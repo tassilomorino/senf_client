@@ -254,12 +254,12 @@ class Geofilter extends Component {
     const data =
       !loadingProjects && geoData !== undefined && geoData !== ""
         ? {
-            type: "Feature",
-            geometry: {
-              type: "Polygon",
-              coordinates: [JSON.parse(geoData)],
-            },
-          }
+          type: "Feature",
+          geometry: {
+            type: "Polygon",
+            coordinates: [JSON.parse(geoData)],
+          },
+        }
         : null;
 
     // console.log(this.props);
@@ -431,44 +431,44 @@ class Geofilter extends Component {
         style={
           openGeofilter
             ? {
-                position: "fixed",
-                width: "100vw",
-                height: "100vh",
-                top: "0",
-                left: "0",
-                zIndex: "999",
-                borderRadius: "0",
-                transform: "scale(1)",
-              }
+              position: "fixed",
+              width: "100vw",
+              height: "100vh",
+              top: "0",
+              left: "0",
+              zIndex: "999",
+              borderRadius: "0",
+              transform: "scale(1)",
+            }
             : {
-                position: "absolute",
-                top: "10px",
-                marginTop: "10px",
-                left: "calc(97.5vw - 127px)",
-                zIndex: "9",
-                width: "127px",
-                height: "127px",
-                borderRadius: "10%",
-                transform: "scale(1)",
-                overflow: "hidden",
-              }
+              position: "absolute",
+              top: "10px",
+              marginTop: "10px",
+              left: "calc(97.5vw - 127px)",
+              zIndex: "9",
+              width: "127px",
+              height: "127px",
+              borderRadius: "10%",
+              transform: "scale(1)",
+              overflow: "hidden",
+            }
         }
       >
         <MapGL
           style={
             openGeofilter
               ? {
-                  position: "fixed",
-                  width: "calc(100% + 1px)",
-                  height: "calc(100% + 1px)",
-                  transform: "scale(1)",
-                  zIndex: 999999,
-                }
+                position: "fixed",
+                width: "calc(100% + 1px)",
+                height: "calc(100% + 1px)",
+                transform: "scale(1)",
+                zIndex: 999999,
+              }
               : {
-                  width: "calc(100% - 0)",
-                  height: "calc(100% - 1px)",
-                  transform: "scale(1)",
-                }
+                width: "calc(100% - 0)",
+                height: "calc(100% - 1px)",
+                transform: "scale(1)",
+              }
           }
           mapStyle={styles[this.state.styleId]}
           accessToken={
@@ -479,10 +479,10 @@ class Geofilter extends Component {
           zoom={openGeofilter ? viewport.zoom : viewport.zoom - 2.5}
           onViewportChange={_onViewportChange}
 
-          // viewportChangeMethod={"easeTo"}
-          // viewportChangeOptions={{
-          //   duration: 1700,
-          // }}
+        // viewportChangeMethod={"easeTo"}
+        // viewportChangeOptions={{
+        //   duration: 1700,
+        // }}
         >
           <Source id="maine" type="geojson" data={data} />
           <Layer
@@ -498,30 +498,19 @@ class Geofilter extends Component {
             style={
               openGeofilter
                 ? {
-                    display: "block",
-                    zIndex: 999,
-                    transform: "translate(80px,-5px)",
-                  }
+                  display: "block",
+                  zIndex: 999,
+                  transform: "translate(80px,-5px)",
+                }
                 : { display: "none" }
             }
           >
             <Themenfilter
-              handleLegend={handleLegend}
-              handleLegend1={handleLegend1}
-              handleLegend2={handleLegend2}
-              handleLegend3={handleLegend3}
-              handleLegend4={handleLegend4}
-              handleLegend5={handleLegend5}
-              handleLegend6={handleLegend6}
-              handleLegend7={handleLegend7}
-              checked={checked}
-              checked1={checked1}
-              checked2={checked2}
-              checked3={checked3}
-              checked4={checked4}
-              checked5={checked5}
-              checked6={checked6}
-              checked7={checked7}
+              handlers={
+                [handleLegend, handleLegend1, handleLegend2, handleLegend3,
+                  handleLegend4, handleLegend5, handleLegend6, handleLegend7]
+              }
+              checks={[checked, checked1, checked2, checked3, checked4, checked5, checked6, checked7]}
             ></Themenfilter>
           </div>
 
@@ -553,16 +542,16 @@ class Geofilter extends Component {
                       element.Thema === "Rad"
                         ? "#929df6"
                         : element.Thema === "Verkehr"
-                        ? "#91dff4"
-                        : element.Thema === "Umwelt und Grün"
-                        ? "#8dd9b8"
-                        : element.Thema === "Sport / Freizeit"
-                        ? "#f6c095"
-                        : element.Thema === "Inklusion / Soziales"
-                        ? "#e8907e"
-                        : element.Thema === "Versorgung"
-                        ? "#bd98f6"
-                        : "#f9db95",
+                          ? "#91dff4"
+                          : element.Thema === "Umwelt und Grün"
+                            ? "#8dd9b8"
+                            : element.Thema === "Sport / Freizeit"
+                              ? "#f6c095"
+                              : element.Thema === "Inklusion / Soziales"
+                                ? "#e8907e"
+                                : element.Thema === "Versorgung"
+                                  ? "#bd98f6"
+                                  : "#f9db95",
                     opacity: "1",
                   }}
                 >
@@ -637,19 +626,19 @@ class Geofilter extends Component {
             openGeofilter
               ? { display: "none" }
               : {
-                  display: "block",
-                  position: "absolute",
-                  top: "5px",
-                  marginTop: "10px",
-                  left: "calc(97.5vw - 137px)",
-                  zIndex: 10,
-                  width: "137px",
-                  height: "137px",
-                  borderRadius: "20px",
-                  backgroundColor: "rgb(0,0,0,0)",
+                display: "block",
+                position: "absolute",
+                top: "5px",
+                marginTop: "10px",
+                left: "calc(97.5vw - 137px)",
+                zIndex: 10,
+                width: "137px",
+                height: "137px",
+                borderRadius: "20px",
+                backgroundColor: "rgb(0,0,0,0)",
 
-                  // border: "5px solid white",
-                }
+                // border: "5px solid white",
+              }
           }
         ></div>
         {map}
@@ -688,14 +677,14 @@ class Geofilter extends Component {
           className="buttonRound buttonResetGeofilter"
           style={
             openGeofilter &&
-            (latitude1 < 50.95) |
+              (latitude1 < 50.95) |
               (latitude2 > 50.82) |
               (longitude2 > 6.812) |
               (longitude3 < 7.07)
               ? { display: "block", zIndex: 999 }
               : openGeofilter
-              ? { display: "block", zIndex: 999, opacity: 0.5 }
-              : { display: "none" }
+                ? { display: "block", zIndex: 999, opacity: 0.5 }
+                : { display: "none" }
           }
         >
           <img src={CircularArrow} width="25" alt="reset_icon"></img>

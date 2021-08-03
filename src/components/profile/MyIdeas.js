@@ -246,22 +246,11 @@ export class MyIdeas extends Component {
         <div className="projectHeader">
           <div className="FilterComponentMobile">
             <Themenfilter
-              handleLegend={handleLegend}
-              handleLegend1={handleLegend1}
-              handleLegend2={handleLegend2}
-              handleLegend3={handleLegend3}
-              handleLegend4={handleLegend4}
-              handleLegend5={handleLegend5}
-              handleLegend6={handleLegend6}
-              handleLegend7={handleLegend7}
-              checked={checked}
-              checked1={checked1}
-              checked2={checked2}
-              checked3={checked3}
-              checked4={checked4}
-              checked5={checked5}
-              checked6={checked6}
-              checked7={checked7}
+              handlers={
+                [handleLegend, handleLegend1, handleLegend2, handleLegend3,
+                  handleLegend4, handleLegend5, handleLegend6, handleLegend7]
+              }
+              checks={[checked, checked1, checked2, checked3, checked4, checked5, checked6, checked7]}
             ></Themenfilter>{" "}
           </div>
 
