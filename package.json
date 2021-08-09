@@ -26,7 +26,6 @@
     "html-to-image": "^1.7.0",
     "html2canvas": "^1.0.0-rc.5",
     "intersection-observer": "^0.10.0",
-    "jwt-autorefresh": "^0.2.4",
     "jwt-decode": "^2.2.0",
     "leaflet": "^1.7.1",
     "leaflet-control-geocoder": "^2.1.0",
@@ -69,7 +68,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "super": "superstatic src",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -87,7 +89,9 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^4.3.5"
+    "@types/react-router-dom": "^4.3.5",
+    "cypress": "^8.1.0",
+    "superstatic": "^7.1.0"
   },
   "proxy": "https://europe-west1-senf-dev.cloudfunctions.net/api"
 }

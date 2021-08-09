@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 
 // MUI Stuff
 import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
 
 // REDUX Stuff
 import { connect } from "react-redux";
@@ -35,18 +34,14 @@ import menuIcon from "../../images/icons/menu.png";
 import shareBorderIcon from "../../images/icons/shareBorder.png";
 import weblinkIcon from "../../images/icons/weblink.png";
 
-import statusIcon from "../../images/icons/flag.png";
 import downloadIcon from "../../images/icons/file.png";
 
 import Geocoder from "react-mapbox-gl-geocoder";
 
-import Geocode from "react-geocode";
 import Weblink from "../../components/modals/postModals/Weblink";
 import Contact from "../../components/modals/postModals/Contact";
 import InlineDatePicker from "../../components/modals/postModals/InlineDatePicker";
 import ToggleDisplay from "react-toggle-display";
-
-import equal from "fast-deep-equal";
 
 const theme = createMuiTheme({
   overrides: {
@@ -366,6 +361,8 @@ class MonitoringEditScream extends Component {
       UI: { loading },
     } = this.props;
     const { viewport, weblink, weblinkTitle, errors } = this.state;
+    // Question: weblink and weblinkTitle show warnings of "no-unused-vars"
+    // Should they simply be deleted here? I'm unfamiliar this React code.
 
     const queryParams = {
       bbox: [6.7, 50.8, 7.2, 51],
@@ -505,7 +502,7 @@ class MonitoringEditScream extends Component {
                   {" "}
                   <a
                     href={
-                      "mailto:" + "hi@gmail.com" + "?subject=" + escape(title)
+                      "mailto:hi@gmail.com?subject=" + escape(title)
                     }
                   >
                     <img
@@ -520,7 +517,7 @@ class MonitoringEditScream extends Component {
                   {" "}
                   <a
                     href={
-                      "mailto:" + "hi@gmail.com" + "?subject=" + escape(title)
+                      "mailto:hi@gmail.com?subject=" + escape(title)
                     }
                   >
                     <img
@@ -535,7 +532,7 @@ class MonitoringEditScream extends Component {
                   {" "}
                   <a
                     href={
-                      "mailto:" + "hi@gmail.com" + "?subject=" + escape(title)
+                      "mailto:hi@gmail.com?subject=" + escape(title)
                     }
                   >
                     <img
@@ -551,7 +548,7 @@ class MonitoringEditScream extends Component {
                   {" "}
                   <a
                     href={
-                      "mailto:" + "hi@gmail.com" + "?subject=" + escape(title)
+                      "mailto:hi@gmail.com?subject=" + escape(title)
                     }
                   >
                     <img
@@ -645,6 +642,7 @@ class MonitoringEditScream extends Component {
                             marginLeft: "-24px",
                             pointerEvents: "none",
                           }}
+                          alt="arrow down"
                         ></img>
                       )}
                     >
@@ -683,6 +681,7 @@ class MonitoringEditScream extends Component {
                             marginLeft: "-24px",
                             pointerEvents: "none",
                           }}
+                          alt="arrow down"
                         ></img>
                       )}
                     >
@@ -832,6 +831,7 @@ class MonitoringEditScream extends Component {
                             marginLeft: "-24px",
                             pointerEvents: "none",
                           }}
+                          alt="arrow down"
                         ></img>
                       )}
                     >

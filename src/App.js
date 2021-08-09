@@ -39,13 +39,6 @@ import ReactGA from "react-ga";
 
 import axios from "axios";
 
-import autorefresh from "jwt-autorefresh";
-
-import jwt from "jwt-autorefresh";
-import tokens from "jwt-autorefresh";
-import payload from "jwt-autorefresh";
-import Constant from "jwt-autorefresh";
-
 import { isTablet } from "react-device-detect";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
@@ -113,7 +106,6 @@ if (token) {
 } else {
   store.dispatch(logoutUser());
 }
-
 
 if (cookies.get("Cookie_settings") === "all") {
   ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS);
