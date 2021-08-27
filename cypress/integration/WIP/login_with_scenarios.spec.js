@@ -1,6 +1,6 @@
 /** @format */
 
-const authUser = require("../fixtures/auth-user.json");
+const authUser = require("../../fixtures/auth-user.json");
 
 describe("The Login Page", () => {
   const { email, password, handle } = authUser;
@@ -14,6 +14,9 @@ describe("The Login Page", () => {
     cy.get(".FilterComponent")
       .find("[data-cy=open-signnote]")
       .click({ force: true });
+
+    // ADD SCENARIOS ABOVE HAPPY PATH
+
     // click on login / anmelden
     cy.get("[data-cy=login]").click();
     // fill email and password
