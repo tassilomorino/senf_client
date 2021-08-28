@@ -17,19 +17,14 @@ describe("The Login Page", () => {
     // click on login / anmelden
     cy.get("[data-cy=login]").click();
     // fill email and password
-    cy.get("[data-cy=login-email]")
-      .click()
-      .type(email)
-    cy.get("[data-cy=login-password]")
-      .click()
-      .type(password)
+    cy.get("[data-cy=login-email]").click().type(email);
+    cy.get("[data-cy=login-password]").click().type(password);
     // submit button
     cy.get("[data-cy=login-user]").click();
     // click the Profile button in Sidebar
     cy.get(".FilterComponent")
       .find("[data-cy=profile-button]")
       .click({ force: true });
-    cy.get("[data-cy=hey-user]")
-      .should('contain.text', 'Hey ' + handle)
+    cy.get("[data-cy=hey-user]").should("contain.text", "Hey " + handle);
   });
 });
