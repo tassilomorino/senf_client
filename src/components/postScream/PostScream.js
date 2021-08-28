@@ -342,7 +342,7 @@ class PostScream extends Component {
     district: "",
 
     MapHeight: "100vh",
-    zoomdetail: false,
+    locationDecided: false,
   };
 
   componentWillReceiveProps(nextProps) {
@@ -585,38 +585,38 @@ class PostScream extends Component {
   };
 
   handleZoom() {
-    if (this.state.zoomdetail === false) {
+    if (this.state.locationDecided === false) {
       this.setState({
-        zoomdetail: true,
+        locationDecided: true,
         MapHeight: "30vh",
       });
     }
 
-    if (this.state.zoomdetail === true) {
+    if (this.state.locationDecided === true) {
       this.setState({
-        zoomdetail: false,
+        locationDecided: false,
         MapHeight: "100vh",
       });
     }
   }
 
   handleZoomNoLocation() {
-    if (this.state.zoomdetail === false) {
+    if (this.state.locationDecided === false) {
       this.setState({
         latitude: 50.93864020643174,
         longitude: 6.958725744885521,
         address: "Ohne Ortsangabe",
         district: "",
         neighborhood: "",
-        zoomdetail: true,
+        locationDecided: true,
         MapHeight: "30vh",
       });
     }
 
-    if (this.state.zoomdetail === true) {
+    if (this.state.locationDecided === true) {
       this.setState({
         // viewport: { zoom: 12, pitch: 0, bearing: 0 },
-        zoomdetail: false,
+        locationDecided: false,
         MapHeight: "100vh",
       });
     }
@@ -762,7 +762,7 @@ class PostScream extends Component {
         <div
           onClick={this.clicked}
           style={
-            this.state.zoomdetail === false
+            this.state.locationDecided === false
               ? { display: "block" }
               : { display: "none" }
           }
@@ -811,7 +811,7 @@ class PostScream extends Component {
 
           <GeolocateControl
             style={
-              this.state.zoomdetail === false
+              this.state.locationDecided === false
                 ? geolocateStyle
                 : geolocateStyle_hide
             }
@@ -822,7 +822,7 @@ class PostScream extends Component {
           <img
             src={Geolocate}
             style={
-              this.state.zoomdetail === false
+              this.state.locationDecided === false
                 ? geolocateIcon
                 : geolocateIcon_hide
             }
@@ -845,7 +845,7 @@ class PostScream extends Component {
         <div
           className="selectLocationContainer"
           style={
-            this.state.zoomdetail
+            this.state.locationDecided
               ? {
                   position: "fixed",
                   bottom: "calc(90vh - 50px)",
@@ -916,7 +916,7 @@ class PostScream extends Component {
               this.state.AndroidStyle === false ? "postCard" : "postCardAndroid"
             }
             style={
-              this.state.zoomdetail
+              this.state.locationDecided
                 ? { top: "20vh", transition: "0.5s" }
                 : { top: "100vh", transition: "0.5s" }
             }
@@ -1037,7 +1037,7 @@ class PostScream extends Component {
             }
             disabled={this.state.loading || this.state.Out ? true : false}
             style={
-              this.state.zoomdetail
+              this.state.locationDecided
                 ? { bottom: "10px", transition: "0.5s" }
                 : { bottom: "-20vh", transition: "0.5s" }
             }
@@ -1055,7 +1055,7 @@ class PostScream extends Component {
       <div
         className={classes.Authlink}
         style={
-          this.state.zoomdetail
+          this.state.locationDecided
             ? { top: "27vh", transition: "0.5s" }
             : { top: "100vh", transition: "0.5s" }
         }
@@ -1096,7 +1096,7 @@ class PostScream extends Component {
           <div className="postScreamMapWrapper">
             <div
               style={
-                this.state.zoomdetail
+                this.state.locationDecided
                   ? { marginTop: 0, transition: "0.5s" }
                   : { marginTop: "100vh", transition: "0.5s" }
               }

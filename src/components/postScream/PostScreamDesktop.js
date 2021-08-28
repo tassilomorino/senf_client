@@ -2,70 +2,44 @@
 
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 import { Translation } from "react-i18next";
+import _ from "lodash";
+import { isAndroid, isMobileOnly } from "react-device-detect";
 
-// MUI Stuff
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import withStyles from "@material-ui/core/styles/withStyles";
-
-//Geocode
-import Geocoder from "react-mapbox-gl-geocoder";
-import nominatim from "nominatim-geocode";
-import L from "leaflet";
-import "leaflet-control-geocoder/dist/Control.Geocoder.js";
-
-//HANDLER
+//Components
 import SignNote from "../profile/SignNote";
+import PostScreamRules from "../modals/PostScreamRules";
+import Weblink from "../modals/postModals/Weblink";
+import Contact from "../modals/postModals/Contact";
+import InlineDatePicker from "../modals/postModals/InlineDatePicker";
 
 //ICONS
 import LocationOn from "@material-ui/icons/LocationOn";
 import AddIcon from "../../images/icons/plus_white.png";
 import Arrow from "../../images/icons/arrow.png";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Pin from "../../images/pin3.png";
 
 // REDUX STUFF
 import { connect } from "react-redux";
 import { postScream } from "../../redux/actions/screamActions";
 import { clearErrors } from "../../redux/actions/errorsActions";
 
-import { withRouter } from "react-router-dom";
+//Map stuff
+import ReactMapGL, { Marker, Source, Layer } from "react-map-gl";
+import Geocoder from "react-mapbox-gl-geocoder";
 
-import _ from "lodash";
-
-import ReactMapGL, {
-  Marker,
-  GeolocateControl,
-  Source,
-  Layer,
-} from "react-map-gl";
-
-// import MapGL, {
-//   Source,
-//   Layer,
-//   Marker,
-//   NavigationControl,
-// } from "@urbica/react-map-gl";
-import Pin from "../../images/pin3.png";
-
-//IF COOKIES NOT ACCEPTED
-import Maploader from "../../images/map.png";
-
-import PostScreamRules from "../modals/PostScreamRules";
-
-import { ConsoleView, isAndroid, isMobileOnly } from "react-device-detect";
-
-//ANIMATION
+// MUI Stuff
+import withStyles from "@material-ui/core/styles/withStyles";
+import { MuiThemeProvider, NativeSelect } from "@material-ui/core";
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import TextField from "@material-ui/core/TextField";
+import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 
 //COOKIES
 import Cookies from "universal-cookie";
-import { MuiThemeProvider, NativeSelect } from "@material-ui/core";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import Weblink from "../modals/postModals/Weblink";
-import Contact from "../modals/postModals/Contact";
-import InlineDatePicker from "../modals/postModals/InlineDatePicker";
-
 const cookies = new Cookies();
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -128,32 +102,7 @@ const styles = {
     marginTop: "0px",
     width: "100%",
   },
-  submitButton: {
-    zIndex: "99999",
-    position: "fixed",
-    bottom: "10px",
-    left: "25vw",
-    float: "right",
-    width: "50vw",
-    borderRadius: "30px",
-    textTransform: "none",
-    fontSize: "14pt",
-    backgroundColor: "white",
-    boxShadow: "0 0px 40px -12px rgba(0,0,0,0.2)",
-  },
 
-  postScreamTitle: {
-    marginTop: "20px",
-    fontSize: "28pt",
-    color: "rgb(255, 205, 6)",
-    backgroundColor: "white",
-    textAlign: "center",
-  },
-  locationField: {
-    fontSize: "10pt",
-    color: "yellow",
-    margin: 0,
-  },
   locationOuter: {
     display: "flex",
     flexDirection: "row",
@@ -167,23 +116,6 @@ const styles = {
     paddingRight: "1%",
   },
 
-  add: {
-    zIndex: 990,
-    position: "fixed",
-    backgroundColor: "#FFD862",
-    width: "7vw",
-    padding: "2.5vw",
-    border: "1px white solid",
-    borderRadius: "100%",
-    bottom: "9px",
-    left: "50%",
-    marginLeft: "-6.2vw",
-    boxShadow: "0 0px 40px -12px rgba(0,0,0,0.5)",
-  },
-  mapwrapper: {
-    position: "absolute",
-    top: "0",
-  },
   Authlink: {
     position: "fixed",
     top: "25vh",
@@ -233,89 +165,6 @@ const styles = {
   },
 };
 
-const geolocateStyle = {
-  position: "fixed",
-  zIndex: "9999",
-  top: "2.5%",
-  right: "2.5%",
-  margin: "auto",
-  height: "50px",
-  width: "50px",
-  borderRadius: "15px",
-  boxShadow: "0 8px 30px -12px rgba(0,0,0,0.5)",
-  backgroundColor: "#fed957",
-  display: "flex",
-  position: "absolute",
-  alignItems: "center",
-  justifyContent: "center",
-  textAlign: "center",
-};
-
-const geolocateStyle_hide = {
-  display: "none",
-};
-
-const geolocateIcon = {
-  position: "fixed",
-  zIndex: "9999",
-  top: "2.5%",
-  right: "2.5%",
-  margin: "auto",
-  height: "50px",
-  width: "50px",
-  borderRadius: "15px",
-  boxShadow: "0 8px 30px -12px rgba(0,0,0,0.5)",
-  backgroundColor: "#fed957",
-  display: "flex",
-  position: "absolute",
-  alignItems: "center",
-  justifyContent: "center",
-  textAlign: "center",
-  pointerEvents: "none",
-};
-
-const geolocateIcon_hide = {
-  display: "none",
-};
-
-// const geolocateStyleWeb = {
-//   position: "fixed",
-//   zIndex: "9999",
-//   top: "4vw",
-//   right: "calc(((100vw - 600px)/2) - 200px)",
-//   margin: "auto",
-//   height: "50px",
-//   width: "50px",
-//   borderRadius: "15px",
-//   boxShadow: "0 8px 30px -12px rgba(0,0,0,0.5)",
-//   backgroundColor: "#fed957",
-//   display: "flex",
-//   position: "absolute",
-//   alignItems: "center",
-//   justifyContent: "center",
-//   textAlign: "center",
-// };
-
-// const geolocateIconWeb = {
-//   position: "fixed",
-//   zIndex: "9999",
-//   top: "4vw",
-//   right: "calc(((100vw - 600px)/2) - 200px)",
-//   margin: "auto",
-//   marginright: "",
-//   height: "50px",
-//   width: "50px",
-//   borderRadius: "15px",
-//   boxShadow: "0 8px 30px -12px rgba(0,0,0,0.5)",
-//   backgroundColor: "#fed957",
-//   display: "flex",
-//   position: "absolute",
-//   alignItems: "center",
-//   justifyContent: "center",
-//   textAlign: "center",
-//   pointerEvents: "none",
-// };
-
 class PostScream extends Component {
   constructor(props) {
     super(props);
@@ -324,8 +173,8 @@ class PostScream extends Component {
   state = {
     open: false,
     Out: false,
-    // load: false,
     loading: false,
+
     body: "",
     title: "",
     project: "",
@@ -333,18 +182,15 @@ class PostScream extends Component {
     openWeblink: false,
     weblinkTitle: null,
     weblink: null,
-
     openContact: false,
     contactTitle: null,
     contact: null,
-
     openCalendar: false,
     selectedDays: [],
     selectedUnix: [],
 
     geoData: "",
     clicked: false,
-    AndroidStyle: false,
     errors: {},
     viewport: {
       latitude: 50.93864020643174,
@@ -355,14 +201,10 @@ class PostScream extends Component {
     },
     latitude: 50.93864020643174,
     longitude: 6.958725744885521,
-    address_long: "Wähle einen Ort",
-    address_short: "gesplitted",
     address: "Ohne Ortsangabe",
     district: "",
     neighborhood: "",
-
-    MapHeight: "100vh",
-    zoomdetail: false,
+    locationDecided: false,
   };
 
   componentWillReceiveProps(nextProps) {
@@ -377,19 +219,7 @@ class PostScream extends Component {
     }
   }
 
-  componentDidMount() {
-    if (isAndroid) {
-      this.setState({ AndroidStyle: true });
-    }
-  }
-
   handleOpen = () => {
-    let coordinates = window.location.hash;
-
-    let lat = Number(coordinates.split("#")[1]);
-    let long = Number(coordinates.split("#")[2]);
-
-    console.log(lat, long);
     this.setState({ open: true, loading: false });
 
     const project =
@@ -429,16 +259,10 @@ class PostScream extends Component {
     });
   };
 
-  handleCookies() {
-    cookies.set("Cookie_settings", "all", {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 90,
-      sameSite: "none",
-      secure: true,
-    });
-    this.setState({ open: false });
-    this.setState({ open: true });
-  }
+  handleClose = () => {
+    this.props.clearErrors();
+    this.setState({ open: false, errors: {} });
+  };
 
   handleRules() {
     cookies.set("Cookie_Rules", "true", {
@@ -451,13 +275,8 @@ class PostScream extends Component {
     this.setState({ open: true });
   }
 
-  handleClose = () => {
-    this.props.clearErrors();
-    this.setState({ open: false, errors: {} });
-  };
   handleChange = (event) => {
     event.preventDefault();
-
     this.setState({ [event.target.name]: event.target.value, loading: false });
   };
 
@@ -467,11 +286,10 @@ class PostScream extends Component {
     for (i = 0; i < selectedDays.length; i++) {
       selectedUnix[i] = selectedDays[i]["unix"];
     }
-
     this.setState({ selectedDays: selectedDays, selectedUnix: selectedUnix });
   };
 
-  handleDropdown = (event) => {
+  handleDropdownProject = (event) => {
     event.preventDefault();
     this.setState({
       project: event.target.value,
@@ -505,18 +323,8 @@ class PostScream extends Component {
     });
   };
 
-  handleDropdownTopic = (event) => {
-    event.preventDefault();
-    this.setState({
-      topic: event.target.value,
-    });
-  };
-
   handleSubmit = (event) => {
     event.preventDefault();
-
-    console.log(this.state.selectedUnix);
-
     this.setState({
       loading: true,
     });
@@ -526,7 +334,6 @@ class PostScream extends Component {
       title: this.state.title,
       locationHeader: this.state.address,
       district: this.state.district,
-
       neighborhood: this.state.neighborhood,
       lat: this.state.latitude,
       long: this.state.longitude,
@@ -534,7 +341,6 @@ class PostScream extends Component {
       Thema: this.state.topic,
       weblinkTitle: this.state.weblinkTitle,
       weblink: this.state.weblink,
-
       contactTitle: this.state.contactTitle,
       contact: this.state.contact,
     };
@@ -545,12 +351,6 @@ class PostScream extends Component {
 
     this.props.postScream(newScream, this.props.user, this.props.history);
   };
-
-  sleeper(ms) {
-    return function (x) {
-      return new Promise((resolve) => setTimeout(() => resolve(x), ms));
-    };
-  }
 
   _onMarkerDragEndDesktop = (newViewport) => {
     this.setState({
@@ -610,7 +410,7 @@ class PostScream extends Component {
     }
   };
 
-  onSelected = (viewport, item) => {
+  onSelected = (viewport) => {
     this.setState({ viewport });
 
     setTimeout(() => {
@@ -624,39 +424,34 @@ class PostScream extends Component {
   };
 
   handleZoom() {
-    if (this.state.zoomdetail === false) {
+    if (this.state.locationDecided === false) {
       this.setState({
-        zoomdetail: true,
-        MapHeight: "30vh",
+        locationDecided: true,
       });
     }
 
-    if (this.state.zoomdetail === true) {
+    if (this.state.locationDecided === true) {
       this.setState({
-        zoomdetail: false,
-        MapHeight: "100vh",
+        locationDecided: false,
       });
     }
   }
 
   handleZoomNoLocation() {
-    if (this.state.zoomdetail === false) {
+    if (this.state.locationDecided === false) {
       this.setState({
         latitude: 50.93864020643174,
         longitude: 6.958725744885521,
         address: "Ohne Ortsangabe",
         district: "",
         neighborhood: "",
-        zoomdetail: true,
-        MapHeight: "30vh",
+        locationDecided: true,
       });
     }
 
-    if (this.state.zoomdetail === true) {
+    if (this.state.locationDecided === true) {
       this.setState({
-        // viewport: { zoom: 12, pitch: 0, bearing: 0 },
-        zoomdetail: false,
-        MapHeight: "100vh",
+        locationDecided: false,
       });
     }
   }
@@ -718,7 +513,6 @@ class PostScream extends Component {
 
   render() {
     const { address, viewport, errors } = this.state;
-
     const queryParams = {
       bbox: [6.7, 50.8, 7.2, 51],
     };
@@ -797,312 +591,6 @@ class PostScream extends Component {
       </>
     );
 
-    const map = (
-      <div className={classes.mapwrapper}>
-        <div
-          onClick={this.clicked}
-          style={
-            this.state.zoomdetail === false
-              ? { display: "block" }
-              : { display: "none" }
-          }
-        >
-          <Geocoder
-            mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-            onSelected={this.onSelected}
-            viewport={viewport}
-            hideOnSelect={true}
-            limit={3}
-            queryParams={queryParams}
-            id="geocoder"
-            transitionDuration={1000}
-          ></Geocoder>
-          <div
-            className="pinLocationHeader"
-            style={
-              this.state.clicked === false ? { zIndex: 9999 } : { zIndex: 0 }
-            }
-          >
-            {addressLine}
-          </div>
-        </div>
-
-        <ReactMapGL
-          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-          mapStyle="mapbox://styles/tmorino/ck0seyzlv0lbh1clfwepe0x0x?optimize=true"
-          {...viewport}
-          maxZoom={18}
-          minZoom={11}
-          width="calc(100vw - 600px)"
-          height="100vh"
-          style={{ position: "fixed", right: 0 }}
-          onMouseUp={this.geocode}
-          onViewportChange={this._onMarkerDragEndDesktop}
-        >
-          <div style={{ pointerEvents: "none" }}>
-            <Marker
-              longitude={viewport.longitude}
-              latitude={viewport.latitude}
-              offsetTop={-150}
-              offsetLeft={-75}
-            >
-              <img src={Pin} width="150" alt="ChatIcon" />
-            </Marker>
-          </div>
-
-          <Source id="maine" type="geojson" data={data} />
-          <Layer
-            id="maine"
-            type="fill"
-            source="maine"
-            paint={{
-              "fill-color": "#fed957",
-              "fill-opacity": 0.3,
-            }}
-          />
-        </ReactMapGL>
-
-        <div
-          className="selectLocationContainer"
-          style={this.state.zoomdetail ? { zIndex: 1 } : { zIndex: 5 }}
-        >
-          <div
-            onClick={() => this.handleZoom()}
-            style={
-              this.state.zoomdetail
-                ? {
-                    display: "block",
-                    width: "100%",
-                    height: "100%",
-                    backgroundColor: "#000000",
-                    position: "absolute",
-                    zIndex: 99999,
-                    opacity: 0.6,
-                    borderRadius: "19px",
-                  }
-                : {
-                    display: "none",
-                  }
-            }
-          ></div>
-          <div className="projectSelectContainer">
-            <span className={classes.boldText}> An: </span>
-
-            <MuiThemeProvider theme={theme}>
-              <NativeSelect
-                value={this.state.project}
-                onChange={this.handleDropdown}
-                name="dropdown"
-                className="projectFormControl"
-                inputProps={{ "aria-label": "dropdown" }}
-                inputStyle={{
-                  fontFamily: "Futura PT W01-Bold",
-                }}
-                id="dropdown"
-                IconComponent={() => (
-                  <img
-                    src={Arrow}
-                    width="20px"
-                    style={{
-                      marginTop: "0px",
-                      marginLeft: "-24px",
-                      pointerEvents: "none",
-                    }}
-                  ></img>
-                )}
-              >
-                <option value="" className={classes.boldText}>
-                  Allgemein (Alle Ideen)
-                </option>
-                {projectsArray}
-              </NativeSelect>
-            </MuiThemeProvider>
-          </div>{" "}
-          <br />
-          <button
-            className={
-              this.state.project !== ""
-                ? "buttonWide buttonSelectLocationNo_hide"
-                : "buttonWide buttonSelectLocationNo"
-            }
-            onClick={() => this.handleZoomNoLocation()}
-          >
-            Ohne Ort
-          </button>
-          <button
-            className={
-              this.state.address === "Ohne Ortsangabe"
-                ? "buttonWide buttonSelectLocation_hide"
-                : "buttonWide buttonSelectLocation"
-            }
-            onClick={() => this.handleZoom()}
-          >
-            Ort bestätigen
-          </button>
-        </div>
-
-        <form onSubmit={this.handleSubmit}>
-          <div
-            className="postCard"
-            style={this.state.zoomdetail ? { zIndex: 5 } : { zIndex: 1 }}
-          >
-            <div
-              onClick={() => this.handleZoom()}
-              style={
-                this.state.zoomdetail
-                  ? {
-                      display: "none",
-                    }
-                  : {
-                      display: "block",
-                      width: "100%",
-                      height: "100%",
-                      backgroundColor: "#000000",
-                      position: "absolute",
-                      zIndex: 99999,
-                      opacity: 0.6,
-                      borderRadius: "19px",
-                    }
-              }
-            ></div>
-
-            <div className={classes.content}>
-              <div
-                className={classes.locationOuter}
-                onClick={() => this.handleZoom()}
-                // onDragStart={() => this.handleClickAdress()}
-              >
-                <LocationOn style={{ marginTop: "-5px" }} />{" "}
-                <div className={classes.locationHeader}> ~ {address} </div>
-              </div>
-              <PostScreamRules></PostScreamRules>
-              <TextField
-                name="title"
-                type="text"
-                label="Titel deiner Idee"
-                multiline
-                rowsMax="2"
-                placeholder=""
-                error={errors.title ? true : false}
-                helperText={errors.title}
-                className={classes.textField}
-                onChange={this.handleChange}
-                margin="normal"
-                fullWidth
-                inputProps={{ maxLength: 70 }}
-              />
-              <TextField
-                name="body"
-                type="text"
-                label="Beschreibung deiner Idee"
-                multiline
-                rowsMax="12"
-                InputProps={{ disableUnderline: true }}
-                placeholder=""
-                error={errors.body ? true : false}
-                helperText={errors.body}
-                className={classes.textField}
-                onChange={this.handleChange}
-                margin="normal"
-                fullWidth
-                inputProps={{ maxLength: 800 }}
-              />
-
-              <Weblink
-                openWeblink={this.state.openWeblink}
-                handleOpenWeblink={this.handleOpenWeblink}
-                handleCloseWeblink={this.handleCloseWeblink}
-                handleSaveWeblink={this.handleSaveWeblink}
-                weblinkTitle={this.state.weblinkTitle}
-                weblink={this.state.weblink}
-                handleChange={this.handleChange}
-              ></Weblink>
-              <Contact
-                openContact={this.state.openContact}
-                handleOpenContact={this.handleOpenContact}
-                handleCloseContact={this.handleCloseContact}
-                handleSaveContact={this.handleSaveContact}
-                contactTitle={this.state.contactTitle}
-                contact={this.state.contact}
-                handleChange={this.handleChange}
-              ></Contact>
-              <div
-                style={
-                  this.state.project === "Agora:_Sommer_des_guten_lebens"
-                    ? {}
-                    : { display: "none" }
-                }
-              >
-                <InlineDatePicker
-                  openCalendar={this.state.openCalendar}
-                  handleOpenCalendar={this.handleOpenCalendar}
-                  handleCloseCalendar={this.handleCloseCalendar}
-                  handleSaveCalendar={this.handleSaveCalendar}
-                  handleChange={this.handleChangeCalendar}
-                  selectedDays={this.state.selectedDays}
-                ></InlineDatePicker>
-              </div>
-              <div className="topicSelectContainer">
-                <span>Thema: </span>
-
-                <MuiThemeProvider theme={theme}>
-                  <NativeSelect
-                    value={this.state.topic}
-                    onChange={this.handleDropdownTopic}
-                    name="dropdown"
-                    className="projectFormControl"
-                    inputProps={{ "aria-label": "dropdown" }}
-                    id="dropdown"
-                    IconComponent={() => (
-                      <img
-                        src={Arrow}
-                        width="20px"
-                        style={{
-                          marginTop: "0px",
-                          marginLeft: "-24px",
-                          pointerEvents: "none",
-                        }}
-                      ></img>
-                    )}
-                  >
-                    <option value="" className={classes.formText}>
-                      Wähle das Thema aus
-                    </option>
-                    {topicsArray}
-                  </NativeSelect>
-                </MuiThemeProvider>
-              </div>
-            </div>
-            <button
-              type="submit"
-              className="submitPostButton buttonWide"
-              disabled={this.state.loading || this.state.Out ? true : false}
-              style={
-                this.state.zoomdetail
-                  ? {
-                      display: "block",
-                    }
-                  : {
-                      display: "none",
-                    }
-              }
-            >
-              Idee teilen
-              {this.state.loading && (
-                <CircularProgress size={30} className={classes.progress} />
-              )}
-            </button>
-          </div>
-        </form>
-      </div>
-    );
-
-    const AuthlinkDesktop = !authenticated ? (
-      <div className={classes.AuthlinkDesktop}>
-        <SignNote />
-      </div>
-    ) : null;
-
     return (
       <Fragment>
         <button
@@ -1111,7 +599,6 @@ class PostScream extends Component {
         >
           <img src={AddIcon} width="25" alt="AddIcon" />
           <span className="addText">
-            {" "}
             <Translation>
               {(t, { i18n }) => <p>{t("postScream_newIdea")}</p>}
             </Translation>
@@ -1125,7 +612,11 @@ class PostScream extends Component {
           BackdropProps={{ classes: { root: classes.root } }}
           PaperProps={{ classes: { root: classes.paper } }}
         >
-          {AuthlinkDesktop}
+          {!authenticated && (
+            <div className={classes.AuthlinkDesktop}>
+              <SignNote />
+            </div>
+          )}
           <button
             tip="Close"
             onClick={this.handleClose}
@@ -1139,11 +630,301 @@ class PostScream extends Component {
             />
           </button>
 
-          <div className="postScreamMapWrapper">
-            <div className="PostBackground"></div>
-
-            {map}
+          <div
+            onClick={this.clicked}
+            style={
+              this.state.locationDecided === false
+                ? { display: "block" }
+                : { display: "none" }
+            }
+          >
+            <Geocoder
+              mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+              onSelected={this.onSelected}
+              viewport={viewport}
+              hideOnSelect={true}
+              limit={3}
+              queryParams={queryParams}
+              id="geocoder"
+              transitionDuration={1000}
+            ></Geocoder>
+            <div
+              className="pinLocationHeader"
+              style={
+                this.state.clicked === false ? { zIndex: 9999 } : { zIndex: 0 }
+              }
+            >
+              {addressLine}
+            </div>
           </div>
+
+          <ReactMapGL
+            mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+            mapStyle="mapbox://styles/tmorino/ck0seyzlv0lbh1clfwepe0x0x?optimize=true"
+            {...viewport}
+            maxZoom={18}
+            minZoom={11}
+            width="calc(100vw - 600px)"
+            height="100vh"
+            style={{ position: "fixed", right: 0 }}
+            onMouseUp={this.geocode}
+            onViewportChange={this._onMarkerDragEndDesktop}
+          >
+            <div style={{ pointerEvents: "none" }}>
+              <Marker
+                longitude={viewport.longitude}
+                latitude={viewport.latitude}
+                offsetTop={-150}
+                offsetLeft={-75}
+              >
+                <img src={Pin} width="150" alt="ChatIcon" />
+              </Marker>
+            </div>
+
+            <Source id="maine" type="geojson" data={data} />
+            <Layer
+              id="maine"
+              type="fill"
+              source="maine"
+              paint={{
+                "fill-color": "#fed957",
+                "fill-opacity": 0.3,
+              }}
+            />
+          </ReactMapGL>
+
+          <div
+            className="selectLocationContainer"
+            style={this.state.locationDecided ? { zIndex: 1 } : { zIndex: 5 }}
+          >
+            <div
+              onClick={() => this.handleZoom()}
+              style={
+                this.state.locationDecided
+                  ? {
+                      display: "block",
+                      width: "100%",
+                      height: "100%",
+                      backgroundColor: "#000000",
+                      position: "absolute",
+                      zIndex: 99999,
+                      opacity: 0.6,
+                      borderRadius: "19px",
+                    }
+                  : {
+                      display: "none",
+                    }
+              }
+            ></div>
+            <div className="projectSelectContainer">
+              <span className={classes.boldText}> An: </span>
+
+              <MuiThemeProvider theme={theme}>
+                <NativeSelect
+                  value={this.state.project}
+                  onChange={this.handleDropdownProject}
+                  name="project"
+                  className="projectFormControl"
+                  inputProps={{ "aria-label": "project" }}
+                  inputStyle={{
+                    fontFamily: "Futura PT W01-Bold",
+                  }}
+                  id="project"
+                  IconComponent={() => (
+                    <img
+                      src={Arrow}
+                      width="20px"
+                      style={{
+                        marginTop: "0px",
+                        marginLeft: "-24px",
+                        pointerEvents: "none",
+                      }}
+                    ></img>
+                  )}
+                >
+                  <option value="" className={classes.boldText}>
+                    Allgemein (Alle Ideen)
+                  </option>
+                  {projectsArray}
+                </NativeSelect>
+              </MuiThemeProvider>
+            </div>{" "}
+            <br />
+            <button
+              className={
+                this.state.project !== ""
+                  ? "buttonWide buttonSelectLocationNo_hide"
+                  : "buttonWide buttonSelectLocationNo"
+              }
+              onClick={() => this.handleZoomNoLocation()}
+            >
+              Ohne Ort
+            </button>
+            <button
+              className={
+                this.state.address === "Ohne Ortsangabe"
+                  ? "buttonWide buttonSelectLocation_hide"
+                  : "buttonWide buttonSelectLocation"
+              }
+              onClick={() => this.handleZoom()}
+            >
+              Ort bestätigen
+            </button>
+          </div>
+
+          <form onSubmit={this.handleSubmit}>
+            <div
+              className="postCard"
+              style={this.state.locationDecided ? { zIndex: 5 } : { zIndex: 1 }}
+            >
+              <div
+                onClick={() => this.handleZoom()}
+                style={
+                  this.state.locationDecided
+                    ? {
+                        display: "none",
+                      }
+                    : {
+                        display: "block",
+                        width: "100%",
+                        height: "100%",
+                        backgroundColor: "#000000",
+                        position: "absolute",
+                        zIndex: 99999,
+                        opacity: 0.6,
+                        borderRadius: "19px",
+                      }
+                }
+              ></div>
+
+              <div className={classes.content}>
+                <div
+                  className={classes.locationOuter}
+                  onClick={() => this.handleZoom()}
+                  // onDragStart={() => this.handleClickAdress()}
+                >
+                  <LocationOn style={{ marginTop: "-5px" }} />{" "}
+                  <div className={classes.locationHeader}> ~ {address} </div>
+                </div>
+                <PostScreamRules></PostScreamRules>
+                <TextField
+                  name="title"
+                  type="text"
+                  label="Titel deiner Idee"
+                  multiline
+                  rowsMax="2"
+                  placeholder=""
+                  error={errors.title ? true : false}
+                  helperText={errors.title}
+                  className={classes.textField}
+                  onChange={this.handleChange}
+                  margin="normal"
+                  fullWidth
+                  inputProps={{ maxLength: 70 }}
+                />
+                <TextField
+                  name="body"
+                  type="text"
+                  label="Beschreibung deiner Idee"
+                  multiline
+                  rowsMax="12"
+                  InputProps={{ disableUnderline: true }}
+                  placeholder=""
+                  error={errors.body ? true : false}
+                  helperText={errors.body}
+                  className={classes.textField}
+                  onChange={this.handleChange}
+                  margin="normal"
+                  fullWidth
+                  inputProps={{ maxLength: 800 }}
+                />
+
+                <Weblink
+                  openWeblink={this.state.openWeblink}
+                  handleOpenWeblink={this.handleOpenWeblink}
+                  handleCloseWeblink={this.handleCloseWeblink}
+                  handleSaveWeblink={this.handleSaveWeblink}
+                  weblinkTitle={this.state.weblinkTitle}
+                  weblink={this.state.weblink}
+                  handleChange={this.handleChange}
+                ></Weblink>
+                <Contact
+                  openContact={this.state.openContact}
+                  handleOpenContact={this.handleOpenContact}
+                  handleCloseContact={this.handleCloseContact}
+                  handleSaveContact={this.handleSaveContact}
+                  contactTitle={this.state.contactTitle}
+                  contact={this.state.contact}
+                  handleChange={this.handleChange}
+                ></Contact>
+                <div
+                  style={
+                    this.state.project === "Agora:_Sommer_des_guten_lebens"
+                      ? {}
+                      : { display: "none" }
+                  }
+                >
+                  <InlineDatePicker
+                    openCalendar={this.state.openCalendar}
+                    handleOpenCalendar={this.handleOpenCalendar}
+                    handleCloseCalendar={this.handleCloseCalendar}
+                    handleSaveCalendar={this.handleSaveCalendar}
+                    handleChange={this.handleChangeCalendar}
+                    selectedDays={this.state.selectedDays}
+                  ></InlineDatePicker>
+                </div>
+                <div className="topicSelectContainer">
+                  <span>Thema: </span>
+
+                  <MuiThemeProvider theme={theme}>
+                    <NativeSelect
+                      value={this.state.topic}
+                      onChange={this.handleChange}
+                      name="topic"
+                      className="projectFormControl"
+                      inputProps={{ "aria-label": "topic" }}
+                      id="topic"
+                      IconComponent={() => (
+                        <img
+                          src={Arrow}
+                          width="20px"
+                          style={{
+                            marginTop: "0px",
+                            marginLeft: "-24px",
+                            pointerEvents: "none",
+                          }}
+                        ></img>
+                      )}
+                    >
+                      <option value="" className={classes.formText}>
+                        Wähle das Thema aus
+                      </option>
+                      {topicsArray}
+                    </NativeSelect>
+                  </MuiThemeProvider>
+                </div>
+              </div>
+              <button
+                type="submit"
+                className="submitPostButton buttonWide"
+                disabled={this.state.loading || this.state.Out ? true : false}
+                style={
+                  this.state.locationDecided
+                    ? {
+                        display: "block",
+                      }
+                    : {
+                        display: "none",
+                      }
+                }
+              >
+                Idee teilen
+                {this.state.loading && (
+                  <CircularProgress size={30} className={classes.progress} />
+                )}
+              </button>
+            </div>
+          </form>
         </Dialog>
       </Fragment>
     );
