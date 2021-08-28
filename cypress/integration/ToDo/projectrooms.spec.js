@@ -19,6 +19,8 @@ describe("Testing projectrooms", () => {
     //cy.
     //Check if the map-filter is working
     //cy.
+    //Check if the revert map-filter is working
+    //cy.
     //Check if you can inspect a certain idea from the list
     //cy.
     //close idea
