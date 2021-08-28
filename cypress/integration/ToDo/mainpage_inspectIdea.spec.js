@@ -1,6 +1,6 @@
 /** @format */
 
-describe("Testing incomng data", () => {
+describe("Test inspecting idea from mainpage", () => {
   before(() => {
     cy.setCookie("Cookie_settings", "all");
     cy.visit("/");
