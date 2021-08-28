@@ -513,75 +513,71 @@ class PostScream extends Component {
     this.props.postScream(newScream, this.props.user, this.props.history);
   };
 
-  _onMarkerDragEnd = (event) => {
+  _onMarkerDragEnd = (newViewport) => {
     this.setState({
+      clicked: false,
+      viewport: newViewport,
       longitude: this.state.viewport.longitude,
       latitude: this.state.viewport.latitude,
     });
-    setTimeout(
-      this.setState({
-        clicked: false,
-      }),
-      500
-    );
-    setTimeout(() => {
-      const geocoder = L.Control.Geocoder.nominatim();
-
-      geocoder.reverse(
-        {
-          lat: this.state.viewport.latitude,
-          lng: this.state.viewport.longitude,
-        },
-        12,
-        (results) => {
-          var r = results[0];
-          var split = r.html.split("<br/>");
-          var address = split[0];
-          this.setState({ address: address, district: r.name });
-          console.log("ihasddhasdkashdkjashd", r);
-        }
-      );
-
-      if (
-        this.state.viewport.latitude > 51.08 ||
-        this.state.viewport.latitude < 50.79 ||
-        this.state.viewport.longitude < 6.712 ||
-        this.state.viewport.longitude > 7.17
-      ) {
-        alert("Außerhalb von Köln kannst du leider noch keine Ideen teilen.");
-        this.setState({
-          Out: true,
-        });
-      } else {
-        this.setState({
-          Out: false,
-        });
-      }
-    }, 500);
   };
 
-  geoclick = () => {
-    setTimeout(
-      function () {
-        this._onMarkerDragEnd();
-      }.bind(this),
-      1000
-    );
+  geocode = () => {
+    const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+    const geocodingClient = mbxGeocoding({
+      accessToken: process.env.REACT_APP_MAPBOX_ACCESS_TOKEN,
+    });
+    geocodingClient
+      .reverseGeocode({
+        query: [this.state.longitude, this.state.latitude],
+        limit: 1,
+      })
+      .send()
+      .then((response) => {
+        const match = response.body;
+        console.log("Gesamt", match.features[0]);
+        console.log(
+          "Adresse",
+          match.features[0].text,
+          match.features[0].address
+        );
+        console.log("Stadtteil", match.features[0].context[1].text);
+
+        const address =
+          match.features[0].address !== undefined
+            ? match.features[0].address
+            : "";
+        this.setState({
+          address: match.features[0].text + " " + address,
+          neighborhood: match.features[0].context[1].text,
+          district: match.features[0].place_name,
+        });
+      });
+
+    if (
+      this.state.latitude > 51.08 ||
+      this.state.latitude < 50.79 ||
+      this.state.longitude < 6.712 ||
+      this.state.longitude > 7.17
+    ) {
+      alert("Außerhalb von Köln kannst du leider noch keine Ideen teilen.");
+      this.setState({
+        Out: true,
+      });
+    } else {
+      this.setState({
+        Out: false,
+      });
+    }
   };
 
   onSelected = (viewport, item) => {
-    setTimeout(
-      function () {
-        this.setState({ viewport });
-        setTimeout(
-          function () {
-            this._onMarkerDragEnd();
-          }.bind(this),
-          2000
-        );
-      }.bind(this),
-      500
-    );
+    this.setState({ viewport });
+
+    setTimeout(() => {
+      this._onMarkerDragEnd(viewport);
+      this.geocode();
+    }, 2000);
   };
 
   clicked = () => {
@@ -611,6 +607,7 @@ class PostScream extends Component {
         longitude: 6.958725744885521,
         address: "Ohne Ortsangabe",
         district: "",
+        neighborhood: "",
         zoomdetail: true,
         MapHeight: "30vh",
       });
@@ -798,10 +795,8 @@ class PostScream extends Component {
           minZoom={11}
           width="100vw"
           height={this.state.MapHeight}
-          onViewportChange={(newViewport) =>
-            this.setState({ viewport: newViewport })
-          }
-          onTouchEnd={this._onMarkerDragEnd}
+          onViewportChange={this._onMarkerDragEnd}
+          onTouchEnd={this.geocode}
         >
           <Source id="maine" type="geojson" data={data} />
           <Layer

@@ -114,6 +114,7 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
     const newScreamData = {
       locationHeader: newScream.locationHeader,
       district: newScream.district,
+      Stadtteil: newScream.neighborhood,
       title: newScream.title,
       lat: newScream.lat,
       long: newScream.long,
