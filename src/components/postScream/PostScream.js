@@ -3,9 +3,9 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
+import { isMobileOnly } from "react-device-detect";
 
 // MUI Stuff
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import Dialog from "@material-ui/core/Dialog";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Slide from "@material-ui/core/Slide";
@@ -24,45 +24,20 @@ import { clearErrors } from "../../redux/actions/errorsActions";
 
 import { withRouter } from "react-router-dom";
 
-//COOKIES
-import Cookies from "universal-cookie";
-
 //Components
 import PostScreamFormContent from "./PostScreamFormContent";
 import PostScreamMap from "./PostScreamMap";
 import PostScreamSelectContainter from "./PostScreamSelectContainter";
-import { isMobileOnly } from "react-device-detect";
-
-const cookies = new Cookies();
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const theme = createMuiTheme({
-  overrides: {
-    MuiInput: {
-      underline: {
-        "&&&&:before": {
-          borderBottom: "1px solid rgba(0, 0, 0, 0)",
-        },
-        "&&&&:after": {
-          borderBottom: "1px solid rgba(255, 255, 255, 0)",
-        },
-      },
-    },
-    MuiNativeSelect: {
-      icon: {
-        opacity: 0,
-      },
-    },
-  },
-});
 const styles = {
   root: {
     padding: "0",
     overflow: "hidden",
-    backgroundColor: "rgb(0,0,0,0.8)",
+    backgroundColor: isMobileOnly ? "white" : "rgb(0,0,0,0.8)",
     backdropFilter: "blur(5px)",
   },
 
@@ -75,21 +50,6 @@ const styles = {
     borderRadius: "0px",
     backgroundColor: "transparent",
   },
-
-  // root: {
-  //   padding: "0",
-  //   overflow: "hidden",
-  // },
-
-  // paper: {
-  //   boxShadow: "none",
-  //   overflow: "hidden",
-  //   padding: "0",
-  //   top: "0",
-  //   overflow: "hidden",
-  //   borderRadius: "0px",
-  //   backgroundColor: "rgb(0,0,0,0.6)",
-  // },
 
   progress: {
     position: "fixed",
@@ -110,32 +70,7 @@ const styles = {
     marginTop: "0px",
     width: "100%",
   },
-  submitButton: {
-    zIndex: "99999",
-    position: "fixed",
-    bottom: "10px",
-    left: "25vw",
-    float: "right",
-    width: "50vw",
-    borderRadius: "30px",
-    textTransform: "none",
-    fontSize: "14pt",
-    backgroundColor: "white",
-    boxShadow: "0 0px 40px -12px rgba(0,0,0,0.2)",
-  },
 
-  postScreamTitle: {
-    marginTop: "20px",
-    fontSize: "28pt",
-    color: "rgb(255, 205, 6)",
-    backgroundColor: "white",
-    textAlign: "center",
-  },
-  locationField: {
-    fontSize: "10pt",
-    color: "yellow",
-    margin: 0,
-  },
   locationOuter: {
     display: "flex",
     flexDirection: "row",
@@ -149,19 +84,6 @@ const styles = {
     paddingRight: "1%",
   },
 
-  add: {
-    zIndex: 990,
-    position: "fixed",
-    backgroundColor: "#FFD862",
-    width: "7vw",
-    padding: "2.5vw",
-    border: "1px white solid",
-    borderRadius: "100%",
-    bottom: "9px",
-    left: "50%",
-    marginLeft: "-6.2vw",
-    boxShadow: "0 0px 40px -12px rgba(0,0,0,0.5)",
-  },
   mapwrapper: {
     position: "absolute",
     top: "0",
@@ -174,26 +96,18 @@ const styles = {
     width: "100%",
   },
 
-  explain: {
+  AuthlinkDesktop: {
+    zIndex: 992,
     position: "fixed",
-    textAlign: "left",
-    top: "22px",
-    left: "27vw",
-    width: "80vw",
-    color: "#414345",
-    zIndex: 1999,
-    fontFamily: "Futura PT W01-Bold",
-    pointerEvents: "none",
-  },
-  smallText: {
-    width: "100%",
-    fontSize: "14pt",
-    position: "fixed",
-    bottom: "1em",
-    zIndex: "999",
-    textAlign: "center",
-    textDecoration: "underline",
-    textShadow: "0px 3px 9px rgba(255, 255, 255, 1)",
+    top: "40px",
+
+    left: 0,
+    marginLeft: "210px",
+    marginRight: "auto",
+    height: "600px",
+    width: "380px",
+    borderRadius: "20px",
+    boxShadow: "0 0px 40px -12px rgba(0,0,0,0)",
   },
 };
 
@@ -292,28 +206,6 @@ class PostScream extends Component {
       }
     });
   };
-
-  handleCookies() {
-    cookies.set("Cookie_settings", "all", {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 90,
-      sameSite: "none",
-      secure: true,
-    });
-    this.setState({ open: false });
-    this.setState({ open: true });
-  }
-
-  handleRules() {
-    cookies.set("Cookie_Rules", "true", {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 90,
-      sameSite: "none",
-      secure: true,
-    });
-    this.setState({ open: false });
-    this.setState({ open: true });
-  }
 
   handleClose = () => {
     this.props.clearErrors();
@@ -498,7 +390,6 @@ class PostScream extends Component {
 
     if (this.state.locationDecided === true) {
       this.setState({
-        // viewport: { zoom: 12, pitch: 0, bearing: 0 },
         locationDecided: false,
         MapHeight: "100vh",
       });
