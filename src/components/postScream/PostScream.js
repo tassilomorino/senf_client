@@ -52,10 +52,10 @@ const styles = {
   },
 
   progress: {
-    position: "fixed",
+    position: "absolute",
     left: "50%",
     marginLeft: "-15px",
-    bottom: "3vh",
+    bottom: "10px",
     zIndex: "9999",
   },
 
@@ -121,6 +121,7 @@ class PostScream extends Component {
     title: "",
     project: "",
     topic: "",
+    neighborhood: "Ohne Ortsangabe",
 
     openWeblink: false,
     weblinkTitle: null,
@@ -167,7 +168,8 @@ class PostScream extends Component {
     }
   }
 
-  handleOpen = () => {
+  handleOpen = (event) => {
+    event.preventDefault();
     this.setState({ open: true, loading: false });
 
     const project =
