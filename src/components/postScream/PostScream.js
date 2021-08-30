@@ -437,6 +437,7 @@ class PostScream extends Component {
       title: this.state.title,
       locationHeader: this.state.address,
       district: this.state.district,
+      neighborhood: this.state.neighborhood,
       lat: this.state.latitude,
       long: this.state.longitude,
       project: this.state.project,
@@ -845,28 +846,11 @@ class PostScream extends Component {
                     handleChangeCalendar={this.handleChangeCalendar}
                     topic={this.state.topic}
                     topicsArray={topicsArray}
+                    loading={this.state.loading}
+                    Out={this.state.Out}
+                    locationDecided={this.state.locationDecided}
                   />
                 </div>
-                <button
-                  type="submit"
-                  className={
-                    this.state.AndroidStyle === false
-                      ? "submitPostButton buttonWide"
-                      : "submitPostButton_android buttonWide"
-                  }
-                  disabled={this.state.loading || this.state.Out ? true : false}
-                  style={
-                    this.state.locationDecided
-                      ? { bottom: "10px", transition: "0.5s" }
-                      : { bottom: "-20vh", transition: "0.5s" }
-                  }
-                >
-                  Idee teilen
-                </button>
-
-                {this.state.loading && (
-                  <CircularProgress size={30} className={classes.progress} />
-                )}
               </form>
             </div>
           </div>

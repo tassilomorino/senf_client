@@ -1143,22 +1143,12 @@ input:focus {
 .submitPostButton {
   z-index: 9999;
   position: fixed;
-  bottom: 0px;
+  bottom: 10px;
   width: 60%;
   left: 20%;
   color: #353535;
   background-color: white;
-
-}
-
-.submitPostButton_android {
-  z-index: 9999;
-  position: relative;
-  margin-top: 400px;
-  width: 60%;
-  left: 20%;
-  color: #353535;
-  background-color: white;
+  animation:enteranimation 2s
 
 }
 

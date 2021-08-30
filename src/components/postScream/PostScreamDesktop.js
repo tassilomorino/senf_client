@@ -720,27 +720,10 @@ class PostScream extends Component {
                 handleChangeCalendar={this.handleChangeCalendar}
                 topic={this.state.topic}
                 topicsArray={topicsArray}
+                loading={this.state.loading}
+                Out={this.state.Out}
+                locationDecided={this.state.locationDecided}
               />
-
-              <button
-                type="submit"
-                className="submitPostButton buttonWide"
-                disabled={this.state.loading || this.state.Out ? true : false}
-                style={
-                  this.state.locationDecided
-                    ? {
-                        display: "block",
-                      }
-                    : {
-                        display: "none",
-                      }
-                }
-              >
-                Idee teilen
-                {this.state.loading && (
-                  <CircularProgress size={30} className={classes.progress} />
-                )}
-              </button>
             </div>
           </form>
         </Dialog>
