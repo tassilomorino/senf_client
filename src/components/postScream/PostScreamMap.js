@@ -12,6 +12,7 @@ import Geocoder from "react-mapbox-gl-geocoder";
 //Icons
 import Pin from "../../images/pin3.png";
 import Geolocate from "../../images/icons/geolocate.png";
+import { isMobile, isMobileOnly } from "react-device-detect";
 
 const geolocateStyle = {
   position: "fixed",
@@ -105,10 +106,11 @@ const PostScreamMap = ({
       {...viewport}
       maxZoom={18}
       minZoom={11}
-      width="100vw"
-      height={MapHeight}
+      width={isMobileOnly ? "100vw" : "calc(100vw - 600px)"}
+      height={isMobileOnly ? MapHeight : "100vh"}
       style={{ position: "fixed", right: 0 }}
       onTouchEnd={geocode}
+      onMouseUp={geocode}
       onViewportChange={_onMarkerDragEnd}
     >
       <Source id="geodata" type="geojson" data={data} />
@@ -121,7 +123,6 @@ const PostScreamMap = ({
           "fill-opacity": 0.3,
         }}
       />
-
       <div
         onClick={addressBarClicked}
         style={
@@ -145,18 +146,25 @@ const PostScreamMap = ({
           {addressLine}
         </div>
       </div>
-
-      <GeolocateControl
-        style={locationDecided === false ? geolocateStyle : geolocateStyle_hide}
-        positionOptions={{ enableHighAccuracy: true }}
-        showUserLocation={false}
-      ></GeolocateControl>
-      <img
-        src={Geolocate}
-        style={locationDecided === false ? geolocateIcon : geolocateIcon_hide}
-        width="20"
-        alt="Geolocate"
-      />
+      {isMobileOnly && (
+        <React.Fragment>
+          <GeolocateControl
+            style={
+              locationDecided === false ? geolocateStyle : geolocateStyle_hide
+            }
+            positionOptions={{ enableHighAccuracy: true }}
+            showUserLocation={false}
+          ></GeolocateControl>
+          <img
+            src={Geolocate}
+            style={
+              locationDecided === false ? geolocateIcon : geolocateIcon_hide
+            }
+            width="20"
+            alt="Geolocate"
+          />
+        </React.Fragment>
+      )}
 
       <div style={{ pointerEvents: "none" }}>
         <Marker

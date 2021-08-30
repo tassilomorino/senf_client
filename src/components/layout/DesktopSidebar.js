@@ -8,7 +8,6 @@ import SignNote from "../profile/SignNote";
 import InlineInformationPageDesktop from "../infocomponents/InlineInformationPageDesktop";
 import Themenfilter from "./Themenfilter";
 import Account from "../profile/Account";
-import PostScreamDesktop from "../postScream/PostScreamDesktop";
 import { MenuItem } from "./MenuItem";
 import { MenuData } from "./MenuData";
 
@@ -22,6 +21,7 @@ import Facebook from "../../images/icons/socialmedia/facebook.png";
 import profile_yellow from "../../images/icons/profile_yellow.png";
 import profile_grey from "../../images/icons/profile_grey.png";
 import Noprofile from "../../images/noprofile.png";
+import PostScream from "../postScream/PostScream";
 
 const styles = {};
 
@@ -127,7 +127,7 @@ const DesktopSidebar = ({
       />
 
       {sign}
-      <PostScreamDesktop
+      <PostScream
         openInfoPageDesktop={openInfoPageDesktop}
         loadingProjects={loadingProjects}
         projectsData={projectsData}

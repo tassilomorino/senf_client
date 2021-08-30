@@ -39,7 +39,6 @@ import Cookies from "universal-cookie";
 import { ProjectIdeas } from "./ProjectIdeas";
 import MapDesktop from "../../../components/map/MapDesktop";
 import PostScream from "../../../components/postScream/PostScream";
-import PostScreamDesktop from "../../../components/postScream/PostScreamDesktop";
 import ScreamShare from "../../../components/modals/ScreamShare";
 import CalendarComponent from "../../../components/calendar/CalendarComponent";
 

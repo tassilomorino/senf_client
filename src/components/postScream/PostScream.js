@@ -2,31 +2,20 @@
 
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import { isAndroid, isMobileOnly } from "react-device-detect";
 import _ from "lodash";
 
 // MUI Stuff
-import { MuiThemeProvider, NativeSelect } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Slide from "@material-ui/core/Slide";
-
-//Geocoder
-import Geocoder from "react-mapbox-gl-geocoder";
-import nominatim from "nominatim-geocode";
-import L from "leaflet";
-import "leaflet-control-geocoder/dist/Control.Geocoder.js";
 
 //HANDLER
 import SignNote from "../profile/SignNote";
 
 //ICONS
-import LocationOn from "@material-ui/icons/LocationOn";
 import AddIcon from "../../images/icons/plus_white.png";
 import Arrow from "../../images/icons/arrow.png";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 // REDUX STUFF
 import { connect } from "react-redux";
@@ -35,27 +24,14 @@ import { clearErrors } from "../../redux/actions/errorsActions";
 
 import { withRouter } from "react-router-dom";
 
-import ReactMapGL, {
-  Marker,
-  GeolocateControl,
-  Source,
-  Layer,
-} from "react-map-gl";
-import Pin from "../../images/pin3.png";
-
-//IF COOKIES NOT ACCEPTED
-import Maploader from "../../images/map.png";
-
 //COOKIES
 import Cookies from "universal-cookie";
 
 //Components
-import PostScreamRules from "../modals/PostScreamRules";
-import Weblink from "../modals/postModals/Weblink";
-import Contact from "../modals/postModals/Contact";
-import InlineDatePicker from "../modals/postModals/InlineDatePicker";
 import PostScreamFormContent from "./PostScreamFormContent";
 import PostScreamMap from "./PostScreamMap";
+import PostScreamSelectContainter from "./PostScreamSelectContainter";
+import { isMobileOnly } from "react-device-detect";
 
 const cookies = new Cookies();
 
@@ -86,6 +62,8 @@ const styles = {
   root: {
     padding: "0",
     overflow: "hidden",
+    backgroundColor: "rgb(0,0,0,0.8)",
+    backdropFilter: "blur(5px)",
   },
 
   paper: {
@@ -95,8 +73,23 @@ const styles = {
     top: "0",
     overflow: "hidden",
     borderRadius: "0px",
-    backgroundColor: "rgb(0,0,0,0.6)",
+    backgroundColor: "transparent",
   },
+
+  // root: {
+  //   padding: "0",
+  //   overflow: "hidden",
+  // },
+
+  // paper: {
+  //   boxShadow: "none",
+  //   overflow: "hidden",
+  //   padding: "0",
+  //   top: "0",
+  //   overflow: "hidden",
+  //   borderRadius: "0px",
+  //   backgroundColor: "rgb(0,0,0,0.6)",
+  // },
 
   progress: {
     position: "fixed",
@@ -204,44 +197,6 @@ const styles = {
   },
 };
 
-// const geolocateStyleWeb = {
-//   position: "fixed",
-//   zIndex: "9999",
-//   top: "4vw",
-//   right: "calc(((100vw - 600px)/2) - 200px)",
-//   margin: "auto",
-//   height: "50px",
-//   width: "50px",
-//   borderRadius: "15px",
-//   boxShadow: "0 8px 30px -12px rgba(0,0,0,0.5)",
-//   backgroundColor: "#fed957",
-//   display: "flex",
-//   position: "absolute",
-//   alignItems: "center",
-//   justifyContent: "center",
-//   textAlign: "center",
-// };
-
-// const geolocateIconWeb = {
-//   position: "fixed",
-//   zIndex: "9999",
-//   top: "4vw",
-//   right: "calc(((100vw - 600px)/2) - 200px)",
-//   margin: "auto",
-//   marginright: "",
-//   height: "50px",
-//   width: "50px",
-//   borderRadius: "15px",
-//   boxShadow: "0 8px 30px -12px rgba(0,0,0,0.5)",
-//   backgroundColor: "#fed957",
-//   display: "flex",
-//   position: "absolute",
-//   alignItems: "center",
-//   justifyContent: "center",
-//   textAlign: "center",
-//   pointerEvents: "none",
-// };
-
 class PostScream extends Component {
   state = {
     open: false,
@@ -267,7 +222,6 @@ class PostScream extends Component {
 
     geoData: "",
     clicked: false,
-    AndroidStyle: false,
     errors: {},
     viewport: {
       latitude: 50.93864020643174,
@@ -296,12 +250,6 @@ class PostScream extends Component {
     if (!nextProps.UI.errors && !nextProps.UI.loading) {
       this.setState({ body: "", open: false, errors: {} });
       this.setState({ title: "", open: false, errors: {} });
-    }
-  }
-
-  componentDidMount() {
-    if (isAndroid) {
-      this.setState({ AndroidStyle: true });
     }
   }
 
@@ -386,7 +334,7 @@ class PostScream extends Component {
     this.setState({ selectedDays: selectedDays, selectedUnix: selectedUnix });
   };
 
-  handleDropdown = (event) => {
+  handleDropdownProject = (event) => {
     event.preventDefault();
     this.setState({
       project: event.target.value,
@@ -420,13 +368,6 @@ class PostScream extends Component {
     });
   };
 
-  handleDropdownTopic = (event) => {
-    event.preventDefault();
-    this.setState({
-      topic: event.target.value,
-    });
-  };
-
   handleSubmit = (event) => {
     event.preventDefault();
     this.setState({
@@ -444,7 +385,6 @@ class PostScream extends Component {
       Thema: this.state.topic,
       weblinkTitle: this.state.weblinkTitle,
       weblink: this.state.weblink,
-
       contactTitle: this.state.contactTitle,
       contact: this.state.contact,
     };
@@ -630,43 +570,6 @@ class PostScream extends Component {
     } = this.props;
     const { authenticated } = this.props.user;
 
-    const projectsArray =
-      this.state.open && !loadingProjects ? (
-        <>
-          {_.orderBy(projectsData, "createdAt", "desc").map((projects) => (
-            <option value={projects.project} className={classes.formText}>
-              + {projects.title}
-            </option>
-          ))}
-        </>
-      ) : null;
-
-    const topicsArray = (
-      <>
-        <option value={"Inklusion / Soziales"} className={classes.formText}>
-          Inklusion / Soziales
-        </option>
-        <option value={"Rad"} className={classes.formText}>
-          Rad
-        </option>
-        <option value={"Sport / Freizeit"} className={classes.formText}>
-          Sport / Freizeit
-        </option>
-        <option value={"Umwelt und Grün"} className={classes.formText}>
-          Umwelt und Grün
-        </option>
-        <option value={"Verkehr"} className={classes.formText}>
-          Verkehr
-        </option>
-        <option value={"Versorgung"} className={classes.formText}>
-          Versorgung
-        </option>
-        <option value={"Sonstige"} className={classes.formText}>
-          Sonstige
-        </option>
-      </>
-    );
-
     return (
       <Fragment>
         <button
@@ -682,19 +585,26 @@ class PostScream extends Component {
           onClose={this.handleClose}
           TransitionComponent={Transition}
           fullScreen
+          BackdropProps={{ classes: { root: classes.root } }}
+          PaperProps={{ classes: { root: classes.paper } }}
         >
           {!authenticated && (
             <div
-              className={classes.Authlink}
+              className={
+                isMobileOnly ? classes.Authlink : classes.AuthlinkDesktop
+              }
               style={
-                this.state.locationDecided
+                isMobileOnly && this.state.locationDecided
                   ? { top: "27vh", transition: "0.5s" }
-                  : { top: "100vh", transition: "0.5s" }
+                  : isMobileOnly && !this.state.locationDecided
+                  ? { top: "100vh", transition: "0.5s" }
+                  : null
               }
             >
               <SignNote />
             </div>
           )}
+
           <button
             tip="Close"
             onClick={this.handleClose}
@@ -707,7 +617,8 @@ class PostScream extends Component {
               style={{ transform: "rotate(90deg)" }}
             />
           </button>
-          <div className="postScreamMapWrapper">
+
+          {isMobileOnly && (
             <div
               style={
                 this.state.locationDecided
@@ -722,137 +633,69 @@ class PostScream extends Component {
 
               <div className="PostBackground"></div>
             </div>
+          )}
 
-            <div className={classes.mapwrapper}>
-              <PostScreamMap
-                MapHeight={this.state.MapHeight}
-                geocode={this.geocode}
-                _onMarkerDragEnd={this._onMarkerDragEnd}
-                geoData={this.state.geoData}
-                viewport={this.state.viewport}
-                clicked={this.state.clicked}
-                addressBarClicked={this.addressBarClicked}
-                locationDecided={this.state.locationDecided}
-                onSelected={this.onSelected}
-                address={this.state.address}
-                loadingProjects={loadingProjects}
-              />
+          <div className={classes.mapwrapper}>
+            <PostScreamMap
+              MapHeight={this.state.MapHeight}
+              geocode={this.geocode}
+              _onMarkerDragEnd={this._onMarkerDragEnd}
+              geoData={this.state.geoData}
+              viewport={this.state.viewport}
+              clicked={this.state.clicked}
+              addressBarClicked={this.addressBarClicked}
+              locationDecided={this.state.locationDecided}
+              onSelected={this.onSelected}
+              address={this.state.address}
+              loadingProjects={loadingProjects}
+            />
 
-              <div
-                className="selectLocationContainer"
-                style={
-                  this.state.locationDecided
-                    ? {
-                        position: "fixed",
-                        bottom: "calc(90vh - 50px)",
-                        display: "none",
-                      }
-                    : {
-                        position: "fixed",
-                        bottom: "20px",
-                        display: "block",
-                      }
-                }
-              >
-                <div className="projectSelectContainer">
-                  <span> An: </span>
+            <PostScreamSelectContainter
+              classes={classes}
+              locationDecided={this.state.locationDecided}
+              handleLocationDecided={() => this.handleLocationDecided()}
+              handleLocationDecidedNoLocation={() =>
+                this.handleLocationDecidedNoLocation()
+              }
+              project={this.state.project}
+              address={this.state.address}
+              handleDropdownProject={this.handleDropdownProject}
+              open={this.state.open}
+              loadingProjects={loadingProjects}
+              projectsData={projectsData}
+            />
 
-                  <MuiThemeProvider theme={theme}>
-                    <NativeSelect
-                      value={this.state.project}
-                      onChange={this.handleDropdown}
-                      name="dropdown"
-                      className="projectFormControl"
-                      inputProps={{ "aria-label": "dropdown" }}
-                      id="dropdown"
-                      IconComponent={() => (
-                        <img
-                          src={Arrow}
-                          width="20px"
-                          style={{
-                            marginTop: "0px",
-                            marginLeft: "-24px",
-                            pointerEvents: "none",
-                          }}
-                        ></img>
-                      )}
-                    >
-                      <option value="" className={classes.formText}>
-                        Allgemein (Alle Ideen)
-                      </option>
-                      {projectsArray}
-                    </NativeSelect>
-                  </MuiThemeProvider>
-                </div>{" "}
-                <br />
-                <button
-                  className={
-                    this.state.project !== ""
-                      ? "buttonWide buttonSelectLocationNo_hide"
-                      : "buttonWide buttonSelectLocationNo"
-                  }
-                  onClick={() => this.handleLocationDecidedNoLocation()}
-                >
-                  Ohne Ort
-                </button>
-                <button
-                  className={
-                    this.state.address === "Ohne Ortsangabe"
-                      ? "buttonWide buttonSelectLocation_hide"
-                      : "buttonWide buttonSelectLocation"
-                  }
-                  onClick={() => this.handleLocationDecided()}
-                >
-                  Ort bestätigen
-                </button>
-              </div>
-              <form onSubmit={this.handleSubmit}>
-                <div
-                  className={
-                    this.state.AndroidStyle === false
-                      ? "postCard"
-                      : "postCardAndroid"
-                  }
-                  style={
-                    this.state.locationDecided
-                      ? { top: "20vh", transition: "0.5s" }
-                      : { top: "100vh", transition: "0.5s" }
-                  }
-                >
-                  <PostScreamFormContent
-                    classes={classes}
-                    errors={this.state.errors}
-                    address={this.state.address}
-                    handleLocationDecided={() => this.handleLocationDecided()}
-                    handleChange={this.handleChange}
-                    openWeblink={this.state.openWeblink}
-                    weblink={this.state.weblink}
-                    weblinkTitle={this.state.weblinkTitle}
-                    handleOpenWeblink={this.handleOpenWeblink}
-                    handleCloseWeblink={this.handleCloseWeblink}
-                    handleSaveWeblink={this.handleSaveWeblink}
-                    openContact={this.state.openContact}
-                    contactTitle={this.state.contactTitle}
-                    contact={this.state.contact}
-                    handleOpenContact={this.handleOpenContact}
-                    handleCloseContact={this.handleCloseContact}
-                    handleSaveContact={this.handleSaveContact}
-                    project={this.state.project}
-                    openCalendar={this.state.openCalendar}
-                    selectedDays={this.state.selectedDays}
-                    handleOpenCalendar={this.handleOpenCalendar}
-                    handleCloseCalendar={this.handleCloseCalendar}
-                    handleSaveCalendar={this.handleSaveCalendar}
-                    handleChangeCalendar={this.handleChangeCalendar}
-                    topic={this.state.topic}
-                    topicsArray={topicsArray}
-                    loading={this.state.loading}
-                    Out={this.state.Out}
-                    locationDecided={this.state.locationDecided}
-                  />
-                </div>
-              </form>
-            </div>
+            <PostScreamFormContent
+              classes={classes}
+              errors={this.state.errors}
+              address={this.state.address}
+              handleLocationDecided={() => this.handleLocationDecided()}
+              handleChange={this.handleChange}
+              openWeblink={this.state.openWeblink}
+              weblink={this.state.weblink}
+              weblinkTitle={this.state.weblinkTitle}
+              handleOpenWeblink={this.handleOpenWeblink}
+              handleCloseWeblink={this.handleCloseWeblink}
+              handleSaveWeblink={this.handleSaveWeblink}
+              openContact={this.state.openContact}
+              contactTitle={this.state.contactTitle}
+              contact={this.state.contact}
+              handleOpenContact={this.handleOpenContact}
+              handleCloseContact={this.handleCloseContact}
+              handleSaveContact={this.handleSaveContact}
+              project={this.state.project}
+              openCalendar={this.state.openCalendar}
+              selectedDays={this.state.selectedDays}
+              handleOpenCalendar={this.handleOpenCalendar}
+              handleCloseCalendar={this.handleCloseCalendar}
+              handleSaveCalendar={this.handleSaveCalendar}
+              handleChangeCalendar={this.handleChangeCalendar}
+              topic={this.state.topic}
+              loading={this.state.loading}
+              Out={this.state.Out}
+              locationDecided={this.state.locationDecided}
+              handleSubmit={this.handleSubmit}
+            />
           </div>
         </Dialog>
       </Fragment>
