@@ -953,15 +953,17 @@ button:disabled {
   top: 0vh;
 
   left: 0;
-  margin-left: 2.5%;
+  margin-left: 2.5vw;
   margin-right: auto;
 
   height: calc((var(--vh, 1vh) * 80) - 70px);
   /* height:calc(80vh - 70px); */
-  width: 95%;
+  width: 95vw;
   border-radius: 20px;
   box-shadow: 0 0px 40px -12px rgba(0, 0, 0, 0);
   background-color: white;
+
+  
 }
 
 .postCardAndroid {

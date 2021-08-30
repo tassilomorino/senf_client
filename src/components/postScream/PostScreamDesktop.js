@@ -5,17 +5,11 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { Translation } from "react-i18next";
 import _ from "lodash";
-import { isAndroid, isMobileOnly } from "react-device-detect";
 
 //Components
 import SignNote from "../profile/SignNote";
-import PostScreamRules from "../modals/PostScreamRules";
-import Weblink from "../modals/postModals/Weblink";
-import Contact from "../modals/postModals/Contact";
-import InlineDatePicker from "../modals/postModals/InlineDatePicker";
 
 //ICONS
-import LocationOn from "@material-ui/icons/LocationOn";
 import AddIcon from "../../images/icons/plus_white.png";
 import Arrow from "../../images/icons/arrow.png";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -34,12 +28,13 @@ import Geocoder from "react-mapbox-gl-geocoder";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { MuiThemeProvider, NativeSelect } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 
 //COOKIES
 import Cookies from "universal-cookie";
+import PostScreamFormContent from "./PostScreamFormContent";
+import PostScreamDesktopMap from "./PostScreamDesktopMap";
 const cookies = new Cookies();
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -116,14 +111,6 @@ const styles = {
     paddingRight: "1%",
   },
 
-  Authlink: {
-    position: "fixed",
-    top: "25vh",
-    height: "80vh",
-    zIndex: "99999",
-    width: "100%",
-  },
-
   AuthlinkDesktop: {
     zIndex: 992,
     position: "fixed",
@@ -166,6 +153,13 @@ const styles = {
 };
 
 class PostScream extends Component {
+  // const [open, setOpen] = useState(false);
+  // const [Out, setOut] = useState(false);
+  // const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
+  // const { t } = useTranslation();
+
   constructor(props) {
     super(props);
     this.handleChangeCalendar = this.handleChangeCalendar.bind(this);
@@ -263,17 +257,6 @@ class PostScream extends Component {
     this.props.clearErrors();
     this.setState({ open: false, errors: {} });
   };
-
-  handleRules() {
-    cookies.set("Cookie_Rules", "true", {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 90,
-      sameSite: "none",
-      secure: true,
-    });
-    this.setState({ open: false });
-    this.setState({ open: true });
-  }
 
   handleChange = (event) => {
     event.preventDefault();
@@ -419,32 +402,24 @@ class PostScream extends Component {
     }, 2000);
   };
 
-  clicked = () => {
+  addressBarClicked = () => {
     this.setState({ clicked: true });
   };
 
-  handleZoom() {
-    if (this.state.locationDecided === false) {
-      this.setState({
-        locationDecided: true,
-      });
-    }
-
-    if (this.state.locationDecided === true) {
-      this.setState({
-        locationDecided: false,
-      });
-    }
+  handleLocationDecided() {
+    this.setState({
+      locationDecided: !this.state.locationDecided,
+    });
   }
 
-  handleZoomNoLocation() {
+  handleLocationDecidedNoLocation() {
     if (this.state.locationDecided === false) {
       this.setState({
         latitude: 50.93864020643174,
         longitude: 6.958725744885521,
         address: "Ohne Ortsangabe",
-        district: "",
-        neighborhood: "",
+        district: "Ohne Ortsangabe",
+        neighborhood: "Ohne Ortsangabe",
         locationDecided: true,
       });
     }
@@ -501,8 +476,8 @@ class PostScream extends Component {
   handleCloseCalendar = () => {
     this.setState({
       openCalendar: false,
-      // weblink: "",
-      // weblinkTitle: "",
+      selectedDays: [],
+      selectedUnix: [],
     });
   };
   handleSaveCalendar = () => {
@@ -512,7 +487,6 @@ class PostScream extends Component {
   };
 
   render() {
-    const { address, viewport, errors } = this.state;
     const queryParams = {
       bbox: [6.7, 50.8, 7.2, 51],
     };
@@ -525,34 +499,6 @@ class PostScream extends Component {
       UI: { loading },
     } = this.props;
     const { authenticated } = this.props.user;
-
-    const data =
-      !loadingProjects && this.state.geoData !== ""
-        ? {
-            type: "Feature",
-            geometry: {
-              type: "Polygon",
-              coordinates: [JSON.parse(this.state.geoData)],
-            },
-          }
-        : {
-            type: "Feature",
-            geometry: {
-              type: "Polygon",
-              coordinates: [],
-            },
-          };
-
-    // const MyInput = (props) => (
-    //   <input {...props} placeholder="" id="geocoder" />
-    // );
-
-    const addressLine =
-      this.state.address === "Ohne Ortsangabe" ? (
-        <>Adresse eingeben</>
-      ) : (
-        this.state.address
-      );
 
     const projectsArray =
       this.state.open && !loadingProjects ? (
@@ -630,75 +576,25 @@ class PostScream extends Component {
             />
           </button>
 
-          <div
-            onClick={this.clicked}
-            style={
-              this.state.locationDecided === false
-                ? { display: "block" }
-                : { display: "none" }
-            }
-          >
-            <Geocoder
-              mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-              onSelected={this.onSelected}
-              viewport={viewport}
-              hideOnSelect={true}
-              limit={3}
-              queryParams={queryParams}
-              id="geocoder"
-              transitionDuration={1000}
-            ></Geocoder>
-            <div
-              className="pinLocationHeader"
-              style={
-                this.state.clicked === false ? { zIndex: 9999 } : { zIndex: 0 }
-              }
-            >
-              {addressLine}
-            </div>
-          </div>
-
-          <ReactMapGL
-            mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-            mapStyle="mapbox://styles/tmorino/ck0seyzlv0lbh1clfwepe0x0x?optimize=true"
-            {...viewport}
-            maxZoom={18}
-            minZoom={11}
-            width="calc(100vw - 600px)"
-            height="100vh"
-            style={{ position: "fixed", right: 0 }}
-            onMouseUp={this.geocode}
-            onViewportChange={this._onMarkerDragEndDesktop}
-          >
-            <div style={{ pointerEvents: "none" }}>
-              <Marker
-                longitude={viewport.longitude}
-                latitude={viewport.latitude}
-                offsetTop={-150}
-                offsetLeft={-75}
-              >
-                <img src={Pin} width="150" alt="ChatIcon" />
-              </Marker>
-            </div>
-
-            <Source id="maine" type="geojson" data={data} />
-            <Layer
-              id="maine"
-              type="fill"
-              source="maine"
-              paint={{
-                "fill-color": "#fed957",
-                "fill-opacity": 0.3,
-              }}
-            />
-          </ReactMapGL>
+          <PostScreamDesktopMap
+            geocode={this.geocode}
+            _onMarkerDragEndDesktop={this._onMarkerDragEndDesktop}
+            geoData={this.state.geoData}
+            viewport={this.state.viewport}
+            clicked={this.state.clicked}
+            addressBarClicked={this.addressBarClicked}
+            locationDecided={this.state.locationDecided}
+            onSelected={this.onSelected}
+            address={this.state.address}
+            loadingProjects={loadingProjects}
+          />
 
           <div
             className="selectLocationContainer"
             style={this.state.locationDecided ? { zIndex: 1 } : { zIndex: 5 }}
           >
             <div
-              onClick={() => this.handleZoom()}
+              onClick={() => this.handleLocationDecided()}
               style={
                 this.state.locationDecided
                   ? {
@@ -756,7 +652,7 @@ class PostScream extends Component {
                   ? "buttonWide buttonSelectLocationNo_hide"
                   : "buttonWide buttonSelectLocationNo"
               }
-              onClick={() => this.handleZoomNoLocation()}
+              onClick={() => this.handleLocationDecidedNoLocation()}
             >
               Ohne Ort
             </button>
@@ -766,7 +662,7 @@ class PostScream extends Component {
                   ? "buttonWide buttonSelectLocation_hide"
                   : "buttonWide buttonSelectLocation"
               }
-              onClick={() => this.handleZoom()}
+              onClick={() => this.handleLocationDecided()}
             >
               Ort bestätigen
             </button>
@@ -778,7 +674,7 @@ class PostScream extends Component {
               style={this.state.locationDecided ? { zIndex: 5 } : { zIndex: 1 }}
             >
               <div
-                onClick={() => this.handleZoom()}
+                onClick={() => this.handleLocationDecided()}
                 style={
                   this.state.locationDecided
                     ? {
@@ -797,113 +693,35 @@ class PostScream extends Component {
                 }
               ></div>
 
-              <div className={classes.content}>
-                <div
-                  className={classes.locationOuter}
-                  onClick={() => this.handleZoom()}
-                  // onDragStart={() => this.handleClickAdress()}
-                >
-                  <LocationOn style={{ marginTop: "-5px" }} />{" "}
-                  <div className={classes.locationHeader}> ~ {address} </div>
-                </div>
-                <PostScreamRules></PostScreamRules>
-                <TextField
-                  name="title"
-                  type="text"
-                  label="Titel deiner Idee"
-                  multiline
-                  rowsMax="2"
-                  placeholder=""
-                  error={errors.title ? true : false}
-                  helperText={errors.title}
-                  className={classes.textField}
-                  onChange={this.handleChange}
-                  margin="normal"
-                  fullWidth
-                  inputProps={{ maxLength: 70 }}
-                />
-                <TextField
-                  name="body"
-                  type="text"
-                  label="Beschreibung deiner Idee"
-                  multiline
-                  rowsMax="12"
-                  InputProps={{ disableUnderline: true }}
-                  placeholder=""
-                  error={errors.body ? true : false}
-                  helperText={errors.body}
-                  className={classes.textField}
-                  onChange={this.handleChange}
-                  margin="normal"
-                  fullWidth
-                  inputProps={{ maxLength: 800 }}
-                />
+              <PostScreamFormContent
+                classes={classes}
+                errors={this.state.errors}
+                address={this.state.address}
+                handleLocationDecided={() => this.handleLocationDecided()}
+                handleChange={this.handleChange}
+                openWeblink={this.state.openWeblink}
+                weblink={this.state.weblink}
+                weblinkTitle={this.state.weblinkTitle}
+                handleOpenWeblink={this.handleOpenWeblink}
+                handleCloseWeblink={this.handleCloseWeblink}
+                handleSaveWeblink={this.handleSaveWeblink}
+                openContact={this.state.openContact}
+                contactTitle={this.state.contactTitle}
+                contact={this.state.contact}
+                handleOpenContact={this.handleOpenContact}
+                handleCloseContact={this.handleCloseContact}
+                handleSaveContact={this.handleSaveContact}
+                project={this.state.project}
+                openCalendar={this.state.openCalendar}
+                selectedDays={this.state.selectedDays}
+                handleOpenCalendar={this.handleOpenCalendar}
+                handleCloseCalendar={this.handleCloseCalendar}
+                handleSaveCalendar={this.handleSaveCalendar}
+                handleChangeCalendar={this.handleChangeCalendar}
+                topic={this.state.topic}
+                topicsArray={topicsArray}
+              />
 
-                <Weblink
-                  openWeblink={this.state.openWeblink}
-                  handleOpenWeblink={this.handleOpenWeblink}
-                  handleCloseWeblink={this.handleCloseWeblink}
-                  handleSaveWeblink={this.handleSaveWeblink}
-                  weblinkTitle={this.state.weblinkTitle}
-                  weblink={this.state.weblink}
-                  handleChange={this.handleChange}
-                ></Weblink>
-                <Contact
-                  openContact={this.state.openContact}
-                  handleOpenContact={this.handleOpenContact}
-                  handleCloseContact={this.handleCloseContact}
-                  handleSaveContact={this.handleSaveContact}
-                  contactTitle={this.state.contactTitle}
-                  contact={this.state.contact}
-                  handleChange={this.handleChange}
-                ></Contact>
-                <div
-                  style={
-                    this.state.project === "Agora:_Sommer_des_guten_lebens"
-                      ? {}
-                      : { display: "none" }
-                  }
-                >
-                  <InlineDatePicker
-                    openCalendar={this.state.openCalendar}
-                    handleOpenCalendar={this.handleOpenCalendar}
-                    handleCloseCalendar={this.handleCloseCalendar}
-                    handleSaveCalendar={this.handleSaveCalendar}
-                    handleChange={this.handleChangeCalendar}
-                    selectedDays={this.state.selectedDays}
-                  ></InlineDatePicker>
-                </div>
-                <div className="topicSelectContainer">
-                  <span>Thema: </span>
-
-                  <MuiThemeProvider theme={theme}>
-                    <NativeSelect
-                      value={this.state.topic}
-                      onChange={this.handleChange}
-                      name="topic"
-                      className="projectFormControl"
-                      inputProps={{ "aria-label": "topic" }}
-                      id="topic"
-                      IconComponent={() => (
-                        <img
-                          src={Arrow}
-                          width="20px"
-                          style={{
-                            marginTop: "0px",
-                            marginLeft: "-24px",
-                            pointerEvents: "none",
-                          }}
-                        ></img>
-                      )}
-                    >
-                      <option value="" className={classes.formText}>
-                        Wähle das Thema aus
-                      </option>
-                      {topicsArray}
-                    </NativeSelect>
-                  </MuiThemeProvider>
-                </div>
-              </div>
               <button
                 type="submit"
                 className="submitPostButton buttonWide"
