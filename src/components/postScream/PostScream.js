@@ -1,90 +1,45 @@
 /** @format */
 
-import React, { Component, Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import PropTypes from "prop-types";
-import { isAndroid, isMobileOnly } from "react-device-detect";
 import _ from "lodash";
+import { useHistory } from "react-router";
+import { isMobileOnly } from "react-device-detect";
 
 // MUI Stuff
-import { MuiThemeProvider, NativeSelect } from "@material-ui/core";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Slide from "@material-ui/core/Slide";
-
-//Geocoder
-import Geocoder from "react-mapbox-gl-geocoder";
-import nominatim from "nominatim-geocode";
-import L from "leaflet";
-import "leaflet-control-geocoder/dist/Control.Geocoder.js";
 
 //HANDLER
 import SignNote from "../profile/SignNote";
 
 //ICONS
-import LocationOn from "@material-ui/icons/LocationOn";
 import AddIcon from "../../images/icons/plus_white.png";
-import Geolocate from "../../images/icons/geolocate.png";
 import Arrow from "../../images/icons/arrow.png";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 // REDUX STUFF
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { postScream } from "../../redux/actions/screamActions";
 import { clearErrors } from "../../redux/actions/errorsActions";
 
 import { withRouter } from "react-router-dom";
 
-import ReactMapGL, {
-  Marker,
-  GeolocateControl,
-  Source,
-  Layer,
-} from "react-map-gl";
-import Pin from "../../images/pin3.png";
-
-//IF COOKIES NOT ACCEPTED
-import Maploader from "../../images/map.png";
-
-//COOKIES
-import Cookies from "universal-cookie";
-
 //Components
-import PostScreamRules from "../modals/PostScreamRules";
-import Weblink from "../modals/postModals/Weblink";
-import Contact from "../modals/postModals/Contact";
-import InlineDatePicker from "../modals/postModals/InlineDatePicker";
-
-const cookies = new Cookies();
+import PostScreamFormContent from "./PostScreamFormContent";
+import PostScreamMap from "./PostScreamMap";
+import PostScreamSelectContainter from "./PostScreamSelectContainter";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const theme = createMuiTheme({
-  overrides: {
-    MuiInput: {
-      underline: {
-        "&&&&:before": {
-          borderBottom: "1px solid rgba(0, 0, 0, 0)",
-        },
-        "&&&&:after": {
-          borderBottom: "1px solid rgba(255, 255, 255, 0)",
-        },
-      },
-    },
-    MuiNativeSelect: {
-      icon: {
-        opacity: 0,
-      },
-    },
-  },
-});
 const styles = {
   root: {
     padding: "0",
     overflow: "hidden",
+    backgroundColor: isMobileOnly ? "white" : "rgb(0,0,0,0.8)",
+    backdropFilter: "blur(5px)",
   },
 
   paper: {
@@ -94,14 +49,14 @@ const styles = {
     top: "0",
     overflow: "hidden",
     borderRadius: "0px",
-    backgroundColor: "rgb(0,0,0,0.6)",
+    backgroundColor: "transparent",
   },
 
   progress: {
-    position: "fixed",
+    position: "absolute",
     left: "50%",
     marginLeft: "-15px",
-    bottom: "3vh",
+    bottom: "10px",
     zIndex: "9999",
   },
 
@@ -116,32 +71,7 @@ const styles = {
     marginTop: "0px",
     width: "100%",
   },
-  submitButton: {
-    zIndex: "99999",
-    position: "fixed",
-    bottom: "10px",
-    left: "25vw",
-    float: "right",
-    width: "50vw",
-    borderRadius: "30px",
-    textTransform: "none",
-    fontSize: "14pt",
-    backgroundColor: "white",
-    boxShadow: "0 0px 40px -12px rgba(0,0,0,0.2)",
-  },
 
-  postScreamTitle: {
-    marginTop: "20px",
-    fontSize: "28pt",
-    color: "rgb(255, 205, 6)",
-    backgroundColor: "white",
-    textAlign: "center",
-  },
-  locationField: {
-    fontSize: "10pt",
-    color: "yellow",
-    margin: 0,
-  },
   locationOuter: {
     display: "flex",
     flexDirection: "row",
@@ -155,19 +85,6 @@ const styles = {
     paddingRight: "1%",
   },
 
-  add: {
-    zIndex: 990,
-    position: "fixed",
-    backgroundColor: "#FFD862",
-    width: "7vw",
-    padding: "2.5vw",
-    border: "1px white solid",
-    borderRadius: "100%",
-    bottom: "9px",
-    left: "50%",
-    marginLeft: "-6.2vw",
-    boxShadow: "0 0px 40px -12px rgba(0,0,0,0.5)",
-  },
   mapwrapper: {
     position: "absolute",
     top: "0",
@@ -193,934 +110,488 @@ const styles = {
     borderRadius: "20px",
     boxShadow: "0 0px 40px -12px rgba(0,0,0,0)",
   },
-
-  explain: {
-    position: "fixed",
-    textAlign: "left",
-    top: "22px",
-    left: "27vw",
-    width: "80vw",
-    color: "#414345",
-    zIndex: 1999,
-    fontFamily: "Futura PT W01-Bold",
-    pointerEvents: "none",
-  },
-  smallText: {
-    width: "100%",
-    fontSize: "14pt",
-    position: "fixed",
-    bottom: "1em",
-    zIndex: "999",
-    textAlign: "center",
-    textDecoration: "underline",
-    textShadow: "0px 3px 9px rgba(255, 255, 255, 1)",
-  },
 };
 
-const geolocateStyle = {
-  position: "fixed",
-  zIndex: "9999",
-  top: "2.5%",
-  right: "2.5%",
-  margin: "auto",
-  height: "50px",
-  width: "50px",
-  borderRadius: "15px",
-  boxShadow: "0 8px 30px -12px rgba(0,0,0,0.5)",
-  backgroundColor: "#fed957",
-  display: "flex",
-  position: "absolute",
-  alignItems: "center",
-  justifyContent: "center",
-  textAlign: "center",
-};
+const PostScream = ({
+  classes,
+  openInfoPageDesktop,
+  loadingProjects,
+  projectsData,
+}) => {
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.UI.loading);
+  const user = useSelector((state) => state.user);
+  const { authenticated } = user;
+  const history = useHistory();
 
-const geolocateStyle_hide = {
-  display: "none",
-};
+  const [open, setOpen] = useState(false);
+  const [viewport, setViewport] = useState({
+    latitude: 50.93864020643174,
+    longitude: 6.958725744885521,
+    zoom: 12,
+    transitionDuration: 1000,
+    pitch: 0,
+  });
 
-const geolocateIcon = {
-  position: "fixed",
-  zIndex: "9999",
-  top: "2.5%",
-  right: "2.5%",
-  margin: "auto",
-  height: "50px",
-  width: "50px",
-  borderRadius: "15px",
-  boxShadow: "0 8px 30px -12px rgba(0,0,0,0.5)",
-  backgroundColor: "#fed957",
-  display: "flex",
-  position: "absolute",
-  alignItems: "center",
-  justifyContent: "center",
-  textAlign: "center",
-  pointerEvents: "none",
-};
+  const [addressBarClickedState, setAddressBarClickedState] = useState(false);
 
-const geolocateIcon_hide = {
-  display: "none",
-};
+  const [out, setOut] = useState(false);
+  const [project, setProject] = useState("");
+  const [geoData, setGeoData] = useState("");
 
-// const geolocateStyleWeb = {
-//   position: "fixed",
-//   zIndex: "9999",
-//   top: "4vw",
-//   right: "calc(((100vw - 600px)/2) - 200px)",
-//   margin: "auto",
-//   height: "50px",
-//   width: "50px",
-//   borderRadius: "15px",
-//   boxShadow: "0 8px 30px -12px rgba(0,0,0,0.5)",
-//   backgroundColor: "#fed957",
-//   display: "flex",
-//   position: "absolute",
-//   alignItems: "center",
-//   justifyContent: "center",
-//   textAlign: "center",
-// };
+  const [address, setAddress] = useState("Ohne Ortsangabe");
+  const [neighborhood, setNeighborhood] = useState("Ohne Ortsangabe");
+  const [fulladdress, setFulladdress] = useState("Ohne Ortsangabe");
 
-// const geolocateIconWeb = {
-//   position: "fixed",
-//   zIndex: "9999",
-//   top: "4vw",
-//   right: "calc(((100vw - 600px)/2) - 200px)",
-//   margin: "auto",
-//   marginright: "",
-//   height: "50px",
-//   width: "50px",
-//   borderRadius: "15px",
-//   boxShadow: "0 8px 30px -12px rgba(0,0,0,0.5)",
-//   backgroundColor: "#fed957",
-//   display: "flex",
-//   position: "absolute",
-//   alignItems: "center",
-//   justifyContent: "center",
-//   textAlign: "center",
-//   pointerEvents: "none",
-// };
+  const [allMainStates, setAllMainStates] = useState({
+    errors: {},
+    MapHeight: "100vh",
+    locationDecided: false,
+  });
 
-class PostScream extends Component {
-  state = {
-    open: false,
-    Out: false,
-    // load: false,
-    loading: false,
+  const { errors, MapHeight, locationDecided } = allMainStates;
+
+  const [allValues, setAllValues] = useState({
     body: "",
     title: "",
-    project: "",
     topic: "",
-
     openWeblink: false,
     weblinkTitle: null,
     weblink: null,
-
     openContact: false,
     contactTitle: null,
     contact: null,
-
     openCalendar: false,
     selectedDays: [],
     selectedUnix: [],
+  });
 
-    geoData: "",
-    clicked: false,
-    AndroidStyle: false,
-    errors: {},
-    viewport: {
-      latitude: 50.93864020643174,
-      longitude: 6.958725744885521,
-      zoom: 12,
-      transitionDuration: 1000,
-      pitch: 0,
-    },
-    latitude: 50.93864020643174,
-    longitude: 6.958725744885521,
-    address_long: "Wähle einen Ort",
-    address_short: "gesplitted",
-    address: "Ohne Ortsangabe",
-    district: "",
+  const {
+    body,
+    title,
+    topic,
+    openWeblink,
+    weblinkTitle,
+    weblink,
+    openContact,
+    contactTitle,
+    contact,
+    openCalendar,
+    selectedDays,
+    selectedUnix,
+  } = allValues;
 
-    MapHeight: "100vh",
-    zoomdetail: false,
-  };
+  // useEffect(() => {
+  //   console.log("nextprops error");
+  //   // componentWillReceiveProps(nextProps) {
+  //   //   if (nextProps.UI.errors) {
+  //   //     this.setState({
+  //   //       errors: nextProps.UI.errors,
+  //   //     });
+  //   //   }
+  //   //   if (!nextProps.UI.errors && !nextProps.UI.loading) {
+  //   //     this.setState({ body: "", open: false, errors: {} });
+  //   //     this.setState({ title: "", open: false, errors: {} });
+  //   //   }
+  //   // }
+  // }, [nextProps.UI.errors]);
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.UI.errors) {
-      this.setState({
-        errors: nextProps.UI.errors,
-      });
-    }
-    if (!nextProps.UI.errors && !nextProps.UI.loading) {
-      this.setState({ body: "", open: false, errors: {} });
-      this.setState({ title: "", open: false, errors: {} });
-    }
-  }
-
-  componentDidMount() {
-    if (isAndroid) {
-      this.setState({ AndroidStyle: true });
-    }
-  }
-
-  handleOpen = () => {
-    this.setState({ open: true, loading: false });
-
+  const handleOpen = (event) => {
+    event.preventDefault();
     const project =
       window.location.pathname.indexOf("_") > 0
         ? window.location.pathname.substring(1)
         : "";
 
-    this.setState({
-      project: project,
-    });
+    setOpen(true);
+    setProject(project);
 
-    const dataArrayProjectSelector = this.props.projectsData;
+    // setAllMainStates({ ...allMainStates, loading: false });
 
-    dataArrayProjectSelector.forEach((element) => {
+    projectsData.forEach((element) => {
       if (project === element.project) {
-        this.setState({
-          geoData: element.geoData,
-          viewport: {
-            zoom: element.zoom,
-            latitude: element.centerLat,
-            longitude: element.centerLong,
-            transitionDuration: 1000,
-          },
+        setViewport({
+          zoom: element.zoom,
+          latitude: element.centerLat,
+          longitude: element.centerLong,
+          transitionDuration: 1000,
         });
+        setGeoData(element.geoData);
       }
       if (project === "") {
-        this.setState({
-          geoData: "",
-          viewport: {
-            zoom: 12,
-            latitude: 50.93864020643174,
-            longitude: 6.958725744885521,
-            transitionDuration: 1000,
-          },
+        setViewport({
+          zoom: 12,
+          latitude: 50.93864020643174,
+          longitude: 6.958725744885521,
+          transitionDuration: 1000,
         });
+        setGeoData("");
       }
     });
   };
 
-  handleCookies() {
-    cookies.set("Cookie_settings", "all", {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 90,
-      sameSite: "none",
-      secure: true,
-    });
-    this.setState({ open: false });
-    this.setState({ open: true });
-  }
-
-  handleRules() {
-    cookies.set("Cookie_Rules", "true", {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 90,
-      sameSite: "none",
-      secure: true,
-    });
-    this.setState({ open: false });
-    this.setState({ open: true });
-  }
-
-  handleClose = () => {
-    this.props.clearErrors();
-    this.setState({ open: false, errors: {} });
+  const handleClose = () => {
+    dispatch(clearErrors());
+    setOpen(false);
+    setAllMainStates({ ...allMainStates, errors: {} });
   };
-  handleChange = (event) => {
+
+  const handleChange = (event) => {
     event.preventDefault();
-    this.setState({ [event.target.name]: event.target.value, loading: false });
+    setAllValues({
+      ...allValues,
+      [event.target.name]: event.target.value,
+    });
   };
 
-  handleChangeCalendar = (selectedDays) => {
+  const handleChangeCalendar = (selectedDays) => {
     const selectedUnix = [];
     var i;
     for (i = 0; i < selectedDays.length; i++) {
       selectedUnix[i] = selectedDays[i]["unix"];
     }
-
-    this.setState({ selectedDays: selectedDays, selectedUnix: selectedUnix });
+    setAllValues({
+      ...allValues,
+      selectedDays: selectedDays,
+      selectedUnix: selectedUnix,
+    });
   };
 
-  handleDropdown = (event) => {
+  const handleDropdownProject = (event) => {
     event.preventDefault();
-    this.setState({
-      project: event.target.value,
-    });
+    setProject(event.target.value);
 
-    const dataArrayProjectSelector = this.props.projectsData;
-
-    dataArrayProjectSelector.forEach((element) => {
+    projectsData.forEach((element) => {
       if (event.target.value === element.project) {
-        this.setState({
-          geoData: element.geoData,
-          viewport: {
-            zoom: element.zoom,
-            latitude: element.centerLat,
-            longitude: element.centerLong,
-            transitionDuration: 1000,
-          },
+        setViewport({
+          zoom: element.zoom,
+          latitude: element.centerLat,
+          longitude: element.centerLong,
+          transitionDuration: 1000,
         });
+        setGeoData(element.geoData);
       }
       if (event.target.value === "") {
-        this.setState({
-          geoData: "",
-          viewport: {
-            zoom: 12,
-            latitude: 50.93864020643174,
-            longitude: 6.958725744885521,
-            transitionDuration: 1000,
-          },
+        setViewport({
+          zoom: 12,
+          latitude: 50.93864020643174,
+          longitude: 6.958725744885521,
+          transitionDuration: 1000,
         });
+        setGeoData("");
       }
     });
   };
 
-  handleDropdownTopic = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    this.setState({
-      topic: event.target.value,
-    });
-  };
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-    this.setState({
-      loading: true,
-    });
     const newScream = {
-      body: this.state.body,
-      title: this.state.title,
-      locationHeader: this.state.address,
-      district: this.state.district,
-      lat: this.state.latitude,
-      long: this.state.longitude,
-      project: this.state.project,
-      Thema: this.state.topic,
-      weblinkTitle: this.state.weblinkTitle,
-      weblink: this.state.weblink,
-
-      contactTitle: this.state.contactTitle,
-      contact: this.state.contact,
+      body,
+      title,
+      locationHeader: address,
+      fulladdress,
+      neighborhood,
+      lat: viewport.latitude,
+      long: viewport.longitude,
+      project,
+      Thema: topic,
+      weblinkTitle,
+      weblink,
+      contactTitle,
+      contact,
     };
 
-    if (this.state.selectedUnix.length > 0) {
-      newScream.selectedUnix = this.state.selectedUnix;
+    if (selectedUnix.length > 0) {
+      newScream.selectedUnix = selectedUnix;
     }
-
-    this.props.postScream(newScream, this.props.user, this.props.history);
-  };
-
-  _onMarkerDragEnd = (event) => {
-    this.setState({
-      longitude: this.state.viewport.longitude,
-      latitude: this.state.viewport.latitude,
+    dispatch(postScream(newScream, user, history)).then(() => {
+      setOpen(false);
     });
-    setTimeout(
-      this.setState({
-        clicked: false,
-      }),
-      500
-    );
-    setTimeout(() => {
-      const geocoder = L.Control.Geocoder.nominatim();
-
-      geocoder.reverse(
-        {
-          lat: this.state.viewport.latitude,
-          lng: this.state.viewport.longitude,
-        },
-        12,
-        (results) => {
-          var r = results[0];
-          var split = r.html.split("<br/>");
-          var address = split[0];
-          this.setState({ address: address, district: r.name });
-          console.log("ihasddhasdkashdkjashd", r);
-        }
-      );
-
-      if (
-        this.state.viewport.latitude > 51.08 ||
-        this.state.viewport.latitude < 50.79 ||
-        this.state.viewport.longitude < 6.712 ||
-        this.state.viewport.longitude > 7.17
-      ) {
-        alert("Außerhalb von Köln kannst du leider noch keine Ideen teilen.");
-        this.setState({
-          Out: true,
-        });
-      } else {
-        this.setState({
-          Out: false,
-        });
-      }
-    }, 500);
   };
 
-  geoclick = () => {
-    setTimeout(
-      function () {
-        this._onMarkerDragEnd();
-      }.bind(this),
-      1000
-    );
+  const _onMarkerDragEnd = (newViewport) => {
+    setViewport(newViewport);
+    setAddressBarClickedState(false);
   };
 
-  onSelected = (viewport, item) => {
-    setTimeout(
-      function () {
-        this.setState({ viewport });
-        setTimeout(
-          function () {
-            this._onMarkerDragEnd();
-          }.bind(this),
-          2000
+  const geocode = (viewport) => {
+    const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+    const geocodingClient = mbxGeocoding({
+      accessToken: process.env.REACT_APP_MAPBOX_ACCESS_TOKEN,
+    });
+    geocodingClient
+      .reverseGeocode({
+        query: [viewport.longitude, viewport.latitude],
+        limit: 1,
+      })
+      .send()
+      .then((response) => {
+        const match = response.body;
+        console.log("Gesamt", match.features[0]);
+        console.log(
+          "Adresse",
+          match.features[0].text,
+          match.features[0].address
         );
-      }.bind(this),
-      500
-    );
+        console.log("Stadtteil", match.features[0].context[1].text);
+
+        const houseNumber =
+          match.features[0].address !== undefined
+            ? match.features[0].address
+            : "";
+
+        setNeighborhood(match.features[0].context[1].text);
+        setAddress(match.features[0].text + " " + houseNumber);
+        setFulladdress(match.features[0].place_name);
+      });
+
+    if (
+      viewport.latitude > 51.08 ||
+      viewport.latitude < 50.79 ||
+      viewport.longitude < 6.712 ||
+      viewport.longitude > 7.17
+    ) {
+      alert("Außerhalb von Köln kannst du leider noch keine Ideen teilen.");
+
+      setOut(true);
+    } else {
+      setOut(false);
+    }
   };
 
-  clicked = () => {
-    this.setState({ clicked: true });
+  const onSelected = (newViewport) => {
+    setViewport(newViewport);
+
+    setTimeout(() => {
+      geocode(newViewport);
+    }, 1000);
   };
 
-  handleZoom() {
-    if (this.state.zoomdetail === false) {
-      this.setState({
-        zoomdetail: true,
+  const addressBarClicked = () => {
+    setAddressBarClickedState(true);
+  };
+
+  const handleLocationDecided = () => {
+    if (locationDecided === false) {
+      setAllMainStates({
+        ...allMainStates,
+        locationDecided: true,
         MapHeight: "30vh",
       });
     }
 
-    if (this.state.zoomdetail === true) {
-      this.setState({
-        zoomdetail: false,
+    if (locationDecided === true) {
+      setAllMainStates({
+        ...allMainStates,
+        locationDecided: false,
         MapHeight: "100vh",
       });
     }
-  }
+  };
 
-  handleZoomNoLocation() {
-    if (this.state.zoomdetail === false) {
-      this.setState({
+  const handleLocationDecidedNoLocation = () => {
+    if (locationDecided === false) {
+      setNeighborhood("Ohne Ortsangabe");
+      setAddress("Ohne Ortsangabe");
+      setFulladdress("Ohne Ortsangabe");
+      setViewport({
+        zoom: 12,
         latitude: 50.93864020643174,
         longitude: 6.958725744885521,
-        address: "Ohne Ortsangabe",
-        district: "",
-        zoomdetail: true,
+        transitionDuration: 1000,
+      });
+      setAllMainStates({
+        ...allMainStates,
+        locationDecided: true,
         MapHeight: "30vh",
       });
     }
 
-    if (this.state.zoomdetail === true) {
-      this.setState({
-        // viewport: { zoom: 12, pitch: 0, bearing: 0 },
-        zoomdetail: false,
+    if (locationDecided === true) {
+      setAllMainStates({
+        ...allMainStates,
+        locationDecided: false,
         MapHeight: "100vh",
       });
     }
-  }
-
-  handleOpenWeblink = () => {
-    this.setState({
-      openWeblink: true,
-    });
   };
-  handleCloseWeblink = () => {
-    this.setState({
+
+  const handleOpenWeblink = () => {
+    setAllValues({ ...allValues, openWeblink: true });
+  };
+  const handleCloseWeblink = () => {
+    setAllValues({
+      ...allValues,
       openWeblink: false,
       weblink: null,
       weblinkTitle: null,
     });
   };
-  handleSaveWeblink = () => {
-    this.setState({
-      openWeblink: false,
-    });
+  const handleSaveWeblink = () => {
+    setAllValues({ ...allValues, openWeblink: false });
   };
-
-  handleOpenContact = () => {
-    this.setState({
-      openContact: true,
-    });
+  const handleOpenContact = () => {
+    setAllValues({ ...allValues, openContact: true });
   };
-  handleCloseContact = () => {
-    this.setState({
+  const handleCloseContact = () => {
+    setAllValues({
+      ...allValues,
       openContact: false,
       contact: null,
       contactTitle: null,
     });
   };
-  handleSaveContact = () => {
-    this.setState({
-      openContact: false,
-    });
+  const handleSaveContact = () => {
+    setAllValues({ ...allValues, openContact: false });
   };
 
-  handleOpenCalendar = () => {
-    this.setState({
-      openCalendar: true,
-    });
-    console.log(this.state.selectedDays);
+  const handleOpenCalendar = () => {
+    setAllValues({ ...allValues, openCalendar: true });
   };
-  handleCloseCalendar = () => {
-    this.setState({
+  const handleCloseCalendar = () => {
+    setAllValues({
+      ...allValues,
       openCalendar: false,
-      // weblink: "",
-      // weblinkTitle: "",
+      selectedDays: [],
+      selectedUnix: [],
     });
   };
-  handleSaveCalendar = () => {
-    this.setState({
-      openCalendar: false,
-    });
+  const handleSaveCalendar = () => {
+    setAllValues({ ...allValues, openCalendar: false });
   };
 
-  render() {
-    const { address, viewport, errors } = this.state;
-
-    const queryParams = {
-      bbox: [6.7, 50.8, 7.2, 51],
-    };
-    const {
-      classes,
-      openInfoPageDesktop,
-      loadingProjects,
-      projectsData,
-      UI: { loading },
-    } = this.props;
-    const { authenticated } = this.props.user;
-
-    const data =
-      !loadingProjects && this.state.geoData !== ""
-        ? {
-            type: "Feature",
-            geometry: {
-              type: "Polygon",
-              coordinates: [JSON.parse(this.state.geoData)],
-            },
-          }
-        : {
-            type: "Feature",
-            geometry: {
-              type: "Polygon",
-              coordinates: [],
-            },
-          };
-
-    // const MyInput = (props) => (
-    //   <input {...props} placeholder="" id="geocoder" />
-    // );
-
-    const addressLine =
-      this.state.address === "Ohne Ortsangabe" ? (
-        <>Adresse eingeben</>
-      ) : (
-        this.state.address
-      );
-
-    const projectsArray =
-      this.state.open && !loadingProjects ? (
-        <>
-          {_.orderBy(projectsData, "createdAt", "desc").map((projects) => (
-            <option value={projects.project} className={classes.formText}>
-              + {projects.title}
-            </option>
-          ))}
-        </>
-      ) : null;
-
-    const topicsArray = (
-      <>
-        <option value={"Inklusion / Soziales"} className={classes.formText}>
-          Inklusion / Soziales
-        </option>
-        <option value={"Rad"} className={classes.formText}>
-          Rad
-        </option>
-        <option value={"Sport / Freizeit"} className={classes.formText}>
-          Sport / Freizeit
-        </option>
-        <option value={"Umwelt und Grün"} className={classes.formText}>
-          Umwelt und Grün
-        </option>
-        <option value={"Verkehr"} className={classes.formText}>
-          Verkehr
-        </option>
-        <option value={"Versorgung"} className={classes.formText}>
-          Versorgung
-        </option>
-        <option value={"Sonstige"} className={classes.formText}>
-          Sonstige
-        </option>
-      </>
-    );
-
-    const map = (
-      <div className={classes.mapwrapper}>
-        <div
-          onClick={this.clicked}
-          style={
-            this.state.zoomdetail === false
-              ? { display: "block" }
-              : { display: "none" }
-          }
-        >
-          <Geocoder
-            mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-            onSelected={this.onSelected}
-            viewport={viewport}
-            hideOnSelect={true}
-            limit={3}
-            queryParams={queryParams}
-            id="geocoder"
-            transitionDuration={1000}
-          ></Geocoder>
-          <div
-            className="pinLocationHeader"
-            style={
-              this.state.clicked === false ? { zIndex: 9999 } : { zIndex: 0 }
-            }
-          >
-            {addressLine}
-          </div>
-        </div>
-
-        <ReactMapGL
-          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-          mapStyle="mapbox://styles/tmorino/ck0seyzlv0lbh1clfwepe0x0x?optimize=true"
-          {...viewport}
-          maxZoom={18}
-          minZoom={11}
-          width="100vw"
-          height={this.state.MapHeight}
-          onViewportChange={(newViewport) =>
-            this.setState({ viewport: newViewport })
-          }
-          onTouchEnd={this._onMarkerDragEnd}
-        >
-          <Source id="maine" type="geojson" data={data} />
-          <Layer
-            id="maine"
-            type="fill"
-            source="maine"
-            paint={{
-              "fill-color": "#fed957",
-              "fill-opacity": 0.3,
-            }}
-          />
-
-          <GeolocateControl
-            style={
-              this.state.zoomdetail === false
-                ? geolocateStyle
-                : geolocateStyle_hide
-            }
-            positionOptions={{ enableHighAccuracy: true }}
-            showUserLocation={false}
-            onViewStateChange={this.geoclick}
-          ></GeolocateControl>
-          <img
-            src={Geolocate}
-            style={
-              this.state.zoomdetail === false
-                ? geolocateIcon
-                : geolocateIcon_hide
-            }
-            width="20"
-            alt="Geolocate"
-          />
-
-          <div style={{ pointerEvents: "none" }}>
-            <Marker
-              longitude={viewport.longitude}
-              latitude={viewport.latitude}
-              offsetTop={-100}
-              offsetLeft={-50}
-            >
-              <img src={Pin} width="100" alt="ChatIcon" />
-            </Marker>
-          </div>
-        </ReactMapGL>
-
-        <div
-          className="selectLocationContainer"
-          style={
-            this.state.zoomdetail
-              ? {
-                  position: "fixed",
-                  bottom: "calc(90vh - 50px)",
-                  display: "none",
-                }
-              : {
-                  position: "fixed",
-                  bottom: "20px",
-                  display: "block",
-                }
-          }
-        >
-          <div className="projectSelectContainer">
-            <span> An: </span>
-
-            <MuiThemeProvider theme={theme}>
-              <NativeSelect
-                value={this.state.project}
-                onChange={this.handleDropdown}
-                name="dropdown"
-                className="projectFormControl"
-                inputProps={{ "aria-label": "dropdown" }}
-                id="dropdown"
-                IconComponent={() => (
-                  <img
-                    src={Arrow}
-                    width="20px"
-                    style={{
-                      marginTop: "0px",
-                      marginLeft: "-24px",
-                      pointerEvents: "none",
-                    }}
-                  ></img>
-                )}
-              >
-                <option value="" className={classes.formText}>
-                  Allgemein (Alle Ideen)
-                </option>
-                {projectsArray}
-              </NativeSelect>
-            </MuiThemeProvider>
-          </div>{" "}
-          <br />
-          <button
-            className={
-              this.state.project !== ""
-                ? "buttonWide buttonSelectLocationNo_hide"
-                : "buttonWide buttonSelectLocationNo"
-            }
-            onClick={() => this.handleZoomNoLocation()}
-          >
-            Ohne Ort
-          </button>
-          <button
-            className={
-              this.state.address === "Ohne Ortsangabe"
-                ? "buttonWide buttonSelectLocation_hide"
-                : "buttonWide buttonSelectLocation"
-            }
-            onClick={() => this.handleZoom()}
-          >
-            Ort bestätigen
-          </button>
-        </div>
-        <form onSubmit={this.handleSubmit}>
-          <div
-            className={
-              this.state.AndroidStyle === false ? "postCard" : "postCardAndroid"
-            }
-            style={
-              this.state.zoomdetail
-                ? { top: "20vh", transition: "0.5s" }
-                : { top: "100vh", transition: "0.5s" }
-            }
-          >
-            <div className={classes.content}>
-              <div
-                className={classes.locationOuter}
-                onClick={() => this.handleZoom()}
-                // onDragStart={() => this.handleClickAdress()}
-              >
-                <LocationOn style={{ marginTop: "-5px" }} />{" "}
-                <div className={classes.locationHeader}> ~ {address} </div>
-              </div>
-              <PostScreamRules></PostScreamRules>
-              <TextField
-                name="title"
-                type="text"
-                label="Titel deiner Idee"
-                multiline
-                rowsMax="2"
-                placeholder=""
-                error={errors.title ? true : false}
-                helperText={errors.title}
-                className={classes.textField}
-                onChange={this.handleChange}
-                margin="normal"
-                fullWidth
-                inputProps={{ maxLength: 70 }}
-              />
-              <TextField
-                name="body"
-                type="text"
-                label="Beschreibung deiner Idee"
-                multiline
-                rowsMax="12"
-                InputProps={{ disableUnderline: true }}
-                placeholder=""
-                error={errors.body ? true : false}
-                helperText={errors.body}
-                className={classes.textField}
-                onChange={this.handleChange}
-                margin="normal"
-                fullWidth
-                inputProps={{ maxLength: 800 }}
-              />
-              <Weblink
-                openWeblink={this.state.openWeblink}
-                handleOpenWeblink={this.handleOpenWeblink}
-                handleCloseWeblink={this.handleCloseWeblink}
-                handleSaveWeblink={this.handleSaveWeblink}
-                weblinkTitle={this.state.weblinkTitle}
-                weblink={this.state.weblink}
-                handleChange={this.handleChange}
-              ></Weblink>
-              <Contact
-                openContact={this.state.openContact}
-                handleOpenContact={this.handleOpenContact}
-                handleCloseContact={this.handleCloseContact}
-                handleSaveContact={this.handleSaveContact}
-                contactTitle={this.state.contactTitle}
-                contact={this.state.contact}
-                handleChange={this.handleChange}
-              ></Contact>
-              <div
-                style={
-                  this.state.project === "Agora:_Sommer_des_guten_lebens"
-                    ? {}
-                    : { display: "none" }
-                }
-              >
-                <InlineDatePicker
-                  openCalendar={this.state.openCalendar}
-                  handleOpenCalendar={this.handleOpenCalendar}
-                  handleCloseCalendar={this.handleCloseCalendar}
-                  handleSaveCalendar={this.handleSaveCalendar}
-                  handleChange={this.handleChangeCalendar}
-                  selectedDays={this.state.selectedDays}
-                ></InlineDatePicker>
-              </div>
-              <div className="topicSelectContainer">
-                <span> Thema:</span>
-
-                <MuiThemeProvider theme={theme}>
-                  <NativeSelect
-                    value={this.state.topic}
-                    onChange={this.handleDropdownTopic}
-                    name="dropdown"
-                    className="projectFormControl"
-                    inputProps={{ "aria-label": "dropdown" }}
-                    id="dropdown"
-                    IconComponent={() => (
-                      <img
-                        src={Arrow}
-                        width="20px"
-                        style={{
-                          marginTop: "0px",
-                          marginLeft: "-24px",
-                          pointerEvents: "none",
-                        }}
-                      ></img>
-                    )}
-                  >
-                    <option value="" className={classes.formText}>
-                      Wähle ein Thema aus
-                    </option>
-                    {topicsArray}
-                  </NativeSelect>
-                </MuiThemeProvider>
-              </div>{" "}
-            </div>
-          </div>
-          <button
-            type="submit"
-            className={
-              this.state.AndroidStyle === false
-                ? "submitPostButton buttonWide"
-                : "submitPostButton_android buttonWide"
-            }
-            disabled={this.state.loading || this.state.Out ? true : false}
-            style={
-              this.state.zoomdetail
-                ? { bottom: "10px", transition: "0.5s" }
-                : { bottom: "-20vh", transition: "0.5s" }
-            }
-          >
-            Idee teilen
-          </button>
-
-          {this.state.loading && (
-            <CircularProgress size={30} className={classes.progress} />
-          )}
-        </form>
-      </div>
-    );
-    const AuthlinkMobile = !authenticated ? (
-      <div
-        className={classes.Authlink}
-        style={
-          this.state.zoomdetail
-            ? { top: "27vh", transition: "0.5s" }
-            : { top: "100vh", transition: "0.5s" }
-        }
+  return (
+    <Fragment>
+      <button
+        onClick={handleOpen}
+        className={openInfoPageDesktop ? "add add_hide" : "add"}
       >
-        <SignNote />
-      </div>
-    ) : null;
+        <img src={AddIcon} width="25" alt="AddIcon" />
+        <span className="addText">Neue Idee</span>
+      </button>
 
-    return (
-      <Fragment>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        TransitionComponent={Transition}
+        fullScreen
+        BackdropProps={{ classes: { root: classes.root } }}
+        PaperProps={{ classes: { root: classes.paper } }}
+      >
+        {!authenticated && (
+          <div
+            className={
+              isMobileOnly ? classes.Authlink : classes.AuthlinkDesktop
+            }
+            style={
+              isMobileOnly && locationDecided
+                ? { top: "27vh", transition: "0.5s" }
+                : isMobileOnly && !locationDecided
+                ? { top: "100vh", transition: "0.5s" }
+                : null
+            }
+          >
+            <SignNote />
+          </div>
+        )}
+
         <button
-          onClick={this.handleOpen}
-          className={openInfoPageDesktop ? "add add_hide" : "add"}
+          tip="Close"
+          onClick={handleClose}
+          className="buttonRound buttonClose"
         >
-          <img src={AddIcon} width="25" alt="AddIcon" />
-          <span className="addText">Neue Idee</span>
+          <img
+            src={Arrow}
+            width="20"
+            alt="backArrow"
+            style={{ transform: "rotate(90deg)" }}
+          />
         </button>
 
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          TransitionComponent={Transition}
-          fullScreen
-        >
-          {AuthlinkMobile}
-          <button
-            tip="Close"
-            onClick={this.handleClose}
-            className="buttonRound buttonClose"
+        {isMobileOnly && (
+          <div
+            style={
+              locationDecided
+                ? { marginTop: 0, transition: "0.5s" }
+                : { marginTop: "100vh", transition: "0.5s" }
+            }
           >
-            <img
-              src={Arrow}
-              width="20"
-              alt="backArrow"
-              style={{ transform: "rotate(90deg)" }}
-            />
-          </button>
-          <div className="postScreamMapWrapper">
             <div
-              style={
-                this.state.zoomdetail
-                  ? { marginTop: 0, transition: "0.5s" }
-                  : { marginTop: "100vh", transition: "0.5s" }
-              }
-            >
-              <div
-                className="backContainer"
-                onClick={() => this.handleZoom()}
-              ></div>
+              className="backContainer"
+              onClick={() => handleLocationDecided()}
+            ></div>
 
-              <div className="PostBackground"></div>
-            </div>
-
-            {map}
+            <div className="PostBackground"></div>
           </div>
-        </Dialog>
-      </Fragment>
-    );
-  }
-}
+        )}
+
+        <div className={classes.mapwrapper}>
+          <PostScreamMap
+            MapHeight={MapHeight}
+            geocode={geocode}
+            _onMarkerDragEnd={_onMarkerDragEnd}
+            geoData={geoData}
+            viewport={viewport}
+            clicked={addressBarClickedState}
+            addressBarClicked={addressBarClicked}
+            locationDecided={locationDecided}
+            onSelected={onSelected}
+            address={address}
+            loadingProjects={loadingProjects}
+          />
+
+          <PostScreamSelectContainter
+            classes={classes}
+            locationDecided={locationDecided}
+            handleLocationDecided={handleLocationDecided}
+            handleLocationDecidedNoLocation={handleLocationDecidedNoLocation}
+            project={project}
+            address={address}
+            handleDropdownProject={handleDropdownProject}
+            open={open}
+            loadingProjects={loadingProjects}
+            projectsData={projectsData}
+          />
+
+          <PostScreamFormContent
+            classes={classes}
+            errors={errors}
+            address={address}
+            handleLocationDecided={handleLocationDecided}
+            handleChange={handleChange}
+            openWeblink={openWeblink}
+            weblink={weblink}
+            weblinkTitle={weblinkTitle}
+            handleOpenWeblink={handleOpenWeblink}
+            handleCloseWeblink={handleCloseWeblink}
+            handleSaveWeblink={handleSaveWeblink}
+            openContact={openContact}
+            contactTitle={contactTitle}
+            contact={contact}
+            handleOpenContact={handleOpenContact}
+            handleCloseContact={handleCloseContact}
+            handleSaveContact={handleSaveContact}
+            project={project}
+            openCalendar={openCalendar}
+            selectedDays={selectedDays}
+            handleOpenCalendar={handleOpenCalendar}
+            handleCloseCalendar={handleCloseCalendar}
+            handleSaveCalendar={handleSaveCalendar}
+            handleChangeCalendar={handleChangeCalendar}
+            topic={topic}
+            loading={loading}
+            Out={out}
+            locationDecided={locationDecided}
+            handleSubmit={handleSubmit}
+            body={body}
+            title={title}
+          />
+        </div>
+      </Dialog>
+    </Fragment>
+  );
+};
 
 PostScream.propTypes = {
   user: PropTypes.object.isRequired,
@@ -1129,11 +600,4 @@ PostScream.propTypes = {
   UI: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  UI: state.UI,
-  user: state.user,
-});
-
-export default connect(mapStateToProps, { postScream, clearErrors })(
-  withStyles(styles)(withRouter(PostScream))
-);
+export default withStyles(styles)(withRouter(PostScream));
