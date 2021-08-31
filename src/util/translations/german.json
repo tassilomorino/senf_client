@@ -8,6 +8,8 @@
   "termsAndConditions": "AGB",
   "accept": "Akzeptieren",
   "next": "Weiter",
+  "to": "An:",
+
   "showIdeas": "Ideen anzeigen",
   "withoutLocation": "Ohne Ortsangabe",
   "withoutLocationShort": "Ohne Ort",
@@ -37,6 +39,7 @@
   "menuData_projectrooms": "Projekträume",
   "menuData_insights": "Insights",
 
+  "topic": "Thema",
   "topics_care": "Versorgung",
   "topics_traffic": "Traffic",
   "topics_ecoAndGreen": "Umwelt und Grün",
@@ -48,7 +51,10 @@
   "map_filterIdeas": "Ideen im Kartenbereich in der Liste anzeigen",
 
   "postScream_newIdea": "Neue Idee",
-
+"postScream_shareIdea":"Idee teilen",
+"postScream_ideaTitle":"Titel deiner Idee",
+"postScream_ideaBody":"Beschreibung deiner Idee",
+"input_address":"Adresse eingeben",
 
   "projectrooms_description": "Gemeinsam mit Organisationen und Initiativen suchen wir zu spezifischen Themen/ Orten eure Ideen. In den jeweiligen Projekträumen könnt ihr die Ideen ansehen, kommentieren & neue eintragen!",
   "projectrooms_request_overTitle": "Für Organisation/Initiativen",

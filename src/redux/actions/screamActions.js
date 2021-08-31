@@ -2,6 +2,7 @@
 
 import firebase from "firebase/app";
 import "firebase/firestore";
+import moment from "moment";
 import { clearErrors } from "./errorsActions";
 import { openProject } from "./projectActions";
 import {
@@ -96,6 +97,7 @@ export const closeScream = () => (dispatch) => {
 
 // Post an idea
 export const postScream = (newScream, user, history) => async (dispatch) => {
+  console.log(history, user);
   const db = firebase.firestore();
 
   dispatch({ type: LOADING_UI });
@@ -111,16 +113,22 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
       payload: { body: "Beschreibung fehlt" },
     });
   } else {
+    const ageCapture = moment().diff(
+      moment(user.credentials.age, "YYYY"),
+      "years"
+    );
+
     const newScreamData = {
       locationHeader: newScream.locationHeader,
-      district: newScream.district,
+      district: newScream.fulladdress,
+      Stadtteil: newScream.neighborhood,
       title: newScream.title,
       lat: newScream.lat,
       long: newScream.long,
       body: newScream.body,
       userHandle: user.credentials.handle,
       sex: user.credentials.sex,
-      age: user.credentials.age,
+      age: ageCapture,
       createdAt: new Date().toISOString(),
       likeCount: 0,
       commentCount: 0,
