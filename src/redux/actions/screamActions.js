@@ -2,6 +2,7 @@
 
 import firebase from "firebase/app";
 import "firebase/firestore";
+import moment from "moment";
 import { clearErrors } from "./errorsActions";
 import { openProject } from "./projectActions";
 import {
@@ -112,6 +113,11 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
       payload: { body: "Beschreibung fehlt" },
     });
   } else {
+    const ageCapture = moment().diff(
+      moment(user.credentials.age, "YYYY"),
+      "years"
+    );
+
     const newScreamData = {
       locationHeader: newScream.locationHeader,
       district: newScream.fulladdress,
@@ -122,7 +128,7 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
       body: newScream.body,
       userHandle: user.credentials.handle,
       sex: user.credentials.sex,
-      age: user.credentials.age,
+      age: ageCapture,
       createdAt: new Date().toISOString(),
       likeCount: 0,
       commentCount: 0,
