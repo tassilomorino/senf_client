@@ -108,6 +108,18 @@ export class Altersgruppe extends Component {
   }
 
   componentDidMount() {
+    // let topic_care_ideas = [agesUnder18, ];
+    // let topic_care_likes = [agesUnder18, ];
+
+    // let agegroupUnder18 = [];
+    // let agegroups_new_wishes = [];
+    // if (agegroups_array !== undefined && agegroups_array.length > 0) {
+    //   agegroups_array.forEach((element) => {
+    //     agegroups_new_likes.push(element.agegroupsLikes);
+    //     agegroups_new_wishes.push(element.agegroupsWishes);
+    //   });
+    // }
+
     axios.get("/agegroups").then((res) => {
       this.setState({ agegroups: res.data });
     });
@@ -436,6 +448,8 @@ export class Altersgruppe extends Component {
         -agegroups_new_wishes[0]["Altersgruppe7"],
         agegroups_new_likes[0]["Altersgruppe7"]
       );
+
+      console.log(Versorgung);
     }
 
     let Rad = [];

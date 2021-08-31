@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { Component, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { isMobileOnly } from "react-device-detect";
 
 // Icons
@@ -140,78 +140,81 @@ const styles = {
   },
 };
 
-class AltersgruppeDialog extends Component {
-  state = {
-    open: false,
+const AgegroupDialog = ({ classes, data, screams }) => {
+  const [open, setOpen] = useState(false);
 
-    oldPath: "",
-    newPath: "",
-    path: "",
-  };
+  useEffect(() => {
+    console.log(screams);
 
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
-  handleClose = () => {
-    this.setState({ open: false });
-  };
+    //       let topic_care = [agesUnder18, ];
 
-  render() {
-    const { classes } = this.props;
+    //       screams.forEach((element) => {
+    // if (element.Thema === "Versorgung" ){
+    //   // if element.age
+    //   // topic_care_ideas.push([element.likeCount]);
 
-    const dialogComponent = isMobileOnly ? (
-      <Dialog
-        scroll={"body"}
-        open={this.state.open}
-        onClose={this.handleClose}
-        BackdropProps={{ classes: { root: classes.root } }}
-        PaperProps={{ classes: { root: classes.paper } }}
-        TransitionComponent={Transition}
-        fullScreen
-        className="dialogOverlayContent"
-        maxWidth={"lg"}
+    // }
+    //       });
+  }, []);
+
+  const dialogComponent = isMobileOnly ? (
+    <Dialog
+      scroll={"body"}
+      open={open}
+      onClose={() => setOpen(false)}
+      BackdropProps={{ classes: { root: classes.root } }}
+      PaperProps={{ classes: { root: classes.paper } }}
+      TransitionComponent={Transition}
+      fullScreen
+      className="dialogOverlayContent"
+      maxWidth={"lg"}
+    >
+      <MyButton
+        onClick={() => setOpen(false)}
+        btnClassName={classes.closeButton}
       >
-        <MyButton onClick={this.handleClose} btnClassName={classes.closeButton}>
-          <CloseIcon />
-        </MyButton>
+        <CloseIcon />
+      </MyButton>
 
-        <DialogContent>
-          <Altersgruppe data={this.props.data} classes={this.props.classes} />
-        </DialogContent>
-      </Dialog>
-    ) : (
-      <Dialog
-        scroll={"body"}
-        open={this.state.open}
-        onClose={this.handleClose}
-        BackdropProps={{ classes: { root: classes.root } }}
-        PaperProps={{ classes: { root: classes.paperWeb } }}
-        TransitionComponent={Transition}
-        fullScreen
-        className="dialogOverlayContent"
-        maxWidth={"lg"}
+      <DialogContent>
+        <Altersgruppe data={data} classes={classes} screams={screams} />
+      </DialogContent>
+    </Dialog>
+  ) : (
+    <Dialog
+      scroll={"body"}
+      open={open}
+      onClose={() => setOpen(false)}
+      BackdropProps={{ classes: { root: classes.root } }}
+      PaperProps={{ classes: { root: classes.paperWeb } }}
+      TransitionComponent={Transition}
+      fullScreen
+      className="dialogOverlayContent"
+      maxWidth={"lg"}
+    >
+      <MyButton
+        onClick={() => setOpen(false)}
+        btnClassName={classes.closeButton}
       >
-        <MyButton onClick={this.handleClose} btnClassName={classes.closeButton}>
-          <CloseIcon />
-        </MyButton>
+        <CloseIcon />
+      </MyButton>
 
-        <DialogContent>
-          <Altersgruppe data={this.props.data} classes={this.props.classes} />
-        </DialogContent>
-      </Dialog>
-    );
+      <DialogContent>
+        <Altersgruppe data={data} classes={classes} />
+      </DialogContent>
+    </Dialog>
+  );
 
-    return (
-      <Fragment>
-        <MyButton
-          onClick={this.handleOpen}
-          btnClassName={classes.expandButton}
-        ></MyButton>
+  return (
+    <Fragment>
+      <MyButton
+        onClick={() => setOpen(true)}
+        btnClassName={classes.expandButton}
+      ></MyButton>
 
-        {dialogComponent}
-      </Fragment>
-    );
-  }
-}
+      {dialogComponent}
+    </Fragment>
+  );
+};
 
-export default withStyles(styles)(AltersgruppeDialog);
+export default withStyles(styles)(AgegroupDialog);

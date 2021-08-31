@@ -6,7 +6,7 @@ import React, { useState, useEffect } from "react";
 import Keyindicators from "./graphs/Keyindicators";
 import ThemenDialog from "./graphs/themendialog";
 import StadttteilDialog from "./graphs/stadtteilDialog";
-import AltersgruppeDialog from "./graphs/altersgruppeDialog";
+import AgegroupDialog from "./graphs/AgegroupDialog";
 import WordcloudDialog from "./graphs/wordcloudDialog";
 
 //Images
@@ -37,6 +37,8 @@ const InsightsPage = ({ order }) => {
         likeCount: doc.data().likeCount,
         Thema: doc.data().Thema,
         Stadtteil: doc.data().Stadtteil,
+        age: doc.data().age,
+        sex: doc.data().sex,
       };
       screams.push(docData);
     });
@@ -83,7 +85,7 @@ const InsightsPage = ({ order }) => {
         </div>
 
         <div className="cover cover4">
-          <AltersgruppeDialog />
+          <AgegroupDialog screams={screams} />
           <img src={Altersgruppencover} width="100%" alt="Themencover" />
         </div>
         <div className="cover cover3">
