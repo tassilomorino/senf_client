@@ -2,6 +2,7 @@
 
 import React from "react";
 import _ from "lodash";
+import { useTranslation } from "react-i18next";
 
 //MUI Stuff
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
@@ -43,6 +44,8 @@ const PostScreamSelectContainter = ({
   loadingProjects,
   projectsData,
 }) => {
+  const { t } = useTranslation();
+
   const projectsArray =
     open && !loadingProjects ? (
       <>
@@ -97,7 +100,7 @@ const PostScreamSelectContainter = ({
         ></div>
       )}
       <div className="projectSelectContainer">
-        <span className={classes.boldText}> An: </span>
+        <span className={classes.boldText}> {t("to")} </span>
 
         <MuiThemeProvider theme={theme}>
           <NativeSelect
@@ -138,7 +141,7 @@ const PostScreamSelectContainter = ({
         }
         onClick={handleLocationDecidedNoLocation}
       >
-        Ohne Ort
+        {t("withoutLocationShort")}
       </button>
       <button
         className={
@@ -148,7 +151,7 @@ const PostScreamSelectContainter = ({
         }
         onClick={handleLocationDecided}
       >
-        Ort bestätigen
+        {t("confirmLocation")}
       </button>
     </div>
   );

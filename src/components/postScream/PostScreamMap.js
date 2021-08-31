@@ -1,6 +1,7 @@
 /** @format */
 
 import React from "react";
+import { isMobileOnly } from "react-device-detect";
 import ReactMapGL, {
   Marker,
   Source,
@@ -9,10 +10,11 @@ import ReactMapGL, {
 } from "react-map-gl";
 import Geocoder from "react-mapbox-gl-geocoder";
 
+import { useTranslation } from "react-i18next";
+
 //Icons
 import Pin from "../../images/pin3.png";
 import Geolocate from "../../images/icons/geolocate.png";
-import { isMobile, isMobileOnly } from "react-device-detect";
 
 const geolocateStyle = {
   position: "fixed",
@@ -72,11 +74,13 @@ const PostScreamMap = ({
   address,
   loadingProjects,
 }) => {
+  const { t } = useTranslation();
+
   const queryParams = {
     bbox: [6.7, 50.8, 7.2, 51],
   };
   const addressLine =
-    address === "Ohne Ortsangabe" ? <>Adresse eingeben</> : address;
+    address === "Ohne Ortsangabe" ? <>{t("input_address")}</> : address;
 
   // const MyInput = (props) => (
   //   <input {...props} placeholder="" id="geocoder" />
@@ -109,8 +113,8 @@ const PostScreamMap = ({
       width={isMobileOnly ? "100vw" : "calc(100vw - 600px)"}
       height={isMobileOnly ? MapHeight : "100vh"}
       style={{ position: "fixed", right: 0 }}
-      onTouchEnd={geocode}
-      onMouseUp={geocode}
+      onTouchEnd={() => geocode(viewport)}
+      onMouseUp={() => geocode(viewport)}
       onViewportChange={_onMarkerDragEnd}
     >
       <Source id="geodata" type="geojson" data={data} />

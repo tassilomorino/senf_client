@@ -1148,7 +1148,7 @@ input:focus {
   left: 20%;
   color: #353535;
   background-color: white;
-  animation:enteranimation 2s
+  animation:submitEnteranimation 2s
 
 }
 
@@ -1429,6 +1429,22 @@ input:focus {
 
   100% {
     opacity: 1;
+    transform: translateY(0%);
+  }
+}
+
+@keyframes submitEnteranimation {
+  0% {
+    opacity: 0;
+    transform: translateY(10%);
+  }
+  50% {
+    opacity: 0;
+    transform: translateY(10%);
+  }
+
+  100% {
+    opacity: 0.6;
     transform: translateY(0%);
   }
 }

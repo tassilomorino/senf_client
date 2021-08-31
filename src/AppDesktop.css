@@ -233,7 +233,7 @@
       top: calc(50vh + 150px );
       left: 280px;
       width: 240px;
-      animation:enteranimation 2s
+      animation:submitEnteranimation 2s
      
   }
   .buttonRulesAccept {
@@ -626,6 +626,22 @@ position: fixed;
     transform: translateY(0%);
   }
 } 
+
+@keyframes submitEnteranimation {
+  0% {
+    opacity: 0;
+    transform: translateY(10%);
+  }
+  50% {
+    opacity: 0;
+    transform: translateY(10%);
+  }
+
+  100% {
+    opacity: 0.6;
+    transform: translateY(0%);
+  }
+}
 
     
   

@@ -96,6 +96,7 @@ export const closeScream = () => (dispatch) => {
 
 // Post an idea
 export const postScream = (newScream, user, history) => async (dispatch) => {
+  console.log(history, user);
   const db = firebase.firestore();
 
   dispatch({ type: LOADING_UI });
@@ -113,7 +114,7 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
   } else {
     const newScreamData = {
       locationHeader: newScream.locationHeader,
-      district: newScream.district,
+      district: newScream.fulladdress,
       Stadtteil: newScream.neighborhood,
       title: newScream.title,
       lat: newScream.lat,

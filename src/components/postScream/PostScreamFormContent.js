@@ -1,18 +1,23 @@
 /** @format */
 
+import React from "react";
+import { isAndroid, isMobileOnly } from "react-device-detect";
+import { useTranslation } from "react-i18next";
+
+//MUI Stuff
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import { MuiThemeProvider, NativeSelect, TextField } from "@material-ui/core";
-import LocationOn from "@material-ui/icons/LocationOn";
-import React, { useEffect } from "react";
+
+//Components
+import PostScreamRules from "../modals/PostScreamRules";
 import Contact from "../modals/postModals/Contact";
 import InlineDatePicker from "../modals/postModals/InlineDatePicker";
 import Weblink from "../modals/postModals/Weblink";
-import PostScreamRules from "../modals/PostScreamRules";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 
 //Icons
 import Arrow from "../../images/icons/arrow.png";
 import { CircularProgress } from "@material-ui/core";
-import { isAndroid, isMobileOnly } from "react-device-detect";
+import LocationOn from "@material-ui/icons/LocationOn";
 
 const theme = createMuiTheme({
   overrides: {
@@ -64,7 +69,11 @@ const PostScreamFormContent = ({
   Out,
   locationDecided,
   handleSubmit,
+  body,
+  title,
 }) => {
+  const { t } = useTranslation();
+
   const topicsArray = (
     <>
       <option value={"Inklusion / Soziales"} className={classes.formText}>
@@ -137,7 +146,7 @@ const PostScreamFormContent = ({
           <TextField
             name="title"
             type="text"
-            label="Titel deiner Idee"
+            label={t("postScream_ideaTitle")}
             multiline
             rowsMax="2"
             placeholder=""
@@ -152,7 +161,7 @@ const PostScreamFormContent = ({
           <TextField
             name="body"
             type="text"
-            label="Beschreibung deiner Idee"
+            label={t("postScream_ideaBody")}
             multiline
             rowsMax="12"
             InputProps={{ disableUnderline: true }}
@@ -199,7 +208,7 @@ const PostScreamFormContent = ({
             ></InlineDatePicker>
           </div>
           <div className="topicSelectContainer">
-            <span>Thema: </span>
+            <span>{t("topic")}: </span>
 
             <MuiThemeProvider theme={theme}>
               <NativeSelect
@@ -233,7 +242,7 @@ const PostScreamFormContent = ({
         <button
           type="submit"
           className="submitPostButton buttonWide"
-          disabled={loading || Out ? true : false}
+          disabled={body === "" || title === "" || Out === true}
           style={
             locationDecided
               ? {
@@ -244,7 +253,7 @@ const PostScreamFormContent = ({
                 }
           }
         >
-          Idee teilen
+          {t("postScream_shareIdea")}
           {loading && (
             <CircularProgress size={30} className={classes.progress} />
           )}
