@@ -9,24 +9,9 @@ import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 
 import topics from "../../data/topics";
 
-/* function TopicFormControlLabel({topic,handler,isChecked}) {
-  return (
-    <FormControlLabel
-      control={<Checkbox 
-                icon={<FiberManualRecordIcon />}
-                checkedIcon={
-                  <FiberManualRecordIcon className="activelegenditem" />
-                }
-                onChange={() => handler(1)}
-                checked={isChecked === 1}
-                style={{ color: topic.color }}
-      />}
-      label={topic.name}
-    />
-  );
-} */
-
 export function Themenfilter({ handlers, checks }) {
+
+  // Handler at index 0 is for the "all" checkbox
   const topicFilters = topics.map((topic, i) => {
     return (
       <Checkbox color="default"
@@ -39,10 +24,6 @@ export function Themenfilter({ handlers, checks }) {
         style={{ color: topic.color }}
       />)
   });
-
-  /* allTopics = {value: 1, label:"Alle Themen", color:"#000000"}
-  topic */
-
 
   return (
     <div className="legendwrapper">
