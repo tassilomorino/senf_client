@@ -1,11 +1,15 @@
 /** @format */
 
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
-
 import "./AppDesktop.css";
 import "./AppIpad.css";
+
+import firebaseConfig from "./firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
 
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
@@ -19,11 +23,10 @@ import { logoutUser, getUserData } from "./redux/actions/userActions";
 
 //Pages
 import home from "./pages/home";
-import start from "./components/infocomponents/start";
-import share from "./components/modals/share";
+import IntroductionInformation from "./components/infocomponents/IntroductionInformation";
 
 import info from "./components/infocomponents/info";
-import intro from "./components/infocomponents/intro";
+import Welcome from "./components/infocomponents/Welcome";
 import verify from "./components/profile/verify";
 
 import impressum from "./components/infocomponents/legal/impressum";
@@ -39,18 +42,42 @@ import ReactGA from "react-ga";
 
 import axios from "axios";
 
-import autorefresh from "jwt-autorefresh";
-
-import jwt from "jwt-autorefresh";
-import tokens from "jwt-autorefresh";
-import payload from "jwt-autorefresh";
-import Constant from "jwt-autorefresh";
-
 import { isTablet } from "react-device-detect";
 import Cookies from "universal-cookie";
-const cookies = new Cookies();
 
+import i18n from "i18next";
+import { useTranslation, initReactI18next } from "react-i18next";
+import translationEN from "./util/translations/english.json";
+import translationDE from "./util/translations/german.json";
+
+i18n
+  .use(initReactI18next) // passes i18n down to react-i18next
+  .init({
+    // the translations
+    // (tip move them in a JSON file and import them,
+    // or even better, manage them via a UI: https://react.i18next.com/guides/multiple-translation-files#manage-your-translations-with-a-management-gui)
+    resources: {
+      en: {
+        translation: translationEN,
+      },
+      de: {
+        translation: translationDE,
+      },
+    },
+    lng: navigator.language === "de-DE" ? "de" : "en", // if you're using a language detector, do not define the lng option
+    fallbackLng: "de",
+
+    interpolation: {
+      escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
+    },
+  });
+
+const cookies = new Cookies();
 require("intersection-observer");
+
+if (firebase.app.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 axios.defaults.baseURL = process.env.REACT_APP_DB_BASE_URL;
 
@@ -95,8 +122,6 @@ if (get_local_storage_status() === "unavailable") {
 
 const token = localStorage.FBIdToken;
 
-const refreshToken = localStorage.FBIdToken_refresh;
-
 console.log(localStorage);
 
 if (token) {
@@ -114,7 +139,6 @@ if (token) {
   store.dispatch(logoutUser());
 }
 
-
 if (cookies.get("Cookie_settings") === "all") {
   ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS);
   ReactGA.pageview(window.location.pathname + window.location.search);
@@ -131,8 +155,8 @@ window.addEventListener("resize", () => {
   let vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty("--vh", `${vh}px`);
 });
-class App extends Component {
-  componentDidMount() {
+const App = () => {
+  useEffect(() => {
     let name = "Senf.koeln";
     let version = "1.0.0";
     console.log(`${name} v${version}`);
@@ -142,56 +166,55 @@ class App extends Component {
       localStorage.setItem(`${name}-Version`, version);
       window.location.reload(true);
     }
-  }
-  render() {
-    const tabletNote = isTablet ? (
-      <div className="tabletLandscapeNote">Bitte rotiere dein Tablet</div>
-    ) : null;
-    return (
-      <MuiThemeProvider theme={theme}>
-        <Provider store={store}>
-          <Router>
-            {/* <Topbar/> */}
-            {tabletNote}
-            <div className="landscapeNote">Bitte rotiere dein Smartphone</div>
+  }, []);
 
-            <div className="container">
-              <Switch>
-                <Route exact path="/" component={home} />
-                <Route exact path="/start" component={start} />
+  const { t } = useTranslation();
 
-                <Route exact path="/filter" component={filter} />
+  const tabletNote = isTablet ? (
+    <div className="tabletLandscapeNote">{t("rotate_tablet")} </div>
+  ) : null;
+  return (
+    <MuiThemeProvider theme={theme}>
+      <Provider store={store}>
+        <Router>
+          {/* <Topbar/> */}
+          {tabletNote}
+          <div className="landscapeNote">{t("rotate_phone")}</div>
 
-                <Route exact path="/info" component={info} />
+          <div className="container">
+            <Switch>
+              <Route exact path="/" component={home} />
+              <Route exact path="/start" component={IntroductionInformation} />
 
-                <Route exact path="/intro" component={intro} />
+              <Route exact path="/filter" component={filter} />
 
-                <Route exact path="/datenschutz" component={datenschutz} />
+              <Route exact path="/info" component={info} />
 
-                <Route exact path="/agb" component={agb} />
+              <Route exact path="/intro" component={Welcome} />
 
-                <Route exact path="/monitoring" component={monitoring} />
+              <Route exact path="/datenschutz" component={datenschutz} />
 
-                <Route exact path="/verify" component={verify} />
+              <Route exact path="/agb" component={agb} />
 
-                <Route
-                  exact
-                  path="/cookieConfigurator"
-                  component={cookieConfigurator}
-                />
+              <Route exact path="/monitoring" component={monitoring} />
 
-                <Route exact path="/impressum" component={impressum} />
+              <Route exact path="/verify" component={verify} />
 
-                <Route exact path="/share/:screamId" component={share} />
+              <Route
+                exact
+                path="/cookieConfigurator"
+                component={cookieConfigurator}
+              />
 
-                <Route exact path="/:screamId" component={home} />
-              </Switch>
-            </div>
-          </Router>
-        </Provider>
-      </MuiThemeProvider>
-    );
-  }
-}
+              <Route exact path="/impressum" component={impressum} />
+
+              <Route exact path="/:screamId" component={home} />
+            </Switch>
+          </div>
+        </Router>
+      </Provider>
+    </MuiThemeProvider>
+  );
+};
 
 export default App;

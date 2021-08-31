@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 
 // MUI Stuff
 import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
 
 // REDUX Stuff
 import { connect } from "react-redux";
@@ -18,14 +17,10 @@ import {
   TextField,
 } from "@material-ui/core";
 
-import {
-  adminEditScream,
-  getUserData,
-  closeMonitoringScream,
-} from "../../redux/actions/dataActions";
+import { editScream, getUserEmail } from "../../redux/actions/screamActions";
+import { closeMonitoringScream } from "../../redux/actions/monitoringScreamActions";
 
 import L from "leaflet";
-
 
 import _ from "lodash";
 
@@ -35,18 +30,14 @@ import menuIcon from "../../images/icons/menu.png";
 import shareBorderIcon from "../../images/icons/shareBorder.png";
 import weblinkIcon from "../../images/icons/weblink.png";
 
-import statusIcon from "../../images/icons/flag.png";
 import downloadIcon from "../../images/icons/file.png";
 
 import Geocoder from "react-mapbox-gl-geocoder";
 
-import Geocode from "react-geocode";
 import Weblink from "../../components/modals/postModals/Weblink";
 import Contact from "../../components/modals/postModals/Contact";
 import InlineDatePicker from "../../components/modals/postModals/InlineDatePicker";
 import ToggleDisplay from "react-toggle-display";
-
-import equal from "fast-deep-equal";
 
 const theme = createMuiTheme({
   overrides: {
@@ -120,9 +111,12 @@ class MonitoringEditScream extends Component {
     notes: null,
   };
 
-  componentWillReceiveProps() {
+  componentDidMount() {
     this.handleOpen();
   }
+  // componentWillReceiveProps() {
+  //   this.handleOpen();
+  // }
   // componentDidCatch(prevProps, nextProps, snapshot) {
   //   alert("hi");
   //   // if (
@@ -134,7 +128,7 @@ class MonitoringEditScream extends Component {
   // }
 
   handleOpen = () => {
-    this.props.getUserData(this.props.scream.userHandle);
+    this.props.getUserEmail(this.props.scream.userHandle);
 
     this.setState({
       open: true,
@@ -186,6 +180,8 @@ class MonitoringEditScream extends Component {
         selectedUnix: this.props.scream.selectedUnix,
       });
     }
+
+    console.log(this.props.data);
   };
   handleClose = () => {
     this.props.closeMonitoringScream();
@@ -286,34 +282,37 @@ class MonitoringEditScream extends Component {
     });
 
     const geocoder = L.Control.Geocoder.nominatim();
-  
-      geocoder.reverse(
-        { lat: this.state.viewport.latitude, lng: this.state.viewport.longitude },
-        12,
-        (results) => {
-          var r = results[0];
-          var split = r.html.split("<br/>");
-          var address = split[0];
-          this.setState({ locationHeader: address, address: address, district: r.name });
-         
-        }
-      );
-  
-      if (
-        this.state.viewport.latitude > 51.08 ||
-        this.state.viewport.latitude < 50.79 ||
-        this.state.viewport.longitude < 6.712 ||
-        this.state.viewport.longitude > 7.17
-      ) {
-        alert("Außerhalb von Köln kannst du leider noch keine Ideen teilen.");
+
+    geocoder.reverse(
+      { lat: this.state.viewport.latitude, lng: this.state.viewport.longitude },
+      12,
+      (results) => {
+        var r = results[0];
+        var split = r.html.split("<br/>");
+        var address = split[0];
         this.setState({
-          Out: true,
-        });
-      } else {
-        this.setState({
-          Out: false,
+          locationHeader: address,
+          address: address,
+          district: r.name,
         });
       }
+    );
+
+    if (
+      this.state.viewport.latitude > 51.08 ||
+      this.state.viewport.latitude < 50.79 ||
+      this.state.viewport.longitude < 6.712 ||
+      this.state.viewport.longitude > 7.17
+    ) {
+      alert("Außerhalb von Köln kannst du leider noch keine Ideen teilen.");
+      this.setState({
+        Out: true,
+      });
+    } else {
+      this.setState({
+        Out: false,
+      });
+    }
   };
 
   editScream = () => {
@@ -348,7 +347,7 @@ class MonitoringEditScream extends Component {
       editScream.selectedUnix = this.state.selectedUnix;
     }
 
-    // this.props.adminEditScream(editScream, this.props.history);
+    // this.props.editScream(editScream, this.props.history);
   };
 
   handleClick = (tab) => {
@@ -365,7 +364,7 @@ class MonitoringEditScream extends Component {
       scream: { Stadtteil, title, Thema },
       UI: { loading },
     } = this.props;
-    const { viewport, weblink, weblinkTitle, errors } = this.state;
+    const { viewport, errors } = this.state;
 
     const queryParams = {
       bbox: [6.7, 50.8, 7.2, 51],
@@ -503,11 +502,7 @@ class MonitoringEditScream extends Component {
               >
                 <div style={{ width: "20px", margin: "10px" }}>
                   {" "}
-                  <a
-                    href={
-                      "mailto:" + "hi@gmail.com" + "?subject=" + escape(title)
-                    }
-                  >
+                  <a href={"mailto:hi@gmail.com?subject=" + escape(title)}>
                     <img
                       src={weblinkIcon}
                       style={{ paddingLeft: "15px" }}
@@ -518,11 +513,7 @@ class MonitoringEditScream extends Component {
                 </div>
                 <div style={{ width: "20px", margin: "10px" }}>
                   {" "}
-                  <a
-                    href={
-                      "mailto:" + "hi@gmail.com" + "?subject=" + escape(title)
-                    }
-                  >
+                  <a href={"mailto:hi@gmail.com?subject=" + escape(title)}>
                     <img
                       src={downloadIcon}
                       style={{ paddingLeft: "9px" }}
@@ -533,11 +524,7 @@ class MonitoringEditScream extends Component {
                 </div>
                 <div style={{ width: "20px", margin: "10px" }}>
                   {" "}
-                  <a
-                    href={
-                      "mailto:" + "hi@gmail.com" + "?subject=" + escape(title)
-                    }
-                  >
+                  <a href={"mailto:hi@gmail.com?subject=" + escape(title)}>
                     <img
                       src={contactIcon}
                       style={{ paddingLeft: "9px" }}
@@ -549,11 +536,7 @@ class MonitoringEditScream extends Component {
 
                 <div style={{ width: "30px", margin: "10px" }}>
                   {" "}
-                  <a
-                    href={
-                      "mailto:" + "hi@gmail.com" + "?subject=" + escape(title)
-                    }
-                  >
+                  <a href={"mailto:hi@gmail.com?subject=" + escape(title)}>
                     <img
                       src={shareBorderIcon}
                       style={{ paddingLeft: "9px" }}
@@ -645,6 +628,7 @@ class MonitoringEditScream extends Component {
                             marginLeft: "-24px",
                             pointerEvents: "none",
                           }}
+                          alt="arrow down"
                         ></img>
                       )}
                     >
@@ -683,6 +667,7 @@ class MonitoringEditScream extends Component {
                             marginLeft: "-24px",
                             pointerEvents: "none",
                           }}
+                          alt="arrow down"
                         ></img>
                       )}
                     >
@@ -694,7 +679,9 @@ class MonitoringEditScream extends Component {
                   </MuiThemeProvider>
                 </div>{" "}
                 <Geocoder
-                  mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+                  mapboxApiAccessToken={
+                    process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
+                  }
                   onSelected={this.onSelected}
                   {...viewport}
                   hideOnSelect={true}
@@ -794,15 +781,17 @@ class MonitoringEditScream extends Component {
                   }}
                 >
                   Email:
-                  <a
-                    href={"mailto:" + this.props.data.scream_user.email}
-                    style={{
-                      fontFamily: "Futura PT W01 Book",
-                      textDecoration: "underline",
-                    }}
-                  >
-                    {this.props.data.scream_user.email}
-                  </a>
+                  {this.props.data.scream_user && (
+                    <a
+                      href={"mailto:" + this.props.data.scream_user.email}
+                      style={{
+                        fontFamily: "Futura PT W01 Book",
+                        textDecoration: "underline",
+                      }}
+                    >
+                      {this.props.data.scream_user.email}
+                    </a>
+                  )}
                 </div>{" "}
                 <div
                   style={{
@@ -832,6 +821,7 @@ class MonitoringEditScream extends Component {
                             marginLeft: "-24px",
                             pointerEvents: "none",
                           }}
+                          alt="arrow down"
                         ></img>
                       )}
                     >
@@ -890,7 +880,7 @@ class MonitoringEditScream extends Component {
 
 MonitoringEditScream.propTypes = {
   classes: PropTypes.object.isRequired,
-  adminEditScream: PropTypes.func.isRequired,
+  editScream: PropTypes.func.isRequired,
   UI: PropTypes.object.isRequired,
 };
 
@@ -903,8 +893,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapActionsToProps = {
-  adminEditScream,
-  getUserData,
+  editScream,
+  getUserEmail,
   closeMonitoringScream,
 };
 

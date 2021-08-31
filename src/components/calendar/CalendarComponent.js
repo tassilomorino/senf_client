@@ -2,13 +2,11 @@
 
 import React from "react";
 import FullCalendar from "@fullcalendar/react"; // must go before plugins
-import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import de from "@fullcalendar/core/locales/de";
 
 import listMonth from "@fullcalendar/list";
-import { openScream } from "../../redux/actions/dataActions";
+import { openScream } from "../../redux/actions/screamActions";
 import PropTypes from "prop-types";
-import withStyles from "@material-ui/core/styles/withStyles";
 // Redux stuff
 import { connect } from "react-redux";
 
@@ -57,7 +55,8 @@ class CalendarComponent extends React.Component {
     });
   }
   handleEventClick = ({ event, el }) => {
-    this.props.openScream(event.id);
+    const screamId = event.id;
+    this.props.openScream(screamId);
   };
 
   render() {

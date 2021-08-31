@@ -1,39 +1,35 @@
 /** @format */
 
 import React, { Component, Fragment } from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
+import { isAndroid } from "react-device-detect";
+import Swipe from "react-easy-swipe";
 
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import CloseIcon from "@material-ui/icons/Close";
-import MyButton from "../../util/MyButton";
-
-// MUI Stuff
-import Dialog from "@material-ui/core/Dialog";
 //Redux
 import { loginUser, signupUser } from "../../redux/actions/userActions";
-
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
-import Slide from "@material-ui/core/Slide";
-
+//Components
 import ToggleDisplay from "react-toggle-display";
+import ResetPassword from "./ResetPassword";
 
+//Icons
+
+//Images
+import Wirke_mit from "../../images/headlines/Wirke_mit.png";
+
+// MUI Stuff
+import withStyles from "@material-ui/core/styles/withStyles";
+import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import CloseIcon from "@material-ui/icons/Close";
+import Dialog from "@material-ui/core/Dialog";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
-import Swipe from "react-easy-swipe";
-
-import { withRouter } from "react-router-dom";
-
-import Wirke_mit from "../../images/headlines/Wirke_mit.png";
-
-import { isAndroid } from "react-device-detect";
-import ResetPassword from "./ResetPassword";
+import Slide from "@material-ui/core/Slide";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -161,7 +157,6 @@ const styles = {
     width: "100%",
     fontSize: "14pt",
     position: "fixed",
-    bottom: "0",
     bottom: "10px",
     zIndex: "999",
     maxWidth: "600px",
@@ -365,7 +360,11 @@ class SignNote extends Component {
 
     return (
       <Fragment>
-        <div onClick={this.handleOpenSign} className={classes.openButton}></div>
+        <button
+          onClick={this.handleOpenSign}
+          className={classes.openButton}
+          data-cy="open-signnote"
+        ></button>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
@@ -405,6 +404,7 @@ class SignNote extends Component {
                     margin="normal"
                     variant="outlined"
                     className={classes.textField}
+                    data-cy="login-email"
                     // helperText={errors.email}
                     error={errors.email ? true : false}
                     value={this.state.email}
@@ -420,6 +420,7 @@ class SignNote extends Component {
                     margin="normal"
                     variant="outlined"
                     className={classes.textField}
+                    data-cy="login-password"
                     // helperText={errors.password}
                     error={errors.password ? true : false}
                     value={this.state.password}
@@ -458,6 +459,7 @@ class SignNote extends Component {
                     type="submit"
                     className="buttonWide buttonSign"
                     disabled={loading}
+                    data-cy="login-user"
                   >
                     Anmelden
                     {loading && (
@@ -489,7 +491,10 @@ class SignNote extends Component {
                     className={classes.smallText}
                     onClick={() => this.handleClickSignIn()}
                   >
-                    Bereits Mitglied? <span className="Terms">Anmelden</span>
+                    Bereits Mitglied?{" "}
+                    <span className="Terms" data-cy="login">
+                      Anmelden
+                    </span>
                   </div>
                   <TextField
                     id="email"
@@ -499,6 +504,7 @@ class SignNote extends Component {
                     margin="dense"
                     variant="outlined"
                     className={classes.textField}
+                    
                     // helperText={errors.email}
                     error={errors.email ? true : false}
                     value={this.state.email}

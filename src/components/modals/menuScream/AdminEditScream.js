@@ -18,13 +18,9 @@ import {
   TextField,
 } from "@material-ui/core";
 
-import {
-  adminEditScream,
-  getUserData,
-} from "../../../redux/actions/dataActions";
+import { editScream, getUserEmail } from "../../../redux/actions/screamActions";
 
 import L from "leaflet";
-
 
 import _ from "lodash";
 
@@ -32,7 +28,6 @@ import Arrow from "../../../images/icons/arrow.png";
 
 import Geocoder from "react-mapbox-gl-geocoder";
 
-import Geocode from "react-geocode";
 import Weblink from "../postModals/Weblink";
 import Contact from "../postModals/Contact";
 import InlineDatePicker from "../postModals/InlineDatePicker";
@@ -108,7 +103,7 @@ class AdminEditScream extends Component {
     notes: null,
   };
   handleOpen = () => {
-    this.props.getUserData(this.props.scream.userHandle);
+    this.props.getUserEmail(this.props.scream.userHandle);
 
     this.setState({
       open: true,
@@ -260,43 +255,39 @@ class AdminEditScream extends Component {
       long: this.state.viewport.longitude,
       lat: this.state.viewport.latitude,
     });
-    
-      const geocoder = L.Control.Geocoder.nominatim();
-  
-      geocoder.reverse(
-        { lat: this.state.viewport.latitude, lng: this.state.viewport.longitude },
-        12,
-        (results) => {
-          var r = results[0];
-          var split = r.html.split("<br/>");
-          var address = split[0];
-          this.setState({ locationHeader: address, address: address, district: r.name });
-         
-        }
-      );
-  
-      if (
-        this.state.viewport.latitude > 51.08 ||
-        this.state.viewport.latitude < 50.79 ||
-        this.state.viewport.longitude < 6.712 ||
-        this.state.viewport.longitude > 7.17
-      ) {
-        alert("Außerhalb von Köln kannst du leider noch keine Ideen teilen.");
+
+    const geocoder = L.Control.Geocoder.nominatim();
+
+    geocoder.reverse(
+      { lat: this.state.viewport.latitude, lng: this.state.viewport.longitude },
+      12,
+      (results) => {
+        var r = results[0];
+        var split = r.html.split("<br/>");
+        var address = split[0];
         this.setState({
-          Out: true,
-        });
-      } else {
-        this.setState({
-          Out: false,
+          locationHeader: address,
+          address: address,
+          district: r.name,
         });
       }
-  
-    
-        
-    
+    );
 
-
-   
+    if (
+      this.state.viewport.latitude > 51.08 ||
+      this.state.viewport.latitude < 50.79 ||
+      this.state.viewport.longitude < 6.712 ||
+      this.state.viewport.longitude > 7.17
+    ) {
+      alert("Außerhalb von Köln kannst du leider noch keine Ideen teilen.");
+      this.setState({
+        Out: true,
+      });
+    } else {
+      this.setState({
+        Out: false,
+      });
+    }
   };
 
   editScream = () => {
@@ -331,7 +322,7 @@ class AdminEditScream extends Component {
       editScream.selectedUnix = this.state.selectedUnix;
     }
 
-    this.props.adminEditScream(editScream, this.props.history);
+    this.props.editScream(editScream, this.props.history);
     // this.setState({ open: false });
     // window.location.reload(false);
   };
@@ -728,7 +719,7 @@ class AdminEditScream extends Component {
 
 AdminEditScream.propTypes = {
   classes: PropTypes.object.isRequired,
-  adminEditScream: PropTypes.func.isRequired,
+  editScream: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -737,7 +728,7 @@ const mapStateToProps = (state) => ({
   scream_user: state.data.scream_user,
 });
 
-const mapActionsToProps = { adminEditScream, getUserData };
+const mapActionsToProps = { editScream, getUserEmail };
 
 export default connect(
   mapStateToProps,

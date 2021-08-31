@@ -1,64 +1,98 @@
 /** @format */
 
-import React, { Component } from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import React, { useState, useEffect } from "react";
 
-import Analyse from "./graphs/analyse";
+//Components
+import Keyindicators from "./graphs/Keyindicators";
 import ThemenDialog from "./graphs/themendialog";
 import StadttteilDialog from "./graphs/stadtteilDialog";
 import AltersgruppeDialog from "./graphs/altersgruppeDialog";
 import WordcloudDialog from "./graphs/wordcloudDialog";
 
+//Images
 import Themencover from "../../images/themencover.png";
 import Stadtteilcover from "../../images/stadtteilcover.png";
 import Keywordscover from "../../images/keywordscover.png";
 import Altersgruppencover from "../../images/altersgruppencover.png";
 
-const styles = {};
-export class InsightsPage extends Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    const { order } = this.props;
+import firebase from "firebase/app";
+import "firebase/firestore";
 
-    return order === 3 ? (
-      <>
-        <div className="MainAnimation2">
-          <Analyse />
-          <div className="cover cover1">
-            <img src={Themencover} width="100%" alt="Themencover" />
-            <ThemenDialog />
-          </div>
-          <div className="cover cover2">
-            <img src={Stadtteilcover} width="100%" alt="Themencover" />
-            <StadttteilDialog />
-          </div>
+const InsightsPage = ({ order }) => {
+  const db = firebase.firestore();
 
-          <div className="cover cover4">
-            <AltersgruppeDialog agegroups={this.props.data} />
-            <img src={Altersgruppencover} width="100%" alt="Themencover" />
-          </div>
-          <div className="cover cover3">
-            <img src={Keywordscover} width="100%" alt="Themencover" />{" "}
-            <WordcloudDialog />
-          </div>
+  const [screams, setScreams] = useState("");
+  const [likesLength, setLikesLength] = useState("");
+  const [commentsLength, setCommentsLength] = useState("");
+
+  const fetchDataScreams = async () => {
+    const ref = await db
+      .collection("screams")
+      .orderBy("createdAt", "desc")
+      .get();
+
+    const screams = [];
+    ref.docs.forEach((doc) => {
+      const docData = {
+        likeCount: doc.data().likeCount,
+        Thema: doc.data().Thema,
+        Stadtteil: doc.data().Stadtteil,
+      };
+      screams.push(docData);
+    });
+
+    setScreams(screams);
+  };
+
+  const fetchDataLikes = async () => {
+    const ref = await db.collection("likes").orderBy("createdAt", "desc").get();
+    const likesLength = ref.size;
+    setLikesLength(likesLength);
+  };
+
+  const fetchDataComments = async () => {
+    const ref = await db
+      .collection("comments")
+      .orderBy("createdAt", "desc")
+      .get();
+    const commentsLength = ref.size;
+    setCommentsLength(commentsLength);
+  };
+
+  useEffect(() => {
+    fetchDataScreams();
+    fetchDataLikes();
+    fetchDataComments();
+  }, []);
+
+  return order === 3 ? (
+    <>
+      <div className="MainAnimation2">
+        <Keyindicators
+          screams={screams}
+          likesLength={likesLength}
+          commentslength={commentsLength}
+        />
+        <div className="cover cover1">
+          <img src={Themencover} width="100%" alt="Themencover" />
+          <ThemenDialog screams={screams} />
         </div>
-      </>
-    ) : null;
-  }
-}
-InsightsPage.propTypes = {};
+        <div className="cover cover2">
+          <img src={Stadtteilcover} width="100%" alt="Themencover" />
+          <StadttteilDialog screams={screams} />
+        </div>
 
-const mapActionsToProps = {};
+        <div className="cover cover4">
+          <AltersgruppeDialog />
+          <img src={Altersgruppencover} width="100%" alt="Themencover" />
+        </div>
+        <div className="cover cover3">
+          <img src={Keywordscover} width="100%" alt="Themencover" />{" "}
+          <WordcloudDialog />
+        </div>
+      </div>
+    </>
+  ) : null;
+};
 
-const mapStateToProps = (state) => ({
-  data: state.data,
-});
-
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(InsightsPage));
+export default InsightsPage;

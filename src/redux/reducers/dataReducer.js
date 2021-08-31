@@ -1,7 +1,6 @@
 /** @format */
 
 import {
-  ADD_SCREAMS,
   SET_SCREAMS,
   LIKE_SCREAM,
   UNLIKE_SCREAM,
@@ -12,53 +11,29 @@ import {
   DELETE_COMMENT,
   POST_SCREAM,
   EDIT_SCREAM,
-  ADMIN_EDIT_SCREAM,
   SET_SCREAM,
   SUBMIT_COMMENT,
-  ADD_ALL_COMMENTS,
-  SET_ALL_COMMENTS,
-  ADD_ALL_LIKES,
-  SET_ALL_LIKES,
-  ADD_WORDCLOUD,
-  SET_WORDCLOUD,
-  ADD_AGEGROUPS,
-  SET_AGEGROUPS,
   LOADING_PROJECTS_DATA,
   SET_PROJECTS,
   SET_PROJECT_SCREAMS,
-  LOADING_PROJECT_SCREAMS,
-  SET_MY_SCREAMS,
-  LOADING_MY_SCREAMS,
-  SUBMIT_CHAT,
   SET_SCREAM_USER,
   SET_FULL_SCREAMS,
+  SET_COOKIES,
 } from "../types";
 
 const initialState = {
   projects: [],
   projectScreams: [],
   loadingProjectScreams: false,
-
-  myScreams: [],
-  loadingMyScreams: false,
-
   screams: [],
   scream: {},
-
-  comments: [],
   comment: {},
-  likes: [],
   like: {},
-  wordcollections: [],
-  wordcollection: {},
-  agegroups: [],
-  agegroup: {},
   loading: false,
-
   loadingProjects: false,
   scream_user: {},
-
   full_screams: [],
+  cookie_settings: "",
 };
 
 export default function (state = initialState, action) {
@@ -68,12 +43,7 @@ export default function (state = initialState, action) {
         ...state,
         loading: true,
       };
-    case ADD_SCREAMS:
-      return {
-        ...state,
-        screams: [...state.screams, ...action.payload],
-        loading: false,
-      };
+
     case SET_SCREAMS:
       return {
         ...state,
@@ -92,34 +62,6 @@ export default function (state = initialState, action) {
         scream_user: action.payload,
       };
 
-    case ADD_ALL_COMMENTS:
-      return {
-        ...state,
-        comments: [...state.comments, ...action.payload],
-        loading: false,
-      };
-
-    case SET_ALL_COMMENTS:
-      return {
-        ...state,
-        comments: action.payload,
-        loading: false,
-      };
-
-    case ADD_ALL_LIKES:
-      return {
-        ...state,
-        likes: [...state.likes, ...action.payload],
-        loading: false,
-      };
-
-    case SET_ALL_LIKES:
-      return {
-        ...state,
-        likes: action.payload,
-        loading: false,
-      };
-
     case LIKE_SCREAM:
     case UNLIKE_SCREAM:
       let index = state.screams.findIndex(
@@ -133,10 +75,10 @@ export default function (state = initialState, action) {
         ...state,
       };
     case DELETE_SCREAM:
-      index = state.screams.findIndex(
+      let index_delete = state.screams.findIndex(
         (scream) => scream.screamId === action.payload
       );
-      state.screams.splice(index, 1);
+      state.screams.splice(index_delete, 1);
       return {
         ...state,
       };
@@ -174,12 +116,6 @@ export default function (state = initialState, action) {
         screams: [action.payload, ...state.screams],
       };
 
-    case ADMIN_EDIT_SCREAM:
-      return {
-        ...state,
-        screams: [action.payload, ...state.screams],
-      };
-
     case SUBMIT_COMMENT:
       return {
         ...state,
@@ -187,32 +123,6 @@ export default function (state = initialState, action) {
           ...state.scream,
           comments: [action.payload, ...state.scream.comments],
         },
-      };
-
-    case ADD_WORDCLOUD:
-      return {
-        ...state,
-        wordcollections: [...state.wordcollections, ...action.payload],
-        loading: false,
-      };
-    case SET_WORDCLOUD:
-      return {
-        ...state,
-        wordcollections: action.payload,
-        loading: false,
-      };
-
-    case ADD_AGEGROUPS:
-      return {
-        ...state,
-        agegroups: [...state.agegroups, ...action.payload],
-        loading: false,
-      };
-    case SET_AGEGROUPS:
-      return {
-        ...state,
-        agegroups: action.payload,
-        loading: false,
       };
 
     case LOADING_PROJECTS_DATA:
@@ -236,39 +146,17 @@ export default function (state = initialState, action) {
         // loadingProjectScreams: false,
       };
 
-    case LOADING_PROJECT_SCREAMS:
-      return {
-        ...state,
-        loadingProjectScreams: true,
-      };
-
-    case SET_MY_SCREAMS:
-      return {
-        ...state,
-        myScreams: action.payload,
-        loadingMyScreams: false,
-      };
-
-    case LOADING_MY_SCREAMS:
-      return {
-        ...state,
-        loadingMyScreams: true,
-      };
-
-    case SUBMIT_CHAT:
-      return {
-        ...state,
-        project: {
-          ...state.project,
-          chat: [action.payload, ...state.project.comments],
-        },
-      };
-
     case SET_FULL_SCREAMS:
       return {
         ...state,
         full_screams: action.payload,
         loading: false,
+      };
+
+    case SET_COOKIES:
+      return {
+        ...state,
+        cookie_settings: action.payload,
       };
 
     default:

@@ -2,35 +2,27 @@
 
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import withStyles from "@material-ui/core/styles/withStyles";
-
-// MUI Stuff
-import Dialog from "@material-ui/core/Dialog";
-import Typography from "@material-ui/core/Typography";
-
-// Icons
-
-import Arrow from "../../images/icons/arrow.png";
-
-//MAPSTUFF
-import "mapbox-gl/dist/mapbox-gl.css";
+import Swipe from "react-easy-swipe";
+import { isMobileOnly } from "react-device-detect";
 
 // Redux stuff
 import { connect } from "react-redux";
-import { clearErrors, getMyScreams } from "../../redux/actions/dataActions";
+import { clearErrors } from "../../redux/actions/errorsActions";
 
-//ANIMATION
-import Slide from "@material-ui/core/Slide";
+import firebase from "firebase/app";
+import "firebase/firestore";
 
-import Swipe from "react-easy-swipe";
-
-import { isMobileOnly } from "react-device-detect";
-
-//COOKIES
-import Cookies from "universal-cookie";
+//Components
 import { MyIdeas } from "./MyIdeas";
 
-const cookies = new Cookies();
+// Icons
+import Arrow from "../../images/icons/arrow.png";
+
+// MUI Stuff
+import withStyles from "@material-ui/core/styles/withStyles";
+import Dialog from "@material-ui/core/Dialog";
+import Typography from "@material-ui/core/Typography";
+import Slide from "@material-ui/core/Slide";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -253,6 +245,7 @@ class Account extends Component {
   }
   state = {
     open: false,
+    myScreams: [],
     clicked: false,
     oldPath: "",
     newPath: "",
@@ -306,7 +299,7 @@ class Account extends Component {
 
     const userHandle = this.props.user.credentials.handle;
 
-    this.props.getMyScreams(userHandle);
+    this.fetchMyScreams(userHandle);
 
     setTimeout(() => {
       this.setState({
@@ -318,6 +311,37 @@ class Account extends Component {
         dialogStyle: { position: "initial" },
       });
     }, 2000);
+  };
+
+  fetchMyScreams = async (userHandle) => {
+    const db = firebase.firestore();
+    const ref = await db
+      .collection("screams")
+      .where("userHandle", "==", userHandle)
+      .orderBy("createdAt", "desc")
+      .get();
+
+    const screams = [];
+    ref.docs.forEach((doc) => {
+      const docData = {
+        screamId: doc.id,
+        lat: doc.data().lat,
+        long: doc.data().long,
+        title: doc.data().title,
+        body: doc.data().body.substr(0, 170),
+        createdAt: doc.data().createdAt,
+        commentCount: doc.data().commentCount,
+        likeCount: doc.data().likeCount,
+        status: doc.data().status,
+        Thema: doc.data().Thema,
+        Stadtteil: doc.data().Stadtteil,
+        project: doc.data().project,
+        projectId: doc.data().project,
+      };
+
+      screams.push(docData);
+      this.setState({ myScreams: screams });
+    });
   };
 
   handleClose = () => {
@@ -504,7 +528,7 @@ class Account extends Component {
       !loadingMyScreams && this.state.open ? (
         <MyIdeas
           loading={loadingMyScreams}
-          myScreams={this.props.data.myScreams}
+          myScreams={this.state.myScreams}
           classes={classes}
           openInfoPageDesktop={this.state.openInfoPageDesktop}
           latitude1={this.state.latitude1}
@@ -569,7 +593,7 @@ class Account extends Component {
               </button> */}
         </div>
         {/* <div className="dialoggradient1"></div> */}
-        <div className="hey-user">Hey {handle} </div>
+        <div className="hey-user" data-cy="hey-user">Hey {handle} </div>
 
         <div className="Tabs Account_Tabs">
           <div className="Tab">
@@ -719,6 +743,7 @@ class Account extends Component {
         <button
           onClick={this.handleOpen}
           className="buttonExpand ripple"
+          data-cy="profile-button"
         ></button>
 
         {dialog}
@@ -729,7 +754,6 @@ class Account extends Component {
 
 Account.propTypes = {
   clearErrors: PropTypes.func.isRequired,
-  getMyScreams: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -740,7 +764,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapActionsToProps = {
-  getMyScreams,
   clearErrors,
 };
 
