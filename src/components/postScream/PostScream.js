@@ -154,7 +154,7 @@ const PostScream = ({
   const [allValues, setAllValues] = useState({
     body: "",
     title: "",
-    topic: "Sonstige",
+    topic: "",
     openWeblink: false,
     weblinkTitle: null,
     weblink: null,
