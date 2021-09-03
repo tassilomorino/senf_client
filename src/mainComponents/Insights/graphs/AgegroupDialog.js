@@ -2,12 +2,12 @@
 
 import React, { useState, Fragment, useEffect } from "react";
 import { isMobileOnly } from "react-device-detect";
-
+import _ from "lodash";
 // Icons
 import CloseIcon from "@material-ui/icons/Close";
 
 //Components
-import Altersgruppe from "./altersgruppe";
+import AgegroupGraph from "./AgegroupGraph";
 import MyButton from "../../../util/MyButton";
 
 // MUI Stuff
@@ -143,18 +143,136 @@ const styles = {
 const AgegroupDialog = ({ classes, data, screams }) => {
   const [open, setOpen] = useState(false);
 
+  let topics_care;
+  let topics_traffic;
+
   useEffect(() => {
-    console.log(screams);
+    const agegroupUnder18 = _.filter(screams, ({ age }) => age < 18);
+    const agegroup18To24 = _.filter(screams, ({ age }) => age > 18 && age < 25);
+    const agegroup25To34 = _.filter(screams, ({ age }) => age > 24 && age < 35);
+    const agegroup35To44 = _.filter(screams, ({ age }) => age > 24 && age < 35);
+    const agegroup45To54 = _.filter(screams, ({ age }) => age > 24 && age < 35);
+    const agegroup55To64 = _.filter(screams, ({ age }) => age > 24 && age < 35);
+    const agegroupOver65 = _.filter(screams, ({ age }) => age > 64);
 
-    //       let topic_care = [agesUnder18, ];
+    let topics_care = [
+      _.filter(agegroupUnder18, { Thema: "Versorgung" }).likeCount,
+      _.filter(agegroupUnder18, { Thema: "Versorgung" }).length * -1,
+      _.filter(agegroup18To24, { Thema: "Versorgung" }).likeCount,
+      _.filter(agegroup18To24, { Thema: "Versorgung" }).length * -1,
+      _.filter(agegroup25To34, { Thema: "Versorgung" }).likeCount,
+      _.filter(agegroup25To34, { Thema: "Versorgung" }).length * -1,
+      _.filter(agegroup35To44, { Thema: "Versorgung" }).likeCount,
+      _.filter(agegroup35To44, { Thema: "Versorgung" }).length * -1,
+      _.filter(agegroup45To54, { Thema: "Versorgung" }).likeCount,
+      _.filter(agegroup45To54, { Thema: "Versorgung" }).length * -1,
+      _.filter(agegroup55To64, { Thema: "Versorgung" }).likeCount,
+      _.filter(agegroup55To64, { Thema: "Versorgung" }).length * -1,
+      _.filter(agegroupOver65, { Thema: "Versorgung" }).likeCount,
+      _.filter(agegroupOver65, { Thema: "Versorgung" }).length * -1,
+    ];
 
-    //       screams.forEach((element) => {
-    // if (element.Thema === "Versorgung" ){
-    //   // if element.age
-    //   // topic_care_ideas.push([element.likeCount]);
+    const topics_traffic = [
+      _.filter(agegroupUnder18, { Thema: "Verkehr" }).likeCount,
+      _.filter(agegroupUnder18, { Thema: "Verkehr" }).length * -1,
+      _.filter(agegroup18To24, { Thema: "Verkehr" }).likeCount,
+      _.filter(agegroup18To24, { Thema: "Verkehr" }).length * -1,
+      _.filter(agegroup25To34, { Thema: "Verkehr" }).likeCount,
+      _.filter(agegroup25To34, { Thema: "Verkehr" }).length * -1,
+      _.filter(agegroup35To44, { Thema: "Verkehr" }).likeCount,
+      _.filter(agegroup35To44, { Thema: "Verkehr" }).length * -1,
+      _.filter(agegroup45To54, { Thema: "Verkehr" }).likeCount,
+      _.filter(agegroup45To54, { Thema: "Verkehr" }).length * -1,
+      _.filter(agegroup55To64, { Thema: "Verkehr" }).likeCount,
+      _.filter(agegroup55To64, { Thema: "Verkehr" }).length * -1,
+      _.filter(agegroupOver65, { Thema: "Verkehr" }).likeCount,
+      _.filter(agegroupOver65, { Thema: "Verkehr" }).length * -1,
+    ];
 
-    // }
-    //       });
+    const topics_ecoAndGreen = [
+      _.filter(agegroupUnder18, { Thema: "Umwelt und Grün" }).likeCount,
+      _.filter(agegroupUnder18, { Thema: "Umwelt und Grün" }).length * -1,
+      _.filter(agegroup18To24, { Thema: "Umwelt und Grün" }).likeCount,
+      _.filter(agegroup18To24, { Thema: "Umwelt und Grün" }).length * -1,
+      _.filter(agegroup25To34, { Thema: "Umwelt und Grün" }).likeCount,
+      _.filter(agegroup25To34, { Thema: "Umwelt und Grün" }).length * -1,
+      _.filter(agegroup35To44, { Thema: "Umwelt und Grün" }).likeCount,
+      _.filter(agegroup35To44, { Thema: "Umwelt und Grün" }).length * -1,
+      _.filter(agegroup45To54, { Thema: "Umwelt und Grün" }).likeCount,
+      _.filter(agegroup45To54, { Thema: "Umwelt und Grün" }).length * -1,
+      _.filter(agegroup55To64, { Thema: "Umwelt und Grün" }).likeCount,
+      _.filter(agegroup55To64, { Thema: "Umwelt und Grün" }).length * -1,
+      _.filter(agegroupOver65, { Thema: "Umwelt und Grün" }).likeCount,
+      _.filter(agegroupOver65, { Thema: "Umwelt und Grün" }).length * -1,
+    ];
+
+    const topics_bike = [
+      _.filter(agegroupUnder18, { Thema: "Rad" }).likeCount,
+      _.filter(agegroupUnder18, { Thema: "Rad" }).length * -1,
+      _.filter(agegroup18To24, { Thema: "Rad" }).likeCount,
+      _.filter(agegroup18To24, { Thema: "Rad" }).length * -1,
+      _.filter(agegroup25To34, { Thema: "Rad" }).likeCount,
+      _.filter(agegroup25To34, { Thema: "Rad" }).length * -1,
+      _.filter(agegroup35To44, { Thema: "Rad" }).likeCount,
+      _.filter(agegroup35To44, { Thema: "Rad" }).length * -1,
+      _.filter(agegroup45To54, { Thema: "Rad" }).likeCount,
+      _.filter(agegroup45To54, { Thema: "Rad" }).length * -1,
+      _.filter(agegroup55To64, { Thema: "Rad" }).likeCount,
+      _.filter(agegroup55To64, { Thema: "Rad" }).length * -1,
+      _.filter(agegroupOver65, { Thema: "Rad" }).likeCount,
+      _.filter(agegroupOver65, { Thema: "Rad" }).length * -1,
+    ];
+
+    const topics_inclusionAndSocial = [
+      _.filter(agegroupUnder18, { Thema: "Inklusion / Soziales" }).likeCount,
+      _.filter(agegroupUnder18, { Thema: "Inklusion / Soziales" }).length * -1,
+      _.filter(agegroup18To24, { Thema: "Inklusion / Soziales" }).likeCount,
+      _.filter(agegroup18To24, { Thema: "Inklusion / Soziales" }).length * -1,
+      _.filter(agegroup25To34, { Thema: "Inklusion / Soziales" }).likeCount,
+      _.filter(agegroup25To34, { Thema: "Inklusion / Soziales" }).length * -1,
+      _.filter(agegroup35To44, { Thema: "Inklusion / Soziales" }).likeCount,
+      _.filter(agegroup35To44, { Thema: "Inklusion / Soziales" }).length * -1,
+      _.filter(agegroup45To54, { Thema: "Inklusion / Soziales" }).likeCount,
+      _.filter(agegroup45To54, { Thema: "Inklusion / Soziales" }).length * -1,
+      _.filter(agegroup55To64, { Thema: "Inklusion / Soziales" }).likeCount,
+      _.filter(agegroup55To64, { Thema: "Inklusion / Soziales" }).length * -1,
+      _.filter(agegroupOver65, { Thema: "Inklusion / Soziales" }).likeCount,
+      _.filter(agegroupOver65, { Thema: "Inklusion / Soziales" }).length * -1,
+    ];
+
+    const topics_sportsAndLeisure = [
+      _.filter(agegroupUnder18, { Thema: "Sport / Freizeit" }).likeCount,
+      _.filter(agegroupUnder18, { Thema: "Sport / Freizeit" }).length * -1,
+      _.filter(agegroup18To24, { Thema: "Sport / Freizeit" }).likeCount,
+      _.filter(agegroup18To24, { Thema: "Sport / Freizeit" }).length * -1,
+      _.filter(agegroup25To34, { Thema: "Sport / Freizeit" }).likeCount,
+      _.filter(agegroup25To34, { Thema: "Sport / Freizeit" }).length * -1,
+      _.filter(agegroup35To44, { Thema: "Sport / Freizeit" }).likeCount,
+      _.filter(agegroup35To44, { Thema: "Sport / Freizeit" }).length * -1,
+      _.filter(agegroup45To54, { Thema: "Sport / Freizeit" }).likeCount,
+      _.filter(agegroup45To54, { Thema: "Sport / Freizeit" }).length * -1,
+      _.filter(agegroup55To64, { Thema: "Sport / Freizeit" }).likeCount,
+      _.filter(agegroup55To64, { Thema: "Sport / Freizeit" }).length * -1,
+      _.filter(agegroupOver65, { Thema: "Sport / Freizeit" }).likeCount,
+      _.filter(agegroupOver65, { Thema: "Sport / Freizeit" }).length * -1,
+    ];
+
+    const topics_other = [
+      _.filter(agegroupUnder18, { Thema: "Sonstige" }).likeCount,
+      _.filter(agegroupUnder18, { Thema: "Sonstige" }).length * -1,
+      _.filter(agegroup18To24, { Thema: "Sonstige" }).likeCount,
+      _.filter(agegroup18To24, { Thema: "Sonstige" }).length * -1,
+      _.filter(agegroup25To34, { Thema: "Sonstige" }).likeCount,
+      _.filter(agegroup25To34, { Thema: "Sonstige" }).length * -1,
+      _.filter(agegroup35To44, { Thema: "Sonstige" }).likeCount,
+      _.filter(agegroup35To44, { Thema: "Sonstige" }).length * -1,
+      _.filter(agegroup45To54, { Thema: "Sonstige" }).likeCount,
+      _.filter(agegroup45To54, { Thema: "Sonstige" }).length * -1,
+      _.filter(agegroup55To64, { Thema: "Sonstige" }).likeCount,
+      _.filter(agegroup55To64, { Thema: "Sonstige" }).length * -1,
+      _.filter(agegroupOver65, { Thema: "Sonstige" }).likeCount,
+      _.filter(agegroupOver65, { Thema: "Sonstige" }).length * -1,
+    ];
   }, []);
 
   const dialogComponent = isMobileOnly ? (
@@ -177,7 +295,7 @@ const AgegroupDialog = ({ classes, data, screams }) => {
       </MyButton>
 
       <DialogContent>
-        <Altersgruppe data={data} classes={classes} screams={screams} />
+        <AgegroupGraph data={data} classes={classes} screams={screams} />
       </DialogContent>
     </Dialog>
   ) : (
@@ -200,7 +318,13 @@ const AgegroupDialog = ({ classes, data, screams }) => {
       </MyButton>
 
       <DialogContent>
-        <Altersgruppe data={data} classes={classes} />
+        <AgegroupGraph
+          data={data}
+          screams={screams}
+          classes={classes}
+          topics_care={topics_care}
+          topics_traffic={topics_traffic}
+        />
       </DialogContent>
     </Dialog>
   );
