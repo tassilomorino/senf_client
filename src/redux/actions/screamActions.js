@@ -136,7 +136,7 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
       project: newScream.project,
     };
 
-    if (newScream.Thema !== "") {
+    if (newScream.Thema !== "" && newScream.Thema !== undefined) {
       newScreamData.Thema = newScream.Thema;
     } else {
       newScreamData.Thema = "Sonstige";
