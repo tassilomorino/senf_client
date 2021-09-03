@@ -96,7 +96,7 @@ const Altersgruppe = ({ classes, screams }) => {
   let topics_care;
   let topics_traffic;
   const topics_ecoAndGreen = [];
-  const topics_bike = [];
+  let topics_bike;
   let topics_inclusionAndSocial;
   let topics_sportsAndLeisure;
   let topics_other;
@@ -178,7 +178,49 @@ const Altersgruppe = ({ classes, screams }) => {
       );
     }, 0);
 
-    console.log(res);
+    console.log(screams);
+
+    const iGot = [
+      {
+        age: 19,
+        likeCount: 2,
+        Thema: "Rad",
+      },
+      {
+        age: 24,
+        likeCount: 3,
+        Thema: "Rad",
+      },
+      {
+        age: 19,
+        likeCount: 1,
+        Thema: "Verkehr",
+      },
+      {
+        age: 29,
+        likeCount: 2,
+        Thema: "Verkehr",
+      },
+    ];
+    const x = [
+      "topic1-agegroupUnder18-likeCount-Sum",
+      "topic1-agegroupUnder18.length",
+      "topic1-agegroup18To24-likeCountSum",
+      "topic1-agegroup18To24.length",
+      "topic1-agegroup25To34-likeCountSum",
+      "topic1-agegroup25To34.length",
+      "....",
+    ];
+
+    const x2 = [
+      "topic2-agegroupUnder18-likeCount-Sum",
+      "topic2-agegroupUnder18.length",
+      "topic2-agegroup18To24-likeCountSum",
+      "topic2-agegroup18To24.length",
+      "topic2-agegroup25To34-likeCountSum",
+      "topic2-agegroup25To34.length",
+      "....",
+    ];
 
     let topics_care = [
       _.filter(agegroupUnder18, { Thema: "Versorgung" }).likeCount,
@@ -231,23 +273,72 @@ const Altersgruppe = ({ classes, screams }) => {
       _.filter(agegroupOver65, { Thema: "Umwelt und Grün" }).length * -1,
     ]);
 
-    topics_bike.push([
-      _.filter(agegroupUnder18, { Thema: "Rad" }).likeCount,
+    let topics_bike = [
+      screams.reduce(function (a, b) {
+        return (
+          (b.Thema === "Rad" && b.age < 18 && a + parseInt(b.likeCount)) || a
+        );
+      }, 0),
       _.filter(agegroupUnder18, { Thema: "Rad" }).length * -1,
-      _.filter(agegroup18To24, { Thema: "Rad" }).likeCount,
+      screams.reduce(function (a, b) {
+        return (
+          (b.Thema === "Rad" &&
+            b.age > 18 &&
+            b.age < 25 &&
+            a + parseInt(b.likeCount)) ||
+          a
+        );
+      }, 0),
       _.filter(agegroup18To24, { Thema: "Rad" }).length * -1,
-      _.filter(agegroup25To34, { Thema: "Rad" }).likeCount,
+      screams.reduce(function (a, b) {
+        return (
+          (b.Thema === "Rad" &&
+            b.age > 24 &&
+            b.age < 35 &&
+            a + parseInt(b.likeCount)) ||
+          a
+        );
+      }, 0),
       _.filter(agegroup25To34, { Thema: "Rad" }).length * -1,
-      _.filter(agegroup35To44, { Thema: "Rad" }).likeCount,
+      screams.reduce(function (a, b) {
+        return (
+          (b.Thema === "Rad" &&
+            b.age > 35 &&
+            b.age < 44 &&
+            a + parseInt(b.likeCount)) ||
+          a
+        );
+      }, 0),
       _.filter(agegroup35To44, { Thema: "Rad" }).length * -1,
-      _.filter(agegroup45To54, { Thema: "Rad" }).likeCount,
+      screams.reduce(function (a, b) {
+        return (
+          (b.Thema === "Rad" &&
+            b.age > 45 &&
+            b.age < 54 &&
+            a + parseInt(b.likeCount)) ||
+          a
+        );
+      }, 0),
       _.filter(agegroup45To54, { Thema: "Rad" }).length * -1,
-      _.filter(agegroup55To64, { Thema: "Rad" }).likeCount,
+      screams.reduce(function (a, b) {
+        return (
+          (b.Thema === "Rad" &&
+            b.age > 55 &&
+            b.age < 64 &&
+            a + parseInt(b.likeCount)) ||
+          a
+        );
+      }, 0),
       _.filter(agegroup55To64, { Thema: "Rad" }).length * -1,
-      _.filter(agegroupOver65, { Thema: "Rad" }).likeCount,
+      screams.reduce(function (a, b) {
+        return (
+          (b.Thema === "Rad" && b.age > 64 && a + parseInt(b.likeCount)) || a
+        );
+      }, 0),
       _.filter(agegroupOver65, { Thema: "Rad" }).length * -1,
-    ]);
+    ];
 
+    console.log(topics_bike);
     let topics_inclusionAndSocial = [
       _.filter(agegroupUnder18, { Thema: "Inklusion / Soziales" }).likeCount,
       _.filter(agegroupUnder18, { Thema: "Inklusion / Soziales" }).length * -1,
