@@ -124,6 +124,8 @@ const token = localStorage.FBIdToken;
 
 console.log(localStorage);
 
+window.store = store;
+
 if (token) {
   const decodedToken = jwtDecode(token);
   const expirationDuration = decodedToken.exp * 1000;

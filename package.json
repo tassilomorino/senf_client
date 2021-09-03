@@ -78,6 +78,7 @@
   "devDependencies": {
     "@types/react-router-dom": "^4.3.5",
     "cypress": "^8.1.0",
+    "cypress-wait-until": "^1.7.1",
     "start-server-and-test": "^1.13.1"
   },
   "proxy": "https://europe-west1-senf-dev.cloudfunctions.net/api"
