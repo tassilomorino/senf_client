@@ -6,8 +6,7 @@ describe("Testing posting and deleting an idea", () => {
     cy.visit("/");
   });
 
-  it("inspecting if posting an idea is working fine, then if you can  also delete it", () => {
-    //PR IS IN THE PIPELINE TO FIX ISSUES ABOUT THE GEOCODER
+  it("is expected to post an idea with all functionality correctly", () => {
     //FOR THIS TEST THE LOGIN PROCESS NEEDS TO BE DONE FIRST...
     //click on the button "+ New idea" within sidebar
     //cy
