@@ -136,10 +136,10 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
       project: newScream.project,
     };
 
-    if (newScream.Thema !== "") {
-      newScreamData.Thema = newScream.Thema;
-    } else {
+    if (newScream.Thema === "" || newScream.Thema === undefined) {
       newScreamData.Thema = "Sonstige";
+    } else {
+      newScreamData.Thema = newScream.Thema;
     }
     if (newScream.weblinkTitle)
       newScreamData.weblinkTitle = newScream.weblinkTitle;
