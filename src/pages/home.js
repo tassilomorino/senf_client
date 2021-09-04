@@ -706,6 +706,29 @@ export class home extends Component {
       },
     } = this.props;
 
+    const iGot = [
+      {
+        Thema: "Rad",
+      },
+      {
+        Thema: "Rad",
+      },
+      {
+        Thema: "Verkehr",
+      },
+      {
+        Thema: "Verkehr",
+      },
+    ];
+    const x = [
+      "topic1-agegroupUnder18-likeCount-Sum",
+      "topic1-agegroupUnder18.length",
+      "topic1-agegroup18To24-likeCountSum",
+      "topic1-agegroup18To24.length",
+      "topic1-agegroup25To34-likeCountSum",
+      "topic1-agegroup25To34.length",
+      "....",
+    ];
     let dataRar = [];
     const dataArray = screams;
 

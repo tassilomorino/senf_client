@@ -97,6 +97,8 @@ const Altersgruppe = ({ classes, screams }) => {
   let topics_traffic;
   const topics_ecoAndGreen = [];
   let topics_bike;
+  let bike_array_with_14_values;
+
   let topics_inclusionAndSocial;
   let topics_sportsAndLeisure;
   let topics_other;
@@ -162,54 +164,62 @@ const Altersgruppe = ({ classes, screams }) => {
     //   })
     // );
 
-    const total = screams
-      .filter(({ Thema }) => Thema === "Rad")
-      .reduce((sum, scream) => sum + scream.likeCount);
+    // const total = screams
+    //   .filter(({ Thema }) => Thema === "Rad")
+    //   .reduce((sum, scream) => sum + scream.likeCount);
 
-    // 6
+    // // 6
 
-    let res = screams.reduce(function (a, b) {
-      return (
-        (b.Thema === "Rad" &&
-          b.age > 18 &&
-          b.age < 25 &&
-          a + parseInt(b.likeCount)) ||
-        a
-      );
-    }, 0);
+    // let res = screams.reduce(function (a, b) {
+    //   return (
+    //     (b.Thema === "Rad" &&
+    //       b.age > 18 &&
+    //       b.age < 25 &&
+    //       a + parseInt(b.likeCount)) ||
+    //     a
+    //   );
+    // }, 0);
 
-    console.log(screams);
-
-    const iGot = [
+    const ideas = [
       {
-        age: 19,
+        age: 17,
         likeCount: 2,
-        Thema: "Rad",
+        topic: "Bike",
       },
       {
-        age: 24,
+        age: 14,
         likeCount: 3,
-        Thema: "Rad",
+        topic: "Bike",
       },
       {
         age: 19,
         likeCount: 1,
-        Thema: "Verkehr",
+        topic: "Traffic",
       },
       {
         age: 29,
         likeCount: 2,
-        Thema: "Verkehr",
+        topic: "Care",
       },
     ];
-    const x = [
+
+    let bike_array_with_14_values = [
+      "-(topic1-agegroupUnder18.length)",
       "topic1-agegroupUnder18-likeCount-Sum",
-      "topic1-agegroupUnder18.length",
+      "-(topic1-agegroup18To24.length)",
       "topic1-agegroup18To24-likeCountSum",
-      "topic1-agegroup18To24.length",
+      "-(topic1-agegroup25To34.length)",
       "topic1-agegroup25To34-likeCountSum",
-      "topic1-agegroup25To34.length",
-      "....",
+      "-(topic1-agegroup35To44.length)",
+      "topic1-agegroup35To44-likeCountSum",
+      "-(topic1-agegroup45To54.length)",
+      "topic1-agegroup45To54-likeCountSum",
+      "-(topic1-agegroup55To64.length)",
+      "topic1-agegroup55To64-likeCountSum",
+      "-(topic1-agegroup55To64.length)",
+      "topic1-agegroup55To64-likeCountSum",
+      "-(topic1-agegroupOver65.length)",
+      "topic1-agegroupOver65-likeCountSum",
     ];
 
     const x2 = [
@@ -221,6 +231,28 @@ const Altersgruppe = ({ classes, screams }) => {
       "topic2-agegroup25To34.length",
       "....",
     ];
+
+    let bike_ideas = 0;
+    let bike_likes = 0;
+
+    ideas.forEach((element, index) => {
+      if (element.topic === "Bike") {
+        if (element.age <= 18) {
+          bike_ideas++;
+          bike_likes += element.likeCount;
+
+          bike_array_with_14_values.push([
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 20,
+          ]);
+          console.log(bike_array_with_14_values);
+        }
+      }
+    });
+
+    const x = ideas.map((element) => element.likeCount);
+
+    console.log(x);
+    console.log(ideas, "bike_ideas", bike_ideas, "bike_likes", bike_likes);
 
     let topics_care = [
       _.filter(agegroupUnder18, { Thema: "Versorgung" }).likeCount,
@@ -338,7 +370,6 @@ const Altersgruppe = ({ classes, screams }) => {
       _.filter(agegroupOver65, { Thema: "Rad" }).length * -1,
     ];
 
-    console.log(topics_bike);
     let topics_inclusionAndSocial = [
       _.filter(agegroupUnder18, { Thema: "Inklusion / Soziales" }).likeCount,
       _.filter(agegroupUnder18, { Thema: "Inklusion / Soziales" }).length * -1,
@@ -927,7 +958,7 @@ const Altersgruppe = ({ classes, screams }) => {
       showlegend: false,
       textposition: "auto",
       type: "bar",
-      x: topics_bike,
+      x: bike_array_with_14_values,
       xaxis: "x",
       y: [
         "< 18",
@@ -1234,7 +1265,6 @@ const Altersgruppe = ({ classes, screams }) => {
   //     <CircularProgress size={50} thickness={2} />
   //   );
 
-  console.log(topics_ecoAndGreen);
   const plot =
     screams !== undefined ? (
       <PlotlyComponent
