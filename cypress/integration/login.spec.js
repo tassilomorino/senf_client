@@ -22,7 +22,7 @@ describe("The Login Page", () => {
       cy.get("[data-cy=open-signnote]")
         .click({ force: true }); // or otherwise scroll up again
     })
-    cy.wait(3000);
+    cy.wait(5000);
     // **TO DO**: improve - do we need the spinner? 
     // cy.waitUntil(() => cy.get("spinnerDivBackground").should("not.exist"))
     // click on login / anmelden
