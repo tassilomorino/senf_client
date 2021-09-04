@@ -20,6 +20,7 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import { SET_AUTHENTICATED } from "./redux/types";
 import { logoutUser, getUserData } from "./redux/actions/userActions";
+import { setCookies } from "./redux/actions/cookiesActions";
 
 //Pages
 import home from "./pages/home";
@@ -159,6 +160,12 @@ window.addEventListener("resize", () => {
 });
 const App = () => {
   useEffect(() => {
+    if (cookies.get("Cookie_settings") === "all") {
+      store.dispatch(setCookies("all"));
+    } else if (cookies.get("Cookie_settings") === "minimum") {
+      store.dispatch(setCookies("minimum"));
+    }
+
     let name = "Senf.koeln";
     let version = "1.0.0";
     console.log(`${name} v${version}`);

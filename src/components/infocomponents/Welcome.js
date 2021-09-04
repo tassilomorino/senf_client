@@ -22,10 +22,6 @@ import { Link } from "react-router-dom";
 //CHECK DEVICE
 import { isMobileOnly } from "react-device-detect";
 
-//Cookies
-import Cookies from "universal-cookie";
-const cookies = new Cookies();
-
 const styles = {
   wrapper: {
     backgroundColor: "white",
@@ -79,11 +75,8 @@ const Welcome = ({ classes }) => {
     dispatch(setCookies(cookie_settings));
   };
 
-  const name = "person";
-
   const cookiebanner =
-    cookies.get("Cookie_settings") !== "all" &&
-    cookies.get("Cookie_settings") !== "minimum" ? (
+    cookie_settings !== "all" && cookie_settings !== "minimum" ? (
       <div>
         <div className="cookiesText">
           {" "}

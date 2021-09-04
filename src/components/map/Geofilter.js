@@ -1,12 +1,11 @@
 /** @format */
 
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 // Redux stuff
-import { connect } from "react-redux";
-import { editUserDetails } from "../../redux/actions/userActions";
+import { useSelector, useDispatch } from "react-redux";
 
 import { openScream } from "../../redux/actions/screamActions";
 
@@ -28,8 +27,6 @@ import { Themenfilter } from "../layout/Themenfilter";
 const cookies = new Cookies();
 
 const styles = {
-  normal: "mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6",
-  filled: "mapbox://styles/tmorino/ckpgm4fwl1ip118thordyjtlm",
   textField: {
     pointerEvents: "none",
     display: "none",
@@ -173,310 +170,263 @@ const styles = {
   },
 };
 
-class Geofilter extends Component {
-  state = { styleId: "normal" };
+const Geofilter = ({
+  classes,
+  viewport,
+  latitude1,
+  latitude2,
+  longitude2,
+  longitude3,
+  _onViewportChange,
+  dataFinal,
 
-  componentDidMount() {
-    if (this.props.geoData === "") {
-      this.setState({
-        styleId: "filled",
-      });
-    }
-  }
+  handleLegend,
+  handleLegend1,
+  handleLegend2,
+  handleLegend3,
+  handleLegend4,
+  handleLegend5,
+  handleLegend6,
+  handleLegend7,
+  checked,
+  checked1,
+  checked2,
+  checked3,
+  checked4,
+  checked5,
+  checked6,
+  checked7,
 
-  fetchDataScream = (screamId) => {
-    this.props.openScream(screamId);
+  handleOpenGeofilter,
+  handleCloseGeofilter,
+  handleResetGeofilter,
+  openGeofilter,
+  showGeofilterResults,
+
+  dataNoLocationHandle,
+  selectedId,
+  noLocation,
+
+  loadingProjects,
+  geoData,
+}) => {
+  const dispatch = useDispatch();
+  const { screams } = useSelector((state) => state.data);
+
+  const fetchDataScream = (screamId) => {
+    dispatch(openScream(screamId));
   };
 
-  // handleChange = (event) => {
-  //   this.setState({
-  //     [event.target.name]: event.target.value,
-  //   });
-  // };
-
-  handleCookies() {
-    cookies.set("Cookie_settings", "all", {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 90,
-
-      sameSite: "none",
-      secure: true,
-    });
-    this.setState({ open: false });
-    this.setState({ open: true });
-  }
-  render() {
-    const {
-      viewport,
-      latitude1,
-      latitude2,
-      longitude2,
-      longitude3,
-      _onViewportChange,
-      dataFinal,
-
-      handleLegend,
-      handleLegend1,
-      handleLegend2,
-      handleLegend3,
-      handleLegend4,
-      handleLegend5,
-      handleLegend6,
-      handleLegend7,
-      checked,
-      checked1,
-      checked2,
-      checked3,
-      checked4,
-      checked5,
-      checked6,
-      checked7,
-
-      handleOpenGeofilter,
-      handleCloseGeofilter,
-      handleResetGeofilter,
-      openGeofilter,
-      showGeofilterResults,
-
-      dataNoLocationHandle,
-      selectedId,
-      noLocation,
-
-      loadingProjects,
-      geoData,
-    } = this.props;
-
-    const { classes } = this.props;
-
-    const data =
-      !loadingProjects && geoData !== undefined && geoData !== ""
-        ? {
+  const data =
+    !loadingProjects && geoData !== undefined && geoData !== ""
+      ? {
           type: "Feature",
           geometry: {
             type: "Polygon",
             coordinates: [JSON.parse(geoData)],
           },
         }
-        : null;
+      : null;
 
-    // console.log(this.props);
-    // const dataArray = dataFinal;
-    // if (dataArray !== undefined && dataArray.length > 0) {
-    //   dataArray.forEach((element) => {
-    //     if (
-    //       element.lat > latitude2 &&
-    //       element.lat < latitude1 &&
-    //       element.long > longitude2 &&
-    //       element.long < longitude3
-    //     ) {
-    //       dataFinal.push(element);
-    //     }
-    //   });
-    // }
+  let screamLenghth = dataFinal.length;
 
-    // let dataFinalMap = [];
-    // const dataArrayMap = this.props.data.screams;
-    // if (dataArrayMap !== undefined && dataArrayMap.length > 0) {
-    //   dataArrayMap.forEach((element) => {
-    //     if (element.lat && element.long) {
-    //       dataFinalMap.push(element);
-    //     }
-    //   });
-    // }
+  const Sonstige = [];
+  const SonstiigedataArray = screams;
+  if (SonstiigedataArray !== undefined && SonstiigedataArray.length > 0) {
+    SonstiigedataArray.forEach((element) => {
+      if (element.Thema === "Sonstige") {
+        Sonstige.push(element);
+      }
+    });
+  }
 
-    let screamLenghth = dataFinal.length;
+  let dataNoLocation = [];
+  const dataArrayNoLocation = dataFinal;
 
-    // const closeicon =
-    //   (latitude1 < 50.95) |
-    //   (latitude2 > 50.82) |
-    //   (longitude2 > 6.812) |
-    //   (longitude3 < 7.07) ? (
-    //     <MyButton onClick={handleRevert} btnClassName={classes.closeButton1}>
-    //       <CloseIcon />
-    //     </MyButton>
-    //   ) : null;
+  if (dataArrayNoLocation !== undefined && dataArrayNoLocation.length > 0) {
+    dataArrayNoLocation.forEach((element) => {
+      if (element.lat === 50.93864020643174) {
+        dataNoLocation.push(element);
+      }
+    });
+  }
 
-    const Sonstige = [];
-    const SonstiigedataArray = this.props.data.screams;
-    if (SonstiigedataArray !== undefined && SonstiigedataArray.length > 0) {
-      SonstiigedataArray.forEach((element) => {
-        if (element.Thema === "Sonstige") {
-          Sonstige.push(element);
-        }
-      });
-    }
+  let dataFinalMap = [];
+  const dataFinalMapArray = dataFinal;
 
-    let dataNoLocation = [];
-    const dataArrayNoLocation = dataFinal;
-
-    if (dataArrayNoLocation !== undefined && dataArrayNoLocation.length > 0) {
-      dataArrayNoLocation.forEach((element) => {
-        if (element.lat === 50.93864020643174) {
-          dataNoLocation.push(element);
-        }
-      });
-    }
-
-    let dataFinalMap = [];
-    const dataFinalMapArray = dataFinal;
-
-    if (dataFinalMapArray !== undefined && dataNoLocation.length > 1) {
-      dataFinalMapArray.forEach((element) => {
-        if (element.lat !== 50.93864020643174) {
-          dataFinalMap.push(element);
-        }
-      });
-    }
-    if (dataFinalMapArray !== undefined && dataNoLocation.length < 2) {
-      dataFinalMapArray.forEach((element) => {
+  if (dataFinalMapArray !== undefined && dataNoLocation.length > 1) {
+    dataFinalMapArray.forEach((element) => {
+      if (element.lat !== 50.93864020643174) {
         dataFinalMap.push(element);
-      });
-    }
+      }
+    });
+  }
+  if (dataFinalMapArray !== undefined && dataNoLocation.length < 2) {
+    dataFinalMapArray.forEach((element) => {
+      dataFinalMap.push(element);
+    });
+  }
 
-    const doubleNoLocation =
-      dataNoLocation.length > 1 ? (
-        <Marker
-          key={"123456"}
-          longitude={6.958725744885521}
-          latitude={50.93864020643174}
+  const doubleNoLocation =
+    dataNoLocation.length > 1 ? (
+      <Marker
+        key={"123456"}
+        longitude={6.958725744885521}
+        latitude={50.93864020643174}
+      >
+        <div
+          style={{
+            zIndex: 9999,
+            position: "absolute",
+            width: "20px",
+            marginLeft: "-10px",
+            height: "20px",
+            marginTop: "-10px",
+            borderRadius: "100%",
+            border: "1px white solid",
+            backgroundColor: "#414345",
+            opacity: "1",
+          }}
+          onClick={dataNoLocationHandle}
         >
           <div
             style={{
-              zIndex: 9999,
               position: "absolute",
-              width: "20px",
-              marginLeft: "-10px",
-              height: "20px",
-              marginTop: "-10px",
-              borderRadius: "100%",
-              border: "1px white solid",
-              backgroundColor: "#414345",
-              opacity: "1",
+              width: "100%",
+              textAlign: "center",
+              color: "white",
+              marginTop: "0px",
             }}
-            onClick={dataNoLocationHandle}
           >
-            <div
+            {dataNoLocation.length}
+          </div>
+        </div>
+      </Marker>
+    ) : null;
+
+  const doubleNoLocationPopUp =
+    openGeofilter && selectedId !== "" ? (
+      <Marker
+        key={selectedId}
+        longitude={6.958725744885521}
+        latitude={50.93864020643174}
+      >
+        <div
+          style={{
+            position: "absolute",
+            marginLeft: "-10px",
+            marginTop: "10px",
+          }}
+        >
+          <div
+            style={{
+              padding: "5px",
+              backgroundColor: "white",
+              marginTop: "5px",
+              width: "60vw",
+              marginLeft: "-30vw",
+
+              height: "auto",
+              borderRadius: "15px",
+              zIndex: "9999",
+              textAlign: "center",
+              boxShadow: "none",
+            }}
+          >
+            <p
               style={{
+                fontFamily: "Futura PT W01-Bold",
+                fontSize: "12pt",
+                paddingRight: "2px",
+                paddingLeft: "2px",
+              }}
+            >
+              Ohne Ortsangabe
+            </p>
+
+            <button
+              className="buttonWide buttonNoLocation"
+              style={{ boxShadow: "none" }}
+              onClick={noLocation}
+            >
+              {dataNoLocation.length} Ideen anzeigen
+            </button>
+          </div>
+        </div>
+      </Marker>
+    ) : null;
+
+  return isMobileOnly ? (
+    <div>
+      <div
+        onClick={handleOpenGeofilter}
+        style={
+          openGeofilter
+            ? { display: "none" }
+            : {
+                display: "block",
                 position: "absolute",
-                width: "100%",
-                textAlign: "center",
-                color: "white",
-                marginTop: "0px",
-              }}
-            >
-              {dataNoLocation.length}
-            </div>
-          </div>
-        </Marker>
-      ) : null;
+                top: "5px",
+                marginTop: "10px",
+                left: "calc(97.5vw - 137px)",
+                zIndex: 10,
+                width: "137px",
+                height: "137px",
+                borderRadius: "20px",
+                backgroundColor: "rgb(0,0,0,0)",
+              }
+        }
+      ></div>
 
-    const doubleNoLocationPopUp =
-      openGeofilter && selectedId !== "" ? (
-        <Marker
-          key={selectedId}
-          longitude={6.958725744885521}
-          latitude={50.93864020643174}
-        >
-          <div
-            style={{
-              position: "absolute",
-              marginLeft: "-10px",
-              marginTop: "10px",
-            }}
-          >
-            <div
-              style={{
-                padding: "5px",
-                backgroundColor: "white",
-                marginTop: "5px",
-                width: "60vw",
-                marginLeft: "-30vw",
-
-                height: "auto",
-                borderRadius: "15px",
-                zIndex: "9999",
-                textAlign: "center",
-                boxShadow: "none",
-              }}
-            >
-              <p
-                style={{
-                  fontFamily: "Futura PT W01-Bold",
-                  fontSize: "12pt",
-                  paddingRight: "2px",
-                  paddingLeft: "2px",
-                }}
-              >
-                Ohne Ortsangabe
-              </p>
-
-              <button
-                className="buttonWide buttonNoLocation"
-                style={{ boxShadow: "none" }}
-                onClick={noLocation}
-              >
-                {dataNoLocation.length} Ideen anzeigen
-              </button>
-            </div>
-          </div>
-        </Marker>
-      ) : null;
-
-    const map = (
       <div
         style={
           openGeofilter
             ? {
-              position: "fixed",
-              width: "100vw",
-              height: "100vh",
-              top: "0",
-              left: "0",
-              zIndex: "999",
-              borderRadius: "0",
-              transform: "scale(1)",
-            }
+                position: "fixed",
+                width: "100vw",
+                height: "100vh",
+                top: "0",
+                left: "0",
+                zIndex: "999",
+                borderRadius: "0",
+                transform: "scale(1)",
+              }
             : {
-              position: "absolute",
-              top: "10px",
-              marginTop: "10px",
-              left: "calc(97.5vw - 127px)",
-              zIndex: "9",
-              width: "127px",
-              height: "127px",
-              borderRadius: "10%",
-              transform: "scale(1)",
-              overflow: "hidden",
-            }
+                position: "absolute",
+                top: "10px",
+                marginTop: "10px",
+                left: "calc(97.5vw - 127px)",
+                zIndex: "9",
+                width: "127px",
+                height: "127px",
+                borderRadius: "10%",
+                transform: "scale(1)",
+                overflow: "hidden",
+              }
         }
       >
         <MapGL
           style={
             openGeofilter
               ? {
-                position: "fixed",
-                width: "calc(100% + 1px)",
-                height: "calc(100% + 1px)",
-                transform: "scale(1)",
-                zIndex: 999999,
-              }
+                  position: "fixed",
+                  width: "calc(100% + 1px)",
+                  height: "calc(100% + 1px)",
+                  transform: "scale(1)",
+                  zIndex: 999999,
+                }
               : {
-                width: "calc(100% - 0)",
-                height: "calc(100% - 1px)",
-                transform: "scale(1)",
-              }
+                  width: "calc(100% - 0)",
+                  height: "calc(100% - 1px)",
+                  transform: "scale(1)",
+                }
           }
-          mapStyle={styles[this.state.styleId]}
+          mapStyle="mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6"
           accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
           minZoom={9}
           {...viewport}
           zoom={openGeofilter ? viewport.zoom : viewport.zoom - 2.5}
           onViewportChange={_onViewportChange}
-
-        // viewportChangeMethod={"easeTo"}
-        // viewportChangeOptions={{
-        //   duration: 1700,
-        // }}
         >
           <Source id="maine" type="geojson" data={data} />
           <Layer
@@ -492,19 +442,34 @@ class Geofilter extends Component {
             style={
               openGeofilter
                 ? {
-                  display: "block",
-                  zIndex: 999,
-                  transform: "translate(80px,-5px)",
-                }
+                    display: "block",
+                    zIndex: 999,
+                    transform: "translate(80px,-5px)",
+                  }
                 : { display: "none" }
             }
           >
             <Themenfilter
-              handlers={
-                [handleLegend, handleLegend1, handleLegend2, handleLegend3,
-                  handleLegend4, handleLegend5, handleLegend6, handleLegend7]
-              }
-              checks={[checked, checked1, checked2, checked3, checked4, checked5, checked6, checked7]}
+              handlers={[
+                handleLegend,
+                handleLegend1,
+                handleLegend2,
+                handleLegend3,
+                handleLegend4,
+                handleLegend5,
+                handleLegend6,
+                handleLegend7,
+              ]}
+              checks={[
+                checked,
+                checked1,
+                checked2,
+                checked3,
+                checked4,
+                checked5,
+                checked6,
+                checked7,
+              ]}
             ></Themenfilter>
           </div>
 
@@ -536,16 +501,16 @@ class Geofilter extends Component {
                       element.Thema === "Rad"
                         ? "#929df6"
                         : element.Thema === "Verkehr"
-                          ? "#91dff4"
-                          : element.Thema === "Umwelt und Grün"
-                            ? "#8dd9b8"
-                            : element.Thema === "Sport / Freizeit"
-                              ? "#f6c095"
-                              : element.Thema === "Inklusion / Soziales"
-                                ? "#e8907e"
-                                : element.Thema === "Versorgung"
-                                  ? "#bd98f6"
-                                  : "#f9db95",
+                        ? "#91dff4"
+                        : element.Thema === "Umwelt und Grün"
+                        ? "#8dd9b8"
+                        : element.Thema === "Sport / Freizeit"
+                        ? "#f6c095"
+                        : element.Thema === "Inklusion / Soziales"
+                        ? "#e8907e"
+                        : element.Thema === "Versorgung"
+                        ? "#bd98f6"
+                        : "#f9db95",
                     opacity: "1",
                   }}
                 >
@@ -561,7 +526,7 @@ class Geofilter extends Component {
                     }}
                   >
                     <button
-                      onClick={() => this.fetchDataScream(element.screamId)}
+                      onClick={() => fetchDataScream(element.screamId)}
                       className="buttonExpand ripple"
                     ></button>
                   </div>
@@ -575,112 +540,56 @@ class Geofilter extends Component {
           </div>
         </MapGL>
       </div>
-    );
-
-    // const maploader =
-    //   cookies.get("Cookie_settings") !== "all" ? (
-    //     <div>
-    //       <div className="CookieNote">
-    //         {" "}
-    //         <span className="cookiesNoteHeader">
-    //           Ohne das akzeptieren aller Cookies <br /> geht diese Funktion
-    //           nicht.
-    //         </span>
-    //         <br />
-    //         <div className="cookiesNoteText">
-    //           <span
-    //             className="CookieLink"
-    //             onClick={() => this.handleOpenCookiePreferences()}
-    //           >
-    //             Hier
-    //           </span>
-    //           &nbsp;findest du deine Cookie-Einstellungen.
-    //         </div>
-    //         <div className="Accept" onClick={() => this.handleCookies()}>
-    //           Alle Akzeptieren
-    //         </div>
-    //       </div>
-    //       <img src={Maploader} className="Maploader" alt="ChatIcon" />
-    //     </div>
-    //   ) : null;
-
-    return isMobileOnly ? (
-      <div>
-        {/* {maploader} */}
-
-        <div
-          onClick={handleOpenGeofilter}
-          style={
-            openGeofilter
-              ? { display: "none" }
-              : {
-                display: "block",
-                position: "absolute",
-                top: "5px",
-                marginTop: "10px",
-                left: "calc(97.5vw - 137px)",
-                zIndex: 10,
-                width: "137px",
-                height: "137px",
-                borderRadius: "20px",
-                backgroundColor: "rgb(0,0,0,0)",
-
-                // border: "5px solid white",
-              }
-          }
-        ></div>
-        {map}
-        <div
-          className="dialogNavigation"
-          style={
-            openGeofilter
-              ? { display: "block", zIndex: 999 }
-              : { display: "none" }
-          }
-        >
-          <button onClick={handleCloseGeofilter} className="buttonRound">
-            <img
-              src={Arrow}
-              width="20"
-              alt="backArrow"
-              style={{ transform: "rotate(90deg)" }}
-            />
-          </button>
-        </div>
-        <button
-          onClick={handleCloseGeofilter}
-          className="buttonWide buttonGeofilter"
-          style={
-            openGeofilter
-              ? { display: "block", zIndex: 999 }
-              : { display: "none" }
-          }
-        >
-          {" "}
-          {screamLenghth} Ideen anzeigen
-        </button>
-
-        <button
-          onClick={handleResetGeofilter}
-          className="buttonRound buttonResetGeofilter"
-          style={
-            openGeofilter &&
-              (latitude1 < 50.95) |
-              (latitude2 > 50.82) |
-              (longitude2 > 6.812) |
-              (longitude3 < 7.07)
-              ? { display: "block", zIndex: 999 }
-              : openGeofilter
-                ? { display: "block", zIndex: 999, opacity: 0.5 }
-                : { display: "none" }
-          }
-        >
-          <img src={CircularArrow} width="25" alt="reset_icon"></img>
+      <div
+        className="dialogNavigation"
+        style={
+          openGeofilter
+            ? { display: "block", zIndex: 999 }
+            : { display: "none" }
+        }
+      >
+        <button onClick={handleCloseGeofilter} className="buttonRound">
+          <img
+            src={Arrow}
+            width="20"
+            alt="backArrow"
+            style={{ transform: "rotate(90deg)" }}
+          />
         </button>
       </div>
-    ) : null;
-  }
-}
+      <button
+        onClick={handleCloseGeofilter}
+        className="buttonWide buttonGeofilter"
+        style={
+          openGeofilter
+            ? { display: "block", zIndex: 999 }
+            : { display: "none" }
+        }
+      >
+        {" "}
+        {screamLenghth} Ideen anzeigen
+      </button>
+
+      <button
+        onClick={handleResetGeofilter}
+        className="buttonRound buttonResetGeofilter"
+        style={
+          openGeofilter &&
+          (latitude1 < 50.95) |
+            (latitude2 > 50.82) |
+            (longitude2 > 6.812) |
+            (longitude3 < 7.07)
+            ? { display: "block", zIndex: 999 }
+            : openGeofilter
+            ? { display: "block", zIndex: 999, opacity: 0.5 }
+            : { display: "none" }
+        }
+      >
+        <img src={CircularArrow} width="25" alt="reset_icon"></img>
+      </button>
+    </div>
+  ) : null;
+};
 
 Geofilter.propTypes = {
   editUserDetails: PropTypes.func.isRequired,
@@ -688,18 +597,4 @@ Geofilter.propTypes = {
   openScream: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  credentials: state.user.credentials,
-  data: state.data,
-  user: state.user,
-});
-
-const mapActionsToProps = {
-  editUserDetails,
-  openScream,
-};
-
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(Geofilter));
+export default withStyles(styles)(Geofilter);

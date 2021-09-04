@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import withStyles from "@material-ui/core/styles/withStyles";
 
+import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router";
 
@@ -118,16 +119,14 @@ const styles = {
 const IntroductionInformation = ({ classes }) => {
   const history = useHistory();
   const { t } = useTranslation();
+  const { cookie_settings } = useSelector((state) => state.data);
 
   useEffect(() => {
     if (!isMobileOnly) {
       history.push("/");
     }
 
-    if (
-      cookies.get("Cookie_settings") !== "all" &&
-      cookies.get("Cookie_settings") !== "minimum"
-    ) {
+    if (cookie_settings !== "all" && cookie_settings !== "minimum") {
       history.push("/intro");
     }
   }, []);
