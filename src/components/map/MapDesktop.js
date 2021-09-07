@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { isMobileOnly } from "react-device-detect";
 
 //Redux
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { openScream } from "../../redux/actions/screamActions";
 
 //MUI Stuff
@@ -51,7 +51,6 @@ const MapDesktop = ({
   _onViewportChangeDesktop,
   dataNoLocationHandle,
   selectedId,
-  openInfoPageDesktop,
   noLocation,
   dataFinal,
   mapDesktopShowResults,
@@ -59,6 +58,8 @@ const MapDesktop = ({
   geoData,
 }) => {
   const { t } = useTranslation();
+  const { openInfoPage } = useSelector((state) => state.UI);
+
   const dispatch = useDispatch();
 
   const [hoverScreamId, setHoverScreamId] = useState("");
@@ -187,7 +188,7 @@ const MapDesktop = ({
     <div className="mapWrapper">
       <MapGL
         style={
-          openInfoPageDesktop
+          openInfoPage
             ? {
                 position: "fixed",
                 width: "100%",
@@ -233,13 +234,7 @@ const MapDesktop = ({
 
         <button
           className="buttonWide buttonMapdesktop"
-          style={
-            !openInfoPageDesktop &&
-            (cookies.get("Cookie_settings") === "all" ||
-              cookies.get("Cookie_settings") === "minimum")
-              ? { display: "block" }
-              : { display: "none" }
-          }
+          style={!openInfoPage ? { display: "block" } : { display: "none" }}
           onClick={() => mapDesktopShowResults(viewport)}
         >
           {t("map_filterIdeas")}
@@ -248,13 +243,7 @@ const MapDesktop = ({
         <button
           onClick={mapDesktopReset}
           className="buttonRound buttonResetMapDesktop"
-          style={
-            !openInfoPageDesktop &&
-            (cookies.get("Cookie_settings") === "all" ||
-              cookies.get("Cookie_settings") === "minimum")
-              ? { display: "block" }
-              : { display: "none" }
-          }
+          style={!openInfoPage ? { display: "block" } : { display: "none" }}
         >
           <img src={CircularArrow} width="25" alt="reset_icon"></img>
         </button>

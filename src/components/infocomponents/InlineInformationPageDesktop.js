@@ -1,14 +1,19 @@
 /** @format */
 
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment, useEffect, useState } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 // MUI Stuff
 import Dialog from "@material-ui/core/Dialog";
 
 // Redux stuff
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import {
+  setInfoPageOpen,
+  setInfoPageClosed,
+} from "../../redux/actions/UiActions";
+import { setCookies } from "../../redux/actions/cookiesActions";
 
 //LazyLoad
 import { LazyImage } from "react-lazy-images";
@@ -36,152 +41,31 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const styles = {
-  root: {
-    //backgroundColor: "rgb(0,0,0,0.5)",
-    padding: "0",
-    borderRadius: "20px !important",
-  },
-
-  paper: {
-    //backgroundColor: "rgb(0,0,0,0.5)",
-    boxShadow: "none",
-
-    height: "auto",
-    padding: "0",
-    top: "18em",
-    borderRadius: "20px ",
-  },
-
-  closeButton: {
-    position: "absolute",
-    top: "2.5vw",
-    left: "2.5vw",
-    color: "black",
-    zIndex: "990",
-    padding: 10,
-  },
-
-  nav: {
-    width: "100vw",
-    height: "80px",
-    position: "fixed",
-    backgroundColor: "white",
-    zIndex: 999,
-  },
-
-  PlattformButton2: {
-    position: "fixed",
-    zIndex: 99,
-    paddingTop: "10px",
-    paddingBottom: "10px",
-    textAlign: "center",
-    width: "200px",
-    right: "50px",
-    bottom: "50px",
-    borderRadius: "100px",
-    color: "white",
-    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.2)",
-    backgroundColor: "#414345",
-    textTransform: "none",
-    fontSize: "14pt",
-    border: " solid 1px #414345",
-  },
-
-  KontaktButton: {
-    position: "absolute",
-    zIndex: 99,
-    paddingTop: "10px",
-    paddingBottom: "10px",
-    textAlign: "center",
-    width: "50vw",
-    left: "25vw",
-    top: "1760px",
-    borderRadius: "100px",
-    color: "#414345",
-    backgroundColor: "white",
-    textTransform: "none",
-    fontSize: "14pt",
-    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.2)",
-  },
-
-  TopPath: {
-    position: "absolute",
-    top: "0",
-    width: "100vw",
-  },
-
-  FirstImage: {
-    position: "absolute",
-    top: "24vw",
-    width: "75vw",
-    marginLeft: "15.3vw",
-  },
-};
-
-const InlineInformationPageDesktop = ({
-  classes,
-  openInfoPageDesktop,
-  cookiesSetDesktop,
-  handleOpenInfoPageDesktop,
-  handleCloseInfoPageDesktop,
-  handleCookies,
-  loading,
-}) => {
+const InlineInformationPageDesktop = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  const { cookie_settings } = useSelector((state) => state.data);
+  const { loading, openInfoPage } = useSelector((state) => state.UI);
+
+  const handleOpen = () => {
+    dispatch(setInfoPageOpen());
+  };
+
+  const handleClose = () => {
+    dispatch(setInfoPageClosed());
+  };
+
+  const handleCookies = (cookie_settings) => {
+    dispatch(setCookies(cookie_settings));
+  };
 
   const dialogComponent =
-    !loading && !cookiesSetDesktop ? (
+    !loading && (cookie_settings === "all" || cookie_settings === "minimum") ? (
       <Dialog
         scroll={"paper"}
-        open={openInfoPageDesktop}
-        onClose={handleCloseInfoPageDesktop}
-        className="dialogOverlayContent"
-        aria-labelledby="scroll-dialog-title"
-        aria-describedby="scroll-dialog-description"
-        maxWidth={"sm"}
-        PaperProps={{
-          style: { borderRadius: "20px" },
-        }}
-      >
-        <DialogContent style={{ height: "200px" }}>
-          <div className="cookiesText">
-            {" "}
-            <span className="cookiesHeader">{t("cookiebanner_title")}</span>
-            <br />
-            <Trans i18nKey="cookiebanner_text">
-              Für die Bereitstellung einiger Funktionen und die Verbesserung
-              dieses Services brauchen wir Cookies. Falls du wirklich nur die
-              technisch notwendigsten Cookies akzeptieren willst, klicke{" "}
-              <span className="Terms" onClick={() => handleCookies("minimum")}>
-                hier
-              </span>
-              &nbsp;oder konfiguriere deine{" "}
-              <span
-                className="Terms"
-                onClick={() => {
-                  window.open("/cookieConfigurator", "_blank");
-                }}
-              >
-                Cookie-Einstellungen
-              </span>
-              .
-            </Trans>
-          </div>
-
-          <button
-            className="buttonWide buttonCookiesDesktop"
-            onClick={() => handleCookies("all")}
-          >
-            {t("accept")}
-          </button>
-        </DialogContent>
-      </Dialog>
-    ) : !loading ? (
-      <Dialog
-        scroll={"paper"}
-        open={openInfoPageDesktop}
-        onClose={handleCloseInfoPageDesktop}
+        open={openInfoPage}
+        onClose={handleClose}
         className="dialogOverlayContent"
         TransitionComponent={Transition}
         aria-labelledby="scroll-dialog-title"
@@ -198,7 +82,7 @@ const InlineInformationPageDesktop = ({
         }}
       >
         <button
-          onClick={handleCloseInfoPageDesktop}
+          onClick={handleClose}
           className="buttonRound buttonClose"
           style={{ position: "fixed" }}
         >
@@ -244,7 +128,7 @@ const InlineInformationPageDesktop = ({
 
             <button
               className="buttonWide buttonInlineInfoIdeas"
-              onClick={handleCloseInfoPageDesktop}
+              onClick={handleClose}
             >
               {t("showIdeas")}
             </button>
@@ -270,18 +154,57 @@ const InlineInformationPageDesktop = ({
           </div>
         </DialogContent>
       </Dialog>
-    ) : (
-      <div className="white">
-        <div className="spinnerDiv">
-          <CircularProgress size={50} thickness={2} />
-          {/* <img src={lamploader} className="lamploader" alt="LikeIcon" /> */}
-        </div>
-      </div>
-    );
+    ) : !loading ? (
+      <Dialog
+        scroll={"paper"}
+        open={openInfoPage}
+        onClose={handleClose}
+        className="dialogOverlayContent"
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+        maxWidth={"sm"}
+        PaperProps={{
+          style: { borderRadius: "20px" },
+        }}
+      >
+        <DialogContent style={{ height: "200px" }}>
+          <div className="cookiesText">
+            {" "}
+            <span className="cookiesHeader">{t("cookiebanner_title")}</span>
+            <br />
+            <Trans i18nKey="cookiebanner_text">
+              Für die Bereitstellung einiger Funktionen und die Verbesserung
+              dieses Services brauchen wir Cookies. Falls du wirklich nur die
+              technisch notwendigsten Cookies akzeptieren willst, klicke{" "}
+              <span className="Terms" onClick={() => handleCookies("minimum")}>
+                hier
+              </span>
+              &nbsp;oder konfiguriere deine{" "}
+              <span
+                className="Terms"
+                onClick={() => {
+                  window.open("/cookieConfigurator", "_blank");
+                }}
+              >
+                Cookie-Einstellungen
+              </span>
+              .
+            </Trans>
+          </div>
+
+          <button
+            className="buttonWide buttonCookiesDesktop"
+            onClick={() => handleCookies("all")}
+          >
+            {t("accept")}
+          </button>
+        </DialogContent>
+      </Dialog>
+    ) : null;
 
   return (
     <Fragment>
-      <div onClick={handleOpenInfoPageDesktop}>
+      <div onClick={handleOpen}>
         <div className="inlineInfoIcon">
           <img src={Info} width="35" alt="EndImage" />
 
@@ -294,4 +217,4 @@ const InlineInformationPageDesktop = ({
   );
 };
 
-export default withStyles(styles)(InlineInformationPageDesktop);
+export default InlineInformationPageDesktop;

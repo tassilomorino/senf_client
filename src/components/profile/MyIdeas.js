@@ -107,7 +107,6 @@ export class MyIdeas extends Component {
       selectedId,
       noLocation,
 
-      openInfoPageDesktop,
       showTitles,
       _onViewportChangeDesktop,
     } = this.props;
@@ -244,11 +243,26 @@ export class MyIdeas extends Component {
         <div className="projectHeader">
           <div className="FilterComponentMobile">
             <Themenfilter
-              handlers={
-                [handleLegend, handleLegend1, handleLegend2, handleLegend3,
-                  handleLegend4, handleLegend5, handleLegend6, handleLegend7]
-              }
-              checks={[checked, checked1, checked2, checked3, checked4, checked5, checked6, checked7]}
+              handlers={[
+                handleLegend,
+                handleLegend1,
+                handleLegend2,
+                handleLegend3,
+                handleLegend4,
+                handleLegend5,
+                handleLegend6,
+                handleLegend7,
+              ]}
+              checks={[
+                checked,
+                checked1,
+                checked2,
+                checked3,
+                checked4,
+                checked5,
+                checked6,
+                checked7,
+              ]}
             ></Themenfilter>{" "}
           </div>
 

@@ -93,7 +93,6 @@ export class monitoring extends Component {
       dropdown: "10",
       selectedId: "",
       showTitles: false,
-      openInfoPageDesktop: false,
       cookiesSetDesktop: false,
 
       openGeofilter: false,
@@ -494,27 +493,6 @@ export class monitoring extends Component {
     });
 
     this.props.closeScream();
-  };
-
-  handleOpenInfoPageDesktop = () => {
-    this.setState({ openInfoPageDesktop: true });
-  };
-  handleCloseInfoPageDesktop = () => {
-    this.setState({ openInfoPageDesktop: false });
-
-    const screamId = this.props.match.params.screamId;
-
-    if (screamId) {
-      if (screamId.indexOf("_") > 0) {
-        this.props.openProject(screamId);
-      } else {
-        this.props.openScreamFirstTime(screamId);
-      }
-      this.setState({ screamIdParam: screamId });
-    }
-    if (window.location.pathname === "/projects") {
-      this.handleClick(2);
-    }
   };
 
   noLocation = () => {
@@ -957,14 +935,9 @@ export class monitoring extends Component {
           checked5={this.state.checked5}
           checked6={this.state.checked6}
           checked7={this.state.checked7}
-          handleOpenInfoPageDesktop={this.handleOpenInfoPageDesktop}
-          handleCloseInfoPageDesktop={this.handleCloseInfoPageDesktop}
-          cookiesSetDesktop={this.state.cookiesSetDesktop}
-          handleCookiesDesktop={this.handleCookiesDesktop}
           handleMinimumCookies={this.handleMinimumCookies}
           deleteAccount={this.deleteAccount}
           handleLogout={this.handleLogout}
-          openInfoPageDesktop={this.state.openInfoPageDesktop}
           loadingProjects={loadingProjects}
           projectsData={projects}
         ></MonitoringDesktopSidebar>

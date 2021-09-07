@@ -3,6 +3,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
+import { useSelector } from "react-redux";
+
 //Components
 import SignNote from "../profile/SignNote";
 import InlineInformationPageDesktop from "../infocomponents/InlineInformationPageDesktop";
@@ -47,17 +49,14 @@ const DesktopSidebar = ({
   checked5,
   checked6,
   checked7,
-
-  openInfoPageDesktop,
-  handleOpenInfoPageDesktop,
-  handleCloseInfoPageDesktop,
-  cookiesSetDesktop,
   handleCookies,
   deleteAccount,
   handleLogout,
   loadingProjects,
   projectsData,
 }) => {
+  const { openInfoPage } = useSelector((state) => state.UI);
+
   const { t } = useTranslation();
 
   const sign = !authenticated ? (
@@ -95,7 +94,6 @@ const DesktopSidebar = ({
         checked7={checked7}
         deleteAccount={deleteAccount}
         handleLogout={handleLogout}
-        openInfoPageDesktop={openInfoPageDesktop}
       />
       <img
         src={order === 4 ? profile_grey : profile_yellow}
@@ -108,19 +106,11 @@ const DesktopSidebar = ({
   );
 
   return (
-    <div
-      className={
-        openInfoPageDesktop ? "FilterComponent_hide" : "FilterComponent"
-      }
-    >
+    <div className={openInfoPage ? "FilterComponent_hide" : "FilterComponent"}>
       <h1 className="logoWeb">
         <img src={Logo} width="100px"></img>
       </h1>
       <InlineInformationPageDesktop
-        openInfoPageDesktop={openInfoPageDesktop}
-        cookiesSetDesktop={cookiesSetDesktop}
-        handleOpenInfoPageDesktop={handleOpenInfoPageDesktop}
-        handleCloseInfoPageDesktop={handleCloseInfoPageDesktop}
         handleCookies={handleCookies}
         loading={loading}
         classes={classes}
@@ -128,7 +118,6 @@ const DesktopSidebar = ({
 
       {sign}
       <PostScream
-        openInfoPageDesktop={openInfoPageDesktop}
         loadingProjects={loadingProjects}
         projectsData={projectsData}
       />
@@ -157,12 +146,27 @@ const DesktopSidebar = ({
       ></div>
 
       <Themenfilter
-          handlers={
-            [handleLegend, handleLegend1, handleLegend2, handleLegend3,
-              handleLegend4, handleLegend5, handleLegend6, handleLegend7]
-          }
-          checks={[checked, checked1, checked2, checked3, checked4, checked5, checked6, checked7]}
-        ></Themenfilter>
+        handlers={[
+          handleLegend,
+          handleLegend1,
+          handleLegend2,
+          handleLegend3,
+          handleLegend4,
+          handleLegend5,
+          handleLegend6,
+          handleLegend7,
+        ]}
+        checks={[
+          checked,
+          checked1,
+          checked2,
+          checked3,
+          checked4,
+          checked5,
+          checked6,
+          checked7,
+        ]}
+      ></Themenfilter>
 
       <div
         style={{
@@ -180,7 +184,7 @@ const DesktopSidebar = ({
       >
         <div
           className="facebook"
-          style={openInfoPageDesktop ? { left: "-200px" } : null}
+          style={openInfoPage ? { left: "-200px" } : null}
         >
           <img src={Facebook} width="25" alt="EndImage" />
         </div>
@@ -190,10 +194,7 @@ const DesktopSidebar = ({
         rel="noopener noreferrer"
         target="_blank"
       >
-        <div
-          className="insta"
-          style={openInfoPageDesktop ? { left: "-200px" } : null}
-        >
+        <div className="insta" style={openInfoPage ? { left: "-200px" } : null}>
           <img src={Insta} width="25" alt="EndImage" />
         </div>{" "}
       </a>

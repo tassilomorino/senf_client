@@ -309,13 +309,6 @@ class Scream extends Component {
             onClick={() => this.fetchDataScream(screamId)}
             className="buttonExpand ripple"
           ></button>
-          {/* <ScreamDialog
-            screamId={screamId}
-            userHandle={userHandle}
-            lat={lat}
-            long={long}
-            openDialog={this.props.openDialog}
-          /> */}
         </CardContent>
       </Card>
     );

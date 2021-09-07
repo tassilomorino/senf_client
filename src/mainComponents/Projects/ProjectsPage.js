@@ -65,7 +65,6 @@ export class ProjectsPage extends Component {
       order,
 
       screamIdParam,
-      openInfoPageDesktop,
       zoomToBounds,
 
       latitude1,
@@ -160,7 +159,6 @@ export class ProjectsPage extends Component {
           longitude2={longitude2}
           longitude3={longitude3}
           longitude4={longitude4}
-          openInfoPageDesktop={openInfoPageDesktop}
           projectsData={projectsData}
           loadingProjects={loadingProjects}
           mapDesktopShowResults={mapDesktopShowResults}

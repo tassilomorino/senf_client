@@ -280,7 +280,6 @@ class ProjectDialog extends Component {
     dropdown: "10",
     selectedId: "",
     showTitles: false,
-    openInfoPageDesktop: false,
     cookiesSetDesktop: false,
 
     openGeofilter: false,
@@ -592,7 +591,6 @@ class ProjectDialog extends Component {
       longitude3,
       latitude4,
       longitude4,
-      openInfoPageDesktop,
       projectsData,
       loadingProjects,
 
@@ -702,7 +700,6 @@ class ProjectDialog extends Component {
         loading={loading}
         projectScreams={this.props.project.screams}
         classes={classes}
-        openInfoPageDesktop={this.state.openInfoPageDesktop}
         latitude1={this.state.latitude1}
         latitude2={this.state.latitude2}
         latitude3={this.state.latitude3}
@@ -761,7 +758,6 @@ class ProjectDialog extends Component {
     const postScreams =
       isMobileOnly && this.state.order === 1 ? (
         <PostScream
-          openInfoPageDesktop={openInfoPageDesktop}
           loadingProjects={loadingProjects}
           projectsData={projectsData}
           project={this.props.project}
@@ -978,15 +974,7 @@ class ProjectDialog extends Component {
         style={this.state.dialogStyle} // This was the key point, reset the position of the dialog, so the user can interact with other elements
         disableBackdropClick // Remove the backdrop click (just to be sure)
       >
-        <div
-          className={
-            openInfoPageDesktop
-              ? "contentWrapper_dialog_hide"
-              : "contentWrapper_dialog"
-          }
-        >
-          {dialogMarkup}
-        </div>
+        <div className="contentWrapper_dialog">{dialogMarkup}</div>
 
         <div
           style={{
@@ -1025,7 +1013,6 @@ class ProjectDialog extends Component {
             viewport={viewport}
             selectedId={this.state.selectedId}
             showTitles={showTitles}
-            openInfoPageDesktop={this.state.openInfoPageDesktop}
             mapDesktopShowResults={this.mapDesktopShowResults}
             mapDesktopReset={this.mapDesktopReset}
           ></MapDesktop>

@@ -21,6 +21,7 @@ import store from "./redux/store";
 import { SET_AUTHENTICATED } from "./redux/types";
 import { logoutUser, getUserData } from "./redux/actions/userActions";
 import { setCookies } from "./redux/actions/cookiesActions";
+import { setInfoPageOpen } from "./redux/actions/UiActions";
 
 //Pages
 import home from "./pages/home";
@@ -143,6 +144,14 @@ if (token) {
 }
 
 if (cookies.get("Cookie_settings") === "all") {
+  store.dispatch(setCookies("all"));
+} else if (cookies.get("Cookie_settings") === "minimum") {
+  store.dispatch(setCookies("minimum"));
+} else {
+  store.dispatch(setInfoPageOpen());
+}
+
+if (cookies.get("Cookie_settings") === "all") {
   ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS);
   ReactGA.pageview(window.location.pathname + window.location.search);
   ReactGA.ga("require", "displayfeatures");
@@ -160,12 +169,6 @@ window.addEventListener("resize", () => {
 });
 const App = () => {
   useEffect(() => {
-    if (cookies.get("Cookie_settings") === "all") {
-      store.dispatch(setCookies("all"));
-    } else if (cookies.get("Cookie_settings") === "minimum") {
-      store.dispatch(setCookies("minimum"));
-    }
-
     let name = "Senf.koeln";
     let version = "1.0.0";
     console.log(`${name} v${version}`);

@@ -247,7 +247,6 @@ class Account extends Component {
     open: false,
     myScreams: [],
     clicked: false,
-    oldPath: "",
     newPath: "",
     path: "",
     order: 1,
@@ -256,8 +255,6 @@ class Account extends Component {
     latitude2: 50.79,
     longitude2: 6.712,
     longitude3: 7.17,
-
-    // userHandle: this.props.user.credentials.handle,
 
     showDemand: false,
     checked: 1,
@@ -271,7 +268,6 @@ class Account extends Component {
     dropdown: "10",
     selectedId: "",
     showTitles: false,
-    openInfoPageDesktop: false,
     cookiesSetDesktop: false,
 
     openGeofilter: false,
@@ -295,8 +291,6 @@ class Account extends Component {
   };
 
   handleOpen = () => {
-    let oldPath = window.location.pathname;
-
     const userHandle = this.props.user.credentials.handle;
 
     this.fetchMyScreams(userHandle);
@@ -353,13 +347,6 @@ class Account extends Component {
         dialogStyle: {},
       });
     }, 2000);
-
-    this.props.clearErrors();
-  };
-
-  handleClose1 = () => {
-    window.history.pushState(null, null, `/`);
-    this.setState({ open: false });
 
     this.props.clearErrors();
   };
@@ -484,17 +471,9 @@ class Account extends Component {
   render() {
     const {
       classes,
-
-      title,
-      owner,
-      ideaCount,
-      imgUrl,
-
       screamIdParam,
-
       showTitles,
       _onViewportChangeDesktop,
-
       handleLegend,
       handleLegend1,
       handleLegend2,
@@ -514,7 +493,6 @@ class Account extends Component {
 
       handleLogout,
       deleteAccount,
-      openInfoPageDesktop,
 
       user: {
         authenticated,
@@ -523,58 +501,6 @@ class Account extends Component {
     } = this.props;
 
     const { loadingMyScreams } = this.props.data;
-
-    const myIdeas =
-      !loadingMyScreams && this.state.open ? (
-        <MyIdeas
-          loading={loadingMyScreams}
-          myScreams={this.state.myScreams}
-          classes={classes}
-          openInfoPageDesktop={this.state.openInfoPageDesktop}
-          latitude1={this.state.latitude1}
-          latitude2={this.state.latitude2}
-          latitude3={this.state.latitude3}
-          latitude4={this.state.latitude4}
-          longitude1={this.state.longitude1}
-          longitude2={this.state.longitude2}
-          longitude3={this.state.longitude3}
-          longitude4={this.state.longitude4}
-          viewport={this.state.viewport}
-          _onViewportChange={this._onViewportChange}
-          noLocation={this.noLocation}
-          handleLegend={handleLegend}
-          handleLegend1={handleLegend1}
-          handleLegend2={handleLegend2}
-          handleLegend3={handleLegend3}
-          handleLegend4={handleLegend4}
-          handleLegend5={handleLegend5}
-          handleLegend6={handleLegend6}
-          handleLegend7={handleLegend7}
-          checked={checked}
-          checked1={checked1}
-          checked2={checked2}
-          checked3={checked3}
-          checked4={checked4}
-          checked5={checked5}
-          checked6={checked6}
-          checked7={checked7}
-          dataNoLocationHandle={this.dataNoLocationHandle}
-          showDemand={this.state.showDemand}
-          handleClick={this.handleClick}
-          handleDropdown={this.handleDropdown}
-          dropdown={this.state.dropdown}
-          handleOpenGeofilter={this.handleOpenGeofilter}
-          handleCloseGeofilter={this.handleCloseGeofilter}
-          handleResetGeofilter={this.handleResetGeofilter}
-          openGeofilter={this.state.openGeofilter}
-          showGeofilterResults={this.state.showGeofilterResults}
-          createGeofilterCircle={this.state.createGeofilterCircle}
-          selectedId={this.state.selectedId}
-          screamIdParam={screamIdParam}
-          _onViewportChangeDesktop={_onViewportChangeDesktop}
-          showTitles={showTitles}
-        ></MyIdeas>
-      ) : null;
 
     const dialogMarkup = (
       <div className="wrapperScreamDialog">
@@ -587,13 +513,10 @@ class Account extends Component {
               style={{ transform: "rotate(90deg)" }}
             />
           </button>
-
-          {/* <button className="buttonRound buttonEdit">
-                <img src={MenuIcon} width="25" alt="editIcon" />
-              </button> */}
         </div>
-        {/* <div className="dialoggradient1"></div> */}
-        <div className="hey-user" data-cy="hey-user">Hey {handle} </div>
+        <div className="hey-user" data-cy="hey-user">
+          Hey {handle}{" "}
+        </div>
 
         <div className="Tabs Account_Tabs">
           <div className="Tab">
@@ -616,28 +539,6 @@ class Account extends Component {
             </div>
           </div>
         </div>
-        {/* <div className="dialogFilterWrapper">
-          <div
-            className={this.state.order === 1 ? "filter_active" : "filter"}
-            onClick={() => this.handleClick(1)}
-          >
-            Profil
-          </div>
-          <div className="filterLinie"></div>{" "}
-          <div
-            className={this.state.order === 2 ? "filter_active" : "filter"}
-            onClick={() => this.handleClick(2)}
-          >
-            Ideen
-          </div>
-          <div className="filterLinie"></div>{" "}
-          <div
-            className={this.state.order === 3 ? "filter_active" : "filter"}
-            onClick={() => this.handleClick(3)}
-          >
-            Einstellungen
-          </div>
-        </div> */}
 
         <div
           className="MainAnimationChannels"
@@ -647,7 +548,55 @@ class Account extends Component {
               : { display: "none", width: "100%", minWidth: "100%" }
           }
         >
-          {myIdeas}
+          {!loadingMyScreams && this.state.open && (
+            <MyIdeas
+              loading={loadingMyScreams}
+              myScreams={this.state.myScreams}
+              classes={classes}
+              latitude1={this.state.latitude1}
+              latitude2={this.state.latitude2}
+              latitude3={this.state.latitude3}
+              latitude4={this.state.latitude4}
+              longitude1={this.state.longitude1}
+              longitude2={this.state.longitude2}
+              longitude3={this.state.longitude3}
+              longitude4={this.state.longitude4}
+              viewport={this.state.viewport}
+              _onViewportChange={this._onViewportChange}
+              noLocation={this.noLocation}
+              handleLegend={handleLegend}
+              handleLegend1={handleLegend1}
+              handleLegend2={handleLegend2}
+              handleLegend3={handleLegend3}
+              handleLegend4={handleLegend4}
+              handleLegend5={handleLegend5}
+              handleLegend6={handleLegend6}
+              handleLegend7={handleLegend7}
+              checked={checked}
+              checked1={checked1}
+              checked2={checked2}
+              checked3={checked3}
+              checked4={checked4}
+              checked5={checked5}
+              checked6={checked6}
+              checked7={checked7}
+              dataNoLocationHandle={this.dataNoLocationHandle}
+              showDemand={this.state.showDemand}
+              handleClick={this.handleClick}
+              handleDropdown={this.handleDropdown}
+              dropdown={this.state.dropdown}
+              handleOpenGeofilter={this.handleOpenGeofilter}
+              handleCloseGeofilter={this.handleCloseGeofilter}
+              handleResetGeofilter={this.handleResetGeofilter}
+              openGeofilter={this.state.openGeofilter}
+              showGeofilterResults={this.state.showGeofilterResults}
+              createGeofilterCircle={this.state.createGeofilterCircle}
+              selectedId={this.state.selectedId}
+              screamIdParam={screamIdParam}
+              _onViewportChangeDesktop={_onViewportChangeDesktop}
+              showTitles={showTitles}
+            ></MyIdeas>
+          )}
         </div>
         <div
           className="MainAnimationChannels"
@@ -716,25 +665,7 @@ class Account extends Component {
         style={this.state.dialogStyle} // This was the key point, reset the position of the dialog, so the user can interact with other elements
         disableBackdropClick // Remove the backdrop click (just to be sure)
       >
-        <div
-          className={
-            openInfoPageDesktop
-              ? "contentWrapper_dialog_hide"
-              : "contentWrapper_dialog"
-          }
-        >
-          {dialogMarkup}
-        </div>
-
-        {/* <div
-          style={{
-            width: "100vw",
-            height: "100vh",
-            backgroundColor: "rgb(0,0,0,0.15)",
-            zIndex: 9,
-          }}
-          onClick={this.handleClose1}
-        ></div> */}
+        <div className="contentWrapper_dialog">{dialogMarkup}</div>
       </Dialog>
     );
 

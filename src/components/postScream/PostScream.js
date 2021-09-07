@@ -112,14 +112,10 @@ const styles = {
   },
 };
 
-const PostScream = ({
-  classes,
-  openInfoPageDesktop,
-  loadingProjects,
-  projectsData,
-}) => {
+const PostScream = ({ classes, loadingProjects, projectsData }) => {
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.UI.loading);
+  const { loading } = useSelector((state) => state.UI);
+
   const user = useSelector((state) => state.user);
   const { authenticated } = user;
   const history = useHistory();
@@ -463,10 +459,7 @@ const PostScream = ({
 
   return (
     <Fragment>
-      <button
-        onClick={handleOpen}
-        className={openInfoPageDesktop ? "add add_hide" : "add"}
-      >
+      <button onClick={handleOpen} className="add">
         <img src={AddIcon} width="25" alt="AddIcon" />
         <span className="addText">Neue Idee</span>
       </button>

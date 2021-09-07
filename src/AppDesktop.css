@@ -342,11 +342,7 @@
      position: relative;
      
     }
-    .contentWrapper_hide {
-      margin-left: -400px;
-     width: 400px; 
-     transition: 0.5s;
-    }
+   
 
     .contentWrapper_dialog {
       margin-left: 0px;
@@ -358,6 +354,7 @@
       margin-left: -600px;
      width: 400px; 
      transition: 0.5s;
+     display: none;
     }
 
     .contentWrapperInsights{
@@ -835,6 +832,7 @@ position: fixed;
     z-index: 999;
     display:block;
     transition: 0.5s;
+    
   }
   
   .FilterComponentMobile{

@@ -53,7 +53,6 @@ class Topbar extends React.Component {
       checked6,
       checked7,
 
-      openInfoPageDesktop,
       deleteAccount,
       handleLogout,
     } = this.props;
@@ -88,7 +87,6 @@ class Topbar extends React.Component {
           checked7={checked7}
           deleteAccount={deleteAccount}
           handleLogout={handleLogout}
-          openInfoPageDesktop={openInfoPageDesktop}
         />
         <img src={profile_yellow} width="35" alt="profileImage" />
       </div>

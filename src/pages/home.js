@@ -74,7 +74,6 @@ export class home extends Component {
       dropdown: "10",
       selectedId: "",
       showTitles: false,
-      openInfoPageDesktop: false,
       cookiesSetDesktop: false,
 
       openGeofilter: false,
@@ -113,59 +112,49 @@ export class home extends Component {
       top: 0,
       left: 0,
     });
+
+    if (!this.props.UI.openInfoPage) {
+      this.openDialogFromUrl();
+    }
+
+    setTimeout(() => {
+      if (!isMobileOnly) {
+        this.setState({
+          viewport: {
+            latitude: 50.95,
+            longitude: 6.9503,
+            zoom: 11.5,
+            transitionDuration: 4000,
+            pitch: 30,
+            bearing: 0,
+          },
+        });
+      }
+    }, 3000);
+    if (!isMobileOnly) {
+      window.addEventListener("popstate", this.handleOnUrlChange, false);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.UI.openInfoPage !== this.props.UI.openInfoPage) {
+      this.openDialogFromUrl();
+    }
+  }
+
+  openDialogFromUrl() {
     const screamId = this.props.match.params.screamId;
 
-    if (
-      screamId &&
-      (cookies.get("Cookie_settings") === "all" ||
-        cookies.get("Cookie_settings") === "minimum")
-    ) {
+    if (screamId) {
       if (screamId.indexOf("_") > 0) {
         this.props.openProject(screamId);
       } else {
         this.props.openScream(screamId);
       }
       this.setState({ screamIdParam: screamId });
-
-      if (window.location.pathname === "/projects") {
-        this.handleClick(2);
-      }
-    } else {
-      setTimeout(() => {
-        if (!isMobileOnly) {
-          this.setState({
-            viewport: {
-              latitude: 50.95,
-              longitude: 6.9503,
-              zoom: 11.5,
-              transitionDuration: 4000,
-              pitch: 30,
-              bearing: 0,
-            },
-          });
-        }
-      }, 3000);
     }
-
-    if (!isMobileOnly) {
-      window.addEventListener("popstate", this.handleOnUrlChange, false);
-    }
-
-    if (
-      cookies.get("Cookie_settings") !== "all" &&
-      cookies.get("Cookie_settings") !== "minimum" &&
-      !isMobileOnly
-    ) {
-      this.setState({ openInfoPageDesktop: true });
-      this.handleOpenInfoPageDesktop();
-    } else if (
-      (cookies.get("Cookie_settings") === "all" ||
-        cookies.get("Cookie_settings") === "minimum") &&
-      !isMobileOnly
-    ) {
-      this.setState({
-        cookiesSetDesktop: true,
-      });
+    if (window.location.pathname === "/projects") {
+      this.handleClick(2);
     }
   }
 
@@ -534,27 +523,6 @@ export class home extends Component {
     this.props.closeScream();
   };
 
-  handleOpenInfoPageDesktop = () => {
-    this.setState({ openInfoPageDesktop: true });
-  };
-  handleCloseInfoPageDesktop = () => {
-    this.setState({ openInfoPageDesktop: false });
-
-    const screamId = this.props.match.params.screamId;
-
-    if (screamId) {
-      if (screamId.indexOf("_") > 0) {
-        this.props.openProject(screamId);
-      } else {
-        this.props.openScream(screamId);
-      }
-      this.setState({ screamIdParam: screamId });
-    }
-    if (window.location.pathname === "/projects") {
-      this.handleClick(2);
-    }
-  };
-
   handleCookies = (cookie_settings) => {
     cookies.set("Cookie_settings", cookie_settings, {
       path: "/",
@@ -564,16 +532,6 @@ export class home extends Component {
     });
     this.setState({ cookiesSetDesktop: true });
   };
-
-  // handleMinimumCookies = () => {
-  //   cookies.set("Cookie_settings", "minimum", {
-  //     path: "/",
-  //     maxAge: 60 * 60 * 24 * 90,
-  //     sameSite: "none",
-  //     secure: true,
-  //   });
-  //   this.setState({ cookiesSetDesktop: true });
-  // };
 
   noLocation = () => {
     this.setState({
@@ -867,72 +825,17 @@ export class home extends Component {
     //   });
     // }
 
-    const error =
-      !loading && screams.length === 0 ? (
-        <div className="errorBackground">
-               <div className="homeHeader"> Ooops! </div>
-          <br />
-          <span className="oopsText">
-            Etwas ist schiefgelaufen. Bitte lade die Seite neu!
-          </span>
-        </div>
-      ) : null;
-
-    const loader =
-      loading &&
-      !this.state.openInfoPageDesktop &&
-      (cookies.get("Cookie_settings") === "all" ||
-        cookies.get("Cookie_settings") === "minimum") ? (
-        <div className="spinnerDivBackground">
-          <img src={lamploader} className="lamploader" alt="loader" />
-        </div>
-      ) : null;
-
-    const projectDialogComponent =
-      this.props.UI.openProject === true ? (
-        <ProjectDialog
-          loading={loading}
-          openProject={this.props.UI.openProject}
-          screamIdParam={screamIdParam}
-          _onViewportChangeDesktop={this._onViewportChangeDesktop}
-          zoomToBounds={this.zoomToBounds}
-          showTitles={this.state.showTitles}
-          handleClick={this.handleClick}
-          handleLegend={this.handleLegend}
-          handleLegend1={this.handleLegend1}
-          handleLegend2={this.handleLegend2}
-          handleLegend3={this.handleLegend3}
-          handleLegend4={this.handleLegend4}
-          handleLegend5={this.handleLegend5}
-          handleLegend6={this.handleLegend6}
-          handleLegend7={this.handleLegend7}
-          checked={checked}
-          checked1={checked1}
-          checked2={checked2}
-          checked3={checked3}
-          checked4={checked4}
-          checked5={checked5}
-          checked6={checked6}
-          checked7={checked7}
-          latitude1={latitude1}
-          latitude2={latitude2}
-          latitude3={latitude3}
-          latitude4={latitude4}
-          longitude1={longitude1}
-          longitude2={longitude2}
-          longitude3={longitude3}
-          longitude4={longitude4}
-          openInfoPageDesktop={this.state.openInfoPageDesktop}
-          loadingProjects={loadingProjects}
-          projectsData={projects}
-          viewport={this.state.viewport}
-          mapDesktopShowResults={this.mapDesktopShowResults}
-        ></ProjectDialog>
-      ) : null;
-
     return (
       <div>
-        {error}
+        {!loading && screams.length === 0 && (
+          <div className="errorBackground">
+                 <div className="homeHeader"> Ooops! </div>
+            <br />
+            <span className="oopsText">
+              Etwas ist schiefgelaufen. Bitte lade die Seite neu!
+            </span>
+          </div>
+        )}
         <div className="appbar">
           <Appbar
             loading={this.state.loading}
@@ -940,7 +843,6 @@ export class home extends Component {
             order={this.state.order}
           ></Appbar>
           <PostScream
-            openInfoPageDesktop={this.state.openInfoPageDesktop}
             loadingProjects={loadingProjects}
             projectsData={projects}
           />
@@ -969,7 +871,6 @@ export class home extends Component {
           checked7={this.state.checked7}
           deleteAccount={this.deleteAccount}
           handleLogout={this.handleLogout}
-          openInfoPageDesktop={this.state.openInfoPageDesktop}
         />
         <DesktopSidebar
           loading={this.state.loading}
@@ -992,76 +893,13 @@ export class home extends Component {
           checked5={this.state.checked5}
           checked6={this.state.checked6}
           checked7={this.state.checked7}
-          handleOpenInfoPageDesktop={this.handleOpenInfoPageDesktop}
-          handleCloseInfoPageDesktop={this.handleCloseInfoPageDesktop}
           cookiesSetDesktop={this.state.cookiesSetDesktop}
           handleCookies={this.handleCookies}
           deleteAccount={this.deleteAccount}
           handleLogout={this.handleLogout}
-          openInfoPageDesktop={this.state.openInfoPageDesktop}
           loadingProjects={loadingProjects}
           projectsData={projects}
         ></DesktopSidebar>
-
-        {/* <MainPage
-          order={order}
-          loading={loading}
-          dropdown={this.state.dropdown}
-          screamIdParam={screamIdParam}
-          screams={this.props.data.screams}
-          classes={classes}
-          openInfoPageDesktop={this.state.openInfoPageDesktop}
-          latitude1={this.state.latitude1}
-          latitude2={this.state.latitude2}
-          latitude3={this.state.latitude3}
-          latitude4={this.state.latitude4}
-          longitude1={this.state.longitude1}
-          longitude2={this.state.longitude2}
-          longitude3={this.state.longitude3}
-          longitude4={this.state.longitude4}
-          viewport={this.state.viewport}
-          _onViewportChange={this._onViewportChange}
-          zoomToBounds={this.zoomToBounds}
-          handleRevert={this.handleRevert}
-          noLocation={this.noLocation}
-          handleLegend={this.handleLegend}
-          handleLegend1={this.handleLegend1}
-          handleLegend2={this.handleLegend2}
-          handleLegend3={this.handleLegend3}
-          handleLegend4={this.handleLegend4}
-          handleLegend5={this.handleLegend5}
-          handleLegend6={this.handleLegend6}
-          handleLegend7={this.handleLegend7}
-          checked={this.state.checked}
-          checked1={this.state.checked1}
-          checked2={this.state.checked2}
-          checked3={this.state.checked3}
-          checked4={this.state.checked4}
-          checked5={this.state.checked5}
-          checked6={this.state.checked6}
-          checked7={this.state.checked7}
-          dataNoLocationHandle={this.dataNoLocationHandle}
-          showDemand={this.state.showDemand}
-          handleClick={this.handleClick}
-          handleDropdown={this.handleDropdown}
-          handleOpenGeofilter={this.handleOpenGeofilter}
-          handleCloseGeofilter={this.handleCloseGeofilter}
-          handleResetGeofilter={this.handleResetGeofilter}
-          openGeofilter={this.state.openGeofilter}
-          showGeofilterResults={this.state.showGeofilterResults}
-          createGeofilterCircle={this.state.createGeofilterCircle}
-          selectedId={this.state.selectedId}
-          channelOrder={this.state.channelOrder}
-          projectsData={projects}
-          handleChannelClick={this.handleChannelClick}
-          _onViewportChangeDesktop={this._onViewportChangeDesktop}
-          mapDesktopShowResults={this.mapDesktopShowResults}
-          mapDesktopReset={this.mapDesktopReset}
-          showTitles={this.state.showTitles}
-          loadingProjects={loadingProjects}
-          userHandle={this.props.user.credentials.handle}
-          openProject={this.props.UI.openProject}
-        ></MainPage> */}
 
         <MapDesktop
           loading={loading}
@@ -1092,126 +930,163 @@ export class home extends Component {
           viewport={this.state.viewport}
           selectedId={this.state.selectedId}
           showTitles={this.state.showTitles}
-          openInfoPageDesktop={this.state.openInfoPageDesktop}
           mapDesktopShowResults={this.mapDesktopShowResults}
           mapDesktopReset={this.mapDesktopReset}
         ></MapDesktop>
-        <div
-          className={
-            this.state.openInfoPageDesktop
-              ? "contentWrapper_hide"
-              : "contentWrapper"
-          }
-        >
-          {loader}
-          <div className="MainBackgroundHome" />
 
-          <AllIdeasPage
-            loading={loading}
-            order={order}
-            classes={classes}
-            dataFinal={dataFinal}
-            viewport={this.state.viewport}
-            latitude1={latitude1}
-            latitude2={latitude2}
-            latitude3={latitude3}
-            latitude4={latitude4}
-            longitude1={longitude1}
-            longitude2={longitude2}
-            longitude3={longitude3}
-            longitude4={longitude4}
-            handleLegend={this.handleLegend}
-            handleLegend1={this.handleLegend1}
-            handleLegend2={this.handleLegend2}
-            handleLegend3={this.handleLegend3}
-            handleLegend4={this.handleLegend4}
-            handleLegend5={this.handleLegend5}
-            handleLegend6={this.handleLegend6}
-            handleLegend7={this.handleLegend7}
-            checked={checked}
-            checked1={checked1}
-            checked2={checked2}
-            checked3={checked3}
-            checked4={checked4}
-            checked5={checked5}
-            checked6={checked6}
-            checked7={checked7}
-            dataNoLocationHandle={this.dataNoLocationHandle}
-            noLocation={this.noLocation}
-            showDemand={this.state.showDemand}
-            handleClick={this.state.handleClick}
-            handleDropdown={this.handleDropdown}
-            handleOpenGeofilter={this.handleOpenGeofilter}
-            handleCloseGeofilter={this.handleCloseGeofilter}
-            handleResetGeofilter={this.handleResetGeofilter}
-            openGeofilter={this.state.openGeofilter}
-            showGeofilterResults={this.state.showGeofilterResults}
-            createGeofilterCircle={this.state.createGeofilterCircle}
-            selectedId={this.state.selectedId}
-            projectsData={projects}
-            _onViewportChange={this._onViewportChange}
-            dropdown={this.state.dropdown}
-          ></AllIdeasPage>
+        {!this.props.UI.openInfoPage && (
+          <div className="contentWrapper">
+            {loading && (
+              <div className="spinnerDivBackground">
+                <img src={lamploader} className="lamploader" alt="loader" />
+              </div>
+            )}
+            <div className="MainBackgroundHome" />
 
-          <ProjectsPage
-            loading={loading}
-            loadingProjects={loadingProjects}
-            order={order}
-            classes={classes}
-            openInfoPageDesktop={this.state.openInfoPageDesktop}
-            viewport={this.state.viewport}
-            latitude1={latitude1}
-            latitude2={latitude2}
-            latitude3={latitude3}
-            latitude4={latitude4}
-            longitude1={longitude1}
-            longitude2={longitude2}
-            longitude3={longitude3}
-            longitude4={longitude4}
-            zoomToBounds={this.zoomToBounds}
-            handleLegend={this.handleLegend}
-            handleLegend1={this.handleLegend1}
-            handleLegend2={this.handleLegend2}
-            handleLegend3={this.handleLegend3}
-            handleLegend4={this.handleLegend4}
-            handleLegend5={this.handleLegend5}
-            handleLegend6={this.handleLegend6}
-            handleLegend7={this.handleLegend7}
-            checked={checked}
-            checked1={checked1}
-            checked2={checked2}
-            checked3={checked3}
-            checked4={checked4}
-            checked5={checked5}
-            checked6={checked6}
-            checked7={checked7}
-            showDemand={this.state.showDemand}
-            handleClick={this.handleClick}
-            handleDropdown={this.handleDropdown}
-            handleOpenGeofilter={this.handleOpenGeofilter}
-            handleCloseGeofilter={this.handleCloseGeofilter}
-            handleResetGeofilter={this.handleResetGeofilter}
-            selectedId={this.state.selectedId}
-            projectsData={projects}
-            _onViewportChange={this._onViewportChange}
-            _onViewportChangeDesktop={this._onViewportChangeDesktop}
-            mapDesktopShowResults={this.state.mapDesktopShowResults}
-            mapDesktopReset={this.mapDesktopReset}
-            showTitles={this.state.showTitles}
-            dropdown={this.state.dropdown}
-            screamIdParam={screamIdParam}
-            userHandle={handle}
-          ></ProjectsPage>
+            <AllIdeasPage
+              loading={loading}
+              order={order}
+              classes={classes}
+              dataFinal={dataFinal}
+              viewport={this.state.viewport}
+              latitude1={latitude1}
+              latitude2={latitude2}
+              latitude3={latitude3}
+              latitude4={latitude4}
+              longitude1={longitude1}
+              longitude2={longitude2}
+              longitude3={longitude3}
+              longitude4={longitude4}
+              handleLegend={this.handleLegend}
+              handleLegend1={this.handleLegend1}
+              handleLegend2={this.handleLegend2}
+              handleLegend3={this.handleLegend3}
+              handleLegend4={this.handleLegend4}
+              handleLegend5={this.handleLegend5}
+              handleLegend6={this.handleLegend6}
+              handleLegend7={this.handleLegend7}
+              checked={checked}
+              checked1={checked1}
+              checked2={checked2}
+              checked3={checked3}
+              checked4={checked4}
+              checked5={checked5}
+              checked6={checked6}
+              checked7={checked7}
+              dataNoLocationHandle={this.dataNoLocationHandle}
+              noLocation={this.noLocation}
+              showDemand={this.state.showDemand}
+              handleClick={this.state.handleClick}
+              handleDropdown={this.handleDropdown}
+              handleOpenGeofilter={this.handleOpenGeofilter}
+              handleCloseGeofilter={this.handleCloseGeofilter}
+              handleResetGeofilter={this.handleResetGeofilter}
+              openGeofilter={this.state.openGeofilter}
+              showGeofilterResults={this.state.showGeofilterResults}
+              createGeofilterCircle={this.state.createGeofilterCircle}
+              selectedId={this.state.selectedId}
+              projectsData={projects}
+              _onViewportChange={this._onViewportChange}
+              dropdown={this.state.dropdown}
+            ></AllIdeasPage>
 
-          <InsightsPage order={order}></InsightsPage>
+            <ProjectsPage
+              loading={loading}
+              loadingProjects={loadingProjects}
+              order={order}
+              classes={classes}
+              viewport={this.state.viewport}
+              latitude1={latitude1}
+              latitude2={latitude2}
+              latitude3={latitude3}
+              latitude4={latitude4}
+              longitude1={longitude1}
+              longitude2={longitude2}
+              longitude3={longitude3}
+              longitude4={longitude4}
+              zoomToBounds={this.zoomToBounds}
+              handleLegend={this.handleLegend}
+              handleLegend1={this.handleLegend1}
+              handleLegend2={this.handleLegend2}
+              handleLegend3={this.handleLegend3}
+              handleLegend4={this.handleLegend4}
+              handleLegend5={this.handleLegend5}
+              handleLegend6={this.handleLegend6}
+              handleLegend7={this.handleLegend7}
+              checked={checked}
+              checked1={checked1}
+              checked2={checked2}
+              checked3={checked3}
+              checked4={checked4}
+              checked5={checked5}
+              checked6={checked6}
+              checked7={checked7}
+              showDemand={this.state.showDemand}
+              handleClick={this.handleClick}
+              handleDropdown={this.handleDropdown}
+              handleOpenGeofilter={this.handleOpenGeofilter}
+              handleCloseGeofilter={this.handleCloseGeofilter}
+              handleResetGeofilter={this.handleResetGeofilter}
+              selectedId={this.state.selectedId}
+              projectsData={projects}
+              _onViewportChange={this._onViewportChange}
+              _onViewportChangeDesktop={this._onViewportChangeDesktop}
+              mapDesktopShowResults={this.state.mapDesktopShowResults}
+              mapDesktopReset={this.mapDesktopReset}
+              showTitles={this.state.showTitles}
+              dropdown={this.state.dropdown}
+              screamIdParam={screamIdParam}
+              userHandle={handle}
+            ></ProjectsPage>
 
-          <ScreamDialog
-            screamIdParam={screamIdParam}
-            projectsData={projects}
-          ></ScreamDialog>
+            <InsightsPage order={order}></InsightsPage>
 
-          {projectDialogComponent}
-        </div>
+            <ScreamDialog
+              screamIdParam={screamIdParam}
+              projectsData={projects}
+            ></ScreamDialog>
+
+            {this.props.UI.openProject === true && (
+              <ProjectDialog
+                loading={loading}
+                openProject={this.props.UI.openProject}
+                screamIdParam={screamIdParam}
+                _onViewportChangeDesktop={this._onViewportChangeDesktop}
+                zoomToBounds={this.zoomToBounds}
+                showTitles={this.state.showTitles}
+                handleClick={this.handleClick}
+                handleLegend={this.handleLegend}
+                handleLegend1={this.handleLegend1}
+                handleLegend2={this.handleLegend2}
+                handleLegend3={this.handleLegend3}
+                handleLegend4={this.handleLegend4}
+                handleLegend5={this.handleLegend5}
+                handleLegend6={this.handleLegend6}
+                handleLegend7={this.handleLegend7}
+                checked={checked}
+                checked1={checked1}
+                checked2={checked2}
+                checked3={checked3}
+                checked4={checked4}
+                checked5={checked5}
+                checked6={checked6}
+                checked7={checked7}
+                latitude1={latitude1}
+                latitude2={latitude2}
+                latitude3={latitude3}
+                latitude4={latitude4}
+                longitude1={longitude1}
+                longitude2={longitude2}
+                longitude3={longitude3}
+                longitude4={longitude4}
+                loadingProjects={loadingProjects}
+                projectsData={projects}
+                viewport={this.state.viewport}
+                mapDesktopShowResults={this.mapDesktopShowResults}
+              ></ProjectDialog>
+            )}
+          </div>
+        )}
       </div>
     );
   }

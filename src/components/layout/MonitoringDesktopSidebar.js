@@ -50,8 +50,6 @@ export class MonitoringDesktopSidebar extends Component {
       checked6,
       checked7,
 
-      openInfoPageDesktop,
-
       deleteAccount,
       handleLogout,
     } = this.props;
@@ -71,7 +69,7 @@ export class MonitoringDesktopSidebar extends Component {
     ) : (
       <div
         className="profile"
-      // onClick={() => handleClick(4)}
+        // onClick={() => handleClick(4)}
       >
         <Account
           handleLegend={this.handleLegend}
@@ -92,7 +90,6 @@ export class MonitoringDesktopSidebar extends Component {
           checked7={checked7}
           deleteAccount={deleteAccount}
           handleLogout={handleLogout}
-          openInfoPageDesktop={openInfoPageDesktop}
         />
         <img
           src={order === 4 ? profile_grey : profile_yellow}
@@ -105,11 +102,7 @@ export class MonitoringDesktopSidebar extends Component {
     );
 
     return (
-      <div
-        className={
-          openInfoPageDesktop ? "FilterComponent_hide" : "FilterComponent"
-        }
-      >
+      <div className="FilterComponent">
         <h1 className="logoWeb">
           <img src={Logo} width="100px"></img>
         </h1>
@@ -155,11 +148,26 @@ export class MonitoringDesktopSidebar extends Component {
         ></div>
 
         <Themenfilter
-          handlers={
-            [handleLegend, handleLegend1, handleLegend2, handleLegend3,
-              handleLegend4, handleLegend5, handleLegend6, handleLegend7]
-          }
-          checks={[checked, checked1, checked2, checked3, checked4, checked5, checked6, checked7]}
+          handlers={[
+            handleLegend,
+            handleLegend1,
+            handleLegend2,
+            handleLegend3,
+            handleLegend4,
+            handleLegend5,
+            handleLegend6,
+            handleLegend7,
+          ]}
+          checks={[
+            checked,
+            checked1,
+            checked2,
+            checked3,
+            checked4,
+            checked5,
+            checked6,
+            checked7,
+          ]}
         ></Themenfilter>
         <div
           style={{
@@ -175,10 +183,7 @@ export class MonitoringDesktopSidebar extends Component {
           rel="noopener noreferrer"
           target="_blank"
         >
-          <div
-            className="facebook"
-            style={openInfoPageDesktop ? { left: "-200px" } : null}
-          >
+          <div className="facebook">
             <img src={Facebook} width="25" alt="EndImage" />
           </div>
         </a>
@@ -187,10 +192,7 @@ export class MonitoringDesktopSidebar extends Component {
           rel="noopener noreferrer"
           target="_blank"
         >
-          <div
-            className="insta"
-            style={openInfoPageDesktop ? { left: "-200px" } : null}
-          >
+          <div className="insta">
             <img src={Insta} width="25" alt="EndImage" />
           </div>{" "}
         </a>
