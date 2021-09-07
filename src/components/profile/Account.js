@@ -308,34 +308,36 @@ class Account extends Component {
   };
 
   fetchMyScreams = async (userHandle) => {
-    const db = firebase.firestore();
-    const ref = await db
-      .collection("screams")
-      .where("userHandle", "==", userHandle)
-      .orderBy("createdAt", "desc")
-      .get();
+    if (userHandle !== undefined) {
+      const db = firebase.firestore();
+      const ref = await db
+        .collection("screams")
+        .where("userHandle", "==", userHandle)
+        .orderBy("createdAt", "desc")
+        .get();
 
-    const screams = [];
-    ref.docs.forEach((doc) => {
-      const docData = {
-        screamId: doc.id,
-        lat: doc.data().lat,
-        long: doc.data().long,
-        title: doc.data().title,
-        body: doc.data().body.substr(0, 170),
-        createdAt: doc.data().createdAt,
-        commentCount: doc.data().commentCount,
-        likeCount: doc.data().likeCount,
-        status: doc.data().status,
-        Thema: doc.data().Thema,
-        Stadtteil: doc.data().Stadtteil,
-        project: doc.data().project,
-        projectId: doc.data().project,
-      };
+      const screams = [];
+      ref.docs.forEach((doc) => {
+        const docData = {
+          screamId: doc.id,
+          lat: doc.data().lat,
+          long: doc.data().long,
+          title: doc.data().title,
+          body: doc.data().body.substr(0, 170),
+          createdAt: doc.data().createdAt,
+          commentCount: doc.data().commentCount,
+          likeCount: doc.data().likeCount,
+          status: doc.data().status,
+          Thema: doc.data().Thema,
+          Stadtteil: doc.data().Stadtteil,
+          project: doc.data().project,
+          projectId: doc.data().project,
+        };
 
-      screams.push(docData);
-      this.setState({ myScreams: screams });
-    });
+        screams.push(docData);
+        this.setState({ myScreams: screams });
+      });
+    }
   };
 
   handleClose = () => {
@@ -643,32 +645,6 @@ class Account extends Component {
       </div>
     );
 
-    const dialog = isMobileOnly ? (
-      <Dialog
-        open={this.state.open}
-        onClose={this.handleClose}
-        TransitionComponent={Transition}
-        fullScreen
-      >
-        <Swipe onSwipeMove={this.onSwipeMove.bind(this)}>{dialogMarkup}</Swipe>
-      </Dialog>
-    ) : (
-      <Dialog
-        open={this.state.open}
-        onClose={this.handleClose}
-        BackdropProps={{ classes: { root: classes.root } }}
-        PaperProps={{ classes: { root: classes.paper } }}
-        TransitionComponent={Transition}
-        fullScreen
-        hideBackdrop // Disable the backdrop color/image
-        disableEnforceFocus // Let the user focus on elements outside the dialog
-        style={this.state.dialogStyle} // This was the key point, reset the position of the dialog, so the user can interact with other elements
-        disableBackdropClick // Remove the backdrop click (just to be sure)
-      >
-        <div className="contentWrapper_dialog">{dialogMarkup}</div>
-      </Dialog>
-    );
-
     return (
       <Fragment>
         <button
@@ -677,7 +653,34 @@ class Account extends Component {
           data-cy="profile-button"
         ></button>
 
-        {dialog}
+        {!this.props.UI.openInfoPage &&
+          (isMobileOnly ? (
+            <Dialog
+              open={this.state.open}
+              onClose={this.handleClose}
+              TransitionComponent={Transition}
+              fullScreen
+            >
+              <Swipe onSwipeMove={this.onSwipeMove.bind(this)}>
+                {dialogMarkup}
+              </Swipe>
+            </Dialog>
+          ) : (
+            <Dialog
+              open={this.state.open}
+              onClose={this.handleClose}
+              BackdropProps={{ classes: { root: classes.root } }}
+              PaperProps={{ classes: { root: classes.paper } }}
+              TransitionComponent={Transition}
+              fullScreen
+              hideBackdrop // Disable the backdrop color/image
+              disableEnforceFocus // Let the user focus on elements outside the dialog
+              style={this.state.dialogStyle} // This was the key point, reset the position of the dialog, so the user can interact with other elements
+              disableBackdropClick // Remove the backdrop click (just to be sure)
+            >
+              <div className="contentWrapper_dialog">{dialogMarkup}</div>
+            </Dialog>
+          ))}
       </Fragment>
     );
   }
