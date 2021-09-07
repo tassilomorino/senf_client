@@ -117,14 +117,6 @@ export class monitoring extends Component {
         minZoom: 8,
       },
     };
-
-    if (
-      cookies.get("Cookie_settings") !== "all" &&
-      cookies.get("Cookie_settings") !== "minimum" &&
-      isMobileOnly
-    ) {
-      this.props.history.push("/intro");
-    }
   }
 
   componentDidMount() {

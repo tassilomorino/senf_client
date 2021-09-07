@@ -368,18 +368,7 @@ class ScreamDialog extends Component {
     this.props.clearErrors();
   };
 
-  handleCookies() {
-    cookies.set("Cookie_settings", "all", {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 90,
-
-      sameSite: "none",
-      secure: true,
-    });
-    this.setState({ open: false });
-
-    this.setState({ open: true });
-  }
+  
 
   handleClick = () => {
     this.setState({ clicked: true });
@@ -559,40 +548,7 @@ class ScreamDialog extends Component {
       </div>
     );
 
-    // (
-    //   <div className="mapWrapperDialog">
-    //     <div className="CookieNoteDialog">
-    //       {" "}
-    //       <span className="cookiesNoteHeader">
-    //         Ohne das akzeptieren aller Cookies <br /> geht diese Funktion
-    //         nicht.
-    //       </span>
-    //       <br />
-    //       <div className="cookiesNoteText">
-    //         <span
-    //           className="Terms"
-    //           onClick={() => this.handleOpenCookiePreferences()}
-    //         >
-    //           Hier
-    //         </span>
-    //         &nbsp;findest du deine Cookie-Einstellungen.
-    //       </div>
-    //       <div className="Accept" onClick={() => this.handleCookies()}>
-    //         Alle Akzeptieren
-    //       </div>
-    //     </div>
-
-    //     <div className={classes.mapPlaceholder}>
-    //       {" "}
-    //       <div className="dialoggradient" />
-    //       <img
-    //         src={Maploader}
-    //         className="Maploaderbackground"
-    //         alt="ChatIcon"
-    //       />
-    //     </div>
-    //   </div>
-    // );
+  
 
     const anmeldeCard = !authenticated ? (
       <div className={classes.anmeldeText}>
