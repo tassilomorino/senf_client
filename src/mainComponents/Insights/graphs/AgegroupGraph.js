@@ -97,11 +97,102 @@ const Altersgruppe = ({ classes, screams }) => {
   let topics_traffic;
   const topics_ecoAndGreen = [];
   let topics_bike;
-  let bike_array_with_14_values;
 
   let topics_inclusionAndSocial;
   let topics_sportsAndLeisure;
   let topics_other;
+
+  const ideas = [
+    // nb of total ideas currently = 217
+    {
+      id: 1,
+      age: 17, // age of the user who created the idea
+      // likeCount: 2,
+      topic: "topic1", // [1, 3]
+      // votes: [17, 25]
+    },
+    {
+      id: 2,
+      age: 14,
+      // likeCount: 3,
+      topic: "topic2",
+    },
+    {
+      id: 3,
+      age: 16,
+      // likeCount: 1,
+      topic: "topic1",
+    },
+    {
+      id: 4,
+      age: 16,
+      // likeCount: 1,
+      topic: "topic1",
+    },
+    {
+      id: 5,
+      age: 29,
+      // likeCount: 2,
+      topic: "topic3",
+    },
+    // etc.
+  ];
+
+  const votes = [
+    // array containing data on each vote, total votes so far 1500
+    {
+      ideaId: 1, // ID of the idea that has been voted on
+      age: 17, // age of voter
+    },
+    {
+      ideaId: 1,
+      age: 25,
+    },
+    {
+      ideaId: 2,
+      age: 55,
+    },
+    {
+      ideaId: 1,
+      age: 14,
+    },
+  ];
+
+  // const traffic_array_with_14_values = [.....](edited)
+
+  const topic1Under18 = -ideas.filter(
+    ({ topic, age }) => topic === "topic1" && age < 18
+  ).length;
+
+  console.log(topic1Under18);
+
+  // const listOfIdsPerTopic1 = ideas.filter(({ topic }) => topic === "topic1").map(({ id }) => id); // makes the website very slow because twice looping over same array
+  // Less elegant but more performant solution is a for ... of loop :
+
+  const listOfIdsPerTopic1 = [];
+
+  for (const idea of ideas) {
+    if (idea.topic === "topic1") {
+      listOfIdsPerTopic1.push(idea.id);
+    }
+  }
+
+  const votesTopic1Under18 = votes.reduce((acc, cur) => {
+    // cur refers to each object in the array votes & acc is a number that get returned
+
+    if (listOfIdsPerTopic1.includes(cur.ideaId) && cur.age < 18) {
+      return ++acc;
+    } else {
+      return acc;
+    }
+  }, 0); // here, 0 is the initiual number for the accumulator
+
+  console.log(votesTopic1Under18); // const traffic_array_with_14_values = [.....](edited)
+
+  const bike_array_with_14_values = [
+    -ideas.filter(({ topic, age }) => topic === "topic1" && age < 18).length,
+    votesTopic1Under18,
+  ];
 
   useEffect(() => {
     // const agegroupUnder18 = _.filter(screams, (o) => o.age > 12 && o.age < 28);
@@ -179,80 +270,6 @@ const Altersgruppe = ({ classes, screams }) => {
     //     a
     //   );
     // }, 0);
-
-    const ideas = [
-      {
-        age: 17,
-        likeCount: 2,
-        topic: "Bike",
-      },
-      {
-        age: 14,
-        likeCount: 3,
-        topic: "Bike",
-      },
-      {
-        age: 19,
-        likeCount: 1,
-        topic: "Traffic",
-      },
-      {
-        age: 29,
-        likeCount: 2,
-        topic: "Care",
-      },
-    ];
-
-    let bike_array_with_14_values = [
-      "-(topic1-agegroupUnder18.length)",
-      "topic1-agegroupUnder18-likeCount-Sum",
-      "-(topic1-agegroup18To24.length)",
-      "topic1-agegroup18To24-likeCountSum",
-      "-(topic1-agegroup25To34.length)",
-      "topic1-agegroup25To34-likeCountSum",
-      "-(topic1-agegroup35To44.length)",
-      "topic1-agegroup35To44-likeCountSum",
-      "-(topic1-agegroup45To54.length)",
-      "topic1-agegroup45To54-likeCountSum",
-      "-(topic1-agegroup55To64.length)",
-      "topic1-agegroup55To64-likeCountSum",
-      "-(topic1-agegroup55To64.length)",
-      "topic1-agegroup55To64-likeCountSum",
-      "-(topic1-agegroupOver65.length)",
-      "topic1-agegroupOver65-likeCountSum",
-    ];
-
-    const x2 = [
-      "topic2-agegroupUnder18-likeCount-Sum",
-      "topic2-agegroupUnder18.length",
-      "topic2-agegroup18To24-likeCountSum",
-      "topic2-agegroup18To24.length",
-      "topic2-agegroup25To34-likeCountSum",
-      "topic2-agegroup25To34.length",
-      "....",
-    ];
-
-    let bike_ideas = 0;
-    let bike_likes = 0;
-
-    ideas.forEach((element, index) => {
-      if (element.topic === "Bike") {
-        if (element.age <= 18) {
-          bike_ideas++;
-          bike_likes += element.likeCount;
-
-          bike_array_with_14_values.push([
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 20,
-          ]);
-          console.log(bike_array_with_14_values);
-        }
-      }
-    });
-
-    const x = ideas.map((element) => element.likeCount);
-
-    console.log(x);
-    console.log(ideas, "bike_ideas", bike_ideas, "bike_likes", bike_likes);
 
     let topics_care = [
       _.filter(agegroupUnder18, { Thema: "Versorgung" }).likeCount,
