@@ -50,8 +50,6 @@ import { useTranslation, initReactI18next } from "react-i18next";
 import translationEN from "./util/translations/english.json";
 import translationDE from "./util/translations/german.json";
 
-import filtercomponent from "./pages/Filtercomponent";
-
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
@@ -199,12 +197,6 @@ const App = () => {
               <Route exact path="/datenschutz" component={datenschutz} />
 
               <Route exact path="/agb" component={agb} />
-
-              <Route
-                exact
-                path="/filtercomponent"
-                component={filtercomponent}
-              />
 
               <Route exact path="/monitoring" component={monitoring} />
 
