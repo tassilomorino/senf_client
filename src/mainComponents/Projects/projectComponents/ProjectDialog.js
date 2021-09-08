@@ -519,14 +519,6 @@ class ProjectDialog extends Component {
     this.props.closeScream();
   };
   mapDesktopReset = () => {
-    // this.setState({
-    //   viewport: {
-    //     zoom: 11.5,
-    //     pitch: 30,
-    //     latitude: 50.95,
-    //     longitude: 6.9503,
-    //   },
-    // });
     this.setState({
       latitude1: 51.08,
       latitude2: 50.79,
@@ -555,8 +547,6 @@ class ProjectDialog extends Component {
         calendar,
       },
       screamIdParam,
-
-      showTitles,
 
       viewport,
       handleTopicSelector,
@@ -603,31 +593,13 @@ class ProjectDialog extends Component {
         selectedId={this.state.selectedId}
         screamIdParam={screamIdParam}
         _onViewportChangeDesktop={this._onViewportChangeDesktop}
-        showTitles={showTitles}
+        showTitles={this.state.showTitles}
         loadingProjects={loadingProjects}
         geoData={geoData}
         handleTopicSelector={handleTopicSelector}
         topicsSelected={topicsSelected}
       ></ProjectIdeas>
     ) : null;
-
-    const dateComponent = endDate ? (
-      <div className="date">
-        {" "}
-        {startDate} – {endDate}{" "}
-      </div>
-    ) : (
-      <div className="date">{startDate} </div>
-    );
-    const postScreams =
-      isMobileOnly && this.state.order === 1 ? (
-        <PostScream
-          openInfoPageDesktop={openInfoPageDesktop}
-          loadingProjects={loadingProjects}
-          projectsData={projectsData}
-          project={this.props.project}
-        />
-      ) : null;
 
     const infoButtons =
       weblink || contact ? (
@@ -697,7 +669,14 @@ class ProjectDialog extends Component {
           />
         </div>
 
-        {postScreams}
+        {isMobileOnly && this.state.order === 1 && (
+          <PostScream
+            openInfoPageDesktop={openInfoPageDesktop}
+            loadingProjects={loadingProjects}
+            projectsData={projectsData}
+            project={this.props.project}
+          />
+        )}
         <div className="imgWrapper">
           <img
             src={imgUrl}
@@ -778,7 +757,14 @@ class ProjectDialog extends Component {
               <br />
               <div className={classes.title}> Zeitraum </div>
               <Typography className={classes.bodytext}>
-                {dateComponent}
+                {endDate ? (
+                  <div className="date">
+                    {" "}
+                    {startDate} – {endDate}{" "}
+                  </div>
+                ) : (
+                  <div className="date">{startDate} </div>
+                )}
               </Typography>
               <br />
 
@@ -801,16 +787,6 @@ class ProjectDialog extends Component {
           <CalendarComponent
             projectScreams={this.props.project.screams}
           ></CalendarComponent>
-
-          {/* <div className={classes.anmeldeText}>
-            An diesem Bereich arbeiten wir gerade. Da unsere Denkweise in jeder
-            Hinsicht bürgerorientiert ist, freuen wir uns natürlich auch über
-            deine Ideen zur Verbesserung unserer Plattform. Sprich uns gerne an!{" "}
-            <br />
-            <a href="mailto:dein@senf.koeln">
-              <button className="buttonWide buttonDialogSign">Kontakt</button>
-            </a>
-          </div> */}
         </div>
       </div>
     );
@@ -867,7 +843,7 @@ class ProjectDialog extends Component {
             _onViewportChangeDesktop={this._onViewportChangeDesktop}
             viewport={viewport}
             selectedId={this.state.selectedId}
-            showTitles={showTitles}
+            showTitles={this.state.showTitles}
             openInfoPageDesktop={this.state.openInfoPageDesktop}
             mapDesktopShowResults={this.mapDesktopShowResults}
             mapDesktopReset={this.mapDesktopReset}

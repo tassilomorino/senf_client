@@ -55,34 +55,15 @@ export class home extends Component {
       latitude2: 50.79,
       longitude2: 6.712,
       longitude3: 7.17,
-      geofilterStatus: false,
-      loadingPage: false,
-      hasNextPage: true,
-      userHandle: this.props.user.credentials.handle,
       screamIdParam: null,
-      projectIdParam: null,
-      count: 0,
-      showDemand: false,
-      // checked: 1,
-      // checked1: "Empty",
-      // checked2: "Empty",
-      // checked3: "Empty",
-      // checked4: "Empty",
-      // checked5: "Empty",
-      // checked6: "Empty",
-      // checked7: "Empty",
       dropdown: "10",
       selectedId: "",
-      showTitles: false,
       openInfoPageDesktop: false,
       cookiesSetDesktop: false,
 
       openGeofilter: false,
       showGeofilterResults: false,
       createGeofilterCircle: false,
-
-      openScream: false,
-      openProject: false,
       viewport: {
         zIndex: 9999,
         position: "fixed",
@@ -306,31 +287,10 @@ export class home extends Component {
   };
 
   _onViewportChangeDesktop = (viewport) => {
-    if (viewport.zoom > 15) {
-      this.setState({
-        showTitles: true,
-      });
-    } else {
-      this.setState({
-        showTitles: false,
-      });
-    }
-
     this.setState({ viewport, selectedId: "" });
   };
 
   zoomToBounds = (centerLat, centerLong, zoom) => {
-    // if (this.props.geoData !== undefined && this.props.geoData !== "") {
-    //   var bbox = require("geojson-bbox");
-    //   var feature = {
-    //     type: "Feature",
-    //     geometry: {
-    //       type: "LineString",
-    //       coordinates: JSON.parse(this.props.geoData),
-    //     },
-    //   };
-    //   var extent = bbox(feature);
-
     this.setState({
       viewport: {
         latitude: centerLat,
@@ -527,7 +487,6 @@ export class home extends Component {
 
   render() {
     const { screams, loading, projects, loadingProjects } = this.props.data;
-    const { order, screamIdParam } = this.state;
 
     const {
       classes,
@@ -578,11 +537,8 @@ export class home extends Component {
         <ProjectDialog
           loading={loading}
           openProject={this.props.UI.openProject}
-          screamIdParam={screamIdParam}
-          _onViewportChangeDesktop={this._onViewportChangeDesktop}
+          screamIdParam={this.state.screamIdParam}
           zoomToBounds={this.zoomToBounds}
-          showTitles={this.state.showTitles}
-          handleClick={this.handleClick}
           handleTopicSelector={this.handleTopicSelector}
           topicsSelected={this.state.topicsSelected}
           openInfoPageDesktop={this.state.openInfoPageDesktop}
@@ -612,7 +568,6 @@ export class home extends Component {
         <Topbar
           loading={loading}
           handleClick={this.handleClick}
-          showDemand={this.state.showDemand}
           order={this.state.order}
           handleTopicSelector={this.handleTopicSelector}
           topicsSelected={this.state.topicsSelected}
@@ -650,7 +605,6 @@ export class home extends Component {
           mapDesktopShowResults={this.mapDesktopShowResults}
           viewport={this.state.viewport}
           selectedId={this.state.selectedId}
-          showTitles={this.state.showTitles}
           openInfoPageDesktop={this.state.openInfoPageDesktop}
           mapDesktopShowResults={this.mapDesktopShowResults}
           mapDesktopReset={this.mapDesktopReset}
@@ -667,7 +621,7 @@ export class home extends Component {
 
           <AllIdeasPage
             loading={loading}
-            order={order}
+            order={this.state.order}
             classes={classes}
             dataFinal={dataFinal}
             viewport={this.state.viewport}
@@ -683,7 +637,6 @@ export class home extends Component {
             topicsSelected={this.state.topicsSelected}
             dataNoLocationHandle={this.dataNoLocationHandle}
             noLocation={this.noLocation}
-            showDemand={this.state.showDemand}
             handleClick={this.state.handleClick}
             handleDropdown={this.handleDropdown}
             handleOpenGeofilter={this.handleOpenGeofilter}
@@ -701,13 +654,13 @@ export class home extends Component {
           <ProjectsPage
             projects={projects}
             loadingProjects={loadingProjects}
-            order={order}
+            order={this.state.order}
           ></ProjectsPage>
 
-          <InsightsPage order={order}></InsightsPage>
+          <InsightsPage order={this.state.order}></InsightsPage>
 
           <ScreamDialog
-            screamIdParam={screamIdParam}
+            screamIdParam={this.state.screamIdParam}
             projectsData={projects}
           ></ScreamDialog>
 
