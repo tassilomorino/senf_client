@@ -1,44 +1,19 @@
 /** @format */
 
-import React, { Component } from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import React from "react";
+import { useTranslation } from "react-i18next";
 
+//Icons
 import AddIcon from "../../images/icons/plus_grey.png";
 
-import { createMuiTheme } from "@material-ui/core";
+//Components
 import ProjectCards from "./projectComponents/ProjectCards";
 
 import _ from "lodash";
 
-const styles = {};
-
-const theme = createMuiTheme({
-  overrides: {
-    MuiInput: {
-      underline: {
-        "&&&&:before": {
-          borderBottom: "1px solid rgba(0, 0, 0, 0)",
-        },
-        "&&&&:after": {
-          borderBottom: "1px solid rgba(255, 255, 255, 0)",
-        },
-      },
-    },
-    MuiNativeSelect: {
-      icon: {
-        opacity: 0,
-      },
-    },
-  },
-});
-export class ProjectsPage extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  createProject = () => {
+const ProjectsPage = ({ loadingProjects, order, projects }) => {
+  const { t } = useTranslation();
+  const createProject = () => {
     var link =
       "mailto:dein@senf.koeln" +
       "?subject=" +
@@ -59,76 +34,10 @@ export class ProjectsPage extends Component {
     window.location.href = link;
   };
 
-  render() {
-    const {
-      loadingProjects,
-      order,
-
-      projectsData,
-      userHandle,
-    } = this.props;
-
-    let ProjectsDataFinal = [];
-
-    projectsData.forEach((element) => {
-      if (userHandle === "TomM") {
-        ProjectsDataFinal.push(element);
-      } else {
-        if (element.createdAt !== "") {
-          ProjectsDataFinal.push(element);
-        }
-      }
-    });
-
-    let projects = !loadingProjects ? (
-      _.orderBy(ProjectsDataFinal, "createdAt", "desc").map((projects) => (
-        <ProjectCards
-          key={projects.project}
-          project={projects}
-          // screamIdParam={screamIdParam}
-          // _onViewportChangeDesktop={_onViewportChangeDesktop}
-          // showTitles={showTitles}
-          // viewport={viewport}
-          // zoomToBounds={zoomToBounds}
-          // handleClick={handleClick}
-          // latitude1={latitude1}
-          // latitude2={latitude2}
-          // latitude3={latitude3}
-          // latitude4={latitude4}
-          // longitude1={longitude1}
-          // longitude2={longitude2}
-          // longitude3={longitude3}
-          // longitude4={longitude4}
-          // openInfoPageDesktop={openInfoPageDesktop}
-          // projectsData={projectsData}
-          // loadingProjects={loadingProjects}
-          // mapDesktopShowResults={mapDesktopShowResults}
-        />
-      ))
-    ) : (
-      <div className="MainAnimation">
-        <div className="no-ideas-yet">Projekträume werden geladen...</div>
-      </div>
-    );
-
-    const error =
-      !loadingProjects && ProjectsDataFinal.length === 0 ? (
-        <div className="MainAnimation">
-          <div className="no-ideas-yet">
-            Beim laden ist ein Fehler aufgetreten. Bitte refreshe die Seite...
-          </div>
-        </div>
-      ) : null;
-
-    return (
-      <div className="MainAnimationChannels">
-        <div
-          style={
-            order === 2
-              ? { display: "block", width: "100%", minWidth: "100%" }
-              : { display: "none", width: "100%", minWidth: "100%" }
-          }
-        >
+  return (
+    <div className="MainAnimationChannels">
+      {order === 2 && (
+        <div>
           <div className="homeHeadermain"></div>
 
           <div className="MainAnimation">
@@ -144,19 +53,30 @@ export class ProjectsPage extends Component {
                 zIndex: 0,
               }}
             >
-              Gemeinsam mit Organisationen und Initiativen suchen wir zu
-              spezifischen Themen/ Orten eure Ideen. In den jeweiligen
-              Projekträumen könnt ihr die Ideen ansehen, kommentieren & neue
-              eintragen!
+              {t("projectrooms_description")}
             </div>
             <br />
-            {projects}
-            {error}
+            {!loadingProjects ? (
+              _.orderBy(projects, "createdAt", "desc").map((projects) => (
+                <ProjectCards key={projects.project} project={projects} />
+              ))
+            ) : (
+              <div className="MainAnimation">
+                <div className="no-ideas-yet">{t("projectrooms_loader")}</div>
+              </div>
+            )}
+            {!loadingProjects && projects.length === 0 && (
+              <div className="MainAnimation">
+                <div className="no-ideas-yet">
+                  {t("projectrooms_loading_error")}
+                </div>
+              </div>
+            )}
             <br />
             <br />
             <br />
 
-            <div className="projectCard" onClick={this.createProject}>
+            <div className="projectCard" onClick={createProject}>
               <div className="leftWrapper" style={{ opacity: 0.5 }}>
                 <img
                   src={AddIcon}
@@ -167,11 +87,12 @@ export class ProjectsPage extends Component {
                 />
               </div>
               <div className="rightWrapper">
-                <div className="owner"> Für Organisation/Initiativen </div>
-                <div className="title"> Projektraum anfragen!</div>
-                <div className="date">
-                  Ihr möchtet zu einem spezifischen Thema/ Ort Ideen sammeln?
+                <div className="owner">
+                  {" "}
+                  {t("projectrooms_request_overTitle")}{" "}
                 </div>
+                <div className="title"> {t("projectrooms_request_title")}</div>
+                <div className="date">{t("projectrooms_request_subTitle")}</div>
               </div>
             </div>
 
@@ -180,22 +101,9 @@ export class ProjectsPage extends Component {
             <br />
           </div>
         </div>
-      </div>
-    );
-  }
-}
-ProjectsPage.propTypes = {
-  user: PropTypes.object.isRequired,
+      )}
+    </div>
+  );
 };
 
-const mapActionsToProps = {};
-
-const mapStateToProps = (state) => ({
-  data: state.data,
-  user: state.user,
-});
-
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(ProjectsPage));
+export default ProjectsPage;

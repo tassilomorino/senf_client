@@ -269,14 +269,6 @@ class ProjectDialog extends Component {
 
     screamIdParam: null,
     showDemand: false,
-    checked: 1,
-    checked1: "Empty",
-    checked2: "Empty",
-    checked3: "Empty",
-    checked4: "Empty",
-    checked5: "Empty",
-    checked6: "Empty",
-    checked7: "Empty",
     dropdown: "10",
     selectedId: "",
     showTitles: false,
@@ -308,7 +300,6 @@ class ProjectDialog extends Component {
       this.handleOpen();
     }
   }
-  componentWillReceiveProps(nextProps) {}
 
   handleOpen = () => {
     this.props.handleTopicSelector("all");
@@ -570,35 +561,15 @@ class ProjectDialog extends Component {
       viewport,
       handleTopicSelector,
       topicsSelected,
-      latitude1,
-      longitude1,
-      latitude2,
-      longitude2,
-      latitude3,
-      longitude3,
-      latitude4,
-      longitude4,
       openInfoPageDesktop,
       projectsData,
       loadingProjects,
-
-      user: {
-        authenticated,
-        credentials: { handle },
-      },
     } = this.props;
 
     const dataRar = this.props.project.screams;
 
-    console.log("dataRar", dataRar);
     const dataFinal = dataRar.filter(
-      ({ Thema, lat, long, status }) =>
-        topicsSelected.includes(Thema) &&
-        lat <= latitude1 &&
-        lat >= latitude2 &&
-        long >= longitude2 &&
-        long <= longitude3 &&
-        status === "None"
+      ({ Thema, status }) => topicsSelected.includes(Thema) && status === "None"
     );
 
     const projectIdeas = !loading ? (
@@ -735,8 +706,6 @@ class ProjectDialog extends Component {
             className="profile-image"
           />
         </div>
-        {/* <div className="project-dialog-owner"> {owner} </div> */}
-
         <div className="project-dialog-title">{title}</div>
 
         <div

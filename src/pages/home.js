@@ -33,7 +33,7 @@ import Cookies from "universal-cookie";
 import Topbar from "../components/layout/Topbar";
 import MapDesktop from "../components/map/MapDesktop";
 import { AllIdeasPage } from "../mainComponents/Ideas/AllIdeasPage";
-import { ProjectsPage } from "../mainComponents/Projects/ProjectsPage";
+import ProjectsPage from "../mainComponents/Projects/ProjectsPage";
 import ScreamDialog from "../components/scream/ScreamDialog";
 import ProjectDialog from "../mainComponents/Projects/projectComponents/ProjectDialog";
 
@@ -585,14 +585,6 @@ export class home extends Component {
           handleClick={this.handleClick}
           handleTopicSelector={this.handleTopicSelector}
           topicsSelected={this.state.topicsSelected}
-          latitude1={this.state.latitude1}
-          latitude2={this.state.latitude2}
-          latitude3={this.state.latitude3}
-          latitude4={this.state.latitude4}
-          longitude1={this.state.longitude1}
-          longitude2={this.state.longitude2}
-          longitude3={this.state.longitude3}
-          longitude4={this.state.longitude4}
           openInfoPageDesktop={this.state.openInfoPageDesktop}
           loadingProjects={loadingProjects}
           projectsData={projects}
@@ -707,39 +699,9 @@ export class home extends Component {
           ></AllIdeasPage>
 
           <ProjectsPage
-            loading={loading}
+            projects={projects}
             loadingProjects={loadingProjects}
             order={order}
-            classes={classes}
-            openInfoPageDesktop={this.state.openInfoPageDesktop}
-            viewport={this.state.viewport}
-            latitude1={this.state.latitude1}
-            latitude2={this.state.latitude2}
-            latitude3={this.state.latitude3}
-            latitude4={this.state.latitude4}
-            longitude1={this.state.longitude1}
-            longitude2={this.state.longitude2}
-            longitude3={this.state.longitude3}
-            longitude4={this.state.longitude4}
-            zoomToBounds={this.zoomToBounds}
-            handleTopicSelector={this.handleTopicSelector}
-            topicsSelected={this.state.topicsSelected}
-            showDemand={this.state.showDemand}
-            handleClick={this.handleClick}
-            handleDropdown={this.handleDropdown}
-            handleOpenGeofilter={this.handleOpenGeofilter}
-            handleCloseGeofilter={this.handleCloseGeofilter}
-            handleResetGeofilter={this.handleResetGeofilter}
-            selectedId={this.state.selectedId}
-            projectsData={projects}
-            _onViewportChange={this._onViewportChange}
-            _onViewportChangeDesktop={this._onViewportChangeDesktop}
-            mapDesktopShowResults={this.state.mapDesktopShowResults}
-            mapDesktopReset={this.mapDesktopReset}
-            showTitles={this.state.showTitles}
-            dropdown={this.state.dropdown}
-            screamIdParam={screamIdParam}
-            userHandle={handle}
           ></ProjectsPage>
 
           <InsightsPage order={order}></InsightsPage>
