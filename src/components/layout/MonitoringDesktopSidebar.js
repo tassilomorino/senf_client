@@ -1,7 +1,6 @@
 /** @format */
 
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import Logo from "../../images/logo.png";
 
 import SignNote from "../profile/SignNote";
@@ -13,20 +12,12 @@ import Facebook from "../../images/icons/socialmedia/facebook.png";
 import Insights_yellow from "../../images/icons/insights_yellow.png";
 import Insights_grey from "../../images/icons/insights_grey.png";
 
-import profile_yellow from "../../images/icons/profile_yellow.png";
-import profile_grey from "../../images/icons/profile_grey.png";
-
 import Noprofile from "../../images/noprofile.png";
 import Arrow from "../../images/icons/arrow_yellow.png";
 
 import TopicFilter from "./TopicFilter";
-import Account from "../profile/Account";
 
 export class MonitoringDesktopSidebar extends Component {
-  state = {
-    project: "",
-  };
-
   render() {
     const {
       authenticated,
@@ -37,9 +28,6 @@ export class MonitoringDesktopSidebar extends Component {
       topicsSelected,
 
       openInfoPageDesktop,
-
-      deleteAccount,
-      handleLogout,
     } = this.props;
     //
 
@@ -54,27 +42,7 @@ export class MonitoringDesktopSidebar extends Component {
         />
         Anmelden
       </div>
-    ) : (
-      <div
-        className="profile"
-        // onClick={() => handleClick(4)}
-      >
-        <Account
-          handleTopicSelector={handleTopicSelector}
-          topicsSelected={topicsSelected}
-          deleteAccount={deleteAccount}
-          handleLogout={handleLogout}
-          openInfoPageDesktop={openInfoPageDesktop}
-        />
-        <img
-          src={order === 4 ? profile_grey : profile_yellow}
-          width="35"
-          alt="EndImage"
-          style={{ paddingRight: "10px" }}
-        />
-        Profil
-      </div>
-    );
+    ) : null;
 
     return (
       <div
@@ -168,8 +136,4 @@ export class MonitoringDesktopSidebar extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  data: state.data,
-});
-
-export default connect(mapStateToProps)(MonitoringDesktopSidebar);
+export default MonitoringDesktopSidebar;

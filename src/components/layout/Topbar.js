@@ -1,13 +1,10 @@
 /** @format */
 
 import React from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
 
 //COMPONENTS
 import InlineInformationPage from "../infocomponents/InlineInformationPage";
-
-//LOADER ICON
 
 //REDUX
 import { connect } from "react-redux";
@@ -17,28 +14,19 @@ import SignNote from "../profile/SignNote";
 import Account from "../profile/Account";
 
 //ICONS
-
-import Insights_yellow from "../../images/icons/insights_yellow.png";
-
 import profile_yellow from "../../images/icons/profile_yellow.png";
-import profile_grey from "../../images/icons/profile_grey.png";
 import Noprofile from "../../images/noprofile.png";
 
 import Logo from "../../images/logo.png";
 
-const styles = {};
 class Topbar extends React.Component {
   render() {
     const {
-      classes,
       user: { authenticated },
-
       order,
       handleClick,
-
       handleTopicSelector,
       topicsSelected,
-
       openInfoPageDesktop,
       deleteAccount,
       handleLogout,
@@ -109,7 +97,4 @@ const mapStateToProps = (state) => ({
   user: state.user,
 });
 
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(Topbar));
+export default connect(mapStateToProps, mapActionsToProps)(Topbar);
