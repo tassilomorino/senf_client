@@ -19,7 +19,7 @@ import profile_grey from "../../images/icons/profile_grey.png";
 import Noprofile from "../../images/noprofile.png";
 import Arrow from "../../images/icons/arrow_yellow.png";
 
-import Themenfilter from "./Themenfilter";
+import TopicFilter from "./TopicFilter";
 import Account from "../profile/Account";
 
 export class MonitoringDesktopSidebar extends Component {
@@ -33,22 +33,8 @@ export class MonitoringDesktopSidebar extends Component {
 
       order,
       handleClick,
-      handleLegend,
-      handleLegend1,
-      handleLegend2,
-      handleLegend3,
-      handleLegend4,
-      handleLegend5,
-      handleLegend6,
-      handleLegend7,
-      checked,
-      checked1,
-      checked2,
-      checked3,
-      checked4,
-      checked5,
-      checked6,
-      checked7,
+      handleTopicSelector,
+      topicsSelected,
 
       openInfoPageDesktop,
 
@@ -71,25 +57,11 @@ export class MonitoringDesktopSidebar extends Component {
     ) : (
       <div
         className="profile"
-      // onClick={() => handleClick(4)}
+        // onClick={() => handleClick(4)}
       >
         <Account
-          handleLegend={this.handleLegend}
-          handleLegend1={this.handleLegend1}
-          handleLegend2={this.handleLegend2}
-          handleLegend3={this.handleLegend3}
-          handleLegend4={this.handleLegend4}
-          handleLegend5={this.handleLegend5}
-          handleLegend6={this.handleLegend6}
-          handleLegend7={this.handleLegend7}
-          checked={checked}
-          checked1={checked1}
-          checked2={checked2}
-          checked3={checked3}
-          checked4={checked4}
-          checked5={checked5}
-          checked6={checked6}
-          checked7={checked7}
+          handleTopicSelector={handleTopicSelector}
+          topicsSelected={topicsSelected}
           deleteAccount={deleteAccount}
           handleLogout={handleLogout}
           openInfoPageDesktop={openInfoPageDesktop}
@@ -154,13 +126,10 @@ export class MonitoringDesktopSidebar extends Component {
           }}
         ></div>
 
-        <Themenfilter
-          handlers={
-            [handleLegend, handleLegend1, handleLegend2, handleLegend3,
-              handleLegend4, handleLegend5, handleLegend6, handleLegend7]
-          }
-          checks={[checked, checked1, checked2, checked3, checked4, checked5, checked6, checked7]}
-        ></Themenfilter>
+        <TopicFilter
+          handleTopicSelector={handleTopicSelector}
+          topicsSelected={topicsSelected}
+        ></TopicFilter>
         <div
           style={{
             position: "relative",

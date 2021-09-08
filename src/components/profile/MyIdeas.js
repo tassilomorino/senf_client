@@ -15,7 +15,7 @@ import NativeSelect from "@material-ui/core/NativeSelect";
 import _ from "lodash";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
-import Themenfilter from "../layout/Themenfilter";
+import TopicFilter from "../layout/TopicFilter";
 
 const styles = {
   inlineText: {
@@ -59,7 +59,7 @@ export class MyIdeas extends Component {
       classes,
       loading,
       dropdown,
-      screamIdParam,
+
       myScreams,
 
       viewport,
@@ -77,25 +77,8 @@ export class MyIdeas extends Component {
 
       handleDropdown,
 
-      handleLegend,
-      handleLegend1,
-      handleLegend2,
-      handleLegend3,
-      handleLegend4,
-      handleLegend5,
-      handleLegend6,
-      handleLegend7,
-      checked,
-      checked1,
-      checked2,
-      checked3,
-      checked4,
-      checked5,
-      checked6,
-      checked7,
-
-      handleClick,
-      showDemand,
+      handleTopicSelector,
+      topicsSelected,
 
       handleOpenGeofilter,
       handleCloseGeofilter,
@@ -106,123 +89,29 @@ export class MyIdeas extends Component {
       dataNoLocationHandle,
       selectedId,
       noLocation,
-
-      openInfoPageDesktop,
-      showTitles,
-      _onViewportChangeDesktop,
     } = this.props;
 
     //
 
-    let dataRarChannel = [];
-    const dataArrayChannel = myScreams;
+    const MyDataFinal = myScreams.filter(
+      ({ Thema, lat, long, status }) =>
+        topicsSelected.includes(Thema) &&
+        lat <= latitude1 &&
+        lat >= latitude2 &&
+        long >= longitude2 &&
+        long <= longitude3 &&
+        status === "None"
+    );
 
-    dataArrayChannel.forEach((element) => {
-      if (
-        checked === 1 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRarChannel.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked1 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRarChannel.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked2 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRarChannel.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked3 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRarChannel.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked4 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRarChannel.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked5 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRarChannel.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked6 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRarChannel.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked7 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRarChannel.push(element);
-      }
-    });
-
-    let dataFinalChannel = [];
-    const dataArrayFinalChannel = dataRarChannel;
-    if (
-      dataArrayFinalChannel !== undefined &&
-      dataArrayFinalChannel.length > 0
-    ) {
-      dataArrayFinalChannel.forEach((element) => {
-        if (element.status === "None") {
-          dataFinalChannel.push(element);
-        }
-      });
-    }
-
-    let recentScreamsMarkup = _.orderBy(
-      dataFinalChannel,
-      "createdAt",
-      "desc"
-    ).map((scream) => <Scream key={scream.screamId} scream={scream} />);
-
-    let HotScreamsMarkup = _.orderBy(dataFinalChannel, "likeCount", "desc").map(
+    let recentScreamsMarkup = _.orderBy(MyDataFinal, "createdAt", "desc").map(
       (scream) => <Scream key={scream.screamId} scream={scream} />
     );
 
-    let screamLength = dataFinalChannel.length;
+    let HotScreamsMarkup = _.orderBy(MyDataFinal, "likeCount", "desc").map(
+      (scream) => <Scream key={scream.screamId} scream={scream} />
+    );
+
+    let screamLength = MyDataFinal.length;
 
     let noMoreScreamsMarkup =
       !loading && screamLength > 0 ? (
@@ -243,13 +132,10 @@ export class MyIdeas extends Component {
       <div className="projectIdeascontent">
         <div className="projectHeader">
           <div className="FilterComponentMobile">
-            <Themenfilter
-              handlers={
-                [handleLegend, handleLegend1, handleLegend2, handleLegend3,
-                  handleLegend4, handleLegend5, handleLegend6, handleLegend7]
-              }
-              checks={[checked, checked1, checked2, checked3, checked4, checked5, checked6, checked7]}
-            ></Themenfilter>{" "}
+            <TopicFilter
+              handleTopicSelector={handleTopicSelector}
+              topicsSelected={topicsSelected}
+            ></TopicFilter>
           </div>
 
           <div
@@ -305,7 +191,7 @@ export class MyIdeas extends Component {
         </div>
 
         <Geofilter
-          dataFinal={dataFinalChannel}
+          dataFinal={MyDataFinal}
           latitude1={latitude1}
           latitude2={latitude2}
           latitude3={latitude3}
@@ -319,22 +205,6 @@ export class MyIdeas extends Component {
           onClick={onClick}
           handleRevert={handleRevert}
           noLocation={noLocation}
-          handleLegend={handleLegend}
-          handleLegend1={handleLegend1}
-          handleLegend2={handleLegend2}
-          handleLegend3={handleLegend3}
-          handleLegend4={handleLegend4}
-          handleLegend5={handleLegend5}
-          handleLegend6={handleLegend6}
-          handleLegend7={handleLegend7}
-          checked={checked}
-          checked1={checked1}
-          checked2={checked2}
-          checked3={checked3}
-          checked4={checked4}
-          checked5={checked5}
-          checked6={checked6}
-          checked7={checked7}
           handleOpenGeofilter={handleOpenGeofilter}
           handleCloseGeofilter={handleCloseGeofilter}
           handleResetGeofilter={handleResetGeofilter}
@@ -344,6 +214,8 @@ export class MyIdeas extends Component {
           dataNoLocationHandle={dataNoLocationHandle}
           selectedId={selectedId}
           noLocation={noLocation}
+          handleTopicSelector={handleTopicSelector}
+          topicsSelected={topicsSelected}
         />
 
         <ToggleDisplay show={dropdown === "10"}>

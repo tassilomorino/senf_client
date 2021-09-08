@@ -64,58 +64,13 @@ export class ProjectsPage extends Component {
       loadingProjects,
       order,
 
-      screamIdParam,
-      openInfoPageDesktop,
-      zoomToBounds,
-
-      latitude1,
-      longitude1,
-      latitude2,
-      longitude2,
-      latitude3,
-      longitude3,
-      latitude4,
-      longitude4,
-      handleClick,
-      handleLegend,
-      handleLegend1,
-      handleLegend2,
-      handleLegend3,
-      handleLegend4,
-      handleLegend5,
-      handleLegend6,
-      handleLegend7,
-      checked,
-      checked1,
-      checked2,
-      checked3,
-      checked4,
-      checked5,
-      checked6,
-      checked7,
-
-      viewport,
-      _onViewportChangeDesktop,
-      mapDesktopShowResults,
-      showTitles,
       projectsData,
       userHandle,
-      // user: {
-      //   credentials: { handle },
-      //   authenticated,
-      // },
     } = this.props;
 
     let ProjectsDataFinal = [];
 
     projectsData.forEach((element) => {
-      // if (window.location.pathname === "/private") {
-      //   ProjectsDataFinal.push(element);
-      // } else {
-      //   if (element.createdAt !== "") {
-      //     ProjectsDataFinal.push(element);
-      //   }
-      // }
       if (userHandle === "TomM") {
         ProjectsDataFinal.push(element);
       } else {
@@ -130,40 +85,24 @@ export class ProjectsPage extends Component {
         <ProjectCards
           key={projects.project}
           project={projects}
-          screamIdParam={screamIdParam}
-          _onViewportChangeDesktop={_onViewportChangeDesktop}
-          showTitles={showTitles}
-          viewport={viewport}
-          zoomToBounds={zoomToBounds}
-          handleClick={handleClick}
-          handleLegend={handleLegend}
-          handleLegend1={handleLegend1}
-          handleLegend2={handleLegend2}
-          handleLegend3={handleLegend3}
-          handleLegend4={handleLegend4}
-          handleLegend5={handleLegend5}
-          handleLegend6={handleLegend6}
-          handleLegend7={handleLegend7}
-          checked={checked}
-          checked1={checked1}
-          checked2={checked2}
-          checked3={checked3}
-          checked4={checked4}
-          checked5={checked5}
-          checked6={checked6}
-          checked7={checked7}
-          latitude1={latitude1}
-          latitude2={latitude2}
-          latitude3={latitude3}
-          latitude4={latitude4}
-          longitude1={longitude1}
-          longitude2={longitude2}
-          longitude3={longitude3}
-          longitude4={longitude4}
-          openInfoPageDesktop={openInfoPageDesktop}
-          projectsData={projectsData}
-          loadingProjects={loadingProjects}
-          mapDesktopShowResults={mapDesktopShowResults}
+          // screamIdParam={screamIdParam}
+          // _onViewportChangeDesktop={_onViewportChangeDesktop}
+          // showTitles={showTitles}
+          // viewport={viewport}
+          // zoomToBounds={zoomToBounds}
+          // handleClick={handleClick}
+          // latitude1={latitude1}
+          // latitude2={latitude2}
+          // latitude3={latitude3}
+          // latitude4={latitude4}
+          // longitude1={longitude1}
+          // longitude2={longitude2}
+          // longitude3={longitude3}
+          // longitude4={longitude4}
+          // openInfoPageDesktop={openInfoPageDesktop}
+          // projectsData={projectsData}
+          // loadingProjects={loadingProjects}
+          // mapDesktopShowResults={mapDesktopShowResults}
         />
       ))
     ) : (

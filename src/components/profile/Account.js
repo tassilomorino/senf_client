@@ -260,14 +260,7 @@ class Account extends Component {
     // userHandle: this.props.user.credentials.handle,
 
     showDemand: false,
-    checked: 1,
-    checked1: "Empty",
-    checked2: "Empty",
-    checked3: "Empty",
-    checked4: "Empty",
-    checked5: "Empty",
-    checked6: "Empty",
-    checked7: "Empty",
+
     dropdown: "10",
     selectedId: "",
     showTitles: false,
@@ -494,23 +487,8 @@ class Account extends Component {
 
       showTitles,
       _onViewportChangeDesktop,
-
-      handleLegend,
-      handleLegend1,
-      handleLegend2,
-      handleLegend3,
-      handleLegend4,
-      handleLegend5,
-      handleLegend6,
-      handleLegend7,
-      checked,
-      checked1,
-      checked2,
-      checked3,
-      checked4,
-      checked5,
-      checked6,
-      checked7,
+      handleTopicSelector,
+      topicsSelected,
 
       handleLogout,
       deleteAccount,
@@ -542,22 +520,6 @@ class Account extends Component {
           viewport={this.state.viewport}
           _onViewportChange={this._onViewportChange}
           noLocation={this.noLocation}
-          handleLegend={handleLegend}
-          handleLegend1={handleLegend1}
-          handleLegend2={handleLegend2}
-          handleLegend3={handleLegend3}
-          handleLegend4={handleLegend4}
-          handleLegend5={handleLegend5}
-          handleLegend6={handleLegend6}
-          handleLegend7={handleLegend7}
-          checked={checked}
-          checked1={checked1}
-          checked2={checked2}
-          checked3={checked3}
-          checked4={checked4}
-          checked5={checked5}
-          checked6={checked6}
-          checked7={checked7}
           dataNoLocationHandle={this.dataNoLocationHandle}
           showDemand={this.state.showDemand}
           handleClick={this.handleClick}
@@ -573,6 +535,8 @@ class Account extends Component {
           screamIdParam={screamIdParam}
           _onViewportChangeDesktop={_onViewportChangeDesktop}
           showTitles={showTitles}
+          handleTopicSelector={handleTopicSelector}
+          topicsSelected={topicsSelected}
         ></MyIdeas>
       ) : null;
 
@@ -593,7 +557,9 @@ class Account extends Component {
               </button> */}
         </div>
         {/* <div className="dialoggradient1"></div> */}
-        <div className="hey-user" data-cy="hey-user">Hey {handle} </div>
+        <div className="hey-user" data-cy="hey-user">
+          Hey {handle}{" "}
+        </div>
 
         <div className="Tabs Account_Tabs">
           <div className="Tab">

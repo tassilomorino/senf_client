@@ -311,7 +311,7 @@ class ProjectDialog extends Component {
   componentWillReceiveProps(nextProps) {}
 
   handleOpen = () => {
-    this.props.handleLegend(1);
+    this.props.handleTopicSelector("all");
 
     let oldPath = window.location.pathname;
     this.setState({
@@ -568,22 +568,8 @@ class ProjectDialog extends Component {
       showTitles,
 
       viewport,
-      handleLegend,
-      handleLegend1,
-      handleLegend2,
-      handleLegend3,
-      handleLegend4,
-      handleLegend5,
-      handleLegend6,
-      handleLegend7,
-      checked,
-      checked1,
-      checked2,
-      checked3,
-      checked4,
-      checked5,
-      checked6,
-      checked7,
+      handleTopicSelector,
+      topicsSelected,
       latitude1,
       longitude1,
       latitude2,
@@ -602,100 +588,18 @@ class ProjectDialog extends Component {
       },
     } = this.props;
 
-    let dataRar = [];
-    const dataArray = this.props.project.screams;
+    const dataRar = this.props.project.screams;
 
-    dataArray.forEach((element) => {
-      if (
-        checked === 1 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRar.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked1 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRar.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked2 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRar.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked3 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRar.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked4 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRar.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked5 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRar.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked6 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRar.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked7 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRar.push(element);
-      }
-    });
-
-    let dataFinal = [];
-    const dataArrayFinal = dataRar;
-    if (dataArrayFinal !== undefined && dataArrayFinal.length > 0) {
-      dataArrayFinal.forEach((element) => {
-        if (element.status === "None") {
-          dataFinal.push(element);
-        }
-      });
-    }
+    console.log("dataRar", dataRar);
+    const dataFinal = dataRar.filter(
+      ({ Thema, lat, long, status }) =>
+        topicsSelected.includes(Thema) &&
+        lat <= latitude1 &&
+        lat >= latitude2 &&
+        long >= longitude2 &&
+        long <= longitude3 &&
+        status === "None"
+    );
 
     const projectIdeas = !loading ? (
       <ProjectIdeas
@@ -714,22 +618,6 @@ class ProjectDialog extends Component {
         viewport={this.state.viewport}
         _onViewportChange={this._onViewportChange}
         noLocation={this.noLocation}
-        handleLegend={handleLegend}
-        handleLegend1={handleLegend1}
-        handleLegend2={handleLegend2}
-        handleLegend3={handleLegend3}
-        handleLegend4={handleLegend4}
-        handleLegend5={handleLegend5}
-        handleLegend6={handleLegend6}
-        handleLegend7={handleLegend7}
-        checked={checked}
-        checked1={checked1}
-        checked2={checked2}
-        checked3={checked3}
-        checked4={checked4}
-        checked5={checked5}
-        checked6={checked6}
-        checked7={checked7}
         dataNoLocationHandle={this.dataNoLocationHandle}
         showDemand={this.state.showDemand}
         handleClick={this.handleClick}
@@ -747,6 +635,8 @@ class ProjectDialog extends Component {
         showTitles={showTitles}
         loadingProjects={loadingProjects}
         geoData={geoData}
+        handleTopicSelector={handleTopicSelector}
+        topicsSelected={topicsSelected}
       ></ProjectIdeas>
     ) : null;
 
@@ -1004,22 +894,6 @@ class ProjectDialog extends Component {
             geoData={geoData}
             style={{ zIndex: 9999 }}
             noLocation={this.noLocation}
-            handleLegend={handleLegend}
-            handleLegend1={handleLegend1}
-            handleLegend2={handleLegend2}
-            handleLegend3={handleLegend3}
-            handleLegend4={handleLegend4}
-            handleLegend5={handleLegend5}
-            handleLegend6={handleLegend6}
-            handleLegend7={handleLegend7}
-            checked={checked}
-            checked1={checked1}
-            checked2={checked2}
-            checked3={checked3}
-            checked4={checked4}
-            checked5={checked5}
-            checked6={checked6}
-            checked7={checked7}
             dataNoLocationHandle={this.dataNoLocationHandle}
             _onViewportChangeDesktop={this._onViewportChangeDesktop}
             viewport={viewport}

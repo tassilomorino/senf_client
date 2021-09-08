@@ -36,22 +36,8 @@ class Topbar extends React.Component {
       order,
       handleClick,
 
-      handleLegend,
-      handleLegend1,
-      handleLegend2,
-      handleLegend3,
-      handleLegend4,
-      handleLegend5,
-      handleLegend6,
-      handleLegend7,
-      checked,
-      checked1,
-      checked2,
-      checked3,
-      checked4,
-      checked5,
-      checked6,
-      checked7,
+      handleTopicSelector,
+      topicsSelected,
 
       openInfoPageDesktop,
       deleteAccount,
@@ -70,22 +56,8 @@ class Topbar extends React.Component {
         // onClick={() => handleClick(4)}
       >
         <Account
-          handleLegend={handleLegend}
-          handleLegend1={handleLegend1}
-          handleLegend2={handleLegend2}
-          handleLegend3={handleLegend3}
-          handleLegend4={handleLegend4}
-          handleLegend5={handleLegend5}
-          handleLegend6={handleLegend6}
-          handleLegend7={handleLegend7}
-          checked={checked}
-          checked1={checked1}
-          checked2={checked2}
-          checked3={checked3}
-          checked4={checked4}
-          checked5={checked5}
-          checked6={checked6}
-          checked7={checked7}
+          handleTopicSelector={handleTopicSelector}
+          topicsSelected={topicsSelected}
           deleteAccount={deleteAccount}
           handleLogout={handleLogout}
           openInfoPageDesktop={openInfoPageDesktop}
