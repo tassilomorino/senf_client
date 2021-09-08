@@ -229,6 +229,8 @@ export class home extends Component {
     this.props.closeScream();
     this.props.closeProject();
 
+    this.handleTopicSelector("all");
+
     if (order === 2) {
       window.history.pushState(null, null, "/projects");
     }

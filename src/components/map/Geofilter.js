@@ -24,7 +24,7 @@ import { isMobileOnly } from "react-device-detect";
 
 //COOKIES
 import Cookies from "universal-cookie";
-import TopicFilter from "../layout/Themenfilter";
+import TopicFilter from "../layout/TopicFilter";
 const cookies = new Cookies();
 
 const styles = {
@@ -215,9 +215,6 @@ class Geofilter extends Component {
       _onViewportChange,
       dataFinal,
 
-      handleTopicSelector,
-      topicsSelected,
-
       handleOpenGeofilter,
       handleCloseGeofilter,
       handleResetGeofilter,
@@ -230,6 +227,8 @@ class Geofilter extends Component {
 
       loadingProjects,
       geoData,
+      handleTopicSelector,
+      topicsSelected,
     } = this.props;
 
     const { classes } = this.props;
@@ -525,37 +524,8 @@ class Geofilter extends Component {
       </div>
     );
 
-    // const maploader =
-    //   cookies.get("Cookie_settings") !== "all" ? (
-    //     <div>
-    //       <div className="CookieNote">
-    //         {" "}
-    //         <span className="cookiesNoteHeader">
-    //           Ohne das akzeptieren aller Cookies <br /> geht diese Funktion
-    //           nicht.
-    //         </span>
-    //         <br />
-    //         <div className="cookiesNoteText">
-    //           <span
-    //             className="CookieLink"
-    //             onClick={() => this.handleOpenCookiePreferences()}
-    //           >
-    //             Hier
-    //           </span>
-    //           &nbsp;findest du deine Cookie-Einstellungen.
-    //         </div>
-    //         <div className="Accept" onClick={() => this.handleCookies()}>
-    //           Alle Akzeptieren
-    //         </div>
-    //       </div>
-    //       <img src={Maploader} className="Maploader" alt="ChatIcon" />
-    //     </div>
-    //   ) : null;
-
     return isMobileOnly ? (
       <div>
-        {/* {maploader} */}
-
         <div
           onClick={handleOpenGeofilter}
           style={
@@ -572,8 +542,6 @@ class Geofilter extends Component {
                   height: "137px",
                   borderRadius: "20px",
                   backgroundColor: "rgb(0,0,0,0)",
-
-                  // border: "5px solid white",
                 }
           }
         ></div>
