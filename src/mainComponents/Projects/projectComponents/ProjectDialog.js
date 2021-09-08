@@ -562,45 +562,6 @@ class ProjectDialog extends Component {
       ({ Thema, status }) => topicsSelected.includes(Thema) && status === "None"
     );
 
-    const projectIdeas = !loading ? (
-      <ProjectIdeas
-        loading={loading}
-        projectScreams={this.props.project.screams}
-        classes={classes}
-        openInfoPageDesktop={this.state.openInfoPageDesktop}
-        latitude1={this.state.latitude1}
-        latitude2={this.state.latitude2}
-        latitude3={this.state.latitude3}
-        latitude4={this.state.latitude4}
-        longitude1={this.state.longitude1}
-        longitude2={this.state.longitude2}
-        longitude3={this.state.longitude3}
-        longitude4={this.state.longitude4}
-        viewport={this.state.viewport}
-        _onViewportChange={this._onViewportChange}
-        noLocation={this.noLocation}
-        dataNoLocationHandle={this.dataNoLocationHandle}
-        showDemand={this.state.showDemand}
-        handleClick={this.handleClick}
-        handleDropdown={this.handleDropdown}
-        dropdown={this.state.dropdown}
-        handleOpenGeofilter={this.handleOpenGeofilter}
-        handleCloseGeofilter={this.handleCloseGeofilter}
-        handleResetGeofilter={this.handleResetGeofilter}
-        openGeofilter={this.state.openGeofilter}
-        showGeofilterResults={this.state.showGeofilterResults}
-        createGeofilterCircle={this.state.createGeofilterCircle}
-        selectedId={this.state.selectedId}
-        screamIdParam={screamIdParam}
-        _onViewportChangeDesktop={this._onViewportChangeDesktop}
-        showTitles={this.state.showTitles}
-        loadingProjects={loadingProjects}
-        geoData={geoData}
-        handleTopicSelector={handleTopicSelector}
-        topicsSelected={topicsSelected}
-      ></ProjectIdeas>
-    ) : null;
-
     const infoButtons =
       weblink || contact ? (
         <>
@@ -729,65 +690,85 @@ class ProjectDialog extends Component {
           </div>
         </div>
 
-        <div
-          className="MainAnimationChannels"
-          style={
-            this.state.order === 1
-              ? { display: "block", width: "100%", minWidth: "100%" }
-              : { display: "none", width: "100%", minWidth: "100%" }
-          }
-        >
-          {projectIdeas}
-        </div>
-        <div
-          className="MainAnimationChannels"
-          style={
-            this.state.order === 2
-              ? { display: "block", width: "100%", minWidth: "100%" }
-              : { display: "none", width: "100%", minWidth: "100%" }
-          }
-        >
-          <div className="projectDialogCard">
-            <div className={classes.content}>
-              <div className={classes.title}> Worum geht's</div>
-              <Typography className={classes.bodytext}>
-                {description}
-                {infoButtons}
-              </Typography>
-              <br />
-              <div className={classes.title}> Zeitraum </div>
-              <Typography className={classes.bodytext}>
-                {endDate ? (
-                  <div className="date">
-                    {" "}
-                    {startDate} – {endDate}{" "}
-                  </div>
-                ) : (
-                  <div className="date">{startDate} </div>
-                )}
-              </Typography>
-              <br />
+        {!loading && this.state.order === 1 && (
+          <div className="MainAnimationChannels">
+            <ProjectIdeas
+              loading={loading}
+              projectScreams={this.props.project.screams}
+              classes={classes}
+              openInfoPageDesktop={this.state.openInfoPageDesktop}
+              latitude1={this.state.latitude1}
+              latitude2={this.state.latitude2}
+              latitude3={this.state.latitude3}
+              latitude4={this.state.latitude4}
+              longitude1={this.state.longitude1}
+              longitude2={this.state.longitude2}
+              longitude3={this.state.longitude3}
+              longitude4={this.state.longitude4}
+              viewport={this.state.viewport}
+              _onViewportChange={this._onViewportChange}
+              noLocation={this.noLocation}
+              dataNoLocationHandle={this.dataNoLocationHandle}
+              showDemand={this.state.showDemand}
+              handleClick={this.handleClick}
+              handleDropdown={this.handleDropdown}
+              dropdown={this.state.dropdown}
+              handleOpenGeofilter={this.handleOpenGeofilter}
+              handleCloseGeofilter={this.handleCloseGeofilter}
+              handleResetGeofilter={this.handleResetGeofilter}
+              openGeofilter={this.state.openGeofilter}
+              showGeofilterResults={this.state.showGeofilterResults}
+              createGeofilterCircle={this.state.createGeofilterCircle}
+              selectedId={this.state.selectedId}
+              screamIdParam={screamIdParam}
+              _onViewportChangeDesktop={this._onViewportChangeDesktop}
+              showTitles={this.state.showTitles}
+              loadingProjects={loadingProjects}
+              geoData={geoData}
+              handleTopicSelector={handleTopicSelector}
+              topicsSelected={topicsSelected}
+            ></ProjectIdeas>
+          </div>
+        )}
+        {this.state.order === 2 && (
+          <div className="MainAnimationChannels">
+            <div className="projectDialogCard">
+              <div className={classes.content}>
+                <div className={classes.title}> Worum geht's</div>
+                <Typography className={classes.bodytext}>
+                  {description}
+                  {infoButtons}
+                </Typography>
+                <br />
+                <div className={classes.title}> Zeitraum </div>
+                <Typography className={classes.bodytext}>
+                  {endDate ? (
+                    <div className="date">
+                      {" "}
+                      {startDate} – {endDate}{" "}
+                    </div>
+                  ) : (
+                    <div className="date">{startDate} </div>
+                  )}
+                </Typography>
+                <br />
 
-              <div className={classes.title}>Initiatoren</div>
-              <Typography className={classes.bodytext}>{owner}</Typography>
-              <br />
+                <div className={classes.title}>Initiatoren</div>
+                <Typography className={classes.bodytext}>{owner}</Typography>
+                <br />
+              </div>
             </div>
-          </div>{" "}
-          <br />
-        </div>
 
-        <div
-          className="MainAnimationChannels"
-          style={
-            this.state.order === 3
-              ? { display: "block", width: "100%", minWidth: "100%" }
-              : { display: "none", width: "100%", minWidth: "100%" }
-          }
-        >
-          <CalendarComponent
-            projectScreams={this.props.project.screams}
-          ></CalendarComponent>
-        </div>
+            <br />
+          </div>
+        )}
+        {this.state.order === 3 && (
+          <div className="MainAnimationChannels">
+            <CalendarComponent
+              projectScreams={this.props.project.screams}
+            ></CalendarComponent>
+          </div>
+        )}
       </div>
     );
 

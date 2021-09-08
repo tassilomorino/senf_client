@@ -57,23 +57,13 @@ class ProjectCards extends Component {
 }
 
 ProjectCards.propTypes = {
-  user: PropTypes.object.isRequired,
-
   project: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
-
   openProject: PropTypes.func.isRequired,
 };
-
-const mapStateToProps = (state) => ({
-  user: state.user,
-});
 
 const mapActionsToProps = {
   openProject,
 };
 
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(ProjectCards));
+export default connect(mapActionsToProps)(withStyles(styles)(ProjectCards));
