@@ -43,6 +43,7 @@ import ScreamShare from "../../../components/modals/ScreamShare";
 import CalendarComponent from "../../../components/calendar/CalendarComponent";
 
 import contactIcon from "../../../images/icons/mail.png";
+import Tabs from "../../../components/module/Tabs";
 
 const cookies = new Cookies();
 
@@ -849,7 +850,17 @@ class ProjectDialog extends Component {
 
         <div className="project-dialog-title">{title}</div>
 
-        <div
+        <Tabs
+          loading={loading}
+          handleClick={this.handleClick}
+          order={this.state.order}
+          // tabLabels={MenuData.map((item) => item.text)}
+          tabLabels={["Ideen", "Infos"]}
+          marginTop={"0px"}
+          marginBottom={"20px"}
+          lineColor={"white"}
+        ></Tabs>
+        {/* <div
           className="Tabs Dialog_Tabs"
           style={calendar ? { width: "90%", left: "5%" } : {}}
         >
@@ -889,7 +900,7 @@ class ProjectDialog extends Component {
               Kalender
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div
           className="MainAnimationChannels"

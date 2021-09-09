@@ -9,7 +9,7 @@ import InlineInformationPageDesktop from "../infocomponents/InlineInformationPag
 import Themenfilter from "./Themenfilter";
 import Account from "../profile/Account";
 import { MenuItem } from "./MenuItem";
-import { MenuData } from "./MenuData";
+import { MenuData } from "../../data/MenuData";
 
 //MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -157,12 +157,27 @@ const DesktopSidebar = ({
       ></div>
 
       <Themenfilter
-          handlers={
-            [handleLegend, handleLegend1, handleLegend2, handleLegend3,
-              handleLegend4, handleLegend5, handleLegend6, handleLegend7]
-          }
-          checks={[checked, checked1, checked2, checked3, checked4, checked5, checked6, checked7]}
-        ></Themenfilter>
+        handlers={[
+          handleLegend,
+          handleLegend1,
+          handleLegend2,
+          handleLegend3,
+          handleLegend4,
+          handleLegend5,
+          handleLegend6,
+          handleLegend7,
+        ]}
+        checks={[
+          checked,
+          checked1,
+          checked2,
+          checked3,
+          checked4,
+          checked5,
+          checked6,
+          checked7,
+        ]}
+      ></Themenfilter>
 
       <div
         style={{

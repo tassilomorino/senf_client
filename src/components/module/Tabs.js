@@ -1,7 +1,4 @@
 /** @format */
-
-/** @format */
-
 import React from "react";
 import styled, { keyframes } from "styled-components";
 
@@ -14,12 +11,10 @@ const enterAnimation = keyframes`
       opacity: 0;
       transform: translateY(10%);
     }
-  
     100% {
       opacity: 1;
       transform: translateY(0%);
     }
-  
 `;
 
 const TabWrapper = styled.div`
@@ -29,6 +24,7 @@ const TabWrapper = styled.div`
   width: 100%;
   margin-left: 0%;
   margin-top: ${(props) => props.marginTop};
+  margin-bottom: ${(props) => props.marginBottom};
 `;
 
 const Tab = styled.div`
@@ -52,11 +48,19 @@ const TabLine = styled.div`
   margin-top: 3px;
   height: 20px;
   width: 2px;
-  background-color: #c9c9c9;
+  background-color: ${(props) => props.lineColor};
   animation: ${enterAnimation} ${(props) => props.i * 0.8}s;
 `;
 
-const Tabs = ({ loading, handleClick, order, tabLabels, marginTop }) => {
+const Tabs = ({
+  loading,
+  handleClick,
+  order,
+  tabLabels,
+  marginTop,
+  marginBottom,
+  lineColor,
+}) => {
   const tab = tabLabels.map((tabLabel, i) => {
     return (
       !loading && (
@@ -66,15 +70,22 @@ const Tabs = ({ loading, handleClick, order, tabLabels, marginTop }) => {
             active={order === i + 1}
             onClick={() => handleClick(i + 1)}
           >
-            {tabLabel}
-          </Tab>
-          {i !== tabLabels.length - 1 && <TabLine i={i + 1.5} />}
+            {tabLabel}{" "}
+          </Tab>{" "}
+          {i !== tabLabels.length - 1 && (
+            <TabLine i={i + 1.5} lineColor={lineColor} />
+          )}{" "}
         </React.Fragment>
       )
     );
   });
 
-  return <TabWrapper marginTop={marginTop}>{tab}</TabWrapper>;
+  return (
+    <TabWrapper marginTop={marginTop} marginBottom={marginBottom}>
+      {" "}
+      {tab}{" "}
+    </TabWrapper>
+  );
 };
 
 export default Tabs;
