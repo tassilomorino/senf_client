@@ -45,11 +45,7 @@ export class MonitoringDesktopSidebar extends Component {
     ) : null;
 
     return (
-      <div
-        className={
-          openInfoPageDesktop ? "FilterComponent_hide" : "FilterComponent"
-        }
-      >
+      <div className={openInfoPageDesktop ? "sideBar_hide" : "sideBar"}>
         <h1 className="logoWeb">
           <img src={Logo} width="100px"></img>
         </h1>

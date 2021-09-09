@@ -138,7 +138,7 @@ export class AllIdeasPage extends Component {
         <div>
           <div className="content">
             <div className="homeHeadermain">
-              <div className="FilterComponentMobile">
+              <div className="sideBarMobile">
                 <TopicFilter
                   handleTopicSelector={handleTopicSelector}
                   topicsSelected={topicsSelected}

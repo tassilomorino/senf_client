@@ -131,7 +131,7 @@ export class MyIdeas extends Component {
     return !loading ? (
       <div className="projectIdeascontent">
         <div className="projectHeader">
-          <div className="FilterComponentMobile">
+          <div className="sideBarMobile">
             <TopicFilter
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
