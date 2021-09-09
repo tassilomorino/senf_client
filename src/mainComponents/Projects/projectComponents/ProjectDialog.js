@@ -36,7 +36,7 @@ import { isMobileOnly } from "react-device-detect";
 import "./ProjectDialog.css";
 //COOKIES
 import Cookies from "universal-cookie";
-import { ProjectIdeas } from "./ProjectIdeas";
+import ProjectIdeas from "./ProjectIdeas";
 import MapDesktop from "../../../components/map/MapDesktop";
 import PostScream from "../../../components/postScream/PostScream";
 import ScreamShare from "../../../components/modals/ScreamShare";
@@ -562,42 +562,6 @@ class ProjectDialog extends Component {
       ({ Thema, status }) => topicsSelected.includes(Thema) && status === "None"
     );
 
-    const infoButtons =
-      weblink || contact ? (
-        <>
-          <br />
-          <br />
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            {weblink ? (
-              <a href={weblink} rel="noopener noreferrer" target="_blank">
-                <button className="buttonInline">
-                  Mehr Infos{" "}
-                  <img
-                    src={WeblinkIcon}
-                    style={{ paddingLeft: "9px", marginTop: "-2px" }}
-                    width="15"
-                    alt="WeblinkIcon"
-                  />
-                </button>
-              </a>
-            ) : null}
-            {contact ? (
-              <a href={"mailto:" + contact}>
-                <button className="buttonInline">
-                  Kontakt
-                  <img
-                    src={contactIcon}
-                    style={{ paddingLeft: "9px" }}
-                    width="22"
-                    alt="WeblinkIcon"
-                  />
-                </button>
-              </a>
-            ) : null}
-          </div>
-        </>
-      ) : null;
-
     const dialogMarkup = loading ? (
       <div className="wrapperScreamDialog">
         <div className="spinnerDiv">
@@ -737,7 +701,48 @@ class ProjectDialog extends Component {
                 <div className={classes.title}> Worum geht's</div>
                 <Typography className={classes.bodytext}>
                   {description}
-                  {infoButtons}
+                  {weblink ||
+                    (contact && (
+                      <>
+                        <br />
+                        <br />
+                        <div style={{ display: "flex", flexDirection: "row" }}>
+                          {weblink && (
+                            <a
+                              href={weblink}
+                              rel="noopener noreferrer"
+                              target="_blank"
+                            >
+                              <button className="buttonInline">
+                                Mehr Infos{" "}
+                                <img
+                                  src={WeblinkIcon}
+                                  style={{
+                                    paddingLeft: "9px",
+                                    marginTop: "-2px",
+                                  }}
+                                  width="15"
+                                  alt="WeblinkIcon"
+                                />
+                              </button>
+                            </a>
+                          )}
+                          {contact && (
+                            <a href={"mailto:" + contact}>
+                              <button className="buttonInline">
+                                Kontakt
+                                <img
+                                  src={contactIcon}
+                                  style={{ paddingLeft: "9px" }}
+                                  width="22"
+                                  alt="WeblinkIcon"
+                                />
+                              </button>
+                            </a>
+                          )}
+                        </div>
+                      </>
+                    ))}
                 </Typography>
                 <br />
                 <div className={classes.title}> Zeitraum </div>
