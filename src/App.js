@@ -27,7 +27,6 @@ import { setInfoPageOpen } from "./redux/actions/UiActions";
 import home from "./pages/home";
 import IntroductionInformation from "./components/infocomponents/IntroductionInformation";
 
-import info from "./components/infocomponents/info";
 import Welcome from "./components/infocomponents/Welcome";
 import verify from "./components/profile/verify";
 
@@ -199,8 +198,6 @@ const App = () => {
               <Route exact path="/start" component={IntroductionInformation} />
 
               <Route exact path="/filter" component={filter} />
-
-              <Route exact path="/info" component={info} />
 
               <Route exact path="/intro" component={Welcome} />
 
