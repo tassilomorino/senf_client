@@ -18,6 +18,7 @@ export function TopicFilter({ handleTopicSelector, topicsSelected }) {
         icon={<FiberManualRecordIcon />}
         checkedIcon={<FiberManualRecordIcon className="activelegenditem" />}
         onChange={() => handleTopicSelector(topic.name)}
+        data-cy={topic.name}
         checked={
           topicsSelected.includes(topic.name) && topicsSelected.length !== 7
         }
@@ -36,6 +37,7 @@ export function TopicFilter({ handleTopicSelector, topicsSelected }) {
               checkedIcon={
                 <FiberManualRecordIcon className="activelegenditem" />
               }
+              data-cy="topic-all"
               onChange={() => handleTopicSelector("all")}
               checked={topicsSelected.length === 7}
               style={{ color: "#000000" }}
