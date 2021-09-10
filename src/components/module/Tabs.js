@@ -24,7 +24,7 @@ const TabWrapper = styled.div`
   width: 100%;
   margin-left: 0%;
   margin-top: ${(props) => props.marginTop};
-  margin-bottom: ${(props) => props.marginBottom};
+  padding-bottom: ${(props) => props.marginBottom};
 `;
 
 const Tab = styled.div`

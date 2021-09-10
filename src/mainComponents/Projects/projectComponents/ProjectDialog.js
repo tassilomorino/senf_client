@@ -44,6 +44,7 @@ import CalendarComponent from "../../../components/calendar/CalendarComponent";
 
 import contactIcon from "../../../images/icons/mail.png";
 import Tabs from "../../../components/module/Tabs";
+import { ProjectTabData } from "../../../data/ProjectTabData";
 
 const cookies = new Cookies();
 
@@ -854,10 +855,13 @@ class ProjectDialog extends Component {
           loading={loading}
           handleClick={this.handleClick}
           order={this.state.order}
-          // tabLabels={MenuData.map((item) => item.text)}
-          tabLabels={["Ideen", "Infos"]}
+          tabLabels={
+            calendar
+              ? ProjectTabData.map((item) => item.text)
+              : ProjectTabData.map((item) => item.text)
+          }
           marginTop={"0px"}
-          marginBottom={"20px"}
+          marginBottom={"40px"}
           lineColor={"white"}
         ></Tabs>
         {/* <div
