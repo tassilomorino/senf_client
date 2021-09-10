@@ -110,7 +110,7 @@ class Topbar extends React.Component {
             loading={loading}
             handleClick={handleClick}
             order={order}
-            tabLabels={MenuData.map((item) => item.text)}
+            tabLabels={MenuData.map((item) => item.text).slice(0, 2)}
             marginTop={"67px"}
             marginBottom={"0px"}
             lineColor={"#c9c9c9"}

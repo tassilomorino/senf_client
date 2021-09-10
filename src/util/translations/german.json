@@ -9,7 +9,9 @@
   "accept": "Akzeptieren",
   "next": "Weiter",
   "to": "An:",
-
+  "details":"Details",
+  "monitoring":"Monitoring",
+  
   "showIdeas": "Ideen anzeigen",
   "withoutLocation": "Ohne Ortsangabe",
   "withoutLocationShort": "Ohne Ort",
@@ -22,6 +24,9 @@
   "votes": "Votes",
   "info": "Infos",
   "calendar": "Kalender",
+
+  "your_ideas":"Deine Ideen",
+  "your_settings":"Dein Account",
 
   "register": "Registrieren",
   "login": "Anmelden",

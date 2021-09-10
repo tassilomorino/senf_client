@@ -82,8 +82,7 @@ const Tabs = ({
 
   return (
     <TabWrapper marginTop={marginTop} marginBottom={marginBottom}>
-      {" "}
-      {tab}{" "}
+      {tab}
     </TabWrapper>
   );
 };

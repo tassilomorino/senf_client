@@ -858,53 +858,12 @@ class ProjectDialog extends Component {
           tabLabels={
             calendar
               ? ProjectTabData.map((item) => item.text)
-              : ProjectTabData.map((item) => item.text)
+              : ProjectTabData.map((item) => item.text).slice(0, 2)
           }
           marginTop={"0px"}
           marginBottom={"40px"}
           lineColor={"white"}
         ></Tabs>
-        {/* <div
-          className="Tabs Dialog_Tabs"
-          style={calendar ? { width: "90%", left: "5%" } : {}}
-        >
-          <div className="Tab">
-            <div
-              className={
-                this.state.order === 1 ? "Tab_active" : "Tab_not_active"
-              }
-              onClick={() => this.handleClick(1)}
-            >
-              Ideen
-            </div>
-            <div className="Tab_Line" style={{ color: "white" }}>
-              |
-            </div>{" "}
-            <div
-              className={
-                this.state.order === 2 ? "Tab_active" : "Tab_not_active"
-              }
-              onClick={() => this.handleClick(2)}
-            >
-              Infos
-            </div>
-            <div
-              className="Tab_Line"
-              style={calendar ? { color: "white" } : { display: "none" }}
-            >
-              |
-            </div>{" "}
-            <div
-              className={
-                this.state.order === 3 ? "Tab_active" : "Tab_not_active"
-              }
-              style={calendar ? {} : { display: "none" }}
-              onClick={() => this.handleClick(3)}
-            >
-              Kalender
-            </div>
-          </div>
-        </div> */}
 
         <div
           className="MainAnimationChannels"
