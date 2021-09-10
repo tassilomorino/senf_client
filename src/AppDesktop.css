@@ -403,18 +403,7 @@
       display:none
     }
 
-    .Topbar_Tabs{
-      margin-top: 20px;
-      justify-content:center;
-      width: 100%;
-    }
-    .Dialog_Tabs{
-      margin-bottom:50px;
-    }
-
-    .Account_Tabs{
-      margin-bottom:50px;
-    }
+  
     .content {
     margin-top: 0px;
       padding-bottom: 100px;
@@ -852,17 +841,7 @@ position: fixed;
       margin-left: 0px;
       padding: 0px;
     }
-    .Filterheader{
-      position: relative;
-    margin-top: 50px;
-    padding-right: 0;
-    top: 0;
-    height: 50px;
-    transform: rotate(0);
-    color: #414345;
-    font-size: 22pt;
-    font-family: Playfair Display;
-    }
+   
     .legend {
       position: relative;
       top: 0;

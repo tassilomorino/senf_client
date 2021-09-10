@@ -605,7 +605,7 @@ class Account extends Component {
           order={this.state.order}
           tabLabels={AccountTabData.map((item) => item.text)}
           marginTop={"0px"}
-          marginBottom={"20px"}
+          marginBottom={"40px"}
           lineColor={"white"}
         ></Tabs>
 
