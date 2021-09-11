@@ -28,6 +28,7 @@ import Logo from "../../images/logo.png";
 import Tabs from "../module/Tabs";
 
 import { MenuData } from "../../data/MenuData";
+import ScrollTabs from "../module/ScrollTabs";
 
 const styles = {};
 class Topbar extends React.Component {
@@ -106,15 +107,15 @@ class Topbar extends React.Component {
           <h1 className="logo1">
             <img src={Logo} width="100px"></img>
           </h1>
-          <Tabs
+          <ScrollTabs
             loading={loading}
             handleClick={handleClick}
             order={order}
-            tabLabels={MenuData.map((item) => item.text).slice(0, 2)}
+            tabLabels={MenuData.map((item) => item.text)}
             marginTop={"67px"}
             marginBottom={"0px"}
             lineColor={"#c9c9c9"}
-          ></Tabs>
+          ></ScrollTabs>
         </div>
       ) : null;
 
