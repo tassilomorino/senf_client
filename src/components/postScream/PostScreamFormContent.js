@@ -1,7 +1,9 @@
 /** @format */
 
 import React from "react";
-import { isAndroid, isMobileOnly } from "react-device-detect";
+import { isAndroid } from "react-device-detect";
+import { isMobileCustom } from "../../util/customDeviceDetect";
+
 import { useTranslation } from "react-i18next";
 
 //MUI Stuff
@@ -104,16 +106,16 @@ const PostScreamFormContent = ({
       <div
         className={isAndroid === false ? "postCard" : "postCardAndroid"}
         style={
-          locationDecided && isMobileOnly
+          locationDecided && isMobileCustom
             ? { top: "20vh", transition: "0.5s" }
-            : !locationDecided && isMobileOnly
+            : !locationDecided && isMobileCustom
             ? { top: "100vh", transition: "0.5s" }
-            : locationDecided && !isMobileOnly
+            : locationDecided && !isMobileCustom
             ? { zIndex: 5 }
             : { zIndex: 1 }
         }
       >
-        {!isMobileOnly && (
+        {!isMobileCustom && (
           <div
             onClick={handleLocationDecided}
             style={

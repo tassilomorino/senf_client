@@ -4,7 +4,7 @@ import React, { useState, useEffect, Fragment } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { useHistory } from "react-router";
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 // MUI Stuff
 import Dialog from "@material-ui/core/Dialog";
@@ -38,7 +38,7 @@ const styles = {
   root: {
     padding: "0",
     overflow: "hidden",
-    backgroundColor: isMobileOnly ? "white" : "rgb(0,0,0,0.8)",
+    backgroundColor: isMobileCustom ? "white" : "rgb(0,0,0,0.8)",
     backdropFilter: "blur(5px)",
   },
 
@@ -475,12 +475,12 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
         {!authenticated && (
           <div
             className={
-              isMobileOnly ? classes.Authlink : classes.AuthlinkDesktop
+              isMobileCustom ? classes.Authlink : classes.AuthlinkDesktop
             }
             style={
-              isMobileOnly && locationDecided
+              isMobileCustom && locationDecided
                 ? { top: "27vh", transition: "0.5s" }
-                : isMobileOnly && !locationDecided
+                : isMobileCustom && !locationDecided
                 ? { top: "100vh", transition: "0.5s" }
                 : null
             }
@@ -502,7 +502,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
           />
         </button>
 
-        {isMobileOnly && (
+        {isMobileCustom && (
           <div
             style={
               locationDecided

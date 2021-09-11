@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 //CHECK DEVICE
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 const styles = {
   wrapper: {
@@ -62,7 +62,7 @@ const Welcome = ({ classes }) => {
   const { cookie_settings } = useSelector((state) => state.data);
 
   useEffect(() => {
-    if (!isMobileOnly) {
+    if (!isMobileCustom) {
       history.push("/");
     }
   }, []);

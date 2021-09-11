@@ -56,7 +56,7 @@ import Swipe from "react-easy-swipe";
 
 import ScreamShare from "../modals/ScreamShare";
 
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 //COOKIES
 import Cookies from "universal-cookie";
@@ -368,8 +368,6 @@ class ScreamDialog extends Component {
     this.props.clearErrors();
   };
 
-  
-
   handleClick = () => {
     this.setState({ clicked: true });
     setTimeout(
@@ -547,8 +545,6 @@ class ScreamDialog extends Component {
         <div className="dialoggradient" />
       </div>
     );
-
-  
 
     const anmeldeCard = !authenticated ? (
       <div className={classes.anmeldeText}>
@@ -845,7 +841,7 @@ class ScreamDialog extends Component {
       </div>
     );
 
-    const dialog = isMobileOnly ? (
+    const dialog = isMobileCustom ? (
       <Dialog
         open={this.props.UI.openScream}
         onClose={this.handleClose}

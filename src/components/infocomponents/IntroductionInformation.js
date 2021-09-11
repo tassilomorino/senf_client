@@ -14,32 +14,17 @@ import { LazyImage } from "react-lazy-images";
 //IMAGES
 import TopPath from "../../images/topPathNew.png";
 import TopPathBad from "../../images/toppathbad.png";
-
 import First from "../../images/first.png";
 import FirstBad from "../../images/firstbad.png";
-
 import Second from "../../images/secondImage.png";
 import Third from "../../images/letstalkbubble.png";
-
 import Logo from "../../images/logo.png";
 
-import Insta from "../../images/icons/socialmedia/insta.png";
-import Facebook from "../../images/icons/socialmedia/facebook.png";
-
-//IMAGES BAD
-
-import CircularProgress from "@material-ui/core/CircularProgress";
-
 //REDUX STUFF
-import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 //DETECT DEVICE
-import { isMobileOnly } from "react-device-detect";
-
-//COOKIES
-import Cookies from "universal-cookie";
-const cookies = new Cookies();
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 const styles = {
   wrapper: {
@@ -122,7 +107,7 @@ const IntroductionInformation = ({ classes }) => {
   const { cookie_settings } = useSelector((state) => state.data);
 
   useEffect(() => {
-    if (!isMobileOnly) {
+    if (!isMobileCustom) {
       history.push("/");
     }
 

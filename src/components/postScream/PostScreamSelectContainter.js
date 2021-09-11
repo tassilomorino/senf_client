@@ -10,7 +10,7 @@ import { MuiThemeProvider, NativeSelect } from "@material-ui/core";
 
 //Icons
 import Arrow from "../../images/icons/arrow.png";
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 const theme = createMuiTheme({
   overrides: {
@@ -61,11 +61,11 @@ const PostScreamSelectContainter = ({
     <div
       className="selectLocationContainer"
       style={
-        !isMobileOnly && locationDecided
+        !isMobileCustom && locationDecided
           ? { zIndex: 1 }
-          : !isMobileOnly && !locationDecided
+          : !isMobileCustom && !locationDecided
           ? { zIndex: 5 }
-          : isMobileOnly && locationDecided
+          : isMobileCustom && locationDecided
           ? {
               position: "fixed",
               bottom: "calc(90vh - 50px)",
@@ -78,7 +78,7 @@ const PostScreamSelectContainter = ({
             }
       }
     >
-      {!isMobileOnly && (
+      {!isMobileCustom && (
         <div
           onClick={handleLocationDecided}
           style={

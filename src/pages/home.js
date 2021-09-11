@@ -15,7 +15,7 @@ import {
   closeProject,
 } from "../redux/actions/projectActions";
 
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../util/customDeviceDetect";
 
 import { logoutUser } from "../redux/actions/userActions";
 import { clearErrors } from "../redux/actions/errorsActions";
@@ -100,7 +100,7 @@ export class home extends Component {
     if (
       cookies.get("Cookie_settings") !== "all" &&
       cookies.get("Cookie_settings") !== "minimum" &&
-      isMobileOnly
+      isMobileCustom
     ) {
       this.props.history.push("/intro");
     }
@@ -118,7 +118,7 @@ export class home extends Component {
     }
 
     setTimeout(() => {
-      if (!isMobileOnly) {
+      if (!isMobileCustom) {
         this.setState({
           viewport: {
             latitude: 50.95,
@@ -131,7 +131,7 @@ export class home extends Component {
         });
       }
     }, 3000);
-    if (!isMobileOnly) {
+    if (!isMobileCustom) {
       window.addEventListener("popstate", this.handleOnUrlChange, false);
     }
   }
@@ -159,7 +159,7 @@ export class home extends Component {
   }
 
   componentWillUnmount() {
-    if (!isMobileOnly) {
+    if (!isMobileCustom) {
       window.removeEventListener("popstate", this.handleOnUrlChange, false);
     }
   }

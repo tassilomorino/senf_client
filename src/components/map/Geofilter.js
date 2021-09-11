@@ -14,17 +14,11 @@ import Arrow from "../../images/icons/arrow.png";
 import CircularArrow from "../../images/icons/circular-arrow.png";
 
 //MAPSTUFF
-// import ReactMapGL, { Marker } from "react-map-gl";
 import MapGL, { Source, Layer, Marker } from "@urbica/react-map-gl";
 
-//IF NOT ACCEPTED COOKIES / NOT SIGNED IN
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
-import { isMobileOnly } from "react-device-detect";
-
-//COOKIES
-import Cookies from "universal-cookie";
 import { Themenfilter } from "../layout/Themenfilter";
-const cookies = new Cookies();
 
 const styles = {
   textField: {
@@ -356,7 +350,7 @@ const Geofilter = ({
       </Marker>
     ) : null;
 
-  return isMobileOnly ? (
+  return isMobileCustom ? (
     <div>
       <div
         onClick={handleOpenGeofilter}

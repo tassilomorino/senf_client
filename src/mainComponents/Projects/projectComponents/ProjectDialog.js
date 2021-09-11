@@ -31,7 +31,7 @@ import lamploader from "../../../images/lamp.png";
 
 import Swipe from "react-easy-swipe";
 
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 import "./ProjectDialog.css";
 //COOKIES
@@ -336,7 +336,7 @@ class ProjectDialog extends Component {
           const centerLong = this.props.project.centerLong;
           const zoom = this.props.project.zoom;
 
-          if (!isMobileOnly) {
+          if (!isMobileCustom) {
             this.props.zoomToBounds(centerLat, centerLong, zoom);
           } else {
             this.setState({
@@ -756,7 +756,7 @@ class ProjectDialog extends Component {
       <div className="date">{startDate} </div>
     );
     const postScreams =
-      isMobileOnly && this.state.order === 1 ? (
+      isMobileCustom && this.state.order === 1 ? (
         <PostScream
           loadingProjects={loadingProjects}
           projectsData={projectsData}
@@ -820,7 +820,7 @@ class ProjectDialog extends Component {
         </div>
         <div
           style={
-            isMobileOnly
+            isMobileCustom
               ? { position: "absolute", top: "10px", right: "10px" }
               : { position: "absolute", top: "20px", right: "10px" }
           }
@@ -952,7 +952,7 @@ class ProjectDialog extends Component {
       </div>
     );
 
-    return isMobileOnly ? (
+    return isMobileCustom ? (
       <Dialog
         open={this.props.openProject}
         onClose={this.handleClose}

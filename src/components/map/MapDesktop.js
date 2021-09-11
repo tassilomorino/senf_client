@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 //Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -184,7 +184,7 @@ const MapDesktop = ({
       </Marker>
     ) : null;
 
-  return !isMobileOnly ? (
+  return !isMobileCustom ? (
     <div className="mapWrapper">
       <MapGL
         style={

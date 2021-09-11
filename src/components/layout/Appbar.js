@@ -13,8 +13,7 @@ import { connect } from "react-redux";
 
 import Appbarimg from "../../images/appbar.png";
 
-
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 const styles = {
   appBarLeft: {
@@ -152,7 +151,7 @@ class Appbar extends React.Component {
       </div>
     ) : null;
 
-    return isMobileOnly ? (
+    return isMobileCustom ? (
       <>
         {" "}
         {leftBar} {rightBar}

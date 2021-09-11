@@ -3,7 +3,7 @@
 import React, { Fragment, Component } from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../util/customDeviceDetect";
 
 //Redux
 import { connect } from "react-redux";
@@ -128,7 +128,7 @@ export class monitoring extends Component {
   }
 
   componentWillUnmount() {
-    if (!isMobileOnly) {
+    if (!isMobileCustom) {
       window.removeEventListener("popstate", this.handleOnUrlChange, false);
     }
   }
