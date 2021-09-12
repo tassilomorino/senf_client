@@ -3,10 +3,7 @@ const fakeData = require("../../fixtures/screams_all_ideas.json");
 
 describe("Some Test", () => {
   it("Adds document to test_hello_world collection of Firestore", () => {
-    cy.intercept("GET", "screams", { fixture: "screams_all_ideas.json" });
-
     // cy.callFirestore("set", "screams", fakeData);
-
     // cy.callFirestore("get", "screams").then((scream) => {
     //   cy.log("get returned: ", scream);
     // });
@@ -19,6 +16,11 @@ describe("Test the display of ideas within the mainpage", () => {
     // cy.intercept("GET", "**/api/screams", {
     //   fixture: "screams_all_ideas.json",
     // });
+    cy.intercept(
+      "GET",
+      "https://google.firestore.v1.Firestore/Listen/channel?database=projects/senf-dev/databases/(default)&gsessionid=SKrYZRftz1inmHCpQzL2UYabw7hgmsYjr98BJcYvDxA&VER=8&RID=rpc&SID=vYNi01z4ljnz2_eLg0URHw&CI=0&AID=0&TYPE=xmlhttp&zx=z171l41j0dja&t=1"
+    );
+    cy.intercept("GET", "**/api/sockjs-node/info?t=1631367554782");
 
     cy.visit("/");
   });
@@ -30,7 +32,7 @@ describe("Test the display of ideas within the mainpage", () => {
     //cy.
 
     //Check if the topic-filters are workin
-    cy.wait(5000);
+    cy.wait(125000);
 
     cy.get(".sideBar").within(() => {
       cy.get("[data-cy=topic-all]").click({ force: true }); // or otherwise scroll up again
