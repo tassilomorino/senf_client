@@ -56,7 +56,7 @@ import Swipe from "react-easy-swipe";
 
 import ScreamShare from "../modals/ScreamShare";
 
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 //COOKIES
 import Cookies from "universal-cookie";
@@ -368,19 +368,6 @@ class ScreamDialog extends Component {
     this.props.clearErrors();
   };
 
-  handleCookies() {
-    cookies.set("Cookie_settings", "all", {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 90,
-
-      sameSite: "none",
-      secure: true,
-    });
-    this.setState({ open: false });
-
-    this.setState({ open: true });
-  }
-
   handleClick = () => {
     this.setState({ clicked: true });
     setTimeout(
@@ -558,41 +545,6 @@ class ScreamDialog extends Component {
         <div className="dialoggradient" />
       </div>
     );
-
-    // (
-    //   <div className="mapWrapperDialog">
-    //     <div className="CookieNoteDialog">
-    //       {" "}
-    //       <span className="cookiesNoteHeader">
-    //         Ohne das akzeptieren aller Cookies <br /> geht diese Funktion
-    //         nicht.
-    //       </span>
-    //       <br />
-    //       <div className="cookiesNoteText">
-    //         <span
-    //           className="Terms"
-    //           onClick={() => this.handleOpenCookiePreferences()}
-    //         >
-    //           Hier
-    //         </span>
-    //         &nbsp;findest du deine Cookie-Einstellungen.
-    //       </div>
-    //       <div className="Accept" onClick={() => this.handleCookies()}>
-    //         Alle Akzeptieren
-    //       </div>
-    //     </div>
-
-    //     <div className={classes.mapPlaceholder}>
-    //       {" "}
-    //       <div className="dialoggradient" />
-    //       <img
-    //         src={Maploader}
-    //         className="Maploaderbackground"
-    //         alt="ChatIcon"
-    //       />
-    //     </div>
-    //   </div>
-    // );
 
     const anmeldeCard = !authenticated ? (
       <div className={classes.anmeldeText}>
@@ -889,7 +841,7 @@ class ScreamDialog extends Component {
       </div>
     );
 
-    const dialog = isMobileOnly ? (
+    const dialog = isMobileCustom ? (
       <Dialog
         open={this.props.UI.openScream}
         onClose={this.handleClose}

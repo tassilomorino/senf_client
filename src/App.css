@@ -1174,7 +1174,7 @@ input:focus {
 }
 
 .spinnerDivBackground {
-  z-index: 99999;
+  z-index: 99;
   display: flex;
   position: fixed;
   align-items: center;
@@ -1715,7 +1715,7 @@ position: fixed;
   opacity: 0.5
 }
 
-.FilterComponent {
+.sideBar {
   display: none
 }
 
@@ -2703,10 +2703,8 @@ position: fixed;
 .projectHeader {
   position: relative;
   z-index: 9;
-  margin-top: -20px;
   margin-left: 2.5%;
   padding-bottom: 1em;
-  font-size: 25pt;
   color: white;
   width: 95%;
   text-align: left;

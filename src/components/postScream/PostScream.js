@@ -4,7 +4,7 @@ import React, { useState, useEffect, Fragment } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { useHistory } from "react-router";
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 // MUI Stuff
 import Dialog from "@material-ui/core/Dialog";
@@ -38,7 +38,7 @@ const styles = {
   root: {
     padding: "0",
     overflow: "hidden",
-    backgroundColor: isMobileOnly ? "white" : "rgb(0,0,0,0.8)",
+    backgroundColor: isMobileCustom ? "white" : "rgb(0,0,0,0.8)",
     backdropFilter: "blur(5px)",
   },
 
@@ -112,14 +112,10 @@ const styles = {
   },
 };
 
-const PostScream = ({
-  classes,
-  openInfoPageDesktop,
-  loadingProjects,
-  projectsData,
-}) => {
+const PostScream = ({ classes, loadingProjects, projectsData }) => {
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.UI.loading);
+  const { loading } = useSelector((state) => state.UI);
+
   const user = useSelector((state) => state.user);
   const { authenticated } = user;
   const history = useHistory();
@@ -463,10 +459,7 @@ const PostScream = ({
 
   return (
     <Fragment>
-      <button
-        onClick={handleOpen}
-        className={openInfoPageDesktop ? "add add_hide" : "add"}
-      >
+      <button onClick={handleOpen} className="add">
         <img src={AddIcon} width="25" alt="AddIcon" />
         <span className="addText">Neue Idee</span>
       </button>
@@ -482,12 +475,12 @@ const PostScream = ({
         {!authenticated && (
           <div
             className={
-              isMobileOnly ? classes.Authlink : classes.AuthlinkDesktop
+              isMobileCustom ? classes.Authlink : classes.AuthlinkDesktop
             }
             style={
-              isMobileOnly && locationDecided
+              isMobileCustom && locationDecided
                 ? { top: "27vh", transition: "0.5s" }
-                : isMobileOnly && !locationDecided
+                : isMobileCustom && !locationDecided
                 ? { top: "100vh", transition: "0.5s" }
                 : null
             }
@@ -509,7 +502,7 @@ const PostScream = ({
           />
         </button>
 
-        {isMobileOnly && (
+        {isMobileCustom && (
           <div
             style={
               locationDecided

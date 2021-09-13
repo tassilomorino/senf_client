@@ -12,6 +12,8 @@ import {
   CLEAR_LOADING_ERRORS,
   OPEN_MONITORING_SCREAM,
   CLOSE_MONITORING_SCREAM,
+  SET_INFOPAGE_OPEN,
+  SET_INFOPAGE_CLOSED,
 } from "../types";
 
 const initialState = {
@@ -21,6 +23,7 @@ const initialState = {
 
   openProject: false,
   errors: null,
+  openInfoPage: false,
 };
 
 export default function (state = initialState, action) {
@@ -87,6 +90,17 @@ export default function (state = initialState, action) {
       return {
         ...state,
         openProject: false,
+      };
+
+    case SET_INFOPAGE_OPEN:
+      return {
+        ...state,
+        openInfoPage: true,
+      };
+    case SET_INFOPAGE_CLOSED:
+      return {
+        ...state,
+        openInfoPage: false,
       };
     default:
       return state;

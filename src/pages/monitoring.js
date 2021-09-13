@@ -3,7 +3,7 @@
 import React, { Fragment, Component } from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../util/customDeviceDetect";
 
 //Redux
 import { connect } from "react-redux";
@@ -93,7 +93,6 @@ export class monitoring extends Component {
       dropdown: "10",
       selectedId: "",
       showTitles: false,
-      openInfoPageDesktop: false,
       cookiesSetDesktop: false,
 
       openGeofilter: false,
@@ -117,15 +116,16 @@ export class monitoring extends Component {
         maxZoom: 18,
         minZoom: 8,
       },
+      topicsSelected: [
+        "Verkehr",
+        "Versorgung",
+        "Umwelt und Grün",
+        "Rad",
+        "Inklusion / Soziales",
+        "Sport / Freizeit",
+        "Sonstige",
+      ],
     };
-
-    if (
-      cookies.get("Cookie_settings") !== "all" &&
-      cookies.get("Cookie_settings") !== "minimum" &&
-      isMobileOnly
-    ) {
-      this.props.history.push("/intro");
-    }
   }
 
   componentDidMount() {
@@ -137,7 +137,7 @@ export class monitoring extends Component {
   }
 
   componentWillUnmount() {
-    if (!isMobileOnly) {
+    if (!isMobileCustom) {
       window.removeEventListener("popstate", this.handleOnUrlChange, false);
     }
   }
@@ -211,183 +211,45 @@ export class monitoring extends Component {
     });
   };
 
-  handleLegend = (checked) => {
-    this.setState({
-      checked,
-      checked1: "Empty",
-      checked2: "Empty",
-      checked3: "Empty",
-      checked4: "Empty",
-      checked5: "Empty",
-      checked6: "Empty",
-      checked7: "Empty",
-    });
-  };
-
-  handleLegend1 = (checked1) => {
-    if (this.state.checked1 === "Empty") {
+  handleTopicSelector = (topic) => {
+    const index = this.state.topicsSelected.indexOf(topic);
+    if (topic === "all") {
       this.setState({
-        checked1,
-        checked: false,
+        topicsSelected: [
+          "Verkehr",
+          "Versorgung",
+          "Umwelt und Grün",
+          "Rad",
+          "Inklusion / Soziales",
+          "Sport / Freizeit",
+          "Sonstige",
+        ],
+      });
+    } else if (this.state.topicsSelected.length === 7) {
+      this.setState({
+        topicsSelected: [topic],
+      });
+    } else if (index === -1) {
+      this.setState({
+        topicsSelected: this.state.topicsSelected.concat(topic),
       });
     } else {
-      this.setState({
-        checked1: "Empty",
-      });
-      if (
-        this.state.checked2 === "Empty" &&
-        this.state.checked3 === "Empty" &&
-        this.state.checked4 === "Empty" &&
-        this.state.checked5 === "Empty" &&
-        this.state.checked6 === "Empty" &&
-        this.state.checked7 === "Empty"
-      ) {
+      this.state.topicsSelected.splice(index, 1);
+      if (this.state.topicsSelected.length === 0) {
         this.setState({
-          checked: 1,
+          topicsSelected: [
+            "Verkehr",
+            "Versorgung",
+            "Umwelt und Grün",
+            "Rad",
+            "Inklusion / Soziales",
+            "Sport / Freizeit",
+            "Sonstige",
+          ],
         });
-      }
-    }
-  };
-  handleLegend2 = (checked2) => {
-    if (this.state.checked2 === "Empty") {
-      this.setState({
-        checked2,
-        checked: false,
-      });
-    } else {
-      this.setState({
-        checked2: "Empty",
-      });
-      if (
-        this.state.checked1 === "Empty" &&
-        this.state.checked3 === "Empty" &&
-        this.state.checked4 === "Empty" &&
-        this.state.checked5 === "Empty" &&
-        this.state.checked6 === "Empty" &&
-        this.state.checked7 === "Empty"
-      ) {
+      } else {
         this.setState({
-          checked: 1,
-        });
-      }
-    }
-  };
-  handleLegend3 = (checked3) => {
-    if (this.state.checked3 === "Empty") {
-      this.setState({
-        checked3,
-        checked: false,
-      });
-    } else {
-      this.setState({
-        checked3: "Empty",
-      });
-      if (
-        this.state.checked1 === "Empty" &&
-        this.state.checked2 === "Empty" &&
-        this.state.checked4 === "Empty" &&
-        this.state.checked5 === "Empty" &&
-        this.state.checked6 === "Empty" &&
-        this.state.checked7 === "Empty"
-      ) {
-        this.setState({
-          checked: 1,
-        });
-      }
-    }
-  };
-  handleLegend4 = (checked4) => {
-    if (this.state.checked4 === "Empty") {
-      this.setState({
-        checked4,
-        checked: false,
-      });
-    } else {
-      this.setState({
-        checked4: "Empty",
-      });
-      if (
-        this.state.checked1 === "Empty" &&
-        this.state.checked2 === "Empty" &&
-        this.state.checked3 === "Empty" &&
-        this.state.checked5 === "Empty" &&
-        this.state.checked6 === "Empty" &&
-        this.state.checked7 === "Empty"
-      ) {
-        this.setState({
-          checked: 1,
-        });
-      }
-    }
-  };
-  handleLegend5 = (checked5) => {
-    if (this.state.checked5 === "Empty") {
-      this.setState({
-        checked5,
-        checked: false,
-      });
-    } else {
-      this.setState({
-        checked5: "Empty",
-      });
-      if (
-        this.state.checked1 === "Empty" &&
-        this.state.checked2 === "Empty" &&
-        this.state.checked3 === "Empty" &&
-        this.state.checked4 === "Empty" &&
-        this.state.checked6 === "Empty" &&
-        this.state.checked7 === "Empty"
-      ) {
-        this.setState({
-          checked: 1,
-        });
-      }
-    }
-  };
-  handleLegend6 = (checked6) => {
-    if (this.state.checked6 === "Empty") {
-      this.setState({
-        checked6,
-        checked: false,
-      });
-    } else {
-      this.setState({
-        checked6: "Empty",
-      });
-      if (
-        this.state.checked1 === "Empty" &&
-        this.state.checked2 === "Empty" &&
-        this.state.checked3 === "Empty" &&
-        this.state.checked4 === "Empty" &&
-        this.state.checked5 === "Empty" &&
-        this.state.checked7 === "Empty"
-      ) {
-        this.setState({
-          checked: 1,
-        });
-      }
-    }
-  };
-  handleLegend7 = (checked7) => {
-    if (this.state.checked7 === "Empty") {
-      this.setState({
-        checked7,
-        checked: false,
-      });
-    } else {
-      this.setState({
-        checked7: "Empty",
-      });
-      if (
-        this.state.checked1 === "Empty" &&
-        this.state.checked2 === "Empty" &&
-        this.state.checked3 === "Empty" &&
-        this.state.checked4 === "Empty" &&
-        this.state.checked5 === "Empty" &&
-        this.state.checked6 === "Empty"
-      ) {
-        this.setState({
-          checked: 1,
+          topicsSelected: this.state.topicsSelected,
         });
       }
     }
@@ -494,27 +356,6 @@ export class monitoring extends Component {
     });
 
     this.props.closeScream();
-  };
-
-  handleOpenInfoPageDesktop = () => {
-    this.setState({ openInfoPageDesktop: true });
-  };
-  handleCloseInfoPageDesktop = () => {
-    this.setState({ openInfoPageDesktop: false });
-
-    const screamId = this.props.match.params.screamId;
-
-    if (screamId) {
-      if (screamId.indexOf("_") > 0) {
-        this.props.openProject(screamId);
-      } else {
-        this.props.openScreamFirstTime(screamId);
-      }
-      this.setState({ screamIdParam: screamId });
-    }
-    if (window.location.pathname === "/projects") {
-      this.handleClick(2);
-    }
   };
 
   noLocation = () => {
@@ -627,14 +468,7 @@ export class monitoring extends Component {
       latitude2,
       longitude2,
       longitude3,
-      checked,
-      checked1,
-      checked2,
-      checked3,
-      checked4,
-      checked5,
-      checked6,
-      checked7,
+
       dropdown,
     } = this.state;
 
@@ -654,190 +488,15 @@ export class monitoring extends Component {
         </div>
       ) : null;
 
-    let dataRar = [];
-    const dataArray = full_screams;
-
-    dataArray.forEach((element) => {
-      if (this.state.project === "") {
-        if (
-          checked === 1 &&
-          element.lat > latitude2 &&
-          element.lat < latitude1 &&
-          element.long > longitude2 &&
-          element.long < longitude3
-        ) {
-          dataRar.push(element);
-        }
-        if (
-          element.Thema !== undefined &&
-          element.Thema === checked1 &&
-          element.lat > latitude2 &&
-          element.lat < latitude1 &&
-          element.long > longitude2 &&
-          element.long < longitude3
-        ) {
-          dataRar.push(element);
-        }
-        if (
-          element.Thema !== undefined &&
-          element.Thema === checked2 &&
-          element.lat > latitude2 &&
-          element.lat < latitude1 &&
-          element.long > longitude2 &&
-          element.long < longitude3
-        ) {
-          dataRar.push(element);
-        }
-        if (
-          element.Thema !== undefined &&
-          element.Thema === checked3 &&
-          element.lat > latitude2 &&
-          element.lat < latitude1 &&
-          element.long > longitude2 &&
-          element.long < longitude3
-        ) {
-          dataRar.push(element);
-        }
-        if (
-          element.Thema !== undefined &&
-          element.Thema === checked4 &&
-          element.lat > latitude2 &&
-          element.lat < latitude1 &&
-          element.long > longitude2 &&
-          element.long < longitude3
-        ) {
-          dataRar.push(element);
-        }
-        if (
-          element.Thema !== undefined &&
-          element.Thema === checked5 &&
-          element.lat > latitude2 &&
-          element.lat < latitude1 &&
-          element.long > longitude2 &&
-          element.long < longitude3
-        ) {
-          dataRar.push(element);
-        }
-        if (
-          element.Thema !== undefined &&
-          element.Thema === checked6 &&
-          element.lat > latitude2 &&
-          element.lat < latitude1 &&
-          element.long > longitude2 &&
-          element.long < longitude3
-        ) {
-          dataRar.push(element);
-        }
-        if (
-          element.Thema !== undefined &&
-          element.Thema === checked7 &&
-          element.lat > latitude2 &&
-          element.lat < latitude1 &&
-          element.long > longitude2 &&
-          element.long < longitude3
-        ) {
-          dataRar.push(element);
-        }
-      } else {
-        if (
-          checked === 1 &&
-          element.lat > latitude2 &&
-          element.lat < latitude1 &&
-          element.long > longitude2 &&
-          element.long < longitude3 &&
-          element.project === this.state.project
-        ) {
-          dataRar.push(element);
-        }
-        if (
-          element.Thema !== undefined &&
-          element.Thema === checked1 &&
-          element.lat > latitude2 &&
-          element.lat < latitude1 &&
-          element.long > longitude2 &&
-          element.long < longitude3 &&
-          element.project === this.state.project
-        ) {
-          dataRar.push(element);
-        }
-        if (
-          element.Thema !== undefined &&
-          element.Thema === checked2 &&
-          element.lat > latitude2 &&
-          element.lat < latitude1 &&
-          element.long > longitude2 &&
-          element.long < longitude3 &&
-          element.project === this.state.project
-        ) {
-          dataRar.push(element);
-        }
-        if (
-          element.Thema !== undefined &&
-          element.Thema === checked3 &&
-          element.lat > latitude2 &&
-          element.lat < latitude1 &&
-          element.long > longitude2 &&
-          element.long < longitude3 &&
-          element.project === this.state.project
-        ) {
-          dataRar.push(element);
-        }
-        if (
-          element.Thema !== undefined &&
-          element.Thema === checked4 &&
-          element.lat > latitude2 &&
-          element.lat < latitude1 &&
-          element.long > longitude2 &&
-          element.long < longitude3 &&
-          element.project === this.state.project
-        ) {
-          dataRar.push(element);
-        }
-        if (
-          element.Thema !== undefined &&
-          element.Thema === checked5 &&
-          element.lat > latitude2 &&
-          element.lat < latitude1 &&
-          element.long > longitude2 &&
-          element.long < longitude3 &&
-          element.project === this.state.project
-        ) {
-          dataRar.push(element);
-        }
-        if (
-          element.Thema !== undefined &&
-          element.Thema === checked6 &&
-          element.lat > latitude2 &&
-          element.lat < latitude1 &&
-          element.long > longitude2 &&
-          element.long < longitude3 &&
-          element.project === this.state.project
-        ) {
-          dataRar.push(element);
-        }
-        if (
-          element.Thema !== undefined &&
-          element.Thema === checked7 &&
-          element.lat > latitude2 &&
-          element.lat < latitude1 &&
-          element.long > longitude2 &&
-          element.long < longitude3 &&
-          element.project === this.state.project
-        ) {
-          dataRar.push(element);
-        }
-      }
-    });
-
-    let dataFinal = [];
-    const dataArrayFinal = dataRar;
-    if (dataArrayFinal !== undefined && dataArrayFinal.length > 0) {
-      dataArrayFinal.forEach((element) => {
-        if (element.status === "None") {
-          dataFinal.push(element);
-        }
-      });
-    }
+    const dataFinal = full_screams.filter(
+      ({ Thema, lat, long, status }) =>
+        this.state.topicsSelected.includes(Thema) &&
+        lat <= this.state.latitude1 &&
+        lat >= this.state.latitude2 &&
+        long >= this.state.longitude2 &&
+        long <= this.state.longitude3 &&
+        status === "None"
+    );
 
     let HotScreamsMarkup = _.orderBy(dataFinal, "likeCount", "desc").map(
       (scream) => (
@@ -941,30 +600,10 @@ export class monitoring extends Component {
           handleChannelClick={this.handleChannelClick}
           order={this.state.order}
           channelOrder={this.state.channelOrder}
-          handleLegend={this.handleLegend}
-          handleLegend1={this.handleLegend1}
-          handleLegend2={this.handleLegend2}
-          handleLegend3={this.handleLegend3}
-          handleLegend4={this.handleLegend4}
-          handleLegend5={this.handleLegend5}
-          handleLegend6={this.handleLegend6}
-          handleLegend7={this.handleLegend7}
-          checked={this.state.checked}
-          checked1={this.state.checked1}
-          checked2={this.state.checked2}
-          checked3={this.state.checked3}
-          checked4={this.state.checked4}
-          checked5={this.state.checked5}
-          checked6={this.state.checked6}
-          checked7={this.state.checked7}
-          handleOpenInfoPageDesktop={this.handleOpenInfoPageDesktop}
-          handleCloseInfoPageDesktop={this.handleCloseInfoPageDesktop}
-          cookiesSetDesktop={this.state.cookiesSetDesktop}
-          handleCookiesDesktop={this.handleCookiesDesktop}
-          handleMinimumCookies={this.handleMinimumCookies}
+          handleTopicSelector={this.handleTopicSelector}
+          topicsSelected={this.state.topicsSelected}
           deleteAccount={this.deleteAccount}
           handleLogout={this.handleLogout}
-          openInfoPageDesktop={this.state.openInfoPageDesktop}
           loadingProjects={loadingProjects}
           projectsData={projects}
         ></MonitoringDesktopSidebar>
@@ -1175,7 +814,7 @@ export class monitoring extends Component {
 
         <div className="monitoringBottombar">
           <ExportToExcel
-            apiData={dataRar}
+            apiData={dataFinal}
             fileName={"hi"}
             dataFinal={dataFinal}
           />

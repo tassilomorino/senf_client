@@ -3,7 +3,7 @@
 import React, { Fragment, useState } from "react";
 
 //Extra-Packages
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 // Icons
 import CloseIcon from "@material-ui/icons/Close";
@@ -69,7 +69,7 @@ const styles = {
 const ThemenDialog = ({ classes, screams }) => {
   const [open, setOpen] = useState(false);
 
-  const dialogComponent = isMobileOnly ? (
+  const dialogComponent = isMobileCustom ? (
     <Dialog
       scroll={"body"}
       open={open}

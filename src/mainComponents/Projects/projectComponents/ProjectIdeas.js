@@ -1,9 +1,6 @@
 /** @format */
 
-import React, { Component } from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import React from "react";
 
 import ToggleDisplay from "react-toggle-display";
 import lamploader from "../../../images/lamp.png";
@@ -16,11 +13,8 @@ import NativeSelect from "@material-ui/core/NativeSelect";
 import _ from "lodash";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
-import Themenfilter from "../../../components/layout/Themenfilter";
-
-import "./ProjectIdeas.css";
-
-const styles = {};
+import TopicFilter from "../../../components/layout/TopicFilter";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 const theme = createMuiTheme({
   overrides: {
@@ -42,325 +36,182 @@ const theme = createMuiTheme({
   },
 });
 
-export class ProjectIdeas extends Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    const {
-      classes,
-      loading,
-      dropdown,
-      projectScreams,
+const ProjectIdeas = ({
+  classes,
+  loading,
+  dropdown,
+  projectScreams,
 
-      viewport,
-      latitude1,
-      longitude1,
-      latitude2,
-      longitude2,
-      latitude3,
-      longitude3,
-      latitude4,
-      longitude4,
-      handleRevert,
-      _onViewportChange,
-      onClick,
+  viewport,
+  latitude1,
+  longitude1,
+  latitude2,
+  longitude2,
+  latitude3,
+  longitude3,
+  latitude4,
+  longitude4,
+  handleRevert,
+  _onViewportChange,
+  onClick,
 
-      handleDropdown,
+  handleDropdown,
 
-      handleLegend,
-      handleLegend1,
-      handleLegend2,
-      handleLegend3,
-      handleLegend4,
-      handleLegend5,
-      handleLegend6,
-      handleLegend7,
-      checked,
-      checked1,
-      checked2,
-      checked3,
-      checked4,
-      checked5,
-      checked6,
-      checked7,
+  handleTopicSelector,
+  topicsSelected,
 
-      handleOpenGeofilter,
-      handleCloseGeofilter,
-      handleResetGeofilter,
-      openGeofilter,
-      showGeofilterResults,
-      createGeofilterCircle,
-      dataNoLocationHandle,
-      selectedId,
-      noLocation,
+  handleOpenGeofilter,
+  handleCloseGeofilter,
+  handleResetGeofilter,
+  openGeofilter,
+  showGeofilterResults,
+  createGeofilterCircle,
+  dataNoLocationHandle,
+  selectedId,
+  noLocation,
 
-      loadingProjects,
-      geoData,
-    } = this.props;
+  loadingProjects,
+  geoData,
+}) => {
+  const dataFinalChannel = projectScreams.filter(
+    ({ Thema, lat, long, status }) =>
+      topicsSelected.includes(Thema) &&
+      lat <= latitude1 &&
+      lat >= latitude2 &&
+      long >= longitude2 &&
+      long <= longitude3 &&
+      status === "None"
+  );
 
-    //
+  let recentScreamsMarkup = _.orderBy(
+    dataFinalChannel,
+    "createdAt",
+    "desc"
+  ).map((scream) => <Scream key={scream.screamId} scream={scream} />);
 
-    let dataRarChannel = [];
-    const dataArrayChannel = projectScreams;
+  let HotScreamsMarkup = _.orderBy(dataFinalChannel, "likeCount", "desc").map(
+    (scream) => <Scream key={scream.screamId} scream={scream} />
+  );
 
-    dataArrayChannel.forEach((element) => {
-      if (
-        checked === 1 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRarChannel.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked1 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRarChannel.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked2 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRarChannel.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked3 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRarChannel.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked4 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRarChannel.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked5 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRarChannel.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked6 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRarChannel.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked7 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRarChannel.push(element);
-      }
-    });
-
-    let dataFinalChannel = [];
-    const dataArrayFinalChannel = dataRarChannel;
-    if (
-      dataArrayFinalChannel !== undefined &&
-      dataArrayFinalChannel.length > 0
-    ) {
-      dataArrayFinalChannel.forEach((element) => {
-        if (element.status === "None") {
-          dataFinalChannel.push(element);
-        }
-      });
-    }
-
-    let recentScreamsMarkup = _.orderBy(
-      dataFinalChannel,
-      "createdAt",
-      "desc"
-    ).map((scream) => <Scream key={scream.screamId} scream={scream} />);
-
-    let HotScreamsMarkup = _.orderBy(dataFinalChannel, "likeCount", "desc").map(
-      (scream) => <Scream key={scream.screamId} scream={scream} />
+  let noMoreScreamsMarkup =
+    !loading && dataFinalChannel.length > 0 ? (
+      <div className="ende">
+        ... <br /> Keine weiteren Ideen <br />
+      </div>
+    ) : !loading && dataFinalChannel.length !== projectScreams.length ? (
+      <div className="no-ideas-yet">
+          Mit den ausgewählten Filtern findest du noch keine Ideen.
+      </div>
+    ) : (
+      <div className="no-ideas-yet">
+         Zu diesem Projektraum wurde bisher noch keine Idee geteilt. Sei die/der
+        erste und teile deine Idee!
+      </div>
     );
 
-    let screamLength = dataFinalChannel.length;
-
-    let noMoreScreamsMarkup =
-      !loading && screamLength > 0 ? (
-        <div className="ende">
-          ... <br /> Keine weiteren Ideen <br />
-        </div>
-      ) : !loading && screamLength !== projectScreams.length ? (
-        <div className="no-ideas-yet">
-            Mit den ausgewählten Filtern findest du noch keine Ideen.
-        </div>
-      ) : (
-        <div className="no-ideas-yet">
-           Zu diesem Projektraum wurde bisher noch keine Idee geteilt. Sei
-          die/der erste und teile deine Idee!
-        </div>
-      );
-
-    return !loading ? (
-      <div className="projectIdeascontent">
-        <div className="projectHeader">
-          <div className="FilterComponentMobile">
-            <Themenfilter
-              handlers={
-                [handleLegend, handleLegend1, handleLegend2, handleLegend3,
-                  handleLegend4, handleLegend5, handleLegend6, handleLegend7]
-              }
-              checks={[checked, checked1, checked2, checked3, checked4, checked5, checked6, checked7]}
-            ></Themenfilter>{" "}
+  return !loading ? (
+    <div className="projectIdeascontent">
+      <div className="projectHeader">
+        {isMobileCustom && (
+          <TopicFilter
+            handleTopicSelector={handleTopicSelector}
+            topicsSelected={topicsSelected}
+          ></TopicFilter>
+        )}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            textAlign: "center",
+          }}
+        >
+          <div className="idea-header">
+            <ToggleDisplay show={dropdown === "10" || dropdown === "20"}>
+              <img
+                src={lamploader}
+                width="50px"
+                style={{ transform: "translateY(10px) rotate(30deg)" }}
+                alt="lamploader"
+              ></img>
+              {dataFinalChannel.length} Ideen{" "}
+            </ToggleDisplay>
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              textAlign: "center",
-            }}
-          >
-            <div className="idea-header">
-              <ToggleDisplay show={dropdown === "10" || dropdown === "20"}>
+          <MuiThemeProvider theme={theme}>
+            <NativeSelect
+              value={dropdown}
+              onChange={handleDropdown}
+              name="dropdown"
+              className="formControl"
+              inputProps={{ "aria-label": "dropdown" }}
+              id="dropdown"
+              IconComponent={() => (
                 <img
-                  src={lamploader}
-                  width="50px"
-                  style={{ transform: "translateY(10px) rotate(30deg)" }}
-                  alt="lamploader"
+                  src={Arrow}
+                  width="20px"
+                  style={{
+                    marginTop: "0px",
+                    marginLeft: "-24px",
+                    pointerEvents: "none",
+                  }}
                 ></img>
-                {screamLength} Ideen{" "}
-              </ToggleDisplay>
-            </div>
-
-            <MuiThemeProvider theme={theme}>
-              <NativeSelect
-                value={dropdown}
-                onChange={handleDropdown}
-                name="dropdown"
-                className="formControl"
-                inputProps={{ "aria-label": "dropdown" }}
-                id="dropdown"
-                IconComponent={() => (
-                  <img
-                    src={Arrow}
-                    width="20px"
-                    style={{
-                      marginTop: "0px",
-                      marginLeft: "-24px",
-                      pointerEvents: "none",
-                    }}
-                  ></img>
-                )}
-              >
-                <option value={10} className={classes.formText}>
-                  neuste
-                </option>
-                <option value={20}>schärfste</option>
-                {/* <option value={30}>umgesetzte</option>
-                  <option value={40}>verworfene</option> */}
-              </NativeSelect>
-            </MuiThemeProvider>
-          </div>
+              )}
+            >
+              <option value={10} className={classes.formText}>
+                neuste
+              </option>
+              <option value={20}>schärfste</option>
+            </NativeSelect>
+          </MuiThemeProvider>
         </div>
-
-        <Geofilter
-          dataFinal={dataFinalChannel}
-          latitude1={latitude1}
-          latitude2={latitude2}
-          latitude3={latitude3}
-          latitude4={latitude4}
-          longitude1={longitude1}
-          longitude2={longitude2}
-          longitude3={longitude3}
-          longitude4={longitude4}
-          viewport={viewport}
-          _onViewportChange={_onViewportChange}
-          onClick={onClick}
-          handleRevert={handleRevert}
-          noLocation={noLocation}
-          handleLegend={handleLegend}
-          handleLegend1={handleLegend1}
-          handleLegend2={handleLegend2}
-          handleLegend3={handleLegend3}
-          handleLegend4={handleLegend4}
-          handleLegend5={handleLegend5}
-          handleLegend6={handleLegend6}
-          handleLegend7={handleLegend7}
-          checked={checked}
-          checked1={checked1}
-          checked2={checked2}
-          checked3={checked3}
-          checked4={checked4}
-          checked5={checked5}
-          checked6={checked6}
-          checked7={checked7}
-          handleOpenGeofilter={handleOpenGeofilter}
-          handleCloseGeofilter={handleCloseGeofilter}
-          handleResetGeofilter={handleResetGeofilter}
-          openGeofilter={openGeofilter}
-          showGeofilterResults={showGeofilterResults}
-          createGeofilterCircle={createGeofilterCircle}
-          dataNoLocationHandle={dataNoLocationHandle}
-          selectedId={selectedId}
-          noLocation={noLocation}
-          loadingProjects={loadingProjects}
-          geoData={geoData}
-        />
-
-        <ToggleDisplay show={dropdown === "10"}>
-          <div className={dropdown === "10" ? "MainAnimation" : ""}>
-            {recentScreamsMarkup}
-            {noMoreScreamsMarkup}
-          </div>
-        </ToggleDisplay>
-        <ToggleDisplay show={dropdown === "20"}>
-          <div className={dropdown === "20" ? "MainAnimation" : ""}>
-            {HotScreamsMarkup}
-            {noMoreScreamsMarkup}
-          </div>
-        </ToggleDisplay>
       </div>
-    ) : null;
-  }
-}
-ProjectIdeas.propTypes = {};
 
-const mapActionsToProps = {};
+      <Geofilter
+        dataFinal={dataFinalChannel}
+        latitude1={latitude1}
+        latitude2={latitude2}
+        latitude3={latitude3}
+        latitude4={latitude4}
+        longitude1={longitude1}
+        longitude2={longitude2}
+        longitude3={longitude3}
+        longitude4={longitude4}
+        viewport={viewport}
+        _onViewportChange={_onViewportChange}
+        onClick={onClick}
+        handleRevert={handleRevert}
+        noLocation={noLocation}
+        handleOpenGeofilter={handleOpenGeofilter}
+        handleCloseGeofilter={handleCloseGeofilter}
+        handleResetGeofilter={handleResetGeofilter}
+        openGeofilter={openGeofilter}
+        showGeofilterResults={showGeofilterResults}
+        createGeofilterCircle={createGeofilterCircle}
+        dataNoLocationHandle={dataNoLocationHandle}
+        selectedId={selectedId}
+        noLocation={noLocation}
+        loadingProjects={loadingProjects}
+        geoData={geoData}
+        handleTopicSelector={handleTopicSelector}
+        topicsSelected={topicsSelected}
+      />
 
-const mapStateToProps = (state) => ({
-  data: state.data,
-});
+      <ToggleDisplay show={dropdown === "10"}>
+        <div className={dropdown === "10" ? "MainAnimation" : ""}>
+          {recentScreamsMarkup}
+          {noMoreScreamsMarkup}
+        </div>
+      </ToggleDisplay>
+      <ToggleDisplay show={dropdown === "20"}>
+        <div className={dropdown === "20" ? "MainAnimation" : ""}>
+          {HotScreamsMarkup}
+          {noMoreScreamsMarkup}
+        </div>
+      </ToggleDisplay>
+    </div>
+  ) : null;
+};
 
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(ProjectIdeas));
+export default ProjectIdeas;

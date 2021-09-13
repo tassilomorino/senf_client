@@ -9,7 +9,7 @@ import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 
 import topics from "../../data/topics";
 
-export function Themenfilter({ handlers, checks }) {
+export function TopicFilter({ handleTopicSelector, topicsSelected }) {
   // Handler at index 0 is for the "all" checkbox
   const topicFilters = topics.map((topic, i) => {
     return (
@@ -17,8 +17,11 @@ export function Themenfilter({ handlers, checks }) {
         color="default"
         icon={<FiberManualRecordIcon />}
         checkedIcon={<FiberManualRecordIcon className="activelegenditem" />}
-        onChange={() => handlers[i + 1](topic.name)}
-        checked={checks[i + 1] === topic.name}
+        onChange={() => handleTopicSelector(topic.name)}
+        data-cy={topic.name}
+        checked={
+          topicsSelected.includes(topic.name) && topicsSelected.length !== 7
+        }
         style={{ color: topic.color }}
       />
     );
@@ -26,7 +29,6 @@ export function Themenfilter({ handlers, checks }) {
 
   return (
     <div className="legendwrapper">
-      {/* <div className="Filterheader"> Filter</div> */}
       <FormGroup row className="legend">
         <FormControlLabel
           control={
@@ -35,8 +37,9 @@ export function Themenfilter({ handlers, checks }) {
               checkedIcon={
                 <FiberManualRecordIcon className="activelegenditem" />
               }
-              onChange={() => handlers[0](1)}
-              checked={checks[0] === 1}
+              data-cy="topic-all"
+              onChange={() => handleTopicSelector("all")}
+              checked={topicsSelected.length === 7}
               style={{ color: "#000000" }}
             />
           }
@@ -46,7 +49,7 @@ export function Themenfilter({ handlers, checks }) {
           <FormControlLabel
             key={`${topic.name}-${i}`}
             control={topicFilters[i]}
-            label={topic.label}
+            label={topic.name}
           />
         ))}
       </FormGroup>
@@ -54,4 +57,4 @@ export function Themenfilter({ handlers, checks }) {
   );
 }
 
-export default Themenfilter;
+export default TopicFilter;
