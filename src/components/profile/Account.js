@@ -3,7 +3,7 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import Swipe from "react-easy-swipe";
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 // Redux stuff
 import { connect } from "react-redux";
@@ -654,7 +654,7 @@ class Account extends Component {
         ></button>
 
         {!this.props.UI.openInfoPage &&
-          (isMobileOnly ? (
+          (isMobileCustom ? (
             <Dialog
               open={this.state.open}
               onClose={this.handleClose}
