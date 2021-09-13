@@ -528,7 +528,6 @@ export class home extends Component {
         />
         <DesktopSidebar
           loading={this.state.loading}
-          authenticated={authenticated}
           handleClick={this.handleClick}
           order={this.state.order}
           handleTopicSelector={this.handleTopicSelector}
