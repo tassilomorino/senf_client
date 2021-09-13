@@ -24,6 +24,7 @@ import profile_yellow from "../../images/icons/profile_yellow.png";
 import profile_grey from "../../images/icons/profile_grey.png";
 import Noprofile from "../../images/noprofile.png";
 import PostScream from "../postScream/PostScream";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 const styles = {};
 
@@ -106,99 +107,106 @@ const DesktopSidebar = ({
   );
 
   return (
-    <div className={openInfoPage ? "FilterComponent_hide" : "FilterComponent"}>
-      <h1 className="logoWeb">
-        <img src={Logo} width="100px"></img>
-      </h1>
-      <InlineInformationPageDesktop
-        handleCookies={handleCookies}
-        loading={loading}
-        classes={classes}
-      />
-
-      {sign}
-      <PostScream
-        loadingProjects={loadingProjects}
-        projectsData={projectsData}
-      />
-
-      {MenuData.map((item, i) => (
-        <MenuItem
-          order={order}
-          index={i + 1}
-          isSelectedIcon={item.isSelectedIcon}
-          isNotSelectedIcon={item.isNotSelectedIcon}
-          text={item.text}
-          handleClick={handleClick}
-        ></MenuItem>
-      ))}
-
+    !isMobileCustom && (
       <div
-        style={{
-          position: "relative",
-          left: "20px",
-          width: "160px",
-          height: "1px",
-          backgroundColor: "lightgrey",
-          top: "90px",
-          marginBottom: "30px",
-        }}
-      ></div>
-
-      <Themenfilter
-        handlers={[
-          handleLegend,
-          handleLegend1,
-          handleLegend2,
-          handleLegend3,
-          handleLegend4,
-          handleLegend5,
-          handleLegend6,
-          handleLegend7,
-        ]}
-        checks={[
-          checked,
-          checked1,
-          checked2,
-          checked3,
-          checked4,
-          checked5,
-          checked6,
-          checked7,
-        ]}
-      ></Themenfilter>
-
-      <div
-        style={{
-          position: "relative",
-          left: "20px",
-          width: "160px",
-          height: "100px",
-        }}
-      ></div>
-
-      <a
-        href="https://www.facebook.com/senf.koeln/"
-        rel="noopener noreferrer"
-        target="_blank"
+        className={openInfoPage ? "FilterComponent_hide" : "FilterComponent"}
       >
+        <h1 className="logoWeb">
+          <img src={Logo} width="100px"></img>
+        </h1>
+        <InlineInformationPageDesktop
+          handleCookies={handleCookies}
+          loading={loading}
+          classes={classes}
+        />
+
+        {sign}
+        <PostScream
+          loadingProjects={loadingProjects}
+          projectsData={projectsData}
+        />
+
+        {MenuData.map((item, i) => (
+          <MenuItem
+            order={order}
+            index={i + 1}
+            isSelectedIcon={item.isSelectedIcon}
+            isNotSelectedIcon={item.isNotSelectedIcon}
+            text={item.text}
+            handleClick={handleClick}
+          ></MenuItem>
+        ))}
+
         <div
-          className="facebook"
-          style={openInfoPage ? { left: "-200px" } : null}
+          style={{
+            position: "relative",
+            left: "20px",
+            width: "160px",
+            height: "1px",
+            backgroundColor: "lightgrey",
+            top: "90px",
+            marginBottom: "30px",
+          }}
+        ></div>
+
+        <Themenfilter
+          handlers={[
+            handleLegend,
+            handleLegend1,
+            handleLegend2,
+            handleLegend3,
+            handleLegend4,
+            handleLegend5,
+            handleLegend6,
+            handleLegend7,
+          ]}
+          checks={[
+            checked,
+            checked1,
+            checked2,
+            checked3,
+            checked4,
+            checked5,
+            checked6,
+            checked7,
+          ]}
+        ></Themenfilter>
+
+        <div
+          style={{
+            position: "relative",
+            left: "20px",
+            width: "160px",
+            height: "100px",
+          }}
+        ></div>
+
+        <a
+          href="https://www.facebook.com/senf.koeln/"
+          rel="noopener noreferrer"
+          target="_blank"
         >
-          <img src={Facebook} width="25" alt="EndImage" />
-        </div>
-      </a>
-      <a
-        href="https://www.instagram.com/senf.koeln/"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        <div className="insta" style={openInfoPage ? { left: "-200px" } : null}>
-          <img src={Insta} width="25" alt="EndImage" />
-        </div>{" "}
-      </a>
-    </div>
+          <div
+            className="facebook"
+            style={openInfoPage ? { left: "-200px" } : null}
+          >
+            <img src={Facebook} width="25" alt="EndImage" />
+          </div>
+        </a>
+        <a
+          href="https://www.instagram.com/senf.koeln/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <div
+            className="insta"
+            style={openInfoPage ? { left: "-200px" } : null}
+          >
+            <img src={Insta} width="25" alt="EndImage" />
+          </div>{" "}
+        </a>
+      </div>
+    )
   );
 };
 

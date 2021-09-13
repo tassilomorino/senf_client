@@ -1,7 +1,6 @@
 /** @format */
 
-import React, { Component, Fragment, useEffect, useState } from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
+import React, { Fragment, useEffect, useState } from "react";
 
 // MUI Stuff
 import Dialog from "@material-ui/core/Dialog";
@@ -25,12 +24,10 @@ import FirstImageBad from "../../images/bigbubblemanbad.png";
 import FirstImage from "../../images/bigbubbleman.png";
 import Mountain from "../../images/bigbubblenew.png";
 
-//LOADER
-import CircularProgress from "@material-ui/core/CircularProgress";
-
 import { useTranslation, Trans } from "react-i18next";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
-//ICON TO OPEN THE INFOMENU
+//Icons
 import Info from "../../images/icons/info.png";
 import CloseIcon from "@material-ui/icons/Close";
 
@@ -60,160 +57,168 @@ const InlineInformationPageDesktop = () => {
     dispatch(setCookies(cookie_settings));
   };
 
-  const dialogComponent =
-    !loading && (cookie_settings === "all" || cookie_settings === "minimum") ? (
-      <Dialog
-        scroll={"paper"}
-        open={openInfoPage}
-        onClose={handleClose}
-        className="dialogOverlayContent"
-        TransitionComponent={Transition}
-        aria-labelledby="scroll-dialog-title"
-        aria-describedby="scroll-dialog-description"
-        maxWidth={"lg"}
-        PaperProps={{
-          style: {
-            borderRadius: "20px",
-            width: "1000px",
-            height: "900px",
-            maxHeight: "calc(100vh - 80px)",
-            overflowX: "hidden",
-          },
-        }}
-      >
-        <button
-          onClick={handleClose}
-          className="buttonRound buttonClose"
-          style={{ position: "fixed" }}
-        >
-          <CloseIcon />
-        </button>
+  return (
+    !isMobileCustom && (
+      <Fragment>
+        <div onClick={handleOpen}>
+          <div className="inlineInfoIcon">
+            <img src={Info} width="35" alt="EndImage" />
 
-        <DialogContent style={{}}>
-          <img className="Gib" src={Headline} width="100px"></img>
+            <span className="inlineInfoIconText">Infos</span>
+          </div>
+        </div>
 
-          <LazyImage
-            src={FirstImage}
-            className="FirstImage"
-            alt="Person_Senftube"
-            placeholder={({ imageProps, ref }) => (
-              <img
-                ref={ref}
-                src={FirstImageBad}
-                className="FirstImage"
-                alt="Person_Senftube"
-              />
-            )}
-            actual={({ imageProps }) => (
-              <img {...imageProps} alt="Person_Senftube" />
-            )}
-          />
-          <div className="SVGweb" alt="TopPath">
-            <img src={Mountain} className="Mountain" alt="Mountain" />
-
-            <div>
-              <span className="title1Web">{t("infopage_block1_title")}</span>
-              <span className="subTitle1Web">
-                {t("infopage_block1_subtitle")}
-              </span>
-            </div>
-            <span className="title2Web">{t("infopage_block2_title")}</span>
-            <span className="subTitle2Web">
-              {t("infopage_block2_subtitle")}
-            </span>
-            <span className="title3Web">{t("infopage_block3_title")}</span>
-            <span className="subTitle3Web">
-              {t("infopage_block3_subtitle")}
-            </span>
-
+        {!loading &&
+        (cookie_settings === "all" || cookie_settings === "minimum") ? (
+          <Dialog
+            scroll={"paper"}
+            open={openInfoPage}
+            onClose={handleClose}
+            className="dialogOverlayContent"
+            TransitionComponent={Transition}
+            aria-labelledby="scroll-dialog-title"
+            aria-describedby="scroll-dialog-description"
+            maxWidth={"lg"}
+            PaperProps={{
+              style: {
+                borderRadius: "20px",
+                width: "1000px",
+                height: "900px",
+                maxHeight: "calc(100vh - 80px)",
+                overflowX: "hidden",
+              },
+            }}
+          >
             <button
-              className="buttonWide buttonInlineInfoIdeas"
               onClick={handleClose}
+              className="buttonRound buttonClose"
+              style={{ position: "fixed" }}
             >
-              {t("showIdeas")}
+              <CloseIcon />
             </button>
 
-            <a href="mailto:dein@senf.koeln">
-              <button className="buttonWide buttonInlineInfoContact">
-                {t("contact")}
-              </button>
-            </a>
+            <DialogContent style={{}}>
+              <img className="Gib" src={Headline} width="100px"></img>
 
-            <span className="footer">
-              <Link to="/impressum">
-                <span className="impressum"> {t("imprint")}</span>
-              </Link>
-              <Link to="/datenschutz">
-                <span className="datenschutz"> | {t("dataPrivacy")} | </span>
-              </Link>
-              <Link to="/agb">
-                <span className="agb"> {t("termsAndConditions")} </span>
-              </Link>
-            </span>
-            <span className="footercopy">{t("infopage_illustrator")}</span>
-          </div>
-        </DialogContent>
-      </Dialog>
-    ) : !loading ? (
-      <Dialog
-        scroll={"paper"}
-        open={openInfoPage}
-        onClose={handleClose}
-        className="dialogOverlayContent"
-        aria-labelledby="scroll-dialog-title"
-        aria-describedby="scroll-dialog-description"
-        maxWidth={"sm"}
-        PaperProps={{
-          style: { borderRadius: "20px" },
-        }}
-      >
-        <DialogContent style={{ height: "200px" }}>
-          <div className="cookiesText">
-            {" "}
-            <span className="cookiesHeader">{t("cookiebanner_title")}</span>
-            <br />
-            <Trans i18nKey="cookiebanner_text">
-              Für die Bereitstellung einiger Funktionen und die Verbesserung
-              dieses Services brauchen wir Cookies. Falls du wirklich nur die
-              technisch notwendigsten Cookies akzeptieren willst, klicke{" "}
-              <span className="Terms" onClick={() => handleCookies("minimum")}>
-                hier
-              </span>
-              &nbsp;oder konfiguriere deine{" "}
-              <span
-                className="Terms"
-                onClick={() => {
-                  window.open("/cookieConfigurator", "_blank");
-                }}
-              >
-                Cookie-Einstellungen
-              </span>
-              .
-            </Trans>
-          </div>
+              <LazyImage
+                src={FirstImage}
+                className="FirstImage"
+                alt="Person_Senftube"
+                placeholder={({ imageProps, ref }) => (
+                  <img
+                    ref={ref}
+                    src={FirstImageBad}
+                    className="FirstImage"
+                    alt="Person_Senftube"
+                  />
+                )}
+                actual={({ imageProps }) => (
+                  <img {...imageProps} alt="Person_Senftube" />
+                )}
+              />
+              <div className="SVGweb" alt="TopPath">
+                <img src={Mountain} className="Mountain" alt="Mountain" />
 
-          <button
-            className="buttonWide buttonCookiesDesktop"
-            onClick={() => handleCookies("all")}
+                <div>
+                  <span className="title1Web">
+                    {t("infopage_block1_title")}
+                  </span>
+                  <span className="subTitle1Web">
+                    {t("infopage_block1_subtitle")}
+                  </span>
+                </div>
+                <span className="title2Web">{t("infopage_block2_title")}</span>
+                <span className="subTitle2Web">
+                  {t("infopage_block2_subtitle")}
+                </span>
+                <span className="title3Web">{t("infopage_block3_title")}</span>
+                <span className="subTitle3Web">
+                  {t("infopage_block3_subtitle")}
+                </span>
+
+                <button
+                  className="buttonWide buttonInlineInfoIdeas"
+                  onClick={handleClose}
+                >
+                  {t("showIdeas")}
+                </button>
+
+                <a href="mailto:dein@senf.koeln">
+                  <button className="buttonWide buttonInlineInfoContact">
+                    {t("contact")}
+                  </button>
+                </a>
+
+                <span className="footer">
+                  <Link to="/impressum">
+                    <span className="impressum"> {t("imprint")}</span>
+                  </Link>
+                  <Link to="/datenschutz">
+                    <span className="datenschutz">
+                      {" "}
+                      | {t("dataPrivacy")} |{" "}
+                    </span>
+                  </Link>
+                  <Link to="/agb">
+                    <span className="agb"> {t("termsAndConditions")} </span>
+                  </Link>
+                </span>
+                <span className="footercopy">{t("infopage_illustrator")}</span>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ) : !loading ? (
+          <Dialog
+            scroll={"paper"}
+            open={openInfoPage}
+            onClose={handleClose}
+            className="dialogOverlayContent"
+            aria-labelledby="scroll-dialog-title"
+            aria-describedby="scroll-dialog-description"
+            maxWidth={"sm"}
+            PaperProps={{
+              style: { borderRadius: "20px" },
+            }}
           >
-            {t("accept")}
-          </button>
-        </DialogContent>
-      </Dialog>
-    ) : null;
+            <DialogContent style={{ height: "200px" }}>
+              <div className="cookiesText">
+                {" "}
+                <span className="cookiesHeader">{t("cookiebanner_title")}</span>
+                <br />
+                <Trans i18nKey="cookiebanner_text">
+                  Für die Bereitstellung einiger Funktionen und die Verbesserung
+                  dieses Services brauchen wir Cookies. Falls du wirklich nur
+                  die technisch notwendigsten Cookies akzeptieren willst, klicke{" "}
+                  <span
+                    className="Terms"
+                    onClick={() => handleCookies("minimum")}
+                  >
+                    hier
+                  </span>
+                  &nbsp;oder konfiguriere deine{" "}
+                  <span
+                    className="Terms"
+                    onClick={() => {
+                      window.open("/cookieConfigurator", "_blank");
+                    }}
+                  >
+                    Cookie-Einstellungen
+                  </span>
+                  .
+                </Trans>
+              </div>
 
-  return (
-    <Fragment>
-      <div onClick={handleOpen}>
-        <div className="inlineInfoIcon">
-          <img src={Info} width="35" alt="EndImage" />
-
-          <span className="inlineInfoIconText">Infos</span>
-        </div>
-      </div>
-
-      {dialogComponent}
-    </Fragment>
+              <button
+                className="buttonWide buttonCookiesDesktop"
+                onClick={() => handleCookies("all")}
+              >
+                {t("accept")}
+              </button>
+            </DialogContent>
+          </Dialog>
+        ) : null}
+      </Fragment>
+    )
   );
 };
 

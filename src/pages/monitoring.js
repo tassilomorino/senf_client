@@ -927,7 +927,6 @@ export class monitoring extends Component {
           checked5={this.state.checked5}
           checked6={this.state.checked6}
           checked7={this.state.checked7}
-          handleMinimumCookies={this.handleMinimumCookies}
           deleteAccount={this.deleteAccount}
           handleLogout={this.handleLogout}
           loadingProjects={loadingProjects}
