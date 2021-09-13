@@ -15,7 +15,7 @@ import {
   closeProject,
 } from "../redux/actions/projectActions";
 
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../util/customDeviceDetect";
 
 import { logoutUser } from "../redux/actions/userActions";
 import { clearErrors } from "../redux/actions/errorsActions";
@@ -58,7 +58,7 @@ export class home extends Component {
       screamIdParam: null,
       dropdown: "10",
       selectedId: "",
-      openInfoPageDesktop: false,
+      showTitles: false,
       cookiesSetDesktop: false,
 
       openGeofilter: false,
@@ -92,7 +92,7 @@ export class home extends Component {
     if (
       cookies.get("Cookie_settings") !== "all" &&
       cookies.get("Cookie_settings") !== "minimum" &&
-      isMobileOnly
+      isMobileCustom
     ) {
       this.props.history.push("/intro");
     }
@@ -104,64 +104,54 @@ export class home extends Component {
       top: 0,
       left: 0,
     });
+
+    if (!this.props.UI.openInfoPage) {
+      this.openDialogFromUrl();
+    }
+
+    setTimeout(() => {
+      if (!isMobileCustom) {
+        this.setState({
+          viewport: {
+            latitude: 50.95,
+            longitude: 6.9503,
+            zoom: 11.5,
+            transitionDuration: 4000,
+            pitch: 30,
+            bearing: 0,
+          },
+        });
+      }
+    }, 3000);
+    if (!isMobileCustom) {
+      window.addEventListener("popstate", this.handleOnUrlChange, false);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.UI.openInfoPage !== this.props.UI.openInfoPage) {
+      this.openDialogFromUrl();
+    }
+  }
+
+  openDialogFromUrl() {
     const screamId = this.props.match.params.screamId;
 
-    if (
-      screamId &&
-      (cookies.get("Cookie_settings") === "all" ||
-        cookies.get("Cookie_settings") === "minimum")
-    ) {
+    if (screamId) {
       if (screamId.indexOf("_") > 0) {
         this.props.openProject(screamId);
       } else {
         this.props.openScream(screamId);
       }
       this.setState({ screamIdParam: screamId });
-
-      if (window.location.pathname === "/projects") {
-        this.handleClick(2);
-      }
-    } else {
-      setTimeout(() => {
-        if (!isMobileOnly) {
-          this.setState({
-            viewport: {
-              latitude: 50.95,
-              longitude: 6.9503,
-              zoom: 11.5,
-              transitionDuration: 4000,
-              pitch: 30,
-              bearing: 0,
-            },
-          });
-        }
-      }, 3000);
     }
-
-    if (!isMobileOnly) {
-      window.addEventListener("popstate", this.handleOnUrlChange, false);
-    }
-
-    if (
-      cookies.get("Cookie_settings") !== "all" &&
-      cookies.get("Cookie_settings") !== "minimum" &&
-      !isMobileOnly
-    ) {
-      this.setState({ openInfoPageDesktop: true });
-      this.handleOpenInfoPageDesktop();
-    } else if (
-      (cookies.get("Cookie_settings") === "all" ||
-        cookies.get("Cookie_settings") === "minimum") &&
-      !isMobileOnly
-    ) {
-      this.setState({
-        cookiesSetDesktop: true,
-      });
+    if (window.location.pathname === "/projects") {
+      this.handleClick(2);
     }
   }
 
   componentWillUnmount() {
-    if (!isMobileOnly) {
+    if (!isMobileCustom) {
       window.removeEventListener("popstate", this.handleOnUrlChange, false);
     }
   }
@@ -368,27 +358,6 @@ export class home extends Component {
     this.props.closeScream();
   };
 
-  handleOpenInfoPageDesktop = () => {
-    this.setState({ openInfoPageDesktop: true });
-  };
-  handleCloseInfoPageDesktop = () => {
-    this.setState({ openInfoPageDesktop: false });
-
-    const screamId = this.props.match.params.screamId;
-
-    if (screamId) {
-      if (screamId.indexOf("_") > 0) {
-        this.props.openProject(screamId);
-      } else {
-        this.props.openScream(screamId);
-      }
-      this.setState({ screamIdParam: screamId });
-    }
-    if (window.location.pathname === "/projects") {
-      this.handleClick(2);
-    }
-  };
-
   handleCookies = (cookie_settings) => {
     cookies.set("Cookie_settings", cookie_settings, {
       path: "/",
@@ -442,12 +411,12 @@ export class home extends Component {
       "&body=" +
       escape(
         "Bitte loeschen Sie meinen Account." +
-        "\n" +
-        "\n" +
-        "Mein Nutzername lautet:" +
-        "\n" +
-        "\n" +
-        userHandle
+          "\n" +
+          "\n" +
+          "Mein Nutzername lautet:" +
+          "\n" +
+          "\n" +
+          userHandle
       );
     window.location.href = link;
   };
@@ -525,47 +494,17 @@ export class home extends Component {
         this.state.topicsSelected.includes(Thema) && status === "None"
     );
 
-    const error =
-      !loading && screams.length === 0 ? (
-        <div className="errorBackground">
-          <div className="homeHeader"> Ooops! </div>
-          <br />
-          <span className="oopsText">
-            Etwas ist schiefgelaufen. Bitte lade die Seite neu!
-          </span>
-        </div>
-      ) : null;
-
-    const loader =
-      loading &&
-        !this.state.openInfoPageDesktop &&
-        (cookies.get("Cookie_settings") === "all" ||
-          cookies.get("Cookie_settings") === "minimum") ? (
-        <div className="spinnerDivBackground">
-          <img src={lamploader} className="lamploader" alt="loader" />
-        </div>
-      ) : null;
-
-    const projectDialogComponent =
-      this.props.UI.openProject === true ? (
-        <ProjectDialog
-          loading={loading}
-          openProject={this.props.UI.openProject}
-          screamIdParam={this.state.screamIdParam}
-          zoomToBounds={this.zoomToBounds}
-          handleTopicSelector={this.handleTopicSelector}
-          topicsSelected={this.state.topicsSelected}
-          openInfoPageDesktop={this.state.openInfoPageDesktop}
-          loadingProjects={loadingProjects}
-          projectsData={projects}
-          viewport={this.state.viewport}
-          mapDesktopShowResults={this.mapDesktopShowResults}
-        ></ProjectDialog>
-      ) : null;
-
     return (
       <div>
-        {error}
+        {!loading && screams.length === 0 && (
+          <div className="errorBackground">
+                 <div className="homeHeader"> Ooops! </div>
+            <br />
+            <span className="oopsText">
+              Etwas ist schiefgelaufen. Bitte lade die Seite neu!
+            </span>
+          </div>
+        )}
         <div className="appbar">
           <Appbar
             loading={this.state.loading}
@@ -573,7 +512,6 @@ export class home extends Component {
             order={this.state.order}
           ></Appbar>
           <PostScream
-            openInfoPageDesktop={this.state.openInfoPageDesktop}
             loadingProjects={loadingProjects}
             projectsData={projects}
           />
@@ -587,7 +525,6 @@ export class home extends Component {
           topicsSelected={this.state.topicsSelected}
           deleteAccount={this.deleteAccount}
           handleLogout={this.handleLogout}
-          openInfoPageDesktop={this.state.openInfoPageDesktop}
         />
         <DesktopSidebar
           loading={this.state.loading}
@@ -596,13 +533,11 @@ export class home extends Component {
           order={this.state.order}
           handleTopicSelector={this.handleTopicSelector}
           topicsSelected={this.state.topicsSelected}
-          handleOpenInfoPageDesktop={this.handleOpenInfoPageDesktop}
           handleCloseInfoPageDesktop={this.handleCloseInfoPageDesktop}
           cookiesSetDesktop={this.state.cookiesSetDesktop}
           handleCookies={this.handleCookies}
           deleteAccount={this.deleteAccount}
           handleLogout={this.handleLogout}
-          openInfoPageDesktop={this.state.openInfoPageDesktop}
           loadingProjects={loadingProjects}
           projectsData={projects}
         ></DesktopSidebar>
@@ -619,67 +554,93 @@ export class home extends Component {
           mapDesktopShowResults={this.mapDesktopShowResults}
           viewport={this.state.viewport}
           selectedId={this.state.selectedId}
-          openInfoPageDesktop={this.state.openInfoPageDesktop}
+          showTitles={this.state.showTitles}
           mapDesktopShowResults={this.mapDesktopShowResults}
           mapDesktopReset={this.mapDesktopReset}
         ></MapDesktop>
-        <div
-          className={
-            this.state.openInfoPageDesktop
-              ? "contentWrapper_hide"
-              : "contentWrapper"
-          }
-        >
-          {loader}
-          <div className="MainBackgroundHome" />
 
-          <AllIdeasPage
-            loading={loading}
-            order={this.state.order}
-            classes={classes}
-            dataFinal={dataFinal}
-            viewport={this.state.viewport}
-            latitude1={this.state.latitude1}
-            latitude2={this.state.latitude2}
-            latitude3={this.state.latitude3}
-            latitude4={this.state.latitude4}
-            longitude1={this.state.longitude1}
-            longitude2={this.state.longitude2}
-            longitude3={this.state.longitude3}
-            longitude4={this.state.longitude4}
-            handleTopicSelector={this.handleTopicSelector}
-            topicsSelected={this.state.topicsSelected}
-            dataNoLocationHandle={this.dataNoLocationHandle}
-            noLocation={this.noLocation}
-            handleClick={this.state.handleClick}
-            handleDropdown={this.handleDropdown}
-            handleOpenGeofilter={this.handleOpenGeofilter}
-            handleCloseGeofilter={this.handleCloseGeofilter}
-            handleResetGeofilter={this.handleResetGeofilter}
-            openGeofilter={this.state.openGeofilter}
-            showGeofilterResults={this.state.showGeofilterResults}
-            createGeofilterCircle={this.state.createGeofilterCircle}
-            selectedId={this.state.selectedId}
-            projectsData={projects}
-            _onViewportChange={this._onViewportChange}
-            dropdown={this.state.dropdown}
-          ></AllIdeasPage>
+        {!this.props.UI.openInfoPage && (
+          <div className="contentWrapper">
+            {loading && (
+              <div className="spinnerDivBackground">
+                <img src={lamploader} className="lamploader" alt="loader" />
+              </div>
+            )}
+            <div className="MainBackgroundHome" />
 
-          <ProjectsPage
-            projects={projects}
-            loadingProjects={loadingProjects}
-            order={this.state.order}
-          ></ProjectsPage>
+            <AllIdeasPage
+              loading={loading}
+              order={this.state.order}
+              classes={classes}
+              dataFinal={dataFinal}
+              viewport={this.state.viewport}
+              latitude1={this.state.latitude1}
+              latitude2={this.state.latitude2}
+              latitude3={this.state.latitude3}
+              latitude4={this.state.latitude4}
+              longitude1={this.state.longitude1}
+              longitude2={this.state.longitude2}
+              longitude3={this.state.longitude3}
+              longitude4={this.state.longitude4}
+              dataNoLocationHandle={this.dataNoLocationHandle}
+              noLocation={this.noLocation}
+              showDemand={this.state.showDemand}
+              handleClick={this.state.handleClick}
+              handleDropdown={this.handleDropdown}
+              handleOpenGeofilter={this.handleOpenGeofilter}
+              handleCloseGeofilter={this.handleCloseGeofilter}
+              handleResetGeofilter={this.handleResetGeofilter}
+              openGeofilter={this.state.openGeofilter}
+              showGeofilterResults={this.state.showGeofilterResults}
+              createGeofilterCircle={this.state.createGeofilterCircle}
+              selectedId={this.state.selectedId}
+              projectsData={projects}
+              _onViewportChange={this._onViewportChange}
+              dropdown={this.state.dropdown}
+              handleTopicSelector={this.handleTopicSelector}
+              topicsSelected={this.state.topicsSelected}
+            ></AllIdeasPage>
 
-          <InsightsPage order={this.state.order}></InsightsPage>
+            <ProjectsPage
+              loadingProjects={loadingProjects}
+              order={this.state.order}
+              projects={projects}
+            ></ProjectsPage>
 
-          <ScreamDialog
-            screamIdParam={this.state.screamIdParam}
-            projectsData={projects}
-          ></ScreamDialog>
+            <InsightsPage order={this.state.order}></InsightsPage>
 
-          {projectDialogComponent}
-        </div>
+            <ScreamDialog
+              screamIdParam={this.state.screamIdParam}
+              projectsData={projects}
+            ></ScreamDialog>
+
+            {this.props.UI.openProject === true && (
+              <ProjectDialog
+                loading={loading}
+                openProject={this.props.UI.openProject}
+                screamIdParam={this.state.screamIdParam}
+                _onViewportChangeDesktop={this._onViewportChangeDesktop}
+                zoomToBounds={this.zoomToBounds}
+                showTitles={this.state.showTitles}
+                handleClick={this.handleClick}
+                latitude1={this.state.latitude1}
+                latitude2={this.state.latitude2}
+                latitude3={this.state.latitude3}
+                latitude4={this.state.latitude4}
+                longitude1={this.state.longitude1}
+                longitude2={this.state.longitude2}
+                longitude3={this.state.longitude3}
+                longitude4={this.state.longitude4}
+                loadingProjects={loadingProjects}
+                projectsData={projects}
+                viewport={this.state.viewport}
+                mapDesktopShowResults={this.mapDesktopShowResults}
+                handleTopicSelector={this.handleTopicSelector}
+                topicsSelected={this.state.topicsSelected}
+              ></ProjectDialog>
+            )}
+          </div>
+        )}
       </div>
     );
   }

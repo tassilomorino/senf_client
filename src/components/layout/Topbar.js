@@ -27,7 +27,6 @@ class Topbar extends React.Component {
       handleClick,
       handleTopicSelector,
       topicsSelected,
-      openInfoPageDesktop,
       deleteAccount,
       handleLogout,
     } = this.props;
@@ -48,7 +47,6 @@ class Topbar extends React.Component {
           topicsSelected={topicsSelected}
           deleteAccount={deleteAccount}
           handleLogout={handleLogout}
-          openInfoPageDesktop={openInfoPageDesktop}
         />
         <img src={profile_yellow} width="35" alt="profileImage" />
       </div>

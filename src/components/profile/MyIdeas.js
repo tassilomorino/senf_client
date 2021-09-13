@@ -16,6 +16,7 @@ import _ from "lodash";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 import TopicFilter from "../layout/TopicFilter";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 const styles = {
   inlineText: {
@@ -89,6 +90,9 @@ export class MyIdeas extends Component {
       dataNoLocationHandle,
       selectedId,
       noLocation,
+
+      showTitles,
+      _onViewportChangeDesktop,
     } = this.props;
 
     //
@@ -131,12 +135,12 @@ export class MyIdeas extends Component {
     return !loading ? (
       <div className="projectIdeascontent">
         <div className="projectHeader">
-          <div className="sideBarMobile">
+          {isMobileCustom && (
             <TopicFilter
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
             ></TopicFilter>
-          </div>
+          )}
 
           <div
             style={{

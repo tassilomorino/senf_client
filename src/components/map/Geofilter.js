@@ -1,12 +1,11 @@
 /** @format */
 
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 // Redux stuff
-import { connect } from "react-redux";
-import { editUserDetails } from "../../redux/actions/userActions";
+import { useSelector, useDispatch } from "react-redux";
 
 import { openScream } from "../../redux/actions/screamActions";
 
@@ -17,7 +16,7 @@ import CircularArrow from "../../images/icons/circular-arrow.png";
 //MAPSTUF
 import MapGL, { Source, Layer, Marker } from "@urbica/react-map-gl";
 
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 //COOKIES
 import Cookies from "universal-cookie";
@@ -25,8 +24,6 @@ import TopicFilter from "../layout/TopicFilter";
 const cookies = new Cookies();
 
 const styles = {
-  normal: "mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6",
-  filled: "mapbox://styles/tmorino/ckpgm4fwl1ip118thordyjtlm",
   textField: {
     pointerEvents: "none",
     display: "none",
@@ -170,281 +167,279 @@ const styles = {
   },
 };
 
-class Geofilter extends Component {
-  state = { styleId: "normal" };
+const Geofilter = ({
+  classes,
+  viewport,
+  latitude1,
+  latitude2,
+  longitude2,
+  longitude3,
+  _onViewportChange,
+  dataFinal,
 
-  componentDidMount() {
-    if (this.props.geoData === "") {
-      this.setState({
-        styleId: "filled",
-      });
-    }
-  }
+  handleOpenGeofilter,
+  handleCloseGeofilter,
+  handleResetGeofilter,
+  openGeofilter,
+  showGeofilterResults,
 
-  fetchDataScream = (screamId) => {
-    this.props.openScream(screamId);
+  dataNoLocationHandle,
+  selectedId,
+  noLocation,
+
+  loadingProjects,
+  geoData,
+  handleTopicSelector,
+  topicsSelected,
+}) => {
+  const dispatch = useDispatch();
+  const { screams } = useSelector((state) => state.data);
+
+  const fetchDataScream = (screamId) => {
+    dispatch(openScream(screamId));
   };
 
-  handleCookies() {
-    cookies.set("Cookie_settings", "all", {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 90,
+  const data =
+    !loadingProjects && geoData !== undefined && geoData !== ""
+      ? {
+          type: "Feature",
+          geometry: {
+            type: "Polygon",
+            coordinates: [JSON.parse(geoData)],
+          },
+        }
+      : null;
 
-      sameSite: "none",
-      secure: true,
+  let dataNoLocation = [];
+  const dataArrayNoLocation = dataFinal;
+
+  if (dataArrayNoLocation !== undefined && dataArrayNoLocation.length > 0) {
+    dataArrayNoLocation.forEach((element) => {
+      if (element.lat === 50.93864020643174) {
+        dataNoLocation.push(element);
+      }
     });
-    this.setState({ open: false });
-    this.setState({ open: true });
   }
-  render() {
-    const {
-      viewport,
-      latitude1,
-      latitude2,
-      longitude2,
-      longitude3,
-      _onViewportChange,
-      dataFinal,
 
-      handleOpenGeofilter,
-      handleCloseGeofilter,
-      handleResetGeofilter,
-      openGeofilter,
-      showGeofilterResults,
+  let dataFinalMap = [];
+  const dataFinalMapArray = dataFinal;
 
-      dataNoLocationHandle,
-      selectedId,
-      noLocation,
-
-      loadingProjects,
-      geoData,
-      handleTopicSelector,
-      topicsSelected,
-    } = this.props;
-
-    const { classes } = this.props;
-
-    const data =
-      !loadingProjects && geoData !== undefined && geoData !== ""
-        ? {
-            type: "Feature",
-            geometry: {
-              type: "Polygon",
-              coordinates: [JSON.parse(geoData)],
-            },
-          }
-        : null;
-
-    let dataNoLocation = [];
-    if (dataFinal !== undefined && dataFinal.length > 0) {
-      dataFinal.forEach((element) => {
-        if (element.lat === 50.93864020643174) {
-          dataNoLocation.push(element);
-        }
-      });
-    }
-
-    let dataFinalMap = [];
-    if (dataFinal !== undefined && dataNoLocation.length > 1) {
-      dataFinal.forEach((element) => {
-        if (element.lat !== 50.93864020643174) {
-          dataFinalMap.push(element);
-        }
-      });
-    }
-    if (dataFinal !== undefined && dataNoLocation.length < 2) {
-      dataFinal.forEach((element) => {
+  if (dataFinalMapArray !== undefined && dataNoLocation.length > 1) {
+    dataFinalMapArray.forEach((element) => {
+      if (element.lat !== 50.93864020643174) {
         dataFinalMap.push(element);
-      });
-    }
+      }
+    });
+  }
+  if (dataFinalMapArray !== undefined && dataNoLocation.length < 2) {
+    dataFinalMapArray.forEach((element) => {
+      dataFinalMap.push(element);
+    });
+  }
 
-    const doubleNoLocation =
-      dataNoLocation.length > 1 ? (
-        <Marker
-          key={"123456"}
-          longitude={6.958725744885521}
-          latitude={50.93864020643174}
+  const doubleNoLocation =
+    dataNoLocation.length > 1 ? (
+      <Marker
+        key={"123456"}
+        longitude={6.958725744885521}
+        latitude={50.93864020643174}
+      >
+        <div
+          style={{
+            zIndex: 9999,
+            position: "absolute",
+            width: "20px",
+            marginLeft: "-10px",
+            height: "20px",
+            marginTop: "-10px",
+            borderRadius: "100%",
+            border: "1px white solid",
+            backgroundColor: "#414345",
+            opacity: "1",
+          }}
+          onClick={dataNoLocationHandle}
         >
           <div
             style={{
-              zIndex: 9999,
               position: "absolute",
-              width: "20px",
-              marginLeft: "-10px",
-              height: "20px",
-              marginTop: "-10px",
-              borderRadius: "100%",
-              border: "1px white solid",
-              backgroundColor: "#414345",
-              opacity: "1",
+              width: "100%",
+              textAlign: "center",
+              color: "white",
+              marginTop: "0px",
             }}
-            onClick={dataNoLocationHandle}
           >
-            <div
+            {dataNoLocation.length}
+          </div>
+        </div>
+      </Marker>
+    ) : null;
+
+  const doubleNoLocationPopUp =
+    openGeofilter && selectedId !== "" ? (
+      <Marker
+        key={selectedId}
+        longitude={6.958725744885521}
+        latitude={50.93864020643174}
+      >
+        <div
+          style={{
+            position: "absolute",
+            marginLeft: "-10px",
+            marginTop: "10px",
+          }}
+        >
+          <div
+            style={{
+              padding: "5px",
+              backgroundColor: "white",
+              marginTop: "5px",
+              width: "60vw",
+              marginLeft: "-30vw",
+
+              height: "auto",
+              borderRadius: "15px",
+              zIndex: "9999",
+              textAlign: "center",
+              boxShadow: "none",
+            }}
+          >
+            <p
               style={{
+                fontFamily: "Futura PT W01-Bold",
+                fontSize: "12pt",
+                paddingRight: "2px",
+                paddingLeft: "2px",
+              }}
+            >
+              Ohne Ortsangabe
+            </p>
+
+            <button
+              className="buttonWide buttonNoLocation"
+              style={{ boxShadow: "none" }}
+              onClick={noLocation}
+            >
+              {dataNoLocation.length} Ideen anzeigen
+            </button>
+          </div>
+        </div>
+      </Marker>
+    ) : null;
+
+  return isMobileCustom ? (
+    <div>
+      <div
+        onClick={handleOpenGeofilter}
+        style={
+          openGeofilter
+            ? { display: "none" }
+            : {
+                display: "block",
                 position: "absolute",
-                width: "100%",
-                textAlign: "center",
-                color: "white",
-                marginTop: "0px",
-              }}
-            >
-              {dataNoLocation.length}
-            </div>
-          </div>
-        </Marker>
-      ) : null;
+                top: "5px",
+                marginTop: "10px",
+                left: "calc(97.5vw - 137px)",
+                zIndex: 10,
+                width: "137px",
+                height: "137px",
+                borderRadius: "20px",
+                backgroundColor: "rgb(0,0,0,0)",
+              }
+        }
+      ></div>
 
-    const doubleNoLocationPopUp =
-      openGeofilter && selectedId !== "" ? (
-        <Marker
-          key={selectedId}
-          longitude={6.958725744885521}
-          latitude={50.93864020643174}
-        >
-          <div
-            style={{
-              position: "absolute",
-              marginLeft: "-10px",
-              marginTop: "10px",
-            }}
-          >
-            <div
-              style={{
-                padding: "5px",
-                backgroundColor: "white",
-                marginTop: "5px",
-                width: "60vw",
-                marginLeft: "-30vw",
-
-                height: "auto",
-                borderRadius: "15px",
-                zIndex: "9999",
-                textAlign: "center",
-                boxShadow: "none",
-              }}
-            >
-              <p
-                style={{
-                  fontFamily: "Futura PT W01-Bold",
-                  fontSize: "12pt",
-                  paddingRight: "2px",
-                  paddingLeft: "2px",
-                }}
-              >
-                Ohne Ortsangabe
-              </p>
-
-              <button
-                className="buttonWide buttonNoLocation"
-                style={{ boxShadow: "none" }}
-                onClick={noLocation}
-              >
-                {dataNoLocation.length} Ideen anzeigen
-              </button>
-            </div>
-          </div>
-        </Marker>
-      ) : null;
-
-    return isMobileOnly ? (
-      <div>
-        <div
-          onClick={handleOpenGeofilter}
-          style={
-            openGeofilter
-              ? { display: "none" }
-              : {
-                  display: "block",
-                  position: "absolute",
-                  top: "5px",
-                  marginTop: "10px",
-                  left: "calc(97.5vw - 137px)",
-                  zIndex: 10,
-                  width: "137px",
-                  height: "137px",
-                  borderRadius: "20px",
-                  backgroundColor: "rgb(0,0,0,0)",
-                }
-          }
-        ></div>
-        <div
+      <div
+        style={
+          openGeofilter
+            ? {
+                position: "fixed",
+                width: "100vw",
+                height: "100vh",
+                top: "0",
+                left: "0",
+                zIndex: "999",
+                borderRadius: "0",
+                transform: "scale(1)",
+              }
+            : {
+                position: "absolute",
+                top: "10px",
+                marginTop: "10px",
+                left: "calc(97.5vw - 127px)",
+                zIndex: "9",
+                width: "127px",
+                height: "127px",
+                borderRadius: "10%",
+                transform: "scale(1)",
+                overflow: "hidden",
+              }
+        }
+      >
+        <MapGL
           style={
             openGeofilter
               ? {
                   position: "fixed",
-                  width: "100vw",
-                  height: "100vh",
-                  top: "0",
-                  left: "0",
-                  zIndex: "999",
-                  borderRadius: "0",
+                  width: "calc(100% + 1px)",
+                  height: "calc(100% + 1px)",
                   transform: "scale(1)",
+                  zIndex: 999999,
                 }
               : {
-                  position: "absolute",
-                  top: "10px",
-                  marginTop: "10px",
-                  left: "calc(97.5vw - 127px)",
-                  zIndex: "9",
-                  width: "127px",
-                  height: "127px",
-                  borderRadius: "10%",
+                  width: "calc(100% - 0)",
+                  height: "calc(100% - 1px)",
                   transform: "scale(1)",
-                  overflow: "hidden",
                 }
           }
+          mapStyle="mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6"
+          accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+          minZoom={9}
+          {...viewport}
+          zoom={openGeofilter ? viewport.zoom : viewport.zoom - 2.5}
+          onViewportChange={_onViewportChange}
         >
-          <MapGL
+          <div
+            className="dialogNavigation"
+            style={
+              openGeofilter
+                ? { display: "block", zIndex: 999 }
+                : { display: "none" }
+            }
+          >
+            <button onClick={handleCloseGeofilter} className="buttonRound">
+              <img
+                src={Arrow}
+                width="20"
+                alt="backArrow"
+                style={{ transform: "rotate(90deg)" }}
+              />
+            </button>
+          </div>
+          <Source id="maine" type="geojson" data={data} />
+          <Layer
+            id="maine"
+            type="fill"
+            source="maine"
+            paint={{
+              "fill-color": "#fed957",
+              "fill-opacity": 0.2,
+            }}
+          />
+          <div
             style={
               openGeofilter
                 ? {
-                    position: "fixed",
-                    width: "calc(100% + 1px)",
-                    height: "calc(100% + 1px)",
-                    transform: "scale(1)",
-                    zIndex: 999999,
+                    display: "block",
+                    zIndex: 999,
+                    transform: "translate(80px,-5px)",
                   }
-                : {
-                    width: "calc(100% - 0)",
-                    height: "calc(100% - 1px)",
-                    transform: "scale(1)",
-                  }
+                : { display: "none" }
             }
-            mapStyle={styles[this.state.styleId]}
-            accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-            minZoom={9}
-            {...viewport}
-            zoom={openGeofilter ? viewport.zoom : viewport.zoom - 2.5}
-            onViewportChange={_onViewportChange}
           >
-            <Source id="maine" type="geojson" data={data} />
-            <Layer
-              id="maine"
-              type="fill"
-              source="maine"
-              paint={{
-                "fill-color": "#fed957",
-                "fill-opacity": 0.2,
-              }}
-            />
-            <div
-              style={
-                openGeofilter
-                  ? {
-                      display: "block",
-                      zIndex: 999,
-                      transform: "translate(80px,-5px)",
-                    }
-                  : { display: "none" }
-              }
-            >
-              <TopicFilter
-                handleTopicSelector={handleTopicSelector}
-                topicsSelected={topicsSelected}
-              ></TopicFilter>
-            </div>
-
+            <TopicFilter
+              handleTopicSelector={handleTopicSelector}
+              topicsSelected={topicsSelected}
+            ></TopicFilter>
             <div
               className={
                 showGeofilterResults === false
@@ -452,7 +447,6 @@ class Geofilter extends Component {
                   : classes.selector
               }
             ></div>
-
             <div style={{ zIndex: 90 }}>
               {dataFinalMap.map((element) => (
                 <Marker
@@ -498,7 +492,7 @@ class Geofilter extends Component {
                       }}
                     >
                       <button
-                        onClick={() => this.fetchDataScream(element.screamId)}
+                        onClick={() => fetchDataScream(element.screamId)}
                         className="buttonExpand ripple"
                       ></button>
                     </div>
@@ -510,59 +504,42 @@ class Geofilter extends Component {
                 </Marker>
               ))}
             </div>
-          </MapGL>
-        </div>
-        <div
-          className="dialogNavigation"
-          style={
-            openGeofilter
-              ? { display: "block", zIndex: 999 }
-              : { display: "none" }
-          }
-        >
-          <button onClick={handleCloseGeofilter} className="buttonRound">
-            <img
-              src={Arrow}
-              width="20"
-              alt="backArrow"
-              style={{ transform: "rotate(90deg)" }}
-            />
+          </div>
+          <button
+            onClick={handleCloseGeofilter}
+            className="buttonWide buttonGeofilter"
+            style={
+              openGeofilter
+                ? { display: "block", zIndex: 999 }
+                : { display: "none" }
+            }
+          >
+            {" "}
+            {dataFinal.length} Ideen anzeigen
           </button>
-        </div>
-        <button
-          onClick={handleCloseGeofilter}
-          className="buttonWide buttonGeofilter"
-          style={
-            openGeofilter
-              ? { display: "block", zIndex: 999 }
-              : { display: "none" }
-          }
-        >
-          {" "}
-          {dataFinal.length} Ideen anzeigen
-        </button>
 
-        <button
-          onClick={handleResetGeofilter}
-          className="buttonRound buttonResetGeofilter"
-          style={
-            openGeofilter &&
-            (latitude1 < 50.95) |
-              (latitude2 > 50.82) |
-              (longitude2 > 6.812) |
-              (longitude3 < 7.07)
-              ? { display: "block", zIndex: 999 }
-              : openGeofilter
-              ? { display: "block", zIndex: 999, opacity: 0.5 }
-              : { display: "none" }
-          }
-        >
-          <img src={CircularArrow} width="25" alt="reset_icon"></img>
-        </button>
+          <button
+            onClick={handleResetGeofilter}
+            className="buttonRound buttonResetGeofilter"
+            style={
+              openGeofilter &&
+              (latitude1 < 50.95) |
+                (latitude2 > 50.82) |
+                (longitude2 > 6.812) |
+                (longitude3 < 7.07)
+                ? { display: "block", zIndex: 999 }
+                : openGeofilter
+                ? { display: "block", zIndex: 999, opacity: 0.5 }
+                : { display: "none" }
+            }
+          >
+            <img src={CircularArrow} width="25" alt="reset_icon"></img>
+          </button>
+        </MapGL>
       </div>
-    ) : null;
-  }
-}
+    </div>
+  ) : null;
+};
 
 Geofilter.propTypes = {
   editUserDetails: PropTypes.func.isRequired,
@@ -570,18 +547,4 @@ Geofilter.propTypes = {
   openScream: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  credentials: state.user.credentials,
-  data: state.data,
-  user: state.user,
-});
-
-const mapActionsToProps = {
-  editUserDetails,
-  openScream,
-};
-
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(Geofilter));
+export default withStyles(styles)(Geofilter);

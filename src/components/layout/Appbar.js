@@ -1,13 +1,12 @@
 /** @format */
 
 import React from "react";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 //ICONS
 
 import Appbarimg from "../../images/appbar.png";
-
-import { isMobileOnly } from "react-device-detect";
 
 const styles = {
   appBarLeft: {
@@ -35,7 +34,7 @@ const styles = {
   },
 };
 const Appbar = ({ classes, order, handleClick }) => {
-  return isMobileOnly ? (
+  return isMobileCustom ? (
     <>
       {" "}
       <div className={classes.appBarLeft}>

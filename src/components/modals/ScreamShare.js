@@ -32,7 +32,7 @@ import Swipe from "react-easy-swipe";
 
 //COOKIES
 import Cookies from "universal-cookie";
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 const cookies = new Cookies();
 
 const styles = {
@@ -349,7 +349,7 @@ class ScreamShare extends Component {
       </>
     ) : null;
 
-    const dialogComponent = isMobileOnly ? (
+    const dialogComponent = isMobileCustom ? (
       <Dialog
         open={this.state.openShare}
         onClose={this.handleCloseShare}

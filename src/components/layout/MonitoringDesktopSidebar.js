@@ -26,8 +26,6 @@ export class MonitoringDesktopSidebar extends Component {
       handleClick,
       handleTopicSelector,
       topicsSelected,
-
-      openInfoPageDesktop,
     } = this.props;
     //
 
@@ -45,7 +43,7 @@ export class MonitoringDesktopSidebar extends Component {
     ) : null;
 
     return (
-      <div className={openInfoPageDesktop ? "sideBar_hide" : "sideBar"}>
+      <div className="FilterComponent">
         <h1 className="logoWeb">
           <img src={Logo} width="100px"></img>
         </h1>
@@ -108,10 +106,7 @@ export class MonitoringDesktopSidebar extends Component {
           rel="noopener noreferrer"
           target="_blank"
         >
-          <div
-            className="facebook"
-            style={openInfoPageDesktop ? { left: "-200px" } : null}
-          >
+          <div className="facebook">
             <img src={Facebook} width="25" alt="EndImage" />
           </div>
         </a>
@@ -120,10 +115,7 @@ export class MonitoringDesktopSidebar extends Component {
           rel="noopener noreferrer"
           target="_blank"
         >
-          <div
-            className="insta"
-            style={openInfoPageDesktop ? { left: "-200px" } : null}
-          >
+          <div className="insta">
             <img src={Insta} width="25" alt="EndImage" />
           </div>{" "}
         </a>

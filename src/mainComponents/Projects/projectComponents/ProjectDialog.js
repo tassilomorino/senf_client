@@ -31,7 +31,7 @@ import lamploader from "../../../images/lamp.png";
 
 import Swipe from "react-easy-swipe";
 
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 import "./ProjectDialog.css";
 //COOKIES
@@ -272,7 +272,6 @@ class ProjectDialog extends Component {
     dropdown: "10",
     selectedId: "",
     showTitles: false,
-    openInfoPageDesktop: false,
     cookiesSetDesktop: false,
 
     openGeofilter: false,
@@ -328,7 +327,7 @@ class ProjectDialog extends Component {
           const centerLong = this.props.project.centerLong;
           const zoom = this.props.project.zoom;
 
-          if (!isMobileOnly) {
+          if (!isMobileCustom) {
             this.props.zoomToBounds(centerLat, centerLong, zoom);
           } else {
             this.setState({
@@ -551,7 +550,6 @@ class ProjectDialog extends Component {
       viewport,
       handleTopicSelector,
       topicsSelected,
-      openInfoPageDesktop,
       projectsData,
       loadingProjects,
     } = this.props;
@@ -582,7 +580,7 @@ class ProjectDialog extends Component {
         </div>
         <div
           style={
-            isMobileOnly
+            isMobileCustom
               ? { position: "absolute", top: "10px", right: "10px" }
               : { position: "absolute", top: "20px", right: "10px" }
           }
@@ -594,9 +592,8 @@ class ProjectDialog extends Component {
           />
         </div>
 
-        {isMobileOnly && this.state.order === 1 && (
+        {isMobileCustom && this.state.order === 1 && (
           <PostScream
-            openInfoPageDesktop={openInfoPageDesktop}
             loadingProjects={loadingProjects}
             projectsData={projectsData}
             project={this.props.project}
@@ -660,7 +657,6 @@ class ProjectDialog extends Component {
               loading={loading}
               projectScreams={this.props.project.screams}
               classes={classes}
-              openInfoPageDesktop={this.state.openInfoPageDesktop}
               latitude1={this.state.latitude1}
               latitude2={this.state.latitude2}
               latitude3={this.state.latitude3}
@@ -777,7 +773,7 @@ class ProjectDialog extends Component {
       </div>
     );
 
-    return isMobileOnly ? (
+    return isMobileCustom ? (
       <Dialog
         open={this.props.openProject}
         onClose={this.handleClose}
@@ -799,15 +795,7 @@ class ProjectDialog extends Component {
         style={this.state.dialogStyle} // This was the key point, reset the position of the dialog, so the user can interact with other elements
         disableBackdropClick // Remove the backdrop click (just to be sure)
       >
-        <div
-          className={
-            openInfoPageDesktop
-              ? "contentWrapper_dialog_hide"
-              : "contentWrapper_dialog"
-          }
-        >
-          {dialogMarkup}
-        </div>
+        <div className="contentWrapper_dialog">{dialogMarkup}</div>
 
         <div
           style={{
@@ -830,7 +818,6 @@ class ProjectDialog extends Component {
             viewport={viewport}
             selectedId={this.state.selectedId}
             showTitles={this.state.showTitles}
-            openInfoPageDesktop={this.state.openInfoPageDesktop}
             mapDesktopShowResults={this.mapDesktopShowResults}
             mapDesktopReset={this.mapDesktopReset}
           ></MapDesktop>

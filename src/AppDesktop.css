@@ -829,10 +829,6 @@ position: fixed;
     transition: 0.5s;
     
   }
-  
-  .sideBarMobile{
-    display:none
-  }
     .legendwrapper {
         transform: scale(0.9);
      position: relative;
@@ -846,6 +842,10 @@ position: fixed;
       padding: 0px;
     }
     .sideBar > .legendwrapper{
+      height: auto;
+    }
+
+    .sideBar_hide > .legendwrapper{
       height: auto;
     }
     .Filterheader{

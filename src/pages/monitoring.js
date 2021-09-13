@@ -3,7 +3,7 @@
 import React, { Fragment, Component } from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../util/customDeviceDetect";
 
 //Redux
 import { connect } from "react-redux";
@@ -93,7 +93,6 @@ export class monitoring extends Component {
       dropdown: "10",
       selectedId: "",
       showTitles: false,
-      openInfoPageDesktop: false,
       cookiesSetDesktop: false,
 
       openGeofilter: false,
@@ -127,14 +126,6 @@ export class monitoring extends Component {
         "Sonstige",
       ],
     };
-
-    if (
-      cookies.get("Cookie_settings") !== "all" &&
-      cookies.get("Cookie_settings") !== "minimum" &&
-      isMobileOnly
-    ) {
-      this.props.history.push("/intro");
-    }
   }
 
   componentDidMount() {
@@ -146,7 +137,7 @@ export class monitoring extends Component {
   }
 
   componentWillUnmount() {
-    if (!isMobileOnly) {
+    if (!isMobileCustom) {
       window.removeEventListener("popstate", this.handleOnUrlChange, false);
     }
   }
@@ -365,27 +356,6 @@ export class monitoring extends Component {
     });
 
     this.props.closeScream();
-  };
-
-  handleOpenInfoPageDesktop = () => {
-    this.setState({ openInfoPageDesktop: true });
-  };
-  handleCloseInfoPageDesktop = () => {
-    this.setState({ openInfoPageDesktop: false });
-
-    const screamId = this.props.match.params.screamId;
-
-    if (screamId) {
-      if (screamId.indexOf("_") > 0) {
-        this.props.openProject(screamId);
-      } else {
-        this.props.openScreamFirstTime(screamId);
-      }
-      this.setState({ screamIdParam: screamId });
-    }
-    if (window.location.pathname === "/projects") {
-      this.handleClick(2);
-    }
   };
 
   noLocation = () => {
@@ -632,14 +602,8 @@ export class monitoring extends Component {
           channelOrder={this.state.channelOrder}
           handleTopicSelector={this.handleTopicSelector}
           topicsSelected={this.state.topicsSelected}
-          handleOpenInfoPageDesktop={this.handleOpenInfoPageDesktop}
-          handleCloseInfoPageDesktop={this.handleCloseInfoPageDesktop}
-          cookiesSetDesktop={this.state.cookiesSetDesktop}
-          handleCookiesDesktop={this.handleCookiesDesktop}
-          handleMinimumCookies={this.handleMinimumCookies}
           deleteAccount={this.deleteAccount}
           handleLogout={this.handleLogout}
-          openInfoPageDesktop={this.state.openInfoPageDesktop}
           loadingProjects={loadingProjects}
           projectsData={projects}
         ></MonitoringDesktopSidebar>

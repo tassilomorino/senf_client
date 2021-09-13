@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { Component, Fragment } from "react";
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 // Icons
 import CloseIcon from "@material-ui/icons/Close";
@@ -159,7 +159,7 @@ class AltersgruppeDialog extends Component {
   render() {
     const { classes } = this.props;
 
-    const dialogComponent = isMobileOnly ? (
+    const dialogComponent = isMobileCustom ? (
       <Dialog
         scroll={"body"}
         open={this.state.open}
