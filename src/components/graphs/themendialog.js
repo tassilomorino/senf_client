@@ -3,14 +3,14 @@
 import React, { Fragment, useState } from "react";
 
 //Extra-Packages
-import { isMobileCustom } from "../../../util/customDeviceDetect";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 // Icons
 import CloseIcon from "@material-ui/icons/Close";
 
 //Components
 import Thema from "./thema";
-import MyButton from "../../../util/MyButton";
+import MyButton from "../../util/MyButton";
 
 // MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";

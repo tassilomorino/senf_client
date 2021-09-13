@@ -1,52 +1,43 @@
 /** @format */
 
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
+import Swipe from "react-easy-swipe";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
-import dayjs from "dayjs";
-import { Link } from "react-router-dom";
 // MUI Stuff
 import Dialog from "@material-ui/core/Dialog";
 import Typography from "@material-ui/core/Typography";
 
-// Icons
-
-import Arrow from "../../../images/icons/arrow.png";
-import WeblinkIcon from "../../../images/icons/weblink.png";
+// Images
+import Arrow from "../../images/icons/arrow.png";
+import WeblinkIcon from "../../images/icons/weblink.png";
+import lamploader from "../../images/lamp.png";
+import contactIcon from "../../images/icons/mail.png";
 
 //MAPSTUFF
 import "mapbox-gl/dist/mapbox-gl.css";
 
 // Redux stuff
 import { connect } from "react-redux";
-import { closeScream } from "../../../redux/actions/screamActions";
-import { closeProject } from "../../../redux/actions/projectActions";
-import { clearErrors } from "../../../redux/actions/errorsActions";
+import { closeScream } from "../../redux/actions/screamActions";
+import { closeProject } from "../../redux/actions/projectActions";
+import { clearErrors } from "../../redux/actions/errorsActions";
 
-//ANIMATION
 import Slide from "@material-ui/core/Slide";
 
-import lamploader from "../../../images/lamp.png";
+//Components
+import ProjectIdeas from "./ProjectIdeas";
+import MapDesktop from "../map/MapDesktop";
+import PostScream from "../postScream/PostScream";
+import ScreamShare from "../modals/ScreamShare";
+import CalendarComponent from "../calendar/CalendarComponent";
 
-import Swipe from "react-easy-swipe";
-
-import { isMobileCustom } from "../../../util/customDeviceDetect";
+import Tabs from "../module/Tabs";
+import { ProjectTabData } from "../../data/ProjectTabData";
 
 import "./ProjectDialog.css";
-//COOKIES
-import Cookies from "universal-cookie";
-import ProjectIdeas from "./ProjectIdeas";
-import MapDesktop from "../../../components/map/MapDesktop";
-import PostScream from "../../../components/postScream/PostScream";
-import ScreamShare from "../../../components/modals/ScreamShare";
-import CalendarComponent from "../../../components/calendar/CalendarComponent";
-
-import contactIcon from "../../../images/icons/mail.png";
-import Tabs from "../../../components/module/Tabs";
-import { ProjectTabData } from "../../../data/ProjectTabData";
-
-const cookies = new Cookies();
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;

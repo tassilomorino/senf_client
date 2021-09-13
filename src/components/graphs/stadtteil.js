@@ -6,7 +6,7 @@ import React, { Component } from "react";
 import createPlotlyComponent from "react-plotlyjs";
 //See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
 import Plotly from "plotly.js/dist/plotly-cartesian";
-import TopicFilter from "../../../components/layout/TopicFilter";
+import TopicFilter from "../layout/TopicFilter";
 const PlotlyComponent = createPlotlyComponent(Plotly);
 
 export class Stadtteil extends Component {

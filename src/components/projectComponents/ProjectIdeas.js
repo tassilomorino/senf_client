@@ -3,16 +3,16 @@
 import React from "react";
 import ToggleDisplay from "react-toggle-display";
 import _ from "lodash";
-import { isMobileCustom } from "../../../util/customDeviceDetect";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 //Components
-import Geofilter from "../../../components/map/Geofilter";
-import Scream from "../../../components/scream/Scream";
-import TopicFilter from "../../../components/layout/TopicFilter";
-import SortingSelect from "../../../components/module/SortingSelect";
+import Geofilter from "../map/Geofilter";
+import Scream from "../scream/Scream";
+import TopicFilter from "../layout/TopicFilter";
+import SortingSelect from "../module/SortingSelect";
 
 //Images
-import lamploader from "../../../images/lamp.png";
+import lamploader from "../../images/lamp.png";
 
 const ProjectIdeas = ({
   loading,

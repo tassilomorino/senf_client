@@ -3,11 +3,11 @@
 import React, { useState, useEffect } from "react";
 
 //Components
-import Keyindicators from "./graphs/Keyindicators";
-import ThemenDialog from "./graphs/themendialog";
-import StadttteilDialog from "./graphs/stadtteilDialog";
-import AltersgruppeDialog from "./graphs/altersgruppeDialog";
-import WordcloudDialog from "./graphs/wordcloudDialog";
+import Keyindicators from "../graphs/Keyindicators";
+import ThemenDialog from "../graphs/themendialog";
+import StadttteilDialog from "../graphs/stadtteilDialog";
+import AltersgruppeDialog from "../graphs/altersgruppeDialog";
+import WordcloudDialog from "../graphs/wordcloudDialog";
 
 //Images
 import Themencover from "../../images/themencover.png";

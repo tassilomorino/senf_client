@@ -1,14 +1,14 @@
 /** @format */
 
 import React, { Component, Fragment } from "react";
-import { isMobileCustom } from "../../../util/customDeviceDetect";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 // Icons
 import CloseIcon from "@material-ui/icons/Close";
 
-//Component
-import MyButton from "../../../util/MyButton";
-import { Wordcloud } from "./wordcloud";
+//Components
+import Altersgruppe from "./altersgruppe";
+import MyButton from "../../util/MyButton";
 
 // MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -29,6 +29,7 @@ const styles = {
   paper: {
     //backgroundColor: "rgb(0,0,0,0.5)",
     boxShadow: "none",
+    overflow: "hidden",
     padding: "0",
     top: "8em",
     overflow: "hidden",
@@ -41,6 +42,19 @@ const styles = {
     maxHeight: "calc(100vh - 80px)",
     overflowX: "hidden",
   },
+  card: {
+    marginTop: "2.5vw",
+    top: "0em",
+    position: "relative",
+    width: "100%",
+    paddingTop: "1em",
+    backgroundColor: "white",
+    height: "auto",
+    paddingBottom: "1em",
+    borderRadius: "10px",
+    overflow: "hidden",
+  },
+
   closeButton: {
     position: "absolute",
     top: "2.5vw",
@@ -68,15 +82,14 @@ const styles = {
   },
 
   card: {
-    marginTop: "2.5vw",
+    marginTop: "0",
     top: "0em",
-    textAlign: "center",
     position: "relative",
     overflow: "hidden",
     paddingTop: "1em",
     backgroundColor: "white",
     height: "auto",
-    paddingBottom: "1em",
+    paddingBottom: "0em",
     borderRadius: "10px",
   },
   title: {
@@ -99,7 +112,6 @@ const styles = {
     textAlign: "center",
   },
   plot: {
-    top: "2vh",
     position: "relative",
     width: "100%",
   },
@@ -113,35 +125,22 @@ const styles = {
     color: "black",
     zIndex: "1",
     position: "relative",
-    width: "110vw",
-    height: "20vh",
-    left: "-12.5vw",
+    width: "100%",
+
     borderRadius: "10px",
-    top: "-0.5vw",
+    top: "2vh",
     transform: "scale(0.8)",
     marginLeft: "7px",
     paddingLeft: "20px",
-  },
-  textField: {
-    backgroundColor: "white",
-    borderRadius: "5px",
-    marginTop: "10px",
-    paddingBottom: "1em",
-  },
-  wordcloud: {
-    position: "relative",
-    backgroundColor: "whiite",
-    zIndex: 999,
-    left: "-5%",
-    height: "50vh",
-    width: "90%",
+
+    marginBottom: "20px",
     maxWidth: "500px",
     marginLeft: "50%",
     transform: "translateX(-50%)",
   },
 };
 
-class StadtteilDialog extends Component {
+class AltersgruppeDialog extends Component {
   state = {
     open: false,
 
@@ -152,11 +151,6 @@ class StadtteilDialog extends Component {
 
   handleOpen = () => {
     this.setState({ open: true });
-    setTimeout(() => {
-      alert(
-        "INFO: Die Keywords können erst aussagekräftig werden, wenn mehr Ideen geteilt werden"
-      );
-    }, 500);
   };
   handleClose = () => {
     this.setState({ open: false });
@@ -182,7 +176,7 @@ class StadtteilDialog extends Component {
         </MyButton>
 
         <DialogContent>
-          <Wordcloud data={this.props.data} classes={this.props.classes} />
+          <Altersgruppe data={this.props.data} classes={this.props.classes} />
         </DialogContent>
       </Dialog>
     ) : (
@@ -202,7 +196,7 @@ class StadtteilDialog extends Component {
         </MyButton>
 
         <DialogContent>
-          <Wordcloud data={this.props.data} classes={this.props.classes} />
+          <Altersgruppe data={this.props.data} classes={this.props.classes} />
         </DialogContent>
       </Dialog>
     );
@@ -220,4 +214,4 @@ class StadtteilDialog extends Component {
   }
 }
 
-export default withStyles(styles)(StadtteilDialog);
+export default withStyles(styles)(AltersgruppeDialog);

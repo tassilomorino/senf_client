@@ -26,16 +26,16 @@ import PostScream from "../components/postScream/PostScream";
 
 import Appbar from "../components/layout/Appbar";
 
-import InsightsPage from "../mainComponents/Insights/InsightsPage";
+import InsightsPage from "../components/templates/InsightsPage";
 import DesktopSidebar from "../components/layout/DesktopSidebar";
 
 import Cookies from "universal-cookie";
 import Topbar from "../components/layout/Topbar";
 import MapDesktop from "../components/map/MapDesktop";
-import { AllIdeasPage } from "../mainComponents/Ideas/AllIdeasPage";
-import ProjectsPage from "../mainComponents/Projects/ProjectsPage";
+import AllIdeasPage from "../components/templates/AllIdeasPage";
+import ProjectsPage from "../components/templates/ProjectsPage";
 import ScreamDialog from "../components/scream/ScreamDialog";
-import ProjectDialog from "../mainComponents/Projects/projectComponents/ProjectDialog";
+import ProjectDialog from "../components/projectComponents/ProjectDialog";
 
 const cookies = new Cookies();
 
