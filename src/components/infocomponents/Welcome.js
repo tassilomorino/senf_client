@@ -140,10 +140,7 @@ const Welcome = ({ classes }) => {
           )}
         />
         <Link to="/start">
-          <button className="buttonWide buttonIntroToStart">
-            {" "}
-            {t("next")}
-          </button>
+          <button className="buttonWide buttonIntroToStart">{t("next")}</button>
         </Link>
 
         <span className="footerIntro">

@@ -952,6 +952,8 @@ position: fixed;
     background-color: #F8F8F8;
   }
 
+  
+
 
 .insta {
   position: fixed;
@@ -1035,6 +1037,22 @@ position: fixed;
       opacity: 1;
       transform: scale(1);
     }
+  }
+
+  .explanation {
+    position: fixed;
+    top: 35vh;
+    width: 200px;
+    left: 32%;
+    display:table;
+    z-index: 0;
+    font-size:20px;
+    
+  }
+  
+  .explanation::before {
+    content: "*";
+    display:table-cell
   }
 
 
