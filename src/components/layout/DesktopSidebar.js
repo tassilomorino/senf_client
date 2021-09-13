@@ -25,7 +25,6 @@ import { isMobileCustom } from "../../util/customDeviceDetect";
 
 const DesktopSidebar = ({
   loading,
-  authenticated,
   classes,
   order,
   handleClick,
@@ -38,37 +37,9 @@ const DesktopSidebar = ({
   projectsData,
 }) => {
   const { openInfoPage } = useSelector((state) => state.UI);
+  const { authenticated } = useSelector((state) => state.user);
 
   const { t } = useTranslation();
-
-  const sign = !authenticated ? (
-    <div className="profile">
-      <SignNote />
-      <img
-        src={Noprofile}
-        width="35"
-        alt="EndImage"
-        style={{ paddingRight: "10px" }}
-      />
-      {t("login")}
-    </div>
-  ) : (
-    <div className="profile">
-      <Account
-        handleTopicSelector={handleTopicSelector}
-        topicsSelected={topicsSelected}
-        deleteAccount={deleteAccount}
-        handleLogout={handleLogout}
-      />
-      <img
-        src={order === 4 ? profile_grey : profile_yellow}
-        width="35"
-        alt="EndImage"
-        style={{ paddingRight: "10px" }}
-      />
-      {t("profile")}
-    </div>
-  );
 
   return (
     !isMobileCustom && (
@@ -82,7 +53,34 @@ const DesktopSidebar = ({
           classes={classes}
         />
 
-        {sign}
+        {!authenticated ? (
+          <div className="profile">
+            <SignNote />
+            <img
+              src={Noprofile}
+              width="35"
+              alt="EndImage"
+              style={{ paddingRight: "10px" }}
+            />
+            {t("login")}
+          </div>
+        ) : (
+          <div className="profile">
+            <Account
+              handleTopicSelector={handleTopicSelector}
+              topicsSelected={topicsSelected}
+              deleteAccount={deleteAccount}
+              handleLogout={handleLogout}
+            />
+            <img
+              src={order === 4 ? profile_grey : profile_yellow}
+              width="35"
+              alt="EndImage"
+              style={{ paddingRight: "10px" }}
+            />
+            {t("profile")}
+          </div>
+        )}
         <PostScream
           loadingProjects={loadingProjects}
           projectsData={projectsData}

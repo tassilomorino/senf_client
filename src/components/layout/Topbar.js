@@ -1,10 +1,6 @@
 /** @format */
-
 import React from "react";
 import PropTypes from "prop-types";
-
-//COMPONENTS
-import InlineInformationPage from "../infocomponents/InlineInformationPage";
 
 //REDUX
 import { useSelector } from "react-redux";
@@ -12,16 +8,14 @@ import { useSelector } from "react-redux";
 //COMPONENTS
 import SignNote from "../profile/SignNote";
 import Account from "../profile/Account";
+import InlineInformationPage from "../infocomponents/InlineInformationPage";
+import ScrollTabs from "../module/ScrollTabs";
+import { MenuData } from "../../data/MenuData";
 
 //ICONS
+import Logo from "../../images/logo.png";
 import profile_yellow from "../../images/icons/profile_yellow.png";
 import Noprofile from "../../images/noprofile.png";
-
-import Logo from "../../images/logo.png";
-import Tabs from "../module/Tabs";
-
-import { MenuData } from "../../data/MenuData";
-import ScrollTabs from "../module/ScrollTabs";
 
 const Topbar = ({
   order,
