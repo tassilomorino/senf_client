@@ -50,6 +50,7 @@ import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
 import translationEN from "./util/translations/english.json";
 import translationDE from "./util/translations/german.json";
+import { isMobileCustom } from "./util/customDeviceDetect";
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
@@ -147,7 +148,9 @@ if (cookies.get("Cookie_settings") === "all") {
 } else if (cookies.get("Cookie_settings") === "minimum") {
   store.dispatch(setCookies("minimum"));
 } else {
-  store.dispatch(setInfoPageOpen());
+  if (!isMobileCustom) {
+    store.dispatch(setInfoPageOpen());
+  }
 }
 
 if (cookies.get("Cookie_settings") === "all") {

@@ -153,17 +153,17 @@ class EditScream extends Component {
     this.setState({ open: false });
   };
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.UI.errors) {
-      this.setState({
-        errors: nextProps.UI.errors,
-      });
-    }
-    if (!nextProps.UI.errors && !nextProps.UI.loading) {
-      this.setState({ body: "", open: false, errors: {} });
-      this.setState({ title: "", open: false, errors: {} });
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.UI.errors) {
+  //     this.setState({
+  //       errors: nextProps.UI.errors,
+  //     });
+  //   }
+  //   if (!nextProps.UI.errors && !nextProps.UI.loading) {
+  //     this.setState({ body: "", open: false, errors: {} });
+  //     this.setState({ title: "", open: false, errors: {} });
+  //   }
+  // }
 
   handleChange = (event) => {
     event.preventDefault();

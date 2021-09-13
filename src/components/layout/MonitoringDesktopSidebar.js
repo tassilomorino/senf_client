@@ -1,7 +1,6 @@
 /** @format */
 
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import Logo from "../../images/logo.png";
 
 import SignNote from "../profile/SignNote";
@@ -13,45 +12,20 @@ import Facebook from "../../images/icons/socialmedia/facebook.png";
 import Insights_yellow from "../../images/icons/insights_yellow.png";
 import Insights_grey from "../../images/icons/insights_grey.png";
 
-import profile_yellow from "../../images/icons/profile_yellow.png";
-import profile_grey from "../../images/icons/profile_grey.png";
-
 import Noprofile from "../../images/noprofile.png";
 import Arrow from "../../images/icons/arrow_yellow.png";
 
-import Themenfilter from "./Themenfilter";
-import Account from "../profile/Account";
+import TopicFilter from "./TopicFilter";
 
 export class MonitoringDesktopSidebar extends Component {
-  state = {
-    project: "",
-  };
-
   render() {
     const {
       authenticated,
 
       order,
       handleClick,
-      handleLegend,
-      handleLegend1,
-      handleLegend2,
-      handleLegend3,
-      handleLegend4,
-      handleLegend5,
-      handleLegend6,
-      handleLegend7,
-      checked,
-      checked1,
-      checked2,
-      checked3,
-      checked4,
-      checked5,
-      checked6,
-      checked7,
-
-      deleteAccount,
-      handleLogout,
+      handleTopicSelector,
+      topicsSelected,
     } = this.props;
     //
 
@@ -66,40 +40,7 @@ export class MonitoringDesktopSidebar extends Component {
         />
         Anmelden
       </div>
-    ) : (
-      <div
-        className="profile"
-        // onClick={() => handleClick(4)}
-      >
-        <Account
-          handleLegend={this.handleLegend}
-          handleLegend1={this.handleLegend1}
-          handleLegend2={this.handleLegend2}
-          handleLegend3={this.handleLegend3}
-          handleLegend4={this.handleLegend4}
-          handleLegend5={this.handleLegend5}
-          handleLegend6={this.handleLegend6}
-          handleLegend7={this.handleLegend7}
-          checked={checked}
-          checked1={checked1}
-          checked2={checked2}
-          checked3={checked3}
-          checked4={checked4}
-          checked5={checked5}
-          checked6={checked6}
-          checked7={checked7}
-          deleteAccount={deleteAccount}
-          handleLogout={handleLogout}
-        />
-        <img
-          src={order === 4 ? profile_grey : profile_yellow}
-          width="35"
-          alt="EndImage"
-          style={{ paddingRight: "10px" }}
-        />
-        Profil
-      </div>
-    );
+    ) : null;
 
     return (
       <div className="FilterComponent">
@@ -147,28 +88,10 @@ export class MonitoringDesktopSidebar extends Component {
           }}
         ></div>
 
-        <Themenfilter
-          handlers={[
-            handleLegend,
-            handleLegend1,
-            handleLegend2,
-            handleLegend3,
-            handleLegend4,
-            handleLegend5,
-            handleLegend6,
-            handleLegend7,
-          ]}
-          checks={[
-            checked,
-            checked1,
-            checked2,
-            checked3,
-            checked4,
-            checked5,
-            checked6,
-            checked7,
-          ]}
-        ></Themenfilter>
+        <TopicFilter
+          handleTopicSelector={handleTopicSelector}
+          topicsSelected={topicsSelected}
+        ></TopicFilter>
         <div
           style={{
             position: "relative",
@@ -201,8 +124,4 @@ export class MonitoringDesktopSidebar extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  data: state.data,
-});
-
-export default connect(mapStateToProps)(MonitoringDesktopSidebar);
+export default MonitoringDesktopSidebar;

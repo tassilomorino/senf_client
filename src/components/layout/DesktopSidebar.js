@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 //Components
 import SignNote from "../profile/SignNote";
 import InlineInformationPageDesktop from "../infocomponents/InlineInformationPageDesktop";
-import Themenfilter from "./Themenfilter";
+import TopicFilter from "./TopicFilter";
 import Account from "../profile/Account";
 import { MenuItem } from "./MenuItem";
 import { MenuData } from "./MenuData";
@@ -34,22 +34,8 @@ const DesktopSidebar = ({
   classes,
   order,
   handleClick,
-  handleLegend,
-  handleLegend1,
-  handleLegend2,
-  handleLegend3,
-  handleLegend4,
-  handleLegend5,
-  handleLegend6,
-  handleLegend7,
-  checked,
-  checked1,
-  checked2,
-  checked3,
-  checked4,
-  checked5,
-  checked6,
-  checked7,
+  handleTopicSelector,
+  topicsSelected,
   handleCookies,
   deleteAccount,
   handleLogout,
@@ -77,22 +63,8 @@ const DesktopSidebar = ({
       // onClick={() => handleClick(4)}
     >
       <Account
-        handleLegend={handleLegend}
-        handleLegend1={handleLegend1}
-        handleLegend2={handleLegend2}
-        handleLegend3={handleLegend3}
-        handleLegend4={handleLegend4}
-        handleLegend5={handleLegend5}
-        handleLegend6={handleLegend6}
-        handleLegend7={handleLegend7}
-        checked={checked}
-        checked1={checked1}
-        checked2={checked2}
-        checked3={checked3}
-        checked4={checked4}
-        checked5={checked5}
-        checked6={checked6}
-        checked7={checked7}
+        handleTopicSelector={handleTopicSelector}
+        topicsSelected={topicsSelected}
         deleteAccount={deleteAccount}
         handleLogout={handleLogout}
       />
@@ -108,9 +80,7 @@ const DesktopSidebar = ({
 
   return (
     !isMobileCustom && (
-      <div
-        className={openInfoPage ? "FilterComponent_hide" : "FilterComponent"}
-      >
+      <div className={openInfoPage ? "sideBar_hide" : "sideBar"}>
         <h1 className="logoWeb">
           <img src={Logo} width="100px"></img>
         </h1>
@@ -149,28 +119,10 @@ const DesktopSidebar = ({
           }}
         ></div>
 
-        <Themenfilter
-          handlers={[
-            handleLegend,
-            handleLegend1,
-            handleLegend2,
-            handleLegend3,
-            handleLegend4,
-            handleLegend5,
-            handleLegend6,
-            handleLegend7,
-          ]}
-          checks={[
-            checked,
-            checked1,
-            checked2,
-            checked3,
-            checked4,
-            checked5,
-            checked6,
-            checked7,
-          ]}
-        ></Themenfilter>
+        <TopicFilter
+          handleTopicSelector={handleTopicSelector}
+          topicsSelected={topicsSelected}
+        ></TopicFilter>
 
         <div
           style={{

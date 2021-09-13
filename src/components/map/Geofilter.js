@@ -13,12 +13,15 @@ import { openScream } from "../../redux/actions/screamActions";
 import Arrow from "../../images/icons/arrow.png";
 import CircularArrow from "../../images/icons/circular-arrow.png";
 
-//MAPSTUFF
+//MAPSTUF
 import MapGL, { Source, Layer, Marker } from "@urbica/react-map-gl";
 
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
-import { Themenfilter } from "../layout/Themenfilter";
+//COOKIES
+import Cookies from "universal-cookie";
+import TopicFilter from "../layout/TopicFilter";
+const cookies = new Cookies();
 
 const styles = {
   textField: {
@@ -174,23 +177,6 @@ const Geofilter = ({
   _onViewportChange,
   dataFinal,
 
-  handleLegend,
-  handleLegend1,
-  handleLegend2,
-  handleLegend3,
-  handleLegend4,
-  handleLegend5,
-  handleLegend6,
-  handleLegend7,
-  checked,
-  checked1,
-  checked2,
-  checked3,
-  checked4,
-  checked5,
-  checked6,
-  checked7,
-
   handleOpenGeofilter,
   handleCloseGeofilter,
   handleResetGeofilter,
@@ -203,6 +189,8 @@ const Geofilter = ({
 
   loadingProjects,
   geoData,
+  handleTopicSelector,
+  topicsSelected,
 }) => {
   const dispatch = useDispatch();
   const { screams } = useSelector((state) => state.data);
@@ -221,18 +209,6 @@ const Geofilter = ({
           },
         }
       : null;
-
-  let screamLenghth = dataFinal.length;
-
-  const Sonstige = [];
-  const SonstiigedataArray = screams;
-  if (SonstiigedataArray !== undefined && SonstiigedataArray.length > 0) {
-    SonstiigedataArray.forEach((element) => {
-      if (element.Thema === "Sonstige") {
-        Sonstige.push(element);
-      }
-    });
-  }
 
   let dataNoLocation = [];
   const dataArrayNoLocation = dataFinal;
@@ -422,6 +398,23 @@ const Geofilter = ({
           zoom={openGeofilter ? viewport.zoom : viewport.zoom - 2.5}
           onViewportChange={_onViewportChange}
         >
+          <div
+            className="dialogNavigation"
+            style={
+              openGeofilter
+                ? { display: "block", zIndex: 999 }
+                : { display: "none" }
+            }
+          >
+            <button onClick={handleCloseGeofilter} className="buttonRound">
+              <img
+                src={Arrow}
+                width="20"
+                alt="backArrow"
+                style={{ transform: "rotate(90deg)" }}
+              />
+            </button>
+          </div>
           <Source id="maine" type="geojson" data={data} />
           <Layer
             id="maine"
@@ -443,144 +436,107 @@ const Geofilter = ({
                 : { display: "none" }
             }
           >
-            <Themenfilter
-              handlers={[
-                handleLegend,
-                handleLegend1,
-                handleLegend2,
-                handleLegend3,
-                handleLegend4,
-                handleLegend5,
-                handleLegend6,
-                handleLegend7,
-              ]}
-              checks={[
-                checked,
-                checked1,
-                checked2,
-                checked3,
-                checked4,
-                checked5,
-                checked6,
-                checked7,
-              ]}
-            ></Themenfilter>
-          </div>
-
-          <div
-            className={
-              showGeofilterResults === false
-                ? classes.selector_hide
-                : classes.selector
-            }
-          ></div>
-
-          <div style={{ zIndex: 90 }}>
-            {dataFinalMap.map((element) => (
-              <Marker
-                key={element.screamId}
-                longitude={element.long}
-                latitude={element.lat}
-              >
-                <div
-                  style={{
-                    position: "absolute",
-                    width: 7 + element.likeCount / 2 + "px",
-                    marginLeft: -((7 + element.likeCount) / 4) + "px",
-                    height: 7 + element.likeCount / 2 + "px",
-                    marginTop: -(7 + element.likeCount) / 4 + "px",
-                    borderRadius: "100%",
-                    border: "1px white solid",
-                    backgroundColor:
-                      element.Thema === "Rad"
-                        ? "#929df6"
-                        : element.Thema === "Verkehr"
-                        ? "#91dff4"
-                        : element.Thema === "Umwelt und Grün"
-                        ? "#8dd9b8"
-                        : element.Thema === "Sport / Freizeit"
-                        ? "#f6c095"
-                        : element.Thema === "Inklusion / Soziales"
-                        ? "#e8907e"
-                        : element.Thema === "Versorgung"
-                        ? "#bd98f6"
-                        : "#f9db95",
-                    opacity: "1",
-                  }}
+            <TopicFilter
+              handleTopicSelector={handleTopicSelector}
+              topicsSelected={topicsSelected}
+            ></TopicFilter>
+            <div
+              className={
+                showGeofilterResults === false
+                  ? classes.selector_hide
+                  : classes.selector
+              }
+            ></div>
+            <div style={{ zIndex: 90 }}>
+              {dataFinalMap.map((element) => (
+                <Marker
+                  key={element.screamId}
+                  longitude={element.long}
+                  latitude={element.lat}
                 >
                   <div
                     style={{
-                      width: "100%",
-                      height: "100%",
                       position: "absolute",
-                      top: "0",
-                      left: 0,
+                      width: 7 + element.likeCount / 2 + "px",
+                      marginLeft: -((7 + element.likeCount) / 4) + "px",
+                      height: 7 + element.likeCount / 2 + "px",
+                      marginTop: -(7 + element.likeCount) / 4 + "px",
                       borderRadius: "100%",
-                      overflow: "hidden",
+                      border: "1px white solid",
+                      backgroundColor:
+                        element.Thema === "Rad"
+                          ? "#929df6"
+                          : element.Thema === "Verkehr"
+                          ? "#91dff4"
+                          : element.Thema === "Umwelt und Grün"
+                          ? "#8dd9b8"
+                          : element.Thema === "Sport / Freizeit"
+                          ? "#f6c095"
+                          : element.Thema === "Inklusion / Soziales"
+                          ? "#e8907e"
+                          : element.Thema === "Versorgung"
+                          ? "#bd98f6"
+                          : "#f9db95",
+                      opacity: "1",
                     }}
                   >
-                    <button
-                      onClick={() => fetchDataScream(element.screamId)}
-                      className="buttonExpand ripple"
-                    ></button>
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        position: "absolute",
+                        top: "0",
+                        left: 0,
+                        borderRadius: "100%",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <button
+                        onClick={() => fetchDataScream(element.screamId)}
+                        className="buttonExpand ripple"
+                      ></button>
+                    </div>
                   </div>
-                </div>
-                <div style={{ zIndex: 99 }}>
-                  {doubleNoLocation}
-                  {doubleNoLocationPopUp}
-                </div>
-              </Marker>
-            ))}
+                  <div style={{ zIndex: 99 }}>
+                    {doubleNoLocation}
+                    {doubleNoLocationPopUp}
+                  </div>
+                </Marker>
+              ))}
+            </div>
           </div>
+          <button
+            onClick={handleCloseGeofilter}
+            className="buttonWide buttonGeofilter"
+            style={
+              openGeofilter
+                ? { display: "block", zIndex: 999 }
+                : { display: "none" }
+            }
+          >
+            {" "}
+            {dataFinal.length} Ideen anzeigen
+          </button>
+
+          <button
+            onClick={handleResetGeofilter}
+            className="buttonRound buttonResetGeofilter"
+            style={
+              openGeofilter &&
+              (latitude1 < 50.95) |
+                (latitude2 > 50.82) |
+                (longitude2 > 6.812) |
+                (longitude3 < 7.07)
+                ? { display: "block", zIndex: 999 }
+                : openGeofilter
+                ? { display: "block", zIndex: 999, opacity: 0.5 }
+                : { display: "none" }
+            }
+          >
+            <img src={CircularArrow} width="25" alt="reset_icon"></img>
+          </button>
         </MapGL>
       </div>
-      <div
-        className="dialogNavigation"
-        style={
-          openGeofilter
-            ? { display: "block", zIndex: 999 }
-            : { display: "none" }
-        }
-      >
-        <button onClick={handleCloseGeofilter} className="buttonRound">
-          <img
-            src={Arrow}
-            width="20"
-            alt="backArrow"
-            style={{ transform: "rotate(90deg)" }}
-          />
-        </button>
-      </div>
-      <button
-        onClick={handleCloseGeofilter}
-        className="buttonWide buttonGeofilter"
-        style={
-          openGeofilter
-            ? { display: "block", zIndex: 999 }
-            : { display: "none" }
-        }
-      >
-        {" "}
-        {screamLenghth} Ideen anzeigen
-      </button>
-
-      <button
-        onClick={handleResetGeofilter}
-        className="buttonRound buttonResetGeofilter"
-        style={
-          openGeofilter &&
-          (latitude1 < 50.95) |
-            (latitude2 > 50.82) |
-            (longitude2 > 6.812) |
-            (longitude3 < 7.07)
-            ? { display: "block", zIndex: 999 }
-            : openGeofilter
-            ? { display: "block", zIndex: 999, opacity: 0.5 }
-            : { display: "none" }
-        }
-      >
-        <img src={CircularArrow} width="25" alt="reset_icon"></img>
-      </button>
     </div>
   ) : null;
 };

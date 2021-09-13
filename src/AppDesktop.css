@@ -350,12 +350,7 @@
      transition: 0.5s;
      
     }
-    .contentWrapper_dialog_hide {
-      margin-left: -600px;
-     width: 400px; 
-     transition: 0.5s;
-     display: none;
-    }
+    
 
     .contentWrapperInsights{
       width: 400px;
@@ -807,7 +802,7 @@ position: fixed;
     
   
   
-  .FilterComponent{
+  .sideBar{
     position: fixed;
     height: 100vh;
     width: 200px;
@@ -822,7 +817,7 @@ position: fixed;
     overflow-y: scroll;
   }
   
-  .FilterComponent_hide{
+  .sideBar_hide{
     position: fixed;
     height: 100vh;
     width: 200px;
@@ -835,20 +830,27 @@ position: fixed;
     
   }
   
-  .FilterComponentMobile{
+  .sideBarMobile{
     display:none
   }
     .legendwrapper {
         transform: scale(0.9);
      position: relative;
-      width: 180px;
-      height: auto;
+      width: 100%;
+      
       left: 10px;
       border-radius: 0px;
       top: 50px;
-      background-color: #F8F8F8;
+      background-color: transparent;
       margin-left: 0px;
       padding: 0px;
+    }
+    .sideBar > .legendwrapper{
+      height: auto;
+    }
+
+    .sideBar_hide > .legendwrapper{
+      height: auto;
     }
     .Filterheader{
       position: relative;

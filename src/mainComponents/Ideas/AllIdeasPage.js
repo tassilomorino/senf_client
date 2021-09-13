@@ -1,3 +1,5 @@
+/** @format */
+
 import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { connect } from "react-redux";
@@ -6,7 +8,7 @@ import PropTypes from "prop-types";
 import lamploader from "../../images/lamp.png";
 import Arrow from "../../images/icons/sort.png";
 
-import { Themenfilter } from "../../components/layout/Themenfilter";
+import TopicFilter from "../../components/layout/TopicFilter";
 import ToggleDisplay from "react-toggle-display";
 import {
   MuiThemeProvider,
@@ -66,22 +68,6 @@ export class AllIdeasPage extends Component {
       latitude4,
       longitude4,
       handleDropdown,
-      handleLegend,
-      handleLegend1,
-      handleLegend2,
-      handleLegend3,
-      handleLegend4,
-      handleLegend5,
-      handleLegend6,
-      handleLegend7,
-      checked,
-      checked1,
-      checked2,
-      checked3,
-      checked4,
-      checked5,
-      checked6,
-      checked7,
 
       dataNoLocationHandle,
       selectedId,
@@ -91,10 +77,8 @@ export class AllIdeasPage extends Component {
 
       dataFinal,
       projectsData,
-      // user: {
-      //   credentials: { handle },
-      //   authenticated,
-      // },
+      handleTopicSelector,
+      topicsSelected,
     } = this.props;
 
     let HotScreamsMarkup = _.orderBy(dataFinal, "likeCount", "desc").map(
@@ -119,17 +103,6 @@ export class AllIdeasPage extends Component {
       )
     );
 
-    // let StatusFullfilledScreamsMarkup = _.orderBy(
-    //   StatusFulfilleddataFinal,
-    //   "createdAt",
-    //   "desc"
-    // ).map((scream) => <Scream key={scream.screamId} scream={scream} />);
-    // let StatusDeleteScreamsMarkup = _.orderBy(
-    //   StatusDeletedataFinal,
-    //   "createdAt",
-    //   "desc"
-    // ).map((scream) => <Scream key={scream.screamId} scream={scream} />);
-
     let screamLength = dataFinal.length;
 
     let noMoreScreamsMarkup =
@@ -142,28 +115,6 @@ export class AllIdeasPage extends Component {
            Mit den ausgewählten Filtern findest du noch keine Ideen.
         </div>
       );
-
-    // let noMoreStatusFullfilledScreamsMarkup =
-    //   !loading && StatusFullfilledScreamsMarkup.length > 0 ? (
-    //     <div className="ende">
-    //       ... <br /> Keine weiteren Ideen <br />
-    //     </div>
-    //   ) : (
-    //     <span className={classes.inlineText}>
-    //        Mit den ausgewählten Filtern findest du noch keine Ideen.
-    //     </span>
-    //   );
-
-    // let noMoreStatusDeleteScreamsMarkup =
-    //   !loading && StatusDeleteScreamsMarkup.length > 0 ? (
-    //     <div className="ende">
-    //       ... <br /> Keine weiteren Ideen <br />
-    //     </div>
-    //   ) : (
-    //     <span className={classes.inlineText}>
-    //        Mit den ausgewählten Filtern findest du noch keine Ideen.
-    //     </span>
-    //   );
 
     const content = !loading ? (
       <>
@@ -187,14 +138,11 @@ export class AllIdeasPage extends Component {
         <div>
           <div className="content">
             <div className="homeHeadermain">
-              <div className="FilterComponentMobile">
-                <Themenfilter
-                  handlers={
-                    [handleLegend, handleLegend1, handleLegend2, handleLegend3,
-                      handleLegend4, handleLegend5, handleLegend6, handleLegend7]
-                  }
-                  checks={[checked, checked1, checked2, checked3, checked4, checked5, checked6, checked7]}
-                ></Themenfilter>{" "}
+              <div className="sideBarMobile">
+                <TopicFilter
+                  handleTopicSelector={handleTopicSelector}
+                  topicsSelected={topicsSelected}
+                ></TopicFilter>
               </div>
 
               <div
@@ -218,13 +166,6 @@ export class AllIdeasPage extends Component {
                     ></img>
                     {screamLength} Ideen{" "}
                   </ToggleDisplay>
-
-                  {/* <ToggleDisplay show={dropdown === "30"}>
-                      {StatusFullfilledScreamsMarkup.length} Ideen{" "}
-                    </ToggleDisplay>
-                    <ToggleDisplay show={dropdown === "40"}>
-                      {StatusDeleteScreamsMarkup.length} Ideen{" "}
-                    </ToggleDisplay> */}
                 </div>
 
                 <MuiThemeProvider theme={theme}>
@@ -251,8 +192,6 @@ export class AllIdeasPage extends Component {
                       neuste
                     </option>
                     <option value={20}>schärfste</option>
-                    {/* <option value={30}>umgesetzte</option>
-                  <option value={40}>verworfene</option> */}
                   </NativeSelect>
                 </MuiThemeProvider>
               </div>
@@ -272,22 +211,6 @@ export class AllIdeasPage extends Component {
               _onViewportChange={_onViewportChange}
               handleRevert={handleRevert}
               noLocation={noLocation}
-              handleLegend={handleLegend}
-              handleLegend1={handleLegend1}
-              handleLegend2={handleLegend2}
-              handleLegend3={handleLegend3}
-              handleLegend4={handleLegend4}
-              handleLegend5={handleLegend5}
-              handleLegend6={handleLegend6}
-              handleLegend7={handleLegend7}
-              checked={checked}
-              checked1={checked1}
-              checked2={checked2}
-              checked3={checked3}
-              checked4={checked4}
-              checked5={checked5}
-              checked6={checked6}
-              checked7={checked7}
               handleOpenGeofilter={handleOpenGeofilter}
               handleCloseGeofilter={handleCloseGeofilter}
               handleResetGeofilter={handleResetGeofilter}
@@ -297,22 +220,11 @@ export class AllIdeasPage extends Component {
               dataNoLocationHandle={dataNoLocationHandle}
               selectedId={selectedId}
               noLocation={noLocation}
+              handleTopicSelector={handleTopicSelector}
+              topicsSelected={topicsSelected}
             />
 
             {content}
-
-            {/* <ToggleDisplay show={dropdown === "30"}>
-                <div className={dropdown === "30" ? "MainAnimation" : ""}>
-                  {StatusFullfilledScreamsMarkup}
-                  {noMoreStatusFullfilledScreamsMarkup}
-                </div>
-              </ToggleDisplay>
-              <ToggleDisplay show={dropdown === "40"}>
-                <div className={dropdown === "40" ? "MainAnimation" : ""}>
-                  {StatusDeleteScreamsMarkup}
-                  {noMoreStatusDeleteScreamsMarkup}
-                </div>
-              </ToggleDisplay> */}
           </div>
         </div>
       </div>

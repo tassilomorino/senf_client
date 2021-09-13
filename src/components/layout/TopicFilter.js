@@ -9,25 +9,26 @@ import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 
 import topics from "../../data/topics";
 
-export function Themenfilter({ handlers, checks }) {
-
+export function TopicFilter({ handleTopicSelector, topicsSelected }) {
   // Handler at index 0 is for the "all" checkbox
   const topicFilters = topics.map((topic, i) => {
     return (
-      <Checkbox color="default"
+      <Checkbox
+        color="default"
         icon={<FiberManualRecordIcon />}
-        checkedIcon={
-          <FiberManualRecordIcon className="activelegenditem" />
+        checkedIcon={<FiberManualRecordIcon className="activelegenditem" />}
+        onChange={() => handleTopicSelector(topic.name)}
+        data-cy={topic.name}
+        checked={
+          topicsSelected.includes(topic.name) && topicsSelected.length !== 7
         }
-        onChange={() => handlers[i + 1](topic.name)}
-        checked={checks[i + 1] === topic.name}
         style={{ color: topic.color }}
-      />)
+      />
+    );
   });
 
   return (
     <div className="legendwrapper">
-      {/* <div className="Filterheader"> Filter</div> */}
       <FormGroup row className="legend">
         <FormControlLabel
           control={
@@ -36,23 +37,24 @@ export function Themenfilter({ handlers, checks }) {
               checkedIcon={
                 <FiberManualRecordIcon className="activelegenditem" />
               }
-              onChange={() => handlers[0](1)}
-              checked={checks[0] === 1}
+              data-cy="topic-all"
+              onChange={() => handleTopicSelector("all")}
+              checked={topicsSelected.length === 7}
               style={{ color: "#000000" }}
             />
           }
           label="Alle Themen"
         />
-        {topics.map((topic, i) =>
-          <FormControlLabel key={`${topic.name}-${i}`}
+        {topics.map((topic, i) => (
+          <FormControlLabel
+            key={`${topic.name}-${i}`}
             control={topicFilters[i]}
             label={topic.name}
-          />)}
-
+          />
+        ))}
       </FormGroup>
     </div>
   );
 }
 
-
-export default Themenfilter;
+export default TopicFilter;
