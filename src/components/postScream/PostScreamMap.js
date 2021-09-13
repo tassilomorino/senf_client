@@ -1,7 +1,7 @@
 /** @format */
 
 import React from "react";
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 import ReactMapGL, {
   Marker,
   Source,
@@ -110,8 +110,8 @@ const PostScreamMap = ({
       {...viewport}
       maxZoom={18}
       minZoom={11}
-      width={isMobileOnly ? "100vw" : "calc(100vw - 600px)"}
-      height={isMobileOnly ? MapHeight : "100vh"}
+      width={isMobileCustom ? "100vw" : "calc(100vw - 600px)"}
+      height={isMobileCustom ? MapHeight : "100vh"}
       style={{ position: "fixed", right: 0 }}
       onTouchEnd={() => geocode(viewport)}
       onMouseUp={() => geocode(viewport)}
@@ -150,7 +150,7 @@ const PostScreamMap = ({
           {addressLine}
         </div>
       </div>
-      {isMobileOnly && (
+      {isMobileCustom && (
         <React.Fragment>
           <GeolocateControl
             style={

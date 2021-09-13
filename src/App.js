@@ -20,12 +20,13 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import { SET_AUTHENTICATED } from "./redux/types";
 import { logoutUser, getUserData } from "./redux/actions/userActions";
+import { setCookies } from "./redux/actions/cookiesActions";
+import { setInfoPageOpen } from "./redux/actions/UiActions";
 
 //Pages
 import home from "./pages/home";
 import IntroductionInformation from "./components/infocomponents/IntroductionInformation";
 
-import info from "./components/infocomponents/info";
 import Welcome from "./components/infocomponents/Welcome";
 import verify from "./components/profile/verify";
 
@@ -49,6 +50,7 @@ import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
 import translationEN from "./util/translations/english.json";
 import translationDE from "./util/translations/german.json";
+import { isMobileCustom } from "./util/customDeviceDetect";
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
@@ -142,6 +144,16 @@ if (token) {
 }
 
 if (cookies.get("Cookie_settings") === "all") {
+  store.dispatch(setCookies("all"));
+} else if (cookies.get("Cookie_settings") === "minimum") {
+  store.dispatch(setCookies("minimum"));
+} else {
+  if (!isMobileCustom) {
+    store.dispatch(setInfoPageOpen());
+  }
+}
+
+if (cookies.get("Cookie_settings") === "all") {
   ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS);
   ReactGA.pageview(window.location.pathname + window.location.search);
   ReactGA.ga("require", "displayfeatures");
@@ -189,8 +201,6 @@ const App = () => {
               <Route exact path="/start" component={IntroductionInformation} />
 
               <Route exact path="/filter" component={filter} />
-
-              <Route exact path="/info" component={info} />
 
               <Route exact path="/intro" component={Welcome} />
 

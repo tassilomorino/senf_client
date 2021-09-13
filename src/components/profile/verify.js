@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { Component } from "react";
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 //REDUX STUFF
 import { connect } from "react-redux";
@@ -46,7 +46,7 @@ export class info extends Component {
     const { loading } = this.props.data;
     const { classes } = this.props;
 
-    const closeButtonDesktop = !isMobileOnly ? (
+    const closeButtonDesktop = !isMobileCustom ? (
       <a href="/">
         <button className="buttonRound buttonClose">
           <CloseIcon />

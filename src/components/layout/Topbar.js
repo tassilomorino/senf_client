@@ -1,13 +1,10 @@
 /** @format */
 
 import React from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
 
 //COMPONENTS
 import InlineInformationPage from "../infocomponents/InlineInformationPage";
-
-//LOADER ICON
 
 //REDUX
 import { connect } from "react-redux";
@@ -17,11 +14,7 @@ import SignNote from "../profile/SignNote";
 import Account from "../profile/Account";
 
 //ICONS
-
-import Insights_yellow from "../../images/icons/insights_yellow.png";
-
 import profile_yellow from "../../images/icons/profile_yellow.png";
-import profile_grey from "../../images/icons/profile_grey.png";
 import Noprofile from "../../images/noprofile.png";
 
 import Logo from "../../images/logo.png";
@@ -30,34 +23,14 @@ import Tabs from "../module/Tabs";
 import { MenuData } from "../../data/MenuData";
 import ScrollTabs from "../module/ScrollTabs";
 
-const styles = {};
 class Topbar extends React.Component {
   render() {
     const {
-      classes,
       user: { authenticated },
-
       order,
       handleClick,
-
-      handleLegend,
-      handleLegend1,
-      handleLegend2,
-      handleLegend3,
-      handleLegend4,
-      handleLegend5,
-      handleLegend6,
-      handleLegend7,
-      checked,
-      checked1,
-      checked2,
-      checked3,
-      checked4,
-      checked5,
-      checked6,
-      checked7,
-
-      openInfoPageDesktop,
+      handleTopicSelector,
+      topicsSelected,
       deleteAccount,
       handleLogout,
     } = this.props;
@@ -74,25 +47,10 @@ class Topbar extends React.Component {
         // onClick={() => handleClick(4)}
       >
         <Account
-          handleLegend={handleLegend}
-          handleLegend1={handleLegend1}
-          handleLegend2={handleLegend2}
-          handleLegend3={handleLegend3}
-          handleLegend4={handleLegend4}
-          handleLegend5={handleLegend5}
-          handleLegend6={handleLegend6}
-          handleLegend7={handleLegend7}
-          checked={checked}
-          checked1={checked1}
-          checked2={checked2}
-          checked3={checked3}
-          checked4={checked4}
-          checked5={checked5}
-          checked6={checked6}
-          checked7={checked7}
+          handleTopicSelector={handleTopicSelector}
+          topicsSelected={topicsSelected}
           deleteAccount={deleteAccount}
           handleLogout={handleLogout}
-          openInfoPageDesktop={openInfoPageDesktop}
         />
         <img src={profile_yellow} width="35" alt="profileImage" />
       </div>
@@ -133,7 +91,4 @@ const mapStateToProps = (state) => ({
   user: state.user,
 });
 
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(Topbar));
+export default connect(mapStateToProps, mapActionsToProps)(Topbar);

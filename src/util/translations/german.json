@@ -65,8 +65,8 @@
   "projectrooms_request_overTitle": "Für Organisation/Initiativen",
   "projectrooms_request_title": "Projektraum anfragen!",
   "projectrooms_request_subTitle": "Ihr möchtet zu einem spezifischen Thema/ Ort Ideen sammeln?",
-
-
+  "projectrooms_loader":"Projekträume werden geladen...",
+  "projectrooms_loading_error": "Beim laden ist ein Fehler aufgetreten. Bitte refreshe die Seite...",
 
   "cookiebanner_title": "Ohne Cookies geht's nicht.",
   "cookiebanner_text": "Für die Bereitstellung einiger Funktionen und die Verbesserung dieses Services brauchen wir Cookies. Falls du wirklich nur die technisch notwendigsten Cookies akzeptieren willst, klicke <2> hier</2> oder konfiguriere deine <5>Cookie-Einstellungen</5> .",

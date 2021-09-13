@@ -65,6 +65,8 @@
    "projectrooms_request_overTitle": "For organisations/initiatives",
    "projectrooms_request_title": "request a projectroom!",
    "projectrooms_request_subTitle": "You want to gather ideas on a specific topic/place?",
+   "projectrooms_loader":"Projectrooms are being loaded...",
+   "projectrooms_loading_error": "An error occured when loading the page. Please refresh...",
 
    "cookiebanner_title": "Cookies are inevitable",
    "cookiebanner_text": "For the provision of some functions and the improvement of this service we need to have cookies. If you really only want to accept technically necessary cookies, click <2> here</2> or configure your <5>cookie settings</5> .",

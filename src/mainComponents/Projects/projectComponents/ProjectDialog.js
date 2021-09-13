@@ -31,12 +31,12 @@ import lamploader from "../../../images/lamp.png";
 
 import Swipe from "react-easy-swipe";
 
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 import "./ProjectDialog.css";
 //COOKIES
 import Cookies from "universal-cookie";
-import { ProjectIdeas } from "./ProjectIdeas";
+import ProjectIdeas from "./ProjectIdeas";
 import MapDesktop from "../../../components/map/MapDesktop";
 import PostScream from "../../../components/postScream/PostScream";
 import ScreamShare from "../../../components/modals/ScreamShare";
@@ -271,18 +271,9 @@ class ProjectDialog extends Component {
 
     screamIdParam: null,
     showDemand: false,
-    checked: 1,
-    checked1: "Empty",
-    checked2: "Empty",
-    checked3: "Empty",
-    checked4: "Empty",
-    checked5: "Empty",
-    checked6: "Empty",
-    checked7: "Empty",
     dropdown: "10",
     selectedId: "",
     showTitles: false,
-    openInfoPageDesktop: false,
     cookiesSetDesktop: false,
 
     openGeofilter: false,
@@ -310,10 +301,9 @@ class ProjectDialog extends Component {
       this.handleOpen();
     }
   }
-  componentWillReceiveProps(nextProps) {}
 
   handleOpen = () => {
-    this.props.handleLegend(1);
+    this.props.handleTopicSelector("all");
 
     let oldPath = window.location.pathname;
     this.setState({
@@ -339,7 +329,7 @@ class ProjectDialog extends Component {
           const centerLong = this.props.project.centerLong;
           const zoom = this.props.project.zoom;
 
-          if (!isMobileOnly) {
+          if (!isMobileCustom) {
             this.props.zoomToBounds(centerLat, centerLong, zoom);
           } else {
             this.setState({
@@ -530,14 +520,6 @@ class ProjectDialog extends Component {
     this.props.closeScream();
   };
   mapDesktopReset = () => {
-    // this.setState({
-    //   viewport: {
-    //     zoom: 11.5,
-    //     pitch: 30,
-    //     latitude: 50.95,
-    //     longitude: 6.9503,
-    //   },
-    // });
     this.setState({
       latitude1: 51.08,
       latitude2: 50.79,
@@ -567,244 +549,18 @@ class ProjectDialog extends Component {
       },
       screamIdParam,
 
-      showTitles,
-
       viewport,
-      handleLegend,
-      handleLegend1,
-      handleLegend2,
-      handleLegend3,
-      handleLegend4,
-      handleLegend5,
-      handleLegend6,
-      handleLegend7,
-      checked,
-      checked1,
-      checked2,
-      checked3,
-      checked4,
-      checked5,
-      checked6,
-      checked7,
-      latitude1,
-      longitude1,
-      latitude2,
-      longitude2,
-      latitude3,
-      longitude3,
-      latitude4,
-      longitude4,
-      openInfoPageDesktop,
+      handleTopicSelector,
+      topicsSelected,
       projectsData,
       loadingProjects,
-
-      user: {
-        authenticated,
-        credentials: { handle },
-      },
     } = this.props;
 
-    let dataRar = [];
-    const dataArray = this.props.project.screams;
+    const dataRar = this.props.project.screams;
 
-    dataArray.forEach((element) => {
-      if (
-        checked === 1 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRar.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked1 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRar.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked2 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRar.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked3 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRar.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked4 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRar.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked5 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRar.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked6 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRar.push(element);
-      }
-      if (
-        element.Thema !== undefined &&
-        element.Thema === checked7 &&
-        element.lat > latitude2 &&
-        element.lat < latitude1 &&
-        element.long > longitude2 &&
-        element.long < longitude3
-      ) {
-        dataRar.push(element);
-      }
-    });
-
-    let dataFinal = [];
-    const dataArrayFinal = dataRar;
-    if (dataArrayFinal !== undefined && dataArrayFinal.length > 0) {
-      dataArrayFinal.forEach((element) => {
-        if (element.status === "None") {
-          dataFinal.push(element);
-        }
-      });
-    }
-
-    const projectIdeas = !loading ? (
-      <ProjectIdeas
-        loading={loading}
-        projectScreams={this.props.project.screams}
-        classes={classes}
-        openInfoPageDesktop={this.state.openInfoPageDesktop}
-        latitude1={this.state.latitude1}
-        latitude2={this.state.latitude2}
-        latitude3={this.state.latitude3}
-        latitude4={this.state.latitude4}
-        longitude1={this.state.longitude1}
-        longitude2={this.state.longitude2}
-        longitude3={this.state.longitude3}
-        longitude4={this.state.longitude4}
-        viewport={this.state.viewport}
-        _onViewportChange={this._onViewportChange}
-        noLocation={this.noLocation}
-        handleLegend={handleLegend}
-        handleLegend1={handleLegend1}
-        handleLegend2={handleLegend2}
-        handleLegend3={handleLegend3}
-        handleLegend4={handleLegend4}
-        handleLegend5={handleLegend5}
-        handleLegend6={handleLegend6}
-        handleLegend7={handleLegend7}
-        checked={checked}
-        checked1={checked1}
-        checked2={checked2}
-        checked3={checked3}
-        checked4={checked4}
-        checked5={checked5}
-        checked6={checked6}
-        checked7={checked7}
-        dataNoLocationHandle={this.dataNoLocationHandle}
-        showDemand={this.state.showDemand}
-        handleClick={this.handleClick}
-        handleDropdown={this.handleDropdown}
-        dropdown={this.state.dropdown}
-        handleOpenGeofilter={this.handleOpenGeofilter}
-        handleCloseGeofilter={this.handleCloseGeofilter}
-        handleResetGeofilter={this.handleResetGeofilter}
-        openGeofilter={this.state.openGeofilter}
-        showGeofilterResults={this.state.showGeofilterResults}
-        createGeofilterCircle={this.state.createGeofilterCircle}
-        selectedId={this.state.selectedId}
-        screamIdParam={screamIdParam}
-        _onViewportChangeDesktop={this._onViewportChangeDesktop}
-        showTitles={showTitles}
-        loadingProjects={loadingProjects}
-        geoData={geoData}
-      ></ProjectIdeas>
-    ) : null;
-
-    const dateComponent = endDate ? (
-      <div className="date">
-        {" "}
-        {startDate} – {endDate}{" "}
-      </div>
-    ) : (
-      <div className="date">{startDate} </div>
+    const dataFinal = dataRar.filter(
+      ({ Thema, status }) => topicsSelected.includes(Thema) && status === "None"
     );
-    const postScreams =
-      isMobileOnly && this.state.order === 1 ? (
-        <PostScream
-          openInfoPageDesktop={openInfoPageDesktop}
-          loadingProjects={loadingProjects}
-          projectsData={projectsData}
-          project={this.props.project}
-        />
-      ) : null;
-
-    const infoButtons =
-      weblink || contact ? (
-        <>
-          <br />
-          <br />
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            {weblink ? (
-              <a href={weblink} rel="noopener noreferrer" target="_blank">
-                <button className="buttonInline">
-                  Mehr Infos{" "}
-                  <img
-                    src={WeblinkIcon}
-                    style={{ paddingLeft: "9px", marginTop: "-2px" }}
-                    width="15"
-                    alt="WeblinkIcon"
-                  />
-                </button>
-              </a>
-            ) : null}
-            {contact ? (
-              <a href={"mailto:" + contact}>
-                <button className="buttonInline">
-                  Kontakt
-                  <img
-                    src={contactIcon}
-                    style={{ paddingLeft: "9px" }}
-                    width="22"
-                    alt="WeblinkIcon"
-                  />
-                </button>
-              </a>
-            ) : null}
-          </div>
-        </>
-      ) : null;
 
     const dialogMarkup = loading ? (
       <div className="wrapperScreamDialog">
@@ -826,7 +582,7 @@ class ProjectDialog extends Component {
         </div>
         <div
           style={
-            isMobileOnly
+            isMobileCustom
               ? { position: "absolute", top: "10px", right: "10px" }
               : { position: "absolute", top: "20px", right: "10px" }
           }
@@ -838,7 +594,13 @@ class ProjectDialog extends Component {
           />
         </div>
 
-        {postScreams}
+        {isMobileCustom && this.state.order === 1 && (
+          <PostScream
+            loadingProjects={loadingProjects}
+            projectsData={projectsData}
+            project={this.props.project}
+          />
+        )}
         <div className="imgWrapper">
           <img
             src={imgUrl}
@@ -847,8 +609,6 @@ class ProjectDialog extends Component {
             className="profile-image"
           />
         </div>
-        {/* <div className="project-dialog-owner"> {owner} </div> */}
-
         <div className="project-dialog-title">{title}</div>
 
         <Tabs
@@ -865,72 +625,129 @@ class ProjectDialog extends Component {
           lineColor={"white"}
         ></Tabs>
 
-        <div
-          className="MainAnimationChannels"
-          style={
-            this.state.order === 1
-              ? { display: "block", width: "100%", minWidth: "100%" }
-              : { display: "none", width: "100%", minWidth: "100%" }
-          }
-        >
-          {projectIdeas}
-        </div>
-        <div
-          className="MainAnimationChannels"
-          style={
-            this.state.order === 2
-              ? { display: "block", width: "100%", minWidth: "100%" }
-              : { display: "none", width: "100%", minWidth: "100%" }
-          }
-        >
-          <div className="projectDialogCard">
-            <div className={classes.content}>
-              <div className={classes.title}> Worum geht's</div>
-              <Typography className={classes.bodytext}>
-                {description}
-                {infoButtons}
-              </Typography>
-              <br />
-              <div className={classes.title}> Zeitraum </div>
-              <Typography className={classes.bodytext}>
-                {dateComponent}
-              </Typography>
-              <br />
+        {!loading && this.state.order === 1 && (
+          <div className="MainAnimationChannels">
+            <ProjectIdeas
+              loading={loading}
+              projectScreams={this.props.project.screams}
+              classes={classes}
+              latitude1={this.state.latitude1}
+              latitude2={this.state.latitude2}
+              latitude3={this.state.latitude3}
+              latitude4={this.state.latitude4}
+              longitude1={this.state.longitude1}
+              longitude2={this.state.longitude2}
+              longitude3={this.state.longitude3}
+              longitude4={this.state.longitude4}
+              viewport={this.state.viewport}
+              _onViewportChange={this._onViewportChange}
+              noLocation={this.noLocation}
+              dataNoLocationHandle={this.dataNoLocationHandle}
+              showDemand={this.state.showDemand}
+              handleClick={this.handleClick}
+              handleDropdown={this.handleDropdown}
+              dropdown={this.state.dropdown}
+              handleOpenGeofilter={this.handleOpenGeofilter}
+              handleCloseGeofilter={this.handleCloseGeofilter}
+              handleResetGeofilter={this.handleResetGeofilter}
+              openGeofilter={this.state.openGeofilter}
+              showGeofilterResults={this.state.showGeofilterResults}
+              createGeofilterCircle={this.state.createGeofilterCircle}
+              selectedId={this.state.selectedId}
+              screamIdParam={screamIdParam}
+              _onViewportChangeDesktop={this._onViewportChangeDesktop}
+              showTitles={this.state.showTitles}
+              loadingProjects={loadingProjects}
+              geoData={geoData}
+              handleTopicSelector={handleTopicSelector}
+              topicsSelected={topicsSelected}
+            ></ProjectIdeas>
+          </div>
+        )}
+        {this.state.order === 2 && (
+          <div className="MainAnimationChannels">
+            <div className="projectDialogCard">
+              <div className={classes.content}>
+                <div className={classes.title}> Worum geht's</div>
+                <Typography className={classes.bodytext}>
+                  {description}
+                  {weblink ||
+                    (contact && (
+                      <>
+                        <br />
+                        <br />
+                        <div style={{ display: "flex", flexDirection: "row" }}>
+                          {weblink && (
+                            <a
+                              href={weblink}
+                              rel="noopener noreferrer"
+                              target="_blank"
+                            >
+                              <button className="buttonInline">
+                                Mehr Infos{" "}
+                                <img
+                                  src={WeblinkIcon}
+                                  style={{
+                                    paddingLeft: "9px",
+                                    marginTop: "-2px",
+                                  }}
+                                  width="15"
+                                  alt="WeblinkIcon"
+                                />
+                              </button>
+                            </a>
+                          )}
+                          {contact && (
+                            <a href={"mailto:" + contact}>
+                              <button className="buttonInline">
+                                Kontakt
+                                <img
+                                  src={contactIcon}
+                                  style={{ paddingLeft: "9px" }}
+                                  width="22"
+                                  alt="WeblinkIcon"
+                                />
+                              </button>
+                            </a>
+                          )}
+                        </div>
+                      </>
+                    ))}
+                </Typography>
+                <br />
+                <div className={classes.title}> Zeitraum </div>
+                <Typography className={classes.bodytext}>
+                  {endDate ? (
+                    <div className="date">
+                      {" "}
+                      {startDate} – {endDate}{" "}
+                    </div>
+                  ) : (
+                    <div className="date">{startDate} </div>
+                  )}
+                </Typography>
+                <br />
 
-              <div className={classes.title}>Initiatoren</div>
-              <Typography className={classes.bodytext}>{owner}</Typography>
-              <br />
+                <div className={classes.title}>Initiatoren</div>
+                <Typography className={classes.bodytext}>{owner}</Typography>
+                <br />
+              </div>
             </div>
-          </div>{" "}
-          <br />
-        </div>
 
-        <div
-          className="MainAnimationChannels"
-          style={
-            this.state.order === 3
-              ? { display: "block", width: "100%", minWidth: "100%" }
-              : { display: "none", width: "100%", minWidth: "100%" }
-          }
-        >
-          <CalendarComponent
-            projectScreams={this.props.project.screams}
-          ></CalendarComponent>
-
-          {/* <div className={classes.anmeldeText}>
-            An diesem Bereich arbeiten wir gerade. Da unsere Denkweise in jeder
-            Hinsicht bürgerorientiert ist, freuen wir uns natürlich auch über
-            deine Ideen zur Verbesserung unserer Plattform. Sprich uns gerne an!{" "}
             <br />
-            <a href="mailto:dein@senf.koeln">
-              <button className="buttonWide buttonDialogSign">Kontakt</button>
-            </a>
-          </div> */}
-        </div>
+          </div>
+        )}
+        {this.state.order === 3 && (
+          <div className="MainAnimationChannels">
+            <CalendarComponent
+              projectScreams={this.props.project.screams}
+            ></CalendarComponent>
+          </div>
+        )}
       </div>
     );
 
-    return isMobileOnly ? (
+    return isMobileCustom ? (
       <Dialog
         open={this.props.openProject}
         onClose={this.handleClose}
@@ -952,15 +769,7 @@ class ProjectDialog extends Component {
         style={this.state.dialogStyle} // This was the key point, reset the position of the dialog, so the user can interact with other elements
         disableBackdropClick // Remove the backdrop click (just to be sure)
       >
-        <div
-          className={
-            openInfoPageDesktop
-              ? "contentWrapper_dialog_hide"
-              : "contentWrapper_dialog"
-          }
-        >
-          {dialogMarkup}
-        </div>
+        <div className="contentWrapper_dialog">{dialogMarkup}</div>
 
         <div
           style={{
@@ -978,28 +787,11 @@ class ProjectDialog extends Component {
             geoData={geoData}
             style={{ zIndex: 9999 }}
             noLocation={this.noLocation}
-            handleLegend={handleLegend}
-            handleLegend1={handleLegend1}
-            handleLegend2={handleLegend2}
-            handleLegend3={handleLegend3}
-            handleLegend4={handleLegend4}
-            handleLegend5={handleLegend5}
-            handleLegend6={handleLegend6}
-            handleLegend7={handleLegend7}
-            checked={checked}
-            checked1={checked1}
-            checked2={checked2}
-            checked3={checked3}
-            checked4={checked4}
-            checked5={checked5}
-            checked6={checked6}
-            checked7={checked7}
             dataNoLocationHandle={this.dataNoLocationHandle}
             _onViewportChangeDesktop={this._onViewportChangeDesktop}
             viewport={viewport}
             selectedId={this.state.selectedId}
-            showTitles={showTitles}
-            openInfoPageDesktop={this.state.openInfoPageDesktop}
+            showTitles={this.state.showTitles}
             mapDesktopShowResults={this.mapDesktopShowResults}
             mapDesktopReset={this.mapDesktopReset}
           ></MapDesktop>

@@ -14,7 +14,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
 import { Stadtteil } from "./stadtteil";
 
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -125,7 +125,7 @@ const styles = {
 const StadtteilDialog = ({ classes, screams }) => {
   const [open, setOpen] = useState("");
 
-  const dialogComponent = isMobileOnly ? (
+  const dialogComponent = isMobileCustom ? (
     <Dialog
       scroll={"body"}
       open={open}

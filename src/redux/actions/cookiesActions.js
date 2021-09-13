@@ -8,8 +8,8 @@ export const setCookies = (cookie_settings) => (dispatch) => {
   cookies.set("Cookie_settings", cookie_settings, {
     path: "/",
     maxAge: 60 * 60 * 24 * 90,
-    secure: true,
-    sameSite: "none",
+    // secure: true,
+    // sameSite: "none",
   });
 
   dispatch({

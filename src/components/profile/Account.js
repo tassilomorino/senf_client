@@ -3,7 +3,7 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import Swipe from "react-easy-swipe";
-import { isMobileOnly } from "react-device-detect";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 // Redux stuff
 import { connect } from "react-redux";
@@ -249,7 +249,6 @@ class Account extends Component {
     open: false,
     myScreams: [],
     clicked: false,
-    oldPath: "",
     newPath: "",
     path: "",
     order: 1,
@@ -259,21 +258,11 @@ class Account extends Component {
     longitude2: 6.712,
     longitude3: 7.17,
 
-    // userHandle: this.props.user.credentials.handle,
-
     showDemand: false,
-    checked: 1,
-    checked1: "Empty",
-    checked2: "Empty",
-    checked3: "Empty",
-    checked4: "Empty",
-    checked5: "Empty",
-    checked6: "Empty",
-    checked7: "Empty",
+
     dropdown: "10",
     selectedId: "",
     showTitles: false,
-    openInfoPageDesktop: false,
     cookiesSetDesktop: false,
 
     openGeofilter: false,
@@ -297,8 +286,6 @@ class Account extends Component {
   };
 
   handleOpen = () => {
-    let oldPath = window.location.pathname;
-
     const userHandle = this.props.user.credentials.handle;
 
     this.fetchMyScreams(userHandle);
@@ -316,34 +303,36 @@ class Account extends Component {
   };
 
   fetchMyScreams = async (userHandle) => {
-    const db = firebase.firestore();
-    const ref = await db
-      .collection("screams")
-      .where("userHandle", "==", userHandle)
-      .orderBy("createdAt", "desc")
-      .get();
+    if (userHandle !== undefined) {
+      const db = firebase.firestore();
+      const ref = await db
+        .collection("screams")
+        .where("userHandle", "==", userHandle)
+        .orderBy("createdAt", "desc")
+        .get();
 
-    const screams = [];
-    ref.docs.forEach((doc) => {
-      const docData = {
-        screamId: doc.id,
-        lat: doc.data().lat,
-        long: doc.data().long,
-        title: doc.data().title,
-        body: doc.data().body.substr(0, 170),
-        createdAt: doc.data().createdAt,
-        commentCount: doc.data().commentCount,
-        likeCount: doc.data().likeCount,
-        status: doc.data().status,
-        Thema: doc.data().Thema,
-        Stadtteil: doc.data().Stadtteil,
-        project: doc.data().project,
-        projectId: doc.data().project,
-      };
+      const screams = [];
+      ref.docs.forEach((doc) => {
+        const docData = {
+          screamId: doc.id,
+          lat: doc.data().lat,
+          long: doc.data().long,
+          title: doc.data().title,
+          body: doc.data().body.substr(0, 170),
+          createdAt: doc.data().createdAt,
+          commentCount: doc.data().commentCount,
+          likeCount: doc.data().likeCount,
+          status: doc.data().status,
+          Thema: doc.data().Thema,
+          Stadtteil: doc.data().Stadtteil,
+          project: doc.data().project,
+          projectId: doc.data().project,
+        };
 
-      screams.push(docData);
-      this.setState({ myScreams: screams });
-    });
+        screams.push(docData);
+        this.setState({ myScreams: screams });
+      });
+    }
   };
 
   handleClose = () => {
@@ -355,13 +344,6 @@ class Account extends Component {
         dialogStyle: {},
       });
     }, 2000);
-
-    this.props.clearErrors();
-  };
-
-  handleClose1 = () => {
-    window.history.pushState(null, null, `/`);
-    this.setState({ open: false });
 
     this.props.clearErrors();
   };
@@ -486,37 +468,14 @@ class Account extends Component {
   render() {
     const {
       classes,
-
-      title,
-      owner,
-      ideaCount,
-      imgUrl,
-
       screamIdParam,
-
       showTitles,
       _onViewportChangeDesktop,
-
-      handleLegend,
-      handleLegend1,
-      handleLegend2,
-      handleLegend3,
-      handleLegend4,
-      handleLegend5,
-      handleLegend6,
-      handleLegend7,
-      checked,
-      checked1,
-      checked2,
-      checked3,
-      checked4,
-      checked5,
-      checked6,
-      checked7,
+      handleTopicSelector,
+      topicsSelected,
 
       handleLogout,
       deleteAccount,
-      openInfoPageDesktop,
 
       user: {
         authenticated,
@@ -525,58 +484,6 @@ class Account extends Component {
     } = this.props;
 
     const { loadingMyScreams } = this.props.data;
-
-    const myIdeas =
-      !loadingMyScreams && this.state.open ? (
-        <MyIdeas
-          loading={loadingMyScreams}
-          myScreams={this.state.myScreams}
-          classes={classes}
-          openInfoPageDesktop={this.state.openInfoPageDesktop}
-          latitude1={this.state.latitude1}
-          latitude2={this.state.latitude2}
-          latitude3={this.state.latitude3}
-          latitude4={this.state.latitude4}
-          longitude1={this.state.longitude1}
-          longitude2={this.state.longitude2}
-          longitude3={this.state.longitude3}
-          longitude4={this.state.longitude4}
-          viewport={this.state.viewport}
-          _onViewportChange={this._onViewportChange}
-          noLocation={this.noLocation}
-          handleLegend={handleLegend}
-          handleLegend1={handleLegend1}
-          handleLegend2={handleLegend2}
-          handleLegend3={handleLegend3}
-          handleLegend4={handleLegend4}
-          handleLegend5={handleLegend5}
-          handleLegend6={handleLegend6}
-          handleLegend7={handleLegend7}
-          checked={checked}
-          checked1={checked1}
-          checked2={checked2}
-          checked3={checked3}
-          checked4={checked4}
-          checked5={checked5}
-          checked6={checked6}
-          checked7={checked7}
-          dataNoLocationHandle={this.dataNoLocationHandle}
-          showDemand={this.state.showDemand}
-          handleClick={this.handleClick}
-          handleDropdown={this.handleDropdown}
-          dropdown={this.state.dropdown}
-          handleOpenGeofilter={this.handleOpenGeofilter}
-          handleCloseGeofilter={this.handleCloseGeofilter}
-          handleResetGeofilter={this.handleResetGeofilter}
-          openGeofilter={this.state.openGeofilter}
-          showGeofilterResults={this.state.showGeofilterResults}
-          createGeofilterCircle={this.state.createGeofilterCircle}
-          selectedId={this.state.selectedId}
-          screamIdParam={screamIdParam}
-          _onViewportChangeDesktop={_onViewportChangeDesktop}
-          showTitles={showTitles}
-        ></MyIdeas>
-      ) : null;
 
     const dialogMarkup = (
       <div className="wrapperScreamDialog">
@@ -589,12 +496,7 @@ class Account extends Component {
               style={{ transform: "rotate(90deg)" }}
             />
           </button>
-
-          {/* <button className="buttonRound buttonEdit">
-                <img src={MenuIcon} width="25" alt="editIcon" />
-              </button> */}
         </div>
-        {/* <div className="dialoggradient1"></div> */}
         <div className="hey-user" data-cy="hey-user">
           Hey {handle}{" "}
         </div>
@@ -617,7 +519,41 @@ class Account extends Component {
               : { display: "none", width: "100%", minWidth: "100%" }
           }
         >
-          {myIdeas}
+          {!loadingMyScreams && this.state.open && (
+            <MyIdeas
+              loading={loadingMyScreams}
+              myScreams={this.state.myScreams}
+              classes={classes}
+              latitude1={this.state.latitude1}
+              latitude2={this.state.latitude2}
+              latitude3={this.state.latitude3}
+              latitude4={this.state.latitude4}
+              longitude1={this.state.longitude1}
+              longitude2={this.state.longitude2}
+              longitude3={this.state.longitude3}
+              longitude4={this.state.longitude4}
+              viewport={this.state.viewport}
+              _onViewportChange={this._onViewportChange}
+              noLocation={this.noLocation}
+              dataNoLocationHandle={this.dataNoLocationHandle}
+              showDemand={this.state.showDemand}
+              handleClick={this.handleClick}
+              handleDropdown={this.handleDropdown}
+              dropdown={this.state.dropdown}
+              handleOpenGeofilter={this.handleOpenGeofilter}
+              handleCloseGeofilter={this.handleCloseGeofilter}
+              handleResetGeofilter={this.handleResetGeofilter}
+              openGeofilter={this.state.openGeofilter}
+              showGeofilterResults={this.state.showGeofilterResults}
+              createGeofilterCircle={this.state.createGeofilterCircle}
+              selectedId={this.state.selectedId}
+              screamIdParam={screamIdParam}
+              _onViewportChangeDesktop={_onViewportChangeDesktop}
+              showTitles={showTitles}
+              handleTopicSelector={handleTopicSelector}
+              topicsSelected={topicsSelected}
+            ></MyIdeas>
+          )}
         </div>
         <div
           className="MainAnimationChannels"
@@ -664,50 +600,6 @@ class Account extends Component {
       </div>
     );
 
-    const dialog = isMobileOnly ? (
-      <Dialog
-        open={this.state.open}
-        onClose={this.handleClose}
-        TransitionComponent={Transition}
-        fullScreen
-      >
-        <Swipe onSwipeMove={this.onSwipeMove.bind(this)}>{dialogMarkup}</Swipe>
-      </Dialog>
-    ) : (
-      <Dialog
-        open={this.state.open}
-        onClose={this.handleClose}
-        BackdropProps={{ classes: { root: classes.root } }}
-        PaperProps={{ classes: { root: classes.paper } }}
-        TransitionComponent={Transition}
-        fullScreen
-        hideBackdrop // Disable the backdrop color/image
-        disableEnforceFocus // Let the user focus on elements outside the dialog
-        style={this.state.dialogStyle} // This was the key point, reset the position of the dialog, so the user can interact with other elements
-        disableBackdropClick // Remove the backdrop click (just to be sure)
-      >
-        <div
-          className={
-            openInfoPageDesktop
-              ? "contentWrapper_dialog_hide"
-              : "contentWrapper_dialog"
-          }
-        >
-          {dialogMarkup}
-        </div>
-
-        {/* <div
-          style={{
-            width: "100vw",
-            height: "100vh",
-            backgroundColor: "rgb(0,0,0,0.15)",
-            zIndex: 9,
-          }}
-          onClick={this.handleClose1}
-        ></div> */}
-      </Dialog>
-    );
-
     return (
       <Fragment>
         <button
@@ -716,7 +608,34 @@ class Account extends Component {
           data-cy="profile-button"
         ></button>
 
-        {dialog}
+        {!this.props.UI.openInfoPage &&
+          (isMobileCustom ? (
+            <Dialog
+              open={this.state.open}
+              onClose={this.handleClose}
+              TransitionComponent={Transition}
+              fullScreen
+            >
+              <Swipe onSwipeMove={this.onSwipeMove.bind(this)}>
+                {dialogMarkup}
+              </Swipe>
+            </Dialog>
+          ) : (
+            <Dialog
+              open={this.state.open}
+              onClose={this.handleClose}
+              BackdropProps={{ classes: { root: classes.root } }}
+              PaperProps={{ classes: { root: classes.paper } }}
+              TransitionComponent={Transition}
+              fullScreen
+              hideBackdrop // Disable the backdrop color/image
+              disableEnforceFocus // Let the user focus on elements outside the dialog
+              style={this.state.dialogStyle} // This was the key point, reset the position of the dialog, so the user can interact with other elements
+              disableBackdropClick // Remove the backdrop click (just to be sure)
+            >
+              <div className="contentWrapper_dialog">{dialogMarkup}</div>
+            </Dialog>
+          ))}
       </Fragment>
     );
   }
