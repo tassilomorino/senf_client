@@ -244,9 +244,23 @@ export class monitoring extends Component {
       });
     } else {
       this.state.topicsSelected.splice(index, 1);
-      this.setState({
-        topicsSelected: this.state.topicsSelected,
-      });
+      if (this.state.topicsSelected.length === 0) {
+        this.setState({
+          topicsSelected: [
+            "Verkehr",
+            "Versorgung",
+            "Umwelt und Grün",
+            "Rad",
+            "Inklusion / Soziales",
+            "Sport / Freizeit",
+            "Sonstige",
+          ],
+        });
+      } else {
+        this.setState({
+          topicsSelected: this.state.topicsSelected,
+        });
+      }
     }
   };
 
