@@ -14,8 +14,7 @@ import _ from "lodash";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 import TopicFilter from "../../../components/layout/TopicFilter";
-
-import "./ProjectIdeas.css";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 const theme = createMuiTheme({
   overrides: {
@@ -113,13 +112,12 @@ const ProjectIdeas = ({
   return !loading ? (
     <div className="projectIdeascontent">
       <div className="projectHeader">
-        <div className="sideBarMobile">
+        {isMobileCustom && (
           <TopicFilter
             handleTopicSelector={handleTopicSelector}
             topicsSelected={topicsSelected}
           ></TopicFilter>
-        </div>
-
+        )}
         <div
           style={{
             display: "flex",

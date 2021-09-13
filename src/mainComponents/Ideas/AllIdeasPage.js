@@ -19,6 +19,7 @@ import Geofilter from "../../components/map/Geofilter";
 import Scream from "../../components/scream/Scream";
 
 import _ from "lodash";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 const styles = {};
 
@@ -138,12 +139,12 @@ export class AllIdeasPage extends Component {
         <div>
           <div className="content">
             <div className="homeHeadermain">
-              <div className="sideBarMobile">
+              {isMobileCustom && (
                 <TopicFilter
                   handleTopicSelector={handleTopicSelector}
                   topicsSelected={topicsSelected}
                 ></TopicFilter>
-              </div>
+              )}
 
               <div
                 style={{
