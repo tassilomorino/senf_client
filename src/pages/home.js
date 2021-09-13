@@ -255,9 +255,23 @@ export class home extends Component {
       });
     } else {
       this.state.topicsSelected.splice(index, 1);
-      this.setState({
-        topicsSelected: this.state.topicsSelected,
-      });
+      if (this.state.topicsSelected.length === 0) {
+        this.setState({
+          topicsSelected: [
+            "Verkehr",
+            "Versorgung",
+            "Umwelt und Grün",
+            "Rad",
+            "Inklusion / Soziales",
+            "Sport / Freizeit",
+            "Sonstige",
+          ],
+        });
+      } else {
+        this.setState({
+          topicsSelected: this.state.topicsSelected,
+        });
+      }
     }
   };
 
@@ -428,12 +442,12 @@ export class home extends Component {
       "&body=" +
       escape(
         "Bitte loeschen Sie meinen Account." +
-          "\n" +
-          "\n" +
-          "Mein Nutzername lautet:" +
-          "\n" +
-          "\n" +
-          userHandle
+        "\n" +
+        "\n" +
+        "Mein Nutzername lautet:" +
+        "\n" +
+        "\n" +
+        userHandle
       );
     window.location.href = link;
   };
@@ -514,7 +528,7 @@ export class home extends Component {
     const error =
       !loading && screams.length === 0 ? (
         <div className="errorBackground">
-               <div className="homeHeader"> Ooops! </div>
+          <div className="homeHeader"> Ooops! </div>
           <br />
           <span className="oopsText">
             Etwas ist schiefgelaufen. Bitte lade die Seite neu!
@@ -524,9 +538,9 @@ export class home extends Component {
 
     const loader =
       loading &&
-      !this.state.openInfoPageDesktop &&
-      (cookies.get("Cookie_settings") === "all" ||
-        cookies.get("Cookie_settings") === "minimum") ? (
+        !this.state.openInfoPageDesktop &&
+        (cookies.get("Cookie_settings") === "all" ||
+          cookies.get("Cookie_settings") === "minimum") ? (
         <div className="spinnerDivBackground">
           <img src={lamploader} className="lamploader" alt="loader" />
         </div>
