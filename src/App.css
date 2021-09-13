@@ -2736,3 +2736,14 @@ input:focus {
   content: "*";
   display:table-cell
 }
+
+.no-ideas-yet{
+   
+  position: relative;
+  font-size: 15pt;
+  color: #414345;
+  width: 80%;
+  margin-left: 10%;
+  text-align: center;
+  z-index: 10;
+} 

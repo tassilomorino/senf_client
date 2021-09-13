@@ -7,9 +7,9 @@ import { useSelector } from "react-redux";
 
 //Icons
 import CircularProgress from "@material-ui/core/CircularProgress";
-import lamploader from "../../../images/lamp.png";
-import ChatBorder from "../../../images/icons/chat.png";
-import HandFull from "../../../images/icons/handsFull.png";
+import lamploader from "../../images/lamp.png";
+import ChatBorder from "../../images/icons/chat.png";
+import HandFull from "../../images/icons/handsFull.png";
 
 const Keyindicators = ({ screams, likesLength, commentslength }) => {
   const Wishlength =

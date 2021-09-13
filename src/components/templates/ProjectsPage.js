@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import AddIcon from "../../images/icons/plus_grey.png";
 
 //Components
-import ProjectCards from "./projectComponents/ProjectCards";
+import ProjectCards from "../projectComponents/ProjectCards";
 
 import _ from "lodash";
 

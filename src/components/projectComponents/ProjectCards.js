@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 // Redux
 import { useDispatch } from "react-redux";
-import { openProject } from "../../../redux/actions/projectActions";
+import { openProject } from "../../redux/actions/projectActions";
 
 import "./ProjectCards.css";
 
