@@ -13,9 +13,6 @@ import Account from "../profile/Account";
 import { MenuItem } from "./MenuItem";
 import { MenuData } from "../../data/MenuData";
 
-//MUI Stuff
-import withStyles from "@material-ui/core/styles/withStyles";
-
 //ICONS
 import Logo from "../../images/logo.png";
 import Insta from "../../images/icons/socialmedia/insta.png";
@@ -25,8 +22,6 @@ import profile_grey from "../../images/icons/profile_grey.png";
 import Noprofile from "../../images/noprofile.png";
 import PostScream from "../postScream/PostScream";
 import { isMobileCustom } from "../../util/customDeviceDetect";
-
-const styles = {};
 
 const DesktopSidebar = ({
   loading,
@@ -58,10 +53,7 @@ const DesktopSidebar = ({
       {t("login")}
     </div>
   ) : (
-    <div
-      className="profile"
-      // onClick={() => handleClick(4)}
-    >
+    <div className="profile">
       <Account
         handleTopicSelector={handleTopicSelector}
         topicsSelected={topicsSelected}
@@ -162,4 +154,4 @@ const DesktopSidebar = ({
   );
 };
 
-export default withStyles(styles)(DesktopSidebar);
+export default DesktopSidebar;
