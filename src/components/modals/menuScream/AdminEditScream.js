@@ -32,6 +32,8 @@ import Weblink from "../postModals/Weblink";
 import Contact from "../postModals/Contact";
 import InlineDatePicker from "../postModals/InlineDatePicker";
 import ToggleDisplay from "react-toggle-display";
+import { EditScreamTabData } from "../../../data/EditScreamTabData";
+import Tabs from "../../module/Tabs";
 
 const theme = createMuiTheme({
   overrides: {
@@ -85,7 +87,7 @@ const styles = {
 class AdminEditScream extends Component {
   state = {
     open: false,
-    tab: 2,
+    order: 2,
     errors: {},
 
     openWeblink: false,
@@ -327,14 +329,14 @@ class AdminEditScream extends Component {
     // window.location.reload(false);
   };
 
-  handleClick = (tab) => {
+  handleClick = (order) => {
     this.setState({
-      tab,
+      order,
     });
   };
 
   render() {
-    const { projects, loadingProjects } = this.props.data;
+    const { projects, loadingProjects, loading } = this.props.data;
 
     const { classes } = this.props;
     const { viewport, weblink, weblinkTitle, errors } = this.state;
@@ -423,33 +425,19 @@ class AdminEditScream extends Component {
           >
             <h3 className="modal_title">Idee bearbeiten (Admin)</h3>
 
-            <div className="Tabs Dialog_Tabs">
-              <div className="Tab">
-                <div
-                  className={
-                    this.state.tab === 1 ? "Tab_active" : "Tab_not_active"
-                  }
-                  onClick={() => this.handleClick(1)}
-                >
-                  Details
-                </div>
-                <div className="Tab_Line" style={{ color: "white" }}>
-                  |
-                </div>{" "}
-                <div
-                  className={
-                    this.state.tab === 2 ? "Tab_active" : "Tab_not_active"
-                  }
-                  onClick={() => this.handleClick(2)}
-                >
-                  Monitoring
-                </div>
-              </div>
-            </div>
+            <Tabs
+              loading={loading}
+              handleClick={this.handleClick}
+              order={this.state.order}
+              tabLabels={EditScreamTabData.map((item) => item.text)}
+              marginTop={"0"}
+              marginBottom={"20px"}
+              lineColor={"white"}
+            ></Tabs>
           </div>
 
           <div className="textFields">
-            <ToggleDisplay show={this.state.tab === 1}>
+            <ToggleDisplay show={this.state.order === 1}>
               <div
                 style={{
                   display: "flex",
@@ -614,7 +602,7 @@ class AdminEditScream extends Component {
                 </div>
               </div>
             </ToggleDisplay>
-            <ToggleDisplay show={this.state.tab === 2}>
+            <ToggleDisplay show={this.state.order === 2}>
               <div
                 style={{
                   display: "flex",

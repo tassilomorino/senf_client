@@ -11,7 +11,7 @@ import InlineInformationPageDesktop from "../infocomponents/InlineInformationPag
 import TopicFilter from "./TopicFilter";
 import Account from "../profile/Account";
 import { MenuItem } from "./MenuItem";
-import { MenuData } from "./MenuData";
+import { MenuData } from "../../data/MenuData";
 
 //MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";

@@ -395,18 +395,7 @@
       display:none
     }
 
-    .Topbar_Tabs{
-      margin-top: 20px;
-      justify-content:center;
-      width: 100%;
-    }
-    .Dialog_Tabs{
-      margin-bottom:50px;
-    }
-
-    .Account_Tabs{
-      margin-bottom:50px;
-    }
+  
     .content {
     margin-top: 0px;
       padding-bottom: 100px;

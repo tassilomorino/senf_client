@@ -9,6 +9,8 @@
    "accept": "Accept",
    "next": "Next",
    "to": "To:",
+   "details":"Details",
+   "monitoring":"Monitoring",
 
    "showIdeas": "Show ideas",
    "withoutLocation":"Without specified location",
@@ -22,6 +24,9 @@
    "votes": "Votes",
    "info": "Info",
    "calendar": "Calendar",
+
+   "your_ideas":"Your ideas",
+   "your_settings":"Your account",
 
    "register": "Register",
    "login": "Login",

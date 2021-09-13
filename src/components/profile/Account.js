@@ -23,6 +23,8 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Dialog from "@material-ui/core/Dialog";
 import Typography from "@material-ui/core/Typography";
 import Slide from "@material-ui/core/Slide";
+import Tabs from "../module/Tabs";
+import { AccountTabData } from "../../data/AccountTabData";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -499,27 +501,15 @@ class Account extends Component {
           Hey {handle}{" "}
         </div>
 
-        <div className="Tabs Account_Tabs">
-          <div className="Tab">
-            <div
-              className={
-                this.state.order === 1 ? "Tab_active" : "Tab_not_active"
-              }
-              onClick={() => this.handleClick(1)}
-            >
-              Deine Ideen{" "}
-            </div>
-            <div className="Tab_Line">| </div>
-            <div
-              className={
-                this.state.order === 2 ? "Tab_active" : "Tab_not_active"
-              }
-              onClick={() => this.handleClick(2)}
-            >
-              Dein Account
-            </div>
-          </div>
-        </div>
+        <Tabs
+          loading={loadingMyScreams}
+          handleClick={this.handleClick}
+          order={this.state.order}
+          tabLabels={AccountTabData.map((item) => item.text)}
+          marginTop={"0px"}
+          marginBottom={"40px"}
+          lineColor={"white"}
+        ></Tabs>
 
         <div
           className="MainAnimationChannels"

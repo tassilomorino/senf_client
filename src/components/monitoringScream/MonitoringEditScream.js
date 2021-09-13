@@ -38,6 +38,8 @@ import Weblink from "../../components/modals/postModals/Weblink";
 import Contact from "../../components/modals/postModals/Contact";
 import InlineDatePicker from "../../components/modals/postModals/InlineDatePicker";
 import ToggleDisplay from "react-toggle-display";
+import Tabs from "../module/Tabs";
+import { EditScreamTabData } from "../../data/EditScreamTabData";
 
 const theme = createMuiTheme({
   overrides: {
@@ -93,7 +95,7 @@ const styles = {
 class MonitoringEditScream extends Component {
   state = {
     open: false,
-    tab: 1,
+    order: 1,
     errors: {},
 
     openWeblink: false,
@@ -350,9 +352,9 @@ class MonitoringEditScream extends Component {
     // this.props.editScream(editScream, this.props.history);
   };
 
-  handleClick = (tab) => {
+  handleClick = (order) => {
     this.setState({
-      tab,
+      order,
     });
   };
 
@@ -556,50 +558,19 @@ class MonitoringEditScream extends Component {
                   />
                 </div>
               </div>
-
-              <div className="Tabs Topbar_Tabs" style={{ marginTop: "0px" }}>
-                <div className="Tab">
-                  <div
-                    className={
-                      this.state.tab === 1 ? "Tab_active" : "Tab_not_active"
-                    }
-                    style={
-                      this.state.tab === 1
-                        ? {
-                            padding: "15px",
-                            borderRadius: "10px",
-                            backgroundColor: "white",
-                          }
-                        : {}
-                    }
-                    onClick={() => this.handleClick(1)}
-                  >
-                    Idee-Details
-                  </div>
-
-                  <div
-                    className={
-                      this.state.tab === 2 ? "Tab_active" : "Tab_not_active"
-                    }
-                    style={
-                      this.state.tab === 2
-                        ? {
-                            padding: "15px",
-                            borderRadius: "10px",
-                            backgroundColor: "white",
-                          }
-                        : {}
-                    }
-                    onClick={() => this.handleClick(2)}
-                  >
-                    Monitoring
-                  </div>
-                </div>
-              </div>
+              <Tabs
+                loading={loading}
+                handleClick={this.handleClick}
+                order={this.state.order}
+                tabLabels={EditScreamTabData.map((item) => item.text)}
+                marginTop={"20px"}
+                marginBottom={"20px"}
+                lineColor={"white"}
+              ></Tabs>
             </div>
 
             <div className="textFields">
-              <ToggleDisplay show={this.state.tab === 1}>
+              <ToggleDisplay show={this.state.order === 1}>
                 <div
                   style={{
                     display: "flex",
@@ -768,7 +739,7 @@ class MonitoringEditScream extends Component {
                   </div>
                 </div>
               </ToggleDisplay>
-              <ToggleDisplay show={this.state.tab === 2}>
+              <ToggleDisplay show={this.state.order === 2}>
                 <div
                   style={{
                     display: "flex",
