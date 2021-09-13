@@ -8,8 +8,10 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 
 import topics from "../../data/topics";
+import { useTranslation } from "react-i18next";
 
 export function TopicFilter({ handleTopicSelector, topicsSelected }) {
+  const { t } = useTranslation();
   // Handler at index 0 is for the "all" checkbox
   const topicFilters = topics.map((topic, i) => {
     return (
@@ -43,13 +45,13 @@ export function TopicFilter({ handleTopicSelector, topicsSelected }) {
               style={{ color: "#000000" }}
             />
           }
-          label="Alle Themen"
+          label={t("topics_all")}
         />
         {topics.map((topic, i) => (
           <FormControlLabel
             key={`${topic.name}-${i}`}
             control={topicFilters[i]}
-            label={topic.name}
+            label={topic.label}
           />
         ))}
       </FormGroup>
