@@ -15,6 +15,7 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 import TopicFilter from "../../../components/layout/TopicFilter";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
+import SortingSelect from "../../../components/module/SortingSelect";
 
 const theme = createMuiTheme({
   overrides: {
@@ -139,32 +140,7 @@ const ProjectIdeas = ({
             </ToggleDisplay>
           </div>
 
-          <MuiThemeProvider theme={theme}>
-            <NativeSelect
-              value={dropdown}
-              onChange={handleDropdown}
-              name="dropdown"
-              className="formControl"
-              inputProps={{ "aria-label": "dropdown" }}
-              id="dropdown"
-              IconComponent={() => (
-                <img
-                  src={Arrow}
-                  width="20px"
-                  style={{
-                    marginTop: "0px",
-                    marginLeft: "-24px",
-                    pointerEvents: "none",
-                  }}
-                ></img>
-              )}
-            >
-              <option value={10} className={classes.formText}>
-                neuste
-              </option>
-              <option value={20}>schärfste</option>
-            </NativeSelect>
-          </MuiThemeProvider>
+          <SortingSelect dropdown={dropdown} handleDropdown={handleDropdown} />
         </div>
       </div>
 

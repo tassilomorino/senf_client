@@ -34,6 +34,7 @@ import ChatBorder from "../images/icons/chat.png";
 import LikeIcon from "../images/icons/handsnoclap.png";
 import CreatedAtIcon from "../images/icons/calendar.png";
 import MonitoringEditScream from "../components/monitoringScream/MonitoringEditScream";
+import SortingSelect from "../components/module/SortingSelect";
 
 const theme = createMuiTheme({
   overrides: {
@@ -720,33 +721,10 @@ export class monitoring extends Component {
                 marginLeft: "10px",
               }}
             >
-              <MuiThemeProvider theme={theme}>
-                <NativeSelect
-                  value={dropdown}
-                  onChange={this.handleDropdown}
-                  name="dropdown"
-                  className="monitoringFormControlSmall"
-                  inputProps={{ "aria-label": "dropdown" }}
-                  id="dropdown"
-                  IconComponent={() => (
-                    <img
-                      src={Sort}
-                      alt="sort-icon"
-                      width="20px"
-                      style={{
-                        marginTop: "0px",
-                        marginLeft: "-24px",
-                        pointerEvents: "none",
-                      }}
-                    ></img>
-                  )}
-                >
-                  <option value={10} className={classes.formText}>
-                    neuste
-                  </option>
-                  <option value={20}>schärfste</option>
-                </NativeSelect>
-              </MuiThemeProvider>
+              <SortingSelect
+                dropdown={dropdown}
+                handleDropdown={this.handleDropdown}
+              />
             </div>
           </div>
 

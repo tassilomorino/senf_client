@@ -1,57 +1,30 @@
 /** @format */
 
 import React, { Component } from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 
 import lamploader from "../../images/lamp.png";
-import Arrow from "../../images/icons/sort.png";
 
 import TopicFilter from "../../components/layout/TopicFilter";
 import ToggleDisplay from "react-toggle-display";
-import {
-  MuiThemeProvider,
-  NativeSelect,
-  createMuiTheme,
-} from "@material-ui/core";
+
 import Geofilter from "../../components/map/Geofilter";
 import Scream from "../../components/scream/Scream";
 
 import _ from "lodash";
 import { isMobileCustom } from "../../util/customDeviceDetect";
+import SortingSelect from "../../components/module/SortingSelect";
 
-const styles = {};
-
-const theme = createMuiTheme({
-  overrides: {
-    MuiInput: {
-      underline: {
-        "&&&&:before": {
-          borderBottom: "1px solid rgba(0, 0, 0, 0)",
-        },
-        "&&&&:after": {
-          borderBottom: "1px solid rgba(255, 255, 255, 0)",
-        },
-      },
-    },
-    MuiNativeSelect: {
-      icon: {
-        opacity: 0,
-      },
-    },
-  },
-});
 export class AllIdeasPage extends Component {
   constructor(props) {
     super(props);
   }
   render() {
     const {
-      classes,
       loading,
       order,
       dropdown,
+      handleDropdown,
       _onViewportChange,
       handleRevert,
       openGeofilter,
@@ -68,7 +41,6 @@ export class AllIdeasPage extends Component {
       longitude3,
       latitude4,
       longitude4,
-      handleDropdown,
 
       dataNoLocationHandle,
       selectedId,
@@ -104,10 +76,8 @@ export class AllIdeasPage extends Component {
       )
     );
 
-    let screamLength = dataFinal.length;
-
     let noMoreScreamsMarkup =
-      !loading && screamLength > 0 ? (
+      !loading && dataFinal.length > 0 ? (
         <div className="ende">
           ... <br /> Keine weiteren Ideen <br />
         </div>
@@ -165,36 +135,14 @@ export class AllIdeasPage extends Component {
                       }}
                       alt="lamploader"
                     ></img>
-                    {screamLength} Ideen{" "}
+                    {dataFinal.length} Ideen{" "}
                   </ToggleDisplay>
                 </div>
 
-                <MuiThemeProvider theme={theme}>
-                  <NativeSelect
-                    value={dropdown}
-                    onChange={handleDropdown}
-                    name="dropdown"
-                    className="formControl"
-                    inputProps={{ "aria-label": "dropdown" }}
-                    id="dropdown"
-                    IconComponent={() => (
-                      <img
-                        src={Arrow}
-                        width="20px"
-                        style={{
-                          marginTop: "0px",
-                          marginLeft: "-24px",
-                          pointerEvents: "none",
-                        }}
-                      ></img>
-                    )}
-                  >
-                    <option value={10} className={classes.formText}>
-                      neuste
-                    </option>
-                    <option value={20}>schärfste</option>
-                  </NativeSelect>
-                </MuiThemeProvider>
+                <SortingSelect
+                  dropdown={dropdown}
+                  handleDropdown={handleDropdown}
+                />
               </div>
             </div>
 
@@ -232,15 +180,5 @@ export class AllIdeasPage extends Component {
     ) : null;
   }
 }
-AllIdeasPage.propTypes = {};
 
-const mapActionsToProps = {};
-
-const mapStateToProps = (state) => ({
-  data: state.data,
-});
-
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(AllIdeasPage));
+export default AllIdeasPage;
