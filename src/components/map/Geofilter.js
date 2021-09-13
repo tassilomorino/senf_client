@@ -14,17 +14,14 @@ import { openScream } from "../../redux/actions/screamActions";
 import Arrow from "../../images/icons/arrow.png";
 import CircularArrow from "../../images/icons/circular-arrow.png";
 
-//MAPSTUFF
-// import ReactMapGL, { Marker } from "react-map-gl";
+//MAPSTUF
 import MapGL, { Source, Layer, Marker } from "@urbica/react-map-gl";
-
-//IF NOT ACCEPTED COOKIES / NOT SIGNED IN
 
 import { isMobileOnly } from "react-device-detect";
 
 //COOKIES
 import Cookies from "universal-cookie";
-import { Themenfilter } from "../layout/Themenfilter";
+import TopicFilter from "../layout/TopicFilter";
 const cookies = new Cookies();
 
 const styles = {
@@ -188,12 +185,6 @@ class Geofilter extends Component {
     this.props.openScream(screamId);
   };
 
-  // handleChange = (event) => {
-  //   this.setState({
-  //     [event.target.name]: event.target.value,
-  //   });
-  // };
-
   handleCookies() {
     cookies.set("Cookie_settings", "all", {
       path: "/",
@@ -215,23 +206,6 @@ class Geofilter extends Component {
       _onViewportChange,
       dataFinal,
 
-      handleLegend,
-      handleLegend1,
-      handleLegend2,
-      handleLegend3,
-      handleLegend4,
-      handleLegend5,
-      handleLegend6,
-      handleLegend7,
-      checked,
-      checked1,
-      checked2,
-      checked3,
-      checked4,
-      checked5,
-      checked6,
-      checked7,
-
       handleOpenGeofilter,
       handleCloseGeofilter,
       handleResetGeofilter,
@@ -244,6 +218,8 @@ class Geofilter extends Component {
 
       loadingProjects,
       geoData,
+      handleTopicSelector,
+      topicsSelected,
     } = this.props;
 
     const { classes } = this.props;
@@ -251,66 +227,17 @@ class Geofilter extends Component {
     const data =
       !loadingProjects && geoData !== undefined && geoData !== ""
         ? {
-          type: "Feature",
-          geometry: {
-            type: "Polygon",
-            coordinates: [JSON.parse(geoData)],
-          },
-        }
+            type: "Feature",
+            geometry: {
+              type: "Polygon",
+              coordinates: [JSON.parse(geoData)],
+            },
+          }
         : null;
 
-    // console.log(this.props);
-    // const dataArray = dataFinal;
-    // if (dataArray !== undefined && dataArray.length > 0) {
-    //   dataArray.forEach((element) => {
-    //     if (
-    //       element.lat > latitude2 &&
-    //       element.lat < latitude1 &&
-    //       element.long > longitude2 &&
-    //       element.long < longitude3
-    //     ) {
-    //       dataFinal.push(element);
-    //     }
-    //   });
-    // }
-
-    // let dataFinalMap = [];
-    // const dataArrayMap = this.props.data.screams;
-    // if (dataArrayMap !== undefined && dataArrayMap.length > 0) {
-    //   dataArrayMap.forEach((element) => {
-    //     if (element.lat && element.long) {
-    //       dataFinalMap.push(element);
-    //     }
-    //   });
-    // }
-
-    let screamLenghth = dataFinal.length;
-
-    // const closeicon =
-    //   (latitude1 < 50.95) |
-    //   (latitude2 > 50.82) |
-    //   (longitude2 > 6.812) |
-    //   (longitude3 < 7.07) ? (
-    //     <MyButton onClick={handleRevert} btnClassName={classes.closeButton1}>
-    //       <CloseIcon />
-    //     </MyButton>
-    //   ) : null;
-
-    const Sonstige = [];
-    const SonstiigedataArray = this.props.data.screams;
-    if (SonstiigedataArray !== undefined && SonstiigedataArray.length > 0) {
-      SonstiigedataArray.forEach((element) => {
-        if (element.Thema === "Sonstige") {
-          Sonstige.push(element);
-        }
-      });
-    }
-
     let dataNoLocation = [];
-    const dataArrayNoLocation = dataFinal;
-
-    if (dataArrayNoLocation !== undefined && dataArrayNoLocation.length > 0) {
-      dataArrayNoLocation.forEach((element) => {
+    if (dataFinal !== undefined && dataFinal.length > 0) {
+      dataFinal.forEach((element) => {
         if (element.lat === 50.93864020643174) {
           dataNoLocation.push(element);
         }
@@ -318,17 +245,15 @@ class Geofilter extends Component {
     }
 
     let dataFinalMap = [];
-    const dataFinalMapArray = dataFinal;
-
-    if (dataFinalMapArray !== undefined && dataNoLocation.length > 1) {
-      dataFinalMapArray.forEach((element) => {
+    if (dataFinal !== undefined && dataNoLocation.length > 1) {
+      dataFinal.forEach((element) => {
         if (element.lat !== 50.93864020643174) {
           dataFinalMap.push(element);
         }
       });
     }
-    if (dataFinalMapArray !== undefined && dataNoLocation.length < 2) {
-      dataFinalMapArray.forEach((element) => {
+    if (dataFinal !== undefined && dataNoLocation.length < 2) {
+      dataFinal.forEach((element) => {
         dataFinalMap.push(element);
       });
     }
@@ -422,214 +347,171 @@ class Geofilter extends Component {
         </Marker>
       ) : null;
 
-    const map = (
-      <div
-        style={
-          openGeofilter
-            ? {
-              position: "fixed",
-              width: "100vw",
-              height: "100vh",
-              top: "0",
-              left: "0",
-              zIndex: "999",
-              borderRadius: "0",
-              transform: "scale(1)",
-            }
-            : {
-              position: "absolute",
-              top: "10px",
-              marginTop: "10px",
-              left: "calc(97.5vw - 127px)",
-              zIndex: "9",
-              width: "127px",
-              height: "127px",
-              borderRadius: "10%",
-              transform: "scale(1)",
-              overflow: "hidden",
-            }
-        }
-      >
-        <MapGL
-          style={
-            openGeofilter
-              ? {
-                position: "fixed",
-                width: "calc(100% + 1px)",
-                height: "calc(100% + 1px)",
-                transform: "scale(1)",
-                zIndex: 999999,
-              }
-              : {
-                width: "calc(100% - 0)",
-                height: "calc(100% - 1px)",
-                transform: "scale(1)",
-              }
-          }
-          mapStyle={styles[this.state.styleId]}
-          accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-          minZoom={9}
-          {...viewport}
-          zoom={openGeofilter ? viewport.zoom : viewport.zoom - 2.5}
-          onViewportChange={_onViewportChange}
-
-        // viewportChangeMethod={"easeTo"}
-        // viewportChangeOptions={{
-        //   duration: 1700,
-        // }}
-        >
-          <Source id="maine" type="geojson" data={data} />
-          <Layer
-            id="maine"
-            type="fill"
-            source="maine"
-            paint={{
-              "fill-color": "#fed957",
-              "fill-opacity": 0.2,
-            }}
-          />
-          <div
-            style={
-              openGeofilter
-                ? {
-                  display: "block",
-                  zIndex: 999,
-                  transform: "translate(80px,-5px)",
-                }
-                : { display: "none" }
-            }
-          >
-            <Themenfilter
-              handlers={
-                [handleLegend, handleLegend1, handleLegend2, handleLegend3,
-                  handleLegend4, handleLegend5, handleLegend6, handleLegend7]
-              }
-              checks={[checked, checked1, checked2, checked3, checked4, checked5, checked6, checked7]}
-            ></Themenfilter>
-          </div>
-
-          <div
-            className={
-              showGeofilterResults === false
-                ? classes.selector_hide
-                : classes.selector
-            }
-          ></div>
-
-          <div style={{ zIndex: 90 }}>
-            {dataFinalMap.map((element) => (
-              <Marker
-                key={element.screamId}
-                longitude={element.long}
-                latitude={element.lat}
-              >
-                <div
-                  style={{
-                    position: "absolute",
-                    width: 7 + element.likeCount / 2 + "px",
-                    marginLeft: -((7 + element.likeCount) / 4) + "px",
-                    height: 7 + element.likeCount / 2 + "px",
-                    marginTop: -(7 + element.likeCount) / 4 + "px",
-                    borderRadius: "100%",
-                    border: "1px white solid",
-                    backgroundColor:
-                      element.Thema === "Rad"
-                        ? "#929df6"
-                        : element.Thema === "Verkehr"
-                          ? "#91dff4"
-                          : element.Thema === "Umwelt und Grün"
-                            ? "#8dd9b8"
-                            : element.Thema === "Sport / Freizeit"
-                              ? "#f6c095"
-                              : element.Thema === "Inklusion / Soziales"
-                                ? "#e8907e"
-                                : element.Thema === "Versorgung"
-                                  ? "#bd98f6"
-                                  : "#f9db95",
-                    opacity: "1",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      position: "absolute",
-                      top: "0",
-                      left: 0,
-                      borderRadius: "100%",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <button
-                      onClick={() => this.fetchDataScream(element.screamId)}
-                      className="buttonExpand ripple"
-                    ></button>
-                  </div>
-                </div>
-                <div style={{ zIndex: 99 }}>
-                  {doubleNoLocation}
-                  {doubleNoLocationPopUp}
-                </div>
-              </Marker>
-            ))}
-          </div>
-        </MapGL>
-      </div>
-    );
-
-    // const maploader =
-    //   cookies.get("Cookie_settings") !== "all" ? (
-    //     <div>
-    //       <div className="CookieNote">
-    //         {" "}
-    //         <span className="cookiesNoteHeader">
-    //           Ohne das akzeptieren aller Cookies <br /> geht diese Funktion
-    //           nicht.
-    //         </span>
-    //         <br />
-    //         <div className="cookiesNoteText">
-    //           <span
-    //             className="CookieLink"
-    //             onClick={() => this.handleOpenCookiePreferences()}
-    //           >
-    //             Hier
-    //           </span>
-    //           &nbsp;findest du deine Cookie-Einstellungen.
-    //         </div>
-    //         <div className="Accept" onClick={() => this.handleCookies()}>
-    //           Alle Akzeptieren
-    //         </div>
-    //       </div>
-    //       <img src={Maploader} className="Maploader" alt="ChatIcon" />
-    //     </div>
-    //   ) : null;
-
     return isMobileOnly ? (
       <div>
-        {/* {maploader} */}
-
         <div
           onClick={handleOpenGeofilter}
           style={
             openGeofilter
               ? { display: "none" }
               : {
-                display: "block",
-                position: "absolute",
-                top: "5px",
-                marginTop: "10px",
-                left: "calc(97.5vw - 137px)",
-                zIndex: 10,
-                width: "137px",
-                height: "137px",
-                borderRadius: "20px",
-                backgroundColor: "rgb(0,0,0,0)",
-
-                // border: "5px solid white",
-              }
+                  display: "block",
+                  position: "absolute",
+                  top: "5px",
+                  marginTop: "10px",
+                  left: "calc(97.5vw - 137px)",
+                  zIndex: 10,
+                  width: "137px",
+                  height: "137px",
+                  borderRadius: "20px",
+                  backgroundColor: "rgb(0,0,0,0)",
+                }
           }
         ></div>
-        {map}
+        <div
+          style={
+            openGeofilter
+              ? {
+                  position: "fixed",
+                  width: "100vw",
+                  height: "100vh",
+                  top: "0",
+                  left: "0",
+                  zIndex: "999",
+                  borderRadius: "0",
+                  transform: "scale(1)",
+                }
+              : {
+                  position: "absolute",
+                  top: "10px",
+                  marginTop: "10px",
+                  left: "calc(97.5vw - 127px)",
+                  zIndex: "9",
+                  width: "127px",
+                  height: "127px",
+                  borderRadius: "10%",
+                  transform: "scale(1)",
+                  overflow: "hidden",
+                }
+          }
+        >
+          <MapGL
+            style={
+              openGeofilter
+                ? {
+                    position: "fixed",
+                    width: "calc(100% + 1px)",
+                    height: "calc(100% + 1px)",
+                    transform: "scale(1)",
+                    zIndex: 999999,
+                  }
+                : {
+                    width: "calc(100% - 0)",
+                    height: "calc(100% - 1px)",
+                    transform: "scale(1)",
+                  }
+            }
+            mapStyle={styles[this.state.styleId]}
+            accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+            minZoom={9}
+            {...viewport}
+            zoom={openGeofilter ? viewport.zoom : viewport.zoom - 2.5}
+            onViewportChange={_onViewportChange}
+          >
+            <Source id="maine" type="geojson" data={data} />
+            <Layer
+              id="maine"
+              type="fill"
+              source="maine"
+              paint={{
+                "fill-color": "#fed957",
+                "fill-opacity": 0.2,
+              }}
+            />
+            <div
+              style={
+                openGeofilter
+                  ? {
+                      display: "block",
+                      zIndex: 999,
+                      transform: "translate(80px,-5px)",
+                    }
+                  : { display: "none" }
+              }
+            >
+              <TopicFilter
+                handleTopicSelector={handleTopicSelector}
+                topicsSelected={topicsSelected}
+              ></TopicFilter>
+            </div>
+
+            <div
+              className={
+                showGeofilterResults === false
+                  ? classes.selector_hide
+                  : classes.selector
+              }
+            ></div>
+
+            <div style={{ zIndex: 90 }}>
+              {dataFinalMap.map((element) => (
+                <Marker
+                  key={element.screamId}
+                  longitude={element.long}
+                  latitude={element.lat}
+                >
+                  <div
+                    style={{
+                      position: "absolute",
+                      width: 7 + element.likeCount / 2 + "px",
+                      marginLeft: -((7 + element.likeCount) / 4) + "px",
+                      height: 7 + element.likeCount / 2 + "px",
+                      marginTop: -(7 + element.likeCount) / 4 + "px",
+                      borderRadius: "100%",
+                      border: "1px white solid",
+                      backgroundColor:
+                        element.Thema === "Rad"
+                          ? "#929df6"
+                          : element.Thema === "Verkehr"
+                          ? "#91dff4"
+                          : element.Thema === "Umwelt und Grün"
+                          ? "#8dd9b8"
+                          : element.Thema === "Sport / Freizeit"
+                          ? "#f6c095"
+                          : element.Thema === "Inklusion / Soziales"
+                          ? "#e8907e"
+                          : element.Thema === "Versorgung"
+                          ? "#bd98f6"
+                          : "#f9db95",
+                      opacity: "1",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        position: "absolute",
+                        top: "0",
+                        left: 0,
+                        borderRadius: "100%",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <button
+                        onClick={() => this.fetchDataScream(element.screamId)}
+                        className="buttonExpand ripple"
+                      ></button>
+                    </div>
+                  </div>
+                  <div style={{ zIndex: 99 }}>
+                    {doubleNoLocation}
+                    {doubleNoLocationPopUp}
+                  </div>
+                </Marker>
+              ))}
+            </div>
+          </MapGL>
+        </div>
         <div
           className="dialogNavigation"
           style={
@@ -657,7 +539,7 @@ class Geofilter extends Component {
           }
         >
           {" "}
-          {screamLenghth} Ideen anzeigen
+          {dataFinal.length} Ideen anzeigen
         </button>
 
         <button
@@ -665,14 +547,14 @@ class Geofilter extends Component {
           className="buttonRound buttonResetGeofilter"
           style={
             openGeofilter &&
-              (latitude1 < 50.95) |
+            (latitude1 < 50.95) |
               (latitude2 > 50.82) |
               (longitude2 > 6.812) |
               (longitude3 < 7.07)
               ? { display: "block", zIndex: 999 }
               : openGeofilter
-                ? { display: "block", zIndex: 999, opacity: 0.5 }
-                : { display: "none" }
+              ? { display: "block", zIndex: 999, opacity: 0.5 }
+              : { display: "none" }
           }
         >
           <img src={CircularArrow} width="25" alt="reset_icon"></img>
