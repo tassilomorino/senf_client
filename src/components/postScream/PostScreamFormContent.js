@@ -7,8 +7,7 @@ import { isMobileCustom } from "../../util/customDeviceDetect";
 import { useTranslation } from "react-i18next";
 
 //MUI Stuff
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import { MuiThemeProvider, NativeSelect, TextField } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 
 //Components
 import PostScreamRules from "../modals/PostScreamRules";
@@ -17,29 +16,9 @@ import InlineDatePicker from "../modals/postModals/InlineDatePicker";
 import Weblink from "../modals/postModals/Weblink";
 
 //Icons
-import Arrow from "../../images/icons/arrow.png";
 import { CircularProgress } from "@material-ui/core";
 import LocationOn from "@material-ui/icons/LocationOn";
-
-const theme = createMuiTheme({
-  overrides: {
-    MuiInput: {
-      underline: {
-        "&&&&:before": {
-          borderBottom: "1px solid rgba(0, 0, 0, 0)",
-        },
-        "&&&&:after": {
-          borderBottom: "1px solid rgba(255, 255, 255, 0)",
-        },
-      },
-    },
-    MuiNativeSelect: {
-      icon: {
-        opacity: 0,
-      },
-    },
-  },
-});
+import Select from "../module/Select";
 
 const PostScreamFormContent = ({
   classes,
@@ -212,32 +191,13 @@ const PostScreamFormContent = ({
           <div className="topicSelectContainer">
             <span>{t("topic")}: </span>
 
-            <MuiThemeProvider theme={theme}>
-              <NativeSelect
-                value={topic}
-                onChange={handleChange}
-                name="topic"
-                className="projectFormControl"
-                inputProps={{ "aria-label": "topic" }}
-                id="topic"
-                IconComponent={() => (
-                  <img
-                    src={Arrow}
-                    width="20px"
-                    style={{
-                      marginTop: "0px",
-                      marginLeft: "-24px",
-                      pointerEvents: "none",
-                    }}
-                  ></img>
-                )}
-              >
-                <option value="" className={classes.formText}>
-                  Wähle das Thema aus
-                </option>
-                {topicsArray}
-              </NativeSelect>
-            </MuiThemeProvider>
+            <Select
+              name={"topic"}
+              value={topic}
+              initialValue={"Wähle das Thema aus"}
+              valuesArray={topicsArray}
+              handleDropdown={handleChange}
+            />
           </div>
         </div>
 

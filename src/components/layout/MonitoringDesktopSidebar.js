@@ -43,7 +43,7 @@ export class MonitoringDesktopSidebar extends Component {
     ) : null;
 
     return (
-      <div className="FilterComponent">
+      <div className="sideBar">
         <h1 className="logoWeb">
           <img src={Logo} width="100px"></img>
         </h1>

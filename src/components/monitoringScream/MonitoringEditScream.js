@@ -10,12 +10,7 @@ import Button from "@material-ui/core/Button";
 // REDUX Stuff
 import { connect } from "react-redux";
 
-import {
-  createMuiTheme,
-  MuiThemeProvider,
-  NativeSelect,
-  TextField,
-} from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 
 import { editScream, getUserEmail } from "../../redux/actions/screamActions";
 import { closeMonitoringScream } from "../../redux/actions/monitoringScreamActions";
@@ -24,7 +19,6 @@ import L from "leaflet";
 
 import _ from "lodash";
 
-import Arrow from "../../images/icons/arrow.png";
 import contactIcon from "../../images/icons/mail.png";
 import menuIcon from "../../images/icons/menu.png";
 import shareBorderIcon from "../../images/icons/shareBorder.png";
@@ -40,26 +34,7 @@ import InlineDatePicker from "../../components/modals/postModals/InlineDatePicke
 import ToggleDisplay from "react-toggle-display";
 import Tabs from "../module/Tabs";
 import { EditScreamTabData } from "../../data/EditScreamTabData";
-
-const theme = createMuiTheme({
-  overrides: {
-    MuiInput: {
-      underline: {
-        "&&&&:before": {
-          borderBottom: "1px solid rgba(0, 0, 0, 0)",
-        },
-        "&&&&:after": {
-          borderBottom: "1px solid rgba(255, 255, 255, 0)",
-        },
-      },
-    },
-    MuiNativeSelect: {
-      icon: {
-        opacity: 0,
-      },
-    },
-  },
-});
+import Select from "../module/Select";
 
 const styles = {
   root: {
@@ -582,33 +557,13 @@ class MonitoringEditScream extends Component {
                   }}
                 >
                   <span> Projektraum: </span>
-                  <MuiThemeProvider theme={theme}>
-                    <NativeSelect
-                      value={this.state.project}
-                      onChange={this.handleDropdown}
-                      name="project"
-                      className="projectFormControl"
-                      inputProps={{ "aria-label": "project" }}
-                      id="project"
-                      IconComponent={() => (
-                        <img
-                          src={Arrow}
-                          width="20px"
-                          style={{
-                            marginTop: "0px",
-                            marginLeft: "-24px",
-                            pointerEvents: "none",
-                          }}
-                          alt="arrow down"
-                        ></img>
-                      )}
-                    >
-                      <option value="" className={classes.formText}>
-                        Allgemein (Alle Ideen)
-                      </option>
-                      {projectsArray}
-                    </NativeSelect>
-                  </MuiThemeProvider>
+                  <Select
+                    name={"project"}
+                    value={this.state.project}
+                    initialValue={"Allgemein (Alle Ideen)"}
+                    valuesArray={projectsArray}
+                    handleDropdown={this.handleDropdown}
+                  />
                 </div>
                 <div
                   style={{
@@ -621,33 +576,13 @@ class MonitoringEditScream extends Component {
                 >
                   <span> Thema:</span>
 
-                  <MuiThemeProvider theme={theme}>
-                    <NativeSelect
-                      value={this.state.topic}
-                      onChange={this.handleDropdown}
-                      name="topic"
-                      className="projectFormControl"
-                      inputProps={{ "aria-label": "topic" }}
-                      id="topic"
-                      IconComponent={() => (
-                        <img
-                          src={Arrow}
-                          width="20px"
-                          style={{
-                            marginTop: "0px",
-                            marginLeft: "-24px",
-                            pointerEvents: "none",
-                          }}
-                          alt="arrow down"
-                        ></img>
-                      )}
-                    >
-                      <option value="" className={classes.formText}>
-                        Wähle ein Thema aus
-                      </option>
-                      {topicsArray}
-                    </NativeSelect>
-                  </MuiThemeProvider>
+                  <Select
+                    name={"topic"}
+                    value={this.state.topic}
+                    initialValue={"Wähle ein Thema aus"}
+                    valuesArray={topicsArray}
+                    handleDropdown={this.handleDropdown}
+                  />
                 </div>{" "}
                 <Geocoder
                   mapboxApiAccessToken={
@@ -774,31 +709,13 @@ class MonitoringEditScream extends Component {
                   }}
                 >
                   <span> Status:</span>
-
-                  <MuiThemeProvider theme={theme}>
-                    <NativeSelect
-                      value={this.state.status}
-                      onChange={this.handleDropdown}
-                      name="status"
-                      className="projectFormControl"
-                      inputProps={{ "aria-label": "status" }}
-                      id="status"
-                      IconComponent={() => (
-                        <img
-                          src={Arrow}
-                          width="20px"
-                          style={{
-                            marginTop: "0px",
-                            marginLeft: "-24px",
-                            pointerEvents: "none",
-                          }}
-                          alt="arrow down"
-                        ></img>
-                      )}
-                    >
-                      {statusArray}
-                    </NativeSelect>
-                  </MuiThemeProvider>
+                  <Select
+                    name={"status"}
+                    value={this.state.status}
+                    initialValue={false}
+                    valuesArray={statusArray}
+                    handleDropdown={this.handleDropdown}
+                  />
                 </div>{" "}
                 <TextField
                   id="notes"

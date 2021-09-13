@@ -1037,6 +1037,19 @@ button:disabled {
   font-size: 12pt !important;
 
 }
+.selectCustom{
+  width: 65%;
+  right: 0;
+  border: 0px solid #414345;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 40px;
+
+
+  font-family: Futura PT W01 Book !important;
+  font-size: 12pt !important;
+}
 
 /* .mapboxgl-ctrl-geocoder {
   margin-left:70px !important;

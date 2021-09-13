@@ -14,19 +14,13 @@ import { logoutUser } from "../redux/actions/userActions";
 import { clearErrors } from "../redux/actions/errorsActions";
 
 //ICONS
-import Sort from "../images/icons/sort.png";
-import Arrow from "../images/icons/arrow.png";
 import Not_connected from "../images/Not_connected.png";
 
-import Cookies from "universal-cookie";
 import { MonitoringDesktopSidebar } from "../components/layout/MonitoringDesktopSidebar";
 
 import _ from "lodash";
 import ToggleDisplay from "react-toggle-display";
 import MonitoringScream from "../components/monitoringScream/MonitoringScream";
-
-import { MuiThemeProvider, NativeSelect } from "@material-ui/core";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 
 import { ExportToExcel } from "../components/monitoringScream/ExportToExcel";
 
@@ -35,28 +29,7 @@ import LikeIcon from "../images/icons/handsnoclap.png";
 import CreatedAtIcon from "../images/icons/calendar.png";
 import MonitoringEditScream from "../components/monitoringScream/MonitoringEditScream";
 import SortingSelect from "../components/module/SortingSelect";
-
-const theme = createMuiTheme({
-  overrides: {
-    MuiInput: {
-      underline: {
-        "&&&&:before": {
-          borderBottom: "1px solid rgba(0, 0, 0, 0)",
-        },
-        "&&&&:after": {
-          borderBottom: "1px solid rgba(255, 255, 255, 0)",
-        },
-      },
-    },
-    MuiNativeSelect: {
-      icon: {
-        opacity: 0,
-      },
-    },
-  },
-});
-
-const cookies = new Cookies();
+import Select from "../components/module/Select";
 
 const styles = {};
 
@@ -687,34 +660,13 @@ export class monitoring extends Component {
                 marginLeft: "auto",
               }}
             >
-              <MuiThemeProvider theme={theme}>
-                <NativeSelect
-                  value={this.state.topic}
-                  onChange={this.handleDropdownTopic}
-                  name="topic"
-                  className="monitoringFormControlSmall"
-                  style={{ width: "150px" }}
-                  inputProps={{ "aria-label": "topic" }}
-                  id="topic"
-                  IconComponent={() => (
-                    <img
-                      src={Arrow}
-                      width="15px"
-                      alt="arrow-icon"
-                      style={{
-                        marginTop: "0px",
-                        marginLeft: "-24px",
-                        pointerEvents: "none",
-                      }}
-                    ></img>
-                  )}
-                >
-                  <option value="" className={classes.formText}>
-                    Alle Bezirke
-                  </option>
-                  {topicsArray}
-                </NativeSelect>
-              </MuiThemeProvider>
+              <Select
+                name={"topic"}
+                value={this.state.topic}
+                initialValue={"Alle Bezirke"}
+                valuesArray={topicsArray}
+                handleDropdown={this.handleDropdownTopic}
+              />
             </div>
             <div
               style={{
