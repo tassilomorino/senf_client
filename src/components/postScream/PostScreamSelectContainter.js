@@ -3,34 +3,8 @@
 import React from "react";
 import _ from "lodash";
 import { useTranslation } from "react-i18next";
-
-//MUI Stuff
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import { MuiThemeProvider, NativeSelect } from "@material-ui/core";
-
-//Icons
-import Arrow from "../../images/icons/arrow.png";
 import { isMobileCustom } from "../../util/customDeviceDetect";
-
-const theme = createMuiTheme({
-  overrides: {
-    MuiInput: {
-      underline: {
-        "&&&&:before": {
-          borderBottom: "1px solid rgba(0, 0, 0, 0)",
-        },
-        "&&&&:after": {
-          borderBottom: "1px solid rgba(255, 255, 255, 0)",
-        },
-      },
-    },
-    MuiNativeSelect: {
-      icon: {
-        opacity: 0,
-      },
-    },
-  },
-});
+import Select from "../module/Select";
 
 const PostScreamSelectContainter = ({
   classes,
@@ -102,36 +76,14 @@ const PostScreamSelectContainter = ({
       <div className="projectSelectContainer">
         <span className={classes.boldText}> {t("to")} </span>
 
-        <MuiThemeProvider theme={theme}>
-          <NativeSelect
-            value={project}
-            onChange={handleDropdownProject}
-            name="project"
-            className="projectFormControl"
-            inputProps={{ "aria-label": "project" }}
-            inputStyle={{
-              fontFamily: "Futura PT W01-Bold",
-            }}
-            id="project"
-            IconComponent={() => (
-              <img
-                src={Arrow}
-                width="20px"
-                style={{
-                  marginTop: "0px",
-                  marginLeft: "-24px",
-                  pointerEvents: "none",
-                }}
-              ></img>
-            )}
-          >
-            <option value="" className={classes.boldText}>
-              Allgemein (Alle Ideen)
-            </option>
-            {projectsArray}
-          </NativeSelect>
-        </MuiThemeProvider>
-      </div>{" "}
+        <Select
+          name={"project"}
+          value={project}
+          initialValue={"Allgemein (Alle Ideen)"}
+          valuesArray={projectsArray}
+          handleDropdown={handleDropdownProject}
+        />
+      </div>
       <br />
       <button
         className={

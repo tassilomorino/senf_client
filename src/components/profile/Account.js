@@ -13,7 +13,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 
 //Components
-import { MyIdeas } from "./MyIdeas";
+import MyIdeas from "./MyIdeas";
 
 // Icons
 import Arrow from "../../images/icons/arrow.png";
@@ -523,7 +523,6 @@ class Account extends Component {
             <MyIdeas
               loading={loadingMyScreams}
               myScreams={this.state.myScreams}
-              classes={classes}
               latitude1={this.state.latitude1}
               latitude2={this.state.latitude2}
               latitude3={this.state.latitude3}

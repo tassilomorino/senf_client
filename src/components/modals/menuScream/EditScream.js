@@ -11,46 +11,19 @@ import Dialog from "@material-ui/core/Dialog";
 // REDUX Stuff
 import { connect } from "react-redux";
 
-import {
-  createMuiTheme,
-  MuiThemeProvider,
-  NativeSelect,
-  TextField,
-} from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 
 import { editScream } from "../../../redux/actions/screamActions";
 
 import _ from "lodash";
-
 import L from "leaflet";
-
-import Arrow from "../../../images/icons/arrow.png";
 
 import Geocoder from "react-mapbox-gl-geocoder";
 
 import Weblink from "../postModals/Weblink";
 import Contact from "../postModals/Contact";
 import InlineDatePicker from "../postModals/InlineDatePicker";
-
-const theme = createMuiTheme({
-  overrides: {
-    MuiInput: {
-      underline: {
-        "&&&&:before": {
-          borderBottom: "1px solid rgba(0, 0, 0, 0)",
-        },
-        "&&&&:after": {
-          borderBottom: "1px solid rgba(255, 255, 255, 0)",
-        },
-      },
-    },
-    MuiNativeSelect: {
-      icon: {
-        opacity: 0,
-      },
-    },
-  },
-});
+import Select from "../../module/Select";
 
 const styles = {
   paper: {
@@ -405,32 +378,13 @@ class EditScream extends Component {
               }}
             >
               <span> An: </span>
-              <MuiThemeProvider theme={theme}>
-                <NativeSelect
-                  value={this.state.project}
-                  onChange={this.handleDropdown}
-                  name="project"
-                  className="projectFormControl"
-                  inputProps={{ "aria-label": "project" }}
-                  id="project"
-                  IconComponent={() => (
-                    <img
-                      src={Arrow}
-                      width="20px"
-                      style={{
-                        marginTop: "0px",
-                        marginLeft: "-24px",
-                        pointerEvents: "none",
-                      }}
-                    ></img>
-                  )}
-                >
-                  <option value="" className={classes.formText}>
-                    Allgemein (Alle Ideen)
-                  </option>
-                  {projectsArray}
-                </NativeSelect>
-              </MuiThemeProvider>
+              <Select
+                name={"project"}
+                value={this.state.project}
+                initialValue={"Allgemein (Alle Ideen)"}
+                valuesArray={projectsArray}
+                handleDropdown={this.handleDropdown}
+              />
             </div>
             <Geocoder
               mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
@@ -488,33 +442,14 @@ class EditScream extends Component {
             >
               <span> Thema:</span>
 
-              <MuiThemeProvider theme={theme}>
-                <NativeSelect
-                  value={this.state.topic}
-                  onChange={this.handleDropdown}
-                  name="topic"
-                  className="projectFormControl"
-                  inputProps={{ "aria-label": "topic" }}
-                  id="topic"
-                  IconComponent={() => (
-                    <img
-                      src={Arrow}
-                      width="20px"
-                      style={{
-                        marginTop: "0px",
-                        marginLeft: "-24px",
-                        pointerEvents: "none",
-                      }}
-                    ></img>
-                  )}
-                >
-                  <option value="" className={classes.formText}>
-                    Wähle ein Thema aus
-                  </option>
-                  {topicsArray}
-                </NativeSelect>
-              </MuiThemeProvider>
-            </div>{" "}
+              <Select
+                name={"topic"}
+                value={this.state.topic}
+                initialValue={"Wähle ein Thema aus"}
+                valuesArray={topicsArray}
+                handleDropdown={this.handleDropdown}
+              />
+            </div>
             <div
               style={{ bottom: " -70px", height: "50px", position: "relative" }}
             >

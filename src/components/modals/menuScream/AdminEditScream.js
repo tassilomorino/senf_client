@@ -11,20 +11,13 @@ import Dialog from "@material-ui/core/Dialog";
 // REDUX Stuff
 import { connect } from "react-redux";
 
-import {
-  createMuiTheme,
-  MuiThemeProvider,
-  NativeSelect,
-  TextField,
-} from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 
 import { editScream, getUserEmail } from "../../../redux/actions/screamActions";
 
 import L from "leaflet";
 
 import _ from "lodash";
-
-import Arrow from "../../../images/icons/arrow.png";
 
 import Geocoder from "react-mapbox-gl-geocoder";
 
@@ -34,26 +27,7 @@ import InlineDatePicker from "../postModals/InlineDatePicker";
 import ToggleDisplay from "react-toggle-display";
 import { EditScreamTabData } from "../../../data/EditScreamTabData";
 import Tabs from "../../module/Tabs";
-
-const theme = createMuiTheme({
-  overrides: {
-    MuiInput: {
-      underline: {
-        "&&&&:before": {
-          borderBottom: "1px solid rgba(0, 0, 0, 0)",
-        },
-        "&&&&:after": {
-          borderBottom: "1px solid rgba(255, 255, 255, 0)",
-        },
-      },
-    },
-    MuiNativeSelect: {
-      icon: {
-        opacity: 0,
-      },
-    },
-  },
-});
+import Select from "../../module/Select";
 
 const styles = {
   paper: {
@@ -358,41 +332,21 @@ class AdminEditScream extends Component {
 
     const topicsArray = (
       <>
-        <option value={"Inklusion / Soziales"} className={classes.formText}>
-          Inklusion / Soziales
-        </option>
-        <option value={"Rad"} className={classes.formText}>
-          Rad
-        </option>
-        <option value={"Sport / Freizeit"} className={classes.formText}>
-          Sport / Freizeit
-        </option>
-        <option value={"Umwelt und Grün"} className={classes.formText}>
-          Umwelt und Grün
-        </option>
-        <option value={"Verkehr"} className={classes.formText}>
-          Verkehr
-        </option>
-        <option value={"Versorgung"} className={classes.formText}>
-          Versorgung
-        </option>
-        <option value={"Sonstige"} className={classes.formText}>
-          Sonstige
-        </option>
+        <option value={"Inklusion / Soziales"}>Inklusion / Soziales</option>
+        <option value={"Rad"}>Rad</option>
+        <option value={"Sport / Freizeit"}>Sport / Freizeit</option>
+        <option value={"Umwelt und Grün"}>Umwelt und Grün</option>
+        <option value={"Verkehr"}>Verkehr</option>
+        <option value={"Versorgung"}>Versorgung</option>
+        <option value={"Sonstige"}>Sonstige</option>
       </>
     );
 
     const statusArray = (
       <>
-        <option value={"None"} className={classes.formText}>
-          Offen
-        </option>
-        <option value={"Eingereicht"} className={classes.formText}>
-          Eingereicht
-        </option>
-        <option value={"Bereits umgesetzt"} className={classes.formText}>
-          Bereits umgesetzt
-        </option>
+        <option value={"None"}>Offen</option>
+        <option value={"Eingereicht"}>Eingereicht</option>
+        <option value={"Bereits umgesetzt"}>Bereits umgesetzt</option>
       </>
     );
 
@@ -449,32 +403,13 @@ class AdminEditScream extends Component {
                 }}
               >
                 <span> Projektraum: </span>
-                <MuiThemeProvider theme={theme}>
-                  <NativeSelect
-                    value={this.state.project}
-                    onChange={this.handleDropdown}
-                    name="project"
-                    className="projectFormControl"
-                    inputProps={{ "aria-label": "project" }}
-                    id="project"
-                    IconComponent={() => (
-                      <img
-                        src={Arrow}
-                        width="20px"
-                        style={{
-                          marginTop: "0px",
-                          marginLeft: "-24px",
-                          pointerEvents: "none",
-                        }}
-                      ></img>
-                    )}
-                  >
-                    <option value="" className={classes.formText}>
-                      Allgemein (Alle Ideen)
-                    </option>
-                    {projectsArray}
-                  </NativeSelect>
-                </MuiThemeProvider>
+                <Select
+                  name={"project"}
+                  value={this.state.project}
+                  initialValue={"Allgemein (Alle Ideen)"}
+                  valuesArray={projectsArray}
+                  handleDropdown={this.handleDropdown}
+                />
               </div>
               <div
                 style={{
@@ -486,34 +421,14 @@ class AdminEditScream extends Component {
                 }}
               >
                 <span> Thema:</span>
-
-                <MuiThemeProvider theme={theme}>
-                  <NativeSelect
-                    value={this.state.topic}
-                    onChange={this.handleDropdown}
-                    name="topic"
-                    className="projectFormControl"
-                    inputProps={{ "aria-label": "topic" }}
-                    id="topic"
-                    IconComponent={() => (
-                      <img
-                        src={Arrow}
-                        width="20px"
-                        style={{
-                          marginTop: "0px",
-                          marginLeft: "-24px",
-                          pointerEvents: "none",
-                        }}
-                      ></img>
-                    )}
-                  >
-                    <option value="" className={classes.formText}>
-                      Wähle ein Thema aus
-                    </option>
-                    {topicsArray}
-                  </NativeSelect>
-                </MuiThemeProvider>
-              </div>{" "}
+                <Select
+                  name={"topic"}
+                  value={this.state.topic}
+                  initialValue={"Wähle ein Thema aus"}
+                  valuesArray={topicsArray}
+                  handleDropdown={this.handleDropdown}
+                />
+              </div>
               <Geocoder
                 mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
                 onSelected={this.onSelected}
@@ -635,31 +550,14 @@ class AdminEditScream extends Component {
                 }}
               >
                 <span> Status:</span>
-
-                <MuiThemeProvider theme={theme}>
-                  <NativeSelect
-                    value={this.state.status}
-                    onChange={this.handleDropdown}
-                    name="status"
-                    className="projectFormControl"
-                    inputProps={{ "aria-label": "status" }}
-                    id="status"
-                    IconComponent={() => (
-                      <img
-                        src={Arrow}
-                        width="20px"
-                        style={{
-                          marginTop: "0px",
-                          marginLeft: "-24px",
-                          pointerEvents: "none",
-                        }}
-                      ></img>
-                    )}
-                  >
-                    {statusArray}
-                  </NativeSelect>
-                </MuiThemeProvider>
-              </div>{" "}
+                <Select
+                  name={"status"}
+                  value={this.state.status}
+                  initialValue={false}
+                  valuesArray={statusArray}
+                  handleDropdown={this.handleDropdown}
+                />
+              </div>
               <TextField
                 id="notes"
                 name="notes"

@@ -1,43 +1,20 @@
 /** @format */
 
 import React from "react";
-
 import ToggleDisplay from "react-toggle-display";
-import lamploader from "../../../images/lamp.png";
-import Geofilter from "../../../components/map/Geofilter";
-import Arrow from "../../../images/icons/sort.png";
-
-import Scream from "../../../components/scream/Scream";
-
-import NativeSelect from "@material-ui/core/NativeSelect";
 import _ from "lodash";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-
-import TopicFilter from "../../../components/layout/TopicFilter";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 
-const theme = createMuiTheme({
-  overrides: {
-    MuiInput: {
-      underline: {
-        "&&&&:before": {
-          borderBottom: "1px solid rgba(0, 0, 0, 0)",
-        },
-        "&&&&:after": {
-          borderBottom: "1px solid rgba(255, 255, 255, 0)",
-        },
-      },
-    },
-    MuiNativeSelect: {
-      icon: {
-        opacity: 0,
-      },
-    },
-  },
-});
+//Components
+import Geofilter from "../../../components/map/Geofilter";
+import Scream from "../../../components/scream/Scream";
+import TopicFilter from "../../../components/layout/TopicFilter";
+import SortingSelect from "../../../components/module/SortingSelect";
+
+//Images
+import lamploader from "../../../images/lamp.png";
 
 const ProjectIdeas = ({
-  classes,
   loading,
   dropdown,
   projectScreams,
@@ -139,32 +116,7 @@ const ProjectIdeas = ({
             </ToggleDisplay>
           </div>
 
-          <MuiThemeProvider theme={theme}>
-            <NativeSelect
-              value={dropdown}
-              onChange={handleDropdown}
-              name="dropdown"
-              className="formControl"
-              inputProps={{ "aria-label": "dropdown" }}
-              id="dropdown"
-              IconComponent={() => (
-                <img
-                  src={Arrow}
-                  width="20px"
-                  style={{
-                    marginTop: "0px",
-                    marginLeft: "-24px",
-                    pointerEvents: "none",
-                  }}
-                ></img>
-              )}
-            >
-              <option value={10} className={classes.formText}>
-                neuste
-              </option>
-              <option value={20}>schärfste</option>
-            </NativeSelect>
-          </MuiThemeProvider>
+          <SortingSelect dropdown={dropdown} handleDropdown={handleDropdown} />
         </div>
       </div>
 
