@@ -34,6 +34,7 @@ import Info from "../../images/icons/info.png";
 import CloseIcon from "@material-ui/icons/Close";
 
 import Logo from "../../images/logo.png";
+import { CustomButton } from "../module/CustomButton";
 
 const styles = {
   root: {
@@ -195,12 +196,14 @@ const InlineInformationPage = ({ classes }) => {
 
           <img src={Third} className="Third" alt="TopPath" />
 
-          <button
-            className="buttonWide buttonInlineInfoIdeas"
-            onClick={() => setOpen(false)}
-          >
-            {t("showIdeas")}
-          </button>
+          <CustomButton
+            text={t("showIdeas")}
+            backgroundColor="#353535"
+            textColor="white"
+            position="absolute"
+            top="1700px"
+            handleButtonClick={() => setOpen(false)}
+          />
 
           <a href="mailto:dein@senf.koeln">
             <button className="buttonWide buttonInlineInfoContact">
