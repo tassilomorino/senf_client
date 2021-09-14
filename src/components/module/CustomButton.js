@@ -44,8 +44,10 @@ const WideButton = styled.button`
 
   background-color: ${(props) => props.backgroundColor};
   color: ${(props) => props.textColor};
-  bottom: ${(props) => (props.bottom ? props.bottom : null)};
+  bottom: ${(props) => props.bottom && props.bottom};
+  top: ${(props) => props.top && props.top};
   position: ${(props) => props.position};
+  z-index: ${(props) => props.zIndex};
   animation: ${(props) =>
     props.animation &&
     css`
@@ -53,12 +55,14 @@ const WideButton = styled.button`
     `};
 `;
 
-const CustomButton = ({
+export const CustomButton = ({
   text,
   backgroundColor,
   textColor,
   position,
   bottom,
+  top,
+  zIndex,
   animation,
   handleButtonClick,
 }) => {
@@ -70,11 +74,11 @@ const CustomButton = ({
       textColor={textColor}
       position={position}
       bottom={bottom}
+      top={top}
+      zIndex={zIndex}
       animation={animation}
     >
       {text}
     </WideButton>
   );
 };
-
-export default CustomButton;
