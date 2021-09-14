@@ -23,6 +23,7 @@ import Cookies from "universal-cookie";
 import TopicFilter from "../layout/TopicFilter";
 import { CustomButton, CustomIconButton } from "../module/CustomButton";
 import { Trans } from "react-i18next";
+import setColorByTopic from "../../data/setColorByTopic";
 const cookies = new Cookies();
 
 const styles = {
@@ -466,20 +467,7 @@ const Geofilter = ({
                       marginTop: -(7 + element.likeCount) / 4 + "px",
                       borderRadius: "100%",
                       border: "1px white solid",
-                      backgroundColor:
-                        element.Thema === "Rad"
-                          ? "#929df6"
-                          : element.Thema === "Verkehr"
-                          ? "#91dff4"
-                          : element.Thema === "Umwelt und Grün"
-                          ? "#8dd9b8"
-                          : element.Thema === "Sport / Freizeit"
-                          ? "#f6c095"
-                          : element.Thema === "Inklusion / Soziales"
-                          ? "#e8907e"
-                          : element.Thema === "Versorgung"
-                          ? "#bd98f6"
-                          : "#f9db95",
+                      backgroundColor: setColorByTopic(element.Thema),
                       opacity: "1",
                     }}
                   >
