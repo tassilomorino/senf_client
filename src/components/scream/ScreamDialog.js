@@ -61,6 +61,7 @@ import { isMobileCustom } from "../../util/customDeviceDetect";
 //COOKIES
 import Cookies from "universal-cookie";
 import AdminMenuScream from "../modals/menuScream/AdminMenuScream";
+import { CustomIconButton } from "../module/CustomButton";
 const cookies = new Cookies();
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -702,14 +703,11 @@ class ScreamDialog extends Component {
         <Grid container spacing={0}>
           <Grid item sm={12} style={{ width: "100%" }}>
             <div className="dialogNavigation">
-              <button onClick={this.handleClose} className="buttonRound">
-                <img
-                  src={Arrow}
-                  width="20"
-                  alt="backArrow"
-                  style={{ transform: "rotate(90deg)" }}
-                />
-              </button>
+              <CustomIconButton
+                name="ArrowLeft"
+                position="fixed"
+                handleButtonClick={this.handleClose}
+              />
 
               <ScreamShare
                 screamId={screamId}

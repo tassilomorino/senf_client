@@ -29,6 +29,7 @@ import { withRouter } from "react-router-dom";
 import PostScreamFormContent from "./PostScreamFormContent";
 import PostScreamMap from "./PostScreamMap";
 import PostScreamSelectContainter from "./PostScreamSelectContainter";
+import { CustomIconButton } from "../module/CustomButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -489,18 +490,14 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
           </div>
         )}
 
-        <button
-          tip="Close"
-          onClick={handleClose}
-          className="buttonRound buttonClose"
-        >
-          <img
-            src={Arrow}
-            width="20"
-            alt="backArrow"
-            style={{ transform: "rotate(90deg)" }}
-          />
-        </button>
+        <CustomIconButton
+          name="Close"
+          position="fixed"
+          margin={
+            document.body.clientWidth > 768 ? "40px" : "18px 0px 0px 13px"
+          }
+          handleButtonClick={handleClose}
+        />
 
         {isMobileCustom && (
           <div

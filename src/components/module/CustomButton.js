@@ -6,6 +6,8 @@ import styled, { css, keyframes } from "styled-components";
 import CloseIcon from "../../images/icons/close.png";
 import ArrowLeftIcon from "../../images/icons/arrow-left.png";
 import CircularArrowIcon from "../../images/icons/circular-arrow.png";
+import ShareIcon from "../../images/icons/share.png";
+
 const enterAnimation = keyframes`
     0% {
       opacity: 0;
@@ -93,6 +95,7 @@ const Icons = {
   Close: CloseIcon,
   ArrowLeft: ArrowLeftIcon,
   CircularArrow: CircularArrowIcon,
+  Share: ShareIcon,
 };
 
 const enterAnimationRound = keyframes`
@@ -132,6 +135,7 @@ const IconButton = styled.button`
   position: ${(props) => props.position};
   top: ${(props) => props.top && props.top};
   bottom: ${(props) => props.bottom && props.bottom};
+  left: ${(props) => props.left && props.left};
   margin: ${(props) => props.margin && props.margin};
   margin-left: ${(props) => props.marginLeft};
   animation: ${(props) =>
@@ -148,6 +152,7 @@ export const CustomIconButton = ({
   margin,
   top,
   bottom,
+  left,
   zIndex,
   handleButtonClick,
   animation,
@@ -160,6 +165,7 @@ export const CustomIconButton = ({
       marginLeft={marginLeft}
       top={top}
       bottom={bottom}
+      left={left}
       margin={margin}
       zIndex={zIndex}
       animation={animation}

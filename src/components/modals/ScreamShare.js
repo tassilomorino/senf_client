@@ -33,6 +33,7 @@ import Swipe from "react-easy-swipe";
 //COOKIES
 import Cookies from "universal-cookie";
 import { isMobileCustom } from "../../util/customDeviceDetect";
+import { CustomIconButton } from "../module/CustomButton";
 const cookies = new Cookies();
 
 const styles = {
@@ -358,12 +359,13 @@ class ScreamShare extends Component {
         className={classes.Background}
         fullScreen
       >
-        <button
-          onClick={this.handleCloseShare}
-          className="buttonRound buttonClose"
-        >
-          <CloseIcon />
-        </button>
+        <CustomIconButton
+          name="Close"
+          position="fixed"
+          margin="10px"
+          handleButtonClick={this.handleCloseShare}
+        />
+
         <Swipe onSwipeMove={this.onSwipeMove.bind(this)}>
           <p
             style={{
@@ -472,13 +474,12 @@ class ScreamShare extends Component {
     );
     return (
       <Fragment>
-        <button
-          onClick={this.handleOpenShare}
-          className="buttonRound buttonShare"
-        >
-          <img src={Share} width="20" alt="editIcon" />
-        </button>
-
+        <CustomIconButton
+          name="Share"
+          position="relative"
+          margin="0 2.5% 0 auto"
+          handleButtonClick={this.handleOpenShare}
+        />
         {dialogComponent}
       </Fragment>
     );
