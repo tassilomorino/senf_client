@@ -21,6 +21,7 @@ import { Link } from "react-router-dom";
 
 //CHECK DEVICE
 import { isMobileCustom } from "../../util/customDeviceDetect";
+import CustomButton from "../module/CustomButton";
 
 const styles = {
   wrapper: {
@@ -75,6 +76,9 @@ const Welcome = ({ classes }) => {
     dispatch(setCookies(cookie_settings));
   };
 
+  const handleButtonClick = () => {
+    history.push("/start");
+  };
   const cookiebanner =
     cookie_settings !== "all" && cookie_settings !== "minimum" ? (
       <div>
@@ -96,12 +100,14 @@ const Welcome = ({ classes }) => {
             .
           </Trans>
         </div>
-        <button
-          className="buttonWide AcceptIntro"
-          onClick={() => handleCookies("all")}
-        >
-          {t("accept")}
-        </button>
+        <CustomButton
+          text={t("accept")}
+          backgroundColor="white"
+          textColor="#353535"
+          position="absolute"
+          bottom="50px"
+          handleButtonClick={() => handleCookies("all")}
+        />
         <span className="footerIntro">
           <Link to="/impressum" className="footerIntroText">
             <span className="impressumIntro"> {t("imprint")} </span>
@@ -139,9 +145,21 @@ const Welcome = ({ classes }) => {
             <img {...imageProps} alt="Person_Senftube" />
           )}
         />
-        <Link to="/start">
-          <button className="buttonWide buttonIntroToStart">{t("next")}</button>
-        </Link>
+
+        <CustomButton
+          text={t("next")}
+          backgroundColor="#353535"
+          textColor="white"
+          position="absolute"
+          bottom="50px"
+          handleButtonClick={handleButtonClick}
+        />
+        {/* <button
+          className="buttonWide buttonIntroToStart"
+          onClick={handleButtonClick}
+        >
+          {t("next")}
+        </button> */}
 
         <span className="footerIntro">
           <Link to="/impressum" className="footerIntroText">

@@ -25,6 +25,7 @@ import { Link } from "react-router-dom";
 
 //DETECT DEVICE
 import { isMobileCustom } from "../../util/customDeviceDetect";
+import CustomButton from "../module/CustomButton";
 
 const styles = {
   wrapper: {
@@ -116,6 +117,10 @@ const IntroductionInformation = ({ classes }) => {
     }
   }, []);
 
+  const handleButtonClick = () => {
+    history.push("/");
+  };
+
   return (
     <div className={classes.wrapper}>
       <div className={classes.nav}>
@@ -190,9 +195,19 @@ const IntroductionInformation = ({ classes }) => {
 
             <img src={Third} className="Third" alt="TopPath" />
 
-            <Link to="/">
+            <CustomButton
+              text={t("next")}
+              backgroundColor="#353535"
+              textColor="white"
+              position="fixed"
+              bottom="50px"
+              animation={true}
+              handleButtonClick={handleButtonClick}
+            />
+
+            {/* <Link to="/">
               <button className="ToWishes buttonWide">{t("next")}</button>
-            </Link>
+            </Link> */}
 
             <a href="mailto:dein@senf.koeln">
               <div className={classes.KontaktButton}>{t("contact")}</div>
