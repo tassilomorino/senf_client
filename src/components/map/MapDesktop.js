@@ -51,7 +51,7 @@ const MapDesktop = ({
   _onViewportChangeDesktop,
   dataNoLocationHandle,
   selectedId,
-  noLocation,
+  handleNoLocation,
   dataFinal,
   mapDesktopShowResults,
   mapDesktopReset,
@@ -175,7 +175,7 @@ const MapDesktop = ({
 
             <button
               className="buttonWide buttonNoLocation"
-              onClick={noLocation}
+              onClick={handleNoLocation}
             >
               {dataNoLocation.length} {t("showIdeas")}
             </button>

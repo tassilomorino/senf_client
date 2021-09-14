@@ -187,7 +187,7 @@ const Geofilter = ({
 
   dataNoLocationHandle,
   selectedId,
-  noLocation,
+  handleNoLocation,
 
   loadingProjects,
   geoData,
@@ -238,6 +238,9 @@ const Geofilter = ({
       dataFinalMap.push(element);
     });
   }
+
+  const number = dataFinal.length;
+  const noLocationnumber = dataNoLocation.length;
 
   const doubleNoLocation =
     dataNoLocation.length > 1 ? (
@@ -316,19 +319,22 @@ const Geofilter = ({
               Ohne Ortsangabe
             </p>
 
-            <button
-              className="buttonWide buttonNoLocation"
-              style={{ boxShadow: "none" }}
-              onClick={noLocation}
-            >
-              {dataNoLocation.length} Ideen anzeigen
-            </button>
+            <CustomButton
+              text={
+                <Trans i18nKey="show_number_ideas" number={noLocationnumber}>
+                  Show {{ noLocationnumber }} ideas
+                </Trans>
+              }
+              backgroundColor="#353535"
+              textColor="white"
+              position="relative"
+              bottom="10px"
+              handleButtonClick={handleNoLocation}
+            />
           </div>
         </div>
       </Marker>
     ) : null;
-
-  const number = dataFinal.length;
 
   return isMobileCustom ? (
     <div>
@@ -540,24 +546,6 @@ const Geofilter = ({
               </div>
             </React.Fragment>
           )}
-
-          {/* <button
-            onClick={handleResetGeofilter}
-            className="buttonRound buttonResetGeofilter"
-            style={
-              openGeofilter &&
-              (latitude1 < 50.95) |
-                (latitude2 > 50.82) |
-                (longitude2 > 6.812) |
-                (longitude3 < 7.07)
-                ? { display: "block", zIndex: 999 }
-                : openGeofilter
-                ? { display: "block", zIndex: 999, opacity: 0.5 }
-                : { display: "none" }
-            }
-          >
-            <img src={CircularArrow} width="25" alt="reset_icon"></img>
-          </button> */}
         </MapGL>
       </div>
     </div>

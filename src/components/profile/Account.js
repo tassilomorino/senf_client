@@ -396,7 +396,7 @@ class Account extends Component {
       longitude4: this.state.viewport.longitude + AddnewRight,
     });
   };
-  noLocation = () => {
+  handleNoLocation = () => {
     this.setState({
       latitude1: 50.93892,
       latitude2: 50.93864,
@@ -533,7 +533,7 @@ class Account extends Component {
               longitude4={this.state.longitude4}
               viewport={this.state.viewport}
               _onViewportChange={this._onViewportChange}
-              noLocation={this.noLocation}
+              handleNoLocation={this.handleNoLocation}
               dataNoLocationHandle={this.dataNoLocationHandle}
               showDemand={this.state.showDemand}
               handleClick={this.handleClick}
