@@ -31,6 +31,7 @@ const enterAnimation = keyframes`
 const WideButton = styled.button`
   border-radius: 30px;
   text-transform: none;
+  white-space: nowrap;
   font-size: 14pt;
   height: 50px;
   font-family: Futura PT W01 Book;
@@ -55,7 +56,7 @@ const WideButton = styled.button`
   animation: ${(props) =>
     props.animation &&
     css`
-      ${enterAnimation} 2.5s
+      ${enterAnimation} 2s
     `};
 `;
 
@@ -129,13 +130,14 @@ const IconButton = styled.button`
   text-align: center;
 
   position: ${(props) => props.position};
-  bottom: ${(props) => props.margin && props.bottom};
+  top: ${(props) => props.top && props.top};
+  bottom: ${(props) => props.bottom && props.bottom};
   margin: ${(props) => props.margin && props.margin};
   margin-left: ${(props) => props.marginLeft};
   animation: ${(props) =>
     props.animation &&
     css`
-      ${enterAnimationRound} .5s
+      ${enterAnimationRound} 2s
     `};
 `;
 
@@ -144,6 +146,7 @@ export const CustomIconButton = ({
   position,
   marginLeft,
   margin,
+  top,
   bottom,
   zIndex,
   handleButtonClick,
@@ -155,6 +158,7 @@ export const CustomIconButton = ({
       onClick={handleButtonClick}
       position={position}
       marginLeft={marginLeft}
+      top={top}
       bottom={bottom}
       margin={margin}
       zIndex={zIndex}

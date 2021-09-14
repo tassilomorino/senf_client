@@ -13,6 +13,8 @@
   "monitoring":"Monitoring",
 
   "show_number_ideas":"{{number}} Ideen anzeigen",
+  "show_noLocationNumber_ideas":"{{noLocationNumber}} Ideen anzeigen",
+
   "showIdeas": "Ideen anzeigen",
   "withoutLocation": "Ohne Ortsangabe",
   "withoutLocationShort": "Ohne Ort",

@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
 //Redux
@@ -24,6 +24,7 @@ import MapGL, {
 
 //COOKIES
 import Cookies from "universal-cookie";
+import { CustomButton, CustomIconButton } from "../module/CustomButton";
 const cookies = new Cookies();
 
 const styles = {
@@ -110,6 +111,8 @@ const MapDesktop = ({
     });
   }
 
+  const noLocationNumber = dataNoLocation.length;
+
   const doubleNoLocation =
     dataNoLocation.length > 1 ? (
       <Marker
@@ -172,13 +175,21 @@ const MapDesktop = ({
             >
               {t("withoutLocation")}
             </p>
-
-            <button
-              className="buttonWide buttonNoLocation"
-              onClick={handleNoLocation}
-            >
-              {dataNoLocation.length} {t("showIdeas")}
-            </button>
+            <CustomButton
+              text={
+                <Trans
+                  i18nKey="show_noLocationNumber_ideas"
+                  noLocationNumber={noLocationNumber}
+                >
+                  Show {{ noLocationNumber }} ideas
+                </Trans>
+              }
+              backgroundColor="#353535"
+              textColor="white"
+              position="relative"
+              bottom="10px"
+              handleButtonClick={handleNoLocation}
+            />
           </div>
         </div>
       </Marker>
@@ -232,21 +243,29 @@ const MapDesktop = ({
           }}
         />
 
-        <button
-          className="buttonWide buttonMapdesktop"
-          style={!openInfoPage ? { display: "block" } : { display: "none" }}
-          onClick={() => mapDesktopShowResults(viewport)}
-        >
-          {t("map_filterIdeas")}
-        </button>
+        {!openInfoPage && (
+          <React.Fragment>
+            <CustomButton
+              text={t("map_filterIdeas")}
+              backgroundColor="white"
+              textColor="#353535"
+              position="fixed"
+              top="40px"
+              animation={true}
+              handleButtonClick={() => mapDesktopShowResults(viewport)}
+            />
+            <CustomIconButton
+              name="CircularArrow"
+              margin="0px"
+              position="fixed"
+              top="40px"
+              marginLeft="calc(50% + 200px)"
+              handleButtonClick={mapDesktopReset}
+              animation={true}
+            />
+          </React.Fragment>
+        )}
 
-        <button
-          onClick={mapDesktopReset}
-          className="buttonRound buttonResetMapDesktop"
-          style={!openInfoPage ? { display: "block" } : { display: "none" }}
-        >
-          <img src={CircularArrow} width="25" alt="reset_icon"></img>
-        </button>
         <div style={{ zIndex: 90 }}>
           {dataFinalMap.map((element) => (
             <Marker

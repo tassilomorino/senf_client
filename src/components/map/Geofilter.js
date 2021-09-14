@@ -240,7 +240,7 @@ const Geofilter = ({
   }
 
   const number = dataFinal.length;
-  const noLocationnumber = dataNoLocation.length;
+  const noLocationNumber = dataNoLocation.length;
 
   const doubleNoLocation =
     dataNoLocation.length > 1 ? (
@@ -321,8 +321,11 @@ const Geofilter = ({
 
             <CustomButton
               text={
-                <Trans i18nKey="show_number_ideas" number={noLocationnumber}>
-                  Show {{ noLocationnumber }} ideas
+                <Trans
+                  i18nKey="show_noLocationNumber_ideas"
+                  noLocationNumber={noLocationNumber}
+                >
+                  Show {{ noLocationNumber }} ideas
                 </Trans>
               }
               backgroundColor="#353535"
@@ -520,6 +523,7 @@ const Geofilter = ({
                 bottom="50px"
                 marginLeft="calc(50% - 20px)"
                 handleButtonClick={handleCloseGeofilter}
+                animation={true}
               />
 
               <div

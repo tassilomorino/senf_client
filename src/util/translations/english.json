@@ -13,6 +13,7 @@
    "monitoring":"Monitoring",
 
    "show_number_ideas":"Show {{ number }} ideas",
+   "show_noLocationNumber_ideas":"Show {{ noLocationNumber }} ideas",
    "showIdeas": "Show ideas",
    "withoutLocation":"Without specified location",
    "withoutLocationShort":"No location",
@@ -55,7 +56,7 @@
    "topics_sportsAndLeisure":"Sports / Leisure",
    "topics_other":"Other",
 
-   "map_filterIdeas":"Show ideas in the map area in the list",
+   "map_filterIdeas":"Show ideas within the map area in the list",
 
    "postScream_newIdea": "New idea",
    "postScream_shareIdea":"Share idea",
