@@ -25,6 +25,7 @@ import { Link } from "react-router-dom";
 
 //DETECT DEVICE
 import { isMobileCustom } from "../../util/customDeviceDetect";
+import { CustomButton } from "../module/CustomButton";
 
 const styles = {
   wrapper: {
@@ -116,6 +117,15 @@ const IntroductionInformation = ({ classes }) => {
     }
   }, []);
 
+  const handleButtonClick = () => {
+    history.push("/");
+  };
+
+  const handleButtonContactClick = () => {
+    var link = "mailto:dein@senf.koeln";
+    window.location.href = link;
+  };
+
   return (
     <div className={classes.wrapper}>
       <div className={classes.nav}>
@@ -190,13 +200,26 @@ const IntroductionInformation = ({ classes }) => {
 
             <img src={Third} className="Third" alt="TopPath" />
 
-            <Link to="/">
-              <button className="ToWishes buttonWide">{t("next")}</button>
-            </Link>
-
-            <a href="mailto:dein@senf.koeln">
-              <div className={classes.KontaktButton}>{t("contact")}</div>
-            </a>
+            <CustomButton
+              text={t("next")}
+              backgroundColor="#353535"
+              textColor="white"
+              position="fixed"
+              bottom="50px"
+              zIndex={99}
+              animation={true}
+              handleButtonClick={handleButtonClick}
+            />
+            <CustomButton
+              text={t("contact")}
+              backgroundColor="white"
+              textColor="#353535"
+              position="absolute"
+              top="1670px"
+              zIndex={1}
+              animation={true}
+              handleButtonClick={handleButtonContactClick}
+            />
 
             <span className="footerStart">
               <Link to="/impressum">
@@ -210,7 +233,7 @@ const IntroductionInformation = ({ classes }) => {
               </Link>
             </span>
             <span className="footercopyStart">{t("infopage_illustrator")}</span>
-          </Grid>{" "}
+          </Grid>
         </Grid>
       </div>
     </div>

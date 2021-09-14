@@ -34,6 +34,7 @@ import Info from "../../images/icons/info.png";
 import CloseIcon from "@material-ui/icons/Close";
 
 import Logo from "../../images/logo.png";
+import { CustomButton } from "../module/CustomButton";
 
 const styles = {
   root: {
@@ -82,6 +83,11 @@ const InlineInformationPage = ({ classes }) => {
   const [open, setOpen] = useState(false);
 
   const { t } = useTranslation();
+
+  const handleButtonContactClick = () => {
+    var link = "mailto:dein@senf.koeln";
+    window.location.href = link;
+  };
 
   return (
     <Fragment>
@@ -195,18 +201,22 @@ const InlineInformationPage = ({ classes }) => {
 
           <img src={Third} className="Third" alt="TopPath" />
 
-          <button
-            className="buttonWide buttonInlineInfoIdeas"
-            onClick={() => setOpen(false)}
-          >
-            {t("showIdeas")}
-          </button>
-
-          <a href="mailto:dein@senf.koeln">
-            <button className="buttonWide buttonInlineInfoContact">
-              {t("contact")}
-            </button>
-          </a>
+          <CustomButton
+            text={t("showIdeas")}
+            backgroundColor="#353535"
+            textColor="white"
+            position="absolute"
+            top="1700px"
+            handleButtonClick={() => setOpen(false)}
+          />
+          <CustomButton
+            text={t("contact")}
+            backgroundColor="white"
+            textColor="#353535"
+            position="absolute"
+            top="1760px"
+            handleButtonClick={handleButtonContactClick}
+          />
 
           <span className="footer">
             <Link to="/impressum">
