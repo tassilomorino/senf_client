@@ -470,14 +470,7 @@ export class home extends Component {
 
   render() {
     const { screams, loading, projects, loadingProjects } = this.props.data;
-
-    const {
-      classes,
-      user: {
-        credentials: { handle },
-        authenticated,
-      },
-    } = this.props;
+    const { classes } = this.props;
 
     const dataFinal = screams.filter(
       ({ Thema, lat, long, status }) =>

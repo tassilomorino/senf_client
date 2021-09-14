@@ -1,8 +1,7 @@
 /** @format */
 
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import PropTypes from "prop-types";
-import _ from "lodash";
 import { useHistory } from "react-router";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
@@ -16,7 +15,6 @@ import SignNote from "../profile/SignNote";
 
 //ICONS
 import AddIcon from "../../images/icons/plus_white.png";
-import Arrow from "../../images/icons/arrow.png";
 
 // REDUX STUFF
 import { useDispatch, useSelector } from "react-redux";
@@ -45,7 +43,6 @@ const styles = {
 
   paper: {
     boxShadow: "none",
-    overflow: "hidden",
     padding: "0",
     top: "0",
     overflow: "hidden",

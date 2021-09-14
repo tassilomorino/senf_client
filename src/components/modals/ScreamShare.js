@@ -1,21 +1,15 @@
 /** @format */
 
 import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
-import MyButton from "../../util/MyButton";
 // MUI Stuff
 import Dialog from "@material-ui/core/Dialog";
 // Icons
-import CloseIcon from "@material-ui/icons/Close";
 
 // Redux stuff
 import { connect } from "react-redux";
 
 import Poster from "../../images/poster.png";
-
-//ANIMATION
-import Share from "../../images/icons/share.png";
 
 //SHARE
 import {
@@ -30,11 +24,8 @@ import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 import html2canvas from "html2canvas";
 import Swipe from "react-easy-swipe";
 
-//COOKIES
-import Cookies from "universal-cookie";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 import { CustomIconButton } from "../module/CustomButton";
-const cookies = new Cookies();
 
 const styles = {
   root: {

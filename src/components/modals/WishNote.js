@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import MyButton from "../../util/MyButton";
 
 // MUI Stuff
-import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import Celebrate from "../../images/celebrateImage.png";
 
