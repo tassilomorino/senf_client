@@ -29,11 +29,10 @@ import { isMobileCustom } from "../../util/customDeviceDetect";
 
 //Icons
 import Info from "../../images/icons/info.png";
-import CloseIcon from "@material-ui/icons/Close";
 
 import DialogContent from "@material-ui/core/DialogContent";
 import Slide from "@material-ui/core/Slide";
-import { CustomButton } from "../module/CustomButton";
+import { CustomButton, CustomIconButton } from "../module/CustomButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -103,14 +102,20 @@ const InlineInformationPageDesktop = () => {
                 handleButtonClick={handleClose}
               />
             </div> */}
+            <CustomIconButton
+              name="Close"
+              position="fixed"
+              marginLeft="-100px"
+              handleButtonClick={handleClose}
+            ></CustomIconButton>
 
-            <button
+            {/* <button
               onClick={handleClose}
               className="buttonRound buttonClose"
               style={{ position: "fixed" }}
             >
               <CloseIcon />
-            </button>
+            </button> */}
 
             <DialogContent style={{}}>
               <img className="Gib" src={Headline} width="100px"></img>

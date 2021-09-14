@@ -3,6 +3,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import styled, { css, keyframes } from "styled-components";
+import CloseIcon from "../../images/icons/close.png";
+import ArrowLeftIcon from "../../images/icons/arrow-left.png";
 
 const enterAnimation = keyframes`
     0% {
@@ -80,5 +82,48 @@ export const CustomButton = ({
     >
       {text}
     </WideButton>
+  );
+};
+
+const Icons = {
+  Close: CloseIcon,
+  ArrowLeft: ArrowLeftIcon,
+};
+
+const IconButton = styled.button`
+  width: 50px;
+  height: 50px;
+  color: #353535;
+  border-radius: 100%;
+  box-shadow: rgb(38, 57, 77, 0.7) 0px 20px 30px -15px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  position: ${(props) => props.position};
+  margin-left: ${(props) => props.marginLeft};
+`;
+
+export const CustomIconButton = ({
+  name,
+  position,
+  marginLeft,
+  top,
+  zIndex,
+  handleButtonClick,
+}) => {
+  const Icon = Icons[name];
+  return (
+    <IconButton
+      onClick={handleButtonClick}
+      position={position}
+      top={top}
+      marginLeft={marginLeft}
+      zIndex={zIndex}
+    >
+      <img src={Icon} width="50%" />
+    </IconButton>
   );
 };
