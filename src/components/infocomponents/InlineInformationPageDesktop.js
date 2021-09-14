@@ -92,30 +92,12 @@ const InlineInformationPageDesktop = () => {
               },
             }}
           >
-            {/* <div style={{ position: "fixed", bottom: 0, left: 0 }}>
-              <CustomButton
-                text={t("showIdeas")}
-                backgroundColor="#353535"
-                textColor="white"
-                position="absolute"
-                bottom="50px"
-                handleButtonClick={handleClose}
-              />
-            </div> */}
             <CustomIconButton
               name="Close"
               position="fixed"
               marginLeft="-100px"
               handleButtonClick={handleClose}
             ></CustomIconButton>
-
-            {/* <button
-              onClick={handleClose}
-              className="buttonRound buttonClose"
-              style={{ position: "fixed" }}
-            >
-              <CloseIcon />
-            </button> */}
 
             <DialogContent style={{}}>
               <img className="Gib" src={Headline} width="100px"></img>

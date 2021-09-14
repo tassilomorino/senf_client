@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import styled, { css, keyframes } from "styled-components";
 import CloseIcon from "../../images/icons/close.png";
 import ArrowLeftIcon from "../../images/icons/arrow-left.png";
-
+import CircularArrowIcon from "../../images/icons/circular-arrow.png";
 const enterAnimation = keyframes`
     0% {
       opacity: 0;
@@ -42,12 +42,14 @@ const WideButton = styled.button`
   justify-content: center;
   align-items: center;
   transform: translateX(-50%);
-  margin-left: 50%;
+
+  margin-left: ${(props) => (props.marginLeft ? props.marginLeft : "50%")};
 
   background-color: ${(props) => props.backgroundColor};
   color: ${(props) => props.textColor};
   bottom: ${(props) => props.bottom && props.bottom};
   top: ${(props) => props.top && props.top};
+
   position: ${(props) => props.position};
   z-index: ${(props) => props.zIndex};
   animation: ${(props) =>
@@ -64,11 +66,11 @@ export const CustomButton = ({
   position,
   bottom,
   top,
+  marginLeft,
   zIndex,
   animation,
   handleButtonClick,
 }) => {
-  const { t } = useTranslation();
   return (
     <WideButton
       onClick={handleButtonClick}
@@ -77,6 +79,7 @@ export const CustomButton = ({
       position={position}
       bottom={bottom}
       top={top}
+      marginLeft={marginLeft}
       zIndex={zIndex}
       animation={animation}
     >
@@ -88,7 +91,30 @@ export const CustomButton = ({
 const Icons = {
   Close: CloseIcon,
   ArrowLeft: ArrowLeftIcon,
+  CircularArrow: CircularArrowIcon,
 };
+
+const enterAnimationRound = keyframes`
+    0% {
+      opacity: 0;
+      transform: scale(0.7) 
+    }
+  
+    80% {
+      opacity: 0;
+      transform: scale(0.7)
+    }
+  
+    90% {
+      opacity: 1;
+      transform: scale(1.1) 
+    }
+  
+    100% {
+      opacity: 1;
+      transform: scale(1)
+    }
+    `;
 
 const IconButton = styled.button`
   width: 50px;
@@ -103,25 +129,36 @@ const IconButton = styled.button`
   text-align: center;
 
   position: ${(props) => props.position};
+  bottom: ${(props) => props.margin && props.bottom};
+  margin: ${(props) => props.margin && props.margin};
   margin-left: ${(props) => props.marginLeft};
+  animation: ${(props) =>
+    props.animation &&
+    css`
+      ${enterAnimationRound} .5s
+    `};
 `;
 
 export const CustomIconButton = ({
   name,
   position,
   marginLeft,
-  top,
+  margin,
+  bottom,
   zIndex,
   handleButtonClick,
+  animation,
 }) => {
   const Icon = Icons[name];
   return (
     <IconButton
       onClick={handleButtonClick}
       position={position}
-      top={top}
       marginLeft={marginLeft}
+      bottom={bottom}
+      margin={margin}
       zIndex={zIndex}
+      animation={animation}
     >
       <img src={Icon} width="50%" />
     </IconButton>

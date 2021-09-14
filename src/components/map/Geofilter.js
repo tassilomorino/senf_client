@@ -21,6 +21,8 @@ import { isMobileCustom } from "../../util/customDeviceDetect";
 //COOKIES
 import Cookies from "universal-cookie";
 import TopicFilter from "../layout/TopicFilter";
+import { CustomButton, CustomIconButton } from "../module/CustomButton";
+import { Trans } from "react-i18next";
 const cookies = new Cookies();
 
 const styles = {
@@ -326,6 +328,8 @@ const Geofilter = ({
       </Marker>
     ) : null;
 
+  const number = dataFinal.length;
+
   return isMobileCustom ? (
     <div>
       <div
@@ -398,23 +402,15 @@ const Geofilter = ({
           zoom={openGeofilter ? viewport.zoom : viewport.zoom - 2.5}
           onViewportChange={_onViewportChange}
         >
-          <div
-            className="dialogNavigation"
-            style={
-              openGeofilter
-                ? { display: "block", zIndex: 999 }
-                : { display: "none" }
-            }
-          >
-            <button onClick={handleCloseGeofilter} className="buttonRound">
-              <img
-                src={Arrow}
-                width="20"
-                alt="backArrow"
-                style={{ transform: "rotate(90deg)" }}
-              />
-            </button>
-          </div>
+          {openGeofilter && (
+            <CustomIconButton
+              name="ArrowLeft"
+              position="fixed"
+              margin="10px"
+              handleButtonClick={handleCloseGeofilter}
+            />
+          )}
+
           <Source id="maine" type="geojson" data={data} />
           <Layer
             id="maine"
@@ -505,20 +501,47 @@ const Geofilter = ({
               ))}
             </div>
           </div>
-          <button
-            onClick={handleCloseGeofilter}
-            className="buttonWide buttonGeofilter"
-            style={
-              openGeofilter
-                ? { display: "block", zIndex: 999 }
-                : { display: "none" }
-            }
-          >
-            {" "}
-            {dataFinal.length} Ideen anzeigen
-          </button>
 
-          <button
+          {openGeofilter && (
+            <React.Fragment>
+              <CustomButton
+                text={
+                  <Trans i18nKey="show_number_ideas" number={number}>
+                    Show {{ number }} ideas
+                  </Trans>
+                }
+                backgroundColor="white"
+                textColor="#353535"
+                position="fixed"
+                bottom="50px"
+                marginLeft="calc(50% - 20px)"
+                handleButtonClick={handleCloseGeofilter}
+              />
+
+              <div
+                style={
+                  (latitude1 < 50.95) |
+                  (latitude2 > 50.82) |
+                  (longitude2 > 6.812) |
+                  (longitude3 < 7.07)
+                    ? {}
+                    : { opacity: 0.7, pointerEvents: "none" }
+                }
+              >
+                <CustomIconButton
+                  name="CircularArrow"
+                  margin="0px"
+                  position="fixed"
+                  bottom="50px"
+                  marginLeft="calc(50% + 80px)"
+                  handleButtonClick={handleResetGeofilter}
+                  animation={true}
+                />
+              </div>
+            </React.Fragment>
+          )}
+
+          {/* <button
             onClick={handleResetGeofilter}
             className="buttonRound buttonResetGeofilter"
             style={
@@ -534,7 +557,7 @@ const Geofilter = ({
             }
           >
             <img src={CircularArrow} width="25" alt="reset_icon"></img>
-          </button>
+          </button> */}
         </MapGL>
       </div>
     </div>

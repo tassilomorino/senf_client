@@ -12,6 +12,7 @@
    "details":"Details",
    "monitoring":"Monitoring",
 
+   "show_number_ideas":"Show {{ number }} ideas",
    "showIdeas": "Show ideas",
    "withoutLocation":"Without specified location",
    "withoutLocationShort":"No location",

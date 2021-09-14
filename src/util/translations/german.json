@@ -11,7 +11,8 @@
   "to": "An:",
   "details":"Details",
   "monitoring":"Monitoring",
-  
+
+  "show_number_ideas":"{{number}} Ideen anzeigen",
   "showIdeas": "Ideen anzeigen",
   "withoutLocation": "Ohne Ortsangabe",
   "withoutLocationShort": "Ohne Ort",
