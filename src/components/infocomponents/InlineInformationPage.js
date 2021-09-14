@@ -84,6 +84,11 @@ const InlineInformationPage = ({ classes }) => {
 
   const { t } = useTranslation();
 
+  const handleButtonContactClick = () => {
+    var link = "mailto:dein@senf.koeln";
+    window.location.href = link;
+  };
+
   return (
     <Fragment>
       <div onClick={() => setOpen(true)}>
@@ -204,12 +209,14 @@ const InlineInformationPage = ({ classes }) => {
             top="1700px"
             handleButtonClick={() => setOpen(false)}
           />
-
-          <a href="mailto:dein@senf.koeln">
-            <button className="buttonWide buttonInlineInfoContact">
-              {t("contact")}
-            </button>
-          </a>
+          <CustomButton
+            text={t("contact")}
+            backgroundColor="white"
+            textColor="#353535"
+            position="absolute"
+            top="1760px"
+            handleButtonClick={handleButtonContactClick}
+          />
 
           <span className="footer">
             <Link to="/impressum">

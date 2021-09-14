@@ -35,7 +35,7 @@ const WideButton = styled.button`
   box-shadow: rgb(38, 57, 77, 0.7) 0px 20px 30px -15px;
   padding-left: 30px;
   padding-right: 30px;
-  min-width: 150px;
+  min-width: 180px;
   display: flex;
   justify-content: center;
   align-items: center;

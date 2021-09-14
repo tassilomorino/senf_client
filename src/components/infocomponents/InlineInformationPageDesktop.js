@@ -33,6 +33,7 @@ import CloseIcon from "@material-ui/icons/Close";
 
 import DialogContent from "@material-ui/core/DialogContent";
 import Slide from "@material-ui/core/Slide";
+import { CustomButton } from "../module/CustomButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -56,7 +57,10 @@ const InlineInformationPageDesktop = () => {
   const handleCookies = (cookie_settings) => {
     dispatch(setCookies(cookie_settings));
   };
-
+  const handleButtonContactClick = () => {
+    var link = "mailto:dein@senf.koeln";
+    window.location.href = link;
+  };
   return (
     !isMobileCustom && (
       <Fragment>
@@ -89,6 +93,17 @@ const InlineInformationPageDesktop = () => {
               },
             }}
           >
+            {/* <div style={{ position: "fixed", bottom: 0, left: 0 }}>
+              <CustomButton
+                text={t("showIdeas")}
+                backgroundColor="#353535"
+                textColor="white"
+                position="absolute"
+                bottom="50px"
+                handleButtonClick={handleClose}
+              />
+            </div> */}
+
             <button
               onClick={handleClose}
               className="buttonRound buttonClose"
@@ -140,18 +155,22 @@ const InlineInformationPageDesktop = () => {
                   {t("infopage_block3_subtitle")}
                 </span>
 
-                <button
-                  className="buttonWide buttonInlineInfoIdeas"
-                  onClick={handleClose}
-                >
-                  {t("showIdeas")}
-                </button>
-
-                <a href="mailto:dein@senf.koeln">
-                  <button className="buttonWide buttonInlineInfoContact">
-                    {t("contact")}
-                  </button>
-                </a>
+                <CustomButton
+                  text={t("showIdeas")}
+                  backgroundColor="#353535"
+                  textColor="white"
+                  position="absolute"
+                  top="2600px"
+                  handleButtonClick={handleClose}
+                />
+                <CustomButton
+                  text={t("contact")}
+                  backgroundColor="white"
+                  textColor="#353535"
+                  position="absolute"
+                  top="2660px"
+                  handleButtonClick={handleButtonContactClick}
+                />
 
                 <span className="footer">
                   <Link to="/impressum">
