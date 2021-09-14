@@ -338,25 +338,23 @@ const Geofilter = ({
 
   return isMobileCustom ? (
     <div>
-      <div
-        onClick={handleOpenGeofilter}
-        style={
-          openGeofilter
-            ? { display: "none" }
-            : {
-                display: "block",
-                position: "absolute",
-                top: "5px",
-                marginTop: "10px",
-                left: "calc(97.5vw - 137px)",
-                zIndex: 10,
-                width: "137px",
-                height: "137px",
-                borderRadius: "20px",
-                backgroundColor: "rgb(0,0,0,0)",
-              }
-        }
-      ></div>
+      {!openGeofilter && (
+        <div
+          onClick={handleOpenGeofilter}
+          style={{
+            display: "block",
+            position: "absolute",
+            top: "5px",
+            marginTop: "10px",
+            left: "calc(97.5vw - 137px)",
+            zIndex: 10,
+            width: "137px",
+            height: "137px",
+            borderRadius: "20px",
+            backgroundColor: "rgb(0,0,0,0)",
+          }}
+        ></div>
+      )}
 
       <div
         style={
