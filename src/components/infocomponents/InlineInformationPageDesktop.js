@@ -231,12 +231,14 @@ const InlineInformationPageDesktop = () => {
                 </Trans>
               </div>
 
-              <button
-                className="buttonWide buttonCookiesDesktop"
-                onClick={() => handleCookies("all")}
-              >
-                {t("accept")}
-              </button>
+              <CustomButton
+                text={t("accept")}
+                backgroundColor="#353535"
+                textColor="white"
+                position="relative"
+                top="30px"
+                handleButtonClick={() => handleCookies("all")}
+              />
             </DialogContent>
           </Dialog>
         ) : null}
