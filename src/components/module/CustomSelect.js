@@ -62,19 +62,14 @@ const ListItem = styled("li")`
   }
 `;
 
-const SortingSelect = ({ handleDropdown }) => {
-  const { t } = useTranslation();
+const CustomSelect = ({ initialValue, options, handleDropdown }) => {
   const [open, setOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(t("newest"));
+  const [selectedOption, setSelectedOption] = useState(initialValue);
   const outerRef = useRef();
 
-  const options = [
-    { name: "newest", label: t("newest") },
-    { name: "hottest", label: t("hottest") },
-    { name: "longtext", label: "really long long text" },
-  ];
+  const handleToggle = (event) => {
+    event.preventDefault();
 
-  const handleToggle = () => {
     setOpen(!open);
   };
 
@@ -127,4 +122,4 @@ const SortingSelect = ({ handleDropdown }) => {
   );
 };
 
-export default SortingSelect;
+export default CustomSelect;

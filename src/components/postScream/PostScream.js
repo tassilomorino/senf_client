@@ -230,11 +230,11 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
     setAllMainStates({ ...allMainStates, errors: {} });
   };
 
-  const handleChange = (event) => {
-    event.preventDefault();
+  const handleChange = (value) => {
+    // event.preventDefault();
     setAllValues({
       ...allValues,
-      [event.target.name]: event.target.value,
+      topic: value,
     });
   };
 

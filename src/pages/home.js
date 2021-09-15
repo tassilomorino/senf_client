@@ -56,7 +56,7 @@ export class home extends Component {
       longitude2: 6.712,
       longitude3: 7.17,
       screamIdParam: null,
-      dropdown: "10",
+      dropdown: "newest",
       selectedId: "",
       showTitles: false,
       cookiesSetDesktop: false,
@@ -215,9 +215,9 @@ export class home extends Component {
     }
   };
 
-  handleDropdown = (event) => {
+  handleDropdown = (value) => {
     this.setState({
-      [event.target.name]: event.target.value,
+      dropdown: value,
     });
   };
 

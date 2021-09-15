@@ -1287,6 +1287,8 @@ input:focus {
   text-align: left;
   font-family: "Playfair Display", serif;
   animation: enteranimation .5s;
+
+  z-index:99
 }
 
 .homeHeader {
@@ -2308,6 +2310,7 @@ input:focus {
   text-align: left;
   font-family: "Playfair Display", serif;
   animation: enteranimation 1.5s;
+  z-index: 99;
 }
 
 

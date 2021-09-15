@@ -258,7 +258,7 @@ class Account extends Component {
 
     showDemand: false,
 
-    dropdown: "10",
+    dropdown: "newest",
     selectedId: "",
     showTitles: false,
     cookiesSetDesktop: false,
@@ -364,9 +364,9 @@ class Account extends Component {
     });
   };
 
-  handleDropdown = (event) => {
+  handleDropdown = (value) => {
     this.setState({
-      [event.target.name]: event.target.value,
+      dropdown: value,
     });
   };
 
