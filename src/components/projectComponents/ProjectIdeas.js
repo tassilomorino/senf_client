@@ -45,7 +45,7 @@ const ProjectIdeas = ({
   createGeofilterCircle,
   dataNoLocationHandle,
   selectedId,
-  noLocation,
+  handleNoLocation,
 
   loadingProjects,
   geoData,
@@ -136,7 +136,7 @@ const ProjectIdeas = ({
         _onViewportChange={_onViewportChange}
         onClick={onClick}
         handleRevert={handleRevert}
-        noLocation={noLocation}
+        handleNoLocation={handleNoLocation}
         handleOpenGeofilter={handleOpenGeofilter}
         handleCloseGeofilter={handleCloseGeofilter}
         handleResetGeofilter={handleResetGeofilter}
@@ -145,7 +145,6 @@ const ProjectIdeas = ({
         createGeofilterCircle={createGeofilterCircle}
         dataNoLocationHandle={dataNoLocationHandle}
         selectedId={selectedId}
-        noLocation={noLocation}
         loadingProjects={loadingProjects}
         geoData={geoData}
         handleTopicSelector={handleTopicSelector}

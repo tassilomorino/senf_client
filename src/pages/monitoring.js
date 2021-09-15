@@ -332,13 +332,12 @@ export class monitoring extends Component {
     this.props.closeScream();
   };
 
-  noLocation = () => {
+  handleNoLocation = () => {
     this.setState({
       latitude1: 50.93892,
       latitude2: 50.93864,
       longitude2: 6.9586,
       longitude3: 6.9588,
-
       openGeofilter: false,
       open: false,
     });

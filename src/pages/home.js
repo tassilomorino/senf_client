@@ -368,7 +368,7 @@ export class home extends Component {
     this.setState({ cookiesSetDesktop: true });
   };
 
-  noLocation = () => {
+  handleNoLocation = () => {
     this.setState({
       latitude1: 50.93892,
       latitude2: 50.93864,
@@ -470,14 +470,7 @@ export class home extends Component {
 
   render() {
     const { screams, loading, projects, loadingProjects } = this.props.data;
-
-    const {
-      classes,
-      user: {
-        credentials: { handle },
-        authenticated,
-      },
-    } = this.props;
+    const { classes } = this.props;
 
     const dataFinal = screams.filter(
       ({ Thema, lat, long, status }) =>
@@ -547,7 +540,7 @@ export class home extends Component {
           dataFinal={dataFinalMap}
           id="mapDesktop"
           style={{ zIndex: 9999 }}
-          noLocation={this.noLocation}
+          handleNoLocation={this.handleNoLocation}
           dataNoLocationHandle={this.dataNoLocationHandle}
           _onViewportChangeDesktop={this._onViewportChangeDesktop}
           mapDesktopShowResults={this.mapDesktopShowResults}
@@ -582,7 +575,7 @@ export class home extends Component {
               longitude3={this.state.longitude3}
               longitude4={this.state.longitude4}
               dataNoLocationHandle={this.dataNoLocationHandle}
-              noLocation={this.noLocation}
+              handleNoLocation={this.handleNoLocation}
               showDemand={this.state.showDemand}
               handleClick={this.state.handleClick}
               handleDropdown={this.handleDropdown}

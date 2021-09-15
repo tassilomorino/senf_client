@@ -58,10 +58,9 @@ import ScreamShare from "../modals/ScreamShare";
 
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
-//COOKIES
-import Cookies from "universal-cookie";
 import AdminMenuScream from "../modals/menuScream/AdminMenuScream";
-const cookies = new Cookies();
+import { CustomButton, CustomIconButton } from "../module/CustomButton";
+import setColorByTopic from "../../data/setColorByTopic";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -461,21 +460,6 @@ class ScreamDialog extends Component {
         ? convertedLinkRaw[0].href
         : null;
 
-    const colorNew =
-      Thema === "Rad"
-        ? "#929df6"
-        : Thema === "Verkehr"
-        ? "#91dff4"
-        : Thema === "Umwelt und Grün"
-        ? "#8dd9b8"
-        : Thema === "Sport / Freizeit"
-        ? "#f6c095"
-        : Thema === "Inklusion / Soziales"
-        ? "#e8907e"
-        : Thema === "Versorgung"
-        ? "#bd98f6"
-        : "#f9db95";
-
     const map = (
       <div className="mapWrapperDialog">
         <MapGL
@@ -509,23 +493,10 @@ class ScreamDialog extends Component {
                 marginTop: -(7 + likeCount) / 2,
                 borderRadius: "100%",
                 border: "1px white solid",
-                backgroundColor: colorNew,
+                backgroundColor: setColorByTopic(Thema),
                 opacity: "1",
               }}
-            >
-              {/* <div
-                  style={{
-                    width: "4px",
-                    zIndex: 1000,
-                    marginLeft: -1.6 + (7 + likeCount) / 2,
-                    height: "4px",
-                    marginTop: -2.25 + (7 + likeCount) / 2,
-                    borderRadius: "100%",
-                    backgroundColor: "#414345",
-                    opacity: "1",
-                  }}
-                /> */}
-            </div>
+            ></div>
             <div
               style={{
                 marginLeft: 3 / 2,
@@ -544,49 +515,6 @@ class ScreamDialog extends Component {
         </MapGL>
         <div className="dialoggradient" />
       </div>
-    );
-
-    const anmeldeCard = !authenticated ? (
-      <div className={classes.anmeldeText}>
-        <button className="buttonWide buttonDialogSign">
-          <SignNote />
-          Melde dich an
-        </button>
-      </div>
-    ) : null;
-
-    const deleteButton =
-      authenticated && (isAdmin === true || isModerator === true) ? (
-        <AdminMenuScream
-          screamId={screamId}
-          userHandle={userHandle}
-          scream={this.props.scream}
-          isModerator={isModerator}
-          isAdmin={isAdmin}
-        />
-      ) : authenticated && userHandle === handle ? (
-        <MenuScream
-          screamId={screamId}
-          userHandle={userHandle}
-          scream={this.props.scream}
-        />
-      ) : null;
-
-    const reportButton = !authenticated ? (
-      <ReportScream screamId={screamId} userHandle={userHandle} />
-    ) : authenticated & (userHandle !== handle) ? (
-      <ReportScream screamId={screamId} userHandle={userHandle} />
-    ) : null;
-
-    const commentButton = !authenticated ? (
-      <MyButton>
-        <SignNote />
-        <img src={ChatBorder} width="100%" alt="ChatIcon" />
-      </MyButton>
-    ) : (
-      <MyButton onClick={() => this.handleClick()}>
-        <img src={ChatBorder} width="90%" alt="ChatIcon" />
-      </MyButton>
     );
 
     const projectsDataFinal = [];
@@ -609,47 +537,6 @@ class ScreamDialog extends Component {
         {projectsDataFinal}
       </button>
     ) : null;
-
-    const infoButtons =
-      weblink || contact ? (
-        <>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              width: "100%",
-              flexWrap: "wrap",
-            }}
-          >
-            {weblink ? (
-              <a href={convertedLink} rel="noopener noreferrer" target="_blank">
-                <button className="buttonInline">
-                  {weblinkTitle}
-                  <img
-                    src={WeblinkIcon}
-                    style={{ paddingLeft: "9px", marginTop: "-2px" }}
-                    width="15"
-                    alt="WeblinkIcon"
-                  />
-                </button>
-              </a>
-            ) : null}
-            {contact ? (
-              <a href={"mailto:" + contact + "?subject=" + escape(title)}>
-                <button className="buttonInline">
-                  {contactTitle}{" "}
-                  <img
-                    src={contactIcon}
-                    style={{ paddingLeft: "9px" }}
-                    width="22"
-                    alt="WeblinkIcon"
-                  />
-                </button>
-              </a>
-            ) : null}
-          </div>
-        </>
-      ) : null;
 
     let selectedDates = [];
     const selectedUnixArray = selectedUnix;
@@ -682,15 +569,6 @@ class ScreamDialog extends Component {
       }
     }
 
-    const selectedDatesComponent =
-      selectedUnixArray !== undefined && selectedUnixArray !== null ? (
-        <div className={classes.selectedDatesOuter}>
-          <EventIcon className={classes.locationIcon} />
-
-          <div className={classes.locationHeader}> {selectedDates} </div>
-        </div>
-      ) : null;
-
     const dialogMarkup = loading ? (
       <div className="wrapperScreamDialog">
         <div className="spinnerDiv">
@@ -702,14 +580,11 @@ class ScreamDialog extends Component {
         <Grid container spacing={0}>
           <Grid item sm={12} style={{ width: "100%" }}>
             <div className="dialogNavigation">
-              <button onClick={this.handleClose} className="buttonRound">
-                <img
-                  src={Arrow}
-                  width="20"
-                  alt="backArrow"
-                  style={{ transform: "rotate(90deg)" }}
-                />
-              </button>
+              <CustomIconButton
+                name="ArrowLeft"
+                position="fixed"
+                handleButtonClick={this.handleClose}
+              />
 
               <ScreamShare
                 screamId={screamId}
@@ -723,8 +598,26 @@ class ScreamDialog extends Component {
               />
 
               <button className="buttonRound buttonEdit">
-                {reportButton}
-                {deleteButton}
+                {!authenticated ? (
+                  <ReportScream screamId={screamId} userHandle={userHandle} />
+                ) : authenticated & (userHandle !== handle) ? (
+                  <ReportScream screamId={screamId} userHandle={userHandle} />
+                ) : null}
+                {authenticated && (isAdmin === true || isModerator === true) ? (
+                  <AdminMenuScream
+                    screamId={screamId}
+                    userHandle={userHandle}
+                    scream={this.props.scream}
+                    isModerator={isModerator}
+                    isAdmin={isAdmin}
+                  />
+                ) : authenticated && userHandle === handle ? (
+                  <MenuScream
+                    screamId={screamId}
+                    userHandle={userHandle}
+                    scream={this.props.scream}
+                  />
+                ) : null}
 
                 <img src={MenuIcon} width="25" alt="editIcon" />
               </button>
@@ -745,13 +638,6 @@ class ScreamDialog extends Component {
               style={project ? { paddingBottom: "50px" } : {}}
             >
               <div className={classes.content}>
-                {/* <div className={classes.locationOuter}>
-                  <LocationOn className={classes.locationIcon} />{" "}
-                  <div className={classes.locationHeader}>
-                    {" "}
-                    {locationHeader}{" "}
-                  </div>
-                </div> */}
                 <div
                   style={{
                     width: "15px",
@@ -760,7 +646,7 @@ class ScreamDialog extends Component {
                     margintop: "5px",
                     borderRadius: "100%",
                     border: "0.5px white solid",
-                    backgroundColor: colorNew,
+                    backgroundColor: setColorByTopic(Thema),
                     opacity: "1",
                     float: "left",
                   }}
@@ -778,12 +664,33 @@ class ScreamDialog extends Component {
                   <div className={classes.engagement}>{likeCount} </div>
                 </div>
                 <div className={classes.commentButtonWrapper}>
-                  <div className={classes.commentButton}>{commentButton}</div>
+                  <div className={classes.commentButton}>
+                    {!authenticated ? (
+                      <MyButton>
+                        <SignNote />
+                        <img src={ChatBorder} width="100%" alt="ChatIcon" />
+                      </MyButton>
+                    ) : (
+                      <MyButton onClick={() => this.handleClick()}>
+                        <img src={ChatBorder} width="90%" alt="ChatIcon" />
+                      </MyButton>
+                    )}
+                  </div>
                   <div className={classes.engagement}>{commentCount}</div>
                 </div>
                 <div className={classes.horrizontalLine}></div>
                 <div className={classes.header}>
-                  {selectedDatesComponent}
+                  {selectedUnixArray !== undefined &&
+                    selectedUnixArray !== null && (
+                      <div className={classes.selectedDatesOuter}>
+                        <EventIcon className={classes.locationIcon} />
+
+                        <div className={classes.locationHeader}>
+                          {" "}
+                          {selectedDates}{" "}
+                        </div>
+                      </div>
+                    )}
                   <div className={classes.locationOuter}>
                     <LocationOn className={classes.locationIcon} />{" "}
                     <div className={classes.locationHeader}>
@@ -813,7 +720,56 @@ class ScreamDialog extends Component {
                     </Typography>
                   </div>
 
-                  {infoButtons}
+                  {(weblink || contact) && (
+                    <>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          width: "100%",
+                          flexWrap: "wrap",
+                        }}
+                      >
+                        {weblink ? (
+                          <a
+                            href={convertedLink}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                          >
+                            <button className="buttonInline">
+                              {weblinkTitle}
+                              <img
+                                src={WeblinkIcon}
+                                style={{
+                                  paddingLeft: "9px",
+                                  marginTop: "-2px",
+                                }}
+                                width="15"
+                                alt="WeblinkIcon"
+                              />
+                            </button>
+                          </a>
+                        ) : null}
+                        {contact ? (
+                          <a
+                            href={
+                              "mailto:" + contact + "?subject=" + escape(title)
+                            }
+                          >
+                            <button className="buttonInline">
+                              {contactTitle}{" "}
+                              <img
+                                src={contactIcon}
+                                style={{ paddingLeft: "9px" }}
+                                width="22"
+                                alt="WeblinkIcon"
+                              />
+                            </button>
+                          </a>
+                        ) : null}
+                      </div>
+                    </>
+                  )}
 
                   {projectTitle}
                 </div>
@@ -831,7 +787,19 @@ class ScreamDialog extends Component {
                 hier an!
               </span>
 
-              {anmeldeCard}
+              {!authenticated && (
+                <div className={classes.anmeldeText}>
+                  <SignNote />
+                  <CustomButton
+                    text="Melde dich an"
+                    backgroundColor="#353535"
+                    textColor="white"
+                    position="relative"
+                    top="10px"
+                    zIndex="0"
+                  />
+                </div>
+              )}
             </div>
           </Card>
 
@@ -841,37 +809,43 @@ class ScreamDialog extends Component {
       </div>
     );
 
-    const dialog = isMobileCustom ? (
-      <Dialog
-        open={this.props.UI.openScream}
-        onClose={this.handleClose}
-        TransitionComponent={Transition}
-        fullScreen
-      >
-        <CommentForm screamId={screamId} clicked={this.state.clicked} />
+    return (
+      <Fragment>
+        {isMobileCustom ? (
+          <Dialog
+            open={this.props.UI.openScream}
+            onClose={this.handleClose}
+            TransitionComponent={Transition}
+            fullScreen
+          >
+            <CommentForm screamId={screamId} clicked={this.state.clicked} />
 
-        <Swipe onSwipeMove={this.onSwipeMove.bind(this)}>{dialogMarkup}</Swipe>
-      </Dialog>
-    ) : (
-      <Dialog
-        open={this.props.UI.openScream}
-        onClose={this.handleClose}
-        BackdropProps={{ classes: { root: classes.root } }}
-        PaperProps={{ classes: { root: classes.paper } }}
-        TransitionComponent={Transition}
-        fullScreen
-        hideBackdrop // Disable the backdrop color/image
-        disableEnforceFocus // Let the user focus on elements outside the dialog
-        style={this.state.dialogStyle} // This was the key point, reset the position of the dialog, so the user can interact with other elements
-        disableBackdropClick // Remove the backdrop click (just to be sure)
-      >
-        <CommentForm screamId={screamId} clicked={this.state.clicked} />
+            <Swipe onSwipeMove={this.onSwipeMove.bind(this)}>
+              {dialogMarkup}
+            </Swipe>
+          </Dialog>
+        ) : (
+          <Dialog
+            open={this.props.UI.openScream}
+            onClose={this.handleClose}
+            BackdropProps={{ classes: { root: classes.root } }}
+            PaperProps={{ classes: { root: classes.paper } }}
+            TransitionComponent={Transition}
+            fullScreen
+            hideBackdrop // Disable the backdrop color/image
+            disableEnforceFocus // Let the user focus on elements outside the dialog
+            style={this.state.dialogStyle} // This was the key point, reset the position of the dialog, so the user can interact with other elements
+            disableBackdropClick // Remove the backdrop click (just to be sure)
+          >
+            <CommentForm screamId={screamId} clicked={this.state.clicked} />
 
-        <Swipe onSwipeMove={this.onSwipeMove.bind(this)}>{dialogMarkup}</Swipe>
-      </Dialog>
+            <Swipe onSwipeMove={this.onSwipeMove.bind(this)}>
+              {dialogMarkup}
+            </Swipe>
+          </Dialog>
+        )}
+      </Fragment>
     );
-
-    return <Fragment>{dialog}</Fragment>;
   }
 }
 

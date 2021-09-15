@@ -29,11 +29,10 @@ import { isMobileCustom } from "../../util/customDeviceDetect";
 
 //Icons
 import Info from "../../images/icons/info.png";
-import CloseIcon from "@material-ui/icons/Close";
 
 import DialogContent from "@material-ui/core/DialogContent";
 import Slide from "@material-ui/core/Slide";
-import { CustomButton } from "../module/CustomButton";
+import { CustomButton, CustomIconButton } from "../module/CustomButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -93,24 +92,12 @@ const InlineInformationPageDesktop = () => {
               },
             }}
           >
-            {/* <div style={{ position: "fixed", bottom: 0, left: 0 }}>
-              <CustomButton
-                text={t("showIdeas")}
-                backgroundColor="#353535"
-                textColor="white"
-                position="absolute"
-                bottom="50px"
-                handleButtonClick={handleClose}
-              />
-            </div> */}
-
-            <button
-              onClick={handleClose}
-              className="buttonRound buttonClose"
-              style={{ position: "fixed" }}
-            >
-              <CloseIcon />
-            </button>
+            <CustomIconButton
+              name="Close"
+              position="fixed"
+              marginLeft="-100px"
+              handleButtonClick={handleClose}
+            ></CustomIconButton>
 
             <DialogContent style={{}}>
               <img className="Gib" src={Headline} width="100px"></img>
@@ -231,12 +218,14 @@ const InlineInformationPageDesktop = () => {
                 </Trans>
               </div>
 
-              <button
-                className="buttonWide buttonCookiesDesktop"
-                onClick={() => handleCookies("all")}
-              >
-                {t("accept")}
-              </button>
+              <CustomButton
+                text={t("accept")}
+                backgroundColor="#353535"
+                textColor="white"
+                position="relative"
+                top="30px"
+                handleButtonClick={() => handleCookies("all")}
+              />
             </DialogContent>
           </Dialog>
         ) : null}

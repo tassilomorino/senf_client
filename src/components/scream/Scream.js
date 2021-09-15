@@ -21,11 +21,11 @@ import CardContent from "@material-ui/core/CardContent";
 import ChatBorder from "../../images/icons/chat.png";
 
 // Redux
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { openScream } from "../../redux/actions/screamActions";
-
 import { openProject } from "../../redux/actions/projectActions";
+import setColorByTopic from "../../data/setColorByTopic";
 
 const styles = {
   gradient: {
@@ -46,9 +46,6 @@ const styles = {
 
     background:
       "linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%)",
-  },
-  yellow: {
-    color: "rgb(100, 100, 100, 0.5)",
   },
 
   line: {
@@ -101,14 +98,11 @@ const styles = {
     boxShadow: "0 8px 40px -12px rgba(0,0,0,0)",
     maxHeight: "14.5em",
   },
-  image: {
-    minWidth: 200,
-  },
+
   content: {
     padding: 15,
     color: "rgb(87, 87, 87)",
     width: "95%",
-
     objectFit: "cover",
   },
 
@@ -141,179 +135,111 @@ const styles = {
     paddingRight: "2%",
     width: "100%",
   },
-  locationIcon: {
-    marginTop: "-2px",
-    float: "left",
-    color: "rgb(255, 205, 6)",
-  },
 };
 
-class Scream extends Component {
-  state = {
-    cardHeight: {},
+const Scream = ({ classes, projectsData, scream }) => {
+  dayjs.extend(relativeTime);
+  const dispatch = useDispatch();
+  const { authenticated } = useSelector((state) => state.user);
+  const {
+    title,
+    body,
+    screamId,
+    likeCount,
+    commentCount,
+    Stadtteil,
+    project,
+    Thema,
+  } = scream;
+
+  const fetchDataScream = (screamId) => {
+    dispatch(openScream(screamId));
   };
 
-  fetchDataScream = (screamId) => {
-    this.props.openScream(screamId);
+  const fetchDataProject = (project) => {
+    dispatch(openProject(project));
   };
 
-  openProject = (project) => {
-    this.props.openProject(project);
-  };
-
-  render() {
-    dayjs.extend(relativeTime);
-    const {
-      classes,
-      projectsData,
-      scream: {
-        title,
-        body,
-        screamId,
-        likeCount,
-        commentCount,
-        Stadtteil,
-        project,
-        Thema,
-      },
-      user: { authenticated },
-    } = this.props;
-
-    const neuladen =
-      Stadtteil === undefined ? (
-        <span
-          style={{
-            left: "0",
-            position: "relative",
-            margintop: "5px",
-            float: "left",
-            color: "rgb(255, 205, 6)",
-          }}
-        >
-          Aktualisiere die Seite
-        </span>
-      ) : null;
-
-    const commentButton = !authenticated ? (
-      <div
-        className={classes.commentButtonWrapperNotAuthenticated}
-        style={project && projectsData ? { top: "100px" } : {}}
-      >
-        <div className={classes.commentButton}>
-          <MyButton>
-            <SignNote />
-            <img src={ChatBorder} width="100%" alt="ChatIcon" />
-          </MyButton>
-        </div>
-        <div className={classes.engagement}>{commentCount}</div>
-      </div>
-    ) : (
-      <div
-        className={classes.commentButtonWrapper}
-        style={project && projectsData ? { top: "100px" } : {}}
-      >
-        <div className={classes.commentButton}>
-          <MyButton>
-            <img src={ChatBorder} width="100%" alt="ChatIcon" />
-          </MyButton>
-        </div>
-        <div className={classes.engagement}>{commentCount}</div>
-      </div>
-    );
-
-    const colorNew =
-      Thema === "Rad"
-        ? "#929df6"
-        : Thema === "Verkehr"
-        ? "#91dff4"
-        : Thema === "Umwelt und Grün"
-        ? "#8dd9b8"
-        : Thema === "Sport / Freizeit"
-        ? "#f6c095"
-        : Thema === "Inklusion / Soziales"
-        ? "#e8907e"
-        : Thema === "Versorgung"
-        ? "#bd98f6"
-        : "#f9db95";
-
-    const projectsDataFinal = [];
-    if (projectsData) {
-      const projectsDataArray = projectsData;
-
-      projectsDataArray.forEach((element) => {
-        if (project === element.project) {
-          projectsDataFinal.push(element.title);
-        }
-      });
-    }
-    // else {
-    //   const projectsDataArray = projectsData;
-
-    //   projectsDataArray.forEach((element) => {
-    //     projectsDataFinal.push(project);
-    //   });
-    // }
-    const projectTitle =
-      project && projectsData ? (
-        <>
-          <div className={classes.gradient2}></div>
-          <button
-            className="screamcardProjectContainer buttonWide "
-            onClick={() => this.openProject(project)}
-          >
-            {projectsDataFinal}
-          </button>
-        </>
-      ) : null;
-
-    return (
-      <Card
-        className={classes.card}
-        style={project && projectsData ? { height: "23em" } : {}}
-      >
-        <CardContent className={classes.content}>
-          {neuladen}
-          <div
-            style={{
-              width: "15px",
-              position: "relative",
-              height: "15px",
-              margintop: "5px",
-              borderRadius: "100%",
-              border: "0.5px white solid",
-              backgroundColor: colorNew,
-              opacity: "1",
-              float: "left",
-            }}
-          />{" "}
-          <div className={classes.locationOuter}>
-            <div className={classes.locationHeader}> {Stadtteil} </div>
-          </div>
-          <div className="screamcardTitle">{title} </div>
-          <div className="bodytext">{body}</div>
-          <div className={classes.gradient}></div>
-          <div className={classes.line} />
-          <div
-            className={classes.likeButtonWrapper}
-            style={project && projectsData ? { top: "10px" } : {}}
-          >
-            <div className={classes.likeButton}>
-              <LikeButton screamId={screamId} />
-            </div>
-            <div className={classes.engagement}>{likeCount} </div>
-          </div>
-          {commentButton}
-          <br />
-          {projectTitle}
-          <button
-            onClick={() => this.fetchDataScream(screamId)}
-            className="buttonExpand ripple"
-          ></button>
-        </CardContent>
-      </Card>
-    );
+  const projectsDataFinal = [];
+  if (projectsData) {
+    projectsData.forEach((element) => {
+      if (project === element.project) {
+        projectsDataFinal.push(element.title);
+      }
+    });
   }
-}
+
+  return (
+    <Card
+      className={classes.card}
+      style={project && projectsData ? { height: "23em" } : {}}
+    >
+      <CardContent className={classes.content}>
+        <div
+          style={{
+            width: "15px",
+            position: "relative",
+            height: "15px",
+            margintop: "5px",
+            borderRadius: "100%",
+            border: "0.5px white solid",
+            backgroundColor: setColorByTopic(Thema),
+            opacity: "1",
+            float: "left",
+          }}
+        />{" "}
+        <div className={classes.locationOuter}>
+          <div className={classes.locationHeader}> {Stadtteil} </div>
+        </div>
+        <div className="screamcardTitle">{title} </div>
+        <div className="bodytext">{body}</div>
+        <div className={classes.gradient}></div>
+        <div className={classes.line} />
+        <div
+          className={classes.likeButtonWrapper}
+          style={project && projectsData ? { top: "10px" } : {}}
+        >
+          <div className={classes.likeButton}>
+            <LikeButton screamId={screamId} />
+          </div>
+          <div className={classes.engagement}>{likeCount} </div>
+        </div>
+        <div
+          className={
+            !authenticated
+              ? classes.commentButtonWrapperNotAuthenticated
+              : classes.commentButtonWrapper
+          }
+          style={project && projectsData ? { top: "100px" } : {}}
+        >
+          <div className={classes.commentButton}>
+            <MyButton>
+              {!authenticated && <SignNote />}
+              <img src={ChatBorder} width="100%" alt="ChatIcon" />
+            </MyButton>
+          </div>
+          <div className={classes.engagement}>{commentCount}</div>
+        </div>
+        <br />
+        {project && projectsData && (
+          <>
+            <div className={classes.gradient2}></div>
+            <button
+              className="screamcardProjectContainer buttonWide "
+              onClick={() => fetchDataProject(project)}
+            >
+              {projectsDataFinal}
+            </button>
+          </>
+        )}
+        <button
+          onClick={() => fetchDataScream(screamId)}
+          className="buttonExpand ripple"
+        ></button>
+      </CardContent>
+    </Card>
+  );
+};
 
 Scream.propTypes = {
   user: PropTypes.object.isRequired,
@@ -324,15 +250,4 @@ Scream.propTypes = {
   openProject: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  user: state.user,
-});
-const mapActionsToProps = {
-  openScream,
-  openProject,
-};
-
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(Scream));
+export default withStyles(styles)(Scream);
