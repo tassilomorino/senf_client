@@ -919,6 +919,7 @@ button:disabled {
   bottom: 0;
   border-bottom-right-radius: 20px;
   border-bottom-left-radius: 20px;
+  font-size:20px;
 }
 
 .projectSelectContainer {

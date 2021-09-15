@@ -65,7 +65,9 @@ const ListItem = styled("li")`
 const SortingSelect = ({ handleDropdown }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(t("newest"));
+  const [selectedOption, setSelectedOption] = useState("newest");
+  const [selectedLabel, setSelectedLabel] = useState(t("newest"));
+
   const outerRef = useRef();
 
   const options = [
@@ -78,8 +80,9 @@ const SortingSelect = ({ handleDropdown }) => {
     setOpen(!open);
   };
 
-  const onOptionClicked = (value) => () => {
+  const onOptionClicked = (value, label) => () => {
     setSelectedOption(value);
+    setSelectedLabel(label);
     handleDropdown(value);
     setOpen(false);
   };
@@ -99,7 +102,7 @@ const SortingSelect = ({ handleDropdown }) => {
         class="dropbtn"
         style={{ zIndex: 999 }}
       >
-        {truncateString(selectedOption, 12)}
+        {truncateString(selectedLabel, 12)}
 
         <img src={Arrow} width="20px" style={{ paddingLeft: "5px" }}></img>
       </DropDownButton>
@@ -108,7 +111,7 @@ const SortingSelect = ({ handleDropdown }) => {
           <DropDownList>
             {options.map((option) => (
               <ListItem
-                onClick={onOptionClicked(option.name)}
+                onClick={onOptionClicked(option.name, option.label)}
                 key={Math.random()}
               >
                 {option.name === selectedOption ? (

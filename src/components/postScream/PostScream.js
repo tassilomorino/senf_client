@@ -230,11 +230,19 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
     setAllMainStates({ ...allMainStates, errors: {} });
   };
 
-  const handleChange = (value) => {
+  const handleDropdown = (value) => {
     // event.preventDefault();
     setAllValues({
       ...allValues,
       topic: value,
+    });
+  };
+
+  const handleChange = (event) => {
+    event.preventDefault();
+    setAllValues({
+      ...allValues,
+      [event.target.name]: event.target.value,
     });
   };
 
@@ -547,6 +555,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
             address={address}
             handleLocationDecided={handleLocationDecided}
             handleChange={handleChange}
+            handleDropdown={handleDropdown}
             openWeblink={openWeblink}
             weblink={weblink}
             weblinkTitle={weblinkTitle}
