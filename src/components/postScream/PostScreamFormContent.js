@@ -19,6 +19,7 @@ import Weblink from "../modals/postModals/Weblink";
 import { CircularProgress } from "@material-ui/core";
 import LocationOn from "@material-ui/icons/LocationOn";
 import Select from "../module/Select";
+import CustomSelect from "../module/CustomSelect";
 
 const PostScreamFormContent = ({
   classes,
@@ -55,31 +56,43 @@ const PostScreamFormContent = ({
 }) => {
   const { t } = useTranslation();
 
-  const topicsArray = (
-    <>
-      <option value={"Inklusion / Soziales"} className={classes.formText}>
-        Inklusion / Soziales
-      </option>
-      <option value={"Rad"} className={classes.formText}>
-        Rad
-      </option>
-      <option value={"Sport / Freizeit"} className={classes.formText}>
-        Sport / Freizeit
-      </option>
-      <option value={"Umwelt und Grün"} className={classes.formText}>
-        Umwelt und Grün
-      </option>
-      <option value={"Verkehr"} className={classes.formText}>
-        Verkehr
-      </option>
-      <option value={"Versorgung"} className={classes.formText}>
-        Versorgung
-      </option>
-      <option value={"Sonstige"} className={classes.formText}>
-        Sonstige
-      </option>
-    </>
-  );
+  const optionsTopics = [
+    { name: "topics_care", label: t("topics_care") },
+    { name: "topics_traffic", label: t("topics_traffic") },
+    { name: "topics_ecoAndGreen", label: t("topics_ecoAndGreen") },
+    {
+      name: "topics_inclusionAndSocial",
+      label: t("topics_inclusionAndSocial"),
+    },
+    { name: "topics_sportsAndLeisure", label: t("topics_sportsAndLeisure") },
+    { name: "topics_other", label: t("topics_other") },
+  ];
+
+  // const topicsArray = (
+  //   <>
+  //     <option value={"Inklusion / Soziales"} className={classes.formText}>
+  //       Inklusion / Soziales
+  //     </option>
+  //     <option value={"Rad"} className={classes.formText}>
+  //       Rad
+  //     </option>
+  //     <option value={"Sport / Freizeit"} className={classes.formText}>
+  //       Sport / Freizeit
+  //     </option>
+  //     <option value={"Umwelt und Grün"} className={classes.formText}>
+  //       Umwelt und Grün
+  //     </option>
+  //     <option value={"Verkehr"} className={classes.formText}>
+  //       Verkehr
+  //     </option>
+  //     <option value={"Versorgung"} className={classes.formText}>
+  //       Versorgung
+  //     </option>
+  //     <option value={"Sonstige"} className={classes.formText}>
+  //       Sonstige
+  //     </option>
+  //   </>
+  // );
   return (
     <form onSubmit={handleSubmit}>
       <div
@@ -191,13 +204,20 @@ const PostScreamFormContent = ({
           <div className="topicSelectContainer">
             <span>{t("topic")}: </span>
 
-            <Select
+            <CustomSelect
+              name={"topic"}
+              value={topic}
+              initialValue={"Wähle das Thema aus"}
+              options={optionsTopics}
+              handleDropdown={handleChange}
+            />
+            {/* <Select
               name={"topic"}
               value={topic}
               initialValue={"Wähle das Thema aus"}
               valuesArray={topicsArray}
               handleDropdown={handleChange}
-            />
+            /> */}
           </div>
         </div>
 
