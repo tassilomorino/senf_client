@@ -27,6 +27,7 @@ const PostScreamFormContent = ({
   address,
   handleLocationDecided,
   handleChange,
+  handleDropdown,
   openWeblink,
   weblink,
   weblinkTitle,
@@ -57,15 +58,25 @@ const PostScreamFormContent = ({
   const { t } = useTranslation();
 
   const optionsTopics = [
-    { name: "topics_care", label: t("topics_care") },
-    { name: "topics_traffic", label: t("topics_traffic") },
-    { name: "topics_ecoAndGreen", label: t("topics_ecoAndGreen") },
+    { name: "Versorgung", label: t("topics_care") },
+    { name: "Verkehr", label: t("topics_traffic") },
     {
-      name: "topics_inclusionAndSocial",
+      name: "Umwelt und Grün",
+      label: t("topics_ecoAndGreen"),
+    },
+    {
+      name: "Rad",
+      label: t("topics_bike"),
+    },
+    {
+      name: "Inklusion / Soziales",
       label: t("topics_inclusionAndSocial"),
     },
-    { name: "topics_sportsAndLeisure", label: t("topics_sportsAndLeisure") },
-    { name: "topics_other", label: t("topics_other") },
+    {
+      name: "Sport / Freizeit",
+      label: t("topics_sportsAndLeisure"),
+    },
+    { name: "Sonstige", label: t("topics_other") },
   ];
 
   // const topicsArray = (
@@ -209,7 +220,7 @@ const PostScreamFormContent = ({
               value={topic}
               initialValue={"Wähle das Thema aus"}
               options={optionsTopics}
-              handleDropdown={handleChange}
+              handleDropdown={handleDropdown}
             />
             {/* <Select
               name={"topic"}

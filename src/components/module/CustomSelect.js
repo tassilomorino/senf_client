@@ -5,14 +5,14 @@ import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 
 //Images
-import Arrow from "../../images/icons/sort.png";
+import Arrow from "../../images/icons/arrow.png";
 
 //Components
 import { useOnClickOutside } from "../../hooks/useOnClickOutside";
 
 const DropDownButton = styled.button`
   font-family: Futura PT W01 Book;
-  font-size: 22px;
+  font-size: 20px;
   color: #353535;
   background-color: white;
   display: flex;
@@ -21,7 +21,7 @@ const DropDownButton = styled.button`
   height: 40px;
   padding: 10px;
   border-radius: 10px;
-  border: 0.5px solid #353535;
+  /* border: 0.5px solid #353535; */
   background-color: transparent;
 `;
 
@@ -65,6 +65,8 @@ const ListItem = styled("li")`
 const CustomSelect = ({ initialValue, options, handleDropdown }) => {
   const [open, setOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(initialValue);
+  const [selectedLabel, setSelectedLabel] = useState(initialValue);
+
   const outerRef = useRef();
 
   const handleToggle = (event) => {
@@ -73,8 +75,9 @@ const CustomSelect = ({ initialValue, options, handleDropdown }) => {
     setOpen(!open);
   };
 
-  const onOptionClicked = (value) => () => {
+  const onOptionClicked = (value, label) => () => {
     setSelectedOption(value);
+    setSelectedLabel(label);
     handleDropdown(value);
     setOpen(false);
   };
@@ -94,24 +97,24 @@ const CustomSelect = ({ initialValue, options, handleDropdown }) => {
         class="dropbtn"
         style={{ zIndex: 999 }}
       >
-        {truncateString(selectedOption, 12)}
+        {truncateString(selectedLabel, 24)}
 
-        <img src={Arrow} width="20px" style={{ paddingLeft: "5px" }}></img>
+        <img src={Arrow} width="20px" style={{ paddingLeft: "10px" }}></img>
       </DropDownButton>
       {open && (
         <DropDownListContainer>
           <DropDownList>
             {options.map((option) => (
               <ListItem
-                onClick={onOptionClicked(option.name)}
+                onClick={onOptionClicked(option.name, option.label)}
                 key={Math.random()}
               >
                 {option.name === selectedOption ? (
                   <span style={{ fontFamily: "Futura PT W01-Bold" }}>
-                    {truncateString(option.label, 12)}
+                    {truncateString(option.label, 24)}
                   </span>
                 ) : (
-                  <span>{truncateString(option.label, 12)}</span>
+                  <span>{truncateString(option.label, 24)}</span>
                 )}
               </ListItem>
             ))}
