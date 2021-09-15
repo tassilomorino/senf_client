@@ -673,10 +673,7 @@ export class monitoring extends Component {
                 marginLeft: "10px",
               }}
             >
-              <SortingSelect
-                dropdown={dropdown}
-                handleDropdown={this.handleDropdown}
-              />
+              <SortingSelect handleDropdown={this.handleDropdown} />
             </div>
           </div>
 

@@ -83,10 +83,7 @@ const AllIdeasPage = ({
                 </ToggleDisplay>
               </div>
 
-              <SortingSelect
-                dropdown={dropdown}
-                handleDropdown={handleDropdown}
-              />
+              <SortingSelect handleDropdown={handleDropdown} />
             </div>
           </div>
 

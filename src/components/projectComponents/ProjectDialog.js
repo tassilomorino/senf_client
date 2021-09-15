@@ -262,7 +262,7 @@ class ProjectDialog extends Component {
 
     screamIdParam: null,
     showDemand: false,
-    dropdown: "10",
+    dropdown: "newest",
     selectedId: "",
     showTitles: false,
     cookiesSetDesktop: false,
@@ -376,9 +376,9 @@ class ProjectDialog extends Component {
     this.props.clearErrors();
   };
 
-  handleDropdown = (event) => {
+  handleDropdown = (value) => {
     this.setState({
-      [event.target.name]: event.target.value,
+      dropdown: value,
     });
   };
 

@@ -100,7 +100,9 @@ const MyIdeas = ({
           }}
         >
           <div className="idea-header">
-            <ToggleDisplay show={dropdown === "10" || dropdown === "20"}>
+            <ToggleDisplay
+              show={dropdown === "newest" || dropdown === "hottest"}
+            >
               <img
                 src={lamploader}
                 width="50px"
@@ -111,7 +113,7 @@ const MyIdeas = ({
             </ToggleDisplay>
           </div>
 
-          <SortingSelect dropdown={dropdown} handleDropdown={handleDropdown} />
+          <SortingSelect handleDropdown={handleDropdown} />
         </div>
       </div>
 
@@ -143,14 +145,14 @@ const MyIdeas = ({
         topicsSelected={topicsSelected}
       />
 
-      <ToggleDisplay show={dropdown === "10"}>
-        <div className={dropdown === "10" ? "MainAnimation" : ""}>
+      <ToggleDisplay show={dropdown === "newest"}>
+        <div className={dropdown === "newest" ? "MainAnimation" : ""}>
           {recentScreamsMarkup}
           {noMoreScreamsMarkup}
         </div>
       </ToggleDisplay>
-      <ToggleDisplay show={dropdown === "20"}>
-        <div className={dropdown === "20" ? "MainAnimation" : ""}>
+      <ToggleDisplay show={dropdown === "hottest"}>
+        <div className={dropdown === "hottest" ? "MainAnimation" : ""}>
           {HotScreamsMarkup}
           {noMoreScreamsMarkup}
         </div>

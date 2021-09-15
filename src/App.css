@@ -2402,6 +2402,7 @@ input:focus {
   text-align: left;
   font-family: "Playfair Display", serif;
   animation: enteranimation 1.5s;
+  z-index: 99;
 }
 
 
