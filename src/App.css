@@ -399,11 +399,9 @@ button:disabled {
   width: 50px;
   height: 50px;
   color: black;
-
   border-radius: 100%;
   /* box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px !important; */
   box-shadow: rgb(38, 57, 77, 0.7) 0px 20px 30px -15px;
-
   background-color: white;
   display: flex;
   position: fixed;
@@ -464,15 +462,6 @@ button:disabled {
   z-index: 9;
 }
 
-.buttonIntroToStart{
-  position: absolute;
-  width: 50%;
-  left: 25%;
-  bottom: 50px;
-  color: white;
-  background-color: #353535;
-}
-
 .buttonSignWrapper {
 
   position: fixed;
@@ -496,44 +485,7 @@ button:disabled {
   margin-left: 10%
 }
 
-.buttonGeofilter {
-  display: block;
-  z-index: 999999;
-  opacity: 1;
-  position: fixed;
-  bottom: 20px;
-  width: 58%;
-  margin-left: calc(25% - 50px);
-}
 
-.buttonResetGeofilter {
-  display: block;
-  z-index: 9999;
-  opacity: 1;
-  position: fixed;
-  bottom: 20px;
-  width: 50px;
-  margin-left: 75%;
-}
-
-
-.buttonInlineInfoIdeas {
-  position: absolute;
-  width: 50%;
-  left: 25%;
-  top: 1700px;
-  color: white;
-  background-color: #353535;
-}
-
-.buttonInlineInfoContact {
-  position: absolute;
-  width: 50%;
-  left: 25%;
-  top: 1760px;
-  color: #353535;
-  background-color: white;
-}
 
 .buttonSelectLocation {
   background-color: #fed957;
@@ -582,33 +534,11 @@ button:disabled {
 
 
 
-.buttonCookiesDesktop {
-  position: relative;
-  margin-top: 30px;
-  width: 60%;
-  margin-left: 20%;
-  color: white;
-  background-color: #414345;
-}
-
-.buttonDialogSign {
-  margin-top: 15px;
-  width: 60%;
-  margin-bottom: -10px;
-  color: white;
-  background-color: #414345;
-  z-index: 10;
-}
-
-
 .buttonVerify {
-
   color: white;
   background-color: #414345;
-
   position: relative;
   z-index: 9;
-
   width: 50vw;
   left: 25vw;
   top: 5vh;
@@ -618,17 +548,8 @@ button:disabled {
 
 }
 
-.buttonNoLocation {
-  position: relative;
-  margin-top: 10px;
-  width: 80%;
-  margin-bottom: 10px;
-  color: white;
-  background-color: #414345;
-}
 
 .buttonLikeFixed {
-
   z-index: 9999;
   position: fixed;
   left: 3%;
@@ -1138,16 +1059,7 @@ input:focus {
 
 }
 
-.buttonRulesAccept {
-  z-index: 99998;
-  color: white;
-  background-color: #414345;
-  position: relative;
-  /* left: 20vw; */
-  margin-top: 40px;
-  width: 60vw;
 
-}
 
 .submitPostButton {
   z-index: 9999;

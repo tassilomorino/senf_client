@@ -504,7 +504,6 @@ class SignNote extends Component {
                     margin="dense"
                     variant="outlined"
                     className={classes.textField}
-                    
                     // helperText={errors.email}
                     error={errors.email ? true : false}
                     value={this.state.email}

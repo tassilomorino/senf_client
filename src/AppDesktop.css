@@ -197,36 +197,8 @@
       top: 40px;
     }
 
-  .buttonInlineInfoIdeas{
-    position: absolute;
-    width: 300px;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 2600px;
-    color: white;
-    background-color: #353535;
-  }
   
-  .buttonInlineInfoContact{
-    position: absolute;
-    width: 300px;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 2660px;
-    color: #353535;
-    background-color: white;
-  }
-
-  /* .buttonSelectLocationNo{
-    background-color: #ffffff;
-    width: 300px;
-    position: fixed;
-    bottom: 40px;
-    left: calc(600px + ((100vw - 600px) /2 ) - 150px);
-    margin-left: 0;
-    z-index:9990;
   
-  } */
   .submitPostButton{
     z-index: 99995;
       position: fixed;
@@ -236,18 +208,7 @@
       animation:submitEnteranimation 2s
      
   }
-  .buttonRulesAccept {
-    z-index: 99998;
-    color: white;
-    background-color: #414345;
   
-      position: fixed;
-      top: 72vh;
-      left: 220px;
-      width: 360px;
-      margin-top:0
-    
-  }
   .buttonVerify{
     z-index: 9;
     color: white;

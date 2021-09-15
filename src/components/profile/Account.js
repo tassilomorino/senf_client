@@ -15,9 +15,6 @@ import "firebase/firestore";
 //Components
 import MyIdeas from "./MyIdeas";
 
-// Icons
-import Arrow from "../../images/icons/arrow.png";
-
 // MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";
 import Dialog from "@material-ui/core/Dialog";
@@ -25,6 +22,7 @@ import Typography from "@material-ui/core/Typography";
 import Slide from "@material-ui/core/Slide";
 import Tabs from "../module/Tabs";
 import { AccountTabData } from "../../data/AccountTabData";
+import { CustomIconButton } from "../module/CustomButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -478,7 +476,6 @@ class Account extends Component {
       deleteAccount,
 
       user: {
-        authenticated,
         credentials: { handle },
       },
     } = this.props;
@@ -488,14 +485,11 @@ class Account extends Component {
     const dialogMarkup = (
       <div className="wrapperScreamDialog">
         <div className="dialogNavigation">
-          <button onClick={this.handleClose} className="buttonRound">
-            <img
-              src={Arrow}
-              width="20"
-              alt="backArrow"
-              style={{ transform: "rotate(90deg)" }}
-            />
-          </button>
+          <CustomIconButton
+            name="ArrowLeft"
+            position="fixed"
+            handleButtonClick={this.handleClose}
+          />
         </div>
         <div className="hey-user" data-cy="hey-user">
           Hey {handle}{" "}
