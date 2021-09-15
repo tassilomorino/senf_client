@@ -38,6 +38,7 @@ import Tabs from "../module/Tabs";
 import { ProjectTabData } from "../../data/ProjectTabData";
 
 import "./ProjectDialog.css";
+import { CustomIconButton } from "../module/CustomButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -562,14 +563,11 @@ class ProjectDialog extends Component {
     ) : (
       <div className="wrapperScreamDialog">
         <div className="dialogNavigation">
-          <button onClick={this.handleClose} className="buttonRound">
-            <img
-              src={Arrow}
-              width="20"
-              alt="backArrow"
-              style={{ transform: "rotate(90deg)" }}
-            />
-          </button>
+          <CustomIconButton
+            name="ArrowLeft"
+            position="fixed"
+            handleButtonClick={this.handleClose}
+          />
         </div>
         <div
           style={

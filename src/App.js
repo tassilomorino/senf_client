@@ -28,7 +28,7 @@ import home from "./pages/home";
 import IntroductionInformation from "./components/infocomponents/IntroductionInformation";
 
 import Welcome from "./components/infocomponents/Welcome";
-import verify from "./components/profile/verify";
+import Verification from "./components/profile/Verification";
 
 import impressum from "./components/infocomponents/legal/impressum";
 import datenschutz from "./components/infocomponents/legal/datenschutz";
@@ -210,7 +210,7 @@ const App = () => {
 
               <Route exact path="/monitoring" component={monitoring} />
 
-              <Route exact path="/verify" component={verify} />
+              <Route exact path="/verify" component={Verification} />
 
               <Route
                 exact
