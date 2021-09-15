@@ -2,9 +2,6 @@
 
 import React from "react";
 
-//Redux
-import { useSelector } from "react-redux";
-
 //Icons
 import CircularProgress from "@material-ui/core/CircularProgress";
 import lamploader from "../../images/lamp.png";

@@ -38,6 +38,7 @@ import Tabs from "../module/Tabs";
 import { ProjectTabData } from "../../data/ProjectTabData";
 
 import "./ProjectDialog.css";
+import { CustomIconButton } from "../module/CustomButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -406,7 +407,7 @@ class ProjectDialog extends Component {
       longitude4: this.state.viewport.longitude + AddnewRight,
     });
   };
-  noLocation = () => {
+  handleNoLocation = () => {
     this.setState({
       latitude1: 50.93892,
       latitude2: 50.93864,
@@ -562,14 +563,11 @@ class ProjectDialog extends Component {
     ) : (
       <div className="wrapperScreamDialog">
         <div className="dialogNavigation">
-          <button onClick={this.handleClose} className="buttonRound">
-            <img
-              src={Arrow}
-              width="20"
-              alt="backArrow"
-              style={{ transform: "rotate(90deg)" }}
-            />
-          </button>
+          <CustomIconButton
+            name="ArrowLeft"
+            position="fixed"
+            handleButtonClick={this.handleClose}
+          />
         </div>
         <div
           style={
@@ -632,7 +630,7 @@ class ProjectDialog extends Component {
               longitude4={this.state.longitude4}
               viewport={this.state.viewport}
               _onViewportChange={this._onViewportChange}
-              noLocation={this.noLocation}
+              handleNoLocation={this.handleNoLocation}
               dataNoLocationHandle={this.dataNoLocationHandle}
               showDemand={this.state.showDemand}
               handleClick={this.handleClick}
@@ -777,7 +775,7 @@ class ProjectDialog extends Component {
             dataFinal={dataFinal}
             geoData={geoData}
             style={{ zIndex: 9999 }}
-            noLocation={this.noLocation}
+            handleNoLocation={this.handleNoLocation}
             dataNoLocationHandle={this.dataNoLocationHandle}
             _onViewportChangeDesktop={this._onViewportChangeDesktop}
             viewport={viewport}

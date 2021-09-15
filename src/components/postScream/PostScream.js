@@ -1,8 +1,7 @@
 /** @format */
 
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import PropTypes from "prop-types";
-import _ from "lodash";
 import { useHistory } from "react-router";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
@@ -16,7 +15,6 @@ import SignNote from "../profile/SignNote";
 
 //ICONS
 import AddIcon from "../../images/icons/plus_white.png";
-import Arrow from "../../images/icons/arrow.png";
 
 // REDUX STUFF
 import { useDispatch, useSelector } from "react-redux";
@@ -29,6 +27,7 @@ import { withRouter } from "react-router-dom";
 import PostScreamFormContent from "./PostScreamFormContent";
 import PostScreamMap from "./PostScreamMap";
 import PostScreamSelectContainter from "./PostScreamSelectContainter";
+import { CustomIconButton } from "../module/CustomButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -44,7 +43,6 @@ const styles = {
 
   paper: {
     boxShadow: "none",
-    overflow: "hidden",
     padding: "0",
     top: "0",
     overflow: "hidden",
@@ -489,18 +487,14 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
           </div>
         )}
 
-        <button
-          tip="Close"
-          onClick={handleClose}
-          className="buttonRound buttonClose"
-        >
-          <img
-            src={Arrow}
-            width="20"
-            alt="backArrow"
-            style={{ transform: "rotate(90deg)" }}
-          />
-        </button>
+        <CustomIconButton
+          name="Close"
+          position="fixed"
+          margin={
+            document.body.clientWidth > 768 ? "40px" : "18px 0px 0px 13px"
+          }
+          handleButtonClick={handleClose}
+        />
 
         {isMobileCustom && (
           <div

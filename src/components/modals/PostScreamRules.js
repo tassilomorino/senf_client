@@ -1,126 +1,105 @@
 /** @format */
 
-import React, { Component, Fragment } from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
+import React, { useState, Fragment } from "react";
+import { Trans, useTranslation } from "react-i18next";
 
 import Dialog from "@material-ui/core/Dialog";
+import { CustomButton } from "../module/CustomButton";
+import styled from "styled-components";
 
-// REDUX Stuff
-import { connect } from "react-redux";
+const Card = styled.div`
+  z-index: 99997;
+  position: fixed;
+  padding: 2.5vw;
+  color: #414345;
+  text-align: center;
+  background-color: white;
+  font-size: 13pt;
+  top: 50vh;
+  margin-top: -200px;
+  border-radius: 20px;
+  left: 0;
+  box-shadow: 0 8px 40px -12px rgb(0 0 0 / 20%);
+  backdrop-filter: blur(10px);
+  width: 90vw;
+  margin-left: 2.5vw;
+  height: 420px;
 
-const styles = {
-  //   paper: {
-  //     borderRadius: "20px",
-  //     height: "150px",
-  //     width: "90vw",
-  //     maxWidth: "400px",
-  //   },
-  confirmButton: {
-    fontSize: 20,
-    textAlign: "center",
-    textTransform: "none",
-    width: "100%",
-    height: "70%",
-    clear: "both",
-    color: "red",
-  },
-  line: {
-    height: 1,
-    width: "100%",
+  @media (min-width: 768px) {
+    margin-top: 0;
+    top: 40px;
+    width: 340px;
+    margin-left: 210px;
+    height: 400px;
+    padding: 20px;
+  }
+`;
 
-    backgroundColor: "grey",
-  },
-  cancelButton: {
-    fontSize: 20,
-    clear: "both",
-    textAlign: "center",
-    textTransform: "none",
-    width: "100%",
-    height: "30%",
-  },
+const PostScreamRules = () => {
+  const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <Fragment>
+      <a onClick={handleOpen} className="rules-link">
+        {t("rules")}
+      </a>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        width="md"
+        style={{ backdropFilter: "blur(5px)" }}
+      >
+        <div>
+          <Card>
+            <br />
+            <span className="PostRulesHeader">{t("rules_title")}</span>
+            <br />
+            <br />
+            <br />
+            <span className="cookiesHeader">{t("rules_section1header")}</span>
+            <br />
+
+            <Trans i18nKey="rules_section1text">
+              Ideen, Wünsche und Anregungen sind hier erwünscht. Für
+              Beschwerden, informier dich bitte
+              <a
+                className="Terms"
+                href="https://www.stadt-koeln.de/service/onlinedienste/anregungen-beschwerden/index.html"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                hier
+              </a>{" "}
+              .
+            </Trans>
+            <br />
+            <br />
+            <br />
+            <span className="cookiesHeader">{t("rules_section2header")}</span>
+            <br />
+            <span>{t("rules_section2text")}</span>
+
+            <CustomButton
+              text={t("rules_understood")}
+              backgroundColor="#353535"
+              textColor="white"
+              position="relative"
+              top="50px"
+              handleButtonClick={handleClose}
+            />
+          </Card>{" "}
+        </div>
+      </Dialog>
+    </Fragment>
+  );
 };
 
-class PostScreamRules extends Component {
-  state = {
-    open: false,
-  };
-
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <Fragment>
-        <a onClick={this.handleOpen} className="rules-link">
-          Regeln
-        </a>
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          width="md"
-          BackdropProps={{ classes: { root: classes.root } }}
-          PaperProps={{ classes: { root: classes.paper } }}
-        >
-          <div>
-            <div className="PostRulesBackground"></div>
-            <div className="PostRules">
-              <br />
-              <span className="PostRulesHeader">Ein paar Worte</span>
-              <br />
-              <br />
-              <br />
-              <span className="cookiesHeader">Zweckmäßigkeit</span>
-              <br />
-              <span>
-                Ideen, Wünsche und Anregungen sind hier erwünscht. Für
-                Beschwerden, informier dich bitte{" "}
-                <a
-                  className="Terms"
-                  href="https://www.stadt-koeln.de/service/onlinedienste/anregungen-beschwerden/index.html"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  hier
-                </a>
-                .
-              </span>
-              <br />
-              <br />
-              <br />
-              <span className="cookiesHeader">Positiv bleiben</span>
-              <br />
-              <span>
-                Bitte achte darauf, dass du deine Beiträge positiv ausdrückst.
-                Unangemessene Inhalte werden gelöscht. Sei dir dessen bewusst!
-              </span>
-
-              <button
-                className="buttonWide buttonRulesAccept"
-                onClick={() => this.handleClose()}
-              >
-                Alles verstanden
-              </button>
-            </div>{" "}
-          </div>
-        </Dialog>
-      </Fragment>
-    );
-  }
-}
-
-PostScreamRules.propTypes = {};
-
-const mapStateToProps = (state) => ({});
-
-const mapActionsToProps = {};
-
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(PostScreamRules));
+export default PostScreamRules;

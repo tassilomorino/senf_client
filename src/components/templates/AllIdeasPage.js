@@ -37,7 +37,7 @@ const AllIdeasPage = ({
 
   dataNoLocationHandle,
   selectedId,
-  noLocation,
+  handleNoLocation,
 
   viewport,
 
@@ -101,7 +101,7 @@ const AllIdeasPage = ({
             viewport={viewport}
             _onViewportChange={_onViewportChange}
             handleRevert={handleRevert}
-            noLocation={noLocation}
+            handleNoLocation={handleNoLocation}
             handleOpenGeofilter={handleOpenGeofilter}
             handleCloseGeofilter={handleCloseGeofilter}
             handleResetGeofilter={handleResetGeofilter}
@@ -110,7 +110,7 @@ const AllIdeasPage = ({
             createGeofilterCircle={createGeofilterCircle}
             dataNoLocationHandle={dataNoLocationHandle}
             selectedId={selectedId}
-            noLocation={noLocation}
+            handleNoLocation={handleNoLocation}
             handleTopicSelector={handleTopicSelector}
             topicsSelected={topicsSelected}
           />

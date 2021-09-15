@@ -1,16 +1,12 @@
 /** @format */
 
-import React, { Component, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
-import PropTypes from "prop-types";
 import MyButton from "../../util/MyButton";
 
 // MUI Stuff
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-
-// REDUX Stuff
-import { connect } from "react-redux";
 
 const styles = {
   deleteButton: {
@@ -52,19 +48,16 @@ const styles = {
   },
 };
 
-class ReportScream extends Component {
-  state = {
-    open: false,
+const ReportScream = ({ userHandle, screamId, classes }) => {
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
   };
-  handleOpen = () => {
-    this.setState({ open: true });
+  const handleClose = () => {
+    setOpen(false);
   };
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-  reportScream = () => {
-    const userHandle = this.props.userHandle;
-    const screamId = this.props.screamId;
+  const reportScream = () => {
     const thisPath = `/users/${userHandle}/scream/${screamId}`;
     const siteLink = "senf.koeln" + thisPath;
 
@@ -81,34 +74,31 @@ class ReportScream extends Component {
       );
     window.location.href = link;
   };
-  render() {
-    const { classes } = this.props;
 
-    return (
-      <Fragment>
-        <MyButton
-          tip="Delete Scream"
-          onClick={this.handleOpen}
-          btnClassName={classes.deleteButton}
-        ></MyButton>
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          width="md"
-          BackdropProps={{ classes: { root: classes.root } }}
-          PaperProps={{ classes: { root: classes.paper } }}
-        >
-          <Button className={classes.confirmButton} onClick={this.reportScream}>
-            Melden
-          </Button>
-          <div className={classes.line} />
-          <Button className={classes.cancelButton} onClick={this.handleClose}>
-            Abbrechen
-          </Button>
-        </Dialog>
-      </Fragment>
-    );
-  }
-}
+  return (
+    <Fragment>
+      <MyButton
+        tip="Delete Scream"
+        onClick={handleOpen}
+        btnClassName={classes.deleteButton}
+      ></MyButton>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        width="md"
+        BackdropProps={{ classes: { root: classes.root } }}
+        PaperProps={{ classes: { root: classes.paper } }}
+      >
+        <Button className={classes.confirmButton} onClick={reportScream}>
+          Melden
+        </Button>
+        <div className={classes.line} />
+        <Button className={classes.cancelButton} onClick={handleClose}>
+          Abbrechen
+        </Button>
+      </Dialog>
+    </Fragment>
+  );
+};
 
 export default withStyles(styles)(ReportScream);

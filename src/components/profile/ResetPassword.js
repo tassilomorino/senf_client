@@ -22,6 +22,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 import TextField from "@material-ui/core/TextField";
+import { CustomIconButton } from "../module/CustomButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -279,12 +280,13 @@ class ResetPassword extends Component {
           PaperProps={{ classes: { root: classes.paper } }}
           TransitionComponent={Transition}
         >
-          <button
-            onClick={this.handleClose}
-            className="buttonRound buttonClose"
-          >
-            <CloseIcon />
-          </button>
+          <CustomIconButton
+            name="Close"
+            position="fixed"
+            left="0px"
+            margin={document.body.clientWidth > 768 ? "40px" : "10px"}
+            handleButtonClick={this.handleClose}
+          />
 
           <Swipe onSwipeMove={this.onSwipeMove.bind(this)}>
             <img

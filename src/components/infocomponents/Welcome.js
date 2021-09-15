@@ -154,12 +154,6 @@ const Welcome = ({ classes }) => {
           bottom="50px"
           handleButtonClick={handleButtonClick}
         />
-        {/* <button
-          className="buttonWide buttonIntroToStart"
-          onClick={handleButtonClick}
-        >
-          {t("next")}
-        </button> */}
 
         <span className="footerIntro">
           <Link to="/impressum" className="footerIntroText">
