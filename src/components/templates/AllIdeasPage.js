@@ -68,7 +68,9 @@ const AllIdeasPage = ({
               }}
             >
               <div className="idea-header">
-                <ToggleDisplay show={dropdown === "10" || dropdown === "20"}>
+                <ToggleDisplay
+                  show={dropdown === "newest" || dropdown === "hottest"}
+                >
                   <img
                     src={lamploader}
                     width="50px"
@@ -117,8 +119,8 @@ const AllIdeasPage = ({
 
           {!loading && (
             <React.Fragment>
-              <ToggleDisplay show={dropdown === "10"}>
-                <div className={dropdown === "10" ? "MainAnimation" : ""}>
+              <ToggleDisplay show={dropdown === "newest"}>
+                <div className={dropdown === "newest" ? "MainAnimation" : ""}>
                   {_.orderBy(dataFinal, "createdAt", "desc").map((scream) => (
                     <Scream
                       loading={loading}
@@ -129,8 +131,8 @@ const AllIdeasPage = ({
                   ))}
                 </div>
               </ToggleDisplay>
-              <ToggleDisplay show={dropdown === "20"}>
-                <div className={dropdown === "20" ? "MainAnimation" : ""}>
+              <ToggleDisplay show={dropdown === "hottest"}>
+                <div className={dropdown === "hottest" ? "MainAnimation" : ""}>
                   {_.orderBy(dataFinal, "likeCount", "desc").map((scream) => (
                     <Scream
                       loading={loading}

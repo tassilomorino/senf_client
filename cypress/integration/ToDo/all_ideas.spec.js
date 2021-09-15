@@ -4,9 +4,9 @@ const fakeData = require("../../fixtures/screams_all_ideas.json");
 describe("Some Test", () => {
   it("Adds document to test_hello_world collection of Firestore", () => {
     // cy.callFirestore("set", "screams", fakeData);
-    // cy.callFirestore("get", "screams").then((scream) => {
-    //   cy.log("get returned: ", scream);
-    // });
+    cy.callFirestore("get", "screams").then((scream) => {
+      cy.log("get returned: ", scream);
+    });
   });
 });
 
@@ -32,7 +32,7 @@ describe("Test the display of ideas within the mainpage", () => {
     //cy.
 
     //Check if the topic-filters are workin
-    cy.wait(125000);
+    cy.wait(1000);
 
     cy.get(".sideBar").within(() => {
       cy.get("[data-cy=topic-all]").click({ force: true }); // or otherwise scroll up again
