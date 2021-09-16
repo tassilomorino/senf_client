@@ -16,10 +16,9 @@ import InlineDatePicker from "../modals/postModals/InlineDatePicker";
 import Weblink from "../modals/postModals/Weblink";
 
 //Icons
-import { CircularProgress } from "@material-ui/core";
 import LocationOn from "@material-ui/icons/LocationOn";
-import Select from "../module/Select";
 import CustomSelect from "../module/CustomSelect";
+import { SubmitButton } from "../module/buttons/SubmitButton";
 
 const PostScreamFormContent = ({
   classes,
@@ -231,7 +230,19 @@ const PostScreamFormContent = ({
             /> */}
           </div>
         </div>
-
+        {locationDecided && (
+          <SubmitButton
+            text={t("postScream_shareIdea")}
+            backgroundColor="white"
+            textColor="#353535"
+            position="absolute"
+            bottom="-60px"
+            loading={loading}
+            disabled={body === "" || title === "" || Out === true}
+            animation={true}
+          />
+        )}
+        {/* 
         <button
           type="submit"
           className="submitPostButton buttonWide"
@@ -250,7 +261,7 @@ const PostScreamFormContent = ({
           {loading && (
             <CircularProgress size={30} className={classes.progress} />
           )}
-        </button>
+        </button> */}
       </div>
     </form>
   );

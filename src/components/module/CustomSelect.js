@@ -110,7 +110,8 @@ const CustomSelect = ({ initialValue, options, handleDropdown }) => {
                 onClick={onOptionClicked(option.name, option.label)}
                 key={Math.random()}
               >
-                {option.name === selectedOption ? (
+                {option.name === selectedOption ||
+                option.label === selectedOption ? (
                   <span style={{ fontFamily: "Futura PT W01-Bold" }}>
                     {truncateString(option.label, 24)}
                   </span>

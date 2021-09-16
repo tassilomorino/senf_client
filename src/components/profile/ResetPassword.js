@@ -22,7 +22,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 import TextField from "@material-ui/core/TextField";
-import { CustomIconButton } from "../module/CustomButton";
+import { CustomIconButton } from "../module/buttons/CustomButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;

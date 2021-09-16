@@ -1,6 +1,7 @@
 /** @format */
 
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import _ from "lodash";
 import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../util/customDeviceDetect";
@@ -19,15 +20,26 @@ const PostScreamSelectContainter = ({
   loadingProjects,
   projectsData,
 }) => {
+  const { projects } = useSelector((state) => state.data);
+
   const { t } = useTranslation();
 
-  const optionsProjects =
+  const optionsProjectsInitial = [
+    { name: "", label: "Allgemein (Alle Ideen)" },
+  ];
+  const optionsProjectsArray =
     open &&
     !loadingProjects &&
     _.orderBy(projectsData, "createdAt", "desc").map((project) => ({
       name: project.project,
       label: project.title,
     }));
+
+  var optionsProjects = [...optionsProjectsInitial, ...optionsProjectsArray];
+
+  console.log(optionsProjects);
+
+  useEffect(() => {}, []);
 
   return (
     <div

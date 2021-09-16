@@ -38,7 +38,7 @@ import Tabs from "../module/Tabs";
 import { ProjectTabData } from "../../data/ProjectTabData";
 
 import "./ProjectDialog.css";
-import { CustomIconButton } from "../module/CustomButton";
+import { CustomIconButton } from "../module/buttons/CustomButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;

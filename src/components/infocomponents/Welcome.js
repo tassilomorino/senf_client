@@ -21,7 +21,7 @@ import { Link } from "react-router-dom";
 
 //CHECK DEVICE
 import { isMobileCustom } from "../../util/customDeviceDetect";
-import { CustomButton } from "../module/CustomButton";
+import { CustomButton } from "../module/buttons/CustomButton";
 
 const styles = {
   wrapper: {
