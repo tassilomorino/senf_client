@@ -14,9 +14,9 @@ import Scream from "../scream/Scream";
 import ListHeader from "../module/Headers/ListHeader";
 
 const MobileFilterAndMapWrapper = styled.div`
-  margin-top: 110px;
-  margin-left: 2.5%;
-  width: 95%;
+  margin-top: 100px;
+  margin-left: 0%;
+  width: 100%;
   z-index: 9;
 `;
 
@@ -59,11 +59,6 @@ const AllIdeasPage = ({
         <div className="content">
           {isMobileCustom && (
             <MobileFilterAndMapWrapper>
-              <TopicFilter
-                handleTopicSelector={handleTopicSelector}
-                topicsSelected={topicsSelected}
-              ></TopicFilter>
-
               <Geofilter
                 dataFinal={dataFinal}
                 latitude1={latitude1}
