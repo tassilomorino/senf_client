@@ -5,6 +5,7 @@ import _ from "lodash";
 import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 import Select from "../module/Select";
+import CustomSelect from "../module/CustomSelect";
 
 const PostScreamSelectContainter = ({
   classes,
@@ -20,16 +21,13 @@ const PostScreamSelectContainter = ({
 }) => {
   const { t } = useTranslation();
 
-  const projectsArray =
-    open && !loadingProjects ? (
-      <>
-        {_.orderBy(projectsData, "createdAt", "desc").map((projects) => (
-          <option value={projects.project} className={classes.formText}>
-            +{projects.title}
-          </option>
-        ))}
-      </>
-    ) : null;
+  const optionsProjects =
+    open &&
+    !loadingProjects &&
+    _.orderBy(projectsData, "createdAt", "desc").map((project) => ({
+      name: project.project,
+      label: project.title,
+    }));
 
   return (
     <div
@@ -76,11 +74,11 @@ const PostScreamSelectContainter = ({
       <div className="projectSelectContainer">
         <span className={classes.boldText}> {t("to")} </span>
 
-        <Select
+        <CustomSelect
           name={"project"}
           value={project}
           initialValue={"Allgemein (Alle Ideen)"}
-          valuesArray={projectsArray}
+          options={optionsProjects}
           handleDropdown={handleDropdownProject}
         />
       </div>
