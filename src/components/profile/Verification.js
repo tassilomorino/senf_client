@@ -18,7 +18,7 @@ import SignInNote from "./SignInNote";
 
 //MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";
-import { CustomIconButton } from "../module/buttons/CustomButton";
+import { CustomIconButton } from "../module/Buttons/CustomButton";
 import { useHistory } from "react-router-dom";
 
 const styles = {

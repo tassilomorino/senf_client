@@ -20,9 +20,9 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Dialog from "@material-ui/core/Dialog";
 import Typography from "@material-ui/core/Typography";
 import Slide from "@material-ui/core/Slide";
-import Tabs from "../module/Tabs";
+import Tabs from "../module/Tabs/Tabs";
 import { AccountTabData } from "../../data/AccountTabData";
-import { CustomIconButton } from "../module/buttons/CustomButton";
+import { CustomIconButton } from "../module/Buttons/CustomButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;

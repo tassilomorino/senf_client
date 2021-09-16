@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 
 //Images
-import Arrow from "../../images/icons/arrow.png";
+import Arrow from "../../../images/icons/arrow.png";
 import { useTranslation } from "react-i18next";
 
 const theme = createMuiTheme({

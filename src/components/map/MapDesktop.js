@@ -24,7 +24,7 @@ import MapGL, {
 
 //COOKIES
 import Cookies from "universal-cookie";
-import { CustomButton, CustomIconButton } from "../module/buttons/CustomButton";
+import { CustomButton, CustomIconButton } from "../module/Buttons/CustomButton";
 import setColorByTopic from "../../data/setColorByTopic";
 const cookies = new Cookies();
 

@@ -26,8 +26,8 @@ import Contact from "../postModals/Contact";
 import InlineDatePicker from "../postModals/InlineDatePicker";
 import ToggleDisplay from "react-toggle-display";
 import { EditScreamTabData } from "../../../data/EditScreamTabData";
-import Tabs from "../../module/Tabs";
-import Select from "../../module/Select";
+import Tabs from "../../module/Tabs/Tabs";
+import Select from "../../module/Selects/Select";
 
 const styles = {
   paper: {

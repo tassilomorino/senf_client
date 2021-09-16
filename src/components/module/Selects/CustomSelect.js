@@ -5,10 +5,10 @@ import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 
 //Images
-import Arrow from "../../images/icons/arrow.png";
+import Arrow from "../../../images/icons/arrow.png";
 
 //Components
-import { useOnClickOutside } from "../../hooks/useOnClickOutside";
+import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 
 const DropDownButton = styled.button`
   font-family: Futura PT W01 Book;
