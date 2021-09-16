@@ -1,12 +1,11 @@
 /** @format */
 
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
 import _ from "lodash";
 import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../util/customDeviceDetect";
-import Select from "../module/Select";
 import CustomSelect from "../module/CustomSelect";
+import { OptionsProjects } from "../../data/OptionsProjects";
 
 const PostScreamSelectContainter = ({
   classes,
@@ -16,30 +15,8 @@ const PostScreamSelectContainter = ({
   project,
   address,
   handleDropdownProject,
-  open,
-  loadingProjects,
-  projectsData,
 }) => {
-  const { projects } = useSelector((state) => state.data);
-
   const { t } = useTranslation();
-
-  const optionsProjectsInitial = [
-    { name: "", label: "Allgemein (Alle Ideen)" },
-  ];
-  const optionsProjectsArray =
-    open &&
-    !loadingProjects &&
-    _.orderBy(projectsData, "createdAt", "desc").map((project) => ({
-      name: project.project,
-      label: project.title,
-    }));
-
-  var optionsProjects = [...optionsProjectsInitial, ...optionsProjectsArray];
-
-  console.log(optionsProjects);
-
-  useEffect(() => {}, []);
 
   return (
     <div
@@ -90,7 +67,7 @@ const PostScreamSelectContainter = ({
           name={"project"}
           value={project}
           initialValue={"Allgemein (Alle Ideen)"}
-          options={optionsProjects}
+          options={OptionsProjects()}
           handleDropdown={handleDropdownProject}
         />
       </div>
