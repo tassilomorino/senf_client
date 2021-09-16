@@ -223,16 +223,17 @@ const Geofilter = ({
                 transform: "scale(1)",
               }
             : {
-                position: "absolute",
+                position: "relative",
                 top: "0px",
                 marginTop: "0px",
-                left: "calc(97.5vw - 127px)",
+                left: "0",
                 zIndex: "9",
-                width: "127px",
-                height: "127px",
-                borderRadius: "20px",
+                width: "100vw",
+                height: "60vh",
+                borderRadius: "0px",
                 transform: "scale(1)",
                 overflow: "hidden",
+                zIndex: 0,
               }
         }
       >
@@ -258,16 +259,12 @@ const Geofilter = ({
           {...viewport}
           zoom={openGeofilter ? viewport.zoom : viewport.zoom - 2.5}
           onViewportChange={_onViewportChange}
+          hash={true}
+          viewportChangeMethod={"easeTo"}
+          viewportChangeOptions={{
+            duration: 2700,
+          }}
         >
-          {openGeofilter && (
-            <CustomIconButton
-              name="ArrowLeft"
-              position="fixed"
-              margin="10px"
-              handleButtonClick={handleCloseGeofilter}
-            />
-          )}
-
           <Source id="maine" type="geojson" data={data} />
           <Layer
             id="maine"
@@ -322,13 +319,19 @@ const Geofilter = ({
             </Marker>
           ))}
 
+          <TopicFilter
+            handleTopicSelector={handleTopicSelector}
+            topicsSelected={topicsSelected}
+          ></TopicFilter>
+
           {openGeofilter && (
             <React.Fragment>
-              <TopicFilter
-                handleTopicSelector={handleTopicSelector}
-                topicsSelected={topicsSelected}
-              ></TopicFilter>
-
+              <CustomIconButton
+                name="ArrowLeft"
+                position="fixed"
+                margin="10px"
+                handleButtonClick={handleCloseGeofilter}
+              />
               <CustomButton
                 text={
                   <Trans i18nKey="show_number_ideas" number={number}>

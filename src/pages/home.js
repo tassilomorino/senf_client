@@ -24,8 +24,6 @@ import { clearErrors } from "../redux/actions/errorsActions";
 import lamploader from "../images/lamp.png";
 import PostScream from "../components/postScream/PostScream";
 
-import Appbar from "../components/layout/Appbar";
-
 import InsightsPage from "../components/templates/InsightsPage";
 import DesktopSidebar from "../components/layout/DesktopSidebar";
 
@@ -497,11 +495,6 @@ export class home extends Component {
           </div>
         )}
         <div className="appbar">
-          <Appbar
-            loading={this.state.loading}
-            handleClick={this.handleClick}
-            order={this.state.order}
-          ></Appbar>
           <PostScream
             loadingProjects={loadingProjects}
             projectsData={projects}

@@ -1401,6 +1401,7 @@ input:focus {
   background-color: white;
   padding: 20px;
   padding-bottom: 30px;
+  margin:10px;
 }
 
 .legend {
