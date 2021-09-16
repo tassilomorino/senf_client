@@ -1393,36 +1393,46 @@ input:focus {
 
 .legendwrapper {
   color: black;
-  z-index: 9999;
+  z-index: 9;
   position: relative;
-  width: 65vw;
-  min-width: 200px;
-  height: 130px;
-  left: -10.5vw;
+  width: calc(100% - 177px);
+  height: 80px;
   border-radius: 20px;
-  top: -0.5vw;
   background-color: white;
-  transform: scale(0.75);
-  margin-left: 7px;
   padding: 20px;
+  padding-bottom: 30px;
 }
 
 .legend {
   position: absolute;
 
   top: 0;
-  width: 95%;
+  width: 100%;
   height: 100%;
-  padding-left: 15px;
+  padding-left: 10px;
   left: 0;
   /* border-left: 1px #ffd388 solid; */
 }
 
 .activelegenditem {
-  border: 2px solid black;
+  border: 1px solid black;
   border-radius: 100%;
 
   background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1) 40%, rgba(255, 255, 255, 0) 50%)
+}
+
+
+.MuiFormControlLabel-root{
+height:31px !important
+}
+.MuiTypography-body1{
+
+font-size:13px !important
+}
+
+.MuiSvgIcon-root{
+  width:16px !important;
+  height:16px !important
 }
 
 
@@ -2185,19 +2195,28 @@ input:focus {
     margin-left: -5px;
 
   }
-
-  .legendwrapper {
-    transform: scale(0.63) translateY(-21px);
-    /* top: -5px; */
-    /* transform: translateY(10px); */
-    margin-left: -17px;
-    height: 160px;
-    width: 72vw;
-  }
-
+ 
+  
   .legend {
-    width: 100%;
+    padding-left: 15px;
+    left: 0;
   }
+  .PrivateSwitchBase-root-15{
+    padding:5px !important;
+  }
+
+  .MuiFormControlLabel-root{
+    height:27px !important
+    }
+    .MuiTypography-body1{
+    
+    font-size:10px !important
+    }
+    
+    .MuiSvgIcon-root{
+      width:14px !important;
+      height:14px !important
+    }
 }
 
 @media screen and (max-width: 321px) {

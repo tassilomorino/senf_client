@@ -23,7 +23,7 @@ import Geocoder from "react-mapbox-gl-geocoder";
 import Weblink from "../postModals/Weblink";
 import Contact from "../postModals/Contact";
 import InlineDatePicker from "../postModals/InlineDatePicker";
-import Select from "../../module/Select";
+import Select from "../../module/Selects/Select";
 
 const styles = {
   paper: {

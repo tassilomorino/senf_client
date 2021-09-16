@@ -11,7 +11,7 @@ import _ from "lodash";
 
 import TopicFilter from "../layout/TopicFilter";
 import { isMobileCustom } from "../../util/customDeviceDetect";
-import SortingSelect from "../module/SortingSelect";
+import SortingSelect from "../module/Selects/SortingSelect";
 
 const MyIdeas = ({
   loading,

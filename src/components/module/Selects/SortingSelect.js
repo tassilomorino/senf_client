@@ -5,10 +5,14 @@ import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 
 //Images
-import Arrow from "../../images/icons/sort.png";
+import Arrow from "../../../images/icons/sort.png";
 
 //Components
-import { useOnClickOutside } from "../../hooks/useOnClickOutside";
+import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
+
+const DropDownContainer = styled("div")`
+  position: relative;
+`;
 
 const DropDownButton = styled.button`
   font-family: Futura PT W01 Book;
@@ -34,8 +38,11 @@ const DropDownListContainer = styled.div`
   border-radius: 10px;
   border: 1px solid #e5e5e5;
   width: auto;
+
+  min-width: 130px;
   height: auto;
   box-sizing: border-box;
+  z-index: 99;
 `;
 
 const DropDownList = styled.ul`
@@ -97,35 +104,37 @@ const SortingSelect = ({ handleDropdown }) => {
   }
   return (
     <div ref={outerRef}>
-      <DropDownButton
-        onClick={handleToggle}
-        class="dropbtn"
-        style={{ zIndex: 999 }}
-      >
-        {truncateString(selectedLabel, 12)}
+      <DropDownContainer>
+        <DropDownButton
+          onClick={handleToggle}
+          class="dropbtn"
+          style={{ zIndex: 999 }}
+        >
+          {truncateString(selectedLabel, 12)}
 
-        <img src={Arrow} width="20px" style={{ paddingLeft: "5px" }}></img>
-      </DropDownButton>
-      {open && (
-        <DropDownListContainer>
-          <DropDownList>
-            {options.map((option) => (
-              <ListItem
-                onClick={onOptionClicked(option.name, option.label)}
-                key={Math.random()}
-              >
-                {option.name === selectedOption ? (
-                  <span style={{ fontFamily: "Futura PT W01-Bold" }}>
-                    {truncateString(option.label, 12)}
-                  </span>
-                ) : (
-                  <span>{truncateString(option.label, 12)}</span>
-                )}
-              </ListItem>
-            ))}
-          </DropDownList>
-        </DropDownListContainer>
-      )}
+          <img src={Arrow} width="20px" style={{ paddingLeft: "5px" }}></img>
+        </DropDownButton>
+        {open && (
+          <DropDownListContainer>
+            <DropDownList>
+              {options.map((option) => (
+                <ListItem
+                  onClick={onOptionClicked(option.name, option.label)}
+                  key={Math.random()}
+                >
+                  {option.name === selectedOption ? (
+                    <span style={{ fontFamily: "Futura PT W01-Bold" }}>
+                      {truncateString(option.label, 12)}
+                    </span>
+                  ) : (
+                    <span>{truncateString(option.label, 12)}</span>
+                  )}
+                </ListItem>
+              ))}
+            </DropDownList>
+          </DropDownListContainer>
+        )}
+      </DropDownContainer>
     </div>
   );
 };

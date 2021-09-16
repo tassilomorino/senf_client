@@ -28,8 +28,8 @@ import ChatBorder from "../images/icons/chat.png";
 import LikeIcon from "../images/icons/handsnoclap.png";
 import CreatedAtIcon from "../images/icons/calendar.png";
 import MonitoringEditScream from "../components/monitoringScream/MonitoringEditScream";
-import SortingSelect from "../components/module/SortingSelect";
-import Select from "../components/module/Select";
+import SortingSelect from "../components/module//Selects/SortingSelect";
+import Select from "../components/module/Selects/Select";
 
 const styles = {};
 

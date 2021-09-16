@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import SignNote from "../profile/SignNote";
 import Account from "../profile/Account";
 import InlineInformationPage from "../infocomponents/InlineInformationPage";
-import ScrollTabs from "../module/ScrollTabs";
+import ScrollTabs from "../module/Tabs/ScrollTabs";
 import { MenuData } from "../../data/MenuData";
 
 //ICONS

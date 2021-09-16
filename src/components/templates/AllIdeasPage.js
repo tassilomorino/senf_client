@@ -3,15 +3,22 @@ import React from "react";
 import ToggleDisplay from "react-toggle-display";
 import _ from "lodash";
 import { isMobileCustom } from "../../util/customDeviceDetect";
+import styled, { css, keyframes } from "styled-components";
 
 //Components
 import TopicFilter from "../layout/TopicFilter";
 import Geofilter from "../map/Geofilter";
 import Scream from "../scream/Scream";
-import SortingSelect from "../module/SortingSelect";
 
 //Images
-import lamploader from "../../images/lamp.png";
+import ListHeader from "../module/Headers/ListHeader";
+
+const MobileFilterAndMapWrapper = styled.div`
+  margin-top: 110px;
+  margin-left: 2.5%;
+  width: 95%;
+  z-index: 9;
+`;
 
 const AllIdeasPage = ({
   loading,
@@ -50,69 +57,49 @@ const AllIdeasPage = ({
     <div className="MainAnimationChannels">
       <div>
         <div className="content">
-          <div className="homeHeadermain">
-            {isMobileCustom && (
+          {isMobileCustom && (
+            <MobileFilterAndMapWrapper>
               <TopicFilter
                 handleTopicSelector={handleTopicSelector}
                 topicsSelected={topicsSelected}
               ></TopicFilter>
-            )}
 
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                textAlign: "center",
-              }}
-            >
-              <div className="idea-header">
-                <ToggleDisplay
-                  show={dropdown === "newest" || dropdown === "hottest"}
-                >
-                  <img
-                    src={lamploader}
-                    width="50px"
-                    style={{
-                      transform: "translateY(10px) rotate(30deg)",
-                    }}
-                    alt="lamploader"
-                  ></img>
-                  {dataFinal.length} Ideen{" "}
-                </ToggleDisplay>
-              </div>
+              <Geofilter
+                dataFinal={dataFinal}
+                latitude1={latitude1}
+                latitude2={latitude2}
+                latitude3={latitude3}
+                latitude4={latitude4}
+                longitude1={longitude1}
+                longitude2={longitude2}
+                longitude3={longitude3}
+                longitude4={longitude4}
+                viewport={viewport}
+                _onViewportChange={_onViewportChange}
+                handleRevert={handleRevert}
+                handleNoLocation={handleNoLocation}
+                handleOpenGeofilter={handleOpenGeofilter}
+                handleCloseGeofilter={handleCloseGeofilter}
+                handleResetGeofilter={handleResetGeofilter}
+                openGeofilter={openGeofilter}
+                showGeofilterResults={showGeofilterResults}
+                createGeofilterCircle={createGeofilterCircle}
+                dataNoLocationHandle={dataNoLocationHandle}
+                selectedId={selectedId}
+                handleNoLocation={handleNoLocation}
+                handleTopicSelector={handleTopicSelector}
+                topicsSelected={topicsSelected}
+              />
+            </MobileFilterAndMapWrapper>
+          )}
 
-              <SortingSelect handleDropdown={handleDropdown} />
-            </div>
-          </div>
-
-          <Geofilter
-            dataFinal={dataFinal}
-            latitude1={latitude1}
-            latitude2={latitude2}
-            latitude3={latitude3}
-            latitude4={latitude4}
-            longitude1={longitude1}
-            longitude2={longitude2}
-            longitude3={longitude3}
-            longitude4={longitude4}
-            viewport={viewport}
-            _onViewportChange={_onViewportChange}
-            handleRevert={handleRevert}
-            handleNoLocation={handleNoLocation}
-            handleOpenGeofilter={handleOpenGeofilter}
-            handleCloseGeofilter={handleCloseGeofilter}
-            handleResetGeofilter={handleResetGeofilter}
-            openGeofilter={openGeofilter}
-            showGeofilterResults={showGeofilterResults}
-            createGeofilterCircle={createGeofilterCircle}
-            dataNoLocationHandle={dataNoLocationHandle}
-            selectedId={selectedId}
-            handleNoLocation={handleNoLocation}
-            handleTopicSelector={handleTopicSelector}
-            topicsSelected={topicsSelected}
-          />
+          {!loading && (
+            <ListHeader
+              handleDropdown={handleDropdown}
+              dataFinal={dataFinal}
+              marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
+            />
+          )}
 
           {!loading && (
             <React.Fragment>

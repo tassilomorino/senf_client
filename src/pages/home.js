@@ -110,18 +110,16 @@ export class home extends Component {
     }
 
     setTimeout(() => {
-      if (!isMobileCustom) {
-        this.setState({
-          viewport: {
-            latitude: 50.95,
-            longitude: 6.9503,
-            zoom: 11.5,
-            transitionDuration: 4000,
-            pitch: 30,
-            bearing: 0,
-          },
-        });
-      }
+      this.setState({
+        viewport: {
+          latitude: 50.95,
+          longitude: 6.9503,
+          zoom: 11.5,
+          transitionDuration: 4000,
+          pitch: 30,
+          bearing: 0,
+        },
+      });
     }, 3000);
     if (!isMobileCustom) {
       window.addEventListener("popstate", this.handleOnUrlChange, false);

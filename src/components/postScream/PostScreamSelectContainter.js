@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import _ from "lodash";
 import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../util/customDeviceDetect";
-import CustomSelect from "../module/CustomSelect";
+import CustomSelect from "../module/Selects/CustomSelect";
 import { OptionsProjects } from "../../data/OptionsProjects";
 
 const PostScreamSelectContainter = ({

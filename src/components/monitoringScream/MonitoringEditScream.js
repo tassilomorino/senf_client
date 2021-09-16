@@ -32,9 +32,9 @@ import Weblink from "../../components/modals/postModals/Weblink";
 import Contact from "../../components/modals/postModals/Contact";
 import InlineDatePicker from "../../components/modals/postModals/InlineDatePicker";
 import ToggleDisplay from "react-toggle-display";
-import Tabs from "../module/Tabs";
+import Tabs from "../module/Tabs/Tabs";
 import { EditScreamTabData } from "../../data/EditScreamTabData";
-import Select from "../module/Select";
+import Select from "../module/Selects/Select";
 
 const styles = {
   root: {

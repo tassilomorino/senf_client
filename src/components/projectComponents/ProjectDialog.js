@@ -34,11 +34,11 @@ import PostScream from "../postScream/PostScream";
 import ScreamShare from "../modals/ScreamShare";
 import CalendarComponent from "../calendar/CalendarComponent";
 
-import Tabs from "../module/Tabs";
+import Tabs from "../module/Tabs/Tabs";
 import { ProjectTabData } from "../../data/ProjectTabData";
 
 import "./ProjectDialog.css";
-import { CustomIconButton } from "../module/buttons/CustomButton";
+import { CustomIconButton } from "../module/Buttons/CustomButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -610,7 +610,7 @@ class ProjectDialog extends Component {
               : ProjectTabData.map((item) => item.text).slice(0, 2)
           }
           marginTop={"0px"}
-          marginBottom={"40px"}
+          marginBottom={"20px"}
           lineColor={"white"}
         ></Tabs>
 
