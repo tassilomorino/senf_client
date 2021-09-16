@@ -22,7 +22,7 @@ import Typography from "@material-ui/core/Typography";
 import Slide from "@material-ui/core/Slide";
 import Tabs from "../module/Tabs";
 import { AccountTabData } from "../../data/AccountTabData";
-import { CustomIconButton } from "../module/CustomButton";
+import { CustomIconButton } from "../module/buttons/CustomButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;

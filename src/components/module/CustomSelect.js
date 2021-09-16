@@ -36,6 +36,7 @@ const DropDownListContainer = styled.div`
   width: auto;
   height: auto;
   box-sizing: border-box;
+  z-index: 99;
 `;
 
 const DropDownList = styled.ul`
@@ -109,7 +110,8 @@ const CustomSelect = ({ initialValue, options, handleDropdown }) => {
                 onClick={onOptionClicked(option.name, option.label)}
                 key={Math.random()}
               >
-                {option.name === selectedOption ? (
+                {option.name === selectedOption ||
+                option.label === selectedOption ? (
                   <span style={{ fontFamily: "Futura PT W01-Bold" }}>
                     {truncateString(option.label, 24)}
                   </span>

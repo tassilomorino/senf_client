@@ -16,10 +16,10 @@ import InlineDatePicker from "../modals/postModals/InlineDatePicker";
 import Weblink from "../modals/postModals/Weblink";
 
 //Icons
-import { CircularProgress } from "@material-ui/core";
 import LocationOn from "@material-ui/icons/LocationOn";
-import Select from "../module/Select";
 import CustomSelect from "../module/CustomSelect";
+import { SubmitButton } from "../module/buttons/SubmitButton";
+import { OptionsTopics } from "../../data/OptionsTopics";
 
 const PostScreamFormContent = ({
   classes,
@@ -57,53 +57,6 @@ const PostScreamFormContent = ({
 }) => {
   const { t } = useTranslation();
 
-  const optionsTopics = [
-    { name: "Versorgung", label: t("topics_care") },
-    { name: "Verkehr", label: t("topics_traffic") },
-    {
-      name: "Umwelt und Grün",
-      label: t("topics_ecoAndGreen"),
-    },
-    {
-      name: "Rad",
-      label: t("topics_bike"),
-    },
-    {
-      name: "Inklusion / Soziales",
-      label: t("topics_inclusionAndSocial"),
-    },
-    {
-      name: "Sport / Freizeit",
-      label: t("topics_sportsAndLeisure"),
-    },
-    { name: "Sonstige", label: t("topics_other") },
-  ];
-
-  // const topicsArray = (
-  //   <>
-  //     <option value={"Inklusion / Soziales"} className={classes.formText}>
-  //       Inklusion / Soziales
-  //     </option>
-  //     <option value={"Rad"} className={classes.formText}>
-  //       Rad
-  //     </option>
-  //     <option value={"Sport / Freizeit"} className={classes.formText}>
-  //       Sport / Freizeit
-  //     </option>
-  //     <option value={"Umwelt und Grün"} className={classes.formText}>
-  //       Umwelt und Grün
-  //     </option>
-  //     <option value={"Verkehr"} className={classes.formText}>
-  //       Verkehr
-  //     </option>
-  //     <option value={"Versorgung"} className={classes.formText}>
-  //       Versorgung
-  //     </option>
-  //     <option value={"Sonstige"} className={classes.formText}>
-  //       Sonstige
-  //     </option>
-  //   </>
-  // );
   return (
     <form onSubmit={handleSubmit}>
       <div
@@ -219,38 +172,23 @@ const PostScreamFormContent = ({
               name={"topic"}
               value={topic}
               initialValue={"Wähle das Thema aus"}
-              options={optionsTopics}
+              options={OptionsTopics()}
               handleDropdown={handleDropdown}
             />
-            {/* <Select
-              name={"topic"}
-              value={topic}
-              initialValue={"Wähle das Thema aus"}
-              valuesArray={topicsArray}
-              handleDropdown={handleChange}
-            /> */}
           </div>
         </div>
-
-        <button
-          type="submit"
-          className="submitPostButton buttonWide"
-          disabled={body === "" || title === "" || Out === true}
-          style={
-            locationDecided
-              ? {
-                  display: "block",
-                }
-              : {
-                  display: "none",
-                }
-          }
-        >
-          {t("postScream_shareIdea")}
-          {loading && (
-            <CircularProgress size={30} className={classes.progress} />
-          )}
-        </button>
+        {locationDecided && (
+          <SubmitButton
+            text={t("postScream_shareIdea")}
+            backgroundColor="white"
+            textColor="#353535"
+            position="absolute"
+            bottom="-60px"
+            loading={loading}
+            disabled={body === "" || title === "" || Out === true}
+            animation={true}
+          />
+        )}
       </div>
     </form>
   );

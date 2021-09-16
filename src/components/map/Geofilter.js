@@ -21,7 +21,7 @@ import { isMobileCustom } from "../../util/customDeviceDetect";
 //COOKIES
 import Cookies from "universal-cookie";
 import TopicFilter from "../layout/TopicFilter";
-import { CustomButton, CustomIconButton } from "../module/CustomButton";
+import { CustomButton, CustomIconButton } from "../module/buttons/CustomButton";
 import { Trans } from "react-i18next";
 import setColorByTopic from "../../data/setColorByTopic";
 const cookies = new Cookies();

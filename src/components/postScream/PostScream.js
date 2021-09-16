@@ -27,7 +27,7 @@ import { withRouter } from "react-router-dom";
 import PostScreamFormContent from "./PostScreamFormContent";
 import PostScreamMap from "./PostScreamMap";
 import PostScreamSelectContainter from "./PostScreamSelectContainter";
-import { CustomIconButton } from "../module/CustomButton";
+import { CustomIconButton } from "../module/buttons/CustomButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -259,12 +259,12 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
     });
   };
 
-  const handleDropdownProject = (event) => {
-    event.preventDefault();
-    setProject(event.target.value);
+  const handleDropdownProject = (value) => {
+    // event.preventDefault();
+    setProject(value);
 
     projectsData.forEach((element) => {
-      if (event.target.value === element.project) {
+      if (value === element.project) {
         setViewport({
           zoom: element.zoom,
           latitude: element.centerLat,
@@ -273,7 +273,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
         });
         setGeoData(element.geoData);
       }
-      if (event.target.value === "") {
+      if (value === "") {
         setViewport({
           zoom: 12,
           latitude: 50.93864020643174,

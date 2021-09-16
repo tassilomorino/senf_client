@@ -3,10 +3,11 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import styled, { css, keyframes } from "styled-components";
-import CloseIcon from "../../images/icons/close.png";
-import ArrowLeftIcon from "../../images/icons/arrow-left.png";
-import CircularArrowIcon from "../../images/icons/circular-arrow.png";
-import ShareIcon from "../../images/icons/share.png";
+import CloseIcon from "../../../images/icons/close.png";
+import ArrowLeftIcon from "../../../images/icons/arrow-left.png";
+import CircularArrowIcon from "../../../images/icons/circular-arrow.png";
+import ShareIcon from "../../../images/icons/share.png";
+import { CircularProgress } from "@material-ui/core";
 
 const enterAnimation = keyframes`
     0% {

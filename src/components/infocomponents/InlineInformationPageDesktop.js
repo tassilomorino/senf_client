@@ -32,7 +32,7 @@ import Info from "../../images/icons/info.png";
 
 import DialogContent from "@material-ui/core/DialogContent";
 import Slide from "@material-ui/core/Slide";
-import { CustomButton, CustomIconButton } from "../module/CustomButton";
+import { CustomButton, CustomIconButton } from "../module/buttons/CustomButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
