@@ -1,5 +1,5 @@
 /** @format */
-import React from "react";
+import React, { useState } from "react";
 import ToggleDisplay from "react-toggle-display";
 import _ from "lodash";
 import { isMobileCustom } from "../../util/customDeviceDetect";
@@ -9,15 +9,16 @@ import styled, { css, keyframes } from "styled-components";
 import TopicFilter from "../layout/TopicFilter";
 import Geofilter from "../map/Geofilter";
 import Scream from "../scream/Scream";
+import Swipe from "react-easy-swipe";
 
 //Images
 import ListHeader from "../module/Headers/ListHeader";
-
 const MobileFilterAndMapWrapper = styled.div`
   margin-top: 100px;
   margin-left: 0%;
   width: 100%;
   z-index: 9;
+  position: fixed;
 `;
 
 const AllIdeasPage = ({
@@ -53,6 +54,20 @@ const AllIdeasPage = ({
   handleTopicSelector,
   topicsSelected,
 }) => {
+  const [swipePosition, setSwipePosition] = useState("70vh");
+  const onSwipeMove = (position, event) => {
+    console.log(position.y);
+    if (`${position.y}` < -150) {
+      alert("up");
+      setSwipePosition("25vh");
+    }
+
+    if (`${position.y}` > 150) {
+      alert("down");
+      setSwipePosition("70vh");
+    }
+  };
+
   return order === 1 ? (
     <div className="MainAnimationChannels">
       <div>
@@ -88,51 +103,78 @@ const AllIdeasPage = ({
             </MobileFilterAndMapWrapper>
           )}
 
-          {!loading && (
-            <ListHeader
-              handleDropdown={handleDropdown}
-              dataFinal={dataFinal}
-              marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
-            />
-          )}
+          <div
+            style={{
+              height: "80vh",
+              width: "100%",
+              backgroundColor: "lightgrey",
+              position: "fixed",
+              overflow: "scroll",
+              zIndex: 99,
+              top: swipePosition,
+            }}
+          >
+            <Swipe onSwipeMove={onSwipeMove}>
+              <div
+                style={{
+                  height: "80px",
+                  width: "100%",
+                  backgroundColor: "darkgrey",
+                  position: "fixed",
+                  zIndex: 99,
+                  top: swipePosition,
+                }}
+              >
+                {!loading && (
+                  <ListHeader
+                    handleDropdown={handleDropdown}
+                    dataFinal={dataFinal}
+                    marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
+                  />
+                )}
+              </div>
+            </Swipe>
 
-          {!loading && (
-            <React.Fragment>
-              <ToggleDisplay show={dropdown === "newest"}>
-                <div className={dropdown === "newest" ? "MainAnimation" : ""}>
-                  {_.orderBy(dataFinal, "createdAt", "desc").map((scream) => (
-                    <Scream
-                      loading={loading}
-                      key={scream.screamId}
-                      scream={scream}
-                      projectsData={projectsData}
-                    />
-                  ))}
-                </div>
-              </ToggleDisplay>
-              <ToggleDisplay show={dropdown === "hottest"}>
-                <div className={dropdown === "hottest" ? "MainAnimation" : ""}>
-                  {_.orderBy(dataFinal, "likeCount", "desc").map((scream) => (
-                    <Scream
-                      loading={loading}
-                      key={scream.screamId}
-                      scream={scream}
-                      projectsData={projectsData}
-                    />
-                  ))}
-                </div>
-              </ToggleDisplay>
-              {dataFinal.length > 0 ? (
-                <div className="ende">
-                  ... <br /> Keine weiteren Ideen <br />
-                </div>
-              ) : (
-                <div className="no-ideas-yet">
-                   Mit den ausgewählten Filtern findest du noch keine Ideen.
-                </div>
-              )}
-            </React.Fragment>
-          )}
+            {!loading && (
+              <React.Fragment>
+                <ToggleDisplay show={dropdown === "newest"}>
+                  <div className={dropdown === "newest" ? "MainAnimation" : ""}>
+                    {_.orderBy(dataFinal, "createdAt", "desc").map((scream) => (
+                      <Scream
+                        loading={loading}
+                        key={scream.screamId}
+                        scream={scream}
+                        projectsData={projectsData}
+                      />
+                    ))}
+                  </div>
+                </ToggleDisplay>
+                <ToggleDisplay show={dropdown === "hottest"}>
+                  <div
+                    className={dropdown === "hottest" ? "MainAnimation" : ""}
+                  >
+                    {_.orderBy(dataFinal, "likeCount", "desc").map((scream) => (
+                      <Scream
+                        loading={loading}
+                        key={scream.screamId}
+                        scream={scream}
+                        projectsData={projectsData}
+                      />
+                    ))}
+                  </div>
+                </ToggleDisplay>
+                {dataFinal.length > 0 ? (
+                  <div className="ende">
+                    ... <br /> Keine weiteren Ideen <br />
+                  </div>
+                ) : (
+                  <div className="no-ideas-yet">
+                     Mit den ausgewählten Filtern findest du noch keine Ideen.
+                  </div>
+                )}
+              </React.Fragment>
+            )}
+          </div>
         </div>
       </div>
     </div>
