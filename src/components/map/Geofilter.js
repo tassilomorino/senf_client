@@ -227,7 +227,7 @@ const Geofilter = ({
 
                 zIndex: "9",
                 width: "100vw",
-                height: "60vh",
+                height: "calc(100vh  - 100px)",
                 transform: "scale(1)",
                 overflow: "hidden",
               }

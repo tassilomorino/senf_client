@@ -58,12 +58,10 @@ const AllIdeasPage = ({
   const onSwipeMove = (position, event) => {
     console.log(position.y);
     if (`${position.y}` < -150) {
-      alert("up");
       setSwipePosition("25vh");
     }
 
     if (`${position.y}` > 150) {
-      alert("down");
       setSwipePosition("70vh");
     }
   };
@@ -107,9 +105,14 @@ const AllIdeasPage = ({
             style={{
               height: "80vh",
               width: "100%",
-              backgroundColor: "lightgrey",
+              backgroundImage:
+                "linear-gradient(to bottom, #ffd19b, #ffda53, #ffffff)",
+              backgroundRepeat: "no-repeat",
+              background:
+                "-webkit-linear-gradient(to left, #ffd19b, #ffda53, #ffffff)",
               position: "fixed",
               overflow: "scroll",
+              borderRadius: "20px 20px 0 0",
               zIndex: 99,
               top: swipePosition,
             }}
@@ -117,12 +120,13 @@ const AllIdeasPage = ({
             <Swipe onSwipeMove={onSwipeMove}>
               <div
                 style={{
-                  height: "80px",
+                  height: "70px",
                   width: "100%",
-                  backgroundColor: "darkgrey",
+                  backgroundColor: "#ffd19b",
                   position: "fixed",
                   zIndex: 99,
                   top: swipePosition,
+                  borderRadius: "20px 20px 0 0",
                 }}
               >
                 {!loading && (
@@ -137,6 +141,12 @@ const AllIdeasPage = ({
 
             {!loading && (
               <React.Fragment>
+                <div
+                  style={{
+                    height: "70px",
+                    width: "100%",
+                  }}
+                ></div>
                 <ToggleDisplay show={dropdown === "newest"}>
                   <div className={dropdown === "newest" ? "MainAnimation" : ""}>
                     {_.orderBy(dataFinal, "createdAt", "desc").map((scream) => (
