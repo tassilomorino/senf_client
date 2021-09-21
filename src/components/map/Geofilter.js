@@ -15,7 +15,7 @@ import { isMobileCustom } from "../../util/customDeviceDetect";
 
 //COOKIES
 import TopicFilter from "../layout/TopicFilter";
-import { CustomButton, CustomIconButton } from "../module/Buttons/CustomButton";
+import { CustomButton, CustomIconButton } from "../module/CustomButtons/CustomButton";
 import { Trans } from "react-i18next";
 import setColorByTopic from "../../data/setColorByTopic";
 

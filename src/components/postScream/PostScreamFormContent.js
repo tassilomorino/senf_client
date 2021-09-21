@@ -18,7 +18,7 @@ import Weblink from "../modals/postModals/Weblink";
 //Icons
 import LocationOn from "@material-ui/icons/LocationOn";
 import CustomSelect from "../module/Selects/CustomSelect";
-import { SubmitButton } from "../module/Buttons/SubmitButton";
+import { SubmitButton } from "../module/CustomButtons/SubmitButton";
 import { OptionsTopics } from "../../data/OptionsTopics";
 
 const PostScreamFormContent = ({
