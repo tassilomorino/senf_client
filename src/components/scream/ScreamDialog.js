@@ -59,7 +59,7 @@ import ScreamShare from "../modals/ScreamShare";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
 import AdminMenuScream from "../modals/menuScream/AdminMenuScream";
-import { CustomButton, CustomIconButton } from "../module/Buttons/CustomButton";
+import { CustomButton, CustomIconButton } from "../module/CustomButtons/CustomButton";
 import setColorByTopic from "../../data/setColorByTopic";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
