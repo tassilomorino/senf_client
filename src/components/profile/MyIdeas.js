@@ -82,7 +82,7 @@ const MyIdeas = ({
     );
   return !loading ? (
     <div className="projectIdeascontent">
-      <div className="projectHeader">
+      {/* <div className="projectHeader">
         {isMobileCustom && (
           <TopicFilter
             handleTopicSelector={handleTopicSelector}
@@ -115,7 +115,7 @@ const MyIdeas = ({
 
           <SortingSelect handleDropdown={handleDropdown} />
         </div>
-      </div>
+      </div> */}
 
       <Geofilter
         dataFinal={MyDataFinal}

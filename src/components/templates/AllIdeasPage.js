@@ -55,14 +55,23 @@ const AllIdeasPage = ({
   topicsSelected,
 }) => {
   const [swipePosition, setSwipePosition] = useState("70vh");
-  const onSwipeMove = (position, event) => {
-    console.log(position.y);
-    if (`${position.y}` < -150) {
-      setSwipePosition("25vh");
-    }
+  const [swipeMovePosition, setSwipeMovePosition] = useState(0);
 
-    if (`${position.y}` > 150) {
+  const onSwipeMove = (position, event) => {
+    setSwipeMovePosition(position.y);
+  };
+
+  const onSwipeEnd = (position, event) => {
+    console.log(position.y);
+    if (swipeMovePosition < -150) {
+      setSwipePosition("25vh");
+      setSwipeMovePosition(0);
+    } else if (swipeMovePosition > 150) {
       setSwipePosition("70vh");
+      setSwipeMovePosition(0);
+    } else {
+      setSwipePosition("70vh");
+      setSwipeMovePosition(0);
     }
   };
 
@@ -113,20 +122,31 @@ const AllIdeasPage = ({
               position: "fixed",
               overflow: "scroll",
               borderRadius: "20px 20px 0 0",
-              zIndex: 99,
+              zIndex: 9,
               top: swipePosition,
+              marginTop: swipeMovePosition + "px",
+              transition: "0s",
             }}
           >
-            <Swipe onSwipeMove={onSwipeMove}>
+            <Swipe
+              onSwipeMove={onSwipeMove}
+              onSwipeEnd={onSwipeEnd}
+              style={{
+                height: "70px",
+                width: "100%",
+              }}
+            >
               <div
                 style={{
                   height: "70px",
                   width: "100%",
                   backgroundColor: "#ffd19b",
                   position: "fixed",
-                  zIndex: 99,
+                  zIndex: 15,
                   top: swipePosition,
+                  marginTop: swipeMovePosition + "px",
                   borderRadius: "20px 20px 0 0",
+                  transition: "0s",
                 }}
               >
                 {!loading && (
@@ -141,12 +161,6 @@ const AllIdeasPage = ({
 
             {!loading && (
               <React.Fragment>
-                <div
-                  style={{
-                    height: "70px",
-                    width: "100%",
-                  }}
-                ></div>
                 <ToggleDisplay show={dropdown === "newest"}>
                   <div className={dropdown === "newest" ? "MainAnimation" : ""}>
                     {_.orderBy(dataFinal, "createdAt", "desc").map((scream) => (
