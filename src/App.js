@@ -126,6 +126,8 @@ const token = localStorage.FBIdToken;
 
 console.log(localStorage);
 
+console.log(process.env.REACT_APP_STAGE);
+
 window.store = store;
 
 if (token) {

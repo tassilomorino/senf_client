@@ -27,7 +27,7 @@ import { withRouter } from "react-router-dom";
 import PostScreamFormContent from "./PostScreamFormContent";
 import PostScreamMap from "./PostScreamMap";
 import PostScreamSelectContainter from "./PostScreamSelectContainter";
-import { CustomIconButton } from "../module/Buttons/CustomButton";
+import { CustomIconButton } from "../module/CustomButtons/CustomButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;

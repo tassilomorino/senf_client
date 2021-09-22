@@ -25,7 +25,7 @@ import html2canvas from "html2canvas";
 import Swipe from "react-easy-swipe";
 
 import { isMobileCustom } from "../../util/customDeviceDetect";
-import { CustomIconButton } from "../module/Buttons/CustomButton";
+import { CustomIconButton } from "../module/CustomButtons/CustomButton";
 
 const styles = {
   root: {

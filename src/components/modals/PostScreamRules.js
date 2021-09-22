@@ -4,7 +4,7 @@ import React, { useState, Fragment } from "react";
 import { Trans, useTranslation } from "react-i18next";
 
 import Dialog from "@material-ui/core/Dialog";
-import { CustomButton } from "../module/Buttons/CustomButton";
+import { CustomButton } from "../module/CustomButtons/CustomButton";
 import styled from "styled-components";
 
 const Card = styled.div`

@@ -34,7 +34,7 @@ import Info from "../../images/icons/info.png";
 import CloseIcon from "@material-ui/icons/Close";
 
 import Logo from "../../images/logo.png";
-import { CustomButton } from "../module/Buttons/CustomButton";
+import { CustomButton } from "../module/CustomButtons/CustomButton";
 
 const styles = {
   root: {
