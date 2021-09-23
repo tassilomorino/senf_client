@@ -76,7 +76,7 @@ const TabGradientEnd = styled.div`
 const ScrollPadding = styled.div`
   padding: 5px;
   display: block;
-  pointerevents: none;
+  pointer-events: none;
 `;
 
 const ScrollTabs = ({

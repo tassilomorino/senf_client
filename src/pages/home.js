@@ -34,7 +34,6 @@ import AllIdeasPage from "../components/templates/AllIdeasPage";
 import ProjectsPage from "../components/templates/ProjectsPage";
 import ScreamDialog from "../components/scream/ScreamDialog";
 import ProjectDialog from "../components/projectComponents/ProjectDialog";
-
 const cookies = new Cookies();
 
 const styles = {};
