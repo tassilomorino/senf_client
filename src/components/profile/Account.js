@@ -264,8 +264,6 @@ class Account extends Component {
     cookiesSetDesktop: false,
 
     openGeofilter: false,
-    showGeofilterResults: false,
-    createGeofilterCircle: false,
     dialogStyle: {},
 
     viewport: {
@@ -385,13 +383,9 @@ class Account extends Component {
 
     this.setState({
       latitude1: this.state.viewport.latitude + Addnewtop,
-      longitude1: this.state.viewport.longitude - Addnew,
       latitude2: this.state.viewport.latitude - AddnewBottom,
       longitude2: this.state.viewport.longitude - Addnew,
-      latitude3: this.state.viewport.latitude + Addnewtop,
       longitude3: this.state.viewport.longitude + AddnewRight,
-      latitude4: this.state.viewport.latitude - AddnewBottom,
-      longitude4: this.state.viewport.longitude + AddnewRight,
     });
   };
   handleNoLocation = () => {
@@ -415,17 +409,12 @@ class Account extends Component {
   handleOpenGeofilter = () => {
     this.setState({
       openGeofilter: true,
-      showGeofilterResults: false,
-      createGeofilterCircle: false,
     });
   };
 
   handleCloseGeofilter = () => {
     this.setState({
-      showGeofilterResults: true,
-
       openGeofilter: false,
-      createGeofilterCircle: true,
     });
 
     setTimeout(() => {
@@ -435,10 +424,7 @@ class Account extends Component {
 
   handleResetGeofilter = () => {
     this.setState({
-      showGeofilterResults: true,
-
       openGeofilter: false,
-      createGeofilterCircle: true,
       viewport: {
         zIndex: 9999,
         position: "fixed",
@@ -519,12 +505,8 @@ class Account extends Component {
               myScreams={this.state.myScreams}
               latitude1={this.state.latitude1}
               latitude2={this.state.latitude2}
-              latitude3={this.state.latitude3}
-              latitude4={this.state.latitude4}
-              longitude1={this.state.longitude1}
               longitude2={this.state.longitude2}
               longitude3={this.state.longitude3}
-              longitude4={this.state.longitude4}
               viewport={this.state.viewport}
               _onViewportChange={this._onViewportChange}
               handleNoLocation={this.handleNoLocation}
@@ -537,8 +519,6 @@ class Account extends Component {
               handleCloseGeofilter={this.handleCloseGeofilter}
               handleResetGeofilter={this.handleResetGeofilter}
               openGeofilter={this.state.openGeofilter}
-              showGeofilterResults={this.state.showGeofilterResults}
-              createGeofilterCircle={this.state.createGeofilterCircle}
               selectedId={this.state.selectedId}
               screamIdParam={screamIdParam}
               _onViewportChangeDesktop={_onViewportChangeDesktop}

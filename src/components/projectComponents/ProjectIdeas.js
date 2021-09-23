@@ -29,13 +29,9 @@ const ProjectIdeas = ({
 
   viewport,
   latitude1,
-  longitude1,
   latitude2,
   longitude2,
-  latitude3,
   longitude3,
-  latitude4,
-  longitude4,
   handleRevert,
   _onViewportChange,
   onClick,
@@ -49,8 +45,6 @@ const ProjectIdeas = ({
   handleCloseGeofilter,
   handleResetGeofilter,
   openGeofilter,
-  showGeofilterResults,
-  createGeofilterCircle,
   dataNoLocationHandle,
   selectedId,
   handleNoLocation,
@@ -107,12 +101,8 @@ const ProjectIdeas = ({
             dataFinal={dataFinalChannel}
             latitude1={latitude1}
             latitude2={latitude2}
-            latitude3={latitude3}
-            latitude4={latitude4}
-            longitude1={longitude1}
             longitude2={longitude2}
             longitude3={longitude3}
-            longitude4={longitude4}
             viewport={viewport}
             _onViewportChange={_onViewportChange}
             onClick={onClick}
@@ -122,8 +112,6 @@ const ProjectIdeas = ({
             handleCloseGeofilter={handleCloseGeofilter}
             handleResetGeofilter={handleResetGeofilter}
             openGeofilter={openGeofilter}
-            showGeofilterResults={showGeofilterResults}
-            createGeofilterCircle={createGeofilterCircle}
             dataNoLocationHandle={dataNoLocationHandle}
             selectedId={selectedId}
             loadingProjects={loadingProjects}
@@ -134,13 +122,12 @@ const ProjectIdeas = ({
         </MobileFilterAndMapWrapper>
       )}
 
-      {!loading && (
-        <ListHeader
-          handleDropdown={handleDropdown}
-          dataFinal={dataFinalChannel}
-          marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
-        />
-      )}
+      <ListHeader
+        loading={loading}
+        handleDropdown={handleDropdown}
+        dataFinal={dataFinalChannel}
+        marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
+      />
 
       <ToggleDisplay show={dropdown === "newest"}>
         <div className={dropdown === "newest" ? "MainAnimation" : ""}>

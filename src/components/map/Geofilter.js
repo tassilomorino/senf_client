@@ -15,12 +15,14 @@ import { isMobileCustom } from "../../util/customDeviceDetect";
 
 //COOKIES
 import TopicFilter from "../layout/TopicFilter";
-import { CustomButton, CustomIconButton } from "../module/CustomButtons/CustomButton";
+import {
+  CustomButton,
+  CustomIconButton,
+} from "../module/CustomButtons/CustomButton";
 import { Trans } from "react-i18next";
 import setColorByTopic from "../../data/setColorByTopic";
 
 const Geofilter = ({
-  classes,
   viewport,
   latitude1,
   latitude2,
@@ -33,7 +35,6 @@ const Geofilter = ({
   handleCloseGeofilter,
   handleResetGeofilter,
   openGeofilter,
-  showGeofilterResults,
 
   dataNoLocationHandle,
   selectedId,

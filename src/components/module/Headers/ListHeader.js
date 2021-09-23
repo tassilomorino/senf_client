@@ -34,22 +34,24 @@ const Wrapper = styled.div`
   animation: ${enterAnimation} 0.7s;
 `;
 
-const ListHeader = ({ dataFinal, handleDropdown, marginTop }) => {
+const ListHeader = ({ loading, dataFinal, handleDropdown, marginTop }) => {
   return (
-    <Wrapper marginTop={marginTop}>
-      <div className="idea-header">
-        <img
-          src={lamploader}
-          width="50px"
-          style={{
-            transform: "translateY(10px) rotate(30deg)",
-          }}
-          alt="lamploader"
-        ></img>{" "}
-        {dataFinal.length} Ideen{" "}
-      </div>
-      <SortingSelect handleDropdown={handleDropdown} />{" "}
-    </Wrapper>
+    !loading && (
+      <Wrapper marginTop={marginTop}>
+        <div className="idea-header">
+          <img
+            src={lamploader}
+            width="50px"
+            style={{
+              transform: "translateY(10px) rotate(30deg)",
+            }}
+            alt="lamploader"
+          ></img>{" "}
+          {dataFinal.length} Ideen{" "}
+        </div>
+        <SortingSelect handleDropdown={handleDropdown} />{" "}
+      </Wrapper>
+    )
   );
 };
 

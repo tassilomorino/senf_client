@@ -21,13 +21,9 @@ const MyIdeas = ({
 
   viewport,
   latitude1,
-  longitude1,
   latitude2,
   longitude2,
-  latitude3,
   longitude3,
-  latitude4,
-  longitude4,
   handleRevert,
   _onViewportChange,
   onClick,
@@ -41,8 +37,7 @@ const MyIdeas = ({
   handleCloseGeofilter,
   handleResetGeofilter,
   openGeofilter,
-  showGeofilterResults,
-  createGeofilterCircle,
+
   dataNoLocationHandle,
   selectedId,
   handleNoLocation,
@@ -121,12 +116,8 @@ const MyIdeas = ({
         dataFinal={MyDataFinal}
         latitude1={latitude1}
         latitude2={latitude2}
-        latitude3={latitude3}
-        latitude4={latitude4}
-        longitude1={longitude1}
         longitude2={longitude2}
         longitude3={longitude3}
-        longitude4={longitude4}
         viewport={viewport}
         _onViewportChange={_onViewportChange}
         onClick={onClick}
@@ -136,8 +127,6 @@ const MyIdeas = ({
         handleCloseGeofilter={handleCloseGeofilter}
         handleResetGeofilter={handleResetGeofilter}
         openGeofilter={openGeofilter}
-        showGeofilterResults={showGeofilterResults}
-        createGeofilterCircle={createGeofilterCircle}
         dataNoLocationHandle={dataNoLocationHandle}
         selectedId={selectedId}
         handleTopicSelector={handleTopicSelector}
