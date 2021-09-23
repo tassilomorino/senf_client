@@ -30,3 +30,10 @@ export const setMapBounds = (viewport, boundAdds) => (dispatch) => {
     payload: bounds,
   });
 };
+
+export const setResetMapBounds = (bounds) => (dispatch) => {
+  dispatch({
+    type: SET_MAP_BOUNDS,
+    payload: bounds,
+  });
+};

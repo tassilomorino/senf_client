@@ -30,7 +30,6 @@ const DesktopSidebar = ({
   handleClick,
   handleTopicSelector,
   topicsSelected,
-  handleCookies,
   deleteAccount,
   handleLogout,
   loadingProjects,
@@ -47,11 +46,7 @@ const DesktopSidebar = ({
         <h1 className="logoWeb">
           <img src={Logo} width="100px"></img>
         </h1>
-        <InlineInformationPageDesktop
-          handleCookies={handleCookies}
-          loading={loading}
-          classes={classes}
-        />
+        <InlineInformationPageDesktop loading={loading} classes={classes} />
 
         {!authenticated ? (
           <div className="profile">

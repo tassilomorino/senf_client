@@ -24,7 +24,7 @@ import { connect } from "react-redux";
 import { closeScream } from "../../redux/actions/screamActions";
 import { closeProject } from "../../redux/actions/projectActions";
 import { clearErrors } from "../../redux/actions/errorsActions";
-
+import { setMapViewport } from "../../redux/actions/mapActions";
 import Slide from "@material-ui/core/Slide";
 
 //Components
@@ -320,7 +320,7 @@ class ProjectDialog extends Component {
           const zoom = this.props.project.zoom;
 
           if (!isMobileCustom) {
-            this.props.zoomToBounds(centerLat, centerLong, zoom);
+            this.zoomToBounds(centerLat, centerLong, zoom);
           } else {
             this.setState({
               viewport: {
@@ -506,6 +506,18 @@ class ProjectDialog extends Component {
     });
 
     this.props.closeScream();
+  };
+
+  zoomToBounds = (centerLat, centerLong, zoom) => {
+    const viewport = {
+      latitude: centerLat,
+      longitude: centerLong,
+      zoom: zoom,
+      transitionDuration: 1000,
+      pitch: 30,
+      bearing: 0,
+    };
+    this.props.setMapViewport(viewport);
   };
 
   render() {
@@ -758,7 +770,6 @@ class ProjectDialog extends Component {
             handleNoLocation={this.handleNoLocation}
             dataNoLocationHandle={this.dataNoLocationHandle}
             _onViewportChangeDesktop={this._onViewportChangeDesktop}
-            viewport={viewport}
             selectedId={this.state.selectedId}
             showTitles={this.state.showTitles}
             mapDesktopShowResults={this.mapDesktopShowResults}
@@ -775,6 +786,7 @@ ProjectDialog.propTypes = {
   closeScream: PropTypes.func.isRequired,
   openProject: PropTypes.func.isRequired,
   closeProject: PropTypes.func.isRequired,
+  setMapViewport: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -789,6 +801,7 @@ const mapActionsToProps = {
   clearErrors,
   closeScream,
   closeProject,
+  setMapViewport,
 };
 
 export default connect(

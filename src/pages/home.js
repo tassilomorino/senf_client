@@ -15,7 +15,11 @@ import {
   closeProject,
 } from "../redux/actions/projectActions";
 
-import { setMapBounds } from "../redux/actions/mapActions";
+import {
+  setMapViewport,
+  setMapBounds,
+  setResetMapBounds,
+} from "../redux/actions/mapActions";
 
 import { isMobileCustom } from "../util/customDeviceDetect";
 
@@ -107,16 +111,15 @@ export class home extends Component {
     }
 
     setTimeout(() => {
-      this.setState({
-        viewport: {
-          latitude: 50.95,
-          longitude: 6.9503,
-          zoom: 11.5,
-          transitionDuration: 4000,
-          pitch: 30,
-          bearing: 0,
-        },
-      });
+      const viewport = {
+        latitude: 50.95,
+        longitude: 6.9503,
+        zoom: 11.5,
+        transitionDuration: 4000,
+        pitch: 30,
+        bearing: 0,
+      };
+      this.props.setMapViewport(viewport);
     }, 3000);
     if (!isMobileCustom) {
       window.addEventListener("popstate", this.handleOnUrlChange, false);
@@ -164,14 +167,15 @@ export class home extends Component {
     } else {
       setTimeout(() => {
         if ((lat < 50.95) | (lat > 50.82)) {
-          this.setState({
-            viewport: {
-              zoom: 16.5,
-              pitch: 30,
-              latitude: lat,
-              longitude: long,
-            },
-          });
+          const viewport = {
+            latitude: lat,
+            longitude: long,
+            zoom: 16.5,
+            transitionDuration: 4000,
+            pitch: 30,
+            bearing: 0,
+          };
+          this.props.setMapViewport(viewport);
         } else {
           this.props.history.push("/");
           window.location.reload();
@@ -260,42 +264,31 @@ export class home extends Component {
     }
   };
 
-  _onViewportChange = (viewport) => {
-    this.setState({ viewport, selectedId: "" });
+  // _onViewportChange = (viewport) => {
+  //   this.setState({ viewport, selectedId: "" });
 
-    var metersPerPx =
-      (156543.03392 *
-        Math.cos((this.state.viewport.latitude * Math.PI) / 180)) /
-      Math.pow(2, this.state.viewport.zoom);
+  //   var metersPerPx =
+  //     (156543.03392 *
+  //       Math.cos((this.state.viewport.latitude * Math.PI) / 180)) /
+  //     Math.pow(2, this.state.viewport.zoom);
 
-    var Addnew = metersPerPx / 500;
-    var Addnewtop = metersPerPx / 1000;
-    var AddnewRight = metersPerPx / 500;
-    var AddnewBottom = metersPerPx / 1000;
+  //   var Addnew = metersPerPx / 500;
+  //   var Addnewtop = metersPerPx / 1000;
+  //   var AddnewRight = metersPerPx / 500;
+  //   var AddnewBottom = metersPerPx / 1000;
 
-    this.setState({
-      latitude1: this.state.viewport.latitude + Addnewtop,
-      latitude2: this.state.viewport.latitude - AddnewBottom,
-      longitude2: this.state.viewport.longitude - Addnew,
-      longitude3: this.state.viewport.longitude + AddnewRight,
-    });
-  };
+  //   this.setState({
+  //     latitude1: this.state.viewport.latitude + Addnewtop,
+  //     latitude2: this.state.viewport.latitude - AddnewBottom,
+  //     longitude2: this.state.viewport.longitude - Addnew,
+  //     longitude3: this.state.viewport.longitude + AddnewRight,
+  //   });
+  // };
 
   _onViewportChangeDesktop = (viewport) => {
-    this.setState({ viewport, selectedId: "" });
-  };
+    this.props.setMapViewport(viewport);
 
-  zoomToBounds = (centerLat, centerLong, zoom) => {
-    this.setState({
-      viewport: {
-        latitude: centerLat,
-        longitude: centerLong,
-        zoom: zoom,
-        transitionDuration: 1000,
-        pitch: 30,
-        bearing: 0,
-      },
-    });
+    this.setState({ selectedId: "" });
   };
 
   mapDesktopShowResults = (viewport) => {
@@ -305,10 +298,6 @@ export class home extends Component {
 
     const boundAdds = [200, 200, 200, 300];
     this.props.setMapBounds(viewport, boundAdds);
-
-    this.setState({
-      viewport: { ...viewport, pitch: 31 },
-    });
 
     this.props.closeScream();
 
@@ -320,32 +309,25 @@ export class home extends Component {
   };
 
   mapDesktopReset = () => {
-    this.setState({
-      viewport: {
-        zoom: 11.5,
-        pitch: 30,
-        latitude: 50.95,
-        longitude: 6.9503,
-      },
-    });
-    this.setState({
+    const viewport = {
+      zoom: 11.5,
+      pitch: 30,
+      latitude: 50.95,
+      longitude: 6.9503,
+    };
+
+    this.props.setMapViewport(viewport);
+
+    const bounds = {
       latitude1: 51.08,
       latitude2: 50.79,
       longitude2: 6.712,
       longitude3: 7.17,
-    });
+    };
+
+    this.props.setResetMapBounds(bounds);
 
     this.props.closeScream();
-  };
-
-  handleCookies = (cookie_settings) => {
-    cookies.set("Cookie_settings", cookie_settings, {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 90,
-      sameSite: "none",
-      secure: true,
-    });
-    this.setState({ cookiesSetDesktop: true });
   };
 
   handleNoLocation = () => {
@@ -497,7 +479,6 @@ export class home extends Component {
           topicsSelected={this.state.topicsSelected}
           handleCloseInfoPageDesktop={this.handleCloseInfoPageDesktop}
           cookiesSetDesktop={this.state.cookiesSetDesktop}
-          handleCookies={this.handleCookies}
           deleteAccount={this.deleteAccount}
           handleLogout={this.handleLogout}
           loadingProjects={loadingProjects}
@@ -514,7 +495,6 @@ export class home extends Component {
           dataNoLocationHandle={this.dataNoLocationHandle}
           _onViewportChangeDesktop={this._onViewportChangeDesktop}
           mapDesktopShowResults={this.mapDesktopShowResults}
-          viewport={this.state.viewport}
           selectedId={this.state.selectedId}
           showTitles={this.state.showTitles}
           mapDesktopShowResults={this.mapDesktopShowResults}
@@ -576,7 +556,6 @@ export class home extends Component {
                 openProject={this.props.UI.openProject}
                 screamIdParam={this.state.screamIdParam}
                 _onViewportChangeDesktop={this._onViewportChangeDesktop}
-                zoomToBounds={this.zoomToBounds}
                 showTitles={this.state.showTitles}
                 handleClick={this.handleClick}
                 latitude1={this.state.latitude1}
@@ -614,7 +593,9 @@ home.propTypes = {
   openProject: PropTypes.func.isRequired,
   closeProject: PropTypes.func.isRequired,
 
+  setMapViewport: PropTypes.func.isRequired,
   setMapBounds: PropTypes.func.isRequired,
+  setResetMapBounds: PropTypes.func.isRequired,
 };
 
 const mapActionsToProps = {
@@ -626,7 +607,9 @@ const mapActionsToProps = {
   openScream,
   openProject,
   closeProject,
+  setMapViewport,
   setMapBounds,
+  setResetMapBounds,
 };
 
 const mapStateToProps = (state) => ({

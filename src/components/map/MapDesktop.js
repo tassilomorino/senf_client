@@ -24,7 +24,10 @@ import MapGL, {
 
 //COOKIES
 import Cookies from "universal-cookie";
-import { CustomButton, CustomIconButton } from "../module/CustomButtons/CustomButton";
+import {
+  CustomButton,
+  CustomIconButton,
+} from "../module/CustomButtons/CustomButton";
 import setColorByTopic from "../../data/setColorByTopic";
 const cookies = new Cookies();
 
@@ -49,7 +52,6 @@ const styles = {
 const MapDesktop = ({
   loadingProjects,
   classes,
-  viewport,
   _onViewportChangeDesktop,
   dataNoLocationHandle,
   selectedId,
@@ -69,6 +71,8 @@ const MapDesktop = ({
   const [hoverLong, setHoverLong] = useState("");
   const [hoverTitle, setHoverTitle] = useState("");
   const [hoverLikeCount, setHoverLikeCount] = useState("");
+
+  const viewport = useSelector((state) => state.data.mapViewport);
 
   const pushScreamId = (screamId) => {
     dispatch(openScream(screamId));
