@@ -43,7 +43,6 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.1.1",
     "react-share": "^3.0.1",
-    "react-spring": "^8.0.27",
     "react-toggle-display": "^2.2.0",
     "react-wordcloud": "^1.2.3",
     "redux": "^4.0.5",
