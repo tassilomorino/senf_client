@@ -1,14 +1,13 @@
 /** @format */
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBbVacMvYfdUG96Ez8UVWbXZPO3f4HnjGY",
-  authDomain: "senf-dev.firebaseapp.com",
-  databaseURL:
-    "https://senf-dev-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "senf-dev",
-  storageBucket: "senf-dev.appspot.com",
-  messagingSenderId: "665148664729",
-  appId: "1:665148664729:web:0cde2c0ef4fe389235c108",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECTID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGEBUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
 export default firebaseConfig;
