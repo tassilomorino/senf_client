@@ -42,7 +42,6 @@ const ShadowBox = styled.div`
   margin-top: ${(props) => props.marginTop && props.marginTop + "px"};
   box-shadow: rgb(38, 57, 77, 0.4) 0px 20px 30px -15px;
   z-index: 14;
-  transition: 5s ease-in;
   display: ${(props) => props.display && props.display};
 `;
 
