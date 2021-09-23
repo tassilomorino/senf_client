@@ -2,6 +2,10 @@
 import React, { useState } from "react";
 import _ from "lodash";
 import { isMobileCustom } from "../../util/customDeviceDetect";
+
+import { useSelector, useDispatch } from "react-redux";
+import { setMapBounds } from "../../redux/actions/mapActions";
+
 import styled, { keyframes } from "styled-components";
 import Swipe from "react-easy-swipe";
 
@@ -87,7 +91,6 @@ const AllIdeasPage = ({
   order,
   dropdown,
   handleDropdown,
-  _onViewportChange,
   handleRevert,
   openGeofilter,
   handleOpenGeofilter,
@@ -101,8 +104,6 @@ const AllIdeasPage = ({
   selectedId,
   handleNoLocation,
 
-  viewport,
-
   dataFinal,
   projectsData,
   handleTopicSelector,
@@ -111,6 +112,9 @@ const AllIdeasPage = ({
   const [swipePosition, setSwipePosition] = useState("70vh");
   const [swipeMovePosition, setSwipeMovePosition] = useState(0);
   const [shadow, setShadow] = useState(false);
+
+  const mapViewport = useSelector((state) => state.data.mapViewport);
+  const dispatch = useDispatch();
 
   const onSwipeMove = (position, event) => {
     setSwipeMovePosition(position.y);
@@ -130,8 +134,10 @@ const AllIdeasPage = ({
     }
   };
 
-  const hideScrollContainer = () => {
-    alert("hi");
+  const _onViewportChange = (viewport) => {
+    const boundAdds = [500, 1000, 500, 1000];
+    dispatch(setMapBounds(viewport, boundAdds));
+
     setSwipePosition("90vh");
     setSwipeMovePosition(0);
   };
@@ -157,9 +163,8 @@ const AllIdeasPage = ({
               latitude2={latitude2}
               longitude2={longitude2}
               longitude3={longitude3}
-              viewport={viewport}
+              viewport={mapViewport}
               _onViewportChange={_onViewportChange}
-              hideScrollContainer={hideScrollContainer}
               handleRevert={handleRevert}
               handleNoLocation={handleNoLocation}
               handleOpenGeofilter={handleOpenGeofilter}

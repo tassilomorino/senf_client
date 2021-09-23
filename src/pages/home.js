@@ -15,6 +15,8 @@ import {
   closeProject,
 } from "../redux/actions/projectActions";
 
+import { setMapBounds } from "../redux/actions/mapActions";
+
 import { isMobileCustom } from "../util/customDeviceDetect";
 
 import { logoutUser } from "../redux/actions/userActions";
@@ -301,21 +303,10 @@ export class home extends Component {
       this.setState({ order: 1 });
     }
 
-    var metersPerPx =
-      (156543.03392 *
-        Math.cos((this.state.viewport.latitude * Math.PI) / 180)) /
-      Math.pow(2, this.state.viewport.zoom);
-
-    var Addnew = metersPerPx / 200;
-    var Addnewtop = metersPerPx / 200;
-    var AddnewRight = metersPerPx / 200;
-    var AddnewBottom = metersPerPx / 300;
+    const boundAdds = [200, 200, 200, 300];
+    this.props.setMapBounds(viewport, boundAdds);
 
     this.setState({
-      latitude1: this.state.viewport.latitude + Addnewtop,
-      latitude2: this.state.viewport.latitude - AddnewBottom,
-      longitude2: this.state.viewport.longitude - Addnew,
-      longitude3: this.state.viewport.longitude + AddnewRight,
       viewport: { ...viewport, pitch: 31 },
     });
 
@@ -450,16 +441,19 @@ export class home extends Component {
   };
 
   render() {
-    const { screams, loading, projects, loadingProjects } = this.props.data;
+    const { screams, loading, projects, loadingProjects, mapBounds } =
+      this.props.data;
     const { classes } = this.props;
+
+    console.log(mapBounds);
 
     const dataFinal = screams.filter(
       ({ Thema, lat, long, status }) =>
         this.state.topicsSelected.includes(Thema) &&
-        lat <= this.state.latitude1 &&
-        lat >= this.state.latitude2 &&
-        long >= this.state.longitude2 &&
-        long <= this.state.longitude3 &&
+        lat <= mapBounds.latitude1 &&
+        lat >= mapBounds.latitude2 &&
+        long >= mapBounds.longitude2 &&
+        long <= mapBounds.longitude3 &&
         status === "None"
     );
 
@@ -619,6 +613,8 @@ home.propTypes = {
   openScream: PropTypes.func.isRequired,
   openProject: PropTypes.func.isRequired,
   closeProject: PropTypes.func.isRequired,
+
+  setMapBounds: PropTypes.func.isRequired,
 };
 
 const mapActionsToProps = {
@@ -630,6 +626,7 @@ const mapActionsToProps = {
   openScream,
   openProject,
   closeProject,
+  setMapBounds,
 };
 
 const mapStateToProps = (state) => ({
