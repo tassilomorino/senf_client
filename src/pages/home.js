@@ -427,7 +427,7 @@ export class home extends Component {
           mapDesktopShowResults={this.mapDesktopShowResults}
           showTitles={this.state.showTitles}
           mapDesktopShowResults={this.mapDesktopShowResults}
-          mapDesktopReset={this.handleMapBoundsReset}
+          handleMapBoundsReset={this.handleMapBoundsReset}
         ></MapDesktop>
 
         {!this.props.UI.openInfoPage && (
@@ -452,7 +452,7 @@ export class home extends Component {
               showDemand={this.state.showDemand}
               handleClick={this.state.handleClick}
               handleDropdown={this.handleDropdown}
-              handleResetGeofilter={this.handleMapBoundsReset}
+              handleMapBoundsReset={this.handleMapBoundsReset}
               projectsData={projects}
               _onViewportChange={this._onViewportChange}
               dropdown={this.state.dropdown}

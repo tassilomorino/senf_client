@@ -92,10 +92,8 @@ const AllIdeasPage = ({
   dropdown,
   handleDropdown,
   handleRevert,
-  openGeofilter,
-  handleOpenGeofilter,
   handleCloseGeofilter,
-  handleResetGeofilter,
+  handleMapBoundsReset,
   latitude1,
   latitude2,
   longitude2,
@@ -163,10 +161,8 @@ const AllIdeasPage = ({
               viewport={mapViewport}
               _onViewportChange={_onViewportChange}
               handleRevert={handleRevert}
-              handleOpenGeofilter={handleOpenGeofilter}
               handleCloseGeofilter={handleCloseGeofilter}
-              handleResetGeofilter={handleResetGeofilter}
-              openGeofilter={openGeofilter}
+              handleMapBoundsReset={handleMapBoundsReset}
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
             />

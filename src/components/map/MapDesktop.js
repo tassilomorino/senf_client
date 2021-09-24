@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../util/customDeviceDetect";
-
+import styled from "styled-components";
 //Redux
 import { useDispatch, useSelector } from "react-redux";
 import { openScream } from "../../redux/actions/screamActions";
@@ -30,6 +30,22 @@ import {
 } from "../module/CustomButtons/CustomButton";
 import setColorByTopic from "../../data/setColorByTopic";
 import NoLocationPopUp from "./NoLocationPopUp";
+import { DesktopMapButtons } from "./DesktopMapButtons";
+
+const OpenIdeaButton = styled.div`
+  position: absolute;
+  width: ${(props) => 7 + props.likeCount / 2 + "px"};
+  height: ${(props) => 7 + props.likeCount / 2 + "px"};
+  min-width: unset;
+
+  margin-left: ${(props) => -((7 + props.likeCount) / 4) + "px"};
+  margin-top: ${(props) => -(7 + props.likeCount) / 4 + "px"};
+  border-radius: 100%;
+  border: 1px white solid;
+  background-color: ${(props) => setColorByTopic(props.Thema)};
+  opacity: 1;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 9px 38px, rgba(0, 0, 0, 0.15) 0px 5px 5px;
+`;
 
 const styles = {
   root: {
@@ -71,7 +87,7 @@ const MapDesktop = ({
 
   const viewport = useSelector((state) => state.data.mapViewport);
 
-  const pushScreamId = (screamId) => {
+  const fetchDataScream = (screamId) => {
     dispatch(openScream(screamId));
   };
 
@@ -160,29 +176,11 @@ const MapDesktop = ({
               "fill-opacity": 0.3,
             }}
           />
-
-          {!openInfoPage && (
-            <React.Fragment>
-              <CustomButton
-                text={t("map_filterIdeas")}
-                backgroundColor="white"
-                textColor="#353535"
-                position="fixed"
-                top="40px"
-                animation={true}
-                handleButtonClick={() => mapDesktopShowResults(viewport)}
-              />
-              <CustomIconButton
-                name="CircularArrow"
-                margin="0px"
-                position="fixed"
-                top="40px"
-                marginLeft="calc(50% + 200px)"
-                handleButtonClick={mapDesktopReset}
-                animation={true}
-              />
-            </React.Fragment>
-          )}
+          <DesktopMapButtons
+            mapDesktopShowResults={mapDesktopShowResults}
+            mapDesktopReset={mapDesktopReset}
+            viewport={viewport}
+          />
 
           <div style={{ zIndex: 90 }}>
             {dataFinalMap.map((element) => (
@@ -191,7 +189,11 @@ const MapDesktop = ({
                 longitude={element.long}
                 latitude={element.lat}
               >
-                <div
+                <OpenIdeaButton
+                  setColorByTopic={setColorByTopic}
+                  likeCount={element.likeCount}
+                  Thema={element.Thema}
+                  onClick={() => fetchDataScream(element.screamId)}
                   onMouseEnter={() => {
                     setHoverScreamId(element.screamId);
                     setHoverLat(element.lat);
@@ -208,38 +210,12 @@ const MapDesktop = ({
                       setHoverLikeCount("");
                     }, 10000)
                   }
-                  // onMouseOver={this.handleMouse}
-                  style={{
-                    position: "absolute",
-                    width: 7 + element.likeCount / 2 + "px",
-                    marginLeft: -((7 + element.likeCount) / 4) + "px",
-                    height: 7 + element.likeCount / 2 + "px",
-                    marginTop: -(7 + element.likeCount) / 4 + "px",
-                    borderRadius: "100%",
-                    border: "1px white solid",
-                    backgroundColor: setColorByTopic(element.Thema),
-                    opacity: "1",
-                  }}
                 >
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      position: "absolute",
-                      top: "0",
-                      left: 0,
-                      borderRadius: "100%",
-                      overflow: "hidden",
-                      boxShadow:
-                        "rgba(0, 0, 0, 0.1) 0px 9px 38px, rgba(0, 0, 0, 0.15) 0px 5px 5px",
-                    }}
-                  >
-                    <button
-                      onClick={() => pushScreamId(element.screamId)}
-                      className="buttonExpand ripple"
-                    ></button>
-                  </div>
-                </div>
+                  <button
+                    onClick={() => fetchDataScream(element.screamId)}
+                    className="buttonExpand ripple"
+                  />
+                </OpenIdeaButton>
               </Marker>
             ))}
 

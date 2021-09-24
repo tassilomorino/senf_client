@@ -1,13 +1,12 @@
 /** @format */
 
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-
+import styled from "styled-components";
 // Redux stuff
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { openScream } from "../../redux/actions/screamActions";
-import { setResetMapBounds } from "../../redux/actions/mapActions";
 
 //MAPSTUF
 import MapGL, { Source, Layer, Marker } from "@urbica/react-map-gl";
@@ -16,21 +15,32 @@ import { isMobileCustom } from "../../util/customDeviceDetect";
 
 //COOKIES
 import TopicFilter from "../layout/TopicFilter";
-import {
-  CustomButton,
-  CustomIconButton,
-} from "../module/CustomButtons/CustomButton";
-import { Trans } from "react-i18next";
 import setColorByTopic from "../../data/setColorByTopic";
 import NoLocationPopUp from "./NoLocationPopUp";
+import MobileMapButtons from "./MobileMapButtons";
+
+const OpenIdeaButton = styled.div`
+  position: absolute;
+  width: ${(props) => 7 + props.likeCount / 2 + "px"};
+  height: ${(props) => 7 + props.likeCount / 2 + "px"};
+  min-width: unset;
+
+  margin-left: ${(props) => -((7 + props.likeCount) / 4) + "px"};
+  margin-top: ${(props) => -(7 + props.likeCount) / 4 + "px"};
+  border-radius: 100%;
+  border: 1px white solid;
+  background-color: ${(props) => setColorByTopic(props.Thema)};
+  opacity: 1;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 9px 38px, rgba(0, 0, 0, 0.15) 0px 5px 5px;
+`;
 
 const Geofilter = ({
   viewport,
   _onViewportChange,
   dataFinal,
 
-  handleCloseGeofilter,
-  handleResetGeofilter,
+  handleShowResults,
+  handleMapBoundsReset,
 
   loadingProjects,
   geoData,
@@ -38,9 +48,6 @@ const Geofilter = ({
   topicsSelected,
 }) => {
   const dispatch = useDispatch();
-
-  const { screams } = useSelector((state) => state.data);
-  const { mapBounds } = useSelector((state) => state.data);
 
   const fetchDataScream = (screamId) => {
     dispatch(openScream(screamId));
@@ -85,8 +92,8 @@ const Geofilter = ({
 
   const number = dataFinal.length;
 
-  return isMobileCustom ? (
-    <div>
+  return (
+    isMobileCustom && (
       <div
         style={{
           position: "relative",
@@ -128,39 +135,18 @@ const Geofilter = ({
               longitude={element.long}
               latitude={element.lat}
             >
-              <div
-                style={{
-                  position: "absolute",
-                  width: 7 + element.likeCount / 2 + "px",
-                  marginLeft: -((7 + element.likeCount) / 4) + "px",
-                  height: 7 + element.likeCount / 2 + "px",
-                  marginTop: -(7 + element.likeCount) / 4 + "px",
-                  borderRadius: "100%",
-                  border: "1px white solid",
-                  backgroundColor: setColorByTopic(element.Thema),
-                  opacity: "1",
-                }}
+              <OpenIdeaButton
+                setColorByTopic={setColorByTopic}
+                likeCount={element.likeCount}
+                Thema={element.Thema}
+                onClick={() => fetchDataScream(element.screamId)}
               >
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    position: "absolute",
-                    top: "0",
-                    left: 0,
-                    borderRadius: "100%",
-                    overflow: "hidden",
-                  }}
-                >
-                  <button
-                    onClick={() => fetchDataScream(element.screamId)}
-                    className="buttonExpand ripple"
-                  ></button>
-                </div>
-              </div>
-              <NoLocationPopUp
-                dataNoLocation={dataNoLocation}
-              ></NoLocationPopUp>
+                <button
+                  onClick={() => fetchDataScream(element.screamId)}
+                  className="buttonExpand ripple"
+                />
+              </OpenIdeaButton>
+              <NoLocationPopUp dataNoLocation={dataNoLocation} />
             </Marker>
           ))}
 
@@ -169,47 +155,15 @@ const Geofilter = ({
             topicsSelected={topicsSelected}
           ></TopicFilter>
 
-          <React.Fragment>
-            <CustomButton
-              text={
-                <Trans i18nKey="show_number_ideas" number={number}>
-                  Show {{ number }} ideas
-                </Trans>
-              }
-              backgroundColor="white"
-              textColor="#353535"
-              position="fixed"
-              bottom="50px"
-              marginLeft="calc(50% - 20px)"
-              handleButtonClick={handleCloseGeofilter}
-              animation={true}
-            />
-
-            <div
-              style={
-                (mapBounds.latitude1 < 50.95) |
-                (mapBounds.latitude2 > 50.82) |
-                (mapBounds.longitude2 > 6.812) |
-                (mapBounds.longitude3 < 7.07)
-                  ? { opacity: 1 }
-                  : { opacity: 0.7, pointerEvents: "none" }
-              }
-            >
-              <CustomIconButton
-                name="CircularArrow"
-                margin="0px"
-                position="fixed"
-                bottom="50px"
-                marginLeft="calc(50% + 80px)"
-                handleButtonClick={handleResetGeofilter}
-                animation={true}
-              />
-            </div>
-          </React.Fragment>
+          <MobileMapButtons
+            number={number}
+            handleShowResults={handleShowResults}
+            handleMapBoundsReset={handleMapBoundsReset}
+          />
         </MapGL>
       </div>
-    </div>
-  ) : null;
+    )
+  );
 };
 
 Geofilter.propTypes = {
