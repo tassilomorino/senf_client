@@ -305,28 +305,6 @@ export class home extends Component {
     });
   };
 
-  handleMapBoundsReset = () => {
-    const viewport = {
-      zoom: 11.5,
-      pitch: 30,
-      latitude: 50.95,
-      longitude: 6.9503,
-    };
-
-    this.props.setMapViewport(viewport);
-
-    const bounds = {
-      latitude1: 51.08,
-      latitude2: 50.79,
-      longitude2: 6.712,
-      longitude3: 7.17,
-    };
-
-    this.props.setResetMapBounds(bounds);
-
-    this.props.closeScream();
-  };
-
   handleLogout = () => {
     this.props.logoutUser();
     this.setState({
@@ -427,7 +405,6 @@ export class home extends Component {
           mapDesktopShowResults={this.mapDesktopShowResults}
           showTitles={this.state.showTitles}
           mapDesktopShowResults={this.mapDesktopShowResults}
-          handleMapBoundsReset={this.handleMapBoundsReset}
         ></MapDesktop>
 
         {!this.props.UI.openInfoPage && (
@@ -452,7 +429,6 @@ export class home extends Component {
               showDemand={this.state.showDemand}
               handleClick={this.state.handleClick}
               handleDropdown={this.handleDropdown}
-              handleMapBoundsReset={this.handleMapBoundsReset}
               projectsData={projects}
               _onViewportChange={this._onViewportChange}
               dropdown={this.state.dropdown}

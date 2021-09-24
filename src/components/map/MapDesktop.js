@@ -71,7 +71,6 @@ const MapDesktop = ({
   _onViewportChangeDesktop,
   dataFinal,
   mapDesktopShowResults,
-  mapDesktopReset,
   geoData,
 }) => {
   const { t } = useTranslation();
@@ -178,7 +177,6 @@ const MapDesktop = ({
           />
           <DesktopMapButtons
             mapDesktopShowResults={mapDesktopShowResults}
-            mapDesktopReset={mapDesktopReset}
             viewport={viewport}
           />
 

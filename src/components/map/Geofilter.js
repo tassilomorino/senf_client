@@ -40,7 +40,6 @@ const Geofilter = ({
   dataFinal,
 
   handleShowResults,
-  handleMapBoundsReset,
 
   loadingProjects,
   geoData,
@@ -158,7 +157,6 @@ const Geofilter = ({
           <MobileMapButtons
             number={number}
             handleShowResults={handleShowResults}
-            handleMapBoundsReset={handleMapBoundsReset}
           />
         </MapGL>
       </div>
