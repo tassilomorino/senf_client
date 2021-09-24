@@ -37,10 +37,6 @@ const MyIdeas = ({
   handleCloseGeofilter,
   handleResetGeofilter,
   openGeofilter,
-
-  dataNoLocationHandle,
-  selectedId,
-  handleNoLocation,
 }) => {
   const MyDataFinal = myScreams.filter(
     ({ Thema, lat, long, status }) =>
@@ -122,13 +118,10 @@ const MyIdeas = ({
         _onViewportChange={_onViewportChange}
         onClick={onClick}
         handleRevert={handleRevert}
-        handleNoLocation={handleNoLocation}
         handleOpenGeofilter={handleOpenGeofilter}
         handleCloseGeofilter={handleCloseGeofilter}
         handleResetGeofilter={handleResetGeofilter}
         openGeofilter={openGeofilter}
-        dataNoLocationHandle={dataNoLocationHandle}
-        selectedId={selectedId}
         handleTopicSelector={handleTopicSelector}
         topicsSelected={topicsSelected}
       />

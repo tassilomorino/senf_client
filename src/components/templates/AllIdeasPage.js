@@ -100,9 +100,6 @@ const AllIdeasPage = ({
   latitude2,
   longitude2,
   longitude3,
-  dataNoLocationHandle,
-  selectedId,
-  handleNoLocation,
 
   dataFinal,
   projectsData,
@@ -166,14 +163,10 @@ const AllIdeasPage = ({
               viewport={mapViewport}
               _onViewportChange={_onViewportChange}
               handleRevert={handleRevert}
-              handleNoLocation={handleNoLocation}
               handleOpenGeofilter={handleOpenGeofilter}
               handleCloseGeofilter={handleCloseGeofilter}
               handleResetGeofilter={handleResetGeofilter}
               openGeofilter={openGeofilter}
-              dataNoLocationHandle={dataNoLocationHandle}
-              selectedId={selectedId}
-              handleNoLocation={handleNoLocation}
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
             />

@@ -41,13 +41,8 @@ const ProjectIdeas = ({
   handleTopicSelector,
   topicsSelected,
 
-  handleOpenGeofilter,
   handleCloseGeofilter,
   handleResetGeofilter,
-  openGeofilter,
-  dataNoLocationHandle,
-  selectedId,
-  handleNoLocation,
 
   loadingProjects,
   geoData,
@@ -107,13 +102,8 @@ const ProjectIdeas = ({
             _onViewportChange={_onViewportChange}
             onClick={onClick}
             handleRevert={handleRevert}
-            handleNoLocation={handleNoLocation}
-            handleOpenGeofilter={handleOpenGeofilter}
             handleCloseGeofilter={handleCloseGeofilter}
             handleResetGeofilter={handleResetGeofilter}
-            openGeofilter={openGeofilter}
-            dataNoLocationHandle={dataNoLocationHandle}
-            selectedId={selectedId}
             loadingProjects={loadingProjects}
             geoData={geoData}
             handleTopicSelector={handleTopicSelector}

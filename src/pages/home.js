@@ -60,7 +60,6 @@ export class home extends Component {
       longitude3: 7.17,
       screamIdParam: null,
       dropdown: "newest",
-      selectedId: "",
       showTitles: false,
       cookiesSetDesktop: false,
 
@@ -287,8 +286,6 @@ export class home extends Component {
 
   _onViewportChangeDesktop = (viewport) => {
     this.props.setMapViewport(viewport);
-
-    this.setState({ selectedId: "" });
   };
 
   mapDesktopShowResults = (viewport) => {
@@ -308,7 +305,7 @@ export class home extends Component {
     });
   };
 
-  mapDesktopReset = () => {
+  handleMapBoundsReset = () => {
     const viewport = {
       zoom: 11.5,
       pitch: 30,
@@ -328,32 +325,6 @@ export class home extends Component {
     this.props.setResetMapBounds(bounds);
 
     this.props.closeScream();
-  };
-
-  handleNoLocation = () => {
-    this.setState({
-      latitude1: 50.93892,
-      latitude2: 50.93864,
-      longitude2: 6.9586,
-      longitude3: 6.9588,
-
-      openGeofilter: false,
-      open: false,
-    });
-  };
-
-  alertClick = (event) => {
-    setTimeout(() => {
-      alert(
-        "Die Keywords werden erst Aussagekräftig wenn mehr Ideen geteilt werden"
-      );
-    }, 2500);
-  };
-
-  dataNoLocationHandle = () => {
-    this.setState({
-      selectedId: "hi",
-    });
   };
 
   handleLogout = () => {
@@ -381,45 +352,6 @@ export class home extends Component {
           userHandle
       );
     window.location.href = link;
-  };
-
-  handleOpenGeofilter = () => {
-    this.setState({
-      openGeofilter: true,
-    });
-  };
-
-  handleCloseGeofilter = () => {
-    this.setState({
-      openGeofilter: false,
-    });
-
-    setTimeout(() => {
-      this.setState({});
-    }, 1000);
-  };
-
-  handleResetGeofilter = () => {
-    this.setState({
-      openGeofilter: false,
-      viewport: {
-        zIndex: 9999,
-        position: "fixed",
-        top: "0vh",
-        left: "0vw",
-        width: "100vw",
-        height: "100vh",
-        latitude: 50.93,
-        longitude: 6.9503,
-        zoom: 9.2 + 1.6,
-        maxZoom: 18,
-        minZoom: 8,
-      },
-      latitude1: 51.08,
-      latitude2: 50.79,
-      longitude2: 6.712,
-      longitude3: 7.17,
-    });
   };
 
   render() {
@@ -491,14 +423,11 @@ export class home extends Component {
           dataFinal={dataFinalMap}
           id="mapDesktop"
           style={{ zIndex: 9999 }}
-          handleNoLocation={this.handleNoLocation}
-          dataNoLocationHandle={this.dataNoLocationHandle}
           _onViewportChangeDesktop={this._onViewportChangeDesktop}
           mapDesktopShowResults={this.mapDesktopShowResults}
-          selectedId={this.state.selectedId}
           showTitles={this.state.showTitles}
           mapDesktopShowResults={this.mapDesktopShowResults}
-          mapDesktopReset={this.mapDesktopReset}
+          mapDesktopReset={this.handleMapBoundsReset}
         ></MapDesktop>
 
         {!this.props.UI.openInfoPage && (
@@ -520,16 +449,10 @@ export class home extends Component {
               latitude2={this.state.latitude2}
               longitude2={this.state.longitude2}
               longitude3={this.state.longitude3}
-              dataNoLocationHandle={this.dataNoLocationHandle}
-              handleNoLocation={this.handleNoLocation}
               showDemand={this.state.showDemand}
               handleClick={this.state.handleClick}
               handleDropdown={this.handleDropdown}
-              handleOpenGeofilter={this.handleOpenGeofilter}
-              handleCloseGeofilter={this.handleCloseGeofilter}
-              handleResetGeofilter={this.handleResetGeofilter}
-              openGeofilter={this.state.openGeofilter}
-              selectedId={this.state.selectedId}
+              handleResetGeofilter={this.handleMapBoundsReset}
               projectsData={projects}
               _onViewportChange={this._onViewportChange}
               dropdown={this.state.dropdown}

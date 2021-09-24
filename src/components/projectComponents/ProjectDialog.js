@@ -401,39 +401,6 @@ class ProjectDialog extends Component {
       longitude3: this.state.viewport.longitude + AddnewRight,
     });
   };
-  handleNoLocation = () => {
-    this.setState({
-      latitude1: 50.93892,
-      latitude2: 50.93864,
-      longitude2: 6.9586,
-      longitude3: 6.9588,
-
-      openGeofilter: false,
-      open: false,
-    });
-  };
-
-  dataNoLocationHandle = () => {
-    this.setState({
-      selectedId: "hi",
-    });
-  };
-
-  handleOpenGeofilter = () => {
-    this.setState({
-      openGeofilter: true,
-    });
-  };
-
-  handleCloseGeofilter = () => {
-    this.setState({
-      openGeofilter: false,
-    });
-
-    setTimeout(() => {
-      this.setState({});
-    }, 1000);
-  };
 
   handleResetGeofilter = () => {
     this.setState({
@@ -624,17 +591,12 @@ class ProjectDialog extends Component {
               longitude3={this.state.longitude3}
               viewport={this.state.viewport}
               _onViewportChange={this._onViewportChange}
-              handleNoLocation={this.handleNoLocation}
-              dataNoLocationHandle={this.dataNoLocationHandle}
               showDemand={this.state.showDemand}
               handleClick={this.handleClick}
               handleDropdown={this.handleDropdown}
               dropdown={this.state.dropdown}
-              handleOpenGeofilter={this.handleOpenGeofilter}
               handleCloseGeofilter={this.handleCloseGeofilter}
               handleResetGeofilter={this.handleResetGeofilter}
-              openGeofilter={this.state.openGeofilter}
-              selectedId={this.state.selectedId}
               screamIdParam={screamIdParam}
               _onViewportChangeDesktop={this._onViewportChangeDesktop}
               showTitles={this.state.showTitles}
@@ -767,10 +729,7 @@ class ProjectDialog extends Component {
             dataFinal={dataFinal}
             geoData={geoData}
             style={{ zIndex: 9999 }}
-            handleNoLocation={this.handleNoLocation}
-            dataNoLocationHandle={this.dataNoLocationHandle}
             _onViewportChangeDesktop={this._onViewportChangeDesktop}
-            selectedId={this.state.selectedId}
             showTitles={this.state.showTitles}
             mapDesktopShowResults={this.mapDesktopShowResults}
             mapDesktopReset={this.mapDesktopReset}
