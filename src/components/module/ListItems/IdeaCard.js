@@ -3,29 +3,29 @@
 import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
-import MyButton from "../../util/MyButton";
+import MyButton from "../../../util/MyButton";
 
 //TIMESTAMP
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
 // COMPONENTS
-import LikeButton from "./LikeButton";
-import SignNote from "../profile/SignNote";
+import LikeButton from "../../scream/LikeButton";
+import SignNote from "../../profile/SignNote";
 
 // MUI Stuff
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 
 // Icons
-import ChatBorder from "../../images/icons/chat.png";
+import ChatBorder from "../../../images/icons/chat.png";
 
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 
-import { openScream } from "../../redux/actions/screamActions";
-import { openProject } from "../../redux/actions/projectActions";
-import setColorByTopic from "../../data/setColorByTopic";
+import { openScream } from "../../../redux/actions/screamActions";
+import { openProject } from "../../../redux/actions/projectActions";
+import setColorByTopic from "../../../data/setColorByTopic";
 
 const styles = {
   gradient: {
@@ -137,7 +137,7 @@ const styles = {
   },
 };
 
-const Scream = ({ classes, projectsData, scream }) => {
+const IdeaCard = ({ classes, projectsData, scream }) => {
   dayjs.extend(relativeTime);
   const dispatch = useDispatch();
   const { authenticated } = useSelector((state) => state.user);
@@ -241,7 +241,7 @@ const Scream = ({ classes, projectsData, scream }) => {
   );
 };
 
-Scream.propTypes = {
+IdeaCard.propTypes = {
   user: PropTypes.object.isRequired,
   scream: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
@@ -250,4 +250,4 @@ Scream.propTypes = {
   openProject: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(Scream);
+export default withStyles(styles)(IdeaCard);

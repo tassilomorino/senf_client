@@ -27,8 +27,6 @@ import { setMapViewport, setMapBounds } from "../../redux/actions/mapActions";
 import Slide from "@material-ui/core/Slide";
 
 //Components
-import ProjectIdeas from "./ProjectIdeas";
-import MapDesktop from "../map/MapDesktop";
 import PostScream from "../postScream/PostScream";
 import ScreamShare from "../modals/ScreamShare";
 import CalendarComponent from "../calendar/CalendarComponent";
@@ -36,7 +34,6 @@ import CalendarComponent from "../calendar/CalendarComponent";
 import Tabs from "../module/Tabs/Tabs";
 import { ProjectTabData } from "../../data/ProjectTabData";
 
-import "./ProjectDialog.css";
 import { CustomIconButton } from "../module/CustomButtons/CustomButton";
 import IdeaList from "../templates/IdeaList";
 

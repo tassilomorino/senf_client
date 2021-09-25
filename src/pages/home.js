@@ -52,29 +52,8 @@ export class home extends Component {
     this.state = {
       order: 1,
 
-      latitude1: 51.08,
-      latitude2: 50.79,
-      longitude2: 6.712,
-      longitude3: 7.17,
       screamIdParam: null,
       dropdown: "newest",
-      showTitles: false,
-      cookiesSetDesktop: false,
-
-      openGeofilter: false,
-      viewport: {
-        zIndex: 9999,
-        position: "fixed",
-        top: "0vh",
-        left: "0vw",
-        width: "100vw",
-        height: "100vh",
-        latitude: 50.93,
-        longitude: 6.9503,
-        zoom: 9.2,
-        maxZoom: 18,
-        minZoom: 8,
-      },
 
       topicsSelected: [
         "Verkehr",
@@ -289,8 +268,14 @@ export class home extends Component {
   };
 
   render() {
-    const { screams, loading, projects, loadingProjects, mapBounds } =
-      this.props.data;
+    const {
+      screams,
+      loading,
+      projects,
+      loadingProjects,
+      mapBounds,
+      mapViewport,
+    } = this.props.data;
     const { classes } = this.props;
 
     console.log(this.props);
@@ -379,7 +364,7 @@ export class home extends Component {
               order={this.state.order}
               classes={classes}
               dataFinal={dataFinal}
-              viewport={this.state.viewport}
+              viewport={mapViewport}
               handleClick={this.state.handleClick}
               handleDropdown={this.handleDropdown}
               projectsData={projects}
@@ -414,7 +399,7 @@ export class home extends Component {
                 longitude3={this.state.longitude3}
                 loadingProjects={loadingProjects}
                 projectsData={projects}
-                viewport={this.state.viewport}
+                viewport={mapViewport}
                 handleTopicSelector={this.handleTopicSelector}
                 topicsSelected={this.state.topicsSelected}
               ></ProjectDialog>

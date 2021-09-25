@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import AddIcon from "../../images/icons/plus_grey.png";
 
 //Components
-import ProjectCards from "../projectComponents/ProjectCards";
+import ProjectCard from "../module/ListItems/ProjectCard";
 
 import _ from "lodash";
 
@@ -58,7 +58,7 @@ const ProjectsPage = ({ loadingProjects, order, projects }) => {
             <br />
             {!loadingProjects ? (
               _.orderBy(projects, "createdAt", "desc").map((projects) => (
-                <ProjectCards key={projects.project} project={projects} />
+                <ProjectCard key={projects.project} project={projects} />
               ))
             ) : (
               <div className="MainAnimation">
