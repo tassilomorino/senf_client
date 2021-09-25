@@ -1,16 +1,16 @@
 /** @format */
 
 import React from "react";
+import { useSelector } from "react-redux";
 import ToggleDisplay from "react-toggle-display";
 import _ from "lodash";
 import { isMobileCustom } from "../../util/customDeviceDetect";
-import styled, { css, keyframes } from "styled-components";
+import styled from "styled-components";
 
 //Components
 import Geofilter from "../map/Geofilter";
 import Scream from "../scream/Scream";
 import TopicFilter from "../layout/TopicFilter";
-import SortingSelect from "../module/Selects/SortingSelect";
 
 //Images
 import ListHeader from "../module/Headers/ListHeader";
@@ -26,37 +26,30 @@ const ProjectIdeas = ({
   loading,
   dropdown,
   projectScreams,
-
-  viewport,
-  latitude1,
-  latitude2,
-  longitude2,
-  longitude3,
-  handleRevert,
-  _onViewportChange,
-  onClick,
-
   handleDropdown,
 
-  handleTopicSelector,
-  topicsSelected,
-
-  handleCloseGeofilter,
-  handleResetGeofilter,
+  viewport,
+  _onViewportChange,
 
   loadingProjects,
   geoData,
+
+  topicsSelected,
+  handleTopicSelector,
 }) => {
+  const { mapBounds } = useSelector((state) => state.data);
+
   const dataFinalChannel = projectScreams.filter(
     ({ Thema, lat, long, status }) =>
       topicsSelected.includes(Thema) &&
-      lat <= latitude1 &&
-      lat >= latitude2 &&
-      long >= longitude2 &&
-      long <= longitude3 &&
+      lat <= mapBounds.latitude1 &&
+      lat >= mapBounds.latitude2 &&
+      long >= mapBounds.longitude2 &&
+      long <= mapBounds.longitude3 &&
       status === "None"
   );
 
+  console.log(mapBounds);
   let recentScreamsMarkup = _.orderBy(
     dataFinalChannel,
     "createdAt",
@@ -94,16 +87,8 @@ const ProjectIdeas = ({
 
           <Geofilter
             dataFinal={dataFinalChannel}
-            latitude1={latitude1}
-            latitude2={latitude2}
-            longitude2={longitude2}
-            longitude3={longitude3}
             viewport={viewport}
             _onViewportChange={_onViewportChange}
-            onClick={onClick}
-            handleRevert={handleRevert}
-            handleCloseGeofilter={handleCloseGeofilter}
-            handleResetGeofilter={handleResetGeofilter}
             loadingProjects={loadingProjects}
             geoData={geoData}
             handleTopicSelector={handleTopicSelector}

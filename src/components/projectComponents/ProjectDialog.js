@@ -11,7 +11,6 @@ import Dialog from "@material-ui/core/Dialog";
 import Typography from "@material-ui/core/Typography";
 
 // Images
-import Arrow from "../../images/icons/arrow.png";
 import WeblinkIcon from "../../images/icons/weblink.png";
 import lamploader from "../../images/lamp.png";
 import contactIcon from "../../images/icons/mail.png";
@@ -24,7 +23,7 @@ import { connect } from "react-redux";
 import { closeScream } from "../../redux/actions/screamActions";
 import { closeProject } from "../../redux/actions/projectActions";
 import { clearErrors } from "../../redux/actions/errorsActions";
-import { setMapViewport } from "../../redux/actions/mapActions";
+import { setMapViewport, setMapBounds } from "../../redux/actions/mapActions";
 import Slide from "@material-ui/core/Slide";
 
 //Components
@@ -39,6 +38,7 @@ import { ProjectTabData } from "../../data/ProjectTabData";
 
 import "./ProjectDialog.css";
 import { CustomIconButton } from "../module/CustomButtons/CustomButton";
+import IdeaList from "../templates/IdeaList";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -262,7 +262,6 @@ class ProjectDialog extends Component {
     longitude3: 7.17,
 
     screamIdParam: null,
-    showDemand: false,
     dropdown: "newest",
     selectedId: "",
     showTitles: false,
@@ -381,100 +380,6 @@ class ProjectDialog extends Component {
     });
   };
 
-  _onViewportChange = (viewport) => {
-    this.setState({ viewport, selectedId: "" });
-
-    var metersPerPx =
-      (156543.03392 *
-        Math.cos((this.state.viewport.latitude * Math.PI) / 180)) /
-      Math.pow(2, this.state.viewport.zoom);
-
-    var Addnew = metersPerPx / 500;
-    var Addnewtop = metersPerPx / 1000;
-    var AddnewRight = metersPerPx / 500;
-    var AddnewBottom = metersPerPx / 1000;
-
-    this.setState({
-      latitude1: this.state.viewport.latitude + Addnewtop,
-      latitude2: this.state.viewport.latitude - AddnewBottom,
-      longitude2: this.state.viewport.longitude - Addnew,
-      longitude3: this.state.viewport.longitude + AddnewRight,
-    });
-  };
-
-  handleResetGeofilter = () => {
-    this.setState({
-      openGeofilter: false,
-      viewport: {
-        zIndex: 9999,
-        position: "fixed",
-        top: "0vh",
-        left: "0vw",
-        width: "100vw",
-        height: "100vh",
-        latitude: 50.93,
-        longitude: 6.9503,
-        zoom: 9.2 + 1.6,
-        maxZoom: 18,
-        minZoom: 8,
-      },
-      latitude1: 51.08,
-      latitude2: 50.79,
-      longitude2: 6.712,
-      longitude3: 7.17,
-    });
-
-    setTimeout(() => {
-      this.setState({});
-    }, 1000);
-  };
-
-  _onViewportChangeDesktop = (viewport) => {
-    if (viewport.zoom > 15) {
-      this.setState({
-        showTitles: true,
-      });
-    } else {
-      this.setState({
-        showTitles: false,
-      });
-    }
-
-    this.setState({ viewport, selectedId: "" });
-  };
-
-  mapDesktopShowResults = (viewport) => {
-    var metersPerPx =
-      (156543.03392 *
-        Math.cos((this.state.viewport.latitude * Math.PI) / 180)) /
-      Math.pow(2, this.state.viewport.zoom);
-
-    var Addnew = metersPerPx / 200;
-    var Addnewtop = metersPerPx / 200;
-    var AddnewRight = metersPerPx / 200;
-    var AddnewBottom = metersPerPx / 300;
-
-    this.setState({
-      latitude1: this.state.viewport.latitude + Addnewtop,
-      latitude2: this.state.viewport.latitude - AddnewBottom,
-      longitude2: this.state.viewport.longitude - Addnew,
-      longitude3: this.state.viewport.longitude + AddnewRight,
-      viewport: { ...viewport, pitch: 31 },
-    });
-
-    this.props.closeScream();
-  };
-  mapDesktopReset = () => {
-    this.setState({
-      latitude1: 51.08,
-      latitude2: 50.79,
-      longitude2: 6.712,
-      longitude3: 7.17,
-    });
-
-    this.props.closeScream();
-  };
-
   zoomToBounds = (centerLat, centerLong, zoom) => {
     const viewport = {
       latitude: centerLat,
@@ -516,7 +421,13 @@ class ProjectDialog extends Component {
     const dataRar = this.props.project.screams;
 
     const dataFinal = dataRar.filter(
-      ({ Thema, status }) => topicsSelected.includes(Thema) && status === "None"
+      ({ Thema, status, lat, long }) =>
+        topicsSelected.includes(Thema) &&
+        lat <= this.props.data.mapBounds.latitude1 &&
+        lat >= this.props.data.mapBounds.latitude2 &&
+        long >= this.props.data.mapBounds.longitude2 &&
+        long <= this.props.data.mapBounds.longitude3 &&
+        status === "None"
     );
 
     const dialogMarkup = loading ? (
@@ -581,7 +492,7 @@ class ProjectDialog extends Component {
 
         {!loading && this.state.order === 1 && (
           <div className="MainAnimationChannels">
-            <ProjectIdeas
+            {/* <ProjectIdeas
               loading={loading}
               projectScreams={this.props.project.screams}
               classes={classes}
@@ -590,21 +501,31 @@ class ProjectDialog extends Component {
               longitude2={this.state.longitude2}
               longitude3={this.state.longitude3}
               viewport={this.state.viewport}
-              _onViewportChange={this._onViewportChange}
-              showDemand={this.state.showDemand}
               handleClick={this.handleClick}
               handleDropdown={this.handleDropdown}
               dropdown={this.state.dropdown}
               handleCloseGeofilter={this.handleCloseGeofilter}
-              handleResetGeofilter={this.handleResetGeofilter}
               screamIdParam={screamIdParam}
-              _onViewportChangeDesktop={this._onViewportChangeDesktop}
               showTitles={this.state.showTitles}
               loadingProjects={loadingProjects}
               geoData={geoData}
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
-            ></ProjectIdeas>
+            ></ProjectIdeas> */}
+
+            <IdeaList
+              loading={loading}
+              order={this.state.order}
+              classes={classes}
+              dataFinal={dataFinal}
+              viewport={viewport}
+              handleClick={this.state.handleClick}
+              handleDropdown={this.handleDropdown}
+              projectsData={this.props.project.screams}
+              dropdown={this.state.dropdown}
+              handleTopicSelector={handleTopicSelector}
+              topicsSelected={topicsSelected}
+            ></IdeaList>
           </div>
         )}
         {this.state.order === 2 && (
@@ -713,28 +634,6 @@ class ProjectDialog extends Component {
         disableBackdropClick // Remove the backdrop click (just to be sure)
       >
         <div className="contentWrapper_dialog">{dialogMarkup}</div>
-
-        <div
-          style={{
-            marginLeft: "200px",
-            position: "fixed",
-            width: "60vw",
-            height: "100vh",
-            zIndex: 99,
-          }}
-        >
-          <MapDesktop
-            loadingProjects={loadingProjects}
-            id="mapDesktop"
-            dataFinal={dataFinal}
-            geoData={geoData}
-            style={{ zIndex: 9999 }}
-            _onViewportChangeDesktop={this._onViewportChangeDesktop}
-            showTitles={this.state.showTitles}
-            mapDesktopShowResults={this.mapDesktopShowResults}
-            mapDesktopReset={this.mapDesktopReset}
-          ></MapDesktop>
-        </div>
       </Dialog>
     );
   }
@@ -746,6 +645,7 @@ ProjectDialog.propTypes = {
   openProject: PropTypes.func.isRequired,
   closeProject: PropTypes.func.isRequired,
   setMapViewport: PropTypes.func.isRequired,
+  setMapBounds: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -761,6 +661,7 @@ const mapActionsToProps = {
   closeScream,
   closeProject,
   setMapViewport,
+  setMapBounds,
 };
 
 export default connect(

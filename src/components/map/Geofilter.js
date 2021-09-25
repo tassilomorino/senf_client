@@ -35,14 +35,15 @@ const OpenIdeaButton = styled.div`
 `;
 
 const Geofilter = ({
-  viewport,
-  _onViewportChange,
   dataFinal,
+  viewport,
 
+  _onViewportChange,
   handleShowResults,
 
   loadingProjects,
   geoData,
+
   handleTopicSelector,
   topicsSelected,
 }) => {
@@ -89,8 +90,6 @@ const Geofilter = ({
     });
   }
 
-  const number = dataFinal.length;
-
   return (
     isMobileCustom && (
       <div
@@ -98,7 +97,7 @@ const Geofilter = ({
           position: "relative",
           zIndex: "9",
           width: "100vw",
-          height: "calc(100vh  - 100px)",
+          height: "100vh",
         }}
       >
         <MapGL
@@ -110,7 +109,7 @@ const Geofilter = ({
           accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
           minZoom={9}
           {...viewport}
-          zoom={viewport.zoom}
+          zoom={viewport.zoom - 2}
           onViewportChange={_onViewportChange}
           viewportChangeMethod={"easeTo"}
           viewportChangeOptions={{
@@ -155,7 +154,7 @@ const Geofilter = ({
           ></TopicFilter>
 
           <MobileMapButtons
-            number={number}
+            number={dataFinal.length}
             handleShowResults={handleShowResults}
           />
         </MapGL>

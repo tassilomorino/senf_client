@@ -55,7 +55,6 @@ export class monitoring extends Component {
       screamIdParam: null,
       projectIdParam: null,
       count: 0,
-      showDemand: false,
       checked: 1,
       checked1: "Empty",
       checked2: "Empty",

@@ -69,6 +69,7 @@ const CustomSelect = ({ initialValue, options, handleDropdown }) => {
   const [selectedLabel, setSelectedLabel] = useState(initialValue);
 
   const outerRef = useRef();
+  useOnClickOutside(outerRef, () => setOpen(false));
 
   const handleToggle = (event) => {
     event.preventDefault();
@@ -82,8 +83,6 @@ const CustomSelect = ({ initialValue, options, handleDropdown }) => {
     handleDropdown(value);
     setOpen(false);
   };
-
-  useOnClickOutside(outerRef, () => setOpen(false));
 
   function truncateString(str, num) {
     if (str.length <= num) {

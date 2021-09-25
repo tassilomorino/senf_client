@@ -7,10 +7,7 @@ import styled from "styled-components";
 //Redux
 import { useDispatch, useSelector } from "react-redux";
 import { openScream } from "../../redux/actions/screamActions";
-import {
-  setMapBounds,
-  setResetMapBounds,
-} from "../../redux/actions/mapActions";
+import { setMapViewport } from "../../redux/actions/mapActions";
 //MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";
 
@@ -24,10 +21,6 @@ import MapGL, {
   NavigationControl,
 } from "@urbica/react-map-gl";
 
-import {
-  CustomButton,
-  CustomIconButton,
-} from "../module/CustomButtons/CustomButton";
 import setColorByTopic from "../../data/setColorByTopic";
 import NoLocationPopUp from "./NoLocationPopUp";
 import { DesktopMapButtons } from "./DesktopMapButtons";
@@ -65,14 +58,7 @@ const styles = {
   },
 };
 
-const MapDesktop = ({
-  loadingProjects,
-  classes,
-  _onViewportChangeDesktop,
-  dataFinal,
-  mapDesktopShowResults,
-  geoData,
-}) => {
+const MapDesktop = ({ loadingProjects, classes, dataFinal, geoData }) => {
   const { t } = useTranslation();
   const { openInfoPage } = useSelector((state) => state.UI);
 
@@ -85,6 +71,10 @@ const MapDesktop = ({
   const [hoverLikeCount, setHoverLikeCount] = useState("");
 
   const viewport = useSelector((state) => state.data.mapViewport);
+
+  const _onViewportChange = (viewport) => {
+    dispatch(setMapViewport(viewport));
+  };
 
   const fetchDataScream = (screamId) => {
     dispatch(openScream(screamId));
@@ -157,7 +147,7 @@ const MapDesktop = ({
           pitch={viewport.pitch}
           bearing={viewport.bearing}
           zoom={viewport.zoom}
-          onViewportChange={_onViewportChangeDesktop}
+          onViewportChange={_onViewportChange}
           viewportChangeMethod={"easeTo"}
           viewportChangeOptions={{
             duration: 2700,
@@ -175,10 +165,7 @@ const MapDesktop = ({
               "fill-opacity": 0.3,
             }}
           />
-          <DesktopMapButtons
-            mapDesktopShowResults={mapDesktopShowResults}
-            viewport={viewport}
-          />
+          <DesktopMapButtons viewport={viewport} />
 
           <div style={{ zIndex: 90 }}>
             {dataFinalMap.map((element) => (

@@ -15,11 +15,7 @@ import {
   closeProject,
 } from "../redux/actions/projectActions";
 
-import {
-  setMapViewport,
-  setMapBounds,
-  setResetMapBounds,
-} from "../redux/actions/mapActions";
+import { setMapViewport, setMapBounds } from "../redux/actions/mapActions";
 
 import { isMobileCustom } from "../util/customDeviceDetect";
 
@@ -36,10 +32,12 @@ import DesktopSidebar from "../components/layout/DesktopSidebar";
 import Cookies from "universal-cookie";
 import Topbar from "../components/layout/Topbar";
 import MapDesktop from "../components/map/MapDesktop";
-import AllIdeasPage from "../components/templates/AllIdeasPage";
+import IdeaList from "../components/templates/IdeaList";
 import ProjectsPage from "../components/templates/ProjectsPage";
 import ScreamDialog from "../components/scream/ScreamDialog";
 import ProjectDialog from "../components/projectComponents/ProjectDialog";
+
+import styled from "styled-components";
 const cookies = new Cookies();
 
 const styles = {};
@@ -263,48 +261,6 @@ export class home extends Component {
     }
   };
 
-  // _onViewportChange = (viewport) => {
-  //   this.setState({ viewport, selectedId: "" });
-
-  //   var metersPerPx =
-  //     (156543.03392 *
-  //       Math.cos((this.state.viewport.latitude * Math.PI) / 180)) /
-  //     Math.pow(2, this.state.viewport.zoom);
-
-  //   var Addnew = metersPerPx / 500;
-  //   var Addnewtop = metersPerPx / 1000;
-  //   var AddnewRight = metersPerPx / 500;
-  //   var AddnewBottom = metersPerPx / 1000;
-
-  //   this.setState({
-  //     latitude1: this.state.viewport.latitude + Addnewtop,
-  //     latitude2: this.state.viewport.latitude - AddnewBottom,
-  //     longitude2: this.state.viewport.longitude - Addnew,
-  //     longitude3: this.state.viewport.longitude + AddnewRight,
-  //   });
-  // };
-
-  _onViewportChangeDesktop = (viewport) => {
-    this.props.setMapViewport(viewport);
-  };
-
-  mapDesktopShowResults = (viewport) => {
-    if (this.state.order === 2) {
-      this.setState({ order: 1 });
-    }
-
-    const boundAdds = [200, 200, 200, 300];
-    this.props.setMapBounds(viewport, boundAdds);
-
-    this.props.closeScream();
-
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth",
-    });
-  };
-
   handleLogout = () => {
     this.props.logoutUser();
     this.setState({
@@ -337,7 +293,7 @@ export class home extends Component {
       this.props.data;
     const { classes } = this.props;
 
-    console.log(mapBounds);
+    console.log(this.props);
 
     const dataFinal = screams.filter(
       ({ Thema, lat, long, status }) =>
@@ -401,10 +357,12 @@ export class home extends Component {
           dataFinal={dataFinalMap}
           id="mapDesktop"
           style={{ zIndex: 9999 }}
-          _onViewportChangeDesktop={this._onViewportChangeDesktop}
-          mapDesktopShowResults={this.mapDesktopShowResults}
           showTitles={this.state.showTitles}
-          mapDesktopShowResults={this.mapDesktopShowResults}
+          geoData={
+            this.props.data.project &&
+            this.props.UI.openProject &&
+            this.props.data.project.geoData
+          }
         ></MapDesktop>
 
         {!this.props.UI.openInfoPage && (
@@ -416,25 +374,19 @@ export class home extends Component {
             )}
             <div className="MainBackgroundHome" />
 
-            <AllIdeasPage
+            <IdeaList
               loading={loading}
               order={this.state.order}
               classes={classes}
               dataFinal={dataFinal}
               viewport={this.state.viewport}
-              latitude1={this.state.latitude1}
-              latitude2={this.state.latitude2}
-              longitude2={this.state.longitude2}
-              longitude3={this.state.longitude3}
-              showDemand={this.state.showDemand}
               handleClick={this.state.handleClick}
               handleDropdown={this.handleDropdown}
               projectsData={projects}
-              _onViewportChange={this._onViewportChange}
               dropdown={this.state.dropdown}
               handleTopicSelector={this.handleTopicSelector}
               topicsSelected={this.state.topicsSelected}
-            ></AllIdeasPage>
+            ></IdeaList>
 
             <ProjectsPage
               loadingProjects={loadingProjects}
@@ -454,7 +406,6 @@ export class home extends Component {
                 loading={loading}
                 openProject={this.props.UI.openProject}
                 screamIdParam={this.state.screamIdParam}
-                _onViewportChangeDesktop={this._onViewportChangeDesktop}
                 showTitles={this.state.showTitles}
                 handleClick={this.handleClick}
                 latitude1={this.state.latitude1}
@@ -464,7 +415,6 @@ export class home extends Component {
                 loadingProjects={loadingProjects}
                 projectsData={projects}
                 viewport={this.state.viewport}
-                mapDesktopShowResults={this.mapDesktopShowResults}
                 handleTopicSelector={this.handleTopicSelector}
                 topicsSelected={this.state.topicsSelected}
               ></ProjectDialog>
@@ -494,7 +444,6 @@ home.propTypes = {
 
   setMapViewport: PropTypes.func.isRequired,
   setMapBounds: PropTypes.func.isRequired,
-  setResetMapBounds: PropTypes.func.isRequired,
 };
 
 const mapActionsToProps = {
@@ -508,7 +457,6 @@ const mapActionsToProps = {
   closeProject,
   setMapViewport,
   setMapBounds,
-  setResetMapBounds,
 };
 
 const mapStateToProps = (state) => ({

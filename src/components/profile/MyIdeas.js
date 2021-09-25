@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { Component } from "react";
-
+import { useSelector } from "react-redux";
 import ToggleDisplay from "react-toggle-display";
 import lamploader from "../../images/lamp.png";
 import Geofilter from "../map/Geofilter";
@@ -38,13 +38,15 @@ const MyIdeas = ({
   handleResetGeofilter,
   openGeofilter,
 }) => {
+  const { mapBounds } = useSelector((state) => state.data);
+
   const MyDataFinal = myScreams.filter(
     ({ Thema, lat, long, status }) =>
       topicsSelected.includes(Thema) &&
-      lat <= latitude1 &&
-      lat >= latitude2 &&
-      long >= longitude2 &&
-      long <= longitude3 &&
+      lat <= mapBounds.latitude1 &&
+      lat >= mapBounds.latitude2 &&
+      long >= mapBounds.longitude2 &&
+      long <= mapBounds.longitude3 &&
       status === "None"
   );
 

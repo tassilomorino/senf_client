@@ -54,14 +54,6 @@ const ScrollContainer = styled.div`
   margin-top: ${(props) => props.marginTop && props.marginTop + "px"};
 `;
 
-const MobileFilterAndMapWrapper = styled.div`
-  margin-top: 100px;
-  margin-left: 0%;
-  width: 100%;
-  z-index: 9;
-  position: fixed;
-`;
-
 const ListHeaderWrapper = styled.div`
   height: 70px;
   width: 100%;
@@ -86,18 +78,11 @@ const ShadowBox = styled.div`
   display: ${(props) => props.display && props.display};
 `;
 
-const AllIdeasPage = ({
+const IdeaList = ({
   loading,
   order,
   dropdown,
   handleDropdown,
-  handleRevert,
-  handleCloseGeofilter,
-  latitude1,
-  latitude2,
-  longitude2,
-  longitude3,
-
   dataFinal,
   projectsData,
   handleTopicSelector,
@@ -149,22 +134,14 @@ const AllIdeasPage = ({
   return order === 1 ? (
     <Wrapper>
       {isMobileCustom ? (
-        <Content>
-          <MobileFilterAndMapWrapper>
-            <Geofilter
-              dataFinal={dataFinal}
-              latitude1={latitude1}
-              latitude2={latitude2}
-              longitude2={longitude2}
-              longitude3={longitude3}
-              viewport={mapViewport}
-              _onViewportChange={_onViewportChange}
-              handleRevert={handleRevert}
-              handleCloseGeofilter={handleCloseGeofilter}
-              handleTopicSelector={handleTopicSelector}
-              topicsSelected={topicsSelected}
-            />
-          </MobileFilterAndMapWrapper>
+        <React.Fragment>
+          <Geofilter
+            dataFinal={dataFinal}
+            viewport={mapViewport}
+            _onViewportChange={_onViewportChange}
+            handleTopicSelector={handleTopicSelector}
+            topicsSelected={topicsSelected}
+          />
 
           <ScrollContainer
             Top={swipePosition}
@@ -198,14 +175,16 @@ const AllIdeasPage = ({
               />
             </Swipe>
 
-            <List
-              loading={loading}
-              dropdown={dropdown}
-              dataFinal={dataFinal}
-              projectsData={projectsData}
-            />
+            <Content>
+              <List
+                loading={loading}
+                dropdown={dropdown}
+                dataFinal={dataFinal}
+                projectsData={projectsData}
+              />
+            </Content>
           </ScrollContainer>
-        </Content>
+        </React.Fragment>
       ) : (
         <Content>
           <ListHeader
@@ -214,6 +193,7 @@ const AllIdeasPage = ({
             dataFinal={dataFinal}
             marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
           />
+
           <List
             loading={loading}
             dropdown={dropdown}
@@ -226,4 +206,4 @@ const AllIdeasPage = ({
   ) : null;
 };
 
-export default AllIdeasPage;
+export default IdeaList;

@@ -256,8 +256,6 @@ class Account extends Component {
     longitude2: 6.712,
     longitude3: 7.17,
 
-    showDemand: false,
-
     dropdown: "newest",
     selectedId: "",
     showTitles: false,
@@ -476,7 +474,6 @@ class Account extends Component {
               longitude3={this.state.longitude3}
               viewport={this.state.viewport}
               _onViewportChange={this._onViewportChange}
-              showDemand={this.state.showDemand}
               handleClick={this.handleClick}
               handleDropdown={this.handleDropdown}
               dropdown={this.state.dropdown}
@@ -485,7 +482,6 @@ class Account extends Component {
               handleResetGeofilter={this.handleResetGeofilter}
               openGeofilter={this.state.openGeofilter}
               screamIdParam={screamIdParam}
-              _onViewportChangeDesktop={_onViewportChangeDesktop}
               showTitles={showTitles}
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
