@@ -35,6 +35,10 @@ const Break = styled.div`
   position: relative;
   height: 110px;
   width: 100%;
+
+  @media (min-width: 768px) {
+    height: 30px;
+  }
 `;
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -53,96 +57,9 @@ const styles = {
     // overflow: "hidden",
     padding: "0",
   },
-
-  engagement: {
-    paddingRight: 10,
-    width: "100%",
-    textAlign: "center",
-    fontSize: 14,
-    color: "black",
-  },
-
-  locationOuter: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    color: "rgb(255, 205, 6)",
-    height: "3vh",
-  },
-  locationHeader: {
-    color: "rgb(255, 205, 6)",
-    float: "left",
-    paddingRight: "2%",
-    width: "100%",
-  },
-  locationIcon: {
-    marginTop: "-3px",
-    paddingRight: "2px",
-    float: "left",
-    color: "rgb(255, 205, 6)",
-  },
-
-  commentHeader: {
-    fontFamily: "Futura PT W01-Bold",
-    marginLeft: "5vw",
-    paddingTop: "1em",
-    paddingBottom: "1em",
-    color: "#414345",
-  },
-  KontaktButton: {
-    position: "absolute",
-    zIndex: 99,
-    paddingTop: "10px",
-    paddingBottom: "10px",
-    textAlign: "center",
-    width: "50vw",
-    left: "25vw",
-    top: "265vh",
-    borderRadius: "100px",
-    color: "#414345",
-    backgroundColor: "white",
-    textTransform: "none",
-    fontSize: "14pt",
-    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.2)",
-  },
-
-  mapPlaceholder: {
-    position: "relative",
-    width: "100vw",
-    zIndex: 0,
-    height: "52vh",
-    backgroundColor: "lightgrey",
-    overflow: "hidden",
-  },
-
-  card2: {
-    zIndex: "99",
-    position: "relative",
-    display: "flex",
-    marginTop: "10px",
-    marginLeft: "auto",
-    marginRight: "auto",
-    width: "95%",
-    borderRadius: 20,
-    minHeight: "auto",
-
-    boxShadow: "0 8px 40px -12px rgba(0,0,0,0)",
-  },
-  vertline: {
-    width: "4px",
-    position: "relative",
-    backgroundColor: "#414345",
-    height: "10px",
-    marginLeft: "-2px",
-    left: "50vw",
-    zIndex: "0",
-  },
 };
 
 class ProjectDialog extends Component {
-  constructor(props) {
-    super(props);
-  }
   state = {
     open: false,
     clicked: false,
@@ -287,8 +204,6 @@ class ProjectDialog extends Component {
         contact,
         calendar,
       },
-      screamIdParam,
-
       viewport,
       handleTopicSelector,
       topicsSelected,
@@ -349,7 +264,7 @@ class ProjectDialog extends Component {
         )}
         {this.state.order === 2 && (
           <React.Fragment>
-            {isMobileCustom && <Break />}
+            <Break />
 
             <div className="MainAnimationChannels">
               <ProjectInfo
@@ -366,7 +281,7 @@ class ProjectDialog extends Component {
         )}
         {this.state.order === 3 && (
           <React.Fragment>
-            {isMobileCustom && <Break />}
+            <Break />
             <div className="MainAnimationChannels">
               <CalendarComponent
                 projectScreams={this.props.project.screams}
