@@ -6,14 +6,14 @@ import styled from "styled-components";
 // Redux stuff
 import { useDispatch } from "react-redux";
 
-import { openScream } from "../../redux/actions/screamActions";
+import { openScream } from "../../../redux/actions/screamActions";
 
 //MAPSTUF
 import MapGL, { Source, Layer, Marker } from "@urbica/react-map-gl";
 
-import { isMobileCustom } from "../../util/customDeviceDetect";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 
-import setColorByTopic from "../../data/setColorByTopic";
+import setColorByTopic from "../../../data/setColorByTopic";
 import NoLocationPopUp from "./NoLocationPopUp";
 import MobileMapButtons from "./MobileMapButtons";
 

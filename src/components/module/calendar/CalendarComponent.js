@@ -5,7 +5,7 @@ import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import de from "@fullcalendar/core/locales/de";
 
 import listMonth from "@fullcalendar/list";
-import { openScream } from "../../redux/actions/screamActions";
+import { openScream } from "../../../redux/actions/screamActions";
 import PropTypes from "prop-types";
 // Redux stuff
 import { connect } from "react-redux";

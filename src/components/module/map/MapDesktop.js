@@ -2,12 +2,12 @@
 
 import React, { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { isMobileCustom } from "../../util/customDeviceDetect";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
 //Redux
 import { useDispatch, useSelector } from "react-redux";
-import { openScream } from "../../redux/actions/screamActions";
-import { setMapViewport } from "../../redux/actions/mapActions";
+import { openScream } from "../../../redux/actions/screamActions";
+import { setMapViewport } from "../../../redux/actions/mapActions";
 //MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";
 
@@ -21,7 +21,7 @@ import MapGL, {
   NavigationControl,
 } from "@urbica/react-map-gl";
 
-import setColorByTopic from "../../data/setColorByTopic";
+import setColorByTopic from "../../../data/setColorByTopic";
 import NoLocationPopUp from "./NoLocationPopUp";
 import { DesktopMapButtons } from "./DesktopMapButtons";
 

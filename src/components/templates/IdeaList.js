@@ -10,7 +10,7 @@ import styled, { keyframes } from "styled-components";
 import Swipe from "react-easy-swipe";
 
 //Components
-import Geofilter from "../map/Geofilter";
+import Geofilter from "../module/map/Geofilter";
 import List from "../module/List/List";
 import ListHeader from "../module/Headers/ListHeader";
 import PostScream from "../postScream/PostScream";

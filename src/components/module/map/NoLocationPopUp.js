@@ -2,13 +2,13 @@
 
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setResetMapBounds } from "../../redux/actions/mapActions";
+import { setResetMapBounds } from "../../../redux/actions/mapActions";
 
-import CloseIcon from "../../images/icons/close.png";
+import CloseIcon from "../../../images/icons/close.png";
 //Map Stuff
 import { Marker } from "@urbica/react-map-gl";
 import { Trans, useTranslation } from "react-i18next";
-import { CustomButton } from "../module/CustomButtons/CustomButton";
+import { CustomButton } from "../CustomButtons/CustomButton";
 
 const NoLocationPopUp = ({ dataNoLocation }) => {
   const { t } = useTranslation();

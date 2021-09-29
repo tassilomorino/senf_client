@@ -24,7 +24,7 @@ import Slide from "@material-ui/core/Slide";
 
 //Components
 import ScreamShare from "../modals/ScreamShare";
-import CalendarComponent from "../calendar/CalendarComponent";
+import CalendarComponent from "../module/calendar/CalendarComponent";
 
 import IdeaList from "../templates/IdeaList";
 import ProjectHeader from "./ProjectHeader";

@@ -3,16 +3,13 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-import {
-  CustomButton,
-  CustomIconButton,
-} from "../module/CustomButtons/CustomButton";
-import { closeScream } from "../../redux/actions/screamActions";
+import { CustomButton, CustomIconButton } from "../CustomButtons/CustomButton";
+import { closeScream } from "../../../redux/actions/screamActions";
 import {
   setMapBounds,
   setMapViewport,
   setResetMapBounds,
-} from "../../redux/actions/mapActions";
+} from "../../../redux/actions/mapActions";
 
 export const DesktopMapButtons = ({ viewport }) => {
   const { t } = useTranslation();

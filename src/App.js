@@ -35,8 +35,6 @@ import datenschutz from "./components/infocomponents/legal/datenschutz";
 import agb from "./components/infocomponents/legal/agb";
 import cookieConfigurator from "./components/infocomponents/legal/cookieConfigurator";
 
-import filter from "./components/map/Geofilter";
-
 import monitoring from "./pages/monitoring";
 
 import ReactGA from "react-ga";
@@ -201,8 +199,6 @@ const App = () => {
             <Switch>
               <Route exact path="/" component={home} />
               <Route exact path="/start" component={IntroductionInformation} />
-
-              <Route exact path="/filter" component={filter} />
 
               <Route exact path="/intro" component={Welcome} />
 
