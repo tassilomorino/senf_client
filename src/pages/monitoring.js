@@ -48,7 +48,6 @@ export class monitoring extends Component {
       latitude2: 50.79,
       longitude2: 6.712,
       longitude3: 7.17,
-      geofilterStatus: false,
       loadingPage: false,
       hasNextPage: true,
       userHandle: this.props.user.credentials.handle,

@@ -2,16 +2,12 @@
 
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Trans } from "react-i18next";
-import {
-  CustomButton,
-  CustomIconButton,
-} from "../module/CustomButtons/CustomButton";
+
 import {
   setMapViewport,
   setResetMapBounds,
-} from "../../redux/actions/mapActions";
-import { closeScream } from "../../redux/actions/screamActions";
+} from "../../../redux/actions/mapActions";
+import { closeScream } from "../../../redux/actions/screamActions";
 
 const MobileMapButtons = ({ handleShowResults, number }) => {
   const { mapBounds } = useSelector((state) => state.data);

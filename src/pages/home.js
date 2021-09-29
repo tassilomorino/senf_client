@@ -30,7 +30,7 @@ import DesktopSidebar from "../components/layout/DesktopSidebar";
 
 import Cookies from "universal-cookie";
 import Topbar from "../components/layout/Topbar";
-import MapDesktop from "../components/map/MapDesktop";
+import MapDesktop from "../components/module/map/MapDesktop";
 import IdeaList from "../components/templates/IdeaList";
 import ProjectsPage from "../components/templates/ProjectsPage";
 import ScreamDialog from "../components/scream/ScreamDialog";
