@@ -24,7 +24,6 @@ import { clearErrors } from "../redux/actions/errorsActions";
 
 //ICONS
 import lamploader from "../images/lamp.png";
-import PostScream from "../components/postScream/PostScream";
 
 import InsightsPage from "../components/templates/InsightsPage";
 import DesktopSidebar from "../components/layout/DesktopSidebar";
@@ -272,6 +271,7 @@ export class home extends Component {
       screams,
       loading,
       projects,
+      project,
       loadingProjects,
       mapBounds,
       mapViewport,
@@ -290,10 +290,15 @@ export class home extends Component {
         status === "None"
     );
 
-    const dataFinalMap = screams.filter(
-      ({ Thema, status }) =>
-        this.state.topicsSelected.includes(Thema) && status === "None"
-    );
+    const dataFinalMap = this.props.UI.openProject
+      ? project.screams.filter(
+          ({ Thema, status }) =>
+            this.state.topicsSelected.includes(Thema) && status === "None"
+        )
+      : screams.filter(
+          ({ Thema, status }) =>
+            this.state.topicsSelected.includes(Thema) && status === "None"
+        );
 
     return (
       <div>
@@ -306,12 +311,6 @@ export class home extends Component {
             </span>
           </div>
         )}
-        <div className="appbar">
-          <PostScream
-            loadingProjects={loadingProjects}
-            projectsData={projects}
-          />
-        </div>
 
         <Topbar
           loading={loading}
@@ -365,9 +364,10 @@ export class home extends Component {
               classes={classes}
               dataFinal={dataFinal}
               viewport={mapViewport}
-              handleClick={this.state.handleClick}
               handleDropdown={this.handleDropdown}
               projectsData={projects}
+              loadingProjects={loadingProjects}
+              project={this.props.project}
               dropdown={this.state.dropdown}
               handleTopicSelector={this.handleTopicSelector}
               topicsSelected={this.state.topicsSelected}

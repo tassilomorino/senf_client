@@ -13,6 +13,8 @@ import Swipe from "react-easy-swipe";
 import Geofilter from "../map/Geofilter";
 import List from "../module/List/List";
 import ListHeader from "../module/Headers/ListHeader";
+import PostScream from "../postScream/PostScream";
+import TopicFilter from "../layout/TopicFilter";
 
 const enterAnimation = keyframes`
        0% {
@@ -32,38 +34,58 @@ const Wrapper = styled.div`
   flex-direction: row;
   transition: 0.5s;
   animation: ${enterAnimation} 0.8s ease-in-out;
+  width: 100%;
 `;
 
 const Content = styled.div`
   margin-top: 0px;
   padding-bottom: 150px;
   overflow-x: hidden;
+  width: 100%;
+`;
+
+const MapClickContainer = styled.div`
+  position: fixed;
+  top: 100px;
+  width: 100%;
+  height: 100px;
+  z-index: 9;
+`;
+
+const SwipeContainer = styled.div`
+  position: fixed;
+  top: ${(props) => props.Top && props.Top};
+  margin-top: ${(props) => props.marginTop && props.marginTop + "px"};
+  width: 100%;
+  z-index: 14;
+  height: ${(props) => (props.Top && props.Top === "25vh" ? "70px" : "30vh")};
 `;
 
 const ScrollContainer = styled.div`
   height: 75vh;
   width: 100%;
-  background-image: linear-gradient(to bottom, #ffd19b, #ffda53, #ffffff);
+  background-image: linear-gradient(to bottom, #fed957, #ffda53, #ffffff);
   background-repeat: no-repeat;
-  background: -webkit-linear-gradient(to left, #ffd19b, #ffda53, #ffffff);
+  background: -webkit-linear-gradient(to left, #fed957, #ffda53, #ffffff);
   position: fixed;
   overflow: scroll;
   border-radius: 20px 20px 0 0;
   z-index: 9;
   top: ${(props) => props.Top && props.Top};
   margin-top: ${(props) => props.marginTop && props.marginTop + "px"};
+  transition: 0.2s ease-out;
 `;
 
 const ListHeaderWrapper = styled.div`
   height: 70px;
   width: 100%;
-  background-color: #ffd19b;
+  background-color: #fed957;
   position: fixed;
   z-index: 15;
   top: ${(props) => props.Top && props.Top};
   margin-top: ${(props) => props.marginTop && props.marginTop + "px"};
   border-radius: 20px 20px 0 0;
-  transition: 0s;
+  transition: 0.2s ease-out;
 `;
 
 const ShadowBox = styled.div`
@@ -76,6 +98,7 @@ const ShadowBox = styled.div`
   box-shadow: rgb(38, 57, 77, 0.4) 0px 20px 30px -15px;
   z-index: 14;
   display: ${(props) => props.display && props.display};
+  transition: 0.2s ease-out;
 `;
 
 const IdeaList = ({
@@ -85,6 +108,9 @@ const IdeaList = ({
   handleDropdown,
   dataFinal,
   projectsData,
+  geoData,
+  loadingProjects,
+  project,
   handleTopicSelector,
   topicsSelected,
 }) => {
@@ -101,14 +127,17 @@ const IdeaList = ({
 
   const onSwipeEnd = (position, event) => {
     console.log(position.y);
-    if (swipeMovePosition < -150) {
+    if (swipeMovePosition < -100) {
       setSwipePosition("25vh");
       setSwipeMovePosition(0);
-    } else if (swipeMovePosition > 150) {
+    } else if (swipePosition === "70vh" && swipeMovePosition > 50) {
+      setSwipePosition("90vh");
+      setSwipeMovePosition(0);
+    } else if (swipeMovePosition > 100) {
       setSwipePosition("70vh");
       setSwipeMovePosition(0);
     } else {
-      setSwipePosition("70vh");
+      //  setSwipePosition("70vh");
       setSwipeMovePosition(0);
     }
   };
@@ -137,10 +166,24 @@ const IdeaList = ({
         <React.Fragment>
           <Geofilter
             dataFinal={dataFinal}
+            geoData={geoData}
             viewport={mapViewport}
             _onViewportChange={_onViewportChange}
+          />
+          <TopicFilter
             handleTopicSelector={handleTopicSelector}
             topicsSelected={topicsSelected}
+          ></TopicFilter>
+
+          {swipePosition === "25vh" && (
+            <MapClickContainer onClick={() => setSwipePosition("70vh")} />
+          )}
+
+          <PostScream
+            loadingProjects={loadingProjects}
+            projectsData={projectsData}
+            project={project}
+            swipePosition={swipePosition}
           />
 
           <ScrollContainer
@@ -151,11 +194,14 @@ const IdeaList = ({
             <Swipe
               onSwipeMove={onSwipeMove}
               onSwipeEnd={onSwipeEnd}
-              style={{
-                height: "70px",
-                width: "100%",
-              }}
+              style={{ height: "70px" }}
             >
+              <SwipeContainer
+                Top={swipePosition}
+                marginTop={swipeMovePosition}
+                onClick={() => setSwipePosition("25vh")}
+              />
+
               <ListHeaderWrapper
                 Top={swipePosition}
                 marginTop={swipeMovePosition}

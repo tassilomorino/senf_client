@@ -102,17 +102,16 @@ const MapDesktop = ({ loadingProjects, classes, dataFinal, geoData }) => {
   }
 
   let dataFinalMap = [];
-  const dataFinalMapArray = dataFinal;
 
-  if (dataFinalMapArray !== undefined && dataNoLocation.length > 1) {
-    dataFinalMapArray.forEach((element) => {
+  if (dataFinal !== undefined && dataNoLocation.length > 1) {
+    dataFinal.forEach((element) => {
       if (element.lat !== 50.93864020643174) {
         dataFinalMap.push(element);
       }
     });
   }
-  if (dataFinalMapArray !== undefined && dataNoLocation.length < 2) {
-    dataFinalMapArray.forEach((element) => {
+  if (dataFinal !== undefined && dataNoLocation.length < 2) {
+    dataFinal.forEach((element) => {
       dataFinalMap.push(element);
     });
   }

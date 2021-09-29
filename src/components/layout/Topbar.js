@@ -29,15 +29,14 @@ const Topbar = ({
   const { authenticated } = useSelector((state) => state.user);
 
   return (
-    !loading &&
-    (order === 1 || order === 2) && (
+    !loading && (
       <div className="TopNav">
         <InlineInformationPage />
 
         {!authenticated ? (
           <div className="profile">
             <SignNote />
-            <img src={Noprofile} width="35" alt="profilePlaceHolderImage" />
+            <img src={Noprofile} width="30" alt="profilePlaceHolderImage" />
           </div>
         ) : (
           <div className="profile">
@@ -47,7 +46,7 @@ const Topbar = ({
               deleteAccount={deleteAccount}
               handleLogout={handleLogout}
             />
-            <img src={profile_yellow} width="35" alt="profileImage" />
+            <img src={profile_yellow} width="30" alt="profileImage" />
           </div>
         )}
         <h1 className="logo1">

@@ -2,7 +2,6 @@
 
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import Swipe from "react-easy-swipe";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
 // Redux stuff
@@ -19,10 +18,16 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Dialog from "@material-ui/core/Dialog";
 import Typography from "@material-ui/core/Typography";
 import Slide from "@material-ui/core/Slide";
-import Tabs from "../module/Tabs/Tabs";
-import { AccountTabData } from "../../data/AccountTabData";
-import { CustomIconButton } from "../module/CustomButtons/CustomButton";
 import IdeaList from "../templates/IdeaList";
+import AccountHeader from "./AccountHeader";
+
+import styled from "styled-components";
+
+const Break = styled.div`
+  position: relative;
+  height: 110px;
+  width: 100%;
+`;
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -357,92 +362,73 @@ class Account extends Component {
 
     const dialogMarkup = (
       <div className="wrapperScreamDialog">
-        <div className="dialogNavigation">
-          <CustomIconButton
-            name="ArrowLeft"
-            position="fixed"
-            handleButtonClick={this.handleClose}
-          />
-        </div>
-        <div className="hey-user" data-cy="hey-user">
-          Hey {handle}{" "}
-        </div>
-
-        <Tabs
+        <AccountHeader
+          handle={handle}
           loading={loadingMyScreams}
-          handleClick={this.handleClick}
           order={this.state.order}
-          tabLabels={AccountTabData.map((item) => item.text)}
-          marginTop={"0px"}
-          marginBottom={"40px"}
-          lineColor={"white"}
-        ></Tabs>
+          handleClose={this.handleClose}
+          handleClick={this.handleClick}
+        />
 
-        <div
-          className="MainAnimationChannels"
-          style={
-            this.state.order === 1
-              ? { display: "block", width: "100%", minWidth: "100%" }
-              : { display: "none", width: "100%", minWidth: "100%" }
-          }
-        >
-          {!loadingMyScreams && this.state.open && (
-            <IdeaList
-              loading={loadingMyScreams}
-              order={this.state.order}
-              classes={classes}
-              dataFinal={this.state.myScreams}
-              viewport={mapViewport}
-              handleClick={this.state.handleClick}
-              handleDropdown={this.handleDropdown}
-              dropdown={this.state.dropdown}
-              handleTopicSelector={handleTopicSelector}
-              topicsSelected={topicsSelected}
-            ></IdeaList>
-          )}
-        </div>
-        <div
-          className="MainAnimationChannels"
-          style={
-            this.state.order === 2
-              ? { display: "block", width: "100%", minWidth: "100%" }
-              : { display: "none", width: "100%", minWidth: "100%" }
-          }
-        >
-          <div className="accountCard">
-            <div className={classes.content}>
-              <Typography className={classes.bodytext}>
-                {" "}
-                Wir freuen uns über deine Beteiligung! Gefällt dir Senf? Stört
-                dich etwas? Melde dich gerne und sag uns, was dir auffällt!
-                <br />
-                <br />
-                Dein Senf.koeln-Team
-                <br />
-              </Typography>
-            </div>{" "}
+        {this.state.order === 1 && (
+          <div className="MainAnimationChannels">
+            {!loadingMyScreams && this.state.open && (
+              <IdeaList
+                loading={loadingMyScreams}
+                order={this.state.order}
+                classes={classes}
+                dataFinal={this.state.myScreams}
+                viewport={mapViewport}
+                handleDropdown={this.handleDropdown}
+                dropdown={this.state.dropdown}
+                handleTopicSelector={handleTopicSelector}
+                topicsSelected={topicsSelected}
+              ></IdeaList>
+            )}
           </div>
-          <div className={classes.accountactions}>
-            <button
-              className="buttonWide buttonSign"
-              style={{ marginTop: "20px" }}
-              onClick={handleLogout}
-            >
-              Ausloggen{" "}
-            </button>
-            <div
-              style={{
-                width: "100%",
-                textAlign: "center",
-                marginTop: "50px",
-                textDecoration: "underline",
-              }}
-              onClick={deleteAccount}
-            >
-              Konto löschen{" "}
+        )}
+
+        {this.state.order === 2 && (
+          <React.Fragment>
+            {isMobileCustom && <Break />}
+            <div className="MainAnimationChannels">
+              <div className="accountCard">
+                <div className={classes.content}>
+                  <p>
+                    {" "}
+                    Wir freuen uns über deine Beteiligung! Gefällt dir Senf?
+                    Stört dich etwas? Melde dich gerne und sag uns, was dir
+                    auffällt!
+                    <br />
+                    <br />
+                    Dein Senf.koeln-Team
+                    <br />
+                  </p>
+                </div>{" "}
+              </div>
+              <div className={classes.accountactions}>
+                <button
+                  className="buttonWide buttonSign"
+                  style={{ marginTop: "20px" }}
+                  onClick={handleLogout}
+                >
+                  Ausloggen{" "}
+                </button>
+                <div
+                  style={{
+                    width: "100%",
+                    textAlign: "center",
+                    marginTop: "50px",
+                    textDecoration: "underline",
+                  }}
+                  onClick={deleteAccount}
+                >
+                  Konto löschen{" "}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </React.Fragment>
+        )}
       </div>
     );
 
@@ -462,9 +448,7 @@ class Account extends Component {
               TransitionComponent={Transition}
               fullScreen
             >
-              <Swipe onSwipeMove={this.onSwipeMove.bind(this)}>
-                {dialogMarkup}
-              </Swipe>
+              {dialogMarkup}
             </Dialog>
           ) : (
             <Dialog

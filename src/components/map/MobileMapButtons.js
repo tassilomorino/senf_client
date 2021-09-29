@@ -40,7 +40,7 @@ const MobileMapButtons = ({ handleShowResults, number }) => {
   };
   return (
     <React.Fragment>
-      <CustomButton
+      {/* <CustomButton
         text={
           <Trans i18nKey="show_number_ideas" number={number}>
             Show {{ number }} ideas
@@ -49,32 +49,30 @@ const MobileMapButtons = ({ handleShowResults, number }) => {
         backgroundColor="white"
         textColor="#353535"
         position="fixed"
-        bottom="50px"
+        bottom="80px"
         marginLeft="calc(50% - 20px)"
         handleButtonClick={handleShowResults}
         animation={true}
-      />
-
-      <div
+      />  <div
         style={
           (mapBounds.latitude1 < 50.95) |
           (mapBounds.latitude2 > 50.82) |
           (mapBounds.longitude2 > 6.812) |
           (mapBounds.longitude3 < 7.07)
             ? { opacity: 1 }
-            : { opacity: 0.7, pointerEvents: "none" }
+            : { opacity: 0, pointerEvents: "none" }
         }
       >
         <CustomIconButton
           name="CircularArrow"
           margin="0px"
           position="fixed"
-          bottom="50px"
+          bottom="80px"
           marginLeft="calc(50% + 80px)"
           handleButtonClick={handleMapBoundsReset}
           animation={true}
         />
-      </div>
+      </div> */}
     </React.Fragment>
   );
 };

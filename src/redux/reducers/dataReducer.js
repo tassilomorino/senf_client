@@ -15,7 +15,7 @@ import {
   SUBMIT_COMMENT,
   LOADING_PROJECTS_DATA,
   SET_PROJECTS,
-  SET_PROJECT_SCREAMS,
+  SET_PROJECT,
   SET_SCREAM_USER,
   SET_FULL_SCREAMS,
   SET_COOKIES,
@@ -25,8 +25,6 @@ import {
 
 const initialState = {
   projects: [],
-  projectScreams: [],
-  loadingProjectScreams: false,
   screams: [],
   scream: {},
   comment: {},
@@ -159,7 +157,7 @@ export default function (state = initialState, action) {
         loadingProjects: false,
       };
 
-    case SET_PROJECT_SCREAMS:
+    case SET_PROJECT:
       return {
         ...state,
         project: action.payload,

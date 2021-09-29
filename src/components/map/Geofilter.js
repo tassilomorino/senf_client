@@ -13,8 +13,6 @@ import MapGL, { Source, Layer, Marker } from "@urbica/react-map-gl";
 
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
-//COOKIES
-import TopicFilter from "../layout/TopicFilter";
 import setColorByTopic from "../../data/setColorByTopic";
 import NoLocationPopUp from "./NoLocationPopUp";
 import MobileMapButtons from "./MobileMapButtons";
@@ -43,9 +41,6 @@ const Geofilter = ({
 
   loadingProjects,
   geoData,
-
-  handleTopicSelector,
-  topicsSelected,
 }) => {
   const dispatch = useDispatch();
 
@@ -147,11 +142,6 @@ const Geofilter = ({
               <NoLocationPopUp dataNoLocation={dataNoLocation} />
             </Marker>
           ))}
-
-          <TopicFilter
-            handleTopicSelector={handleTopicSelector}
-            topicsSelected={topicsSelected}
-          ></TopicFilter>
 
           <MobileMapButtons
             number={dataFinal.length}

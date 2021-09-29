@@ -40,22 +40,20 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
     );
 
   return (
-    <div className="analysewrapper">
-      <div className="keyindicatorswrapper">
-        {Wishlength}
-        {Likeslength}
+    <div className="keyindicatorswrapper">
+      {Wishlength}
+      {Likeslength}
 
-        {commentslength === 0 ? (
-          <div className="keyindicatorcard">
-            <CircularProgress size={12} thickness={2} />
-          </div>
-        ) : (
-          <div className="keyindicatorcard">
-            <img src={ChatBorder} width="25px" alt="lamploader"></img>
-            {commentslength} Kommentare
-          </div>
-        )}
-      </div>
+      {commentslength === 0 ? (
+        <div className="keyindicatorcard">
+          <CircularProgress size={12} thickness={2} />
+        </div>
+      ) : (
+        <div className="keyindicatorcard">
+          <img src={ChatBorder} width="25px" alt="lamploader"></img>
+          {commentslength} Kommentare
+        </div>
+      )}
     </div>
   );
 };

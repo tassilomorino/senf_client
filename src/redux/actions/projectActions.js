@@ -8,7 +8,7 @@ import {
   STOP_LOADING_UI,
   LOADING_PROJECTS_DATA,
   SET_PROJECTS,
-  SET_PROJECT_SCREAMS,
+  SET_PROJECT,
   OPEN_PROJECT,
   CLOSE_PROJECT,
 } from "../types";
@@ -78,14 +78,16 @@ export const openProject = (project) => async (dispatch) => {
 
     const newPath = `/${project.id}`;
     window.history.pushState(null, null, newPath);
-    dispatch({ type: SET_PROJECT_SCREAMS, payload: project });
+    dispatch({ type: SET_PROJECT, payload: project });
     dispatch({ type: OPEN_PROJECT });
     dispatch({ type: STOP_LOADING_UI });
   }
 };
 
 export const closeProject = () => (dispatch) => {
+  dispatch({ type: SET_PROJECT, payload: null });
   dispatch({ type: CLOSE_PROJECT });
+
   window.history.pushState(null, null, "/");
 
   setTimeout(() => {

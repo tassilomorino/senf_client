@@ -93,7 +93,7 @@ const styles = {
     marginLeft: "auto",
     marginRight: "auto",
     minHeight: "12em",
-    maxWidth: "95%",
+    width: "95%",
     borderRadius: 20,
     boxShadow: "0 8px 40px -12px rgba(0,0,0,0)",
     maxHeight: "14.5em",
@@ -189,7 +189,15 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
           }}
         />{" "}
         <div className={classes.locationOuter}>
-          <div className={classes.locationHeader}> {Stadtteil} </div>
+          <div
+            className={classes.locationHeader}
+            style={{
+              color: setColorByTopic(Thema),
+            }}
+          >
+            {" "}
+            {Stadtteil}{" "}
+          </div>
         </div>
         <div className="screamcardTitle">{title} </div>
         <div className="bodytext">{body}</div>

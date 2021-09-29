@@ -641,7 +641,7 @@ button:disabled {
   z-index: 999;
   top: 0;
   width: 30px;
-  left: 32px;
+  left: 20px;
   margin-top: 25px;
   font-size: 0pt;
 }
@@ -672,10 +672,10 @@ button:disabled {
 .profile {
   position: fixed;
   z-index: 999;
-  width: 35px;
-  right: 32px;
+  width: 30px;
+  right: 20px;
   top: 28px;
-  height: 35px;
+  height: 30px;
   font-size: 0;
   pointer-events: pointer;
 
@@ -1428,7 +1428,7 @@ height:31px !important
 }
 .MuiTypography-body1{
 
-font-size:13px !important
+font-size:15px !important
 }
 
 .MuiSvgIcon-root{
@@ -1683,7 +1683,7 @@ font-size:13px !important
 
   opacity: 1;
   height: 100vh;
-  margin-top: 50px;
+  margin-top: 90px;
   animation: cardanimation 0.8s ease-in-out;
 }
 
@@ -1695,6 +1695,7 @@ font-size:13px !important
   padding-bottom: 2em;
 
   animation: cardanimation 0.8s ease-in-out;
+  width:100%;
 }
 
 
@@ -2377,6 +2378,7 @@ font-size:13px !important
   font-weight: 500;
   padding-top: 5px;
   padding-bottom: 5px;
+  font-weight: 800;
 }
 
 .screamcardProjectContainer {
@@ -2696,7 +2698,7 @@ z-index: 99;
 position: relative;
 
 display: flex;
-margin-top: 0px;
+margin-top: 110px;
 margin-left: 2.5%;
 width: 95%;
 min-width: 95%;
