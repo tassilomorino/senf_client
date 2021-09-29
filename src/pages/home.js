@@ -239,33 +239,6 @@ export class home extends Component {
     }
   };
 
-  handleLogout = () => {
-    this.props.logoutUser();
-    this.setState({
-      order: 1,
-    });
-  };
-
-  deleteAccount = () => {
-    const userHandle = this.props.user.credentials.handle;
-
-    var link =
-      "mailto:dein@senf.koeln" +
-      "?subject=" +
-      escape("Bitte um Account-loeschung") +
-      "&body=" +
-      escape(
-        "Bitte loeschen Sie meinen Account." +
-          "\n" +
-          "\n" +
-          "Mein Nutzername lautet:" +
-          "\n" +
-          "\n" +
-          userHandle
-      );
-    window.location.href = link;
-  };
-
   render() {
     const {
       screams,
@@ -318,8 +291,6 @@ export class home extends Component {
           order={this.state.order}
           handleTopicSelector={this.handleTopicSelector}
           topicsSelected={this.state.topicsSelected}
-          deleteAccount={this.deleteAccount}
-          handleLogout={this.handleLogout}
         />
         <DesktopSidebar
           loading={this.state.loading}
@@ -327,10 +298,6 @@ export class home extends Component {
           order={this.state.order}
           handleTopicSelector={this.handleTopicSelector}
           topicsSelected={this.state.topicsSelected}
-          handleCloseInfoPageDesktop={this.handleCloseInfoPageDesktop}
-          cookiesSetDesktop={this.state.cookiesSetDesktop}
-          deleteAccount={this.deleteAccount}
-          handleLogout={this.handleLogout}
           loadingProjects={loadingProjects}
           projectsData={projects}
         ></DesktopSidebar>
@@ -341,7 +308,6 @@ export class home extends Component {
           dataFinal={dataFinalMap}
           id="mapDesktop"
           style={{ zIndex: 9999 }}
-          showTitles={this.state.showTitles}
           geoData={
             this.props.data.project &&
             this.props.UI.openProject &&
@@ -391,7 +357,6 @@ export class home extends Component {
                 loading={loading}
                 openProject={this.props.UI.openProject}
                 screamIdParam={this.state.screamIdParam}
-                showTitles={this.state.showTitles}
                 handleClick={this.handleClick}
                 latitude1={this.state.latitude1}
                 latitude2={this.state.latitude2}

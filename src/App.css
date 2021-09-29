@@ -1689,13 +1689,12 @@ font-size:15px !important
 
 .MainAnimationChannels {
   opacity: 1;
-  display: flex;
-  flex-direction: row;
+  display: block;
   transition: 0.5s;
   padding-bottom: 2em;
 
   animation: cardanimation 0.8s ease-in-out;
-  width:100%;
+  
 }
 
 
@@ -2212,7 +2211,7 @@ font-size:15px !important
     }
     .MuiTypography-body1{
     
-    font-size:10px !important
+    font-size:15px !important
     }
     
     .MuiSvgIcon-root{

@@ -22,6 +22,7 @@ import IdeaList from "../templates/IdeaList";
 import AccountHeader from "./AccountHeader";
 
 import styled from "styled-components";
+import AccountSettings from "./AccountSettings";
 
 const Break = styled.div`
   position: relative;
@@ -350,9 +351,6 @@ class Account extends Component {
       handleTopicSelector,
       topicsSelected,
 
-      handleLogout,
-      deleteAccount,
-
       user: {
         credentials: { handle },
       },
@@ -392,40 +390,7 @@ class Account extends Component {
           <React.Fragment>
             {isMobileCustom && <Break />}
             <div className="MainAnimationChannels">
-              <div className="accountCard">
-                <div className={classes.content}>
-                  <p>
-                    {" "}
-                    Wir freuen uns über deine Beteiligung! Gefällt dir Senf?
-                    Stört dich etwas? Melde dich gerne und sag uns, was dir
-                    auffällt!
-                    <br />
-                    <br />
-                    Dein Senf.koeln-Team
-                    <br />
-                  </p>
-                </div>{" "}
-              </div>
-              <div className={classes.accountactions}>
-                <button
-                  className="buttonWide buttonSign"
-                  style={{ marginTop: "20px" }}
-                  onClick={handleLogout}
-                >
-                  Ausloggen{" "}
-                </button>
-                <div
-                  style={{
-                    width: "100%",
-                    textAlign: "center",
-                    marginTop: "50px",
-                    textDecoration: "underline",
-                  }}
-                  onClick={deleteAccount}
-                >
-                  Konto löschen{" "}
-                </div>
-              </div>
+              <AccountSettings />
             </div>
           </React.Fragment>
         )}

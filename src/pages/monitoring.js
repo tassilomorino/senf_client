@@ -55,36 +55,12 @@ export class monitoring extends Component {
       screamIdParam: null,
       projectIdParam: null,
       count: 0,
-      checked: 1,
-      checked1: "Empty",
-      checked2: "Empty",
-      checked3: "Empty",
-      checked4: "Empty",
-      checked5: "Empty",
-      checked6: "Empty",
-      checked7: "Empty",
       dropdown: "10",
-      selectedId: "",
-      showTitles: false,
-      cookiesSetDesktop: false,
-
       channelOrder: 1,
 
       openScream: false,
       openProject: false,
-      viewport: {
-        zIndex: 9999,
-        position: "fixed",
-        top: "0vh",
-        left: "0vw",
-        width: "100vw",
-        height: "100vh",
-        latitude: 50.93,
-        longitude: 6.9503,
-        zoom: 9.2,
-        maxZoom: 18,
-        minZoom: 8,
-      },
+
       topicsSelected: [
         "Verkehr",
         "Versorgung",
@@ -110,41 +86,6 @@ export class monitoring extends Component {
       window.removeEventListener("popstate", this.handleOnUrlChange, false);
     }
   }
-
-  handleOnUrlChange = () => {
-    let coordinates = window.location.hash;
-
-    let lat = Number(coordinates.split("#")[1]);
-    let long = Number(coordinates.split("#")[2]);
-
-    console.log(lat);
-
-    if (coordinates.includes("infoPage")) {
-      //nothing
-    } else {
-      setTimeout(() => {
-        if ((lat < 50.95) | (lat > 50.82)) {
-          this.setState({
-            viewport: {
-              zoom: 16.5,
-              pitch: 30,
-              latitude: lat,
-              longitude: long,
-            },
-          });
-        } else {
-          this.props.history.push("/");
-          window.location.reload();
-        }
-      }, 400);
-
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      });
-    }
-  };
 
   handleClick = (order) => {
     this.setState({

@@ -52,18 +52,26 @@ const ProjectHeader = ({
   handleClose,
   handleClick,
 }) => {
+  function truncateString(str, num) {
+    if (str.length <= num) {
+      return str;
+    }
+    return str.slice(0, num) + "...";
+  }
   return isMobileCustom ? (
     <FixedWrapper>
       <FlexWrapper>
         <CustomIconButton
           name="ArrowLeft"
           position="fixed"
-          top="20px"
+          top="13px"
           shadow={false}
           handleButtonClick={handleClose}
         />
 
-        <TitleWrapper data-cy="hey-user">Hey {handle} </TitleWrapper>
+        <TitleWrapper data-cy="hey-user">
+          {truncateString("Hey " + handle, 18)}
+        </TitleWrapper>
         <div />
       </FlexWrapper>
 

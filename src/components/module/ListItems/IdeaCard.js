@@ -195,7 +195,6 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
               color: setColorByTopic(Thema),
             }}
           >
-            {" "}
             {Stadtteil}{" "}
           </div>
         </div>

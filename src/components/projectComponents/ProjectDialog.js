@@ -159,10 +159,6 @@ class ProjectDialog extends Component {
     screamIdParam: null,
     dropdown: "newest",
     selectedId: "",
-    showTitles: false,
-    cookiesSetDesktop: false,
-
-    openGeofilter: false,
 
     dialogStyle: {},
     viewport: {

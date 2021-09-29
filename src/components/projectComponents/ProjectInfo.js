@@ -11,7 +11,6 @@ import contactIcon from "../../images/icons/mail.png";
 const Card = styled.div`
   z-index: 99;
   position: relative;
-
   display: flex;
   margin-top: 0px;
   margin-left: 2.5%;
@@ -19,9 +18,9 @@ const Card = styled.div`
   min-width: 95%;
   border-radius: 20px;
   height: auto;
-
   background-color: white;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0);
+  margin-bottom: 10px;
 `;
 
 const Content = styled.div`

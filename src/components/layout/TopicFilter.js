@@ -2,8 +2,6 @@
 
 import React from "react";
 import { isMobileCustom } from "../../util/customDeviceDetect";
-
-import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
@@ -17,6 +15,10 @@ const enterAnimation = keyframes`
        0% {
         margin-left: 100%;
 }
+60% {
+        margin-left: 100%;
+}
+
 
 100% {
   margin-left: calc(100% - 120px);
@@ -42,7 +44,7 @@ const TopicFilterInnerWrapperMobile = styled.div`
   padding-right: 20px;
   margin: 10px;
   margin-left: calc(100% - 120px);
-  animation: ${enterAnimation} 1.5s;
+  animation: ${enterAnimation} 5s;
   z-index: 15;
   pointer-events: auto;
 `;

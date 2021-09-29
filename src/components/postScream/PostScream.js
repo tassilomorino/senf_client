@@ -540,136 +540,136 @@ const PostScream = ({
   };
 
   return (
-    !loading && (
-      <Fragment>
-        {isMobileCustom ? (
+    <Fragment>
+      {!isMobileCustom ? (
+        <OpenButtonDesktop onClick={handleOpen}>
+          <img src={AddIcon} width="25" alt="AddIcon" />
+          <span className="addText">Neue Idee</span>
+        </OpenButtonDesktop>
+      ) : (
+        !loading && (
           <OpenButtonMobile onClick={handleOpen} swipePosition={swipePosition}>
             <img src={AddIcon} width="25" alt="AddIcon" />
           </OpenButtonMobile>
-        ) : (
-          <OpenButtonDesktop onClick={handleOpen}>
-            <img src={AddIcon} width="25" alt="AddIcon" />
-            <span className="addText">Neue Idee</span>
-          </OpenButtonDesktop>
+        )
+      )}
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        TransitionComponent={Transition}
+        fullScreen
+        BackdropProps={{ classes: { root: classes.root } }}
+        PaperProps={{ classes: { root: classes.paper } }}
+      >
+        {!authenticated && (
+          <div
+            className={
+              isMobileCustom ? classes.Authlink : classes.AuthlinkDesktop
+            }
+            style={
+              isMobileCustom && locationDecided
+                ? { top: "27vh", transition: "0.5s" }
+                : isMobileCustom && !locationDecided
+                ? { top: "100vh", transition: "0.5s" }
+                : null
+            }
+          >
+            <SignNote />
+          </div>
         )}
 
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          TransitionComponent={Transition}
-          fullScreen
-          BackdropProps={{ classes: { root: classes.root } }}
-          PaperProps={{ classes: { root: classes.paper } }}
-        >
-          {!authenticated && (
-            <div
-              className={
-                isMobileCustom ? classes.Authlink : classes.AuthlinkDesktop
-              }
-              style={
-                isMobileCustom && locationDecided
-                  ? { top: "27vh", transition: "0.5s" }
-                  : isMobileCustom && !locationDecided
-                  ? { top: "100vh", transition: "0.5s" }
-                  : null
-              }
-            >
-              <SignNote />
-            </div>
-          )}
+        <CustomIconButton
+          name="Close"
+          position="fixed"
+          margin={
+            document.body.clientWidth > 768 ? "40px" : "18px 0px 0px 13px"
+          }
+          handleButtonClick={handleClose}
+        />
 
-          <CustomIconButton
-            name="Close"
-            position="fixed"
-            margin={
-              document.body.clientWidth > 768 ? "40px" : "18px 0px 0px 13px"
+        {isMobileCustom && (
+          <div
+            style={
+              locationDecided
+                ? { marginTop: 0, transition: "0.5s" }
+                : { marginTop: "100vh", transition: "0.5s" }
             }
-            handleButtonClick={handleClose}
+          >
+            <div
+              className="backContainer"
+              onClick={() => handleLocationDecided()}
+            ></div>
+
+            <div className="PostBackground"></div>
+          </div>
+        )}
+
+        <div className={classes.mapwrapper}>
+          <PostScreamMap
+            MapHeight={MapHeight}
+            geocode={geocode}
+            _onMarkerDragEnd={_onMarkerDragEnd}
+            geoData={geoData}
+            viewport={viewport}
+            clicked={addressBarClickedState}
+            addressBarClicked={addressBarClicked}
+            locationDecided={locationDecided}
+            onSelected={onSelected}
+            address={address}
+            loadingProjects={loadingProjects}
           />
 
-          {isMobileCustom && (
-            <div
-              style={
-                locationDecided
-                  ? { marginTop: 0, transition: "0.5s" }
-                  : { marginTop: "100vh", transition: "0.5s" }
-              }
-            >
-              <div
-                className="backContainer"
-                onClick={() => handleLocationDecided()}
-              ></div>
+          <PostScreamSelectContainter
+            classes={classes}
+            locationDecided={locationDecided}
+            handleLocationDecided={handleLocationDecided}
+            handleLocationDecidedNoLocation={handleLocationDecidedNoLocation}
+            projectSelected={projectSelected}
+            address={address}
+            handleDropdownProject={handleDropdownProject}
+            open={open}
+            loadingProjects={loadingProjects}
+            projectsData={projectsData}
+          />
 
-              <div className="PostBackground"></div>
-            </div>
-          )}
-
-          <div className={classes.mapwrapper}>
-            <PostScreamMap
-              MapHeight={MapHeight}
-              geocode={geocode}
-              _onMarkerDragEnd={_onMarkerDragEnd}
-              geoData={geoData}
-              viewport={viewport}
-              clicked={addressBarClickedState}
-              addressBarClicked={addressBarClicked}
-              locationDecided={locationDecided}
-              onSelected={onSelected}
-              address={address}
-              loadingProjects={loadingProjects}
-            />
-
-            <PostScreamSelectContainter
-              classes={classes}
-              locationDecided={locationDecided}
-              handleLocationDecided={handleLocationDecided}
-              handleLocationDecidedNoLocation={handleLocationDecidedNoLocation}
-              projectSelected={projectSelected}
-              address={address}
-              handleDropdownProject={handleDropdownProject}
-              open={open}
-              loadingProjects={loadingProjects}
-              projectsData={projectsData}
-            />
-
-            <PostScreamFormContent
-              classes={classes}
-              errors={errors}
-              address={address}
-              handleLocationDecided={handleLocationDecided}
-              handleChange={handleChange}
-              handleDropdown={handleDropdown}
-              openWeblink={openWeblink}
-              weblink={weblink}
-              weblinkTitle={weblinkTitle}
-              handleOpenWeblink={handleOpenWeblink}
-              handleCloseWeblink={handleCloseWeblink}
-              handleSaveWeblink={handleSaveWeblink}
-              openContact={openContact}
-              contactTitle={contactTitle}
-              contact={contact}
-              handleOpenContact={handleOpenContact}
-              handleCloseContact={handleCloseContact}
-              handleSaveContact={handleSaveContact}
-              project={projectSelected}
-              openCalendar={openCalendar}
-              selectedDays={selectedDays}
-              handleOpenCalendar={handleOpenCalendar}
-              handleCloseCalendar={handleCloseCalendar}
-              handleSaveCalendar={handleSaveCalendar}
-              handleChangeCalendar={handleChangeCalendar}
-              topic={topic}
-              loading={loading}
-              Out={out}
-              locationDecided={locationDecided}
-              handleSubmit={handleSubmit}
-              body={body}
-              title={title}
-            />
-          </div>
-        </Dialog>
-      </Fragment>
-    )
+          <PostScreamFormContent
+            classes={classes}
+            errors={errors}
+            address={address}
+            handleLocationDecided={handleLocationDecided}
+            handleChange={handleChange}
+            handleDropdown={handleDropdown}
+            openWeblink={openWeblink}
+            weblink={weblink}
+            weblinkTitle={weblinkTitle}
+            handleOpenWeblink={handleOpenWeblink}
+            handleCloseWeblink={handleCloseWeblink}
+            handleSaveWeblink={handleSaveWeblink}
+            openContact={openContact}
+            contactTitle={contactTitle}
+            contact={contact}
+            handleOpenContact={handleOpenContact}
+            handleCloseContact={handleCloseContact}
+            handleSaveContact={handleSaveContact}
+            project={projectSelected}
+            openCalendar={openCalendar}
+            selectedDays={selectedDays}
+            handleOpenCalendar={handleOpenCalendar}
+            handleCloseCalendar={handleCloseCalendar}
+            handleSaveCalendar={handleSaveCalendar}
+            handleChangeCalendar={handleChangeCalendar}
+            topic={topic}
+            loading={loading}
+            Out={out}
+            locationDecided={locationDecided}
+            handleSubmit={handleSubmit}
+            body={body}
+            title={title}
+          />
+        </div>
+      </Dialog>
+    </Fragment>
   );
 };
 

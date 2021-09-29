@@ -36,6 +36,7 @@
    "register": "Register",
    "login": "Login",
    "profile": "Profile",
+   "logout":"Logout",
 
    "alreadyMember": "Already a member?",
    "notYetMember": "not yet a member?",

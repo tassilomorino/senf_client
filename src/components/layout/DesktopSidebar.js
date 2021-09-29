@@ -30,8 +30,6 @@ const DesktopSidebar = ({
   handleClick,
   handleTopicSelector,
   topicsSelected,
-  deleteAccount,
-  handleLogout,
   loadingProjects,
   projectsData,
 }) => {
@@ -64,8 +62,6 @@ const DesktopSidebar = ({
             <Account
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
-              deleteAccount={deleteAccount}
-              handleLogout={handleLogout}
             />
             <img
               src={order === 4 ? profile_grey : profile_yellow}

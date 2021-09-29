@@ -22,8 +22,6 @@ const Topbar = ({
   handleClick,
   handleTopicSelector,
   topicsSelected,
-  deleteAccount,
-  handleLogout,
 }) => {
   const { loading } = useSelector((state) => state.data);
   const { authenticated } = useSelector((state) => state.user);
@@ -43,8 +41,6 @@ const Topbar = ({
             <Account
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
-              deleteAccount={deleteAccount}
-              handleLogout={handleLogout}
             />
             <img src={profile_yellow} width="30" alt="profileImage" />
           </div>

@@ -82,18 +82,24 @@ const ProjectHeader = ({
   path,
   project,
 }) => {
+  function truncateString(str, num) {
+    if (str.length <= num) {
+      return str;
+    }
+    return str.slice(0, num) + "...";
+  }
   return isMobileCustom ? (
     <FixedWrapper>
       <FlexWrapper>
         <CustomIconButton
           name="ArrowLeft"
           position="fixed"
-          top="20px"
+          top="13px"
           shadow={false}
           handleButtonClick={handleClose}
         />
 
-        <TitleWrapper>{title}</TitleWrapper>
+        <TitleWrapper>{truncateString(title, 18)}</TitleWrapper>
 
         <ImgWrapperMobile>
           <img src={imgUrl} width="100%" alt="project-thumbnail" />
