@@ -141,6 +141,8 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
   dayjs.extend(relativeTime);
   const dispatch = useDispatch();
   const { authenticated } = useSelector((state) => state.user);
+  const { openProject } = useSelector((state) => state.UI);
+
   const {
     title,
     body,
@@ -172,7 +174,7 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
   return (
     <Card
       className={classes.card}
-      style={project && projectsData ? { height: "23em" } : {}}
+      style={!openProject && project && projectsData ? { height: "23em" } : {}}
     >
       <CardContent className={classes.content}>
         <div
@@ -195,7 +197,7 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
               color: setColorByTopic(Thema),
             }}
           >
-            {Stadtteil}{" "}
+            {Stadtteil}
           </div>
         </div>
         <div className="screamcardTitle">{title} </div>
@@ -228,7 +230,7 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
           <div className={classes.engagement}>{commentCount}</div>
         </div>
         <br />
-        {project && projectsData && (
+        {!openProject && project && projectsData && (
           <>
             <div className={classes.gradient2}></div>
             <button
