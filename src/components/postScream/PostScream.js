@@ -28,10 +28,82 @@ import PostScreamFormContent from "./PostScreamFormContent";
 import PostScreamMap from "./PostScreamMap";
 import PostScreamSelectContainter from "./PostScreamSelectContainter";
 import { CustomIconButton } from "../module/CustomButtons/CustomButton";
+import styled, { keyframes } from "styled-components";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+
+const AddbuttonAnimation = keyframes`
+     0% {
+    background-color: #ffd862;
+  }
+
+  50% {
+    background-color: #414345;
+  }
+
+  100% {
+    background-color: #ffd862;
+  }
+    `;
+
+const OpenButtonMobile = styled.button`
+  z-index: 999;
+  width: 40px;
+  height: 40px;
+  padding: 22px;
+  position: fixed;
+  left: 50vw;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: rgb(87, 87, 87);
+  border: 1px white solid;
+  border-radius: 100%;
+  font-size: 0;
+  box-shadow: rgb(0, 0, 0, 0.8) 0px 20px 20px -15px;
+
+  animation: ${AddbuttonAnimation} 5s ease-in-out infinite;
+
+  bottom: ${(props) => (props.swipePosition === "90vh" ? "80px" : "9px")};
+  left: 50vw;
+  transition: 1s;
+`;
+
+const OpenButtonDesktop = styled.button`
+  z-index: 9999;
+  width: 160px;
+  height: 40px;
+  padding: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  position: relative;
+  left: 20px;
+  transform: none;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  background-color: #353535;
+
+  border: 0px white solid;
+  border-radius: 40px;
+  top: 85px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 12pt;
+  color: white;
+  font-family: Futura PT W01 Book;
+  animation: none;
+
+  box-shadow: rgb(0, 0, 0, 0) 0px 20px 20px -15px;
+  transition: 0.5s;
+`;
 
 const styles = {
   root: {
@@ -110,9 +182,15 @@ const styles = {
   },
 };
 
-const PostScream = ({ classes, loadingProjects, projectsData }) => {
+const PostScream = ({
+  classes,
+  loadingProjects,
+  projectsData,
+  swipePosition,
+}) => {
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.UI);
+  const { project } = useSelector((state) => state.data);
 
   const user = useSelector((state) => state.user);
   const { authenticated } = user;
@@ -130,7 +208,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
   const [addressBarClickedState, setAddressBarClickedState] = useState(false);
 
   const [out, setOut] = useState(false);
-  const [project, setProject] = useState("");
+  const [projectSelected, setProjectSeleted] = useState("");
   const [geoData, setGeoData] = useState("");
 
   const [address, setAddress] = useState("Ohne Ortsangabe");
@@ -192,18 +270,16 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
 
   const handleOpen = (event) => {
     event.preventDefault();
-    const project =
-      window.location.pathname.indexOf("_") > 0
-        ? window.location.pathname.substring(1)
-        : "";
+    const projectSelected = project ? project.id : "";
+    console.log("Hereee", projectSelected);
 
     setOpen(true);
-    setProject(project);
+    setProjectSeleted(projectSelected);
 
     // setAllMainStates({ ...allMainStates, loading: false });
 
     projectsData.forEach((element) => {
-      if (project === element.project) {
+      if (projectSelected === element.project) {
         setViewport({
           zoom: element.zoom,
           latitude: element.centerLat,
@@ -261,7 +337,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
 
   const handleDropdownProject = (value) => {
     // event.preventDefault();
-    setProject(value);
+    setProjectSeleted(value);
 
     projectsData.forEach((element) => {
       if (value === element.project) {
@@ -296,7 +372,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
       neighborhood,
       lat: viewport.latitude,
       long: viewport.longitude,
-      project,
+      project: projectSelected,
       Thema: topic,
       weblinkTitle,
       weblink,
@@ -465,10 +541,18 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
 
   return (
     <Fragment>
-      <button onClick={handleOpen} className="add">
-        <img src={AddIcon} width="25" alt="AddIcon" />
-        <span className="addText">Neue Idee</span>
-      </button>
+      {!isMobileCustom ? (
+        <OpenButtonDesktop onClick={handleOpen}>
+          <img src={AddIcon} width="25" alt="AddIcon" />
+          <span className="addText">Neue Idee</span>
+        </OpenButtonDesktop>
+      ) : (
+        !loading && (
+          <OpenButtonMobile onClick={handleOpen} swipePosition={swipePosition}>
+            <img src={AddIcon} width="25" alt="AddIcon" />
+          </OpenButtonMobile>
+        )
+      )}
 
       <Dialog
         open={open}
@@ -541,7 +625,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
             locationDecided={locationDecided}
             handleLocationDecided={handleLocationDecided}
             handleLocationDecidedNoLocation={handleLocationDecidedNoLocation}
-            project={project}
+            projectSelected={projectSelected}
             address={address}
             handleDropdownProject={handleDropdownProject}
             open={open}
@@ -568,7 +652,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
             handleOpenContact={handleOpenContact}
             handleCloseContact={handleCloseContact}
             handleSaveContact={handleSaveContact}
-            project={project}
+            project={projectSelected}
             openCalendar={openCalendar}
             selectedDays={selectedDays}
             handleOpenCalendar={handleOpenCalendar}

@@ -38,7 +38,7 @@ const Tab = styled.div`
   padding-right: 15px;
   padding-left: 15px;
   animation: ${enterAnimation} ${(props) => props.i * 0.8}s;
-  font-size: 20px;
+  font-size: 18px;
   color: rgb(87, 87, 87);
   font-family: ${(props) =>
     props.active ? "Futura PT W01-Bold" : "Futura PT W01 Book;"};
@@ -72,9 +72,9 @@ const Tabs = ({
           >
             {tabLabel}{" "}
           </Tab>{" "}
-          {i !== tabLabels.length - 1 && (
+          {/* {i !== tabLabels.length - 1 && (
             <TabLine i={i + 1.5} lineColor={lineColor} />
-          )}{" "}
+          )}{" "} */}
         </React.Fragment>
       )
     );

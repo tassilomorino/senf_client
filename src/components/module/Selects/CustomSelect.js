@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 
@@ -63,12 +63,24 @@ const ListItem = styled("li")`
   }
 `;
 
-const CustomSelect = ({ initialValue, options, handleDropdown }) => {
+const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
   const [open, setOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(initialValue);
+
+  const [selectedOption, setSelectedOption] = useState(
+    value === "" ? initialValue : value
+  );
   const [selectedLabel, setSelectedLabel] = useState(initialValue);
 
+  useEffect(() => {
+    for (const option of options) {
+      if (option.name === value) {
+        setSelectedLabel(option.label);
+      }
+    }
+  }, []);
+
   const outerRef = useRef();
+  useOnClickOutside(outerRef, () => setOpen(false));
 
   const handleToggle = (event) => {
     event.preventDefault();
@@ -82,8 +94,6 @@ const CustomSelect = ({ initialValue, options, handleDropdown }) => {
     handleDropdown(value);
     setOpen(false);
   };
-
-  useOnClickOutside(outerRef, () => setOpen(false));
 
   function truncateString(str, num) {
     if (str.length <= num) {

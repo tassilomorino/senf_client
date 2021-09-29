@@ -641,7 +641,7 @@ button:disabled {
   z-index: 999;
   top: 0;
   width: 30px;
-  left: 32px;
+  left: 20px;
   margin-top: 25px;
   font-size: 0pt;
 }
@@ -672,10 +672,10 @@ button:disabled {
 .profile {
   position: fixed;
   z-index: 999;
-  width: 35px;
-  right: 32px;
+  width: 30px;
+  right: 20px;
   top: 28px;
-  height: 35px;
+  height: 30px;
   font-size: 0;
   pointer-events: pointer;
 
@@ -1428,7 +1428,7 @@ height:31px !important
 }
 .MuiTypography-body1{
 
-font-size:13px !important
+font-size:15px !important
 }
 
 .MuiSvgIcon-root{
@@ -1683,18 +1683,18 @@ font-size:13px !important
 
   opacity: 1;
   height: 100vh;
-  margin-top: 50px;
+  margin-top: 90px;
   animation: cardanimation 0.8s ease-in-out;
 }
 
 .MainAnimationChannels {
   opacity: 1;
-  display: flex;
-  flex-direction: row;
+  display: block;
   transition: 0.5s;
   padding-bottom: 2em;
 
   animation: cardanimation 0.8s ease-in-out;
+  
 }
 
 
@@ -2211,7 +2211,7 @@ font-size:13px !important
     }
     .MuiTypography-body1{
     
-    font-size:10px !important
+    font-size:15px !important
     }
     
     .MuiSvgIcon-root{
@@ -2377,6 +2377,7 @@ font-size:13px !important
   font-weight: 500;
   padding-top: 5px;
   padding-bottom: 5px;
+  font-weight: 800;
 }
 
 .screamcardProjectContainer {
@@ -2679,3 +2680,189 @@ font-size:13px !important
   text-align: center;
   z-index: 10;
 } 
+
+
+
+.projectCardsWrapper{
+
+  /* margin-top: 10px; */
+  width: calc(100vw );
+  margin-left: 20px;
+  transform: scale(0.8);
+
+
+}.projectDialogCard{
+
+z-index: 99;
+position: relative;
+
+display: flex;
+margin-top: 110px;
+margin-left: 2.5%;
+width: 95%;
+min-width: 95%;
+border-radius: 20px;
+height: auto;
+
+background-color: white;
+box-shadow: 0 8px 40px -12px rgba(0,0,0,0);
+}
+
+
+.imgWrapper{
+
+
+  position: relative;
+  width: 100px;
+  height: 100px;
+  background-color: white;
+  border-radius: 20px;
+  left: calc(50% - 50px);
+  margin-top: 10px;
+
+
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  overflow: hidden;
+
+
+
+}
+
+.project-dialog-owner{
+  
+margin-top: 20px;
+margin-bottom: 10px;
+font-family: Futura PT W01 Book;
+color: #353535;
+text-align: center;
+
+} 
+
+.project-dialog-title{
+font-size: 18px;
+font-family: PlayfairDisplay-Bold;
+/* font-family: Futura PT W01-Bold; */
+
+color: #353535;
+text-align: center;
+width: 60%;
+margin-left: 20%;
+margin-top:10px;
+
+margin-bottom: 20px;
+
+}
+
+/*
+.dialogFilterWrapper {
+  z-index: 99;
+  position: relative;
+  display: flex;
+  justify-content:space-evenly;
+  width: 80%;
+  margin-left: 10%;
+  font-size: 18px;
+  margin-top: 0px;
+  margin-bottom:25px;
+  color: #353535;
+  
+  
+  height: 1.7em;
+  font-family: Futura PT W01-Bold;
+
+  animation: enteranimation 1.5s;
+}*/
+
+.projectCard {
+  position: relative;
+  display: flex;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 100px;
+  max-width: 95%;
+  border-radius: 20px;
+  /* box-shadow: 0 8px 40px -12px rgba(0,0,0,0); */
+  max-height: 14em;
+  /* background-color: rgb(255,255,255,0.6); */
+
+  border-radius: 20px;
+ overflow: hidden;
+  /* background: transparent;
+  box-shadow:  9px 9px 18px #f6d254,
+               -9px -9px 18px #ffe05a; */
+}
+
+
+.leftWrapper{
+  position: relative;
+  width: 120px;
+  height: 120px;
+  background-color: white;
+  border-radius: 20px;
+
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  overflow: hidden;
+
+}
+.leftWrapper img{
+  width: 100%;
+  margin-left: 0%;
+}
+
+.rightWrapper{
+  
+ 
+  margin-left: 10px;
+  height: 120px;
+  width: 60%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+ 
+ 
+
+}
+
+.title{
+  font-size: 18px;
+  font-family: PlayfairDisplay-Bold;
+   font-family: Futura PT W01-Bold; 
+  color: #353535;
+
+}
+.owner{
+  
+  font-family: Futura PT W01 Book;
+  color: #353535
+} 
+
+.date{
+  margin-top:10px;
+  font-family: Futura PT W01 Book;
+  color: #353535
+}
+
+
+
+.ideaCount{
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  font-family: Futura PT W01 Book;
+  color:#353535;
+  margin-top: 10px;
+  margin-left: -10px;
+  
+}

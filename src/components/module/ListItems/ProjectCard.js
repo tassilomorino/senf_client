@@ -6,11 +6,9 @@ import PropTypes from "prop-types";
 
 // Redux
 import { useDispatch } from "react-redux";
-import { openProject } from "../../redux/actions/projectActions";
+import { openProject } from "../../../redux/actions/projectActions";
 
-import "./ProjectCards.css";
-
-const ProjectCards = (props) => {
+const ProjectCard = (props) => {
   const {
     project: { title, owner, imgUrl, project, startDate, endDate },
   } = props;
@@ -51,9 +49,9 @@ const ProjectCards = (props) => {
   );
 };
 
-ProjectCards.propTypes = {
+ProjectCard.propTypes = {
   project: PropTypes.object.isRequired,
   openProject: PropTypes.func.isRequired,
 };
 
-export default ProjectCards;
+export default ProjectCard;

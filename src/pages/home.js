@@ -15,6 +15,8 @@ import {
   closeProject,
 } from "../redux/actions/projectActions";
 
+import { setMapViewport, setMapBounds } from "../redux/actions/mapActions";
+
 import { isMobileCustom } from "../util/customDeviceDetect";
 
 import { logoutUser } from "../redux/actions/userActions";
@@ -22,7 +24,6 @@ import { clearErrors } from "../redux/actions/errorsActions";
 
 //ICONS
 import lamploader from "../images/lamp.png";
-import PostScream from "../components/postScream/PostScream";
 
 import InsightsPage from "../components/templates/InsightsPage";
 import DesktopSidebar from "../components/layout/DesktopSidebar";
@@ -30,10 +31,12 @@ import DesktopSidebar from "../components/layout/DesktopSidebar";
 import Cookies from "universal-cookie";
 import Topbar from "../components/layout/Topbar";
 import MapDesktop from "../components/map/MapDesktop";
-import AllIdeasPage from "../components/templates/AllIdeasPage";
+import IdeaList from "../components/templates/IdeaList";
 import ProjectsPage from "../components/templates/ProjectsPage";
 import ScreamDialog from "../components/scream/ScreamDialog";
 import ProjectDialog from "../components/projectComponents/ProjectDialog";
+
+import styled from "styled-components";
 const cookies = new Cookies();
 
 const styles = {};
@@ -48,32 +51,8 @@ export class home extends Component {
     this.state = {
       order: 1,
 
-      latitude1: 51.08,
-      latitude2: 50.79,
-      longitude2: 6.712,
-      longitude3: 7.17,
       screamIdParam: null,
       dropdown: "newest",
-      selectedId: "",
-      showTitles: false,
-      cookiesSetDesktop: false,
-
-      openGeofilter: false,
-      showGeofilterResults: false,
-      createGeofilterCircle: false,
-      viewport: {
-        zIndex: 9999,
-        position: "fixed",
-        top: "0vh",
-        left: "0vw",
-        width: "100vw",
-        height: "100vh",
-        latitude: 50.93,
-        longitude: 6.9503,
-        zoom: 9.2,
-        maxZoom: 18,
-        minZoom: 8,
-      },
 
       topicsSelected: [
         "Verkehr",
@@ -107,16 +86,15 @@ export class home extends Component {
     }
 
     setTimeout(() => {
-      this.setState({
-        viewport: {
-          latitude: 50.95,
-          longitude: 6.9503,
-          zoom: 11.5,
-          transitionDuration: 4000,
-          pitch: 30,
-          bearing: 0,
-        },
-      });
+      const viewport = {
+        latitude: 50.95,
+        longitude: 6.9503,
+        zoom: 11.5,
+        transitionDuration: 4000,
+        pitch: 30,
+        bearing: 0,
+      };
+      this.props.setMapViewport(viewport);
     }, 3000);
     if (!isMobileCustom) {
       window.addEventListener("popstate", this.handleOnUrlChange, false);
@@ -164,14 +142,15 @@ export class home extends Component {
     } else {
       setTimeout(() => {
         if ((lat < 50.95) | (lat > 50.82)) {
-          this.setState({
-            viewport: {
-              zoom: 16.5,
-              pitch: 30,
-              latitude: lat,
-              longitude: long,
-            },
-          });
+          const viewport = {
+            latitude: lat,
+            longitude: long,
+            zoom: 16.5,
+            transitionDuration: 4000,
+            pitch: 30,
+            bearing: 0,
+          };
+          this.props.setMapViewport(viewport);
         } else {
           this.props.history.push("/");
           window.location.reload();
@@ -260,227 +239,39 @@ export class home extends Component {
     }
   };
 
-  _onViewportChange = (viewport) => {
-    this.setState({ viewport, selectedId: "" });
-
-    var metersPerPx =
-      (156543.03392 *
-        Math.cos((this.state.viewport.latitude * Math.PI) / 180)) /
-      Math.pow(2, this.state.viewport.zoom);
-
-    var Addnew = metersPerPx / 500;
-    var Addnewtop = metersPerPx / 1000;
-    var AddnewRight = metersPerPx / 500;
-    var AddnewBottom = metersPerPx / 1000;
-
-    this.setState({
-      latitude1: this.state.viewport.latitude + Addnewtop,
-      longitude1: this.state.viewport.longitude - Addnew,
-      latitude2: this.state.viewport.latitude - AddnewBottom,
-      longitude2: this.state.viewport.longitude - Addnew,
-      latitude3: this.state.viewport.latitude + Addnewtop,
-      longitude3: this.state.viewport.longitude + AddnewRight,
-      latitude4: this.state.viewport.latitude - AddnewBottom,
-      longitude4: this.state.viewport.longitude + AddnewRight,
-    });
-  };
-
-  _onViewportChangeDesktop = (viewport) => {
-    this.setState({ viewport, selectedId: "" });
-  };
-
-  zoomToBounds = (centerLat, centerLong, zoom) => {
-    this.setState({
-      viewport: {
-        latitude: centerLat,
-        longitude: centerLong,
-        zoom: zoom,
-        transitionDuration: 1000,
-        pitch: 30,
-        bearing: 0,
-      },
-    });
-  };
-
-  mapDesktopShowResults = (viewport) => {
-    if (this.state.order === 2) {
-      this.setState({ order: 1 });
-    }
-
-    var metersPerPx =
-      (156543.03392 *
-        Math.cos((this.state.viewport.latitude * Math.PI) / 180)) /
-      Math.pow(2, this.state.viewport.zoom);
-
-    var Addnew = metersPerPx / 200;
-    var Addnewtop = metersPerPx / 200;
-    var AddnewRight = metersPerPx / 200;
-    var AddnewBottom = metersPerPx / 300;
-
-    this.setState({
-      latitude1: this.state.viewport.latitude + Addnewtop,
-      latitude2: this.state.viewport.latitude - AddnewBottom,
-      longitude2: this.state.viewport.longitude - Addnew,
-      longitude3: this.state.viewport.longitude + AddnewRight,
-      viewport: { ...viewport, pitch: 31 },
-    });
-
-    this.props.closeScream();
-
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth",
-    });
-  };
-
-  mapDesktopReset = () => {
-    this.setState({
-      viewport: {
-        zoom: 11.5,
-        pitch: 30,
-        latitude: 50.95,
-        longitude: 6.9503,
-      },
-    });
-    this.setState({
-      latitude1: 51.08,
-      latitude2: 50.79,
-      longitude2: 6.712,
-      longitude3: 7.17,
-    });
-
-    this.props.closeScream();
-  };
-
-  handleCookies = (cookie_settings) => {
-    cookies.set("Cookie_settings", cookie_settings, {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 90,
-      sameSite: "none",
-      secure: true,
-    });
-    this.setState({ cookiesSetDesktop: true });
-  };
-
-  handleNoLocation = () => {
-    this.setState({
-      latitude1: 50.93892,
-      latitude2: 50.93864,
-      longitude2: 6.9586,
-      longitude3: 6.9588,
-
-      openGeofilter: false,
-      open: false,
-    });
-  };
-
-  alertClick = (event) => {
-    setTimeout(() => {
-      alert(
-        "Die Keywords werden erst Aussagekräftig wenn mehr Ideen geteilt werden"
-      );
-    }, 2500);
-  };
-
-  dataNoLocationHandle = () => {
-    this.setState({
-      selectedId: "hi",
-    });
-  };
-
-  handleLogout = () => {
-    this.props.logoutUser();
-    this.setState({
-      order: 1,
-    });
-  };
-
-  deleteAccount = () => {
-    const userHandle = this.props.user.credentials.handle;
-
-    var link =
-      "mailto:dein@senf.koeln" +
-      "?subject=" +
-      escape("Bitte um Account-loeschung") +
-      "&body=" +
-      escape(
-        "Bitte loeschen Sie meinen Account." +
-          "\n" +
-          "\n" +
-          "Mein Nutzername lautet:" +
-          "\n" +
-          "\n" +
-          userHandle
-      );
-    window.location.href = link;
-  };
-
-  handleOpenGeofilter = () => {
-    this.setState({
-      openGeofilter: true,
-      showGeofilterResults: false,
-      createGeofilterCircle: false,
-    });
-  };
-
-  handleCloseGeofilter = () => {
-    this.setState({
-      showGeofilterResults: true,
-
-      openGeofilter: false,
-      createGeofilterCircle: true,
-    });
-
-    setTimeout(() => {
-      this.setState({});
-    }, 1000);
-  };
-
-  handleResetGeofilter = () => {
-    this.setState({
-      showGeofilterResults: true,
-
-      openGeofilter: false,
-      createGeofilterCircle: true,
-      viewport: {
-        zIndex: 9999,
-        position: "fixed",
-        top: "0vh",
-        left: "0vw",
-        width: "100vw",
-        height: "100vh",
-        latitude: 50.93,
-        longitude: 6.9503,
-        zoom: 9.2 + 1.6,
-        maxZoom: 18,
-        minZoom: 8,
-      },
-      latitude1: 51.08,
-      latitude2: 50.79,
-      longitude2: 6.712,
-      longitude3: 7.17,
-    });
-  };
-
   render() {
-    const { screams, loading, projects, loadingProjects } = this.props.data;
+    const {
+      screams,
+      loading,
+      projects,
+      project,
+      loadingProjects,
+      mapBounds,
+      mapViewport,
+    } = this.props.data;
     const { classes } = this.props;
+
+    console.log(this.props);
 
     const dataFinal = screams.filter(
       ({ Thema, lat, long, status }) =>
         this.state.topicsSelected.includes(Thema) &&
-        lat <= this.state.latitude1 &&
-        lat >= this.state.latitude2 &&
-        long >= this.state.longitude2 &&
-        long <= this.state.longitude3 &&
+        lat <= mapBounds.latitude1 &&
+        lat >= mapBounds.latitude2 &&
+        long >= mapBounds.longitude2 &&
+        long <= mapBounds.longitude3 &&
         status === "None"
     );
 
-    const dataFinalMap = screams.filter(
-      ({ Thema, status }) =>
-        this.state.topicsSelected.includes(Thema) && status === "None"
-    );
+    const dataFinalMap = this.props.UI.openProject
+      ? project.screams.filter(
+          ({ Thema, status }) =>
+            this.state.topicsSelected.includes(Thema) && status === "None"
+        )
+      : screams.filter(
+          ({ Thema, status }) =>
+            this.state.topicsSelected.includes(Thema) && status === "None"
+        );
 
     return (
       <div>
@@ -493,12 +284,6 @@ export class home extends Component {
             </span>
           </div>
         )}
-        <div className="appbar">
-          <PostScream
-            loadingProjects={loadingProjects}
-            projectsData={projects}
-          />
-        </div>
 
         <Topbar
           loading={loading}
@@ -506,8 +291,6 @@ export class home extends Component {
           order={this.state.order}
           handleTopicSelector={this.handleTopicSelector}
           topicsSelected={this.state.topicsSelected}
-          deleteAccount={this.deleteAccount}
-          handleLogout={this.handleLogout}
         />
         <DesktopSidebar
           loading={this.state.loading}
@@ -515,11 +298,6 @@ export class home extends Component {
           order={this.state.order}
           handleTopicSelector={this.handleTopicSelector}
           topicsSelected={this.state.topicsSelected}
-          handleCloseInfoPageDesktop={this.handleCloseInfoPageDesktop}
-          cookiesSetDesktop={this.state.cookiesSetDesktop}
-          handleCookies={this.handleCookies}
-          deleteAccount={this.deleteAccount}
-          handleLogout={this.handleLogout}
           loadingProjects={loadingProjects}
           projectsData={projects}
         ></DesktopSidebar>
@@ -530,15 +308,11 @@ export class home extends Component {
           dataFinal={dataFinalMap}
           id="mapDesktop"
           style={{ zIndex: 9999 }}
-          handleNoLocation={this.handleNoLocation}
-          dataNoLocationHandle={this.dataNoLocationHandle}
-          _onViewportChangeDesktop={this._onViewportChangeDesktop}
-          mapDesktopShowResults={this.mapDesktopShowResults}
-          viewport={this.state.viewport}
-          selectedId={this.state.selectedId}
-          showTitles={this.state.showTitles}
-          mapDesktopShowResults={this.mapDesktopShowResults}
-          mapDesktopReset={this.mapDesktopReset}
+          geoData={
+            this.props.data.project &&
+            this.props.UI.openProject &&
+            this.props.data.project.geoData
+          }
         ></MapDesktop>
 
         {!this.props.UI.openInfoPage && (
@@ -550,38 +324,20 @@ export class home extends Component {
             )}
             <div className="MainBackgroundHome" />
 
-            <AllIdeasPage
+            <IdeaList
               loading={loading}
               order={this.state.order}
               classes={classes}
               dataFinal={dataFinal}
-              viewport={this.state.viewport}
-              latitude1={this.state.latitude1}
-              latitude2={this.state.latitude2}
-              latitude3={this.state.latitude3}
-              latitude4={this.state.latitude4}
-              longitude1={this.state.longitude1}
-              longitude2={this.state.longitude2}
-              longitude3={this.state.longitude3}
-              longitude4={this.state.longitude4}
-              dataNoLocationHandle={this.dataNoLocationHandle}
-              handleNoLocation={this.handleNoLocation}
-              showDemand={this.state.showDemand}
-              handleClick={this.state.handleClick}
+              viewport={mapViewport}
               handleDropdown={this.handleDropdown}
-              handleOpenGeofilter={this.handleOpenGeofilter}
-              handleCloseGeofilter={this.handleCloseGeofilter}
-              handleResetGeofilter={this.handleResetGeofilter}
-              openGeofilter={this.state.openGeofilter}
-              showGeofilterResults={this.state.showGeofilterResults}
-              createGeofilterCircle={this.state.createGeofilterCircle}
-              selectedId={this.state.selectedId}
               projectsData={projects}
-              _onViewportChange={this._onViewportChange}
+              loadingProjects={loadingProjects}
+              project={this.props.project}
               dropdown={this.state.dropdown}
               handleTopicSelector={this.handleTopicSelector}
               topicsSelected={this.state.topicsSelected}
-            ></AllIdeasPage>
+            ></IdeaList>
 
             <ProjectsPage
               loadingProjects={loadingProjects}
@@ -601,22 +357,14 @@ export class home extends Component {
                 loading={loading}
                 openProject={this.props.UI.openProject}
                 screamIdParam={this.state.screamIdParam}
-                _onViewportChangeDesktop={this._onViewportChangeDesktop}
-                zoomToBounds={this.zoomToBounds}
-                showTitles={this.state.showTitles}
                 handleClick={this.handleClick}
                 latitude1={this.state.latitude1}
                 latitude2={this.state.latitude2}
-                latitude3={this.state.latitude3}
-                latitude4={this.state.latitude4}
-                longitude1={this.state.longitude1}
                 longitude2={this.state.longitude2}
                 longitude3={this.state.longitude3}
-                longitude4={this.state.longitude4}
                 loadingProjects={loadingProjects}
                 projectsData={projects}
-                viewport={this.state.viewport}
-                mapDesktopShowResults={this.mapDesktopShowResults}
+                viewport={mapViewport}
                 handleTopicSelector={this.handleTopicSelector}
                 topicsSelected={this.state.topicsSelected}
               ></ProjectDialog>
@@ -643,6 +391,9 @@ home.propTypes = {
   openScream: PropTypes.func.isRequired,
   openProject: PropTypes.func.isRequired,
   closeProject: PropTypes.func.isRequired,
+
+  setMapViewport: PropTypes.func.isRequired,
+  setMapBounds: PropTypes.func.isRequired,
 };
 
 const mapActionsToProps = {
@@ -654,6 +405,8 @@ const mapActionsToProps = {
   openScream,
   openProject,
   closeProject,
+  setMapViewport,
+  setMapBounds,
 };
 
 const mapStateToProps = (state) => ({

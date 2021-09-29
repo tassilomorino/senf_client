@@ -30,9 +30,6 @@ const DesktopSidebar = ({
   handleClick,
   handleTopicSelector,
   topicsSelected,
-  handleCookies,
-  deleteAccount,
-  handleLogout,
   loadingProjects,
   projectsData,
 }) => {
@@ -47,11 +44,7 @@ const DesktopSidebar = ({
         <h1 className="logoWeb">
           <img src={Logo} width="100px"></img>
         </h1>
-        <InlineInformationPageDesktop
-          handleCookies={handleCookies}
-          loading={loading}
-          classes={classes}
-        />
+        <InlineInformationPageDesktop loading={loading} classes={classes} />
 
         {!authenticated ? (
           <div className="profile">
@@ -69,8 +62,6 @@ const DesktopSidebar = ({
             <Account
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
-              deleteAccount={deleteAccount}
-              handleLogout={handleLogout}
             />
             <img
               src={order === 4 ? profile_grey : profile_yellow}

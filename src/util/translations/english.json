@@ -21,6 +21,9 @@
 
    "newest": "newest",
    "hottest": "hottest",
+
+   "noMoreIdeas": "No further ideas",
+   "noContentIdeas": "With the filters selected, you won't find any ideas yet.",
    "ideas": "Ideas",
    "comments": "Comments",
    "votes": "Votes",
@@ -33,6 +36,7 @@
    "register": "Register",
    "login": "Login",
    "profile": "Profile",
+   "logout":"Logout",
 
    "alreadyMember": "Already a member?",
    "notYetMember": "not yet a member?",

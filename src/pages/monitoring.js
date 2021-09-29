@@ -55,41 +55,12 @@ export class monitoring extends Component {
       screamIdParam: null,
       projectIdParam: null,
       count: 0,
-      showDemand: false,
-      checked: 1,
-      checked1: "Empty",
-      checked2: "Empty",
-      checked3: "Empty",
-      checked4: "Empty",
-      checked5: "Empty",
-      checked6: "Empty",
-      checked7: "Empty",
       dropdown: "10",
-      selectedId: "",
-      showTitles: false,
-      cookiesSetDesktop: false,
-
-      openGeofilter: false,
-      showGeofilterResults: false,
-      createGeofilterCircle: false,
-
       channelOrder: 1,
 
       openScream: false,
       openProject: false,
-      viewport: {
-        zIndex: 9999,
-        position: "fixed",
-        top: "0vh",
-        left: "0vw",
-        width: "100vw",
-        height: "100vh",
-        latitude: 50.93,
-        longitude: 6.9503,
-        zoom: 9.2,
-        maxZoom: 18,
-        minZoom: 8,
-      },
+
       topicsSelected: [
         "Verkehr",
         "Versorgung",
@@ -115,41 +86,6 @@ export class monitoring extends Component {
       window.removeEventListener("popstate", this.handleOnUrlChange, false);
     }
   }
-
-  handleOnUrlChange = () => {
-    let coordinates = window.location.hash;
-
-    let lat = Number(coordinates.split("#")[1]);
-    let long = Number(coordinates.split("#")[2]);
-
-    console.log(lat);
-
-    if (coordinates.includes("infoPage")) {
-      //nothing
-    } else {
-      setTimeout(() => {
-        if ((lat < 50.95) | (lat > 50.82)) {
-          this.setState({
-            viewport: {
-              zoom: 16.5,
-              pitch: 30,
-              latitude: lat,
-              longitude: long,
-            },
-          });
-        } else {
-          this.props.history.push("/");
-          window.location.reload();
-        }
-      }, 400);
-
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      });
-    }
-  };
 
   handleClick = (order) => {
     this.setState({
@@ -227,208 +163,6 @@ export class monitoring extends Component {
         });
       }
     }
-  };
-
-  _onViewportChange = (viewport) => {
-    this.setState({ viewport, selectedId: "" });
-
-    var metersPerPx =
-      (156543.03392 *
-        Math.cos((this.state.viewport.latitude * Math.PI) / 180)) /
-      Math.pow(2, this.state.viewport.zoom);
-
-    var Addnew = metersPerPx / 500;
-    var Addnewtop = metersPerPx / 1000;
-    var AddnewRight = metersPerPx / 500;
-    var AddnewBottom = metersPerPx / 1000;
-
-    this.setState({
-      latitude1: this.state.viewport.latitude + Addnewtop,
-      longitude1: this.state.viewport.longitude - Addnew,
-      latitude2: this.state.viewport.latitude - AddnewBottom,
-      longitude2: this.state.viewport.longitude - Addnew,
-      latitude3: this.state.viewport.latitude + Addnewtop,
-      longitude3: this.state.viewport.longitude + AddnewRight,
-      latitude4: this.state.viewport.latitude - AddnewBottom,
-      longitude4: this.state.viewport.longitude + AddnewRight,
-    });
-  };
-
-  _onViewportChangeDesktop = (viewport) => {
-    if (viewport.zoom > 15) {
-      this.setState({
-        showTitles: true,
-      });
-    } else {
-      this.setState({
-        showTitles: false,
-      });
-    }
-
-    this.setState({ viewport, selectedId: "" });
-  };
-
-  zoomToBounds = (centerLat, centerLong, zoom) => {
-    this.setState({
-      viewport: {
-        latitude: centerLat,
-        longitude: centerLong,
-        zoom: zoom,
-        transitionDuration: 1000,
-        pitch: 30,
-        bearing: 0,
-      },
-    });
-  };
-
-  mapDesktopShowResults = (viewport) => {
-    if (this.state.order === 2) {
-      this.setState({ order: 1 });
-    }
-
-    var metersPerPx =
-      (156543.03392 *
-        Math.cos((this.state.viewport.latitude * Math.PI) / 180)) /
-      Math.pow(2, this.state.viewport.zoom);
-
-    var Addnew = metersPerPx / 200;
-    var Addnewtop = metersPerPx / 200;
-    var AddnewRight = metersPerPx / 200;
-    var AddnewBottom = metersPerPx / 300;
-
-    this.setState({
-      latitude1: this.state.viewport.latitude + Addnewtop,
-      latitude2: this.state.viewport.latitude - AddnewBottom,
-      longitude2: this.state.viewport.longitude - Addnew,
-      longitude3: this.state.viewport.longitude + AddnewRight,
-      viewport: { ...viewport, pitch: 31 },
-    });
-
-    this.props.closeScream();
-
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth",
-    });
-  };
-
-  mapDesktopReset = () => {
-    this.setState({
-      viewport: {
-        zoom: 11.5,
-        pitch: 30,
-        latitude: 50.95,
-        longitude: 6.9503,
-      },
-    });
-    this.setState({
-      latitude1: 51.08,
-      latitude2: 50.79,
-      longitude2: 6.712,
-      longitude3: 7.17,
-    });
-
-    this.props.closeScream();
-  };
-
-  handleNoLocation = () => {
-    this.setState({
-      latitude1: 50.93892,
-      latitude2: 50.93864,
-      longitude2: 6.9586,
-      longitude3: 6.9588,
-      openGeofilter: false,
-      open: false,
-    });
-  };
-
-  alertClick = (event) => {
-    setTimeout(() => {
-      alert(
-        "Die Keywords werden erst Aussagekräftig wenn mehr Ideen geteilt werden"
-      );
-    }, 2500);
-  };
-
-  dataNoLocationHandle = () => {
-    this.setState({
-      selectedId: "hi",
-    });
-  };
-
-  handleLogout = () => {
-    this.props.logoutUser();
-    this.setState({
-      order: 1,
-    });
-  };
-
-  deleteAccount = () => {
-    const userHandle = this.props.user.credentials.handle;
-
-    var link =
-      "mailto:dein@senf.koeln" +
-      "?subject=" +
-      escape("Bitte um Account-loeschung") +
-      "&body=" +
-      escape(
-        "Bitte loeschen Sie meinen Account." +
-          "\n" +
-          "\n" +
-          "Mein Nutzername lautet:" +
-          "\n" +
-          "\n" +
-          userHandle
-      );
-    window.location.href = link;
-  };
-
-  handleOpenGeofilter = () => {
-    this.setState({
-      openGeofilter: true,
-      showGeofilterResults: false,
-      createGeofilterCircle: false,
-    });
-  };
-
-  handleCloseGeofilter = () => {
-    this.setState({
-      showGeofilterResults: true,
-
-      openGeofilter: false,
-      createGeofilterCircle: true,
-    });
-
-    setTimeout(() => {
-      this.setState({});
-    }, 1000);
-  };
-
-  handleResetGeofilter = () => {
-    this.setState({
-      showGeofilterResults: true,
-
-      openGeofilter: false,
-      createGeofilterCircle: true,
-      viewport: {
-        zIndex: 9999,
-        position: "fixed",
-        top: "0vh",
-        left: "0vw",
-        width: "100vw",
-        height: "100vh",
-        latitude: 50.93,
-        longitude: 6.9503,
-        zoom: 9.2 + 1.6,
-        maxZoom: 18,
-        minZoom: 8,
-      },
-      latitude1: 51.08,
-      latitude2: 50.79,
-      longitude2: 6.712,
-      longitude3: 7.17,
-    });
   };
 
   render() {
@@ -575,8 +309,6 @@ export class monitoring extends Component {
           channelOrder={this.state.channelOrder}
           handleTopicSelector={this.handleTopicSelector}
           topicsSelected={this.state.topicsSelected}
-          deleteAccount={this.deleteAccount}
-          handleLogout={this.handleLogout}
           loadingProjects={loadingProjects}
           projectsData={projects}
         ></MonitoringDesktopSidebar>

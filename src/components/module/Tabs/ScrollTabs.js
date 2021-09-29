@@ -38,10 +38,10 @@ const Tab = styled.div`
   height: 100%;
   display: inline-flex;
   white-space: nowrap;
-  padding-right: 15px;
-  padding-left: 15px;
+  padding-right: 10px;
+  padding-left: 10px;
   animation: ${enterAnimation} ${(props) => props.i * 0.8}s;
-  font-size: 20px;
+  font-size: 18px;
   color: rgb(87, 87, 87);
   font-family: ${(props) =>
     props.active ? "Futura PT W01-Bold" : "Futura PT W01 Book;"};

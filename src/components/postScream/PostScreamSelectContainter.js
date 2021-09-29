@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useEffect } from "react";
+import React from "react";
 import _ from "lodash";
 import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../util/customDeviceDetect";
@@ -12,7 +12,7 @@ const PostScreamSelectContainter = ({
   locationDecided,
   handleLocationDecided,
   handleLocationDecidedNoLocation,
-  project,
+  projectSelected,
   address,
   handleDropdownProject,
 }) => {
@@ -65,7 +65,7 @@ const PostScreamSelectContainter = ({
 
         <CustomSelect
           name={"project"}
-          value={project}
+          value={projectSelected}
           initialValue={"Allgemein (Alle Ideen)"}
           options={OptionsProjects()}
           handleDropdown={handleDropdownProject}
@@ -74,7 +74,7 @@ const PostScreamSelectContainter = ({
       <br />
       <button
         className={
-          project !== ""
+          projectSelected !== ""
             ? "buttonWide buttonSelectLocationNo_hide"
             : "buttonWide buttonSelectLocationNo"
         }

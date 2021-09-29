@@ -51,10 +51,11 @@ const styles = {
   closeButton: {
     zIndex: 9999,
     position: "fixed",
-    left: "35px",
-    width: "30px",
+    left: "15px",
+    width: "40px",
     marginTop: "18px",
     color: "#ffd388",
+    transform: "scale(1.5)",
   },
 
   nav: {
@@ -93,7 +94,7 @@ const InlineInformationPage = ({ classes }) => {
     <Fragment>
       <div onClick={() => setOpen(true)}>
         <div className="inlineInfoIcon">
-          <img src={Info} width="35" alt="EndImage" />
+          <img src={Info} width="30" alt="EndImage" />
 
           <span className="inlineInfoIconText">Infos</span>
         </div>

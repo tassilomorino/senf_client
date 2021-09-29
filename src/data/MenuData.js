@@ -30,11 +30,7 @@ export const MenuData = [
       </Translation>
     ),
   },
-  {
-    isSelectedIcon: List_grey,
-    isNotSelectedIcon: List_yellow,
-    text: <Translation>{(t, { i18n }) => <span>Aktionen</span>}</Translation>,
-  },
+
   {
     isSelectedIcon: Insights_grey,
     isNotSelectedIcon: Insights_yellow,
@@ -43,5 +39,10 @@ export const MenuData = [
         {(t, { i18n }) => <span>{t("menuData_insights")}</span>}
       </Translation>
     ),
+  },
+  {
+    isSelectedIcon: List_grey,
+    isNotSelectedIcon: List_yellow,
+    text: <Translation>{(t, { i18n }) => <span>Aktionen</span>}</Translation>,
   },
 ];

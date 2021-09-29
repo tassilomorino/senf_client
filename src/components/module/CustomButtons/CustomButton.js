@@ -126,7 +126,8 @@ const IconButton = styled.button`
   height: 50px;
   color: #353535;
   border-radius: 100%;
-  box-shadow: rgb(38, 57, 77, 0.7) 0px 20px 30px -15px;
+  box-shadow: ${(props) =>
+    props.shadow === false ? "" : "rgb(38, 57, 77, 0.7) 0px 20px 30px -15px;"};
   background-color: white;
   display: flex;
   align-items: center;
@@ -155,6 +156,7 @@ export const CustomIconButton = ({
   bottom,
   left,
   zIndex,
+  shadow,
   handleButtonClick,
   animation,
 }) => {
@@ -170,6 +172,7 @@ export const CustomIconButton = ({
       margin={margin}
       zIndex={zIndex}
       animation={animation}
+      shadow={shadow}
     >
       <img src={Icon} width="50%" />
     </IconButton>
