@@ -104,7 +104,7 @@ const Welcome = ({ classes }) => {
           text={t("accept")}
           backgroundColor="white"
           textColor="#353535"
-          position="absolute"
+          position="fixed"
           bottom="50px"
           handleButtonClick={() => handleCookies("all")}
         />
@@ -150,7 +150,7 @@ const Welcome = ({ classes }) => {
           text={t("next")}
           backgroundColor="#353535"
           textColor="white"
-          position="absolute"
+          position="fixed"
           bottom="50px"
           handleButtonClick={handleButtonClick}
         />
