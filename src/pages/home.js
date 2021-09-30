@@ -29,7 +29,7 @@ import InsightsPage from "../components/templates/InsightsPage";
 import DesktopSidebar from "../components/layout/DesktopSidebar";
 
 import Cookies from "universal-cookie";
-import Topbar from "../components/layout/Topbar";
+import Topbar from "../components/module/Navigation/Topbar";
 import MapDesktop from "../components/module/map/MapDesktop";
 import IdeaList from "../components/templates/IdeaList";
 import ProjectsPage from "../components/templates/ProjectsPage";
@@ -89,7 +89,7 @@ export class home extends Component {
       const viewport = {
         latitude: 50.95,
         longitude: 6.9503,
-        zoom: 11.5,
+        zoom: isMobileCustom ? 9.5 : 11.5,
         transitionDuration: 4000,
         pitch: 30,
         bearing: 0,

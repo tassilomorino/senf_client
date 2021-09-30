@@ -1,5 +1,6 @@
 /** @format */
 
+import { isMobileCustom } from "../../util/customDeviceDetect";
 import {
   SET_SCREAMS,
   LIKE_SCREAM,
@@ -37,7 +38,7 @@ const initialState = {
   mapViewport: {
     latitude: 50.93,
     longitude: 6.9503,
-    zoom: 9.2,
+    zoom: isMobileCustom ? 7.2 : 9.2,
     maxZoom: 18,
     minZoom: 8,
   },

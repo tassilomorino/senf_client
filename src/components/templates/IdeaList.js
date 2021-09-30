@@ -4,13 +4,13 @@ import _ from "lodash";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
 import { useSelector, useDispatch } from "react-redux";
-import { setMapBounds } from "../../redux/actions/mapActions";
+import { setMapBounds, setMapViewport } from "../../redux/actions/mapActions";
 
 import styled, { keyframes } from "styled-components";
 import Swipe from "react-easy-swipe";
 
 //Components
-import Geofilter from "../module/map/Geofilter";
+import MapMobile from "../module/map/MapMobile";
 import List from "../module/List/List";
 import ListHeader from "../module/Headers/ListHeader";
 import PostScream from "../postScream/PostScream";
@@ -58,15 +58,20 @@ const SwipeContainer = styled.div`
   margin-top: ${(props) => props.marginTop && props.marginTop + "px"};
   width: 100%;
   z-index: 14;
-  height: ${(props) => (props.Top && props.Top === "25%" ? "70px" : "30%")};
+  height: ${(props) => (props.Top && props.Top === "141px" ? "70px" : "30%")};
 `;
 
 const ScrollContainer = styled.div`
-  height: 75%;
+  height: 150%;
   width: 100%;
-  background-image: linear-gradient(to bottom, #fed957, #ffda53, #ffffff);
-  background-repeat: no-repeat;
-  background: -webkit-linear-gradient(to left, #fed957, #ffda53, #ffffff);
+
+  background: rgb(254, 217, 87);
+  background: linear-gradient(
+    180deg,
+    rgba(254, 217, 87, 1) 0%,
+    rgba(255, 218, 83, 1) 25%,
+    rgba(255, 255, 255, 1) 50%
+  );
   position: fixed;
   overflow: scroll;
   border-radius: 20px 20px 0 0;
@@ -128,10 +133,10 @@ const IdeaList = ({
   const onSwipeEnd = (position, event) => {
     console.log(position.y);
     if (swipeMovePosition < -100) {
-      setSwipePosition("25%");
+      setSwipePosition("141px");
       setSwipeMovePosition(0);
     } else if (swipePosition === "70%" && swipeMovePosition > 50) {
-      setSwipePosition("90%");
+      setSwipePosition("calc(100% - 70px)");
       setSwipeMovePosition(0);
     } else if (swipeMovePosition > 100) {
       setSwipePosition("70%");
@@ -143,10 +148,12 @@ const IdeaList = ({
   };
 
   const _onViewportChange = (viewport) => {
+    dispatch(setMapViewport(viewport));
+
     const boundAdds = [500, 1000, 500, 1000];
     dispatch(setMapBounds(viewport, boundAdds));
 
-    setSwipePosition("90%");
+    setSwipePosition("calc(100% - 70px)");
     setSwipeMovePosition(0);
   };
 
@@ -164,7 +171,7 @@ const IdeaList = ({
     <Wrapper>
       {isMobileCustom ? (
         <React.Fragment>
-          <Geofilter
+          <MapMobile
             dataFinal={dataFinal}
             geoData={geoData}
             viewport={mapViewport}
@@ -175,7 +182,7 @@ const IdeaList = ({
             topicsSelected={topicsSelected}
           ></TopicFilter>
 
-          {swipePosition === "25%" && (
+          {swipePosition === "141px" && (
             <MapClickContainer onClick={() => setSwipePosition("70%")} />
           )}
 
@@ -199,7 +206,7 @@ const IdeaList = ({
               <SwipeContainer
                 Top={swipePosition}
                 marginTop={swipeMovePosition}
-                onClick={() => setSwipePosition("25%")}
+                onClick={() => setSwipePosition("141px")}
               />
 
               <ListHeaderWrapper

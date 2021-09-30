@@ -27,7 +27,7 @@ import ScreamShare from "../modals/ScreamShare";
 import CalendarComponent from "../module/calendar/CalendarComponent";
 
 import IdeaList from "../templates/IdeaList";
-import ProjectHeader from "./ProjectHeader";
+import ProjectHeader from "../module/Navigation/ProjectHeader";
 import ProjectInfo from "./ProjectInfo";
 import styled from "styled-components";
 
@@ -102,7 +102,9 @@ class ProjectDialog extends Component {
         setTimeout(() => {
           const centerLat = this.props.project.centerLat;
           const centerLong = this.props.project.centerLong;
-          const zoom = this.props.project.zoom;
+          const zoom = isMobileCustom
+            ? this.props.project.zoom - 2
+            : this.props.project.zoom;
 
           this.zoomToBounds(centerLat, centerLong, zoom);
         }, 600);
@@ -123,7 +125,7 @@ class ProjectDialog extends Component {
     const viewport = {
       latitude: 50.95,
       longitude: 6.9503,
-      zoom: 11.5,
+      zoom: isMobileCustom ? 9.5 : 11.5,
       transitionDuration: 4000,
       pitch: 30,
       bearing: 0,

@@ -69,7 +69,8 @@ const OpenButtonMobile = styled.button`
 
   animation: ${AddbuttonAnimation} 5s ease-in-out infinite;
 
-  bottom: ${(props) => (props.swipePosition === "90vh" ? "80px" : "9px")};
+  bottom: ${(props) =>
+    props.swipePosition === "calc(100% - 70px)" ? "80px" : "9px"};
   left: 50vw;
   transition: 1s;
 `;
