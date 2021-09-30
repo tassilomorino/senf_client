@@ -308,6 +308,7 @@ export class home extends Component {
           dataFinal={dataFinalMap}
           id="mapDesktop"
           style={{ zIndex: 9999 }}
+          openProject={this.props.UI.openProject}
           geoData={
             this.props.data.project &&
             this.props.UI.openProject &&

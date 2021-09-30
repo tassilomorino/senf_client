@@ -35,12 +35,6 @@ const initialState = {
   full_screams: [],
   cookie_settings: "",
   mapViewport: {
-    zIndex: 9999,
-    position: "fixed",
-    top: "0vh",
-    left: "0vw",
-    width: "100vw",
-    height: "100vh",
     latitude: 50.93,
     longitude: 6.9503,
     zoom: 9.2,

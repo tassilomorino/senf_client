@@ -29,6 +29,7 @@ import PostScreamMap from "./PostScreamMap";
 import PostScreamSelectContainter from "./PostScreamSelectContainter";
 import { CustomIconButton } from "../module/CustomButtons/CustomButton";
 import styled, { keyframes } from "styled-components";
+import { setMapViewport } from "../../redux/actions/mapActions";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -197,13 +198,16 @@ const PostScream = ({
   const history = useHistory();
 
   const [open, setOpen] = useState(false);
-  const [viewport, setViewport] = useState({
-    latitude: 50.93864020643174,
-    longitude: 6.958725744885521,
-    zoom: 12,
-    transitionDuration: 1000,
-    pitch: 0,
-  });
+
+  const mapViewport = useSelector((state) => state.data.mapViewport);
+
+  // const [viewport, setViewport] = useState({
+  //   latitude: 50.93864020643174,
+  //   longitude: 6.958725744885521,
+  //   zoom: 12,
+  //   transitionDuration: 1000,
+  //   pitch: 0,
+  // });
 
   const [addressBarClickedState, setAddressBarClickedState] = useState(false);
 
@@ -280,21 +284,25 @@ const PostScream = ({
 
     projectsData.forEach((element) => {
       if (projectSelected === element.project) {
-        setViewport({
+        const viewport = {
           zoom: element.zoom,
           latitude: element.centerLat,
           longitude: element.centerLong,
           transitionDuration: 1000,
-        });
+        };
+        dispatch(setMapViewport(viewport));
+
         setGeoData(element.geoData);
       }
       if (project === "") {
-        setViewport({
+        const viewport = {
           zoom: 12,
           latitude: 50.93864020643174,
           longitude: 6.958725744885521,
           transitionDuration: 1000,
-        });
+        };
+        dispatch(setMapViewport(viewport));
+
         setGeoData("");
       }
     });
@@ -341,21 +349,25 @@ const PostScream = ({
 
     projectsData.forEach((element) => {
       if (value === element.project) {
-        setViewport({
+        const viewport = {
           zoom: element.zoom,
           latitude: element.centerLat,
           longitude: element.centerLong,
           transitionDuration: 1000,
-        });
+        };
+        dispatch(setMapViewport(viewport));
+
         setGeoData(element.geoData);
       }
       if (value === "") {
-        setViewport({
+        const viewport = {
           zoom: 12,
           latitude: 50.93864020643174,
           longitude: 6.958725744885521,
           transitionDuration: 1000,
-        });
+        };
+        dispatch(setMapViewport(viewport));
+
         setGeoData("");
       }
     });
@@ -370,8 +382,8 @@ const PostScream = ({
       locationHeader: address,
       fulladdress,
       neighborhood,
-      lat: viewport.latitude,
-      long: viewport.longitude,
+      lat: mapViewport.latitude,
+      long: mapViewport.longitude,
       project: projectSelected,
       Thema: topic,
       weblinkTitle,
@@ -389,7 +401,8 @@ const PostScream = ({
   };
 
   const _onMarkerDragEnd = (newViewport) => {
-    setViewport(newViewport);
+    dispatch(setMapViewport(newViewport));
+
     setAddressBarClickedState(false);
   };
 
@@ -439,7 +452,7 @@ const PostScream = ({
   };
 
   const onSelected = (newViewport) => {
-    setViewport(newViewport);
+    dispatch(setMapViewport(newViewport));
 
     setTimeout(() => {
       geocode(newViewport);
@@ -473,12 +486,14 @@ const PostScream = ({
       setNeighborhood("Ohne Ortsangabe");
       setAddress("Ohne Ortsangabe");
       setFulladdress("Ohne Ortsangabe");
-      setViewport({
+      const viewport = {
         zoom: 12,
         latitude: 50.93864020643174,
         longitude: 6.958725744885521,
         transitionDuration: 1000,
-      });
+      };
+      dispatch(setMapViewport(viewport));
+
       setAllMainStates({
         ...allMainStates,
         locationDecided: true,
@@ -611,7 +626,7 @@ const PostScream = ({
             geocode={geocode}
             _onMarkerDragEnd={_onMarkerDragEnd}
             geoData={geoData}
-            viewport={viewport}
+            viewport={mapViewport}
             clicked={addressBarClickedState}
             addressBarClicked={addressBarClicked}
             locationDecided={locationDecided}
