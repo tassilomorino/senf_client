@@ -46,7 +46,7 @@ const TopicFilterInnerWrapperMobile = styled.div`
   margin-left: calc(100% - 120px);
   animation: ${enterAnimation} 5s;
   z-index: 15;
-  pointer-events: auto;
+  pointer-events: all;
 `;
 
 const TopicFilterWrapperDesktop = styled.div`

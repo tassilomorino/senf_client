@@ -58,11 +58,11 @@ const SwipeContainer = styled.div`
   margin-top: ${(props) => props.marginTop && props.marginTop + "px"};
   width: 100%;
   z-index: 14;
-  height: ${(props) => (props.Top && props.Top === "25vh" ? "70px" : "30vh")};
+  height: ${(props) => (props.Top && props.Top === "25%" ? "70px" : "30%")};
 `;
 
 const ScrollContainer = styled.div`
-  height: 75vh;
+  height: 75%;
   width: 100%;
   background-image: linear-gradient(to bottom, #fed957, #ffda53, #ffffff);
   background-repeat: no-repeat;
@@ -73,7 +73,7 @@ const ScrollContainer = styled.div`
   z-index: 9;
   top: ${(props) => props.Top && props.Top};
   margin-top: ${(props) => props.marginTop && props.marginTop + "px"};
-  transition: 0.2s ease-out;
+  /* transition: 0.2s ease-out; */
 `;
 
 const ListHeaderWrapper = styled.div`
@@ -85,7 +85,7 @@ const ListHeaderWrapper = styled.div`
   top: ${(props) => props.Top && props.Top};
   margin-top: ${(props) => props.marginTop && props.marginTop + "px"};
   border-radius: 20px 20px 0 0;
-  transition: 0.2s ease-out;
+  /* transition: 0.2s ease-out; */
 `;
 
 const ShadowBox = styled.div`
@@ -98,7 +98,7 @@ const ShadowBox = styled.div`
   box-shadow: rgb(38, 57, 77, 0.4) 0px 20px 30px -15px;
   z-index: 14;
   display: ${(props) => props.display && props.display};
-  transition: 0.2s ease-out;
+  /* transition: 0.2s ease-out; */
 `;
 
 const IdeaList = ({
@@ -114,7 +114,7 @@ const IdeaList = ({
   handleTopicSelector,
   topicsSelected,
 }) => {
-  const [swipePosition, setSwipePosition] = useState("70vh");
+  const [swipePosition, setSwipePosition] = useState("70%");
   const [swipeMovePosition, setSwipeMovePosition] = useState(0);
   const [shadow, setShadow] = useState(false);
 
@@ -128,16 +128,16 @@ const IdeaList = ({
   const onSwipeEnd = (position, event) => {
     console.log(position.y);
     if (swipeMovePosition < -100) {
-      setSwipePosition("25vh");
+      setSwipePosition("25%");
       setSwipeMovePosition(0);
-    } else if (swipePosition === "70vh" && swipeMovePosition > 50) {
-      setSwipePosition("90vh");
+    } else if (swipePosition === "70%" && swipeMovePosition > 50) {
+      setSwipePosition("90%");
       setSwipeMovePosition(0);
     } else if (swipeMovePosition > 100) {
-      setSwipePosition("70vh");
+      setSwipePosition("70%");
       setSwipeMovePosition(0);
     } else {
-      //  setSwipePosition("70vh");
+      //  setSwipePosition("70%");
       setSwipeMovePosition(0);
     }
   };
@@ -146,7 +146,7 @@ const IdeaList = ({
     const boundAdds = [500, 1000, 500, 1000];
     dispatch(setMapBounds(viewport, boundAdds));
 
-    setSwipePosition("90vh");
+    setSwipePosition("90%");
     setSwipeMovePosition(0);
   };
 
@@ -175,8 +175,8 @@ const IdeaList = ({
             topicsSelected={topicsSelected}
           ></TopicFilter>
 
-          {swipePosition === "25vh" && (
-            <MapClickContainer onClick={() => setSwipePosition("70vh")} />
+          {swipePosition === "25%" && (
+            <MapClickContainer onClick={() => setSwipePosition("70%")} />
           )}
 
           <PostScream
@@ -199,7 +199,7 @@ const IdeaList = ({
               <SwipeContainer
                 Top={swipePosition}
                 marginTop={swipeMovePosition}
-                onClick={() => setSwipePosition("25vh")}
+                onClick={() => setSwipePosition("25%")}
               />
 
               <ListHeaderWrapper
