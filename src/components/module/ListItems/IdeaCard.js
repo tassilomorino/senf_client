@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
 import MyButton from "../../../util/MyButton";
+import styled from "styled-components";
 
 //TIMESTAMP
 import dayjs from "dayjs";
@@ -13,10 +14,6 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import LikeButton from "../../scream/LikeButton";
 import SignNote from "../../profile/SignNote";
 
-// MUI Stuff
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-
 // Icons
 import ChatBorder from "../../../images/icons/chat.png";
 
@@ -24,7 +21,6 @@ import ChatBorder from "../../../images/icons/chat.png";
 import { useSelector, useDispatch } from "react-redux";
 
 import { openScream } from "../../../redux/actions/screamActions";
-import { openProject } from "../../../redux/actions/projectActions";
 import setColorByTopic from "../../../data/setColorByTopic";
 
 const styles = {
@@ -99,12 +95,12 @@ const styles = {
     maxHeight: "14.5em",
   },
 
-  content: {
+  /* content: {
     padding: 15,
     color: "rgb(87, 87, 87)",
     width: "95%",
     objectFit: "cover",
-  },
+  }, */
 
   bodytext: {
     position: "relative",
@@ -171,12 +167,33 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
     });
   }
 
+  const CardContent = styled.div`
+    color: rgb(87, 87, 87);
+    width: 95%;
+    padding: 15px;
+    object-fit: cover;
+  `
+  const Card = styled.div`
+    background-color: white;
+    width: 95%;
+    display: flex;
+    position: relative;
+    box-shadow: 0 8px 40px -12px rgb(0 0 0 / 0%);
+    max-height: 14.5em;
+    min-height: 12em;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    height: ${(props) => props.project && "23em" } 
+  `
+
   return (
     <Card
-      className={classes.card}
-      style={!openProject && project && projectsData ? { height: "23em" } : {}}
+      project={!openProject && project && projectsData }
     >
-      <CardContent className={classes.content}>
+      <CardContent>
+      
         <div
           style={{
             width: "15px",
