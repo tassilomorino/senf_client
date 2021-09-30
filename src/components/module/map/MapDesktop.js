@@ -58,7 +58,13 @@ const styles = {
   },
 };
 
-const MapDesktop = ({ loadingProjects, classes, dataFinal, geoData }) => {
+const MapDesktop = ({
+  loadingProjects,
+  classes,
+  dataFinal,
+  geoData,
+  openProject,
+}) => {
   const { t } = useTranslation();
   const { openInfoPage } = useSelector((state) => state.UI);
 
@@ -153,17 +159,20 @@ const MapDesktop = ({ loadingProjects, classes, dataFinal, geoData }) => {
           }}
         >
           <NavigationControl showCompass showZoom position="top-right" />
-
-          <Source id="maine" type="geojson" data={data} />
-          <Layer
-            id="maine"
-            type="fill"
-            source="maine"
-            paint={{
-              "fill-color": "#fed957",
-              "fill-opacity": 0.3,
-            }}
-          />
+          {openProject && (
+            <React.Fragment>
+              <Source id="maine" type="geojson" data={data} />
+              <Layer
+                id="maine"
+                type="fill"
+                source="maine"
+                paint={{
+                  "fill-color": "#fed957",
+                  "fill-opacity": 0.3,
+                }}
+              />
+            </React.Fragment>
+          )}
           <DesktopMapButtons viewport={viewport} />
 
           <div style={{ zIndex: 90 }}>
