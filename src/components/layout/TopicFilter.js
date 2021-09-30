@@ -27,7 +27,7 @@ const enterAnimation = keyframes`
 const TopicFilterWrapperMobile = styled.div`
   z-index: 15;
   position: fixed;
-  top: 100px;
+  top: 90px;
   width: 100%;
   overflow-x: scroll;
   pointer-events: none;
@@ -39,10 +39,10 @@ const TopicFilterInnerWrapperMobile = styled.div`
   border-radius: 20px;
   backdrop-filter: blur(5px);
   background-color: rgb(0, 0, 0, 0.1);
-  padding: 10px;
+  padding: 5px;
   padding-left: 20px;
   padding-right: 20px;
-  margin: 10px;
+  margin: 5px;
   margin-left: calc(100% - 120px);
   animation: ${enterAnimation} 5s;
   z-index: 15;

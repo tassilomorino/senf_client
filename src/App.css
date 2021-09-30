@@ -1373,17 +1373,6 @@ input:focus {
   }
 }
 
-.TopNav {
-  z-index: 90;
-  position: fixed;
-  top: 0;
-  width: 100vw;
-  /* height: 7.5em; */
-
-  height: 100px;
-  background-color: white;
-  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
-}
 
 
 
@@ -2198,26 +2187,7 @@ font-size:15px !important
   }
  
   
-  .legend {
-    padding-left: 15px;
-    left: 0;
-  }
-  .PrivateSwitchBase-root-15{
-    padding:5px !important;
-  }
-
-  .MuiFormControlLabel-root{
-    height:27px !important
-    }
-    .MuiTypography-body1{
-    
-    font-size:15px !important
-    }
-    
-    .MuiSvgIcon-root{
-      width:14px !important;
-      height:14px !important
-    }
+  
 }
 
 @media screen and (max-width: 321px) {

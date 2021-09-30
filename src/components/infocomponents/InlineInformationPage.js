@@ -30,7 +30,6 @@ import TopPathBad from "../../images/toppathbad.png";
 import FirstBad from "../../images/firstbad.png";
 
 //ICON TO OPEN THE INFOMENU
-import Info from "../../images/icons/info.png";
 import CloseIcon from "@material-ui/icons/Close";
 
 import Logo from "../../images/logo.png";
@@ -92,13 +91,11 @@ const InlineInformationPage = ({ classes }) => {
 
   return (
     <Fragment>
-      <div onClick={() => setOpen(true)}>
-        <div className="inlineInfoIcon">
-          <img src={Info} width="30" alt="EndImage" />
-
-          <span className="inlineInfoIconText">Infos</span>
-        </div>
-      </div>
+      <button
+        onClick={() => setOpen(true)}
+        className="buttonExpand ripple"
+        data-cy="InlineInfo-button"
+      ></button>
 
       <Dialog
         open={open}
