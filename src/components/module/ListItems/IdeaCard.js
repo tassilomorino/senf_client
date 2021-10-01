@@ -10,7 +10,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
 // COMPONENTS
-import LikeButton from "../../scream/LikeButton";
+import LikeButton from "../../module/CustomButtons/LikeButton";
 import SignNote from "../../profile/SignNote";
 
 // MUI Stuff

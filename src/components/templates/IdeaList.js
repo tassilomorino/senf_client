@@ -14,7 +14,7 @@ import MapMobile from "../module/map/MapMobile";
 import List from "../module/List/List";
 import ListHeader from "../module/Headers/ListHeader";
 import PostScream from "../postScream/PostScream";
-import TopicFilter from "../layout/TopicFilter";
+import TopicFilter from "../module/Filters/TopicFilter";
 
 const ListEnterAnimation = keyframes`
        0% {
@@ -57,7 +57,6 @@ const ScrollContainer = styled.div`
   );
 
   animation: ${ListEnterAnimation} 3s;
-  transition: 0.05s ease-out;
   box-shadow: 0 8px 40px 12px rgba(0, 0, 0, 0.2);
 `;
 

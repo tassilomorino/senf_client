@@ -1,21 +1,21 @@
 /** @format */
 
 import React, { Component } from "react";
-import Logo from "../../images/logo.png";
+import Logo from "../../../images/logo.png";
 
-import SignNote from "../profile/SignNote";
+import SignNote from "../../profile/SignNote";
 
 //ICONS
-import Insta from "../../images/icons/socialmedia/insta.png";
-import Facebook from "../../images/icons/socialmedia/facebook.png";
+import Insta from "../../../images/icons/socialmedia/insta.png";
+import Facebook from "../../../images/icons/socialmedia/facebook.png";
 
-import Insights_yellow from "../../images/icons/insights_yellow.png";
-import Insights_grey from "../../images/icons/insights_grey.png";
+import Insights_yellow from "../../../images/icons/insights_yellow.png";
+import Insights_grey from "../../../images/icons/insights_grey.png";
 
-import Noprofile from "../../images/noprofile.png";
-import Arrow from "../../images/icons/arrow_yellow.png";
+import Noprofile from "../../../images/noprofile.png";
+import Arrow from "../../../images/icons/arrow_yellow.png";
 
-import TopicFilter from "./TopicFilter";
+import TopicFilter from "../../module/Filters/TopicFilter";
 
 export class MonitoringDesktopSidebar extends Component {
   render() {

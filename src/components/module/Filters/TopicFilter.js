@@ -1,12 +1,12 @@
 /** @format */
 
 import React from "react";
-import { isMobileCustom } from "../../util/customDeviceDetect";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 
-import topics from "../../data/topics";
+import topics from "../../../data/topics";
 import { useTranslation } from "react-i18next";
 
 import styled, { keyframes } from "styled-components";

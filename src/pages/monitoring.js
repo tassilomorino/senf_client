@@ -16,7 +16,7 @@ import { clearErrors } from "../redux/actions/errorsActions";
 //ICONS
 import Not_connected from "../images/Not_connected.png";
 
-import { MonitoringDesktopSidebar } from "../components/layout/MonitoringDesktopSidebar";
+import { MonitoringDesktopSidebar } from "../components/module/Navigation/MonitoringDesktopSidebar";
 
 import _ from "lodash";
 import ToggleDisplay from "react-toggle-display";
