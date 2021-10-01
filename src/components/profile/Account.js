@@ -7,9 +7,10 @@ import { isMobileCustom } from "../../util/customDeviceDetect";
 // Redux stuff
 import { connect } from "react-redux";
 import { clearErrors } from "../../redux/actions/errorsActions";
-
-import firebase from "firebase/app";
-import "firebase/firestore";
+import {
+  getMyScreams,
+  resetMyScreams,
+} from "../../redux/actions/screamActions";
 
 //Components
 
@@ -275,41 +276,14 @@ class Account extends Component {
   };
 
   fetchMyScreams = async (userHandle) => {
-    if (userHandle !== undefined) {
-      const db = firebase.firestore();
-      const ref = await db
-        .collection("screams")
-        .where("userHandle", "==", userHandle)
-        .orderBy("createdAt", "desc")
-        .get();
-
-      const screams = [];
-      ref.docs.forEach((doc) => {
-        const docData = {
-          screamId: doc.id,
-          lat: doc.data().lat,
-          long: doc.data().long,
-          title: doc.data().title,
-          body: doc.data().body.substr(0, 170),
-          createdAt: doc.data().createdAt,
-          commentCount: doc.data().commentCount,
-          likeCount: doc.data().likeCount,
-          status: doc.data().status,
-          Thema: doc.data().Thema,
-          Stadtteil: doc.data().Stadtteil,
-          project: doc.data().project,
-          projectId: doc.data().project,
-        };
-
-        screams.push(docData);
-        this.setState({ myScreams: screams });
-      });
-    }
+    this.props.getMyScreams(userHandle);
   };
 
   handleClose = () => {
     window.history.pushState(null, null, `/`);
     this.setState({ open: false });
+
+    this.props.resetMyScreams();
 
     setTimeout(() => {
       this.setState({
@@ -347,16 +321,27 @@ class Account extends Component {
   render() {
     const {
       classes,
-
       handleTopicSelector,
       topicsSelected,
-
+      dataFinalMap,
       user: {
         credentials: { handle },
       },
     } = this.props;
 
-    const { loadingMyScreams, mapViewport } = this.props.data;
+    const { loadingMyScreams, mapViewport, myScreams } = this.props.data;
+
+    const dataFinal =
+      myScreams &&
+      myScreams.filter(
+        ({ Thema, status, lat, long }) =>
+          topicsSelected.includes(Thema) &&
+          lat <= this.props.data.mapBounds.latitude1 &&
+          lat >= this.props.data.mapBounds.latitude2 &&
+          long >= this.props.data.mapBounds.longitude2 &&
+          long <= this.props.data.mapBounds.longitude3 &&
+          status === "None"
+      );
 
     const dialogMarkup = (
       <div className="wrapperScreamDialog">
@@ -372,15 +357,18 @@ class Account extends Component {
           <div className="MainAnimationChannels">
             {!loadingMyScreams && this.state.open && (
               <IdeaList
+                type="myIdeas"
                 loading={loadingMyScreams}
                 order={this.state.order}
                 classes={classes}
-                dataFinal={this.state.myScreams}
+                dataFinal={dataFinal}
+                myScreams={myScreams}
                 viewport={mapViewport}
                 handleDropdown={this.handleDropdown}
                 dropdown={this.state.dropdown}
                 handleTopicSelector={handleTopicSelector}
                 topicsSelected={topicsSelected}
+                dataFinalMap={dataFinalMap}
               ></IdeaList>
             )}
           </div>
@@ -442,6 +430,7 @@ Account.propTypes = {
 
 const mapStateToProps = (state) => ({
   scream: state.data.scream,
+  myScreams: state.data.myScreams,
   data: state.data,
   UI: state.UI,
   user: state.user,
@@ -449,6 +438,8 @@ const mapStateToProps = (state) => ({
 
 const mapActionsToProps = {
   clearErrors,
+  getMyScreams,
+  resetMyScreams,
 };
 
 export default connect(

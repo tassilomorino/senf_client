@@ -3,6 +3,7 @@
 import { isMobileCustom } from "../../util/customDeviceDetect";
 import {
   SET_SCREAMS,
+  SET_MY_SCREAMS,
   LIKE_SCREAM,
   UNLIKE_SCREAM,
   LOADING_DATA,
@@ -27,6 +28,7 @@ import {
 const initialState = {
   projects: [],
   screams: [],
+  myScreams: null,
   scream: {},
   comment: {},
   like: {},
@@ -62,6 +64,13 @@ export default function (state = initialState, action) {
       return {
         ...state,
         screams: action.payload,
+        loading: false,
+      };
+
+    case SET_MY_SCREAMS:
+      return {
+        ...state,
+        myScreams: action.payload,
         loading: false,
       };
     case SET_SCREAM:

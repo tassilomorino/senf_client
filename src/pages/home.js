@@ -244,6 +244,7 @@ export class home extends Component {
   render() {
     const {
       screams,
+      myScreams,
       loading,
       projects,
       project,
@@ -253,7 +254,7 @@ export class home extends Component {
     } = this.props.data;
     const { classes } = this.props;
 
-    console.log(this.props);
+    console.log(myScreams);
 
     const dataFinal = screams.filter(
       ({ Thema, lat, long, status }) =>
@@ -267,6 +268,11 @@ export class home extends Component {
 
     const dataFinalMap = this.props.UI.openProject
       ? project.screams.filter(
+          ({ Thema, status }) =>
+            this.state.topicsSelected.includes(Thema) && status === "None"
+        )
+      : myScreams !== null
+      ? myScreams.filter(
           ({ Thema, status }) =>
             this.state.topicsSelected.includes(Thema) && status === "None"
         )
@@ -293,6 +299,7 @@ export class home extends Component {
           order={this.state.order}
           handleTopicSelector={this.handleTopicSelector}
           topicsSelected={this.state.topicsSelected}
+          dataFinalMap={dataFinalMap}
         />
         <DesktopSidebar
           loading={this.state.loading}
@@ -302,6 +309,7 @@ export class home extends Component {
           topicsSelected={this.state.topicsSelected}
           loadingProjects={loadingProjects}
           projectsData={projects}
+          dataFinalMap={dataFinalMap}
         ></DesktopSidebar>
 
         <MapDesktop
@@ -328,10 +336,12 @@ export class home extends Component {
             <div className="MainBackgroundHome" />
 
             <IdeaList
+              type="allIdeas"
               loading={loading}
               order={this.state.order}
               classes={classes}
               dataFinal={dataFinal}
+              dataFinalMap={dataFinalMap}
               viewport={mapViewport}
               handleDropdown={this.handleDropdown}
               projectsData={projects}
@@ -359,6 +369,7 @@ export class home extends Component {
               <ProjectDialog
                 loading={loading}
                 openProject={this.props.UI.openProject}
+                dataFinalMap={dataFinalMap}
                 screamIdParam={this.state.screamIdParam}
                 handleClick={this.handleClick}
                 latitude1={this.state.latitude1}

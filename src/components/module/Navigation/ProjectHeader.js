@@ -43,7 +43,6 @@ const ImgWrapperDesktop = styled.div`
   left: calc(50% - 50px);
   margin-top: 10px;
   display: flex;
-  position: relative;
   align-items: center;
   justify-content: flex-start;
   text-align: center;

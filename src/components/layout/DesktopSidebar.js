@@ -32,6 +32,7 @@ const DesktopSidebar = ({
   topicsSelected,
   loadingProjects,
   projectsData,
+  dataFinalMap,
 }) => {
   const { openInfoPage } = useSelector((state) => state.UI);
   const { authenticated } = useSelector((state) => state.user);
@@ -62,6 +63,7 @@ const DesktopSidebar = ({
             <Account
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
+              dataFinalMap={dataFinalMap}
             />
             <img
               src={order === 4 ? profile_grey : profile_yellow}

@@ -37,44 +37,38 @@ export const NoMoreMainContent = ({ dataFinal }) => {
   );
 };
 
-export const NoMoreMyContent = ({ MyDataFinal, myScreams, loading }) => {
+export const NoMoreMyContent = ({ dataFinal, myScreams, loading }) => {
   const { t } = useTranslation();
 
-  return !loading && MyDataFinal.length > 0 ? (
-    <div className="ende">
-      ... <br /> Keine weiteren Ideen <br />
-    </div>
+  return !loading && dataFinal.length > 0 ? (
+    <NoMore>
+      ... <br /> {t("noMoreIdeas")} <br />
+    </NoMore>
   ) : myScreams === undefined ? (
-    <div className="no-ideas-yet">
+    <NoContent>
       Du hast bisher noch keine Idee geteilt. Es gibt noch so viele Ideen da
       draußen & du bist kreativ! Teile deine Ideen!
-    </div>
+    </NoContent>
   ) : (
-    <div className="no-ideas-yet">
+    <NoContent>
        Zu den ausgewählten Filtern hast du noch keine Ideen geteilt.
-    </div>
+    </NoContent>
   );
 };
 
-export const NoMoreProjectsContent = ({
-  dataFinalChannel,
-  loading,
-  projectScreams,
-}) => {
+export const NoMoreProjectsContent = ({ dataFinal, loading, project }) => {
   const { t } = useTranslation();
 
-  return !loading && dataFinalChannel.length > 0 ? (
-    <div className="ende">
-      ... <br /> Keine weiteren Ideen <br />
-    </div>
-  ) : !loading && dataFinalChannel.length !== projectScreams.length ? (
-    <div className="no-ideas-yet">
-      Mit den ausgewählten Filtern findest du noch keine Ideen.
-    </div>
+  return !loading && dataFinal.length > 0 ? (
+    <NoMore>
+      ... <br /> {t("noMoreIdeas")} <br />
+    </NoMore>
+  ) : !loading && dataFinal.length !== project.screams.length ? (
+    <NoContent>{t("noContentIdeas")}</NoContent>
   ) : (
-    <div className="no-ideas-yet">
+    <NoContent>
       Zu diesem Projektraum wurde bisher noch keine Idee geteilt. Sei die/der
       erste und teile deine Idee!
-    </div>
+    </NoContent>
   );
 };

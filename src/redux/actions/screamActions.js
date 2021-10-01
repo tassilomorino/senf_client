@@ -7,6 +7,7 @@ import { clearErrors } from "./errorsActions";
 import { openProject } from "./projectActions";
 import {
   SET_SCREAMS,
+  SET_MY_SCREAMS,
   LOADING_DATA,
   DELETE_SCREAM,
   SET_ERRORS,
@@ -51,6 +52,50 @@ export const getScreams = () => async (dispatch) => {
   dispatch({
     type: SET_SCREAMS,
     payload: screams,
+  });
+};
+
+export const getMyScreams = (userHandle) => async (dispatch) => {
+  if (userHandle !== undefined) {
+    const db = firebase.firestore();
+    const ref = await db
+      .collection("screams")
+      .where("userHandle", "==", userHandle)
+      .orderBy("createdAt", "desc")
+      .get();
+
+    const screams = [];
+    ref.docs.forEach((doc) => {
+      const docData = {
+        screamId: doc.id,
+        lat: doc.data().lat,
+        long: doc.data().long,
+        title: doc.data().title,
+        body: doc.data().body.substr(0, 170),
+        createdAt: doc.data().createdAt,
+        commentCount: doc.data().commentCount,
+        likeCount: doc.data().likeCount,
+        status: doc.data().status,
+        Thema: doc.data().Thema,
+        Stadtteil: doc.data().Stadtteil,
+        project: doc.data().project,
+        projectId: doc.data().project,
+      };
+
+      screams.push(docData);
+    });
+
+    dispatch({
+      type: SET_MY_SCREAMS,
+      payload: screams,
+    });
+  }
+};
+
+export const resetMyScreams = () => async (dispatch) => {
+  dispatch({
+    type: SET_MY_SCREAMS,
+    payload: null,
   });
 };
 
