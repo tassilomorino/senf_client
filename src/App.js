@@ -176,18 +176,6 @@ window.addEventListener("resize", () => {
   document.documentElement.style.setProperty("--vh", `${vh}px`);
 });
 const App = () => {
-  useEffect(() => {
-    let name = "Senf.koeln";
-    let version = "1.0.0";
-    console.log(`${name} v${version}`);
-    const last_version = localStorage.getItem(`${name}-Version`);
-    if (last_version !== version) {
-      console.log("New Version Available!");
-      localStorage.setItem(`${name}-Version`, version);
-      window.location.reload(true);
-    }
-  }, []);
-
   const { t } = useTranslation();
 
   const tabletNote = isTablet ? (

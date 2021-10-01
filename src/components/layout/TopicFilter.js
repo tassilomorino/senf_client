@@ -31,7 +31,6 @@ const TopicFilterWrapperMobile = styled.div`
   width: 100%;
   overflow-x: scroll;
   -webkit-overflow-scrolling: touch;
-  pointer-events: none;
 `;
 
 const TopicFilterInnerWrapperMobile = styled.div`
@@ -47,7 +46,6 @@ const TopicFilterInnerWrapperMobile = styled.div`
   margin-left: calc(100% - 120px);
   animation: ${enterAnimation} 3.5s;
   z-index: 15;
-  pointer-events: all;
 `;
 
 const TopicFilterWrapperDesktop = styled.div`

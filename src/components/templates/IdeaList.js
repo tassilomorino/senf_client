@@ -65,7 +65,6 @@ const ScrollContainer = styled.div`
   );
 
   animation: ${ListEnterAnimation} 3s;
-  transition: 0.1s ease-out;
 `;
 
 const Content = styled.div`
