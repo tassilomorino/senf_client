@@ -15,7 +15,7 @@ const enterAnimation = keyframes`
        0% {
         margin-left: 100%;
 }
-60% {
+30% {
         margin-left: 100%;
 }
 
@@ -30,6 +30,7 @@ const TopicFilterWrapperMobile = styled.div`
   top: 90px;
   width: 100%;
   overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
   pointer-events: none;
 `;
 
@@ -44,7 +45,7 @@ const TopicFilterInnerWrapperMobile = styled.div`
   padding-right: 20px;
   margin: 5px;
   margin-left: calc(100% - 120px);
-  animation: ${enterAnimation} 5s;
+  animation: ${enterAnimation} 3.5s;
   z-index: 15;
   pointer-events: all;
 `;
@@ -59,7 +60,7 @@ const TopicFilterWrapperDesktop = styled.div`
   height: auto;
 `;
 
-export function TopicFilter({ handleTopicSelector, topicsSelected }) {
+export function TopicFilter({ handleTopicSelector, topicsSelected, loading }) {
   const { t } = useTranslation();
   // Handler at index 0 is for the "all" checkbox
   const topicFilters = topics.map((topic, i) => {
@@ -78,7 +79,7 @@ export function TopicFilter({ handleTopicSelector, topicsSelected }) {
     );
   });
 
-  return isMobileCustom ? (
+  return isMobileCustom && !loading ? (
     <TopicFilterWrapperMobile>
       <TopicFilterInnerWrapperMobile>
         <FormControlLabel
