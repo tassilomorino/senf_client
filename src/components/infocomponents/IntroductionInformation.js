@@ -49,7 +49,7 @@ const styles = {
     height: "80px",
     position: "fixed",
     backgroundColor: "white",
-    zIndex: 999,
+    zIndex: 98,
   },
 
   PlattformButton2: {
@@ -128,10 +128,9 @@ const IntroductionInformation = ({ classes }) => {
 
   return (
     <div className={classes.wrapper}>
-      <div className={classes.nav}>
-        <h1 className="logo1">
-          <img src={Logo} width="100px"></img>
-        </h1>
+      <div className={classes.nav} />
+      <div className="logo1">
+        <img src={Logo} width="100px"></img>
       </div>
 
       <div className="wrapperMenu">

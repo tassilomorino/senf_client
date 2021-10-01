@@ -56,7 +56,6 @@ import withClearCache from "./ClearCache";
 
 const ClearCacheComponent = withClearCache(MainApp);
 
-
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
@@ -196,7 +195,7 @@ const App = () => {
   ) : null;
   return (
     <MuiThemeProvider theme={theme}>
-      <ClearCacheComponent />;
+      <ClearCacheComponent />
 
       <Provider store={store}>
         <Router>
@@ -240,8 +239,7 @@ console.log(getBuildDate(packageJson.buildDate));
 function MainApp(props) {
   return (
     <div className="App">
-      <header className="App-header">
-      </header>
+      <header className="App-header"></header>
     </div>
   );
 }

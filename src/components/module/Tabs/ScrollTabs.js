@@ -27,6 +27,7 @@ const TabWrapper = styled.div`
   padding-bottom: ${(props) => props.marginBottom};
   overflow: hidden;
   overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
 `;
 
 const Tab = styled.div`

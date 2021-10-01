@@ -49,6 +49,19 @@ const AddbuttonAnimation = keyframes`
   }
     `;
 
+const enterAnimation = keyframes`
+0% {
+transform: translateY(200%) translateX(-50%);
+}
+50% {
+transform: translateY(200%) translateX(-50%);
+}
+
+
+100% {
+  transform: translateY(0%) translateX(-50%);}
+`;
+
 const OpenButtonMobile = styled.button`
   z-index: 999;
   width: 40px;
@@ -67,7 +80,7 @@ const OpenButtonMobile = styled.button`
   font-size: 0;
   box-shadow: rgb(0, 0, 0, 0.8) 0px 20px 20px -15px;
 
-  animation: ${AddbuttonAnimation} 5s ease-in-out infinite;
+  animation: ${AddbuttonAnimation} 5s ease-in-out infinite, ${enterAnimation} 3s;
 
   bottom: ${(props) =>
     props.swipePosition === "calc(100% - 70px)" ? "80px" : "9px"};
@@ -563,6 +576,7 @@ const PostScream = ({
           <span className="addText">Neue Idee</span>
         </OpenButtonDesktop>
       ) : (
+        !loading &&
         !loading && (
           <OpenButtonMobile onClick={handleOpen} swipePosition={swipePosition}>
             <img src={AddIcon} width="25" alt="AddIcon" />

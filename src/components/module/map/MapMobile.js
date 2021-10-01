@@ -93,7 +93,7 @@ const MapMobile = ({
     isMobileCustom && (
       <div
         style={{
-          position: "relative",
+          position: "fixed",
           zIndex: "9",
           width: "100vw",
           height: "100vh",

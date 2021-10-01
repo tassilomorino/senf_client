@@ -651,8 +651,8 @@ button:disabled {
   position: absolute;
   z-index: 999;
   width: 35px;
-  right: 56px;
-  top: 30px;
+  right: 45px;
+  top: 20px;
   height: 35px;
   font-size: 0;
 
@@ -662,8 +662,8 @@ button:disabled {
   position: absolute;
   z-index: 999;
   width: 35px;
-  right: 26px;
-  top: 30px;
+  right: 15px;
+  top: 20px;
   height: 35px;
   font-size: 0;
 
@@ -1104,6 +1104,7 @@ input:focus {
   text-align: center;
   height: 100%;
   width: 100%;
+  top:0;
 
   background-attachment: fixed;
   background-image: linear-gradient(to bottom, #ffd19b, #ffda53, #ffffff);
@@ -1681,6 +1682,7 @@ font-size:15px !important
   display: block;
   transition: 0.5s;
   padding-bottom: 2em;
+  height:100%;
 
   animation: cardanimation 0.8s ease-in-out;
   
@@ -1723,18 +1725,12 @@ font-size:15px !important
 
 .logo1 {
   position: absolute;
-  top: 0em;
+  top: 10px;
   width: 100%;
   z-index: 99;
-  color: #ffd388;
   padding-bottom: 10;
-  font-size: 40;
   text-align: center;
-  line-height: 35px;
-  font-weight: 100;
 
-  font-family: Playfair Display;
-  clear: both;
 }
 
 .logo2 {

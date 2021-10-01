@@ -62,7 +62,7 @@ const styles = {
     height: "80px",
     position: "fixed",
     backgroundColor: "white",
-    zIndex: 999,
+    zIndex: 98,
   },
 
   TopPath: {
@@ -110,12 +110,11 @@ const InlineInformationPage = ({ classes }) => {
         >
           <CloseIcon />
         </MyButton>
-
-        <div className={classes.nav}>
-          <h1 className="logo1">
-            <img src={Logo} width="100px"></img>
-          </h1>
+        <div className="logo1">
+          <img src={Logo} width="100px"></img>
         </div>
+
+        <div className={classes.nav} />
 
         <a
           href="https://www.facebook.com/senf.koeln/"
