@@ -26,7 +26,7 @@ import { clearErrors } from "../redux/actions/errorsActions";
 import lamploader from "../images/lamp.png";
 
 import InsightsPage from "../components/templates/InsightsPage";
-import DesktopSidebar from "../components/layout/DesktopSidebar";
+import DesktopSidebar from "../components/module/Navigation/DesktopSidebar";
 
 import Cookies from "universal-cookie";
 import Topbar from "../components/module/Navigation/Topbar";

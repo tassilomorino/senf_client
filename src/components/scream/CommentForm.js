@@ -9,7 +9,7 @@ import TextField from "@material-ui/core/TextField";
 // Redux stuff
 import { connect } from "react-redux";
 import { submitComment } from "../../redux/actions/commentActions";
-import LikeButton from "./LikeButton";
+import LikeButton from "../module/CustomButtons/LikeButton";
 
 const styles = {
   textField: {
