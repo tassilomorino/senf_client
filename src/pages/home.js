@@ -151,9 +151,6 @@ export class home extends Component {
             bearing: 0,
           };
           this.props.setMapViewport(viewport);
-        } else {
-          this.props.history.push("/");
-          window.location.reload();
         }
       }, 400);
 

@@ -21,7 +21,7 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 import Info from "../../../images/icons/info.png";
 
 const Wrapper = styled.div`
-  z-index: 9999;
+  z-index: 99;
   position: fixed;
   top: 0;
   width: 100vw;

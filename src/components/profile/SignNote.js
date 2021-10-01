@@ -259,19 +259,6 @@ class SignNote extends Component {
       password: this.state.password,
     };
     this.props.loginUser(userData, this.props.history);
-
-    // setTimeout(
-    //   function() {
-    //     this.setState({ open: false });
-    //   }.bind(this),
-    //   1500
-    // );
-    // setTimeout(
-    //   function () {
-    //     window.location.reload();
-    //   }.bind(this),
-    //   59 * 1000
-    // );
   };
   handleChange = (event) => {
     this.setState({
