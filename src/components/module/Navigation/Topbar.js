@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import SignNote from "../../profile/SignNote";
 import Account from "../../profile/Account";
 import InlineInformationPage from "../../infocomponents/InlineInformationPage";
-import ScrollTabs from "../Tabs/ScrollTabs";
+import Tabs from "../Tabs/Tabs";
 import { MenuData } from "../../../data/MenuData";
 
 //ICONS
@@ -67,6 +67,7 @@ const Topbar = ({
   handleClick,
   handleTopicSelector,
   topicsSelected,
+  dataFinalMap,
 }) => {
   const { loading } = useSelector((state) => state.data);
   const { authenticated } = useSelector((state) => state.user);
@@ -94,18 +95,19 @@ const Topbar = ({
             <Account
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
+              dataFinalMap={dataFinalMap}
             />
             <img src={profile_yellow} width="30" alt="profileImage" />
           </ProfileButtonContainer>
         )}
-        <ScrollTabs
+        <Tabs
           loading={loading}
           handleClick={handleClick}
           order={order}
           tabLabels={MenuData.map((item) => item.text)}
           marginTop={"57px"}
           marginBottom={"0px"}
-        ></ScrollTabs>
+        ></Tabs>
       </Wrapper>
     )
   );

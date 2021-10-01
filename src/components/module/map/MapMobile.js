@@ -43,7 +43,10 @@ const MapMobile = ({
 
   loadingProjects,
   geoData,
+
+  setSwipePosition,
 }) => {
+  console.log("heererere", dataFinal);
   const dispatch = useDispatch();
 
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -160,14 +163,12 @@ const MapMobile = ({
                   className="buttonExpand ripple"
                 />
               </OpenIdeaButton>
-              <NoLocationPopUp dataNoLocation={dataNoLocation} />
+              <NoLocationPopUp
+                dataNoLocation={dataNoLocation}
+                setSwipePosition={setSwipePosition}
+              />
             </Marker>
           ))}
-
-          <MobileMapButtons
-            number={dataFinal.length}
-            handleShowResults={handleShowResults}
-          />
         </MapGL>
       </div>
     )

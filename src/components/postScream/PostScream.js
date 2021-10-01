@@ -84,7 +84,7 @@ const OpenButtonMobile = styled.button`
     ${enterAnimation} 3.5s;
 
   bottom: ${(props) =>
-    props.swipePosition === "calc(100% - 70px)" ? "80px" : "9px"};
+    props.swipePosition === "calc(100% - 95px)" ? "105px" : "9px"};
   left: 50vw;
   transition: 1s;
 `;

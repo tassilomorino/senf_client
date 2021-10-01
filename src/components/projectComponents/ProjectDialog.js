@@ -143,6 +143,15 @@ class ProjectDialog extends Component {
     this.setState({
       order,
     });
+
+    if (order === 2) {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
+    }
+
     this.props.clearErrors();
   };
 
@@ -186,6 +195,7 @@ class ProjectDialog extends Component {
       topicsSelected,
       projectsData,
       loadingProjects,
+      dataFinalMap,
     } = this.props;
 
     const dataRar = this.props.project.screams;
@@ -223,6 +233,7 @@ class ProjectDialog extends Component {
         {!loading && this.state.order === 1 && (
           <div className="MainAnimationChannels">
             <IdeaList
+              type="projectIdeas"
               loading={loading}
               order={this.state.order}
               classes={classes}
@@ -236,6 +247,7 @@ class ProjectDialog extends Component {
               dropdown={this.state.dropdown}
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
+              dataFinalMap={dataFinalMap}
             ></IdeaList>
           </div>
         )}

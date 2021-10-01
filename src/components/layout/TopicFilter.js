@@ -44,12 +44,12 @@ const MapClickContainer = styled.div`
 const TopicFilterInnerWrapperMobile = styled.div`
   width: 880px;
 
-  border-radius: 20px;
+  border-radius: 20px 0 0 20px;
   backdrop-filter: blur(5px);
   background-color: rgb(0, 0, 0, 0.1);
   padding: 5px;
   padding-left: 20px;
-  padding-right: 20px;
+  padding-right: 0px;
   margin: 5px;
 
   margin-left: calc(100% - 120px);

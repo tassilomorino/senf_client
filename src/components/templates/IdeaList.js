@@ -58,6 +58,7 @@ const ScrollContainer = styled.div`
 
   animation: ${ListEnterAnimation} 3s;
   transition: 0.05s ease-out;
+  box-shadow: 0 8px 40px 12px rgba(0, 0, 0, 0.2);
 `;
 
 const Content = styled.div`
@@ -67,7 +68,9 @@ const Content = styled.div`
   width: 100%;
   height: 100%;
   top: 0;
+`;
 
+const ContentMobile = styled(Content)`
   position: absolute;
   overflow: scroll;
 `;
@@ -106,15 +109,18 @@ const ShadowBox = styled.div`
 `;
 
 const IdeaList = ({
+  type,
   loading,
   order,
   dropdown,
   handleDropdown,
   dataFinal,
+  dataFinalMap,
   projectsData,
   geoData,
   loadingProjects,
   project,
+  myScreams,
   handleTopicSelector,
   topicsSelected,
 }) => {
@@ -135,7 +141,7 @@ const IdeaList = ({
       setSwipePosition("141px");
       setSwipeMovePosition(0);
     } else if (swipePosition === "70%" && swipeMovePosition > 50) {
-      setSwipePosition("calc(100% - 70px)");
+      setSwipePosition("calc(100% - 95px)");
       setSwipeMovePosition(0);
     } else if (swipeMovePosition > 50) {
       setSwipePosition("70%");
@@ -152,7 +158,7 @@ const IdeaList = ({
     const boundAdds = [500, 1000, 500, 1000];
     dispatch(setMapBounds(viewport, boundAdds));
 
-    setSwipePosition("calc(100% - 70px)");
+    setSwipePosition("calc(100% - 95px)");
     setSwipeMovePosition(0);
   };
 
@@ -172,11 +178,12 @@ const IdeaList = ({
       {isMobileCustom ? (
         <React.Fragment>
           <MapMobile
-            dataFinal={dataFinal}
+            dataFinal={dataFinalMap}
             geoData={geoData}
             viewport={mapViewport}
             _onViewportChange={_onViewportChange}
-          />{" "}
+            setSwipePosition={setSwipePosition}
+          />
           <TopicFilter
             loading={loading}
             handleTopicSelector={handleTopicSelector}
@@ -195,7 +202,7 @@ const IdeaList = ({
             marginTop={swipeMovePosition}
             onScroll={handleScroll}
           >
-            <Content>
+            <ContentMobile>
               <Swipe
                 onSwipeMove={onSwipeMove}
                 onSwipeEnd={onSwipeEnd}
@@ -227,12 +234,15 @@ const IdeaList = ({
                 </SwipeContainer>
               </Swipe>{" "}
               <List
+                type={type}
                 loading={loading}
                 dropdown={dropdown}
                 dataFinal={dataFinal}
                 projectsData={projectsData}
+                project={project}
+                myScreams={myScreams}
               />{" "}
-            </Content>{" "}
+            </ContentMobile>{" "}
           </ScrollContainer>{" "}
         </React.Fragment>
       ) : (
@@ -244,10 +254,13 @@ const IdeaList = ({
             marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
           />
           <List
+            type={type}
             loading={loading}
             dropdown={dropdown}
             dataFinal={dataFinal}
             projectsData={projectsData}
+            project={project}
+            myScreams={myScreams}
           />{" "}
         </Content>
       )}{" "}
