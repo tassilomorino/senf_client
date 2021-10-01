@@ -175,6 +175,11 @@ export class home extends Component {
 
     if (order === 2) {
       window.history.pushState(null, null, "/projects");
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
     }
 
     if (order === 3) {

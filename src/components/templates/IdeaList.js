@@ -131,13 +131,13 @@ const IdeaList = ({
 
   const onSwipeEnd = (position, event) => {
     console.log(position.y);
-    if (swipeMovePosition < -100) {
+    if (swipeMovePosition < -50) {
       setSwipePosition("141px");
       setSwipeMovePosition(0);
     } else if (swipePosition === "70%" && swipeMovePosition > 50) {
       setSwipePosition("calc(100% - 70px)");
       setSwipeMovePosition(0);
-    } else if (swipeMovePosition > 100) {
+    } else if (swipeMovePosition > 50) {
       setSwipePosition("70%");
       setSwipeMovePosition(0);
     } else {
