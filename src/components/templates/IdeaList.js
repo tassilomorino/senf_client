@@ -34,14 +34,6 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 
-const MapClickContainer = styled.div`
-  position: fixed;
-  top: 100px;
-  width: 100%;
-  height: 100px;
-  z-index: 9;
-`;
-
 const ScrollContainer = styled.div`
   height: 150%;
   width: 100%;
@@ -65,6 +57,7 @@ const ScrollContainer = styled.div`
   );
 
   animation: ${ListEnterAnimation} 3s;
+  transition: 0.05s ease-out;
 `;
 
 const Content = styled.div`
@@ -188,10 +181,9 @@ const IdeaList = ({
             loading={loading}
             handleTopicSelector={handleTopicSelector}
             topicsSelected={topicsSelected}
+            swipePosition={swipePosition}
+            setSwipePosition={setSwipePosition}
           ></TopicFilter>
-          {swipePosition === "141px" && (
-            <MapClickContainer onClick={() => setSwipePosition("70%")} />
-          )}
           <PostScream
             loadingProjects={loadingProjects}
             projectsData={projectsData}
