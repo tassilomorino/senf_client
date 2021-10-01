@@ -51,10 +51,10 @@ const AddbuttonAnimation = keyframes`
 
 const enterAnimation = keyframes`
 0% {
-transform: translateY(200%) translateX(-50%);
+transform: translateY(400%) translateX(-50%);
 }
 50% {
-transform: translateY(200%) translateX(-50%);
+transform: translateY(400%) translateX(-50%);
 }
 
 
@@ -80,7 +80,8 @@ const OpenButtonMobile = styled.button`
   font-size: 0;
   box-shadow: rgb(0, 0, 0, 0.8) 0px 20px 20px -15px;
 
-  animation: ${AddbuttonAnimation} 5s ease-in-out infinite, ${enterAnimation} 3s;
+  animation: ${AddbuttonAnimation} 5s ease-in-out infinite,
+    ${enterAnimation} 3.5s;
 
   bottom: ${(props) =>
     props.swipePosition === "calc(100% - 70px)" ? "80px" : "9px"};

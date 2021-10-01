@@ -27,10 +27,18 @@ const enterAnimation = keyframes`
 const TopicFilterWrapperMobile = styled.div`
   z-index: 15;
   position: fixed;
+
   top: 90px;
   width: 100%;
   overflow-x: scroll;
   -webkit-overflow-scrolling: touch;
+`;
+
+const MapClickContainer = styled.div`
+  position: absolute;
+  width: calc(100% - 120px);
+  height: 50px;
+  z-index: 9;
 `;
 
 const TopicFilterInnerWrapperMobile = styled.div`
@@ -43,6 +51,7 @@ const TopicFilterInnerWrapperMobile = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   margin: 5px;
+
   margin-left: calc(100% - 120px);
   animation: ${enterAnimation} 3.5s;
   z-index: 15;
@@ -58,7 +67,13 @@ const TopicFilterWrapperDesktop = styled.div`
   height: auto;
 `;
 
-export function TopicFilter({ handleTopicSelector, topicsSelected, loading }) {
+export function TopicFilter({
+  handleTopicSelector,
+  topicsSelected,
+  loading,
+  swipePosition,
+  setSwipePosition,
+}) {
   const { t } = useTranslation();
   // Handler at index 0 is for the "all" checkbox
   const topicFilters = topics.map((topic, i) => {
@@ -79,6 +94,9 @@ export function TopicFilter({ handleTopicSelector, topicsSelected, loading }) {
 
   return isMobileCustom && !loading ? (
     <TopicFilterWrapperMobile>
+      {swipePosition === "141px" && (
+        <MapClickContainer onClick={() => setSwipePosition("70%")} />
+      )}
       <TopicFilterInnerWrapperMobile>
         <FormControlLabel
           control={

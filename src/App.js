@@ -183,7 +183,7 @@ const App = () => {
   ) : null;
   return (
     <MuiThemeProvider theme={theme}>
-      <ClearCacheComponent />
+      {process.env.REACT_APP_STAGE !== "development" && <ClearCacheComponent />}
 
       <Provider store={store}>
         <Router>

@@ -43,6 +43,8 @@ export const MenuData = [
   {
     isSelectedIcon: List_grey,
     isNotSelectedIcon: List_yellow,
-    text: <Translation>{(t, { i18n }) => <span>Aktionen</span>}</Translation>,
+    text: (
+      <Translation>{(t, { i18n }) => <span>Werkzeugkoffer</span>}</Translation>
+    ),
   },
 ];
