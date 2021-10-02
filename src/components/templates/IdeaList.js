@@ -128,6 +128,10 @@ const IdeaList = ({
   const mapViewport = useSelector((state) => state.data.mapViewport);
   const dispatch = useDispatch();
 
+  const onSwipeStart = (position, event) => {
+    setSwipeMovePosition(swipeMovePosition - position.y + "px");
+  };
+
   const onSwipeMove = (position, event) => {
     setSwipeMovePosition(position.y + "px");
   };
@@ -195,6 +199,7 @@ const IdeaList = ({
           >
             <ContentMobile>
               <Swipe
+                onSwipeStart={onSwipeStart}
                 onSwipeMove={onSwipeMove}
                 onSwipeEnd={onSwipeEnd}
                 style={{
