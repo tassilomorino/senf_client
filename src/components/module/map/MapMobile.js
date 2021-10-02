@@ -43,10 +43,9 @@ const MapMobile = ({
 
   loadingProjects,
   geoData,
-
   setSwipePosition,
+  setSwipeMovePosition,
 }) => {
-  console.log("heererere", dataFinal);
   const dispatch = useDispatch();
 
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -166,6 +165,7 @@ const MapMobile = ({
               <NoLocationPopUp
                 dataNoLocation={dataNoLocation}
                 setSwipePosition={setSwipePosition}
+                setSwipeMovePosition={setSwipeMovePosition}
               />
             </Marker>
           ))}

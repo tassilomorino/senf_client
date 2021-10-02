@@ -10,11 +10,11 @@ import relativeTime from "dayjs/plugin/relativeTime";
 
 // Redux
 import { connect } from "react-redux";
-import { openMonitoringScream } from "../../redux/actions/monitoringScreamActions";
+import { openMonitoringScream } from "../../../redux/actions/monitoringScreamActions";
 
 // Icons
-import menuIcon from "../../images/icons/menu.png";
-import statusIcon from "../../images/icons/flag.png";
+import menuIcon from "../../../images/icons/menu.png";
+import statusIcon from "../../../images/icons/flag.png";
 
 const styles = {
   gradient: {
@@ -51,7 +51,7 @@ const styles = {
   },
 };
 
-class MonitoringScream extends Component {
+class IdeaCardMonitoring extends Component {
   state = {
     isToggleOn: false,
     cardHeight: "30px",
@@ -196,7 +196,7 @@ class MonitoringScream extends Component {
   }
 }
 
-MonitoringScream.propTypes = {
+IdeaCardMonitoring.propTypes = {
   user: PropTypes.object.isRequired,
   scream: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
@@ -213,4 +213,4 @@ const mapActionsToProps = {
 export default connect(
   mapStateToProps,
   mapActionsToProps
-)(withStyles(styles)(MonitoringScream));
+)(withStyles(styles)(IdeaCardMonitoring));

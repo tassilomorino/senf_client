@@ -33,7 +33,7 @@ import Topbar from "../components/module/Navigation/Topbar";
 import MapDesktop from "../components/module/map/MapDesktop";
 import IdeaList from "../components/templates/IdeaList";
 import ProjectsPage from "../components/templates/ProjectsPage";
-import ScreamDialog from "../components/scream/ScreamDialog";
+import ScreamDialog from "../components/templates/ScreamDialog";
 import ProjectDialog from "../components/projectComponents/ProjectDialog";
 
 import styled from "styled-components";

@@ -20,9 +20,9 @@ import { MonitoringDesktopSidebar } from "../components/module/Navigation/Monito
 
 import _ from "lodash";
 import ToggleDisplay from "react-toggle-display";
-import MonitoringScream from "../components/monitoringScream/MonitoringScream";
+import IdeaCardMonitoring from "../components/module/ListItems/IdeaCardMonitoring";
 
-import { ExportToExcel } from "../components/monitoringScream/ExportToExcel";
+import { ExportToExcel } from "../components/module/CustomButtons/ExportToExcel";
 
 import ChatBorder from "../images/icons/chat.png";
 import LikeIcon from "../images/icons/handsnoclap.png";
@@ -206,7 +206,7 @@ export class monitoring extends Component {
 
     let HotScreamsMarkup = _.orderBy(dataFinal, "likeCount", "desc").map(
       (scream) => (
-        <MonitoringScream
+        <IdeaCardMonitoring
           loading={loading}
           key={scream.screamId}
           scream={scream}
@@ -217,7 +217,7 @@ export class monitoring extends Component {
 
     let recentScreamsMarkup = _.orderBy(dataFinal, "createdAt", "desc").map(
       (scream) => (
-        <MonitoringScream
+        <IdeaCardMonitoring
           loading={loading}
           key={scream.screamId}
           scream={scream}
