@@ -55,7 +55,7 @@ const ScrollContainer = styled.div`
 
   animation: ${ListEnterAnimation} 3s;
   box-shadow: 0 8px 40px 12px rgba(0, 0, 0, 0.2);
-  transition: 0.3s ease-out;
+  transition: 0.1s ease-out;
 `;
 
 const Content = styled.div`
@@ -137,13 +137,6 @@ const IdeaList = ({
     if (swipeMovePosition < "-50px") {
       setSwipePosition("top");
       setSwipeMovePosition("calc(-70% + 141px)");
-    } else if (swipePosition === "top" && swipeMovePosition > "50px") {
-      alert("hi");
-      setSwipePosition("center");
-      setSwipeMovePosition("0px");
-    } else if (swipePosition === "center" && swipeMovePosition > "20px") {
-      setSwipePosition("bottom");
-      setSwipeMovePosition("calc(30% - 95px)");
     } else {
       setSwipeMovePosition(0);
     }
