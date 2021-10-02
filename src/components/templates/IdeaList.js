@@ -35,7 +35,7 @@ const Wrapper = styled.div`
 `;
 
 const ScrollContainer = styled.div`
-  height: 100%;
+  height: 150%;
   width: 100%;
 
   background: rgb(254, 217, 87);
@@ -48,14 +48,16 @@ const ScrollContainer = styled.div`
   position: fixed;
   border-radius: 20px 20px 0 0;
   z-index: 9;
-  /* top: ${(props) => props.Top && props.Top}; */
-  top: 70%;
-
-  transform: translateY(${(props) => props.marginTop && props.marginTop});
+  top: ${(props) => props.Top && props.Top};
+  will-change: transform;
+  transform: translateY(
+    ${(props) => {
+      return props.marginTop && props.marginTop + "px";
+    }}
+  );
 
   animation: ${ListEnterAnimation} 3s;
   box-shadow: 0 8px 40px 12px rgba(0, 0, 0, 0.2);
-  transition: 0.1s ease-out;
 `;
 
 const Content = styled.div`
@@ -77,7 +79,7 @@ const SwipeContainer = styled.div`
 
   width: 100%;
   z-index: 15;
-  height: ${(props) => (props.Top && props.Top === "top" ? "70px" : "30%")};
+  height: ${(props) => (props.Top && props.Top === "141px" ? "70px" : "30%")};
 `;
 
 const ListHeaderWrapper = styled.div`
@@ -121,7 +123,7 @@ const IdeaList = ({
   handleTopicSelector,
   topicsSelected,
 }) => {
-  const [swipePosition, setSwipePosition] = useState("center");
+  const [swipePosition, setSwipePosition] = useState("70%");
   const [swipeMovePosition, setSwipeMovePosition] = useState(0);
   const [shadow, setShadow] = useState(false);
 
@@ -129,15 +131,22 @@ const IdeaList = ({
   const dispatch = useDispatch();
 
   const onSwipeMove = (position, event) => {
-    setSwipeMovePosition(position.y + "px");
+    setSwipeMovePosition(position.y);
   };
 
   const onSwipeEnd = (position, event) => {
     console.log(position.y);
-    if (swipeMovePosition < "-50px") {
-      setSwipePosition("top");
-      setSwipeMovePosition("calc(-70% + 141px)");
+    if (swipeMovePosition < -50) {
+      setSwipePosition("141px");
+      setSwipeMovePosition(0);
+    } else if (swipePosition === "70%" && swipeMovePosition > 50) {
+      setSwipePosition("calc(100% - 95px)");
+      setSwipeMovePosition(0);
+    } else if (swipeMovePosition > 50) {
+      setSwipePosition("70%");
+      setSwipeMovePosition(0);
     } else {
+      //  setSwipePosition("70%");
       setSwipeMovePosition(0);
     }
   };
@@ -147,8 +156,9 @@ const IdeaList = ({
 
     const boundAdds = [500, 1000, 500, 1000];
     dispatch(setMapBounds(viewport, boundAdds));
-    setSwipePosition("bottom");
-    setSwipeMovePosition("calc(30% - 95px)");
+
+    setSwipePosition("calc(100% - 95px)");
+    setSwipeMovePosition(0);
   };
 
   const handleScroll = (e) => {
@@ -172,7 +182,6 @@ const IdeaList = ({
             viewport={mapViewport}
             _onViewportChange={_onViewportChange}
             setSwipePosition={setSwipePosition}
-            setSwipeMovePosition={setSwipeMovePosition}
           />
           <TopicFilter
             loading={loading}
@@ -180,7 +189,6 @@ const IdeaList = ({
             topicsSelected={topicsSelected}
             swipePosition={swipePosition}
             setSwipePosition={setSwipePosition}
-            setSwipeMovePosition={setSwipeMovePosition}
           ></TopicFilter>
           <PostScream
             loadingProjects={loadingProjects}
@@ -204,7 +212,7 @@ const IdeaList = ({
                 <SwipeContainer
                   Top={swipePosition}
                   marginTop={swipeMovePosition}
-                  onClick={() => setSwipeMovePosition("calc(-70% + 141px)")}
+                  onClick={() => setSwipePosition("141px")}
                 >
                   <ListHeaderWrapper
                     Top={swipePosition}

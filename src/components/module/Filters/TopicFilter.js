@@ -72,7 +72,7 @@ export function TopicFilter({
   topicsSelected,
   loading,
   swipePosition,
-  setSwipeMovePosition,
+  setSwipePosition,
 }) {
   const { t } = useTranslation();
   // Handler at index 0 is for the "all" checkbox
@@ -94,8 +94,8 @@ export function TopicFilter({
 
   return isMobileCustom && !loading ? (
     <TopicFilterWrapperMobile>
-      {swipePosition === "top" && (
-        <MapClickContainer onClick={() => setSwipeMovePosition("0")} />
+      {swipePosition === "141px" && (
+        <MapClickContainer onClick={() => setSwipePosition("70%")} />
       )}
       <TopicFilterInnerWrapperMobile>
         <FormControlLabel

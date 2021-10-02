@@ -83,7 +83,8 @@ const OpenButtonMobile = styled.button`
   animation: ${AddbuttonAnimation} 5s ease-in-out infinite,
     ${enterAnimation} 3.5s;
 
-  bottom: ${(props) => (props.swipePosition === "bottom" ? "105px" : "9px")};
+  bottom: ${(props) =>
+    props.swipePosition === "calc(100% - 95px)" ? "105px" : "9px"};
   left: 50vw;
   transition: 1s;
 `;
@@ -289,6 +290,7 @@ const PostScream = ({
   const handleOpen = (event) => {
     event.preventDefault();
     const projectSelected = project ? project.id : "";
+    console.log("Hereee", projectSelected);
 
     setOpen(true);
     setProjectSeleted(projectSelected);
