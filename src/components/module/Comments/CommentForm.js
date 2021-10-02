@@ -8,8 +8,8 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 // Redux stuff
 import { connect } from "react-redux";
-import { submitComment } from "../../redux/actions/commentActions";
-import LikeButton from "../module/CustomButtons/LikeButton";
+import { submitComment } from "../../../redux/actions/commentActions";
+import LikeButton from "../CustomButtons/LikeButton";
 
 const styles = {
   textField: {

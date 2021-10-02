@@ -6,8 +6,8 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import MyButton from "../../util/MyButton";
 import LikeButton from "../module/CustomButtons/LikeButton";
 import ChatBorder from "../../images/icons/chat.png";
-import Comments from "./Comments";
-import CommentForm from "./CommentForm";
+import Comments from "../module/Comments/Comments";
+import CommentForm from "../module/Comments/CommentForm";
 import dayjs from "dayjs";
 // MUI Stuff
 import Dialog from "@material-ui/core/Dialog";

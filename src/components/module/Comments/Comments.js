@@ -8,7 +8,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
-import { getComment } from "../../redux/actions/commentActions";
+import { getComment } from "../../../redux/actions/commentActions";
 
 //GET TIME TIMESTAMP
 import dayjs from "dayjs";
@@ -17,14 +17,13 @@ import dayjs from "dayjs";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 
 // REPORT/DELETE COMMENT
-import ReportComment from "../modals/ReportComment";
-import DeleteComment from "../modals/DeleteComment";
+import ReportComment from "../../modals/ReportComment";
+import DeleteComment from "../../modals/DeleteComment";
 
 //ICONS
-import MenuIcon from "../../images/icons/menu.png";
+import MenuIcon from "../../../images/icons/menu.png";
 
 const styles = {
   card: {
