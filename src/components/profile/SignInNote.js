@@ -237,13 +237,6 @@ class SignInNote extends Component {
       password: this.state.password,
     };
     this.props.loginUser(userData, this.props.history);
-
-    // setTimeout(
-    //   function () {
-    //     window.location.reload();
-    //   }.bind(this),
-    //   59 * 1000
-    // );
   };
   handleChange = (event) => {
     this.setState({

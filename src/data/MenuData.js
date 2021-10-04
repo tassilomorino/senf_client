@@ -40,9 +40,4 @@ export const MenuData = [
       </Translation>
     ),
   },
-  {
-    isSelectedIcon: List_grey,
-    isNotSelectedIcon: List_yellow,
-    text: <Translation>{(t, { i18n }) => <span>Aktionen</span>}</Translation>,
-  },
 ];

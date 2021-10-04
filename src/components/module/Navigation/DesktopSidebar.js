@@ -6,22 +6,22 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
 //Components
-import SignNote from "../profile/SignNote";
-import InlineInformationPageDesktop from "../infocomponents/InlineInformationPageDesktop";
-import TopicFilter from "./TopicFilter";
-import Account from "../profile/Account";
+import SignNote from "../../profile/SignNote";
+import InlineInformationPageDesktop from "../../infocomponents/InlineInformationPageDesktop";
+import TopicFilter from "../../module/Filters/TopicFilter";
+import Account from "../../profile/Account";
 import { MenuItem } from "./MenuItem";
-import { MenuData } from "../../data/MenuData";
+import { MenuData } from "../../../data/MenuData";
 
 //ICONS
-import Logo from "../../images/logo.png";
-import Insta from "../../images/icons/socialmedia/insta.png";
-import Facebook from "../../images/icons/socialmedia/facebook.png";
-import profile_yellow from "../../images/icons/profile_yellow.png";
-import profile_grey from "../../images/icons/profile_grey.png";
-import Noprofile from "../../images/noprofile.png";
-import PostScream from "../postScream/PostScream";
-import { isMobileCustom } from "../../util/customDeviceDetect";
+import Logo from "../../../images/logo.png";
+import Insta from "../../../images/icons/socialmedia/insta.png";
+import Facebook from "../../../images/icons/socialmedia/facebook.png";
+import profile_yellow from "../../../images/icons/profile_yellow.png";
+import profile_grey from "../../../images/icons/profile_grey.png";
+import Noprofile from "../../../images/noprofile.png";
+import PostScream from "../../postScream/PostScream";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 const DesktopSidebar = ({
   loading,
@@ -32,6 +32,7 @@ const DesktopSidebar = ({
   topicsSelected,
   loadingProjects,
   projectsData,
+  dataFinalMap,
 }) => {
   const { openInfoPage } = useSelector((state) => state.UI);
   const { authenticated } = useSelector((state) => state.user);
@@ -62,6 +63,7 @@ const DesktopSidebar = ({
             <Account
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
+              dataFinalMap={dataFinalMap}
             />
             <img
               src={order === 4 ? profile_grey : profile_yellow}

@@ -651,8 +651,8 @@ button:disabled {
   position: absolute;
   z-index: 999;
   width: 35px;
-  right: 56px;
-  top: 30px;
+  right: 45px;
+  top: 20px;
   height: 35px;
   font-size: 0;
 
@@ -662,8 +662,8 @@ button:disabled {
   position: absolute;
   z-index: 999;
   width: 35px;
-  right: 26px;
-  top: 30px;
+  right: 15px;
+  top: 20px;
   height: 35px;
   font-size: 0;
 
@@ -1104,6 +1104,7 @@ input:focus {
   text-align: center;
   height: 100%;
   width: 100%;
+  top:0;
 
   background-attachment: fixed;
   background-image: linear-gradient(to bottom, #ffd19b, #ffda53, #ffffff);
@@ -1373,17 +1374,6 @@ input:focus {
   }
 }
 
-.TopNav {
-  z-index: 90;
-  position: fixed;
-  top: 0;
-  width: 100vw;
-  /* height: 7.5em; */
-
-  height: 100px;
-  background-color: white;
-  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
-}
 
 
 
@@ -1692,6 +1682,7 @@ font-size:15px !important
   display: block;
   transition: 0.5s;
   padding-bottom: 2em;
+  height:100%;
 
   animation: cardanimation 0.8s ease-in-out;
   
@@ -1734,18 +1725,12 @@ font-size:15px !important
 
 .logo1 {
   position: absolute;
-  top: 0em;
+  top: 10px;
   width: 100%;
   z-index: 99;
-  color: #ffd388;
   padding-bottom: 10;
-  font-size: 40;
   text-align: center;
-  line-height: 35px;
-  font-weight: 100;
 
-  font-family: Playfair Display;
-  clear: both;
 }
 
 .logo2 {
@@ -2198,26 +2183,7 @@ font-size:15px !important
   }
  
   
-  .legend {
-    padding-left: 15px;
-    left: 0;
-  }
-  .PrivateSwitchBase-root-15{
-    padding:5px !important;
-  }
-
-  .MuiFormControlLabel-root{
-    height:27px !important
-    }
-    .MuiTypography-body1{
-    
-    font-size:15px !important
-    }
-    
-    .MuiSvgIcon-root{
-      width:14px !important;
-      height:14px !important
-    }
+  
 }
 
 @media screen and (max-width: 321px) {

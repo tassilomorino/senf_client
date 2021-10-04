@@ -10,7 +10,11 @@ import { Marker } from "@urbica/react-map-gl";
 import { Trans, useTranslation } from "react-i18next";
 import { CustomButton } from "../CustomButtons/CustomButton";
 
-const NoLocationPopUp = ({ dataNoLocation }) => {
+const NoLocationPopUp = ({
+  dataNoLocation,
+  setSwipePosition,
+  setSwipeMovePosition,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [openNoLocation, setOpenNoLocation] = useState(false);
@@ -27,6 +31,8 @@ const NoLocationPopUp = ({ dataNoLocation }) => {
 
     dispatch(setResetMapBounds(bounds));
     setOpenNoLocation(false);
+    setSwipePosition("top");
+    setSwipeMovePosition("calc(-70% + 141px)");
   };
 
   return (

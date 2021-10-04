@@ -30,7 +30,6 @@ import TopPathBad from "../../images/toppathbad.png";
 import FirstBad from "../../images/firstbad.png";
 
 //ICON TO OPEN THE INFOMENU
-import Info from "../../images/icons/info.png";
 import CloseIcon from "@material-ui/icons/Close";
 
 import Logo from "../../images/logo.png";
@@ -63,7 +62,7 @@ const styles = {
     height: "80px",
     position: "fixed",
     backgroundColor: "white",
-    zIndex: 999,
+    zIndex: 98,
   },
 
   TopPath: {
@@ -92,13 +91,11 @@ const InlineInformationPage = ({ classes }) => {
 
   return (
     <Fragment>
-      <div onClick={() => setOpen(true)}>
-        <div className="inlineInfoIcon">
-          <img src={Info} width="30" alt="EndImage" />
-
-          <span className="inlineInfoIconText">Infos</span>
-        </div>
-      </div>
+      <button
+        onClick={() => setOpen(true)}
+        className="buttonExpand ripple"
+        data-cy="InlineInfo-button"
+      ></button>
 
       <Dialog
         open={open}
@@ -113,12 +110,11 @@ const InlineInformationPage = ({ classes }) => {
         >
           <CloseIcon />
         </MyButton>
-
-        <div className={classes.nav}>
-          <h1 className="logo1">
-            <img src={Logo} width="100px"></img>
-          </h1>
+        <div className="logo1">
+          <img src={Logo} width="100px"></img>
         </div>
+
+        <div className={classes.nav} />
 
         <a
           href="https://www.facebook.com/senf.koeln/"

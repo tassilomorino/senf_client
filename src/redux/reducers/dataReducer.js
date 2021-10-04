@@ -1,7 +1,9 @@
 /** @format */
 
+import { isMobileCustom } from "../../util/customDeviceDetect";
 import {
   SET_SCREAMS,
+  SET_MY_SCREAMS,
   LIKE_SCREAM,
   UNLIKE_SCREAM,
   LOADING_DATA,
@@ -26,6 +28,7 @@ import {
 const initialState = {
   projects: [],
   screams: [],
+  myScreams: null,
   scream: {},
   comment: {},
   like: {},
@@ -35,15 +38,9 @@ const initialState = {
   full_screams: [],
   cookie_settings: "",
   mapViewport: {
-    zIndex: 9999,
-    position: "fixed",
-    top: "0vh",
-    left: "0vw",
-    width: "100vw",
-    height: "100vh",
     latitude: 50.93,
     longitude: 6.9503,
-    zoom: 9.2,
+    zoom: isMobileCustom ? 7.2 : 9.2,
     maxZoom: 18,
     minZoom: 8,
   },
@@ -67,6 +64,13 @@ export default function (state = initialState, action) {
       return {
         ...state,
         screams: action.payload,
+        loading: false,
+      };
+
+    case SET_MY_SCREAMS:
+      return {
+        ...state,
+        myScreams: action.payload,
         loading: false,
       };
     case SET_SCREAM:

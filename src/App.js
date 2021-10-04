@@ -50,6 +50,12 @@ import translationEN from "./util/translations/english.json";
 import translationDE from "./util/translations/german.json";
 import { isMobileCustom } from "./util/customDeviceDetect";
 
+import packageJson from "../package.json";
+import { getBuildDate } from "./util/utils";
+import withClearCache from "./ClearCache";
+
+const ClearCacheComponent = withClearCache(MainApp);
+
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
@@ -170,18 +176,6 @@ window.addEventListener("resize", () => {
   document.documentElement.style.setProperty("--vh", `${vh}px`);
 });
 const App = () => {
-  useEffect(() => {
-    let name = "Senf.koeln";
-    let version = "1.0.0";
-    console.log(`${name} v${version}`);
-    const last_version = localStorage.getItem(`${name}-Version`);
-    if (last_version !== version) {
-      console.log("New Version Available!");
-      localStorage.setItem(`${name}-Version`, version);
-      window.location.reload(true);
-    }
-  }, []);
-
   const { t } = useTranslation();
 
   const tabletNote = isTablet ? (
@@ -189,6 +183,8 @@ const App = () => {
   ) : null;
   return (
     <MuiThemeProvider theme={theme}>
+      {process.env.REACT_APP_STAGE !== "development" && <ClearCacheComponent />}
+
       <Provider store={store}>
         <Router>
           {/* <Topbar/> */}
@@ -226,5 +222,14 @@ const App = () => {
     </MuiThemeProvider>
   );
 };
+console.log(getBuildDate(packageJson.buildDate));
+
+function MainApp(props) {
+  return (
+    <div className="App">
+      <header className="App-header"></header>
+    </div>
+  );
+}
 
 export default App;

@@ -1,12 +1,12 @@
 /** @format */
 
 import React from "react";
-import { isMobileCustom } from "../../util/customDeviceDetect";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 
-import topics from "../../data/topics";
+import topics from "../../../data/topics";
 import { useTranslation } from "react-i18next";
 
 import styled, { keyframes } from "styled-components";
@@ -15,7 +15,7 @@ const enterAnimation = keyframes`
        0% {
         margin-left: 100%;
 }
-60% {
+30% {
         margin-left: 100%;
 }
 
@@ -27,26 +27,34 @@ const enterAnimation = keyframes`
 const TopicFilterWrapperMobile = styled.div`
   z-index: 15;
   position: fixed;
-  top: 100px;
+
+  top: 90px;
   width: 100%;
   overflow-x: scroll;
-  pointer-events: none;
+  -webkit-overflow-scrolling: touch;
+`;
+
+const MapClickContainer = styled.div`
+  position: absolute;
+  width: calc(100% - 120px);
+  height: 50px;
+  z-index: 9;
 `;
 
 const TopicFilterInnerWrapperMobile = styled.div`
   width: 880px;
 
-  border-radius: 20px;
+  border-radius: 20px 0 0 20px;
   backdrop-filter: blur(5px);
   background-color: rgb(0, 0, 0, 0.1);
-  padding: 10px;
+  padding: 5px;
   padding-left: 20px;
-  padding-right: 20px;
-  margin: 10px;
+  padding-right: 0px;
+  margin: 5px;
+
   margin-left: calc(100% - 120px);
-  animation: ${enterAnimation} 5s;
+  animation: ${enterAnimation} 3.5s;
   z-index: 15;
-  pointer-events: auto;
 `;
 
 const TopicFilterWrapperDesktop = styled.div`
@@ -59,7 +67,13 @@ const TopicFilterWrapperDesktop = styled.div`
   height: auto;
 `;
 
-export function TopicFilter({ handleTopicSelector, topicsSelected }) {
+export function TopicFilter({
+  handleTopicSelector,
+  topicsSelected,
+  loading,
+  swipePosition,
+  setSwipeMovePosition,
+}) {
   const { t } = useTranslation();
   // Handler at index 0 is for the "all" checkbox
   const topicFilters = topics.map((topic, i) => {
@@ -78,8 +92,11 @@ export function TopicFilter({ handleTopicSelector, topicsSelected }) {
     );
   });
 
-  return isMobileCustom ? (
+  return isMobileCustom && !loading ? (
     <TopicFilterWrapperMobile>
+      {swipePosition === "top" && (
+        <MapClickContainer onClick={() => setSwipeMovePosition("0")} />
+      )}
       <TopicFilterInnerWrapperMobile>
         <FormControlLabel
           control={

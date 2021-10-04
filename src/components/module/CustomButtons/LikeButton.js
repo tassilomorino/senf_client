@@ -4,17 +4,17 @@ import React from "react";
 
 //Redux
 import { useSelector, useDispatch } from "react-redux";
-import { likeScream, unlikeScream } from "../../redux/actions/likeActions";
+import { likeScream, unlikeScream } from "../../../redux/actions/likeActions";
 import PropTypes from "prop-types";
 
 //Components
-import MyButton from "../../util/MyButton";
-import WishNote from "../modals/WishNote";
-import SignNote from "../profile/SignNote";
+import MyButton from "../../../util/MyButton";
+import WishNote from "../../modals/WishNote";
+import SignNote from "../../profile/SignNote";
 
 //Images
-import HandBorder from "../../images/icons/handsnoclap.png";
-import HandFull from "../../images/icons/handsFull.png";
+import HandBorder from "../../../images/icons/handsnoclap.png";
+import HandFull from "../../../images/icons/handsFull.png";
 
 const LikeButton = ({ screamId }) => {
   const dispatch = useDispatch();

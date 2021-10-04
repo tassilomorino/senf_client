@@ -76,9 +76,6 @@ class MenuScream extends Component {
     } else {
       //some code
     }
-
-    // this.setState({ open: false });
-    // window.location.reload(false);
   };
 
   render() {

@@ -2,11 +2,28 @@
 
 import React from "react";
 import _ from "lodash";
+<<<<<<< HEAD
 import { useTranslation } from "react-i18next"
+=======
+import { useTranslation } from "react-i18next";
+>>>>>>> main
 import IdeaCard from "../ListItems/IdeaCard";
-import { NoMoreMainContent } from "./NoMoreContent";
+import {
+  NoMoreMainContent,
+  NoMoreMyContent,
+  NoMoreProjectsContent,
+} from "./NoMoreContent";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 
-const List = ({ loading, dropdown, dataFinal, projectsData }) => {
+const List = ({
+  type,
+  loading,
+  dropdown,
+  dataFinal,
+  projectsData,
+  project,
+  myScreams,
+}) => {
   const { t } = useTranslation();
   return (
     !loading && (
@@ -37,7 +54,19 @@ const List = ({ loading, dropdown, dataFinal, projectsData }) => {
           </div>
         )}
 
-        <NoMoreMainContent dataFinal={dataFinal} />
+        {type === "myIdeas" ? (
+          <NoMoreMyContent dataFinal={dataFinal} myScreams={myScreams} />
+        ) : type === "projectIdeas" ? (
+          <NoMoreProjectsContent dataFinal={dataFinal} project={project} />
+        ) : (
+          <NoMoreMainContent dataFinal={dataFinal} />
+        )}
+
+        {isMobileCustom ? (
+          <div style={{ height: "70%" }} />
+        ) : (
+          <div style={{ height: "200px" }} />
+        )}
       </React.Fragment>
     )
   );

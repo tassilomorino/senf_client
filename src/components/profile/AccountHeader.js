@@ -12,7 +12,7 @@ const FixedWrapper = styled.div`
   position: fixed;
   width: 95%;
 
-  height: 90px;
+  height: 80px;
   z-index: 99;
   background-color: white;
   top: 10px;
@@ -24,7 +24,7 @@ const FixedWrapper = styled.div`
 const FlexWrapper = styled.div`
   position: relative;
   width: 97.5%;
-  height: 60px;
+  height: 50px;
   z-index: 99;
   top: 0px;
   left: 0;

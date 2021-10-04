@@ -1,18 +1,18 @@
 /** @format */
 
 import React from "react";
-import { isMobileCustom } from "../../util/customDeviceDetect";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
-import { CustomIconButton } from "../module/CustomButtons/CustomButton";
-import ScreamShare from "../modals/ScreamShare";
-import Tabs from "../module/Tabs/Tabs";
-import { ProjectTabData } from "../../data/ProjectTabData";
+import { CustomIconButton } from "../CustomButtons/CustomButton";
+import ScreamShare from "../../modals/ScreamShare";
+import Tabs from "../Tabs/Tabs";
+import { ProjectTabData } from "../../../data/ProjectTabData";
 
 const FixedWrapper = styled.div`
   position: fixed;
   width: 95%;
 
-  height: 90px;
+  height: 80px;
   z-index: 99;
   background-color: white;
   top: 10px;
@@ -24,7 +24,7 @@ const FixedWrapper = styled.div`
 const FlexWrapper = styled.div`
   position: relative;
   width: 97.5%;
-  height: 60px;
+  height: 50px;
   z-index: 99;
   top: 0px;
   left: 0;
@@ -43,7 +43,6 @@ const ImgWrapperDesktop = styled.div`
   left: calc(50% - 50px);
   margin-top: 10px;
   display: flex;
-  position: relative;
   align-items: center;
   justify-content: flex-start;
   text-align: center;
@@ -94,7 +93,7 @@ const ProjectHeader = ({
         <CustomIconButton
           name="ArrowLeft"
           position="fixed"
-          top="13px"
+          top="9px"
           shadow={false}
           handleButtonClick={handleClose}
         />

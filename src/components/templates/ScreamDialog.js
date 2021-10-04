@@ -4,10 +4,10 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 import MyButton from "../../util/MyButton";
-import LikeButton from "./LikeButton";
+import LikeButton from "../module/CustomButtons/LikeButton";
 import ChatBorder from "../../images/icons/chat.png";
-import Comments from "./Comments";
-import CommentForm from "./CommentForm";
+import Comments from "../module/Comments/Comments";
+import CommentForm from "../module/Comments/CommentForm";
 import dayjs from "dayjs";
 // MUI Stuff
 import Dialog from "@material-ui/core/Dialog";
@@ -21,8 +21,6 @@ import Pin from "../../images/pin3.png";
 import LocationOn from "@material-ui/icons/LocationOn";
 import CreateIcon from "@material-ui/icons/Create";
 import EventIcon from "@material-ui/icons/Event";
-
-import Arrow from "../../images/icons/arrow.png";
 
 import WeblinkIcon from "../../images/icons/weblink.png";
 

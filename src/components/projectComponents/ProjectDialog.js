@@ -27,7 +27,7 @@ import ScreamShare from "../modals/ScreamShare";
 import CalendarComponent from "../module/calendar/CalendarComponent";
 
 import IdeaList from "../templates/IdeaList";
-import ProjectHeader from "./ProjectHeader";
+import ProjectHeader from "../module/Navigation/ProjectHeader";
 import ProjectInfo from "./ProjectInfo";
 import styled from "styled-components";
 
@@ -62,35 +62,13 @@ const styles = {
 class ProjectDialog extends Component {
   state = {
     open: false,
-    clicked: false,
     oldPath: "",
     newPath: "",
     path: "",
     order: 1,
-
-    latitude1: 51.08,
-    latitude2: 50.79,
-    longitude2: 6.712,
-    longitude3: 7.17,
-
     screamIdParam: null,
     dropdown: "newest",
-    selectedId: "",
-
     dialogStyle: {},
-    viewport: {
-      zIndex: 9999,
-      position: "fixed",
-      top: "0vh",
-      left: "0vw",
-      width: "100vw",
-      height: "100vh",
-      latitude: 50.93,
-      longitude: 6.9503,
-      zoom: 9.2,
-      maxZoom: 18,
-      minZoom: 8,
-    },
   };
 
   componentDidMount() {
@@ -124,7 +102,9 @@ class ProjectDialog extends Component {
         setTimeout(() => {
           const centerLat = this.props.project.centerLat;
           const centerLong = this.props.project.centerLong;
-          const zoom = this.props.project.zoom;
+          const zoom = isMobileCustom
+            ? this.props.project.zoom - 2
+            : this.props.project.zoom;
 
           this.zoomToBounds(centerLat, centerLong, zoom);
         }, 600);
@@ -142,6 +122,16 @@ class ProjectDialog extends Component {
     this.props.closeProject();
     this.props.clearErrors();
 
+    const viewport = {
+      latitude: 50.95,
+      longitude: 6.9503,
+      zoom: isMobileCustom ? 9.5 : 11.5,
+      transitionDuration: 4000,
+      pitch: 30,
+      bearing: 0,
+    };
+    this.props.setMapViewport(viewport);
+
     setTimeout(() => {
       this.setState({
         dialogStyle: {},
@@ -149,23 +139,19 @@ class ProjectDialog extends Component {
     }, 1000);
   };
 
-  // onSwipeMove(position) {
-  //   if (`${position.x}` > 150) {
-  //     this.handleClose();
-  //   }
-  //   var el = document.querySelector(".wrapperScreamDialog");
-  //   if (el.scrollTop < 5) {
-  //     if (`${position.y}` > 250) {
-  //       this.handleClose();
-  //     }
-  //   }
-  //   this.props.clearErrors();
-  // }
-
   handleClick = (order) => {
     this.setState({
       order,
     });
+
+    if (order === 2) {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
+    }
+
     this.props.clearErrors();
   };
 
@@ -209,6 +195,7 @@ class ProjectDialog extends Component {
       topicsSelected,
       projectsData,
       loadingProjects,
+      dataFinalMap,
     } = this.props;
 
     const dataRar = this.props.project.screams;
@@ -246,6 +233,7 @@ class ProjectDialog extends Component {
         {!loading && this.state.order === 1 && (
           <div className="MainAnimationChannels">
             <IdeaList
+              type="projectIdeas"
               loading={loading}
               order={this.state.order}
               classes={classes}
@@ -259,6 +247,7 @@ class ProjectDialog extends Component {
               dropdown={this.state.dropdown}
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
+              dataFinalMap={dataFinalMap}
             ></IdeaList>
           </div>
         )}

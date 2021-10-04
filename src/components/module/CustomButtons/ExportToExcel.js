@@ -3,7 +3,7 @@
 import React from "react";
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
-import downloadIcon from "../../images/icons/file.png";
+import downloadIcon from "../../../images/icons/file.png";
 
 export const ExportToExcel = ({ apiData, fileName, dataFinal }) => {
   const fileType =

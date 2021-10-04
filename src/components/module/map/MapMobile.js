@@ -1,6 +1,6 @@
 /** @format */
 
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 // Redux stuff
@@ -17,6 +17,8 @@ import setColorByTopic from "../../../data/setColorByTopic";
 import NoLocationPopUp from "./NoLocationPopUp";
 import MobileMapButtons from "./MobileMapButtons";
 
+// import cologne_grid from "../../../images/cologne_grid.svg";
+
 const OpenIdeaButton = styled.div`
   position: absolute;
   width: ${(props) => 7 + props.likeCount / 2 + "px"};
@@ -32,7 +34,7 @@ const OpenIdeaButton = styled.div`
   box-shadow: rgba(0, 0, 0, 0.1) 0px 9px 38px, rgba(0, 0, 0, 0.15) 0px 5px 5px;
 `;
 
-const Geofilter = ({
+const MapMobile = ({
   dataFinal,
   viewport,
 
@@ -41,8 +43,12 @@ const Geofilter = ({
 
   loadingProjects,
   geoData,
+  setSwipePosition,
+  setSwipeMovePosition,
 }) => {
   const dispatch = useDispatch();
+
+  const [mapLoaded, setMapLoaded] = useState(false);
 
   const fetchDataScream = (screamId) => {
     dispatch(openScream(screamId));
@@ -89,12 +95,29 @@ const Geofilter = ({
     isMobileCustom && (
       <div
         style={{
-          position: "relative",
+          position: "fixed",
           zIndex: "9",
           width: "100vw",
           height: "100vh",
         }}
       >
+        {/* {!mapLoaded && (
+          <React.Fragment>
+            <img
+              src={cologne_grid}
+              alt="Kiwi standing on oval"
+              style={{ position: "absolute" }}
+            />
+
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                backgroundColor: "white",
+              }}
+            />
+          </React.Fragment>
+        )} */}
         <MapGL
           style={{
             width: "100%",
@@ -104,12 +127,12 @@ const Geofilter = ({
           accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
           minZoom={9}
           {...viewport}
-          zoom={viewport.zoom - 2}
           onViewportChange={_onViewportChange}
           viewportChangeMethod={"easeTo"}
           viewportChangeOptions={{
             duration: 2700,
           }}
+          onLoad={() => setMapLoaded(true)}
         >
           <Source id="maine" type="geojson" data={data} />
           <Layer
@@ -139,24 +162,23 @@ const Geofilter = ({
                   className="buttonExpand ripple"
                 />
               </OpenIdeaButton>
-              <NoLocationPopUp dataNoLocation={dataNoLocation} />
+              <NoLocationPopUp
+                dataNoLocation={dataNoLocation}
+                setSwipePosition={setSwipePosition}
+                setSwipeMovePosition={setSwipeMovePosition}
+              />
             </Marker>
           ))}
-
-          <MobileMapButtons
-            number={dataFinal.length}
-            handleShowResults={handleShowResults}
-          />
         </MapGL>
       </div>
     )
   );
 };
 
-Geofilter.propTypes = {
+MapMobile.propTypes = {
   editUserDetails: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   openScream: PropTypes.func.isRequired,
 };
 
-export default Geofilter;
+export default MapMobile;
