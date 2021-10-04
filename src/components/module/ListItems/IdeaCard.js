@@ -24,15 +24,6 @@ import { openScream } from "../../../redux/actions/screamActions";
 import setColorByTopic from "../../../data/setColorByTopic";
 
 const styles = {
-  gradient: {
-    width: "100%",
-    height: "100px",
-    position: "absolute",
-    bottom: 0,
-
-    background:
-      "linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%)",
-  },
 
   gradient2: {
     width: "80%",
@@ -42,15 +33,6 @@ const styles = {
 
     background:
       "linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%)",
-  },
-
-  line: {
-    position: "absolute",
-    left: "85%",
-    top: "0%",
-    width: "1px",
-    backgroundColor: "#d5dadd",
-    height: "100%",
   },
 
   likeButton: {
@@ -81,18 +63,6 @@ const styles = {
     position: "absolute",
     left: "85%",
     zIndex: 10,
-  },
-  card: {
-    position: "relative",
-    display: "flex",
-    marginBottom: 10,
-    marginLeft: "auto",
-    marginRight: "auto",
-    minHeight: "12em",
-    width: "95%",
-    borderRadius: 20,
-    boxShadow: "0 8px 40px -12px rgba(0,0,0,0)",
-    maxHeight: "14.5em",
   },
 
   bodytext: {
@@ -165,7 +135,7 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
     margin-right: auto;
     border-radius: 20px;
     margin-bottom: 10px;
-    height: ${(props) => props.project && "23em" } 
+    height: ${(props) => props.project && "23em"} 
   `
 
   const ColorDot = styled.div`
@@ -193,31 +163,69 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
     padding-right: 2%;
   `
 
+  const ScreamCardTitle = styled.div`
+    clear: both;
+    color: rgb(87, 87, 87);
+    width: 85%;
+    position: relative;
+    font-size: 20px;
+    font-family: Playfair Display;
+    font-weight: 500;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-weight: 800;
+  `
+
+  const Gradient = styled.div`
+    width: 100%;
+    bottom: 0;
+    height: 100px;
+    position: absolute;
+    background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%);
+  `
+
+  const Line = styled.div`
+    top: 0%;
+    left: 85%;
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    background-color: #d5dadd;
+  `
+
+  const LikeButtonWrapper = styled.div`
+    top: ${(props) => props.project && props.projectsData ? "10px" : "10%" };
+    left: 85%;
+    z-index: 10;
+    position: absolute;
+    text-align: center;
+  `
+
   return (
     <Card
-      project={!openProject && project && projectsData }
+      project={!openProject && project && projectsData}
     >
       <CardContent>
-      
-        <ColorDot/>{" "}
+
+        <ColorDot />{" "}
         <LocationOuter>
           <LocationHeader>
             {Stadtteil}
           </LocationHeader>
         </LocationOuter>
-        <div className="screamcardTitle">{title} </div>
+        <ScreamCardTitle /* className="screamcardTitle" */>{title} </ScreamCardTitle>
         <div className="bodytext">{body}</div>
-        <div className={classes.gradient}></div>
-        <div className={classes.line} />
-        <div
-          className={classes.likeButtonWrapper}
-          style={project && projectsData ? { top: "10px" } : {}}
+        <Gradient></Gradient>
+        <Line/>
+        <LikeButtonWrapper
+          project={project}
+          projectsData={projectsData}
         >
           <div className={classes.likeButton}>
             <LikeButton screamId={screamId} />
           </div>
           <div className={classes.engagement}>{likeCount} </div>
-        </div>
+        </LikeButtonWrapper>
         <div
           className={
             !authenticated
