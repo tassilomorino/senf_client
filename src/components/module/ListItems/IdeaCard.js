@@ -95,13 +95,6 @@ const styles = {
     maxHeight: "14.5em",
   },
 
-  /* content: {
-    padding: 15,
-    color: "rgb(87, 87, 87)",
-    width: "95%",
-    objectFit: "cover",
-  }, */
-
   bodytext: {
     position: "relative",
     width: "85%",
@@ -117,19 +110,6 @@ const styles = {
     textAlign: "center",
     fontSize: 14,
     color: "black",
-  },
-
-  locationOuter: {
-    float: "left",
-    marginLeft: "10px",
-    color: "rgb(255, 205, 6)",
-    height: "3vh",
-  },
-  locationHeader: {
-    color: "rgb(255, 205, 6)",
-    float: "left",
-    paddingRight: "2%",
-    width: "100%",
   },
 };
 
@@ -188,35 +168,43 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
     height: ${(props) => props.project && "23em" } 
   `
 
+  const ColorDot = styled.div`
+    width: 15px;
+    position: relative;
+    height: 15px;
+    border-radius: 100%;
+    border: 0.5px solid white;
+    background-color: ${(props) => setColorByTopic(Thema)};
+    opacity: 1;
+    float: left;
+  `
+
+  const LocationOuter = styled.div`
+    color: rgb(255, 205, 6);
+    float: left;
+    height: 3vh;
+    margin-left: 10px;
+  `
+
+  const LocationHeader = styled.div`
+    color: ${(props) => setColorByTopic(Thema)};
+    float: left;
+    width: 100%;
+    padding-right: 2%;
+  `
+
   return (
     <Card
       project={!openProject && project && projectsData }
     >
       <CardContent>
       
-        <div
-          style={{
-            width: "15px",
-            position: "relative",
-            height: "15px",
-            margintop: "5px",
-            borderRadius: "100%",
-            border: "0.5px white solid",
-            backgroundColor: setColorByTopic(Thema),
-            opacity: "1",
-            float: "left",
-          }}
-        />{" "}
-        <div className={classes.locationOuter}>
-          <div
-            className={classes.locationHeader}
-            style={{
-              color: setColorByTopic(Thema),
-            }}
-          >
+        <ColorDot/>{" "}
+        <LocationOuter>
+          <LocationHeader>
             {Stadtteil}
-          </div>
-        </div>
+          </LocationHeader>
+        </LocationOuter>
         <div className="screamcardTitle">{title} </div>
         <div className="bodytext">{body}</div>
         <div className={classes.gradient}></div>

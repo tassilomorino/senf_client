@@ -2,11 +2,7 @@
 
 import React from "react";
 import _ from "lodash";
-<<<<<<< HEAD
-import { useTranslation } from "react-i18next"
-=======
 import { useTranslation } from "react-i18next";
->>>>>>> main
 import IdeaCard from "../ListItems/IdeaCard";
 import {
   NoMoreMainContent,
