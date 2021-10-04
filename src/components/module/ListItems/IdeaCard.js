@@ -25,32 +25,6 @@ import setColorByTopic from "../../../data/setColorByTopic";
 
 const styles = {
 
-  gradient2: {
-    width: "80%",
-    height: "50px",
-    position: "absolute",
-    bottom: "50px",
-
-    background:
-      "linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%)",
-  },
-
-  likeButton: {
-    zIndex: 10,
-    position: "relative",
-    left: "0%",
-    // width: "15vw",
-    // height: "15vw",
-    top: "10%",
-  },
-  likeButtonWrapper: {
-    zIndex: 10,
-    position: "absolute",
-    left: "85%",
-    // width: "15vw",
-    top: "10%",
-    textAlign: "center",
-  },
   commentButtonWrapper: {
     top: "55%",
     position: "absolute",
@@ -73,14 +47,8 @@ const styles = {
     maxHeight: "3.6em",
     textOverflow: "-o-ellipsis-lastline",
   },
+  // double checkt - compare with styled component below
 
-  engagement: {
-    paddingRight: 10,
-    width: "100%",
-    textAlign: "center",
-    fontSize: 14,
-    color: "black",
-  },
 };
 
 const IdeaCard = ({ classes, projectsData, scream }) => {
@@ -175,6 +143,16 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
     padding-bottom: 5px;
     font-weight: 800;
   `
+  const BodyText = styled.div`
+    white-space: pre-line;
+    position: relative;
+    width: 85%;
+    font-size: 14pt;
+    line-height: 17pt;
+    overflow: hidden;
+    max-height: 4.8em;  
+  `
+  // DOUBLE CHECK BODYTEXT with T (differences with bodytext above)
 
   const Gradient = styled.div`
     width: 100%;
@@ -201,30 +179,52 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
     text-align: center;
   `
 
+  const LikeButtonDesign = styled.div`
+    top: 10%;
+    left: 0%;
+    z-index: 10;
+    position: relative;
+  `
+
+  const Engagement = styled.div`
+    color: black;
+    width: 100%;
+    font-size: 14px;
+    text-align: center;
+    padding-right: 10px;
+  `
+
+  const Gradient2 = styled.div`
+  width: 80%;
+    bottom: 50px;
+    height: 50px;
+    position: absolute;
+    background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%);
+  `
+
   return (
     <Card
       project={!openProject && project && projectsData}
     >
       <CardContent>
-
         <ColorDot />{" "}
         <LocationOuter>
           <LocationHeader>
             {Stadtteil}
           </LocationHeader>
         </LocationOuter>
-        <ScreamCardTitle /* className="screamcardTitle" */>{title} </ScreamCardTitle>
-        <div className="bodytext">{body}</div>
+        <ScreamCardTitle>{title} OPA</ScreamCardTitle>
+        <BodyText /* className="bodytext"*/>{body} </BodyText>
         <Gradient></Gradient>
         <Line/>
         <LikeButtonWrapper
           project={project}
           projectsData={projectsData}
         >
-          <div className={classes.likeButton}>
-            <LikeButton screamId={screamId} />
-          </div>
-          <div className={classes.engagement}>{likeCount} </div>
+          <LikeButtonDesign>
+            <LikeButton screamId={screamId} /> 
+          </LikeButtonDesign>
+          <Engagement>{likeCount} </Engagement>
         </LikeButtonWrapper>
         <div
           className={
@@ -245,7 +245,7 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
         <br />
         {!openProject && project && projectsData && (
           <>
-            <div className={classes.gradient2}></div>
+            <Gradient2></Gradient2>
             <button
               className="screamcardProjectContainer buttonWide "
               onClick={() => fetchDataProject(project)}
