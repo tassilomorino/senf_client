@@ -48,6 +48,7 @@ const styles = {
     textOverflow: "-o-ellipsis-lastline",
   },
   // double checkt - compare with styled component below
+  // Question: where does "commentButton" come from?
 
 };
 
@@ -195,12 +196,72 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
   `
 
   const Gradient2 = styled.div`
-  width: 80%;
+    width: 80%;
     bottom: 50px;
     height: 50px;
     position: absolute;
     background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%);
   `
+// the next 2 const => better separate into smaller bits?
+
+  const ButtonExpandRippleAfter = styled.button`
+    & { 
+      background-color: transparent;
+      position: absolute;
+      left: 0%;
+      top: 0%;
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      z-index: 9;
+    }
+
+    &::after{
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      border-radius: 50%;
+      padding: 50%;
+      width: 32px;
+      height: 32px;
+      background-color: currentColor;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(1);
+      transition: opacity 1s, transform 0.5s;
+    }
+  `
+    // buttonWide overwritten by ScreamcardProjectContainer for a few elements (see commented out)
+    const ScreamcardProjectContainerButtonWide = styled.button`
+      background-color: #f8f8f8;
+      width: 100%;
+      padding-left: 5%;
+      padding-right: 5%;
+      left: 0;
+      height: 50px;
+      position: absolute;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      bottom: 0;
+      border-radius: 0%;
+      border-bottom-right-radius: 20px;
+      border-bottom-left-radius: 20px;
+      z-index: 10;
+      color: #353535;
+      font-size: 12pt;
+      box-shadow: rgb(38 57 77 / 0%) 0px 20px 30px -15px;
+
+      // border-radius: 30px;
+      text-transform: none;
+      /* font-size: 14pt;
+      background-color: white;
+      height: 50px; */
+      font-family: Futura PT W01 Book;
+      // box-shadow: rgb(38 57 77 / 70%) 0px 20px 30px -15px;
+    `
+
 
   return (
     <Card
@@ -240,24 +301,22 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
               <img src={ChatBorder} width="100%" alt="ChatIcon" />
             </MyButton>
           </div>
-          <div className={classes.engagement}>{commentCount}</div>
+          <Engagement>{commentCount}</Engagement>
         </div>
         <br />
         {!openProject && project && projectsData && (
           <>
             <Gradient2></Gradient2>
-            <button
-              className="screamcardProjectContainer buttonWide "
+            <ScreamcardProjectContainerButtonWide
               onClick={() => fetchDataProject(project)}
             >
               {projectsDataFinal}
-            </button>
+            </ScreamcardProjectContainerButtonWide>
           </>
         )}
-        <button
+        <ButtonExpandRippleAfter
           onClick={() => fetchDataScream(screamId)}
-          className="buttonExpand ripple"
-        ></button>
+        ></ButtonExpandRippleAfter>
       </CardContent>
     </Card>
   );
