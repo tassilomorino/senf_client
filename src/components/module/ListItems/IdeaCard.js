@@ -38,16 +38,6 @@ const styles = {
     left: "85%",
     zIndex: 10,
   },
-
-  bodytext: {
-    position: "relative",
-    width: "85%",
-    fontSize: "14pt",
-    overflow: "hidden",
-    maxHeight: "3.6em",
-    textOverflow: "-o-ellipsis-lastline",
-  },
-  // double checkt - compare with styled component below
   // Question: where does "commentButton" come from?
 
 };
@@ -153,8 +143,6 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
     overflow: hidden;
     max-height: 4.8em;  
   `
-  // DOUBLE CHECK BODYTEXT with T (differences with bodytext above)
-
   const Gradient = styled.div`
     width: 100%;
     bottom: 0;
@@ -173,7 +161,7 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
   `
 
   const LikeButtonWrapper = styled.div`
-    top: ${(props) => props.project && props.projectsData ? "10px" : "10%" };
+    top: ${(props) => props.project && props.projectsData ? "10px" : "10%"};
     left: 85%;
     z-index: 10;
     position: absolute;
@@ -202,7 +190,7 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
     position: absolute;
     background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%);
   `
-// the next 2 const => better separate into smaller bits?
+  // the next 2 const => better separate into smaller bits?
 
   const ButtonExpandRippleAfter = styled.button`
     & { 
@@ -231,8 +219,8 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
       transition: opacity 1s, transform 0.5s;
     }
   `
-    // buttonWide overwritten by ScreamcardProjectContainer for a few elements (see commented out)
-    const ScreamcardProjectContainerButtonWide = styled.button`
+  // buttonWide overwritten by ScreamcardProjectContainer for a few elements (see commented out)
+  const ScreamcardProjectContainerButtonWide = styled.button`
       background-color: #f8f8f8;
       width: 100%;
       padding-left: 5%;
@@ -261,7 +249,12 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
       font-family: Futura PT W01 Book;
       // box-shadow: rgb(38 57 77 / 70%) 0px 20px 30px -15px;
     `
-
+  const CommentButtonWrapper = styled.button`
+        top: ${(props) => props.project && props.projectsData ? "100px" : "55%"};
+        left: 85%;
+        z-index: ${(props) => props.authenticated ? "0":"10"};
+        position: absolute;
+      `
 
   return (
     <Card
@@ -274,35 +267,30 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
             {Stadtteil}
           </LocationHeader>
         </LocationOuter>
-        <ScreamCardTitle>{title} OPA</ScreamCardTitle>
+        <ScreamCardTitle>{title}</ScreamCardTitle>
         <BodyText /* className="bodytext"*/>{body} </BodyText>
         <Gradient></Gradient>
-        <Line/>
+        <Line />
         <LikeButtonWrapper
           project={project}
           projectsData={projectsData}
         >
           <LikeButtonDesign>
-            <LikeButton screamId={screamId} /> 
+            <LikeButton screamId={screamId} />
           </LikeButtonDesign>
           <Engagement>{likeCount} </Engagement>
         </LikeButtonWrapper>
-        <div
-          className={
-            !authenticated
-              ? classes.commentButtonWrapperNotAuthenticated
-              : classes.commentButtonWrapper
-          }
-          style={project && projectsData ? { top: "100px" } : {}}
+        <CommentButtonWrapper
+          authenticated = {authenticated}
+          project={project}
+          projectsData={projectsData}
         >
-          <div className={classes.commentButton}>
             <MyButton>
               {!authenticated && <SignNote />}
               <img src={ChatBorder} width="100%" alt="ChatIcon" />
             </MyButton>
-          </div>
           <Engagement>{commentCount}</Engagement>
-        </div>
+        </CommentButtonWrapper>
         <br />
         {!openProject && project && projectsData && (
           <>
