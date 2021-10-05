@@ -22,25 +22,9 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { openScream } from "../../../redux/actions/screamActions";
 import setColorByTopic from "../../../data/setColorByTopic";
+import ExpandButton from "../CustomButtons/ExpandButton";
 
-const styles = {
-
-  commentButtonWrapper: {
-    top: "55%",
-    position: "absolute",
-    left: "85%",
-    zIndex: 0,
-  },
-
-  commentButtonWrapperNotAuthenticated: {
-    top: "55%",
-    position: "absolute",
-    left: "85%",
-    zIndex: 10,
-  },
-  // Question: where does "commentButton" come from?
-
-};
+const styles = {};
 
 const IdeaCard = ({ classes, projectsData, scream }) => {
   dayjs.extend(relativeTime);
@@ -190,35 +174,6 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
     position: absolute;
     background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%);
   `
-  // the next 2 const => better separate into smaller bits?
-
-  const ButtonExpandRippleAfter = styled.button`
-    & { 
-      background-color: transparent;
-      position: absolute;
-      left: 0%;
-      top: 0%;
-      width: 100%;
-      height: 100%;
-      border-radius: 20px;
-      z-index: 9;
-    }
-
-    &::after{
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      border-radius: 50%;
-      padding: 50%;
-      width: 32px;
-      height: 32px;
-      background-color: currentColor;
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(1);
-      transition: opacity 1s, transform 0.5s;
-    }
-  `
   // buttonWide overwritten by ScreamcardProjectContainer for a few elements (see commented out)
   const ScreamcardProjectContainerButtonWide = styled.button`
       background-color: #f8f8f8;
@@ -252,7 +207,7 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
   const CommentButtonWrapper = styled.button`
         top: ${(props) => props.project && props.projectsData ? "100px" : "55%"};
         left: 85%;
-        z-index: ${(props) => props.authenticated ? "0":"10"};
+        z-index: ${(props) => props.authenticated ? "0" : "10"};
         position: absolute;
       `
 
@@ -281,14 +236,14 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
           <Engagement>{likeCount} </Engagement>
         </LikeButtonWrapper>
         <CommentButtonWrapper
-          authenticated = {authenticated}
+          authenticated={authenticated}
           project={project}
           projectsData={projectsData}
         >
-            <MyButton>
-              {!authenticated && <SignNote />}
-              <img src={ChatBorder} width="100%" alt="ChatIcon" />
-            </MyButton>
+          <MyButton>
+            {!authenticated && <SignNote />}
+            <img src={ChatBorder} width="100%" alt="ChatIcon" />
+          </MyButton>
           <Engagement>{commentCount}</Engagement>
         </CommentButtonWrapper>
         <br />
@@ -302,9 +257,9 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
             </ScreamcardProjectContainerButtonWide>
           </>
         )}
-        <ButtonExpandRippleAfter
-          onClick={() => fetchDataScream(screamId)}
-        ></ButtonExpandRippleAfter>
+        <ExpandButton
+          handleButtonClick={() => fetchDataScream(screamId)}
+         />
       </CardContent>
     </Card>
   );
