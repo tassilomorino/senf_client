@@ -298,7 +298,7 @@ const styles = {
   },
 };
 
-const ScreamDialog = ({ classes, projectsData, scream }) => {
+const ScreamDialog = ({ classes, projectsData }) => {
   const {
     screamId,
     locationHeader,
@@ -314,12 +314,10 @@ const ScreamDialog = ({ classes, projectsData, scream }) => {
     comments,
     Thema,
     project,
-
     weblink,
     weblinkTitle,
     contact,
     contactTitle,
-
     selectedUnix,
   } = useSelector((state) => state.data.scream);
 
@@ -496,7 +494,7 @@ const ScreamDialog = ({ classes, projectsData, scream }) => {
               />
 
               */}
-            <EditButton screamId={screamId} userHandle={userHandle} />
+            {/* <EditButton screamId={screamId} userHandle={userHandle} /> */}
             {/* <div className="dialogZoomButton" onClick={() => this.handleZoom()}>
               <Switch
                 checked={this.state.zoomdetail}

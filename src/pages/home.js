@@ -293,22 +293,30 @@ export class home extends Component {
             )}
             <div className="MainBackgroundHome" />
 
-            <IdeaList
-              type="allIdeas"
-              loading={loading}
-              order={this.state.order}
-              classes={classes}
-              dataFinal={dataFinal}
-              dataFinalMap={dataFinalMap}
-              viewport={mapViewport}
-              handleDropdown={this.handleDropdown}
-              projectsData={projects}
-              loadingProjects={loadingProjects}
-              project={this.props.project}
-              dropdown={this.state.dropdown}
-              handleTopicSelector={this.handleTopicSelector}
-              topicsSelected={this.state.topicsSelected}
-            ></IdeaList>
+            <div
+              style={
+                !this.props.UI.openScream
+                  ? { overflowY: "scroll" }
+                  : { height: "100vh", overflowY: "hidden" }
+              }
+            >
+              <IdeaList
+                type="allIdeas"
+                loading={loading}
+                order={this.state.order}
+                classes={classes}
+                dataFinal={dataFinal}
+                dataFinalMap={dataFinalMap}
+                viewport={mapViewport}
+                handleDropdown={this.handleDropdown}
+                projectsData={projects}
+                loadingProjects={loadingProjects}
+                project={this.props.project}
+                dropdown={this.state.dropdown}
+                handleTopicSelector={this.handleTopicSelector}
+                topicsSelected={this.state.topicsSelected}
+              ></IdeaList>
+            </div>
 
             <ProjectsPage
               loadingProjects={loadingProjects}
@@ -318,14 +326,14 @@ export class home extends Component {
 
             <InsightsPage order={this.state.order}></InsightsPage>
 
-            {this.props.UI.openScream === true && (
+            {this.props.UI.openScream && (
               <ScreamDialog
                 screamIdParam={this.state.screamIdParam}
                 projectsData={projects}
               ></ScreamDialog>
             )}
 
-            {this.props.UI.openProject === true && (
+            {this.props.UI.openProject && (
               <ProjectDialog
                 loading={loading}
                 openProject={this.props.UI.openProject}

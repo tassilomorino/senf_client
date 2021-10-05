@@ -843,6 +843,7 @@ position: fixed;
     .wrapperScreamDialog {
       margin-left: 0px;
       width: 400px;
+      overflow-y: scroll;
       z-index: 99;
       top: 0;
       background-attachment: fixed;
