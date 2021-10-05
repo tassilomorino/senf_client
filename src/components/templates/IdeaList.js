@@ -54,7 +54,7 @@ const ScrollContainer = styled.div`
   transform: translateY(${(props) => props.marginTop && props.marginTop});
 
   animation: ${ListEnterAnimation} 3s;
-  box-shadow: 0 8px 40px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 20px 12px rgba(0, 0, 0, 0.1);
   transition: 0.1s ease-out;
 `;
 
@@ -124,7 +124,13 @@ const IdeaList = ({
   const [swipePosition, setSwipePosition] = useState("center");
   const [swipeMovePosition, setSwipeMovePosition] = useState(0);
   const [shadow, setShadow] = useState(false);
+  const { openScream } = useSelector((state) => state.UI);
 
+  useEffect(() => {
+    if (openScream) {
+      setSwipeMovePosition(0);
+    }
+  }, [openScream]);
   const mapViewport = useSelector((state) => state.data.mapViewport);
   const dispatch = useDispatch();
 

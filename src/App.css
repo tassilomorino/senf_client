@@ -810,19 +810,6 @@ button:disabled {
   background-repeat: no-repeat;
 }
 
-.dialoggradient1 {
-  position: absolute;
-  margin-top: 0vh;
-  height: 13vh;
-  width: 100vw;
-  background-attachment: fixed;
-  background: -webkit-gradient(linear,
-      0% 0%,
-      0% 100%,
-      from(#ffda53),
-      to(rgba(255, 255, 255, 0)));
-  background-repeat: no-repeat;
-}
 
 
 
@@ -1341,22 +1328,7 @@ input:focus {
   animation: enteranimation 1.5s;
 }
 
-@keyframes enteranimation {
-  0% {
-    opacity: 0;
-    transform: translateY(10%);
-  }
 
-  50% {
-    opacity: 0;
-    transform: translateY(10%);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0%);
-  }
-}
 
 @keyframes submitEnteranimation {
   0% {
@@ -1491,17 +1463,52 @@ font-size:15px !important
   color: #c9c9c9;
 }
 
+.fullGradientWrapper {
+  width: 100vw;
+  height: 100%;
+  position: fixed;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  background-attachment: fixed;
+  background-image: linear-gradient(to bottom, #ffd19b, #ffda53, #ffffff);
+  background-repeat: no-repeat;
+  background: -webkit-linear-gradient(to left, #ffd19b, #ffda53, #ffffff);
+}
 
 
 .wrapperScreamDialog {
   width: 100vw;
   height: 100%;
-  position: fixed;
-  overflow-x: hidden;
-  background-attachment: fixed;
-  background-image: linear-gradient(to bottom, #ffd19b, #ffda53, #ffffff);
-  background-repeat: no-repeat;
-  background: -webkit-linear-gradient(to left, #ffd19b, #ffda53, #ffffff);
+  margin-top:50vh;
+  z-index: 9999;
+  top: 0;
+  animation: enterScreamDialogAnimation 0.5s;
+  position:absolute;
+}
+
+
+@keyframes enterScreamDialogAnimation {
+  0% {
+    transform: translateY(50%);
+  }
+
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+
+.dialoggradient1 {
+  position: absolute;
+  margin-top: -10px;
+  height: 110%;
+  width: 100vw;
+  border-radius: 20px 20px 0 0;
+  background: rgb(254,217,87);
+  background: linear-gradient(180deg, rgba(254,217,87,1) 0%, rgba(254,217,87,1) 6%, rgba(255,218,83,1) 41%, rgba(255,255,255,1) 70%);
+z-index: 99;
+box-shadow: 0 8px 20px 12px rgba(0, 0, 0, 0.1);
+
 }
 
 .dialogNavigation {
@@ -1519,7 +1526,7 @@ font-size:15px !important
   z-index: 99;
   position: relative;
   display: flex;
-  margin-top: -80px;
+  margin-top: 2vh;
   margin-left: 2.5%;
   width: 95%;
   border-radius: 20px;
@@ -2831,4 +2838,22 @@ margin-bottom: 20px;
   margin-top: 10px;
   margin-left: -10px;
   
+}
+
+
+@keyframes enteranimation {
+  0% {
+    opacity: 0;
+    transform: translateY(10%);
+  }
+
+  50% {
+    opacity: 0;
+    transform: translateY(10%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
 }

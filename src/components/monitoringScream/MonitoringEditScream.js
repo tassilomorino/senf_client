@@ -1098,13 +1098,13 @@ export default connect(
 //     } = this.props;
 
 //     const dialogMarkup = loading ? (
-//       <div className="wrapperScreamDialog">
+//       <div className="fullGradientWrapper">
 //         <div className="spinnerDiv">
 //           <img src={lamploader} className="lamploader" alt="LikeIcon" />
 //         </div>
 //       </div>
 //     ) : (
-//       <div className="wrapperScreamDialog">hiiii</div>
+//       <div className="fullGradientWrapper">hiiii</div>
 //     );
 
 //     const dialog = (

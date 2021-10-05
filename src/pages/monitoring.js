@@ -74,10 +74,6 @@ export class monitoring extends Component {
 
   componentDidMount() {
     this.props.clearErrors();
-    window.scrollTo({
-      top: 0,
-      left: 0,
-    });
   }
 
   componentWillUnmount() {
@@ -107,11 +103,6 @@ export class monitoring extends Component {
       screamIdParam: null,
     });
     this.props.closeScream();
-
-    window.scrollTo({
-      top: 0,
-      left: 0,
-    });
   };
 
   handleDropdown = (event) => {

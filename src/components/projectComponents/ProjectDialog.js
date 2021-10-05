@@ -210,14 +210,8 @@ class ProjectDialog extends Component {
         status === "None"
     );
 
-    const dialogMarkup = loading ? (
-      <div className="wrapperScreamDialog">
-        <div className="spinnerDiv">
-          <img src={lamploader} className="lamploader" alt="LikeIcon" />
-        </div>
-      </div>
-    ) : (
-      <div className="wrapperScreamDialog">
+    const dialogMarkup = (
+      <div className="fullGradientWrapper">
         <ProjectHeader
           imgUrl={imgUrl}
           title={title}
@@ -230,7 +224,7 @@ class ProjectDialog extends Component {
           handleClick={this.handleClick}
         />
 
-        {!loading && this.state.order === 1 && (
+        {this.state.order === 1 && (
           <div className="MainAnimationChannels">
             <IdeaList
               type="projectIdeas"

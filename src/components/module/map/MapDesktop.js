@@ -145,7 +145,6 @@ const MapDesktop = ({
           }
           mapStyle="mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6"
           accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-          hash={true}
           minZoom={8}
           latitude={viewport.latitude}
           longitude={viewport.longitude}

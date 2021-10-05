@@ -828,14 +828,30 @@ position: fixed;
       flex-direction: column !important;
       
     }
-   
-    .wrapperScreamDialog {
+
+    .fullGradientWrapper{
       margin-left: 200px;
       width: 400px;
       z-index: 99;
       top: 0;
-      
-      /* position: fixed; */
+      background-attachment: fixed;
+      background-image: linear-gradient(to bottom, #ffd19b, #ffda53, #ffffff);
+      background-repeat: no-repeat;
+      background: -webkit-linear-gradient(to left, #ffd19b, #ffda53, #ffffff);
+    }
+   
+    .wrapperScreamDialog {
+      margin-left: 0px;
+      width: 400px;
+      z-index: 99;
+      top: 0;
+      background-attachment: fixed;
+      background-image: linear-gradient(to bottom, #ffd19b, #ffda53, #ffffff);
+      background-repeat: no-repeat;
+      background: -webkit-linear-gradient(to left, #ffd19b, #ffda53, #ffffff);
+      position:absolute;
+  margin-top:0vh;
+  animation: enterScreamDialogAnimation 0.5s;
     }
 
     .wrapperMonitoringDialog{

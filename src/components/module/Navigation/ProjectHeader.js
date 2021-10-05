@@ -1,6 +1,7 @@
 /** @format */
 
 import React from "react";
+import { useSelector } from "react-redux";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
 import { CustomIconButton } from "../CustomButtons/CustomButton";
@@ -15,10 +16,12 @@ const FixedWrapper = styled.div`
   height: 80px;
   z-index: 99;
   background-color: white;
-  top: 10px;
+  top: ${(props) => (props.openScream ? "-100px" : "10px")};
+
   left: 2.5%;
   border-radius: 20px 20px;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
+  transition: 1s;
 `;
 
 const FlexWrapper = styled.div`
@@ -81,6 +84,8 @@ const ProjectHeader = ({
   path,
   project,
 }) => {
+  const { openScream } = useSelector((state) => state.UI);
+
   function truncateString(str, num) {
     if (str.length <= num) {
       return str;
@@ -88,7 +93,7 @@ const ProjectHeader = ({
     return str.slice(0, num) + "...";
   }
   return isMobileCustom ? (
-    <FixedWrapper>
+    <FixedWrapper openScream={openScream}>
       <FlexWrapper>
         <CustomIconButton
           name="ArrowLeft"

@@ -1,6 +1,7 @@
 /** @format */
 
 import React from "react";
+import { useSelector } from "react-redux";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -28,10 +29,11 @@ const TopicFilterWrapperMobile = styled.div`
   z-index: 15;
   position: fixed;
 
-  top: 90px;
+  top: ${(props) => (props.openScream ? "10px" : "90px")};
   width: 100%;
   overflow-x: scroll;
   -webkit-overflow-scrolling: touch;
+  transition: 1s;
 `;
 
 const MapClickContainer = styled.div`
@@ -74,6 +76,8 @@ export function TopicFilter({
   swipePosition,
   setSwipeMovePosition,
 }) {
+  const { openScream } = useSelector((state) => state.UI);
+
   const { t } = useTranslation();
   // Handler at index 0 is for the "all" checkbox
   const topicFilters = topics.map((topic, i) => {
@@ -93,7 +97,7 @@ export function TopicFilter({
   });
 
   return isMobileCustom && !loading ? (
-    <TopicFilterWrapperMobile>
+    <TopicFilterWrapperMobile openScream={openScream}>
       {swipePosition === "top" && (
         <MapClickContainer onClick={() => setSwipeMovePosition("0")} />
       )}

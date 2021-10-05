@@ -64,6 +64,7 @@ export class home extends Component {
         "Sonstige",
       ],
     };
+    console.log(this.props);
 
     if (
       cookies.get("Cookie_settings") !== "all" &&
@@ -76,28 +77,24 @@ export class home extends Component {
 
   componentDidMount() {
     this.props.clearErrors();
-    window.scrollTo({
-      top: 0,
-      left: 0,
-    });
 
     if (!this.props.UI.openInfoPage) {
       this.openDialogFromUrl();
     }
 
-    setTimeout(() => {
-      const viewport = {
-        latitude: 50.95,
-        longitude: 6.9503,
-        zoom: isMobileCustom ? 9.5 : 11.5,
-        transitionDuration: 4000,
-        pitch: 30,
-        bearing: 0,
-      };
-      this.props.setMapViewport(viewport);
-    }, 3000);
-    if (!isMobileCustom) {
-      window.addEventListener("popstate", this.handleOnUrlChange, false);
+    const screamId = this.props.match.params.screamId;
+    if (!screamId) {
+      setTimeout(() => {
+        const viewport = {
+          latitude: 50.95,
+          longitude: 6.9503,
+          zoom: isMobileCustom ? 9.5 : 11.5,
+          transitionDuration: 4000,
+          pitch: 30,
+          bearing: 0,
+        };
+        this.props.setMapViewport(viewport);
+      }, 3000);
     }
   }
 
@@ -122,45 +119,6 @@ export class home extends Component {
       this.handleClick(2);
     }
   }
-
-  componentWillUnmount() {
-    if (!isMobileCustom) {
-      window.removeEventListener("popstate", this.handleOnUrlChange, false);
-    }
-  }
-
-  handleOnUrlChange = () => {
-    let coordinates = window.location.hash;
-
-    let lat = Number(coordinates.split("#")[1]);
-    let long = Number(coordinates.split("#")[2]);
-
-    console.log(lat);
-
-    if (coordinates.includes("infoPage")) {
-      //nothing
-    } else {
-      setTimeout(() => {
-        if ((lat < 50.95) | (lat > 50.82)) {
-          const viewport = {
-            latitude: lat,
-            longitude: long,
-            zoom: 16.5,
-            transitionDuration: 4000,
-            pitch: 30,
-            bearing: 0,
-          };
-          this.props.setMapViewport(viewport);
-        }
-      }, 400);
-
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      });
-    }
-  };
 
   handleClick = (order) => {
     this.setState({
@@ -360,10 +318,12 @@ export class home extends Component {
 
             <InsightsPage order={this.state.order}></InsightsPage>
 
-            <ScreamDialog
-              screamIdParam={this.state.screamIdParam}
-              projectsData={projects}
-            ></ScreamDialog>
+            {this.props.UI.openScream === true && (
+              <ScreamDialog
+                screamIdParam={this.state.screamIdParam}
+                projectsData={projects}
+              ></ScreamDialog>
+            )}
 
             {this.props.UI.openProject === true && (
               <ProjectDialog
