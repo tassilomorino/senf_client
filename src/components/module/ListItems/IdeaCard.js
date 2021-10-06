@@ -1,7 +1,6 @@
 /** @format */
 
-import React, { Component } from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
+import React from "react";
 import PropTypes from "prop-types";
 import MyButton from "../../../util/MyButton";
 import styled from "styled-components";
@@ -23,8 +22,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { openScream } from "../../../redux/actions/screamActions";
 import setColorByTopic from "../../../data/setColorByTopic";
 import ExpandButton from "../CustomButtons/ExpandButton";
-
-const styles = {};
 
 const IdeaCard = ({ classes, projectsData, scream }) => {
   dayjs.extend(relativeTime);
@@ -142,6 +139,7 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
     height: 100%;
     position: absolute;
     background-color: #d5dadd;
+    z-index: 11;
   `
 
   const LikeButtonWrapper = styled.div`
@@ -205,10 +203,11 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
       // box-shadow: rgb(38 57 77 / 70%) 0px 20px 30px -15px;
     `
   const CommentButtonWrapper = styled.button`
-        top: ${(props) => props.project && props.projectsData ? "100px" : "55%"};
-        left: 85%;
-        z-index: ${(props) => props.authenticated ? "0" : "10"};
-        position: absolute;
+    top: ${(props) => props.project && props.projectsData ? "100px" : "55%"};
+    left: 85%;
+    z-index: ${(props) => props.authenticated ? "0" : "10"};
+    position: absolute;
+    background-color: white;
       `
 
   return (
@@ -259,7 +258,7 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
         )}
         <ExpandButton
           handleButtonClick={() => fetchDataScream(screamId)}
-         />
+        />
       </CardContent>
     </Card>
   );
@@ -274,4 +273,4 @@ IdeaCard.propTypes = {
   openProject: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(IdeaCard);
+export default IdeaCard;
