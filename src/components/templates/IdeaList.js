@@ -179,7 +179,23 @@ const IdeaList = ({
             project={project}
           />
           <SwipeCard>
-            <Swipee>hiiii</Swipee>
+            <ListHeaderWrapper>
+              <ListHeader
+                loading={loading}
+                handleDropdown={handleDropdown}
+                dataFinal={dataFinal}
+                marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
+              />{" "}
+            </ListHeaderWrapper>
+            <List
+              type={type}
+              loading={loading}
+              dropdown={dropdown}
+              dataFinal={dataFinal}
+              projectsData={projectsData}
+              project={project}
+              myScreams={myScreams}
+            />
           </SwipeCard>
           {/* <ScrollContainer onScroll={handleScroll}>
             <ContentMobile>

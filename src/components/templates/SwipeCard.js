@@ -5,7 +5,7 @@ import { useDrag } from "@use-gesture/react";
 
 const Top = 141;
 
-const SwipeCard = () => {
+const SwipeCard = ({ children }) => {
   const [config, setConfig] = React.useState({
     gesture: "movement",
     enabled: true,
@@ -31,6 +31,7 @@ const SwipeCard = () => {
     y: 0,
     scale: 1,
     transform: `translateY(${window.innerHeight - 150}px)`,
+    overflow: "scroll",
   }));
 
   const {
@@ -81,11 +82,9 @@ const SwipeCard = () => {
   );
 
   return (
-    <>
-      <div className="Swipecontainer">
-        <animated.div className="drag" {...bind()} style={props} />
-      </div>
-    </>
+    <animated.div className="drag" {...bind()} style={props}>
+      {children}
+    </animated.div>
   );
 };
 
