@@ -467,8 +467,8 @@ class ScreamShare extends Component {
       <Fragment>
         <CustomIconButton
           name="Share"
-          position="relative"
-          margin="0 2.5% 0 auto"
+          margin="10px"
+          left="calc(100% - 150px)"
           handleButtonClick={this.handleOpenShare}
         />
         {dialogComponent}

@@ -12,6 +12,7 @@ import { setMapViewport } from "../../../redux/actions/mapActions";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 //Icons
+import Pin from "../../../images/pin3.png";
 
 //Map Stuff
 import MapGL, {

@@ -12,14 +12,11 @@ import Comments from "../module/Comments/Comments";
 import CommentForm from "../module/Comments/CommentForm";
 import dayjs from "dayjs";
 // MUI Stuff
-import Dialog from "@material-ui/core/Dialog";
-import Grid from "@material-ui/core/Grid";
+
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 
 // Icons
-import MenuIcon from "../../images/icons/menu.png";
-import Pin from "../../images/pin3.png";
 import LocationOn from "@material-ui/icons/LocationOn";
 import CreateIcon from "@material-ui/icons/Create";
 import EventIcon from "@material-ui/icons/Event";
@@ -28,25 +25,17 @@ import WeblinkIcon from "../../images/icons/weblink.png";
 
 import contactIcon from "../../images/icons/mail.png";
 
-import Switch from "@material-ui/core/Switch";
-
 import * as linkify from "linkifyjs";
 
-import StickyBackground from "./StickyBackground";
-
 //MAPSTUFF
-import MapGL, { Marker } from "@urbica/react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 // Redux stuff
-import { connect } from "react-redux";
 import { closeScream } from "../../redux/actions/screamActions";
 import { openProject } from "../../redux/actions/projectActions";
 import { clearErrors } from "../../redux/actions/errorsActions";
 
 //COMPONENTS
-import MenuScream from "../modals/menuScream/MenuScream";
-import ReportScream from "../modals/ReportScream";
 import SignNote from "../profile/SignNote";
 
 //ANIMATION
@@ -54,37 +43,55 @@ import Slide from "@material-ui/core/Slide";
 
 import lamploader from "../../images/lamp.png";
 
-import Swipe from "react-easy-swipe";
-
 import ScreamShare from "../modals/ScreamShare";
 
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
-import AdminMenuScream from "../modals/menuScream/AdminMenuScream";
 import {
   CustomButton,
   CustomIconButton,
 } from "../module/CustomButtons/CustomButton";
 import setColorByTopic from "../../data/setColorByTopic";
 import EditButton from "../module/CustomButtons/EditButton";
+import styled from "styled-components";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+const BackgroundMobile = styled.div`
+  position: absolute;
+  margin-top: -10px;
+  height: 110%;
+  width: 100vw;
+  border-radius: 20px 20px 0 0;
+  background: rgb(254, 217, 87);
+  background: linear-gradient(
+    180deg,
+    rgba(254, 217, 87, 1) 0%,
+    rgba(254, 217, 87, 1) 6%,
+    rgba(255, 218, 83, 1) 41%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  z-index: 99;
+  box-shadow: 0 8px 20px 12px rgba(0, 0, 0, 0.1);
+`;
+
+const BackgroundDesktop = styled.div`
+  position: fixed;
+  margin-top: 0px;
+  top: 0;
+  height: 100%;
+  width: 400px;
+  border-radius: 0px 0px 0 0;
+  background: rgb(254, 217, 87);
+  background: linear-gradient(
+    180deg,
+    rgba(254, 217, 87, 1) 0%,
+    rgba(254, 217, 87, 1) 6%,
+    rgba(255, 218, 83, 1) 41%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  z-index: 99;
+`;
 
 const styles = {
-  root: {
-    backgroundColor: "rgb(0,0,0,0)",
-    padding: "0",
-  },
-
-  paper: {
-    backgroundColor: "transparent",
-    boxShadow: "none",
-    // overflow: "hidden",
-    padding: "0",
-  },
-
   header: {
     paddingTop: "10px",
     marginLeft: "0vw",
@@ -324,30 +331,10 @@ const ScreamDialog = ({ classes, projectsData }) => {
   const dispatch = useDispatch();
   const { loading, openScream } = useSelector((state) => state.UI);
 
-  const { authenticated, credentials } = useSelector((state) => state.user);
+  const { authenticated } = useSelector((state) => state.user);
 
-  const { handle, isAdmin, isModerator } = credentials;
-
-  const [dialogStyle, setDialogStyle] = useState(null);
   const [path, setPath] = useState("");
   const [clicked, setClicked] = useState(false);
-
-  const [isSticky, setSticky] = useState(false);
-  const ref = useRef(null);
-  const handleScroll = () => {
-    console.log("scrolling");
-    if (ref.current) {
-      setSticky(ref.current.getBoundingClientRect().top <= 0);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", () => handleScroll);
-    };
-  }, []);
 
   useEffect(() => {
     if (openScream && lat !== undefined) {
@@ -379,31 +366,13 @@ const ScreamDialog = ({ classes, projectsData }) => {
     }, 1000);
   };
 
-  // const handleZoom =()=> {
-  //   if (this.state.zoomdetail === false) {
-  //     this.setState({
-  //       viewport: { zoom: 16.5, pitch: 50, bearing: -40 },
-  //       zoomdetail: true,
-  //       MapHeight: "80vh",
-  //     });
-  //   }
-
-  //   if (this.state.zoomdetail === true) {
-  //     this.setState({
-  //       viewport: { zoom: 12, pitch: 0, bearing: 0 },
-  //       zoomdetail: false,
-  //       MapHeight: "80vh",
-  //     });
-  //   }
-  // }
-
-  // const handleUnErrorMap = () => {
-  //   this.setState((prevState) => {
-  //     return {
-  //       viewport: { zoom: prevState.viewport.zoom + 0.001 },
-  //     };
-  //   });
-  // };
+  const handleUnErrorMap = () => {
+    // this.setState((prevState) => {
+    //   return {
+    //     viewport: { zoom: prevState.viewport.zoom + 0.001 },
+    //   };
+    // });
+  };
 
   const openTheProject = (project) => {
     dispatch(openProject(project));
@@ -483,27 +452,23 @@ const ScreamDialog = ({ classes, projectsData }) => {
 
           <div className="wrapperScreamDialog">
             {/* <ScreamShare
-                screamId={screamId}
-                userHandle={userHandle}
-                likeCount={3}
-                title={title}
-                path={this.state.path}
-                locationHeader={locationHeader}
-                Stadtteil={Stadtteil}
-                handleUnErrorMap={this.handleUnErrorMap}
-              />
-
-              */}
-            {/* <EditButton screamId={screamId} userHandle={userHandle} /> */}
-            {/* <div className="dialogZoomButton" onClick={() => this.handleZoom()}>
-              <Switch
-                checked={this.state.zoomdetail}
-                name="checkedA"
-                inputProps={{ "aria-label": "secondary checkbox" }}
-              />
-              Detailansicht
-            </div> */}
-            <div className="dialoggradient1" id="background"></div>
+              screamId={screamId}
+              userHandle={userHandle}
+              likeCount={3}
+              title={title}
+              path={path}
+              locationHeader={locationHeader}
+              Stadtteil={Stadtteil}
+              handleUnErrorMap={handleUnErrorMap}
+            />*/}
+            <CustomIconButton
+              name="Share"
+              margin="10px"
+              left="calc(100% - 130px)"
+              position="relative"
+            />
+            <EditButton screamId={screamId} userHandle={userHandle} />
+            {isMobileCustom ? <BackgroundMobile /> : <BackgroundDesktop />}
             <div
               className="dialogCard"
               style={project ? { paddingBottom: "50px", zIndex: 9999 } : {}}

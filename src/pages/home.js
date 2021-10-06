@@ -296,8 +296,8 @@ export class home extends Component {
             <div
               style={
                 !this.props.UI.openScream
-                  ? { overflowY: "scroll" }
-                  : { height: "100vh", overflowY: "hidden" }
+                  ? { overflow: "scroll" }
+                  : { height: "100vh", overflow: "hidden" }
               }
             >
               <IdeaList
