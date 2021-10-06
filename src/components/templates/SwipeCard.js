@@ -3,6 +3,8 @@ import React from "react";
 import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 
+const Top = 141;
+
 const SwipeCard = () => {
   const [config, setConfig] = React.useState({
     gesture: "movement",
@@ -24,7 +26,12 @@ const SwipeCard = () => {
       right: 100,
     },
   });
-  const [props, set] = useSpring(() => ({ x: 0, y: 0, scale: 1 }));
+  const [props, set] = useSpring(() => ({
+    x: 0,
+    y: 0,
+    scale: 1,
+    transform: `translateY(${window.innerHeight - 150}px)`,
+  }));
 
   const {
     gesture,
@@ -39,19 +46,30 @@ const SwipeCard = () => {
   } = config;
 
   const bind = useDrag(
-    ({
-      tap,
-      swipe: [swipeX, swipeY],
-      down,
-      movement: [mx, my],
-      offset: [x, y],
-    }) => {
-      if (tap) console("Tap!");
-      if (swipeX) console(`Swipe ${swipeX > 0 ? "Right" : "Left"}`);
-      if (swipeY) console(`Swipe ${swipeY > 0 ? "Bottom" : "Top"}`);
+    ({ tap, swipe: [, swipeY], down, movement: [, my], offset: [, y] }) => {
+      console.log();
+      if (my < -200) {
+        set({
+          y: down ? my : 100,
+          scale: down ? 0.9 : 1,
+          backgroundColor: down ? "green" : "lightgreen",
+          transform: down ? `translateY(${0}px)` : `translateY(${141}px)`,
+        });
+      }
+      if (my > 200) {
+        set({
+          y: down ? my : window.innerHeight - 100,
+          scale: down ? 0.9 : 1,
+          transform: down
+            ? `translateY(${0}px)`
+            : `translateY(${window.innerHeight - 150}px)`,
+        });
+      }
+      //   if (tap) console("Tap!");
+      //   if (swipeY) console(`Swipe ${swipeY > 0 ? "Bottom" : "Top"}`);
+
       if (gesture === "movement")
-        set({ x: down ? mx : 0, y: down ? my : 0, scale: down ? 1.2 : 1 });
-      else set({ x, y, scale: down ? 1.2 : 1 });
+        set({ y: down ? my : 0, scale: down ? 0.9 : 1 });
     },
     {
       ...rest,
@@ -64,17 +82,7 @@ const SwipeCard = () => {
 
   return (
     <>
-      <div className="container">
-        {activateBounds && (
-          <div
-            className="bounds"
-            style={{
-              width: bounds.right - bounds.left,
-              height: bounds.bottom - bounds.top,
-              transform: `translate3d(${bounds.left}, ${bounds.top})`,
-            }}
-          />
-        )}
+      <div className="Swipecontainer">
         <animated.div className="drag" {...bind()} style={props} />
       </div>
     </>

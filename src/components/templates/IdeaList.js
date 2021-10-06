@@ -33,6 +33,8 @@ const Wrapper = styled.div`
   flex-direction: row;
   transition: 0.5s;
   width: 100%;
+  height: 100%;
+  overflow: hidden;
 `;
 
 const ScrollContainer = styled.div`
