@@ -63,7 +63,7 @@ transform: translateY(400%) translateX(-50%);
 `;
 
 const OpenButtonMobile = styled.button`
-  z-index: 999;
+  z-index: 99;
   width: 40px;
   height: 40px;
   padding: 22px;

@@ -36,6 +36,7 @@ const styles = {
     borderRadius: "20px",
     borderTop: "0px solid #414345",
     boxShadow: "0 8px 40px -12px rgba(0,0,0,0)",
+    zIndex: 99,
   },
   content: {
     padding: "16px",

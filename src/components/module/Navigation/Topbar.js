@@ -23,13 +23,15 @@ import Info from "../../../images/icons/info.png";
 const Wrapper = styled.div`
   z-index: 99;
   position: fixed;
-  top: 0;
+
   width: 100vw;
   /* height: 7.5em; */
 
   height: 90px;
   background-color: white;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
+  top: ${(props) => (props.openScream ? "-90px" : "0px")};
+  transition: 1s;
 `;
 
 const LogoContainer = styled.div`
@@ -41,7 +43,7 @@ const LogoContainer = styled.div`
 `;
 
 const ProfileButtonContainer = styled.div`
-  position: fixed;
+  position: absolute;
   z-index: 999;
   width: 30px;
   right: 20px;
@@ -52,7 +54,7 @@ const ProfileButtonContainer = styled.div`
 `;
 
 const InlineInfoButtonContainer = styled.div`
-  position: fixed;
+  position: absolute;
   z-index: 999;
   width: 30px;
   left: 20px;
@@ -71,11 +73,12 @@ const Topbar = ({
 }) => {
   const { loading } = useSelector((state) => state.data);
   const { authenticated } = useSelector((state) => state.user);
+  const { openScream } = useSelector((state) => state.UI);
 
   return (
     !loading &&
     isMobileCustom && (
-      <Wrapper>
+      <Wrapper openScream={openScream}>
         <InlineInfoButtonContainer>
           <InlineInformationPage />
           <img src={Info} width="30" alt="EndImage" />

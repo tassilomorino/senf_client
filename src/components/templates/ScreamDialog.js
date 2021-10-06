@@ -1,6 +1,8 @@
 /** @format */
 
-import React, { Component, Fragment } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setMapViewport } from "../../redux/actions/mapActions";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 import MyButton from "../../util/MyButton";
@@ -10,14 +12,11 @@ import Comments from "../module/Comments/Comments";
 import CommentForm from "../module/Comments/CommentForm";
 import dayjs from "dayjs";
 // MUI Stuff
-import Dialog from "@material-ui/core/Dialog";
-import Grid from "@material-ui/core/Grid";
+
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 
 // Icons
-import MenuIcon from "../../images/icons/menu.png";
-import Pin from "../../images/pin3.png";
 import LocationOn from "@material-ui/icons/LocationOn";
 import CreateIcon from "@material-ui/icons/Create";
 import EventIcon from "@material-ui/icons/Event";
@@ -26,23 +25,17 @@ import WeblinkIcon from "../../images/icons/weblink.png";
 
 import contactIcon from "../../images/icons/mail.png";
 
-import Switch from "@material-ui/core/Switch";
-
 import * as linkify from "linkifyjs";
 
 //MAPSTUFF
-import MapGL, { Marker } from "@urbica/react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 // Redux stuff
-import { connect } from "react-redux";
 import { closeScream } from "../../redux/actions/screamActions";
 import { openProject } from "../../redux/actions/projectActions";
 import { clearErrors } from "../../redux/actions/errorsActions";
 
 //COMPONENTS
-import MenuScream from "../modals/menuScream/MenuScream";
-import ReportScream from "../modals/ReportScream";
 import SignNote from "../profile/SignNote";
 
 //ANIMATION
@@ -50,49 +43,55 @@ import Slide from "@material-ui/core/Slide";
 
 import lamploader from "../../images/lamp.png";
 
-import Swipe from "react-easy-swipe";
-
 import ScreamShare from "../modals/ScreamShare";
 
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
-import AdminMenuScream from "../modals/menuScream/AdminMenuScream";
 import {
   CustomButton,
   CustomIconButton,
 } from "../module/CustomButtons/CustomButton";
 import setColorByTopic from "../../data/setColorByTopic";
+import EditButton from "../module/CustomButtons/EditButton";
+import styled from "styled-components";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+const BackgroundMobile = styled.div`
+  position: absolute;
+  margin-top: -10px;
+  height: 110%;
+  width: 100vw;
+  border-radius: 20px 20px 0 0;
+  background: rgb(254, 217, 87);
+  background: linear-gradient(
+    180deg,
+    rgba(254, 217, 87, 1) 0%,
+    rgba(254, 217, 87, 1) 6%,
+    rgba(255, 218, 83, 1) 41%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  z-index: 99;
+  box-shadow: 0 8px 20px 12px rgba(0, 0, 0, 0.1);
+`;
+
+const BackgroundDesktop = styled.div`
+  position: fixed;
+  margin-top: 0px;
+  top: 0;
+  height: 100%;
+  width: 400px;
+  border-radius: 0px 0px 0 0;
+  background: rgb(254, 217, 87);
+  background: linear-gradient(
+    180deg,
+    rgba(254, 217, 87, 1) 0%,
+    rgba(254, 217, 87, 1) 6%,
+    rgba(255, 218, 83, 1) 41%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  z-index: 99;
+`;
 
 const styles = {
-  root: {
-    backgroundColor: "rgb(0,0,0,0.1)",
-    padding: "0",
-  },
-
-  paper: {
-    backgroundColor: "transparent",
-    boxShadow: "none",
-    // overflow: "hidden",
-    padding: "0",
-  },
-
-  closeButton: {
-    position: "relative",
-    height: "35px",
-    width: "35px",
-
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 22,
-    borderRadius: "100%",
-    backgroundColor: "white",
-    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.5)",
-  },
   header: {
     paddingTop: "10px",
     marginLeft: "0vw",
@@ -306,337 +305,173 @@ const styles = {
   },
 };
 
-class ScreamDialog extends Component {
-  state = {
-    open: false,
-    clicked: false,
-    oldPath: "/",
+const ScreamDialog = ({ classes, projectsData }) => {
+  const {
+    screamId,
+    locationHeader,
+    Stadtteil,
+    title,
+    body,
+    createdAt,
+    likeCount,
+    commentCount,
+    lat,
+    long,
+    userHandle,
+    comments,
+    Thema,
+    project,
+    weblink,
+    weblinkTitle,
+    contact,
+    contactTitle,
+    selectedUnix,
+  } = useSelector((state) => state.data.scream);
 
-    path: "",
-    zoomdetail: false,
-    hi: 50.9,
-    ho: 6.9,
-    count: 1,
-    MapHeight: "50vh",
-    viewport: {
-      position: "fixed",
-      width: "100vw",
-      height: "52vh",
-      zoom: 12,
-      color: "lightgrey",
-    },
-    dialogStyle: {},
-    selectedUnixConverted: null,
-  };
+  const dispatch = useDispatch();
+  const { loading, openScream } = useSelector((state) => state.UI);
 
-  // componentDidMount() {
-  //   const data = [];
-  //   var i;
+  const { authenticated } = useSelector((state) => state.user);
 
-  //   if (this.props.selectedUnix) {
+  const [path, setPath] = useState("");
+  const [clicked, setClicked] = useState(false);
 
-  //     for (i = 0; i < this.props.selectedUnix.length; i++) {
-  //       data.push(new Date(this.props.selectedUnix[i] * 1000));
-  //     }
-  //     this.setState({
-  //       selectedUnixConverted: data,
-  //     });
-  //   }
-  // }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.UI.openScream) {
-      const { screamId } = this.props.scream;
-      this.setState({
-        path: `https://senf.koeln/${screamId}`,
-      });
-
+  useEffect(() => {
+    if (openScream && lat !== undefined) {
       setTimeout(() => {
-        this.setState({
-          dialogStyle: { position: "initial" },
-        });
-      }, 3000);
-    } else {
-      this.setState({
-        dialogStyle: {},
-      });
-    }
-  }
+        const viewport = {
+          latitude: isMobileCustom && openScream ? lat - 0.0008 : lat,
+          longitude: long,
+          zoom: 16.5,
+          transitionDuration: 4000,
+          pitch: 30,
+          bearing: 0,
+        };
+        dispatch(setMapViewport(viewport));
+      }, 400);
 
-  handleClose = () => {
-    this.props.closeScream();
-    this.props.clearErrors();
+      setPath(`https://senf.koeln/${screamId}`);
+    }
+  }, [loading]);
+
+  const handleClose = () => {
+    dispatch(closeScream());
+    dispatch(clearErrors());
   };
 
-  handleClick = () => {
-    this.setState({ clicked: true });
-    setTimeout(
-      function () {
-        this.setState({ clicked: false });
-      }.bind(this),
-      1000
-    );
+  const handleClick = () => {
+    setClicked(true);
+    setTimeout(() => {
+      setClicked(false);
+    }, 1000);
   };
 
-  handleZoom() {
-    if (this.state.zoomdetail === false) {
-      this.setState({
-        viewport: { zoom: 16.5, pitch: 50, bearing: -40 },
-        zoomdetail: true,
-        MapHeight: "80vh",
-      });
-    }
-
-    if (this.state.zoomdetail === true) {
-      this.setState({
-        viewport: { zoom: 12, pitch: 0, bearing: 0 },
-        zoomdetail: false,
-        MapHeight: "80vh",
-      });
-    }
-  }
-
-  handleUnErrorMap = () => {
-    this.setState((prevState) => {
-      return {
-        viewport: { zoom: prevState.viewport.zoom + 0.001 },
-      };
-    });
+  const handleUnErrorMap = () => {
+    // this.setState((prevState) => {
+    //   return {
+    //     viewport: { zoom: prevState.viewport.zoom + 0.001 },
+    //   };
+    // });
   };
 
-  onSwipeMove(position) {
-    if (`${position.x}` > 150) {
-      this.handleClose();
-    }
-    var el = document.querySelector(".wrapperScreamDialog");
-    if (el.scrollTop < 5) {
-      if (`${position.y}` > 250) {
-        this.handleClose();
+  const openTheProject = (project) => {
+    dispatch(openProject(project));
+  };
+
+  const convertedLinkRaw = weblink ? linkify.find(weblink) : null;
+  const convertedLink =
+    weblink && convertedLinkRaw[0] !== undefined
+      ? convertedLinkRaw[0].href
+      : null;
+
+  const projectsDataFinal = [];
+  if (projectsData) {
+    const projectsDataArray = projectsData;
+
+    projectsDataArray.forEach((element) => {
+      if (project === element.project) {
+        projectsDataFinal.push(element.title);
       }
-    }
+    });
   }
 
-  openProject = (project) => {
-    this.props.openProject(project);
+  const projectTitle = project ? (
+    // && project === this.props.projects.project
+    <button
+      className="screamcardProjectContainer buttonWide "
+      onClick={() => openTheProject(project)}
+    >
+      {projectsDataFinal}
+    </button>
+  ) : null;
+
+  let selectedDates = [];
+  const selectedUnixArray = selectedUnix;
+  const options = {
+    weekday: "short",
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   };
 
-  render() {
-    const {
-      classes,
-      projectsData,
-      scream: {
-        screamId,
-        locationHeader,
-        Stadtteil,
-        title,
-        body,
-        createdAt,
-        likeCount,
-        commentCount,
-        lat,
-        long,
-        userHandle,
-        comments,
-        Thema,
-        project,
-
-        weblink,
-        weblinkTitle,
-        contact,
-        contactTitle,
-
-        selectedUnix,
-      },
-      UI: { loading },
-
-      user: {
-        authenticated,
-        credentials: { handle, isAdmin, isModerator },
-      },
-    } = this.props;
-
-    const convertedLinkRaw = weblink ? linkify.find(weblink) : null;
-    const convertedLink =
-      weblink && convertedLinkRaw[0] !== undefined
-        ? convertedLinkRaw[0].href
-        : null;
-
-    const map = (
-      <div className="mapWrapperDialog">
-        <MapGL
-          id="map"
-          style={{
-            position: "relative",
-            zIndex: 0,
-            width: "100vw",
-            height: this.state.MapHeight,
-            marginTop: 0,
-          }}
-          mapStyle="mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6"
-          accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-          {...this.state.viewport}
-          latitude={lat}
-          longitude={long}
-          onViewportChange={(viewport) => this.setState({ viewport })}
-          viewportChangeMethod={"easeTo"}
-          viewportChangeOptions={{
-            duration: 1200,
-          }}
-        >
-          <Marker key={screamId} longitude={long} latitude={lat}>
-            <div
-              style={{
-                position: "absolute",
-                zIndex: "99",
-                width: 7 + likeCount / 2,
-                marginLeft: -((14 + likeCount) / 4),
-                height: 7 + likeCount / 2,
-                marginTop: -(7 + likeCount) / 2,
-                borderRadius: "100%",
-                border: "1px white solid",
-                backgroundColor: setColorByTopic(Thema),
-                opacity: "1",
-              }}
-            ></div>
-            <div
-              style={{
-                marginLeft: 3 / 2,
-                zIndex: "1",
-                marginTop: -(7 + likeCount) / 2,
-              }}
-            >
-              <img
-                src={Pin}
-                style={{ clipPath: "polygon(0 0, 100% 0, 100% 88%, 0 88%)" }}
-                className="pin"
-                alt="ChatIcon"
-              />
-            </div>
-          </Marker>
-        </MapGL>
-        <div className="dialoggradient" />
-      </div>
-    );
-
-    const projectsDataFinal = [];
-    if (projectsData) {
-      const projectsDataArray = projectsData;
-
-      projectsDataArray.forEach((element) => {
-        if (project === element.project) {
-          projectsDataFinal.push(element.title);
-        }
-      });
-    }
-
-    const projectTitle = project ? (
-      // && project === this.props.projects.project
-      <button
-        className="screamcardProjectContainer buttonWide "
-        onClick={() => this.openProject(project)}
-      >
-        {projectsDataFinal}
-      </button>
-    ) : null;
-
-    let selectedDates = [];
-    const selectedUnixArray = selectedUnix;
-    const options = {
-      weekday: "short",
-      year: "numeric",
-      month: "numeric",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    };
-
-    if (selectedUnixArray !== undefined && selectedUnixArray !== null) {
-      if (selectedUnixArray.length > 0) {
-        selectedUnixArray.forEach((element) => {
-          selectedDates.push(
-            <div>
-              {new Date(element * 1000).toLocaleTimeString("de-DE", options)}{" "}
-              <br />{" "}
-            </div>
-          );
-        });
-      } else {
-        selectedDates = (
+  if (selectedUnixArray !== undefined && selectedUnixArray !== null) {
+    if (selectedUnixArray.length > 0) {
+      selectedUnixArray.forEach((element) => {
+        selectedDates.push(
           <div>
-            {new Date(selectedUnix * 1000).toLocaleTimeString("de-DE", options)}{" "}
+            {new Date(element * 1000).toLocaleTimeString("de-DE", options)}{" "}
             <br />{" "}
           </div>
         );
-      }
-    }
-
-    const dialogMarkup = loading ? (
-      <div className="wrapperScreamDialog">
-        <div className="spinnerDiv">
-          <img src={lamploader} className="lamploader" alt="LikeIcon" />
+      });
+    } else {
+      selectedDates = (
+        <div>
+          {new Date(selectedUnix * 1000).toLocaleTimeString("de-DE", options)}{" "}
+          <br />{" "}
         </div>
-      </div>
-    ) : (
-      <div className="wrapperScreamDialog">
-        <Grid container spacing={0}>
-          <Grid item sm={12} style={{ width: "100%" }}>
-            <div className="dialogNavigation">
-              <CustomIconButton
-                name="ArrowLeft"
-                position="fixed"
-                handleButtonClick={this.handleClose}
-              />
+      );
+    }
+  }
 
-              <ScreamShare
-                screamId={screamId}
-                userHandle={userHandle}
-                likeCount={3}
-                title={title}
-                path={this.state.path}
-                locationHeader={locationHeader}
-                Stadtteil={Stadtteil}
-                handleUnErrorMap={this.handleUnErrorMap}
-              />
+  return (
+    <Fragment>
+      {!loading ? (
+        <React.Fragment>
+          <CommentForm screamId={screamId} clicked={clicked} />
 
-              <button className="buttonRound buttonEdit">
-                {!authenticated ? (
-                  <ReportScream screamId={screamId} userHandle={userHandle} />
-                ) : authenticated & (userHandle !== handle) ? (
-                  <ReportScream screamId={screamId} userHandle={userHandle} />
-                ) : null}
-                {authenticated && (isAdmin === true || isModerator === true) ? (
-                  <AdminMenuScream
-                    screamId={screamId}
-                    userHandle={userHandle}
-                    scream={this.props.scream}
-                    isModerator={isModerator}
-                    isAdmin={isAdmin}
-                  />
-                ) : authenticated && userHandle === handle ? (
-                  <MenuScream
-                    screamId={screamId}
-                    userHandle={userHandle}
-                    scream={this.props.scream}
-                  />
-                ) : null}
+          <CustomIconButton
+            name="ArrowLeft"
+            position="fixed"
+            margin="10px"
+            top="0px"
+            handleButtonClick={handleClose}
+          />
 
-                <img src={MenuIcon} width="25" alt="editIcon" />
-              </button>
-            </div>
-            {map}
-            <div className="dialogZoomButton" onClick={() => this.handleZoom()}>
-              <Switch
-                checked={this.state.zoomdetail}
-                name="checkedA"
-                inputProps={{ "aria-label": "secondary checkbox" }}
-              />
-              Detailansicht
-            </div>
-
-            <div className="dialoggradient1"></div>
+          <div className="wrapperScreamDialog">
+            {/* <ScreamShare
+              screamId={screamId}
+              userHandle={userHandle}
+              likeCount={3}
+              title={title}
+              path={path}
+              locationHeader={locationHeader}
+              Stadtteil={Stadtteil}
+              handleUnErrorMap={handleUnErrorMap}
+            />*/}
+            <CustomIconButton
+              name="Share"
+              margin="10px"
+              left="calc(100% - 130px)"
+              position="relative"
+            />
+            <EditButton screamId={screamId} userHandle={userHandle} />
+            {isMobileCustom ? <BackgroundMobile /> : <BackgroundDesktop />}
             <div
               className="dialogCard"
-              style={project ? { paddingBottom: "50px" } : {}}
+              style={project ? { paddingBottom: "50px", zIndex: 9999 } : {}}
             >
               <div className={classes.content}>
                 <div
@@ -672,7 +507,7 @@ class ScreamDialog extends Component {
                         <img src={ChatBorder} width="100%" alt="ChatIcon" />
                       </MyButton>
                     ) : (
-                      <MyButton onClick={() => this.handleClick()}>
+                      <MyButton onClick={() => handleClick()}>
                         <img src={ChatBorder} width="90%" alt="ChatIcon" />
                       </MyButton>
                     )}
@@ -776,79 +611,44 @@ class ScreamDialog extends Component {
                 </div>
               </div>
             </div>
-          </Grid>
+            <div className={classes.vertline} />
+            <Card className={classes.card2}>
+              <div className={classes.anmeldeText}>
+                <span>
+                  {" "}
+                  Was hältst du von der Idee? <br /> Rege den Meinungsaustausch
+                  hier an!
+                </span>
 
-          <div className={classes.vertline} />
-
-          <Card className={classes.card2}>
-            <div className={classes.anmeldeText}>
-              <span>
-                {" "}
-                Was hältst du von der Idee? <br /> Rege den Meinungsaustausch
-                hier an!
-              </span>
-
-              {!authenticated && (
-                <div className={classes.anmeldeText}>
-                  <SignNote />
-                  <CustomButton
-                    text="Melde dich an"
-                    backgroundColor="#353535"
-                    textColor="white"
-                    position="relative"
-                    top="10px"
-                    zIndex="0"
-                  />
-                </div>
-              )}
-            </div>
-          </Card>
-
-          <Comments comments={comments} />
-        </Grid>
-        <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
-      </div>
-    );
-
-    return (
-      <Fragment>
-        {isMobileCustom ? (
-          <Dialog
-            open={this.props.UI.openScream}
-            onClose={this.handleClose}
-            TransitionComponent={Transition}
-            fullScreen
-          >
-            <CommentForm screamId={screamId} clicked={this.state.clicked} />
-
-            <Swipe onSwipeMove={this.onSwipeMove.bind(this)}>
-              {dialogMarkup}
-            </Swipe>
-          </Dialog>
-        ) : (
-          <Dialog
-            open={this.props.UI.openScream}
-            onClose={this.handleClose}
-            BackdropProps={{ classes: { root: classes.root } }}
-            PaperProps={{ classes: { root: classes.paper } }}
-            TransitionComponent={Transition}
-            fullScreen
-            hideBackdrop // Disable the backdrop color/image
-            disableEnforceFocus // Let the user focus on elements outside the dialog
-            style={this.state.dialogStyle} // This was the key point, reset the position of the dialog, so the user can interact with other elements
-            disableBackdropClick // Remove the backdrop click (just to be sure)
-          >
-            <CommentForm screamId={screamId} clicked={this.state.clicked} />
-
-            <Swipe onSwipeMove={this.onSwipeMove.bind(this)}>
-              {dialogMarkup}
-            </Swipe>
-          </Dialog>
-        )}
-      </Fragment>
-    );
-  }
-}
+                {!authenticated && (
+                  <div className={classes.anmeldeText}>
+                    <SignNote />
+                    <CustomButton
+                      text="Melde dich an"
+                      backgroundColor="#353535"
+                      textColor="white"
+                      position="relative"
+                      top="10px"
+                      zIndex="0"
+                    />
+                  </div>
+                )}
+              </div>
+            </Card>
+            <Comments comments={comments} />
+            <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
+          </div>
+        </React.Fragment>
+      ) : (
+        <div className="fullGradientWrapper">
+          <div className="spinnerDiv">
+            <img src={lamploader} className="lamploader" alt="LikeIcon" />
+          </div>
+        </div>
+      )}
+    </Fragment>
+  );
+};
 
 ScreamDialog.propTypes = {
   clearErrors: PropTypes.func.isRequired,
@@ -857,19 +657,4 @@ ScreamDialog.propTypes = {
   UI: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  scream: state.data.scream,
-  UI: state.UI,
-  user: state.user,
-});
-
-const mapActionsToProps = {
-  closeScream,
-  clearErrors,
-  openProject,
-};
-
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(ScreamDialog));
+export default withStyles(styles)(ScreamDialog);

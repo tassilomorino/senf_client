@@ -41,6 +41,42 @@ const Break = styled.div`
   }
 `;
 
+const BackgroundMobile = styled.div`
+  position: absolute;
+  margin-top: -10px;
+  height: 110%;
+  width: 100vw;
+  border-radius: 20px 20px 0 0;
+  background: rgb(254, 217, 87);
+  background: linear-gradient(
+    180deg,
+    rgba(254, 217, 87, 1) 0%,
+    rgba(254, 217, 87, 1) 6%,
+    rgba(255, 218, 83, 1) 41%,
+    rgba(255, 255, 255, 1) 70%
+  );
+  z-index: 0;
+  box-shadow: 0 8px 20px 12px rgba(0, 0, 0, 0.1);
+`;
+
+const BackgroundDesktop = styled.div`
+  position: fixed;
+  margin-top: 0px;
+  top: 0;
+  height: 100%;
+  width: 400px;
+  border-radius: 0px 0px 0 0;
+  background: rgb(254, 217, 87);
+  background: linear-gradient(
+    180deg,
+    rgba(254, 217, 87, 1) 0%,
+    rgba(254, 217, 87, 1) 6%,
+    rgba(255, 218, 83, 1) 41%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  z-index: 0;
+`;
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -210,101 +246,72 @@ class ProjectDialog extends Component {
         status === "None"
     );
 
-    const dialogMarkup = loading ? (
-      <div className="wrapperScreamDialog">
-        <div className="spinnerDiv">
-          <img src={lamploader} className="lamploader" alt="LikeIcon" />
+    return (
+      this.props.openProject && (
+        <div className="projectDialog">
+          {isMobileCustom ? <BackgroundMobile /> : <BackgroundDesktop />}
+          <ProjectHeader
+            imgUrl={imgUrl}
+            title={title}
+            loading={loading}
+            calendar={calendar}
+            order={this.state.order}
+            path={this.state.path}
+            project={this.props.project}
+            handleClose={this.handleClose}
+            handleClick={this.handleClick}
+          />
+
+          {this.state.order === 1 && (
+            <div className="MainAnimationChannels">
+              <IdeaList
+                type="projectIdeas"
+                loading={loading}
+                order={this.state.order}
+                classes={classes}
+                dataFinal={dataFinal}
+                geoData={geoData}
+                viewport={viewport}
+                handleDropdown={this.handleDropdown}
+                projectsData={projectsData}
+                loadingProjects={loadingProjects}
+                project={this.props.project}
+                dropdown={this.state.dropdown}
+                handleTopicSelector={handleTopicSelector}
+                topicsSelected={topicsSelected}
+                dataFinalMap={dataFinalMap}
+              ></IdeaList>
+            </div>
+          )}
+          {this.state.order === 2 && (
+            <React.Fragment>
+              <Break />
+
+              <div className="MainAnimationChannels">
+                <ProjectInfo
+                  description={description}
+                  weblink={weblink}
+                  contact={contact}
+                  startDate={startDate}
+                  endDate={endDate}
+                  owner={owner}
+                />
+                <br />
+              </div>
+            </React.Fragment>
+          )}
+          {this.state.order === 3 && (
+            <React.Fragment>
+              <Break />
+              <div className="MainAnimationChannels">
+                <CalendarComponent
+                  projectScreams={this.props.project.screams}
+                ></CalendarComponent>
+              </div>
+            </React.Fragment>
+          )}
         </div>
-      </div>
-    ) : (
-      <div className="wrapperScreamDialog">
-        <ProjectHeader
-          imgUrl={imgUrl}
-          title={title}
-          loading={loading}
-          calendar={calendar}
-          order={this.state.order}
-          path={this.state.path}
-          project={this.props.project}
-          handleClose={this.handleClose}
-          handleClick={this.handleClick}
-        />
-
-        {!loading && this.state.order === 1 && (
-          <div className="MainAnimationChannels">
-            <IdeaList
-              type="projectIdeas"
-              loading={loading}
-              order={this.state.order}
-              classes={classes}
-              dataFinal={dataFinal}
-              geoData={geoData}
-              viewport={viewport}
-              handleDropdown={this.handleDropdown}
-              projectsData={projectsData}
-              loadingProjects={loadingProjects}
-              project={this.props.project}
-              dropdown={this.state.dropdown}
-              handleTopicSelector={handleTopicSelector}
-              topicsSelected={topicsSelected}
-              dataFinalMap={dataFinalMap}
-            ></IdeaList>
-          </div>
-        )}
-        {this.state.order === 2 && (
-          <React.Fragment>
-            <Break />
-
-            <div className="MainAnimationChannels">
-              <ProjectInfo
-                description={description}
-                weblink={weblink}
-                contact={contact}
-                startDate={startDate}
-                endDate={endDate}
-                owner={owner}
-              />
-              <br />
-            </div>
-          </React.Fragment>
-        )}
-        {this.state.order === 3 && (
-          <React.Fragment>
-            <Break />
-            <div className="MainAnimationChannels">
-              <CalendarComponent
-                projectScreams={this.props.project.screams}
-              ></CalendarComponent>
-            </div>
-          </React.Fragment>
-        )}
-      </div>
-    );
-
-    return isMobileCustom ? (
-      <Dialog
-        open={this.props.openProject}
-        onClose={this.handleClose}
-        TransitionComponent={Transition}
-        fullScreen
-      >
-        {dialogMarkup}
-      </Dialog>
-    ) : (
-      <Dialog
-        open={this.props.openProject}
-        onClose={this.handleClose}
-        BackdropProps={{ classes: { root: classes.root } }}
-        PaperProps={{ classes: { root: classes.paper } }}
-        TransitionComponent={Transition}
-        fullScreen
-        hideBackdrop // Disable the backdrop color/image
-        disableEnforceFocus // Let the user focus on elements outside the dialog
-        style={this.state.dialogStyle} // This was the key point, reset the position of the dialog, so the user can interact with other elements
-        disableBackdropClick // Remove the backdrop click (just to be sure)
-      >
-        <div className="contentWrapper_dialog">{dialogMarkup}</div>
-      </Dialog>
+      )
     );
   }
 }

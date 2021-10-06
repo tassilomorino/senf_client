@@ -299,7 +299,7 @@ class Account extends Component {
     if (`${position.x}` > 150) {
       this.handleClose();
     }
-    var el = document.querySelector(".wrapperScreamDialog");
+    var el = document.querySelector(".fullGradientWrapper");
     if (el.scrollTop < 5) {
       if (`${position.y}` > 250) {
         this.handleClose();
@@ -345,7 +345,7 @@ class Account extends Component {
       );
 
     const dialogMarkup = (
-      <div className="wrapperScreamDialog">
+      <div className="fullGradientWrapper">
         <AccountHeader
           handle={handle}
           loading={loadingMyScreams}

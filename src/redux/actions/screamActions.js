@@ -120,7 +120,7 @@ export const openScream = (screamId) => async (dispatch) => {
       scream.comments.push({ ...doc.data(), commentId: doc.id })
     );
 
-    window.location = "#" + scream.lat + "#" + scream.long;
+    // window.location = "#" + scream.lat + "#" + scream.long;
 
     dispatch({ type: LOADING_UI });
     dispatch({ type: OPEN_SCREAM });
