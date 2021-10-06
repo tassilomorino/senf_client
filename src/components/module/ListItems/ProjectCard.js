@@ -86,7 +86,8 @@ const ProjectCard = (props) => {
     font-family: Futura PT W01 Book;
     color: #353535
   `
-  // Ideacards IN the project view slightly different...why?
+  // Understanding what they are (seem to be hidden?)
+  // Ideacards IN the project view slightly different than when coming in...why?
   return (
     <ProjectCard>
       <ExpandButton
