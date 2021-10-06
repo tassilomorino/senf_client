@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 // Redux
 import { useDispatch } from "react-redux";
 import { openProject } from "../../../redux/actions/projectActions";
+import ExpandButton from "../CustomButtons/ExpandButton";
 
 const ProjectCard = (props) => {
   const {
@@ -19,10 +20,9 @@ const ProjectCard = (props) => {
 
   return (
     <div className="projectCard">
-      <button
-        onClick={() => pushScreamId(project)}
-        className="buttonExpand ripple"
-      ></button>
+      <ExpandButton
+          handleButtonClick={() => pushScreamId(project)}
+         />
 
       <div className="leftWrapper">
         <img

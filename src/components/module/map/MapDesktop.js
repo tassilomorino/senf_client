@@ -25,6 +25,7 @@ import MapGL, {
 import setColorByTopic from "../../../data/setColorByTopic";
 import NoLocationPopUp from "./NoLocationPopUp";
 import { DesktopMapButtons } from "./DesktopMapButtons";
+import ExpandButton from "../CustomButtons/ExpandButton";
 
 const OpenIdeaButton = styled.div`
   position: absolute;
@@ -90,12 +91,12 @@ const MapDesktop = ({
   const data =
     !loadingProjects && geoData !== undefined && geoData !== ""
       ? {
-          type: "Feature",
-          geometry: {
-            type: "Polygon",
-            coordinates: [JSON.parse(geoData)],
-          },
-        }
+        type: "Feature",
+        geometry: {
+          type: "Polygon",
+          coordinates: [JSON.parse(geoData)],
+        },
+      }
       : null;
 
   let dataNoLocation = [];
@@ -130,19 +131,19 @@ const MapDesktop = ({
           style={
             openInfoPage
               ? {
-                  position: "fixed",
-                  width: "100%",
-                  height: "100%",
-                  transform: "scale(1)",
-                  left: 0,
-                }
+                position: "fixed",
+                width: "100%",
+                height: "100%",
+                transform: "scale(1)",
+                left: 0,
+              }
               : {
-                  position: "fixed",
-                  width: "calc(100% - 600px)",
-                  left: "600px",
-                  height: "100%",
-                  transform: "scale(1)",
-                }
+                position: "fixed",
+                width: "calc(100% - 600px)",
+                left: "600px",
+                height: "100%",
+                transform: "scale(1)",
+              }
           }
           mapStyle="mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6"
           accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
@@ -204,9 +205,8 @@ const MapDesktop = ({
                     }, 10000)
                   }
                 >
-                  <button
-                    onClick={() => fetchDataScream(element.screamId)}
-                    className="buttonExpand ripple"
+                  <ExpandButton
+                    handleButtonClick={() => fetchDataScream(element.screamId)}
                   />
                 </OpenIdeaButton>
               </Marker>

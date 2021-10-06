@@ -24,6 +24,7 @@ import AccountHeader from "./AccountHeader";
 
 import styled from "styled-components";
 import AccountSettings from "./AccountSettings";
+import ExpandButton from "../module/CustomButtons/ExpandButton";
 
 const Break = styled.div`
   position: relative;
@@ -387,11 +388,10 @@ class Account extends Component {
 
     return (
       <Fragment>
-        <button
-          onClick={this.handleOpen}
-          className="buttonExpand ripple"
-          data-cy="profile-button"
-        ></button>
+        <ExpandButton
+          handleButtonClick={this.handleOpen}
+          dataCy="profile-button"
+         />
 
         {!this.props.UI.openInfoPage &&
           (isMobileCustom ? (
