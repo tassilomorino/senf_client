@@ -2861,13 +2861,13 @@ margin-bottom: 20px;
 }
 
 
-.sheet{
-  z-index: 100;
-  position: fixed;
-  left: 0;
-  height: calc(100vh + 100px);
-  width: 100vw;
-  border-radius: 20px 20px 0px;
-  background: green;
+
+.drag {
+  width: 80px;
+  height: 80px;
+  background: hotpink;
+  border-radius: 16px;
   touch-action: none;
+  position: absolute;
+  z-index:999
 }

@@ -176,11 +176,7 @@ const IdeaList = ({
             projectsData={projectsData}
             project={project}
           />
-          <SwipeCard
-            defaultMode="collapsed"
-            height={600}
-            style={{ pointerEvents: "all", zIndex: 999 }}
-          >
+          <SwipeCard>
             <Swipee>hiiii</Swipee>
           </SwipeCard>
           {/* <ScrollContainer onScroll={handleScroll}>

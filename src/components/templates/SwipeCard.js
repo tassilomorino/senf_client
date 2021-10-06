@@ -1,96 +1,83 @@
 /** @format */
+import React from "react";
+import { useSpring, animated } from "@react-spring/web";
+import { useDrag } from "@use-gesture/react";
 
-import React, { useState, useEffect } from "react";
-
-import { useGesture } from "@use-gesture/react";
-import { a, useSpring, config } from "@react-spring/web";
-import clamp from "lodash-es/clamp";
-const getY = (height, mode) => {
-  if (mode === "collapsed") {
-    return height * 1 - 100;
-  }
-  return 75;
-};
-const SwipeCard = ({ defaultMode, height, children }) => {
-  const [mode, setMode] = useState(defaultMode);
-  const [{ y }, set] = useSpring(() => ({
-    y: getY(height, mode),
-    config: config.gentle,
-  }));
-  const collapsedY = getY(height, "collapsed");
-  const expandedY = getY(height, "expanded");
-
-  useEffect(() => {
-    set({ y: mode === "collapsed" ? collapsedY : expandedY });
-  }, [mode, collapsedY, expandedY, set]);
-
-  const calculateNextY = (down, currentY, deltaY, velocity) => {
-    if (down) {
-      return currentY + deltaY;
-    }
-
-    const threshold = 100 / velocity;
-
-    if (mode === "expanded") {
-      return deltaY > threshold ? collapsedY : expandedY;
-    }
-
-    if (mode === "collapsed") {
-      return deltaY < -threshold ? expandedY : collapsedY;
-    }
-
-    return getY(height, mode);
-  };
-  const bind = useGesture({
-    onDrag: ({
-      down,
-      movement: [, my],
-      delta: [_, deltaY],
-      velocity,
-      temp = y.get(),
-    }) => {
-      velocity = clamp(velocity, 1, 8);
-
-      if (!down) {
-        if (mode === "expanded" && my > 70) {
-          setMode("collapsed");
-        } else if (mode === "collapsed" && my < -70) {
-          setMode("expanded");
-        }
-      }
-
-      const nextY = calculateNextY(down, temp, deltaY, velocity);
-
-      set({
-        y: nextY,
-      });
-
-      return temp;
+const SwipeCard = () => {
+  const [config, setConfig] = React.useState({
+    gesture: "movement",
+    enabled: true,
+    pointer: false,
+    axis: undefined,
+    delay: 0,
+    fliterTaps: true,
+    threshold: 10,
+    swipeDist: 100,
+    swipeVel: 0.5,
+    activateBounds: false,
+    rubberband: 0.15,
+    bounds: {
+      enabled: false,
+      top: -100,
+      bottom: 100,
+      left: -100,
+      right: 100,
     },
-    // onHover: ({ hovering }) => {
-    //   if (mode === "collapsed") {
-    //     set({
-    //       y: hovering ? getY(height, mode) - 10 : getY(height, mode)
-    //     });
-    //   }
-    // }
   });
+  const [props, set] = useSpring(() => ({ x: 0, y: 0, scale: 1 }));
+
+  const {
+    gesture,
+    threshold,
+    swipeDist,
+    swipeVel,
+    pointer,
+    activateBounds,
+    bounds,
+    rubberband,
+    ...rest
+  } = config;
+
+  const bind = useDrag(
+    ({
+      tap,
+      swipe: [swipeX, swipeY],
+      down,
+      movement: [mx, my],
+      offset: [x, y],
+    }) => {
+      if (tap) console("Tap!");
+      if (swipeX) console(`Swipe ${swipeX > 0 ? "Right" : "Left"}`);
+      if (swipeY) console(`Swipe ${swipeY > 0 ? "Bottom" : "Top"}`);
+      if (gesture === "movement")
+        set({ x: down ? mx : 0, y: down ? my : 0, scale: down ? 1.2 : 1 });
+      else set({ x, y, scale: down ? 1.2 : 1 });
+    },
+    {
+      ...rest,
+      eventOptions: { pointer },
+      threshold: threshold < 0 ? undefined : [threshold, threshold],
+      bounds: activateBounds ? bounds : undefined,
+      rubberband: activateBounds ? rubberband : 0,
+    }
+  );
 
   return (
-    <a.div
-      {...bind()}
-      style={{
-        height,
-        pointerEvents: "all",
-        zIndex: 999,
-        width: "100%",
-        bottom: 0,
-        position: "fixed",
-        transform: y.interpolate((y) => `translateY(calc(${y}px))`),
-      }}
-    >
-      {children}
-    </a.div>
+    <>
+      <div className="container">
+        {activateBounds && (
+          <div
+            className="bounds"
+            style={{
+              width: bounds.right - bounds.left,
+              height: bounds.bottom - bounds.top,
+              transform: `translate3d(${bounds.left}, ${bounds.top})`,
+            }}
+          />
+        )}
+        <animated.div className="drag" {...bind()} style={props} />
+      </div>
+    </>
   );
 };
 
