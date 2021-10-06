@@ -22,6 +22,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { openScream } from "../../../redux/actions/screamActions";
 import setColorByTopic from "../../../data/setColorByTopic";
 import ExpandButton from "../CustomButtons/ExpandButton";
+import { openProject } from "../../../redux/actions/projectActions";
 
 const IdeaCard = ({ classes, projectsData, scream }) => {
   dayjs.extend(relativeTime);
@@ -75,7 +76,8 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
     margin-right: auto;
     border-radius: 20px;
     margin-bottom: 10px;
-    height: ${(props) => props.project && "23em"} 
+    height: ${(props) => props.project && "23em"};
+    overflow: hidden;
   `
 
   const ColorDot = styled.div`
@@ -136,7 +138,7 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
     top: 0%;
     left: 85%;
     width: 1px;
-    height: 100%;
+    height: ${(props) => props.project && props.projectsData ? "calc(100% - 50px)" : "100%"};
     position: absolute;
     background-color: #d5dadd;
     z-index: 11;
@@ -172,35 +174,30 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
     position: absolute;
     background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%);
   `
-  // buttonWide overwritten by ScreamcardProjectContainer for a few elements (see commented out)
-  const ScreamcardProjectContainerButtonWide = styled.button`
-      background-color: #f8f8f8;
-      width: 100%;
-      padding-left: 5%;
-      padding-right: 5%;
-      left: 0;
-      height: 50px;
-      position: absolute;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      bottom: 0;
-      border-radius: 0%;
-      border-bottom-right-radius: 20px;
-      border-bottom-left-radius: 20px;
-      z-index: 10;
-      color: #353535;
-      font-size: 12pt;
-      box-shadow: rgb(38 57 77 / 0%) 0px 20px 30px -15px;
 
-      // border-radius: 30px;
-      text-transform: none;
-      /* font-size: 14pt;
-      background-color: white;
-      height: 50px; */
-      font-family: Futura PT W01 Book;
-      // box-shadow: rgb(38 57 77 / 70%) 0px 20px 30px -15px;
+  const ScreamcardProjectContainerButtonWide = styled.button`
+    background-color: #f8f8f8;
+    width: 100%;
+    padding-left: 5%;
+    padding-right: 5%;
+    left: 0;
+    height: 50px;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    bottom: 0;
+    border-radius: 0%;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    z-index: 10;
+    color: #353535;
+    font-size: 12pt;
+    box-shadow: rgb(38 57 77 / 0%) 0px 20px 30px -15px;
+
+    text-transform: none;
+    font-family: Futura PT W01 Book;
     `
   const CommentButtonWrapper = styled.button`
     top: ${(props) => props.project && props.projectsData ? "100px" : "55%"};
@@ -222,9 +219,12 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
           </LocationHeader>
         </LocationOuter>
         <ScreamCardTitle>{title}</ScreamCardTitle>
-        <BodyText /* className="bodytext"*/>{body} </BodyText>
+        <BodyText>{body} </BodyText>
         <Gradient></Gradient>
-        <Line />
+        <Line
+          project={project}
+          projectsData={projectsData}
+        />
         <LikeButtonWrapper
           project={project}
           projectsData={projectsData}
