@@ -1,5 +1,5 @@
 /** @format */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import _ from "lodash";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
@@ -15,6 +15,7 @@ import List from "../module/List/List";
 import ListHeader from "../module/Headers/ListHeader";
 import PostScream from "../postScream/PostScream";
 import TopicFilter from "../module/Filters/TopicFilter";
+import SwipeCard from "./SwipeCard";
 
 const ListEnterAnimation = keyframes`
        0% {
@@ -104,7 +105,17 @@ const ShadowBox = styled.div`
   z-index: 14;
   display: ${(props) => props.display && props.display};
 `;
-
+const Swipee = styled.div`
+  border-radius: 16px;
+  user-select: none;
+  background: hotpink;
+  color: white;
+  width: 100%;
+  height: 300%;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+`;
 const IdeaList = ({
   type,
   loading,
@@ -121,40 +132,17 @@ const IdeaList = ({
   handleTopicSelector,
   topicsSelected,
 }) => {
-  const [swipePosition, setSwipePosition] = useState("center");
-  const [swipeMovePosition, setSwipeMovePosition] = useState(0);
   const [shadow, setShadow] = useState(false);
   const { openScream } = useSelector((state) => state.UI);
 
-  useEffect(() => {
-    if (openScream) {
-      setSwipeMovePosition(0);
-    }
-  }, [openScream]);
   const mapViewport = useSelector((state) => state.data.mapViewport);
   const dispatch = useDispatch();
-
-  const onSwipeMove = (position, event) => {
-    setSwipeMovePosition(position.y + "px");
-  };
-
-  const onSwipeEnd = (position, event) => {
-    console.log(position.y);
-    if (swipeMovePosition < "-50px") {
-      setSwipePosition("top");
-      setSwipeMovePosition("calc(-70% + 141px)");
-    } else {
-      setSwipeMovePosition(0);
-    }
-  };
 
   const _onViewportChange = (viewport) => {
     dispatch(setMapViewport(viewport));
 
     const boundAdds = [500, 1000, 500, 1000];
     dispatch(setMapBounds(viewport, boundAdds));
-    setSwipePosition("bottom");
-    setSwipeMovePosition("calc(30% - 95px)");
   };
 
   const handleScroll = (e) => {
@@ -177,59 +165,65 @@ const IdeaList = ({
             geoData={geoData}
             viewport={mapViewport}
             _onViewportChange={_onViewportChange}
-            setSwipePosition={setSwipePosition}
-            setSwipeMovePosition={setSwipeMovePosition}
           />
           <TopicFilter
             loading={loading}
             handleTopicSelector={handleTopicSelector}
             topicsSelected={topicsSelected}
-            swipePosition={swipePosition}
-            setSwipePosition={setSwipePosition}
-            setSwipeMovePosition={setSwipeMovePosition}
           ></TopicFilter>
           <PostScream
             loadingProjects={loadingProjects}
             projectsData={projectsData}
             project={project}
-            swipePosition={swipePosition}
           />
-          <ScrollContainer
-            Top={swipePosition}
-            marginTop={swipeMovePosition}
-            onScroll={handleScroll}
+          <SwipeCard
+            defaultMode="collapsed"
+            height={600}
+            style={{ pointerEvents: "all", zIndex: 999 }}
           >
+            <Swipee>hiiii</Swipee>
+          </SwipeCard>
+          {/* <ScrollContainer onScroll={handleScroll}>
             <ContentMobile>
-              <Swipe
-                onSwipeMove={onSwipeMove}
-                onSwipeEnd={onSwipeEnd}
+              <div
+                className="card"
+                ref={cardRef}
+                // style={{ height: `${cardHeight}px` }}
                 style={{
-                  height: "70px",
+                  backgroundColor: "green",
+                  height: "200px",
+                  width: "100%",
                 }}
               >
-                <SwipeContainer
-                  Top={swipePosition}
-                  marginTop={swipeMovePosition}
-                  onClick={() => setSwipeMovePosition("calc(-70% + 141px)")}
+                <span
+                  className="card-knob"
+                  style={{
+                    backgroundColor: "blue",
+                    height: "200px",
+                    width: "100%",
+                  }}
+                  onMouseDown={touchStart}
+                  onTouchStart={touchStart}
+                  onMouseMove={touchMove}
+                  onTouchMove={touchMove}
+                  onMouseUp={touchEnd}
+                  onTouchEnd={touchEnd}
                 >
-                  <ListHeaderWrapper
-                    Top={swipePosition}
-                    marginTop={swipeMovePosition}
-                  >
-                    <ListHeader
-                      loading={loading}
-                      handleDropdown={handleDropdown}
-                      dataFinal={dataFinal}
-                      marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
-                    />{" "}
-                  </ListHeaderWrapper>
-                  <ShadowBox
-                    Top={swipePosition}
-                    marginTop={swipeMovePosition}
-                    display={shadow ? "block" : "none"}
-                  />
-                </SwipeContainer>
-              </Swipe>{" "}
+                  <SwipeContainer>
+                    <ListHeaderWrapper>
+                      <ListHeader
+                        loading={loading}
+                        handleDropdown={handleDropdown}
+                        dataFinal={dataFinal}
+                        marginTop={
+                          document.body.clientWidth > 768 ? "40px" : "0"
+                        }
+                      />{" "}
+                    </ListHeaderWrapper>
+                    <ShadowBox display={shadow ? "block" : "none"} />
+                  </SwipeContainer>
+                </span>
+              </div>
               <List
                 type={type}
                 loading={loading}
@@ -239,8 +233,8 @@ const IdeaList = ({
                 project={project}
                 myScreams={myScreams}
               />{" "}
-            </ContentMobile>{" "}
-          </ScrollContainer>{" "}
+            </ContentMobile>{" "} 
+          </ScrollContainer>{" "}*/}
         </React.Fragment>
       ) : (
         <Content>
