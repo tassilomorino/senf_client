@@ -34,6 +34,7 @@ import CloseIcon from "@material-ui/icons/Close";
 
 import Logo from "../../images/logo.png";
 import { CustomButton } from "../module/CustomButtons/CustomButton";
+import ExpandButton from "../module/CustomButtons/ExpandButton";
 
 const styles = {
   root: {
@@ -91,11 +92,10 @@ const InlineInformationPage = ({ classes }) => {
 
   return (
     <Fragment>
-      <button
-        onClick={() => setOpen(true)}
-        className="buttonExpand ripple"
-        data-cy="InlineInfo-button"
-      ></button>
+      <ExpandButton
+          handleButtonClick={() => setOpen(true)}
+          dataCy="InlineInfo-button"
+         />
 
       <Dialog
         open={open}

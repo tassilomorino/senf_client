@@ -16,6 +16,7 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 import setColorByTopic from "../../../data/setColorByTopic";
 import NoLocationPopUp from "./NoLocationPopUp";
 import MobileMapButtons from "./MobileMapButtons";
+import ExpandButton from "../CustomButtons/ExpandButton";
 
 // import cologne_grid from "../../../images/cologne_grid.svg";
 
@@ -57,12 +58,12 @@ const MapMobile = ({
   const data =
     !loadingProjects && geoData !== undefined && geoData !== ""
       ? {
-          type: "Feature",
-          geometry: {
-            type: "Polygon",
-            coordinates: [JSON.parse(geoData)],
-          },
-        }
+        type: "Feature",
+        geometry: {
+          type: "Polygon",
+          coordinates: [JSON.parse(geoData)],
+        },
+      }
       : null;
 
   let dataNoLocation = [];
@@ -157,9 +158,8 @@ const MapMobile = ({
                 Thema={element.Thema}
                 onClick={() => fetchDataScream(element.screamId)}
               >
-                <button
-                  onClick={() => fetchDataScream(element.screamId)}
-                  className="buttonExpand ripple"
+                <ExpandButton
+                  handleButtonClick={() => fetchDataScream(element.screamId)}
                 />
               </OpenIdeaButton>
               <NoLocationPopUp

@@ -1,9 +1,9 @@
 /** @format */
 
-import React, { Component } from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
+import React from "react";
 import PropTypes from "prop-types";
 import MyButton from "../../../util/MyButton";
+import styled from "styled-components";
 
 //TIMESTAMP
 import dayjs from "dayjs";
@@ -13,10 +13,6 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import LikeButton from "../../module/CustomButtons/LikeButton";
 import SignNote from "../../profile/SignNote";
 
-// MUI Stuff
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-
 // Icons
 import ChatBorder from "../../../images/icons/chat.png";
 
@@ -24,118 +20,9 @@ import ChatBorder from "../../../images/icons/chat.png";
 import { useSelector, useDispatch } from "react-redux";
 
 import { openScream } from "../../../redux/actions/screamActions";
-import { openProject } from "../../../redux/actions/projectActions";
 import setColorByTopic from "../../../data/setColorByTopic";
-
-const styles = {
-  gradient: {
-    width: "100%",
-    height: "100px",
-    position: "absolute",
-    bottom: 0,
-
-    background:
-      "linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%)",
-  },
-
-  gradient2: {
-    width: "80%",
-    height: "50px",
-    position: "absolute",
-    bottom: "50px",
-
-    background:
-      "linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%)",
-  },
-
-  line: {
-    position: "absolute",
-    left: "85%",
-    top: "0%",
-    width: "1px",
-    backgroundColor: "#d5dadd",
-    height: "100%",
-  },
-
-  likeButton: {
-    zIndex: 10,
-    position: "relative",
-    left: "0%",
-    // width: "15vw",
-    // height: "15vw",
-    top: "10%",
-  },
-  likeButtonWrapper: {
-    zIndex: 10,
-    position: "absolute",
-    left: "85%",
-    // width: "15vw",
-    top: "10%",
-    textAlign: "center",
-  },
-  commentButtonWrapper: {
-    top: "55%",
-    position: "absolute",
-    left: "85%",
-    zIndex: 0,
-  },
-
-  commentButtonWrapperNotAuthenticated: {
-    top: "55%",
-    position: "absolute",
-    left: "85%",
-    zIndex: 10,
-  },
-  card: {
-    position: "relative",
-    display: "flex",
-    marginBottom: 10,
-    marginLeft: "auto",
-    marginRight: "auto",
-    minHeight: "12em",
-    width: "95%",
-    borderRadius: 20,
-    boxShadow: "0 8px 40px -12px rgba(0,0,0,0)",
-    maxHeight: "14.5em",
-  },
-
-  content: {
-    padding: 15,
-    color: "rgb(87, 87, 87)",
-    width: "95%",
-    objectFit: "cover",
-  },
-
-  bodytext: {
-    position: "relative",
-    width: "85%",
-    fontSize: "14pt",
-    overflow: "hidden",
-    maxHeight: "3.6em",
-    textOverflow: "-o-ellipsis-lastline",
-  },
-
-  engagement: {
-    paddingRight: 10,
-    width: "100%",
-    textAlign: "center",
-    fontSize: 14,
-    color: "black",
-  },
-
-  locationOuter: {
-    float: "left",
-    marginLeft: "10px",
-    color: "rgb(255, 205, 6)",
-    height: "3vh",
-  },
-  locationHeader: {
-    color: "rgb(255, 205, 6)",
-    float: "left",
-    paddingRight: "2%",
-    width: "100%",
-  },
-};
+import ExpandButton from "../CustomButtons/ExpandButton";
+import { openProject } from "../../../redux/actions/projectActions";
 
 const IdeaCard = ({ classes, projectsData, scream }) => {
   dayjs.extend(relativeTime);
@@ -171,80 +58,207 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
     });
   }
 
+  const CardContent = styled.div`
+    color: rgb(87, 87, 87);
+    width: 95%;
+    padding: 15px;
+    object-fit: cover;
+  `
+  const Card = styled.div`
+    background-color: white;
+    width: 95%;
+    display: flex;
+    position: relative;
+    box-shadow: 0 8px 40px -12px rgb(0 0 0 / 0%);
+    max-height: 14.5em;
+    min-height: 12em;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    height: ${(props) => props.project && "23em"};
+    overflow: hidden;
+  `
+
+  const ColorDot = styled.div`
+    width: 15px;
+    position: relative;
+    height: 15px;
+    border-radius: 100%;
+    border: 0.5px solid white;
+    background-color: ${(props) => setColorByTopic(Thema)};
+    opacity: 1;
+    float: left;
+  `
+
+  const LocationOuter = styled.div`
+    color: rgb(255, 205, 6);
+    float: left;
+    height: 3vh;
+    margin-left: 10px;
+  `
+
+  const LocationHeader = styled.div`
+    color: ${(props) => setColorByTopic(Thema)};
+    float: left;
+    width: 100%;
+    padding-right: 2%;
+  `
+
+  const ScreamCardTitle = styled.div`
+    clear: both;
+    color: rgb(87, 87, 87);
+    width: 85%;
+    position: relative;
+    font-size: 20px;
+    font-family: Playfair Display;
+    font-weight: 500;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-weight: 800;
+  `
+  const BodyText = styled.div`
+    white-space: pre-line;
+    position: relative;
+    width: 85%;
+    font-size: 14pt;
+    line-height: 17pt;
+    overflow: hidden;
+    max-height: 4.8em;  
+  `
+  const Gradient = styled.div`
+    width: 100%;
+    bottom: 0;
+    height: 100px;
+    position: absolute;
+    background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%);
+  `
+
+  const Line = styled.div`
+    top: 0%;
+    left: 85%;
+    width: 1px;
+    height: ${(props) => props.project && props.projectsData ? "calc(100% - 50px)" : "100%"};
+    position: absolute;
+    background-color: #d5dadd;
+    z-index: 11;
+  `
+
+  const LikeButtonWrapper = styled.div`
+    top: ${(props) => props.project && props.projectsData ? "10px" : "10%"};
+    left: 85%;
+    z-index: 10;
+    position: absolute;
+    text-align: center;
+  `
+
+  const LikeButtonDesign = styled.div`
+    top: 10%;
+    left: 0%;
+    z-index: 10;
+    position: relative;
+  `
+
+  const Engagement = styled.div`
+    color: black;
+    width: 100%;
+    font-size: 14px;
+    text-align: center;
+    padding-right: 10px;
+  `
+
+  const Gradient2 = styled.div`
+    width: 80%;
+    bottom: 50px;
+    height: 50px;
+    position: absolute;
+    background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%);
+  `
+
+  const ScreamcardProjectContainerButtonWide = styled.button`
+    background-color: #f8f8f8;
+    width: 100%;
+    padding-left: 5%;
+    padding-right: 5%;
+    left: 0;
+    height: 50px;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    bottom: 0;
+    border-radius: 0%;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    z-index: 10;
+    color: #353535;
+    font-size: 12pt;
+    box-shadow: rgb(38 57 77 / 0%) 0px 20px 30px -15px;
+
+    text-transform: none;
+    font-family: Futura PT W01 Book;
+    `
+  const CommentButtonWrapper = styled.button`
+    top: ${(props) => props.project && props.projectsData ? "100px" : "55%"};
+    left: 85%;
+    z-index: ${(props) => props.authenticated ? "0" : "10"};
+    position: absolute;
+    background-color: white;
+      `
+
   return (
     <Card
-      className={classes.card}
-      style={!openProject && project && projectsData ? { height: "23em" } : {}}
+      project={!openProject && project && projectsData}
     >
-      <CardContent className={classes.content}>
-        <div
-          style={{
-            width: "15px",
-            position: "relative",
-            height: "15px",
-            margintop: "5px",
-            borderRadius: "100%",
-            border: "0.5px white solid",
-            backgroundColor: setColorByTopic(Thema),
-            opacity: "1",
-            float: "left",
-          }}
-        />{" "}
-        <div className={classes.locationOuter}>
-          <div
-            className={classes.locationHeader}
-            style={{
-              color: setColorByTopic(Thema),
-            }}
-          >
+      <CardContent>
+        <ColorDot />{" "}
+        <LocationOuter>
+          <LocationHeader>
             {Stadtteil}
-          </div>
-        </div>
-        <div className="screamcardTitle">{title} </div>
-        <div className="bodytext">{body}</div>
-        <div className={classes.gradient}></div>
-        <div className={classes.line} />
-        <div
-          className={classes.likeButtonWrapper}
-          style={project && projectsData ? { top: "10px" } : {}}
+          </LocationHeader>
+        </LocationOuter>
+        <ScreamCardTitle>{title}</ScreamCardTitle>
+        <BodyText>{body} </BodyText>
+        <Gradient></Gradient>
+        <Line
+          project={project}
+          projectsData={projectsData}
+        />
+        <LikeButtonWrapper
+          project={project}
+          projectsData={projectsData}
         >
-          <div className={classes.likeButton}>
+          <LikeButtonDesign>
             <LikeButton screamId={screamId} />
-          </div>
-          <div className={classes.engagement}>{likeCount} </div>
-        </div>
-        <div
-          className={
-            !authenticated
-              ? classes.commentButtonWrapperNotAuthenticated
-              : classes.commentButtonWrapper
-          }
-          style={project && projectsData ? { top: "100px" } : {}}
+          </LikeButtonDesign>
+          <Engagement>{likeCount} </Engagement>
+        </LikeButtonWrapper>
+        <CommentButtonWrapper
+          authenticated={authenticated}
+          project={project}
+          projectsData={projectsData}
         >
-          <div className={classes.commentButton}>
-            <MyButton>
-              {!authenticated && <SignNote />}
-              <img src={ChatBorder} width="100%" alt="ChatIcon" />
-            </MyButton>
-          </div>
-          <div className={classes.engagement}>{commentCount}</div>
-        </div>
+          <MyButton>
+            {!authenticated && <SignNote />}
+            <img src={ChatBorder} width="100%" alt="ChatIcon" />
+          </MyButton>
+          <Engagement>{commentCount}</Engagement>
+        </CommentButtonWrapper>
         <br />
         {!openProject && project && projectsData && (
           <>
-            <div className={classes.gradient2}></div>
-            <button
-              className="screamcardProjectContainer buttonWide "
+            <Gradient2></Gradient2>
+            <ScreamcardProjectContainerButtonWide
               onClick={() => fetchDataProject(project)}
             >
               {projectsDataFinal}
-            </button>
+            </ScreamcardProjectContainerButtonWide>
           </>
         )}
-        <button
-          onClick={() => fetchDataScream(screamId)}
-          className="buttonExpand ripple"
-        ></button>
+        <ExpandButton
+          handleButtonClick={() => fetchDataScream(screamId)}
+        />
       </CardContent>
     </Card>
   );
@@ -259,4 +273,4 @@ IdeaCard.propTypes = {
   openProject: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(IdeaCard);
+export default IdeaCard;
