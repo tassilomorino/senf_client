@@ -1,5 +1,5 @@
 /** @format */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
@@ -9,6 +9,7 @@ const Top = 141;
 const SwipeCard = ({ children, loading }) => {
   const { openScream } = useSelector((state) => state.UI);
 
+  const [position, setPosition] = useState("bottom");
   const [config, setConfig] = React.useState({
     gesture: "movement",
     enabled: true,
@@ -55,21 +56,23 @@ const SwipeCard = ({ children, loading }) => {
       if (my < -100) {
         set({
           y: down ? my : 100,
-          scale: down ? 1 : 1,
-          backgroundColor: down ? "green" : "lightgreen",
-          transform: down ? `translateY(${0}px)` : `translateY(${141}px)`,
+          transform:
+            down && position !== "top"
+              ? `translateY(${0}px)`
+              : `translateY(${141}px)`,
           touchAction: "unset",
         });
+        setPosition("top");
       }
-      if (my > 100) {
+      if (my > 200) {
         set({
-          y: down ? my : window.innerHeight - 100,
-          scale: down ? 1 : 1,
+          y: down ? my : window.innerHeight - 120,
           transform: down
             ? `translateY(${0}px)`
             : `translateY(${window.innerHeight - 120}px)`,
           touchAction: "none",
         });
+        setPosition("bottom");
       }
 
       if (gesture === "movement")
