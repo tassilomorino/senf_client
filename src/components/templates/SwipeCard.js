@@ -83,7 +83,11 @@ const SwipeCard = ({ children, loading }) => {
       ...rest,
       eventOptions: { pointer },
       threshold: threshold < 0 ? undefined : [threshold, threshold],
-      bounds: activateBounds ? bounds : undefined,
+      bounds: {
+        enabled: true,
+        top: -window.innerHeight + 141,
+        bottom: window.innerHeight,
+      },
       rubberband: activateBounds ? rubberband : 0,
     }
   );
