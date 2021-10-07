@@ -32,6 +32,7 @@ const SwipeCard = ({ children }) => {
     scale: 1,
     transform: `translateY(${window.innerHeight - 150}px)`,
     overflow: "scroll",
+    touchAction: "none",
   }));
 
   const {
@@ -54,7 +55,7 @@ const SwipeCard = ({ children }) => {
           scale: down ? 0.98 : 1,
           backgroundColor: down ? "green" : "lightgreen",
           transform: down ? `translateY(${0}px)` : `translateY(${141}px)`,
-          touchAction: "none",
+          touchAction: "unset",
         });
       }
       if (my > 200) {
@@ -64,7 +65,7 @@ const SwipeCard = ({ children }) => {
           transform: down
             ? `translateY(${0}px)`
             : `translateY(${window.innerHeight - 150}px)`,
-          touchAction: "all",
+          touchAction: "none",
         });
       }
 
