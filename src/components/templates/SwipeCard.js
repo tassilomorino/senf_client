@@ -70,7 +70,7 @@ const SwipeCard = ({ children }) => {
       }
 
       if (gesture === "movement")
-        set({ y: down ? my : 0, scale: down ? 0.98 : 1 });
+        set({ y: down ? my : 0, scale: down ? 1 : 1 });
     },
     {
       pointer: { touch: true },
