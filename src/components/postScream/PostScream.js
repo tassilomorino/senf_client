@@ -79,7 +79,7 @@ const OpenButtonMobile = styled.button`
   border-radius: 100%;
   font-size: 0;
   box-shadow: rgb(0, 0, 0, 0.8) 0px 20px 20px -15px;
-  z-index: ${(props) => (props.openScream ? 0 : 9999)};
+  z-index: ${(props) => (props.openScream ? 0 : 999)};
 
   animation: ${AddbuttonAnimation} 5s ease-in-out infinite,
     ${enterAnimation} 3.5s;

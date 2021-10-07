@@ -64,7 +64,7 @@ body {
   margin: 0;
   font-family: Futura PT W01 Book;
   overflow: scroll;
-
+  overscroll-behavior-y: contain;
 
 
 
@@ -2876,7 +2876,7 @@ margin-bottom: 20px;
   );
   border-radius: 20px;
   position: absolute;
-  z-index:999;
+  z-index:995;
   animation: dragEnterAnimation 2s
 
  
