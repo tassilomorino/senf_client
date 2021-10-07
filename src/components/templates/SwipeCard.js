@@ -4,8 +4,6 @@ import { useSelector } from "react-redux";
 import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 
-const Top = 141;
-
 const SwipeCard = ({ children, loading }) => {
   const { openScream } = useSelector((state) => state.UI);
 
