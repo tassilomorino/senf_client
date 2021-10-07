@@ -60,12 +60,18 @@
     url("fonts/PlayfairDisplay-SemiBold.ttf") format("truetype");
 }
 
+html {
+  overflow: hidden;
+  width: 100%;
+}
+
 body {
   margin: 0;
   font-family: Futura PT W01 Book;
   overflow: scroll;
   overscroll-behavior-y: contain;
 
+ 
 
 
 
@@ -76,7 +82,6 @@ body {
   background-repeat: no-repeat;
   background: -webkit-linear-gradient(to left, #ffd19b, #ffda53, #ffffff);
   top: 0;
-  height: 100vh;
   width: 100%;
 
 
@@ -85,6 +90,12 @@ body {
   scrollbar-width: none;
   /* Firefox */
 
+
+  height: 100%;
+  position: fixed;
+  /* prevent overscroll bounce*/
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 
 }
 
