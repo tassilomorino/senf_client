@@ -52,7 +52,7 @@ const ScrollContainer = styled.div`
   border-radius: 20px 20px 0 0;
   z-index: 9;
   /* top: ${(props) => props.Top && props.Top}; */
-  top: 70%;
+  top: 0%;
 
   transform: translateY(${(props) => props.marginTop && props.marginTop});
 
@@ -71,7 +71,6 @@ const Content = styled.div`
 `;
 
 const ContentMobile = styled(Content)`
-  position: absolute;
   overflow: scroll;
 `;
 
@@ -187,6 +186,7 @@ const IdeaList = ({
                 marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
               />{" "}
             </ListHeaderWrapper>
+            <ShadowBox display={shadow ? "block" : "none"} />
             <List
               type={type}
               loading={loading}
@@ -195,60 +195,8 @@ const IdeaList = ({
               projectsData={projectsData}
               project={project}
               myScreams={myScreams}
-            />
+            />{" "}
           </SwipeCard>
-          {/* <ScrollContainer onScroll={handleScroll}>
-            <ContentMobile>
-              <div
-                className="card"
-                ref={cardRef}
-                // style={{ height: `${cardHeight}px` }}
-                style={{
-                  backgroundColor: "green",
-                  height: "200px",
-                  width: "100%",
-                }}
-              >
-                <span
-                  className="card-knob"
-                  style={{
-                    backgroundColor: "blue",
-                    height: "200px",
-                    width: "100%",
-                  }}
-                  onMouseDown={touchStart}
-                  onTouchStart={touchStart}
-                  onMouseMove={touchMove}
-                  onTouchMove={touchMove}
-                  onMouseUp={touchEnd}
-                  onTouchEnd={touchEnd}
-                >
-                  <SwipeContainer>
-                    <ListHeaderWrapper>
-                      <ListHeader
-                        loading={loading}
-                        handleDropdown={handleDropdown}
-                        dataFinal={dataFinal}
-                        marginTop={
-                          document.body.clientWidth > 768 ? "40px" : "0"
-                        }
-                      />{" "}
-                    </ListHeaderWrapper>
-                    <ShadowBox display={shadow ? "block" : "none"} />
-                  </SwipeContainer>
-                </span>
-              </div>
-              <List
-                type={type}
-                loading={loading}
-                dropdown={dropdown}
-                dataFinal={dataFinal}
-                projectsData={projectsData}
-                project={project}
-                myScreams={myScreams}
-              />{" "}
-            </ContentMobile>{" "} 
-          </ScrollContainer>{" "}*/}
         </React.Fragment>
       ) : (
         <Content>

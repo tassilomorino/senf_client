@@ -47,12 +47,11 @@ const SwipeCard = ({ children }) => {
   } = config;
 
   const bind = useDrag(
-    ({ tap, swipe: [, swipeY], down, movement: [, my], offset: [, y] }) => {
-      console.log();
+    ({ down, movement: [, my], offset: [, y] }) => {
       if (my < -200) {
         set({
           y: down ? my : 100,
-          scale: down ? 0.9 : 1,
+          scale: down ? 0.95 : 1,
           backgroundColor: down ? "green" : "lightgreen",
           transform: down ? `translateY(${0}px)` : `translateY(${141}px)`,
         });
@@ -60,19 +59,18 @@ const SwipeCard = ({ children }) => {
       if (my > 200) {
         set({
           y: down ? my : window.innerHeight - 100,
-          scale: down ? 0.9 : 1,
+          scale: down ? 0.95 : 1,
           transform: down
             ? `translateY(${0}px)`
             : `translateY(${window.innerHeight - 150}px)`,
         });
       }
-      //   if (tap) console("Tap!");
-      //   if (swipeY) console(`Swipe ${swipeY > 0 ? "Bottom" : "Top"}`);
 
       if (gesture === "movement")
-        set({ y: down ? my : 0, scale: down ? 0.9 : 1 });
+        set({ y: down ? my : 0, scale: down ? 0.95 : 1 });
     },
     {
+      pointer: { touch: true },
       ...rest,
       eventOptions: { pointer },
       threshold: threshold < 0 ? undefined : [threshold, threshold],
