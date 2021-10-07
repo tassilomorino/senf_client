@@ -51,23 +51,25 @@ const SwipeCard = ({ children }) => {
       if (my < -200) {
         set({
           y: down ? my : 100,
-          scale: down ? 0.95 : 1,
+          scale: down ? 0.98 : 1,
           backgroundColor: down ? "green" : "lightgreen",
           transform: down ? `translateY(${0}px)` : `translateY(${141}px)`,
+          touchAction: "none",
         });
       }
       if (my > 200) {
         set({
           y: down ? my : window.innerHeight - 100,
-          scale: down ? 0.95 : 1,
+          scale: down ? 0.98 : 1,
           transform: down
             ? `translateY(${0}px)`
             : `translateY(${window.innerHeight - 150}px)`,
+          touchAction: "all",
         });
       }
 
       if (gesture === "movement")
-        set({ y: down ? my : 0, scale: down ? 0.95 : 1 });
+        set({ y: down ? my : 0, scale: down ? 0.98 : 1 });
     },
     {
       pointer: { touch: true },
