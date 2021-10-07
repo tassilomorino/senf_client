@@ -1,11 +1,14 @@
 /** @format */
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 
 const Top = 141;
 
-const SwipeCard = ({ children }) => {
+const SwipeCard = ({ children, loading }) => {
+  const { openScream } = useSelector((state) => state.UI);
+
   const [config, setConfig] = React.useState({
     gesture: "movement",
     enabled: true,
@@ -30,7 +33,7 @@ const SwipeCard = ({ children }) => {
     x: 0,
     y: 0,
     scale: 1,
-    transform: `translateY(${window.innerHeight - 150}px)`,
+    transform: `translateY(${window.innerHeight - 120}px)`,
     overflow: "scroll",
     touchAction: "none",
   }));
@@ -64,7 +67,7 @@ const SwipeCard = ({ children }) => {
           scale: down ? 1 : 1,
           transform: down
             ? `translateY(${0}px)`
-            : `translateY(${window.innerHeight - 150}px)`,
+            : `translateY(${window.innerHeight - 120}px)`,
           touchAction: "none",
         });
       }
@@ -82,8 +85,18 @@ const SwipeCard = ({ children }) => {
     }
   );
 
+  useEffect(() => {
+    if (openScream) {
+      set({
+        y: 0,
+        transform: `translateY(${window.innerHeight - 120}px)`,
+        touchAction: "none",
+      });
+    }
+  }, [openScream]);
+
   return (
-    <animated.div className="drag" {...bind()} style={props}>
+    <animated.div className={!loading ? "drag" : ""} {...bind()} style={props}>
       {children}
     </animated.div>
   );

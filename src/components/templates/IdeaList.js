@@ -19,7 +19,7 @@ import SwipeCard from "./SwipeCard";
 
 const ListEnterAnimation = keyframes`
        0% {
-  transform: translateY(100%) ; 
+  transform: translateY(10%) ; 
 }
 
 100% {
@@ -38,27 +38,7 @@ const Wrapper = styled.div`
 `;
 
 const ScrollContainer = styled.div`
-  height: 100%;
-  width: 100%;
-
-  background: rgb(254, 217, 87);
-  background: linear-gradient(
-    180deg,
-    rgba(254, 217, 87, 1) 0%,
-    rgba(255, 218, 83, 1) 25%,
-    rgba(255, 255, 255, 1) 50%
-  );
-  position: fixed;
-  border-radius: 20px 20px 0 0;
-  z-index: 9;
-  /* top: ${(props) => props.Top && props.Top}; */
-  top: 0%;
-
-  transform: translateY(${(props) => props.marginTop && props.marginTop});
-
   animation: ${ListEnterAnimation} 3s;
-  box-shadow: 0 8px 20px 12px rgba(0, 0, 0, 0.1);
-  transition: 0.1s ease-out;
 `;
 
 const Content = styled.div`
@@ -134,7 +114,6 @@ const IdeaList = ({
   topicsSelected,
 }) => {
   const [shadow, setShadow] = useState(false);
-  const { openScream } = useSelector((state) => state.UI);
 
   const mapViewport = useSelector((state) => state.data.mapViewport);
   const dispatch = useDispatch();
@@ -177,7 +156,8 @@ const IdeaList = ({
             projectsData={projectsData}
             project={project}
           />
-          <SwipeCard>
+
+          <SwipeCard loading={loading}>
             <ListHeaderWrapper>
               <ListHeader
                 loading={loading}
