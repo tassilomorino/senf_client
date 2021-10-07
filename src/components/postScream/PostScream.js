@@ -79,11 +79,12 @@ const OpenButtonMobile = styled.button`
   border-radius: 100%;
   font-size: 0;
   box-shadow: rgb(0, 0, 0, 0.8) 0px 20px 20px -15px;
+  z-index: ${(props) => (props.openScream ? 0 : 999)};
 
   animation: ${AddbuttonAnimation} 5s ease-in-out infinite,
     ${enterAnimation} 3.5s;
 
-  bottom: ${(props) => (props.swipePosition === "bottom" ? "105px" : "9px")};
+  bottom: ${(props) => (props.swipePosition === "bottom" ? "135px" : "9px")};
   left: 50vw;
   transition: 1s;
 `;
@@ -204,7 +205,7 @@ const PostScream = ({
   swipePosition,
 }) => {
   const dispatch = useDispatch();
-  const { loading } = useSelector((state) => state.UI);
+  const { loading, openScream } = useSelector((state) => state.UI);
   const { project } = useSelector((state) => state.data);
 
   const user = useSelector((state) => state.user);
@@ -577,7 +578,11 @@ const PostScream = ({
       ) : (
         !loading &&
         !loading && (
-          <OpenButtonMobile onClick={handleOpen} swipePosition={swipePosition}>
+          <OpenButtonMobile
+            onClick={handleOpen}
+            swipePosition={swipePosition}
+            openScream={openScream}
+          >
             <img src={AddIcon} width="25" alt="AddIcon" />
           </OpenButtonMobile>
         )

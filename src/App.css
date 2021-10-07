@@ -60,12 +60,18 @@
     url("fonts/PlayfairDisplay-SemiBold.ttf") format("truetype");
 }
 
+html {
+  overflow: hidden;
+  width: 100%;
+}
+
 body {
   margin: 0;
   font-family: Futura PT W01 Book;
   overflow: scroll;
+  overscroll-behavior-y: contain;
 
-
+ 
 
 
 
@@ -76,7 +82,6 @@ body {
   background-repeat: no-repeat;
   background: -webkit-linear-gradient(to left, #ffd19b, #ffda53, #ffffff);
   top: 0;
-  height: 100vh;
   width: 100%;
 
 
@@ -85,6 +90,12 @@ body {
   scrollbar-width: none;
   /* Firefox */
 
+
+  height: 100%;
+  position: fixed;
+  /* prevent overscroll bounce*/
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 
 }
 
@@ -2857,5 +2868,41 @@ margin-bottom: 20px;
   100% {
     opacity: 1;
     transform: translateY(0%);
+  }
+}
+
+
+.drag {
+
+  overscroll-behavior: contain;
+  width: 100%;
+  height: 100%;
+
+  background: rgb(254, 217, 87);
+  background: linear-gradient(
+    180deg,
+    rgba(254, 217, 87, 1) 0%,
+    rgba(255, 218, 83, 1) 25%,
+    rgba(255, 255, 255, 1) 50%
+  );
+  border-radius: 20px;
+  position: absolute;
+  z-index:995;
+  animation: dragEnterAnimation 2s
+
+ 
+}
+
+@keyframes dragEnterAnimation {
+  0% {
+    transform: translateY(120%);
+  }
+
+  50% {
+    transform: translateY(120%);
+  }
+
+  100% {
+    transform: translateY(calc(100% - 120px))
   }
 }
