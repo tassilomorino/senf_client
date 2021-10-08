@@ -74,10 +74,8 @@ const ProjectCard = (props) => {
     font-family: Futura PT W01 Book;
     color: #353535
   `
-  // why 2 fonts?
   const Title = styled.div`
     font-size: 18px;
-    font-family: PlayfairDisplay-Bold;
     font-family: Futura PT W01-Bold; 
     color: #353535;
   ` 
