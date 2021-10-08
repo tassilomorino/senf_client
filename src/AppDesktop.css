@@ -853,19 +853,36 @@ position: fixed;
     }
 
 
-    .wrapperScreamDialog {
-      margin-left: 0px;
-      margin-top: 0px;
-      width: 400px;
-      overflow-y: scroll;
-      z-index: 99;
-      top: 0;
-      
-      position:absolute;
-  margin-top:0vh;
-  animation: enterScreamDialogAnimation 0.5s;
-    }
 
+
+
+    .wrapperScreamDialog {
+      width: 400px;
+      height: 100vh;
+      z-index: 7000;
+      top: 0;
+      position:absolute;
+      overflow-x:hidden;
+      pointer-events:all
+      
+      
+      
+    }
+    
+    .innerWrapperScreamDialog {
+      
+      min-height: 100vh;
+      margin-top:0vh;
+      top: 0;
+      animation: enterScreamDialogAnimation 0.5s;
+      position:absolute;
+      overflow: hidden;
+      pointer-events:all
+      
+      
+      
+    }
+    
 
 
     .wrapperMonitoringDialog{
