@@ -466,169 +466,167 @@ const ScreamDialog = ({ classes, projectsData }) => {
           />
 
           <div className="wrapperScreamDialog">
-            <div className="innerWrapperScreamDialog">
-              <CustomIconButton
-                name="Share"
-                margin="10px"
-                left="calc(100% - 130px)"
-                position="relative"
-                handleButtonClick={handleShare}
-              />
-              <EditButton screamId={screamId} userHandle={userHandle} />
-              {isMobileCustom ? <BackgroundMobile /> : <BackgroundDesktop />}
-              <div
-                className="dialogCard"
-                style={project ? { paddingBottom: "50px", zIndex: 9999 } : {}}
-              >
-                <div className={classes.content}>
+            <CustomIconButton
+              name="Share"
+              margin="10px"
+              left="calc(100% - 130px)"
+              position="relative"
+              handleButtonClick={handleShare}
+            />
+            <EditButton screamId={screamId} userHandle={userHandle} />
+            {isMobileCustom ? <BackgroundMobile /> : <BackgroundDesktop />}
+            <div
+              className="dialogCard"
+              style={project ? { paddingBottom: "50px", zIndex: 9999 } : {}}
+            >
+              <div className={classes.content}>
+                <div
+                  style={{
+                    width: "15px",
+                    position: "relative",
+                    height: "15px",
+                    margintop: "5px",
+                    borderRadius: "100%",
+                    border: "0.5px white solid",
+                    backgroundColor: setColorByTopic(Thema),
+                    opacity: "1",
+                    float: "left",
+                  }}
+                />{" "}
+                <div className={classes.district}>
+                  <div className={classes.districtHeader}> {Stadtteil} </div>
+                </div>
+                <div className={classes.title}>{title} </div>
+                <Typography className={classes.bodytext}>{body}</Typography>
+                <div className={classes.line} />
+                <div className={classes.likeButtonWrapper}>
+                  <div className={classes.likeButton}>
+                    <LikeButton screamId={screamId} />
+                  </div>
+                  <div className={classes.engagement}>{likeCount} </div>
+                </div>
+                <div className={classes.commentButtonWrapper}>
+                  <div className={classes.commentButton}>
+                    {!authenticated ? (
+                      <MyButton>
+                        <SignNote />
+                        <img src={ChatBorder} width="100%" alt="ChatIcon" />
+                      </MyButton>
+                    ) : (
+                      <MyButton onClick={() => handleClick()}>
+                        <img src={ChatBorder} width="90%" alt="ChatIcon" />
+                      </MyButton>
+                    )}
+                  </div>
+                  <div className={classes.engagement}>{commentCount}</div>
+                </div>
+                <div className={classes.horrizontalLine}></div>
+                <div className={classes.header}>
+                  {selectedUnixArray !== undefined &&
+                    selectedUnixArray !== null && (
+                      <div className={classes.selectedDatesOuter}>
+                        <EventIcon className={classes.locationIcon} />
+
+                        <div className={classes.locationHeader}>
+                          {" "}
+                          {selectedDates}{" "}
+                        </div>
+                      </div>
+                    )}
+                  <div className={classes.locationOuter}>
+                    <LocationOn className={classes.locationIcon} />{" "}
+                    <div className={classes.locationHeader}>
+                      {" "}
+                      {locationHeader}{" "}
+                    </div>
+                  </div>
+
                   <div
                     style={{
-                      width: "15px",
-                      position: "relative",
-                      height: "15px",
-                      margintop: "5px",
-                      borderRadius: "100%",
-                      border: "0.5px white solid",
-                      backgroundColor: setColorByTopic(Thema),
-                      opacity: "1",
-                      float: "left",
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "start",
                     }}
-                  />{" "}
-                  <div className={classes.district}>
-                    <div className={classes.districtHeader}> {Stadtteil} </div>
-                  </div>
-                  <div className={classes.title}>{title} </div>
-                  <Typography className={classes.bodytext}>{body}</Typography>
-                  <div className={classes.line} />
-                  <div className={classes.likeButtonWrapper}>
-                    <div className={classes.likeButton}>
-                      <LikeButton screamId={screamId} />
-                    </div>
-                    <div className={classes.engagement}>{likeCount} </div>
-                  </div>
-                  <div className={classes.commentButtonWrapper}>
-                    <div className={classes.commentButton}>
-                      {!authenticated ? (
-                        <MyButton>
-                          <SignNote />
-                          <img src={ChatBorder} width="100%" alt="ChatIcon" />
-                        </MyButton>
-                      ) : (
-                        <MyButton onClick={() => handleClick()}>
-                          <img src={ChatBorder} width="90%" alt="ChatIcon" />
-                        </MyButton>
-                      )}
-                    </div>
-                    <div className={classes.engagement}>{commentCount}</div>
-                  </div>
-                  <div className={classes.horrizontalLine}></div>
-                  <div className={classes.header}>
-                    {selectedUnixArray !== undefined &&
-                      selectedUnixArray !== null && (
-                        <div className={classes.selectedDatesOuter}>
-                          <EventIcon className={classes.locationIcon} />
-
-                          <div className={classes.locationHeader}>
-                            {" "}
-                            {selectedDates}{" "}
-                          </div>
-                        </div>
-                      )}
-                    <div className={classes.locationOuter}>
-                      <LocationOn className={classes.locationIcon} />{" "}
-                      <div className={classes.locationHeader}>
-                        {" "}
-                        {locationHeader}{" "}
-                      </div>
-                    </div>
-
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "start",
-                      }}
+                  >
+                    <CreateIcon className={classes.locationIcon} />{" "}
+                    <Typography
+                      // component={Link}
+                      // to={`/users/${userHandle}`}
+                      className={classes.user}
                     >
-                      <CreateIcon className={classes.locationIcon} />{" "}
-                      <Typography
-                        // component={Link}
-                        // to={`/users/${userHandle}`}
-                        className={classes.user}
-                      >
-                        {userHandle}
-                        &nbsp;am&nbsp;
-                      </Typography>
-                      <Typography className={classes.date}>
-                        {dayjs(createdAt).format("DD.MM.YYYY")}
-                      </Typography>
-                    </div>
-
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                      }}
-                    >
-                      {weblink && (
-                        <Button onClick={() => openLink(convertedLink)}>
-                          {weblinkTitle}
-                          <img
-                            src={WeblinkIcon}
-                            style={{
-                              paddingLeft: "9px",
-                              marginTop: "-2px",
-                            }}
-                            width="15"
-                            alt="WeblinkIcon"
-                          />
-                        </Button>
-                      )}
-
-                      {contact && (
-                        <Button onClick={() => openMail(contact)}>
-                          {contactTitle}
-                          <img
-                            src={contactIcon}
-                            style={{ paddingLeft: "9px" }}
-                            width="22"
-                            alt="WeblinkIcon"
-                          />
-                        </Button>
-                      )}
-                    </div>
-
-                    {projectTitle}
+                      {userHandle}
+                      &nbsp;am&nbsp;
+                    </Typography>
+                    <Typography className={classes.date}>
+                      {dayjs(createdAt).format("DD.MM.YYYY")}
+                    </Typography>
                   </div>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {weblink && (
+                      <Button onClick={() => openLink(convertedLink)}>
+                        {weblinkTitle}
+                        <img
+                          src={WeblinkIcon}
+                          style={{
+                            paddingLeft: "9px",
+                            marginTop: "-2px",
+                          }}
+                          width="15"
+                          alt="WeblinkIcon"
+                        />
+                      </Button>
+                    )}
+
+                    {contact && (
+                      <Button onClick={() => openMail(contact)}>
+                        {contactTitle}
+                        <img
+                          src={contactIcon}
+                          style={{ paddingLeft: "9px" }}
+                          width="22"
+                          alt="WeblinkIcon"
+                        />
+                      </Button>
+                    )}
+                  </div>
+
+                  {projectTitle}
                 </div>
               </div>
-              <div className={classes.vertline} />
-              <Card className={classes.card2}>
-                <div className={classes.anmeldeText}>
-                  <span>
-                    {" "}
-                    Was hältst du von der Idee? <br /> Rege den
-                    Meinungsaustausch hier an!
-                  </span>
-
-                  {!authenticated && (
-                    <div className={classes.anmeldeText}>
-                      <SignNote />
-                      <CustomButton
-                        text="Melde dich an"
-                        backgroundColor="#353535"
-                        textColor="white"
-                        position="relative"
-                        top="10px"
-                        zIndex="0"
-                      />
-                    </div>
-                  )}
-                </div>
-              </Card>
-              <Comments comments={comments} />
-              <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
             </div>
+            <div className={classes.vertline} />
+            <Card className={classes.card2}>
+              <div className={classes.anmeldeText}>
+                <span>
+                  {" "}
+                  Was hältst du von der Idee? <br /> Rege den Meinungsaustausch
+                  hier an!
+                </span>
+
+                {!authenticated && (
+                  <div className={classes.anmeldeText}>
+                    <SignNote />
+                    <CustomButton
+                      text="Melde dich an"
+                      backgroundColor="#353535"
+                      textColor="white"
+                      position="relative"
+                      top="10px"
+                      zIndex="0"
+                    />
+                  </div>
+                )}
+              </div>
+            </Card>
+            <Comments comments={comments} />
+            <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
           </div>
         </React.Fragment>
       ) : (

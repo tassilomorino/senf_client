@@ -301,6 +301,7 @@
      width: 400px; 
      transition: 0.5s;
      position: relative;
+   
      
     }
    
@@ -853,9 +854,20 @@ position: fixed;
     }
 
 
+     .wrapperScreamDialog {
+      margin-left: 0px;
+      margin-top: 0px;
+      width: 400px;
+      overflow-y: scroll !important;
+      z-index: 99;
+      top: 0;
+      
+      position:absolute;
 
+  animation: enterScreamDialogAnimation 0.5s;
+    } 
 
-
+/*
     .wrapperScreamDialog {
       width: 400px;
       height: 100vh;
@@ -883,7 +895,7 @@ position: fixed;
       
       
     }
-    
+    */
 
 
     .wrapperMonitoringDialog{
