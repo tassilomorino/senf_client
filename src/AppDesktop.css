@@ -863,7 +863,7 @@ position: fixed;
       top: 0;
       position:absolute;
       overflow-x:hidden;
-      pointer-events:all
+      pointer-events: unset;
       
       
       
@@ -877,7 +877,7 @@ position: fixed;
       animation: enterScreamDialogAnimation 0.5s;
       position:absolute;
       overflow: hidden;
-      pointer-events:all
+      pointer-events: unset;
       
       
       
