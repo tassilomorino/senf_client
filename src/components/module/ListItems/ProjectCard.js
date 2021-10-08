@@ -8,19 +8,11 @@ import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { openProject } from "../../../redux/actions/projectActions";
 import ExpandButton from "../CustomButtons/ExpandButton";
+import AddIcon from "../../images/icons/plus_grey.png";
 
 import styled from "styled-components";
 
-const ProjectCard = (props) => {
-  const {
-    project: { title, owner, imgUrl, project, startDate, endDate },
-  } = props;
-  const dispatch = useDispatch();
-  const pushScreamId = (project) => {
-    dispatch(openProject(project));
-  };
-
-  const ProjectCard = styled.div`
+const ProjectCardDesign = styled.div`
     position: relative;
     display: flex;
     margin-bottom: 10px;
@@ -84,9 +76,19 @@ const ProjectCard = (props) => {
     font-family: Futura PT W01 Book;
     color: #353535
   `
+
+
+export const ProjectCard = (props) => {
+  const {
+    project: { title, owner, imgUrl, project, startDate, endDate },
+  } = props;
+  const dispatch = useDispatch();
+  const pushScreamId = (project) => {
+    dispatch(openProject(project));
+  };
   
   return (
-    <ProjectCard>
+    <ProjectCardDesign>
       <ExpandButton
         handleButtonClick={() => pushScreamId(project)}
       />
@@ -112,13 +114,52 @@ const ProjectCard = (props) => {
           <Date>{startDate} </Date>
         )}
       </RightWrapper>
-    </ProjectCard>
+    </ProjectCardDesign>
   );
 };
 
-ProjectCard.propTypes = {
-  project: PropTypes.object.isRequired,
-  openProject: PropTypes.func.isRequired,
-};
+export const CreateProject = () => {
+  
+  const createProject = () => {
+    var link =
+      "mailto:dein@senf.koeln" +
+      "?subject=" +
+      escape("Projektraum-Anfrage") +
+      "&body=" +
+      escape(
+        "Projektraum-Titel:" +
+        "\n" +
+        "\n" +
+        "Worum geht's:" +
+        "\n" +
+        "\n" +
+        "Projektzeitraum:" +
+        "\n" +
+        "\n" +
+        "Logo + Cover-Bild:"
+      );
+    window.location.href = link;
+  };
 
-export default ProjectCard;
+  return(
+    <div className="projectCard" onClick={createProject}>
+              <div className="leftWrapper" style={{ opacity: 0.5 }}>
+                <img
+                  src={AddIcon}
+                  alt="profile"
+                  className="profile-image"
+                  width="50%"
+                  style={{ width: "50%", marginLeft: "25%" }}
+                />
+              </div>
+              <div className="rightWrapper">
+                <div className="owner">
+                  {" "}
+                  {t("projectrooms_request_overTitle")}{" "}
+                </div>
+                <div className="title"> {t("projectrooms_request_title")}</div>
+                <div className="date">{t("projectrooms_request_subTitle")}</div>
+              </div>
+            </div>
+  )
+};
