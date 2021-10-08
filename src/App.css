@@ -1522,7 +1522,7 @@ font-size:15px !important
   animation: enterScreamDialogAnimation 0.5s;
   position:absolute;
   overflow: hidden;
-  pointer-events: unset;
+  pointer-events: auto;
   
   
   
