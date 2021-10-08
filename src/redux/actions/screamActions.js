@@ -101,8 +101,6 @@ export const resetMyScreams = () => async (dispatch) => {
 
 // Open an idea
 export const openScream = (screamId) => async (dispatch) => {
-  document.body.style.overflow = "hidden";
-
   const db = firebase.firestore();
   const ref = await db.collection("screams").doc(screamId).get();
   const commentsRef = await db
