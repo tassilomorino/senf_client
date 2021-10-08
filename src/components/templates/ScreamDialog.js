@@ -327,6 +327,8 @@ const ScreamDialog = ({ classes, projectsData }) => {
   const [path, setPath] = useState("");
   const [clicked, setClicked] = useState(false);
 
+  const [shareOpen, setShareOpen] = useState(false);
+
   const convertedLinkRaw = weblink && linkify.find(weblink);
   const convertedLink =
     weblink && convertedLinkRaw[0] !== undefined && convertedLinkRaw[0].href;
@@ -366,14 +368,14 @@ const ScreamDialog = ({ classes, projectsData }) => {
       navigator
         .share({
           title: `Senf.koeln – ${title}`,
-          url: convertedLink,
+          url: path,
         })
         .then(() => {
           console.log("Thanks for sharing!");
         })
         .catch(console.error);
     } else {
-      // fallback
+      setShareOpen(true);
     }
   };
 
@@ -446,6 +448,15 @@ const ScreamDialog = ({ classes, projectsData }) => {
         <React.Fragment>
           <CommentForm screamId={screamId} clicked={clicked} />
 
+          {shareOpen && (
+            <ScreamShare
+              screamId={screamId}
+              title={title}
+              path={path}
+              setShareOpen={setShareOpen}
+            />
+          )}
+
           <CustomIconButton
             name="ArrowLeft"
             position="fixed"
@@ -455,16 +466,6 @@ const ScreamDialog = ({ classes, projectsData }) => {
           />
 
           <div className="wrapperScreamDialog">
-            {/* <ScreamShare
-              screamId={screamId}
-              userHandle={userHandle}
-              likeCount={3}
-              title={title}
-              path={path}
-              locationHeader={locationHeader}
-              Stadtteil={Stadtteil}
-              handleUnErrorMap={handleUnErrorMap}
-            />*/}
             <CustomIconButton
               name="Share"
               margin="10px"
