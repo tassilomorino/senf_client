@@ -1508,7 +1508,7 @@ font-size:15px !important
   top: 0;
   position:fixed;
   overflow-x:hidden;
-  pointer-events:none
+ 
   
   
   
@@ -1522,7 +1522,7 @@ font-size:15px !important
   animation: enterScreamDialogAnimation 0.5s;
   position:absolute;
   overflow: hidden;
-  pointer-events:all
+
   
   
   
