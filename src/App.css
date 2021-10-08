@@ -371,17 +371,6 @@ a {
   transition: opacity 1s, transform 0.5s;
 }
 
-
-
-/* Active */
-/* .ripple:active:after {
-  opacity: 0.16;
-  transform: translate(-50%, -50%) scale(0);
-  transition: transform 0s;
-} */
-
-
-
 button {
   display: inline-block;
   border: none;
