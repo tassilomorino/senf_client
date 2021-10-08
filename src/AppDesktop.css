@@ -877,7 +877,8 @@ position: fixed;
       animation: enterScreamDialogAnimation 0.5s;
       position:absolute;
       overflow: hidden;
-      pointer-events: auto;
+      pointer-events: initial;
+      touch-action: initial;
       
       
       
