@@ -135,9 +135,9 @@ export const closeScream = () => (dispatch) => {
   dispatch({ type: CLOSE_SCREAM });
   window.history.pushState(null, null, "/");
 
-  setTimeout(() => {
-    document.body.style.overflow = "scroll";
-  }, 1000);
+  // setTimeout(() => {
+  //   document.body.style.overflow = "scroll";
+  // }, 1000);
 };
 
 // Post an idea

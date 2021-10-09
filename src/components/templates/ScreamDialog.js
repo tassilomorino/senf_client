@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { Fragment, useState, useEffect, useRef } from "react";
+import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setMapViewport } from "../../redux/actions/mapActions";
 import PropTypes from "prop-types";
@@ -53,7 +54,9 @@ import {
 } from "../module/CustomButtons/CustomButton";
 import setColorByTopic from "../../data/setColorByTopic";
 import EditButton from "../module/CustomButtons/EditButton";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
+
+const portalRoot = document.getElementById("portal-root");
 
 const BackgroundMobile = styled.div`
   position: absolute;
@@ -89,6 +92,12 @@ const BackgroundDesktop = styled.div`
     rgba(255, 255, 255, 1) 100%
   );
   z-index: 99;
+`;
+
+const ScrollDisabler = createGlobalStyle`
+  body {
+    overflow: hidden;
+  }
 `;
 
 const styles = {
@@ -338,6 +347,11 @@ const ScreamDialog = ({ classes, projectsData }) => {
 
   useEffect(() => {
     if (openScream && lat !== undefined) {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
       setTimeout(() => {
         const viewport = {
           latitude: isMobileCustom && openScream ? lat - 0.0008 : lat,
@@ -436,21 +450,21 @@ const ScreamDialog = ({ classes, projectsData }) => {
     }
   }
 
-  return (
+  return ReactDOM.createPortal(
     <Fragment>
       {!loading ? (
         <React.Fragment>
           <CommentForm screamId={screamId} clicked={clicked} />
 
-          <CustomIconButton
-            name="ArrowLeft"
-            position="fixed"
-            margin="10px"
-            top="0px"
-            handleButtonClick={handleClose}
-          />
-
           <div className="wrapperScreamDialog">
+            <CustomIconButton
+              name="ArrowLeft"
+              position="fixed"
+              margin="10px"
+              top="0px"
+              zIndex="9999"
+              handleButtonClick={handleClose}
+            />
             {/* <ScreamShare
               screamId={screamId}
               userHandle={userHandle}
@@ -638,6 +652,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
             <Comments comments={comments} />
             <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
           </div>
+          <ScrollDisabler />
         </React.Fragment>
       ) : (
         <div className="fullGradientWrapper">
@@ -646,7 +661,8 @@ const ScreamDialog = ({ classes, projectsData }) => {
           </div>
         </div>
       )}
-    </Fragment>
+    </Fragment>,
+    portalRoot
   );
 };
 

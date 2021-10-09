@@ -293,30 +293,22 @@ export class home extends Component {
             )}
             <div className="MainBackgroundHome" />
 
-            <div
-              style={
-                !this.props.UI.openScream
-                  ? { overflow: "scroll" }
-                  : { height: "100vh", overflow: "hidden" }
-              }
-            >
-              <IdeaList
-                type="allIdeas"
-                loading={loading}
-                order={this.state.order}
-                classes={classes}
-                dataFinal={dataFinal}
-                dataFinalMap={dataFinalMap}
-                viewport={mapViewport}
-                handleDropdown={this.handleDropdown}
-                projectsData={projects}
-                loadingProjects={loadingProjects}
-                project={this.props.project}
-                dropdown={this.state.dropdown}
-                handleTopicSelector={this.handleTopicSelector}
-                topicsSelected={this.state.topicsSelected}
-              ></IdeaList>
-            </div>
+            <IdeaList
+              type="allIdeas"
+              loading={loading}
+              order={this.state.order}
+              classes={classes}
+              dataFinal={dataFinal}
+              dataFinalMap={dataFinalMap}
+              viewport={mapViewport}
+              handleDropdown={this.handleDropdown}
+              projectsData={projects}
+              loadingProjects={loadingProjects}
+              project={this.props.project}
+              dropdown={this.state.dropdown}
+              handleTopicSelector={this.handleTopicSelector}
+              topicsSelected={this.state.topicsSelected}
+            ></IdeaList>
 
             <ProjectsPage
               loadingProjects={loadingProjects}
@@ -325,13 +317,6 @@ export class home extends Component {
             ></ProjectsPage>
 
             <InsightsPage order={this.state.order}></InsightsPage>
-
-            {this.props.UI.openScream && (
-              <ScreamDialog
-                screamIdParam={this.state.screamIdParam}
-                projectsData={projects}
-              ></ScreamDialog>
-            )}
 
             {this.props.UI.openProject && (
               <ProjectDialog
@@ -351,6 +336,15 @@ export class home extends Component {
                 topicsSelected={this.state.topicsSelected}
               ></ProjectDialog>
             )}
+          </div>
+        )}
+
+        {!this.props.UI.openInfoPage && this.props.UI.openScream && (
+          <div style={{ height: "100vh", overflow: "scroll" }}>
+            <ScreamDialog
+              screamIdParam={this.state.screamIdParam}
+              projectsData={projects}
+            ></ScreamDialog>
           </div>
         )}
       </div>

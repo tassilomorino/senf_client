@@ -48,6 +48,7 @@ const Content = styled.div`
   width: 100%;
   height: 100%;
   top: 0;
+  overflow: ${(props) => props.openScream && "hidden"};
 `;
 
 const ContentMobile = styled(Content)`
@@ -118,6 +119,8 @@ const IdeaList = ({
   const mapViewport = useSelector((state) => state.data.mapViewport);
   const dispatch = useDispatch();
 
+  const { openScream } = useSelector((state) => state.UI);
+
   const _onViewportChange = (viewport) => {
     dispatch(setMapViewport(viewport));
 
@@ -179,7 +182,7 @@ const IdeaList = ({
           </SwipeCard>
         </React.Fragment>
       ) : (
-        <Content>
+        <Content openScream={openScream}>
           <ListHeader
             loading={loading}
             handleDropdown={handleDropdown}
