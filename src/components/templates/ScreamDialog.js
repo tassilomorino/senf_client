@@ -40,8 +40,6 @@ import { clearErrors } from "../../redux/actions/errorsActions";
 import SignNote from "../profile/SignNote";
 
 //ANIMATION
-import Slide from "@material-ui/core/Slide";
-
 import lamploader from "../../images/lamp.png";
 
 import ScreamShare from "../modals/ScreamShare";
@@ -55,13 +53,14 @@ import {
 import setColorByTopic from "../../data/setColorByTopic";
 import EditButton from "../module/CustomButtons/EditButton";
 import styled, { createGlobalStyle } from "styled-components";
+import ScreamDialogSwipeCard from "./ScreamDialogSwipeCard";
 
 const portalRoot = document.getElementById("portal-root");
 
 const BackgroundMobile = styled.div`
   position: absolute;
   margin-top: -10px;
-  height: 110%;
+  min-height: 100%;
   width: 100vw;
   border-radius: 20px 20px 0 0;
   background: rgb(254, 217, 87);
@@ -92,6 +91,25 @@ const BackgroundDesktop = styled.div`
     rgba(255, 255, 255, 1) 100%
   );
   z-index: 99;
+`;
+
+const Button = styled.button`
+  border-radius: 20px;
+  text-transform: none;
+  font-size: 12pt;
+  background-color: white;
+  height: 40px;
+  font-family: Futura PT W01 Book;
+  box-shadow: none;
+  padding-right: 15px;
+  padding-left: 15px;
+  background-color: rgb(254, 217, 87);
+  margin-right: 5px;
+  box-shadow: rgb(38, 57, 77, 0) 0px 20px 30px -16px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const ScrollDisabler = createGlobalStyle`
@@ -264,32 +282,6 @@ const styles = {
     paddingBottom: "15px",
   },
 
-  KontaktButton: {
-    position: "absolute",
-    zIndex: 99,
-    paddingTop: "10px",
-    paddingBottom: "10px",
-    textAlign: "center",
-    width: "50vw",
-    left: "25vw",
-    top: "265vh",
-    borderRadius: "100px",
-    color: "#414345",
-    backgroundColor: "white",
-    textTransform: "none",
-    fontSize: "14pt",
-    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.2)",
-  },
-
-  mapPlaceholder: {
-    position: "relative",
-    width: "100vw",
-    zIndex: 0,
-    height: "52vh",
-    backgroundColor: "lightgrey",
-    overflow: "hidden",
-  },
-
   card2: {
     zIndex: "99",
     position: "relative",
@@ -345,6 +337,12 @@ const ScreamDialog = ({ classes, projectsData }) => {
   const [path, setPath] = useState("");
   const [clicked, setClicked] = useState(false);
 
+  const [shareOpen, setShareOpen] = useState(false);
+
+  const convertedLinkRaw = weblink && linkify.find(weblink);
+  const convertedLink =
+    weblink && convertedLinkRaw[0] !== undefined && convertedLinkRaw[0].href;
+
   useEffect(() => {
     if (openScream && lat !== undefined) {
       window.scrollTo({
@@ -380,23 +378,32 @@ const ScreamDialog = ({ classes, projectsData }) => {
     }, 1000);
   };
 
-  const handleUnErrorMap = () => {
-    // this.setState((prevState) => {
-    //   return {
-    //     viewport: { zoom: prevState.viewport.zoom + 0.001 },
-    //   };
-    // });
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: `Senf.koeln – ${title}`,
+          url: path,
+        })
+        .then(() => {
+          console.log("Thanks for sharing!");
+        })
+        .catch(console.error);
+    } else {
+      setShareOpen(true);
+    }
   };
 
   const openTheProject = (project) => {
     dispatch(openProject(project));
   };
 
-  const convertedLinkRaw = weblink ? linkify.find(weblink) : null;
-  const convertedLink =
-    weblink && convertedLinkRaw[0] !== undefined
-      ? convertedLinkRaw[0].href
-      : null;
+  const openLink = (convertedLink) => {
+    window.open(convertedLink, "_blank");
+  };
+  const openMail = (contact) => {
+    window.location.href = "mailto:" + contact;
+  };
 
   const projectsDataFinal = [];
   if (projectsData) {
@@ -450,11 +457,20 @@ const ScreamDialog = ({ classes, projectsData }) => {
     }
   }
 
-  return ReactDOM.createPortal(
+  const content = (
     <Fragment>
       {!loading ? (
         <React.Fragment>
           <CommentForm screamId={screamId} clicked={clicked} />
+
+          {shareOpen && (
+            <ScreamShare
+              screamId={screamId}
+              title={title}
+              path={path}
+              setShareOpen={setShareOpen}
+            />
+          )}
 
           <CustomIconButton
             name="ArrowLeft"
@@ -466,21 +482,12 @@ const ScreamDialog = ({ classes, projectsData }) => {
           />
 
           <div className="wrapperScreamDialog">
-            {/* <ScreamShare
-              screamId={screamId}
-              userHandle={userHandle}
-              likeCount={3}
-              title={title}
-              path={path}
-              locationHeader={locationHeader}
-              Stadtteil={Stadtteil}
-              handleUnErrorMap={handleUnErrorMap}
-            />*/}
             <CustomIconButton
               name="Share"
               margin="10px"
               left="calc(100% - 130px)"
               position="relative"
+              handleButtonClick={handleShare}
             />
             <EditButton screamId={screamId} userHandle={userHandle} />
             {isMobileCustom ? <BackgroundMobile /> : <BackgroundDesktop />}
@@ -571,56 +578,40 @@ const ScreamDialog = ({ classes, projectsData }) => {
                     </Typography>
                   </div>
 
-                  {(weblink || contact) && (
-                    <>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          width: "100%",
-                          flexWrap: "wrap",
-                        }}
-                      >
-                        {weblink ? (
-                          <a
-                            href={convertedLink}
-                            rel="noopener noreferrer"
-                            target="_blank"
-                          >
-                            <button className="buttonInline">
-                              {weblinkTitle}
-                              <img
-                                src={WeblinkIcon}
-                                style={{
-                                  paddingLeft: "9px",
-                                  marginTop: "-2px",
-                                }}
-                                width="15"
-                                alt="WeblinkIcon"
-                              />
-                            </button>
-                          </a>
-                        ) : null}
-                        {contact ? (
-                          <a
-                            href={
-                              "mailto:" + contact + "?subject=" + escape(title)
-                            }
-                          >
-                            <button className="buttonInline">
-                              {contactTitle}{" "}
-                              <img
-                                src={contactIcon}
-                                style={{ paddingLeft: "9px" }}
-                                width="22"
-                                alt="WeblinkIcon"
-                              />
-                            </button>
-                          </a>
-                        ) : null}
-                      </div>
-                    </>
-                  )}
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {weblink && (
+                      <Button onClick={() => openLink(convertedLink)}>
+                        {weblinkTitle}
+                        <img
+                          src={WeblinkIcon}
+                          style={{
+                            paddingLeft: "9px",
+                            marginTop: "-2px",
+                          }}
+                          width="15"
+                          alt="WeblinkIcon"
+                        />
+                      </Button>
+                    )}
+
+                    {contact && (
+                      <Button onClick={() => openMail(contact)}>
+                        {contactTitle}
+                        <img
+                          src={contactIcon}
+                          style={{ paddingLeft: "9px" }}
+                          width="22"
+                          alt="WeblinkIcon"
+                        />
+                      </Button>
+                    )}
+                  </div>
 
                   {projectTitle}
                 </div>
@@ -662,7 +653,17 @@ const ScreamDialog = ({ classes, projectsData }) => {
           </div>
         </div>
       )}
-    </Fragment>,
+    </Fragment>
+  );
+
+  return ReactDOM.createPortal(
+    <React.Fragment>
+      {isMobileCustom ? (
+        <ScreamDialogSwipeCard>{content}</ScreamDialogSwipeCard>
+      ) : (
+        content
+      )}
+    </React.Fragment>,
     portalRoot
   );
 };

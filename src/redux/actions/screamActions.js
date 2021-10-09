@@ -101,6 +101,10 @@ export const resetMyScreams = () => async (dispatch) => {
 
 // Open an idea
 export const openScream = (screamId) => async (dispatch) => {
+  // When the modal is shown, we want a fixed body
+  document.body.style.position = "fixed";
+  document.body.style.top = `-${window.scrollY}px`;
+
   const db = firebase.firestore();
   const ref = await db.collection("screams").doc(screamId).get();
   const commentsRef = await db
@@ -134,10 +138,6 @@ export const openScream = (screamId) => async (dispatch) => {
 export const closeScream = () => (dispatch) => {
   dispatch({ type: CLOSE_SCREAM });
   window.history.pushState(null, null, "/");
-
-  // setTimeout(() => {
-  //   document.body.style.overflow = "scroll";
-  // }, 1000);
 };
 
 // Post an idea

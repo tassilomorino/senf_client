@@ -20,7 +20,6 @@ import { closeScream } from "../../redux/actions/screamActions";
 import { closeProject } from "../../redux/actions/projectActions";
 import { clearErrors } from "../../redux/actions/errorsActions";
 import { setMapViewport, setMapBounds } from "../../redux/actions/mapActions";
-import Slide from "@material-ui/core/Slide";
 
 //Components
 import ScreamShare from "../modals/ScreamShare";
@@ -76,10 +75,6 @@ const BackgroundDesktop = styled.div`
   );
   z-index: 0;
 `;
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 const styles = {
   root: {
