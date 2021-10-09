@@ -456,15 +456,16 @@ const ScreamDialog = ({ classes, projectsData }) => {
         <React.Fragment>
           <CommentForm screamId={screamId} clicked={clicked} />
 
+          <CustomIconButton
+            name="ArrowLeft"
+            position="fixed"
+            margin="10px"
+            marginLeft={document.body.clientWidth > 768 && "210px"}
+            top="0px"
+            handleButtonClick={handleClose}
+          />
+
           <div className="wrapperScreamDialog">
-            <CustomIconButton
-              name="ArrowLeft"
-              position="fixed"
-              margin="10px"
-              top="0px"
-              zIndex="9999"
-              handleButtonClick={handleClose}
-            />
             {/* <ScreamShare
               screamId={screamId}
               userHandle={userHandle}
