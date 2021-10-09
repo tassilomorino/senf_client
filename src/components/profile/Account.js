@@ -391,7 +391,7 @@ class Account extends Component {
         <ExpandButton
           handleButtonClick={this.handleOpen}
           dataCy="profile-button"
-         />
+        />
 
         {!this.props.UI.openInfoPage &&
           (isMobileCustom ? (
