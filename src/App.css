@@ -1511,7 +1511,7 @@ pointer-events: none;
   top: 0;
   animation: enterScreamDialogAnimation 0.5s;
   position:absolute;
-  pointer-events: auto;
+  pointer-events: auto !important;
 
 }
 
