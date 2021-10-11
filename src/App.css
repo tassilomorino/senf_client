@@ -1496,9 +1496,10 @@ position:fixed;
 top:0;
 left:0;
 z-index:999;
-pointer-events: none;
+
 
   overflow-y: scroll !important;
+  touch-action:none
   
 }
 
@@ -1511,6 +1512,7 @@ pointer-events: none;
   animation: enterScreamDialogAnimation 0.5s;
   position:absolute;
   pointer-events: auto;
+  touch-action:unset
 
 }
 
