@@ -1493,14 +1493,22 @@ font-size:15px !important
 
 .wrapperScreamDialog {
   width: 100vw;
-  margin-top:0vh;
-  height:100vh;
+  margin-top:50vh;
   z-index: 7000;
   top: 0;
   animation: enterScreamDialogAnimation 0.5s;
-  position:fixed;
-  overflow-y: scroll;
-  
+  position:absolute;
+
+}
+
+.wrapperScreamDialog {
+  width: 100vw;
+  margin-top:50vh;
+  z-index: 7000;
+  top: 0;
+  animation: enterScreamDialogAnimation 0.5s;
+  position:absolute;
+
 }
 
 /* 

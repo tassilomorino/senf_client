@@ -53,7 +53,6 @@ import {
 import setColorByTopic from "../../data/setColorByTopic";
 import EditButton from "../module/CustomButtons/EditButton";
 import styled, { createGlobalStyle } from "styled-components";
-import ScreamDialogSwipeCard from "./ScreamDialogSwipeCard";
 
 const portalRoot = document.getElementById("portal-root");
 
@@ -114,7 +113,7 @@ const Button = styled.button`
 
 const ScrollDisabler = createGlobalStyle`
   body {
-    overflow: hidden;
+    overflow: scroll;
   }
 `;
 
@@ -457,7 +456,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
     }
   }
 
-  const content = (
+  return ReactDOM.createPortal(
     <Fragment>
       {!loading ? (
         <React.Fragment>
@@ -653,17 +652,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
           </div>
         </div>
       )}
-    </Fragment>
-  );
-
-  return ReactDOM.createPortal(
-    <React.Fragment>
-      {isMobileCustom ? (
-        <ScreamDialogSwipeCard>{content}</ScreamDialogSwipeCard>
-      ) : (
-        content
-      )}
-    </React.Fragment>,
+    </Fragment>,
     portalRoot
   );
 };
