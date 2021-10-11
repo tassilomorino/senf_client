@@ -114,6 +114,7 @@ const Button = styled.button`
 const ScrollDisabler = createGlobalStyle`
   body {
     overflow: scroll;
+    overflow-x: hidden;
   }
 `;
 
@@ -642,6 +643,12 @@ const ScreamDialog = ({ classes, projectsData }) => {
             </Card>
             <Comments comments={comments} />
             <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
+            {isMobileCustom && (
+              <React.Fragment>
+                <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
+                <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
+              </React.Fragment>
+            )}
           </div>
           <ScrollDisabler />
         </React.Fragment>
