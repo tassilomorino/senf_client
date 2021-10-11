@@ -4,7 +4,7 @@ import "firebase/firestore";
 
 import { clearErrors } from "./errorsActions";
 
-import { openScream } from "./screamActions";
+import { openScreamFunc } from "./screamActions";
 
 import {
   SET_COMMENT,
@@ -67,7 +67,7 @@ export const submitComment =
       });
 
       setTimeout(() => {
-        dispatch(openScream(screamId));
+        dispatch(openScreamFunc(screamId));
       }, 10);
     }
   };
@@ -109,7 +109,7 @@ export const deleteComment =
       });
 
       setTimeout(() => {
-        dispatch(openScream(screamId));
+        dispatch(openScreamFunc(screamId));
       }, 50);
     }
 

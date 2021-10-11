@@ -1,12 +1,13 @@
 /** @format */
 
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 // Redux stuff
 import { useDispatch } from "react-redux";
 
-import { openScream } from "../../../redux/actions/screamActions";
+import { openScreamFunc } from "../../../redux/actions/screamActions";
 
 //MAPSTUF
 import MapGL, { Source, Layer, Marker } from "@urbica/react-map-gl";
@@ -18,6 +19,8 @@ import NoLocationPopUp from "./NoLocationPopUp";
 import MobileMapButtons from "./MobileMapButtons";
 import ExpandButton from "../CustomButtons/ExpandButton";
 
+//Icons
+import Pin from "../../../images/pin3.png";
 // import cologne_grid from "../../../images/cologne_grid.svg";
 
 const OpenIdeaButton = styled.div`
@@ -35,6 +38,14 @@ const OpenIdeaButton = styled.div`
   box-shadow: rgba(0, 0, 0, 0.1) 0px 9px 38px, rgba(0, 0, 0, 0.15) 0px 5px 5px;
 `;
 
+const PinComponent = styled.img`
+  position: absolute;
+  width: 100px;
+  transform: translateY(-88%) translateX(-45%) rotate(0deg);
+  transform-origin: bottom center;
+  margin-top: ${(props) => -(7 + props.likeCount) / 4 + "px"};
+`;
+
 const MapMobile = ({
   dataFinal,
   viewport,
@@ -49,21 +60,26 @@ const MapMobile = ({
 }) => {
   const dispatch = useDispatch();
 
+  const { openInfoPage, openScream, loading } = useSelector(
+    (state) => state.UI
+  );
+  const { scream } = useSelector((state) => state.data);
+
   const [mapLoaded, setMapLoaded] = useState(false);
 
   const fetchDataScream = (screamId) => {
-    dispatch(openScream(screamId));
+    dispatch(openScreamFunc(screamId));
   };
 
   const data =
     !loadingProjects && geoData !== undefined && geoData !== ""
       ? {
-        type: "Feature",
-        geometry: {
-          type: "Polygon",
-          coordinates: [JSON.parse(geoData)],
-        },
-      }
+          type: "Feature",
+          geometry: {
+            type: "Polygon",
+            coordinates: [JSON.parse(geoData)],
+          },
+        }
       : null;
 
   let dataNoLocation = [];
@@ -169,6 +185,23 @@ const MapMobile = ({
               />
             </Marker>
           ))}
+
+          {openScream && scream.lat && (
+            <Marker
+              key={scream.screamId}
+              longitude={scream.long}
+              latitude={scream.lat}
+            >
+              <PinComponent
+                src={Pin}
+                likeCount={scream.likeCount}
+                style={{
+                  clipPath: "polygon(0 0, 100% 0, 100% 88%, 0 88%)",
+                }}
+                alt="ChatIcon"
+              />
+            </Marker>
+          )}
         </MapGL>
       </div>
     )
@@ -178,7 +211,7 @@ const MapMobile = ({
 MapMobile.propTypes = {
   editUserDetails: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
-  openScream: PropTypes.func.isRequired,
+  openScreamFunc: PropTypes.func.isRequired,
 };
 
 export default MapMobile;

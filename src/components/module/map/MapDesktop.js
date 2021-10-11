@@ -6,7 +6,7 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
 //Redux
 import { useDispatch, useSelector } from "react-redux";
-import { openScream } from "../../../redux/actions/screamActions";
+import { openScreamFunc } from "../../../redux/actions/screamActions";
 import { setMapViewport } from "../../../redux/actions/mapActions";
 //MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -42,6 +42,14 @@ const OpenIdeaButton = styled.div`
   box-shadow: rgba(0, 0, 0, 0.1) 0px 9px 38px, rgba(0, 0, 0, 0.15) 0px 5px 5px;
 `;
 
+const PinComponent = styled.img`
+  position: absolute;
+  width: 100px;
+  transform: translateY(-88%) translateX(-45%) rotate(0deg);
+  transform-origin: bottom center;
+  margin-top: ${(props) => -(7 + props.likeCount) / 4 + "px"};
+`;
+
 const styles = {
   root: {
     backgroundColor: "lightgrey",
@@ -68,7 +76,10 @@ const MapDesktop = ({
   openProject,
 }) => {
   const { t } = useTranslation();
-  const { openInfoPage } = useSelector((state) => state.UI);
+  const { openInfoPage, openScream, loading } = useSelector(
+    (state) => state.UI
+  );
+  const { scream } = useSelector((state) => state.data);
 
   const dispatch = useDispatch();
 
@@ -85,18 +96,18 @@ const MapDesktop = ({
   };
 
   const fetchDataScream = (screamId) => {
-    dispatch(openScream(screamId));
+    dispatch(openScreamFunc(screamId));
   };
 
   const data =
     !loadingProjects && geoData !== undefined && geoData !== ""
       ? {
-        type: "Feature",
-        geometry: {
-          type: "Polygon",
-          coordinates: [JSON.parse(geoData)],
-        },
-      }
+          type: "Feature",
+          geometry: {
+            type: "Polygon",
+            coordinates: [JSON.parse(geoData)],
+          },
+        }
       : null;
 
   let dataNoLocation = [];
@@ -131,19 +142,19 @@ const MapDesktop = ({
           style={
             openInfoPage
               ? {
-                position: "fixed",
-                width: "100%",
-                height: "100%",
-                transform: "scale(1)",
-                left: 0,
-              }
+                  position: "fixed",
+                  width: "100%",
+                  height: "100%",
+                  transform: "scale(1)",
+                  left: 0,
+                }
               : {
-                position: "fixed",
-                width: "calc(100% - 600px)",
-                left: "600px",
-                height: "100%",
-                transform: "scale(1)",
-              }
+                  position: "fixed",
+                  width: "calc(100% - 600px)",
+                  left: "600px",
+                  height: "100%",
+                  transform: "scale(1)",
+                }
           }
           mapStyle="mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6"
           accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
@@ -211,6 +222,23 @@ const MapDesktop = ({
                 </OpenIdeaButton>
               </Marker>
             ))}
+
+            {openScream && scream.lat && (
+              <Marker
+                key={scream.screamId}
+                longitude={scream.long}
+                latitude={scream.lat}
+              >
+                <PinComponent
+                  src={Pin}
+                  likeCount={scream.likeCount}
+                  style={{
+                    clipPath: "polygon(0 0, 100% 0, 100% 88%, 0 88%)",
+                  }}
+                  alt="ChatIcon"
+                />
+              </Marker>
+            )}
 
             <Marker
               key={hoverScreamId}

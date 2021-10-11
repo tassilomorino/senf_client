@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import {
   getScreams,
   closeScream,
-  openScream,
+  openScreamFunc,
 } from "../redux/actions/screamActions";
 import {
   getProjects,
@@ -110,7 +110,7 @@ export class home extends Component {
       if (screamId.indexOf("_") > 0) {
         this.props.openProject(screamId);
       } else {
-        this.props.openScream(screamId);
+        this.props.openScreamFunc(screamId);
       }
       this.setState({ screamIdParam: screamId });
     }
@@ -377,7 +377,7 @@ const mapActionsToProps = {
   clearErrors,
   getProjects,
   closeScream,
-  openScream,
+  openScreamFunc,
   openProject,
   closeProject,
   setMapViewport,

@@ -1655,8 +1655,11 @@ font-size:15px !important
 .pin {
   position: absolute;
   width: 100px;
-  margin-top: -100px;
+   margin-top: -125px; 
   margin-left: -50px;
+background-color: #353535;
+  transform: rotate(0) ;
+  transform-origin: bottom center;
 }
 
 .mapPin {

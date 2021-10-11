@@ -100,7 +100,7 @@ export const resetMyScreams = () => async (dispatch) => {
 };
 
 // Open an idea
-export const openScream = (screamId) => async (dispatch) => {
+export const openScreamFunc = (screamId) => async (dispatch) => {
   // When the modal is shown, we want a fixed body
   document.body.style.position = "fixed";
   document.body.style.top = `-${window.scrollY}px`;
@@ -218,7 +218,7 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
           } else {
             history.push(`/${resScream.screamId}`);
             const screamId = resScream.screamId;
-            dispatch(openScream(screamId));
+            dispatch(openScreamFunc(screamId));
           }
         }, 20);
       });
@@ -247,7 +247,7 @@ export const editScream = (editScream) => async (dispatch) => {
         payload: editScream,
       });
     });
-  dispatch(openScream(screamId));
+  dispatch(openScreamFunc(screamId));
   dispatch(clearErrors());
 };
 
