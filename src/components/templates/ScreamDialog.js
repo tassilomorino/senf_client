@@ -458,9 +458,9 @@ const ScreamDialog = ({ classes, projectsData }) => {
   }
 
   return ReactDOM.createPortal(
-    <Fragment>
+    <div className="OuterWrapperScreamDialog">
       {!loading ? (
-        <React.Fragment>
+        <div style={{ pointerEvents: "auto" }}>
           <CommentForm screamId={screamId} clicked={clicked} />
 
           {shareOpen && (
@@ -651,7 +651,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
             )}
           </div>
           <ScrollDisabler />
-        </React.Fragment>
+        </div>
       ) : (
         <div className="fullGradientWrapper">
           <div className="spinnerDiv">
@@ -659,7 +659,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
           </div>
         </div>
       )}
-    </Fragment>,
+    </div>,
     portalRoot
   );
 };

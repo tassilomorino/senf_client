@@ -1489,14 +1489,28 @@ font-size:15px !important
   position:absolute;
 }
 
+.OuterWrapperScreamDialog{
+  width: 100vw;
+  height:100vh;
+position:fixed;
+top:0;
+left:0;
+z-index:999;
+pointer-events: none;
+
+  overflow-y: scroll !important;
+  
+}
 
 .wrapperScreamDialog {
   width: 100vw;
   margin-top:50vh;
   z-index: 7000;
+  margin-left:10px;
   top: 0;
   animation: enterScreamDialogAnimation 0.5s;
   position:absolute;
+  pointer-events: auto;
 
 }
 

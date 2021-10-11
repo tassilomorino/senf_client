@@ -98,6 +98,13 @@ const SwipeCard = ({ children, loading }) => {
         touchAction: "none",
       });
     }
+    // else {
+    //   set({
+    //     y: 0,
+    //     transform: `translateY(${window.innerHeight - 120}px)`,
+    //     touchAction: "none",
+    //   });
+    // }
   }, [openScream]);
 
   return (
