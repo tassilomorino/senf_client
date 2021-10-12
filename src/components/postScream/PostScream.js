@@ -171,10 +171,6 @@ const styles = {
     paddingRight: "1%",
   },
 
-  mapwrapper: {
-    position: "absolute",
-    top: "0",
-  },
   Authlink: {
     position: "fixed",
     top: "25vh",
@@ -613,15 +609,6 @@ const PostScream = ({
           </div>
         )}
 
-        <CustomIconButton
-          name="Close"
-          position="fixed"
-          margin={
-            document.body.clientWidth > 768 ? "40px" : "18px 0px 0px 13px"
-          }
-          handleButtonClick={handleClose}
-        />
-
         {isMobileCustom && (
           <div
             style={
@@ -639,69 +626,76 @@ const PostScream = ({
           </div>
         )}
 
-        <div className={classes.mapwrapper}>
-          <PostScreamMap
-            MapHeight={MapHeight}
-            geocode={geocode}
-            _onMarkerDragEnd={_onMarkerDragEnd}
-            geoData={geoData}
-            viewport={mapViewport}
-            clicked={addressBarClickedState}
-            addressBarClicked={addressBarClicked}
-            locationDecided={locationDecided}
-            onSelected={onSelected}
-            address={address}
-            loadingProjects={loadingProjects}
-          />
+        <PostScreamMap
+          MapHeight={MapHeight}
+          geocode={geocode}
+          _onMarkerDragEnd={_onMarkerDragEnd}
+          geoData={geoData}
+          viewport={mapViewport}
+          clicked={addressBarClickedState}
+          addressBarClicked={addressBarClicked}
+          locationDecided={locationDecided}
+          onSelected={onSelected}
+          address={address}
+          loadingProjects={loadingProjects}
+        />
 
-          <PostScreamSelectContainter
-            classes={classes}
-            locationDecided={locationDecided}
-            handleLocationDecided={handleLocationDecided}
-            handleLocationDecidedNoLocation={handleLocationDecidedNoLocation}
-            projectSelected={projectSelected}
-            address={address}
-            handleDropdownProject={handleDropdownProject}
-            open={open}
-            loadingProjects={loadingProjects}
-            projectsData={projectsData}
-          />
+        <PostScreamSelectContainter
+          classes={classes}
+          locationDecided={locationDecided}
+          handleLocationDecided={handleLocationDecided}
+          handleLocationDecidedNoLocation={handleLocationDecidedNoLocation}
+          projectSelected={projectSelected}
+          address={address}
+          handleDropdownProject={handleDropdownProject}
+          open={open}
+          loadingProjects={loadingProjects}
+          projectsData={projectsData}
+        />
 
-          <PostScreamFormContent
-            classes={classes}
-            errors={errors}
-            address={address}
-            handleLocationDecided={handleLocationDecided}
-            handleChange={handleChange}
-            handleDropdown={handleDropdown}
-            openWeblink={openWeblink}
-            weblink={weblink}
-            weblinkTitle={weblinkTitle}
-            handleOpenWeblink={handleOpenWeblink}
-            handleCloseWeblink={handleCloseWeblink}
-            handleSaveWeblink={handleSaveWeblink}
-            openContact={openContact}
-            contactTitle={contactTitle}
-            contact={contact}
-            handleOpenContact={handleOpenContact}
-            handleCloseContact={handleCloseContact}
-            handleSaveContact={handleSaveContact}
-            project={projectSelected}
-            openCalendar={openCalendar}
-            selectedDays={selectedDays}
-            handleOpenCalendar={handleOpenCalendar}
-            handleCloseCalendar={handleCloseCalendar}
-            handleSaveCalendar={handleSaveCalendar}
-            handleChangeCalendar={handleChangeCalendar}
-            topic={topic}
-            loading={loading}
-            Out={out}
-            locationDecided={locationDecided}
-            handleSubmit={handleSubmit}
-            body={body}
-            title={title}
-          />
-        </div>
+        <PostScreamFormContent
+          classes={classes}
+          errors={errors}
+          address={address}
+          handleLocationDecided={handleLocationDecided}
+          handleChange={handleChange}
+          handleDropdown={handleDropdown}
+          openWeblink={openWeblink}
+          weblink={weblink}
+          weblinkTitle={weblinkTitle}
+          handleOpenWeblink={handleOpenWeblink}
+          handleCloseWeblink={handleCloseWeblink}
+          handleSaveWeblink={handleSaveWeblink}
+          openContact={openContact}
+          contactTitle={contactTitle}
+          contact={contact}
+          handleOpenContact={handleOpenContact}
+          handleCloseContact={handleCloseContact}
+          handleSaveContact={handleSaveContact}
+          project={projectSelected}
+          openCalendar={openCalendar}
+          selectedDays={selectedDays}
+          handleOpenCalendar={handleOpenCalendar}
+          handleCloseCalendar={handleCloseCalendar}
+          handleSaveCalendar={handleSaveCalendar}
+          handleChangeCalendar={handleChangeCalendar}
+          topic={topic}
+          loading={loading}
+          Out={out}
+          locationDecided={locationDecided}
+          handleSubmit={handleSubmit}
+          body={body}
+          title={title}
+        />
+        <CustomIconButton
+          name="Close"
+          position="fixed"
+          margin={
+            document.body.clientWidth > 768 ? "40px" : "18px 0px 0px 13px"
+          }
+          handleButtonClick={handleClose}
+          zIndex="1"
+        />
       </Dialog>
     </Fragment>
   );
