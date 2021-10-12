@@ -41,7 +41,7 @@ import SignNote from "../profile/SignNote";
 //ANIMATION
 import lamploader from "../../images/lamp.png";
 
-import ShareModal from "../modals/ShareModal";
+import ShareModal from "../module/Modals/ShareModal";
 
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
@@ -50,8 +50,8 @@ import {
   CustomIconButton,
 } from "../module/CustomButtons/CustomButton";
 import setColorByTopic from "../../data/setColorByTopic";
-import EditButton from "../module/CustomButtons/EditButton";
 import styled from "styled-components";
+import MenuModal from "../module/Modals/MenuModal";
 
 const BackgroundMobile = styled.div`
   position: absolute;
@@ -87,6 +87,15 @@ const BackgroundDesktop = styled.div`
     rgba(255, 255, 255, 1) 100%
   );
   z-index: 99;
+`;
+
+const ButtonsContainer = styled.div`
+  width: 120px;
+  height: 50px;
+  margin-left: calc(100% - 120px);
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-around;
 `;
 
 const Button = styled.button`
@@ -328,6 +337,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
   const [clicked, setClicked] = useState(false);
 
   const [shareOpen, setShareOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const convertedLinkRaw = weblink && linkify.find(weblink);
   const convertedLink =
@@ -457,6 +467,14 @@ const ScreamDialog = ({ classes, projectsData }) => {
             />
           )}
 
+          {menuOpen && (
+            <MenuModal
+              screamId={screamId}
+              userHandle={userHandle}
+              setMenuOpen={setMenuOpen}
+            />
+          )}
+
           <CustomIconButton
             name="ArrowLeft"
             position="fixed"
@@ -466,14 +484,13 @@ const ScreamDialog = ({ classes, projectsData }) => {
           />
 
           <div className="wrapperScreamDialog">
-            <CustomIconButton
-              name="Share"
-              margin="10px"
-              left="calc(100% - 130px)"
-              position="relative"
-              handleButtonClick={handleShare}
-            />
-            <EditButton screamId={screamId} userHandle={userHandle} />
+            <ButtonsContainer>
+              <CustomIconButton name="Share" handleButtonClick={handleShare} />
+              <CustomIconButton
+                name="Menu"
+                handleButtonClick={() => setMenuOpen(true)}
+              />
+            </ButtonsContainer>
             {isMobileCustom ? <BackgroundMobile /> : <BackgroundDesktop />}
             <div
               className="dialogCard"

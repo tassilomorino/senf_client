@@ -7,6 +7,8 @@ import CloseIcon from "../../../images/icons/close.png";
 import ArrowLeftIcon from "../../../images/icons/arrow-left.png";
 import CircularArrowIcon from "../../../images/icons/circular-arrow.png";
 import ShareIcon from "../../../images/icons/share.png";
+import MenuIcon from "../../../images/icons/menu.png";
+
 import { CircularProgress } from "@material-ui/core";
 
 const enterAnimation = keyframes`
@@ -97,6 +99,7 @@ const Icons = {
   ArrowLeft: ArrowLeftIcon,
   CircularArrow: CircularArrowIcon,
   Share: ShareIcon,
+  Menu: MenuIcon,
 };
 
 const enterAnimationRound = keyframes`

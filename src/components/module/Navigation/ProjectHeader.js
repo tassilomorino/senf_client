@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
 import { CustomIconButton } from "../CustomButtons/CustomButton";
-import ShareModal from "../../modals/ShareModal";
+import ShareModal from "../Modals/ShareModal";
 import Tabs from "../Tabs/Tabs";
 import { ProjectTabData } from "../../../data/ProjectTabData";
 

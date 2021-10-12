@@ -13,17 +13,22 @@ import { connect } from "react-redux";
 
 import { TextField } from "@material-ui/core";
 
-import { editScream } from "../../../redux/actions/screamActions";
+import { editScream, getUserEmail } from "../../../redux/actions/screamActions";
+
+import L from "leaflet";
 
 import _ from "lodash";
-import L from "leaflet";
 
 import Geocoder from "react-mapbox-gl-geocoder";
 
-import Weblink from "../postModals/Weblink";
-import Contact from "../postModals/Contact";
-import InlineDatePicker from "../postModals/InlineDatePicker";
-import Select from "../../module/Selects/Select";
+import Weblink from "../../modals/postModals/Weblink";
+import Contact from "../../modals/postModals/Contact";
+import InlineDatePicker from "../../modals/postModals/InlineDatePicker";
+import ToggleDisplay from "react-toggle-display";
+import { EditScreamTabData } from "../../../data/EditScreamTabData";
+import Tabs from "../Tabs/Tabs";
+import Select from "../Selects/Select";
+import MainModal from "./MainModal";
 
 const styles = {
   paper: {
@@ -32,6 +37,7 @@ const styles = {
     // width: "95%",
     margin: "2.5%",
     maxWidth: "400px",
+    width: "400px !important",
   },
 
   button: {
@@ -53,15 +59,15 @@ const styles = {
   },
 };
 
-class EditScream extends Component {
+class AdminEditModal extends Component {
   state = {
     open: false,
+    order: 2,
     errors: {},
 
     openWeblink: false,
     weblinkTitle: null,
     weblink: null,
-    project: "",
 
     openContact: false,
     contactTitle: null,
@@ -70,8 +76,12 @@ class EditScream extends Component {
     openCalendar: false,
     selectedDays: [],
     selectedUnix: [],
+
+    notes: null,
   };
   handleOpen = () => {
+    this.props.getUserEmail(this.props.scream.userHandle);
+
     this.setState({
       open: true,
       title: this.props.scream.title,
@@ -86,6 +96,8 @@ class EditScream extends Component {
         latitude: this.props.scream.lat,
         longitude: this.props.scream.long,
       },
+      status: this.props.scream.status,
+      notes: this.props.scream.notes,
     });
 
     if (this.props.scream.project === undefined) {
@@ -93,6 +105,7 @@ class EditScream extends Component {
         project: "",
       });
     }
+
     if (this.props.scream.weblink) {
       this.setState({
         weblink: this.props.scream.weblink,
@@ -122,21 +135,6 @@ class EditScream extends Component {
 
     console.log(this.props);
   };
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.UI.errors) {
-  //     this.setState({
-  //       errors: nextProps.UI.errors,
-  //     });
-  //   }
-  //   if (!nextProps.UI.errors && !nextProps.UI.loading) {
-  //     this.setState({ body: "", open: false, errors: {} });
-  //     this.setState({ title: "", open: false, errors: {} });
-  //   }
-  // }
 
   handleChange = (event) => {
     event.preventDefault();
@@ -268,6 +266,7 @@ class EditScream extends Component {
 
   editScream = () => {
     console.log(this.state);
+
     const editScream = {
       screamId: this.props.scream.screamId,
       title: this.state.title,
@@ -285,6 +284,9 @@ class EditScream extends Component {
 
       contactTitle: this.state.contactTitle,
       contact: this.state.contact,
+
+      status: this.state.status,
+      notes: this.state.notes,
     };
 
     console.log(this.state.selectedUnix);
@@ -298,10 +300,17 @@ class EditScream extends Component {
     // this.setState({ open: false });
     // window.location.reload(false);
   };
-  render() {
-    const { projects, loadingProjects } = this.props.data;
 
-    const { classes } = this.props;
+  handleClick = (order) => {
+    this.setState({
+      order,
+    });
+  };
+
+  render() {
+    const { projects, loadingProjects, loading } = this.props.data;
+
+    const { classes, setAdminEditOpen } = this.props;
     const { viewport, weblink, weblinkTitle, errors } = this.state;
 
     const queryParams = {
@@ -321,27 +330,21 @@ class EditScream extends Component {
 
     const topicsArray = (
       <>
-        <option value={"Inklusion / Soziales"} className={classes.formText}>
-          Inklusion / Soziales
-        </option>
-        <option value={"Rad"} className={classes.formText}>
-          Rad
-        </option>
-        <option value={"Sport / Freizeit"} className={classes.formText}>
-          Sport / Freizeit
-        </option>
-        <option value={"Umwelt und Grün"} className={classes.formText}>
-          Umwelt und Grün
-        </option>
-        <option value={"Verkehr"} className={classes.formText}>
-          Verkehr
-        </option>
-        <option value={"Versorgung"} className={classes.formText}>
-          Versorgung
-        </option>
-        <option value={"Sonstige"} className={classes.formText}>
-          Sonstige
-        </option>
+        <option value={"Inklusion / Soziales"}>Inklusion / Soziales</option>
+        <option value={"Rad"}>Rad</option>
+        <option value={"Sport / Freizeit"}>Sport / Freizeit</option>
+        <option value={"Umwelt und Grün"}>Umwelt und Grün</option>
+        <option value={"Verkehr"}>Verkehr</option>
+        <option value={"Versorgung"}>Versorgung</option>
+        <option value={"Sonstige"}>Sonstige</option>
+      </>
+    );
+
+    const statusArray = (
+      <>
+        <option value={"None"}>Offen</option>
+        <option value={"Eingereicht"}>Eingereicht</option>
+        <option value={"Bereits umgesetzt"}>Bereits umgesetzt</option>
       </>
     );
 
@@ -354,19 +357,29 @@ class EditScream extends Component {
     );
 
     return (
-      <Fragment>
-        <Button className={classes.confirmButton} onClick={this.handleOpen}>
-          Idee bearbeiten
-        </Button>
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          width="md"
-          BackdropProps={{ classes: { root: classes.root } }}
-          PaperProps={{ classes: { root: classes.paper } }}
+      <MainModal handleButtonClick={() => setAdminEditOpen(false)}>
+        <div
+          style={{
+            width: "100%",
+            height: "110px",
+            backgroundColor: "#f8f8f8",
+          }}
         >
-          <h3 className="modal_title">Idee bearbeiten</h3>
-          <div className="textFields">
+          <h3 className="modal_title">Idee bearbeiten (Admin)</h3>
+
+          <Tabs
+            loading={loading}
+            handleClick={this.handleClick}
+            order={this.state.order}
+            tabLabels={EditScreamTabData.map((item) => item.text)}
+            marginTop={"0"}
+            marginBottom={"20px"}
+            lineColor={"white"}
+          ></Tabs>
+        </div>
+
+        <div className="textFields">
+          <ToggleDisplay show={this.state.order === 1}>
             <div
               style={{
                 display: "flex",
@@ -377,12 +390,30 @@ class EditScream extends Component {
                 fontFamily: "Futura PT W01-Bold",
               }}
             >
-              <span> An: </span>
+              <span> Projektraum: </span>
               <Select
                 name={"project"}
                 value={this.state.project}
                 initialValue={"Allgemein (Alle Ideen)"}
                 valuesArray={projectsArray}
+                handleDropdown={this.handleDropdown}
+              />
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                fontFamily: "Futura PT W01-Bold",
+              }}
+            >
+              <span> Thema:</span>
+              <Select
+                name={"topic"}
+                value={this.state.topic}
+                initialValue={"Wähle ein Thema aus"}
+                valuesArray={topicsArray}
                 handleDropdown={this.handleDropdown}
               />
             </div>
@@ -434,24 +465,9 @@ class EditScream extends Component {
             ></TextField>
             <div
               style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
+                bottom: " -70px",
+                height: "50px",
               }}
-            >
-              <span> Thema:</span>
-
-              <Select
-                name={"topic"}
-                value={this.state.topic}
-                initialValue={"Wähle ein Thema aus"}
-                valuesArray={topicsArray}
-                handleDropdown={this.handleDropdown}
-              />
-            </div>
-            <div
-              style={{ bottom: " -70px", height: "50px", position: "relative" }}
             >
               <Weblink
                 openWeblink={this.state.openWeblink}
@@ -488,32 +504,96 @@ class EditScream extends Component {
                 ></InlineDatePicker>
               </div>
             </div>
-          </div>
-          <div className="buttons">
-            <Button className={classes.button} onClick={this.handleClose}>
-              Abbrechen
-            </Button>
-            <Button
-              className={classes.button}
-              onClick={this.editScream}
-              style={
-                (this.state.weblink !== null || this.state.weblink !== " ") &&
-                (this.state.weblinkTitle !== null ||
-                  this.state.weblinkTitle !== " ")
-                  ? {}
-                  : { pointerEvents: "none", opacity: 0.6 }
-              }
+          </ToggleDisplay>
+          <ToggleDisplay show={this.state.order === 2}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+
+                fontFamily: "Futura PT W01-Bold",
+                marginTop: "20px",
+              }}
             >
-              Speichern
-            </Button>
-          </div>
-        </Dialog>
-      </Fragment>
+              Email:
+              <a
+                href={"mailto:" + this.props.data.scream_user.email}
+                style={{
+                  fontFamily: "Futura PT W01 Book",
+                  textDecoration: "underline",
+                }}
+              >
+                {this.props.data.scream_user.email}
+              </a>
+            </div>{" "}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                fontFamily: "Futura PT W01-Bold",
+              }}
+            >
+              <span> Status:</span>
+              <Select
+                name={"status"}
+                value={this.state.status}
+                initialValue={false}
+                valuesArray={statusArray}
+                handleDropdown={this.handleDropdown}
+              />
+            </div>
+            <TextField
+              id="notes"
+              name="notes"
+              type="text"
+              label="Notizen"
+              placeholder="Füge Notizen hinzu..."
+              margin="normal"
+              color="transparent"
+              variant="outlined"
+              className="textField"
+              multiline
+              rowsMax="12"
+              error={errors.body ? true : false}
+              helperText={errors.body}
+              value={this.state.notes}
+              onChange={this.handleChange}
+              style={{ marginTop: "5px", marginBottom: "5px" }}
+            ></TextField>
+          </ToggleDisplay>
+        </div>
+
+        <div className="buttons">
+          <Button
+            className={classes.button}
+            onClick={() => setAdminEditOpen(false)}
+          >
+            Abbrechen
+          </Button>
+          <Button
+            className={classes.button}
+            onClick={this.editScream}
+            style={
+              (this.state.weblink !== null || this.state.weblink !== " ") &&
+              (this.state.weblinkTitle !== null ||
+                this.state.weblinkTitle !== " ")
+                ? {}
+                : { pointerEvents: "none", opacity: 0.6 }
+            }
+          >
+            Speichern
+          </Button>
+        </div>
+      </MainModal>
     );
   }
 }
 
-EditScream.propTypes = {
+AdminEditModal.propTypes = {
   classes: PropTypes.object.isRequired,
   editScream: PropTypes.func.isRequired,
 };
@@ -521,11 +601,12 @@ EditScream.propTypes = {
 const mapStateToProps = (state) => ({
   data: state.data,
   scream: state.data.scream,
+  scream_user: state.data.scream_user,
 });
 
-const mapActionsToProps = { editScream };
+const mapActionsToProps = { editScream, getUserEmail };
 
 export default connect(
   mapStateToProps,
   mapActionsToProps
-)(withStyles(styles)(EditScream));
+)(withStyles(styles)(AdminEditModal));
