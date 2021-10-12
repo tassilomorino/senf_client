@@ -180,6 +180,7 @@ const PostScreamFormContent = ({
         {locationDecided && (
           <SubmitButton
             text={t("postScream_shareIdea")}
+            zIndex="9"
             backgroundColor="white"
             textColor="#353535"
             position="absolute"

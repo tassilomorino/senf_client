@@ -16,6 +16,7 @@ export function OptionsProjects() {
     (project) => ({
       name: project.project,
       label: project.title,
+      img: project.imgUrl,
     })
   );
 

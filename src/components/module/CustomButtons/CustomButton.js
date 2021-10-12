@@ -133,7 +133,7 @@ const IconButton = styled.button`
   align-items: center;
   justify-content: center;
   text-align: center;
-
+  z-index: ${(props) => props.zIndex && props.zIndex};
   position: ${(props) => props.position};
   top: ${(props) => props.top && props.top};
   bottom: ${(props) => props.bottom && props.bottom};

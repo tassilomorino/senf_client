@@ -31,11 +31,13 @@ const PostScreamSelectContainter = ({
               position: "fixed",
               bottom: "calc(90vh - 50px)",
               display: "none",
+              zIndex: 999,
             }
           : {
               position: "fixed",
               bottom: "20px",
               display: "block",
+              zIndex: 999,
             }
       }
     >

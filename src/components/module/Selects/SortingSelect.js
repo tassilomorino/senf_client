@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 
@@ -80,7 +80,6 @@ const SortingSelect = ({ handleDropdown }) => {
   const options = [
     { name: "newest", label: t("newest") },
     { name: "hottest", label: t("hottest") },
-    { name: "longtext", label: "really long long text" },
   ];
 
   const handleToggle = () => {
