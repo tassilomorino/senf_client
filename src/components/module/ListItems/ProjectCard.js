@@ -76,6 +76,12 @@ const ProjectCardDesign = styled.div`
     color: #353535
   `
 
+  const ProjectImg = styled.img.attrs(props => ({
+    src: props.Img,
+  }))`
+    width: 100%;
+    alt:"profile";
+  `
 
 export const ProjectCard = (props) => {
   const {
@@ -93,11 +99,8 @@ export const ProjectCard = (props) => {
       />
 
       <LeftWrapper>
-        <img
-          src={imgUrl}
-          width="100%"
-          alt="profile"
-          className="profile-image"
+        <ProjectImg
+          Img={imgUrl}
         />
       </LeftWrapper>
       <RightWrapper>
@@ -143,24 +146,21 @@ export const CreateProject = () => {
   };
 
   return(
-    <div className="projectCard" onClick={createProject}>
-              <div className="leftWrapper" style={{ opacity: 0.5 }}>
-                <img
-                  src={AddIcon}
-                  alt="profile"
-                  className="profile-image"
-                  width="50%"
+    <ProjectCardDesign onClick={createProject}>
+              <LeftWrapper style={{ opacity: 0.5 }}>
+                <ProjectImg
+                  Img={AddIcon}
                   style={{ width: "50%", marginLeft: "25%" }}
                 />
-              </div>
-              <div className="rightWrapper">
-                <div className="owner">
+              </LeftWrapper>
+              <RightWrapper>
+                <Owner>
                   {" "}
                   {t("projectrooms_request_overTitle")}{" "}
-                </div>
-                <div className="title"> {t("projectrooms_request_title")}</div>
-                <div className="date">{t("projectrooms_request_subTitle")}</div>
-              </div>
-            </div>
+                </Owner>
+                <Title> {t("projectrooms_request_title")}</Title>
+                <Date>{t("projectrooms_request_subTitle")}</Date>
+              </RightWrapper>
+            </ProjectCardDesign>
   )
 };

@@ -48,6 +48,16 @@ const ProjectRoomDescription = styled.div`
   z-index: 0;
 `
 
+const NoIdeasYet = styled.div`
+  position: relative;
+  font-size: 15pt;
+  color: #414345;
+  width: 80%;
+  margin-left: 10%;
+  text-align: center;
+  z-index: 10;
+`
+
 const ProjectsPage = ({ loadingProjects, order, projects }) => {
   const { t } = useTranslation();
 
@@ -68,14 +78,14 @@ const ProjectsPage = ({ loadingProjects, order, projects }) => {
               ))
             ) : (
               <MainAnimation>
-                <div className="no-ideas-yet">{t("projectrooms_loader")}</div>
+                <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>
               </MainAnimation>
             )}
             {!loadingProjects && projects.length === 0 && (
               <MainAnimation>
-                <div className="no-ideas-yet">
+                <NoIdeasYet>
                   {t("projectrooms_loading_error")}
-                </div>
+                </NoIdeasYet>
               </MainAnimation>
             )}
             <br />
