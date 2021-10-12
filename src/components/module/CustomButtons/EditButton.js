@@ -29,6 +29,8 @@ const EditButton = ({ screamId, userHandle }) => {
   const { authenticated, credentials } = useSelector((state) => state.user);
   const { handle, isAdmin, isModerator } = credentials;
 
+  const { scream } = useSelector((state) => state.data);
+
   return (
     <RoundButton>
       {!authenticated ? (
@@ -40,7 +42,7 @@ const EditButton = ({ screamId, userHandle }) => {
         <AdminMenuScream
           screamId={screamId}
           userHandle={userHandle}
-          scream={this.props.scream}
+          scream={scream}
           isModerator={isModerator}
           isAdmin={isAdmin}
         />
@@ -48,7 +50,7 @@ const EditButton = ({ screamId, userHandle }) => {
         <MenuScream
           screamId={screamId}
           userHandle={userHandle}
-          scream={this.props.scream}
+          scream={scream}
         />
       ) : null}
 

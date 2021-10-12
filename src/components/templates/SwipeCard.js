@@ -55,14 +55,14 @@ const SwipeCard = ({ children, loading }) => {
         set({
           y: down ? my : 100,
           transform:
-            down && position !== "top"
-              ? `translateY(${0}px)`
-              : `translateY(${141}px)`,
+            !down && position !== "bottom"
+              ? `translateY(${141}px)`
+              : `translateY(${0}px)`,
           touchAction: "unset",
         });
         setPosition("top");
       }
-      if (my > 200) {
+      if (my > 150) {
         set({
           y: down ? my : window.innerHeight - 120,
           transform: down

@@ -297,7 +297,12 @@ export class home extends Component {
               style={
                 !this.props.UI.openScream
                   ? { overflow: "scroll" }
-                  : { height: "100vh", overflow: "hidden" }
+                  : {
+                      height: "100vh",
+                      overflow: "hidden",
+                      top: `-${window.scrollY}px`,
+                      position: "fixed",
+                    }
               }
             >
               <IdeaList
@@ -332,7 +337,6 @@ export class home extends Component {
                 projectsData={projects}
               ></ScreamDialog>
             )}
-
             {this.props.UI.openProject && (
               <ProjectDialog
                 loading={loading}
