@@ -129,7 +129,7 @@ const IdeaList = ({
             projectsData={projectsData}
             project={project}
           />
-          <ContentMobile openScream={openScream}>
+          <ContentMobile openScream={openScream} id="listMobile">
             <SwipeCard loading={loading}>
               <ListHeaderWrapper>
                 <ListHeader

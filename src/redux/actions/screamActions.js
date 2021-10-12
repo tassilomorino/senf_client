@@ -21,6 +21,8 @@ import {
   SET_SCREAM_USER,
 } from "../types";
 
+import { lock, unlock } from "tua-body-scroll-lock";
+
 // Get all ideas
 export const getScreams = () => async (dispatch) => {
   dispatch({ type: LOADING_DATA });
@@ -102,8 +104,8 @@ export const resetMyScreams = () => async (dispatch) => {
 // Open an idea
 export const openScreamFunc = (screamId) => async (dispatch) => {
   // When the modal is shown, we want a fixed body
-  document.body.style.position = "fixed";
-  document.body.style.top = `-${window.scrollY}px`;
+  // document.body.style.position = "fixed";
+  // document.body.style.top = `-${window.scrollY}px`;
 
   const db = firebase.firestore();
   const ref = await db.collection("screams").doc(screamId).get();

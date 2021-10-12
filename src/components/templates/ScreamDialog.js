@@ -54,6 +54,8 @@ import setColorByTopic from "../../data/setColorByTopic";
 import EditButton from "../module/CustomButtons/EditButton";
 import styled, { createGlobalStyle } from "styled-components";
 
+import { lock, unlock } from "tua-body-scroll-lock";
+
 const portalRoot = document.getElementById("portal-root");
 
 const BackgroundMobile = styled.div`
@@ -112,10 +114,11 @@ const Button = styled.button`
 `;
 
 const ScrollDisabler = createGlobalStyle`
-  body {
-    overflow: scroll;
+  :root > body {
+    overflow: hidden;
     overflow-x: hidden;
   }
+ 
 `;
 
 const styles = {
@@ -458,7 +461,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
   }
 
   return ReactDOM.createPortal(
-    <div className="OuterWrapperScreamDialog">
+    <div className="OuterWrapperScreamDialog" id="OuterWrapperScreamDialog">
       {!loading ? (
         <div style={{ pointerEvents: "auto" }}>
           <CommentForm screamId={screamId} clicked={clicked} />

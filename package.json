@@ -55,6 +55,7 @@
     "redux-thunk": "^2.3.0",
     "source-map-explorer": "^2.4.2",
     "styled-components": "^5.3.1",
+    "tua-body-scroll-lock": "^1.2.1",
     "universal-cookie": "^4.0.3",
     "xlsx": "^0.17.0"
   },
