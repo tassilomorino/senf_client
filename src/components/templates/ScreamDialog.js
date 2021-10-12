@@ -41,7 +41,7 @@ import SignNote from "../profile/SignNote";
 //ANIMATION
 import lamploader from "../../images/lamp.png";
 
-import ScreamShare from "../modals/ScreamShare";
+import ShareModal from "../modals/ShareModal";
 
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
@@ -449,7 +449,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
           <CommentForm screamId={screamId} clicked={clicked} />
 
           {shareOpen && (
-            <ScreamShare
+            <ShareModal
               screamId={screamId}
               title={title}
               path={path}

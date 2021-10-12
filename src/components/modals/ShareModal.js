@@ -63,7 +63,7 @@ const styles = {
   },
 };
 
-const ScreamShare = ({ classes, path, setShareOpen }) => {
+const ShareModal = ({ classes, path, setShareOpen }) => {
   return (
     <Wrapper onClick={() => setShareOpen(false)}>
       <InnerWrapper>
@@ -107,4 +107,4 @@ const ScreamShare = ({ classes, path, setShareOpen }) => {
   );
 };
 
-export default withStyles(styles)(ScreamShare);
+export default withStyles(styles)(ShareModal);

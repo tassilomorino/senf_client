@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
 import { CustomIconButton } from "../CustomButtons/CustomButton";
-import ScreamShare from "../../modals/ScreamShare";
+import ShareModal from "../../modals/ShareModal";
 import Tabs from "../Tabs/Tabs";
 import { ProjectTabData } from "../../../data/ProjectTabData";
 
@@ -128,7 +128,7 @@ const ProjectHeader = ({
       </FlexWrapper>
 
       {/* <div style={{ position: "absolute", top: "10px", right: "10px" }}>
-        <ScreamShare screamId={project} title={title} path={path} />
+        <ShareModal screamId={project} title={title} path={path} />
       </div> */}
 
       <Tabs
@@ -148,7 +148,7 @@ const ProjectHeader = ({
   ) : (
     <React.Fragment>
       {shareOpen && (
-        <ScreamShare
+        <ShareModal
           screamId={project}
           title={title}
           path={path}

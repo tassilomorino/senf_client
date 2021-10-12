@@ -4,7 +4,6 @@ import React from "react";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 import styled from "styled-components";
 import { CustomIconButton } from "../module/CustomButtons/CustomButton";
-import ScreamShare from "../modals/ScreamShare";
 import Tabs from "../module/Tabs/Tabs";
 import { AccountTabData } from "../../data/AccountTabData";
 
