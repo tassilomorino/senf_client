@@ -2,13 +2,12 @@
 
 import React from "react";
 
-import PropTypes from "prop-types";
-
 // Redux
 import { useDispatch } from "react-redux";
 import { openProject } from "../../../redux/actions/projectActions";
 import ExpandButton from "../CustomButtons/ExpandButton";
-import AddIcon from "../../images/icons/plus_grey.png";
+import AddIcon from "../../../images/icons/plus_grey.png";
+import { useTranslation } from "react-i18next";
 
 import styled from "styled-components";
 
@@ -119,6 +118,8 @@ export const ProjectCard = (props) => {
 };
 
 export const CreateProject = () => {
+
+  const { t } = useTranslation();
   
   const createProject = () => {
     var link =
