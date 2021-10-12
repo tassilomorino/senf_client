@@ -2,25 +2,16 @@
 
 import React from "react";
 
-import PropTypes from "prop-types";
-
 // Redux
 import { useDispatch } from "react-redux";
 import { openProject } from "../../../redux/actions/projectActions";
 import ExpandButton from "../CustomButtons/ExpandButton";
+import AddIcon from "../../../images/icons/plus_grey.png";
+import { useTranslation } from "react-i18next";
 
 import styled from "styled-components";
 
-const ProjectCard = (props) => {
-  const {
-    project: { title, owner, imgUrl, project, startDate, endDate },
-  } = props;
-  const dispatch = useDispatch();
-  const pushScreamId = (project) => {
-    dispatch(openProject(project));
-  };
-
-  const ProjectCard = styled.div`
+const ProjectCardDesign = styled.div`
     position: relative;
     display: flex;
     margin-bottom: 10px;
@@ -84,19 +75,32 @@ const ProjectCard = (props) => {
     font-family: Futura PT W01 Book;
     color: #353535
   `
+
+  const ProjectImg = styled.img.attrs(props => ({
+    src: props.Img,
+  }))`
+    width: 100%;
+    alt:"profile";
+  `
+
+export const ProjectCard = (props) => {
+  const {
+    project: { title, owner, imgUrl, project, startDate, endDate },
+  } = props;
+  const dispatch = useDispatch();
+  const pushScreamId = (project) => {
+    dispatch(openProject(project));
+  };
   
   return (
-    <ProjectCard>
+    <ProjectCardDesign>
       <ExpandButton
         handleButtonClick={() => pushScreamId(project)}
       />
 
       <LeftWrapper>
-        <img
-          src={imgUrl}
-          width="100%"
-          alt="profile"
-          className="profile-image"
+        <ProjectImg
+          Img={imgUrl}
         />
       </LeftWrapper>
       <RightWrapper>
@@ -112,13 +116,51 @@ const ProjectCard = (props) => {
           <Date>{startDate} </Date>
         )}
       </RightWrapper>
-    </ProjectCard>
+    </ProjectCardDesign>
   );
 };
 
-ProjectCard.propTypes = {
-  project: PropTypes.object.isRequired,
-  openProject: PropTypes.func.isRequired,
-};
+export const CreateProject = () => {
 
-export default ProjectCard;
+  const { t } = useTranslation();
+  
+  const createProject = () => {
+    var link =
+      "mailto:dein@senf.koeln" +
+      "?subject=" +
+      escape("Projektraum-Anfrage") +
+      "&body=" +
+      escape(
+        "Projektraum-Titel:" +
+        "\n" +
+        "\n" +
+        "Worum geht's:" +
+        "\n" +
+        "\n" +
+        "Projektzeitraum:" +
+        "\n" +
+        "\n" +
+        "Logo + Cover-Bild:"
+      );
+    window.location.href = link;
+  };
+
+  return(
+    <ProjectCardDesign onClick={createProject}>
+              <LeftWrapper style={{ opacity: 0.5 }}>
+                <ProjectImg
+                  Img={AddIcon}
+                  style={{ width: "50%", marginLeft: "25%" }}
+                />
+              </LeftWrapper>
+              <RightWrapper>
+                <Owner>
+                  {" "}
+                  {t("projectrooms_request_overTitle")}{" "}
+                </Owner>
+                <Title> {t("projectrooms_request_title")}</Title>
+                <Date>{t("projectrooms_request_subTitle")}</Date>
+              </RightWrapper>
+            </ProjectCardDesign>
+  )
+};
