@@ -70,7 +70,7 @@ const InsightsPage = ({ order }) => {
     <>
       <MainAnimations
         height="100vh"
-        margintop="90px"
+        marginTop="90px"
       >
         <Keyindicators
           screams={screams}

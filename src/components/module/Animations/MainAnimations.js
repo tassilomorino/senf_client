@@ -4,9 +4,9 @@ import styled from "styled-components";
 const MainAnimation = styled.div`
   opacity: 1;
   animation: cardanimation 0.8s ease-in-out;
-  height: ${(props) => props.height };
-  margin-top: ${(props) => props.margintop};
-  padding-top: ${(props) => props.paddingtop};
+  height: ${(props) => props.height && props.height};
+  margin-top: ${(props) => props.marginTop};
+  padding-top: ${(props) => props.paddingTop};
   transition: ${(props) => props.transition};
   display: ${(props) => props.display };
 `
@@ -36,16 +36,16 @@ const MainAnimation = styled.div`
 const MainAnimations = ({
     children,
     height,
-    margintop,
-    paddingtop,
+    marginTop,
+    paddingTop,
     transition,
     display
 }) => {
     return (
         <MainAnimation
             height={height}
-            margintop={margintop}
-            paddingtop={paddingtop}
+            margintop={marginTop}
+            paddingtop={paddingTop}
             transition={transition}
             display={display}
         >
