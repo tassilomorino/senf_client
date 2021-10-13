@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 import { TextField } from "@material-ui/core";
 
 //Components
-import PostScreamRules from "../modals/PostScreamRules";
+import PostScreamRules from "./PostScreamRules";
 import Contact from "../modals/postModals/Contact";
 import InlineDatePicker from "../modals/postModals/InlineDatePicker";
 import Weblink from "../modals/postModals/Weblink";

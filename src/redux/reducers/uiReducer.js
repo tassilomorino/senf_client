@@ -14,6 +14,8 @@ import {
   CLOSE_MONITORING_SCREAM,
   SET_INFOPAGE_OPEN,
   SET_INFOPAGE_CLOSED,
+  VOTED_TRUE,
+  VOTED_FALSE,
 } from "../types";
 
 const initialState = {
@@ -24,6 +26,7 @@ const initialState = {
   openProject: false,
   errors: null,
   openInfoPage: false,
+  voted: false,
 };
 
 export default function (state = initialState, action) {
@@ -102,6 +105,17 @@ export default function (state = initialState, action) {
         ...state,
         openInfoPage: false,
       };
+    case VOTED_TRUE:
+      return {
+        ...state,
+        voted: true,
+      };
+    case VOTED_FALSE:
+      return {
+        ...state,
+        voted: false,
+      };
+
     default:
       return state;
   }
