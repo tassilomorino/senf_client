@@ -22,7 +22,6 @@ import { clearErrors } from "../../redux/actions/errorsActions";
 import { setMapViewport, setMapBounds } from "../../redux/actions/mapActions";
 
 //Components
-import ScreamShare from "../modals/ScreamShare";
 import CalendarComponent from "../module/calendar/CalendarComponent";
 
 import IdeaList from "../templates/IdeaList";

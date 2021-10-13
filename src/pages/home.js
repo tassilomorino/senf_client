@@ -37,6 +37,7 @@ import ScreamDialog from "../components/templates/ScreamDialog";
 import ProjectDialog from "../components/projectComponents/ProjectDialog";
 
 import styled from "styled-components";
+import ThanksForTheVote from "../components/module/Backgrounds/ThanksForTheVote";
 const cookies = new Cookies();
 
 const styles = {};
@@ -250,6 +251,8 @@ export class home extends Component {
             </span>
           </div>
         )}
+
+        {this.props.UI.voted && <ThanksForTheVote />}
 
         <Topbar
           loading={loading}

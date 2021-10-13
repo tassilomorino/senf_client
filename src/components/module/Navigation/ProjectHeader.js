@@ -1,11 +1,11 @@
 /** @format */
 
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
 import { CustomIconButton } from "../CustomButtons/CustomButton";
-import ScreamShare from "../../modals/ScreamShare";
+import ShareModal from "../Modals/ShareModal";
 import Tabs from "../Tabs/Tabs";
 import { ProjectTabData } from "../../../data/ProjectTabData";
 
@@ -85,6 +85,23 @@ const ProjectHeader = ({
   project,
 }) => {
   const { openScream } = useSelector((state) => state.UI);
+  const [shareOpen, setShareOpen] = useState(false);
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: `Senf.koeln – ${title}`,
+          url: path,
+        })
+        .then(() => {
+          console.log("Thanks for sharing!");
+        })
+        .catch(console.error);
+    } else {
+      setShareOpen(true);
+    }
+  };
 
   function truncateString(str, num) {
     if (str.length <= num) {
@@ -111,7 +128,7 @@ const ProjectHeader = ({
       </FlexWrapper>
 
       {/* <div style={{ position: "absolute", top: "10px", right: "10px" }}>
-        <ScreamShare screamId={project} title={title} path={path} />
+        <ShareModal screamId={project} title={title} path={path} />
       </div> */}
 
       <Tabs
@@ -130,6 +147,14 @@ const ProjectHeader = ({
     </FixedWrapper>
   ) : (
     <React.Fragment>
+      {shareOpen && (
+        <ShareModal
+          screamId={project}
+          title={title}
+          path={path}
+          setShareOpen={setShareOpen}
+        />
+      )}
       <CustomIconButton
         name="ArrowLeft"
         position="fixed"
@@ -145,7 +170,13 @@ const ProjectHeader = ({
       <TitleWrapper>{title}</TitleWrapper>
 
       <div style={{ position: "absolute", top: "20px", right: "10px" }}>
-        <ScreamShare screamId={project} title={title} path={path} />
+        <CustomIconButton
+          name="Share"
+          margin="0px"
+          left="calc(100% - 50px)"
+          position="relative"
+          handleButtonClick={handleShare}
+        />
       </div>
 
       <Tabs

@@ -1928,35 +1928,8 @@ font-size:15px !important
   }
 }
 
-.Wishanimation {
-  opacity: 0;
-  margin-top: 25vh;
-  max-width: 600px;
-  z-index: 9999;
-  animation: Wishanimation 2s ease-in-out;
-}
 
-@keyframes Wishanimation {
-  0% {
-    opacity: 0;
-    transform: translateY(10%);
-  }
 
-  40% {
-    opacity: 1;
-    transform: translateY(0%);
-  }
-
-  60% {
-    opacity: 1;
-    transform: translateY(0%);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translateY(-10%);
-  }
-}
 
 .VerifyHeader {
   position: relative;

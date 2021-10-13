@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 
 //Components
 import MyButton from "../../../util/MyButton";
-import WishNote from "../../modals/WishNote";
+import ThanksForTheVote from "../Backgrounds/ThanksForTheVote";
 import SignNote from "../../profile/SignNote";
 
 //Images
@@ -35,12 +35,10 @@ const LikeButton = ({ screamId }) => {
   ) : likedScream() ? (
     <MyButton onClick={() => dispatch(unlikeScream(screamId, user))}>
       <img src={HandFull} width="100%" alt="LikeIcon" />
-      <WishNote />
     </MyButton>
   ) : (
     <MyButton onClick={() => dispatch(likeScream(screamId, user))}>
       <img src={HandBorder} width="100%" alt="LikeIcon" />
-      <WishNote />
     </MyButton>
   );
   return likeButton;

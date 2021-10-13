@@ -1,14 +1,12 @@
 /** @format */
 
-import React, { Component, Fragment } from "react";
+import React, { useState, Fragment } from "react";
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 //REDUX STUFF
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-
-import { getComment } from "../../../redux/actions/commentActions";
 
 //GET TIME TIMESTAMP
 import dayjs from "dayjs";
@@ -18,12 +16,9 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 
-// REPORT/DELETE COMMENT
-import ReportComment from "../../modals/ReportComment";
-import DeleteComment from "../../modals/DeleteComment";
-
 //ICONS
 import MenuIcon from "../../../images/icons/menu.png";
+import CommentMenuModal from "../Modals/CommentMenuModal";
 
 const styles = {
   card: {
@@ -97,84 +92,81 @@ const styles = {
   },
 };
 
-class Comments extends Component {
-  render() {
-    const {
-      classes,
-      scream: { comments },
-      user: {
-        authenticated,
-        credentials: { handle },
-      },
-    } = this.props;
+const Comments = ({ classes }) => {
+  const [commentMenuOpen, setCommentMenuOpen] = useState(false);
+  const [userHandleSelected, setUserHandleSelected] = useState("");
+  const [commentIdSelected, setCommentIdSelected] = useState("");
 
-    return (
-      <Grid container>
-        {comments.map((comment, index) => {
-          const { body, createdAt, userHandle, commentId } = comment;
-          const deleteButton =
-            authenticated && userHandle === handle ? (
-              <DeleteComment commentId={commentId} userHandle={userHandle} />
-            ) : null;
+  const { screamId, comments } = useSelector((state) => state.data.scream);
 
-          const reportButton = !authenticated ? (
-            <ReportComment commentId={commentId} userHandle={userHandle} />
-          ) : authenticated & (userHandle !== handle) ? (
-            <ReportComment commentId={commentId} userHandle={userHandle} />
-          ) : null;
+  return (
+    <Grid container>
+      {commentMenuOpen && (
+        <CommentMenuModal
+          commentId={commentIdSelected}
+          setCommentMenuOpen={setCommentMenuOpen}
+          screamId={screamId}
+          userHandle={userHandleSelected}
+        />
+      )}
+      {comments.map((comment, index) => {
+        const { body, createdAt, userHandle, commentId } = comment;
 
-          return (
-            <Fragment key={createdAt}>
-              <div className={classes.vertline} />
+        return (
+          <Fragment key={createdAt}>
+            <div className={classes.vertline} />
 
-              <Grid item sm={12}>
-                <Grid container>
-                  <Grid item sm={12} className={classes.gridWrapper}>
-                    <div className={classes.commentData}>
-                      <Card className={classes.card}>
-                        <div className={classes.content}>
-                          <div className={classes.header}>
-                            <Typography
-                              component={Link}
-                              to={`/users/${userHandle}`}
-                              className={classes.user}
-                            >
-                              {userHandle}&nbsp;–&nbsp;
-                            </Typography>
+            <Grid item sm={12}>
+              <Grid container>
+                <Grid item sm={12} className={classes.gridWrapper}>
+                  <div className={classes.commentData}>
+                    <Card className={classes.card}>
+                      <div className={classes.content}>
+                        <div className={classes.header}>
+                          <Typography
+                            component={Link}
+                            to={`/users/${userHandle}`}
+                            className={classes.user}
+                          >
+                            {userHandle}&nbsp;–&nbsp;
+                          </Typography>
 
-                            <Typography className={classes.date}>
-                              {dayjs(createdAt).format("DD.MM.YYYY")}
-                            </Typography>
-                          </div>
-
-                          <div className={classes.editButton}>
-                            {deleteButton}
-                            {reportButton}
-
-                            <img
-                              className={classes.editButtonCircle}
-                              src={MenuIcon}
-                              width="25"
-                              alt="editIcon"
-                            />
-                          </div>
-
-                          <Typography className={classes.bodytext}>
-                            {body}
+                          <Typography className={classes.date}>
+                            {dayjs(createdAt).format("DD.MM.YYYY")}
                           </Typography>
                         </div>
-                      </Card>
-                    </div>
-                  </Grid>
+
+                        <div
+                          className={classes.editButton}
+                          onClick={() => {
+                            setCommentMenuOpen(true);
+                            setUserHandleSelected(userHandle);
+                            setCommentIdSelected(commentId);
+                          }}
+                        >
+                          <img
+                            className={classes.editButtonCircle}
+                            src={MenuIcon}
+                            width="25"
+                            alt="editIcon"
+                          />
+                        </div>
+
+                        <Typography className={classes.bodytext}>
+                          {body}
+                        </Typography>
+                      </div>
+                    </Card>
+                  </div>
                 </Grid>
               </Grid>
-            </Fragment>
-          );
-        })}
-      </Grid>
-    );
-  }
-}
+            </Grid>
+          </Fragment>
+        );
+      })}
+    </Grid>
+  );
+};
 
 Comments.propTypes = {
   comments: PropTypes.array.isRequired,
@@ -183,17 +175,4 @@ Comments.propTypes = {
   getComment: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  scream: state.data.scream,
-  UI: state.UI,
-  user: state.user,
-});
-
-const mapActionsToProps = {
-  getComment,
-};
-
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(Comments));
+export default withStyles(styles)(Comments);
