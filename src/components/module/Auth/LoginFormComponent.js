@@ -18,7 +18,7 @@ const LoginFormComponent = ({
   setPassword,
 }) => {
   return (
-    <form noValidate onSubmit={handleSubmitLogin}>
+    <React.Fragment>
       <div className={classes.textfields}>
         <div className={classes.smallText} onClick={() => handleToggle()}>
           Noch kein Mitglied? <span className="Terms">Registrieren</span>
@@ -78,6 +78,7 @@ const LoginFormComponent = ({
           className="buttonWide buttonSign"
           disabled={loading}
           data-cy="login-user"
+          onClick={() => handleSubmitLogin()}
         >
           Anmelden
           {loading && (
@@ -93,7 +94,7 @@ const LoginFormComponent = ({
       >
         Noch kein Mitglied? <span className="Terms">Registrieren</span>
       </div>
-    </form>
+    </React.Fragment>
   );
 };
 

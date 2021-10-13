@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import "./AppDesktop.css";
@@ -134,20 +134,20 @@ console.log(process.env.REACT_APP_STAGE);
 
 window.store = store;
 
-if (token) {
-  const decodedToken = jwtDecode(token);
-  const expirationDuration = decodedToken.exp * 1000;
+// if (token) {
+//   const decodedToken = jwtDecode(token);
+//   const expirationDuration = decodedToken.exp * 1000;
 
-  if (expirationDuration < Date.now()) {
-    store.dispatch(logoutUser());
-  } else {
-    store.dispatch({ type: SET_AUTHENTICATED });
-    axios.defaults.headers.common["Authorization"] = token;
-    store.dispatch(getUserData());
-  }
-} else {
-  store.dispatch(logoutUser());
-}
+//   if (expirationDuration < Date.now()) {
+//     store.dispatch(logoutUser());
+//   } else {
+//     store.dispatch({ type: SET_AUTHENTICATED });
+//     axios.defaults.headers.common["Authorization"] = token;
+//     store.dispatch(getUserData());
+//   }
+// } else {
+//   store.dispatch(logoutUser());
+// }
 
 if (cookies.get("Cookie_settings") === "all") {
   store.dispatch(setCookies("all"));
@@ -177,6 +177,25 @@ window.addEventListener("resize", () => {
 });
 const App = () => {
   const { t } = useTranslation();
+
+  const [isAuthed, setIsAuthed] = useState(false);
+
+  const userState = () => {
+    firebase.auth().onAuthStateChanged((user) => {
+      console.log("user", user);
+      console.log("userId", user.uid);
+      if (user) {
+        store.dispatch({ type: SET_AUTHENTICATED });
+        store.dispatch(getUserData(user.email));
+      } else {
+        store.dispatch(logoutUser());
+      }
+    });
+  };
+
+  useEffect(() => {
+    userState();
+  }, [isAuthed]);
 
   const tabletNote = isTablet ? (
     <div className="tabletLandscapeNote">{t("rotate_tablet")} </div>

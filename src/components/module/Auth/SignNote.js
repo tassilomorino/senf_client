@@ -1,7 +1,9 @@
 /** @format */
 
 import React, { useState, Fragment } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import firebase from "firebase/app";
+import "firebase/auth";
 import PropTypes from "prop-types";
 import { isAndroid } from "react-device-detect";
 import Swipe from "react-easy-swipe";
@@ -227,6 +229,7 @@ const SignNote = ({ classes }) => {
   const [sex, setSex] = useState("");
 
   const { loading, errors } = useSelector((state) => state.UI);
+  const dispatch = useDispatch();
 
   // componentWillReceiveProps(nextProps) {
   //   if (nextProps.UI.errors) {
@@ -234,13 +237,12 @@ const SignNote = ({ classes }) => {
   //   }
   // }
 
-  const handleSubmitLogin = (event) => {
-    event.preventDefault();
-    const userData = {
-      email: email,
-      password: password,
-    };
-    alert(userData.email);
+  const handleSubmitLogin = async (event) => {
+    const userInfo = await firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password);
+    console.log(userInfo);
+
     // dispatch(loginUser(userData, props.history))
   };
 

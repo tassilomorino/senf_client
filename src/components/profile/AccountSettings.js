@@ -38,7 +38,7 @@ const AccountSettings = () => {
   };
 
   const deleteAccount = () => {
-    const userHandle = this.props.user.credentials.handle;
+    const userHandle = this.props.user.handle;
 
     var link =
       "mailto:dein@senf.koeln" +

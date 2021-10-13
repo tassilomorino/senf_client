@@ -27,7 +27,7 @@ export const likeScream = (screamId, user) => async (dispatch) => {
 
   const likeDocument = await db
     .collection("likes")
-    .where("userHandle", "==", user.credentials.handle)
+    .where("userHandle", "==", user.handle)
     .where("screamId", "==", screamId)
     .limit(1)
     .get();
@@ -48,10 +48,10 @@ export const likeScream = (screamId, user) => async (dispatch) => {
     } else {
       db.collection("likes").add({
         screamId: screamId,
-        userHandle: user.credentials.handle,
+        userHandle: user.handle,
         createdAt: new Date().toISOString(),
-        sex: user.credentials.sex,
-        age: user.credentials.age,
+        sex: user.sex,
+        age: user.age,
       });
 
       scream.likeCount++;
@@ -87,7 +87,7 @@ export const unlikeScream = (screamId, user) => async (dispatch) => {
 
   const likeDocument = await db
     .collection("likes")
-    .where("userHandle", "==", user.credentials.handle)
+    .where("userHandle", "==", user.handle)
     .where("screamId", "==", screamId)
     .limit(1)
     .get();

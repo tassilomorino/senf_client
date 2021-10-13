@@ -1,4 +1,6 @@
 /** @format */
+import firebase from "firebase/app";
+import "firebase/firestore";
 
 import {
   SET_USER,
@@ -80,22 +82,40 @@ export const resetPassword = (email, history) => (dispatch) => {
 };
 
 export const logoutUser = () => (dispatch) => {
-  localStorage.removeItem("FBIdToken");
-  delete axios.defaults.headers.common["Authorization"];
+  firebase.auth().signOut();
   dispatch({ type: SET_UNAUTHENTICATED });
 };
 
-export const getUserData = () => (dispatch) => {
-  dispatch({ type: LOADING_USER });
-  axios
-    .get("/user")
-    .then((res) => {
-      dispatch({
-        type: SET_USER,
-        payload: res.data,
-      });
-    })
-    .catch((err) => console.log(err));
+export const getUserData = (email) => async (dispatch) => {
+  const db = firebase.firestore();
+  const userDocument = await db
+    .collection("users")
+    .where("email", "==", email)
+    .get();
+
+  userDocument.docs.forEach((doc) => {
+    console.log(doc.data());
+    const userData = doc.data();
+    userData.likes = [];
+    dispatch(getUserLikes(userData));
+  });
+};
+
+export const getUserLikes = (userData) => async (dispatch) => {
+  console.log(userData);
+  const db = firebase.firestore();
+
+  const userLikes = await db
+    .collection("likes")
+    .where("userHandle", "==", userData.handle)
+    .get();
+
+  userLikes.docs.forEach((doc) => userData.likes.push({ ...doc.data() }));
+
+  dispatch({
+    type: SET_USER,
+    payload: userData,
+  });
 };
 
 // export const uploadImage = formData => dispatch => {
