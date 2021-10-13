@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import Logo from "../../../images/logo.png";
 
-import SignNote from "../../profile/SignNote";
+import SignNote from "../Auth/SignNote";
 
 //ICONS
 import Insta from "../../../images/icons/socialmedia/insta.png";

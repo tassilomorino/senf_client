@@ -35,9 +35,6 @@ const AccountSettings = () => {
 
   const handleLogout = () => {
     dispatch(logoutUser());
-    this.setState({
-      order: 1,
-    });
   };
 
   const deleteAccount = () => {
