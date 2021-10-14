@@ -248,9 +248,9 @@ const styles = {
 };
 
 class Account extends Component {
-  constructor(props) {
+  /* constructor(props) {
     super(props);
-  }
+  } */
   state = {
     open: false,
     myScreams: [],
@@ -355,7 +355,12 @@ class Account extends Component {
         />
 
         {this.state.order === 1 && (
-          <div className="MainAnimationChannels">
+          <MainAnimations
+          transition="0.5s"
+          display="block"
+          paddingBottom="2em"
+          height="100%"
+          >
             {!loadingMyScreams && this.state.open && (
               <IdeaList
                 type="myIdeas"
@@ -372,7 +377,7 @@ class Account extends Component {
                 dataFinalMap={dataFinalMap}
               ></IdeaList>
             )}
-          </div>
+          </MainAnimations>
         )}
 
         {this.state.order === 2 && (
