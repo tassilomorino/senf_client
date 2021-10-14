@@ -17,7 +17,6 @@ import {
 // MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";
 import Dialog from "@material-ui/core/Dialog";
-import Typography from "@material-ui/core/Typography";
 import Slide from "@material-ui/core/Slide";
 import IdeaList from "../templates/IdeaList";
 import AccountHeader from "./AccountHeader";
@@ -25,6 +24,7 @@ import AccountHeader from "./AccountHeader";
 import styled from "styled-components";
 import AccountSettings from "./AccountSettings";
 import ExpandButton from "../module/CustomButtons/ExpandButton";
+import MainAnimations from "../module/Animations/MainAnimations";
 
 const Break = styled.div`
   position: relative;
@@ -378,9 +378,13 @@ class Account extends Component {
         {this.state.order === 2 && (
           <React.Fragment>
             {isMobileCustom && <Break />}
-            <div className="MainAnimationChannels">
+            <MainAnimations
+              transition="0.5s"
+              display="block"
+              paddingBottom="2em"
+              height="100%">
               <AccountSettings />
-            </div>
+            </MainAnimations>
           </React.Fragment>
         )}
       </div>
