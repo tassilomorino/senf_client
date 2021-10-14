@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
 //COMPONENTS
-import SignNote from "../../profile/SignNote";
+import SignNote from "../Auth/SignNote";
 import Account from "../../profile/Account";
 import InlineInformationPage from "../../infocomponents/InlineInformationPage";
 import Tabs from "../Tabs/Tabs";

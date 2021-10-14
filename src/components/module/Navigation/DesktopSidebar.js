@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
 //Components
-import SignNote from "../../profile/SignNote";
+import SignNote from "../Auth/SignNote";
 import InlineInformationPageDesktop from "../../infocomponents/InlineInformationPageDesktop";
 import TopicFilter from "../../module/Filters/TopicFilter";
 import Account from "../../profile/Account";

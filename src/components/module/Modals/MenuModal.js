@@ -24,8 +24,10 @@ const Line = styled.div`
   position: relative;
 `;
 const MenuModal = ({ setMenuOpen, screamId, userHandle }) => {
-  const { authenticated, credentials } = useSelector((state) => state.user);
-  const { handle, isAdmin, isModerator } = credentials;
+  const { authenticated, handle, isAdmin, isModerator } = useSelector(
+    (state) => state.user
+  );
+
   const { scream } = useSelector((state) => state.data);
   const [editOpen, setEditOpen] = useState(false);
   const [adminEditOpen, setAdminEditOpen] = useState(false);

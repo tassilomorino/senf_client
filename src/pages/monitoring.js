@@ -50,7 +50,7 @@ export class monitoring extends Component {
       longitude3: 7.17,
       loadingPage: false,
       hasNextPage: true,
-      userHandle: this.props.user.credentials.handle,
+      userHandle: this.props.user.handle,
       screamIdParam: null,
       projectIdParam: null,
       count: 0,
