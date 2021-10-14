@@ -5,10 +5,10 @@ const MainAnimation = styled.div`
   opacity: 1;
   animation: cardanimation 0.8s ease-in-out;
   height: ${(props) => props.height && props.height};
-  margin-top: ${(props) => props.marginTop};
-  padding-top: ${(props) => props.paddingTop};
-  transition: ${(props) => props.transition};
-  display: ${(props) => props.display };
+  margin-top: ${(props) => props.marginTop && props.marginTop};
+  padding-top: ${(props) => props.paddingTop && props.paddingTop};
+  transition: ${(props) => props.transition && props.transition};
+  display: ${(props) => props.display && props.display};
 `
 
 /* .MainAnimation {
@@ -34,24 +34,24 @@ const MainAnimation = styled.div`
 
 
 const MainAnimations = ({
-    children,
-    height,
-    marginTop,
-    paddingTop,
-    transition,
-    display
+  children,
+  height,
+  marginTop,
+  paddingTop,
+  transition,
+  display
 }) => {
-    return (
-        <MainAnimation
-            height={height}
-            margintop={marginTop}
-            paddingtop={paddingTop}
-            transition={transition}
-            display={display}
-        >
-            {children}
-        </MainAnimation>
-    )
+  return (
+    <MainAnimation
+      height={height}
+      margintop={marginTop}
+      paddingtop={paddingTop}
+      transition={transition}
+      display={display}
+    >
+      {children}
+    </MainAnimation>
+  )
 }
 
 export default MainAnimations
