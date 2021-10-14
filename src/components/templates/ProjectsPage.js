@@ -8,16 +8,7 @@ import styled from "styled-components";
 import { ProjectCard, CreateProject } from "../module/ListItems/ProjectCard";
 
 import _ from "lodash";
-
-const MainAnimationChannels = styled.div`
-  opacity: 1;
-  display: block;
-  transition: 0.5s;
-  padding-bottom: 2em;
-  height:100%;
-
-  animation: cardanimation 0.8s ease-in-out;
-`
+import MainAnimations from "../module/Animations/MainAnimations";
 
 const HomeHeadermain = styled.div`
   position: relative;
@@ -33,11 +24,6 @@ const HomeHeadermain = styled.div`
   animation: enteranimation .5s;
   z-index:99
 `
-
-const MainAnimation = styled.div`
-  opacity: 1;
-  animation: cardanimation 0.8s ease-in-out;
-`
 const ProjectRoomDescription = styled.div`
   font-size: 14pt;
   color: rgb(65, 67, 69);
@@ -47,7 +33,6 @@ const ProjectRoomDescription = styled.div`
   padding-bottom: 15px;
   z-index: 0;
 `
-
 const NoIdeasYet = styled.div`
   position: relative;
   font-size: 15pt;
@@ -57,17 +42,21 @@ const NoIdeasYet = styled.div`
   text-align: center;
   z-index: 10;
 `
-
 const ProjectsPage = ({ loadingProjects, order, projects }) => {
   const { t } = useTranslation();
 
   return (
-    <MainAnimationChannels>
+    <MainAnimations
+      transition="0.5s"
+      display="block"
+      paddingBottom="2em"
+      height="100%"
+    >
       {order === 2 && (
         <div>
           <HomeHeadermain></HomeHeadermain>
 
-          <MainAnimation>
+          <MainAnimations>
             <ProjectRoomDescription>
               {t("projectrooms_description")}
             </ProjectRoomDescription>
@@ -77,17 +66,18 @@ const ProjectsPage = ({ loadingProjects, order, projects }) => {
                 <ProjectCard key={projects.project} project={projects} />
               ))
             ) : (
-              <MainAnimation>
+              <MainAnimations>
                 <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>
-              </MainAnimation>
+              </MainAnimations>
             )}
             {!loadingProjects && projects.length === 0 && (
-              <MainAnimation>
+              <MainAnimations>
                 <NoIdeasYet>
                   {t("projectrooms_loading_error")}
                 </NoIdeasYet>
-              </MainAnimation>
+              </MainAnimations>
             )}
+
             <br />
             <br />
             <br />
@@ -97,10 +87,10 @@ const ProjectsPage = ({ loadingProjects, order, projects }) => {
             <br />
             <br />
             <br />
-          </MainAnimation>
+          </MainAnimations>
         </div>
       )}
-    </MainAnimationChannels>
+    </MainAnimations>
   );
 };
 
