@@ -11,7 +11,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 
 // COMPONENTS
 import LikeButton from "../../module/CustomButtons/LikeButton";
-import SignNote from "../Auth/SignNote";
+import RegistrationAndLogin from "../Auth/RegistrationAndLogin";
 
 // Icons
 import ChatBorder from "../../../images/icons/chat.png";
@@ -247,7 +247,7 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
           projectsData={projectsData}
         >
           <MyButton>
-            {!authenticated && <SignNote />}
+            {!authenticated && <RegistrationAndLogin />}
             <img src={ChatBorder} width="100%" alt="ChatIcon" />
           </MyButton>
           <Engagement>{commentCount}</Engagement>

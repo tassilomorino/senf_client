@@ -184,15 +184,6 @@ const styles = {
     textAlign: "center",
   },
 
-  forgotWrapper: {
-    position: "relative",
-    marginTop: "2em",
-    textAlign: "center",
-    width: "100vw",
-    height: "1em",
-    fontSize: "12pt",
-    backgroundColor: "green",
-  },
   forgot: {
     position: "relative",
     marginTop: "1em",

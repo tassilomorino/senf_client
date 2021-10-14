@@ -1251,19 +1251,6 @@ input:focus {
   font-family: "Playfair Display", serif;
 }
 
-.SignNote {
-  position: fixed;
-  z-index: 999;
-  margin-top: 1.5em;
-  font-size: 28pt;
-  color: #414345;
-  width: 90vw;
-  top: 5vh;
-  left: 5vw;
-  text-align: center;
-  font-family: "Playfair Display", serif;
-  animation: enteranimation 1.5s;
-}
 
 
 

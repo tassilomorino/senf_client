@@ -78,7 +78,7 @@ const LoginFormComponent = ({
           className="buttonWide buttonSign"
           disabled={loading}
           data-cy="login-user"
-          onClick={() => handleSubmitLogin()}
+          onClick={handleSubmitLogin}
         >
           Anmelden
           {loading && (

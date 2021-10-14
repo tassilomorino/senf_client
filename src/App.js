@@ -184,9 +184,12 @@ const App = () => {
     firebase.auth().onAuthStateChanged((user) => {
       console.log("user", user);
       console.log("userId", user.uid);
-      if (user) {
+
+      if (user && user.emailVerified) {
         store.dispatch({ type: SET_AUTHENTICATED });
         store.dispatch(getUserData(user.email));
+      } else if (user) {
+        //a new user is registrating
       } else {
         store.dispatch(logoutUser());
       }

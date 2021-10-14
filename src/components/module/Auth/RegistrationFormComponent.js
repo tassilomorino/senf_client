@@ -30,7 +30,7 @@ const RegistrationFormComponent = ({
   setSex,
 }) => {
   return (
-    <form noValidate onSubmit={handleSubmitRegister}>
+    <form noValidate>
       <div className={classes.textfields}>
         <div className={classes.smallText} onClick={() => handleToggle()}>
           Bereits Mitglied?{" "}
@@ -278,6 +278,7 @@ const RegistrationFormComponent = ({
           type="submit"
           className="buttonWide buttonSign"
           disabled={loading}
+          onClick={handleSubmitRegister}
         >
           Registrieren
           {loading && (

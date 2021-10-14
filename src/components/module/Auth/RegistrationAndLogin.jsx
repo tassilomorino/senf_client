@@ -4,14 +4,11 @@ import React, { useState, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import firebase from "firebase/app";
 import "firebase/auth";
+import { useHistory } from "react-router";
+
 import PropTypes from "prop-types";
-import { isAndroid } from "react-device-detect";
 import Swipe from "react-easy-swipe";
 
-//Redux
-import { loginUser, signupUser } from "../../../redux/actions/userActions";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
 
 import ExpandButton from "../CustomButtons/ExpandButton";
 //Icons
@@ -23,9 +20,6 @@ import Wirke_mit from "../../../images/headlines/Wirke_mit.png";
 import withStyles from "@material-ui/core/styles/withStyles";
 import CloseIcon from "@material-ui/icons/Close";
 import Dialog from "@material-ui/core/Dialog";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/FormControl";
 import Slide from "@material-ui/core/Slide";
 import RegistrationFormComponent from "./RegistrationFormComponent";
 import LoginFormComponent from "./LoginFormComponent";
@@ -217,7 +211,7 @@ const styles = {
   },
 };
 
-const SignNote = ({ classes }) => {
+const RegistrationAndLogin = ({ classes }) => {
   const [open, setOpen] = useState(false);
   const [toggleSignup, setToggleSignup] = useState(false);
   const [email, setEmail] = useState("");
@@ -230,6 +224,7 @@ const SignNote = ({ classes }) => {
 
   const { loading, errors } = useSelector((state) => state.UI);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   // componentWillReceiveProps(nextProps) {
   //   if (nextProps.UI.errors) {
@@ -238,6 +233,7 @@ const SignNote = ({ classes }) => {
   // }
 
   const handleSubmitLogin = async (event) => {
+    event.preventDefault();
     const userInfo = await firebase
       .auth()
       .signInWithEmailAndPassword(email, password);
@@ -246,19 +242,35 @@ const SignNote = ({ classes }) => {
     // dispatch(loginUser(userData, props.history))
   };
 
-  const handleSubmitRegister = (event) => {
+  const handleSubmitRegister = async (event) => {
     event.preventDefault();
+    const userInfo = await firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(async (userCredential) => {
+        const db = firebase.firestore();
 
-    const newUserData = {
-      email: email,
-      password: password,
-      confirmPassword: confirmPassword,
-      handle: handle,
-      age: age,
-      sex: sex,
-    };
-    alert(newUserData.email);
-    // props.signupUser(newUserData, props.history);
+        if (userCredential) {
+          await db.collection("users").doc(handle).set({
+            handle: handle,
+            email: email,
+            age: age,
+            sex: sex,
+            createdAt: new Date().toISOString(),
+            userId: userCredential.user.uid,
+          });
+        }
+      })
+      .then(async () => {
+        var user = firebase.auth().currentUser;
+        await user.sendEmailVerification();
+      })
+      .then(async () => {
+        const emailWrapper = {
+          email: email,
+        };
+        history.push("/verify", emailWrapper);
+      });
   };
 
   const handleToggle = () => {
@@ -278,7 +290,7 @@ const SignNote = ({ classes }) => {
     <Fragment>
       <ExpandButton
         handleButtonClick={() => setOpen(true)}
-        data-cy="open-signnote"
+        data-cy="open-RegistrationAndLogin"
       ></ExpandButton>
       <Dialog
         open={open}
@@ -338,7 +350,7 @@ const SignNote = ({ classes }) => {
   );
 };
 
-SignNote.propTypes = {
+RegistrationAndLogin.propTypes = {
   classes: PropTypes.object.isRequired,
   loginUser: PropTypes.func.isRequired,
   signupUser: PropTypes.func.isRequired,
@@ -346,15 +358,5 @@ SignNote.propTypes = {
   user: PropTypes.object.isRequired,
   UI: PropTypes.object.isRequired,
 };
-const mapStateToProps = (state) => ({
-  user: state.user,
-  UI: state.UI,
-});
-const mapActionsToProps = {
-  loginUser,
-  signupUser,
-};
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(withRouter(SignNote)));
+
+export default (withStyles(styles)(RegistrationAndLogin));
