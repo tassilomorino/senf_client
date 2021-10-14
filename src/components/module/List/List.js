@@ -9,6 +9,7 @@ import {
   NoMoreProjectsContent,
 } from "./NoMoreContent";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
+import MainAnimations from "../Animations/MainAnimations";
 
 const List = ({
   type,
@@ -19,12 +20,14 @@ const List = ({
   project,
   myScreams,
 }) => {
-  
+
   return (
     !loading && (
       <React.Fragment>
         {dropdown === "newest" && (
-          <div className={dropdown === "newest" ? "MainAnimation" : ""}>
+          // was the logic here double? if not "newest" then this {element} will be skipped
+          // <div className={dropdown === "newest" ? "MainAnimation" : ""}>
+          <MainAnimations>
             {_.orderBy(dataFinal, "createdAt", "desc").map((scream) => (
               <IdeaCard
                 loading={loading}
@@ -33,11 +36,13 @@ const List = ({
                 projectsData={projectsData}
               />
             ))}
-          </div>
+          </MainAnimations>
         )}
 
         {dropdown === "hottest" && (
-          <div className={dropdown === "hottest" ? "MainAnimation" : ""}>
+          // same as for "newest"?
+          // <div className={dropdown === "hottest" ? "MainAnimation" : ""}>
+          <MainAnimations>
             {_.orderBy(dataFinal, "likeCount", "desc").map((scream) => (
               <IdeaCard
                 loading={loading}
@@ -46,7 +51,7 @@ const List = ({
                 projectsData={projectsData}
               />
             ))}
-          </div>
+          </MainAnimations>
         )}
 
         {type === "myIdeas" ? (
