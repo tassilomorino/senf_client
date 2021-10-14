@@ -11,7 +11,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Slide from "@material-ui/core/Slide";
 
 //HANDLER
-import SignNote from "../profile/SignNote";
+import SignNote from "../module/Auth/SignNote";
 
 //ICONS
 import AddIcon from "../../images/icons/plus_white.png";

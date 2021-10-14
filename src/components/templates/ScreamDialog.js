@@ -36,7 +36,7 @@ import { openProject } from "../../redux/actions/projectActions";
 import { clearErrors } from "../../redux/actions/errorsActions";
 
 //COMPONENTS
-import SignNote from "../profile/SignNote";
+import SignNote from "../module/Auth/SignNote";
 
 //ANIMATION
 import lamploader from "../../images/lamp.png";

@@ -260,7 +260,7 @@ class Account extends Component {
   };
 
   handleOpen = () => {
-    const userHandle = this.props.user.credentials.handle;
+    const userHandle = this.props.user.handle;
 
     this.fetchMyScreams(userHandle);
 
@@ -325,9 +325,7 @@ class Account extends Component {
       handleTopicSelector,
       topicsSelected,
       dataFinalMap,
-      user: {
-        credentials: { handle },
-      },
+      user: { handle },
     } = this.props;
 
     const { loadingMyScreams, mapViewport, myScreams } = this.props.data;

@@ -27,8 +27,10 @@ const CommentMenuModal = ({
   userHandle,
 }) => {
   console.log(commentId, userHandle);
-  const { authenticated, credentials } = useSelector((state) => state.user);
-  const { handle, isAdmin, isModerator } = credentials;
+  const { authenticated, handle, isAdmin, isModerator } = useSelector(
+    (state) => state.user
+  );
+
   const user = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
