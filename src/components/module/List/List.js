@@ -20,7 +20,7 @@ const List = ({
   project,
   myScreams,
 }) => {
-  const { t } = useTranslation();
+  
   return (
     !loading && (
       <React.Fragment>
