@@ -18,6 +18,23 @@ import Altersgruppencover from "../../images/altersgruppencover.png";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import MainAnimations from "../module/Animations/MainAnimations";
+import styled from "styled-components";
+
+const Covers = styled.div`
+  margin-top: 2.5%;
+  margin-left: 2.5%;
+  width: 46.25%;
+  height: auto;
+  z-index: 9;
+  float: left;
+  position: relative;
+  animation: ${(props) => props.animation}
+`
+const CoverImg = styled.img`
+  width: 100%;
+  alt: "Themencover";
+  src: ${(props) => props.src}
+`
 
 const InsightsPage = ({ order }) => {
   const db = firebase.firestore();
@@ -77,23 +94,23 @@ const InsightsPage = ({ order }) => {
           likesLength={likesLength}
           commentslength={commentsLength}
         />
-        <div className="cover cover1">
-          <img src={Themencover} width="100%" alt="Themencover" />
+        <Covers animation="coverAnimation 0.5s ease-in-out">
+          <CoverImg src={Themencover} />
           <ThemenDialog screams={screams} />
-        </div>
-        <div className="cover cover2">
-          <img src={Stadtteilcover} width="100%" alt="Themencover" />
+        </Covers>
+        <Covers animation="coverAnimation 0.75s ease-in-out">
+          <CoverImg src={Stadtteilcover} />
           <StadttteilDialog screams={screams} />
-        </div>
+        </Covers>
 
-        <div className="cover cover4">
+        <Covers animation="coverAnimation 1.25s ease-in-out">
           <AltersgruppeDialog />
-          <img src={Altersgruppencover} width="100%" alt="Themencover" />
-        </div>
-        <div className="cover cover3">
-          <img src={Keywordscover} width="100%" alt="Themencover" />{" "}
+          <CoverImg src={Altersgruppencover} />
+        </Covers>
+        <Covers animation="coverAnimation 1s ease-in-out">
+          <CoverImg src={Keywordscover} />{" "}
           <WordcloudDialog />
-        </div>
+        </Covers>
       </MainAnimations>
     </>
   ) : null;
