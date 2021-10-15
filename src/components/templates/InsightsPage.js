@@ -33,7 +33,8 @@ const Covers = styled.div`
 const CoverImg = styled.img`
   width: 100%;
   alt: "Themencover";
-  src: ${(props) => props.src}
+  src: ${(props) => props.src};
+  //border-radius: 25px;
 `
 
 const InsightsPage = ({ order }) => {
