@@ -12,6 +12,7 @@ const RippleContainer = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: 10;
 
   font-size: 14pt;
   font-family: Futura PT W01 Book;
