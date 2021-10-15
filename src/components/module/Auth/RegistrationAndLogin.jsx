@@ -23,6 +23,7 @@ import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 import RegistrationFormComponent from "./RegistrationFormComponent";
 import LoginFormComponent from "./LoginFormComponent";
+import { CustomIconButton } from "../CustomButtons/CustomButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -222,7 +223,12 @@ const RegistrationAndLogin = ({ classes }) => {
   const [age, setAge] = useState("");
   const [sex, setSex] = useState("");
 
-  const { loading, errors } = useSelector((state) => state.UI);
+  const [errors, setErrors]= useState(null)
+
+  const [errorMessage, setErrorMessage]= useState(null)
+
+  const [loading, setLoading] = useState(false);
+
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -234,10 +240,15 @@ const RegistrationAndLogin = ({ classes }) => {
 
   const handleSubmitLogin = async (event) => {
     event.preventDefault();
+    setLoading(true)
     const userInfo = await firebase
       .auth()
-      .signInWithEmailAndPassword(email, password);
-    console.log(userInfo);
+      .signInWithEmailAndPassword(email, password).then(()=>{
+        setLoading(false)
+      }).catch(err=>{
+        setLoading(false)
+      setErrorMessage(err.message)
+      });
 
     // dispatch(loginUser(userData, props.history))
   };
@@ -270,7 +281,9 @@ const RegistrationAndLogin = ({ classes }) => {
           email: email,
         };
         history.push("/verify", emailWrapper);
-      });
+      }).catch(err=>{
+        setErrorMessage(err.message)
+})
   };
 
   const handleToggle = () => {
@@ -300,12 +313,14 @@ const RegistrationAndLogin = ({ classes }) => {
         PaperProps={{ classes: { root: classes.paper } }}
         TransitionComponent={Transition}
       >
-        <button
-          onClick={() => setOpen(false)}
-          className="buttonRound buttonClose"
-        >
-          <CloseIcon />
-        </button>
+         <CustomIconButton
+              name="Close"
+              position="fixed"
+              margin={document.body.clientWidth > 768 ? "40px" : "10px"}
+              left="0"
+              handleButtonClick={() => setOpen(false)}
+            ></CustomIconButton>
+       
 
         <Swipe onSwipeMove={onSwipeMove.bind(this)}>
           <img
@@ -316,7 +331,9 @@ const RegistrationAndLogin = ({ classes }) => {
           {!toggleSignup ? (
             <LoginFormComponent
               classes={classes}
+              loading={loading}
               errors={errors}
+              errorMessage={errorMessage}
               handleToggle={handleToggle}
               handleSubmitLogin={handleSubmitLogin}
               setEmail={setEmail}
@@ -327,7 +344,10 @@ const RegistrationAndLogin = ({ classes }) => {
           ) : (
             <RegistrationFormComponent
               classes={classes}
+
+              loading={loading}
               errors={errors}
+              errorMessage={errorMessage}
               handleToggle={handleToggle}
               handleSubmitRegister={handleSubmitRegister}
               setEmail={setEmail}

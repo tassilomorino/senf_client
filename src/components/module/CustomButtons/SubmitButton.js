@@ -72,6 +72,8 @@ export const SubmitButton = ({
   animation,
   loading,
   disabled,
+
+  handleButtonClick,
 }) => {
   return (
     <WideButton
@@ -86,6 +88,7 @@ export const SubmitButton = ({
       animation={animation}
       loading={loading}
       disabled={disabled}
+      onClick={handleButtonClick}
     >
       {text}
       {loading && (

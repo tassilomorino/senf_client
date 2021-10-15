@@ -6,9 +6,12 @@ import {
   InputLabel,
   Select,
   TextField,
+  Typography,
 } from "@material-ui/core";
 import React from "react";
 import { isAndroid } from "react-device-detect";
+import { useTranslation } from "react-i18next";
+import { SubmitButton } from "../CustomButtons/SubmitButton";
 
 const RegistrationFormComponent = ({
   loading,
@@ -20,6 +23,7 @@ const RegistrationFormComponent = ({
   age,
   sex,
   errors,
+  errorMessage,
   handleToggle,
   handleSubmitRegister,
   setEmail,
@@ -29,6 +33,8 @@ const RegistrationFormComponent = ({
   setAge,
   setSex,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <form noValidate>
       <div className={classes.textfields}>
@@ -253,11 +259,11 @@ const RegistrationFormComponent = ({
             <option value={"diverse"}>Divers</option>
           </Select>
         </FormControl>
-        {/* {errors.handle && (
-                    <Typography className={classes.customError}>
-                      {errors.handle}
-                    </Typography>
-                  )} */}
+        {errorMessage && (
+          <Typography className={classes.customError}>
+            {errorMessage}
+          </Typography>
+        )}
         <div className={classes.data}>
           Mit der Registrierung bestätige ich, dass ich die &nbsp;
           <a className="Terms" href="/agb" target="_blank">
@@ -271,21 +277,18 @@ const RegistrationFormComponent = ({
           {/* Ich bestätige außerdem, dass ich mindestens 18 Jahre alt bin */}
         </div>
       </div>
-      <div
-        className={isAndroid ? "buttonSignWrapperAndroid" : "buttonSignWrapper"}
-      >
-        <button
-          type="submit"
-          className="buttonWide buttonSign"
-          disabled={loading}
-          onClick={handleSubmitRegister}
-        >
-          Registrieren
-          {loading && (
-            <CircularProgress size={30} className={classes.progress} />
-          )}
-        </button>
-      </div>
+      <SubmitButton
+        text={t("register")}
+        zIndex="9"
+        backgroundColor="white"
+        textColor="#353535"
+        position={isAndroid ? "relative" : "fixed"}
+        top={isAndroid && "80px"}
+        bottom={!isAndroid && "3em"}
+        loading={loading}
+        handleButtonClick={handleSubmitRegister}
+        disabled={loading}
+      />
       <div
         className={
           isAndroid ? classes.smallText_fixed_android : classes.smallText_fixed

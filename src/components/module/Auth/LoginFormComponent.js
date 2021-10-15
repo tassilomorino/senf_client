@@ -3,7 +3,9 @@
 import { CircularProgress, TextField, Typography } from "@material-ui/core";
 import React from "react";
 import { isAndroid } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 import ResetPassword from "../../profile/ResetPassword";
+import { SubmitButton } from "../CustomButtons/SubmitButton";
 
 const LoginFormComponent = ({
   loading,
@@ -12,11 +14,13 @@ const LoginFormComponent = ({
   password,
 
   errors,
+  errorMessage,
   handleToggle,
   handleSubmitLogin,
   setEmail,
   setPassword,
 }) => {
+  const { t } = useTranslation();
   return (
     <React.Fragment>
       <div className={classes.textfields}>
@@ -58,34 +62,31 @@ const LoginFormComponent = ({
 
         <ResetPassword />
 
-        {errors?.general && (
+        {errorMessage && (
           <Typography className={classes.customError}>
-            {errors.general}
+            {errorMessage}
           </Typography>
         )}
-        {errors?.emailVerified && (
+        {/* {errors?.emailVerified && (
           <Typography className={classes.customError}>
             {errors.emailVerified}
           </Typography>
-        )}
+        )} */}
       </div>
 
-      <div
-        className={isAndroid ? "buttonSignWrapperAndroid" : "buttonSignWrapper"}
-      >
-        <button
-          type="submit"
-          className="buttonWide buttonSign"
-          disabled={loading}
-          data-cy="login-user"
-          onClick={handleSubmitLogin}
-        >
-          Anmelden
-          {loading && (
-            <CircularProgress size={30} className={classes.progress} />
-          )}
-        </button>
-      </div>
+      <SubmitButton
+        text={t("login")}
+        zIndex="9"
+        backgroundColor="white"
+        textColor="#353535"
+        position={isAndroid ? "relative" : "fixed"}
+        top={isAndroid && "80px"}
+        bottom={!isAndroid && "3em"}
+        loading={loading}
+        handleButtonClick={handleSubmitLogin}
+        disabled={loading}
+      />
+
       <div
         className={
           isAndroid ? classes.smallText_fixed_android : classes.smallText_fixed

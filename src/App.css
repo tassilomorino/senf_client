@@ -1485,6 +1485,7 @@ font-size:15px !important
   top: 0;
   animation: enterScreamDialogAnimation 0.5s;
   position:absolute;
+  margin-left:0px
   
 }
 
