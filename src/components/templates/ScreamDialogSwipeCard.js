@@ -30,7 +30,7 @@ const ScreamDialogSwipeCard = ({ children, loading }) => {
     y: 0,
     scale: 1,
     transform: `translateY(${window.innerHeight / 2}px)`,
-    overflow: "none",
+    overflow: "hidden",
     touchAction: "none",
   }));
 
@@ -56,7 +56,7 @@ const ScreamDialogSwipeCard = ({ children, loading }) => {
           y: down ? my : 100,
           transform: !down ? `translateY(${0}px)` : `translateY(${0}px)`,
           touchAction: "unset",
-          overflow: "scroll",
+          overflowY: "scroll",
         });
       }
 
@@ -67,6 +67,7 @@ const ScreamDialogSwipeCard = ({ children, loading }) => {
             ? `translateY(${0}px)`
             : `translateY(${window.innerHeight / 2}px)`,
           touchAction: "none",
+          overflow: "hidden",
         });
       }
 
