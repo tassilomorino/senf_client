@@ -17,6 +17,7 @@ import Altersgruppencover from "../../images/altersgruppencover.png";
 
 import firebase from "firebase/app";
 import "firebase/firestore";
+import MainAnimations from "../module/Animations/MainAnimations";
 
 const InsightsPage = ({ order }) => {
   const db = firebase.firestore();
@@ -67,7 +68,10 @@ const InsightsPage = ({ order }) => {
 
   return order === 3 ? (
     <>
-      <div className="MainAnimation2">
+      <MainAnimations
+        height="100vh"
+        marginTop="90px"
+      >
         <Keyindicators
           screams={screams}
           likesLength={likesLength}
@@ -90,7 +94,7 @@ const InsightsPage = ({ order }) => {
           <img src={Keywordscover} width="100%" alt="Themencover" />{" "}
           <WordcloudDialog />
         </div>
-      </div>
+      </MainAnimations>
     </>
   ) : null;
 };

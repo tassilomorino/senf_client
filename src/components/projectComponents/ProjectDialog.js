@@ -5,12 +5,6 @@ import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
-// MUI Stuff
-import Dialog from "@material-ui/core/Dialog";
-
-// Images
-import lamploader from "../../images/lamp.png";
-
 //MAPSTUFF
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -28,6 +22,7 @@ import IdeaList from "../templates/IdeaList";
 import ProjectHeader from "../module/Navigation/ProjectHeader";
 import ProjectInfo from "./ProjectInfo";
 import styled from "styled-components";
+import MainAnimations from "../module/Animations/MainAnimations";
 
 const Break = styled.div`
   position: relative;
@@ -257,7 +252,12 @@ class ProjectDialog extends Component {
           />
 
           {this.state.order === 1 && (
-            <div className="MainAnimationChannels">
+            <MainAnimations
+              transition="0.5s"
+              display="block"
+              paddingBottom="2em"
+              height="100%"
+            >
               <IdeaList
                 type="projectIdeas"
                 loading={loading}
@@ -275,13 +275,18 @@ class ProjectDialog extends Component {
                 topicsSelected={topicsSelected}
                 dataFinalMap={dataFinalMap}
               ></IdeaList>
-            </div>
+            </MainAnimations>
           )}
           {this.state.order === 2 && (
             <React.Fragment>
               <Break />
 
-              <div className="MainAnimationChannels">
+              <MainAnimations
+                transition="0.5s"
+                display="block"
+                paddingBottom="2em"
+                height="100%"
+              >
                 <ProjectInfo
                   description={description}
                   weblink={weblink}
@@ -291,17 +296,22 @@ class ProjectDialog extends Component {
                   owner={owner}
                 />
                 <br />
-              </div>
+              </MainAnimations>
             </React.Fragment>
           )}
           {this.state.order === 3 && (
             <React.Fragment>
               <Break />
-              <div className="MainAnimationChannels">
+              <MainAnimations
+                transition="0.5s"
+                display="block"
+                paddingBottom="2em"
+                height="100%"
+                >
                 <CalendarComponent
                   projectScreams={this.props.project.screams}
                 ></CalendarComponent>
-              </div>
+              </MainAnimations>
             </React.Fragment>
           )}
         </div>

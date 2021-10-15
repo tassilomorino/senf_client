@@ -17,7 +17,6 @@ import {
 // MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";
 import Dialog from "@material-ui/core/Dialog";
-import Typography from "@material-ui/core/Typography";
 import Slide from "@material-ui/core/Slide";
 import IdeaList from "../templates/IdeaList";
 import AccountHeader from "./AccountHeader";
@@ -25,6 +24,7 @@ import AccountHeader from "./AccountHeader";
 import styled from "styled-components";
 import AccountSettings from "./AccountSettings";
 import ExpandButton from "../module/CustomButtons/ExpandButton";
+import MainAnimations from "../module/Animations/MainAnimations";
 
 const Break = styled.div`
   position: relative;
@@ -248,9 +248,9 @@ const styles = {
 };
 
 class Account extends Component {
-  constructor(props) {
+  /* constructor(props) {
     super(props);
-  }
+  } */
   state = {
     open: false,
     myScreams: [],
@@ -353,7 +353,12 @@ class Account extends Component {
         />
 
         {this.state.order === 1 && (
-          <div className="MainAnimationChannels">
+          <MainAnimations
+          transition="0.5s"
+          display="block"
+          paddingBottom="2em"
+          height="100%"
+          >
             {!loadingMyScreams && this.state.open && (
               <IdeaList
                 type="myIdeas"
@@ -370,15 +375,19 @@ class Account extends Component {
                 dataFinalMap={dataFinalMap}
               ></IdeaList>
             )}
-          </div>
+          </MainAnimations>
         )}
 
         {this.state.order === 2 && (
           <React.Fragment>
             {isMobileCustom && <Break />}
-            <div className="MainAnimationChannels">
+            <MainAnimations
+              transition="0.5s"
+              display="block"
+              paddingBottom="2em"
+              height="100%">
               <AccountSettings />
-            </div>
+            </MainAnimations>
           </React.Fragment>
         )}
       </div>
