@@ -5,10 +5,10 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 //Components
-import { ProjectCard, CreateProject } from "../module/ListItems/ProjectCard";
+import { ProjectCard, CreateProject } from "../molecules/Cards/ProjectCard";
 
 import _ from "lodash";
-import MainAnimations from "../module/Animations/MainAnimations";
+import MainAnimations from "../atoms/Animations/MainAnimations";
 
 const HomeHeadermain = styled.div`
   position: relative;
@@ -21,9 +21,9 @@ const HomeHeadermain = styled.div`
   color: white;
   text-align: left;
   font-family: "Playfair Display", serif;
-  animation: enteranimation .5s;
-  z-index:99
-`
+  animation: enteranimation 0.5s;
+  z-index: 99;
+`;
 const ProjectRoomDescription = styled.div`
   font-size: 14pt;
   color: rgb(65, 67, 69);
@@ -32,7 +32,7 @@ const ProjectRoomDescription = styled.div`
   margin-left: 5%;
   padding-bottom: 15px;
   z-index: 0;
-`
+`;
 const NoIdeasYet = styled.div`
   position: relative;
   font-size: 15pt;
@@ -41,7 +41,7 @@ const NoIdeasYet = styled.div`
   margin-left: 10%;
   text-align: center;
   z-index: 10;
-`
+`;
 const ProjectsPage = ({ loadingProjects, order, projects }) => {
   const { t } = useTranslation();
 
@@ -72,9 +72,7 @@ const ProjectsPage = ({ loadingProjects, order, projects }) => {
             )}
             {!loadingProjects && projects.length === 0 && (
               <MainAnimations>
-                <NoIdeasYet>
-                  {t("projectrooms_loading_error")}
-                </NoIdeasYet>
+                <NoIdeasYet>{t("projectrooms_loading_error")}</NoIdeasYet>
               </MainAnimations>
             )}
 

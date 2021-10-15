@@ -26,18 +26,18 @@ import { clearErrors } from "../redux/actions/errorsActions";
 import lamploader from "../images/lamp.png";
 
 import InsightsPage from "../components/templates/InsightsPage";
-import DesktopSidebar from "../components/module/Navigation/DesktopSidebar";
+import DesktopSidebar from "../components/molecules/Navigation/DesktopSidebar";
 
 import Cookies from "universal-cookie";
-import Topbar from "../components/module/Navigation/Topbar";
-import MapDesktop from "../components/module/map/MapDesktop";
+import Topbar from "../components/molecules/Navigation/Topbar";
+import MapDesktop from "../components/atoms/map/MapDesktop";
 import IdeaList from "../components/templates/IdeaList";
 import ProjectsPage from "../components/templates/ProjectsPage";
 import ScreamDialog from "../components/templates/ScreamDialog";
-import ProjectDialog from "../components/projectComponents/ProjectDialog";
+import ProjectDialog from "../components/organisms/Projects/ProjectDialog";
 
 import styled from "styled-components";
-import ThanksForTheVote from "../components/module/Backgrounds/ThanksForTheVote";
+import ThanksForTheVote from "../components/atoms/Backgrounds/ThanksForTheVote";
 const cookies = new Cookies();
 
 const styles = {};
