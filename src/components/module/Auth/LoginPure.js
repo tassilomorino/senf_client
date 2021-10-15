@@ -297,37 +297,17 @@ const LoginPure = ({ classes }) => {
             className={classes.headline}
             alt="wirke_mit_headline"
           />
-          {!toggleSignup ? (
-            <LoginFormComponent
-              classes={classes}
-              errors={errors}
-              handleToggle={handleToggle}
-              handleSubmitLogin={handleSubmitLogin}
-              setEmail={setEmail}
-              setPassword={setPassword}
-              email={email}
-              password={password}
-            />
-          ) : (
-            <RegistrationFormComponent
-              classes={classes}
-              errors={errors}
-              handleToggle={handleToggle}
-              handleSubmitRegister={handleSubmitRegister}
-              setEmail={setEmail}
-              setPassword={setPassword}
-              setConfirmPassword={setConfirmPassword}
-              setHandle={setHandle}
-              setAge={setAge}
-              setSex={setSex}
-              email={email}
-              password={password}
-              confirmPassword={confirmPassword}
-              handle={handle}
-              age={age}
-              sex={sex}
-            />
-          )}
+
+          <LoginFormComponent
+            classes={classes}
+            errors={errors}
+            handleToggle={handleToggle}
+            handleSubmitLogin={handleSubmitLogin}
+            setEmail={setEmail}
+            setPassword={setPassword}
+            email={email}
+            password={password}
+          />
         </Swipe>
       </Dialog>
     </Fragment>
