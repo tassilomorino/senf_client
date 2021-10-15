@@ -30,7 +30,7 @@ const ScreamDialogSwipeCard = ({ children, loading }) => {
     y: 0,
     scale: 1,
     transform: `translateY(${window.innerHeight / 2}px)`,
-    overflow: "scroll",
+    overflow: "none",
     touchAction: "none",
   }));
 
@@ -48,14 +48,19 @@ const ScreamDialogSwipeCard = ({ children, loading }) => {
 
   const bind = useDrag(
     ({ down, movement: [, my], offset: [, y] }) => {
+      const el = document.querySelector(".screamDialogDrag");
+      // get scroll position in px
+
       if (my < -100) {
         set({
           y: down ? my : 100,
           transform: !down ? `translateY(${0}px)` : `translateY(${0}px)`,
           touchAction: "unset",
+          overflow: "scroll",
         });
       }
-      if (my > 150) {
+
+      if (el.scrollTop < 30 && my > 150) {
         set({
           y: down ? my : window.innerHeight - 120,
           transform: down
