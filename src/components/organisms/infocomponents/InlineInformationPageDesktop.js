@@ -70,12 +70,12 @@ const InlineInformationPageDesktop = () => {
           <div className="inlineInfoIcon">
             <img src={Info} width="35" alt="EndImage" />
 
-            <span className="inlineInfoIconText">Infos</span>
+            <span className="inlineInfoIconText"> {t("info")}</span>
           </div>
         </div>
 
         {!loading &&
-        (cookie_settings === "all" || cookie_settings === "minimum") ? (
+          (cookie_settings === "all" || cookie_settings === "minimum") ? (
           <Dialog
             scroll={"paper"}
             open={openInfoPage}
