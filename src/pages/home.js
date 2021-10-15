@@ -3,7 +3,9 @@
 import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
+import { compose } from 'redux'
 import { connect } from "react-redux";
+import { withTranslation } from 'react-i18next';
 import {
   getScreams,
   closeScream,
@@ -37,6 +39,7 @@ import ScreamDialog from "../components/templates/ScreamDialog";
 import ProjectDialog from "../components/organisms/Projects/ProjectDialog";
 
 import styled from "styled-components";
+
 import ThanksForTheVote from "../components/atoms/Backgrounds/ThanksForTheVote";
 const cookies = new Cookies();
 
@@ -227,27 +230,29 @@ export class home extends Component {
 
     const dataFinalMap = this.props.UI.openProject
       ? project.screams.filter(
-          ({ Thema, status }) =>
-            this.state.topicsSelected.includes(Thema) && status === "None"
-        )
+        ({ Thema, status }) =>
+          this.state.topicsSelected.includes(Thema) && status === "None"
+      )
       : myScreams !== null
-      ? myScreams.filter(
+        ? myScreams.filter(
           ({ Thema, status }) =>
             this.state.topicsSelected.includes(Thema) && status === "None"
         )
-      : screams.filter(
+        : screams.filter(
           ({ Thema, status }) =>
             this.state.topicsSelected.includes(Thema) && status === "None"
         );
+
+
 
     return (
       <div>
         {!loading && screams.length === 0 && (
           <div className="errorBackground">
-                 <div className="homeHeader"> Ooops! </div>
+            <div className="homeHeader"> Ooops! </div>
             <br />
             <span className="oopsText">
-              Etwas ist schiefgelaufen. Bitte lade die Seite neu!
+              {this.props.t("something_went_wrong")}
             </span>
           </div>
         )}
@@ -301,11 +306,11 @@ export class home extends Component {
                 !this.props.UI.openScream
                   ? { overflow: "scroll" }
                   : {
-                      height: "100vh",
-                      overflow: "hidden",
-                      top: `-${window.scrollY}px`,
-                      position: "fixed",
-                    }
+                    height: "100vh",
+                    overflow: "hidden",
+                    top: `-${window.scrollY}px`,
+                    position: "fixed",
+                  }
               }
             >
               <IdeaList
@@ -407,4 +412,4 @@ const mapStateToProps = (state) => ({
 export default connect(
   mapStateToProps,
   mapActionsToProps
-)(withStyles(styles)(home));
+)(compose(withStyles(styles), withTranslation())(home));
