@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
 //COMPONENTS
-import SignNote from "../Auth/SignNote";
+import RegistrationAndLogin from "../Auth/RegistrationAndLogin";
 import Account from "../../profile/Account";
 import InlineInformationPage from "../../infocomponents/InlineInformationPage";
 import Tabs from "../Tabs/Tabs";
@@ -90,7 +90,7 @@ const Topbar = ({
 
         {!authenticated ? (
           <ProfileButtonContainer>
-            <SignNote />
+            <RegistrationAndLogin />
             <img src={Noprofile} width="30" alt="profilePlaceHolderImage" />
           </ProfileButtonContainer>
         ) : (

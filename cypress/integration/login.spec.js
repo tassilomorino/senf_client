@@ -19,7 +19,7 @@ describe("The Login Page", () => {
   // data-cy tags were added to the html as necessary
   it("logs User in successfully", () => {
     cy.get(".sideBar").within(() => {
-      cy.get("[data-cy=open-signnote]").click({ force: true }); // or otherwise scroll up again
+      cy.get("[data-cy=open-RegistrationAndLogin]").click({ force: true }); // or otherwise scroll up again
     });
     cy.wait(5000);
     // **TO DO**: improve - do we need the spinner?

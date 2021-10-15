@@ -40,6 +40,7 @@ const WideButton = styled.button`
   background-color: ${(props) => props.backgroundColor};
   color: ${(props) => props.textColor};
   bottom: ${(props) => props.bottom && props.bottom};
+  left: ${(props) => props.left && props.left};
   top: ${(props) => props.top && props.top};
 
   position: ${(props) => props.position};
@@ -68,10 +69,13 @@ export const SubmitButton = ({
   bottom,
   top,
   marginLeft,
+  left,
   zIndex,
   animation,
   loading,
   disabled,
+
+  handleButtonClick,
 }) => {
   return (
     <WideButton
@@ -80,12 +84,14 @@ export const SubmitButton = ({
       textColor={textColor}
       position={position}
       bottom={bottom}
+      left={left}
       top={top}
       marginLeft={marginLeft}
       zIndex={zIndex}
       animation={animation}
       loading={loading}
       disabled={disabled}
+      onClick={handleButtonClick}
     >
       {text}
       {loading && (

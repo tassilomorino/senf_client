@@ -14,7 +14,7 @@ import Celebrate from "../../images/celebrateImage.png";
 import Fast_geschafft from "../../images/headlines/Fast_geschafft.png";
 
 //COMPONENT
-import SignInNote from "./SignInNote";
+import LoginPure from "../module/Auth/LoginPure";
 
 //MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -79,7 +79,7 @@ const Verification = ({ classes }) => {
           </div>
 
           <button className="buttonWide buttonVerify">
-            Zur Anmeldung <SignInNote />
+            Zur Anmeldung <LoginPure />
           </button>
 
           <img src={Celebrate} className="CelebrateVerify" alt="EndImage" />

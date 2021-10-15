@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
 //Components
-import SignNote from "../Auth/SignNote";
+import RegistrationAndLogin from "../Auth/RegistrationAndLogin";
 import InlineInformationPageDesktop from "../../infocomponents/InlineInformationPageDesktop";
 import TopicFilter from "../../module/Filters/TopicFilter";
 import Account from "../../profile/Account";
@@ -49,7 +49,7 @@ const DesktopSidebar = ({
 
         {!authenticated ? (
           <div className="profile">
-            <SignNote />
+            <RegistrationAndLogin />
             <img
               src={Noprofile}
               width="35"

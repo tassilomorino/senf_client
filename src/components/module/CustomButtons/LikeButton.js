@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 //Components
 import MyButton from "../../../util/MyButton";
 import ThanksForTheVote from "../Backgrounds/ThanksForTheVote";
-import SignNote from "../Auth/SignNote";
+import RegistrationAndLogin from "../Auth/RegistrationAndLogin";
 
 //Images
 import HandBorder from "../../../images/icons/handsnoclap.png";
@@ -29,7 +29,7 @@ const LikeButton = ({ screamId }) => {
 
   const likeButton = !user.authenticated ? (
     <MyButton>
-      <SignNote />
+      <RegistrationAndLogin />
       <img src={HandBorder} width="100%" alt="LikeIcon" />
     </MyButton>
   ) : likedScream() ? (

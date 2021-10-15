@@ -4,8 +4,9 @@ import React, { useState, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import firebase from "firebase/app";
 import "firebase/auth";
+import { useHistory } from "react-router";
+
 import PropTypes from "prop-types";
-import { isAndroid } from "react-device-detect";
 import Swipe from "react-easy-swipe";
 
 //Redux
@@ -23,9 +24,6 @@ import Wirke_mit from "../../../images/headlines/Wirke_mit.png";
 import withStyles from "@material-ui/core/styles/withStyles";
 import CloseIcon from "@material-ui/icons/Close";
 import Dialog from "@material-ui/core/Dialog";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/FormControl";
 import Slide from "@material-ui/core/Slide";
 import RegistrationFormComponent from "./RegistrationFormComponent";
 import LoginFormComponent from "./LoginFormComponent";
@@ -35,17 +33,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const styles = {
-  openButton: {
-    zIndex: 999,
-    backgroundColor: "rgba(155,109,155,0)",
-    position: "absolute",
-    left: "0%",
-    top: "0",
-
-    width: "100%",
-    height: "100%",
-    borderRadius: "20px",
-  },
   root: {
     width: "100vw",
     height: "100vh",
@@ -199,15 +186,6 @@ const styles = {
     textAlign: "center",
   },
 
-  forgotWrapper: {
-    position: "relative",
-    marginTop: "2em",
-    textAlign: "center",
-    width: "100vw",
-    height: "1em",
-    fontSize: "12pt",
-    backgroundColor: "green",
-  },
   forgot: {
     position: "relative",
     marginTop: "1em",
@@ -217,7 +195,7 @@ const styles = {
   },
 };
 
-const SignNote = ({ classes }) => {
+const LoginPure = ({ classes }) => {
   const [open, setOpen] = useState(false);
   const [toggleSignup, setToggleSignup] = useState(false);
   const [email, setEmail] = useState("");
@@ -230,6 +208,7 @@ const SignNote = ({ classes }) => {
 
   const { loading, errors } = useSelector((state) => state.UI);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   // componentWillReceiveProps(nextProps) {
   //   if (nextProps.UI.errors) {
@@ -238,6 +217,7 @@ const SignNote = ({ classes }) => {
   // }
 
   const handleSubmitLogin = async (event) => {
+    event.preventDefault();
     const userInfo = await firebase
       .auth()
       .signInWithEmailAndPassword(email, password);
@@ -246,19 +226,35 @@ const SignNote = ({ classes }) => {
     // dispatch(loginUser(userData, props.history))
   };
 
-  const handleSubmitRegister = (event) => {
+  const handleSubmitRegister = async (event) => {
     event.preventDefault();
+    const userInfo = await firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(async (userCredential) => {
+        const db = firebase.firestore();
 
-    const newUserData = {
-      email: email,
-      password: password,
-      confirmPassword: confirmPassword,
-      handle: handle,
-      age: age,
-      sex: sex,
-    };
-    alert(newUserData.email);
-    // props.signupUser(newUserData, props.history);
+        if (userCredential) {
+          await db.collection("users").doc(handle).set({
+            handle: handle,
+            email: email,
+            age: age,
+            sex: sex,
+            createdAt: new Date().toISOString(),
+            userId: userCredential.user.uid,
+          });
+        }
+      })
+      .then(async () => {
+        var user = firebase.auth().currentUser;
+        await user.sendEmailVerification();
+      })
+      .then(async () => {
+        const emailWrapper = {
+          email: email,
+        };
+        history.push("/verify", emailWrapper);
+      });
   };
 
   const handleToggle = () => {
@@ -278,7 +274,7 @@ const SignNote = ({ classes }) => {
     <Fragment>
       <ExpandButton
         handleButtonClick={() => setOpen(true)}
-        data-cy="open-signnote"
+        data-cy="open-RegistrationAndLogin"
       ></ExpandButton>
       <Dialog
         open={open}
@@ -301,44 +297,24 @@ const SignNote = ({ classes }) => {
             className={classes.headline}
             alt="wirke_mit_headline"
           />
-          {!toggleSignup ? (
-            <LoginFormComponent
-              classes={classes}
-              errors={errors}
-              handleToggle={handleToggle}
-              handleSubmitLogin={handleSubmitLogin}
-              setEmail={setEmail}
-              setPassword={setPassword}
-              email={email}
-              password={password}
-            />
-          ) : (
-            <RegistrationFormComponent
-              classes={classes}
-              errors={errors}
-              handleToggle={handleToggle}
-              handleSubmitRegister={handleSubmitRegister}
-              setEmail={setEmail}
-              setPassword={setPassword}
-              setConfirmPassword={setConfirmPassword}
-              setHandle={setHandle}
-              setAge={setAge}
-              setSex={setSex}
-              email={email}
-              password={password}
-              confirmPassword={confirmPassword}
-              handle={handle}
-              age={age}
-              sex={sex}
-            />
-          )}
+
+          <LoginFormComponent
+            classes={classes}
+            errors={errors}
+            handleToggle={handleToggle}
+            handleSubmitLogin={handleSubmitLogin}
+            setEmail={setEmail}
+            setPassword={setPassword}
+            email={email}
+            password={password}
+          />
         </Swipe>
       </Dialog>
     </Fragment>
   );
 };
 
-SignNote.propTypes = {
+LoginPure.propTypes = {
   classes: PropTypes.object.isRequired,
   loginUser: PropTypes.func.isRequired,
   signupUser: PropTypes.func.isRequired,
@@ -357,4 +333,4 @@ const mapActionsToProps = {
 export default connect(
   mapStateToProps,
   mapActionsToProps
-)(withStyles(styles)(withRouter(SignNote)));
+)(withStyles(styles)(withRouter(LoginPure)));

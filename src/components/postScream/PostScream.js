@@ -11,7 +11,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Slide from "@material-ui/core/Slide";
 
 //HANDLER
-import SignNote from "../module/Auth/SignNote";
+import RegistrationAndLogin from "../module/Auth/RegistrationAndLogin";
 
 //ICONS
 import AddIcon from "../../images/icons/plus_white.png";
@@ -605,7 +605,7 @@ const PostScream = ({
                 : null
             }
           >
-            <SignNote />
+            <RegistrationAndLogin />
           </div>
         )}
 

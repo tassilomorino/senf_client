@@ -36,7 +36,7 @@ import { openProject } from "../../redux/actions/projectActions";
 import { clearErrors } from "../../redux/actions/errorsActions";
 
 //COMPONENTS
-import SignNote from "../module/Auth/SignNote";
+import RegistrationAndLogin from "../module/Auth/RegistrationAndLogin";
 
 //ANIMATION
 import lamploader from "../../images/lamp.png";
@@ -526,7 +526,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
                   <div className={classes.commentButton}>
                     {!authenticated ? (
                       <MyButton>
-                        <SignNote />
+                        <RegistrationAndLogin />
                         <img src={ChatBorder} width="100%" alt="ChatIcon" />
                       </MyButton>
                     ) : (
@@ -629,7 +629,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
 
                 {!authenticated && (
                   <div className={classes.anmeldeText}>
-                    <SignNote />
+                    <RegistrationAndLogin />
                     <CustomButton
                       text="Melde dich an"
                       backgroundColor="#353535"
