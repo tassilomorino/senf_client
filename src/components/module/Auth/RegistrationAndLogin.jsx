@@ -223,7 +223,12 @@ const RegistrationAndLogin = ({ classes }) => {
   const [age, setAge] = useState("");
   const [sex, setSex] = useState("");
 
-  const [errors, setErrors]= useState(null)
+
+  const [errors, setErrors] = useState({
+    email: false,
+    middleName: false,
+    lastName: false,
+  })
 
   const [errorMessage, setErrorMessage]= useState(null)
 
@@ -255,6 +260,16 @@ const RegistrationAndLogin = ({ classes }) => {
 
   const handleSubmitRegister = async (event) => {
     event.preventDefault();
+    
+    if (email.trim() === '') {
+      setErrors({
+        ...errors,
+        email: true,
+      })
+      setErrorMessage("Email is required")
+      return;
+    }
+
     const userInfo = await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
