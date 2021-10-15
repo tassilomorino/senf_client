@@ -648,7 +648,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
   );
   return ReactDOM.createPortal(
     isMobileCustom ? (
-      <React.Fragment>
+      <React.Fragment style={{ overflowX: "hidden" }}>
         <CommentForm screamId={screamId} clicked={clicked} />
 
         {shareOpen && (
@@ -666,6 +666,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
           margin="10px"
           marginLeft={document.body.clientWidth > 768 && "210px"}
           top="0px"
+          zIndex="9999"
           handleButtonClick={handleClose}
         />
 

@@ -21,8 +21,8 @@ const ScreamDialogSwipeCard = ({ children, loading }) => {
       enabled: false,
       top: -100,
       bottom: 100,
-      left: -100,
-      right: 100,
+      left: 0,
+      right: 0,
     },
   });
   const [props, set] = useSpring(() => ({
@@ -30,7 +30,7 @@ const ScreamDialogSwipeCard = ({ children, loading }) => {
     y: 0,
     scale: 1,
     transform: `translateY(${window.innerHeight / 2}px)`,
-    overflow: "hidden",
+    overflowY: "hidden",
     touchAction: "none",
   }));
 
@@ -49,25 +49,22 @@ const ScreamDialogSwipeCard = ({ children, loading }) => {
   const bind = useDrag(
     ({ down, movement: [, my], offset: [, y] }) => {
       const el = document.querySelector(".screamDialogDrag");
-      // get scroll position in px
 
-      if (my < -100) {
+      if (my < -50) {
         set({
           y: down ? my : 100,
           transform: !down ? `translateY(${0}px)` : `translateY(${0}px)`,
           touchAction: "unset",
-          overflow: "scroll",
+          overflowY: "scroll",
         });
-      }
-
-      if (el.scrollTop < 30 && my > 150) {
+      } else if (el.scrollTop < 30 && my > 150) {
         set({
           y: down ? my : window.innerHeight - 120,
           transform: down
             ? `translateY(${0}px)`
             : `translateY(${window.innerHeight / 2}px)`,
           touchAction: "none",
-          overflow: "hidden",
+          overflowY: "hidden",
         });
       }
 
@@ -83,6 +80,8 @@ const ScreamDialogSwipeCard = ({ children, loading }) => {
         enabled: true,
         top: -window.innerHeight + 241,
         bottom: window.innerHeight - 120,
+        left: 0,
+        right: 0,
       },
       rubberband: activateBounds ? rubberband : 0,
     }

@@ -1491,21 +1491,6 @@ font-size:15px !important
 
 
 
-.wrapperScreamDialog {
-  width: 100vw;
-  margin-top:0vh;
-  z-index: 7000;
-  margin-left:0px;
-  z-index:9999;
-  top: 0;
-  animation: enterScreamDialogAnimation 0.5s;
-  position:absolute;
-  overflow-y: hidden;
- 
-  
-
-
-}
 
 
 
@@ -2924,6 +2909,24 @@ margin-bottom: 20px;
  
 }
 
+.wrapperScreamDialog {
+  width: 100vw;
+  margin-top:0vh;
+  z-index: 7000;
+  margin-left:0px;
+  z-index:997;
+  top: 0;
+  animation: enterScreamDialogAnimation 0.5s;
+  position:absolute;
+  overflow-y: hidden;
+  overflow-x: hidden;
+ 
+  
+
+
+}
+
+
 
 .screamDialogDrag {
 
@@ -2932,7 +2935,7 @@ margin-bottom: 20px;
   height: 100%;
 
   position: absolute;
-  z-index:9999;
+  z-index:998;
   top: 0;
   overflow:hidden;
 
