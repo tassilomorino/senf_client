@@ -56,6 +56,8 @@ import styled, { createGlobalStyle } from "styled-components";
 
 import { lock, unlock } from "tua-body-scroll-lock";
 
+import ScreamDialogSwipeCard from "./ScreamDialogSwipeCard";
+
 const portalRoot = document.getElementById("portal-root");
 
 const BackgroundMobile = styled.div`
@@ -460,30 +462,10 @@ const ScreamDialog = ({ classes, projectsData }) => {
     }
   }
 
-  return ReactDOM.createPortal(
-    <div className="OuterWrapperScreamDialog" id="OuterWrapperScreamDialog">
+  const content = (
+    <div>
       {!loading ? (
         <div style={{ pointerEvents: "auto" }}>
-          <CommentForm screamId={screamId} clicked={clicked} />
-
-          {shareOpen && (
-            <ScreamShare
-              screamId={screamId}
-              title={title}
-              path={path}
-              setShareOpen={setShareOpen}
-            />
-          )}
-
-          <CustomIconButton
-            name="ArrowLeft"
-            position="fixed"
-            margin="10px"
-            marginLeft={document.body.clientWidth > 768 && "210px"}
-            top="0px"
-            handleButtonClick={handleClose}
-          />
-
           <div className="wrapperScreamDialog">
             <CustomIconButton
               name="Share"
@@ -662,7 +644,58 @@ const ScreamDialog = ({ classes, projectsData }) => {
           </div>
         </div>
       )}
-    </div>,
+    </div>
+  );
+  return ReactDOM.createPortal(
+    isMobileCustom ? (
+      <React.Fragment>
+        <CommentForm screamId={screamId} clicked={clicked} />
+
+        {shareOpen && (
+          <ScreamShare
+            screamId={screamId}
+            title={title}
+            path={path}
+            setShareOpen={setShareOpen}
+          />
+        )}
+
+        <CustomIconButton
+          name="ArrowLeft"
+          position="fixed"
+          margin="10px"
+          marginLeft={document.body.clientWidth > 768 && "210px"}
+          top="0px"
+          handleButtonClick={handleClose}
+        />
+
+        <ScreamDialogSwipeCard> {content}</ScreamDialogSwipeCard>
+      </React.Fragment>
+    ) : (
+      <React.Fragment>
+        <CommentForm screamId={screamId} clicked={clicked} />
+
+        {shareOpen && (
+          <ScreamShare
+            screamId={screamId}
+            title={title}
+            path={path}
+            setShareOpen={setShareOpen}
+          />
+        )}
+
+        <CustomIconButton
+          name="ArrowLeft"
+          position="fixed"
+          margin="10px"
+          marginLeft={document.body.clientWidth > 768 && "210px"}
+          top="0px"
+          handleButtonClick={handleClose}
+        />
+
+        {content}
+      </React.Fragment>
+    ),
     portalRoot
   );
 };
