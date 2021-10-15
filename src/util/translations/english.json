@@ -60,6 +60,12 @@
    "topics_sportsAndLeisure": "Sports / Leisure",
    "topics_other": "Other",
 
+
+   "topics": "Topics",
+  "districts": "Districts",
+  "agegroups": "Agegroups",
+  "keywords": "Keywords",
+
    "map_filterIdeas": "Show ideas within the map area in the list",
 
    "postScream_newIdea": "New idea",
