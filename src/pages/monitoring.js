@@ -16,20 +16,20 @@ import { clearErrors } from "../redux/actions/errorsActions";
 //ICONS
 import Not_connected from "../images/Not_connected.png";
 
-import { MonitoringDesktopSidebar } from "../components/module/Navigation/MonitoringDesktopSidebar";
+import { MonitoringDesktopSidebar } from "../components/molecules/Navigation/MonitoringDesktopSidebar";
 
 import _ from "lodash";
 import ToggleDisplay from "react-toggle-display";
-import IdeaCardMonitoring from "../components/module/ListItems/IdeaCardMonitoring";
+import IdeaCardMonitoring from "../components/molecules/Cards/IdeaCardMonitoring";
 
-import { ExportToExcel } from "../components/module/CustomButtons/ExportToExcel";
+import { ExportToExcel } from "../components/atoms/CustomButtons/ExportToExcel";
 
 import ChatBorder from "../images/icons/chat.png";
 import LikeIcon from "../images/icons/handsnoclap.png";
 import CreatedAtIcon from "../images/icons/calendar.png";
-import MonitoringEditScream from "../components/monitoringScream/MonitoringEditScream";
-import SortingSelect from "../components/module//Selects/SortingSelect";
-import Select from "../components/module/Selects/Select";
+import MonitoringEditScream from "../components/organisms/SideBars/MonitoringEditScream";
+import SortingSelect from "../components/atoms//Selects/SortingSelect";
+import Select from "../components/atoms/Selects/Select";
 
 const styles = {};
 
@@ -50,7 +50,7 @@ export class monitoring extends Component {
       longitude3: 7.17,
       loadingPage: false,
       hasNextPage: true,
-      userHandle: this.props.user.credentials.handle,
+      userHandle: this.props.user.handle,
       screamIdParam: null,
       projectIdParam: null,
       count: 0,

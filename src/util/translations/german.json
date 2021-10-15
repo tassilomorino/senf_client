@@ -61,6 +61,11 @@
   "topics_sportsAndLeisure": "Sport / Freizeit",
   "topics_other": "Sonstige",
 
+  "topics": "Themen",
+  "districts": "Stadtteile",
+  "agegroups": "Altersgruppen",
+  "keywords": "Keywords",
+
   "map_filterIdeas": "Ideen im Kartenbereich in der Liste anzeigen",
 
   "postScream_newIdea": "Neue Idee",

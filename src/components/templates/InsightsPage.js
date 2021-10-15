@@ -3,22 +3,62 @@
 import React, { useState, useEffect } from "react";
 
 //Components
-import Keyindicators from "../graphs/Keyindicators";
-import ThemenDialog from "../graphs/themendialog";
-import StadttteilDialog from "../graphs/stadtteilDialog";
-import AltersgruppeDialog from "../graphs/altersgruppeDialog";
-import WordcloudDialog from "../graphs/wordcloudDialog";
+import Keyindicators from "../molecules/graphs/Keyindicators";
+import ThemenDialog from "../molecules/graphs/themendialog";
+import StadttteilDialog from "../molecules/graphs/stadtteilDialog";
+import AltersgruppeDialog from "../molecules/graphs/altersgruppeDialog";
+import WordcloudDialog from "../molecules/graphs/wordcloudDialog";
 
 //Images
-import Themencover from "../../images/themencover.png";
-import Stadtteilcover from "../../images/stadtteilcover.png";
-import Keywordscover from "../../images/keywordscover.png";
-import Altersgruppencover from "../../images/altersgruppencover.png";
+import Themencover from "../../images/insightsCovers/topic-cover.jpg";
+import DistrictsCover from "../../images/insightsCovers/districts-cover.jpg";
+import KeywordsCover from "../../images/insightsCovers/keywords-cover.jpg";
+import AgegroupsCover from "../../images/insightsCovers/agegroups-cover.jpg";
 
 import firebase from "firebase/app";
 import "firebase/firestore";
+import MainAnimations from "../atoms/Animations/MainAnimations";
+import styled from "styled-components";
+import { useTranslation } from "react-i18next";
+
+const CoverWrapper = styled.div`
+  margin-left: 2.5%;
+  width: 95%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px 10px;
+  grid-template-areas:
+    ". ."
+    ". .";
+`;
+const Covers = styled.div`
+  width: 100%;
+  height: auto;
+  z-index: 9;
+  float: left;
+  position: relative;
+  animation: ${(props) => props.animation};
+  overflow: hidden;
+  border-radius: 20px;
+`;
+const CoverImg = styled.img`
+  width: 100%;
+  height: 100%;
+`;
+const CoverTitle = styled.span`
+  font-size: 18px;
+  /* font-family: PlayfairDisplay-Bold; */
+  font-family: Futura PT W01-Bold;
+  color: #353535;
+  text-align: center;
+  width: 100%;
+  position: absolute;
+  top: 30px;
+`;
 
 const InsightsPage = ({ order }) => {
+  const { t } = useTranslation();
   const db = firebase.firestore();
 
   const [screams, setScreams] = useState("");
@@ -65,34 +105,43 @@ const InsightsPage = ({ order }) => {
     fetchDataComments();
   }, []);
 
-  return order === 3 ? (
-    <>
-      <div className="MainAnimation2">
-        <Keyindicators
-          screams={screams}
-          likesLength={likesLength}
-          commentslength={commentsLength}
-        />
-        <div className="cover cover1">
-          <img src={Themencover} width="100%" alt="Themencover" />
-          <ThemenDialog screams={screams} />
-        </div>
-        <div className="cover cover2">
-          <img src={Stadtteilcover} width="100%" alt="Themencover" />
-          <StadttteilDialog screams={screams} />
-        </div>
+  return (
+    order === 3 && (
+      <React.Fragment>
+        <MainAnimations height="100vh" marginTop="90px">
+          <Keyindicators
+            screams={screams}
+            likesLength={likesLength}
+            commentslength={commentsLength}
+          />
+          <CoverWrapper>
+            <Covers animation="coverAnimation 0.5s ease-in-out">
+              <CoverTitle>{t("topics")}</CoverTitle>
+              <CoverImg src={Themencover} alt="insights-topic-cover" />
+              <ThemenDialog screams={screams} />
+            </Covers>
 
-        <div className="cover cover4">
-          <AltersgruppeDialog />
-          <img src={Altersgruppencover} width="100%" alt="Themencover" />
-        </div>
-        <div className="cover cover3">
-          <img src={Keywordscover} width="100%" alt="Themencover" />{" "}
-          <WordcloudDialog />
-        </div>
-      </div>
-    </>
-  ) : null;
+            <Covers animation="coverAnimation 0.75s ease-in-out">
+              <CoverTitle>{t("districts")}</CoverTitle>
+              <CoverImg src={DistrictsCover} alt="insights-districts-cover" />
+              <StadttteilDialog screams={screams} />
+            </Covers>
+
+            <Covers animation="coverAnimation 1.25s ease-in-out">
+              <CoverTitle>{t("agegroups")}</CoverTitle>
+              <CoverImg src={AgegroupsCover} alt="insights-agegroups-cover" />
+              <AltersgruppeDialog />
+            </Covers>
+            <Covers animation="coverAnimation 1s ease-in-out">
+              <CoverTitle>{t("keywords")}</CoverTitle>
+              <CoverImg src={KeywordsCover} alt="insights-keywords-cover" />
+              <WordcloudDialog />
+            </Covers>
+          </CoverWrapper>
+        </MainAnimations>
+      </React.Fragment>
+    )
+  );
 };
 
 export default InsightsPage;

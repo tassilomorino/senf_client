@@ -21,7 +21,6 @@ import {
   SET_SCREAM_USER,
 } from "../types";
 
-import { lock, unlock } from "tua-body-scroll-lock";
 
 // Get all ideas
 export const getScreams = () => async (dispatch) => {
@@ -160,10 +159,7 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
       payload: { body: "Beschreibung fehlt" },
     });
   } else {
-    const ageCapture = moment().diff(
-      moment(user.credentials.age, "YYYY"),
-      "years"
-    );
+    const ageCapture = moment().diff(moment(user.age, "YYYY"), "years");
 
     const newScreamData = {
       locationHeader: newScream.locationHeader,
@@ -173,8 +169,8 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
       lat: newScream.lat,
       long: newScream.long,
       body: newScream.body,
-      userHandle: user.credentials.handle,
-      sex: user.credentials.sex,
+      userHandle: user.handle,
+      sex: user.sex,
       age: ageCapture,
       createdAt: new Date().toISOString(),
       likeCount: 0,
@@ -264,8 +260,8 @@ export const deleteScream = (screamId, user) => async (dispatch) => {
   if (!doc.exists) {
     console.log("Scream not found");
   }
-  // else if (doc.data().userHandle !== user.credentials.handle) {
-  //   console.log("Unauthorized", doc.data().handle, user.credentials.handle);
+  // else if (doc.data().userHandle !== user.handle) {
+  //   console.log("Unauthorized", doc.data().handle, user.handle);
   //   // return res.status(403).json({ error: "Unauthorized" });
   // }
   else {

@@ -2,107 +2,93 @@
 
 import React from "react";
 import { useTranslation } from "react-i18next";
-
-//Icons
-import AddIcon from "../../images/icons/plus_grey.png";
+import styled from "styled-components";
 
 //Components
-import ProjectCard from "../module/ListItems/ProjectCard";
+import { ProjectCard, CreateProject } from "../molecules/Cards/ProjectCard";
 
 import _ from "lodash";
+import MainAnimations from "../atoms/Animations/MainAnimations";
 
+const HomeHeadermain = styled.div`
+  position: relative;
+  z-index: 9;
+  margin-top: 2.8em;
+  margin-left: 2.5%;
+  width: 95%;
+  padding-bottom: 1em;
+  font-size: 25pt;
+  color: white;
+  text-align: left;
+  font-family: "Playfair Display", serif;
+  animation: enteranimation 0.5s;
+  z-index: 99;
+`;
+const ProjectRoomDescription = styled.div`
+  font-size: 14pt;
+  color: rgb(65, 67, 69);
+  width: 90%;
+  text-align: left;
+  margin-left: 5%;
+  padding-bottom: 15px;
+  z-index: 0;
+`;
+const NoIdeasYet = styled.div`
+  position: relative;
+  font-size: 15pt;
+  color: #414345;
+  width: 80%;
+  margin-left: 10%;
+  text-align: center;
+  z-index: 10;
+`;
 const ProjectsPage = ({ loadingProjects, order, projects }) => {
   const { t } = useTranslation();
-  const createProject = () => {
-    var link =
-      "mailto:dein@senf.koeln" +
-      "?subject=" +
-      escape("Projektraum-Anfrage") +
-      "&body=" +
-      escape(
-        "Projektraum-Titel:" +
-          "\n" +
-          "\n" +
-          "Worum geht's:" +
-          "\n" +
-          "\n" +
-          "Projektzeitraum:" +
-          "\n" +
-          "\n" +
-          "Logo + Cover-Bild:"
-      );
-    window.location.href = link;
-  };
 
   return (
-    <div className="MainAnimationChannels">
+    <MainAnimations
+      transition="0.5s"
+      display="block"
+      paddingBottom="2em"
+      height="100%"
+    >
       {order === 2 && (
         <div>
-          <div className="homeHeadermain"></div>
+          <HomeHeadermain></HomeHeadermain>
 
-          <div className="MainAnimation">
-            <div
-              style={{
-                fontSize: "14pt",
-                color: "#414345",
-                width: "90%",
-
-                textAlign: "left",
-                marginLeft: "5%",
-                paddingBottom: "15px",
-                zIndex: 0,
-              }}
-            >
+          <MainAnimations>
+            <ProjectRoomDescription>
               {t("projectrooms_description")}
-            </div>
+            </ProjectRoomDescription>
             <br />
             {!loadingProjects ? (
               _.orderBy(projects, "createdAt", "desc").map((projects) => (
                 <ProjectCard key={projects.project} project={projects} />
               ))
             ) : (
-              <div className="MainAnimation">
-                <div className="no-ideas-yet">{t("projectrooms_loader")}</div>
-              </div>
+              <MainAnimations>
+                <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>
+              </MainAnimations>
             )}
             {!loadingProjects && projects.length === 0 && (
-              <div className="MainAnimation">
-                <div className="no-ideas-yet">
-                  {t("projectrooms_loading_error")}
-                </div>
-              </div>
+              <MainAnimations>
+                <NoIdeasYet>{t("projectrooms_loading_error")}</NoIdeasYet>
+              </MainAnimations>
             )}
-            <br />
-            <br />
-            <br />
-
-            <div className="projectCard" onClick={createProject}>
-              <div className="leftWrapper" style={{ opacity: 0.5 }}>
-                <img
-                  src={AddIcon}
-                  alt="profile"
-                  className="profile-image"
-                  width="50%"
-                  style={{ width: "50%", marginLeft: "25%" }}
-                />
-              </div>
-              <div className="rightWrapper">
-                <div className="owner">
-                  {" "}
-                  {t("projectrooms_request_overTitle")}{" "}
-                </div>
-                <div className="title"> {t("projectrooms_request_title")}</div>
-                <div className="date">{t("projectrooms_request_subTitle")}</div>
-              </div>
-            </div>
 
             <br />
             <br />
             <br />
-          </div>
+
+            <CreateProject />
+
+            <br />
+            <br />
+            <br />
+          </MainAnimations>
         </div>
       )}
-    </div>
+    </MainAnimations>
   );
 };
 

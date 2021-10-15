@@ -7,10 +7,10 @@ import { setMapViewport } from "../../redux/actions/mapActions";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 import MyButton from "../../util/MyButton";
-import LikeButton from "../module/CustomButtons/LikeButton";
+import LikeButton from "../atoms/CustomButtons/LikeButton";
 import ChatBorder from "../../images/icons/chat.png";
-import Comments from "../module/Comments/Comments";
-import CommentForm from "../module/Comments/CommentForm";
+import Comments from "../molecules/Cards/Comments";
+import CommentForm from "../atoms/Comments/CommentForm";
 import dayjs from "dayjs";
 // MUI Stuff
 
@@ -37,24 +37,22 @@ import { openProject } from "../../redux/actions/projectActions";
 import { clearErrors } from "../../redux/actions/errorsActions";
 
 //COMPONENTS
-import SignNote from "../profile/SignNote";
+import RegistrationAndLogin from "../atoms/Auth/RegistrationAndLogin";
 
 //ANIMATION
 import lamploader from "../../images/lamp.png";
 
-import ScreamShare from "../modals/ScreamShare";
+import ShareModal from "../molecules/Modals/ShareModal";
 
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
 import {
   CustomButton,
   CustomIconButton,
-} from "../module/CustomButtons/CustomButton";
+} from "../atoms/CustomButtons/CustomButton";
 import setColorByTopic from "../../data/setColorByTopic";
-import EditButton from "../module/CustomButtons/EditButton";
 import styled, { createGlobalStyle } from "styled-components";
 
-import { lock, unlock } from "tua-body-scroll-lock";
 
 import ScreamDialogSwipeCard from "./ScreamDialogSwipeCard";
 
@@ -94,6 +92,15 @@ const BackgroundDesktop = styled.div`
     rgba(255, 255, 255, 1) 100%
   );
   z-index: 99;
+`;
+
+const ButtonsContainer = styled.div`
+  width: 120px;
+  height: 50px;
+  margin-left: calc(100% - 120px);
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-around;
 `;
 
 const Button = styled.button`
@@ -343,6 +350,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
   const [clicked, setClicked] = useState(false);
 
   const [shareOpen, setShareOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const convertedLinkRaw = weblink && linkify.find(weblink);
   const convertedLink =
@@ -467,14 +475,13 @@ const ScreamDialog = ({ classes, projectsData }) => {
       {!loading ? (
         <div style={{ pointerEvents: "auto" }}>
           <div className="wrapperScreamDialog">
-            <CustomIconButton
-              name="Share"
-              margin="10px"
-              left="calc(100% - 130px)"
-              position="relative"
-              handleButtonClick={handleShare}
-            />
-            <EditButton screamId={screamId} userHandle={userHandle} />
+            <ButtonsContainer>
+              <CustomIconButton name="Share" handleButtonClick={handleShare} />
+              <CustomIconButton
+                name="Menu"
+                handleButtonClick={() => setMenuOpen(true)}
+              />
+            </ButtonsContainer>
             {isMobileCustom ? <BackgroundMobile /> : <BackgroundDesktop />}
             <div
               className="dialogCard"
@@ -510,7 +517,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
                   <div className={classes.commentButton}>
                     {!authenticated ? (
                       <MyButton>
-                        <SignNote />
+                        <RegistrationAndLogin />
                         <img src={ChatBorder} width="100%" alt="ChatIcon" />
                       </MyButton>
                     ) : (
@@ -613,7 +620,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
 
                 {!authenticated && (
                   <div className={classes.anmeldeText}>
-                    <SignNote />
+                    <RegistrationAndLogin />
                     <CustomButton
                       text="Melde dich an"
                       backgroundColor="#353535"
@@ -652,7 +659,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
         <CommentForm screamId={screamId} clicked={clicked} />
 
         {shareOpen && (
-          <ScreamShare
+          <ShareModal
             screamId={screamId}
             title={title}
             path={path}
@@ -677,7 +684,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
         <CommentForm screamId={screamId} clicked={clicked} />
 
         {shareOpen && (
-          <ScreamShare
+          <ShareModal
             screamId={screamId}
             title={title}
             path={path}

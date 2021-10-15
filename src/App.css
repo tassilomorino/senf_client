@@ -1250,19 +1250,6 @@ input:focus {
   font-family: "Playfair Display", serif;
 }
 
-.SignNote {
-  position: fixed;
-  z-index: 999;
-  margin-top: 1.5em;
-  font-size: 28pt;
-  color: #414345;
-  width: 90vw;
-  top: 5vh;
-  left: 5vw;
-  text-align: center;
-  font-family: "Playfair Display", serif;
-  animation: enteranimation 1.5s;
-}
 
 
 
@@ -1488,7 +1475,6 @@ font-size:15px !important
   animation: enterScreamDialogAnimation 0.5s;
   position:absolute;
 }
-
 
 
 
@@ -1924,35 +1910,8 @@ background-color: #353535;
   }
 }
 
-.Wishanimation {
-  opacity: 0;
-  margin-top: 25vh;
-  max-width: 600px;
-  z-index: 9999;
-  animation: Wishanimation 2s ease-in-out;
-}
 
-@keyframes Wishanimation {
-  0% {
-    opacity: 0;
-    transform: translateY(10%);
-  }
 
-  40% {
-    opacity: 1;
-    transform: translateY(0%);
-  }
-
-  60% {
-    opacity: 1;
-    transform: translateY(0%);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translateY(-10%);
-  }
-}
 
 .VerifyHeader {
   position: relative;
@@ -2955,3 +2914,5 @@ margin-bottom: 20px;
     transform: translateY(calc(100% - 120px))
   }
 }
+
+

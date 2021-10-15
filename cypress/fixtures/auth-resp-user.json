@@ -1,12 +1,12 @@
 {
-    "credentials": {
+    
         "email": "senftestuser@web.de",
         "userId": "3flKWAdkTCYV7Vfehpr7DrMO3TD2",
         "age": "1957",
         "handle": "thomas",
         "createdAt": "2021-08-16T10:03:08.490Z",
-        "sex": "male"
-    },
+        "sex": "male",
+    
     "likes": [
         {
             "sex": "male",

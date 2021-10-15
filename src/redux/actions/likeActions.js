@@ -3,10 +3,18 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 
-import { LIKE_SCREAM, UNLIKE_SCREAM } from "../types";
+import { LIKE_SCREAM, UNLIKE_SCREAM, VOTED_TRUE, VOTED_FALSE } from "../types";
 
 // Like a scream
 export const likeScream = (screamId, user) => async (dispatch) => {
+  dispatch({
+    type: VOTED_TRUE,
+  });
+  setTimeout(() => {
+    dispatch({
+      type: VOTED_FALSE,
+    });
+  }, 2000);
   const db = firebase.firestore();
   const screamDocument = db.collection("screams").doc(screamId);
   const doc = await screamDocument.get();
@@ -19,7 +27,7 @@ export const likeScream = (screamId, user) => async (dispatch) => {
 
   const likeDocument = await db
     .collection("likes")
-    .where("userHandle", "==", user.credentials.handle)
+    .where("userHandle", "==", user.handle)
     .where("screamId", "==", screamId)
     .limit(1)
     .get();
@@ -40,10 +48,10 @@ export const likeScream = (screamId, user) => async (dispatch) => {
     } else {
       db.collection("likes").add({
         screamId: screamId,
-        userHandle: user.credentials.handle,
+        userHandle: user.handle,
         createdAt: new Date().toISOString(),
-        sex: user.credentials.sex,
-        age: user.credentials.age,
+        sex: user.sex,
+        age: user.age,
       });
 
       scream.likeCount++;
@@ -58,6 +66,14 @@ export const likeScream = (screamId, user) => async (dispatch) => {
 };
 // Unlike an idea
 export const unlikeScream = (screamId, user) => async (dispatch) => {
+  dispatch({
+    type: VOTED_TRUE,
+  });
+  setTimeout(() => {
+    dispatch({
+      type: VOTED_FALSE,
+    });
+  }, 2000);
   console.log(screamId, user);
   const db = firebase.firestore();
   const screamDocument = db.collection("screams").doc(screamId);
@@ -71,7 +87,7 @@ export const unlikeScream = (screamId, user) => async (dispatch) => {
 
   const likeDocument = await db
     .collection("likes")
-    .where("userHandle", "==", user.credentials.handle)
+    .where("userHandle", "==", user.handle)
     .where("screamId", "==", screamId)
     .limit(1)
     .get();

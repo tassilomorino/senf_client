@@ -55,9 +55,9 @@ export const submitComment =
         body: commentData.body,
         createdAt: new Date().toISOString(),
         screamId: screamId,
-        userHandle: user.credentials.handle,
-        sex: user.credentials.sex,
-        age: user.credentials.age,
+        userHandle: user.handle,
+        sex: user.sex,
+        age: user.age,
       };
       await db.collection("comments").add(newComment);
 
