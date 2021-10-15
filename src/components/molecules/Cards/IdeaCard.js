@@ -19,7 +19,7 @@ import ChatBorder from "../../../images/icons/chat.png";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 
-import { openScream } from "../../../redux/actions/screamActions";
+import { openScreamFunc } from "../../../redux/actions/screamActions";
 import setColorByTopic from "../../../data/setColorByTopic";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import { openProject } from "../../../redux/actions/projectActions";
@@ -204,7 +204,7 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
   } = scream;
 
   const fetchDataScream = (screamId) => {
-    dispatch(openScream(screamId));
+    dispatch(openScreamFunc(screamId));
   };
 
   const fetchDataProject = (project) => {
@@ -274,7 +274,7 @@ IdeaCard.propTypes = {
   scream: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   openDialog: PropTypes.bool,
-  openScream: PropTypes.func.isRequired,
+  openScreamFunc: PropTypes.func.isRequired,
   openProject: PropTypes.func.isRequired,
 };
 

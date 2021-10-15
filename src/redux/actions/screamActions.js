@@ -21,6 +21,7 @@ import {
   SET_SCREAM_USER,
 } from "../types";
 
+
 // Get all ideas
 export const getScreams = () => async (dispatch) => {
   dispatch({ type: LOADING_DATA });
@@ -100,10 +101,10 @@ export const resetMyScreams = () => async (dispatch) => {
 };
 
 // Open an idea
-export const openScream = (screamId) => async (dispatch) => {
+export const openScreamFunc = (screamId) => async (dispatch) => {
   // When the modal is shown, we want a fixed body
-  document.body.style.position = "fixed";
-  document.body.style.top = `-${window.scrollY}px`;
+  // document.body.style.position = "fixed";
+  // document.body.style.top = `-${window.scrollY}px`;
 
   const db = firebase.firestore();
   const ref = await db.collection("screams").doc(screamId).get();
@@ -138,12 +139,6 @@ export const openScream = (screamId) => async (dispatch) => {
 export const closeScream = () => (dispatch) => {
   dispatch({ type: CLOSE_SCREAM });
   window.history.pushState(null, null, "/");
-
-  // When the modal is hidden...
-  const scrollY = document.body.style.top;
-  document.body.style.position = "";
-  document.body.style.top = "";
-  window.scrollTo(0, parseInt(scrollY || "0") * -1);
 };
 
 // Post an idea
@@ -221,7 +216,7 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
           } else {
             history.push(`/${resScream.screamId}`);
             const screamId = resScream.screamId;
-            dispatch(openScream(screamId));
+            dispatch(openScreamFunc(screamId));
           }
         }, 20);
       });
@@ -250,7 +245,7 @@ export const editScream = (editScream) => async (dispatch) => {
         payload: editScream,
       });
     });
-  dispatch(openScream(screamId));
+  dispatch(openScreamFunc(screamId));
   dispatch(clearErrors());
 };
 

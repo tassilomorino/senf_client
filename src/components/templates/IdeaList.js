@@ -17,16 +17,6 @@ import PostScream from "../organisms/PostIdea/PostScream";
 import TopicFilter from "../atoms/Filters/TopicFilter";
 import SwipeCard from "./SwipeCard";
 
-const ListEnterAnimation = keyframes`
-       0% {
-  transform: translateY(10%) ; 
-}
-
-100% {
-  transform: translateY(0%) ; 
-}
-    `;
-
 const Wrapper = styled.div`
   opacity: 1;
   display: flex;
@@ -35,10 +25,6 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   overflow: hidden;
-`;
-
-const ScrollContainer = styled.div`
-  animation: ${ListEnterAnimation} 3s;
 `;
 
 const Content = styled.div`
@@ -50,16 +36,11 @@ const Content = styled.div`
   top: 0;
 `;
 
-const ContentMobile = styled(Content)`
-  overflow: scroll;
-`;
-
-const SwipeContainer = styled.div`
-  position: fixed;
-
-  width: 100%;
-  z-index: 15;
-  height: ${(props) => (props.Top && props.Top === "top" ? "70px" : "30%")};
+const ContentMobile = styled.div`
+  /* overflow-y: ${(props) => props.openScream && "hidden"};
+  pointer-events: ${(props) => props.openScream && "none"};
+  position: ${(props) => props.openScream && "fixed"};
+  top: ${(props) => props.openScream && "90vh"}; */
 `;
 
 const ListHeaderWrapper = styled.div`
@@ -86,17 +67,7 @@ const ShadowBox = styled.div`
   z-index: 14;
   display: ${(props) => props.display && props.display};
 `;
-const Swipee = styled.div`
-  border-radius: 16px;
-  user-select: none;
-  background: hotpink;
-  color: white;
-  width: 100%;
-  height: 300%;
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-`;
+
 const IdeaList = ({
   type,
   loading,
@@ -117,6 +88,8 @@ const IdeaList = ({
 
   const mapViewport = useSelector((state) => state.data.mapViewport);
   const dispatch = useDispatch();
+
+  const { openScream } = useSelector((state) => state.UI);
 
   const _onViewportChange = (viewport) => {
     dispatch(setMapViewport(viewport));
@@ -156,27 +129,28 @@ const IdeaList = ({
             projectsData={projectsData}
             project={project}
           />
-
-          <SwipeCard loading={loading}>
-            <ListHeaderWrapper>
-              <ListHeader
+          <ContentMobile openScream={openScream} id="listMobile">
+            <SwipeCard loading={loading}>
+              <ListHeaderWrapper>
+                <ListHeader
+                  loading={loading}
+                  handleDropdown={handleDropdown}
+                  dataFinal={dataFinal}
+                  marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
+                />{" "}
+              </ListHeaderWrapper>
+              <ShadowBox display={shadow ? "block" : "none"} />
+              <List
+                type={type}
                 loading={loading}
-                handleDropdown={handleDropdown}
+                dropdown={dropdown}
                 dataFinal={dataFinal}
-                marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
+                projectsData={projectsData}
+                project={project}
+                myScreams={myScreams}
               />{" "}
-            </ListHeaderWrapper>
-            <ShadowBox display={shadow ? "block" : "none"} />
-            <List
-              type={type}
-              loading={loading}
-              dropdown={dropdown}
-              dataFinal={dataFinal}
-              projectsData={projectsData}
-              project={project}
-              myScreams={myScreams}
-            />{" "}
-          </SwipeCard>
+            </SwipeCard>
+          </ContentMobile>
         </React.Fragment>
       ) : (
         <Content>

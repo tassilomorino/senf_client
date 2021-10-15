@@ -5,7 +5,7 @@ import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import de from "@fullcalendar/core/locales/de";
 
 import listMonth from "@fullcalendar/list";
-import { openScream } from "../../../redux/actions/screamActions";
+import { openScreamFunc } from "../../../redux/actions/screamActions";
 import PropTypes from "prop-types";
 // Redux stuff
 import { connect } from "react-redux";
@@ -56,7 +56,7 @@ class CalendarComponent extends React.Component {
   }
   handleEventClick = ({ event, el }) => {
     const screamId = event.id;
-    this.props.openScream(screamId);
+    this.props.openScreamFunc(screamId);
   };
 
   render() {
@@ -89,7 +89,7 @@ class CalendarComponent extends React.Component {
 }
 
 CalendarComponent.propTypes = {
-  openScream: PropTypes.func.isRequired,
+  openScreamFunc: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -97,7 +97,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapActionsToProps = {
-  openScream,
+  openScreamFunc,
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(CalendarComponent);
