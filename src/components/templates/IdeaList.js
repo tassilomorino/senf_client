@@ -10,11 +10,11 @@ import styled, { keyframes } from "styled-components";
 import Swipe from "react-easy-swipe";
 
 //Components
-import MapMobile from "../module/map/MapMobile";
-import List from "../module/List/List";
-import ListHeader from "../module/Headers/ListHeader";
-import PostScream from "../postScream/PostScream";
-import TopicFilter from "../module/Filters/TopicFilter";
+import MapMobile from "../atoms/map/MapMobile";
+import List from "../atoms/List/List";
+import ListHeader from "../atoms/Headers/ListHeader";
+import PostScream from "../organisms/PostIdea/PostScream";
+import TopicFilter from "../atoms/Filters/TopicFilter";
 import SwipeCard from "./SwipeCard";
 
 const ListEnterAnimation = keyframes`

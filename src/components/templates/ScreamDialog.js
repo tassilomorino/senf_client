@@ -6,10 +6,10 @@ import { setMapViewport } from "../../redux/actions/mapActions";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 import MyButton from "../../util/MyButton";
-import LikeButton from "../module/CustomButtons/LikeButton";
+import LikeButton from "../atoms/CustomButtons/LikeButton";
 import ChatBorder from "../../images/icons/chat.png";
-import Comments from "../module/Comments/Comments";
-import CommentForm from "../module/Comments/CommentForm";
+import Comments from "../molecules/Cards/Comments";
+import CommentForm from "../atoms/Comments/CommentForm";
 import dayjs from "dayjs";
 // MUI Stuff
 
@@ -36,22 +36,22 @@ import { openProject } from "../../redux/actions/projectActions";
 import { clearErrors } from "../../redux/actions/errorsActions";
 
 //COMPONENTS
-import RegistrationAndLogin from "../module/Auth/RegistrationAndLogin";
+import RegistrationAndLogin from "../atoms/Auth/RegistrationAndLogin";
 
 //ANIMATION
 import lamploader from "../../images/lamp.png";
 
-import ShareModal from "../module/Modals/ShareModal";
+import ShareModal from "../molecules/Modals/ShareModal";
 
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
 import {
   CustomButton,
   CustomIconButton,
-} from "../module/CustomButtons/CustomButton";
+} from "../atoms/CustomButtons/CustomButton";
 import setColorByTopic from "../../data/setColorByTopic";
 import styled from "styled-components";
-import MenuModal from "../module/Modals/MenuModal";
+import MenuModal from "../molecules/Modals/MenuModal";
 
 const BackgroundMobile = styled.div`
   position: absolute;

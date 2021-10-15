@@ -25,15 +25,15 @@ import { setInfoPageOpen } from "./redux/actions/UiActions";
 
 //Pages
 import home from "./pages/home";
-import IntroductionInformation from "./components/infocomponents/IntroductionInformation";
+import IntroductionInformation from "./components/organisms/infocomponents/IntroductionInformation";
 
-import Welcome from "./components/infocomponents/Welcome";
-import Verification from "./components/profile/Verification";
+import Welcome from "./components/organisms/infocomponents/Welcome";
+import Verification from "./pages/Verification";
 
-import impressum from "./components/infocomponents/legal/impressum";
-import datenschutz from "./components/infocomponents/legal/datenschutz";
-import agb from "./components/infocomponents/legal/agb";
-import cookieConfigurator from "./components/infocomponents/legal/cookieConfigurator";
+import impressum from "./components/organisms/infocomponents/legal/impressum";
+import datenschutz from "./components/organisms/infocomponents/legal/datenschutz";
+import agb from "./components/organisms/infocomponents/legal/agb";
+import cookieConfigurator from "./components/organisms/infocomponents/legal/cookieConfigurator";
 
 import monitoring from "./pages/monitoring";
 
