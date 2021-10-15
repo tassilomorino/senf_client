@@ -9,7 +9,7 @@ const ScreamDialogSwipeCard = ({ children, loading }) => {
     gesture: "movement",
     enabled: true,
     pointer: false,
-    axis: undefined,
+    axis: "y",
     delay: 0,
     fliterTaps: true,
     threshold: 10,
@@ -56,7 +56,7 @@ const ScreamDialogSwipeCard = ({ children, loading }) => {
           y: down ? my : 100,
           transform: !down ? `translateY(${0}px)` : `translateY(${0}px)`,
           touchAction: "unset",
-          overflowY: "scroll",
+          overflow: "scroll",
         });
       }
 

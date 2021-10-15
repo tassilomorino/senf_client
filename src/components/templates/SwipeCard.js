@@ -12,7 +12,7 @@ const SwipeCard = ({ children, loading }) => {
     gesture: "movement",
     enabled: true,
     pointer: false,
-    axis: undefined,
+    axis: "y",
     delay: 0,
     fliterTaps: true,
     threshold: 10,
