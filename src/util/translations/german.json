@@ -24,7 +24,8 @@
   "hottest": "schärfste",
 
   "noMoreIdeas":"Keine weiteren Ideen",
-"noContentIdeas":"Mit den ausgewählten Filtern findest du noch keine Ideen.",
+  "noContentIdeas":"Mit den ausgewählten Filtern findest du noch keine Ideen.",
+  "idea":"Idee",
   "ideas": "Ideen",
   "comments": "Kommentare",
   "votes": "Votes",

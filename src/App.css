@@ -606,12 +606,6 @@ button:disabled {
 }
 
 
-.idea-header {
-
-  margin-top: -20px;
-  font-size: 24pt;
-
-}
 
 .contentWrapper {
   width: 100vw;
@@ -2167,19 +2161,7 @@ background-color: #353535;
 }
 
 
-@media screen and (max-width: 330px) {
 
-  .idea-header {
-
-    margin-top: -20px;
-    font-size: 21pt;
-    margin-left: -5px;
-
-  }
- 
-  
-  
-}
 
 @media screen and (max-width: 321px) {
   .subTitle1 {
