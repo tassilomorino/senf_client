@@ -53,8 +53,7 @@ import {
 import setColorByTopic from "../../data/setColorByTopic";
 import styled, { createGlobalStyle } from "styled-components";
 
-
-import ScreamDialogSwipeCard from "./ScreamDialogSwipeCard";
+import ScreamDialogSwipe from "../../hooks/ScreamDialogSwipe";
 
 const portalRoot = document.getElementById("portal-root");
 
@@ -677,7 +676,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
           handleButtonClick={handleClose}
         />
 
-        <ScreamDialogSwipeCard> {content}</ScreamDialogSwipeCard>
+        <ScreamDialogSwipe loading={loading}> {content}</ScreamDialogSwipe>
       </React.Fragment>
     ) : (
       <React.Fragment>

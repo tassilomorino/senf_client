@@ -15,7 +15,7 @@ import List from "../atoms/List/List";
 import ListHeader from "../atoms/Headers/ListHeader";
 import PostScream from "../organisms/PostIdea/PostScream";
 import TopicFilter from "../atoms/Filters/TopicFilter";
-import SwipeCard from "./SwipeCard";
+import IdeaListSwipe from "../../hooks/IdeaListSwipe";
 
 const Wrapper = styled.div`
   opacity: 1;
@@ -130,7 +130,7 @@ const IdeaList = ({
             project={project}
           />
           <ContentMobile openScream={openScream} id="listMobile">
-            <SwipeCard loading={loading}>
+            <IdeaListSwipe loading={loading}>
               <ListHeaderWrapper>
                 <ListHeader
                   loading={loading}
@@ -149,7 +149,7 @@ const IdeaList = ({
                 project={project}
                 myScreams={myScreams}
               />{" "}
-            </SwipeCard>
+            </IdeaListSwipe>
           </ContentMobile>
         </React.Fragment>
       ) : (
