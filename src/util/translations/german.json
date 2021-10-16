@@ -41,9 +41,10 @@
   "logout":"Ausloggen",
 
   "alreadyMember": "Bereits Mitglied?",
-  "notYetMember": "noch kein Mitglied?",
+  "notYetMember": "Noch kein Mitglied?",
   "password": "Passwort mit mind. 8 Zeichen",
   "confirmPassword": "Passwort bestätigen",
+  "forgotPassword":"Du hast dein Passwort vergessen?",
   "username": "Nutzername",
   "birthyear": "Jahrgang",
   "gender": "Geschlecht",

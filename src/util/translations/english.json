@@ -40,9 +40,10 @@
    "logout":"Logout",
 
    "alreadyMember": "Already a member?",
-   "notYetMember": "not yet a member?",
+   "notYetMember": "Not yet a member?",
    "password": "Password with at least 8 characters",
    "confirmPassword": "Confirm password",
+   "forgotPassword":"Forgotten your password?",
    "username": "Username",
    "birthyear": "Birthyear",
    "gender": "Gender",

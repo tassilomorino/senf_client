@@ -25,7 +25,7 @@ const LoginFormComponent = ({
     <React.Fragment>
       <div className={classes.textfields}>
         <div className={classes.smallText} onClick={() => handleToggle()}>
-          Noch kein Mitglied? <span className="Terms">Registrieren</span>
+          {t('notYetMember')} <span className="Terms">{t('register')}</span>
         </div>
         <TextField
           id="outlined-name"
@@ -45,7 +45,7 @@ const LoginFormComponent = ({
         <TextField
           id="outlined-password-input"
           name="password"
-          label="Passwort"
+          label={t('password')}
           type="password"
           autoComplete="current-password"
           margin="normal"
@@ -93,7 +93,7 @@ const LoginFormComponent = ({
         }
         onClick={() => handleToggle()}
       >
-        Noch kein Mitglied? <span className="Terms">Registrieren</span>
+        {t('notYetMember')} <span className="Terms">{t('register')}</span>
       </div>
     </React.Fragment>
   );
