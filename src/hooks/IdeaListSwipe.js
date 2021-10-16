@@ -41,7 +41,7 @@ const IdeaListSwipe = ({ children, loading }) => {
         setPosition("bottom");
       }
 
-      set({ y: down ? my : 0, scale: down ? 1 : 1 });
+      set({ y: down ? my : 0 });
     },
     {
       pointer: { touch: true },

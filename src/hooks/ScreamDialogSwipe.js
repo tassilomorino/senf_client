@@ -1,5 +1,5 @@
 /** @format */
-import React from "react";
+import React, { useState } from "react";
 import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 
@@ -9,7 +9,7 @@ const ScreamDialogSwipe = ({ children, loading }) => {
     y: 0,
     scale: 1,
     transform: `translateY(${window.innerHeight / 2}px)`,
-    overflowY: "hidden",
+    overflow: "scroll",
     touchAction: "none",
   }));
 
@@ -20,22 +20,23 @@ const ScreamDialogSwipe = ({ children, loading }) => {
       if (my < -50) {
         set({
           y: down ? my : 100,
-          transform: !down ? `translateY(${0}px)` : `translateY(${0}px)`,
+          transform: !down ? `translateY(${-30}px)` : `translateY(${0}px)`,
           touchAction: "unset",
-          overflowY: "scroll",
+          overflow: "scroll",
         });
-      } else if (el.scrollTop < 30 && my > 150) {
+      }
+      if (el.scrollTop < 30 && my > 150) {
         set({
           y: down ? my : window.innerHeight - 120,
           transform: down
             ? `translateY(${0}px)`
             : `translateY(${window.innerHeight / 2}px)`,
           touchAction: "none",
-          overflowY: "hidden",
+          overflow: "scroll",
         });
       }
 
-      set({ y: down ? my : 0, scale: down ? 1 : 1 });
+      set({ y: down ? my : 0 });
     },
     {
       pointer: { touch: true },

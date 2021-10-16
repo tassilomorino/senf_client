@@ -4,7 +4,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import moment from "moment";
 import { clearErrors } from "./errorsActions";
-import { openProject } from "./projectActions";
+import { openProjectFunc } from "./projectActions";
 import {
   SET_SCREAMS,
   SET_MY_SCREAMS,
@@ -20,7 +20,6 @@ import {
   CLOSE_SCREAM,
   SET_SCREAM_USER,
 } from "../types";
-
 
 // Get all ideas
 export const getScreams = () => async (dispatch) => {
@@ -212,7 +211,7 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
               : "";
 
           if (project.indexOf("_") > 0) {
-            dispatch(openProject(project));
+            dispatch(openProjectFunc(project));
           } else {
             history.push(`/${resScream.screamId}`);
             const screamId = resScream.screamId;
