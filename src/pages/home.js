@@ -401,8 +401,8 @@ const mapStateToProps = (state) => ({
 });
 
 
+
 export default connect(
   mapStateToProps,
   mapActionsToProps
-)(compose(withStyles(styles), withTranslation())(home));
-
+)(withTranslation()(home));
