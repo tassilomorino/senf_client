@@ -4,10 +4,7 @@ import { useSelector } from "react-redux";
 import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 
-const SwipeCard = ({ children, loading }) => {
-  const { openScream } = useSelector((state) => state.UI);
-
-  const [position, setPosition] = useState("bottom");
+const ScreamDialogSwipeCard = ({ children, loading }) => {
   const [config, setConfig] = React.useState({
     gesture: "movement",
     enabled: true,
@@ -24,16 +21,16 @@ const SwipeCard = ({ children, loading }) => {
       enabled: false,
       top: -100,
       bottom: 100,
-      left: -100,
-      right: 100,
+      left: 0,
+      right: 0,
     },
   });
   const [props, set] = useSpring(() => ({
     x: 0,
     y: 0,
     scale: 1,
-    transform: `translateY(${window.innerHeight - 120}px)`,
-    overflow: "scroll",
+    transform: `translateY(${window.innerHeight / 2}px)`,
+    overflowY: "hidden",
     touchAction: "none",
   }));
 
@@ -51,26 +48,24 @@ const SwipeCard = ({ children, loading }) => {
 
   const bind = useDrag(
     ({ down, movement: [, my], offset: [, y] }) => {
-      if (my < -100) {
+      const el = document.querySelector(".screamDialogDrag");
+
+      if (my < -50) {
         set({
           y: down ? my : 100,
-          transform:
-            !down && position !== "bottom"
-              ? `translateY(${141}px)`
-              : `translateY(${0}px)`,
+          transform: !down ? `translateY(${0}px)` : `translateY(${0}px)`,
           touchAction: "unset",
+          overflowY: "scroll",
         });
-        setPosition("top");
-      }
-      if (my > 150) {
+      } else if (el.scrollTop < 30 && my > 150) {
         set({
           y: down ? my : window.innerHeight - 120,
           transform: down
             ? `translateY(${0}px)`
-            : `translateY(${window.innerHeight - 120}px)`,
+            : `translateY(${window.innerHeight / 2}px)`,
           touchAction: "none",
+          overflowY: "hidden",
         });
-        setPosition("bottom");
       }
 
       if (gesture === "movement")
@@ -85,33 +80,18 @@ const SwipeCard = ({ children, loading }) => {
         enabled: true,
         top: -window.innerHeight + 241,
         bottom: window.innerHeight - 120,
+        left: 0,
+        right: 0,
       },
       rubberband: activateBounds ? rubberband : 0,
     }
   );
 
-  useEffect(() => {
-    if (openScream) {
-      set({
-        y: 0,
-        transform: `translateY(${window.innerHeight - 120}px)`,
-        touchAction: "none",
-      });
-    }
-    // else {
-    //   set({
-    //     y: 0,
-    //     transform: `translateY(${window.innerHeight - 120}px)`,
-    //     touchAction: "none",
-    //   });
-    // }
-  }, [openScream]);
-
   return (
-    <animated.div className={!loading ? "drag" : ""} {...bind()} style={props}>
+    <animated.div className="screamDialogDrag" {...bind()} style={props}>
       {children}
     </animated.div>
   );
 };
 
-export default SwipeCard;
+export default ScreamDialogSwipeCard;
