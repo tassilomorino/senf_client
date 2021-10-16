@@ -3,6 +3,7 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 
+import { closeScream } from "./screamActions";
 import {
   LOADING_UI,
   STOP_LOADING_UI,
@@ -53,8 +54,9 @@ export const getProjects = () => async (dispatch) => {
 };
 
 // Open a project
-export const openProject = (project) => async (dispatch) => {
+export const openProjectFunc = (project) => async (dispatch) => {
   dispatch({ type: LOADING_UI });
+
   const db = firebase.firestore();
   const ref = await db.collection("projects").doc(project).get();
 
@@ -80,6 +82,7 @@ export const openProject = (project) => async (dispatch) => {
     window.history.pushState(null, null, newPath);
     dispatch({ type: SET_PROJECT, payload: project });
     dispatch({ type: OPEN_PROJECT });
+    dispatch(closeScream());
     dispatch({ type: STOP_LOADING_UI });
   }
 };

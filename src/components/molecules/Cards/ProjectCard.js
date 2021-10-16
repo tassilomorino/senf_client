@@ -4,7 +4,7 @@ import React from "react";
 
 // Redux
 import { useDispatch } from "react-redux";
-import { openProject } from "../../../redux/actions/projectActions";
+import { openProjectFunc } from "../../../redux/actions/projectActions";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import AddIcon from "../../../images/icons/plus_grey.png";
 import { useTranslation } from "react-i18next";
@@ -89,7 +89,7 @@ export const ProjectCard = (props) => {
   } = props;
   const dispatch = useDispatch();
   const pushScreamId = (project) => {
-    dispatch(openProject(project));
+    dispatch(openProjectFunc(project));
   };
 
   return (
