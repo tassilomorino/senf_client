@@ -60,6 +60,7 @@ const IdeaListSwipe = ({ children, loading }) => {
         transform: `translateY(${window.innerHeight - 120}px)`,
         touchAction: "none",
       });
+      setPosition("bottom");
     }
   }, [openScream]);
 
