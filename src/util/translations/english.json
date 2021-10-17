@@ -4,13 +4,12 @@
 
    "contact": "Contact",
    "imprint": "Imprint",
-   "dataPrivacy": "Data privacy",
-   "termsAndConditions": "Terms",
    "accept": "Accept",
    "next": "Next",
    "to": "To:",
    "details": "Details",
    "monitoring": "Monitoring",
+   "andThe":"and the",
 
    "show_number_ideas": "Show {{ number }} ideas",
    "show_noLocationNumber_ideas": "Show {{ noLocationNumber }} ideas",
@@ -47,6 +46,16 @@
    "username": "Username",
    "birthyear": "Birthyear",
    "gender": "Gender",
+   "female":"Female",
+   "male":"Male",
+   "diverse":"Diverse",
+   
+   "dataPrivacy": "Data privacy",
+   "termsAndConditions": "T&Cs",
+   "terms_understood":"By registering, I confirm that I have read and understood the",
+   "terms_agreed":"of Senf and I agree with them.",
+   "privacyPolicy":"Privacy policy",
+   
 
    "menuData_allIdeas": "All ideas",
    "menuData_projectrooms": "Projectrooms",

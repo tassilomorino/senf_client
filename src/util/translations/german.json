@@ -4,13 +4,12 @@
 
   "contact": "Kontakt",
   "imprint": "Impressum",
-  "dataPrivacy": "Datenschutz",
-  "termsAndConditions": "AGB",
   "accept": "Akzeptieren",
   "next": "Weiter",
   "to": "An:",
   "details": "Details",
   "monitoring": "Monitoring",
+  "andThe":"und die",
 
   "show_number_ideas": "{{number}} Ideen anzeigen",
   "show_noLocationNumber_ideas": "{{noLocationNumber}} Ideen anzeigen",
@@ -48,6 +47,17 @@
   "username": "Nutzername",
   "birthyear": "Jahrgang",
   "gender": "Geschlecht",
+  "female":"Weiblich",
+  "male":"Männlich",
+  "diverse":"Divers",
+  
+  "dataPrivacy": "Datenschutz",
+  "termsAndConditions": "AGB",
+  "terms_understood":"Mit der Registrierung bestätige ich, dass ich die",
+  "terms_agreed":"von Senf gelesen habe und ihnen zustimme.",
+  "privacyPolicy":"Datenschutzrichtlinie",
+  
+
 
   "menuData_allIdeas": "Alle Ideen",
   "menuData_projectrooms": "Projekträume",
