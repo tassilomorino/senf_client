@@ -33,7 +33,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 
 // Redux stuff
 import { closeScream } from "../../redux/actions/screamActions";
-import { openProject } from "../../redux/actions/projectActions";
+import { openProjectFunc } from "../../redux/actions/projectActions";
 import { clearErrors } from "../../redux/actions/errorsActions";
 
 //COMPONENTS
@@ -43,6 +43,7 @@ import RegistrationAndLogin from "../atoms/Auth/RegistrationAndLogin";
 import lamploader from "../../images/lamp.png";
 
 import ShareModal from "../molecules/Modals/ShareModal";
+import MenuModal from "../molecules/Modals/MenuModal";
 
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
@@ -53,8 +54,7 @@ import {
 import setColorByTopic from "../../data/setColorByTopic";
 import styled, { createGlobalStyle } from "styled-components";
 
-
-import ScreamDialogSwipeCard from "./ScreamDialogSwipeCard";
+import ScreamDialogSwipe from "../../hooks/ScreamDialogSwipe";
 
 const portalRoot = document.getElementById("portal-root");
 
@@ -143,11 +143,13 @@ const styles = {
     color: "#353535",
     fontSize: "12pt",
     height: "16px",
+    pointerEvents: "none",
   },
   date: {
     position: "relative",
     color: "#353535",
     fontSize: "12pt",
+    pointerEvents: "none",
   },
 
   faceButton: {
@@ -180,6 +182,7 @@ const styles = {
     width: "1px",
     backgroundColor: "#d5dadd",
     height: "100%",
+    pointerEvents: "none",
   },
 
   horrizontalLine: {
@@ -191,6 +194,7 @@ const styles = {
     width: "calc(85% + 25px)",
     marginTop: "20px",
     marginBottom: "10px",
+    pointerEvents: "none",
   },
 
   likeButton: {
@@ -225,11 +229,13 @@ const styles = {
     fontWeight: 500,
     fontFamily: "Playfair Display",
     clear: "both",
+    pointerEvents: "none",
   },
   bodytext: {
     width: "80%",
     fontSize: "19px !important",
     whiteSpace: "pre-line",
+    pointerEvents: "none",
   },
   engagement: {
     paddingRight: 10,
@@ -274,6 +280,7 @@ const styles = {
     marginLeft: "10px",
     color: "rgb(255, 205, 6)",
     height: "3vh",
+    pointerEvents: "none",
   },
 
   districtHeader: {
@@ -281,6 +288,7 @@ const styles = {
     float: "left",
     paddingRight: "2%",
     width: "100%",
+    pointerEvents: "none",
   },
 
   anmeldeText: {
@@ -292,6 +300,8 @@ const styles = {
     textAlign: "center",
     marginLeft: "2.5%",
     paddingBottom: "15px",
+
+    pointerEvents: "none",
   },
 
   card2: {
@@ -408,7 +418,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
   };
 
   const openTheProject = (project) => {
-    dispatch(openProject(project));
+    dispatch(openProjectFunc(project));
   };
 
   const openLink = (convertedLink) => {
@@ -666,6 +676,13 @@ const ScreamDialog = ({ classes, projectsData }) => {
             setShareOpen={setShareOpen}
           />
         )}
+        {menuOpen && (
+          <MenuModal
+            screamId={screamId}
+            userHandle={userHandle}
+            setMenuOpen={setMenuOpen}
+          />
+        )}
 
         <CustomIconButton
           name="ArrowLeft"
@@ -677,7 +694,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
           handleButtonClick={handleClose}
         />
 
-        <ScreamDialogSwipeCard> {content}</ScreamDialogSwipeCard>
+        <ScreamDialogSwipe loading={loading}> {content}</ScreamDialogSwipe>
       </React.Fragment>
     ) : (
       <React.Fragment>
@@ -689,6 +706,13 @@ const ScreamDialog = ({ classes, projectsData }) => {
             title={title}
             path={path}
             setShareOpen={setShareOpen}
+          />
+        )}
+        {menuOpen && (
+          <MenuModal
+            screamId={screamId}
+            userHandle={userHandle}
+            setMenuOpen={setMenuOpen}
           />
         )}
 
@@ -711,7 +735,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
 ScreamDialog.propTypes = {
   clearErrors: PropTypes.func.isRequired,
   closeScream: PropTypes.func.isRequired,
-  openProject: PropTypes.func.isRequired,
+  openProjectFunc: PropTypes.func.isRequired,
   UI: PropTypes.object.isRequired,
 };
 

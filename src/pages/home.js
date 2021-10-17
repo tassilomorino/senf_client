@@ -11,7 +11,7 @@ import {
 } from "../redux/actions/screamActions";
 import {
   getProjects,
-  openProject,
+  openProjectFunc,
   closeProject,
 } from "../redux/actions/projectActions";
 
@@ -112,7 +112,7 @@ export class home extends Component {
 
     if (screamId) {
       if (screamId.indexOf("_") > 0) {
-        this.props.openProject(screamId);
+        this.props.openProjectFunc(screamId);
       } else {
         this.props.openScreamFunc(screamId);
       }
@@ -348,12 +348,10 @@ export class home extends Component {
         )}
 
         {!this.props.UI.openInfoPage && this.props.UI.openScream && (
-          <div style={{ height: "100vh", overflow: "scroll" }}>
-            <ScreamDialog
-              screamIdParam={this.state.screamIdParam}
-              projectsData={projects}
-            ></ScreamDialog>
-          </div>
+          <ScreamDialog
+            screamIdParam={this.state.screamIdParam}
+            projectsData={projects}
+          />
         )}
       </div>
     );
@@ -373,7 +371,7 @@ home.propTypes = {
 
   closeScream: PropTypes.func.isRequired,
   openScream: PropTypes.func.isRequired,
-  openProject: PropTypes.func.isRequired,
+  openProjectFunc: PropTypes.func.isRequired,
   closeProject: PropTypes.func.isRequired,
 
   setMapViewport: PropTypes.func.isRequired,
@@ -387,7 +385,7 @@ const mapActionsToProps = {
   getProjects,
   closeScream,
   openScreamFunc,
-  openProject,
+  openProjectFunc,
   closeProject,
   setMapViewport,
   setMapBounds,

@@ -22,7 +22,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { openScreamFunc } from "../../../redux/actions/screamActions";
 import setColorByTopic from "../../../data/setColorByTopic";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
-import { openProject } from "../../../redux/actions/projectActions";
+import { openProjectFunc } from "../../../redux/actions/projectActions";
 
 const CardContent = styled.div`
   color: rgb(87, 87, 87);
@@ -170,11 +170,10 @@ const ScreamcardProjectContainerButtonWide = styled.button`
   border-radius: 0%;
   border-bottom-right-radius: 20px;
   border-bottom-left-radius: 20px;
-  z-index: 10;
+  z-index: 11;
   color: #353535;
   font-size: 12pt;
   box-shadow: rgb(38 57 77 / 0%) 0px 20px 30px -15px;
-
   text-transform: none;
   font-family: Futura PT W01 Book;
 `;
@@ -208,7 +207,7 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
   };
 
   const fetchDataProject = (project) => {
-    dispatch(openProject(project));
+    dispatch(openProjectFunc(project));
   };
 
   const projectsDataFinal = [];
