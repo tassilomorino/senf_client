@@ -23,6 +23,7 @@ import { openScreamFunc } from "../../../redux/actions/screamActions";
 import setColorByTopic from "../../../data/setColorByTopic";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import { openProjectFunc } from "../../../redux/actions/projectActions";
+import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
 
 const CardContent = styled.div`
   color: rgb(87, 87, 87);
@@ -246,10 +247,10 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
           project={project}
           projectsData={projectsData}
         >
-          <MyButton>
+          <MyButtonStyle>
             {!authenticated && <RegistrationAndLogin />}
             <img src={ChatBorder} width="100%" alt="ChatIcon" />
-          </MyButton>
+          </MyButtonStyle>
           <Engagement>{commentCount}</Engagement>
         </CommentButtonWrapper>
         <br />
