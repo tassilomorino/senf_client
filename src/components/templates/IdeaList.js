@@ -16,6 +16,7 @@ import List from "../atoms/List/List";
 import Toolbar from "../molecules/Toolbar/Toolbar";
 import PostScream from "../organisms/PostIdea/PostScream";
 import TopicFilter from "../atoms/Filters/TopicFilter";
+import SortingSelect from "../atoms/Selects/SortingSelect";
 
 const Wrapper = styled.div`
   opacity: 1;
@@ -41,9 +42,10 @@ const ListHeaderWrapper = styled.div`
   width: 100%;
   background-color: #fed957;
   display: block;
-  position: sticky;
   z-index: 15;
   top: 0;
+
+  position: sticky;
 
   border-radius: 20px 20px 0 0;
 `;
@@ -63,7 +65,7 @@ const ShadowBox = styled.div`
 
 const FakelistContainer = styled.div`
   width: 100%;
-  z-index: 999;
+  z-index: 996;
   height: 100vh;
   position: fixed;
   top: 211px;
@@ -87,6 +89,13 @@ const FakelistContainer = styled.div`
       opacity: 1;
     }
   }
+`;
+
+const SelectPositioner = styled.div`
+  position: fixed;
+  top: 156px;
+  right: 2.5%;
+  z-index: 996;
 `;
 const IdeaList = ({
   type,
@@ -125,20 +134,6 @@ const IdeaList = ({
     touchAction: "none",
   }));
 
-  useEffect(() => {
-    if (openScream) {
-      set({
-        marginTop: "90vh",
-        transition: "0.3s",
-      });
-    } else {
-      set({
-        marginTop: "0",
-        transition: "0s",
-      });
-    }
-  }, [openScream]);
-
   const setSwipePositionUp = () => {
     setSwipePosition("top");
     set({
@@ -156,6 +151,24 @@ const IdeaList = ({
       touchAction: "none",
     });
   };
+
+  useEffect(() => {
+    if (openScream) {
+      set({
+        opacity: "0",
+        pointerEvents: "none",
+        // marginTop: "90vh",
+        // transition: "0.3s",
+      });
+    } else {
+      set({
+        opacity: "1",
+        pointerEvents: "auto",
+        // marginTop: "0",
+        // transition: "0s",
+      });
+    }
+  }, [openScream]);
 
   // const bind = useDrag(
   //   ({ down, movement: [, my] }) => {
@@ -209,7 +222,7 @@ const IdeaList = ({
         });
         setSwipePosition("top");
       }
-      if (my > 150) {
+      if (my > 50) {
         set({
           y: down ? my : window.innerHeight - 120,
           transform: down
@@ -260,19 +273,26 @@ const IdeaList = ({
             projectsData={projectsData}
             project={project}
           />
-          {swipePosition === "top" && (
-            <FakelistContainer>
-              <List
-                type={type}
-                loading={loading}
-                dropdown={dropdown}
-                dataFinal={dataFinal}
-                projectsData={projectsData}
-                project={project}
-                myScreams={myScreams}
-              />{" "}
-            </FakelistContainer>
-          )}{" "}
+          <FakelistContainer
+            style={
+              swipePosition === "top" && !openScream
+                ? { opacity: "1", pointerEvents: "auto" }
+                : { opacity: "0", pointerEvents: "none" }
+            }
+          >
+            <SelectPositioner>
+              <SortingSelect handleDropdown={handleDropdown} />
+            </SelectPositioner>
+            <List
+              type={type}
+              loading={loading}
+              dropdown={dropdown}
+              dataFinal={dataFinal}
+              projectsData={projectsData}
+              project={project}
+              myScreams={myScreams}
+            />{" "}
+          </FakelistContainer>
           <animated.div
             className={!loading ? "drag" : ""}
             {...bind()}
