@@ -1,12 +1,14 @@
 /** @format */
 
 import React, { Component } from "react";
+import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 // MUI Stuff
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 // Redux stuff
+import { compose } from "redux";
 import { connect } from "react-redux";
 import { submitComment } from "../../../redux/actions/commentActions";
 import LikeButton from "../CustomButtons/LikeButton";
@@ -93,7 +95,7 @@ class CommentForm extends Component {
           <TextField
             name="body"
             type="text"
-            label="Was ist deine Meinung?"
+            label={this.props.t('opinion')}
             id="outlined-name"
             margin="dense"
             variant="outlined"
@@ -139,6 +141,9 @@ const mapStateToProps = (state) => ({
   user: state.user,
 });
 
-export default connect(mapStateToProps, { submitComment })(
-  withStyles(styles)(CommentForm)
-);
+
+export default compose(
+  withStyles(styles),
+  withTranslation(),
+  connect(mapStateToProps, { submitComment }))
+  (CommentForm)

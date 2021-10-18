@@ -23,8 +23,12 @@
 
    "noMoreIdeas": "No further ideas",
    "noContentIdeas": "With the filters selected, you won't find any ideas yet.",
+   "noSharedIdeas":"You haven't shared an idea yet.You are creative! Share your ideas!",
+   "noIdeasWithFilter":"You haven't shared any ideas with selected filters yet.",
+   "noProjectIdeas":"No idea has been shared for this project space. Be the first and share your idea!",
    "idea":"Idea",
    "ideas": "Ideas",
+   "opinion":"What is your opinion ?",
    "comments": "Comments",
    "votes": "Votes",
    "info": "Info",
@@ -78,7 +82,8 @@
   "keywords": "Keywords",
 
    "map_filterIdeas": "Show ideas within the map area in the list",
-
+   "dialogScream_what_do_you_think":"What do you think of the idea?",
+   "dialogScream_opinion":"We encourage to leave an opinion!",
    "postScream_newIdea": "New idea",
    "postScream_shareIdea": "Share idea",
    "postScream_ideaTitle": "Title of your idea",

@@ -24,8 +24,12 @@
 
   "noMoreIdeas":"Keine weiteren Ideen",
   "noContentIdeas":"Mit den ausgewählten Filtern findest du noch keine Ideen.",
+  "noSharedIdeas":"Du hast bisher noch keine Idee geteilt. Es gibt noch so viele Ideen da draußen & du bist kreativ! Teile deine Ideen!",
+  "noIdeasWithFilter":"Zu den ausgewählten Filtern hast du noch keine Ideen geteilt.",
+  "noProjectIdeas":"Zu diesem Projektraum wurde bisher noch keine Idee geteilt. Sei die/der erste und teile deine Idee!",
   "idea":"Idee",
   "ideas": "Ideen",
+  "opinion":"Was ist deine Meinung ?",
   "comments": "Kommentare",
   "votes": "Votes",
   "info": "Infos",
@@ -79,7 +83,8 @@
   "keywords": "Keywords",
 
   "map_filterIdeas": "Ideen im Kartenbereich in der Liste anzeigen",
-
+  "dialogScream_what_do_you_think":"Was hältst du von der Idee?",
+  "dialogScream_opinion":"Rege den Meinungsaustausch hier an!",
   "postScream_newIdea": "Neue Idee",
   "postScream_shareIdea": "Idee teilen",
   "postScream_ideaTitle": "Titel deiner Idee",

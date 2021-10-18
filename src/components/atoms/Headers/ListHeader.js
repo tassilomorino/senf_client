@@ -71,9 +71,9 @@ const ListHeader = ({ loading, dataFinal, handleDropdown, marginTop }) => {
         {isMobileCustom && <Bar />}
         <IdeaHeader>
           <Lightbulb src={lightbulbImg} alt={'lightbulb'} />
-          {dataFinal.length}
+          {dataFinal?.length}
           {" "}
-          {dataFinal.length >= 2 ? t('ideas') : t('idea')}
+          {dataFinal?.length === 1 ? t('idea'): t('ideas')}
         </IdeaHeader>
         <SortingSelect handleDropdown={handleDropdown} />{" "}
       </Wrapper>
