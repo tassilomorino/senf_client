@@ -61,6 +61,33 @@ const ShadowBox = styled.div`
   display: ${(props) => props.display && props.display};
 `;
 
+const FakelistContainer = styled.div`
+  width: 100%;
+  z-index: 999;
+  height: 100vh;
+  position: fixed;
+  top: 211px;
+  overflow: scroll;
+  background: rgb(254, 217, 87);
+  background: linear-gradient(
+    180deg,
+    rgba(254, 217, 87, 1) 0%,
+    rgba(255, 218, 83, 1) 50%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  animation: animation 0.7s;
+  @keyframes animation {
+    0% {
+      opacity: 0;
+    }
+    99% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+`;
 const IdeaList = ({
   type,
   loading,
@@ -130,15 +157,54 @@ const IdeaList = ({
     });
   };
 
+  // const bind = useDrag(
+  //   ({ down, movement: [, my] }) => {
+  //     if (my < -100) {
+  //       set({
+  //         y: down ? my : 100,
+  //         transform:
+  //           !down && swipePosition !== "bottom"
+  //             ? `translateY(${141}px)`
+  //             : `translateY(${0}px)`,
+  //         touchAction: "unset",
+  //       });
+  //       setSwipePosition("top");
+  //     }
+  //     if (my > 150) {
+  //       set({
+  //         y: down ? my : window.innerHeight - 120,
+  //         transform: down
+  //           ? `translateY(${0}px)`
+  //           : `translateY(${window.innerHeight - 120}px)`,
+  //         touchAction: "none",
+  //       });
+  //       setSwipePosition("bottom");
+  //     }
+
+  //     set({ y: down ? my : 0 });
+  //   },
+  //   {
+  //     pointer: { touch: true },
+  //     bounds: {
+  //       top: swipePosition === "top" ? 0 : -window.innerHeight,
+  //       bottom: swipePosition === "bottom" ? 20 : window.innerHeight - 420,
+  //     },
+  //     threshold: [10, 10],
+  //     gesture: "movement",
+  //     activateBounds: true,
+  //     filterTaps: true,
+  //   }
+  // );
+
   const bind = useDrag(
     ({ down, movement: [, my], offset: [, y] }) => {
       if (my < -100) {
         set({
-          y: down ? my : 141,
+          y: down ? my : 100,
           transform:
-            !down && swipePosition === "top"
+            !down && swipePosition !== "bottom"
               ? `translateY(${141}px)`
-              : `translateY(${window.innerHeight - 120}px)`,
+              : `translateY(${0}px)`,
           touchAction: "unset",
         });
         setSwipePosition("top");
@@ -146,27 +212,27 @@ const IdeaList = ({
       if (my > 150) {
         set({
           y: down ? my : window.innerHeight - 120,
-          transform:
-            !down && swipePosition === "bottom"
-              ? `translateY(${window.innerHeight - 120}px)`
-              : `translateY(${0}px)`,
+          transform: down
+            ? `translateY(${0}px)`
+            : `translateY(${window.innerHeight - 120}px)`,
           touchAction: "none",
         });
         setSwipePosition("bottom");
       }
 
-      set({ y: down ? my : 0 });
+      set({
+        y: down ? my : 0,
+      });
     },
     {
-      pointer: { touch: true },
-      bounds: {
-        top: swipePosition === "top" ? 0 : -window.innerHeight,
-        bottom: swipePosition === "bottom" ? 20 : window.innerHeight - 420,
+      pointer: {
+        touch: true,
       },
-      threshold: [10, 10],
-      gesture: "movement",
-
-      filterTaps: true,
+      bounds: {
+        enabled: true,
+        /*   top: -window.innerHeight + 341,
+        bottom: swipePosition === "bottom" ? 20 : window.innerHeight - 420, */
+      },
     }
   );
 
@@ -181,22 +247,35 @@ const IdeaList = ({
             viewport={mapViewport}
             _onViewportChange={_onViewportChange}
             setSwipePositionUp={() => setSwipePositionUp()}
-          />
+          />{" "}
           <TopicFilter
             loading={loading}
             handleTopicSelector={handleTopicSelector}
             topicsSelected={topicsSelected}
             swipePosition={swipePosition}
             setSwipePositionDown={() => setSwipePositionDown()}
-          ></TopicFilter>
+          ></TopicFilter>{" "}
           <PostScream
             loadingProjects={loadingProjects}
             projectsData={projectsData}
             project={project}
           />
+          {swipePosition === "top" && (
+            <FakelistContainer>
+              <List
+                type={type}
+                loading={loading}
+                dropdown={dropdown}
+                dataFinal={dataFinal}
+                projectsData={projectsData}
+                project={project}
+                myScreams={myScreams}
+              />{" "}
+            </FakelistContainer>
+          )}{" "}
           <animated.div
             className={!loading ? "drag" : ""}
-            // {...bind()}
+            {...bind()}
             style={props}
           >
             <ListHeaderWrapper>
@@ -211,7 +290,7 @@ const IdeaList = ({
                     : () => setSwipePositionDown()
                 }
               />{" "}
-            </ListHeaderWrapper>
+            </ListHeaderWrapper>{" "}
             <List
               type={type}
               loading={loading}
@@ -221,7 +300,7 @@ const IdeaList = ({
               project={project}
               myScreams={myScreams}
             />{" "}
-          </animated.div>
+          </animated.div>{" "}
         </React.Fragment>
       ) : (
         <Content>
@@ -230,7 +309,7 @@ const IdeaList = ({
             handleDropdown={handleDropdown}
             dataFinal={dataFinal}
             marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
-          />
+          />{" "}
           <List
             type={type}
             loading={loading}
