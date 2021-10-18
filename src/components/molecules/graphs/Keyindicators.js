@@ -7,8 +7,11 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import lamploader from "../../../images/lamp.png";
 import ChatBorder from "../../../images/icons/chat.png";
 import HandFull from "../../../images/icons/handsFull.png";
+import { useTranslation } from "react-i18next";
 
 const Keyindicators = ({ screams, likesLength, commentslength }) => {
+  const {t} = useTranslation()
+
   const Wishlength =
     screams.length === 0 ? (
       <div className="keyindicatorcard">
@@ -22,7 +25,7 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
           style={{ transform: "rotate(35deg) translateY(-1px)" }}
           alt="lamploader"
         ></img>
-        {screams.length} Ideen
+        {screams.length} {screams.length === 1 ? t('idea'): t('ideas')}
       </div>
     );
 
@@ -51,7 +54,7 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
       ) : (
         <div className="keyindicatorcard">
           <img src={ChatBorder} width="25px" alt="lamploader"></img>
-          {commentslength} Kommentare
+          {commentslength} {commentslength === 1 ? t('comment'): t('comments')}
         </div>
       )}
     </div>

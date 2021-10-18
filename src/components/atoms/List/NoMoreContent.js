@@ -40,7 +40,7 @@ export const NoMoreMainContent = ({ dataFinal }) => {
 export const NoMoreMyContent = ({ dataFinal, myScreams, loading }) => {
   const { t } = useTranslation();
 
-  return !loading && dataFinal.length > 0 ? (
+  return !loading && dataFinal?.length > 0 ? (
     <NoMore>
       ... <br /> {t("noMoreIdeas")} <br />
     </NoMore>

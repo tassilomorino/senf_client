@@ -10,6 +10,7 @@
   "details": "Details",
   "monitoring": "Monitoring",
   "andThe":"und die",
+  "your": "Dein",
 
   "show_number_ideas": "{{number}} Ideen anzeigen",
   "show_noLocationNumber_ideas": "{{noLocationNumber}} Ideen anzeigen",
@@ -30,6 +31,7 @@
   "idea":"Idee",
   "ideas": "Ideen",
   "opinion":"Was ist deine Meinung ?",
+  "comment":"Kommentar",
   "comments": "Kommentare",
   "votes": "Votes",
   "info": "Infos",
@@ -42,6 +44,7 @@
   "login": "Anmelden",
   "profile": "Profil",
   "logout":"Ausloggen",
+  "deteleAccount":"Konto löschen",
 
   "alreadyMember": "Bereits Mitglied?",
   "notYetMember": "Noch kein Mitglied?",
@@ -118,7 +121,7 @@
   "infopage_block3_subtitle": "Wir konnten bereits tolle Kooperationen eingehen. Wenn auch dich unsere Denkweise anspricht, lass uns quatschen!",
   "infopage_illustrator": "Illustratorin: Gizem Güvendag",
 
-
+"account_contact":"Wir freuen uns über deine Beteiligung! Gefällt dir Senf? Stört dich etwas? Melde dich gerne und sag uns, was dir auffällt!",
 "something_went_wrong":"Etwas ist schiefgelaufen. Bitte lade die Seite neu"
 
 
