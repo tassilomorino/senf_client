@@ -134,7 +134,7 @@ const IdeaList = ({
     ({ down, movement: [, my], offset: [, y] }) => {
       if (my < -100) {
         set({
-          y: down ? my : 0,
+          y: down ? my : 141,
           transform:
             !down && swipePosition === "top"
               ? `translateY(${141}px)`
@@ -145,7 +145,7 @@ const IdeaList = ({
       }
       if (my > 150) {
         set({
-          y: down ? my : 0,
+          y: down ? my : window.innerHeight - 120,
           transform:
             !down && swipePosition === "bottom"
               ? `translateY(${window.innerHeight - 120}px)`
@@ -160,12 +160,13 @@ const IdeaList = ({
     {
       pointer: { touch: true },
       bounds: {
-        bottom: swipePosition === "bottom" ? 20 : window.innerHeight - 120,
+        top: swipePosition === "top" ? 0 : -window.innerHeight,
+        bottom: swipePosition === "bottom" ? 20 : window.innerHeight - 420,
       },
+      threshold: [10, 10],
       gesture: "movement",
-      threshold: 10,
-      swipeDist: 100,
-      swipeVel: 0.5,
+
+      filterTaps: true,
     }
   );
 
@@ -195,7 +196,7 @@ const IdeaList = ({
           />
           <animated.div
             className={!loading ? "drag" : ""}
-            {...bind()}
+            // {...bind()}
             style={props}
           >
             <ListHeaderWrapper>
