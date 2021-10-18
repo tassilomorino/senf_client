@@ -17,6 +17,21 @@ const IdeaListSwipe = ({ children, loading }) => {
     touchAction: "none",
   }));
 
+  useEffect(() => {
+    if (openScream) {
+      set({
+        marginTop: "90vh",
+        transition: "0.3s",
+      });
+      setPosition("bottom");
+    } else {
+      set({
+        marginTop: "0",
+        transition: "0s",
+      });
+    }
+  }, [openScream]);
+
   const bind = useDrag(
     ({ down, movement: [, my], offset: [, y] }) => {
       if (my < -100) {
@@ -52,17 +67,6 @@ const IdeaListSwipe = ({ children, loading }) => {
       },
     }
   );
-
-  useEffect(() => {
-    if (openScream) {
-      set({
-        y: 0,
-        transform: `translateY(${window.innerHeight - 120}px)`,
-        touchAction: "none",
-      });
-      setPosition("bottom");
-    }
-  }, [openScream]);
 
   return (
     <animated.div className={!loading ? "drag" : ""} {...bind()} style={props}>
