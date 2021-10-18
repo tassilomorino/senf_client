@@ -1,21 +1,21 @@
 /** @format */
-import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import _ from "lodash";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setMapBounds, setMapViewport } from "../../redux/actions/mapActions";
+import { useSpring, animated } from "@react-spring/web";
+import { useDrag } from "@use-gesture/react";
 
-import styled, { keyframes } from "styled-components";
-import Swipe from "react-easy-swipe";
+import styled from "styled-components";
 
 //Components
 import MapMobile from "../atoms/map/MapMobile";
 import List from "../atoms/List/List";
-import ListHeader from "../atoms/Headers/ListHeader";
+import Toolbar from "../molecules/Toolbar/Toolbar";
 import PostScream from "../organisms/PostIdea/PostScream";
 import TopicFilter from "../atoms/Filters/TopicFilter";
-import IdeaListSwipe from "../../hooks/IdeaListSwipe";
 
 const Wrapper = styled.div`
   opacity: 1;
@@ -34,13 +34,6 @@ const Content = styled.div`
   width: 100%;
   height: 100%;
   top: 0;
-`;
-
-const ContentMobile = styled.div`
-  /* overflow-y: ${(props) => props.openScream && "hidden"};
-  pointer-events: ${(props) => props.openScream && "none"};
-  position: ${(props) => props.openScream && "fixed"};
-  top: ${(props) => props.openScream && "90vh"}; */
 `;
 
 const ListHeaderWrapper = styled.div`
@@ -84,12 +77,9 @@ const IdeaList = ({
   handleTopicSelector,
   topicsSelected,
 }) => {
-  const [shadow, setShadow] = useState(false);
-
+  const { openScream } = useSelector((state) => state.UI);
   const mapViewport = useSelector((state) => state.data.mapViewport);
   const dispatch = useDispatch();
-
-  const { openScream } = useSelector((state) => state.UI);
 
   const _onViewportChange = (viewport) => {
     dispatch(setMapViewport(viewport));
@@ -98,15 +88,86 @@ const IdeaList = ({
     dispatch(setMapBounds(viewport, boundAdds));
   };
 
-  const handleScroll = (e) => {
-    const element = e.target;
+  const [swipePosition, setSwipePosition] = useState("bottom");
+  const [props, set] = useSpring(() => ({
+    x: 0,
+    y: 0,
+    scale: 1,
+    transform: `translateY(${window.innerHeight - 120}px)`,
+    overflow: "scroll",
+    touchAction: "none",
+  }));
 
-    if (element.scrollTop > 5) {
-      setShadow(true);
+  useEffect(() => {
+    if (openScream) {
+      set({
+        marginTop: "90vh",
+        transition: "0.3s",
+      });
     } else {
-      setShadow(false);
+      set({
+        marginTop: "0",
+        transition: "0s",
+      });
     }
+  }, [openScream]);
+
+  const setSwipePositionUp = () => {
+    setSwipePosition("top");
+    set({
+      y: 0,
+      transform: `translateY(${141}px)`,
+      touchAction: "unset",
+    });
   };
+
+  const setSwipePositionDown = () => {
+    setSwipePosition("bottom");
+    set({
+      y: 0,
+      transform: `translateY(${window.innerHeight - 120}px)`,
+      touchAction: "none",
+    });
+  };
+
+  const bind = useDrag(
+    ({ down, movement: [, my], offset: [, y] }) => {
+      if (my < -100) {
+        set({
+          y: down ? my : 0,
+          transform:
+            !down && swipePosition === "top"
+              ? `translateY(${141}px)`
+              : `translateY(${window.innerHeight - 120}px)`,
+          touchAction: "unset",
+        });
+        setSwipePosition("top");
+      }
+      if (my > 150) {
+        set({
+          y: down ? my : 0,
+          transform:
+            !down && swipePosition === "bottom"
+              ? `translateY(${window.innerHeight - 120}px)`
+              : `translateY(${0}px)`,
+          touchAction: "none",
+        });
+        setSwipePosition("bottom");
+      }
+
+      set({ y: down ? my : 0 });
+    },
+    {
+      pointer: { touch: true },
+      bounds: {
+        bottom: swipePosition === "bottom" ? 20 : window.innerHeight - 120,
+      },
+      gesture: "movement",
+      threshold: 10,
+      swipeDist: 100,
+      swipeVel: 0.5,
+    }
+  );
 
   return order === 1 ? (
     <Wrapper>
@@ -118,43 +179,52 @@ const IdeaList = ({
             geoData={geoData}
             viewport={mapViewport}
             _onViewportChange={_onViewportChange}
+            setSwipePositionUp={() => setSwipePositionUp()}
           />
           <TopicFilter
             loading={loading}
             handleTopicSelector={handleTopicSelector}
             topicsSelected={topicsSelected}
+            swipePosition={swipePosition}
+            setSwipePositionDown={() => setSwipePositionDown()}
           ></TopicFilter>
           <PostScream
             loadingProjects={loadingProjects}
             projectsData={projectsData}
             project={project}
           />
-          <ContentMobile openScream={openScream} id="listMobile">
-            <IdeaListSwipe loading={loading}>
-              <ListHeaderWrapper>
-                <ListHeader
-                  loading={loading}
-                  handleDropdown={handleDropdown}
-                  dataFinal={dataFinal}
-                  marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
-                />{" "}
-              </ListHeaderWrapper>
-              <ShadowBox display={shadow ? "block" : "none"} />
-              <List
-                type={type}
+          <animated.div
+            className={!loading ? "drag" : ""}
+            {...bind()}
+            style={props}
+          >
+            <ListHeaderWrapper>
+              <Toolbar
                 loading={loading}
-                dropdown={dropdown}
+                handleDropdown={handleDropdown}
                 dataFinal={dataFinal}
-                projectsData={projectsData}
-                project={project}
-                myScreams={myScreams}
+                marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
+                handleClickSwipe={
+                  swipePosition === "bottom"
+                    ? () => setSwipePositionUp()
+                    : () => setSwipePositionDown()
+                }
               />{" "}
-            </IdeaListSwipe>
-          </ContentMobile>
+            </ListHeaderWrapper>
+            <List
+              type={type}
+              loading={loading}
+              dropdown={dropdown}
+              dataFinal={dataFinal}
+              projectsData={projectsData}
+              project={project}
+              myScreams={myScreams}
+            />{" "}
+          </animated.div>
         </React.Fragment>
       ) : (
         <Content>
-          <ListHeader
+          <Toolbar
             loading={loading}
             handleDropdown={handleDropdown}
             dataFinal={dataFinal}

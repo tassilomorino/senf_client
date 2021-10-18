@@ -51,18 +51,14 @@ const MapMobile = ({
   viewport,
 
   _onViewportChange,
-  handleShowResults,
 
   loadingProjects,
   geoData,
-  setSwipePosition,
-  setSwipeMovePosition,
+  setSwipePositionUp,
 }) => {
   const dispatch = useDispatch();
 
-  const { openInfoPage, openScream, loading } = useSelector(
-    (state) => state.UI
-  );
+  const { openScream } = useSelector((state) => state.UI);
   const { scream } = useSelector((state) => state.data);
 
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -180,8 +176,7 @@ const MapMobile = ({
               </OpenIdeaButton>
               <NoLocationPopUp
                 dataNoLocation={dataNoLocation}
-                setSwipePosition={setSwipePosition}
-                setSwipeMovePosition={setSwipeMovePosition}
+                setSwipePositionUp={setSwipePositionUp}
               />
             </Marker>
           ))}
