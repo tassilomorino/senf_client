@@ -23,7 +23,7 @@ import { setCookies } from "./redux/actions/cookiesActions";
 import { setInfoPageOpen } from "./redux/actions/UiActions";
 
 //Pages
-import home from "./pages/home";
+import Main from "./components/templates/Main";
 import IntroductionInformation from "./components/organisms/infocomponents/IntroductionInformation";
 
 import Welcome from "./components/organisms/infocomponents/Welcome";
@@ -200,7 +200,7 @@ const App = () => {
 
           <div className="container">
             <Switch>
-              <Route exact path="/" component={home} />
+              <Route exact path="/" component={Main} />
               <Route exact path="/start" component={IntroductionInformation} />
 
               <Route exact path="/intro" component={Welcome} />
@@ -221,7 +221,7 @@ const App = () => {
 
               <Route exact path="/impressum" component={impressum} />
 
-              <Route exact path="/:screamId" component={home} />
+              <Route exact path="/:screamId" component={Main} />
             </Switch>
           </div>
         </Router>

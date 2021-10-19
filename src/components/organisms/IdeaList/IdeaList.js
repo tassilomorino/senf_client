@@ -1,21 +1,24 @@
 /** @format */
 import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import _ from "lodash";
-import { isMobileCustom } from "../../util/customDeviceDetect";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 import { useSelector, useDispatch } from "react-redux";
-import { setMapBounds, setMapViewport } from "../../redux/actions/mapActions";
+import {
+  setMapBounds,
+  setMapViewport,
+} from "../../../redux/actions/mapActions";
 
 import styled, { keyframes } from "styled-components";
 import Swipe from "react-easy-swipe";
 
 //Components
-import MapMobile from "../atoms/map/MapMobile";
-import List from "../atoms/List/List";
-import ListHeader from "../atoms/Headers/ListHeader";
-import PostScream from "../organisms/PostIdea/PostScream";
-import TopicFilter from "../atoms/Filters/TopicFilter";
-import IdeaListSwipe from "../../hooks/IdeaListSwipe";
+import MapMobile from "../../atoms/map/MapMobile";
+import List from "../../atoms/List/List";
+import ListHeader from "../../atoms/Headers/ListHeader";
+import PostScream from "../PostIdea/PostScream";
+import TopicFilter from "../../atoms/Filters/TopicFilter";
+import IdeaListSwipe from "../../../hooks/IdeaListSwipe";
 
 const Wrapper = styled.div`
   opacity: 1;
