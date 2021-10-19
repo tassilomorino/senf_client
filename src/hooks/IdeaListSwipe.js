@@ -5,7 +5,7 @@ import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 
 const IdeaListSwipe = ({ children, loading }) => {
-  const { openScream } = useSelector((state) => state.UI);
+  const openScream = useSelector((state) => state.UI.openScream);
 
   const [position, setPosition] = useState("bottom");
   const [props, set] = useSpring(() => ({

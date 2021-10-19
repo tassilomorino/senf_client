@@ -10,7 +10,7 @@ import {
 import { closeScream } from "../../../redux/actions/screamActions";
 
 const MobileMapButtons = ({ handleShowResults, number }) => {
-  const { mapBounds } = useSelector((state) => state.data);
+  const mapBounds = useSelector((state) => state.data.mapBounds);
 
   const dispatch = useDispatch();
 

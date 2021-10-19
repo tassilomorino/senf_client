@@ -128,6 +128,13 @@ if (get_local_storage_status() === "unavailable") {
 
 console.log(process.env.REACT_APP_STAGE);
 
+// if (process.env.REACT_APP_STAGE === "development") {
+//   const whyDidYouRender = require("@welldone-software/why-did-you-render");
+//   whyDidYouRender(React, {
+//     trackAllPureComponents: true,
+//   });
+// }
+
 window.store = store;
 
 if (cookies.get("Cookie_settings") === "all") {

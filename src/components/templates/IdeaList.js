@@ -89,7 +89,7 @@ const IdeaList = ({
   const mapViewport = useSelector((state) => state.data.mapViewport);
   const dispatch = useDispatch();
 
-  const { openScream } = useSelector((state) => state.UI);
+  const openScream = useSelector((state) => state.UI.openScream);
 
   const _onViewportChange = (viewport) => {
     dispatch(setMapViewport(viewport));

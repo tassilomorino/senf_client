@@ -38,7 +38,7 @@ const styles = {
 };
 
 const Verification = ({ classes }) => {
-  const { loading } = useSelector((state) => state.data);
+  const loading = useSelector((state) => state.data.loading);
   const history = useHistory();
   const handleClick = () => {
     alert(

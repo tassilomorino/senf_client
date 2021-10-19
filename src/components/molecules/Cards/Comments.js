@@ -97,7 +97,8 @@ const Comments = ({ classes }) => {
   const [userHandleSelected, setUserHandleSelected] = useState("");
   const [commentIdSelected, setCommentIdSelected] = useState("");
 
-  const { screamId, comments } = useSelector((state) => state.data.scream);
+  const screamId = useSelector((state) => state.data.scream.screamId);
+  const comments = useSelector((state) => state.data.scream.comments);
 
   return (
     <Grid container>

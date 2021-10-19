@@ -19,7 +19,7 @@ import HandFull from "../../../images/icons/handsFull.png";
 const LikeButton = ({ screamId }) => {
   const dispatch = useDispatch();
 
-  const { user } = useSelector((state) => state);
+  const user = useSelector((state) => state.user);
 
   const likedScream = () => {
     if (user.likes && user.likes.find((like) => like.screamId === screamId))

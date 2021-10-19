@@ -14,7 +14,6 @@ import MapGL, { Source, Layer, Marker } from "@urbica/react-map-gl";
 
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 
-import setColorByTopic from "../../../data/setColorByTopic";
 import NoLocationPopUp from "./NoLocationPopUp";
 import MobileMapButtons from "./MobileMapButtons";
 import ExpandButton from "../CustomButtons/ExpandButton";
@@ -33,7 +32,7 @@ const OpenIdeaButton = styled.div`
   margin-top: ${(props) => -(7 + props.likeCount) / 4 + "px"};
   border-radius: 100%;
   border: 1px white solid;
-  background-color: ${(props) => setColorByTopic(props.Thema)};
+  background-color: ${(props) => props.color};
   opacity: 1;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 9px 38px, rgba(0, 0, 0, 0.15) 0px 5px 5px;
 `;
@@ -60,10 +59,8 @@ const MapMobile = ({
 }) => {
   const dispatch = useDispatch();
 
-  const { openInfoPage, openScream, loading } = useSelector(
-    (state) => state.UI
-  );
-  const { scream } = useSelector((state) => state.data);
+  const openScream = useSelector((state) => state.UI.openScream);
+  const scream = useSelector((state) => state.data.scream);
 
   const [mapLoaded, setMapLoaded] = useState(false);
 
@@ -169,7 +166,7 @@ const MapMobile = ({
               latitude={element.lat}
             >
               <OpenIdeaButton
-                setColorByTopic={setColorByTopic}
+                color={element.color}
                 likeCount={element.likeCount}
                 Thema={element.Thema}
                 onClick={() => fetchDataScream(element.screamId)}

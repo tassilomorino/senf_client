@@ -20,6 +20,7 @@ import {
   CLOSE_SCREAM,
   SET_SCREAM_USER,
 } from "../types";
+import setColorByTopic from "../../data/setColorByTopic";
 
 // Get all ideas
 export const getScreams = () => async (dispatch) => {
@@ -44,6 +45,7 @@ export const getScreams = () => async (dispatch) => {
       Stadtteil: doc.data().Stadtteil,
       project: doc.data().project,
       projectId: doc.data().project,
+      color: setColorByTopic(doc.data().Thema),
     };
 
     screams.push(docData);

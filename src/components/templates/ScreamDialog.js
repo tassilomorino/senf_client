@@ -51,7 +51,6 @@ import {
   CustomButton,
   CustomIconButton,
 } from "../atoms/CustomButtons/CustomButton";
-import setColorByTopic from "../../data/setColorByTopic";
 import styled, { createGlobalStyle } from "styled-components";
 
 import ScreamDialogSwipe from "../../hooks/ScreamDialogSwipe";
@@ -342,7 +341,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
     long,
     userHandle,
     comments,
-    Thema,
+    color,
     project,
     weblink,
     weblinkTitle,
@@ -352,9 +351,10 @@ const ScreamDialog = ({ classes, projectsData }) => {
   } = useSelector((state) => state.data.scream);
 
   const dispatch = useDispatch();
-  const { loading, openScream } = useSelector((state) => state.UI);
+  const openScream = useSelector((state) => state.UI.openScream);
+  const loading = useSelector((state) => state.UI.loading);
 
-  const { authenticated } = useSelector((state) => state.user);
+  const authenticated = useSelector((state) => state.user.authenticated);
 
   const [path, setPath] = useState("");
   const [clicked, setClicked] = useState(false);
@@ -506,7 +506,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
                     margintop: "5px",
                     borderRadius: "100%",
                     border: "0.5px white solid",
-                    backgroundColor: setColorByTopic(Thema),
+                    backgroundColor: color,
                     opacity: "1",
                     float: "left",
                   }}
