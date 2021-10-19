@@ -164,12 +164,14 @@ const LikeButtonWrapper = styled.div`
   text-align: center;
 `;
 
-const LikeButtonDesign = styled.div`
+// LikeButtonDesign seems unnecessary: @tassilomorino please confirm
+
+/* const LikeButtonDesign = styled.div`
   top: 10%;
   left: 0%;
   z-index: 10;
   position: relative;
-`;
+`; */
 
 const Engagement = styled.div`
   color: black;
@@ -237,9 +239,9 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
           projectsData={projectsData}
         />
         <LikeButtonWrapper project={project} projectsData={projectsData}>
-          <LikeButtonDesign>
+          {/* <LikeButtonDesign> */}
             <LikeButton screamId={screamId} />
-          </LikeButtonDesign>
+          {/* </LikeButtonDesign> */}
           <Engagement>{likeCount} </Engagement>
         </LikeButtonWrapper>
         <CommentButtonWrapper
