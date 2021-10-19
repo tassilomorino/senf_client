@@ -18,7 +18,7 @@ import {
 import withStyles from "@material-ui/core/styles/withStyles";
 import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
-import IdeaList from "../../templates/IdeaList";
+import IdeaList from "../IdeaList/IdeaList";
 import AccountHeader from "../../molecules/Headers/AccountHeader";
 
 import styled from "styled-components";

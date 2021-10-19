@@ -3,13 +3,12 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { setMapViewport } from "../../redux/actions/mapActions";
+import { setMapViewport } from "../../../redux/actions/mapActions";
 import withStyles from "@material-ui/core/styles/withStyles";
-import MyButton from "../../util/MyButton";
-import LikeButton from "../atoms/CustomButtons/LikeButton";
-import ChatBorder from "../../images/icons/chat.png";
-import Comments from "../molecules/Cards/Comments";
-import CommentForm from "../atoms/Comments/CommentForm";
+import MyButton from "../../../util/MyButton";
+import LikeButton from "../../atoms/CustomButtons/LikeButton";
+import Comments from "../../molecules/Cards/Comments";
+import CommentForm from "../../atoms/Comments/CommentForm";
 import dayjs from "dayjs";
 // MUI Stuff
 
@@ -21,9 +20,10 @@ import LocationOn from "@material-ui/icons/LocationOn";
 import CreateIcon from "@material-ui/icons/Create";
 import EventIcon from "@material-ui/icons/Event";
 
-import WeblinkIcon from "../../images/icons/weblink.png";
-
-import contactIcon from "../../images/icons/mail.png";
+import WeblinkIcon from "../../../images/icons/weblink.png";
+import ChatBorder from "../../../images/icons/chat.png";
+import lamploader from "../../../images/lamp.png";
+import contactIcon from "../../../images/icons/mail.png";
 
 import * as linkify from "linkifyjs";
 
@@ -31,28 +31,25 @@ import * as linkify from "linkifyjs";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 // Redux stuff
-import { closeScream } from "../../redux/actions/screamActions";
-import { openProjectFunc } from "../../redux/actions/projectActions";
-import { clearErrors } from "../../redux/actions/errorsActions";
+import { closeScream } from "../../../redux/actions/screamActions";
+import { openProjectFunc } from "../../../redux/actions/projectActions";
+import { clearErrors } from "../../../redux/actions/errorsActions";
 
 //COMPONENTS
-import RegistrationAndLogin from "../atoms/Auth/RegistrationAndLogin";
+import RegistrationAndLogin from "../../atoms/Auth/RegistrationAndLogin";
 
-//ANIMATION
-import lamploader from "../../images/lamp.png";
+import ShareModal from "../../molecules/Modals/ShareModal";
+import MenuModal from "../../molecules/Modals/MenuModal";
 
-import ShareModal from "../molecules/Modals/ShareModal";
-import MenuModal from "../molecules/Modals/MenuModal";
-
-import { isMobileCustom } from "../../util/customDeviceDetect";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 import {
   CustomButton,
   CustomIconButton,
-} from "../atoms/CustomButtons/CustomButton";
+} from "../../atoms/CustomButtons/CustomButton";
 import styled, { createGlobalStyle } from "styled-components";
 
-import ScreamDialogSwipe from "../../hooks/ScreamDialogSwipe";
+import ScreamDialogSwipe from "../../../hooks/ScreamDialogSwipe";
 
 const portalRoot = document.getElementById("portal-root");
 
