@@ -2,7 +2,6 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import MyButton from "../../../util/MyButton";
 import styled from "styled-components";
 
 //TIMESTAMP
@@ -164,15 +163,6 @@ const LikeButtonWrapper = styled.div`
   text-align: center;
 `;
 
-// LikeButtonDesign seems unnecessary: @tassilomorino please confirm
-
-/* const LikeButtonDesign = styled.div`
-  top: 10%;
-  left: 0%;
-  z-index: 10;
-  position: relative;
-`; */
-
 const Engagement = styled.div`
   color: black;
   width: 100%;
@@ -239,9 +229,7 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
           projectsData={projectsData}
         />
         <LikeButtonWrapper project={project} projectsData={projectsData}>
-          {/* <LikeButtonDesign> */}
-            <LikeButton screamId={screamId} />
-          {/* </LikeButtonDesign> */}
+          <LikeButton screamId={screamId} />
           <Engagement>{likeCount} </Engagement>
         </LikeButtonWrapper>
         <CommentButtonWrapper
