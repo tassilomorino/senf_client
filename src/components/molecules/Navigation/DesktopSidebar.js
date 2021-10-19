@@ -81,6 +81,7 @@ const DesktopSidebar = ({
 
         {MenuData.map((item, i) => (
           <MenuItem
+            key={i}
             order={order}
             index={i + 1}
             isSelectedIcon={item.isSelectedIcon}

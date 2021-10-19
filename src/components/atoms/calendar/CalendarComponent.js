@@ -32,7 +32,6 @@ class CalendarComponent extends React.Component {
     const data = [];
     var i;
     var u;
-    console.log(this.props.projectScreams);
     for (i = 0; i < this.props.projectScreams.length; i++) {
       if (
         this.props.projectScreams[i].selectedUnix === undefined ||

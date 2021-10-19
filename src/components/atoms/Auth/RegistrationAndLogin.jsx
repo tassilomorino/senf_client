@@ -385,13 +385,6 @@ const RegistrationAndLogin = ({ classes }) => {
   );
 };
 
-RegistrationAndLogin.propTypes = {
-  classes: PropTypes.object.isRequired,
-  loginUser: PropTypes.func.isRequired,
-  signupUser: PropTypes.func.isRequired,
 
-  user: PropTypes.object.isRequired,
-  UI: PropTypes.object.isRequired,
-};
 
 export default (withStyles(styles)(RegistrationAndLogin));

@@ -209,7 +209,6 @@ const MapMobile = ({
 };
 
 MapMobile.propTypes = {
-  editUserDetails: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   openScreamFunc: PropTypes.func.isRequired,
 };

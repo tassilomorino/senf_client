@@ -168,11 +168,4 @@ const Comments = ({ classes }) => {
   );
 };
 
-Comments.propTypes = {
-  comments: PropTypes.array.isRequired,
-  user: PropTypes.object.isRequired,
-  comment: PropTypes.object.isRequired,
-  getComment: PropTypes.func.isRequired,
-};
-
 export default withStyles(styles)(Comments);

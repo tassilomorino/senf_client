@@ -159,7 +159,6 @@ export class monitoring extends Component {
     const { full_screams, loading, projects, loadingProjects } =
       this.props.data;
 
-    console.log(this.props.data);
     const {
       latitude1,
       latitude2,

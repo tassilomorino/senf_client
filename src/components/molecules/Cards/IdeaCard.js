@@ -268,13 +268,4 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
   );
 };
 
-IdeaCard.propTypes = {
-  user: PropTypes.object.isRequired,
-  scream: PropTypes.object.isRequired,
-  classes: PropTypes.object.isRequired,
-  openDialog: PropTypes.bool,
-  openScreamFunc: PropTypes.func.isRequired,
-  openProject: PropTypes.func.isRequired,
-};
-
 export default IdeaCard;

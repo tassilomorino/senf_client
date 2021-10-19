@@ -126,28 +126,9 @@ if (get_local_storage_status() === "unavailable") {
   );
 }
 
-const token = localStorage.FBIdToken;
-
-console.log(localStorage);
-
 console.log(process.env.REACT_APP_STAGE);
 
 window.store = store;
-
-// if (token) {
-//   const decodedToken = jwtDecode(token);
-//   const expirationDuration = decodedToken.exp * 1000;
-
-//   if (expirationDuration < Date.now()) {
-//     store.dispatch(logoutUser());
-//   } else {
-//     store.dispatch({ type: SET_AUTHENTICATED });
-//     axios.defaults.headers.common["Authorization"] = token;
-//     store.dispatch(getUserData());
-//   }
-// } else {
-//   store.dispatch(logoutUser());
-// }
 
 if (cookies.get("Cookie_settings") === "all") {
   store.dispatch(setCookies("all"));
@@ -182,12 +163,9 @@ const App = () => {
 
   const userState = () => {
     firebase.auth().onAuthStateChanged((user) => {
-      console.log("user", user);
-      console.log("userId", user.uid);
-
       if (user && user.emailVerified) {
         store.dispatch({ type: SET_AUTHENTICATED });
-        store.dispatch(getUserData(user.email));
+        store.dispatch(getUserData(user.uid));
       } else if (user) {
         //a new user is registrating
       } else {

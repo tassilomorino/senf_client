@@ -226,7 +226,7 @@ class ResetPassword extends Component {
     const email = {
       email: this.state.email,
     };
-    console.log(email);
+
     this.props.resetPassword(email, this.props.history);
 
     setTimeout(() => {

@@ -55,12 +55,12 @@ export const getScreams = () => async (dispatch) => {
   });
 };
 
-export const getMyScreams = (userHandle) => async (dispatch) => {
-  if (userHandle !== undefined) {
+export const getMyScreams = (userId) => async (dispatch) => {
+  if (userId !== undefined) {
     const db = firebase.firestore();
     const ref = await db
       .collection("screams")
-      .where("userHandle", "==", userHandle)
+      .where("userId", "==", userId)
       .orderBy("createdAt", "desc")
       .get();
 

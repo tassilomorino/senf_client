@@ -44,11 +44,4 @@ const LikeButton = ({ screamId }) => {
   return likeButton;
 };
 
-LikeButton.propTypes = {
-  user: PropTypes.object.isRequired,
-  screamId: PropTypes.string.isRequired,
-  likeScream: PropTypes.func.isRequired,
-  unlikeScream: PropTypes.func.isRequired,
-};
-
 export default LikeButton;

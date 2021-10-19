@@ -665,7 +665,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
   );
   return ReactDOM.createPortal(
     isMobileCustom ? (
-      <React.Fragment style={{ overflowX: "hidden" }}>
+      <React.Fragment>
         <CommentForm screamId={screamId} clicked={clicked} />
 
         {shareOpen && (
@@ -730,13 +730,6 @@ const ScreamDialog = ({ classes, projectsData }) => {
     ),
     portalRoot
   );
-};
-
-ScreamDialog.propTypes = {
-  clearErrors: PropTypes.func.isRequired,
-  closeScream: PropTypes.func.isRequired,
-  openProjectFunc: PropTypes.func.isRequired,
-  UI: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(ScreamDialog);
