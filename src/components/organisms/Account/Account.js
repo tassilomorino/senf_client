@@ -260,7 +260,6 @@ class Account extends Component {
   };
 
   handleOpen = () => {
-    const userHandle = this.props.user.handle;
     const userId = this.props.user.userId;
 
     this.fetchMyScreams(userId).then(() => {

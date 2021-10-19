@@ -15,7 +15,6 @@ import MapGL, { Source, Layer, Marker } from "@urbica/react-map-gl";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 import NoLocationPopUp from "./NoLocationPopUp";
-import MobileMapButtons from "./MobileMapButtons";
 import ExpandButton from "../CustomButtons/ExpandButton";
 
 //Icons
@@ -62,7 +61,7 @@ const MapMobile = ({
   const openScream = useSelector((state) => state.UI.openScream);
   const scream = useSelector((state) => state.data.scream);
 
-  const [mapLoaded, setMapLoaded] = useState(false);
+  // const [mapLoaded, setMapLoaded] = useState(false);
 
   const fetchDataScream = (screamId) => {
     dispatch(openScreamFunc(screamId));
@@ -146,7 +145,7 @@ const MapMobile = ({
           viewportChangeOptions={{
             duration: 2700,
           }}
-          onLoad={() => setMapLoaded(true)}
+          // onLoad={() => setMapLoaded(true)}
         >
           <Source id="maine" type="geojson" data={data} />
           <Layer

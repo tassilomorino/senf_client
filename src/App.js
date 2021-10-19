@@ -14,7 +14,6 @@ import "firebase/firestore";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import themeFile from "./util/theme";
-import jwtDecode from "jwt-decode";
 //Redux
 import { Provider } from "react-redux";
 import store from "./redux/store";
@@ -173,6 +172,7 @@ const App = () => {
       if (user && user.emailVerified) {
         store.dispatch({ type: SET_AUTHENTICATED });
         store.dispatch(getUserData(user.uid));
+        setIsAuthed(true);
       } else if (user) {
         //a new user is registrating
       } else {

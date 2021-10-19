@@ -1,10 +1,9 @@
 /** @format */
 
-import React, { Fragment, useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setMapViewport } from "../../redux/actions/mapActions";
-import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 import MyButton from "../../util/MyButton";
 import LikeButton from "../atoms/CustomButtons/LikeButton";
