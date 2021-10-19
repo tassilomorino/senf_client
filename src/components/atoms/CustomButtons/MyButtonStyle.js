@@ -27,7 +27,6 @@ const MyButtonDesign = styled.div`
     background-color: transparent;
     -webkit-appearance: none;
     -webkit-tap-highlight-color: transparent;
-
 `
 
 const IconButton = styled.span`
