@@ -57,7 +57,7 @@ const ListHeader = ({ loading, dataFinal, handleDropdown, marginTop }) => {
             }}
             alt="lamploader"
           ></img>{" "}
-          {dataFinal.length} Ideen{" "}
+          {dataFinal.length !== null && dataFinal.length} Ideen{" "}
         </div>
         <SortingSelect handleDropdown={handleDropdown} />{" "}
       </Wrapper>

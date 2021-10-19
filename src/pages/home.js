@@ -43,8 +43,6 @@ export class home extends Component {
   // TOGGLES
   constructor(props) {
     super(props);
-    this.props.getScreams();
-    this.props.getProjects();
 
     this.state = {
       order: 1,
@@ -62,7 +60,6 @@ export class home extends Component {
         "Sonstige",
       ],
     };
-    console.log(this.props);
 
     if (
       cookies.get("Cookie_settings") !== "all" &&
@@ -74,6 +71,8 @@ export class home extends Component {
   }
 
   componentDidMount() {
+    this.props.getScreams();
+    this.props.getProjects();
     this.props.clearErrors();
 
     if (!this.props.UI.openInfoPage) {
@@ -209,8 +208,6 @@ export class home extends Component {
       mapViewport,
     } = this.props.data;
     const { classes } = this.props;
-
-    console.log(myScreams);
 
     const dataFinal = screams.filter(
       ({ Thema, lat, long, status }) =>
@@ -349,26 +346,6 @@ export class home extends Component {
     );
   }
 }
-
-home.propTypes = {
-  classes: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
-  getScreams: PropTypes.func.isRequired,
-  logoutUser: PropTypes.func.isRequired,
-
-  openDialog: PropTypes.bool,
-
-  getProjects: PropTypes.func.isRequired,
-  UI: PropTypes.object.isRequired,
-
-  closeScream: PropTypes.func.isRequired,
-  openScream: PropTypes.func.isRequired,
-  openProjectFunc: PropTypes.func.isRequired,
-  closeProject: PropTypes.func.isRequired,
-
-  setMapViewport: PropTypes.func.isRequired,
-  setMapBounds: PropTypes.func.isRequired,
-};
 
 const mapActionsToProps = {
   logoutUser,

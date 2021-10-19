@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import _ from "lodash";
 
 export function OptionsProjects() {
-  const { projects } = useSelector((state) => state.data);
+  const projects = useSelector((state) => state.data.projects);
   const { t } = useTranslation();
 
   const optionsProjectsInitial = [

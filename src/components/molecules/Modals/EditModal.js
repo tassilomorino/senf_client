@@ -122,8 +122,6 @@ class EditModal extends Component {
         selectedUnix: this.props.scream.selectedUnix,
       });
     }
-
-    console.log(this.props);
   };
   handleClose = () => {
     this.setState({ open: false });
@@ -144,8 +142,6 @@ class EditModal extends Component {
   handleChange = (event) => {
     event.preventDefault();
     this.setState({ [event.target.name]: event.target.value, loading: false });
-
-    console.log(this.state.selectedUnix);
   };
 
   handleChangeCalendar = (selectedDays) => {
@@ -205,7 +201,6 @@ class EditModal extends Component {
     this.setState({
       openCalendar: true,
     });
-    console.log(this.state.selectedDays);
   };
   handleCloseCalendar = () => {
     this.setState({
@@ -270,7 +265,6 @@ class EditModal extends Component {
   };
 
   editScream = () => {
-    console.log(this.state);
     const editScream = {
       screamId: this.props.scream.screamId,
       title: this.state.title,
@@ -290,7 +284,6 @@ class EditModal extends Component {
       contact: this.state.contact,
     };
 
-    console.log(this.state.selectedUnix);
     if (this.state.selectedUnix[0] === undefined) {
       editScream.selectedUnix = null;
     } else {

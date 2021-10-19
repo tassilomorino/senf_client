@@ -260,15 +260,14 @@ class Account extends Component {
   };
 
   handleOpen = () => {
-    const userHandle = this.props.user.handle;
+    const userId = this.props.user.userId;
 
-    this.fetchMyScreams(userHandle);
-
-    setTimeout(() => {
+    this.fetchMyScreams(userId).then(() => {
       this.setState({
         open: true,
       });
-    }, 500);
+    });
+
     setTimeout(() => {
       this.setState({
         dialogStyle: { position: "initial" },
@@ -276,8 +275,8 @@ class Account extends Component {
     }, 2000);
   };
 
-  fetchMyScreams = async (userHandle) => {
-    this.props.getMyScreams(userHandle);
+  fetchMyScreams = async (userId) => {
+    this.props.getMyScreams(userId);
   };
 
   handleClose = () => {
@@ -330,17 +329,17 @@ class Account extends Component {
 
     const { loadingMyScreams, mapViewport, myScreams } = this.props.data;
 
-    const dataFinal =
-      myScreams &&
-      myScreams.filter(
-        ({ Thema, status, lat, long }) =>
-          topicsSelected.includes(Thema) &&
-          lat <= this.props.data.mapBounds.latitude1 &&
-          lat >= this.props.data.mapBounds.latitude2 &&
-          long >= this.props.data.mapBounds.longitude2 &&
-          long <= this.props.data.mapBounds.longitude3 &&
-          status === "None"
-      );
+    const dataFinal = myScreams
+      ? myScreams.filter(
+          ({ Thema, status, lat, long }) =>
+            topicsSelected.includes(Thema) &&
+            lat <= this.props.data.mapBounds.latitude1 &&
+            lat >= this.props.data.mapBounds.latitude2 &&
+            long >= this.props.data.mapBounds.longitude2 &&
+            long <= this.props.data.mapBounds.longitude3 &&
+            status === "None"
+        )
+      : [];
 
     const dialogMarkup = (
       <div className="fullGradientWrapper">

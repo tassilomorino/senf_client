@@ -701,11 +701,4 @@ const PostScream = ({
   );
 };
 
-PostScream.propTypes = {
-  user: PropTypes.object.isRequired,
-  postScream: PropTypes.func.isRequired,
-  clearErrors: PropTypes.func.isRequired,
-  UI: PropTypes.object.isRequired,
-};
-
 export default withStyles(styles)(withRouter(PostScream));

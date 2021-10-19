@@ -20,6 +20,7 @@ import {
   CLOSE_SCREAM,
   SET_SCREAM_USER,
 } from "../types";
+import setColorByTopic from "../../data/setColorByTopic";
 
 // Get all ideas
 export const getScreams = () => async (dispatch) => {
@@ -44,6 +45,7 @@ export const getScreams = () => async (dispatch) => {
       Stadtteil: doc.data().Stadtteil,
       project: doc.data().project,
       projectId: doc.data().project,
+      color: setColorByTopic(doc.data().Thema),
     };
 
     screams.push(docData);
@@ -55,12 +57,12 @@ export const getScreams = () => async (dispatch) => {
   });
 };
 
-export const getMyScreams = (userHandle) => async (dispatch) => {
-  if (userHandle !== undefined) {
+export const getMyScreams = (userId) => async (dispatch) => {
+  if (userId !== undefined) {
     const db = firebase.firestore();
     const ref = await db
       .collection("screams")
-      .where("userHandle", "==", userHandle)
+      .where("userId", "==", userId)
       .orderBy("createdAt", "desc")
       .get();
 

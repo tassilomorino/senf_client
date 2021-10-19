@@ -22,7 +22,6 @@ import MapGL, {
   NavigationControl,
 } from "@urbica/react-map-gl";
 
-import setColorByTopic from "../../../data/setColorByTopic";
 import NoLocationPopUp from "./NoLocationPopUp";
 import { DesktopMapButtons } from "./DesktopMapButtons";
 import ExpandButton from "../CustomButtons/ExpandButton";
@@ -37,7 +36,7 @@ const OpenIdeaButton = styled.div`
   margin-top: ${(props) => -(7 + props.likeCount) / 4 + "px"};
   border-radius: 100%;
   border: 1px white solid;
-  background-color: ${(props) => setColorByTopic(props.Thema)};
+  background-color: ${(props) => props.color};
   opacity: 1;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 9px 38px, rgba(0, 0, 0, 0.15) 0px 5px 5px;
 `;
@@ -76,10 +75,11 @@ const MapDesktop = ({
   openProject,
 }) => {
   const { t } = useTranslation();
-  const { openInfoPage, openScream, loading } = useSelector(
-    (state) => state.UI
-  );
-  const { scream } = useSelector((state) => state.data);
+  const openInfoPage = useSelector((state) => state.UI.openInfoPage);
+  const openScream = useSelector((state) => state.UI.openScream);
+  const loading = useSelector((state) => state.UI.loading);
+
+  const scream = useSelector((state) => state.data.scream);
 
   const dispatch = useDispatch();
 
@@ -195,9 +195,9 @@ const MapDesktop = ({
                 latitude={element.lat}
               >
                 <OpenIdeaButton
-                  setColorByTopic={setColorByTopic}
                   likeCount={element.likeCount}
                   Thema={element.Thema}
+                  color={element.color}
                   onClick={() => fetchDataScream(element.screamId)}
                   onMouseEnter={() => {
                     setHoverScreamId(element.screamId);

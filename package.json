@@ -85,6 +85,7 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^4.3.5",
+    "@welldone-software/why-did-you-render": "^6.2.1",
     "cypress": "^8.1.0",
     "cypress-firebase": "^2.0.0",
     "cypress-wait-until": "^1.7.1",
