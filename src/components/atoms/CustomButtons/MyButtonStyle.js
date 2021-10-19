@@ -32,8 +32,6 @@ const MyButtonDesign = styled.div`
 const IconButton = styled.span`
     width: 100%;
     display: flex;
-    // align-items: inherit;
-    // justify-content: inherit;
 `
 
 const MyButtonStyle = ({ children, onClick, btnClassName }) => {

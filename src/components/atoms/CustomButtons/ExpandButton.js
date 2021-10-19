@@ -20,6 +20,12 @@ const RippleContainer = styled.div`
   justify-content: center;
   align-items: center;
 
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.03);;
+  }
+
   span {
     transform: scale(0);
     border-radius: 100%;
