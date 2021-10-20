@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom";
 import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../util/customDeviceDetect";
-import Cookies from "universal-cookie";
 
 import {
   getScreams,
@@ -34,12 +33,11 @@ import ThanksForTheVote from "../atoms/Backgrounds/ThanksForTheVote";
 import Account from "../organisms/Account/Account";
 import Loader from "../atoms/Animations/Loader";
 
-const cookies = new Cookies();
-
 const Main = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { screamId } = useParams();
+  const { cookie_settings } = useSelector((state) => state.data);
 
   const history = useHistory();
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
@@ -77,30 +75,34 @@ const Main = () => {
 
   useEffect(() => {
     if (
-      cookies.get("Cookie_settings") !== "all" &&
-      cookies.get("Cookie_settings") !== "minimum" &&
+      cookie_settings !== "all" &&
+      cookie_settings !== "minimum" &&
       isMobileCustom
     ) {
       history.push("/intro");
     } else {
-      dispatch(getScreams());
-      dispatch(getProjects());
+      dispatch(getScreams())
+        .then(() => {
+          dispatch(getProjects());
+        })
+        .then(() => {
+          if (!screamId) {
+            setTimeout(() => {
+              const viewport = {
+                latitude: 50.95,
+                longitude: 6.9503,
+                zoom: isMobileCustom ? 9.5 : 11.5,
+                transitionDuration: 4000,
+                pitch: 30,
+                bearing: 0,
+              };
+              dispatch(setMapViewport(viewport));
+            }, 2000);
+          }
+        });
+
       if (!openInfoPage && screamId) {
         openDialogFromUrl();
-      }
-
-      if (!screamId) {
-        setTimeout(() => {
-          const viewport = {
-            latitude: 50.95,
-            longitude: 6.9503,
-            zoom: isMobileCustom ? 9.5 : 11.5,
-            transitionDuration: 4000,
-            pitch: 30,
-            bearing: 0,
-          };
-          dispatch(setMapViewport(viewport));
-        }, 3000);
       }
     }
   }, []);
@@ -244,7 +246,7 @@ const Main = () => {
       <MapDesktop
         loading={loading}
         loadingProjects={loadingProjects}
-        dataFinal={dataFinalMap}
+        dataFinal={dataFinalMap.slice(0, 215)}
         id="mapDesktop"
         style={{ zIndex: 9999 }}
         openProject={openProject}
@@ -260,7 +262,7 @@ const Main = () => {
             type="allIdeas"
             loading={loading}
             order={order}
-            dataFinal={dataFinal}
+            dataFinal={dataFinal.slice(0, 215)}
             dataFinalMap={dataFinalMap}
             viewport={mapViewport}
             handleDropdown={handleDropdown}
@@ -287,10 +289,6 @@ const Main = () => {
               dataFinalMap={dataFinalMap}
               screamIdParam={screamIdParam}
               handleClick={handleClick}
-              // latitude1={latitude1}
-              // latitude2={mapBounds.latitude2}
-              // longitude2={mapBounds.longitude2}
-              // longitude3={mapBounds.longitude3}
               loadingProjects={loadingProjects}
               projectsData={projects}
               viewport={mapViewport}
