@@ -62,6 +62,8 @@ export const openScreamFunc = (screamId) => async (dispatch) => {
   // When the modal is shown, we want a fixed body
   // document.body.style.position = "fixed";
   // document.body.style.top = `-${window.scrollY}px`;
+  dispatch({ type: LOADING_UI });
+  dispatch({ type: OPEN_SCREAM });
 
   const db = firebase.firestore();
   const ref = await db.collection("screams").doc(screamId).get();
@@ -85,8 +87,6 @@ export const openScreamFunc = (screamId) => async (dispatch) => {
 
     // window.location = "#" + scream.lat + "#" + scream.long;
 
-    dispatch({ type: LOADING_UI });
-    dispatch({ type: OPEN_SCREAM });
     const newPath = `/${screamId}`;
     window.history.pushState(null, null, newPath);
     dispatch({ type: SET_SCREAM, payload: scream });

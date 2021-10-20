@@ -4,9 +4,19 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import setColorByTopic from "../../data/setColorByTopic";
 
-import { SET_MY_SCREAMS, OPEN_ACCOUNT, CLOSE_ACCOUNT } from "../types";
+import {
+  SET_MY_SCREAMS,
+  OPEN_ACCOUNT,
+  CLOSE_ACCOUNT,
+  LOADING_MYSCREAMS_DATA,
+} from "../types";
 
 export const openAccountFunc = (userId) => async (dispatch) => {
+  dispatch({
+    type: OPEN_ACCOUNT,
+  });
+
+  dispatch({ type: LOADING_MYSCREAMS_DATA });
   if (userId !== undefined) {
     const db = firebase.firestore();
     const ref = await db
@@ -40,9 +50,6 @@ export const openAccountFunc = (userId) => async (dispatch) => {
     dispatch({
       type: SET_MY_SCREAMS,
       payload: screams,
-    });
-    dispatch({
-      type: OPEN_ACCOUNT,
     });
   }
 };

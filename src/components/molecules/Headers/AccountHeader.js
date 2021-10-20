@@ -14,7 +14,7 @@ const FixedWrapper = styled.div`
   width: 95%;
 
   height: 80px;
-  z-index: 99;
+  z-index: 999;
   background-color: white;
   top: 10px;
   left: 2.5%;

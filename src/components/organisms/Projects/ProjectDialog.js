@@ -16,6 +16,7 @@ import { clearErrors } from "../../../redux/actions/errorsActions";
 import {
   setMapViewport,
   setMapBounds,
+  setResetMapBounds,
 } from "../../../redux/actions/mapActions";
 
 //Components
@@ -74,6 +75,14 @@ class ProjectDialog extends Component {
   }
 
   handleOpen = () => {
+    const bounds = {
+      latitude1: 51.08,
+      latitude2: 50.79,
+      longitude2: 6.712,
+      longitude3: 7.17,
+    };
+
+    this.props.setResetMapBounds(bounds);
     this.props.handleTopicSelector("all");
 
     let oldPath = window.location.pathname;
@@ -292,15 +301,6 @@ class ProjectDialog extends Component {
   }
 }
 
-ProjectDialog.propTypes = {
-  clearErrors: PropTypes.func.isRequired,
-  closeScream: PropTypes.func.isRequired,
-  openProject: PropTypes.func.isRequired,
-  closeProject: PropTypes.func.isRequired,
-  setMapViewport: PropTypes.func.isRequired,
-  setMapBounds: PropTypes.func.isRequired,
-};
-
 const mapStateToProps = (state) => ({
   scream: state.data.scream,
   project: state.data.project,
@@ -315,6 +315,7 @@ const mapActionsToProps = {
   closeProject,
   setMapViewport,
   setMapBounds,
+  setResetMapBounds,
 };
 
 export default connect(

@@ -1,7 +1,6 @@
 /** @format */
 
 import React from "react";
-import PropTypes from "prop-types";
 import MyButton from "../../../util/MyButton";
 import styled from "styled-components";
 
@@ -201,11 +200,11 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
     color,
   } = scream;
 
-  const fetchDataScream = (screamId) => {
+  const fetchDataScream = () => {
     dispatch(openScreamFunc(screamId));
   };
 
-  const fetchDataProject = (project) => {
+  const fetchDataProject = () => {
     dispatch(openProjectFunc(project));
   };
 
@@ -254,14 +253,12 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
         {!openProject && project && projectsData && (
           <>
             <Gradient2></Gradient2>
-            <ScreamcardProjectContainerButtonWide
-              onClick={() => fetchDataProject(project)}
-            >
+            <ScreamcardProjectContainerButtonWide onClick={fetchDataProject}>
               {projectsDataFinal}
             </ScreamcardProjectContainerButtonWide>
           </>
         )}
-        <ExpandButton handleButtonClick={() => fetchDataScream(screamId)} />
+        <ExpandButton handleButtonClick={fetchDataScream} />
       </CardContent>
     </Card>
   );
