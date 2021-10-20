@@ -34,40 +34,14 @@ import ProjectsPage from "../organisms/Projects/ProjectsPage";
 import ScreamDialog from "../organisms/IdeaDialog/ScreamDialog";
 import ProjectDialog from "../organisms/Projects/ProjectDialog";
 import ThanksForTheVote from "../atoms/Backgrounds/ThanksForTheVote";
+import Account from "../organisms/Account/Account";
 
 const cookies = new Cookies();
 
 const Main = () => {
-  useEffect(() => {
-    dispatch(getScreams());
-    dispatch(getProjects());
 
-    if (
-      cookies.get("Cookie_settings") !== "all" &&
-      cookies.get("Cookie_settings") !== "minimum" &&
-      isMobileCustom
-    ) {
-      history.push("/intro");
-    } else {
-      if (!openInfoPage && screamId) {
-        openDialogFromUrl();
-      }
+  
 
-      if (!screamId) {
-        setTimeout(() => {
-          const viewport = {
-            latitude: 50.95,
-            longitude: 6.9503,
-            zoom: isMobileCustom ? 9.5 : 11.5,
-            transitionDuration: 4000,
-            pitch: 30,
-            bearing: 0,
-          };
-          dispatch(setMapViewport(viewport));
-        }, 3000);
-      }
-    }
-  }, []);
   const { t } = useTranslation()
   const dispatch = useDispatch();
   const { screamId } = useParams();
@@ -76,6 +50,8 @@ const Main = () => {
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openScream = useSelector((state) => state.UI.openScream);
   const openProject = useSelector((state) => state.UI.openProject);
+  const openAccount = useSelector((state) => state.UI.openAccount);
+
   const voted = useSelector((state) => state.UI.voted);
 
   const screams = useSelector((state) => state.data.screams);
@@ -103,6 +79,36 @@ const Main = () => {
   const [screamIdParam, setScreamIdParam] = useState(null);
 
   const [dropdown, setDropdown] = useState("newest");
+
+  useEffect(() => {
+    if (
+      cookies.get("Cookie_settings") !== "all" &&
+      cookies.get("Cookie_settings") !== "minimum" &&
+      isMobileCustom
+    ) {
+      history.push("/intro");
+    } else {
+      dispatch(getScreams());
+      dispatch(getProjects());
+      if (!openInfoPage && screamId) {
+        openDialogFromUrl();
+      }
+
+      if (!screamId) {
+        setTimeout(() => {
+          const viewport = {
+            latitude: 50.95,
+            longitude: 6.9503,
+            zoom: isMobileCustom ? 9.5 : 11.5,
+            transitionDuration: 4000,
+            pitch: 30,
+            bearing: 0,
+          };
+          dispatch(setMapViewport(viewport));
+        }, 3000);
+      }
+    }
+  }, []);
 
   const openDialogFromUrl = () => {
     if (screamId) {
@@ -302,6 +308,13 @@ const Main = () => {
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
             ></ProjectDialog>
+          )}
+          {openAccount && (
+            <Account
+              handleTopicSelector={handleTopicSelector}
+              topicsSelected={topicsSelected}
+              dataFinalMap={dataFinalMap}
+            />
           )}
         </div>
       )}

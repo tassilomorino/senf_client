@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
 //COMPONENTS
-import RegistrationAndLogin from "../../atoms/Auth/RegistrationAndLogin";
+import LoginRegistration from "../../atoms/Auth/LoginRegistration";
 import Account from "../../organisms/Account/Account";
 import InlineInformationPage from "../../organisms/infocomponents/InlineInformationPage";
 import Tabs from "../../atoms/Tabs/Tabs";
@@ -90,16 +90,16 @@ const Topbar = ({
 
         {!authenticated ? (
           <ProfileButtonContainer>
-            <RegistrationAndLogin />
+            <LoginRegistration />
             <img src={Noprofile} width="30" alt="profilePlaceHolderImage" />
           </ProfileButtonContainer>
         ) : (
           <ProfileButtonContainer>
-            <Account
+            {/* <Account
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
               dataFinalMap={dataFinalMap}
-            />
+            /> */}
             <img src={profile_yellow} width="30" alt="profileImage" />
           </ProfileButtonContainer>
         )}

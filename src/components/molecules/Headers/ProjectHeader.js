@@ -10,18 +10,22 @@ import Tabs from "../../atoms/Tabs/Tabs";
 import { ProjectTabData } from "../../../data/ProjectTabData";
 
 const FixedWrapper = styled.div`
+  z-index: 999;
   position: fixed;
   width: 95%;
 
   height: 80px;
   z-index: 99;
   background-color: white;
-  top: ${(props) => (props.openScream ? "-100px" : "10px")};
-
+  top: 10px;
   left: 2.5%;
   border-radius: 20px 20px;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
-  transition: 1s;
+
+  @media (min-width: 768px) {
+    left: 210px;
+    width: 380px;
+  }
 `;
 
 const FlexWrapper = styled.div`
@@ -109,43 +113,7 @@ const ProjectHeader = ({
     }
     return str.slice(0, num) + "...";
   }
-  return isMobileCustom ? (
-    <FixedWrapper openScream={openScream}>
-      <FlexWrapper>
-        <CustomIconButton
-          name="ArrowLeft"
-          position="fixed"
-          top="9px"
-          shadow={false}
-          handleButtonClick={handleClose}
-        />
-
-        <TitleWrapper>{truncateString(title, 18)}</TitleWrapper>
-
-        <ImgWrapperMobile>
-          <img src={imgUrl} width="100%" alt="project-thumbnail" />
-        </ImgWrapperMobile>
-      </FlexWrapper>
-
-      {/* <div style={{ position: "absolute", top: "10px", right: "10px" }}>
-        <ShareModal screamId={project} title={title} path={path} />
-      </div> */}
-
-      <Tabs
-        loading={loading}
-        handleClick={handleClick}
-        order={order}
-        tabLabels={
-          calendar
-            ? ProjectTabData.map((item) => item.text)
-            : ProjectTabData.map((item) => item.text).slice(0, 2)
-        }
-        marginTop={"0px"}
-        marginBottom={"0px"}
-        lineColor={"#cecece"}
-      ></Tabs>
-    </FixedWrapper>
-  ) : (
+  return (
     <React.Fragment>
       {shareOpen && (
         <ShareModal
@@ -155,43 +123,51 @@ const ProjectHeader = ({
           setShareOpen={setShareOpen}
         />
       )}
-      <CustomIconButton
-        name="ArrowLeft"
-        position="fixed"
-        marginLeft="10px"
-        top="20px"
-        handleButtonClick={handleClose}
-      />
 
-      <ImgWrapperDesktop>
-        <img src={imgUrl} width="100%" alt="project-thumbnail" />
-      </ImgWrapperDesktop>
+      <FixedWrapper openScream={openScream}>
+        <FlexWrapper>
+          <CustomIconButton
+            name="ArrowLeft"
+            position="fixed"
+            top="9px"
+            shadow={false}
+            handleButtonClick={handleClose}
+          />
 
-      <TitleWrapper>{title}</TitleWrapper>
+          <TitleWrapper>{truncateString(title, 18)}</TitleWrapper>
 
-      <div style={{ position: "absolute", top: "20px", right: "10px" }}>
-        <CustomIconButton
-          name="Share"
-          margin="0px"
-          left="calc(100% - 50px)"
-          position="relative"
-          handleButtonClick={handleShare}
-        />
-      </div>
+          <ImgWrapperMobile>
+            <img src={imgUrl} width="100%" alt="project-thumbnail" />
+          </ImgWrapperMobile>
+        </FlexWrapper>
+        {/* <div style={{ position: "absolute", top: "20px", right: "10px" }}>
+          <CustomIconButton
+            name="Share"
+            margin="0px"
+            left="calc(100% - 50px)"
+            position="relative"
+            handleButtonClick={handleShare}
+          />
+        </div> */}
 
-      <Tabs
-        loading={loading}
-        handleClick={handleClick}
-        order={order}
-        tabLabels={
-          calendar
-            ? ProjectTabData.map((item) => item.text)
-            : ProjectTabData.map((item) => item.text).slice(0, 2)
-        }
-        marginTop={"0px"}
-        marginBottom={"0px"}
-        lineColor={"white"}
-      ></Tabs>
+        {/* <div style={{ position: "absolute", top: "10px", right: "10px" }}>
+        <ShareModal screamId={project} title={title} path={path} />
+      </div> */}
+
+        <Tabs
+          loading={loading}
+          handleClick={handleClick}
+          order={order}
+          tabLabels={
+            calendar
+              ? ProjectTabData.map((item) => item.text)
+              : ProjectTabData.map((item) => item.text).slice(0, 2)
+          }
+          marginTop={"0px"}
+          marginBottom={"0px"}
+          lineColor={"#cecece"}
+        ></Tabs>
+      </FixedWrapper>
     </React.Fragment>
   );
 };
