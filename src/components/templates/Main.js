@@ -246,7 +246,7 @@ const Main = () => {
       <MapDesktop
         loading={loading}
         loadingProjects={loadingProjects}
-        dataFinal={dataFinalMap.slice(0, 215)}
+        dataFinal={dataFinalMap.slice(0, 55)}
         id="mapDesktop"
         style={{ zIndex: 9999 }}
         openProject={openProject}
@@ -262,7 +262,7 @@ const Main = () => {
             type="allIdeas"
             loading={loading}
             order={order}
-            dataFinal={dataFinal.slice(0, 215)}
+            dataFinal={dataFinal.slice(0, 55)}
             dataFinalMap={dataFinalMap}
             viewport={mapViewport}
             handleDropdown={handleDropdown}
