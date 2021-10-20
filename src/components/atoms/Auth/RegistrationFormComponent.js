@@ -39,9 +39,9 @@ const RegistrationFormComponent = ({
     <form noValidate>
       <div className={classes.textfields}>
         <div className={classes.smallText} onClick={() => handleToggle()}>
-          Bereits Mitglied?{" "}
+          {t('alreadyMember')}{" "}
           <span className="Terms" data-cy="login">
-            Anmelden
+          {t('login')}
           </span>
         </div>
         <TextField
@@ -62,7 +62,7 @@ const RegistrationFormComponent = ({
           id="password"
           name="password"
           type="password"
-          label="Passwort mit mind. 8 Zeichen"
+          label={t('password')}
           margin="dense"
           variant="outlined"
           className={classes.textField}
@@ -76,7 +76,7 @@ const RegistrationFormComponent = ({
           id="confirmPassword"
           name="confirmPassword"
           type="password"
-          label="Passwort bestätigen"
+          label={t('confirmPassword')}
           margin="dense"
           variant="outlined"
           className={
@@ -92,7 +92,7 @@ const RegistrationFormComponent = ({
           id="handle"
           name="handle"
           type="text"
-          label="Nutzername"
+          label={t('username')}
           margin="dense"
           variant="outlined"
           className={classes.textField}
@@ -110,14 +110,14 @@ const RegistrationFormComponent = ({
           }
         >
           <InputLabel margin="dense" htmlFor="outlined-age-native-simple">
-            Jahrgang
+            {t('birthyear')}
           </InputLabel>
           <Select
             native
             margin="dense"
             value={age}
             onChange={(event) => setAge(event.target.value)}
-            label="Geschlecht"
+            label={t('gender')}
             id="standard-textarea"
             inputProps={{
               name: "age",
@@ -239,14 +239,14 @@ const RegistrationFormComponent = ({
           }
         >
           <InputLabel margin="dense" htmlFor="outlined-age-native-simple">
-            Geschlecht
+            {t('gender')}
           </InputLabel>
           <Select
             native
             margin="dense"
             value={sex}
             onChange={(event) => setSex(event.target.value)}
-            label="Geschlecht"
+            label= {t('gender')}
             id="standard-textarea"
             inputProps={{
               name: "sex",
@@ -254,9 +254,9 @@ const RegistrationFormComponent = ({
             }}
           >
             <option aria-label="None" value="" />
-            <option value={"female"}>Weiblich</option>
-            <option value={"male"}>Männlich</option>
-            <option value={"diverse"}>Divers</option>
+            <option value={"female"}>{t('female')}</option>
+            <option value={"male"}>{t('male')}</option>
+            <option value={"diverse"}>{t('diverse')}</option>
           </Select>
         </FormControl>
         {errorMessage && (
@@ -265,15 +265,16 @@ const RegistrationFormComponent = ({
           </Typography>
         )}
         <div className={classes.data}>
-          Mit der Registrierung bestätige ich, dass ich die &nbsp;
+          {t('terms_understood')} &nbsp;
           <a className="Terms" href="/agb" target="_blank">
-            AGB
+            {t('termsAndConditions')}
           </a>
-          &nbsp; und die &nbsp;
+          &nbsp; {t('andThe')} &nbsp;
           <a className="Terms" href="/datenschutz" target="_blank">
-            Datenschutzrichtlinie
+          {t('dataPrivacy')} 
+            
           </a>
-          &nbsp; von Senf gelesen habe und ihnen zustimme.
+          &nbsp; {t('terms_agreed')}
           {/* Ich bestätige außerdem, dass ich mindestens 18 Jahre alt bin */}
         </div>
       </div>
@@ -295,7 +296,7 @@ const RegistrationFormComponent = ({
         }
         onClick={() => handleToggle()}
       >
-        Bereits Mitglied? <span className="Terms">Anmelden</span>
+        {t('alreadyMember')} <span className="Terms"> {t('login')}</span>
       </div>
     </form>
   );

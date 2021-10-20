@@ -1,7 +1,7 @@
 /** @format */
 
 import React from "react";
-
+import { useTranslation } from "react-i18next";
 //Graphs
 import createPlotlyComponent from "react-plotlyjs";
 //See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
@@ -275,13 +275,12 @@ const Thema = ({ screams }) => {
     showLink: false,
     displayModeBar: false,
   };
-
+const {t} = useTranslation()
   return (
     <div className="insights-card">
-      <div className="insights-card-title">Themen</div>
+      <div className="insights-card-title">{t('topics')}</div>
       <div className="insights-card-subtitle">
-        Anhand der gesammelten Ideen und Votes, kannst du die Relevanz der
-        Themen erkennen.
+      {t('topics_explained')}
       </div>
       <div className="insights-plot-clickblocker"></div>
       <PlotlyComponent

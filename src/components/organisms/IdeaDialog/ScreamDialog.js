@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
+import {useTranslation} from 'react-i18next'
 import { useSelector, useDispatch } from "react-redux";
 import { setMapViewport } from "../../../redux/actions/mapActions";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -347,6 +348,9 @@ const ScreamDialog = ({ classes, projectsData }) => {
   } = useSelector((state) => state.data.scream);
 
   const dispatch = useDispatch();
+
+  const {t} = useTranslation();
+
   const openScream = useSelector((state) => state.UI.openScream);
   const loading = useSelector((state) => state.UI.loading);
 
@@ -383,7 +387,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
 
       setPath(`https://senf.koeln/${screamId}`);
     }
-  }, [loading]);
+  }, [dispatch, lat, loading, long, openScream, screamId]);
 
   const handleClose = () => {
     dispatch(closeScream());
@@ -620,8 +624,9 @@ const ScreamDialog = ({ classes, projectsData }) => {
               <div className={classes.anmeldeText}>
                 <span>
                   {" "}
-                  Was hältst du von der Idee? <br /> Rege den Meinungsaustausch
-                  hier an!
+                  {t('dialogScream_what_do_you_think')} <br />
+                  
+                  {t('dialogScream_opinion')}
                 </span>
 
                 {!authenticated && (

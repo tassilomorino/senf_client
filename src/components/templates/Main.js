@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router";
+import { useTranslation } from 'react-i18next'
 import { isMobileCustom } from "../../util/customDeviceDetect";
 import Cookies from "universal-cookie";
 
@@ -38,6 +39,10 @@ import Account from "../organisms/Account/Account";
 const cookies = new Cookies();
 
 const Main = () => {
+
+  
+
+  const { t } = useTranslation()
   const dispatch = useDispatch();
   const { screamId } = useParams();
 
@@ -217,7 +222,7 @@ const Main = () => {
                <div className="homeHeader"> Ooops! </div>
           <br />
           <span className="oopsText">
-            Etwas ist schiefgelaufen. Bitte lade die Seite neu!
+          {t("something_went_wrong")}
           </span>
         </div>
       )}
