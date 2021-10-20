@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { Component } from "react";
+import { Translation  } from "react-i18next";
 import axios from "axios";
 
 //Extra-Packages
@@ -145,11 +146,10 @@ export class Wordcloud extends Component {
     return (
       <div className={classes.card}>
         <div className={classes.title}>Top Keywords</div>
-        <div className={classes.subtitle}>
-          Die Keywords geben einen schnellen Einblick in die Gesprächsthemen.
-          Umso mehr Ideen geteilt werden, desto aussagekräftiger werden diese
-          Einblicke.
-        </div>
+          <Translation>
+          {(t) => (<div className={classes.subtitle}>{t("keywords_explained")}</div>)}
+        </Translation>
+       
 
         <FormControl variant="outlined" className={classes.textField}>
           <InputLabel
@@ -167,7 +167,7 @@ export class Wordcloud extends Component {
               name: "bezirk",
               id: "outlined-age-native-simple",
             }}
-          >
+          >   
             <option aria-label="Alle Themen" value={3}>
               Alle Themen
             </option>
