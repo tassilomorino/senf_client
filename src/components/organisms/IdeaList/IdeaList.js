@@ -1,22 +1,26 @@
 /** @format */
 import React, { useState, useEffect } from "react";
 import _ from "lodash";
-import { isMobileCustom } from "../../util/customDeviceDetect";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 import { useSelector, useDispatch } from "react-redux";
-import { setMapBounds, setMapViewport } from "../../redux/actions/mapActions";
+
+import {
+  setMapBounds,
+  setMapViewport,
+} from "../../../redux/actions/mapActions";
 import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 
 import styled from "styled-components";
 
 //Components
-import MapMobile from "../atoms/map/MapMobile";
-import List from "../atoms/List/List";
-import Toolbar from "../molecules/Toolbar/Toolbar";
-import PostScream from "../organisms/PostIdea/PostScream";
-import TopicFilter from "../atoms/Filters/TopicFilter";
-import SortingSelect from "../atoms/Selects/SortingSelect";
+import SortingSelect from "../../atoms/Selects/SortingSelect";
+import MapMobile from "../../atoms/map/MapMobile";
+import List from "../../atoms/List/List";
+import PostScream from "../PostIdea/PostScream";
+import TopicFilter from "../../atoms/Filters/TopicFilter";
+import Toolbar from "../../molecules/Toolbar/Toolbar";
 
 const Wrapper = styled.div`
   opacity: 1;
@@ -113,9 +117,10 @@ const IdeaList = ({
   handleTopicSelector,
   topicsSelected,
 }) => {
-  const { openScream } = useSelector((state) => state.UI);
   const mapViewport = useSelector((state) => state.data.mapViewport);
   const dispatch = useDispatch();
+
+  const openScream = useSelector((state) => state.UI.openScream);
 
   const _onViewportChange = (viewport) => {
     dispatch(setMapViewport(viewport));

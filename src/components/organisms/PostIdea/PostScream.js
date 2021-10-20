@@ -4,14 +4,14 @@ import React, { useState, Fragment } from "react";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-
+import { useTranslation } from "react-i18next";
 // MUI Stuff
 import Dialog from "@material-ui/core/Dialog";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Slide from "@material-ui/core/Slide";
 
 //HANDLER
-import RegistrationAndLogin from "../../atoms/Auth/RegistrationAndLogin";
+import RegistrationAndLogin from "../../atoms/Auth/LoginRegistration";
 
 //ICONS
 import AddIcon from "../../../images/icons/plus_white.png";
@@ -207,7 +207,7 @@ const PostScream = ({
   const user = useSelector((state) => state.user);
   const { authenticated } = user;
   const history = useHistory();
-
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
   const mapViewport = useSelector((state) => state.data.mapViewport);
@@ -569,7 +569,7 @@ const PostScream = ({
       {!isMobileCustom ? (
         <OpenButtonDesktop onClick={handleOpen}>
           <img src={AddIcon} width="25" alt="AddIcon" />
-          <span className="addText">Neue Idee</span>
+          <span className="addText">{t("postScream_newIdea")}</span>
         </OpenButtonDesktop>
       ) : (
         !loading &&
@@ -601,8 +601,8 @@ const PostScream = ({
               isMobileCustom && locationDecided
                 ? { top: "27vh", transition: "0.5s" }
                 : isMobileCustom && !locationDecided
-                ? { top: "100vh", transition: "0.5s" }
-                : null
+                  ? { top: "100vh", transition: "0.5s" }
+                  : null
             }
           >
             <RegistrationAndLogin />
@@ -699,13 +699,6 @@ const PostScream = ({
       </Dialog>
     </Fragment>
   );
-};
-
-PostScream.propTypes = {
-  user: PropTypes.object.isRequired,
-  postScream: PropTypes.func.isRequired,
-  clearErrors: PropTypes.func.isRequired,
-  UI: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(withRouter(PostScream));

@@ -1,40 +1,37 @@
 /** @format */
 
-import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 // Redux stuff
-import { connect } from "react-redux";
-import { clearErrors } from "../../../redux/actions/errorsActions";
-import {
-  getMyScreams,
-  resetMyScreams,
-} from "../../../redux/actions/screamActions";
 
 //Components
 
 // MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";
-import Dialog from "@material-ui/core/Dialog";
-import Slide from "@material-ui/core/Slide";
-import IdeaList from "../../templates/IdeaList";
+import IdeaList from "../IdeaList/IdeaList";
 import AccountHeader from "../../molecules/Headers/AccountHeader";
 
 import styled from "styled-components";
 import AccountSettings from "./AccountSettings";
-import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import MainAnimations from "../../atoms/Animations/MainAnimations";
+import { closeAccountFunc } from "../../../redux/actions/accountActions";
+import {
+  BackgroundDesktop,
+  BackgroundMobile,
+} from "../../atoms/Backgrounds/GradientBackgrounds";
+import Loader from "../../atoms/Animations/Loader";
 
 const Break = styled.div`
   position: relative;
   height: 110px;
   width: 100%;
-`;
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+  @media (min-width: 768px) {
+    height: 30px;
+  }
+`;
 
 const styles = {
   root: {
@@ -247,140 +244,78 @@ const styles = {
   },
 };
 
-class Account extends Component {
-  /* constructor(props) {
-    super(props);
-  } */
-  state = {
-    open: false,
-    myScreams: [],
-    order: 1,
-    dropdown: "newest",
-    dialogStyle: {},
-  };
+const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
+  const loadingMyScreams = useSelector((state) => state.data.loadingMyScreams);
+  const mapViewport = useSelector((state) => state.data.mapViewport);
+  const mapBounds = useSelector((state) => state.data.mapBounds);
 
-  handleOpen = () => {
-    const userHandle = this.props.user.handle;
+  const myScreams = useSelector((state) => state.data.myScreams);
+  const [dropdown, setDropdown] = useState("newest");
+  const [order, setOrder] = useState(1);
+  const dispatch = useDispatch();
 
-    this.fetchMyScreams(userHandle);
-
-    setTimeout(() => {
-      this.setState({
-        open: true,
-      });
-    }, 500);
-    setTimeout(() => {
-      this.setState({
-        dialogStyle: { position: "initial" },
-      });
-    }, 2000);
-  };
-
-  fetchMyScreams = async (userHandle) => {
-    this.props.getMyScreams(userHandle);
-  };
-
-  handleClose = () => {
+  const handleClose = () => {
     window.history.pushState(null, null, `/`);
-    this.setState({ open: false });
-
-    this.props.resetMyScreams();
-
-    setTimeout(() => {
-      this.setState({
-        dialogStyle: {},
-      });
-    }, 2000);
-
-    this.props.clearErrors();
+    dispatch(closeAccountFunc());
   };
 
-  onSwipeMove(position) {
-    if (`${position.x}` > 150) {
-      this.handleClose();
-    }
-    var el = document.querySelector(".fullGradientWrapper");
-    if (el.scrollTop < 5) {
-      if (`${position.y}` > 250) {
-        this.handleClose();
-      }
-    }
-  }
-
-  handleClick = (order) => {
-    this.setState({
-      order,
-    });
+  const handleClick = (order) => {
+    setOrder(order);
   };
 
-  handleDropdown = (value) => {
-    this.setState({
-      dropdown: value,
-    });
+  const handleDropdown = (value) => {
+    setDropdown(value);
   };
 
-  render() {
-    const {
-      classes,
-      handleTopicSelector,
-      topicsSelected,
-      dataFinalMap,
-      user: { handle },
-    } = this.props;
-
-    const { loadingMyScreams, mapViewport, myScreams } = this.props.data;
-
-    const dataFinal =
-      myScreams &&
-      myScreams.filter(
+  const dataFinal = myScreams
+    ? myScreams.filter(
         ({ Thema, status, lat, long }) =>
           topicsSelected.includes(Thema) &&
-          lat <= this.props.data.mapBounds.latitude1 &&
-          lat >= this.props.data.mapBounds.latitude2 &&
-          long >= this.props.data.mapBounds.longitude2 &&
-          long <= this.props.data.mapBounds.longitude3 &&
+          lat <= mapBounds.latitude1 &&
+          lat >= mapBounds.latitude2 &&
+          long >= mapBounds.longitude2 &&
+          long <= mapBounds.longitude3 &&
           status === "None"
-      );
+      )
+    : [];
 
-    const dialogMarkup = (
-      <div className="fullGradientWrapper">
-        <AccountHeader
-          handle={handle}
-          loading={loadingMyScreams}
-          order={this.state.order}
-          handleClose={this.handleClose}
-          handleClick={this.handleClick}
-        />
+  return (
+    <React.Fragment>
+      <AccountHeader
+        loading={loadingMyScreams}
+        order={order}
+        handleClose={handleClose}
+        handleClick={handleClick}
+      />
 
-        {this.state.order === 1 && (
-          <MainAnimations
-            transition="0.5s"
-            display="block"
-            paddingBottom="2em"
-            height="100%"
-          >
-            {!loadingMyScreams && this.state.open && (
+      <div className="accountDialog">
+        {isMobileCustom ? <BackgroundMobile /> : <BackgroundDesktop />}
+
+        {order === 1 && (
+          <MainAnimations transition="0.5s" display="block" paddingBottom="2em">
+            {!loadingMyScreams ? (
               <IdeaList
                 type="myIdeas"
                 loading={loadingMyScreams}
-                order={this.state.order}
-                classes={classes}
+                order={order}
                 dataFinal={dataFinal}
                 myScreams={myScreams}
                 viewport={mapViewport}
-                handleDropdown={this.handleDropdown}
-                dropdown={this.state.dropdown}
+                handleDropdown={handleDropdown}
+                dropdown={dropdown}
                 handleTopicSelector={handleTopicSelector}
                 topicsSelected={topicsSelected}
                 dataFinalMap={dataFinalMap}
               ></IdeaList>
+            ) : (
+              <Loader />
             )}
           </MainAnimations>
         )}
 
-        {this.state.order === 2 && (
+        {order === 2 && (
           <React.Fragment>
-            {isMobileCustom && <Break />}
+            <Break />
             <MainAnimations
               transition="0.5s"
               display="block"
@@ -392,65 +327,8 @@ class Account extends Component {
           </React.Fragment>
         )}
       </div>
-    );
-
-    return (
-      <Fragment>
-        <ExpandButton
-          handleButtonClick={this.handleOpen}
-          dataCy="profile-button"
-        />
-
-        {!this.props.UI.openInfoPage &&
-          (isMobileCustom ? (
-            <Dialog
-              open={this.state.open}
-              onClose={this.handleClose}
-              TransitionComponent={Transition}
-              fullScreen
-            >
-              {dialogMarkup}
-            </Dialog>
-          ) : (
-            <Dialog
-              open={this.state.open}
-              onClose={this.handleClose}
-              BackdropProps={{ classes: { root: classes.root } }}
-              PaperProps={{ classes: { root: classes.paper } }}
-              TransitionComponent={Transition}
-              fullScreen
-              hideBackdrop // Disable the backdrop color/image
-              disableEnforceFocus // Let the user focus on elements outside the dialog
-              style={this.state.dialogStyle} // This was the key point, reset the position of the dialog, so the user can interact with other elements
-              disableBackdropClick // Remove the backdrop click (just to be sure)
-            >
-              <div className="contentWrapper_dialog">{dialogMarkup}</div>
-            </Dialog>
-          ))}
-      </Fragment>
-    );
-  }
-}
-
-Account.propTypes = {
-  clearErrors: PropTypes.func.isRequired,
+    </React.Fragment>
+  );
 };
 
-const mapStateToProps = (state) => ({
-  scream: state.data.scream,
-  myScreams: state.data.myScreams,
-  data: state.data,
-  UI: state.UI,
-  user: state.user,
-});
-
-const mapActionsToProps = {
-  clearErrors,
-  getMyScreams,
-  resetMyScreams,
-};
-
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(Account));
+export default withStyles(styles)(Account);

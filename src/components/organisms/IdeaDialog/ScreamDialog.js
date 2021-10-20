@@ -1,16 +1,15 @@
 /** @format */
 
-import React, { Fragment, useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
+import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
-import { setMapViewport } from "../../redux/actions/mapActions";
-import PropTypes from "prop-types";
+import { setMapViewport } from "../../../redux/actions/mapActions";
 import withStyles from "@material-ui/core/styles/withStyles";
-import MyButton from "../../util/MyButton";
-import LikeButton from "../atoms/CustomButtons/LikeButton";
-import ChatBorder from "../../images/icons/chat.png";
-import Comments from "../molecules/Cards/Comments";
-import CommentForm from "../atoms/Comments/CommentForm";
+import MyButton from "../../../util/MyButton";
+import LikeButton from "../../atoms/CustomButtons/LikeButton";
+import Comments from "../../molecules/Cards/Comments";
+import CommentForm from "../../atoms/Comments/CommentForm";
 import dayjs from "dayjs";
 // MUI Stuff
 
@@ -22,9 +21,10 @@ import LocationOn from "@material-ui/icons/LocationOn";
 import CreateIcon from "@material-ui/icons/Create";
 import EventIcon from "@material-ui/icons/Event";
 
-import WeblinkIcon from "../../images/icons/weblink.png";
-
-import contactIcon from "../../images/icons/mail.png";
+import WeblinkIcon from "../../../images/icons/weblink.png";
+import ChatBorder from "../../../images/icons/chat.png";
+import lamploader from "../../../images/lamp.png";
+import contactIcon from "../../../images/icons/mail.png";
 
 import * as linkify from "linkifyjs";
 
@@ -32,29 +32,26 @@ import * as linkify from "linkifyjs";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 // Redux stuff
-import { closeScream } from "../../redux/actions/screamActions";
-import { openProjectFunc } from "../../redux/actions/projectActions";
-import { clearErrors } from "../../redux/actions/errorsActions";
+import { closeScream } from "../../../redux/actions/screamActions";
+import { openProjectFunc } from "../../../redux/actions/projectActions";
+import { clearErrors } from "../../../redux/actions/errorsActions";
 
 //COMPONENTS
-import RegistrationAndLogin from "../atoms/Auth/RegistrationAndLogin";
+import RegistrationAndLogin from "../../atoms/Auth/LoginRegistration";
 
-//ANIMATION
-import lamploader from "../../images/lamp.png";
+import ShareModal from "../../molecules/Modals/ShareModal";
+import MenuModal from "../../molecules/Modals/MenuModal";
 
-import ShareModal from "../molecules/Modals/ShareModal";
-import MenuModal from "../molecules/Modals/MenuModal";
-
-import { isMobileCustom } from "../../util/customDeviceDetect";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 import {
   CustomButton,
   CustomIconButton,
-} from "../atoms/CustomButtons/CustomButton";
-import setColorByTopic from "../../data/setColorByTopic";
+} from "../../atoms/CustomButtons/CustomButton";
 import styled, { createGlobalStyle } from "styled-components";
 
-import ScreamDialogSwipe from "../../hooks/ScreamDialogSwipe";
+import ScreamDialogSwipe from "../../../hooks/ScreamDialogSwipe";
+import Loader from "../../atoms/Animations/Loader";
 
 const portalRoot = document.getElementById("portal-root");
 
@@ -120,14 +117,6 @@ const Button = styled.button`
   display: flex;
   flex-direction: row;
   align-items: center;
-`;
-
-const ScrollDisabler = createGlobalStyle`
-  :root > body {
-    overflow: hidden;
-    overflow-x: hidden;
-  }
- 
 `;
 
 const styles = {
@@ -342,7 +331,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
     long,
     userHandle,
     comments,
-    Thema,
+    color,
     project,
     weblink,
     weblinkTitle,
@@ -352,9 +341,13 @@ const ScreamDialog = ({ classes, projectsData }) => {
   } = useSelector((state) => state.data.scream);
 
   const dispatch = useDispatch();
-  const { loading, openScream } = useSelector((state) => state.UI);
 
-  const { authenticated } = useSelector((state) => state.user);
+  const { t } = useTranslation();
+
+  const openScream = useSelector((state) => state.UI.openScream);
+  const loading = useSelector((state) => state.UI.loading);
+
+  const authenticated = useSelector((state) => state.user.authenticated);
 
   const [path, setPath] = useState("");
   const [clicked, setClicked] = useState(false);
@@ -387,7 +380,7 @@ const ScreamDialog = ({ classes, projectsData }) => {
 
       setPath(`https://senf.koeln/${screamId}`);
     }
-  }, [loading]);
+  }, [dispatch, lat, loading, long, openScream, screamId]);
 
   const handleClose = () => {
     dispatch(closeScream());
@@ -481,191 +474,183 @@ const ScreamDialog = ({ classes, projectsData }) => {
   }
 
   const content = (
-    <div>
+    <div className="wrapperScreamDialog">
       {!loading ? (
-        <div style={{ pointerEvents: "auto" }}>
-          <div className="wrapperScreamDialog">
-            <ButtonsContainer>
-              <CustomIconButton name="Share" handleButtonClick={handleShare} />
-              <CustomIconButton
-                name="Menu"
-                handleButtonClick={() => setMenuOpen(true)}
-              />
-            </ButtonsContainer>
-            {isMobileCustom ? <BackgroundMobile /> : <BackgroundDesktop />}
-            <div
-              className="dialogCard"
-              style={project ? { paddingBottom: "50px", zIndex: 9999 } : {}}
-            >
-              <div className={classes.content}>
-                <div
-                  style={{
-                    width: "15px",
-                    position: "relative",
-                    height: "15px",
-                    margintop: "5px",
-                    borderRadius: "100%",
-                    border: "0.5px white solid",
-                    backgroundColor: setColorByTopic(Thema),
-                    opacity: "1",
-                    float: "left",
-                  }}
-                />{" "}
-                <div className={classes.district}>
-                  <div className={classes.districtHeader}> {Stadtteil} </div>
+        <React.Fragment>
+          <ButtonsContainer>
+            <CustomIconButton name="Share" handleButtonClick={handleShare} />
+            <CustomIconButton
+              name="Menu"
+              handleButtonClick={() => setMenuOpen(true)}
+            />
+          </ButtonsContainer>
+          {isMobileCustom ? <BackgroundMobile /> : <BackgroundDesktop />}
+          <div
+            className="dialogCard"
+            style={project ? { paddingBottom: "50px", zIndex: 9999 } : {}}
+          >
+            <div className={classes.content}>
+              <div
+                style={{
+                  width: "15px",
+                  position: "relative",
+                  height: "15px",
+                  margintop: "5px",
+                  borderRadius: "100%",
+                  border: "0.5px white solid",
+                  backgroundColor: color,
+                  opacity: "1",
+                  float: "left",
+                }}
+              />{" "}
+              <div className={classes.district}>
+                <div className={classes.districtHeader}> {Stadtteil} </div>
+              </div>
+              <div className={classes.title}>{title} </div>
+              <Typography className={classes.bodytext}>{body}</Typography>
+              <div className={classes.line} />
+              <div className={classes.likeButtonWrapper}>
+                <div className={classes.likeButton}>
+                  <LikeButton screamId={screamId} />
                 </div>
-                <div className={classes.title}>{title} </div>
-                <Typography className={classes.bodytext}>{body}</Typography>
-                <div className={classes.line} />
-                <div className={classes.likeButtonWrapper}>
-                  <div className={classes.likeButton}>
-                    <LikeButton screamId={screamId} />
-                  </div>
-                  <div className={classes.engagement}>{likeCount} </div>
+                <div className={classes.engagement}>{likeCount} </div>
+              </div>
+              <div className={classes.commentButtonWrapper}>
+                <div className={classes.commentButton}>
+                  {!authenticated ? (
+                    <MyButton>
+                      <RegistrationAndLogin />
+                      <img src={ChatBorder} width="100%" alt="ChatIcon" />
+                    </MyButton>
+                  ) : (
+                    <MyButton onClick={() => handleClick()}>
+                      <img src={ChatBorder} width="90%" alt="ChatIcon" />
+                    </MyButton>
+                  )}
                 </div>
-                <div className={classes.commentButtonWrapper}>
-                  <div className={classes.commentButton}>
-                    {!authenticated ? (
-                      <MyButton>
-                        <RegistrationAndLogin />
-                        <img src={ChatBorder} width="100%" alt="ChatIcon" />
-                      </MyButton>
-                    ) : (
-                      <MyButton onClick={() => handleClick()}>
-                        <img src={ChatBorder} width="90%" alt="ChatIcon" />
-                      </MyButton>
-                    )}
-                  </div>
-                  <div className={classes.engagement}>{commentCount}</div>
-                </div>
-                <div className={classes.horrizontalLine}></div>
-                <div className={classes.header}>
-                  {selectedUnixArray !== undefined &&
-                    selectedUnixArray !== null && (
-                      <div className={classes.selectedDatesOuter}>
-                        <EventIcon className={classes.locationIcon} />
+                <div className={classes.engagement}>{commentCount}</div>
+              </div>
+              <div className={classes.horrizontalLine}></div>
+              <div className={classes.header}>
+                {selectedUnixArray !== undefined && selectedUnixArray !== null && (
+                  <div className={classes.selectedDatesOuter}>
+                    <EventIcon className={classes.locationIcon} />
 
-                        <div className={classes.locationHeader}>
-                          {" "}
-                          {selectedDates}{" "}
-                        </div>
-                      </div>
-                    )}
-                  <div className={classes.locationOuter}>
-                    <LocationOn className={classes.locationIcon} />{" "}
                     <div className={classes.locationHeader}>
                       {" "}
-                      {locationHeader}{" "}
+                      {selectedDates}{" "}
                     </div>
                   </div>
-
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "start",
-                    }}
-                  >
-                    <CreateIcon className={classes.locationIcon} />{" "}
-                    <Typography
-                      // component={Link}
-                      // to={`/users/${userHandle}`}
-                      className={classes.user}
-                    >
-                      {userHandle}
-                      &nbsp;am&nbsp;
-                    </Typography>
-                    <Typography className={classes.date}>
-                      {dayjs(createdAt).format("DD.MM.YYYY")}
-                    </Typography>
+                )}
+                <div className={classes.locationOuter}>
+                  <LocationOn className={classes.locationIcon} />{" "}
+                  <div className={classes.locationHeader}>
+                    {" "}
+                    {locationHeader}{" "}
                   </div>
-
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      flexWrap: "wrap",
-                    }}
-                  >
-                    {weblink && (
-                      <Button onClick={() => openLink(convertedLink)}>
-                        {weblinkTitle}
-                        <img
-                          src={WeblinkIcon}
-                          style={{
-                            paddingLeft: "9px",
-                            marginTop: "-2px",
-                          }}
-                          width="15"
-                          alt="WeblinkIcon"
-                        />
-                      </Button>
-                    )}
-
-                    {contact && (
-                      <Button onClick={() => openMail(contact)}>
-                        {contactTitle}
-                        <img
-                          src={contactIcon}
-                          style={{ paddingLeft: "9px" }}
-                          width="22"
-                          alt="WeblinkIcon"
-                        />
-                      </Button>
-                    )}
-                  </div>
-
-                  {projectTitle}
                 </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "start",
+                  }}
+                >
+                  <CreateIcon className={classes.locationIcon} />{" "}
+                  <Typography
+                    // component={Link}
+                    // to={`/users/${userHandle}`}
+                    className={classes.user}
+                  >
+                    {userHandle}
+                    &nbsp;am&nbsp;
+                  </Typography>
+                  <Typography className={classes.date}>
+                    {dayjs(createdAt).format("DD.MM.YYYY")}
+                  </Typography>
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  {weblink && (
+                    <Button onClick={() => openLink(convertedLink)}>
+                      {weblinkTitle}
+                      <img
+                        src={WeblinkIcon}
+                        style={{
+                          paddingLeft: "9px",
+                          marginTop: "-2px",
+                        }}
+                        width="15"
+                        alt="WeblinkIcon"
+                      />
+                    </Button>
+                  )}
+
+                  {contact && (
+                    <Button onClick={() => openMail(contact)}>
+                      {contactTitle}
+                      <img
+                        src={contactIcon}
+                        style={{ paddingLeft: "9px" }}
+                        width="22"
+                        alt="WeblinkIcon"
+                      />
+                    </Button>
+                  )}
+                </div>
+
+                {projectTitle}
               </div>
             </div>
-            <div className={classes.vertline} />
-            <Card className={classes.card2}>
-              <div className={classes.anmeldeText}>
-                <span>
-                  {" "}
-                  Was hältst du von der Idee? <br /> Rege den Meinungsaustausch
-                  hier an!
-                </span>
+          </div>
+          <div className={classes.vertline} />
+          <Card className={classes.card2}>
+            <div className={classes.anmeldeText}>
+              <span>
+                {" "}
+                {t("dialogScream_what_do_you_think")} <br />
+                {t("dialogScream_opinion")}
+              </span>
 
-                {!authenticated && (
-                  <div className={classes.anmeldeText}>
-                    <RegistrationAndLogin />
-                    <CustomButton
-                      text="Melde dich an"
-                      backgroundColor="#353535"
-                      textColor="white"
-                      position="relative"
-                      top="10px"
-                      zIndex="0"
-                    />
-                  </div>
-                )}
-              </div>
-            </Card>
-            <Comments comments={comments} />
-            <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
-            {isMobileCustom && (
-              <React.Fragment>
-                <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
-                <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
-              </React.Fragment>
-            )}
-          </div>
-          <ScrollDisabler />
-        </div>
+              {!authenticated && (
+                <div className={classes.anmeldeText}>
+                  <RegistrationAndLogin />
+                  <CustomButton
+                    text="Melde dich an"
+                    backgroundColor="#353535"
+                    textColor="white"
+                    position="relative"
+                    top="10px"
+                    zIndex="0"
+                  />
+                </div>
+              )}
+            </div>
+          </Card>
+          <Comments comments={comments} />
+          <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
+          {isMobileCustom && (
+            <React.Fragment>
+              <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
+              <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
+            </React.Fragment>
+          )}
+        </React.Fragment>
       ) : (
-        <div className="fullGradientWrapper">
-          <div className="spinnerDiv">
-            <img src={lamploader} className="lamploader" alt="LikeIcon" />
-          </div>
-        </div>
+        <Loader />
       )}
     </div>
   );
   return ReactDOM.createPortal(
     isMobileCustom ? (
-      <React.Fragment style={{ overflowX: "hidden" }}>
+      <React.Fragment>
         <CommentForm screamId={screamId} clicked={clicked} />
 
         {shareOpen && (
@@ -730,13 +715,6 @@ const ScreamDialog = ({ classes, projectsData }) => {
     ),
     portalRoot
   );
-};
-
-ScreamDialog.propTypes = {
-  clearErrors: PropTypes.func.isRequired,
-  closeScream: PropTypes.func.isRequired,
-  openProjectFunc: PropTypes.func.isRequired,
-  UI: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(ScreamDialog);

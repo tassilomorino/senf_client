@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { Component } from "react";
+import { Translation } from "react-i18next";
 
 //Graphs
 import createPlotlyComponent from "react-plotlyjs";
@@ -393,11 +394,13 @@ export class Stadtteil extends Component {
 
     return (
       <div className={classes.card}>
-        <div className={classes.title}>Stadtteile</div>
-        <div className={classes.subtitle}>
-          Anhand der gesammelten Ideen und Votes kannst du die Relevanz der
-          Themen innerhalb der Stadtteile erkennen und nach Themen filtern.
-        </div>
+        <Translation>
+          {(t) => <div className={classes.title}>{t("districts")}</div>}
+        </Translation>
+
+        <Translation>
+          {(t) => (<div className={classes.subtitle}>{t("districts_explained")}</div>)}
+        </Translation>
 
         <TopicFilter
           handleTopicSelector={this.handleTopicSelector}

@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import Logo from "../../../images/logo.png";
 
-import RegistrationAndLogin from "../../atoms/Auth/RegistrationAndLogin";
+import LoginRegistration from "../../atoms/Auth/LoginRegistration";
 
 //ICONS
 import Insta from "../../../images/icons/socialmedia/insta.png";
@@ -31,7 +31,7 @@ export class MonitoringDesktopSidebar extends Component {
 
     const sign = !authenticated ? (
       <div className="profile">
-        <RegistrationAndLogin />
+        <LoginRegistration />
         <img
           src={Noprofile}
           width="35"

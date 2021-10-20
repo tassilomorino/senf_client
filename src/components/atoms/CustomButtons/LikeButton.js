@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 //Components
 import MyButton from "../../../util/MyButton";
 import ThanksForTheVote from "../Backgrounds/ThanksForTheVote";
-import RegistrationAndLogin from "../Auth/RegistrationAndLogin";
+import RegistrationAndLogin from "../Auth/LoginRegistration";
 
 //Images
 import HandBorder from "../../../images/icons/handsnoclap.png";
@@ -19,7 +19,7 @@ import HandFull from "../../../images/icons/handsFull.png";
 const LikeButton = ({ screamId }) => {
   const dispatch = useDispatch();
 
-  const { user } = useSelector((state) => state);
+  const user = useSelector((state) => state.user);
 
   const likedScream = () => {
     if (user.likes && user.likes.find((like) => like.screamId === screamId))
@@ -42,13 +42,6 @@ const LikeButton = ({ screamId }) => {
     </MyButton>
   );
   return likeButton;
-};
-
-LikeButton.propTypes = {
-  user: PropTypes.object.isRequired,
-  screamId: PropTypes.string.isRequired,
-  likeScream: PropTypes.func.isRequired,
-  unlikeScream: PropTypes.func.isRequired,
 };
 
 export default LikeButton;

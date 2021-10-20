@@ -14,7 +14,7 @@ import {
 export const DesktopMapButtons = ({ viewport }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { openInfoPage } = useSelector((state) => state.UI);
+  const openInfoPage = useSelector((state) => state.UI.openInfoPage);
 
   const handleMapBoundsSet = (viewport) => {
     const boundAdds = [200, 200, 200, 300];

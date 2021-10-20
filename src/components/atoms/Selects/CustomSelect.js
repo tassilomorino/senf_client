@@ -131,7 +131,6 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
         rect.right <=
           (window.innerWidth || document.documentElement.clientWidth);
 
-      console.log(isInViewportVar);
       setIsInViewport(isInViewportVar);
     }
   }, [open]);

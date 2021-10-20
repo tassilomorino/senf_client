@@ -4,8 +4,10 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import Swipe from "react-easy-swipe";
 import { isAndroid } from "react-device-detect";
+import { withTranslation } from "react-i18next";
 
 //Redux
+import { compose } from "redux";
 import { resetPassword } from "../../../redux/actions/userActions";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -13,8 +15,6 @@ import { withRouter } from "react-router-dom";
 //Images
 import pw_reset from "../../../images/headlines/pw_reset.png";
 
-//Icons
-import CloseIcon from "@material-ui/icons/Close";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 // MUI Stuff
@@ -226,7 +226,7 @@ class ResetPassword extends Component {
     const email = {
       email: this.state.email,
     };
-    console.log(email);
+
     this.props.resetPassword(email, this.props.history);
 
     setTimeout(() => {
@@ -257,10 +257,9 @@ class ResetPassword extends Component {
 
     return (
       <Fragment>
-        <div className={classes.forgot}>
-          Du hast dein{" "}
-          <span className="Terms" onClick={() => this.handleOpen()}>
-            Passwort vergessen?{" "}
+        <div className={classes.forgot} onClick={() => this.handleOpen()}>
+        <span className="Terms">
+          {this.props.t("forgotPassword")}
           </span>
         </div>
         <Dialog
@@ -349,7 +348,11 @@ const mapStateToProps = (state) => ({
 const mapActionsToProps = {
   resetPassword,
 };
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(withRouter(ResetPassword)));
+
+export default withRouter(
+  compose(
+    withStyles(styles),
+    withTranslation(),
+    connect(mapStateToProps, mapActionsToProps)
+  )(ResetPassword)
+);

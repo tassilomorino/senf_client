@@ -3,10 +3,11 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { openAccountFunc } from "../../../redux/actions/accountActions";
 
 //Components
-import RegistrationAndLogin from "../../atoms/Auth/RegistrationAndLogin";
+import RegistrationAndLogin from "../../atoms/Auth/LoginRegistration";
 import InlineInformationPageDesktop from "../../organisms/infocomponents/InlineInformationPageDesktop";
 import TopicFilter from "../../atoms/Filters/TopicFilter";
 import Account from "../../organisms/Account/Account";
@@ -22,6 +23,7 @@ import profile_grey from "../../../images/icons/profile_grey.png";
 import Noprofile from "../../../images/noprofile.png";
 import PostScream from "../../organisms/PostIdea/PostScream";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
+import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
 const DesktopSidebar = ({
   loading,
@@ -34,10 +36,15 @@ const DesktopSidebar = ({
   projectsData,
   dataFinalMap,
 }) => {
-  const { openInfoPage } = useSelector((state) => state.UI);
-  const { authenticated } = useSelector((state) => state.user);
-
+  const openInfoPage = useSelector((state) => state.UI.openInfoPage);
+  const authenticated = useSelector((state) => state.user.authenticated);
+  const userId = useSelector((state) => state.user.userId);
+  const dispatch = useDispatch();
   const { t } = useTranslation();
+
+  const openTheAccount = () => {
+    dispatch(openAccountFunc(userId));
+  };
 
   return (
     !isMobileCustom && (
@@ -60,10 +67,9 @@ const DesktopSidebar = ({
           </div>
         ) : (
           <div className="profile">
-            <Account
-              handleTopicSelector={handleTopicSelector}
-              topicsSelected={topicsSelected}
-              dataFinalMap={dataFinalMap}
+            <ExpandButton
+              handleButtonClick={openTheAccount}
+              dataCy="profile-button"
             />
             <img
               src={order === 4 ? profile_grey : profile_yellow}
@@ -81,6 +87,7 @@ const DesktopSidebar = ({
 
         {MenuData.map((item, i) => (
           <MenuItem
+            key={i}
             order={order}
             index={i + 1}
             isSelectedIcon={item.isSelectedIcon}

@@ -157,8 +157,6 @@ class MonitoringEditScream extends Component {
         selectedUnix: this.props.scream.selectedUnix,
       });
     }
-
-    console.log(this.props.data);
   };
   handleClose = () => {
     this.props.closeMonitoringScream();

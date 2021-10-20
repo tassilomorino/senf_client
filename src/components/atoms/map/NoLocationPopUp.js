@@ -31,7 +31,7 @@ const NoLocationPopUp = ({ dataNoLocation, setSwipePositionUp }) => {
   };
 
   return (
-    <React.Fragment style={{ zIndex: 99 }}>
+    <React.Fragment>
       {dataNoLocation.length > 1 && (
         <Marker
           key={"123456"}

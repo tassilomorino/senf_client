@@ -105,11 +105,7 @@ const SortingSelect = ({ handleDropdown }) => {
   return (
     <div ref={outerRef}>
       <DropDownContainer>
-        <DropDownButton
-          onClick={handleToggle}
-          class="dropbtn"
-          style={{ zIndex: 999 }}
-        >
+        <DropDownButton onClick={handleToggle} style={{ zIndex: 999 }}>
           {truncateString(selectedLabel, 12)}
 
           <img src={Arrow} width="20px" style={{ paddingLeft: "5px" }}></img>

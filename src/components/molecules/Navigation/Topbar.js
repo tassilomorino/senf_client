@@ -3,11 +3,10 @@ import React from "react";
 import PropTypes from "prop-types";
 
 //REDUX
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 //COMPONENTS
-import RegistrationAndLogin from "../../atoms/Auth/RegistrationAndLogin";
-import Account from "../../organisms/Account/Account";
+import LoginRegistration from "../../atoms/Auth/LoginRegistration";
 import InlineInformationPage from "../../organisms/infocomponents/InlineInformationPage";
 import Tabs from "../../atoms/Tabs/Tabs";
 import { MenuData } from "../../../data/MenuData";
@@ -19,6 +18,8 @@ import Noprofile from "../../../images/noprofile.png";
 import styled from "styled-components";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import Info from "../../../images/icons/info.png";
+import { openAccountFunc } from "../../../redux/actions/accountActions";
+import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
 const Wrapper = styled.div`
   z-index: 99;
@@ -64,17 +65,16 @@ const InlineInfoButtonContainer = styled.div`
   pointer-events: pointer;
 `;
 
-const Topbar = ({
-  order,
-  handleClick,
-  handleTopicSelector,
-  topicsSelected,
-  dataFinalMap,
-}) => {
-  const { loading } = useSelector((state) => state.data);
-  const { authenticated } = useSelector((state) => state.user);
-  const { openScream } = useSelector((state) => state.UI);
+const Topbar = ({ order, handleClick }) => {
+  const loading = useSelector((state) => state.data.loading);
+  const authenticated = useSelector((state) => state.user.authenticated);
+  const openScream = useSelector((state) => state.UI.openScream);
+  const userId = useSelector((state) => state.user.userId);
+  const dispatch = useDispatch();
 
+  const openTheAccount = () => {
+    dispatch(openAccountFunc(userId));
+  };
   return (
     !loading &&
     isMobileCustom && (
@@ -90,15 +90,14 @@ const Topbar = ({
 
         {!authenticated ? (
           <ProfileButtonContainer>
-            <RegistrationAndLogin />
+            <LoginRegistration />
             <img src={Noprofile} width="30" alt="profilePlaceHolderImage" />
           </ProfileButtonContainer>
         ) : (
           <ProfileButtonContainer>
-            <Account
-              handleTopicSelector={handleTopicSelector}
-              topicsSelected={topicsSelected}
-              dataFinalMap={dataFinalMap}
+            <ExpandButton
+              handleButtonClick={openTheAccount}
+              dataCy="profile-button"
             />
             <img src={profile_yellow} width="30" alt="profileImage" />
           </ProfileButtonContainer>
@@ -114,9 +113,6 @@ const Topbar = ({
       </Wrapper>
     )
   );
-};
-Topbar.propTypes = {
-  user: PropTypes.object.isRequired,
 };
 
 export default Topbar;

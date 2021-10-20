@@ -606,12 +606,7 @@ button:disabled {
 }
 
 
-.idea-header {
 
-  margin-top: -20px;
-  font-size: 24pt;
-
-}
 
 .contentWrapper {
   width: 100vw;
@@ -1084,22 +1079,7 @@ input:focus {
   width: 100%;
 }
 
-.spinnerDivBackground {
-  z-index: 99;
-  display: flex;
-  position: fixed;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  height: 100%;
-  width: 100%;
-  top:0;
 
-  background-attachment: fixed;
-  background-image: linear-gradient(to bottom, #ffd19b, #ffda53, #ffffff);
-  background-repeat: no-repeat;
-  background: -webkit-linear-gradient(to left, #ffd19b, #ffda53, #ffffff);
-}
 
 
 
@@ -1466,11 +1446,13 @@ font-size:15px !important
   
 }
 
-.projectDialog {
+.projectDialog ,
+.accountDialog {
+  
   width: 100vw;
   height: 100%;
   margin-top:0vh;
-  z-index: 6900;
+  z-index: 996;
   top: 0;
   animation: enterScreamDialogAnimation 0.5s;
   position:absolute;
@@ -2158,19 +2140,7 @@ background-color: #353535;
 }
 
 
-@media screen and (max-width: 330px) {
 
-  .idea-header {
-
-    margin-top: -20px;
-    font-size: 21pt;
-    margin-left: -5px;
-
-  }
- 
-  
-  
-}
 
 @media screen and (max-width: 321px) {
   .subTitle1 {

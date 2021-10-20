@@ -1,7 +1,6 @@
 /** @format */
 
 import React from "react";
-import PropTypes from "prop-types";
 import MyButton from "../../../util/MyButton";
 import styled from "styled-components";
 
@@ -11,7 +10,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 
 // COMPONENTS
 import LikeButton from "../../atoms/CustomButtons/LikeButton";
-import RegistrationAndLogin from "../../atoms/Auth/RegistrationAndLogin";
+import RegistrationAndLogin from "../../atoms/Auth/LoginRegistration";
 
 // Icons
 import ChatBorder from "../../../images/icons/chat.png";
@@ -20,7 +19,6 @@ import ChatBorder from "../../../images/icons/chat.png";
 import { useSelector, useDispatch } from "react-redux";
 
 import { openScreamFunc } from "../../../redux/actions/screamActions";
-import setColorByTopic from "../../../data/setColorByTopic";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import { openProjectFunc } from "../../../redux/actions/projectActions";
 
@@ -52,7 +50,7 @@ const ColorDot = styled.div`
   height: 15px;
   border-radius: 100%;
   border: 0.5px solid white;
-  background-color: ${(props) => setColorByTopic(props.thema)};
+  background-color: ${(props) => props.color};
   opacity: 1;
   float: left;
 `;
@@ -65,7 +63,7 @@ const LocationOuter = styled.div`
 `;
 
 const LocationHeader = styled.div`
-  color: ${(props) => setColorByTopic(props.thema)};
+  color: ${(props) => props.color};
   float: left;
   width: 100%;
   padding-right: 2%;
@@ -188,8 +186,8 @@ const CommentButtonWrapper = styled.button`
 const IdeaCard = ({ classes, projectsData, scream }) => {
   dayjs.extend(relativeTime);
   const dispatch = useDispatch();
-  const { authenticated } = useSelector((state) => state.user);
-  const { openProject } = useSelector((state) => state.UI);
+  const authenticated = useSelector((state) => state.user.authenticated);
+  const openProject = useSelector((state) => state.UI.openProject);
 
   const {
     title,
@@ -199,14 +197,14 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
     commentCount,
     Stadtteil,
     project,
-    Thema,
+    color,
   } = scream;
 
-  const fetchDataScream = (screamId) => {
+  const fetchDataScream = () => {
     dispatch(openScreamFunc(screamId));
   };
 
-  const fetchDataProject = (project) => {
+  const fetchDataProject = () => {
     dispatch(openProjectFunc(project));
   };
 
@@ -222,9 +220,9 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
   return (
     <Card project={!openProject && project && projectsData}>
       <CardContent>
-        <ColorDot thema={Thema} />{" "}
+        <ColorDot color={color} />{" "}
         <LocationOuter>
-          <LocationHeader thema={Thema}>{Stadtteil}</LocationHeader>
+          <LocationHeader color={color}>{Stadtteil}</LocationHeader>
         </LocationOuter>
         <ScreamCardTitle>{title}</ScreamCardTitle>
         <BodyText>{body} </BodyText>
@@ -255,26 +253,15 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
         {!openProject && project && projectsData && (
           <>
             <Gradient2></Gradient2>
-            <ScreamcardProjectContainerButtonWide
-              onClick={() => fetchDataProject(project)}
-            >
+            <ScreamcardProjectContainerButtonWide onClick={fetchDataProject}>
               {projectsDataFinal}
             </ScreamcardProjectContainerButtonWide>
           </>
         )}
-        <ExpandButton handleButtonClick={() => fetchDataScream(screamId)} />
+        <ExpandButton handleButtonClick={fetchDataScream} />
       </CardContent>
     </Card>
   );
-};
-
-IdeaCard.propTypes = {
-  user: PropTypes.object.isRequired,
-  scream: PropTypes.object.isRequired,
-  classes: PropTypes.object.isRequired,
-  openDialog: PropTypes.bool,
-  openScreamFunc: PropTypes.func.isRequired,
-  openProject: PropTypes.func.isRequired,
 };
 
 export default IdeaCard;

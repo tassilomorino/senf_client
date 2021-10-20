@@ -97,7 +97,8 @@ const Comments = ({ classes }) => {
   const [userHandleSelected, setUserHandleSelected] = useState("");
   const [commentIdSelected, setCommentIdSelected] = useState("");
 
-  const { screamId, comments } = useSelector((state) => state.data.scream);
+  const screamId = useSelector((state) => state.data.scream.screamId);
+  const comments = useSelector((state) => state.data.scream.comments);
 
   return (
     <Grid container>
@@ -166,13 +167,6 @@ const Comments = ({ classes }) => {
       })}
     </Grid>
   );
-};
-
-Comments.propTypes = {
-  comments: PropTypes.array.isRequired,
-  user: PropTypes.object.isRequired,
-  comment: PropTypes.object.isRequired,
-  getComment: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(Comments);

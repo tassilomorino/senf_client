@@ -1,14 +1,13 @@
 /** @format */
 
 import React, { useState, Fragment } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { useHistory } from "react-router";
 
 import PropTypes from "prop-types";
 import Swipe from "react-easy-swipe";
-
 
 import ExpandButton from "../CustomButtons/ExpandButton";
 //Icons
@@ -212,7 +211,7 @@ const styles = {
   },
 };
 
-const RegistrationAndLogin = ({ classes }) => {
+const LoginRegistration = ({ classes }) => {
   const [open, setOpen] = useState(false);
   const [toggleSignup, setToggleSignup] = useState(false);
   const [email, setEmail] = useState("");
@@ -223,14 +222,13 @@ const RegistrationAndLogin = ({ classes }) => {
   const [age, setAge] = useState("");
   const [sex, setSex] = useState("");
 
-
   const [errors, setErrors] = useState({
     email: false,
     middleName: false,
     lastName: false,
-  })
+  });
 
-  const [errorMessage, setErrorMessage]= useState(null)
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const [loading, setLoading] = useState(false);
 
@@ -245,14 +243,16 @@ const RegistrationAndLogin = ({ classes }) => {
 
   const handleSubmitLogin = async (event) => {
     event.preventDefault();
-    setLoading(true)
+    setLoading(true);
     const userInfo = await firebase
       .auth()
-      .signInWithEmailAndPassword(email, password).then(()=>{
-        setLoading(false)
-      }).catch(err=>{
-        setLoading(false)
-      setErrorMessage(err.message)
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        setErrorMessage(err.message);
       });
 
     // dispatch(loginUser(userData, props.history))
@@ -260,13 +260,13 @@ const RegistrationAndLogin = ({ classes }) => {
 
   const handleSubmitRegister = async (event) => {
     event.preventDefault();
-    
-    if (email.trim() === '') {
+
+    if (email.trim() === "") {
       setErrors({
         ...errors,
         email: true,
-      })
-      setErrorMessage("Email is required")
+      });
+      setErrorMessage("Email is required");
       return;
     }
 
@@ -296,9 +296,10 @@ const RegistrationAndLogin = ({ classes }) => {
           email: email,
         };
         history.push("/verify", emailWrapper);
-      }).catch(err=>{
-        setErrorMessage(err.message)
-})
+      })
+      .catch((err) => {
+        setErrorMessage(err.message);
+      });
   };
 
   const handleToggle = () => {
@@ -328,14 +329,13 @@ const RegistrationAndLogin = ({ classes }) => {
         PaperProps={{ classes: { root: classes.paper } }}
         TransitionComponent={Transition}
       >
-         <CustomIconButton
-              name="Close"
-              position="fixed"
-              margin={document.body.clientWidth > 768 ? "40px" : "10px"}
-              left="0"
-              handleButtonClick={() => setOpen(false)}
-            ></CustomIconButton>
-       
+        <CustomIconButton
+          name="Close"
+          position="fixed"
+          margin={document.body.clientWidth > 768 ? "40px" : "10px"}
+          left="0"
+          handleButtonClick={() => setOpen(false)}
+        ></CustomIconButton>
 
         <Swipe onSwipeMove={onSwipeMove.bind(this)}>
           <img
@@ -359,7 +359,6 @@ const RegistrationAndLogin = ({ classes }) => {
           ) : (
             <RegistrationFormComponent
               classes={classes}
-
               loading={loading}
               errors={errors}
               errorMessage={errorMessage}
@@ -385,13 +384,4 @@ const RegistrationAndLogin = ({ classes }) => {
   );
 };
 
-RegistrationAndLogin.propTypes = {
-  classes: PropTypes.object.isRequired,
-  loginUser: PropTypes.func.isRequired,
-  signupUser: PropTypes.func.isRequired,
-
-  user: PropTypes.object.isRequired,
-  UI: PropTypes.object.isRequired,
-};
-
-export default (withStyles(styles)(RegistrationAndLogin));
+export default withStyles(styles)(LoginRegistration);

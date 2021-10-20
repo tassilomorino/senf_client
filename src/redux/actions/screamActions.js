@@ -20,6 +20,7 @@ import {
   CLOSE_SCREAM,
   SET_SCREAM_USER,
 } from "../types";
+import setColorByTopic from "../../data/setColorByTopic";
 
 // Get all ideas
 export const getScreams = () => async (dispatch) => {
@@ -44,6 +45,7 @@ export const getScreams = () => async (dispatch) => {
       Stadtteil: doc.data().Stadtteil,
       project: doc.data().project,
       projectId: doc.data().project,
+      color: setColorByTopic(doc.data().Thema),
     };
 
     screams.push(docData);
@@ -55,55 +57,13 @@ export const getScreams = () => async (dispatch) => {
   });
 };
 
-export const getMyScreams = (userHandle) => async (dispatch) => {
-  if (userHandle !== undefined) {
-    const db = firebase.firestore();
-    const ref = await db
-      .collection("screams")
-      .where("userHandle", "==", userHandle)
-      .orderBy("createdAt", "desc")
-      .get();
-
-    const screams = [];
-    ref.docs.forEach((doc) => {
-      const docData = {
-        screamId: doc.id,
-        lat: doc.data().lat,
-        long: doc.data().long,
-        title: doc.data().title,
-        body: doc.data().body.substr(0, 170),
-        createdAt: doc.data().createdAt,
-        commentCount: doc.data().commentCount,
-        likeCount: doc.data().likeCount,
-        status: doc.data().status,
-        Thema: doc.data().Thema,
-        Stadtteil: doc.data().Stadtteil,
-        project: doc.data().project,
-        projectId: doc.data().project,
-      };
-
-      screams.push(docData);
-    });
-
-    dispatch({
-      type: SET_MY_SCREAMS,
-      payload: screams,
-    });
-  }
-};
-
-export const resetMyScreams = () => async (dispatch) => {
-  dispatch({
-    type: SET_MY_SCREAMS,
-    payload: null,
-  });
-};
-
 // Open an idea
 export const openScreamFunc = (screamId) => async (dispatch) => {
   // When the modal is shown, we want a fixed body
   // document.body.style.position = "fixed";
   // document.body.style.top = `-${window.scrollY}px`;
+  dispatch({ type: LOADING_UI });
+  dispatch({ type: OPEN_SCREAM });
 
   const db = firebase.firestore();
   const ref = await db.collection("screams").doc(screamId).get();
@@ -118,6 +78,7 @@ export const openScreamFunc = (screamId) => async (dispatch) => {
   } else {
     const scream = ref.data();
     scream.screamId = ref.id;
+    scream.color = setColorByTopic(ref.data().Thema);
     scream.comments = [];
 
     commentsRef.forEach((doc) =>
@@ -126,8 +87,6 @@ export const openScreamFunc = (screamId) => async (dispatch) => {
 
     // window.location = "#" + scream.lat + "#" + scream.long;
 
-    dispatch({ type: LOADING_UI });
-    dispatch({ type: OPEN_SCREAM });
     const newPath = `/${screamId}`;
     window.history.pushState(null, null, newPath);
     dispatch({ type: SET_SCREAM, payload: scream });

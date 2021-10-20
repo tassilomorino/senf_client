@@ -76,7 +76,7 @@ export function TopicFilter({
   swipePosition,
   setSwipePositionDown,
 }) {
-  const { openScream } = useSelector((state) => state.UI);
+  const openScream = useSelector((state) => state.UI.openScream);
 
   const { t } = useTranslation();
   // Handler at index 0 is for the "all" checkbox

@@ -1,12 +1,14 @@
 /** @format */
 
 import React, { Component } from "react";
+import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 // MUI Stuff
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 // Redux stuff
+import { compose } from "redux";
 import { connect } from "react-redux";
 import { submitComment } from "../../../redux/actions/commentActions";
 import LikeButton from "../CustomButtons/LikeButton";
@@ -63,7 +65,6 @@ class CommentForm extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
   handleSubmit = (event) => {
-    console.log(this.props);
     event.preventDefault();
     this.props.submitComment(
       this.props.screamId,
@@ -93,7 +94,7 @@ class CommentForm extends Component {
           <TextField
             name="body"
             type="text"
-            label="Was ist deine Meinung?"
+            label={this.props.t('opinion')}
             id="outlined-name"
             margin="dense"
             variant="outlined"
@@ -125,20 +126,15 @@ class CommentForm extends Component {
   }
 }
 
-CommentForm.propTypes = {
-  submitComment: PropTypes.func.isRequired,
-  UI: PropTypes.object.isRequired,
-  classes: PropTypes.object.isRequired,
-  screamId: PropTypes.string.isRequired,
-  authenticated: PropTypes.bool.isRequired,
-};
-
 const mapStateToProps = (state) => ({
   UI: state.UI,
   authenticated: state.user.authenticated,
   user: state.user,
 });
 
-export default connect(mapStateToProps, { submitComment })(
-  withStyles(styles)(CommentForm)
-);
+
+export default compose(
+  withStyles(styles),
+  withTranslation(),
+  connect(mapStateToProps, { submitComment }))
+  (CommentForm)
