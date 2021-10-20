@@ -50,6 +50,9 @@ export const CLOSE_SCREAM = "CLOSE_SCREAM";
 export const OPEN_PROJECT = "OPEN_PROJECT";
 export const CLOSE_PROJECT = "CLOSE_PROJECT";
 
+export const OPEN_ACCOUNT = "OPEN_ACCOUNT";
+export const CLOSE_ACCOUNT = "CLOSE_ACCOUNT";
+
 export const CLEAR_LOADING_ERRORS = "CLEAR_LOADING_ERRORS";
 
 export const SET_SCREAM_USER = "SET_SCREAM_USER";

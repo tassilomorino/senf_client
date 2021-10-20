@@ -57,50 +57,6 @@ export const getScreams = () => async (dispatch) => {
   });
 };
 
-export const getMyScreams = (userId) => async (dispatch) => {
-  if (userId !== undefined) {
-    const db = firebase.firestore();
-    const ref = await db
-      .collection("screams")
-      .where("userId", "==", userId)
-      .orderBy("createdAt", "desc")
-      .get();
-
-    const screams = [];
-    ref.docs.forEach((doc) => {
-      const docData = {
-        screamId: doc.id,
-        lat: doc.data().lat,
-        long: doc.data().long,
-        title: doc.data().title,
-        body: doc.data().body.substr(0, 170),
-        createdAt: doc.data().createdAt,
-        commentCount: doc.data().commentCount,
-        likeCount: doc.data().likeCount,
-        status: doc.data().status,
-        Thema: doc.data().Thema,
-        Stadtteil: doc.data().Stadtteil,
-        project: doc.data().project,
-        projectId: doc.data().project,
-      };
-
-      screams.push(docData);
-    });
-
-    dispatch({
-      type: SET_MY_SCREAMS,
-      payload: screams,
-    });
-  }
-};
-
-export const resetMyScreams = () => async (dispatch) => {
-  dispatch({
-    type: SET_MY_SCREAMS,
-    payload: null,
-  });
-};
-
 // Open an idea
 export const openScreamFunc = (screamId) => async (dispatch) => {
   // When the modal is shown, we want a fixed body
@@ -120,6 +76,7 @@ export const openScreamFunc = (screamId) => async (dispatch) => {
   } else {
     const scream = ref.data();
     scream.screamId = ref.id;
+    scream.color = setColorByTopic(ref.data().Thema);
     scream.comments = [];
 
     commentsRef.forEach((doc) =>

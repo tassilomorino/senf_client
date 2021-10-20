@@ -26,6 +26,10 @@ import ProjectHeader from "../../molecules/Headers/ProjectHeader";
 import ProjectInfo from "../../molecules/Cards/ProjectInfo";
 import styled from "styled-components";
 import MainAnimations from "../../atoms/Animations/MainAnimations";
+import {
+  BackgroundDesktop,
+  BackgroundMobile,
+} from "../../atoms/Backgrounds/GradientBackgrounds";
 
 const Break = styled.div`
   position: relative;
@@ -35,42 +39,6 @@ const Break = styled.div`
   @media (min-width: 768px) {
     height: 30px;
   }
-`;
-
-const BackgroundMobile = styled.div`
-  position: absolute;
-  margin-top: -10px;
-  height: 110%;
-  width: 100vw;
-  border-radius: 20px 20px 0 0;
-  background: rgb(254, 217, 87);
-  background: linear-gradient(
-    180deg,
-    rgba(254, 217, 87, 1) 0%,
-    rgba(254, 217, 87, 1) 6%,
-    rgba(255, 218, 83, 1) 41%,
-    rgba(255, 255, 255, 1) 70%
-  );
-  z-index: 0;
-  box-shadow: 0 8px 20px 12px rgba(0, 0, 0, 0.1);
-`;
-
-const BackgroundDesktop = styled.div`
-  position: fixed;
-  margin-top: 0px;
-  top: 0;
-  height: 100%;
-  width: 400px;
-  border-radius: 0px 0px 0 0;
-  background: rgb(254, 217, 87);
-  background: linear-gradient(
-    180deg,
-    rgba(254, 217, 87, 1) 0%,
-    rgba(254, 217, 87, 1) 6%,
-    rgba(255, 218, 83, 1) 41%,
-    rgba(255, 255, 255, 1) 100%
-  );
-  z-index: 0;
 `;
 
 const styles = {
@@ -240,8 +208,7 @@ class ProjectDialog extends Component {
 
     return (
       this.props.openProject && (
-        <div className="projectDialog">
-          {isMobileCustom ? <BackgroundMobile /> : <BackgroundDesktop />}
+        <React.Fragment>
           <ProjectHeader
             imgUrl={imgUrl}
             title={title}
@@ -254,70 +221,72 @@ class ProjectDialog extends Component {
             handleClick={this.handleClick}
           />
 
-          {this.state.order === 1 && (
-            <MainAnimations
-              transition="0.5s"
-              display="block"
-              paddingBottom="2em"
-              height="100%"
-            >
-              <IdeaList
-                type="projectIdeas"
-                loading={loading}
-                order={this.state.order}
-                classes={classes}
-                dataFinal={dataFinal}
-                geoData={geoData}
-                viewport={viewport}
-                handleDropdown={this.handleDropdown}
-                projectsData={projectsData}
-                loadingProjects={loadingProjects}
-                project={this.props.project}
-                dropdown={this.state.dropdown}
-                handleTopicSelector={handleTopicSelector}
-                topicsSelected={topicsSelected}
-                dataFinalMap={dataFinalMap}
-              ></IdeaList>
-            </MainAnimations>
-          )}
-          {this.state.order === 2 && (
-            <React.Fragment>
-              <Break />
+          <div className="projectDialog">
+            {isMobileCustom ? <BackgroundMobile /> : <BackgroundDesktop />}
 
+            {this.state.order === 1 && (
               <MainAnimations
                 transition="0.5s"
                 display="block"
                 paddingBottom="2em"
-                height="100%"
               >
-                <ProjectInfo
-                  description={description}
-                  weblink={weblink}
-                  contact={contact}
-                  startDate={startDate}
-                  endDate={endDate}
-                  owner={owner}
-                />
-                <br />
+                <IdeaList
+                  type="projectIdeas"
+                  loading={loading}
+                  order={this.state.order}
+                  dataFinal={dataFinal}
+                  geoData={geoData}
+                  viewport={viewport}
+                  handleDropdown={this.handleDropdown}
+                  projectsData={projectsData}
+                  loadingProjects={loadingProjects}
+                  project={this.props.project}
+                  dropdown={this.state.dropdown}
+                  handleTopicSelector={handleTopicSelector}
+                  topicsSelected={topicsSelected}
+                  dataFinalMap={dataFinalMap}
+                ></IdeaList>
               </MainAnimations>
-            </React.Fragment>
-          )}
-          {this.state.order === 3 && (
-            <React.Fragment>
-              <Break />
-              <MainAnimations
-                transition="0.5s"
-                display="block"
-                paddingBottom="2em"
-                height="100%"
-              >
-                <CalendarComponent
-                  projectScreams={this.props.project.screams}
-                ></CalendarComponent>
-              </MainAnimations>
-            </React.Fragment>
-          )}
-        </div>
+            )}
+            {this.state.order === 2 && (
+              <React.Fragment>
+                <Break />
+
+                <MainAnimations
+                  transition="0.5s"
+                  display="block"
+                  paddingBottom="2em"
+                  height="100%"
+                >
+                  <ProjectInfo
+                    description={description}
+                    weblink={weblink}
+                    contact={contact}
+                    startDate={startDate}
+                    endDate={endDate}
+                    owner={owner}
+                  />
+                  <br />
+                </MainAnimations>
+              </React.Fragment>
+            )}
+            {this.state.order === 3 && (
+              <React.Fragment>
+                <Break />
+                <MainAnimations
+                  transition="0.5s"
+                  display="block"
+                  paddingBottom="2em"
+                  height="100%"
+                >
+                  <CalendarComponent
+                    projectScreams={this.props.project.screams}
+                  ></CalendarComponent>
+                </MainAnimations>
+              </React.Fragment>
+            )}
+          </div>
+        </React.Fragment>
       )
     );
   }
