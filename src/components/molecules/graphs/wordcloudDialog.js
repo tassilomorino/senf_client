@@ -7,7 +7,6 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 import CloseIcon from "@material-ui/icons/Close";
 
 //Component
-import MyButton from "../../../util/MyButton";
 import { Wordcloud } from "./wordcloud";
 
 // MUI Stuff
@@ -15,6 +14,8 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import Slide from "@material-ui/core/Slide";
+import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
+import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -177,9 +178,9 @@ class StadtteilDialog extends Component {
         className="dialogOverlayContent"
         maxWidth={"lg"}
       >
-        <MyButton onClick={this.handleClose} btnClassName={classes.closeButton}>
+        <MyButtonStyle onClick={this.handleClose} btnClassName={classes.closeButton}>
           <CloseIcon />
-        </MyButton>
+        </MyButtonStyle>
 
         <DialogContent>
           <Wordcloud data={this.props.data} classes={this.props.classes} />
@@ -197,9 +198,9 @@ class StadtteilDialog extends Component {
         className="dialogOverlayContent"
         maxWidth={"lg"}
       >
-        <MyButton onClick={this.handleClose} btnClassName={classes.closeButton}>
+        <MyButtonStyle onClick={this.handleClose} btnClassName={classes.closeButton}>
           <CloseIcon />
-        </MyButton>
+        </MyButtonStyle>
 
         <DialogContent>
           <Wordcloud data={this.props.data} classes={this.props.classes} />
@@ -209,10 +210,9 @@ class StadtteilDialog extends Component {
 
     return (
       <Fragment>
-        <MyButton
-          onClick={this.handleOpen}
-          btnClassName={classes.expandButton}
-        ></MyButton>
+        <ExpandButton
+          handleButtonClick={this.handleOpen}
+        ></ExpandButton>
 
         {dialogComponent}
       </Fragment>

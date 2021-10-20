@@ -5,7 +5,6 @@ import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setMapViewport } from "../../../redux/actions/mapActions";
 import withStyles from "@material-ui/core/styles/withStyles";
-import MyButton from "../../../util/MyButton";
 import LikeButton from "../../atoms/CustomButtons/LikeButton";
 import Comments from "../../molecules/Cards/Comments";
 import CommentForm from "../../atoms/Comments/CommentForm";
@@ -50,6 +49,7 @@ import {
 import styled, { createGlobalStyle } from "styled-components";
 
 import ScreamDialogSwipe from "../../../hooks/ScreamDialogSwipe";
+import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
 
 const portalRoot = document.getElementById("portal-root");
 
@@ -522,14 +522,14 @@ const ScreamDialog = ({ classes, projectsData }) => {
                 <div className={classes.commentButtonWrapper}>
                   <div className={classes.commentButton}>
                     {!authenticated ? (
-                      <MyButton>
+                      <MyButtonStyle>
                         <RegistrationAndLogin />
                         <img src={ChatBorder} width="100%" alt="ChatIcon" />
-                      </MyButton>
+                      </MyButtonStyle>
                     ) : (
-                      <MyButton onClick={() => handleClick()}>
+                      <MyButtonStyle onClick={() => handleClick()}>
                         <img src={ChatBorder} width="90%" alt="ChatIcon" />
-                      </MyButton>
+                      </MyButtonStyle>
                     )}
                   </div>
                   <div className={classes.engagement}>{commentCount}</div>

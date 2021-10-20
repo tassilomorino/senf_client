@@ -2,7 +2,6 @@
 
 import React, { Fragment, useState } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
-import MyButton from "../../../util/MyButton";
 
 import { useTranslation } from "react-i18next";
 
@@ -35,6 +34,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Logo from "../../../images/logo.png";
 import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
+import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
 
 const styles = {
   root: {
@@ -104,14 +104,14 @@ const InlineInformationPage = ({ classes }) => {
         PaperProps={{ classes: { root: classes.paper } }}
         fullScreen
       >
-        <MyButton
+        <MyButtonStyle
           onClick={() => setOpen(false)}
           btnClassName={classes.closeButton}
-        >
+        > 
           <CloseIcon />
-        </MyButton>
+        </MyButtonStyle>
         <div className="logo1">
-          <img src={Logo} width="100px"></img>
+          <img src={Logo} width="100px" alt="logo1"></img>
         </div>
 
         <div className={classes.nav} />

@@ -2,7 +2,6 @@
 
 import React, { useState, Fragment } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
-import MyButton from "../../../util/MyButton";
 // MUI Stuff
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -15,6 +14,8 @@ import Slide from "@material-ui/core/Slide";
 import { Stadtteil } from "./stadtteil";
 
 import { isMobileCustom } from "../../../util/customDeviceDetect";
+import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
+import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -137,12 +138,12 @@ const StadtteilDialog = ({ classes, screams }) => {
       TransitionComponent={Transition}
       fullScreen
     >
-      <MyButton
+      <MyButtonStyle
         onClick={() => setOpen(false)}
         btnClassName={classes.closeButton}
       >
         <CloseIcon />
-      </MyButton>
+      </MyButtonStyle>
 
       <DialogContent>
         <Stadtteil classes={classes} screams={screams} />
@@ -160,12 +161,12 @@ const StadtteilDialog = ({ classes, screams }) => {
       TransitionComponent={Transition}
       fullScreen
     >
-      <MyButton
+      <MyButtonStyle
         onClick={() => setOpen(false)}
         btnClassName={classes.closeButton}
       >
         <CloseIcon />
-      </MyButton>
+      </MyButtonStyle>
 
       <DialogContent>
         <Stadtteil classes={classes} screams={screams} />
@@ -175,10 +176,9 @@ const StadtteilDialog = ({ classes, screams }) => {
 
   return (
     <Fragment>
-      <MyButton
-        onClick={() => setOpen(true)}
-        btnClassName={classes.expandButton}
-      ></MyButton>
+      <ExpandButton
+        handleButtonClick={() => setOpen(true)}
+      ></ExpandButton>
 
       {dialogComponent}
     </Fragment>
