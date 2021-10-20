@@ -14,7 +14,6 @@ import "firebase/firestore";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import themeFile from "./util/theme";
-import jwtDecode from "jwt-decode";
 //Redux
 import { Provider } from "react-redux";
 import store from "./redux/store";
@@ -24,7 +23,7 @@ import { setCookies } from "./redux/actions/cookiesActions";
 import { setInfoPageOpen } from "./redux/actions/UiActions";
 
 //Pages
-import home from "./pages/home";
+import Main from "./components/templates/Main";
 import IntroductionInformation from "./components/organisms/infocomponents/IntroductionInformation";
 
 import Welcome from "./components/organisms/infocomponents/Welcome";
@@ -126,28 +125,16 @@ if (get_local_storage_status() === "unavailable") {
   );
 }
 
-const token = localStorage.FBIdToken;
-
-console.log(localStorage);
-
 console.log(process.env.REACT_APP_STAGE);
 
-window.store = store;
-
-// if (token) {
-//   const decodedToken = jwtDecode(token);
-//   const expirationDuration = decodedToken.exp * 1000;
-
-//   if (expirationDuration < Date.now()) {
-//     store.dispatch(logoutUser());
-//   } else {
-//     store.dispatch({ type: SET_AUTHENTICATED });
-//     axios.defaults.headers.common["Authorization"] = token;
-//     store.dispatch(getUserData());
-//   }
-// } else {
-//   store.dispatch(logoutUser());
+// if (process.env.REACT_APP_STAGE === "development") {
+//   const whyDidYouRender = require("@welldone-software/why-did-you-render");
+//   whyDidYouRender(React, {
+//     trackAllPureComponents: true,
+//   });
 // }
+
+window.store = store;
 
 if (cookies.get("Cookie_settings") === "all") {
   store.dispatch(setCookies("all"));
@@ -182,12 +169,10 @@ const App = () => {
 
   const userState = () => {
     firebase.auth().onAuthStateChanged((user) => {
-      console.log("user", user);
-      console.log("userId", user.uid);
-
       if (user && user.emailVerified) {
         store.dispatch({ type: SET_AUTHENTICATED });
-        store.dispatch(getUserData(user.email));
+        store.dispatch(getUserData(user.uid));
+        setIsAuthed(true);
       } else if (user) {
         //a new user is registrating
       } else {
@@ -215,7 +200,7 @@ const App = () => {
 
           <div className="container">
             <Switch>
-              <Route exact path="/" component={home} />
+              <Route exact path="/" component={Main} />
               <Route exact path="/start" component={IntroductionInformation} />
 
               <Route exact path="/intro" component={Welcome} />
@@ -236,7 +221,7 @@ const App = () => {
 
               <Route exact path="/impressum" component={impressum} />
 
-              <Route exact path="/:screamId" component={home} />
+              <Route exact path="/:screamId" component={Main} />
             </Switch>
           </div>
         </Router>

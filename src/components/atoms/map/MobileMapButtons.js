@@ -1,39 +1,38 @@
 /** @format */
 
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+// import { useSelector, useDispatch } from "react-redux";
 
-import {
-  setMapViewport,
-  setResetMapBounds,
-} from "../../../redux/actions/mapActions";
-import { closeScream } from "../../../redux/actions/screamActions";
+// import {
+//   setMapViewport,
+//   setResetMapBounds,
+// } from "../../../redux/actions/mapActions";
+// import { closeScream } from "../../../redux/actions/screamActions";
 
 const MobileMapButtons = ({ handleShowResults, number }) => {
-  const { mapBounds } = useSelector((state) => state.data);
+  // const mapBounds = useSelector((state) => state.data.mapBounds);
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const handleMapBoundsReset = () => {
-    const viewport = {
-      zoom: 11.5,
-      pitch: 30,
-      latitude: 50.95,
-      longitude: 6.9503,
-    };
+  // const handleMapBoundsReset = () => {
+  //   const viewport = {
+  //     zoom: 11.5,
+  //     pitch: 30,
+  //     latitude: 50.95,
+  //     longitude: 6.9503,
+  //   };
 
-    dispatch(setMapViewport(viewport));
+  //   dispatch(setMapViewport(viewport));
 
-    const bounds = {
-      latitude1: 51.08,
-      latitude2: 50.79,
-      longitude2: 6.712,
-      longitude3: 7.17,
-    };
-
-    dispatch(setResetMapBounds(bounds));
-    dispatch(closeScream());
-  };
+  //   const bounds = {
+  //     latitude1: 51.08,
+  //     latitude2: 50.79,
+  //     longitude2: 6.712,
+  //     longitude3: 7.17,
+  //   }
+  //   dispatch(setResetMapBounds(bounds));
+  //   dispatch(closeScream());
+  // };
   return (
     <React.Fragment>
       {/* <CustomButton

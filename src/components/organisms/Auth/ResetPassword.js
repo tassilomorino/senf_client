@@ -13,8 +13,6 @@ import { withRouter } from "react-router-dom";
 //Images
 import pw_reset from "../../../images/headlines/pw_reset.png";
 
-//Icons
-import CloseIcon from "@material-ui/icons/Close";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 // MUI Stuff
@@ -226,7 +224,7 @@ class ResetPassword extends Component {
     const email = {
       email: this.state.email,
     };
-    console.log(email);
+
     this.props.resetPassword(email, this.props.history);
 
     setTimeout(() => {

@@ -10,7 +10,6 @@ import PropTypes from "prop-types";
 import Swipe from "react-easy-swipe";
 
 //Redux
-import { loginUser, signupUser } from "../../../redux/actions/userActions";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
@@ -221,9 +220,6 @@ const LoginPure = ({ classes }) => {
     const userInfo = await firebase
       .auth()
       .signInWithEmailAndPassword(email, password);
-    console.log(userInfo);
-
-    // dispatch(loginUser(userData, props.history))
   };
 
   const handleSubmitRegister = async (event) => {
@@ -314,22 +310,11 @@ const LoginPure = ({ classes }) => {
   );
 };
 
-LoginPure.propTypes = {
-  classes: PropTypes.object.isRequired,
-  loginUser: PropTypes.func.isRequired,
-  signupUser: PropTypes.func.isRequired,
-
-  user: PropTypes.object.isRequired,
-  UI: PropTypes.object.isRequired,
-};
 const mapStateToProps = (state) => ({
   user: state.user,
   UI: state.UI,
 });
-const mapActionsToProps = {
-  loginUser,
-  signupUser,
-};
+const mapActionsToProps = {};
 export default connect(
   mapStateToProps,
   mapActionsToProps

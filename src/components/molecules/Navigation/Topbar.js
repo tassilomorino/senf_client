@@ -115,8 +115,5 @@ const Topbar = ({
     )
   );
 };
-Topbar.propTypes = {
-  user: PropTypes.object.isRequired,
-};
 
 export default Topbar;
