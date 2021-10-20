@@ -5,7 +5,7 @@ import lightbulbImg from "../../../images/lamp.png";
 import SortingSelect from "../Selects/SortingSelect";
 import styled, { keyframes } from "styled-components";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from "react-i18next";
 
 const enterAnimation = keyframes`
        0% {
@@ -45,35 +45,30 @@ const Bar = styled.div`
   top: 10px;
 `;
 const IdeaHeader = styled.div`
-margin-top: -20px;
-font-size: 24pt;
+  z-index: 2;
+  margin-top: -20px;
+  font-size: 24pt;
 
-
-@media screen and (max-width: 330px) {
+  @media screen and (max-width: 330px) {
     margin-top: -20px;
     font-size: 21pt;
     margin-left: -5px;
-}
-
+  }
 `;
 const Lightbulb = styled.img`
-width:50px;
-transform: translateY(10px) rotate(30deg);
+  width: 50px;
+  transform: translateY(10px) rotate(30deg);
 `;
 
-
-
 const ListHeader = ({ loading, dataFinal, handleDropdown, marginTop }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return (
     !loading && (
       <Wrapper marginTop={marginTop}>
         {isMobileCustom && <Bar />}
         <IdeaHeader>
-          <Lightbulb src={lightbulbImg} alt={'lightbulb'} />
-          {dataFinal?.length}
-          {" "}
-          {dataFinal?.length === 1 ? t('idea'): t('ideas')}
+          <Lightbulb src={lightbulbImg} alt={"lightbulb"} />
+          {dataFinal?.length} {dataFinal?.length === 1 ? t("idea") : t("ideas")}
         </IdeaHeader>
         <SortingSelect handleDropdown={handleDropdown} />{" "}
       </Wrapper>

@@ -21,6 +21,7 @@ import {
   BackgroundDesktop,
   BackgroundMobile,
 } from "../../atoms/Backgrounds/GradientBackgrounds";
+import Loader from "../../atoms/Animations/Loader";
 
 const Break = styled.div`
   position: relative;
@@ -243,12 +244,7 @@ const styles = {
   },
 };
 
-const Account = ({
-  classes,
-  handleTopicSelector,
-  topicsSelected,
-  dataFinalMap,
-}) => {
+const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
   const loadingMyScreams = useSelector((state) => state.data.loadingMyScreams);
   const mapViewport = useSelector((state) => state.data.mapViewport);
   const mapBounds = useSelector((state) => state.data.mapBounds);
@@ -297,7 +293,7 @@ const Account = ({
 
         {order === 1 && (
           <MainAnimations transition="0.5s" display="block" paddingBottom="2em">
-            {!loadingMyScreams && (
+            {!loadingMyScreams ? (
               <IdeaList
                 type="myIdeas"
                 loading={loadingMyScreams}
@@ -311,6 +307,8 @@ const Account = ({
                 topicsSelected={topicsSelected}
                 dataFinalMap={dataFinalMap}
               ></IdeaList>
+            ) : (
+              <Loader />
             )}
           </MainAnimations>
         )}

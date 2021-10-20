@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router";
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 import Cookies from "universal-cookie";
 
@@ -21,9 +21,6 @@ import {
 
 import { setMapViewport } from "../../redux/actions/mapActions";
 
-//ICONS
-import lamploader from "../../images/lamp.png";
-
 //Components
 import InsightsPage from "../organisms/Insights/InsightsPage";
 import DesktopSidebar from "../molecules/Navigation/DesktopSidebar";
@@ -35,14 +32,12 @@ import ScreamDialog from "../organisms/IdeaDialog/ScreamDialog";
 import ProjectDialog from "../organisms/Projects/ProjectDialog";
 import ThanksForTheVote from "../atoms/Backgrounds/ThanksForTheVote";
 import Account from "../organisms/Account/Account";
+import Loader from "../atoms/Animations/Loader";
 
 const cookies = new Cookies();
 
 const Main = () => {
-
-  
-
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { screamId } = useParams();
 
@@ -221,9 +216,7 @@ const Main = () => {
         <div className="errorBackground">
                <div className="homeHeader"> Ooops! </div>
           <br />
-          <span className="oopsText">
-          {t("something_went_wrong")}
-          </span>
+          <span className="oopsText">{t("something_went_wrong")}</span>
         </div>
       )}
 
@@ -260,11 +253,7 @@ const Main = () => {
 
       {!openInfoPage && (
         <div className="contentWrapper">
-          {loading && (
-            <div className="spinnerDivBackground">
-              <img src={lamploader} className="lamploader" alt="loader" />
-            </div>
-          )}
+          {loading && <Loader />}
           <div className="MainBackgroundHome" />
 
           <IdeaList
