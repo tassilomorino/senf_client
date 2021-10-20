@@ -1,7 +1,6 @@
 /** @format */
 
 import React from "react";
-import { Link } from "react-router-dom";
 import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 import styled from "styled-components";
 
@@ -51,9 +50,7 @@ const Agb = () => {
       />
 
       <Wrapper>
-        <Link to="/">
-          <Logo2>Senf</Logo2>
-        </Link>
+        <Logo2 onClick={() => linkToHome()}>Senf</Logo2>
         <br />
         <br /> <br />
         <h1>Allgemeine Geschäftsbedingungen</h1>
