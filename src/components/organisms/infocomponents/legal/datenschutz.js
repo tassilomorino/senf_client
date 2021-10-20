@@ -1,15 +1,12 @@
 /** @format */
 
-import React, { Component } from "react";
+import React from "react";
 
 import withStyles from "@material-ui/core/styles/withStyles";
 
 import { Link } from "react-router-dom";
 
-import { connect } from "react-redux";
-import MyButton from "../../../../util/MyButton";
-
-import CloseIcon from "@material-ui/icons/Close";
+import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 
 const styles = {
   wrapper: {
@@ -18,31 +15,26 @@ const styles = {
     width: "90vw",
     height: "100%",
     marginLeft: "5vw",
-  },
-  closeButton: {
-    zIndex: 999999,
-    position: "fixed",
-    left: "15px",
-
-    marginTop: "18px",
-    backgroundColor: "white",
-    color: "#ffd388",
-  },
+  }
 };
 
-export class start extends Component {
-  render() {
-    const { classes } = this.props;
+const Datenschutz = ({classes })=> {
+
+  const linkToHome = () => {
+    window.location.href = "/";
+  }
 
     return (
       <div>
         {/* <div className="MainBackground"></div> */}
 
-        <Link to="/">
-          <MyButton btnClassName={classes.closeButton}>
-            <CloseIcon />
-          </MyButton>
-        </Link>
+        <CustomIconButton
+        name="Close"
+        position="fixed"
+        margin={document.body.clientWidth > 768 ? "40px" : "10px"}
+        left="0"
+        handleButtonClick={() => linkToHome()}
+      />
 
         <div className={classes.wrapper}>
           <Link to="/">
@@ -842,10 +834,6 @@ export class start extends Component {
       </div>
     );
   }
-}
 
-const mapStateToProps = (state) => ({
-  data: state.data,
-});
 
-export default connect(mapStateToProps)(withStyles(styles)(start));
+export default Datenschutz (withStyles(styles));
