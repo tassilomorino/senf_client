@@ -11,7 +11,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 
 // COMPONENTS
 import LikeButton from "../../atoms/CustomButtons/LikeButton";
-import RegistrationAndLogin from "../../atoms/Auth/RegistrationAndLogin";
+import RegistrationAndLogin from "../../atoms/Auth/LoginRegistration";
 
 // Icons
 import ChatBorder from "../../../images/icons/chat.png";

@@ -36,7 +36,7 @@ import { openProjectFunc } from "../../../redux/actions/projectActions";
 import { clearErrors } from "../../../redux/actions/errorsActions";
 
 //COMPONENTS
-import RegistrationAndLogin from "../../atoms/Auth/RegistrationAndLogin";
+import RegistrationAndLogin from "../../atoms/Auth/LoginRegistration";
 
 import ShareModal from "../../molecules/Modals/ShareModal";
 import MenuModal from "../../molecules/Modals/MenuModal";

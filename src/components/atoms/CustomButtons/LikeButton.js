@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 //Components
 import MyButton from "../../../util/MyButton";
 import ThanksForTheVote from "../Backgrounds/ThanksForTheVote";
-import RegistrationAndLogin from "../Auth/RegistrationAndLogin";
+import RegistrationAndLogin from "../Auth/LoginRegistration";
 
 //Images
 import HandBorder from "../../../images/icons/handsnoclap.png";
