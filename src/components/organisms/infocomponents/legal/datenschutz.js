@@ -1,22 +1,16 @@
 /** @format */
 
 import React from "react";
-
-import withStyles from "@material-ui/core/styles/withStyles";
-
-import { Link } from "react-router-dom";
-
 import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
+import styled from "styled-components";
 
-const styles = {
-  wrapper: {
-    position: "relative",
-    zIndex: 0,
-    width: "90vw",
-    height: "100%",
-    marginLeft: "5vw",
-  }
-};
+const Wrapper = styled.div`
+  position: relative;
+  z-index: 0;
+  width: 90vw;
+  height: 100%;
+  margin-left: 5vw;
+`
 
 const Datenschutz = ({classes })=> {
 
@@ -36,10 +30,8 @@ const Datenschutz = ({classes })=> {
         handleButtonClick={() => linkToHome()}
       />
 
-        <div className={classes.wrapper}>
-          <Link to="/">
-            <h1 className="logo2">Senf</h1>
-          </Link>
+        <Wrapper>
+            <h1 onClick={() => linkToHome()} className="logo2">Senf</h1>
           <br />
           <br /> <br />
           <h1>Datenschutz</h1>
@@ -830,10 +822,10 @@ const Datenschutz = ({classes })=> {
             erforderlich wird, informieren wir Sie natürlich unverzüglich.
           </p>
           <p>(Stand dieser Hinweise: Dezember 2019)</p>
-        </div>
+        </Wrapper>
       </div>
     );
   }
 
 
-export default Datenschutz (withStyles(styles));
+export default Datenschutz;
