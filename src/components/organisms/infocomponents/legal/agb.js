@@ -1,28 +1,38 @@
 /** @format */
 
 import React from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
 import { Link } from "react-router-dom";
 import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
+import styled from "styled-components";
 
-const styles = {
-  wrapper: {
-    position: "relative",
-    width: "90vw",
-    marginLeft: "5vw",
-  },
-  closeButton: {
-    zIndex: 9999,
-    position: "fixed",
-    left: "15px",
+const Wrapper = styled.div`
+  width: 90vw;
+  position: relative;
+  margin-left: 5vw;
+`
 
-    marginTop: "18px",
-    backgroundColor: "white",
-    color: "#ffd388",
-  },
-};
+const Logo2 = styled.h1`
+  position: absolute;
+  top: 0em;
+  left: 0vw;
+  width: 100%;
+  z-index: 99;
+  color: white;
+  // padding-bottom: 10;
+  // font-size: 40;
+  text-align: left;
+  line-height: 35px;
+  font-weight: 100;
+  font-family: Playfair Display;
+  clear: both;
+`
+const Terms = styled.a`
+  text-decoration: none;
+  color: #414345;
+  cursor: pointer;
+`
 
-const Agb = ({classes}) => {
+const Agb = () => {
 
   const linkToHome = () => {
     window.location.href = "/";
@@ -37,12 +47,12 @@ const Agb = ({classes}) => {
         position="fixed"
         margin={document.body.clientWidth > 768 ? "40px" : "10px"}
         left="0"
-        handleButtonClick={() => linkToHome()} 
+        handleButtonClick={() => linkToHome()}
       />
 
-      <div className={classes.wrapper}>
+      <Wrapper>
         <Link to="/">
-          <h1 className="logo2">Senf</h1>
+          <Logo2>Senf</Logo2>
         </Link>
         <br />
         <br /> <br />
@@ -73,16 +83,16 @@ const Agb = ({classes}) => {
         <p>
           Die vorliegenden Allgemeinen Geschäftsbedingungen („AGB“) regeln
           deinen Zugriff auf Senf.koeln.In unserer{" "}
-          <a className="terms" href="/datenschutz" target="_blank">
+          <Terms href="/datenschutz" target="_blank">
             Datenschutzrichtlinie
-          </a>{" "}
+          </Terms>{" "}
           wird erläutert, wie wir deine Daten erheben und verwenden, während
           hier deine Pflichten hinsichtlich der Nutzung von Senf dargelegt
           werden.Durch die Registrierung erklärst du dich mit diesen AGB und
           unserer{" "}
-          <a className="terms" href="/datenschutz" target="_blank">
+          <Terms href="/datenschutz" target="_blank">
             Datenschutzrichtlinie
-          </a>{" "}
+          </Terms>{" "}
           einverstanden.
         </p>{" "}
         <h3>2. Registrierung</h3>{" "}
@@ -328,9 +338,9 @@ const Agb = ({classes}) => {
           Inkrafttreten kündigen.Indem Sie die Dienste nach Inkrafttreten der
           Änderungen weiterhin nutzen, stimmen Sie den geänderten AGB zu.
         </p>{" "}
-      </div>
+      </Wrapper>
     </div>
   );
 }
 
-export default (withStyles(styles)(Agb));
+export default Agb;
