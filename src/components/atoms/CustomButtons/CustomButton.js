@@ -1,15 +1,12 @@
 /** @format */
 
 import React from "react";
-import { useTranslation } from "react-i18next";
 import styled, { css, keyframes } from "styled-components";
 import CloseIcon from "../../../images/icons/close.png";
 import ArrowLeftIcon from "../../../images/icons/arrow-left.png";
 import CircularArrowIcon from "../../../images/icons/circular-arrow.png";
 import ShareIcon from "../../../images/icons/share.png";
 import MenuIcon from "../../../images/icons/menu.png";
-
-import { CircularProgress } from "@material-ui/core";
 
 const enterAnimation = keyframes`
     0% {
@@ -47,6 +44,7 @@ const WideButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
   transform: translateX(-50%);
 
   margin-left: ${(props) => (props.marginLeft ? props.marginLeft : "50%")};
@@ -136,6 +134,7 @@ const IconButton = styled.button`
   align-items: center;
   justify-content: center;
   text-align: center;
+  cursor: pointer;
   z-index: ${(props) => props.zIndex && props.zIndex};
   position: ${(props) => props.position};
   top: ${(props) => props.top && props.top};
@@ -177,7 +176,7 @@ export const CustomIconButton = ({
       animation={animation}
       shadow={shadow}
     >
-      <img src={Icon} width="50%" />
+      <img src={Icon} width="50%" alt="icon"/>
     </IconButton>
   );
 };
