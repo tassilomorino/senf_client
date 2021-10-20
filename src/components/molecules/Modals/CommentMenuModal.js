@@ -26,7 +26,6 @@ const CommentMenuModal = ({
   screamId,
   userHandle,
 }) => {
-  console.log(commentId, userHandle);
   const { authenticated, handle, isAdmin, isModerator } = useSelector(
     (state) => state.user
   );

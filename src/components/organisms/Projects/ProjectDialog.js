@@ -21,7 +21,7 @@ import {
 //Components
 import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 
-import IdeaList from "../../templates/IdeaList";
+import IdeaList from "../IdeaList/IdeaList";
 import ProjectHeader from "../../molecules/Headers/ProjectHeader";
 import ProjectInfo from "../../molecules/Cards/ProjectInfo";
 import styled from "styled-components";

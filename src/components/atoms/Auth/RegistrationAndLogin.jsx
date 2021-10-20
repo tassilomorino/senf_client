@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useState, Fragment } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import {  useDispatch } from "react-redux";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { useHistory } from "react-router";
@@ -385,13 +385,6 @@ const RegistrationAndLogin = ({ classes }) => {
   );
 };
 
-RegistrationAndLogin.propTypes = {
-  classes: PropTypes.object.isRequired,
-  loginUser: PropTypes.func.isRequired,
-  signupUser: PropTypes.func.isRequired,
 
-  user: PropTypes.object.isRequired,
-  UI: PropTypes.object.isRequired,
-};
 
 export default (withStyles(styles)(RegistrationAndLogin));

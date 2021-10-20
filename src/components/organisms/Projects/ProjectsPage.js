@@ -5,10 +5,10 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 //Components
-import { ProjectCard, CreateProject } from "../molecules/Cards/ProjectCard";
+import { ProjectCard, CreateProject } from "../../molecules/Cards/ProjectCard";
 
 import _ from "lodash";
-import MainAnimations from "../atoms/Animations/MainAnimations";
+import MainAnimations from "../../atoms/Animations/MainAnimations";
 
 const HomeHeadermain = styled.div`
   position: relative;

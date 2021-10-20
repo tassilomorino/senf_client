@@ -3,21 +3,21 @@
 import React, { useState, useEffect } from "react";
 
 //Components
-import Keyindicators from "../molecules/graphs/Keyindicators";
-import ThemenDialog from "../molecules/graphs/themendialog";
-import StadttteilDialog from "../molecules/graphs/stadtteilDialog";
-import AltersgruppeDialog from "../molecules/graphs/altersgruppeDialog";
-import WordcloudDialog from "../molecules/graphs/wordcloudDialog";
+import Keyindicators from "../../molecules/graphs/Keyindicators";
+import ThemenDialog from "../../molecules/graphs/themendialog";
+import StadttteilDialog from "../../molecules/graphs/stadtteilDialog";
+import AltersgruppeDialog from "../../molecules/graphs/altersgruppeDialog";
+import WordcloudDialog from "../../molecules/graphs/wordcloudDialog";
 
 //Images
-import Themencover from "../../images/insightsCovers/topic-cover.jpg";
-import DistrictsCover from "../../images/insightsCovers/districts-cover.jpg";
-import KeywordsCover from "../../images/insightsCovers/keywords-cover.jpg";
-import AgegroupsCover from "../../images/insightsCovers/agegroups-cover.jpg";
+import Themencover from "../../../images/insightsCovers/topic-cover.jpg";
+import DistrictsCover from "../../../images/insightsCovers/districts-cover.jpg";
+import KeywordsCover from "../../../images/insightsCovers/keywords-cover.jpg";
+import AgegroupsCover from "../../../images/insightsCovers/agegroups-cover.jpg";
 
 import firebase from "firebase/app";
 import "firebase/firestore";
-import MainAnimations from "../atoms/Animations/MainAnimations";
+import MainAnimations from "../../atoms/Animations/MainAnimations";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 

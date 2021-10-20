@@ -65,7 +65,6 @@ class CommentForm extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
   handleSubmit = (event) => {
-    console.log(this.props);
     event.preventDefault();
     this.props.submitComment(
       this.props.screamId,
@@ -126,14 +125,6 @@ class CommentForm extends Component {
     return commentFormMarkup;
   }
 }
-
-CommentForm.propTypes = {
-  submitComment: PropTypes.func.isRequired,
-  UI: PropTypes.object.isRequired,
-  classes: PropTypes.object.isRequired,
-  screamId: PropTypes.string.isRequired,
-  authenticated: PropTypes.bool.isRequired,
-};
 
 const mapStateToProps = (state) => ({
   UI: state.UI,
