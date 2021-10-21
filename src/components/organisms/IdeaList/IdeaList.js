@@ -16,7 +16,7 @@ import styled from "styled-components";
 
 //Components
 import MapMobile from "../../atoms/map/MapMobile";
-import List from "../../atoms/List/List";
+import List from "../../molecules/List/List";
 import PostScream from "../PostIdea/PostScream";
 import TopicFilter from "../../atoms/Filters/TopicFilter";
 import Toolbar from "../../molecules/Toolbar/Toolbar";
@@ -73,12 +73,12 @@ const IdeaList = ({
   dropdown,
   handleDropdown,
   dataFinal,
+  dataFinalLength,
   dataFinalMap,
   projectsData,
   geoData,
   loadingProjects,
   project,
-  myScreams,
   handleTopicSelector,
   topicsSelected,
 }) => {
@@ -211,7 +211,7 @@ const IdeaList = ({
                 <Toolbar
                   loading={loading}
                   handleDropdown={handleDropdown}
-                  dataFinal={dataFinal}
+                  dataFinalLength={dataFinalLength}
                   marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
                   handleClickSwipe={
                     swipePosition === "bottom"
@@ -220,24 +220,24 @@ const IdeaList = ({
                   }
                 />{" "}
               </animated.div>
-            </ListHeaderWrapper>{" "}
+            </ListHeaderWrapper>
+            {/* <ShadowBox display={shadow ? "block" : "none"} /> */}
             <List
               type={type}
               loading={loading}
               dropdown={dropdown}
               dataFinal={dataFinal}
+              dataFinalLength={dataFinalLength}
               projectsData={projectsData}
-              project={project}
-              myScreams={myScreams}
-            />{" "}
-          </animated.div>{" "}
+            />
+          </animated.div>
         </React.Fragment>
       ) : (
         <Content>
           <Toolbar
             loading={loading}
             handleDropdown={handleDropdown}
-            dataFinal={dataFinal}
+            dataFinalLength={dataFinalLength}
             marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
           />{" "}
           <List
@@ -245,9 +245,8 @@ const IdeaList = ({
             loading={loading}
             dropdown={dropdown}
             dataFinal={dataFinal}
+            dataFinalLength={dataFinalLength}
             projectsData={projectsData}
-            project={project}
-            myScreams={myScreams}
           />{" "}
         </Content>
       )}{" "}

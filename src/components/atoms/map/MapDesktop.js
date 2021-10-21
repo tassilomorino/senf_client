@@ -188,40 +188,37 @@ const MapDesktop = ({
           <DesktopMapButtons viewport={viewport} />
 
           <div style={{ zIndex: 90 }}>
-            {dataFinalMap.map((element) => (
-              <Marker
-                key={element.screamId}
-                longitude={element.long}
-                latitude={element.lat}
-              >
-                <OpenIdeaButton
-                  likeCount={element.likeCount}
-                  Thema={element.Thema}
-                  color={element.color}
-                  onClick={() => fetchDataScream(element.screamId)}
-                  onMouseEnter={() => {
-                    setHoverScreamId(element.screamId);
-                    setHoverLat(element.lat);
-                    setHoverLong(element.long);
-                    setHoverTitle(element.title);
-                    setHoverLikeCount(element.likeCount);
-                  }}
-                  onMouseLeave={() =>
-                    setTimeout(() => {
-                      setHoverScreamId("");
-                      setHoverLat("");
-                      setHoverLong("");
-                      setHoverTitle("");
-                      setHoverLikeCount("");
-                    }, 10000)
-                  }
-                >
-                  <ExpandButton
-                    handleButtonClick={() => fetchDataScream(element.screamId)}
-                  />
-                </OpenIdeaButton>
-              </Marker>
-            ))}
+            {dataFinalMap.map(
+              ({ screamId, long, lat, likeCount, color, title }) => (
+                <Marker key={screamId} longitude={long} latitude={lat}>
+                  <OpenIdeaButton
+                    likeCount={likeCount}
+                    color={color}
+                    onClick={() => fetchDataScream(screamId)}
+                    onMouseEnter={() => {
+                      setHoverScreamId(screamId);
+                      setHoverLat(lat);
+                      setHoverLong(long);
+                      setHoverTitle(title);
+                      setHoverLikeCount(likeCount);
+                    }}
+                    onMouseLeave={() =>
+                      setTimeout(() => {
+                        setHoverScreamId("");
+                        setHoverLat("");
+                        setHoverLong("");
+                        setHoverTitle("");
+                        setHoverLikeCount("");
+                      }, 10000)
+                    }
+                  >
+                    <ExpandButton
+                      handleButtonClick={() => fetchDataScream(screamId)}
+                    />
+                  </OpenIdeaButton>
+                </Marker>
+              )
+            )}
 
             {openScream && scream.lat && (
               <Marker

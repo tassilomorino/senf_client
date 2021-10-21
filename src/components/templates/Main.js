@@ -32,6 +32,7 @@ import ProjectDialog from "../organisms/Projects/ProjectDialog";
 import ThanksForTheVote from "../atoms/Backgrounds/ThanksForTheVote";
 import Account from "../organisms/Account/Account";
 import Loader from "../atoms/Animations/Loader";
+import { closeAccountFunc } from "../../redux/actions/accountActions";
 
 const Main = () => {
   const { t } = useTranslation();
@@ -128,6 +129,7 @@ const Main = () => {
 
     dispatch(closeScream());
     dispatch(closeProject());
+    dispatch(closeAccountFunc());
 
     handleTopicSelector("all");
 
@@ -197,6 +199,8 @@ const Main = () => {
       status === "None"
   );
 
+  const dataFinalLength = dataFinal.length;
+
   const dataFinalMap = openProject
     ? project.screams.filter(
         ({ Thema, status }) =>
@@ -246,7 +250,7 @@ const Main = () => {
       <MapDesktop
         loading={loading}
         loadingProjects={loadingProjects}
-        dataFinal={dataFinalMap.slice(0, 55)}
+        dataFinal={dataFinalMap.slice(0, 300)}
         id="mapDesktop"
         style={{ zIndex: 9999 }}
         openProject={openProject}
@@ -262,7 +266,8 @@ const Main = () => {
             type="allIdeas"
             loading={loading}
             order={order}
-            dataFinal={dataFinal.slice(0, 55)}
+            dataFinal={dataFinal.slice(0, 15)}
+            dataFinalLength={dataFinalLength}
             dataFinalMap={dataFinalMap}
             viewport={mapViewport}
             handleDropdown={handleDropdown}

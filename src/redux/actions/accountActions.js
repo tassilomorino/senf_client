@@ -15,8 +15,8 @@ export const openAccountFunc = (userId) => async (dispatch) => {
   dispatch({
     type: OPEN_ACCOUNT,
   });
-
   dispatch({ type: LOADING_MYSCREAMS_DATA });
+
   if (userId !== undefined) {
     const db = firebase.firestore();
     const ref = await db
@@ -51,6 +51,10 @@ export const openAccountFunc = (userId) => async (dispatch) => {
       type: SET_MY_SCREAMS,
       payload: screams,
     });
+  } else {
+    setTimeout(() => {
+      openAccountFunc(userId);
+    }, 1000);
   }
 };
 

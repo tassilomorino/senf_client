@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 const NoMore = styled.div`
@@ -25,10 +26,10 @@ const NoContent = styled.div`
   z-index: 10;
 `;
 
-export const NoMoreMainContent = ({ dataFinal }) => {
+export const NoMoreMainContent = ({ dataFinalLength }) => {
   const { t } = useTranslation();
 
-  return dataFinal?.length > 0 ? (
+  return dataFinalLength > 0 ? (
     <NoMore>
       ... <br /> {t("noMoreIdeas")} <br />
     </NoMore>
@@ -37,36 +38,34 @@ export const NoMoreMainContent = ({ dataFinal }) => {
   );
 };
 
-export const NoMoreMyContent = ({ dataFinal, myScreams, loading }) => {
+export const NoMoreMyContent = ({ dataFinalLength, loading }) => {
+  const myScreams = useSelector((state) => state.data.myScreams);
+
   const { t } = useTranslation();
 
-  return !loading && dataFinal?.length > 0 ? (
+  return !loading && dataFinalLength > 0 ? (
     <NoMore>
       ... <br /> {t("noMoreIdeas")} <br />
     </NoMore>
   ) : myScreams === undefined ? (
-    <NoContent>
-      {t('noSharedIdeas')}
-    </NoContent>
+    <NoContent>{t("noSharedIdeas")}</NoContent>
   ) : (
-    <NoContent>
-       {t('noIdeasWithFilter')}
-    </NoContent>
+    <NoContent> {t("noIdeasWithFilter")}</NoContent>
   );
 };
 
-export const NoMoreProjectsContent = ({ dataFinal, loading, project }) => {
+export const NoMoreProjectsContent = ({ dataFinalLength, loading }) => {
+  const screams = useSelector((state) => state.data.project.screams);
+
   const { t } = useTranslation();
 
-  return !loading && dataFinal.length > 0 ? (
+  return !loading && dataFinalLength > 0 ? (
     <NoMore>
       ... <br /> {t("noMoreIdeas")} <br />
     </NoMore>
-  ) : !loading && dataFinal.length !== project.screams.length ? (
+  ) : !loading && dataFinalLength !== screams.length ? (
     <NoContent>{t("noContentIdeas")}</NoContent>
   ) : (
-    <NoContent>
-      {t('noProjectIdeas')}
-    </NoContent>
+    <NoContent>{t("noProjectIdeas")}</NoContent>
   );
 };

@@ -73,10 +73,10 @@ const Lightbulb = styled.img`
 
 const Toolbar = ({
   loading,
-  dataFinal,
   handleDropdown,
   marginTop,
   handleClickSwipe,
+  dataFinalLength,
 }) => {
   const { t } = useTranslation();
   return (
@@ -85,7 +85,7 @@ const Toolbar = ({
         {isMobileCustom && <Bar />}
         <IdeaHeader>
           <Lightbulb src={lightbulbImg} alt={"lightbulb"} />
-          {dataFinal?.length} {dataFinal?.length === 1 ? t("idea") : t("ideas")}
+          {dataFinalLength} {dataFinalLength === 1 ? t("idea") : t("ideas")}
         </IdeaHeader>
         <SortingSelect handleDropdown={handleDropdown} />{" "}
         {isMobileCustom && <Background onClick={handleClickSwipe} />}
