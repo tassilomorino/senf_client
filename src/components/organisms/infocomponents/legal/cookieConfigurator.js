@@ -1,9 +1,6 @@
 /** @format */
 
-import React, { Component } from "react";
-
-import withStyles from "@material-ui/core/styles/withStyles";
-import { connect } from "react-redux";
+import React, { useState, useEffect } from "react";
 
 import Switch from "@material-ui/core/Switch";
 
@@ -12,15 +9,10 @@ import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 import styled from "styled-components";
 import LogoWhite from "../../../../images/logo_white.png";
 
+// search for Switch "code sandbox" without material ui => add it to Atoms and call it Switch
+// "shared styles" component in legal folder
 
 const cookies = new Cookies();
-
-const styles = {
-  Switch: {
-    float: "right",
-  },
-};
-
 
 const ListItem = styled.p`
   padding-bottom: 0;
@@ -60,31 +52,25 @@ const Logo = styled.h1`
   left: 0vw;
 `
 
-export class start extends Component {
-  state = {
-    necessary: true,
-    location: false,
-  };
+const CookieConfigurator = ({ classes }) =>  {
 
-  componentDidMount() {
+  /* const [necessary, setNecessary] = useState(true); */
+  const necessary = true; // remove once implemented Switch that works with functional components
+  const [location, setLocation] = useState(false)
+
+  useEffect(() => {
     if (cookies.get("Cookie_settings") !== "all") {
-      this.setState({
-        location: false,
-      });
+      setLocation(false);
     }
     if (cookies.get("Cookie_settings") === "all") {
-      this.setState({
-        location: true,
-      });
+      setLocation(true);
     }
-  }
+  }, [])
 
-  handleLocation = (event) => {
-    this.setState({
-      location: !this.state.location,
-    });
+  const handleLocation = (event) => {
+    setLocation(!location);
 
-    if (this.state.location === false) {
+    if (location === false) {
       cookies.set("Cookie_settings", "all", {
         path: "/",
         maxAge: 60 * 60 * 24 * 90,
@@ -92,7 +78,7 @@ export class start extends Component {
         secure: true,
       });
     }
-    if (this.state.location === true) {
+    if (location === true) {
       cookies.set("Cookie_settings", "minimum", {
         path: "/",
         maxAge: 60 * 60 * 24 * 90,
@@ -101,8 +87,7 @@ export class start extends Component {
       });
     }
   };
-  render() {
-    const { classes } = this.props;
+  
 
     const linkToHome = () => {
       window.location.href = "/";
@@ -134,9 +119,9 @@ export class start extends Component {
             aktivieren. Du kannst die Einstellungen jederzeit ändern.
           </p>
           <Switch
-            className={classes.Switch}
+            right="0"
             disabled
-            checked={this.state.necessary}
+            checked={necessary}
             value="necessary"
             inputProps={{ "aria-label": "primary checkbox" }}
           />
@@ -172,9 +157,8 @@ export class start extends Component {
           <ListTitle>Speicherdauer</ListTitle>{" "}
           <ListItem>3 Monate</ListItem>
           <Switch
-            className={classes.Switch}
-            checked={this.state.location}
-            onChange={() => this.handleLocation()}
+            checked={location}
+            onChange={() => handleLocation()}
             value="location"
             color="primary"
             inputProps={{ "aria-label": "primary checkbox" }}
@@ -261,10 +245,5 @@ export class start extends Component {
       </div>
     );
   }
-}
 
-const mapStateToProps = (state) => ({
-  data: state.data,
-});
-
-export default connect(mapStateToProps)(withStyles(styles)(start));
+export default CookieConfigurator;
