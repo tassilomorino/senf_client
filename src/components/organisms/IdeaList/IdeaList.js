@@ -175,59 +175,21 @@ const IdeaList = ({
     }
   }, [openScream]);
 
-  // const bind = useDrag(
-  //   ({ down, movement: [, my] }) => {
-  //     if (my < -100) {
-  //       set({
-  //         y: down ? my : 100,
-  //         transform:
-  //           !down && swipePosition !== "bottom"
-  //             ? `translateY(${141}px)`
-  //             : `translateY(${0}px)`,
-  //         touchAction: "unset",
-  //       });
-  //       setSwipePosition("top");
-  //     }
-  //     if (my > 150) {
-  //       set({
-  //         y: down ? my : window.innerHeight - 120,
-  //         transform: down
-  //           ? `translateY(${0}px)`
-  //           : `translateY(${window.innerHeight - 120}px)`,
-  //         touchAction: "none",
-  //       });
-  //       setSwipePosition("bottom");
-  //     }
-
-  //     set({ y: down ? my : 0 });
-  //   },
-  //   {
-  //     pointer: { touch: true },
-  //     bounds: {
-  //       top: swipePosition === "top" ? 0 : -window.innerHeight,
-  //       bottom: swipePosition === "bottom" ? 20 : window.innerHeight - 420,
-  //     },
-  //     threshold: [10, 10],
-  //     gesture: "movement",
-  //     activateBounds: true,
-  //     filterTaps: true,
-  //   }
-  // );
-
   const bind = useDrag(
-    ({ down, movement: [, my], offset: [, y] }) => {
+    ({ currentTarget, down, movement: [, my], offset: [, y] }) => {
+      console.log(currentTarget);
       if (my < -100) {
         set({
-          y: down ? my : 100,
+          y: down ? my : 0,
           transform:
             !down && swipePosition !== "bottom"
               ? `translateY(${141}px)`
-              : `translateY(${0}px)`,
+              : `translateY(${window.innerHeight - 120}px)`,
           touchAction: "unset",
         });
         setSwipePosition("top");
       }
-      if (my > 50) {
+      if (my > 150) {
         set({
           y: down ? my : window.innerHeight - 120,
           transform: down
@@ -238,18 +200,14 @@ const IdeaList = ({
         setSwipePosition("bottom");
       }
 
-      set({
-        y: down ? my : 0,
-      });
+      set({ y: down ? my : 0 });
     },
     {
-      pointer: {
-        touch: true,
-      },
+      pointer: { touch: true },
       bounds: {
         enabled: true,
-        /*   top: -window.innerHeight + 341,
-        bottom: swipePosition === "bottom" ? 20 : window.innerHeight - 420, */
+        top: -window.innerHeight + 341,
+        bottom: swipePosition === "bottom" ? 20 : window.innerHeight - 120,
       },
     }
   );
@@ -278,7 +236,7 @@ const IdeaList = ({
             projectsData={projectsData}
             project={project}
           />
-          <FakelistContainer
+          {/* <FakelistContainer
             style={
               swipePosition === "top" && !openScream
                 ? { opacity: "1", pointerEvents: "auto" }
@@ -297,24 +255,26 @@ const IdeaList = ({
               project={project}
               myScreams={myScreams}
             />{" "}
-          </FakelistContainer>
-          <animated.div
-            className={!loading ? "drag" : ""}
-            {...bind()}
-            style={props}
-          >
+          </FakelistContainer> */}
+          <animated.div className={!loading ? "drag" : ""} style={props}>
             <ListHeaderWrapper>
-              <Toolbar
-                loading={loading}
-                handleDropdown={handleDropdown}
-                dataFinal={dataFinal}
-                marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
-                handleClickSwipe={
-                  swipePosition === "bottom"
-                    ? () => setSwipePositionUp()
-                    : () => setSwipePositionDown()
-                }
-              />{" "}
+              <animated.div
+                {...bind()}
+                style={props}
+                style={{ backgroundColor: "#fed957" }}
+              >
+                <Toolbar
+                  loading={loading}
+                  handleDropdown={handleDropdown}
+                  dataFinal={dataFinal}
+                  marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
+                  handleClickSwipe={
+                    swipePosition === "bottom"
+                      ? () => setSwipePositionUp()
+                      : () => setSwipePositionDown()
+                  }
+                />{" "}
+              </animated.div>
             </ListHeaderWrapper>{" "}
             <List
               type={type}
