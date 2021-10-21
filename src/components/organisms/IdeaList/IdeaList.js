@@ -15,7 +15,6 @@ import { useDrag } from "@use-gesture/react";
 import styled from "styled-components";
 
 //Components
-import SortingSelect from "../../atoms/Selects/SortingSelect";
 import MapMobile from "../../atoms/map/MapMobile";
 import List from "../../atoms/List/List";
 import PostScream from "../PostIdea/PostScream";
@@ -67,40 +66,6 @@ const ShadowBox = styled.div`
   display: ${(props) => props.display && props.display};
 `;
 
-const FakelistContainer = styled.div`
-  width: 100%;
-  z-index: 996;
-  height: 100vh;
-  position: fixed;
-  top: 211px;
-  overflow: scroll;
-  background: rgb(254, 217, 87);
-  background: linear-gradient(
-    180deg,
-    rgba(254, 217, 87, 1) 0%,
-    rgba(255, 218, 83, 1) 50%,
-    rgba(255, 255, 255, 1) 100%
-  );
-  animation: animation 0.7s;
-  @keyframes animation {
-    0% {
-      opacity: 0;
-    }
-    99% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-`;
-
-const SelectPositioner = styled.div`
-  position: fixed;
-  top: 156px;
-  right: 2.5%;
-  z-index: 996;
-`;
 const IdeaList = ({
   type,
   loading,
@@ -162,15 +127,11 @@ const IdeaList = ({
       set({
         opacity: "0",
         pointerEvents: "none",
-        // marginTop: "90vh",
-        // transition: "0.3s",
       });
     } else {
       set({
         opacity: "1",
         pointerEvents: "auto",
-        // marginTop: "0",
-        // transition: "0s",
       });
     }
   }, [openScream]);
@@ -236,32 +197,12 @@ const IdeaList = ({
             projectsData={projectsData}
             project={project}
           />
-          {/* <FakelistContainer
-            style={
-              swipePosition === "top" && !openScream
-                ? { opacity: "1", pointerEvents: "auto" }
-                : { opacity: "0", pointerEvents: "none" }
-            }
-          >
-            <SelectPositioner>
-              <SortingSelect handleDropdown={handleDropdown} />
-            </SelectPositioner>
-            <List
-              type={type}
-              loading={loading}
-              dropdown={dropdown}
-              dataFinal={dataFinal}
-              projectsData={projectsData}
-              project={project}
-              myScreams={myScreams}
-            />{" "}
-          </FakelistContainer> */}
           <animated.div className={!loading ? "drag" : ""} style={props}>
             <ListHeaderWrapper>
               <animated.div
                 {...bind()}
                 style={props}
-                style={{ backgroundColor: "#fed957" }}
+                style={{ backgroundColor: "#fed957", height: "70px" }}
               >
                 <Toolbar
                   loading={loading}
