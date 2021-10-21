@@ -3,17 +3,16 @@
 import React, { Component } from "react";
 
 import withStyles from "@material-ui/core/styles/withStyles";
-
-import { Link } from "react-router-dom";
-
 import { connect } from "react-redux";
-import MyButton from "../../../../util/MyButton";
-
-import CloseIcon from "@material-ui/icons/Close";
 
 import Switch from "@material-ui/core/Switch";
 
 import Cookies from "universal-cookie";
+import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
+import styled from "styled-components";
+import LogoWhite from "../../../../images/logo_white.png";
+
+
 const cookies = new Cookies();
 
 const styles = {
@@ -53,6 +52,22 @@ const styles = {
     marginTop: "0",
   },
 };
+
+const Wrapper = styled.div`
+  position: relative;
+  z-index: 0;
+  width: 90vw;
+  height: 100%;
+  margin: auto;
+  max-width: 600px;
+  margin-top: 30vh;
+`
+
+const Logo = styled.h1`
+  position: relative;
+  top: 0em;
+  left: 0vw;
+`
 
 export class start extends Component {
   state = {
@@ -98,20 +113,27 @@ export class start extends Component {
   render() {
     const { classes } = this.props;
 
+    const linkToHome = () => {
+      window.location.href = "/";
+    }
+
     return (
       <div>
         {/* <div className="MainBackground"></div> */}
 
-        <Link to="/">
-          <MyButton btnClassName={classes.closeButton}>
-            <CloseIcon />
-          </MyButton>
-        </Link>
+        <CustomIconButton
+        name="Close"
+        position="fixed"
+        margin={document.body.clientWidth > 768 ? "40px" : "10px"}
+        left="0"
+        handleButtonClick={() => linkToHome()}
+        top="0"
+      />
 
-        <div className={classes.wrapper}>
-          <Link to="/">
-            <h1 className="logo2">Senf</h1>
-          </Link>
+        <Wrapper>
+        <Logo onClick={() => linkToHome()}>
+          <img src={LogoWhite} width="100px" alt="logo" />
+        </Logo>
           <br />
           <br /> <br />
           <h1>Cookie Richtlinie</h1>
@@ -244,7 +266,7 @@ export class start extends Component {
           </p>
           <h3 className={classes.listTitle}>Speicherdauer</h3>{" "}
           <p className={classes.listitem}>18 Jahre</p>
-        </div>
+        </Wrapper>
       </div>
     );
   }

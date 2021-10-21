@@ -15,7 +15,7 @@ const Wrapper = styled.div`
   margin-top: 30vh;
 `
 const Terms = styled.a`
-  text-decoration: none;
+  text-decoration: underline;
   color: #414345;
   cursor: pointer;
 `
