@@ -215,6 +215,8 @@ class ProjectDialog extends Component {
         status === "None"
     );
 
+    const dataFinalLength = dataFinal.length;
+
     return (
       this.props.openProject && (
         <React.Fragment>
@@ -244,6 +246,7 @@ class ProjectDialog extends Component {
                   loading={loading}
                   order={this.state.order}
                   dataFinal={dataFinal}
+                  dataFinalLength={dataFinalLength}
                   geoData={geoData}
                   viewport={viewport}
                   handleDropdown={this.handleDropdown}

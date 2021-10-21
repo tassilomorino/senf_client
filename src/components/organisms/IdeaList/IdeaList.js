@@ -78,12 +78,12 @@ const IdeaList = ({
   dropdown,
   handleDropdown,
   dataFinal,
+  dataFinalLength,
   dataFinalMap,
   projectsData,
   geoData,
   loadingProjects,
   project,
-  myScreams,
   handleTopicSelector,
   topicsSelected,
 }) => {
@@ -138,7 +138,7 @@ const IdeaList = ({
                 <ListHeader
                   loading={loading}
                   handleDropdown={handleDropdown}
-                  dataFinal={dataFinal}
+                  dataFinalLength={dataFinalLength}
                   marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
                 />{" "}
               </ListHeaderWrapper>
@@ -148,6 +148,7 @@ const IdeaList = ({
                 loading={loading}
                 dropdown={dropdown}
                 dataFinal={dataFinal}
+                dataFinalLength={dataFinalLength}
                 projectsData={projectsData}
               />
             </IdeaListSwipe>
@@ -158,7 +159,7 @@ const IdeaList = ({
           <ListHeader
             loading={loading}
             handleDropdown={handleDropdown}
-            dataFinal={dataFinal}
+            dataFinalLength={dataFinalLength}
             marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
           />
           <List
@@ -166,6 +167,7 @@ const IdeaList = ({
             loading={loading}
             dropdown={dropdown}
             dataFinal={dataFinal}
+            dataFinalLength={dataFinalLength}
             projectsData={projectsData}
           />{" "}
         </Content>

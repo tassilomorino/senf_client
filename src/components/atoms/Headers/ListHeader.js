@@ -60,7 +60,13 @@ const Lightbulb = styled.img`
   transform: translateY(10px) rotate(30deg);
 `;
 
-const ListHeader = ({ loading, dataFinal, handleDropdown, marginTop }) => {
+const ListHeader = ({
+  loading,
+  dataFinal,
+  dataFinalLength,
+  handleDropdown,
+  marginTop,
+}) => {
   const { t } = useTranslation();
   return (
     !loading && (
@@ -68,7 +74,7 @@ const ListHeader = ({ loading, dataFinal, handleDropdown, marginTop }) => {
         {isMobileCustom && <Bar />}
         <IdeaHeader>
           <Lightbulb src={lightbulbImg} alt={"lightbulb"} />
-          {dataFinal?.length} {dataFinal?.length === 1 ? t("idea") : t("ideas")}
+          {dataFinalLength} {dataFinalLength === 1 ? t("idea") : t("ideas")}
         </IdeaHeader>
         <SortingSelect handleDropdown={handleDropdown} />{" "}
       </Wrapper>

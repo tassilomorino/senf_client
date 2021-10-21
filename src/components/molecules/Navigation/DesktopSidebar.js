@@ -34,7 +34,6 @@ const DesktopSidebar = ({
   topicsSelected,
   loadingProjects,
   projectsData,
-  dataFinalMap,
 }) => {
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const authenticated = useSelector((state) => state.user.authenticated);

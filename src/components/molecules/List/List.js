@@ -11,8 +11,14 @@ import {
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import MainAnimations from "../../atoms/Animations/MainAnimations";
 
-const List = ({ type, loading, dropdown, dataFinal, projectsData }) => {
-  const dataFinalLength = dataFinal?.length;
+const List = ({
+  type,
+  loading,
+  dropdown,
+  dataFinal,
+  dataFinalLength,
+  projectsData,
+}) => {
   return (
     !loading && (
       <React.Fragment>

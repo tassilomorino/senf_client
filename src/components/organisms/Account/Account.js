@@ -279,6 +279,8 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
       )
     : [];
 
+  const dataFinalLength = dataFinal.length;
+
   return (
     <React.Fragment>
       <AccountHeader
@@ -299,7 +301,7 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
                 loading={loadingMyScreams}
                 order={order}
                 dataFinal={dataFinal}
-                myScreams={myScreams}
+                dataFinalLength={dataFinalLength}
                 viewport={mapViewport}
                 handleDropdown={handleDropdown}
                 dropdown={dropdown}

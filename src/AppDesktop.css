@@ -874,35 +874,7 @@
     animation: enterScreamDialogAnimation 0.5s;
   }
 
-  /*
-    .wrapperScreamDialog {
-      width: 400px;
-      height: 100vh;
-      z-index: 7000;
-      top: 0;
-      position:absolute;
-      overflow-x:hidden;
-      pointer-events: auto;
-      
-      
-      
-    }
-    
-    .innerWrapperScreamDialog {
-      
-      min-height: 100vh;
-      margin-top:0vh;
-      top: 0;
-      animation: enterScreamDialogAnimation 0.5s;
-      position:absolute;
-      overflow: hidden;
-      pointer-events: initial;
-      touch-action: initial;
-      
-      
-      
-    }
-    */
+ 
 
 
   .wrapperMonitoringDialog {
@@ -921,18 +893,7 @@
     background: #ffffff
   }
 
-  .dialogNavigation {
-    position: fixed;
-    z-index: 9999;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: row;
-    margin-left: 200px;
-    width: 380px;
-    padding: 10px;
-    padding-top: 20px;
-  }
+ 
 
   .mapWrapperDialog {
     display: none;
