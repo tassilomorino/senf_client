@@ -158,20 +158,15 @@ const MapMobile = ({
             }}
           />
 
-          {dataFinalMap.map((element) => (
-            <Marker
-              key={element.screamId}
-              longitude={element.long}
-              latitude={element.lat}
-            >
+          {dataFinalMap.map(({ screamId, long, lat, likeCount, color }) => (
+            <Marker key={screamId} longitude={long} latitude={lat}>
               <OpenIdeaButton
-                color={element.color}
-                likeCount={element.likeCount}
-                Thema={element.Thema}
-                onClick={() => fetchDataScream(element.screamId)}
+                color={color}
+                likeCount={likeCount}
+                onClick={() => fetchDataScream(screamId)}
               >
                 <ExpandButton
-                  handleButtonClick={() => fetchDataScream(element.screamId)}
+                  handleButtonClick={() => fetchDataScream(screamId)}
                 />
               </OpenIdeaButton>
               <NoLocationPopUp

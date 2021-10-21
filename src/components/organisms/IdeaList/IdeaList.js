@@ -14,7 +14,7 @@ import Swipe from "react-easy-swipe";
 
 //Components
 import MapMobile from "../../atoms/map/MapMobile";
-import List from "../../atoms/List/List";
+import List from "../../molecules/List/List";
 import ListHeader from "../../atoms/Headers/ListHeader";
 import PostScream from "../PostIdea/PostScream";
 import TopicFilter from "../../atoms/Filters/TopicFilter";
@@ -149,9 +149,7 @@ const IdeaList = ({
                 dropdown={dropdown}
                 dataFinal={dataFinal}
                 projectsData={projectsData}
-                project={project}
-                myScreams={myScreams}
-              />{" "}
+              />
             </IdeaListSwipe>
           </ContentMobile>
         </React.Fragment>
@@ -169,8 +167,6 @@ const IdeaList = ({
             dropdown={dropdown}
             dataFinal={dataFinal}
             projectsData={projectsData}
-            project={project}
-            myScreams={myScreams}
           />{" "}
         </Content>
       )}{" "}
