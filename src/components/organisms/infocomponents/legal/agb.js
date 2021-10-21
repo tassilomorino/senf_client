@@ -3,32 +3,26 @@
 import React from "react";
 import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 import styled from "styled-components";
+import LogoWhite from "../../../../images/logo_white.png";
 
 const Wrapper = styled.div`
-  width: 90vw;
   position: relative;
-  margin-left: 5vw;
-`
-
-const Logo2 = styled.h1`
-  position: absolute;
-  top: 0em;
-  left: 0vw;
-  width: 100%;
-  z-index: 99;
-  color: white;
-  // padding-bottom: 10;
-  // font-size: 40;
-  text-align: left;
-  line-height: 35px;
-  font-weight: 100;
-  font-family: Playfair Display;
-  clear: both;
+  z-index: 0;
+  width: 90vw;
+  height: 100%;
+  margin: auto;
+  max-width: 600px;
+  margin-top: 30vh;
 `
 const Terms = styled.a`
   text-decoration: none;
   color: #414345;
   cursor: pointer;
+`
+const Logo = styled.h1`
+  position: relative;
+  top: 0em;
+  left: 0vw;
 `
 
 const Agb = () => {
@@ -47,10 +41,13 @@ const Agb = () => {
         margin={document.body.clientWidth > 768 ? "40px" : "10px"}
         left="0"
         handleButtonClick={() => linkToHome()}
+        top="0"
       />
 
       <Wrapper>
-        <Logo2 onClick={() => linkToHome()}>Senf</Logo2>
+        <Logo onClick={() => linkToHome()}>
+          <img src={LogoWhite} width="100px" alt="logo" />
+        </Logo>
         <br />
         <br /> <br />
         <h1>Allgemeine Geschäftsbedingungen</h1>
