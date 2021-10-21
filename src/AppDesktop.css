@@ -857,7 +857,7 @@
     z-index: 90;
     top: 0;
     position: fixed;
-    animation: enterScreamDialogAnimation 0.5s;
+    
   }
 
 
@@ -871,7 +871,7 @@
     height: 100vh;
     position: fixed;
     margin-top: 0vh;
-    animation: enterScreamDialogAnimation 0.5s;
+    
   }
 
  
