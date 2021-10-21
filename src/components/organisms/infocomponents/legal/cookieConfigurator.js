@@ -16,42 +16,33 @@ import LogoWhite from "../../../../images/logo_white.png";
 const cookies = new Cookies();
 
 const styles = {
-  wrapper: {
-    position: "relative",
-    width: "90vw",
-    marginLeft: "5vw",
-  },
-  closeButton: {
-    zIndex: 9999,
-    position: "fixed",
-    left: "15px",
-
-    marginTop: "18px",
-    backgroundColor: "white",
-    color: "#ffd388",
-  },
-  Header: {
-    width: "70vw",
-    top: "0",
-    marginTop: "15px",
-  },
   Switch: {
     float: "right",
   },
-  line: {
-    height: "1px",
-    width: "100%",
-    backgroundColor: "#414345",
-  },
-  listTitle: {
-    paddingBottom: 0,
-    marginBottom: "0",
-  },
-  listitem: {
-    paddingBottom: 0,
-    marginTop: "0",
-  },
 };
+
+
+const ListItem = styled.p`
+  padding-bottom: 0;
+  margin-top: 0;
+`
+
+const ListTitle = styled.h3`
+  padding-bottom: 0;
+  margin-bottom: 0;
+`
+
+const Line = styled.div`
+  height: 1px;
+  width: 100%;
+  background-color: #414345;
+`
+
+const Header = styled.h2`
+  width: 70vw;
+  top: 0;
+  margin-top: 15px;
+`
 
 const Wrapper = styled.div`
   position: relative;
@@ -149,7 +140,7 @@ export class start extends Component {
             value="necessary"
             inputProps={{ "aria-label": "primary checkbox" }}
           />
-          <h2 className={classes.Header}>Notwendige Cookies</h2>
+          <Header>Notwendige Cookies</Header>
           <p>
             Notwendige Cookies helfen dabei, eine Website nutzbar zu machen,
             indem sie Grundfunktionen wie Seitennavigation und Zugriff auf
@@ -157,29 +148,29 @@ export class start extends Component {
             diese Cookies nicht richtig funktionieren. Sie können nicht
             blockiert werden.
           </p>
-          <div className={classes.line} />
-          <h3 className={classes.listTitle}>Anbieter</h3>{" "}
-          <p className={classes.listitem}>Senf</p>
-          <h3 className={classes.listTitle}>Name</h3>{" "}
-          <p className={classes.listitem}>Cookie_settings</p>
-          <h3 className={classes.listTitle}>Zweck</h3>{" "}
-          <p className={classes.listitem}>
+          <Line />
+          <ListTitle>Anbieter</ListTitle>{" "}
+          <ListItem>Senf</ListItem>
+          <ListTitle>Name</ListTitle>{" "}
+          <ListItem>Cookie_settings</ListItem>
+          <ListTitle>Zweck</ListTitle>{" "}
+          <ListItem>
             Speichert sämtliche Cookie Präferenzen des Nutzers
-          </p>
-          <h3 className={classes.listTitle}>Speicherdauer</h3>{" "}
-          <p className={classes.listitem}>3 Monate</p>
-          <div className={classes.line} />
-          <h3 className={classes.listTitle}>Anbieter</h3>{" "}
-          <p className={classes.listitem}>Senf</p>
-          <h3 className={classes.listTitle}>Name</h3>{" "}
-          <p className={classes.listitem}>Cookie_Rules</p>
-          <h3 className={classes.listTitle}>Zweck</h3>{" "}
-          <p className={classes.listitem}>
+          </ListItem>
+          <ListTitle>Speicherdauer</ListTitle>{" "}
+          <ListItem>3 Monate</ListItem>
+          <Line />
+          <ListTitle>Anbieter</ListTitle>{" "}
+          <ListItem>Senf</ListItem>
+          <ListTitle>Name</ListTitle>{" "}
+          <ListItem>Cookie_Rules</ListItem>
+          <ListTitle>Zweck</ListTitle>{" "}
+          <ListItem>
             Speichert, dass Nutzer den Regeln des Ideen-teilens zugestimmt
             haben.
-          </p>
-          <h3 className={classes.listTitle}>Speicherdauer</h3>{" "}
-          <p className={classes.listitem}>3 Monate</p>
+          </ListItem>
+          <ListTitle>Speicherdauer</ListTitle>{" "}
+          <ListItem>3 Monate</ListItem>
           <Switch
             className={classes.Switch}
             checked={this.state.location}
@@ -188,84 +179,84 @@ export class start extends Component {
             color="primary"
             inputProps={{ "aria-label": "primary checkbox" }}
           />
-          <h2 className={classes.Header}>Service-verbessernde-Cookies</h2>
+          <Header>Service-verbessernde-Cookies</Header>
           <p>
             Die Service verbessernden Cookies erlauben es, dass sowohl
             Funktionen wie der Kartendienst oder auch die Analyse der Ergebnisse
             geschehen kann.
           </p>
-          <div className={classes.line} />
-          <h3 className={classes.listTitle}>Anbieter</h3>{" "}
-          <p className={classes.listitem}>Senf</p>
-          <h3 className={classes.listTitle}>Name</h3>{" "}
-          <p className={classes.listitem}>_ga</p>
-          <h3 className={classes.listTitle}>Zweck</h3>{" "}
-          <p className={classes.listitem}>
+          <Line />
+          <ListTitle>Anbieter</ListTitle>{" "}
+          <ListItem>Senf</ListItem>
+          <ListTitle>Name</ListTitle>{" "}
+          <ListItem>_ga</ListItem>
+          <ListTitle>Zweck</ListTitle>{" "}
+          <ListItem>
             Google Analytics-Cookie zur Benutzeridentifizierung
-          </p>
-          <h3 className={classes.listTitle}>Speicherdauer</h3>{" "}
-          <p className={classes.listitem}>2 Jahre</p>
-          <div className={classes.line} />
-          <h3 className={classes.listTitle}>Anbieter</h3>{" "}
-          <p className={classes.listitem}>Senf</p>
-          <h3 className={classes.listTitle}>Name</h3>{" "}
-          <p className={classes.listitem}>_gid</p>
-          <h3 className={classes.listTitle}>Zweck</h3>{" "}
-          <p className={classes.listitem}>
+          </ListItem>
+          <ListTitle>Speicherdauer</ListTitle>{" "}
+          <ListItem>2 Jahre</ListItem>
+          <Line />
+          <ListTitle>Anbieter</ListTitle>{" "}
+          <ListItem>Senf</ListItem>
+          <ListTitle>Name</ListTitle>{" "}
+          <ListItem>_gid</ListItem>
+          <ListTitle>Zweck</ListTitle>{" "}
+          <ListItem>
             Google Analytics-Cookie zur Benutzeridentifizierung
-          </p>
-          <h3 className={classes.listTitle}>Speicherdauer</h3>{" "}
-          <p className={classes.listitem}>24 Stunden</p>
-          <div className={classes.line} />
-          <h3 className={classes.listTitle}>Anbieter</h3>{" "}
-          <p className={classes.listitem}>Senf</p>
-          <h3 className={classes.listTitle}>Name</h3>{" "}
-          <p className={classes.listitem}>_gat</p>
-          <h3 className={classes.listTitle}>Zweck</h3>{" "}
-          <p className={classes.listitem}>Drosselung der Anforderungsrate</p>
-          <h3 className={classes.listTitle}>Speicherdauer</h3>{" "}
-          <p className={classes.listitem}>1 Minute</p>
-          <div className={classes.line} />
-          <h3 className={classes.listTitle}>Anbieter</h3>{" "}
-          <p className={classes.listitem}>Google</p>
-          <h3 className={classes.listTitle}>Name</h3>{" "}
-          <p className={classes.listitem}>1P_JAR</p>
-          <h3 className={classes.listTitle}>Zweck</h3>{" "}
-          <p className={classes.listitem}>
+          </ListItem>
+          <ListTitle>Speicherdauer</ListTitle>{" "}
+          <ListItem>24 Stunden</ListItem>
+          <Line />
+          <ListTitle>Anbieter</ListTitle>{" "}
+          <ListItem>Senf</ListItem>
+          <ListTitle>Name</ListTitle>{" "}
+          <ListItem>_gat</ListItem>
+          <ListTitle>Zweck</ListTitle>{" "}
+          <ListItem>Drosselung der Anforderungsrate</ListItem>
+          <ListTitle>Speicherdauer</ListTitle>{" "}
+          <ListItem>1 Minute</ListItem>
+          <Line />
+          <ListTitle>Anbieter</ListTitle>{" "}
+          <ListItem>Google</ListItem>
+          <ListTitle>Name</ListTitle>{" "}
+          <ListItem>1P_JAR</ListItem>
+          <ListTitle>Zweck</ListTitle>{" "}
+          <ListItem>
             Wird zur Optimierung von Werbung von Google DoubleClick eingesetzt,
             um für Nutzer relevante Anzeigen bereitzustellen, Berichte zur
             Kampagnenleistung zu verbessern oder um zu vermeiden, dass ein
             Nutzer dieselben Anzeigen mehrmals sieht.
-          </p>
-          <h3 className={classes.listTitle}>Speicherdauer</h3>{" "}
-          <p className={classes.listitem}>1 Monat</p>
-          <div className={classes.line} />
-          <h3 className={classes.listTitle}>Anbieter</h3>{" "}
-          <p className={classes.listitem}>Google</p>
-          <h3 className={classes.listTitle}>Name</h3>{" "}
-          <p className={classes.listitem}>NID</p>
-          <h3 className={classes.listTitle}>Zweck</h3>{" "}
-          <p className={classes.listitem}>
+          </ListItem>
+          <ListTitle>Speicherdauer</ListTitle>{" "}
+          <ListItem>1 Monat</ListItem>
+          <Line />
+          <ListTitle>Anbieter</ListTitle>{" "}
+          <ListItem>Google</ListItem>
+          <ListTitle>Name</ListTitle>{" "}
+          <ListItem>NID</ListItem>
+          <ListTitle>Zweck</ListTitle>{" "}
+          <ListItem>
             Das NID-Cookie enthält eine eindeutige ID, über die Google Ihre
             bevorzugten Einstellungen und andere Informationen speichert,
             insbesondere Ihre bevorzugte Sprache (z. B. Deutsch), wie viele
             Suchergebnisse pro Seite angezeigt werden sollen (z. B. 10 oder 20)
             und ob der Google SafeSearch-Filter
-          </p>
-          <h3 className={classes.listTitle}>Speicherdauer</h3>{" "}
-          <p className={classes.listitem}>6 Monate</p>
-          <div className={classes.line} />
-          <h3 className={classes.listTitle}>Anbieter</h3>{" "}
-          <p className={classes.listitem}>Google</p>
-          <h3 className={classes.listTitle}>Name</h3>{" "}
-          <p className={classes.listitem}>CONSENT</p>
-          <h3 className={classes.listTitle}>Zweck</h3>{" "}
-          <p className={classes.listitem}>
+          </ListItem>
+          <ListTitle>Speicherdauer</ListTitle>{" "}
+          <ListItem>6 Monate</ListItem>
+          <Line />
+          <ListTitle>Anbieter</ListTitle>{" "}
+          <ListItem>Google</ListItem>
+          <ListTitle>Name</ListTitle>{" "}
+          <ListItem>CONSENT</ListItem>
+          <ListTitle>Zweck</ListTitle>{" "}
+          <ListItem>
             Speichert deine Bestätigung zur Verwendung der Cookies für die
             Standort-Ermittlung
-          </p>
-          <h3 className={classes.listTitle}>Speicherdauer</h3>{" "}
-          <p className={classes.listitem}>18 Jahre</p>
+          </ListItem>
+          <ListTitle>Speicherdauer</ListTitle>{" "}
+          <ListItem>18 Jahre</ListItem>
         </Wrapper>
       </div>
     );
