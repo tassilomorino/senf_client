@@ -202,7 +202,11 @@ const IdeaList = ({
               <animated.div
                 {...bind()}
                 style={props}
-                style={{ backgroundColor: "#fed957", height: "70px" }}
+                style={{
+                  backgroundColor: "#fed957",
+                  height: "70px",
+                  pointerEvents: "none",
+                }}
               >
                 <Toolbar
                   loading={loading}
