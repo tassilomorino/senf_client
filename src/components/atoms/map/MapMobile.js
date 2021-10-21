@@ -49,12 +49,10 @@ const MapMobile = ({
   viewport,
 
   _onViewportChange,
-  handleShowResults,
 
   loadingProjects,
   geoData,
-  setSwipePosition,
-  setSwipeMovePosition,
+  setSwipePositionUp,
 }) => {
   const dispatch = useDispatch();
 
@@ -176,8 +174,7 @@ const MapMobile = ({
               </OpenIdeaButton>
               <NoLocationPopUp
                 dataNoLocation={dataNoLocation}
-                setSwipePosition={setSwipePosition}
-                setSwipeMovePosition={setSwipeMovePosition}
+                setSwipePositionUp={setSwipePositionUp}
               />
             </Marker>
           ))}

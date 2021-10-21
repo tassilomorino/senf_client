@@ -1,8 +1,9 @@
 /** @format */
 
 import React from "react";
+
 import lightbulbImg from "../../../images/lamp.png";
-import SortingSelect from "../Selects/SortingSelect";
+import SortingSelect from "../../atoms/Selects/SortingSelect";
 import styled, { keyframes } from "styled-components";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { useTranslation } from "react-i18next";
@@ -34,15 +35,25 @@ const Wrapper = styled.div`
   padding: 10px 2.5% 20px 2.5%;
   margin-top: ${(props) => props.marginTop && props.marginTop};
   animation: ${enterAnimation} 0.7s;
+  pointer-events: none;
 `;
 const Bar = styled.div`
   position: absolute;
-  width: 80px;
+  width: 60px;
   height: 4px;
   border-radius: 10px;
-  margin-left: calc(47.5% - 40px);
+  margin-left: calc(47.5% - 30px);
   background-color: white;
   top: 10px;
+`;
+
+const Background = styled.div`
+  width: 100%;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  z-index: -1;
+  pointer-events: auto;
 `;
 const IdeaHeader = styled.div`
   z-index: 2;
@@ -60,7 +71,13 @@ const Lightbulb = styled.img`
   transform: translateY(10px) rotate(30deg);
 `;
 
-const ListHeader = ({ loading, dataFinal, handleDropdown, marginTop }) => {
+const Toolbar = ({
+  loading,
+  dataFinal,
+  handleDropdown,
+  marginTop,
+  handleClickSwipe,
+}) => {
   const { t } = useTranslation();
   return (
     !loading && (
@@ -71,9 +88,10 @@ const ListHeader = ({ loading, dataFinal, handleDropdown, marginTop }) => {
           {dataFinal?.length} {dataFinal?.length === 1 ? t("idea") : t("ideas")}
         </IdeaHeader>
         <SortingSelect handleDropdown={handleDropdown} />{" "}
+        {isMobileCustom && <Background onClick={handleClickSwipe} />}
       </Wrapper>
     )
   );
 };
 
-export default ListHeader;
+export default Toolbar;
