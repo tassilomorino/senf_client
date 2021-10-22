@@ -19,10 +19,24 @@ const FixedWrapper = styled.div`
   left: 2.5%;
   border-radius: 20px 20px;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
+  animation: animation 1.7s ease-in-out;
 
   @media (min-width: 768px) {
     left: 210px;
     width: 380px;
+    animation: none;
+  }
+
+  @keyframes animation {
+    0% {
+      transform: translateY(-100%);
+    }
+    50% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(0%);
+    }
   }
 `;
 
