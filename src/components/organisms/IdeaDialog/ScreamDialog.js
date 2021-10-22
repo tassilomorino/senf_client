@@ -50,11 +50,8 @@ import {
 import styled, { createGlobalStyle } from "styled-components";
 
 import ScreamDialogSwipe from "../../../hooks/ScreamDialogSwipe";
-<<<<<<< HEAD
 import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
-=======
 import Loader from "../../atoms/Animations/Loader";
->>>>>>> main
 
 const portalRoot = document.getElementById("portal-root");
 
