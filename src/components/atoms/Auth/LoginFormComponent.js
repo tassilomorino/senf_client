@@ -12,9 +12,10 @@ const LoginFormComponent = ({
   classes,
   email,
   password,
-
+  onBlur,
   errors,
   errorMessage,
+  helperText,
   handleToggle,
   handleSubmitLogin,
   setEmail,
@@ -36,10 +37,11 @@ const LoginFormComponent = ({
           variant="outlined"
           className={classes.textField}
           data-cy="login-email"
-          // helperText={errors.email}
+          helperText={helperText.email}
           error={errors?.email ? true : false}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          onBlur={onBlur}
         ></TextField>
 
         <TextField

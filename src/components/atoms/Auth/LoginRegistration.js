@@ -229,6 +229,7 @@ const LoginRegistration = ({ classes }) => {
   });
 
   const [errorMessage, setErrorMessage] = useState(null);
+  const [helperText, sethelperText] = useState({email:null,password:null});
 
   const [loading, setLoading] = useState(false);
 
@@ -241,6 +242,16 @@ const LoginRegistration = ({ classes }) => {
   //   }
   // }
 
+  const onBlur = (event) => {
+    
+    if (email === "") {
+      sethelperText({...helperText,email:'field is empty'});
+      setErrors({ ...errors, email: true });
+    } else {
+      sethelperText({...helperText,email:null});
+      setErrors({ ...errors, email: false });
+    }
+  };
   const handleSubmitLogin = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -349,12 +360,14 @@ const LoginRegistration = ({ classes }) => {
               loading={loading}
               errors={errors}
               errorMessage={errorMessage}
+              helperText={helperText}
               handleToggle={handleToggle}
               handleSubmitLogin={handleSubmitLogin}
               setEmail={setEmail}
               setPassword={setPassword}
               email={email}
               password={password}
+              onBlur={onBlur}
             />
           ) : (
             <RegistrationFormComponent
