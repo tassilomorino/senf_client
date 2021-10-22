@@ -325,12 +325,6 @@
     position: absolute;
   }
 
-  .spinnerDivBackground {
-
-    position: fixed;
-    width: 400px;
-    
-  }
 
   .content {
     margin-top: 0em;
@@ -853,15 +847,16 @@
     background: -webkit-linear-gradient(to left, #ffd19b, #ffda53, #ffffff);
   }
 
-  .projectDialog {
+  .projectDialog,
+  .accountDialog {
     margin-left: 0px;
-    margin-top: 0px;
     width: 400px;
+    height:100vh;
+    padding-top:70px;
     overflow-y: scroll;
-    z-index: 99;
+    z-index: 90;
     top: 0;
-    position: absolute;
-    margin-top: 0vh;
+    position: fixed;
     animation: enterScreamDialogAnimation 0.5s;
   }
 

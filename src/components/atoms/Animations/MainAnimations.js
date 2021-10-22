@@ -1,4 +1,6 @@
-import React from 'react'
+/** @format */
+
+import React from "react";
 import styled from "styled-components";
 
 const MainAnimation = styled.div`
@@ -9,7 +11,8 @@ const MainAnimation = styled.div`
   padding-bottom: ${(props) => props.paddingBottom && props.paddingBottom};
   transition: ${(props) => props.transition && props.transition};
   display: ${(props) => props.display && props.display};
-`
+  top: 0;
+`;
 
 /* .MainAnimation {
   // opacity: 1;
@@ -32,14 +35,13 @@ const MainAnimation = styled.div`
   // animation: cardanimation 0.8s ease-in-out;
 } */
 
-
 const MainAnimations = ({
   children,
   height,
   marginTop,
   paddingBottom,
   transition,
-  display
+  display,
 }) => {
   return (
     <MainAnimation
@@ -51,7 +53,7 @@ const MainAnimations = ({
     >
       {children}
     </MainAnimation>
-  )
-}
+  );
+};
 
-export default MainAnimations
+export default MainAnimations;

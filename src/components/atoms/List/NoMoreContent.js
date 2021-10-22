@@ -28,7 +28,7 @@ const NoContent = styled.div`
 export const NoMoreMainContent = ({ dataFinal }) => {
   const { t } = useTranslation();
 
-  return dataFinal.length > 0 ? (
+  return dataFinal?.length > 0 ? (
     <NoMore>
       ... <br /> {t("noMoreIdeas")} <br />
     </NoMore>
@@ -40,18 +40,17 @@ export const NoMoreMainContent = ({ dataFinal }) => {
 export const NoMoreMyContent = ({ dataFinal, myScreams, loading }) => {
   const { t } = useTranslation();
 
-  return !loading && dataFinal.length > 0 ? (
+  return !loading && dataFinal?.length > 0 ? (
     <NoMore>
       ... <br /> {t("noMoreIdeas")} <br />
     </NoMore>
   ) : myScreams === undefined ? (
     <NoContent>
-      Du hast bisher noch keine Idee geteilt. Es gibt noch so viele Ideen da
-      draußen & du bist kreativ! Teile deine Ideen!
+      {t('noSharedIdeas')}
     </NoContent>
   ) : (
     <NoContent>
-       Zu den ausgewählten Filtern hast du noch keine Ideen geteilt.
+       {t('noIdeasWithFilter')}
     </NoContent>
   );
 };
@@ -67,8 +66,7 @@ export const NoMoreProjectsContent = ({ dataFinal, loading, project }) => {
     <NoContent>{t("noContentIdeas")}</NoContent>
   ) : (
     <NoContent>
-      Zu diesem Projektraum wurde bisher noch keine Idee geteilt. Sei die/der
-      erste und teile deine Idee!
+      {t('noProjectIdeas')}
     </NoContent>
   );
 };

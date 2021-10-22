@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { Component } from "react";
+import { Translation } from "react-i18next";
 import axios from "axios";
 
 //MUI Stuff
@@ -921,12 +922,13 @@ export class Altersgruppe extends Component {
 
     return (
       <div className={classes.card}>
-        <div className={classes.title}>Altersgruppen</div>
-        <div className={classes.subtitle}>
-          Anhand der gesammelten Ideen und Votes kannst du die Relevanz der
-          Themen für die unterschiedlichen Altersgruppen erkennen und nach
-          Themen filtern.
-        </div>
+        <Translation>
+          {(t) => <div className={classes.title}>{t("agegroups")}</div>}
+        </Translation>
+        
+        <Translation>
+          {(t) => <div className={classes.subtitle}>{t("agegroups_explained")}</div>}
+        </Translation>
 
         {themenfilter}
         <div className={classes.clickblocker}></div>

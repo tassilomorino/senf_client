@@ -61,11 +61,10 @@ const AccountSettings = () => {
       <Card>
         <Content>
           <p>
-            Wir freuen uns über deine Beteiligung! Gefällt dir Senf? Stört dich
-            etwas? Melde dich gerne und sag uns, was dir auffällt!
+            {t('account_contact')}
             <br />
             <br />
-            Dein Senf.koeln-Team
+            {t('your')} Senf.koeln-Team
             <br />
           </p>
         </Content>
@@ -87,7 +86,7 @@ const AccountSettings = () => {
         }}
         onClick={deleteAccount}
       >
-        Konto löschen{" "}
+        {t('deteleAccount')}{" "}
       </div>
     </React.Fragment>
   );

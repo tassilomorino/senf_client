@@ -5,7 +5,6 @@ import React from "react";
 //Redux
 import { useSelector, useDispatch } from "react-redux";
 import { likeScream, unlikeScream } from "../../../redux/actions/likeActions";
-import PropTypes from "prop-types";
 
 //Components
 import RegistrationAndLogin from "../Auth/RegistrationAndLogin";
