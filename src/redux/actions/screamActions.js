@@ -94,6 +94,30 @@ export const openScreamFunc = (screamId) => async (dispatch) => {
   }
 };
 
+export const reloadScreamFunc = (screamId) => async (dispatch) => {
+  const db = firebase.firestore();
+  const ref = await db.collection("screams").doc(screamId).get();
+  const commentsRef = await db
+    .collection("comments")
+    .where("screamId", "==", screamId)
+    .orderBy("createdAt", "desc")
+    .get();
+
+  if (!ref.exists) {
+    console.log("No such document!");
+  } else {
+    const scream = ref.data();
+    scream.screamId = ref.id;
+    scream.color = setColorByTopic(ref.data().Thema);
+    scream.comments = [];
+
+    commentsRef.forEach((doc) =>
+      scream.comments.push({ ...doc.data(), commentId: doc.id })
+    );
+    dispatch({ type: SET_SCREAM, payload: scream });
+  }
+};
+
 export const closeScream = () => (dispatch) => {
   dispatch({ type: CLOSE_SCREAM });
   window.history.pushState(null, null, "/");

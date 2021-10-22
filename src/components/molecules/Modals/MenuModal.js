@@ -68,7 +68,13 @@ const MenuModal = ({ setMenuOpen, screamId, userHandle }) => {
 
   return (
     <React.Fragment>
-      {editOpen && <EditModal scream={scream} setEditOpen={setEditOpen} />}
+      {editOpen && (
+        <EditModal
+          scream={scream}
+          setEditOpen={setEditOpen}
+          setMenuOpen={setMenuOpen}
+        />
+      )}
 
       {adminEditOpen && (
         <AdminEditModal

@@ -4,7 +4,7 @@ import "firebase/firestore";
 
 import { clearErrors } from "./errorsActions";
 
-import { openScreamFunc } from "./screamActions";
+import { reloadScreamFunc } from "./screamActions";
 
 import {
   SET_COMMENT,
@@ -67,14 +67,14 @@ export const submitComment =
       });
 
       setTimeout(() => {
-        dispatch(openScreamFunc(screamId));
-      }, 10);
+        dispatch(reloadScreamFunc(screamId));
+      }, 100);
     }
   };
 
 //delete your comment
 export const deleteComment =
-  (commentId, user, screamId) => async (dispatch) => {
+  (commentId, user, screamId, isAdmin, isModerator) => async (dispatch) => {
     const db = firebase.firestore();
     const ref = db.collection("comments").doc(commentId);
     const doc = await ref.get();
@@ -90,10 +90,11 @@ export const deleteComment =
 
     if (!doc.exists) {
       console.log("No such document!");
-    } else if (doc.userHandle !== user.handle) {
-      console.log("not your comment");
-      // return res.status(403).json({ error: "Unauthorized" });
-    } else {
+    } else if (
+      doc.data().userHandle === user.handle ||
+      isAdmin ||
+      isModerator
+    ) {
       const scream = screamDoc.data();
       scream.commentCount--;
       screamDocument.update({ commentCount: scream.commentCount });
@@ -109,9 +110,11 @@ export const deleteComment =
       });
 
       setTimeout(() => {
-        dispatch(openScreamFunc(screamId));
-      }, 50);
+        dispatch(reloadScreamFunc(screamId));
+      }, 100);
+    } else {
+      console.log(doc.data().userHandle, user.handle, "not your comment");
+      // return res.status(403).json({ error: "Unauthorized" });
     }
-
     dispatch(clearErrors());
   };

@@ -252,7 +252,6 @@ const Main = () => {
         loadingProjects={loadingProjects}
         dataFinal={dataFinalMap.slice(0, 300)}
         id="mapDesktop"
-        style={{ zIndex: 9999 }}
         openProject={openProject}
         geoData={project && openProject && project.geoData}
       ></MapDesktop>

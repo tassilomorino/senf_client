@@ -4,6 +4,7 @@ import "firebase/firestore";
 
 import { SET_USER, SET_UNAUTHENTICATED } from "../types";
 import axios from "axios";
+import { closeAccountFunc } from "./accountActions";
 
 export const resetPassword = (email, history) => (dispatch) => {
   axios
@@ -17,6 +18,7 @@ export const resetPassword = (email, history) => (dispatch) => {
 export const logoutUser = () => (dispatch) => {
   firebase.auth().signOut();
   dispatch({ type: SET_UNAUTHENTICATED });
+  dispatch(closeAccountFunc());
 };
 
 export const getUserData = (uid) => async (dispatch) => {

@@ -9,7 +9,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import MyButton from "../../../util/MyButton";
 import LikeButton from "../../atoms/CustomButtons/LikeButton";
 import Comments from "../../molecules/Cards/Comments";
-import CommentForm from "../../atoms/Comments/CommentForm";
+import CommentForm from "../../atoms/Forms/CommentForm";
 import dayjs from "dayjs";
 // MUI Stuff
 
@@ -141,22 +141,7 @@ const styles = {
     pointerEvents: "none",
   },
 
-  faceButton: {
-    zIndex: 9999,
-  },
 
-  expandButton: {
-    position: "absolute",
-    left: "0%",
-    top: "0%",
-    width: "110%",
-    height: "110%",
-    borderRadius: 0,
-    // marginTop: "-20px",
-    // marginLeft: "-10px",
-    zIndex: 9,
-    // backgroundColor: "rgb(0,0,0,0.5)",
-  },
 
   content: {
     width: "95%",

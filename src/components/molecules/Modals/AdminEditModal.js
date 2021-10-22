@@ -79,7 +79,7 @@ class AdminEditModal extends Component {
 
     notes: null,
   };
-  handleOpen = () => {
+  componentDidUpdate() {
     this.props.getUserEmail(this.props.scream.userHandle);
 
     this.setState({
@@ -134,7 +134,7 @@ class AdminEditModal extends Component {
     }
 
     console.log(this.props);
-  };
+  }
 
   handleChange = (event) => {
     event.preventDefault();
@@ -297,8 +297,8 @@ class AdminEditModal extends Component {
     }
 
     this.props.editScream(editScream, this.props.history);
-    // this.setState({ open: false });
-    // window.location.reload(false);
+    this.props.setEditOpen(false);
+    this.props.setMenuOpen(false);
   };
 
   handleClick = (order) => {
