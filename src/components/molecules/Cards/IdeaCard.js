@@ -34,13 +34,12 @@ const Card = styled.div`
   display: flex;
   position: relative;
   box-shadow: 0 8px 40px -12px rgb(0 0 0 / 0%);
-  max-height: 14.5em;
-  min-height: 12em;
+
   margin-left: auto;
   margin-right: auto;
   border-radius: 20px;
   margin-bottom: 10px;
-  height: ${(props) => props.project && "23em"};
+  height: ${(props) => (props.project ? "13.5em" : "11em")};
   overflow: hidden;
 `;
 
@@ -82,7 +81,7 @@ const ScreamCardTitle = styled.div`
   font-weight: 800;
 `;
 const BodyText = styled.div`
-  white-space: pre-line;
+  white-space: none;
   position: relative;
   width: 85%;
   font-size: 14pt;
@@ -93,7 +92,7 @@ const BodyText = styled.div`
 const Gradient = styled.div`
   width: 100%;
   bottom: 0;
-  height: 100px;
+  height: 80px;
   position: absolute;
   background: linear-gradient(
     0deg,
@@ -106,7 +105,7 @@ const Gradient = styled.div`
 const Gradient2 = styled.div`
   width: 80%;
   bottom: 50px;
-  height: 50px;
+  height: 70px;
   position: absolute;
   background: linear-gradient(
     0deg,
@@ -154,9 +153,9 @@ const Line = styled.div`
 `;
 
 const LikeButtonWrapper = styled.div`
-  top: ${(props) => (props.project && props.projectsData ? "10px" : "10%")};
+  top: ${(props) => (props.project && props.projectsData ? "0px" : "0px")};
   left: 85%;
-  z-index: 10;
+  z-index: 12;
   position: absolute;
   text-align: center;
 `;
@@ -170,7 +169,7 @@ const Engagement = styled.div`
 `;
 
 const CommentButtonWrapper = styled.div`
-  top: ${(props) => (props.project && props.projectsData ? "100px" : "55%")};
+  top: ${(props) => (props.project && props.projectsData ? "85px" : "85px")};
   left: 85%;
   z-index: ${(props) => (props.authenticated ? "0" : "10")};
   position: absolute;
