@@ -19,70 +19,41 @@ const List = ({
   dataFinalLength,
   projectsData,
 }) => {
+  const content = (
+    <MainAnimations>
+      {dataFinal.map(
+        ({
+          title,
+          body,
+          screamId,
+          likeCount,
+          commentCount,
+          Stadtteil,
+          project,
+          color,
+        }) => (
+          <IdeaCard
+            loading={loading}
+            key={screamId}
+            title={title}
+            body={body}
+            screamId={screamId}
+            likeCount={likeCount}
+            commentCount={commentCount}
+            Stadtteil={Stadtteil}
+            project={project}
+            color={color}
+            projectsData={projectsData}
+          />
+        )
+      )}
+    </MainAnimations>
+  );
   return (
     !loading && (
       <React.Fragment>
-        {dropdown === "newest" && (
-          <MainAnimations>
-            {_.orderBy(dataFinal, "createdAt", "desc").map(
-              ({
-                title,
-                body,
-                screamId,
-                likeCount,
-                commentCount,
-                Stadtteil,
-                project,
-                color,
-              }) => (
-                <IdeaCard
-                  loading={loading}
-                  key={screamId}
-                  title={title}
-                  body={body}
-                  screamId={screamId}
-                  likeCount={likeCount}
-                  commentCount={commentCount}
-                  Stadtteil={Stadtteil}
-                  project={project}
-                  color={color}
-                  projectsData={projectsData}
-                />
-              )
-            )}
-          </MainAnimations>
-        )}
-
-        {dropdown === "hottest" && (
-          <MainAnimations>
-            {_.orderBy(dataFinal, "likeCount", "desc").map(
-              ({
-                title,
-                body,
-                screamId,
-                likeCount,
-                commentCount,
-                Stadtteil,
-                project,
-                color,
-              }) => (
-                <IdeaCard
-                  loading={loading}
-                  key={screamId}
-                  title={title}
-                  body={body}
-                  screamId={screamId}
-                  likeCount={likeCount}
-                  commentCount={commentCount}
-                  Stadtteil={Stadtteil}
-                  project={project}
-                  color={color}
-                  projectsData={projectsData}
-                />
-              )
-            )}
-          </MainAnimations>
-        )}
+        {dropdown === "newest" && content}
+        {dropdown === "hottest" && content}
 
         {type === "myIdeas" ? (
           <NoMoreMyContent dataFinalLength={dataFinalLength} />

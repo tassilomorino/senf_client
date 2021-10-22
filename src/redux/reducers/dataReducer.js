@@ -15,6 +15,7 @@ import {
   EDIT_SCREAM,
   SET_SCREAM,
   SUBMIT_COMMENT,
+  LOADING_IDEA_DATA,
   LOADING_PROJECTS_DATA,
   LOADING_MYSCREAMS_DATA,
   SET_PROJECTS,
@@ -34,6 +35,7 @@ const initialState = {
   comment: {},
   like: {},
   loading: false,
+  loadingIdea: false,
   loadingProjects: false,
   loadingMyScreams: false,
   scream_user: {},
@@ -62,6 +64,12 @@ export default function (state = initialState, action) {
         loading: true,
       };
 
+    case LOADING_IDEA_DATA:
+      return {
+        ...state,
+        loadingIdea: true,
+      };
+
     case LOADING_MYSCREAMS_DATA:
       return {
         ...state,
@@ -85,6 +93,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         scream: action.payload,
+        loadingIdea: false,
       };
 
     case SET_SCREAM_USER:

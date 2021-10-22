@@ -757,7 +757,7 @@
     background-color: #F8F8F8;
     top: 0;
     left: 0;
-    z-index: 999;
+    z-index: 1;
     display: block;
     transition: 0.5s;
 
@@ -857,7 +857,7 @@
     z-index: 90;
     top: 0;
     position: fixed;
-    animation: enterScreamDialogAnimation 0.5s;
+    
   }
 
 
@@ -866,12 +866,12 @@
     margin-top: 0px;
     width: 400px;
     overflow-y: scroll !important;
-    z-index: 99;
+    z-index: 97;
     top: 0;
     height: 100vh;
     position: fixed;
     margin-top: 0vh;
-    animation: enterScreamDialogAnimation 0.5s;
+    
   }
 
  
