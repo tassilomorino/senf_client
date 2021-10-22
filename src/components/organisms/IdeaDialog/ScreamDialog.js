@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import { setMapViewport } from "../../../redux/actions/mapActions";
 import withStyles from "@material-ui/core/styles/withStyles";
-import MyButton from "../../../util/MyButton";
 import LikeButton from "../../atoms/CustomButtons/LikeButton";
 import Comments from "../../molecules/Cards/Comments";
 import CommentForm from "../../atoms/Comments/CommentForm";
@@ -51,6 +50,7 @@ import {
 import styled, { createGlobalStyle } from "styled-components";
 
 import ScreamDialogSwipe from "../../../hooks/ScreamDialogSwipe";
+import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
 import Loader from "../../atoms/Animations/Loader";
 
 const portalRoot = document.getElementById("portal-root");
@@ -513,20 +513,20 @@ const ScreamDialog = ({ classes, projectsData }) => {
                 <div className={classes.likeButton}>
                   <LikeButton screamId={screamId} />
                 </div>
-                <div className={classes.engagement}>{likeCount} </div>
-              </div>
-              <div className={classes.commentButtonWrapper}>
-                <div className={classes.commentButton}>
-                  {!authenticated ? (
-                    <MyButton>
-                      <RegistrationAndLogin />
-                      <img src={ChatBorder} width="100%" alt="ChatIcon" />
-                    </MyButton>
-                  ) : (
-                    <MyButton onClick={() => handleClick()}>
-                      <img src={ChatBorder} width="90%" alt="ChatIcon" />
-                    </MyButton>
-                  )}
+                <div className={classes.commentButtonWrapper}>
+                  <div className={classes.commentButton}>
+                    {!authenticated ? (
+                      <MyButtonStyle>
+                        <RegistrationAndLogin />
+                        <img src={ChatBorder} width="100%" alt="ChatIcon" />
+                      </MyButtonStyle>
+                    ) : (
+                      <MyButtonStyle onClick={() => handleClick()}>
+                        <img src={ChatBorder} width="90%" alt="ChatIcon" />
+                      </MyButtonStyle>
+                    )}
+                  </div>
+                  <div className={classes.engagement}>{commentCount}</div>
                 </div>
                 <div className={classes.engagement}>{commentCount}</div>
               </div>

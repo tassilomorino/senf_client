@@ -1,6 +1,5 @@
 /** @format */
 import React from "react";
-import PropTypes from "prop-types";
 
 //REDUX
 import { useDispatch, useSelector } from "react-redux";
@@ -85,7 +84,7 @@ const Topbar = ({ order, handleClick }) => {
         </InlineInfoButtonContainer>
 
         <LogoContainer>
-          <img src={Logo} width="100px"></img>
+          <img src={Logo} width="100px" alt="logo"></img>
         </LogoContainer>
 
         {!authenticated ? (
