@@ -516,7 +516,6 @@ const ScreamDialog = ({ classes, projectsData }) => {
                 <div className={classes.likeButton}>
                   <LikeButton screamId={screamId} />
                 </div>
-<<<<<<< HEAD
                 <div className={classes.commentButtonWrapper}>
                   <div className={classes.commentButton}>
                     {!authenticated ? (
@@ -531,22 +530,6 @@ const ScreamDialog = ({ classes, projectsData }) => {
                     )}
                   </div>
                   <div className={classes.engagement}>{commentCount}</div>
-=======
-                <div className={classes.engagement}>{likeCount} </div>
-              </div>
-              <div className={classes.commentButtonWrapper}>
-                <div className={classes.commentButton}>
-                  {!authenticated ? (
-                    <MyButton>
-                      <RegistrationAndLogin />
-                      <img src={ChatBorder} width="100%" alt="ChatIcon" />
-                    </MyButton>
-                  ) : (
-                    <MyButton onClick={() => handleClick()}>
-                      <img src={ChatBorder} width="90%" alt="ChatIcon" />
-                    </MyButton>
-                  )}
->>>>>>> main
                 </div>
                 <div className={classes.engagement}>{commentCount}</div>
               </div>
