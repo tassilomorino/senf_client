@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { likeScream, unlikeScream } from "../../../redux/actions/likeActions";
 
 //Components
-import RegistrationAndLogin from "../Auth/RegistrationAndLogin";
+import RegistrationAndLogin from "../Auth/LoginRegistration";
 
 //Images
 import HandBorder from "../../../images/icons/handsnoclap.png";
