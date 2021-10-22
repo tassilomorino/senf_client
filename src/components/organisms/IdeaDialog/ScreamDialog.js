@@ -3,70 +3,32 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { setMapViewport } from "../../../redux/actions/mapActions";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Comments from "../../molecules/Cards/Comments";
-import CommentForm from "../../atoms/Forms/CommentForm";
-// MUI Stuff
-
-//MAPSTUFF
-import "mapbox-gl/dist/mapbox-gl.css";
+import styled from "styled-components";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 // Redux stuff
 import { closeScream } from "../../../redux/actions/screamActions";
 import { clearErrors } from "../../../redux/actions/errorsActions";
+import { setMapViewport } from "../../../redux/actions/mapActions";
 
 //COMPONENTS
 import ShareModal from "../../molecules/Modals/ShareModal";
 import MenuModal from "../../molecules/Modals/MenuModal";
-
-import { isMobileCustom } from "../../../util/customDeviceDetect";
-
+import Comments from "../../molecules/Cards/Comments";
+import CommentForm from "../../atoms/Forms/CommentForm";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
-import styled from "styled-components";
 
 import ScreamDialogSwipe from "../../../hooks/ScreamDialogSwipe";
 import Loader from "../../atoms/Animations/Loader";
 import ShareYourOpinionCard from "../../molecules/Cards/ShareYourOpinionCard";
 import IdeaCardBig from "../../molecules/Cards/IdeaCardBig";
+import {
+  BackgroundDesktop,
+  BackgroundMobile,
+} from "../../atoms/Backgrounds/GradientBackgrounds";
+import CommentMenuModal from "../../molecules/Modals/CommentMenuModal";
 
 const portalRoot = document.getElementById("portal-root");
-
-const BackgroundMobile = styled.div`
-  position: absolute;
-  margin-top: -10px;
-  min-height: 100%;
-  width: 100vw;
-  border-radius: 20px 20px 0 0;
-  background: rgb(254, 217, 87);
-  background: linear-gradient(
-    180deg,
-    rgba(254, 217, 87, 1) 0%,
-    rgba(254, 217, 87, 1) 6%,
-    rgba(255, 218, 83, 1) 41%,
-    rgba(255, 255, 255, 1) 100%
-  );
-  z-index: 0;
-  box-shadow: 0 8px 20px 12px rgba(0, 0, 0, 0.1);
-`;
-
-const BackgroundDesktop = styled.div`
-  position: fixed;
-  margin-top: 0px;
-  top: 0;
-  height: 100%;
-  width: 400px;
-  border-radius: 0px 0px 0 0;
-  background: rgb(254, 217, 87);
-  background: linear-gradient(
-    180deg,
-    rgba(254, 217, 87, 1) 0%,
-    rgba(254, 217, 87, 1) 6%,
-    rgba(255, 218, 83, 1) 41%,
-    rgba(255, 255, 255, 1) 100%
-  );
-  z-index: 0;
-`;
 
 const ButtonsContainer = styled.div`
   width: 120px;
@@ -94,13 +56,17 @@ const ScreamDialog = () => {
   const dispatch = useDispatch();
 
   const openScream = useSelector((state) => state.UI.openScream);
-  const loading = useSelector((state) => state.UI.loading);
+  const loadingIdea = useSelector((state) => state.data.loadingIdea);
 
   const [path, setPath] = useState("");
   const [clicked, setClicked] = useState(false);
 
   const [shareOpen, setShareOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const [commentMenuOpen, setCommentMenuOpen] = useState(false);
+  const [userHandleSelected, setUserHandleSelected] = useState("");
+  const [commentIdSelected, setCommentIdSelected] = useState("");
 
   useEffect(() => {
     if (openScream && lat !== undefined) {
@@ -123,7 +89,7 @@ const ScreamDialog = () => {
 
       setPath(`https://senf.koeln/${screamId}`);
     }
-  }, [dispatch, lat, loading, long, openScream, screamId]);
+  }, [lat, loadingIdea, long, openScream, screamId]);
 
   const handleClose = () => {
     dispatch(closeScream());
@@ -147,7 +113,7 @@ const ScreamDialog = () => {
   };
   const content = (
     <div className="wrapperScreamDialog">
-      {!loading ? (
+      {!loadingIdea ? (
         <React.Fragment>
           <ButtonsContainer>
             <CustomIconButton name="Share" handleButtonClick={handleShare} />
@@ -160,7 +126,12 @@ const ScreamDialog = () => {
           <IdeaCardBig setClicked={setClicked} />
           <VerticalLine />
           <ShareYourOpinionCard />
-          <Comments comments={comments} />
+          <Comments
+            comments={comments}
+            setCommentMenuOpen={setCommentMenuOpen}
+            setUserHandleSelected={setUserHandleSelected}
+            setCommentIdSelected={setCommentIdSelected}
+          />
           {isMobileCustom ? (
             <div style={{ height: "200px" }} />
           ) : (
@@ -174,8 +145,6 @@ const ScreamDialog = () => {
   );
   return ReactDOM.createPortal(
     <React.Fragment>
-      <CommentForm screamId={screamId} clicked={clicked} />
-
       {shareOpen && (
         <ShareModal
           screamId={screamId}
@@ -192,18 +161,28 @@ const ScreamDialog = () => {
         />
       )}
 
+      {commentMenuOpen && (
+        <CommentMenuModal
+          commentId={commentIdSelected}
+          setCommentMenuOpen={setCommentMenuOpen}
+          screamId={screamId}
+          userHandle={userHandleSelected}
+        />
+      )}
+
+      <CommentForm screamId={screamId} clicked={clicked} />
       <CustomIconButton
         name="ArrowLeft"
         position="fixed"
         margin="10px"
         marginLeft={document.body.clientWidth > 768 && "210px"}
         top="0px"
-        zIndex="9999"
+        zIndex="98"
         handleButtonClick={handleClose}
       />
 
       {isMobileCustom ? (
-        <ScreamDialogSwipe loading={loading}> {content}</ScreamDialogSwipe>
+        <ScreamDialogSwipe loading={loadingIdea}> {content}</ScreamDialogSwipe>
       ) : (
         <React.Fragment>{content}</React.Fragment>
       )}

@@ -1,25 +1,24 @@
 /** @format */
 import React from "react";
-import PropTypes from "prop-types";
+import styled from "styled-components";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
+import { useDispatch, useSelector } from "react-redux";
 
 //REDUX
-import { useDispatch, useSelector } from "react-redux";
+import { openAccountFunc } from "../../../redux/actions/accountActions";
 
 //COMPONENTS
 import LoginRegistration from "../../atoms/Auth/LoginRegistration";
 import InlineInformationPage from "../../organisms/infocomponents/InlineInformationPage";
 import Tabs from "../../atoms/Tabs/Tabs";
 import { MenuData } from "../../../data/MenuData";
+import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
 //ICONS
 import Logo from "../../../images/logo.png";
 import profile_yellow from "../../../images/icons/profile_yellow.png";
 import Noprofile from "../../../images/noprofile.png";
-import styled from "styled-components";
-import { isMobileCustom } from "../../../util/customDeviceDetect";
 import Info from "../../../images/icons/info.png";
-import { openAccountFunc } from "../../../redux/actions/accountActions";
-import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
 const Wrapper = styled.div`
   z-index: 99;
@@ -31,7 +30,7 @@ const Wrapper = styled.div`
   height: 90px;
   background-color: white;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
-  top: ${(props) => (props.openScream ? "-90px" : "0px")};
+  top: ${(props) => (props.moveUp ? "-90px" : "0px")};
   transition: 1s;
 `;
 
@@ -69,6 +68,9 @@ const Topbar = ({ order, handleClick }) => {
   const loading = useSelector((state) => state.data.loading);
   const authenticated = useSelector((state) => state.user.authenticated);
   const openScream = useSelector((state) => state.UI.openScream);
+  const openProject = useSelector((state) => state.UI.openProject);
+  const openAccount = useSelector((state) => state.UI.openAccount);
+
   const userId = useSelector((state) => state.user.userId);
   const dispatch = useDispatch();
 
@@ -78,7 +80,7 @@ const Topbar = ({ order, handleClick }) => {
   return (
     !loading &&
     isMobileCustom && (
-      <Wrapper openScream={openScream}>
+      <Wrapper moveUp={openScream || openProject || openAccount}>
         <InlineInfoButtonContainer>
           <InlineInformationPage />
           <img src={Info} width="30" alt="EndImage" />

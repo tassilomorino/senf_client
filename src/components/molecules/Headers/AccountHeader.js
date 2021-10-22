@@ -9,14 +9,13 @@ import { AccountTabData } from "../../../data/AccountTabData";
 import { useSelector } from "react-redux";
 
 const FixedWrapper = styled.div`
-  z-index: 999;
+  z-index: 91;
   position: fixed;
   width: 95%;
 
   height: 80px;
-  z-index: 999;
   background-color: white;
-  top: 10px;
+  top: ${(props) => (props.moveUp ? "-90px" : "10px")};
   left: 2.5%;
   border-radius: 20px 20px;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
@@ -31,7 +30,6 @@ const FlexWrapper = styled.div`
   position: relative;
   width: 97.5%;
   height: 50px;
-  z-index: 99;
   top: 0px;
   left: 0;
   display: flex;
@@ -53,7 +51,7 @@ const TitleWrapper = styled.div`
 
 const ProjectHeader = ({ loading, order, handleClose, handleClick }) => {
   const handle = useSelector((state) => state.user.handle);
-
+  const openScream = useSelector((state) => state.UI.openScream);
   function truncateString(str, num) {
     if (str.length <= num) {
       return str;
@@ -61,7 +59,7 @@ const ProjectHeader = ({ loading, order, handleClose, handleClick }) => {
     return str.slice(0, num) + "...";
   }
   return (
-    <FixedWrapper>
+    <FixedWrapper moveUp={openScream}>
       <FlexWrapper>
         <CustomIconButton
           name="ArrowLeft"

@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import ShareModal from "../../molecules/Modals/ShareModal";
@@ -10,14 +9,13 @@ import Tabs from "../../atoms/Tabs/Tabs";
 import { ProjectTabData } from "../../../data/ProjectTabData";
 
 const FixedWrapper = styled.div`
-  z-index: 999;
+  z-index: 91;
   position: fixed;
   width: 95%;
 
   height: 80px;
-  z-index: 99;
   background-color: white;
-  top: 10px;
+  top: ${(props) => (props.moveUp ? "-90px" : "10px")};
   left: 2.5%;
   border-radius: 20px 20px;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
@@ -32,28 +30,12 @@ const FlexWrapper = styled.div`
   position: relative;
   width: 97.5%;
   height: 50px;
-  z-index: 99;
   top: 0px;
   left: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-`;
-
-const ImgWrapperDesktop = styled.div`
-  position: relative;
-  width: 100px;
-  height: 100px;
-  background-color: white;
-  border-radius: 20px;
-  left: calc(50% - 50px);
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  text-align: center;
-  overflow: hidden;
 `;
 
 const ImgWrapperMobile = styled.div`
@@ -124,7 +106,7 @@ const ProjectHeader = ({
         />
       )}
 
-      <FixedWrapper openScream={openScream}>
+      <FixedWrapper moveUp={openScream}>
         <FlexWrapper>
           <CustomIconButton
             name="ArrowLeft"

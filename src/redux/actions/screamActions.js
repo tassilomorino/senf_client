@@ -7,7 +7,6 @@ import { clearErrors } from "./errorsActions";
 import { openProjectFunc } from "./projectActions";
 import {
   SET_SCREAMS,
-  SET_MY_SCREAMS,
   LOADING_DATA,
   DELETE_SCREAM,
   SET_ERRORS,
@@ -15,7 +14,7 @@ import {
   EDIT_SCREAM,
   LOADING_UI,
   SET_SCREAM,
-  STOP_LOADING_UI,
+  LOADING_IDEA_DATA,
   OPEN_SCREAM,
   CLOSE_SCREAM,
   SET_SCREAM_USER,
@@ -62,7 +61,7 @@ export const openScreamFunc = (screamId) => async (dispatch) => {
   // When the modal is shown, we want a fixed body
   // document.body.style.position = "fixed";
   // document.body.style.top = `-${window.scrollY}px`;
-  dispatch({ type: LOADING_UI });
+  dispatch({ type: LOADING_IDEA_DATA });
   dispatch({ type: OPEN_SCREAM });
 
   const db = firebase.firestore();
@@ -90,7 +89,6 @@ export const openScreamFunc = (screamId) => async (dispatch) => {
     const newPath = `/${screamId}`;
     window.history.pushState(null, null, newPath);
     dispatch({ type: SET_SCREAM, payload: scream });
-    dispatch({ type: STOP_LOADING_UI });
   }
 };
 

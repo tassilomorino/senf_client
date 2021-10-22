@@ -92,24 +92,16 @@ const styles = {
   },
 };
 
-const Comments = ({ classes }) => {
-  const [commentMenuOpen, setCommentMenuOpen] = useState(false);
-  const [userHandleSelected, setUserHandleSelected] = useState("");
-  const [commentIdSelected, setCommentIdSelected] = useState("");
-
-  const screamId = useSelector((state) => state.data.scream.screamId);
+const Comments = ({
+  classes,
+  setCommentMenuOpen,
+  setUserHandleSelected,
+  setCommentIdSelected,
+}) => {
   const comments = useSelector((state) => state.data.scream.comments);
 
   return (
     <Grid container>
-      {commentMenuOpen && (
-        <CommentMenuModal
-          commentId={commentIdSelected}
-          setCommentMenuOpen={setCommentMenuOpen}
-          screamId={screamId}
-          userHandle={userHandleSelected}
-        />
-      )}
       {comments.map((comment, index) => {
         const { body, createdAt, userHandle, commentId } = comment;
 

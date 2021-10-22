@@ -866,7 +866,7 @@
     margin-top: 0px;
     width: 400px;
     overflow-y: scroll !important;
-    z-index: 99;
+    z-index: 97;
     top: 0;
     height: 100vh;
     position: fixed;

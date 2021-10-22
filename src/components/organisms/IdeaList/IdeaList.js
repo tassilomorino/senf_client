@@ -178,13 +178,15 @@ const IdeaList = ({
       {" "}
       {isMobileCustom ? (
         <React.Fragment>
-          <MapMobile
-            dataFinal={dataFinalMap}
-            geoData={geoData}
-            viewport={mapViewport}
-            _onViewportChange={_onViewportChange}
-            setSwipePositionUp={() => setSwipePositionUp()}
-          />{" "}
+          <div style={{ height: "100vh" }}>
+            <MapMobile
+              dataFinal={dataFinalMap}
+              geoData={geoData}
+              viewport={mapViewport}
+              _onViewportChange={_onViewportChange}
+              setSwipePositionUp={() => setSwipePositionUp()}
+            />
+          </div>
           <TopicFilter
             loading={loading}
             handleTopicSelector={handleTopicSelector}
