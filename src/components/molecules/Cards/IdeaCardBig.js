@@ -20,6 +20,7 @@ import EventIcon from "@material-ui/icons/Event";
 import WeblinkIcon from "../../../images/icons/weblink.png";
 import ChatBorder from "../../../images/icons/chat.png";
 import contactIcon from "../../../images/icons/mail.png";
+import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
 
 const Content = styled.div`
   width: 95%;
@@ -332,14 +333,14 @@ const IdeaCardBig = ({ classes, setClicked }) => {
         <div className={classes.commentButtonWrapper}>
           <div className={classes.commentButton}>
             {!authenticated ? (
-              <MyButton>
+              <MyButtonStyle>
                 <LoginRegistration />
                 <img src={ChatBorder} width="100%" alt="ChatIcon" />
-              </MyButton>
+              </MyButtonStyle>
             ) : (
-              <MyButton onClick={() => handleClick()}>
+              <MyButtonStyle onClick={() => handleClick()}>
                 <img src={ChatBorder} width="90%" alt="ChatIcon" />
-              </MyButton>
+              </MyButtonStyle>
             )}
           </div>
           <div className={classes.engagement}>{commentCount}</div>

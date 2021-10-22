@@ -10,13 +10,14 @@ import CloseIcon from "@material-ui/icons/Close";
 
 //Components
 import Thema from "./thema";
-import MyButton from "../../../util/MyButton";
 
 // MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import Slide from "@material-ui/core/Slide";
+import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
+import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -81,12 +82,12 @@ const ThemenDialog = ({ classes, screams }) => {
       fullScreen
       maxWidth={"lg"}
     >
-      <MyButton
+      <MyButtonStyle
         onClick={() => setOpen(false)}
         btnClassName={classes.closeButton}
       >
         <CloseIcon />
-      </MyButton>
+      </MyButtonStyle>
 
       <DialogContent>
         <Thema screams={screams} />
@@ -106,12 +107,12 @@ const ThemenDialog = ({ classes, screams }) => {
       fullScreen
       maxWidth={"lg"}
     >
-      <MyButton
+      <MyButtonStyle
         onClick={() => setOpen(false)}
         btnClassName={classes.closeButton}
       >
         <CloseIcon />
-      </MyButton>
+      </MyButtonStyle>
 
       <DialogContent>
         <Thema screams={screams} />
@@ -122,10 +123,9 @@ const ThemenDialog = ({ classes, screams }) => {
   );
   return (
     <Fragment>
-      <MyButton
-        onClick={() => setOpen(true)}
-        btnClassName={classes.expandButton}
-      ></MyButton>
+      <ExpandButton
+        handleButtonClick={() => setOpen(true)}
+      ></ExpandButton>
 
       {dialogComponent}
     </Fragment>

@@ -87,7 +87,7 @@ const Topbar = ({ order, handleClick }) => {
         </InlineInfoButtonContainer>
 
         <LogoContainer>
-          <img src={Logo} width="100px"></img>
+          <img src={Logo} width="100px" alt="logo"></img>
         </LogoContainer>
 
         {!authenticated ? (

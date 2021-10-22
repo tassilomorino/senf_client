@@ -8,13 +8,14 @@ import CloseIcon from "@material-ui/icons/Close";
 
 //Components
 import Altersgruppe from "./altersgruppe";
-import MyButton from "../../../util/MyButton";
 
 // MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import Slide from "@material-ui/core/Slide";
+import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
+import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -32,7 +33,6 @@ const styles = {
     overflow: "hidden",
     padding: "0",
     top: "8em",
-    overflow: "hidden",
     borderRadius: "10px",
   },
   paperWeb: {
@@ -41,18 +41,6 @@ const styles = {
     height: "auto",
     maxHeight: "calc(100vh - 80px)",
     overflowX: "hidden",
-  },
-  card: {
-    marginTop: "2.5vw",
-    top: "0em",
-    position: "relative",
-    width: "100%",
-    paddingTop: "1em",
-    backgroundColor: "white",
-    height: "auto",
-    paddingBottom: "1em",
-    borderRadius: "10px",
-    overflow: "hidden",
   },
 
   closeButton: {
@@ -129,8 +117,6 @@ const styles = {
 
     borderRadius: "10px",
     top: "2vh",
-    transform: "scale(0.8)",
-    marginLeft: "7px",
     paddingLeft: "20px",
 
     marginBottom: "20px",
@@ -171,9 +157,9 @@ class AltersgruppeDialog extends Component {
         className="dialogOverlayContent"
         maxWidth={"lg"}
       >
-        <MyButton onClick={this.handleClose} btnClassName={classes.closeButton}>
+        <MyButtonStyle onClick={this.handleClose} btnClassName={classes.closeButton}>
           <CloseIcon />
-        </MyButton>
+        </MyButtonStyle>
 
         <DialogContent>
           <Altersgruppe data={this.props.data} classes={this.props.classes} />
@@ -191,9 +177,9 @@ class AltersgruppeDialog extends Component {
         className="dialogOverlayContent"
         maxWidth={"lg"}
       >
-        <MyButton onClick={this.handleClose} btnClassName={classes.closeButton}>
+        <MyButtonStyle onClick={this.handleClose} btnClassName={classes.closeButton}>
           <CloseIcon />
-        </MyButton>
+        </MyButtonStyle>
 
         <DialogContent>
           <Altersgruppe data={this.props.data} classes={this.props.classes} />
@@ -203,11 +189,9 @@ class AltersgruppeDialog extends Component {
 
     return (
       <Fragment>
-        <MyButton
-          onClick={this.handleOpen}
-          btnClassName={classes.expandButton}
-        ></MyButton>
-
+        <ExpandButton
+          handleButtonClick={this.handleOpen}
+        ></ExpandButton>
         {dialogComponent}
       </Fragment>
     );

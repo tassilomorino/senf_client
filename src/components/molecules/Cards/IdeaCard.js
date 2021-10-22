@@ -1,7 +1,6 @@
 /** @format */
 
 import React from "react";
-import MyButton from "../../../util/MyButton";
 import styled from "styled-components";
 
 //TIMESTAMP
@@ -21,6 +20,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { openScreamFunc } from "../../../redux/actions/screamActions";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import { openProjectFunc } from "../../../redux/actions/projectActions";
+import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
 
 const CardContent = styled.div`
   color: rgb(87, 87, 87);
@@ -103,42 +103,6 @@ const Gradient = styled.div`
   );
 `;
 
-const Line = styled.div`
-  top: 0%;
-  left: 85%;
-  width: 1px;
-  height: ${(props) =>
-    !props.openProject && props.project && props.projectsData
-      ? "calc(100% - 50px)"
-      : "100%"};
-  position: absolute;
-  background-color: #d5dadd;
-  z-index: 11;
-`;
-
-const LikeButtonWrapper = styled.div`
-  top: ${(props) => (props.project && props.projectsData ? "10px" : "10%")};
-  left: 85%;
-  z-index: 10;
-  position: absolute;
-  text-align: center;
-`;
-
-const LikeButtonDesign = styled.div`
-  top: 10%;
-  left: 0%;
-  z-index: 10;
-  position: relative;
-`;
-
-const Engagement = styled.div`
-  color: black;
-  width: 100%;
-  font-size: 14px;
-  text-align: center;
-  padding-right: 10px;
-`;
-
 const Gradient2 = styled.div`
   width: 80%;
   bottom: 50px;
@@ -175,7 +139,37 @@ const ScreamcardProjectContainerButtonWide = styled.button`
   text-transform: none;
   font-family: Futura PT W01 Book;
 `;
-const CommentButtonWrapper = styled.button`
+
+const Line = styled.div`
+  top: 0%;
+  left: 85%;
+  width: 1px;
+  height: ${(props) =>
+    !props.openProject && props.project && props.projectsData
+      ? "calc(100% - 50px)"
+      : "100%"};
+  position: absolute;
+  background-color: #d5dadd;
+  z-index: 11;
+`;
+
+const LikeButtonWrapper = styled.div`
+  top: ${(props) => (props.project && props.projectsData ? "10px" : "10%")};
+  left: 85%;
+  z-index: 10;
+  position: absolute;
+  text-align: center;
+`;
+
+const Engagement = styled.div`
+  color: black;
+  width: 100%;
+  font-size: 14px;
+  text-align: center;
+  padding-right: 10px;
+`;
+
+const CommentButtonWrapper = styled.div`
   top: ${(props) => (props.project && props.projectsData ? "100px" : "55%")};
   left: 85%;
   z-index: ${(props) => (props.authenticated ? "0" : "10")};
@@ -233,9 +227,7 @@ const IdeaCard = ({
           projectsData={projectsData}
         />
         <LikeButtonWrapper project={project} projectsData={projectsData}>
-          <LikeButtonDesign>
-            <LikeButton screamId={screamId} />
-          </LikeButtonDesign>
+          <LikeButton screamId={screamId} />
           <Engagement>{likeCount} </Engagement>
         </LikeButtonWrapper>
         <CommentButtonWrapper
@@ -243,10 +235,10 @@ const IdeaCard = ({
           project={project}
           projectsData={projectsData}
         >
-          <MyButton>
+          <MyButtonStyle>
             {!authenticated && <RegistrationAndLogin />}
             <img src={ChatBorder} width="100%" alt="ChatIcon" />
-          </MyButton>
+          </MyButtonStyle>
           <Engagement>{commentCount}</Engagement>
         </CommentButtonWrapper>
         <br />
