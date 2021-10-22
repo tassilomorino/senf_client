@@ -161,12 +161,10 @@ const ScreamDialog = () => {
           <VerticalLine />
           <ShareYourOpinionCard />
           <Comments comments={comments} />
-          <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
-          {isMobileCustom && (
-            <React.Fragment>
-              <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
-              <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
-            </React.Fragment>
+          {isMobileCustom ? (
+            <div style={{ height: "200px" }} />
+          ) : (
+            <div style={{ height: "200px" }} />
           )}
         </React.Fragment>
       ) : (
@@ -175,70 +173,41 @@ const ScreamDialog = () => {
     </div>
   );
   return ReactDOM.createPortal(
-    isMobileCustom ? (
-      <React.Fragment>
-        <CommentForm screamId={screamId} clicked={clicked} />
+    <React.Fragment>
+      <CommentForm screamId={screamId} clicked={clicked} />
 
-        {shareOpen && (
-          <ShareModal
-            screamId={screamId}
-            title={title}
-            path={path}
-            setShareOpen={setShareOpen}
-          />
-        )}
-        {menuOpen && (
-          <MenuModal
-            screamId={screamId}
-            userHandle={userHandle}
-            setMenuOpen={setMenuOpen}
-          />
-        )}
-
-        <CustomIconButton
-          name="ArrowLeft"
-          position="fixed"
-          margin="10px"
-          marginLeft={document.body.clientWidth > 768 && "210px"}
-          top="0px"
-          zIndex="9999"
-          handleButtonClick={handleClose}
+      {shareOpen && (
+        <ShareModal
+          screamId={screamId}
+          title={title}
+          path={path}
+          setShareOpen={setShareOpen}
         />
+      )}
+      {menuOpen && (
+        <MenuModal
+          screamId={screamId}
+          userHandle={userHandle}
+          setMenuOpen={setMenuOpen}
+        />
+      )}
 
+      <CustomIconButton
+        name="ArrowLeft"
+        position="fixed"
+        margin="10px"
+        marginLeft={document.body.clientWidth > 768 && "210px"}
+        top="0px"
+        zIndex="9999"
+        handleButtonClick={handleClose}
+      />
+
+      {isMobileCustom ? (
         <ScreamDialogSwipe loading={loading}> {content}</ScreamDialogSwipe>
-      </React.Fragment>
-    ) : (
-      <React.Fragment>
-        <CommentForm screamId={screamId} clicked={clicked} />
-
-        {shareOpen && (
-          <ShareModal
-            screamId={screamId}
-            title={title}
-            path={path}
-            setShareOpen={setShareOpen}
-          />
-        )}
-        {menuOpen && (
-          <MenuModal
-            screamId={screamId}
-            userHandle={userHandle}
-            setMenuOpen={setMenuOpen}
-          />
-        )}
-
-        <CustomIconButton
-          name="ArrowLeft"
-          position="fixed"
-          margin="10px"
-          marginLeft={document.body.clientWidth > 768 && "210px"}
-          top="0px"
-          handleButtonClick={handleClose}
-        />
-
-        {content}
-      </React.Fragment>
-    ),
+      ) : (
+        <React.Fragment>{content}</React.Fragment>
+      )}
+    </React.Fragment>,
     portalRoot
   );
 };
