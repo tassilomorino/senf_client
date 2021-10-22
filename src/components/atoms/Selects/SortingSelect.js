@@ -44,6 +44,7 @@ const DropDownListContainer = styled.div`
   height: auto;
   box-sizing: border-box;
   z-index: 99;
+  pointer-events: auto;
 `;
 
 const DropDownList = styled.ul`
