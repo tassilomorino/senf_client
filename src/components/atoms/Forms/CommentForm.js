@@ -12,6 +12,7 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { submitComment } from "../../../redux/actions/commentActions";
 import LikeButton from "../CustomButtons/LikeButton";
+import { SubmitButton } from "../CustomButtons/SubmitButton";
 
 const styles = {
   textField: {
@@ -66,14 +67,21 @@ class CommentForm extends Component {
   };
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.submitComment(
-      this.props.screamId,
-      { body: this.state.body },
-      this.props.user
-    );
     this.setState({
       loading: true,
     });
+    this.props
+      .submitComment(
+        this.props.screamId,
+        { body: this.state.body },
+        this.props.user
+      )
+      .then(() => {
+        this.setState({
+          loading: false,
+          body: "",
+        });
+      });
   };
 
   render() {
@@ -94,7 +102,7 @@ class CommentForm extends Component {
           <TextField
             name="body"
             type="text"
-            label={this.props.t('opinion')}
+            label={this.props.t("opinion")}
             id="outlined-name"
             margin="dense"
             variant="outlined"
@@ -106,14 +114,28 @@ class CommentForm extends Component {
             fullWidth
             className={classes.textField}
           />
-          <Button
+          <SubmitButton
+            text="Senden"
+            zIndex="999"
+            backgroundColor="#fed957"
+            width="50px"
+            textColor="#353535"
+            position="absolute"
+            bottom="10px"
+            left="calc(50% - 50px)"
+            loading={this.state.loading}
+            disabled={this.state.body === "" || this.state.loading}
+            smallSubmitButton={true}
+          />
+          {/* <Button
             type="submit"
             variant="contained"
             color="secondary"
+            disabled={this.state.body === ""}
             className={classes.button}
           >
             Senden
-          </Button>
+          </Button> */}
 
           {/* {loading && (
               <CircularProgress size={30} className={classes.progress} />
@@ -132,9 +154,8 @@ const mapStateToProps = (state) => ({
   user: state.user,
 });
 
-
 export default compose(
   withStyles(styles),
   withTranslation(),
-  connect(mapStateToProps, { submitComment }))
-  (CommentForm)
+  connect(mapStateToProps, { submitComment })
+)(CommentForm);
