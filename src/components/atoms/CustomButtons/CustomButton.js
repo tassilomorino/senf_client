@@ -48,6 +48,7 @@ const WideButton = styled.button`
   justify-content: center;
   align-items: center;
   transform: translateX(-50%);
+  overflow: hidden;
 
   margin-left: ${(props) => (props.marginLeft ? props.marginLeft : "50%")};
 
@@ -76,6 +77,7 @@ export const CustomButton = ({
   zIndex,
   animation,
   handleButtonClick,
+  children,
 }) => {
   return (
     <WideButton
@@ -90,6 +92,7 @@ export const CustomButton = ({
       animation={animation}
     >
       {text}
+      {children}
     </WideButton>
   );
 };

@@ -310,9 +310,7 @@ const Main = () => {
         </div>
       )}
 
-      {!openInfoPage && openScream && (
-        <ScreamDialog screamIdParam={screamIdParam} projectsData={projects} />
-      )}
+      {!openInfoPage && openScream && <ScreamDialog />}
     </div>
   );
 };
