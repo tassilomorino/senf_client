@@ -74,7 +74,7 @@ export function TopicFilter({
   topicsSelected,
   loading,
   swipePosition,
-  setSwipeMovePosition,
+  setSwipePositionDown,
 }) {
   const openScream = useSelector((state) => state.UI.openScream);
 
@@ -99,7 +99,7 @@ export function TopicFilter({
   return isMobileCustom && !loading ? (
     <TopicFilterWrapperMobile openScream={openScream}>
       {swipePosition === "top" && (
-        <MapClickContainer onClick={() => setSwipeMovePosition("0")} />
+        <MapClickContainer onClick={setSwipePositionDown} />
       )}
       <TopicFilterInnerWrapperMobile>
         <FormControlLabel

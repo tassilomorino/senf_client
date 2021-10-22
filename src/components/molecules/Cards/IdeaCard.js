@@ -177,22 +177,22 @@ const CommentButtonWrapper = styled.div`
   background-color: white;
 `;
 
-const IdeaCard = ({ classes, projectsData, scream }) => {
+const IdeaCard = ({
+  projectsData,
+  title,
+  body,
+  screamId,
+  likeCount,
+  commentCount,
+  Stadtteil,
+  project,
+  color,
+}) => {
+  const ideaCardProject = project;
   dayjs.extend(relativeTime);
   const dispatch = useDispatch();
   const authenticated = useSelector((state) => state.user.authenticated);
   const openProject = useSelector((state) => state.UI.openProject);
-
-  const {
-    title,
-    body,
-    screamId,
-    likeCount,
-    commentCount,
-    Stadtteil,
-    project,
-    color,
-  } = scream;
 
   const fetchDataScream = () => {
     dispatch(openScreamFunc(screamId));
@@ -204,9 +204,9 @@ const IdeaCard = ({ classes, projectsData, scream }) => {
 
   const projectsDataFinal = [];
   if (projectsData) {
-    projectsData.forEach((element) => {
-      if (project === element.project) {
-        projectsDataFinal.push(element.title);
+    projectsData.forEach(({ project, title }) => {
+      if (ideaCardProject === project) {
+        projectsDataFinal.push(title);
       }
     });
   }
