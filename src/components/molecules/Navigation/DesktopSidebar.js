@@ -10,12 +10,11 @@ import { openAccountFunc } from "../../../redux/actions/accountActions";
 import RegistrationAndLogin from "../../atoms/Auth/LoginRegistration";
 import InlineInformationPageDesktop from "../../organisms/infocomponents/InlineInformationPageDesktop";
 import TopicFilter from "../../atoms/Filters/TopicFilter";
-import Account from "../../organisms/Account/Account";
 import { MenuItem } from "./MenuItem";
 import { MenuData } from "../../../data/MenuData";
 
 //ICONS
-import Logo from "../../../images/logo.png";
+import LogoImg from "../../../images/logo.png";
 import Insta from "../../../images/icons/socialmedia/insta.png";
 import Facebook from "../../../images/icons/socialmedia/facebook.png";
 import profile_yellow from "../../../images/icons/profile_yellow.png";
@@ -24,6 +23,42 @@ import Noprofile from "../../../images/noprofile.png";
 import PostScream from "../../organisms/PostIdea/PostScream";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
+import styled from "styled-components";
+
+const Logo = styled.div`
+  position: fixed;
+  width: 180px;
+  z-index: 99999;
+
+  padding-bottom: 10;
+  font-size: 40;
+  margin-left: 20px;
+  padding-top: 35px;
+  margin-top: 0;
+  /* animation: logoAnimation 2.5s; */
+  background-color: #f8f8f8;
+`;
+
+const Tabs = styled.div`
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: left;
+
+  width: 160px;
+  height: 35px;
+  left: 20px;
+  top: 80px;
+  font-size: 14pt;
+  line-height: 14pt;
+  color: #353535;
+
+  margin-bottom: 10px;
+  border-radius: 17.5px;
+`;
 
 const DesktopSidebar = ({
   loading,
@@ -48,13 +83,13 @@ const DesktopSidebar = ({
   return (
     !isMobileCustom && (
       <div className={openInfoPage ? "sideBar_hide" : "sideBar"}>
-        <h1 className="logoWeb">
-          <img src={Logo} width="100px" alt="logoWeb"></img>
-        </h1>
+        <Logo>
+          <img src={LogoImg} width="100px" alt="logoWeb"></img>
+        </Logo>
         <InlineInformationPageDesktop loading={loading} classes={classes} />
 
         {!authenticated ? (
-          <div className="profile">
+          <Tabs>
             <RegistrationAndLogin />
             <img
               src={Noprofile}
@@ -63,9 +98,9 @@ const DesktopSidebar = ({
               style={{ paddingRight: "10px" }}
             />
             {t("login")}
-          </div>
+          </Tabs>
         ) : (
-          <div className="profile">
+          <Tabs>
             <ExpandButton
               handleButtonClick={openTheAccount}
               dataCy="profile-button"
@@ -77,7 +112,7 @@ const DesktopSidebar = ({
               style={{ paddingRight: "10px" }}
             />
             {t("profile")}
-          </div>
+          </Tabs>
         )}
         <PostScream
           loadingProjects={loadingProjects}

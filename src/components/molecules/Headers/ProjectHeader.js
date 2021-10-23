@@ -125,7 +125,7 @@ const ProjectHeader = ({
           <CustomIconButton
             name="ArrowLeft"
             position="fixed"
-            top="9px"
+            top="10px"
             shadow={false}
             handleButtonClick={handleClose}
           />
