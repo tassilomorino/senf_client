@@ -26,8 +26,7 @@ border:0
     font-size: 22px;
     margin: 0;
     margin-left: 15px;
-    /* font-family:Futura PT W01 Book; */
-    font-family: Futura PT W01-Bold;
+     font-family:Futura PT W01 Book; 
     color:#414345
   }
 
@@ -57,7 +56,7 @@ border:0
 .fc-direction-ltr .fc-list-day-text, .fc-direction-rtl .fc-list-day-text{
   font-size:20px;
   height:25px;
-  width: 30px;
+  width: 35px;
   overflow: hidden;
   text-align: center;
   font-family: Futura PT W01-Bold
@@ -65,8 +64,9 @@ border:0
 }
 
 .fc-direction-ltr .fc-list-day-side-text, .fc-direction-rtl .fc-list-day-text {
-  font-size: 16px;
+  font-size: 14px;
   text-align: center;
+  font-family:Futura PT W01 Book;
   
   
 }
@@ -102,7 +102,8 @@ border:0
   .fc .fc-list-table  tbody{
     display: grid;
   grid-gap: 10px;
-  grid-template-columns: max-content
+  grid-template-columns: max-content;
+  padding-bottom: 200px;
   }
 
   .fc-list-day  {
