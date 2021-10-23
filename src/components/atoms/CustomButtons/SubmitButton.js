@@ -89,7 +89,6 @@ export const SubmitButton = ({
       marginLeft={marginLeft}
       zIndex={zIndex}
       animation={animation}
-      loading={loading}
       disabled={disabled}
       onClick={handleButtonClick}
     >
