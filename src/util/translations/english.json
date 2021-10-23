@@ -48,7 +48,8 @@
 
   "alreadyMember": "Already a member?",
   "notYetMember": "Not yet a member?",
-  "password": "Password with at least 8 characters",
+  "password": "Password",
+  "password_8characters":"Password with at least 8 characters",
   "confirmPassword": "Confirm password",
   "forgotPassword": "Forgotten your password?",
   "username": "Username",
