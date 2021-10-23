@@ -10,16 +10,10 @@ import { SubmitButton } from "../CustomButtons/SubmitButton";
 const LoginFormComponent = ({
   loading,
   classes,
-  email,
-  password,
-  onBlur,
-  errors,
   errorMessage,
-  helperText,
   handleToggle,
   handleSubmitLogin,
-  setEmail,
-  setPassword,
+  formik
 }) => {
   const { t } = useTranslation();
   return (
@@ -37,11 +31,11 @@ const LoginFormComponent = ({
           variant="outlined"
           className={classes.textField}
           data-cy="login-email"
-          helperText={helperText.email}
-          error={errors?.email ? true : false}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          onBlur={onBlur}
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          error={Boolean(formik.errors.email)}
+          helperText={formik.errors.email}
+          
         ></TextField>
 
         <TextField
@@ -54,10 +48,10 @@ const LoginFormComponent = ({
           variant="outlined"
           className={classes.textField}
           data-cy="login-password"
-          // helperText={errors.password}
-          error={errors?.password ? true : false}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          error={Boolean(formik.errors.password)}
+          helperText={formik.errors.password}
         ></TextField>
 
         <br />

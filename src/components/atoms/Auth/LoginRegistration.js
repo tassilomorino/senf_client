@@ -5,7 +5,8 @@ import { useDispatch } from "react-redux";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { useHistory } from "react-router";
-
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 import PropTypes from "prop-types";
 import Swipe from "react-easy-swipe";
 
@@ -242,24 +243,33 @@ const LoginRegistration = ({ classes }) => {
   //   }
   // }
 
-  const onBlur = (event) => {
-    
-    if (email === "") {
-      sethelperText({...helperText,email:'field is empty'});
-      setErrors({ ...errors, email: true });
-    } else {
-      sethelperText({...helperText,email:null});
-      setErrors({ ...errors, email: false });
-    }
-  };
+  const loginValidationSchema = yup.object({
+    email: yup
+      .string('Enter your email')
+      .email('Enter a valid email')
+      .required('Email is required'),
+    password: yup
+      .string('Enter your password')
+      .required('Password is required'),
+  });
+  const formikLoginStore = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: loginValidationSchema,
+  });
+  
+  
   const handleSubmitLogin = async (event) => {
     event.preventDefault();
     setLoading(true);
     const userInfo = await firebase
       .auth()
-      .signInWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(formikLoginStore.values.email, formikLoginStore.values.password)
       .then(() => {
         setLoading(false);
+        history.push('/')
       })
       .catch((err) => {
         setLoading(false);
@@ -358,16 +368,13 @@ const LoginRegistration = ({ classes }) => {
             <LoginFormComponent
               classes={classes}
               loading={loading}
-              errors={errors}
               errorMessage={errorMessage}
-              helperText={helperText}
+              formik={formikLoginStore}
               handleToggle={handleToggle}
               handleSubmitLogin={handleSubmitLogin}
-              setEmail={setEmail}
-              setPassword={setPassword}
-              email={email}
-              password={password}
-              onBlur={onBlur}
+              
+              
+              
             />
           ) : (
             <RegistrationFormComponent
