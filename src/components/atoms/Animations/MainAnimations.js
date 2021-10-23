@@ -11,7 +11,8 @@ const MainAnimation = styled.div`
   padding-bottom: ${(props) => props.paddingBottom && props.paddingBottom};
   transition: ${(props) => props.transition && props.transition};
   display: ${(props) => props.display && props.display};
-  top: 0;
+  top: ${(props) => (props.top ? props.top : 0)};
+  position: ${(props) => props.position && props.position};
 `;
 
 /* .MainAnimation {
@@ -42,6 +43,8 @@ const MainAnimations = ({
   paddingBottom,
   transition,
   display,
+  position,
+  top,
 }) => {
   return (
     <MainAnimation
@@ -50,6 +53,8 @@ const MainAnimations = ({
       paddingBottom={paddingBottom}
       transition={transition}
       display={display}
+      position={position}
+      top={top}
     >
       {children}
     </MainAnimation>

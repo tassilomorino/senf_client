@@ -283,11 +283,14 @@ class ProjectDialog extends Component {
             {this.state.order === 3 && (
               <React.Fragment>
                 <Break />
+
                 <MainAnimations
                   transition="0.5s"
                   display="block"
                   paddingBottom="2em"
                   height="100%"
+                  position={document.body.clientWidth > 768 && "fixed"}
+                  top={document.body.clientWidth > 768 && "100px"}
                 >
                   <CalendarComponent
                     projectScreams={this.props.project.screams}
