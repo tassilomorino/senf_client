@@ -291,6 +291,7 @@ class ProjectDialog extends Component {
                 >
                   <CalendarComponent
                     projectScreams={this.props.project.screams}
+                    handleClick={this.handleClick}
                   ></CalendarComponent>
                 </MainAnimations>
               </React.Fragment>

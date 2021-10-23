@@ -56,6 +56,7 @@ class CalendarComponent extends React.Component {
   handleEventClick = ({ event, el }) => {
     const screamId = event.id;
     this.props.openScreamFunc(screamId);
+    this.props.handleClick(1);
   };
 
   render() {
@@ -75,12 +76,12 @@ class CalendarComponent extends React.Component {
         }}
       >
         <FullCalendar
-          style={{ display: "inline-block", backgroundCoolor: "white" }}
           plugins={[listMonth]}
           initialView="listMonth"
           events={this.state.calendarEvents}
           locale={de}
           eventClick={this.handleEventClick}
+          dayHeaderFormat="ddd"
         />
       </div>
     );
