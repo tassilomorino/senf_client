@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-
+import _ from "lodash";
 //MAPSTUFF
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -203,7 +203,12 @@ class ProjectDialog extends Component {
 
     const dataRar = this.props.project.screams;
 
-    const dataFinal = dataRar.filter(
+    const sortedScreams =
+      this.state.dropdown === "newest"
+        ? _.orderBy(dataRar, "createdAt", "desc")
+        : _.orderBy(dataRar, "likeCount", "desc");
+
+    const dataFinal = sortedScreams.filter(
       ({ Thema, status, lat, long }) =>
         topicsSelected.includes(Thema) &&
         lat <= this.props.data.mapBounds.latitude1 &&

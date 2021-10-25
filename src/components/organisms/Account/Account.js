@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import _ from "lodash";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
 import { closeAccountFunc } from "../../../redux/actions/accountActions";
@@ -50,8 +51,13 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
     setDropdown(value);
   };
 
+  const sortedScreams =
+    dropdown === "newest"
+      ? _.orderBy(myScreams, "createdAt", "desc")
+      : _.orderBy(myScreams, "likeCount", "desc");
+
   const dataFinal = myScreams
-    ? myScreams.filter(
+    ? sortedScreams.filter(
         ({ Thema, status, lat, long }) =>
           topicsSelected.includes(Thema) &&
           lat <= mapBounds.latitude1 &&
@@ -91,7 +97,6 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
                 handleTopicSelector={handleTopicSelector}
                 topicsSelected={topicsSelected}
                 dataFinalMap={dataFinalMap}
-                
               ></IdeaList>
             ) : (
               <Loader />
