@@ -267,22 +267,24 @@ const Main = () => {
           {loading && <Loader />}
           <div className="MainBackgroundHome" />
 
-          <IdeaList
-            type="allIdeas"
-            loading={loading}
-            order={order}
-            dataFinal={dataFinal.slice(0, 15)}
-            dataFinalLength={dataFinalLength}
-            dataFinalMap={dataFinalMap}
-            viewport={mapViewport}
-            handleDropdown={handleDropdown}
-            projectsData={projects}
-            loadingProjects={loadingProjects}
-            project={project}
-            dropdown={dropdown}
-            handleTopicSelector={handleTopicSelector}
-            topicsSelected={topicsSelected}
-          />
+          {!openProject && (
+            <IdeaList
+              type="allIdeas"
+              loading={loading}
+              order={order}
+              dataFinal={dataFinal.slice(0, 15)}
+              dataFinalLength={dataFinalLength}
+              dataFinalMap={dataFinalMap}
+              viewport={mapViewport}
+              handleDropdown={handleDropdown}
+              projectsData={projects}
+              loadingProjects={loadingProjects}
+              project={project}
+              dropdown={dropdown}
+              handleTopicSelector={handleTopicSelector}
+              topicsSelected={topicsSelected}
+            />
+          )}
 
           <ProjectsPage
             loadingProjects={loadingProjects}

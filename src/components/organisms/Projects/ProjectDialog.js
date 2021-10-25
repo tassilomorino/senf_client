@@ -259,7 +259,7 @@ class ProjectDialog extends Component {
               </MainAnimations>
             )}
             {this.state.order === 2 && (
-              <React.Fragment>
+              <div style={{ overflow: "scroll", height: "100vh" }}>
                 <Break />
 
                 <MainAnimations
@@ -278,7 +278,7 @@ class ProjectDialog extends Component {
                   />
                   <br />
                 </MainAnimations>
-              </React.Fragment>
+              </div>
             )}
             {this.state.order === 3 && (
               <React.Fragment>

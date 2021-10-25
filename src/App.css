@@ -72,7 +72,8 @@ body {
   overscroll-behavior-y: contain;
 
  
-
+font-size: 18,666666666666664px !important;
+    line-height: 22,666666666666664px !important;
 
 
   background-attachment: fixed;
@@ -1494,7 +1495,7 @@ font-size:15px !important
   display: flex;
   flex-direction: column;
   z-index:99;
-  animation: enterScreamDialogAnimation 1.7s;
+  animation: enterScreamDialogAnimation 1.5s;
 }
 
 .wrapperMenu {

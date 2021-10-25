@@ -80,14 +80,16 @@ const ScreamCardTitle = styled.div`
   padding-bottom: 5px;
   font-weight: 800;
 `;
-const BodyText = styled.div`
+const BodyText = styled.p`
   white-space: none;
   position: relative;
   width: 85%;
+
   font-size: 14pt;
   line-height: 17pt;
   overflow: hidden;
   max-height: 4.8em;
+  margin-top: 0;
 `;
 const Gradient = styled.div`
   width: 100%;

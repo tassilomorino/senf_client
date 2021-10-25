@@ -1,12 +1,12 @@
 /** @format */
 
-import { Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 
 // Images
 import WeblinkIcon from "../../../images/icons/weblink.png";
 import contactIcon from "../../../images/icons/mail.png";
+import { Text } from "../../../styles/GlobalStyle";
 
 const Card = styled.div`
   z-index: 99;
@@ -27,6 +27,8 @@ const Content = styled.div`
   width: 100%;
   padding: 15px;
   object-fit: cover;
+  font-size: 18, 666666666666664px !important;
+  line-height: 22, 666666666666664px !important;
 `;
 
 const Title = styled.div`
@@ -77,7 +79,7 @@ const ProjectInfo = ({
     <Card>
       <Content>
         <Title> Worum geht's</Title>
-        <p>{description}</p>
+        <Text>{description}</Text>
 
         <div style={{ display: "flex", flexDirection: "row" }}>
           {weblink && (
@@ -112,17 +114,17 @@ const ProjectInfo = ({
         <Title> Zeitraum </Title>
         <p>
           {endDate ? (
-            <div className="date">
+            <Text>
               {startDate} – {endDate}
-            </div>
+            </Text>
           ) : (
-            <div className="date">{startDate} </div>
+            <Text>{startDate} </Text>
           )}
         </p>
         <br />
 
         <Title>Initiatoren</Title>
-        <p>{owner}</p>
+        <Text>{owner}</Text>
         <br />
       </Content>
     </Card>
