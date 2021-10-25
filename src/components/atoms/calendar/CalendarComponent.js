@@ -3,6 +3,7 @@
 import React from "react";
 import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import de from "@fullcalendar/core/locales/de";
+import { formatDate } from "@fullcalendar/react";
 
 import listMonth from "@fullcalendar/list";
 import { openScreamFunc } from "../../../redux/actions/screamActions";
@@ -12,6 +13,13 @@ import { connect } from "react-redux";
 
 import "./Fullcalendar.css";
 
+let str = formatDate(new Date(), {
+  month: "long",
+  year: "numeric",
+  day: "numeric",
+});
+
+console.log(str);
 class CalendarComponent extends React.Component {
   constructor() {
     super();
@@ -28,6 +36,7 @@ class CalendarComponent extends React.Component {
       ],
     };
   }
+
   componentDidMount() {
     const data = [];
     var i;
@@ -82,7 +91,6 @@ class CalendarComponent extends React.Component {
           events={this.state.calendarEvents}
           locale={de}
           eventClick={this.handleEventClick}
-          dayHeaderFormat="ddd"
         />
       </div>
     );

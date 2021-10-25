@@ -35,7 +35,7 @@ border:0
     padding: 18px 0px;
     width: 70px;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     justify-content: center;
     align-items: center;
       
@@ -53,23 +53,42 @@ border:0
   
 }
 
-.fc-direction-ltr .fc-list-day-text, .fc-direction-rtl .fc-list-day-text{
-  font-size:20px;
-  height:25px;
-  width: 35px;
-  overflow: hidden;
-  text-align: center;
-  font-family: Futura PT W01-Bold
-  
-}
+
 
 .fc-direction-ltr .fc-list-day-side-text, .fc-direction-rtl .fc-list-day-text {
-  font-size: 14px;
+  font-size: 20px;
   text-align: center;
   font-family:Futura PT W01 Book;
+  text-transform: uppercase;
+  width: 20px;
+  overflow: hidden;
+  display: block;
+  font-family: 'Inconsolata', monospace;
+  padding-bottom: 5px;
+ 
+
   
   
 }
+.fc-direction-ltr .fc-list-day-text, .fc-direction-rtl .fc-list-day-text{
+  font-size:28px;
+  height:25px;
+  width: 38px;
+  overflow: hidden;
+  text-align: center;
+  font-family: Futura PT W01-Bold;
+  /* font-family: 'Inconsolata', monospace; */
+  font-family: 'Inconsolata', monospace;
+  margin-left: 5px;
+}
+
+.fc .fc-list-day-side-text::first-letter {
+  /* color: blue !important;
+  font-family: "Comic Sans MS";
+  font-size: 1em;
+  font-weight: bold; */
+}
+
 
 
 .fc .fc-list-sticky .fc-list-day > *{
