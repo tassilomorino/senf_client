@@ -135,6 +135,47 @@ const MapDesktop = ({
     });
   }
 
+  // const datatry = "NgSEZQk57zWGJYVvOZ4z"
+  // const dataMarkers = {
+  //  `${datatry}`: {
+  //     type: "Feature",
+  //     geometry: {
+  //       type: "Point",
+  //       coordinates: [6.932, 50.915422],
+  //     },
+  //     properties: {
+  //       id: "IhmyQY49rOlKwZLwf35Q",
+  //     },
+  //   },
+  //   IhmyQY49rOlKwZLwf35Q: {
+  //     type: "Feature",
+  //     geometry: {
+  //       type: "Point",
+  //       coordinates: [6.93, 50.914422],
+  //     },
+  //     properties: {
+  //       id: "IhmyQY49rOlKwZLwf35Q",
+  //     },
+  //   },
+  // };
+
+  // dataFinal.forEach((element) => {
+  //   dataMarkers.push({
+  //      screamId: {
+  //       type: "Feature",
+  //       geometry: {
+  //         type: "Point",
+  //         coordinates: [6.93, 50.914422],
+  //       },
+  //       properties: {
+  //         id: "IhmyQY49rOlKwZLwf35Q",
+  //       },
+  //     },
+  //   });
+  // });
+
+  // console.log(dataMarkers);
+
   return (
     !isMobileCustom && (
       <div className="mapWrapper">
@@ -187,90 +228,106 @@ const MapDesktop = ({
           )}
           <DesktopMapButtons viewport={viewport} />
 
-          <div style={{ zIndex: 90 }}>
-            {dataFinalMap.map(
+          {/* {dataFinalMap.map(
               ({ screamId, long, lat, likeCount, color, title }) => (
-                <Marker key={screamId} longitude={long} latitude={lat}>
-                  <OpenIdeaButton
-                    likeCount={likeCount}
-                    color={color}
-                    onClick={() => fetchDataScream(screamId)}
-                    onMouseEnter={() => {
-                      setHoverScreamId(screamId);
-                      setHoverLat(lat);
-                      setHoverLong(long);
-                      setHoverTitle(title);
-                      setHoverLikeCount(likeCount);
+                <React.Fragment>
+                  <Source
+                    id={screamId}
+                    type="geojson"
+                    data={dataMarkers[screamId]}
+                  />
+                  <Layer
+                    id={screamId}
+                    type="circle"
+                    source={screamId}
+                    paint={{
+                      "circle-radius": 6,
+                      "circle-color": "#B42222",
+                      "circle-stroke-color": "green",
                     }}
-                    onMouseLeave={() =>
-                      setTimeout(() => {
-                        setHoverScreamId("");
-                        setHoverLat("");
-                        setHoverLong("");
-                        setHoverTitle("");
-                        setHoverLikeCount("");
-                      }, 10000)
-                    }
-                  >
-                    <ExpandButton
-                      handleButtonClick={() => fetchDataScream(screamId)}
-                    />
-                  </OpenIdeaButton>
-                </Marker>
+                    onClick={() => alert("hi")}
+                  />
+                </React.Fragment>
               )
-            )}
+            )} */}
 
-            {openScream && scream.lat && (
-              <Marker
-                key={scream.screamId}
-                longitude={scream.long}
-                latitude={scream.lat}
-              >
-                <PinComponent
-                  src={Pin}
-                  likeCount={scream.likeCount}
-                  style={{
-                    clipPath: "polygon(0 0, 100% 0, 100% 88%, 0 88%)",
+          {dataFinalMap.map(
+            ({ screamId, long, lat, likeCount, color, title }) => (
+              <Marker key={screamId} longitude={long} latitude={lat}>
+                <OpenIdeaButton
+                  likeCount={likeCount}
+                  color={color}
+                  onClick={() => fetchDataScream(screamId)}
+                  onMouseEnter={() => {
+                    setHoverScreamId(screamId);
+                    setHoverLat(lat);
+                    setHoverLong(long);
+                    setHoverTitle(title);
+                    setHoverLikeCount(likeCount);
                   }}
-                  alt="ChatIcon"
-                />
+                  onMouseLeave={() =>
+                    setTimeout(() => {
+                      setHoverScreamId("");
+                      setHoverLat("");
+                      setHoverLong("");
+                      setHoverTitle("");
+                      setHoverLikeCount("");
+                    }, 10000)
+                  }
+                >
+                  <ExpandButton
+                    handleButtonClick={() => fetchDataScream(screamId)}
+                  />
+                </OpenIdeaButton>
               </Marker>
-            )}
+            )
+          )}
 
+          {openScream && scream.lat && (
             <Marker
-              key={hoverScreamId}
-              longitude={hoverLong}
-              latitude={hoverLat}
+              key={scream.screamId}
+              longitude={scream.long}
+              latitude={scream.lat}
+            >
+              <PinComponent
+                src={Pin}
+                likeCount={scream.likeCount}
+                style={{
+                  clipPath: "polygon(0 0, 100% 0, 100% 88%, 0 88%)",
+                }}
+                alt="ChatIcon"
+              />
+            </Marker>
+          )}
+
+          <Marker key={hoverScreamId} longitude={hoverLong} latitude={hoverLat}>
+            <div
+              style={{
+                position: "absolute",
+                width: 7 + hoverLikeCount / 2 + "px",
+                marginLeft: -((7 + hoverLikeCount) / 4) + "px",
+                height: 7 + hoverLikeCount / 2 + "px",
+                marginTop: -(7 + hoverLikeCount) / 4 + "px",
+                borderRadius: "100%",
+                border: "1px white solid",
+                backgroundColor: "rgb(0,0,0,0.2)",
+
+                opacity: "1",
+                pointerEvents: "none",
+              }}
             >
               <div
+                className={classes.title}
                 style={{
-                  position: "absolute",
-                  width: 7 + hoverLikeCount / 2 + "px",
-                  marginLeft: -((7 + hoverLikeCount) / 4) + "px",
-                  height: 7 + hoverLikeCount / 2 + "px",
-                  marginTop: -(7 + hoverLikeCount) / 4 + "px",
-                  borderRadius: "100%",
-                  border: "1px white solid",
-                  backgroundColor: "rgb(0,0,0,0.2)",
-                  zIndex: 0,
-
-                  opacity: "1",
-                  pointerEvents: "none",
+                  marginLeft: +(20 + hoverLikeCount) / 2 + "px",
+                  marginTop: +(5 + hoverLikeCount) / 4 + "px",
+                  transform: "translateY(-50%)",
                 }}
               >
-                <div
-                  className={classes.title}
-                  style={{
-                    marginLeft: +(20 + hoverLikeCount) / 2 + "px",
-                    marginTop: +(5 + hoverLikeCount) / 4 + "px",
-                    transform: "translateY(-50%)",
-                  }}
-                >
-                  {hoverTitle}
-                </div>
+                {hoverTitle}
               </div>
-            </Marker>
-          </div>
+            </div>
+          </Marker>
 
           <NoLocationPopUp dataNoLocation={dataNoLocation}></NoLocationPopUp>
         </MapGL>

@@ -7,7 +7,6 @@ import { clearErrors } from "./errorsActions";
 import { openProjectFunc } from "./projectActions";
 import {
   SET_SCREAMS,
-  SET_MY_SCREAMS,
   LOADING_DATA,
   DELETE_SCREAM,
   SET_ERRORS,
@@ -15,7 +14,7 @@ import {
   EDIT_SCREAM,
   LOADING_UI,
   SET_SCREAM,
-  STOP_LOADING_UI,
+  LOADING_IDEA_DATA,
   OPEN_SCREAM,
   CLOSE_SCREAM,
   SET_SCREAM_USER,
@@ -62,7 +61,7 @@ export const openScreamFunc = (screamId) => async (dispatch) => {
   // When the modal is shown, we want a fixed body
   // document.body.style.position = "fixed";
   // document.body.style.top = `-${window.scrollY}px`;
-  dispatch({ type: LOADING_UI });
+  dispatch({ type: LOADING_IDEA_DATA });
   dispatch({ type: OPEN_SCREAM });
 
   const db = firebase.firestore();
@@ -90,7 +89,30 @@ export const openScreamFunc = (screamId) => async (dispatch) => {
     const newPath = `/${screamId}`;
     window.history.pushState(null, null, newPath);
     dispatch({ type: SET_SCREAM, payload: scream });
-    dispatch({ type: STOP_LOADING_UI });
+  }
+};
+
+export const reloadScreamFunc = (screamId) => async (dispatch) => {
+  const db = firebase.firestore();
+  const ref = await db.collection("screams").doc(screamId).get();
+  const commentsRef = await db
+    .collection("comments")
+    .where("screamId", "==", screamId)
+    .orderBy("createdAt", "desc")
+    .get();
+
+  if (!ref.exists) {
+    console.log("No such document!");
+  } else {
+    const scream = ref.data();
+    scream.screamId = ref.id;
+    scream.color = setColorByTopic(ref.data().Thema);
+    scream.comments = [];
+
+    commentsRef.forEach((doc) =>
+      scream.comments.push({ ...doc.data(), commentId: doc.id })
+    );
+    dispatch({ type: SET_SCREAM, payload: scream });
   }
 };
 

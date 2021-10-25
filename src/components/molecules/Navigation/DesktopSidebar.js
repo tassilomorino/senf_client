@@ -49,7 +49,7 @@ const DesktopSidebar = ({
     !isMobileCustom && (
       <div className={openInfoPage ? "sideBar_hide" : "sideBar"}>
         <h1 className="logoWeb">
-          <img src={Logo} width="100px"></img>
+          <img src={Logo} width="100px" alt="logoWeb"></img>
         </h1>
         <InlineInformationPageDesktop loading={loading} classes={classes} />
 

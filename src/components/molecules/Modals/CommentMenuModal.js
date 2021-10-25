@@ -39,7 +39,11 @@ const CommentMenuModal = ({
       "Bist du sicher, dass du den Kommentar löschen möchtest?"
     );
     if (answer) {
-      dispatch(deleteComment(commentId, user, screamId));
+      dispatch(
+        deleteComment(commentId, user, screamId, isAdmin, isModerator)
+      ).then(() => {
+        setCommentMenuOpen(false);
+      });
 
       //some code
     } else {
@@ -78,6 +82,14 @@ const CommentMenuModal = ({
           <ButtonWrapper>
             <ExpandButton handleButtonClick={deleteTheComment}>
               Kommentar löschen
+            </ExpandButton>
+          </ButtonWrapper>
+        )}
+
+        {authenticated && (isAdmin === true || isModerator === true) && (
+          <ButtonWrapper>
+            <ExpandButton handleButtonClick={deleteTheComment}>
+              Kommentar löschen (Admin)
             </ExpandButton>
           </ButtonWrapper>
         )}

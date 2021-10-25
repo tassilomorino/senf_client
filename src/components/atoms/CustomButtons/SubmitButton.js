@@ -24,12 +24,12 @@ const WideButton = styled.button`
   text-transform: none;
   white-space: nowrap;
   font-size: 14pt;
-  height: 50px;
+  height: ${(props) => (props.smallSubmitButton ? "40px" : "50px")};
   font-family: Futura PT W01 Book;
   box-shadow: rgb(38, 57, 77, 0.7) 0px 20px 30px -15px;
-  padding-left: 30px;
-  padding-right: 30px;
-  min-width: 180px;
+  padding-left: ${(props) => (props.smallSubmitButton ? "12px" : "30px")};
+  padding-right: ${(props) => (props.smallSubmitButton ? "12px" : "30px")};
+  min-width: ${(props) => (props.smallSubmitButton ? "70px" : "180px")};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -76,6 +76,7 @@ export const SubmitButton = ({
   disabled,
 
   handleButtonClick,
+  smallSubmitButton,
 }) => {
   return (
     <WideButton
@@ -91,6 +92,7 @@ export const SubmitButton = ({
       animation={animation}
       disabled={disabled}
       onClick={handleButtonClick}
+      smallSubmitButton={smallSubmitButton}
     >
       {text}
       {loading && (

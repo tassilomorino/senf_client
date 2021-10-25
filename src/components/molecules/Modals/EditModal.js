@@ -74,7 +74,7 @@ class EditModal extends Component {
     selectedDays: [],
     selectedUnix: [],
   };
-  handleOpen = () => {
+  componentDidMount() {
     this.setState({
       open: true,
       title: this.props.scream.title,
@@ -122,9 +122,9 @@ class EditModal extends Component {
         selectedUnix: this.props.scream.selectedUnix,
       });
     }
-  };
+  }
   handleClose = () => {
-    this.setState({ open: false });
+    this.props.setEditOpen(false);
   };
 
   // componentWillReceiveProps(nextProps) {
@@ -291,8 +291,8 @@ class EditModal extends Component {
     }
 
     this.props.editScream(editScream, this.props.history);
-    // this.setState({ open: false });
-    // window.location.reload(false);
+    this.props.setEditOpen(false);
+    this.props.setMenuOpen(false)
   };
   render() {
     const { projects, loadingProjects } = this.props.data;

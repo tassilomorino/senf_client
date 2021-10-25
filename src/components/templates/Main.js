@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../util/customDeviceDetect";
+import _ from "lodash";
 
 import {
   getScreams,
@@ -189,7 +190,12 @@ const Main = () => {
     }
   };
 
-  const dataFinal = screams.filter(
+  const sortedScreams =
+    dropdown === "newest"
+      ? _.orderBy(screams, "createdAt", "desc")
+      : _.orderBy(screams, "likeCount", "desc");
+
+  const dataFinal = sortedScreams.filter(
     ({ Thema, lat, long, status }) =>
       topicsSelected.includes(Thema) &&
       lat <= mapBounds.latitude1 &&
@@ -252,7 +258,6 @@ const Main = () => {
         loadingProjects={loadingProjects}
         dataFinal={dataFinalMap.slice(0, 300)}
         id="mapDesktop"
-        style={{ zIndex: 9999 }}
         openProject={openProject}
         geoData={project && openProject && project.geoData}
       ></MapDesktop>
@@ -311,9 +316,7 @@ const Main = () => {
         </div>
       )}
 
-      {!openInfoPage && openScream && (
-        <ScreamDialog screamIdParam={screamIdParam} projectsData={projects} />
-      )}
+      {!openInfoPage && openScream && <ScreamDialog />}
     </div>
   );
 };

@@ -59,7 +59,7 @@ const MapMobile = ({
   const openScream = useSelector((state) => state.UI.openScream);
   const scream = useSelector((state) => state.data.scream);
 
-  // const [mapLoaded, setMapLoaded] = useState(false);
+  const [mapLoaded, setMapLoaded] = useState(false);
 
   const fetchDataScream = (screamId) => {
     dispatch(openScreamFunc(screamId));
@@ -112,23 +112,17 @@ const MapMobile = ({
           height: "100vh",
         }}
       >
-        {/* {!mapLoaded && (
+        {!mapLoaded && (
           <React.Fragment>
-            <img
-              src={cologne_grid}
-              alt="Kiwi standing on oval"
-              style={{ position: "absolute" }}
-            />
-
             <div
               style={{
                 width: "100%",
                 height: "100%",
-                backgroundColor: "white",
+                backgroundColor: "#f8f8f8",
               }}
             />
           </React.Fragment>
-        )} */}
+        )}
         <MapGL
           style={{
             width: "100%",
@@ -143,7 +137,7 @@ const MapMobile = ({
           viewportChangeOptions={{
             duration: 2700,
           }}
-          // onLoad={() => setMapLoaded(true)}
+          onLoad={() => setMapLoaded(true)}
         >
           <Source id="maine" type="geojson" data={data} />
           <Layer

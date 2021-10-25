@@ -5,16 +5,14 @@ import React from "react";
 //Redux
 import { useSelector, useDispatch } from "react-redux";
 import { likeScream, unlikeScream } from "../../../redux/actions/likeActions";
-import PropTypes from "prop-types";
 
 //Components
-import MyButton from "../../../util/MyButton";
-import ThanksForTheVote from "../Backgrounds/ThanksForTheVote";
 import RegistrationAndLogin from "../Auth/LoginRegistration";
 
 //Images
 import HandBorder from "../../../images/icons/handsnoclap.png";
 import HandFull from "../../../images/icons/handsFull.png";
+import MyButtonStyle from "./MyButtonStyle";
 
 const LikeButton = ({ screamId }) => {
   const dispatch = useDispatch();
@@ -28,18 +26,18 @@ const LikeButton = ({ screamId }) => {
   };
 
   const likeButton = !user.authenticated ? (
-    <MyButton>
+    <MyButtonStyle>
       <RegistrationAndLogin />
       <img src={HandBorder} width="100%" alt="LikeIcon" />
-    </MyButton>
+    </MyButtonStyle>
   ) : likedScream() ? (
-    <MyButton onClick={() => dispatch(unlikeScream(screamId, user))}>
+    <MyButtonStyle onClick={() => dispatch(unlikeScream(screamId, user))}>
       <img src={HandFull} width="100%" alt="LikeIcon" />
-    </MyButton>
+    </MyButtonStyle>
   ) : (
-    <MyButton onClick={() => dispatch(likeScream(screamId, user))}>
+    <MyButtonStyle onClick={() => dispatch(likeScream(screamId, user))}>
       <img src={HandBorder} width="100%" alt="LikeIcon" />
-    </MyButton>
+    </MyButtonStyle>
   );
   return likeButton;
 };
