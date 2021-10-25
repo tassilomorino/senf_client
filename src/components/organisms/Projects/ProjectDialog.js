@@ -9,7 +9,6 @@ import "mapbox-gl/dist/mapbox-gl.css";
 
 // Redux stuff
 import { connect } from "react-redux";
-import { closeScream } from "../../../redux/actions/screamActions";
 import { closeProject } from "../../../redux/actions/projectActions";
 import { clearErrors } from "../../../redux/actions/errorsActions";
 import {
@@ -284,14 +283,18 @@ class ProjectDialog extends Component {
             {this.state.order === 3 && (
               <React.Fragment>
                 <Break />
+
                 <MainAnimations
                   transition="0.5s"
                   display="block"
                   paddingBottom="2em"
                   height="100%"
+                  position={document.body.clientWidth > 768 && "fixed"}
+                  top={document.body.clientWidth > 768 && "100px"}
                 >
                   <CalendarComponent
                     projectScreams={this.props.project.screams}
+                    handleClick={this.handleClick}
                   ></CalendarComponent>
                 </MainAnimations>
               </React.Fragment>
@@ -313,7 +316,6 @@ const mapStateToProps = (state) => ({
 
 const mapActionsToProps = {
   clearErrors,
-  closeScream,
   closeProject,
   setMapViewport,
   setMapBounds,

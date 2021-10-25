@@ -77,12 +77,12 @@ export const openProjectFunc = (project) => async (dispatch) => {
     screamsRef.docs.forEach((doc) =>
       project.screams.push({ ...doc.data(), screamId: doc.id })
     );
-
+    dispatch(closeScream());
     const newPath = `/${project.id}`;
     window.history.pushState(null, null, newPath);
     dispatch({ type: SET_PROJECT, payload: project });
     dispatch({ type: OPEN_PROJECT });
-    dispatch(closeScream());
+
     dispatch({ type: STOP_LOADING_UI });
   }
 };

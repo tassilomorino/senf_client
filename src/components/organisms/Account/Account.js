@@ -91,6 +91,7 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
                 handleTopicSelector={handleTopicSelector}
                 topicsSelected={topicsSelected}
                 dataFinalMap={dataFinalMap}
+                
               ></IdeaList>
             ) : (
               <Loader />

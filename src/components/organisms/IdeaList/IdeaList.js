@@ -29,6 +29,7 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   overflow: hidden;
+  z-index: ${(props) => props.zIndex && props.zIndex};
 `;
 
 const Content = styled.div`
@@ -81,6 +82,7 @@ const IdeaList = ({
   project,
   handleTopicSelector,
   topicsSelected,
+  zIndex,
 }) => {
   const mapViewport = useSelector((state) => state.data.mapViewport);
   const dispatch = useDispatch();
@@ -174,7 +176,7 @@ const IdeaList = ({
   );
 
   return order === 1 ? (
-    <Wrapper>
+    <Wrapper zIndex={zIndex}>
       {" "}
       {isMobileCustom ? (
         <React.Fragment>

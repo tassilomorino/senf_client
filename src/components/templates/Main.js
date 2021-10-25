@@ -282,7 +282,7 @@ const Main = () => {
             dropdown={dropdown}
             handleTopicSelector={handleTopicSelector}
             topicsSelected={topicsSelected}
-          ></IdeaList>
+          />
 
           <ProjectsPage
             loadingProjects={loadingProjects}
