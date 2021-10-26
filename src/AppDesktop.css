@@ -300,25 +300,13 @@
     margin-left: 200px;
     width: 400px;
     transition: 0.5s;
-    position: relative;
+    position: fixed;
 
 
   }
 
 
-  .contentWrapper_dialog {
-    margin-left: 0px;
-    width: 400px;
-    transition: 0.5s;
-
-  }
-
-
-  .contentWrapperInsights {
-    width: 400px;
-    margin-left: 50%;
-    transform: translateX(-50%);
-  }
+ 
 
   .spinnerDiv {
 

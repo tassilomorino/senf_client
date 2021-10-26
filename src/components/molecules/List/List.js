@@ -27,7 +27,7 @@ const Wrapper = styled.div`
   @media (min-width: 768px) {
     width: 400px;
     top: 110px;
-    position: fixed;
+    position: relative;
   }
 `;
 const List = ({
@@ -51,6 +51,7 @@ const List = ({
   useEffect(() => {
     if (
       (dataFinalLength &&
+        prevdataFinalLength &&
         prevdataFinalLength.dataFinalLength !== dataFinalLength) ||
       (dropdown && prevDropdown && prevDropdown.dropdown !== dropdown)
     ) {
@@ -146,7 +147,7 @@ const List = ({
           {showItems(dataFinal)}
         </InfiniteScroll>
 
-        {!hasMoreItems | (dataFinalLength === 0) && (
+        {!hasMoreItems | (dataFinalLength === 0) ? (
           <React.Fragment>
             {type === "myIdeas" ? (
               <NoMoreMyContent dataFinalLength={dataFinalLength} />
@@ -156,11 +157,11 @@ const List = ({
               <NoMoreMainContent dataFinalLength={dataFinalLength} />
             )}
           </React.Fragment>
-        )}
+        ) : null}
         {isMobileCustom ? (
           <div style={{ height: "70%" }} />
         ) : (
-          <div style={{ height: "200px" }} />
+          <div style={{ height: "500px" }} />
         )}
       </Wrapper>
     )

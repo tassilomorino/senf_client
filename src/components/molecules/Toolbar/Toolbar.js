@@ -33,9 +33,19 @@ const Wrapper = styled.div`
   justify-content: space-between;
   height: 50px;
   padding: 10px 2.5% 20px 2.5%;
-  margin-top: ${(props) => props.marginTop && props.marginTop};
+
   animation: ${enterAnimation} 0.7s;
   pointer-events: none;
+
+  @media (min-width: 768px) {
+    position: fixed;
+    top: ${(props) => (props.type === "allIdeas" ? "40px" : "100px")};
+    z-index: 2;
+    width: 380px;
+    left: 200px;
+    padding: 10px 10px 20px 10px;
+    margin-top: 0;
+  }
 `;
 const Bar = styled.div`
   position: absolute;
@@ -73,15 +83,17 @@ const Lightbulb = styled.img`
 
 const Toolbar = ({
   loading,
+  type,
   handleDropdown,
   marginTop,
   handleClickSwipe,
   dataFinalLength,
 }) => {
   const { t } = useTranslation();
+
   return (
     !loading && (
-      <Wrapper marginTop={marginTop}>
+      <Wrapper type={type}>
         {isMobileCustom && <Bar />}
         <IdeaHeader>
           <Lightbulb src={lightbulbImg} alt={"lightbulb"} />
