@@ -35,7 +35,7 @@ export const getScreams = () => async (dispatch) => {
       lat: doc.data().lat,
       long: doc.data().long,
       title: doc.data().title,
-      body: doc.data().body.substr(0, 170),
+      body: doc.data().body.substr(0, 120),
       createdAt: doc.data().createdAt,
       commentCount: doc.data().commentCount,
       likeCount: doc.data().likeCount,

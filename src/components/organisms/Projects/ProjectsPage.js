@@ -9,21 +9,8 @@ import { ProjectCard, CreateProject } from "../../molecules/Cards/ProjectCard";
 
 import _ from "lodash";
 import MainAnimations from "../../atoms/Animations/MainAnimations";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 
-const HomeHeadermain = styled.div`
-  position: relative;
-  z-index: 9;
-  margin-top: 2.8em;
-  margin-left: 2.5%;
-  width: 95%;
-  padding-bottom: 1em;
-  font-size: 25pt;
-  color: white;
-  text-align: left;
-  font-family: "Playfair Display", serif;
-  animation: enteranimation 0.5s;
-  z-index: 99;
-`;
 const ProjectRoomDescription = styled.div`
   font-size: 14pt;
   color: rgb(65, 67, 69);
@@ -54,8 +41,11 @@ const ProjectsPage = ({ loadingProjects, order, projects }) => {
     >
       {order === 2 && (
         <div>
-          <HomeHeadermain></HomeHeadermain>
-
+          {isMobileCustom ? (
+            <div style={{ height: "110px" }} />
+          ) : (
+            <div style={{ height: "100px" }} />
+          )}
           <MainAnimations>
             <ProjectRoomDescription>
               {t("projectrooms_description")}
