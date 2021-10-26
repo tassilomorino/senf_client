@@ -216,7 +216,6 @@ const IdeaList = ({
                   loading={loading}
                   handleDropdown={handleDropdown}
                   dataFinalLength={dataFinalLength}
-                  marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
                   handleClickSwipe={
                     swipePosition === "bottom"
                       ? () => setSwipePositionUp()
@@ -242,7 +241,7 @@ const IdeaList = ({
             loading={loading}
             handleDropdown={handleDropdown}
             dataFinalLength={dataFinalLength}
-            marginTop={document.body.clientWidth > 768 ? "40px" : "0"}
+            type={type}
           />{" "}
           <List
             type={type}

@@ -234,29 +234,23 @@ class ProjectDialog extends Component {
             {isMobileCustom ? <BackgroundMobile /> : <BackgroundDesktop />}
 
             {this.state.order === 1 && (
-              <MainAnimations
-                transition="0.5s"
-                display="block"
-                paddingBottom="2em"
-              >
-                <IdeaList
-                  type="projectIdeas"
-                  loading={loading}
-                  order={this.state.order}
-                  dataFinal={dataFinal}
-                  dataFinalLength={dataFinalLength}
-                  geoData={geoData}
-                  viewport={viewport}
-                  handleDropdown={this.handleDropdown}
-                  projectsData={projectsData}
-                  loadingProjects={loadingProjects}
-                  project={this.props.project}
-                  dropdown={this.state.dropdown}
-                  handleTopicSelector={handleTopicSelector}
-                  topicsSelected={topicsSelected}
-                  dataFinalMap={dataFinalMap}
-                ></IdeaList>
-              </MainAnimations>
+              <IdeaList
+                type="projectIdeas"
+                loading={loading}
+                order={this.state.order}
+                dataFinal={dataFinal}
+                dataFinalLength={dataFinalLength}
+                geoData={geoData}
+                viewport={viewport}
+                handleDropdown={this.handleDropdown}
+                projectsData={projectsData}
+                loadingProjects={loadingProjects}
+                project={this.props.project}
+                dropdown={this.state.dropdown}
+                handleTopicSelector={handleTopicSelector}
+                topicsSelected={topicsSelected}
+                dataFinalMap={dataFinalMap}
+              ></IdeaList>
             )}
             {this.state.order === 2 && (
               <React.Fragment>
