@@ -16,7 +16,8 @@ import SkeletonCard from "../Cards/SkeletonCard";
 
 const Wrapper = styled.div`
   height: 100vh;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
   position: relative;
   width: 100%;
   top: 0;
@@ -162,13 +163,12 @@ const List = ({
             ) : (
               <NoMoreMainContent dataFinalLength={dataFinalLength} />
             )}
-
-            {isMobileCustom ? (
-              <div style={{ height: "70%" }} />
-            ) : (
-              <div style={{ height: "200px" }} />
-            )}
           </React.Fragment>
+        )}
+        {isMobileCustom ? (
+          <div style={{ height: "70%" }} />
+        ) : (
+          <div style={{ height: "200px" }} />
         )}
       </Wrapper>
     )
