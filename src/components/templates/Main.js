@@ -267,7 +267,7 @@ const Main = () => {
           {loading && <Loader />}
           <div className="MainBackgroundHome" />
 
-          {!openProject && (
+          {!openProject && !openAccount && (
             <IdeaList
               type="allIdeas"
               loading={loading}
