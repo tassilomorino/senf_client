@@ -40,7 +40,7 @@ const Wrapper = styled.div`
   @media (min-width: 768px) {
     position: fixed;
     top: ${(props) => (props.type === "allIdeas" ? "40px" : "100px")};
-    z-index: 2;
+    z-index: 99;
     width: 380px;
     left: 200px;
     padding: 10px 10px 20px 10px;
