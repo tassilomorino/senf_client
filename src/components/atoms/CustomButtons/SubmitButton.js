@@ -34,6 +34,7 @@ const WideButton = styled.button`
   justify-content: center;
   align-items: center;
   transform: translateX(-50%);
+  cursor:pointer;
 
   margin-left: ${(props) => (props.marginLeft ? props.marginLeft : "50%")};
 

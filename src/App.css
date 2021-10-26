@@ -136,6 +136,7 @@ a {
 
 .Terms {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 
