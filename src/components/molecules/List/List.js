@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import _ from "lodash";
 import IdeaCard from "../Cards/IdeaCard";
 import {
@@ -37,13 +37,31 @@ const List = ({
   dataFinalLength,
   projectsData,
 }) => {
+  function usePrevious(value) {
+    const ref = useRef();
+    useEffect(() => {
+      ref.current = value;
+    });
+    return ref.current;
+  }
+  const prevdataFinalLength = usePrevious({ dataFinalLength });
+
+  useEffect(() => {
+    if (
+      dataFinalLength &&
+      prevdataFinalLength.dataFinalLength !== dataFinalLength
+    ) {
+      setListItems(1);
+      sethasMoreItems(true);
+    }
+  }, [dataFinalLength]);
   const itemsPerPage = 1;
   const [hasMoreItems, sethasMoreItems] = useState(true);
-  const [records, setrecords] = useState(itemsPerPage);
+  const [listItems, setListItems] = useState(itemsPerPage);
 
   const showItems = (dataFinal) => {
     var items = [];
-    for (var i = 0; i < records; i++) {
+    for (var i = 0; i < listItems; i++) {
       items.push(
         <IdeaCard
           loading={loading}
@@ -68,15 +86,15 @@ const List = ({
       "loading more",
       "df.length",
       dataFinal.length,
-      "recors:",
-      records
+      "listItems:",
+      listItems
     );
-    if (records === dataFinal.length) {
+    if (listItems === dataFinal.length) {
       sethasMoreItems(false);
     } else {
       setTimeout(() => {
-        setrecords(records + itemsPerPage);
-        //(posts.length-records)>10? setrecords(records + 10):setrecords(records+15);
+        setListItems(listItems + itemsPerPage);
+        //(posts.length-listItems)>10? setlistItems(listItems + 10):setlistItems(listItems+15);
       }, 100);
     }
   };
@@ -118,7 +136,7 @@ const List = ({
           <InfiniteScroll
             loadMore={() => loadMore()}
             hasMore={hasMoreItems}
-            loader={<SkeletonCard>hi</SkeletonCard>}
+            loader={<SkeletonCard></SkeletonCard>}
             useWindow={false}
           >
             {showItems(dataFinal)}
@@ -135,18 +153,22 @@ const List = ({
           </InfiniteScroll>
         )}
 
-        {type === "myIdeas" ? (
-          <NoMoreMyContent dataFinalLength={dataFinalLength} />
-        ) : type === "projectIdeas" ? (
-          <NoMoreProjectsContent dataFinalLength={dataFinalLength} />
-        ) : (
-          <NoMoreMainContent dataFinalLength={dataFinalLength} />
-        )}
+        {!hasMoreItems && (
+          <React.Fragment>
+            {type === "myIdeas" ? (
+              <NoMoreMyContent dataFinalLength={dataFinalLength} />
+            ) : type === "projectIdeas" ? (
+              <NoMoreProjectsContent dataFinalLength={dataFinalLength} />
+            ) : (
+              <NoMoreMainContent dataFinalLength={dataFinalLength} />
+            )}
 
-        {isMobileCustom ? (
-          <div style={{ height: "70%" }} />
-        ) : (
-          <div style={{ height: "200px" }} />
+            {isMobileCustom ? (
+              <div style={{ height: "70%" }} />
+            ) : (
+              <div style={{ height: "200px" }} />
+            )}
+          </React.Fragment>
         )}
       </Wrapper>
     )

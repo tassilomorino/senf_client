@@ -41,6 +41,18 @@ const Card = styled.div`
   margin-bottom: 10px;
   height: ${(props) => (props.project ? "13.5em" : "11em")};
   overflow: hidden;
+  animation: animation 0.8s;
+
+  @keyframes animation {
+    0% {
+      opacity: 0;
+      transform: translateY(50%) translateX(20%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0%) translateX(0%);
+    }
+  }
 `;
 
 const ColorDot = styled.div`
