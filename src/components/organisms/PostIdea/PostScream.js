@@ -212,13 +212,13 @@ const PostScream = ({
 
   const mapViewport = useSelector((state) => state.data.mapViewport);
 
-  // const [viewport, setViewport] = useState({
-  //   latitude: 50.93864020643174,
-  //   longitude: 6.958725744885521,
-  //   zoom: 12,
-  //   transitionDuration: 1000,
-  //   pitch: 0,
-  // });
+  const [viewport, setViewport] = useState({
+    latitude: 50.93864020643174,
+    longitude: 6.958725744885521,
+    zoom: 12,
+    transitionDuration: 1000,
+    pitch: 0,
+  });
 
   const [addressBarClickedState, setAddressBarClickedState] = useState(false);
 
@@ -300,18 +300,18 @@ const PostScream = ({
           longitude: element.centerLong,
           transitionDuration: 1000,
         };
-        dispatch(setMapViewport(viewport));
+        setViewport(viewport);
 
         setGeoData(element.geoData);
       }
-      if (project === "") {
+      if (projectSelected === "") {
         const viewport = {
-          zoom: 12,
-          latitude: 50.93864020643174,
-          longitude: 6.958725744885521,
+          zoom: mapViewport.zoom,
+          latitude: mapViewport.latitude,
+          longitude: mapViewport.longitude,
           transitionDuration: 1000,
         };
-        dispatch(setMapViewport(viewport));
+        setViewport(viewport);
 
         setGeoData("");
       }
@@ -365,7 +365,7 @@ const PostScream = ({
           longitude: element.centerLong,
           transitionDuration: 1000,
         };
-        dispatch(setMapViewport(viewport));
+        setViewport(viewport);
 
         setGeoData(element.geoData);
       }
@@ -376,7 +376,7 @@ const PostScream = ({
           longitude: 6.958725744885521,
           transitionDuration: 1000,
         };
-        dispatch(setMapViewport(viewport));
+        setViewport(viewport);
 
         setGeoData("");
       }
@@ -392,8 +392,8 @@ const PostScream = ({
       locationHeader: address,
       fulladdress,
       neighborhood,
-      lat: mapViewport.latitude,
-      long: mapViewport.longitude,
+      lat: viewport.latitude,
+      long: viewport.longitude,
       project: projectSelected,
       Thema: topic,
       weblinkTitle,
@@ -411,7 +411,7 @@ const PostScream = ({
   };
 
   const _onMarkerDragEnd = (newViewport) => {
-    dispatch(setMapViewport(newViewport));
+    setViewport(newViewport);
 
     setAddressBarClickedState(false);
   };
@@ -462,7 +462,7 @@ const PostScream = ({
   };
 
   const onSelected = (newViewport) => {
-    dispatch(setMapViewport(newViewport));
+    setViewport(newViewport);
 
     setTimeout(() => {
       geocode(newViewport);
@@ -502,7 +502,7 @@ const PostScream = ({
         longitude: 6.958725744885521,
         transitionDuration: 1000,
       };
-      dispatch(setMapViewport(viewport));
+      setViewport(viewport);
 
       setAllMainStates({
         ...allMainStates,
@@ -601,8 +601,8 @@ const PostScream = ({
               isMobileCustom && locationDecided
                 ? { top: "27vh", transition: "0.5s" }
                 : isMobileCustom && !locationDecided
-                  ? { top: "100vh", transition: "0.5s" }
-                  : null
+                ? { top: "100vh", transition: "0.5s" }
+                : null
             }
           >
             <RegistrationAndLogin />
@@ -631,7 +631,7 @@ const PostScream = ({
           geocode={geocode}
           _onMarkerDragEnd={_onMarkerDragEnd}
           geoData={geoData}
-          viewport={mapViewport}
+          viewport={viewport}
           clicked={addressBarClickedState}
           addressBarClicked={addressBarClicked}
           locationDecided={locationDecided}
