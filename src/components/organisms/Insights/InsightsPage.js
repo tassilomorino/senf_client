@@ -21,6 +21,18 @@ import MainAnimations from "../../atoms/Animations/MainAnimations";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 
+const Wrapper = styled.div`
+  margin-top: 90px;
+  @media (min-width: 768px) {
+    margin-left: 200px;
+    width: 400px;
+    transition: 0.5s;
+    position: fixed;
+    top: 50px;
+    margin-top: 0px;
+    left: 0;
+  }
+`;
 const CoverWrapper = styled.div`
   margin-left: 2.5%;
   width: 95%;
@@ -107,8 +119,8 @@ const InsightsPage = ({ order }) => {
 
   return (
     order === 3 && (
-      <React.Fragment>
-        <MainAnimations height="100vh" marginTop="90px">
+      <Wrapper>
+        <MainAnimations transition="0.5s" display="block" paddingBottom="2em">
           <Keyindicators
             screams={screams}
             likesLength={likesLength}
@@ -139,7 +151,7 @@ const InsightsPage = ({ order }) => {
             </Covers>
           </CoverWrapper>
         </MainAnimations>
-      </React.Fragment>
+      </Wrapper>
     )
   );
 };
