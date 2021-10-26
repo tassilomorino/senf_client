@@ -622,15 +622,6 @@ button:disabled {
 
 
 
-.inlineInfoIcon {
-  position: absolute;
-  z-index: 999;
-  top: 0;
-  width: 30px;
-  left: 20px;
-  margin-top: 25px;
-  font-size: 0pt;
-}
 
 
 .facebook {
