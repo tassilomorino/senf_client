@@ -272,7 +272,7 @@ const Main = () => {
               type="allIdeas"
               loading={loading}
               order={order}
-              dataFinal={dataFinal.slice(0, 15)}
+              dataFinal={dataFinal}
               dataFinalLength={dataFinalLength}
               dataFinalMap={dataFinalMap}
               viewport={mapViewport}
