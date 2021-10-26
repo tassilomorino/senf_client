@@ -2,11 +2,12 @@
 
 import React, { useState, Fragment } from "react";
 import { useDispatch } from "react-redux";
+import { SET_AUTHENTICATED } from "../../../redux/types";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { useHistory } from "react-router";
-import { useFormik } from 'formik';
-import * as yup from 'yup';
+import { useFormik } from "formik";
+import * as yup from "yup";
 import PropTypes from "prop-types";
 import Swipe from "react-easy-swipe";
 
@@ -145,6 +146,7 @@ const styles = {
     zIndex: "999",
     maxWidth: "600px",
     textAlign: "center",
+    cursor:'pointer',
   },
 
   smallText_fixed: {
@@ -155,6 +157,7 @@ const styles = {
     zIndex: "999",
     maxWidth: "600px",
     textAlign: "center",
+    cursor:'pointer',
   },
 
   smallText_fixed_android: {
@@ -215,23 +218,7 @@ const styles = {
 const LoginRegistration = ({ classes }) => {
   const [open, setOpen] = useState(false);
   const [toggleSignup, setToggleSignup] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [handle, setHandle] = useState("");
-
-  const [age, setAge] = useState("");
-  const [sex, setSex] = useState("");
-
-  const [errors, setErrors] = useState({
-    email: false,
-    middleName: false,
-    lastName: false,
-  });
-
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [helperText, sethelperText] = useState({email:null,password:null});
-
+  const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
@@ -245,31 +232,76 @@ const LoginRegistration = ({ classes }) => {
 
   const loginValidationSchema = yup.object({
     email: yup
-      .string('Enter your email')
-      .email('Enter a valid email')
-      .required('Email is required'),
-    password: yup
-      .string('Enter your password')
-      .required('Password is required'),
+      .string()
+      .required("Enter your email")
+      .email("Enter a valid email"),
+
+    password: yup.string().required("Enter your password"),
   });
+  const registerValidationSchema = yup.object({
+    email: yup
+      .string()
+      .required("Enter your email")
+      .email("Enter a valid email"),
+
+    password: yup
+      .string()
+      .required("Enter your password")
+      .min(8, "Password must contain atleast 8 characters or more")
+      .matches(/\d+/, "Password must contain atleast one number"),
+/*    .matches(/[a-z]+/, " Password must contain atleast one lowercase letter")
+      .matches(/[A-Z]+/, "Password must contain atleast one uppercase letter")
+      
+       this regex fails if password has non latin letters ÄÖÜβ,šųįę,лиьбю бit will not let register,
+      */
+      
+    
+    confirmPassword: yup
+      .string()
+      .required("Confirm your password")
+      .oneOf([yup.ref("password"), null], "Passwords must match"),
+    username: yup
+      .string()
+      .required("Enter your username")
+      .min(3, "Your username is too short")
+      .max(30, "Your username is too long")
+    /* .matches(regex,'your message')  */
+  });
+
   const formikLoginStore = useFormik({
     initialValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
     validationSchema: loginValidationSchema,
   });
-  
-  
+
+  const formikRegisterStore = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+      username: "",
+      age: "",
+      sex: "",
+    },
+    validationSchema: registerValidationSchema,
+  });
+
   const handleSubmitLogin = async (event) => {
     event.preventDefault();
+
     setLoading(true);
     const userInfo = await firebase
       .auth()
-      .signInWithEmailAndPassword(formikLoginStore.values.email, formikLoginStore.values.password)
+      .signInWithEmailAndPassword(
+        formikLoginStore.values.email,
+        formikLoginStore.values.password
+      )
       .then(() => {
         setLoading(false);
-        history.push('/')
+        dispatch({ type: SET_AUTHENTICATED });
+        history.push("/");
       })
       .catch((err) => {
         setLoading(false);
@@ -282,30 +314,27 @@ const LoginRegistration = ({ classes }) => {
   const handleSubmitRegister = async (event) => {
     event.preventDefault();
 
-    if (email.trim() === "") {
-      setErrors({
-        ...errors,
-        email: true,
-      });
-      setErrorMessage("Email is required");
-      return;
-    }
-
     const userInfo = await firebase
       .auth()
-      .createUserWithEmailAndPassword(email, password)
+      .createUserWithEmailAndPassword(
+        formikRegisterStore.values.email,
+        formikRegisterStore.values.password
+      )
       .then(async (userCredential) => {
         const db = firebase.firestore();
 
         if (userCredential) {
-          await db.collection("users").doc(handle).set({
-            handle: handle,
-            email: email,
-            age: age,
-            sex: sex,
-            createdAt: new Date().toISOString(),
-            userId: userCredential.user.uid,
-          });
+          await db
+            .collection("users")
+            .doc(formikRegisterStore.values.username)
+            .set({
+              handle: formikRegisterStore.values.username,
+              email: formikRegisterStore.values.email,
+              age: formikRegisterStore.values.age,
+              sex: formikRegisterStore.values.sex,
+              createdAt: new Date().toISOString(),
+              userId: userCredential.user.uid,
+            });
         }
       })
       .then(async () => {
@@ -314,7 +343,7 @@ const LoginRegistration = ({ classes }) => {
       })
       .then(async () => {
         const emailWrapper = {
-          email: email,
+          email: formikRegisterStore.values.email,
         };
         history.push("/verify", emailWrapper);
       })
@@ -325,6 +354,7 @@ const LoginRegistration = ({ classes }) => {
 
   const handleToggle = () => {
     setToggleSignup(!toggleSignup);
+    setErrorMessage('')
   };
 
   const onSwipeMove = (position) => {
@@ -369,33 +399,18 @@ const LoginRegistration = ({ classes }) => {
               classes={classes}
               loading={loading}
               errorMessage={errorMessage}
-              formik={formikLoginStore}
               handleToggle={handleToggle}
               handleSubmitLogin={handleSubmitLogin}
-              
-              
-              
+              formik={formikLoginStore}
             />
           ) : (
             <RegistrationFormComponent
               classes={classes}
               loading={loading}
-              errors={errors}
               errorMessage={errorMessage}
               handleToggle={handleToggle}
               handleSubmitRegister={handleSubmitRegister}
-              setEmail={setEmail}
-              setPassword={setPassword}
-              setConfirmPassword={setConfirmPassword}
-              setHandle={setHandle}
-              setAge={setAge}
-              setSex={setSex}
-              email={email}
-              password={password}
-              confirmPassword={confirmPassword}
-              handle={handle}
-              age={age}
-              sex={sex}
+              formik={formikRegisterStore}
             />
           )}
         </Swipe>

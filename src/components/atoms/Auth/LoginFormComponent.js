@@ -16,6 +16,7 @@ const LoginFormComponent = ({
   formik
 }) => {
   const { t } = useTranslation();
+  
   return (
     <React.Fragment>
       <div className={classes.textfields}>
@@ -80,7 +81,7 @@ const LoginFormComponent = ({
         left="0"
         loading={loading}
         handleButtonClick={handleSubmitLogin}
-        disabled={loading}
+        disabled={loading || !formik.isValid}
       />
 
       <div
