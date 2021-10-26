@@ -55,6 +55,11 @@ const List = ({
         prevdataFinalLength.dataFinalLength !== dataFinalLength) ||
       (dropdown && prevDropdown && prevDropdown.dropdown !== dropdown)
     ) {
+      const element = document.getElementById("List");
+      element.scrollTo({
+        top: 0,
+        left: 0,
+      });
       setListItems(1);
       sethasMoreItems(true);
     }
@@ -137,7 +142,7 @@ const List = ({
   // );
   return (
     !loading && (
-      <Wrapper>
+      <Wrapper id="List">
         <InfiniteScroll
           loadMore={() => loadMore()}
           hasMore={hasMoreItems}
