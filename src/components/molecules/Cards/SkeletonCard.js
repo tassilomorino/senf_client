@@ -12,7 +12,8 @@ const Card = styled.div`
   margin-right: auto;
   border-radius: 20px;
   margin-bottom: 10px;
-  height: 11em;
+  height: ${(props) => (props.dataFinalLength ? "0em" : "11em")};
+
   opacity: 0;
   animation: animation 0.8s;
 
@@ -28,8 +29,8 @@ const Card = styled.div`
   }
 `;
 
-const SkeletonCard = () => {
-  return <Card />;
+const SkeletonCard = ({ dataFinalLength }) => {
+  return <Card dataFinalLength={dataFinalLength} />;
 };
 
 export default SkeletonCard;

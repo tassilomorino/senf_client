@@ -46,40 +46,44 @@ const List = ({
     return ref.current;
   }
   const prevdataFinalLength = usePrevious({ dataFinalLength });
+  const prevDropdown = usePrevious({ dropdown });
 
   useEffect(() => {
     if (
-      dataFinalLength &&
-      prevdataFinalLength.dataFinalLength !== dataFinalLength
+      (dataFinalLength &&
+        prevdataFinalLength.dataFinalLength !== dataFinalLength) ||
+      (dropdown && prevDropdown && prevDropdown.dropdown !== dropdown)
     ) {
       setListItems(1);
       sethasMoreItems(true);
     }
-  }, [dataFinalLength]);
+  }, [dropdown, dataFinalLength]);
   const itemsPerPage = 1;
   const [hasMoreItems, sethasMoreItems] = useState(true);
   const [listItems, setListItems] = useState(itemsPerPage);
 
   const showItems = (dataFinal) => {
     var items = [];
-    for (var i = 0; i < listItems; i++) {
-      items.push(
-        <IdeaCard
-          loading={loading}
-          key={dataFinal[i]?.screamId}
-          title={dataFinal[i]?.title}
-          body={dataFinal[i]?.body}
-          screamId={dataFinal[i]?.screamId}
-          likeCount={dataFinal[i]?.likeCount}
-          commentCount={dataFinal[i]?.commentCount}
-          Stadtteil={dataFinal[i]?.Stadtteil}
-          project={dataFinal[i]?.project}
-          color={dataFinal[i]?.color}
-          projectsData={projectsData}
-        />
-      );
+    if (dataFinalLength !== 0) {
+      for (var i = 0; i < listItems; i++) {
+        items.push(
+          <IdeaCard
+            loading={loading}
+            key={dataFinal[i]?.screamId}
+            title={dataFinal[i]?.title}
+            body={dataFinal[i]?.body}
+            screamId={dataFinal[i]?.screamId}
+            likeCount={dataFinal[i]?.likeCount}
+            commentCount={dataFinal[i]?.commentCount}
+            Stadtteil={dataFinal[i]?.Stadtteil}
+            project={dataFinal[i]?.project}
+            color={dataFinal[i]?.color}
+            projectsData={projectsData}
+          />
+        );
+      }
+      return items;
     }
-    return items;
   };
 
   const loadMore = () => {
@@ -133,28 +137,16 @@ const List = ({
   return (
     !loading && (
       <Wrapper>
-        {dropdown === "newest" && (
-          <InfiniteScroll
-            loadMore={() => loadMore()}
-            hasMore={hasMoreItems}
-            loader={<SkeletonCard></SkeletonCard>}
-            useWindow={false}
-          >
-            {showItems(dataFinal)}
-          </InfiniteScroll>
-        )}
-        {dropdown === "hottest" && (
-          <InfiniteScroll
-            loadMore={loadMore}
-            hasMore={hasMoreItems}
-            loader={<SkeletonCard>hi</SkeletonCard>}
-            useWindow={false}
-          >
-            {showItems(dataFinal)}
-          </InfiniteScroll>
-        )}
+        <InfiniteScroll
+          loadMore={() => loadMore()}
+          hasMore={hasMoreItems}
+          loader={<SkeletonCard dataFinalLength={dataFinalLength === 0} />}
+          useWindow={false}
+        >
+          {showItems(dataFinal)}
+        </InfiniteScroll>
 
-        {!hasMoreItems && (
+        {!hasMoreItems | (dataFinalLength === 0) && (
           <React.Fragment>
             {type === "myIdeas" ? (
               <NoMoreMyContent dataFinalLength={dataFinalLength} />
