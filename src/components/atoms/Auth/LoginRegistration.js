@@ -163,7 +163,8 @@ const styles = {
   smallText_fixed_android: {
     width: "100%",
     fontSize: "14pt",
-    position: "relative",
+    position: 'fixed',
+    bottom: '40px',
     marginTop: "20px",
     zIndex: "999",
     maxWidth: "600px",
