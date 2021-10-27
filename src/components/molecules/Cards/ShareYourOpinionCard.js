@@ -20,14 +20,17 @@ const Card = styled.div`
 
 const InnerWrapper = styled.div`
   width: 95%;
-  margin-top: 15px;
+  margin-top: 20px;
   text-align: center;
   margin-left: 2.5%;
-  padding-bottom: 15px;
+  padding-bottom: 25px;
 
-  font-family: Futura PT W01-Bold;
+  font-family: Futura PT W01 Book;
+  line-height: 1.8;
   font-size: 14pt;
   color: #414345;
+
+  
 `;
 
 const ShareYourOpinionCard = () => {
@@ -43,7 +46,7 @@ const ShareYourOpinionCard = () => {
 
         {!authenticated && (
           <CustomButton
-            text="Melde dich an"
+            text={t('login2')}
             backgroundColor="#353535"
             textColor="white"
             position="relative"

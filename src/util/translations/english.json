@@ -41,6 +41,7 @@
 
   "register": "Register",
   "login": "Login",
+  "login2":"Log in",
   "profile": "Profile",
   "logout": "Logout",
   "deteleAccount": "Delete account",
