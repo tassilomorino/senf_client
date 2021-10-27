@@ -39,6 +39,7 @@
     "react-easy-swipe": "0.0.18",
     "react-ga": "^2.7.0",
     "react-i18next": "^11.11.4",
+    "react-infinite-scroller": "^1.2.4",
     "react-lazy-images": "^1.1.0",
     "react-map-gl": "^5.3.12",
     "react-mapbox-gl-geocoder": "^1.1.0",
