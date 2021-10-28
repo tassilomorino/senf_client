@@ -150,6 +150,7 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
       long: newScream.long,
       body: newScream.body,
       userHandle: user.handle,
+      userId: user.userId,
       sex: user.sex,
       age: ageCapture,
       createdAt: new Date().toISOString(),
@@ -257,11 +258,13 @@ export const deleteScream = (screamId, user) => async (dispatch) => {
   }
 };
 
-export const getUserEmail = (userHandle) => async (dispatch) => {
+export const getUserEmail = (userId) => async (dispatch) => {
   const db = firebase.firestore();
   await db
     .collection("users")
-    .doc(userHandle)
+    .doc(userId)
+    .collection("Private")
+    .doc(userId)
     .get()
     .then((doc) => {
       dispatch({
