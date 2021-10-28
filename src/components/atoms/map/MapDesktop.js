@@ -135,47 +135,6 @@ const MapDesktop = ({
     });
   }
 
-  // const datatry = "NgSEZQk57zWGJYVvOZ4z"
-  // const dataMarkers = {
-  //  `${datatry}`: {
-  //     type: "Feature",
-  //     geometry: {
-  //       type: "Point",
-  //       coordinates: [6.932, 50.915422],
-  //     },
-  //     properties: {
-  //       id: "IhmyQY49rOlKwZLwf35Q",
-  //     },
-  //   },
-  //   IhmyQY49rOlKwZLwf35Q: {
-  //     type: "Feature",
-  //     geometry: {
-  //       type: "Point",
-  //       coordinates: [6.93, 50.914422],
-  //     },
-  //     properties: {
-  //       id: "IhmyQY49rOlKwZLwf35Q",
-  //     },
-  //   },
-  // };
-
-  // dataFinal.forEach((element) => {
-  //   dataMarkers.push({
-  //      screamId: {
-  //       type: "Feature",
-  //       geometry: {
-  //         type: "Point",
-  //         coordinates: [6.93, 50.914422],
-  //       },
-  //       properties: {
-  //         id: "IhmyQY49rOlKwZLwf35Q",
-  //       },
-  //     },
-  //   });
-  // });
-
-  // console.log(dataMarkers);
-
   return (
     !isMobileCustom && (
       <div className="mapWrapper">
@@ -228,30 +187,55 @@ const MapDesktop = ({
           )}
           <DesktopMapButtons viewport={viewport} />
 
-          {/* {dataFinalMap.map(
-              ({ screamId, long, lat, likeCount, color, title }) => (
-                <React.Fragment>
-                  <Source
-                    id={screamId}
-                    type="geojson"
-                    data={dataMarkers[screamId]}
-                  />
-                  <Layer
-                    id={screamId}
-                    type="circle"
-                    source={screamId}
-                    paint={{
-                      "circle-radius": 6,
-                      "circle-color": "#B42222",
-                      "circle-stroke-color": "green",
-                    }}
-                    onClick={() => alert("hi")}
-                  />
-                </React.Fragment>
-              )
-            )} */}
-
           {dataFinalMap.map(
+            ({ screamId, long, lat, likeCount, color, title }) => (
+              <div
+                style={{
+                  boxShadow:
+                    "rgba(0, 0, 0, 0.1) 0px 9px 38px, rgba(0, 0, 0, 0.15) 0px 5px 5px",
+                }}
+              >
+                <Source
+                  id={screamId}
+                  type="geojson"
+                  data={{
+                    type: "Feature",
+                    geometry: {
+                      type: "Point",
+                      coordinates: [long, lat],
+                    },
+                  }}
+                />
+                <Layer
+                  id={screamId}
+                  type="circle"
+                  source={screamId}
+                  paint={{
+                    "circle-radius": 3 + likeCount / 4,
+                    "circle-color": color,
+                    "circle-stroke-color": "#fff",
+                  }}
+                  onClick={() => fetchDataScream(screamId)}
+                  onHover={() => {
+                    setHoverScreamId(screamId);
+                    setHoverLat(lat);
+                    setHoverLong(long);
+                    setHoverTitle(title);
+                    setHoverLikeCount(likeCount);
+                  }}
+                  onLeave={() => {
+                    setHoverScreamId("");
+                    setHoverLat("");
+                    setHoverLong("");
+                    setHoverTitle("");
+                    setHoverLikeCount("");
+                  }}
+                />
+              </div>
+            )
+          )}
+
+          {/* {dataFinalMap.map(
             ({ screamId, long, lat, likeCount, color, title }) => (
               <Marker key={screamId} longitude={long} latitude={lat}>
                 <OpenIdeaButton
@@ -281,7 +265,7 @@ const MapDesktop = ({
                 </OpenIdeaButton>
               </Marker>
             )
-          )}
+          )} */}
 
           {openScream && scream.lat && (
             <Marker
