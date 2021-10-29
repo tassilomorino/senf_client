@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState } from "react";
+import React, { useState, PureComponent } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
@@ -21,25 +21,9 @@ import MapGL, {
   Marker,
   NavigationControl,
 } from "@urbica/react-map-gl";
-
+import { Markers } from "./Markers";
 import NoLocationPopUp from "./NoLocationPopUp";
 import { DesktopMapButtons } from "./DesktopMapButtons";
-import ExpandButton from "../CustomButtons/ExpandButton";
-
-const OpenIdeaButton = styled.div`
-  position: absolute;
-  width: ${(props) => 7 + props.likeCount / 2 + "px"};
-  height: ${(props) => 7 + props.likeCount / 2 + "px"};
-  min-width: unset;
-
-  margin-left: ${(props) => -((7 + props.likeCount) / 4) + "px"};
-  margin-top: ${(props) => -(7 + props.likeCount) / 4 + "px"};
-  border-radius: 100%;
-  border: 1px white solid;
-  background-color: ${(props) => props.color};
-  opacity: 1;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 9px 38px, rgba(0, 0, 0, 0.15) 0px 5px 5px;
-`;
 
 const PinComponent = styled.img`
   position: absolute;
@@ -187,7 +171,7 @@ const MapDesktop = ({
           )}
           <DesktopMapButtons viewport={viewport} />
 
-          {dataFinalMap.map(
+          {/* {dataFinalMap.map(
             ({ screamId, long, lat, likeCount, color, title }) => (
               <div
                 style={{
@@ -233,9 +217,19 @@ const MapDesktop = ({
                 />
               </div>
             )
-          )}
+          )} */}
 
-          {/* {dataFinalMap.map(
+          <Markers
+            dataFinalMap={dataFinalMap}
+            fetchDataScream={fetchDataScream}
+            setHoverScreamId={setHoverScreamId}
+            setHoverLat={setHoverLat}
+            setHoverLong={setHoverLong}
+            setHoverTitle={setHoverTitle}
+            setHoverLikeCount={setHoverLikeCount}
+          />
+
+          {/*    {dataFinalMap.map(
             ({ screamId, long, lat, likeCount, color, title }) => (
               <Marker key={screamId} longitude={long} latitude={lat}>
                 <OpenIdeaButton

@@ -19,6 +19,7 @@ import ExpandButton from "../CustomButtons/ExpandButton";
 
 //Icons
 import Pin from "../../../images/pin3.png";
+import { MarkersMobile } from "./Markers";
 // import cologne_grid from "../../../images/cologne_grid.svg";
 
 const OpenIdeaButton = styled.div`
@@ -150,23 +151,10 @@ const MapMobile = ({
             }}
           />
 
-          {dataFinalMap.map(({ screamId, long, lat, likeCount, color }) => (
-            <Marker key={screamId} longitude={long} latitude={lat}>
-              <OpenIdeaButton
-                color={color}
-                likeCount={likeCount}
-                onClick={() => fetchDataScream(screamId)}
-              >
-                <ExpandButton
-                  handleButtonClick={() => fetchDataScream(screamId)}
-                />
-              </OpenIdeaButton>
-              <NoLocationPopUp
-                dataNoLocation={dataNoLocation}
-                setSwipePositionUp={setSwipePositionUp}
-              />
-            </Marker>
-          ))}
+          <MarkersMobile
+            dataFinalMap={dataFinalMap}
+            fetchDataScream={fetchDataScream}
+          />
 
           {openScream && scream.lat && (
             <Marker
