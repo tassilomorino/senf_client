@@ -74,9 +74,18 @@ const MapDesktop = ({
   const [hoverLikeCount, setHoverLikeCount] = useState("");
 
   const viewport = useSelector((state) => state.data.mapViewport);
+  const [zoomBreak, setZoomBreak] = useState(0.8);
 
   const _onViewportChange = (viewport) => {
     dispatch(setMapViewport(viewport));
+
+    if (viewport.zoom > 15) {
+      setZoomBreak(2);
+    } else if (viewport.zoom > 13) {
+      setZoomBreak(1.2);
+    } else {
+      setZoomBreak(0.8);
+    }
   };
 
   const fetchDataScream = (screamId) => {
@@ -227,6 +236,7 @@ const MapDesktop = ({
             setHoverLong={setHoverLong}
             setHoverTitle={setHoverTitle}
             setHoverLikeCount={setHoverLikeCount}
+            zoomBreak={zoomBreak}
           />
 
           {/*    {dataFinalMap.map(

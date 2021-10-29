@@ -7,8 +7,8 @@ import ExpandButton from "../CustomButtons/ExpandButton";
 
 const OpenIdeaButton = styled.div`
   position: absolute;
-  width: ${(props) => 7 + props.likeCount / 2 + "px"};
-  height: ${(props) => 7 + props.likeCount / 2 + "px"};
+  width: ${(props) => (7 + props.likeCount / 2) * props.zoomBreak + "px"};
+  height: ${(props) => (7 + props.likeCount / 2) * props.zoomBreak + "px"};
   min-width: unset;
 
   margin-left: ${(props) => -((7 + props.likeCount) / 4) + "px"};
@@ -30,6 +30,7 @@ export class Markers extends PureComponent {
       setHoverLong,
       setHoverTitle,
       setHoverLikeCount,
+      zoomBreak,
     } = this.props;
     return dataFinalMap.map(
       ({ screamId, long, lat, likeCount, color, title }) => (
@@ -37,6 +38,7 @@ export class Markers extends PureComponent {
           <OpenIdeaButton
             likeCount={likeCount}
             color={color}
+            zoomBreak={zoomBreak}
             onMouseEnter={() => {
               setHoverScreamId(screamId);
               setHoverLat(lat);
@@ -64,11 +66,15 @@ export class Markers extends PureComponent {
 
 export class MarkersMobile extends PureComponent {
   render() {
-    const { dataFinalMap, fetchDataScream } = this.props;
+    const { dataFinalMap, fetchDataScream, zoomBreak } = this.props;
     return dataFinalMap.map(
       ({ screamId, long, lat, likeCount, color, title }) => (
         <Marker key={screamId} longitude={long} latitude={lat}>
-          <OpenIdeaButton likeCount={likeCount} color={color}>
+          <OpenIdeaButton
+            likeCount={likeCount}
+            zoomBreak={zoomBreak}
+            color={color}
+          >
             <ExpandButton handleButtonClick={() => fetchDataScream(screamId)} />
           </OpenIdeaButton>
         </Marker>

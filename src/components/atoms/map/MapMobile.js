@@ -50,13 +50,12 @@ const MapMobile = ({
   viewport,
 
   _onViewportChange,
-
+  zoomBreak,
   loadingProjects,
   geoData,
   setSwipePositionUp,
 }) => {
   const dispatch = useDispatch();
-
   const openScream = useSelector((state) => state.UI.openScream);
   const scream = useSelector((state) => state.data.scream);
 
@@ -154,6 +153,7 @@ const MapMobile = ({
           <MarkersMobile
             dataFinalMap={dataFinalMap}
             fetchDataScream={fetchDataScream}
+            zoomBreak={zoomBreak}
           />
 
           {openScream && scream.lat && (
@@ -172,6 +172,10 @@ const MapMobile = ({
               />
             </Marker>
           )}
+          <NoLocationPopUp
+            dataNoLocation={dataNoLocation}
+            setSwipePositionUp={setSwipePositionUp}
+          ></NoLocationPopUp>
         </MapGL>
       </div>
     )

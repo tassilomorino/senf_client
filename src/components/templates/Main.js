@@ -91,8 +91,8 @@ const Main = () => {
           if (!screamId) {
             setTimeout(() => {
               const viewport = {
-                latitude: 50.95,
-                longitude: 6.9503,
+                latitude: 50.93864020643174,
+                longitude: 6.958725744885521,
                 zoom: isMobileCustom ? 9.5 : 11.5,
                 transitionDuration: 4000,
                 pitch: 30,
