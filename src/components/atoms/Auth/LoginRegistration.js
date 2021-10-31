@@ -275,7 +275,9 @@ const LoginRegistration = ({ classes }) => {
       password: "",
     },
     validationSchema: loginValidationSchema,
-    validateOnMount:true
+    isInitialValid:false,
+    
+    
   });
 
   const formikRegisterStore = useFormik({
@@ -288,7 +290,8 @@ const LoginRegistration = ({ classes }) => {
       sex: "",
     },
     validationSchema: registerValidationSchema,
-    validateOnMount:true
+    isInitialValid:false
+   
   });
 
   const handleSubmitLogin = async (event) => {
