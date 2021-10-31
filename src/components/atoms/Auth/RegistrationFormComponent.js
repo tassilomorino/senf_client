@@ -41,7 +41,7 @@ const RegistrationFormComponent = ({
           variant="outlined"
           className={classes.textField}
           helperText={formik.errors.email}
-          error={Boolean(formik.errors.email)}
+          error={  formik.values.email!=='' && Boolean(formik.errors.email)}
           value={formik.values.email}
           onChange={formik.handleChange}
           fullWidth
@@ -55,7 +55,7 @@ const RegistrationFormComponent = ({
           variant="outlined"
           className={classes.textField}
           helperText={formik.errors.password}
-          error={Boolean(formik.errors.password)}
+          error={  formik.values.password!=='' && Boolean(formik.errors.password)}
           value={formik.values.password}
           onChange={formik.handleChange}
           fullWidth
@@ -67,11 +67,9 @@ const RegistrationFormComponent = ({
           label={t('confirmPassword')}
           margin="dense"
           variant="outlined"
-          className={
-            formik.values.password === "" ? classes.textField_hide : classes.textField
-          }
+          className={classes.textField}
           helperText={formik.errors.confirmPassword}
-          error={Boolean(formik.errors.confirmPassword)}
+          error={formik.values.confirmPassword!=='' && Boolean(formik.errors.confirmPassword)}
           value={formik.values.confirmPassword}
           onChange={formik.handleChange}
           fullWidth
@@ -83,9 +81,11 @@ const RegistrationFormComponent = ({
           label={t('username')}
           margin="dense"
           variant="outlined"
-          className={classes.textField}
+          className={
+            formik.values.confirmPassword === "" ? classes.textField_hide : classes.textField
+          }
           helperText={formik.errors.username}
-          error={Boolean(formik.errors.username)}
+          error={formik.values.username!=='' && Boolean(formik.errors.username)}
           value={formik.values.username}
           onChange={formik.handleChange}
           fullWidth
