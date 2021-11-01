@@ -2,6 +2,7 @@
 
 import firebase from "firebase/app";
 import "firebase/firestore";
+import setColorByTopic from "../../data/setColorByTopic";
 
 import { LIKE_SCREAM, UNLIKE_SCREAM, VOTED_TRUE, VOTED_FALSE } from "../types";
 
@@ -37,6 +38,7 @@ export const likeScream = (screamId, user) => async (dispatch) => {
   } else {
     const scream = doc.data();
     scream.screamId = doc.id;
+    scream.color = setColorByTopic(doc.data().Thema);
     scream.comments = [];
 
     commentsRef.forEach((doc) =>
@@ -97,6 +99,7 @@ export const unlikeScream = (screamId, user) => async (dispatch) => {
   } else {
     const scream = doc.data();
     scream.screamId = doc.id;
+    scream.color = setColorByTopic(doc.data().Thema);
     scream.comments = [];
 
     commentsRef.forEach((doc) =>

@@ -78,6 +78,9 @@ const ScreamDialog = () => {
         left: 0,
         behavior: "smooth",
       });
+      if (!isMobileCustom) {
+        setCommentFormShow(true);
+      }
       setTimeout(() => {
         const viewport = {
           latitude: isMobileCustom && openScream ? lat - 0.0008 : lat,

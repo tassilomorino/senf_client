@@ -9,10 +9,6 @@ import relativeTime from "dayjs/plugin/relativeTime";
 
 // COMPONENTS
 import LikeButton from "../../atoms/CustomButtons/LikeButton";
-import RegistrationAndLogin from "../../atoms/Auth/LoginRegistration";
-
-// Icons
-import ChatBorder from "../../../images/icons/chat.png";
 
 // Redux
 import { useSelector, useDispatch } from "react-redux";
@@ -20,8 +16,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { openScreamFunc } from "../../../redux/actions/screamActions";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import { openProjectFunc } from "../../../redux/actions/projectActions";
-import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
-
+import CommentButton from "../../atoms/CustomButtons/CommentButton";
+import {
+  LikeButtonWrapper,
+  CommentButtonWrapper,
+  Engagement,
+} from "./styles/sharedStyles";
 const CardContent = styled.div`
   color: rgb(87, 87, 87);
   width: 95%;
@@ -166,30 +166,6 @@ const Line = styled.div`
   z-index: 11;
 `;
 
-const LikeButtonWrapper = styled.div`
-  top: ${(props) => (props.project && props.projectsData ? "0px" : "0px")};
-  left: 85%;
-  z-index: 12;
-  position: absolute;
-  text-align: center;
-`;
-
-const Engagement = styled.div`
-  color: black;
-  width: 100%;
-  font-size: 14px;
-  text-align: center;
-  padding-right: 10px;
-`;
-
-const CommentButtonWrapper = styled.div`
-  top: ${(props) => (props.project && props.projectsData ? "85px" : "85px")};
-  left: 85%;
-  z-index: ${(props) => (props.authenticated ? "0" : "10")};
-  position: absolute;
-  background-color: white;
-`;
-
 const IdeaCard = ({
   projectsData,
   title,
@@ -243,15 +219,8 @@ const IdeaCard = ({
           <LikeButton screamId={screamId} />
           <Engagement>{likeCount} </Engagement>
         </LikeButtonWrapper>
-        <CommentButtonWrapper
-          authenticated={authenticated}
-          project={project}
-          projectsData={projectsData}
-        >
-          <MyButtonStyle>
-            {!authenticated && <RegistrationAndLogin />}
-            <img src={ChatBorder} width="100%" alt="ChatIcon" />
-          </MyButtonStyle>
+        <CommentButtonWrapper project={project} projectsData={projectsData}>
+          <CommentButton handleButtonClick={fetchDataScream} />
           <Engagement>{commentCount}</Engagement>
         </CommentButtonWrapper>
         <br />
