@@ -126,8 +126,9 @@ const styles = {
     paddingTop: 5,
     paddingBottom: 5,
     fontSize: 20,
-    fontWeight: 500,
+
     fontFamily: "Playfair Display",
+    fontWeight: "900",
     clear: "both",
     pointerEvents: "none",
   },
