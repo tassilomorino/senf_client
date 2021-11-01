@@ -173,8 +173,9 @@ const Main = () => {
     } else if (index === -1) {
       setTopicsSelected(topicsSelected.concat(topic));
     } else {
-      topicsSelected.splice(index, 1);
-      if (topicsSelected.length === 0) {
+      const newTopics = topicsSelected.filter((item) => item !== topic);
+
+      if (newTopics.length === 0) {
         setTopicsSelected([
           "Verkehr",
           "Versorgung",
@@ -185,7 +186,7 @@ const Main = () => {
           "Sonstige",
         ]);
       } else {
-        setTopicsSelected(topicsSelected);
+        setTopicsSelected(...[newTopics]);
       }
     }
   };
