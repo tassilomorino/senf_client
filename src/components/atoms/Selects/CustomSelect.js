@@ -108,11 +108,6 @@ const Span = styled.span`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: 350px;
-  display: inline-block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 `;
 
 const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
@@ -177,7 +172,7 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
         class="dropbtn"
         style={{ zIndex: 999 }}
       >
-        {truncateString(selectedLabel, 22)}
+        {truncateString(selectedLabel, 25)}
 
         <img
           src={Arrow}
@@ -203,14 +198,14 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
                     <Span style={{ fontFamily: "Futura PT W01-Bold" }}>
                       {option.color && <ColorDot color={option.color} />}
                       {option.img && <Img src={option.img} />}
-                      {option.label}
+                      {truncateString(option.label, 22)}
                     </Span>
                   ) : (
                     <Span>
                       {" "}
                       {option.color && <ColorDot color={option.color} />}
                       {option.img && <Img src={option.img} />}
-                      {option.label}
+                      {truncateString(option.label, 30)}
                     </Span>
                   )}
                 </ListItem>
