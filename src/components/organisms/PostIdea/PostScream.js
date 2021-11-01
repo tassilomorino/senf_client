@@ -225,6 +225,7 @@ const PostScream = ({
   const [out, setOut] = useState(false);
   const [projectSelected, setProjectSeleted] = useState("");
   const [geoData, setGeoData] = useState("");
+  const [checkIfCalendar, setCheckIfCalendar] = useState(false);
 
   const [address, setAddress] = useState("Ohne Ortsangabe");
   const [neighborhood, setNeighborhood] = useState("Ohne Ortsangabe");
@@ -303,6 +304,7 @@ const PostScream = ({
         setViewport(viewport);
 
         setGeoData(element.geoData);
+        setCheckIfCalendar(element.calendar);
       }
       if (projectSelected === "") {
         const viewport = {
@@ -368,6 +370,7 @@ const PostScream = ({
         setViewport(viewport);
 
         setGeoData(element.geoData);
+        setCheckIfCalendar(element.calendar);
       }
       if (value === "") {
         const viewport = {
@@ -379,6 +382,7 @@ const PostScream = ({
         setViewport(viewport);
 
         setGeoData("");
+        setCheckIfCalendar(false);
       }
     });
   };
@@ -686,6 +690,7 @@ const PostScream = ({
           handleSubmit={handleSubmit}
           body={body}
           title={title}
+          checkIfCalendar={checkIfCalendar}
         />
         <CustomIconButton
           name="Close"
