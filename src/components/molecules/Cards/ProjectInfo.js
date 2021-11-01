@@ -6,7 +6,7 @@ import styled from "styled-components";
 // Images
 import WeblinkIcon from "../../../images/icons/weblink.png";
 import contactIcon from "../../../images/icons/mail.png";
-import { Text } from "../../../styles/GlobalStyle";
+import { StyledText } from "../../../styles/GlobalStyle";
 
 const Card = styled.div`
   z-index: 99;
@@ -79,7 +79,7 @@ const ProjectInfo = ({
     <Card>
       <Content>
         <Title> Worum geht's</Title>
-        <Text>{description}</Text>
+        <StyledText>{description}</StyledText>
 
         <div style={{ display: "flex", flexDirection: "row" }}>
           {weblink && (
@@ -114,17 +114,17 @@ const ProjectInfo = ({
         <Title> Zeitraum </Title>
         <p>
           {endDate ? (
-            <Text>
+            <StyledText>
               {startDate} – {endDate}
-            </Text>
+            </StyledText>
           ) : (
-            <Text>{startDate} </Text>
+            <StyledText>{startDate} </StyledText>
           )}
         </p>
         <br />
 
         <Title>Initiatoren</Title>
-        <Text>{owner}</Text>
+        <StyledText>{owner}</StyledText>
         <br />
       </Content>
     </Card>
