@@ -30,7 +30,8 @@ const PinComponent = styled.img`
   width: 100px;
   transform: translateY(-88%) translateX(-45%) rotate(0deg);
   transform-origin: bottom center;
-  margin-top: ${(props) => -(7 + props.likeCount) / 4 + "px"};
+  margin-top: ${(props) =>
+    (-(7 + props.likeCount) * props.zoomBreak) / 4 + "px"};
 `;
 
 const styles = {
@@ -280,6 +281,7 @@ const MapDesktop = ({
               <PinComponent
                 src={Pin}
                 likeCount={scream.likeCount}
+                zoomBreak={zoomBreak}
                 style={{
                   clipPath: "polygon(0 0, 100% 0, 100% 88%, 0 88%)",
                 }}
@@ -292,10 +294,10 @@ const MapDesktop = ({
             <div
               style={{
                 position: "absolute",
-                width: 7 + hoverLikeCount / 2 + "px",
-                marginLeft: -((7 + hoverLikeCount) / 4) + "px",
-                height: 7 + hoverLikeCount / 2 + "px",
-                marginTop: -(7 + hoverLikeCount) / 4 + "px",
+                width: (7 + hoverLikeCount / 2) * zoomBreak + "px",
+                marginLeft: -((7 + hoverLikeCount) / 4) * zoomBreak + "px",
+                height: (7 + hoverLikeCount / 2) * zoomBreak + "px",
+                marginTop: -((7 + hoverLikeCount) / 4) * zoomBreak + "px",
                 borderRadius: "100%",
                 border: "1px white solid",
                 backgroundColor: "rgb(0,0,0,0.2)",
