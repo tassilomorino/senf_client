@@ -35,7 +35,7 @@ const LoginFormComponent = ({
           value={formik.values.email}
           onChange={formik.handleChange}
           error={formik.values.email !=='' &&Boolean(formik.errors.email)}
-          helperText={formik.errors.email}
+          helperText={formik.values.email !==''&&formik.errors.email}
           
         ></TextField>
 
@@ -52,7 +52,7 @@ const LoginFormComponent = ({
           value={formik.values.password}
           onChange={formik.handleChange}
           error={formik.values.password !=='' && Boolean(formik.errors.password)}
-          helperText={formik.errors.password}
+          helperText={formik.values.password !==''&&formik.errors.password}
         ></TextField>
 
         <br />

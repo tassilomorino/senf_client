@@ -40,10 +40,11 @@ const RegistrationFormComponent = ({
           margin="dense"
           variant="outlined"
           className={classes.textField}
-          helperText={formik.errors.email}
-          error={  formik.values.email!=='' && Boolean(formik.errors.email)}
+          helperText={formik.values.email!==''&& formik.errors.email}
+          error={formik.values.email!==''&& Boolean(formik.errors.email)}
           value={formik.values.email}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
           fullWidth
         ></TextField>
         <TextField
@@ -54,10 +55,11 @@ const RegistrationFormComponent = ({
           margin="dense"
           variant="outlined"
           className={classes.textField}
-          helperText={formik.errors.password}
-          error={  formik.values.password!=='' && Boolean(formik.errors.password)}
+          helperText={formik.values.password!==''&&formik.errors.password}
+          error={formik.values.password!==''&&  Boolean(formik.errors.password)}
           value={formik.values.password}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
           fullWidth
         ></TextField>
         <TextField
@@ -68,10 +70,11 @@ const RegistrationFormComponent = ({
           margin="dense"
           variant="outlined"
           className={classes.textField}
-          helperText={formik.errors.confirmPassword}
-          error={formik.values.confirmPassword!=='' && Boolean(formik.errors.confirmPassword)}
+          helperText={formik.values.confirmPassword!==''&& formik.errors.confirmPassword}
+          error={ formik.values.confirmPassword!=='' &&Boolean(formik.errors.confirmPassword)}
           value={formik.values.confirmPassword}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
           fullWidth
         ></TextField>
         <TextField
@@ -84,10 +87,11 @@ const RegistrationFormComponent = ({
           className={
             formik.values.confirmPassword === "" ? classes.textField_hide : classes.textField
           }
-          helperText={formik.errors.username}
-          error={formik.values.username!=='' && Boolean(formik.errors.username)}
+          helperText={formik.values.username!==''&& formik.errors.username}
+          error={formik.values.username!==''&& Boolean(formik.errors.username)}
           value={formik.values.username}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
           fullWidth
         ></TextField>
 

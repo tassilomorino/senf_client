@@ -287,6 +287,8 @@ const LoginRegistration = ({ classes }) => {
     },
     validationSchema: registerValidationSchema,
     isInitialValid: false,
+    validateOnChange:true,
+    validateOnBlur:true
   });
 
   const handleSubmitLogin = async (event) => {
