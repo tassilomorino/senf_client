@@ -82,26 +82,22 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
       <div className="accountDialog">
         {isMobileCustom ? <BackgroundMobile /> : <BackgroundDesktop />}
 
-        {order === 1 && (
-          <MainAnimations transition="0.5s" display="block" paddingBottom="2em">
-            {!loadingMyScreams ? (
-              <IdeaList
-                type="myIdeas"
-                loading={loadingMyScreams}
-                order={order}
-                dataFinal={dataFinal}
-                dataFinalLength={dataFinalLength}
-                viewport={mapViewport}
-                handleDropdown={handleDropdown}
-                dropdown={dropdown}
-                handleTopicSelector={handleTopicSelector}
-                topicsSelected={topicsSelected}
-                dataFinalMap={dataFinalMap}
-              ></IdeaList>
-            ) : (
-              <Loader />
-            )}
-          </MainAnimations>
+        {order === 1 && !loadingMyScreams ? (
+          <IdeaList
+            type="myIdeas"
+            loading={loadingMyScreams}
+            order={order}
+            dataFinal={dataFinal}
+            dataFinalLength={dataFinalLength}
+            viewport={mapViewport}
+            handleDropdown={handleDropdown}
+            dropdown={dropdown}
+            handleTopicSelector={handleTopicSelector}
+            topicsSelected={topicsSelected}
+            dataFinalMap={dataFinalMap}
+          ></IdeaList>
+        ) : (
+          <Loader />
         )}
 
         {order === 2 && (

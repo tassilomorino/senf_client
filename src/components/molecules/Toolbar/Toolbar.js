@@ -8,22 +8,6 @@ import styled, { keyframes } from "styled-components";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { useTranslation } from "react-i18next";
 
-const enterAnimation = keyframes`
-       0% {
-  opacity: 0;
-  transform: translateY(10%) ;
-}
-20% {
-  opacity: 0;
-  transform: translateY(10%);
-}
-
-100% {
-  opacity: 1;
-  transform: translateY(0%) ; 
-}
-    `;
-
 const Wrapper = styled.div`
   font-family: PlayfairDisplay-Regular;
   font-size: 24px;
@@ -34,7 +18,7 @@ const Wrapper = styled.div`
   height: 50px;
   padding: 10px 2.5% 20px 2.5%;
 
-  animation: ${enterAnimation} 0.7s;
+  animation: ToolbarAnimation 0.7s;
   pointer-events: none;
 
   @media (min-width: 768px) {
@@ -42,11 +26,26 @@ const Wrapper = styled.div`
     top: ${(props) => (props.type === "allIdeas" ? "40px" : "100px")};
     z-index: 99;
     width: 380px;
-    left: 200px;
     padding: 10px 10px 20px 10px;
-    margin-top: 0;
+  }
+
+  @keyframes ToolbarAnimation {
+    0% {
+      opacity: 0;
+      transform: translateY(10%);
+    }
+    20% {
+      opacity: 0;
+      transform: translateY(10%);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0%);
+    }
   }
 `;
+
 const Bar = styled.div`
   position: absolute;
   width: 60px;

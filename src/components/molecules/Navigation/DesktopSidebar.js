@@ -24,6 +24,8 @@ import PostScream from "../../organisms/PostIdea/PostScream";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import styled from "styled-components";
+import { closeScream } from "../../../redux/actions/screamActions";
+import { closeProject } from "../../../redux/actions/projectActions";
 
 const Logo = styled.div`
   position: fixed;
@@ -80,6 +82,11 @@ const DesktopSidebar = ({
 
   const openTheAccount = () => {
     dispatch(openAccountFunc(userId));
+
+    dispatch(closeScream());
+    dispatch(closeProject());
+
+    handleTopicSelector("all");
   };
 
   return (
