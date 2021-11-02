@@ -146,7 +146,7 @@ const styles = {
     zIndex: "999",
     maxWidth: "600px",
     textAlign: "center",
-    cursor: 'pointer',
+    cursor: "pointer",
   },
 
   smallText_fixed: {
@@ -157,14 +157,14 @@ const styles = {
     zIndex: "999",
     maxWidth: "600px",
     textAlign: "center",
-    cursor: 'pointer',
+    cursor: "pointer",
   },
 
   smallText_fixed_android: {
     width: "100%",
     fontSize: "14pt",
-    position: 'fixed',
-    bottom: '40px',
+    position: "fixed",
+    bottom: "40px",
     marginTop: "20px",
     zIndex: "999",
     maxWidth: "600px",
@@ -219,7 +219,7 @@ const styles = {
 const LoginRegistration = ({ classes }) => {
   const [open, setOpen] = useState(false);
   const [toggleSignup, setToggleSignup] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
@@ -251,8 +251,6 @@ const LoginRegistration = ({ classes }) => {
       .min(8, "Password must contain atleast 8 characters or more")
       .matches(/\d+/, "Password must contain atleast one number"),
 
-
-
     confirmPassword: yup
       .string()
       .required("Confirm your password")
@@ -262,8 +260,11 @@ const LoginRegistration = ({ classes }) => {
       .required("Enter your username")
       .min(3, "Your username is too short")
       .max(20, "Your username is too long")
-      .matches(/^\S*$/, 'Spaces are not allowed')
-      .matches(/^[a-zA-Z0-9\-\_\.]*$/, 'Only Latin letters numbers and symbols .-_ allowed')
+      .matches(/^\S*$/, "Spaces are not allowed")
+      .matches(
+        /^[a-zA-Z0-9\-\_\.]*$/,
+        "Only Latin letters numbers and symbols .-_  are allowed"
+      ),
   });
 
   const formikLoginStore = useFormik({
@@ -273,8 +274,6 @@ const LoginRegistration = ({ classes }) => {
     },
     validationSchema: loginValidationSchema,
     isInitialValid: false,
-
-
   });
 
   const formikRegisterStore = useFormik({
@@ -287,8 +286,7 @@ const LoginRegistration = ({ classes }) => {
       sex: "",
     },
     validationSchema: registerValidationSchema,
-    isInitialValid: false
-
+    isInitialValid: false,
   });
 
   const handleSubmitLogin = async (event) => {
@@ -317,17 +315,27 @@ const LoginRegistration = ({ classes }) => {
   const handleSubmitRegister = async (event) => {
     event.preventDefault();
 
-    const userInfo = await firebase
-      .auth()
-      .createUserWithEmailAndPassword(
-        formikRegisterStore.values.email,
-        formikRegisterStore.values.password
-      )
-      .then(async (userCredential) => {
-        const db = firebase.firestore();
+    const db = firebase.firestore();
+    const usersRef = db.collection("users");
+    usersRef
+      .where("handle", "==", formikRegisterStore.values.username)
+      .get()
+      .then((snapshot) => {
+        if (snapshot.empty) {
+          return firebase
+            .auth()
+            .createUserWithEmailAndPassword(
+              formikRegisterStore.values.email,
+              formikRegisterStore.values.password
+            );
+        } else {
+          throw new Error("Username is already taken");
+        }
+      })
 
-        if (userCredential) {     
-            await db
+      .then(async (userCredential) => {
+        if (userCredential) {
+          await db
             .collection("users")
             .doc(formikRegisterStore.values.username)
             .set({
@@ -338,10 +346,10 @@ const LoginRegistration = ({ classes }) => {
               createdAt: new Date().toISOString(),
               userId: userCredential.user.uid,
             });
-          }
+        }
       })
       .then(async () => {
-        var user = firebase.auth().currentUser;
+        const user = firebase.auth().currentUser;
         await user.sendEmailVerification();
       })
       .then(async () => {
@@ -357,7 +365,7 @@ const LoginRegistration = ({ classes }) => {
 
   const handleToggle = () => {
     setToggleSignup(!toggleSignup);
-    setErrorMessage('')
+    setErrorMessage("");
   };
 
   const onSwipeMove = (position) => {
