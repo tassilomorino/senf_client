@@ -35,6 +35,7 @@ import agb from "./components/organisms/infocomponents/legal/agb";
 import cookieConfigurator from "./components/organisms/infocomponents/legal/cookieConfigurator";
 
 import monitoring from "./pages/monitoring";
+import blank from "./pages/Blank";
 
 import ReactGA from "react-ga";
 
@@ -220,6 +221,8 @@ const App = () => {
               />
 
               <Route exact path="/impressum" component={impressum} />
+
+              <Route exact path="/blank" component={blank} />
 
               <Route exact path="/:screamId" component={Main} />
             </Switch>
