@@ -12,6 +12,12 @@ import {
   CLEAR_LOADING_ERRORS,
   OPEN_MONITORING_SCREAM,
   CLOSE_MONITORING_SCREAM,
+  SET_INFOPAGE_OPEN,
+  SET_INFOPAGE_CLOSED,
+  VOTED_TRUE,
+  VOTED_FALSE,
+  OPEN_ACCOUNT,
+  CLOSE_ACCOUNT,
 } from "../types";
 
 const initialState = {
@@ -20,7 +26,10 @@ const initialState = {
   openMonitoringScream: false,
 
   openProject: false,
+  openAccount: false,
   errors: null,
+  openInfoPage: false,
+  voted: false,
 };
 
 export default function (state = initialState, action) {
@@ -88,6 +97,40 @@ export default function (state = initialState, action) {
         ...state,
         openProject: false,
       };
+
+    case OPEN_ACCOUNT:
+      return {
+        ...state,
+        openAccount: true,
+      };
+
+    case CLOSE_ACCOUNT:
+      return {
+        ...state,
+        openAccount: false,
+      };
+
+    case SET_INFOPAGE_OPEN:
+      return {
+        ...state,
+        openInfoPage: true,
+      };
+    case SET_INFOPAGE_CLOSED:
+      return {
+        ...state,
+        openInfoPage: false,
+      };
+    case VOTED_TRUE:
+      return {
+        ...state,
+        voted: true,
+      };
+    case VOTED_FALSE:
+      return {
+        ...state,
+        voted: false,
+      };
+
     default:
       return state;
   }

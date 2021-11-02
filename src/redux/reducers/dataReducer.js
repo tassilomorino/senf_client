@@ -1,7 +1,9 @@
 /** @format */
 
+import { isMobileCustom } from "../../util/customDeviceDetect";
 import {
   SET_SCREAMS,
+  SET_MY_SCREAMS,
   LIKE_SCREAM,
   UNLIKE_SCREAM,
   LOADING_DATA,
@@ -13,27 +15,45 @@ import {
   EDIT_SCREAM,
   SET_SCREAM,
   SUBMIT_COMMENT,
+  LOADING_IDEA_DATA,
   LOADING_PROJECTS_DATA,
+  LOADING_MYSCREAMS_DATA,
   SET_PROJECTS,
-  SET_PROJECT_SCREAMS,
+  SET_PROJECT,
   SET_SCREAM_USER,
   SET_FULL_SCREAMS,
   SET_COOKIES,
+  SET_MAP_VIEWPORT,
+  SET_MAP_BOUNDS,
 } from "../types";
 
 const initialState = {
   projects: [],
-  projectScreams: [],
-  loadingProjectScreams: false,
   screams: [],
+  myScreams: null,
   scream: {},
   comment: {},
   like: {},
   loading: false,
+  loadingIdea: false,
   loadingProjects: false,
+  loadingMyScreams: false,
   scream_user: {},
   full_screams: [],
   cookie_settings: "",
+  mapViewport: {
+    latitude: 50.93,
+    longitude: 6.9503,
+    zoom: isMobileCustom ? 7.2 : 9.2,
+    maxZoom: 18,
+    minZoom: 8,
+  },
+  mapBounds: {
+    latitude1: 51.08,
+    latitude2: 50.79,
+    longitude2: 6.712,
+    longitude3: 7.17,
+  },
 };
 
 export default function (state = initialState, action) {
@@ -44,16 +64,36 @@ export default function (state = initialState, action) {
         loading: true,
       };
 
+    case LOADING_IDEA_DATA:
+      return {
+        ...state,
+        loadingIdea: true,
+      };
+
+    case LOADING_MYSCREAMS_DATA:
+      return {
+        ...state,
+        loadingMyScreams: true,
+      };
+
     case SET_SCREAMS:
       return {
         ...state,
         screams: action.payload,
         loading: false,
       };
+
+    case SET_MY_SCREAMS:
+      return {
+        ...state,
+        myScreams: action.payload,
+        loadingMyScreams: false,
+      };
     case SET_SCREAM:
       return {
         ...state,
         scream: action.payload,
+        loadingIdea: false,
       };
 
     case SET_SCREAM_USER:
@@ -138,7 +178,7 @@ export default function (state = initialState, action) {
         loadingProjects: false,
       };
 
-    case SET_PROJECT_SCREAMS:
+    case SET_PROJECT:
       return {
         ...state,
         project: action.payload,
@@ -157,6 +197,18 @@ export default function (state = initialState, action) {
       return {
         ...state,
         cookie_settings: action.payload,
+      };
+
+    case SET_MAP_VIEWPORT:
+      return {
+        ...state,
+        mapViewport: action.payload,
+      };
+
+    case SET_MAP_BOUNDS:
+      return {
+        ...state,
+        mapBounds: action.payload,
       };
 
     default:

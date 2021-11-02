@@ -1,3 +1,19 @@
+/** @format */
+
+import "cypress-wait-until";
+
+import firebase from "firebase/app";
+import firebaseConfig from "../../src/firebase";
+
+import "firebase/auth";
+import "firebase/database";
+import "firebase/firestore";
+import { attachCustomCommands } from "cypress-firebase";
+
+firebase.initializeApp(firebaseConfig);
+
+attachCustomCommands({ Cypress, cy, firebase });
+
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite

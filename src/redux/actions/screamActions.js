@@ -2,8 +2,9 @@
 
 import firebase from "firebase/app";
 import "firebase/firestore";
+import moment from "moment";
 import { clearErrors } from "./errorsActions";
-import { openProject } from "./projectActions";
+import { openProjectFunc } from "./projectActions";
 import {
   SET_SCREAMS,
   LOADING_DATA,
@@ -13,11 +14,12 @@ import {
   EDIT_SCREAM,
   LOADING_UI,
   SET_SCREAM,
-  STOP_LOADING_UI,
+  LOADING_IDEA_DATA,
   OPEN_SCREAM,
   CLOSE_SCREAM,
   SET_SCREAM_USER,
 } from "../types";
+import setColorByTopic from "../../data/setColorByTopic";
 
 // Get all ideas
 export const getScreams = () => async (dispatch) => {
@@ -33,7 +35,7 @@ export const getScreams = () => async (dispatch) => {
       lat: doc.data().lat,
       long: doc.data().long,
       title: doc.data().title,
-      body: doc.data().body.substr(0, 170),
+      body: doc.data().body.substr(0, 120),
       createdAt: doc.data().createdAt,
       commentCount: doc.data().commentCount,
       likeCount: doc.data().likeCount,
@@ -42,6 +44,39 @@ export const getScreams = () => async (dispatch) => {
       Stadtteil: doc.data().Stadtteil,
       project: doc.data().project,
       projectId: doc.data().project,
+      color: setColorByTopic(doc.data().Thema),
+    };
+
+    screams.push(docData);
+  });
+
+  dispatch({
+    type: SET_SCREAMS,
+    payload: screams,
+  });
+};
+
+export const reloadScreams = () => async (dispatch) => {
+  const db = firebase.firestore();
+  const ref = await db.collection("screams").orderBy("createdAt", "desc").get();
+
+  const screams = [];
+  ref.docs.forEach((doc) => {
+    const docData = {
+      screamId: doc.id,
+      lat: doc.data().lat,
+      long: doc.data().long,
+      title: doc.data().title,
+      body: doc.data().body.substr(0, 120),
+      createdAt: doc.data().createdAt,
+      commentCount: doc.data().commentCount,
+      likeCount: doc.data().likeCount,
+      status: doc.data().status,
+      Thema: doc.data().Thema,
+      Stadtteil: doc.data().Stadtteil,
+      project: doc.data().project,
+      projectId: doc.data().project,
+      color: setColorByTopic(doc.data().Thema),
     };
 
     screams.push(docData);
@@ -54,7 +89,13 @@ export const getScreams = () => async (dispatch) => {
 };
 
 // Open an idea
-export const openScream = (screamId) => async (dispatch) => {
+export const openScreamFunc = (screamId) => async (dispatch) => {
+  // When the modal is shown, we want a fixed body
+  // document.body.style.position = "fixed";
+  // document.body.style.top = `-${window.scrollY}px`;
+  dispatch({ type: LOADING_IDEA_DATA });
+  dispatch({ type: OPEN_SCREAM });
+
   const db = firebase.firestore();
   const ref = await db.collection("screams").doc(screamId).get();
   const commentsRef = await db
@@ -68,34 +109,59 @@ export const openScream = (screamId) => async (dispatch) => {
   } else {
     const scream = ref.data();
     scream.screamId = ref.id;
+    scream.color = setColorByTopic(ref.data().Thema);
     scream.comments = [];
 
     commentsRef.forEach((doc) =>
       scream.comments.push({ ...doc.data(), commentId: doc.id })
     );
 
-    window.location = "#" + scream.lat + "#" + scream.long;
+    // window.location = "#" + scream.lat + "#" + scream.long;
 
-    dispatch({ type: LOADING_UI });
-    dispatch({ type: OPEN_SCREAM });
     const newPath = `/${screamId}`;
     window.history.pushState(null, null, newPath);
     dispatch({ type: SET_SCREAM, payload: scream });
-    dispatch({ type: STOP_LOADING_UI });
+  }
+};
+
+export const reloadScreamFunc = (screamId) => async (dispatch) => {
+  const db = firebase.firestore();
+  const ref = await db.collection("screams").doc(screamId).get();
+  const commentsRef = await db
+    .collection("comments")
+    .where("screamId", "==", screamId)
+    .orderBy("createdAt", "desc")
+    .get();
+
+  if (!ref.exists) {
+    console.log("No such document!");
+  } else {
+    const scream = ref.data();
+    scream.screamId = ref.id;
+    scream.color = setColorByTopic(ref.data().Thema);
+    scream.comments = [];
+
+    commentsRef.forEach((doc) =>
+      scream.comments.push({ ...doc.data(), commentId: doc.id })
+    );
+    dispatch({ type: SET_SCREAM, payload: scream });
   }
 };
 
 export const closeScream = () => (dispatch) => {
   dispatch({ type: CLOSE_SCREAM });
-  window.history.pushState(null, null, "/");
 
-  setTimeout(() => {
-    document.body.style.overflow = "scroll";
-  }, 1000);
+  // IF IT BECOMES NECESSARY (IF IN PROJECTROOM, GET PROJECTSCREAMS)
+  // setTimeout(() => {
+  //   dispatch(reloadScreams());
+  // }, 100);
+
+  window.history.pushState(null, null, "/");
 };
 
 // Post an idea
 export const postScream = (newScream, user, history) => async (dispatch) => {
+  console.log(history, user);
   const db = firebase.firestore();
 
   dispatch({ type: LOADING_UI });
@@ -111,16 +177,20 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
       payload: { body: "Beschreibung fehlt" },
     });
   } else {
+    const ageCapture = moment().diff(moment(user.age, "YYYY"), "years");
+
     const newScreamData = {
       locationHeader: newScream.locationHeader,
-      district: newScream.district,
+      district: newScream.fulladdress,
+      Stadtteil: newScream.neighborhood,
       title: newScream.title,
       lat: newScream.lat,
       long: newScream.long,
       body: newScream.body,
-      userHandle: user.credentials.handle,
-      sex: user.credentials.sex,
-      age: user.credentials.age,
+      userHandle: user.handle,
+      userId: user.userId,
+      sex: user.sex,
+      age: ageCapture,
       createdAt: new Date().toISOString(),
       likeCount: 0,
       commentCount: 0,
@@ -128,7 +198,11 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
       project: newScream.project,
     };
 
-    if (newScream.Thema) newScreamData.Thema = newScream.Thema;
+    if (newScream.Thema === "" || newScream.Thema === undefined) {
+      newScreamData.Thema = "Sonstige";
+    } else {
+      newScreamData.Thema = newScream.Thema;
+    }
     if (newScream.weblinkTitle)
       newScreamData.weblinkTitle = newScream.weblinkTitle;
     if (newScream.weblink) newScreamData.weblink = newScream.weblink;
@@ -149,6 +223,9 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
           type: POST_SCREAM,
           payload: resScream,
         });
+        setTimeout(() => {
+          dispatch(reloadScreams());
+        }, 100);
 
         setTimeout(() => {
           const project =
@@ -157,11 +234,11 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
               : "";
 
           if (project.indexOf("_") > 0) {
-            dispatch(openProject(project));
+            dispatch(openProjectFunc(project));
           } else {
             history.push(`/${resScream.screamId}`);
             const screamId = resScream.screamId;
-            dispatch(openScream(screamId));
+            dispatch(openScreamFunc(screamId));
           }
         }, 20);
       });
@@ -190,7 +267,7 @@ export const editScream = (editScream) => async (dispatch) => {
         payload: editScream,
       });
     });
-  dispatch(openScream(screamId));
+  dispatch(openScreamFunc(screamId));
   dispatch(clearErrors());
 };
 
@@ -205,8 +282,8 @@ export const deleteScream = (screamId, user) => async (dispatch) => {
   if (!doc.exists) {
     console.log("Scream not found");
   }
-  // else if (doc.data().userHandle !== user.credentials.handle) {
-  //   console.log("Unauthorized", doc.data().handle, user.credentials.handle);
+  // else if (doc.data().userHandle !== user.handle) {
+  //   console.log("Unauthorized", doc.data().handle, user.handle);
   //   // return res.status(403).json({ error: "Unauthorized" });
   // }
   else {
@@ -222,11 +299,13 @@ export const deleteScream = (screamId, user) => async (dispatch) => {
   }
 };
 
-export const getUserEmail = (userHandle) => async (dispatch) => {
+export const getUserEmail = (userId) => async (dispatch) => {
   const db = firebase.firestore();
   await db
     .collection("users")
-    .doc(userHandle)
+    .doc(userId)
+    .collection("Private")
+    .doc(userId)
     .get()
     .then((doc) => {
       dispatch({

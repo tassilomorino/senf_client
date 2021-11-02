@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import "./AppDesktop.css";
@@ -14,27 +14,25 @@ import "firebase/firestore";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import themeFile from "./util/theme";
-import jwtDecode from "jwt-decode";
 //Redux
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import { SET_AUTHENTICATED } from "./redux/types";
 import { logoutUser, getUserData } from "./redux/actions/userActions";
+import { setCookies } from "./redux/actions/cookiesActions";
+import { setInfoPageOpen } from "./redux/actions/UiActions";
 
 //Pages
-import home from "./pages/home";
-import IntroductionInformation from "./components/infocomponents/IntroductionInformation";
+import Main from "./components/templates/Main";
+import IntroductionInformation from "./components/organisms/infocomponents/IntroductionInformation";
 
-import info from "./components/infocomponents/info";
-import Welcome from "./components/infocomponents/Welcome";
-import verify from "./components/profile/verify";
+import Welcome from "./components/organisms/infocomponents/Welcome";
+import Verification from "./pages/Verification";
 
-import impressum from "./components/infocomponents/legal/impressum";
-import datenschutz from "./components/infocomponents/legal/datenschutz";
-import agb from "./components/infocomponents/legal/agb";
-import cookieConfigurator from "./components/infocomponents/legal/cookieConfigurator";
-
-import filter from "./components/map/Geofilter";
+import impressum from "./components/organisms/infocomponents/legal/impressum";
+import datenschutz from "./components/organisms/infocomponents/legal/datenschutz";
+import agb from "./components/organisms/infocomponents/legal/agb";
+import cookieConfigurator from "./components/organisms/infocomponents/legal/cookieConfigurator";
 
 import monitoring from "./pages/monitoring";
 
@@ -49,6 +47,13 @@ import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
 import translationEN from "./util/translations/english.json";
 import translationDE from "./util/translations/german.json";
+import { isMobileCustom } from "./util/customDeviceDetect";
+
+import packageJson from "../package.json";
+import { getBuildDate } from "./util/utils";
+import withClearCache from "./ClearCache";
+
+const ClearCacheComponent = withClearCache(MainApp);
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
@@ -120,23 +125,25 @@ if (get_local_storage_status() === "unavailable") {
   );
 }
 
-const token = localStorage.FBIdToken;
+console.log(process.env.REACT_APP_STAGE);
 
-console.log(localStorage);
+// if (process.env.REACT_APP_STAGE === "development") {
+//   const whyDidYouRender = require("@welldone-software/why-did-you-render");
+//   whyDidYouRender(React, {
+//     trackAllPureComponents: true,
+//   });
+// }
 
-if (token) {
-  const decodedToken = jwtDecode(token);
-  const expirationDuration = decodedToken.exp * 1000;
+window.store = store;
 
-  if (expirationDuration < Date.now()) {
-    store.dispatch(logoutUser());
-  } else {
-    store.dispatch({ type: SET_AUTHENTICATED });
-    axios.defaults.headers.common["Authorization"] = token;
-    store.dispatch(getUserData());
-  }
+if (cookies.get("Cookie_settings") === "all") {
+  store.dispatch(setCookies("all"));
+} else if (cookies.get("Cookie_settings") === "minimum") {
+  store.dispatch(setCookies("minimum"));
 } else {
-  store.dispatch(logoutUser());
+  if (!isMobileCustom) {
+    store.dispatch(setInfoPageOpen());
+  }
 }
 
 if (cookies.get("Cookie_settings") === "all") {
@@ -156,25 +163,35 @@ window.addEventListener("resize", () => {
   document.documentElement.style.setProperty("--vh", `${vh}px`);
 });
 const App = () => {
-  useEffect(() => {
-    let name = "Senf.koeln";
-    let version = "1.0.0";
-    console.log(`${name} v${version}`);
-    const last_version = localStorage.getItem(`${name}-Version`);
-    if (last_version !== version) {
-      console.log("New Version Available!");
-      localStorage.setItem(`${name}-Version`, version);
-      window.location.reload(true);
-    }
-  }, []);
-
   const { t } = useTranslation();
+
+  const [isAuthed, setIsAuthed] = useState(false);
+
+  const userState = () => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user && user.emailVerified) {
+        store.dispatch({ type: SET_AUTHENTICATED });
+        store.dispatch(getUserData(user.uid));
+        setIsAuthed(true);
+      } else if (user) {
+        //a new user is registrating
+      } else {
+        store.dispatch(logoutUser());
+      }
+    });
+  };
+
+  useEffect(() => {
+    userState();
+  }, [isAuthed]);
 
   const tabletNote = isTablet ? (
     <div className="tabletLandscapeNote">{t("rotate_tablet")} </div>
   ) : null;
   return (
     <MuiThemeProvider theme={theme}>
+      {process.env.REACT_APP_STAGE !== "development" && <ClearCacheComponent />}
+
       <Provider store={store}>
         <Router>
           {/* <Topbar/> */}
@@ -183,12 +200,8 @@ const App = () => {
 
           <div className="container">
             <Switch>
-              <Route exact path="/" component={home} />
+              <Route exact path="/" component={Main} />
               <Route exact path="/start" component={IntroductionInformation} />
-
-              <Route exact path="/filter" component={filter} />
-
-              <Route exact path="/info" component={info} />
 
               <Route exact path="/intro" component={Welcome} />
 
@@ -198,7 +211,7 @@ const App = () => {
 
               <Route exact path="/monitoring" component={monitoring} />
 
-              <Route exact path="/verify" component={verify} />
+              <Route exact path="/verify" component={Verification} />
 
               <Route
                 exact
@@ -208,7 +221,7 @@ const App = () => {
 
               <Route exact path="/impressum" component={impressum} />
 
-              <Route exact path="/:screamId" component={home} />
+              <Route exact path="/:screamId" component={Main} />
             </Switch>
           </div>
         </Router>
@@ -216,5 +229,14 @@ const App = () => {
     </MuiThemeProvider>
   );
 };
+console.log(getBuildDate(packageJson.buildDate));
+
+function MainApp(props) {
+  return (
+    <div className="App">
+      <header className="App-header"></header>
+    </div>
+  );
+}
 
 export default App;

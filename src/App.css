@@ -60,13 +60,20 @@
     url("fonts/PlayfairDisplay-SemiBold.ttf") format("truetype");
 }
 
+html {
+  overflow: hidden;
+  width: 100%;
+}
+
 body {
   margin: 0;
   font-family: Futura PT W01 Book;
-  overflow: scroll;
+  /* overflow: scroll; */
+  overscroll-behavior-y: contain;
 
-
-
+ 
+font-size: 18,666666666666664px !important;
+    line-height: 22,666666666666664px !important;
 
 
   background-attachment: fixed;
@@ -76,7 +83,6 @@ body {
   background-repeat: no-repeat;
   background: -webkit-linear-gradient(to left, #ffd19b, #ffda53, #ffffff);
   top: 0;
-  height: 100vh;
   width: 100%;
 
 
@@ -85,6 +91,12 @@ body {
   scrollbar-width: none;
   /* Firefox */
 
+
+  height: 100%;
+  position: fixed;
+  /* prevent overscroll bounce*/
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 
 }
 
@@ -360,17 +372,6 @@ a {
   transition: opacity 1s, transform 0.5s;
 }
 
-
-
-/* Active */
-/* .ripple:active:after {
-  opacity: 0.16;
-  transform: translate(-50%, -50%) scale(0);
-  transition: transform 0s;
-} */
-
-
-
 button {
   display: inline-block;
   border: none;
@@ -399,11 +400,9 @@ button:disabled {
   width: 50px;
   height: 50px;
   color: black;
-
   border-radius: 100%;
   /* box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px !important; */
   box-shadow: rgb(38, 57, 77, 0.7) 0px 20px 30px -15px;
-
   background-color: white;
   display: flex;
   position: fixed;
@@ -464,15 +463,6 @@ button:disabled {
   z-index: 9;
 }
 
-.buttonIntroToStart{
-  position: absolute;
-  width: 50%;
-  left: 25%;
-  bottom: 50px;
-  color: white;
-  background-color: #353535;
-}
-
 .buttonSignWrapper {
 
   position: fixed;
@@ -496,44 +486,7 @@ button:disabled {
   margin-left: 10%
 }
 
-.buttonGeofilter {
-  display: block;
-  z-index: 999999;
-  opacity: 1;
-  position: fixed;
-  bottom: 20px;
-  width: 58%;
-  margin-left: calc(25% - 50px);
-}
 
-.buttonResetGeofilter {
-  display: block;
-  z-index: 9999;
-  opacity: 1;
-  position: fixed;
-  bottom: 20px;
-  width: 50px;
-  margin-left: 75%;
-}
-
-
-.buttonInlineInfoIdeas {
-  position: absolute;
-  width: 50%;
-  left: 25%;
-  top: 1700px;
-  color: white;
-  background-color: #353535;
-}
-
-.buttonInlineInfoContact {
-  position: absolute;
-  width: 50%;
-  left: 25%;
-  top: 1760px;
-  color: #353535;
-  background-color: white;
-}
 
 .buttonSelectLocation {
   background-color: #fed957;
@@ -577,42 +530,18 @@ button:disabled {
 }
 
 .buttonEdit {
-  position: relative
-}
-
-.buttonShare {
   position: relative;
-  margin-left: auto;
-  margin-right: 2.5%;
+ 
+
 }
 
-.buttonCookiesDesktop {
-  position: relative;
-  margin-top: 30px;
-  width: 60%;
-  margin-left: 20%;
-  color: white;
-  background-color: #414345;
-}
-
-.buttonDialogSign {
-  margin-top: 15px;
-  width: 60%;
-  margin-bottom: -10px;
-  color: white;
-  background-color: #414345;
-  z-index: 10;
-}
 
 
 .buttonVerify {
-
   color: white;
   background-color: #414345;
-
   position: relative;
   z-index: 9;
-
   width: 50vw;
   left: 25vw;
   top: 5vh;
@@ -622,17 +551,8 @@ button:disabled {
 
 }
 
-.buttonNoLocation {
-  position: relative;
-  margin-top: 10px;
-  width: 80%;
-  margin-bottom: 10px;
-  color: white;
-  background-color: #414345;
-}
 
 .buttonLikeFixed {
-
   z-index: 9999;
   position: fixed;
   left: 3%;
@@ -687,55 +607,29 @@ button:disabled {
 }
 
 
-.idea-header {
 
-  margin-top: -20px;
-  font-size: 24pt;
-
-}
 
 .contentWrapper {
   width: 100vw;
   height: 100%;
-  min-height: 100vh;
+
   overflow: hidden;
-
-}
-
-.contentWrapper_dialog {
-  width: 100vw;
-  height: 100%;
-  min-height: 100vh;
-  overflow: hidden;
+  
 
 }
 
 
-.dialogOverlayContent {
 
-  position: relative;
-  margin-left: 2.5vw;
-  width: 95vw;
-  height: auto;
-}
 
-.inlineInfoIcon {
-  position: absolute;
-  z-index: 999;
-  top: 0;
-  width: 30px;
-  left: 32px;
-  margin-top: 25px;
-  font-size: 0pt;
-}
+
 
 
 .facebook {
   position: absolute;
   z-index: 999;
   width: 35px;
-  right: 56px;
-  top: 30px;
+  right: 45px;
+  top: 20px;
   height: 35px;
   font-size: 0;
 
@@ -745,8 +639,8 @@ button:disabled {
   position: absolute;
   z-index: 999;
   width: 35px;
-  right: 26px;
-  top: 30px;
+  right: 15px;
+  top: 20px;
   height: 35px;
   font-size: 0;
 
@@ -755,10 +649,10 @@ button:disabled {
 .profile {
   position: fixed;
   z-index: 999;
-  width: 35px;
-  right: 32px;
+  width: 30px;
+  right: 20px;
   top: 28px;
-  height: 35px;
+  height: 30px;
   font-size: 0;
   pointer-events: pointer;
 
@@ -893,19 +787,6 @@ button:disabled {
   background-repeat: no-repeat;
 }
 
-.dialoggradient1 {
-  position: absolute;
-  margin-top: 0vh;
-  height: 13vh;
-  width: 100vw;
-  background-attachment: fixed;
-  background: -webkit-gradient(linear,
-      0% 0%,
-      0% 100%,
-      from(#ffda53),
-      to(rgba(255, 255, 255, 0)));
-  background-repeat: no-repeat;
-}
 
 
 
@@ -953,15 +834,17 @@ button:disabled {
   top: 0vh;
 
   left: 0;
-  margin-left: 2.5%;
+  margin-left: 2.5vw;
   margin-right: auto;
 
   height: calc((var(--vh, 1vh) * 80) - 70px);
   /* height:calc(80vh - 70px); */
-  width: 95%;
+  width: 95vw;
   border-radius: 20px;
   box-shadow: 0 0px 40px -12px rgba(0, 0, 0, 0);
   background-color: white;
+
+  
 }
 
 .postCardAndroid {
@@ -1000,6 +883,7 @@ button:disabled {
   bottom: 0;
   border-bottom-right-radius: 20px;
   border-bottom-left-radius: 20px;
+  font-size:20px;
 }
 
 .projectSelectContainer {
@@ -1034,6 +918,19 @@ button:disabled {
   font-family: Futura PT W01 Book !important;
   font-size: 12pt !important;
 
+}
+.selectCustom{
+  width: 65%;
+  right: 0;
+  border: 0px solid #414345;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 40px;
+
+
+  font-family: Futura PT W01 Book !important;
+  font-size: 12pt !important;
 }
 
 /* .mapboxgl-ctrl-geocoder {
@@ -1127,36 +1024,17 @@ input:focus {
 
 }
 
-.buttonRulesAccept {
-  z-index: 99998;
-  color: white;
-  background-color: #414345;
-  position: relative;
-  /* left: 20vw; */
-  margin-top: 40px;
-  width: 60vw;
 
-}
 
 .submitPostButton {
   z-index: 9999;
   position: fixed;
-  bottom: 0px;
+  bottom: 10px;
   width: 60%;
   left: 20%;
   color: #353535;
   background-color: white;
-
-}
-
-.submitPostButton_android {
-  z-index: 9999;
-  position: relative;
-  margin-top: 400px;
-  width: 60%;
-  left: 20%;
-  color: #353535;
-  background-color: white;
+  animation:submitEnteranimation 2s
 
 }
 
@@ -1181,21 +1059,7 @@ input:focus {
   width: 100%;
 }
 
-.spinnerDivBackground {
-  z-index: 99999;
-  display: flex;
-  position: fixed;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  height: 100%;
-  width: 100%;
 
-  background-attachment: fixed;
-  background-image: linear-gradient(to bottom, #ffd19b, #ffda53, #ffffff);
-  background-repeat: no-repeat;
-  background: -webkit-linear-gradient(to left, #ffd19b, #ffda53, #ffffff);
-}
 
 
 
@@ -1346,25 +1210,12 @@ input:focus {
   font-family: "Playfair Display", serif;
 }
 
-.SignNote {
-  position: fixed;
-  z-index: 999;
-  margin-top: 1.5em;
-  font-size: 28pt;
-  color: #414345;
-  width: 90vw;
-  top: 5vh;
-  left: 5vw;
-  text-align: center;
-  font-family: "Playfair Display", serif;
-  animation: enteranimation 1.5s;
-}
 
 
 
 .homeHeadermain {
   position: relative;
-  z-index: 9;
+ 
   margin-top: 2.8em;
   margin-left: 2.5%;
   width: 95%;
@@ -1374,6 +1225,8 @@ input:focus {
   text-align: left;
   font-family: "Playfair Display", serif;
   animation: enteranimation .5s;
+
+  z-index:99
 }
 
 .homeHeader {
@@ -1424,399 +1277,77 @@ input:focus {
   animation: enteranimation 1.5s;
 }
 
-@keyframes enteranimation {
+
+
+@keyframes submitEnteranimation {
   0% {
     opacity: 0;
     transform: translateY(10%);
   }
-
   50% {
     opacity: 0;
     transform: translateY(10%);
   }
 
   100% {
-    opacity: 1;
+    opacity: 0.6;
     transform: translateY(0%);
   }
 }
 
-.TopNav {
-  z-index: 90;
-  position: fixed;
-  top: 0;
-  width: 100vw;
-  /* height: 7.5em; */
-
-  height: 100px;
-  background-color: white;
-  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
-}
-
-
-.TopNav-new {
-  display: flex;
-  flex-direction: row;
-  z-index: 9999;
-  position: fixed;
-  justify-content: center;
-  width: 100%;
-  height: 50px;
-}
-
-.filterLine {
-
-  position: absolute;
-  top: -7px;
-  height: 35px;
-  background-color: #353535;
-  z-index: -1;
-  border-radius: 30px;
-  opacity: 0;
-}
-
-.filterLine1 {
-  transform: translateX(-52px);
-  transition: 0.5s;
-  width: 100px;
-  z-index: -1
-}
-
-.filterLine2 {
-
-  transform: translateX(48px);
-  transition: 0.5s;
-  width: 100px;
-}
-
-
-/* .TopNav-filter{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  height: 50px;
-  width: 100%;
-  animation: TopNavfilteranimation 0.9s;
-opacity: 0.5;
-font-size: 20px;
-margin-top: 50px;
-position: fixed;
-} */
-/* 
- .TopNav-filter {
-  z-index: 99;
-  position: relative;
-  font-size: 15pt;
-  margin-top: 3.4em;
-  margin-left: auto;
-  margin-right: auto;
-  left: 1em;
-  color: rgb(87, 87, 87);
-  width: 13em;
-  height: 1.7em;
-  animation: TopNavEnteranimation 1.5s;
-} 
-
-@keyframes TopNavEnteranimation {
-  0% {
-    opacity: 0;
-    transform: translateY(10%);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0%);
-  }
-}
-
-.hide {
-  display: none;
-}
-
-.TopNav-filter1 {
-  float: left;
-
-  margin-right: 5px;
-  animation: TopNavfilteranimation 0.9s;
-}
-
-.TopNav-filter1active {
-  font-family: Futura PT W01-Bold;
-  float: left;
-  margin-right: 5px;
-  animation: TopNavfilteranimation 0.9s;
-}
-
-.TopNav-filterLinie {
-  color: #c9c9c9;
-  float: left;
-  animation: TopNavfilteranimation 1s;
-}
-
-.TopNav-filter2 {
-  margin-left: 5px;
-  margin-right: 5px;
-
-  float: left;
-  animation: TopNavfilteranimation 1.1s;
-}
-
-.TopNav-filter2active {
-  font-family: Futura PT W01-Bold;
-  margin-left: 5px;
-  margin-right: 5px;
-  float: left;
-  animation: TopNavfilteranimation 1.1s;
-}
-
-.TopNav-filterLinie1 {
-  animation: TopNavfilteranimation 1.2s;
-}
-
-.TopNav-filter3 {
-  margin-left: 5px;
-  margin-right: 5px;
-  animation: TopNavfilteranimation 1.3s;
-  float: left;
-}
-
-.TopNav-filter3active {
-  font-family: Futura PT W01-Bold;
-  margin-left: 5px;
-  margin-right: 5px;
-  animation: TopNavfilteranimation 1.3s;
-  float: left;
-}
-
-.TopNav-filterLinie2 {
-  animation: TopNavfilteranimation 1.4s;
-}
-
-.TopNav-filter4 {
-  margin-left: 5px;
-  float: left;
-  animation: TopNavfilteranimation 1.5s;
-}
-
-.TopNav-filter4active {
-  font-family: Futura PT W01-Bold;
-  margin-left: 5px;
-  float: left;
-  animation: TopNavfilteranimation 1.5s;
-}
-
-@keyframes TopNavfilteranimation {
-  0% {
-    opacity: 0;
-  }
-
-  50% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-} */
-
-.Topbar_Tabs {
-  margin-top: 67px;
-  justify-content: center;
-  width: 100%;
-}
-
-.Dialog_Tabs {
-  margin-top: 0px;
-  margin-bottom: 20px;
-  justify-content: space-evenly;
-  width: 60%;
-  left: 20%;
-}
-
-.Account_Tabs {
-  margin-top: 0px;
-  margin-bottom: 20px;
-  justify-content: space-evenly;
-  width: 100%;
-}
-
-.Tabs {
-  z-index: 99;
-  position: relative;
-  display: flex;
-
-  margin-left: 0%;
-
-
-  font-size: 18px;
-
-  color: #353535;
-  animation: enteranimation .5s;
-}
 
 
 
-.hide {
-  display: none;
-}
-
-.Tab {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-evenly;
-  text-align: center;
-  height: 100%;
-  width: 70%;
-
-  animation: filteranimation 0.9s;
-
-
-
-  font-size: 20px;
-  color: rgb(87, 87, 87);
-}
-
-.Tab_Line {
-  color: #c9c9c9;
-  /* margin-left: 5px;
-  margin-right: 5px; */
-}
-
-.Tab_active {
-
-  text-align: center;
-  height: 100%;
-  font-family: Futura PT W01-Bold;
-
-  animation: filteranimation 0.9s;
-  opacity: 1;
-}
-
-.filterLinie {
-  background-color: #353535;
-  position: relative;
-  z-index: 999;
-  margin-top: 10px;
-  height: 40px;
-  width: 3px;
-  opacity: 1;
-  border-radius: 2px;
-  opacity: 0.5
-}
-
-.FilterComponent {
+.sideBar {
   display: none
 }
 
 .legendwrapper {
   color: black;
-  z-index: 9999;
+  z-index: 9;
   position: relative;
-  width: 65vw;
-  min-width: 200px;
-  height: 130px;
-  left: -10.5vw;
+  width: calc(100% - 177px);
+  height: 80px;
   border-radius: 20px;
-  top: -0.5vw;
   background-color: white;
-  transform: scale(0.75);
-  margin-left: 7px;
   padding: 20px;
+  padding-bottom: 30px;
+  margin:10px;
 }
 
 .legend {
   position: absolute;
 
   top: 0;
-  width: 95%;
+  width: 100%;
   height: 100%;
-  padding-left: 15px;
+  padding-left: 10px;
   left: 0;
   /* border-left: 1px #ffd388 solid; */
 }
 
 .activelegenditem {
-  border: 2px solid black;
+  border: 1px solid black;
   border-radius: 100%;
 
   background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1) 40%, rgba(255, 255, 255, 0) 50%)
 }
 
 
+.MuiFormControlLabel-root{
+height:31px !important
+}
+.MuiTypography-body1{
 
-.Filterheader {
-  position: relative;
-  margin-top: -5px;
-  padding-right: 15px;
-  top: 1.8em;
-  width: 3.5vh;
-  height: 10vh;
-  transform: rotate(270deg);
-  color: #414345;
-  clear: both;
-  font-size: 22pt;
-  font-family: Playfair Display;
+font-size:15px !important
 }
 
-.FilterheaderMap {
-  position: relative;
-  margin-top: -5px;
-  padding-right: 15px;
-  top: 2.4em;
-  width: 3.5vh;
-  height: 6vh;
-  transform: rotate(270deg);
-  color: #414345;
-  clear: both;
-  font-size: 22pt;
-  font-family: Playfair Display;
+.MuiSvgIcon-root{
+  width:16px !important;
+  height:16px !important
 }
 
-.District {
-  position: absolute;
-  float: right;
-  right: -3vw;
-  top: -3vw;
-  z-index: 999;
-  z-index: 9;
-  color: rgb(87, 87, 87);
-  margin-top: 0em;
-  font-family: Futura PT W01 Book;
 
-  margin-left: auto;
-  margin-right: auto;
-  width: 30px;
-  padding: 30px;
-  border-radius: 100%;
-  line-height: 15pt;
-  border: 1px solid #ffd388;
-  font-size: 15pt;
-  clip-path: polygon(0 10%, 88% 10%, 88% 100%, 0% 100%);
-}
-
-.DistrictOn {
-  position: fixed;
-  z-index: 999;
-  z-index: 999;
-  color: rgb(87, 87, 87);
-  margin-top: 5.42em;
-  text-align: center;
-  left: 50%;
-  margin-left: -26px;
-  width: 25px;
-  padding: 12px;
-  border-radius: 100%;
-  line-height: 15pt;
-  opacity: 1;
-  border: 1px solid white;
-  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0);
-  background-color: #414347;
-  pointer-events: none;
-  font-size: 15pt;
-}
 
 .footer {
   position: absolute;
@@ -1881,35 +1412,47 @@ position: fixed;
   color: #c9c9c9;
 }
 
-
-
-.wrapperScreamDialog {
+.fullGradientWrapper {
   width: 100vw;
   height: 100%;
   position: fixed;
   overflow-x: hidden;
+  overflow-y: scroll;
   background-attachment: fixed;
   background-image: linear-gradient(to bottom, #ffd19b, #ffda53, #ffffff);
   background-repeat: no-repeat;
   background: -webkit-linear-gradient(to left, #ffd19b, #ffda53, #ffffff);
+
+  
 }
 
-.dialogNavigation {
-  position: fixed;
-  z-index: 998;
+.projectDialog ,
+.accountDialog {
+  
+  width: 100vw;
+  height: 100%;
+  margin-top:0vh;
+  z-index: 90;
   top: 0;
-  left: 0;
-  display: flex;
-  flex-direction: row;
-  width: calc(100% - 5vw);
-  padding: 2.5vw;
+  
+  position:fixed;
 }
+
+
+
+
+
+
+
+
+
+
 
 .dialogCard {
   z-index: 99;
   position: relative;
   display: flex;
-  margin-top: -80px;
+  margin-top: 2vh;
   margin-left: 2.5%;
   width: 95%;
   border-radius: 20px;
@@ -1942,6 +1485,8 @@ position: fixed;
 
   display: flex;
   flex-direction: column;
+  z-index:99;
+  animation: enterScreamDialogAnimation 1.5s;
 }
 
 .wrapperMenu {
@@ -2004,8 +1549,11 @@ position: fixed;
 .pin {
   position: absolute;
   width: 100px;
-  margin-top: -100px;
+   margin-top: -125px; 
   margin-left: -50px;
+background-color: #353535;
+  transform: rotate(0) ;
+  transform-origin: bottom center;
 }
 
 .mapPin {
@@ -2063,18 +1611,19 @@ position: fixed;
 
   opacity: 1;
   height: 100vh;
-  margin-top: 50px;
+  margin-top: 90px;
   animation: cardanimation 0.8s ease-in-out;
 }
 
 .MainAnimationChannels {
   opacity: 1;
-  display: flex;
-  flex-direction: row;
+  display: block;
   transition: 0.5s;
   padding-bottom: 2em;
+  height:100%;
 
   animation: cardanimation 0.8s ease-in-out;
+  
 }
 
 
@@ -2114,18 +1663,12 @@ position: fixed;
 
 .logo1 {
   position: absolute;
-  top: 0em;
+  top: 10px;
   width: 100%;
   z-index: 99;
-  color: #ffd388;
   padding-bottom: 10;
-  font-size: 40;
   text-align: center;
-  line-height: 35px;
-  font-weight: 100;
 
-  font-family: Playfair Display;
-  clear: both;
 }
 
 .logo2 {
@@ -2283,35 +1826,8 @@ position: fixed;
   }
 }
 
-.Wishanimation {
-  opacity: 0;
-  margin-top: 25vh;
-  max-width: 600px;
-  z-index: 9999;
-  animation: Wishanimation 2s ease-in-out;
-}
 
-@keyframes Wishanimation {
-  0% {
-    opacity: 0;
-    transform: translateY(10%);
-  }
 
-  40% {
-    opacity: 1;
-    transform: translateY(0%);
-  }
-
-  60% {
-    opacity: 1;
-    transform: translateY(0%);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translateY(-10%);
-  }
-}
 
 .VerifyHeader {
   position: relative;
@@ -2567,29 +2083,7 @@ position: fixed;
 }
 
 
-@media screen and (max-width: 330px) {
 
-  .idea-header {
-
-    margin-top: -20px;
-    font-size: 21pt;
-    margin-left: -5px;
-
-  }
-
-  .legendwrapper {
-    transform: scale(0.63) translateY(-21px);
-    /* top: -5px; */
-    /* transform: translateY(10px); */
-    margin-left: -17px;
-    height: 160px;
-    width: 72vw;
-  }
-
-  .legend {
-    width: 100%;
-  }
-}
 
 @media screen and (max-width: 321px) {
   .subTitle1 {
@@ -2695,15 +2189,14 @@ position: fixed;
 .projectHeader {
   position: relative;
   z-index: 9;
-  margin-top: -20px;
   margin-left: 2.5%;
   padding-bottom: 1em;
-  font-size: 25pt;
   color: white;
   width: 95%;
   text-align: left;
   font-family: "Playfair Display", serif;
   animation: enteranimation 1.5s;
+  z-index: 99;
 }
 
 
@@ -2749,6 +2242,7 @@ position: fixed;
   font-weight: 500;
   padding-top: 5px;
   padding-bottom: 5px;
+  font-weight: 800;
 }
 
 .screamcardProjectContainer {
@@ -3040,3 +2534,308 @@ position: fixed;
   content: "*";
   display:table-cell
 }
+
+.no-ideas-yet{
+   
+  position: relative;
+  font-size: 15pt;
+  color: #414345;
+  width: 80%;
+  margin-left: 10%;
+  text-align: center;
+  z-index: 10;
+} 
+
+
+
+.projectCardsWrapper{
+
+  /* margin-top: 10px; */
+  width: calc(100vw );
+  margin-left: 20px;
+  transform: scale(0.8);
+
+
+}.projectDialogCard{
+
+z-index: 99;
+position: relative;
+
+display: flex;
+margin-top: 110px;
+margin-left: 2.5%;
+width: 95%;
+min-width: 95%;
+border-radius: 20px;
+height: auto;
+
+background-color: white;
+box-shadow: 0 8px 40px -12px rgba(0,0,0,0);
+}
+
+
+.imgWrapper{
+
+
+  position: relative;
+  width: 100px;
+  height: 100px;
+  background-color: white;
+  border-radius: 20px;
+  left: calc(50% - 50px);
+  margin-top: 10px;
+
+
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  overflow: hidden;
+
+
+
+}
+
+.project-dialog-owner{
+  
+margin-top: 20px;
+margin-bottom: 10px;
+font-family: Futura PT W01 Book;
+color: #353535;
+text-align: center;
+
+} 
+
+.project-dialog-title{
+font-size: 18px;
+font-family: PlayfairDisplay-Bold;
+/* font-family: Futura PT W01-Bold; */
+
+color: #353535;
+text-align: center;
+width: 60%;
+margin-left: 20%;
+margin-top:10px;
+
+margin-bottom: 20px;
+
+}
+
+/*
+.dialogFilterWrapper {
+  z-index: 99;
+  position: relative;
+  display: flex;
+  justify-content:space-evenly;
+  width: 80%;
+  margin-left: 10%;
+  font-size: 18px;
+  margin-top: 0px;
+  margin-bottom:25px;
+  color: #353535;
+  
+  
+  height: 1.7em;
+  font-family: Futura PT W01-Bold;
+
+  animation: enteranimation 1.5s;
+}*/
+
+.projectCard {
+  position: relative;
+  display: flex;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 100px;
+  max-width: 95%;
+  border-radius: 20px;
+  /* box-shadow: 0 8px 40px -12px rgba(0,0,0,0); */
+  max-height: 14em;
+  /* background-color: rgb(255,255,255,0.6); */
+
+  border-radius: 20px;
+ overflow: hidden;
+  /* background: transparent;
+  box-shadow:  9px 9px 18px #f6d254,
+               -9px -9px 18px #ffe05a; */
+}
+
+
+.leftWrapper{
+  position: relative;
+  width: 120px;
+  height: 120px;
+  background-color: white;
+  border-radius: 20px;
+
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  overflow: hidden;
+
+}
+.leftWrapper img{
+  width: 100%;
+  margin-left: 0%;
+}
+
+.rightWrapper{
+  
+ 
+  margin-left: 10px;
+  height: 120px;
+  width: 60%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+ 
+ 
+
+}
+
+.title{
+  font-size: 18px;
+  font-family: PlayfairDisplay-Bold;
+   font-family: Futura PT W01-Bold; 
+  color: #353535;
+
+}
+.owner{
+  
+  font-family: Futura PT W01 Book;
+  color: #353535
+} 
+
+.date{
+  margin-top:10px;
+  font-family: Futura PT W01 Book;
+  color: #353535
+}
+
+
+
+.ideaCount{
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  font-family: Futura PT W01 Book;
+  color:#353535;
+  margin-top: 10px;
+  margin-left: -10px;
+  
+}
+
+
+@keyframes enteranimation {
+  0% {
+    opacity: 0;
+    transform: translateY(10%);
+  }
+
+  50% {
+    opacity: 0;
+    transform: translateY(10%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+
+
+.drag {
+
+  overscroll-behavior: contain;
+  width: 100%;
+  height: 100%;
+
+  background: rgb(254,217,87);
+background: linear-gradient(180deg, rgba(254,217,87,1) 0%, rgba(255,218,83,1) 50%, rgba(255,255,255,1) 100%);
+border-radius: 20px;
+  position: absolute;
+  z-index:995;
+  animation: dragEnterAnimation 2s
+
+ 
+}
+
+@keyframes dragEnterAnimation {
+  0% {
+    transform: translateY(120%);
+  }
+
+  50% {
+    transform: translateY(120%);
+  }
+
+  100% {
+    transform: translateY(calc(100% - 120px))
+  }
+}
+
+
+
+
+.wrapperScreamDialog {
+  width: 100vw;
+  margin-top:0vh;
+  margin-left:0px;
+  z-index:97;
+  top: 30px;
+  animation: enterScreamDialogAnimation 0.7s;
+  position:absolute;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  
+
+
+}
+
+@keyframes enterScreamDialogAnimation {
+  0% {
+    transform: translateY(50%);
+    opacity: 0;
+  }
+  49% {
+    transform: translateY(50%);
+    opacity: 0;
+  }
+
+  50% {
+    transform: translateY(50%);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+
+
+
+
+.screamDialogDrag {
+  width: 100%;
+  height: 120%;
+  position: absolute;
+  z-index:96;
+  top: 0;
+  overflow: scroll;
+  
+
+ 
+}
+
+
+

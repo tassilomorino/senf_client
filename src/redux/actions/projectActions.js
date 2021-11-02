@@ -3,12 +3,13 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 
+import { closeScream } from "./screamActions";
 import {
   LOADING_UI,
   STOP_LOADING_UI,
   LOADING_PROJECTS_DATA,
   SET_PROJECTS,
-  SET_PROJECT_SCREAMS,
+  SET_PROJECT,
   OPEN_PROJECT,
   CLOSE_PROJECT,
 } from "../types";
@@ -40,6 +41,7 @@ export const getProjects = () => async (dispatch) => {
       centerLong: doc.data().centerLong,
       zoom: doc.data().zoom,
       projectId: doc.id,
+      calendar: doc.data().calendar,
       // weblink: doc.data().weblink,
     };
 
@@ -53,8 +55,9 @@ export const getProjects = () => async (dispatch) => {
 };
 
 // Open a project
-export const openProject = (project) => async (dispatch) => {
+export const openProjectFunc = (project) => async (dispatch) => {
   dispatch({ type: LOADING_UI });
+
   const db = firebase.firestore();
   const ref = await db.collection("projects").doc(project).get();
 
@@ -75,17 +78,20 @@ export const openProject = (project) => async (dispatch) => {
     screamsRef.docs.forEach((doc) =>
       project.screams.push({ ...doc.data(), screamId: doc.id })
     );
-
+    dispatch(closeScream());
     const newPath = `/${project.id}`;
     window.history.pushState(null, null, newPath);
-    dispatch({ type: SET_PROJECT_SCREAMS, payload: project });
+    dispatch({ type: SET_PROJECT, payload: project });
     dispatch({ type: OPEN_PROJECT });
+
     dispatch({ type: STOP_LOADING_UI });
   }
 };
 
 export const closeProject = () => (dispatch) => {
+  dispatch({ type: SET_PROJECT, payload: null });
   dispatch({ type: CLOSE_PROJECT });
+
   window.history.pushState(null, null, "/");
 
   setTimeout(() => {
