@@ -172,6 +172,7 @@ const ScreamDialog = () => {
             <CustomIconButton name="Share" handleButtonClick={handleShare} />
             <CustomIconButton
               name="Menu"
+              iconWidth="70%"
               handleButtonClick={() => setMenuOpen(true)}
             />
           </ButtonsContainer>
