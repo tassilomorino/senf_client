@@ -32,12 +32,15 @@ export function MenuItem({
   isNotSelectedIcon,
   text,
   handleClick,
+  openAccount,
 }) {
   return (
     <Tab>
       <ExpandButton handleButtonClick={() => handleClick(index)} />
       <img
-        src={order === index ? isSelectedIcon : isNotSelectedIcon}
+        src={
+          order === index && !openAccount ? isSelectedIcon : isNotSelectedIcon
+        }
         width="35"
         alt={text}
         style={{ paddingRight: "10px" }}

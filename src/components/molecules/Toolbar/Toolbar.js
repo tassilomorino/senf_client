@@ -68,7 +68,7 @@ const Background = styled.div`
 const IdeaHeader = styled.div`
   z-index: 2;
   margin-top: -20px;
-  font-size: 24pt;
+  font-size: 26px;
 
   @media screen and (max-width: 330px) {
     margin-top: -20px;
