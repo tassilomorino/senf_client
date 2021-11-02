@@ -146,7 +146,7 @@ const styles = {
     zIndex: "999",
     maxWidth: "600px",
     textAlign: "center",
-    cursor:'pointer',
+    cursor: 'pointer',
   },
 
   smallText_fixed: {
@@ -157,7 +157,7 @@ const styles = {
     zIndex: "999",
     maxWidth: "600px",
     textAlign: "center",
-    cursor:'pointer',
+    cursor: 'pointer',
   },
 
   smallText_fixed_android: {
@@ -250,13 +250,9 @@ const LoginRegistration = ({ classes }) => {
       .required("Enter your password")
       .min(8, "Password must contain atleast 8 characters or more")
       .matches(/\d+/, "Password must contain atleast one number"),
-/*    .matches(/[a-z]+/, " Password must contain atleast one lowercase letter")
-      .matches(/[A-Z]+/, "Password must contain atleast one uppercase letter")
-      
-       this regex fails if password has non latin letters ÄÖÜβ,šųįę,лиьбю бit will not let register,
-      */
-      
-    
+
+
+
     confirmPassword: yup
       .string()
       .required("Confirm your password")
@@ -265,8 +261,9 @@ const LoginRegistration = ({ classes }) => {
       .string()
       .required("Enter your username")
       .min(3, "Your username is too short")
-      .max(30, "Your username is too long")
-    /* .matches(regex,'your message')  */
+      .max(20, "Your username is too long")
+      .matches(/^\S*$/, 'Spaces are not allowed')
+      .matches(/^[a-zA-Z0-9\-\_\.]*$/, 'Only Latin letters numbers and symbols .-_ allowed')
   });
 
   const formikLoginStore = useFormik({
@@ -275,9 +272,9 @@ const LoginRegistration = ({ classes }) => {
       password: "",
     },
     validationSchema: loginValidationSchema,
-    isInitialValid:false,
-    
-    
+    isInitialValid: false,
+
+
   });
 
   const formikRegisterStore = useFormik({
@@ -290,8 +287,8 @@ const LoginRegistration = ({ classes }) => {
       sex: "",
     },
     validationSchema: registerValidationSchema,
-    isInitialValid:false
-   
+    isInitialValid: false
+
   });
 
   const handleSubmitLogin = async (event) => {
@@ -329,8 +326,8 @@ const LoginRegistration = ({ classes }) => {
       .then(async (userCredential) => {
         const db = firebase.firestore();
 
-        if (userCredential) {
-          await db
+        if (userCredential) {     
+            await db
             .collection("users")
             .doc(formikRegisterStore.values.username)
             .set({
@@ -341,7 +338,7 @@ const LoginRegistration = ({ classes }) => {
               createdAt: new Date().toISOString(),
               userId: userCredential.user.uid,
             });
-        }
+          }
       })
       .then(async () => {
         var user = firebase.auth().currentUser;
