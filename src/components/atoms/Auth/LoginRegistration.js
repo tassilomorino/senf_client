@@ -337,9 +337,10 @@ const LoginRegistration = ({ classes }) => {
 
       .then(async (userCredential) => {
         if (userCredential) {
+
           await db
             .collection("users")
-            .doc(formikRegisterStore.values.username)
+            .doc(userCredential.user.uid)
             .set({
               handle: formikRegisterStore.values.username,
               email: formikRegisterStore.values.email,
@@ -348,6 +349,7 @@ const LoginRegistration = ({ classes }) => {
               createdAt: new Date().toISOString(),
               userId: userCredential.user.uid,
             });
+
         }
       })
       .then(async () => {

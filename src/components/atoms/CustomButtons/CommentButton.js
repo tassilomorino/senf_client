@@ -9,22 +9,15 @@ import { likeScream, unlikeScream } from "../../../redux/actions/likeActions";
 //Components
 import RegistrationAndLogin from "../Auth/LoginRegistration";
 
+//Images
 import { CustomIconButton } from "./CustomButton";
 
-const LikeButton = ({ screamId }) => {
-  const dispatch = useDispatch();
-
+const CommentButton = ({ handleButtonClick }) => {
   const user = useSelector((state) => state.user);
 
-  const likedScream = () => {
-    if (user.likes && user.likes.find((like) => like.screamId === screamId))
-      return true;
-    else return false;
-  };
-
-  const likeButton = !user.authenticated ? (
+  const commentButton = !user.authenticated ? (
     <CustomIconButton
-      name="Handsnoclap"
+      name="Chat"
       iconWidth="80%"
       position="relative"
       margin="0"
@@ -35,30 +28,19 @@ const LikeButton = ({ screamId }) => {
     >
       <RegistrationAndLogin />
     </CustomIconButton>
-  ) : likedScream() ? (
-    <CustomIconButton
-      name="HandsFull"
-      iconWidth="80%"
-      position="relative"
-      margin="0"
-      left="calc(50% - 25px)"
-      shadow={false}
-      backgroundColor={"transparent"}
-      handleButtonClick={() => dispatch(unlikeScream(screamId, user))}
-    />
   ) : (
     <CustomIconButton
-      name="Handsnoclap"
+      name="Chat"
       iconWidth="80%"
       position="relative"
       margin="0"
       left="calc(50% - 25px)"
       shadow={false}
       backgroundColor={"transparent"}
-      handleButtonClick={() => dispatch(likeScream(screamId, user))}
+      handleButtonClick={handleButtonClick}
     />
   );
-  return likeButton;
+  return commentButton;
 };
 
-export default LikeButton;
+export default CommentButton;
