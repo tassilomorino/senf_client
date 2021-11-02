@@ -82,7 +82,9 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
       <div className="accountDialog">
         {isMobileCustom ? <BackgroundMobile /> : <BackgroundDesktop />}
 
-        {order === 1 && !loadingMyScreams ? (
+        {loadingMyScreams ? (
+          <Loader />
+        ) : order === 1 ? (
           <IdeaList
             type="myIdeas"
             loading={loadingMyScreams}
@@ -96,9 +98,7 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
             topicsSelected={topicsSelected}
             dataFinalMap={dataFinalMap}
           ></IdeaList>
-        ) : (
-          <Loader />
-        )}
+        ) : null}
 
         {order === 2 && (
           <React.Fragment>
