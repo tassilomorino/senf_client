@@ -140,7 +140,7 @@ const styles = {
   },
 };
 
-const AgegroupDialog = ({ classes, data, screams }) => {
+const AgegroupDialog = ({ classes, data, screams, likes }) => {
   const [open, setOpen] = useState(false);
 
   let topics_care;
@@ -295,7 +295,12 @@ const AgegroupDialog = ({ classes, data, screams }) => {
       </MyButton>
 
       <DialogContent>
-        <AgegroupGraph data={data} classes={classes} screams={screams} />
+        <AgegroupGraph
+          data={data}
+          classes={classes}
+          screams={screams}
+          likes={likes}
+        />
       </DialogContent>
     </Dialog>
   ) : (
@@ -321,9 +326,8 @@ const AgegroupDialog = ({ classes, data, screams }) => {
         <AgegroupGraph
           data={data}
           screams={screams}
+          likes={likes}
           classes={classes}
-          topics_care={topics_care}
-          topics_traffic={topics_traffic}
         />
       </DialogContent>
     </Dialog>

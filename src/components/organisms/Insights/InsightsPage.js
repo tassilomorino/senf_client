@@ -74,6 +74,7 @@ const InsightsPage = ({ order }) => {
   const db = firebase.firestore();
 
   const [screams, setScreams] = useState("");
+  const [likes, setLikes] = useState("");
   const [likesLength, setLikesLength] = useState("");
   const [commentsLength, setCommentsLength] = useState("");
 
@@ -89,6 +90,7 @@ const InsightsPage = ({ order }) => {
         likeCount: doc.data().likeCount,
         Thema: doc.data().Thema,
         Stadtteil: doc.data().Stadtteil,
+        age: doc.data().age,
       };
       screams.push(docData);
     });
@@ -100,6 +102,16 @@ const InsightsPage = ({ order }) => {
     const ref = await db.collection("likes").orderBy("createdAt", "desc").get();
     const likesLength = ref.size;
     setLikesLength(likesLength);
+
+    const likes = [];
+    ref.docs.forEach((doc) => {
+      const docData = {
+        age: doc.data().age,
+        Thema: doc.data().Thema,
+      };
+      likes.push(docData);
+    });
+    setLikes(likes);
   };
 
   const fetchDataComments = async () => {
@@ -142,7 +154,7 @@ const InsightsPage = ({ order }) => {
             <Covers animation="coverAnimation 1.25s ease-in-out">
               <CoverTitle>{t("agegroups")}</CoverTitle>
               <CoverImg src={AgegroupsCover} alt="insights-agegroups-cover" />
-              <AgegroupDialog screams={screams} />
+              <AgegroupDialog screams={screams} likes={likes} />
             </Covers>
             <Covers animation="coverAnimation 1s ease-in-out">
               <CoverTitle>{t("keywords")}</CoverTitle>
