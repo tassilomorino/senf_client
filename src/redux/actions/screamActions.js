@@ -177,7 +177,8 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
       payload: { body: "Beschreibung fehlt" },
     });
   } else {
-    const ageCapture = moment().diff(moment(user.age, "YYYY"), "years");
+    const ageCapture =
+      user.age !== "" ? moment().diff(moment(user.age, "YYYY"), "years") : "";
 
     const newScreamData = {
       locationHeader: newScream.locationHeader,
