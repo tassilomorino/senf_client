@@ -56,6 +56,38 @@ export const getScreams = () => async (dispatch) => {
   });
 };
 
+export const reloadScreams = () => async (dispatch) => {
+  const db = firebase.firestore();
+  const ref = await db.collection("screams").orderBy("createdAt", "desc").get();
+
+  const screams = [];
+  ref.docs.forEach((doc) => {
+    const docData = {
+      screamId: doc.id,
+      lat: doc.data().lat,
+      long: doc.data().long,
+      title: doc.data().title,
+      body: doc.data().body.substr(0, 120),
+      createdAt: doc.data().createdAt,
+      commentCount: doc.data().commentCount,
+      likeCount: doc.data().likeCount,
+      status: doc.data().status,
+      Thema: doc.data().Thema,
+      Stadtteil: doc.data().Stadtteil,
+      project: doc.data().project,
+      projectId: doc.data().project,
+      color: setColorByTopic(doc.data().Thema),
+    };
+
+    screams.push(docData);
+  });
+
+  dispatch({
+    type: SET_SCREAMS,
+    payload: screams,
+  });
+};
+
 // Open an idea
 export const openScreamFunc = (screamId) => async (dispatch) => {
   // When the modal is shown, we want a fixed body
@@ -118,6 +150,12 @@ export const reloadScreamFunc = (screamId) => async (dispatch) => {
 
 export const closeScream = () => (dispatch) => {
   dispatch({ type: CLOSE_SCREAM });
+
+  // IF IT BECOMES NECESSARY (IF IN PROJECTROOM, GET PROJECTSCREAMS)
+  // setTimeout(() => {
+  //   dispatch(reloadScreams());
+  // }, 100);
+
   window.history.pushState(null, null, "/");
 };
 
@@ -150,6 +188,7 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
       long: newScream.long,
       body: newScream.body,
       userHandle: user.handle,
+      userId: user.userId,
       sex: user.sex,
       age: ageCapture,
       createdAt: new Date().toISOString(),
@@ -184,6 +223,9 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
           type: POST_SCREAM,
           payload: resScream,
         });
+        setTimeout(() => {
+          dispatch(reloadScreams());
+        }, 100);
 
         setTimeout(() => {
           const project =
@@ -257,11 +299,13 @@ export const deleteScream = (screamId, user) => async (dispatch) => {
   }
 };
 
-export const getUserEmail = (userHandle) => async (dispatch) => {
+export const getUserEmail = (userId) => async (dispatch) => {
   const db = firebase.firestore();
   await db
     .collection("users")
-    .doc(userHandle)
+    .doc(userId)
+    .collection("Private")
+    .doc(userId)
     .get()
     .then((doc) => {
       dispatch({
