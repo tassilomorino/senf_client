@@ -133,11 +133,7 @@ export function TopicFilter({
   });
 
   return isMobileCustom && !loading ? (
-    <TopicFilterWrapperMobile
-      openScream={openScream}
-      moveLeft={moveLeft}
-      id="Wrapper"
-    >
+    <TopicFilterWrapperMobile openScream={openScream} id="Wrapper">
       {swipePosition === "top" && (
         <MapClickContainer onClick={setSwipePositionDown} />
       )}
