@@ -46,13 +46,16 @@ const CoverWrapper = styled.div`
 `;
 const Covers = styled.div`
   width: 100%;
-  height: auto;
+  height: 100%;
   z-index: 9;
   float: left;
   position: relative;
   animation: ${(props) => props.animation};
   overflow: hidden;
   border-radius: 20px;
+  background-color: white;
+  margin: 0;
+  padding: 0;
 `;
 const CoverImg = styled.img`
   width: 100%;
