@@ -98,20 +98,21 @@ export function TopicFilter({
   }, [openScream]);
 
   useEffect(() => {
-    const el = document.getElementById("Wrapper");
-    if (moveLeft) {
+    if (isMobileCustom) {
       const el = document.getElementById("Wrapper");
-      el.scroll({
-        top: 0,
-        left: window.innerWidth - 125,
-        behavior: "smooth",
-      });
-    } else {
-      el.scroll({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      });
+      if (moveLeft) {
+        el.scroll({
+          top: 0,
+          left: window.innerWidth - 125,
+          behavior: "smooth",
+        });
+      } else {
+        el.scroll({
+          top: 0,
+          left: 0,
+          behavior: "smooth",
+        });
+      }
     }
   }, [moveLeft]);
 
