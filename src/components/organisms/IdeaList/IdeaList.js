@@ -149,6 +149,16 @@ const IdeaList = ({
   const bind = useDrag(
     ({ currentTarget, down, movement: [, my], offset: [, y] }) => {
       console.log(currentTarget);
+      if (my > 50) {
+        setSwipePosition("bottom");
+        set({
+          transform: !down
+            ? `translateY(${window.innerHeight - 120}px)`
+            : `translateY(${0}px)`,
+          touchAction: "none",
+        });
+      }
+
       if (my < -50) {
         setSwipePosition("top");
         set({
@@ -157,15 +167,6 @@ const IdeaList = ({
               ? `translateY(${141}px)`
               : `translateY(${window.innerHeight - 120}px)`,
           touchAction: "unset",
-        });
-      }
-      if (my > 50) {
-        setSwipePosition("bottom");
-        set({
-          transform: !down
-            ? `translateY(${window.innerHeight - 120}px)`
-            : `translateY(${141}px)`,
-          touchAction: "none",
         });
       }
 
