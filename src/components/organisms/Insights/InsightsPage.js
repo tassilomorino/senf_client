@@ -5,9 +5,8 @@ import React, { useState, useEffect } from "react";
 //Components
 import Keyindicators from "../../molecules/graphs/Keyindicators";
 import ThemenDialog from "../../molecules/graphs/themendialog";
-import StadttteilDialog from "../../molecules/graphs/stadtteilDialog";
+import DistrictsDialog from "../../molecules/graphs/DistrictsDialog";
 import AgegroupDialog from "../../molecules/graphs/AgegroupDialog";
-import WordcloudDialog from "../../molecules/graphs/wordcloudDialog";
 
 //Images
 import Themencover from "../../../images/insightsCovers/topic-cover.jpg";
@@ -152,7 +151,7 @@ const InsightsPage = ({ order }) => {
             <Covers animation="coverAnimation 0.75s ease-in-out">
               <CoverTitle>{t("districts")}</CoverTitle>
               <CoverImg src={DistrictsCover} alt="insights-districts-cover" />
-              <StadttteilDialog screams={screams} />
+              <DistrictsDialog screams={screams} />
             </Covers>
 
             <Covers animation="coverAnimation 1.25s ease-in-out">
