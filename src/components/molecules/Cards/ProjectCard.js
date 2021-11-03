@@ -142,7 +142,7 @@ export const CreateProject = () => {
 
   return (
     <ProjectCardDesign onClick={createProject}>
-      <LeftWrapper style={{ opacity: 0.5 }}>
+      <LeftWrapper>
         <ProjectImg Img={AddIcon} style={{ width: "50%", marginLeft: "25%" }} />
       </LeftWrapper>
       <RightWrapper>
