@@ -69,7 +69,7 @@ const ColorDot = styled.div`
 const LocationOuter = styled.div`
   color: rgb(255, 205, 6);
   float: left;
-  height: 3vh;
+  height: 25px;
   margin-left: 10px;
 `;
 

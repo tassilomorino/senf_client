@@ -187,7 +187,7 @@ const styles = {
     float: "left",
     marginLeft: "10px",
     color: "rgb(255, 205, 6)",
-    height: "3vh",
+    height: "25px",
     pointerEvents: "none",
   },
 
