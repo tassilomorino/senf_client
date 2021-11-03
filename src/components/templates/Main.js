@@ -287,14 +287,6 @@ const Main = () => {
             />
           )}
 
-          <ProjectsPage
-            loadingProjects={loadingProjects}
-            order={order}
-            projects={projects}
-          ></ProjectsPage>
-
-          <InsightsPage order={order}></InsightsPage>
-
           {openProject && (
             <ProjectDialog
               loading={loading}
@@ -316,6 +308,21 @@ const Main = () => {
               dataFinalMap={dataFinalMap}
             />
           )}
+        </div>
+      )}
+
+      {!openInfoPage && order === 2 && (
+        <div className="contentWrapper_insights">
+          <ProjectsPage
+            loadingProjects={loadingProjects}
+            order={order}
+            projects={projects}
+          ></ProjectsPage>
+        </div>
+      )}
+      {!openInfoPage && order === 3 && (
+        <div className="contentWrapper_insights">
+          <InsightsPage order={order}></InsightsPage>
         </div>
       )}
 
