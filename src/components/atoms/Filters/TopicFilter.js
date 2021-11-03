@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -32,6 +32,7 @@ const TopicFilterWrapperMobile = styled.div`
   top: ${(props) => (props.openScream ? "10px" : "90px")};
   width: 100%;
   overflow-x: scroll;
+
   -webkit-overflow-scrolling: touch;
   transition: 1s;
 `;
@@ -64,10 +65,7 @@ const TopicFilterInnerWrapperMobile = styled.div`
   padding-left: 20px;
   padding-right: 0px;
   margin: 5px;
-
-  margin-left: ${(props) => (props.moveLeft ? "10px" : "calc(100% - 120px)")};
-  transition: 0.5s;
-
+  margin-left: calc(100% - 120px);
   animation: ${enterAnimation} 3.5s;
   z-index: 15;
 `;
@@ -93,6 +91,30 @@ export function TopicFilter({
   const [moveLeft, setMoveLeft] = useState(false);
   const { t } = useTranslation();
 
+  useEffect(() => {
+    if (openScream) {
+      setMoveLeft(false);
+    }
+  }, [openScream]);
+
+  useEffect(() => {
+    const el = document.getElementById("Wrapper");
+    if (moveLeft) {
+      const el = document.getElementById("Wrapper");
+      el.scroll({
+        top: 0,
+        left: window.innerWidth - 125,
+        behavior: "smooth",
+      });
+    } else {
+      el.scroll({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
+    }
+  }, [moveLeft]);
+
   // Handler at index 0 is for the "all" checkbox
   const topicFilters = topics.map((topic, i) => {
     return (
@@ -111,12 +133,16 @@ export function TopicFilter({
   });
 
   return isMobileCustom && !loading ? (
-    <TopicFilterWrapperMobile openScream={openScream}>
+    <TopicFilterWrapperMobile
+      openScream={openScream}
+      moveLeft={moveLeft}
+      id="Wrapper"
+    >
       {swipePosition === "top" && (
         <MapClickContainer onClick={setSwipePositionDown} />
       )}
 
-      <TopicFilterInnerWrapperMobile moveLeft={moveLeft}>
+      <TopicFilterInnerWrapperMobile>
         <OpenButtonMobile
           onClick={() => setMoveLeft(!moveLeft)}
           hide={topicsSelected.length === 7}
