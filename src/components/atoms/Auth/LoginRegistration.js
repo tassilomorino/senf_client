@@ -25,6 +25,7 @@ import Slide from "@material-ui/core/Slide";
 import RegistrationFormComponent from "./RegistrationFormComponent";
 import LoginFormComponent from "./LoginFormComponent";
 import { CustomIconButton } from "../CustomButtons/CustomButton";
+import { useTranslation } from "react-i18next";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -224,7 +225,7 @@ const LoginRegistration = ({ classes }) => {
 
   const dispatch = useDispatch();
   const history = useHistory();
-
+  const { t } = useTranslation();
   // componentWillReceiveProps(nextProps) {
   //   if (nextProps.UI.errors) {
   //     setState({ errors: nextProps.UI.errors });
@@ -234,37 +235,34 @@ const LoginRegistration = ({ classes }) => {
   const loginValidationSchema = yup.object({
     email: yup
       .string()
-      .required("Enter your email")
-      .email("Enter a valid email"),
+      .required(t("enter_email"))
+      .email(t("enter_valid_email")),
 
-    password: yup.string().required("Enter your password"),
+    password: yup.string().required(t("enter_password")),
   });
   const registerValidationSchema = yup.object({
     email: yup
       .string()
-      .required("Enter your email")
-      .email("Enter a valid email"),
+      .required(t("enter_email"))
+      .email(t("enter_valid_email")),
 
     password: yup
       .string()
-      .required("Enter your password")
-      .min(8, "Password must contain atleast 8 characters or more")
-      .matches(/\d+/, "Password must contain atleast one number"),
+      .required(t("enter_password"))
+      .min(8, t("password_8characters"))
+      .matches(/\d+/, t("password_with_number")),
 
     confirmPassword: yup
       .string()
-      .required("Confirm your password")
-      .oneOf([yup.ref("password"), null], "Passwords must match"),
+      .required(t("confirmPassword"))
+      .oneOf([yup.ref("password"), null], t("passwords_must_match")),
     username: yup
       .string()
-      .required("Enter your username")
-      .min(3, "Your username is too short")
-      .max(20, "Your username is too long")
-      .matches(/^\S*$/, "Spaces are not allowed")
-      .matches(
-        /^[a-zA-Z0-9\-\_\.]*$/,
-        "Only Latin letters numbers and symbols .-_  are allowed"
-      ),
+      .required(t("enter_username"))
+      .min(3, t("username_too_short"))
+      .max(20, t("username_too_long"))
+      .matches(/^\S*$/, t("spaces_username"))
+      .matches(/^[a-zA-Z0-9\-\_\.]*$/, t("username_latin_only")),
   });
 
   const formikLoginStore = useFormik({
@@ -287,8 +285,8 @@ const LoginRegistration = ({ classes }) => {
     },
     validationSchema: registerValidationSchema,
     isInitialValid: false,
-    validateOnChange:true,
-    validateOnBlur:true
+    validateOnChange: true,
+    validateOnBlur: true,
   });
 
   const handleSubmitLogin = async (event) => {
@@ -331,25 +329,20 @@ const LoginRegistration = ({ classes }) => {
               formikRegisterStore.values.password
             );
         } else {
-          throw new Error("Username is already taken");
+          throw new Error(t("username_taken"));
         }
       })
 
       .then(async (userCredential) => {
         if (userCredential) {
-
-          await db
-            .collection("users")
-            .doc(userCredential.user.uid)
-            .set({
-              handle: formikRegisterStore.values.username,
-              email: formikRegisterStore.values.email,
-              age: formikRegisterStore.values.age,
-              sex: formikRegisterStore.values.sex,
-              createdAt: new Date().toISOString(),
-              userId: userCredential.user.uid,
-            });
-
+          await db.collection("users").doc(userCredential.user.uid).set({
+            handle: formikRegisterStore.values.username,
+            email: formikRegisterStore.values.email,
+            age: formikRegisterStore.values.age,
+            sex: formikRegisterStore.values.sex,
+            createdAt: new Date().toISOString(),
+            userId: userCredential.user.uid,
+          });
         }
       })
       .then(async () => {
