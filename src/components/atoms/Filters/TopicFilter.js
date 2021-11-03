@@ -99,7 +99,11 @@ export function TopicFilter({
   }, [openScream]);
 
   useEffect(() => {
-    if (isMobileCustom && !inline) {
+    if (
+      isMobileCustom &&
+      !inline &&
+      document.getElementById("Wrapper") !== null
+    ) {
       const el = document.getElementById("Wrapper");
       if (moveLeft) {
         el.scroll({
