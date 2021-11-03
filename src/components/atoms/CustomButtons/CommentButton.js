@@ -3,8 +3,7 @@
 import React from "react";
 
 //Redux
-import { useSelector, useDispatch } from "react-redux";
-import { likeScream, unlikeScream } from "../../../redux/actions/likeActions";
+import { useSelector } from "react-redux";
 
 //Components
 import RegistrationAndLogin from "../Auth/LoginRegistration";

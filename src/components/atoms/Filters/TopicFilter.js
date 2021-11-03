@@ -1,6 +1,6 @@
 /** @format */
 
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -43,6 +43,17 @@ const MapClickContainer = styled.div`
   z-index: 9;
 `;
 
+const OpenButtonMobile = styled.div`
+  position: absolute;
+  width: 120px;
+  margin-left: 0;
+  left: 0;
+  top: 0;
+  height: 50px;
+  z-index: 9;
+  display: ${(props) => (props.hide ? "block" : "none")};
+`;
+
 const TopicFilterInnerWrapperMobile = styled.div`
   width: 880px;
 
@@ -54,7 +65,9 @@ const TopicFilterInnerWrapperMobile = styled.div`
   padding-right: 0px;
   margin: 5px;
 
-  margin-left: calc(100% - 120px);
+  margin-left: ${(props) => (props.moveLeft ? "10px" : "calc(100% - 120px)")};
+  transition: 0.5s;
+
   animation: ${enterAnimation} 3.5s;
   z-index: 15;
 `;
@@ -77,8 +90,9 @@ export function TopicFilter({
   setSwipePositionDown,
 }) {
   const openScream = useSelector((state) => state.UI.openScream);
-
+  const [moveLeft, setMoveLeft] = useState(false);
   const { t } = useTranslation();
+
   // Handler at index 0 is for the "all" checkbox
   const topicFilters = topics.map((topic, i) => {
     return (
@@ -101,7 +115,12 @@ export function TopicFilter({
       {swipePosition === "top" && (
         <MapClickContainer onClick={setSwipePositionDown} />
       )}
-      <TopicFilterInnerWrapperMobile>
+
+      <TopicFilterInnerWrapperMobile moveLeft={moveLeft}>
+        <OpenButtonMobile
+          onClick={() => setMoveLeft(!moveLeft)}
+          hide={topicsSelected.length === 7}
+        />
         <FormControlLabel
           control={
             <Checkbox
