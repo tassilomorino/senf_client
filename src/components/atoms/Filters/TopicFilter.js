@@ -86,6 +86,7 @@ export function TopicFilter({
   loading,
   swipePosition,
   setSwipePositionDown,
+  inline,
 }) {
   const openScream = useSelector((state) => state.UI.openScream);
   const [moveLeft, setMoveLeft] = useState(false);
@@ -98,7 +99,7 @@ export function TopicFilter({
   }, [openScream]);
 
   useEffect(() => {
-    if (isMobileCustom) {
+    if (isMobileCustom && !inline) {
       const el = document.getElementById("Wrapper");
       if (moveLeft) {
         el.scroll({
@@ -133,7 +134,7 @@ export function TopicFilter({
     );
   });
 
-  return isMobileCustom && !loading ? (
+  return isMobileCustom && !loading && !inline ? (
     <TopicFilterWrapperMobile openScream={openScream} id="Wrapper">
       {swipePosition === "top" && (
         <MapClickContainer onClick={setSwipePositionDown} />

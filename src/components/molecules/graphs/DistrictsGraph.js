@@ -1,15 +1,12 @@
 /** @format */
 
 import React, { useState } from "react";
-
-//Icons
-import CircularProgress from "@material-ui/core/CircularProgress";
+import { Translation } from "react-i18next";
 
 //Graphs
 import createPlotlyComponent from "react-plotlyjs";
 //See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
 import Plotly from "plotly.js/dist/plotly-cartesian";
-import { Agegroupdata } from "./Agegroup/Agegroupdata";
 import TopicFilter from "../../atoms/Filters/TopicFilter";
 import styled from "styled-components";
 const PlotlyComponent = createPlotlyComponent(Plotly);
@@ -23,7 +20,8 @@ const TopicFilterWrapper = styled.div`
   margin-left: 50%;
   transform: translateX(-50%);
 `;
-const AgegroupGraph = ({ classes, screams, likes }) => {
+
+const DistrictsGraph = ({ classes, screams }) => {
   const [topicsSelected, setTopicsSelected] = useState([
     "Verkehr",
     "Versorgung",
@@ -68,49 +66,151 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
     }
   };
 
-  const screamsFiltered = screams
-    ? screams.filter(({ Thema }) => topicsSelected.includes(Thema))
-    : [];
-  console.log(likes);
+  let Rad = [];
+  let Rad_one = [];
+  let Rad_likes = [];
 
-  const likesFiltered = likes
-    ? likes.filter(({ Thema }) => topicsSelected.includes(Thema))
-    : [];
+  let Inklusion_Soziales = [];
+  let Inklusion_Soziales_one = [];
+  let Inklusion_Soziales_likes = [];
+
+  let Verkehr = [];
+  let Verkehr_one = [];
+  let Verkehr_likes = [];
+
+  let Umwelt = [];
+  let Umwelt_one = [];
+  let Umwelt_likes = [];
+
+  let Versorgung = [];
+  let Versorgung_one = [];
+  let Versorgung_likes = [];
+
+  let Sport_Freizeit = [];
+  let Sport_Freizeit_one = [];
+  let Sport_Freizeit_likes = [];
+
+  let Sonstige = [];
+  let Sonstige_one = [];
+  let Sonstige_likes = [];
+
+  if (screams !== undefined && screams.length > 0) {
+    screams.forEach((element) => {
+      if (element.Thema === "Rad" && topicsSelected.includes(element.Thema)) {
+        Rad.push(element.Stadtteil);
+        Rad_one.push(1);
+        Rad_likes.push(element.likeCount);
+      }
+      if (
+        element.Thema === "Inklusion / Soziales" &&
+        topicsSelected.includes(element.Thema)
+      ) {
+        Inklusion_Soziales.push(element.Stadtteil);
+        Inklusion_Soziales_one.push(1);
+        Inklusion_Soziales_likes.push(element.likeCount);
+      }
+      if (
+        element.Thema === "Verkehr" &&
+        topicsSelected.includes(element.Thema)
+      ) {
+        Verkehr.push(element.Stadtteil);
+        Verkehr_one.push(1);
+        Verkehr_likes.push(element.likeCount);
+      }
+
+      if (
+        element.Thema === "Umwelt und Grün" &&
+        topicsSelected.includes(element.Thema)
+      ) {
+        Umwelt.push(element.Stadtteil);
+        Umwelt_one.push(1);
+        Umwelt_likes.push(element.likeCount);
+      }
+      if (
+        element.Thema === "Versorgung" &&
+        topicsSelected.includes(element.Thema)
+      ) {
+        Versorgung.push(element.Stadtteil);
+        Versorgung_one.push(1);
+        Versorgung_likes.push(element.likeCount);
+      }
+      if (
+        element.Thema === "Sport / Freizeit" &&
+        topicsSelected.includes(element.Thema)
+      ) {
+        Sport_Freizeit.push(element.Stadtteil);
+        Sport_Freizeit_one.push(1);
+        Sport_Freizeit_likes.push(element.likeCount);
+      }
+      if (
+        element.Thema === "Sonstige" &&
+        topicsSelected.includes(element.Thema)
+      ) {
+        Sonstige.push(element.Stadtteil);
+        Sonstige_one.push(1);
+        Sonstige_likes.push(element.likeCount);
+      }
+    });
+  }
+
+  let Rad_one_negative = Rad_one.map(
+    (v) => -(Math.floor(Math.abs(v) * 100) / 100)
+  );
+  let Inklusion_Soziales_one_negative = Inklusion_Soziales_one.map(
+    (v) => -(Math.floor(Math.abs(v) * 100) / 100)
+  );
+  let Verkehr_one_negative = Verkehr_one.map(
+    (v) => -(Math.floor(Math.abs(v) * 100) / 100)
+  );
+  let Umwelt_one_negative = Umwelt_one.map(
+    (v) => -(Math.floor(Math.abs(v) * 100) / 100)
+  );
+  let Versorgung_one_negative = Versorgung_one.map(
+    (v) => -(Math.floor(Math.abs(v) * 100) / 100)
+  );
+  let Sport_Freizeit_one_negative = Sport_Freizeit_one.map(
+    (v) => -(Math.floor(Math.abs(v) * 100) / 100)
+  );
+  let Sonstige_one_negative = Sonstige_one.map(
+    (v) => -(Math.floor(Math.abs(v) * 100) / 100)
+  );
+
+  let stadtteile_merge = [
+    ...Rad,
+    ...Inklusion_Soziales,
+    ...Verkehr,
+    ...Umwelt,
+    ...Versorgung,
+    ...Sport_Freizeit,
+    ...Sonstige,
+  ];
+  let stadtteile_unique = [...new Set(stadtteile_merge)];
+  let linelength = stadtteile_unique.length - 0.5;
+
+  let plotheight = 100 + linelength * 30;
+
   let data = [
     {
       alignmentgroup: true,
 
       legendgroup: "Rad",
-      marker: { color: "#929df6" },
+      marker: {
+        color: "#929df6",
+      },
       name: "Rad",
       offsetgroup: "Rad",
       orientation: "h",
       showlegend: false,
       textposition: "auto",
       type: "bar",
-      x: Agegroupdata(screamsFiltered, likesFiltered, "Rad"),
+      x: [...Rad_one_negative, ...Rad_likes],
       xaxis: "x",
-      y: [
-        "< 18",
-        "< 18",
-        "18 - 24",
-        "18 - 24",
-        "25-34",
-        "25-34",
-        "35-44",
-        "35-44",
-        "45-54",
-        "45-54",
-        "55-64",
-        "55-64",
-        "65+",
-        "65+",
-      ],
-
+      y: [...Rad, ...Rad],
       yaxis: "y",
     },
     {
       alignmentgroup: true,
+
       legendgroup: "Inklusion / Soziales",
       marker: { color: "#e8907e" },
       name: "Inklusion / Soziales",
@@ -119,28 +219,14 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       showlegend: false,
       textposition: "auto",
       type: "bar",
-      x: Agegroupdata(screamsFiltered, likesFiltered, "Inklusion / Soziales"),
+      x: [...Inklusion_Soziales_one_negative, ...Inklusion_Soziales_likes],
       xaxis: "x",
-      y: [
-        "< 18",
-        "< 18",
-        "18 - 24",
-        "18 - 24",
-        "25-34",
-        "25-34",
-        "35-44",
-        "35-44",
-        "45-54",
-        "45-54",
-        "55-64",
-        "55-64",
-        "65+",
-        "65+",
-      ],
+      y: [...Inklusion_Soziales, ...Inklusion_Soziales],
       yaxis: "y",
     },
     {
       alignmentgroup: true,
+
       legendgroup: "Verkehr",
       marker: { color: "#91dff4" },
       name: "Verkehr",
@@ -149,28 +235,14 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       showlegend: false,
       textposition: "auto",
       type: "bar",
-      x: Agegroupdata(screamsFiltered, likesFiltered, "Verkehr"),
+      x: [...Verkehr_one_negative, ...Verkehr_likes],
       xaxis: "x",
-      y: [
-        "< 18",
-        "< 18",
-        "18 - 24",
-        "18 - 24",
-        "25-34",
-        "25-34",
-        "35-44",
-        "35-44",
-        "45-54",
-        "45-54",
-        "55-64",
-        "55-64",
-        "65+",
-        "65+",
-      ],
+      y: [...Verkehr, ...Verkehr],
       yaxis: "y",
     },
     {
       alignmentgroup: true,
+
       legendgroup: "Umwelt und Grün",
       marker: { color: "#8dd9b8" },
       name: "Umwelt und Grün",
@@ -179,28 +251,14 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       showlegend: false,
       textposition: "auto",
       type: "bar",
-      x: Agegroupdata(screamsFiltered, likesFiltered, "Umwelt und Grün"),
+      x: [...Umwelt_one_negative, ...Umwelt_likes],
       xaxis: "x",
-      y: [
-        "< 18",
-        "< 18",
-        "18 - 24",
-        "18 - 24",
-        "25-34",
-        "25-34",
-        "35-44",
-        "35-44",
-        "45-54",
-        "45-54",
-        "55-64",
-        "55-64",
-        "65+",
-        "65+",
-      ],
+      y: [...Umwelt, ...Umwelt],
       yaxis: "y",
     },
     {
       alignmentgroup: true,
+
       legendgroup: "Versorgung",
       marker: { color: "#bd98f6" },
       name: "Versorgung",
@@ -209,28 +267,14 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       showlegend: false,
       textposition: "auto",
       type: "bar",
-      x: Agegroupdata(screamsFiltered, likesFiltered, "Versorgung"),
+      x: [...Versorgung_one_negative, ...Versorgung_likes],
       xaxis: "x",
-      y: [
-        "< 18",
-        "< 18",
-        "18 - 24",
-        "18 - 24",
-        "25-34",
-        "25-34",
-        "35-44",
-        "35-44",
-        "45-54",
-        "45-54",
-        "55-64",
-        "55-64",
-        "65+",
-        "65+",
-      ],
+      y: [...Versorgung, ...Versorgung],
       yaxis: "y",
     },
     {
       alignmentgroup: true,
+
       legendgroup: "Sport / Freizeit",
       marker: { color: "#f6c095" },
       name: "Sport / Freizeit",
@@ -239,28 +283,15 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       showlegend: false,
       textposition: "auto",
       type: "bar",
-      x: Agegroupdata(screamsFiltered, likesFiltered, "Sport / Freizeit"),
+      x: [...Sport_Freizeit_one_negative, ...Sport_Freizeit_likes],
       xaxis: "x",
-      y: [
-        "< 18",
-        "< 18",
-        "18 - 24",
-        "18 - 24",
-        "25-34",
-        "25-34",
-        "35-44",
-        "35-44",
-        "45-54",
-        "45-54",
-        "55-64",
-        "55-64",
-        "65+",
-        "65+",
-      ],
+      y: [...Sport_Freizeit, ...Sport_Freizeit],
       yaxis: "y",
     },
+
     {
       alignmentgroup: true,
+
       legendgroup: "Sonstige",
       marker: { color: "#f9db95" },
       name: "Sonstige",
@@ -269,24 +300,9 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       showlegend: false,
       textposition: "auto",
       type: "bar",
-      x: Agegroupdata(screamsFiltered, likesFiltered, "Sonstige"),
+      x: [...Sonstige_one_negative, ...Sonstige_likes],
       xaxis: "x",
-      y: [
-        "< 18",
-        "< 18",
-        "18 - 24",
-        "18 - 24",
-        "25-34",
-        "25-34",
-        "35-44",
-        "35-44",
-        "45-54",
-        "45-54",
-        "55-64",
-        "55-64",
-        "65+",
-        "65+",
-      ],
+      y: [...Sonstige, ...Sonstige],
       yaxis: "y",
     },
   ];
@@ -294,7 +310,7 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
     annotations: [
       {
         x: 0,
-        y: 7,
+        y: linelength + 1,
         xref: "x",
         yref: "y",
         text: "Ideen | Votes",
@@ -308,10 +324,10 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
     ],
     barmode: "relative",
     font: { color: "#414345", family: "Futura PT W01 Book", size: 14 },
-    autosize: true,
-    height: 300,
+    //   autosize: true,
+    height: plotheight,
     hovermode: false,
-    margin: { b: 40, l: 45, r: 0, t: 20 },
+    margin: { b: 40, l: 110, r: 0, t: 30 },
     shapes: [
       {
         line: { color: "white", width: 2 },
@@ -319,7 +335,7 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
         x0: 0,
         x1: 0,
         y0: -0.5,
-        y1: 6.5,
+        y1: linelength,
       },
     ],
     template: "...",
@@ -329,76 +345,30 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       domain: [0.0, 1.0],
       showgrid: false,
       zeroline: false,
+
       showline: false,
       linewidth: 2,
-      tickmode: "array", // If "array", the placement of the ticks is set via `tickvals` and the tick text is `ticktext`.
-      tickvals: [
-        -1000, -500, -200, -100, -50, -25, -10, 0, 10, 25, 50, 100, 200,
-      ],
-      ticktext: [
-        "1000",
-        "500",
-        "200",
-        "100",
-        "50",
-        "25",
-        "10",
-        "|",
-        "10",
-        "25",
-        "50",
-        "100",
-        "200",
-        "500",
-        "1000",
-      ],
-      linecolor: "white",
-    },
-
-    xaxis2: {
-      title: "trend2",
-      anchor: "x",
-      fixedrange: true,
-      domain: [1.0, 0],
-      showgrid: false,
-      zeroline: false,
-      showline: false,
-      linewidth: 2,
-
       tickmode: "array", // If "array", the placement of the ticks is set via `tickvals` and the tick text is `ticktext`.
       tickvals: [-500, -250, -100, -50, 0, 50, 100, 250, 500],
       ticktext: ["500", "250", "100", "50", "|", "50", "100", "250", "500"],
       linecolor: "white",
-      mirror: true,
     },
     yaxis: {
       anchor: "x",
       fixedrange: true,
-      categoryarray: [
-        "65+",
-        "55-64",
-        "45-54",
-        "35-44",
-        "25-34",
-        "18 - 24",
-        "< 18",
-      ],
-
-      categoryorder: "array",
+      categoryorder: "total ascending",
       tickcolor: "white",
       ticklen: 0,
       ticks: "outside",
       title: { text: "" },
       showgrid: false,
     },
-
     domain: [0.0, 1.0],
     //   title: {
     //     text: "Wünsche | Stimmen",
-    //     textposition: "middle center",
     //     xanchor: "center",
-    //     x: 0.5,
-    //     y: 1.1,
+    //     x: 0.56,
+    //     y: 0.97,
     //     font: {
     //       size: 15
     //     }
@@ -410,41 +380,18 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
     displayModeBar: false,
   };
 
-  // const plot =
-  //   agegroups_new_wishes !== undefined &&
-  //   agegroups_new_likes !== undefined &&
-  //   agegroups_new_wishes.length > 0 &&
-  //   agegroups_new_likes.length > 0 ? (
-  //     <PlotlyComponent
-  //       className={classes.plot}
-  //       data={data}
-  //       layout={layout}
-  //       config={config}
-  //     />
-  //   ) : (
-  //     <CircularProgress size={50} thickness={2} />
-  //   );
-
-  const plot =
-    screams !== undefined ? (
-      <PlotlyComponent
-        className={classes.plot}
-        data={data}
-        layout={layout}
-        config={config}
-      />
-    ) : (
-      <CircularProgress size={50} thickness={2} />
-    );
-
   return (
     <div className={classes.card}>
-      <div className={classes.title}>Altersgruppen</div>
-      <div className={classes.subtitle}>
-        Anhand der gesammelten Ideen und Votes kannst du die Relevanz der Themen
-        für die unterschiedlichen Altersgruppen erkennen und nach Themen
-        filtern.
-      </div>
+      <Translation>
+        {(t) => <div className={classes.title}>{t("districts")}</div>}
+      </Translation>
+
+      <Translation>
+        {(t) => (
+          <div className={classes.subtitle}>{t("districts_explained")}</div>
+        )}
+      </Translation>
+
       <TopicFilterWrapper>
         <TopicFilter
           handleTopicSelector={handleTopicSelector}
@@ -452,11 +399,15 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
           inline={true}
         />
       </TopicFilterWrapper>
-
       <div className={classes.clickblocker}></div>
-      {plot}
+      <PlotlyComponent
+        className={classes.plot}
+        data={data}
+        layout={layout}
+        config={config}
+      />
     </div>
   );
 };
 
-export default AgegroupGraph;
+export default DistrictsGraph;

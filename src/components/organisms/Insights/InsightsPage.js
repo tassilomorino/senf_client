@@ -5,9 +5,8 @@ import React, { useState, useEffect } from "react";
 //Components
 import Keyindicators from "../../molecules/graphs/Keyindicators";
 import ThemenDialog from "../../molecules/graphs/themendialog";
-import StadttteilDialog from "../../molecules/graphs/stadtteilDialog";
+import DistrictsDialog from "../../molecules/graphs/DistrictsDialog";
 import AgegroupDialog from "../../molecules/graphs/AgegroupDialog";
-import WordcloudDialog from "../../molecules/graphs/wordcloudDialog";
 
 //Images
 import Themencover from "../../../images/insightsCovers/topic-cover.jpg";
@@ -20,6 +19,7 @@ import "firebase/firestore";
 import MainAnimations from "../../atoms/Animations/MainAnimations";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
+import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
 const Wrapper = styled.div`
   margin-top: 90px;
@@ -129,6 +129,9 @@ const InsightsPage = ({ order }) => {
     fetchDataComments();
   }, []);
 
+  const handleLink = () => {
+    window.open("https://wiki.agorakoeln.de/", "_blank");
+  };
   return (
     order === 3 && (
       <Wrapper>
@@ -148,7 +151,7 @@ const InsightsPage = ({ order }) => {
             <Covers animation="coverAnimation 0.75s ease-in-out">
               <CoverTitle>{t("districts")}</CoverTitle>
               <CoverImg src={DistrictsCover} alt="insights-districts-cover" />
-              <StadttteilDialog screams={screams} />
+              <DistrictsDialog screams={screams} />
             </Covers>
 
             <Covers animation="coverAnimation 1.25s ease-in-out">
@@ -157,9 +160,10 @@ const InsightsPage = ({ order }) => {
               <AgegroupDialog screams={screams} likes={likes} />
             </Covers>
             <Covers animation="coverAnimation 1s ease-in-out">
-              <CoverTitle>{t("keywords")}</CoverTitle>
+              <CoverTitle>{t("toolbox")}</CoverTitle>
               <CoverImg src={KeywordsCover} alt="insights-keywords-cover" />
-              <WordcloudDialog />
+              <ExpandButton handleButtonClick={() => handleLink()} />
+              {/* <WordcloudDialog /> */}
             </Covers>
           </CoverWrapper>
         </MainAnimations>
