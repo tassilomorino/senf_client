@@ -31,9 +31,9 @@ import downloadIcon from "../../../images/icons/file.png";
 
 import Geocoder from "react-mapbox-gl-geocoder";
 
-import Weblink from "../../molecules/Modals/PostEditModals/Weblink";
-import Contact from "../../molecules/Modals/PostEditModals/Contact";
-import InlineDatePicker from "../../molecules/Modals/PostEditModals/InlineDatePicker";
+import Weblink from "../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
+import Contact from "../../molecules/Modals/Post_Edit_ModalComponents/Contact";
+import InlineDatePicker from "../../molecules/Modals/Post_Edit_ModalComponents/InlineDatePicker";
 import ToggleDisplay from "react-toggle-display";
 import Tabs from "../../atoms/Tabs/Tabs";
 import { EditScreamTabData } from "../../../data/EditScreamTabData";

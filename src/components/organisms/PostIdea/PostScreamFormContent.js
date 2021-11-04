@@ -11,9 +11,9 @@ import { TextField } from "@material-ui/core";
 
 //Components
 import PostScreamRules from "./PostScreamRules";
-import Contact from "../../molecules/Modals/PostEditModals/Contact";
-import InlineDatePicker from "../../molecules/Modals/PostEditModals/InlineDatePicker";
-import Weblink from "../../molecules/Modals/PostEditModals/Weblink";
+import Contact from "../../molecules/Modals/Post_Edit_ModalComponents/Contact";
+import InlineDatePicker from "../../molecules/Modals/Post_Edit_ModalComponents/InlineDatePicker";
+import Weblink from "../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
 
 //Icons
 import LocationOn from "@material-ui/icons/LocationOn";

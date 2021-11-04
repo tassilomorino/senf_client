@@ -24,9 +24,9 @@ import _ from "lodash";
 
 import Geocoder from "react-mapbox-gl-geocoder";
 
-import Weblink from "./PostEditModals/Weblink";
-import Contact from "./PostEditModals/Contact";
-import InlineDatePicker from "./PostEditModals/InlineDatePicker";
+import Weblink from "./Post_Edit_ModalComponents/Weblink";
+import Contact from "./Post_Edit_ModalComponents/Contact";
+import InlineDatePicker from "./Post_Edit_ModalComponents/InlineDatePicker";
 import ToggleDisplay from "react-toggle-display";
 import { EditScreamTabData } from "../../../data/EditScreamTabData";
 import Tabs from "../../atoms/Tabs/Tabs";
