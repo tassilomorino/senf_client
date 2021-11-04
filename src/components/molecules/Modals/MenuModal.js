@@ -82,6 +82,8 @@ const MenuModal = ({ setMenuOpen, screamId, userHandle }) => {
           scream={scream}
           isAdmin={isAdmin && true}
           setAdminEditOpen={setAdminEditOpen}
+          setMenuOpen={setMenuOpen}
+          adminEditOpen={adminEditOpen}
         />
       )}
 
