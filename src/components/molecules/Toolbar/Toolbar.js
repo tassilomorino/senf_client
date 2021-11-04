@@ -9,7 +9,8 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { useTranslation } from "react-i18next";
 
 const Wrapper = styled.div`
-  font-family: PlayfairDisplay-Regular;
+  font-family: Playfair Display;
+  font-weight: 500;
   font-size: 24px;
   color: white;
   display: flex;

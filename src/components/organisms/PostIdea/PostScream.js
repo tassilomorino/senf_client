@@ -84,7 +84,7 @@ const OpenButtonMobile = styled.button`
   animation: ${AddbuttonAnimation} 5s ease-in-out infinite,
     ${enterAnimation} 3.5s;
 
-  bottom: ${(props) => (props.swipePosition === "bottom" ? "135px" : "9px")};
+  bottom: 15px;
   left: 50vw;
   transition: 1s;
 `;
@@ -194,12 +194,7 @@ const styles = {
   },
 };
 
-const PostScream = ({
-  classes,
-  loadingProjects,
-  projectsData,
-  swipePosition,
-}) => {
+const PostScream = ({ classes, loadingProjects, projectsData }) => {
   const dispatch = useDispatch();
   const { loading, openScream } = useSelector((state) => state.UI);
   const { project } = useSelector((state) => state.data);
@@ -578,11 +573,7 @@ const PostScream = ({
       ) : (
         !loading &&
         !loading && (
-          <OpenButtonMobile
-            onClick={handleOpen}
-            swipePosition={swipePosition}
-            openScream={openScream}
-          >
+          <OpenButtonMobile onClick={handleOpen} openScream={openScream}>
             <img src={AddIcon} width="25" alt="AddIcon" />
           </OpenButtonMobile>
         )
