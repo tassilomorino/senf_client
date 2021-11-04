@@ -118,7 +118,6 @@ const IdeaList = ({
   const setSwipePositionUp = () => {
     setSwipePosition("top");
     set({
-      y: 0,
       transform: `translateY(${141}px)`,
       touchAction: "unset",
     });
@@ -127,7 +126,6 @@ const IdeaList = ({
   const setSwipePositionDown = () => {
     setSwipePosition("bottom");
     set({
-      y: 0,
       transform: `translateY(${window.innerHeight - 120}px)`,
       touchAction: "none",
     });

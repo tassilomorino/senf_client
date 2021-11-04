@@ -10,7 +10,7 @@ import HandFull from "../../../images/icons/handsFull.png";
 import { useTranslation } from "react-i18next";
 
 const Keyindicators = ({ screams, likesLength, commentslength }) => {
-  const {t} = useTranslation()
+  const { t } = useTranslation();
 
   const Wishlength =
     screams.length === 0 ? (
@@ -22,10 +22,13 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
         <img
           src={lamploader}
           width="35px"
-          style={{ transform: "rotate(35deg) translateY(-1px)" }}
+          style={{
+            transform: "rotate(35deg) translateY(-1px)",
+            paddingBottom: "10px",
+          }}
           alt="lamploader"
         ></img>
-        {screams.length} {screams.length === 1 ? t('idea'): t('ideas')}
+        {screams.length} {screams.length === 1 ? t("idea") : t("ideas")}
       </div>
     );
 
@@ -36,7 +39,12 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
       </div>
     ) : (
       <div className="keyindicatorcard">
-        <img src={HandFull} width="25px" alt="lamploader"></img>
+        <img
+          src={HandFull}
+          width="25px"
+          alt="lamploader"
+          style={{ paddingBottom: "10px" }}
+        ></img>
         {"  "}
         {likesLength} Votes
       </div>
@@ -53,8 +61,13 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
         </div>
       ) : (
         <div className="keyindicatorcard">
-          <img src={ChatBorder} width="25px" alt="lamploader"></img>
-          {commentslength} {commentslength === 1 ? t('comment'): t('comments')}
+          <img
+            src={ChatBorder}
+            width="25px"
+            alt="lamploader"
+            style={{ paddingBottom: "10px" }}
+          ></img>
+          {commentslength} {commentslength === 1 ? t("comment") : t("comments")}
         </div>
       )}
     </div>

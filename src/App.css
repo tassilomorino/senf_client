@@ -2463,7 +2463,7 @@ background-color: #353535;
 .keyindicatorswrapper {
   width: 95%;
   display: flex;
-  padding-top: 10px;
+  padding-top: 40px;
   margin-left: 2.5%;
   margin-bottom: 20px;
   flex-direction: row;
@@ -2476,7 +2476,7 @@ background-color: #353535;
   position: relative;
   text-align: center;
   align-items: center;
-  font-family: Futura PT W01-Bold;
+  font-family: Futura PT W01 Book;
   padding-left: 10px;
   padding-right: 10px;
   flex-direction: column;
