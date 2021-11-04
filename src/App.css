@@ -2807,6 +2807,8 @@ border-radius: 20px;
   overflow-y: hidden;
   overflow-x: hidden;
   overscroll-behavior: contain;
+  min-height: 100%;
+
   
 
 
@@ -2840,14 +2842,12 @@ border-radius: 20px;
 .screamDialogDrag {
   width: 100%;
   height: 120%;
-  position: absolute;
+  position: fixed;
   z-index:96;
-  top: 0;
+ top:0;
   overflow: scroll;
   
 
  
 }
-
-
 

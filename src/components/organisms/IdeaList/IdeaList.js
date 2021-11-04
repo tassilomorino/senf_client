@@ -112,6 +112,7 @@ const IdeaList = ({
     transform: `translateY(${window.innerHeight - 120}px)`,
     overflow: "scroll",
     touchAction: "none",
+    userSelect: "none",
   }));
 
   const setSwipePositionUp = () => {
@@ -147,27 +148,26 @@ const IdeaList = ({
   }, [openScream]);
 
   const bind = useDrag(
-    ({ currentTarget, down, movement: [, my], offset: [, y] }) => {
+    ({ last, currentTarget, down, movement: [, my], offset: [, y] }) => {
       console.log(currentTarget);
-      if (my > 50) {
-        setSwipePosition("bottom");
+      if (last && my > 50) {
         set({
           transform: !down
             ? `translateY(${window.innerHeight - 120}px)`
             : `translateY(${0}px)`,
           touchAction: "none",
         });
+        setSwipePosition("bottom");
       }
 
-      if (my < -50) {
-        setSwipePosition("top");
+      if (last && my < -50) {
         set({
-          transform:
-            !down && swipePosition !== "bottom"
-              ? `translateY(${141}px)`
-              : `translateY(${window.innerHeight - 120}px)`,
+          transform: !down
+            ? `translateY(${141}px)`
+            : `translateY(${window.innerHeight - 120}px)`,
           touchAction: "unset",
         });
+        setSwipePosition("top");
       }
 
       set({ y: down ? my : 0 });
