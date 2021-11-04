@@ -695,7 +695,7 @@
 
 
   .geocoder-edit {
-    z-index: 9999;
+    
     position: relative;
     font-family: Futura PT W01 Book;
 
@@ -902,7 +902,7 @@
 
     left: 200px;
     width: 400px;
-    z-index:9999;
+    z-index:99;
 
   }
 

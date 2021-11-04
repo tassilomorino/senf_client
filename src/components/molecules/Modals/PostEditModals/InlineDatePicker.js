@@ -1,23 +1,15 @@
 /** @format */
-import React, { useState, Component, Fragment } from "react";
-import DatePicker, { DateObject } from "react-multi-date-picker";
+import React from "react";
 
 import DatePanel from "react-multi-date-picker/plugins/date_panel";
 import { Calendar } from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 
 import withStyles from "@material-ui/core/styles/withStyles";
-import PropTypes from "prop-types";
 
 // MUI Stuff
 import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-
-// REDUX Stuff
-import { connect } from "react-redux";
-
-import CalendarIcon from "../../../../images/icons/calendar.png";
-import { TextField } from "@material-ui/core";
+import MainModal from "../MainModal";
 
 const styles = {
   paper: {
@@ -53,124 +45,83 @@ const styles = {
   },
 };
 
-class InlineDatePicker extends Component {
-  render() {
-    const {
-      classes,
-      weblink,
-      weblinkTitle,
-      handleChange,
+const InlineDatePicker = ({
+  classes,
 
-      openCalendar,
-      handleOpenCalendar,
-      handleCloseCalendar,
-      handleSaveCalendar,
-      selectedDays,
-    } = this.props;
+  setCalendarOpen,
+  handleChangeCalendar,
+  handleCloseCalendar,
+  handleSaveCalendar,
+  selectedDays,
+}) => {
+  const tomorrow = new Date();
 
-    const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
 
-    tomorrow.setDate(tomorrow.getDate() + 1);
+  return (
+    <MainModal handleButtonClick={() => setCalendarOpen(false)} zIndex={999}>
+      <h3 className="modal_title">Datum hinzufügen:</h3>
 
-    return (
-      <Fragment>
-        <div
-          onClick={handleOpenCalendar}
-          className="buttonRound buttonCalendar"
+      <p style={{ widthh: "100%", textAlign: "center" }}>
+        Zuerst Datum, dann Zeit auswählen.
+      </p>
+
+      <div className="textFields">
+        <Calendar
+          weekStartDayIndex={1}
+          weekDays={["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"]}
+          months={[
+            "Januar",
+            "Februar",
+            "März",
+            "April",
+            "Mai",
+            "Juni",
+            "Juli",
+            "August",
+            "September",
+            "Oktober",
+            "November",
+            "Dezember",
+          ]}
+          value={selectedDays}
+          onChange={handleChangeCalendar}
+          format="D. MMMM HH:mm"
+          sort
+          shadow={false}
+          plugins={[
+            <DatePanel
+              header="Ausgewählte Daten"
+              position="bottom"
+              markFocused
+            />,
+            <TimePicker
+              position="right"
+              hideSeconds
+              timeFormat="HH:mm"
+              showTimeInput
+              style={{ minWidth: "100px" }}
+            />,
+          ]}
+        ></Calendar>
+      </div>
+
+      <div className="buttons">
+        <Button className={classes.button} onClick={handleCloseCalendar}>
+          {selectedDays !== [] ? "Löschen" : "Abbrechen"}
+        </Button>
+        <Button
+          className={classes.button}
+          onClick={handleSaveCalendar}
           style={
-            selectedDays && selectedDays.length > 0
-              ? { backgroundColor: "#fed957" }
-              : {}
+            selectedDays !== [] ? {} : { pointerEvents: "none", opacity: 0.6 }
           }
         >
-          <img src={CalendarIcon} width="30" alt="AddIcon" />
-        </div>
-        <Dialog
-          open={openCalendar}
-          onClose={handleCloseCalendar}
-          width="md"
-          BackdropProps={{ classes: { root: classes.root } }}
-          PaperProps={{ classes: { root: classes.paper } }}
-        >
-          <h3 className="modal_title">Datum hinzufügen:</h3>
-
-          <p style={{ widthh: "100%", textAlign: "center" }}>
-            Zuerst Datum, dann Zeit auswählen.
-          </p>
-
-          <div className="textFields">
-            <Calendar
-              weekStartDayIndex={1}
-              weekDays={["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"]}
-              months={[
-                "Januar",
-                "Februar",
-                "März",
-                "April",
-                "Mai",
-                "Juni",
-                "Juli",
-                "August",
-                "September",
-                "Oktober",
-                "November",
-                "Dezember",
-              ]}
-              value={selectedDays}
-              onChange={handleChange}
-              format="D. MMMM HH:mm"
-              sort
-              shadow={false}
-              plugins={[
-                <DatePanel
-                  header="Ausgewählte Daten"
-                  position="bottom"
-                  markFocused
-                />,
-                <TimePicker
-                  position="right"
-                  hideSeconds
-                  timeFormat="HH:mm"
-                  showTimeInput
-                  style={{ minWidth: "100px" }}
-                />,
-              ]}
-            ></Calendar>
-          </div>
-
-          <div className="buttons">
-            <Button className={classes.button} onClick={handleCloseCalendar}>
-              {weblink !== "" && weblinkTitle !== "" ? "Löschen" : "Abbrechen"}
-            </Button>
-            <Button
-              className={classes.button}
-              onClick={handleSaveCalendar}
-              style={
-                weblink !== "" && weblinkTitle !== ""
-                  ? {}
-                  : { pointerEvents: "none", opacity: 0.6 }
-              }
-            >
-              Speichern
-            </Button>
-          </div>
-        </Dialog>
-      </Fragment>
-    );
-  }
-}
-
-InlineDatePicker.propTypes = {
-  classes: PropTypes.object.isRequired,
+          Speichern
+        </Button>
+      </div>
+    </MainModal>
+  );
 };
 
-const mapStateToProps = (state) => ({
-  scream: state.data.scream,
-});
-
-const mapActionsToProps = {};
-
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(InlineDatePicker));
+export default withStyles(styles)(InlineDatePicker);

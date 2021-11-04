@@ -73,6 +73,7 @@ const MenuModal = ({ setMenuOpen, screamId, userHandle }) => {
           scream={scream}
           setEditOpen={setEditOpen}
           setMenuOpen={setMenuOpen}
+          editOpen={editOpen}
         />
       )}
 

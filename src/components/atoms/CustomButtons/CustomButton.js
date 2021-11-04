@@ -10,7 +10,9 @@ import MenuIcon from "../../../images/icons/menu.png";
 import HandsFullIcon from "../../../images/icons/handsFull.png";
 import HandsnoclapIcon from "../../../images/icons/handsnoclap.png";
 import ChatIconIcon from "../../../images/icons/chat.png";
-
+import WeblinkIcon from "../../../images/icons/world-wide-web-on-grid.png";
+import ContactIcon from "../../../images/icons/mail.png";
+import DatePickerIcon from "../../../images/icons/calendar.png";
 const enterAnimation = keyframes`
     0% {
       opacity: 0;
@@ -107,6 +109,9 @@ const Icons = {
   HandsFull: HandsFullIcon,
   Handsnoclap: HandsnoclapIcon,
   Chat: ChatIconIcon,
+  Weblink: WeblinkIcon,
+  Contact: ContactIcon,
+  DatePicker: DatePickerIcon,
 };
 
 const enterAnimationRound = keyframes`

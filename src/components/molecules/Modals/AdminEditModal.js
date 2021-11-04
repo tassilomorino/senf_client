@@ -13,7 +13,10 @@ import { connect } from "react-redux";
 
 import { TextField } from "@material-ui/core";
 
-import { editScream, getUserEmail } from "../../../redux/actions/screamActions";
+import {
+  editScreamFunc,
+  getUserEmail,
+} from "../../../redux/actions/screamActions";
 
 import L from "leaflet";
 
@@ -296,7 +299,7 @@ class AdminEditModal extends Component {
       editScream.selectedUnix = this.state.selectedUnix;
     }
 
-    this.props.editScream(editScream, this.props.history);
+    this.props.editScreamFunc(editScream, this.props.history);
     this.props.setEditOpen(false);
     this.props.setMenuOpen(false);
   };
@@ -604,7 +607,7 @@ const mapStateToProps = (state) => ({
   scream_user: state.data.scream_user,
 });
 
-const mapActionsToProps = { editScream, getUserEmail };
+const mapActionsToProps = { editScreamFunc, getUserEmail };
 
 export default connect(
   mapStateToProps,

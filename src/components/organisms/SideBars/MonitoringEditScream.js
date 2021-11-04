@@ -12,7 +12,10 @@ import { connect } from "react-redux";
 
 import { TextField } from "@material-ui/core";
 
-import { editScream, getUserEmail } from "../../../redux/actions/screamActions";
+import {
+  editScreamFunc,
+  getUserEmail,
+} from "../../../redux/actions/screamActions";
 import { closeMonitoringScream } from "../../../redux/actions/monitoringScreamActions";
 
 import L from "leaflet";
@@ -779,7 +782,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapActionsToProps = {
-  editScream,
+  editScreamFunc,
   getUserEmail,
   closeMonitoringScream,
 };
