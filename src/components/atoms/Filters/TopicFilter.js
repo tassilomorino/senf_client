@@ -46,12 +46,13 @@ const MapClickContainer = styled.div`
 
 const OpenButtonMobile = styled.div`
   position: absolute;
-  width: 120px;
-  margin-left: 0;
-  left: 0;
-  top: 0;
-  height: 50px;
-  z-index: 9;
+  width: 110px;
+
+  height: 30px;
+  z-index: 10;
+  margin-left: -20px;
+  margin-top: 0px;
+  border-radius: 15px;
   display: ${(props) => (props.hide ? "block" : "none")};
 `;
 
@@ -99,7 +100,11 @@ export function TopicFilter({
   }, [openScream]);
 
   useEffect(() => {
-    if (isMobileCustom && !inline) {
+    if (
+      isMobileCustom &&
+      !inline &&
+      document.getElementById("Wrapper") !== null
+    ) {
       const el = document.getElementById("Wrapper");
       if (moveLeft) {
         el.scroll({

@@ -20,7 +20,6 @@ import Comments from "../../molecules/Cards/Comments";
 import CommentForm from "../../atoms/Forms/CommentForm";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 
-import ScreamDialogSwipe from "../../../hooks/ScreamDialogSwipe";
 import Loader from "../../atoms/Animations/Loader";
 import ShareYourOpinionCard from "../../molecules/Cards/ShareYourOpinionCard";
 import IdeaCardBig from "../../molecules/Cards/IdeaCardBig";
@@ -70,7 +69,7 @@ const ScreamDialog = () => {
   const [userHandleSelected, setUserHandleSelected] = useState("");
   const [commentIdSelected, setCommentIdSelected] = useState("");
   const [commentFormShow, setCommentFormShow] = useState(false);
-
+  const [swipePosition, setSwipePosition] = useState("bottom");
   useEffect(() => {
     if (openScream && lat !== undefined) {
       window.scrollTo({
@@ -119,36 +118,34 @@ const ScreamDialog = () => {
   };
 
   const [props, set] = useSpring(() => ({
-    x: 0,
     y: 0,
-    scale: 1,
     transform: `translateY(${window.innerHeight / 2}px)`,
     overflow: "scroll",
     touchAction: "none",
   }));
 
   const bind = useDrag(
-    ({ down, movement: [, my], offset: [, y] }) => {
+    ({ last, down, movement: [, my], offset: [, y] }) => {
       const el = document.querySelector(".screamDialogDrag");
-
-      if (my < -50) {
+      console.log(last);
+      if (last && my < -50 && swipePosition === "bottom") {
         set({
-          y: down ? my : 100,
           transform: !down ? `translateY(${-30}px)` : `translateY(${0}px)`,
           touchAction: "unset",
           overflow: "scroll",
         });
         setCommentFormShow(true);
+        setSwipePosition("top");
       }
-      if (el.scrollTop < 30 && my > 150) {
+      if (last && el.scrollTop < 30 && my > 150) {
         set({
-          y: down ? my : window.innerHeight - 120,
           transform: down
             ? `translateY(${0}px)`
             : `translateY(${window.innerHeight / 2}px)`,
           touchAction: "none",
           overflow: "scroll",
         });
+        setSwipePosition("bottom");
       }
 
       set({ y: down ? my : 0 });
@@ -157,7 +154,7 @@ const ScreamDialog = () => {
       pointer: { touch: true },
       bounds: {
         enabled: true,
-        top: -window.innerHeight + 241,
+        top: -window.innerHeight / 2,
         bottom: window.innerHeight - 120,
         left: 0,
         right: 0,

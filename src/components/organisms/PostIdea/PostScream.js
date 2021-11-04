@@ -30,6 +30,9 @@ import PostScreamSelectContainter from "./PostScreamSelectContainter";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import styled, { keyframes } from "styled-components";
 import { setMapViewport } from "../../../redux/actions/mapActions";
+import Weblink from "../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
+import Contact from "../../molecules/Modals/Post_Edit_ModalComponents/Contact";
+import InlineDatePicker from "../../molecules/Modals/Post_Edit_ModalComponents/InlineDatePicker";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -84,7 +87,7 @@ const OpenButtonMobile = styled.button`
   animation: ${AddbuttonAnimation} 5s ease-in-out infinite,
     ${enterAnimation} 3.5s;
 
-  bottom: ${(props) => (props.swipePosition === "bottom" ? "135px" : "9px")};
+  bottom: 15px;
   left: 50vw;
   transition: 1s;
 `;
@@ -194,12 +197,7 @@ const styles = {
   },
 };
 
-const PostScream = ({
-  classes,
-  loadingProjects,
-  projectsData,
-  swipePosition,
-}) => {
+const PostScream = ({ classes, loadingProjects, projectsData }) => {
   const dispatch = useDispatch();
   const { loading, openScream } = useSelector((state) => state.UI);
   const { project } = useSelector((state) => state.data);
@@ -239,50 +237,22 @@ const PostScream = ({
 
   const { errors, MapHeight, locationDecided } = allMainStates;
 
-  const [allValues, setAllValues] = useState({
-    body: "",
-    title: "",
-    topic: "",
-    openWeblink: false,
-    weblinkTitle: null,
-    weblink: null,
-    openContact: false,
-    contactTitle: null,
-    contact: null,
-    openCalendar: false,
-    selectedDays: [],
-    selectedUnix: [],
-  });
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [topic, setTopic] = useState("");
+  // const [project, setProject] = useState("");
 
-  const {
-    body,
-    title,
-    topic,
-    openWeblink,
-    weblinkTitle,
-    weblink,
-    openContact,
-    contactTitle,
-    contact,
-    openCalendar,
-    selectedDays,
-    selectedUnix,
-  } = allValues;
+  const [weblinkOpen, setWeblinkOpen] = useState(false);
+  const [weblink, setWeblink] = useState(null);
+  const [weblinkTitle, setWeblinkTitle] = useState(null);
 
-  // useEffect(() => {
-  //   console.log("nextprops error");
-  //   // componentWillReceiveProps(nextProps) {
-  //   //   if (nextProps.UI.errors) {
-  //   //     this.setState({
-  //   //       errors: nextProps.UI.errors,
-  //   //     });
-  //   //   }
-  //   //   if (!nextProps.UI.errors && !nextProps.UI.loading) {
-  //   //     this.setState({ body: "", open: false, errors: {} });
-  //   //     this.setState({ title: "", open: false, errors: {} });
-  //   //   }
-  //   // }
-  // }, [nextProps.UI.errors]);
+  const [contactOpen, setContactOpen] = useState(false);
+  const [contact, setContact] = useState(null);
+  const [contactTitle, setContactTitle] = useState(null);
+
+  const [calendarOpen, setCalendarOpen] = useState(false);
+  const [selectedDays, setSelectedDays] = useState([]);
+  const [selectedUnix, setSelectedUnix] = useState([]);
 
   const handleOpen = (event) => {
     event.preventDefault();
@@ -327,32 +297,7 @@ const PostScream = ({
   };
 
   const handleDropdown = (value) => {
-    // event.preventDefault();
-    setAllValues({
-      ...allValues,
-      topic: value,
-    });
-  };
-
-  const handleChange = (event) => {
-    event.preventDefault();
-    setAllValues({
-      ...allValues,
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  const handleChangeCalendar = (selectedDays) => {
-    const selectedUnix = [];
-    var i;
-    for (i = 0; i < selectedDays.length; i++) {
-      selectedUnix[i] = selectedDays[i]["unix"];
-    }
-    setAllValues({
-      ...allValues,
-      selectedDays: selectedDays,
-      selectedUnix: selectedUnix,
-    });
+    setTopic(value);
   };
 
   const handleDropdownProject = (value) => {
@@ -387,6 +332,44 @@ const PostScream = ({
     });
   };
 
+  const handleCloseWeblink = () => {
+    setWeblinkOpen(false);
+    setWeblink(null);
+    setWeblinkTitle(null);
+  };
+  const handleSaveWeblink = () => {
+    setWeblinkOpen(false);
+  };
+
+  const handleCloseContact = () => {
+    setContactOpen(false);
+    setContact(null);
+    setContactTitle(null);
+  };
+  const handleSaveContact = () => {
+    setContactOpen(false);
+  };
+
+  const handleChangeCalendar = (selectedDays) => {
+    const selectedUnix = [];
+    var i;
+    for (i = 0; i < selectedDays.length; i++) {
+      selectedUnix[i] = selectedDays[i]["unix"];
+    }
+
+    setSelectedDays(selectedDays);
+    setSelectedUnix(selectedUnix);
+  };
+
+  const handleCloseCalendar = () => {
+    setCalendarOpen(false);
+
+    setSelectedDays([]);
+    setSelectedUnix([]);
+  };
+  const handleSaveCalendar = () => {
+    setCalendarOpen(false);
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -524,50 +507,6 @@ const PostScream = ({
     }
   };
 
-  const handleOpenWeblink = () => {
-    setAllValues({ ...allValues, openWeblink: true });
-  };
-  const handleCloseWeblink = () => {
-    setAllValues({
-      ...allValues,
-      openWeblink: false,
-      weblink: null,
-      weblinkTitle: null,
-    });
-  };
-  const handleSaveWeblink = () => {
-    setAllValues({ ...allValues, openWeblink: false });
-  };
-  const handleOpenContact = () => {
-    setAllValues({ ...allValues, openContact: true });
-  };
-  const handleCloseContact = () => {
-    setAllValues({
-      ...allValues,
-      openContact: false,
-      contact: null,
-      contactTitle: null,
-    });
-  };
-  const handleSaveContact = () => {
-    setAllValues({ ...allValues, openContact: false });
-  };
-
-  const handleOpenCalendar = () => {
-    setAllValues({ ...allValues, openCalendar: true });
-  };
-  const handleCloseCalendar = () => {
-    setAllValues({
-      ...allValues,
-      openCalendar: false,
-      selectedDays: [],
-      selectedUnix: [],
-    });
-  };
-  const handleSaveCalendar = () => {
-    setAllValues({ ...allValues, openCalendar: false });
-  };
-
   return (
     <Fragment>
       {!isMobileCustom ? (
@@ -578,11 +517,7 @@ const PostScream = ({
       ) : (
         !loading &&
         !loading && (
-          <OpenButtonMobile
-            onClick={handleOpen}
-            swipePosition={swipePosition}
-            openScream={openScream}
-          >
+          <OpenButtonMobile onClick={handleOpen} openScream={openScream}>
             <img src={AddIcon} width="25" alt="AddIcon" />
           </OpenButtonMobile>
         )
@@ -630,6 +565,38 @@ const PostScream = ({
           </div>
         )}
 
+        {weblinkOpen && (
+          <Weblink
+            handleCloseWeblink={handleCloseWeblink}
+            handleSaveWeblink={handleSaveWeblink}
+            weblinkTitle={weblinkTitle}
+            weblink={weblink}
+            setWeblinkTitle={setWeblinkTitle}
+            setWeblink={setWeblink}
+            setWeblinkOpen={setWeblinkOpen}
+          />
+        )}
+        {contactOpen && (
+          <Contact
+            handleCloseContact={handleCloseContact}
+            handleSaveContact={handleSaveContact}
+            contactTitle={contactTitle}
+            contact={contact}
+            setContactTitle={setContactTitle}
+            setContact={setContact}
+            setContactOpen={setContactOpen}
+          />
+        )}
+        {calendarOpen && (
+          <InlineDatePicker
+            setCalendarOpen={setCalendarOpen}
+            handleCloseCalendar={handleCloseCalendar}
+            handleSaveCalendar={handleSaveCalendar}
+            handleChangeCalendar={handleChangeCalendar}
+            selectedDays={selectedDays}
+          />
+        )}
+
         <PostScreamMap
           MapHeight={MapHeight}
           geocode={geocode}
@@ -662,27 +629,13 @@ const PostScream = ({
           errors={errors}
           address={address}
           handleLocationDecided={handleLocationDecided}
-          handleChange={handleChange}
           handleDropdown={handleDropdown}
-          openWeblink={openWeblink}
           weblink={weblink}
           weblinkTitle={weblinkTitle}
-          handleOpenWeblink={handleOpenWeblink}
-          handleCloseWeblink={handleCloseWeblink}
-          handleSaveWeblink={handleSaveWeblink}
-          openContact={openContact}
           contactTitle={contactTitle}
           contact={contact}
-          handleOpenContact={handleOpenContact}
-          handleCloseContact={handleCloseContact}
-          handleSaveContact={handleSaveContact}
           project={projectSelected}
-          openCalendar={openCalendar}
           selectedDays={selectedDays}
-          handleOpenCalendar={handleOpenCalendar}
-          handleCloseCalendar={handleCloseCalendar}
-          handleSaveCalendar={handleSaveCalendar}
-          handleChangeCalendar={handleChangeCalendar}
           topic={topic}
           loading={loading}
           Out={out}
@@ -690,6 +643,11 @@ const PostScream = ({
           handleSubmit={handleSubmit}
           body={body}
           title={title}
+          setTitle={setTitle}
+          setBody={setBody}
+          setWeblinkOpen={setWeblinkOpen}
+          setContactOpen={setContactOpen}
+          setCalendarOpen={setCalendarOpen}
           checkIfCalendar={checkIfCalendar}
         />
         <CustomIconButton

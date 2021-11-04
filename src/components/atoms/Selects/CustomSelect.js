@@ -141,7 +141,7 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
         setSelectedLabel(option.label);
       }
     }
-  }, []);
+  }, [value]);
 
   const outerRef = useRef();
   useOnClickOutside(outerRef, () => setOpen(false));

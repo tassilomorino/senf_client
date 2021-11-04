@@ -30,8 +30,9 @@ const PinComponent = styled.img`
   width: 100px;
   transform: translateY(-88%) translateX(-45%) rotate(0deg);
   transform-origin: bottom center;
-  margin-top: ${(props) =>
-    (-(7 + props.likeCount) * props.zoomBreak) / 4 + "px"};
+  margin-top: ${(props) => -(7 + props.likeCount / 4) * props.zoomBreak + "px"};
+  margin-left: ${(props) =>
+    -((7 + props.likeCount / 4) * props.zoomBreak) / 2 + "px"};
 `;
 
 const styles = {
@@ -294,10 +295,10 @@ const MapDesktop = ({
             <div
               style={{
                 position: "absolute",
-                width: (7 + hoverLikeCount / 2) * zoomBreak + "px",
-                marginLeft: -((7 + hoverLikeCount) / 4) * zoomBreak + "px",
-                height: (7 + hoverLikeCount / 2) * zoomBreak + "px",
-                marginTop: -((7 + hoverLikeCount) / 4) * zoomBreak + "px",
+                width: (7 + hoverLikeCount / 4) * zoomBreak + "px",
+                marginLeft: -(7 + hoverLikeCount / 4) * zoomBreak + "px",
+                height: (7 + hoverLikeCount / 4) * zoomBreak + "px",
+                marginTop: -(7 + hoverLikeCount / 4) * zoomBreak + "px",
                 borderRadius: "100%",
                 border: "1px white solid",
                 backgroundColor: "rgb(0,0,0,0.2)",
@@ -309,8 +310,8 @@ const MapDesktop = ({
               <div
                 className={classes.title}
                 style={{
-                  marginLeft: +(20 + hoverLikeCount) / 2 + "px",
-                  marginTop: +(5 + hoverLikeCount) / 4 + "px",
+                  marginLeft: +(15 * zoomBreak + hoverLikeCount / 4) + "px",
+                  marginTop: +(5 * zoomBreak + hoverLikeCount / 8) + "px",
                   transform: "translateY(-50%)",
                 }}
               >

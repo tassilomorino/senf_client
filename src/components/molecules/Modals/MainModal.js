@@ -9,14 +9,15 @@ const Wrapper = styled.div`
   top: 0;
   left: 0;
   position: fixed;
-  z-index: 99998;
+
+  z-index: ${(props) => (props.zIndex ? props.zIndex : 998)};
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 const Background = styled.div`
   position: fixed;
-  z-index: 99991;
+  z-index: 991;
   width: 100%;
   height: 100%;
   top: 0;
@@ -38,9 +39,9 @@ const InnerWrapper = styled.div`
   overflow: hidden;
 `;
 
-const MainModal = ({ handleButtonClick, children }) => {
+const MainModal = ({ handleButtonClick, children, zIndex }) => {
   return (
-    <Wrapper>
+    <Wrapper zIndex={zIndex}>
       <InnerWrapper>{children}</InnerWrapper>
       <Background onClick={handleButtonClick} />
     </Wrapper>

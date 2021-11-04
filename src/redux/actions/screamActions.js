@@ -247,7 +247,7 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
 };
 
 // Edit your idea
-export const editScream = (editScream) => async (dispatch) => {
+export const editScreamFunc = (editScream) => async (dispatch) => {
   const db = firebase.firestore();
   dispatch({ type: LOADING_UI });
   const screamId = editScream.screamId;

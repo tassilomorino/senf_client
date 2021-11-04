@@ -12,7 +12,10 @@ import { connect } from "react-redux";
 
 import { TextField } from "@material-ui/core";
 
-import { editScream, getUserEmail } from "../../../redux/actions/screamActions";
+import {
+  editScreamFunc,
+  getUserEmail,
+} from "../../../redux/actions/screamActions";
 import { closeMonitoringScream } from "../../../redux/actions/monitoringScreamActions";
 
 import L from "leaflet";
@@ -28,9 +31,9 @@ import downloadIcon from "../../../images/icons/file.png";
 
 import Geocoder from "react-mapbox-gl-geocoder";
 
-import Weblink from "../../molecules/Modals/PostEditModals/Weblink";
-import Contact from "../../molecules/Modals/PostEditModals/Contact";
-import InlineDatePicker from "../../molecules/Modals/PostEditModals/InlineDatePicker";
+import Weblink from "../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
+import Contact from "../../molecules/Modals/Post_Edit_ModalComponents/Contact";
+import InlineDatePicker from "../../molecules/Modals/Post_Edit_ModalComponents/InlineDatePicker";
 import ToggleDisplay from "react-toggle-display";
 import Tabs from "../../atoms/Tabs/Tabs";
 import { EditScreamTabData } from "../../../data/EditScreamTabData";
@@ -779,7 +782,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapActionsToProps = {
-  editScream,
+  editScreamFunc,
   getUserEmail,
   closeMonitoringScream,
 };

@@ -311,7 +311,7 @@ const Main = () => {
         </div>
       )}
 
-      {!openInfoPage && order === 2 && (
+      {!openInfoPage && !openProject && !openAccount && order === 2 && (
         <div className="contentWrapper_insights">
           <ProjectsPage
             loadingProjects={loadingProjects}
@@ -320,7 +320,7 @@ const Main = () => {
           ></ProjectsPage>
         </div>
       )}
-      {!openInfoPage && order === 3 && (
+      {!openInfoPage && !openProject && !openAccount && order === 3 && (
         <div className="contentWrapper_insights">
           <InsightsPage order={order}></InsightsPage>
         </div>
