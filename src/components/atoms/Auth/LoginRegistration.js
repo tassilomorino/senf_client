@@ -382,7 +382,6 @@ const LoginRegistration = ({ classes }) => {
       ></ExpandButton>
       <Dialog
         open={open}
-        onClose={() => setOpen(false)}
         width="md"
         BackdropProps={{ classes: { root: classes.root } }}
         PaperProps={{ classes: { root: classes.paper } }}
