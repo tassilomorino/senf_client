@@ -26,7 +26,9 @@ const PinComponent = styled.img`
   width: 100px;
   transform: translateY(-88%) translateX(-45%) rotate(0deg);
   transform-origin: bottom center;
-  margin-top: ${(props) => -(7 + props.likeCount) / 4 + "px"};
+  margin-top: ${(props) => -(7 + props.likeCount / 4) * props.zoomBreak + "px"};
+  margin-left: ${(props) =>
+    -((7 + props.likeCount / 4) * props.zoomBreak) / 2 + "px"};
 `;
 
 const MapMobile = ({
@@ -149,6 +151,7 @@ const MapMobile = ({
               <PinComponent
                 src={Pin}
                 likeCount={scream.likeCount}
+                zoomBreak={zoomBreak}
                 style={{
                   clipPath: "polygon(0 0, 100% 0, 100% 88%, 0 88%)",
                 }}

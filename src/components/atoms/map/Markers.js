@@ -7,14 +7,13 @@ import ExpandButton from "../CustomButtons/ExpandButton";
 
 const OpenIdeaButton = styled.div`
   position: absolute;
-  width: ${(props) => (7 + props.likeCount / 2) * props.zoomBreak + "px"};
-  height: ${(props) => (7 + props.likeCount / 2) * props.zoomBreak + "px"};
+  width: ${(props) => (7 + props.likeCount / 4) * props.zoomBreak + "px"};
+  height: ${(props) => (7 + props.likeCount / 4) * props.zoomBreak + "px"};
   min-width: unset;
 
   margin-left: ${(props) =>
-    -((7 + props.likeCount) / 4) * props.zoomBreak + "px"};
-  margin-top: ${(props) =>
-    -((7 + props.likeCount) / 4) * props.zoomBreak + "px"};
+    -(7 + props.likeCount / 4) * props.zoomBreak + "px"};
+  margin-top: ${(props) => -(7 + props.likeCount / 4) * props.zoomBreak + "px"};
   border-radius: 100%;
   border: 1px white solid;
   background-color: ${(props) => props.color};
