@@ -301,6 +301,7 @@
     width: 400px;
     transition: 0.5s;
     position: fixed;
+    
 
 
   }
@@ -308,8 +309,10 @@
    .contentWrapper_insights {
     margin-left: 200px;
     width: 400px;
+    height:100%;
     transition: 0.5s;
     position: fixed;
+    overflow:scroll
 
 
   }
