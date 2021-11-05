@@ -302,6 +302,7 @@ const LoginRegistration = ({ classes }) => {
       .then(() => {
         setLoading(false);
         setOpen(false);
+
       })
       .catch((err) => {
         setLoading(false);
