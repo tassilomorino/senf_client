@@ -301,7 +301,6 @@ const LoginRegistration = ({ classes }) => {
       )
       .then(() => {
         setLoading(false);
-        // dispatch({ type: SET_AUTHENTICATED });
         setOpen(false);
       })
       .catch((err) => {
