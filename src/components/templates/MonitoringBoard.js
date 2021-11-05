@@ -17,7 +17,7 @@ import Not_connected from "../../images/Not_connected.png";
 
 import { MonitoringDesktopSidebar } from "../molecules/Navigation/MonitoringDesktopSidebar";
 
-import { ExportToExcel } from "../atoms/CustomButtons/ExportToExcel";
+// import { ExportToExcel } from "../atoms/CustomButtons/ExportToExcel";
 
 //Components
 import MonitoringEditScream from "../organisms/SideBars/MonitoringEditScream";
@@ -216,11 +216,11 @@ const MonitoringBoard = () => {
       </div>
 
       <div className="monitoringBottombar">
-        <ExportToExcel
+        {/* <ExportToExcel
           apiData={dataFinal}
           fileName={"hi"}
           dataFinal={dataFinal}
-        />
+        /> */}
       </div>
 
       <div
