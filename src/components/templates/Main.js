@@ -34,6 +34,7 @@ import ThanksForTheVote from "../atoms/Backgrounds/ThanksForTheVote";
 import Account from "../organisms/Account/Account";
 import Loader from "../atoms/Animations/Loader";
 import { closeAccountFunc } from "../../redux/actions/accountActions";
+import ErrorBackground from "../atoms/Backgrounds/ErrorBackground";
 
 const Main = () => {
   const { t } = useTranslation();
@@ -225,13 +226,7 @@ const Main = () => {
 
   return (
     <div>
-      {!loading && screams.length === 0 && (
-        <div className="errorBackground">
-               <div className="homeHeader"> Ooops! </div>
-          <br />
-          <span className="oopsText">{t("something_went_wrong")}</span>
-        </div>
-      )}
+      <ErrorBackground loading={loading} />
 
       {voted && <ThanksForTheVote />}
 

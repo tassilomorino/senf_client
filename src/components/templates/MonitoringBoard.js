@@ -27,6 +27,7 @@ import { CustomButton } from "../atoms/CustomButtons/CustomButton";
 import LoginRegistration from "../atoms/Auth/LoginRegistration";
 import styled from "styled-components";
 import { StyledText } from "../../styles/GlobalStyle";
+import ErrorBackground from "../atoms/Backgrounds/ErrorBackground";
 const NoAuthorizationWrapper = styled.div`
   width: 100vw;
   height: 100vh;
@@ -156,17 +157,6 @@ const MonitoringBoard = () => {
     }
   };
 
-  const error =
-    !loading && full_screams.length === 0 ? (
-      <div className="errorBackground">
-             <div className="homeHeader"> Ooops! </div>
-        <br />
-        <span className="oopsText">
-          Etwas ist schiefgelaufen. Bitte lade die Seite neu!
-        </span>
-      </div>
-    ) : null;
-
   const sortedScreams =
     dropdown === "newest"
       ? _.orderBy(full_screams, "createdAt", "desc")
@@ -186,7 +176,7 @@ const MonitoringBoard = () => {
 
   return user.isAdmin === true ? (
     <div>
-      {error}
+      <ErrorBackground loading={loading} />
 
       <MonitoringDesktopSidebar
         loading={loading}
