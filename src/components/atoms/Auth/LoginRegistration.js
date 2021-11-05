@@ -307,8 +307,6 @@ const LoginRegistration = ({ classes }) => {
         setLoading(false);
         setErrorMessage(err.message);
       });
-
-    // dispatch(loginUser(userData, props.history))
   };
 
   const handleSubmitRegister = async (event) => {
