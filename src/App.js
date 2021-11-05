@@ -18,7 +18,7 @@ import "firebase/auth";
 import "firebase/firestore";
 
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import {createTheme} from "@material-ui/core/styles/";
 import themeFile from "./util/theme";
 //Redux
 import { Provider } from "react-redux";
@@ -93,7 +93,7 @@ if (firebase.app.length) {
 
 axios.defaults.baseURL = process.env.REACT_APP_DB_BASE_URL;
 
-const theme = createMuiTheme(themeFile);
+const theme = createTheme(themeFile);
 
 function get_local_storage_status() {
   let test = "test";
