@@ -137,6 +137,7 @@ a {
 
 .Terms {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 
@@ -849,7 +850,7 @@ button:disabled {
   margin-left: 2.5vw;
   margin-right: auto;
 
-  height: calc((var(--vh, 1vh) * 80) - 70px);
+  height: calc((var(--vh, 1vh) * 75) - 70px);
   /* height:calc(80vh - 70px); */
   width: 95vw;
   border-radius: 20px;
@@ -2718,6 +2719,7 @@ border-radius: 20px;
   overflow-x: hidden;
   overscroll-behavior: contain;
   min-height: 100%;
+  
 
   
 
@@ -2756,6 +2758,7 @@ border-radius: 20px;
   z-index:96;
  top:0;
   overflow: scroll;
+  overscroll-behavior: contain;
   
 
  

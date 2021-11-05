@@ -14,7 +14,7 @@ import Celebrate from "../images/celebrateImage.png";
 import Fast_geschafft from "../images/headlines/Fast_geschafft.png";
 
 //COMPONENT
-import LoginPure from "../components/atoms/Auth/LoginPure";
+import LoginRegistration from "../components/atoms/Auth/LoginRegistration";
 
 //MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -79,7 +79,7 @@ const Verification = ({ classes }) => {
           </div>
 
           <button className="buttonWide buttonVerify">
-            Zur Anmeldung <LoginPure />
+            Zur Anmeldung <LoginRegistration />
           </button>
 
           <img src={Celebrate} className="CelebrateVerify" alt="EndImage" />

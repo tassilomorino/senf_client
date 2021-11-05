@@ -10,22 +10,18 @@ import { SubmitButton } from "../CustomButtons/SubmitButton";
 const LoginFormComponent = ({
   loading,
   classes,
-  email,
-  password,
-
-  errors,
   errorMessage,
   handleToggle,
   handleSubmitLogin,
-  setEmail,
-  setPassword,
+  formik,
 }) => {
   const { t } = useTranslation();
+
   return (
     <React.Fragment>
       <div className={classes.textfields}>
         <div className={classes.smallText} onClick={() => handleToggle()}>
-          {t('notYetMember')} <span className="Terms">{t('register')}</span>
+          {t("notYetMember")} <span className="Terms">{t("register")}</span>
         </div>
         <TextField
           id="outlined-name"
@@ -36,26 +32,28 @@ const LoginFormComponent = ({
           variant="outlined"
           className={classes.textField}
           data-cy="login-email"
-          // helperText={errors.email}
-          error={errors?.email ? true : false}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          error={formik.values.email !== "" && Boolean(formik.errors.email)}
+          helperText={formik.values.email !== "" && formik.errors.email}
         ></TextField>
 
         <TextField
           id="outlined-password-input"
           name="password"
-          label={t('password')}
+          label={t("password")}
           type="password"
           autoComplete="current-password"
           margin="normal"
           variant="outlined"
           className={classes.textField}
           data-cy="login-password"
-          // helperText={errors.password}
-          error={errors?.password ? true : false}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          error={
+            formik.values.password !== "" && Boolean(formik.errors.password)
+          }
+          helperText={formik.values.password !== "" && formik.errors.password}
         ></TextField>
 
         <br />
@@ -84,17 +82,17 @@ const LoginFormComponent = ({
         left="0"
         loading={loading}
         handleButtonClick={handleSubmitLogin}
-        disabled={loading}
+        disabled={loading || !formik.isValid}
       />
 
-      <div
+      {/* <div
         className={
           isAndroid ? classes.smallText_fixed_android : classes.smallText_fixed
         }
         onClick={() => handleToggle()}
       >
         {t('notYetMember')} <span className="Terms">{t('register')}</span>
-      </div>
+      </div> */}
     </React.Fragment>
   );
 };

@@ -253,8 +253,10 @@ class ResetPassword extends Component {
 
     return (
       <Fragment>
+
         <div className={classes.forgot} onClick={() => this.handleOpen()}>
           <span className="Terms">{this.props.t("forgotPassword")}</span>
+
         </div>
         <Dialog
           open={this.state.open}
