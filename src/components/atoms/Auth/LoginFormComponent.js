@@ -10,17 +10,13 @@ import { SubmitButton } from "../CustomButtons/SubmitButton";
 const LoginFormComponent = ({
   loading,
   classes,
-  email,
-  password,
-
-  errors,
   errorMessage,
   handleToggle,
   handleSubmitLogin,
-  setEmail,
-  setPassword,
+  formik
 }) => {
   const { t } = useTranslation();
+  
   return (
     <React.Fragment>
       <div className={classes.textfields}>
@@ -36,10 +32,11 @@ const LoginFormComponent = ({
           variant="outlined"
           className={classes.textField}
           data-cy="login-email"
-          // helperText={errors.email}
-          error={errors?.email ? true : false}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          error={formik.values.email !=='' &&Boolean(formik.errors.email)}
+          helperText={formik.values.email !==''&&formik.errors.email}
+          
         ></TextField>
 
         <TextField
@@ -52,10 +49,10 @@ const LoginFormComponent = ({
           variant="outlined"
           className={classes.textField}
           data-cy="login-password"
-          // helperText={errors.password}
-          error={errors?.password ? true : false}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          error={formik.values.password !=='' && Boolean(formik.errors.password)}
+          helperText={formik.values.password !==''&&formik.errors.password}
         ></TextField>
 
         <br />
@@ -84,7 +81,7 @@ const LoginFormComponent = ({
         left="0"
         loading={loading}
         handleButtonClick={handleSubmitLogin}
-        disabled={loading}
+        disabled={loading || !formik.isValid}
       />
 
       <div

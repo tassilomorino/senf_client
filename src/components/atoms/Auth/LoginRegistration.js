@@ -2,10 +2,12 @@
 
 import React, { useState, Fragment } from "react";
 import { useDispatch } from "react-redux";
+import { SET_AUTHENTICATED } from "../../../redux/types";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { useHistory } from "react-router";
-
+import { useFormik } from "formik";
+import * as yup from "yup";
 import PropTypes from "prop-types";
 import Swipe from "react-easy-swipe";
 
@@ -23,6 +25,7 @@ import Slide from "@material-ui/core/Slide";
 import RegistrationFormComponent from "./RegistrationFormComponent";
 import LoginFormComponent from "./LoginFormComponent";
 import { CustomIconButton } from "../CustomButtons/CustomButton";
+import { useTranslation } from "react-i18next";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -144,6 +147,7 @@ const styles = {
     zIndex: "999",
     maxWidth: "600px",
     textAlign: "center",
+    cursor: "pointer",
   },
 
   smallText_fixed: {
@@ -154,12 +158,14 @@ const styles = {
     zIndex: "999",
     maxWidth: "600px",
     textAlign: "center",
+    cursor: "pointer",
   },
 
   smallText_fixed_android: {
     width: "100%",
     fontSize: "14pt",
-    position: "relative",
+    position: "fixed",
+    bottom: "40px",
     marginTop: "20px",
     zIndex: "999",
     maxWidth: "600px",
@@ -214,41 +220,89 @@ const styles = {
 const LoginRegistration = ({ classes }) => {
   const [open, setOpen] = useState(false);
   const [toggleSignup, setToggleSignup] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [handle, setHandle] = useState("");
-
-  const [age, setAge] = useState("");
-  const [sex, setSex] = useState("");
-
-  const [errors, setErrors] = useState({
-    email: false,
-    middleName: false,
-    lastName: false,
-  });
-
-  const [errorMessage, setErrorMessage] = useState(null);
-
+  const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
   const history = useHistory();
-
+  const { t } = useTranslation();
   // componentWillReceiveProps(nextProps) {
   //   if (nextProps.UI.errors) {
   //     setState({ errors: nextProps.UI.errors });
   //   }
   // }
 
+  const loginValidationSchema = yup.object({
+    email: yup
+      .string()
+      .required(t("enter_email"))
+      .email(t("enter_valid_email")),
+
+    password: yup.string().required(t("enter_password")),
+  });
+  const registerValidationSchema = yup.object({
+    email: yup
+      .string()
+      .required(t("enter_email"))
+      .email(t("enter_valid_email")),
+
+    password: yup
+      .string()
+      .required(t("enter_password"))
+      .min(8, t("password_8characters"))
+      .matches(/\d+/, t("password_with_number")),
+
+    confirmPassword: yup
+      .string()
+      .required(t("confirmPassword"))
+      .oneOf([yup.ref("password"), null], t("passwords_must_match")),
+    username: yup
+      .string()
+      .required(t("enter_username"))
+      .min(3, t("username_too_short"))
+      .max(20, t("username_too_long"))
+      .matches(/^\S*$/, t("spaces_username"))
+      .matches(/^[a-zA-Z0-9\-\_\.]*$/, t("username_latin_only")),
+  });
+
+  const formikLoginStore = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: loginValidationSchema,
+    isInitialValid: false,
+  });
+
+  const formikRegisterStore = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+      username: "",
+      age: "",
+      sex: "",
+    },
+    validationSchema: registerValidationSchema,
+    isInitialValid: false,
+    validateOnChange: true,
+    validateOnBlur: true,
+  });
+
   const handleSubmitLogin = async (event) => {
     event.preventDefault();
+
     setLoading(true);
     const userInfo = await firebase
       .auth()
-      .signInWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(
+        formikLoginStore.values.email,
+        formikLoginStore.values.password
+      )
       .then(() => {
         setLoading(false);
+        dispatch({ type: SET_AUTHENTICATED });
+        history.push("/");
       })
       .catch((err) => {
         setLoading(false);
@@ -261,39 +315,43 @@ const LoginRegistration = ({ classes }) => {
   const handleSubmitRegister = async (event) => {
     event.preventDefault();
 
-    if (email.trim() === "") {
-      setErrors({
-        ...errors,
-        email: true,
-      });
-      setErrorMessage("Email is required");
-      return;
-    }
+    const db = firebase.firestore();
+    const usersRef = db.collection("users");
+    usersRef
+      .where("handle", "==", formikRegisterStore.values.username)
+      .get()
+      .then((snapshot) => {
+        if (snapshot.empty) {
+          return firebase
+            .auth()
+            .createUserWithEmailAndPassword(
+              formikRegisterStore.values.email,
+              formikRegisterStore.values.password
+            );
+        } else {
+          throw new Error(t("username_taken"));
+        }
+      })
 
-    const userInfo = await firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
       .then(async (userCredential) => {
-        const db = firebase.firestore();
-
         if (userCredential) {
           await db.collection("users").doc(userCredential.user.uid).set({
-            handle: handle,
-            email: email,
-            age: age,
-            sex: sex,
+            handle: formikRegisterStore.values.username,
+            email: formikRegisterStore.values.email,
+            age: formikRegisterStore.values.age,
+            sex: formikRegisterStore.values.sex,
             createdAt: new Date().toISOString(),
             userId: userCredential.user.uid,
           });
         }
       })
       .then(async () => {
-        var user = firebase.auth().currentUser;
+        const user = firebase.auth().currentUser;
         await user.sendEmailVerification();
       })
       .then(async () => {
         const emailWrapper = {
-          email: email,
+          email: formikRegisterStore.values.email,
         };
         history.push("/verify", emailWrapper);
       })
@@ -304,6 +362,7 @@ const LoginRegistration = ({ classes }) => {
 
   const handleToggle = () => {
     setToggleSignup(!toggleSignup);
+    setErrorMessage("");
   };
 
   const onSwipeMove = (position) => {
@@ -323,7 +382,6 @@ const LoginRegistration = ({ classes }) => {
       ></ExpandButton>
       <Dialog
         open={open}
-        onClose={() => setOpen(false)}
         width="md"
         BackdropProps={{ classes: { root: classes.root } }}
         PaperProps={{ classes: { root: classes.paper } }}
@@ -347,35 +405,19 @@ const LoginRegistration = ({ classes }) => {
             <LoginFormComponent
               classes={classes}
               loading={loading}
-              errors={errors}
               errorMessage={errorMessage}
               handleToggle={handleToggle}
               handleSubmitLogin={handleSubmitLogin}
-              setEmail={setEmail}
-              setPassword={setPassword}
-              email={email}
-              password={password}
+              formik={formikLoginStore}
             />
           ) : (
             <RegistrationFormComponent
               classes={classes}
               loading={loading}
-              errors={errors}
               errorMessage={errorMessage}
               handleToggle={handleToggle}
               handleSubmitRegister={handleSubmitRegister}
-              setEmail={setEmail}
-              setPassword={setPassword}
-              setConfirmPassword={setConfirmPassword}
-              setHandle={setHandle}
-              setAge={setAge}
-              setSex={setSex}
-              email={email}
-              password={password}
-              confirmPassword={confirmPassword}
-              handle={handle}
-              age={age}
-              sex={sex}
+              formik={formikRegisterStore}
             />
           )}
         </Swipe>

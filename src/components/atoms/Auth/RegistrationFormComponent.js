@@ -16,22 +16,10 @@ import { SubmitButton } from "../CustomButtons/SubmitButton";
 const RegistrationFormComponent = ({
   loading,
   classes,
-  email,
-  password,
-  confirmPassword,
-  handle,
-  age,
-  sex,
-  errors,
   errorMessage,
   handleToggle,
   handleSubmitRegister,
-  setEmail,
-  setPassword,
-  setConfirmPassword,
-  setHandle,
-  setAge,
-  setSex,
+  formik
 }) => {
   const { t } = useTranslation();
 
@@ -52,10 +40,11 @@ const RegistrationFormComponent = ({
           margin="dense"
           variant="outlined"
           className={classes.textField}
-          // helperText={errors.email}
-          error={errors?.email ? true : false}
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
+          helperText={formik.values.email!==''&& formik.errors.email}
+          error={formik.values.email!==''&& Boolean(formik.errors.email)}
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
           fullWidth
         ></TextField>
         <TextField
@@ -66,10 +55,11 @@ const RegistrationFormComponent = ({
           margin="dense"
           variant="outlined"
           className={classes.textField}
-          // helperText={errors.password}
-          error={errors?.password ? true : false}
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
+          helperText={formik.values.password!==''&&formik.errors.password}
+          error={formik.values.password!==''&&  Boolean(formik.errors.password)}
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
           fullWidth
         ></TextField>
         <TextField
@@ -79,34 +69,36 @@ const RegistrationFormComponent = ({
           label={t('confirmPassword')}
           margin="dense"
           variant="outlined"
-          className={
-            password === "" ? classes.textField_hide : classes.textField
-          }
-          // helperText={errors.confirmPassword}
-          error={errors?.confirmPassword ? true : false}
-          value={confirmPassword}
-          onChange={(event) => setConfirmPassword(event.target.value)}
+          className={classes.textField}
+          helperText={formik.values.confirmPassword!==''&& formik.errors.confirmPassword}
+          error={ formik.values.confirmPassword!=='' &&Boolean(formik.errors.confirmPassword)}
+          value={formik.values.confirmPassword}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
           fullWidth
         ></TextField>
         <TextField
           id="handle"
-          name="handle"
+          name="username"
           type="text"
           label={t('username')}
           margin="dense"
           variant="outlined"
-          className={classes.textField}
-          // helperText={errors.handle}
-          error={errors?.handle ? true : false}
-          value={handle}
-          onChange={(event) => setHandle(event.target.value)}
+          className={
+            formik.values.confirmPassword === "" ? classes.textField_hide : classes.textField
+          }
+          helperText={formik.values.username!==''&& formik.errors.username}
+          error={formik.values.username!==''&& Boolean(formik.errors.username)}
+          value={formik.values.username}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
           fullWidth
         ></TextField>
 
         <FormControl
           variant="outlined"
           className={
-            handle === "" ? classes.textFieldAge_hide : classes.textFieldAge
+            formik.values.username === "" ? classes.textFieldAge_hide : classes.textFieldAge
           }
         >
           <InputLabel margin="dense" htmlFor="outlined-age-native-simple">
@@ -115,8 +107,8 @@ const RegistrationFormComponent = ({
           <Select
             native
             margin="dense"
-            value={age}
-            onChange={(event) => setAge(event.target.value)}
+            value={formik.values.age}
+            onChange={formik.handleChange}
             label={t('gender')}
             id="standard-textarea"
             inputProps={{
@@ -235,7 +227,7 @@ const RegistrationFormComponent = ({
         <FormControl
           variant="outlined"
           className={
-            handle === "" ? classes.textFieldSex_hide : classes.textFieldSex
+            formik.values.username === "" ? classes.textFieldSex_hide : classes.textFieldSex
           }
         >
           <InputLabel margin="dense" htmlFor="outlined-age-native-simple">
@@ -244,8 +236,8 @@ const RegistrationFormComponent = ({
           <Select
             native
             margin="dense"
-            value={sex}
-            onChange={(event) => setSex(event.target.value)}
+            value={formik.values.sex}
+            onChange={formik.handleChange}
             label= {t('gender')}
             id="standard-textarea"
             inputProps={{
@@ -288,7 +280,7 @@ const RegistrationFormComponent = ({
         left="0"
         loading={loading}
         handleButtonClick={handleSubmitRegister}
-        disabled={loading}
+        disabled={loading || !formik.isValid}
       />
       <div
         className={
