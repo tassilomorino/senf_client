@@ -39,14 +39,11 @@ const Img = styled.img`
   justify-content: center;
   text-align: center;
   pointer-events: none;
-
-  &:hover {
-    opacity: 0.8;
-  }
 `;
 
 const PostScreamMap = ({
   _onMarkerDragEnd,
+  geocode,
   geoData,
   viewport,
   clicked,
@@ -147,6 +144,11 @@ const PostScreamMap = ({
           <GeolocateControl
             positionOptions={{ enableHighAccuracy: true }}
             showUserLocation={false}
+            onGeolocate={() => {
+              setTimeout(() => {
+                geocode(viewport);
+              }, 1500);
+            }}
           ></GeolocateControl>
           <Img
             show={locationDecided === false}

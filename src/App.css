@@ -870,7 +870,7 @@ button:disabled {
   margin-right: auto;
 
   /* height: calc((var(--vh, 1vh) * 70) - 70px);  */
-  height: 450px;
+  height: 400px;
   /* height:calc(80vh - 70px); */
   width: 95%;
   border-radius: 20px;
@@ -994,6 +994,8 @@ input:focus {
   border-radius: 5px;
   width: 95vw;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
+  font-family: Futura PT W01 Book;
+  font-size: 12pt;
 }
 
 .react-geocoder-item {
@@ -1013,6 +1015,8 @@ input:focus {
 }
 
 .pinLocationHeader {
+  font-family: Futura PT W01 Book;
+  font-size: 12pt;
   z-index: 9999;
   position: fixed;
   top: 2.5%;
