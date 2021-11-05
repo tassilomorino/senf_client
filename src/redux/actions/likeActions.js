@@ -74,14 +74,6 @@ export const likeScream = (screamId, user) => async (dispatch) => {
 };
 // Unlike an idea
 export const unlikeScream = (screamId, user) => async (dispatch) => {
-  dispatch({
-    type: VOTED_TRUE,
-  });
-  setTimeout(() => {
-    dispatch({
-      type: VOTED_FALSE,
-    });
-  }, 2000);
   console.log(screamId, user);
   const db = firebase.firestore();
   const screamDocument = db.collection("screams").doc(screamId);

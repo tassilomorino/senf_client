@@ -1,7 +1,8 @@
 /** @format */
 
 import React, { Component } from "react";
-import Logo from "../../../images/logo.png";
+import LogoImg from "../../../images/logo.png";
+import { Logo, Tabs } from "./styles/sharedStyles";
 
 import LoginRegistration from "../../atoms/Auth/LoginRegistration";
 
@@ -16,65 +17,35 @@ import Noprofile from "../../../images/noprofile.png";
 import Arrow from "../../../images/icons/arrow_yellow.png";
 
 import TopicFilter from "../../atoms/Filters/TopicFilter";
+import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
 export class MonitoringDesktopSidebar extends Component {
   render() {
-    const {
-      authenticated,
-
-      order,
-      handleClick,
-      handleTopicSelector,
-      topicsSelected,
-    } = this.props;
+    const { handleTopicSelector, topicsSelected } = this.props;
     //
-
-    const sign = !authenticated ? (
-      <div className="profile">
-        <LoginRegistration />
-        <img
-          src={Noprofile}
-          width="35"
-          alt="EndImage"
-          style={{ paddingRight: "10px" }}
-        />
-        Anmelden
-      </div>
-    ) : null;
 
     return (
       <div className="sideBar">
-        <h1 className="logoWeb">
-          <img src={Logo} width="100px"></img>
-        </h1>
-        <div className="profile" onClick={() => handleClick(3)}>
-          {/* <Insights /> */}
-          <div style={{ width: "45px" }}>
-            <img
-              src={order === 3 ? Arrow : Arrow}
-              width="25"
-              alt="EndImage"
-              style={{
-                paddingRight: "10px",
-                transform: "rotate(90deg) translateX(5px)",
-              }}
-            />
-          </div>
-          Zur Startseite
-        </div>
-
-        {sign}
-
-        <div className="profile" onClick={() => handleClick(3)}>
-          {/* <Insights /> */}
-          <img
-            src={order === 3 ? Insights_grey : Insights_yellow}
-            width="35"
-            alt="EndImage"
-            style={{ paddingRight: "10px" }}
+        <Logo>
+          <img src={LogoImg} width="100px" alt="logoWeb"></img>
+        </Logo>
+        <Tabs>
+          <ExpandButton
+            handleButtonClick={() => window.open("/")}
+            dataCy="profile-button"
           />
-          Insights
-        </div>
+          <img
+            src={Arrow}
+            width="25"
+            alt="EndImage"
+            style={{
+              paddingRight: "10px",
+              transform: "rotate(90deg) translateX(5px)",
+            }}
+          />
+          Zur Startseite
+          {/* {t("profile")} */}
+        </Tabs>
 
         <div
           style={{

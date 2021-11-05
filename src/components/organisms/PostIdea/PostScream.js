@@ -1,7 +1,6 @@
 /** @format */
 
 import React, { useState, Fragment } from "react";
-import PropTypes from "prop-types";
 import { useHistory } from "react-router";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { useTranslation } from "react-i18next";
@@ -29,14 +28,9 @@ import PostScreamMap from "./PostScreamMap";
 import PostScreamSelectContainter from "./PostScreamSelectContainter";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import styled, { keyframes } from "styled-components";
-import { setMapViewport } from "../../../redux/actions/mapActions";
 import Weblink from "../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
 import Contact from "../../molecules/Modals/Post_Edit_ModalComponents/Contact";
 import InlineDatePicker from "../../molecules/Modals/Post_Edit_ModalComponents/InlineDatePicker";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 const AddbuttonAnimation = keyframes`
      0% {
@@ -215,7 +209,6 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
     longitude: 6.958725744885521,
     zoom: 12,
     transitionDuration: 1000,
-    pitch: 0,
   });
 
   const [addressBarClickedState, setAddressBarClickedState] = useState(false);
@@ -399,6 +392,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
 
   const _onMarkerDragEnd = (newViewport) => {
     setViewport(newViewport);
+    geocode(newViewport);
 
     setAddressBarClickedState(false);
   };
@@ -526,7 +520,6 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
       <Dialog
         open={open}
         onClose={handleClose}
-        TransitionComponent={Transition}
         fullScreen
         BackdropProps={{ classes: { root: classes.root } }}
         PaperProps={{ classes: { root: classes.paper } }}

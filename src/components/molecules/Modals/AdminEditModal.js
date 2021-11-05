@@ -1,12 +1,12 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router";
 import withStyles from "@material-ui/core/styles/withStyles";
 // MUI Stuff
 import Button from "@material-ui/core/Button";
-
-// REDUX Stuff
-import { useSelector, useDispatch } from "react-redux";
 
 import {
   editScreamFunc,
@@ -18,8 +18,7 @@ import Contact from "./Post_Edit_ModalComponents/Contact";
 import InlineDatePicker from "./Post_Edit_ModalComponents/InlineDatePicker";
 
 import MainModal from "./MainModal";
-import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router";
+
 import EditModalMainFields from "./Post_Edit_ModalComponents/EditModalMainFields";
 import Tabs from "../../atoms/Tabs/Tabs";
 import { EditScreamTabData } from "../../../data/EditScreamTabData";

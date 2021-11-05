@@ -2,6 +2,7 @@
 
 import firebase from "firebase/app";
 import "firebase/firestore";
+import setColorByTopic from "../../data/setColorByTopic";
 import {
   LOADING_DATA,
   LOADING_UI,
@@ -24,6 +25,7 @@ export const getAllFullScreams = () => async (dispatch) => {
     const docData = {
       screamId: doc.id,
       ...doc.data(),
+      color: setColorByTopic(doc.data().Thema),
     };
 
     screams.push(docData);

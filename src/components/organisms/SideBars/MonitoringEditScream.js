@@ -1,26 +1,17 @@
 /** @format */
-
-import React, { Component, Fragment } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router";
 import withStyles from "@material-ui/core/styles/withStyles";
-import PropTypes from "prop-types";
 
 // MUI Stuff
 import Button from "@material-ui/core/Button";
-
-// REDUX Stuff
-import { connect } from "react-redux";
-
-import { TextField } from "@material-ui/core";
 
 import {
   editScreamFunc,
   getUserEmail,
 } from "../../../redux/actions/screamActions";
-import { closeMonitoringScream } from "../../../redux/actions/monitoringScreamActions";
-
-import L from "leaflet";
-
-import _ from "lodash";
 
 import contactIcon from "../../../images/icons/mail.png";
 import menuIcon from "../../../images/icons/menu.png";
@@ -29,15 +20,12 @@ import weblinkIcon from "../../../images/icons/weblink.png";
 
 import downloadIcon from "../../../images/icons/file.png";
 
-import Geocoder from "react-mapbox-gl-geocoder";
-
-import Weblink from "../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
-import Contact from "../../molecules/Modals/Post_Edit_ModalComponents/Contact";
-import InlineDatePicker from "../../molecules/Modals/Post_Edit_ModalComponents/InlineDatePicker";
 import ToggleDisplay from "react-toggle-display";
 import Tabs from "../../atoms/Tabs/Tabs";
 import { EditScreamTabData } from "../../../data/EditScreamTabData";
-import Select from "../../atoms/Selects/Select";
+import setColorByTopic from "../../../data/setColorByTopic";
+import EditModalMainFields from "../../molecules/Modals/Post_Edit_ModalComponents/EditModalMainFields";
+import AdminEditModalMainFields from "../../molecules/Modals/Post_Edit_ModalComponents/AdminEditModalMainFields";
 
 const styles = {
   root: {
@@ -70,727 +58,405 @@ const styles = {
   },
 };
 
-class MonitoringEditScream extends Component {
-  state = {
-    open: false,
-    order: 1,
-    errors: {},
+const MonitoringEditScream = ({
+  monitoringEditOpen,
+  setMonitoringEditOpen,
+  classes,
+}) => {
+  const { t } = useTranslation();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const loadingIdea = useSelector((state) => state.data.loadingIdea);
+  const [order, setOrder] = useState(1);
+  const [status, setStatus] = useState("");
+  const [notes, setNotes] = useState("");
 
-    openWeblink: false,
-    weblinkTitle: null,
-    weblink: null,
+  const [address, setAddress] = useState("Ohne Ortsangabe");
+  const [neighborhood, setNeighborhood] = useState("Ohne Ortsangabe");
+  const [fulladdress, setFulladdress] = useState("Ohne Ortsangabe");
 
-    openContact: false,
-    contactTitle: null,
-    contact: null,
+  const projects = useSelector((state) => state.data.projects);
+  const scream = useSelector((state) => state.data.scream);
+  const [checkIfCalendar, setCheckIfCalendar] = useState(false);
 
-    openCalendar: false,
-    selectedDays: [],
-    selectedUnix: [],
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [topic, setTopic] = useState("");
+  const [project, setProject] = useState("");
 
-    notes: null,
-  };
+  const [weblinkOpen, setWeblinkOpen] = useState(false);
+  const [weblink, setWeblink] = useState(null);
+  const [weblinkTitle, setWeblinkTitle] = useState(null);
 
-  componentDidMount() {
-    this.handleOpen();
-  }
-  // componentWillReceiveProps() {
-  //   this.handleOpen();
-  // }
-  // componentDidCatch(prevProps, nextProps, snapshot) {
-  //   alert("hi");
-  //   // if (
-  //   //   prevProps.openMonitoringScream === false &&
-  //   //   this.props.UI.openMonitoringScream === true
-  //   // ) {
-  //   //   this.handleOpen();
-  //   // }
-  // }
+  const [contactOpen, setContactOpen] = useState(false);
+  const [contact, setContact] = useState(null);
+  const [contactTitle, setContactTitle] = useState(null);
 
-  handleOpen = () => {
-    this.props.getUserEmail(this.props.scream.userId);
+  const [calendarOpen, setCalendarOpen] = useState(false);
+  const [selectedDays, setSelectedDays] = useState([]);
+  const [selectedUnix, setSelectedUnix] = useState([]);
 
-    this.setState({
-      open: true,
-      title: this.props.scream.title,
-      body: this.props.scream.body,
-      project: this.props.scream.project,
-      topic: this.props.scream.Thema,
-      locationHeader: this.props.scream.locationHeader,
-      district: this.props.scream.district,
-      lat: this.props.scream.lat,
-      long: this.props.scream.long,
-      viewport: {
-        latitude: this.props.scream.lat,
-        longitude: this.props.scream.long,
-      },
-      status: this.props.scream.status,
-      notes: this.props.scream.notes,
+  const [viewport, setViewport] = useState({
+    latitude: 50.93864020643174,
+    longitude: 6.958725744885521,
+    zoom: 12,
+    transitionDuration: 1000,
+    pitch: 0,
+  });
+
+  useEffect(() => {
+    console.log(scream);
+    dispatch(getUserEmail(scream.userId));
+    setBody(scream.body);
+    setTitle(scream.title);
+    setTopic(scream.Thema);
+    setProject(scream.project);
+    setViewport({ latitude: scream.lat, longitude: scream.long });
+
+    setNeighborhood(scream.Stadtteil);
+    setAddress(scream.locationHeader);
+    setFulladdress(scream.district);
+    setStatus(scream.status);
+
+    projects.forEach((element) => {
+      if (scream.project === element.project) {
+        setCheckIfCalendar(element.calendar);
+      }
+      if (scream.project === "") {
+        setCheckIfCalendar(false);
+      }
     });
 
-    if (this.props.scream.project === undefined) {
-      this.setState({
-        project: "",
-      });
+    if (scream.notes) {
+      setNotes(scream.notes);
+    }
+    if (scream.weblink) {
+      setWeblink(scream.weblink);
+      setWeblinkTitle(scream.weblinkTitle);
+    }
+    if (scream.contact) {
+      setContact(scream.contact);
+      setContactTitle(scream.contactTitle);
     }
 
-    if (this.props.scream.weblink) {
-      this.setState({
-        weblink: this.props.scream.weblink,
-        weblinkTitle: this.props.scream.weblinkTitle,
-      });
-    }
-    if (this.props.scream.contact) {
-      this.setState({
-        contact: this.props.scream.contact,
-        contactTitle: this.props.scream.contactTitle,
-      });
-    }
-
-    if (this.props.scream.selectedUnix) {
+    if (scream.selectedUnix) {
       const selectedDays = [];
-      const selectedUnix = this.props.scream.selectedUnix;
+      const selectedUnix = scream.selectedUnix;
       var i;
       for (i = 0; i < selectedUnix.length; i++) {
         selectedDays[i] = new Date(selectedUnix[i] * 1000);
       }
 
-      this.setState({
-        selectedDays: selectedDays,
-        selectedUnix: this.props.scream.selectedUnix,
-      });
+      setSelectedDays(selectedDays);
+      setSelectedUnix(scream.selectedUnix);
     }
-  };
-  handleClose = () => {
-    this.props.closeMonitoringScream();
-  };
+  }, [monitoringEditOpen, scream]);
 
-  handleChange = (event) => {
-    event.preventDefault();
-    this.setState({ [event.target.name]: event.target.value, loading: false });
-
-    console.log(this.state.selectedUnix);
+  const handleDropdown = (value) => {
+    setTopic(value);
   };
 
-  handleChangeCalendar = (selectedDays) => {
+  const handleDropdownProject = (value) => {
+    setProject(value);
+
+    projects.forEach((element) => {
+      if (value === element.project) {
+        setCheckIfCalendar(element.calendar);
+      }
+      if (value === "") {
+        setCheckIfCalendar(false);
+      }
+    });
+  };
+
+  const handleCloseWeblink = () => {
+    setWeblinkOpen(false);
+    setWeblink(null);
+    setWeblinkTitle(null);
+  };
+  const handleSaveWeblink = () => {
+    setWeblinkOpen(false);
+  };
+
+  const handleCloseContact = () => {
+    setContactOpen(false);
+    setContact(null);
+    setContactTitle(null);
+  };
+  const handleSaveContact = () => {
+    setContactOpen(false);
+  };
+
+  const handleChangeCalendar = (selectedDays) => {
     const selectedUnix = [];
     var i;
     for (i = 0; i < selectedDays.length; i++) {
       selectedUnix[i] = selectedDays[i]["unix"];
     }
 
-    this.setState({ selectedDays: selectedDays, selectedUnix: selectedUnix });
+    setSelectedDays(selectedDays);
+    setSelectedUnix(selectedUnix);
   };
 
-  handleDropdown = (event) => {
-    event.preventDefault();
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
+  const handleCloseCalendar = () => {
+    setCalendarOpen(false);
+
+    setSelectedDays([]);
+    setSelectedUnix([]);
+  };
+  const handleSaveCalendar = () => {
+    setCalendarOpen(false);
   };
 
-  handleOpenWeblink = () => {
-    this.setState({
-      openWeblink: true,
-    });
-  };
-  handleCloseWeblink = () => {
-    this.setState({
-      openWeblink: false,
-      weblink: null,
-      weblinkTitle: null,
-    });
-  };
-  handleSaveWeblink = () => {
-    this.setState({
-      openWeblink: false,
-    });
-  };
-
-  handleOpenContact = () => {
-    this.setState({
-      openContact: true,
-    });
-  };
-  handleCloseContact = () => {
-    this.setState({
-      openContact: false,
-      contact: null,
-      contactTitle: null,
-    });
-  };
-  handleSaveContact = () => {
-    this.setState({
-      openContact: false,
-    });
-  };
-
-  handleOpenCalendar = () => {
-    this.setState({
-      openCalendar: true,
-    });
-    console.log(this.state.selectedDays);
-  };
-  handleCloseCalendar = () => {
-    this.setState({
-      openCalendar: false,
-      // weblink: "",
-      // weblinkTitle: "",
-    });
-  };
-  handleSaveCalendar = () => {
-    this.setState({
-      openCalendar: false,
-    });
-  };
-
-  onSelected = (viewport, item) => {
-    this.setState({ viewport });
+  const onSelected = (newViewport) => {
     setTimeout(() => {
-      this._onMarkerDragEnd();
-    }, 10);
+      geocode(newViewport);
+      setViewport(newViewport);
+    }, 1000);
   };
 
-  _onMarkerDragEnd = (event) => {
-    this.setState({
-      longitude: this.state.viewport.longitude,
-      latitude: this.state.viewport.latitude,
-      long: this.state.viewport.longitude,
-      lat: this.state.viewport.latitude,
+  const geocode = (viewport) => {
+    const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+    const geocodingClient = mbxGeocoding({
+      accessToken: process.env.REACT_APP_MAPBOX_ACCESS_TOKEN,
     });
+    geocodingClient
+      .reverseGeocode({
+        query: [viewport.longitude, viewport.latitude],
+        limit: 1,
+      })
+      .send()
+      .then((response) => {
+        const match = response.body;
+        console.log("Gesamt", match.features[0]);
+        console.log(
+          "Adresse",
+          match.features[0].text,
+          match.features[0].address
+        );
+        console.log("Stadtteil", match.features[0].context[1].text);
 
-    const geocoder = L.Control.Geocoder.nominatim();
+        const houseNumber =
+          match.features[0].address !== undefined
+            ? match.features[0].address
+            : "";
 
-    geocoder.reverse(
-      { lat: this.state.viewport.latitude, lng: this.state.viewport.longitude },
-      12,
-      (results) => {
-        var r = results[0];
-        var split = r.html.split("<br/>");
-        var address = split[0];
-        this.setState({
-          locationHeader: address,
-          address: address,
-          district: r.name,
-        });
-      }
-    );
-
-    if (
-      this.state.viewport.latitude > 51.08 ||
-      this.state.viewport.latitude < 50.79 ||
-      this.state.viewport.longitude < 6.712 ||
-      this.state.viewport.longitude > 7.17
-    ) {
-      alert("Außerhalb von Köln kannst du leider noch keine Ideen teilen.");
-      this.setState({
-        Out: true,
+        setNeighborhood(match.features[0].context[1].text);
+        setAddress(match.features[0].text + " " + houseNumber);
+        setFulladdress(match.features[0].place_name);
       });
-    } else {
-      this.setState({
-        Out: false,
-      });
-    }
   };
 
-  editScream = () => {
-    console.log(this.state);
-
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(address, neighborhood);
     const editScream = {
-      screamId: this.props.scream.screamId,
-      title: this.state.title,
-      body: this.state.body,
-
-      project: this.state.project,
-      Thema: this.state.topic,
-      locationHeader: this.state.locationHeader,
-      district: this.state.district,
-      lat: this.state.lat,
-      long: this.state.long,
-
-      weblinkTitle: this.state.weblinkTitle,
-      weblink: this.state.weblink,
-
-      contactTitle: this.state.contactTitle,
-      contact: this.state.contact,
-
-      status: this.state.status,
-      notes: this.state.notes,
+      screamId: scream.screamId,
+      body,
+      title,
+      locationHeader: address,
+      district: fulladdress,
+      Stadtteil: neighborhood,
+      lat: viewport.latitude,
+      long: viewport.longitude,
+      project,
+      Thema: topic,
+      weblinkTitle,
+      weblink,
+      contactTitle,
+      contact,
+      status,
+      notes,
     };
 
-    console.log(this.state.selectedUnix);
-    if (this.state.selectedUnix[0] === undefined) {
+    if (selectedUnix[0] === undefined) {
       editScream.selectedUnix = null;
     } else {
-      editScream.selectedUnix = this.state.selectedUnix;
+      editScream.selectedUnix = selectedUnix;
     }
 
-    // this.props.editScream(editScream, this.props.history);
+    dispatch(editScreamFunc(editScream, history)).then(() => {});
   };
 
-  handleClick = (order) => {
-    this.setState({
-      order,
-    });
-  };
-
-  render() {
-    const { projects, loadingProjects } = this.props.data;
-
-    const {
-      classes,
-      scream: { Stadtteil, title, Thema },
-      UI: { loading },
-    } = this.props;
-    const { viewport, errors } = this.state;
-
-    const queryParams = {
-      bbox: [6.7, 50.8, 7.2, 51],
-    };
-
-    const projectsArray =
-      this.props.UI.openMonitoringScream && !loadingProjects ? (
-        <>
-          {_.orderBy(projects, "createdAt", "desc").map((projects) => (
-            <option value={projects.project} className={classes.formText}>
-              + {projects.title}
-            </option>
-          ))}
-        </>
-      ) : null;
-
-    const topicsArray = (
-      <>
-        <option value={"Inklusion / Soziales"} className={classes.formText}>
-          Inklusion / Soziales
-        </option>
-        <option value={"Rad"} className={classes.formText}>
-          Rad
-        </option>
-        <option value={"Sport / Freizeit"} className={classes.formText}>
-          Sport / Freizeit
-        </option>
-        <option value={"Umwelt und Grün"} className={classes.formText}>
-          Umwelt und Grün
-        </option>
-        <option value={"Verkehr"} className={classes.formText}>
-          Verkehr
-        </option>
-        <option value={"Versorgung"} className={classes.formText}>
-          Versorgung
-        </option>
-        <option value={"Sonstige"} className={classes.formText}>
-          Sonstige
-        </option>
-      </>
-    );
-
-    const statusArray = (
-      <>
-        <option value={"None"} className={classes.formText}>
-          Offen
-        </option>
-        <option value={"Eingereicht"} className={classes.formText}>
-          Eingereicht
-        </option>
-        <option value={"Bereits umgesetzt"} className={classes.formText}>
-          Bereits umgesetzt
-        </option>
-      </>
-    );
-
-    const MyInput = (props) => (
-      <input
-        {...props}
-        placeholder={this.props.scream.locationHeader}
-        id="geocoder"
-      />
-    );
-
-    const colorNew =
-      Thema === "Rad"
-        ? "#929df6"
-        : Thema === "Verkehr"
-        ? "#91dff4"
-        : Thema === "Umwelt und Grün"
-        ? "#8dd9b8"
-        : Thema === "Sport / Freizeit"
-        ? "#f6c095"
-        : Thema === "Inklusion / Soziales"
-        ? "#e8907e"
-        : Thema === "Versorgung"
-        ? "#bd98f6"
-        : "#f9db95";
-
-    return !loading ? (
-      <Fragment>
-        <ToggleDisplay show={this.props.UI.openMonitoringScream}>
-          <div className="wrapperMonitoringDialog">
+  return !loadingIdea ? (
+    <React.Fragment>
+      <div className="wrapperMonitoringDialog">
+        <div
+          style={{
+            width: "100%",
+            height: "auto",
+            backgroundColor: "#f8f8f8",
+            paddingBottom: "5px",
+          }}
+        >
+          <div style={{ display: "flex" }}>
             <div
               style={{
-                width: "100%",
-                height: "auto",
-                backgroundColor: "#f8f8f8",
-                paddingBottom: "5px",
+                width: "15px",
+                marginTop: "20px",
+                marginLeft: "20px",
+                marginRight: "10px",
               }}
             >
-              <div style={{ display: "flex" }}>
-                <div
-                  style={{
-                    width: "15px",
-                    marginTop: "20px",
-                    marginLeft: "20px",
-                    marginRight: "10px",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "15px",
-                      height: "15px",
-                      borderRadius: "100%",
-                      border: "0.5px white solid",
-                      backgroundColor: colorNew,
-                    }}
-                  />
-                </div>
-
-                <div style={{ width: "110px", marginTop: "20px" }}>
-                  {Stadtteil}
-                </div>
-              </div>
               <div
                 style={{
-                  width: "300px",
-                  margin: "10px",
-                  marginLeft: "20px",
-                  fontFamily: "Futura PT W01-Bold",
-                  fontSize: "20px",
+                  width: "15px",
+                  height: "15px",
+                  borderRadius: "100%",
+                  border: "0.5px white solid",
+                  backgroundColor: setColorByTopic(scream.Thema),
                 }}
-              >
-                {title}{" "}
-              </div>
-              <div
-                style={{
-                  width: "200px",
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  borderRadius: "20px",
-                }}
-              >
-                <div style={{ width: "20px", margin: "10px" }}>
-                  {" "}
-                  <a href={"mailto:hi@gmail.com?subject=" + escape(title)}>
-                    <img
-                      src={weblinkIcon}
-                      style={{ paddingLeft: "15px" }}
-                      width="18"
-                      alt="WeblinkIcon"
-                    />
-                  </a>
-                </div>
-                <div style={{ width: "20px", margin: "10px" }}>
-                  {" "}
-                  <a href={"mailto:hi@gmail.com?subject=" + escape(title)}>
-                    <img
-                      src={downloadIcon}
-                      style={{ paddingLeft: "9px" }}
-                      width="22"
-                      alt="WeblinkIcon"
-                    />
-                  </a>
-                </div>
-                <div style={{ width: "20px", margin: "10px" }}>
-                  {" "}
-                  <a href={"mailto:hi@gmail.com?subject=" + escape(title)}>
-                    <img
-                      src={contactIcon}
-                      style={{ paddingLeft: "9px" }}
-                      width="22"
-                      alt="WeblinkIcon"
-                    />
-                  </a>
-                </div>
-
-                <div style={{ width: "30px", margin: "10px" }}>
-                  {" "}
-                  <a href={"mailto:hi@gmail.com?subject=" + escape(title)}>
-                    <img
-                      src={shareBorderIcon}
-                      style={{ paddingLeft: "9px" }}
-                      width="22"
-                      alt="WeblinkIcon"
-                    />
-                  </a>
-                </div>
-
-                <div style={{ width: "50px", margin: "10px" }}>
-                  {" "}
-                  <img
-                    src={menuIcon}
-                    style={{ paddingTop: "5px" }}
-                    width="30"
-                    alt="WeblinkIcon"
-                  />
-                </div>
-              </div>
-              <Tabs
-                loading={loading}
-                handleClick={this.handleClick}
-                order={this.state.order}
-                tabLabels={EditScreamTabData.map((item) => item.text)}
-                marginTop={"20px"}
-                marginBottom={"20px"}
-                lineColor={"white"}
-              ></Tabs>
+              />
             </div>
 
-            <div className="textFields">
-              <ToggleDisplay show={this.state.order === 1}>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-
-                    fontFamily: "Futura PT W01-Bold",
-                  }}
-                >
-                  <span> Projektraum: </span>
-                  <Select
-                    name={"project"}
-                    value={this.state.project}
-                    initialValue={"Allgemein (Alle Ideen)"}
-                    valuesArray={projectsArray}
-                    handleDropdown={this.handleDropdown}
-                  />
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    fontFamily: "Futura PT W01-Bold",
-                  }}
-                >
-                  <span> Thema:</span>
-
-                  <Select
-                    name={"topic"}
-                    value={this.state.topic}
-                    initialValue={"Wähle ein Thema aus"}
-                    valuesArray={topicsArray}
-                    handleDropdown={this.handleDropdown}
-                  />
-                </div>{" "}
-                <Geocoder
-                  mapboxApiAccessToken={
-                    process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
-                  }
-                  onSelected={this.onSelected}
-                  {...viewport}
-                  hideOnSelect={true}
-                  limit={3}
-                  queryParams={queryParams}
-                  id="geocoder-edit"
-                  className="geocoder-edit"
-                  inputComponent={MyInput}
-                  updateInputOnSelect
-                ></Geocoder>
-                <TextField
-                  id="title"
-                  name="title"
-                  type="text"
-                  label="Titel"
-                  margin="normal"
-                  color="transparent"
-                  variant="outlined"
-                  className="textField"
-                  multiline
-                  rowsMax="2"
-                  error={errors.title ? true : false}
-                  helperText={errors.title}
-                  value={this.state.title}
-                  onChange={this.handleChange}
-                  style={{ marginTop: "5px", marginBottom: "5px" }}
-                ></TextField>
-                <TextField
-                  id="body"
-                  name="body"
-                  type="text"
-                  label="Beschreibung"
-                  margin="normal"
-                  color="transparent"
-                  variant="outlined"
-                  className="textField"
-                  multiline
-                  rowsMax="12"
-                  error={errors.body ? true : false}
-                  helperText={errors.body}
-                  value={this.state.body}
-                  onChange={this.handleChange}
-                  style={{ marginTop: "5px", marginBottom: "5px" }}
-                ></TextField>
-                <div
-                  style={{
-                    bottom: " -70px",
-                    height: "50px",
-                  }}
-                >
-                  <Weblink
-                    openWeblink={this.state.openWeblink}
-                    handleOpenWeblink={this.handleOpenWeblink}
-                    handleCloseWeblink={this.handleCloseWeblink}
-                    handleSaveWeblink={this.handleSaveWeblink}
-                    weblinkTitle={this.state.weblinkTitle}
-                    weblink={this.state.weblink}
-                    handleChange={this.handleChange}
-                  ></Weblink>
-                  <Contact
-                    openContact={this.state.openContact}
-                    handleOpenContact={this.handleOpenContact}
-                    handleCloseContact={this.handleCloseContact}
-                    handleSaveContact={this.handleSaveContact}
-                    contactTitle={this.state.contactTitle}
-                    contact={this.state.contact}
-                    handleChange={this.handleChange}
-                  ></Contact>
-                  <div
-                    style={
-                      this.state.project === "Agora:_Sommer_des_guten_lebens"
-                        ? {}
-                        : { display: "none" }
-                    }
-                  >
-                    <InlineDatePicker
-                      openCalendar={this.state.openCalendar}
-                      handleOpenCalendar={this.handleOpenCalendar}
-                      handleCloseCalendar={this.handleCloseCalendar}
-                      handleSaveCalendar={this.handleSaveCalendar}
-                      handleChange={this.handleChangeCalendar}
-                      selectedDays={this.state.selectedDays}
-                    ></InlineDatePicker>
-                  </div>
-                </div>
-              </ToggleDisplay>
-              <ToggleDisplay show={this.state.order === 2}>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-
-                    fontFamily: "Futura PT W01-Bold",
-                    marginTop: "20px",
-                  }}
-                >
-                  Email:
-                  {this.props.data.scream_user && (
-                    <a
-                      href={"mailto:" + this.props.data.scream_user.email}
-                      style={{
-                        fontFamily: "Futura PT W01 Book",
-                        textDecoration: "underline",
-                      }}
-                    >
-                      {this.props.data.scream_user.email}
-                    </a>
-                  )}
-                </div>{" "}
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    fontFamily: "Futura PT W01-Bold",
-                  }}
-                >
-                  <span> Status:</span>
-                  <Select
-                    name={"status"}
-                    value={this.state.status}
-                    initialValue={false}
-                    valuesArray={statusArray}
-                    handleDropdown={this.handleDropdown}
-                  />
-                </div>{" "}
-                <TextField
-                  id="notes"
-                  name="notes"
-                  type="text"
-                  label="Notizen"
-                  placeholder="Füge Notizen hinzu..."
-                  margin="normal"
-                  color="transparent"
-                  variant="outlined"
-                  className="textField"
-                  multiline
-                  rowsMax="12"
-                  error={errors.body ? true : false}
-                  helperText={errors.body}
-                  value={this.state.notes}
-                  onChange={this.handleChange}
-                  style={{ marginTop: "5px", marginBottom: "5px" }}
-                ></TextField>
-              </ToggleDisplay>
-            </div>
-
-            <div
-              className="buttons"
-              style={{ position: "fixed", bottom: 0, width: "400px" }}
-            >
-              <Button className={classes.button} onClick={this.handleClose}>
-                Abbrechen
-              </Button>
-              <Button
-                className={classes.button}
-                onClick={this.editScream}
-                style={
-                  (this.state.weblink !== null || this.state.weblink !== " ") &&
-                  (this.state.weblinkTitle !== null ||
-                    this.state.weblinkTitle !== " ")
-                    ? {}
-                    : { pointerEvents: "none", opacity: 0.6 }
-                }
-              >
-                Speichern
-              </Button>
+            <div style={{ width: "110px", marginTop: "20px" }}>
+              {scream.Stadtteil}
             </div>
           </div>
-        </ToggleDisplay>
-      </Fragment>
-    ) : null;
-  }
-}
+          <div
+            style={{
+              width: "300px",
+              margin: "10px",
+              marginLeft: "20px",
+              fontFamily: "Futura PT W01-Bold",
+              fontSize: "20px",
+            }}
+          >
+            {title}{" "}
+          </div>
+          <div
+            style={{
+              width: "200px",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              borderRadius: "20px",
+            }}
+          >
+            <div style={{ width: "20px", margin: "10px" }}>
+              {" "}
+              <a href={"mailto:hi@gmail.com?subject=" + escape(title)}>
+                <img
+                  src={weblinkIcon}
+                  style={{ paddingLeft: "15px" }}
+                  width="18"
+                  alt="WeblinkIcon"
+                />
+              </a>
+            </div>
+            <div style={{ width: "20px", margin: "10px" }}>
+              {" "}
+              <a href={"mailto:hi@gmail.com?subject=" + escape(title)}>
+                <img
+                  src={downloadIcon}
+                  style={{ paddingLeft: "9px" }}
+                  width="22"
+                  alt="WeblinkIcon"
+                />
+              </a>
+            </div>
+            <div style={{ width: "20px", margin: "10px" }}>
+              {" "}
+              <a href={"mailto:hi@gmail.com?subject=" + escape(title)}>
+                <img
+                  src={contactIcon}
+                  style={{ paddingLeft: "9px" }}
+                  width="22"
+                  alt="WeblinkIcon"
+                />
+              </a>
+            </div>
 
-MonitoringEditScream.propTypes = {
-  classes: PropTypes.object.isRequired,
-  editScream: PropTypes.func.isRequired,
-  UI: PropTypes.object.isRequired,
+            <div style={{ width: "30px", margin: "10px" }}>
+              {" "}
+              <a href={"mailto:hi@gmail.com?subject=" + escape(title)}>
+                <img
+                  src={shareBorderIcon}
+                  style={{ paddingLeft: "9px" }}
+                  width="22"
+                  alt="WeblinkIcon"
+                />
+              </a>
+            </div>
+
+            <div style={{ width: "50px", margin: "10px" }}>
+              {" "}
+              <img
+                src={menuIcon}
+                style={{ paddingTop: "5px" }}
+                width="30"
+                alt="WeblinkIcon"
+              />
+            </div>
+          </div>
+          <Tabs
+            loading={loadingIdea}
+            handleClick={setOrder}
+            order={order}
+            tabLabels={EditScreamTabData.map((item) => item.text)}
+            marginTop={"20px"}
+            marginBottom={"20px"}
+            lineColor={"white"}
+          ></Tabs>
+        </div>
+
+        {order === 1 ? (
+          <EditModalMainFields
+            project={project}
+            handleDropdownProject={handleDropdownProject}
+            onSelected={onSelected}
+            viewport={viewport}
+            scream={scream}
+            title={title}
+            body={body}
+            topic={topic}
+            setTitle={setTitle}
+            setBody={setBody}
+            handleDropdown={handleDropdown}
+            weblink={weblink}
+            weblinkTitle={weblinkTitle}
+            setWeblinkOpen={setWeblinkOpen}
+            contact={contact}
+            contactTitle={contactTitle}
+            setContactOpen={setContactOpen}
+            checkIfCalendar={checkIfCalendar}
+            selectedDays={selectedDays}
+            setCalendarOpen={setCalendarOpen}
+          />
+        ) : (
+          <AdminEditModalMainFields
+            status={status}
+            setStatus={setStatus}
+            notes={notes}
+            setNotes={setNotes}
+          />
+        )}
+
+        <div className="buttons">
+          <Button
+            className={classes.button}
+            onClick={() => setMonitoringEditOpen(false)}
+          >
+            Abbrechen
+          </Button>
+          <Button
+            className={classes.button}
+            onClick={handleSubmit}
+            style={
+              title === "" || body === ""
+                ? { pointerEvents: "none", opacity: 0.4 }
+                : {}
+            }
+          >
+            Speichern
+          </Button>
+        </div>
+      </div>
+    </React.Fragment>
+  ) : null;
 };
 
-const mapStateToProps = (state) => ({
-  data: state.data,
-  scream: state.data.scream,
-  scream_user: state.data.scream_user,
-
-  UI: state.UI,
-});
-
-const mapActionsToProps = {
-  editScreamFunc,
-  getUserEmail,
-  closeMonitoringScream,
-};
-
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(MonitoringEditScream));
+export default withStyles(styles)(MonitoringEditScream);
 
 // import React, { Component, Fragment } from "react";
 // import PropTypes from "prop-types";

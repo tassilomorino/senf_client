@@ -12,7 +12,7 @@
     transform: translateX(-50%);
     left: 0;
 
-    top: 25vh;
+    top: 30vh;
 
     padding-bottom: 400px;
     display: inline-block;
@@ -985,33 +985,32 @@
     font-size: 3vw;
     color: #ffd388;
     font-family: Playfair Display;
-    width: 25%;
-    left: 35%;
-    text-align: center;
-    position: fixed;
-    top: 15vh;
+    width: 50%;
+    margin-left:50%;
+    transform:translateX(-50%);
+    margin-top: 100px;
     animation: GibAnimation 0.5s;
   }
 
   @keyframes GibAnimation {
     0% {
       opacity: 0;
-      transform: scale(0.7);
+      transform: scale(0.7) translateX(-50%);
     }
 
     10% {
       opacity: 0;
-      transform: scale(0.7);
+      transform: scale(0.7)translateX(-50%);
     }
 
     60% {
       opacity: 1;
-      transform: scale(1.1);
+      transform: scale(1.1) translateX(-50%);
     }
 
     100% {
       opacity: 1;
-      transform: scale(1);
+      transform: scale(1) translateX(-50%);
     }
   }
 

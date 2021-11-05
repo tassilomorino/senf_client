@@ -26,34 +26,45 @@ export const getScreams = () => async (dispatch) => {
   dispatch({ type: LOADING_DATA });
 
   const db = firebase.firestore();
-  const ref = await db.collection("screams").orderBy("createdAt", "desc").get();
+  const ref = await db
+    .collection("screams")
+    .orderBy("createdAt", "desc")
+    .get()
+    .then((ref) => {
+      const screams = [];
+      ref.docs.forEach((doc) => {
+        const docData = {
+          screamId: doc.id,
+          lat: doc.data().lat,
+          long: doc.data().long,
+          title: doc.data().title,
+          body: doc.data().body.substr(0, 120),
+          createdAt: doc.data().createdAt,
+          commentCount: doc.data().commentCount,
+          likeCount: doc.data().likeCount,
+          status: doc.data().status,
+          Thema: doc.data().Thema,
+          Stadtteil: doc.data().Stadtteil,
+          project: doc.data().project,
+          projectId: doc.data().project,
+          color: setColorByTopic(doc.data().Thema),
+        };
 
-  const screams = [];
-  ref.docs.forEach((doc) => {
-    const docData = {
-      screamId: doc.id,
-      lat: doc.data().lat,
-      long: doc.data().long,
-      title: doc.data().title,
-      body: doc.data().body.substr(0, 120),
-      createdAt: doc.data().createdAt,
-      commentCount: doc.data().commentCount,
-      likeCount: doc.data().likeCount,
-      status: doc.data().status,
-      Thema: doc.data().Thema,
-      Stadtteil: doc.data().Stadtteil,
-      project: doc.data().project,
-      projectId: doc.data().project,
-      color: setColorByTopic(doc.data().Thema),
-    };
+        screams.push(docData);
+      });
 
-    screams.push(docData);
-  });
-
-  dispatch({
-    type: SET_SCREAMS,
-    payload: screams,
-  });
+      dispatch({
+        type: SET_SCREAMS,
+        payload: screams,
+      });
+    })
+    .catch((error) => {
+      dispatch({
+        type: SET_ERRORS,
+        payload: { title: "Error occured when loading" },
+      });
+      console.log("Error getting document:", error);
+    });
 };
 
 export const reloadScreams = () => async (dispatch) => {

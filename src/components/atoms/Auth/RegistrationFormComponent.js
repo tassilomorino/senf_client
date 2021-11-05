@@ -19,7 +19,7 @@ const RegistrationFormComponent = ({
   errorMessage,
   handleToggle,
   handleSubmitRegister,
-  formik
+  formik,
 }) => {
   const { t } = useTranslation();
 
@@ -27,9 +27,9 @@ const RegistrationFormComponent = ({
     <form noValidate>
       <div className={classes.textfields}>
         <div className={classes.smallText} onClick={() => handleToggle()}>
-          {t('alreadyMember')}{" "}
+          {t("alreadyMember")}{" "}
           <span className="Terms" data-cy="login">
-          {t('login')}
+            {t("login")}
           </span>
         </div>
         <TextField
@@ -40,8 +40,8 @@ const RegistrationFormComponent = ({
           margin="dense"
           variant="outlined"
           className={classes.textField}
-          helperText={formik.values.email!==''&& formik.errors.email}
-          error={formik.values.email!==''&& Boolean(formik.errors.email)}
+          helperText={formik.values.email !== "" && formik.errors.email}
+          error={formik.values.email !== "" && Boolean(formik.errors.email)}
           value={formik.values.email}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -51,12 +51,14 @@ const RegistrationFormComponent = ({
           id="password"
           name="password"
           type="password"
-          label={t('password')}
+          label={t("password")}
           margin="dense"
           variant="outlined"
           className={classes.textField}
-          helperText={formik.values.password!==''&&formik.errors.password}
-          error={formik.values.password!==''&&  Boolean(formik.errors.password)}
+          helperText={formik.values.password !== "" && formik.errors.password}
+          error={
+            formik.values.password !== "" && Boolean(formik.errors.password)
+          }
           value={formik.values.password}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -66,12 +68,18 @@ const RegistrationFormComponent = ({
           id="confirmPassword"
           name="confirmPassword"
           type="password"
-          label={t('confirmPassword')}
+          label={t("confirmPassword")}
           margin="dense"
           variant="outlined"
           className={classes.textField}
-          helperText={formik.values.confirmPassword!==''&& formik.errors.confirmPassword}
-          error={ formik.values.confirmPassword!=='' &&Boolean(formik.errors.confirmPassword)}
+          helperText={
+            formik.values.confirmPassword !== "" &&
+            formik.errors.confirmPassword
+          }
+          error={
+            formik.values.confirmPassword !== "" &&
+            Boolean(formik.errors.confirmPassword)
+          }
           value={formik.values.confirmPassword}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -81,14 +89,18 @@ const RegistrationFormComponent = ({
           id="handle"
           name="username"
           type="text"
-          label={t('username')}
+          label={t("username")}
           margin="dense"
           variant="outlined"
           className={
-            formik.values.confirmPassword === "" ? classes.textField_hide : classes.textField
+            formik.values.confirmPassword === ""
+              ? classes.textField_hide
+              : classes.textField
           }
-          helperText={formik.values.username!==''&& formik.errors.username}
-          error={formik.values.username!==''&& Boolean(formik.errors.username)}
+          helperText={formik.values.username !== "" && formik.errors.username}
+          error={
+            formik.values.username !== "" && Boolean(formik.errors.username)
+          }
           value={formik.values.username}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -98,18 +110,20 @@ const RegistrationFormComponent = ({
         <FormControl
           variant="outlined"
           className={
-            formik.values.username === "" ? classes.textFieldAge_hide : classes.textFieldAge
+            formik.values.username === ""
+              ? classes.textFieldAge_hide
+              : classes.textFieldAge
           }
         >
           <InputLabel margin="dense" htmlFor="outlined-age-native-simple">
-            {t('birthyear')}
+            {t("birthyear")}
           </InputLabel>
           <Select
             native
             margin="dense"
             value={formik.values.age}
             onChange={formik.handleChange}
-            label={t('gender')}
+            label={t("gender")}
             id="standard-textarea"
             inputProps={{
               name: "age",
@@ -227,18 +241,20 @@ const RegistrationFormComponent = ({
         <FormControl
           variant="outlined"
           className={
-            formik.values.username === "" ? classes.textFieldSex_hide : classes.textFieldSex
+            formik.values.username === ""
+              ? classes.textFieldSex_hide
+              : classes.textFieldSex
           }
         >
           <InputLabel margin="dense" htmlFor="outlined-age-native-simple">
-            {t('gender')}
+            {t("gender")}
           </InputLabel>
           <Select
             native
             margin="dense"
             value={formik.values.sex}
             onChange={formik.handleChange}
-            label= {t('gender')}
+            label={t("gender")}
             id="standard-textarea"
             inputProps={{
               name: "sex",
@@ -246,9 +262,9 @@ const RegistrationFormComponent = ({
             }}
           >
             <option aria-label="None" value="" />
-            <option value={"female"}>{t('female')}</option>
-            <option value={"male"}>{t('male')}</option>
-            <option value={"diverse"}>{t('diverse')}</option>
+            <option value={"female"}>{t("female")}</option>
+            <option value={"male"}>{t("male")}</option>
+            <option value={"diverse"}>{t("diverse")}</option>
           </Select>
         </FormControl>
         {errorMessage && (
@@ -257,16 +273,15 @@ const RegistrationFormComponent = ({
           </Typography>
         )}
         <div className={classes.data}>
-          {t('terms_understood')} &nbsp;
+          {t("terms_understood")} &nbsp;
           <a className="Terms" href="/agb" target="_blank">
-            {t('termsAndConditions')}
+            {t("termsAndConditions")}
           </a>
-          &nbsp; {t('andThe')} &nbsp;
+          &nbsp; {t("andThe")} &nbsp;
           <a className="Terms" href="/datenschutz" target="_blank">
-          {t('dataPrivacy')} 
-            
+            {t("dataPrivacy")}
           </a>
-          &nbsp; {t('terms_agreed')}
+          &nbsp; {t("terms_agreed")}
           {/* Ich bestätige außerdem, dass ich mindestens 18 Jahre alt bin */}
         </div>
       </div>
@@ -282,14 +297,14 @@ const RegistrationFormComponent = ({
         handleButtonClick={handleSubmitRegister}
         disabled={loading || !formik.isValid}
       />
-      <div
+      {/* <div
         className={
           isAndroid ? classes.smallText_fixed_android : classes.smallText_fixed
         }
         onClick={() => handleToggle()}
       >
         {t('alreadyMember')} <span className="Terms"> {t('login')}</span>
-      </div>
+      </div> */}
     </form>
   );
 };

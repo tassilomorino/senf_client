@@ -2,12 +2,8 @@
 
 import React from "react";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-import ReactMapGL, {
-  Marker,
-  Source,
-  Layer,
-  GeolocateControl,
-} from "react-map-gl";
+import MapGL, { GeolocateControl, Source, Layer } from "@urbica/react-map-gl";
+
 import Geocoder from "react-mapbox-gl-geocoder";
 
 import { useTranslation } from "react-i18next";
@@ -15,56 +11,39 @@ import { useTranslation } from "react-i18next";
 //Icons
 import Pin from "../../../images/pin3.png";
 import Geolocate from "../../../images/icons/geolocate.png";
+import styled from "styled-components";
 
-const geolocateStyle = {
-  position: "fixed",
-  zIndex: "9999",
-  top: "2.5%",
-  right: "2.5%",
-  margin: "auto",
-  height: "50px",
-  width: "50px",
-  borderRadius: "15px",
-  boxShadow: "0 8px 30px -12px rgba(0,0,0,0.5)",
-  backgroundColor: "#fed957",
-  display: "flex",
-  position: "absolute",
-  alignItems: "center",
-  justifyContent: "center",
-  textAlign: "center",
-};
+const PinWrapper = styled.div`
+  position: fixed;
+  left: ${(props) =>
+    props.isMobileCustom ? "50%" : "calc(600px + (100% - 600px) / 2)"};
+  margin-left: -50px;
+  margin-top: -100px;
+  top: 50%;
+`;
 
-const geolocateStyle_hide = {
-  display: "none",
-};
+const Img = styled.img`
+  position: fixed;
+  z-index: 9999;
+  top: 2.5%;
+  right: 2.5%;
+  margin: auto;
+  height: 50px;
+  width: 50px;
+  border-radius: 15px;
+  box-shadow: 0 8px 30px -12px rgba(0, 0, 0, 0.5);
+  background-color: #fed957;
+  display: ${(props) => (props.show ? "flex" : "none")};
 
-const geolocateIcon = {
-  position: "fixed",
-  zIndex: "9999",
-  top: "2.5%",
-  right: "2.5%",
-  margin: "auto",
-  height: "50px",
-  width: "50px",
-  borderRadius: "15px",
-  boxShadow: "0 8px 30px -12px rgba(0,0,0,0.5)",
-  backgroundColor: "#fed957",
-  display: "flex",
-  position: "absolute",
-  alignItems: "center",
-  justifyContent: "center",
-  textAlign: "center",
-  pointerEvents: "none",
-};
-
-const geolocateIcon_hide = {
-  display: "none",
-};
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  pointer-events: none;
+`;
 
 const PostScreamMap = ({
-  MapHeight,
-  geocode,
   _onMarkerDragEnd,
+  geocode,
   geoData,
   viewport,
   clicked,
@@ -81,10 +60,6 @@ const PostScreamMap = ({
   };
   const addressLine =
     address === "Ohne Ortsangabe" ? <>{t("input_address")}</> : address;
-
-  // const MyInput = (props) => (
-  //   <input {...props} placeholder="" id="geocoder" />
-  // );
 
   const data =
     !loadingProjects && geoData !== ""
@@ -104,18 +79,31 @@ const PostScreamMap = ({
         };
 
   return (
-    <ReactMapGL
-      mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-      mapStyle="mapbox://styles/tmorino/ck0seyzlv0lbh1clfwepe0x0x?optimize=true"
+    <MapGL
+      accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+      mapStyle="mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6"
       {...viewport}
       maxZoom={18}
       minZoom={11}
-      width={isMobileCustom ? "100vw" : "calc(100vw - 600px)"}
-      height={isMobileCustom ? MapHeight : "100vh"}
-      style={{ position: "fixed", right: 0 }}
-      onTouchEnd={() => geocode(viewport)}
-      onMouseUp={() => geocode(viewport)}
+      style={
+        isMobileCustom
+          ? {
+              width: "100vw",
+              height: "100vh",
+              position: "fixed",
+            }
+          : {
+              position: "fixed",
+              width: "calc(100% - 600px)",
+              left: "600px",
+              height: "100%",
+            }
+      }
       onViewportChange={_onMarkerDragEnd}
+      viewportChangeMethod={"easeTo"}
+      viewportChangeOptions={{
+        duration: 2700,
+      }}
     >
       <Source id="geodata" type="geojson" data={data} />
       <Layer
@@ -150,20 +138,21 @@ const PostScreamMap = ({
           {addressLine}
         </div>
       </div>
+
       {isMobileCustom && (
         <React.Fragment>
           <GeolocateControl
-            style={
-              locationDecided === false ? geolocateStyle : geolocateStyle_hide
-            }
             positionOptions={{ enableHighAccuracy: true }}
             showUserLocation={false}
+            onGeolocate={() => {
+              setTimeout(() => {
+                geocode(viewport);
+              }, 1500);
+            }}
           ></GeolocateControl>
-          <img
+          <Img
+            show={locationDecided === false}
             src={Geolocate}
-            style={
-              locationDecided === false ? geolocateIcon : geolocateIcon_hide
-            }
             width="20"
             alt="Geolocate"
           />
@@ -171,16 +160,11 @@ const PostScreamMap = ({
       )}
 
       <div style={{ pointerEvents: "none" }}>
-        <Marker
-          longitude={viewport.longitude}
-          latitude={viewport.latitude}
-          offsetTop={-100}
-          offsetLeft={-50}
-        >
+        <PinWrapper isMobileCustom={isMobileCustom}>
           <img src={Pin} width="100" alt="ChatIcon" />
-        </Marker>
+        </PinWrapper>
       </div>
-    </ReactMapGL>
+    </MapGL>
   );
 };
 
