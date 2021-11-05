@@ -299,15 +299,28 @@ const LoginRegistration = ({ classes }) => {
         formikLoginStore.values.email,
         formikLoginStore.values.password
       )
-      .then(() => {
-        setLoading(false);
-        setOpen(false);
-        history.push("/");
+
+      .then((user) => {
+        if (user.user.emailVerified) {
+          setLoading(false);
+
+          dispatch({ type: SET_AUTHENTICATED });
+          history.push("/");
+          setOpen(false);
+        } else {
+          setLoading(false);
+          setErrorMessage(
+            "Du hast dedine Email-Adresse noch nicht verifiziert!"
+          );
+        }
+
       })
       .catch((err) => {
         setLoading(false);
         setErrorMessage(err.message);
       });
+
+    // dispatch(loginUser(userData, props.history))
   };
 
   const handleSubmitRegister = async (event) => {
