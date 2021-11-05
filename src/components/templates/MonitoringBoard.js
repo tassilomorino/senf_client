@@ -23,7 +23,26 @@ import { ExportToExcel } from "../atoms/CustomButtons/ExportToExcel";
 import MonitoringEditScream from "../organisms/SideBars/MonitoringEditScream";
 import MonitoringToolbar from "../molecules/Toolbar/MonitoringToolbar";
 import MonitoringList from "../molecules/List/MonitoringList";
-
+import { CustomButton } from "../atoms/CustomButtons/CustomButton";
+import LoginRegistration from "../atoms/Auth/LoginRegistration";
+import styled from "styled-components";
+import { StyledText } from "../../styles/GlobalStyle";
+const NoAuthorizationWrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  position: relative;
+`;
+const TitleWrapper = styled.div`
+  margin-top: 25vh;
+  text-align: center;
+`;
+const Title = styled.h3`
+  text-align: center;
+  font-family: PlayfairDisplay-Bold;
+  font-size: 22px;
+`;
 const MonitoringBoard = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -165,7 +184,7 @@ const MonitoringBoard = () => {
 
   let dataFinalLength = dataFinal.length;
 
-  return (
+  return user.isAdmin === true ? (
     <div>
       {error}
 
@@ -249,6 +268,28 @@ const MonitoringBoard = () => {
         )}
       </div>
     </div>
+  ) : (
+    <NoAuthorizationWrapper>
+      <TitleWrapper>
+        <Title>Keine Berechtigung</Title>
+        <StyledText>
+          Du hast leider keine Berechtigung, um diese Unterseite zu sehen
+        </StyledText>
+      </TitleWrapper>
+      {!user.authenticated && (
+        <CustomButton
+          text="Melde dich an"
+          backgroundColor="#353535"
+          textColor="white"
+          position="relative"
+          top="20px"
+          left="0"
+          zIndex="0"
+        >
+          <LoginRegistration />
+        </CustomButton>
+      )}
+    </NoAuthorizationWrapper>
   );
 };
 
