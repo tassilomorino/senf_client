@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@fullcalendar/bootstrap": "^5.8.0",
     "@fullcalendar/core": "^5.8.0",
     "@fullcalendar/list": "^5.8.0",
     "@fullcalendar/react": "^5.8.0",
@@ -18,18 +17,11 @@
     "dayjs": "^1.8.28",
     "firebase": "^8.6.3",
     "formik": "^2.2.9",
-    "fullcalendar": "^5.8.0",
-    "html2canvas": "^1.0.0-rc.5",
-    "i": "^0.3.7",
     "i18next": "^20.4.0",
     "intersection-observer": "^0.10.0",
-    "leaflet": "^1.7.1",
-    "leaflet-control-geocoder": "^2.1.0",
     "linkifyjs": "*",
     "lodash": "^4.17.21",
-    "lodash-es": "^4.17.21",
     "moment": "^2.29.1",
-    "npm": "^7.24.2",
     "plotly.js": "^1.54.5",
     "react": "^16.13.1",
     "react-device-detect": "^1.13.1",
@@ -53,7 +45,6 @@
     "source-map-explorer": "^2.4.2",
     "styled-components": "^5.3.1",
     "universal-cookie": "^4.0.3",
-    "xlsx": "^0.17.0",
     "yup": "^0.32.11"
   },
   "scripts": {
@@ -90,5 +81,5 @@
     "start-server-and-test": "^1.13.1"
   },
   "proxy": "https://europe-west1-senf-dev.cloudfunctions.net/api",
-  "buildDate": 1633079652
+  "buildDate": 1636128378389
 }
