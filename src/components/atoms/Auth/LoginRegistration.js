@@ -301,15 +301,13 @@ const LoginRegistration = ({ classes }) => {
       )
       .then(() => {
         setLoading(false);
-        // dispatch({ type: SET_AUTHENTICATED });
-        history.push("/");
+        setOpen(false);
+
       })
       .catch((err) => {
         setLoading(false);
         setErrorMessage(err.message);
       });
-
-    // dispatch(loginUser(userData, props.history))
   };
 
   const handleSubmitRegister = async (event) => {
