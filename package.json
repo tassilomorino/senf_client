@@ -22,7 +22,7 @@
     "linkifyjs": "^3.0.3",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
-    "plotly.js": "^2.6.2",
+    "plotly.js": "^1.58.5",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-device-detect": "^2.1.2",
@@ -82,5 +82,5 @@
     "start-server-and-test": "^1.13.1"
   },
   "proxy": "https://europe-west1-senf-dev.cloudfunctions.net/api",
-  "buildDate": 1636128378389
+  "buildDate": 1636133080996
 }
