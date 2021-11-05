@@ -1977,7 +1977,7 @@ background-color: #353535;
 .FirstImage {
   z-index: 999;
   position: absolute;
-  margin-top: 25vh;
+  margin-top: 30vh;
   width: 800px;
   margin-left: 50%;
   transform: translateX(-50%);
