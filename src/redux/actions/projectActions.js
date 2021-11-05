@@ -13,6 +13,7 @@ import {
   OPEN_PROJECT,
   CLOSE_PROJECT,
 } from "../types";
+import setColorByTopic from "../../data/setColorByTopic";
 
 // Get all projects
 export const getProjects = () => async (dispatch) => {
@@ -76,7 +77,11 @@ export const openProjectFunc = (project) => async (dispatch) => {
     project.screams = [];
 
     screamsRef.docs.forEach((doc) =>
-      project.screams.push({ ...doc.data(), screamId: doc.id })
+      project.screams.push({
+        ...doc.data(),
+        screamId: doc.id,
+        color: setColorByTopic(doc.data().Thema),
+      })
     );
     dispatch(closeScream());
     const newPath = `/${project.id}`;
