@@ -121,22 +121,21 @@ export const CreateProject = () => {
 
   const createProject = () => {
     var link =
-      "mailto:dein@senf.koeln" +
-      "?subject=" +
-      escape("Projektraum-Anfrage") +
-      "&body=" +
-      escape(
-        "Projektraum-Titel:" +
-          "\n" +
-          "\n" +
-          "Worum geht's:" +
-          "\n" +
-          "\n" +
-          "Projektzeitraum:" +
-          "\n" +
-          "\n" +
-          "Logo + Cover-Bild:"
-      );
+      "mailto:dein@senf.koeln" + "?subject=" + escape("Projektraum-Anfrage");
+    // +
+    // "&body=" +
+    // escape(
+    //   "Projektraum-Titel:" +
+    //     "\n" +
+    //     "\n" +
+    //     "Worum geht's:" +
+    //     "\n" +
+    //     "\n" +
+    //     "Projektzeitraum:" +
+    //     "\n" +
+    //     "\n" +
+    //     "Logo + Cover-Bild:"
+    // );
     window.location.href = link;
   };
 

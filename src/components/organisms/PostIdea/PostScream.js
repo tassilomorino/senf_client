@@ -393,6 +393,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
 
   const _onMarkerDragEnd = (newViewport) => {
     setViewport(newViewport);
+    geocode(newViewport);
 
     setAddressBarClickedState(false);
   };
