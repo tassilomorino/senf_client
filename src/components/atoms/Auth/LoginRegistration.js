@@ -26,6 +26,7 @@ import RegistrationFormComponent from "./RegistrationFormComponent";
 import LoginFormComponent from "./LoginFormComponent";
 import { CustomIconButton } from "../CustomButtons/CustomButton";
 import { useTranslation } from "react-i18next";
+import { getUserData } from "../../../redux/actions/userActions";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -305,6 +306,7 @@ const LoginRegistration = ({ classes }) => {
           setLoading(false);
 
           dispatch({ type: SET_AUTHENTICATED });
+          dispatch(getUserData(user.uid));
           history.push("/");
           setOpen(false);
         } else {
@@ -313,7 +315,6 @@ const LoginRegistration = ({ classes }) => {
             "Du hast dedine Email-Adresse noch nicht verifiziert!"
           );
         }
-
       })
       .catch((err) => {
         setLoading(false);
