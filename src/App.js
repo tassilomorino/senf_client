@@ -1,7 +1,13 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { useSelector } from "react-redux";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 import "./App.css";
 import "./AppDesktop.css";
 import "./AppIpad.css";
@@ -34,7 +40,7 @@ import datenschutz from "./components/organisms/infocomponents/legal/datenschutz
 import agb from "./components/organisms/infocomponents/legal/agb";
 import cookieConfigurator from "./components/organisms/infocomponents/legal/cookieConfigurator";
 
-import monitoring from "./pages/monitoring";
+import MonitoringBoard from "./components/templates/MonitoringBoard";
 import blank from "./pages/Blank";
 
 import ReactGA from "react-ga";
@@ -167,7 +173,6 @@ const App = () => {
   const { t } = useTranslation();
 
   const [isAuthed, setIsAuthed] = useState(false);
-
   const userState = () => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user && user.emailVerified) {
@@ -210,7 +215,7 @@ const App = () => {
 
               <Route exact path="/agb" component={agb} />
 
-              <Route exact path="/monitoring" component={monitoring} />
+              <Route exact path="/monitoring" component={MonitoringBoard} />
 
               <Route exact path="/verify" component={Verification} />
 

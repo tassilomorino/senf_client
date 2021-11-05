@@ -1,16 +1,13 @@
 /** @format */
 
-import React, { Component } from "react";
+import React, { useState } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
-import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+import { openMonitoringScream } from "../../../redux/actions/monitoringScreamActions";
 
 //TIMESTAMP
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-
-// Redux
-import { connect } from "react-redux";
-import { openMonitoringScream } from "../../../redux/actions/monitoringScreamActions";
 
 // Icons
 import menuIcon from "../../../images/icons/menu.png";
@@ -51,165 +48,113 @@ const styles = {
   },
 };
 
-class IdeaCardMonitoring extends Component {
-  state = {
-    isToggleOn: false,
-    cardHeight: "30px",
-    notes: null,
+const IdeaCardMonitoring = ({
+  classes,
+  projectsData,
+
+  title,
+  screamId,
+  likeCount,
+  commentCount,
+  Stadtteil,
+  project,
+  Thema,
+  status,
+  createdAt,
+  userHandle,
+  color,
+}) => {
+  const dispatch = useDispatch();
+
+  const handleExpand = (screamId) => {
+    dispatch(openMonitoringScream(screamId));
   };
 
-  componentDidMount() {
-    this.setState({
-      notes: null,
+  const handleChange = (event) => {
+    event.preventDefault();
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  dayjs.extend(relativeTime);
+
+  const projectsDataFinal = [];
+  if (projectsData) {
+    const projectsDataArray = projectsData;
+
+    projectsDataArray.forEach((element) => {
+      if (project === element.project) {
+        projectsDataFinal.push(element.imgUrl);
+      }
     });
   }
 
-  handleExpand = (screamId) => {
-    this.props.openMonitoringScream(screamId);
-    this.setState((prevState) => ({
-      isToggleOn: !prevState.isToggleOn,
-    }));
-  };
-
-  handleChange = (event) => {
-    event.preventDefault();
-    this.setState({ [event.target.name]: event.target.value });
-
-  };
-
-  render() {
-    dayjs.extend(relativeTime);
-    const {
-      classes,
-      projectsData,
-      scream: {
-        title,
-        screamId,
-        likeCount,
-        commentCount,
-        Stadtteil,
-        project,
-        Thema,
-        status,
-        createdAt,
-        userHandle,
-      },
-    } = this.props;
-
-    const colorNew =
-      Thema === "Rad"
-        ? "#929df6"
-        : Thema === "Verkehr"
-        ? "#91dff4"
-        : Thema === "Umwelt und Grün"
-        ? "#8dd9b8"
-        : Thema === "Sport / Freizeit"
-        ? "#f6c095"
-        : Thema === "Inklusion / Soziales"
-        ? "#e8907e"
-        : Thema === "Versorgung"
-        ? "#bd98f6"
-        : "#f9db95";
-
-    const projectsDataFinal = [];
-    if (projectsData) {
-      const projectsDataArray = projectsData;
-
-      projectsDataArray.forEach((element) => {
-        if (project === element.project) {
-          projectsDataFinal.push(element.imgUrl);
-        }
-      });
-    }
-
-    return (
-      <button
-        className="monitoringCard"
-        onClick={() => this.handleExpand(screamId)}
-      >
-        <div>
-          <div className={classes.content}>
-            <div style={{ width: "20px", margin: "10px" }}>
-              <div
-                style={{
-                  width: "15px",
-                  height: "15px",
-                  borderRadius: "100%",
-                  border: "0.5px white solid",
-                  backgroundColor: colorNew,
-                }}
-              />
-            </div>
-            <div style={{ width: "300px", margin: "10px" }}>{title} </div>
-            <div style={{ width: "110px", margin: "10px" }}>{Stadtteil}</div>
-            <div style={{ width: "110px", margin: "10px" }}>{userHandle}</div>
-
-            <div style={{ width: "20px", margin: "10px" }}>{likeCount}</div>
-            <div style={{ width: "20px", margin: "10px" }}>{commentCount}</div>
-
-            <div style={{ width: "40px", margin: "10px" }}>
-              {dayjs(createdAt).format("DD.MM.")}
-            </div>
-            <div style={{ width: "30px", margin: "10px" }}>
-              <img
-                src={projectsDataFinal}
-                width="30px"
-                alt="project-thumbnail"
-                style={{ borderRadius: "10px", overflow: "hidden" }}
-              ></img>
-            </div>
-            <div style={{ width: "20px", margin: "10px" }}>
-              {" "}
-              {status === "None" ? (
-                <img src={statusIcon} width="22" alt="status-icon" />
-              ) : null}
-            </div>
-          </div>
-        </div>
-
-        <div
-          style={{
-            position: "absolute",
-            right: 0,
-            zIndex: 999,
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            borderRadius: "20px",
-          }}
-          className="hoverIcon"
-        >
-          <div style={{ width: "50px", margin: "10px" }}>
-            {" "}
-            <img
-              className="hoverIcon"
-              src={menuIcon}
-              style={{ paddingTop: "5px" }}
-              width="30"
-              alt="WeblinkIcon"
+  return (
+    <button className="monitoringCard" onClick={() => handleExpand(screamId)}>
+      <div>
+        <div className={classes.content}>
+          <div style={{ width: "20px", margin: "10px" }}>
+            <div
+              style={{
+                width: "15px",
+                height: "15px",
+                borderRadius: "100%",
+                border: "0.5px white solid",
+                backgroundColor: color,
+              }}
             />
           </div>
+          <div style={{ width: "300px", margin: "10px" }}>{title} </div>
+          <div style={{ width: "110px", margin: "10px" }}>{Stadtteil}</div>
+          <div style={{ width: "110px", margin: "10px" }}>{userHandle}</div>
+
+          <div style={{ width: "20px", margin: "10px" }}>{likeCount}</div>
+          <div style={{ width: "20px", margin: "10px" }}>{commentCount}</div>
+
+          <div style={{ width: "40px", margin: "10px" }}>
+            {dayjs(createdAt).format("DD.MM.")}
+          </div>
+          <div style={{ width: "30px", margin: "10px" }}>
+            <img
+              src={projectsDataFinal}
+              width="30px"
+              alt="project-thumbnail"
+              style={{ borderRadius: "10px", overflow: "hidden" }}
+            ></img>
+          </div>
+          <div style={{ width: "20px", margin: "10px" }}>
+            {" "}
+            {status === "None" ? (
+              <img src={statusIcon} width="22" alt="status-icon" />
+            ) : null}
+          </div>
         </div>
-      </button>
-    );
-  }
-}
+      </div>
 
-IdeaCardMonitoring.propTypes = {
-  user: PropTypes.object.isRequired,
-  scream: PropTypes.object.isRequired,
-  classes: PropTypes.object.isRequired,
-  openMonitoringScream: PropTypes.func.isRequired,
+      <div
+        style={{
+          position: "absolute",
+          right: 0,
+          zIndex: 999,
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          borderRadius: "20px",
+        }}
+        className="hoverIcon"
+      >
+        <div style={{ width: "50px", margin: "10px" }}>
+          {" "}
+          <img
+            className="hoverIcon"
+            src={menuIcon}
+            style={{ paddingTop: "5px" }}
+            width="30"
+            alt="WeblinkIcon"
+          />
+        </div>
+      </div>
+    </button>
+  );
 };
 
-const mapStateToProps = (state) => ({
-  user: state.user,
-});
-const mapActionsToProps = {
-  openMonitoringScream,
-};
-
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(IdeaCardMonitoring));
+export default withStyles(styles)(IdeaCardMonitoring);

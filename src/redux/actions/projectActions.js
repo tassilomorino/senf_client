@@ -81,6 +81,7 @@ export const openProjectFunc = (project) => async (dispatch) => {
         ...doc.data(),
         screamId: doc.id,
         color: setColorByTopic(doc.data().Thema),
+        body: doc.data().body.substr(0, 120),
       })
     );
     dispatch(closeScream());
