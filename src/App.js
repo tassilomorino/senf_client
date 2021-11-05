@@ -208,13 +208,9 @@ const App = () => {
             <Switch>
               <Route exact path="/" component={Main} />
               <Route exact path="/start" component={IntroductionInformation} />
-
               <Route exact path="/intro" component={Welcome} />
-
               <Route exact path="/datenschutz" component={datenschutz} />
-
               <Route exact path="/agb" component={agb} />
-
               <Route exact path="/monitoring" component={MonitoringBoard} />
 
               <Route exact path="/verify" component={Verification} />
