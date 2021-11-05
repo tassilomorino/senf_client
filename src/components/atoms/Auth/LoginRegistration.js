@@ -303,10 +303,10 @@ const LoginRegistration = ({ classes }) => {
 
       .then((user) => {
         if (user.user.emailVerified) {
+          console.log(user.user.uid);
           setLoading(false);
-
           dispatch({ type: SET_AUTHENTICATED });
-          dispatch(getUserData(user.uid));
+          dispatch(getUserData(user.user.uid));
           history.push("/");
           setOpen(false);
         } else {
