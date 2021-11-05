@@ -299,6 +299,7 @@ const LoginRegistration = ({ classes }) => {
         formikLoginStore.values.email,
         formikLoginStore.values.password
       )
+
       .then((user) => {
         if (user.user.emailVerified) {
           setLoading(false);
@@ -312,6 +313,7 @@ const LoginRegistration = ({ classes }) => {
             "Du hast dedine Email-Adresse noch nicht verifiziert!"
           );
         }
+
       })
       .catch((err) => {
         setLoading(false);
