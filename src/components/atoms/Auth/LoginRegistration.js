@@ -302,7 +302,7 @@ const LoginRegistration = ({ classes }) => {
       .then(() => {
         setLoading(false);
         setOpen(false);
-
+        history.push("/");
       })
       .catch((err) => {
         setLoading(false);
