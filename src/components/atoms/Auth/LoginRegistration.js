@@ -301,7 +301,7 @@ const LoginRegistration = ({ classes }) => {
       )
       .then(() => {
         setLoading(false);
-        dispatch({ type: SET_AUTHENTICATED });
+        // dispatch({ type: SET_AUTHENTICATED });
         history.push("/");
       })
       .catch((err) => {
