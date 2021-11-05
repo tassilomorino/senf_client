@@ -488,7 +488,11 @@ export class monitoring extends Component {
           <div className="no-ideas-yet">
             Wähle eine Idee aus, um diesen Bereich zu aktivieren
           </div>
-          {this.props.UI.openMonitoringScream && <MonitoringEditScream />}
+          {this.props.UI.openMonitoringScream && (
+            <MonitoringEditScream
+              monitoringEditScreamOpen={this.props.UI.openMonitoringScream}
+            />
+          )}
         </div>
       </div>
     );
