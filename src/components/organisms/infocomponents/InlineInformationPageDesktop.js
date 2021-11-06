@@ -104,11 +104,11 @@ const InlineInformationPageDesktop = () => {
 
             <DialogContent style={{}}>
               <img className="Gib" src={Headline} width="100px"></img>
-              {navigator.language !== "de-DE" && (
+              {/* {navigator.language !== "de-DE" && (
                 <p className="explanation">
                   German expression saying – Contribute!
                 </p>
-              )}
+              )} */}
               <LazyImage
                 src={FirstImage}
                 className="FirstImage"
