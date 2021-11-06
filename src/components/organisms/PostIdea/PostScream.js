@@ -81,7 +81,7 @@ const OpenButtonMobile = styled.button`
   animation: ${AddbuttonAnimation} 5s ease-in-out infinite,
     ${enterAnimation} 3.5s;
 
-  bottom: 15px;
+  bottom: ${(props) => (props.isInstagram ? "35px" : "25px")};
   left: 50vw;
   transition: 1s;
 `;
@@ -511,7 +511,14 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
       ) : (
         !loading &&
         !loading && (
-          <OpenButtonMobile onClick={handleOpen} openScream={openScream}>
+          <OpenButtonMobile
+            onClick={handleOpen}
+            openScream={openScream}
+            isInstagram={
+              window.innerHeight === window.screen.height &&
+              navigator.userAgent.match(/instagram/i)
+            }
+          >
             <img src={AddIcon} width="25" alt="AddIcon" />
           </OpenButtonMobile>
         )
