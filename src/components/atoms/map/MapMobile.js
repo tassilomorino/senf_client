@@ -19,6 +19,7 @@ import NoLocationPopUp from "./NoLocationPopUp";
 //Icons
 import Pin from "../../../images/pin3.png";
 import { MarkersMobile } from "./Markers";
+import { PatternBackground } from "./styles/sharedStyles";
 // import cologne_grid from "../../../images/cologne_grid.svg";
 
 const PinComponent = styled.img`
@@ -98,17 +99,7 @@ const MapMobile = ({
           height: "100vh",
         }}
       >
-        {!mapLoaded && (
-          <React.Fragment>
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                backgroundColor: "#f8f8f8",
-              }}
-            />
-          </React.Fragment>
-        )}
+        {!mapLoaded && <PatternBackground />}
         <MapGL
           style={{
             width: "100%",
