@@ -785,7 +785,8 @@
   }
 
   .MuiFormControlLabel-root {
-    height: 38px !important
+    height: 38px !important;
+    
   }
 
   .MuiTypography-body1 {
