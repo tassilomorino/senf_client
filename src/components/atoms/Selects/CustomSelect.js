@@ -2,14 +2,12 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import { useTranslation } from "react-i18next";
 
 //Images
 import Arrow from "../../../images/icons/arrow.png";
 
 //Components
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
-import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 const DropDownButton = styled.button`
   font-family: Futura PT W01 Book;
@@ -118,6 +116,15 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
   );
   const [selectedLabel, setSelectedLabel] = useState(initialValue);
   const [isInViewport, setIsInViewport] = useState(true);
+  const [dropDownButtonAmount, setDropDownButtonAmount] = useState(28);
+
+  useEffect(() => {
+    if (document.body.clientWidth < 350) {
+      setDropDownButtonAmount(18);
+    } else if (document.body.clientWidth < 400) {
+      setDropDownButtonAmount(25);
+    }
+  }, []);
 
   useEffect(() => {
     if (open) {
@@ -171,8 +178,9 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
         onClick={handleToggle}
         class="dropbtn"
         style={{ zIndex: 999 }}
+        id="dropDownButton"
       >
-        {truncateString(selectedLabel, 25)}
+        {truncateString(selectedLabel, dropDownButtonAmount)}
 
         <img
           src={Arrow}
@@ -198,14 +206,14 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
                     <Span style={{ fontFamily: "Futura PT W01-Bold" }}>
                       {option.color && <ColorDot color={option.color} />}
                       {option.img && <Img src={option.img} />}
-                      {truncateString(option.label, 22)}
+                      {truncateString(option.label, dropDownButtonAmount)}
                     </Span>
                   ) : (
                     <Span>
                       {" "}
                       {option.color && <ColorDot color={option.color} />}
                       {option.img && <Img src={option.img} />}
-                      {truncateString(option.label, 30)}
+                      {truncateString(option.label, dropDownButtonAmount * 1.2)}
                     </Span>
                   )}
                 </ListItem>
