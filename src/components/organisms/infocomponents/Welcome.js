@@ -125,9 +125,9 @@ const Welcome = ({ classes }) => {
   return (
     <div className={classes.wrapper}>
       <div className="wrapperMenu">
-        {navigator.language !== "de-DE" && (
+        {/* {navigator.language !== "de-DE" && (
           <p className="explanation">German expression saying – Contribute!</p>
-        )}
+        )} */}
 
         <LazyImage
           src={FirstImage}
