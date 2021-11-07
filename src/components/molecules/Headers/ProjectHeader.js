@@ -1,76 +1,18 @@
 /** @format */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import ShareModal from "../../molecules/Modals/ShareModal";
 import Tabs from "../../atoms/Tabs/Tabs";
 import { ProjectTabData } from "../../../data/ProjectTabData";
-
-const FixedWrapper = styled.div`
-  z-index: 91;
-  position: fixed;
-  width: 95%;
-
-  height: 80px;
-  background-color: white;
-  top: ${(props) => (props.moveUp ? "-90px" : "10px")};
-  left: 2.5%;
-  border-radius: 20px 20px;
-  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
-  animation: downAnimation 1.7s ease-in-out;
-
-  @media (min-width: 768px) {
-    left: 210px;
-    width: 380px;
-    animation: none;
-  }
-
-  @keyframes downAnimation {
-    0% {
-      transform: translateY(-100%);
-    }
-    50% {
-      transform: translateY(-100%);
-    }
-    100% {
-      transform: translateY(0%);
-    }
-  }
-`;
-
-const FlexWrapper = styled.div`
-  position: relative;
-  width: 97.5%;
-  height: 50px;
-  top: 0px;
-  left: 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const ImgWrapperMobile = styled.div`
-  position: relative;
-  width: 40px;
-  height: 40px;
-  background-color: white;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.8);
-`;
-
-const TitleWrapper = styled.div`
-  font-size: 18px;
-  font-family: PlayfairDisplay-Bold;
-  color: #353535;
-  text-align: center;
-  width: 60%;
-  margin-top: 15px;
-  margin-bottom: 20px;
-`;
+import {
+  FixedWrapper,
+  FlexWrapper,
+  TitleWrapper,
+  ImgWrapperMobile,
+} from "./styles/sharedStyles";
 
 const ProjectHeader = ({
   imgUrl,
@@ -85,6 +27,12 @@ const ProjectHeader = ({
 }) => {
   const { openScream } = useSelector((state) => state.UI);
   const [shareOpen, setShareOpen] = useState(false);
+  const [amount, setAmount] = useState(18);
+
+  useEffect(() => {
+    const amount = document.getElementById("wrapper").offsetWidth / 17;
+    setAmount(amount);
+  }, []);
 
   const handleShare = () => {
     if (navigator.share) {
@@ -119,7 +67,7 @@ const ProjectHeader = ({
         />
       )}
 
-      <FixedWrapper moveUp={openScream}>
+      <FixedWrapper moveUp={openScream} id="wrapper">
         <FlexWrapper>
           <CustomIconButton
             name="ArrowLeft"
@@ -128,7 +76,7 @@ const ProjectHeader = ({
             handleButtonClick={handleClose}
           />
 
-          <TitleWrapper>{truncateString(title, 18)}</TitleWrapper>
+          <TitleWrapper>{truncateString(title, amount)}</TitleWrapper>
 
           <ImgWrapperMobile>
             <img src={imgUrl} width="100%" alt="project-thumbnail" />
