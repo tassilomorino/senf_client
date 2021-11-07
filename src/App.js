@@ -76,7 +76,7 @@ i18n
         translation: translationDE,
       },
     },
-    lng: navigator.language === "de-DE" ? "de" : "en", // if you're using a language detector, do not define the lng option
+    lng: navigator.language === "de-DE" ? "de" : "de", // if you're using a language detector, do not define the lng option
     fallbackLng: "de",
 
     interpolation: {
@@ -210,13 +210,9 @@ const App = () => {
             <Switch>
               <Route exact path="/" component={Main} />
               <Route exact path="/start" component={IntroductionInformation} />
-
               <Route exact path="/intro" component={Welcome} />
-
               <Route exact path="/datenschutz" component={datenschutz} />
-
               <Route exact path="/agb" component={agb} />
-
               <Route exact path="/monitoring" component={MonitoringBoard} />
 
               <Route exact path="/verify" component={Verification} />

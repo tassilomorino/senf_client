@@ -26,6 +26,7 @@ import RegistrationFormComponent from "./RegistrationFormComponent";
 import LoginFormComponent from "./LoginFormComponent";
 import { CustomIconButton } from "../CustomButtons/CustomButton";
 import { useTranslation } from "react-i18next";
+import { getUserData } from "../../../redux/actions/userActions";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -299,10 +300,21 @@ const LoginRegistration = ({ classes }) => {
         formikLoginStore.values.email,
         formikLoginStore.values.password
       )
-      .then(() => {
-        setLoading(false);
-        dispatch({ type: SET_AUTHENTICATED });
-        history.push("/");
+
+      .then((user) => {
+        if (user.user.emailVerified) {
+          console.log(user.user.uid);
+          setLoading(false);
+          dispatch({ type: SET_AUTHENTICATED });
+          dispatch(getUserData(user.user.uid));
+          history.push("/");
+          setOpen(false);
+        } else {
+          setLoading(false);
+          setErrorMessage(
+            "Du hast dedine Email-Adresse noch nicht verifiziert!"
+          );
+        }
       })
       .catch((err) => {
         setLoading(false);

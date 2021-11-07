@@ -73,7 +73,7 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
   return (
     <React.Fragment>
       <AccountHeader
-        loading={loadingMyScreams}
+        loading={false}
         order={order}
         handleClose={handleClose}
         handleClick={handleClick}
@@ -82,12 +82,10 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
       <div className="accountDialog">
         {isMobileCustom ? <BackgroundMobile /> : <BackgroundDesktop />}
 
-        {loadingMyScreams ? (
-          <Loader />
-        ) : order === 1 ? (
+        {order === 1 && (
           <IdeaList
             type="myIdeas"
-            loading={loadingMyScreams}
+            loading={false}
             order={order}
             dataFinal={dataFinal}
             dataFinalLength={dataFinalLength}
@@ -98,7 +96,7 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
             topicsSelected={topicsSelected}
             dataFinalMap={dataFinalMap}
           ></IdeaList>
-        ) : null}
+        )}
 
         {order === 2 && (
           <React.Fragment>
