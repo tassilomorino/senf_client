@@ -195,7 +195,7 @@ const App = () => {
     <div className="tabletLandscapeNote">{t("rotate_tablet")} </div>
   ) : null;
 
-  console.log('deploy test')
+ 
   return (
     <MuiThemeProvider theme={theme}>
       {process.env.REACT_APP_STAGE !== "development" && <ClearCacheComponent />}
