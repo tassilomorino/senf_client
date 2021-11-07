@@ -68,7 +68,6 @@ const TitleWrapper = styled.div`
   color: #353535;
   text-align: center;
   width: 60%;
-  margin-left: 20%;
   margin-top: 15px;
   margin-bottom: 20px;
 `;
@@ -124,7 +123,6 @@ const ProjectHeader = ({
         <FlexWrapper>
           <CustomIconButton
             name="ArrowLeft"
-            position="fixed"
             top="10px"
             shadow={false}
             handleButtonClick={handleClose}

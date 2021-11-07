@@ -83,7 +83,7 @@ const MapMobile = ({
       }
     });
   }
-  if (dataFinalMapArray !== undefined && dataNoLocation.length === 1) {
+  if (dataFinalMapArray !== undefined && dataNoLocation.length < 2) {
     dataFinalMapArray.forEach((element) => {
       dataFinalMap.push(element);
     });
