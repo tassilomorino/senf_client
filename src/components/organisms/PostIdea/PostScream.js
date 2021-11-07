@@ -160,7 +160,8 @@ const styles = {
     flexDirection: "row",
     justifyContent: "flex-start",
     color: "rgb(255, 205, 6)",
-    height: "3vh",
+    height: "10px",
+    alignItems: "center",
   },
   locationHeader: {
     color: "rgb(255, 205, 6)",

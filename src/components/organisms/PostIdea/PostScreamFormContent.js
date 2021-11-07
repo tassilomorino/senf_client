@@ -82,7 +82,7 @@ const PostScreamFormContent = ({
       )}
       <div className={classes.content}>
         <div className={classes.locationOuter} onClick={handleLocationDecided}>
-          <LocationOn style={{ marginTop: "-5px" }} />{" "}
+          <LocationOn  />{" "}
           <div className={classes.locationHeader}> ~ {address} </div>
         </div>
         <PostScreamRules />
