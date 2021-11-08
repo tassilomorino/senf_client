@@ -26,7 +26,8 @@ const Cookiebanner = () => {
 
   const handleCookies = (cookie_settings) => {
     dispatch(setCookies(cookie_settings));
-    if (screamId) {
+
+    if (window.location.pathname !== "/") {
       dispatch(setInfoPageClosed());
     }
   };
