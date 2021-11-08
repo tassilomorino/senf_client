@@ -1,13 +1,7 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import "./AppDesktop.css";
 import "./AppIpad.css";
@@ -18,7 +12,8 @@ import "firebase/auth";
 import "firebase/firestore";
 
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import createTheme from "@material-ui/core/styles/createMuiTheme";
+
 import themeFile from "./util/theme";
 //Redux
 import { Provider } from "react-redux";
@@ -59,7 +54,6 @@ import { isMobileCustom } from "./util/customDeviceDetect";
 import packageJson from "../package.json";
 import { getBuildDate } from "./util/utils";
 import withClearCache from "./ClearCache";
-import ProjectsPage from "./components/organisms/Projects/ProjectsPage";
 
 const ClearCacheComponent = withClearCache(MainApp);
 
@@ -94,7 +88,7 @@ if (firebase.app.length) {
 
 axios.defaults.baseURL = process.env.REACT_APP_DB_BASE_URL;
 
-const theme = createMuiTheme(themeFile);
+const theme = createTheme(themeFile);
 
 function get_local_storage_status() {
   let test = "test";
@@ -195,6 +189,7 @@ const App = () => {
   const tabletNote = isTablet ? (
     <div className="tabletLandscapeNote">{t("rotate_tablet")} </div>
   ) : null;
+
   return (
     <MuiThemeProvider theme={theme}>
       {process.env.REACT_APP_STAGE !== "development" && <ClearCacheComponent />}
