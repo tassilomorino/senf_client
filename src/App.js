@@ -12,7 +12,7 @@ import "firebase/auth";
 import "firebase/firestore";
 
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
-import createTheme from "@material-ui/core/styles/createMuiTheme";
+import { createTheme } from "@material-ui/core/styles/";
 
 import themeFile from "./util/theme";
 //Redux
