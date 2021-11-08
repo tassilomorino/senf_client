@@ -59,6 +59,7 @@ import { isMobileCustom } from "./util/customDeviceDetect";
 import packageJson from "../package.json";
 import { getBuildDate } from "./util/utils";
 import withClearCache from "./ClearCache";
+import ProjectsPage from "./components/organisms/Projects/ProjectsPage";
 
 const ClearCacheComponent = withClearCache(MainApp);
 
@@ -207,6 +208,7 @@ const App = () => {
           <div className="container">
             <Switch>
               <Route exact path="/" component={Main} />
+              <Route exact path="/projects" component={Main} />
               <Route exact path="/start" component={IntroductionInformation} />
               <Route exact path="/intro" component={Welcome} />
               <Route exact path="/datenschutz" component={datenschutz} />
@@ -226,6 +228,7 @@ const App = () => {
               <Route exact path="/blank" component={blank} />
 
               <Route exact path="/:screamId" component={Main} />
+              <Route path="*" component={Main} />
             </Switch>
           </div>
         </Router>
