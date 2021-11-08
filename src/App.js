@@ -54,6 +54,7 @@ import { isMobileCustom } from "./util/customDeviceDetect";
 import packageJson from "../package.json";
 import { getBuildDate } from "./util/utils";
 import withClearCache from "./ClearCache";
+import Cookiebanner from "./components/organisms/Cookiebanner/Cookiebanner";
 
 const ClearCacheComponent = withClearCache(MainApp);
 
@@ -196,7 +197,8 @@ const App = () => {
 
       <Provider store={store}>
         <Router>
-          {/* <Topbar/> */}
+          <Cookiebanner />
+
           {tabletNote}
           <div className="landscapeNote">{t("rotate_phone")}</div>
 

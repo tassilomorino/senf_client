@@ -37,7 +37,6 @@ import {
 } from "../../atoms/CustomButtons/CustomButton";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import { SideBarTabs } from "../../../styles/GlobalStyle";
-import Cookiebanner from "../Cookiebanner/Cookiebanner";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -177,8 +176,6 @@ const InlineInformationPageDesktop = () => {
               </div>
             </DialogContent>
           </Dialog>
-        ) : !loading ? (
-          <Cookiebanner />
         ) : null}
       </Fragment>
     )

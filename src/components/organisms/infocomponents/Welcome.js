@@ -19,7 +19,6 @@ import { Link } from "react-router-dom";
 //CHECK DEVICE
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
-import Cookiebanner from "../../organisms/Cookiebanner/Cookiebanner";
 
 const styles = {
   wrapper: {
@@ -113,7 +112,6 @@ const Welcome = ({ classes }) => {
           </Link>
         </span>
       </div>
-      <Cookiebanner />
     </div>
   );
 };
