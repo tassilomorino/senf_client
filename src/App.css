@@ -221,7 +221,7 @@ a {
 }
 
 .cookiesText {
-  z-index: 95;
+  z-index: 9995;
   position: fixed;
   width: 95vw;
   height: 14em;

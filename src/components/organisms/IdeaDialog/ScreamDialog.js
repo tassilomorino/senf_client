@@ -28,6 +28,7 @@ import {
   BackgroundMobile,
 } from "../../atoms/Backgrounds/GradientBackgrounds";
 import CommentMenuModal from "../../molecules/Modals/CommentMenuModal";
+import Cookiebanner from "../Cookiebanner/Cookiebanner";
 
 const portalRoot = document.getElementById("portal-root");
 
@@ -196,6 +197,7 @@ const ScreamDialog = () => {
   );
   return ReactDOM.createPortal(
     <React.Fragment>
+      <Cookiebanner />
       {shareOpen && (
         <ShareModal
           screamId={screamId}
@@ -241,7 +243,10 @@ const ScreamDialog = () => {
           {content}
         </animated.div>
       ) : (
-        <React.Fragment>{content}</React.Fragment>
+        <React.Fragment>
+          <Cookiebanner />
+          {content}
+        </React.Fragment>
       )}
     </React.Fragment>,
     portalRoot

@@ -29,6 +29,7 @@ import {
   BackgroundDesktop,
   BackgroundMobile,
 } from "../../atoms/Backgrounds/GradientBackgrounds";
+import Cookiebanner from "../Cookiebanner/Cookiebanner";
 
 const Break = styled.div`
   position: relative;
@@ -223,6 +224,7 @@ class ProjectDialog extends Component {
     return (
       this.props.openProject && (
         <React.Fragment>
+          <Cookiebanner />
           <ProjectHeader
             imgUrl={imgUrl}
             title={title}

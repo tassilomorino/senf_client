@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useHistory } from "react-router";
 
 //Translation
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 //Images
 import FirstImage from "../../../images/cityperson.png";
@@ -14,14 +14,12 @@ import { LazyImage } from "react-lazy-images";
 //MUI STuff
 import withStyles from "@material-ui/core/styles/withStyles";
 
-//REDUX
-import { setCookies } from "../../../redux/actions/cookiesActions";
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 //CHECK DEVICE
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
+import Cookiebanner from "../../organisms/Cookiebanner/Cookiebanner";
 
 const styles = {
   wrapper: {
@@ -59,8 +57,6 @@ const styles = {
 const Welcome = ({ classes }) => {
   const { t } = useTranslation();
   const history = useHistory();
-  const dispatch = useDispatch();
-  const { cookie_settings } = useSelector((state) => state.data);
 
   useEffect(() => {
     if (!isMobileCustom) {
@@ -68,59 +64,9 @@ const Welcome = ({ classes }) => {
     }
   }, []);
 
-  const handleOpenCookiePreferences = () => {
-    window.open("/cookieConfigurator", "_blank");
-  };
-
-  const handleCookies = (cookie_settings) => {
-    dispatch(setCookies(cookie_settings));
-  };
-
   const handleButtonClick = () => {
     history.push("/start");
   };
-  const cookiebanner =
-    cookie_settings !== "all" && cookie_settings !== "minimum" ? (
-      <div>
-        <div className="cookiesText">
-          {" "}
-          <span className="cookiesHeader">{t("cookiebanner_title")}</span>
-          <br />
-          <Trans i18nKey="cookiebanner_text">
-            Für die Bereitstellung einiger Funktionen und die Verbesserung
-            dieses Services brauchen wir Cookies. Falls du wirklich nur die
-            technisch notwendigsten Cookies akzeptieren willst, klicke{" "}
-            <span className="Terms" onClick={() => handleCookies("minimum")}>
-              hier
-            </span>
-            &nbsp;oder konfiguriere deine{" "}
-            <span className="Terms" onClick={handleOpenCookiePreferences}>
-              Cookie-Einstellungen
-            </span>
-            .
-          </Trans>
-        </div>
-        <CustomButton
-          text={t("accept")}
-          backgroundColor="white"
-          textColor="#353535"
-          position="fixed"
-          bottom="50px"
-          handleButtonClick={() => handleCookies("all")}
-        />
-        <span className="footerIntro">
-          <Link to="/impressum" className="footerIntroText">
-            <span className="impressumIntro"> {t("imprint")} </span>
-          </Link>
-          <Link to="/datenschutz" className="footerIntroText">
-            <span className="datenschutzInto"> | {t("dataPrivacy")} |</span>
-          </Link>
-          <Link to="/agb" className="footerIntroText">
-            <span> {t("termsAndConditions")} </span>
-          </Link>
-        </span>{" "}
-      </div>
-    ) : null;
 
   return (
     <div className={classes.wrapper}>
@@ -167,7 +113,7 @@ const Welcome = ({ classes }) => {
           </Link>
         </span>
       </div>
-      {cookiebanner}
+      <Cookiebanner />
     </div>
   );
 };

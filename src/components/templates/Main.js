@@ -80,7 +80,8 @@ const Main = () => {
     if (
       cookie_settings !== "all" &&
       cookie_settings !== "minimum" &&
-      isMobileCustom
+      isMobileCustom &&
+      !screamId
     ) {
       history.push("/intro");
     } else {
@@ -108,7 +109,7 @@ const Main = () => {
         openDialogFromUrl();
       }
     }
-  }, []);
+  }, [openInfoPage]);
 
   const openDialogFromUrl = () => {
     if (screamId) {
