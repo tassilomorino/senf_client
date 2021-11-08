@@ -85,7 +85,7 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
         {order === 1 && (
           <IdeaList
             type="myIdeas"
-            loading={false}
+            loading={loadingMyScreams}
             order={order}
             dataFinal={dataFinal}
             dataFinalLength={dataFinalLength}

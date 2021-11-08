@@ -1,13 +1,7 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import "./AppDesktop.css";
 import "./AppIpad.css";
@@ -18,7 +12,8 @@ import "firebase/auth";
 import "firebase/firestore";
 
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
-import {createTheme} from "@material-ui/core/styles/";
+import { createTheme } from "@material-ui/core/styles/";
+
 import themeFile from "./util/theme";
 //Redux
 import { Provider } from "react-redux";
@@ -195,7 +190,6 @@ const App = () => {
     <div className="tabletLandscapeNote">{t("rotate_tablet")} </div>
   ) : null;
 
- 
   return (
     <MuiThemeProvider theme={theme}>
       {process.env.REACT_APP_STAGE !== "development" && <ClearCacheComponent />}
@@ -209,6 +203,7 @@ const App = () => {
           <div className="container">
             <Switch>
               <Route exact path="/" component={Main} />
+              <Route exact path="/projects" component={Main} />
               <Route exact path="/start" component={IntroductionInformation} />
               <Route exact path="/intro" component={Welcome} />
               <Route exact path="/datenschutz" component={datenschutz} />
@@ -228,6 +223,7 @@ const App = () => {
               <Route exact path="/blank" component={blank} />
 
               <Route exact path="/:screamId" component={Main} />
+              <Route path="*" component={Main} />
             </Switch>
           </div>
         </Router>

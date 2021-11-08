@@ -225,7 +225,8 @@ const Main = () => {
       );
 
   return (
-    <div>
+    <React.Fragment>
+      {loading && isMobileCustom && <Loader />}
       <ErrorBackground loading={loading} />
 
       {voted && <ThanksForTheVote />}
@@ -260,7 +261,7 @@ const Main = () => {
 
       {!openInfoPage && (
         <div className="contentWrapper">
-          {loading && <Loader />}
+          {loading && !isMobileCustom && <Loader />}
           <div className="MainBackgroundHome" />
 
           {!openProject && !openAccount && (
@@ -322,7 +323,7 @@ const Main = () => {
       )}
 
       {!openInfoPage && openScream && <ScreamDialog />}
-    </div>
+    </React.Fragment>
   );
 };
 

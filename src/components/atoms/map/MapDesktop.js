@@ -24,6 +24,7 @@ import MapGL, {
 import { Markers } from "./Markers";
 import NoLocationPopUp from "./NoLocationPopUp";
 import { DesktopMapButtons } from "./DesktopMapButtons";
+import { PatternBackground } from "./styles/sharedStyles";
 
 const PinComponent = styled.img`
   position: absolute;
@@ -77,6 +78,7 @@ const MapDesktop = ({
 
   const viewport = useSelector((state) => state.data.mapViewport);
   const [zoomBreak, setZoomBreak] = useState(0.8);
+  const [mapLoaded, setMapLoaded] = useState(false);
 
   const _onViewportChange = (viewport) => {
     dispatch(setMapViewport(viewport));
@@ -133,6 +135,7 @@ const MapDesktop = ({
   return (
     !isMobileCustom && (
       <div className="mapWrapper">
+        {!mapLoaded && <PatternBackground />}
         <MapGL
           style={
             openInfoPage
@@ -164,6 +167,7 @@ const MapDesktop = ({
           viewportChangeOptions={{
             duration: 2700,
           }}
+          onLoad={() => setMapLoaded(true)}
         >
           <NavigationControl showCompass showZoom position="top-right" />
           {openProject && (

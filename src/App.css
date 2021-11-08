@@ -1353,7 +1353,9 @@ input:focus {
 
 
 .MuiFormControlLabel-root{
-height:31px !important
+height:31px !important;
+    flex: none !important;
+
 }
 .MuiTypography-body1{
 

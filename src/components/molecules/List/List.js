@@ -63,7 +63,7 @@ const List = ({
       setListItems(1);
       sethasMoreItems(true);
     }
-  }, [dropdown, dataFinalLength]);
+  }, [loading, dropdown, dataFinalLength]);
   const itemsPerPage = 1;
   const [hasMoreItems, sethasMoreItems] = useState(true);
   const [listItems, setListItems] = useState(itemsPerPage);

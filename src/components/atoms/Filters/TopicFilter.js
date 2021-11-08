@@ -57,18 +57,20 @@ const OpenButtonMobile = styled.div`
 `;
 
 const TopicFilterInnerWrapperMobile = styled.div`
-  width: 880px;
-
+  
   border-radius: 20px 0 0 20px;
   backdrop-filter: blur(5px);
   background-color: rgb(0, 0, 0, 0.1);
   padding: 5px;
   padding-left: 20px;
-  padding-right: 0px;
+  padding-right: 20px;
   margin: 5px;
   margin-left: calc(100% - 120px);
   animation: ${enterAnimation} 3.5s;
   z-index: 15;
+  display: flex;
+  flex-direction: row;
+  width: max-content;
 `;
 
 const TopicFilterWrapperDesktop = styled.div`
