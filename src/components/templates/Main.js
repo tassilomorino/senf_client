@@ -34,6 +34,7 @@ import Account from "../organisms/Account/Account";
 import Loader from "../atoms/Animations/Loader";
 import { closeAccountFunc } from "../../redux/actions/accountActions";
 import ErrorBackground from "../atoms/Backgrounds/ErrorBackground";
+import { isAndroid } from "react-device-detect";
 
 const Main = () => {
   const { t } = useTranslation();
@@ -76,20 +77,10 @@ const Main = () => {
   const [dropdown, setDropdown] = useState("newest");
 
   useEffect(() => {
-    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    var str = navigator.userAgent;
-    var instagram = str.indexOf("Instagram");
-    var facebook = str.indexOf("FB");
-
-    if (/android/i.test(userAgent) && (instagram != -1 || facebook != -1)) {
-      document.write(
-        '<a target="_blank" href="https://yourdomain.com" download id="open-browser-url">Please wait. Proceed to Chrome</a>'
+    if (navigator.userAgent.includes("Instagram") && isAndroid) {
+      alert(
+        "Bitte schau dir Senf.koeln in deinem Standardbrowser an, falls dir die Seite beschädigt angezeigt wird"
       );
-      window.stop();
-      let input = document.getElementById("open-browser-url");
-      if (input) {
-        input.click();
-      }
     }
     if (
       cookie_settings !== "all" &&

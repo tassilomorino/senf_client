@@ -6,7 +6,7 @@ import React, { Fragment, useState } from "react";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 // Icons
-import CloseIcon from "@material-ui/icons/Close";
+import CloseIcon from "../../../images/icons/close.png";
 
 //Components
 import Thema from "./thema";
@@ -86,7 +86,7 @@ const ThemenDialog = ({ classes, screams }) => {
         onClick={() => setOpen(false)}
         btnClassName={classes.closeButton}
       >
-        <CloseIcon />
+        <img src={CloseIcon} width="20px" />
       </MyButtonStyle>
 
       <DialogContent>
@@ -111,7 +111,7 @@ const ThemenDialog = ({ classes, screams }) => {
         onClick={() => setOpen(false)}
         btnClassName={classes.closeButton}
       >
-        <CloseIcon />
+        <img src={CloseIcon} width="20px" />
       </MyButtonStyle>
 
       <DialogContent>
@@ -123,9 +123,7 @@ const ThemenDialog = ({ classes, screams }) => {
   );
   return (
     <Fragment>
-      <ExpandButton
-        handleButtonClick={() => setOpen(true)}
-      ></ExpandButton>
+      <ExpandButton handleButtonClick={() => setOpen(true)}></ExpandButton>
 
       {dialogComponent}
     </Fragment>

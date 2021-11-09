@@ -29,7 +29,7 @@ import TopPathBad from "../../../images/toppathbad.png";
 import FirstBad from "../../../images/firstbad.png";
 
 //ICON TO OPEN THE INFOMENU
-import CloseIcon from "@material-ui/icons/Close";
+import CloseIcon from "../../../images/icons/close_yellow.png";
 
 import Logo from "../../../images/logo.png";
 import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
@@ -51,7 +51,8 @@ const styles = {
   closeButton: {
     zIndex: 9999,
     position: "fixed",
-    left: "15px",
+    top: "5px",
+    left: "25px",
     width: "40px",
     marginTop: "18px",
     color: "#ffd388",
@@ -107,8 +108,8 @@ const InlineInformationPage = ({ classes }) => {
         <MyButtonStyle
           onClick={() => setOpen(false)}
           btnClassName={classes.closeButton}
-        > 
-          <CloseIcon />
+        >
+          <img src={CloseIcon} width="20px" />
         </MyButtonStyle>
         <div className="logo1">
           <img src={Logo} width="100px" alt="logo1"></img>

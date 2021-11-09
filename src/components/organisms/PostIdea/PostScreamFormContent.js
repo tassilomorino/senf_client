@@ -13,7 +13,7 @@ import { TextField } from "@material-ui/core";
 import PostScreamRules from "./PostScreamRules";
 
 //Icons
-import LocationOn from "@material-ui/icons/LocationOn";
+import LocationYellowIcon from "../../../images/icons/location_yellow.png";
 import CustomSelect from "../../atoms/Selects/CustomSelect";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import { OptionsTopics } from "../../../data/OptionsTopics";
@@ -82,7 +82,12 @@ const PostScreamFormContent = ({
       )}
       <div className={classes.content}>
         <div className={classes.locationOuter} onClick={handleLocationDecided}>
-          <LocationOn  />{" "}
+          <img
+            src={LocationYellowIcon}
+            width="20px"
+            height="20px"
+            style={{ paddingRight: "5px" }}
+          />
           <div className={classes.locationHeader}> ~ {address} </div>
         </div>
         <PostScreamRules />
@@ -146,7 +151,7 @@ const PostScreamFormContent = ({
             position="absolute"
             bottom="70px"
             marginLeft="120px"
-            iconWidth="80%"
+            iconWidth="70%"
             zIndex={0}
             backgroundColor={selectedDays.length === 0 ? "white" : "#fed957"}
             handleButtonClick={() => setCalendarOpen(true)}

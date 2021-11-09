@@ -3,7 +3,7 @@
 import React, { useState, Fragment, useEffect } from "react";
 import { isMobileOnly } from "react-device-detect";
 // Icons
-import CloseIcon from "@material-ui/icons/Close";
+import CloseIcon from "../../../images/icons/close.png";
 
 //Components
 import AgegroupGraph from "./AgegroupGraph";
@@ -158,7 +158,7 @@ const AgegroupDialog = ({ classes, data, screams, likes }) => {
         onClick={() => setOpen(false)}
         btnClassName={classes.closeButton}
       >
-        <CloseIcon />
+        <img src={CloseIcon} width="20px" />
       </MyButton>
 
       <DialogContent>
@@ -186,7 +186,7 @@ const AgegroupDialog = ({ classes, data, screams, likes }) => {
         onClick={() => setOpen(false)}
         btnClassName={classes.closeButton}
       >
-        <CloseIcon />
+        <img src={CloseIcon} width="20px" />
       </MyButton>
 
       <DialogContent>
