@@ -104,10 +104,12 @@ const Main = () => {
             }, 2000);
           }
         });
+    }
+  }, []);
 
-      if (!openInfoPage && screamId) {
-        openDialogFromUrl();
-      }
+  useEffect(() => {
+    if (!openInfoPage && screamId) {
+      openDialogFromUrl();
     }
   }, [openInfoPage]);
 

@@ -34,7 +34,7 @@ const initialState = {
   scream: {},
   comment: {},
   like: {},
-  loading: false,
+  loading: true,
   loadingIdea: false,
   loadingProjects: false,
   loadingMyScreams: false,

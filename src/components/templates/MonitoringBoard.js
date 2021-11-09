@@ -266,7 +266,7 @@ const MonitoringBoard = () => {
           Du hast leider keine Berechtigung, um diese Unterseite zu sehen
         </StyledText>
       </TitleWrapper>
-      {!user.authenticated && (
+      {!user.authenticated | !user.isAdmin && (
         <CustomButton
           text="Melde dich an"
           backgroundColor="#353535"

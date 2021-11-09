@@ -307,7 +307,11 @@ const LoginRegistration = ({ classes }) => {
           setLoading(false);
           dispatch({ type: SET_AUTHENTICATED });
           dispatch(getUserData(user.user.uid));
-          history.push("/");
+          console.log(window.location);
+          if (window.location.pathname === "/verify") {
+            history.push("/");
+          }
+
           setOpen(false);
         } else {
           setLoading(false);
