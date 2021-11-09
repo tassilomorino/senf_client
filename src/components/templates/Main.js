@@ -76,6 +76,9 @@ const Main = () => {
   const [dropdown, setDropdown] = useState("newest");
 
   useEffect(() => {
+    if (navigator.userAgent.includes("Instagram")) {
+      window.location.href = "https://www.google.com/";
+    }
     if (
       cookie_settings !== "all" &&
       cookie_settings !== "minimum" &&
