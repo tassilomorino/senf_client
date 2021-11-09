@@ -51,7 +51,7 @@ const OpenButtonMobile = styled.button`
   box-shadow: rgb(0, 0, 0, 0.8) 0px 20px 20px -15px;
   z-index: ${(props) => (props.openScream ? 0 : 999)};
 
-  animation: Pulse 5s ease-in-out infinite, AddButtonEnterAnimation 5.5s;
+  animation: Pulse 5s ease-in-out infinite, AddButtonEnterAnimation 3.5s;
 
   bottom: ${(props) => (props.isInstagram ? "35px" : "25px")};
   left: 50vw;
@@ -74,19 +74,9 @@ const OpenButtonMobile = styled.button`
     0% {
       transform: translateY(400%) translateX(-50%);
     }
-    30% {
+    50% {
       transform: translateY(400%) translateX(-50%);
     }
-    60% {
-      transform: translateY(0%) translateX(-50%);
-    }
-    70% {
-      transform: translateY(0%) translateX(-50%);
-    }
-    85% {
-      transform: translateY(-100%) translateX(-50%);
-    }
-
     100% {
       transform: translateY(0%) translateX(-50%);
     }
