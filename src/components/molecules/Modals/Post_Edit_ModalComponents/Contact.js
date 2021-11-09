@@ -1,17 +1,13 @@
 /** @format */
 
-import React, { Component, Fragment } from "react";
+import React from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
-import PropTypes from "prop-types";
 
 // MUI Stuff
 import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
 
 // REDUX Stuff
-import { connect } from "react-redux";
 
-import MailIcon from "../../../../images/icons/mail.png";
 import { TextField } from "@material-ui/core";
 import MainModal from "../MainModal";
 

@@ -37,9 +37,6 @@ import cookieConfigurator from "./components/organisms/infocomponents/legal/cook
 
 import MonitoringBoard from "./components/templates/MonitoringBoard";
 import blank from "./pages/Blank";
-
-import ReactGA from "react-ga";
-
 import axios from "axios";
 
 import { isTablet } from "react-device-detect";
@@ -83,8 +80,10 @@ i18n
 const cookies = new Cookies();
 require("intersection-observer");
 
-if (firebase.app.length) {
+if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
+} else {
+  firebase.app(); // if already initialized, use that one
 }
 
 axios.defaults.baseURL = process.env.REACT_APP_DB_BASE_URL;
@@ -149,22 +148,6 @@ if (cookies.get("Cookie_settings") === "all") {
   }
 }
 
-if (cookies.get("Cookie_settings") === "all") {
-  ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS);
-  ReactGA.pageview(window.location.pathname + window.location.search);
-  ReactGA.ga("require", "displayfeatures");
-  ReactGA.ga("set", "allowAdFeatures", true);
-}
-let vh = window.innerHeight * 0.01;
-// Then we set the value in the --vh custom property to the root of the document
-document.documentElement.style.setProperty("--vh", `${vh}px`);
-
-// We listen to the resize event
-window.addEventListener("resize", () => {
-  // We execute the same script as before
-  let vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty("--vh", `${vh}px`);
-});
 const App = () => {
   const { t } = useTranslation();
 

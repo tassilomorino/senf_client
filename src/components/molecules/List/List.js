@@ -1,7 +1,6 @@
 /** @format */
 
 import React, { useState, useEffect, useRef } from "react";
-import _ from "lodash";
 import IdeaCard from "../Cards/IdeaCard";
 import {
   NoMoreMainContent,

@@ -7,8 +7,6 @@ import * as linkify from "linkifyjs";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Typography } from "@material-ui/core";
 import LikeButton from "../../atoms/CustomButtons/LikeButton";
-import MyButton from "../../../util/MyButton";
-import LoginRegistration from "../../atoms/Auth/LoginRegistration";
 import dayjs from "dayjs";
 import { openProjectFunc } from "../../../redux/actions/projectActions";
 
@@ -18,9 +16,7 @@ import CreateIcon from "@material-ui/icons/Create";
 import EventIcon from "@material-ui/icons/Event";
 
 import WeblinkIcon from "../../../images/icons/weblink.png";
-import ChatBorder from "../../../images/icons/chat.png";
 import contactIcon from "../../../images/icons/mail.png";
-import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
 
 import {
   LikeButtonWrapper,

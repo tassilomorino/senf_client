@@ -8,7 +8,6 @@ import "firebase/auth";
 import { useHistory } from "react-router";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import PropTypes from "prop-types";
 import Swipe from "react-easy-swipe";
 
 import ExpandButton from "../CustomButtons/ExpandButton";
@@ -19,7 +18,6 @@ import Wirke_mit from "../../../images/headlines/Wirke_mit.png";
 
 // MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";
-import CloseIcon from "@material-ui/icons/Close";
 import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 import RegistrationFormComponent from "./RegistrationFormComponent";

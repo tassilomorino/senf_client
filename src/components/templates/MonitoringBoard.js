@@ -2,11 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../util/customDeviceDetect";
-import _ from "lodash";
 
 //Redux
 import { getAllFullScreams } from "../../redux/actions/monitoringScreamActions";
@@ -159,8 +157,18 @@ const MonitoringBoard = () => {
 
   const sortedScreams =
     dropdown === "newest"
-      ? _.orderBy(full_screams, "createdAt", "desc")
-      : _.orderBy(full_screams, "likeCount", "desc");
+      ? full_screams?.sort(function (a, b) {
+          if (a.createdAt > b.createdAt) {
+            return -1;
+          }
+          return 0;
+        })
+      : full_screams?.sort(function (a, b) {
+          if (a.likeCount > b.likeCount) {
+            return -1;
+          }
+          return 0;
+        });
 
   const dataFinal = sortedScreams.filter(
     ({ Thema, lat, long, status }) =>

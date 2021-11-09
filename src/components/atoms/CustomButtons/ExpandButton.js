@@ -2,7 +2,6 @@
 
 import React, { useState, useLayoutEffect } from "react";
 import styled from "styled-components";
-import PropTypes from "prop-types";
 
 const RippleContainer = styled.div`
   position: absolute;
@@ -23,7 +22,7 @@ const RippleContainer = styled.div`
   cursor: pointer;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.03);;
+    background-color: rgba(0, 0, 0, 0.03);
   }
 
   span {
@@ -117,53 +116,4 @@ const ExpandButton = ({
   );
 };
 
-ExpandButton.propTypes = {
-  duration: PropTypes.number,
-  color: PropTypes.string,
-};
-
 export default ExpandButton;
-
-// import React from "react";
-// import styled from "styled-components";
-
-// const ButtonExpandRippleAfter = styled.button`
-//   & {
-//     background-color: transparent;
-//     position: absolute;
-//     left: 0%;
-//     top: 0%;
-//     width: 100%;
-//     height: 100%;
-//     border-radius: 20px;
-//     z-index: 9;
-
-//     font-size: 14pt;
-//     font-family: Futura PT W01 Book;
-//   }
-
-//   /* &::after {
-//     content: "";
-//     position: absolute;
-//     left: 50%;
-//     top: 50%;
-//     border-radius: 50%;
-//     padding: 50%;
-//     width: 32px;
-//     height: 32px;
-//     background-color: currentColor;
-//     opacity: 0;
-//     transform: translate(-50%, -50%) scale(1);
-//     transition: opacity 1s, transform 0.5s;
-//   } */
-// `;
-
-// const ExpandButton = ({ handleButtonClick, dataCy, children }) => {
-//   return (
-//     <ButtonExpandRippleAfter onClick={handleButtonClick} data-cy={dataCy}>
-//       {children}
-//     </ButtonExpandRippleAfter>
-//   );
-// };
-
-// export default ExpandButton;

@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom";
 import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../util/customDeviceDetect";
-import _ from "lodash";
 
 import {
   getScreams,
@@ -88,6 +87,9 @@ const Main = () => {
       dispatch(getScreams())
         .then(() => {
           dispatch(getProjects());
+          if (window.location.pathname === "/projects") {
+            handleClick(2);
+          }
         })
         .then(() => {
           if (!screamId) {
@@ -121,9 +123,6 @@ const Main = () => {
         dispatch(openScreamFunc(screamId));
       }
       setScreamIdParam(screamId);
-    }
-    if (window.location.pathname === "/projects") {
-      handleClick(2);
     }
   };
 
@@ -195,10 +194,25 @@ const Main = () => {
     }
   };
 
+  // const sortedScreams =
+  //   dropdown === "newest"
+  //     ? _.orderBy(screams, "createdAt", "desc")
+  //     : _.orderBy(screams, "likeCount", "desc");
+
   const sortedScreams =
     dropdown === "newest"
-      ? _.orderBy(screams, "createdAt", "desc")
-      : _.orderBy(screams, "likeCount", "desc");
+      ? screams?.sort(function (a, b) {
+          if (a.createdAt > b.createdAt) {
+            return -1;
+          }
+          return 0;
+        })
+      : screams?.sort(function (a, b) {
+          if (a.likeCount > b.likeCount) {
+            return -1;
+          }
+          return 0;
+        });
 
   const dataFinal = sortedScreams.filter(
     ({ Thema, lat, long, status }) =>
