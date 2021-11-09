@@ -4,7 +4,6 @@ import { Dialog, DialogContent } from "@material-ui/core";
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { setCookies } from "../../../redux/actions/cookiesActions";
 import { setInfoPageClosed } from "../../../redux/actions/UiActions";
@@ -14,7 +13,6 @@ import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
 const Cookiebanner = () => {
   const cookie_settings = useSelector((state) => state.data.cookie_settings);
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
-  const { screamId } = useParams();
 
   const { t } = useTranslation();
 
