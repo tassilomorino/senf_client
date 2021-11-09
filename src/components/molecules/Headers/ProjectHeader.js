@@ -50,12 +50,6 @@ const ProjectHeader = ({
     }
   };
 
-  function truncateString(str, num) {
-    if (str.length <= num) {
-      return str;
-    }
-    return str.slice(0, num) + "...";
-  }
   return (
     <React.Fragment>
       {shareOpen && (
@@ -76,7 +70,7 @@ const ProjectHeader = ({
             handleButtonClick={handleClose}
           />
 
-          <TitleWrapper>{truncateString(title, amount)}</TitleWrapper>
+          <TitleWrapper>{title}</TitleWrapper>
 
           <ImgWrapperMobile>
             <img src={imgUrl} width="100%" alt="project-thumbnail" />

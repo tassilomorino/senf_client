@@ -61,7 +61,11 @@ export const TitleWrapper = styled.div`
   font-family: PlayfairDisplay-Bold;
   color: #353535;
   text-align: center;
-  width: 60%;
+  width: 73%;
   margin-top: 15px;
   margin-bottom: 20px;
+  max-width: 290px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;

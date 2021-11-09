@@ -115,7 +115,6 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
     value === "" ? initialValue : value
   );
   const [selectedLabel, setSelectedLabel] = useState(initialValue);
-  const [isInViewport, setIsInViewport] = useState(true);
   const [dropDownButtonAmount, setDropDownButtonAmount] = useState(28);
 
   useEffect(() => {
@@ -125,22 +124,6 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
       setDropDownButtonAmount(25);
     }
   }, []);
-
-  useEffect(() => {
-    if (open) {
-      const box = document.querySelector("#container");
-      const rect = box.getBoundingClientRect();
-      const isInViewportVar =
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <=
-          (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <=
-          (window.innerWidth || document.documentElement.clientWidth);
-
-      setIsInViewport(isInViewportVar);
-    }
-  }, [open]);
 
   useEffect(() => {
     for (const option of options) {
@@ -206,7 +189,7 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
                     <Span style={{ fontFamily: "Futura PT W01-Bold" }}>
                       {option.color && <ColorDot color={option.color} />}
                       {option.img && <Img src={option.img} />}
-                      {truncateString(option.label, dropDownButtonAmount)}
+                      {truncateString(option.label, dropDownButtonAmount * 0.9)}
                     </Span>
                   ) : (
                     <Span>
