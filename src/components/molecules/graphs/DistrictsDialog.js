@@ -16,6 +16,7 @@ import DistrictsGraph from "./DistrictsGraph";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
+import MyButton from "../../../util/MyButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -138,12 +139,12 @@ const DistrictsDialog = ({ classes, screams }) => {
       TransitionComponent={Transition}
       fullScreen
     >
-      <MyButtonStyle
+      <MyButton
         onClick={() => setOpen(false)}
         btnClassName={classes.closeButton}
       >
         <img src={CloseIcon} width="20px" />
-      </MyButtonStyle>
+      </MyButton>
 
       <DialogContent>
         <DistrictsGraph classes={classes} screams={screams} />
@@ -161,12 +162,12 @@ const DistrictsDialog = ({ classes, screams }) => {
       TransitionComponent={Transition}
       fullScreen
     >
-      <MyButtonStyle
+      <MyButton
         onClick={() => setOpen(false)}
         btnClassName={classes.closeButton}
       >
         <img src={CloseIcon} width="20px" />
-      </MyButtonStyle>
+      </MyButton>
 
       <DialogContent>
         <DistrictsGraph classes={classes} screams={screams} />

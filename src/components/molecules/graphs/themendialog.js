@@ -18,6 +18,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import Slide from "@material-ui/core/Slide";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
+import MyButton from "../../../util/MyButton";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -82,12 +83,12 @@ const ThemenDialog = ({ classes, screams }) => {
       fullScreen
       maxWidth={"lg"}
     >
-      <MyButtonStyle
+      <MyButton
         onClick={() => setOpen(false)}
         btnClassName={classes.closeButton}
       >
         <img src={CloseIcon} width="20px" />
-      </MyButtonStyle>
+      </MyButton>
 
       <DialogContent>
         <Thema screams={screams} />
