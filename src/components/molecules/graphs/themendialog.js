@@ -108,12 +108,12 @@ const ThemenDialog = ({ classes, screams }) => {
       fullScreen
       maxWidth={"lg"}
     >
-      <MyButtonStyle
+      <MyButton
         onClick={() => setOpen(false)}
         btnClassName={classes.closeButton}
       >
         <img src={CloseIcon} width="20px" />
-      </MyButtonStyle>
+      </MyButton>
 
       <DialogContent>
         <Thema screams={screams} />
