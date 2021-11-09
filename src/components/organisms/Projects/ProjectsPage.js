@@ -7,7 +7,6 @@ import styled from "styled-components";
 //Components
 import { ProjectCard, CreateProject } from "../../molecules/Cards/ProjectCard";
 
-import _ from "lodash";
 import MainAnimations from "../../atoms/Animations/MainAnimations";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 
@@ -52,9 +51,16 @@ const ProjectsPage = ({ loadingProjects, order, projects }) => {
             </ProjectRoomDescription>
             <br />
             {!loadingProjects ? (
-              _.orderBy(projects, "createdAt", "desc").map((projects) => (
-                <ProjectCard key={projects.project} project={projects} />
-              ))
+              projects
+                ?.sort(function (a, b) {
+                  if (a.createdAt > b.createdAt) {
+                    return -1;
+                  }
+                  return 0;
+                })
+                .map((projects) => (
+                  <ProjectCard key={projects.project} project={projects} />
+                ))
             ) : (
               <MainAnimations>
                 <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>

@@ -32,33 +32,6 @@ import Weblink from "../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
 import Contact from "../../molecules/Modals/Post_Edit_ModalComponents/Contact";
 import InlineDatePicker from "../../molecules/Modals/Post_Edit_ModalComponents/InlineDatePicker";
 
-const AddbuttonAnimation = keyframes`
-     0% {
-    background-color: #ffd862;
-  }
-
-  50% {
-    background-color: #414345;
-  }
-
-  100% {
-    background-color: #ffd862;
-  }
-    `;
-
-const enterAnimation = keyframes`
-0% {
-transform: translateY(400%) translateX(-50%);
-}
-50% {
-transform: translateY(400%) translateX(-50%);
-}
-
-
-100% {
-  transform: translateY(0%) translateX(-50%);}
-`;
-
 const OpenButtonMobile = styled.button`
   z-index: 99;
   width: 40px;
@@ -78,12 +51,36 @@ const OpenButtonMobile = styled.button`
   box-shadow: rgb(0, 0, 0, 0.8) 0px 20px 20px -15px;
   z-index: ${(props) => (props.openScream ? 0 : 999)};
 
-  animation: ${AddbuttonAnimation} 5s ease-in-out infinite,
-    ${enterAnimation} 3.5s;
+  animation: Pulse 5s ease-in-out infinite, AddButtonEnterAnimation 3.5s;
 
   bottom: ${(props) => (props.isInstagram ? "35px" : "25px")};
   left: 50vw;
-  transition: 1s;
+
+  @keyframes Pulse {
+    0% {
+      background-color: #ffd862;
+    }
+
+    50% {
+      background-color: #414345;
+    }
+
+    100% {
+      background-color: #ffd862;
+    }
+  }
+
+  @keyframes AddButtonEnterAnimation {
+    0% {
+      transform: translateY(400%) translateX(-50%);
+    }
+    50% {
+      transform: translateY(400%) translateX(-50%);
+    }
+    100% {
+      transform: translateY(0%) translateX(-50%);
+    }
+  }
 `;
 
 const OpenButtonDesktop = styled.button`
@@ -194,11 +191,12 @@ const styles = {
 
 const PostScream = ({ classes, loadingProjects, projectsData }) => {
   const dispatch = useDispatch();
-  const { loading, openScream } = useSelector((state) => state.UI);
-  const { project } = useSelector((state) => state.data);
+  const openScream = useSelector((state) => state.UI.openScream);
+  const loading = useSelector((state) => state.data.loading);
+
+  const project = useSelector((state) => state.data.project);
 
   const user = useSelector((state) => state.user);
-  const { authenticated } = user;
   const history = useHistory();
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
@@ -510,7 +508,6 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
           <span className="addText">{t("postScream_newIdea")}</span>
         </OpenButtonDesktop>
       ) : (
-        !loading &&
         !loading && (
           <OpenButtonMobile
             onClick={handleOpen}
@@ -532,7 +529,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
         BackdropProps={{ classes: { root: classes.root } }}
         PaperProps={{ classes: { root: classes.paper } }}
       >
-        {!authenticated && (
+        {!user.authenticated && (
           <div
             className={
               isMobileCustom ? classes.Authlink : classes.AuthlinkDesktop

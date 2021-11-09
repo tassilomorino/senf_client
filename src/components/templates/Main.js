@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom";
 import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../util/customDeviceDetect";
-import _ from "lodash";
 
 import {
   getScreams,
@@ -35,6 +34,7 @@ import Account from "../organisms/Account/Account";
 import Loader from "../atoms/Animations/Loader";
 import { closeAccountFunc } from "../../redux/actions/accountActions";
 import ErrorBackground from "../atoms/Backgrounds/ErrorBackground";
+import { isAndroid } from "react-device-detect";
 
 const Main = () => {
   const { t } = useTranslation();
@@ -77,16 +77,25 @@ const Main = () => {
   const [dropdown, setDropdown] = useState("newest");
 
   useEffect(() => {
+    if (navigator.userAgent.includes("Instagram") && isAndroid) {
+      alert(
+        "Bitte schau dir Senf.koeln in deinem Standardbrowser an, falls dir die Seite beschädigt angezeigt wird"
+      );
+    }
     if (
       cookie_settings !== "all" &&
       cookie_settings !== "minimum" &&
-      isMobileCustom
+      isMobileCustom &&
+      !screamId
     ) {
       history.push("/intro");
     } else {
       dispatch(getScreams())
         .then(() => {
           dispatch(getProjects());
+          if (window.location.pathname === "/projects") {
+            handleClick(2);
+          }
         })
         .then(() => {
           if (!screamId) {
@@ -103,12 +112,14 @@ const Main = () => {
             }, 2000);
           }
         });
-
-      if (!openInfoPage && screamId) {
-        openDialogFromUrl();
-      }
     }
   }, []);
+
+  useEffect(() => {
+    if (!openInfoPage && screamId) {
+      openDialogFromUrl();
+    }
+  }, [openInfoPage]);
 
   const openDialogFromUrl = () => {
     if (screamId) {
@@ -118,9 +129,6 @@ const Main = () => {
         dispatch(openScreamFunc(screamId));
       }
       setScreamIdParam(screamId);
-    }
-    if (window.location.pathname === "/projects") {
-      handleClick(2);
     }
   };
 
@@ -192,10 +200,25 @@ const Main = () => {
     }
   };
 
+  // const sortedScreams =
+  //   dropdown === "newest"
+  //     ? _.orderBy(screams, "createdAt", "desc")
+  //     : _.orderBy(screams, "likeCount", "desc");
+
   const sortedScreams =
     dropdown === "newest"
-      ? _.orderBy(screams, "createdAt", "desc")
-      : _.orderBy(screams, "likeCount", "desc");
+      ? screams?.sort(function (a, b) {
+          if (a.createdAt > b.createdAt) {
+            return -1;
+          }
+          return 0;
+        })
+      : screams?.sort(function (a, b) {
+          if (a.likeCount > b.likeCount) {
+            return -1;
+          }
+          return 0;
+        });
 
   const dataFinal = sortedScreams.filter(
     ({ Thema, lat, long, status }) =>

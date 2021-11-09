@@ -3,10 +3,6 @@
 import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-import _ from "lodash";
-//MAPSTUFF
-import "mapbox-gl/dist/mapbox-gl.css";
-
 // Redux stuff
 import { connect } from "react-redux";
 import { closeProject } from "../../../redux/actions/projectActions";
@@ -178,8 +174,6 @@ class ProjectDialog extends Component {
 
   render() {
     const {
-      classes,
-
       UI: { loading },
       project: {
         title,
@@ -205,8 +199,18 @@ class ProjectDialog extends Component {
 
     const sortedScreams =
       this.state.dropdown === "newest"
-        ? _.orderBy(dataRar, "createdAt", "desc")
-        : _.orderBy(dataRar, "likeCount", "desc");
+        ? dataRar?.sort(function (a, b) {
+            if (a.createdAt > b.createdAt) {
+              return -1;
+            }
+            return 0;
+          })
+        : dataRar?.sort(function (a, b) {
+            if (a.likeCount > b.likeCount) {
+              return -1;
+            }
+            return 0;
+          });
 
     const dataFinal = sortedScreams.filter(
       ({ Thema, status, lat, long }) =>

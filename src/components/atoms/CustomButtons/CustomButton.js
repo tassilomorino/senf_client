@@ -12,7 +12,7 @@ import HandsnoclapIcon from "../../../images/icons/handsnoclap.png";
 import ChatIconIcon from "../../../images/icons/chat.png";
 import WeblinkIcon from "../../../images/icons/world-wide-web-on-grid.png";
 import ContactIcon from "../../../images/icons/mail.png";
-import DatePickerIcon from "../../../images/icons/calendar.png";
+import DatePickerIcon from "../../../images/icons/datepicker.png";
 const enterAnimation = keyframes`
     0% {
       opacity: 0;

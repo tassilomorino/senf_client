@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment } from "react";
 
 // MUI Stuff
 import Dialog from "@material-ui/core/Dialog";
@@ -12,7 +12,6 @@ import {
   setInfoPageOpen,
   setInfoPageClosed,
 } from "../../../redux/actions/UiActions";
-import { setCookies } from "../../../redux/actions/cookiesActions";
 
 //LazyLoad
 import { LazyImage } from "react-lazy-images";
@@ -24,7 +23,7 @@ import FirstImageBad from "../../../images/bigbubblemanbad.png";
 import FirstImage from "../../../images/bigbubbleman.png";
 import Mountain from "../../../images/bigbubblenew.png";
 
-import { useTranslation, Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 //Icons
@@ -58,9 +57,6 @@ const InlineInformationPageDesktop = () => {
     dispatch(setInfoPageClosed());
   };
 
-  const handleCookies = (cookie_settings) => {
-    dispatch(setCookies(cookie_settings));
-  };
   const handleButtonContactClick = () => {
     var link = "mailto:dein@senf.koeln";
     window.location.href = link;
@@ -178,57 +174,6 @@ const InlineInformationPageDesktop = () => {
                 </span>
                 <span className="footercopy">{t("infopage_illustrator")}</span>
               </div>
-            </DialogContent>
-          </Dialog>
-        ) : !loading ? (
-          <Dialog
-            scroll={"paper"}
-            open={openInfoPage}
-            onClose={handleClose}
-            className="dialogOverlayContent"
-            aria-labelledby="scroll-dialog-title"
-            aria-describedby="scroll-dialog-description"
-            maxWidth={"sm"}
-            PaperProps={{
-              style: { borderRadius: "20px" },
-            }}
-          >
-            <DialogContent style={{ height: "200px" }}>
-              <div className="cookiesText">
-                {" "}
-                <span className="cookiesHeader">{t("cookiebanner_title")}</span>
-                <br />
-                <Trans i18nKey="cookiebanner_text">
-                  Für die Bereitstellung einiger Funktionen und die Verbesserung
-                  dieses Services brauchen wir Cookies. Falls du wirklich nur
-                  die technisch notwendigsten Cookies akzeptieren willst, klicke{" "}
-                  <span
-                    className="Terms"
-                    onClick={() => handleCookies("minimum")}
-                  >
-                    hier
-                  </span>
-                  &nbsp;oder konfiguriere deine{" "}
-                  <span
-                    className="Terms"
-                    onClick={() => {
-                      window.open("/cookieConfigurator", "_blank");
-                    }}
-                  >
-                    Cookie-Einstellungen
-                  </span>
-                  .
-                </Trans>
-              </div>
-
-              <CustomButton
-                text={t("accept")}
-                backgroundColor="#353535"
-                textColor="white"
-                position="relative"
-                top="30px"
-                handleButtonClick={() => handleCookies("all")}
-              />
             </DialogContent>
           </Dialog>
         ) : null}

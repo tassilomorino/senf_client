@@ -1,7 +1,6 @@
 /** @format */
 
 import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
 import Swipe from "react-easy-swipe";
 import { isAndroid } from "react-device-detect";
 import { withTranslation } from "react-i18next";
@@ -253,10 +252,8 @@ class ResetPassword extends Component {
 
     return (
       <Fragment>
-
         <div className={classes.forgot} onClick={() => this.handleOpen()}>
           <span className="Terms">{this.props.t("forgotPassword")}</span>
-
         </div>
         <Dialog
           open={this.state.open}
@@ -330,13 +327,6 @@ class ResetPassword extends Component {
   }
 }
 
-ResetPassword.propTypes = {
-  classes: PropTypes.object.isRequired,
-  resetPassword: PropTypes.func.isRequired,
-
-  user: PropTypes.object.isRequired,
-  UI: PropTypes.object.isRequired,
-};
 const mapStateToProps = (state) => ({
   user: state.user,
   UI: state.UI,

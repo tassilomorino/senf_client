@@ -7,20 +7,16 @@ import * as linkify from "linkifyjs";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Typography } from "@material-ui/core";
 import LikeButton from "../../atoms/CustomButtons/LikeButton";
-import MyButton from "../../../util/MyButton";
-import LoginRegistration from "../../atoms/Auth/LoginRegistration";
 import dayjs from "dayjs";
 import { openProjectFunc } from "../../../redux/actions/projectActions";
 
 // Icons
-import LocationOn from "@material-ui/icons/LocationOn";
-import CreateIcon from "@material-ui/icons/Create";
-import EventIcon from "@material-ui/icons/Event";
+import CalendarIcon from "../../../images/icons/calendar.png";
+import PenIcon from "../../../images/icons/pen.png";
+import LocationIcon from "../../../images/icons/location.png";
 
 import WeblinkIcon from "../../../images/icons/weblink.png";
-import ChatBorder from "../../../images/icons/chat.png";
 import contactIcon from "../../../images/icons/mail.png";
-import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
 
 import {
   LikeButtonWrapper,
@@ -365,13 +361,23 @@ const IdeaCardBig = ({ classes, setClicked }) => {
         <div className={classes.header}>
           {selectedUnixArray !== undefined && selectedUnixArray !== null && (
             <div className={classes.selectedDatesOuter}>
-              <EventIcon className={classes.locationIcon} />
+              <img
+                src={CalendarIcon}
+                width="20px"
+                style={{ paddingRight: "5px" }}
+              />
 
               <div className={classes.locationHeader}> {selectedDates} </div>
             </div>
           )}
           <div className={classes.locationOuter}>
-            <LocationOn className={classes.locationIcon} />{" "}
+            <img
+              src={LocationIcon}
+              width="20px"
+              height="20px"
+              style={{ paddingRight: "5px" }}
+            />
+
             <div className={classes.locationHeader}> {locationHeader} </div>
           </div>
 
@@ -382,7 +388,8 @@ const IdeaCardBig = ({ classes, setClicked }) => {
               alignItems: "start",
             }}
           >
-            <CreateIcon className={classes.locationIcon} />{" "}
+            <img src={PenIcon} width="20px" style={{ paddingRight: "5px" }} />
+
             <Typography
               // component={Link}
               // to={`/users/${userHandle}`}

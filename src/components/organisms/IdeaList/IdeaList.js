@@ -1,6 +1,5 @@
 /** @format */
 import React, { useState, useEffect } from "react";
-import _ from "lodash";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 import { useSelector, useDispatch } from "react-redux";

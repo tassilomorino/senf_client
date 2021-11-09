@@ -1,38 +1,27 @@
 /** @format */
 
-    // overall logic and tests to be done:
-    // 1) NOT LOGGED IN 
-    // 1.a) post an idea => fail
-    // 2) LOG IN
-    // 2.a) post an idea => success
-    // 2.b) delete his own idea => success
-
-const { before } = require("lodash");
+// overall logic and tests to be done:
+// 1) NOT LOGGED IN
+// 1.a) post an idea => fail
+// 2) LOG IN
+// 2.a) post an idea => success
+// 2.b) delete his own idea => success
 
 describe("User that wants to post or delete an idea", () => {
-
   before(() => {
     cy.setCookie("Cookie_settings", "all");
     cy.visit("/");
   });
 
   describe("and is NOT logged in", () => {
-
-    it("tries to post an idea", () => {
-
-    });
-
-
+    it("tries to post an idea", () => {});
 
     describe("and is logged in", () => {
-
       before(() => {
-        // Logs in successfully 
-      })
+        // Logs in successfully
+      });
 
       it("posts an idea", () => {
-        
-        
         //click on the button "+ New idea" within sidebar
         //cy
         //Check if ...?
@@ -83,14 +72,7 @@ describe("User that wants to post or delete an idea", () => {
         //cy
       });
 
-      it("deletes an idea", () => {
-
-      });
-
-    })
-
-  })
-
-
-
+      it("deletes an idea", () => {});
+    });
+  });
 });

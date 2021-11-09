@@ -1,8 +1,7 @@
 /** @format */
 
-import React, { useState, Fragment } from "react";
+import React, { Fragment } from "react";
 import { useSelector } from "react-redux";
-import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 //REDUX STUFF
@@ -18,7 +17,6 @@ import Card from "@material-ui/core/Card";
 
 //ICONS
 import MenuIcon from "../../../images/icons/menu.png";
-import CommentMenuModal from "../Modals/CommentMenuModal";
 import { StyledText } from "../../../styles/GlobalStyle";
 
 const styles = {

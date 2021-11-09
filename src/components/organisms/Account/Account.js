@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import _ from "lodash";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
 import { closeAccountFunc } from "../../../redux/actions/accountActions";
@@ -16,7 +15,6 @@ import {
   BackgroundDesktop,
   BackgroundMobile,
 } from "../../atoms/Backgrounds/GradientBackgrounds";
-import Loader from "../../atoms/Animations/Loader";
 
 const Break = styled.div`
   position: relative;
@@ -53,8 +51,18 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
 
   const sortedScreams =
     dropdown === "newest"
-      ? _.orderBy(myScreams, "createdAt", "desc")
-      : _.orderBy(myScreams, "likeCount", "desc");
+      ? myScreams?.sort(function (a, b) {
+          if (a.createdAt > b.createdAt) {
+            return -1;
+          }
+          return 0;
+        })
+      : myScreams?.sort(function (a, b) {
+          if (a.likeCount > b.likeCount) {
+            return -1;
+          }
+          return 0;
+        });
 
   const dataFinal = myScreams
     ? sortedScreams.filter(

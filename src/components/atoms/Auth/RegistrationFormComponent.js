@@ -1,7 +1,6 @@
 /** @format */
 
 import {
-  CircularProgress,
   FormControl,
   InputLabel,
   Select,
@@ -9,7 +8,6 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
-import { isAndroid } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { SubmitButton } from "../CustomButtons/SubmitButton";
 

@@ -7,7 +7,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 
 // Icons
-import CloseIcon from "@material-ui/icons/Close";
+import CloseIcon from "../../../images/icons/close.png";
 
 //ANIMATION
 import Slide from "@material-ui/core/Slide";
@@ -142,7 +142,7 @@ const DistrictsDialog = ({ classes, screams }) => {
         onClick={() => setOpen(false)}
         btnClassName={classes.closeButton}
       >
-        <CloseIcon />
+        <img src={CloseIcon} width="20px" />
       </MyButtonStyle>
 
       <DialogContent>
@@ -165,7 +165,7 @@ const DistrictsDialog = ({ classes, screams }) => {
         onClick={() => setOpen(false)}
         btnClassName={classes.closeButton}
       >
-        <CloseIcon />
+        <img src={CloseIcon} width="20px" />
       </MyButtonStyle>
 
       <DialogContent>
