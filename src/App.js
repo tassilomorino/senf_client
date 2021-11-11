@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import './styles/mapbox-gl.css';
 import "./App.css";
 import "./AppDesktop.css";
 import "./AppIpad.css";
