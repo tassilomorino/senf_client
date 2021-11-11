@@ -41,6 +41,7 @@
     "source-map-explorer": "^2.5.2",
     "styled-components": "^5.3.3",
     "universal-cookie": "^4.0.4",
+    "workbox-cacheable-response": "^6.3.0",
     "workbox-core": "^6.3.0",
     "workbox-expiration": "^6.3.0",
     "workbox-precaching": "^6.3.0",
@@ -82,5 +83,5 @@
     "start-server-and-test": "^1.13.1"
   },
   "proxy": "https://europe-west1-senf-dev.cloudfunctions.net/api",
-  "buildDate": 1636545369199
+  "buildDate": 1636638205420
 }
