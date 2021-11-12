@@ -7,8 +7,8 @@ import CustomSelect from "../../atoms/Selects/CustomSelect";
 import SortingSelect from "../../atoms/Selects/SortingSelect";
 
 //icons
-import LikeIcon from "../../../images/icons/handsnoclap.png";
-import CommentIcon from "../../../images/icons/chat.png";
+import LikeIcon from "../../../images/icons/handsFull.png";
+import CommentIcon from "../../../images/icons/chat_full.png";
 import CreatedAtIcon from "../../../images/icons/calendar.png";
 
 const MonitoringToolbar = ({
@@ -117,7 +117,7 @@ const MonitoringToolbar = ({
             marginLeft: "5px",
           }}
         >
-          <img alt="like-icon" src={LikeIcon} width="20px"></img>{" "}
+          <img alt="like-icon" src={LikeIcon} width="22px"></img>{" "}
         </div>
         <div style={{ width: "20px", margin: "10px", marginTop: "8px" }}>
           <img alt="comments-icon" src={CommentIcon} width="20px"></img>{" "}

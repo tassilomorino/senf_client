@@ -2027,7 +2027,26 @@ background-color: #353535;
   }
 }
 
-
+.switchDevice{
+  display: block;
+    z-index: 99999;
+    position: fixed;
+    background-attachment: fixed;
+    background-image: linear-gradient(to bottom, #ffd19b, #ffda53, #ffffff);
+    background-repeat: no-repeat;
+    
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 35pt;
+    color: #353535;
+    text-align: center;
+    font-family: "Playfair Display", serif;
+}
 
 .landscapeNote {
   display: none;

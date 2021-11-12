@@ -183,6 +183,13 @@ const App = () => {
           <Cookiebanner />
 
           {tabletNote}
+          {isTablet && (
+            <div className="switchDevice">
+              Bitte öffne Senf.koeln auf deinem Smartphone oder
+              Desktop-Computer. Die Tablet-Version kommt bald wieder :)
+            </div>
+          )}
+
           <div className="landscapeNote">{t("rotate_phone")}</div>
 
           <div className="container">
