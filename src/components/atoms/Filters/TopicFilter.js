@@ -33,6 +33,7 @@ const TopicFilterWrapperMobile = styled.div`
   width: 100%;
   overflow-x: scroll;
   -webkit-overflow-scrolling: touch;
+  transition: 1s;
 `;
 
 const MapClickContainer = styled.div`
@@ -63,7 +64,7 @@ const TopicFilterInnerWrapperMobile = styled.div`
   padding-right: 20px;
   margin: 5px;
   margin-left: calc(100% - 120px);
-  animation: ${enterAnimation} 3.5s;
+  animation: ${enterAnimation} 2.5s ease-out;
   z-index: 15;
   display: flex;
   flex-direction: row;

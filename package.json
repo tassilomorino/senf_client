@@ -77,5 +77,5 @@
     "start-server-and-test": "^1.13.1"
   },
   "proxy": "https://europe-west1-senf-dev.cloudfunctions.net/api",
-  "buildDate": 1636456540831
+  "buildDate": 1636809178839
 }

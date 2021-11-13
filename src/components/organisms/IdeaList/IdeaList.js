@@ -149,9 +149,7 @@ const IdeaList = ({
       console.log(currentTarget);
       if (last && my > 50) {
         set({
-          transform: !down
-            ? `translateY(${window.innerHeight - 120}px)`
-            : `translateY(${0}px)`,
+          transform: `translateY(${window.innerHeight - 120}px)`,
           touchAction: "none",
         });
         setSwipePosition("bottom");
@@ -159,9 +157,8 @@ const IdeaList = ({
 
       if (last && my < -50) {
         set({
-          transform: !down
-            ? `translateY(${141}px)`
-            : `translateY(${window.innerHeight - 120}px)`,
+          transform: `translateY(${141}px)`,
+
           touchAction: "unset",
         });
         setSwipePosition("top");
@@ -173,8 +170,6 @@ const IdeaList = ({
       pointer: { touch: true },
       bounds: {
         enabled: true,
-        top: -window.innerHeight + 341,
-        bottom: swipePosition === "bottom" ? 20 : window.innerHeight - 120,
       },
     }
   );

@@ -145,7 +145,7 @@ const List = ({
         <InfiniteScroll
           loadMore={() => loadMore()}
           hasMore={hasMoreItems}
-          loader={<SkeletonCard dataFinalLength={dataFinalLength === 0} />}
+          // loader={<SkeletonCard dataFinalLength={dataFinalLength === 0} />}
           useWindow={false}
         >
           {showItems(dataFinal)}
