@@ -1113,11 +1113,9 @@ font-size:15px !important
   top: 0;
   
   position:fixed;
+pointer-events:none;
+
 }
-
-
-
-
 
 
 

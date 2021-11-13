@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
@@ -42,6 +42,7 @@ const MapMobile = ({
   geoData,
   setSwipePositionUp,
 }) => {
+  console.log("map is rerendering");
   const dispatch = useDispatch();
   const openScream = useSelector((state) => state.UI.openScream);
   const scream = useSelector((state) => state.data.scream);

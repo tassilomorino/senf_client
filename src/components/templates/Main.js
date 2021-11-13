@@ -18,7 +18,7 @@ import {
   closeProject,
 } from "../../redux/actions/projectActions";
 
-import { setMapViewport } from "../../redux/actions/mapActions";
+import { setMapBounds, setMapViewport } from "../../redux/actions/mapActions";
 
 //Components
 import InsightsPage from "../organisms/Insights/InsightsPage";
@@ -35,12 +35,15 @@ import Loader from "../atoms/Animations/Loader";
 import { closeAccountFunc } from "../../redux/actions/accountActions";
 import ErrorBackground from "../atoms/Backgrounds/ErrorBackground";
 import { isAndroid } from "react-device-detect";
+import MapMobile from "../atoms/map/MapMobile";
 
 const Main = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { screamId } = useParams();
   const { cookie_settings } = useSelector((state) => state.data);
+
+  const [zoomBreak, setZoomBreak] = useState(0.6);
 
   const history = useHistory();
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
@@ -200,6 +203,20 @@ const Main = () => {
     }
   };
 
+  const _onViewportChange = (viewport) => {
+    dispatch(setMapViewport(viewport));
+    if (viewport.zoom > 15) {
+      setZoomBreak(2);
+    } else if (viewport.zoom > 11.5) {
+      setZoomBreak(1);
+    } else {
+      setZoomBreak(0.6);
+    }
+
+    const boundAdds = [500, 1000, 500, 1000];
+    dispatch(setMapBounds(viewport, boundAdds));
+  };
+
   // const sortedScreams =
   //   dropdown === "newest"
   //     ? _.orderBy(screams, "createdAt", "desc")
@@ -282,6 +299,16 @@ const Main = () => {
         geoData={project && openProject && project.geoData}
       ></MapDesktop>
 
+      {(order === 1 || openProject || openScream) && (
+        <MapMobile
+          dataFinal={dataFinalMap}
+          viewport={mapViewport}
+          _onViewportChange={_onViewportChange}
+          //  setSwipePositionUp={() => setSwipePositionUp()}
+          zoomBreak={zoomBreak}
+          geoData={project && openProject && project.geoData}
+        />
+      )}
       {!openInfoPage && (
         <div className="contentWrapper">
           {loading && !isMobileCustom && <Loader />}
@@ -294,7 +321,7 @@ const Main = () => {
               order={order}
               dataFinal={dataFinal}
               dataFinalLength={dataFinalLength}
-              dataFinalMap={dataFinalMap.slice(0, 5)}
+              dataFinalMap={dataFinalMap}
               viewport={mapViewport}
               handleDropdown={handleDropdown}
               projectsData={projects}

@@ -240,7 +240,11 @@ class ProjectDialog extends Component {
           />
 
           <div className="projectDialog">
-            {isMobileCustom ? <BackgroundMobile /> : <BackgroundDesktop />}
+            {isMobileCustom && this.state.order !== 1 ? (
+              <BackgroundMobile />
+            ) : !isMobileCustom ? (
+              <BackgroundDesktop />
+            ) : null}
 
             {this.state.order === 1 && (
               <IdeaList
