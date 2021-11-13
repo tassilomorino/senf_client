@@ -83,10 +83,6 @@ require("intersection-observer");
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
- 
-} else {
-  firebase.app(); // if already initialized, use that one
-   
   firebase
   .firestore()
   .enablePersistence()
@@ -95,6 +91,11 @@ if (!firebase.apps.length) {
     console.log(err);
     return firebase.firestore();
   });
+ 
+} else {
+  firebase.app(); // if already initialized, use that one
+   
+  
 }
 
 axios.defaults.baseURL = process.env.REACT_APP_DB_BASE_URL;
