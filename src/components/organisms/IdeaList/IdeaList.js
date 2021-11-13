@@ -145,8 +145,7 @@ const IdeaList = ({
   }, [openScream]);
 
   const bind = useDrag(
-    ({ last, currentTarget, down, movement: [, my], offset: [, y] }) => {
-      console.log(currentTarget);
+    ({ last, down, movement: [, my], offset: [, y] }) => {
       if (last && my > 50) {
         set({
           transform: `translateY(${window.innerHeight - 120}px)`,

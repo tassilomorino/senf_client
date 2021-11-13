@@ -294,7 +294,7 @@ const Main = () => {
               order={order}
               dataFinal={dataFinal}
               dataFinalLength={dataFinalLength}
-              dataFinalMap={dataFinalMap}
+              dataFinalMap={dataFinalMap.slice(0, 5)}
               viewport={mapViewport}
               handleDropdown={handleDropdown}
               projectsData={projects}
