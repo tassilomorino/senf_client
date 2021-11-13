@@ -21,6 +21,7 @@ const Card = styled.div`
   background-color: white;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0);
   margin-bottom: 10px;
+  pointer-events: all;
 `;
 
 const Content = styled.div`

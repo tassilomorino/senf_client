@@ -1,15 +1,13 @@
 /** @format */
 
-import React, { Component } from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 // Redux stuff
-import { connect } from "react-redux";
 import { closeProject } from "../../../redux/actions/projectActions";
 import { clearErrors } from "../../../redux/actions/errorsActions";
 import {
   setMapViewport,
-  setMapBounds,
   setResetMapBounds,
 } from "../../../redux/actions/mapActions";
 
@@ -36,39 +34,41 @@ const Break = styled.div`
   }
 `;
 
-const styles = {
-  root: {
-    backgroundColor: "transparent",
-    padding: "0",
-  },
+const ProjectDialog = ({
+  viewport,
+  handleTopicSelector,
+  topicsSelected,
+  projectsData,
+  loadingProjects,
+  dataFinalMap,
+}) => {
+  const [open, setOpen] = useState(false);
 
-  paper: {
-    backgroundColor: "transparent",
-    boxShadow: "none",
-    // overflow: "hidden",
-    padding: "0",
-  },
-};
+  const [oldPath, setOldPath] = useState("");
+  const [newPath, setNewPath] = useState("");
+  const [path, setPath] = useState("");
+  const [order, setOrder] = useState(1);
+  const [dropdown, setDropdown] = useState("newest");
 
-class ProjectDialog extends Component {
-  state = {
-    open: false,
-    oldPath: "",
-    newPath: "",
-    path: "",
-    order: 1,
-    screamIdParam: null,
-    dropdown: "newest",
-    dialogStyle: {},
-  };
+  const openProject = useSelector((state) => state.UI.openProject);
+  const project = useSelector((state) => state.data.project);
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.UI.loading);
+  const mapBounds = useSelector((state) => state.data.mapBounds);
+  const {
+    title,
+    owner,
+    imgUrl,
+    description,
+    startDate,
+    endDate,
+    geoData,
+    weblink,
+    contact,
+    calendar,
+  } = project;
 
-  componentDidMount() {
-    if (this.props.openProject) {
-      this.handleOpen();
-    }
-  }
-
-  handleOpen = () => {
+  useEffect(() => {
     const bounds = {
       latitude1: 51.08,
       latitude2: 50.79,
@@ -76,15 +76,11 @@ class ProjectDialog extends Component {
       longitude3: 7.17,
     };
 
-    this.props.setResetMapBounds(bounds);
-    this.props.handleTopicSelector("all");
+    dispatch(setResetMapBounds(bounds));
+    handleTopicSelector("all");
 
-    let oldPath = window.location.pathname;
-    this.setState({
-      oldPath,
-    });
+    setOldPath(window.location.pathname);
     setTimeout(() => {
-      const { project } = this.props.project;
       const newPath = `/${project}`;
 
       if (project !== undefined) {
@@ -92,34 +88,24 @@ class ProjectDialog extends Component {
       }
 
       setTimeout(() => {
-        this.setState({
-          path: "https://senf.koeln" + newPath,
-        });
+        setPath("https://senf.koeln" + newPath);
       }, 10);
 
-      if (this.props.project.centerLong !== undefined) {
+      if (project.centerLong !== undefined) {
         setTimeout(() => {
-          const centerLat = this.props.project.centerLat;
-          const centerLong = this.props.project.centerLong;
-          const zoom = isMobileCustom
-            ? this.props.project.zoom - 2
-            : this.props.project.zoom;
+          const centerLat = project.centerLat;
+          const centerLong = project.centerLong;
+          const zoom = isMobileCustom ? project.zoom - 2 : project.zoom;
 
-          this.zoomToBounds(centerLat, centerLong, zoom);
+          zoomToBounds(centerLat, centerLong, zoom);
         }, 600);
       }
-
-      setTimeout(() => {
-        this.setState({
-          dialogStyle: { position: "initial" },
-        });
-      }, 2000);
     }, 10);
-  };
+  }, [openProject]);
 
-  handleClose = () => {
-    this.props.closeProject();
-    this.props.clearErrors();
+  const handleClose = () => {
+    dispatch(closeProject());
+    dispatch(clearErrors());
 
     const viewport = {
       latitude: 50.95,
@@ -129,19 +115,11 @@ class ProjectDialog extends Component {
       pitch: 30,
       bearing: 0,
     };
-    this.props.setMapViewport(viewport);
-
-    setTimeout(() => {
-      this.setState({
-        dialogStyle: {},
-      });
-    }, 1000);
+    dispatch(setMapViewport(viewport));
   };
 
-  handleClick = (order) => {
-    this.setState({
-      order,
-    });
+  const handleClick = (order) => {
+    setOrder(order);
 
     if (order === 2) {
       window.scrollTo({
@@ -151,16 +129,14 @@ class ProjectDialog extends Component {
       });
     }
 
-    this.props.clearErrors();
+    dispatch(clearErrors());
   };
 
-  handleDropdown = (value) => {
-    this.setState({
-      dropdown: value,
-    });
+  const handleDropdown = (value) => {
+    setDropdown(value);
   };
 
-  zoomToBounds = (centerLat, centerLong, zoom) => {
+  const zoomToBounds = (centerLat, centerLong, zoom) => {
     const viewport = {
       latitude: centerLat,
       longitude: centerLong,
@@ -169,167 +145,124 @@ class ProjectDialog extends Component {
       pitch: 30,
       bearing: 0,
     };
-    this.props.setMapViewport(viewport);
+    dispatch(setMapViewport(viewport));
   };
 
-  render() {
-    const {
-      UI: { loading },
-      project: {
-        title,
-        owner,
-        imgUrl,
-        description,
-        startDate,
-        endDate,
-        geoData,
-        weblink,
-        contact,
-        calendar,
-      },
-      viewport,
-      handleTopicSelector,
-      topicsSelected,
-      projectsData,
-      loadingProjects,
-      dataFinalMap,
-    } = this.props;
+  const dataRar = project.screams;
 
-    const dataRar = this.props.project.screams;
+  const sortedScreams =
+    dropdown === "newest"
+      ? dataRar?.sort(function (a, b) {
+          if (a.createdAt > b.createdAt) {
+            return -1;
+          }
+          return 0;
+        })
+      : dataRar?.sort(function (a, b) {
+          if (a.likeCount > b.likeCount) {
+            return -1;
+          }
+          return 0;
+        });
 
-    const sortedScreams =
-      this.state.dropdown === "newest"
-        ? dataRar?.sort(function (a, b) {
-            if (a.createdAt > b.createdAt) {
-              return -1;
-            }
-            return 0;
-          })
-        : dataRar?.sort(function (a, b) {
-            if (a.likeCount > b.likeCount) {
-              return -1;
-            }
-            return 0;
-          });
+  const dataFinal = sortedScreams.filter(
+    ({ Thema, status, lat, long }) =>
+      topicsSelected.includes(Thema) &&
+      lat <= mapBounds.latitude1 &&
+      lat >= mapBounds.latitude2 &&
+      long >= mapBounds.longitude2 &&
+      long <= mapBounds.longitude3 &&
+      status === "None"
+  );
 
-    const dataFinal = sortedScreams.filter(
-      ({ Thema, status, lat, long }) =>
-        topicsSelected.includes(Thema) &&
-        lat <= this.props.data.mapBounds.latitude1 &&
-        lat >= this.props.data.mapBounds.latitude2 &&
-        long >= this.props.data.mapBounds.longitude2 &&
-        long <= this.props.data.mapBounds.longitude3 &&
-        status === "None"
-    );
+  const dataFinalLength = dataFinal.length;
 
-    const dataFinalLength = dataFinal.length;
+  return (
+    openProject && (
+      <React.Fragment>
+        <ProjectHeader
+          imgUrl={imgUrl}
+          title={title}
+          loading={loading}
+          calendar={calendar}
+          order={order}
+          path={path}
+          project={project}
+          handleClose={handleClose}
+          handleClick={handleClick}
+        />
 
-    return (
-      this.props.openProject && (
-        <React.Fragment>
-          <ProjectHeader
-            imgUrl={imgUrl}
-            title={title}
-            loading={loading}
-            calendar={calendar}
-            order={this.state.order}
-            path={this.state.path}
-            project={this.props.project}
-            handleClose={this.handleClose}
-            handleClick={this.handleClick}
-          />
+        <div className="projectDialog">
+          {isMobileCustom && order !== 1 ? (
+            <BackgroundMobile />
+          ) : !isMobileCustom ? (
+            <BackgroundDesktop />
+          ) : null}
 
-          <div className="projectDialog">
-            {isMobileCustom && this.state.order !== 1 ? (
-              <BackgroundMobile />
-            ) : !isMobileCustom ? (
-              <BackgroundDesktop />
-            ) : null}
+          {order === 1 && (
+            <IdeaList
+              type="projectIdeas"
+              loading={loading}
+              order={order}
+              dataFinal={dataFinal}
+              dataFinalLength={dataFinalLength}
+              geoData={geoData}
+              viewport={viewport}
+              handleDropdown={handleDropdown}
+              projectsData={projectsData}
+              loadingProjects={loadingProjects}
+              project={project}
+              dropdown={dropdown}
+              handleTopicSelector={handleTopicSelector}
+              topicsSelected={topicsSelected}
+              dataFinalMap={dataFinalMap}
+            ></IdeaList>
+          )}
+          {order === 2 && (
+            <div style={{ overflow: "scroll", height: "100vh" }}>
+              <Break />
 
-            {this.state.order === 1 && (
-              <IdeaList
-                type="projectIdeas"
-                loading={loading}
-                order={this.state.order}
-                dataFinal={dataFinal}
-                dataFinalLength={dataFinalLength}
-                geoData={geoData}
-                viewport={viewport}
-                handleDropdown={this.handleDropdown}
-                projectsData={projectsData}
-                loadingProjects={loadingProjects}
-                project={this.props.project}
-                dropdown={this.state.dropdown}
-                handleTopicSelector={handleTopicSelector}
-                topicsSelected={topicsSelected}
-                dataFinalMap={dataFinalMap}
-              ></IdeaList>
-            )}
-            {this.state.order === 2 && (
-              <div style={{ overflow: "scroll", height: "100vh" }}>
-                <Break />
+              <MainAnimations
+                transition="0.5s"
+                display="block"
+                paddingBottom="2em"
+                height="100%"
+              >
+                <ProjectInfo
+                  description={description}
+                  weblink={weblink}
+                  contact={contact}
+                  startDate={startDate}
+                  endDate={endDate}
+                  owner={owner}
+                />
+                <br />
+              </MainAnimations>
+            </div>
+          )}
+          {order === 3 && (
+            <React.Fragment>
+              <Break />
 
-                <MainAnimations
-                  transition="0.5s"
-                  display="block"
-                  paddingBottom="2em"
-                  height="100%"
-                >
-                  <ProjectInfo
-                    description={description}
-                    weblink={weblink}
-                    contact={contact}
-                    startDate={startDate}
-                    endDate={endDate}
-                    owner={owner}
-                  />
-                  <br />
-                </MainAnimations>
-              </div>
-            )}
-            {this.state.order === 3 && (
-              <React.Fragment>
-                <Break />
-
-                <MainAnimations
-                  transition="0.5s"
-                  display="block"
-                  paddingBottom="2em"
-                  height="100%"
-                  position={document.body.clientWidth > 768 && "fixed"}
-                  top={document.body.clientWidth > 768 && "100px"}
-                >
-                  <CalendarComponent
-                    projectScreams={this.props.project.screams}
-                    handleClick={this.handleClick}
-                  ></CalendarComponent>
-                </MainAnimations>
-              </React.Fragment>
-            )}
-          </div>
-        </React.Fragment>
-      )
-    );
-  }
-}
-
-const mapStateToProps = (state) => ({
-  scream: state.data.scream,
-  project: state.data.project,
-  data: state.data,
-  UI: state.UI,
-  user: state.user,
-});
-
-const mapActionsToProps = {
-  clearErrors,
-  closeProject,
-  setMapViewport,
-  setMapBounds,
-  setResetMapBounds,
+              <MainAnimations
+                transition="0.5s"
+                display="block"
+                paddingBottom="2em"
+                height="100%"
+                position={document.body.clientWidth > 768 && "fixed"}
+                top={document.body.clientWidth > 768 && "100px"}
+              >
+                <CalendarComponent
+                  projectScreams={project.screams}
+                  handleClick={handleClick}
+                ></CalendarComponent>
+              </MainAnimations>
+            </React.Fragment>
+          )}
+        </div>
+      </React.Fragment>
+    )
+  );
 };
 
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(ProjectDialog));
+export default ProjectDialog;

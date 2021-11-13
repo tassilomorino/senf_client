@@ -355,7 +355,7 @@ const Main = () => {
               viewport={mapViewport}
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
-            ></ProjectDialog>
+            />
           )}
           {openAccount && (
             <Account
