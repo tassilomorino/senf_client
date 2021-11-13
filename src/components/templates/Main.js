@@ -36,6 +36,7 @@ import { closeAccountFunc } from "../../redux/actions/accountActions";
 import ErrorBackground from "../atoms/Backgrounds/ErrorBackground";
 import { isAndroid } from "react-device-detect";
 import MapMobile from "../atoms/map/MapMobile";
+import TopicFilter from "../atoms/Filters/TopicFilter";
 
 const Main = () => {
   const { t } = useTranslation();
@@ -299,16 +300,25 @@ const Main = () => {
         geoData={project && openProject && project.geoData}
       ></MapDesktop>
 
-      {(order === 1 || openProject || openScream) && (
-        <MapMobile
-          dataFinal={dataFinalMap}
-          viewport={mapViewport}
-          _onViewportChange={_onViewportChange}
-          //  setSwipePositionUp={() => setSwipePositionUp()}
-          zoomBreak={zoomBreak}
-          geoData={project && openProject && project.geoData}
-        />
-      )}
+      {!loading &&
+        !loadingProjects &&
+        (order === 1 || openProject || openScream) && (
+          <React.Fragment>
+            <TopicFilter
+              loading={loading}
+              handleTopicSelector={handleTopicSelector}
+              topicsSelected={topicsSelected}
+            />
+            <MapMobile
+              dataFinal={dataFinalMap}
+              viewport={mapViewport}
+              _onViewportChange={_onViewportChange}
+              zoomBreak={zoomBreak}
+              openProject={openProject}
+              geoData={project && openProject && project.geoData}
+            />
+          </React.Fragment>
+        )}
       {!openInfoPage && (
         <div className="contentWrapper">
           {loading && !isMobileCustom && <Loader />}

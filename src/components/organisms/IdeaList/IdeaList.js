@@ -14,11 +14,13 @@ import { useDrag } from "@use-gesture/react";
 import styled from "styled-components";
 
 //Components
-import MapMobile from "../../atoms/map/MapMobile";
 import List from "../../molecules/List/List";
 import PostScream from "../PostIdea/PostScream";
-import TopicFilter from "../../atoms/Filters/TopicFilter";
 import Toolbar from "../../molecules/Toolbar/Toolbar";
+import {
+  setSwipePositionDown,
+  setSwipePositionUp,
+} from "../../../redux/actions/UiActions";
 
 const Wrapper = styled.div`
   opacity: 1;
@@ -74,36 +76,16 @@ const IdeaList = ({
   handleDropdown,
   dataFinal,
   dataFinalLength,
-  dataFinalMap,
   projectsData,
-  geoData,
   loadingProjects,
   project,
-  handleTopicSelector,
-  topicsSelected,
   zIndex,
 }) => {
-  const mapViewport = useSelector((state) => state.data.mapViewport);
   const openScream = useSelector((state) => state.UI.openScream);
 
   const dispatch = useDispatch();
-  const [zoomBreak, setZoomBreak] = useState(0.6);
 
-  const _onViewportChange = (viewport) => {
-    dispatch(setMapViewport(viewport));
-    if (viewport.zoom > 15) {
-      setZoomBreak(2);
-    } else if (viewport.zoom > 11.5) {
-      setZoomBreak(1);
-    } else {
-      setZoomBreak(0.6);
-    }
-
-    const boundAdds = [500, 1000, 500, 1000];
-    dispatch(setMapBounds(viewport, boundAdds));
-  };
-
-  const [swipePosition, setSwipePosition] = useState("bottom");
+  const swipePosition = useSelector((state) => state.UI.swipePosition);
   const [props, set] = useSpring(() => ({
     x: 0,
     y: 0,
@@ -114,16 +96,16 @@ const IdeaList = ({
     userSelect: "none",
   }));
 
-  const setSwipePositionUp = () => {
-    setSwipePosition("top");
+  const setSwipeUp = () => {
+    dispatch(setSwipePositionUp());
     set({
       transform: `translateY(${141}px)`,
       touchAction: "unset",
     });
   };
 
-  const setSwipePositionDown = () => {
-    setSwipePosition("bottom");
+  const setSwipeDown = () => {
+    dispatch(setSwipePositionDown());
     set({
       transform: `translateY(${window.innerHeight - 120}px)`,
       touchAction: "none",
@@ -144,6 +126,12 @@ const IdeaList = ({
     }
   }, [openScream]);
 
+  useEffect(() => {
+    if (swipePosition === "bottom") {
+      setSwipeDown();
+    }
+  }, [swipePosition]);
+
   const bind = useDrag(
     ({ last, down, movement: [, my], offset: [, y] }) => {
       if (last && my > 50) {
@@ -151,7 +139,7 @@ const IdeaList = ({
           transform: `translateY(${window.innerHeight - 120}px)`,
           touchAction: "none",
         });
-        setSwipePosition("bottom");
+        dispatch(setSwipePositionDown());
       }
 
       if (last && my < -50) {
@@ -160,7 +148,7 @@ const IdeaList = ({
 
           touchAction: "unset",
         });
-        setSwipePosition("top");
+        dispatch(setSwipePositionUp());
       }
 
       set({ y: down ? my : 0 });
@@ -178,13 +166,6 @@ const IdeaList = ({
       {" "}
       {isMobileCustom ? (
         <React.Fragment>
-          <TopicFilter
-            loading={loading}
-            handleTopicSelector={handleTopicSelector}
-            topicsSelected={topicsSelected}
-            swipePosition={swipePosition}
-            setSwipePositionDown={() => setSwipePositionDown()}
-          ></TopicFilter>{" "}
           <PostScream
             loadingProjects={loadingProjects}
             projectsData={projectsData}
@@ -207,8 +188,8 @@ const IdeaList = ({
                   dataFinalLength={dataFinalLength}
                   handleClickSwipe={
                     swipePosition === "bottom"
-                      ? () => setSwipePositionUp()
-                      : () => setSwipePositionDown()
+                      ? () => setSwipeUp()
+                      : () => setSwipeDown()
                   }
                 />{" "}
               </animated.div>

@@ -35,12 +35,11 @@ const PinComponent = styled.img`
 const MapMobile = ({
   dataFinal,
   viewport,
-
+  openProject,
   _onViewportChange,
   zoomBreak,
   loadingProjects,
   geoData,
-  setSwipePositionUp,
 }) => {
   console.log("map is rerendering");
   const dispatch = useDispatch();
@@ -110,16 +109,23 @@ const MapMobile = ({
           }}
           onLoad={() => setMapLoaded(true)}
         >
-          <Source id="maine" type="geojson" data={data} />
-          <Layer
-            id="maine"
-            type="fill"
-            source="maine"
-            paint={{
-              "fill-color": "#fed957",
-              "fill-opacity": 0.2,
-            }}
-          />
+          {openProject &&
+            !loadingProjects &&
+            geoData !== undefined &&
+            geoData !== "" && (
+              <React.Fragment>
+                <Source id="maine" type="geojson" data={data} />
+                <Layer
+                  id="maine"
+                  type="fill"
+                  source="maine"
+                  paint={{
+                    "fill-color": "#fed957",
+                    "fill-opacity": 0.3,
+                  }}
+                />
+              </React.Fragment>
+            )}
 
           <MarkersMobile
             dataFinalMap={dataFinalMap}
@@ -144,10 +150,7 @@ const MapMobile = ({
               />
             </Marker>
           )}
-          <NoLocationPopUp
-            dataNoLocation={dataNoLocation}
-            setSwipePositionUp={setSwipePositionUp}
-          />
+          <NoLocationPopUp dataNoLocation={dataNoLocation} />
         </MapGL>
       </Wrapper>
     )

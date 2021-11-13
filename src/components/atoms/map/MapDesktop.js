@@ -170,20 +170,23 @@ const MapDesktop = ({
           onLoad={() => setMapLoaded(true)}
         >
           <NavigationControl showCompass showZoom position="top-right" />
-          {openProject && (
-            <React.Fragment>
-              <Source id="maine" type="geojson" data={data} />
-              <Layer
-                id="maine"
-                type="fill"
-                source="maine"
-                paint={{
-                  "fill-color": "#fed957",
-                  "fill-opacity": 0.3,
-                }}
-              />
-            </React.Fragment>
-          )}
+          {openProject &&
+            !loadingProjects &&
+            geoData !== undefined &&
+            geoData !== "" && (
+              <React.Fragment>
+                <Source id="maine" type="geojson" data={data} />
+                <Layer
+                  id="maine"
+                  type="fill"
+                  source="maine"
+                  paint={{
+                    "fill-color": "#fed957",
+                    "fill-opacity": 0.3,
+                  }}
+                />
+              </React.Fragment>
+            )}
           <DesktopMapButtons viewport={viewport} />
 
           {/* {dataFinalMap.map(

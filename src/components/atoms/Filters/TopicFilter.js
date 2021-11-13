@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -11,6 +11,7 @@ import topics from "../../../data/topics";
 import { useTranslation } from "react-i18next";
 
 import styled, { keyframes } from "styled-components";
+import { setSwipePositionDown } from "../../../redux/actions/UiActions";
 
 const enterAnimation = keyframes`
        0% {
@@ -85,13 +86,13 @@ export function TopicFilter({
   handleTopicSelector,
   topicsSelected,
   loading,
-  swipePosition,
-  setSwipePositionDown,
   inline,
 }) {
   const openScream = useSelector((state) => state.UI.openScream);
   const [moveLeft, setMoveLeft] = useState(false);
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const swipePosition = useSelector((state) => state.UI.swipePosition);
 
   useEffect(() => {
     if (openScream) {
@@ -122,6 +123,10 @@ export function TopicFilter({
     }
   }, [moveLeft]);
 
+  const setSwipeDown = () => {
+    dispatch(setSwipePositionDown());
+  };
+
   // Handler at index 0 is for the "all" checkbox
   const topicFilters = topics.map((topic, i) => {
     return (
@@ -141,9 +146,7 @@ export function TopicFilter({
 
   return isMobileCustom && !loading && !inline ? (
     <TopicFilterWrapperMobile openScream={openScream} id="Wrapper">
-      {swipePosition === "top" && (
-        <MapClickContainer onClick={setSwipePositionDown} />
-      )}
+      {swipePosition === "top" && <MapClickContainer onClick={setSwipeDown} />}
 
       <TopicFilterInnerWrapperMobile>
         <OpenButtonMobile
