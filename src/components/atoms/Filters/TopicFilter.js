@@ -32,9 +32,7 @@ const TopicFilterWrapperMobile = styled.div`
   top: ${(props) => (props.openScream ? "10px" : "90px")};
   width: 100%;
   overflow-x: scroll;
-
   -webkit-overflow-scrolling: touch;
-  transition: 1s;
 `;
 
 const MapClickContainer = styled.div`
@@ -57,7 +55,6 @@ const OpenButtonMobile = styled.div`
 `;
 
 const TopicFilterInnerWrapperMobile = styled.div`
-  
   border-radius: 20px 0 0 20px;
   backdrop-filter: blur(5px);
   background-color: rgb(0, 0, 0, 0.1);

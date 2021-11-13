@@ -52,10 +52,10 @@ const styles = {
   closeButton: {
     zIndex: 9999,
     position: "fixed",
-    top: "5px",
-    left: "25px",
+    top: "0px",
+    left: "15px",
     width: "40px",
-    marginTop: "18px",
+    marginTop: "10px",
     color: "#ffd388",
     transform: "scale(1.5)",
   },

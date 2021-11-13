@@ -24,7 +24,7 @@ const Wrapper = styled.div`
   opacity: 1;
   display: flex;
   flex-direction: row;
-  transition: 0.5s;
+
   width: 100%;
   height: 100%;
   overflow: hidden;
