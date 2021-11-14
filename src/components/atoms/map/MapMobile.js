@@ -27,11 +27,14 @@ const Wrapper = styled.div`
 const PinComponent = styled.img`
   position: absolute;
   width: 100px;
-  transform: translateY(-88%) translateX(-45%) rotate(0deg);
+  transform: translateY(-90%) translateX(-50%) rotate(0deg);
   transform-origin: bottom center;
-  margin-top: ${(props) => -(7 + props.likeCount / 4) * props.zoomBreak + "px"};
+
+  margin-top: ${(props) =>
+    -((7 + props.likeCount / 4) * props.zoomBreak) / 1.5 + "px"};
   margin-left: ${(props) =>
-    -((7 + props.likeCount / 4) * props.zoomBreak) / 2 + "px"};
+    -((7 + props.likeCount / 4) * props.zoomBreak) / 8 + "px"};
+  z-index: 0;
 `;
 
 const MapMobile = ({

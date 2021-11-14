@@ -1,7 +1,7 @@
 /** @format */
 
-import React, { useState, PureComponent } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
 //Redux
@@ -30,11 +30,13 @@ import { useParams } from "react-router";
 const PinComponent = styled.img`
   position: absolute;
   width: 100px;
-  transform: translateY(-88%) translateX(-45%) rotate(0deg);
+  transform: translateY(-90%) translateX(-50%) rotate(0deg);
   transform-origin: bottom center;
-  margin-top: ${(props) => -(7 + props.likeCount / 4) * props.zoomBreak + "px"};
+  margin-top: ${(props) =>
+    -((7 + props.likeCount / 4) * props.zoomBreak) / 1.5 + "px"};
   margin-left: ${(props) =>
-    -((7 + props.likeCount / 4) * props.zoomBreak) / 2 + "px"};
+    -((7 + props.likeCount / 4) * props.zoomBreak) / 8 + "px"};
+  z-index: 0;
 `;
 
 const styles = {
@@ -61,6 +63,8 @@ const MapDesktop = ({
   dataFinal,
   geoData,
   openProject,
+  _onViewportChange,
+  zoomBreak,
 }) => {
   const { t } = useTranslation();
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
@@ -78,21 +82,8 @@ const MapDesktop = ({
   const [hoverLikeCount, setHoverLikeCount] = useState("");
 
   const viewport = useSelector((state) => state.data.mapViewport);
-  const [zoomBreak, setZoomBreak] = useState(0.8);
   const [mapLoaded, setMapLoaded] = useState(false);
   const { screamId } = useParams();
-
-  const _onViewportChange = (viewport) => {
-    dispatch(setMapViewport(viewport));
-
-    if (viewport.zoom > 15) {
-      setZoomBreak(2);
-    } else if (viewport.zoom > 13) {
-      setZoomBreak(1.2);
-    } else {
-      setZoomBreak(0.8);
-    }
-  };
 
   const fetchDataScream = (screamId) => {
     dispatch(openScreamFunc(screamId));
@@ -327,8 +318,8 @@ const MapDesktop = ({
                 height: (7 + hoverLikeCount / 4) * zoomBreak + "px",
                 marginTop: -(7 + hoverLikeCount / 4) * zoomBreak + "px",
                 borderRadius: "100%",
-                border: "1px white solid",
-                backgroundColor: "rgb(0,0,0,0.2)",
+                // border: "1px white solid",
+                // backgroundColor: "rgb(0,0,0,0.2)",
 
                 opacity: "1",
                 pointerEvents: "none",
@@ -337,8 +328,8 @@ const MapDesktop = ({
               <div
                 className={classes.title}
                 style={{
-                  marginLeft: +(15 * zoomBreak + hoverLikeCount / 4) + "px",
-                  marginTop: +(5 * zoomBreak + hoverLikeCount / 8) + "px",
+                  marginLeft: +(18 + hoverLikeCount / 4) * zoomBreak + "px",
+                  marginTop: +(5 + hoverLikeCount / 6) * zoomBreak + "px",
                   transform: "translateY(-50%)",
                 }}
               >

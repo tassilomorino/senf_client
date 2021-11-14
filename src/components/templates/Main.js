@@ -188,6 +188,20 @@ const Main = () => {
     }
   };
 
+  useEffect(() => {
+    if (openScream) {
+      setTimeout(() => {
+        if (mapViewport.zoom > 15) {
+          setZoomBreak(2);
+        } else if (mapViewport.zoom > 11.5) {
+          setZoomBreak(1);
+        } else {
+          setZoomBreak(0.6);
+        }
+      }, 1000);
+    }
+  }, [openScream, mapViewport]);
+
   const _onViewportChange = (viewport) => {
     dispatch(setMapViewport(viewport));
     if (viewport.zoom > 15) {
@@ -198,8 +212,10 @@ const Main = () => {
       setZoomBreak(0.6);
     }
 
-    const boundAdds = [500, 1000, 500, 1000];
-    dispatch(setMapBounds(viewport, boundAdds));
+    if (isMobileCustom) {
+      const boundAdds = [500, 1000, 500, 1000];
+      dispatch(setMapBounds(viewport, boundAdds));
+    }
   };
 
   // const sortedScreams =
@@ -279,6 +295,8 @@ const Main = () => {
         loading={loading}
         loadingProjects={loadingProjects}
         dataFinal={dataFinalMap.slice(0, 300)}
+        _onViewportChange={_onViewportChange}
+        zoomBreak={zoomBreak}
         id="mapDesktop"
         openProject={openProject}
         geoData={project && openProject && project.geoData}

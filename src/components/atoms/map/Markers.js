@@ -7,18 +7,26 @@ import ExpandButton from "../CustomButtons/ExpandButton";
 
 const OpenIdeaButton = styled.div`
   position: absolute;
-  width: ${(props) => (7 + props.likeCount / 4) * props.zoomBreak + "px"};
-  height: ${(props) => (7 + props.likeCount / 4) * props.zoomBreak + "px"};
+  width: ${(props) => 7 + props.likeCount / 4 + "px"};
+  height: ${(props) => 7 + props.likeCount / 4 + "px"};
   min-width: unset;
 
-  margin-left: ${(props) =>
-    -(7 + props.likeCount / 4) * props.zoomBreak + "px"};
-  margin-top: ${(props) => -(7 + props.likeCount / 4) * props.zoomBreak + "px"};
+  margin-left: ${(props) => -(7 + props.likeCount / 4) + "px"};
+  margin-top: ${(props) => -(7 + props.likeCount / 4) + "px"};
   border-radius: 100%;
   border: 1px white solid;
   background-color: ${(props) => props.color};
   opacity: 1;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 9px 38px, rgba(0, 0, 0, 0.15) 0px 5px 5px;
+
+  transform: scale(${(props) => props.zoomBreak});
+  transition: 0.5s;
+  z-index: 2;
+  overflow: hidden;
+
+  &:hover {
+    filter: brightness(50%);
+  }
 `;
 
 export class Markers extends PureComponent {
