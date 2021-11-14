@@ -221,7 +221,13 @@ const ProjectDialog = ({
             ></IdeaList>
           )}
           {order === 2 && (
-            <div style={{ overflow: "scroll", height: "100vh" }}>
+            <div
+              style={{
+                overflow: "scroll",
+                height: "100vh",
+                pointerEvents: "all",
+              }}
+            >
               <Break />
 
               <MainAnimations
