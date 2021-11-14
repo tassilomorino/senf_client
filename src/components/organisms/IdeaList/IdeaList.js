@@ -81,6 +81,7 @@ const IdeaList = ({
   project,
   zIndex,
 }) => {
+  console.log("IdeaList rerendering");
   const openScream = useSelector((state) => state.UI.openScream);
 
   const dispatch = useDispatch();

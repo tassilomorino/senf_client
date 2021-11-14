@@ -11,7 +11,6 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
-import SkeletonCard from "../Cards/SkeletonCard";
 
 const Wrapper = styled.div`
   height: 100vh;

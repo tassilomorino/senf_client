@@ -17,7 +17,7 @@ const enterAnimation = keyframes`
        0% {
         margin-left: 100%;
 }
-30% {
+80% {
         margin-left: 100%;
 }
 
@@ -32,9 +32,13 @@ const TopicFilterWrapperMobile = styled.div`
 
   top: ${(props) => (props.openScream ? "10px" : "90px")};
   width: 100%;
+
   overflow-x: scroll;
   -webkit-overflow-scrolling: touch;
   transition: 1s;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  margin-top: -20px;
 `;
 
 const MapClickContainer = styled.div`
@@ -59,13 +63,14 @@ const OpenButtonMobile = styled.div`
 const TopicFilterInnerWrapperMobile = styled.div`
   border-radius: 20px 0 0 20px;
   backdrop-filter: blur(5px);
-  background-color: rgb(0, 0, 0, 0.1);
+  background-color: rgb(255, 255, 255, 0.5);
+  box-shadow: 0 -18px 40px 12px rgba(0, 0, 0, 0.2);
   padding: 5px;
   padding-left: 20px;
   padding-right: 20px;
   margin: 5px;
   margin-left: calc(100% - 120px);
-  animation: ${enterAnimation} 2.5s ease-out;
+  animation: ${enterAnimation} 3.5s ease-out;
   z-index: 15;
   display: flex;
   flex-direction: row;
