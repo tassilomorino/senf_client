@@ -19,6 +19,7 @@ const Wrapper = styled.div`
   position: relative;
   width: 100%;
   top: 0;
+  pointer-events: all;
 
   animation: cardanimation 0.8s ease-in-out;
 
