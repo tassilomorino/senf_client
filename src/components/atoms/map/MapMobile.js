@@ -43,7 +43,6 @@ const MapMobile = ({
   loadingProjects,
   geoData,
 }) => {
-  console.log("map is rerendering");
   const dispatch = useDispatch();
   const { screamId } = useParams();
 
@@ -58,8 +57,8 @@ const MapMobile = ({
 
   const handlleMapLoaded = () => {
     setMapLoaded(true);
-
-    if (!screamId) {
+    console.log(screamId);
+    if (!screamId && !openProject) {
       setTimeout(() => {
         const viewport = {
           latitude: 50.93864020643174,

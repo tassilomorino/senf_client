@@ -4,10 +4,6 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 import { useSelector, useDispatch } from "react-redux";
 
-import {
-  setMapBounds,
-  setMapViewport,
-} from "../../../redux/actions/mapActions";
 import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 
@@ -81,7 +77,6 @@ const IdeaList = ({
   project,
   zIndex,
 }) => {
-  console.log("IdeaList rerendering");
   const openScream = useSelector((state) => state.UI.openScream);
 
   const dispatch = useDispatch();
