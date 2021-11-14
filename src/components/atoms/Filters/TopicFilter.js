@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 
 import styled, { keyframes } from "styled-components";
 import { setSwipePositionDown } from "../../../redux/actions/UiActions";
+import MapClickContainer from "./MapClickContainer";
 
 const enterAnimation = keyframes`
        0% {
@@ -39,13 +40,6 @@ const TopicFilterWrapperMobile = styled.div`
   padding-bottom: 20px;
   padding-top: 20px;
   margin-top: -20px;
-`;
-
-const MapClickContainer = styled.div`
-  position: absolute;
-  width: calc(100% - 120px);
-  height: 50px;
-  z-index: 9;
 `;
 
 const OpenButtonMobile = styled.div`
@@ -96,8 +90,6 @@ export function TopicFilter({
   const openScream = useSelector((state) => state.UI.openScream);
   const [moveLeft, setMoveLeft] = useState(false);
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const swipePosition = useSelector((state) => state.UI.swipePosition);
 
   useEffect(() => {
     if (openScream) {
@@ -128,10 +120,6 @@ export function TopicFilter({
     }
   }, [moveLeft]);
 
-  const setSwipeDown = () => {
-    dispatch(setSwipePositionDown());
-  };
-
   // Handler at index 0 is for the "all" checkbox
   const topicFilters = topics.map((topic, i) => {
     return (
@@ -151,8 +139,7 @@ export function TopicFilter({
 
   return isMobileCustom && !loading && !inline ? (
     <TopicFilterWrapperMobile openScream={openScream} id="Wrapper">
-      {swipePosition === "top" && <MapClickContainer onClick={setSwipeDown} />}
-
+      <MapClickContainer />
       <TopicFilterInnerWrapperMobile>
         <OpenButtonMobile
           onClick={() => setMoveLeft(!moveLeft)}
@@ -208,4 +195,4 @@ export function TopicFilter({
   );
 }
 
-export default TopicFilter;
+export default React.memo(TopicFilter);

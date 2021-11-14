@@ -46,6 +46,8 @@ const MapMobile = ({
   loadingProjects,
   geoData,
 }) => {
+  console.log("MapMobile rerendering");
+
   const dispatch = useDispatch();
   const { screamId } = useParams();
 
@@ -60,7 +62,6 @@ const MapMobile = ({
 
   const handlleMapLoaded = () => {
     setMapLoaded(true);
-    console.log(screamId);
     if (!screamId && !openProject) {
       setTimeout(() => {
         const viewport = {
