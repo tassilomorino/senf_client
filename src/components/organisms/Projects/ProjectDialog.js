@@ -79,17 +79,19 @@ const ProjectDialog = ({
     dispatch(setResetMapBounds(bounds));
     handleTopicSelector("all");
 
-    setOldPath(window.location.pathname);
+    console.log(window.location.pathname);
+
+    setPath(window.location.pathname);
     setTimeout(() => {
-      const newPath = `/${project}`;
+      // const newPath = `/${project}`;
 
-      if (project !== undefined) {
-        window.history.pushState(null, null, newPath);
-      }
+      // if (project !== undefined) {
+      //   window.history.pushState(null, null, newPath);
+      // }
 
-      setTimeout(() => {
-        setPath("https://senf.koeln" + newPath);
-      }, 10);
+      // setTimeout(() => {
+      //   setPath("https://senf.koeln" + newPath);
+      // }, 10);
 
       if (project.centerLong !== undefined) {
         setTimeout(() => {
