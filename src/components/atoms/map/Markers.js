@@ -24,8 +24,10 @@ const OpenIdeaButton = styled.div`
   z-index: 2;
   overflow: hidden;
 
-  &:hover {
-    filter: brightness(50%);
+  @media (min-width: 768px) {
+    &:hover {
+      filter: brightness(50%);
+    }
   }
 `;
 
