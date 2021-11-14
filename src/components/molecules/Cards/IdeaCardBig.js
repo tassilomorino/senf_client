@@ -155,6 +155,7 @@ const styles = {
     justifyContent: "flex-start",
 
     height: "25px",
+    alignItems: "center",
   },
   selectedDatesOuter: {
     display: "flex",
@@ -163,20 +164,7 @@ const styles = {
 
     height: "auto",
     paddingBottom: "10px",
-  },
-
-  locationIcon: {
-    marginTop: "-3px",
-    paddingRight: "2px",
-    float: "left",
-    color: "#353535",
-  },
-  locationHeader: {
-    color: "##353535",
-    float: "left",
-    paddingRight: "2%",
-    width: "100%",
-    fontSize: "12pt",
+    alignItems: "center",
   },
 
   district: {
@@ -336,27 +324,6 @@ const IdeaCardBig = ({ classes, setClicked }) => {
           <CommentButton handleButtonClick={() => handleClick()} />
           <Engagement>{commentCount}</Engagement>
         </CommentButtonWrapper>
-        {/* <div className={classes.likeButtonWrapper}>
-          <div className={classes.likeButton}>
-            <LikeButton screamId={screamId} />
-          </div>
-          <div className={classes.engagement}>{likeCount} </div>
-        </div>
-        <div className={classes.commentButtonWrapper}>
-          <div className={classes.commentButton}>
-            {!authenticated ? (
-              <MyButtonStyle>
-                <LoginRegistration />
-                <img src={ChatBorder} width="100%" alt="ChatIcon" />
-              </MyButtonStyle>
-            ) : (
-              <MyButtonStyle onClick={() => handleClick()}>
-                <img src={ChatBorder} width="90%" alt="ChatIcon" />
-              </MyButtonStyle>
-            )}
-          </div>
-          <div className={classes.engagement}>{commentCount}</div>
-        </div> */}
         <div className={classes.horrizontalLine}></div>
         <div className={classes.header}>
           {selectedUnixArray !== undefined && selectedUnixArray !== null && (
@@ -364,7 +331,7 @@ const IdeaCardBig = ({ classes, setClicked }) => {
               <img
                 src={CalendarIcon}
                 width="20px"
-                style={{ paddingRight: "5px" }}
+                style={{ paddingRight: "5px", alignSelf: "center" }}
               />
 
               <div className={classes.locationHeader}> {selectedDates} </div>
@@ -375,7 +342,7 @@ const IdeaCardBig = ({ classes, setClicked }) => {
               src={LocationIcon}
               width="20px"
               height="20px"
-              style={{ paddingRight: "5px" }}
+              style={{ paddingRight: "5px", alignSelf: "center" }}
             />
 
             <div className={classes.locationHeader}> {locationHeader} </div>
@@ -388,7 +355,11 @@ const IdeaCardBig = ({ classes, setClicked }) => {
               alignItems: "start",
             }}
           >
-            <img src={PenIcon} width="20px" style={{ paddingRight: "5px" }} />
+            <img
+              src={PenIcon}
+              width="20px"
+              style={{ paddingRight: "5px", alignSelf: "center" }}
+            />
 
             <Typography
               // component={Link}
