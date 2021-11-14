@@ -286,6 +286,7 @@ const Main = () => {
 
       {!loading &&
         !loadingProjects &&
+        isMobileCustom &&
         (order === 1 || openProject || openScream) && (
           <React.Fragment>
             <TopicFilter
