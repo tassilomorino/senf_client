@@ -37,6 +37,7 @@ import ErrorBackground from "../atoms/Backgrounds/ErrorBackground";
 import { isAndroid } from "react-device-detect";
 import MapMobile from "../atoms/map/MapMobile";
 import TopicFilter from "../atoms/Filters/TopicFilter";
+import PostScream from "../organisms/PostIdea/PostScream";
 
 const Main = () => {
   const { t } = useTranslation();
@@ -305,8 +306,13 @@ const Main = () => {
       {!loading &&
         !loadingProjects &&
         isMobileCustom &&
-        (order === 1 || openProject || openScream) && (
+        (order === 1 || openProject || openScream || openAccount) && (
           <React.Fragment>
+            <PostScream
+              loadingProjects={loadingProjects}
+              projectsData={projects}
+              project={project}
+            />
             <TopicFilter
               loading={loading}
               handleTopicSelector={handleTopicSelector}
@@ -338,8 +344,6 @@ const Main = () => {
               viewport={mapViewport}
               handleDropdown={handleDropdown}
               projectsData={projects}
-              loadingProjects={loadingProjects}
-              project={project}
               dropdown={dropdown}
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}

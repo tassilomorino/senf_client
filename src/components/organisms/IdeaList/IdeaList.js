@@ -1,5 +1,5 @@
 /** @format */
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -11,7 +11,6 @@ import styled from "styled-components";
 
 //Components
 import List from "../../molecules/List/List";
-import PostScream from "../PostIdea/PostScream";
 import Toolbar from "../../molecules/Toolbar/Toolbar";
 import {
   setSwipePositionDown,
@@ -73,8 +72,6 @@ const IdeaList = ({
   dataFinal,
   dataFinalLength,
   projectsData,
-  loadingProjects,
-  project,
   zIndex,
 }) => {
   const openScream = useSelector((state) => state.UI.openScream);
@@ -162,11 +159,6 @@ const IdeaList = ({
       {" "}
       {isMobileCustom ? (
         <React.Fragment>
-          <PostScream
-            loadingProjects={loadingProjects}
-            projectsData={projectsData}
-            project={project}
-          />
           <animated.div className={!loading ? "drag" : ""} style={props}>
             <ListHeaderWrapper>
               <animated.div

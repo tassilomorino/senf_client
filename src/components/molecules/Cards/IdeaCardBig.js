@@ -332,6 +332,7 @@ const IdeaCardBig = ({ classes, setClicked }) => {
                 src={CalendarIcon}
                 width="20px"
                 style={{ paddingRight: "5px", alignSelf: "center" }}
+                al="CalendarIcon"
               />
 
               <div className={classes.locationHeader}> {selectedDates} </div>
@@ -343,6 +344,7 @@ const IdeaCardBig = ({ classes, setClicked }) => {
               width="20px"
               height="20px"
               style={{ paddingRight: "5px", alignSelf: "center" }}
+              alt="locationIcon"
             />
 
             <div className={classes.locationHeader}> {locationHeader} </div>
@@ -359,6 +361,7 @@ const IdeaCardBig = ({ classes, setClicked }) => {
               src={PenIcon}
               width="20px"
               style={{ paddingRight: "5px", alignSelf: "center" }}
+              alt="CreatorIcon"
             />
 
             <Typography
