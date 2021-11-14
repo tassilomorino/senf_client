@@ -33,6 +33,8 @@ const OpenIdeaButton = styled.div`
 
 export class Markers extends PureComponent {
   render() {
+    console.log("Markers rerendering");
+
     const {
       dataFinalMap,
       fetchDataScream,
@@ -77,6 +79,8 @@ export class Markers extends PureComponent {
 
 export class MarkersMobile extends PureComponent {
   render() {
+    console.log("Markers Moble rerendering");
+
     const { dataFinalMap, fetchDataScream, zoomBreak } = this.props;
     return dataFinalMap.map(({ screamId, long, lat, likeCount, color }) => (
       <Marker key={screamId} longitude={long} latitude={lat}>

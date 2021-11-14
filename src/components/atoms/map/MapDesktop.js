@@ -30,13 +30,13 @@ import { useParams } from "react-router";
 const PinComponent = styled.img`
   position: absolute;
   width: 100px;
-  transform: translateY(-90%) translateX(-50%) rotate(0deg);
+  transform: translateY(-95%) translateX(-50%) rotate(0deg);
   transform-origin: bottom center;
-  margin-top: ${(props) =>
+  /* margin-top: ${(props) =>
     -((7 + props.likeCount / 4) * props.zoomBreak) / 1.5 + "px"};
   margin-left: ${(props) =>
-    -((7 + props.likeCount / 4) * props.zoomBreak) / 8 + "px"};
-  z-index: 0;
+    -((7 + props.likeCount / 4) * props.zoomBreak) / 8 + "px"}; */
+  z-index: -1;
 `;
 
 const styles = {
@@ -75,6 +75,8 @@ const MapDesktop = ({
 
   const dispatch = useDispatch();
 
+  const [hoveredStateId, setHoveredStateId] = useState(null);
+
   const [hoverScreamId, setHoverScreamId] = useState("");
   const [hoverLat, setHoverLat] = useState("");
   const [hoverLong, setHoverLong] = useState("");
@@ -84,10 +86,6 @@ const MapDesktop = ({
   const viewport = useSelector((state) => state.data.mapViewport);
   const [mapLoaded, setMapLoaded] = useState(false);
   const { screamId } = useParams();
-
-  const fetchDataScream = (screamId) => {
-    dispatch(openScreamFunc(screamId));
-  };
 
   const handlleMapLoaded = () => {
     setMapLoaded(true);
@@ -142,6 +140,47 @@ const MapDesktop = ({
       dataFinalMap.push(element);
     });
   }
+
+  let mygeojson = { type: "FeatureCollection", features: [] };
+
+  for (let point of dataFinalMap) {
+    let properties = point;
+    properties.circleRadius = 5 + point.likeCount / 10;
+    properties.circleBlurRadius = 12 + point.likeCount / 10;
+
+    delete properties.longitude;
+    delete properties.latitude;
+    let feature = {
+      type: "Feature",
+      geometry: { type: "Point", coordinates: [point.long, point.lat] },
+      properties: properties,
+    };
+    mygeojson.features.push(feature);
+  }
+
+  const onHover = (event) => {
+    if (event.features.length > 0) {
+      setHoverScreamId(event.features[0].properties.screamId);
+      setHoverLat(event.features[0].properties.lat);
+      setHoverLong(event.features[0].properties.long);
+      setHoverTitle(event.features[0].properties.title);
+      setHoverLikeCount(event.features[0].properties.likeCount);
+    }
+  };
+
+  const onLeave = (event) => {
+    setHoverScreamId("");
+    setHoverLat("");
+    setHoverLong("");
+    setHoverTitle("");
+    setHoverLikeCount("");
+  };
+
+  const onClick = (event) => {
+    if (event.features.length > 0) {
+      dispatch(openScreamFunc(event.features[0].properties.screamId));
+    }
+  };
 
   return (
     !isMobileCustom && (
@@ -248,7 +287,83 @@ const MapDesktop = ({
             )
           )} */}
 
-          <Markers
+          <Source id="mygeojson" type="geojson" data={mygeojson} />
+          <Layer
+            id="mygeojsonblur"
+            source="mygeojson"
+            type="circle"
+            paint={{
+              "circle-radius": [
+                "interpolate",
+                ["linear"],
+                ["zoom"],
+                // when zoom is 0, set each feature's circle radius to the value of its "rating" property
+                0,
+                ["*", 0.1, ["get", "circleBlurRadius"]],
+
+                10,
+                ["*", 0.4, ["get", "circleBlurRadius"]],
+
+                // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
+                20,
+                ["*", 3, ["get", "circleBlurRadius"]],
+              ],
+              "circle-color": "#000",
+
+              "circle-blur": 1,
+              "circle-opacity": 0.3,
+            }}
+          />
+          <Layer
+            id="mygeojson"
+            source="mygeojson"
+            type="circle"
+            onHover={onHover}
+            onLeave={onLeave}
+            onClick={onClick}
+            paint={{
+              // "circle-radius": {
+              //   base: ["get", "likeCount"],
+              //   stops: [
+              //     [12, 3],
+              //     [22, 180],
+              //   ],
+              // },
+              "circle-radius": [
+                "interpolate",
+                ["linear"],
+                ["zoom"],
+                // when zoom is 0, set each feature's circle radius to the value of its "rating" property
+                0,
+                ["*", 0.1, ["get", "circleRadius"]],
+
+                10,
+                ["*", 0.4, ["get", "circleRadius"]],
+
+                // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
+                20,
+                ["*", 3, ["get", "circleRadius"]],
+              ],
+              "circle-color": ["get", "color"],
+              // "circle-color": [
+              //   "match",
+              //   ["get", "Thema"],
+              //   "Rad",
+              //   "blue",
+              //   "Umwelt und Grün",
+              //   "#223b53",
+              //   "Verkehr",
+              //   "#e55e5e",
+              //   "Asian",
+              //   "#3bb2d0",
+              //   /* other */ "#ccc",
+              // ],
+              "circle-stroke-color": "#fff",
+              "circle-stroke-width": 1,
+            }}
+          />
+
+          {/* <Markers
             dataFinalMap={dataFinalMap}
             fetchDataScream={fetchDataScream}
             setHoverScreamId={setHoverScreamId}
@@ -257,7 +372,7 @@ const MapDesktop = ({
             setHoverTitle={setHoverTitle}
             setHoverLikeCount={setHoverLikeCount}
             zoomBreak={zoomBreak}
-          />
+          /> */}
 
           {/*    {dataFinalMap.map(
             ({ screamId, long, lat, likeCount, color, title }) => (
@@ -302,7 +417,7 @@ const MapDesktop = ({
                 likeCount={scream.likeCount}
                 zoomBreak={zoomBreak}
                 style={{
-                  clipPath: "polygon(0 0, 100% 0, 100% 88%, 0 88%)",
+                  clipPath: "polygon(0 0, 100% 0, 100% 82%, 0 82%)",
                 }}
                 alt="ChatIcon"
               />
