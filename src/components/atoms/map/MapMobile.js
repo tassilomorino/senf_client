@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, memo } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
@@ -9,11 +9,13 @@ import { openScreamFunc } from "../../../redux/actions/screamActions";
 //MAPSTUF
 import MapGL, { Source, Layer, Marker } from "@urbica/react-map-gl";
 import NoLocationPopUp from "./NoLocationPopUp";
+import { setMapViewport } from "../../../redux/actions/mapActions";
 
 //Icons
 import Pin from "../../../images/pin3.png";
 import { MarkersMobile } from "./Markers";
 import { PatternBackground } from "./styles/sharedStyles";
+import { useParams } from "react-router";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -43,6 +45,8 @@ const MapMobile = ({
 }) => {
   console.log("map is rerendering");
   const dispatch = useDispatch();
+  const { screamId } = useParams();
+
   const openScream = useSelector((state) => state.UI.openScream);
   const scream = useSelector((state) => state.data.scream);
 
@@ -50,6 +54,24 @@ const MapMobile = ({
 
   const fetchDataScream = (screamId) => {
     dispatch(openScreamFunc(screamId));
+  };
+
+  const handlleMapLoaded = () => {
+    setMapLoaded(true);
+
+    if (!screamId) {
+      setTimeout(() => {
+        const viewport = {
+          latitude: 50.93864020643174,
+          longitude: 6.958725744885521,
+          zoom: isMobileCustom ? 9.5 : 11.5,
+          transitionDuration: 4000,
+          pitch: 30,
+          bearing: 0,
+        };
+        dispatch(setMapViewport(viewport));
+      }, 1000);
+    }
   };
 
   const data =
@@ -107,7 +129,7 @@ const MapMobile = ({
           viewportChangeOptions={{
             duration: 2700,
           }}
-          onLoad={() => setMapLoaded(true)}
+          onLoad={handlleMapLoaded}
         >
           {openProject &&
             !loadingProjects &&

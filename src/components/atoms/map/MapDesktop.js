@@ -25,6 +25,7 @@ import { Markers } from "./Markers";
 import NoLocationPopUp from "./NoLocationPopUp";
 import { DesktopMapButtons } from "./DesktopMapButtons";
 import { PatternBackground } from "./styles/sharedStyles";
+import { useParams } from "react-router";
 
 const PinComponent = styled.img`
   position: absolute;
@@ -79,6 +80,7 @@ const MapDesktop = ({
   const viewport = useSelector((state) => state.data.mapViewport);
   const [zoomBreak, setZoomBreak] = useState(0.8);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const { screamId } = useParams();
 
   const _onViewportChange = (viewport) => {
     dispatch(setMapViewport(viewport));
@@ -94,6 +96,24 @@ const MapDesktop = ({
 
   const fetchDataScream = (screamId) => {
     dispatch(openScreamFunc(screamId));
+  };
+
+  const handlleMapLoaded = () => {
+    setMapLoaded(true);
+
+    if (!screamId) {
+      setTimeout(() => {
+        const viewport = {
+          latitude: 50.93864020643174,
+          longitude: 6.958725744885521,
+          zoom: isMobileCustom ? 9.5 : 11.5,
+          transitionDuration: 4000,
+          pitch: 30,
+          bearing: 0,
+        };
+        dispatch(setMapViewport(viewport));
+      }, 1000);
+    }
   };
 
   const data =
@@ -167,7 +187,7 @@ const MapDesktop = ({
           viewportChangeOptions={{
             duration: 2700,
           }}
-          onLoad={() => setMapLoaded(true)}
+          onLoad={handlleMapLoaded}
         >
           <NavigationControl showCompass showZoom position="top-right" />
           {openProject &&

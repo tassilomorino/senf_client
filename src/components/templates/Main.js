@@ -94,28 +94,12 @@ const Main = () => {
     ) {
       history.push("/intro");
     } else {
-      dispatch(getScreams())
-        .then(() => {
-          dispatch(getProjects());
-          if (window.location.pathname === "/projects") {
-            handleClick(2);
-          }
-        })
-        .then(() => {
-          if (!screamId) {
-            setTimeout(() => {
-              const viewport = {
-                latitude: 50.93864020643174,
-                longitude: 6.958725744885521,
-                zoom: isMobileCustom ? 9.5 : 11.5,
-                transitionDuration: 4000,
-                pitch: 30,
-                bearing: 0,
-              };
-              dispatch(setMapViewport(viewport));
-            }, 2000);
-          }
-        });
+      dispatch(getScreams()).then(() => {
+        dispatch(getProjects());
+        if (window.location.pathname === "/projects") {
+          handleClick(2);
+        }
+      });
     }
   }, []);
 
