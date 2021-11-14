@@ -37,20 +37,20 @@ const Tab = styled.div`
   width: auto;
   padding-right: 15px;
   padding-left: 15px;
-  animation: ${enterAnimation} ${(props) => props.i * 0.8}s;
+  animation: ${enterAnimation} ${(props) => props.i * 0.3}s;
   font-size: 18px;
   color: rgb(87, 87, 87);
   font-family: ${(props) =>
     props.active ? "Futura PT W01-Bold" : "Futura PT W01 Book;"};
 `;
 
-const TabLine = styled.div`
-  margin-top: 3px;
-  height: 20px;
-  width: 2px;
-  background-color: ${(props) => props.lineColor};
-  animation: ${enterAnimation} ${(props) => props.i * 0.8}s;
-`;
+// const TabLine = styled.div`
+//   margin-top: 3px;
+//   height: 20px;
+//   width: 2px;
+//   background-color: ${(props) => props.lineColor};
+//   animation: ${enterAnimation} ${(props) => props.i * 0.8}s;
+// `;
 
 const Tabs = ({
   loading,
@@ -59,7 +59,6 @@ const Tabs = ({
   tabLabels,
   marginTop,
   marginBottom,
-  lineColor,
 }) => {
   const tab = tabLabels.map((tabLabel, i) => {
     return (
