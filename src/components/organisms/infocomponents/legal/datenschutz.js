@@ -1,14 +1,7 @@
 /** @format */
 
 import React from "react";
-import styled from "styled-components";
-import LegalStyles from "./LegalStyles";
-
-const Terms = styled.a`
-  text-decoration: underline;
-  color: #414345;
-  cursor: pointer;
-`
+import { LegalStyles, Terms } from "./LegalStyles";
 
 const Datenschutz = () => {
 

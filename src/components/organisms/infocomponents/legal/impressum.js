@@ -1,7 +1,7 @@
 /** @format */
 
 import React from "react";
-import LegalStyles from "./LegalStyles";
+import { LegalStyles } from "./LegalStyles";
 
 const Impressum = () => {
 

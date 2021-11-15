@@ -18,11 +18,11 @@ const Logo = styled.h1`
   left: 0vw;
 `
 
-const LegalStyles = ({ children }) => {
+export const LegalStyles = ({ children }) => {
 
     const linkToHome = () => {
         window.location.href = "/";
-      }
+    }
 
     return (
         <div>
@@ -45,4 +45,16 @@ const LegalStyles = ({ children }) => {
     )
 }
 
-export default LegalStyles
+const TermsWrapper = styled.a`
+  text-decoration: underline;
+  color: #414345;
+  cursor: pointer;
+`
+
+export const Terms = ({ children, href, target, rel }) => {
+    return (
+        <TermsWrapper prefetch href={href} passHref target={target} rel={rel}>
+            {children}
+        </TermsWrapper>
+    )
+}
