@@ -19,6 +19,7 @@ const Wrapper = styled.div`
   position: relative;
   width: 100%;
   top: 0;
+  pointer-events: all;
 
   animation: cardanimation 0.8s ease-in-out;
 
@@ -26,7 +27,6 @@ const Wrapper = styled.div`
     width: 400px;
     top: 110px;
     position: relative;
-    pointer-events: all;
   }
 `;
 const List = ({
