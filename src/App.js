@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import './styles/mapbox-gl.css';
 import "./App.css";
 import "./AppDesktop.css";
 import "./AppIpad.css";
@@ -50,10 +51,10 @@ import { isMobileCustom } from "./util/customDeviceDetect";
 
 import packageJson from "../package.json";
 import { getBuildDate } from "./util/utils";
-import withClearCache from "./ClearCache";
+//import withClearCache from "./ClearCache";
 import Cookiebanner from "./components/organisms/Cookiebanner/Cookiebanner";
 
-const ClearCacheComponent = withClearCache(MainApp);
+
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
@@ -82,8 +83,19 @@ require("intersection-observer");
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
+  firebase
+  .firestore()
+  .enablePersistence()
+  .then(() => firebase.firestore())
+  .catch(err => {
+    console.log(err);
+    return firebase.firestore();
+  });
+ 
 } else {
   firebase.app(); // if already initialized, use that one
+   
+  
 }
 
 axios.defaults.baseURL = process.env.REACT_APP_DB_BASE_URL;
@@ -180,7 +192,7 @@ const App = () => {
 
   return (
     <MuiThemeProvider theme={theme}>
-      {process.env.REACT_APP_STAGE !== "development" && <ClearCacheComponent />}
+     
 
       <Provider store={store}>
         <Router>
@@ -229,12 +241,7 @@ const App = () => {
 };
 console.log(getBuildDate(packageJson.buildDate));
 
-function MainApp(props) {
-  return (
-    <div className="App">
-      <header className="App-header"></header>
-    </div>
-  );
-}
+
 
 export default App;
+/* export default withClearCache(MainApp); */
