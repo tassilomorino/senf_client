@@ -108,14 +108,21 @@ const IdeaList = ({
   useEffect(() => {
     if (openScream) {
       set({
-        opacity: "0",
-        pointerEvents: "none",
+        transform: `translateY(${window.innerHeight + 120}px)`,
+        touchAction: "none",
       });
     } else {
-      set({
-        opacity: "1",
-        pointerEvents: "auto",
-      });
+      if (swipePosition === "bottom") {
+        set({
+          transform: `translateY(${window.innerHeight - 120}px)`,
+          touchAction: "none",
+        });
+      } else {
+        set({
+          transform: `translateY(${141}px)`,
+          touchAction: "unset",
+        });
+      }
     }
   }, [openScream]);
 
