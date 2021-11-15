@@ -106,10 +106,10 @@ const Main = () => {
   }, []);
 
   useEffect(() => {
-    if (!openInfoPage && screamId) {
+    if (screamId) {
       openDialogFromUrl();
     }
-  }, [openInfoPage]);
+  }, []);
 
   const openDialogFromUrl = () => {
     if (screamId) {
@@ -220,14 +220,17 @@ const Main = () => {
     }
   };
 
-  const screamsSearched = screams.filter((val) => {
-    if (serachTerm === "") {
+  const [searchTerm, setSearchTerm] = useState("");
+  const screamsSearched = screams?.filter((val) => {
+    if (searchTerm === "") {
       return val;
-    } else if (val.title.toLowerCase().includes(serachTerm.toLowerCase())) {
+    } else if (
+      val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.body.toLowerCase().includes(searchTerm.toLowerCase())
+    ) {
       return val;
     }
   });
-
   const sortedScreams =
     dropdown === "newest"
       ? screamsSearched?.sort(function (a, b) {
@@ -351,6 +354,7 @@ const Main = () => {
               dropdown={dropdown}
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
+              setSearchTerm={setSearchTerm}
             />
           )}
 

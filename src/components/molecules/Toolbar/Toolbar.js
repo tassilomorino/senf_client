@@ -17,15 +17,14 @@ const Wrapper = styled.div`
   justify-content: space-between;
   height: 50px;
   transition: height 0.5s;
-  background-color: #fed957;
-  padding: 5px 2.5% 10px 2.5%;
+  padding: 0px 2.5% 10px 2.5%;
 
   animation: ToolbarAnimation 0.7s;
   pointer-events: none;
   flex-flow: wrap;
   @media (min-width: 768px) {
     position: fixed;
-    top: ${(props) => (props.type === "allIdeas" ? "40px" : "100px")};
+    top: ${(props) => (props.type === "allIdeas" ? "30px" : "100px")};
     z-index: 99;
     width: 380px;
     padding: 10px 10px 20px 10px;
@@ -110,7 +109,7 @@ const SearchIconButton = styled.button`
 const Input = styled.input`
   -webkit-appearance: none;
   display: block;
-  width: 95%;
+  width: 100%;
   padding: 14px 14px 12px;
   height: 26px;
   font-family: Futura PT W01 Book;
@@ -118,7 +117,7 @@ const Input = styled.input`
   font-weight: 400;
   line-height: 1.5;
   color: #353535;
-  border: 2px solid white;
+  border: 1px solid white;
   background-color: white;
   border-radius: 20px;
   margin-top: 0px;
@@ -145,6 +144,7 @@ const Toolbar = ({
   dataFinalLength,
   setSearchOpen,
   searchOpen,
+  setSearchTerm,
 }) => {
   const { t } = useTranslation();
 
@@ -163,9 +163,8 @@ const Toolbar = ({
         {searchOpen && (
           <Input
             type="text"
-            placeholder="search..."
-            // onChange={(event) => setSerachTerm(event.target.value)}
-            style={{ zIndex: 9999 }}
+            placeholder="Durchsuche Titel und Beschreibungen..."
+            onChange={(event) => setSearchTerm(event.target.value)}
           />
         )}
       </Wrapper>

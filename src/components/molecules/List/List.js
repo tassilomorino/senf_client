@@ -19,14 +19,13 @@ const Wrapper = styled.div`
   position: relative;
   width: 100%;
   top: 0;
-
+  pointer-events: all;
   animation: cardanimation 0.8s ease-in-out;
 
   @media (min-width: 768px) {
     width: 400px;
     top: 110px;
     position: relative;
-    pointer-events: all;
   }
 `;
 const List = ({
@@ -72,19 +71,21 @@ const List = ({
     if (dataFinalLength !== 0) {
       for (var i = 0; i < listItems; i++) {
         items.push(
-          <IdeaCard
-            loading={loading}
-            key={dataFinal[i]?.screamId}
-            title={dataFinal[i]?.title}
-            body={dataFinal[i]?.body}
-            screamId={dataFinal[i]?.screamId}
-            likeCount={dataFinal[i]?.likeCount}
-            commentCount={dataFinal[i]?.commentCount}
-            Stadtteil={dataFinal[i]?.Stadtteil}
-            project={dataFinal[i]?.project}
-            color={dataFinal[i]?.color}
-            projectsData={projectsData}
-          />
+          dataFinal[i]?.screamId && (
+            <IdeaCard
+              loading={loading}
+              key={dataFinal[i]?.screamId}
+              title={dataFinal[i]?.title}
+              body={dataFinal[i]?.body}
+              screamId={dataFinal[i]?.screamId}
+              likeCount={dataFinal[i]?.likeCount}
+              commentCount={dataFinal[i]?.commentCount}
+              Stadtteil={dataFinal[i]?.Stadtteil}
+              project={dataFinal[i]?.project}
+              color={dataFinal[i]?.color}
+              projectsData={projectsData}
+            />
+          )
         );
       }
       return items;

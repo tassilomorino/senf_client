@@ -16,6 +16,10 @@ import {
   setSwipePositionDown,
   setSwipePositionUp,
 } from "../../../redux/actions/UiActions";
+import {
+  BackgroundDesktop,
+  BackgroundMobile,
+} from "../../atoms/Backgrounds/GradientBackgrounds";
 
 const Wrapper = styled.div`
   opacity: 1;
@@ -73,11 +77,11 @@ const IdeaList = ({
   dataFinalLength,
   projectsData,
   zIndex,
+  setSearchTerm,
 }) => {
+  const dispatch = useDispatch();
   const openScream = useSelector((state) => state.UI.openScream);
   const [searchOpen, setSearchOpen] = useState(false);
-
-  const dispatch = useDispatch();
 
   const swipePosition = useSelector((state) => state.UI.swipePosition);
   const [props, set] = useSpring(() => ({
@@ -184,6 +188,7 @@ const IdeaList = ({
                   dataFinalLength={dataFinalLength}
                   setSearchOpen={setSearchOpen}
                   searchOpen={searchOpen}
+                  setSearchTerm={setSearchTerm}
                   handleClickSwipe={
                     swipePosition === "bottom"
                       ? () => setSwipeUp()
@@ -210,12 +215,18 @@ const IdeaList = ({
         </React.Fragment>
       ) : (
         <Content>
+          {isMobileCustom && order !== 1 ? (
+            <BackgroundMobile />
+          ) : !isMobileCustom ? (
+            <BackgroundDesktop />
+          ) : null}
           <Toolbar
             loading={loading}
             handleDropdown={handleDropdown}
             dataFinalLength={dataFinalLength}
             setSearchOpen={setSearchOpen}
             searchOpen={searchOpen}
+            setSearchTerm={setSearchTerm}
             type={type}
           />{" "}
           {searchOpen ? (
