@@ -1,30 +1,27 @@
 /** @format */
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 import { useSelector, useDispatch } from "react-redux";
 
-import {
-  setMapBounds,
-  setMapViewport,
-} from "../../../redux/actions/mapActions";
 import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 
 import styled from "styled-components";
 
 //Components
-import MapMobile from "../../atoms/map/MapMobile";
 import List from "../../molecules/List/List";
-import PostScream from "../PostIdea/PostScream";
-import TopicFilter from "../../atoms/Filters/TopicFilter";
 import Toolbar from "../../molecules/Toolbar/Toolbar";
+import {
+  setSwipePositionDown,
+  setSwipePositionUp,
+} from "../../../redux/actions/UiActions";
 
 const Wrapper = styled.div`
   opacity: 1;
   display: flex;
   flex-direction: row;
-  transition: 0.5s;
+
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -74,36 +71,14 @@ const IdeaList = ({
   handleDropdown,
   dataFinal,
   dataFinalLength,
-  dataFinalMap,
   projectsData,
-  geoData,
-  loadingProjects,
-  project,
-  handleTopicSelector,
-  topicsSelected,
   zIndex,
 }) => {
-  const mapViewport = useSelector((state) => state.data.mapViewport);
   const openScream = useSelector((state) => state.UI.openScream);
 
   const dispatch = useDispatch();
-  const [zoomBreak, setZoomBreak] = useState(0.6);
 
-  const _onViewportChange = (viewport) => {
-    dispatch(setMapViewport(viewport));
-    if (viewport.zoom > 15) {
-      setZoomBreak(2);
-    } else if (viewport.zoom > 11.5) {
-      setZoomBreak(1);
-    } else {
-      setZoomBreak(0.6);
-    }
-
-    const boundAdds = [500, 1000, 500, 1000];
-    dispatch(setMapBounds(viewport, boundAdds));
-  };
-
-  const [swipePosition, setSwipePosition] = useState("bottom");
+  const swipePosition = useSelector((state) => state.UI.swipePosition);
   const [props, set] = useSpring(() => ({
     x: 0,
     y: 0,
@@ -114,16 +89,16 @@ const IdeaList = ({
     userSelect: "none",
   }));
 
-  const setSwipePositionUp = () => {
-    setSwipePosition("top");
+  const setSwipeUp = () => {
+    dispatch(setSwipePositionUp());
     set({
       transform: `translateY(${141}px)`,
       touchAction: "unset",
     });
   };
 
-  const setSwipePositionDown = () => {
-    setSwipePosition("bottom");
+  const setSwipeDown = () => {
+    dispatch(setSwipePositionDown());
     set({
       transform: `translateY(${window.innerHeight - 120}px)`,
       touchAction: "none",
@@ -133,38 +108,47 @@ const IdeaList = ({
   useEffect(() => {
     if (openScream) {
       set({
-        opacity: "0",
-        pointerEvents: "none",
+        transform: `translateY(${window.innerHeight + 120}px)`,
+        touchAction: "none",
       });
     } else {
-      set({
-        opacity: "1",
-        pointerEvents: "auto",
-      });
+      if (swipePosition === "bottom") {
+        set({
+          transform: `translateY(${window.innerHeight - 120}px)`,
+          touchAction: "none",
+        });
+      } else {
+        set({
+          transform: `translateY(${141}px)`,
+          touchAction: "unset",
+        });
+      }
     }
   }, [openScream]);
 
+  useEffect(() => {
+    if (swipePosition === "bottom") {
+      setSwipeDown();
+    }
+  }, [swipePosition]);
+
   const bind = useDrag(
-    ({ last, currentTarget, down, movement: [, my], offset: [, y] }) => {
-      console.log(currentTarget);
+    ({ last, down, movement: [, my], offset: [, y] }) => {
       if (last && my > 50) {
         set({
-          transform: !down
-            ? `translateY(${window.innerHeight - 120}px)`
-            : `translateY(${0}px)`,
+          transform: `translateY(${window.innerHeight - 120}px)`,
           touchAction: "none",
         });
-        setSwipePosition("bottom");
+        dispatch(setSwipePositionDown());
       }
 
       if (last && my < -50) {
         set({
-          transform: !down
-            ? `translateY(${141}px)`
-            : `translateY(${window.innerHeight - 120}px)`,
+          transform: `translateY(${141}px)`,
+
           touchAction: "unset",
         });
-        setSwipePosition("top");
+        dispatch(setSwipePositionUp());
       }
 
       set({ y: down ? my : 0 });
@@ -173,8 +157,6 @@ const IdeaList = ({
       pointer: { touch: true },
       bounds: {
         enabled: true,
-        top: -window.innerHeight + 341,
-        bottom: swipePosition === "bottom" ? 20 : window.innerHeight - 120,
       },
     }
   );
@@ -184,28 +166,6 @@ const IdeaList = ({
       {" "}
       {isMobileCustom ? (
         <React.Fragment>
-          <div style={{ height: "100vh" }}>
-            <MapMobile
-              dataFinal={dataFinalMap}
-              geoData={geoData}
-              viewport={mapViewport}
-              _onViewportChange={_onViewportChange}
-              setSwipePositionUp={() => setSwipePositionUp()}
-              zoomBreak={zoomBreak}
-            />
-          </div>
-          <TopicFilter
-            loading={loading}
-            handleTopicSelector={handleTopicSelector}
-            topicsSelected={topicsSelected}
-            swipePosition={swipePosition}
-            setSwipePositionDown={() => setSwipePositionDown()}
-          ></TopicFilter>{" "}
-          <PostScream
-            loadingProjects={loadingProjects}
-            projectsData={projectsData}
-            project={project}
-          />
           <animated.div className={!loading ? "drag" : ""} style={props}>
             <ListHeaderWrapper>
               <animated.div
@@ -223,8 +183,8 @@ const IdeaList = ({
                   dataFinalLength={dataFinalLength}
                   handleClickSwipe={
                     swipePosition === "bottom"
-                      ? () => setSwipePositionUp()
-                      : () => setSwipePositionDown()
+                      ? () => setSwipeUp()
+                      : () => setSwipeDown()
                   }
                 />{" "}
               </animated.div>

@@ -11,7 +11,6 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
-import SkeletonCard from "../Cards/SkeletonCard";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -27,6 +26,7 @@ const Wrapper = styled.div`
     width: 400px;
     top: 110px;
     position: relative;
+    pointer-events: all;
   }
 `;
 const List = ({
@@ -145,7 +145,7 @@ const List = ({
         <InfiniteScroll
           loadMore={() => loadMore()}
           hasMore={hasMoreItems}
-          loader={<SkeletonCard dataFinalLength={dataFinalLength === 0} />}
+          // loader={<SkeletonCard dataFinalLength={dataFinalLength === 0} />}
           useWindow={false}
         >
           {showItems(dataFinal)}

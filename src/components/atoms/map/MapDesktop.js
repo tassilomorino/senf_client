@@ -1,7 +1,7 @@
 /** @format */
 
-import React, { useState, PureComponent } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
 //Redux
@@ -25,15 +25,15 @@ import { Markers } from "./Markers";
 import NoLocationPopUp from "./NoLocationPopUp";
 import { DesktopMapButtons } from "./DesktopMapButtons";
 import { PatternBackground } from "./styles/sharedStyles";
+import { useParams } from "react-router";
 
 const PinComponent = styled.img`
   position: absolute;
   width: 100px;
-  transform: translateY(-88%) translateX(-45%) rotate(0deg);
+  transform: translateY(-95%) translateX(-50%) rotate(0deg);
   transform-origin: bottom center;
-  margin-top: ${(props) => -(7 + props.likeCount / 4) * props.zoomBreak + "px"};
-  margin-left: ${(props) =>
-    -((7 + props.likeCount / 4) * props.zoomBreak) / 2 + "px"};
+
+  z-index: -1;
 `;
 
 const styles = {
@@ -60,6 +60,8 @@ const MapDesktop = ({
   dataFinal,
   geoData,
   openProject,
+  _onViewportChange,
+  zoomBreak,
 }) => {
   const { t } = useTranslation();
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
@@ -70,6 +72,8 @@ const MapDesktop = ({
 
   const dispatch = useDispatch();
 
+  const [hoveredStateId, setHoveredStateId] = useState(null);
+
   const [hoverScreamId, setHoverScreamId] = useState("");
   const [hoverLat, setHoverLat] = useState("");
   const [hoverLong, setHoverLong] = useState("");
@@ -77,23 +81,25 @@ const MapDesktop = ({
   const [hoverLikeCount, setHoverLikeCount] = useState("");
 
   const viewport = useSelector((state) => state.data.mapViewport);
-  const [zoomBreak, setZoomBreak] = useState(0.8);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const { screamId } = useParams();
 
-  const _onViewportChange = (viewport) => {
-    dispatch(setMapViewport(viewport));
+  const handlleMapLoaded = () => {
+    setMapLoaded(true);
 
-    if (viewport.zoom > 15) {
-      setZoomBreak(2);
-    } else if (viewport.zoom > 13) {
-      setZoomBreak(1.2);
-    } else {
-      setZoomBreak(0.8);
+    if (!screamId) {
+      setTimeout(() => {
+        const viewport = {
+          latitude: 50.93864020643174,
+          longitude: 6.958725744885521,
+          zoom: isMobileCustom ? 9.5 : 11.5,
+          transitionDuration: 4000,
+          pitch: 30,
+          bearing: 0,
+        };
+        dispatch(setMapViewport(viewport));
+      }, 1000);
     }
-  };
-
-  const fetchDataScream = (screamId) => {
-    dispatch(openScreamFunc(screamId));
   };
 
   const data =
@@ -132,6 +138,47 @@ const MapDesktop = ({
     });
   }
 
+  let mygeojson = { type: "FeatureCollection", features: [] };
+
+  for (let point of dataFinalMap) {
+    let properties = point;
+    properties.circleRadius = 5 + point.likeCount / 7;
+    properties.circleBlurRadius = 14 + point.likeCount / 7;
+
+    delete properties.longitude;
+    delete properties.latitude;
+    let feature = {
+      type: "Feature",
+      geometry: { type: "Point", coordinates: [point.long, point.lat] },
+      properties: properties,
+    };
+    mygeojson.features.push(feature);
+  }
+
+  const onHover = (event) => {
+    if (event.features.length > 0) {
+      setHoverScreamId(event.features[0].properties.screamId);
+      setHoverLat(event.features[0].properties.lat);
+      setHoverLong(event.features[0].properties.long);
+      setHoverTitle(event.features[0].properties.title);
+      setHoverLikeCount(event.features[0].properties.likeCount);
+    }
+  };
+
+  const onLeave = (event) => {
+    setHoverScreamId("");
+    setHoverLat("");
+    setHoverLong("");
+    setHoverTitle("");
+    setHoverLikeCount("");
+  };
+
+  const onClick = (event) => {
+    if (event.features.length > 0) {
+      dispatch(openScreamFunc(event.features[0].properties.screamId));
+    }
+  };
+
   return (
     !isMobileCustom && (
       <div className="mapWrapper">
@@ -167,23 +214,26 @@ const MapDesktop = ({
           viewportChangeOptions={{
             duration: 2700,
           }}
-          onLoad={() => setMapLoaded(true)}
+          onLoad={handlleMapLoaded}
         >
           <NavigationControl showCompass showZoom position="top-right" />
-          {openProject && (
-            <React.Fragment>
-              <Source id="maine" type="geojson" data={data} />
-              <Layer
-                id="maine"
-                type="fill"
-                source="maine"
-                paint={{
-                  "fill-color": "#fed957",
-                  "fill-opacity": 0.3,
-                }}
-              />
-            </React.Fragment>
-          )}
+          {openProject &&
+            !loadingProjects &&
+            geoData !== undefined &&
+            geoData !== "" && (
+              <React.Fragment>
+                <Source id="maine" type="geojson" data={data} />
+                <Layer
+                  id="maine"
+                  type="fill"
+                  source="maine"
+                  paint={{
+                    "fill-color": "#fed957",
+                    "fill-opacity": 0.3,
+                  }}
+                />
+              </React.Fragment>
+            )}
           <DesktopMapButtons viewport={viewport} />
 
           {/* {dataFinalMap.map(
@@ -234,7 +284,97 @@ const MapDesktop = ({
             )
           )} */}
 
-          <Markers
+          <Source id="mygeojson" type="geojson" data={mygeojson} />
+          <Layer
+            id="mygeojsonblur"
+            source="mygeojson"
+            type="circle"
+            paint={{
+              "circle-radius": [
+                "interpolate",
+                ["linear"],
+                ["zoom"],
+                // when zoom is 0, set each feature's circle radius to the value of its "rating" property
+                0,
+                ["*", 0.1, ["get", "circleBlurRadius"]],
+
+                10,
+                ["*", 0.4, ["get", "circleBlurRadius"]],
+
+                // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
+                20,
+                ["*", 3, ["get", "circleBlurRadius"]],
+              ],
+              "circle-color": "#000",
+
+              "circle-blur": 1,
+              "circle-opacity": 0.15,
+            }}
+          />
+          <Layer
+            id="mygeojson"
+            source="mygeojson"
+            type="circle"
+            onHover={onHover}
+            onLeave={onLeave}
+            onClick={onClick}
+            paint={{
+              // "circle-radius": {
+              //   base: ["get", "likeCount"],
+              //   stops: [
+              //     [12, 3],
+              //     [22, 180],
+              //   ],
+              // },
+              "circle-radius": [
+                "interpolate",
+                ["linear"],
+                ["zoom"],
+                // when zoom is 0, set each feature's circle radius to the value of its "rating" property
+                0,
+                ["*", 0.1, ["get", "circleRadius"]],
+
+                10,
+                ["*", 0.4, ["get", "circleRadius"]],
+
+                // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
+                20,
+                ["*", 3, ["get", "circleRadius"]],
+              ],
+              "circle-color": ["get", "color"],
+              // "circle-color": [
+              //   "match",
+              //   ["get", "Thema"],
+              //   "Rad",
+              //   "blue",
+              //   "Umwelt und Grün",
+              //   "#223b53",
+              //   "Verkehr",
+              //   "#e55e5e",
+              //   "Asian",
+              //   "#3bb2d0",
+              //   /* other */ "#ccc",
+              // ],
+              "circle-stroke-color": "#fff",
+              "circle-stroke-width": [
+                "interpolate",
+                ["linear"],
+                ["zoom"],
+                // when zoom is 0, set each feature's circle radius to the value of its "rating" property
+                0,
+                0.1,
+
+                10,
+                0.4,
+
+                // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
+                20,
+                3,
+              ],
+            }}
+          />
+
+          {/* <Markers
             dataFinalMap={dataFinalMap}
             fetchDataScream={fetchDataScream}
             setHoverScreamId={setHoverScreamId}
@@ -243,7 +383,7 @@ const MapDesktop = ({
             setHoverTitle={setHoverTitle}
             setHoverLikeCount={setHoverLikeCount}
             zoomBreak={zoomBreak}
-          />
+          /> */}
 
           {/*    {dataFinalMap.map(
             ({ screamId, long, lat, likeCount, color, title }) => (
@@ -288,7 +428,7 @@ const MapDesktop = ({
                 likeCount={scream.likeCount}
                 zoomBreak={zoomBreak}
                 style={{
-                  clipPath: "polygon(0 0, 100% 0, 100% 88%, 0 88%)",
+                  clipPath: "polygon(0 0, 100% 0, 100% 82%, 0 82%)",
                 }}
                 alt="ChatIcon"
               />
@@ -304,8 +444,8 @@ const MapDesktop = ({
                 height: (7 + hoverLikeCount / 4) * zoomBreak + "px",
                 marginTop: -(7 + hoverLikeCount / 4) * zoomBreak + "px",
                 borderRadius: "100%",
-                border: "1px white solid",
-                backgroundColor: "rgb(0,0,0,0.2)",
+                // border: "1px white solid",
+                // backgroundColor: "rgb(0,0,0,0.2)",
 
                 opacity: "1",
                 pointerEvents: "none",
@@ -314,8 +454,8 @@ const MapDesktop = ({
               <div
                 className={classes.title}
                 style={{
-                  marginLeft: +(15 * zoomBreak + hoverLikeCount / 4) + "px",
-                  marginTop: +(5 * zoomBreak + hoverLikeCount / 8) + "px",
+                  marginLeft: +(18 + hoverLikeCount / 4) * zoomBreak + "px",
+                  marginTop: +(5 + hoverLikeCount / 6) * zoomBreak + "px",
                   transform: "translateY(-50%)",
                 }}
               >

@@ -58,12 +58,12 @@ const IdeaCardMonitoring = ({
   commentCount,
   Stadtteil,
   project,
-  Thema,
   status,
   createdAt,
   userHandle,
   color,
 }) => {
+  const ideaCardProject = project;
   const dispatch = useDispatch();
 
   const handleExpand = (screamId) => {
@@ -79,11 +79,9 @@ const IdeaCardMonitoring = ({
 
   const projectsDataFinal = [];
   if (projectsData) {
-    const projectsDataArray = projectsData;
-
-    projectsDataArray.forEach((element) => {
-      if (project === element.project) {
-        projectsDataFinal.push(element.imgUrl);
+    projectsData.forEach(({ project, imgUrl }) => {
+      if (ideaCardProject === project) {
+        projectsDataFinal.push(imgUrl);
       }
     });
   }
@@ -114,12 +112,14 @@ const IdeaCardMonitoring = ({
             {dayjs(createdAt).format("DD.MM.")}
           </div>
           <div style={{ width: "30px", margin: "10px" }}>
-            <img
-              src={projectsDataFinal}
-              width="30px"
-              alt="project-thumbnail"
-              style={{ borderRadius: "10px", overflow: "hidden" }}
-            ></img>
+            {projectsDataFinal.length > 0 && (
+              <img
+                src={projectsDataFinal}
+                width="30px"
+                alt="project-thumbnail"
+                style={{ borderRadius: "10px", overflow: "hidden" }}
+              />
+            )}
           </div>
           <div style={{ width: "20px", margin: "10px" }}>
             {" "}

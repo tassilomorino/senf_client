@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -11,12 +11,14 @@ import topics from "../../../data/topics";
 import { useTranslation } from "react-i18next";
 
 import styled, { keyframes } from "styled-components";
+import { setSwipePositionDown } from "../../../redux/actions/UiActions";
+import MapClickContainer from "./MapClickContainer";
 
 const enterAnimation = keyframes`
        0% {
         margin-left: 100%;
 }
-30% {
+80% {
         margin-left: 100%;
 }
 
@@ -31,17 +33,13 @@ const TopicFilterWrapperMobile = styled.div`
 
   top: ${(props) => (props.openScream ? "10px" : "90px")};
   width: 100%;
-  overflow-x: scroll;
 
+  overflow-x: scroll;
   -webkit-overflow-scrolling: touch;
   transition: 1s;
-`;
-
-const MapClickContainer = styled.div`
-  position: absolute;
-  width: calc(100% - 120px);
-  height: 50px;
-  z-index: 9;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  margin-top: -20px;
 `;
 
 const OpenButtonMobile = styled.div`
@@ -57,16 +55,16 @@ const OpenButtonMobile = styled.div`
 `;
 
 const TopicFilterInnerWrapperMobile = styled.div`
-  
   border-radius: 20px 0 0 20px;
   backdrop-filter: blur(5px);
-  background-color: rgb(0, 0, 0, 0.1);
+  background-color: rgb(255, 255, 255, 0.5);
+  box-shadow: 0 -18px 40px 12px rgba(0, 0, 0, 0.2);
   padding: 5px;
   padding-left: 20px;
   padding-right: 20px;
   margin: 5px;
   margin-left: calc(100% - 120px);
-  animation: ${enterAnimation} 3.5s;
+  animation: ${enterAnimation} 3.5s ease-out;
   z-index: 15;
   display: flex;
   flex-direction: row;
@@ -87,8 +85,6 @@ export function TopicFilter({
   handleTopicSelector,
   topicsSelected,
   loading,
-  swipePosition,
-  setSwipePositionDown,
   inline,
 }) {
   const openScream = useSelector((state) => state.UI.openScream);
@@ -143,10 +139,7 @@ export function TopicFilter({
 
   return isMobileCustom && !loading && !inline ? (
     <TopicFilterWrapperMobile openScream={openScream} id="Wrapper">
-      {swipePosition === "top" && (
-        <MapClickContainer onClick={setSwipePositionDown} />
-      )}
-
+      <MapClickContainer />
       <TopicFilterInnerWrapperMobile>
         <OpenButtonMobile
           onClick={() => setMoveLeft(!moveLeft)}
@@ -202,4 +195,4 @@ export function TopicFilter({
   );
 }
 
-export default TopicFilter;
+export default React.memo(TopicFilter);

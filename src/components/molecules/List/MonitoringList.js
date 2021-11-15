@@ -74,6 +74,7 @@ const MonitoringList = ({
             screamId={dataFinal[i]?.screamId}
             likeCount={dataFinal[i]?.likeCount}
             commentCount={dataFinal[i]?.commentCount}
+            userHandle={dataFinal[i]?.userHandle}
             Stadtteil={dataFinal[i]?.Stadtteil}
             project={dataFinal[i]?.project}
             color={dataFinal[i]?.color}
