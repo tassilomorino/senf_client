@@ -66,24 +66,6 @@ const Background = styled.div`
   z-index: -1;
   pointer-events: auto;
 `;
-const IdeaHeader = styled.div`
-  z-index: 2;
-  display: flex;
-  height: 100%;
-
-  @media screen and (max-width: 330px) {
-    font-size: 21pt;
-    margin-left: -5px;
-  }
-`;
-
-const Lightbulb = styled.img`
-  width: 50px;
-  align-self: center;
-  margin-top: -20px;
-
-  transform: translateY(10px) rotate(30deg);
-`;
 
 const Title = styled.h2`
   font-family: PlayfairDisplay-Bold;
@@ -105,6 +87,10 @@ const SearchIconButton = styled.button`
   pointer-events: auto;
   margin-left: auto;
   margin-right: 10px;
+  border: ${(props) =>
+    props.searchTerm !== "" && !props.searchOpen
+      ? "1px solid white"
+      : "none"}; ;
 `;
 
 const Input = styled.input`
@@ -165,7 +151,11 @@ const Toolbar = ({
         <Title>
           {dataFinalLength} {dataFinalLength === 1 ? t("idea") : t("ideas")}
         </Title>
-        <SearchIconButton onClick={setSearch}>
+        <SearchIconButton
+          onClick={setSearch}
+          searchTerm={searchTerm}
+          searchOpen={searchOpen}
+        >
           <img src={SearchIcon} width="20px" style={{ marginLeft: "auto" }} />
         </SearchIconButton>
         <SortingSelect handleDropdown={handleDropdown} />{" "}
