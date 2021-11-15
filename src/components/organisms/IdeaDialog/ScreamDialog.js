@@ -164,8 +164,9 @@ const ScreamDialog = () => {
         });
         setSwipePosition("bottom");
       }
-
-      set({ y: down ? my : 0 });
+      if (swipePosition !== "top") {
+        set({ y: down ? my : 0 });
+      }
     },
     {
       pointer: { touch: true },

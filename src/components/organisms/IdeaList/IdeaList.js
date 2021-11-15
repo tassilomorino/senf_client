@@ -114,19 +114,22 @@ const IdeaList = ({
   useEffect(() => {
     if (openScream) {
       set({
-        transform: `translateY(${window.innerHeight + 120}px)`,
+        transform: `translateY(${window.innerHeight + 20}px)`,
         touchAction: "none",
+        pointerEvents: "none",
       });
     } else {
       if (swipePosition === "bottom") {
         set({
           transform: `translateY(${window.innerHeight - 120}px)`,
           touchAction: "none",
+          pointerEvents: "all",
         });
       } else {
         set({
           transform: `translateY(${141}px)`,
           touchAction: "unset",
+          pointerEvents: "all",
         });
       }
     }
