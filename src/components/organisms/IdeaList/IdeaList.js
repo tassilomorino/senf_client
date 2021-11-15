@@ -135,6 +135,9 @@ const IdeaList = ({
     if (swipePosition === "bottom") {
       setSwipeDown();
     }
+    if (swipePosition === "top") {
+      setSwipeUp();
+    }
   }, [swipePosition]);
 
   const bind = useDrag(

@@ -10,8 +10,9 @@ import { Marker } from "@urbica/react-map-gl";
 import { Trans, useTranslation } from "react-i18next";
 import { CustomButton } from "../CustomButtons/CustomButton";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
+import { setSwipePositionUp } from "../../../redux/actions/UiActions";
 
-const NoLocationPopUp = ({ dataNoLocation, setSwipePositionUp }) => {
+const NoLocationPopUp = ({ dataNoLocation }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [openNoLocation, setOpenNoLocation] = useState(false);
@@ -29,7 +30,7 @@ const NoLocationPopUp = ({ dataNoLocation, setSwipePositionUp }) => {
     dispatch(setResetMapBounds(bounds));
     setOpenNoLocation(false);
     if (isMobileCustom) {
-      setSwipePositionUp();
+      dispatch(setSwipePositionUp());
     }
   };
 

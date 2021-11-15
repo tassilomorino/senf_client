@@ -1,6 +1,7 @@
 /** @format */
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 
@@ -9,6 +10,8 @@ import Arrow from "../../../images/icons/sort.png";
 
 //Components
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
+import { setSwipePositionUp } from "../../../redux/actions/UiActions";
 
 const DropDownContainer = styled("div")`
   position: relative;
@@ -72,6 +75,7 @@ const ListItem = styled("li")`
 
 const SortingSelect = ({ handleDropdown }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("newest");
   const [selectedLabel, setSelectedLabel] = useState(t("newest"));
@@ -85,6 +89,9 @@ const SortingSelect = ({ handleDropdown }) => {
 
   const handleToggle = () => {
     setOpen(!open);
+    if (isMobileCustom) {
+      dispatch(setSwipePositionUp());
+    }
   };
 
   const onOptionClicked = (value, label) => () => {

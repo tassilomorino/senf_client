@@ -1,15 +1,16 @@
 /** @format */
 
-import React, { useState } from "react";
+import React from "react";
+import { useDispatch } from "react-redux";
 
 import SortingSelect from "../../atoms/Selects/SortingSelect";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { useTranslation } from "react-i18next";
 
 //Icons
-import lightbulbImg from "../../../images/lamp.png";
 import SearchIcon from "../../../images/icons/search.png";
+import { setSwipePositionUp } from "../../../redux/actions/UiActions";
 
 const Wrapper = styled.div`
   display: flex;
@@ -147,7 +148,15 @@ const Toolbar = ({
   setSearchTerm,
 }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
+  const setSearch = () => {
+    setSearchOpen(!searchOpen);
+
+    if (isMobileCustom) {
+      dispatch(setSwipePositionUp());
+    }
+  };
   return (
     !loading && (
       <Wrapper type={type} searchOpen={searchOpen}>
@@ -155,7 +164,7 @@ const Toolbar = ({
         <Title>
           {dataFinalLength} {dataFinalLength === 1 ? t("idea") : t("ideas")}
         </Title>
-        <SearchIconButton onClick={() => setSearchOpen(!searchOpen)}>
+        <SearchIconButton onClick={setSearch}>
           <img src={SearchIcon} width="20px" style={{ marginLeft: "auto" }} />
         </SearchIconButton>
         <SortingSelect handleDropdown={handleDropdown} />{" "}
