@@ -88,7 +88,11 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
       />
 
       <div className="accountDialog">
-        {isMobileCustom ? <BackgroundMobile /> : <BackgroundDesktop />}
+        {isMobileCustom && order !== 1 ? (
+          <BackgroundMobile />
+        ) : !isMobileCustom ? (
+          <BackgroundDesktop />
+        ) : null}
 
         {order === 1 && (
           <IdeaList
@@ -107,7 +111,13 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
         )}
 
         {order === 2 && (
-          <React.Fragment>
+          <div
+            style={{
+              overflow: "scroll",
+              height: "100vh",
+              pointerEvents: "all",
+            }}
+          >
             <Break />
             <MainAnimations
               transition="0.5s"
@@ -117,7 +127,7 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
             >
               <AccountSettings />
             </MainAnimations>
-          </React.Fragment>
+          </div>
         )}
       </div>
     </React.Fragment>

@@ -82,6 +82,7 @@ class CalendarComponent extends React.Component {
           flexDirection: "row",
           flexGrow: "1",
           paddingBottom: "50vh",
+          pointerEvents: "all",
         }}
       >
         <FullCalendar

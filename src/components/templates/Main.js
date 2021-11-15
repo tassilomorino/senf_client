@@ -18,7 +18,7 @@ import {
   closeProject,
 } from "../../redux/actions/projectActions";
 
-import { setMapViewport } from "../../redux/actions/mapActions";
+import { setMapBounds, setMapViewport } from "../../redux/actions/mapActions";
 
 //Components
 import InsightsPage from "../organisms/Insights/InsightsPage";
@@ -35,12 +35,17 @@ import Loader from "../atoms/Animations/Loader";
 import { closeAccountFunc } from "../../redux/actions/accountActions";
 import ErrorBackground from "../atoms/Backgrounds/ErrorBackground";
 import { isAndroid } from "react-device-detect";
+import MapMobile from "../atoms/map/MapMobile";
+import TopicFilter from "../atoms/Filters/TopicFilter";
+import PostScream from "../organisms/PostIdea/PostScream";
 
 const Main = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { screamId } = useParams();
   const { cookie_settings } = useSelector((state) => state.data);
+
+  const [zoomBreak, setZoomBreak] = useState(0.6);
 
   const history = useHistory();
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
@@ -90,28 +95,12 @@ const Main = () => {
     ) {
       history.push("/intro");
     } else {
-      dispatch(getScreams())
-        .then(() => {
-          dispatch(getProjects());
-          if (window.location.pathname === "/projects") {
-            handleClick(2);
-          }
-        })
-        .then(() => {
-          if (!screamId) {
-            setTimeout(() => {
-              const viewport = {
-                latitude: 50.93864020643174,
-                longitude: 6.958725744885521,
-                zoom: isMobileCustom ? 9.5 : 11.5,
-                transitionDuration: 4000,
-                pitch: 30,
-                bearing: 0,
-              };
-              dispatch(setMapViewport(viewport));
-            }, 2000);
-          }
-        });
+      dispatch(getScreams()).then(() => {
+        dispatch(getProjects());
+        if (window.location.pathname === "/projects") {
+          handleClick(2);
+        }
+      });
     }
   }, []);
 
@@ -200,6 +189,36 @@ const Main = () => {
     }
   };
 
+  useEffect(() => {
+    if (openScream) {
+      setTimeout(() => {
+        if (mapViewport.zoom > 15) {
+          setZoomBreak(2);
+        } else if (mapViewport.zoom > 11.5) {
+          setZoomBreak(1);
+        } else {
+          setZoomBreak(0.6);
+        }
+      }, 1000);
+    }
+  }, [openScream, mapViewport]);
+
+  const _onViewportChange = (viewport) => {
+    dispatch(setMapViewport(viewport));
+    if (viewport.zoom > 15) {
+      setZoomBreak(2);
+    } else if (viewport.zoom > 11.5) {
+      setZoomBreak(1);
+    } else {
+      setZoomBreak(0.6);
+    }
+
+    if (isMobileCustom) {
+      const boundAdds = [500, 1000, 500, 1000];
+      dispatch(setMapBounds(viewport, boundAdds));
+    }
+  };
+
   // const sortedScreams =
   //   dropdown === "newest"
   //     ? _.orderBy(screams, "createdAt", "desc")
@@ -277,11 +296,38 @@ const Main = () => {
         loading={loading}
         loadingProjects={loadingProjects}
         dataFinal={dataFinalMap.slice(0, 300)}
+        _onViewportChange={_onViewportChange}
+        zoomBreak={zoomBreak}
         id="mapDesktop"
         openProject={openProject}
         geoData={project && openProject && project.geoData}
       ></MapDesktop>
 
+      {!loading &&
+        !loadingProjects &&
+        isMobileCustom &&
+        (order === 1 || openProject || openScream || openAccount) && (
+          <React.Fragment>
+            <PostScream
+              loadingProjects={loadingProjects}
+              projectsData={projects}
+              project={project}
+            />
+            <TopicFilter
+              loading={loading}
+              handleTopicSelector={handleTopicSelector}
+              topicsSelected={topicsSelected}
+            />
+            <MapMobile
+              dataFinal={dataFinalMap}
+              viewport={mapViewport}
+              _onViewportChange={_onViewportChange}
+              zoomBreak={zoomBreak}
+              openProject={openProject}
+              geoData={project && openProject && project.geoData}
+            />
+          </React.Fragment>
+        )}
       {!openInfoPage && (
         <div className="contentWrapper">
           {loading && !isMobileCustom && <Loader />}
@@ -298,8 +344,6 @@ const Main = () => {
               viewport={mapViewport}
               handleDropdown={handleDropdown}
               projectsData={projects}
-              loadingProjects={loadingProjects}
-              project={project}
               dropdown={dropdown}
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
@@ -318,7 +362,7 @@ const Main = () => {
               viewport={mapViewport}
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
-            ></ProjectDialog>
+            />
           )}
           {openAccount && (
             <Account

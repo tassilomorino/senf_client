@@ -160,6 +160,10 @@ if (cookies.get("Cookie_settings") === "all") {
   }
 }
 
+let vh = window.innerHeight * 0.01;
+// Then we set the value in the --vh custom property to the root of the document
+document.documentElement.style.setProperty("--vh", `${vh}px`);
+
 const App = () => {
   const { t } = useTranslation();
 
@@ -195,6 +199,13 @@ const App = () => {
           <Cookiebanner />
 
           {tabletNote}
+          {isTablet && (
+            <div className="switchDevice">
+              Bitte öffne Senf.koeln auf deinem Smartphone oder
+              Desktop-Computer. Die Tablet-Version kommt bald wieder :)
+            </div>
+          )}
+
           <div className="landscapeNote">{t("rotate_phone")}</div>
 
           <div className="container">

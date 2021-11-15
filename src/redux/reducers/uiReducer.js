@@ -18,6 +18,8 @@ import {
   VOTED_FALSE,
   OPEN_ACCOUNT,
   CLOSE_ACCOUNT,
+  SET_SWIPEPOSITION_UP,
+  SET_SWIPEPOSITION_DOWN,
 } from "../types";
 
 const initialState = {
@@ -30,6 +32,7 @@ const initialState = {
   errors: null,
   openInfoPage: false,
   voted: false,
+  swipePosition: "bottom",
 };
 
 export default function (state = initialState, action) {
@@ -129,6 +132,18 @@ export default function (state = initialState, action) {
       return {
         ...state,
         voted: false,
+      };
+
+    case SET_SWIPEPOSITION_UP:
+      return {
+        ...state,
+        swipePosition: "top",
+      };
+
+    case SET_SWIPEPOSITION_DOWN:
+      return {
+        ...state,
+        swipePosition: "bottom",
       };
 
     default:
