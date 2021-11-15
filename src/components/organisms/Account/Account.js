@@ -110,7 +110,8 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
             topicsSelected={topicsSelected}
             dataFinalMap={dataFinalMap}
             setSearchTerm={setSearchTerm}
-          ></IdeaList>
+            searchTerm={searchTerm}
+          />
         )}
 
         {order === 2 && (

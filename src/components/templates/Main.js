@@ -349,6 +349,7 @@ const Main = () => {
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
               setSearchTerm={setSearchTerm}
+              searchTerm={searchTerm}
             />
           )}
 

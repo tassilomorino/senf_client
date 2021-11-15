@@ -53,7 +53,7 @@ const Bar = styled.div`
   width: 40px;
   height: 4px;
   border-radius: 10px;
-  margin-left: calc(45% - 20px);
+  margin-left: calc(47.5% - 20px);
   background-color: white;
   top: 10px;
 `;
@@ -146,6 +146,7 @@ const Toolbar = ({
   setSearchOpen,
   searchOpen,
   setSearchTerm,
+  searchTerm,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -172,6 +173,7 @@ const Toolbar = ({
         {searchOpen && (
           <Input
             type="text"
+            value={searchTerm}
             placeholder="Durchsuche Titel und Beschreibungen..."
             onChange={(event) => setSearchTerm(event.target.value)}
           />

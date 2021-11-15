@@ -78,6 +78,7 @@ const IdeaList = ({
   projectsData,
   zIndex,
   setSearchTerm,
+  searchTerm,
 }) => {
   const dispatch = useDispatch();
   const openScream = useSelector((state) => state.UI.openScream);
@@ -192,6 +193,7 @@ const IdeaList = ({
                   setSearchOpen={setSearchOpen}
                   searchOpen={searchOpen}
                   setSearchTerm={setSearchTerm}
+                  searchTerm={searchTerm}
                   handleClickSwipe={
                     swipePosition === "bottom"
                       ? () => setSwipeUp()
@@ -230,6 +232,7 @@ const IdeaList = ({
             setSearchOpen={setSearchOpen}
             searchOpen={searchOpen}
             setSearchTerm={setSearchTerm}
+            searchTerm={searchTerm}
             type={type}
           />{" "}
           {searchOpen ? (

@@ -221,7 +221,8 @@ const ProjectDialog = ({
               topicsSelected={topicsSelected}
               dataFinalMap={dataFinalMap}
               setSearchTerm={setSearchTerm}
-            ></IdeaList>
+              searchTerm={searchTerm}
+            />
           )}
           {order === 2 && (
             <div
