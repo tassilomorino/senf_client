@@ -19,6 +19,10 @@ import ProjectHeader from "../../molecules/Headers/ProjectHeader";
 import ProjectInfo from "../../molecules/Cards/ProjectInfo";
 import styled from "styled-components";
 import MainAnimations from "../../atoms/Animations/MainAnimations";
+import {
+  BackgroundDesktop,
+  BackgroundMobile,
+} from "../../atoms/Backgrounds/GradientBackgrounds";
 
 const Break = styled.div`
   position: relative;
@@ -203,6 +207,11 @@ const ProjectDialog = ({
         />
 
         <div className="projectDialog">
+          {isMobileCustom && order !== 1 ? (
+            <BackgroundMobile />
+          ) : !isMobileCustom ? (
+            <BackgroundDesktop />
+          ) : null}
           {order === 1 && (
             <IdeaList
               type="projectIdeas"
