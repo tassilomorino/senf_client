@@ -107,12 +107,6 @@ const Main = () => {
 
   useEffect(() => {
     if (screamId) {
-      openDialogFromUrl();
-    }
-  }, []);
-
-  const openDialogFromUrl = () => {
-    if (screamId) {
       if (screamId.indexOf("_") > 0) {
         dispatch(openProjectFunc(screamId));
       } else {
@@ -120,7 +114,7 @@ const Main = () => {
       }
       setScreamIdParam(screamId);
     }
-  };
+  }, []);
 
   const handleClick = (order) => {
     setOrder(order);
