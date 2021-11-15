@@ -1,54 +1,14 @@
 /** @format */
 
 import React from "react";
-import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
-import styled from "styled-components";
-import LogoWhite from "../../../../images/logo_white.png";
-
-const Wrapper = styled.div`
-  position: relative;
-  z-index: 0;
-  width: 90vw;
-  height: 100%;
-  margin: auto;
-  max-width: 600px;
-  margin-top: 30vh;
-`
-
-const Terms = styled.a`
-  text-decoration: underline;
-  color: #414345;
-  cursor: pointer;
-`
-const Logo = styled.h1`
-  position: relative;
-  top: 0em;
-  left: 0vw;
-`
+import { LegalStyles, Terms } from "./LegalStyles";
 
 const Datenschutz = () => {
 
-  const linkToHome = () => {
-    window.location.href = "/";
-  }
-
   return (
-    <div>
+    <LegalStyles>
       {/* <div className="MainBackground"></div> */}
 
-      <CustomIconButton
-        name="Close"
-        position="fixed"
-        margin={document.body.clientWidth > 768 ? "40px" : "10px"}
-        left="0"
-        handleButtonClick={() => linkToHome()}
-        top="0"
-      />
-
-      <Wrapper>
-      <Logo onClick={() => linkToHome()}>
-        <img src={LogoWhite} width="100px" alt="logo" />
-        </Logo>
         <br />
         <br /> <br />
         <h1>Datenschutz</h1>
@@ -821,8 +781,8 @@ const Datenschutz = () => {
           erforderlich wird, informieren wir Sie natürlich unverzüglich.
         </p>
         <p>(Stand dieser Hinweise: Dezember 2019)</p>
-      </Wrapper>
-    </div>
+      
+    </LegalStyles>
   );
 }
 
