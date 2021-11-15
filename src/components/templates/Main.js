@@ -38,6 +38,7 @@ import { isAndroid } from "react-device-detect";
 import MapMobile from "../atoms/map/MapMobile";
 import TopicFilter from "../atoms/Filters/TopicFilter";
 import PostScream from "../organisms/PostIdea/PostScream";
+import SearchComponent from "../organisms/Search/SearchComponent";
 
 const Main = () => {
   const { t } = useTranslation();
@@ -272,6 +273,14 @@ const Main = () => {
       <ErrorBackground loading={loading} />
 
       {voted && <ThanksForTheVote />}
+
+      {/* <SearchComponent
+        loading={loading}
+        dropdown={dropdown}
+        dataFinal={dataFinal}
+        dataFinalLength={dataFinalLength}
+        projectsData={projects}
+      /> */}
 
       <Topbar
         loading={loading}
