@@ -54,7 +54,7 @@ import { getBuildDate } from "./util/utils";
 //import withClearCache from "./ClearCache";
 import Cookiebanner from "./components/organisms/Cookiebanner/Cookiebanner";
 
-/* const ClearCacheComponent = withClearCache(MainApp); */
+
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
@@ -192,7 +192,7 @@ const App = () => {
 
   return (
     <MuiThemeProvider theme={theme}>
-      {process.env.REACT_APP_STAGE !== "development" && <ClearCacheComponent />}
+     
 
       <Provider store={store}>
         <Router>
@@ -244,3 +244,4 @@ console.log(getBuildDate(packageJson.buildDate));
 
 
 export default App;
+/* export default withClearCache(MainApp); */
