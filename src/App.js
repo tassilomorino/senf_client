@@ -51,10 +51,10 @@ import { isMobileCustom } from "./util/customDeviceDetect";
 
 import packageJson from "../package.json";
 import { getBuildDate } from "./util/utils";
-import withClearCache from "./ClearCache";
+//import withClearCache from "./ClearCache";
 import Cookiebanner from "./components/organisms/Cookiebanner/Cookiebanner";
 
-const ClearCacheComponent = withClearCache(MainApp);
+/* const ClearCacheComponent = withClearCache(MainApp); */
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
@@ -230,12 +230,6 @@ const App = () => {
 };
 console.log(getBuildDate(packageJson.buildDate));
 
-function MainApp(props) {
-  return (
-    <div className="App">
-      <header className="App-header"></header>
-    </div>
-  );
-}
+
 
 export default App;
