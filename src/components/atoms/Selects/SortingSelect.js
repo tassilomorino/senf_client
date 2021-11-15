@@ -17,16 +17,15 @@ const DropDownContainer = styled("div")`
 const DropDownButton = styled.button`
   font-family: Futura PT W01 Book;
   font-size: 22px;
-  color: #353535;
-  background-color: white;
+  color: white;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   height: 40px;
   padding: 10px;
   border-radius: 10px;
-  border: 0.5px solid #353535;
-  background-color: transparent;
+  /* border: 0.5px solid #353535; */
+  background-color: #f6cb2f;
   pointer-events: auto;
 `;
 
@@ -109,7 +108,7 @@ const SortingSelect = ({ handleDropdown }) => {
         <DropDownButton onClick={handleToggle} style={{ zIndex: 999 }}>
           {truncateString(selectedLabel, 12)}
 
-          <img src={Arrow} width="20px" style={{ paddingLeft: "5px" }}></img>
+          {/* <img src={Arrow} width="20px" style={{ paddingLeft: "5px" }}></img> */}
         </DropDownButton>
         {open && (
           <DropDownListContainer>

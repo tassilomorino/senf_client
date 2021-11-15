@@ -1,5 +1,5 @@
 /** @format */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -75,6 +75,7 @@ const IdeaList = ({
   zIndex,
 }) => {
   const openScream = useSelector((state) => state.UI.openScream);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -181,6 +182,8 @@ const IdeaList = ({
                   loading={loading}
                   handleDropdown={handleDropdown}
                   dataFinalLength={dataFinalLength}
+                  setSearchOpen={setSearchOpen}
+                  searchOpen={searchOpen}
                   handleClickSwipe={
                     swipePosition === "bottom"
                       ? () => setSwipeUp()
@@ -189,6 +192,11 @@ const IdeaList = ({
                 />{" "}
               </animated.div>
             </ListHeaderWrapper>
+            {searchOpen ? (
+              <div style={{ height: "60px", transition: "0.5s" }} />
+            ) : (
+              <div style={{ height: "0px", transition: "0.5s" }} />
+            )}
             {/* <ShadowBox display={shadow ? "block" : "none"} /> */}
             <List
               type={type}
@@ -206,8 +214,15 @@ const IdeaList = ({
             loading={loading}
             handleDropdown={handleDropdown}
             dataFinalLength={dataFinalLength}
+            setSearchOpen={setSearchOpen}
+            searchOpen={searchOpen}
             type={type}
           />{" "}
+          {searchOpen ? (
+            <div style={{ height: "60px", transition: "0.5s" }} />
+          ) : (
+            <div style={{ height: "0px", transition: "0.5s" }} />
+          )}
           <List
             type={type}
             loading={loading}

@@ -44,6 +44,7 @@ const Main = () => {
   const dispatch = useDispatch();
   const { screamId } = useParams();
   const { cookie_settings } = useSelector((state) => state.data);
+  const [serachTerm, setSerachTerm] = useState("");
 
   const [zoomBreak, setZoomBreak] = useState(0.6);
 
@@ -219,20 +220,23 @@ const Main = () => {
     }
   };
 
-  // const sortedScreams =
-  //   dropdown === "newest"
-  //     ? _.orderBy(screams, "createdAt", "desc")
-  //     : _.orderBy(screams, "likeCount", "desc");
+  const screamsSearched = screams.filter((val) => {
+    if (serachTerm === "") {
+      return val;
+    } else if (val.title.toLowerCase().includes(serachTerm.toLowerCase())) {
+      return val;
+    }
+  });
 
   const sortedScreams =
     dropdown === "newest"
-      ? screams?.sort(function (a, b) {
+      ? screamsSearched?.sort(function (a, b) {
           if (a.createdAt > b.createdAt) {
             return -1;
           }
           return 0;
         })
-      : screams?.sort(function (a, b) {
+      : screamsSearched?.sort(function (a, b) {
           if (a.likeCount > b.likeCount) {
             return -1;
           }
@@ -261,7 +265,7 @@ const Main = () => {
         ({ Thema, status }) =>
           topicsSelected.includes(Thema) && status === "None"
       )
-    : screams.filter(
+    : screamsSearched.filter(
         ({ Thema, status }) =>
           topicsSelected.includes(Thema) && status === "None"
       );

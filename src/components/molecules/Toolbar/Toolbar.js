@@ -1,27 +1,28 @@
 /** @format */
 
-import React from "react";
+import React, { useState } from "react";
 
-import lightbulbImg from "../../../images/lamp.png";
 import SortingSelect from "../../atoms/Selects/SortingSelect";
 import styled, { keyframes } from "styled-components";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { useTranslation } from "react-i18next";
 
+//Icons
+import lightbulbImg from "../../../images/lamp.png";
+import SearchIcon from "../../../images/icons/search.png";
+
 const Wrapper = styled.div`
-  font-family: Playfair Display;
-  font-weight: 500;
-  font-size: 24px;
-  color: white;
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 50px;
-  padding: 10px 2.5% 20px 2.5%;
+  transition: height 0.5s;
+  background-color: #fed957;
+  padding: 5px 2.5% 10px 2.5%;
 
   animation: ToolbarAnimation 0.7s;
   pointer-events: none;
-
+  flex-flow: wrap;
   @media (min-width: 768px) {
     position: fixed;
     top: ${(props) => (props.type === "allIdeas" ? "40px" : "100px")};
@@ -49,10 +50,10 @@ const Wrapper = styled.div`
 
 const Bar = styled.div`
   position: absolute;
-  width: 60px;
+  width: 40px;
   height: 4px;
   border-radius: 10px;
-  margin-left: calc(47.5% - 30px);
+  margin-left: calc(45% - 20px);
   background-color: white;
   top: 10px;
 `;
@@ -67,40 +68,106 @@ const Background = styled.div`
 `;
 const IdeaHeader = styled.div`
   z-index: 2;
-  margin-top: -20px;
-  font-size: 26px;
+  display: flex;
+  height: 100%;
 
   @media screen and (max-width: 330px) {
-    margin-top: -20px;
     font-size: 21pt;
     margin-left: -5px;
   }
 `;
+
 const Lightbulb = styled.img`
   width: 50px;
+  align-self: center;
+  margin-top: -20px;
+
   transform: translateY(10px) rotate(30deg);
+`;
+
+const Title = styled.h2`
+  font-family: PlayfairDisplay-Bold;
+  font-size: 22px;
+  font-weight: 100;
+  margin-left: 2.5%;
+  color: white;
+  align-self: center;
+`;
+
+const SearchIconButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #f6cb2f;
+  pointer-events: auto;
+  margin-left: auto;
+  margin-right: 10px;
+`;
+
+const Input = styled.input`
+  -webkit-appearance: none;
+  display: block;
+  width: 95%;
+  padding: 14px 14px 12px;
+  height: 26px;
+  font-family: Futura PT W01 Book;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #353535;
+  border: 2px solid white;
+  background-color: white;
+  border-radius: 20px;
+  margin-top: 0px;
+  transition: all 0.15s ease;
+  pointer-events: all;
+
+  &:hover {
+    border-color: black;
+    background-color: white;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: black;
+    background-color: white;
+  }
 `;
 
 const Toolbar = ({
   loading,
   type,
   handleDropdown,
-  marginTop,
   handleClickSwipe,
   dataFinalLength,
+  setSearchOpen,
+  searchOpen,
 }) => {
   const { t } = useTranslation();
 
   return (
     !loading && (
-      <Wrapper type={type}>
+      <Wrapper type={type} searchOpen={searchOpen}>
         {isMobileCustom && <Bar />}
-        <IdeaHeader>
-          <Lightbulb src={lightbulbImg} alt={"lightbulb"} />
+        <Title>
           {dataFinalLength} {dataFinalLength === 1 ? t("idea") : t("ideas")}
-        </IdeaHeader>
+        </Title>
+        <SearchIconButton onClick={() => setSearchOpen(!searchOpen)}>
+          <img src={SearchIcon} width="20px" style={{ marginLeft: "auto" }} />
+        </SearchIconButton>
         <SortingSelect handleDropdown={handleDropdown} />{" "}
         {isMobileCustom && <Background onClick={handleClickSwipe} />}
+        {searchOpen && (
+          <Input
+            type="text"
+            placeholder="search..."
+            // onChange={(event) => setSerachTerm(event.target.value)}
+            style={{ zIndex: 9999 }}
+          />
+        )}
       </Wrapper>
     )
   );
