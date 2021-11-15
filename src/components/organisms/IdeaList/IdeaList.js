@@ -1,8 +1,7 @@
 /** @format */
 import React, { useEffect } from "react";
-import { isMobileCustom } from "../../../util/customDeviceDetect";
-
 import { useSelector, useDispatch } from "react-redux";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
@@ -145,7 +144,6 @@ const IdeaList = ({
       if (last && my < -50) {
         set({
           transform: `translateY(${141}px)`,
-
           touchAction: "unset",
         });
         dispatch(setSwipePositionUp());

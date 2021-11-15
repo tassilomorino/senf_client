@@ -20,8 +20,8 @@ import MapGL, {
   Layer,
   Marker,
   NavigationControl,
+  Image,
 } from "@urbica/react-map-gl";
-import { Markers } from "./Markers";
 import NoLocationPopUp from "./NoLocationPopUp";
 import { DesktopMapButtons } from "./DesktopMapButtons";
 import { PatternBackground } from "./styles/sharedStyles";
@@ -71,8 +71,6 @@ const MapDesktop = ({
   const scream = useSelector((state) => state.data.scream);
 
   const dispatch = useDispatch();
-
-  const [hoveredStateId, setHoveredStateId] = useState(null);
 
   const [hoverScreamId, setHoverScreamId] = useState("");
   const [hoverLat, setHoverLat] = useState("");
@@ -165,7 +163,7 @@ const MapDesktop = ({
     }
   };
 
-  const onLeave = (event) => {
+  const onLeave = () => {
     setHoverScreamId("");
     setHoverLat("");
     setHoverLong("");
@@ -236,55 +234,8 @@ const MapDesktop = ({
             )}
           <DesktopMapButtons viewport={viewport} />
 
-          {/* {dataFinalMap.map(
-            ({ screamId, long, lat, likeCount, color, title }) => (
-              <div
-                style={{
-                  boxShadow:
-                    "rgba(0, 0, 0, 0.1) 0px 9px 38px, rgba(0, 0, 0, 0.15) 0px 5px 5px",
-                }}
-              >
-                <Source
-                  id={screamId}
-                  type="geojson"
-                  data={{
-                    type: "Feature",
-                    geometry: {
-                      type: "Point",
-                      coordinates: [long, lat],
-                    },
-                  }}
-                />
-                <Layer
-                  id={screamId}
-                  type="circle"
-                  source={screamId}
-                  paint={{
-                    "circle-radius": 3 + likeCount / 4,
-                    "circle-color": color,
-                    "circle-stroke-color": "#fff",
-                  }}
-                  onClick={() => fetchDataScream(screamId)}
-                  onHover={() => {
-                    setHoverScreamId(screamId);
-                    setHoverLat(lat);
-                    setHoverLong(long);
-                    setHoverTitle(title);
-                    setHoverLikeCount(likeCount);
-                  }}
-                  onLeave={() => {
-                    setHoverScreamId("");
-                    setHoverLat("");
-                    setHoverLong("");
-                    setHoverTitle("");
-                    setHoverLikeCount("");
-                  }}
-                />
-              </div>
-            )
-          )} */}
-
           <Source id="mygeojson" type="geojson" data={mygeojson} />
+
           <Layer
             id="mygeojsonblur"
             source="mygeojson"
@@ -374,48 +325,18 @@ const MapDesktop = ({
             }}
           />
 
-          {/* <Markers
-            dataFinalMap={dataFinalMap}
-            fetchDataScream={fetchDataScream}
-            setHoverScreamId={setHoverScreamId}
-            setHoverLat={setHoverLat}
-            setHoverLong={setHoverLong}
-            setHoverTitle={setHoverTitle}
-            setHoverLikeCount={setHoverLikeCount}
-            zoomBreak={zoomBreak}
-          /> */}
+          {/*  ONCE WE NEED TO ADD SYMBOLS TO THE MAP
+          <Image id="my-image" image={imageURL} />
+          <Layer
+            id="image-layer"
+            type="symbol"
+            source="mygeojson"
+            layout={{
+              "icon-image": "my-image",
 
-          {/*    {dataFinalMap.map(
-            ({ screamId, long, lat, likeCount, color, title }) => (
-              <Marker key={screamId} longitude={long} latitude={lat}>
-                <OpenIdeaButton
-                  likeCount={likeCount}
-                  color={color}
-                  onClick={() => fetchDataScream(screamId)}
-                  onMouseEnter={() => {
-                    setHoverScreamId(screamId);
-                    setHoverLat(lat);
-                    setHoverLong(long);
-                    setHoverTitle(title);
-                    setHoverLikeCount(likeCount);
-                  }}
-                  onMouseLeave={() =>
-                    setTimeout(() => {
-                      setHoverScreamId("");
-                      setHoverLat("");
-                      setHoverLong("");
-                      setHoverTitle("");
-                      setHoverLikeCount("");
-                    }, 10000)
-                  }
-                >
-                  <ExpandButton
-                    handleButtonClick={() => fetchDataScream(screamId)}
-                  />
-                </OpenIdeaButton>
-              </Marker>
-            )
-          )} */}
+              "icon-size": 0.05,
+            }}
+          /> */}
 
           {openScream && scream.lat && (
             <Marker

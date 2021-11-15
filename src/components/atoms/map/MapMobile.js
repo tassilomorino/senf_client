@@ -13,7 +13,6 @@ import { setMapViewport } from "../../../redux/actions/mapActions";
 
 //Icons
 import Pin from "../../../images/pin3.png";
-import { MarkersMobile } from "./Markers";
 import { PatternBackground } from "./styles/sharedStyles";
 import { useParams } from "react-router";
 
