@@ -19,10 +19,6 @@ import ProjectHeader from "../../molecules/Headers/ProjectHeader";
 import ProjectInfo from "../../molecules/Cards/ProjectInfo";
 import styled from "styled-components";
 import MainAnimations from "../../atoms/Animations/MainAnimations";
-import {
-  BackgroundDesktop,
-  BackgroundMobile,
-} from "../../atoms/Backgrounds/GradientBackgrounds";
 
 const Break = styled.div`
   position: relative;
@@ -152,15 +148,27 @@ const ProjectDialog = ({
 
   const dataRar = project.screams;
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const screamsSearched = dataRar?.filter((val) => {
+    if (searchTerm === "") {
+      return val;
+    } else if (
+      val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.body.toLowerCase().includes(searchTerm.toLowerCase())
+    ) {
+      return val;
+    }
+  });
+
   const sortedScreams =
     dropdown === "newest"
-      ? dataRar?.sort(function (a, b) {
+      ? screamsSearched?.sort(function (a, b) {
           if (a.createdAt > b.createdAt) {
             return -1;
           }
           return 0;
         })
-      : dataRar?.sort(function (a, b) {
+      : screamsSearched?.sort(function (a, b) {
           if (a.likeCount > b.likeCount) {
             return -1;
           }
@@ -195,12 +203,6 @@ const ProjectDialog = ({
         />
 
         <div className="projectDialog">
-          {isMobileCustom && order !== 1 ? (
-            <BackgroundMobile />
-          ) : !isMobileCustom ? (
-            <BackgroundDesktop />
-          ) : null}
-
           {order === 1 && (
             <IdeaList
               type="projectIdeas"
@@ -218,7 +220,9 @@ const ProjectDialog = ({
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
               dataFinalMap={dataFinalMap}
-            ></IdeaList>
+              setSearchTerm={setSearchTerm}
+              searchTerm={searchTerm}
+            />
           )}
           {order === 2 && (
             <div

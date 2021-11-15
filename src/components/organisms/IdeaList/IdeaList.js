@@ -1,5 +1,5 @@
 /** @format */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -16,6 +16,10 @@ import {
   setSwipePositionDown,
   setSwipePositionUp,
 } from "../../../redux/actions/UiActions";
+import {
+  BackgroundDesktop,
+  BackgroundMobile,
+} from "../../atoms/Backgrounds/GradientBackgrounds";
 
 const Wrapper = styled.div`
   opacity: 1;
@@ -73,10 +77,12 @@ const IdeaList = ({
   dataFinalLength,
   projectsData,
   zIndex,
+  setSearchTerm,
+  searchTerm,
 }) => {
-  const openScream = useSelector((state) => state.UI.openScream);
-
   const dispatch = useDispatch();
+  const openScream = useSelector((state) => state.UI.openScream);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const swipePosition = useSelector((state) => state.UI.swipePosition);
   const [props, set] = useSpring(() => ({
@@ -130,6 +136,9 @@ const IdeaList = ({
     if (swipePosition === "bottom") {
       setSwipeDown();
     }
+    if (swipePosition === "top") {
+      setSwipeUp();
+    }
   }, [swipePosition]);
 
   const bind = useDrag(
@@ -181,6 +190,10 @@ const IdeaList = ({
                   loading={loading}
                   handleDropdown={handleDropdown}
                   dataFinalLength={dataFinalLength}
+                  setSearchOpen={setSearchOpen}
+                  searchOpen={searchOpen}
+                  setSearchTerm={setSearchTerm}
+                  searchTerm={searchTerm}
                   handleClickSwipe={
                     swipePosition === "bottom"
                       ? () => setSwipeUp()
@@ -189,6 +202,11 @@ const IdeaList = ({
                 />{" "}
               </animated.div>
             </ListHeaderWrapper>
+            {searchOpen ? (
+              <div style={{ height: "60px", transition: "0.5s" }} />
+            ) : (
+              <div style={{ height: "0px", transition: "0.5s" }} />
+            )}
             {/* <ShadowBox display={shadow ? "block" : "none"} /> */}
             <List
               type={type}
@@ -202,12 +220,26 @@ const IdeaList = ({
         </React.Fragment>
       ) : (
         <Content>
+          {isMobileCustom && order !== 1 ? (
+            <BackgroundMobile />
+          ) : !isMobileCustom ? (
+            <BackgroundDesktop />
+          ) : null}
           <Toolbar
             loading={loading}
             handleDropdown={handleDropdown}
             dataFinalLength={dataFinalLength}
+            setSearchOpen={setSearchOpen}
+            searchOpen={searchOpen}
+            setSearchTerm={setSearchTerm}
+            searchTerm={searchTerm}
             type={type}
           />{" "}
+          {searchOpen ? (
+            <div style={{ height: "60px", transition: "0.5s" }} />
+          ) : (
+            <div style={{ height: "0px", transition: "0.5s" }} />
+          )}
           <List
             type={type}
             loading={loading}

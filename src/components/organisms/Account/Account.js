@@ -11,10 +11,6 @@ import IdeaList from "../IdeaList/IdeaList";
 import AccountHeader from "../../molecules/Headers/AccountHeader";
 import AccountSettings from "./AccountSettings";
 import MainAnimations from "../../atoms/Animations/MainAnimations";
-import {
-  BackgroundDesktop,
-  BackgroundMobile,
-} from "../../atoms/Backgrounds/GradientBackgrounds";
 
 const Break = styled.div`
   position: relative;
@@ -49,22 +45,34 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
     setDropdown(value);
   };
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const screamsSearched = myScreams?.filter((val) => {
+    if (searchTerm === "") {
+      return val;
+    } else if (
+      val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.body.toLowerCase().includes(searchTerm.toLowerCase())
+    ) {
+      return val;
+    }
+  });
+
   const sortedScreams =
     dropdown === "newest"
-      ? myScreams?.sort(function (a, b) {
+      ? screamsSearched?.sort(function (a, b) {
           if (a.createdAt > b.createdAt) {
             return -1;
           }
           return 0;
         })
-      : myScreams?.sort(function (a, b) {
+      : screamsSearched?.sort(function (a, b) {
           if (a.likeCount > b.likeCount) {
             return -1;
           }
           return 0;
         });
 
-  const dataFinal = myScreams
+  const dataFinal = sortedScreams
     ? sortedScreams.filter(
         ({ Thema, status, lat, long }) =>
           topicsSelected.includes(Thema) &&
@@ -88,12 +96,6 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
       />
 
       <div className="accountDialog">
-        {isMobileCustom && order !== 1 ? (
-          <BackgroundMobile />
-        ) : !isMobileCustom ? (
-          <BackgroundDesktop />
-        ) : null}
-
         {order === 1 && (
           <IdeaList
             type="myIdeas"
@@ -107,7 +109,9 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
             handleTopicSelector={handleTopicSelector}
             topicsSelected={topicsSelected}
             dataFinalMap={dataFinalMap}
-          ></IdeaList>
+            setSearchTerm={setSearchTerm}
+            searchTerm={searchTerm}
+          />
         )}
 
         {order === 2 && (

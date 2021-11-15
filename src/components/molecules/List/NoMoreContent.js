@@ -47,7 +47,7 @@ export const NoMoreMyContent = ({ dataFinalLength, loading }) => {
     <NoMore>
       ... <br /> {t("noMoreIdeas")} <br />
     </NoMore>
-  ) : myScreams === undefined ? (
+  ) : myScreams === undefined || myScreams === 0 ? (
     <NoContent>{t("noSharedIdeas")}</NoContent>
   ) : (
     <NoContent> {t("noIdeasWithFilter")}</NoContent>
@@ -63,9 +63,9 @@ export const NoMoreProjectsContent = ({ dataFinalLength, loading }) => {
     <NoMore>
       ... <br /> {t("noMoreIdeas")} <br />
     </NoMore>
-  ) : !loading && dataFinalLength && dataFinalLength !== screams.length ? (
-    <NoContent>{t("noContentIdeas")}</NoContent>
-  ) : (
+  ) : !loading && (screams.length === 0 || screams === undefined) ? (
     <NoContent>{t("noProjectIdeas")}</NoContent>
+  ) : (
+    <NoContent>{t("noContentIdeas")}</NoContent>
   );
 };

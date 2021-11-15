@@ -44,6 +44,7 @@ const Main = () => {
   const dispatch = useDispatch();
   const { screamId } = useParams();
   const { cookie_settings } = useSelector((state) => state.data);
+  const [serachTerm, setSerachTerm] = useState("");
 
   const [zoomBreak, setZoomBreak] = useState(0.6);
 
@@ -105,12 +106,6 @@ const Main = () => {
   }, []);
 
   useEffect(() => {
-    if (!openInfoPage && screamId) {
-      openDialogFromUrl();
-    }
-  }, [openInfoPage]);
-
-  const openDialogFromUrl = () => {
     if (screamId) {
       if (screamId.indexOf("_") > 0) {
         dispatch(openProjectFunc(screamId));
@@ -119,7 +114,7 @@ const Main = () => {
       }
       setScreamIdParam(screamId);
     }
-  };
+  }, []);
 
   const handleClick = (order) => {
     setOrder(order);
@@ -219,20 +214,26 @@ const Main = () => {
     }
   };
 
-  // const sortedScreams =
-  //   dropdown === "newest"
-  //     ? _.orderBy(screams, "createdAt", "desc")
-  //     : _.orderBy(screams, "likeCount", "desc");
-
+  const [searchTerm, setSearchTerm] = useState("");
+  const screamsSearched = screams?.filter((val) => {
+    if (searchTerm === "") {
+      return val;
+    } else if (
+      val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.body.toLowerCase().includes(searchTerm.toLowerCase())
+    ) {
+      return val;
+    }
+  });
   const sortedScreams =
     dropdown === "newest"
-      ? screams?.sort(function (a, b) {
+      ? screamsSearched?.sort(function (a, b) {
           if (a.createdAt > b.createdAt) {
             return -1;
           }
           return 0;
         })
-      : screams?.sort(function (a, b) {
+      : screamsSearched?.sort(function (a, b) {
           if (a.likeCount > b.likeCount) {
             return -1;
           }
@@ -261,7 +262,7 @@ const Main = () => {
         ({ Thema, status }) =>
           topicsSelected.includes(Thema) && status === "None"
       )
-    : screams.filter(
+    : screamsSearched.filter(
         ({ Thema, status }) =>
           topicsSelected.includes(Thema) && status === "None"
       );
@@ -347,6 +348,8 @@ const Main = () => {
               dropdown={dropdown}
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
+              setSearchTerm={setSearchTerm}
+              searchTerm={searchTerm}
             />
           )}
 
