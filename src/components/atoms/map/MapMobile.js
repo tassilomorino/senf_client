@@ -9,11 +9,13 @@ import { openScreamFunc } from "../../../redux/actions/screamActions";
 //MAPSTUF
 import MapGL, { Source, Layer, Marker } from "@urbica/react-map-gl";
 import NoLocationPopUp from "./NoLocationPopUp";
+import { setMapViewport } from "../../../redux/actions/mapActions";
 
 //Icons
 import Pin from "../../../images/pin3.png";
 import { MarkersMobile } from "./Markers";
 import { PatternBackground } from "./styles/sharedStyles";
+import { useParams } from "react-router";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -25,24 +27,24 @@ const Wrapper = styled.div`
 const PinComponent = styled.img`
   position: absolute;
   width: 100px;
-  transform: translateY(-88%) translateX(-45%) rotate(0deg);
+  transform: translateY(-95%) translateX(-50%) rotate(0deg);
   transform-origin: bottom center;
-  margin-top: ${(props) => -(7 + props.likeCount / 4) * props.zoomBreak + "px"};
-  margin-left: ${(props) =>
-    -((7 + props.likeCount / 4) * props.zoomBreak) / 2 + "px"};
+
+  z-index: -1;
 `;
 
 const MapMobile = ({
   dataFinal,
   viewport,
-
+  openProject,
   _onViewportChange,
   zoomBreak,
   loadingProjects,
   geoData,
-  setSwipePositionUp,
 }) => {
   const dispatch = useDispatch();
+  const { screamId } = useParams();
+
   const openScream = useSelector((state) => state.UI.openScream);
   const scream = useSelector((state) => state.data.scream);
 
@@ -50,6 +52,23 @@ const MapMobile = ({
 
   const fetchDataScream = (screamId) => {
     dispatch(openScreamFunc(screamId));
+  };
+
+  const handlleMapLoaded = () => {
+    setMapLoaded(true);
+    if (!screamId && !openProject) {
+      setTimeout(() => {
+        const viewport = {
+          latitude: 50.93864020643174,
+          longitude: 6.958725744885521,
+          zoom: isMobileCustom ? 9.5 : 11.5,
+          transitionDuration: 4000,
+          pitch: 30,
+          bearing: 0,
+        };
+        dispatch(setMapViewport(viewport));
+      }, 1000);
+    }
   };
 
   const data =
@@ -89,6 +108,29 @@ const MapMobile = ({
     });
   }
 
+  let mygeojson = { type: "FeatureCollection", features: [] };
+
+  for (let point of dataFinalMap) {
+    let properties = point;
+    properties.circleRadius = 5 + point.likeCount / 7;
+    properties.circleBlurRadius = 14 + point.likeCount / 7;
+
+    delete properties.longitude;
+    delete properties.latitude;
+    let feature = {
+      type: "Feature",
+      geometry: { type: "Point", coordinates: [point.long, point.lat] },
+      properties: properties,
+    };
+    mygeojson.features.push(feature);
+  }
+
+  const onClick = (event) => {
+    if (event.features.length > 0) {
+      dispatch(openScreamFunc(event.features[0].properties.screamId));
+    }
+  };
+
   return (
     isMobileCustom && (
       <Wrapper>
@@ -107,23 +149,104 @@ const MapMobile = ({
           viewportChangeOptions={{
             duration: 2700,
           }}
-          onLoad={() => setMapLoaded(true)}
+          onLoad={handlleMapLoaded}
         >
-          <Source id="maine" type="geojson" data={data} />
-          <Layer
-            id="maine"
-            type="fill"
-            source="maine"
-            paint={{
-              "fill-color": "#fed957",
-              "fill-opacity": 0.2,
-            }}
-          />
+          {openProject &&
+            !loadingProjects &&
+            geoData !== undefined &&
+            geoData !== "" && (
+              <React.Fragment>
+                <Source id="maine" type="geojson" data={data} />
+                <Layer
+                  id="maine"
+                  type="fill"
+                  source="maine"
+                  paint={{
+                    "fill-color": "#fed957",
+                    "fill-opacity": 0.3,
+                  }}
+                />
+              </React.Fragment>
+            )}
 
-          <MarkersMobile
+          {/* <MarkersMobile
             dataFinalMap={dataFinalMap}
             fetchDataScream={fetchDataScream}
             zoomBreak={zoomBreak}
+          /> */}
+
+          <Source id="mygeojson" type="geojson" data={mygeojson} />
+          <Layer
+            id="mygeojsonblur"
+            source="mygeojson"
+            type="circle"
+            paint={{
+              "circle-radius": [
+                "interpolate",
+                ["linear"],
+                ["zoom"],
+                // when zoom is 0, set each feature's circle radius to the value of its "rating" property
+                0,
+                ["*", 0.1, ["get", "circleBlurRadius"]],
+
+                10,
+                ["*", 0.4, ["get", "circleBlurRadius"]],
+
+                // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
+                20,
+                ["*", 3, ["get", "circleBlurRadius"]],
+              ],
+              "circle-color": "#000",
+              "circle-blur": 1,
+              "circle-opacity": 0.15,
+            }}
+          />
+          <Layer
+            id="mygeojson"
+            source="mygeojson"
+            type="circle"
+            onClick={onClick}
+            paint={{
+              // "circle-radius": {
+              //   base: ["get", "likeCount"],
+              //   stops: [
+              //     [12, 3],
+              //     [22, 180],
+              //   ],
+              // },
+              "circle-radius": [
+                "interpolate",
+                ["linear"],
+                ["zoom"],
+                // when zoom is 0, set each feature's circle radius to the value of its "rating" property
+                0,
+                ["*", 0.1, ["get", "circleRadius"]],
+
+                10,
+                ["*", 0.4, ["get", "circleRadius"]],
+
+                // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
+                20,
+                ["*", 3, ["get", "circleRadius"]],
+              ],
+              "circle-color": ["get", "color"],
+              "circle-stroke-color": "#fff",
+              "circle-stroke-width": [
+                "interpolate",
+                ["linear"],
+                ["zoom"],
+                // when zoom is 0, set each feature's circle radius to the value of its "rating" property
+                0,
+                0.1,
+
+                10,
+                0.4,
+
+                // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
+                20,
+                3,
+              ],
+            }}
           />
 
           {openScream && scream.lat && (
@@ -137,16 +260,13 @@ const MapMobile = ({
                 likeCount={scream.likeCount}
                 zoomBreak={zoomBreak}
                 style={{
-                  clipPath: "polygon(0 0, 100% 0, 100% 88%, 0 88%)",
+                  clipPath: "polygon(0 0, 100% 0, 100% 82%, 0 82%)",
                 }}
                 alt="ChatIcon"
               />
             </Marker>
           )}
-          <NoLocationPopUp
-            dataNoLocation={dataNoLocation}
-            setSwipePositionUp={setSwipePositionUp}
-          />
+          <NoLocationPopUp dataNoLocation={dataNoLocation} />
         </MapGL>
       </Wrapper>
     )

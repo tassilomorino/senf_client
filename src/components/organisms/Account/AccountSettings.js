@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { logoutUser } from "../../../redux/actions/userActions";
 import { StyledText } from "../../../styles/GlobalStyle";
@@ -34,13 +34,13 @@ const AccountSettings = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
+  const handle = useSelector((state) => state.user.handle);
+
   const handleLogout = () => {
     dispatch(logoutUser());
   };
 
   const deleteAccount = () => {
-    const userHandle = this.props.user.handle;
-
     var link =
       "mailto:dein@senf.koeln" +
       "?subject=" +
@@ -53,7 +53,7 @@ const AccountSettings = () => {
           "Mein Nutzername lautet:" +
           "\n" +
           "\n" +
-          userHandle
+          handle
       );
     window.location.href = link;
   };

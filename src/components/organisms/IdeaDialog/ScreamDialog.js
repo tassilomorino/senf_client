@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
@@ -70,6 +70,17 @@ const ScreamDialog = () => {
   const [commentIdSelected, setCommentIdSelected] = useState("");
   const [commentFormShow, setCommentFormShow] = useState(false);
   const [swipePosition, setSwipePosition] = useState("bottom");
+
+  function usePrevious(value) {
+    const ref = useRef();
+    useEffect(() => {
+      ref.current = value;
+    });
+    return ref.current;
+  }
+  const prevLat = usePrevious({ lat });
+  const prevLong = usePrevious({ long });
+
   useEffect(() => {
     if (openScream && lat !== undefined) {
       window.scrollTo({
@@ -80,17 +91,23 @@ const ScreamDialog = () => {
       if (!isMobileCustom) {
         setCommentFormShow(true);
       }
-      setTimeout(() => {
-        const viewport = {
-          latitude: isMobileCustom && openScream ? lat - 0.0008 : lat,
-          longitude: long,
-          zoom: 16.5,
-          transitionDuration: 4000,
-          pitch: 30,
-          bearing: 0,
-        };
-        dispatch(setMapViewport(viewport));
-      }, 400);
+
+      if (
+        (lat && prevLat && prevLat.lat !== lat) ||
+        (long && prevLong && prevLong.long !== long)
+      ) {
+        setTimeout(() => {
+          const viewport = {
+            latitude: isMobileCustom && openScream ? lat - 0.0008 : lat,
+            longitude: long,
+            zoom: 16.5,
+            transitionDuration: 4000,
+            pitch: 30,
+            bearing: 0,
+          };
+          dispatch(setMapViewport(viewport));
+        }, 200);
+      }
 
       setPath(`https://senf.koeln/${screamId}`);
     }

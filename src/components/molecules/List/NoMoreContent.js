@@ -29,7 +29,7 @@ const NoContent = styled.div`
 export const NoMoreMainContent = ({ dataFinalLength }) => {
   const { t } = useTranslation();
 
-  return dataFinalLength > 0 ? (
+  return dataFinalLength && dataFinalLength > 0 ? (
     <NoMore>
       ... <br /> {t("noMoreIdeas")} <br />
     </NoMore>
@@ -43,7 +43,7 @@ export const NoMoreMyContent = ({ dataFinalLength, loading }) => {
 
   const { t } = useTranslation();
 
-  return !loading && dataFinalLength > 0 ? (
+  return !loading && dataFinalLength && dataFinalLength > 0 ? (
     <NoMore>
       ... <br /> {t("noMoreIdeas")} <br />
     </NoMore>
@@ -59,11 +59,11 @@ export const NoMoreProjectsContent = ({ dataFinalLength, loading }) => {
 
   const { t } = useTranslation();
 
-  return !loading && dataFinalLength > 0 ? (
+  return !loading && dataFinalLength && dataFinalLength > 0 ? (
     <NoMore>
       ... <br /> {t("noMoreIdeas")} <br />
     </NoMore>
-  ) : !loading && dataFinalLength !== screams.length ? (
+  ) : !loading && dataFinalLength && dataFinalLength !== screams.length ? (
     <NoContent>{t("noContentIdeas")}</NoContent>
   ) : (
     <NoContent>{t("noProjectIdeas")}</NoContent>

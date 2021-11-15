@@ -35,6 +35,7 @@ import Logo from "../../../images/logo.png";
 import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
+import MyButton from "../../../util/MyButton";
 
 const styles = {
   root: {
@@ -51,10 +52,10 @@ const styles = {
   closeButton: {
     zIndex: 9999,
     position: "fixed",
-    top: "5px",
-    left: "25px",
+    top: "0px",
+    left: "15px",
     width: "40px",
-    marginTop: "18px",
+    marginTop: "10px",
     color: "#ffd388",
     transform: "scale(1.5)",
   },
@@ -105,12 +106,12 @@ const InlineInformationPage = ({ classes }) => {
         PaperProps={{ classes: { root: classes.paper } }}
         fullScreen
       >
-        <MyButtonStyle
+        <MyButton
           onClick={() => setOpen(false)}
           btnClassName={classes.closeButton}
         >
           <img src={CloseIcon} width="20px" />
-        </MyButtonStyle>
+        </MyButton>
         <div className="logo1">
           <img src={Logo} width="100px" alt="logo1"></img>
         </div>
