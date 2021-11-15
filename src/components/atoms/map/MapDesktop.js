@@ -32,10 +32,7 @@ const PinComponent = styled.img`
   width: 100px;
   transform: translateY(-95%) translateX(-50%) rotate(0deg);
   transform-origin: bottom center;
-  /* margin-top: ${(props) =>
-    -((7 + props.likeCount / 4) * props.zoomBreak) / 1.5 + "px"};
-  margin-left: ${(props) =>
-    -((7 + props.likeCount / 4) * props.zoomBreak) / 8 + "px"}; */
+
   z-index: -1;
 `;
 
@@ -145,8 +142,8 @@ const MapDesktop = ({
 
   for (let point of dataFinalMap) {
     let properties = point;
-    properties.circleRadius = 5 + point.likeCount / 10;
-    properties.circleBlurRadius = 12 + point.likeCount / 10;
+    properties.circleRadius = 5 + point.likeCount / 7;
+    properties.circleBlurRadius = 14 + point.likeCount / 7;
 
     delete properties.longitude;
     delete properties.latitude;
@@ -311,7 +308,7 @@ const MapDesktop = ({
               "circle-color": "#000",
 
               "circle-blur": 1,
-              "circle-opacity": 0.3,
+              "circle-opacity": 0.15,
             }}
           />
           <Layer
@@ -359,7 +356,21 @@ const MapDesktop = ({
               //   /* other */ "#ccc",
               // ],
               "circle-stroke-color": "#fff",
-              "circle-stroke-width": 1,
+              "circle-stroke-width": [
+                "interpolate",
+                ["linear"],
+                ["zoom"],
+                // when zoom is 0, set each feature's circle radius to the value of its "rating" property
+                0,
+                0.1,
+
+                10,
+                0.4,
+
+                // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
+                20,
+                3,
+              ],
             }}
           />
 

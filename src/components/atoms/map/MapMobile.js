@@ -112,8 +112,8 @@ const MapMobile = ({
 
   for (let point of dataFinalMap) {
     let properties = point;
-    properties.circleRadius = 5 + point.likeCount / 10;
-    properties.circleBlurRadius = 12 + point.likeCount / 10;
+    properties.circleRadius = 5 + point.likeCount / 7;
+    properties.circleBlurRadius = 14 + point.likeCount / 7;
 
     delete properties.longitude;
     delete properties.latitude;
@@ -197,9 +197,8 @@ const MapMobile = ({
                 ["*", 3, ["get", "circleBlurRadius"]],
               ],
               "circle-color": "#000",
-
               "circle-blur": 1,
-              "circle-opacity": 0.3,
+              "circle-opacity": 0.15,
             }}
           />
           <Layer
@@ -231,21 +230,22 @@ const MapMobile = ({
                 ["*", 3, ["get", "circleRadius"]],
               ],
               "circle-color": ["get", "color"],
-              // "circle-color": [
-              //   "match",
-              //   ["get", "Thema"],
-              //   "Rad",
-              //   "blue",
-              //   "Umwelt und Grün",
-              //   "#223b53",
-              //   "Verkehr",
-              //   "#e55e5e",
-              //   "Asian",
-              //   "#3bb2d0",
-              //   /* other */ "#ccc",
-              // ],
               "circle-stroke-color": "#fff",
-              "circle-stroke-width": 1,
+              "circle-stroke-width": [
+                "interpolate",
+                ["linear"],
+                ["zoom"],
+                // when zoom is 0, set each feature's circle radius to the value of its "rating" property
+                0,
+                0.1,
+
+                10,
+                0.4,
+
+                // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
+                20,
+                3,
+              ],
             }}
           />
 
