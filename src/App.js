@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import './styles/mapbox-gl.css';
+import "./styles/mapbox-gl.css";
 import "./App.css";
 import "./AppDesktop.css";
 import "./AppIpad.css";
@@ -54,8 +54,6 @@ import { getBuildDate } from "./util/utils";
 //import withClearCache from "./ClearCache";
 import Cookiebanner from "./components/organisms/Cookiebanner/Cookiebanner";
 
-
-
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
@@ -84,18 +82,15 @@ require("intersection-observer");
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
   firebase
-  .firestore()
-  .enablePersistence()
-  .then(() => firebase.firestore())
-  .catch(err => {
-    console.log(err);
-    return firebase.firestore();
-  });
- 
+    .firestore()
+    .enablePersistence()
+    .then(() => firebase.firestore())
+    .catch((err) => {
+      console.log(err);
+      return firebase.firestore();
+    });
 } else {
   firebase.app(); // if already initialized, use that one
-   
-  
 }
 
 axios.defaults.baseURL = process.env.REACT_APP_DB_BASE_URL;
@@ -192,19 +187,17 @@ const App = () => {
 
   return (
     <MuiThemeProvider theme={theme}>
-     
-
       <Provider store={store}>
         <Router>
           <Cookiebanner />
 
           {tabletNote}
-          {isTablet && (
+          {/* {isTablet && (
             <div className="switchDevice">
               Bitte öffne Senf.koeln auf deinem Smartphone oder
               Desktop-Computer. Die Tablet-Version kommt bald wieder :)
             </div>
-          )}
+          )} */}
 
           <div className="landscapeNote">{t("rotate_phone")}</div>
 
@@ -240,8 +233,6 @@ const App = () => {
   );
 };
 console.log(getBuildDate(packageJson.buildDate));
-
-
 
 export default App;
 /* export default withClearCache(MainApp); */
