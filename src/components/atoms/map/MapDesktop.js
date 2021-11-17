@@ -296,14 +296,17 @@ const MapDesktop = ({
                 ["zoom"],
                 // when zoom is 0, set each feature's circle radius to the value of its "rating" property
                 0,
-                ["*", 0.1, ["get", "circleBlurRadius"]],
+                ["*", 0, ["get", "circleBlurRadius"]],
 
                 10,
-                ["*", 0.4, ["get", "circleBlurRadius"]],
+                ["*", 0, ["get", "circleBlurRadius"]],
 
                 // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
+
+                14,
+                ["*", 4, ["get", "circleRadius"]],
                 20,
-                ["*", 3, ["get", "circleBlurRadius"]],
+                ["*", 0, ["get", "circleRadius"]],
               ],
               "circle-color": "#000",
 
@@ -338,8 +341,10 @@ const MapDesktop = ({
                 ["*", 0.4, ["get", "circleRadius"]],
 
                 // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
+                14,
+                ["*", 1.5, ["get", "circleRadius"]],
                 20,
-                ["*", 3, ["get", "circleRadius"]],
+                ["*", 1.2, ["get", "circleRadius"]],
               ],
               "circle-color": ["get", "color"],
               // "circle-color": [
