@@ -32,6 +32,10 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
   const mapBounds = useSelector((state) => state.data.mapBounds);
 
   const myScreams = useSelector((state) => state.data.myScreams);
+  const user = useSelector((state) => state.user);
+
+  console.log(user);
+
   const [dropdown, setDropdown] = useState("newest");
   const [order, setOrder] = useState(1);
   const dispatch = useDispatch();

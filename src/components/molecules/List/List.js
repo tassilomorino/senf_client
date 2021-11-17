@@ -100,6 +100,11 @@ const List = ({
       "listItems:",
       listItems
     );
+
+    if (!loading && dataFinal.length === 0) {
+      sethasMoreItems(false);
+    }
+
     if (listItems === dataFinal.length) {
       sethasMoreItems(false);
     } else {
