@@ -21,22 +21,22 @@ import {
 import { setMapBounds, setMapViewport } from "../../redux/actions/mapActions";
 
 //Components
-import InsightsPage from "../organisms/Insights/InsightsPage";
+import InsightsPage from "../organisms/SubPages/InsightsPage";
 import DesktopSidebar from "../molecules/Navigation/DesktopSidebar";
 import Topbar from "../molecules/Navigation/Topbar";
 import MapDesktop from "../atoms/map/MapDesktop";
 import IdeaList from "../organisms/IdeaList/IdeaList";
-import ProjectsPage from "../organisms/Projects/ProjectsPage";
-import ScreamDialog from "../organisms/IdeaDialog/ScreamDialog";
-import ProjectDialog from "../organisms/Projects/ProjectDialog";
+import ProjectsPage from "../organisms/SubPages/ProjectsPage";
+import ScreamDialog from "../organisms/Dialogs/ScreamDialog";
+import ProjectDialog from "../organisms/Dialogs/ProjectDialog";
 import ThanksForTheVote from "../atoms/Backgrounds/ThanksForTheVote";
-import Account from "../organisms/Account/Account";
-import Loader from "../atoms/Animations/Loader";
+import Account from "../organisms/Dialogs/Account";
+import Loader from "../atoms/Backgrounds/Loader";
 import { closeAccountFunc } from "../../redux/actions/accountActions";
 import ErrorBackground from "../atoms/Backgrounds/ErrorBackground";
 import { isAndroid } from "react-device-detect";
 import MapMobile from "../atoms/map/MapMobile";
-import TopicFilter from "../atoms/Filters/TopicFilter";
+import TopicFilter from "../molecules/Filters/TopicFilter";
 import PostScream from "../organisms/PostIdea/PostScream";
 
 const Main = () => {
@@ -83,11 +83,11 @@ const Main = () => {
   const [dropdown, setDropdown] = useState("newest");
 
   useEffect(() => {
-    if (navigator.userAgent.includes("Instagram") && isAndroid) {
-      alert(
-        "Bitte schau dir Senf.koeln in deinem Standardbrowser an, falls dir die Seite beschädigt angezeigt wird"
-      );
-    }
+    // if (navigator.userAgent.includes("Instagram") && isAndroid) {
+    //   alert(
+    //     "Bitte schau dir Senf.koeln in deinem Standardbrowser an, falls dir die Seite beschädigt angezeigt wird"
+    //   );
+    // }
     if (
       cookie_settings !== "all" &&
       cookie_settings !== "minimum" &&

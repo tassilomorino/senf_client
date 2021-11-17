@@ -8,6 +8,7 @@ import { openProjectFunc } from "./projectActions";
 import {
   SET_SCREAMS,
   LOADING_DATA,
+  STOP_LOADING_DATA,
   DELETE_SCREAM,
   SET_ERRORS,
   POST_SCREAM,
@@ -62,6 +63,9 @@ export const getScreams = () => async (dispatch) => {
       dispatch({
         type: SET_ERRORS,
         payload: { title: "Error occured when loading" },
+      });
+      dispatch({
+        type: STOP_LOADING_DATA,
       });
       console.log("Error getting document:", error);
     });

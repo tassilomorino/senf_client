@@ -9,8 +9,12 @@ import { closeAccountFunc } from "../../../redux/actions/accountActions";
 //Components
 import IdeaList from "../IdeaList/IdeaList";
 import AccountHeader from "../../molecules/Headers/AccountHeader";
-import AccountSettings from "./AccountSettings";
-import MainAnimations from "../../atoms/Animations/MainAnimations";
+import AccountSettings from "../../molecules/DialogInlineComponents/AccountSettings";
+import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
+import {
+  BackgroundDesktop,
+  BackgroundMobile,
+} from "../../atoms/Backgrounds/GradientBackgrounds";
 
 const Break = styled.div`
   position: relative;
@@ -96,6 +100,11 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
       />
 
       <div className="accountDialog">
+        {isMobileCustom && order !== 1 ? (
+          <BackgroundMobile />
+        ) : !isMobileCustom ? (
+          <BackgroundDesktop />
+        ) : null}
         {order === 1 && (
           <IdeaList
             type="myIdeas"

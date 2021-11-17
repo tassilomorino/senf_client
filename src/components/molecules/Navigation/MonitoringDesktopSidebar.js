@@ -4,19 +4,13 @@ import React, { Component } from "react";
 import LogoImg from "../../../images/logo.png";
 import { Logo, Tabs } from "./styles/sharedStyles";
 
-import LoginRegistration from "../../atoms/Auth/LoginRegistration";
-
 //ICONS
 import Insta from "../../../images/icons/socialmedia/insta.png";
 import Facebook from "../../../images/icons/socialmedia/facebook.png";
 
-import Insights_yellow from "../../../images/icons/insights_yellow.png";
-import Insights_grey from "../../../images/icons/insights_grey.png";
-
-import Noprofile from "../../../images/noprofile.png";
 import Arrow from "../../../images/icons/arrow_yellow.png";
 
-import TopicFilter from "../../atoms/Filters/TopicFilter";
+import TopicFilter from "../Filters/TopicFilter";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
 export class MonitoringDesktopSidebar extends Component {

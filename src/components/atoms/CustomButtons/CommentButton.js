@@ -6,7 +6,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 //Components
-import RegistrationAndLogin from "../Auth/LoginRegistration";
+import LoginRegistration from "../../organisms/Auth/LoginRegistration";
 
 //Images
 import { CustomIconButton } from "./CustomButton";
@@ -25,7 +25,7 @@ const CommentButton = ({ handleButtonClick }) => {
       backgroundColor={"transparent"}
       handleButtonClick={() => console.log("not logged in")}
     >
-      <RegistrationAndLogin />
+      <LoginRegistration />
     </CustomIconButton>
   ) : (
     <CustomIconButton

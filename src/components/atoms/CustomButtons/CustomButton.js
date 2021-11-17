@@ -68,6 +68,10 @@ const WideButton = styled.button`
     css`
       ${enterAnimation} 2s
     `};
+
+  &:hover {
+    filter: brightness(95%);
+  }
 `;
 
 export const CustomButton = ({
@@ -168,7 +172,7 @@ const IconButton = styled.button`
     `};
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.03);
+    filter: brightness(95%);
   }
 `;
 

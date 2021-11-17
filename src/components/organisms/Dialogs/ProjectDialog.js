@@ -16,9 +16,13 @@ import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 
 import IdeaList from "../IdeaList/IdeaList";
 import ProjectHeader from "../../molecules/Headers/ProjectHeader";
-import ProjectInfo from "../../molecules/Cards/ProjectInfo";
+import ProjectInfo from "../../molecules/DialogInlineComponents/ProjectInfo";
 import styled from "styled-components";
-import MainAnimations from "../../atoms/Animations/MainAnimations";
+import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
+import {
+  BackgroundDesktop,
+  BackgroundMobile,
+} from "../../atoms/Backgrounds/GradientBackgrounds";
 
 const Break = styled.div`
   position: relative;
@@ -203,6 +207,11 @@ const ProjectDialog = ({
         />
 
         <div className="projectDialog">
+          {isMobileCustom && order !== 1 ? (
+            <BackgroundMobile />
+          ) : !isMobileCustom ? (
+            <BackgroundDesktop />
+          ) : null}
           {order === 1 && (
             <IdeaList
               type="projectIdeas"

@@ -7,9 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { openAccountFunc } from "../../../redux/actions/accountActions";
 
 //Components
-import RegistrationAndLogin from "../../atoms/Auth/LoginRegistration";
+import RegistrationAndLogin from "../../organisms/Auth/LoginRegistration";
 import InlineInformationPageDesktop from "../../organisms/infocomponents/InlineInformationPageDesktop";
-import TopicFilter from "../../atoms/Filters/TopicFilter";
+import TopicFilter from "../Filters/TopicFilter";
 import { MenuItem } from "./MenuItem";
 import { MenuData } from "../../../data/MenuData";
 

@@ -54,19 +54,6 @@ const ListHeaderWrapper = styled.div`
   border-radius: 20px 20px 0 0;
 `;
 
-const ShadowBox = styled.div`
-  width: 90%;
-  margin-left: 5%;
-  height: 70px;
-  display: block;
-  position: absolute;
-  top: 0;
-
-  box-shadow: rgb(38, 57, 77, 0.4) 0px 20px 30px -15px;
-  z-index: 14;
-  display: ${(props) => props.display && props.display};
-`;
-
 const IdeaList = ({
   type,
   loading,
@@ -114,19 +101,22 @@ const IdeaList = ({
   useEffect(() => {
     if (openScream) {
       set({
-        transform: `translateY(${window.innerHeight + 120}px)`,
+        transform: `translateY(${window.innerHeight + 20}px)`,
         touchAction: "none",
+        pointerEvents: "none",
       });
     } else {
       if (swipePosition === "bottom") {
         set({
           transform: `translateY(${window.innerHeight - 120}px)`,
           touchAction: "none",
+          pointerEvents: "all",
         });
       } else {
         set({
           transform: `translateY(${141}px)`,
           touchAction: "unset",
+          pointerEvents: "all",
         });
       }
     }

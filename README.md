@@ -24,7 +24,6 @@ To obtain an access token, sign in to https://www.mapbox.com/ and visit Account 
 ## 3: Add a .env file to the Project root containing the following two Variables:
 
 REACT_APP_MAPBOX_ACCESS_TOKEN= Your_Access_token_here <br/>
-REACT_APP_DB_BASE_URL=https://europe-west1-senf-dev.cloudfunctions.net/api
 <br/><br/>
 Tip: If you already started the React Server before adding these variables you need to restart the react server afterwards
 

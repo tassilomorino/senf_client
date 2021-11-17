@@ -16,7 +16,7 @@ import AgegroupsCover from "../../../images/insightsCovers/agegroups-cover.jpg";
 
 import firebase from "firebase/app";
 import "firebase/firestore";
-import MainAnimations from "../../atoms/Animations/MainAnimations";
+import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";

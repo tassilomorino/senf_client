@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { openAccountFunc } from "../../../redux/actions/accountActions";
 
 //COMPONENTS
-import LoginRegistration from "../../atoms/Auth/LoginRegistration";
+import LoginRegistration from "../../organisms/Auth/LoginRegistration";
 import InlineInformationPage from "../../organisms/infocomponents/InlineInformationPage";
 import Tabs from "../../atoms/Tabs/Tabs";
 import { MenuData } from "../../../data/MenuData";
@@ -32,6 +32,22 @@ const Wrapper = styled.div`
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
   top: ${(props) => (props.moveUp ? "-90px" : "0px")};
   transition: 1s;
+  animation: TopbarEnterAnimation 2.5s;
+
+  @keyframes TopbarEnterAnimation {
+    0% {
+      opacity: 0;
+      transform: translateY(-100%);
+    }
+    75% {
+      opacity: 1;
+      transform: translateY(-100%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0%);
+    }
+  }
 `;
 
 const LogoContainer = styled.div`

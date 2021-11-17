@@ -82,7 +82,6 @@
     "cypress-wait-until": "^1.7.1",
     "start-server-and-test": "^1.13.1"
   },
-  "proxy": "https://europe-west1-senf-dev.cloudfunctions.net/api",
   "buildDate": 1636809178839
 
 }

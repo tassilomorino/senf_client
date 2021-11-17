@@ -14,7 +14,7 @@ import Celebrate from "../images/celebrateImage.png";
 import Fast_geschafft from "../images/headlines/Fast_geschafft.png";
 
 //COMPONENT
-import LoginRegistration from "../components/atoms/Auth/LoginRegistration";
+import LoginRegistration from "../components/organisms/Auth/LoginRegistration";
 
 //MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";

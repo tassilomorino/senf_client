@@ -5,7 +5,7 @@ import React from "react";
 import { isAndroid } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import ResetPassword from "../../organisms/Auth/ResetPassword";
-import { SubmitButton } from "../CustomButtons/SubmitButton";
+import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 
 const LoginFormComponent = ({
   loading,

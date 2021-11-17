@@ -11,6 +11,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { CustomButton } from "../CustomButtons/CustomButton";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { setSwipePositionUp } from "../../../redux/actions/UiActions";
+import { closeScream } from "../../../redux/actions/screamActions";
 
 const NoLocationPopUp = ({ dataNoLocation }) => {
   const { t } = useTranslation();
@@ -29,6 +30,7 @@ const NoLocationPopUp = ({ dataNoLocation }) => {
 
     dispatch(setResetMapBounds(bounds));
     setOpenNoLocation(false);
+    dispatch(closeScream());
     if (isMobileCustom) {
       dispatch(setSwipePositionUp());
     }

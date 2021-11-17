@@ -16,10 +16,10 @@ describe("Test the display of ideas within the mainpage", () => {
     // cy.intercept("GET", "**/api/screams", {
     //   fixture: "screams_all_ideas.json",
     // });
-    cy.intercept(
-      "GET",
-      "https://google.firestore.v1.Firestore/Listen/channel?database=projects/senf-dev/databases/(default)&gsessionid=SKrYZRftz1inmHCpQzL2UYabw7hgmsYjr98BJcYvDxA&VER=8&RID=rpc&SID=vYNi01z4ljnz2_eLg0URHw&CI=0&AID=0&TYPE=xmlhttp&zx=z171l41j0dja&t=1"
-    );
+    // cy.intercept(
+    //   "GET",
+    //   "https://google.firestore.v1.Firestore/Listen/channel?database=projects/senf-dev/databases/(default)&gsessionid=SKrYZRftz1inmHCpQzL2UYabw7hgmsYjr98BJcYvDxA&VER=8&RID=rpc&SID=vYNi01z4ljnz2_eLg0URHw&CI=0&AID=0&TYPE=xmlhttp&zx=z171l41j0dja&t=1"
+    // );
     cy.intercept("GET", "**/api/sockjs-node/info?t=1631367554782");
 
     cy.visit("/");

@@ -20,7 +20,7 @@ import Comments from "../../molecules/Cards/Comments";
 import CommentForm from "../../atoms/Forms/CommentForm";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 
-import Loader from "../../atoms/Animations/Loader";
+import Loader from "../../atoms/Backgrounds/Loader";
 import ShareYourOpinionCard from "../../molecules/Cards/ShareYourOpinionCard";
 import IdeaCardBig from "../../molecules/Cards/IdeaCardBig";
 import {
@@ -164,8 +164,9 @@ const ScreamDialog = () => {
         });
         setSwipePosition("bottom");
       }
-
-      set({ y: down ? my : 0 });
+      if (swipePosition !== "top") {
+        set({ y: down ? my : 0 });
+      }
     },
     {
       pointer: { touch: true },
