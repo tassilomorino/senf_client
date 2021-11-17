@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import LogoImg from "../../../images/logo.png";
 import { Logo, Tabs } from "./styles/sharedStyles";
 
-import LoginRegistration from "../../atoms/Auth/LoginRegistration";
+import LoginRegistration from "../../organisms/Auth/LoginRegistration";
 
 //ICONS
 import Insta from "../../../images/icons/socialmedia/insta.png";

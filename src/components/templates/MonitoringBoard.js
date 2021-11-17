@@ -22,7 +22,7 @@ import MonitoringEditScream from "../organisms/SideBars/MonitoringEditScream";
 import MonitoringToolbar from "../molecules/Toolbar/MonitoringToolbar";
 import MonitoringList from "../molecules/List/MonitoringList";
 import { CustomButton } from "../atoms/CustomButtons/CustomButton";
-import LoginRegistration from "../atoms/Auth/LoginRegistration";
+import LoginRegistration from "../organisms/Auth/LoginRegistration";
 import styled from "styled-components";
 import { StyledText } from "../../styles/GlobalStyle";
 import ErrorBackground from "../atoms/Backgrounds/ErrorBackground";

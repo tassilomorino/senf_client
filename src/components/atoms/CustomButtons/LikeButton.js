@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { likeScream, unlikeScream } from "../../../redux/actions/likeActions";
 
 //Components
-import RegistrationAndLogin from "../Auth/LoginRegistration";
+import LoginRegistration from "../../organisms/Auth/LoginRegistration";
 
 import { CustomIconButton } from "./CustomButton";
 
@@ -33,7 +33,7 @@ const LikeButton = ({ screamId }) => {
       backgroundColor={"transparent"}
       handleButtonClick={() => console.log("not logged in")}
     >
-      <RegistrationAndLogin />
+      <LoginRegistration />
     </CustomIconButton>
   ) : likedScream() ? (
     <CustomIconButton

@@ -16,9 +16,9 @@ import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 
 import IdeaList from "../IdeaList/IdeaList";
 import ProjectHeader from "../../molecules/Headers/ProjectHeader";
-import ProjectInfo from "../../molecules/Cards/ProjectInfo";
+import ProjectInfo from "../../molecules/DialogInlineComponents/ProjectInfo";
 import styled from "styled-components";
-import MainAnimations from "../../atoms/Animations/MainAnimations";
+import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
 import {
   BackgroundDesktop,
   BackgroundMobile,

@@ -10,19 +10,19 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import Swipe from "react-easy-swipe";
 
-import ExpandButton from "../CustomButtons/ExpandButton";
+import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
+import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
+
 //Icons
 
 //Images
 import Wirke_mit from "../../../images/headlines/Wirke_mit.png";
 
-// MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";
 import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 import RegistrationFormComponent from "./RegistrationFormComponent";
 import LoginFormComponent from "./LoginFormComponent";
-import { CustomIconButton } from "../CustomButtons/CustomButton";
 import { useTranslation } from "react-i18next";
 import { getUserData } from "../../../redux/actions/userActions";
 

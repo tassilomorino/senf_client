@@ -4,7 +4,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import LoginRegistration from "../../atoms/Auth/LoginRegistration";
+import LoginRegistration from "../../organisms/Auth/LoginRegistration";
 import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
 
 const Card = styled.div`
@@ -29,8 +29,6 @@ const InnerWrapper = styled.div`
   line-height: 1.8;
   font-size: 14pt;
   color: #414345;
-
-  
 `;
 
 const ShareYourOpinionCard = () => {
@@ -46,7 +44,7 @@ const ShareYourOpinionCard = () => {
 
         {!authenticated && (
           <CustomButton
-            text={t('login2')}
+            text={t("login2")}
             backgroundColor="#353535"
             textColor="white"
             position="relative"

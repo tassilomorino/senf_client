@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { SubmitButton } from "../CustomButtons/SubmitButton";
+import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 
 const RegistrationFormComponent = ({
   loading,

@@ -9,8 +9,8 @@ import { closeAccountFunc } from "../../../redux/actions/accountActions";
 //Components
 import IdeaList from "../IdeaList/IdeaList";
 import AccountHeader from "../../molecules/Headers/AccountHeader";
-import AccountSettings from "./AccountSettings";
-import MainAnimations from "../../atoms/Animations/MainAnimations";
+import AccountSettings from "../../molecules/DialogInlineComponents/AccountSettings";
+import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
 import {
   BackgroundDesktop,
   BackgroundMobile,

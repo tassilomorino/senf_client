@@ -7,6 +7,7 @@ import {
   LIKE_SCREAM,
   UNLIKE_SCREAM,
   LOADING_DATA,
+  STOP_LOADING_DATA,
   DELETE_SCREAM,
   SET_COMMENTS,
   SET_COMMENT,
@@ -58,6 +59,11 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case STOP_LOADING_DATA:
+      return {
+        ...state,
+        loading: false,
+      };
     case LOADING_DATA:
       return {
         ...state,
