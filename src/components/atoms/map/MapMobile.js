@@ -41,6 +41,7 @@ const MapMobile = ({
   zoomBreak,
   loadingProjects,
   geoData,
+  mapRef,
 }) => {
   const dispatch = useDispatch();
   const { screamId } = useParams();
@@ -136,6 +137,7 @@ const MapMobile = ({
       <Wrapper>
         {!mapLoaded && <PatternBackground />}
         <MapGL
+          ref={mapRef}
           style={{
             width: "100%",
             height: "100%",

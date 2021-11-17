@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router";
@@ -81,6 +81,8 @@ const Main = () => {
   const [screamIdParam, setScreamIdParam] = useState(null);
 
   const [dropdown, setDropdown] = useState("newest");
+
+  const mapRef = useRef(null);
 
   useEffect(() => {
     // if (navigator.userAgent.includes("Instagram") && isAndroid) {
@@ -209,8 +211,16 @@ const Main = () => {
     }
 
     if (isMobileCustom) {
-      const boundAdds = [500, 1000, 500, 1000];
-      dispatch(setMapBounds(viewport, boundAdds));
+      const map = mapRef.current.getMap();
+      var canvas = map.getCanvas(),
+        w = canvas.width,
+        h = canvas.height,
+        NW = map.unproject([0, 0]).toArray(),
+        SE = map.unproject([w, h]).toArray();
+      var bounds = [NW, SE];
+      console.log(bounds);
+
+      dispatch(setMapBounds(bounds));
     }
   };
 
@@ -302,6 +312,7 @@ const Main = () => {
         id="mapDesktop"
         openProject={openProject}
         geoData={project && openProject && project.geoData}
+        mapRef={mapRef}
       ></MapDesktop>
 
       {!loading &&
@@ -326,6 +337,7 @@ const Main = () => {
               zoomBreak={zoomBreak}
               openProject={openProject}
               geoData={project && openProject && project.geoData}
+              mapRef={mapRef}
             />
           </React.Fragment>
         )}

@@ -11,14 +11,22 @@ import {
   setResetMapBounds,
 } from "../../../redux/actions/mapActions";
 
-export const DesktopMapButtons = ({ viewport }) => {
+export const DesktopMapButtons = ({ viewport, mapRef }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
 
   const handleMapBoundsSet = (viewport) => {
-    const boundAdds = [200, 200, 200, 300];
-    dispatch(setMapBounds(viewport, boundAdds));
+    const map = mapRef.current.getMap();
+    var canvas = map.getCanvas(),
+      w = canvas.width,
+      h = canvas.height,
+      NW = map.unproject([0, 0]).toArray(),
+      SE = map.unproject([w, h]).toArray();
+    var bounds = [NW, SE];
+
+    dispatch(setMapBounds(bounds));
+
     dispatch(closeScream());
 
     window.scrollTo({

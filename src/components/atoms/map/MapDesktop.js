@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
@@ -21,7 +21,7 @@ import MapGL, {
   Marker,
   NavigationControl,
 } from "@urbica/react-map-gl";
-import { Markers } from "./Markers";
+
 import NoLocationPopUp from "./NoLocationPopUp";
 import { DesktopMapButtons } from "./DesktopMapButtons";
 import { PatternBackground } from "./styles/sharedStyles";
@@ -62,6 +62,7 @@ const MapDesktop = ({
   openProject,
   _onViewportChange,
   zoomBreak,
+  mapRef,
 }) => {
   const { t } = useTranslation();
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
@@ -184,6 +185,7 @@ const MapDesktop = ({
       <div className="mapWrapper">
         {!mapLoaded && <PatternBackground />}
         <MapGL
+          ref={mapRef}
           style={
             openInfoPage
               ? {
@@ -234,7 +236,7 @@ const MapDesktop = ({
                 />
               </React.Fragment>
             )}
-          <DesktopMapButtons viewport={viewport} />
+          <DesktopMapButtons viewport={viewport} mapRef={mapRef} />
 
           {/* {dataFinalMap.map(
             ({ screamId, long, lat, likeCount, color, title }) => (

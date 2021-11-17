@@ -203,12 +203,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
 
   const mapViewport = useSelector((state) => state.data.mapViewport);
 
-  const [viewport, setViewport] = useState({
-    latitude: 50.93864020643174,
-    longitude: 6.958725744885521,
-    zoom: 12,
-    transitionDuration: 1000,
-  });
+  const [viewport, setViewport] = useState(null);
 
   const [addressBarClickedState, setAddressBarClickedState] = useState(false);
 
