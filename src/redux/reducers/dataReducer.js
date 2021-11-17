@@ -26,6 +26,8 @@ import {
   SET_COOKIES,
   SET_MAP_VIEWPORT,
   SET_MAP_BOUNDS,
+  SET_INITIAL_MAP_BOUNDS,
+  SET_INITIAL_MAP_VIEWPORT,
 } from "../types";
 
 const initialState = {
@@ -49,9 +51,11 @@ const initialState = {
     maxZoom: 18,
     minZoom: 8,
   },
+  initialMapViewport: null,
+  initialMapBounds: null,
   mapBounds: {
-    latitude1: 51.08,
-    latitude2: 50.79,
+    latitude1: 55.08,
+    latitude2: 54.79,
     longitude2: 6.712,
     longitude3: 7.17,
   },
@@ -211,10 +215,22 @@ export default function (state = initialState, action) {
         mapViewport: action.payload,
       };
 
+    case SET_INITIAL_MAP_VIEWPORT:
+      return {
+        ...state,
+        initialMapViewport: action.payload,
+      };
+
     case SET_MAP_BOUNDS:
       return {
         ...state,
         mapBounds: action.payload,
+      };
+
+    case SET_INITIAL_MAP_BOUNDS:
+      return {
+        ...state,
+        initialMapBounds: action.payload,
       };
 
     default:

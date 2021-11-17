@@ -1,9 +1,21 @@
 /** @format */
-import { SET_MAP_BOUNDS, SET_MAP_VIEWPORT } from "../types";
+import {
+  SET_MAP_BOUNDS,
+  SET_INITIAL_MAP_BOUNDS,
+  SET_MAP_VIEWPORT,
+  SET_INITIAL_MAP_VIEWPORT,
+} from "../types";
 
 export const setMapViewport = (viewport) => (dispatch) => {
   dispatch({
     type: SET_MAP_VIEWPORT,
+    payload: viewport,
+  });
+};
+
+export const setInitialMapViewport = (viewport) => (dispatch) => {
+  dispatch({
+    type: SET_INITIAL_MAP_VIEWPORT,
     payload: viewport,
   });
 };
@@ -25,16 +37,16 @@ export const setMapBounds = (bounds) => (dispatch) => {
   //   longitude3: viewport.longitude + AddnewRight,
   // };
 
-  const newBounds = {
-    latitude1: bounds[0][1],
-    latitude2: bounds[1][1],
-    longitude2: bounds[0][0],
-    longitude3: bounds[1][0],
-  };
-
   dispatch({
     type: SET_MAP_BOUNDS,
-    payload: newBounds,
+    payload: bounds,
+  });
+};
+
+export const setInitialMapBounds = (bounds) => (dispatch) => {
+  dispatch({
+    type: SET_INITIAL_MAP_BOUNDS,
+    payload: bounds,
   });
 };
 

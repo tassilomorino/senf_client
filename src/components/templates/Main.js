@@ -18,7 +18,12 @@ import {
   closeProject,
 } from "../../redux/actions/projectActions";
 
-import { setMapBounds, setMapViewport } from "../../redux/actions/mapActions";
+import {
+  setMapBounds,
+  setInitialMapBounds,
+  setMapViewport,
+  setInitialMapViewport,
+} from "../../redux/actions/mapActions";
 
 //Components
 import InsightsPage from "../organisms/SubPages/InsightsPage";
@@ -44,7 +49,6 @@ const Main = () => {
   const dispatch = useDispatch();
   const { screamId } = useParams();
   const { cookie_settings } = useSelector((state) => state.data);
-  const [serachTerm, setSerachTerm] = useState("");
 
   const [zoomBreak, setZoomBreak] = useState(0.6);
 
@@ -83,6 +87,37 @@ const Main = () => {
   const [dropdown, setDropdown] = useState("newest");
 
   const mapRef = useRef(null);
+
+  useEffect(() => {
+    const viewport = {
+      latitude: 50.93864020643174,
+      longitude: 6.958725744885521,
+      zoom: isMobileCustom ? 9.5 : 11.5,
+      pitch: 30,
+    };
+    dispatch(setInitialMapViewport(viewport));
+
+    console.log(mapRef.current);
+    if (mapRef.current) {
+      const map = mapRef.current.getMap();
+      var canvas = map.getCanvas(),
+        w = canvas.width,
+        h = canvas.height,
+        NW = map.unproject([0, 0]).toArray(),
+        SE = map.unproject([w, h]).toArray();
+      var boundsRar = [NW, SE];
+
+      const bounds = {
+        latitude1: boundsRar[0][1],
+        latitude2: boundsRar[1][1],
+        longitude2: boundsRar[0][0],
+        longitude3: boundsRar[1][0],
+      };
+
+      dispatch(setInitialMapBounds(bounds));
+      dispatch(setMapBounds(bounds));
+    }
+  }, []);
 
   useEffect(() => {
     // if (navigator.userAgent.includes("Instagram") && isAndroid) {
@@ -217,8 +252,14 @@ const Main = () => {
         h = canvas.height,
         NW = map.unproject([0, 0]).toArray(),
         SE = map.unproject([w, h]).toArray();
-      var bounds = [NW, SE];
-      console.log(bounds);
+      var boundsRar = [NW, SE];
+
+      const bounds = {
+        latitude1: boundsRar[0][1],
+        latitude2: boundsRar[1][1],
+        longitude2: boundsRar[0][0],
+        longitude3: boundsRar[1][0],
+      };
 
       dispatch(setMapBounds(bounds));
     }
@@ -315,6 +356,24 @@ const Main = () => {
         mapRef={mapRef}
       ></MapDesktop>
 
+      <div
+        style={
+          isMobileCustom &&
+          (order === 1 || openProject || openScream || openAccount)
+            ? { visibility: "visible" }
+            : { visibility: "hidden" }
+        }
+      >
+        <MapMobile
+          dataFinal={dataFinalMap}
+          viewport={mapViewport}
+          _onViewportChange={_onViewportChange}
+          zoomBreak={zoomBreak}
+          openProject={openProject}
+          geoData={project && openProject && project.geoData}
+          mapRef={mapRef}
+        />
+      </div>
       {!loading &&
         !loadingProjects &&
         isMobileCustom &&
@@ -329,15 +388,6 @@ const Main = () => {
               loading={loading}
               handleTopicSelector={handleTopicSelector}
               topicsSelected={topicsSelected}
-            />
-            <MapMobile
-              dataFinal={dataFinalMap}
-              viewport={mapViewport}
-              _onViewportChange={_onViewportChange}
-              zoomBreak={zoomBreak}
-              openProject={openProject}
-              geoData={project && openProject && project.geoData}
-              mapRef={mapRef}
             />
           </React.Fragment>
         )}

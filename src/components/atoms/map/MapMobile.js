@@ -50,25 +50,24 @@ const MapMobile = ({
   const scream = useSelector((state) => state.data.scream);
 
   const [mapLoaded, setMapLoaded] = useState(false);
-
-  const fetchDataScream = (screamId) => {
-    dispatch(openScreamFunc(screamId));
-  };
+  const initialMapViewport = useSelector(
+    (state) => state.data.initialMapViewport
+  );
 
   const handlleMapLoaded = () => {
     setMapLoaded(true);
     if (!screamId && !openProject) {
       setTimeout(() => {
-        const viewport = {
-          latitude: 50.93864020643174,
-          longitude: 6.958725744885521,
-          zoom: isMobileCustom ? 9.5 : 11.5,
-          transitionDuration: 4000,
-          pitch: 30,
-          bearing: 0,
-        };
-        dispatch(setMapViewport(viewport));
+        if (initialMapViewport !== null) {
+          dispatch(setMapViewport(initialMapViewport));
+        }
       }, 1000);
+    }
+  };
+
+  const onClick = (event) => {
+    if (event.features.length > 0) {
+      dispatch(openScreamFunc(event.features[0].properties.screamId));
     }
   };
 
@@ -125,12 +124,6 @@ const MapMobile = ({
     };
     mygeojson.features.push(feature);
   }
-
-  const onClick = (event) => {
-    if (event.features.length > 0) {
-      dispatch(openScreamFunc(event.features[0].properties.screamId));
-    }
-  };
 
   return (
     isMobileCustom && (

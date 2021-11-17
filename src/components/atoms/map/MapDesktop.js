@@ -82,6 +82,10 @@ const MapDesktop = ({
   const [hoverLikeCount, setHoverLikeCount] = useState("");
 
   const viewport = useSelector((state) => state.data.mapViewport);
+  const initialMapViewport = useSelector(
+    (state) => state.data.initialMapViewport
+  );
+
   const [mapLoaded, setMapLoaded] = useState(false);
   const { screamId } = useParams();
 
@@ -90,15 +94,9 @@ const MapDesktop = ({
 
     if (!screamId) {
       setTimeout(() => {
-        const viewport = {
-          latitude: 50.93864020643174,
-          longitude: 6.958725744885521,
-          zoom: isMobileCustom ? 9.5 : 11.5,
-          transitionDuration: 4000,
-          pitch: 30,
-          bearing: 0,
-        };
-        dispatch(setMapViewport(viewport));
+        if (initialMapViewport !== null) {
+          dispatch(setMapViewport(initialMapViewport));
+        }
       }, 1000);
     }
   };

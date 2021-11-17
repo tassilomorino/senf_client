@@ -7,8 +7,8 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { closeProject } from "../../../redux/actions/projectActions";
 import { clearErrors } from "../../../redux/actions/errorsActions";
 import {
+  setMapBounds,
   setMapViewport,
-  setResetMapBounds,
 } from "../../../redux/actions/mapActions";
 
 //Components
@@ -55,6 +55,9 @@ const ProjectDialog = ({
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.UI.loading);
   const mapBounds = useSelector((state) => state.data.mapBounds);
+  const inititalMapBounds = useSelector(
+    (state) => state.data.inititalMapBounds
+  );
   const {
     title,
     owner,
@@ -69,14 +72,9 @@ const ProjectDialog = ({
   } = project;
 
   useEffect(() => {
-    const bounds = {
-      latitude1: 51.08,
-      latitude2: 50.79,
-      longitude2: 6.712,
-      longitude3: 7.17,
-    };
-
-    dispatch(setResetMapBounds(bounds));
+    if (inititalMapBounds) {
+      dispatch(setMapBounds(inititalMapBounds));
+    }
     handleTopicSelector("all");
 
     console.log(window.location.pathname);
