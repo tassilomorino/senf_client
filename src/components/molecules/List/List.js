@@ -54,10 +54,11 @@ const List = ({
       (dropdown && prevDropdown && prevDropdown.dropdown !== dropdown)
     ) {
       const element = document.getElementById("List");
-      element.scrollTo({
+      element?.scrollTo({
         top: 0,
         left: 0,
       });
+
       setListItems(1);
       sethasMoreItems(true);
     }

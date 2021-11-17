@@ -45,11 +45,12 @@ const initialState = {
   full_screams: [],
   cookie_settings: "",
   mapViewport: {
-    latitude: 50.93,
+    latitude: 55.93,
     longitude: 6.9503,
     zoom: isMobileCustom ? 7.2 : 9.2,
     maxZoom: 18,
     minZoom: 8,
+    duration: 0,
   },
   initialMapViewport: null,
   initialMapBounds: null,

@@ -212,7 +212,7 @@ const MapDesktop = ({
           onViewportChange={_onViewportChange}
           viewportChangeMethod={"easeTo"}
           viewportChangeOptions={{
-            duration: 2700,
+            duration: viewport.duration,
           }}
           onLoad={handlleMapLoaded}
         >

@@ -89,16 +89,33 @@ const Main = () => {
   const mapRef = useRef(null);
 
   useEffect(() => {
-    const viewport = {
+    const TopViewport = {
       latitude: 50.93864020643174,
       longitude: 6.958725744885521,
-      zoom: isMobileCustom ? 9.5 : 11.5,
-      pitch: 30,
+
+      // BERLIN
+      // latitude: 52.52,
+      // longitude: 13.405,
+
+      zoom: isMobileCustom ? 7.2 : 9.2,
+      maxZoom: 18,
+      minZoom: 8,
+      duration: 0,
     };
+
+    dispatch(setMapViewport(TopViewport));
+    const viewport = {
+      latitude: TopViewport.latitude,
+      longitude: TopViewport.longitude,
+
+      zoom: TopViewport.zoom + 1.3,
+      pitch: 30,
+      duration: 2700,
+    };
+
     dispatch(setInitialMapViewport(viewport));
 
-    console.log(mapRef.current);
-    if (mapRef.current) {
+    setTimeout(() => {
       const map = mapRef.current.getMap();
       var canvas = map.getCanvas(),
         w = canvas.width,
@@ -116,7 +133,7 @@ const Main = () => {
 
       dispatch(setInitialMapBounds(bounds));
       dispatch(setMapBounds(bounds));
-    }
+    }, 500);
   }, []);
 
   useEffect(() => {
