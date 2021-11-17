@@ -92,7 +92,6 @@ const EditModal = ({ setEditOpen, setMenuOpen, editOpen, classes }) => {
     setBody(scream.body);
     setTitle(scream.title);
     setTopic(scream.Thema);
-    setProject(scream.project);
     setViewport({ latitude: scream.lat, longitude: scream.long });
 
     setNeighborhood(scream.Stadtteil);
@@ -107,6 +106,10 @@ const EditModal = ({ setEditOpen, setMenuOpen, editOpen, classes }) => {
         setCheckIfCalendar(false);
       }
     });
+
+    if (scream.project) {
+      setProject(scream.project);
+    }
 
     if (scream.weblink) {
       setWeblink(scream.weblink);
