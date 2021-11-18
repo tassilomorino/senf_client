@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { SET_AUTHENTICATED } from "../../../redux/types";
 import firebase from "firebase/app";
@@ -388,6 +388,22 @@ const LoginRegistration = ({ classes }) => {
     }
   };
 
+  const keySubmitRef = useRef(null);
+
+  useEffect(() => {
+    const listener = (event) => {
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+        console.log("Enter key was pressed. Run your function.");
+        // callMyFunction();
+        keySubmitRef.current?.click();
+      }
+    };
+    document.addEventListener("keydown", listener);
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
+  }, []);
+
   return (
     <Fragment>
       <ExpandButton
@@ -423,6 +439,7 @@ const LoginRegistration = ({ classes }) => {
               handleToggle={handleToggle}
               handleSubmitLogin={handleSubmitLogin}
               formik={formikLoginStore}
+              keySubmitRef={keySubmitRef}
             />
           ) : (
             <RegistrationFormComponent
@@ -432,6 +449,7 @@ const LoginRegistration = ({ classes }) => {
               handleToggle={handleToggle}
               handleSubmitRegister={handleSubmitRegister}
               formik={formikRegisterStore}
+              keySubmitRef={keySubmitRef}
             />
           )}
         </Swipe>

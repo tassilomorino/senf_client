@@ -14,6 +14,7 @@ const LoginFormComponent = ({
   handleToggle,
   handleSubmitLogin,
   formik,
+  keySubmitRef,
 }) => {
   const { t } = useTranslation();
 
@@ -83,6 +84,7 @@ const LoginFormComponent = ({
         loading={loading}
         handleButtonClick={handleSubmitLogin}
         disabled={loading || !formik.isValid}
+        keySubmitRef={keySubmitRef}
       />
 
       {/* <div

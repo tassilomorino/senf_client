@@ -34,7 +34,7 @@ const WideButton = styled.button`
   justify-content: center;
   align-items: center;
   transform: translateX(-50%);
-  cursor:pointer;
+  cursor: pointer;
 
   margin-left: ${(props) => (props.marginLeft ? props.marginLeft : "50%")};
 
@@ -78,6 +78,7 @@ export const SubmitButton = ({
 
   handleButtonClick,
   smallSubmitButton,
+  keySubmitRef,
 }) => {
   return (
     <WideButton
@@ -94,6 +95,7 @@ export const SubmitButton = ({
       disabled={disabled}
       onClick={handleButtonClick}
       smallSubmitButton={smallSubmitButton}
+      ref={keySubmitRef}
     >
       {text}
       {loading && (
