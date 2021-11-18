@@ -65,6 +65,7 @@ const Main = () => {
 
   const loading = useSelector((state) => state.data.loading);
   const loadingProjects = useSelector((state) => state.UI.loadingProjects);
+  const loadingIdea = useSelector((state) => state.data.loadingIdea);
 
   const projects = useSelector((state) => state.data.projects);
   const project = useSelector((state) => state.data.project);
@@ -88,6 +89,7 @@ const Main = () => {
 
   const mapRef = useRef(null);
   const mapLoaded = useSelector((state) => state.data.mapLoaded);
+  const initialMapBounds = useSelector((state) => state.data.initialMapBounds);
 
   useEffect(() => {
     const TopViewport = {
@@ -110,6 +112,7 @@ const Main = () => {
     };
 
     dispatch(setMapViewport(TopViewport));
+
     const viewport = {
       latitude: TopViewport.latitude,
       longitude: TopViewport.longitude,
@@ -123,7 +126,12 @@ const Main = () => {
   }, []);
 
   useEffect(() => {
-    if (mapViewport.latitude !== 0 && mapRef.current && mapLoaded) {
+    if (
+      initialMapBounds === null &&
+      mapViewport.latitude !== 0 &&
+      mapRef.current &&
+      mapLoaded
+    ) {
       const map = mapRef.current.getMap();
       var canvas = map.getCanvas(),
         w = canvas.width,
@@ -143,6 +151,67 @@ const Main = () => {
       dispatch(setMapBounds(bounds));
     }
   }, [mapViewport, mapLoaded]);
+
+  useEffect(() => {
+    if (
+      project &&
+      project.centerLong !== undefined &&
+      mapViewport.latitude !== 0 &&
+      mapRef.current &&
+      mapLoaded
+    ) {
+      setTimeout(() => {
+        const projectViewport = {
+          latitude: project.centerLat,
+          longitude: project.centerLong,
+          zoom: isMobileCustom ? project.zoom - 2 : project.zoom,
+          duration: 2700,
+          pitch: 30,
+        };
+
+        dispatch(setMapViewport(projectViewport));
+      }, 500);
+    }
+  }, [openProject]);
+
+  const { lat, long } = useSelector((state) => state.data.scream);
+
+  function usePrevious(value) {
+    const ref = useRef();
+    useEffect(() => {
+      ref.current = value;
+    });
+    return ref.current;
+  }
+  const prevLat = usePrevious({ lat });
+  const prevLong = usePrevious({ long });
+
+  useEffect(() => {
+    if (
+      openScream &&
+      loadingIdea === false &&
+      lat !== undefined &&
+      mapViewport.latitude !== 0 &&
+      mapRef.current &&
+      mapLoaded
+    ) {
+      if (
+        (lat && prevLat && prevLat.lat !== lat) ||
+        (long && prevLong && prevLong.long !== long)
+      ) {
+        setTimeout(() => {
+          const ideaViewport = {
+            latitude: isMobileCustom && openScream ? lat - 0.0008 : lat,
+            longitude: long,
+            zoom: 16.5,
+            duration: 2700,
+          };
+
+          dispatch(setMapViewport(ideaViewport));
+        }, 500);
+      }
+    }
+  }, [lat, long, loadingIdea, openScream]);
 
   useEffect(() => {
     // if (navigator.userAgent.includes("Instagram") && isAndroid) {

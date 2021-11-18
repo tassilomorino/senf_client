@@ -89,12 +89,10 @@ const MapDesktop = ({
   const handlleMapLoaded = () => {
     dispatch(setMapLoaded());
 
-    if (!screamId) {
+    if (!screamId && !openProject && initialMapViewport !== null && mapLoaded) {
       setTimeout(() => {
-        if (initialMapViewport !== null) {
-          dispatch(setMapViewport(initialMapViewport));
-        }
-      }, 1000);
+        dispatch(setMapViewport(initialMapViewport));
+      }, 500);
     }
   };
 

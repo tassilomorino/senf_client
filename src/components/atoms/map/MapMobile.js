@@ -58,10 +58,11 @@ const MapMobile = ({
 
   const handlleMapLoaded = () => {
     dispatch(setMapLoaded());
-    if (!screamId && !openProject) {
-      if (initialMapViewport !== null && mapLoaded) {
+
+    if (!screamId && !openProject && initialMapViewport !== null && mapLoaded) {
+      setTimeout(() => {
         dispatch(setMapViewport(initialMapViewport));
-      }
+      }, 500);
     }
   };
 

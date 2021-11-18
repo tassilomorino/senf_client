@@ -55,9 +55,12 @@ const ProjectDialog = ({
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.UI.loading);
   const mapBounds = useSelector((state) => state.data.mapBounds);
-  const inititalMapBounds = useSelector(
-    (state) => state.data.inititalMapBounds
+
+  const mapLoaded = useSelector((state) => state.data.mapLoaded);
+  const initialMapViewport = useSelector(
+    (state) => state.data.initialMapViewport
   );
+
   const {
     title,
     owner,
@@ -72,50 +75,14 @@ const ProjectDialog = ({
   } = project;
 
   useEffect(() => {
-    if (inititalMapBounds) {
-      dispatch(setMapBounds(inititalMapBounds));
-    }
     handleTopicSelector("all");
-
-    console.log(window.location.pathname);
-
     setPath(window.location.pathname);
-    setTimeout(() => {
-      // const newPath = `/${project}`;
-
-      // if (project !== undefined) {
-      //   window.history.pushState(null, null, newPath);
-      // }
-
-      // setTimeout(() => {
-      //   setPath("https://senf.koeln" + newPath);
-      // }, 10);
-
-      if (project.centerLong !== undefined) {
-        setTimeout(() => {
-          const centerLat = project.centerLat;
-          const centerLong = project.centerLong;
-          const zoom = isMobileCustom ? project.zoom - 2 : project.zoom;
-
-          zoomToBounds(centerLat, centerLong, zoom);
-        }, 600);
-      }
-    }, 10);
   }, [openProject]);
 
   const handleClose = () => {
     dispatch(closeProject());
     dispatch(clearErrors());
-
-    const viewport = {
-      latitude: 50.95,
-      longitude: 6.9503,
-      zoom: isMobileCustom ? 9.5 : 11.5,
-      transitionDuration: 4000,
-      pitch: 30,
-      bearing: 0,
-    };
-    dispatch(setMapViewport(viewport));
+    dispatch(setMapViewport(initialMapViewport));
   };
 
   const handleClick = (order) => {
@@ -134,18 +101,6 @@ const ProjectDialog = ({
 
   const handleDropdown = (value) => {
     setDropdown(value);
-  };
-
-  const zoomToBounds = (centerLat, centerLong, zoom) => {
-    const viewport = {
-      latitude: centerLat,
-      longitude: centerLong,
-      zoom: zoom,
-      transitionDuration: 1000,
-      pitch: 30,
-      bearing: 0,
-    };
-    dispatch(setMapViewport(viewport));
   };
 
   const dataRar = project.screams;

@@ -92,22 +92,22 @@ const ScreamDialog = () => {
         setCommentFormShow(true);
       }
 
-      if (
-        (lat && prevLat && prevLat.lat !== lat) ||
-        (long && prevLong && prevLong.long !== long)
-      ) {
-        setTimeout(() => {
-          const viewport = {
-            latitude: isMobileCustom && openScream ? lat - 0.0008 : lat,
-            longitude: long,
-            zoom: 16.5,
-            transitionDuration: 4000,
-            pitch: 30,
-            bearing: 0,
-          };
-          dispatch(setMapViewport(viewport));
-        }, 200);
-      }
+      // if (
+      //   (lat && prevLat && prevLat.lat !== lat) ||
+      //   (long && prevLong && prevLong.long !== long)
+      // ) {
+      //   setTimeout(() => {
+      //     const viewport = {
+      //       latitude: isMobileCustom && openScream ? lat - 0.0008 : lat,
+      //       longitude: long,
+      //       zoom: 16.5,
+      //       transitionDuration: 4000,
+      //       pitch: 30,
+      //       bearing: 0,
+      //     };
+      //     dispatch(setMapViewport(viewport));
+      //   }, 200);
+      // }
 
       setPath(`https://senf.koeln/${screamId}`);
     }
