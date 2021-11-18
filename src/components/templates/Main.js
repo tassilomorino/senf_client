@@ -87,12 +87,11 @@ const Main = () => {
   const [dropdown, setDropdown] = useState("newest");
 
   const mapRef = useRef(null);
-  const inititalMapViewport = useSelector(
-    (state) => state.data.inititalMapViewport
-  );
+  const mapLoaded = useSelector((state) => state.data.mapLoaded);
 
   useEffect(() => {
     const TopViewport = {
+      //Köln
       latitude: 50.93864020643174,
       longitude: 6.958725744885521,
 
@@ -124,28 +123,26 @@ const Main = () => {
   }, []);
 
   useEffect(() => {
-    if (inititalMapViewport !== null) {
-      setTimeout(() => {
-        const map = mapRef.current.getMap();
-        var canvas = map.getCanvas(),
-          w = canvas.width,
-          h = canvas.height,
-          NW = map.unproject([0, 0]).toArray(),
-          SE = map.unproject([w, h]).toArray();
-        var boundsRar = [NW, SE];
+    if (mapViewport.latitude !== 0 && mapRef.current && mapLoaded) {
+      const map = mapRef.current.getMap();
+      var canvas = map.getCanvas(),
+        w = canvas.width,
+        h = canvas.height,
+        NW = map.unproject([0, 0]).toArray(),
+        SE = map.unproject([w, h]).toArray();
+      var boundsRar = [NW, SE];
 
-        const bounds = {
-          latitude1: boundsRar[0][1],
-          latitude2: boundsRar[1][1],
-          longitude2: boundsRar[0][0],
-          longitude3: boundsRar[1][0],
-        };
+      const bounds = {
+        latitude1: boundsRar[0][1],
+        latitude2: boundsRar[1][1],
+        longitude2: boundsRar[0][0],
+        longitude3: boundsRar[1][0],
+      };
 
-        dispatch(setInitialMapBounds(bounds));
-        dispatch(setMapBounds(bounds));
-      }, 1000);
+      dispatch(setInitialMapBounds(bounds));
+      dispatch(setMapBounds(bounds));
     }
-  }, [inititalMapViewport]);
+  }, [mapViewport, mapLoaded]);
 
   useEffect(() => {
     // if (navigator.userAgent.includes("Instagram") && isAndroid) {
@@ -371,18 +368,19 @@ const Main = () => {
         projectsData={projects}
         dataFinalMap={dataFinalMap}
       ></DesktopSidebar>
-
-      <MapDesktop
-        loading={loading}
-        loadingProjects={loadingProjects}
-        dataFinal={dataFinalMap.slice(0, 300)}
-        _onViewportChange={_onViewportChange}
-        zoomBreak={zoomBreak}
-        id="mapDesktop"
-        openProject={openProject}
-        geoData={project && openProject && project.geoData}
-        mapRef={mapRef}
-      ></MapDesktop>
+      {!isMobileCustom && (
+        <MapDesktop
+          loading={loading}
+          loadingProjects={loadingProjects}
+          dataFinal={dataFinalMap.slice(0, 300)}
+          _onViewportChange={_onViewportChange}
+          zoomBreak={zoomBreak}
+          id="mapDesktop"
+          openProject={openProject}
+          geoData={project && openProject && project.geoData}
+          mapRef={mapRef}
+        ></MapDesktop>
+      )}
 
       <div
         style={

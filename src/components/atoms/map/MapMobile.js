@@ -9,11 +9,13 @@ import { openScreamFunc } from "../../../redux/actions/screamActions";
 //MAPSTUF
 import MapGL, { Source, Layer, Marker } from "@urbica/react-map-gl";
 import NoLocationPopUp from "./NoLocationPopUp";
-import { setMapViewport } from "../../../redux/actions/mapActions";
+import {
+  setMapLoaded,
+  setMapViewport,
+} from "../../../redux/actions/mapActions";
 
 //Icons
 import Pin from "../../../images/pin3.png";
-import { MarkersMobile } from "./Markers";
 import { PatternBackground } from "./styles/sharedStyles";
 import { useParams } from "react-router";
 
@@ -49,19 +51,17 @@ const MapMobile = ({
   const openScream = useSelector((state) => state.UI.openScream);
   const scream = useSelector((state) => state.data.scream);
 
-  const [mapLoaded, setMapLoaded] = useState(false);
+  const mapLoaded = useSelector((state) => state.data.mapLoaded);
   const initialMapViewport = useSelector(
     (state) => state.data.initialMapViewport
   );
 
   const handlleMapLoaded = () => {
-    setMapLoaded(true);
+    dispatch(setMapLoaded());
     if (!screamId && !openProject) {
-      setTimeout(() => {
-        if (initialMapViewport !== null) {
-          dispatch(setMapViewport(initialMapViewport));
-        }
-      }, 1000);
+      if (initialMapViewport !== null && mapLoaded) {
+        dispatch(setMapViewport(initialMapViewport));
+      }
     }
   };
 
@@ -137,7 +137,7 @@ const MapMobile = ({
           }}
           mapStyle="mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6"
           accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-          minZoom={9}
+          minZoom={7}
           {...viewport}
           onViewportChange={_onViewportChange}
           viewportChangeMethod={"easeTo"}

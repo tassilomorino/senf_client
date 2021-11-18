@@ -1,10 +1,18 @@
 /** @format */
 import {
+  SET_MAP_LOADED,
   SET_MAP_BOUNDS,
   SET_INITIAL_MAP_BOUNDS,
   SET_MAP_VIEWPORT,
   SET_INITIAL_MAP_VIEWPORT,
 } from "../types";
+
+export const setMapLoaded = () => (dispatch) => {
+  dispatch({
+    type: SET_MAP_LOADED,
+    payload: true,
+  });
+};
 
 export const setMapViewport = (viewport) => (dispatch) => {
   dispatch({

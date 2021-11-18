@@ -24,6 +24,7 @@ import {
   SET_SCREAM_USER,
   SET_FULL_SCREAMS,
   SET_COOKIES,
+  SET_MAP_LOADED,
   SET_MAP_VIEWPORT,
   SET_MAP_BOUNDS,
   SET_INITIAL_MAP_BOUNDS,
@@ -44,9 +45,10 @@ const initialState = {
   scream_user: {},
   full_screams: [],
   cookie_settings: "",
+  mapLoaded: false,
   mapViewport: {
-    latitude: 55.93,
-    longitude: 6.9503,
+    latitude: 0,
+    longitude: 0,
     zoom: isMobileCustom ? 7.2 : 9.2,
     maxZoom: 18,
     // minZoom: 8,
@@ -55,10 +57,10 @@ const initialState = {
   initialMapViewport: null,
   initialMapBounds: null,
   mapBounds: {
-    latitude1: 55.08,
-    latitude2: 54.79,
-    longitude2: 6.712,
-    longitude3: 7.17,
+    latitude1: 0,
+    latitude2: 0,
+    longitude2: 0,
+    longitude3: 0,
   },
 };
 
@@ -208,6 +210,12 @@ export default function (state = initialState, action) {
       return {
         ...state,
         cookie_settings: action.payload,
+      };
+
+    case SET_MAP_LOADED:
+      return {
+        ...state,
+        mapLoaded: true,
       };
 
     case SET_MAP_VIEWPORT:

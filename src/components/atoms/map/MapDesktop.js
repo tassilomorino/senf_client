@@ -1,13 +1,16 @@
 /** @format */
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
 //Redux
 import { useDispatch, useSelector } from "react-redux";
 import { openScreamFunc } from "../../../redux/actions/screamActions";
-import { setMapViewport } from "../../../redux/actions/mapActions";
+import {
+  setMapLoaded,
+  setMapViewport,
+} from "../../../redux/actions/mapActions";
 //MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";
 
@@ -64,17 +67,12 @@ const MapDesktop = ({
   zoomBreak,
   mapRef,
 }) => {
-  const { t } = useTranslation();
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openScream = useSelector((state) => state.UI.openScream);
-  const loading = useSelector((state) => state.UI.loading);
 
   const scream = useSelector((state) => state.data.scream);
 
   const dispatch = useDispatch();
-
-  const [hoveredStateId, setHoveredStateId] = useState(null);
-
   const [hoverScreamId, setHoverScreamId] = useState("");
   const [hoverLat, setHoverLat] = useState("");
   const [hoverLong, setHoverLong] = useState("");
@@ -85,12 +83,11 @@ const MapDesktop = ({
   const initialMapViewport = useSelector(
     (state) => state.data.initialMapViewport
   );
-
-  const [mapLoaded, setMapLoaded] = useState(false);
+  const mapLoaded = useSelector((state) => state.data.mapLoaded);
   const { screamId } = useParams();
 
   const handlleMapLoaded = () => {
-    setMapLoaded(true);
+    dispatch(setMapLoaded());
 
     if (!screamId) {
       setTimeout(() => {
@@ -203,7 +200,7 @@ const MapDesktop = ({
           }
           mapStyle="mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6"
           accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-          // minZoom={8}
+          minZoom={7}
           latitude={viewport.latitude}
           longitude={viewport.longitude}
           pitch={viewport.pitch}
