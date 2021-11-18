@@ -49,7 +49,7 @@ const initialState = {
     longitude: 6.9503,
     zoom: isMobileCustom ? 7.2 : 9.2,
     maxZoom: 18,
-    minZoom: 8,
+    // minZoom: 8,
     duration: 0,
   },
   initialMapViewport: null,

@@ -87,6 +87,9 @@ const Main = () => {
   const [dropdown, setDropdown] = useState("newest");
 
   const mapRef = useRef(null);
+  const inititalMapViewport = useSelector(
+    (state) => state.data.inititalMapViewport
+  );
 
   useEffect(() => {
     const TopViewport = {
@@ -97,9 +100,13 @@ const Main = () => {
       // latitude: 52.52,
       // longitude: 13.405,
 
+      //RIO
+      // latitude: -22.908333,
+      // longitude: -43.196388,
+
       zoom: isMobileCustom ? 7.2 : 9.2,
       maxZoom: 18,
-      minZoom: 8,
+      // minZoom: 8,
       duration: 0,
     };
 
@@ -114,27 +121,31 @@ const Main = () => {
     };
 
     dispatch(setInitialMapViewport(viewport));
-
-    setTimeout(() => {
-      const map = mapRef.current.getMap();
-      var canvas = map.getCanvas(),
-        w = canvas.width,
-        h = canvas.height,
-        NW = map.unproject([0, 0]).toArray(),
-        SE = map.unproject([w, h]).toArray();
-      var boundsRar = [NW, SE];
-
-      const bounds = {
-        latitude1: boundsRar[0][1],
-        latitude2: boundsRar[1][1],
-        longitude2: boundsRar[0][0],
-        longitude3: boundsRar[1][0],
-      };
-
-      dispatch(setInitialMapBounds(bounds));
-      dispatch(setMapBounds(bounds));
-    }, 500);
   }, []);
+
+  useEffect(() => {
+    if (inititalMapViewport !== null) {
+      setTimeout(() => {
+        const map = mapRef.current.getMap();
+        var canvas = map.getCanvas(),
+          w = canvas.width,
+          h = canvas.height,
+          NW = map.unproject([0, 0]).toArray(),
+          SE = map.unproject([w, h]).toArray();
+        var boundsRar = [NW, SE];
+
+        const bounds = {
+          latitude1: boundsRar[0][1],
+          latitude2: boundsRar[1][1],
+          longitude2: boundsRar[0][0],
+          longitude3: boundsRar[1][0],
+        };
+
+        dispatch(setInitialMapBounds(bounds));
+        dispatch(setMapBounds(bounds));
+      }, 10);
+    }
+  }, [inititalMapViewport]);
 
   useEffect(() => {
     // if (navigator.userAgent.includes("Instagram") && isAndroid) {
