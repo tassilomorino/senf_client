@@ -143,7 +143,7 @@ const Main = () => {
 
         dispatch(setInitialMapBounds(bounds));
         dispatch(setMapBounds(bounds));
-      }, 10);
+      }, 1000);
     }
   }, [inititalMapViewport]);
 
