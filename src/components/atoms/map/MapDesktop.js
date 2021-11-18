@@ -108,6 +108,8 @@ const MapDesktop = ({
       : null;
 
   let dataNoLocation = [];
+  let dataFinalMap = [];
+  let mygeojson = { type: "FeatureCollection", features: [] };
 
   if (dataFinal !== undefined && dataFinal.length > 0) {
     dataFinal.forEach((element) => {
@@ -116,8 +118,6 @@ const MapDesktop = ({
       }
     });
   }
-
-  let dataFinalMap = [];
 
   if (dataFinal !== undefined && dataNoLocation.length > 1) {
     dataFinal.forEach((element) => {
@@ -132,8 +132,6 @@ const MapDesktop = ({
     });
   }
 
-  let mygeojson = { type: "FeatureCollection", features: [] };
-
   for (let point of dataFinalMap) {
     let properties = point;
     properties.circleRadius = 5 + point.likeCount / 7;
@@ -141,12 +139,50 @@ const MapDesktop = ({
 
     delete properties.longitude;
     delete properties.latitude;
-    let feature = {
-      type: "Feature",
-      geometry: { type: "Point", coordinates: [point.long, point.lat] },
-      properties: properties,
-    };
-    mygeojson.features.push(feature);
+
+    const unique =
+      dataFinalMap.filter((item) => item.long === point.long).length === 1;
+
+    if (unique) {
+      let feature = {
+        type: "Feature",
+        geometry: { type: "Point", coordinates: [point.long, point.lat] },
+        properties: properties,
+      };
+      mygeojson.features.push(feature);
+    } else {
+      function generateHash(string) {
+        var hash = 0;
+        if (string.length == 0) return hash;
+        for (let i = 0; i < string.length; i++) {
+          var charCode = string.charCodeAt(i);
+          hash = (hash << 7) - hash + charCode;
+          hash = hash & hash;
+        }
+        return hash;
+      }
+
+      function reversedNum(num) {
+        return (
+          parseFloat(num.toString().split("").reverse().join("")) *
+          Math.sign(num)
+        );
+      }
+      const hash = generateHash(point.screamId);
+
+      point.long = point.long + hash / 100000000000000;
+      point.lat = point.lat + reversedNum(hash) / 100000000000000;
+
+      let feature = {
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: [point.long, point.lat],
+        },
+        properties: properties,
+      };
+      mygeojson.features.push(feature);
+    }
   }
 
   const onHover = (event) => {
