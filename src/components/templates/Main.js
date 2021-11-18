@@ -106,7 +106,7 @@ const Main = () => {
       // longitude: -43.196388,
 
       zoom: isMobileCustom ? 7.2 : 9.2,
-      maxZoom: 18,
+
       // minZoom: 8,
       duration: 0,
     };

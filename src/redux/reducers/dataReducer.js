@@ -50,7 +50,7 @@ const initialState = {
     latitude: 0,
     longitude: 0,
     zoom: isMobileCustom ? 7.2 : 9.2,
-    maxZoom: 18,
+
     // minZoom: 8,
     duration: 0,
   },
