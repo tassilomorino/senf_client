@@ -189,7 +189,7 @@ const Main = () => {
   useEffect(() => {
     if (
       openScream &&
-      loadingIdea === false &&
+      !loadingIdea &&
       lat !== undefined &&
       mapViewport.latitude !== 0 &&
       mapRef.current &&
@@ -205,6 +205,7 @@ const Main = () => {
             longitude: long,
             zoom: 16.5,
             duration: 2700,
+            pitch: 30,
           };
 
           dispatch(setMapViewport(ideaViewport));
