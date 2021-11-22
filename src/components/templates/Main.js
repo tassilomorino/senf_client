@@ -147,7 +147,6 @@ const Main = () => {
     return ref.current;
   }
   const prevLat = usePrevious({ lat });
-  const prevLong = usePrevious({ long });
 
   useEffect(() => {
     if (
@@ -157,10 +156,7 @@ const Main = () => {
       mapRef.current &&
       mapLoaded
     ) {
-      if (
-        (lat && prevLat && prevLat.lat !== lat) ||
-        (long && prevLong && prevLong.long !== long)
-      ) {
+      if (lat && prevLat && prevLat.lat !== lat) {
         setTimeout(() => {
           const ideaViewport = {
             latitude: isMobileCustom && openScream ? lat - 0.0008 : lat,

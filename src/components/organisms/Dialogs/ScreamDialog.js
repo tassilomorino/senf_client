@@ -71,15 +71,15 @@ const ScreamDialog = () => {
   const [commentFormShow, setCommentFormShow] = useState(false);
   const [swipePosition, setSwipePosition] = useState("bottom");
 
-  function usePrevious(value) {
-    const ref = useRef();
-    useEffect(() => {
-      ref.current = value;
-    });
-    return ref.current;
-  }
-  const prevLat = usePrevious({ lat });
-  const prevLong = usePrevious({ long });
+  // function usePrevious(value) {
+  //   const ref = useRef();
+  //   useEffect(() => {
+  //     ref.current = value;
+  //   });
+  //   return ref.current;
+  // }
+  // const prevLat = usePrevious({ lat });
+  // const prevLong = usePrevious({ long });
 
   useEffect(() => {
     if (openScream && lat !== undefined) {
