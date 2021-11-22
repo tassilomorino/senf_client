@@ -130,6 +130,12 @@ const DesktopSidebar = ({
             height: "100px",
           }}
         ></div>{" "}
+        {process.env.REACT_APP_INTERNATIONAL &&
+          process.env.REACT_APP_INTERNATIONAL === "true" && (
+            <CustomButton handleButtonClick={setChangeLocationModalOpen}>
+              Standort ändern
+            </CustomButton>
+          )}
         <a
           href="https://www.facebook.com/senf.koeln/"
           rel="noopener noreferrer"
