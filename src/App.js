@@ -53,6 +53,7 @@ import packageJson from "../package.json";
 import { getBuildDate } from "./util/utils";
 //import withClearCache from "./ClearCache";
 import Cookiebanner from "./components/organisms/Cookiebanner/Cookiebanner";
+import { setViewport } from "./MapAnimations";
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
@@ -180,6 +181,10 @@ const App = () => {
   useEffect(() => {
     userState();
   }, [isAuthed]);
+
+  useEffect(() => {
+    setViewport();
+  }, []);
 
   const tabletNote = isTablet ? (
     <div className="tabletLandscapeNote">{t("rotate_tablet")} </div>

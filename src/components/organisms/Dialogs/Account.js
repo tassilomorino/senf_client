@@ -57,7 +57,10 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
       return val;
     } else if (
       val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.body.toLowerCase().includes(searchTerm.toLowerCase())
+      val.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.Stadtteil?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.Stadtbezirk?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.locationHeader?.toLowerCase().includes(searchTerm.toLowerCase())
     ) {
       return val;
     }
@@ -82,10 +85,10 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
     ? sortedScreams.filter(
         ({ Thema, status, lat, long }) =>
           topicsSelected.includes(Thema) &&
-          lat <= mapBounds.latitude1 &&
-          lat >= mapBounds.latitude2 &&
-          long >= mapBounds.longitude2 &&
-          long <= mapBounds.longitude3 &&
+          lat <= mapBounds?.latitude1 &&
+          lat >= mapBounds?.latitude2 &&
+          long >= mapBounds?.longitude2 &&
+          long <= mapBounds?.longitude3 &&
           status === "None"
       )
     : [];

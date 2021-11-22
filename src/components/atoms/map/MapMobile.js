@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
@@ -58,13 +58,18 @@ const MapMobile = ({
 
   const handlleMapLoaded = () => {
     dispatch(setMapLoaded());
-
     if (!screamId && !openProject && initialMapViewport !== null && mapLoaded) {
       setTimeout(() => {
         dispatch(setMapViewport(initialMapViewport));
       }, 500);
     }
   };
+  useEffect(() => {
+    if (!initialMapViewport) return;
+    setTimeout(() => {
+      dispatch(setMapViewport(initialMapViewport));
+    }, 500);
+  }, [initialMapViewport]);
 
   const onClick = (event) => {
     if (event.features.length > 0) {
@@ -202,12 +207,6 @@ const MapMobile = ({
                 />
               </React.Fragment>
             )}
-
-          {/* <MarkersMobile
-            dataFinalMap={dataFinalMap}
-            fetchDataScream={fetchDataScream}
-            zoomBreak={zoomBreak}
-          /> */}
 
           <Source id="mygeojson" type="geojson" data={mygeojson} />
           <Layer

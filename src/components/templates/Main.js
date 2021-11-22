@@ -43,6 +43,7 @@ import { isAndroid } from "react-device-detect";
 import MapMobile from "../atoms/map/MapMobile";
 import TopicFilter from "../molecules/Filters/TopicFilter";
 import PostScream from "../organisms/PostIdea/PostScream";
+import ChangeLocationModal from "../molecules/Modals/ChangeLocationModal";
 
 const Main = () => {
   const { t } = useTranslation();
@@ -86,52 +87,17 @@ const Main = () => {
   const [screamIdParam, setScreamIdParam] = useState(null);
 
   const [dropdown, setDropdown] = useState("newest");
+  const [changeLocationModalOpen, setChangeLocationModalOpen] = useState(false);
 
   const mapRef = useRef(null);
   const mapLoaded = useSelector((state) => state.data.mapLoaded);
-  const initialMapBounds = useSelector((state) => state.data.initialMapBounds);
+  const { lat, long } = useSelector((state) => state.data.scream);
+  const initialMapViewport = useSelector(
+    (state) => state.data.initialMapViewport
+  );
 
   useEffect(() => {
-    const TopViewport = {
-      //Köln
-      latitude: 50.93864020643174,
-      longitude: 6.958725744885521,
-
-      // BERLIN
-      // latitude: 52.52,
-      // longitude: 13.405,
-
-      //RIO
-      // latitude: -22.908333,
-      // longitude: -43.196388,
-
-      zoom: isMobileCustom ? 7.2 : 9.2,
-
-      // minZoom: 8,
-      duration: 0,
-    };
-
-    dispatch(setMapViewport(TopViewport));
-
-    const viewport = {
-      latitude: TopViewport.latitude,
-      longitude: TopViewport.longitude,
-
-      zoom: TopViewport.zoom + 1.3,
-      pitch: 30,
-      duration: 2700,
-    };
-
-    dispatch(setInitialMapViewport(viewport));
-  }, []);
-
-  useEffect(() => {
-    if (
-      initialMapBounds === null &&
-      mapViewport.latitude !== 0 &&
-      mapRef.current &&
-      mapLoaded
-    ) {
+    if (mapViewport.latitude !== 0 && mapRef.current && mapLoaded) {
       const map = mapRef.current.getMap();
       var canvas = map.getCanvas(),
         w = canvas.width,
@@ -146,11 +112,10 @@ const Main = () => {
         longitude2: boundsRar[0][0],
         longitude3: boundsRar[1][0],
       };
-
       dispatch(setInitialMapBounds(bounds));
       dispatch(setMapBounds(bounds));
     }
-  }, [mapViewport, mapLoaded]);
+  }, [mapLoaded, initialMapViewport]);
 
   useEffect(() => {
     if (
@@ -174,8 +139,6 @@ const Main = () => {
     }
   }, [openProject]);
 
-  const { lat, long } = useSelector((state) => state.data.scream);
-
   function usePrevious(value) {
     const ref = useRef();
     useEffect(() => {
@@ -190,7 +153,6 @@ const Main = () => {
     if (
       openScream &&
       !loadingIdea &&
-      lat !== undefined &&
       mapViewport.latitude !== 0 &&
       mapRef.current &&
       mapLoaded
@@ -228,14 +190,17 @@ const Main = () => {
     ) {
       history.push("/intro");
     } else {
-      dispatch(getScreams()).then(() => {
-        dispatch(getProjects());
-        if (window.location.pathname === "/projects") {
-          handleClick(2);
-        }
-      });
+      if (mapViewport.latitude !== 0) {
+        dispatch(getScreams(mapViewport)).then(() => {
+          dispatch(getProjects(mapViewport));
+
+          if (window.location.pathname === "/projects") {
+            handleClick(2);
+          }
+        });
+      }
     }
-  }, []);
+  }, [initialMapViewport]);
 
   useEffect(() => {
     if (screamId) {
@@ -366,7 +331,10 @@ const Main = () => {
       return val;
     } else if (
       val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.body.toLowerCase().includes(searchTerm.toLowerCase())
+      val.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.Stadtteil?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.Stadtbezirk?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.locationHeader?.toLowerCase().includes(searchTerm.toLowerCase())
     ) {
       return val;
     }
@@ -389,10 +357,10 @@ const Main = () => {
   const dataFinal = sortedScreams.filter(
     ({ Thema, lat, long, status }) =>
       topicsSelected.includes(Thema) &&
-      lat <= mapBounds.latitude1 &&
-      lat >= mapBounds.latitude2 &&
-      long >= mapBounds.longitude2 &&
-      long <= mapBounds.longitude3 &&
+      lat <= mapBounds?.latitude1 &&
+      lat >= mapBounds?.latitude2 &&
+      long >= mapBounds?.longitude2 &&
+      long <= mapBounds?.longitude3 &&
       status === "None"
   );
 
@@ -420,6 +388,12 @@ const Main = () => {
 
       {voted && <ThanksForTheVote />}
 
+      {changeLocationModalOpen && (
+        <ChangeLocationModal
+          setChangeLocationModalOpen={setChangeLocationModalOpen}
+        />
+      )}
+
       <Topbar
         loading={loading}
         handleClick={handleClick}
@@ -437,6 +411,7 @@ const Main = () => {
         loadingProjects={loadingProjects}
         projectsData={projects}
         dataFinalMap={dataFinalMap}
+        setChangeLocationModalOpen={setChangeLocationModalOpen}
       ></DesktopSidebar>
       {!isMobileCustom && (
         <MapDesktop

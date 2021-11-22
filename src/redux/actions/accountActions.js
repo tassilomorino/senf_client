@@ -16,46 +16,42 @@ export const openAccountFunc = (userId) => async (dispatch) => {
     type: OPEN_ACCOUNT,
   });
 
-  if (userId !== undefined) {
-    dispatch({ type: LOADING_MYSCREAMS_DATA });
-    const db = firebase.firestore();
-    const ref = await db
+  dispatch({ type: LOADING_MYSCREAMS_DATA });
+  const db = firebase.firestore();
+  const ref =
+    userId &&
+    (await db
       .collection("screams")
       .where("userId", "==", userId)
       .orderBy("createdAt", "desc")
-      .get();
+      .get());
 
-    const screams = [];
-    ref.docs.forEach((doc) => {
-      const docData = {
-        screamId: doc.id,
-        lat: doc.data().lat,
-        long: doc.data().long,
-        title: doc.data().title,
-        body: doc.data().body.substr(0, 170),
-        createdAt: doc.data().createdAt,
-        commentCount: doc.data().commentCount,
-        likeCount: doc.data().likeCount,
-        status: doc.data().status,
-        Thema: doc.data().Thema,
-        Stadtteil: doc.data().Stadtteil,
-        project: doc.data().project,
-        projectId: doc.data().project,
-        color: setColorByTopic(doc.data().Thema),
-      };
+  const screams = [];
+  ref.docs?.forEach((doc) => {
+    const docData = {
+      screamId: doc.id,
+      lat: doc.data().lat,
+      long: doc.data().long,
+      title: doc.data().title,
+      body: doc.data().body.substr(0, 170),
+      createdAt: doc.data().createdAt,
+      commentCount: doc.data().commentCount,
+      likeCount: doc.data().likeCount,
+      status: doc.data().status,
+      Thema: doc.data().Thema,
+      Stadtteil: doc.data().Stadtteil,
+      project: doc.data().project,
+      projectId: doc.data().project,
+      color: setColorByTopic(doc.data().Thema),
+    };
 
-      screams.push(docData);
-    });
+    screams.push(docData);
+  });
 
-    dispatch({
-      type: SET_MY_SCREAMS,
-      payload: screams,
-    });
-  } else {
-    setTimeout(() => {
-      openAccountFunc(userId);
-    }, 1000);
-  }
+  dispatch({
+    type: SET_MY_SCREAMS,
+    payload: screams,
+  });
 };
 
 export const closeAccountFunc = () => async (dispatch) => {

@@ -27,6 +27,8 @@ import styled from "styled-components";
 import { closeScream } from "../../../redux/actions/screamActions";
 import { closeProject } from "../../../redux/actions/projectActions";
 import { Logo, Tabs } from "./styles/sharedStyles";
+import ChangeLocationModal from "../Modals/ChangeLocationModal";
+import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
 
 const DesktopSidebar = ({
   loading,
@@ -37,6 +39,7 @@ const DesktopSidebar = ({
   topicsSelected,
   loadingProjects,
   projectsData,
+  setChangeLocationModalOpen,
 }) => {
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openAccount = useSelector((state) => state.UI.openAccount);
@@ -62,7 +65,6 @@ const DesktopSidebar = ({
           <img src={LogoImg} width="100px" alt="logoWeb"></img>
         </Logo>
         <InlineInformationPageDesktop loading={loading} classes={classes} />
-
         {!authenticated ? (
           <Tabs>
             <RegistrationAndLogin />
@@ -93,7 +95,6 @@ const DesktopSidebar = ({
           loadingProjects={loadingProjects}
           projectsData={projectsData}
         />
-
         {MenuData.map((item, i) => (
           <MenuItem
             key={i}
@@ -106,7 +107,6 @@ const DesktopSidebar = ({
             openAccount={openAccount}
           ></MenuItem>
         ))}
-
         <div
           style={{
             position: "relative",
@@ -118,12 +118,10 @@ const DesktopSidebar = ({
             marginBottom: "30px",
           }}
         ></div>
-
         <TopicFilter
           handleTopicSelector={handleTopicSelector}
           topicsSelected={topicsSelected}
         ></TopicFilter>
-
         <div
           style={{
             position: "relative",
@@ -131,8 +129,12 @@ const DesktopSidebar = ({
             width: "160px",
             height: "100px",
           }}
-        ></div>
-
+        ></div>{" "}
+        {process.env.REACT_APP_INTERNATIONAL === "true" && (
+          <CustomButton handleButtonClick={setChangeLocationModalOpen}>
+            Standort ändern
+          </CustomButton>
+        )}
         <a
           href="https://www.facebook.com/senf.koeln/"
           rel="noopener noreferrer"

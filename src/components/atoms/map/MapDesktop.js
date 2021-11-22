@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
@@ -95,6 +95,12 @@ const MapDesktop = ({
       }, 500);
     }
   };
+  useEffect(() => {
+    if (!initialMapViewport) return;
+    setTimeout(() => {
+      dispatch(setMapViewport(initialMapViewport));
+    }, 500);
+  }, [initialMapViewport]);
 
   const data =
     !loadingProjects && geoData !== undefined && geoData !== ""
@@ -213,6 +219,7 @@ const MapDesktop = ({
     !isMobileCustom && (
       <div className="mapWrapper">
         {!mapLoaded && <PatternBackground />}
+
         <MapGL
           ref={mapRef}
           style={
@@ -266,54 +273,6 @@ const MapDesktop = ({
               </React.Fragment>
             )}
           <DesktopMapButtons viewport={viewport} mapRef={mapRef} />
-
-          {/* {dataFinalMap.map(
-            ({ screamId, long, lat, likeCount, color, title }) => (
-              <div
-                style={{
-                  boxShadow:
-                    "rgba(0, 0, 0, 0.1) 0px 9px 38px, rgba(0, 0, 0, 0.15) 0px 5px 5px",
-                }}
-              >
-                <Source
-                  id={screamId}
-                  type="geojson"
-                  data={{
-                    type: "Feature",
-                    geometry: {
-                      type: "Point",
-                      coordinates: [long, lat],
-                    },
-                  }}
-                />
-                <Layer
-                  id={screamId}
-                  type="circle"
-                  source={screamId}
-                  paint={{
-                    "circle-radius": 3 + likeCount / 4,
-                    "circle-color": color,
-                    "circle-stroke-color": "#fff",
-                  }}
-                  onClick={() => fetchDataScream(screamId)}
-                  onHover={() => {
-                    setHoverScreamId(screamId);
-                    setHoverLat(lat);
-                    setHoverLong(long);
-                    setHoverTitle(title);
-                    setHoverLikeCount(likeCount);
-                  }}
-                  onLeave={() => {
-                    setHoverScreamId("");
-                    setHoverLat("");
-                    setHoverLong("");
-                    setHoverTitle("");
-                    setHoverLikeCount("");
-                  }}
-                />
-              </div>
-            )
-          )} */}
 
           <Source id="mygeojson" type="geojson" data={mygeojson} />
           <Layer
@@ -409,49 +368,6 @@ const MapDesktop = ({
               ],
             }}
           />
-
-          {/* <Markers
-            dataFinalMap={dataFinalMap}
-            fetchDataScream={fetchDataScream}
-            setHoverScreamId={setHoverScreamId}
-            setHoverLat={setHoverLat}
-            setHoverLong={setHoverLong}
-            setHoverTitle={setHoverTitle}
-            setHoverLikeCount={setHoverLikeCount}
-            zoomBreak={zoomBreak}
-          /> */}
-
-          {/*    {dataFinalMap.map(
-            ({ screamId, long, lat, likeCount, color, title }) => (
-              <Marker key={screamId} longitude={long} latitude={lat}>
-                <OpenIdeaButton
-                  likeCount={likeCount}
-                  color={color}
-                  onClick={() => fetchDataScream(screamId)}
-                  onMouseEnter={() => {
-                    setHoverScreamId(screamId);
-                    setHoverLat(lat);
-                    setHoverLong(long);
-                    setHoverTitle(title);
-                    setHoverLikeCount(likeCount);
-                  }}
-                  onMouseLeave={() =>
-                    setTimeout(() => {
-                      setHoverScreamId("");
-                      setHoverLat("");
-                      setHoverLong("");
-                      setHoverTitle("");
-                      setHoverLikeCount("");
-                    }, 10000)
-                  }
-                >
-                  <ExpandButton
-                    handleButtonClick={() => fetchDataScream(screamId)}
-                  />
-                </OpenIdeaButton>
-              </Marker>
-            )
-          )} */}
 
           {openScream && scream.lat && (
             <Marker

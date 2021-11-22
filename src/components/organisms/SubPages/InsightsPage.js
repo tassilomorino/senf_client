@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-
+import { useSelector } from "react-redux";
 //Components
 import Keyindicators from "../../molecules/graphs/Keyindicators";
 import ThemenDialog from "../../molecules/graphs/themendialog";
@@ -81,10 +81,13 @@ const InsightsPage = ({ order }) => {
   const [likesLength, setLikesLength] = useState("");
   const [commentsLength, setCommentsLength] = useState("");
 
+  const mapViewport = useSelector((state) => state.data.mapViewport);
   const fetchDataScreams = async () => {
     const ref = await db
       .collection("screams")
-      .orderBy("createdAt", "desc")
+      .where("lat", "<", Number(mapViewport.latitude) + 1)
+      .where("lat", ">", Number(mapViewport.latitude) - 1)
+
       .get();
 
     const screams = [];
