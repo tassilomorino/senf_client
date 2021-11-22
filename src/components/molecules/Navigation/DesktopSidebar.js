@@ -130,7 +130,7 @@ const DesktopSidebar = ({
             height: "100px",
           }}
         ></div>{" "}
-        {process.env.REACT_APP_INTERNATIONAL === "true" && (
+        {process.env.REACT_APP_INTERNATIONAL && (
           <CustomButton handleButtonClick={setChangeLocationModalOpen}>
             Standort ändern
           </CustomButton>
