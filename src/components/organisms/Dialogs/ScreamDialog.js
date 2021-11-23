@@ -154,7 +154,7 @@ const ScreamDialog = () => {
         set({ y: down ? my : 0 });
       }
 
-      if (last && mx > 150) {
+      if (last && mx > 100) {
         handleClose();
       }
     },
