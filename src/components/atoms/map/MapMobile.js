@@ -305,7 +305,7 @@ const MapMobile = ({
                 ["*", 0.1, ["get", "circleRadius"]],
 
                 10,
-                ["*", 0.6, ["get", "circleRadius"]],
+                ["*", 1.4, ["get", "circleRadius"]],
 
                 // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
                 14,
