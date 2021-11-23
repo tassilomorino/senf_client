@@ -44,6 +44,7 @@ import MapMobile from "../atoms/map/MapMobile";
 import TopicFilter from "../molecules/Filters/TopicFilter";
 import PostScream from "../organisms/PostIdea/PostScream";
 import ChangeLocationModal from "../molecules/Modals/ChangeLocationModal";
+import { usePrevious } from "../../hooks/usePrevious";
 
 const Main = () => {
   const { t } = useTranslation();
@@ -97,7 +98,7 @@ const Main = () => {
   );
 
   useEffect(() => {
-    if (mapViewport.latitude !== 0 && mapRef.current && mapLoaded) {
+    if (mapViewport?.latitude !== 0 && mapRef?.current && mapLoaded) {
       const map = mapRef.current.getMap();
       var canvas = map.getCanvas(),
         w = canvas.width,
@@ -114,6 +115,7 @@ const Main = () => {
       };
       dispatch(setInitialMapBounds(bounds));
       dispatch(setMapBounds(bounds));
+      console.log("setMapBounds in Main", bounds);
     }
   }, [mapLoaded, initialMapViewport]);
 
@@ -139,13 +141,6 @@ const Main = () => {
     }
   }, [openProject]);
 
-  function usePrevious(value) {
-    const ref = useRef();
-    useEffect(() => {
-      ref.current = value;
-    });
-    return ref.current;
-  }
   const prevLat = usePrevious({ lat });
 
   useEffect(() => {
@@ -186,7 +181,7 @@ const Main = () => {
     ) {
       history.push("/intro");
     } else {
-      if (mapViewport.latitude !== 0) {
+      if (mapViewport && mapViewport.latitude !== 0) {
         dispatch(getScreams(mapViewport)).then(() => {
           dispatch(getProjects(mapViewport));
 

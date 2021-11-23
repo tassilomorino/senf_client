@@ -52,6 +52,8 @@ const MapMobile = ({
   const scream = useSelector((state) => state.data.scream);
 
   const mapLoaded = useSelector((state) => state.data.mapLoaded);
+  const mapViewport = useSelector((state) => state.data.mapViewport);
+
   const initialMapViewport = useSelector(
     (state) => state.data.initialMapViewport
   );
@@ -61,15 +63,15 @@ const MapMobile = ({
     if (!screamId && !openProject && initialMapViewport !== null && mapLoaded) {
       setTimeout(() => {
         dispatch(setMapViewport(initialMapViewport));
-      }, 500);
+      }, 1000);
     }
   };
-  useEffect(() => {
-    if (!initialMapViewport) return;
-    setTimeout(() => {
-      dispatch(setMapViewport(initialMapViewport));
-    }, 500);
-  }, [initialMapViewport]);
+  // useEffect(() => {
+  //   if (!initialMapViewport) return;
+  //   setTimeout(() => {
+  //     dispatch(setMapViewport(initialMapViewport));
+  //   }, 500);
+  // }, [initialMapViewport]);
 
   const onClick = (event) => {
     if (event.features.length > 0) {
@@ -170,7 +172,8 @@ const MapMobile = ({
   }
 
   return (
-    isMobileCustom && (
+    isMobileCustom &&
+    mapViewport && (
       <Wrapper>
         {!mapLoaded && <PatternBackground />}
         <MapGL

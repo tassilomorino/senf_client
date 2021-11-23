@@ -46,22 +46,10 @@ const initialState = {
   full_screams: [],
   cookie_settings: "",
   mapLoaded: false,
-  mapViewport: {
-    latitude: 0,
-    longitude: 0,
-    zoom: isMobileCustom ? 7.2 : 9.2,
-
-    // minZoom: 8,
-    duration: 0,
-  },
+  mapViewport: null,
   initialMapViewport: null,
   initialMapBounds: null,
-  mapBounds: {
-    latitude1: 0,
-    latitude2: 0,
-    longitude2: 0,
-    longitude3: 0,
-  },
+  mapBounds: null,
 };
 
 export default function (state = initialState, action) {

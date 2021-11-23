@@ -163,11 +163,10 @@ const IdeaList = ({
 
   return order === 1 ? (
     <Wrapper zIndex={zIndex}>
-      {" "}
       {isMobileCustom ? (
         <React.Fragment>
           <animated.div className={!loading ? "drag" : ""} style={props}>
-            {mapBounds.latitude1 !== 0 && (
+            {mapBounds?.latitude1 !== 0 && (
               <React.Fragment>
                 <ListHeaderWrapper>
                   <animated.div

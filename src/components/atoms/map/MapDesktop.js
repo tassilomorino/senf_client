@@ -79,7 +79,7 @@ const MapDesktop = ({
   const [hoverTitle, setHoverTitle] = useState("");
   const [hoverLikeCount, setHoverLikeCount] = useState("");
 
-  const viewport = useSelector((state) => state.data.mapViewport);
+  const mapViewport = useSelector((state) => state.data.mapViewport);
   const initialMapViewport = useSelector(
     (state) => state.data.initialMapViewport
   );
@@ -92,14 +92,14 @@ const MapDesktop = ({
     if (!screamId && !openProject && initialMapViewport !== null && mapLoaded) {
       setTimeout(() => {
         dispatch(setMapViewport(initialMapViewport));
-      }, 500);
+      }, 1000);
     }
   };
   useEffect(() => {
     if (!initialMapViewport) return;
     setTimeout(() => {
       dispatch(setMapViewport(initialMapViewport));
-    }, 500);
+    }, 1000);
   }, [initialMapViewport]);
 
   const data =
@@ -216,7 +216,8 @@ const MapDesktop = ({
   };
 
   return (
-    !isMobileCustom && (
+    !isMobileCustom &&
+    mapViewport && (
       <div className="mapWrapper">
         {!mapLoaded && <PatternBackground />}
 
@@ -242,15 +243,15 @@ const MapDesktop = ({
           mapStyle="mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6"
           accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
           minZoom={7}
-          latitude={viewport.latitude}
-          longitude={viewport.longitude}
-          pitch={viewport.pitch}
-          bearing={viewport.bearing}
-          zoom={viewport.zoom}
+          latitude={mapViewport.latitude}
+          longitude={mapViewport.longitude}
+          pitch={mapViewport.pitch}
+          bearing={mapViewport.bearing}
+          zoom={mapViewport.zoom}
           onViewportChange={_onViewportChange}
           viewportChangeMethod={"easeTo"}
           viewportChangeOptions={{
-            duration: viewport.duration,
+            duration: mapViewport.duration,
           }}
           onLoad={handlleMapLoaded}
         >
@@ -272,7 +273,7 @@ const MapDesktop = ({
                 />
               </React.Fragment>
             )}
-          <DesktopMapButtons viewport={viewport} mapRef={mapRef} />
+          <DesktopMapButtons viewport={mapViewport} mapRef={mapRef} />
 
           <Source id="mygeojson" type="geojson" data={mygeojson} />
           <Layer

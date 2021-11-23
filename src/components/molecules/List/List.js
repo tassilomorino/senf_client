@@ -1,6 +1,7 @@
 /** @format */
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import IdeaCard from "../Cards/IdeaCard";
 import {
   NoMoreMainContent,
@@ -11,6 +12,7 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
+import { usePrevious } from "../../../hooks/usePrevious";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -36,13 +38,7 @@ const List = ({
   dataFinalLength,
   projectsData,
 }) => {
-  function usePrevious(value) {
-    const ref = useRef();
-    useEffect(() => {
-      ref.current = value;
-    });
-    return ref.current;
-  }
+  const mapBounds = useSelector((state) => state.data.mapBounds);
   const prevdataFinalLength = usePrevious({ dataFinalLength });
   const prevDropdown = usePrevious({ dropdown });
 
@@ -147,7 +143,8 @@ const List = ({
   //   </MainAnimations>
   // );
   return (
-    !loading && (
+    !loading &&
+    mapBounds && (
       <Wrapper id="List">
         <InfiniteScroll
           loadMore={() => loadMore()}
