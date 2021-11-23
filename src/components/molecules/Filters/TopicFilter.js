@@ -6,7 +6,7 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-
+import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 import topics from "../../../data/topics";
 import { useTranslation } from "react-i18next";
 
@@ -82,14 +82,14 @@ const TopicFilterWrapperDesktop = styled.div`
 `;
 
 export function TopicFilter({
-  handleTopicSelector,
-  topicsSelected,
   loading,
   inline,
 }) {
   const openScream = useSelector((state) => state.UI.openScream);
+  const selectedTopics = useSelector((state) => state.data.topics);
   const [moveLeft, setMoveLeft] = useState(false);
   const { t } = useTranslation();
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (openScream) {
@@ -118,7 +118,8 @@ export function TopicFilter({
         });
       }
     }
-  }, [moveLeft]);
+    
+  }, [moveLeft,inline]);
 
   // Handler at index 0 is for the "all" checkbox
   const topicFilters = topics.map((topic, i) => {
@@ -127,10 +128,10 @@ export function TopicFilter({
         color="default"
         icon={<FiberManualRecordIcon />}
         checkedIcon={<FiberManualRecordIcon className="activelegenditem" />}
-        onChange={() => handleTopicSelector(topic.name)}
+        onChange={() => dispatch(handleTopicSelectorRedux(topic.name))}
         data-cy={topic.name}
         checked={
-          topicsSelected.includes(topic.name) && topicsSelected.length !== 7
+          selectedTopics.includes(topic.name) && selectedTopics.length !== 7
         }
         style={{ color: topic.color }}
       />
@@ -143,7 +144,7 @@ export function TopicFilter({
       <TopicFilterInnerWrapperMobile>
         <OpenButtonMobile
           onClick={() => setMoveLeft(!moveLeft)}
-          hide={topicsSelected.length === 7}
+          hide={selectedTopics.length === 7}
         />
         <FormControlLabel
           control={
@@ -153,8 +154,8 @@ export function TopicFilter({
                 <FiberManualRecordIcon className="activelegenditem" />
               }
               data-cy="topic-all"
-              onChange={() => handleTopicSelector("all")}
-              checked={topicsSelected.length === 7}
+              onChange={() =>dispatch(handleTopicSelectorRedux('all'))}
+              checked={selectedTopics.length === 7}
               style={{ color: "#000000" }}
             />
           }
@@ -177,8 +178,8 @@ export function TopicFilter({
             icon={<FiberManualRecordIcon />}
             checkedIcon={<FiberManualRecordIcon className="activelegenditem" />}
             data-cy="topic-all"
-            onChange={() => handleTopicSelector("all")}
-            checked={topicsSelected.length === 7}
+            onChange={() => dispatch(handleTopicSelectorRedux('all'))}
+            checked={selectedTopics.length === 7}
             style={{ color: "#000000" }}
           />
         }
