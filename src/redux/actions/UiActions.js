@@ -5,6 +5,7 @@ import {
   SET_INFOPAGE_CLOSED,
   SET_SWIPEPOSITION_DOWN,
   SET_SWIPEPOSITION_UP,
+  SET_TOPICS
 } from "../types";
 
 export const setInfoPageOpen = () => (dispatch) => {
@@ -28,3 +29,9 @@ export const setSwipePositionDown = () => (dispatch) => {
     type: SET_SWIPEPOSITION_DOWN,
   });
 };
+export const handleTopicSelectorRedux = (topic)=>(dispatch)=>{
+  dispatch({
+    type:SET_TOPICS,
+    payload:topic
+  })
+}
