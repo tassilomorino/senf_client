@@ -104,20 +104,17 @@ const IdeaList = ({
       set({
         transform: `translateY(${window.innerHeight + 20}px)`,
         touchAction: "none",
-        pointerEvents: "none",
       });
     } else {
       if (swipePosition === "bottom") {
         set({
           transform: `translateY(${window.innerHeight - 120}px)`,
           touchAction: "none",
-          pointerEvents: "all",
         });
       } else {
         set({
           transform: `translateY(${141}px)`,
           touchAction: "unset",
-          pointerEvents: "all",
         });
       }
     }
@@ -166,7 +163,9 @@ const IdeaList = ({
       {isMobileCustom ? (
         <React.Fragment>
           <animated.div
-            className={!loading && !openScream ? "drag" : ""}
+            className={
+              !loading ? "drag" : !loading && openScream ? "drag drag-hide" : ""
+            }
             style={props}
           >
             {mapBounds?.latitude1 !== 0 && (

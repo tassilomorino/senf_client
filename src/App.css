@@ -2228,6 +2228,10 @@ border-radius: 20px;
  
 }
 
+.drag-hide{
+pointer-events:none;
+}
+
 @keyframes dragEnterAnimation {
   0% {
     transform: translateY(120%);
