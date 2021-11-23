@@ -15,6 +15,7 @@ import {
   BackgroundDesktop,
   BackgroundMobile,
 } from "../../atoms/Backgrounds/GradientBackgrounds";
+import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 
 const Break = styled.div`
   position: relative;
@@ -26,11 +27,11 @@ const Break = styled.div`
   }
 `;
 
-const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
+const Account = ({ dataFinalMap }) => {
   const loadingMyScreams = useSelector((state) => state.data.loadingMyScreams);
   const mapViewport = useSelector((state) => state.data.mapViewport);
   const mapBounds = useSelector((state) => state.data.mapBounds);
-
+  const selectedTopics = useSelector((state) => state.data.topics);
   const myScreams = useSelector((state) => state.data.myScreams);
   const [dropdown, setDropdown] = useState("newest");
   const [order, setOrder] = useState(1);
@@ -39,6 +40,7 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
   const handleClose = () => {
     window.history.pushState(null, null, `/`);
     dispatch(closeAccountFunc());
+    dispatch(handleTopicSelectorRedux('all'))
   };
 
   const handleClick = (order) => {
@@ -79,7 +81,7 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
   const dataFinal = sortedScreams
     ? sortedScreams.filter(
         ({ Thema, status, lat, long }) =>
-          topicsSelected.includes(Thema) &&
+        selectedTopics.includes(Thema) &&
           lat <= mapBounds.latitude1 &&
           lat >= mapBounds.latitude2 &&
           long >= mapBounds.longitude2 &&
@@ -115,8 +117,6 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
             viewport={mapViewport}
             handleDropdown={handleDropdown}
             dropdown={dropdown}
-            handleTopicSelector={handleTopicSelector}
-            topicsSelected={topicsSelected}
             dataFinalMap={dataFinalMap}
             setSearchTerm={setSearchTerm}
             searchTerm={searchTerm}
