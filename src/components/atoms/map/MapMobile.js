@@ -244,7 +244,7 @@ const MapMobile = ({
             id="mygeojson"
             source="mygeojson"
             type="circle"
-            onClick={onClick}
+            // onClick={onClick}
             paint={{
               // "circle-radius": {
               //   base: ["get", "likeCount"],
@@ -287,6 +287,34 @@ const MapMobile = ({
                 20,
                 3,
               ],
+            }}
+          />
+
+          <Layer
+            id="clickLayer"
+            source="mygeojson"
+            type="circle"
+            onClick={onClick}
+            paint={{
+              "circle-radius": [
+                "interpolate",
+                ["linear"],
+                ["zoom"],
+                // when zoom is 0, set each feature's circle radius to the value of its "rating" property
+                0,
+                ["*", 0.1, ["get", "circleRadius"]],
+
+                10,
+                ["*", 0.6, ["get", "circleRadius"]],
+
+                // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
+                14,
+                ["*", 2.8, ["get", "circleRadius"]],
+                20,
+                ["*", 2, ["get", "circleRadius"]],
+              ],
+              "circle-color": "#fff",
+              "circle-opacity": 0,
             }}
           />
 
