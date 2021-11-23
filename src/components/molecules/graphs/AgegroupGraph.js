@@ -1,7 +1,8 @@
 /** @format */
 
 import React, { useState } from "react";
-
+import { useSelector, useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 //Icons
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -23,59 +24,45 @@ const TopicFilterWrapper = styled.div`
   margin-left: 50%;
   transform: translateX(-50%);
 `;
-const AgegroupGraph = ({ classes, screams, likes }) => {
-  const [topicsSelected, setTopicsSelected] = useState([
-    "Verkehr",
-    "Versorgung",
-    "Umwelt und Grün",
-    "Rad",
-    "Inklusion / Soziales",
-    "Sport / Freizeit",
-    "Sonstige",
-  ]);
-  const handleTopicSelector = (topic) => {
-    const index = topicsSelected.indexOf(topic);
-    if (topic === "all") {
-      setTopicsSelected([
-        "Verkehr",
-        "Versorgung",
-        "Umwelt und Grün",
-        "Rad",
-        "Inklusion / Soziales",
-        "Sport / Freizeit",
-        "Sonstige",
-      ]);
-    } else if (topicsSelected.length === 7) {
-      setTopicsSelected([topic]);
-    } else if (index === -1) {
-      setTopicsSelected(topicsSelected.concat(topic));
-    } else {
-      const newTopics = topicsSelected.filter((item) => item !== topic);
 
-      if (newTopics.length === 0) {
-        setTopicsSelected([
-          "Verkehr",
-          "Versorgung",
-          "Umwelt und Grün",
-          "Rad",
-          "Inklusion / Soziales",
-          "Sport / Freizeit",
-          "Sonstige",
-        ]);
-      } else {
-        setTopicsSelected(...[newTopics]);
-      }
-    }
-  };
+const AgegroupGraph = ({ classes, screams, likes }) => {
+  
+  
+  
+
+ 
+
+
+  
+  const { t } = useTranslation();
+
+  const selectedTopics = useSelector((state) => state.data.topics);
 
   const screamsFiltered = screams
-    ? screams.filter(({ Thema }) => topicsSelected.includes(Thema))
+    ? screams.filter(({ Thema }) => selectedTopics.includes(Thema))
     : [];
   console.log(likes);
 
   const likesFiltered = likes
-    ? likes.filter(({ Thema }) => topicsSelected.includes(Thema))
+    ? likes.filter(({ Thema }) => selectedTopics.includes(Thema))
     : [];
+
+  const ageRange = [
+    "< 18",
+    "< 18",
+    "18 - 24",
+    "18 - 24",
+    "25-34",
+    "25-34",
+    "35-44",
+    "35-44",
+    "45-54",
+    "45-54",
+    "55-64",
+    "55-64",
+    "65+",
+    "65+",
+  ];
   let data = [
     {
       alignmentgroup: true,
@@ -90,22 +77,7 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       type: "bar",
       x: Agegroupdata(screamsFiltered, likesFiltered, "Rad"),
       xaxis: "x",
-      y: [
-        "< 18",
-        "< 18",
-        "18 - 24",
-        "18 - 24",
-        "25-34",
-        "25-34",
-        "35-44",
-        "35-44",
-        "45-54",
-        "45-54",
-        "55-64",
-        "55-64",
-        "65+",
-        "65+",
-      ],
+      y: ageRange,
 
       yaxis: "y",
     },
@@ -121,22 +93,7 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       type: "bar",
       x: Agegroupdata(screamsFiltered, likesFiltered, "Inklusion / Soziales"),
       xaxis: "x",
-      y: [
-        "< 18",
-        "< 18",
-        "18 - 24",
-        "18 - 24",
-        "25-34",
-        "25-34",
-        "35-44",
-        "35-44",
-        "45-54",
-        "45-54",
-        "55-64",
-        "55-64",
-        "65+",
-        "65+",
-      ],
+      y: ageRange,
       yaxis: "y",
     },
     {
@@ -151,22 +108,7 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       type: "bar",
       x: Agegroupdata(screamsFiltered, likesFiltered, "Verkehr"),
       xaxis: "x",
-      y: [
-        "< 18",
-        "< 18",
-        "18 - 24",
-        "18 - 24",
-        "25-34",
-        "25-34",
-        "35-44",
-        "35-44",
-        "45-54",
-        "45-54",
-        "55-64",
-        "55-64",
-        "65+",
-        "65+",
-      ],
+      y: ageRange,
       yaxis: "y",
     },
     {
@@ -181,22 +123,7 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       type: "bar",
       x: Agegroupdata(screamsFiltered, likesFiltered, "Umwelt und Grün"),
       xaxis: "x",
-      y: [
-        "< 18",
-        "< 18",
-        "18 - 24",
-        "18 - 24",
-        "25-34",
-        "25-34",
-        "35-44",
-        "35-44",
-        "45-54",
-        "45-54",
-        "55-64",
-        "55-64",
-        "65+",
-        "65+",
-      ],
+      y: ageRange,
       yaxis: "y",
     },
     {
@@ -211,22 +138,7 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       type: "bar",
       x: Agegroupdata(screamsFiltered, likesFiltered, "Versorgung"),
       xaxis: "x",
-      y: [
-        "< 18",
-        "< 18",
-        "18 - 24",
-        "18 - 24",
-        "25-34",
-        "25-34",
-        "35-44",
-        "35-44",
-        "45-54",
-        "45-54",
-        "55-64",
-        "55-64",
-        "65+",
-        "65+",
-      ],
+      y: ageRange,
       yaxis: "y",
     },
     {
@@ -241,22 +153,7 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       type: "bar",
       x: Agegroupdata(screamsFiltered, likesFiltered, "Sport / Freizeit"),
       xaxis: "x",
-      y: [
-        "< 18",
-        "< 18",
-        "18 - 24",
-        "18 - 24",
-        "25-34",
-        "25-34",
-        "35-44",
-        "35-44",
-        "45-54",
-        "45-54",
-        "55-64",
-        "55-64",
-        "65+",
-        "65+",
-      ],
+      y: ageRange,
       yaxis: "y",
     },
     {
@@ -271,22 +168,7 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       type: "bar",
       x: Agegroupdata(screamsFiltered, likesFiltered, "Sonstige"),
       xaxis: "x",
-      y: [
-        "< 18",
-        "< 18",
-        "18 - 24",
-        "18 - 24",
-        "25-34",
-        "25-34",
-        "35-44",
-        "35-44",
-        "45-54",
-        "45-54",
-        "55-64",
-        "55-64",
-        "65+",
-        "65+",
-      ],
+      y: ageRange,
       yaxis: "y",
     },
   ];
@@ -433,24 +315,17 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
         layout={layout}
         config={config}
       />
+    
     ) : (
       <CircularProgress size={50} thickness={2} />
     );
 
   return (
     <div className={classes.card}>
-      <div className={classes.title}>Altersgruppen</div>
-      <div className={classes.subtitle}>
-        Anhand der gesammelten Ideen und Votes kannst du die Relevanz der Themen
-        für die unterschiedlichen Altersgruppen erkennen und nach Themen
-        filtern.
-      </div>
+      <div className={classes.title}>{t("agegroups")}</div>
+      <div className={classes.subtitle}>{t("agegroups_explained")}</div>
       <TopicFilterWrapper>
-        <TopicFilter
-          handleTopicSelector={handleTopicSelector}
-          topicsSelected={topicsSelected}
-          inline={true}
-        />
+        <TopicFilter inline={true} />
       </TopicFilterWrapper>
 
       <div className={classes.clickblocker}></div>
