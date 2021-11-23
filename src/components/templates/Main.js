@@ -7,6 +7,8 @@ import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
+import _ from "lodash";
+
 import {
   getScreams,
   closeScream,
@@ -22,7 +24,6 @@ import {
   setMapBounds,
   setInitialMapBounds,
   setMapViewport,
-  setInitialMapViewport,
 } from "../../redux/actions/mapActions";
 
 //Components
@@ -334,20 +335,26 @@ const Main = () => {
       return val;
     }
   });
+
   const sortedScreams =
     dropdown === "newest"
-      ? screamsSearched?.sort(function (a, b) {
-          if (a.createdAt > b.createdAt) {
-            return -1;
-          }
-          return 0;
-        })
-      : screamsSearched?.sort(function (a, b) {
-          if (a.likeCount > b.likeCount) {
-            return -1;
-          }
-          return 0;
-        });
+      ? _.orderBy(screamsSearched, "createdAt", "desc")
+      : _.orderBy(screamsSearched, "likeCount", "desc");
+
+  // const sortedScreams =
+  //   dropdown === "newest"
+  //     ? screamsSearched?.sort(function (a, b) {
+  //         if (a.createdAt > b.createdAt) {
+  //           return -1;
+  //         }
+  //         return 0;
+  //       })
+  //     : screamsSearched?.sort(function (a, b) {
+  //         if (a.likeCount > b.likeCount) {
+  //           return -1;
+  //         }
+  //         return 0;
+  //       });
 
   const dataFinal = sortedScreams.filter(
     ({ Thema, lat, long, status }) =>

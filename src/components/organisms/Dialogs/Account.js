@@ -16,6 +16,8 @@ import {
   BackgroundMobile,
 } from "../../atoms/Backgrounds/GradientBackgrounds";
 
+import _ from "lodash";
+
 const Break = styled.div`
   position: relative;
   height: 110px;
@@ -68,18 +70,8 @@ const Account = ({ handleTopicSelector, topicsSelected, dataFinalMap }) => {
 
   const sortedScreams =
     dropdown === "newest"
-      ? screamsSearched?.sort(function (a, b) {
-          if (a.createdAt > b.createdAt) {
-            return -1;
-          }
-          return 0;
-        })
-      : screamsSearched?.sort(function (a, b) {
-          if (a.likeCount > b.likeCount) {
-            return -1;
-          }
-          return 0;
-        });
+      ? _.orderBy(screamsSearched, "createdAt", "desc")
+      : _.orderBy(screamsSearched, "likeCount", "desc");
 
   const dataFinal = sortedScreams
     ? sortedScreams.filter(

@@ -29,9 +29,9 @@ export const getScreams = (mapViewport) => async (dispatch) => {
   const db = firebase.firestore();
   const ref = await db
     .collection("screams")
-    // .where("lat", "<", Number(mapViewport.latitude) + 1)
-    // .where("lat", ">", Number(mapViewport.latitude) - 1)
-    .orderBy("createdAt", "desc")
+    .where("lat", "<", Number(mapViewport.latitude) + 1)
+    .where("lat", ">", Number(mapViewport.latitude) - 1)
+    // .orderBy("createdAt", "desc")
     .get()
     .then((ref) => {
       const screams = [];
