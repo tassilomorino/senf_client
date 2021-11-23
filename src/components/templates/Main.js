@@ -39,7 +39,6 @@ import Account from "../organisms/Dialogs/Account";
 import Loader from "../atoms/Backgrounds/Loader";
 import { closeAccountFunc } from "../../redux/actions/accountActions";
 import ErrorBackground from "../atoms/Backgrounds/ErrorBackground";
-import { isAndroid } from "react-device-detect";
 import MapMobile from "../atoms/map/MapMobile";
 import TopicFilter from "../molecules/Filters/TopicFilter";
 import PostScream from "../organisms/PostIdea/PostScream";
