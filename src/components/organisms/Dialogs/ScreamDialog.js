@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
@@ -11,13 +11,11 @@ import { useDrag } from "@use-gesture/react";
 // Redux stuff
 import { closeScream } from "../../../redux/actions/screamActions";
 import { clearErrors } from "../../../redux/actions/errorsActions";
-import { setMapViewport } from "../../../redux/actions/mapActions";
 
 //COMPONENTS
 import ShareModal from "../../molecules/Modals/ShareModal";
 import MenuModal from "../../molecules/Modals/MenuModal";
 import Comments from "../../molecules/Cards/Comments";
-import CommentForm from "../../atoms/Forms/CommentForm";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 
 import Loader from "../../atoms/Backgrounds/Loader";
@@ -68,16 +66,8 @@ const ScreamDialog = () => {
   const [commentMenuOpen, setCommentMenuOpen] = useState(false);
   const [userHandleSelected, setUserHandleSelected] = useState("");
   const [commentIdSelected, setCommentIdSelected] = useState("");
-  const [commentFormShow, setCommentFormShow] = useState(false);
   const [swipePosition, setSwipePosition] = useState("bottom");
 
-  // function usePrevious(value) {
-  //   const ref = useRef();
-  //   useEffect(() => {
-  //     ref.current = value;
-  //   });
-  //   return ref.current;
-  // }
   // const prevLat = usePrevious({ lat });
   // const prevLong = usePrevious({ long });
 
@@ -88,9 +78,6 @@ const ScreamDialog = () => {
         left: 0,
         behavior: "smooth",
       });
-      if (!isMobileCustom) {
-        setCommentFormShow(true);
-      }
 
       // if (
       //   (lat && prevLat && prevLat.lat !== lat) ||
@@ -142,16 +129,15 @@ const ScreamDialog = () => {
   }));
 
   const bind = useDrag(
-    ({ last, down, movement: [, my], offset: [, y] }) => {
+    ({ last, down, movement: [mx, my] }) => {
       const el = document.querySelector(".screamDialogDrag");
-      console.log(last);
+
       if (last && my < -50 && swipePosition === "bottom") {
         set({
           transform: !down ? `translateY(${-30}px)` : `translateY(${0}px)`,
           touchAction: "unset",
           overflow: "scroll",
         });
-        setCommentFormShow(true);
         setSwipePosition("top");
       }
       if (last && el.scrollTop < 30 && my > 150) {
@@ -167,6 +153,10 @@ const ScreamDialog = () => {
       if (swipePosition !== "top") {
         set({ y: down ? my : 0 });
       }
+
+      if (last && mx > 150) {
+        handleClose();
+      }
     },
     {
       pointer: { touch: true },
@@ -174,8 +164,6 @@ const ScreamDialog = () => {
         enabled: true,
         top: -window.innerHeight / 2,
         bottom: window.innerHeight - 120,
-        left: 0,
-        right: 0,
       },
     }
   );
@@ -194,7 +182,7 @@ const ScreamDialog = () => {
           {isMobileCustom ? <BackgroundMobile /> : <BackgroundDesktop />}
           <IdeaCardBig setClicked={setClicked} />
           <VerticalLine />
-          <ShareYourOpinionCard />
+          <ShareYourOpinionCard screamId={screamId} clicked={clicked} />
           <Comments
             comments={comments}
             setCommentMenuOpen={setCommentMenuOpen}
@@ -239,7 +227,6 @@ const ScreamDialog = () => {
         />
       )}
 
-      {commentFormShow && <CommentForm screamId={screamId} clicked={clicked} />}
       <CustomIconButton
         name="ArrowLeft"
         position="fixed"

@@ -118,7 +118,7 @@ export const openScreamFunc = (screamId) => async (dispatch) => {
   const commentsRef = await db
     .collection("comments")
     .where("screamId", "==", screamId)
-    .orderBy("createdAt", "desc")
+    .orderBy("createdAt", "asc")
     .get();
 
   if (!ref.exists) {
