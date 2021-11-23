@@ -71,8 +71,8 @@ const MonitoringBoard = () => {
     "Sonstige",
   ]);
   const [order, setOrder] = useState(1);
-  const [screamIdParam, setScreamIdParam] = useState(null);
   const mapBounds = useSelector((state) => state.data.mapBounds);
+  const mapViewport = useSelector((state) => state.data.mapViewport);
 
   const [dropdown, setDropdown] = useState("newest");
 
@@ -84,8 +84,8 @@ const MonitoringBoard = () => {
     ) {
       history.push("/intro");
     } else {
-      dispatch(getAllFullScreams()).then(() => {
-        dispatch(getProjects());
+      dispatch(getAllFullScreams(mapViewport)).then(() => {
+        dispatch(getProjects(mapViewport));
       });
     }
   }, []);
@@ -164,10 +164,10 @@ const MonitoringBoard = () => {
   const dataFinal = sortedScreams.filter(
     ({ Thema, lat, long, status }) =>
       topicsSelected.includes(Thema) &&
-      lat <= mapBounds.latitude1 &&
-      lat >= mapBounds.latitude2 &&
-      long >= mapBounds.longitude2 &&
-      long <= mapBounds.longitude3 &&
+      // lat <= mapBounds.latitude1 &&
+      // lat >= mapBounds.latitude2 &&
+      // long >= mapBounds.longitude2 &&
+      // long <= mapBounds.longitude3 &&
       status === "None"
   );
 

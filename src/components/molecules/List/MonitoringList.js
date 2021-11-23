@@ -94,7 +94,7 @@ const MonitoringList = ({
       "listItems:",
       listItems
     );
-    if (listItems === dataFinal.length) {
+    if ((listItems === dataFinal.length) | (dataFinalLength === 0)) {
       sethasMoreItems(false);
     } else {
       setTimeout(() => {
