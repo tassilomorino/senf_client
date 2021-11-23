@@ -163,9 +163,7 @@ const IdeaList = ({
       {isMobileCustom ? (
         <React.Fragment>
           <animated.div
-            className={
-              !loading ? "drag" : !loading && openScream ? "drag drag-hide" : ""
-            }
+            className={!loading && !openScream ? "drag" : ""}
             style={props}
           >
             {mapBounds?.latitude1 !== 0 && (
