@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Translation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 
 //Graphs
 import createPlotlyComponent from "react-plotlyjs";
@@ -22,49 +23,9 @@ const TopicFilterWrapper = styled.div`
 `;
 
 const DistrictsGraph = ({ classes, screams }) => {
-  const [topicsSelected, setTopicsSelected] = useState([
-    "Verkehr",
-    "Versorgung",
-    "Umwelt und Grün",
-    "Rad",
-    "Inklusion / Soziales",
-    "Sport / Freizeit",
-    "Sonstige",
-  ]);
-  const handleTopicSelector = (topic) => {
-    const index = topicsSelected.indexOf(topic);
-    if (topic === "all") {
-      setTopicsSelected([
-        "Verkehr",
-        "Versorgung",
-        "Umwelt und Grün",
-        "Rad",
-        "Inklusion / Soziales",
-        "Sport / Freizeit",
-        "Sonstige",
-      ]);
-    } else if (topicsSelected.length === 7) {
-      setTopicsSelected([topic]);
-    } else if (index === -1) {
-      setTopicsSelected(topicsSelected.concat(topic));
-    } else {
-      const newTopics = topicsSelected.filter((item) => item !== topic);
+  const selectedTopics = useSelector((state) => state.data.topics);
+ 
 
-      if (newTopics.length === 0) {
-        setTopicsSelected([
-          "Verkehr",
-          "Versorgung",
-          "Umwelt und Grün",
-          "Rad",
-          "Inklusion / Soziales",
-          "Sport / Freizeit",
-          "Sonstige",
-        ]);
-      } else {
-        setTopicsSelected(...[newTopics]);
-      }
-    }
-  };
 
   let Rad = [];
   let Rad_one = [];
@@ -96,14 +57,14 @@ const DistrictsGraph = ({ classes, screams }) => {
 
   if (screams !== undefined && screams.length > 0) {
     screams.forEach((element) => {
-      if (element.Thema === "Rad" && topicsSelected.includes(element.Thema)) {
+      if (element.Thema === "Rad" && selectedTopics.includes(element.Thema)) {
         Rad.push(element.Stadtteil);
         Rad_one.push(1);
         Rad_likes.push(element.likeCount);
       }
       if (
         element.Thema === "Inklusion / Soziales" &&
-        topicsSelected.includes(element.Thema)
+        selectedTopics.includes(element.Thema)
       ) {
         Inklusion_Soziales.push(element.Stadtteil);
         Inklusion_Soziales_one.push(1);
@@ -111,7 +72,7 @@ const DistrictsGraph = ({ classes, screams }) => {
       }
       if (
         element.Thema === "Verkehr" &&
-        topicsSelected.includes(element.Thema)
+        selectedTopics.includes(element.Thema)
       ) {
         Verkehr.push(element.Stadtteil);
         Verkehr_one.push(1);
@@ -120,7 +81,7 @@ const DistrictsGraph = ({ classes, screams }) => {
 
       if (
         element.Thema === "Umwelt und Grün" &&
-        topicsSelected.includes(element.Thema)
+        selectedTopics.includes(element.Thema)
       ) {
         Umwelt.push(element.Stadtteil);
         Umwelt_one.push(1);
@@ -128,7 +89,7 @@ const DistrictsGraph = ({ classes, screams }) => {
       }
       if (
         element.Thema === "Versorgung" &&
-        topicsSelected.includes(element.Thema)
+        selectedTopics.includes(element.Thema)
       ) {
         Versorgung.push(element.Stadtteil);
         Versorgung_one.push(1);
@@ -136,7 +97,7 @@ const DistrictsGraph = ({ classes, screams }) => {
       }
       if (
         element.Thema === "Sport / Freizeit" &&
-        topicsSelected.includes(element.Thema)
+        selectedTopics.includes(element.Thema)
       ) {
         Sport_Freizeit.push(element.Stadtteil);
         Sport_Freizeit_one.push(1);
@@ -144,7 +105,7 @@ const DistrictsGraph = ({ classes, screams }) => {
       }
       if (
         element.Thema === "Sonstige" &&
-        topicsSelected.includes(element.Thema)
+        selectedTopics.includes(element.Thema)
       ) {
         Sonstige.push(element.Stadtteil);
         Sonstige_one.push(1);
@@ -394,8 +355,6 @@ const DistrictsGraph = ({ classes, screams }) => {
 
       <TopicFilterWrapper>
         <TopicFilter
-          handleTopicSelector={handleTopicSelector}
-          topicsSelected={topicsSelected}
           inline={true}
         />
       </TopicFilterWrapper>

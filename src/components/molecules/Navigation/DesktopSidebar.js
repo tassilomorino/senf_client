@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 
 import { useDispatch, useSelector } from "react-redux";
 import { openAccountFunc } from "../../../redux/actions/accountActions";
-
+import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 //Components
 import RegistrationAndLogin from "../../organisms/Auth/LoginRegistration";
 import InlineInformationPageDesktop from "../../organisms/infocomponents/InlineInformationPageDesktop";
@@ -33,8 +33,6 @@ const DesktopSidebar = ({
   classes,
   order,
   handleClick,
-  handleTopicSelector,
-  topicsSelected,
   loadingProjects,
   projectsData,
 }) => {
@@ -43,6 +41,7 @@ const DesktopSidebar = ({
 
   const authenticated = useSelector((state) => state.user.authenticated);
   const userId = useSelector((state) => state.user.userId);
+  
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -52,7 +51,7 @@ const DesktopSidebar = ({
     dispatch(closeScream());
     dispatch(closeProject());
 
-    handleTopicSelector("all");
+    dispatch(handleTopicSelectorRedux('all'))
   };
 
   return (
@@ -119,10 +118,8 @@ const DesktopSidebar = ({
           }}
         ></div>
 
-        <TopicFilter
-          handleTopicSelector={handleTopicSelector}
-          topicsSelected={topicsSelected}
-        ></TopicFilter>
+        <TopicFilter/>
+
 
         <div
           style={{

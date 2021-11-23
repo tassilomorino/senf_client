@@ -93,13 +93,13 @@ const List = ({
   };
 
   const loadMore = () => {
-    console.log(
+/*     console.log(
       "loading more",
       "df.length",
       dataFinal.length,
       "listItems:",
       listItems
-    );
+    ); */
     if (listItems === dataFinal.length) {
       sethasMoreItems(false);
     } else {
