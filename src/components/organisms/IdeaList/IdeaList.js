@@ -165,7 +165,10 @@ const IdeaList = ({
     <Wrapper zIndex={zIndex}>
       {isMobileCustom ? (
         <React.Fragment>
-          <animated.div className={!loading ? "drag" : ""} style={props}>
+          <animated.div
+            className={!loading && !openScream ? "drag" : ""}
+            style={props}
+          >
             {mapBounds?.latitude1 !== 0 && (
               <React.Fragment>
                 <ListHeaderWrapper>
