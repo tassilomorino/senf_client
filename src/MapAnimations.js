@@ -46,29 +46,30 @@ export const setViewport = () => {
   };
 
   store.dispatch(setInitialMapViewport(zoomedViewport));
+  setBeforeMapbounds();
 };
 
-// export const setBeforeMapbounds = () => {
-//   console.log(localStorage.getItem("latitude"));
-//   const bounds = {
-//     latitude1:
-//       typeof Storage !== "undefined" && localStorage.getItem("latitude")
-//         ? Number(localStorage.getItem("latitude")) + 1
-//         : 50.93864020643174 + 1,
-//     latitude2:
-//       typeof Storage !== "undefined" && localStorage.getItem("latitude")
-//         ? Number(localStorage.getItem("latitude")) - 1
-//         : 50.93864020643174 - 1,
-//     longitude2:
-//       typeof Storage !== "undefined" && localStorage.getItem("longitude")
-//         ? Number(localStorage.getItem("longitude")) - 1
-//         : 6.958725744885521 - 1,
-//     longitude3:
-//       typeof Storage !== "undefined" && localStorage.getItem("longitude")
-//         ? Number(localStorage.getItem("longitude")) + 1
-//         : 6.958725744885521 + 1,
-//   };
+export const setBeforeMapbounds = () => {
+  console.log(localStorage.getItem("latitude"));
+  const bounds = {
+    latitude1:
+      typeof Storage !== "undefined" && localStorage.getItem("latitude")
+        ? Number(localStorage.getItem("latitude")) + 1
+        : 50.93864020643174 + 1,
+    latitude2:
+      typeof Storage !== "undefined" && localStorage.getItem("latitude")
+        ? Number(localStorage.getItem("latitude")) - 1
+        : 50.93864020643174 - 1,
+    longitude2:
+      typeof Storage !== "undefined" && localStorage.getItem("longitude")
+        ? Number(localStorage.getItem("longitude")) - 1
+        : 6.958725744885521 - 1,
+    longitude3:
+      typeof Storage !== "undefined" && localStorage.getItem("longitude")
+        ? Number(localStorage.getItem("longitude")) + 1
+        : 6.958725744885521 + 1,
+  };
 
-//   console.log(bounds, "localStorage?:", localStorage.getItem("longitude"));
-//   store.dispatch(setMapBounds(bounds));
-// };
+  console.log(bounds, "localStorage?:", localStorage.getItem("longitude"));
+  store.dispatch(setMapBounds(bounds));
+};
