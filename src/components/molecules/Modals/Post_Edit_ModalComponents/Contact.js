@@ -9,7 +9,7 @@ import Button from "@material-ui/core/Button";
 // REDUX Stuff
 
 import { TextField } from "@material-ui/core";
-import MainModal from "../MainModal";
+import MainModal from "../../../atoms/Layout/MainModal";
 
 const styles = {
   paper: {

@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { deleteScream } from "../../../redux/actions/screamActions";
 import EditModal from "./EditModal";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
-import MainModal from "./MainModal";
+import MainModal from "../../atoms/Layout/MainModal";
 import AdminEditModal from "./AdminEditModal";
 
 const ButtonWrapper = styled.div`

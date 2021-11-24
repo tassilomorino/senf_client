@@ -14,7 +14,7 @@ import Weblink from "./Post_Edit_ModalComponents/Weblink";
 import Contact from "./Post_Edit_ModalComponents/Contact";
 import InlineDatePicker from "./Post_Edit_ModalComponents/InlineDatePicker";
 
-import MainModal from "./MainModal";
+import MainModal from "../../atoms/Layout/MainModal";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router";
 import EditModalMainFields from "./Post_Edit_ModalComponents/EditModalMainFields";

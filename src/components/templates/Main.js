@@ -508,13 +508,11 @@ const Main = () => {
       )}
 
       {!openInfoPage && !openProject && !openAccount && order === 2 && (
-        <div className="contentWrapper_insights">
-          <ProjectsPage
-            loadingProjects={loadingProjects}
-            order={order}
-            projects={projects}
-          ></ProjectsPage>
-        </div>
+        <ProjectsPage
+          loadingProjects={loadingProjects}
+          order={order}
+          projects={projects}
+        ></ProjectsPage>
       )}
       {!openInfoPage && !openProject && !openAccount && order === 3 && (
         <div className="contentWrapper_insights">

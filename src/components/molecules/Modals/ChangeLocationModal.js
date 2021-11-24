@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { setViewport } from "../../../MapAnimations";
-import MainModal from "./MainModal";
+import MainModal from "../../atoms/Layout/MainModal";
 import Geolocate from "../../../images/icons/geolocate.png";
 import styled from "styled-components";
 import axios from "axios";
