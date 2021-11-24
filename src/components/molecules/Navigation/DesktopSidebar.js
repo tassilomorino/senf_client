@@ -1,10 +1,13 @@
 /** @format */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useDispatch, useSelector } from "react-redux";
-import { openAccountFunc } from "../../../redux/actions/accountActions";
+import {
+  openAccountFunc,
+  getMyScreams,
+} from "../../../redux/actions/accountActions";
 
 //Components
 import RegistrationAndLogin from "../../organisms/Auth/LoginRegistration";
@@ -56,6 +59,13 @@ const DesktopSidebar = ({
 
     handleTopicSelector("all");
   };
+  useEffect(() => {
+    if (userId && openAccount) {
+      if (userId) {
+        dispatch(getMyScreams(userId));
+      }
+    }
+  }, [openAccount, userId]);
 
   return (
     !isMobileCustom && (

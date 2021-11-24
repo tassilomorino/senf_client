@@ -11,22 +11,23 @@ import {
   LOADING_MYSCREAMS_DATA,
 } from "../types";
 
-export const openAccountFunc = (userId) => async (dispatch) => {
+export const openAccountFunc = () => async (dispatch) => {
   dispatch({
     type: OPEN_ACCOUNT,
   });
+};
 
+export const getMyScreams = (userId) => async (dispatch) => {
   dispatch({ type: LOADING_MYSCREAMS_DATA });
   const db = firebase.firestore();
-  const ref =
-    userId &&
-    (await db
-      .collection("screams")
-      .where("userId", "==", userId)
-      .orderBy("createdAt", "desc")
-      .get());
+  const ref = await db
+    .collection("screams")
+    .where("userId", "==", userId)
+    .orderBy("createdAt", "desc")
+    .get();
 
   const screams = [];
+
   ref.docs?.forEach((doc) => {
     const docData = {
       screamId: doc.id,

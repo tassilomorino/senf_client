@@ -14,6 +14,7 @@ const LoginFormComponent = ({
   handleToggle,
   handleSubmitLogin,
   formik,
+  outsideClick,
   keySubmitRef,
 }) => {
   const { t } = useTranslation();
@@ -35,9 +36,9 @@ const LoginFormComponent = ({
           data-cy="login-email"
           value={formik.values.email}
           onChange={formik.handleChange}
-          error={formik.values.email !== "" && Boolean(formik.errors.email)}
-          helperText={formik.values.email !== "" && formik.errors.email}
-        ></TextField>
+          error={outsideClick && Boolean(formik.errors.email)}
+          helperText={outsideClick && formik.errors.email}
+        />
 
         <TextField
           id="outlined-password-input"
@@ -51,11 +52,9 @@ const LoginFormComponent = ({
           data-cy="login-password"
           value={formik.values.password}
           onChange={formik.handleChange}
-          error={
-            formik.values.password !== "" && Boolean(formik.errors.password)
-          }
-          helperText={formik.values.password !== "" && formik.errors.password}
-        ></TextField>
+          error={outsideClick && Boolean(formik.errors.password)}
+          helperText={outsideClick && formik.errors.password}
+        />
 
         <br />
 
@@ -72,20 +71,21 @@ const LoginFormComponent = ({
           </Typography>
         )} */}
       </div>
-
-      <SubmitButton
-        text={t("login")}
-        zIndex="9"
-        backgroundColor="white"
-        textColor="#353535"
-        position="relative"
-        top={document.body.clientWidth > 768 ? "100px" : "70px"}
-        left="0"
-        loading={loading}
-        handleButtonClick={handleSubmitLogin}
-        disabled={loading || !formik.isValid}
-        keySubmitRef={keySubmitRef}
-      />
+      <div style={loading || !formik.isValid ? { pointerEvents: "none" } : {}}>
+        <SubmitButton
+          text={t("login")}
+          zIndex="9"
+          backgroundColor="white"
+          textColor="#353535"
+          position="relative"
+          top={document.body.clientWidth > 768 ? "100px" : "70px"}
+          left="0"
+          loading={loading}
+          handleButtonClick={handleSubmitLogin}
+          disabled={loading || !formik.isValid}
+          keySubmitRef={keySubmitRef}
+        />
+      </div>
 
       {/* <div
         className={

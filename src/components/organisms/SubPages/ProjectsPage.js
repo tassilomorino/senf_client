@@ -44,7 +44,8 @@ const NoIdeasYet = styled.div`
   text-align: center;
 `;
 const ProjectsPage = ({ order, projectsData }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isCreateProjectDialogIsOpen, setCreateProjectDialogIsOpen] =
+    useState(false);
   const { t } = useTranslation();
   const loadingProjects = useSelector((state) => state.data.loadingProjects);
 
@@ -107,7 +108,10 @@ const ProjectsPage = ({ order, projectsData }) => {
 
   return (
     <Wrapper>
-      <CreateProjectDialog setIsOpen={setIsOpen} isOpen={isOpen} />
+      <CreateProjectDialog
+        setCreateProjectDialogIsOpen={setCreateProjectDialogIsOpen}
+        isCreateProjectDialogIsOpen={isCreateProjectDialogIsOpen}
+      />
 
       {isMobileCustom ? (
         <div style={{ height: "110px" }} />
@@ -136,7 +140,9 @@ const ProjectsPage = ({ order, projectsData }) => {
       <br />
       <br />
 
-      <CreateProject setIsOpen={setIsOpen} />
+      <CreateProject
+        setCreateProjectDialogIsOpen={setCreateProjectDialogIsOpen}
+      />
 
       <br />
       <br />

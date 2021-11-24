@@ -21,6 +21,9 @@ const Wrapper = styled.div`
   left: 0;
   height: 100%;
   width: 100vw;
+  display: flex;
+  justify-content: center;
+
   /* background: rgb(254, 217, 87);
   background: linear-gradient(
     180deg,
@@ -54,9 +57,29 @@ const Wrapper = styled.div`
   }
 `;
 
+const InnerWrapper = styled.div`
+  width: 100%;
+  max-width: 600px;
+  z-index: 10;
+`;
+const Background = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+`;
 const MainDialog = ({ isOpen, setIsOpen, children }) => {
   return ReactDOM.createPortal(
-    isOpen && <Wrapper onClick={() => setIsOpen(false)}>{children}</Wrapper>,
+    isOpen && (
+      <Wrapper>
+        <InnerWrapper>{children}</InnerWrapper>
+        <Background
+        // onClick={() => setIsOpen(false)}
+        />
+      </Wrapper>
+    ),
     portalRoot
   );
 };

@@ -138,7 +138,9 @@
   "infopage_block3_subtitle": "Wir konnten bereits tolle Kooperationen eingehen. Wenn auch dich unsere Denkweise anspricht, lass uns quatschen!",
   "infopage_illustrator": "Illustratorin: Gizem Güvendag",
 
-  "account_contact": "Wir freuen uns über deine Beteiligung! Gefällt dir Senf? Stört dich etwas? Melde dich gerne und sag uns, was dir auffällt!"
+  "account_contact": "Wir freuen uns über deine Beteiligung! Gefällt dir Senf? Stört dich etwas? Melde dich gerne und sag uns, was dir auffällt!",
   
   
+  "projectRoom_name":"Projektraum-Name",
+  "projectRoom_description":"Beschreibungstext (max. 1000 Zeichen)"
 }

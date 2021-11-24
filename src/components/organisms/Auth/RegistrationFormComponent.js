@@ -18,6 +18,7 @@ const RegistrationFormComponent = ({
   handleToggle,
   handleSubmitRegister,
   formik,
+  outsideClick,
 }) => {
   const { t } = useTranslation();
 
@@ -38,8 +39,8 @@ const RegistrationFormComponent = ({
           margin="dense"
           variant="outlined"
           className={classes.textField}
-          helperText={formik.values.email !== "" && formik.errors.email}
-          error={formik.values.email !== "" && Boolean(formik.errors.email)}
+          helperText={outsideClick && formik.errors.email}
+          error={outsideClick && Boolean(formik.errors.email)}
           value={formik.values.email}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -53,10 +54,8 @@ const RegistrationFormComponent = ({
           margin="dense"
           variant="outlined"
           className={classes.textField}
-          helperText={formik.values.password !== "" && formik.errors.password}
-          error={
-            formik.values.password !== "" && Boolean(formik.errors.password)
-          }
+          helperText={outsideClick && formik.errors.password}
+          error={outsideClick && Boolean(formik.errors.password)}
           value={formik.values.password}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -70,14 +69,8 @@ const RegistrationFormComponent = ({
           margin="dense"
           variant="outlined"
           className={classes.textField}
-          helperText={
-            formik.values.confirmPassword !== "" &&
-            formik.errors.confirmPassword
-          }
-          error={
-            formik.values.confirmPassword !== "" &&
-            Boolean(formik.errors.confirmPassword)
-          }
+          helperText={outsideClick && formik.errors.confirmPassword}
+          error={outsideClick && Boolean(formik.errors.confirmPassword)}
           value={formik.values.confirmPassword}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -95,10 +88,8 @@ const RegistrationFormComponent = ({
               ? classes.textField_hide
               : classes.textField
           }
-          helperText={formik.values.username !== "" && formik.errors.username}
-          error={
-            formik.values.username !== "" && Boolean(formik.errors.username)
-          }
+          helperText={outsideClick && formik.errors.username}
+          error={outsideClick && Boolean(formik.errors.username)}
           value={formik.values.username}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -283,18 +274,20 @@ const RegistrationFormComponent = ({
           {/* Ich bestätige außerdem, dass ich mindestens 18 Jahre alt bin */}
         </div>
       </div>
-      <SubmitButton
-        text={t("register")}
-        zIndex="9"
-        backgroundColor="white"
-        textColor="#353535"
-        position="relative"
-        top={document.body.clientWidth > 768 ? "100px" : "50px"}
-        left="0"
-        loading={loading}
-        handleButtonClick={handleSubmitRegister}
-        disabled={loading || !formik.isValid}
-      />
+      <div style={loading || !formik.isValid ? { pointerEvents: "none" } : {}}>
+        <SubmitButton
+          text={t("register")}
+          zIndex="9"
+          backgroundColor="white"
+          textColor="#353535"
+          position="relative"
+          top={document.body.clientWidth > 768 ? "100px" : "50px"}
+          left="0"
+          loading={loading}
+          handleButtonClick={handleSubmitRegister}
+          disabled={loading || !formik.isValid}
+        />
+      </div>
       {/* <div
         className={
           isAndroid ? classes.smallText_fixed_android : classes.smallText_fixed

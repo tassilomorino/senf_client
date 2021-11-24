@@ -3,7 +3,7 @@
 import React from "react";
 
 // Redux
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { openProjectFunc } from "../../../redux/actions/projectActions";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import AddIcon from "../../../images/icons/plus_grey.png";
@@ -122,10 +122,12 @@ export const ProjectCard = (props) => {
   );
 };
 
-export const CreateProject = () => {
+export const CreateProject = ({ setCreateProjectDialogIsOpen }) => {
   const { t } = useTranslation();
+  const isOrgModerator = useSelector((state) => state.user.isOrgModerator);
+  const handle = useSelector((state) => state.user.handle);
 
-  const createProject = () => {
+  const requestProject = () => {
     var link =
       "mailto:dein@senf.koeln" + "?subject=" + escape("Projektraum-Anfrage");
     // +
@@ -146,7 +148,12 @@ export const CreateProject = () => {
   };
 
   return (
-    <ProjectCardDesign onClick={createProject}>
+    <ProjectCardDesign>
+      <ExpandButton
+        handleButtonClick={
+          !isOrgModerator ? requestProject : setCreateProjectDialogIsOpen
+        }
+      />
       <LeftWrapper>
         <img
           src={AddIcon}
@@ -156,9 +163,22 @@ export const CreateProject = () => {
         />
       </LeftWrapper>
       <RightWrapper>
-        <Owner> {t("projectrooms_request_overTitle")} </Owner>
-        <Title> {t("projectrooms_request_title")}</Title>
-        <Date>{t("projectrooms_request_subTitle")}</Date>
+        {!isOrgModerator ? (
+          <React.Fragment>
+            <Owner> {t("projectrooms_request_overTitle")} </Owner>
+            <Title> {t("projectrooms_request_title")}</Title>
+            <Date>{t("projectrooms_request_subTitle")}</Date>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <Owner>
+              {" "}
+              {t("für")} {handle}
+            </Owner>
+            <Title> {t("Projektraum erstellen")}</Title>
+            <Date>{t("projectrooms_request_subTitle")}</Date>
+          </React.Fragment>
+        )}
       </RightWrapper>
     </ProjectCardDesign>
   );

@@ -1,11 +1,14 @@
 /** @format */
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { useDispatch, useSelector } from "react-redux";
 
 //REDUX
-import { openAccountFunc } from "../../../redux/actions/accountActions";
+import {
+  openAccountFunc,
+  getMyScreams,
+} from "../../../redux/actions/accountActions";
 
 //COMPONENTS
 import LoginRegistration from "../../organisms/Auth/LoginRegistration";
@@ -93,6 +96,14 @@ const Topbar = ({ order, handleClick }) => {
   const openTheAccount = () => {
     dispatch(openAccountFunc(userId));
   };
+
+  useEffect(() => {
+    if (userId && openAccount) {
+      if (userId) {
+        dispatch(getMyScreams(userId));
+      }
+    }
+  }, [openAccount, userId]);
   return (
     !loading &&
     isMobileCustom && (
