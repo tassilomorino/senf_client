@@ -66,7 +66,7 @@ const Main = () => {
   const myScreams = useSelector((state) => state.data.myScreams);
 
   const loading = useSelector((state) => state.data.loading);
-  const loadingProjects = useSelector((state) => state.UI.loadingProjects);
+  const loadingProjects = useSelector((state) => state.data.loadingProjects);
   const loadingIdea = useSelector((state) => state.data.loadingIdea);
 
   const projects = useSelector((state) => state.data.projects);
@@ -414,7 +414,7 @@ const Main = () => {
         <MapDesktop
           loading={loading}
           loadingProjects={loadingProjects}
-          dataFinal={dataFinalMap.slice(0, 300)}
+          dataFinal={dataFinalMap}
           _onViewportChange={_onViewportChange}
           zoomBreak={zoomBreak}
           id="mapDesktop"
@@ -508,11 +508,7 @@ const Main = () => {
       )}
 
       {!openInfoPage && !openProject && !openAccount && order === 2 && (
-        <ProjectsPage
-          loadingProjects={loadingProjects}
-          order={order}
-          projects={projects}
-        ></ProjectsPage>
+        <ProjectsPage order={order} projectsData={projects}></ProjectsPage>
       )}
       {!openInfoPage && !openProject && !openAccount && order === 3 && (
         <div className="contentWrapper_insights">

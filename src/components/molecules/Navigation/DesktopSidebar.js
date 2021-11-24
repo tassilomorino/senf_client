@@ -23,12 +23,11 @@ import Noprofile from "../../../images/noprofile.png";
 import PostScream from "../../organisms/PostIdea/PostScream";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
-import styled from "styled-components";
 import { closeScream } from "../../../redux/actions/screamActions";
 import { closeProject } from "../../../redux/actions/projectActions";
 import { Logo, Tabs } from "./styles/sharedStyles";
-import ChangeLocationModal from "../Modals/ChangeLocationModal";
 import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
+import styled from "styled-components";
 
 const DesktopSidebar = ({
   loading,

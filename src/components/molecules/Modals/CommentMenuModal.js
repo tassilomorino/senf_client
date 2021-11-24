@@ -13,6 +13,7 @@ const ButtonWrapper = styled.div`
   position: relative;
   z-index: 999;
   overflow: hidden;
+  white-space: nowrap;
 `;
 const Line = styled.div`
   height: 1px;

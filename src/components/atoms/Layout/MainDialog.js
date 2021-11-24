@@ -1,6 +1,8 @@
 /** @format */
 
 import React, { useState } from "react";
+import ReactDOM from "react-dom";
+
 import styled from "styled-components";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import {
@@ -8,9 +10,13 @@ import {
   BackgroundMobile,
 } from "../Backgrounds/GradientBackgrounds";
 
+const portalRoot = document.getElementById("portal-root-dialog");
+
 const Wrapper = styled.div`
-  z-index: 9999;
   position: fixed;
+  z-index: 1300;
+  inset: 0px;
+
   top: 0;
   left: 0;
   height: 100%;
@@ -48,13 +54,10 @@ const Wrapper = styled.div`
   }
 `;
 
-const MainDialog = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  return (
-    <React.Fragment>
-      <button onClick={() => setIsOpen(true)}>OPEN </button>
-      {isOpen && <Wrapper onClick={() => setIsOpen(false)}></Wrapper>}
-    </React.Fragment>
+const MainDialog = ({ isOpen, setIsOpen, children }) => {
+  return ReactDOM.createPortal(
+    isOpen && <Wrapper onClick={() => setIsOpen(false)}>{children}</Wrapper>,
+    portalRoot
   );
 };
 

@@ -1,19 +1,24 @@
 /** @format */
 
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-
+import _ from "lodash";
 //Components
 import { ProjectCard, CreateProject } from "../../molecules/Cards/ProjectCard";
 
-import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-import MainDialog from "../../atoms/Layout/MainDialog";
+import InfiniteScroll from "react-infinite-scroller";
+import CreateProjectDialog from "../CreateProject/CreateProjectDialog";
 
 const Wrapper = styled.div`
-  width: 100%;
-  position: relative;
+  width: 100vw;
+  height: 100%;
+
+  overflow: hidden;
+  position: fixed;
+  overflow: scroll;
   animation: cardanimation 0.8s ease-in-out;
 
   @media (min-width: 768px) {
@@ -29,6 +34,7 @@ const ProjectRoomDescription = styled.div`
   margin-left: 5%;
   padding-bottom: 30px;
 `;
+
 const NoIdeasYet = styled.div`
   position: relative;
   font-size: 15pt;
@@ -37,52 +43,105 @@ const NoIdeasYet = styled.div`
   margin-left: 10%;
   text-align: center;
 `;
-const ProjectsPage = ({ loadingProjects, order, projects }) => {
+const ProjectsPage = ({ order, projectsData }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
+  const loadingProjects = useSelector((state) => state.data.loadingProjects);
+
+  const projects = _.orderBy(projectsData, "createdAt", "desc");
+
+  // const prevdataFinalLength = usePrevious({ dataFinalLength });
+  // const prevDropdown = usePrevious({ dropdown });
+
+  useEffect(() => {
+    if (!loadingProjects) {
+      const element = document.getElementById("List");
+      element?.scrollTo({
+        top: 0,
+        left: 0,
+      });
+
+      setListItems(1);
+      sethasMoreItems(true);
+    }
+  }, [loadingProjects]);
+  const itemsPerPage = 1;
+  const [hasMoreItems, sethasMoreItems] = useState(true);
+  const [listItems, setListItems] = useState(itemsPerPage);
+
+  const showItems = (projects) => {
+    var items = [];
+    if (projects.length !== 0) {
+      for (var i = 0; i < listItems; i++) {
+        items.push(
+          projects[i]?.project && (
+            <ProjectCard key={projects[i]?.project} project={projects[i]} />
+          )
+        );
+      }
+      return items;
+    }
+  };
+
+  const loadMore = () => {
+    console.log(
+      "loading more",
+      "df.length",
+      projects.length,
+      "listItems:",
+      listItems
+    );
+
+    if (!loadingProjects && projects.length === 0) {
+      sethasMoreItems(false);
+    }
+
+    if (listItems === projects.length) {
+      sethasMoreItems(false);
+    } else {
+      setTimeout(() => {
+        setListItems(listItems + itemsPerPage);
+      }, 100);
+    }
+  };
 
   return (
-    order === 2 && (
-      <Wrapper>
-        {isMobileCustom ? (
-          <div style={{ height: "110px" }} />
-        ) : (
-          <div style={{ height: "80px" }} />
-        )}
-        <ProjectRoomDescription>
-          {t("projectrooms_description")}
-        </ProjectRoomDescription>
+    <Wrapper>
+      <CreateProjectDialog setIsOpen={setIsOpen} isOpen={isOpen} />
 
-        <MainDialog />
+      {isMobileCustom ? (
+        <div style={{ height: "110px" }} />
+      ) : (
+        <div style={{ height: "80px" }} />
+      )}
+      <ProjectRoomDescription>
+        {t("projectrooms_description")}
+      </ProjectRoomDescription>
 
-        {!loadingProjects ? (
-          projects
-            ?.sort(function (a, b) {
-              if (a.createdAt > b.createdAt) {
-                return -1;
-              }
-              return 0;
-            })
-            .map((projects) => (
-              <ProjectCard key={projects.project} project={projects} />
-            ))
-        ) : (
-          <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>
-        )}
-        {!loadingProjects && projects.length === 0 && (
-          <NoIdeasYet>{t("projectrooms_loading_error")}</NoIdeasYet>
-        )}
+      {!loadingProjects ? (
+        <InfiniteScroll
+          loadMore={() => loadMore()}
+          hasMore={hasMoreItems}
+          useWindow={false}
+        >
+          {showItems(projects)}
+        </InfiniteScroll>
+      ) : (
+        <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>
+      )}
+      {!loadingProjects && projects.length === 0 && (
+        <NoIdeasYet>{t("projectrooms_loading_error")}</NoIdeasYet>
+      )}
+      <br />
+      <br />
+      <br />
 
-        <br />
-        <br />
-        <br />
+      <CreateProject setIsOpen={setIsOpen} />
 
-        <CreateProject />
-
-        <br />
-        <br />
-        <br />
-      </Wrapper>
-    )
+      <br />
+      <br />
+      <br />
+    </Wrapper>
   );
 };
 
