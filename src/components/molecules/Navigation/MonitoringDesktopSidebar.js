@@ -15,8 +15,8 @@ import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
 export class MonitoringDesktopSidebar extends Component {
   render() {
-    const { handleTopicSelector, topicsSelected } = this.props;
-    //
+    
+    
 
     return (
       <div className="sideBar">
@@ -53,10 +53,8 @@ export class MonitoringDesktopSidebar extends Component {
           }}
         ></div>
 
-        <TopicFilter
-          handleTopicSelector={handleTopicSelector}
-          topicsSelected={topicsSelected}
-        ></TopicFilter>
+        <TopicFilter/>
+
         <div
           style={{
             position: "relative",

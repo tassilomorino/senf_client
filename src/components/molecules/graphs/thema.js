@@ -1,12 +1,22 @@
 /** @format */
 
 import React from "react";
+
+//Icons
+import CircularProgress from "@material-ui/core/CircularProgress";
+//Translation
 import { useTranslation } from "react-i18next";
 //Graphs
 import createPlotlyComponent from "react-plotlyjs";
 //See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
-import Plotly from "plotly.js/dist/plotly-cartesian";
+import Plotly from "plotly.js/dist/plotly-cartesian.min";
 const PlotlyComponent = createPlotlyComponent(Plotly);
+
+// let PlotlyComponent
+// import(/* webpackChunkName: "Thema.js-Graph plotly" */'plotly.js/dist/plotly-cartesian.min').then(plotly=>{
+//   PlotlyComponent = createPlotlyComponent(plotly);
+  
+// })
 
 const Thema = ({ screams }) => {
   function sum(input) {
@@ -276,6 +286,21 @@ const Thema = ({ screams }) => {
     displayModeBar: false,
   };
 const {t} = useTranslation()
+
+const plot =
+     screams && PlotlyComponent !== undefined  ? (
+      <PlotlyComponent
+        className='insights-plot'
+        data={data}
+        layout={layout}
+        config={config}
+      />
+    
+    ) : (
+      <div style={{display: 'flex', justifyContent: 'center'}}>
+      <CircularProgress size={50} thickness={2} />
+      </div>
+    );
   return (
     <div className="insights-card">
       <div className="insights-card-title">{t('topics')}</div>
@@ -283,12 +308,7 @@ const {t} = useTranslation()
       {t('topics_explained')}
       </div>
       <div className="insights-plot-clickblocker"></div>
-      <PlotlyComponent
-        className="insights-plot"
-        data={data}
-        layout={layout}
-        config={config}
-      />
+      {plot}
     </div>
   );
 };

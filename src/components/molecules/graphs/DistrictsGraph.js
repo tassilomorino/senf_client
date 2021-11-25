@@ -2,13 +2,16 @@
 
 import React, { useState } from "react";
 import { Translation } from "react-i18next";
-
+import { useDispatch, useSelector } from "react-redux";
+//Icons
+import CircularProgress from "@material-ui/core/CircularProgress";
 //Graphs
 import createPlotlyComponent from "react-plotlyjs";
 //See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
-import Plotly from "plotly.js/dist/plotly-cartesian";
+import Plotly from "plotly.js/dist/plotly-cartesian.min";
 import TopicFilter from "../Filters/TopicFilter";
 import styled from "styled-components";
+
 const PlotlyComponent = createPlotlyComponent(Plotly);
 
 const TopicFilterWrapper = styled.div`
@@ -21,50 +24,16 @@ const TopicFilterWrapper = styled.div`
   transform: translateX(-50%);
 `;
 
-const DistrictsGraph = ({ classes, screams }) => {
-  const [topicsSelected, setTopicsSelected] = useState([
-    "Verkehr",
-    "Versorgung",
-    "Umwelt und Grün",
-    "Rad",
-    "Inklusion / Soziales",
-    "Sport / Freizeit",
-    "Sonstige",
-  ]);
-  const handleTopicSelector = (topic) => {
-    const index = topicsSelected.indexOf(topic);
-    if (topic === "all") {
-      setTopicsSelected([
-        "Verkehr",
-        "Versorgung",
-        "Umwelt und Grün",
-        "Rad",
-        "Inklusion / Soziales",
-        "Sport / Freizeit",
-        "Sonstige",
-      ]);
-    } else if (topicsSelected.length === 7) {
-      setTopicsSelected([topic]);
-    } else if (index === -1) {
-      setTopicsSelected(topicsSelected.concat(topic));
-    } else {
-      const newTopics = topicsSelected.filter((item) => item !== topic);
+//  let PlotlyComponent
+// import(/* webpackChunkName: "Districts-Graph plotly" */'plotly.js/dist/plotly-cartesian.min').then(plotly=>{
+//   PlotlyComponent = createPlotlyComponent(plotly);
+  
+// })  
 
-      if (newTopics.length === 0) {
-        setTopicsSelected([
-          "Verkehr",
-          "Versorgung",
-          "Umwelt und Grün",
-          "Rad",
-          "Inklusion / Soziales",
-          "Sport / Freizeit",
-          "Sonstige",
-        ]);
-      } else {
-        setTopicsSelected(...[newTopics]);
-      }
-    }
-  };
+const DistrictsGraph = ({ classes, screams }) => {
+  const selectedTopics = useSelector((state) => state.data.topics);
+ 
+
 
   let Rad = [];
   let Rad_one = [];
@@ -96,14 +65,14 @@ const DistrictsGraph = ({ classes, screams }) => {
 
   if (screams !== undefined && screams.length > 0) {
     screams.forEach((element) => {
-      if (element.Thema === "Rad" && topicsSelected.includes(element.Thema)) {
+      if (element.Thema === "Rad" && selectedTopics.includes(element.Thema)) {
         Rad.push(element.Stadtteil);
         Rad_one.push(1);
         Rad_likes.push(element.likeCount);
       }
       if (
         element.Thema === "Inklusion / Soziales" &&
-        topicsSelected.includes(element.Thema)
+        selectedTopics.includes(element.Thema)
       ) {
         Inklusion_Soziales.push(element.Stadtteil);
         Inklusion_Soziales_one.push(1);
@@ -111,7 +80,7 @@ const DistrictsGraph = ({ classes, screams }) => {
       }
       if (
         element.Thema === "Verkehr" &&
-        topicsSelected.includes(element.Thema)
+        selectedTopics.includes(element.Thema)
       ) {
         Verkehr.push(element.Stadtteil);
         Verkehr_one.push(1);
@@ -120,7 +89,7 @@ const DistrictsGraph = ({ classes, screams }) => {
 
       if (
         element.Thema === "Umwelt und Grün" &&
-        topicsSelected.includes(element.Thema)
+        selectedTopics.includes(element.Thema)
       ) {
         Umwelt.push(element.Stadtteil);
         Umwelt_one.push(1);
@@ -128,7 +97,7 @@ const DistrictsGraph = ({ classes, screams }) => {
       }
       if (
         element.Thema === "Versorgung" &&
-        topicsSelected.includes(element.Thema)
+        selectedTopics.includes(element.Thema)
       ) {
         Versorgung.push(element.Stadtteil);
         Versorgung_one.push(1);
@@ -136,7 +105,7 @@ const DistrictsGraph = ({ classes, screams }) => {
       }
       if (
         element.Thema === "Sport / Freizeit" &&
-        topicsSelected.includes(element.Thema)
+        selectedTopics.includes(element.Thema)
       ) {
         Sport_Freizeit.push(element.Stadtteil);
         Sport_Freizeit_one.push(1);
@@ -144,7 +113,7 @@ const DistrictsGraph = ({ classes, screams }) => {
       }
       if (
         element.Thema === "Sonstige" &&
-        topicsSelected.includes(element.Thema)
+        selectedTopics.includes(element.Thema)
       ) {
         Sonstige.push(element.Stadtteil);
         Sonstige_one.push(1);
@@ -379,7 +348,20 @@ const DistrictsGraph = ({ classes, screams }) => {
     showLink: false,
     displayModeBar: false,
   };
-
+  const plot =
+    screams && PlotlyComponent !== undefined  ? (
+    <PlotlyComponent
+      className={classes.plot}
+      data={data}
+      layout={layout}
+      config={config}
+    />
+  
+  ) : (
+    <div style={{display: 'flex', justifyContent: 'center'}}>
+    <CircularProgress size={50} thickness={2} />
+    </div>
+  );
   return (
     <div className={classes.card}>
       <Translation>
@@ -394,18 +376,11 @@ const DistrictsGraph = ({ classes, screams }) => {
 
       <TopicFilterWrapper>
         <TopicFilter
-          handleTopicSelector={handleTopicSelector}
-          topicsSelected={topicsSelected}
           inline={true}
         />
       </TopicFilterWrapper>
       <div className={classes.clickblocker}></div>
-      <PlotlyComponent
-        className={classes.plot}
-        data={data}
-        layout={layout}
-        config={config}
-      />
+      {plot}
     </div>
   );
 };

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 /** @format */
 
 import { isMobileCustom } from "../../util/customDeviceDetect";
@@ -26,8 +27,19 @@ import {
   SET_COOKIES,
   SET_MAP_VIEWPORT,
   SET_MAP_BOUNDS,
+  SET_TOPICS,
 } from "../types";
 
+
+const defaultTopics = [
+  "Verkehr",
+  "Versorgung",
+  "Umwelt und Grün",
+  "Rad",
+  "Inklusion / Soziales",
+  "Sport / Freizeit",
+  "Sonstige",
+];
 const initialState = {
   projects: [],
   screams: [],
@@ -55,6 +67,7 @@ const initialState = {
     longitude2: 6.712,
     longitude3: 7.17,
   },
+  topics:defaultTopics
 };
 
 export default function (state = initialState, action) {
@@ -217,6 +230,38 @@ export default function (state = initialState, action) {
         mapBounds: action.payload,
       };
 
+    case SET_TOPICS:
+      const indexOfTopic = state.topics.indexOf(action.payload);
+      
+
+      if (action.payload === "all") {
+        return {
+          ...state,
+          topics: defaultTopics,
+        };
+      } else if (state.topics.length === 7) {
+        //
+        return { ...state, topics: [action.payload] };
+      } else if (indexOfTopic === -1) {
+        // topic does not exist, add it
+
+        return { ...state, topics: [...state.topics, action.payload] };
+      } else {
+        // topic exists, remove it
+        const removedTopicArray = state.topics.filter(
+          (item) => item !== action.payload
+        );
+        if (removedTopicArray.length === 0) {
+          //show default if all topics removed
+          return {
+            ...state,
+            topics: defaultTopics,
+          };
+        } else {
+           // show remaining after removal
+          return { ...state, topics: [...removedTopicArray] };
+        }
+      }
     default:
       return state;
   }

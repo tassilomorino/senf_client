@@ -1,14 +1,15 @@
 /** @format */
 
 import React, { Component } from "react";
-
+//Icons
+import CircularProgress from "@material-ui/core/CircularProgress";
 //Redux
 import { connect } from "react-redux";
 
 //Graphs
 import createPlotlyComponent from "react-plotlyjs";
 //See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
-import Plotly from "plotly.js/dist/plotly-cartesian";
+import Plotly from "plotly.js/dist/plotly-cartesian.min";
 
 //MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -19,6 +20,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const PlotlyComponent = createPlotlyComponent(Plotly);
+// let PlotlyComponent
+// import(/* webpackChunkName: "Trends.js Graph plotly" */'plotly.js/dist/plotly-cartesian.min').then(plotly=>{
+//   PlotlyComponent = createPlotlyComponent(plotly);
+  
+// }) 
 
 const styles = {
   root: {
@@ -327,17 +333,26 @@ export class Trends extends Component {
       displayModeBar: false,
     };
 
+    const plot =
+      PlotlyComponent !== undefined  ? (
+     <PlotlyComponent
+       className={classes.plot}
+       data={data}
+       layout={layout}
+       config={config}
+     />
+   
+   ) : (
+    <div style={{display: 'flex', justifyContent: 'center'}}>
+     <CircularProgress size={50} thickness={2} />
+     </div>
+   );
     return (
       <div className={classes.card}>
         {/* <div className={classes.clickblocker}></div> */}
         <div className={classes.title}>Themen-Trends</div>
 
-        <PlotlyComponent
-          className={classes.plot}
-          data={data}
-          layout={layout}
-          config={config}
-        />
+{plot}
       </div>
     );
   }

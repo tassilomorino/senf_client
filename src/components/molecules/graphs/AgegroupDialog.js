@@ -6,10 +6,11 @@ import { isMobileOnly } from "react-device-detect";
 import CloseIcon from "../../../images/icons/close.png";
 
 //Components
-import AgegroupGraph from "./AgegroupGraph";
+
 import MyButton from "../../../util/MyButton";
 
 // MUI Stuff
+import CircularProgress from "@material-ui/core/CircularProgress";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -17,7 +18,7 @@ import Slide from "@material-ui/core/Slide";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
+const AgegroupGraph =React.lazy(()=> import(/* webpackChunkName: "Agegroup-Graph" */"./AgegroupGraph"));
 const styles = {
   root: {
     //backgroundColor: "rgb(0,0,0,0.5)",
@@ -190,12 +191,14 @@ const AgegroupDialog = ({ classes, data, screams, likes }) => {
       </MyButton>
 
       <DialogContent>
+        <React.Suspense fallback={<CircularProgress size={50} thickness={2} />}>
         <AgegroupGraph
           data={data}
           screams={screams}
           likes={likes}
           classes={classes}
         />
+        </React.Suspense>
       </DialogContent>
     </Dialog>
   );
