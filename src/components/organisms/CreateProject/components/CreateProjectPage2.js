@@ -1,21 +1,19 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import { TextField } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
-import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-import Weblink from "../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
-import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
+import Weblink from "../../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
+import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
 
-import UploadImage from "../../../images/icons/uploadImage.png";
+import UploadImage from "../../../../images/icons/uploadImage.png";
 import imageCompression from "browser-image-compression";
 
 const Wrapper = styled.div`
@@ -161,15 +159,13 @@ const CreateProjectPage1 = ({ outsideClick }) => {
 
   const loadImageFromStorage = () => {
     const storageRef = firebase.storage().ref();
-    const fileRef = storageRef
+    storageRef
       .child(`projectRoomThumbnails/${OrganizationAndProjectName}`)
       .getDownloadURL()
       .then(onResolve, onReject);
 
     function onResolve(foundURL) {
-      //stuff
       setUploadedImage(foundURL);
-      console.log();
     }
 
     function onReject(error) {

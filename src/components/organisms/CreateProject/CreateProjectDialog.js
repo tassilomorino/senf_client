@@ -4,8 +4,9 @@ import React, { useState, useRef, useCallback } from "react";
 import styled from "styled-components";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import MainDialog from "../../atoms/Layout/MainDialog";
-import CreateProjectPage1 from "./CreateProjectPage1";
-import CreateProjectPage2 from "./CreateProjectPage2";
+import CreateProjectPage1 from "./components/CreateProjectPage1";
+import CreateProjectPage2 from "./components/CreateProjectPage2";
+import CreateProjectPage3 from "./components/CreateProjectPage3";
 
 import { useTranslation } from "react-i18next";
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
@@ -141,29 +142,34 @@ const CreateProjectDialog = ({
         />
       </animated.div>
     ),
-    // ({ style }) => (
-    //   <animated.div
-    //     style={{
-    //       ...style,
+    ({ style }) => (
+      <animated.div
+        style={{
+          ...style,
 
-    //       width: "100%",
-    //       position: "absolute",
-    //     }}
-    //   >
-    //     <SubmitButton
-    //       text={t("back")}
-    //       zIndex="9"
-    //       backgroundColor="white"
-    //       textColor="#353535"
-    //       position="relative"
-    //       top={document.body.clientWidth > 768 ? "100px" : "70px"}
-    //       left="0"
-    //       handleButtonClick={onClickPrev}
-    //       // disabled={!formikCreateProjectStore.isValid}
-    //       // keySubmitRef={keySubmitRef}
-    //     />
-    //   </animated.div>
-    // ),
+          width: "100%",
+          position: "absolute",
+        }}
+      >
+        <CreateProjectPage3
+          outsideClick={outsideClick}
+          setOutsideClick={setOutsideClick}
+        />
+
+        {/* <SubmitButton
+          text={t("next")}
+          zIndex="9"
+          backgroundColor="white"
+          textColor="#353535"
+          position="relative"
+          top={document.body.clientWidth > 768 ? "100px" : "70px"}
+          left="0"
+          handleButtonClick={onClickNext}
+          // disabled={!formikCreateProjectStore.isValid}
+          // keySubmitRef={keySubmitRef}
+        /> */}
+      </animated.div>
+    ),
   ];
 
   const currentStep = (100 / pages.length) * (index + 1);

@@ -3,7 +3,6 @@
 import React from "react";
 import { TextField } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
-import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
