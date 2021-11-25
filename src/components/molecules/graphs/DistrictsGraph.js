@@ -3,14 +3,16 @@
 import React, { useState } from "react";
 import { Translation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-
+//Icons
+import CircularProgress from "@material-ui/core/CircularProgress";
 //Graphs
 import createPlotlyComponent from "react-plotlyjs";
 //See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
-import Plotly from "plotly.js/dist/plotly-cartesian";
+//import Plotly from "plotly.js/dist/plotly-cartesian.min";
 import TopicFilter from "../Filters/TopicFilter";
 import styled from "styled-components";
-const PlotlyComponent = createPlotlyComponent(Plotly);
+
+//const PlotlyComponent = createPlotlyComponent(Plotly);
 
 const TopicFilterWrapper = styled.div`
   width: 100%;
@@ -21,6 +23,12 @@ const TopicFilterWrapper = styled.div`
   margin-left: 50%;
   transform: translateX(-50%);
 `;
+
+let PlotlyComponent
+import('plotly.js/dist/plotly-cartesian.min').then(plotly=>{
+  PlotlyComponent = createPlotlyComponent(plotly);
+  
+})
 
 const DistrictsGraph = ({ classes, screams }) => {
   const selectedTopics = useSelector((state) => state.data.topics);
@@ -340,7 +348,20 @@ const DistrictsGraph = ({ classes, screams }) => {
     showLink: false,
     displayModeBar: false,
   };
-
+  const plot =
+    screams && PlotlyComponent !== undefined  ? (
+    <PlotlyComponent
+      className={classes.plot}
+      data={data}
+      layout={layout}
+      config={config}
+    />
+  
+  ) : (
+    <div style={{display: 'flex', justifyContent: 'center'}}>
+    <CircularProgress size={50} thickness={2} />
+    </div>
+  );
   return (
     <div className={classes.card}>
       <Translation>
@@ -359,12 +380,7 @@ const DistrictsGraph = ({ classes, screams }) => {
         />
       </TopicFilterWrapper>
       <div className={classes.clickblocker}></div>
-      <PlotlyComponent
-        className={classes.plot}
-        data={data}
-        layout={layout}
-        config={config}
-      />
+      {plot}
     </div>
   );
 };

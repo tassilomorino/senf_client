@@ -9,11 +9,12 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 //Graphs
 import createPlotlyComponent from "react-plotlyjs";
 //See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
-import Plotly from "plotly.js/dist/plotly-cartesian";
+//import Plotly from "plotly.js/dist/plotly-cartesian.min";
 import { Agegroupdata } from "./Agegroup/Agegroupdata";
 import TopicFilter from "../Filters/TopicFilter";
 import styled from "styled-components";
-const PlotlyComponent = createPlotlyComponent(Plotly);
+//const PlotlyComponent = createPlotlyComponent(Plotly);
+
 
 const TopicFilterWrapper = styled.div`
   width: 100%;
@@ -24,6 +25,13 @@ const TopicFilterWrapper = styled.div`
   margin-left: 50%;
   transform: translateX(-50%);
 `;
+
+let PlotlyComponent
+import('plotly.js/dist/plotly-cartesian.min').then(plotly=>{
+  PlotlyComponent = createPlotlyComponent(plotly);
+  
+})
+
 
 const AgegroupGraph = ({ classes, screams, likes }) => {
   
@@ -41,7 +49,7 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
   const screamsFiltered = screams
     ? screams.filter(({ Thema }) => selectedTopics.includes(Thema))
     : [];
-  console.log(likes);
+  //console.log(likes);
 
   const likesFiltered = likes
     ? likes.filter(({ Thema }) => selectedTopics.includes(Thema))
@@ -308,7 +316,7 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
   //   );
 
   const plot =
-    screams !== undefined ? (
+    screams && PlotlyComponent !== undefined  ? (
       <PlotlyComponent
         className={classes.plot}
         data={data}
@@ -317,7 +325,9 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       />
     
     ) : (
+      <div style={{display: 'flex', justifyContent: 'center'}}>
       <CircularProgress size={50} thickness={2} />
+      </div>
     );
 
   return (
@@ -329,6 +339,7 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       </TopicFilterWrapper>
 
       <div className={classes.clickblocker}></div>
+      
       {plot}
     </div>
   );
