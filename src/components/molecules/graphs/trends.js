@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 //Graphs
 import createPlotlyComponent from "react-plotlyjs";
 //See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
-//import Plotly from "plotly.js/dist/plotly-cartesian.min";
+import Plotly from "plotly.js/dist/plotly-cartesian.min";
 
 //MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -19,12 +19,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-//const PlotlyComponent = createPlotlyComponent(Plotly);
-let PlotlyComponent
-import('plotly.js/dist/plotly-cartesian.min').then(plotly=>{
-  PlotlyComponent = createPlotlyComponent(plotly);
+const PlotlyComponent = createPlotlyComponent(Plotly);
+// let PlotlyComponent
+// import(/* webpackChunkName: "Trends.js Graph plotly" */'plotly.js/dist/plotly-cartesian.min').then(plotly=>{
+//   PlotlyComponent = createPlotlyComponent(plotly);
   
-})
+// }) 
 
 const styles = {
   root: {

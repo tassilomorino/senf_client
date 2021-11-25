@@ -8,11 +8,11 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 //Graphs
 import createPlotlyComponent from "react-plotlyjs";
 //See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
-//import Plotly from "plotly.js/dist/plotly-cartesian.min";
+import Plotly from "plotly.js/dist/plotly-cartesian.min";
 import TopicFilter from "../Filters/TopicFilter";
 import styled from "styled-components";
 
-//const PlotlyComponent = createPlotlyComponent(Plotly);
+const PlotlyComponent = createPlotlyComponent(Plotly);
 
 const TopicFilterWrapper = styled.div`
   width: 100%;
@@ -24,11 +24,11 @@ const TopicFilterWrapper = styled.div`
   transform: translateX(-50%);
 `;
 
-let PlotlyComponent
-import('plotly.js/dist/plotly-cartesian.min').then(plotly=>{
-  PlotlyComponent = createPlotlyComponent(plotly);
+//  let PlotlyComponent
+// import(/* webpackChunkName: "Districts-Graph plotly" */'plotly.js/dist/plotly-cartesian.min').then(plotly=>{
+//   PlotlyComponent = createPlotlyComponent(plotly);
   
-})
+// })  
 
 const DistrictsGraph = ({ classes, screams }) => {
   const selectedTopics = useSelector((state) => state.data.topics);

@@ -5,13 +5,13 @@ import withStyles from "@material-ui/core/styles/withStyles";
 // MUI Stuff
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
-
+import CircularProgress from "@material-ui/core/CircularProgress";
 // Icons
 import CloseIcon from "../../../images/icons/close.png";
 
 //ANIMATION
 import Slide from "@material-ui/core/Slide";
-import DistrictsGraph from "./DistrictsGraph";
+
 
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
@@ -21,7 +21,7 @@ import MyButton from "../../../util/MyButton";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
+const DistrictsGraph =React.lazy(()=> import(/* webpackChunkName: "DistrictsGraph" */"./DistrictsGraph"));
 const styles = {
   root: {
     //backgroundColor: "rgb(0,0,0,0.5)",
@@ -170,7 +170,9 @@ const DistrictsDialog = ({ classes, screams }) => {
       </MyButton>
 
       <DialogContent>
+      <React.Suspense fallback={<CircularProgress size={50} thickness={2} />}>
         <DistrictsGraph classes={classes} screams={screams} />
+        </React.Suspense>
       </DialogContent>
     </Dialog>
   );
