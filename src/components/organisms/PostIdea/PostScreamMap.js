@@ -130,7 +130,7 @@ const PostScreamMap = ({
           queryParams={queryParams}
           id="geocoder"
           transitionDuration={1000}
-        ></Geocoder>
+        />
         <div
           className="pinLocationHeader"
           style={clicked === false ? { zIndex: 9999 } : { zIndex: 0 }}
@@ -149,7 +149,7 @@ const PostScreamMap = ({
                 geocode(viewport);
               }, 1500);
             }}
-          ></GeolocateControl>
+          />
           <Img
             show={locationDecided === false}
             src={Geolocate}

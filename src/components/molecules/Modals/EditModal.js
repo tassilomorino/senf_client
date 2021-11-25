@@ -14,7 +14,7 @@ import Weblink from "./Post_Edit_ModalComponents/Weblink";
 import Contact from "./Post_Edit_ModalComponents/Contact";
 import InlineDatePicker from "./Post_Edit_ModalComponents/InlineDatePicker";
 
-import MainModal from "./MainModal";
+import MainModal from "../../atoms/Layout/MainModal";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router";
 import EditModalMainFields from "./Post_Edit_ModalComponents/EditModalMainFields";
@@ -80,13 +80,7 @@ const EditModal = ({ setEditOpen, setMenuOpen, editOpen, classes }) => {
   const [selectedDays, setSelectedDays] = useState([]);
   const [selectedUnix, setSelectedUnix] = useState([]);
 
-  const [viewport, setViewport] = useState({
-    latitude: 50.93864020643174,
-    longitude: 6.958725744885521,
-    zoom: 12,
-    transitionDuration: 1000,
-    pitch: 0,
-  });
+  const [viewport, setViewport] = useState(null);
 
   useEffect(() => {
     setBody(scream.body);

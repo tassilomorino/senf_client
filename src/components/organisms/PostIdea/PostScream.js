@@ -202,13 +202,11 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
   const [open, setOpen] = useState(false);
 
   const mapViewport = useSelector((state) => state.data.mapViewport);
+  const initialMapViewport = useSelector(
+    (state) => state.data.initialMapViewport
+  );
 
-  const [viewport, setViewport] = useState({
-    latitude: 50.93864020643174,
-    longitude: 6.958725744885521,
-    zoom: 12,
-    transitionDuration: 1000,
-  });
+  const [viewport, setViewport] = useState(null);
 
   const [addressBarClickedState, setAddressBarClickedState] = useState(false);
 
@@ -310,13 +308,10 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
         setCheckIfCalendar(element.calendar);
       }
       if (value === "") {
-        const viewport = {
-          zoom: 12,
-          latitude: 50.93864020643174,
-          longitude: 6.958725744885521,
-          transitionDuration: 1000,
-        };
-        setViewport(viewport);
+        if (initialMapViewport) {
+          initialMapViewport.pitch = 0;
+          setViewport(initialMapViewport);
+        }
 
         setGeoData("");
         setCheckIfCalendar(false);

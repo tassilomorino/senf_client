@@ -1,6 +1,7 @@
 /** @format */
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import IdeaCard from "../Cards/IdeaCard";
 import {
   NoMoreMainContent,
@@ -11,6 +12,7 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
+import { usePrevious } from "../../../hooks/usePrevious";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -36,13 +38,7 @@ const List = ({
   dataFinalLength,
   projectsData,
 }) => {
-  function usePrevious(value) {
-    const ref = useRef();
-    useEffect(() => {
-      ref.current = value;
-    });
-    return ref.current;
-  }
+  const mapBounds = useSelector((state) => state.data.mapBounds);
   const prevdataFinalLength = usePrevious({ dataFinalLength });
   const prevDropdown = usePrevious({ dropdown });
 
@@ -54,10 +50,11 @@ const List = ({
       (dropdown && prevDropdown && prevDropdown.dropdown !== dropdown)
     ) {
       const element = document.getElementById("List");
-      element.scrollTo({
+      element?.scrollTo({
         top: 0,
         left: 0,
       });
+
       setListItems(1);
       sethasMoreItems(true);
     }
@@ -93,13 +90,6 @@ const List = ({
   };
 
   const loadMore = () => {
-/*     console.log(
-      "loading more",
-      "df.length",
-      dataFinal.length,
-      "listItems:",
-      listItems
-    ); */
     if (listItems === dataFinal.length) {
       sethasMoreItems(false);
     } else {
@@ -110,38 +100,9 @@ const List = ({
     }
   };
 
-  // const content = (
-  //   <MainAnimations>
-  //     {dataFinal.map(
-  //       ({
-  //         title,
-  //         body,
-  //         screamId,
-  //         likeCount,
-  //         commentCount,
-  //         Stadtteil,
-  //         project,
-  //         color,
-  //       }) => (
-  //         <IdeaCard
-  //           loading={loading}
-  //           key={screamId}
-  //           title={title}
-  //           body={body}
-  //           screamId={screamId}
-  //           likeCount={likeCount}
-  //           commentCount={commentCount}
-  //           Stadtteil={Stadtteil}
-  //           project={project}
-  //           color={color}
-  //           projectsData={projectsData}
-  //         />
-  //       )
-  //     )}
-  //   </MainAnimations>
-  // );
   return (
-    !loading && (
+    !loading &&
+    mapBounds && (
       <Wrapper id="List">
         <InfiniteScroll
           loadMore={() => loadMore()}

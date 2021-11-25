@@ -1,11 +1,14 @@
 /** @format */
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { useDispatch, useSelector } from "react-redux";
 
 //REDUX
-import { openAccountFunc } from "../../../redux/actions/accountActions";
+import {
+  openAccountFunc,
+  getMyScreams,
+} from "../../../redux/actions/accountActions";
 
 //COMPONENTS
 import LoginRegistration from "../../organisms/Auth/LoginRegistration";
@@ -32,14 +35,14 @@ const Wrapper = styled.div`
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
   top: ${(props) => (props.moveUp ? "-90px" : "0px")};
   transition: 1s;
-  animation: TopbarEnterAnimation 2.5s;
+  animation: TopbarEnterAnimation 2s;
 
   @keyframes TopbarEnterAnimation {
     0% {
       opacity: 0;
       transform: translateY(-100%);
     }
-    75% {
+    50% {
       opacity: 1;
       transform: translateY(-100%);
     }
@@ -93,6 +96,14 @@ const Topbar = ({ order, handleClick }) => {
   const openTheAccount = () => {
     dispatch(openAccountFunc(userId));
   };
+
+  useEffect(() => {
+    if (userId && openAccount) {
+      if (userId) {
+        dispatch(getMyScreams(userId));
+      }
+    }
+  }, [openAccount, userId]);
   return (
     !loading &&
     isMobileCustom && (

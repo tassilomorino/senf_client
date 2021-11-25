@@ -4,7 +4,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
-import MainModal from "./MainModal";
+import MainModal from "../../atoms/Layout/MainModal";
 import { deleteComment } from "../../../redux/actions/commentActions";
 
 const ButtonWrapper = styled.div`
@@ -13,6 +13,7 @@ const ButtonWrapper = styled.div`
   position: relative;
   z-index: 999;
   overflow: hidden;
+  white-space: nowrap;
 `;
 const Line = styled.div`
   height: 1px;

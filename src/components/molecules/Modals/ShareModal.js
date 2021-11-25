@@ -12,7 +12,7 @@ import {
 
 //SHAREICONS
 import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
-import MainModal from "./MainModal";
+import MainModal from "../../atoms/Layout/MainModal";
 
 const styles = {
   functions: {

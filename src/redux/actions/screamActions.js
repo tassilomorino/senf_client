@@ -23,13 +23,15 @@ import {
 import setColorByTopic from "../../data/setColorByTopic";
 
 // Get all ideas
-export const getScreams = () => async (dispatch) => {
+export const getScreams = (mapViewport) => async (dispatch) => {
   dispatch({ type: LOADING_DATA });
 
   const db = firebase.firestore();
   const ref = await db
     .collection("screams")
-    .orderBy("createdAt", "desc")
+    .where("lat", "<", Number(mapViewport.latitude) + 1)
+    .where("lat", ">", Number(mapViewport.latitude) - 1)
+    // .orderBy("createdAt", "desc")
     .get()
     .then((ref) => {
       const screams = [];
@@ -116,7 +118,7 @@ export const openScreamFunc = (screamId) => async (dispatch) => {
   const commentsRef = await db
     .collection("comments")
     .where("screamId", "==", screamId)
-    .orderBy("createdAt", "desc")
+    .orderBy("createdAt", "asc")
     .get();
 
   if (!ref.exists) {

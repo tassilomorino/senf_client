@@ -47,7 +47,7 @@ export const getUserLikes = (userData) => async (dispatch) => {
 
   const userLikes = await db
     .collection("likes")
-    .where("userHandle", "==", userData.handle)
+    .where("userId", "==", userData.userId)
     .get();
 
   userLikes.docs.forEach((doc) => userData.likes.push({ ...doc.data() }));

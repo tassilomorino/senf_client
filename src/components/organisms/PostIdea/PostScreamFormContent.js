@@ -96,7 +96,7 @@ const PostScreamFormContent = ({
           type="text"
           label={t("postScream_ideaTitle")}
           multiline
-          rowsMax="2"
+          maxRows="2"
           placeholder=""
           error={errors.title ? true : false}
           helperText={errors.title}
@@ -111,7 +111,7 @@ const PostScreamFormContent = ({
           type="text"
           label={t("postScream_ideaBody")}
           multiline
-          rowsMax="12"
+          maxRows="12"
           InputProps={{ disableUnderline: true }}
           placeholder=""
           error={errors.body ? true : false}

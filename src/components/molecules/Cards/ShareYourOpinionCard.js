@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import LoginRegistration from "../../organisms/Auth/LoginRegistration";
 import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
+import CommentForm from "../../atoms/Forms/CommentForm";
 
 const Card = styled.div`
   display: flex;
@@ -31,18 +32,20 @@ const InnerWrapper = styled.div`
   color: #414345;
 `;
 
-const ShareYourOpinionCard = () => {
+const ShareYourOpinionCard = ({ screamId, clicked }) => {
   const { t } = useTranslation();
   const authenticated = useSelector((state) => state.user.authenticated);
   return (
     <Card>
       <InnerWrapper>
-        <span>
-          {t("dialogScream_what_do_you_think")} <br />
-          {t("dialogScream_opinion")}
-        </span>
-
         {!authenticated && (
+          <span>
+            {t("dialogScream_what_do_you_think")} <br />
+          </span>
+        )}
+        <span>{t("dialogScream_opinion")}</span>
+
+        {!authenticated ? (
           <CustomButton
             text={t("login2")}
             backgroundColor="#353535"
@@ -53,6 +56,8 @@ const ShareYourOpinionCard = () => {
           >
             <LoginRegistration />
           </CustomButton>
+        ) : (
+          <CommentForm screamId={screamId} clicked={clicked} />
         )}
       </InnerWrapper>
     </Card>

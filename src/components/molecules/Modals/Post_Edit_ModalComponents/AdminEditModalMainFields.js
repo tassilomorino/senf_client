@@ -65,7 +65,7 @@ const AdminEditModalMainFields = ({ status, setStatus, notes, setNotes }) => {
         variant="outlined"
         className="textField"
         multiline
-        rowsMax="12"
+        maxRows="12"
         // error={errors.body ? true : false}
         // helperText={errors.body}
         value={notes}

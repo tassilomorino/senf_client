@@ -8,17 +8,35 @@ import { closeScream } from "../../../redux/actions/screamActions";
 import {
   setMapBounds,
   setMapViewport,
-  setResetMapBounds,
 } from "../../../redux/actions/mapActions";
 
-export const DesktopMapButtons = ({ viewport }) => {
+export const DesktopMapButtons = ({ viewport, mapRef }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
+  const initialMapBounds = useSelector((state) => state.data.initialMapBounds);
+  const initialMapViewport = useSelector(
+    (state) => state.data.initialMapViewport
+  );
 
   const handleMapBoundsSet = (viewport) => {
-    const boundAdds = [200, 200, 200, 300];
-    dispatch(setMapBounds(viewport, boundAdds));
+    const map = mapRef.current.getMap();
+    var canvas = map.getCanvas(),
+      w = canvas.width,
+      h = canvas.height,
+      NW = map.unproject([0, 0]).toArray(),
+      SE = map.unproject([w, h]).toArray();
+    var boundsRar = [NW, SE];
+
+    const bounds = {
+      latitude1: boundsRar[0][1],
+      latitude2: boundsRar[1][1],
+      longitude2: boundsRar[0][0],
+      longitude3: boundsRar[1][0],
+    };
+
+    dispatch(setMapBounds(bounds));
+
     dispatch(closeScream());
 
     window.scrollTo({
@@ -29,23 +47,9 @@ export const DesktopMapButtons = ({ viewport }) => {
   };
 
   const handleMapBoundsReset = () => {
-    const viewport = {
-      zoom: 11.5,
-      pitch: 30,
-      latitude: 50.95,
-      longitude: 6.9503,
-    };
+    dispatch(setMapViewport(initialMapViewport));
+    dispatch(setMapBounds(initialMapBounds));
 
-    dispatch(setMapViewport(viewport));
-
-    const bounds = {
-      latitude1: 51.08,
-      latitude2: 50.79,
-      longitude2: 6.712,
-      longitude3: 7.17,
-    };
-
-    dispatch(setResetMapBounds(bounds));
     dispatch(closeScream());
   };
 

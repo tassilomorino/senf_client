@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
@@ -9,11 +9,13 @@ import { openScreamFunc } from "../../../redux/actions/screamActions";
 //MAPSTUF
 import MapGL, { Source, Layer, Marker } from "@urbica/react-map-gl";
 import NoLocationPopUp from "./NoLocationPopUp";
-import { setMapViewport } from "../../../redux/actions/mapActions";
+import {
+  setMapLoaded,
+  setMapViewport,
+} from "../../../redux/actions/mapActions";
 
 //Icons
 import Pin from "../../../images/pin3.png";
-import { MarkersMobile } from "./Markers";
 import { PatternBackground } from "./styles/sharedStyles";
 import { useParams } from "react-router";
 
@@ -41,6 +43,7 @@ const MapMobile = ({
   zoomBreak,
   loadingProjects,
   geoData,
+  mapRef,
 }) => {
   const dispatch = useDispatch();
   const { screamId } = useParams();
@@ -48,26 +51,31 @@ const MapMobile = ({
   const openScream = useSelector((state) => state.UI.openScream);
   const scream = useSelector((state) => state.data.scream);
 
-  const [mapLoaded, setMapLoaded] = useState(false);
+  const mapLoaded = useSelector((state) => state.data.mapLoaded);
+  const mapViewport = useSelector((state) => state.data.mapViewport);
 
-  const fetchDataScream = (screamId) => {
-    dispatch(openScreamFunc(screamId));
-  };
+  const initialMapViewport = useSelector(
+    (state) => state.data.initialMapViewport
+  );
 
   const handlleMapLoaded = () => {
-    setMapLoaded(true);
-    if (!screamId && !openProject) {
+    dispatch(setMapLoaded());
+    if (!screamId && !openProject && initialMapViewport !== null && mapLoaded) {
       setTimeout(() => {
-        const viewport = {
-          latitude: 50.93864020643174,
-          longitude: 6.958725744885521,
-          zoom: isMobileCustom ? 9.5 : 11.5,
-          transitionDuration: 4000,
-          pitch: 30,
-          bearing: 0,
-        };
-        dispatch(setMapViewport(viewport));
+        dispatch(setMapViewport(initialMapViewport));
       }, 1000);
+    }
+  };
+  // useEffect(() => {
+  //   if (!initialMapViewport) return;
+  //   setTimeout(() => {
+  //     dispatch(setMapViewport(initialMapViewport));
+  //   }, 500);
+  // }, [initialMapViewport]);
+
+  const onClick = (event) => {
+    if (event.features.length > 0) {
+      dispatch(openScreamFunc(event.features[0].properties.screamId));
     }
   };
 
@@ -117,32 +125,66 @@ const MapMobile = ({
 
     delete properties.longitude;
     delete properties.latitude;
-    let feature = {
-      type: "Feature",
-      geometry: { type: "Point", coordinates: [point.long, point.lat] },
-      properties: properties,
-    };
-    mygeojson.features.push(feature);
+
+    const unique =
+      dataFinalMap.filter((item) => item.long === point.long).length === 1;
+
+    if (unique) {
+      let feature = {
+        type: "Feature",
+        geometry: { type: "Point", coordinates: [point.long, point.lat] },
+        properties: properties,
+      };
+      mygeojson.features.push(feature);
+    } else {
+      function generateHash(string) {
+        var hash = 0;
+        if (string.length == 0) return hash;
+        for (let i = 0; i < string.length; i++) {
+          var charCode = string.charCodeAt(i);
+          hash = (hash << 7) - hash + charCode;
+          hash = hash & hash;
+        }
+        return hash;
+      }
+
+      function reversedNum(num) {
+        return (
+          parseFloat(num.toString().split("").reverse().join("")) *
+          Math.sign(num)
+        );
+      }
+      const hash = generateHash(point.screamId);
+
+      point.long = point.long + hash / 100000000000000;
+      point.lat = point.lat + reversedNum(hash) / 100000000000000;
+
+      let feature = {
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: [point.long, point.lat],
+        },
+        properties: properties,
+      };
+      mygeojson.features.push(feature);
+    }
   }
 
-  const onClick = (event) => {
-    if (event.features.length > 0) {
-      dispatch(openScreamFunc(event.features[0].properties.screamId));
-    }
-  };
-
   return (
-    isMobileCustom && (
+    isMobileCustom &&
+    mapViewport && (
       <Wrapper>
         {!mapLoaded && <PatternBackground />}
         <MapGL
+          ref={mapRef}
           style={{
             width: "100%",
             height: "100%",
           }}
           mapStyle="mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6"
           accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-          minZoom={9}
+          minZoom={7}
           {...viewport}
           onViewportChange={_onViewportChange}
           viewportChangeMethod={"easeTo"}
@@ -168,12 +210,6 @@ const MapMobile = ({
                 />
               </React.Fragment>
             )}
-
-          {/* <MarkersMobile
-            dataFinalMap={dataFinalMap}
-            fetchDataScream={fetchDataScream}
-            zoomBreak={zoomBreak}
-          /> */}
 
           <Source id="mygeojson" type="geojson" data={mygeojson} />
           <Layer
@@ -208,7 +244,7 @@ const MapMobile = ({
             id="mygeojson"
             source="mygeojson"
             type="circle"
-            onClick={onClick}
+            // onClick={onClick}
             paint={{
               // "circle-radius": {
               //   base: ["get", "likeCount"],
@@ -251,6 +287,34 @@ const MapMobile = ({
                 20,
                 3,
               ],
+            }}
+          />
+
+          <Layer
+            id="clickLayer"
+            source="mygeojson"
+            type="circle"
+            onClick={onClick}
+            paint={{
+              "circle-radius": [
+                "interpolate",
+                ["linear"],
+                ["zoom"],
+                // when zoom is 0, set each feature's circle radius to the value of its "rating" property
+                0,
+                ["*", 0.1, ["get", "circleRadius"]],
+
+                10,
+                ["*", 1.4, ["get", "circleRadius"]],
+
+                // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
+                14,
+                ["*", 2.8, ["get", "circleRadius"]],
+                20,
+                ["*", 2, ["get", "circleRadius"]],
+              ],
+              "circle-color": "#fff",
+              "circle-opacity": 0,
             }}
           />
 

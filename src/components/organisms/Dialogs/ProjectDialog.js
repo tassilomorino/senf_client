@@ -7,8 +7,8 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { closeProject } from "../../../redux/actions/projectActions";
 import { clearErrors } from "../../../redux/actions/errorsActions";
 import {
+  setMapBounds,
   setMapViewport,
-  setResetMapBounds,
 } from "../../../redux/actions/mapActions";
 
 //Components
@@ -24,6 +24,8 @@ import {
   BackgroundMobile,
 } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
+
+import _ from "lodash";
 
 const Break = styled.div`
   position: relative;
@@ -54,7 +56,13 @@ const ProjectDialog = ({
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.UI.loading);
   const mapBounds = useSelector((state) => state.data.mapBounds);
+
+  const mapLoaded = useSelector((state) => state.data.mapLoaded);
+  const initialMapViewport = useSelector(
+    (state) => state.data.initialMapViewport
+  );
   const selectedTopics = useSelector((state) => state.data.topics);
+
   const {
     title,
     owner,
@@ -69,55 +77,15 @@ const ProjectDialog = ({
   } = project;
 
   useEffect(() => {
-    const bounds = {
-      latitude1: 51.08,
-      latitude2: 50.79,
-      longitude2: 6.712,
-      longitude3: 7.17,
-    };
-
-    dispatch(setResetMapBounds(bounds));
     dispatch(handleTopicSelectorRedux("all"));
-
-    console.log(window.location.pathname);
-
     setPath(window.location.pathname);
-    setTimeout(() => {
-      // const newPath = `/${project}`;
-
-      // if (project !== undefined) {
-      //   window.history.pushState(null, null, newPath);
-      // }
-
-      // setTimeout(() => {
-      //   setPath("https://senf.koeln" + newPath);
-      // }, 10);
-
-      if (project.centerLong !== undefined) {
-        setTimeout(() => {
-          const centerLat = project.centerLat;
-          const centerLong = project.centerLong;
-          const zoom = isMobileCustom ? project.zoom - 2 : project.zoom;
-
-          zoomToBounds(centerLat, centerLong, zoom);
-        }, 600);
-      }
-    }, 10);
   }, [openProject]);
 
   const handleClose = () => {
+    console.log(initialMapViewport);
     dispatch(closeProject());
     dispatch(clearErrors());
-
-    const viewport = {
-      latitude: 50.95,
-      longitude: 6.9503,
-      zoom: isMobileCustom ? 9.5 : 11.5,
-      transitionDuration: 4000,
-      pitch: 30,
-      bearing: 0,
-    };
-    dispatch(setMapViewport(viewport));
+    dispatch(setMapViewport(initialMapViewport));
   };
 
   const handleClick = (order) => {
@@ -138,18 +106,6 @@ const ProjectDialog = ({
     setDropdown(value);
   };
 
-  const zoomToBounds = (centerLat, centerLong, zoom) => {
-    const viewport = {
-      latitude: centerLat,
-      longitude: centerLong,
-      zoom: zoom,
-      transitionDuration: 1000,
-      pitch: 30,
-      bearing: 0,
-    };
-    dispatch(setMapViewport(viewport));
-  };
-
   const dataRar = project.screams;
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -158,7 +114,10 @@ const ProjectDialog = ({
       return val;
     } else if (
       val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.body.toLowerCase().includes(searchTerm.toLowerCase())
+      val.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.Stadtteil?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.Stadtbezirk?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.locationHeader?.toLowerCase().includes(searchTerm.toLowerCase())
     ) {
       return val;
     }
@@ -166,26 +125,16 @@ const ProjectDialog = ({
 
   const sortedScreams =
     dropdown === "newest"
-      ? screamsSearched?.sort(function (a, b) {
-          if (a.createdAt > b.createdAt) {
-            return -1;
-          }
-          return 0;
-        })
-      : screamsSearched?.sort(function (a, b) {
-          if (a.likeCount > b.likeCount) {
-            return -1;
-          }
-          return 0;
-        });
+      ? _.orderBy(screamsSearched, "createdAt", "desc")
+      : _.orderBy(screamsSearched, "likeCount", "desc");
 
   const dataFinal = sortedScreams.filter(
     ({ Thema, status, lat, long }) =>
       selectedTopics.includes(Thema) &&
-      lat <= mapBounds.latitude1 &&
-      lat >= mapBounds.latitude2 &&
-      long >= mapBounds.longitude2 &&
-      long <= mapBounds.longitude3 &&
+      lat <= mapBounds?.latitude1 &&
+      lat >= mapBounds?.latitude2 &&
+      long >= mapBounds?.longitude2 &&
+      long <= mapBounds?.longitude3 &&
       status === "None"
   );
 

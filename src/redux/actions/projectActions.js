@@ -16,14 +16,17 @@ import {
 import setColorByTopic from "../../data/setColorByTopic";
 
 // Get all projects
-export const getProjects = () => async (dispatch) => {
+export const getProjects = (mapViewport) => async (dispatch) => {
   dispatch({ type: LOADING_PROJECTS_DATA });
 
   const db = firebase.firestore();
   const ref = await db
     .collection("projects")
-    .orderBy("createdAt", "desc")
+    .where("centerLat", "<", Number(mapViewport.latitude) + 1)
+    .where("centerLat", ">", Number(mapViewport.latitude) - 1)
+    // .orderBy("createdAt", "desc")
     .get();
+  // : await db.collection("projects").orderBy("createdAt", "desc").get();
 
   const projects = [];
   ref.docs.forEach((doc) => {

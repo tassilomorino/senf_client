@@ -20,6 +20,8 @@ const ProjectHeader = ({ loading, order, handleClose, handleClick }) => {
   const openScream = useSelector((state) => state.UI.openScream);
   const [amount, setAmount] = useState(18);
 
+  const userHandle = handle ? handle : "...";
+
   useEffect(() => {
     const amount = document.getElementById("wrapper").offsetWidth / 17;
     setAmount(amount);
@@ -42,7 +44,7 @@ const ProjectHeader = ({ loading, order, handleClose, handleClick }) => {
         />
 
         <TitleWrapper data-cy="hey-user">
-          {truncateString("Hey " + handle, amount)}
+          {truncateString("Hey " + userHandle, amount)}
         </TitleWrapper>
         <ImgWrapperMobile style={{ opacity: "0" }}></ImgWrapperMobile>
       </FlexWrapper>

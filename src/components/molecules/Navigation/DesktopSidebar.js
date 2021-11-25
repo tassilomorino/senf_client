@@ -1,10 +1,13 @@
 /** @format */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useDispatch, useSelector } from "react-redux";
-import { openAccountFunc } from "../../../redux/actions/accountActions";
+import {
+  openAccountFunc,
+  getMyScreams,
+} from "../../../redux/actions/accountActions";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 //Components
 import RegistrationAndLogin from "../../organisms/Auth/LoginRegistration";
@@ -23,10 +26,11 @@ import Noprofile from "../../../images/noprofile.png";
 import PostScream from "../../organisms/PostIdea/PostScream";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
-import styled from "styled-components";
 import { closeScream } from "../../../redux/actions/screamActions";
 import { closeProject } from "../../../redux/actions/projectActions";
 import { Logo, Tabs } from "./styles/sharedStyles";
+import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
+import styled from "styled-components";
 
 const DesktopSidebar = ({
   loading,
@@ -35,13 +39,14 @@ const DesktopSidebar = ({
   handleClick,
   loadingProjects,
   projectsData,
+  setChangeLocationModalOpen,
 }) => {
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openAccount = useSelector((state) => state.UI.openAccount);
 
   const authenticated = useSelector((state) => state.user.authenticated);
   const userId = useSelector((state) => state.user.userId);
-  
+
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -51,8 +56,15 @@ const DesktopSidebar = ({
     dispatch(closeScream());
     dispatch(closeProject());
 
-    dispatch(handleTopicSelectorRedux('all'))
+    dispatch(handleTopicSelectorRedux("all"));
   };
+  useEffect(() => {
+    if (userId && openAccount) {
+      if (userId) {
+        dispatch(getMyScreams(userId));
+      }
+    }
+  }, [openAccount, userId]);
 
   return (
     !isMobileCustom && (
@@ -61,7 +73,6 @@ const DesktopSidebar = ({
           <img src={LogoImg} width="100px" alt="logoWeb"></img>
         </Logo>
         <InlineInformationPageDesktop loading={loading} classes={classes} />
-
         {!authenticated ? (
           <Tabs>
             <RegistrationAndLogin />
@@ -92,7 +103,6 @@ const DesktopSidebar = ({
           loadingProjects={loadingProjects}
           projectsData={projectsData}
         />
-
         {MenuData.map((item, i) => (
           <MenuItem
             key={i}
@@ -105,7 +115,6 @@ const DesktopSidebar = ({
             openAccount={openAccount}
           ></MenuItem>
         ))}
-
         <div
           style={{
             position: "relative",
@@ -117,10 +126,7 @@ const DesktopSidebar = ({
             marginBottom: "30px",
           }}
         ></div>
-
-        <TopicFilter/>
-
-
+        <TopicFilter />
         <div
           style={{
             position: "relative",
@@ -128,8 +134,13 @@ const DesktopSidebar = ({
             width: "160px",
             height: "100px",
           }}
-        ></div>
-
+        ></div>{" "}
+        {process.env.REACT_APP_INTERNATIONAL &&
+          process.env.REACT_APP_INTERNATIONAL === "true" && (
+            <CustomButton handleButtonClick={setChangeLocationModalOpen}>
+              Standort ändern
+            </CustomButton>
+          )}
         <a
           href="https://www.facebook.com/senf.koeln/"
           rel="noopener noreferrer"

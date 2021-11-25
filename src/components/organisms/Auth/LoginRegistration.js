@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { SET_AUTHENTICATED } from "../../../redux/types";
 import firebase from "firebase/app";
@@ -25,6 +25,7 @@ import RegistrationFormComponent from "./RegistrationFormComponent";
 import LoginFormComponent from "./LoginFormComponent";
 import { useTranslation } from "react-i18next";
 import { getUserData } from "../../../redux/actions/userActions";
+import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -225,6 +226,18 @@ const LoginRegistration = ({ classes }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { t } = useTranslation();
+
+  const [outsideClick, setOutsideClick] = useState(false);
+
+  const outerRef = useRef();
+  useOnClickOutside(outerRef, () => {
+    setOutsideClick(true);
+
+    setTimeout(() => {
+      setOutsideClick(false);
+    }, 10000);
+  });
+
   // componentWillReceiveProps(nextProps) {
   //   if (nextProps.UI.errors) {
   //     setState({ errors: nextProps.UI.errors });
@@ -388,12 +401,29 @@ const LoginRegistration = ({ classes }) => {
     }
   };
 
+  const keySubmitRef = useRef(null);
+
+  useEffect(() => {
+    const listener = (event) => {
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+        console.log("Enter key was pressed. Run your function.");
+        // callMyFunction();
+        keySubmitRef.current?.click();
+      }
+    };
+    document.addEventListener("keydown", listener);
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
+  }, []);
+
   return (
     <Fragment>
       <ExpandButton
         handleButtonClick={() => setOpen(true)}
         data-cy="open-RegistrationAndLogin"
       ></ExpandButton>
+
       <Dialog
         open={open}
         width="md"
@@ -401,40 +431,46 @@ const LoginRegistration = ({ classes }) => {
         PaperProps={{ classes: { root: classes.paper } }}
         TransitionComponent={Transition}
       >
-        <CustomIconButton
-          name="Close"
-          position="fixed"
-          margin={document.body.clientWidth > 768 ? "40px" : "10px"}
-          left="0"
-          handleButtonClick={() => setOpen(false)}
-        ></CustomIconButton>
-
-        <Swipe onSwipeMove={onSwipeMove.bind(this)}>
-          <img
-            src={Wirke_mit}
-            className={classes.headline}
-            alt="wirke_mit_headline"
+        <div ref={outerRef}>
+          <CustomIconButton
+            name="Close"
+            position="fixed"
+            margin={document.body.clientWidth > 768 ? "40px" : "10px"}
+            left="0"
+            handleButtonClick={() => setOpen(false)}
           />
-          {!toggleSignup ? (
-            <LoginFormComponent
-              classes={classes}
-              loading={loading}
-              errorMessage={errorMessage}
-              handleToggle={handleToggle}
-              handleSubmitLogin={handleSubmitLogin}
-              formik={formikLoginStore}
+
+          <Swipe onSwipeMove={onSwipeMove.bind(this)}>
+            <img
+              src={Wirke_mit}
+              className={classes.headline}
+              alt="wirke_mit_headline"
             />
-          ) : (
-            <RegistrationFormComponent
-              classes={classes}
-              loading={loading}
-              errorMessage={errorMessage}
-              handleToggle={handleToggle}
-              handleSubmitRegister={handleSubmitRegister}
-              formik={formikRegisterStore}
-            />
-          )}
-        </Swipe>
+            {!toggleSignup ? (
+              <LoginFormComponent
+                classes={classes}
+                loading={loading}
+                errorMessage={errorMessage}
+                handleToggle={handleToggle}
+                handleSubmitLogin={handleSubmitLogin}
+                formik={formikLoginStore}
+                outsideClick={outsideClick}
+                keySubmitRef={keySubmitRef}
+              />
+            ) : (
+              <RegistrationFormComponent
+                classes={classes}
+                loading={loading}
+                errorMessage={errorMessage}
+                handleToggle={handleToggle}
+                handleSubmitRegister={handleSubmitRegister}
+                formik={formikRegisterStore}
+                outsideClick={outsideClick}
+                keySubmitRef={keySubmitRef}
+              />
+            )}
+          </Swipe>
+        </div>
       </Dialog>
     </Fragment>
   );

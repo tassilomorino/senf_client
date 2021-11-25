@@ -1,11 +1,13 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../util/customDeviceDetect";
+
+import _ from "lodash";
 
 import {
   getScreams,
@@ -18,8 +20,13 @@ import {
   closeProject,
 } from "../../redux/actions/projectActions";
 
-import { setMapBounds, setMapViewport } from "../../redux/actions/mapActions";
+import {
+  setMapBounds,
+  setInitialMapBounds,
+  setMapViewport,
+} from "../../redux/actions/mapActions";
 import { handleTopicSelectorRedux } from "../../redux/actions/UiActions";
+
 //Components
 import InsightsPage from "../organisms/SubPages/InsightsPage";
 import DesktopSidebar from "../molecules/Navigation/DesktopSidebar";
@@ -34,17 +41,17 @@ import Account from "../organisms/Dialogs/Account";
 import Loader from "../atoms/Backgrounds/Loader";
 import { closeAccountFunc } from "../../redux/actions/accountActions";
 import ErrorBackground from "../atoms/Backgrounds/ErrorBackground";
-import { isAndroid } from "react-device-detect";
 import MapMobile from "../atoms/map/MapMobile";
 import TopicFilter from "../molecules/Filters/TopicFilter";
 import PostScream from "../organisms/PostIdea/PostScream";
+import ChangeLocationModal from "../molecules/Modals/ChangeLocationModal";
+import { usePrevious } from "../../hooks/usePrevious";
 
 const Main = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { screamId } = useParams();
   const { cookie_settings } = useSelector((state) => state.data);
-  const [serachTerm, setSerachTerm] = useState("");
 
   const [zoomBreak, setZoomBreak] = useState(0.6);
 
@@ -60,7 +67,8 @@ const Main = () => {
   const myScreams = useSelector((state) => state.data.myScreams);
 
   const loading = useSelector((state) => state.data.loading);
-  const loadingProjects = useSelector((state) => state.UI.loadingProjects);
+  const loadingProjects = useSelector((state) => state.data.loadingProjects);
+  const loadingIdea = useSelector((state) => state.data.loadingIdea);
 
   const projects = useSelector((state) => state.data.projects);
   const project = useSelector((state) => state.data.project);
@@ -73,6 +81,84 @@ const Main = () => {
   const [screamIdParam, setScreamIdParam] = useState(null);
 
   const [dropdown, setDropdown] = useState("newest");
+  const [changeLocationModalOpen, setChangeLocationModalOpen] = useState(false);
+
+  const mapRef = useRef(null);
+  const mapLoaded = useSelector((state) => state.data.mapLoaded);
+  const { lat, long } = useSelector((state) => state.data.scream);
+  const initialMapViewport = useSelector(
+    (state) => state.data.initialMapViewport
+  );
+
+  useEffect(() => {
+    if (mapViewport?.latitude !== 0 && mapRef?.current && mapLoaded) {
+      const map = mapRef.current.getMap();
+      var canvas = map.getCanvas(),
+        w = canvas.width,
+        h = canvas.height,
+        NW = map.unproject([0, 0]).toArray(),
+        SE = map.unproject([w, h]).toArray();
+      var boundsRar = [NW, SE];
+
+      const bounds = {
+        latitude1: boundsRar[0][1],
+        latitude2: boundsRar[1][1],
+        longitude2: boundsRar[0][0],
+        longitude3: boundsRar[1][0],
+      };
+      dispatch(setInitialMapBounds(bounds));
+      dispatch(setMapBounds(bounds));
+      console.log("setMapBounds in Main", bounds);
+    }
+  }, [mapLoaded, initialMapViewport]);
+
+  useEffect(() => {
+    if (
+      project &&
+      project.centerLong !== undefined &&
+      mapViewport.latitude !== 0 &&
+      mapRef.current &&
+      mapLoaded
+    ) {
+      setTimeout(() => {
+        const projectViewport = {
+          latitude: project.centerLat,
+          longitude: project.centerLong,
+          zoom: isMobileCustom ? project.zoom - 2 : project.zoom,
+          duration: 2700,
+          pitch: 30,
+        };
+
+        dispatch(setMapViewport(projectViewport));
+      }, 500);
+    }
+  }, [openProject]);
+
+  const prevLat = usePrevious({ lat });
+
+  useEffect(() => {
+    if (
+      openScream &&
+      !loadingIdea &&
+      mapViewport.latitude !== 0 &&
+      mapRef.current &&
+      mapLoaded
+    ) {
+      if (lat && prevLat && prevLat.lat !== lat) {
+        setTimeout(() => {
+          const ideaViewport = {
+            latitude: isMobileCustom && openScream ? lat - 0.0008 : lat,
+            longitude: long,
+            zoom: 16.5,
+            duration: 2700,
+            pitch: 30,
+          };
+
+          dispatch(setMapViewport(ideaViewport));
+        }, 500);
+      }
+    }
+  }, [lat, long, loadingIdea, openScream]);
 
   useEffect(() => {
     // if (navigator.userAgent.includes("Instagram") && isAndroid) {
@@ -88,14 +174,17 @@ const Main = () => {
     ) {
       history.push("/intro");
     } else {
-      dispatch(getScreams()).then(() => {
-        dispatch(getProjects());
-        if (window.location.pathname === "/projects") {
-          handleClick(2);
-        }
-      });
+      if (mapViewport && mapViewport.latitude !== 0) {
+        dispatch(getScreams(mapViewport)).then(() => {
+          dispatch(getProjects(mapViewport));
+
+          if (window.location.pathname === "/projects") {
+            handleClick(2);
+          }
+        });
+      }
     }
-  }, []);
+  }, [initialMapViewport]);
 
   useEffect(() => {
     if (screamId) {
@@ -117,8 +206,7 @@ const Main = () => {
     dispatch(closeProject());
     dispatch(closeAccountFunc());
 
-    
-    dispatch(handleTopicSelectorRedux('all'))
+    dispatch(handleTopicSelectorRedux("all"));
 
     if (order === 2) {
       window.history.pushState(null, null, "/projects");
@@ -141,8 +229,6 @@ const Main = () => {
   const handleDropdown = (value) => {
     setDropdown(value);
   };
-
-
 
   useEffect(() => {
     if (openScream) {
@@ -169,8 +255,22 @@ const Main = () => {
     }
 
     if (isMobileCustom) {
-      const boundAdds = [500, 1000, 500, 1000];
-      dispatch(setMapBounds(viewport, boundAdds));
+      const map = mapRef.current.getMap();
+      var canvas = map.getCanvas(),
+        w = canvas.width,
+        h = canvas.height,
+        NW = map.unproject([0, 0]).toArray(),
+        SE = map.unproject([w, h]).toArray();
+      var boundsRar = [NW, SE];
+
+      const bounds = {
+        latitude1: boundsRar[0][1],
+        latitude2: boundsRar[1][1],
+        longitude2: boundsRar[0][0],
+        longitude3: boundsRar[1][0],
+      };
+
+      dispatch(setMapBounds(bounds));
     }
   };
 
@@ -180,33 +280,42 @@ const Main = () => {
       return val;
     } else if (
       val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.body.toLowerCase().includes(searchTerm.toLowerCase())
+      val.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.Stadtteil?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.Stadtbezirk?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.locationHeader?.toLowerCase().includes(searchTerm.toLowerCase())
     ) {
       return val;
     }
   });
+
   const sortedScreams =
     dropdown === "newest"
-      ? screamsSearched?.sort(function (a, b) {
-          if (a.createdAt > b.createdAt) {
-            return -1;
-          }
-          return 0;
-        })
-      : screamsSearched?.sort(function (a, b) {
-          if (a.likeCount > b.likeCount) {
-            return -1;
-          }
-          return 0;
-        });
+      ? _.orderBy(screamsSearched, "createdAt", "desc")
+      : _.orderBy(screamsSearched, "likeCount", "desc");
+
+  // const sortedScreams =
+  //   dropdown === "newest"
+  //     ? screamsSearched?.sort(function (a, b) {
+  //         if (a.createdAt > b.createdAt) {
+  //           return -1;
+  //         }
+  //         return 0;
+  //       })
+  //     : screamsSearched?.sort(function (a, b) {
+  //         if (a.likeCount > b.likeCount) {
+  //           return -1;
+  //         }
+  //         return 0;
+  //       });
 
   const dataFinal = sortedScreams.filter(
     ({ Thema, lat, long, status }) =>
-    selectedTopics.includes(Thema) &&
-      lat <= mapBounds.latitude1 &&
-      lat >= mapBounds.latitude2 &&
-      long >= mapBounds.longitude2 &&
-      long <= mapBounds.longitude3 &&
+      selectedTopics.includes(Thema) &&
+      lat <= mapBounds?.latitude1 &&
+      lat >= mapBounds?.latitude2 &&
+      long >= mapBounds?.longitude2 &&
+      long <= mapBounds?.longitude3 &&
       status === "None"
   );
 
@@ -215,16 +324,16 @@ const Main = () => {
   const dataFinalMap = openProject
     ? project.screams.filter(
         ({ Thema, status }) =>
-        selectedTopics.includes(Thema) && status === "None"
+          selectedTopics.includes(Thema) && status === "None"
       )
     : myScreams !== null
     ? myScreams.filter(
         ({ Thema, status }) =>
-        selectedTopics.includes(Thema) && status === "None"
+          selectedTopics.includes(Thema) && status === "None"
       )
     : screamsSearched.filter(
         ({ Thema, status }) =>
-        selectedTopics.includes(Thema) && status === "None"
+          selectedTopics.includes(Thema) && status === "None"
       );
 
   return (
@@ -233,6 +342,12 @@ const Main = () => {
       <ErrorBackground loading={loading} />
 
       {voted && <ThanksForTheVote />}
+
+      {changeLocationModalOpen && (
+        <ChangeLocationModal
+          setChangeLocationModalOpen={setChangeLocationModalOpen}
+        />
+      )}
 
       <Topbar
         loading={loading}
@@ -247,19 +362,40 @@ const Main = () => {
         loadingProjects={loadingProjects}
         projectsData={projects}
         dataFinalMap={dataFinalMap}
+        setChangeLocationModalOpen={setChangeLocationModalOpen}
       ></DesktopSidebar>
+      {!isMobileCustom && (
+        <MapDesktop
+          loading={loading}
+          loadingProjects={loadingProjects}
+          dataFinal={dataFinalMap}
+          _onViewportChange={_onViewportChange}
+          zoomBreak={zoomBreak}
+          id="mapDesktop"
+          openProject={openProject}
+          geoData={project && openProject && project.geoData}
+          mapRef={mapRef}
+        ></MapDesktop>
+      )}
 
-      <MapDesktop
-        loading={loading}
-        loadingProjects={loadingProjects}
-        dataFinal={dataFinalMap.slice(0, 300)}
-        _onViewportChange={_onViewportChange}
-        zoomBreak={zoomBreak}
-        id="mapDesktop"
-        openProject={openProject}
-        geoData={project && openProject && project.geoData}
-      ></MapDesktop>
-
+      <div
+        style={
+          isMobileCustom &&
+          (order === 1 || openProject || openScream || openAccount)
+            ? { visibility: "visible" }
+            : { visibility: "hidden" }
+        }
+      >
+        <MapMobile
+          dataFinal={dataFinalMap}
+          viewport={mapViewport}
+          _onViewportChange={_onViewportChange}
+          zoomBreak={zoomBreak}
+          openProject={openProject}
+          geoData={project && openProject && project.geoData}
+          mapRef={mapRef}
+        />
+      </div>
       {!loading &&
         !loadingProjects &&
         isMobileCustom &&
@@ -270,17 +406,7 @@ const Main = () => {
               projectsData={projects}
               project={project}
             />
-            <TopicFilter
-              loading={loading}
-            />
-            <MapMobile
-              dataFinal={dataFinalMap}
-              viewport={mapViewport}
-              _onViewportChange={_onViewportChange}
-              zoomBreak={zoomBreak}
-              openProject={openProject}
-              geoData={project && openProject && project.geoData}
-            />
+            <TopicFilter loading={loading} />
           </React.Fragment>
         )}
       {!openInfoPage && (
@@ -315,25 +441,14 @@ const Main = () => {
               loadingProjects={loadingProjects}
               projectsData={projects}
               viewport={mapViewport}
-
             />
           )}
-          {openAccount && (
-            <Account
-              dataFinalMap={dataFinalMap}
-            />
-          )}
+          {openAccount && <Account dataFinalMap={dataFinalMap} />}
         </div>
       )}
 
       {!openInfoPage && !openProject && !openAccount && order === 2 && (
-        <div className="contentWrapper_insights">
-          <ProjectsPage
-            loadingProjects={loadingProjects}
-            order={order}
-            projects={projects}
-          ></ProjectsPage>
-        </div>
+        <ProjectsPage order={order} projectsData={projects}></ProjectsPage>
       )}
       {!openInfoPage && !openProject && !openAccount && order === 3 && (
         <div className="contentWrapper_insights">

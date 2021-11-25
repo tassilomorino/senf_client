@@ -1,4 +1,9 @@
-/* eslint-disable import/no-anonymous-default-export */
+/**
+ * /* eslint-disable import/no-anonymous-default-export
+ *
+ * @format
+ */
+
 /** @format */
 
 import { isMobileCustom } from "../../util/customDeviceDetect";
@@ -25,11 +30,13 @@ import {
   SET_SCREAM_USER,
   SET_FULL_SCREAMS,
   SET_COOKIES,
+  SET_MAP_LOADED,
   SET_MAP_VIEWPORT,
   SET_MAP_BOUNDS,
+  SET_INITIAL_MAP_BOUNDS,
+  SET_INITIAL_MAP_VIEWPORT,
   SET_TOPICS,
 } from "../types";
-
 
 const defaultTopics = [
   "Verkehr",
@@ -54,20 +61,12 @@ const initialState = {
   scream_user: {},
   full_screams: [],
   cookie_settings: "",
-  mapViewport: {
-    latitude: 50.93,
-    longitude: 6.9503,
-    zoom: isMobileCustom ? 7.2 : 9.2,
-    maxZoom: 18,
-    minZoom: 8,
-  },
-  mapBounds: {
-    latitude1: 51.08,
-    latitude2: 50.79,
-    longitude2: 6.712,
-    longitude3: 7.17,
-  },
-  topics:defaultTopics
+  mapLoaded: false,
+  mapViewport: null,
+  initialMapViewport: null,
+  initialMapBounds: null,
+  mapBounds: null,
+  topics: defaultTopics,
 };
 
 export default function (state = initialState, action) {
@@ -218,10 +217,22 @@ export default function (state = initialState, action) {
         cookie_settings: action.payload,
       };
 
+    case SET_MAP_LOADED:
+      return {
+        ...state,
+        mapLoaded: true,
+      };
+
     case SET_MAP_VIEWPORT:
       return {
         ...state,
         mapViewport: action.payload,
+      };
+
+    case SET_INITIAL_MAP_VIEWPORT:
+      return {
+        ...state,
+        initialMapViewport: action.payload,
       };
 
     case SET_MAP_BOUNDS:
@@ -230,9 +241,14 @@ export default function (state = initialState, action) {
         mapBounds: action.payload,
       };
 
+    case SET_INITIAL_MAP_BOUNDS:
+      return {
+        ...state,
+        initialMapBounds: action.payload,
+      };
+
     case SET_TOPICS:
       const indexOfTopic = state.topics.indexOf(action.payload);
-      
 
       if (action.payload === "all") {
         return {
@@ -258,7 +274,7 @@ export default function (state = initialState, action) {
             topics: defaultTopics,
           };
         } else {
-           // show remaining after removal
+          // show remaining after removal
           return { ...state, topics: [...removedTopicArray] };
         }
       }

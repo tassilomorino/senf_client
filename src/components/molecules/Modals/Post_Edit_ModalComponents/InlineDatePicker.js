@@ -9,7 +9,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 
 // MUI Stuff
 import Button from "@material-ui/core/Button";
-import MainModal from "../MainModal";
+import MainModal from "../../../atoms/Layout/MainModal";
 
 const styles = {
   paper: {

@@ -17,6 +17,8 @@ import {
 } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 
+import _ from "lodash";
+
 const Break = styled.div`
   position: relative;
   height: 110px;
@@ -33,6 +35,8 @@ const Account = ({ dataFinalMap }) => {
   const mapBounds = useSelector((state) => state.data.mapBounds);
   const selectedTopics = useSelector((state) => state.data.topics);
   const myScreams = useSelector((state) => state.data.myScreams);
+  // const user = useSelector((state) => state.user);
+
   const [dropdown, setDropdown] = useState("newest");
   const [order, setOrder] = useState(1);
   const dispatch = useDispatch();
@@ -40,7 +44,7 @@ const Account = ({ dataFinalMap }) => {
   const handleClose = () => {
     window.history.pushState(null, null, `/`);
     dispatch(closeAccountFunc());
-    dispatch(handleTopicSelectorRedux('all'))
+    dispatch(handleTopicSelectorRedux("all"));
   };
 
   const handleClick = (order) => {
@@ -57,7 +61,10 @@ const Account = ({ dataFinalMap }) => {
       return val;
     } else if (
       val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.body.toLowerCase().includes(searchTerm.toLowerCase())
+      val.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.Stadtteil?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.Stadtbezirk?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.locationHeader?.toLowerCase().includes(searchTerm.toLowerCase())
     ) {
       return val;
     }
@@ -65,27 +72,17 @@ const Account = ({ dataFinalMap }) => {
 
   const sortedScreams =
     dropdown === "newest"
-      ? screamsSearched?.sort(function (a, b) {
-          if (a.createdAt > b.createdAt) {
-            return -1;
-          }
-          return 0;
-        })
-      : screamsSearched?.sort(function (a, b) {
-          if (a.likeCount > b.likeCount) {
-            return -1;
-          }
-          return 0;
-        });
+      ? _.orderBy(screamsSearched, "createdAt", "desc")
+      : _.orderBy(screamsSearched, "likeCount", "desc");
 
   const dataFinal = sortedScreams
     ? sortedScreams.filter(
         ({ Thema, status, lat, long }) =>
-        selectedTopics.includes(Thema) &&
-          lat <= mapBounds.latitude1 &&
-          lat >= mapBounds.latitude2 &&
-          long >= mapBounds.longitude2 &&
-          long <= mapBounds.longitude3 &&
+          selectedTopics.includes(Thema) &&
+          lat <= mapBounds?.latitude1 &&
+          lat >= mapBounds?.latitude2 &&
+          long >= mapBounds?.longitude2 &&
+          long <= mapBounds?.longitude3 &&
           status === "None"
       )
     : [];

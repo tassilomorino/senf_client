@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../util/customDeviceDetect";
+import _ from "lodash";
 
 //Redux
 import { getAllFullScreams } from "../../redux/actions/monitoringScreamActions";
@@ -61,10 +62,9 @@ const MonitoringBoard = () => {
   const projects = useSelector((state) => state.data.projects);
   const selectedTopics = useSelector((state) => state.data.topics);
 
-
   const [order, setOrder] = useState(1);
-  const [screamIdParam, setScreamIdParam] = useState(null);
   const mapBounds = useSelector((state) => state.data.mapBounds);
+  const mapViewport = useSelector((state) => state.data.mapViewport);
 
   const [dropdown, setDropdown] = useState("newest");
 
@@ -76,8 +76,8 @@ const MonitoringBoard = () => {
     ) {
       history.push("/intro");
     } else {
-      dispatch(getAllFullScreams()).then(() => {
-        dispatch(getProjects());
+      dispatch(getAllFullScreams(mapViewport)).then(() => {
+        dispatch(getProjects(mapViewport));
       });
     }
   }, []);
@@ -113,30 +113,18 @@ const MonitoringBoard = () => {
     setDropdown(value);
   };
 
-
-
   const sortedScreams =
     dropdown === "newest"
-      ? full_screams?.sort(function (a, b) {
-          if (a.createdAt > b.createdAt) {
-            return -1;
-          }
-          return 0;
-        })
-      : full_screams?.sort(function (a, b) {
-          if (a.likeCount > b.likeCount) {
-            return -1;
-          }
-          return 0;
-        });
+      ? _.orderBy(full_screams, "createdAt", "desc")
+      : _.orderBy(full_screams, "likeCount", "desc");
 
   const dataFinal = sortedScreams.filter(
     ({ Thema, lat, long, status }) =>
-    selectedTopics.includes(Thema) &&
-      lat <= mapBounds.latitude1 &&
-      lat >= mapBounds.latitude2 &&
-      long >= mapBounds.longitude2 &&
-      long <= mapBounds.longitude3 &&
+      selectedTopics.includes(Thema) &&
+      // lat <= mapBounds.latitude1 &&
+      // lat >= mapBounds.latitude2 &&
+      // long >= mapBounds.longitude2 &&
+      // long <= mapBounds.longitude3 &&
       status === "None"
   );
 

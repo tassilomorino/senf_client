@@ -70,6 +70,7 @@ const IdeaList = ({
   const dispatch = useDispatch();
   const openScream = useSelector((state) => state.UI.openScream);
   const [searchOpen, setSearchOpen] = useState(false);
+  const mapBounds = useSelector((state) => state.data.mapBounds);
 
   const swipePosition = useSelector((state) => state.UI.swipePosition);
   const [props, set] = useSpring(() => ({
@@ -103,20 +104,17 @@ const IdeaList = ({
       set({
         transform: `translateY(${window.innerHeight + 20}px)`,
         touchAction: "none",
-        pointerEvents: "none",
       });
     } else {
       if (swipePosition === "bottom") {
         set({
           transform: `translateY(${window.innerHeight - 120}px)`,
           touchAction: "none",
-          pointerEvents: "all",
         });
       } else {
         set({
           transform: `translateY(${141}px)`,
           touchAction: "unset",
-          pointerEvents: "all",
         });
       }
     }
@@ -162,50 +160,57 @@ const IdeaList = ({
 
   return order === 1 ? (
     <Wrapper zIndex={zIndex}>
-      {" "}
       {isMobileCustom ? (
         <React.Fragment>
-          <animated.div className={!loading ? "drag" : ""} style={props}>
-            <ListHeaderWrapper>
-              <animated.div
-                {...bind()}
-                style={props}
-                style={{
-                  backgroundColor: "#fed957",
-                  height: "70px",
-                  pointerEvents: "none",
-                }}
-              >
-                <Toolbar
+          <animated.div
+            className={!loading && !openScream ? "drag" : ""}
+            style={props}
+          >
+            {mapBounds?.latitude1 !== 0 && (
+              <React.Fragment>
+                <ListHeaderWrapper>
+                  <animated.div
+                    {...bind()}
+                    style={props}
+                    style={{
+                      backgroundColor: "#fed957",
+                      height: "70px",
+                      pointerEvents: "none",
+                    }}
+                  >
+                    <Toolbar
+                      loading={loading}
+                      handleDropdown={handleDropdown}
+                      dataFinalLength={dataFinalLength}
+                      setSearchOpen={setSearchOpen}
+                      searchOpen={searchOpen}
+                      setSearchTerm={setSearchTerm}
+                      searchTerm={searchTerm}
+                      handleClickSwipe={
+                        swipePosition === "bottom"
+                          ? () => setSwipeUp()
+                          : () => setSwipeDown()
+                      }
+                    />{" "}
+                  </animated.div>
+                </ListHeaderWrapper>
+
+                {searchOpen ? (
+                  <div style={{ height: "60px", transition: "0.5s" }} />
+                ) : (
+                  <div style={{ height: "0px", transition: "0.5s" }} />
+                )}
+                {/* <ShadowBox display={shadow ? "block" : "none"} /> */}
+                <List
+                  type={type}
                   loading={loading}
-                  handleDropdown={handleDropdown}
+                  dropdown={dropdown}
+                  dataFinal={dataFinal}
                   dataFinalLength={dataFinalLength}
-                  setSearchOpen={setSearchOpen}
-                  searchOpen={searchOpen}
-                  setSearchTerm={setSearchTerm}
-                  searchTerm={searchTerm}
-                  handleClickSwipe={
-                    swipePosition === "bottom"
-                      ? () => setSwipeUp()
-                      : () => setSwipeDown()
-                  }
-                />{" "}
-              </animated.div>
-            </ListHeaderWrapper>
-            {searchOpen ? (
-              <div style={{ height: "60px", transition: "0.5s" }} />
-            ) : (
-              <div style={{ height: "0px", transition: "0.5s" }} />
+                  projectsData={projectsData}
+                />
+              </React.Fragment>
             )}
-            {/* <ShadowBox display={shadow ? "block" : "none"} /> */}
-            <List
-              type={type}
-              loading={loading}
-              dropdown={dropdown}
-              dataFinal={dataFinal}
-              dataFinalLength={dataFinalLength}
-              projectsData={projectsData}
-            />
           </animated.div>
         </React.Fragment>
       ) : (

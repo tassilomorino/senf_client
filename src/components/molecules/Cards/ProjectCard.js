@@ -3,7 +3,7 @@
 import React from "react";
 
 // Redux
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { openProjectFunc } from "../../../redux/actions/projectActions";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import AddIcon from "../../../images/icons/plus_grey.png";
@@ -18,7 +18,7 @@ const ProjectCardDesign = styled.div`
   margin-left: auto;
   margin-right: auto;
   min-height: 100px;
-  max-width: 95%;
+  width: 95%;
   border-radius: 20px;
   /* box-shadow: 0 8px 40px -12px rgba(0,0,0,0); */
   max-height: 14em;
@@ -29,6 +29,19 @@ const ProjectCardDesign = styled.div`
   /* background: transparent;
     box-shadow:  9px 9px 18px #f6d254,
                 -9px -9px 18px #ffe05a; */
+
+  animation: ProjectCardAnimation 0.8s;
+
+  @keyframes ProjectCardAnimation {
+    0% {
+      opacity: 0;
+      transform: translateY(50%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0%);
+    }
+  }
 `;
 
 const LeftWrapper = styled.div`
@@ -76,13 +89,6 @@ const Date = styled.div`
   color: #353535;
 `;
 
-const ProjectImg = styled.img.attrs((props) => ({
-  src: props.Img,
-}))`
-  width: 100%;
-  alt: "profile";
-`;
-
 export const ProjectCard = (props) => {
   const {
     project: { title, owner, imgUrl, project, startDate, endDate },
@@ -97,7 +103,7 @@ export const ProjectCard = (props) => {
       <ExpandButton handleButtonClick={() => pushScreamId(project)} />
 
       <LeftWrapper>
-        <ProjectImg Img={imgUrl} />
+        <img src={imgUrl} width="100%" alt="profile" />
       </LeftWrapper>
       <RightWrapper>
         <Owner> {owner} </Owner>
@@ -116,10 +122,12 @@ export const ProjectCard = (props) => {
   );
 };
 
-export const CreateProject = () => {
+export const CreateProject = ({ setCreateProjectDialogIsOpen }) => {
   const { t } = useTranslation();
+  const isOrgModerator = useSelector((state) => state.user.isOrgModerator);
+  const handle = useSelector((state) => state.user.handle);
 
-  const createProject = () => {
+  const requestProject = () => {
     var link =
       "mailto:dein@senf.koeln" + "?subject=" + escape("Projektraum-Anfrage");
     // +
@@ -140,14 +148,37 @@ export const CreateProject = () => {
   };
 
   return (
-    <ProjectCardDesign onClick={createProject}>
+    <ProjectCardDesign>
+      <ExpandButton
+        handleButtonClick={
+          !isOrgModerator ? requestProject : setCreateProjectDialogIsOpen
+        }
+      />
       <LeftWrapper>
-        <ProjectImg Img={AddIcon} style={{ width: "50%", marginLeft: "25%" }} />
+        <img
+          src={AddIcon}
+          width="100%"
+          alt="profile"
+          style={{ width: "50%", marginLeft: "25%" }}
+        />
       </LeftWrapper>
       <RightWrapper>
-        <Owner> {t("projectrooms_request_overTitle")} </Owner>
-        <Title> {t("projectrooms_request_title")}</Title>
-        <Date>{t("projectrooms_request_subTitle")}</Date>
+        {!isOrgModerator ? (
+          <React.Fragment>
+            <Owner> {t("projectrooms_request_overTitle")} </Owner>
+            <Title> {t("projectrooms_request_title")}</Title>
+            <Date>{t("projectrooms_request_subTitle")}</Date>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <Owner>
+              {" "}
+              {t("für")} {handle}
+            </Owner>
+            <Title> {t("Projektraum erstellen")}</Title>
+            <Date>{t("projectrooms_request_subTitle")}</Date>
+          </React.Fragment>
+        )}
       </RightWrapper>
     </ProjectCardDesign>
   );

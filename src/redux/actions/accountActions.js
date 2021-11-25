@@ -11,51 +11,48 @@ import {
   LOADING_MYSCREAMS_DATA,
 } from "../types";
 
-export const openAccountFunc = (userId) => async (dispatch) => {
+export const openAccountFunc = () => async (dispatch) => {
   dispatch({
     type: OPEN_ACCOUNT,
   });
+};
 
-  if (userId !== undefined) {
-    dispatch({ type: LOADING_MYSCREAMS_DATA });
-    const db = firebase.firestore();
-    const ref = await db
-      .collection("screams")
-      .where("userId", "==", userId)
-      .orderBy("createdAt", "desc")
-      .get();
+export const getMyScreams = (userId) => async (dispatch) => {
+  dispatch({ type: LOADING_MYSCREAMS_DATA });
+  const db = firebase.firestore();
+  const ref = await db
+    .collection("screams")
+    .where("userId", "==", userId)
+    .orderBy("createdAt", "desc")
+    .get();
 
-    const screams = [];
-    ref.docs.forEach((doc) => {
-      const docData = {
-        screamId: doc.id,
-        lat: doc.data().lat,
-        long: doc.data().long,
-        title: doc.data().title,
-        body: doc.data().body.substr(0, 170),
-        createdAt: doc.data().createdAt,
-        commentCount: doc.data().commentCount,
-        likeCount: doc.data().likeCount,
-        status: doc.data().status,
-        Thema: doc.data().Thema,
-        Stadtteil: doc.data().Stadtteil,
-        project: doc.data().project,
-        projectId: doc.data().project,
-        color: setColorByTopic(doc.data().Thema),
-      };
+  const screams = [];
 
-      screams.push(docData);
-    });
+  ref.docs?.forEach((doc) => {
+    const docData = {
+      screamId: doc.id,
+      lat: doc.data().lat,
+      long: doc.data().long,
+      title: doc.data().title,
+      body: doc.data().body.substr(0, 170),
+      createdAt: doc.data().createdAt,
+      commentCount: doc.data().commentCount,
+      likeCount: doc.data().likeCount,
+      status: doc.data().status,
+      Thema: doc.data().Thema,
+      Stadtteil: doc.data().Stadtteil,
+      project: doc.data().project,
+      projectId: doc.data().project,
+      color: setColorByTopic(doc.data().Thema),
+    };
 
-    dispatch({
-      type: SET_MY_SCREAMS,
-      payload: screams,
-    });
-  } else {
-    setTimeout(() => {
-      openAccountFunc(userId);
-    }, 1000);
-  }
+    screams.push(docData);
+  });
+
+  dispatch({
+    type: SET_MY_SCREAMS,
+    payload: screams,
+  });
 };
 
 export const closeAccountFunc = () => async (dispatch) => {

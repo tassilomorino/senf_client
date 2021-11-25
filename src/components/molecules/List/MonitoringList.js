@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import IdeaCardMonitoring from "../Cards/IdeaCardMonitoring";
 import {
   NoMoreMainContent,
@@ -12,6 +12,7 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
 import SkeletonCard from "../Cards/SkeletonCard";
+import { usePrevious } from "../../../hooks/usePrevious";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -31,13 +32,6 @@ const MonitoringList = ({
   dataFinalLength,
   projectsData,
 }) => {
-  function usePrevious(value) {
-    const ref = useRef();
-    useEffect(() => {
-      ref.current = value;
-    });
-    return ref.current;
-  }
   const prevdataFinalLength = usePrevious({ dataFinalLength });
   const prevDropdown = usePrevious({ dropdown });
 
@@ -94,7 +88,7 @@ const MonitoringList = ({
       "listItems:",
       listItems
     );
-    if (listItems === dataFinal.length) {
+    if ((listItems === dataFinal.length) | (dataFinalLength === 0)) {
       sethasMoreItems(false);
     } else {
       setTimeout(() => {

@@ -82,7 +82,7 @@ const EditModalMainFields = ({
         variant="outlined"
         className="textField"
         multiline
-        rowsMax="2"
+        maxRows="2"
         // error={errors.title ? true : false}
         // helperText={errors.title}
         value={title}
@@ -99,7 +99,7 @@ const EditModalMainFields = ({
         variant="outlined"
         className="textField"
         multiline
-        rowsMax="12"
+        maxRows="12"
         // error={errors.body ? true : false}
         // helperText={errors.body}
         value={body}

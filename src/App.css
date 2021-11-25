@@ -1091,20 +1091,7 @@ font-size:15px !important
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.4);
 }
 
-.commentFormWrapper {
-  z-index: 100;
-  position: fixed;
-  bottom: 0;
-  height: 60px;
-  width: 100%;
-  background-color: white;
-  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.3);
 
-  display: flex;
-  flex-direction: column;
-  z-index:99;
-  animation: enterScreamDialogAnimation 1.5s;
-}
 
 .wrapperMenu {
   width: 100%;
@@ -2227,6 +2214,7 @@ border-radius: 20px;
 
  
 }
+
 
 @keyframes dragEnterAnimation {
   0% {

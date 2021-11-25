@@ -1,13 +1,16 @@
 /** @format */
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
 //Redux
 import { useDispatch, useSelector } from "react-redux";
 import { openScreamFunc } from "../../../redux/actions/screamActions";
-import { setMapViewport } from "../../../redux/actions/mapActions";
+import {
+  setMapLoaded,
+  setMapViewport,
+} from "../../../redux/actions/mapActions";
 //MUI Stuff
 import withStyles from "@material-ui/core/styles/withStyles";
 
@@ -21,7 +24,7 @@ import MapGL, {
   Marker,
   NavigationControl,
 } from "@urbica/react-map-gl";
-import { Markers } from "./Markers";
+
 import NoLocationPopUp from "./NoLocationPopUp";
 import { DesktopMapButtons } from "./DesktopMapButtons";
 import { PatternBackground } from "./styles/sharedStyles";
@@ -62,45 +65,42 @@ const MapDesktop = ({
   openProject,
   _onViewportChange,
   zoomBreak,
+  mapRef,
 }) => {
-  const { t } = useTranslation();
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openScream = useSelector((state) => state.UI.openScream);
-  const loading = useSelector((state) => state.UI.loading);
 
   const scream = useSelector((state) => state.data.scream);
 
   const dispatch = useDispatch();
-
-  const [hoveredStateId, setHoveredStateId] = useState(null);
-
   const [hoverScreamId, setHoverScreamId] = useState("");
   const [hoverLat, setHoverLat] = useState("");
   const [hoverLong, setHoverLong] = useState("");
   const [hoverTitle, setHoverTitle] = useState("");
   const [hoverLikeCount, setHoverLikeCount] = useState("");
 
-  const viewport = useSelector((state) => state.data.mapViewport);
-  const [mapLoaded, setMapLoaded] = useState(false);
+  const mapViewport = useSelector((state) => state.data.mapViewport);
+  const initialMapViewport = useSelector(
+    (state) => state.data.initialMapViewport
+  );
+  const mapLoaded = useSelector((state) => state.data.mapLoaded);
   const { screamId } = useParams();
 
   const handlleMapLoaded = () => {
-    setMapLoaded(true);
+    dispatch(setMapLoaded());
 
-    if (!screamId) {
+    if (!screamId && !openProject && initialMapViewport !== null && mapLoaded) {
       setTimeout(() => {
-        const viewport = {
-          latitude: 50.93864020643174,
-          longitude: 6.958725744885521,
-          zoom: isMobileCustom ? 9.5 : 11.5,
-          transitionDuration: 4000,
-          pitch: 30,
-          bearing: 0,
-        };
-        dispatch(setMapViewport(viewport));
+        dispatch(setMapViewport(initialMapViewport));
       }, 1000);
     }
   };
+  useEffect(() => {
+    if (!initialMapViewport) return;
+    setTimeout(() => {
+      dispatch(setMapViewport(initialMapViewport));
+    }, 1000);
+  }, [initialMapViewport]);
 
   const data =
     !loadingProjects && geoData !== undefined && geoData !== ""
@@ -114,6 +114,8 @@ const MapDesktop = ({
       : null;
 
   let dataNoLocation = [];
+  let dataFinalMap = [];
+  let mygeojson = { type: "FeatureCollection", features: [] };
 
   if (dataFinal !== undefined && dataFinal.length > 0) {
     dataFinal.forEach((element) => {
@@ -122,8 +124,6 @@ const MapDesktop = ({
       }
     });
   }
-
-  let dataFinalMap = [];
 
   if (dataFinal !== undefined && dataNoLocation.length > 1) {
     dataFinal.forEach((element) => {
@@ -138,8 +138,6 @@ const MapDesktop = ({
     });
   }
 
-  let mygeojson = { type: "FeatureCollection", features: [] };
-
   for (let point of dataFinalMap) {
     let properties = point;
     properties.circleRadius = 5 + point.likeCount / 7;
@@ -147,12 +145,50 @@ const MapDesktop = ({
 
     delete properties.longitude;
     delete properties.latitude;
-    let feature = {
-      type: "Feature",
-      geometry: { type: "Point", coordinates: [point.long, point.lat] },
-      properties: properties,
-    };
-    mygeojson.features.push(feature);
+
+    const unique =
+      dataFinalMap.filter((item) => item.long === point.long).length === 1;
+
+    if (unique) {
+      let feature = {
+        type: "Feature",
+        geometry: { type: "Point", coordinates: [point.long, point.lat] },
+        properties: properties,
+      };
+      mygeojson.features.push(feature);
+    } else {
+      function generateHash(string) {
+        var hash = 0;
+        if (string.length == 0) return hash;
+        for (let i = 0; i < string.length; i++) {
+          var charCode = string.charCodeAt(i);
+          hash = (hash << 7) - hash + charCode;
+          hash = hash & hash;
+        }
+        return hash;
+      }
+
+      function reversedNum(num) {
+        return (
+          parseFloat(num.toString().split("").reverse().join("")) *
+          Math.sign(num)
+        );
+      }
+      const hash = generateHash(point.screamId);
+
+      point.long = point.long + hash / 100000000000000;
+      point.lat = point.lat + reversedNum(hash) / 100000000000000;
+
+      let feature = {
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: [point.long, point.lat],
+        },
+        properties: properties,
+      };
+      mygeojson.features.push(feature);
+    }
   }
 
   const onHover = (event) => {
@@ -180,10 +216,13 @@ const MapDesktop = ({
   };
 
   return (
-    !isMobileCustom && (
+    !isMobileCustom &&
+    mapViewport && (
       <div className="mapWrapper">
         {!mapLoaded && <PatternBackground />}
+
         <MapGL
+          ref={mapRef}
           style={
             openInfoPage
               ? {
@@ -203,16 +242,16 @@ const MapDesktop = ({
           }
           mapStyle="mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6"
           accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-          minZoom={8}
-          latitude={viewport.latitude}
-          longitude={viewport.longitude}
-          pitch={viewport.pitch}
-          bearing={viewport.bearing}
-          zoom={viewport.zoom}
+          minZoom={7}
+          latitude={mapViewport.latitude}
+          longitude={mapViewport.longitude}
+          pitch={mapViewport.pitch}
+          bearing={mapViewport.bearing}
+          zoom={mapViewport.zoom}
           onViewportChange={_onViewportChange}
           viewportChangeMethod={"easeTo"}
           viewportChangeOptions={{
-            duration: 2700,
+            duration: mapViewport.duration,
           }}
           onLoad={handlleMapLoaded}
         >
@@ -234,55 +273,7 @@ const MapDesktop = ({
                 />
               </React.Fragment>
             )}
-          <DesktopMapButtons viewport={viewport} />
-
-          {/* {dataFinalMap.map(
-            ({ screamId, long, lat, likeCount, color, title }) => (
-              <div
-                style={{
-                  boxShadow:
-                    "rgba(0, 0, 0, 0.1) 0px 9px 38px, rgba(0, 0, 0, 0.15) 0px 5px 5px",
-                }}
-              >
-                <Source
-                  id={screamId}
-                  type="geojson"
-                  data={{
-                    type: "Feature",
-                    geometry: {
-                      type: "Point",
-                      coordinates: [long, lat],
-                    },
-                  }}
-                />
-                <Layer
-                  id={screamId}
-                  type="circle"
-                  source={screamId}
-                  paint={{
-                    "circle-radius": 3 + likeCount / 4,
-                    "circle-color": color,
-                    "circle-stroke-color": "#fff",
-                  }}
-                  onClick={() => fetchDataScream(screamId)}
-                  onHover={() => {
-                    setHoverScreamId(screamId);
-                    setHoverLat(lat);
-                    setHoverLong(long);
-                    setHoverTitle(title);
-                    setHoverLikeCount(likeCount);
-                  }}
-                  onLeave={() => {
-                    setHoverScreamId("");
-                    setHoverLat("");
-                    setHoverLong("");
-                    setHoverTitle("");
-                    setHoverLikeCount("");
-                  }}
-                />
-              </div>
-            )
-          )} */}
+          <DesktopMapButtons viewport={mapViewport} mapRef={mapRef} />
 
           <Source id="mygeojson" type="geojson" data={mygeojson} />
           <Layer
@@ -378,49 +369,6 @@ const MapDesktop = ({
               ],
             }}
           />
-
-          {/* <Markers
-            dataFinalMap={dataFinalMap}
-            fetchDataScream={fetchDataScream}
-            setHoverScreamId={setHoverScreamId}
-            setHoverLat={setHoverLat}
-            setHoverLong={setHoverLong}
-            setHoverTitle={setHoverTitle}
-            setHoverLikeCount={setHoverLikeCount}
-            zoomBreak={zoomBreak}
-          /> */}
-
-          {/*    {dataFinalMap.map(
-            ({ screamId, long, lat, likeCount, color, title }) => (
-              <Marker key={screamId} longitude={long} latitude={lat}>
-                <OpenIdeaButton
-                  likeCount={likeCount}
-                  color={color}
-                  onClick={() => fetchDataScream(screamId)}
-                  onMouseEnter={() => {
-                    setHoverScreamId(screamId);
-                    setHoverLat(lat);
-                    setHoverLong(long);
-                    setHoverTitle(title);
-                    setHoverLikeCount(likeCount);
-                  }}
-                  onMouseLeave={() =>
-                    setTimeout(() => {
-                      setHoverScreamId("");
-                      setHoverLat("");
-                      setHoverLong("");
-                      setHoverTitle("");
-                      setHoverLikeCount("");
-                    }, 10000)
-                  }
-                >
-                  <ExpandButton
-                    handleButtonClick={() => fetchDataScream(screamId)}
-                  />
-                </OpenIdeaButton>
-              </Marker>
-            )
-          )} */}
 
           {openScream && scream.lat && (
             <Marker

@@ -41,9 +41,9 @@ const Card = styled.div`
   margin-bottom: 10px;
   height: ${(props) => (props.project ? "13.5em" : "11em")};
   overflow: hidden;
-  animation: animation 0.8s;
+  animation: IdeaCardAnimation 0.8s;
 
-  @keyframes animation {
+  @keyframes IdeaCardAnimation {
     0% {
       opacity: 0;
       transform: translateY(50%);
