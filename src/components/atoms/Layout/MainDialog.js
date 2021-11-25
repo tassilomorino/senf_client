@@ -37,7 +37,7 @@ const Wrapper = styled.div`
   background-repeat: no-repeat;
   background: -webkit-linear-gradient(to left, #ffd19b, #ffda53, #ffffff);
   animation: mainDialogAnimation 0.2s;
-  opacity: 0.9;
+  opacity: 1;
 
   @keyframes mainDialogAnimation {
     0% {
@@ -51,7 +51,7 @@ const Wrapper = styled.div`
     }
 
     100% {
-      opacity: 0.9;
+      opacity: 1;
       transform: translateY(0%);
     }
   }

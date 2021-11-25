@@ -214,11 +214,6 @@ class ResetPassword extends Component {
     this.setState({ open: false });
   };
 
-  //   componentWillReceiveProps(nextProps) {
-  //     if (nextProps.UI.errors) {
-  //       this.setState({ errors: nextProps.UI.errors });
-  //     }
-  //   }
   handleSubmit = (event) => {
     event.preventDefault();
 
@@ -296,7 +291,7 @@ class ResetPassword extends Component {
                   error={errors.email ? true : false}
                   value={this.state.email}
                   onChange={this.handleChange}
-                ></TextField>
+                />
               </div>
 
               <div

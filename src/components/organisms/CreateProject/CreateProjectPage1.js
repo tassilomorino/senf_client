@@ -4,12 +4,60 @@ import React from "react";
 import { TextField } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
+import styled from "styled-components";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
-const CreateProjectPage1 = ({ formik, handleNext, outsideClick }) => {
+const Title = styled.h2`
+  font-family: PlayfairDisplay-Bold;
+  font-size: 22px;
+  font-weight: 100;
+  color: #353535;
+  align-self: center;
+
+  @media (min-width: 768px) {
+    font-size: 32px;
+  }
+`;
+
+const CreateProjectPage1 = ({ outsideClick }) => {
   const { t } = useTranslation();
+
+  const createProjectValidationSchema = yup.object({
+    projectRoom_name: yup
+      .string()
+      .required(t("enter_email"))
+      .min(3, t("username_too_short"))
+      .max(20, t("username_too_long")),
+
+    projectRoom_description: yup
+      .string()
+      .required(t("enter_email"))
+      .min(100, t("username_too_short"))
+      .max(1000, t("username_too_long")),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      projectRoom_name: "",
+      password: "",
+      one: "",
+      two: "",
+      three: "",
+      four: "",
+    },
+    validationSchema: createProjectValidationSchema,
+    isInitialValid: false,
+    validateOnChange: true,
+    validateOnBlur: true,
+  });
+
   return (
     <div>
-      <h2>Dein Projektraum</h2>
+      <Title>
+        Erstelle deinen <br />
+        Projektraum
+      </Title>
       <TextField
         id="outlined-name"
         name="projectRoom_name"
@@ -17,6 +65,7 @@ const CreateProjectPage1 = ({ formik, handleNext, outsideClick }) => {
         label={t("projectRoom_name")}
         margin="normal"
         variant="outlined"
+        multiline
         style={{
           backgroundColor: "white",
           borderRadius: "5px",
@@ -34,8 +83,8 @@ const CreateProjectPage1 = ({ formik, handleNext, outsideClick }) => {
         label={t("projectRoom_description")}
         margin="normal"
         multiline
-        rows="10"
-        rowsMax="12"
+        minRows="10"
+        maxRows="12"
         variant="outlined"
         style={{
           backgroundColor: "white",
@@ -46,19 +95,6 @@ const CreateProjectPage1 = ({ formik, handleNext, outsideClick }) => {
         onChange={formik.handleChange}
         error={outsideClick && Boolean(formik.errors.projectRoom_description)}
         helperText={outsideClick && formik.errors.projectRoom_description}
-      />
-
-      <SubmitButton
-        text={t("login")}
-        zIndex="9"
-        backgroundColor="white"
-        textColor="#353535"
-        position="relative"
-        top={document.body.clientWidth > 768 ? "100px" : "70px"}
-        left="0"
-        handleButtonClick={handleNext}
-        disabled={!formik.isValid}
-        // keySubmitRef={keySubmitRef}
       />
     </div>
   );
