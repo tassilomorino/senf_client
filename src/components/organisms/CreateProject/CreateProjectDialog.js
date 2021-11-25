@@ -17,6 +17,7 @@ const InnerWrapper = styled.div`
   text-align: center;
   margin-top: 60px;
   position: relative;
+
   @media (min-width: 768px) {
     margin-top: 40px;
   }

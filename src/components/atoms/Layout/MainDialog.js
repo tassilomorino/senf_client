@@ -38,6 +38,7 @@ const Wrapper = styled.div`
   background: -webkit-linear-gradient(to left, #ffd19b, #ffda53, #ffffff);
   animation: mainDialogAnimation 0.2s;
   opacity: 1;
+  overflow-y: scroll;
 
   @keyframes mainDialogAnimation {
     0% {
