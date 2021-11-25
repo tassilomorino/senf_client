@@ -23,6 +23,7 @@ import {
   BackgroundDesktop,
   BackgroundMobile,
 } from "../../atoms/Backgrounds/GradientBackgrounds";
+import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 
 import _ from "lodash";
 
@@ -38,8 +39,6 @@ const Break = styled.div`
 
 const ProjectDialog = ({
   viewport,
-  handleTopicSelector,
-  topicsSelected,
   projectsData,
   loadingProjects,
   dataFinalMap,
@@ -62,6 +61,7 @@ const ProjectDialog = ({
   const initialMapViewport = useSelector(
     (state) => state.data.initialMapViewport
   );
+  const selectedTopics = useSelector((state) => state.data.topics);
 
   const {
     title,
@@ -77,7 +77,7 @@ const ProjectDialog = ({
   } = project;
 
   useEffect(() => {
-    handleTopicSelector("all");
+    dispatch(handleTopicSelectorRedux("all"));
     setPath(window.location.pathname);
   }, [openProject]);
 
@@ -130,7 +130,7 @@ const ProjectDialog = ({
 
   const dataFinal = sortedScreams.filter(
     ({ Thema, status, lat, long }) =>
-      topicsSelected.includes(Thema) &&
+      selectedTopics.includes(Thema) &&
       lat <= mapBounds?.latitude1 &&
       lat >= mapBounds?.latitude2 &&
       long >= mapBounds?.longitude2 &&
@@ -175,8 +175,6 @@ const ProjectDialog = ({
               loadingProjects={loadingProjects}
               project={project}
               dropdown={dropdown}
-              handleTopicSelector={handleTopicSelector}
-              topicsSelected={topicsSelected}
               dataFinalMap={dataFinalMap}
               setSearchTerm={setSearchTerm}
               searchTerm={searchTerm}

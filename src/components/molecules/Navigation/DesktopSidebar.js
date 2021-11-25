@@ -8,7 +8,7 @@ import {
   openAccountFunc,
   getMyScreams,
 } from "../../../redux/actions/accountActions";
-
+import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 //Components
 import RegistrationAndLogin from "../../organisms/Auth/LoginRegistration";
 import InlineInformationPageDesktop from "../../organisms/infocomponents/InlineInformationPageDesktop";
@@ -37,8 +37,6 @@ const DesktopSidebar = ({
   classes,
   order,
   handleClick,
-  handleTopicSelector,
-  topicsSelected,
   loadingProjects,
   projectsData,
   setChangeLocationModalOpen,
@@ -48,6 +46,7 @@ const DesktopSidebar = ({
 
   const authenticated = useSelector((state) => state.user.authenticated);
   const userId = useSelector((state) => state.user.userId);
+
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -57,7 +56,7 @@ const DesktopSidebar = ({
     dispatch(closeScream());
     dispatch(closeProject());
 
-    handleTopicSelector("all");
+    dispatch(handleTopicSelectorRedux("all"));
   };
   useEffect(() => {
     if (userId && openAccount) {
@@ -127,10 +126,7 @@ const DesktopSidebar = ({
             marginBottom: "30px",
           }}
         ></div>
-        <TopicFilter
-          handleTopicSelector={handleTopicSelector}
-          topicsSelected={topicsSelected}
-        ></TopicFilter>
+        <TopicFilter />
         <div
           style={{
             position: "relative",

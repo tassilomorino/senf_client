@@ -25,6 +25,7 @@ import {
   setInitialMapBounds,
   setMapViewport,
 } from "../../redux/actions/mapActions";
+import { handleTopicSelectorRedux } from "../../redux/actions/UiActions";
 
 //Components
 import InsightsPage from "../organisms/SubPages/InsightsPage";
@@ -74,16 +75,8 @@ const Main = () => {
   const mapBounds = useSelector((state) => state.data.mapBounds);
 
   const mapViewport = useSelector((state) => state.data.mapViewport);
+  const selectedTopics = useSelector((state) => state.data.topics);
 
-  const [topicsSelected, setTopicsSelected] = useState([
-    "Verkehr",
-    "Versorgung",
-    "Umwelt und Grün",
-    "Rad",
-    "Inklusion / Soziales",
-    "Sport / Freizeit",
-    "Sonstige",
-  ]);
   const [order, setOrder] = useState(1);
   const [screamIdParam, setScreamIdParam] = useState(null);
 
@@ -213,7 +206,7 @@ const Main = () => {
     dispatch(closeProject());
     dispatch(closeAccountFunc());
 
-    handleTopicSelector("all");
+    dispatch(handleTopicSelectorRedux("all"));
 
     if (order === 2) {
       window.history.pushState(null, null, "/projects");
@@ -235,41 +228,6 @@ const Main = () => {
 
   const handleDropdown = (value) => {
     setDropdown(value);
-  };
-
-  const handleTopicSelector = (topic) => {
-    const index = topicsSelected.indexOf(topic);
-    if (topic === "all") {
-      setTopicsSelected([
-        "Verkehr",
-        "Versorgung",
-        "Umwelt und Grün",
-        "Rad",
-        "Inklusion / Soziales",
-        "Sport / Freizeit",
-        "Sonstige",
-      ]);
-    } else if (topicsSelected.length === 7) {
-      setTopicsSelected([topic]);
-    } else if (index === -1) {
-      setTopicsSelected(topicsSelected.concat(topic));
-    } else {
-      const newTopics = topicsSelected.filter((item) => item !== topic);
-
-      if (newTopics.length === 0) {
-        setTopicsSelected([
-          "Verkehr",
-          "Versorgung",
-          "Umwelt und Grün",
-          "Rad",
-          "Inklusion / Soziales",
-          "Sport / Freizeit",
-          "Sonstige",
-        ]);
-      } else {
-        setTopicsSelected(...[newTopics]);
-      }
-    }
   };
 
   useEffect(() => {
@@ -353,7 +311,7 @@ const Main = () => {
 
   const dataFinal = sortedScreams.filter(
     ({ Thema, lat, long, status }) =>
-      topicsSelected.includes(Thema) &&
+      selectedTopics.includes(Thema) &&
       lat <= mapBounds?.latitude1 &&
       lat >= mapBounds?.latitude2 &&
       long >= mapBounds?.longitude2 &&
@@ -366,16 +324,16 @@ const Main = () => {
   const dataFinalMap = openProject
     ? project.screams.filter(
         ({ Thema, status }) =>
-          topicsSelected.includes(Thema) && status === "None"
+          selectedTopics.includes(Thema) && status === "None"
       )
     : myScreams !== null
     ? myScreams.filter(
         ({ Thema, status }) =>
-          topicsSelected.includes(Thema) && status === "None"
+          selectedTopics.includes(Thema) && status === "None"
       )
     : screamsSearched.filter(
         ({ Thema, status }) =>
-          topicsSelected.includes(Thema) && status === "None"
+          selectedTopics.includes(Thema) && status === "None"
       );
 
   return (
@@ -395,16 +353,12 @@ const Main = () => {
         loading={loading}
         handleClick={handleClick}
         order={order}
-        handleTopicSelector={handleTopicSelector}
-        topicsSelected={topicsSelected}
         dataFinalMap={dataFinalMap}
       />
       <DesktopSidebar
         loading={loading}
         handleClick={handleClick}
         order={order}
-        handleTopicSelector={handleTopicSelector}
-        topicsSelected={topicsSelected}
         loadingProjects={loadingProjects}
         projectsData={projects}
         dataFinalMap={dataFinalMap}
@@ -452,11 +406,7 @@ const Main = () => {
               projectsData={projects}
               project={project}
             />
-            <TopicFilter
-              loading={loading}
-              handleTopicSelector={handleTopicSelector}
-              topicsSelected={topicsSelected}
-            />
+            <TopicFilter loading={loading} />
           </React.Fragment>
         )}
       {!openInfoPage && (
@@ -476,8 +426,6 @@ const Main = () => {
               handleDropdown={handleDropdown}
               projectsData={projects}
               dropdown={dropdown}
-              handleTopicSelector={handleTopicSelector}
-              topicsSelected={topicsSelected}
               setSearchTerm={setSearchTerm}
               searchTerm={searchTerm}
             />
@@ -493,17 +441,9 @@ const Main = () => {
               loadingProjects={loadingProjects}
               projectsData={projects}
               viewport={mapViewport}
-              handleTopicSelector={handleTopicSelector}
-              topicsSelected={topicsSelected}
             />
           )}
-          {openAccount && (
-            <Account
-              handleTopicSelector={handleTopicSelector}
-              topicsSelected={topicsSelected}
-              dataFinalMap={dataFinalMap}
-            />
-          )}
+          {openAccount && <Account dataFinalMap={dataFinalMap} />}
         </div>
       )}
 

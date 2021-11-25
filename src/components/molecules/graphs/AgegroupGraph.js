@@ -1,18 +1,20 @@
 /** @format */
 
 import React, { useState } from "react";
-
+import { useSelector, useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 //Icons
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 //Graphs
 import createPlotlyComponent from "react-plotlyjs";
 //See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
-import Plotly from "plotly.js/dist/plotly-cartesian";
+import Plotly from "plotly.js/dist/plotly-cartesian.min";
 import { Agegroupdata } from "./Agegroup/Agegroupdata";
 import TopicFilter from "../Filters/TopicFilter";
 import styled from "styled-components";
 const PlotlyComponent = createPlotlyComponent(Plotly);
+
 
 const TopicFilterWrapper = styled.div`
   width: 100%;
@@ -23,59 +25,52 @@ const TopicFilterWrapper = styled.div`
   margin-left: 50%;
   transform: translateX(-50%);
 `;
-const AgegroupGraph = ({ classes, screams, likes }) => {
-  const [topicsSelected, setTopicsSelected] = useState([
-    "Verkehr",
-    "Versorgung",
-    "Umwelt und Grün",
-    "Rad",
-    "Inklusion / Soziales",
-    "Sport / Freizeit",
-    "Sonstige",
-  ]);
-  const handleTopicSelector = (topic) => {
-    const index = topicsSelected.indexOf(topic);
-    if (topic === "all") {
-      setTopicsSelected([
-        "Verkehr",
-        "Versorgung",
-        "Umwelt und Grün",
-        "Rad",
-        "Inklusion / Soziales",
-        "Sport / Freizeit",
-        "Sonstige",
-      ]);
-    } else if (topicsSelected.length === 7) {
-      setTopicsSelected([topic]);
-    } else if (index === -1) {
-      setTopicsSelected(topicsSelected.concat(topic));
-    } else {
-      const newTopics = topicsSelected.filter((item) => item !== topic);
 
-      if (newTopics.length === 0) {
-        setTopicsSelected([
-          "Verkehr",
-          "Versorgung",
-          "Umwelt und Grün",
-          "Rad",
-          "Inklusion / Soziales",
-          "Sport / Freizeit",
-          "Sonstige",
-        ]);
-      } else {
-        setTopicsSelected(...[newTopics]);
-      }
-    }
-  };
+//  let PlotlyComponent
+// import(/* webpackChunkName: "Agegroup-Graph plotly" */'plotly.js/dist/plotly-cartesian.min').then(plotly=>{
+//   PlotlyComponent = createPlotlyComponent(plotly);
+  
+// }) 
+
+
+const AgegroupGraph = ({ classes, screams, likes }) => {
+  
+  
+  
+
+ 
+
+
+  
+  const { t } = useTranslation();
+
+  const selectedTopics = useSelector((state) => state.data.topics);
 
   const screamsFiltered = screams
-    ? screams.filter(({ Thema }) => topicsSelected.includes(Thema))
+    ? screams.filter(({ Thema }) => selectedTopics.includes(Thema))
     : [];
-  console.log(likes);
+  //console.log(likes);
 
   const likesFiltered = likes
-    ? likes.filter(({ Thema }) => topicsSelected.includes(Thema))
+    ? likes.filter(({ Thema }) => selectedTopics.includes(Thema))
     : [];
+
+  const ageRange = [
+    "< 18",
+    "< 18",
+    "18 - 24",
+    "18 - 24",
+    "25-34",
+    "25-34",
+    "35-44",
+    "35-44",
+    "45-54",
+    "45-54",
+    "55-64",
+    "55-64",
+    "65+",
+    "65+",
+  ];
   let data = [
     {
       alignmentgroup: true,
@@ -90,22 +85,7 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       type: "bar",
       x: Agegroupdata(screamsFiltered, likesFiltered, "Rad"),
       xaxis: "x",
-      y: [
-        "< 18",
-        "< 18",
-        "18 - 24",
-        "18 - 24",
-        "25-34",
-        "25-34",
-        "35-44",
-        "35-44",
-        "45-54",
-        "45-54",
-        "55-64",
-        "55-64",
-        "65+",
-        "65+",
-      ],
+      y: ageRange,
 
       yaxis: "y",
     },
@@ -121,22 +101,7 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       type: "bar",
       x: Agegroupdata(screamsFiltered, likesFiltered, "Inklusion / Soziales"),
       xaxis: "x",
-      y: [
-        "< 18",
-        "< 18",
-        "18 - 24",
-        "18 - 24",
-        "25-34",
-        "25-34",
-        "35-44",
-        "35-44",
-        "45-54",
-        "45-54",
-        "55-64",
-        "55-64",
-        "65+",
-        "65+",
-      ],
+      y: ageRange,
       yaxis: "y",
     },
     {
@@ -151,22 +116,7 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       type: "bar",
       x: Agegroupdata(screamsFiltered, likesFiltered, "Verkehr"),
       xaxis: "x",
-      y: [
-        "< 18",
-        "< 18",
-        "18 - 24",
-        "18 - 24",
-        "25-34",
-        "25-34",
-        "35-44",
-        "35-44",
-        "45-54",
-        "45-54",
-        "55-64",
-        "55-64",
-        "65+",
-        "65+",
-      ],
+      y: ageRange,
       yaxis: "y",
     },
     {
@@ -181,22 +131,7 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       type: "bar",
       x: Agegroupdata(screamsFiltered, likesFiltered, "Umwelt und Grün"),
       xaxis: "x",
-      y: [
-        "< 18",
-        "< 18",
-        "18 - 24",
-        "18 - 24",
-        "25-34",
-        "25-34",
-        "35-44",
-        "35-44",
-        "45-54",
-        "45-54",
-        "55-64",
-        "55-64",
-        "65+",
-        "65+",
-      ],
+      y: ageRange,
       yaxis: "y",
     },
     {
@@ -211,22 +146,7 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       type: "bar",
       x: Agegroupdata(screamsFiltered, likesFiltered, "Versorgung"),
       xaxis: "x",
-      y: [
-        "< 18",
-        "< 18",
-        "18 - 24",
-        "18 - 24",
-        "25-34",
-        "25-34",
-        "35-44",
-        "35-44",
-        "45-54",
-        "45-54",
-        "55-64",
-        "55-64",
-        "65+",
-        "65+",
-      ],
+      y: ageRange,
       yaxis: "y",
     },
     {
@@ -241,22 +161,7 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       type: "bar",
       x: Agegroupdata(screamsFiltered, likesFiltered, "Sport / Freizeit"),
       xaxis: "x",
-      y: [
-        "< 18",
-        "< 18",
-        "18 - 24",
-        "18 - 24",
-        "25-34",
-        "25-34",
-        "35-44",
-        "35-44",
-        "45-54",
-        "45-54",
-        "55-64",
-        "55-64",
-        "65+",
-        "65+",
-      ],
+      y: ageRange,
       yaxis: "y",
     },
     {
@@ -271,22 +176,7 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       type: "bar",
       x: Agegroupdata(screamsFiltered, likesFiltered, "Sonstige"),
       xaxis: "x",
-      y: [
-        "< 18",
-        "< 18",
-        "18 - 24",
-        "18 - 24",
-        "25-34",
-        "25-34",
-        "35-44",
-        "35-44",
-        "45-54",
-        "45-54",
-        "55-64",
-        "55-64",
-        "65+",
-        "65+",
-      ],
+      y: ageRange,
       yaxis: "y",
     },
   ];
@@ -426,34 +316,30 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
   //   );
 
   const plot =
-    screams !== undefined ? (
+    screams && PlotlyComponent !== undefined  ? (
       <PlotlyComponent
         className={classes.plot}
         data={data}
         layout={layout}
         config={config}
       />
+    
     ) : (
+      <div style={{display: 'flex', justifyContent: 'center'}}>
       <CircularProgress size={50} thickness={2} />
+      </div>
     );
 
   return (
     <div className={classes.card}>
-      <div className={classes.title}>Altersgruppen</div>
-      <div className={classes.subtitle}>
-        Anhand der gesammelten Ideen und Votes kannst du die Relevanz der Themen
-        für die unterschiedlichen Altersgruppen erkennen und nach Themen
-        filtern.
-      </div>
+      <div className={classes.title}>{t("agegroups")}</div>
+      <div className={classes.subtitle}>{t("agegroups_explained")}</div>
       <TopicFilterWrapper>
-        <TopicFilter
-          handleTopicSelector={handleTopicSelector}
-          topicsSelected={topicsSelected}
-          inline={true}
-        />
+        <TopicFilter inline={true} />
       </TopicFilterWrapper>
 
       <div className={classes.clickblocker}></div>
+      
       {plot}
     </div>
   );

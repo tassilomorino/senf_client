@@ -60,16 +60,8 @@ const MonitoringBoard = () => {
   const loadingProjects = useSelector((state) => state.UI.loadingProjects);
 
   const projects = useSelector((state) => state.data.projects);
+  const selectedTopics = useSelector((state) => state.data.topics);
 
-  const [topicsSelected, setTopicsSelected] = useState([
-    "Verkehr",
-    "Versorgung",
-    "Umwelt und Grün",
-    "Rad",
-    "Inklusion / Soziales",
-    "Sport / Freizeit",
-    "Sonstige",
-  ]);
   const [order, setOrder] = useState(1);
   const mapBounds = useSelector((state) => state.data.mapBounds);
   const mapViewport = useSelector((state) => state.data.mapViewport);
@@ -121,41 +113,6 @@ const MonitoringBoard = () => {
     setDropdown(value);
   };
 
-  const handleTopicSelector = (topic) => {
-    const index = topicsSelected.indexOf(topic);
-    if (topic === "all") {
-      setTopicsSelected([
-        "Verkehr",
-        "Versorgung",
-        "Umwelt und Grün",
-        "Rad",
-        "Inklusion / Soziales",
-        "Sport / Freizeit",
-        "Sonstige",
-      ]);
-    } else if (topicsSelected.length === 7) {
-      setTopicsSelected([topic]);
-    } else if (index === -1) {
-      setTopicsSelected(topicsSelected.concat(topic));
-    } else {
-      const newTopics = topicsSelected.filter((item) => item !== topic);
-
-      if (newTopics.length === 0) {
-        setTopicsSelected([
-          "Verkehr",
-          "Versorgung",
-          "Umwelt und Grün",
-          "Rad",
-          "Inklusion / Soziales",
-          "Sport / Freizeit",
-          "Sonstige",
-        ]);
-      } else {
-        setTopicsSelected(...[newTopics]);
-      }
-    }
-  };
-
   const sortedScreams =
     dropdown === "newest"
       ? _.orderBy(full_screams, "createdAt", "desc")
@@ -163,7 +120,7 @@ const MonitoringBoard = () => {
 
   const dataFinal = sortedScreams.filter(
     ({ Thema, lat, long, status }) =>
-      topicsSelected.includes(Thema) &&
+      selectedTopics.includes(Thema) &&
       // lat <= mapBounds.latitude1 &&
       // lat >= mapBounds.latitude2 &&
       // long >= mapBounds.longitude2 &&
@@ -183,8 +140,6 @@ const MonitoringBoard = () => {
         handleClick={handleClick}
         order={order}
         channelOrder={order}
-        handleTopicSelector={handleTopicSelector}
-        topicsSelected={topicsSelected}
         loadingProjects={loadingProjects}
         projectsData={projects}
       ></MonitoringDesktopSidebar>

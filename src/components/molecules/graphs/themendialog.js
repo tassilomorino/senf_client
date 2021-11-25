@@ -9,9 +9,10 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 import CloseIcon from "../../../images/icons/close.png";
 
 //Components
-import Thema from "./thema";
+
 
 // MUI Stuff
+import CircularProgress from "@material-ui/core/CircularProgress";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -22,7 +23,7 @@ import MyButton from "../../../util/MyButton";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
+const Thema =React.lazy(()=> import(/* webpackChunkName: "ThemenGraph" */"./thema"));
 const styles = {
   root: {
     //backgroundColor: "rgb(0,0,0,0.5)",
@@ -116,7 +117,9 @@ const ThemenDialog = ({ classes, screams }) => {
       </MyButton>
 
       <DialogContent>
+      <React.Suspense fallback={<CircularProgress size={50} thickness={2} />}>
         <Thema screams={screams} />
+        </React.Suspense>
         {/* <br />
         <Trends /> */}
       </DialogContent>

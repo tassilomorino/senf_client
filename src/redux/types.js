@@ -12,10 +12,10 @@ export const LOADING_UI = "LOADING_UI";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";
 export const LOADING_DATA = "LOADING_DATA";
 export const STOP_LOADING_DATA = "STOP_LOADING_DATA";
-
 export const STOP_LOADING_UI = "STOP_LOADING_UI";
 export const LOADING_IDEA_DATA = "LOADING_IDEA_DATA";
 // Data reducer types
+export const SET_TOPICS = "SET_TOPICS";
 export const ADD_SCREAMS = "ADD_SCREAMS";
 export const SET_SCREAMS = "SET_SCREAMS";
 export const SET_SCREAM = "SET_SCREAM";

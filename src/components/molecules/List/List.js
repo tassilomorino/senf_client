@@ -90,18 +90,6 @@ const List = ({
   };
 
   const loadMore = () => {
-    console.log(
-      "loading more",
-      "df.length",
-      dataFinal.length,
-      "listItems:",
-      listItems
-    );
-
-    if (!loading && dataFinal.length === 0) {
-      sethasMoreItems(false);
-    }
-
     if (listItems === dataFinal.length) {
       sethasMoreItems(false);
     } else {
@@ -112,36 +100,6 @@ const List = ({
     }
   };
 
-  // const content = (
-  //   <MainAnimations>
-  //     {dataFinal.map(
-  //       ({
-  //         title,
-  //         body,
-  //         screamId,
-  //         likeCount,
-  //         commentCount,
-  //         Stadtteil,
-  //         project,
-  //         color,
-  //       }) => (
-  //         <IdeaCard
-  //           loading={loading}
-  //           key={screamId}
-  //           title={title}
-  //           body={body}
-  //           screamId={screamId}
-  //           likeCount={likeCount}
-  //           commentCount={commentCount}
-  //           Stadtteil={Stadtteil}
-  //           project={project}
-  //           color={color}
-  //           projectsData={projectsData}
-  //         />
-  //       )
-  //     )}
-  //   </MainAnimations>
-  // );
   return (
     !loading &&
     mapBounds && (
