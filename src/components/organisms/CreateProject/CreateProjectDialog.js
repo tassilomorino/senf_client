@@ -1,22 +1,22 @@
 /** @format */
 
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import styled from "styled-components";
+import { useTranslation } from "react-i18next";
+import { useTransition, animated } from "@react-spring/web";
+import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
+
+//Components
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import MainDialog from "../../atoms/Layout/MainDialog";
+import CreateProjectPage0 from "./components/CreateProjectPage0";
 import CreateProjectPage1 from "./components/CreateProjectPage1";
 import CreateProjectPage2 from "./components/CreateProjectPage2";
 import CreateProjectPage3 from "./components/CreateProjectPage3";
 
-import { useTranslation } from "react-i18next";
-import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
-
-import { useTransition, animated } from "@react-spring/web";
-import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
-
 const InnerWrapper = styled.div`
   text-align: center;
-  margin-top: 60px;
+  margin-top: 40px;
   position: relative;
 
   @media (min-width: 768px) {
@@ -31,7 +31,7 @@ const ProgressLine = styled.div`
   background-color: rgb(255, 255, 255, 0.4);
   border-radius: 10px;
   position: relative;
-  top: 40px;
+  top: 30px;
 `;
 const CurrentStep = styled.div`
   height: 100%;
@@ -61,6 +61,15 @@ const CreateProjectDialog = ({
     set((state) => state + 1);
     setFrom(30);
     setLeave(-15);
+  }, []);
+
+  useEffect(() => {
+    if (
+      typeof Storage !== "undefined" &&
+      !localStorage.getItem("createProjectData")
+    ) {
+      set(1);
+    }
   }, []);
 
   const transitions = useTransition(index, {
@@ -95,22 +104,21 @@ const CreateProjectDialog = ({
           position: "absolute",
         }}
       >
+        <CreateProjectPage0 onClickNext={onClickNext} />
+      </animated.div>
+    ),
+    ({ style }) => (
+      <animated.div
+        style={{
+          ...style,
+
+          width: "100%",
+          position: "absolute",
+        }}
+      >
         <CreateProjectPage1
           outsideClick={outsideClick}
-          setOutsideClick={setOutsideClick}
-        />
-
-        <SubmitButton
-          text={t("next")}
-          zIndex="9"
-          backgroundColor="white"
-          textColor="#353535"
-          position="relative"
-          top={document.body.clientWidth > 768 ? "100px" : "70px"}
-          left="0"
-          handleButtonClick={onClickNext}
-          // disabled={!formikCreateProjectStore.isValid}
-          //   keySubmitRef={keySubmitRef}
+          onClickNext={onClickNext}
         />
       </animated.div>
     ),
@@ -126,19 +134,7 @@ const CreateProjectDialog = ({
         <CreateProjectPage2
           outsideClick={outsideClick}
           setOutsideClick={setOutsideClick}
-        />
-
-        <SubmitButton
-          text={t("next")}
-          zIndex="9"
-          backgroundColor="white"
-          textColor="#353535"
-          position="relative"
-          top={document.body.clientWidth > 768 ? "100px" : "70px"}
-          left="0"
-          handleButtonClick={onClickNext}
-          // disabled={!formikCreateProjectStore.isValid}
-          // keySubmitRef={keySubmitRef}
+          onClickNext={onClickNext}
         />
       </animated.div>
     ),
@@ -146,7 +142,6 @@ const CreateProjectDialog = ({
       <animated.div
         style={{
           ...style,
-
           width: "100%",
           position: "absolute",
         }}
@@ -155,60 +150,46 @@ const CreateProjectDialog = ({
           outsideClick={outsideClick}
           setOutsideClick={setOutsideClick}
         />
-
-        {/* <SubmitButton
-          text={t("next")}
-          zIndex="9"
-          backgroundColor="white"
-          textColor="#353535"
-          position="relative"
-          top={document.body.clientWidth > 768 ? "100px" : "70px"}
-          left="0"
-          handleButtonClick={onClickNext}
-          // disabled={!formikCreateProjectStore.isValid}
-          // keySubmitRef={keySubmitRef}
-        /> */}
       </animated.div>
     ),
   ];
 
-  const currentStep = (100 / pages.length) * (index + 1);
+  const currentStep = (100 / (pages.length - 1)) * index;
 
   return (
     <MainDialog
       setIsOpen={setCreateProjectDialogIsOpen}
       isOpen={isCreateProjectDialogIsOpen}
     >
-      {" "}
-      <div ref={outerRef}>
-        <ProgressLine>
-          <CurrentStep index={currentStep} />
-        </ProgressLine>
-        {index === 0 ? (
-          <CustomIconButton
-            name="Close"
-            position="fixed"
-            margin={document.body.clientWidth > 768 ? "40px" : "10px"}
-            left="0"
-            handleButtonClick={() => setCreateProjectDialogIsOpen(false)}
-          />
-        ) : (
-          <CustomIconButton
-            name="ArrowLeft"
-            position="fixed"
-            margin={document.body.clientWidth > 768 ? "40px" : "10px"}
-            left="0"
-            handleButtonClick={onClickPrev}
-          />
-        )}
+      <ProgressLine>
+        <CurrentStep index={currentStep} />
+      </ProgressLine>
+      {index === 0 ? (
+        <CustomIconButton
+          name="Close"
+          position="fixed"
+          margin={document.body.clientWidth > 768 ? "40px" : "10px"}
+          left="0"
+          top="0"
+          handleButtonClick={() => setCreateProjectDialogIsOpen(false)}
+        />
+      ) : (
+        <CustomIconButton
+          name="ArrowLeft"
+          position="fixed"
+          margin={document.body.clientWidth > 768 ? "40px" : "10px"}
+          left="0"
+          top="0"
+          handleButtonClick={onClickPrev}
+        />
+      )}
 
-        <InnerWrapper>
-          {transitions((style, i) => {
-            const Page = pages[i];
-            return <Page style={style} />;
-          })}
-        </InnerWrapper>
-      </div>
+      <InnerWrapper>
+        {transitions((style, i) => {
+          const Page = pages[i];
+          return <Page style={style} />;
+        })}
+      </InnerWrapper>
     </MainDialog>
   );
 };

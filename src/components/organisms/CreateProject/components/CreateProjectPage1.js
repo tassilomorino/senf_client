@@ -1,11 +1,18 @@
 /** @format */
 
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { TextField } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
+import {
+  retrievedData,
+  startedCreatingProject,
+} from "../functions/CreateProjectFunctions";
+import { createProjectSaveData } from "../../../../redux/actions/formDataActions";
 
 const Title = styled.h2`
   font-family: PlayfairDisplay-Bold;
@@ -19,8 +26,10 @@ const Title = styled.h2`
   }
 `;
 
-const CreateProjectPage1 = ({ outsideClick }) => {
+const CreateProjectPage1 = ({ outsideClick, onClickNext }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const [projectRoom_name, setProjectRoom_name] = useState(null);
 
   const createProjectValidationSchema = yup.object({
     projectRoom_name: yup
@@ -39,23 +48,59 @@ const CreateProjectPage1 = ({ outsideClick }) => {
   const formik = useFormik({
     initialValues: {
       projectRoom_name: "",
-      password: "",
-      one: "",
-      two: "",
-      three: "",
-      four: "",
+      projectRoom_description: "",
     },
     validationSchema: createProjectValidationSchema,
-    isInitialValid: false,
     validateOnChange: true,
     validateOnBlur: true,
   });
 
+  useEffect(() => {
+    if (startedCreatingProject) {
+      setProjectRoom_name(retrievedData.projectRoom_name);
+
+      formik.setFieldValue("projectRoom_name", retrievedData.projectRoom_name);
+      formik.setFieldValue(
+        "projectRoom_description",
+        retrievedData.projectRoom_description
+      );
+    }
+  }, []);
+
+  const handleNext = () => {
+    var createProjectData = {
+      projectRoom_name: formik.values.projectRoom_name,
+      projectRoom_description: formik.values.projectRoom_description,
+      geoData:
+        retrievedData && retrievedData.geoData ? retrievedData.geoData : null,
+    };
+
+    dispatch(createProjectSaveData());
+    // Retrieve the object from storage
+    // var retrievedObject = localStorage.getItem('testObject');
+    // console.log('retrievedObject: ', JSON.parse(retrievedObject));
+
+    // Store
+    localStorage.setItem(
+      "createProjectData",
+      JSON.stringify(createProjectData)
+    );
+
+    console.log(localStorage.createProjectData);
+    onClickNext();
+  };
+
   return (
     <div>
       <Title>
-        Erstelle deinen <br />
-        Projektraum
+        {projectRoom_name ? (
+          <span>Infos zu "{projectRoom_name}" bearbeiten</span>
+        ) : (
+          <span>
+            Erstelle deinen <br />
+            Projektraum
+          </span>
+        )}
       </Title>
       <TextField
         id="outlined-name"
@@ -94,6 +139,19 @@ const CreateProjectPage1 = ({ outsideClick }) => {
         onChange={formik.handleChange}
         error={outsideClick && Boolean(formik.errors.projectRoom_description)}
         helperText={outsideClick && formik.errors.projectRoom_description}
+      />
+
+      <SubmitButton
+        text={t("next")}
+        zIndex="9"
+        backgroundColor="white"
+        textColor="#353535"
+        position="relative"
+        top={document.body.clientWidth > 768 ? "100px" : "70px"}
+        left="0"
+        handleButtonClick={handleNext}
+        // disabled={!formikCreateProjectStore.isValid}
+        //   keySubmitRef={keySubmitRef}
       />
     </div>
   );

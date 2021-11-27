@@ -140,7 +140,8 @@
 
   "account_contact": "Wir freuen uns über deine Beteiligung! Gefällt dir Senf? Stört dich etwas? Melde dich gerne und sag uns, was dir auffällt!",
   
-  
+  "restart":"Neustarten",
+  "continue_creation":"Erstellung fortsetzen",
   "projectRoom_name":"Projektraum-Name",
   "projectRoom_description":"Beschreibungstext (max. 1000 Zeichen)"
 }

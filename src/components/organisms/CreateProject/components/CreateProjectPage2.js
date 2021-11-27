@@ -15,6 +15,8 @@ import "firebase/storage";
 
 import UploadImage from "../../../../images/icons/uploadImage.png";
 import imageCompression from "browser-image-compression";
+import { startedCreatingProject } from "../functions/CreateProjectFunctions";
+import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
 const Wrapper = styled.div`
   display: flex;
@@ -72,37 +74,19 @@ const ButttonsWrapper = styled.div`
   margin-top: 20px;
 `;
 
-const CreateProjectPage1 = ({ outsideClick }) => {
+const CreateProjectPage1 = ({ onClickNext }) => {
   const { t } = useTranslation();
 
-  const createProjectValidationSchema = yup.object({
-    projectRoom_name: yup
-      .string()
-      .required(t("enter_email"))
-      .min(3, t("username_too_short"))
-      .max(20, t("username_too_long")),
+  const [projectRoom_name, setProjectRoom_name] = useState(null);
 
-    projectRoom_description: yup
-      .string()
-      .required(t("enter_email"))
-      .min(100, t("username_too_short"))
-      .max(1000, t("username_too_long")),
-  });
-
-  const formik = useFormik({
-    initialValues: {
-      projectRoom_name: "",
-      password: "",
-      one: "",
-      two: "",
-      three: "",
-      four: "",
-    },
-    validationSchema: createProjectValidationSchema,
-    isInitialValid: false,
-    validateOnChange: true,
-    validateOnBlur: true,
-  });
+  useEffect(() => {
+    if (startedCreatingProject) {
+      const retrievedData = JSON.parse(
+        localStorage.getItem("createProjectData")
+      );
+      setProjectRoom_name(retrievedData.projectRoom_name);
+    }
+  }, []);
 
   const [weblinkOpen, setWeblinkOpen] = useState(false);
   const [weblink, setWeblink] = useState(null);
@@ -120,9 +104,6 @@ const CreateProjectPage1 = ({ outsideClick }) => {
   const handleSaveWeblink = () => {
     setWeblinkOpen(false);
   };
-
-  const [fileUrl, setFileUrl] = useState(null);
-  const [projectName, setProjectName] = useState("TryoutProjectName");
 
   const [OrganizationAndProjectName, setOrganizationAndProjectName] = useState(
     "Organization:_Tryout_ProjectName"
@@ -154,6 +135,7 @@ const CreateProjectPage1 = ({ outsideClick }) => {
   }
 
   useEffect(() => {
+    console.log("loaded");
     loadImageFromStorage();
   }, []);
 
@@ -175,29 +157,27 @@ const CreateProjectPage1 = ({ outsideClick }) => {
 
   return (
     <Wrapper>
-      <Title>"Neuer Neusser Platz"</Title>
+      <Title> "{projectRoom_name}" aufwerten</Title>
 
-      <form>
-        <StyledLabel
-          onMouseEnter={() => setUploadImageHover(true)}
-          onMouseLeave={() => setUploadImageHover(false)}
-          htmlFor="imageUploader"
-        >
-          {(!uploadedImage || uploadImageHover) && (
-            <StyledIconWrapper>
-              <img src={UploadImage} width="50%" />
-            </StyledIconWrapper>
-          )}
+      <StyledLabel
+        onMouseEnter={() => setUploadImageHover(true)}
+        onMouseLeave={() => setUploadImageHover(false)}
+        htmlFor="imageUploader"
+      >
+        {(!uploadedImage || uploadImageHover) && (
+          <StyledIconWrapper>
+            <img src={UploadImage} width="50%" />
+          </StyledIconWrapper>
+        )}
 
-          {uploadedImage && <StyledImg src={uploadedImage} width="100%" />}
-        </StyledLabel>
-        <input
-          type="file"
-          onChange={(event) => handleImageUpload(event)}
-          style={{ display: "none" }}
-          id="imageUploader"
-        />
-      </form>
+        {uploadedImage && <StyledImg src={uploadedImage} width="100%" />}
+      </StyledLabel>
+      <input
+        type="file"
+        onChange={(event) => handleImageUpload(event)}
+        style={{ display: "none" }}
+        id="imageUploader"
+      />
 
       <h3> Lade ein Bild hoch</h3>
       <ButttonsWrapper>
@@ -237,6 +217,19 @@ const CreateProjectPage1 = ({ outsideClick }) => {
           setWeblinkOpen={setWeblinkOpen}
         />
       )}
+
+      <SubmitButton
+        text={t("next")}
+        zIndex="9"
+        backgroundColor="white"
+        textColor="#353535"
+        position="relative"
+        top={document.body.clientWidth > 768 ? "100px" : "70px"}
+        left="0"
+        handleButtonClick={onClickNext}
+        // disabled={!formikCreateProjectStore.isValid}
+        // keySubmitRef={keySubmitRef}
+      />
     </Wrapper>
   );
 };
