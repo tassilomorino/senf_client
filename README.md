@@ -21,11 +21,14 @@ To avoid ending up with an unmanageable amount of branches, we decided to go thi
 
 To obtain an access token, sign in to https://www.mapbox.com/ and visit Account > Tokens. The token will start with "pk". You may use the default or create another
 
-## 3: Add a .env file to the Project root containing the following two Variables:
+## 3: Add a .env file to the Project root containing the following variable:
 
 REACT_APP_MAPBOX_ACCESS_TOKEN= Your_Access_token_here <br/>
 <br/><br/>
-Tip: If you already started the React Server before adding these variables you need to restart the react server afterwards
+Using your mapbox token you will not be able to see map on the screen, but website will be functional. If you are interested in contributing, please contact [@tassilomorino](https://github.com/tassilomorino) to get a private token.
+
+<br/><br/>
+Tip: If you already started the React Server before adding this variable you need to restart the react server afterwards
 
 ## 4: Install packages
 
