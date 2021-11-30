@@ -49,7 +49,7 @@ const CreateProjectPage1 = ({ outsideClick, onClickNext }) => {
     projectRoom_description: yup
       .string()
       .required(t("enter_email"))
-      .min(100, t("username_too_short"))
+      .min(10, t("username_too_short"))
       .max(1000, t("username_too_long")),
   });
 
@@ -59,6 +59,7 @@ const CreateProjectPage1 = ({ outsideClick, onClickNext }) => {
       projectRoom_description: "",
     },
     validationSchema: createProjectValidationSchema,
+    validateOnMount: true,
     validateOnChange: true,
     validateOnBlur: true,
   });
@@ -84,7 +85,7 @@ const CreateProjectPage1 = ({ outsideClick, onClickNext }) => {
       projectRoom_name: formik.values.projectRoom_name,
       projectRoom_description: formik.values.projectRoom_description,
     };
-
+    dispatch(createProjectSaveData(createProjectFormDataPage1));
     // if (
     //   createProjectFormData &&
     //   createProjectFormData.projectRoom_name &&
@@ -129,6 +130,7 @@ const CreateProjectPage1 = ({ outsideClick, onClickNext }) => {
 
     onClickNext();
   };
+  console.log(outsideClick);
 
   return (
     <div>
@@ -190,7 +192,7 @@ const CreateProjectPage1 = ({ outsideClick, onClickNext }) => {
         top={document.body.clientWidth > 768 ? "100px" : "70px"}
         left="0"
         handleButtonClick={handleNext}
-        // disabled={!formikCreateProjectStore.isValid}
+        disabled={!formik.isValid}
         //   keySubmitRef={keySubmitRef}
       />
     </div>

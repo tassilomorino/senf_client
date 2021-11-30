@@ -110,7 +110,7 @@ const CreateProjectPage1 = ({ outsideClick }) => {
         </h3>
 
         <DrawMapButton onClick={setMapOpen}>
-          {createProjectFormData.geoData ? (
+          {createProjectFormData && createProjectFormData.geoData ? (
             <MapPreview
               mapOpen={mapOpen}
               setMapOpen={setMapOpen}

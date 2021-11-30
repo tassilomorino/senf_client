@@ -16,6 +16,7 @@ const MapWrapper = styled.div`
   background-color: grey;
   position: relative;
   pointer-events: none;
+  overflow: hidden;
 `;
 
 const MapPreview = ({ viewport }) => {
