@@ -1,22 +1,27 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { useFormik } from "formik";
-import * as yup from "yup";
+import imageCompression from "browser-image-compression";
 
-import Weblink from "../../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
-import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
-
+//firebase
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
 
-import UploadImage from "../../../../images/icons/uploadImage.png";
-import imageCompression from "browser-image-compression";
-import { startedCreatingProject } from "../functions/CreateProjectFunctions";
+//redux
+import { createProjectSaveData } from "../../../../redux/actions/formDataActions";
+
+//Components
+import Weblink from "../../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
+import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
+
+//images
+import UploadImageIcon from "../../../../images/icons/uploadImage.png";
+import { CircularProgress } from "@material-ui/core";
 
 const Wrapper = styled.div`
   display: flex;
@@ -76,17 +81,16 @@ const ButttonsWrapper = styled.div`
 
 const CreateProjectPage1 = ({ onClickNext }) => {
   const { t } = useTranslation();
-
-  const [projectRoom_name, setProjectRoom_name] = useState(null);
-
-  useEffect(() => {
-    if (startedCreatingProject) {
-      const retrievedData = JSON.parse(
-        localStorage.getItem("createProjectData")
-      );
-      setProjectRoom_name(retrievedData.projectRoom_name);
-    }
-  }, []);
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const createProjectFormData = useSelector(
+    (state) => state.formData.createProjectFormData
+  );
+  const organization = useSelector((state) => state.user.organization);
+  const underscoreProjectName = createProjectFormData?.projectRoom_name
+    .split(" ")
+    .join("_");
+  const fileName = organization + ":_" + underscoreProjectName;
 
   const [weblinkOpen, setWeblinkOpen] = useState(false);
   const [weblink, setWeblink] = useState(null);
@@ -105,9 +109,6 @@ const CreateProjectPage1 = ({ onClickNext }) => {
     setWeblinkOpen(false);
   };
 
-  const [OrganizationAndProjectName, setOrganizationAndProjectName] = useState(
-    "Organization:_Tryout_ProjectName"
-  );
   const [uploadedImage, setUploadedImage] = useState(null);
   const [uploadImageHover, setUploadImageHover] = useState(false);
 
@@ -122,27 +123,40 @@ const CreateProjectPage1 = ({ onClickNext }) => {
       useWebWorker: true,
     };
     try {
+      setLoading(true);
       const compressedFile = await imageCompression(imageFile, options);
       const storageRef = firebase.storage().ref();
+
       const fileRef = storageRef.child(
-        `projectRoomThumbnails/${OrganizationAndProjectName}`
+        `projectRoomThumbnails/${fileName}/thumbnail`
       );
       await fileRef.put(compressedFile);
-      setUploadedImage(await fileRef.getDownloadURL());
+      setUploadedImage(
+        await fileRef.getDownloadURL().then(() => {
+          setLoading(false);
+        })
+      );
+
+      var createProjectFormDataPage1 = {
+        ...createProjectFormData,
+        imgUrl: fileRef,
+      };
+
+      dispatch(createProjectSaveData(createProjectFormDataPage1));
     } catch (error) {
       console.log(error);
     }
   }
 
   useEffect(() => {
-    console.log("loaded");
-    loadImageFromStorage();
+    loadImageFromStorage(fileName, setUploadedImage);
+    console.log(uploadedImage);
   }, []);
 
-  const loadImageFromStorage = () => {
+  const loadImageFromStorage = (fileName, setUploadedImage) => {
     const storageRef = firebase.storage().ref();
     storageRef
-      .child(`projectRoomThumbnails/${OrganizationAndProjectName}`)
+      .child(`projectRoomThumbnails/${fileName}/thumbnail`)
       .getDownloadURL()
       .then(onResolve, onReject);
 
@@ -157,7 +171,14 @@ const CreateProjectPage1 = ({ onClickNext }) => {
 
   return (
     <Wrapper>
-      <Title> "{projectRoom_name}" aufwerten</Title>
+      <Title>
+        {" "}
+        "
+        {createProjectFormData &&
+          createProjectFormData.projectRoom_name &&
+          createProjectFormData.projectRoom_name}
+        " aufwerten
+      </Title>
 
       <StyledLabel
         onMouseEnter={() => setUploadImageHover(true)}
@@ -166,7 +187,11 @@ const CreateProjectPage1 = ({ onClickNext }) => {
       >
         {(!uploadedImage || uploadImageHover) && (
           <StyledIconWrapper>
-            <img src={UploadImage} width="50%" />
+            {loading ? (
+              <CircularProgress size={50} thickness={2} />
+            ) : (
+              <img src={UploadImageIcon} alt="UploadImageIcon" width="50%" />
+            )}
           </StyledIconWrapper>
         )}
 

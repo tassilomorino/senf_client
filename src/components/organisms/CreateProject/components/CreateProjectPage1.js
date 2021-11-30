@@ -8,10 +8,12 @@ import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
-import {
-  retrievedData,
-  startedCreatingProject,
-} from "../functions/CreateProjectFunctions";
+
+//firebase
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/storage";
+
 import { createProjectSaveData } from "../../../../redux/actions/formDataActions";
 
 const Title = styled.h2`
@@ -29,7 +31,13 @@ const Title = styled.h2`
 const CreateProjectPage1 = ({ outsideClick, onClickNext }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const organization = useSelector((state) => state.user.organization);
+
   const [projectRoom_name, setProjectRoom_name] = useState(null);
+
+  const createProjectFormData = useSelector(
+    (state) => state.formData.createProjectFormData
+  );
 
   const createProjectValidationSchema = yup.object({
     projectRoom_name: yup
@@ -56,37 +64,69 @@ const CreateProjectPage1 = ({ outsideClick, onClickNext }) => {
   });
 
   useEffect(() => {
-    if (startedCreatingProject) {
-      setProjectRoom_name(retrievedData.projectRoom_name);
+    if (createProjectFormData) {
+      setProjectRoom_name(createProjectFormData.projectRoom_name);
 
-      formik.setFieldValue("projectRoom_name", retrievedData.projectRoom_name);
+      formik.setFieldValue(
+        "projectRoom_name",
+        createProjectFormData.projectRoom_name
+      );
       formik.setFieldValue(
         "projectRoom_description",
-        retrievedData.projectRoom_description
+        createProjectFormData.projectRoom_description
       );
     }
   }, []);
 
   const handleNext = () => {
-    var createProjectData = {
+    var createProjectFormDataPage1 = {
+      ...createProjectFormData,
       projectRoom_name: formik.values.projectRoom_name,
       projectRoom_description: formik.values.projectRoom_description,
-      geoData:
-        retrievedData && retrievedData.geoData ? retrievedData.geoData : null,
     };
 
-    dispatch(createProjectSaveData());
-    // Retrieve the object from storage
-    // var retrievedObject = localStorage.getItem('testObject');
-    // console.log('retrievedObject: ', JSON.parse(retrievedObject));
+    // if (
+    //   createProjectFormData &&
+    //   createProjectFormData.projectRoom_name &&
+    //   createProjectFormData.imgUrl
+    // ) {
+    //   console.log("ddownloaf image");
+    //   const underscoreProjectNameOld = createProjectFormData.projectRoom_name
+    //     .split(" ")
+    //     .join("_");
+    //   const fileNameOld = organization + ":_" + underscoreProjectNameOld;
 
-    // Store
-    localStorage.setItem(
-      "createProjectData",
-      JSON.stringify(createProjectData)
-    );
+    //   const storageRef = firebase.storage().ref();
+    //   storageRef
+    //     .child(`projectRoomThumbnails/${fileNameOld}/thumbnail`)
+    //     .getDownloadURL()
+    //     .then(onResolve, onReject);
 
-    console.log(localStorage.createProjectData);
+    //   function onResolve(foundURL) {
+    //     dispatch(createProjectSaveData(createProjectFormDataPage1));
+
+    //     const underscoreProjectNameNew =
+    //       createProjectFormDataPage1.projectRoom_name.split(" ").join("_");
+    //     const fileNameNew = organization + ":_" + underscoreProjectNameNew;
+
+    //     storageRef
+    //       .child(`projectRoomThumbnails/${fileNameNew}/thumbnail`)
+    //       .put(foundURL)
+    //       .then(() => {
+    //         console.log("upload image", fileNameOld, fileNameNew);
+    //         onClickNext();
+    //       });
+    //   }
+
+    //   function onReject(error) {
+    //     dispatch(createProjectSaveData(createProjectFormDataPage1));
+
+    //     console.log(error.code);
+    //     //No Photo specified
+    //     onClickNext();
+    //   }
+    // }
+
     onClickNext();
   };
 

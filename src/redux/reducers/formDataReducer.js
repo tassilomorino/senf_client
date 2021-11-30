@@ -7,8 +7,8 @@
 import { SET_CREATE_PROJECT_FORM_DATA } from "../types";
 
 const initialState = {
-  createProjectData: null,
-  createOrganizationData: null,
+  createProjectFormData: null,
+  createOrganizationFormData: null,
 };
 
 export default function (state = initialState, action) {
@@ -16,7 +16,7 @@ export default function (state = initialState, action) {
     case SET_CREATE_PROJECT_FORM_DATA:
       return {
         ...state,
-        createProjectData: action.payload,
+        createProjectFormData: action.payload,
       };
 
     default:

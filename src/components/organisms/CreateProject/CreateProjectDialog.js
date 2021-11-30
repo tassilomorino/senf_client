@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { useState, useRef, useCallback, useEffect } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import { useTransition, animated } from "@react-spring/web";
@@ -49,7 +50,17 @@ const CreateProjectDialog = ({
   const { t } = useTranslation();
   const [outsideClick, setOutsideClick] = useState(false);
 
-  const [index, set] = useState(0);
+  const createProjectFormData = useSelector(
+    (state) => state.formData.createProjectFormData
+  );
+  const [index, set] = useState(1);
+
+  useEffect(() => {
+    if (createProjectFormData && createProjectFormData.projectRoom_name) {
+      set(0);
+    }
+  }, []);
+
   const [fromValue, setFrom] = useState(-100);
   const [leaveValue, setLeave] = useState(15);
   const onClickPrev = useCallback(() => {
@@ -63,27 +74,22 @@ const CreateProjectDialog = ({
     setLeave(-15);
   }, []);
 
-  useEffect(() => {
-    if (
-      typeof Storage !== "undefined" &&
-      !localStorage.getItem("createProjectData")
-    ) {
-      set(1);
-    }
-  }, []);
-
   const transitions = useTransition(index, {
-    from: {
-      opacity: 0,
-      transform: `translateX(${fromValue}%)`,
-      config: { duration: 1000, mass: 100 },
+    // from: {
+    //   opacity: 0,
+    //   transform: `translateX(${fromValue}%)`,
+    //   config: { duration: 1000, mass: 100 },
+    // },
+    enter: {
+      opacity: 1,
+      transform: "translateX(0%)",
+      animation: "smallEnteranimation 1s",
     },
-    enter: { opacity: 1, transform: "translateX(0%)" },
-    leave: {
-      opacity: 0,
-      transform: `translateX(${leaveValue}%)`,
-      config: { duration: 300 },
-    },
+    // leave: {
+    //   opacity: 0,
+    //   transform: `translateX(${leaveValue}%)`,
+    //   config: { duration: 300 },
+    // },
   });
 
   const outerRef = useRef();

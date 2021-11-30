@@ -1,10 +1,12 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ReactDOM from "react-dom";
-import MapGL, { Source, Layer } from "@urbica/react-map-gl";
+import MapGL, { FullscreenControl, Source, Layer } from "@urbica/react-map-gl";
 import Draw from "@urbica/react-map-gl-draw";
 import "mapbox-gl/dist/mapbox-gl.css";
+
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import styled from "styled-components";
 import {
@@ -12,10 +14,8 @@ import {
   CustomIconButton,
 } from "../../../atoms/CustomButtons/CustomButton";
 import { useTranslation } from "react-i18next";
-import {
-  retrievedData,
-  startedCreatingProject,
-} from "../functions/CreateProjectFunctions";
+import { createProjectSaveData } from "../../../../redux/actions/formDataActions";
+import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
 const MapWrapper = styled.div`
   width: 100%;
@@ -26,6 +26,16 @@ const MapWrapper = styled.div`
   z-index: 9999;
   visibility: ${(props) => (props.mapOpen ? "visible" : "hidden")};
 `;
+
+const ButtonsContainer = styled.div`
+  position: fixed;
+  display: flex;
+  justify-content: space-around;
+  bottom: 70px;
+  width: 120px;
+  height: 50px;
+  margin-left: calc(50% - 60px);
+`;
 const MapDialog = ({
   mapOpen,
   setMapOpen,
@@ -33,11 +43,26 @@ const MapDialog = ({
   mapRef,
   _onViewportChange,
   _,
-  setFeatures,
 }) => {
   const { t } = useTranslation();
-
+  const dispatch = useDispatch();
   const [data, setData] = useState(null);
+
+  const drawRef = useRef(null);
+  const [toolMode, setMode] = useState(null);
+  const [isSetPolygon, setPolygon] = useState(false);
+
+  useEffect(() => {
+    if (data) {
+      setMode("simple_select");
+    } else {
+      setMode("draw_polygon");
+    }
+  }, [data]);
+
+  const createProjectFormData = useSelector(
+    (state) => state.formData.createProjectFormData
+  );
 
   // const [data, setData] = useState({
   //   type: "FeatureCollection",
@@ -64,52 +89,41 @@ const MapDialog = ({
   // });
 
   useEffect(() => {
-    if (startedCreatingProject) {
-      console.log(retrievedData);
-    }
-    if (startedCreatingProject && retrievedData.geoData) {
-      setData(retrievedData.geoData);
+    if (createProjectFormData && createProjectFormData.geoData) {
+      setData(createProjectFormData.geoData);
     }
   }, []);
 
-  const handleSave = (e) => {
-    // var keyboardEvent = document.createEvent("KeyboardEvent");
-    // var initMethod =
-    //   typeof keyboardEvent.initKeyboardEvent !== "undefined"
-    //     ? "initKeyboardEvent"
-    //     : "initKeyEvent";
+  const handleSet = () => {
+    setMode("simple_select");
 
-    // keyboardEvent[initMethod](
-    //   "keydown", // event type: keydown, keyup, keypress
-    //   true, // bubbles
-    //   true, // cancelable
-    //   window, // view: should be window
-    //   false, // ctrlKey
-    //   false, // altKey
-    //   false, // shiftKey
-    //   false, // metaKey
-    //   13, // keyCode: unsigned long - the virtual key code, else 0
-    //   0 // charCode: unsigned long - the Unicode character associated with the depressed key, else 0
-    // );
-    // document.dispatchEvent(keyboardEvent);
+    setTimeout(() => {
+      setMode("draw_polygon");
+      setMode("simple_select");
+      setPolygon(true);
+    }, 100);
+  };
 
-    // if (e.key == "Enter") {
-    //   alert("enter key pressed");
-    // }
+  const handleClose = () => {
+    var createProjectData = {
+      ...createProjectFormData,
+      geoData: data,
+    };
 
-    if (data && retrievedData) {
-      var createProjectData = {
-        projectRoom_name: retrievedData.projectRoom_name,
-        projectRoom_description: retrievedData.projectRoom_description,
-        geoData: data,
-      };
+    dispatch(createProjectSaveData(createProjectData));
+  };
+  const handleSave = () => {
+    var createProjectData = {
+      ...createProjectFormData,
+      geoData: data,
+    };
 
-      localStorage.setItem(
-        "createProjectData",
-        JSON.stringify(createProjectData)
-      );
-      console.log(JSON.stringify(createProjectData));
-    }
+    dispatch(createProjectSaveData(createProjectData));
+  };
+
+  const handleDelete = (data) => {
+    setData(null);
+    drawRef.current._draw.deleteAll();
   };
 
   return ReactDOM.createPortal(
@@ -119,7 +133,7 @@ const MapDialog = ({
         position="fixed"
         margin={document.body.clientWidth > 768 ? "40px" : "10px"}
         left="0"
-        handleButtonClick={() => setMapOpen(false)}
+        handleButtonClick={handleClose}
       />
 
       {viewport && (
@@ -141,6 +155,11 @@ const MapDialog = ({
             duration: 2700,
           }}
         >
+          {/* <FullscreenControl
+            position="top-right"
+            style={{ backgroundColor: "green" }}
+          /> */}
+
           {/* <Source
             id="maine"
             type="geojson"
@@ -156,40 +175,45 @@ const MapDialog = ({
             }}
           /> */}
           <Draw
+            ref={drawRef}
             data={data}
             onChange={(data) => {
               setData(data);
               console.log(data);
             }}
-            // onDrawCreate={({ features }) => {
-            //   setFeatures({ features });
-            //   console.log(features);
-            // }}
-            // onDrawUpdate={({ features }) => {
-            //   setFeatures({ features });
-            //   console.log(features);
-            // }}
-            // onDrawCreate={({ features, data }) => {
-            //   setFeatures({ features });
-            //   setData(data);
-            //   console.log("CREATE", "data", data, "features", features);
-            // }}
-            // onDrawUpdate={({ features, data }) => {
-            //   setFeatures({ features });
-            //   setData(data);
-            //   console.log("data", data, "features", features);
-            // }}
-            mode="draw_polygon"
+            mode={toolMode}
           />
+          <ButtonsContainer>
+            {data && (
+              <CustomIconButton
+                name="Trash"
+                iconWidth="80%"
+                position="relative"
+                backgroundColor="white"
+                handleButtonClick={() =>
+                  handleDelete(data, createProjectFormData)
+                }
+              />
+            )}
 
-          <CustomButton
+            <CustomIconButton
+              name="Check"
+              iconWidth="80%"
+              position="relative"
+              backgroundColor="white"
+              handleButtonClick={handleSet}
+            />
+          </ButtonsContainer>
+
+          <SubmitButton
             text={t("save")}
             backgroundColor="#353535"
             textColor="white"
-            position="relative"
+            position="fixed"
             bottom="10px"
             zIndex="0"
             handleButtonClick={handleSave}
+            disabled={!(data && isSetPolygon)}
           />
         </MapGL>
       )}

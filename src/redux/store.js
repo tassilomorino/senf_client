@@ -3,12 +3,16 @@
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 
+import throttle from "lodash/throttle";
+
 import userReducer from "./reducers/userReducer";
 import formDataReducer from "./reducers/formDataReducer";
 import dataReducer from "./reducers/dataReducer";
 import uiReducer from "./reducers/uiReducer";
-
-const initialState = {};
+import {
+  loadStateCreateProjectData,
+  saveStateCreateProjectData,
+} from "./persistedState";
 
 const middleware = [thunk];
 
@@ -25,6 +29,19 @@ const composeEnhancers =
     : compose;
 
 const enhancer = composeEnhancers(applyMiddleware(...middleware));
-const store = createStore(reducers, initialState, enhancer);
+
+const persistedState = loadStateCreateProjectData();
+
+const store = createStore(reducers, persistedState, enhancer);
+
+store.subscribe(
+  throttle(() => {
+    if (store.getState().formData.createProjectFormData !== null) {
+      saveStateCreateProjectData({
+        formData: store.getState().formData,
+      });
+    }
+  }, 1000)
+);
 
 export default store;

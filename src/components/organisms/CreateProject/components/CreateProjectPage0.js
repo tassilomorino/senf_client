@@ -1,16 +1,14 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
-import {
-  retrievedData,
-  startedCreatingProject,
-} from "../functions/CreateProjectFunctions";
 
 import NotDoneImage from "../../../../images/Not_connected.png";
+import { createProjectDeleteData } from "../../../../redux/actions/formDataActions";
 
 const Title = styled.h2`
   font-family: PlayfairDisplay-Bold;
@@ -27,29 +25,33 @@ const Title = styled.h2`
 
 const CreateProjectPage0 = ({ outsideClick, onClickNext }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
-  const [projectRoom_name, setProjectRoom_name] = useState(null);
-
-  useEffect(() => {
-    if (
-      startedCreatingProject &&
-      retrievedData &&
-      retrievedData.projectRoom_name
-    ) {
-      setProjectRoom_name(retrievedData.projectRoom_name);
-    }
-  }, []);
+  const createProjectFormData = useSelector(
+    (state) => state.formData.createProjectFormData
+  );
 
   const handleRestart = () => {
-    localStorage.removeItem("createProjectData");
-    onClickNext();
+    var answer = window.confirm(
+      "Bist du sicher, dass du die Erstellung des Projektraums neustarten möchtest?"
+    );
+    if (answer) {
+      dispatch(createProjectDeleteData());
+      localStorage.removeItem("createProjectData");
+      onClickNext();
+    } else {
+      //some code
+    }
   };
 
   return (
     <div>
       <Title>
         Du bist noch dabei, deinen Projektraum{" "}
-        {projectRoom_name && `"${projectRoom_name}"`} zu erstellen{" "}
+        {createProjectFormData &&
+          createProjectFormData.projectRoom_name &&
+          `"${createProjectFormData.projectRoom_name}"`}{" "}
+        zu erstellen{" "}
       </Title>
 
       <img src={NotDoneImage} width="60%" alt="NotDoneImage" />

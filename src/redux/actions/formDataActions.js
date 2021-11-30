@@ -8,3 +8,10 @@ export const createProjectSaveData = (createProjectFormData) => (dispatch) => {
     payload: createProjectFormData,
   });
 };
+
+export const createProjectDeleteData = () => (dispatch) => {
+  dispatch({
+    type: SET_CREATE_PROJECT_FORM_DATA,
+    payload: null,
+  });
+};

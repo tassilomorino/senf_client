@@ -1,13 +1,15 @@
 /** @format */
 
 import React, { useState, useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import MapDialog from "./MapDialog";
 
-import DrawMap from "../../../../images/drawMap.jpg";
-import { CustomButton } from "../../../atoms/CustomButtons/CustomButton";
+import DrawMapImage from "../../../../images/drawMap.jpg";
+import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
+import { createProjectSaveData } from "../../../../redux/actions/formDataActions";
+import MapPreview from "./MapPreview";
 
 const Wrapper = styled.div`
   display: flex;
@@ -47,11 +49,15 @@ const StyledImg = styled.img`
 
 const CreateProjectPage1 = ({ outsideClick }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
   const [mapOpen, setMapOpen] = useState(false);
   const mapViewport = useSelector((state) => state.data.mapViewport);
   const mapRef = useRef(null);
   const [viewport, setViewport] = useState(null);
-
+  const createProjectFormData = useSelector(
+    (state) => state.formData.createProjectFormData
+  );
   useEffect(() => {
     const viewport = {
       zoom: mapViewport.zoom,
@@ -66,7 +72,20 @@ const CreateProjectPage1 = ({ outsideClick }) => {
     setViewport(viewport);
   };
 
-  const handleDelete = () => {};
+  const handleDelete = (data, createProjectFormData) => {
+    if (data) {
+      var createProjectData = {
+        ...createProjectFormData,
+        geoData: null,
+      };
+
+      dispatch(createProjectSaveData(createProjectData));
+
+      setTimeout(() => {
+        setMapOpen(true);
+      }, 1000);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -76,6 +95,7 @@ const CreateProjectPage1 = ({ outsideClick }) => {
         viewport={viewport}
         mapRef={mapRef}
         _onViewportChange={_onViewportChange}
+        handleDelete={handleDelete}
       />
 
       <Wrapper>
@@ -85,21 +105,36 @@ const CreateProjectPage1 = ({ outsideClick }) => {
           Ortsbezogen Ideen sammeln.
         </h3>
 
-        <DrawMapButton onClick={setMapOpen}>
-          <StyledImg src={DrawMap} />
-        </DrawMapButton>
         <h3>
-          Gebiet <br /> einzeichnen
+          Zeichne das Gebiet ein! <br />
         </h3>
 
-        <CustomButton
-          text={t("delete")}
-          backgroundColor="#353535"
-          textColor="white"
+        <DrawMapButton onClick={setMapOpen}>
+          {createProjectFormData.geoData ? (
+            <MapPreview
+              mapOpen={mapOpen}
+              setMapOpen={setMapOpen}
+              viewport={viewport}
+              mapRef={mapRef}
+              _onViewportChange={_onViewportChange}
+              handleDelete={handleDelete}
+            />
+          ) : (
+            <StyledImg src={DrawMapImage} />
+          )}
+        </DrawMapButton>
+
+        <SubmitButton
+          text={t("next")}
+          zIndex="9"
+          backgroundColor="white"
+          textColor="#353535"
           position="relative"
-          top="10px"
-          zIndex="0"
-          handleButtonClick={handleDelete}
+          top={document.body.clientWidth > 768 ? "100px" : "70px"}
+          left="0"
+          // handleButtonClick={onClickNext}
+          // disabled={!formikCreateProjectStore.isValid}
+          // keySubmitRef={keySubmitRef}
         />
       </Wrapper>
     </React.Fragment>

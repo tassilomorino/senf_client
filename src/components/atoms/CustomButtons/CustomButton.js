@@ -13,6 +13,9 @@ import ChatIconIcon from "../../../images/icons/chat.png";
 import WeblinkIcon from "../../../images/icons/world-wide-web-on-grid.png";
 import ContactIcon from "../../../images/icons/mail.png";
 import DatePickerIcon from "../../../images/icons/datepicker.png";
+import CheckIcon from "../../../images/icons/check.png";
+import TrashIcon from "../../../images/icons/trash.png";
+
 const enterAnimation = keyframes`
     0% {
       opacity: 0;
@@ -119,6 +122,8 @@ const Icons = {
   Weblink: WeblinkIcon,
   Contact: ContactIcon,
   DatePicker: DatePickerIcon,
+  Check: CheckIcon,
+  Trash: TrashIcon,
 };
 
 const enterAnimationRound = keyframes`
