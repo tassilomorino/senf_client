@@ -17,27 +17,19 @@ This project was started by an amateur programmer, so please don't be too harsh 
 
 To avoid ending up with an unmanageable amount of branches, we decided to go this way: fork the repository first and then clone it. When contributing, create a pull request as described in [this documentation](/docs/CREATE_A_PULL_REQUEST.md)
 
-## 2: Create a Mapbox Account and get an Access Token
+## 2: Install packages
 
-To obtain an access token, sign in to https://www.mapbox.com/ and visit Account > Tokens. The token will start with "pk". You may use the default or create another
+Open `senf_client` folder in the terminal and type `npm install`.
+If you get error `npm command not found ` make sure you have [node.js](https://nodejs.org/en/)  installed on your machine.
 
-## 3: Add a .env file to the Project root containing the following variable:
+## 3: Run project
 
-REACT_APP_MAPBOX_ACCESS_TOKEN= Your_Access_token_here <br/>
-<br/><br/>
-Using your mapbox token you will not be able to see map on the screen, but website will be functional. If you are interested in contributing, please contact [@tassilomorino](https://github.com/tassilomorino) to get a private token.
+To run a project, type `npm start` in the terminal 
 
-<br/><br/>
-Tip: If you already started the React Server before adding this variable you need to restart the react server afterwards
+## 4: Open it
 
-## 4: Install packages
+Go to [http://localhost:3000](http://localhost:3000)
 
-run `npm install`
-
-## 5: Run project
-
-run `npm start`
-
-## 6: Open it
-
-go to [http://localhost:3000](http://localhost:3000)
+## 5: Private access token
+To see map on a screen, you need to get a private mapbox access token from [@tassilomorino](https://github.com/tassilomorino)
+and update your `REACT_APP_MAPBOX_ACCESS_TOKEN=`  variable in `.env` file.
