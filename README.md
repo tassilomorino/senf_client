@@ -15,21 +15,26 @@ This project was started by an amateur programmer, so please don't be too harsh 
 
 ## 1: Fork this repository and clone your own Fork
 
-To avoid ending up with an unmanageable amount of branches, we decided to go this way: fork the repository first and then clone it. When contributing, create a pull request as described in [this documentation](/docs/CREATE_A_PULL_REQUEST.md)
+To avoid ending up with an unmanageable amount of branches, we decided to go this way: fork the repository first and then clone your fork to your computer using `git clone` https://github.com/your-github-name/senf_client.git. When contributing, create a pull request as described in [this documentation](/docs/CREATE_A_PULL_REQUEST.md)
 
 ## 2: Install packages
 
+
 Open `senf_client` folder in the terminal and type `npm install`.
+
 If you get error `npm command not found ` make sure you have [node.js](https://nodejs.org/en/)  installed on your machine.
 
-## 3: Run project
+
+## 3: Change to .env file
+
+Open `senf_client` folder, find a file called .env-sample and rename it to .env
+
+## 4: Run project
 
 To run a project, type `npm start` in the terminal 
 
-## 4: Open it
+## 5: Open it
 
 Go to [http://localhost:3000](http://localhost:3000)
 
-## 5: Private access token
-To see map on a screen, you need to get a private mapbox access token from [@tassilomorino](https://github.com/tassilomorino)
-and update your `REACT_APP_MAPBOX_ACCESS_TOKEN=`  variable in `.env` file.
+
