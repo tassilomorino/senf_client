@@ -58,7 +58,9 @@
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "cypress:ci": "start-server-and-test start:silent http://localhost:3000 cy:run",
-    "cypress": "start-server-and-test start:silent http://localhost:3000 cy:open"
+    "cypress": "start-server-and-test start:silent http://localhost:3000 cy:open",
+    "lint": "eslint .",
+    "format": "prettier --write \"./**/*.{js,jsx,json}\" --config ./.prettierrc"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -81,6 +83,7 @@
     "cypress": "^8.1.0",
     "cypress-firebase": "^2.0.0",
     "cypress-wait-until": "^1.7.1",
+    "prettier": "^2.5.0",
     "start-server-and-test": "^1.13.1"
   },
   "buildDate": 1637595103636
