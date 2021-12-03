@@ -11,6 +11,7 @@ import { ProjectCard, CreateProject } from "../../molecules/Cards/ProjectCard";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import InfiniteScroll from "react-infinite-scroller";
 import CreateProjectDialog from "../CreateProject/CreateProjectDialog";
+import CreateOrganizationDialog from "../CreateOrganization/CreateOrganizationDialog";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -46,6 +47,10 @@ const NoIdeasYet = styled.div`
 const ProjectsPage = ({ order, projectsData }) => {
   const [isCreateProjectDialogIsOpen, setCreateProjectDialogIsOpen] =
     useState(false);
+  const [isCreateOrganizationIsOpen, setCreateOrganizationIsOpen] =
+    useState(false);
+  const { isAdmin } = useSelector((state) => state.user);
+
   const { t } = useTranslation();
   const loadingProjects = useSelector((state) => state.data.loadingProjects);
 
@@ -112,6 +117,10 @@ const ProjectsPage = ({ order, projectsData }) => {
         setCreateProjectDialogIsOpen={setCreateProjectDialogIsOpen}
         isCreateProjectDialogIsOpen={isCreateProjectDialogIsOpen}
       />
+      <CreateOrganizationDialog
+        setCreateOrganizationIsOpen={setCreateOrganizationIsOpen}
+        isCreateOrganizationIsOpen={isCreateOrganizationIsOpen}
+      />
 
       {isMobileCustom ? (
         <div style={{ height: "110px" }} />
@@ -143,6 +152,11 @@ const ProjectsPage = ({ order, projectsData }) => {
       <CreateProject
         setCreateProjectDialogIsOpen={setCreateProjectDialogIsOpen}
       />
+      {isAdmin && (
+        <button onClick={setCreateOrganizationIsOpen}>
+          create Organization
+        </button>
+      )}
 
       <br />
       <br />

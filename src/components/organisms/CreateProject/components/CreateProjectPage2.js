@@ -75,6 +75,8 @@ const CreateProjectPage2 = ({ onClickNext }) => {
         localStorage.getItem("createProjectRoomId")
       ) {
         const ref = await db
+          .collection("organizations")
+          .doc(localStorage.getItem("createProjectRoomOrganizationId"))
           .collection("projectRooms")
           .doc(localStorage.getItem("createProjectRoomId"))
           .get();
@@ -112,6 +114,8 @@ const CreateProjectPage2 = ({ onClickNext }) => {
         contact: contact,
       };
       const ref = await db
+        .collection("organizations")
+        .doc(localStorage.getItem("createProjectRoomOrganizationId"))
         .collection("projectRooms")
         .doc(localStorage.getItem("createProjectRoomId"));
       return ref.update(updateProject).then(() => {

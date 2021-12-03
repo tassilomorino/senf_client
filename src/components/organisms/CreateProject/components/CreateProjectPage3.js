@@ -68,7 +68,6 @@ const CreateProjectPage3 = ({ onClickNext }) => {
   const createProjectFormData = useSelector(
     (state) => state.formData.createProjectFormData
   );
-  const organization = useSelector((state) => state.user.organization);
 
   const fileName = null;
 
@@ -91,7 +90,9 @@ const CreateProjectPage3 = ({ onClickNext }) => {
       const storageRef = firebase.storage().ref();
 
       const fileRef = storageRef.child(
-        `projectRoomThumbnails/${fileName}/thumbnail`
+        `projectRoomThumbnails/${localStorage.getItem(
+          "createProjectRoomOrganizationId"
+        )}/${localStorage.getItem("createProjectRoomId")}/thumbnail`
       );
       await fileRef.put(compressedFile);
       setUploadedImage(
@@ -112,20 +113,13 @@ const CreateProjectPage3 = ({ onClickNext }) => {
   }
 
   useEffect(() => {
-    loadImageFromStorage(fileName, setUploadedImage);
-    console.log(uploadedImage);
-
-    const db = firebase.firestore();
-    const ref = db.collection("projects").doc();
-    const myId = ref.id;
-
-    console.log(myId);
-  }, []);
-
-  const loadImageFromStorage = (fileName, setUploadedImage) => {
     const storageRef = firebase.storage().ref();
     storageRef
-      .child(`projectRoomThumbnails/${fileName}/thumbnail`)
+      .child(
+        `organizationsData/${localStorage.getItem(
+          "createProjectRoomOrganizationId"
+        )}/${localStorage.getItem("createProjectRoomId")}/thumbnail`
+      )
       .getDownloadURL()
       .then(onResolve, onReject);
 
@@ -136,7 +130,7 @@ const CreateProjectPage3 = ({ onClickNext }) => {
     function onReject(error) {
       console.log(error.code);
     }
-  };
+  }, [uploadedImage]);
 
   return (
     <Wrapper>

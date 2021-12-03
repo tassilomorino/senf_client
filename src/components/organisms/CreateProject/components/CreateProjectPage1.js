@@ -28,7 +28,6 @@ const SelectContainer = styled.div`
 const CreateProjectPage1 = ({ onClickNext }) => {
   const { t } = useTranslation();
   const [outsideClick, setOutsideClick] = useState(false);
-  const userId = useSelector((state) => state.user.userId);
 
   const outerRef = useRef();
   useOnClickOutside(outerRef, () => {
@@ -96,28 +95,32 @@ const CreateProjectPage1 = ({ onClickNext }) => {
   useEffect(() => {
     async function fetchData() {
       const db = firebase.firestore();
-      if (
-        typeof Storage !== "undefined" &&
-        localStorage.getItem("createProjectRoomId")
-      ) {
-        const ref = await db
-          .collection("projectRooms")
-          .doc(localStorage.getItem("createProjectRoomId"))
-          .get();
 
-        if (!ref.exists) {
-          console.log("No such document!");
-        } else {
-          const data = ref.data();
-          setTitle(data.title);
+      const ref = await db
+        .collection("organizations")
+        .doc(localStorage.getItem("createProjectRoomOrganizationId"))
+        .collection("projectRooms")
+        .doc(localStorage.getItem("createProjectRoomId"))
+        .get();
 
-          formik.setFieldValue("title", data.title);
-          formik.setFieldValue("description", data.description);
-          setTimeout(() => formik.setFieldTouched("title", true));
-        }
+      if (!ref.exists) {
+        console.log("No such document!");
+      } else {
+        const data = ref.data();
+        setTitle(data.title);
+
+        formik.setFieldValue("title", data.title);
+        formik.setFieldValue("description", data.description);
+        setTimeout(() => formik.setFieldTouched("title", true));
       }
     }
-    fetchData();
+
+    if (
+      typeof Storage !== "undefined" &&
+      localStorage.getItem("createProjectRoomId")
+    ) {
+      fetchData();
+    }
   }, []);
 
   const handleNext = async () => {
@@ -135,6 +138,8 @@ const CreateProjectPage1 = ({ onClickNext }) => {
       };
 
       const ref = await db
+        .collection("organizations")
+        .doc(selectedOrganizationId)
         .collection("projectRooms")
         .doc(localStorage.getItem("createProjectRoomId"));
 
@@ -151,10 +156,16 @@ const CreateProjectPage1 = ({ onClickNext }) => {
       };
 
       await db
+        .collection("organizations")
+        .doc(selectedOrganizationId)
         .collection("projectRooms")
         .add(newProject)
         .then((doc) => {
           localStorage.setItem("createProjectRoomId", doc.id);
+          localStorage.setItem(
+            "createProjectRoomOrganizationId",
+            selectedOrganizationId
+          );
         })
         .then(() => {
           onClickNext();

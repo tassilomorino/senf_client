@@ -35,7 +35,12 @@ const EditModalMainFields = ({
   };
 
   const MyInput = (props) => (
-    <input {...props} placeholder={scream.locationHeader} id="geocoder" />
+    <input
+      {...props}
+      placeholder={scream.locationHeader}
+      id="geocoder"
+      autocomplete="off"
+    />
   );
   return (
     <div className="textFields">
@@ -70,7 +75,7 @@ const EditModalMainFields = ({
         className="geocoder-edit"
         inputComponent={MyInput}
         updateInputOnSelect
-      ></Geocoder>
+      />
 
       <TextField
         id="title"
