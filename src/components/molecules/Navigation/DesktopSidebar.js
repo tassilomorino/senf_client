@@ -126,7 +126,7 @@ const DesktopSidebar = ({
             marginBottom: "30px",
           }}
         ></div>
-        <TopicFilter />
+        <TopicFilter column />
         <div
           style={{
             position: "relative",
