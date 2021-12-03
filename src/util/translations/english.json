@@ -36,6 +36,10 @@
   "votes": "Votes",
   "info": "Info",
   "calendar": "Calendar",
+  "what_is_it_about": "What is it about ?",
+  "more_info": "More Info",
+  "period": "Period",
+  "Initiators": "Initiators",
 
   "your_ideas": "Your ideas",
   "your_settings": "Your account",
@@ -77,6 +81,8 @@
   "diverse": "Diverse",
   "enter_email": "Enter your email",
   "enter_valid_email": "Enter a valid email",
+
+  "searchBar": "Search titles and descriptions...",
 
   "dataPrivacy": "Data privacy",
   "termsAndConditions": "T&Cs",
