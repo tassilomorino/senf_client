@@ -81,15 +81,12 @@ const TopicFilterWrapperDesktop = styled.div`
   height: auto;
 `;
 
-export function TopicFilter({
-  loading,
-  inline,
-}) {
+export function TopicFilter({ loading, inline }) {
   const openScream = useSelector((state) => state.UI.openScream);
   const selectedTopics = useSelector((state) => state.data.topics);
   const [moveLeft, setMoveLeft] = useState(false);
   const { t } = useTranslation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (openScream) {
@@ -118,8 +115,7 @@ export function TopicFilter({
         });
       }
     }
-    
-  }, [moveLeft,inline]);
+  }, [moveLeft, inline]);
 
   // Handler at index 0 is for the "all" checkbox
   const topicFilters = topics.map((topic, i) => {
@@ -154,7 +150,7 @@ export function TopicFilter({
                 <FiberManualRecordIcon className="activelegenditem" />
               }
               data-cy="topic-all"
-              onChange={() =>dispatch(handleTopicSelectorRedux('all'))}
+              onChange={() => dispatch(handleTopicSelectorRedux("all"))}
               checked={selectedTopics.length === 7}
               style={{ color: "#000000" }}
             />
@@ -178,7 +174,7 @@ export function TopicFilter({
             icon={<FiberManualRecordIcon />}
             checkedIcon={<FiberManualRecordIcon className="activelegenditem" />}
             data-cy="topic-all"
-            onChange={() => dispatch(handleTopicSelectorRedux('all'))}
+            onChange={() => dispatch(handleTopicSelectorRedux("all"))}
             checked={selectedTopics.length === 7}
             style={{ color: "#000000" }}
           />
@@ -187,6 +183,7 @@ export function TopicFilter({
       />
       {topics.map((topic, i) => (
         <FormControlLabel
+          style={{ display: "flex" }}
           key={`${topic.name}-${i}`}
           control={topicFilters[i]}
           label={topic.label}
