@@ -138,7 +138,7 @@ const DesktopSidebar = ({
         {process.env.REACT_APP_INTERNATIONAL &&
           process.env.REACT_APP_INTERNATIONAL === "true" && (
             <CustomButton handleButtonClick={setChangeLocationModalOpen}>
-              Standort ändern
+              Stadt ändern
             </CustomButton>
           )}
         <a

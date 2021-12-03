@@ -1,31 +1,16 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import styled from "styled-components";
 
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
 import NotDoneImage from "../../../../images/Not_connected.png";
-import { createProjectDeleteData } from "../../../../redux/actions/formDataActions";
+import { Title } from "./styles/sharedStyles";
 
-const Title = styled.h2`
-  font-family: PlayfairDisplay-Bold;
-  font-size: 22px;
-  font-weight: 100;
-  color: #353535;
-  align-self: center;
-  margin-bottom: 40px;
-
-  @media (min-width: 768px) {
-    font-size: 32px;
-  }
-`;
-
-const CreateProjectPage0 = ({ outsideClick, onClickNext }) => {
+const CreateProjectPage0 = ({ onClickNext }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
 
   const createProjectFormData = useSelector(
     (state) => state.formData.createProjectFormData
@@ -36,8 +21,7 @@ const CreateProjectPage0 = ({ outsideClick, onClickNext }) => {
       "Bist du sicher, dass du die Erstellung des Projektraums neustarten möchtest?"
     );
     if (answer) {
-      dispatch(createProjectDeleteData());
-      localStorage.removeItem("createProjectData");
+      localStorage.removeItem("createProjectRoomId");
       onClickNext();
     } else {
       //some code
@@ -53,6 +37,7 @@ const CreateProjectPage0 = ({ outsideClick, onClickNext }) => {
           `"${createProjectFormData.projectRoom_name}"`}{" "}
         zu erstellen{" "}
       </Title>
+      <br />
 
       <img src={NotDoneImage} width="60%" alt="NotDoneImage" />
       <SubmitButton

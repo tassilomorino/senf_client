@@ -46,6 +46,7 @@ import TopicFilter from "../molecules/Filters/TopicFilter";
 import PostScream from "../organisms/PostIdea/PostScream";
 import ChangeLocationModal from "../molecules/Modals/ChangeLocationModal";
 import { usePrevious } from "../../hooks/usePrevious";
+import { getOrganizations } from "../../redux/actions/organizationActions";
 
 const Main = () => {
   const { t } = useTranslation();
@@ -176,7 +177,9 @@ const Main = () => {
     } else {
       if (mapViewport && mapViewport.latitude !== 0) {
         dispatch(getScreams(mapViewport)).then(() => {
-          dispatch(getProjects(mapViewport));
+          dispatch(getProjects(mapViewport)).then(() => {
+            dispatch(getOrganizations(mapViewport));
+          });
 
           if (window.location.pathname === "/projects") {
             handleClick(2);

@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import { useTransition, animated } from "@react-spring/web";
-import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 
 //Components
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
@@ -14,6 +13,8 @@ import CreateProjectPage0 from "./components/CreateProjectPage0";
 import CreateProjectPage1 from "./components/CreateProjectPage1";
 import CreateProjectPage2 from "./components/CreateProjectPage2";
 import CreateProjectPage3 from "./components/CreateProjectPage3";
+import CreateProjectPage4 from "./components/CreateProjectPage4";
+import CreateProjectPagePreview from "./components/CreateProjectPreview";
 
 const InnerWrapper = styled.div`
   text-align: center;
@@ -48,7 +49,6 @@ const CreateProjectDialog = ({
   isCreateProjectDialogIsOpen,
 }) => {
   const { t } = useTranslation();
-  const [outsideClick, setOutsideClick] = useState(false);
 
   const createProjectFormData = useSelector(
     (state) => state.formData.createProjectFormData
@@ -56,7 +56,10 @@ const CreateProjectDialog = ({
   const [index, set] = useState(1);
 
   useEffect(() => {
-    if (createProjectFormData && createProjectFormData.projectRoom_name) {
+    if (
+      typeof Storage !== "undefined" &&
+      localStorage.getItem("createProjectRoomId")
+    ) {
       set(0);
     }
   }, []);
@@ -92,14 +95,6 @@ const CreateProjectDialog = ({
     // },
   });
 
-  const outerRef = useRef();
-  useOnClickOutside(outerRef, () => {
-    setOutsideClick(true);
-    setTimeout(() => {
-      setOutsideClick(false);
-    }, 10000);
-  });
-
   const pages = [
     ({ style }) => (
       <animated.div
@@ -122,10 +117,7 @@ const CreateProjectDialog = ({
           position: "absolute",
         }}
       >
-        <CreateProjectPage1
-          outsideClick={outsideClick}
-          onClickNext={onClickNext}
-        />
+        <CreateProjectPage1 onClickNext={onClickNext} />
       </animated.div>
     ),
     ({ style }) => (
@@ -137,11 +129,7 @@ const CreateProjectDialog = ({
           position: "absolute",
         }}
       >
-        <CreateProjectPage2
-          outsideClick={outsideClick}
-          setOutsideClick={setOutsideClick}
-          onClickNext={onClickNext}
-        />
+        <CreateProjectPage2 onClickNext={onClickNext} />
       </animated.div>
     ),
     ({ style }) => (
@@ -152,10 +140,29 @@ const CreateProjectDialog = ({
           position: "absolute",
         }}
       >
-        <CreateProjectPage3
-          outsideClick={outsideClick}
-          setOutsideClick={setOutsideClick}
-        />
+        <CreateProjectPage3 onClickNext={onClickNext} />
+      </animated.div>
+    ),
+    ({ style }) => (
+      <animated.div
+        style={{
+          ...style,
+          width: "100%",
+          position: "absolute",
+        }}
+      >
+        <CreateProjectPage4 onClickNext={onClickNext} />
+      </animated.div>
+    ),
+    ({ style }) => (
+      <animated.div
+        style={{
+          ...style,
+          width: "100%",
+          position: "absolute",
+        }}
+      >
+        <CreateProjectPagePreview />
       </animated.div>
     ),
   ];

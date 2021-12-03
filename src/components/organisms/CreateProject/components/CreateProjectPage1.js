@@ -1,7 +1,9 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import _ from "lodash";
+
 import { TextField } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
@@ -14,39 +16,67 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
 
-import { createProjectSaveData } from "../../../../redux/actions/formDataActions";
+import { useOnClickOutside } from "../../../../hooks/useOnClickOutside";
+import { SubTitle, Title } from "./styles/sharedStyles";
+import CustomSelect from "../../../atoms/Selects/CustomSelect";
 
-const Title = styled.h2`
-  font-family: PlayfairDisplay-Bold;
-  font-size: 22px;
-  font-weight: 100;
-  color: #353535;
-  align-self: center;
-
-  @media (min-width: 768px) {
-    font-size: 32px;
-  }
+const SelectContainer = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
-const CreateProjectPage1 = ({ outsideClick, onClickNext }) => {
+const CreateProjectPage1 = ({ onClickNext }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const organization = useSelector((state) => state.user.organization);
+  const [outsideClick, setOutsideClick] = useState(false);
+  const userId = useSelector((state) => state.user.userId);
 
-  const [projectRoom_name, setProjectRoom_name] = useState(null);
+  const outerRef = useRef();
+  useOnClickOutside(outerRef, () => {
+    setOutsideClick(true);
+    setTimeout(() => {
+      setOutsideClick(false);
+    }, 10000);
+  });
 
-  const createProjectFormData = useSelector(
-    (state) => state.formData.createProjectFormData
+  const organizationId = useSelector((state) => state.user.organizationId);
+  const organizations = useSelector((state) => state.data.organizations);
+
+  const [selectedOrganizationId, setSelectedOrganizationId] = useState(null);
+
+  const myOrganizations = organizations.filter(({ id }) =>
+    organizationId.includes(id)
   );
 
+  const optionsOrganizationsArray = _.orderBy(
+    myOrganizations,
+    "createdAt",
+    "desc"
+  ).map((organization) => ({
+    name: organization.id,
+    label: organization.title,
+    img: organization.imgUrl,
+  }));
+
+  const [title, setTitle] = useState(null);
+
+  useEffect(() => {
+    if (organizationId && organizationId.length === 1) {
+      setSelectedOrganizationId(myOrganizations[0].id);
+    }
+  }, []);
+
+  const handleDropdown = (value) => {
+    setSelectedOrganizationId(value);
+  };
+
   const createProjectValidationSchema = yup.object({
-    projectRoom_name: yup
+    title: yup
       .string()
       .required(t("enter_email"))
       .min(3, t("username_too_short"))
       .max(20, t("username_too_long")),
 
-    projectRoom_description: yup
+    description: yup
       .string()
       .required(t("enter_email"))
       .min(10, t("username_too_short"))
@@ -55,88 +85,88 @@ const CreateProjectPage1 = ({ outsideClick, onClickNext }) => {
 
   const formik = useFormik({
     initialValues: {
-      projectRoom_name: "",
-      projectRoom_description: "",
+      title: "",
+      description: "",
     },
     validationSchema: createProjectValidationSchema,
-    validateOnMount: true,
     validateOnChange: true,
     validateOnBlur: true,
   });
 
   useEffect(() => {
-    if (createProjectFormData) {
-      setProjectRoom_name(createProjectFormData.projectRoom_name);
+    async function fetchData() {
+      const db = firebase.firestore();
+      if (
+        typeof Storage !== "undefined" &&
+        localStorage.getItem("createProjectRoomId")
+      ) {
+        const ref = await db
+          .collection("projectRooms")
+          .doc(localStorage.getItem("createProjectRoomId"))
+          .get();
 
-      formik.setFieldValue(
-        "projectRoom_name",
-        createProjectFormData.projectRoom_name
-      );
-      formik.setFieldValue(
-        "projectRoom_description",
-        createProjectFormData.projectRoom_description
-      );
+        if (!ref.exists) {
+          console.log("No such document!");
+        } else {
+          const data = ref.data();
+          setTitle(data.title);
+
+          formik.setFieldValue("title", data.title);
+          formik.setFieldValue("description", data.description);
+          setTimeout(() => formik.setFieldTouched("title", true));
+        }
+      }
     }
+    fetchData();
   }, []);
 
-  const handleNext = () => {
-    var createProjectFormDataPage1 = {
-      ...createProjectFormData,
-      projectRoom_name: formik.values.projectRoom_name,
-      projectRoom_description: formik.values.projectRoom_description,
-    };
-    dispatch(createProjectSaveData(createProjectFormDataPage1));
-    // if (
-    //   createProjectFormData &&
-    //   createProjectFormData.projectRoom_name &&
-    //   createProjectFormData.imgUrl
-    // ) {
-    //   console.log("ddownloaf image");
-    //   const underscoreProjectNameOld = createProjectFormData.projectRoom_name
-    //     .split(" ")
-    //     .join("_");
-    //   const fileNameOld = organization + ":_" + underscoreProjectNameOld;
+  const handleNext = async () => {
+    const db = firebase.firestore();
 
-    //   const storageRef = firebase.storage().ref();
-    //   storageRef
-    //     .child(`projectRoomThumbnails/${fileNameOld}/thumbnail`)
-    //     .getDownloadURL()
-    //     .then(onResolve, onReject);
+    if (
+      typeof Storage !== "undefined" &&
+      localStorage.getItem("createProjectRoomId")
+    ) {
+      //UPDATING AN EXISTING PROJECTROOM
+      const updateProject = {
+        title: formik.values.title,
+        description: formik.values.description,
+        owner: selectedOrganizationId,
+      };
 
-    //   function onResolve(foundURL) {
-    //     dispatch(createProjectSaveData(createProjectFormDataPage1));
+      const ref = await db
+        .collection("projectRooms")
+        .doc(localStorage.getItem("createProjectRoomId"));
 
-    //     const underscoreProjectNameNew =
-    //       createProjectFormDataPage1.projectRoom_name.split(" ").join("_");
-    //     const fileNameNew = organization + ":_" + underscoreProjectNameNew;
+      return ref.update(updateProject).then(() => {
+        onClickNext();
+      });
+    } else {
+      //CREATING A NEW PROJECTROOM
+      const newProject = {
+        title: formik.values.title,
+        description: formik.values.description,
+        createdAt: new Date().toISOString(),
+        owner: selectedOrganizationId,
+      };
 
-    //     storageRef
-    //       .child(`projectRoomThumbnails/${fileNameNew}/thumbnail`)
-    //       .put(foundURL)
-    //       .then(() => {
-    //         console.log("upload image", fileNameOld, fileNameNew);
-    //         onClickNext();
-    //       });
-    //   }
-
-    //   function onReject(error) {
-    //     dispatch(createProjectSaveData(createProjectFormDataPage1));
-
-    //     console.log(error.code);
-    //     //No Photo specified
-    //     onClickNext();
-    //   }
-    // }
-
-    onClickNext();
+      await db
+        .collection("projectRooms")
+        .add(newProject)
+        .then((doc) => {
+          localStorage.setItem("createProjectRoomId", doc.id);
+        })
+        .then(() => {
+          onClickNext();
+        });
+    }
   };
-  console.log(outsideClick);
 
   return (
-    <div>
+    <div ref={outerRef}>
       <Title>
-        {projectRoom_name ? (
-          <span>Infos zu "{projectRoom_name}" bearbeiten</span>
+        {title ? (
+          <span>Projektinfos bearbeiten</span>
         ) : (
           <span>
             Erstelle deinen <br />
@@ -144,11 +174,27 @@ const CreateProjectPage1 = ({ outsideClick, onClickNext }) => {
           </span>
         )}
       </Title>
+      <SubTitle>
+        Wähle einen passenden Projektnamen sowie eine Projektraumbeschreibung,
+        die zum einen informiert und zum anderen auffordert Ideen beizutragen
+        und sich einzubringen.
+      </SubTitle>
+
+      <SelectContainer>
+        <CustomSelect
+          name={"project"}
+          value={selectedOrganizationId}
+          initialValue={""}
+          options={optionsOrganizationsArray}
+          handleDropdown={handleDropdown}
+        />
+      </SelectContainer>
+
       <TextField
         id="outlined-name"
-        name="projectRoom_name"
-        type="projectRoom_name"
-        label={t("projectRoom_name")}
+        name="title"
+        type="title"
+        label={t("title")}
         margin="normal"
         variant="outlined"
         multiline
@@ -157,16 +203,16 @@ const CreateProjectPage1 = ({ outsideClick, onClickNext }) => {
           borderRadius: "5px",
           width: "80%",
         }}
-        value={formik.values.projectRoom_name}
+        value={formik.values.title}
         onChange={formik.handleChange}
-        error={outsideClick && Boolean(formik.errors.projectRoom_name)}
-        helperText={outsideClick && formik.errors.projectRoom_name}
+        error={outsideClick && Boolean(formik.errors.title)}
+        helperText={outsideClick && formik.errors.title}
       />
       <TextField
         id="outlined-name"
-        name="projectRoom_description"
-        type="projectRoom_description"
-        label={t("projectRoom_description")}
+        name="description"
+        type="description"
+        label={t("description")}
         margin="normal"
         multiline
         minRows="10"
@@ -177,10 +223,10 @@ const CreateProjectPage1 = ({ outsideClick, onClickNext }) => {
           borderRadius: "5px",
           width: "80%",
         }}
-        value={formik.values.projectRoom_description}
+        value={formik.values.description}
         onChange={formik.handleChange}
-        error={outsideClick && Boolean(formik.errors.projectRoom_description)}
-        helperText={outsideClick && formik.errors.projectRoom_description}
+        error={outsideClick && Boolean(formik.errors.description)}
+        helperText={outsideClick && formik.errors.description}
       />
 
       <SubmitButton

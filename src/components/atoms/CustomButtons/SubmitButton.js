@@ -33,7 +33,8 @@ const WideButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: translateX(-50%);
+  transform: ${(props) =>
+    props.transformX ? props.transformX : "translateX(-50%)"};
   cursor: pointer;
 
   margin-left: ${(props) => (props.marginLeft ? props.marginLeft : "50%")};
@@ -70,6 +71,7 @@ export const SubmitButton = ({
   bottom,
   top,
   marginLeft,
+  transformX,
   left,
   zIndex,
   animation,
@@ -90,6 +92,7 @@ export const SubmitButton = ({
       left={left}
       top={top}
       marginLeft={marginLeft}
+      transformX={transformX}
       zIndex={zIndex}
       animation={animation}
       disabled={disabled}

@@ -24,9 +24,11 @@ import {
   SUBMIT_COMMENT,
   LOADING_IDEA_DATA,
   LOADING_PROJECTS_DATA,
+  LOADING_ORGANIZATIONS_DATA,
   LOADING_MYSCREAMS_DATA,
   SET_PROJECTS,
   SET_PROJECT,
+  SET_ORGANIZATIONS,
   SET_SCREAM_USER,
   SET_FULL_SCREAMS,
   SET_COOKIES,
@@ -49,6 +51,7 @@ const defaultTopics = [
 ];
 const initialState = {
   projects: [],
+  organizations: [],
   screams: [],
   myScreams: null,
   scream: {},
@@ -57,6 +60,7 @@ const initialState = {
   loading: true,
   loadingIdea: false,
   loadingProjects: false,
+  loadingOrganizations: false,
   loadingMyScreams: false,
   scream_user: {},
   full_screams: [],
@@ -202,6 +206,19 @@ export default function (state = initialState, action) {
         project: action.payload,
         // projectScreams: action.payload,
         // loadingProjectScreams: false,
+      };
+
+    case LOADING_ORGANIZATIONS_DATA:
+      return {
+        ...state,
+        loadingOrganizations: true,
+      };
+
+    case SET_ORGANIZATIONS:
+      return {
+        ...state,
+        organizations: action.payload,
+        loadingOrganizations: false,
       };
 
     case SET_FULL_SCREAMS:

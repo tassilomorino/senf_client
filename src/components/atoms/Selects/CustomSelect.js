@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { useState, useRef, useEffect } from "react";
+import ReactDOM from "react-dom";
 import styled from "styled-components";
 
 //Images
@@ -45,7 +46,7 @@ const DropDownListContainer = styled.div`
   max-height: 80vh;
   overflow: scroll;
   box-sizing: border-box;
-  z-index: 999;
+  z-index: 99999;
   border-radius: 20px;
 `;
 
@@ -55,7 +56,7 @@ const Background = styled.div`
   top: 0;
   left: 0;
   position: fixed;
-  z-index: 998;
+  z-index: 99998;
   background-color: rgb(0, 0, 0, 0.6);
 `;
 
@@ -156,7 +157,7 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
     return str.slice(0, num) + "...";
   }
   return (
-    <div ref={outerRef}>
+    <React.Fragment>
       <DropDownButton
         onClick={handleToggle}
         class="dropbtn"
@@ -173,41 +174,51 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
             transition: "0.5s",
             transform: open && "scaleY(-1)",
           }}
-        ></img>
+        />
       </DropDownButton>
-      {open && (
-        <React.Fragment>
-          <DropDownListContainer id="container">
-            <DropDownList>
-              {options.map((option) => (
-                <ListItem
-                  onClick={onOptionClicked(option.name, option.label)}
-                  key={Math.random()}
-                >
-                  {option.name === selectedOption ||
-                  option.label === selectedOption ? (
-                    <Span style={{ fontFamily: "Futura PT W01-Bold" }}>
-                      {option.color && <ColorDot color={option.color} />}
-                      {option.img && <Img src={option.img} />}
-                      {truncateString(option.label, dropDownButtonAmount * 0.9)}
-                    </Span>
-                  ) : (
-                    <Span>
-                      {" "}
-                      {option.color && <ColorDot color={option.color} />}
-                      {option.img && <Img src={option.img} />}
-                      {truncateString(option.label, dropDownButtonAmount * 1.2)}
-                    </Span>
-                  )}
-                </ListItem>
-              ))}
-            </DropDownList>
-          </DropDownListContainer>
 
-          <Background onClick={() => setOpen(false)} />
-        </React.Fragment>
+      {ReactDOM.createPortal(
+        open && (
+          <React.Fragment>
+            <DropDownListContainer id="container">
+              <DropDownList>
+                {options.map((option) => (
+                  <ListItem
+                    onClick={onOptionClicked(option.name, option.label)}
+                    key={Math.random()}
+                  >
+                    {option.name === selectedOption ||
+                    option.label === selectedOption ? (
+                      <Span style={{ fontFamily: "Futura PT W01-Bold" }}>
+                        {option.color && <ColorDot color={option.color} />}
+                        {option.img && <Img src={option.img} />}
+                        {truncateString(
+                          option.label,
+                          dropDownButtonAmount * 0.9
+                        )}
+                      </Span>
+                    ) : (
+                      <Span>
+                        {" "}
+                        {option.color && <ColorDot color={option.color} />}
+                        {option.img && <Img src={option.img} />}
+                        {truncateString(
+                          option.label,
+                          dropDownButtonAmount * 1.2
+                        )}
+                      </Span>
+                    )}
+                  </ListItem>
+                ))}
+              </DropDownList>
+            </DropDownListContainer>
+
+            <Background onClick={() => setOpen(false)} />
+          </React.Fragment>
+        ),
+        document.getElementById("portal-root-modal")
       )}
-    </div>
+    </React.Fragment>
   );
 };
 

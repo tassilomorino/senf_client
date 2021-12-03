@@ -46,6 +46,7 @@ export const getProjects = (mapViewport) => async (dispatch) => {
       zoom: doc.data().zoom,
       projectId: doc.id,
       calendar: doc.data().calendar,
+      organizationId: doc.data().organizationId,
       // weblink: doc.data().weblink,
     };
 
