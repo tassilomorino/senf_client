@@ -1,7 +1,8 @@
 /** @format */
 
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import MainModal from "../../atoms/Layout/MainModal";
@@ -14,6 +15,8 @@ const ButtonWrapper = styled.div`
   z-index: 999;
   overflow: hidden;
   white-space: nowrap;
+  background-color: ${(props) =>
+    props.warning ? "rgba(232, 144, 126, 0.4)" : "none"};
 `;
 const Line = styled.div`
   height: 1px;
@@ -21,6 +24,14 @@ const Line = styled.div`
   background-color: grey;
   position: relative;
 `;
+const Headline = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-size: 12pt;
+`;
+
 const CommentMenuModal = ({
   setCommentMenuOpen,
   commentId,
@@ -32,24 +43,23 @@ const CommentMenuModal = ({
   );
 
   const user = useSelector((state) => state.user);
-
+  const [confirmMenu, setConfirmMenuOpen] = useState(false);
   const dispatch = useDispatch();
 
-  const deleteTheComment = () => {
-    var answer = window.confirm(
-      "Bist du sicher, dass du den Kommentar löschen möchtest?"
-    );
-    if (answer) {
-      dispatch(
-        deleteComment(commentId, user, screamId, isAdmin, isModerator)
-      ).then(() => {
-        setCommentMenuOpen(false);
-      });
+  const goBack = () => {
+    setCommentMenuOpen(true);
+    setConfirmMenuOpen(false);
+  };
 
-      //some code
-    } else {
-      //some code
-    }
+  const openConfirmMenu = () => setConfirmMenuOpen(true);
+
+  const deleteTheComment = () => {
+    dispatch(
+      deleteComment(commentId, user, screamId, isAdmin, isModerator)
+    ).then(() => {
+      setCommentMenuOpen(false);
+      setConfirmMenuOpen(false);
+    });
   };
 
   const reportComment = () => {
@@ -75,42 +85,62 @@ const CommentMenuModal = ({
       );
     window.location.href = link;
   };
-
+  const { t } = useTranslation();
   return (
     <React.Fragment>
-      <MainModal handleButtonClick={() => setCommentMenuOpen(false)}>
-        {authenticated && userHandle === handle && (
-          <ButtonWrapper>
-            <ExpandButton handleButtonClick={deleteTheComment}>
-              Kommentar löschen
+      {!confirmMenu ? (
+        <MainModal handleButtonClick={() => setCommentMenuOpen(false)}>
+          {authenticated && userHandle === handle && (
+            <ButtonWrapper>
+              <ExpandButton handleButtonClick={openConfirmMenu}>
+                {t("delete_comment")}
+              </ExpandButton>
+            </ButtonWrapper>
+          )}
+
+          {authenticated && (isAdmin === true || isModerator === true) && (
+            <ButtonWrapper>
+              <ExpandButton handleButtonClick={openConfirmMenu}>
+                {t("delete_comment_admin")}
+              </ExpandButton>
+            </ButtonWrapper>
+          )}
+
+          <ButtonWrapper
+            standalone={
+              (authenticated && userHandle === handle) || isAdmin || isModerator
+                ? false
+                : true
+            }
+          >
+            <ExpandButton handleButtonClick={reportComment}>
+              {t("report")}
             </ExpandButton>
           </ButtonWrapper>
-        )}
-
-        {authenticated && (isAdmin === true || isModerator === true) && (
+          <Line />
           <ButtonWrapper>
-            <ExpandButton handleButtonClick={deleteTheComment}>
-              Kommentar löschen (Admin)
+            <ExpandButton handleButtonClick={() => setCommentMenuOpen(false)}>
+              {t("cancel")}
             </ExpandButton>
           </ButtonWrapper>
-        )}
+        </MainModal>
+      ) : (
+        <MainModal handleButtonClick={goBack}>
+          <Headline>{t("delete_comment_confirm")}</Headline>
 
-        <ButtonWrapper
-          standalone={
-            (authenticated && userHandle === handle) || isAdmin || isModerator
-              ? false
-              : true
-          }
-        >
-          <ExpandButton handleButtonClick={reportComment}>Melden</ExpandButton>
-        </ButtonWrapper>
-        <Line />
-        <ButtonWrapper>
-          <ExpandButton handleButtonClick={() => setCommentMenuOpen(false)}>
-            Abbrechen
-          </ExpandButton>
-        </ButtonWrapper>
-      </MainModal>
+          <Line />
+          <ButtonWrapper warning>
+            <ExpandButton handleButtonClick={deleteTheComment}>
+              {t("delete")}
+            </ExpandButton>
+          </ButtonWrapper>
+          <ButtonWrapper>
+            <ExpandButton handleButtonClick={goBack}>
+              {t("cancel")}
+            </ExpandButton>
+          </ButtonWrapper>
+        </MainModal>
+      )}
     </React.Fragment>
   );
 };

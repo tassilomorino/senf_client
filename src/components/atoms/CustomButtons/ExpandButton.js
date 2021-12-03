@@ -22,7 +22,7 @@ const RippleContainer = styled.div`
   cursor: pointer;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.03);
+    background-color: rgba(0, 0, 0, 0.1);
   }
 
   span {
