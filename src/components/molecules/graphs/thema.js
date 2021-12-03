@@ -15,10 +15,12 @@ const PlotlyComponent = createPlotlyComponent(Plotly);
 // let PlotlyComponent
 // import(/* webpackChunkName: "Thema.js-Graph plotly" */'plotly.js/dist/plotly-cartesian.min').then(plotly=>{
 //   PlotlyComponent = createPlotlyComponent(plotly);
-  
+
 // })
 
 const Thema = ({ screams }) => {
+  const { t } = useTranslation();
+
   function sum(input) {
     if (toString.call(input) !== "[object Array]") return false;
 
@@ -82,7 +84,7 @@ const Thema = ({ screams }) => {
   let Sonstigetrue = 0;
   if (Sonstige.length > 0) {
     SonstigeLength = Sonstige.length;
-    Sonstige_text = "Sonstige";
+    Sonstige_text = t("topics_other");
     Sonstigetrue = 1;
   }
 
@@ -117,7 +119,7 @@ const Thema = ({ screams }) => {
       type: "bar",
       x: [-Rad.length, sum(Rad)],
       xaxis: "x",
-      y: ["Rad", "Rad"],
+      y: [t("topics_bike"), t("topics_bike")],
       yaxis: "y",
     },
     {
@@ -132,7 +134,7 @@ const Thema = ({ screams }) => {
       x: [-Verkehr.length, sum(Verkehr)],
       entry: [-Verkehr.length, sum(Verkehr)],
       xaxis: "x",
-      y: ["Verkehr", "Verkehr"],
+      y: [t("topics_traffic"), t("topics_traffic")],
       yaxis: "y",
     },
     {
@@ -146,7 +148,7 @@ const Thema = ({ screams }) => {
       type: "bar",
       x: [-Umwelt.length, sum(Umwelt)],
       xaxis: "x",
-      y: ["Umwelt und Grün", "Umwelt und Grün"],
+      y: [t("topics_ecoAndGreen"), t("topics_ecoAndGreen")],
       yaxis: "y",
     },
     {
@@ -160,7 +162,7 @@ const Thema = ({ screams }) => {
       type: "bar",
       x: [-Inklusion_Soziales.length, sum(Inklusion_Soziales)],
       xaxis: "x",
-      y: ["Inklusion / Soziales", "Inklusion / Soziales"],
+      y: [t("topics_inclusionAndSocial"), t("topics_inclusionAndSocial")],
       yaxis: "y",
     },
     {
@@ -174,7 +176,7 @@ const Thema = ({ screams }) => {
       type: "bar",
       x: [-Versorgung.length, sum(Versorgung)],
       xaxis: "x",
-      y: ["Versorgung", "Versorgung"],
+      y: [t("topics_care"), t("topics_care")],
       yaxis: "y",
     },
     {
@@ -188,7 +190,7 @@ const Thema = ({ screams }) => {
       type: "bar",
       x: [-Sport_Freizeit.length, sum(Sport_Freizeit)],
       xaxis: "x",
-      y: ["Sport / Freizeit", "Sport / Freizeit"],
+      y: [t("topics_sportsAndLeisure"), t("topics_sportsAndLeisure")],
       yaxis: "y",
     },
     {
@@ -206,6 +208,7 @@ const Thema = ({ screams }) => {
       yaxis: "y",
     },
   ];
+
   let layout = {
     barmode: "relative",
     font: { color: "#414345", family: "Futura PT W01 Book", size: 14 },
@@ -269,7 +272,7 @@ const Thema = ({ screams }) => {
         y: 6 + Sonstigetrue,
         xref: "x",
         yref: "y",
-        text: "Ideen | Votes",
+        text: t("ideas") + " | Votes",
         ay: 0,
         ax: -1,
         arrowcolor: "rgba(255, 0, 255, 0.53)",
@@ -285,28 +288,24 @@ const Thema = ({ screams }) => {
     showLink: false,
     displayModeBar: false,
   };
-const {t} = useTranslation()
 
-const plot =
-     screams && PlotlyComponent !== undefined  ? (
+  const plot =
+    screams && PlotlyComponent !== undefined ? (
       <PlotlyComponent
-        className='insights-plot'
+        className="insights-plot"
         data={data}
         layout={layout}
         config={config}
       />
-    
     ) : (
-      <div style={{display: 'flex', justifyContent: 'center'}}>
-      <CircularProgress size={50} thickness={2} />
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <CircularProgress size={50} thickness={2} />
       </div>
     );
   return (
     <div className="insights-card">
-      <div className="insights-card-title">{t('topics')}</div>
-      <div className="insights-card-subtitle">
-      {t('topics_explained')}
-      </div>
+      <div className="insights-card-title">{t("topics")}</div>
+      <div className="insights-card-subtitle">{t("topics_explained")}</div>
       <div className="insights-plot-clickblocker"></div>
       {plot}
     </div>
