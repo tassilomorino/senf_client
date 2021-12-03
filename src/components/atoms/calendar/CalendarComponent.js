@@ -2,7 +2,8 @@
 
 import React from "react";
 import FullCalendar from "@fullcalendar/react"; // must go before plugins
-import de from "@fullcalendar/core/locales/de";
+import deLocale from "@fullcalendar/core/locales/de";
+import enLocale from "@fullcalendar/core/locales/en-gb";
 import { formatDate } from "@fullcalendar/react";
 
 import listMonth from "@fullcalendar/list";
@@ -18,7 +19,6 @@ let str = formatDate(new Date(), {
   day: "numeric",
 });
 
-console.log(str);
 class CalendarComponent extends React.Component {
   constructor() {
     super();
@@ -89,7 +89,7 @@ class CalendarComponent extends React.Component {
           plugins={[listMonth]}
           initialView="listMonth"
           events={this.state.calendarEvents}
-          locale={de}
+          locale={navigator.language === "de-DE" ? deLocale : enLocale}
           eventClick={this.handleEventClick}
         />
       </div>
