@@ -30,6 +30,14 @@ const Content = styled.div`
   text-align: center;
 `;
 
+const DeleteButton = styled.div`
+  width: 100%;
+  text-align: center;
+  margin-top: 50px;
+  text-decoration: underline;
+  position: relative;
+  cursor: pointer;
+`;
 const AccountSettings = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -78,18 +86,7 @@ const AccountSettings = () => {
         handleButtonClick={handleLogout}
       />
 
-      <div
-        style={{
-          width: "100%",
-          textAlign: "center",
-          marginTop: "50px",
-          textDecoration: "underline",
-          position: "relative",
-        }}
-        onClick={deleteAccount}
-      >
-        {t("deteleAccount")}{" "}
-      </div>
+      <DeleteButton onClick={deleteAccount}>{t("deteleAccount")} </DeleteButton>
     </React.Fragment>
   );
 };
