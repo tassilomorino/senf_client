@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import styled from "styled-components";
+import Cookies from "universal-cookie";
 import deLocale from "@fullcalendar/core/locales/de";
 import enLocale from "@fullcalendar/core/locales/en-gb";
 import { formatDate } from "@fullcalendar/react";
@@ -34,6 +35,7 @@ const CalendarWrapper = styled.div`
 `;
 const CalendarComponent = ({ projectScreams, ...props }) => {
   const dispatch = useDispatch();
+  const cookies = new Cookies();
   const [initState, setInitState] = useState({
     calendarWeekends: true,
     calendarEvents: [
@@ -75,14 +77,14 @@ const CalendarComponent = ({ projectScreams, ...props }) => {
     dispatch(openScreamFunc(screamId));
     props.handleClick(1);
   };
-
+  const lang = cookies.get("language");
   return (
     <CalendarWrapper>
       <FullCalendar
         plugins={[listMonth]}
         initialView="listMonth"
         events={initState.calendarEvents}
-        locale={navigator.language === "de-DE" ? deLocale : enLocale}
+        locale={lang === "de" ? deLocale : enLocale}
         eventClick={handleEventClick}
       />
     </CalendarWrapper>
