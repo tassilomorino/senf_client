@@ -54,10 +54,14 @@ import { getBuildDate } from "./util/utils";
 //import withClearCache from "./ClearCache";
 import Cookiebanner from "./components/organisms/Cookiebanner/Cookiebanner";
 import { setViewport } from "./MapAnimations";
+import detectLocation from "./util/detectLocation";
 
 i18n
+  //.use(LanguageDetector)
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
+    debug: false,
+    supportedLngs: ["de", "en"],
     // the translations
     // (tip move them in a JSON file and import them,
     // or even better, manage them via a UI: https://react.i18next.com/guides/multiple-translation-files#manage-your-translations-with-a-management-gui)
@@ -69,14 +73,15 @@ i18n
         translation: translationDE,
       },
     },
-    lng: navigator.language === "de-DE" ? "en" : "en", // if you're using a language detector, do not define the lng option
-    fallbackLng: "de",
+    //lng: localStorage.getItem("lang"), // if you're using a language detector, do not define the lng option
+
+    fallbackLng: "en",
 
     interpolation: {
       escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
     },
   });
-
+detectLocation(); // detect location and set i18n language
 const cookies = new Cookies();
 require("intersection-observer");
 
@@ -155,7 +160,6 @@ if (cookies.get("Cookie_settings") === "all") {
     store.dispatch(setInfoPageOpen());
   }
 }
-
 let vh = window.innerHeight * 0.01;
 // Then we set the value in the --vh custom property to the root of the document
 document.documentElement.style.setProperty("--vh", `${vh}px`);
