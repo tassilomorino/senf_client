@@ -1,9 +1,10 @@
 /** @format */
 
-import React, { useEffect } from "react";
+import React, { useEffect, memo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useDispatch, useSelector } from "react-redux";
+
 import {
   openAccountFunc,
   getMyScreams,
@@ -12,6 +13,7 @@ import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 //Components
 import RegistrationAndLogin from "../../organisms/Auth/LoginRegistration";
 import InlineInformationPageDesktop from "../../organisms/infocomponents/InlineInformationPageDesktop";
+import SelectLanguageButton from "../../atoms/CustomButtons/SelectLanguageButton";
 import TopicFilter from "../Filters/TopicFilter";
 import { MenuItem } from "./MenuItem";
 import { MenuData } from "../../../data/MenuData";
@@ -72,6 +74,7 @@ const DesktopSidebar = ({
         <Logo>
           <img src={LogoImg} width="100px" alt="logoWeb"></img>
         </Logo>
+        <SelectLanguageButton />
         <InlineInformationPageDesktop loading={loading} classes={classes} />
         {!authenticated ? (
           <Tabs>
@@ -126,7 +129,7 @@ const DesktopSidebar = ({
             marginBottom: "30px",
           }}
         ></div>
-        <TopicFilter />
+        <TopicFilter column />
         <div
           style={{
             position: "relative",
@@ -170,4 +173,4 @@ const DesktopSidebar = ({
   );
 };
 
-export default DesktopSidebar;
+export default memo(DesktopSidebar);

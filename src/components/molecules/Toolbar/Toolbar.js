@@ -127,13 +127,18 @@ const Toolbar = ({
           searchTerm={searchTerm}
           searchOpen={searchOpen}
         >
-          <img src={SearchIcon} width="20px" style={{ marginLeft: "auto" }} />
+          <img
+            src={SearchIcon}
+            width="20px"
+            style={{ marginLeft: "auto" }}
+            alt=""
+          />
         </SearchIconButton>
         <SortingSelect handleDropdown={handleDropdown} />{" "}
         {isMobileCustom && <Background onClick={handleClickSwipe} />}
         {searchOpen && (
           <Searchbar
-            placeholder="Durchsuche Titel und Beschreibungen..."
+            placeholder={t("searchBar")}
             setSearchTerm={setSearchTerm}
             searchTerm={searchTerm}
           />

@@ -79,17 +79,17 @@ const TopicFilterWrapperDesktop = styled.div`
   background-color: transparent;
   padding: 0px;
   height: auto;
+  display: flex;
+  flex-direction: ${(props) => (props.column ? "column" : "row")};
+  flex-wrap: wrap;
 `;
 
-export function TopicFilter({
-  loading,
-  inline,
-}) {
+export function TopicFilter({ loading, inline, column }) {
   const openScream = useSelector((state) => state.UI.openScream);
   const selectedTopics = useSelector((state) => state.data.topics);
   const [moveLeft, setMoveLeft] = useState(false);
   const { t } = useTranslation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (openScream) {
@@ -118,8 +118,7 @@ export function TopicFilter({
         });
       }
     }
-    
-  }, [moveLeft,inline]);
+  }, [moveLeft, inline]);
 
   // Handler at index 0 is for the "all" checkbox
   const topicFilters = topics.map((topic, i) => {
@@ -154,7 +153,7 @@ export function TopicFilter({
                 <FiberManualRecordIcon className="activelegenditem" />
               }
               data-cy="topic-all"
-              onChange={() =>dispatch(handleTopicSelectorRedux('all'))}
+              onChange={() => dispatch(handleTopicSelectorRedux("all"))}
               checked={selectedTopics.length === 7}
               style={{ color: "#000000" }}
             />
@@ -171,14 +170,14 @@ export function TopicFilter({
       </TopicFilterInnerWrapperMobile>
     </TopicFilterWrapperMobile>
   ) : (
-    <TopicFilterWrapperDesktop>
+    <TopicFilterWrapperDesktop column={column}>
       <FormControlLabel
         control={
           <Checkbox
             icon={<FiberManualRecordIcon />}
             checkedIcon={<FiberManualRecordIcon className="activelegenditem" />}
             data-cy="topic-all"
-            onChange={() => dispatch(handleTopicSelectorRedux('all'))}
+            onChange={() => dispatch(handleTopicSelectorRedux("all"))}
             checked={selectedTopics.length === 7}
             style={{ color: "#000000" }}
           />

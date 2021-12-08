@@ -15,7 +15,6 @@ import TopicFilter from "../Filters/TopicFilter";
 import styled from "styled-components";
 const PlotlyComponent = createPlotlyComponent(Plotly);
 
-
 const TopicFilterWrapper = styled.div`
   width: 100%;
   max-width: 500px;
@@ -29,19 +28,10 @@ const TopicFilterWrapper = styled.div`
 //  let PlotlyComponent
 // import(/* webpackChunkName: "Agegroup-Graph plotly" */'plotly.js/dist/plotly-cartesian.min').then(plotly=>{
 //   PlotlyComponent = createPlotlyComponent(plotly);
-  
-// }) 
 
+// })
 
 const AgegroupGraph = ({ classes, screams, likes }) => {
-  
-  
-  
-
- 
-
-
-  
   const { t } = useTranslation();
 
   const selectedTopics = useSelector((state) => state.data.topics);
@@ -187,7 +177,7 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
         y: 7,
         xref: "x",
         yref: "y",
-        text: "Ideen | Votes",
+        text: t("ideas") + " | Votes",
         ay: 0,
         ax: -1,
         arrowcolor: "rgba(255, 0, 255, 0.53)",
@@ -316,17 +306,16 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
   //   );
 
   const plot =
-    screams && PlotlyComponent !== undefined  ? (
+    screams && PlotlyComponent !== undefined ? (
       <PlotlyComponent
         className={classes.plot}
         data={data}
         layout={layout}
         config={config}
       />
-    
     ) : (
-      <div style={{display: 'flex', justifyContent: 'center'}}>
-      <CircularProgress size={50} thickness={2} />
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <CircularProgress size={50} thickness={2} />
       </div>
     );
 
@@ -339,7 +328,7 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
       </TopicFilterWrapper>
 
       <div className={classes.clickblocker}></div>
-      
+
       {plot}
     </div>
   );

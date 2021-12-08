@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useState } from "react";
-import { Translation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 //Icons
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -27,13 +27,12 @@ const TopicFilterWrapper = styled.div`
 //  let PlotlyComponent
 // import(/* webpackChunkName: "Districts-Graph plotly" */'plotly.js/dist/plotly-cartesian.min').then(plotly=>{
 //   PlotlyComponent = createPlotlyComponent(plotly);
-  
-// })  
+
+// })
 
 const DistrictsGraph = ({ classes, screams }) => {
   const selectedTopics = useSelector((state) => state.data.topics);
- 
-
+  const { t } = useTranslation();
 
   let Rad = [];
   let Rad_one = [];
@@ -282,7 +281,7 @@ const DistrictsGraph = ({ classes, screams }) => {
         y: linelength + 1,
         xref: "x",
         yref: "y",
-        text: "Ideen | Votes",
+        text: t("ideas") + " | Votes",
         ay: 0,
         ax: -1,
         arrowcolor: "rgba(255, 0, 255, 0.53)",
@@ -349,35 +348,24 @@ const DistrictsGraph = ({ classes, screams }) => {
     displayModeBar: false,
   };
   const plot =
-    screams && PlotlyComponent !== undefined  ? (
-    <PlotlyComponent
-      className={classes.plot}
-      data={data}
-      layout={layout}
-      config={config}
-    />
-  
-  ) : (
-    <div style={{display: 'flex', justifyContent: 'center'}}>
-    <CircularProgress size={50} thickness={2} />
-    </div>
-  );
+    screams && PlotlyComponent !== undefined ? (
+      <PlotlyComponent
+        className={classes.plot}
+        data={data}
+        layout={layout}
+        config={config}
+      />
+    ) : (
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <CircularProgress size={50} thickness={2} />
+      </div>
+    );
   return (
     <div className={classes.card}>
-      <Translation>
-        {(t) => <div className={classes.title}>{t("districts")}</div>}
-      </Translation>
-
-      <Translation>
-        {(t) => (
-          <div className={classes.subtitle}>{t("districts_explained")}</div>
-        )}
-      </Translation>
-
+      <div className={classes.title}>{t("districts")}</div>
+      <div className={classes.subtitle}>{t("districts_explained")}</div>
       <TopicFilterWrapper>
-        <TopicFilter
-          inline={true}
-        />
+        <TopicFilter inline={true} />
       </TopicFilterWrapper>
       <div className={classes.clickblocker}></div>
       {plot}
