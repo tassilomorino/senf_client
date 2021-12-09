@@ -12,6 +12,7 @@ import {
   SET_PROJECT,
   OPEN_PROJECT,
   CLOSE_PROJECT,
+  OPEN_CREATE_PROJECTROOM,
 } from "../types";
 import setColorByTopic from "../../data/setColorByTopic";
 
@@ -48,6 +49,7 @@ export const getProjects = (mapViewport) => async (dispatch) => {
       calendar: doc.data().calendar,
       organizationId: doc.data().organizationId,
       // weblink: doc.data().weblink,
+      Thema: doc.data().Thema,
     };
 
     projects.push(docData);
@@ -107,4 +109,11 @@ export const closeProject = () => (dispatch) => {
   setTimeout(() => {
     document.body.style.overflow = "scroll";
   }, 1000);
+};
+
+export const openCreateProjectRoomFunc = (state) => async (dispatch) => {
+  dispatch({
+    type: OPEN_CREATE_PROJECTROOM,
+    payload: state,
+  });
 };

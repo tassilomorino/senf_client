@@ -14,7 +14,7 @@ import {
 //Components
 import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 
-import IdeaList from "../IdeaList/IdeaList";
+import IdeaList from "../SwipeLists/IdeaList";
 import ProjectHeader from "../../molecules/Headers/ProjectHeader";
 import ProjectInfo from "../../molecules/DialogInlineComponents/ProjectInfo";
 import styled from "styled-components";

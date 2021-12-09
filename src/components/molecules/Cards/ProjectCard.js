@@ -58,11 +58,13 @@ const LeftWrapper = styled.div`
   text-align: center;
   overflow: hidden;
 `;
-// what about the LeftWrapper img?
-/* .leftWrapper img{
-    width: 100%;
-    margin-left: 0%;
-  } */
+
+const StyledImg = styled.img`
+  flex-shrink: 0;
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+`;
 
 const RightWrapper = styled.div`
   margin-left: 10px;
@@ -103,7 +105,7 @@ export const ProjectCard = (props) => {
       <ExpandButton handleButtonClick={() => pushScreamId(project)} />
 
       <LeftWrapper>
-        <img src={imgUrl} width="100%" alt="profile" />
+        <StyledImg src={imgUrl} width="100%" alt="profile" />
       </LeftWrapper>
       <RightWrapper>
         <Owner> {owner} </Owner>

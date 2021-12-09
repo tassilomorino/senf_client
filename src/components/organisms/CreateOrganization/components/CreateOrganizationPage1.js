@@ -17,15 +17,9 @@ import "firebase/firestore";
 import "firebase/storage";
 
 import { useOnClickOutside } from "../../../../hooks/useOnClickOutside";
-import { SubTitle, Title } from "./styles/sharedStyles";
-import CustomSelect from "../../../atoms/Selects/CustomSelect";
+import { ButtonsWrapper, SubTitle, Title } from "./styles/sharedStyles";
 
-const SelectContainer = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const CreateProjectPage1 = ({ onClickNext }) => {
+const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();
   const [outsideClick, setOutsideClick] = useState(false);
 
@@ -37,37 +31,7 @@ const CreateProjectPage1 = ({ onClickNext }) => {
     }, 10000);
   });
 
-  const organizationId = useSelector((state) => state.user.organizationId);
-  const organizations = useSelector((state) => state.data.organizations);
-
-  const [selectedOrganizationId, setSelectedOrganizationId] = useState(null);
-
-  const myOrganizations = organizations.filter(({ organizationId }) =>
-    organizationId.includes(organizationId)
-  );
-
-  const optionsOrganizationsArray = _.orderBy(
-    myOrganizations,
-    "createdAt",
-    "desc"
-  ).map((organization) => ({
-    name: organization.organizationId,
-    label: organization.title,
-    img: organization.imgUrl,
-  }));
-
   const [title, setTitle] = useState(null);
-
-  useEffect(() => {
-    console.log(organizationId, myOrganizations);
-    if (organizationId && organizationId.length === 1) {
-      setSelectedOrganizationId(myOrganizations[0].organizationId);
-    }
-  }, []);
-
-  const handleDropdown = (value) => {
-    setSelectedOrganizationId(value);
-  };
 
   const createProjectValidationSchema = yup.object({
     title: yup
@@ -99,9 +63,7 @@ const CreateProjectPage1 = ({ onClickNext }) => {
 
       const ref = await db
         .collection("organizations")
-        .doc(localStorage.getItem("createProjectRoomOrganizationId"))
-        .collection("projectRooms")
-        .doc(localStorage.getItem("createProjectRoomId"))
+        .doc(localStorage.getItem("createOrganizationId"))
         .get();
 
       if (!ref.exists) {
@@ -118,7 +80,7 @@ const CreateProjectPage1 = ({ onClickNext }) => {
 
     if (
       typeof Storage !== "undefined" &&
-      localStorage.getItem("createProjectRoomId")
+      localStorage.getItem("createOrganizationId")
     ) {
       fetchData();
     }
@@ -129,48 +91,21 @@ const CreateProjectPage1 = ({ onClickNext }) => {
 
     if (
       typeof Storage !== "undefined" &&
-      localStorage.getItem("createProjectRoomId")
+      localStorage.getItem("createOrganizationId")
     ) {
       //UPDATING AN EXISTING PROJECTROOM
       const updateProject = {
         title: formik.values.title,
         description: formik.values.description,
-        owner: selectedOrganizationId,
       };
 
       const ref = await db
         .collection("organizations")
-        .doc(selectedOrganizationId)
-        .collection("projectRooms")
-        .doc(localStorage.getItem("createProjectRoomId"));
+        .doc(localStorage.getItem("createOrganizationId"));
 
       return ref.update(updateProject).then(() => {
         onClickNext();
       });
-    } else {
-      //CREATING A NEW PROJECTROOM
-      const newProject = {
-        title: formik.values.title,
-        description: formik.values.description,
-        createdAt: new Date().toISOString(),
-        owner: selectedOrganizationId,
-      };
-
-      await db
-        .collection("organizations")
-        .doc(selectedOrganizationId)
-        .collection("projectRooms")
-        .add(newProject)
-        .then((doc) => {
-          localStorage.setItem("createProjectRoomId", doc.id);
-          localStorage.setItem(
-            "createProjectRoomOrganizationId",
-            selectedOrganizationId
-          );
-        })
-        .then(() => {
-          onClickNext();
-        });
     }
   };
 
@@ -178,35 +113,21 @@ const CreateProjectPage1 = ({ onClickNext }) => {
     <div ref={outerRef}>
       <Title>
         {title ? (
-          <span>Projektinfos bearbeiten</span>
+          <span>Organisationsinfos bearbeiten</span>
         ) : (
           <span>
-            Erstelle deinen <br />
-            Projektraum
+            Erstelle deine <br />
+            Organisation
           </span>
         )}
       </Title>
-      <SubTitle>
-        Wähle einen passenden Projektnamen sowie eine Projektraumbeschreibung,
-        die zum einen informiert und zum anderen auffordert Ideen beizutragen
-        und sich einzubringen.
-      </SubTitle>
-
-      <SelectContainer>
-        <CustomSelect
-          name={"project"}
-          value={selectedOrganizationId}
-          initialValue={""}
-          options={optionsOrganizationsArray}
-          handleDropdown={handleDropdown}
-        />
-      </SelectContainer>
+      <SubTitle>sdjhaskjdhas jkhashda skjdh asjkdhaskjdhs shjajkdsh</SubTitle>
 
       <TextField
         id="outlined-name"
         name="title"
         type="title"
-        label={t("title")}
+        label={t("projectRoom_title")}
         margin="normal"
         variant="outlined"
         multiline
@@ -224,7 +145,7 @@ const CreateProjectPage1 = ({ onClickNext }) => {
         id="outlined-name"
         name="description"
         type="description"
-        label={t("description")}
+        label={t("projectRoom_description")}
         margin="normal"
         multiline
         minRows="10"
@@ -241,20 +162,31 @@ const CreateProjectPage1 = ({ onClickNext }) => {
         helperText={outsideClick && formik.errors.description}
       />
 
-      <SubmitButton
-        text={t("next")}
-        zIndex="9"
-        backgroundColor="white"
-        textColor="#353535"
-        position="relative"
-        top={document.body.clientWidth > 768 ? "100px" : "70px"}
-        left="0"
-        handleButtonClick={handleNext}
-        disabled={!formik.isValid}
-        //   keySubmitRef={keySubmitRef}
-      />
+      <ButtonsWrapper>
+        <SubmitButton
+          text={t("next")}
+          zIndex="9"
+          backgroundColor="white"
+          textColor="#353535"
+          top={document.body.clientWidth > 768 ? "100px" : "70px"}
+          left="0"
+          handleButtonClick={handleNext}
+          disabled={!formik.isValid}
+          //   keySubmitRef={keySubmitRef}
+        />
+        <SubmitButton
+          text={t("back")}
+          zIndex="9"
+          backgroundColor="transparent"
+          shadow={false}
+          textColor="#353535"
+          left="0"
+          handleButtonClick={onClickPrev}
+          //   keySubmitRef={keySubmitRef}
+        />
+      </ButtonsWrapper>
     </div>
   );
 };
 
-export default CreateProjectPage1;
+export default CreateOrganizationPage1;

@@ -113,7 +113,7 @@ const DesktopSidebar = ({
             text={item.text}
             handleClick={handleClick}
             openAccount={openAccount}
-          ></MenuItem>
+          />
         ))}
         <div
           style={{

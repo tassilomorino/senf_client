@@ -9,6 +9,7 @@ import {
   CLOSE_SCREAM,
   OPEN_PROJECT,
   CLOSE_PROJECT,
+  OPEN_CREATE_PROJECTROOM,
   CLEAR_LOADING_ERRORS,
   OPEN_MONITORING_SCREAM,
   CLOSE_MONITORING_SCREAM,
@@ -18,6 +19,9 @@ import {
   VOTED_FALSE,
   OPEN_ACCOUNT,
   CLOSE_ACCOUNT,
+  OPEN_ORGANIZATIONS,
+  CLOSE_ORGANIZATIONS,
+  OPEN_CREATE_ORGANIZATION,
   SET_SWIPEPOSITION_UP,
   SET_SWIPEPOSITION_DOWN,
 } from "../types";
@@ -29,6 +33,10 @@ const initialState = {
 
   openProject: false,
   openAccount: false,
+  openOrganizations: false,
+  openCreateOrganization: false,
+  openCreateProjectRoom: false,
+
   errors: null,
   openInfoPage: false,
   voted: false,
@@ -101,6 +109,12 @@ export default function (state = initialState, action) {
         openProject: false,
       };
 
+    case OPEN_CREATE_PROJECTROOM:
+      return {
+        ...state,
+        openCreateProjectRoom: action.payload,
+      };
+
     case OPEN_ACCOUNT:
       return {
         ...state,
@@ -111,6 +125,23 @@ export default function (state = initialState, action) {
       return {
         ...state,
         openAccount: false,
+      };
+    case OPEN_ORGANIZATIONS:
+      return {
+        ...state,
+        openOrganizations: true,
+      };
+
+    case CLOSE_ORGANIZATIONS:
+      return {
+        ...state,
+        openOrganizations: false,
+      };
+
+    case OPEN_CREATE_ORGANIZATION:
+      return {
+        ...state,
+        openCreateOrganization: action.payload,
       };
 
     case SET_INFOPAGE_OPEN:

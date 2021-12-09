@@ -52,7 +52,7 @@ const Covers = styled.div`
   position: relative;
   animation: ${(props) => props.animation};
   overflow: hidden;
-  border-radius: 20px;
+  border-radius: 25px;
   background-color: white;
   margin: 0;
   padding: 0;

@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import _ from "lodash";
@@ -12,6 +12,7 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 import InfiniteScroll from "react-infinite-scroller";
 import CreateProjectDialog from "../CreateProject/CreateProjectDialog";
 import CreateOrganizationDialog from "../CreateOrganization/CreateOrganizationDialog";
+import { openOrganizationsFunc } from "../../../redux/actions/organizationActions";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -45,6 +46,7 @@ const NoIdeasYet = styled.div`
   text-align: center;
 `;
 const ProjectsPage = ({ order, projectsData }) => {
+  const dispatch = useDispatch();
   const [isCreateProjectDialogIsOpen, setCreateProjectDialogIsOpen] =
     useState(false);
   const [isCreateOrganizationIsOpen, setCreateOrganizationIsOpen] =
@@ -111,6 +113,10 @@ const ProjectsPage = ({ order, projectsData }) => {
     }
   };
 
+  const handleOpenOrganizations = () => {
+    dispatch(openOrganizationsFunc());
+  };
+
   return (
     <Wrapper>
       <CreateProjectDialog
@@ -153,9 +159,7 @@ const ProjectsPage = ({ order, projectsData }) => {
         setCreateProjectDialogIsOpen={setCreateProjectDialogIsOpen}
       />
       {isAdmin && (
-        <button onClick={setCreateOrganizationIsOpen}>
-          create Organization
-        </button>
+        <button onClick={handleOpenOrganizations}>open Organizations</button>
       )}
 
       <br />

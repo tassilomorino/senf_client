@@ -12,7 +12,8 @@ import { useTranslation } from "react-i18next";
 import SearchIcon from "../../../images/icons/search.png";
 import { setSwipePositionUp } from "../../../redux/actions/UiActions";
 import Searchbar from "../../atoms/Searchbar/Searchbar";
-
+import AddIcon from "../../../images/icons/plus_white.png";
+import { stateCreateOrganizationsFunc } from "../../../redux/actions/organizationActions";
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
@@ -87,11 +88,23 @@ const SearchIconButton = styled.button`
   background-color: #f6cb2f;
   pointer-events: auto;
   margin-left: auto;
-  margin-right: 10px;
+  margin-right: 5px;
   border: ${(props) =>
     props.searchTerm !== "" && !props.searchOpen
       ? "1px solid white"
       : "none"}; ;
+`;
+const AddIconButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #f6cb2f;
+  pointer-events: auto;
+  margin-left: 5px;
+  margin-right: 0px;
 `;
 
 const Toolbar = ({
@@ -116,12 +129,17 @@ const Toolbar = ({
       dispatch(setSwipePositionUp());
     }
   };
+
+  const openCreateOrganization = () => {
+    dispatch(stateCreateOrganizationsFunc(true));
+  };
   return (
     !loading && (
       <Wrapper type={type} searchOpen={searchOpen}>
         {isMobileCustom && <Bar />}
         <Title>
-          {dataFinalLength} {dataFinalLength === 1 ? t("idea") : t("ideas")}
+          {dataFinalLength}{" "}
+          {dataFinalLength === 1 ? t("organization") : t("organizations")}
         </Title>
         <SearchIconButton
           onClick={setSearch}
@@ -131,6 +149,9 @@ const Toolbar = ({
           <img src={SearchIcon} width="20px" style={{ marginLeft: "auto" }} />
         </SearchIconButton>
         <SortingSelect handleDropdown={handleDropdown} />{" "}
+        <AddIconButton onClick={openCreateOrganization}>
+          <img src={AddIcon} width="20px" style={{ marginLeft: "auto" }} />
+        </AddIconButton>
         {isMobileCustom && <Background onClick={handleClickSwipe} />}
         {searchOpen && (
           <Searchbar

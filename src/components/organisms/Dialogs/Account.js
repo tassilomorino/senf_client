@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { closeAccountFunc } from "../../../redux/actions/accountActions";
 
 //Components
-import IdeaList from "../IdeaList/IdeaList";
+import IdeaList from "../SwipeLists/IdeaList";
 import AccountHeader from "../../molecules/Headers/AccountHeader";
 import AccountSettings from "../../molecules/DialogInlineComponents/AccountSettings";
 import MainAnimations from "../../atoms/Backgrounds/MainAnimations";

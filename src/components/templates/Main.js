@@ -32,7 +32,7 @@ import InsightsPage from "../organisms/SubPages/InsightsPage";
 import DesktopSidebar from "../molecules/Navigation/DesktopSidebar";
 import Topbar from "../molecules/Navigation/Topbar";
 import MapDesktop from "../atoms/map/MapDesktop";
-import IdeaList from "../organisms/IdeaList/IdeaList";
+import IdeaList from "../organisms/SwipeLists/IdeaList";
 import ProjectsPage from "../organisms/SubPages/ProjectsPage";
 import ScreamDialog from "../organisms/Dialogs/ScreamDialog";
 import ProjectDialog from "../organisms/Dialogs/ProjectDialog";
@@ -47,6 +47,10 @@ import PostScream from "../organisms/PostIdea/PostScream";
 import ChangeLocationModal from "../molecules/Modals/ChangeLocationModal";
 import { usePrevious } from "../../hooks/usePrevious";
 import { getOrganizations } from "../../redux/actions/organizationActions";
+import OrganizationsDialog from "../organisms/Dialogs/OrganizationsDialog";
+import ProjectList from "../organisms/SwipeLists/ProjectList";
+import CreateOrganizationDialog from "../organisms/CreateOrganization/CreateOrganizationDialog";
+import CreateProjectDialog from "../organisms/CreateProject/CreateProjectDialog";
 
 const Main = () => {
   const { t } = useTranslation();
@@ -61,6 +65,13 @@ const Main = () => {
   const openScream = useSelector((state) => state.UI.openScream);
   const openProject = useSelector((state) => state.UI.openProject);
   const openAccount = useSelector((state) => state.UI.openAccount);
+  const openOrganizations = useSelector((state) => state.UI.openOrganizations);
+  const openCreateOrganization = useSelector(
+    (state) => state.UI.openCreateOrganization
+  );
+  const openCreateProjectRoom = useSelector(
+    (state) => state.UI.openCreateProjectRoom
+  );
 
   const voted = useSelector((state) => state.UI.voted);
 
@@ -339,6 +350,8 @@ const Main = () => {
           selectedTopics.includes(Thema) && status === "None"
       );
 
+  console.log(openCreateOrganization);
+
   return (
     <React.Fragment>
       {loading && isMobileCustom && <Loader />}
@@ -378,13 +391,19 @@ const Main = () => {
           openProject={openProject}
           geoData={project && openProject && project.geoData}
           mapRef={mapRef}
-        ></MapDesktop>
+          projects={projects}
+          order={order}
+        />
       )}
 
       <div
         style={
           isMobileCustom &&
-          (order === 1 || openProject || openScream || openAccount)
+          (order === 1 ||
+            order === 2 ||
+            openProject ||
+            openScream ||
+            openAccount)
             ? { visibility: "visible" }
             : { visibility: "hidden" }
         }
@@ -417,7 +436,7 @@ const Main = () => {
           {loading && !isMobileCustom && <Loader />}
           <div className="MainBackgroundHome" />
 
-          {!openProject && !openAccount && (
+          {!openProject && !openAccount && order === 1 && (
             <IdeaList
               type="allIdeas"
               loading={loading}
@@ -434,6 +453,30 @@ const Main = () => {
             />
           )}
 
+          {openOrganizations && (
+            <OrganizationsDialog dataFinalMap={dataFinalMap} />
+          )}
+          {!openOrganizations &&
+            !openInfoPage &&
+            !openProject &&
+            !openAccount &&
+            order === 2 && (
+              <ProjectList
+                type="allIdeas"
+                loading={loadingProjects}
+                order={order}
+                dataFinal={projects}
+                dataFinalLength={projects.length}
+                dataFinalMap={dataFinalMap}
+                viewport={mapViewport}
+                handleDropdown={handleDropdown}
+                projectsData={projects}
+                dropdown={dropdown}
+                setSearchTerm={setSearchTerm}
+                searchTerm={searchTerm}
+              />
+            )}
+
           {openProject && (
             <ProjectDialog
               loading={loading}
@@ -446,13 +489,14 @@ const Main = () => {
               viewport={mapViewport}
             />
           )}
+
           {openAccount && <Account dataFinalMap={dataFinalMap} />}
         </div>
       )}
 
-      {!openInfoPage && !openProject && !openAccount && order === 2 && (
+      {/* {!openInfoPage && !openProject && !openAccount && order === 2 && (
         <ProjectsPage order={order} projectsData={projects}></ProjectsPage>
-      )}
+      )} */}
       {!openInfoPage && !openProject && !openAccount && order === 3 && (
         <div className="contentWrapper_insights">
           <InsightsPage order={order}></InsightsPage>
@@ -460,6 +504,9 @@ const Main = () => {
       )}
 
       {!openInfoPage && openScream && <ScreamDialog />}
+
+      {openCreateOrganization && <CreateOrganizationDialog />}
+      {openCreateProjectRoom && <CreateProjectDialog />}
     </React.Fragment>
   );
 };

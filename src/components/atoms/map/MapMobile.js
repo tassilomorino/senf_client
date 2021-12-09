@@ -116,7 +116,7 @@ const MapMobile = ({
     });
   }
 
-  let mygeojson = { type: "FeatureCollection", features: [] };
+  let geojsonIdeas = { type: "FeatureCollection", features: [] };
 
   for (let point of dataFinalMap) {
     let properties = point;
@@ -135,7 +135,7 @@ const MapMobile = ({
         geometry: { type: "Point", coordinates: [point.long, point.lat] },
         properties: properties,
       };
-      mygeojson.features.push(feature);
+      geojsonIdeas.features.push(feature);
     } else {
       function generateHash(string) {
         var hash = 0;
@@ -167,7 +167,7 @@ const MapMobile = ({
         },
         properties: properties,
       };
-      mygeojson.features.push(feature);
+      geojsonIdeas.features.push(feature);
     }
   }
 
@@ -211,10 +211,10 @@ const MapMobile = ({
               </React.Fragment>
             )}
 
-          <Source id="mygeojson" type="geojson" data={mygeojson} />
+          <Source id="geojsonIdeas" type="geojson" data={geojsonIdeas} />
           <Layer
-            id="mygeojsonblur"
-            source="mygeojson"
+            id="geojsonIdeasblur"
+            source="geojsonIdeas"
             type="circle"
             paint={{
               "circle-radius": [
@@ -241,8 +241,8 @@ const MapMobile = ({
             }}
           />
           <Layer
-            id="mygeojson"
-            source="mygeojson"
+            id="geojsonIdeas"
+            source="geojsonIdeas"
             type="circle"
             // onClick={onClick}
             paint={{
@@ -292,7 +292,7 @@ const MapMobile = ({
 
           <Layer
             id="clickLayer"
-            source="mygeojson"
+            source="geojsonIdeas"
             type="circle"
             onClick={onClick}
             paint={{

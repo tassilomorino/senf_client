@@ -23,12 +23,18 @@ import MapGL, {
   Layer,
   Marker,
   NavigationControl,
+  Image,
 } from "@urbica/react-map-gl";
 
 import NoLocationPopUp from "./NoLocationPopUp";
 import { DesktopMapButtons } from "./DesktopMapButtons";
 import { PatternBackground } from "./styles/sharedStyles";
 import { useParams } from "react-router";
+
+import ProjectRoomIcon0 from "../../../images/icons/pr_pin0.png";
+import ProjectRoomIcon1 from "../../../images/icons/pr_pin1.png";
+import ProjectRoomIcon2 from "../../../images/icons/pr_pin2.png";
+import { openProjectFunc } from "../../../redux/actions/projectActions";
 
 const PinComponent = styled.img`
   position: absolute;
@@ -66,6 +72,8 @@ const MapDesktop = ({
   _onViewportChange,
   zoomBreak,
   mapRef,
+  projects,
+  order,
 }) => {
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openScream = useSelector((state) => state.UI.openScream);
@@ -115,7 +123,8 @@ const MapDesktop = ({
 
   let dataNoLocation = [];
   let dataFinalMap = [];
-  let mygeojson = { type: "FeatureCollection", features: [] };
+  let geojsonIdeas = { type: "FeatureCollection", features: [] };
+  let geojsonProjectRooms = { type: "FeatureCollection", features: [] };
 
   if (dataFinal !== undefined && dataFinal.length > 0) {
     dataFinal.forEach((element) => {
@@ -155,7 +164,7 @@ const MapDesktop = ({
         geometry: { type: "Point", coordinates: [point.long, point.lat] },
         properties: properties,
       };
-      mygeojson.features.push(feature);
+      geojsonIdeas.features.push(feature);
     } else {
       function generateHash(string) {
         var hash = 0;
@@ -187,11 +196,25 @@ const MapDesktop = ({
         },
         properties: properties,
       };
-      mygeojson.features.push(feature);
+      geojsonIdeas.features.push(feature);
     }
   }
 
-  const onHover = (event) => {
+  for (let point of projects) {
+    let properties = point;
+
+    let feature = {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [point.centerLong, point.centerLat],
+      },
+      properties: properties,
+    };
+    geojsonProjectRooms.features.push(feature);
+    console.log(geojsonProjectRooms);
+  }
+  const onHoverIdea = (event) => {
     if (event.features.length > 0) {
       setHoverScreamId(event.features[0].properties.screamId);
       setHoverLat(event.features[0].properties.lat);
@@ -201,7 +224,7 @@ const MapDesktop = ({
     }
   };
 
-  const onLeave = (event) => {
+  const onLeaveIdea = (event) => {
     setHoverScreamId("");
     setHoverLat("");
     setHoverLong("");
@@ -209,9 +232,33 @@ const MapDesktop = ({
     setHoverLikeCount("");
   };
 
-  const onClick = (event) => {
+  const onClickIdea = (event) => {
     if (event.features.length > 0) {
       dispatch(openScreamFunc(event.features[0].properties.screamId));
+    }
+  };
+
+  const onHoverProjectRoom = (event) => {
+    // if (event.features.length > 0) {
+    //   setHoverScreamId(event.features[0].properties.screamId);
+    //   setHoverLat(event.features[0].properties.lat);
+    //   setHoverLong(event.features[0].properties.long);
+    //   setHoverTitle(event.features[0].properties.title);
+    //   setHoverLikeCount(event.features[0].properties.likeCount);
+    // }
+  };
+
+  const onLeaveProjectRoom = (event) => {
+    // setHoverScreamId("");
+    // setHoverLat("");
+    // setHoverLong("");
+    // setHoverTitle("");
+    // setHoverLikeCount("");
+  };
+
+  const onClickProjectRoom = (event) => {
+    if (event.features.length > 0) {
+      dispatch(openProjectFunc(event.features[0].properties.projectId));
     }
   };
 
@@ -275,149 +322,206 @@ const MapDesktop = ({
             )}
           <DesktopMapButtons viewport={mapViewport} mapRef={mapRef} />
 
-          <Source id="mygeojson" type="geojson" data={mygeojson} />
-          <Layer
-            id="mygeojsonblur"
-            source="mygeojson"
-            type="circle"
-            paint={{
-              "circle-radius": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                // when zoom is 0, set each feature's circle radius to the value of its "rating" property
-                0,
-                ["*", 0, ["get", "circleBlurRadius"]],
+          <Image id="projectRoomIcon0" image={ProjectRoomIcon0} />
+          <Image id="projectRoomIcon1" image={ProjectRoomIcon1} />
+          <Image id="projectRoomIcon2" image={ProjectRoomIcon2} />
 
-                10,
-                ["*", 0, ["get", "circleBlurRadius"]],
-
-                // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
-
-                14,
-                ["*", 4, ["get", "circleRadius"]],
-                20,
-                ["*", 0, ["get", "circleRadius"]],
-              ],
-              "circle-color": "#000",
-
-              "circle-blur": 1,
-              "circle-opacity": 0.15,
-            }}
+          <Source id="geojsonIdeas" type="geojson" data={geojsonIdeas} />
+          <Source
+            id="geojsonProjectRooms"
+            type="geojson"
+            data={geojsonProjectRooms}
           />
-          <Layer
-            id="mygeojson"
-            source="mygeojson"
-            type="circle"
-            onHover={onHover}
-            onLeave={onLeave}
-            onClick={onClick}
-            paint={{
-              // "circle-radius": {
-              //   base: ["get", "likeCount"],
-              //   stops: [
-              //     [12, 3],
-              //     [22, 180],
-              //   ],
-              // },
-              "circle-radius": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                // when zoom is 0, set each feature's circle radius to the value of its "rating" property
-                0,
-                ["*", 0.1, ["get", "circleRadius"]],
+          {order === 1 || openScream || openProject ? (
+            <React.Fragment>
+              <Layer
+                id="geojsonIdeasblur"
+                source="geojsonIdeas"
+                type="circle"
+                paint={{
+                  "circle-radius": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    // when zoom is 0, set each feature's circle radius to the value of its "rating" property
+                    0,
+                    ["*", 0, ["get", "circleBlurRadius"]],
 
-                10,
-                ["*", 0.4, ["get", "circleRadius"]],
+                    10,
+                    ["*", 0, ["get", "circleBlurRadius"]],
 
-                // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
-                14,
-                ["*", 1.5, ["get", "circleRadius"]],
-                20,
-                ["*", 1.2, ["get", "circleRadius"]],
-              ],
-              "circle-color": ["get", "color"],
-              // "circle-color": [
-              //   "match",
-              //   ["get", "Thema"],
-              //   "Rad",
-              //   "blue",
-              //   "Umwelt und Grün",
-              //   "#223b53",
-              //   "Verkehr",
-              //   "#e55e5e",
-              //   "Asian",
-              //   "#3bb2d0",
-              //   /* other */ "#ccc",
-              // ],
-              "circle-stroke-color": "#fff",
-              "circle-stroke-width": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                // when zoom is 0, set each feature's circle radius to the value of its "rating" property
-                0,
-                0.1,
+                    // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
 
-                10,
-                0.4,
+                    14,
+                    ["*", 4, ["get", "circleRadius"]],
+                    20,
+                    ["*", 0, ["get", "circleRadius"]],
+                  ],
+                  "circle-color": "#000",
 
-                // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
-                20,
-                3,
-              ],
-            }}
-          />
-
-          {openScream && scream.lat && (
-            <Marker
-              key={scream.screamId}
-              longitude={scream.long}
-              latitude={scream.lat}
-            >
-              <PinComponent
-                src={Pin}
-                likeCount={scream.likeCount}
-                zoomBreak={zoomBreak}
-                style={{
-                  clipPath: "polygon(0 0, 100% 0, 100% 82%, 0 82%)",
+                  "circle-blur": 1,
+                  "circle-opacity": 0.15,
                 }}
-                alt="ChatIcon"
               />
-            </Marker>
-          )}
+              <Layer
+                id="geojsonIdeas"
+                source="geojsonIdeas"
+                type="circle"
+                onHover={onHoverIdea}
+                onLeave={onLeaveIdea}
+                onClick={onClickIdea}
+                paint={{
+                  // "circle-radius": {
+                  //   base: ["get", "likeCount"],
+                  //   stops: [
+                  //     [12, 3],
+                  //     [22, 180],
+                  //   ],
+                  // },
+                  "circle-radius": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    // when zoom is 0, set each feature's circle radius to the value of its "rating" property
+                    0,
+                    ["*", 0.1, ["get", "circleRadius"]],
 
-          <Marker key={hoverScreamId} longitude={hoverLong} latitude={hoverLat}>
-            <div
-              style={{
-                position: "absolute",
-                width: (7 + hoverLikeCount / 4) * zoomBreak + "px",
-                marginLeft: -(7 + hoverLikeCount / 4) * zoomBreak + "px",
-                height: (7 + hoverLikeCount / 4) * zoomBreak + "px",
-                marginTop: -(7 + hoverLikeCount / 4) * zoomBreak + "px",
-                borderRadius: "100%",
-                // border: "1px white solid",
-                // backgroundColor: "rgb(0,0,0,0.2)",
+                    10,
+                    ["*", 0.4, ["get", "circleRadius"]],
 
-                opacity: "1",
-                pointerEvents: "none",
-              }}
-            >
-              <div
-                className={classes.title}
-                style={{
-                  marginLeft: +(18 + hoverLikeCount / 4) * zoomBreak + "px",
-                  marginTop: +(5 + hoverLikeCount / 6) * zoomBreak + "px",
-                  transform: "translateY(-50%)",
+                    // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
+                    14,
+                    ["*", 1.5, ["get", "circleRadius"]],
+                    20,
+                    ["*", 1.2, ["get", "circleRadius"]],
+                  ],
+                  "circle-color": ["get", "color"],
+                  // "circle-color": [
+                  //   "match",
+                  //   ["get", "Thema"],
+                  //   "Rad",
+                  //   "blue",
+                  //   "Umwelt und Grün",
+                  //   "#223b53",
+                  //   "Verkehr",
+                  //   "#e55e5e",
+                  //   "Asian",
+                  //   "#3bb2d0",
+                  //   /* other */ "#ccc",
+                  // ],
+                  "circle-stroke-color": "#fff",
+                  "circle-stroke-width": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    // when zoom is 0, set each feature's circle radius to the value of its "rating" property
+                    0,
+                    0.1,
+
+                    10,
+                    0.4,
+
+                    // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
+                    20,
+                    3,
+                  ],
                 }}
-              >
-                {hoverTitle}
-              </div>
-            </div>
-          </Marker>
+              />
+              {openScream && scream.lat && (
+                <Marker
+                  key={scream.screamId}
+                  longitude={scream.long}
+                  latitude={scream.lat}
+                >
+                  <PinComponent
+                    src={Pin}
+                    likeCount={scream.likeCount}
+                    zoomBreak={zoomBreak}
+                    style={{
+                      clipPath: "polygon(0 0, 100% 0, 100% 82%, 0 82%)",
+                    }}
+                    alt="ChatIcon"
+                  />
+                </Marker>
+              )}
 
-          <NoLocationPopUp dataNoLocation={dataNoLocation}></NoLocationPopUp>
+              <Marker
+                key={hoverScreamId}
+                longitude={hoverLong}
+                latitude={hoverLat}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    width: (7 + hoverLikeCount / 4) * zoomBreak + "px",
+                    marginLeft: -(7 + hoverLikeCount / 4) * zoomBreak + "px",
+                    height: (7 + hoverLikeCount / 4) * zoomBreak + "px",
+                    marginTop: -(7 + hoverLikeCount / 4) * zoomBreak + "px",
+                    borderRadius: "100%",
+                    // border: "1px white solid",
+                    // backgroundColor: "rgb(0,0,0,0.2)",
+
+                    opacity: "1",
+                    pointerEvents: "none",
+                  }}
+                >
+                  <div
+                    className={classes.title}
+                    style={{
+                      marginLeft: +(18 + hoverLikeCount / 4) * zoomBreak + "px",
+                      marginTop: +(5 + hoverLikeCount / 6) * zoomBreak + "px",
+                      transform: "translateY(-50%)",
+                    }}
+                  >
+                    {hoverTitle}
+                  </div>
+                </div>
+              </Marker>
+
+              <NoLocationPopUp
+                dataNoLocation={dataNoLocation}
+              ></NoLocationPopUp>
+            </React.Fragment>
+          ) : (
+            <Layer
+              id="geojsonProjectRooms"
+              source="geojsonProjectRooms"
+              type="symbol"
+              onHover={onHoverProjectRoom}
+              onLeave={onLeaveProjectRoom}
+              onClick={onClickProjectRoom}
+              layout={{
+                // "icon-image": "projectRoomIcon2",
+                // "icon-image": `projectRoomIcon${Math.floor(Math.random() * 2)}`,
+
+                "icon-image": [
+                  "match",
+                  ["get", "Thema[0]"],
+                  "Rad",
+                  "projectRoomIcon1",
+                  "Umwelt und Grün",
+                  "projectRoomIcon2",
+                  "projectRoomIcon0",
+                ],
+                "icon-size": [
+                  "interpolate",
+                  ["linear"],
+                  ["zoom"],
+                  // when zoom is 0, set each feature's circle radius to the value of its "rating" property
+                  0,
+                  0.01,
+
+                  10,
+                  0.08,
+
+                  // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
+                  20,
+                  0.7,
+                ],
+                "icon-anchor": "bottom",
+              }}
+            />
+          )}
         </MapGL>
       </div>
     )

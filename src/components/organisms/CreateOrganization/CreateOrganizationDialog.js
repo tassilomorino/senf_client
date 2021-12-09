@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import { useTransition, animated } from "@react-spring/web";
@@ -9,13 +9,16 @@ import { useTransition, animated } from "@react-spring/web";
 //Components
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import MainDialog from "../../atoms/Layout/MainDialog";
-import CreateProjectPage0 from "./components/CreateProjectPage0";
-import CreateProjectPage1 from "./components/CreateProjectPage1";
-import CreateProjectPage2 from "./components/CreateProjectPage2";
-import CreateProjectPage3 from "./components/CreateProjectPage3";
-import CreateProjectPage4 from "./components/CreateProjectPage4";
-import CreateProjectPagePreview from "./components/CreateProjectPreview";
-import { openCreateProjectRoomFunc } from "../../../redux/actions/projectActions";
+import CreateOrganizationPage0 from "./components/CreateOrganizationPage0";
+import CreateOrganizationPage0a from "./components/CreateOrganizationPage0a";
+import CreateOrganizationPage0b from "./components/CreateOrganizationPage0b";
+import CreateOrganizationPage1 from "./components/CreateOrganizationPage1";
+import CreateOrganizationPage2 from "./components/CreateOrganizationPage2";
+import CreateOrganizationPage3 from "./components/CreateOrganizationPage3";
+import CreateOrganizationPage4 from "./components/CreateOrganizationPage4";
+import CreateOrganizationPagePreview from "./components/CreateProjectPreview";
+import FinishedCreatingOrganization from "./components/FinishedCreatingOrganization";
+import { stateCreateOrganizationsFunc } from "../../../redux/actions/organizationActions";
 
 const InnerWrapper = styled.div`
   text-align: center;
@@ -46,15 +49,15 @@ const CurrentStep = styled.div`
 `;
 
 const CreateProjectDialog = () => {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const [index, set] = useState(1);
 
   useEffect(() => {
     if (
       typeof Storage !== "undefined" &&
-      localStorage.getItem("createProjectRoomId")
+      localStorage.getItem("createOrganizationId")
     ) {
       set(0);
     }
@@ -92,7 +95,7 @@ const CreateProjectDialog = () => {
   });
 
   const setClose = () => {
-    dispatch(openCreateProjectRoomFunc(false));
+    dispatch(stateCreateOrganizationsFunc(false));
   };
 
   const pages = [
@@ -105,7 +108,7 @@ const CreateProjectDialog = () => {
           position: "absolute",
         }}
       >
-        <CreateProjectPage0 onClickNext={onClickNext} />
+        <CreateOrganizationPage0 onClickNext={onClickNext} />
       </animated.div>
     ),
     ({ style }) => (
@@ -117,7 +120,10 @@ const CreateProjectDialog = () => {
           position: "absolute",
         }}
       >
-        <CreateProjectPage1 onClickNext={onClickNext} />
+        <CreateOrganizationPage0a
+          onClickNext={onClickNext}
+          onClickPrev={onClickPrev}
+        />
       </animated.div>
     ),
     ({ style }) => (
@@ -129,7 +135,40 @@ const CreateProjectDialog = () => {
           position: "absolute",
         }}
       >
-        <CreateProjectPage2 onClickNext={onClickNext} />
+        <CreateOrganizationPage0b
+          onClickNext={onClickNext}
+          onClickPrev={onClickPrev}
+        />
+      </animated.div>
+    ),
+    ({ style }) => (
+      <animated.div
+        style={{
+          ...style,
+
+          width: "100%",
+          position: "absolute",
+        }}
+      >
+        <CreateOrganizationPage1
+          onClickNext={onClickNext}
+          onClickPrev={onClickPrev}
+        />
+      </animated.div>
+    ),
+    ({ style }) => (
+      <animated.div
+        style={{
+          ...style,
+
+          width: "100%",
+          position: "absolute",
+        }}
+      >
+        <CreateOrganizationPage2
+          onClickNext={onClickNext}
+          onClickPrev={onClickPrev}
+        />
       </animated.div>
     ),
     ({ style }) => (
@@ -140,7 +179,10 @@ const CreateProjectDialog = () => {
           position: "absolute",
         }}
       >
-        <CreateProjectPage3 onClickNext={onClickNext} />
+        <CreateOrganizationPage3
+          onClickNext={onClickNext}
+          onClickPrev={onClickPrev}
+        />
       </animated.div>
     ),
     ({ style }) => (
@@ -151,7 +193,10 @@ const CreateProjectDialog = () => {
           position: "absolute",
         }}
       >
-        <CreateProjectPage4 onClickNext={onClickNext} />
+        <CreateOrganizationPage4
+          onClickNext={onClickNext}
+          onClickPrev={onClickPrev}
+        />
       </animated.div>
     ),
     ({ style }) => (
@@ -162,7 +207,25 @@ const CreateProjectDialog = () => {
           position: "absolute",
         }}
       >
-        <CreateProjectPagePreview />
+        <CreateOrganizationPagePreview
+          onClickNext={onClickNext}
+          onClickPrev={onClickPrev}
+        />
+      </animated.div>
+    ),
+    ({ style }) => (
+      <animated.div
+        style={{
+          ...style,
+          width: "100%",
+          position: "absolute",
+        }}
+      >
+        <FinishedCreatingOrganization
+          onClickPrev={onClickPrev}
+          setCreateOrganizationIsOpen={setClose}
+          set={set}
+        />
       </animated.div>
     ),
   ];
@@ -174,25 +237,14 @@ const CreateProjectDialog = () => {
       <ProgressLine>
         <CurrentStep index={currentStep} />
       </ProgressLine>
-      {index === 0 ? (
-        <CustomIconButton
-          name="Close"
-          position="fixed"
-          margin={document.body.clientWidth > 768 ? "40px" : "10px"}
-          left="0"
-          top="0"
-          handleButtonClick={setClose}
-        />
-      ) : (
-        <CustomIconButton
-          name="ArrowLeft"
-          position="fixed"
-          margin={document.body.clientWidth > 768 ? "40px" : "10px"}
-          left="0"
-          top="0"
-          handleButtonClick={onClickPrev}
-        />
-      )}
+      <CustomIconButton
+        name="Close"
+        position="fixed"
+        margin={document.body.clientWidth > 768 ? "40px" : "10px"}
+        left="0"
+        top="0"
+        handleButtonClick={setClose}
+      />
 
       <InnerWrapper>
         {transitions((style, i) => {

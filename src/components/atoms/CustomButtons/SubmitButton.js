@@ -26,7 +26,8 @@ const WideButton = styled.button`
   font-size: 14pt;
   height: ${(props) => (props.smallSubmitButton ? "40px" : "50px")};
   font-family: Futura PT W01 Book;
-  box-shadow: rgb(38, 57, 77, 0.7) 0px 20px 30px -15px;
+  box-shadow: ${(props) =>
+    props.shadow === false ? "" : "rgb(38, 57, 77, 0.7) 0px 20px 30px -15px;"};
   padding-left: ${(props) => (props.smallSubmitButton ? "12px" : "30px")};
   padding-right: ${(props) => (props.smallSubmitButton ? "12px" : "30px")};
   min-width: ${(props) => (props.smallSubmitButton ? "70px" : "180px")};
@@ -77,6 +78,7 @@ export const SubmitButton = ({
   animation,
   loading,
   disabled,
+  shadow,
 
   handleButtonClick,
   smallSubmitButton,
@@ -99,6 +101,7 @@ export const SubmitButton = ({
       onClick={handleButtonClick}
       smallSubmitButton={smallSubmitButton}
       ref={keySubmitRef}
+      shadow={shadow}
     >
       {text}
       {loading && (

@@ -6,6 +6,7 @@
   "imprint": "Impressum",
   "accept": "Akzeptieren",
   "next": "Weiter",
+  "back":"Zurück",
   "save":"Speichern",
   "to": "An:",
   "details": "Details",
@@ -31,6 +32,10 @@
   "noProjectIdeas": "Zu diesem Projektraum wurde bisher noch keine Idee geteilt. Sei die/der erste und teile deine Idee!",
   "idea": "Idee",
   "ideas": "Ideen",
+  "projectRoom":"Projektraum",
+  "projectRooms":"Projekträume",
+  "organization":"Organsation",
+  "organizations":"Organsationen",
   "opinion": "Was ist deine Meinung ?",
   "comment": "Kommentar",
   "comments": "Kommentare",
@@ -143,6 +148,6 @@
   
   "restart":"Neustarten",
   "continue_creation":"Erstellung fortsetzen",
-  "projectRoom_name":"Projektraum-Name",
+  "projectRoom_title":"Projektraum-Name",
   "projectRoom_description":"Beschreibungstext (max. 1000 Zeichen)"
 }

@@ -11,7 +11,7 @@ import styled from "styled-components";
 
 //Components
 import List from "../../molecules/List/List";
-import Toolbar from "../../molecules/Toolbar/Toolbar";
+import ProjectsToolbar from "../../molecules/Toolbar/ProjectsToolbar";
 import {
   setSwipePositionDown,
   setSwipePositionUp,
@@ -20,6 +20,7 @@ import {
   BackgroundDesktop,
   BackgroundMobile,
 } from "../../atoms/Backgrounds/GradientBackgrounds";
+import ProjectsList from "../../molecules/List/ProjectsList";
 
 const Wrapper = styled.div`
   opacity: 1;
@@ -54,7 +55,7 @@ const ListHeaderWrapper = styled.div`
   border-radius: 20px 20px 0 0;
 `;
 
-const IdeaList = ({
+const ProjectList = ({
   type,
   loading,
   order,
@@ -158,7 +159,7 @@ const IdeaList = ({
     }
   );
 
-  return order === 1 ? (
+  return (
     <Wrapper zIndex={zIndex}>
       {isMobileCustom ? (
         <React.Fragment>
@@ -178,7 +179,7 @@ const IdeaList = ({
                       pointerEvents: "none",
                     }}
                   >
-                    <Toolbar
+                    <ProjectsToolbar
                       loading={loading}
                       handleDropdown={handleDropdown}
                       dataFinalLength={dataFinalLength}
@@ -201,7 +202,8 @@ const IdeaList = ({
                   <div style={{ height: "0px", transition: "0.5s" }} />
                 )}
                 {/* <ShadowBox display={shadow ? "block" : "none"} /> */}
-                <List
+
+                <ProjectsList
                   type={type}
                   loading={loading}
                   dropdown={dropdown}
@@ -220,7 +222,7 @@ const IdeaList = ({
           ) : !isMobileCustom ? (
             <BackgroundDesktop />
           ) : null}
-          <Toolbar
+          <ProjectsToolbar
             loading={loading}
             handleDropdown={handleDropdown}
             dataFinalLength={dataFinalLength}
@@ -235,7 +237,7 @@ const IdeaList = ({
           ) : (
             <div style={{ height: "0px", transition: "0.5s" }} />
           )}
-          <List
+          <ProjectsList
             type={type}
             loading={loading}
             dropdown={dropdown}
@@ -246,7 +248,7 @@ const IdeaList = ({
         </Content>
       )}{" "}
     </Wrapper>
-  ) : null;
+  );
 };
 
-export default IdeaList;
+export default ProjectList;
