@@ -26,6 +26,29 @@ import {
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 
 import _ from "lodash";
+import OrganizationHeader from "../../molecules/Headers/OrganizationHeader";
+import { openOrganizationFunc } from "../../../redux/actions/organizationActions";
+
+const Wrapper = styled.div`
+  width: 100vw;
+  height: 100%;
+  margin-top: 0vh;
+  z-index: 90;
+  top: 0;
+  position: fixed;
+  pointer-events: none;
+
+  @media (min-width: 768px) {
+    margin-left: 0px;
+    width: 400px;
+    height: 100vh;
+    padding-top: 70px;
+    overflow-y: scroll;
+    z-index: 90;
+    top: 0;
+    position: fixed;
+  }
+`;
 
 const Break = styled.div`
   position: relative;
@@ -37,7 +60,7 @@ const Break = styled.div`
   }
 `;
 
-const ProjectDialog = ({
+const OrganizationDialog = ({
   viewport,
   projectsData,
   loadingProjects,
@@ -47,116 +70,99 @@ const ProjectDialog = ({
   const [order, setOrder] = useState(1);
   const [dropdown, setDropdown] = useState("newest");
 
-  const openProject = useSelector((state) => state.UI.openProject);
-  const project = useSelector((state) => state.data.project);
+  const openOrganization = useSelector((state) => state.UI.openOrganization);
+  const organization = useSelector((state) => state.data.organization);
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.UI.loading);
   const mapBounds = useSelector((state) => state.data.mapBounds);
-
-  const initialMapViewport = useSelector(
-    (state) => state.data.initialMapViewport
-  );
   const selectedTopics = useSelector((state) => state.data.topics);
 
-  const {
-    title,
-    owner,
-    imgUrl,
-    description,
-    startDate,
-    endDate,
-    geoData,
-    weblink,
-    contact,
-    calendar,
-  } = project;
+  const { title, imgUrl } = organization;
 
   useEffect(() => {
     dispatch(handleTopicSelectorRedux("all"));
     setPath(window.location.pathname);
-  }, [openProject]);
+    console.log(organization);
+  }, [openOrganization]);
 
   const handleClose = () => {
-    console.log(initialMapViewport);
-    dispatch(closeProject());
-    dispatch(clearErrors());
-    dispatch(setMapViewport(initialMapViewport));
-  };
-
-  const handleClick = (order) => {
-    setOrder(order);
-
-    if (order === 2) {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      });
-    }
-
+    dispatch(openOrganizationFunc(false));
     dispatch(clearErrors());
   };
 
-  const handleDropdown = (value) => {
-    setDropdown(value);
-  };
+  // const handleClick = (order) => {
+  //   setOrder(order);
 
-  const dataRar = project.screams;
+  //   if (order === 2) {
+  //     window.scrollTo({
+  //       top: 0,
+  //       left: 0,
+  //       behavior: "smooth",
+  //     });
+  //   }
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const screamsSearched = dataRar?.filter((val) => {
-    if (searchTerm === "") {
-      return val;
-    } else if (
-      val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.Stadtteil?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.Stadtbezirk?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.locationHeader?.toLowerCase().includes(searchTerm.toLowerCase())
-    ) {
-      return val;
-    }
-  });
+  //   dispatch(clearErrors());
+  // };
 
-  const sortedScreams =
-    dropdown === "newest"
-      ? _.orderBy(screamsSearched, "createdAt", "desc")
-      : _.orderBy(screamsSearched, "likeCount", "desc");
+  // const handleDropdown = (value) => {
+  //   setDropdown(value);
+  // };
 
-  const dataFinal = sortedScreams.filter(
-    ({ Thema, status, lat, long }) =>
-      selectedTopics.includes(Thema) &&
-      lat <= mapBounds?.latitude1 &&
-      lat >= mapBounds?.latitude2 &&
-      long >= mapBounds?.longitude2 &&
-      long <= mapBounds?.longitude3 &&
-      status === "None"
-  );
+  // const dataRar = organization.projects;
 
-  const dataFinalLength = dataFinal.length;
+  // const [searchTerm, setSearchTerm] = useState("");
+  // const screamsSearched = dataRar?.filter((val) => {
+  //   if (searchTerm === "") {
+  //     return val;
+  //   } else if (
+  //     val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     val.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     val.Stadtteil?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     val.Stadtbezirk?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     val.locationHeader?.toLowerCase().includes(searchTerm.toLowerCase())
+  //   ) {
+  //     return val;
+  //   }
+  // });
+
+  // const sortedScreams =
+  //   dropdown === "newest"
+  //     ? _.orderBy(screamsSearched, "createdAt", "desc")
+  //     : _.orderBy(screamsSearched, "likeCount", "desc");
+
+  // const dataFinal = sortedScreams.filter(
+  //   ({ Thema, status, lat, long }) =>
+  //     selectedTopics.includes(Thema) &&
+  //     lat <= mapBounds?.latitude1 &&
+  //     lat >= mapBounds?.latitude2 &&
+  //     long >= mapBounds?.longitude2 &&
+  //     long <= mapBounds?.longitude3 &&
+  //     status === "None"
+  // );
+
+  // const dataFinalLength = dataFinal.length;
 
   return (
-    openProject && (
+    openOrganization && (
       <React.Fragment>
-        <ProjectHeader
+        <OrganizationHeader
           imgUrl={imgUrl}
           title={title}
           loading={loading}
-          calendar={calendar}
           order={order}
           path={path}
-          project={project}
+          organization={organization}
           handleClose={handleClose}
-          handleClick={handleClick}
+          // handleClick={handleClick}
         />
 
-        <div className="projectDialog">
+        <Wrapper>
           {isMobileCustom && order !== 1 ? (
             <BackgroundMobile />
           ) : !isMobileCustom ? (
             <BackgroundDesktop />
           ) : null}
-          {order === 1 && (
+          {/* {order === 1 && (
             <IdeaList
               type="projectIdeas"
               loading={loading}
@@ -168,7 +174,7 @@ const ProjectDialog = ({
               handleDropdown={handleDropdown}
               projectsData={projectsData}
               loadingProjects={loadingProjects}
-              project={project}
+              project={organization}
               dropdown={dropdown}
               dataFinalMap={dataFinalMap}
               setSearchTerm={setSearchTerm}
@@ -202,30 +208,11 @@ const ProjectDialog = ({
                 <br />
               </MainAnimations>
             </div>
-          )}
-          {order === 3 && (
-            <React.Fragment>
-              <Break />
-
-              <MainAnimations
-                transition="0.5s"
-                display="block"
-                paddingBottom="2em"
-                height="100%"
-                position={document.body.clientWidth > 768 && "fixed"}
-                top={document.body.clientWidth > 768 && "100px"}
-              >
-                <CalendarComponent
-                  projectScreams={project.screams}
-                  handleClick={handleClick}
-                ></CalendarComponent>
-              </MainAnimations>
-            </React.Fragment>
-          )}
-        </div>
+          )} */}
+        </Wrapper>
       </React.Fragment>
     )
   );
 };
 
-export default ProjectDialog;
+export default OrganizationDialog;

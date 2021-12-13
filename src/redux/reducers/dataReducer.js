@@ -29,6 +29,7 @@ import {
   SET_PROJECTS,
   SET_PROJECT,
   SET_ORGANIZATIONS,
+  SET_ORGANIZATION,
   SET_SCREAM_USER,
   SET_FULL_SCREAMS,
   SET_COOKIES,
@@ -38,6 +39,7 @@ import {
   SET_INITIAL_MAP_BOUNDS,
   SET_INITIAL_MAP_VIEWPORT,
   SET_TOPICS,
+  SET_ORGANIZATION_TYPES,
 } from "../types";
 
 const defaultTopics = [
@@ -48,6 +50,12 @@ const defaultTopics = [
   "Inklusion / Soziales",
   "Sport / Freizeit",
   "Sonstige",
+];
+
+const defaultOrganizationTypes = [
+  "Vereine",
+  "Bürgerinitiativen",
+  "Planungsbüros",
 ];
 const initialState = {
   projects: [],
@@ -71,6 +79,7 @@ const initialState = {
   initialMapBounds: null,
   mapBounds: null,
   topics: defaultTopics,
+  organizationTypes: defaultOrganizationTypes,
 };
 
 export default function (state = initialState, action) {
@@ -221,6 +230,11 @@ export default function (state = initialState, action) {
         loadingOrganizations: false,
       };
 
+    case SET_ORGANIZATION:
+      return {
+        ...state,
+        organization: action.payload,
+      };
     case SET_FULL_SCREAMS:
       return {
         ...state,
@@ -295,6 +309,47 @@ export default function (state = initialState, action) {
           return { ...state, topics: [...removedTopicArray] };
         }
       }
+
+    case SET_ORGANIZATION_TYPES:
+      const indexOfOrganizationTypes = state.organizationTypes.indexOf(
+        action.payload
+      );
+
+      if (action.payload === "all") {
+        return {
+          ...state,
+          topics: defaultTopics,
+        };
+      } else if (state.organizationTypes.length === 7) {
+        //
+        return { ...state, organizationTypes: [action.payload] };
+      } else if (indexOfOrganizationTypes === -1) {
+        // topic does not exist, add it
+
+        return {
+          ...state,
+          organizationTypes: [...state.organizationTypes, action.payload],
+        };
+      } else {
+        // OrganizationTypes exists, remove it
+        const removedOrganizationTypesArray = state.organizationTypes.filter(
+          (item) => item !== action.payload
+        );
+        if (removedOrganizationTypesArray.length === 0) {
+          //show default if all topics removed
+          return {
+            ...state,
+            topics: defaultTopics,
+          };
+        } else {
+          // show remaining after removal
+          return {
+            ...state,
+            organizationTypes: [...removedOrganizationTypesArray],
+          };
+        }
+      }
+
     default:
       return state;
   }

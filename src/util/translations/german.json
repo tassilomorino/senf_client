@@ -149,5 +149,17 @@
   "restart":"Neustarten",
   "continue_creation":"Erstellung fortsetzen",
   "projectRoom_title":"Projektraum-Name",
-  "projectRoom_description":"Beschreibungstext (max. 1000 Zeichen)"
+  "projectRoom_description":"Beschreibungstext (max. 1000 Zeichen)",
+
+
+
+
+  "organizationTypes_all": "Alle Organisationstypen",
+  "organizationTypes_association": "Vereine",
+  "organizationTypes_initiatives": "Initiativen",
+  "organizationTypes_ecoAndGreen": "Umwelt und Grün",
+  "organizationTypes_bike": "Rad",
+  "organizationTypes_inclusionAndSocial": "Inklusion / Soziales",
+  "organizationTypes_sportsAndLeisure": "Sport / Freizeit",
+  "organizationTypes_other": "Sonstige"
 }

@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
 import {
-  closeOrganizationsFunc,
+  openOrganizationsFunc,
   stateCreateOrganizationsFunc,
 } from "../../../redux/actions/organizationActions";
 
@@ -27,6 +27,7 @@ import {
 import CreateOrganizationDialog from "../CreateOrganization/CreateOrganizationDialog";
 import OrganizationsToolbar from "../../molecules/Toolbar/OrganizationsToolbar";
 import MainDialog from "../../atoms/Layout/MainDialog";
+import HorizontalSwiper from "../SwipeLists/HorizontalSwiper";
 const Wrapper = styled.div`
   width: 100vw;
   height: 100%;
@@ -55,10 +56,15 @@ const Wrapper = styled.div`
   }
 `;
 
+const InnerWrapper = styled.div`
+  margin-top: 20px;
+`;
+
 const CoverWrapper = styled.div`
-  margin-top: 100px;
+  margin-top: 0px;
   margin-left: 2.5%;
   width: 95%;
+
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
@@ -87,6 +93,20 @@ const NoIdeasYet = styled.div`
   text-align: center;
 `;
 
+const Title = styled.h2`
+  font-family: PlayfairDisplay-Bold;
+  font-size: 22px;
+  font-weight: 100;
+  color: #353535;
+  align-self: center;
+  margin-top: 10px;
+  text-align: center;
+
+  @media (min-width: 768px) {
+    font-size: 32px;
+  }
+`;
+
 const OrganizationsDialog = ({ dataFinalMap }) => {
   const { t } = useTranslation();
   const [searchOpen, setSearchOpen] = useState(false);
@@ -108,7 +128,7 @@ const OrganizationsDialog = ({ dataFinalMap }) => {
   const dispatch = useDispatch();
 
   const handleClose = () => {
-    dispatch(closeOrganizationsFunc());
+    dispatch(openOrganizationsFunc(false));
   };
 
   const handleClick = (order) => {
@@ -213,7 +233,6 @@ const OrganizationsDialog = ({ dataFinalMap }) => {
       />
 
       <OrganizationsToolbar
-        type="allIdeas"
         loading={loadingOrganizations}
         handleDropdown={handleDropdown}
         dataFinalLength={dataFinalLength}
@@ -222,17 +241,20 @@ const OrganizationsDialog = ({ dataFinalMap }) => {
         setSearchTerm={setSearchTerm}
         searchTerm={searchTerm}
       />
-      {!loadingOrganizations ? (
-        <InfiniteScroll
-          loadMore={() => loadMore()}
-          hasMore={hasMoreItems}
-          useWindow={false}
-        >
-          <CoverWrapper>{showItems(dataFinal)}</CoverWrapper>
-        </InfiniteScroll>
-      ) : (
-        <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>
-      )}
+
+      <InnerWrapper>
+        {!loadingOrganizations ? (
+          <InfiniteScroll
+            loadMore={() => loadMore()}
+            hasMore={hasMoreItems}
+            useWindow={false}
+          >
+            <CoverWrapper>{showItems(dataFinal)}</CoverWrapper>
+          </InfiniteScroll>
+        ) : (
+          <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>
+        )}
+      </InnerWrapper>
     </Wrapper>
   );
 };

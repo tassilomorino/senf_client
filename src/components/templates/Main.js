@@ -33,7 +33,6 @@ import DesktopSidebar from "../molecules/Navigation/DesktopSidebar";
 import Topbar from "../molecules/Navigation/Topbar";
 import MapDesktop from "../atoms/map/MapDesktop";
 import IdeaList from "../organisms/SwipeLists/IdeaList";
-import ProjectsPage from "../organisms/SubPages/ProjectsPage";
 import ScreamDialog from "../organisms/Dialogs/ScreamDialog";
 import ProjectDialog from "../organisms/Dialogs/ProjectDialog";
 import ThanksForTheVote from "../atoms/Backgrounds/ThanksForTheVote";
@@ -51,11 +50,12 @@ import OrganizationsDialog from "../organisms/Dialogs/OrganizationsDialog";
 import ProjectList from "../organisms/SwipeLists/ProjectList";
 import CreateOrganizationDialog from "../organisms/CreateOrganization/CreateOrganizationDialog";
 import CreateProjectDialog from "../organisms/CreateProject/CreateProjectDialog";
+import OrganizationDialog from "../organisms/Dialogs/OrganizationDialog";
 
 const Main = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { screamId } = useParams();
+  const { screamId, projectRoomId } = useParams();
   const { cookie_settings } = useSelector((state) => state.data);
 
   const [zoomBreak, setZoomBreak] = useState(0.6);
@@ -66,6 +66,8 @@ const Main = () => {
   const openProject = useSelector((state) => state.UI.openProject);
   const openAccount = useSelector((state) => state.UI.openAccount);
   const openOrganizations = useSelector((state) => state.UI.openOrganizations);
+  const openOrganization = useSelector((state) => state.UI.openOrganization);
+
   const openCreateOrganization = useSelector(
     (state) => state.UI.openCreateOrganization
   );
@@ -90,7 +92,6 @@ const Main = () => {
   const selectedTopics = useSelector((state) => state.data.topics);
 
   const [order, setOrder] = useState(1);
-  const [screamIdParam, setScreamIdParam] = useState(null);
 
   const [dropdown, setDropdown] = useState("newest");
   const [changeLocationModalOpen, setChangeLocationModalOpen] = useState(false);
@@ -192,7 +193,7 @@ const Main = () => {
             dispatch(getOrganizations(mapViewport));
           });
 
-          if (window.location.pathname === "/projects") {
+          if (window.location.pathname === "/projectRooms") {
             handleClick(2);
           }
         });
@@ -201,20 +202,16 @@ const Main = () => {
   }, [initialMapViewport]);
 
   useEffect(() => {
+    if (projectRoomId) {
+      dispatch(openProjectFunc(projectRoomId));
+    }
     if (screamId) {
-      if (screamId.indexOf("_") > 0) {
-        dispatch(openProjectFunc(screamId));
-      } else {
-        dispatch(openScreamFunc(screamId));
-      }
-      setScreamIdParam(screamId);
+      dispatch(openScreamFunc(screamId));
     }
   }, []);
 
   const handleClick = (order) => {
     setOrder(order);
-
-    setScreamIdParam(null);
 
     dispatch(closeScream());
     dispatch(closeProject());
@@ -222,13 +219,12 @@ const Main = () => {
 
     dispatch(handleTopicSelectorRedux("all"));
 
+    if (order === 1) {
+      window.history.pushState(null, null, "/");
+    }
+
     if (order === 2) {
-      window.history.pushState(null, null, "/projects");
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      });
+      window.history.pushState(null, null, "/projectRooms");
     }
 
     if (order === 3) {
@@ -349,8 +345,6 @@ const Main = () => {
         ({ Thema, status }) =>
           selectedTopics.includes(Thema) && status === "None"
       );
-
-  console.log(openCreateOrganization);
 
   return (
     <React.Fragment>
@@ -482,10 +476,21 @@ const Main = () => {
               loading={loading}
               openProject={openProject}
               dataFinalMap={dataFinalMap}
-              screamIdParam={screamIdParam}
               handleClick={handleClick}
               loadingProjects={loadingProjects}
               projectsData={projects}
+              viewport={mapViewport}
+            />
+          )}
+
+          {openOrganization && (
+            <OrganizationDialog
+              // loading={loading}
+              openOrganization={openOrganization}
+              dataFinalMap={dataFinalMap}
+              handleClick={handleClick}
+              // loadingOrganizations={loadingOrganizations}
+              // projectsData={projects}
               viewport={mapViewport}
             />
           )}
@@ -494,9 +499,6 @@ const Main = () => {
         </div>
       )}
 
-      {/* {!openInfoPage && !openProject && !openAccount && order === 2 && (
-        <ProjectsPage order={order} projectsData={projects}></ProjectsPage>
-      )} */}
       {!openInfoPage && !openProject && !openAccount && order === 3 && (
         <div className="contentWrapper_insights">
           <InsightsPage order={order}></InsightsPage>

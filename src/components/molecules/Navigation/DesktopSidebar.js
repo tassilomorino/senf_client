@@ -31,7 +31,17 @@ import { closeProject } from "../../../redux/actions/projectActions";
 import { Logo, Tabs } from "./styles/sharedStyles";
 import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
 import styled from "styled-components";
+import { OrganizationTypeFilter } from "../Filters/OrganizationTypeFilter";
 
+const FilterWrapper = styled.div`
+  overflow: hidden;
+  position: relative;
+  height: auto;
+  max-height: ${(props) => (props.active ? "1000px" : "0px")};
+  transition: 0.8s;
+  left: 30px;
+  top: 70px;
+`;
 const DesktopSidebar = ({
   loading,
   classes,
@@ -43,6 +53,7 @@ const DesktopSidebar = ({
 }) => {
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openAccount = useSelector((state) => state.UI.openAccount);
+  const openProject = useSelector((state) => state.UI.openProject);
 
   const authenticated = useSelector((state) => state.user.authenticated);
   const userId = useSelector((state) => state.user.userId);
@@ -99,23 +110,24 @@ const DesktopSidebar = ({
             {t("profile")}
           </Tabs>
         )}
+        <FilterWrapper active={openAccount}>
+          <TopicFilter />
+        </FilterWrapper>
         <PostScream
           loadingProjects={loadingProjects}
           projectsData={projectsData}
         />
-        {MenuData.map((item, i) => (
-          <MenuItem
-            key={i}
-            order={order}
-            index={i + 1}
-            isSelectedIcon={item.isSelectedIcon}
-            isNotSelectedIcon={item.isNotSelectedIcon}
-            text={item.text}
-            handleClick={handleClick}
-            openAccount={openAccount}
-          />
-        ))}
-        <div
+        <MenuItem
+          key={1}
+          order={order}
+          index={1}
+          isSelectedIcon={MenuData[0].isSelectedIcon}
+          isNotSelectedIcon={MenuData[0].isNotSelectedIcon}
+          text={MenuData[0].text}
+          handleClick={handleClick}
+          openAccount={openAccount}
+        />
+        {/* <div
           style={{
             position: "relative",
             left: "20px",
@@ -125,8 +137,46 @@ const DesktopSidebar = ({
             top: "90px",
             marginBottom: "30px",
           }}
-        ></div>
-        <TopicFilter />
+        /> */}
+        <FilterWrapper active={order === 1 && !loading && !openAccount}>
+          <TopicFilter />
+        </FilterWrapper>
+        <MenuItem
+          key={2}
+          order={order}
+          index={2}
+          isSelectedIcon={MenuData[1].isSelectedIcon}
+          isNotSelectedIcon={MenuData[1].isNotSelectedIcon}
+          text={MenuData[1].text}
+          handleClick={handleClick}
+          openAccount={openAccount}
+        />
+        <FilterWrapper active={order === 2 && !openProject}>
+          <OrganizationTypeFilter />
+        </FilterWrapper>
+        <FilterWrapper active={openProject}>
+          <TopicFilter />
+        </FilterWrapper>
+        <MenuItem
+          key={3}
+          order={order}
+          index={3}
+          isSelectedIcon={MenuData[2].isSelectedIcon}
+          isNotSelectedIcon={MenuData[2].isNotSelectedIcon}
+          text={MenuData[2].text}
+          handleClick={handleClick}
+          openAccount={openAccount}
+        />
+        <MenuItem
+          key={4}
+          order={order}
+          index={4}
+          isSelectedIcon={MenuData[3].isSelectedIcon}
+          isNotSelectedIcon={MenuData[3].isNotSelectedIcon}
+          text={MenuData[3].text}
+          handleClick={handleClick}
+          openAccount={openAccount}
+        />
         <div
           style={{
             position: "relative",
@@ -135,12 +185,12 @@ const DesktopSidebar = ({
             height: "100px",
           }}
         ></div>{" "}
-        {process.env.REACT_APP_INTERNATIONAL &&
+        {/* {process.env.REACT_APP_INTERNATIONAL &&
           process.env.REACT_APP_INTERNATIONAL === "true" && (
             <CustomButton handleButtonClick={setChangeLocationModalOpen}>
               Stadt ändern
             </CustomButton>
-          )}
+          )} */}
         <a
           href="https://www.facebook.com/senf.koeln/"
           rel="noopener noreferrer"

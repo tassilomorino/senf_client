@@ -50,6 +50,7 @@ export const getProjects = (mapViewport) => async (dispatch) => {
       organizationId: doc.data().organizationId,
       // weblink: doc.data().weblink,
       Thema: doc.data().Thema,
+      organizationType: doc.data().organizationType,
     };
 
     projects.push(docData);
@@ -91,7 +92,7 @@ export const openProjectFunc = (project) => async (dispatch) => {
       })
     );
     dispatch(closeScream());
-    const newPath = `/${project.id}`;
+    const newPath = `/projectRooms/${project.id}`;
     window.history.pushState(null, null, newPath);
     dispatch({ type: SET_PROJECT, payload: project });
     dispatch({ type: OPEN_PROJECT });
@@ -104,7 +105,7 @@ export const closeProject = () => (dispatch) => {
   dispatch({ type: SET_PROJECT, payload: null });
   dispatch({ type: CLOSE_PROJECT });
 
-  window.history.pushState(null, null, "/");
+  window.history.pushState(null, null, "/projectRooms");
 
   setTimeout(() => {
     document.body.style.overflow = "scroll";

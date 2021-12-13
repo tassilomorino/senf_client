@@ -12,6 +12,7 @@ import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
 import Arrow from "../../../images/icons/arrow.png";
 import { truncateString } from "../../../hooks/truncateString";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -99,25 +100,24 @@ const ArrowRight = styled(ArrowLeft)`
 `;
 
 const items = [
-  { title: "Alle Organizationen", buttonText: "Alle anzeigen", id: 0 },
+  {
+    title: "Alle Projekträume",
+    buttonText: "Organisationen anzeigen",
+    id: 0,
+  },
   { title: "Bürgerinitiativen", buttonText: "Alle anzeigen", id: 1 },
   { title: "Planungsbüros", buttonText: "Alle anzeigen", id: 2 },
   { title: "Vereine", buttonText: "Alle anzeigen", id: 3 },
 ];
-const HorizontalSwiper = () => {
+const HorizontalSwiper = ({ active, setActive }) => {
   const dispatch = useDispatch();
 
-  const handleOpenOrganizations = () => {
-    dispatch(openOrganizationsFunc());
-  };
   const [props, set] = useSpring(() => ({
     x: 0,
     transform: `translateX(0px)`,
     overflow: "scroll",
     touchAction: "none",
   }));
-
-  const [active, setActive] = useState(0);
 
   const handlePrev = () => {
     setActive(Math.max(0, active - 1));
@@ -153,10 +153,14 @@ const HorizontalSwiper = () => {
     }
   }, [active]);
 
+  const handleOpenOrganizations = () => {
+    dispatch(openOrganizationsFunc(true));
+  };
+
   return (
     <Wrapper>
       <FlexWrapper>
-        {active !== 0 && (
+        {!isMobileCustom && active !== 0 && (
           <ArrowLeft>
             <img
               src={Arrow}
@@ -165,7 +169,7 @@ const HorizontalSwiper = () => {
             />
           </ArrowLeft>
         )}
-        {active !== 3 && (
+        {!isMobileCustom && active !== 3 && (
           <ArrowRight>
             <img
               src={Arrow}
@@ -177,7 +181,7 @@ const HorizontalSwiper = () => {
         {items.map(({ title, buttonText, id }) => (
           <HorizontalSwipeCard {...bind()} active={id === active} style={props}>
             <Title active={id === active}>
-              {id === active
+              {id === active || isMobileCustom
                 ? title
                 : active === 0
                 ? truncateString(title, 14)
@@ -186,9 +190,12 @@ const HorizontalSwiper = () => {
             {/* {id === active && (
               <SubTitle onClick={handleOpenOrganizations}>
                 {buttonText}{" "}
-            
               </SubTitle>
             )} */}
+
+            {id === active && (
+              <ExpandButton handleButtonClick={handleOpenOrganizations} />
+            )}
 
             {id === active - 1 && (
               <ExpandButton handleButtonClick={handlePrev} />

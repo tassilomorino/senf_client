@@ -11,10 +11,16 @@ import { useTranslation } from "react-i18next";
 
 import styled from "styled-components";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
-import { stateCreateOrganizationsFunc } from "../../../redux/actions/organizationActions";
+import {
+  openOrganizationFunc,
+  stateCreateOrganizationsFunc,
+} from "../../../redux/actions/organizationActions";
 
 const Wrapper = styled.div`
   margin-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   animation: OrganizationCardAnimation 0.8s;
 
@@ -31,13 +37,13 @@ const Wrapper = styled.div`
 `;
 
 const Covers = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 140px;
+  height: 140px;
   z-index: 9;
   float: left;
   position: relative;
   overflow: hidden;
-  border-radius: 25px;
+  border-radius: 100%;
   background-color: white;
   margin: 0;
   padding: 0;
@@ -53,7 +59,8 @@ const StyledImg = styled.img`
 const Title = styled.div`
   font-size: 18px;
   top: 10px;
-  margin-left: 10px;
+  margin-left: 0px;
+  width: 140px;
   text-align: center;
   font-family: Futura PT W01-Bold;
   color: #353535;
@@ -65,23 +72,27 @@ export const OrganizationCard = (props) => {
     organization: { title, owner, imgUrl, organizationId },
   } = props;
   const dispatch = useDispatch();
-  const pushOrganizationId = () => {
+  const pushEditOrganizationId = () => {
     localStorage.setItem("createOrganizationId", organizationId);
     dispatch(stateCreateOrganizationsFunc(true));
+  };
+
+  const pushOrganizationId = () => {
+    dispatch(openOrganizationFunc(true, organizationId));
   };
 
   return (
     <Wrapper>
       <Covers>
-        <CustomIconButton
+        {/* <CustomIconButton
           name="Menu"
           iconWidth="70%"
-          handleButtonClick={() => pushOrganizationId()}
+          handleButtonClick={() => pushEditOrganizationId()}
           position="absolute"
           left="calc(100% - 54px)"
           margin="2px"
-        />
-        <ExpandButton handleButtonClick={() => console.log("hi")} />
+        /> */}
+        <ExpandButton handleButtonClick={pushOrganizationId} />
         <StyledImg src={imgUrl} width="100%" alt="profile" />
       </Covers>
 

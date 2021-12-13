@@ -38,7 +38,7 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
       .string()
       .required(t("enter_email"))
       .min(3, t("username_too_short"))
-      .max(20, t("username_too_long")),
+      .max(40, t("username_too_long")),
 
     description: yup
       .string()

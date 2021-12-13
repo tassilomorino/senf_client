@@ -9,8 +9,9 @@ import {
   LOADING_ORGANIZATIONS_DATA,
   SET_ORGANIZATIONS,
   OPEN_ORGANIZATIONS,
-  CLOSE_ORGANIZATIONS,
   OPEN_CREATE_ORGANIZATION,
+  OPEN_ORGANIZATION,
+  SET_ORGANIZATION,
 } from "../types";
 
 // Get all projects
@@ -49,20 +50,10 @@ export const getOrganizations = (mapViewport) => async (dispatch) => {
   });
 };
 
-export const openOrganizationsFunc = () => async (dispatch) => {
+export const openOrganizationsFunc = (state) => async (dispatch) => {
   dispatch({
     type: OPEN_ORGANIZATIONS,
-  });
-};
-
-export const closeOrganizationsFunc = () => async (dispatch) => {
-  // dispatch({
-  //   type: SET_MY_SCREAMS,
-  //   payload: null,
-  // });
-
-  dispatch({
-    type: CLOSE_ORGANIZATIONS,
+    payload: state,
   });
 };
 
@@ -73,3 +64,66 @@ export const stateCreateOrganizationsFunc = (state) => async (dispatch) => {
     payload: state,
   });
 };
+
+export const openOrganizationFunc =
+  (state, organizationId) => async (dispatch) => {
+    if (state === true) {
+      // dispatch({ type: LOADING_UI });
+
+      const db = firebase.firestore();
+      const storageRef = firebase.storage().ref();
+
+      const ref = await db
+        .collection("organizations")
+        .doc(organizationId)
+        .get();
+
+      // const screamsRef = await db
+      //   .collection("screams")
+      //   .where("project", "==", project)
+      //   .orderBy("createdAt", "desc")
+      //   .get();
+
+      if (!ref.exists) {
+        console.log("No such document!");
+      } else {
+        const organization = ref.data();
+
+        const image = storageRef
+          .child(`/organizationsData/${ref.id}/logo/logo`)
+          .getDownloadURL()
+          .then((image) => {
+            organization.imgUrl = image;
+            organization.id = ref.id;
+            organization.projectRooms = [];
+
+            dispatch({ type: SET_ORGANIZATION, payload: organization });
+            dispatch({
+              type: OPEN_ORGANIZATION,
+              payload: state,
+            });
+          });
+
+        // screamsRef.docs.forEach((doc) =>
+        //   project.screams.push({
+        //     ...doc.data(),
+        //     screamId: doc.id,
+        //     color: setColorByTopic(doc.data().Thema),
+        //     body: doc.data().body.substr(0, 120),
+        //   })
+        // );
+        // dispatch(closeScream());
+        // const newPath = `/${project.id}`;
+        // window.history.pushState(null, null, newPath);
+
+        // dispatch({ type: OPEN_PROJECT });
+
+        // dispatch({ type: STOP_LOADING_UI });
+      }
+    } else {
+      dispatch({
+        type: OPEN_ORGANIZATION,
+        payload: state,
+      });
+    }
+  };

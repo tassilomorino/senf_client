@@ -20,7 +20,7 @@ import {
   OPEN_ACCOUNT,
   CLOSE_ACCOUNT,
   OPEN_ORGANIZATIONS,
-  CLOSE_ORGANIZATIONS,
+  OPEN_ORGANIZATION,
   OPEN_CREATE_ORGANIZATION,
   SET_SWIPEPOSITION_UP,
   SET_SWIPEPOSITION_DOWN,
@@ -34,6 +34,7 @@ const initialState = {
   openProject: false,
   openAccount: false,
   openOrganizations: false,
+  openOrganization: false,
   openCreateOrganization: false,
   openCreateProjectRoom: false,
 
@@ -129,13 +130,13 @@ export default function (state = initialState, action) {
     case OPEN_ORGANIZATIONS:
       return {
         ...state,
-        openOrganizations: true,
+        openOrganizations: action.payload,
       };
 
-    case CLOSE_ORGANIZATIONS:
+    case OPEN_ORGANIZATION:
       return {
         ...state,
-        openOrganizations: false,
+        openOrganization: action.payload,
       };
 
     case OPEN_CREATE_ORGANIZATION:

@@ -212,7 +212,6 @@ const MapDesktop = ({
       properties: properties,
     };
     geojsonProjectRooms.features.push(feature);
-    console.log(geojsonProjectRooms);
   }
   const onHoverIdea = (event) => {
     if (event.features.length > 0) {
@@ -496,10 +495,10 @@ const MapDesktop = ({
 
                 "icon-image": [
                   "match",
-                  ["get", "Thema[0]"],
-                  "Rad",
+                  ["get", "organizationType"],
+                  "Verein",
                   "projectRoomIcon1",
-                  "Umwelt und Grün",
+                  "Partei",
                   "projectRoomIcon2",
                   "projectRoomIcon0",
                 ],

@@ -9,6 +9,9 @@ import LampIcon_yellow from "../images/icons/lampIcon_yellow.png";
 import Insights_yellow from "../images/icons/insights_yellow.png";
 import Insights_grey from "../images/icons/insights_grey.png";
 
+import Organization_yellow from "../images/icons/organization_yellow.png";
+import Organization_grey from "../images/icons/organization_grey.png";
+
 import { Translation } from "react-i18next";
 
 export const MenuData = [
@@ -37,6 +40,16 @@ export const MenuData = [
     text: (
       <Translation>
         {(t, { i18n }) => <span>{t("menuData_insights")}</span>}
+      </Translation>
+    ),
+  },
+
+  {
+    isSelectedIcon: Organization_grey,
+    isNotSelectedIcon: Organization_yellow,
+    text: (
+      <Translation>
+        {(t, { i18n }) => <span>{t("organizations")}</span>}
       </Translation>
     ),
   },

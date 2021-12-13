@@ -13,7 +13,7 @@ import {
 //COMPONENTS
 import LoginRegistration from "../../organisms/Auth/LoginRegistration";
 import InlineInformationPage from "../../organisms/infocomponents/InlineInformationPage";
-import Tabs from "../../atoms/Tabs/Tabs";
+import ScrollTabs from "../../atoms/Tabs/ScrollTabs";
 import { MenuData } from "../../../data/MenuData";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
@@ -134,14 +134,14 @@ const Topbar = ({ order, handleClick }) => {
             <img src={profile_yellow} width="30" alt="profileImage" />
           </ProfileButtonContainer>
         )}
-        <Tabs
+        <ScrollTabs
           loading={loading}
           handleClick={handleClick}
           order={order}
           tabLabels={MenuData.map((item) => item.text)}
           marginTop={"57px"}
           marginBottom={"0px"}
-        ></Tabs>
+        ></ScrollTabs>
       </Wrapper>
     )
   );

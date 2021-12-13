@@ -56,6 +56,31 @@ const ProjectsList = ({
   const prevdataFinalLength = usePrevious({ dataFinalLength });
   const prevDropdown = usePrevious({ dropdown });
 
+  const [active, setActive] = useState(0);
+  const [selectedOrganizationType, setSelectedOrganizationType] =
+    useState("all");
+
+  useEffect(() => {
+    switch (active) {
+      case 1:
+        setSelectedOrganizationType("Verein");
+        break;
+      case 2:
+        setSelectedOrganizationType("Bürgerinitiative");
+        break;
+
+      default:
+        setSelectedOrganizationType("all");
+    }
+  }, [active]);
+
+  const dataFinalFiltered =
+    active === 0
+      ? dataFinal
+      : dataFinal.filter(({ organizationType }) =>
+          selectedOrganizationType.includes(organizationType)
+        );
+
   useEffect(() => {
     if (
       (dataFinalLength &&
@@ -92,7 +117,7 @@ const ProjectsList = ({
   };
 
   const loadMore = () => {
-    if (listItems === dataFinal.length) {
+    if (listItems === dataFinalFiltered.length) {
       sethasMoreItems(false);
     } else {
       setTimeout(() => {
@@ -108,14 +133,14 @@ const ProjectsList = ({
     !loading &&
     mapBounds && (
       <Wrapper id="List">
-        {isAdmin && <HorizontalSwiper />}
+        {isAdmin && <HorizontalSwiper active={active} setActive={setActive} />}
         <InfiniteScroll
           loadMore={() => loadMore()}
           hasMore={hasMoreItems}
           // loader={<SkeletonCard dataFinalLength={dataFinalLength === 0} />}
           useWindow={false}
         >
-          {showItems(dataFinal)}
+          {showItems(dataFinalFiltered)}
         </InfiniteScroll>
 
         {loading && <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>}

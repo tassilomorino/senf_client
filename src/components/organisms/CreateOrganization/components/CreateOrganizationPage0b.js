@@ -118,7 +118,8 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
       const newProject = {
         organizationType: organizationType,
         userIds: [userId],
-        startedCreating: true,
+        createdAt: new Date().toISOString(),
+        status: "deactivated",
       };
 
       const userRef = await db.collection("users").doc(userId);

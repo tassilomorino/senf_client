@@ -62,30 +62,11 @@ const CreateOrganizationPage0 = ({ onClickNext, onClickPrev }) => {
   const [selected, setSelected] = useState(false);
 
   useEffect(() => {
-    async function fetchData() {
-      const db = firebase.firestore();
-
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createOrganizationId"))
-        .get();
-
-      if (!ref.exists) {
-        console.log("No such document!");
-      } else {
-        const data = ref.data();
-        console.log(data);
-        if (data.startedCreating) {
-          setSelected(true);
-        }
-      }
-    }
-
     if (
       typeof Storage !== "undefined" &&
       localStorage.getItem("createOrganizationId")
     ) {
-      fetchData();
+      setSelected(true);
     }
   }, []);
 

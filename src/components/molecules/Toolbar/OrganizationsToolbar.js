@@ -16,18 +16,18 @@ import AddIcon from "../../../images/icons/plus_white.png";
 import { stateCreateOrganizationsFunc } from "../../../redux/actions/organizationActions";
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  height: 50px;
+  justify-content: center;
+  height: 90px;
   transition: height 0.5s;
-  padding: 0px 2.5% 10px 2.5%;
+  padding: 10px 2.5% 10px 2.5%;
 
   animation: ToolbarAnimation 0.7s;
   pointer-events: none;
-  flex-flow: wrap;
+
   @media (min-width: 768px) {
-    position: fixed;
-    top: ${(props) => (props.type === "allIdeas" ? "30px" : "100px")};
+    top: 0px;
     z-index: 99;
     width: 380px;
     padding: 10px 10px 20px 10px;
@@ -50,14 +50,8 @@ const Wrapper = styled.div`
   }
 `;
 
-const Bar = styled.div`
-  position: absolute;
-  width: 40px;
-  height: 4px;
-  border-radius: 10px;
-  margin-left: calc(47.5% - 20px);
-  background-color: white;
-  top: 10px;
+const ButtonsWrapper = styled.div`
+  display: flex;
 `;
 
 const Background = styled.div`
@@ -73,8 +67,7 @@ const Title = styled.h2`
   font-family: PlayfairDisplay-Bold;
   font-size: 22px;
   font-weight: 100;
-  margin-left: 2.5%;
-  color: white;
+  color: #353535;
   align-self: center;
 `;
 
@@ -136,22 +129,25 @@ const Toolbar = ({
   return (
     !loading && (
       <Wrapper type={type} searchOpen={searchOpen}>
-        {isMobileCustom && <Bar />}
         <Title>
           {dataFinalLength}{" "}
-          {dataFinalLength === 1 ? t("organization") : t("organizations")}
+          {/* {dataFinalLength === 1 ? t("organization") : t("organizations")} */}
+          Bürgerinitiativen
         </Title>
-        <SearchIconButton
-          onClick={setSearch}
-          searchTerm={searchTerm}
-          searchOpen={searchOpen}
-        >
-          <img src={SearchIcon} width="20px" style={{ marginLeft: "auto" }} />
-        </SearchIconButton>
-        <SortingSelect handleDropdown={handleDropdown} />{" "}
-        <AddIconButton onClick={openCreateOrganization}>
-          <img src={AddIcon} width="20px" style={{ marginLeft: "auto" }} />
-        </AddIconButton>
+
+        <ButtonsWrapper>
+          <SearchIconButton
+            onClick={setSearch}
+            searchTerm={searchTerm}
+            searchOpen={searchOpen}
+          >
+            <img src={SearchIcon} width="20px" style={{ marginLeft: "auto" }} />
+          </SearchIconButton>
+          {/* <SortingSelect handleDropdown={handleDropdown} />{" "} */}
+          <AddIconButton onClick={openCreateOrganization}>
+            <img src={AddIcon} width="20px" style={{ marginLeft: "auto" }} />
+          </AddIconButton>
+        </ButtonsWrapper>
         {isMobileCustom && <Background onClick={handleClickSwipe} />}
         {searchOpen && (
           <Searchbar
