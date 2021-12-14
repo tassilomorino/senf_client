@@ -1,6 +1,12 @@
 /** @format */
 
-import React, { useState, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router";
@@ -197,38 +203,41 @@ const Main = () => {
     }
   }, []);
 
-  const handleClick = (order) => {
-    setOrder(order);
+  const handleClick = useCallback(
+    (order) => {
+      setOrder(order);
 
-    setScreamIdParam(null);
+      setScreamIdParam(null);
 
-    dispatch(closeScream());
-    dispatch(closeProject());
-    dispatch(closeAccountFunc());
+      dispatch(closeScream());
+      dispatch(closeProject());
+      dispatch(closeAccountFunc());
 
-    dispatch(handleTopicSelectorRedux("all"));
+      dispatch(handleTopicSelectorRedux("all"));
 
-    if (order === 2) {
-      window.history.pushState(null, null, "/projects");
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      });
-    }
+      if (order === 2) {
+        window.history.pushState(null, null, "/projects");
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "smooth",
+        });
+      }
 
-    if (order === 3) {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      });
-    }
-  };
+      if (order === 3) {
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "smooth",
+        });
+      }
+    },
+    [dispatch]
+  );
 
-  const handleDropdown = (value) => {
+  const handleDropdown = useCallback((value) => {
     setDropdown(value);
-  };
+  }, []);
 
   useEffect(() => {
     if (openScream) {
@@ -244,55 +253,57 @@ const Main = () => {
     }
   }, [openScream, mapViewport]);
 
-  const _onViewportChange = (viewport) => {
-    dispatch(setMapViewport(viewport));
-    if (viewport.zoom > 15) {
-      setZoomBreak(2);
-    } else if (viewport.zoom > 11.5) {
-      setZoomBreak(1);
-    } else {
-      setZoomBreak(0.6);
-    }
+  const _onViewportChange = useCallback(
+    (viewport) => {
+      dispatch(setMapViewport(viewport));
+      if (viewport.zoom > 15) {
+        setZoomBreak(2);
+      } else if (viewport.zoom > 11.5) {
+        setZoomBreak(1);
+      } else {
+        setZoomBreak(0.6);
+      }
 
-    if (isMobileCustom) {
-      const map = mapRef.current.getMap();
-      var canvas = map.getCanvas(),
-        w = canvas.width,
-        h = canvas.height,
-        NW = map.unproject([0, 0]).toArray(),
-        SE = map.unproject([w, h]).toArray();
-      var boundsRar = [NW, SE];
+      if (isMobileCustom) {
+        const map = mapRef.current.getMap();
+        var canvas = map.getCanvas(),
+          w = canvas.width,
+          h = canvas.height,
+          NW = map.unproject([0, 0]).toArray(),
+          SE = map.unproject([w, h]).toArray();
+        var boundsRar = [NW, SE];
 
-      const bounds = {
-        latitude1: boundsRar[0][1],
-        latitude2: boundsRar[1][1],
-        longitude2: boundsRar[0][0],
-        longitude3: boundsRar[1][0],
-      };
+        const bounds = {
+          latitude1: boundsRar[0][1],
+          latitude2: boundsRar[1][1],
+          longitude2: boundsRar[0][0],
+          longitude3: boundsRar[1][0],
+        };
 
-      dispatch(setMapBounds(bounds));
-    }
-  };
+        dispatch(setMapBounds(bounds));
+      }
+    },
+    [dispatch]
+  );
 
   const [searchTerm, setSearchTerm] = useState("");
-  const screamsSearched = screams?.filter((val) => {
-    if (searchTerm === "") {
-      return val;
-    } else if (
-      val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.Stadtteil?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.Stadtbezirk?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.locationHeader?.toLowerCase().includes(searchTerm.toLowerCase())
-    ) {
-      return val;
-    }
-  });
-
-  const sortedScreams =
-    dropdown === "newest"
-      ? _.orderBy(screamsSearched, "createdAt", "desc")
-      : _.orderBy(screamsSearched, "likeCount", "desc");
+  const screamsSearched = useMemo(
+    () =>
+      screams?.filter((val) => {
+        if (searchTerm === "") {
+          return val;
+        } else if (
+          val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          val.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          val.Stadtteil?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          val.Stadtbezirk?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          val.locationHeader?.toLowerCase().includes(searchTerm.toLowerCase())
+        ) {
+          return val;
+        }
+      }),
+    [screams, searchTerm]
+  );
 
   // const sortedScreams =
   //   dropdown === "newest"
@@ -309,32 +320,51 @@ const Main = () => {
   //         return 0;
   //       });
 
-  const dataFinal = sortedScreams.filter(
-    ({ Thema, lat, long, status }) =>
-      selectedTopics.includes(Thema) &&
-      lat <= mapBounds?.latitude1 &&
-      lat >= mapBounds?.latitude2 &&
-      long >= mapBounds?.longitude2 &&
-      long <= mapBounds?.longitude3 &&
-      status === "None"
-  );
+  const dataFinal = useMemo(() => {
+    const sortedScreams =
+      dropdown === "newest"
+        ? _.orderBy(screamsSearched, "createdAt", "desc")
+        : _.orderBy(screamsSearched, "likeCount", "desc");
+
+    return sortedScreams.filter(
+      ({ lat, long, Thema, status }) =>
+        selectedTopics.includes(Thema) &&
+        lat <= mapBounds?.latitude1 &&
+        lat >= mapBounds?.latitude2 &&
+        long >= mapBounds?.longitude2 &&
+        long <= mapBounds?.longitude3 &&
+        status === "None"
+    );
+  }, [
+    mapBounds?.latitude1,
+    mapBounds?.latitude2,
+    mapBounds?.longitude2,
+    mapBounds?.longitude3,
+    selectedTopics,
+    dropdown,
+    screamsSearched,
+  ]);
 
   const dataFinalLength = dataFinal.length;
 
-  const dataFinalMap = openProject
-    ? project.screams.filter(
-        ({ Thema, status }) =>
-          selectedTopics.includes(Thema) && status === "None"
-      )
-    : myScreams !== null
-    ? myScreams.filter(
-        ({ Thema, status }) =>
-          selectedTopics.includes(Thema) && status === "None"
-      )
-    : screamsSearched.filter(
-        ({ Thema, status }) =>
-          selectedTopics.includes(Thema) && status === "None"
-      );
+  const dataFinalMap = useMemo(
+    () =>
+      openProject
+        ? project?.screams.filter(
+            ({ Thema, status }) =>
+              selectedTopics.includes(Thema) && status === "None"
+          )
+        : myScreams !== null
+        ? myScreams.filter(
+            ({ Thema, status }) =>
+              selectedTopics.includes(Thema) && status === "None"
+          )
+        : screamsSearched.filter(
+            ({ Thema, status }) =>
+              selectedTopics.includes(Thema) && status === "None"
+          ),
+    [myScreams, openProject, project?.screams, screamsSearched, selectedTopics]
+  );
 
   return (
     <React.Fragment>
@@ -349,19 +379,10 @@ const Main = () => {
         />
       )}
 
-      <Topbar
-        loading={loading}
-        handleClick={handleClick}
-        order={order}
-        dataFinalMap={dataFinalMap}
-      />
+      <Topbar loading={loading} handleClick={handleClick} order={order} />
       <DesktopSidebar
-        loading={loading}
         handleClick={handleClick}
         order={order}
-        loadingProjects={loadingProjects}
-        projectsData={projects}
-        dataFinalMap={dataFinalMap}
         setChangeLocationModalOpen={setChangeLocationModalOpen}
       ></DesktopSidebar>
       {!isMobileCustom && (
@@ -388,7 +409,6 @@ const Main = () => {
       >
         <MapMobile
           dataFinal={dataFinalMap}
-          viewport={mapViewport}
           _onViewportChange={_onViewportChange}
           zoomBreak={zoomBreak}
           openProject={openProject}
@@ -421,8 +441,6 @@ const Main = () => {
               order={order}
               dataFinal={dataFinal}
               dataFinalLength={dataFinalLength}
-              dataFinalMap={dataFinalMap}
-              viewport={mapViewport}
               handleDropdown={handleDropdown}
               projectsData={projects}
               dropdown={dropdown}
@@ -435,12 +453,10 @@ const Main = () => {
             <ProjectDialog
               loading={loading}
               openProject={openProject}
-              dataFinalMap={dataFinalMap}
               screamIdParam={screamIdParam}
               handleClick={handleClick}
               loadingProjects={loadingProjects}
               projectsData={projects}
-              viewport={mapViewport}
             />
           )}
           {openAccount && <Account dataFinalMap={dataFinalMap} />}
@@ -448,11 +464,11 @@ const Main = () => {
       )}
 
       {!openInfoPage && !openProject && !openAccount && order === 2 && (
-        <ProjectsPage order={order} projectsData={projects}></ProjectsPage>
+        <ProjectsPage projectsData={projects}></ProjectsPage>
       )}
       {!openInfoPage && !openProject && !openAccount && order === 3 && (
         <div className="contentWrapper_insights">
-          <InsightsPage order={order}></InsightsPage>
+          <InsightsPage></InsightsPage>
         </div>
       )}
 
