@@ -34,17 +34,11 @@ import { Logo, Tabs } from "./styles/sharedStyles";
 import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
 import styled from "styled-components";
 
-const DesktopSidebar = ({
-  loading,
-  classes,
-  order,
-  handleClick,
-  loadingProjects,
-  projectsData,
-  setChangeLocationModalOpen,
-}) => {
+const DesktopSidebar = ({ order, handleClick, setChangeLocationModalOpen }) => {
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openAccount = useSelector((state) => state.UI.openAccount);
+  const projects = useSelector((state) => state.data.projects);
+  const loadingProjects = useSelector((state) => state.data.loadingProjects);
 
   const authenticated = useSelector((state) => state.user.authenticated);
   const userId = useSelector((state) => state.user.userId);
@@ -75,7 +69,7 @@ const DesktopSidebar = ({
           <img src={LogoImg} width="100px" alt="logoWeb"></img>
         </Logo>
         <SelectLanguageButton />
-        <InlineInformationPageDesktop loading={loading} classes={classes} />
+        <InlineInformationPageDesktop />
         {!authenticated ? (
           <Tabs>
             <RegistrationAndLogin />
@@ -102,10 +96,7 @@ const DesktopSidebar = ({
             {t("profile")}
           </Tabs>
         )}
-        <PostScream
-          loadingProjects={loadingProjects}
-          projectsData={projectsData}
-        />
+        <PostScream loadingProjects={loadingProjects} projectsData={projects} />
         {MenuData.map((item, i) => (
           <MenuItem
             key={i}
