@@ -1,6 +1,6 @@
 /** @format */
 
-import React from "react";
+import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
@@ -33,4 +33,4 @@ const ErrorBackground = ({ loading }) => {
   );
 };
 
-export default ErrorBackground;
+export default memo(ErrorBackground);

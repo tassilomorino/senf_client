@@ -1,6 +1,6 @@
 /** @format */
 
-import React from "react";
+import React, { memo } from "react";
 import { useDispatch } from "react-redux";
 
 import SortingSelect from "../../atoms/Selects/SortingSelect";
@@ -148,4 +148,4 @@ const Toolbar = ({
   );
 };
 
-export default Toolbar;
+export default memo(Toolbar);
