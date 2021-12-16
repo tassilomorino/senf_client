@@ -13,6 +13,8 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { ProjectCard } from "../Cards/ProjectCard";
+import { useTranslation } from "react-i18next";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -30,7 +32,17 @@ const Wrapper = styled.div`
     position: relative;
   }
 `;
+
+const NoIdeasYet = styled.div`
+  position: relative;
+  font-size: 15pt;
+  color: #414345;
+  width: 80%;
+  margin-left: 10%;
+  text-align: center;
+`;
 const List = ({
+  swipeListType,
   type,
   loading,
   dropdown,
@@ -38,6 +50,7 @@ const List = ({
   dataFinalLength,
   projectsData,
 }) => {
+  const { t } = useTranslation();
   const mapBounds = useSelector((state) => state.data.mapBounds);
   const prevdataFinalLength = usePrevious({ dataFinalLength });
   const prevDropdown = usePrevious({ dropdown });
@@ -67,23 +80,34 @@ const List = ({
     var items = [];
     if (dataFinalLength !== 0) {
       for (var i = 0; i < listItems; i++) {
-        items.push(
-          dataFinal[i]?.screamId && (
-            <IdeaCard
-              loading={loading}
-              key={dataFinal[i]?.screamId}
-              title={dataFinal[i]?.title}
-              body={dataFinal[i]?.body}
-              screamId={dataFinal[i]?.screamId}
-              likeCount={dataFinal[i]?.likeCount}
-              commentCount={dataFinal[i]?.commentCount}
-              Stadtteil={dataFinal[i]?.Stadtteil}
-              project={dataFinal[i]?.project}
-              color={dataFinal[i]?.color}
-              projectsData={projectsData}
-            />
-          )
-        );
+        if (swipeListType === "projectRoomOverview") {
+          items.push(
+            dataFinal[i]?.projectId && (
+              <ProjectCard
+                key={dataFinal[i]?.projectId}
+                project={dataFinal[i]}
+              />
+            )
+          );
+        } else {
+          items.push(
+            dataFinal[i]?.screamId && (
+              <IdeaCard
+                loading={loading}
+                key={dataFinal[i]?.screamId}
+                title={dataFinal[i]?.title}
+                body={dataFinal[i]?.body}
+                screamId={dataFinal[i]?.screamId}
+                likeCount={dataFinal[i]?.likeCount}
+                commentCount={dataFinal[i]?.commentCount}
+                Stadtteil={dataFinal[i]?.Stadtteil}
+                project={dataFinal[i]?.project}
+                color={dataFinal[i]?.color}
+                projectsData={projectsData}
+              />
+            )
+          );
+        }
       }
       return items;
     }
@@ -113,7 +137,8 @@ const List = ({
           {showItems(dataFinal)}
         </InfiniteScroll>
 
-        {!hasMoreItems | (dataFinalLength === 0) ? (
+        {swipeListType === "ideas" &&
+        !hasMoreItems | (dataFinalLength === 0) ? (
           <React.Fragment>
             {type === "myIdeas" ? (
               <NoMoreMyContent dataFinalLength={dataFinalLength} />
@@ -124,11 +149,17 @@ const List = ({
             )}
           </React.Fragment>
         ) : null}
-        {isMobileCustom ? (
-          <div style={{ height: "70%" }} />
-        ) : (
-          <div style={{ height: "500px" }} />
+
+        {swipeListType === "projectRoomOverview" && loading && (
+          <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>
         )}
+        {swipeListType === "projectRoomOverview" &&
+          !loading &&
+          dataFinal.length === 0 && (
+            <NoIdeasYet>{t("projectrooms_loading_error")}</NoIdeasYet>
+          )}
+
+        <div style={isMobileCustom ? { height: "70%" } : { height: "500px" }} />
       </Wrapper>
     )
   );

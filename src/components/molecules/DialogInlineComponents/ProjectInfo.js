@@ -2,7 +2,7 @@
 
 import React from "react";
 import styled from "styled-components";
-
+import { useTranslation } from "react-i18next";
 // Images
 import WeblinkIcon from "../../../images/icons/weblink.png";
 import contactIcon from "../../../images/icons/mail.png";
@@ -76,16 +76,17 @@ const ProjectInfo = ({
   const openMail = (contact) => {
     window.location.href = "mailto:" + contact;
   };
+  const { t } = useTranslation();
   return (
     <Card>
       <Content>
-        <Title> Worum geht's</Title>
+        <Title> {t("what_is_it_about")}</Title>
         <StyledText>{description}</StyledText>
 
         <div style={{ display: "flex", flexDirection: "row" }}>
           {weblink && (
             <Button onClick={() => openLink(weblink)}>
-              Mehr Infos{" "}
+              {t("more_info")}{" "}
               <img
                 src={WeblinkIcon}
                 style={{
@@ -100,7 +101,7 @@ const ProjectInfo = ({
 
           {contact && (
             <Button onClick={() => openMail(contact)}>
-              Kontakt
+              {t("contact")}
               <img
                 src={contactIcon}
                 style={{ paddingLeft: "9px" }}
@@ -112,7 +113,7 @@ const ProjectInfo = ({
         </div>
 
         <br />
-        <Title> Zeitraum </Title>
+        <Title> {t("period")} </Title>
         <p>
           {endDate ? (
             <StyledText>
@@ -124,7 +125,7 @@ const ProjectInfo = ({
         </p>
         <br />
 
-        <Title>Initiatoren</Title>
+        <Title>{t("Initiators")}</Title>
         <StyledText>{owner}</StyledText>
         <br />
       </Content>

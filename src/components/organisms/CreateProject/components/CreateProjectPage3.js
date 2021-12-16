@@ -21,7 +21,7 @@ import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 import UploadImageIcon from "../../../../images/icons/uploadImage.png";
 import { CircularProgress } from "@material-ui/core";
 import CreateProjectTitle from "./CreateProjectTitle";
-import { SubTitle, Title } from "./styles/sharedStyles";
+import { ButtonsWrapper, SubTitle, Title } from "./styles/sharedStyles";
 
 const Wrapper = styled.div`
   display: flex;
@@ -61,7 +61,7 @@ const StyledImg = styled.img`
   object-fit: cover;
 `;
 
-const CreateProjectPage3 = ({ onClickNext }) => {
+const CreateProjectPage3 = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -90,7 +90,7 @@ const CreateProjectPage3 = ({ onClickNext }) => {
       const storageRef = firebase.storage().ref();
 
       const fileRef = storageRef.child(
-        `projectRoomThumbnails/${localStorage.getItem(
+        `organizationsData/${localStorage.getItem(
           "createProjectRoomOrganizationId"
         )}/${localStorage.getItem("createProjectRoomId")}/thumbnail`
       );
@@ -165,19 +165,29 @@ const CreateProjectPage3 = ({ onClickNext }) => {
         id="imageUploader"
       />
 
-      <SubmitButton
-        text={t("next")}
-        zIndex="9"
-        backgroundColor="white"
-        textColor="#353535"
-        transformX="none"
-        marginLeft="0"
-        position="relative"
-        top={document.body.clientWidth > 768 ? "100px" : "70px"}
-        handleButtonClick={onClickNext}
-        // disabled={!formikCreateProjectStore.isValid}
-        // keySubmitRef={keySubmitRef}
-      />
+      <ButtonsWrapper>
+        <SubmitButton
+          text={t("next")}
+          zIndex="9"
+          backgroundColor="white"
+          textColor="#353535"
+          top={document.body.clientWidth > 768 ? "100px" : "70px"}
+          left="0"
+          handleButtonClick={onClickNext}
+          disabled={!uploadedImage}
+          //   keySubmitRef={keySubmitRef}
+        />
+        <SubmitButton
+          text={t("back")}
+          zIndex="9"
+          backgroundColor="transparent"
+          shadow={false}
+          textColor="#353535"
+          left="0"
+          handleButtonClick={onClickPrev}
+          //   keySubmitRef={keySubmitRef}
+        />
+      </ButtonsWrapper>
     </Wrapper>
   );
 };

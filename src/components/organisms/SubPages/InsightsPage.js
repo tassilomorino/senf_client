@@ -21,18 +21,6 @@ import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
-const Wrapper = styled.div`
-  margin-top: 90px;
-  @media (min-width: 768px) {
-    margin-left: 200px;
-    width: 400px;
-    transition: 0.5s;
-    position: fixed;
-    top: 50px;
-    margin-top: 0px;
-    left: 0;
-  }
-`;
 const CoverWrapper = styled.div`
   margin-left: 2.5%;
   width: 95%;
@@ -139,42 +127,38 @@ const InsightsPage = ({ order }) => {
     window.open("https://wiki.agorakoeln.de/", "_blank");
   };
   return (
-    order === 3 && (
-      <Wrapper>
-        <MainAnimations transition="0.5s" display="block" paddingBottom="2em">
-          <Keyindicators
-            screams={screams}
-            likesLength={likesLength}
-            commentslength={commentsLength}
-          />
-          <CoverWrapper>
-            <Covers animation="coverAnimation 0.5s ease-in-out">
-              <CoverTitle>{t("topics")}</CoverTitle>
-              <CoverImg src={Themencover} alt="insights-topic-cover" />
-              <ThemenDialog screams={screams} />
-            </Covers>
+    <MainAnimations transition="0.5s" display="block" paddingBottom="2em">
+      <Keyindicators
+        screams={screams}
+        likesLength={likesLength}
+        commentslength={commentsLength}
+      />
+      <CoverWrapper>
+        <Covers animation="coverAnimation 0.5s ease-in-out">
+          <CoverTitle>{t("topics")}</CoverTitle>
+          <CoverImg src={Themencover} alt="insights-topic-cover" />
+          <ThemenDialog screams={screams} />
+        </Covers>
 
-            <Covers animation="coverAnimation 0.75s ease-in-out">
-              <CoverTitle>{t("districts")}</CoverTitle>
-              <CoverImg src={DistrictsCover} alt="insights-districts-cover" />
-              <DistrictsDialog screams={screams} />
-            </Covers>
+        <Covers animation="coverAnimation 0.75s ease-in-out">
+          <CoverTitle>{t("districts")}</CoverTitle>
+          <CoverImg src={DistrictsCover} alt="insights-districts-cover" />
+          <DistrictsDialog screams={screams} />
+        </Covers>
 
-            <Covers animation="coverAnimation 1.25s ease-in-out">
-              <CoverTitle>{t("agegroups")}</CoverTitle>
-              <CoverImg src={AgegroupsCover} alt="insights-agegroups-cover" />
-              <AgegroupDialog screams={screams} likes={likes} />
-            </Covers>
-            <Covers animation="coverAnimation 1s ease-in-out">
-              <CoverTitle>{t("toolbox")}</CoverTitle>
-              <CoverImg src={KeywordsCover} alt="insights-keywords-cover" />
-              <ExpandButton handleButtonClick={() => handleLink()} />
-              {/* <WordcloudDialog /> */}
-            </Covers>
-          </CoverWrapper>
-        </MainAnimations>
-      </Wrapper>
-    )
+        <Covers animation="coverAnimation 1.25s ease-in-out">
+          <CoverTitle>{t("agegroups")}</CoverTitle>
+          <CoverImg src={AgegroupsCover} alt="insights-agegroups-cover" />
+          <AgegroupDialog screams={screams} likes={likes} />
+        </Covers>
+        <Covers animation="coverAnimation 1s ease-in-out">
+          <CoverTitle>{t("toolbox")}</CoverTitle>
+          <CoverImg src={KeywordsCover} alt="insights-keywords-cover" />
+          <ExpandButton handleButtonClick={() => handleLink()} />
+          {/* <WordcloudDialog /> */}
+        </Covers>
+      </CoverWrapper>
+    </MainAnimations>
   );
 };
 

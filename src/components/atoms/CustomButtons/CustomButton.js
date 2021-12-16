@@ -159,6 +159,7 @@ const IconButton = styled.button`
   background-color: ${(props) =>
     props.backgroundColor ? props.backgroundColor : "white"};
   display: flex;
+  flex: none;
   align-items: center;
   justify-content: center;
   text-align: center;

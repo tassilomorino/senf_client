@@ -74,6 +74,7 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     textAlign: "center",
+    cursor: "pointer",
   },
   editButtonCircle: {
     padding: 10,

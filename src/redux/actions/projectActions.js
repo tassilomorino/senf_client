@@ -2,6 +2,7 @@
 
 import firebase from "firebase/app";
 import "firebase/firestore";
+import "firebase/storage";
 
 import { closeScream } from "./screamActions";
 import {
@@ -21,39 +22,49 @@ export const getProjects = (mapViewport) => async (dispatch) => {
   dispatch({ type: LOADING_PROJECTS_DATA });
 
   const db = firebase.firestore();
+  const storageRef = firebase.storage().ref();
+
   const ref = await db
-    .collection("projects")
-    .where("centerLat", "<", Number(mapViewport.latitude) + 1)
-    .where("centerLat", ">", Number(mapViewport.latitude) - 1)
+    .collectionGroup("projectRooms")
+    // .where("centerLat", "<", Number(mapViewport.latitude) + 1)
+    // .where("centerLat", ">", Number(mapViewport.latitude) - 1)
     // .orderBy("createdAt", "desc")
     .get();
   // : await db.collection("projects").orderBy("createdAt", "desc").get();
 
   const projects = [];
   ref.docs.forEach((doc) => {
-    const docData = {
-      project: doc.id,
-      title: doc.data().title,
-      // description: doc.data().description,
-      owner: doc.data().owner,
-      createdAt: doc.data().createdAt,
-      imgUrl: doc.data().imgUrl,
-      startDate: doc.data().startDate,
-      endDate: doc.data().endDate,
-      status: doc.data().status,
-      geoData: doc.data().geoData,
-      centerLat: doc.data().centerLat,
-      centerLong: doc.data().centerLong,
-      zoom: doc.data().zoom,
-      projectId: doc.id,
-      calendar: doc.data().calendar,
-      organizationId: doc.data().organizationId,
-      // weblink: doc.data().weblink,
-      Thema: doc.data().Thema,
-      organizationType: doc.data().organizationType,
-    };
+    const image = storageRef
+      .child(
+        `/organizationsData/${doc.data().organizationId}/${doc.id}/thumbnail`
+      )
+      .getDownloadURL()
+      .then((image) => {
+        const docData = {
+          project: doc.id,
+          projectId: doc.id,
+          title: doc.data().title,
+          // description: doc.data().description,
+          owner: doc.data().owner,
+          createdAt: doc.data().createdAt,
+          imgUrl: doc.data().imgUrl,
+          startDate: doc.data().startDate,
+          endDate: doc.data().endDate,
+          status: doc.data().status,
+          geoData: doc.data().geoData,
+          centerLat: doc.data().centerLat,
+          centerLong: doc.data().centerLong,
+          zoom: doc.data().zoom,
 
-    projects.push(docData);
+          calendar: doc.data().calendar,
+          organizationId: doc.data().organizationId,
+          // weblink: doc.data().weblink,
+          Thema: doc.data().Thema,
+          organizationType: doc.data().organizationType,
+          imgUrl: image,
+        };
+        projects.push(docData);
+      });
   });
 
   dispatch({
@@ -63,22 +74,23 @@ export const getProjects = (mapViewport) => async (dispatch) => {
 };
 
 // Open a project
-export const openProjectFunc = (project) => async (dispatch) => {
+export const openProjectFunc = (projectRoomId) => async (dispatch) => {
   dispatch({ type: LOADING_UI });
 
   const db = firebase.firestore();
-  const ref = await db.collection("projects").doc(project).get();
+  const ref = await db
+    .collectionGroup("projectRooms")
+    .where("projectRoomId", "==", projectRoomId)
+    .get();
 
   const screamsRef = await db
     .collection("screams")
-    .where("project", "==", project)
+    .where("project", "==", projectRoomId)
     .orderBy("createdAt", "desc")
     .get();
 
-  if (!ref.exists) {
-    console.log("No such document!");
-  } else {
-    const project = ref.data();
+  ref.docs.forEach((doc) => {
+    const project = doc.data();
 
     project.id = ref.id;
     project.screams = [];
@@ -98,7 +110,7 @@ export const openProjectFunc = (project) => async (dispatch) => {
     dispatch({ type: OPEN_PROJECT });
 
     dispatch({ type: STOP_LOADING_UI });
-  }
+  });
 };
 
 export const closeProject = () => (dispatch) => {

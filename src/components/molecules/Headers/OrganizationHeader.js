@@ -4,9 +4,8 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
-import ShareModal from "../Modals/ShareModal";
 import Tabs from "../../atoms/Tabs/Tabs";
-import { ProjectTabData } from "../../../data/ProjectTabData";
+import { OrganizationTabData } from "../../../data/OrganizationTabData";
 import {
   FixedWrapper,
   FlexWrapper,
@@ -70,8 +69,8 @@ const OrganizationHeader = ({
           order={order}
           tabLabels={
             calendar
-              ? ProjectTabData.map((item) => item.text)
-              : ProjectTabData.map((item) => item.text).slice(0, 2)
+              ? OrganizationTabData.map((item) => item.text)
+              : OrganizationTabData.map((item) => item.text).slice(0, 2)
           }
           marginTop={"0px"}
           marginBottom={"0px"}

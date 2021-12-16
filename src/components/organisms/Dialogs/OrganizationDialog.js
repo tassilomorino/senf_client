@@ -14,39 +14,21 @@ import {
 //Components
 import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 
-import IdeaList from "../SwipeLists/IdeaList";
 import ProjectHeader from "../../molecules/Headers/ProjectHeader";
 import ProjectInfo from "../../molecules/DialogInlineComponents/ProjectInfo";
 import styled from "styled-components";
 import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
-import {
-  BackgroundDesktop,
-  BackgroundMobile,
-} from "../../atoms/Backgrounds/GradientBackgrounds";
+import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 
 import _ from "lodash";
 import OrganizationHeader from "../../molecules/Headers/OrganizationHeader";
 import { openOrganizationFunc } from "../../../redux/actions/organizationActions";
+import SwipeList from "../SwipeLists/SwipeList";
 
 const Wrapper = styled.div`
-  width: 100vw;
-  height: 100%;
-  margin-top: 0vh;
-  z-index: 90;
-  top: 0;
-  position: fixed;
-  pointer-events: none;
-
   @media (min-width: 768px) {
-    margin-left: 0px;
-    width: 400px;
-    height: 100vh;
     padding-top: 70px;
-    overflow-y: scroll;
-    z-index: 90;
-    top: 0;
-    position: fixed;
   }
 `;
 
@@ -74,6 +56,7 @@ const OrganizationDialog = ({
   const organization = useSelector((state) => state.data.organization);
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.UI.loading);
+  const mapViewport = useSelector((state) => state.data.mapViewport);
   const mapBounds = useSelector((state) => state.data.mapBounds);
   const selectedTopics = useSelector((state) => state.data.topics);
 
@@ -90,47 +73,48 @@ const OrganizationDialog = ({
     dispatch(clearErrors());
   };
 
-  // const handleClick = (order) => {
-  //   setOrder(order);
+  const handleClick = (order) => {
+    setOrder(order);
 
-  //   if (order === 2) {
-  //     window.scrollTo({
-  //       top: 0,
-  //       left: 0,
-  //       behavior: "smooth",
-  //     });
-  //   }
+    if (order === 2) {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
+    }
 
-  //   dispatch(clearErrors());
-  // };
+    dispatch(clearErrors());
+  };
 
-  // const handleDropdown = (value) => {
-  //   setDropdown(value);
-  // };
+  const handleDropdown = (value) => {
+    setDropdown(value);
+  };
 
-  // const dataRar = organization.projects;
+  const dataRar = organization.projectRooms;
 
-  // const [searchTerm, setSearchTerm] = useState("");
-  // const screamsSearched = dataRar?.filter((val) => {
-  //   if (searchTerm === "") {
-  //     return val;
-  //   } else if (
-  //     val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //     val.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //     val.Stadtteil?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //     val.Stadtbezirk?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //     val.locationHeader?.toLowerCase().includes(searchTerm.toLowerCase())
-  //   ) {
-  //     return val;
-  //   }
-  // });
+  const [searchTerm, setSearchTerm] = useState("");
+  const screamsSearched = dataRar?.filter((val) => {
+    if (searchTerm === "") {
+      return val;
+    } else if (
+      val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.Stadtteil?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.Stadtbezirk?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.locationHeader?.toLowerCase().includes(searchTerm.toLowerCase())
+    ) {
+      return val;
+    }
+  });
 
-  // const sortedScreams =
-  //   dropdown === "newest"
-  //     ? _.orderBy(screamsSearched, "createdAt", "desc")
-  //     : _.orderBy(screamsSearched, "likeCount", "desc");
+  const sortedScreams =
+    dropdown === "newest"
+      ? _.orderBy(screamsSearched, "createdAt", "desc")
+      : _.orderBy(screamsSearched, "likeCount", "desc");
 
-  // const dataFinal = sortedScreams.filter(
+  const dataFinal = sortedScreams;
+  // .filter(
   //   ({ Thema, status, lat, long }) =>
   //     selectedTopics.includes(Thema) &&
   //     lat <= mapBounds?.latitude1 &&
@@ -140,7 +124,9 @@ const OrganizationDialog = ({
   //     status === "None"
   // );
 
-  // const dataFinalLength = dataFinal.length;
+  const dataFinalLength = dataFinal.length;
+
+  console.log(dataFinal);
 
   return (
     openOrganization && (
@@ -153,34 +139,29 @@ const OrganizationDialog = ({
           path={path}
           organization={organization}
           handleClose={handleClose}
-          // handleClick={handleClick}
+          handleClick={handleClick}
         />
 
         <Wrapper>
-          {isMobileCustom && order !== 1 ? (
-            <BackgroundMobile />
-          ) : !isMobileCustom ? (
-            <BackgroundDesktop />
-          ) : null}
-          {/* {order === 1 && (
-            <IdeaList
-              type="projectIdeas"
-              loading={loading}
+          {!isMobileCustom || (isMobileCustom && order !== 1 && <Background />)}
+
+          {order === 1 && (
+            <SwipeList
+              swipeListType="projectRoomOverview"
+              loading={loadingProjects}
               order={order}
               dataFinal={dataFinal}
-              dataFinalLength={dataFinalLength}
-              geoData={geoData}
-              viewport={viewport}
+              dataFinalLength={dataFinal.length}
+              dataFinalMap={dataFinalMap}
+              viewport={mapViewport}
               handleDropdown={handleDropdown}
               projectsData={projectsData}
-              loadingProjects={loadingProjects}
-              project={organization}
               dropdown={dropdown}
-              dataFinalMap={dataFinalMap}
               setSearchTerm={setSearchTerm}
               searchTerm={searchTerm}
             />
           )}
+          {/*
           {order === 2 && (
             <div
               style={{

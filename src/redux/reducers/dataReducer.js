@@ -54,8 +54,12 @@ const defaultTopics = [
 
 const defaultOrganizationTypes = [
   "Vereine",
-  "Bürgerinitiativen",
+  "Initiativen",
   "Planungsbüros",
+  "Politik",
+  "Stadtverwaltung",
+  "Presse",
+  "Sonstige",
 ];
 const initialState = {
   projects: [],
@@ -318,13 +322,13 @@ export default function (state = initialState, action) {
       if (action.payload === "all") {
         return {
           ...state,
-          topics: defaultTopics,
+          organizationTypes: defaultOrganizationTypes,
         };
       } else if (state.organizationTypes.length === 7) {
         //
         return { ...state, organizationTypes: [action.payload] };
       } else if (indexOfOrganizationTypes === -1) {
-        // topic does not exist, add it
+        // organizationTypes does not exist, add it
 
         return {
           ...state,
@@ -336,10 +340,10 @@ export default function (state = initialState, action) {
           (item) => item !== action.payload
         );
         if (removedOrganizationTypesArray.length === 0) {
-          //show default if all topics removed
+          //show default if all organizationTypes removed
           return {
             ...state,
-            topics: defaultTopics,
+            organizationTypes: defaultOrganizationTypes,
           };
         } else {
           // show remaining after removal

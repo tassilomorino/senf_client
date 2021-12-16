@@ -1,20 +1,49 @@
 /** @format */
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+
+//firebase
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/storage";
 
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
 import NotDoneImage from "../../../../images/Not_connected.png";
 import { Title } from "./styles/sharedStyles";
 
-const CreateProjectPage0 = ({ onClickNext }) => {
+const CreateProjectPage0 = ({ set }) => {
   const { t } = useTranslation();
+  const [title, setTitle] = useState(null);
 
-  const createProjectFormData = useSelector(
-    (state) => state.formData.createProjectFormData
-  );
+  useEffect(() => {
+    async function fetchData() {
+      const db = firebase.firestore();
+
+      const ref = await db
+        .collection("organizations")
+        .doc(localStorage.getItem("createProjectRoomOrganizationId"))
+        .collection("projectRooms")
+        .doc(localStorage.getItem("createProjectRoomId"))
+        .get();
+
+      if (!ref.exists) {
+        console.log("No such document!");
+      } else {
+        const data = ref.data();
+        setTitle(data.title);
+      }
+    }
+
+    if (
+      typeof Storage !== "undefined" &&
+      localStorage.getItem("createProjectRoomId")
+    ) {
+      fetchData();
+    }
+  }, []);
 
   const handleRestart = () => {
     var answer = window.confirm(
@@ -22,7 +51,8 @@ const CreateProjectPage0 = ({ onClickNext }) => {
     );
     if (answer) {
       localStorage.removeItem("createProjectRoomId");
-      onClickNext();
+
+      set(1);
     } else {
       //some code
     }
@@ -31,10 +61,7 @@ const CreateProjectPage0 = ({ onClickNext }) => {
   return (
     <div>
       <Title>
-        Du bist noch dabei, deinen Projektraum{" "}
-        {createProjectFormData &&
-          createProjectFormData.projectRoom_name &&
-          `"${createProjectFormData.projectRoom_name}"`}{" "}
+        Du bist noch dabei, deinen Projektraum {title && `"${title}"`}
         zu erstellen{" "}
       </Title>
       <br />
@@ -48,7 +75,7 @@ const CreateProjectPage0 = ({ onClickNext }) => {
         position="relative"
         top="50px"
         left="0"
-        handleButtonClick={onClickNext}
+        handleButtonClick={() => set(2)}
         // disabled={!formikCreateProjectStore.isValid}
         //   keySubmitRef={keySubmitRef}
       />

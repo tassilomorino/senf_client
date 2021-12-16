@@ -32,8 +32,8 @@ import InsightsPage from "../organisms/SubPages/InsightsPage";
 import DesktopSidebar from "../molecules/Navigation/DesktopSidebar";
 import Topbar from "../molecules/Navigation/Topbar";
 import MapDesktop from "../atoms/map/MapDesktop";
-import IdeaList from "../organisms/SwipeLists/IdeaList";
-import ScreamDialog from "../organisms/Dialogs/ScreamDialog";
+import SwipeList from "../organisms/SwipeLists/SwipeList";
+import IdeaDialog from "../organisms/Dialogs/IdeaDialog";
 import ProjectDialog from "../organisms/Dialogs/ProjectDialog";
 import ThanksForTheVote from "../atoms/Backgrounds/ThanksForTheVote";
 import Account from "../organisms/Dialogs/Account";
@@ -46,12 +46,32 @@ import PostScream from "../organisms/PostIdea/PostScream";
 import ChangeLocationModal from "../molecules/Modals/ChangeLocationModal";
 import { usePrevious } from "../../hooks/usePrevious";
 import { getOrganizations } from "../../redux/actions/organizationActions";
-import OrganizationsDialog from "../organisms/Dialogs/OrganizationsDialog";
-import ProjectList from "../organisms/SwipeLists/ProjectList";
 import CreateOrganizationDialog from "../organisms/CreateOrganization/CreateOrganizationDialog";
 import CreateProjectDialog from "../organisms/CreateProject/CreateProjectDialog";
 import OrganizationDialog from "../organisms/Dialogs/OrganizationDialog";
+import { OrganizationTypeFilter } from "../molecules/Filters/OrganizationTypeFilter";
+import OrganizationsPage from "../organisms/SubPages/OrganizationsPage";
+import styled from "styled-components";
 
+const MainColumnWrapper = styled.div`
+  width: 100vw;
+  height: 100%;
+  margin-top: 0vh;
+  z-index: 90;
+  top: 0;
+  position: fixed;
+  pointer-events: none;
+
+  @media (min-width: 768px) {
+    margin-left: 200px;
+    width: 400px;
+    height: 100vh;
+    overflow-y: scroll;
+    z-index: 90;
+    top: 0;
+    position: fixed;
+  }
+`;
 const Main = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -65,7 +85,6 @@ const Main = () => {
   const openScream = useSelector((state) => state.UI.openScream);
   const openProject = useSelector((state) => state.UI.openProject);
   const openAccount = useSelector((state) => state.UI.openAccount);
-  const openOrganizations = useSelector((state) => state.UI.openOrganizations);
   const openOrganization = useSelector((state) => state.UI.openOrganization);
 
   const openCreateOrganization = useSelector(
@@ -349,16 +368,6 @@ const Main = () => {
   return (
     <React.Fragment>
       {loading && isMobileCustom && <Loader />}
-      <ErrorBackground loading={loading} />
-
-      {voted && <ThanksForTheVote />}
-
-      {changeLocationModalOpen && (
-        <ChangeLocationModal
-          setChangeLocationModalOpen={setChangeLocationModalOpen}
-        />
-      )}
-
       <Topbar
         loading={loading}
         handleClick={handleClick}
@@ -373,8 +382,8 @@ const Main = () => {
         projectsData={projects}
         dataFinalMap={dataFinalMap}
         setChangeLocationModalOpen={setChangeLocationModalOpen}
-      ></DesktopSidebar>
-      {!isMobileCustom && (
+      />
+      {!isMobileCustom ? (
         <MapDesktop
           loading={loading}
           loadingProjects={loadingProjects}
@@ -388,30 +397,20 @@ const Main = () => {
           projects={projects}
           order={order}
         />
-      )}
-
-      <div
-        style={
-          isMobileCustom &&
-          (order === 1 ||
-            order === 2 ||
-            openProject ||
-            openScream ||
-            openAccount)
-            ? { visibility: "visible" }
-            : { visibility: "hidden" }
-        }
-      >
+      ) : (
         <MapMobile
+          order={order}
           dataFinal={dataFinalMap}
           viewport={mapViewport}
           _onViewportChange={_onViewportChange}
           zoomBreak={zoomBreak}
           openProject={openProject}
+          projects={projects}
           geoData={project && openProject && project.geoData}
           mapRef={mapRef}
         />
-      </div>
+      )}
+
       {!loading &&
         !loadingProjects &&
         isMobileCustom &&
@@ -425,14 +424,23 @@ const Main = () => {
             <TopicFilter loading={loading} />
           </React.Fragment>
         )}
+
+      {!loading &&
+        !loadingProjects &&
+        isMobileCustom &&
+        !openProject &&
+        !openScream &&
+        !openAccount &&
+        order === 2 && <OrganizationTypeFilter loading={loading} />}
+
       {!openInfoPage && (
-        <div className="contentWrapper">
+        <MainColumnWrapper>
           {loading && !isMobileCustom && <Loader />}
-          <div className="MainBackgroundHome" />
 
           {!openProject && !openAccount && order === 1 && (
-            <IdeaList
-              type="allIdeas"
+            <SwipeList
+              swipeListType="ideas"
+              type="standalone"
               loading={loading}
               order={order}
               dataFinal={dataFinal}
@@ -447,29 +455,23 @@ const Main = () => {
             />
           )}
 
-          {openOrganizations && (
-            <OrganizationsDialog dataFinalMap={dataFinalMap} />
+          {!openInfoPage && !openProject && !openAccount && order === 2 && (
+            <SwipeList
+              swipeListType="projectRoomOverview"
+              type="standalone"
+              loading={loadingProjects}
+              order={order}
+              dataFinal={projects}
+              dataFinalLength={projects.length}
+              dataFinalMap={dataFinalMap}
+              viewport={mapViewport}
+              handleDropdown={handleDropdown}
+              projectsData={projects}
+              dropdown={dropdown}
+              setSearchTerm={setSearchTerm}
+              searchTerm={searchTerm}
+            />
           )}
-          {!openOrganizations &&
-            !openInfoPage &&
-            !openProject &&
-            !openAccount &&
-            order === 2 && (
-              <ProjectList
-                type="allIdeas"
-                loading={loadingProjects}
-                order={order}
-                dataFinal={projects}
-                dataFinalLength={projects.length}
-                dataFinalMap={dataFinalMap}
-                viewport={mapViewport}
-                handleDropdown={handleDropdown}
-                projectsData={projects}
-                dropdown={dropdown}
-                setSearchTerm={setSearchTerm}
-                searchTerm={searchTerm}
-              />
-            )}
 
           {openProject && (
             <ProjectDialog
@@ -482,31 +484,43 @@ const Main = () => {
               viewport={mapViewport}
             />
           )}
-
           {openOrganization && (
             <OrganizationDialog
-              // loading={loading}
+              loading={loading}
               openOrganization={openOrganization}
               dataFinalMap={dataFinalMap}
               handleClick={handleClick}
+              loadingProjects={false}
               // loadingOrganizations={loadingOrganizations}
-              // projectsData={projects}
+              projectsData={projects}
               viewport={mapViewport}
             />
           )}
 
           {openAccount && <Account dataFinalMap={dataFinalMap} />}
-        </div>
+
+          {!openInfoPage && openScream && <IdeaDialog />}
+
+          {!openInfoPage &&
+            !openProject &&
+            !openAccount &&
+            !openOrganization &&
+            order === 3 && <OrganizationsPage order={order} />}
+
+          {!openInfoPage && !openProject && !openAccount && order === 4 && (
+            <InsightsPage order={order} />
+          )}
+        </MainColumnWrapper>
       )}
 
-      {!openInfoPage && !openProject && !openAccount && order === 3 && (
-        <div className="contentWrapper_insights">
-          <InsightsPage order={order}></InsightsPage>
-        </div>
+      <ErrorBackground loading={loading} />
+
+      {voted && <ThanksForTheVote />}
+      {changeLocationModalOpen && (
+        <ChangeLocationModal
+          setChangeLocationModalOpen={setChangeLocationModalOpen}
+        />
       )}
-
-      {!openInfoPage && openScream && <ScreamDialog />}
-
       {openCreateOrganization && <CreateOrganizationDialog />}
       {openCreateProjectRoom && <CreateProjectDialog />}
     </React.Fragment>

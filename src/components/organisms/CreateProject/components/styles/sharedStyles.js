@@ -31,3 +31,7 @@ export const Title = styled.h2`
     font-size: 32px;
   }
 `;
+
+export const ButtonsWrapper = styled.div`
+  margin-top: 30px;
+`;

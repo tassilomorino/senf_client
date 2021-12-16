@@ -10,7 +10,7 @@ import styled from "styled-components";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
 //images
-import { Title } from "./styles/sharedStyles";
+import { ButtonsWrapper, Title } from "./styles/sharedStyles";
 
 const Wrapper = styled.div`
   display: flex;
@@ -36,7 +36,7 @@ const FrameWrapper = styled.div`
   }
 `;
 
-const CreateProjectPagePreview = ({ onClickNext }) => {
+const CreateProjectPagePreview = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();
 
   return (
@@ -52,19 +52,29 @@ const CreateProjectPagePreview = ({ onClickNext }) => {
         />
       </FrameWrapper>
 
-      <SubmitButton
-        text={t("Fertigstellen")}
-        zIndex="9"
-        backgroundColor="#353535"
-        textColor="white"
-        transformX="none"
-        marginLeft="0"
-        position="relative"
-        top={document.body.clientWidth > 768 ? "30px" : "70px"}
-        handleButtonClick={onClickNext}
-        // disabled={!formikCreateProjectStore.isValid}
-        // keySubmitRef={keySubmitRef}
-      />
+      <ButtonsWrapper>
+        <SubmitButton
+          text={t("Fertigstellen")}
+          zIndex="9"
+          backgroundColor="white"
+          textColor="#353535"
+          top={document.body.clientWidth > 768 ? "100px" : "70px"}
+          left="0"
+          handleButtonClick={onClickNext}
+          /*  disabled={!data} */
+          //   keySubmitRef={keySubmitRef}
+        />
+        <SubmitButton
+          text={t("back")}
+          zIndex="9"
+          backgroundColor="transparent"
+          shadow={false}
+          textColor="#353535"
+          left="0"
+          handleButtonClick={onClickPrev}
+          //   keySubmitRef={keySubmitRef}
+        />
+      </ButtonsWrapper>
     </Wrapper>
   );
 };

@@ -7,12 +7,11 @@ import styled from "styled-components";
 import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 
-import { openOrganizationsFunc } from "../../../redux/actions/organizationActions";
-import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
+import ExpandButton from "../atoms/CustomButtons/ExpandButton";
 
 import Arrow from "../../../images/icons/arrow.png";
-import { truncateString } from "../../../hooks/truncateString";
-import { isMobileCustom } from "../../../util/customDeviceDetect";
+import { truncateString } from "../../hooks/truncateString";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -154,7 +153,7 @@ const HorizontalSwiper = ({ active, setActive }) => {
   }, [active]);
 
   const handleOpenOrganizations = () => {
-    dispatch(openOrganizationsFunc(true));
+    // dispatch(openOrganizationsFunc(true));
   };
 
   return (

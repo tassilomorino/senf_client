@@ -8,7 +8,6 @@ import { closeScream } from "./screamActions";
 import {
   LOADING_ORGANIZATIONS_DATA,
   SET_ORGANIZATIONS,
-  OPEN_ORGANIZATIONS,
   OPEN_CREATE_ORGANIZATION,
   OPEN_ORGANIZATION,
   SET_ORGANIZATION,
@@ -50,13 +49,6 @@ export const getOrganizations = (mapViewport) => async (dispatch) => {
   });
 };
 
-export const openOrganizationsFunc = (state) => async (dispatch) => {
-  dispatch({
-    type: OPEN_ORGANIZATIONS,
-    payload: state,
-  });
-};
-
 export const stateCreateOrganizationsFunc = (state) => async (dispatch) => {
   console.log(state);
   dispatch({
@@ -78,11 +70,12 @@ export const openOrganizationFunc =
         .doc(organizationId)
         .get();
 
-      // const screamsRef = await db
-      //   .collection("screams")
-      //   .where("project", "==", project)
-      //   .orderBy("createdAt", "desc")
-      //   .get();
+      const projectRoomsRef = await db
+        .collection("organizations")
+        .doc(organizationId)
+        .collection("projectRooms")
+        .orderBy("createdAt", "desc")
+        .get();
 
       if (!ref.exists) {
         console.log("No such document!");
@@ -97,6 +90,13 @@ export const openOrganizationFunc =
             organization.id = ref.id;
             organization.projectRooms = [];
 
+            projectRoomsRef.docs.forEach((doc) =>
+              organization.projectRooms.push({
+                ...doc.data(),
+                projectId: doc.id,
+              })
+            );
+
             dispatch({ type: SET_ORGANIZATION, payload: organization });
             dispatch({
               type: OPEN_ORGANIZATION,
@@ -104,14 +104,6 @@ export const openOrganizationFunc =
             });
           });
 
-        // screamsRef.docs.forEach((doc) =>
-        //   project.screams.push({
-        //     ...doc.data(),
-        //     screamId: doc.id,
-        //     color: setColorByTopic(doc.data().Thema),
-        //     body: doc.data().body.substr(0, 120),
-        //   })
-        // );
         // dispatch(closeScream());
         // const newPath = `/${project.id}`;
         // window.history.pushState(null, null, newPath);

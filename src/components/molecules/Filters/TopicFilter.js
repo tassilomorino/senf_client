@@ -64,7 +64,7 @@ const TopicFilterInnerWrapperMobile = styled.div`
   padding-right: 20px;
   margin: 5px;
   margin-left: calc(100% - 120px);
-  animation: ${enterAnimation} 3.5s ease-out;
+  animation: ${enterAnimation} 2.5s ease-out;
   z-index: 15;
   display: flex;
   flex-direction: row;
@@ -75,11 +75,13 @@ const TopicFilterWrapperDesktop = styled.div`
   position: relative;
   width: 100%;
   height: auto;
-  background-color: transparent;
+  display: flex;
+  flex-direction: ${(props) => (props.column ? "column" : "row")};
+  flex-wrap: wrap;
   padding: 10px;
 `;
 
-export function TopicFilter({ loading, inline }) {
+export function TopicFilter({ loading, inline, column }) {
   const openScream = useSelector((state) => state.UI.openScream);
   const selectedTopics = useSelector((state) => state.data.topics);
   const [moveLeft, setMoveLeft] = useState(false);
@@ -165,7 +167,7 @@ export function TopicFilter({ loading, inline }) {
       </TopicFilterInnerWrapperMobile>
     </TopicFilterWrapperMobile>
   ) : (
-    <TopicFilterWrapperDesktop>
+    <TopicFilterWrapperDesktop column={column}>
       <FormControlLabel
         control={
           <Checkbox

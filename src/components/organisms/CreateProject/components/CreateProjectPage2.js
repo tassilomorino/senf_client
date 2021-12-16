@@ -17,7 +17,7 @@ import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
 //images
-import { SubTitle, Title } from "./styles/sharedStyles";
+import { ButtonsWrapper, SubTitle, Title } from "./styles/sharedStyles";
 import CreateProjectTitle from "./CreateProjectTitle";
 import Contact from "../../../molecules/Modals/Post_Edit_ModalComponents/Contact";
 
@@ -34,7 +34,7 @@ const ButttonsWrapper = styled.div`
   margin-top: 20px;
 `;
 
-const CreateProjectPage2 = ({ onClickNext }) => {
+const CreateProjectPage2 = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const createProjectFormData = useSelector(
@@ -192,19 +192,28 @@ const CreateProjectPage2 = ({ onClickNext }) => {
         />
       </ButttonsWrapper>
 
-      <SubmitButton
-        text={t("next")}
-        zIndex="9"
-        backgroundColor="white"
-        textColor="#353535"
-        transformX="none"
-        marginLeft="0"
-        position="relative"
-        top={document.body.clientWidth > 768 ? "100px" : "70px"}
-        handleButtonClick={handleNext}
-        // disabled={!formikCreateProjectStore.isValid}
-        // keySubmitRef={keySubmitRef}
-      />
+      <ButtonsWrapper>
+        <SubmitButton
+          text={t("next")}
+          zIndex="9"
+          backgroundColor="white"
+          textColor="#353535"
+          top={document.body.clientWidth > 768 ? "100px" : "70px"}
+          left="0"
+          handleButtonClick={handleNext}
+          //   keySubmitRef={keySubmitRef}
+        />
+        <SubmitButton
+          text={t("back")}
+          zIndex="9"
+          backgroundColor="transparent"
+          shadow={false}
+          textColor="#353535"
+          left="0"
+          handleButtonClick={onClickPrev}
+          //   keySubmitRef={keySubmitRef}
+        />
+      </ButtonsWrapper>
     </Wrapper>
   );
 };

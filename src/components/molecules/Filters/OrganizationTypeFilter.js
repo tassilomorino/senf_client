@@ -77,9 +77,12 @@ const FilterWrapperDesktop = styled.div`
   height: auto;
   background-color: transparent;
   padding: 10px;
+  display: flex;
+  flex-direction: ${(props) => (props.column ? "column" : "row")};
+  flex-wrap: wrap;
 `;
 
-export function OrganizationTypeFilter({ loading }) {
+export function OrganizationTypeFilter({ loading, column }) {
   const openScream = useSelector((state) => state.UI.openScream);
   const selectedOrganizationTypes = useSelector(
     (state) => state.data.organizationTypes
@@ -172,7 +175,7 @@ export function OrganizationTypeFilter({ loading }) {
       </FilterInnerWrapperMobile>
     </FilterWrapperMobile>
   ) : (
-    <FilterWrapperDesktop>
+    <FilterWrapperDesktop column={column}>
       <FormControlLabel
         control={
           <Checkbox

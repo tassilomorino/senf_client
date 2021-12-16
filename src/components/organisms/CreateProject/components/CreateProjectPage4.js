@@ -10,8 +10,13 @@ import DrawMapImage from "../../../../images/drawMap.jpg";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 import { createProjectSaveData } from "../../../../redux/actions/formDataActions";
 import MapPreview from "./MapPreview";
-import { Title, SubTitle } from "./styles/sharedStyles";
+import { Title, SubTitle, ButtonsWrapper } from "./styles/sharedStyles";
 import CreateProjectTitle from "./CreateProjectTitle";
+
+//firebase
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/storage";
 
 const Wrapper = styled.div`
   display: flex;
@@ -38,45 +43,62 @@ const StyledImg = styled.img`
   object-fit: cover;
 `;
 
-const CreateProjectPage4 = ({ onClickNext }) => {
+const CreateProjectPage4 = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
 
   const [mapOpen, setMapOpen] = useState(false);
   const mapViewport = useSelector((state) => state.data.mapViewport);
   const mapRef = useRef(null);
   const [viewport, setViewport] = useState(null);
-  const createProjectFormData = useSelector(
-    (state) => state.formData.createProjectFormData
-  );
-  useEffect(() => {
-    const viewport = {
-      zoom: mapViewport.zoom,
-      latitude: mapViewport.latitude,
-      longitude: mapViewport.longitude,
-      transitionDuration: 1000,
-    };
-    setViewport(viewport);
-  }, []);
+  const [data, setData] = useState(null);
 
   const _onViewportChange = (viewport) => {
     setViewport(viewport);
   };
 
-  const handleDelete = (data, createProjectFormData) => {
-    if (data) {
-      var createProjectData = {
-        ...createProjectFormData,
-        geoData: null,
-      };
+  useEffect(() => {
+    async function fetchData() {
+      const db = firebase.firestore();
+      if (
+        typeof Storage !== "undefined" &&
+        localStorage.getItem("createProjectRoomId")
+      ) {
+        const ref = await db
+          .collection("organizations")
+          .doc(localStorage.getItem("createProjectRoomOrganizationId"))
+          .collection("projectRooms")
+          .doc(localStorage.getItem("createProjectRoomId"))
+          .get();
 
-      dispatch(createProjectSaveData(createProjectData));
+        if (!ref.exists) {
+          console.log("No such document!");
+        } else {
+          const data = ref.data();
 
-      setTimeout(() => {
-        setMapOpen(true);
-      }, 1000);
+          if (data.geoData) {
+            setData(JSON.parse(data.geoData));
+          }
+          if (data.centerLong) {
+            setViewport({
+              latitude: data.centerLat,
+              longitude: data.centerLong,
+              zoom: data.zoom,
+              pitch: 0,
+            });
+          } else {
+            const viewport = {
+              zoom: mapViewport.zoom,
+              latitude: mapViewport.latitude,
+              longitude: mapViewport.longitude,
+              transitionDuration: 1000,
+            };
+            setViewport(viewport);
+          }
+        }
+      }
     }
-  };
+    fetchData();
+  }, []);
 
   return (
     <React.Fragment>
@@ -86,46 +108,58 @@ const CreateProjectPage4 = ({ onClickNext }) => {
         viewport={viewport}
         mapRef={mapRef}
         _onViewportChange={_onViewportChange}
-        handleDelete={handleDelete}
+        data={data}
+        setData={setData}
+        setViewport={setViewport}
       />
 
       <Wrapper>
         <CreateProjectTitle />
-        <Title>Ort festlegen</Title>
+        <Title>Gebiet festlegen</Title>
         <SubTitle>
           Mit deinem individeullen Projektraum kannst du ortsbezogen Ideen
           sammeln. Zeichne das Gebiet ein!
         </SubTitle>
 
         <DrawMapButton onClick={setMapOpen}>
-          {createProjectFormData && createProjectFormData.geoData ? (
+          {data ? (
             <MapPreview
               mapOpen={mapOpen}
               setMapOpen={setMapOpen}
               viewport={viewport}
               mapRef={mapRef}
               _onViewportChange={_onViewportChange}
-              handleDelete={handleDelete}
+              data={data}
+              setData={setData}
             />
           ) : (
             <StyledImg src={DrawMapImage} />
           )}
         </DrawMapButton>
 
-        <SubmitButton
-          text={t("next")}
-          zIndex="9"
-          backgroundColor="white"
-          textColor="#353535"
-          transformX="none"
-          marginLeft="0"
-          position="relative"
-          top={document.body.clientWidth > 768 ? "100px" : "30px"}
-          left="0"
-          handleButtonClick={onClickNext}
-          // disabled={!formikCreateProjectStore.isValid}
-          // keySubmitRef={keySubmitRef}
-        />
+        <ButtonsWrapper>
+          <SubmitButton
+            text={t("next")}
+            zIndex="9"
+            backgroundColor="white"
+            textColor="#353535"
+            top={document.body.clientWidth > 768 ? "100px" : "70px"}
+            left="0"
+            handleButtonClick={onClickNext}
+            disabled={!data}
+            //   keySubmitRef={keySubmitRef}
+          />
+          <SubmitButton
+            text={t("back")}
+            zIndex="9"
+            backgroundColor="transparent"
+            shadow={false}
+            textColor="#353535"
+            left="0"
+            handleButtonClick={onClickPrev}
+            //   keySubmitRef={keySubmitRef}
+          />
+        </ButtonsWrapper>
       </Wrapper>
     </React.Fragment>
   );

@@ -1,14 +1,17 @@
 /** @format */
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react"; // must go before plugins
-import de from "@fullcalendar/core/locales/de";
+import styled from "styled-components";
+import Cookies from "universal-cookie";
+import deLocale from "@fullcalendar/core/locales/de";
+import enLocale from "@fullcalendar/core/locales/en-gb";
 import { formatDate } from "@fullcalendar/react";
 
 import listMonth from "@fullcalendar/list";
 import { openScreamFunc } from "../../../redux/actions/screamActions";
 // Redux stuff
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import "./Fullcalendar.css";
 
@@ -18,91 +21,74 @@ let str = formatDate(new Date(), {
   day: "numeric",
 });
 
-console.log(str);
-class CalendarComponent extends React.Component {
-  constructor() {
-    super();
+const CalendarWrapper = styled.div`
+  z-index: 999;
+  padding-right: 2.5%;
+  padding-left: 2.5%;
+  min-height: 80vh;
+  min-width: 95%;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  padding-bottom: 50vh;
+  pointer-events: all;
+`;
+const CalendarComponent = ({ projectScreams, ...props }) => {
+  const dispatch = useDispatch();
+  const cookies = new Cookies();
+  const [initState, setInitState] = useState({
+    calendarWeekends: true,
+    calendarEvents: [
+      // initial event data
+      {
+        title: "Aktion X",
+        date: new Date(1623397202 * 1000),
+        id: "cIOhFG1vJoI9lDQ0QOPk",
+      },
+    ],
+  });
 
-    this.state = {
-      calendarWeekends: true,
-      calendarEvents: [
-        // initial event data
-        {
-          title: "Aktion X",
-          date: new Date(1623397202 * 1000),
-          id: "cIOhFG1vJoI9lDQ0QOPk",
-        },
-      ],
-    };
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     const data = [];
-    var i;
-    var u;
-    for (i = 0; i < this.props.projectScreams.length; i++) {
+    let i;
+    let u;
+    for (i = 0; i < projectScreams.length; i++) {
       if (
-        this.props.projectScreams[i].selectedUnix === undefined ||
-        this.props.projectScreams[i].selectedUnix === null
+        projectScreams[i].selectedUnix === undefined ||
+        projectScreams[i].selectedUnix === null
       ) {
         continue;
       }
-      for (u = 0; u < this.props.projectScreams[i].selectedUnix.length; u++) {
+      for (u = 0; u < projectScreams[i].selectedUnix.length; u++) {
         const eventObject = {
-          title: this.props.projectScreams[i].title,
-          date: new Date(this.props.projectScreams[i].selectedUnix[u] * 1000),
-          id: this.props.projectScreams[i].screamId,
+          title: projectScreams[i].title,
+          date: new Date(projectScreams[i].selectedUnix[u] * 1000),
+          id: projectScreams[i].screamId,
         };
         data.push(eventObject);
       }
     }
 
-    this.setState({
-      calendarEvents: data,
-    });
-  }
-  handleEventClick = ({ event, el }) => {
+    setInitState({ ...initState, calendarEvents: data });
+  }, []);
+
+  const handleEventClick = ({ event, el }) => {
     const screamId = event.id;
-    this.props.openScreamFunc(screamId);
-    this.props.handleClick(1);
+    dispatch(openScreamFunc(screamId));
+    props.handleClick(1);
   };
-
-  render() {
-    return (
-      <div
-        style={{
-          zIndex: 999,
-          paddingRight: "2.5%",
-          paddingLeft: "2.5%",
-
-          minHeight: "80vh",
-
-          minWidth: "95%",
-          display: "flex",
-          flexDirection: "row",
-          flexGrow: "1",
-          paddingBottom: "50vh",
-          pointerEvents: "all",
-        }}
-      >
-        <FullCalendar
-          plugins={[listMonth]}
-          initialView="listMonth"
-          events={this.state.calendarEvents}
-          locale={de}
-          eventClick={this.handleEventClick}
-        />
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = (state) => ({
-  data: state.data,
-});
-
-const mapActionsToProps = {
-  openScreamFunc,
+  const lang = cookies.get("language");
+  return (
+    <CalendarWrapper>
+      <FullCalendar
+        plugins={[listMonth]}
+        initialView="listMonth"
+        events={initState.calendarEvents}
+        locale={lang === "de" ? deLocale : enLocale}
+        eventClick={handleEventClick}
+      />
+    </CalendarWrapper>
+  );
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(CalendarComponent);
+export default CalendarComponent;

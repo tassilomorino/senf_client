@@ -16,21 +16,7 @@ import {
   setSwipePositionDown,
   setSwipePositionUp,
 } from "../../../redux/actions/UiActions";
-import {
-  BackgroundDesktop,
-  BackgroundMobile,
-} from "../../atoms/Backgrounds/GradientBackgrounds";
-
-const Wrapper = styled.div`
-  opacity: 1;
-  display: flex;
-  flex-direction: row;
-
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: ${(props) => props.zIndex && props.zIndex};
-`;
+import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 
 const Content = styled.div`
   margin-top: 0px;
@@ -55,6 +41,7 @@ const ListHeaderWrapper = styled.div`
 `;
 
 const IdeaList = ({
+  swipeListType,
   type,
   loading,
   order,
@@ -158,94 +145,90 @@ const IdeaList = ({
     }
   );
 
-  return (
-    <Wrapper zIndex={zIndex}>
-      {isMobileCustom ? (
-        <React.Fragment>
-          <animated.div
-            className={!loading && !openScream ? "drag" : ""}
-            style={props}
-          >
-            {mapBounds?.latitude1 !== 0 && (
-              <React.Fragment>
-                <ListHeaderWrapper>
-                  <animated.div
-                    {...bind()}
-                    style={props}
-                    style={{
-                      backgroundColor: "#fed957",
-                      height: "70px",
-                      pointerEvents: "none",
-                    }}
-                  >
-                    <Toolbar
-                      loading={loading}
-                      handleDropdown={handleDropdown}
-                      dataFinalLength={dataFinalLength}
-                      setSearchOpen={setSearchOpen}
-                      searchOpen={searchOpen}
-                      setSearchTerm={setSearchTerm}
-                      searchTerm={searchTerm}
-                      handleClickSwipe={
-                        swipePosition === "bottom"
-                          ? () => setSwipeUp()
-                          : () => setSwipeDown()
-                      }
-                    />{" "}
-                  </animated.div>
-                </ListHeaderWrapper>
-
-                {searchOpen ? (
-                  <div style={{ height: "60px", transition: "0.5s" }} />
-                ) : (
-                  <div style={{ height: "0px", transition: "0.5s" }} />
-                )}
-                {/* <ShadowBox display={shadow ? "block" : "none"} /> */}
-                <List
-                  type={type}
+  return isMobileCustom ? (
+    <React.Fragment>
+      <animated.div
+        className={!loading && !openScream ? "drag" : "drag_hide"}
+        style={props}
+      >
+        {mapBounds?.latitude1 !== 0 && (
+          <React.Fragment>
+            <ListHeaderWrapper>
+              <animated.div
+                {...bind()}
+                style={props}
+                style={{
+                  backgroundColor: "#fed957",
+                  height: "70px",
+                  pointerEvents: "none",
+                }}
+              >
+                <Toolbar
+                  swipeListType={swipeListType}
                   loading={loading}
-                  dropdown={dropdown}
-                  dataFinal={dataFinal}
+                  handleDropdown={handleDropdown}
                   dataFinalLength={dataFinalLength}
-                  projectsData={projectsData}
-                />
-              </React.Fragment>
+                  setSearchOpen={setSearchOpen}
+                  searchOpen={searchOpen}
+                  setSearchTerm={setSearchTerm}
+                  searchTerm={searchTerm}
+                  handleClickSwipe={
+                    swipePosition === "bottom"
+                      ? () => setSwipeUp()
+                      : () => setSwipeDown()
+                  }
+                />{" "}
+              </animated.div>
+            </ListHeaderWrapper>
+
+            {searchOpen ? (
+              <div style={{ height: "60px", transition: "0.5s" }} />
+            ) : (
+              <div style={{ height: "0px", transition: "0.5s" }} />
             )}
-          </animated.div>
-        </React.Fragment>
+            {/* <ShadowBox display={shadow ? "block" : "none"} /> */}
+            <List
+              swipeListType={swipeListType}
+              type={type}
+              loading={loading}
+              dropdown={dropdown}
+              dataFinal={dataFinal}
+              dataFinalLength={dataFinalLength}
+              projectsData={projectsData}
+            />
+          </React.Fragment>
+        )}
+      </animated.div>
+    </React.Fragment>
+  ) : (
+    <Content>
+      <Background />
+      <Toolbar
+        swipeListType={swipeListType}
+        loading={loading}
+        handleDropdown={handleDropdown}
+        dataFinalLength={dataFinalLength}
+        setSearchOpen={setSearchOpen}
+        searchOpen={searchOpen}
+        setSearchTerm={setSearchTerm}
+        searchTerm={searchTerm}
+        type={type}
+      />{" "}
+      {searchOpen ? (
+        <div style={{ height: "60px", transition: "0.5s" }} />
       ) : (
-        <Content>
-          {isMobileCustom && order !== 1 ? (
-            <BackgroundMobile />
-          ) : !isMobileCustom ? (
-            <BackgroundDesktop />
-          ) : null}
-          <Toolbar
-            loading={loading}
-            handleDropdown={handleDropdown}
-            dataFinalLength={dataFinalLength}
-            setSearchOpen={setSearchOpen}
-            searchOpen={searchOpen}
-            setSearchTerm={setSearchTerm}
-            searchTerm={searchTerm}
-            type={type}
-          />{" "}
-          {searchOpen ? (
-            <div style={{ height: "60px", transition: "0.5s" }} />
-          ) : (
-            <div style={{ height: "0px", transition: "0.5s" }} />
-          )}
-          <List
-            type={type}
-            loading={loading}
-            dropdown={dropdown}
-            dataFinal={dataFinal}
-            dataFinalLength={dataFinalLength}
-            projectsData={projectsData}
-          />{" "}
-        </Content>
-      )}{" "}
-    </Wrapper>
+        <div style={{ height: "0px", transition: "0.5s" }} />
+      )}
+      <List
+        swipeListType={swipeListType}
+        type={type}
+        loading={loading}
+        dropdown={dropdown}
+        dataFinal={dataFinal}
+        dataFinalLength={dataFinalLength}
+        projectsData={projectsData}
+      />{" "}
+    </Content>
   );
 };
 

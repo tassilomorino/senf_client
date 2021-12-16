@@ -19,7 +19,6 @@ import {
   VOTED_FALSE,
   OPEN_ACCOUNT,
   CLOSE_ACCOUNT,
-  OPEN_ORGANIZATIONS,
   OPEN_ORGANIZATION,
   OPEN_CREATE_ORGANIZATION,
   SET_SWIPEPOSITION_UP,
@@ -33,7 +32,6 @@ const initialState = {
 
   openProject: false,
   openAccount: false,
-  openOrganizations: false,
   openOrganization: false,
   openCreateOrganization: false,
   openCreateProjectRoom: false,
@@ -126,11 +124,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         openAccount: false,
-      };
-    case OPEN_ORGANIZATIONS:
-      return {
-        ...state,
-        openOrganizations: action.payload,
       };
 
     case OPEN_ORGANIZATION:

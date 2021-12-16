@@ -14,18 +14,21 @@ import {
 //Components
 import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 
-import IdeaList from "../SwipeLists/IdeaList";
+import IdeaList from "../SwipeLists/SwipeList";
 import ProjectHeader from "../../molecules/Headers/ProjectHeader";
 import ProjectInfo from "../../molecules/DialogInlineComponents/ProjectInfo";
 import styled from "styled-components";
 import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
-import {
-  BackgroundDesktop,
-  BackgroundMobile,
-} from "../../atoms/Backgrounds/GradientBackgrounds";
+import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 
 import _ from "lodash";
+
+const Wrapper = styled.div`
+  @media (min-width: 768px) {
+    padding-top: 70px;
+  }
+`;
 
 const Break = styled.div`
   position: relative;
@@ -150,12 +153,9 @@ const ProjectDialog = ({
           handleClick={handleClick}
         />
 
-        <div className="projectDialog">
-          {isMobileCustom && order !== 1 ? (
-            <BackgroundMobile />
-          ) : !isMobileCustom ? (
-            <BackgroundDesktop />
-          ) : null}
+        <Wrapper>
+          {!isMobileCustom || (isMobileCustom && order !== 1 && <Background />)}
+
           {order === 1 && (
             <IdeaList
               type="projectIdeas"
@@ -222,7 +222,7 @@ const ProjectDialog = ({
               </MainAnimations>
             </React.Fragment>
           )}
-        </div>
+        </Wrapper>
       </React.Fragment>
     )
   );

@@ -25,15 +25,22 @@ import MapGL, {
   NavigationControl,
   Image,
 } from "@urbica/react-map-gl";
+import { LinearInterpolator, WebMercatorViewport } from "react-map-gl";
+import bbox from "@turf/bbox";
 
 import NoLocationPopUp from "./NoLocationPopUp";
 import { DesktopMapButtons } from "./DesktopMapButtons";
 import { PatternBackground } from "./styles/sharedStyles";
 import { useParams } from "react-router";
 
-import ProjectRoomIcon0 from "../../../images/icons/pr_pin0.png";
-import ProjectRoomIcon1 from "../../../images/icons/pr_pin1.png";
-import ProjectRoomIcon2 from "../../../images/icons/pr_pin2.png";
+import Bubble1 from "../../../images/bubbles/bubble1.png";
+import Bubble2 from "../../../images/bubbles/bubble2.png";
+import Bubble3 from "../../../images/bubbles/bubble3.png";
+import Bubble4 from "../../../images/bubbles/bubble4.png";
+import Bubble5 from "../../../images/bubbles/bubble5.png";
+import Bubble6 from "../../../images/bubbles/bubble6.png";
+import Bubble7 from "../../../images/bubbles/bubble7.png";
+
 import { openProjectFunc } from "../../../redux/actions/projectActions";
 
 const PinComponent = styled.img`
@@ -92,6 +99,8 @@ const MapDesktop = ({
     (state) => state.data.initialMapViewport
   );
   const mapLoaded = useSelector((state) => state.data.mapLoaded);
+  const [projectRoomBounds, setProjectRoomBounds] = useState(null);
+
   const { screamId } = useParams();
 
   const handlleMapLoaded = () => {
@@ -101,6 +110,22 @@ const MapDesktop = ({
       setTimeout(() => {
         dispatch(setMapViewport(initialMapViewport));
       }, 1000);
+
+      setTimeout(() => {
+        // mapRef.fitBounds([
+        //   [32.958984, -5.353521], // southwestern corner of the bounds
+        //   [43.50585, 5.615985], // northeastern corner of the bounds
+        // ]);
+        // dispatch(
+        //   setMapViewport({
+        //     ...mapViewport,
+        //     bounds: [
+        //       [6.3, 50.7],
+        //       [6.8, 50.9],
+        //     ],
+        //   })
+        // );
+      }, 2000);
     }
   };
   useEffect(() => {
@@ -110,16 +135,46 @@ const MapDesktop = ({
     }, 1000);
   }, [initialMapViewport]);
 
+  useEffect(() => {
+    if (!loadingProjects && geoData !== undefined && geoData !== "") {
+      const feature = JSON.parse(geoData);
+
+      if (geoData && feature && mapViewport) {
+        // calculate the bounding box of the feature
+        const [minLng, minLat, maxLng, maxLat] = bbox(feature);
+
+        const size = maxLat - minLat + maxLng - minLng;
+        const newZoom =
+          size < 0.05 ? 15.5 : size < 0.1 ? 13.5 : size < 0.2 ? 12.5 : 10.5;
+
+        const newViewport = {
+          latitude: (minLat + maxLat) / 2,
+          longitude: (minLng + maxLng) / 2,
+          zoom: newZoom,
+          duration: 2700,
+          pitch: 30,
+        };
+        console.log(mapViewport, newViewport);
+        dispatch(setMapViewport(newViewport));
+      }
+    }
+  }, [geoData]);
+
   const data =
-    !loadingProjects && geoData !== undefined && geoData !== ""
-      ? {
-          type: "Feature",
-          geometry: {
-            type: "Polygon",
-            coordinates: [JSON.parse(geoData)],
-          },
-        }
-      : null;
+    !loadingProjects &&
+    geoData !== undefined &&
+    geoData !== "" &&
+    JSON.parse(geoData);
+  // const data =
+  //   !loadingProjects && geoData !== undefined && geoData !== ""
+  //     ? {
+  //         type: "Feature",
+  //         geometry: {
+  //           type: "Polygon",
+  //           coordinates: [JSON.parse(geoData)],
+  //         },
+  //       }
+  //     : null;
 
   let dataNoLocation = [];
   let dataFinalMap = [];
@@ -294,6 +349,31 @@ const MapDesktop = ({
           pitch={mapViewport.pitch}
           bearing={mapViewport.bearing}
           zoom={mapViewport.zoom}
+          // maxBounds={
+          //   openProject &&
+          //   !loadingProjects &&
+          //   geoData !== undefined &&
+          //   geoData !== ""
+          //     ? projectRoomBounds
+          //     : null
+          // }
+          // bounds={
+          //   openProject &&
+          //   !loadingProjects &&
+          //   geoData !== undefined &&
+          //   geoData !== ""
+          //     ? projectRoomBounds
+          //     : null
+          // }
+          // bounds={
+          //   openProject &&
+          //   !loadingProjects &&
+          //   geoData !== undefined &&
+          //   geoData !== "" && [
+          //     [6.5, 50.8],
+          //     [6.8, 50.9],
+          //   ]
+          // }
           onViewportChange={_onViewportChange}
           viewportChangeMethod={"easeTo"}
           viewportChangeOptions={{
@@ -321,9 +401,13 @@ const MapDesktop = ({
             )}
           <DesktopMapButtons viewport={mapViewport} mapRef={mapRef} />
 
-          <Image id="projectRoomIcon0" image={ProjectRoomIcon0} />
-          <Image id="projectRoomIcon1" image={ProjectRoomIcon1} />
-          <Image id="projectRoomIcon2" image={ProjectRoomIcon2} />
+          <Image id="Bubble1" image={Bubble1} />
+          <Image id="Bubble2" image={Bubble2} />
+          <Image id="Bubble3" image={Bubble3} />
+          <Image id="Bubble4" image={Bubble4} />
+          <Image id="Bubble5" image={Bubble5} />
+          <Image id="Bubble6" image={Bubble6} />
+          <Image id="Bubble7" image={Bubble7} />
 
           <Source id="geojsonIdeas" type="geojson" data={geojsonIdeas} />
           <Source
@@ -496,11 +580,19 @@ const MapDesktop = ({
                 "icon-image": [
                   "match",
                   ["get", "organizationType"],
-                  "Verein",
-                  "projectRoomIcon1",
-                  "Partei",
-                  "projectRoomIcon2",
-                  "projectRoomIcon0",
+                  "Vereine",
+                  "Bubble1",
+                  "Inititiven",
+                  "Bubble2",
+                  "Planungsbüros",
+                  "Bubble3",
+                  "Politik",
+                  "Bubble4",
+                  "Stadtverwaltung",
+                  "Bubble5",
+                  "Presse",
+                  "Bubble6",
+                  "Bubble7",
                 ],
                 "icon-size": [
                   "interpolate",
@@ -511,11 +603,11 @@ const MapDesktop = ({
                   0.01,
 
                   10,
-                  0.08,
+                  0.05,
 
                   // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
                   20,
-                  0.7,
+                  0.4,
                 ],
                 "icon-anchor": "bottom",
               }}

@@ -7,18 +7,20 @@ import styled from "styled-components";
 import { closeAccountFunc } from "../../../redux/actions/accountActions";
 
 //Components
-import IdeaList from "../SwipeLists/IdeaList";
+import IdeaList from "../SwipeLists/SwipeList";
 import AccountHeader from "../../molecules/Headers/AccountHeader";
 import AccountSettings from "../../molecules/DialogInlineComponents/AccountSettings";
 import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
-import {
-  BackgroundDesktop,
-  BackgroundMobile,
-} from "../../atoms/Backgrounds/GradientBackgrounds";
+import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 
 import _ from "lodash";
 
+const Wrapper = styled.div`
+  @media (min-width: 768px) {
+    padding-top: 70px;
+  }
+`;
 const Break = styled.div`
   position: relative;
   height: 110px;
@@ -98,12 +100,8 @@ const Account = ({ dataFinalMap }) => {
         handleClick={handleClick}
       />
 
-      <div className="accountDialog">
-        {isMobileCustom && order !== 1 ? (
-          <BackgroundMobile />
-        ) : !isMobileCustom ? (
-          <BackgroundDesktop />
-        ) : null}
+      <Wrapper>
+        {!isMobileCustom || (isMobileCustom && order !== 1 && <Background />)}
         {order === 1 && (
           <IdeaList
             type="myIdeas"
@@ -139,7 +137,7 @@ const Account = ({ dataFinalMap }) => {
             </MainAnimations>
           </div>
         )}
-      </div>
+      </Wrapper>
     </React.Fragment>
   );
 };

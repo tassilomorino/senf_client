@@ -14,11 +14,13 @@ export const FixedWrapper = styled.div`
   border-radius: 20px 20px;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
   animation: downAnimation 1.7s ease-in-out;
+  pointer-events: all;
 
   @media (min-width: 768px) {
     left: 210px;
     width: 380px;
     animation: none;
+    top: 10px;
   }
 
   @keyframes downAnimation {

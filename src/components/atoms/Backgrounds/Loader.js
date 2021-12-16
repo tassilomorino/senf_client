@@ -5,43 +5,23 @@ import styled from "styled-components";
 //ICONS
 import lamploader from "../../../images/lamp.png";
 import Logo from "../../../images/AddPlease.png";
+import { Background } from "./GradientBackgrounds";
 
 const Wrapper = styled.div`
   z-index: 99;
   display: flex;
-  position: fixed;
   align-items: center;
   justify-content: center;
   text-align: center;
+
   height: 100%;
   width: 100%;
   top: 0;
-  background-color: transparent;
-
-  background-attachment: fixed;
-  background-image: linear-gradient(to bottom, #ffd19b, #ffda53, #ffffff);
-  background-repeat: no-repeat;
-  background: -webkit-linear-gradient(to left, #ffd19b, #ffda53, #ffffff);
-
-  /* background-color: #e9e9e9;
-  opacity: 1;
-  background-image: linear-gradient(white 2.6px, transparent 2.6px),
-    linear-gradient(90deg, white 2.6px, transparent 2.6px),
-    linear-gradient(white 1.3px, transparent 1.3px),
-    linear-gradient(90deg, white 1.3px, #f8f8f8 1.3px);
-  background-size: 65px 65px, 65px 65px, 13px 13px, 13px 13px;
-  background-position: -2.6px -2.6px, -2.6px -2.6px, -1.3px -1.3px,
-    -1.3px -1.3px; */
-  width: 100%;
-  height: 100%;
+  left: 0;
   position: fixed;
-  z-index: 2;
 
   @media (min-width: 768px) {
-    position: fixed;
-    width: 400px;
-    height: 100vh;
-    top: 0;
+    position: relative;
   }
 `;
 
@@ -102,7 +82,7 @@ const Loader = () => {
   return (
     <Wrapper>
       <LoaderImg src={lamploader} alt="loader-icon" />
-
+      <Background />
       {/* <div
         style={{
           width: "100%",

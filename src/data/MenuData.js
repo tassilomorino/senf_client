@@ -35,21 +35,20 @@ export const MenuData = [
   },
 
   {
-    isSelectedIcon: Insights_grey,
-    isNotSelectedIcon: Insights_yellow,
-    text: (
-      <Translation>
-        {(t, { i18n }) => <span>{t("menuData_insights")}</span>}
-      </Translation>
-    ),
-  },
-
-  {
     isSelectedIcon: Organization_grey,
     isNotSelectedIcon: Organization_yellow,
     text: (
       <Translation>
         {(t, { i18n }) => <span>{t("organizations")}</span>}
+      </Translation>
+    ),
+  },
+  {
+    isSelectedIcon: Insights_grey,
+    isNotSelectedIcon: Insights_yellow,
+    text: (
+      <Translation>
+        {(t, { i18n }) => <span>{t("menuData_insights")}</span>}
       </Translation>
     ),
   },

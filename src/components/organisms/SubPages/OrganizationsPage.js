@@ -1,63 +1,23 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { isMobileCustom } from "../../../util/customDeviceDetect";
-import styled from "styled-components";
-import {
-  openOrganizationsFunc,
-  stateCreateOrganizationsFunc,
-} from "../../../redux/actions/organizationActions";
-
-//Components
-import {
-  BackgroundDesktop,
-  BackgroundMobile,
-} from "../../atoms/Backgrounds/GradientBackgrounds";
-import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
-
+import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
+
+import firebase from "firebase/app";
+import "firebase/firestore";
+import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
+import styled from "styled-components";
 import { useTranslation } from "react-i18next";
-import InfiniteScroll from "react-infinite-scroller";
+import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import { OrganizationCard } from "../../molecules/Cards/OrganizationCard";
-import {
-  CustomButton,
-  CustomIconButton,
-} from "../../atoms/CustomButtons/CustomButton";
-import CreateOrganizationDialog from "../CreateOrganization/CreateOrganizationDialog";
-import OrganizationsToolbar from "../../molecules/Toolbar/OrganizationsToolbar";
-import MainDialog from "../../atoms/Layout/MainDialog";
-import HorizontalSwiper from "../SwipeLists/HorizontalSwiper";
-const Wrapper = styled.div`
-  width: 100vw;
-  height: 100%;
-  margin-top: 0vh;
-  z-index: 99;
-  top: 0;
-  position: fixed;
-  background: rgb(254, 217, 87);
-  background: linear-gradient(
-    180deg,
-    rgba(254, 217, 87, 1) 0%,
-    rgba(254, 217, 87, 1) 6%,
-    rgba(255, 218, 83, 1) 41%,
-    rgba(255, 255, 255, 1) 100%
-  );
-
-  @media (min-width: 768px) {
-    margin-left: 0px;
-    width: 400px;
-    height: 100vh;
-
-    overflow-y: scroll;
-    z-index: 90;
-    top: 0;
-    position: fixed;
-  }
-`;
+import { openOrganizationFunc } from "../../../redux/actions/organizationActions";
+import InfiniteScroll from "react-infinite-scroller";
+import Toolbar from "../../molecules/Toolbar/Toolbar";
 
 const InnerWrapper = styled.div`
-  margin-top: 20px;
+  margin-top: 120px;
+  pointer-events: all;
 `;
 
 const CoverWrapper = styled.div`
@@ -107,7 +67,7 @@ const Title = styled.h2`
   }
 `;
 
-const OrganizationsDialog = ({ dataFinalMap }) => {
+const OrganizationsPage = () => {
   const { t } = useTranslation();
   const [searchOpen, setSearchOpen] = useState(false);
 
@@ -128,7 +88,7 @@ const OrganizationsDialog = ({ dataFinalMap }) => {
   const dispatch = useDispatch();
 
   const handleClose = () => {
-    dispatch(openOrganizationsFunc(false));
+    dispatch(openOrganizationFunc(false));
   };
 
   const handleClick = (order) => {
@@ -220,19 +180,11 @@ const OrganizationsDialog = ({ dataFinalMap }) => {
     }
   };
 
-  console.log(dataFinal, organizations);
-
   return (
-    <Wrapper>
-      <CustomIconButton
-        name="ArrowLeft"
-        position="fixed"
-        margin={document.body.clientWidth > 768 ? "10px" : "10px"}
-        left={document.body.clientWidth > 768 ? "200px" : "0"}
-        handleButtonClick={handleClose}
-      />
-
-      <OrganizationsToolbar
+    <React.Fragment>
+      <Toolbar
+        swipeListType="organizationOverview"
+        type="standalone"
         loading={loadingOrganizations}
         handleDropdown={handleDropdown}
         dataFinalLength={dataFinalLength}
@@ -255,8 +207,8 @@ const OrganizationsDialog = ({ dataFinalMap }) => {
           <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>
         )}
       </InnerWrapper>
-    </Wrapper>
+    </React.Fragment>
   );
 };
 
-export default OrganizationsDialog;
+export default OrganizationsPage;

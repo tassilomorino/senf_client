@@ -1,13 +1,12 @@
 /** @format */
 
-import React, { useState, useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
 
 import MapGL from "@urbica/react-map-gl";
 import Draw from "@urbica/react-map-gl-draw";
 import "mapbox-gl/dist/mapbox-gl.css";
-
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
+
 import styled from "styled-components";
 
 const MapWrapper = styled.div`
@@ -19,21 +18,7 @@ const MapWrapper = styled.div`
   overflow: hidden;
 `;
 
-const MapPreview = ({ viewport }) => {
-  const [data, setData] = useState(null);
-
-  const drawRef = useRef(null);
-
-  const createProjectFormData = useSelector(
-    (state) => state.formData.createProjectFormData
-  );
-
-  useEffect(() => {
-    if (createProjectFormData && createProjectFormData.geoData) {
-      setData(createProjectFormData.geoData);
-    }
-  }, []);
-
+const MapPreview = ({ viewport, data }) => {
   return (
     <MapWrapper>
       {viewport && (
@@ -45,14 +30,14 @@ const MapPreview = ({ viewport }) => {
           longitude={viewport.longitude}
           pitch={viewport.pitch}
           bearing={viewport.bearing}
-          zoom={viewport.zoom - 1}
+          zoom={viewport.zoom - 2.4}
           style={{ height: "100%", width: "100%" }}
           viewportChangeMethod={"easeTo"}
           viewportChangeOptions={{
             duration: 2700,
           }}
         >
-          <Draw ref={drawRef} data={data} />
+          <Draw data={data} />
         </MapGL>
       )}
     </MapWrapper>

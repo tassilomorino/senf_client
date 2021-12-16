@@ -21,14 +21,58 @@ import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import Loader from "../../atoms/Backgrounds/Loader";
 import ShareYourOpinionCard from "../../molecules/Cards/ShareYourOpinionCard";
 import IdeaCardBig from "../../molecules/Cards/IdeaCardBig";
-import {
-  BackgroundDesktop,
-  BackgroundMobile,
-} from "../../atoms/Backgrounds/GradientBackgrounds";
+import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import CommentMenuModal from "../../molecules/Modals/CommentMenuModal";
 
 const portalRoot = document.getElementById("portal-root");
 
+const Wrapper = styled.div`
+  width: 100vw;
+  margin-top: 0vh;
+  margin-left: 0px;
+  z-index: 97;
+  top: 30px;
+  position: absolute;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  min-height: 100%;
+
+  @media (min-width: 768px) {
+    margin-left: 200px;
+    margin-top: 0px;
+    width: 400px;
+    overflow-y: scroll !important;
+    z-index: 97;
+    top: 0;
+    height: 100vh;
+    position: fixed;
+    margin-top: 0vh;
+
+    animation: enterScreamDialogAnimation 0.7s;
+
+    @keyframes enterScreamDialogAnimation {
+      0% {
+        transform: translateY(50%);
+        opacity: 0;
+      }
+      49% {
+        transform: translateY(50%);
+        opacity: 0;
+      }
+
+      50% {
+        transform: translateY(50%);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(0%);
+        opacity: 1;
+      }
+    }
+  }
+`;
 const ButtonsContainer = styled.div`
   width: 120px;
   height: 50px;
@@ -47,7 +91,7 @@ const VerticalLine = styled.div`
   z-index: 0;
 `;
 
-const ScreamDialog = () => {
+const IdeaDialog = () => {
   const { screamId, title, lat, long, userHandle, comments } = useSelector(
     (state) => state.data.scream
   );
@@ -168,7 +212,7 @@ const ScreamDialog = () => {
     }
   );
   const content = (
-    <div className="wrapperScreamDialog">
+    <Wrapper>
       {!loadingIdea ? (
         <React.Fragment>
           <ButtonsContainer>
@@ -179,7 +223,8 @@ const ScreamDialog = () => {
               handleButtonClick={() => setMenuOpen(true)}
             />
           </ButtonsContainer>
-          {isMobileCustom ? <BackgroundMobile /> : <BackgroundDesktop />}
+          <Background />
+
           <IdeaCardBig setClicked={setClicked} />
           <VerticalLine />
           <ShareYourOpinionCard screamId={screamId} clicked={clicked} />
@@ -198,7 +243,7 @@ const ScreamDialog = () => {
       ) : (
         <Loader />
       )}
-    </div>
+    </Wrapper>
   );
   return ReactDOM.createPortal(
     <React.Fragment>
@@ -253,4 +298,4 @@ const ScreamDialog = () => {
   );
 };
 
-export default ScreamDialog;
+export default IdeaDialog;

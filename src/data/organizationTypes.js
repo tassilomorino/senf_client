@@ -10,7 +10,7 @@ const organizationTypes = [
         {(t, { i18n }) => <span>{t("organizationTypes_association")}</span>}
       </Translation>
     ),
-    color: "#bd98f6",
+    color: "#f8a9a0",
   },
   {
     name: "Initiativen", //  Initiatives
@@ -19,47 +19,43 @@ const organizationTypes = [
         {(t, { i18n }) => <span>{t("organizationTypes_initiatives")}</span>}
       </Translation>
     ),
-    color: "#91dff4",
+    color: "#d2a6e5",
   },
   {
-    name: "Planungsbüros", //  Environment and Green
+    name: "Planungsbüros", //  Planners
     label: (
       <Translation>
-        {(t, { i18n }) => <span>{t("organizationTypes_ecoAndGreen")}</span>}
+        {(t, { i18n }) => <span>{t("organizationTypes_planners")}</span>}
       </Translation>
     ),
-    color: "#8dd9b8",
+    color: "#92b7b2",
   },
   {
-    name: "Politik", //  Bicycle
+    name: "Politik", //  Politics
     label: (
       <Translation>
-        {(t, { i18n }) => <span>{t("organizationTypes_bike")}</span>}
+        {(t, { i18n }) => <span>{t("organizationTypes_politics")}</span>}
       </Translation>
     ),
-    color: "#929df6",
+    color: "#ffc473",
   },
   {
-    name: "Stadverwaltung", //  Inclusion / Social
+    name: "Stadverwaltung", //  Administration
     label: (
       <Translation>
-        {(t, { i18n }) => (
-          <span>{t("organizationTypes_inclusionAndSocial")}</span>
-        )}
+        {(t, { i18n }) => <span>{t("organizationTypes_administration")}</span>}
       </Translation>
     ),
-    color: "#e8907e",
+    color: "#d92d46",
   },
   {
-    name: "Presse", //  Sports / Leisure
+    name: "Presse", //  Press
     label: (
       <Translation>
-        {(t, { i18n }) => (
-          <span>{t("organizationTypes_sportsAndLeisure")}</span>
-        )}
+        {(t, { i18n }) => <span>{t("organizationTypes_press")}</span>}
       </Translation>
     ),
-    color: "#f6c095",
+    color: "#7293b9",
   },
   {
     name: "Sonstige", //  Others
@@ -68,7 +64,7 @@ const organizationTypes = [
         {(t, { i18n }) => <span>{t("organizationTypes_other")}</span>}
       </Translation>
     ),
-    color: "#f9db95",
+    color: "#f1cb00",
   },
 ];
 

@@ -10,6 +10,7 @@ import { useTransition, animated } from "@react-spring/web";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import MainDialog from "../../atoms/Layout/MainDialog";
 import CreateProjectPage0 from "./components/CreateProjectPage0";
+import CreateProjectPage0a from "./components/CreateProjectPage0a";
 import CreateProjectPage1 from "./components/CreateProjectPage1";
 import CreateProjectPage2 from "./components/CreateProjectPage2";
 import CreateProjectPage3 from "./components/CreateProjectPage3";
@@ -62,6 +63,7 @@ const CreateProjectDialog = () => {
 
   const [fromValue, setFrom] = useState(-100);
   const [leaveValue, setLeave] = useState(15);
+
   const onClickPrev = useCallback(() => {
     set((state) => state - 1);
     setFrom(-30);
@@ -105,7 +107,19 @@ const CreateProjectDialog = () => {
           position: "absolute",
         }}
       >
-        <CreateProjectPage0 onClickNext={onClickNext} />
+        <CreateProjectPage0 set={set} />
+      </animated.div>
+    ),
+    ({ style }) => (
+      <animated.div
+        style={{
+          ...style,
+
+          width: "100%",
+          position: "absolute",
+        }}
+      >
+        <CreateProjectPage0a onClickNext={onClickNext} />
       </animated.div>
     ),
     ({ style }) => (
@@ -129,7 +143,10 @@ const CreateProjectDialog = () => {
           position: "absolute",
         }}
       >
-        <CreateProjectPage2 onClickNext={onClickNext} />
+        <CreateProjectPage2
+          onClickNext={onClickNext}
+          onClickPrev={onClickPrev}
+        />
       </animated.div>
     ),
     ({ style }) => (
@@ -140,7 +157,10 @@ const CreateProjectDialog = () => {
           position: "absolute",
         }}
       >
-        <CreateProjectPage3 onClickNext={onClickNext} />
+        <CreateProjectPage3
+          onClickNext={onClickNext}
+          onClickPrev={onClickPrev}
+        />
       </animated.div>
     ),
     ({ style }) => (
@@ -151,7 +171,10 @@ const CreateProjectDialog = () => {
           position: "absolute",
         }}
       >
-        <CreateProjectPage4 onClickNext={onClickNext} />
+        <CreateProjectPage4
+          onClickNext={onClickNext}
+          onClickPrev={onClickPrev}
+        />
       </animated.div>
     ),
     ({ style }) => (
@@ -162,7 +185,7 @@ const CreateProjectDialog = () => {
           position: "absolute",
         }}
       >
-        <CreateProjectPagePreview />
+        <CreateProjectPagePreview onClickPrev={onClickPrev} />
       </animated.div>
     ),
   ];
@@ -174,25 +197,15 @@ const CreateProjectDialog = () => {
       <ProgressLine>
         <CurrentStep index={currentStep} />
       </ProgressLine>
-      {index === 0 ? (
-        <CustomIconButton
-          name="Close"
-          position="fixed"
-          margin={document.body.clientWidth > 768 ? "40px" : "10px"}
-          left="0"
-          top="0"
-          handleButtonClick={setClose}
-        />
-      ) : (
-        <CustomIconButton
-          name="ArrowLeft"
-          position="fixed"
-          margin={document.body.clientWidth > 768 ? "40px" : "10px"}
-          left="0"
-          top="0"
-          handleButtonClick={onClickPrev}
-        />
-      )}
+
+      <CustomIconButton
+        name="Close"
+        position="fixed"
+        margin={document.body.clientWidth > 768 ? "40px" : "10px"}
+        left="0"
+        top="0"
+        handleButtonClick={setClose}
+      />
 
       <InnerWrapper>
         {transitions((style, i) => {

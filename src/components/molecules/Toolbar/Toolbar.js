@@ -10,8 +10,13 @@ import { useTranslation } from "react-i18next";
 
 //Icons
 import SearchIcon from "../../../images/icons/search.png";
+import AddIcon from "../../../images/icons/plus_white.png";
+
+//Components
 import { setSwipePositionUp } from "../../../redux/actions/UiActions";
 import Searchbar from "../../atoms/Searchbar/Searchbar";
+import { openCreateProjectRoomFunc } from "../../../redux/actions/projectActions";
+import { stateCreateOrganizationsFunc } from "../../../redux/actions/organizationActions";
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,7 +31,7 @@ const Wrapper = styled.div`
   flex-flow: wrap;
   @media (min-width: 768px) {
     position: fixed;
-    top: ${(props) => (props.type === "allIdeas" ? "30px" : "100px")};
+    top: ${(props) => (props.type === "standalone" ? "30px" : "100px")};
     z-index: 99;
     width: 380px;
     padding: 10px 10px 20px 10px;
@@ -94,7 +99,21 @@ const SearchIconButton = styled.button`
       : "none"}; ;
 `;
 
+const AddIconButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #f6cb2f;
+  pointer-events: auto;
+  margin-left: 5px;
+  margin-right: 0px;
+`;
+
 const Toolbar = ({
+  swipeListType,
   loading,
   type,
   handleDropdown,
@@ -116,25 +135,67 @@ const Toolbar = ({
       dispatch(setSwipePositionUp());
     }
   };
+
+  const openCreateProjectRoom = () => {
+    dispatch(openCreateProjectRoomFunc(true));
+  };
+
+  const openCreateOrganization = () => {
+    dispatch(stateCreateOrganizationsFunc(true));
+  };
   return (
     !loading && (
       <Wrapper type={type} searchOpen={searchOpen}>
         {isMobileCustom && <Bar />}
-        <Title>
-          {dataFinalLength} {dataFinalLength === 1 ? t("idea") : t("ideas")}
-        </Title>
+
+        {swipeListType === "ideas" ? (
+          <Title>
+            {dataFinalLength} {dataFinalLength === 1 ? t("idea") : t("ideas")}
+          </Title>
+        ) : swipeListType === "projectRoomOverview" ? (
+          <Title>
+            {dataFinalLength}{" "}
+            {dataFinalLength === 1 ? t("projectRoom") : t("projectRooms")}
+          </Title>
+        ) : (
+          swipeListType === "organizationOverview" && (
+            <Title>
+              {dataFinalLength}{" "}
+              {dataFinalLength === 1 ? t("organization") : t("organizations")}
+            </Title>
+          )
+        )}
+
         <SearchIconButton
           onClick={setSearch}
           searchTerm={searchTerm}
           searchOpen={searchOpen}
         >
-          <img src={SearchIcon} width="20px" style={{ marginLeft: "auto" }} />
+          <img
+            src={SearchIcon}
+            width="20px"
+            style={{ marginLeft: "auto" }}
+            alt=""
+          />
         </SearchIconButton>
-        <SortingSelect handleDropdown={handleDropdown} />{" "}
+        {swipeListType === "ideas" ? (
+          <SortingSelect handleDropdown={handleDropdown} />
+        ) : swipeListType === "projectRoomOverview" ? (
+          <AddIconButton onClick={openCreateProjectRoom}>
+            <img src={AddIcon} width="20px" style={{ marginLeft: "auto" }} />
+          </AddIconButton>
+        ) : (
+          swipeListType === "organizationOverview" && (
+            <AddIconButton onClick={openCreateOrganization}>
+              <img src={AddIcon} width="20px" style={{ marginLeft: "auto" }} />
+            </AddIconButton>
+          )
+        )}
+
         {isMobileCustom && <Background onClick={handleClickSwipe} />}
         {searchOpen && (
           <Searchbar
-            placeholder="Durchsuche Titel und Beschreibungen..."
+            placeholder={t("searchBar")}
             setSearchTerm={setSearchTerm}
             searchTerm={searchTerm}
           />

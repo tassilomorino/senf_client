@@ -72,7 +72,7 @@ const CommentForm = ({ classes, screamId, clicked }) => {
             className={classes.textField}
           />
           <SubmitButton
-            text="Senden"
+            text={t("send")}
             zIndex="999"
             backgroundColor="#fed957"
             width="50px"
