@@ -10,7 +10,8 @@ import {
   FixedWrapper,
   FlexWrapper,
   TitleWrapper,
-  ImgWrapperMobile,
+  ImgWrapper,
+  StyledImg,
 } from "./styles/sharedStyles";
 
 const OrganizationHeader = ({
@@ -45,9 +46,9 @@ const OrganizationHeader = ({
 
           <TitleWrapper>{title}</TitleWrapper>
 
-          <ImgWrapperMobile>
-            <img src={imgUrl} width="100%" alt="project-thumbnail" />
-          </ImgWrapperMobile>
+          <ImgWrapper>
+            <StyledImg src={imgUrl} width="100%" alt="project-thumbnail" />
+          </ImgWrapper>
         </FlexWrapper>
         {/* <div style={{ position: "absolute", top: "20px", right: "10px" }}>
           <CustomIconButton

@@ -85,37 +85,46 @@ export const openOrganizationFunc =
         const image = storageRef
           .child(`/organizationsData/${ref.id}/logo/logo`)
           .getDownloadURL()
-          .then((image) => {
-            organization.imgUrl = image;
-            organization.id = ref.id;
+          .then((organizationImage) => {
+            organization.imgUrl = organizationImage;
+            organization.organizationId = ref.id;
             organization.projectRooms = [];
 
-            projectRoomsRef.docs.forEach((doc) =>
-              organization.projectRooms.push({
-                ...doc.data(),
-                projectId: doc.id,
-              })
-            );
+            const newPath = `/organizations/${organization.organizationId}`;
+            window.history.pushState(null, null, newPath);
 
             dispatch({ type: SET_ORGANIZATION, payload: organization });
+
             dispatch({
               type: OPEN_ORGANIZATION,
               payload: state,
             });
+
+            projectRoomsRef.docs.forEach((doc) => {
+              console.log(organization.organizationId);
+              storageRef
+                .child(
+                  `/organizationsData/${organization.organizationId}/${doc.id}/thumbnail`
+                )
+                .getDownloadURL()
+                .then((prjectRoomImage) => {
+                  organization.projectRooms.push({
+                    ...doc.data(),
+                    projectRoomId: doc.id,
+                    imgUrl: prjectRoomImage,
+                  });
+                })
+                .then(() => {
+                  dispatch({ type: SET_ORGANIZATION, payload: organization });
+                });
+            });
           });
-
-        // dispatch(closeScream());
-        // const newPath = `/${project.id}`;
-        // window.history.pushState(null, null, newPath);
-
-        // dispatch({ type: OPEN_PROJECT });
-
-        // dispatch({ type: STOP_LOADING_UI });
       }
     } else {
       dispatch({
         type: OPEN_ORGANIZATION,
         payload: state,
       });
+      dispatch({ type: SET_ORGANIZATION, payload: null });
     }
   };

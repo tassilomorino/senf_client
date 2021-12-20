@@ -48,7 +48,7 @@ export const FlexWrapper = styled.div`
   justify-content: space-between;
 `;
 
-export const ImgWrapperMobile = styled.div`
+export const ImgWrapper = styled.div`
   position: relative;
   width: 40px;
   height: 40px;
@@ -56,6 +56,12 @@ export const ImgWrapperMobile = styled.div`
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.8);
+`;
+export const StyledImg = styled.img`
+  flex-shrink: 0;
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
 `;
 
 export const TitleWrapper = styled.div`

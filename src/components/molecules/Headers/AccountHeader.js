@@ -12,7 +12,7 @@ import {
   FixedWrapper,
   FlexWrapper,
   TitleWrapper,
-  ImgWrapperMobile,
+  ImgWrapper,
 } from "./styles/sharedStyles";
 
 const ProjectHeader = ({ loading, order, handleClose, handleClick }) => {
@@ -46,7 +46,7 @@ const ProjectHeader = ({ loading, order, handleClose, handleClick }) => {
         <TitleWrapper data-cy="hey-user">
           {truncateString("Hey " + userHandle, amount)}
         </TitleWrapper>
-        <ImgWrapperMobile style={{ opacity: "0" }}></ImgWrapperMobile>
+        <ImgWrapper style={{ opacity: "0" }}></ImgWrapper>
       </FlexWrapper>
 
       <Tabs

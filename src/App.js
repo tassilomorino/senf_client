@@ -214,6 +214,7 @@ const App = () => {
             <Switch>
               <Route exact path="/" component={Main} />
               <Route exact path="/projectRooms" component={Main} />
+              <Route exact path="/organizations" component={Main} />
               <Route exact path="/start" component={IntroductionInformation} />
               <Route exact path="/intro" component={Welcome} />
               <Route exact path="/datenschutz" component={datenschutz} />
@@ -233,9 +234,15 @@ const App = () => {
               <Route exact path="/blank" component={blank} />
 
               <Route exact path="/:screamId" component={Main} />
+
               <Route
                 exact
                 path="/projectRooms/:projectRoomId"
+                component={Main}
+              />
+              <Route
+                exact
+                path="/organizations/:organizationId"
                 component={Main}
               />
 

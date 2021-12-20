@@ -57,10 +57,8 @@ const OrganizationDialog = ({
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.UI.loading);
   const mapViewport = useSelector((state) => state.data.mapViewport);
-  const mapBounds = useSelector((state) => state.data.mapBounds);
-  const selectedTopics = useSelector((state) => state.data.topics);
 
-  const { title, imgUrl } = organization;
+  const { title, imgUrl, description, weblink, contact } = organization;
 
   useEffect(() => {
     dispatch(handleTopicSelectorRedux("all"));
@@ -124,10 +122,6 @@ const OrganizationDialog = ({
   //     status === "None"
   // );
 
-  const dataFinalLength = dataFinal.length;
-
-  console.log(dataFinal);
-
   return (
     openOrganization && (
       <React.Fragment>
@@ -161,7 +155,7 @@ const OrganizationDialog = ({
               searchTerm={searchTerm}
             />
           )}
-          {/*
+
           {order === 2 && (
             <div
               style={{
@@ -182,14 +176,11 @@ const OrganizationDialog = ({
                   description={description}
                   weblink={weblink}
                   contact={contact}
-                  startDate={startDate}
-                  endDate={endDate}
-                  owner={owner}
                 />
                 <br />
               </MainAnimations>
             </div>
-          )} */}
+          )}
         </Wrapper>
       </React.Fragment>
     )

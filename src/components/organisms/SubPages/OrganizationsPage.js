@@ -20,20 +20,6 @@ const InnerWrapper = styled.div`
   pointer-events: all;
 `;
 
-const CoverWrapper = styled.div`
-  margin-top: 0px;
-  margin-left: 2.5%;
-  width: 95%;
-
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 10px 10px;
-  grid-template-areas:
-    ". ."
-    ". .";
-`;
-
 const Break = styled.div`
   position: relative;
   height: 110px;
@@ -201,7 +187,7 @@ const OrganizationsPage = () => {
             hasMore={hasMoreItems}
             useWindow={false}
           >
-            <CoverWrapper>{showItems(dataFinal)}</CoverWrapper>
+            {showItems(dataFinal)}
           </InfiniteScroll>
         ) : (
           <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>

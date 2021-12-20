@@ -45,7 +45,10 @@ import TopicFilter from "../molecules/Filters/TopicFilter";
 import PostScream from "../organisms/PostIdea/PostScream";
 import ChangeLocationModal from "../molecules/Modals/ChangeLocationModal";
 import { usePrevious } from "../../hooks/usePrevious";
-import { getOrganizations } from "../../redux/actions/organizationActions";
+import {
+  getOrganizations,
+  openOrganizationFunc,
+} from "../../redux/actions/organizationActions";
 import CreateOrganizationDialog from "../organisms/CreateOrganization/CreateOrganizationDialog";
 import CreateProjectDialog from "../organisms/CreateProject/CreateProjectDialog";
 import OrganizationDialog from "../organisms/Dialogs/OrganizationDialog";
@@ -75,7 +78,7 @@ const MainColumnWrapper = styled.div`
 const Main = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { screamId, projectRoomId } = useParams();
+  const { screamId, projectRoomId, organizationId } = useParams();
   const { cookie_settings } = useSelector((state) => state.data);
   const [zoomBreak, setZoomBreak] = useState(0.6);
   const history = useHistory();
@@ -209,6 +212,9 @@ const Main = () => {
           if (window.location.pathname === "/projectRooms") {
             handleClick(2);
           }
+          if (window.location.pathname === "/organizations") {
+            handleClick(3);
+          }
         });
       }
     }
@@ -216,31 +222,34 @@ const Main = () => {
 
   useEffect(() => {
     if (projectRoomId) {
+      handleClick(2);
       dispatch(openProjectFunc(projectRoomId));
     }
     if (screamId) {
       dispatch(openScreamFunc(screamId));
     }
+    if (organizationId) {
+      handleClick(3);
+      dispatch(openOrganizationFunc(true, organizationId));
+    }
   }, []);
 
   const handleClick = (order) => {
     setOrder(order);
-
     dispatch(closeScream());
     dispatch(closeProject());
     dispatch(closeAccountFunc());
-
     dispatch(handleTopicSelectorRedux("all"));
 
     if (order === 1) {
       window.history.pushState(null, null, "/");
     }
-
     if (order === 2) {
       window.history.pushState(null, null, "/projectRooms");
     }
-
     if (order === 3) {
+      window.history.pushState(null, null, "/organizations");
+
       window.scrollTo({
         top: 0,
         left: 0,

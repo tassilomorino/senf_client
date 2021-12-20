@@ -82,7 +82,6 @@ const List = ({
       console.log(dataFinal);
       for (var i = 0; i < listItems; i++) {
         if (swipeListType === "projectRoomOverview") {
-          console.log(dataFinal);
           items.push(
             dataFinal[i]?.projectRoomId && (
               <ProjectCard
