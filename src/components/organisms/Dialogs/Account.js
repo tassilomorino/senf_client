@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { closeAccountFunc } from "../../../redux/actions/accountActions";
 
 //Components
-import IdeaList from "../SwipeLists/SwipeList";
+import SwipeList from "../SwipeLists/SwipeList";
 import AccountHeader from "../../molecules/Headers/AccountHeader";
 import AccountSettings from "../../molecules/DialogInlineComponents/AccountSettings";
 import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
@@ -89,8 +89,6 @@ const Account = ({ dataFinalMap }) => {
       )
     : [];
 
-  const dataFinalLength = dataFinal.length;
-
   return (
     <React.Fragment>
       <AccountHeader
@@ -103,12 +101,13 @@ const Account = ({ dataFinalMap }) => {
       <Wrapper>
         {!isMobileCustom || (isMobileCustom && order !== 1 && <Background />)}
         {order === 1 && (
-          <IdeaList
+          <SwipeList
+            swipeListType="ideas"
             type="myIdeas"
             loading={loadingMyScreams}
             order={order}
             dataFinal={dataFinal}
-            dataFinalLength={dataFinalLength}
+            dataFinalLength={dataFinal.length}
             viewport={mapViewport}
             handleDropdown={handleDropdown}
             dropdown={dropdown}

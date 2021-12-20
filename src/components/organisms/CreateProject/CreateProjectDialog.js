@@ -57,7 +57,11 @@ const CreateProjectDialog = () => {
       typeof Storage !== "undefined" &&
       localStorage.getItem("createProjectRoomId")
     ) {
-      set(0);
+      if (localStorage.getItem("createProjectPostEdit")) {
+        set(pages.length - 1);
+      } else {
+        set(0);
+      }
     }
   }, []);
 
@@ -95,6 +99,7 @@ const CreateProjectDialog = () => {
 
   const setClose = () => {
     dispatch(openCreateProjectRoomFunc(false));
+    localStorage.removeItem("createProjectPostEdit");
   };
 
   const pages = [
@@ -185,7 +190,11 @@ const CreateProjectDialog = () => {
           position: "absolute",
         }}
       >
-        <CreateProjectPagePreview onClickPrev={onClickPrev} />
+        <CreateProjectPagePreview
+          onClickPrev={onClickPrev}
+          setClose={setClose}
+          set={set}
+        />
       </animated.div>
     ),
   ];

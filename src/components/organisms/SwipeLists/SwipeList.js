@@ -40,7 +40,7 @@ const ListHeaderWrapper = styled.div`
   border-radius: 20px 20px 0 0;
 `;
 
-const IdeaList = ({
+const SwipeList = ({
   swipeListType,
   type,
   loading,
@@ -48,7 +48,6 @@ const IdeaList = ({
   dropdown,
   handleDropdown,
   dataFinal,
-  dataFinalLength,
   projectsData,
   zIndex,
   setSearchTerm,
@@ -167,7 +166,7 @@ const IdeaList = ({
                   swipeListType={swipeListType}
                   loading={loading}
                   handleDropdown={handleDropdown}
-                  dataFinalLength={dataFinalLength}
+                  dataFinalLength={dataFinal.length}
                   setSearchOpen={setSearchOpen}
                   searchOpen={searchOpen}
                   setSearchTerm={setSearchTerm}
@@ -193,7 +192,6 @@ const IdeaList = ({
               loading={loading}
               dropdown={dropdown}
               dataFinal={dataFinal}
-              dataFinalLength={dataFinalLength}
               projectsData={projectsData}
             />
           </React.Fragment>
@@ -207,7 +205,7 @@ const IdeaList = ({
         swipeListType={swipeListType}
         loading={loading}
         handleDropdown={handleDropdown}
-        dataFinalLength={dataFinalLength}
+        dataFinalLength={dataFinal.length}
         setSearchOpen={setSearchOpen}
         searchOpen={searchOpen}
         setSearchTerm={setSearchTerm}
@@ -225,11 +223,10 @@ const IdeaList = ({
         loading={loading}
         dropdown={dropdown}
         dataFinal={dataFinal}
-        dataFinalLength={dataFinalLength}
         projectsData={projectsData}
       />{" "}
     </Content>
   );
 };
 
-export default IdeaList;
+export default SwipeList;

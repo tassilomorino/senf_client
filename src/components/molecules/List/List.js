@@ -47,9 +47,9 @@ const List = ({
   loading,
   dropdown,
   dataFinal,
-  dataFinalLength,
   projectsData,
 }) => {
+  const dataFinalLength = dataFinal.length;
   const { t } = useTranslation();
   const mapBounds = useSelector((state) => state.data.mapBounds);
   const prevdataFinalLength = usePrevious({ dataFinalLength });
@@ -79,12 +79,14 @@ const List = ({
   const showItems = (dataFinal) => {
     var items = [];
     if (dataFinalLength !== 0) {
+      console.log(dataFinal);
       for (var i = 0; i < listItems; i++) {
         if (swipeListType === "projectRoomOverview") {
+          console.log(dataFinal);
           items.push(
-            dataFinal[i]?.projectId && (
+            dataFinal[i]?.projectRoomId && (
               <ProjectCard
-                key={dataFinal[i]?.projectId}
+                key={dataFinal[i]?.projectRoomId}
                 project={dataFinal[i]}
               />
             )

@@ -4,13 +4,17 @@ import React from "react";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
-import { openProjectFunc } from "../../../redux/actions/projectActions";
+import {
+  openCreateProjectRoomFunc,
+  openProjectFunc,
+} from "../../../redux/actions/projectActions";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import AddIcon from "../../../images/icons/plus_grey.png";
 import { useTranslation } from "react-i18next";
 
 import styled from "styled-components";
-
+import notPublishedIcon from "../../../images/icons/notPublished.png";
+import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 const ProjectCardDesign = styled.div`
   position: relative;
   display: flex;
@@ -59,6 +63,17 @@ const LeftWrapper = styled.div`
   overflow: hidden;
 `;
 
+const LeftWrapperOverlay = styled.div`
+  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(255, 255, 255, 0.8);
+  border-radius: 20px;
+`;
 const StyledImg = styled.img`
   flex-shrink: 0;
   min-width: 100%;
@@ -93,18 +108,52 @@ const Date = styled.div`
 
 export const ProjectCard = (props) => {
   const {
-    project: { title, owner, imgUrl, project, startDate, endDate },
+    project: {
+      projectRoomId,
+      title,
+      owner,
+      imgUrl,
+      startDate,
+      endDate,
+      status,
+      organizationId,
+    },
   } = props;
   const dispatch = useDispatch();
-  const pushScreamId = (project) => {
-    dispatch(openProjectFunc(project));
+  const pushScreamId = () => {
+    dispatch(openProjectFunc(projectRoomId));
+  };
+  const handleEdit = () => {
+    console.log(organizationId, projectRoomId);
+    localStorage.setItem("createProjectRoomOrganizationId", organizationId);
+    localStorage.setItem("createProjectRoomId", projectRoomId);
+    localStorage.setItem("createProjectPostEdit", true);
+
+    dispatch(openCreateProjectRoomFunc(true));
   };
 
   return (
     <ProjectCardDesign>
-      <ExpandButton handleButtonClick={() => pushScreamId(project)} />
+      <ExpandButton handleButtonClick={() => pushScreamId()} />
 
       <LeftWrapper>
+        <CustomIconButton
+          name="Menu"
+          iconWidth="70%"
+          handleButtonClick={() => handleEdit()}
+          position="absolute"
+          left="calc(100% - 54px)"
+          margin="2px"
+          top="0px"
+          backgroundColor="transparent"
+          shadow={false}
+        />
+        {status === "deactivated" && (
+          <LeftWrapperOverlay>
+            <img src={notPublishedIcon} alt="UploadImageIcon" width="50%" />
+          </LeftWrapperOverlay>
+        )}
+
         <StyledImg src={imgUrl} width="100%" alt="profile" />
       </LeftWrapper>
       <RightWrapper>

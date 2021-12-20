@@ -28,7 +28,7 @@ export const getProjects = (mapViewport) => async (dispatch) => {
     .collectionGroup("projectRooms")
     // .where("centerLat", "<", Number(mapViewport.latitude) + 1)
     // .where("centerLat", ">", Number(mapViewport.latitude) - 1)
-    // .orderBy("createdAt", "desc")
+    .orderBy("createdAt", "desc")
     .get();
   // : await db.collection("projects").orderBy("createdAt", "desc").get();
 
@@ -41,13 +41,11 @@ export const getProjects = (mapViewport) => async (dispatch) => {
       .getDownloadURL()
       .then((image) => {
         const docData = {
-          project: doc.id,
-          projectId: doc.id,
+          projectRoomId: doc.data().projectRoomId,
           title: doc.data().title,
           // description: doc.data().description,
           owner: doc.data().owner,
           createdAt: doc.data().createdAt,
-          imgUrl: doc.data().imgUrl,
           startDate: doc.data().startDate,
           endDate: doc.data().endDate,
           status: doc.data().status,
@@ -78,6 +76,8 @@ export const openProjectFunc = (projectRoomId) => async (dispatch) => {
   dispatch({ type: LOADING_UI });
 
   const db = firebase.firestore();
+  const storageRef = firebase.storage().ref();
+
   const ref = await db
     .collectionGroup("projectRooms")
     .where("projectRoomId", "==", projectRoomId)
@@ -90,26 +90,33 @@ export const openProjectFunc = (projectRoomId) => async (dispatch) => {
     .get();
 
   ref.docs.forEach((doc) => {
-    const project = doc.data();
+    const image = storageRef
+      .child(
+        `/organizationsData/${doc.data().organizationId}/${doc.id}/thumbnail`
+      )
+      .getDownloadURL()
+      .then((image) => {
+        const projectRoom = doc.data();
+        projectRoom.imgUrl = image;
+        projectRoom.screams = [];
 
-    project.id = ref.id;
-    project.screams = [];
+        screamsRef.docs.forEach((doc) =>
+          projectRoom.screams.push({
+            ...doc.data(),
+            screamId: doc.id,
+            color: setColorByTopic(doc.data().Thema),
+            body: doc.data().body.substr(0, 120),
+          })
+        );
 
-    screamsRef.docs.forEach((doc) =>
-      project.screams.push({
-        ...doc.data(),
-        screamId: doc.id,
-        color: setColorByTopic(doc.data().Thema),
-        body: doc.data().body.substr(0, 120),
-      })
-    );
-    dispatch(closeScream());
-    const newPath = `/projectRooms/${project.id}`;
-    window.history.pushState(null, null, newPath);
-    dispatch({ type: SET_PROJECT, payload: project });
-    dispatch({ type: OPEN_PROJECT });
+        dispatch(closeScream());
+        const newPath = `/projectRooms/${projectRoom.projectRoomId}`;
+        window.history.pushState(null, null, newPath);
+        dispatch({ type: SET_PROJECT, payload: projectRoom });
+        dispatch({ type: OPEN_PROJECT });
 
-    dispatch({ type: STOP_LOADING_UI });
+        dispatch({ type: STOP_LOADING_UI });
+      });
   });
 };
 

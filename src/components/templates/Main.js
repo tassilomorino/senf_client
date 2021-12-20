@@ -77,25 +77,20 @@ const Main = () => {
   const dispatch = useDispatch();
   const { screamId, projectRoomId } = useParams();
   const { cookie_settings } = useSelector((state) => state.data);
-
   const [zoomBreak, setZoomBreak] = useState(0.6);
-
   const history = useHistory();
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openScream = useSelector((state) => state.UI.openScream);
   const openProject = useSelector((state) => state.UI.openProject);
   const openAccount = useSelector((state) => state.UI.openAccount);
   const openOrganization = useSelector((state) => state.UI.openOrganization);
-
   const openCreateOrganization = useSelector(
     (state) => state.UI.openCreateOrganization
   );
   const openCreateProjectRoom = useSelector(
     (state) => state.UI.openCreateProjectRoom
   );
-
   const voted = useSelector((state) => state.UI.voted);
-
   const screams = useSelector((state) => state.data.screams);
   const myScreams = useSelector((state) => state.data.myScreams);
 
@@ -140,7 +135,6 @@ const Main = () => {
       };
       dispatch(setInitialMapBounds(bounds));
       dispatch(setMapBounds(bounds));
-      console.log("setMapBounds in Main", bounds);
     }
   }, [mapLoaded, initialMapViewport]);
 
@@ -337,7 +331,9 @@ const Main = () => {
   //         }
   //         return 0;
   //       });
-
+  const dataFinalMapProjects = projects.filter(
+    ({ status }) => status === "active"
+  );
   const dataFinal = sortedScreams.filter(
     ({ Thema, lat, long, status }) =>
       selectedTopics.includes(Thema) &&
@@ -347,8 +343,6 @@ const Main = () => {
       long <= mapBounds?.longitude3 &&
       status === "None"
   );
-
-  const dataFinalLength = dataFinal.length;
 
   const dataFinalMap = openProject
     ? project.screams.filter(
@@ -394,7 +388,7 @@ const Main = () => {
           openProject={openProject}
           geoData={project && openProject && project.geoData}
           mapRef={mapRef}
-          projects={projects}
+          projects={dataFinalMapProjects}
           order={order}
         />
       ) : (
@@ -405,7 +399,7 @@ const Main = () => {
           _onViewportChange={_onViewportChange}
           zoomBreak={zoomBreak}
           openProject={openProject}
-          projects={projects}
+          projects={dataFinalMapProjects}
           geoData={project && openProject && project.geoData}
           mapRef={mapRef}
         />
@@ -444,7 +438,6 @@ const Main = () => {
               loading={loading}
               order={order}
               dataFinal={dataFinal}
-              dataFinalLength={dataFinalLength}
               dataFinalMap={dataFinalMap}
               viewport={mapViewport}
               handleDropdown={handleDropdown}
@@ -462,7 +455,6 @@ const Main = () => {
               loading={loadingProjects}
               order={order}
               dataFinal={projects}
-              dataFinalLength={projects.length}
               dataFinalMap={dataFinalMap}
               viewport={mapViewport}
               handleDropdown={handleDropdown}

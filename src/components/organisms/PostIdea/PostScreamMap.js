@@ -63,13 +63,7 @@ const PostScreamMap = ({
 
   const data =
     !loadingProjects && geoData !== ""
-      ? {
-          type: "Feature",
-          geometry: {
-            type: "Polygon",
-            coordinates: [JSON.parse(geoData)],
-          },
-        }
+      ? JSON.parse(geoData)
       : {
           type: "Feature",
           geometry: {

@@ -14,7 +14,7 @@ import {
 //Components
 import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 
-import IdeaList from "../SwipeLists/SwipeList";
+import SwipeList from "../SwipeLists/SwipeList";
 import ProjectHeader from "../../molecules/Headers/ProjectHeader";
 import ProjectInfo from "../../molecules/DialogInlineComponents/ProjectInfo";
 import styled from "styled-components";
@@ -136,8 +136,6 @@ const ProjectDialog = ({
       status === "None"
   );
 
-  const dataFinalLength = dataFinal.length;
-
   return (
     openProject && (
       <React.Fragment>
@@ -157,12 +155,12 @@ const ProjectDialog = ({
           {!isMobileCustom || (isMobileCustom && order !== 1 && <Background />)}
 
           {order === 1 && (
-            <IdeaList
+            <SwipeList
+              swipeListType="ideas"
               type="projectIdeas"
               loading={loading}
               order={order}
               dataFinal={dataFinal}
-              dataFinalLength={dataFinalLength}
               geoData={geoData}
               viewport={viewport}
               handleDropdown={handleDropdown}
