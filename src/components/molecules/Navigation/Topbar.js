@@ -87,7 +87,7 @@ const Topbar = ({ order, handleClick }) => {
   const loading = useSelector((state) => state.data.loading);
   const authenticated = useSelector((state) => state.user.authenticated);
   const openScream = useSelector((state) => state.UI.openScream);
-  const openProject = useSelector((state) => state.UI.openProject);
+  const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
   const openAccount = useSelector((state) => state.UI.openAccount);
   const openOrganization = useSelector((state) => state.UI.openOrganization);
 
@@ -109,7 +109,9 @@ const Topbar = ({ order, handleClick }) => {
     !loading &&
     isMobileCustom && (
       <Wrapper
-        moveUp={openScream || openProject || openAccount || openOrganization}
+        moveUp={
+          openScream || openProjectRoom || openAccount || openOrganization
+        }
       >
         <InlineInfoButtonContainer>
           <InlineInformationPage />

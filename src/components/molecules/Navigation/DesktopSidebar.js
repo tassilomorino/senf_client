@@ -54,7 +54,7 @@ const DesktopSidebar = ({
 }) => {
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openAccount = useSelector((state) => state.UI.openAccount);
-  const openProject = useSelector((state) => state.UI.openProject);
+  const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
 
   const authenticated = useSelector((state) => state.user.authenticated);
   const userId = useSelector((state) => state.user.userId);
@@ -153,10 +153,10 @@ const DesktopSidebar = ({
           handleClick={handleClick}
           openAccount={openAccount}
         />
-        <FilterWrapper active={order === 2 && !openProject}>
+        <FilterWrapper active={order === 2 && !openProjectRoom}>
           <OrganizationTypeFilter column />
         </FilterWrapper>
-        <FilterWrapper active={openProject}>
+        <FilterWrapper active={openProjectRoom}>
           <TopicFilter column />
         </FilterWrapper>
         <MenuItem

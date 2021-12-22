@@ -132,8 +132,9 @@ const CreateProjectPagePreview = ({ onClickPrev, setClose, set }) => {
         .doc(localStorage.getItem("createProjectRoomId"));
 
       return ref.update({ status: "deactivated" }).then(() => {
-        setClose();
         dispatch(getProjects());
+
+        setClose();
         //REMOVE LOCALSTORAGE
         localStorage.removeItem("createProjectRoomOrganizationId");
         localStorage.removeItem("createProjectRoomId");
@@ -157,6 +158,8 @@ const CreateProjectPagePreview = ({ onClickPrev, setClose, set }) => {
         .doc(localStorage.getItem("createProjectRoomId"));
 
       return ref.update({ status: "active" }).then(() => {
+        dispatch(getProjects());
+
         setClose();
 
         //REMOVE LOCALSTORAGE

@@ -15,7 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { openScreamFunc } from "../../../redux/actions/screamActions";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
-import { openProjectFunc } from "../../../redux/actions/projectActions";
+import { openProjectRoomFunc } from "../../../redux/actions/projectActions";
 import CommentButton from "../../atoms/CustomButtons/CommentButton";
 import {
   LikeButtonWrapper,
@@ -158,7 +158,7 @@ const Line = styled.div`
   left: 85%;
   width: 1px;
   height: ${(props) =>
-    !props.openProject && props.project && props.projectsData
+    !props.openProjectRoom && props.project && props.projectsData
       ? "calc(100% - 50px)"
       : "100%"};
   position: absolute;
@@ -181,14 +181,14 @@ const IdeaCard = ({
   dayjs.extend(relativeTime);
   const dispatch = useDispatch();
   const authenticated = useSelector((state) => state.user.authenticated);
-  const openProject = useSelector((state) => state.UI.openProject);
+  const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
 
   const fetchDataScream = () => {
     dispatch(openScreamFunc(screamId));
   };
 
   const fetchDataProject = () => {
-    dispatch(openProjectFunc(project));
+    dispatch(openProjectRoomFunc(project));
   };
 
   const projectsDataFinal = [];
@@ -201,7 +201,7 @@ const IdeaCard = ({
   }
 
   return (
-    <Card project={!openProject && project && projectsData}>
+    <Card project={!openProjectRoom && project && projectsData}>
       <CardContent>
         <ColorDot color={color} />{" "}
         <LocationOuter>
@@ -211,7 +211,7 @@ const IdeaCard = ({
         <BodyText>{body} </BodyText>
         <Gradient></Gradient>
         <Line
-          openProject={openProject}
+          openProjectRoom={openProjectRoom}
           project={project}
           projectsData={projectsData}
         />
@@ -224,7 +224,7 @@ const IdeaCard = ({
           <Engagement>{commentCount}</Engagement>
         </CommentButtonWrapper>
         <br />
-        {!openProject && project && projectsData && (
+        {!openProjectRoom && project && projectsData && (
           <>
             <Gradient2></Gradient2>
             <ScreamcardProjectContainerButtonWide onClick={fetchDataProject}>

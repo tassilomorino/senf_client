@@ -4,7 +4,6 @@ import React from "react";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
-import { openProjectFunc } from "../../../redux/actions/projectActions";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import AddIcon from "../../../images/icons/plus_grey.png";
 import { useTranslation } from "react-i18next";
@@ -111,6 +110,7 @@ const Summary = styled.h3`
   font-weight: 600;
   font-size: 16px;
   line-height: 22px;
+  text-align: left;
   /* or 157% */
 
   color: #483800;

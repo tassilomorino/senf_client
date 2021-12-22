@@ -7,7 +7,7 @@ import {
   STOP_LOADING_UI,
   OPEN_SCREAM,
   CLOSE_SCREAM,
-  OPEN_PROJECT,
+  OPEN_PROJECTROOM,
   CLOSE_PROJECT,
   OPEN_CREATE_PROJECTROOM,
   CLEAR_LOADING_ERRORS,
@@ -30,7 +30,7 @@ const initialState = {
   openScream: false,
   openMonitoringScream: false,
 
-  openProject: false,
+  openProjectRoom: false,
   openAccount: false,
   openOrganization: false,
   openCreateOrganization: false,
@@ -96,16 +96,16 @@ export default function (state = initialState, action) {
         openMonitoringScream: false,
       };
 
-    case OPEN_PROJECT:
+    case OPEN_PROJECTROOM:
       return {
         ...state,
-        openProject: true,
+        openProjectRoom: true,
       };
 
     case CLOSE_PROJECT:
       return {
         ...state,
-        openProject: false,
+        openProjectRoom: false,
       };
 
     case OPEN_CREATE_PROJECTROOM:

@@ -8,7 +8,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import { Typography } from "@material-ui/core";
 import LikeButton from "../../atoms/CustomButtons/LikeButton";
 import dayjs from "dayjs";
-import { openProjectFunc } from "../../../redux/actions/projectActions";
+import { openProjectRoomFunc } from "../../../redux/actions/projectActions";
 
 // Icons
 import CalendarIcon from "../../../images/icons/calendar.png";
@@ -231,7 +231,7 @@ const IdeaCardBig = ({ classes, setClicked }) => {
   };
 
   const openTheProject = (project) => {
-    dispatch(openProjectFunc(project));
+    dispatch(openProjectRoomFunc(project));
   };
 
   const openLink = (convertedLink) => {

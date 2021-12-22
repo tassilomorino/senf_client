@@ -41,7 +41,7 @@ import Bubble5 from "../../../images/bubbles/bubble5.png";
 import Bubble6 from "../../../images/bubbles/bubble6.png";
 import Bubble7 from "../../../images/bubbles/bubble7.png";
 
-import { openProjectFunc } from "../../../redux/actions/projectActions";
+import { openProjectRoomFunc } from "../../../redux/actions/projectActions";
 
 const PinComponent = styled.img`
   position: absolute;
@@ -75,7 +75,7 @@ const MapDesktop = ({
   classes,
   dataFinal,
   geoData,
-  openProject,
+  openProjectRoom,
   _onViewportChange,
   zoomBreak,
   mapRef,
@@ -106,7 +106,12 @@ const MapDesktop = ({
   const handlleMapLoaded = () => {
     dispatch(setMapLoaded());
 
-    if (!screamId && !openProject && initialMapViewport !== null && mapLoaded) {
+    if (
+      !screamId &&
+      !openProjectRoom &&
+      initialMapViewport !== null &&
+      mapLoaded
+    ) {
       setTimeout(() => {
         dispatch(setMapViewport(initialMapViewport));
       }, 1000);
@@ -312,7 +317,7 @@ const MapDesktop = ({
 
   const onClickProjectRoom = (event) => {
     if (event.features.length > 0) {
-      dispatch(openProjectFunc(event.features[0].properties.projectId));
+      dispatch(openProjectRoomFunc(event.features[0].properties.projectId));
     }
   };
 
@@ -382,7 +387,7 @@ const MapDesktop = ({
           onLoad={handlleMapLoaded}
         >
           <NavigationControl showCompass showZoom position="top-right" />
-          {openProject &&
+          {openProjectRoom &&
             !loadingProjects &&
             geoData !== undefined &&
             geoData !== "" && (
@@ -415,7 +420,7 @@ const MapDesktop = ({
             type="geojson"
             data={geojsonProjectRooms}
           />
-          {order === 1 || openScream || openProject ? (
+          {order === 1 || openScream || openProjectRoom ? (
             <React.Fragment>
               <Layer
                 id="geojsonIdeasblur"

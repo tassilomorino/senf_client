@@ -18,6 +18,7 @@ import "firebase/storage";
 
 import { SubTitle, Title } from "./styles/sharedStyles";
 import CustomSelect from "../../../atoms/Selects/CustomSelect";
+import { OrganizationCard } from "../../../molecules/Cards/OrganizationCard";
 
 const SelectContainer = styled.div`
   display: flex;
@@ -128,6 +129,13 @@ const CreateProjectPage1 = ({ onClickNext }) => {
           handleDropdown={handleDropdown}
         />
       </SelectContainer>
+
+      {myOrganizations.map((organization) => (
+        <OrganizationCard
+          key={organization.organizationId}
+          organization={organization}
+        />
+      ))}
 
       <SubmitButton
         text={t("lets_go")}

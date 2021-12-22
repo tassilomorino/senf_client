@@ -11,7 +11,7 @@ import {
   LOADING_PROJECTS_DATA,
   SET_PROJECTS,
   SET_PROJECT,
-  OPEN_PROJECT,
+  OPEN_PROJECTROOM,
   CLOSE_PROJECT,
   OPEN_CREATE_PROJECTROOM,
 } from "../types";
@@ -34,7 +34,7 @@ export const getProjects = (mapViewport) => async (dispatch) => {
 
   const projects = [];
   ref.docs.forEach((doc) => {
-    const image = storageRef
+    storageRef
       .child(
         `/organizationsData/${doc.data().organizationId}/${doc.id}/thumbnail`
       )
@@ -64,17 +64,17 @@ export const getProjects = (mapViewport) => async (dispatch) => {
         projects.push(docData);
       });
   });
-
-  dispatch({
-    type: SET_PROJECTS,
-    payload: projects,
-  });
+  //THIS IS DONE DIRTY WITH THE SETTIMEOUT
+  setTimeout(() => {
+    dispatch({
+      type: SET_PROJECTS,
+      payload: projects,
+    });
+  }, 200);
 };
 
 // Open a project
-export const openProjectFunc = (projectRoomId) => async (dispatch) => {
-  dispatch({ type: LOADING_UI });
-
+export const openProjectRoomFunc = (projectRoomId) => async (dispatch) => {
   const db = firebase.firestore();
   const storageRef = firebase.storage().ref();
 
@@ -113,12 +113,13 @@ export const openProjectFunc = (projectRoomId) => async (dispatch) => {
         const newPath = `/projectRooms/${projectRoom.projectRoomId}`;
         window.history.pushState(null, null, newPath);
         dispatch({ type: SET_PROJECT, payload: projectRoom });
-        dispatch({ type: OPEN_PROJECT });
-
+        dispatch({ type: OPEN_PROJECTROOM });
         dispatch({ type: STOP_LOADING_UI });
       });
   });
 };
+
+export const loadProjectRoomData = (projectRoomId) => async (dispatch) => {};
 
 export const closeProject = () => (dispatch) => {
   dispatch({ type: SET_PROJECT, payload: null });

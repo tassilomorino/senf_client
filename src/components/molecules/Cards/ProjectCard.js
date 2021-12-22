@@ -6,7 +6,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   openCreateProjectRoomFunc,
-  openProjectFunc,
+  openProjectRoomFunc,
 } from "../../../redux/actions/projectActions";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import AddIcon from "../../../images/icons/plus_grey.png";
@@ -121,7 +121,7 @@ export const ProjectCard = (props) => {
   } = props;
   const dispatch = useDispatch();
   const pushScreamId = () => {
-    dispatch(openProjectFunc(projectRoomId));
+    dispatch(openProjectRoomFunc(projectRoomId));
   };
   const handleEdit = () => {
     console.log(organizationId, projectRoomId);

@@ -246,7 +246,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
 
   const handleOpen = (event) => {
     event.preventDefault();
-    const projectSelected = project ? project.id : "";
+    const projectSelected = project ? project.projectRoomId : "";
 
     setOpen(true);
     setProjectSeleted(projectSelected);
@@ -254,7 +254,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
     // setAllMainStates({ ...allMainStates, loading: false });
 
     projectsData.forEach((element) => {
-      if (projectSelected === element.project) {
+      if (projectSelected === element.projectRoomId) {
         const viewport = {
           zoom: element.zoom,
           latitude: element.centerLat,
@@ -293,9 +293,10 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
   const handleDropdownProject = (value) => {
     // event.preventDefault();
     setProjectSeleted(value);
+    console.log(value);
 
     projectsData.forEach((element) => {
-      if (value === element.project) {
+      if (value === element.projectRoomId) {
         const viewport = {
           zoom: element.zoom,
           latitude: element.centerLat,

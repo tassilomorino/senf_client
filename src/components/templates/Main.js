@@ -16,7 +16,7 @@ import {
 } from "../../redux/actions/screamActions";
 import {
   getProjects,
-  openProjectFunc,
+  openProjectRoomFunc,
   closeProject,
 } from "../../redux/actions/projectActions";
 
@@ -84,7 +84,7 @@ const Main = () => {
   const history = useHistory();
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openScream = useSelector((state) => state.UI.openScream);
-  const openProject = useSelector((state) => state.UI.openProject);
+  const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
   const openAccount = useSelector((state) => state.UI.openAccount);
   const openOrganization = useSelector((state) => state.UI.openOrganization);
   const openCreateOrganization = useSelector(
@@ -99,6 +99,10 @@ const Main = () => {
 
   const loading = useSelector((state) => state.data.loading);
   const loadingProjects = useSelector((state) => state.data.loadingProjects);
+  const loadingOrganizations = useSelector(
+    (state) => state.data.loadingOrganizations
+  );
+
   const loadingIdea = useSelector((state) => state.data.loadingIdea);
 
   const projects = useSelector((state) => state.data.projects);
@@ -161,7 +165,7 @@ const Main = () => {
         dispatch(setMapViewport(projectViewport));
       }, 500);
     }
-  }, [openProject]);
+  }, [openProjectRoom]);
 
   const prevLat = usePrevious({ lat });
 
@@ -223,7 +227,7 @@ const Main = () => {
   useEffect(() => {
     if (projectRoomId) {
       handleClick(2);
-      dispatch(openProjectFunc(projectRoomId));
+      dispatch(openProjectRoomFunc(projectRoomId));
     }
     if (screamId) {
       dispatch(openScreamFunc(screamId));
@@ -326,6 +330,7 @@ const Main = () => {
       ? _.orderBy(screamsSearched, "createdAt", "desc")
       : _.orderBy(screamsSearched, "likeCount", "desc");
 
+  const sortedProjectRooms = _.orderBy(projects, "createdAt", "desc");
   // const sortedScreams =
   //   dropdown === "newest"
   //     ? screamsSearched?.sort(function (a, b) {
@@ -340,9 +345,7 @@ const Main = () => {
   //         }
   //         return 0;
   //       });
-  const dataFinalMapProjects = projects.filter(
-    ({ status }) => status === "active"
-  );
+
   const dataFinal = sortedScreams.filter(
     ({ Thema, lat, long, status }) =>
       selectedTopics.includes(Thema) &&
@@ -353,7 +356,11 @@ const Main = () => {
       status === "None"
   );
 
-  const dataFinalMap = openProject
+  const dataFinalMapProjects = projects.filter(
+    ({ status }) => status === "active"
+  );
+
+  const dataFinalMap = openProjectRoom
     ? project.screams.filter(
         ({ Thema, status }) =>
           selectedTopics.includes(Thema) && status === "None"
@@ -394,8 +401,8 @@ const Main = () => {
           _onViewportChange={_onViewportChange}
           zoomBreak={zoomBreak}
           id="mapDesktop"
-          openProject={openProject}
-          geoData={project && openProject && project.geoData}
+          openProjectRoom={openProjectRoom}
+          geoData={project && openProjectRoom && project.geoData}
           mapRef={mapRef}
           projects={dataFinalMapProjects}
           order={order}
@@ -407,9 +414,9 @@ const Main = () => {
           viewport={mapViewport}
           _onViewportChange={_onViewportChange}
           zoomBreak={zoomBreak}
-          openProject={openProject}
+          openProjectRoom={openProjectRoom}
           projects={dataFinalMapProjects}
-          geoData={project && openProject && project.geoData}
+          geoData={project && openProjectRoom && project.geoData}
           mapRef={mapRef}
         />
       )}
@@ -417,7 +424,7 @@ const Main = () => {
       {!loading &&
         !loadingProjects &&
         isMobileCustom &&
-        (order === 1 || openProject || openScream || openAccount) && (
+        (order === 1 || openProjectRoom || openScream || openAccount) && (
           <React.Fragment>
             <PostScream
               loadingProjects={loadingProjects}
@@ -431,7 +438,7 @@ const Main = () => {
       {!loading &&
         !loadingProjects &&
         isMobileCustom &&
-        !openProject &&
+        !openProjectRoom &&
         !openScream &&
         !openAccount &&
         order === 2 && <OrganizationTypeFilter loading={loading} />}
@@ -440,7 +447,7 @@ const Main = () => {
         <MainColumnWrapper>
           {loading && !isMobileCustom && <Loader />}
 
-          {!openProject && !openAccount && order === 1 && (
+          {!openProjectRoom && !openAccount && order === 1 && (
             <SwipeList
               swipeListType="ideas"
               type="standalone"
@@ -457,27 +464,30 @@ const Main = () => {
             />
           )}
 
-          {!openInfoPage && !openProject && !openAccount && order === 2 && (
-            <SwipeList
-              swipeListType="projectRoomOverview"
-              type="standalone"
-              loading={loadingProjects}
-              order={order}
-              dataFinal={projects}
-              dataFinalMap={dataFinalMap}
-              viewport={mapViewport}
-              handleDropdown={handleDropdown}
-              projectsData={projects}
-              dropdown={dropdown}
-              setSearchTerm={setSearchTerm}
-              searchTerm={searchTerm}
-            />
-          )}
+          {!openInfoPage &&
+            !openProjectRoom &&
+            !openAccount &&
+            !loadingProjects &&
+            order === 2 && (
+              <SwipeList
+                swipeListType="projectRoomOverview"
+                type="standalone"
+                loading={loadingProjects}
+                order={order}
+                dataFinal={sortedProjectRooms}
+                dataFinalMap={dataFinalMap}
+                viewport={mapViewport}
+                handleDropdown={handleDropdown}
+                projectsData={sortedProjectRooms}
+                dropdown={dropdown}
+                setSearchTerm={setSearchTerm}
+                searchTerm={searchTerm}
+              />
+            )}
 
-          {openProject && (
+          {openProjectRoom && (
             <ProjectDialog
               loading={loading}
-              openProject={openProject}
               dataFinalMap={dataFinalMap}
               handleClick={handleClick}
               loadingProjects={loadingProjects}
@@ -503,12 +513,13 @@ const Main = () => {
           {!openInfoPage && openScream && <IdeaDialog />}
 
           {!openInfoPage &&
-            !openProject &&
+            !openProjectRoom &&
             !openAccount &&
             !openOrganization &&
+            !loadingOrganizations &&
             order === 3 && <OrganizationsPage order={order} />}
 
-          {!openInfoPage && !openProject && !openAccount && order === 4 && (
+          {!openInfoPage && !openProjectRoom && !openAccount && order === 4 && (
             <InsightsPage order={order} />
           )}
         </MainColumnWrapper>

@@ -50,7 +50,7 @@ const ProjectDialog = ({
   const [order, setOrder] = useState(1);
   const [dropdown, setDropdown] = useState("newest");
 
-  const openProject = useSelector((state) => state.UI.openProject);
+  const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
   const project = useSelector((state) => state.data.project);
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.UI.loading);
@@ -77,7 +77,7 @@ const ProjectDialog = ({
   useEffect(() => {
     dispatch(handleTopicSelectorRedux("all"));
     setPath(window.location.pathname);
-  }, [openProject]);
+  }, [openProjectRoom]);
 
   const handleClose = () => {
     console.log(initialMapViewport);
@@ -137,92 +137,90 @@ const ProjectDialog = ({
   );
 
   return (
-    openProject && (
-      <React.Fragment>
-        <ProjectHeader
-          imgUrl={imgUrl}
-          title={title}
-          loading={loading}
-          calendar={calendar}
-          order={order}
-          path={path}
-          project={project}
-          handleClose={handleClose}
-          handleClick={handleClick}
-        />
+    <React.Fragment>
+      <ProjectHeader
+        imgUrl={imgUrl}
+        title={title}
+        loading={loading}
+        calendar={calendar}
+        order={order}
+        path={path}
+        project={project}
+        handleClose={handleClose}
+        handleClick={handleClick}
+      />
 
-        <Wrapper>
-          {!isMobileCustom || (isMobileCustom && order !== 1 && <Background />)}
+      <Wrapper>
+        {!isMobileCustom || (isMobileCustom && order !== 1 && <Background />)}
 
-          {order === 1 && (
-            <SwipeList
-              swipeListType="ideas"
-              type="projectIdeas"
-              loading={loading}
-              order={order}
-              dataFinal={dataFinal}
-              geoData={geoData}
-              viewport={viewport}
-              handleDropdown={handleDropdown}
-              projectsData={projectsData}
-              loadingProjects={loadingProjects}
-              project={project}
-              dropdown={dropdown}
-              dataFinalMap={dataFinalMap}
-              setSearchTerm={setSearchTerm}
-              searchTerm={searchTerm}
-            />
-          )}
-          {order === 2 && (
-            <div
-              style={{
-                overflow: "scroll",
-                height: "100vh",
-                pointerEvents: "all",
-              }}
+        {order === 1 && (
+          <SwipeList
+            swipeListType="ideas"
+            type="projectIdeas"
+            loading={loading}
+            order={order}
+            dataFinal={dataFinal}
+            geoData={geoData}
+            viewport={viewport}
+            handleDropdown={handleDropdown}
+            projectsData={projectsData}
+            loadingProjects={loadingProjects}
+            project={project}
+            dropdown={dropdown}
+            dataFinalMap={dataFinalMap}
+            setSearchTerm={setSearchTerm}
+            searchTerm={searchTerm}
+          />
+        )}
+        {order === 2 && (
+          <div
+            style={{
+              overflow: "scroll",
+              height: "100vh",
+              pointerEvents: "all",
+            }}
+          >
+            <Break />
+
+            <MainAnimations
+              transition="0.5s"
+              display="block"
+              paddingBottom="2em"
+              height="100%"
             >
-              <Break />
+              <ProjectInfo
+                description={description}
+                weblink={weblink}
+                contact={contact}
+                startDate={startDate}
+                endDate={endDate}
+                owner={owner}
+              />
+              <br />
+            </MainAnimations>
+          </div>
+        )}
+        {order === 3 && (
+          <React.Fragment>
+            <Break />
 
-              <MainAnimations
-                transition="0.5s"
-                display="block"
-                paddingBottom="2em"
-                height="100%"
-              >
-                <ProjectInfo
-                  description={description}
-                  weblink={weblink}
-                  contact={contact}
-                  startDate={startDate}
-                  endDate={endDate}
-                  owner={owner}
-                />
-                <br />
-              </MainAnimations>
-            </div>
-          )}
-          {order === 3 && (
-            <React.Fragment>
-              <Break />
-
-              <MainAnimations
-                transition="0.5s"
-                display="block"
-                paddingBottom="2em"
-                height="100%"
-                position={document.body.clientWidth > 768 && "fixed"}
-                top={document.body.clientWidth > 768 && "100px"}
-              >
-                <CalendarComponent
-                  projectScreams={project.screams}
-                  handleClick={handleClick}
-                ></CalendarComponent>
-              </MainAnimations>
-            </React.Fragment>
-          )}
-        </Wrapper>
-      </React.Fragment>
-    )
+            <MainAnimations
+              transition="0.5s"
+              display="block"
+              paddingBottom="2em"
+              height="100%"
+              position={document.body.clientWidth > 768 && "fixed"}
+              top={document.body.clientWidth > 768 && "100px"}
+            >
+              <CalendarComponent
+                projectScreams={project.screams}
+                handleClick={handleClick}
+              ></CalendarComponent>
+            </MainAnimations>
+          </React.Fragment>
+        )}
+      </Wrapper>
+    </React.Fragment>
   );
 };
 

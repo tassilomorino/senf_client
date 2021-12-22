@@ -4,7 +4,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import moment from "moment";
 import { clearErrors } from "./errorsActions";
-import { openProjectFunc } from "./projectActions";
+import { openProjectRoomFunc } from "./projectActions";
 import {
   SET_SCREAMS,
   LOADING_DATA,
@@ -252,7 +252,7 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
               : "";
 
           if (project.indexOf("_") > 0) {
-            dispatch(openProjectFunc(project));
+            dispatch(openProjectRoomFunc(project));
           } else {
             history.push(`/${resScream.screamId}`);
             const screamId = resScream.screamId;
