@@ -6,6 +6,7 @@ import "./styles/mapbox-gl.css";
 import "./App.css";
 import "./AppDesktop.css";
 import "./AppIpad.css";
+import "./mapbox.css";
 
 import firebaseConfig from "./firebase";
 import firebase from "firebase/app";

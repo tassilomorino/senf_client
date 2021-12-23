@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 // Redux stuff
-import { closeProject } from "../../../redux/actions/projectActions";
+import { openProjectRoomFunc } from "../../../redux/actions/projectActions";
 import { clearErrors } from "../../../redux/actions/errorsActions";
 import {
   setMapBounds,
@@ -51,7 +51,9 @@ const ProjectDialog = ({
   const [dropdown, setDropdown] = useState("newest");
 
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
+
   const project = useSelector((state) => state.data.project);
+
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.UI.loading);
   const mapBounds = useSelector((state) => state.data.mapBounds);
@@ -61,19 +63,6 @@ const ProjectDialog = ({
   );
   const selectedTopics = useSelector((state) => state.data.topics);
 
-  const {
-    title,
-    owner,
-    imgUrl,
-    description,
-    startDate,
-    endDate,
-    geoData,
-    weblink,
-    contact,
-    calendar,
-  } = project;
-
   useEffect(() => {
     dispatch(handleTopicSelectorRedux("all"));
     setPath(window.location.pathname);
@@ -81,7 +70,7 @@ const ProjectDialog = ({
 
   const handleClose = () => {
     console.log(initialMapViewport);
-    dispatch(closeProject());
+    dispatch(openProjectRoomFunc(null, false));
     dispatch(clearErrors());
     dispatch(setMapViewport(initialMapViewport));
   };
@@ -104,7 +93,7 @@ const ProjectDialog = ({
     setDropdown(value);
   };
 
-  const dataRar = project.screams;
+  const dataRar = project?.screams;
 
   const [searchTerm, setSearchTerm] = useState("");
   const screamsSearched = dataRar?.filter((val) => {
@@ -139,13 +128,12 @@ const ProjectDialog = ({
   return (
     <React.Fragment>
       <ProjectHeader
-        imgUrl={imgUrl}
-        title={title}
+        imgUrl={project?.imgUrl}
+        title={project?.title}
         loading={loading}
-        calendar={calendar}
+        calendar={project?.calendar}
         order={order}
         path={path}
-        project={project}
         handleClose={handleClose}
         handleClick={handleClick}
       />
@@ -160,12 +148,11 @@ const ProjectDialog = ({
             loading={loading}
             order={order}
             dataFinal={dataFinal}
-            geoData={geoData}
+            geoData={project?.geoData}
             viewport={viewport}
             handleDropdown={handleDropdown}
             projectsData={projectsData}
             loadingProjects={loadingProjects}
-            project={project}
             dropdown={dropdown}
             dataFinalMap={dataFinalMap}
             setSearchTerm={setSearchTerm}
@@ -189,12 +176,12 @@ const ProjectDialog = ({
               height="100%"
             >
               <ProjectInfo
-                description={description}
-                weblink={weblink}
-                contact={contact}
-                startDate={startDate}
-                endDate={endDate}
-                owner={owner}
+                description={project?.description}
+                weblink={project?.weblink}
+                contact={project?.contact}
+                startDate={project?.startDate}
+                endDate={project?.endDate}
+                owner={project?.owner}
               />
               <br />
             </MainAnimations>
@@ -213,9 +200,9 @@ const ProjectDialog = ({
               top={document.body.clientWidth > 768 && "100px"}
             >
               <CalendarComponent
-                projectScreams={project.screams}
+                projectScreams={project?.screams}
                 handleClick={handleClick}
-              ></CalendarComponent>
+              />
             </MainAnimations>
           </React.Fragment>
         )}

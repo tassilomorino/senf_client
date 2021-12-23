@@ -67,6 +67,7 @@ const initialState = {
   screams: [],
   myScreams: null,
   scream: {},
+  project: {},
   comment: {},
   like: {},
   loading: true,

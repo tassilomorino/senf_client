@@ -74,7 +74,24 @@ export const getProjects = (mapViewport) => async (dispatch) => {
 };
 
 // Open a project
-export const openProjectRoomFunc = (projectRoomId) => async (dispatch) => {
+
+export const openProjectRoomFunc =
+  (projectRoomId, state) => async (dispatch) => {
+    if (state === true) {
+      dispatch({ type: LOADING_UI });
+      dispatch({ type: OPEN_PROJECTROOM });
+      dispatch(loadProjectRoomData(projectRoomId));
+      dispatch(closeScream());
+      const newPath = `/projectRooms/${projectRoomId}`;
+      window.history.pushState(null, null, newPath);
+    } else {
+      dispatch({ type: SET_PROJECT, payload: null });
+      dispatch({ type: CLOSE_PROJECT });
+
+      window.history.pushState(null, null, "/projectRooms");
+    }
+  };
+export const loadProjectRoomData = (projectRoomId) => async (dispatch) => {
   const db = firebase.firestore();
   const storageRef = firebase.storage().ref();
 
@@ -90,7 +107,7 @@ export const openProjectRoomFunc = (projectRoomId) => async (dispatch) => {
     .get();
 
   ref.docs.forEach((doc) => {
-    const image = storageRef
+    storageRef
       .child(
         `/organizationsData/${doc.data().organizationId}/${doc.id}/thumbnail`
       )
@@ -109,27 +126,10 @@ export const openProjectRoomFunc = (projectRoomId) => async (dispatch) => {
           })
         );
 
-        dispatch(closeScream());
-        const newPath = `/projectRooms/${projectRoom.projectRoomId}`;
-        window.history.pushState(null, null, newPath);
         dispatch({ type: SET_PROJECT, payload: projectRoom });
-        dispatch({ type: OPEN_PROJECTROOM });
         dispatch({ type: STOP_LOADING_UI });
       });
   });
-};
-
-export const loadProjectRoomData = (projectRoomId) => async (dispatch) => {};
-
-export const closeProject = () => (dispatch) => {
-  dispatch({ type: SET_PROJECT, payload: null });
-  dispatch({ type: CLOSE_PROJECT });
-
-  window.history.pushState(null, null, "/projectRooms");
-
-  setTimeout(() => {
-    document.body.style.overflow = "scroll";
-  }, 1000);
 };
 
 export const openCreateProjectRoomFunc = (state) => async (dispatch) => {

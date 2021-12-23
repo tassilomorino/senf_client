@@ -14,6 +14,18 @@ const NoMore = styled.div`
   width: 100%;
   text-align: center;
   font-family: Playfair Display;
+  animation: NoMoreAnimation 1s;
+
+  @keyframes NoMoreAnimation {
+    0% {
+      opacity: 0;
+      transform: translateY(50%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0%);
+    }
+  }
 `;
 
 const NoContent = styled.div`
@@ -55,7 +67,7 @@ export const NoMoreMyContent = ({ dataFinalLength, loading }) => {
 };
 
 export const NoMoreProjectsContent = ({ dataFinalLength, loading }) => {
-  const screams = useSelector((state) => state.data.project.screams);
+  const project = useSelector((state) => state.data.project);
 
   const { t } = useTranslation();
 
@@ -63,7 +75,8 @@ export const NoMoreProjectsContent = ({ dataFinalLength, loading }) => {
     <NoMore>
       ... <br /> {t("noMoreIdeas")} <br />
     </NoMore>
-  ) : !loading && (screams.length === 0 || screams === undefined) ? (
+  ) : !loading &&
+    (project?.screams === undefined || project?.screams?.length === 0) ? (
     <NoContent>{t("noProjectIdeas")}</NoContent>
   ) : (
     <NoContent>{t("noContentIdeas")}</NoContent>

@@ -231,7 +231,7 @@ const IdeaCardBig = ({ classes, setClicked }) => {
   };
 
   const openTheProject = (project) => {
-    dispatch(openProjectRoomFunc(project));
+    dispatch(openProjectRoomFunc(project, true));
   };
 
   const openLink = (convertedLink) => {
@@ -243,9 +243,9 @@ const IdeaCardBig = ({ classes, setClicked }) => {
 
   const projectsDataFinal = [];
   if (projects) {
-    projects.forEach((element) => {
-      if (project === element.project) {
-        projectsDataFinal.push(element.title);
+    projects.forEach(({ projectRoomId, title }) => {
+      if (project === projectRoomId) {
+        projectsDataFinal.push(title);
       }
     });
   }

@@ -230,7 +230,6 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [topic, setTopic] = useState("");
-  // const [project, setProject] = useState("");
 
   const [weblinkOpen, setWeblinkOpen] = useState(false);
   const [weblink, setWeblink] = useState(null);
@@ -246,38 +245,41 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
 
   const handleOpen = (event) => {
     event.preventDefault();
-    const projectSelected = project ? project.projectRoomId : "";
+    const projectSelected = project?.projectRoomId
+      ? project?.projectRoomId
+      : "";
 
-    setOpen(true);
     setProjectSeleted(projectSelected);
 
     // setAllMainStates({ ...allMainStates, loading: false });
 
-    projectsData.forEach((element) => {
-      if (projectSelected === element.projectRoomId) {
-        const viewport = {
-          zoom: element.zoom,
-          latitude: element.centerLat,
-          longitude: element.centerLong,
-          transitionDuration: 1000,
-        };
-        setViewport(viewport);
-
-        setGeoData(element.geoData);
-        setCheckIfCalendar(element.calendar);
+    projectsData.forEach(
+      ({ projectRoomId, zoom, centerLat, centerLong, geoData, calendar }) => {
+        if (projectSelected === projectRoomId) {
+          const viewport = {
+            zoom: zoom,
+            latitude: centerLat,
+            longitude: centerLong,
+            transitionDuration: 1000,
+          };
+          setViewport(viewport);
+          setGeoData(geoData);
+          setCheckIfCalendar(calendar);
+        }
+        if (projectSelected === "") {
+          const viewport = {
+            zoom: mapViewport.zoom,
+            latitude: mapViewport.latitude,
+            longitude: mapViewport.longitude,
+            transitionDuration: 1000,
+          };
+          setViewport(viewport);
+          setGeoData("");
+        }
       }
-      if (projectSelected === "") {
-        const viewport = {
-          zoom: mapViewport.zoom,
-          latitude: mapViewport.latitude,
-          longitude: mapViewport.longitude,
-          transitionDuration: 1000,
-        };
-        setViewport(viewport);
+    );
 
-        setGeoData("");
-      }
-    });
+    setOpen(true);
   };
 
   const handleClose = () => {

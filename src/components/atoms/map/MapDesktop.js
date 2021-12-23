@@ -77,7 +77,6 @@ const MapDesktop = ({
   geoData,
   openProjectRoom,
   _onViewportChange,
-  zoomBreak,
   mapRef,
   projects,
   order,
@@ -88,18 +87,13 @@ const MapDesktop = ({
   const scream = useSelector((state) => state.data.scream);
 
   const dispatch = useDispatch();
-  const [hoverScreamId, setHoverScreamId] = useState("");
-  const [hoverLat, setHoverLat] = useState("");
-  const [hoverLong, setHoverLong] = useState("");
-  const [hoverTitle, setHoverTitle] = useState("");
-  const [hoverLikeCount, setHoverLikeCount] = useState("");
+  const [hoverId, setHoverId] = useState("");
 
   const mapViewport = useSelector((state) => state.data.mapViewport);
   const initialMapViewport = useSelector(
     (state) => state.data.initialMapViewport
   );
   const mapLoaded = useSelector((state) => state.data.mapLoaded);
-  const [projectRoomBounds, setProjectRoomBounds] = useState(null);
 
   const { screamId } = useParams();
 
@@ -115,22 +109,6 @@ const MapDesktop = ({
       setTimeout(() => {
         dispatch(setMapViewport(initialMapViewport));
       }, 1000);
-
-      setTimeout(() => {
-        // mapRef.fitBounds([
-        //   [32.958984, -5.353521], // southwestern corner of the bounds
-        //   [43.50585, 5.615985], // northeastern corner of the bounds
-        // ]);
-        // dispatch(
-        //   setMapViewport({
-        //     ...mapViewport,
-        //     bounds: [
-        //       [6.3, 50.7],
-        //       [6.8, 50.9],
-        //     ],
-        //   })
-        // );
-      }, 2000);
     }
   };
   useEffect(() => {
@@ -275,20 +253,12 @@ const MapDesktop = ({
   }
   const onHoverIdea = (event) => {
     if (event.features.length > 0) {
-      setHoverScreamId(event.features[0].properties.screamId);
-      setHoverLat(event.features[0].properties.lat);
-      setHoverLong(event.features[0].properties.long);
-      setHoverTitle(event.features[0].properties.title);
-      setHoverLikeCount(event.features[0].properties.likeCount);
+      setHoverId(event.features[0].properties.screamId);
     }
   };
 
   const onLeaveIdea = (event) => {
-    setHoverScreamId("");
-    setHoverLat("");
-    setHoverLong("");
-    setHoverTitle("");
-    setHoverLikeCount("");
+    setHoverId("");
   };
 
   const onClickIdea = (event) => {
@@ -298,26 +268,20 @@ const MapDesktop = ({
   };
 
   const onHoverProjectRoom = (event) => {
-    // if (event.features.length > 0) {
-    //   setHoverScreamId(event.features[0].properties.screamId);
-    //   setHoverLat(event.features[0].properties.lat);
-    //   setHoverLong(event.features[0].properties.long);
-    //   setHoverTitle(event.features[0].properties.title);
-    //   setHoverLikeCount(event.features[0].properties.likeCount);
-    // }
+    if (event.features.length > 0) {
+      setHoverId(event.features[0].properties.projectRoomId);
+    }
   };
 
   const onLeaveProjectRoom = (event) => {
-    // setHoverScreamId("");
-    // setHoverLat("");
-    // setHoverLong("");
-    // setHoverTitle("");
-    // setHoverLikeCount("");
+    setHoverId("");
   };
 
   const onClickProjectRoom = (event) => {
     if (event.features.length > 0) {
-      dispatch(openProjectRoomFunc(event.features[0].properties.projectId));
+      dispatch(
+        openProjectRoomFunc(event.features[0].properties.projectRoomId, true)
+      );
     }
   };
 
@@ -354,31 +318,6 @@ const MapDesktop = ({
           pitch={mapViewport.pitch}
           bearing={mapViewport.bearing}
           zoom={mapViewport.zoom}
-          // maxBounds={
-          //   openProject &&
-          //   !loadingProjects &&
-          //   geoData !== undefined &&
-          //   geoData !== ""
-          //     ? projectRoomBounds
-          //     : null
-          // }
-          // bounds={
-          //   openProject &&
-          //   !loadingProjects &&
-          //   geoData !== undefined &&
-          //   geoData !== ""
-          //     ? projectRoomBounds
-          //     : null
-          // }
-          // bounds={
-          //   openProject &&
-          //   !loadingProjects &&
-          //   geoData !== undefined &&
-          //   geoData !== "" && [
-          //     [6.5, 50.8],
-          //     [6.8, 50.9],
-          //   ]
-          // }
           onViewportChange={_onViewportChange}
           viewportChangeMethod={"easeTo"}
           viewportChangeOptions={{
@@ -404,24 +343,11 @@ const MapDesktop = ({
                 />
               </React.Fragment>
             )}
-          <DesktopMapButtons viewport={mapViewport} mapRef={mapRef} />
 
-          <Image id="Bubble1" image={Bubble1} />
-          <Image id="Bubble2" image={Bubble2} />
-          <Image id="Bubble3" image={Bubble3} />
-          <Image id="Bubble4" image={Bubble4} />
-          <Image id="Bubble5" image={Bubble5} />
-          <Image id="Bubble6" image={Bubble6} />
-          <Image id="Bubble7" image={Bubble7} />
-
-          <Source id="geojsonIdeas" type="geojson" data={geojsonIdeas} />
-          <Source
-            id="geojsonProjectRooms"
-            type="geojson"
-            data={geojsonProjectRooms}
-          />
           {order === 1 || openScream || openProjectRoom ? (
             <React.Fragment>
+              <DesktopMapButtons viewport={mapViewport} mapRef={mapRef} />
+              <Source id="geojsonIdeas" type="geojson" data={geojsonIdeas} />
               <Layer
                 id="geojsonIdeasblur"
                 source="geojsonIdeas"
@@ -431,14 +357,11 @@ const MapDesktop = ({
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    // when zoom is 0, set each feature's circle radius to the value of its "rating" property
                     0,
                     ["*", 0, ["get", "circleBlurRadius"]],
 
                     10,
                     ["*", 0, ["get", "circleBlurRadius"]],
-
-                    // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
 
                     14,
                     ["*", 4, ["get", "circleRadius"]],
@@ -451,6 +374,7 @@ const MapDesktop = ({
                   "circle-opacity": 0.15,
                 }}
               />
+
               <Layer
                 id="geojsonIdeas"
                 source="geojsonIdeas"
@@ -466,6 +390,7 @@ const MapDesktop = ({
                   //     [22, 180],
                   //   ],
                   // },
+
                   "circle-radius": [
                     "interpolate",
                     ["linear"],
@@ -509,10 +434,25 @@ const MapDesktop = ({
                     10,
                     0.4,
 
-                    // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
+                    // when zoom is 20, set each feature's circle radius to four times the value of its "rating" property
                     20,
                     3,
                   ],
+                }}
+              />
+
+              <Layer
+                id="geojsonIdeasText"
+                source="geojsonIdeas"
+                type="symbol"
+                filter={["==", ["get", "screamId"], hoverId]}
+                layout={{
+                  "text-field": ["get", "title"],
+                  "text-anchor": "left",
+                  "text-offset": [1, 0],
+                  "text-font": ["DIN Offc Pro Bold", "Arial Unicode MS Bold"],
+                  "text-justify": "left",
+                  "text-size": 16,
                 }}
               />
               {openScream && scream.lat && (
@@ -524,7 +464,6 @@ const MapDesktop = ({
                   <PinComponent
                     src={Pin}
                     likeCount={scream.likeCount}
-                    zoomBreak={zoomBreak}
                     style={{
                       clipPath: "polygon(0 0, 100% 0, 100% 82%, 0 82%)",
                     }}
@@ -533,90 +472,82 @@ const MapDesktop = ({
                 </Marker>
               )}
 
-              <Marker
-                key={hoverScreamId}
-                longitude={hoverLong}
-                latitude={hoverLat}
-              >
-                <div
-                  style={{
-                    position: "absolute",
-                    width: (7 + hoverLikeCount / 4) * zoomBreak + "px",
-                    marginLeft: -(7 + hoverLikeCount / 4) * zoomBreak + "px",
-                    height: (7 + hoverLikeCount / 4) * zoomBreak + "px",
-                    marginTop: -(7 + hoverLikeCount / 4) * zoomBreak + "px",
-                    borderRadius: "100%",
-                    // border: "1px white solid",
-                    // backgroundColor: "rgb(0,0,0,0.2)",
-
-                    opacity: "1",
-                    pointerEvents: "none",
-                  }}
-                >
-                  <div
-                    className={classes.title}
-                    style={{
-                      marginLeft: +(18 + hoverLikeCount / 4) * zoomBreak + "px",
-                      marginTop: +(5 + hoverLikeCount / 6) * zoomBreak + "px",
-                      transform: "translateY(-50%)",
-                    }}
-                  >
-                    {hoverTitle}
-                  </div>
-                </div>
-              </Marker>
-
-              <NoLocationPopUp
-                dataNoLocation={dataNoLocation}
-              ></NoLocationPopUp>
+              <NoLocationPopUp dataNoLocation={dataNoLocation} />
             </React.Fragment>
           ) : (
-            <Layer
-              id="geojsonProjectRooms"
-              source="geojsonProjectRooms"
-              type="symbol"
-              onHover={onHoverProjectRoom}
-              onLeave={onLeaveProjectRoom}
-              onClick={onClickProjectRoom}
-              layout={{
-                // "icon-image": "projectRoomIcon2",
-                // "icon-image": `projectRoomIcon${Math.floor(Math.random() * 2)}`,
+            <React.Fragment>
+              <Image id="Bubble1" image={Bubble1} />
+              <Image id="Bubble2" image={Bubble2} />
+              <Image id="Bubble3" image={Bubble3} />
+              <Image id="Bubble4" image={Bubble4} />
+              <Image id="Bubble5" image={Bubble5} />
+              <Image id="Bubble6" image={Bubble6} />
+              <Image id="Bubble7" image={Bubble7} />
+              <Source
+                id="geojsonProjectRooms"
+                type="geojson"
+                data={geojsonProjectRooms}
+              />
+              <Layer
+                id="geojsonProjectRooms"
+                source="geojsonProjectRooms"
+                type="symbol"
+                onHover={onHoverProjectRoom}
+                onLeave={onLeaveProjectRoom}
+                onClick={onClickProjectRoom}
+                layout={{
+                  "icon-image": [
+                    "match",
+                    ["get", "organizationType"],
+                    "Vereine",
+                    "Bubble1",
+                    "Inititiven",
+                    "Bubble2",
+                    "Planungsbüros",
+                    "Bubble3",
+                    "Politik",
+                    "Bubble4",
+                    "Stadtverwaltung",
+                    "Bubble5",
+                    "Presse",
+                    "Bubble6",
+                    "Bubble7",
+                  ],
+                  "icon-size": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    // when zoom is 0, set each feature's circle radius to the value of its "rating" property
+                    0,
+                    0.01,
 
-                "icon-image": [
-                  "match",
-                  ["get", "organizationType"],
-                  "Vereine",
-                  "Bubble1",
-                  "Inititiven",
-                  "Bubble2",
-                  "Planungsbüros",
-                  "Bubble3",
-                  "Politik",
-                  "Bubble4",
-                  "Stadtverwaltung",
-                  "Bubble5",
-                  "Presse",
-                  "Bubble6",
-                  "Bubble7",
-                ],
-                "icon-size": [
-                  "interpolate",
-                  ["linear"],
-                  ["zoom"],
-                  // when zoom is 0, set each feature's circle radius to the value of its "rating" property
-                  0,
-                  0.01,
+                    10,
+                    0.05,
 
-                  10,
-                  0.05,
-
-                  // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
-                  20,
-                  0.4,
-                ],
-                "icon-anchor": "bottom",
-              }}
-            />
+                    // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
+                    20,
+                    0.4,
+                  ],
+                  "icon-anchor": "bottom",
+                  "icon-allow-overlap": true,
+                }}
+              />
+              <Layer
+                id="geojsonProjectRoomsText"
+                source="geojsonProjectRooms"
+                type="symbol"
+                filter={["==", ["get", "projectRoomId"], hoverId]}
+                layout={{
+                  "text-field": ["get", "title"],
+                  "text-anchor": "left",
+                  "text-offset": [0.5, -1.5],
+                  "text-font": ["DIN Offc Pro Bold", "Arial Unicode MS Bold"],
+                  "text-justify": "left",
+                  "text-size": 16,
+                  "text-allow-overlap": true,
+                }}
+              />
+            </React.Fragment>
           )}
         </MapGL>
       </div>

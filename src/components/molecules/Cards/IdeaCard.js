@@ -188,13 +188,13 @@ const IdeaCard = ({
   };
 
   const fetchDataProject = () => {
-    dispatch(openProjectRoomFunc(project));
+    dispatch(openProjectRoomFunc(project, true));
   };
 
   const projectsDataFinal = [];
   if (projectsData) {
-    projectsData.forEach(({ project, title }) => {
-      if (ideaCardProject === project) {
+    projectsData.forEach(({ projectRoomId, title }) => {
+      if (ideaCardProject === projectRoomId) {
         projectsDataFinal.push(title);
       }
     });

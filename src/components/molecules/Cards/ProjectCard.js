@@ -121,7 +121,7 @@ export const ProjectCard = (props) => {
   } = props;
   const dispatch = useDispatch();
   const pushScreamId = () => {
-    dispatch(openProjectRoomFunc(projectRoomId));
+    dispatch(openProjectRoomFunc(projectRoomId, true));
   };
   const handleEdit = () => {
     console.log(organizationId, projectRoomId);

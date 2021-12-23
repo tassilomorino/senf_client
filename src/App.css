@@ -719,11 +719,7 @@ button:disabled {
   font-size: 12pt !important;
 }
 
-/* .mapboxgl-ctrl-geocoder {
-  margin-left:70px !important;
-  margin-top:20px !important;
-  width: 50% !important;
-} */
+
 
 .react-geocoder {
   position: fixed;
@@ -779,13 +775,7 @@ input:focus {
   padding: 10px;
 }
 
-.mapboxgl-ctrl {
-  opacity: 0;
-}
 
-.mapboxgl-ctrl-logo {
-  pointer-events: none;
-}
 
 .pinLocationHeader {
   font-family: Futura PT W01 Book;
@@ -1723,12 +1713,6 @@ input:focus {
   border-radius: 5px;
   width: 95%;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
-}
-.mapboxgl-ctrl-top-right {
-  width: 70px;
-  height: 70px;
-  top: 10px;
-  right: 10px;
 }
 
 .keyindicatorswrapper {

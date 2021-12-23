@@ -17,7 +17,6 @@ import {
 import {
   getProjects,
   openProjectRoomFunc,
-  closeProject,
 } from "../../redux/actions/projectActions";
 
 import {
@@ -80,7 +79,6 @@ const Main = () => {
   const dispatch = useDispatch();
   const { screamId, projectRoomId, organizationId } = useParams();
   const { cookie_settings } = useSelector((state) => state.data);
-  const [zoomBreak, setZoomBreak] = useState(0.6);
   const history = useHistory();
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openScream = useSelector((state) => state.UI.openScream);
@@ -194,11 +192,6 @@ const Main = () => {
   }, [lat, long, loadingIdea, openScream]);
 
   useEffect(() => {
-    // if (navigator.userAgent.includes("Instagram") && isAndroid) {
-    //   alert(
-    //     "Bitte schau dir Senf.koeln in deinem Standardbrowser an, falls dir die Seite beschädigt angezeigt wird"
-    //   );
-    // }
     if (
       cookie_settings !== "all" &&
       cookie_settings !== "minimum" &&
@@ -213,35 +206,31 @@ const Main = () => {
             dispatch(getOrganizations(mapViewport));
           });
 
-          if (window.location.pathname === "/projectRooms") {
-            handleClick(2);
-          }
-          if (window.location.pathname === "/organizations") {
-            handleClick(3);
+          if (screamId) {
+            setOrder(1);
+            dispatch(openScreamFunc(screamId));
+          } else if (projectRoomId) {
+            setOrder(2);
+            dispatch(openProjectRoomFunc(projectRoomId, true));
+          } else if (organizationId) {
+            setOrder(3);
+            dispatch(openOrganizationFunc(true, organizationId));
+          } else if (window.location.pathname === "/projectRooms") {
+            setOrder(2);
+          } else if (window.location.pathname === "/organizations") {
+            setOrder(3);
+          } else if (window.location.pathname === "/insights") {
+            setOrder(4);
           }
         });
       }
     }
   }, [initialMapViewport]);
 
-  useEffect(() => {
-    if (projectRoomId) {
-      handleClick(2);
-      dispatch(openProjectRoomFunc(projectRoomId));
-    }
-    if (screamId) {
-      dispatch(openScreamFunc(screamId));
-    }
-    if (organizationId) {
-      handleClick(3);
-      dispatch(openOrganizationFunc(true, organizationId));
-    }
-  }, []);
-
   const handleClick = (order) => {
     setOrder(order);
     dispatch(closeScream());
-    dispatch(closeProject());
+    dispatch(openProjectRoomFunc(null, false));
     dispatch(closeAccountFunc());
     dispatch(handleTopicSelectorRedux("all"));
 
@@ -253,6 +242,9 @@ const Main = () => {
     }
     if (order === 3) {
       window.history.pushState(null, null, "/organizations");
+    }
+    if (order === 4) {
+      window.history.pushState(null, null, "/insights");
 
       window.scrollTo({
         top: 0,
@@ -266,29 +258,8 @@ const Main = () => {
     setDropdown(value);
   };
 
-  useEffect(() => {
-    if (openScream) {
-      setTimeout(() => {
-        if (mapViewport.zoom > 15) {
-          setZoomBreak(2);
-        } else if (mapViewport.zoom > 11.5) {
-          setZoomBreak(1);
-        } else {
-          setZoomBreak(0.6);
-        }
-      }, 1000);
-    }
-  }, [openScream, mapViewport]);
-
   const _onViewportChange = (viewport) => {
     dispatch(setMapViewport(viewport));
-    if (viewport.zoom > 15) {
-      setZoomBreak(2);
-    } else if (viewport.zoom > 11.5) {
-      setZoomBreak(1);
-    } else {
-      setZoomBreak(0.6);
-    }
 
     if (isMobileCustom) {
       const map = mapRef.current.getMap();
@@ -356,12 +327,12 @@ const Main = () => {
       status === "None"
   );
 
-  const dataFinalMapProjects = projects.filter(
+  const dataFinalMapProjects = projects?.filter(
     ({ status }) => status === "active"
   );
 
   const dataFinalMap = openProjectRoom
-    ? project.screams.filter(
+    ? project?.screams?.filter(
         ({ Thema, status }) =>
           selectedTopics.includes(Thema) && status === "None"
       )
@@ -399,8 +370,6 @@ const Main = () => {
           loadingProjects={loadingProjects}
           dataFinal={dataFinalMap}
           _onViewportChange={_onViewportChange}
-          zoomBreak={zoomBreak}
-          id="mapDesktop"
           openProjectRoom={openProjectRoom}
           geoData={project && openProjectRoom && project.geoData}
           mapRef={mapRef}
@@ -413,7 +382,6 @@ const Main = () => {
           dataFinal={dataFinalMap}
           viewport={mapViewport}
           _onViewportChange={_onViewportChange}
-          zoomBreak={zoomBreak}
           openProjectRoom={openProjectRoom}
           projects={dataFinalMapProjects}
           geoData={project && openProjectRoom && project.geoData}

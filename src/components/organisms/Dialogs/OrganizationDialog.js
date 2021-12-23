@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 // Redux stuff
-import { closeProject } from "../../../redux/actions/projectActions";
 import { clearErrors } from "../../../redux/actions/errorsActions";
 import {
   setMapBounds,

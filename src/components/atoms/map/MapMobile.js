@@ -50,7 +50,6 @@ const MapMobile = ({
   viewport,
   openProjectRoom,
   _onViewportChange,
-  zoomBreak,
   loadingProjects,
   projects,
   geoData,
@@ -100,7 +99,9 @@ const MapMobile = ({
 
   const onClickProjectRoom = (event) => {
     if (event.features.length > 0) {
-      dispatch(openProjectRoomFunc(event.features[0].properties.projectId));
+      dispatch(
+        openProjectRoomFunc(event.features[0].properties.projectId, true)
+      );
     }
   };
 
@@ -390,7 +391,6 @@ const MapMobile = ({
                   <PinComponent
                     src={Pin}
                     likeCount={scream.likeCount}
-                    zoomBreak={zoomBreak}
                     style={{
                       clipPath: "polygon(0 0, 100% 0, 100% 82%, 0 82%)",
                     }}

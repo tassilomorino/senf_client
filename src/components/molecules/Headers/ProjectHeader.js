@@ -24,10 +24,9 @@ const ProjectHeader = ({
   handleClose,
   handleClick,
   path,
-  project,
 }) => {
   const { openScream } = useSelector((state) => state.UI);
-  const [shareOpen, setShareOpen] = useState(false);
+  // const [shareOpen, setShareOpen] = useState(false);
   const [amount, setAmount] = useState(18);
 
   useEffect(() => {
@@ -35,32 +34,32 @@ const ProjectHeader = ({
     setAmount(amount);
   }, []);
 
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator
-        .share({
-          title: `Senf.koeln – ${title}`,
-          url: path,
-        })
-        .then(() => {
-          console.log("Thanks for sharing!");
-        })
-        .catch(console.error);
-    } else {
-      setShareOpen(true);
-    }
-  };
+  // const handleShare = () => {
+  //   if (navigator.share) {
+  //     navigator
+  //       .share({
+  //         title: `Senf.koeln – ${title}`,
+  //         url: path,
+  //       })
+  //       .then(() => {
+  //         console.log("Thanks for sharing!");
+  //       })
+  //       .catch(console.error);
+  //   } else {
+  //     setShareOpen(true);
+  //   }
+  // };
 
   return (
     <React.Fragment>
-      {shareOpen && (
+      {/* {shareOpen && (
         <ShareModal
           screamId={project}
           title={title}
           path={path}
           setShareOpen={setShareOpen}
         />
-      )}
+      )} */}
 
       <FixedWrapper moveUp={openScream} id="wrapper">
         <FlexWrapper>
@@ -74,7 +73,9 @@ const ProjectHeader = ({
           <TitleWrapper>{title}</TitleWrapper>
 
           <ImgWrapper>
-            <StyledImg src={imgUrl} width="100%" alt="project-thumbnail" />
+            {imgUrl && (
+              <StyledImg src={imgUrl} width="100%" alt="project-thumbnail" />
+            )}
           </ImgWrapper>
         </FlexWrapper>
         {/* <div style={{ position: "absolute", top: "20px", right: "10px" }}>

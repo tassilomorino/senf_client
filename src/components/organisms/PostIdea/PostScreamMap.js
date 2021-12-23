@@ -73,92 +73,96 @@ const PostScreamMap = ({
         };
 
   return (
-    <MapGL
-      accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-      mapStyle="mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6"
-      {...viewport}
-      maxZoom={18}
-      minZoom={11}
-      style={
-        isMobileCustom
-          ? {
-              width: "100vw",
-              height: "100vh",
-              position: "fixed",
-            }
-          : {
-              position: "fixed",
-              width: "calc(100% - 600px)",
-              left: "600px",
-              height: "100%",
-            }
-      }
-      onViewportChange={_onMarkerDragEnd}
-      viewportChangeMethod={"easeTo"}
-      viewportChangeOptions={{
-        duration: 2700,
-      }}
-    >
-      <Source id="geodata" type="geojson" data={data} />
-      <Layer
-        id="geodata"
-        type="fill"
-        source="geodata"
-        paint={{
-          "fill-color": "#fed957",
-          "fill-opacity": 0.3,
-        }}
-      />
-      <div
-        onClick={addressBarClicked}
+    viewport && (
+      <MapGL
+        accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+        mapStyle="mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6"
+        {...viewport}
+        maxZoom={18}
+        minZoom={11}
         style={
-          locationDecided === false ? { display: "block" } : { display: "none" }
+          isMobileCustom
+            ? {
+                width: "100vw",
+                height: "100vh",
+                position: "fixed",
+              }
+            : {
+                position: "fixed",
+                width: "calc(100% - 600px)",
+                left: "600px",
+                height: "100%",
+              }
         }
+        onViewportChange={_onMarkerDragEnd}
+        viewportChangeMethod={"easeTo"}
+        viewportChangeOptions={{
+          duration: 2700,
+        }}
       >
-        <Geocoder
-          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-          onSelected={onSelected}
-          viewport={viewport}
-          hideOnSelect={true}
-          limit={3}
-          queryParams={queryParams}
-          id="geocoder"
-          transitionDuration={1000}
+        <Source id="geodata" type="geojson" data={data} />
+        <Layer
+          id="geodata"
+          type="fill"
+          source="geodata"
+          paint={{
+            "fill-color": "#fed957",
+            "fill-opacity": 0.3,
+          }}
         />
         <div
-          className="pinLocationHeader"
-          style={clicked === false ? { zIndex: 9999 } : { zIndex: 0 }}
+          onClick={addressBarClicked}
+          style={
+            locationDecided === false
+              ? { display: "block" }
+              : { display: "none" }
+          }
         >
-          {addressLine}
+          <Geocoder
+            mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+            onSelected={onSelected}
+            viewport={viewport}
+            hideOnSelect={true}
+            limit={3}
+            queryParams={queryParams}
+            id="geocoder"
+            transitionDuration={1000}
+          />
+          <div
+            className="pinLocationHeader"
+            style={clicked === false ? { zIndex: 9999 } : { zIndex: 0 }}
+          >
+            {addressLine}
+          </div>
         </div>
-      </div>
 
-      {isMobileCustom && (
-        <React.Fragment>
-          <GeolocateControl
-            positionOptions={{ enableHighAccuracy: true }}
-            showUserLocation={false}
-            onGeolocate={() => {
-              setTimeout(() => {
-                geocode(viewport);
-              }, 1500);
-            }}
-          />
-          <Img
-            show={locationDecided === false}
-            src={Geolocate}
-            width="20"
-            alt="Geolocate"
-          />
-        </React.Fragment>
-      )}
+        {isMobileCustom && (
+          <React.Fragment>
+            <GeolocateControl
+              positionOptions={{ enableHighAccuracy: true }}
+              showUserLocation={false}
+              onGeolocate={() => {
+                setTimeout(() => {
+                  geocode(viewport);
+                }, 1500);
+              }}
+            />
+            {/* <Img
+              show={locationDecided === false}
+              src={Geolocate}
+              width="20"
+              alt="Geolocate"
+            /> */}
+          </React.Fragment>
+        )}
 
-      <div style={{ pointerEvents: "none" }}>
-        <PinWrapper isMobileCustom={isMobileCustom}>
-          <img src={Pin} width="100" alt="ChatIcon" />
-        </PinWrapper>
-      </div>
-    </MapGL>
+        <div style={{ pointerEvents: "none" }}>
+          <PinWrapper isMobileCustom={isMobileCustom}>
+            <img src={Pin} width="100" alt="ChatIcon" />
+          </PinWrapper>
+        </div>
+      </MapGL>
+    )
   );
 };
 
