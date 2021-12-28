@@ -16,23 +16,6 @@ import { usePrevious } from "../../../hooks/usePrevious";
 import { ProjectCard } from "../Cards/ProjectCard";
 import { useTranslation } from "react-i18next";
 
-const Wrapper = styled.div`
-  height: 100vh;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  position: relative;
-  width: 100%;
-  top: 0;
-  pointer-events: all;
-  animation: cardanimation 0.8s ease-in-out;
-
-  @media (min-width: 768px) {
-    width: 400px;
-    top: 110px;
-    position: relative;
-  }
-`;
-
 const NoIdeasYet = styled.div`
   position: relative;
   font-size: 15pt;
@@ -41,9 +24,12 @@ const NoIdeasYet = styled.div`
   margin-left: 10%;
   text-align: center;
 `;
+
 const List = ({
   swipeListType,
   type,
+  order,
+  handleClick,
   loading,
   dropdown,
   dataFinal,
@@ -128,8 +114,9 @@ const List = ({
   return (
     !loading &&
     mapBounds && (
-      <Wrapper id="List">
+      <React.Fragment>
         <InfiniteScroll
+          id="List"
           loadMore={() => loadMore()}
           hasMore={hasMoreItems}
           // loader={<SkeletonCard dataFinalLength={dataFinalLength === 0} />}
@@ -161,7 +148,7 @@ const List = ({
           )}
 
         <div style={isMobileCustom ? { height: "70%" } : { height: "500px" }} />
-      </Wrapper>
+      </React.Fragment>
     )
   );
 };

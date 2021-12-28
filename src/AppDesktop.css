@@ -390,13 +390,6 @@
     pointer-events: none;
   }
 
-  .mapWrapper {
-    margin: 0px;
-    top: 0;
-    left: 600px;
-    position: fixed;
-  }
-
   .selectLocationContainer {
     position: fixed;
     height: 130px;

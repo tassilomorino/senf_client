@@ -7,9 +7,10 @@ export const FixedWrapper = styled.div`
   position: fixed;
   width: 95%;
 
-  height: 80px;
+  height: 50px;
   background-color: white;
   top: ${(props) => (props.moveUp ? "-90px" : "10px")};
+  transition: 1s;
   left: 2.5%;
   border-radius: 20px 20px;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);

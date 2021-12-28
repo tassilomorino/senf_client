@@ -25,7 +25,8 @@ const ProjectHeader = ({
   handleClick,
   path,
 }) => {
-  const { openScream } = useSelector((state) => state.UI);
+  const openScream = useSelector((state) => state.UI.openScream);
+  const swipePosition = useSelector((state) => state.UI.swipePosition);
   // const [shareOpen, setShareOpen] = useState(false);
   const [amount, setAmount] = useState(18);
 
@@ -61,7 +62,7 @@ const ProjectHeader = ({
         />
       )} */}
 
-      <FixedWrapper moveUp={openScream} id="wrapper">
+      <FixedWrapper moveUp={openScream || swipePosition === "top"} id="wrapper">
         <FlexWrapper>
           <CustomIconButton
             name="ArrowLeft"
@@ -92,7 +93,7 @@ const ProjectHeader = ({
         <ShareModal screamId={project} title={title} path={path} />
       </div> */}
 
-        <Tabs
+        {/* <Tabs
           loading={loading}
           handleClick={handleClick}
           order={order}
@@ -104,7 +105,7 @@ const ProjectHeader = ({
           marginTop={"0px"}
           marginBottom={"0px"}
           lineColor={"#cecece"}
-        ></Tabs>
+        ></Tabs> */}
       </FixedWrapper>
     </React.Fragment>
   );

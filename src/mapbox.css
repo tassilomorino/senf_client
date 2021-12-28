@@ -2,7 +2,7 @@
   .mapboxgl-ctrl-group button {
     width: 50px !important;
     height: 50px !important;
-    top: 10px;
+    top: 5px;
     right: 0px;
     position: fixed;
     z-index: 999;

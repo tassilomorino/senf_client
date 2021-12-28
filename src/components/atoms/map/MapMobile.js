@@ -26,6 +26,7 @@ import Bubble5 from "../../../images/bubbles/bubble5.png";
 import Bubble6 from "../../../images/bubbles/bubble6.png";
 import Bubble7 from "../../../images/bubbles/bubble7.png";
 import { openProjectRoomFunc } from "../../../redux/actions/projectActions";
+import { setSwipePositionDown } from "../../../redux/actions/UiActions";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -42,6 +43,27 @@ const PinComponent = styled.img`
   transform-origin: bottom center;
 
   z-index: -1;
+`;
+const ClickBackground = styled.div`
+  height: 100vh;
+  width: 100vw;
+  background-color: rgb(0, 0, 0, 0.5);
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  opacity: ${(props) => (props.show ? 1 : 0)};
+  transition: 0.5s;
+  pointer-events: ${(props) => (props.show ? "all" : "none")};
+`;
+
+const Bar = styled.div`
+  position: absolute;
+  width: 40px;
+  height: 4px;
+  border-radius: 10px;
+  margin-left: calc(47.5% - 20px);
+  background-color: white;
+  top: 10px;
 `;
 
 const MapMobile = ({
@@ -63,7 +85,7 @@ const MapMobile = ({
   const openAccount = useSelector((state) => state.UI.openAccount);
 
   const scream = useSelector((state) => state.data.scream);
-
+  const swipePosition = useSelector((state) => state.UI.swipePosition);
   const mapLoaded = useSelector((state) => state.data.mapLoaded);
   const mapViewport = useSelector((state) => state.data.mapViewport);
 
@@ -103,6 +125,10 @@ const MapMobile = ({
         openProjectRoomFunc(event.features[0].properties.projectId, true)
       );
     }
+  };
+
+  const setSwipeDown = () => {
+    dispatch(setSwipePositionDown());
   };
 
   const data =
@@ -242,6 +268,13 @@ const MapMobile = ({
           }}
           onLoad={handlleMapLoaded}
         >
+          <ClickBackground
+            show={swipePosition === "top"}
+            onClick={setSwipeDown}
+          >
+            <Bar />
+          </ClickBackground>
+          }
           {openProjectRoom &&
             !loadingProjects &&
             geoData !== undefined &&
@@ -259,7 +292,6 @@ const MapMobile = ({
                 />
               </React.Fragment>
             )}
-
           <Image id="Bubble1" image={Bubble1} />
           <Image id="Bubble2" image={Bubble2} />
           <Image id="Bubble3" image={Bubble3} />
@@ -267,7 +299,6 @@ const MapMobile = ({
           <Image id="Bubble5" image={Bubble5} />
           <Image id="Bubble6" image={Bubble6} />
           <Image id="Bubble7" image={Bubble7} />
-
           <Source id="geojsonIdeas" type="geojson" data={geojsonIdeas} />
           <Source
             id="geojsonProjectRooms"

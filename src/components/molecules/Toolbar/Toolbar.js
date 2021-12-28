@@ -54,16 +54,6 @@ const Wrapper = styled.div`
   }
 `;
 
-const Bar = styled.div`
-  position: absolute;
-  width: 40px;
-  height: 4px;
-  border-radius: 10px;
-  margin-left: calc(47.5% - 20px);
-  background-color: white;
-  top: 10px;
-`;
-
 const Background = styled.div`
   width: 100%;
   height: 100%;
@@ -146,8 +136,6 @@ const Toolbar = ({
   return (
     !loading && (
       <Wrapper type={type} searchOpen={searchOpen}>
-        {isMobileCustom && <Bar />}
-
         {swipeListType === "ideas" ? (
           <Title>
             {dataFinalLength} {dataFinalLength === 1 ? t("idea") : t("ideas")}

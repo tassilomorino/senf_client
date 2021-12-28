@@ -30,7 +30,7 @@ const Wrapper = styled.div`
   width: 100vw;
   /* height: 7.5em; */
 
-  height: 90px;
+  height: 60px;
   background-color: white;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
   top: ${(props) => (props.moveUp ? "-90px" : "0px")};
@@ -90,6 +90,7 @@ const Topbar = ({ order, handleClick }) => {
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
   const openAccount = useSelector((state) => state.UI.openAccount);
   const openOrganization = useSelector((state) => state.UI.openOrganization);
+  const swipePosition = useSelector((state) => state.UI.swipePosition);
 
   const userId = useSelector((state) => state.user.userId);
   const dispatch = useDispatch();
@@ -110,7 +111,11 @@ const Topbar = ({ order, handleClick }) => {
     isMobileCustom && (
       <Wrapper
         moveUp={
-          openScream || openProjectRoom || openAccount || openOrganization
+          openScream ||
+          openProjectRoom ||
+          openAccount ||
+          openOrganization ||
+          swipePosition === "top"
         }
       >
         <InlineInfoButtonContainer>
@@ -136,14 +141,14 @@ const Topbar = ({ order, handleClick }) => {
             <img src={profile_yellow} width="30" alt="profileImage" />
           </ProfileButtonContainer>
         )}
-        <ScrollTabs
+        {/* <ScrollTabs
           loading={loading}
           handleClick={handleClick}
           order={order}
           tabLabels={MenuData.map((item) => item.text)}
           marginTop={"57px"}
           marginBottom={"0px"}
-        ></ScrollTabs>
+        ></ScrollTabs> */}
       </Wrapper>
     )
   );

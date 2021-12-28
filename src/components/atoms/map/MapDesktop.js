@@ -1,7 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect, useContext } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useState, useEffect } from "react";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
 //Redux
@@ -11,8 +10,6 @@ import {
   setMapLoaded,
   setMapViewport,
 } from "../../../redux/actions/mapActions";
-//MUI Stuff
-import withStyles from "@material-ui/core/styles/withStyles";
 
 //Icons
 import Pin from "../../../images/pin3.png";
@@ -25,7 +22,6 @@ import MapGL, {
   NavigationControl,
   Image,
 } from "@urbica/react-map-gl";
-import { LinearInterpolator, WebMercatorViewport } from "react-map-gl";
 import bbox from "@turf/bbox";
 
 import NoLocationPopUp from "./NoLocationPopUp";
@@ -42,7 +38,20 @@ import Bubble6 from "../../../images/bubbles/bubble6.png";
 import Bubble7 from "../../../images/bubbles/bubble7.png";
 
 import { openProjectRoomFunc } from "../../../redux/actions/projectActions";
+import { setSwipePositionDown } from "../../../redux/actions/UiActions";
 
+const Wrapper = styled.div`
+  z-index: 9;
+  margin: 0px;
+  top: 0;
+  left: 0;
+  position: fixed;
+
+  /* margin: 0px;
+    top: 0;
+    left: 600px;
+    position: fixed; */
+`;
 const PinComponent = styled.img`
   position: absolute;
   width: 100px;
@@ -52,27 +61,30 @@ const PinComponent = styled.img`
   z-index: -1;
 `;
 
-const styles = {
-  root: {
-    backgroundColor: "lightgrey",
-  },
-  title: {
-    position: "absolute",
-    width: "200px",
-    display: "block",
-    fontSize: "14px",
-    lineHeight: "16px",
-    fontFamily: "Futura PT W01-Bold",
-    textShadow: "2px 2px 18px #FFFFFF",
-    opacity: 1,
-    transition: "0.2s",
-    PointerEvents: "none",
-  },
-};
+const ClickBackground = styled.div`
+  height: 100vh;
+  width: 100vw;
+  background-color: rgb(0, 0, 0, 0.5);
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  opacity: ${(props) => (props.show ? 1 : 0)};
+  transition: 0.5s;
+  pointer-events: ${(props) => (props.show ? "all" : "none")};
+`;
+
+const Bar = styled.div`
+  position: fixed;
+  width: 40px;
+  height: 4px;
+  border-radius: 10px;
+  left: calc(47.5% - 20px);
+  background-color: white;
+  top: 10px;
+`;
 
 const MapDesktop = ({
   loadingProjects,
-  classes,
   dataFinal,
   geoData,
   openProjectRoom,
@@ -81,21 +93,22 @@ const MapDesktop = ({
   projects,
   order,
 }) => {
-  const openInfoPage = useSelector((state) => state.UI.openInfoPage);
-  const openScream = useSelector((state) => state.UI.openScream);
-
-  const scream = useSelector((state) => state.data.scream);
-
   const dispatch = useDispatch();
-  const [hoverId, setHoverId] = useState("");
-
+  const { screamId } = useParams();
   const mapViewport = useSelector((state) => state.data.mapViewport);
   const initialMapViewport = useSelector(
     (state) => state.data.initialMapViewport
   );
   const mapLoaded = useSelector((state) => state.data.mapLoaded);
+  const openInfoPage = useSelector((state) => state.UI.openInfoPage);
+  const openScream = useSelector((state) => state.UI.openScream);
+  const scream = useSelector((state) => state.data.scream);
+  const [hoverId, setHoverId] = useState("");
+  const swipePosition = useSelector((state) => state.UI.swipePosition);
 
-  const { screamId } = useParams();
+  const setSwipeDown = () => {
+    dispatch(setSwipePositionDown());
+  };
 
   const handlleMapLoaded = () => {
     dispatch(setMapLoaded());
@@ -118,46 +131,11 @@ const MapDesktop = ({
     }, 1000);
   }, [initialMapViewport]);
 
-  useEffect(() => {
-    if (!loadingProjects && geoData !== undefined && geoData !== "") {
-      const feature = JSON.parse(geoData);
-
-      if (geoData && feature && mapViewport) {
-        // calculate the bounding box of the feature
-        const [minLng, minLat, maxLng, maxLat] = bbox(feature);
-
-        const size = maxLat - minLat + maxLng - minLng;
-        const newZoom =
-          size < 0.05 ? 15.5 : size < 0.1 ? 13.5 : size < 0.2 ? 12.5 : 10.5;
-
-        const newViewport = {
-          latitude: (minLat + maxLat) / 2,
-          longitude: (minLng + maxLng) / 2,
-          zoom: newZoom,
-          duration: 2700,
-          pitch: 30,
-        };
-        console.log(mapViewport, newViewport);
-        dispatch(setMapViewport(newViewport));
-      }
-    }
-  }, [geoData]);
-
   const data =
     !loadingProjects &&
     geoData !== undefined &&
     geoData !== "" &&
     JSON.parse(geoData);
-  // const data =
-  //   !loadingProjects && geoData !== undefined && geoData !== ""
-  //     ? {
-  //         type: "Feature",
-  //         geometry: {
-  //           type: "Polygon",
-  //           coordinates: [JSON.parse(geoData)],
-  //         },
-  //       }
-  //     : null;
 
   let dataNoLocation = [];
   let dataFinalMap = [];
@@ -286,9 +264,8 @@ const MapDesktop = ({
   };
 
   return (
-    !isMobileCustom &&
     mapViewport && (
-      <div className="mapWrapper">
+      <React.Fragment>
         {!mapLoaded && <PatternBackground />}
 
         <MapGL
@@ -302,10 +279,20 @@ const MapDesktop = ({
                   transform: "scale(1)",
                   left: 0,
                 }
+              : isMobileCustom
+              ? {
+                  position: "fixed",
+                  width: "100vw",
+                  left: "0",
+                  height: "100vh",
+                  top: "0",
+                  transform: "scale(1)",
+                }
               : {
                   position: "fixed",
                   width: "calc(100% - 600px)",
                   left: "600px",
+                  top: "0",
                   height: "100%",
                   transform: "scale(1)",
                 }
@@ -325,7 +312,17 @@ const MapDesktop = ({
           }}
           onLoad={handlleMapLoaded}
         >
-          <NavigationControl showCompass showZoom position="top-right" />
+          {isMobileCustom && (
+            <ClickBackground
+              show={swipePosition === "top"}
+              onClick={setSwipeDown}
+            >
+              <Bar />
+            </ClickBackground>
+          )}
+          {!isMobileCustom && (
+            <NavigationControl showCompass showZoom position="top-right" />
+          )}
           {openProjectRoom &&
             !loadingProjects &&
             geoData !== undefined &&
@@ -346,7 +343,9 @@ const MapDesktop = ({
 
           {order === 1 || openScream || openProjectRoom ? (
             <React.Fragment>
-              <DesktopMapButtons viewport={mapViewport} mapRef={mapRef} />
+              {!isMobileCustom && (
+                <DesktopMapButtons viewport={mapViewport} mapRef={mapRef} />
+              )}
               <Source id="geojsonIdeas" type="geojson" data={geojsonIdeas} />
               <Layer
                 id="geojsonIdeasblur"
@@ -550,9 +549,9 @@ const MapDesktop = ({
             </React.Fragment>
           )}
         </MapGL>
-      </div>
+      </React.Fragment>
     )
   );
 };
 
-export default withStyles(styles)(MapDesktop);
+export default MapDesktop;

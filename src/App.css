@@ -719,8 +719,6 @@ button:disabled {
   font-size: 12pt !important;
 }
 
-
-
 .react-geocoder {
   position: fixed;
   font-family: Futura PT W01 Book;
@@ -774,8 +772,6 @@ input:focus {
   border-bottom: 1px solid white;
   padding: 10px;
 }
-
-
 
 .pinLocationHeader {
   font-family: Futura PT W01 Book;
@@ -991,14 +987,6 @@ input:focus {
   height: 100%;
   position: fixed;
   overflow-x: hidden;
-}
-
-.mapWrapper {
-  z-index: 9;
-  margin: 0px;
-  top: 0;
-  left: 0;
-  position: fixed;
 }
 
 .noLocationPopUp {

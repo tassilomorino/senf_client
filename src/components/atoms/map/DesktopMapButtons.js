@@ -9,11 +9,14 @@ import {
   setMapBounds,
   setMapViewport,
 } from "../../../redux/actions/mapActions";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
+import { SubmitButton } from "../CustomButtons/SubmitButton";
 
 export const DesktopMapButtons = ({ viewport, mapRef }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
+  const openScream = useSelector((state) => state.UI.openScream);
   const initialMapBounds = useSelector((state) => state.data.initialMapBounds);
   const initialMapViewport = useSelector(
     (state) => state.data.initialMapViewport
@@ -54,17 +57,33 @@ export const DesktopMapButtons = ({ viewport, mapRef }) => {
   };
 
   return (
-    !openInfoPage && (
-      <React.Fragment>
-        <CustomButton
-          text={t("map_filterIdeas")}
-          backgroundColor="white"
-          textColor="#353535"
-          position="fixed"
-          top="40px"
-          animation={true}
-          handleButtonClick={() => handleMapBoundsSet(viewport)}
-        />
+    !openInfoPage &&
+    !openScream && (
+      <div
+      // style={isMobileCustom ? { transform: "scale(0.8)" } : {}}
+      >
+        {isMobileCustom ? (
+          <SubmitButton
+            text={t("Ideen im Bereich anzeigen")}
+            backgroundColor="white"
+            textColor="#353535"
+            position="fixed"
+            bottom="130px"
+            animation={true}
+            handleButtonClick={() => handleMapBoundsSet(viewport)}
+            smallSubmitButton={true}
+          />
+        ) : (
+          <CustomButton
+            text={t("map_filterIdeas")}
+            backgroundColor="white"
+            textColor="#353535"
+            position="fixed"
+            top="40px"
+            animation={true}
+            handleButtonClick={() => handleMapBoundsSet(viewport)}
+          />
+        )}
         <CustomIconButton
           name="CircularArrow"
           margin="0px"
@@ -74,7 +93,7 @@ export const DesktopMapButtons = ({ viewport, mapRef }) => {
           handleButtonClick={handleMapBoundsReset}
           animation={true}
         />
-      </React.Fragment>
+      </div>
     )
   );
 };

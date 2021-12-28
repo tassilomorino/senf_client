@@ -28,8 +28,8 @@ const WideButton = styled.button`
   font-family: Futura PT W01 Book;
   box-shadow: ${(props) =>
     props.shadow === false ? "" : "rgb(38, 57, 77, 0.7) 0px 20px 30px -15px;"};
-  padding-left: ${(props) => (props.smallSubmitButton ? "12px" : "30px")};
-  padding-right: ${(props) => (props.smallSubmitButton ? "12px" : "30px")};
+  padding-left: ${(props) => (props.smallSubmitButton ? "15px" : "30px")};
+  padding-right: ${(props) => (props.smallSubmitButton ? "15px" : "30px")};
   min-width: ${(props) => (props.smallSubmitButton ? "70px" : "180px")};
   display: flex;
   justify-content: center;

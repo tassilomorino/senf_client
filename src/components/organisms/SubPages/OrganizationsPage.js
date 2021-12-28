@@ -14,9 +14,52 @@ import { OrganizationCard } from "../../molecules/Cards/OrganizationCard";
 import { openOrganizationFunc } from "../../../redux/actions/organizationActions";
 import InfiniteScroll from "react-infinite-scroller";
 import Toolbar from "../../molecules/Toolbar/Toolbar";
+import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
+import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 
+const Wrapper = styled.div`
+  width: 100vw;
+  height: 100%;
+  margin-top: 0vh;
+  z-index: 99;
+  top: 0;
+  position: fixed;
+  pointer-events: all;
+
+  background: rgb(254, 217, 87);
+  background: linear-gradient(
+    180deg,
+    rgba(254, 217, 87, 1) 0%,
+    rgba(254, 217, 87, 1) 6%,
+    rgba(255, 218, 83, 1) 41%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  /* animation: OrganizationPageAnimation 0.2s; */
+
+  @media (min-width: 768px) {
+    margin-left: 200px;
+    width: 400px;
+    height: 100vh;
+    overflow-y: scroll;
+    z-index: 90;
+    top: 0;
+    position: fixed;
+  }
+
+  /* @keyframes OrganizationPageAnimation {
+    0% {
+      left: 50vw;
+      opacity: 0;
+    }
+    100% {
+      left: 0vw;
+      opacity: 1;
+    }
+  } */
+`;
 const InnerWrapper = styled.div`
-  margin-top: 120px;
+  margin-top: ${(props) => (props.isMobileCustom ? "10px" : "120px")};
   pointer-events: all;
 `;
 
@@ -53,7 +96,7 @@ const Title = styled.h2`
   }
 `;
 
-const OrganizationsPage = () => {
+const OrganizationsPage = ({ handleClick }) => {
   const { t } = useTranslation();
   const [searchOpen, setSearchOpen] = useState(false);
 
@@ -70,16 +113,7 @@ const OrganizationsPage = () => {
   // const prevDropdown = usePrevious({ dropdown });
 
   const [dropdown, setDropdown] = useState("newest");
-  const [order, setOrder] = useState(1);
   const dispatch = useDispatch();
-
-  const handleClose = () => {
-    dispatch(openOrganizationFunc(false));
-  };
-
-  const handleClick = (order) => {
-    setOrder(order);
-  };
 
   const handleDropdown = (value) => {
     setDropdown(value);
@@ -167,7 +201,16 @@ const OrganizationsPage = () => {
   };
 
   return (
-    <React.Fragment>
+    <Wrapper>
+      {isMobileCustom && (
+        <CustomIconButton
+          name="ArrowLeft"
+          position="relative"
+          margin="10px"
+          backgroundColor="#FFF0BC"
+          handleButtonClick={() => handleClick(2)}
+        />
+      )}
       <Toolbar
         swipeListType="organizationOverview"
         type="standalone"
@@ -180,7 +223,7 @@ const OrganizationsPage = () => {
         searchTerm={searchTerm}
       />
 
-      <InnerWrapper>
+      <InnerWrapper isMobileCustom={isMobileCustom}>
         {!loadingOrganizations ? (
           <InfiniteScroll
             loadMore={() => loadMore()}
@@ -193,7 +236,7 @@ const OrganizationsPage = () => {
           <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>
         )}
       </InnerWrapper>
-    </React.Fragment>
+    </Wrapper>
   );
 };
 

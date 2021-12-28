@@ -29,9 +29,10 @@ const enterAnimation = keyframes`
     `;
 const FilterWrapperMobile = styled.div`
   z-index: 15;
-  position: fixed;
+  position: relative;
 
-  top: ${(props) => (props.openScream ? "10px" : "90px")};
+  top: ${(props) =>
+    props.openScream ? "10px" : props.type === "list" ? "0px" : "90px"};
   width: 100%;
 
   overflow-x: scroll;
@@ -40,6 +41,7 @@ const FilterWrapperMobile = styled.div`
   padding-bottom: 20px;
   padding-top: 20px;
   margin-top: -20px;
+  z-index: 999;
 `;
 
 const OpenButtonMobile = styled.div`
@@ -57,14 +59,15 @@ const OpenButtonMobile = styled.div`
 const FilterInnerWrapperMobile = styled.div`
   border-radius: 20px 0 0 20px;
   backdrop-filter: blur(5px);
-  background-color: rgb(255, 255, 255, 0.5);
-  box-shadow: 0 -18px 40px 12px rgba(0, 0, 0, 0.2);
-  padding: 5px;
-  padding-left: 20px;
+  /* background-color: rgb(255, 255, 255, 0.5); */
+  /* box-shadow: 0 -18px 40px 12px rgba(0, 0, 0, 0.2); */
+  /* padding: 5px; */
+  padding-left: 10px;
   padding-right: 20px;
   margin: 5px;
-  margin-left: calc(100% - 120px);
-  animation: ${enterAnimation} 3.5s ease-out;
+  /* margin-left: calc(100% - 120px); */
+  /* animation: ${enterAnimation} 2.5s ease-out; */
+  margin-left: 10px;
   z-index: 15;
   display: flex;
   flex-direction: row;
@@ -82,7 +85,7 @@ const FilterWrapperDesktop = styled.div`
   flex-wrap: wrap;
 `;
 
-export function OrganizationTypeFilter({ loading, column }) {
+export function OrganizationTypeFilter({ loading, type, column }) {
   const openScream = useSelector((state) => state.UI.openScream);
   const selectedOrganizationTypes = useSelector(
     (state) => state.data.organizationTypes
@@ -141,7 +144,7 @@ export function OrganizationTypeFilter({ loading, column }) {
   );
 
   return isMobileCustom && !loading ? (
-    <FilterWrapperMobile openScream={openScream} id="Wrapper">
+    <FilterWrapperMobile openScream={openScream} id="Wrapper" type={type}>
       <MapClickContainer />
       <FilterInnerWrapperMobile>
         <OpenButtonMobile
@@ -149,6 +152,13 @@ export function OrganizationTypeFilter({ loading, column }) {
           hide={selectedOrganizationTypes.length === 7}
         />
         <FormControlLabel
+          style={{
+            backgroundColor: "white",
+            paddingRight: "10px",
+            borderRadius: "8px",
+            boxShadow:
+              type !== "list" ? "0 8px 30px -12px rgba(0, 0, 0, 0.8)" : "none",
+          }}
           control={
             <Checkbox
               icon={<FiberManualRecordIcon />}
@@ -167,6 +177,15 @@ export function OrganizationTypeFilter({ loading, column }) {
         />
         {organizationTypes.map((organizationTypes, i) => (
           <FormControlLabel
+            style={{
+              backgroundColor: "white",
+              paddingRight: "10px",
+              borderRadius: "8px",
+              boxShadow:
+                type !== "list"
+                  ? "0 8px 30px -12px rgba(0, 0, 0, 0.8)"
+                  : "none",
+            }}
             key={`${organizationTypes.name}-${i}`}
             control={organizationTypesFilters[i]}
             label={organizationTypes.label}

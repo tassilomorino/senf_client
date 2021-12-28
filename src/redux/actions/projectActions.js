@@ -16,6 +16,7 @@ import {
   OPEN_CREATE_PROJECTROOM,
 } from "../types";
 import setColorByTopic from "../../data/setColorByTopic";
+import { setSwipePositionDown } from "./UiActions";
 
 // Get all projects
 export const getProjects = (mapViewport) => async (dispatch) => {
@@ -80,6 +81,7 @@ export const openProjectRoomFunc =
     if (state === true) {
       dispatch({ type: LOADING_UI });
       dispatch({ type: OPEN_PROJECTROOM });
+      dispatch(setSwipePositionDown());
       dispatch(loadProjectRoomData(projectRoomId));
       dispatch(closeScream());
       const newPath = `/projectRooms/${projectRoomId}`;

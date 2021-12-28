@@ -111,7 +111,7 @@ const Main = () => {
   const selectedTopics = useSelector((state) => state.data.topics);
 
   const [order, setOrder] = useState(1);
-
+  const swipePosition = useSelector((state) => state.UI.swipePosition);
   const [dropdown, setDropdown] = useState("newest");
   const [changeLocationModalOpen, setChangeLocationModalOpen] = useState(false);
 
@@ -145,6 +145,7 @@ const Main = () => {
 
   useEffect(() => {
     if (
+      openProjectRoom &&
       project &&
       project.centerLong !== undefined &&
       mapViewport.latitude !== 0 &&
@@ -163,7 +164,7 @@ const Main = () => {
         dispatch(setMapViewport(projectViewport));
       }, 500);
     }
-  }, [openProjectRoom]);
+  }, [project]);
 
   const prevLat = usePrevious({ lat });
 
@@ -364,17 +365,29 @@ const Main = () => {
         dataFinalMap={dataFinalMap}
         setChangeLocationModalOpen={setChangeLocationModalOpen}
       />
-      {!isMobileCustom ? (
+      <MapDesktop
+        order={order}
+        dataFinal={dataFinalMap}
+        loading={loading}
+        loadingProjects={loadingProjects}
+        _onViewportChange={_onViewportChange}
+        openProjectRoom={openProjectRoom}
+        geoData={project && openProjectRoom && project.geoData}
+        mapRef={mapRef}
+        projects={dataFinalMapProjects}
+      />
+
+      {/* {!isMobileCustom ? (
         <MapDesktop
+          order={order}
+          dataFinal={dataFinalMap}
           loading={loading}
           loadingProjects={loadingProjects}
-          dataFinal={dataFinalMap}
           _onViewportChange={_onViewportChange}
           openProjectRoom={openProjectRoom}
           geoData={project && openProjectRoom && project.geoData}
           mapRef={mapRef}
           projects={dataFinalMapProjects}
-          order={order}
         />
       ) : (
         <MapMobile
@@ -387,62 +400,43 @@ const Main = () => {
           geoData={project && openProjectRoom && project.geoData}
           mapRef={mapRef}
         />
-      )}
+      )} */}
 
       {!loading &&
         !loadingProjects &&
         isMobileCustom &&
-        (order === 1 || openProjectRoom || openScream || openAccount) && (
+        (order === 1 ||
+          order === 2 ||
+          openProjectRoom ||
+          openScream ||
+          openAccount) && (
           <React.Fragment>
             <PostScream
               loadingProjects={loadingProjects}
               projectsData={projects}
               project={project}
             />
-            <TopicFilter loading={loading} />
+            <TopicFilter
+              loading={loading}
+              type={order === 1 ? "topics" : "organizationType"}
+            />
           </React.Fragment>
         )}
-
-      {!loading &&
-        !loadingProjects &&
-        isMobileCustom &&
-        !openProjectRoom &&
-        !openScream &&
-        !openAccount &&
-        order === 2 && <OrganizationTypeFilter loading={loading} />}
 
       {!openInfoPage && (
         <MainColumnWrapper>
           {loading && !isMobileCustom && <Loader />}
 
-          {!openProjectRoom && !openAccount && order === 1 && (
-            <SwipeList
-              swipeListType="ideas"
-              type="standalone"
-              loading={loading}
-              order={order}
-              dataFinal={dataFinal}
-              dataFinalMap={dataFinalMap}
-              viewport={mapViewport}
-              handleDropdown={handleDropdown}
-              projectsData={projects}
-              dropdown={dropdown}
-              setSearchTerm={setSearchTerm}
-              searchTerm={searchTerm}
-            />
-          )}
-
-          {!openInfoPage &&
-            !openProjectRoom &&
+          {!openProjectRoom &&
             !openAccount &&
             !loadingProjects &&
-            order === 2 && (
+            (order === 1 || order === 2) && (
               <SwipeList
-                swipeListType="projectRoomOverview"
+                swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}
                 type="standalone"
-                loading={loadingProjects}
+                loading={order === 1 ? loading : loadingProjects}
                 order={order}
-                dataFinal={sortedProjectRooms}
+                dataFinal={order === 1 ? dataFinal : sortedProjectRooms}
                 dataFinalMap={dataFinalMap}
                 viewport={mapViewport}
                 handleDropdown={handleDropdown}
@@ -450,6 +444,7 @@ const Main = () => {
                 dropdown={dropdown}
                 setSearchTerm={setSearchTerm}
                 searchTerm={searchTerm}
+                handleClick={handleClick}
               />
             )}
 
@@ -480,18 +475,18 @@ const Main = () => {
 
           {!openInfoPage && openScream && <IdeaDialog />}
 
-          {!openInfoPage &&
-            !openProjectRoom &&
-            !openAccount &&
-            !openOrganization &&
-            !loadingOrganizations &&
-            order === 3 && <OrganizationsPage order={order} />}
-
           {!openInfoPage && !openProjectRoom && !openAccount && order === 4 && (
             <InsightsPage order={order} />
           )}
         </MainColumnWrapper>
       )}
+
+      {!openInfoPage &&
+        !openProjectRoom &&
+        !openAccount &&
+        !openOrganization &&
+        !loadingOrganizations &&
+        order === 3 && <OrganizationsPage handleClick={handleClick} />}
 
       <ErrorBackground loading={loading} />
 
