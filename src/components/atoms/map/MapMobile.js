@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useEffect } from "react";
+import React, { useEffect, memo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
@@ -37,7 +37,6 @@ const PinComponent = styled.img`
 
 const MapMobile = ({
   dataFinal,
-  viewport,
   openProject,
   _onViewportChange,
   zoomBreak,
@@ -185,7 +184,7 @@ const MapMobile = ({
           mapStyle="mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6"
           accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
           minZoom={7}
-          {...viewport}
+          {...mapViewport}
           onViewportChange={_onViewportChange}
           viewportChangeMethod={"easeTo"}
           viewportChangeOptions={{
@@ -342,4 +341,4 @@ const MapMobile = ({
   );
 };
 
-export default MapMobile;
+export default memo(MapMobile);

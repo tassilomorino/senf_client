@@ -1,5 +1,5 @@
 /** @format */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -249,4 +249,4 @@ const IdeaList = ({
   ) : null;
 };
 
-export default IdeaList;
+export default memo(IdeaList);

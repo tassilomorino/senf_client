@@ -1,6 +1,6 @@
 /** @format */
 
-import React from "react";
+import React, { memo } from "react";
 import styled from "styled-components";
 
 //TIMESTAMP
@@ -238,4 +238,4 @@ const IdeaCard = ({
   );
 };
 
-export default IdeaCard;
+export default memo(IdeaCard);

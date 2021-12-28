@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
@@ -253,4 +253,4 @@ const ScreamDialog = () => {
   );
 };
 
-export default ScreamDialog;
+export default memo(ScreamDialog);

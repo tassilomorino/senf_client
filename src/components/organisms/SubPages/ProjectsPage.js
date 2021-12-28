@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
@@ -43,7 +43,7 @@ const NoIdeasYet = styled.div`
   margin-left: 10%;
   text-align: center;
 `;
-const ProjectsPage = ({ order, projectsData }) => {
+const ProjectsPage = ({ projectsData }) => {
   const [isCreateProjectDialogIsOpen, setCreateProjectDialogIsOpen] =
     useState(false);
   const { t } = useTranslation();
@@ -151,4 +151,4 @@ const ProjectsPage = ({ order, projectsData }) => {
   );
 };
 
-export default ProjectsPage;
+export default memo(ProjectsPage);

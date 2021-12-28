@@ -1,5 +1,5 @@
 /** @format */
-import React, { useEffect } from "react";
+import React, { useEffect, memo } from "react";
 import styled from "styled-components";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { useDispatch, useSelector } from "react-redux";
@@ -144,4 +144,4 @@ const Topbar = ({ order, handleClick }) => {
   );
 };
 
-export default Topbar;
+export default memo(Topbar);

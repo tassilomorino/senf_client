@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, memo } from "react";
 import { useHistory } from "react-router";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { useTranslation } from "react-i18next";
@@ -657,4 +657,4 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
   );
 };
 
-export default withStyles(styles)(withRouter(PostScream));
+export default withStyles(styles)(withRouter(memo(PostScream)));

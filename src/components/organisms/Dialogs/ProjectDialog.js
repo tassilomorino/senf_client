@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 // Redux stuff
@@ -37,12 +37,7 @@ const Break = styled.div`
   }
 `;
 
-const ProjectDialog = ({
-  viewport,
-  projectsData,
-  loadingProjects,
-  dataFinalMap,
-}) => {
+const ProjectDialog = ({ projectsData, loadingProjects }) => {
   const [open, setOpen] = useState(false);
 
   const [oldPath, setOldPath] = useState("");
@@ -81,26 +76,29 @@ const ProjectDialog = ({
     setPath(window.location.pathname);
   }, [openProject]);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     console.log(initialMapViewport);
     dispatch(closeProject());
     dispatch(clearErrors());
     dispatch(setMapViewport(initialMapViewport));
-  };
+  }, [dispatch, initialMapViewport]);
 
-  const handleClick = (order) => {
-    setOrder(order);
+  const handleClick = useCallback(
+    (order) => {
+      setOrder(order);
 
-    if (order === 2) {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      });
-    }
+      if (order === 2) {
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "smooth",
+        });
+      }
 
-    dispatch(clearErrors());
-  };
+      dispatch(clearErrors());
+    },
+    [dispatch]
+  );
 
   const handleDropdown = (value) => {
     setDropdown(value);
@@ -169,13 +167,11 @@ const ProjectDialog = ({
               dataFinal={dataFinal}
               dataFinalLength={dataFinalLength}
               geoData={geoData}
-              viewport={viewport}
               handleDropdown={handleDropdown}
               projectsData={projectsData}
               loadingProjects={loadingProjects}
               project={project}
               dropdown={dropdown}
-              dataFinalMap={dataFinalMap}
               setSearchTerm={setSearchTerm}
               searchTerm={searchTerm}
             />
@@ -233,4 +229,4 @@ const ProjectDialog = ({
   );
 };
 
-export default ProjectDialog;
+export default memo(ProjectDialog);

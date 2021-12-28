@@ -22,8 +22,8 @@ export const getProjects = (mapViewport) => async (dispatch) => {
   const db = firebase.firestore();
   const ref = await db
     .collection("projects")
-    .where("centerLat", "<", Number(mapViewport.latitude) + 1)
-    .where("centerLat", ">", Number(mapViewport.latitude) - 1)
+    .where("centerLat", "<", Number(mapViewport?.latitude) + 1)
+    .where("centerLat", ">", Number(mapViewport?.latitude) - 1)
     // .orderBy("createdAt", "desc")
     .get();
   // : await db.collection("projects").orderBy("createdAt", "desc").get();
