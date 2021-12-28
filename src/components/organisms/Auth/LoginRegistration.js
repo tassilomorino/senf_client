@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, Fragment, useEffect, useRef } from "react";
+import React, { useState, Fragment, useEffect, useRef, memo } from "react";
 import { useDispatch } from "react-redux";
 import { SET_AUTHENTICATED } from "../../../redux/types";
 import firebase from "firebase/app";
@@ -476,4 +476,4 @@ const LoginRegistration = ({ classes }) => {
   );
 };
 
-export default withStyles(styles)(LoginRegistration);
+export default memo(withStyles(styles)(LoginRegistration));

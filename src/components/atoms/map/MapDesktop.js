@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
 //Redux
@@ -312,7 +312,7 @@ const MapDesktop = ({
           }}
           onLoad={handlleMapLoaded}
         >
-          {isMobileCustom && (
+          {isMobileCustom && !openScream && (
             <ClickBackground
               show={swipePosition === "top"}
               onClick={setSwipeDown}
@@ -554,4 +554,4 @@ const MapDesktop = ({
   );
 };
 
-export default MapDesktop;
+export default memo(MapDesktop);

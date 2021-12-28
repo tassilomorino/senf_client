@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 // Redux stuff
@@ -68,26 +68,29 @@ const ProjectDialog = ({
     setPath(window.location.pathname);
   }, [openProjectRoom]);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     console.log(initialMapViewport);
     dispatch(openProjectRoomFunc(null, false));
     dispatch(clearErrors());
     dispatch(setMapViewport(initialMapViewport));
-  };
+  }, [dispatch, initialMapViewport]);
 
-  const handleClick = (order) => {
-    setOrder(order);
+  const handleClick = useCallback(
+    (order) => {
+      setOrder(order);
 
-    if (order === 2) {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      });
-    }
+      if (order === 2) {
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "smooth",
+        });
+      }
 
-    dispatch(clearErrors());
-  };
+      dispatch(clearErrors());
+    },
+    [dispatch]
+  );
 
   const handleDropdown = (value) => {
     setDropdown(value);
@@ -211,4 +214,4 @@ const ProjectDialog = ({
   );
 };
 
-export default ProjectDialog;
+export default memo(ProjectDialog);

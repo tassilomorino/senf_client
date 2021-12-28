@@ -1,5 +1,5 @@
 /** @format */
-import React, { useEffect } from "react";
+import React, { useEffect, memo } from "react";
 import styled from "styled-components";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,6 +22,7 @@ import Logo from "../../../images/logo.png";
 import profile_yellow from "../../../images/icons/profile_yellow.png";
 import Noprofile from "../../../images/noprofile.png";
 import Info from "../../../images/icons/info.png";
+import InsightsIcon from "../../../images/icons/insights_yellow.png";
 
 const Wrapper = styled.div`
   z-index: 99;
@@ -66,6 +67,17 @@ const ProfileButtonContainer = styled.div`
   z-index: 999;
   width: 30px;
   right: 20px;
+  top: 18px;
+  height: 30px;
+  font-size: 0;
+  pointer-events: pointer;
+`;
+
+const InsightsButtonContainer = styled.div`
+  position: absolute;
+  z-index: 999;
+  width: 30px;
+  right: 60px;
   top: 18px;
   height: 30px;
   font-size: 0;
@@ -127,6 +139,10 @@ const Topbar = ({ order, handleClick }) => {
           <img src={Logo} width="100px" alt="logo"></img>
         </LogoContainer>
 
+        <InsightsButtonContainer onClick={() => handleClick(4)}>
+          <img src={InsightsIcon} width="30" alt="profilePlaceHolderImage" />
+        </InsightsButtonContainer>
+
         {!authenticated ? (
           <ProfileButtonContainer>
             <LoginRegistration />
@@ -154,4 +170,4 @@ const Topbar = ({ order, handleClick }) => {
   );
 };
 
-export default Topbar;
+export default memo(Topbar);

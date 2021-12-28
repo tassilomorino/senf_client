@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { useSelector } from "react-redux";
 //Components
 import Keyindicators from "../../molecules/graphs/Keyindicators";
@@ -20,6 +20,9 @@ import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
+import { Wrapper } from "./styles/sharedStyles";
+import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 const CoverWrapper = styled.div`
   margin-left: 2.5%;
@@ -60,7 +63,7 @@ const CoverTitle = styled.span`
   top: 30px;
 `;
 
-const InsightsPage = ({ order }) => {
+const InsightsPage = ({ handleClick }) => {
   const { t } = useTranslation();
   const db = firebase.firestore();
 
@@ -69,12 +72,12 @@ const InsightsPage = ({ order }) => {
   const [likesLength, setLikesLength] = useState("");
   const [commentsLength, setCommentsLength] = useState("");
 
-  const mapViewport = useSelector((state) => state.data.mapViewport);
+  //const mapViewport = useSelector((state) => state.data.mapViewport);
   const fetchDataScreams = async () => {
     const ref = await db
       .collection("screams")
-      .where("lat", "<", Number(mapViewport.latitude) + 1)
-      .where("lat", ">", Number(mapViewport.latitude) - 1)
+      /*   .where("lat", "<", Number(mapViewport.latitude) + 1)
+      .where("lat", ">", Number(mapViewport.latitude) - 1) */
 
       .get();
 
@@ -127,39 +130,50 @@ const InsightsPage = ({ order }) => {
     window.open("https://wiki.agorakoeln.de/", "_blank");
   };
   return (
-    <MainAnimations transition="0.5s" display="block" paddingBottom="2em">
-      <Keyindicators
-        screams={screams}
-        likesLength={likesLength}
-        commentslength={commentsLength}
-      />
-      <CoverWrapper>
-        <Covers animation="coverAnimation 0.5s ease-in-out">
-          <CoverTitle>{t("topics")}</CoverTitle>
-          <CoverImg src={Themencover} alt="insights-topic-cover" />
-          <ThemenDialog screams={screams} />
-        </Covers>
+    <Wrapper>
+      {isMobileCustom && (
+        <CustomIconButton
+          name="ArrowLeft"
+          position="relative"
+          margin="10px"
+          backgroundColor="#FFF0BC"
+          handleButtonClick={() => handleClick(2)}
+        />
+      )}
+      <MainAnimations transition="0.5s" display="block" paddingBottom="2em">
+        <Keyindicators
+          screams={screams}
+          likesLength={likesLength}
+          commentslength={commentsLength}
+        />
+        <CoverWrapper>
+          <Covers animation="coverAnimation 0.5s ease-in-out">
+            <CoverTitle>{t("topics")}</CoverTitle>
+            <CoverImg src={Themencover} alt="insights-topic-cover" />
+            <ThemenDialog screams={screams} />
+          </Covers>
 
-        <Covers animation="coverAnimation 0.75s ease-in-out">
-          <CoverTitle>{t("districts")}</CoverTitle>
-          <CoverImg src={DistrictsCover} alt="insights-districts-cover" />
-          <DistrictsDialog screams={screams} />
-        </Covers>
+          <Covers animation="coverAnimation 0.75s ease-in-out">
+            <CoverTitle>{t("districts")}</CoverTitle>
+            <CoverImg src={DistrictsCover} alt="insights-districts-cover" />
+            <DistrictsDialog screams={screams} />
+          </Covers>
 
-        <Covers animation="coverAnimation 1.25s ease-in-out">
-          <CoverTitle>{t("agegroups")}</CoverTitle>
-          <CoverImg src={AgegroupsCover} alt="insights-agegroups-cover" />
-          <AgegroupDialog screams={screams} likes={likes} />
-        </Covers>
-        <Covers animation="coverAnimation 1s ease-in-out">
-          <CoverTitle>{t("toolbox")}</CoverTitle>
-          <CoverImg src={KeywordsCover} alt="insights-keywords-cover" />
-          <ExpandButton handleButtonClick={() => handleLink()} />
-          {/* <WordcloudDialog /> */}
-        </Covers>
-      </CoverWrapper>
-    </MainAnimations>
+          <Covers animation="coverAnimation 1.25s ease-in-out">
+            <CoverTitle>{t("agegroups")}</CoverTitle>
+            <CoverImg src={AgegroupsCover} alt="insights-agegroups-cover" />
+            <AgegroupDialog screams={screams} likes={likes} />
+          </Covers>
+          <Covers animation="coverAnimation 1s ease-in-out">
+            <CoverTitle>{t("toolbox")}</CoverTitle>
+            <CoverImg src={KeywordsCover} alt="insights-keywords-cover" />
+            <ExpandButton handleButtonClick={() => handleLink()} />
+            {/* <WordcloudDialog /> */}
+          </Covers>
+        </CoverWrapper>
+      </MainAnimations>
+    </Wrapper>
   );
 };
 
-export default InsightsPage;
+export default memo(InsightsPage);

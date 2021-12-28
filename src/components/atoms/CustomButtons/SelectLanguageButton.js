@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, memo } from "react";
 import i18n from "i18next";
 import styled from "styled-components";
 import Cookies from "universal-cookie";
@@ -18,11 +18,9 @@ function SelectLanguageButtons() {
   const langFromCookie = cookies.get("language");
   const [language, setLanguage] = React.useState("");
 
-  useEffect(() => {
-    if (langFromCookie) {
-      setLanguage(langFromCookie);
-    }
-  }, [langFromCookie]);
+  setTimeout(() => {
+    setLanguage(langFromCookie);
+  }, 2000);
 
   const handleChange = (event) => {
     setLanguage(event.target.value);
@@ -34,7 +32,7 @@ function SelectLanguageButtons() {
     <Wrapper>
       <FormControl sx={{ m: 1, minWidth: 80 }}>
         <Select
-          value={language}
+          value={language || ""}
           onChange={handleChange}
           displayEmpty
           inputProps={{ "aria-label": "Without label" }}
@@ -46,4 +44,4 @@ function SelectLanguageButtons() {
     </Wrapper>
   );
 }
-export default SelectLanguageButtons;
+export default memo(SelectLanguageButtons);

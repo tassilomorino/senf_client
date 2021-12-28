@@ -1,5 +1,5 @@
 /** @format */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -18,7 +18,7 @@ import {
 } from "../../../redux/actions/UiActions";
 import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
-import { TopicFilter } from "../../molecules/Filters/TopicFilter";
+import TagsFilter from "../../molecules/Filters/TagsFilter";
 import { OrganizationTypeFilter } from "../../molecules/Filters/OrganizationTypeFilter";
 import Tabs from "../../atoms/Tabs/Tabs";
 import { MenuData } from "../../../data/MenuData";
@@ -254,7 +254,7 @@ const SwipeList = ({
                   />
 
                   {(order === 1 || order === 2) && (
-                    <TopicFilter
+                    <TagsFilter
                       placing="list"
                       type={order === 1 ? "topics" : "organizationType"}
                     />
@@ -355,4 +355,4 @@ const SwipeList = ({
   );
 };
 
-export default SwipeList;
+export default memo(SwipeList);

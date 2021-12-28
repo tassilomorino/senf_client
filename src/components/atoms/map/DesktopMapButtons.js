@@ -1,6 +1,6 @@
 /** @format */
 
-import React from "react";
+import React, { memo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { CustomButton, CustomIconButton } from "../CustomButtons/CustomButton";
@@ -12,7 +12,7 @@ import {
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { SubmitButton } from "../CustomButtons/SubmitButton";
 
-export const DesktopMapButtons = ({ viewport, mapRef }) => {
+export const DesktopMapButtons = memo(({ viewport, mapRef }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
@@ -96,4 +96,4 @@ export const DesktopMapButtons = ({ viewport, mapRef }) => {
       </div>
     )
   );
-};
+});

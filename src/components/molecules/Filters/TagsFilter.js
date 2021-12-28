@@ -50,7 +50,7 @@ const FilterWrapperMobile = styled.div`
   }
 `;
 
-const TopicFilterInnerWrapperMobile = styled.div`
+const FilterInnerWrapperMobile = styled.div`
   border-radius: 20px 0 0 20px;
   backdrop-filter: blur(5px);
   /* background-color: rgb(255, 255, 255, 0.5); */
@@ -67,7 +67,7 @@ const TopicFilterInnerWrapperMobile = styled.div`
   width: max-content;
 `;
 
-const TopicFilterWrapperDesktop = styled.div`
+const FilterWrapperDesktop = styled.div`
   position: relative;
   width: 100%;
   height: auto;
@@ -77,7 +77,7 @@ const TopicFilterWrapperDesktop = styled.div`
   padding: 10px;
 `;
 
-export function TopicFilter({ loading, placing, type, inline, column }) {
+export function TagsFilter({ loading, placing, type, inline, column }) {
   const openScream = useSelector((state) => state.UI.openScream);
   const selectedTopics = useSelector((state) => state.data.topics);
   const selectedOrganizationTypes = useSelector(
@@ -140,7 +140,7 @@ export function TopicFilter({ loading, placing, type, inline, column }) {
       placing={placing}
       moveUp={swipePosition === "top"}
     >
-      <TopicFilterInnerWrapperMobile>
+      <FilterInnerWrapperMobile>
         <FormControlLabel
           style={{
             backgroundColor: "white",
@@ -204,10 +204,10 @@ export function TopicFilter({ loading, placing, type, inline, column }) {
                 label={organizationTypes.label}
               />
             ))}
-      </TopicFilterInnerWrapperMobile>
+      </FilterInnerWrapperMobile>
     </FilterWrapperMobile>
   ) : (
-    <TopicFilterWrapperDesktop column={column}>
+    <FilterWrapperDesktop column={column}>
       <FormControlLabel
         control={
           <Checkbox
@@ -241,8 +241,8 @@ export function TopicFilter({ loading, placing, type, inline, column }) {
               label={organizationTypes.label}
             />
           ))}
-    </TopicFilterWrapperDesktop>
+    </FilterWrapperDesktop>
   );
 }
 
-export default React.memo(TopicFilter);
+export default React.memo(TagsFilter);

@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { Fragment } from "react";
+import React, { Fragment, memo, useCallback } from "react";
 
 // MUI Stuff
 import Dialog from "@material-ui/core/Dialog";
@@ -41,6 +41,15 @@ import { SideBarTabs } from "../../../styles/GlobalStyle";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+const paperProps = {
+  style: {
+    borderRadius: "20px",
+    width: "1000px",
+    height: "900px",
+    maxHeight: "calc(100vh - 80px)",
+    overflowX: "hidden",
+  },
+};
 
 const InlineInformationPageDesktop = () => {
   const { t } = useTranslation();
@@ -49,18 +58,18 @@ const InlineInformationPageDesktop = () => {
   const { cookie_settings } = useSelector((state) => state.data);
   const { loading, openInfoPage } = useSelector((state) => state.UI);
 
-  const handleOpen = () => {
+  const handleOpen = useCallback(() => {
     dispatch(setInfoPageOpen());
-  };
+  }, [dispatch]);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     dispatch(setInfoPageClosed());
-  };
+  }, [dispatch]);
 
-  const handleButtonContactClick = () => {
+  const handleButtonContactClick = useCallback(() => {
     var link = "mailto:dein@senf.koeln";
     window.location.href = link;
-  };
+  }, []);
   return (
     !isMobileCustom && (
       <Fragment>
@@ -71,6 +80,7 @@ const InlineInformationPageDesktop = () => {
         </SideBarTabs>
 
         {!loading &&
+        openInfoPage &&
         (cookie_settings === "all" || cookie_settings === "minimum") ? (
           <Dialog
             scroll={"paper"}
@@ -81,15 +91,7 @@ const InlineInformationPageDesktop = () => {
             aria-labelledby="scroll-dialog-title"
             aria-describedby="scroll-dialog-description"
             maxWidth={"lg"}
-            PaperProps={{
-              style: {
-                borderRadius: "20px",
-                width: "1000px",
-                height: "900px",
-                maxHeight: "calc(100vh - 80px)",
-                overflowX: "hidden",
-              },
-            }}
+            PaperProps={paperProps}
           >
             <CustomIconButton
               name="Close"
@@ -98,7 +100,7 @@ const InlineInformationPageDesktop = () => {
               handleButtonClick={handleClose}
             ></CustomIconButton>
 
-            <DialogContent style={{}}>
+            <DialogContent>
               <img className="Gib" src={Headline} width="100px"></img>
               {/* {navigator.language !== "de-DE" && (
                 <p className="explanation">
@@ -182,4 +184,4 @@ const InlineInformationPageDesktop = () => {
   );
 };
 
-export default InlineInformationPageDesktop;
+export default memo(InlineInformationPageDesktop);

@@ -27,8 +27,8 @@ export const getProjects = (mapViewport) => async (dispatch) => {
 
   const ref = await db
     .collectionGroup("projectRooms")
-    // .where("centerLat", "<", Number(mapViewport.latitude) + 1)
-    // .where("centerLat", ">", Number(mapViewport.latitude) - 1)
+    // .where("centerLat", "<", Number(mapViewport?.latitude) + 1)
+    // .where("centerLat", ">", Number(mapViewport?.latitude) - 1)
     .orderBy("createdAt", "desc")
     .get();
   // : await db.collection("projects").orderBy("createdAt", "desc").get();

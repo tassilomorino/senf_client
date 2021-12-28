@@ -14,7 +14,7 @@ import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 import RegistrationAndLogin from "../../organisms/Auth/LoginRegistration";
 import InlineInformationPageDesktop from "../../organisms/infocomponents/InlineInformationPageDesktop";
 import SelectLanguageButton from "../../atoms/CustomButtons/SelectLanguageButton";
-import TopicFilter from "../Filters/TopicFilter";
+import TagsFilter from "../Filters/TagsFilter";
 import { MenuItem } from "./MenuItem";
 import { MenuData } from "../../../data/MenuData";
 
@@ -46,18 +46,18 @@ const FilterWrapper = styled.div`
   left: 30px;
   top: 70px;
 `;
+
 const DesktopSidebar = ({
-  loading,
-  classes,
   order,
   handleClick,
-  loadingProjects,
-  projectsData,
   setChangeLocationModalOpen,
+  loading,
 }) => {
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openAccount = useSelector((state) => state.UI.openAccount);
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
+  const projects = useSelector((state) => state.data.projects);
+  const loadingProjects = useSelector((state) => state.data.loadingProjects);
 
   const authenticated = useSelector((state) => state.user.authenticated);
   const userId = useSelector((state) => state.user.userId);
@@ -82,57 +82,53 @@ const DesktopSidebar = ({
   }, [openAccount, userId]);
 
   return (
-    !isMobileCustom && (
-      <div className={openInfoPage ? "sideBar_hide" : "sideBar"}>
-        <Logo>
-          <img src={LogoImg} width="100px" alt="logoWeb"></img>
-        </Logo>
-        <SelectLanguageButton />
-        <InlineInformationPageDesktop loading={loading} classes={classes} />
-        {!authenticated ? (
-          <Tabs>
-            <RegistrationAndLogin />
-            <img
-              src={Noprofile}
-              width="35"
-              alt="EndImage"
-              style={{ paddingRight: "10px" }}
-            />
-            {t("login")}
-          </Tabs>
-        ) : (
-          <Tabs>
-            <ExpandButton
-              handleButtonClick={openTheAccount}
-              dataCy="profile-button"
-            />
-            <img
-              src={openAccount ? profile_grey : profile_yellow}
-              width="35"
-              alt="EndImage"
-              style={{ paddingRight: "10px" }}
-            />
-            {t("profile")}
-          </Tabs>
-        )}
-        <FilterWrapper active={openAccount}>
-          <TopicFilter />
-        </FilterWrapper>
-        <PostScream
-          loadingProjects={loadingProjects}
-          projectsData={projectsData}
-        />
-        <MenuItem
-          key={1}
-          order={order}
-          index={1}
-          isSelectedIcon={MenuData[0].isSelectedIcon}
-          isNotSelectedIcon={MenuData[0].isNotSelectedIcon}
-          text={MenuData[0].text}
-          handleClick={handleClick}
-          openAccount={openAccount}
-        />
-        {/* <div
+    <div className={openInfoPage ? "sideBar_hide" : "sideBar"}>
+      <Logo>
+        <img src={LogoImg} width="100px" alt="logoWeb"></img>
+      </Logo>
+      <SelectLanguageButton />
+      <InlineInformationPageDesktop />
+      {!authenticated ? (
+        <Tabs>
+          <RegistrationAndLogin />
+          <img
+            src={Noprofile}
+            width="35"
+            alt="EndImage"
+            style={{ paddingRight: "10px" }}
+          />
+          {t("login")}
+        </Tabs>
+      ) : (
+        <Tabs>
+          <ExpandButton
+            handleButtonClick={openTheAccount}
+            dataCy="profile-button"
+          />
+          <img
+            src={openAccount ? profile_grey : profile_yellow}
+            width="35"
+            alt="EndImage"
+            style={{ paddingRight: "10px" }}
+          />
+          {t("profile")}
+        </Tabs>
+      )}
+      <FilterWrapper active={openAccount}>
+        <TagsFilter column loading={loading} type="topics" />
+      </FilterWrapper>
+      <PostScream loadingProjects={loadingProjects} projectsData={projects} />
+      <MenuItem
+        key={1}
+        order={order}
+        index={1}
+        isSelectedIcon={MenuData[0].isSelectedIcon}
+        isNotSelectedIcon={MenuData[0].isNotSelectedIcon}
+        text={MenuData[0].text}
+        handleClick={handleClick}
+        openAccount={openAccount}
+      />
+      {/* <div
           style={{
             position: "relative",
             left: "20px",
@@ -143,85 +139,85 @@ const DesktopSidebar = ({
             marginBottom: "30px",
           }}
         /> */}
-        <FilterWrapper active={order === 1 && !loading && !openAccount}>
-          <TopicFilter column />
-        </FilterWrapper>
-        <MenuItem
-          key={2}
-          order={order}
-          index={2}
-          isSelectedIcon={MenuData[1].isSelectedIcon}
-          isNotSelectedIcon={MenuData[1].isNotSelectedIcon}
-          text={MenuData[1].text}
-          handleClick={handleClick}
-          openAccount={openAccount}
+      <FilterWrapper active={order === 1 && !loading && !openAccount}>
+        <TagsFilter column loading={loading} type="topics" />
+      </FilterWrapper>
+      <MenuItem
+        key={2}
+        order={order}
+        index={2}
+        isSelectedIcon={MenuData[1].isSelectedIcon}
+        isNotSelectedIcon={MenuData[1].isNotSelectedIcon}
+        text={MenuData[1].text}
+        handleClick={handleClick}
+        openAccount={openAccount}
+      />
+      <FilterWrapper active={order === 2 && !openProjectRoom}>
+        <OrganizationTypeFilter column />
+      </FilterWrapper>
+      <FilterWrapper active={openProjectRoom}>
+        <TagsFilter
+          column
+          loading={loading}
+          type={openProjectRoom ? "topics" : "organizationType"}
         />
-        <FilterWrapper active={order === 2 && !openProjectRoom}>
-          <OrganizationTypeFilter column />
-        </FilterWrapper>
-        <FilterWrapper active={openProjectRoom}>
-          <TopicFilter column />
-        </FilterWrapper>
-        <MenuItem
-          key={3}
-          order={order}
-          index={3}
-          isSelectedIcon={MenuData[2].isSelectedIcon}
-          isNotSelectedIcon={MenuData[2].isNotSelectedIcon}
-          text={MenuData[2].text}
-          handleClick={handleClick}
-          openAccount={openAccount}
-        />
-        <MenuItem
-          key={4}
-          order={order}
-          index={4}
-          isSelectedIcon={MenuData[3].isSelectedIcon}
-          isNotSelectedIcon={MenuData[3].isNotSelectedIcon}
-          text={MenuData[3].text}
-          handleClick={handleClick}
-          openAccount={openAccount}
-        />
-        <div
-          style={{
-            position: "relative",
-            left: "20px",
-            width: "160px",
-            height: "100px",
-          }}
-        ></div>{" "}
-        {/* {process.env.REACT_APP_INTERNATIONAL &&
+      </FilterWrapper>
+      <MenuItem
+        key={3}
+        order={order}
+        index={3}
+        isSelectedIcon={MenuData[2].isSelectedIcon}
+        isNotSelectedIcon={MenuData[2].isNotSelectedIcon}
+        text={MenuData[2].text}
+        handleClick={handleClick}
+        openAccount={openAccount}
+      />
+      <MenuItem
+        key={4}
+        order={order}
+        index={4}
+        isSelectedIcon={MenuData[3].isSelectedIcon}
+        isNotSelectedIcon={MenuData[3].isNotSelectedIcon}
+        text={MenuData[3].text}
+        handleClick={handleClick}
+        openAccount={openAccount}
+      />
+      <div
+        style={{
+          position: "relative",
+          left: "20px",
+          width: "160px",
+          height: "100px",
+        }}
+      ></div>{" "}
+      {/* {process.env.REACT_APP_INTERNATIONAL &&
           process.env.REACT_APP_INTERNATIONAL === "true" && (
             <CustomButton handleButtonClick={setChangeLocationModalOpen}>
               Stadt ändern
             </CustomButton>
           )} */}
-        <a
-          href="https://www.facebook.com/senf.koeln/"
-          rel="noopener noreferrer"
-          target="_blank"
+      <a
+        href="https://www.facebook.com/senf.koeln/"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <div
+          className="facebook"
+          style={openInfoPage ? { left: "-200px" } : null}
         >
-          <div
-            className="facebook"
-            style={openInfoPage ? { left: "-200px" } : null}
-          >
-            <img src={Facebook} width="25" alt="EndImage" />
-          </div>
-        </a>
-        <a
-          href="https://www.instagram.com/senf.koeln/"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <div
-            className="insta"
-            style={openInfoPage ? { left: "-200px" } : null}
-          >
-            <img src={Insta} width="25" alt="EndImage" />
-          </div>{" "}
-        </a>
-      </div>
-    )
+          <img src={Facebook} width="25" alt="EndImage" />
+        </div>
+      </a>
+      <a
+        href="https://www.instagram.com/senf.koeln/"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <div className="insta" style={openInfoPage ? { left: "-200px" } : null}>
+          <img src={Insta} width="25" alt="EndImage" />
+        </div>{" "}
+      </a>
+    </div>
   );
 };
 

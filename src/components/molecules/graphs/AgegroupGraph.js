@@ -11,11 +11,11 @@ import createPlotlyComponent from "react-plotlyjs";
 //See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
 import Plotly from "plotly.js/dist/plotly-cartesian.min";
 import { Agegroupdata } from "./Agegroup/Agegroupdata";
-import TopicFilter from "../Filters/TopicFilter";
+import TagsFilter from "../Filters/TagsFilter";
 import styled from "styled-components";
 const PlotlyComponent = createPlotlyComponent(Plotly);
 
-const TopicFilterWrapper = styled.div`
+const FilterWrapper = styled.div`
   width: 100%;
   max-width: 500px;
   margin-bottom: 50px;
@@ -323,9 +323,9 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
     <div className={classes.card}>
       <div className={classes.title}>{t("agegroups")}</div>
       <div className={classes.subtitle}>{t("agegroups_explained")}</div>
-      <TopicFilterWrapper>
-        <TopicFilter inline={true} />
-      </TopicFilterWrapper>
+      <FilterWrapper>
+        <TagsFilter inline={true} />
+      </FilterWrapper>
 
       <div className={classes.clickblocker}></div>
 
