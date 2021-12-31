@@ -1,7 +1,7 @@
 /** @format */
 import React from "react";
 import styled, { keyframes } from "styled-components";
-
+import Line from "../../../images/line.png";
 const enterAnimation = keyframes`
     0% {
       opacity: 0;
@@ -31,7 +31,7 @@ const FlexWrapper = styled.div`
 `;
 const Tab = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
   text-align: center;
@@ -57,6 +57,15 @@ const TabLine = styled.div`
   margin-left: 70px;
 `;
 
+const ImgWrapper = styled.div`
+  opacity: ${(props) => (props.active ? "1" : "0")};
+  margin-top: 5px;
+  position: absolute;
+  width: 120px;
+  z-index: -1;
+  height: 25px;
+`;
+
 const Tabs = ({
   loading,
   handleClick,
@@ -74,7 +83,11 @@ const Tabs = ({
             active={order === i + 1}
             onClick={() => handleClick(i + 1)}
           >
-            {tabLabel}{" "}
+            {tabLabel}
+            <ImgWrapper active={order === i + 1}>
+              {" "}
+              <img src={Line} width="100%" height="100%" />
+            </ImgWrapper>
           </Tab>{" "}
           {/* {i !== tabLabels.length - 1 && (
             <TabLine i={i + 1.5} lineColor={lineColor} />
