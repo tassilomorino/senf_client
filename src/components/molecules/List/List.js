@@ -49,6 +49,7 @@ const List = ({
       (dropdown && prevDropdown && prevDropdown.dropdown !== dropdown)
     ) {
       const element = document.getElementById("List");
+
       element?.scrollTo({
         top: 0,
         left: 0,
@@ -65,7 +66,6 @@ const List = ({
   const showItems = (dataFinal) => {
     var items = [];
     if (dataFinalLength !== 0) {
-      console.log(dataFinal);
       for (var i = 0; i < listItems; i++) {
         if (swipeListType === "projectRoomOverview") {
           items.push(

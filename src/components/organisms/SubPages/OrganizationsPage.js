@@ -18,20 +18,20 @@ import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { Wrapper } from "./styles/sharedStyles";
+import { TagsFilter } from "../../molecules/Filters/TagsFilter";
+import { Tabs } from "@material-ui/core";
+import { MenuData } from "../../../data/MenuData";
+
+const OuterInnerWrapper = styled.div`
+  overflow-y: scroll;
+  pointer-events: all;
+  height: 100%;
+  width: 100%;
+`;
 
 const InnerWrapper = styled.div`
   margin-top: ${(props) => (props.isMobileCustom ? "10px" : "120px")};
   pointer-events: all;
-`;
-
-const Break = styled.div`
-  position: relative;
-  height: 110px;
-  width: 100%;
-
-  @media (min-width: 768px) {
-    height: 30px;
-  }
 `;
 
 const NoIdeasYet = styled.div`
@@ -49,7 +49,7 @@ const Title = styled.h2`
   font-weight: 100;
   color: #353535;
   align-self: center;
-  margin-top: 10px;
+  margin-top: 20px;
   text-align: center;
 
   @media (min-width: 768px) {
@@ -57,7 +57,7 @@ const Title = styled.h2`
   }
 `;
 
-const OrganizationsPage = ({ handleClick }) => {
+const OrganizationsPage = ({ handleClick, order, loading }) => {
   const { t } = useTranslation();
   const [searchOpen, setSearchOpen] = useState(false);
 
@@ -166,37 +166,47 @@ const OrganizationsPage = ({ handleClick }) => {
       {isMobileCustom && (
         <CustomIconButton
           name="ArrowLeft"
-          position="relative"
+          position="fixed"
           margin="10px"
           backgroundColor="#FFF0BC"
           handleButtonClick={() => handleClick(2)}
         />
       )}
-      <Toolbar
-        swipeListType="organizationOverview"
-        type="standalone"
-        loading={loadingOrganizations}
-        handleDropdown={handleDropdown}
-        dataFinalLength={dataFinalLength}
-        setSearchOpen={setSearchOpen}
-        searchOpen={searchOpen}
-        setSearchTerm={setSearchTerm}
-        searchTerm={searchTerm}
+
+      <Title>{t("organizations")}</Title>
+
+      <TagsFilter
+        placing="list"
+        type={order === 1 ? "topics" : "organizationType"}
       />
 
-      <InnerWrapper isMobileCustom={isMobileCustom}>
-        {!loadingOrganizations ? (
-          <InfiniteScroll
-            loadMore={() => loadMore()}
-            hasMore={hasMoreItems}
-            useWindow={false}
-          >
-            {showItems(dataFinal)}
-          </InfiniteScroll>
-        ) : (
-          <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>
-        )}
-      </InnerWrapper>
+      <OuterInnerWrapper>
+        <Toolbar
+          swipeListType="organizationOverview"
+          type="standalone"
+          loading={loadingOrganizations}
+          handleDropdown={handleDropdown}
+          dataFinalLength={dataFinalLength}
+          setSearchOpen={setSearchOpen}
+          searchOpen={searchOpen}
+          setSearchTerm={setSearchTerm}
+          searchTerm={searchTerm}
+        />
+
+        <InnerWrapper isMobileCustom={isMobileCustom}>
+          {!loadingOrganizations ? (
+            <InfiniteScroll
+              loadMore={() => loadMore()}
+              hasMore={hasMoreItems}
+              useWindow={false}
+            >
+              {showItems(dataFinal)}
+            </InfiniteScroll>
+          ) : (
+            <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>
+          )}
+        </InnerWrapper>
+      </OuterInnerWrapper>
     </Wrapper>
   );
 };

@@ -19,14 +19,16 @@ const enterAnimation = keyframes`
 
 const TabWrapper = styled.div`
   position: relative;
-  display: flex;
-  justify-content: center;
+
   width: 100%;
   margin-left: 0%;
   margin-top: ${(props) => props.marginTop};
   padding-bottom: ${(props) => props.marginBottom};
 `;
-
+const FlexWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 const Tab = styled.div`
   display: flex;
   flex-direction: row;
@@ -38,19 +40,22 @@ const Tab = styled.div`
   padding-right: 15px;
   padding-left: 15px;
   animation: ${enterAnimation} ${(props) => props.i * 0.3}s;
-  font-size: 18px;
-  color: rgb(87, 87, 87);
+  font-size: 22px;
+  /* color: rgb(87, 87, 87);
   font-family: ${(props) =>
-    props.active ? "Futura PT W01-Bold" : "Futura PT W01 Book;"};
+    props.active ? "Futura PT W01-Bold" : "Futura PT W01 Book;"}; */
+
+  font-family: Futura PT W01 Book;
+  color: #353535;
+  opacity: ${(props) => (props.active ? "1" : "0.6")};
 `;
 
-// const TabLine = styled.div`
-//   margin-top: 3px;
-//   height: 20px;
-//   width: 2px;
-//   background-color: ${(props) => props.lineColor};
-//   animation: ${enterAnimation} ${(props) => props.i * 0.8}s;
-// `;
+const TabLine = styled.div`
+  height: 3px;
+  width: 50px;
+  background-color: #353535;
+  margin-left: 70px;
+`;
 
 const Tabs = ({
   loading,
@@ -81,7 +86,8 @@ const Tabs = ({
 
   return (
     <TabWrapper marginTop={marginTop} marginBottom={marginBottom}>
-      {tab}
+      <FlexWrapper>{tab}</FlexWrapper>
+      {/* <TabLine order={order} /> */}
     </TabWrapper>
   );
 };

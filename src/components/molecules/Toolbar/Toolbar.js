@@ -9,7 +9,7 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { useTranslation } from "react-i18next";
 
 //Icons
-import SearchIcon from "../../../images/icons/search.png";
+import SearchIcon from "../../../images/icons/search-black.png";
 import AddIcon from "../../../images/icons/plus_white.png";
 
 //Components
@@ -63,13 +63,19 @@ const Background = styled.div`
   pointer-events: auto;
 `;
 
-const Title = styled.h2`
-  font-family: PlayfairDisplay-Bold;
+const Title = styled.button`
+  font-family: Futura PT W01 Book;
   font-size: 22px;
-  font-weight: 100;
-  margin-left: 2.5%;
-  color: white;
-  align-self: center;
+  color: #353535;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 40px;
+  padding: 10px;
+  border-radius: 10px;
+  /* border: 0.5px solid #353535; */
+  background-color: transparent;
+  pointer-events: auto;
 `;
 
 const SearchIconButton = styled.button`
@@ -79,7 +85,7 @@ const SearchIconButton = styled.button`
   height: 40px;
   padding: 10px;
   border-radius: 10px;
-  background-color: #f6cb2f;
+  background-color: transparent;
   pointer-events: auto;
   margin-left: auto;
   margin-right: 10px;
@@ -113,7 +119,6 @@ const Toolbar = ({
   searchOpen,
   setSearchTerm,
   searchTerm,
-  order,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -137,19 +142,15 @@ const Toolbar = ({
     !loading && (
       <Wrapper type={type} searchOpen={searchOpen}>
         {swipeListType === "ideas" ? (
-          <Title>
-            {dataFinalLength} {dataFinalLength === 1 ? t("idea") : t("ideas")}
-          </Title>
+          <SortingSelect handleDropdown={handleDropdown} />
         ) : swipeListType === "projectRoomOverview" ? (
           <Title>
-            {dataFinalLength}{" "}
-            {dataFinalLength === 1 ? t("projectRoom") : t("projectRooms")}
+            {t("newest")} {t("projectRooms")}
           </Title>
         ) : (
           swipeListType === "organizationOverview" && (
             <Title>
-              {dataFinalLength}{" "}
-              {dataFinalLength === 1 ? t("organization") : t("organizations")}
+              {t("newest")} {t("organizations")}
             </Title>
           )
         )}
@@ -166,9 +167,7 @@ const Toolbar = ({
             alt=""
           />
         </SearchIconButton>
-        {swipeListType === "ideas" ? (
-          <SortingSelect handleDropdown={handleDropdown} />
-        ) : swipeListType === "projectRoomOverview" ? (
+        {swipeListType === "projectRoomOverview" ? (
           <AddIconButton onClick={openCreateProjectRoom}>
             <img src={AddIcon} width="20px" style={{ marginLeft: "auto" }} />
           </AddIconButton>

@@ -8,7 +8,6 @@ export const Wrapper = styled.div`
   top: 0;
   position: fixed;
   pointer-events: all;
-
   background: rgb(254, 217, 87);
   background: linear-gradient(
     180deg,

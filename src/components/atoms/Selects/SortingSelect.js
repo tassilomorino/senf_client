@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 
 //Images
-import Arrow from "../../../images/icons/sort.png";
+import Arrow from "../../../images/icons/arrow.png";
 
 //Components
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
@@ -20,7 +20,7 @@ const DropDownContainer = styled("div")`
 const DropDownButton = styled.button`
   font-family: Futura PT W01 Book;
   font-size: 22px;
-  color: white;
+  color: #353535;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -28,13 +28,13 @@ const DropDownButton = styled.button`
   padding: 10px;
   border-radius: 10px;
   /* border: 0.5px solid #353535; */
-  background-color: #f6cb2f;
+  background-color: transparent;
   pointer-events: auto;
 `;
 
 const DropDownListContainer = styled.div`
   position: absolute;
-  right: 0;
+  left: 0;
   display: block;
   background-color: white;
   box-shadow: rgb(38, 57, 77, 0.7) 0px 20px 30px -15px;
@@ -42,7 +42,7 @@ const DropDownListContainer = styled.div`
   border: 1px solid #e5e5e5;
   width: auto;
 
-  min-width: 130px;
+  min-width: 160px;
   height: auto;
   box-sizing: border-box;
   z-index: 99;
@@ -101,20 +101,22 @@ const SortingSelect = ({ handleDropdown }) => {
     setOpen(false);
   };
 
-  useOnClickOutside(outerRef, () => setOpen(false));
+  // useOnClickOutside(outerRef, () => setOpen(false));
 
-  function truncateString(str, num) {
-    if (str.length <= num) {
-      return str;
-    }
-    return str.slice(0, num) + "...";
-  }
   return (
     <div ref={outerRef}>
       <DropDownContainer>
         <DropDownButton onClick={handleToggle} style={{ zIndex: 999 }}>
-          {truncateString(selectedLabel, 12)}
-
+          {selectedLabel} {t("ideas")}
+          <img
+            src={Arrow}
+            width="20px"
+            style={{
+              paddingLeft: "10px",
+              transition: "0.5s",
+              transform: open && "scaleY(-1)",
+            }}
+          />
           {/* <img src={Arrow} width="20px" style={{ paddingLeft: "5px" }}></img> */}
         </DropDownButton>
         {open && (
@@ -127,10 +129,10 @@ const SortingSelect = ({ handleDropdown }) => {
                 >
                   {option.name === selectedOption ? (
                     <span style={{ fontFamily: "Futura PT W01-Bold" }}>
-                      {truncateString(option.label, 12)}
+                      {option.label}
                     </span>
                   ) : (
-                    <span>{truncateString(option.label, 12)}</span>
+                    <span>{option.label}</span>
                   )}
                 </ListItem>
               ))}

@@ -359,7 +359,7 @@ const Main = () => {
   const dataFinalMap = useMemo(
     () =>
       openProjectRoom
-        ? project?.screams.filter(
+        ? project?.screams?.filter(
             ({ Thema, status }) =>
               selectedTopics.includes(Thema) && status === "None"
           )

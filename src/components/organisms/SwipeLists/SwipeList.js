@@ -1,5 +1,5 @@
 /** @format */
-import React, { useEffect, useState, memo } from "react";
+import React, { useEffect, useState, memo, useCallback, useRef } from "react";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -22,6 +22,7 @@ import TagsFilter from "../../molecules/Filters/TagsFilter";
 import { OrganizationTypeFilter } from "../../molecules/Filters/OrganizationTypeFilter";
 import Tabs from "../../atoms/Tabs/Tabs";
 import { MenuData } from "../../../data/MenuData";
+import Wave from "../../atoms/Backgrounds/Wave";
 
 const Content = styled.div`
   margin-top: 0px;
@@ -66,6 +67,7 @@ const ListWrapper = styled.div`
 const SlideUpSection = styled(animated.div)`
   height: 140px;
   position: relative;
+  z-index: 9;
 `;
 const OrganizationsIntroWrapper = styled.div`
   display: flex;
@@ -111,6 +113,7 @@ const SwipeList = ({
   const mapBounds = useSelector((state) => state.data.mapBounds);
 
   const swipePosition = useSelector((state) => state.UI.swipePosition);
+  const [scrollTop, setScrollTop] = useState(0);
   const [props, set] = useSpring(() => ({
     x: 0,
     y: 0,
@@ -128,6 +131,7 @@ const SwipeList = ({
     position: "relative",
     top: 0,
     overflow: "hidden",
+    zIndex: 91,
   }));
 
   const [listHeaderProps, setListHeaderProps] = useSpring(() => ({
@@ -141,6 +145,7 @@ const SwipeList = ({
     });
     setSlideUpSectionProps({
       height: "150px",
+      overflow: "visible",
     });
     setListHeaderProps({
       height: "110px",
@@ -155,6 +160,7 @@ const SwipeList = ({
     });
     setSlideUpSectionProps({
       height: "0px",
+      overflow: "hidden",
     });
     setListHeaderProps({
       height: "60px",
@@ -201,6 +207,7 @@ const SwipeList = ({
         dispatch(setSwipePositionDown());
         setSlideUpSectionProps({
           height: "0px",
+          overflow: "hidden",
         });
         setListHeaderProps({
           height: "60px",
@@ -216,6 +223,7 @@ const SwipeList = ({
         dispatch(setSwipePositionUp());
         setSlideUpSectionProps({
           height: "150px",
+          overflow: "visible",
         });
         setListHeaderProps({
           height: "110px",
@@ -232,6 +240,8 @@ const SwipeList = ({
       },
     }
   );
+
+  const ref = useRef();
 
   return isMobileCustom ? (
     <React.Fragment>
@@ -271,15 +281,9 @@ const SwipeList = ({
               </animated.div>
             </ListHeaderWrapper>
 
-            {searchOpen ? (
-              <div style={{ height: "60px", transition: "0.5s" }} />
-            ) : (
-              <div style={{ height: "0px", transition: "0.5s" }} />
-            )}
-
             {/* <ShadowBox display={shadow ? "block" : "none"} /> */}
 
-            <ListWrapper>
+            <ListWrapper ref={ref} id="ListWrapper">
               {order === 2 && (
                 <SlideUpSection style={slideUpSectionProps}>
                   <OrganizationsIntroWrapper>
@@ -306,7 +310,39 @@ const SwipeList = ({
                   />{" "}
                 </SlideUpSection>
               )}
+              {order === 1 && (
+                <SlideUpSection style={slideUpSectionProps}>
+                  <OrganizationsIntroWrapper>
+                    <OrganizationsIntro>
+                      Verschaff dir einen schnellen Einblick durch Statistiken.
+                    </OrganizationsIntro>
+                    <CustomIconButton
+                      name="ArrowRight"
+                      position="relative"
+                      top="20px"
+                      backgroundColor="#FFF0BC"
+                      handleButtonClick={() => handleClick(4)}
+                    />
+                  </OrganizationsIntroWrapper>
+                  <Toolbar
+                    swipeListType={swipeListType}
+                    loading={loading}
+                    handleDropdown={handleDropdown}
+                    dataFinalLength={dataFinal.length}
+                    setSearchOpen={setSearchOpen}
+                    searchOpen={searchOpen}
+                    setSearchTerm={setSearchTerm}
+                    searchTerm={searchTerm}
+                  />{" "}
+                </SlideUpSection>
+              )}
+              {searchOpen ? (
+                <div style={{ height: "60px", transition: "0.5s" }} />
+              ) : (
+                <div style={{ height: "0px", transition: "0.5s" }} />
+              )}
 
+              <Wave />
               <List
                 swipeListType={swipeListType}
                 type={type}
