@@ -51,17 +51,11 @@ const FilterWrapperMobile = styled.div`
 `;
 
 const FilterInnerWrapperMobile = styled.div`
-  border-radius: 20px 0 0 20px;
-  backdrop-filter: blur(5px);
-  /* background-color: rgb(255, 255, 255, 0.5); */
-  /* box-shadow: 0 -18px 40px 12px rgba(0, 0, 0, 0.2); */
-  /* padding: 5px; */
   padding-left: 10px;
   padding-right: 20px;
   margin: 5px;
-  /* margin-left: calc(100% - 120px); */
   margin-left: 10px;
-  z-index: 15;
+
   display: flex;
   flex-direction: row;
   width: max-content;

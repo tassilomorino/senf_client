@@ -89,6 +89,8 @@ const SearchIconButton = styled.button`
   pointer-events: auto;
   margin-left: auto;
   margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   border: ${(props) =>
     props.searchTerm !== "" && !props.searchOpen
       ? "1px solid white"

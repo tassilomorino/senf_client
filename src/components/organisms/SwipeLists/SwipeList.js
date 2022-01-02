@@ -82,6 +82,24 @@ const OrganizationsIntro = styled.h3`
 
   text-align: left;
   z-index: 10;
+  opacity: 1;
+  transform: translateY(0px);
+  animation: OrganizationsIntroAnimation 0.7s;
+
+  @keyframes OrganizationsIntroAnimation {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    50% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+  }
 `;
 
 const ClickBackground = styled.div`

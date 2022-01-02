@@ -416,7 +416,11 @@ const Main = () => {
           openAccount) && (
           <TagsFilter
             loading={loading}
-            type={order === 1 ? "topics" : "organizationType"}
+            type={
+              order === 1 || openProjectRoom || openScream || openAccount
+                ? "topics"
+                : "organizationType"
+            }
           />
         )}
       {!loading &&

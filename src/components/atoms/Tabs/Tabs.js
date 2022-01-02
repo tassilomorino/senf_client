@@ -64,6 +64,17 @@ const ImgWrapper = styled.div`
   width: 120px;
   z-index: -1;
   height: 25px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  animation: ${(props) => (props.active ? "ImgWrapperAnimation 0.5s" : "none")};
+
+  @keyframes ImgWrapperAnimation {
+    0% {
+      clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+    }
+    100% {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+  }
 `;
 
 const Tabs = ({
