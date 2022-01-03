@@ -17,7 +17,7 @@ const CommentButton = ({ handleButtonClick }) => {
   const commentButton = !user.authenticated ? (
     <CustomIconButton
       name="Chat"
-      iconWidth="65%"
+      iconWidth="23px"
       position="relative"
       margin="0"
       left="0"
@@ -30,7 +30,7 @@ const CommentButton = ({ handleButtonClick }) => {
   ) : (
     <CustomIconButton
       name="Chat"
-      iconWidth="65%"
+      iconWidth="23px"
       position="relative"
       margin="0"
       left="0"

@@ -25,7 +25,7 @@ const LikeButton = ({ screamId }) => {
   const likeButton = !user.authenticated ? (
     <CustomIconButton
       name="Handsnoclap"
-      iconWidth="70%"
+      iconWidth="25px"
       position="relative"
       margin="0"
       left="0"
@@ -39,7 +39,7 @@ const LikeButton = ({ screamId }) => {
   ) : likedScream() ? (
     <CustomIconButton
       name="HandsFull"
-      iconWidth="70%"
+      iconWidth="25px"
       position="relative"
       margin="0"
       left="0"
@@ -51,7 +51,7 @@ const LikeButton = ({ screamId }) => {
   ) : (
     <CustomIconButton
       name="Handsnoclap"
-      iconWidth="70%"
+      iconWidth="25px"
       position="relative"
       margin="0"
       left="0"
