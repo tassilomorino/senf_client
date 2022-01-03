@@ -316,9 +316,7 @@ const MapDesktop = ({
             <ClickBackground
               show={swipePosition === "top"}
               onClick={setSwipeDown}
-            >
-              <Bar />
-            </ClickBackground>
+            />
           )}
           {!isMobileCustom && (
             <NavigationControl showCompass showZoom position="top-right" />

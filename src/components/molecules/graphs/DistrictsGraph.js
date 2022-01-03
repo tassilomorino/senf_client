@@ -11,15 +11,16 @@ import createPlotlyComponent from "react-plotlyjs";
 import Plotly from "plotly.js/dist/plotly-cartesian.min";
 import TagsFilter from "../Filters/TagsFilter";
 import styled from "styled-components";
+import { CenteredH2, CenteredStyledText } from "../../../styles/GlobalStyle";
 
 const PlotlyComponent = createPlotlyComponent(Plotly);
 
-const FilterWrapper = styled.div`
+const InnerWrapper = styled.div`
   width: 100%;
   max-width: 500px;
   margin-bottom: 50px;
   position: relative;
-  top: -40px;
+  top: 30px;
   margin-left: 50%;
   transform: translateX(-50%);
 `;
@@ -294,6 +295,9 @@ const DistrictsGraph = ({ classes, screams }) => {
     font: { color: "#414345", family: "Futura PT W01 Book", size: 14 },
     //   autosize: true,
     height: plotheight,
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "rgba(0,0,0,0)",
+
     hovermode: false,
     margin: { b: 40, l: 110, r: 0, t: 30 },
     shapes: [
@@ -362,11 +366,12 @@ const DistrictsGraph = ({ classes, screams }) => {
     );
   return (
     <div className={classes.card}>
-      <div className={classes.title}>{t("districts")}</div>
-      <div className={classes.subtitle}>{t("districts_explained")}</div>
-      <FilterWrapper>
-        <TagsFilter inline={true} />
-      </FilterWrapper>
+      <CenteredH2>{t("districts")}</CenteredH2>
+      <InnerWrapper>
+        <CenteredStyledText>{t("districts_explained")}</CenteredStyledText>
+
+        <TagsFilter placing="insights" type="topics" />
+      </InnerWrapper>
       <div className={classes.clickblocker}></div>
       {plot}
     </div>

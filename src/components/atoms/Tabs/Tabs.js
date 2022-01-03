@@ -40,15 +40,10 @@ const Tab = styled.div`
   padding-right: 15px;
   padding-left: 15px;
   animation: ${enterAnimation} ${(props) => props.i * 0.3}s;
-  font-size: 22px;
-  /* color: rgb(87, 87, 87);
-  font-family: ${(props) =>
-    props.active ? "Futura PT W01-Bold" : "Futura PT W01 Book;"}; */
 
-  font-family: Futura PT W01 Book;
-  color: #353535;
   opacity: ${(props) => (props.active ? "1" : "0.6")};
 `;
+const TabText = styled.h2``;
 
 const TabLine = styled.div`
   height: 3px;
@@ -94,7 +89,7 @@ const Tabs = ({
             active={order === i + 1}
             onClick={() => handleClick(i + 1)}
           >
-            {tabLabel}
+            <TabText>{tabLabel}</TabText>
             <ImgWrapper active={order === i + 1}>
               {" "}
               <img src={Line} width="100%" height="100%" />

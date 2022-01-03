@@ -2,10 +2,23 @@
 
 import styled from "styled-components";
 
+export const CenteredH2 = styled.h2`
+  text-align: center;
+`;
+
+export const FatH2 = styled.h2`
+  font-weight: 900;
+`;
+
 export const StyledText = styled.p`
-  font-size: 18.666px;
-  line-height: 22.666px;
+  margin: 0;
+  font-size: 16px;
+  line-height: 18x;
   color: #353535;
+`;
+
+export const CenteredStyledText = styled(StyledText)`
+  text-align: center;
 `;
 
 export const SideBarTabs = styled.div`

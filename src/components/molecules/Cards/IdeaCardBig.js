@@ -18,11 +18,7 @@ import LocationIcon from "../../../images/icons/location.png";
 import WeblinkIcon from "../../../images/icons/weblink.png";
 import contactIcon from "../../../images/icons/mail.png";
 
-import {
-  LikeButtonWrapper,
-  CommentButtonWrapper,
-  Engagement,
-} from "./styles/sharedStyles";
+import { EngagementWrapper } from "./styles/sharedStyles";
 import CommentButton from "../../atoms/CustomButtons/CommentButton";
 
 const Content = styled.div`
@@ -316,14 +312,13 @@ const IdeaCardBig = ({ classes, setClicked }) => {
         <div className={classes.title}>{title} </div>
         <Typography className={classes.bodytext}>{body}</Typography>
         <div className={classes.line} />
-        <LikeButtonWrapper ideaCardBig={true}>
+        <EngagementWrapper>
           <LikeButton screamId={screamId} />
-          <Engagement>{likeCount} </Engagement>
-        </LikeButtonWrapper>
-        <CommentButtonWrapper ideaCardBig={true}>
+          <h4>{likeCount} </h4>
+
           <CommentButton handleButtonClick={() => handleClick()} />
-          <Engagement>{commentCount}</Engagement>
-        </CommentButtonWrapper>
+          <h4>{commentCount}</h4>
+        </EngagementWrapper>
         <div className={classes.horrizontalLine}></div>
         <div className={classes.header}>
           {selectedUnixArray !== undefined && selectedUnixArray !== null && (

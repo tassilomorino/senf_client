@@ -17,11 +17,8 @@ import { openScreamFunc } from "../../../redux/actions/screamActions";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import { openProjectRoomFunc } from "../../../redux/actions/projectActions";
 import CommentButton from "../../atoms/CustomButtons/CommentButton";
-import {
-  LikeButtonWrapper,
-  CommentButtonWrapper,
-  Engagement,
-} from "./styles/sharedStyles";
+import { EngagementWrapper } from "./styles/sharedStyles";
+import { FatH2, StyledText } from "../../../styles/GlobalStyle";
 const CardContent = styled.div`
   color: rgb(87, 87, 87);
   width: 95%;
@@ -75,7 +72,7 @@ const LocationOuter = styled.div`
 
 const LocationHeader = styled.div`
   color: ${(props) => props.color};
-  float: left;
+
   width: 100%;
   padding-right: 2%;
 `;
@@ -84,21 +81,15 @@ const ScreamCardTitle = styled.div`
   clear: both;
   color: rgb(87, 87, 87);
   width: 85%;
-  position: relative;
-  font-size: 20px;
-  font-family: Playfair Display;
-  font-weight: 500;
+  position: relative
   padding-top: 5px;
   padding-bottom: 5px;
-  font-weight: 800;
 `;
 const BodyText = styled.p`
   white-space: none;
   position: relative;
-  width: 85%;
+  width: 100%;
 
-  font-size: 14pt;
-  line-height: 17pt;
   overflow: hidden;
   max-height: 4.8em;
   margin-top: 0;
@@ -153,19 +144,6 @@ const ScreamcardProjectContainerButtonWide = styled.button`
   font-family: Futura PT W01 Book;
 `;
 
-const Line = styled.div`
-  top: 0%;
-  left: 85%;
-  width: 1px;
-  height: ${(props) =>
-    !props.openProjectRoom && props.project && props.projectsData
-      ? "calc(100% - 50px)"
-      : "100%"};
-  position: absolute;
-  background-color: #d5dadd;
-  z-index: 11;
-`;
-
 const IdeaCard = ({
   projectsData,
   title,
@@ -180,7 +158,6 @@ const IdeaCard = ({
   const ideaCardProject = project;
   dayjs.extend(relativeTime);
   const dispatch = useDispatch();
-  const authenticated = useSelector((state) => state.user.authenticated);
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
 
   const fetchDataScream = () => {
@@ -205,24 +182,24 @@ const IdeaCard = ({
       <CardContent>
         <ColorDot color={color} />{" "}
         <LocationOuter>
-          <LocationHeader color={color}>{Stadtteil}</LocationHeader>
+          <LocationHeader color={color}>
+            <h4>{Stadtteil}</h4>
+          </LocationHeader>
         </LocationOuter>
-        <ScreamCardTitle>{title}</ScreamCardTitle>
-        <BodyText>{body} </BodyText>
+        <ScreamCardTitle>
+          <FatH2>{title}</FatH2>
+        </ScreamCardTitle>
+        <BodyText>
+          <StyledText>{body} </StyledText>
+        </BodyText>
         <Gradient></Gradient>
-        <Line
-          openProjectRoom={openProjectRoom}
-          project={project}
-          projectsData={projectsData}
-        />
-        <LikeButtonWrapper project={project} projectsData={projectsData}>
+        <EngagementWrapper>
           <LikeButton screamId={screamId} />
-          <Engagement>{likeCount} </Engagement>
-        </LikeButtonWrapper>
-        <CommentButtonWrapper project={project} projectsData={projectsData}>
+          <h4>{likeCount} </h4>
+
           <CommentButton handleButtonClick={fetchDataScream} />
-          <Engagement>{commentCount}</Engagement>
-        </CommentButtonWrapper>
+          <h4>{commentCount}</h4>
+        </EngagementWrapper>
         <br />
         {!openProjectRoom && project && projectsData && (
           <>

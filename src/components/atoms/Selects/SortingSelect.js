@@ -12,17 +12,13 @@ import Arrow from "../../../images/icons/arrow.png";
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { setSwipePositionUp } from "../../../redux/actions/UiActions";
+import { FatH2 } from "../../../styles/GlobalStyle";
 
 const DropDownContainer = styled("div")`
   position: relative;
 `;
 
 const DropDownButton = styled.button`
-  font-family: Futura PT W01 Book;
-  font-size: 22px;
-  color: #353535;
-  display: flex;
-  align-items: center;
   justify-content: flex-end;
   height: 40px;
   padding: 10px;
@@ -63,8 +59,6 @@ const ListItem = styled("li")`
   list-style: none;
   text-align: left;
   color: #353535;
-  font-family: Futura PT W01 Book;
-  font-size: 20px;
   height: 30px;
   padding: 10px;
 
@@ -128,11 +122,9 @@ const SortingSelect = ({ handleDropdown }) => {
                   key={Math.random()}
                 >
                   {option.name === selectedOption ? (
-                    <span style={{ fontFamily: "Futura PT W01-Bold" }}>
-                      {option.label}
-                    </span>
+                    <FatH2>{option.label}</FatH2>
                   ) : (
-                    <span>{option.label}</span>
+                    <h2>{option.label}</h2>
                   )}
                 </ListItem>
               ))}

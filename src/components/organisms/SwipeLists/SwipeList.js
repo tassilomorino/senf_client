@@ -68,14 +68,13 @@ const SlideUpSection = styled(animated.div)`
   height: 140px;
   position: relative;
   z-index: 9;
+  overflow: hidden;
 `;
 const OrganizationsIntroWrapper = styled.div`
   display: flex;
 `;
 const OrganizationsIntro = styled.h3`
   position: relative;
-  font-size: 15pt;
-  font-weight: 100;
   color: #414345;
   width: 250px;
   margin-left: 20px;

@@ -56,6 +56,7 @@ import { getBuildDate } from "./util/utils";
 import Cookiebanner from "./components/organisms/Cookiebanner/Cookiebanner";
 import { setViewport } from "./MapAnimations";
 import detectLocation from "./util/detectLocation";
+import GlobalStyles from "./styles/GlobalStyles";
 
 i18n
   //.use(LanguageDetector)
@@ -198,6 +199,7 @@ const App = () => {
   return (
     <MuiThemeProvider theme={theme}>
       <Provider store={store}>
+        <GlobalStyles />
         <Router>
           <Cookiebanner />
 

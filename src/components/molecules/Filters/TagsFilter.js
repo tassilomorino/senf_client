@@ -2,8 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { isMobileCustom } from "../../../util/customDeviceDetect";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import {
@@ -26,6 +24,8 @@ const FilterWrapperMobile = styled.div`
       ? "15px"
       : props.placing === "list"
       ? "0px"
+      : props.placing === "insights"
+      ? "20px"
       : props.moveUp
       ? "-90px"
       : "60px"};
@@ -48,6 +48,12 @@ const FilterWrapperMobile = styled.div`
       margin-left: 10px;
     }
   }
+
+  @media (min-width: 768px) {
+    top: 0;
+    padding-left: 0;
+    padding-bottom: 0;
+  }
 `;
 
 const FilterInnerWrapperMobile = styled.div`
@@ -59,16 +65,43 @@ const FilterInnerWrapperMobile = styled.div`
   display: flex;
   flex-direction: row;
   width: max-content;
+
+  @media (min-width: 768px) {
+    position: relative;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: ${(props) => (props.column ? "column" : "row")};
+    flex-wrap: wrap;
+    padding: 0px;
+    margin-left: 0;
+  }
 `;
 
-const FilterWrapperDesktop = styled.div`
-  position: relative;
-  width: 100%;
-  height: auto;
+const Tag = styled.div`
   display: flex;
-  flex-direction: ${(props) => (props.column ? "column" : "row")};
-  flex-wrap: wrap;
-  padding: 10px;
+  justify-content: space-around;
+  align-items: center;
+  background-color: white;
+  padding-right: 10px;
+  margin-right: 5px;
+  border-radius: 8px;
+  box-shadow: ${(props) =>
+    props.placing !== "list" && props.placing !== "insights"
+      ? "0 8px 30px -12px rgba(0, 0, 0, 0.8)"
+      : "none"};
+  background-color: ${(props) =>
+    props.checked
+      ? ` white`
+      : props.placing !== "list"
+      ? "#ECECEC"
+      : "#FFE898"};
+  outline-offset: -2px;
+
+  @media (min-width: 768px) {
+    box-shadow: none;
+    margin-top: 5px;
+  }
 `;
 
 export function TagsFilter({ loading, placing, type, inline, column }) {
@@ -88,154 +121,89 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
     }
   }, [openScream]);
 
-  // Handler at index 0 is for the "all" checkbox
-  const topicFilters = topics.map((topic, i) => {
-    return (
-      <Checkbox
-        color="default"
-        icon={<FiberManualRecordIcon />}
-        checkedIcon={<FiberManualRecordIcon className="activelegenditem" />}
-        onChange={() => dispatch(handleTopicSelectorRedux(topic.name))}
-        data-cy={topic.name}
-        checked={
-          selectedTopics.includes(topic.name) && selectedTopics.length !== 7
-        }
-        style={{ color: topic.color }}
-      />
-    );
-  });
-
-  const organizationTypesFilters = organizationTypes.map(
-    (organizationTypes, i) => {
-      return (
-        <Checkbox
-          color="default"
-          icon={<FiberManualRecordIcon />}
-          checkedIcon={<FiberManualRecordIcon className="activelegenditem" />}
-          onChange={() =>
-            dispatch(
-              handleOrganizationTypesSelectorRedux(organizationTypes.name)
-            )
-          }
-          data-cy={organizationTypes.name}
-          checked={
-            selectedOrganizationTypes.includes(organizationTypes.name) &&
-            selectedOrganizationTypes.length !== 7
-          }
-          style={{ color: organizationTypes.color }}
-        />
-      );
-    }
-  );
-  return isMobileCustom && !loading && !inline ? (
-    <FilterWrapperMobile
-      openScream={openScream}
-      id="Wrapper"
-      placing={placing}
-      moveUp={swipePosition === "top"}
-    >
-      <FilterInnerWrapperMobile>
-        <FormControlLabel
-          style={{
-            backgroundColor: "white",
-            paddingRight: "10px",
-            borderRadius: "8px",
-            boxShadow:
-              placing !== "list"
-                ? "0 8px 30px -12px rgba(0, 0, 0, 0.8)"
-                : "none",
-          }}
-          control={
-            <Checkbox
-              icon={<FiberManualRecordIcon />}
-              checkedIcon={
-                <FiberManualRecordIcon className="activelegenditem" />
-              }
-              data-cy="topic-all"
-              onChange={
-                type === "topics"
-                  ? () => dispatch(handleTopicSelectorRedux("all"))
-                  : () => dispatch(handleOrganizationTypesSelectorRedux("all"))
-              }
-              checked={selectedTopics.length === 7}
-              style={{ color: "#000000" }}
-            />
-          }
-          label={
-            type === "topics" ? t("topics_all") : t("organizationTypes_all")
-          }
-        />
-        {type === "topics"
-          ? topics.map((topic, i) => (
-              <FormControlLabel
-                style={{
-                  backgroundColor: "white",
-                  paddingRight: "10px",
-                  borderRadius: "8px",
-                  boxShadow:
-                    placing !== "list"
-                      ? "0 8px 30px -12px rgba(0, 0, 0, 0.8)"
-                      : "none",
-                }}
-                key={`${topic.name}-${i}`}
-                control={topicFilters[i]}
-                label={topic.label}
-              />
-            ))
-          : organizationTypes.map((organizationTypes, i) => (
-              <FormControlLabel
-                style={{
-                  backgroundColor: "white",
-                  paddingRight: "10px",
-                  borderRadius: "8px",
-                  boxShadow:
-                    placing !== "list"
-                      ? "0 8px 30px -12px rgba(0, 0, 0, 0.8)"
-                      : "none",
-                }}
-                key={`${organizationTypes.name}-${i}`}
-                control={organizationTypesFilters[i]}
-                label={organizationTypes.label}
-              />
-            ))}
-      </FilterInnerWrapperMobile>
-    </FilterWrapperMobile>
-  ) : (
-    <FilterWrapperDesktop column={column}>
-      <FormControlLabel
-        control={
-          <Checkbox
-            icon={<FiberManualRecordIcon />}
-            checkedIcon={<FiberManualRecordIcon className="activelegenditem" />}
-            data-cy="topic-all"
-            onChange={
+  return (
+    !loading &&
+    !inline && (
+      <FilterWrapperMobile
+        openScream={openScream}
+        id="Wrapper"
+        placing={placing}
+        moveUp={swipePosition === "top"}
+      >
+        <FilterInnerWrapperMobile>
+          <Tag
+            placing={placing}
+            onClick={
               type === "topics"
                 ? () => dispatch(handleTopicSelectorRedux("all"))
                 : () => dispatch(handleOrganizationTypesSelectorRedux("all"))
             }
-            checked={selectedTopics.length === 7}
-            style={{ color: "#000000" }}
-          />
-        }
-        label={type === "topics" ? t("topics_all") : t("organizationTypes_all")}
-      />
+            checked={
+              type === "topics"
+                ? selectedTopics.length === 7
+                : selectedOrganizationTypes.length === 7
+            }
+            color="#000000"
+          >
+            <Checkbox
+              color="default"
+              icon={<FiberManualRecordIcon />}
+              style={{ color: "#000000" }}
+            />
 
-      {type === "topics"
-        ? topics.map((topic, i) => (
-            <FormControlLabel
-              key={`${topic.name}-${i}`}
-              control={topicFilters[i]}
-              label={topic.label}
-            />
-          ))
-        : organizationTypes.map((organizationTypes, i) => (
-            <FormControlLabel
-              key={`${organizationTypes.name}-${i}`}
-              control={organizationTypesFilters[i]}
-              label={organizationTypes.label}
-            />
-          ))}
-    </FilterWrapperDesktop>
+            {type === "topics" ? t("topics_all") : t("organizationTypes_all")}
+          </Tag>
+          {type === "topics"
+            ? topics.map((topic, i) => (
+                <Tag
+                  placing={placing}
+                  onClick={() => dispatch(handleTopicSelectorRedux(topic.name))}
+                  checked={
+                    selectedTopics.includes(topic.name) &&
+                    selectedTopics.length !== 7
+                  }
+                  color={topic.color}
+                >
+                  <Checkbox
+                    color="default"
+                    icon={<FiberManualRecordIcon />}
+                    data-cy={topic.name}
+                    style={{ color: topic.color }}
+                  />
+
+                  {topic.label}
+                </Tag>
+              ))
+            : organizationTypes.map((organizationTypes, i) => (
+                <Tag
+                  placing={placing}
+                  onClick={() =>
+                    dispatch(
+                      handleOrganizationTypesSelectorRedux(
+                        organizationTypes.name
+                      )
+                    )
+                  }
+                  checked={
+                    selectedOrganizationTypes.includes(
+                      organizationTypes.name
+                    ) && selectedOrganizationTypes.length !== 7
+                  }
+                  color={organizationTypes.color}
+                >
+                  <Checkbox
+                    color="default"
+                    icon={<FiberManualRecordIcon />}
+                    data-cy={organizationTypes.name}
+                    style={{ color: organizationTypes.color }}
+                  />
+
+                  {organizationTypes.label}
+                </Tag>
+              ))}
+        </FilterInnerWrapperMobile>
+      </FilterWrapperMobile>
+    )
   );
 }
 

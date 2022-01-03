@@ -21,11 +21,6 @@ export default {
     },
   },
 
-  typography: {
-    useNextVariants: true,
-    fontWeight: "300",
-    fontFamily: "Futura PT W01 Book",
-  },
   form: {
     textAlign: "center",
   },
