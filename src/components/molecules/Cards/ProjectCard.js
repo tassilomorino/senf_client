@@ -28,10 +28,10 @@ import { FatH2, StyledText } from "../../../styles/GlobalStyle";
 
 const ImgWrapper = styled.div`
   position: relative;
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   background-color: white;
-  border-radius: 20px;
+  border-radius: 18px;
 
   display: flex;
   position: relative;
@@ -39,18 +39,19 @@ const ImgWrapper = styled.div`
   justify-content: flex-start;
   text-align: center;
   overflow: hidden;
+  flex-shrink: 0;
 `;
 
 const ImgWrapperOverlay = styled.div`
   flex-shrink: 0;
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: rgb(255, 255, 255, 0.8);
-  border-radius: 20px;
+  border-radius: 18px;
 `;
 const StyledImg = styled.img`
   flex-shrink: 0;

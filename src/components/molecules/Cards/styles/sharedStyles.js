@@ -67,7 +67,6 @@ export const DistrictHeader = styled.div`
 export const CardTitle = styled.div`
   clear: both;
   color: rgb(87, 87, 87);
-  width: 100%;
   position: relative;
   padding-top: 5px;
   padding-bottom: 5px;
