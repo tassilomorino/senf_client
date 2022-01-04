@@ -17,8 +17,17 @@ import { openScreamFunc } from "../../../redux/actions/screamActions";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import { openProjectRoomFunc } from "../../../redux/actions/projectActions";
 import CommentButton from "../../atoms/CustomButtons/CommentButton";
-import { EngagementWrapper } from "./styles/sharedStyles";
+import {
+  CardTitle,
+  ColorDot,
+  DistrictHeader,
+  EngagementWrapper,
+  ProjectOpenButton,
+} from "./styles/sharedStyles";
 import { FatH2, StyledText } from "../../../styles/GlobalStyle";
+
+import ProjectRoomIcon from "../../../images/icons/projectRoomIcon.png";
+
 const CardContent = styled.div`
   color: rgb(87, 87, 87);
   width: 95%;
@@ -52,39 +61,6 @@ const Card = styled.div`
   }
 `;
 
-const ColorDot = styled.div`
-  width: 15px;
-  position: relative;
-  height: 15px;
-  border-radius: 100%;
-  border: 0.5px solid white;
-  background-color: ${(props) => props.color};
-  opacity: 1;
-  float: left;
-`;
-
-const LocationOuter = styled.div`
-  color: rgb(255, 205, 6);
-  float: left;
-  height: 25px;
-  margin-left: 10px;
-`;
-
-const LocationHeader = styled.div`
-  color: ${(props) => props.color};
-
-  width: 100%;
-  padding-right: 2%;
-`;
-
-const ScreamCardTitle = styled.div`
-  clear: both;
-  color: rgb(87, 87, 87);
-  width: 85%;
-  position: relative
-  padding-top: 5px;
-  padding-bottom: 5px;
-`;
 const BodyText = styled.p`
   white-space: none;
   position: relative;
@@ -108,8 +84,8 @@ const Gradient = styled.div`
 `;
 
 const Gradient2 = styled.div`
-  width: 80%;
-  bottom: 50px;
+  width: 100%;
+  bottom: 30px;
   height: 70px;
   position: absolute;
   background: linear-gradient(
@@ -118,30 +94,6 @@ const Gradient2 = styled.div`
     rgba(255, 255, 255, 1) 20%,
     rgba(255, 255, 255, 0) 100%
   );
-`;
-
-const ScreamcardProjectContainerButtonWide = styled.button`
-  background-color: #f8f8f8;
-  width: 100%;
-  padding-left: 5%;
-  padding-right: 5%;
-  left: 0;
-  height: 50px;
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  bottom: 0;
-  border-radius: 0%;
-  border-bottom-right-radius: 20px;
-  border-bottom-left-radius: 20px;
-  z-index: 11;
-  color: #353535;
-  font-size: 12pt;
-  box-shadow: rgb(38 57 77 / 0%) 0px 20px 30px -15px;
-  text-transform: none;
-  font-family: Futura PT W01 Book;
 `;
 
 const IdeaCard = ({
@@ -180,19 +132,10 @@ const IdeaCard = ({
   return (
     <Card project={!openProjectRoom && project && projectsData}>
       <CardContent>
-        <ColorDot color={color} />{" "}
-        <LocationOuter>
-          <LocationHeader color={color}>
-            <h4>{Stadtteil}</h4>
-          </LocationHeader>
-        </LocationOuter>
-        <ScreamCardTitle>
-          <FatH2>{title}</FatH2>
-        </ScreamCardTitle>
-        <BodyText>
-          <StyledText>{body} </StyledText>
-        </BodyText>
-        <Gradient></Gradient>
+        <ColorDot color={color} />
+        <DistrictHeader color={color}>
+          <h4>{Stadtteil}</h4>
+        </DistrictHeader>
         <EngagementWrapper>
           <LikeButton screamId={screamId} />
           <h4>{likeCount} </h4>
@@ -200,13 +143,26 @@ const IdeaCard = ({
           <CommentButton handleButtonClick={fetchDataScream} />
           <h4>{commentCount}</h4>
         </EngagementWrapper>
+        <CardTitle>
+          <FatH2>{title}</FatH2>
+        </CardTitle>
+        <BodyText>
+          <StyledText>{body} </StyledText>
+        </BodyText>
+        <Gradient />
         <br />
         {!openProjectRoom && project && projectsData && (
           <>
             <Gradient2></Gradient2>
-            <ScreamcardProjectContainerButtonWide onClick={fetchDataProject}>
+            <ProjectOpenButton onClick={fetchDataProject}>
+              <img
+                src={ProjectRoomIcon}
+                width="20px"
+                style={{ paddingRight: "10px", alignSelf: "center" }}
+                alt="ProjectRoomIcon"
+              />
               {projectsDataFinal}
-            </ScreamcardProjectContainerButtonWide>
+            </ProjectOpenButton>
           </>
         )}
         <ExpandButton handleButtonClick={fetchDataScream} />

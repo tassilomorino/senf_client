@@ -956,19 +956,6 @@ input:focus {
   pointer-events: none;
 }
 
-.dialogCard {
-  z-index: 99;
-  position: relative;
-  display: flex;
-  margin-top: 2vh;
-  margin-left: 2.5%;
-  width: 95%;
-  border-radius: 20px;
-  min-height: 280px;
-  background-color: white;
-  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0);
-}
-
 .dialogZoomButton {
   z-index: 99;
   position: relative;
@@ -1518,29 +1505,6 @@ input:focus {
   padding-top: 5px;
   padding-bottom: 5px;
   font-weight: 800;
-}
-
-.screamcardProjectContainer {
-  background-color: #f8f8f8;
-  width: 100%;
-  padding-left: 5%;
-  padding-right: 5%;
-  left: 0;
-  height: 50px;
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  bottom: 0;
-  border-radius: 0%;
-  border-bottom-right-radius: 20px;
-  border-bottom-left-radius: 20px;
-  z-index: 10;
-  color: #353535;
-  font-size: 12pt;
-
-  box-shadow: rgb(38, 57, 77, 0) 0px 20px 30px -15px;
 }
 
 @media screen and (max-width: 330px) {
