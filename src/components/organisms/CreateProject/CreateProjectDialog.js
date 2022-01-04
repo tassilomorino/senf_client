@@ -6,6 +6,10 @@ import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import { useTransition, animated } from "@react-spring/web";
 
+//firebase
+import firebase from "firebase/app";
+import "firebase/firestore";
+
 //Components
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import MainDialog from "../../atoms/Layout/MainDialog";
@@ -17,14 +21,15 @@ import CreateProjectPage3 from "./components/CreateProjectPage3";
 import CreateProjectPage4 from "./components/CreateProjectPage4";
 import CreateProjectPagePreview from "./components/CreateProjectPreview";
 import { openCreateProjectRoomFunc } from "../../../redux/actions/projectActions";
+import { CreateProjectTitle } from "./components/styles/sharedStyles";
 
 const InnerWrapper = styled.div`
   text-align: center;
-  margin-top: 40px;
+  margin-top: 0px;
   position: relative;
 
   @media (min-width: 768px) {
-    margin-top: 40px;
+    margin-top: 0px;
   }
 `;
 
@@ -49,6 +54,7 @@ const CurrentStep = styled.div`
 const CreateProjectDialog = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [title, setTitle] = useState(null);
 
   const [index, set] = useState(1);
 
@@ -63,6 +69,31 @@ const CreateProjectDialog = () => {
         set(0);
       }
     }
+  }, []);
+
+  useEffect(() => {
+    async function fetchData() {
+      const db = firebase.firestore();
+      if (
+        typeof Storage !== "undefined" &&
+        localStorage.getItem("createProjectRoomId")
+      ) {
+        const ref = await db
+          .collection("organizations")
+          .doc(localStorage.getItem("createProjectRoomOrganizationId"))
+          .collection("projectRooms")
+          .doc(localStorage.getItem("createProjectRoomId"))
+          .get();
+
+        if (!ref.exists) {
+          console.log("No such document!");
+        } else {
+          const data = ref.data();
+          setTitle(data.title);
+        }
+      }
+    }
+    fetchData();
   }, []);
 
   const [fromValue, setFrom] = useState(-100);
@@ -206,6 +237,9 @@ const CreateProjectDialog = () => {
       <ProgressLine>
         <CurrentStep index={currentStep} />
       </ProgressLine>
+      <CreateProjectTitle>
+        {index !== 0 && index !== 1 && index !== 2 && title}
+      </CreateProjectTitle>
 
       <CustomIconButton
         name="Close"

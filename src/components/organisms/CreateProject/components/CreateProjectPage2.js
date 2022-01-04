@@ -17,8 +17,12 @@ import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
 //images
-import { ButtonsWrapper, SubTitle, Title } from "./styles/sharedStyles";
-import CreateProjectTitle from "./CreateProjectTitle";
+import {
+  ButtonsWrapper,
+  CreateProjectTitle,
+  SubTitle,
+  Title,
+} from "./styles/sharedStyles";
 import Contact from "../../../molecules/Modals/Post_Edit_ModalComponents/Contact";
 
 const Wrapper = styled.div`
@@ -40,7 +44,7 @@ const CreateProjectPage2 = ({ onClickNext, onClickPrev }) => {
   const createProjectFormData = useSelector(
     (state) => state.formData.createProjectFormData
   );
-
+  const [title, setTitle] = useState(null);
   const [weblinkOpen, setWeblinkOpen] = useState(false);
   const [weblink, setWeblink] = useState(null);
   const [weblinkTitle, setWeblinkTitle] = useState(null);
@@ -85,6 +89,7 @@ const CreateProjectPage2 = ({ onClickNext, onClickPrev }) => {
           console.log("No such document!");
         } else {
           const data = ref.data();
+          setTitle(data.title);
 
           if (data.contact) {
             setContact(data.contact);
@@ -160,7 +165,6 @@ const CreateProjectPage2 = ({ onClickNext, onClickPrev }) => {
         document.getElementById("portal-root-modal")
       )}
 
-      <CreateProjectTitle />
       <Title> Kontaktdaten hinzufügen</Title>
 
       <SubTitle>

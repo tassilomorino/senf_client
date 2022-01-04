@@ -11,7 +11,8 @@ const GlobalStyles = createGlobalStyle`
       h2{
         font-weight: 400;
     font-size: 18px;
-    margin:0
+    margin:0;
+   
       }
       h3{
         font-weight: 400;

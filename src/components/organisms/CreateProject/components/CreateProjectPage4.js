@@ -8,10 +8,13 @@ import MapDialog from "./MapDialog";
 
 import DrawMapImage from "../../../../images/drawMap.jpg";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
-import { createProjectSaveData } from "../../../../redux/actions/formDataActions";
 import MapPreview from "./MapPreview";
-import { Title, SubTitle, ButtonsWrapper } from "./styles/sharedStyles";
-import CreateProjectTitle from "./CreateProjectTitle";
+import {
+  Title,
+  SubTitle,
+  ButtonsWrapper,
+  CreateProjectTitle,
+} from "./styles/sharedStyles";
 
 //firebase
 import firebase from "firebase/app";
@@ -74,7 +77,6 @@ const CreateProjectPage4 = ({ onClickNext, onClickPrev }) => {
           console.log("No such document!");
         } else {
           const data = ref.data();
-
           if (data.geoData) {
             setData(JSON.parse(data.geoData));
           }
@@ -114,7 +116,6 @@ const CreateProjectPage4 = ({ onClickNext, onClickPrev }) => {
       />
 
       <Wrapper>
-        <CreateProjectTitle />
         <Title>Gebiet festlegen</Title>
         <SubTitle>
           Mit deinem individeullen Projektraum kannst du ortsbezogen Ideen

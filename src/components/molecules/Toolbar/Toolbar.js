@@ -144,16 +144,20 @@ const Toolbar = ({
     !loading && (
       <Wrapper type={type} searchOpen={searchOpen}>
         {swipeListType === "ideas" ? (
-          <SortingSelect handleDropdown={handleDropdown} />
+          <SortingSelect label={t("ideas")} handleDropdown={handleDropdown} />
         ) : swipeListType === "projectRoomOverview" ? (
-          <Title>
-            {t("newest")} {t("projectRooms")}
-          </Title>
+          <SortingSelect
+            label={t("projectRooms")}
+            handleDropdown={handleDropdown}
+            placing="basicSorting"
+          />
         ) : (
           swipeListType === "organizationOverview" && (
-            <Title>
-              {t("newest")} {t("organizations")}
-            </Title>
+            <SortingSelect
+              label={t("organizations")}
+              handleDropdown={handleDropdown}
+              placing="basicSorting"
+            />
           )
         )}
 

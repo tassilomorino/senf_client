@@ -67,7 +67,7 @@ const ListItem = styled("li")`
   }
 `;
 
-const SortingSelect = ({ handleDropdown }) => {
+const SortingSelect = ({ label, handleDropdown, placing }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -76,9 +76,15 @@ const SortingSelect = ({ handleDropdown }) => {
 
   const outerRef = useRef();
 
-  const options = [
+  const relevanceOptions = [
     { name: "newest", label: t("newest") },
     { name: "hottest", label: t("hottest") },
+  ];
+
+  const basicSortingOptions = [
+    { name: "newest", label: t("newest") },
+    { name: "aToZ", label: t("aToZ") },
+    { name: "zToA", label: t("zToA") },
   ];
 
   const handleToggle = () => {
@@ -101,10 +107,10 @@ const SortingSelect = ({ handleDropdown }) => {
     <div ref={outerRef}>
       <DropDownContainer>
         <DropDownButton onClick={handleToggle} style={{ zIndex: 999 }}>
-          {selectedLabel} {t("ideas")}
+          {selectedLabel} {label}
           <img
             src={Arrow}
-            width="20px"
+            width="15px"
             style={{
               paddingLeft: "10px",
               transition: "0.5s",
@@ -116,18 +122,31 @@ const SortingSelect = ({ handleDropdown }) => {
         {open && (
           <DropDownListContainer>
             <DropDownList>
-              {options.map((option) => (
-                <ListItem
-                  onClick={onOptionClicked(option.name, option.label)}
-                  key={Math.random()}
-                >
-                  {option.name === selectedOption ? (
-                    <FatH2>{option.label}</FatH2>
-                  ) : (
-                    <h2>{option.label}</h2>
-                  )}
-                </ListItem>
-              ))}
+              {placing !== "basicSorting"
+                ? relevanceOptions.map((option) => (
+                    <ListItem
+                      onClick={onOptionClicked(option.name, option.label)}
+                      key={Math.random()}
+                    >
+                      {option.name === selectedOption ? (
+                        <FatH2>{option.label}</FatH2>
+                      ) : (
+                        <h2>{option.label}</h2>
+                      )}
+                    </ListItem>
+                  ))
+                : basicSortingOptions.map((option) => (
+                    <ListItem
+                      onClick={onOptionClicked(option.name, option.label)}
+                      key={Math.random()}
+                    >
+                      {option.name === selectedOption ? (
+                        <FatH2>{option.label}</FatH2>
+                      ) : (
+                        <h2>{option.label}</h2>
+                      )}
+                    </ListItem>
+                  ))}
             </DropDownList>
           </DropDownListContainer>
         )}

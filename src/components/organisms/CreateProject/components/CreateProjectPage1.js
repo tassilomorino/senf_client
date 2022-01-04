@@ -1,7 +1,6 @@
 /** @format */
 
 import React, { useState, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 
 import { TextField } from "@material-ui/core";
@@ -19,11 +18,6 @@ import "firebase/storage";
 import { useOnClickOutside } from "../../../../hooks/useOnClickOutside";
 import { SubTitle, Title, ButtonsWrapper } from "./styles/sharedStyles";
 import CustomSelect from "../../../atoms/Selects/CustomSelect";
-
-const SelectContainer = styled.div`
-  display: flex;
-  justify-content: center;
-`;
 
 const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();

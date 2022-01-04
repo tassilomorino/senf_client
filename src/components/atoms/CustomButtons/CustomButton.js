@@ -217,7 +217,7 @@ export const CustomIconButton = ({
       backgroundColor={backgroundColor}
     >
       {children}
-      <img src={Icon} width={iconWidth ? iconWidth : "50%"} alt="icon" />
+      <img src={Icon} width={iconWidth ? iconWidth : "20px"} alt="icon" />
     </IconButton>
   );
 };

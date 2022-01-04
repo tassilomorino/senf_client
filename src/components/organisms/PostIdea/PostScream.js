@@ -88,8 +88,8 @@ const OpenButtonDesktop = styled.button`
   width: 160px;
   height: 40px;
   padding: 0;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
   position: relative;
   left: 20px;
   transform: none;
@@ -106,9 +106,7 @@ const OpenButtonDesktop = styled.button`
   top: 85px;
   margin-top: 0;
   margin-bottom: 20px;
-  font-size: 12pt;
   color: white;
-  font-family: Futura PT W01 Book;
   animation: none;
 
   box-shadow: rgb(0, 0, 0, 0) 0px 20px 20px -15px;
@@ -502,8 +500,13 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
     <Fragment>
       {!isMobileCustom ? (
         <OpenButtonDesktop onClick={handleOpen}>
-          <img src={AddIcon} width="25" alt="AddIcon" />
-          <span className="addText">{t("postScream_newIdea")}</span>
+          <img
+            src={AddIcon}
+            width="25"
+            alt="AddIcon"
+            style={{ paddingRight: "10px" }}
+          />
+          {t("postScream_newIdea")}
         </OpenButtonDesktop>
       ) : (
         !loading && (
