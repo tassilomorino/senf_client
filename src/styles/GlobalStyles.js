@@ -32,6 +32,14 @@ const GlobalStyles = createGlobalStyle`
   display: flex;
   align-items: center;
       }
+
+      input{
+        font-family: 'Nunito', sans-serif;
+
+        font-weight: 300;
+    font-size: 14px
+
+      }
 `;
 
 export default GlobalStyles;

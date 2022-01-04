@@ -235,6 +235,41 @@ const IdeaCardBig = ({ classes, setClicked }) => {
           <StyledText>{body} </StyledText>
         </BodyText>
 
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+          }}
+        >
+          {weblink && (
+            <Button onClick={() => openLink(convertedLink)}>
+              {weblinkTitle}
+              <img
+                src={WeblinkIcon}
+                style={{
+                  paddingLeft: "9px",
+                  marginTop: "-2px",
+                }}
+                width="15"
+                alt="WeblinkIcon"
+              />
+            </Button>
+          )}
+
+          {contact && (
+            <Button onClick={() => openMail(contact)}>
+              {contactTitle}
+              <img
+                src={contactIcon}
+                style={{ paddingLeft: "9px" }}
+                width="22"
+                alt="WeblinkIcon"
+              />
+            </Button>
+          )}
+        </div>
+
         <div className={classes.header}>
           {selectedUnixArray !== undefined && selectedUnixArray !== null && (
             <div className={classes.selectedDatesOuter}>
@@ -279,41 +314,6 @@ const IdeaCardBig = ({ classes, setClicked }) => {
               &nbsp;am&nbsp;
             </StyledText>
             <StyledText>{dayjs(createdAt).format("DD.MM.YYYY")}</StyledText>
-          </div>
-
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "wrap",
-            }}
-          >
-            {weblink && (
-              <Button onClick={() => openLink(convertedLink)}>
-                {weblinkTitle}
-                <img
-                  src={WeblinkIcon}
-                  style={{
-                    paddingLeft: "9px",
-                    marginTop: "-2px",
-                  }}
-                  width="15"
-                  alt="WeblinkIcon"
-                />
-              </Button>
-            )}
-
-            {contact && (
-              <Button onClick={() => openMail(contact)}>
-                {contactTitle}
-                <img
-                  src={contactIcon}
-                  style={{ paddingLeft: "9px" }}
-                  width="22"
-                  alt="WeblinkIcon"
-                />
-              </Button>
-            )}
           </div>
 
           {project && (

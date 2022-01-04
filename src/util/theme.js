@@ -21,6 +21,11 @@ export default {
     },
   },
 
+  // typography: {
+  //   useNextVariants: true,
+  //   fontWeight: "300",
+  //   fontFamily: "'Nunito', sans-serif",
+  // },
   form: {
     textAlign: "center",
   },

@@ -18,70 +18,19 @@ import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import { openProjectRoomFunc } from "../../../redux/actions/projectActions";
 import CommentButton from "../../atoms/CustomButtons/CommentButton";
 import {
+  BodyText,
+  Card,
+  CardContent,
   CardTitle,
   ColorDot,
   DistrictHeader,
   EngagementWrapper,
+  Gradient,
   ProjectOpenButton,
 } from "./styles/sharedStyles";
 import { FatH2, StyledText } from "../../../styles/GlobalStyle";
 
 import ProjectRoomIcon from "../../../images/icons/projectRoomIcon.png";
-
-const CardContent = styled.div`
-  color: rgb(87, 87, 87);
-  width: 95%;
-  padding: 15px;
-  object-fit: cover;
-`;
-const Card = styled.div`
-  background-color: white;
-  width: 95%;
-  display: flex;
-  position: relative;
-  box-shadow: 0 8px 40px -12px rgb(0 0 0 / 0%);
-
-  margin-left: auto;
-  margin-right: auto;
-  border-radius: 20px;
-  margin-bottom: 10px;
-  height: ${(props) => (props.project ? "13.5em" : "11em")};
-  overflow: hidden;
-  animation: IdeaCardAnimation 0.8s;
-
-  @keyframes IdeaCardAnimation {
-    0% {
-      opacity: 0;
-      transform: translateY(50%);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0%);
-    }
-  }
-`;
-
-const BodyText = styled.p`
-  white-space: none;
-  position: relative;
-  width: 100%;
-
-  overflow: hidden;
-  max-height: 4.8em;
-  margin-top: 0;
-`;
-const Gradient = styled.div`
-  width: 100%;
-  bottom: 0;
-  height: 80px;
-  position: absolute;
-  background: linear-gradient(
-    0deg,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 1) 20%,
-    rgba(255, 255, 255, 0) 100%
-  );
-`;
 
 const Gradient2 = styled.div`
   width: 100%;

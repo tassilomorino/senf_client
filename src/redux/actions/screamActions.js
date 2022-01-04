@@ -41,7 +41,7 @@ export const getScreams = (mapViewport) => async (dispatch) => {
           lat: doc.data().lat,
           long: doc.data().long,
           title: doc.data().title,
-          body: doc.data().body.substr(0, 120),
+          body: doc.data().body.substr(0, 150),
           createdAt: doc.data().createdAt,
           commentCount: doc.data().commentCount,
           likeCount: doc.data().likeCount,
