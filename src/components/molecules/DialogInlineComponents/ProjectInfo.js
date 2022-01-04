@@ -6,7 +6,8 @@ import { useTranslation } from "react-i18next";
 // Images
 import WeblinkIcon from "../../../images/icons/weblink.png";
 import contactIcon from "../../../images/icons/mail.png";
-import { StyledText } from "../../../styles/GlobalStyle";
+import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
+import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 
 const Card = styled.div`
   z-index: 99;
@@ -32,25 +33,11 @@ const Content = styled.div`
   line-height: 22, 666666666666664px !important;
 `;
 
-const Title = styled.div`
-  position: relative;
-  width: 95%;
-  color: #353535;
-  padding-top: 5;
-  padding-bottom: 5;
-  font-size: 18px;
-  font-weight: 500;
-  font-family: Futura PT W01-Bold;
-  clear: both;
-`;
-
 const Button = styled.button`
   border-radius: 20px;
   text-transform: none;
-  font-size: 12pt;
   background-color: white;
   height: 40px;
-  font-family: Futura PT W01 Book;
   box-shadow: none;
   padding-right: 15px;
   padding-left: 15px;
@@ -80,40 +67,49 @@ const ProjectInfo = ({
   return (
     <Card>
       <Content>
-        <Title> {t("what_is_it_about")}</Title>
+        <StyledH2 fontWeight="900"> {t("what_is_it_about")}</StyledH2>
+
         <StyledText>{description}</StyledText>
 
-        <div style={{ display: "flex", flexDirection: "row" }}>
+        <div
+          style={{ display: "flex", flexDirection: "row", marginTop: "20px" }}
+        >
           {weblink && (
-            <Button onClick={() => openLink(weblink)}>
-              {t("more_info")}{" "}
-              <img
-                src={WeblinkIcon}
-                style={{
-                  paddingLeft: "9px",
-                  marginTop: "-2px",
-                }}
-                width="15"
-                alt="WeblinkIcon"
-              />
-            </Button>
+            <SubmitButton
+              text={t("more_info")}
+              zIndex="999"
+              backgroundColor="#fed957"
+              textColor="#353535"
+              onClick={() => openLink(weblink)}
+              shadow={false}
+              smallSubmitButton={true}
+              iconRight={true}
+              name="Weblink"
+              marginLeft="0"
+              transformX="none"
+              iconWidth="16px"
+            />
           )}
-
           {contact && (
-            <Button onClick={() => openMail(contact)}>
-              {t("contact")}
-              <img
-                src={contactIcon}
-                style={{ paddingLeft: "9px" }}
-                width="22"
-                alt="WeblinkIcon"
-              />
-            </Button>
+            <SubmitButton
+              text={t("contact")}
+              zIndex="999"
+              backgroundColor="#fed957"
+              textColor="#353535"
+              onClick={() => openMail(contact)}
+              shadow={false}
+              smallSubmitButton={true}
+              iconRight={true}
+              name="Contact"
+              marginLeft="10px"
+              transformX="none"
+              iconWidth="22px"
+            />
           )}
         </div>
 
         <br />
-        <Title> {t("period")} </Title>
+        <StyledH2 fontWeight="900"> {t("period")} </StyledH2>
         <p>
           {endDate ? (
             <StyledText>
@@ -125,7 +121,7 @@ const ProjectInfo = ({
         </p>
         <br />
 
-        <Title>{t("Initiators")}</Title>
+        <StyledH2 fontWeight="900">{t("Initiators")}</StyledH2>
         <StyledText>{owner}</StyledText>
         <br />
       </Content>

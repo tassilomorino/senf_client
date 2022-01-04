@@ -23,7 +23,7 @@ import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import { Wrapper } from "./styles/sharedStyles";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-import { FatH2 } from "../../../styles/GlobalStyle";
+import { StyledH2 } from "../../../styles/GlobalStyle";
 
 const CoverWrapper = styled.div`
   margin-left: 2.5%;
@@ -146,7 +146,7 @@ const InsightsPage = ({ handleClick }) => {
         <CoverWrapper>
           <Covers animation="coverAnimation 0.5s ease-in-out">
             <CoverTitle>
-              <FatH2>{t("topics")}</FatH2>
+              <StyledH2 fontWeight="900">{t("topics")}</StyledH2>
             </CoverTitle>
             <CoverImg src={Themencover} alt="insights-topic-cover" />
             <ThemenDialog screams={screams} />
@@ -154,7 +154,7 @@ const InsightsPage = ({ handleClick }) => {
 
           <Covers animation="coverAnimation 0.75s ease-in-out">
             <CoverTitle>
-              <FatH2>{t("districts")}</FatH2>
+              <StyledH2 fontWeight="900">{t("districts")}</StyledH2>
             </CoverTitle>
             <CoverImg src={DistrictsCover} alt="insights-districts-cover" />
             <DistrictsDialog screams={screams} />
@@ -162,14 +162,14 @@ const InsightsPage = ({ handleClick }) => {
 
           <Covers animation="coverAnimation 1.25s ease-in-out">
             <CoverTitle>
-              <FatH2>{t("agegroups")}</FatH2>
+              <StyledH2 fontWeight="900">{t("agegroups")}</StyledH2>
             </CoverTitle>
             <CoverImg src={AgegroupsCover} alt="insights-agegroups-cover" />
             <AgegroupDialog screams={screams} likes={likes} />
           </Covers>
           <Covers animation="coverAnimation 1s ease-in-out">
             <CoverTitle>
-              <FatH2>{t("toolbox")}</FatH2>
+              <StyledH2 fontWeight="900">{t("toolbox")}</StyledH2>
             </CoverTitle>
             <CoverImg src={KeywordsCover} alt="insights-keywords-cover" />
             <ExpandButton handleButtonClick={() => handleLink()} />

@@ -2,6 +2,8 @@
 import React from "react";
 import styled, { css, keyframes } from "styled-components";
 import { CircularProgress } from "@material-ui/core";
+import ContactIcon from "../../../images/icons/mail.png";
+import WeblinkIcon from "../../../images/icons/weblink.png";
 
 const enterAnimation = keyframes`
        0% {
@@ -23,9 +25,8 @@ const WideButton = styled.button`
   border-radius: 30px;
   text-transform: none;
   white-space: nowrap;
-  font-size: 14pt;
-  height: ${(props) => (props.smallSubmitButton ? "40px" : "50px")};
-  font-family: Futura PT W01 Book;
+  height: ${(props) => (props.smallSubmitButton ? "35px" : "50px")};
+  font-size: ${(props) => props.smallSubmitButton && "15px"};
   box-shadow: ${(props) =>
     props.shadow === false ? "" : "rgb(38, 57, 77, 0.7) 0px 20px 30px -15px;"};
   padding-left: ${(props) => (props.smallSubmitButton ? "15px" : "30px")};
@@ -64,6 +65,10 @@ const LoaderWrapper = styled.span`
   height: 100%;
 `;
 
+const Icons = {
+  Contact: ContactIcon,
+  Weblink: WeblinkIcon,
+};
 export const SubmitButton = ({
   text,
   backgroundColor,
@@ -83,7 +88,13 @@ export const SubmitButton = ({
   handleButtonClick,
   smallSubmitButton,
   keySubmitRef,
+
+  iconRight,
+  name,
+  iconWidth,
 }) => {
+  const Icon = Icons[name];
+
   return (
     <WideButton
       type="submit"
@@ -104,6 +115,15 @@ export const SubmitButton = ({
       shadow={shadow}
     >
       {text}
+      {iconRight && (
+        <img
+          src={Icon}
+          width={iconWidth ? iconWidth : "20px"}
+          alt="icon"
+          style={{ paddingLeft: "10px" }}
+        />
+      )}
+
       {loading && (
         <LoaderWrapper>
           <CircularProgress size={30} />{" "}

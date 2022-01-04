@@ -9,10 +9,9 @@ import Arrow from "../../../images/icons/arrow.png";
 
 //Components
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
+import { StyledLi } from "../../../styles/GlobalStyle";
 
 const DropDownButton = styled.button`
-  font-family: Futura PT W01 Book;
-  font-size: 20px;
   color: #353535;
   background-color: white;
   display: flex;
@@ -75,8 +74,6 @@ const ListItem = styled("li")`
   list-style: none;
   text-align: left;
   color: #353535;
-  font-family: Futura PT W01 Book;
-  font-size: 20px;
   height: 30px;
   padding: 10px;
 
@@ -189,16 +186,16 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
                   >
                     {option.name === selectedOption ||
                     option.label === selectedOption ? (
-                      <Span style={{ fontFamily: "Futura PT W01-Bold" }}>
+                      <StyledLi fontWeight="900">
                         {option.color && <ColorDot color={option.color} />}
                         {option.img && <Img src={option.img} />}
                         {truncateString(
                           option.label,
                           dropDownButtonAmount * 0.9
                         )}
-                      </Span>
+                      </StyledLi>
                     ) : (
-                      <Span>
+                      <React.Fragment>
                         {" "}
                         {option.color && <ColorDot color={option.color} />}
                         {option.img && <Img src={option.img} />}
@@ -206,7 +203,7 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
                           option.label,
                           dropDownButtonAmount * 1.2
                         )}
-                      </Span>
+                      </React.Fragment>
                     )}
                   </ListItem>
                 ))}

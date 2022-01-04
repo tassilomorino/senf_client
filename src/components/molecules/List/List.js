@@ -7,6 +7,7 @@ import {
   NoMoreMainContent,
   NoMoreMyContent,
   NoMoreProjectsContent,
+  NoMoreProjectRooms,
 } from "./NoMoreContent";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 
@@ -15,6 +16,7 @@ import styled from "styled-components";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { ProjectCard } from "../Cards/ProjectCard";
 import { useTranslation } from "react-i18next";
+import { NoMore } from "./styles/sharedStyles";
 
 const NoIdeasYet = styled.div`
   position: relative;
@@ -136,16 +138,20 @@ const List = ({
               <NoMoreMainContent dataFinalLength={dataFinalLength} />
             )}
           </React.Fragment>
-        ) : null}
+        ) : (
+          !hasMoreItems | (dataFinalLength === 0) && (
+            <NoMoreProjectRooms dataFinalLength={dataFinalLength} />
+          )
+        )}
 
         {swipeListType === "projectRoomOverview" && loading && (
           <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>
         )}
-        {swipeListType === "projectRoomOverview" &&
+        {/* {swipeListType === "projectRoomOverview" &&
           !loading &&
           dataFinal.length === 0 && (
             <NoIdeasYet>{t("projectrooms_loading_error")}</NoIdeasYet>
-          )}
+          )} */}
 
         <div style={isMobileCustom ? { height: "70%" } : { height: "500px" }} />
       </React.Fragment>

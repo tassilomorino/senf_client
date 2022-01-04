@@ -80,6 +80,8 @@ const ButtonsContainer = styled.div`
   margin-top: 10px;
   display: flex;
   justify-content: space-around;
+  position: relative;
+  z-index: 1;
 `;
 const VerticalLine = styled.div`
   width: 4px;

@@ -36,7 +36,7 @@ import {
 import { Logo, Tabs } from "./styles/sharedStyles";
 import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
 import styled from "styled-components";
-import { OrganizationTypeFilter } from "../Filters/OrganizationTypeFilter";
+import { SideBarTabs } from "../../../styles/GlobalStyle";
 
 const FilterWrapper = styled.div`
   overflow: hidden;
@@ -89,7 +89,7 @@ const DesktopSidebar = ({
       <SelectLanguageButton />
       <InlineInformationPageDesktop />
       {!authenticated ? (
-        <Tabs>
+        <SideBarTabs>
           <RegistrationAndLogin />
           <img
             src={Noprofile}
@@ -98,9 +98,9 @@ const DesktopSidebar = ({
             style={{ paddingRight: "10px" }}
           />
           {t("login")}
-        </Tabs>
+        </SideBarTabs>
       ) : (
-        <Tabs>
+        <SideBarTabs fontWeight={openAccount && "900"}>
           <ExpandButton
             handleButtonClick={openTheAccount}
             dataCy="profile-button"
@@ -112,7 +112,7 @@ const DesktopSidebar = ({
             style={{ paddingRight: "10px" }}
           />
           {t("profile")}
-        </Tabs>
+        </SideBarTabs>
       )}
       <FilterWrapper active={openAccount}>
         <TagsFilter column loading={loading} type="topics" />
@@ -153,7 +153,7 @@ const DesktopSidebar = ({
         openAccount={openAccount}
       />
       <FilterWrapper active={order === 2 && !openProjectRoom}>
-        <OrganizationTypeFilter column />
+        <TagsFilter column type="organizationType" />
       </FilterWrapper>
       <FilterWrapper active={openProjectRoom}>
         <TagsFilter

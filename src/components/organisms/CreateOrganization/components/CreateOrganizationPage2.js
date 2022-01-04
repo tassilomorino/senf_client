@@ -18,7 +18,6 @@ import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
 //images
 import { ButtonsWrapper, SubTitle, Title } from "./styles/sharedStyles";
-import CreateProjectTitle from "./CreateProjectTitle";
 import Contact from "../../../molecules/Modals/Post_Edit_ModalComponents/Contact";
 import Geocoder from "react-mapbox-gl-geocoder";
 
@@ -197,7 +196,6 @@ const CreateOrganizationPage2 = ({ onClickNext, onClickPrev }) => {
         document.getElementById("portal-root-modal")
       )}
 
-      <CreateProjectTitle />
       <Title> Kontaktdaten hinzufügen</Title>
 
       <SubTitle>

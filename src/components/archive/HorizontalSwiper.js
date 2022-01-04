@@ -42,14 +42,10 @@ const HorizontalSwipeCard = styled(animated.div)`
 `;
 
 const Title = styled.h3`
-  font-size: 18px;
   margin-left: 10px;
   margin-top: 5px;
   margin-bottom: 3px;
   text-align: left;
-  font-family: Futura PT W01-Bold;
-  font-weight: 100;
-  color: #353535;
   /* text-decoration: ${(props) => (props.active ? "underline" : "none")}; */
 
   -webkit-touch-callout: none; /* iOS Safari */
@@ -60,13 +56,10 @@ const Title = styled.h3`
   user-select: none;
 `;
 const SubTitle = styled.h4`
-  font-size: 18px;
   margin-top: 0px;
   margin-left: 10px;
   margin-bottom: 0;
   text-align: left;
-  font-family: Futura PT W01 Book;
-  color: #5a5a5a;
   position: relative;
   animation: SubTitleAnimation 1s;
 

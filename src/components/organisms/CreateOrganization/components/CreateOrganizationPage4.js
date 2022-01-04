@@ -11,7 +11,6 @@ import "firebase/storage";
 
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 import { Title, SubTitle, ButtonsWrapper } from "./styles/sharedStyles";
-import CreateProjectTitle from "./CreateProjectTitle";
 import Searchbar from "../../../atoms/Searchbar/Searchbar";
 
 const Wrapper = styled.div`
@@ -117,7 +116,6 @@ const CreateOrganizationPage4 = ({ onClickNext, onClickPrev }) => {
   return (
     <React.Fragment>
       <Wrapper>
-        <CreateProjectTitle />
         <Title>Füge weitere Mitglieder deiner Organisation hinzu </Title>
         <SubTitle>sadklsdjas askjddkashd kajs</SubTitle>
         <br />

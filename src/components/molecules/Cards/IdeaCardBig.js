@@ -27,7 +27,12 @@ import {
   ProjectOpenButton,
 } from "./styles/sharedStyles";
 import CommentButton from "../../atoms/CustomButtons/CommentButton";
-import { FatH2, StyledText } from "../../../styles/GlobalStyle";
+import {
+  StyledH2,
+  StyledSmallText,
+  StyledText,
+} from "../../../styles/GlobalStyle";
+import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 
 const Card = styled.div`
   z-index: 99;
@@ -64,10 +69,9 @@ const BodyText = styled.p`
 const Button = styled.button`
   border-radius: 20px;
   text-transform: none;
-  font-size: 12pt;
+  font-size: 14px;
   background-color: white;
   height: 40px;
-  font-family: Futura PT W01 Book;
   box-shadow: none;
   padding-right: 15px;
   padding-left: 15px;
@@ -229,7 +233,7 @@ const IdeaCardBig = ({ classes, setClicked }) => {
           <h4>{commentCount}</h4>
         </EngagementWrapper>
         <CardTitle>
-          <FatH2>{title}</FatH2>
+          <StyledH2 fontWeight="900">{title}</StyledH2>
         </CardTitle>
         <BodyText>
           <StyledText>{body} </StyledText>
@@ -243,30 +247,36 @@ const IdeaCardBig = ({ classes, setClicked }) => {
           }}
         >
           {weblink && (
-            <Button onClick={() => openLink(convertedLink)}>
-              {weblinkTitle}
-              <img
-                src={WeblinkIcon}
-                style={{
-                  paddingLeft: "9px",
-                  marginTop: "-2px",
-                }}
-                width="15"
-                alt="WeblinkIcon"
-              />
-            </Button>
+            <SubmitButton
+              text={weblinkTitle}
+              zIndex="999"
+              backgroundColor="#fed957"
+              textColor="#353535"
+              onClick={() => openLink(convertedLink)}
+              shadow={false}
+              smallSubmitButton={true}
+              iconRight={true}
+              name="Weblink"
+              marginLeft="0"
+              transformX="none"
+              iconWidth="16px"
+            />
           )}
-
           {contact && (
-            <Button onClick={() => openMail(contact)}>
-              {contactTitle}
-              <img
-                src={contactIcon}
-                style={{ paddingLeft: "9px" }}
-                width="22"
-                alt="WeblinkIcon"
-              />
-            </Button>
+            <SubmitButton
+              text={contactTitle}
+              zIndex="999"
+              backgroundColor="#fed957"
+              textColor="#353535"
+              onClick={() => openMail(contact)}
+              shadow={false}
+              smallSubmitButton={true}
+              iconRight={true}
+              name="Contact"
+              marginLeft="10px"
+              transformX="none"
+              iconWidth="22px"
+            />
           )}
         </div>
 
@@ -292,7 +302,7 @@ const IdeaCardBig = ({ classes, setClicked }) => {
               alt="locationIcon"
             />
 
-            <StyledText> {locationHeader} </StyledText>
+            <StyledSmallText> {locationHeader} </StyledSmallText>
           </div>
 
           <div
@@ -309,11 +319,13 @@ const IdeaCardBig = ({ classes, setClicked }) => {
               alt="CreatorIcon"
             />
 
-            <StyledText>
+            <StyledSmallText>
               {userHandle}
               &nbsp;am&nbsp;
-            </StyledText>
-            <StyledText>{dayjs(createdAt).format("DD.MM.YYYY")}</StyledText>
+            </StyledSmallText>
+            <StyledSmallText>
+              {dayjs(createdAt).format("DD.MM.YYYY")}
+            </StyledSmallText>
           </div>
 
           {project && (

@@ -32,7 +32,6 @@ const StyledUL = styled.ol`
 `;
 const StyledLi = styled.li`
   text-align: left;
-  font-family: Futura PT W01 Book;
   font-size: 18px;
   color: #353535;
   font-weight: 100;

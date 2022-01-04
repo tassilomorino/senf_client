@@ -63,21 +63,6 @@ const Background = styled.div`
   pointer-events: auto;
 `;
 
-const Title = styled.button`
-  font-family: Futura PT W01 Book;
-  font-size: 22px;
-  color: #353535;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  height: 40px;
-  padding: 10px;
-  border-radius: 10px;
-  /* border: 0.5px solid #353535; */
-  background-color: transparent;
-  pointer-events: auto;
-`;
-
 const SearchIconButton = styled.button`
   display: flex;
   align-items: center;

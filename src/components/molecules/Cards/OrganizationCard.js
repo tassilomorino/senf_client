@@ -14,6 +14,7 @@ import {
   openOrganizationFunc,
   stateCreateOrganizationsFunc,
 } from "../../../redux/actions/organizationActions";
+import { StyledH2 } from "../../../styles/GlobalStyle";
 
 const Wrapper = styled.div`
   display: flex;
@@ -62,18 +63,13 @@ const StyledImg = styled.img`
   object-fit: cover;
 `;
 
-const OrganizationType = styled.h3`
+const OrganizationType = styled.h4`
   position: absolute;
   height: 16px;
   left: 154px;
   right: 10px;
   top: 6px;
 
-  font-family: Futura PT W01 Book;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 16px;
   /* identical to box height, or 114% */
 
   display: flex;
@@ -87,33 +83,14 @@ const Title = styled.h2`
   height: 22px;
   left: 154px;
   top: 28px;
-
-  font-family: Futura PT W01-Bold;
-  font-style: normal;
-  font-weight: 800;
-  font-size: 18px;
-  line-height: 22px;
-  /* identical to box height, or 122% */
-
-  color: #483800;
 `;
 
-const Summary = styled.h3`
+const Summary = styled.div`
   position: absolute;
   height: 60px;
   left: 154px;
   right: 10px;
   top: 54px;
-
-  font-family: Futura PT W01 Book;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 22px;
-  text-align: left;
-  /* or 157% */
-
-  color: #483800;
 `;
 
 export const OrganizationCard = (props) => {
@@ -149,29 +126,13 @@ export const OrganizationCard = (props) => {
       </LogoWrapper>
       <OrganizationType>Planungsbüro</OrganizationType>
 
-      <Title>{title}</Title>
+      <Title>
+        <StyledH2 fontWeight="900">{title}</StyledH2>
+      </Title>
       <Summary>
         Kurzbeschreibung unserer tolllen Organisation. Was machen wir, wer sind
         wir etc...
       </Summary>
     </Wrapper>
-
-    // <ProjectCardDesign>
-    //   {/* <ExpandButton handleButtonClick={() => pushScreamId(project)} /> */}
-
-    //   <RightWrapper>
-    //     <Owner> {owner} </Owner>
-    //     <Title>{title}</Title>
-    //     {/*
-    //     {endDate ? (
-    //       <Date>
-    //         {" "}
-    //         {startDate} – {endDate}{" "}
-    //       </Date>
-    //     ) : (
-    //       <Date>{startDate} </Date>
-    //     )} */}
-    //   </RightWrapper>
-    // </ProjectCardDesign>
   );
 };

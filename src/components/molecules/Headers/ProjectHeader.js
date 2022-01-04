@@ -93,7 +93,7 @@ const ProjectHeader = ({
         <ShareModal screamId={project} title={title} path={path} />
       </div> */}
 
-        {/* <Tabs
+        <Tabs
           loading={loading}
           handleClick={handleClick}
           order={order}
@@ -105,7 +105,7 @@ const ProjectHeader = ({
           marginTop={"0px"}
           marginBottom={"0px"}
           lineColor={"#cecece"}
-        ></Tabs> */}
+        ></Tabs>
       </FixedWrapper>
     </React.Fragment>
   );

@@ -28,7 +28,7 @@ import {
   Gradient,
   ProjectOpenButton,
 } from "./styles/sharedStyles";
-import { FatH2, StyledText } from "../../../styles/GlobalStyle";
+import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
 
 import ProjectRoomIcon from "../../../images/icons/projectRoomIcon.png";
 
@@ -93,7 +93,7 @@ const IdeaCard = ({
           <h4>{commentCount}</h4>
         </EngagementWrapper>
         <CardTitle>
-          <FatH2>{title}</FatH2>
+          <StyledH2 fontWeight="900">{title}</StyledH2>
         </CardTitle>
         <BodyText>
           <StyledText>{body} </StyledText>

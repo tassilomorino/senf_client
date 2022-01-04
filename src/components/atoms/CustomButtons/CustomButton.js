@@ -43,9 +43,7 @@ const WideButton = styled.button`
   border-radius: 30px;
   text-transform: none;
   white-space: nowrap;
-  font-size: 14pt;
   height: 50px;
-  font-family: Futura PT W01 Book;
   box-shadow: rgb(38, 57, 77, 0.7) 0px 20px 30px -15px;
   padding-left: 30px;
   padding-right: 30px;

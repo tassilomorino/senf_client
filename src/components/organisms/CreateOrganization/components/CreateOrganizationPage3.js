@@ -20,7 +20,6 @@ import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 //images
 import UploadImageIcon from "../../../../images/icons/uploadImage.png";
 import { CircularProgress } from "@material-ui/core";
-import CreateProjectTitle from "./CreateProjectTitle";
 import { ButtonsWrapper, SubTitle, Title } from "./styles/sharedStyles";
 
 const Wrapper = styled.div`
@@ -65,9 +64,6 @@ const CreateOrganizationPage3 = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const createProjectFormData = useSelector(
-    (state) => state.formData.createProjectFormData
-  );
 
   const fileName = null;
 
@@ -100,13 +96,6 @@ const CreateOrganizationPage3 = ({ onClickNext, onClickPrev }) => {
           setLoading(false);
         })
       );
-
-      var createProjectFormDataPage1 = {
-        ...createProjectFormData,
-        imgUrl: fileRef,
-      };
-
-      dispatch(createProjectSaveData(createProjectFormDataPage1));
     } catch (error) {
       console.log(error);
     }
@@ -134,7 +123,6 @@ const CreateOrganizationPage3 = ({ onClickNext, onClickPrev }) => {
 
   return (
     <Wrapper>
-      <CreateProjectTitle />
       <Title> Bild hochladen</Title>
       <SubTitle>
         Lade ein aussagekräftiges Bild für den Projektraum hoch und wähle dabei

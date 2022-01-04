@@ -19,7 +19,6 @@ import {
 import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import TagsFilter from "../../molecules/Filters/TagsFilter";
-import { OrganizationTypeFilter } from "../../molecules/Filters/OrganizationTypeFilter";
 import Tabs from "../../atoms/Tabs/Tabs";
 import { MenuData } from "../../../data/MenuData";
 import Wave from "../../atoms/Backgrounds/Wave";

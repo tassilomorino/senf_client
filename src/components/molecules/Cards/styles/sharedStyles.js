@@ -66,7 +66,6 @@ export const DistrictHeader = styled.div`
 
 export const CardTitle = styled.div`
   clear: both;
-  color: rgb(87, 87, 87);
   position: relative;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -103,6 +102,7 @@ export const ProjectOpenButton = styled.button`
   font-size: 12pt;
 
   box-shadow: rgb(38, 57, 77, 0) 0px 20px 30px -15px;
+  z-index: 99;
 `;
 
 export const Gradient = styled.div`

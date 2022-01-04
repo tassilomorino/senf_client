@@ -24,7 +24,7 @@ import {
   DistrictHeader,
   Gradient,
 } from "./styles/sharedStyles";
-import { FatH2, StyledText } from "../../../styles/GlobalStyle";
+import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
 
 const ImgWrapper = styled.div`
   position: relative;
@@ -81,7 +81,10 @@ export const ProjectCard = (props) => {
       organizationId,
     },
   } = props;
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  console.log(user);
+
   const pushScreamId = () => {
     dispatch(openProjectRoomFunc(projectRoomId, true));
   };
@@ -97,6 +100,20 @@ export const ProjectCard = (props) => {
   return (
     <Card project={true}>
       <CardContent>
+        {user?.organizationId?.includes(organizationId) && (
+          <CustomIconButton
+            name="Menu"
+            iconWidth="70%"
+            handleButtonClick={() => handleEdit()}
+            position="absolute"
+            left="calc(100% - 54px)"
+            margin="2px"
+            top="0px"
+            backgroundColor="transparent"
+            shadow={false}
+            zIndex="99"
+          />
+        )}
         <ExpandButton handleButtonClick={() => pushScreamId()} />
         <FlexWrapper>
           <ImgWrapper>
@@ -115,7 +132,7 @@ export const ProjectCard = (props) => {
             </DistrictHeader>
 
             <CardTitle>
-              <FatH2>{title}</FatH2>
+              <StyledH2 fontWeight="900">{title}</StyledH2>
             </CardTitle>
           </RightWrapper>
         </FlexWrapper>
@@ -123,18 +140,6 @@ export const ProjectCard = (props) => {
           <StyledText>{description} </StyledText>
         </BodyText>
         <Gradient />
-
-        <CustomIconButton
-          name="Menu"
-          iconWidth="70%"
-          handleButtonClick={() => handleEdit()}
-          position="absolute"
-          left="calc(100% - 54px)"
-          margin="2px"
-          top="0px"
-          backgroundColor="transparent"
-          shadow={false}
-        />
       </CardContent>
     </Card>
   );

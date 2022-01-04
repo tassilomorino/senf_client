@@ -56,7 +56,6 @@ import {
 import CreateOrganizationDialog from "../organisms/CreateOrganization/CreateOrganizationDialog";
 import CreateProjectDialog from "../organisms/CreateProject/CreateProjectDialog";
 import OrganizationDialog from "../organisms/Dialogs/OrganizationDialog";
-import { OrganizationTypeFilter } from "../molecules/Filters/OrganizationTypeFilter";
 import OrganizationsPage from "../organisms/SubPages/OrganizationsPage";
 import styled from "styled-components";
 
@@ -409,15 +408,12 @@ const Main = () => {
       {!loading &&
         !loadingProjects &&
         isMobileCustom &&
-        (order === 1 ||
-          order === 2 ||
-          openProjectRoom ||
-          openScream ||
-          openAccount) && (
+        !openScream &&
+        (order === 1 || order === 2 || openProjectRoom || openAccount) && (
           <TagsFilter
             loading={loading}
             type={
-              order === 1 || openProjectRoom || openScream || openAccount
+              order === 1 || openProjectRoom || openAccount
                 ? "topics"
                 : "organizationType"
             }

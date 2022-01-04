@@ -12,7 +12,7 @@ import Arrow from "../../../images/icons/arrow.png";
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { setSwipePositionUp } from "../../../redux/actions/UiActions";
-import { FatH2 } from "../../../styles/GlobalStyle";
+import { StyledH2 } from "../../../styles/GlobalStyle";
 
 const DropDownContainer = styled("div")`
   position: relative;
@@ -129,7 +129,7 @@ const SortingSelect = ({ label, handleDropdown, placing }) => {
                       key={Math.random()}
                     >
                       {option.name === selectedOption ? (
-                        <FatH2>{option.label}</FatH2>
+                        <StyledH2 fontWeight="900">{option.label}</StyledH2>
                       ) : (
                         <h2>{option.label}</h2>
                       )}
@@ -141,7 +141,7 @@ const SortingSelect = ({ label, handleDropdown, placing }) => {
                       key={Math.random()}
                     >
                       {option.name === selectedOption ? (
-                        <FatH2>{option.label}</FatH2>
+                        <StyledH2 fontWeight="900">{option.label}</StyledH2>
                       ) : (
                         <h2>{option.label}</h2>
                       )}
