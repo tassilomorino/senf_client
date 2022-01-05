@@ -8,6 +8,7 @@ export const CenteredH2 = styled.h2`
 
 export const StyledH2 = styled.h2`
   font-weight: ${(props) => (props.fontWeight ? props.fontWeight : 400)};
+  text-align: ${(props) => (props.textAlign ? props.textAlign : "left")};
 `;
 
 export const StyledH3 = styled.h3`
@@ -23,7 +24,7 @@ export const StyledText = styled.p`
   margin: 0;
   font-size: 17px;
   line-height: 20x;
-  color: #353535;
+  color: ${(props) => (props.color ? props.color : "#353535")};
 `;
 export const StyledSmallText = styled.p`
   margin: 0;

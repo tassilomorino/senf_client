@@ -72,17 +72,26 @@ const FilterInnerWrapperMobile = styled.div`
     height: auto;
     display: flex;
     flex-direction: ${(props) => (props.column ? "column" : "row")};
+    align-items: flex-start;
+
+    text-align: left;
     flex-wrap: wrap;
     padding: 0px;
     margin-left: 0;
   }
 `;
 
-const Tag = styled.div`
+const Tag = styled.button`
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
   display: flex;
-  justify-content: space-around;
+  cursor: pointer;
+  justify-content: flex-start;
+
   align-items: center;
   background-color: white;
+  padding: 5px;
   padding-right: 10px;
   margin-right: 5px;
   border-radius: 8px;
@@ -101,6 +110,9 @@ const Tag = styled.div`
   @media (min-width: 768px) {
     box-shadow: none;
     margin-top: 5px;
+    padding: 0px;
+    padding-right: 10px;
+    font-size: 14px;
   }
 `;
 
@@ -130,7 +142,7 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
         placing={placing}
         moveUp={swipePosition === "top"}
       >
-        <FilterInnerWrapperMobile>
+        <FilterInnerWrapperMobile column={column}>
           <Tag
             placing={placing}
             onClick={
@@ -148,7 +160,7 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
             <Checkbox
               color="default"
               icon={<FiberManualRecordIcon />}
-              style={{ color: "#000000" }}
+              style={{ color: "#000000", padding: "5px" }}
             />
 
             {type === "topics" ? t("topics_all") : t("organizationTypes_all")}
@@ -168,7 +180,7 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
                     color="default"
                     icon={<FiberManualRecordIcon />}
                     data-cy={topic.name}
-                    style={{ color: topic.color }}
+                    style={{ color: topic.color, padding: "5px" }}
                   />
 
                   {topic.label}

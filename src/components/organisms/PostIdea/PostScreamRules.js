@@ -6,6 +6,7 @@ import { Trans, useTranslation } from "react-i18next";
 import Dialog from "@material-ui/core/Dialog";
 import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
 import styled from "styled-components";
+import { StyledH2 } from "../../../styles/GlobalStyle";
 
 const Card = styled.div`
   z-index: 99997;
@@ -64,7 +65,9 @@ const PostScreamRules = () => {
             <br />
             <br />
             <br />
-            <span className="cookiesHeader">{t("rules_section1header")}</span>
+            <StyledH2 fontWeight="900" textAlign="center">
+              {t("rules_section1header")}
+            </StyledH2>
             <br />
 
             <Trans i18nKey="rules_section1text">
@@ -83,7 +86,9 @@ const PostScreamRules = () => {
             <br />
             <br />
             <br />
-            <span className="cookiesHeader">{t("rules_section2header")}</span>
+            <StyledH2 fontWeight="900" textAlign="center">
+              {t("rules_section2header")}
+            </StyledH2>
             <br />
             <span>{t("rules_section2text")}</span>
 
