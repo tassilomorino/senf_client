@@ -12,7 +12,37 @@ import { useTranslation } from "react-i18next";
 import Pin from "../../../images/pin3.png";
 import Geolocate from "../../../images/icons/geolocate.png";
 import styled from "styled-components";
-import {StyledText} from "../../../styles/GlobalStyle"
+import { StyledText } from "../../../styles/GlobalStyle";
+
+const AdressLinePlaceHolderDiv = styled.div`
+  position: fixed;
+  top: 20px;
+  left: 70px;
+  width: calc(80% - 85px);
+
+  height: 50px;
+  padding-left: 15px;
+  padding-right: 5px;
+  border-radius: 15px;
+  color: #353535;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  pointer-events: none;
+
+  box-shadow: 0 8px 30px -12px rgba(0, 0, 0, 0.5);
+
+  @media (min-width: 768px) {
+    z-index: 9999;
+    top: 50px;
+    left: calc(600px + ((100vw - 600px) / 2) - 150px);
+    width: 300px;
+  }
+`;
 const PinWrapper = styled.div`
   position: fixed;
   left: ${(props) =>
@@ -128,14 +158,11 @@ const PostScreamMap = ({
             id="geocoder"
             transitionDuration={1000}
           />
-          <div
-            className="pinLocationHeader"
+          <AdressLinePlaceHolderDiv
             style={clicked === false ? { zIndex: 9999 } : { zIndex: 0 }}
           >
-            <StyledText>
-            {addressLine}
-            </StyledText>
-          </div>
+            <StyledText>{addressLine}</StyledText>
+          </AdressLinePlaceHolderDiv>
         </div>
 
         {isMobileCustom && (

@@ -98,7 +98,6 @@
     left: 200px;
     color: #414345;
     font-size: 20px;
-
   }
 
   .infotext {
@@ -405,32 +404,6 @@
     width: 300px;
     padding-right: 10px;
     box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
-  }
-
-  .pinLocationHeader {
-    z-index: 9999;
-    position: fixed;
-    top: 50px;
-    left: calc(600px + ((100vw - 600px) / 2) - 150px);
-    /* left:calc(100vw - 600px);
-        transform:translateX(-50%); */
-    width: 300px;
-
-    height: 50px;
-    padding-left: 15px;
-    padding-right: 5px;
-    border-radius: 15px;
-    color: #353535;
-    background-color: white;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    pointer-events: none;
-
-    box-shadow: 0 8px 30px -12px rgba(0, 0, 0, 0.5);
   }
 
   /* .react-geocoder-results {

@@ -20,6 +20,7 @@ export const StyledH2 = styled.h2`
 export const StyledH3 = styled.h3`
   margin: 0;
   padding: 0;
+  text-align: ${(props) => (props.textAlign ? props.textAlign : "left")};
 `;
 
 export const StyledH4 = styled.h4`

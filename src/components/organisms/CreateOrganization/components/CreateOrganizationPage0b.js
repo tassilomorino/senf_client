@@ -55,7 +55,6 @@ const CoverImg = styled.img`
 const CoverTitle = styled.span`
   font-size: 18px;
   /* font-family: PlayfairDisplay-Bold; */
-  font-family: Futura PT W01-Bold;
   color: #353535;
   text-align: center;
   width: 100%;
