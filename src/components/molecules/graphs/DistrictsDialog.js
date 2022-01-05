@@ -57,39 +57,6 @@ const styles = {
     zIndex: "990",
     padding: 10,
   },
-
-  expandButton: {
-    position: "absolute",
-    left: "0%",
-    top: "0%",
-    width: "100%",
-    height: "100%",
-    borderRadius: 0,
-    zIndex: 9,
-  },
-  card: {
-    marginTop: "2.5vw",
-    top: "0em",
-    position: "relative",
-    width: "100%",
-    paddingTop: "1em",
-    backgroundColor: "#f8f8f8",
-    height: "auto",
-    paddingBottom: "1em",
-    borderRadius: "10px",
-    overflow: "hidden",
-  },
-
-  plot: {
-    position: "relative",
-    width: "100%",
-  },
-  clickblocker: {
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    zIndex: "9",
-  },
 };
 
 const DistrictsDialog = ({ classes, screams }) => {

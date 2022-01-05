@@ -11,19 +11,9 @@ import createPlotlyComponent from "react-plotlyjs";
 import Plotly from "plotly.js/dist/plotly-cartesian.min";
 import TagsFilter from "../Filters/TagsFilter";
 import styled from "styled-components";
-import { CenteredH2, CenteredStyledText } from "../../../styles/GlobalStyle";
+import GraphsWrapper from "./GraphsWrapper";
 
 const PlotlyComponent = createPlotlyComponent(Plotly);
-
-const InnerWrapper = styled.div`
-  width: 100%;
-  max-width: 500px;
-  margin-bottom: 50px;
-  position: relative;
-  top: 30px;
-  margin-left: 50%;
-  transform: translateX(-50%);
-`;
 
 //  let PlotlyComponent
 // import(/* webpackChunkName: "Districts-Graph plotly" */'plotly.js/dist/plotly-cartesian.min').then(plotly=>{
@@ -291,9 +281,7 @@ const DistrictsGraph = ({ classes, screams }) => {
         showarrow: true,
       },
     ],
-    barmode: "relative",
-    font: { color: "#414345", family: "Futura PT W01 Book", size: 14 },
-    //   autosize: true,
+    barmode: "relative", //   autosize: true,
     height: plotheight,
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "rgba(0,0,0,0)",
@@ -353,28 +341,18 @@ const DistrictsGraph = ({ classes, screams }) => {
   };
   const plot =
     screams && PlotlyComponent !== undefined ? (
-      <PlotlyComponent
-        className={classes.plot}
-        data={data}
-        layout={layout}
-        config={config}
-      />
+      <PlotlyComponent data={data} layout={layout} config={config} />
     ) : (
       <div style={{ display: "flex", justifyContent: "center" }}>
         <CircularProgress size={50} thickness={2} />
       </div>
     );
   return (
-    <div className={classes.card}>
-      <CenteredH2>{t("districts")}</CenteredH2>
-      <InnerWrapper>
-        <CenteredStyledText>{t("districts_explained")}</CenteredStyledText>
-
-        <TagsFilter placing="insights" type="topics" />
-      </InnerWrapper>
-      <div className={classes.clickblocker}></div>
-      {plot}
-    </div>
+    <GraphsWrapper
+      title={t("districts")}
+      subTitle={t("districts_explained")}
+      plot={plot}
+    />
   );
 };
 

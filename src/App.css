@@ -115,59 +115,6 @@
   text-align: left;
 }
 
-.AcceptIntro {
-  color: #414345;
-  background-color: white;
-  position: fixed;
-  left: 25vw;
-  width: 50vw;
-  bottom: 50px;
-}
-
-.CookieNote {
-  position: fixed;
-  z-index: 99;
-  width: 95%;
-  left: 2.5vw;
-  height: 10em;
-  bottom: 10em;
-  background-color: #414345;
-  color: white;
-  border-radius: 20px;
-  text-align: center;
-}
-
-.CookieNoteDialog {
-  position: absolute;
-  z-index: 999;
-  width: 95vw;
-  left: 2.5vw;
-  height: 10em;
-  top: 4em;
-  background-color: #414345;
-  color: white;
-  border-radius: 20px;
-  text-align: center;
-}
-
-.cookiesNoteHeader {
-  position: relative;
-  top: 1em;
-  font-family: Futura PT W01-Bold;
-}
-
-.cookiesNoteText {
-  position: relative;
-  top: 1.5em;
-  z-index: 99;
-  width: 95vw;
-  color: white;
-  text-align: center;
-  font-size: 13pt;
-  margin-left: 0vw;
-  left: 0;
-}
-
 .bodytext {
   white-space: pre-line;
   position: relative;
@@ -250,28 +197,6 @@
   top: 5vh;
 }
 
-.buttonLikeFixed {
-  z-index: 9999;
-  position: fixed;
-  left: 3%;
-  bottom: 5px;
-  width: 55px;
-}
-
-.formControl {
-  width: auto;
-  right: 0;
-  border: 1px solid #414345;
-  border-radius: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  height: 40px;
-
-  width: 127px;
-  font-family: Futura PT W01 Book !important;
-  font-size: 16pt !important;
-}
-
 .contentWrapper {
   width: 100vw;
   height: 100%;
@@ -352,19 +277,7 @@
   z-index: -1;
 }
 
-.Navigation-title {
-  font-family: Futura PT W01-Bold;
-  color: #353535;
-  text-align: center;
-  width: calc(100vw - 150px);
-  margin-left: 75px;
-  font-size: 16pt;
-  display: flex;
-  margin-top: 0;
-  align-items: center;
-  justify-content: center;
-  height: 80px;
-}
+
 
 .dialoggradient {
   position: absolute;
@@ -460,71 +373,14 @@
   background-color: white;
 }
 
-.topicSelectContainer {
-  background-color: #f8f8f8;
-  width: 90%;
-  padding-left: 5%;
-  padding-right: 5%;
-  left: 0;
-  height: 50px;
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  bottom: 0;
-  border-bottom-right-radius: 20px;
-  border-bottom-left-radius: 20px;
-  font-size: 20px;
-}
 
-.projectSelectContainer {
-  background-color: #f8f8f8;
-  background-color: transparent;
-  width: 90%;
-  margin-left: 5%;
-  margin-right: 5%;
-  left: 0;
-  height: 50px;
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  top: 0;
-  border-bottom: 1px solid #353535;
-  /* border-bottom-right-radius: 20px;
-    border-bottom-left-radius: 20px; */
-}
 
-.projectFormControl {
-  width: 65%;
-  right: 0;
-  border: 0px solid #414345;
-  border-radius: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  height: 40px;
 
-  font-family: Futura PT W01 Book !important;
-  font-size: 12pt !important;
-}
-.selectCustom {
-  width: 65%;
-  right: 0;
-  border: 0px solid #414345;
-  border-radius: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  height: 40px;
 
-  font-family: Futura PT W01 Book !important;
-  font-size: 12pt !important;
-}
+
 
 .react-geocoder {
   position: fixed;
-  font-family: Futura PT W01 Book;
   z-index: 9;
 }
 
@@ -547,7 +403,6 @@ input:focus {
   left: 70px;
   padding-left: 15px;
 
-  font-family: "Futura PT W01 Book", sans-serif;
   font-size: 12pt;
   box-shadow: 0 8px 30px -12px rgba(0, 0, 0, 0);
 }
@@ -562,7 +417,6 @@ input:focus {
   border-radius: 5px;
   width: 95vw;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
-  font-family: Futura PT W01 Book;
   font-size: 12pt;
 }
 
@@ -577,11 +431,8 @@ input:focus {
 }
 
 .pinLocationHeader {
-  font-family: Futura PT W01 Book;
-  font-size: 12pt;
-  z-index: 9999;
   position: fixed;
-  top: 2.5%;
+  top: 20px;
   left: 70px;
   width: calc(80% - 85px);
 
@@ -1024,7 +875,7 @@ input:focus {
   top: 490px;
   left: 12vw;
   color: #414345;
-  font-size: 16px
+  font-size: 16px;
 }
 
 .title2 {
@@ -1407,29 +1258,6 @@ input:focus {
   border-radius: 5px;
   width: 95%;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
-}
-
-.keyindicatorswrapper {
-  width: 95%;
-  display: flex;
-  padding-top: 40px;
-  margin-left: 2.5%;
-  margin-bottom: 20px;
-  flex-direction: row;
-  justify-content: center;
-}
-
-.keyindicatorcard {
-  height: 50px;
-  display: flex;
-  position: relative;
-  text-align: center;
-  align-items: center;
-  font-family: Futura PT W01 Book;
-  padding-left: 10px;
-  padding-right: 10px;
-  flex-direction: column;
-  justify-content: flex-end;
 }
 
 .insights-card {

@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 import Pin from "../../../images/pin3.png";
 import Geolocate from "../../../images/icons/geolocate.png";
 import styled from "styled-components";
-
+import {StyledText} from "../../../styles/GlobalStyle"
 const PinWrapper = styled.div`
   position: fixed;
   left: ${(props) =>
@@ -132,7 +132,9 @@ const PostScreamMap = ({
             className="pinLocationHeader"
             style={clicked === false ? { zIndex: 9999 } : { zIndex: 0 }}
           >
+            <StyledText>
             {addressLine}
+            </StyledText>
           </div>
         </div>
 

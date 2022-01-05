@@ -207,7 +207,7 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
                     color="default"
                     icon={<FiberManualRecordIcon />}
                     data-cy={organizationTypes.name}
-                    style={{ color: organizationTypes.color }}
+                    style={{ color: organizationTypes.color, padding: "5px" }}
                   />
 
                   {organizationTypes.label}

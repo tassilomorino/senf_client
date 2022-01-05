@@ -3,7 +3,6 @@
 import styled from "styled-components";
 
 export const SubTitle = styled.h3`
-  font-family: Futura PT W01 Book;
   font-size: 18px;
   font-weight: 100;
   width: 80%;

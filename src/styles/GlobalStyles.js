@@ -63,6 +63,7 @@ div::-webkit-scrollbar {
 a {
   text-decoration: none;
   color: #414345;
+  font-size:16px;
 }
 
     h2{

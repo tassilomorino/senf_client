@@ -16,7 +16,6 @@ import "firebase/firestore";
 import "firebase/storage";
 
 const Header = styled.h3`
-  font-family: Futura PT W01-Bold;
   font-size: 18px;
   color: #353535;
   font-weight: 100;
@@ -50,7 +49,6 @@ const CheckBoxWrapper = styled.div`
   align-items: center;
 `;
 const CheckBoxLabel = styled.label`
-  font-family: Futura PT W01 Book;
   font-size: 18px;
   color: #353535;
   font-weight: 100;

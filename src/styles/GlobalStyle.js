@@ -5,6 +5,12 @@ import styled from "styled-components";
 export const CenteredH2 = styled.h2`
   text-align: center;
 `;
+export const StyledA = styled.a`
+  font-weight: ${(props) => (props.fontWeight ? props.fontWeight : 400)};
+  text-decoration: ${(props) =>
+    props.textDecoration ? props.textDecoration : "none"};
+  color: ${(props) => (props.color ? props.color : "#353535")};
+`;
 
 export const StyledH2 = styled.h2`
   font-weight: ${(props) => (props.fontWeight ? props.fontWeight : 400)};
@@ -12,6 +18,11 @@ export const StyledH2 = styled.h2`
 `;
 
 export const StyledH3 = styled.h3`
+  margin: 0;
+  padding: 0;
+`;
+
+export const StyledH4 = styled.h4`
   margin: 0;
   padding: 0;
 `;
@@ -25,6 +36,7 @@ export const StyledText = styled.p`
   font-size: 17px;
   line-height: 20x;
   color: ${(props) => (props.color ? props.color : "#353535")};
+  text-align: ${(props) => (props.textAlign ? props.textAlign : "left")};
 `;
 export const StyledSmallText = styled.p`
   margin: 0;

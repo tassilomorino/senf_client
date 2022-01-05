@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   z-index: 9995;
   position: fixed;
   width: 95vw;
-  height: 22em;
+  height: 20em;
   padding: 2.5vw;
   color: white;
   text-align: center;
@@ -72,7 +72,7 @@ const Cookiebanner = () => {
           {t("cookiebanner_title")}
         </StyledH2>
         <br />
-        <StyledText color="white">
+        <StyledText color="white" textAlign="center">
           <Trans i18nKey="cookiebanner_text">
             Für die Bereitstellung einiger Funktionen und die Verbesserung
             dieses Services brauchen wir Cookies. Falls du wirklich nur die

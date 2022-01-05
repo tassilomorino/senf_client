@@ -9,7 +9,7 @@ import Arrow from "../../../images/icons/arrow.png";
 
 //Components
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
-import { StyledLi } from "../../../styles/GlobalStyle";
+import { StyledH3, StyledLi } from "../../../styles/GlobalStyle";
 
 const DropDownButton = styled.button`
   color: #353535;
@@ -161,7 +161,9 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
         style={{ zIndex: 999 }}
         id="dropDownButton"
       >
-        {truncateString(selectedLabel, dropDownButtonAmount)}
+        <StyledH3>
+          {truncateString(selectedLabel, dropDownButtonAmount)}
+        </StyledH3>
 
         <img
           src={Arrow}
