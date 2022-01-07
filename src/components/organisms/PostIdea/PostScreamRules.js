@@ -6,7 +6,7 @@ import { Trans, useTranslation } from "react-i18next";
 import Dialog from "@material-ui/core/Dialog";
 import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
 import styled from "styled-components";
-import { StyledH2 } from "../../../styles/GlobalStyle";
+import { StyledA, StyledH2, StyledText } from "../../../styles/GlobalStyle";
 
 const Card = styled.div`
   z-index: 99997;
@@ -31,7 +31,7 @@ const Card = styled.div`
     top: 40px;
     width: 340px;
     margin-left: 210px;
-    height: 400px;
+    height: 420px;
     padding: 20px;
   }
 `;
@@ -49,27 +49,30 @@ const PostScreamRules = () => {
 
   return (
     <Fragment>
-      <a onClick={handleOpen} className="rules-link">
+      <StyledA
+        textDecoration="underline"
+        onClick={handleOpen}
+        style={{ marginLeft: "auto" }}
+      >
         {t("rules")}
-      </a>
+      </StyledA>
       <Dialog
         open={open}
         onClose={handleClose}
         width="md"
         style={{ backdropFilter: "blur(5px)" }}
       >
-        <div>
-          <Card>
-            <br />
-            <span className="PostRulesHeader">{t("rules_title")}</span>
-            <br />
-            <br />
-            <br />
-            <StyledH2 fontWeight="900" textAlign="center">
-              {t("rules_section1header")}
-            </StyledH2>
-            <br />
+        <Card>
+          <br />
+          <span className="PostRulesHeader">{t("rules_title")}</span>
+          <br />
 
+          <br />
+          <StyledH2 fontWeight="900" textAlign="center">
+            {t("rules_section1header")}
+          </StyledH2>
+
+          <StyledText textAlign="center">
             <Trans i18nKey="rules_section1text">
               Ideen, Wünsche und Anregungen sind hier erwünscht. Für
               Beschwerden, informier dich bitte
@@ -83,25 +86,24 @@ const PostScreamRules = () => {
               </a>{" "}
               .
             </Trans>
-            <br />
-            <br />
-            <br />
-            <StyledH2 fontWeight="900" textAlign="center">
-              {t("rules_section2header")}
-            </StyledH2>
-            <br />
-            <span>{t("rules_section2text")}</span>
+          </StyledText>
+          <br />
 
-            <CustomButton
-              text={t("rules_understood")}
-              backgroundColor="#353535"
-              textColor="white"
-              position="relative"
-              top="50px"
-              handleButtonClick={handleClose}
-            />
-          </Card>{" "}
-        </div>
+          <br />
+          <StyledH2 fontWeight="900" textAlign="center">
+            {t("rules_section2header")}
+          </StyledH2>
+          <StyledText textAlign="center">{t("rules_section2text")}</StyledText>
+
+          <CustomButton
+            text={t("rules_understood")}
+            backgroundColor="#353535"
+            textColor="white"
+            position="relative"
+            top="50px"
+            handleButtonClick={handleClose}
+          />
+        </Card>{" "}
       </Dialog>
     </Fragment>
   );

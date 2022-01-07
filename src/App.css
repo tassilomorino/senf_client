@@ -234,54 +234,6 @@
   );
 }
 
-.selectLocationContainer {
-  height: 130px;
-  width: 95%;
-  margin-left: 2.5%;
-  background-color: #f8f8f8;
-  border-radius: 20px;
-  box-shadow: 0 8px 30px -12px rgba(0, 0, 0, 0.5);
-}
-
-.postCard {
-  z-index: 12;
-  position: absolute;
-  display: flex;
-  top: 0vh;
-
-  left: 0;
-  margin-left: 2.5vw;
-  margin-right: auto;
-
-  /* height: calc(75vh - 70px); */
-  height: calc((var(--vh, 1vh) * 75) - 70px);
-
-  /* height:calc(80vh - 70px); */
-  width: 95vw;
-  border-radius: 20px;
-  box-shadow: 0 0px 40px -12px rgba(0, 0, 0, 0);
-  background-color: white;
-}
-
-.postCardAndroid {
-  z-index: 12;
-  position: absolute;
-  display: flex;
-  top: 0vh;
-
-  left: 0;
-  margin-left: 2.5%;
-  margin-right: auto;
-
-  /* height: calc((var(--vh, 1vh) * 70) - 70px);  */
-  height: 400px;
-  /* height:calc(80vh - 70px); */
-  width: 95%;
-  border-radius: 20px;
-  box-shadow: 0 0px 40px -12px rgba(0, 0, 0, 0);
-  background-color: white;
-}
-
 .react-geocoder {
   position: fixed;
   z-index: 9;
@@ -877,7 +829,6 @@ input:focus {
   left: 0%;
   padding-left: 15px;
 
-  font-family: "Futura PT W01 Book", sans-serif;
   font-size: 12pt;
   box-shadow: 0 8px 30px -12px rgba(0, 0, 0, 0);
 

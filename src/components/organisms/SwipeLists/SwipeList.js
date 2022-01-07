@@ -359,16 +359,18 @@ const SwipeList = ({
               )}
 
               <Wave />
-              <List
-                swipeListType={swipeListType}
-                type={type}
-                order={order}
-                loading={loading}
-                dropdown={dropdown}
-                dataFinal={dataFinal}
-                projectsData={projectsData}
-                handleClick={handleClick}
-              />
+              {!loading && (
+                <List
+                  swipeListType={swipeListType}
+                  type={type}
+                  order={order}
+                  loading={loading}
+                  dropdown={dropdown}
+                  dataFinal={dataFinal}
+                  projectsData={projectsData}
+                  handleClick={handleClick}
+                />
+              )}
             </ListWrapper>
           </React.Fragment>
         )}

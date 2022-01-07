@@ -5,23 +5,21 @@ import styled from "styled-components";
 export const FixedWrapper = styled.div`
   z-index: 91;
   position: fixed;
-  width: 95%;
-
+  width: 100%;
+  overflow: visible;
   height: 50px;
-  background-color: white;
-  top: ${(props) => (props.moveUp ? "-90px" : "10px")};
+  top: ${(props) => (props.moveUp ? "-90px" : "0px")};
+  padding-top: 10px;
+
   transition: 1s;
-  left: 2.5%;
-  border-radius: 20px 20px;
-  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
+  left: 0%;
+  border-radius: 0px 0px;
   animation: downAnimation 1.7s ease-in-out;
   pointer-events: all;
 
   @media (min-width: 768px) {
-    left: 210px;
-    width: 380px;
-    animation: none;
-    top: 10px;
+    left: 200px;
+    width: 400px;
   }
 
   @keyframes downAnimation {
@@ -39,7 +37,7 @@ export const FixedWrapper = styled.div`
 
 export const FlexWrapper = styled.div`
   position: relative;
-  width: 97.5%;
+  width: 95%;
   height: 50px;
   top: 0px;
   left: 0;
@@ -57,12 +55,39 @@ export const ImgWrapper = styled.div`
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.8);
+  z-index: 3;
 `;
 export const StyledImg = styled.img`
   flex-shrink: 0;
   min-width: 100%;
   min-height: 100%;
   object-fit: cover;
+`;
+
+export const SVGWrapper = styled.div`
+  position: fixed;
+  top: -55px;
+  left: 0;
+  pointer-events: none;
+  z-index: 9;
+  width: 100%;
+  height: 300px;
+  overflow-x: hidden;
+
+  @media (min-width: 768px) {
+    left: 200px;
+    width: 400px;
+    animation: none;
+  }
+`;
+
+export const StyledIcon = styled.img`
+  width: 30px;
+  top: 80px;
+  left: calc(50% - 30px);
+  position: absolute;
+  z-index: 2;
+  pointer-events: all;
 `;
 
 export const TitleWrapper = styled.div`
@@ -77,4 +102,5 @@ export const TitleWrapper = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  z-index: 3;
 `;

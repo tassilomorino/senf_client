@@ -89,7 +89,7 @@ const PostScreamMap = ({
     bbox: [6.7, 50.8, 7.2, 51],
   };
   const addressLine =
-    address === "Ohne Ortsangabe" ? <>{t("input_address")}</> : address;
+    !address  ? t("input_address") : address;
 
   const data =
     !loadingProjects && geoData !== ""

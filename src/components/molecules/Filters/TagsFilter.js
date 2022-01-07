@@ -20,15 +20,11 @@ const FilterWrapperMobile = styled.div`
   position: relative;
 
   top: ${(props) =>
-    props.openScream
-      ? "15px"
-      : props.placing === "list"
+    props.placing === "list"
       ? "0px"
       : props.placing === "insights"
       ? "20px"
-      : props.moveUp
-      ? "-90px"
-      : "60px"};
+      : "calc(100vh - 170px)"};
   width: 100%;
 
   overflow-x: scroll;

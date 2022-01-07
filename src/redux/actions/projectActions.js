@@ -6,8 +6,8 @@ import "firebase/storage";
 
 import { closeScream } from "./screamActions";
 import {
-  LOADING_UI,
-  STOP_LOADING_UI,
+  LOADING_DATA,
+  STOP_LOADING_DATA,
   LOADING_PROJECTS_DATA,
   SET_PROJECTS,
   SET_PROJECT,
@@ -79,7 +79,7 @@ export const getProjects = (mapViewport) => async (dispatch) => {
 export const openProjectRoomFunc =
   (projectRoomId, state) => async (dispatch) => {
     if (state === true) {
-      dispatch({ type: LOADING_UI });
+      dispatch({ type: LOADING_DATA });
       dispatch({ type: OPEN_PROJECTROOM });
       dispatch(setSwipePositionDown());
       dispatch(loadProjectRoomData(projectRoomId));
@@ -129,7 +129,7 @@ export const loadProjectRoomData = (projectRoomId) => async (dispatch) => {
         );
 
         dispatch({ type: SET_PROJECT, payload: projectRoom });
-        dispatch({ type: STOP_LOADING_UI });
+        dispatch({ type: STOP_LOADING_DATA });
       });
   });
 };

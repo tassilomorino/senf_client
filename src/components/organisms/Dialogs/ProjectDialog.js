@@ -23,6 +23,9 @@ import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 
 import _ from "lodash";
+import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
+import { useTranslation } from "react-i18next";
+import PostScream from "../PostIdea/PostScream";
 
 const Wrapper = styled.div`
   @media (min-width: 768px) {
@@ -40,19 +43,32 @@ const Break = styled.div`
   }
 `;
 
+const MapHider = styled.div`
+  width: calc(100% - 600px);
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 600px;
+  background-color: #000;
+  opacity: 0.6;
+  z-index: 0;
+`;
+
 const ProjectDialog = ({
   viewport,
   projectsData,
   loadingProjects,
   dataFinalMap,
 }) => {
+  const { t } = useTranslation();
   const [path, setPath] = useState("");
-  const [order, setOrder] = useState(1);
+  const [order, setOrder] = useState(2);
   const [dropdown, setDropdown] = useState("newest");
 
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
 
   const project = useSelector((state) => state.data.project);
+  const projects = useSelector((state) => state.data.projects);
 
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.UI.loading);
@@ -140,7 +156,14 @@ const ProjectDialog = ({
         handleClose={handleClose}
         handleClick={handleClick}
       />
-
+      {isMobileCustom && (order === 1 || order === 3) && (
+        <PostScream
+          loadingProjects={loadingProjects}
+          projectsData={projects}
+          project={project}
+        />
+      )}
+      {!isMobileCustom && order === 2 && <MapHider />}
       <Wrapper>
         {!isMobileCustom || (isMobileCustom && order !== 1 && <Background />)}
 
@@ -170,6 +193,17 @@ const ProjectDialog = ({
               pointerEvents: "all",
             }}
           >
+            <SubmitButton
+              text={t("showIdeas")}
+              zIndex="9"
+              backgroundColor={isMobileCustom ? "#353535" : "white"}
+              textColor={isMobileCustom ? "white" : "#353535"}
+              position="fixed"
+              bottom={isMobileCustom ? "10px" : "50%"}
+              left={isMobileCustom ? "0" : "calc(600px + ((100% - 600px)/2)) "}
+              marginLeft={isMobileCustom ? "50%" : "0"}
+              handleButtonClick={() => handleClick(1)}
+            />
             <Break />
 
             <MainAnimations

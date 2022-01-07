@@ -42,11 +42,13 @@ export const getOrganizations = (mapViewport) => async (dispatch) => {
         organizations.push(docData);
       });
   });
-
-  dispatch({
-    type: SET_ORGANIZATIONS,
-    payload: organizations,
-  });
+  //THIS IS DONE DIRTY WITH THE SETTIMEOUT
+  setTimeout(() => {
+    dispatch({
+      type: SET_ORGANIZATIONS,
+      payload: organizations,
+    });
+  }, 200);
 };
 
 export const stateCreateOrganizationsFunc = (state) => async (dispatch) => {

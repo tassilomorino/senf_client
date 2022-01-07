@@ -60,7 +60,6 @@ const IdeaCard = ({
   dayjs.extend(relativeTime);
   const dispatch = useDispatch();
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
-
   const fetchDataScream = () => {
     dispatch(openScreamFunc(screamId));
   };
@@ -70,6 +69,7 @@ const IdeaCard = ({
   };
 
   const projectsDataFinal = [];
+
   if (projectsData) {
     projectsData.forEach(({ projectRoomId, title }) => {
       if (ideaCardProject === projectRoomId) {
@@ -100,7 +100,7 @@ const IdeaCard = ({
         </BodyText>
         <Gradient />
         <br />
-        {!openProjectRoom && project && projectsData && (
+        {!openProjectRoom && ideaCardProject && projectsData && (
           <>
             <Gradient2></Gradient2>
             <ProjectOpenButton onClick={fetchDataProject}>

@@ -108,7 +108,6 @@ const List = ({
     } else {
       setTimeout(() => {
         setListItems(listItems + itemsPerPage);
-        //(posts.length-listItems)>10? setlistItems(listItems + 10):setlistItems(listItems+15);
       }, 100);
     }
   };
@@ -138,11 +137,9 @@ const List = ({
               <NoMoreMainContent dataFinalLength={dataFinalLength} />
             )}
           </React.Fragment>
-        ) : (
-          !hasMoreItems | (dataFinalLength === 0) && (
-            <NoMoreProjectRooms dataFinalLength={dataFinalLength} />
-          )
-        )}
+        ) : !hasMoreItems | (dataFinalLength === 0) ? (
+          <NoMoreProjectRooms dataFinalLength={dataFinalLength} />
+        ) : null}
 
         {swipeListType === "projectRoomOverview" && loading && (
           <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>

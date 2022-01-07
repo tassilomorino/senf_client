@@ -9,7 +9,7 @@ import ChatBorder from "../../../images/icons/chat.png";
 import HandFull from "../../../images/icons/handsFull.png";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { StyledH2, StyledH3, StyledH4 } from "../../../styles/GlobalStyle";
+import { StyledH2, StyledH3 } from "../../../styles/GlobalStyle";
 
 const Wrapper = styled.div`
   width: 95%;

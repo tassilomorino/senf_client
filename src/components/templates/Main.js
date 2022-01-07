@@ -206,9 +206,9 @@ const Main = () => {
       history.push("/intro");
     } else {
       if (mapViewport && mapViewport.latitude !== 0) {
-        dispatch(getScreams(mapViewport)).then(() => {
+        dispatch(getOrganizations(mapViewport)).then(() => {
           dispatch(getProjects(mapViewport)).then(() => {
-            dispatch(getOrganizations(mapViewport));
+            dispatch(getScreams(mapViewport));
           });
           if (window.location.pathname === "/projectRooms") {
             setOrder(2);
@@ -422,7 +422,7 @@ const Main = () => {
       {!loading &&
         !loadingProjects &&
         isMobileCustom &&
-        (order === 1 || openProjectRoom || openScream || openAccount) && (
+        (order === 1 || openScream || openAccount) && (
           <PostScream
             loadingProjects={loadingProjects}
             projectsData={projects}
@@ -437,6 +437,7 @@ const Main = () => {
           {!openProjectRoom &&
             !openAccount &&
             !loadingProjects &&
+            !loading &&
             (order === 1 || order === 2) && (
               <SwipeList
                 swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}

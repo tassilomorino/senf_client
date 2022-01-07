@@ -138,30 +138,9 @@ const styles = {
     zIndex: "9999",
   },
 
-  content: {
-    padding: 25,
-    objectFit: "cover",
-    overflow: "scroll",
-    width: "100%",
-  },
-
   textField: {
     marginTop: "0px",
     width: "100%",
-  },
-
-  locationOuter: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    color: "rgb(255, 205, 6)",
-    height: "10px",
-    alignItems: "center",
-  },
-  locationHeader: {
-    color: "rgb(255, 205, 6)",
-    float: "left",
-    paddingRight: "1%",
   },
 
   Authlink: {
@@ -213,7 +192,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
   const [geoData, setGeoData] = useState("");
   const [checkIfCalendar, setCheckIfCalendar] = useState(false);
 
-  const [address, setAddress] = useState("Ohne Ortsangabe");
+  const [address, setAddress] = useState(null);
   const [neighborhood, setNeighborhood] = useState("Ohne Ortsangabe");
   const [fulladdress, setFulladdress] = useState("Ohne Ortsangabe");
 
@@ -450,14 +429,13 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
   };
 
   const handleLocationDecided = () => {
-    if (locationDecided === false) {
+    if (address) {
       setAllMainStates({
         ...allMainStates,
         locationDecided: true,
         MapHeight: "30vh",
       });
     }
-
     if (locationDecided === true) {
       setAllMainStates({
         ...allMainStates,

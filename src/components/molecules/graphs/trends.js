@@ -246,7 +246,6 @@ export class Trends extends Component {
       showlegend: false,
 
       template: "...",
-      font: { color: "#414345", family: "Futura PT W01 Book", size: 14 },
       //   autosize: true,
       //   height: 300,
       //   hovermode: false,

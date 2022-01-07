@@ -83,7 +83,6 @@ export const ProjectCard = (props) => {
   } = props;
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  console.log(user);
 
   const pushScreamId = () => {
     dispatch(openProjectRoomFunc(projectRoomId, true));

@@ -325,35 +325,6 @@
     pointer-events: none;
   }
 
-  .selectLocationContainer {
-    position: fixed;
-    height: 130px;
-    width: 380px;
-    margin-left: 210px;
-    top: 40px;
-    background-color: #f8f8f8;
-    border-radius: 20px;
-    box-shadow: 0 8px 30px -12px rgba(0, 0, 0, 0.5);
-    z-index: 5;
-    animation: enteranimation 0.5s;
-  }
-
-  .postCard {
-    position: fixed;
-    top: 135px;
-
-    left: 0;
-    margin-left: 210px;
-    margin-right: auto;
-    height: 50vh;
-    width: 380px;
-    border-radius: 20px;
-    box-shadow: 0 0px 40px -12px rgba(0, 0, 0, 0);
-    background-color: white;
-    z-index: 2;
-    animation: enteranimation 1s;
-  }
-
   @keyframes enteranimation {
     0% {
       opacity: 0;
@@ -388,7 +359,6 @@
     height: 50px;
     left: calc(600px + ((100vw - 600px) / 2) - 150px);
     transform: translateX(0%);
-    font-family: Futura PT W01 Book;
     font-size: 12pt;
     box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
   }
@@ -425,7 +395,6 @@
 
   .geocoder-edit {
     position: relative;
-    font-family: Futura PT W01 Book;
   }
 
   .geocoder-edit input {
@@ -439,7 +408,6 @@
     left: 0%;
     padding-left: 15px;
 
-    font-family: "Futura PT W01 Book", sans-serif;
     font-size: 12pt;
     box-shadow: 0 8px 30px -12px rgba(0, 0, 0, 0);
 

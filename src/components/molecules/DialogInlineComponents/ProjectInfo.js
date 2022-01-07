@@ -13,7 +13,7 @@ const Card = styled.div`
   z-index: 99;
   position: relative;
   display: flex;
-  margin-top: 0px;
+  margin-top: 40px;
   margin-left: 2.5%;
   width: 95%;
   min-width: 95%;
@@ -23,6 +23,7 @@ const Card = styled.div`
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0);
   margin-bottom: 10px;
   pointer-events: all;
+  z-index: 0;
 `;
 
 const Content = styled.div`
