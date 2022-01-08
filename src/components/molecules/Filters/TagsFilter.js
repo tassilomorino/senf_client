@@ -28,7 +28,12 @@ const FilterWrapperMobile = styled.div`
       ? "0px"
       : props.placing === "insights"
       ? "20px"
-      : "calc(100vh - 170px)"};
+      : "none"};
+
+  bottom: ${(props) =>
+    props.placing !== "list" && props.placing !== "insights" && isMobileCustom
+      ? "170px"
+      : "none"};
   width: 100%;
 
   overflow-x: scroll;
@@ -113,6 +118,10 @@ const Tag = styled.button`
     padding: 0px;
     padding-right: 10px;
     font-size: 14px;
+
+    &:hover {
+      background-color: #ffe898;
+    }
   }
 `;
 
