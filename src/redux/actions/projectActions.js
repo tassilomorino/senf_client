@@ -63,15 +63,14 @@ export const getProjects = (mapViewport) => async (dispatch) => {
           imgUrl: image,
         };
         projects.push(docData);
+        if (projects.length === ref.size) {
+          dispatch({
+            type: SET_PROJECTS,
+            payload: projects,
+          });
+        }
       });
   });
-  //THIS IS DONE DIRTY WITH THE SETTIMEOUT
-  setTimeout(() => {
-    dispatch({
-      type: SET_PROJECTS,
-      payload: projects,
-    });
-  }, 200);
 };
 
 // Open a project

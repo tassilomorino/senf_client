@@ -40,15 +40,15 @@ export const getOrganizations = (mapViewport) => async (dispatch) => {
           imgUrl: image,
         };
         organizations.push(docData);
+        if (organizations.length === ref.size) {
+          dispatch({
+            type: SET_ORGANIZATIONS,
+            payload: organizations,
+          });
+        }
       });
   });
   //THIS IS DONE DIRTY WITH THE SETTIMEOUT
-  setTimeout(() => {
-    dispatch({
-      type: SET_ORGANIZATIONS,
-      payload: organizations,
-    });
-  }, 200);
 };
 
 export const stateCreateOrganizationsFunc = (state) => async (dispatch) => {

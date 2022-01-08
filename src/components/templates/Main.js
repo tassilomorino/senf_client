@@ -206,27 +206,26 @@ const Main = () => {
       history.push("/intro");
     } else {
       if (mapViewport && mapViewport.latitude !== 0) {
-        dispatch(getOrganizations(mapViewport)).then(() => {
-          dispatch(getProjects(mapViewport)).then(() => {
-            dispatch(getScreams(mapViewport));
-          });
-          if (window.location.pathname === "/projectRooms") {
-            setOrder(2);
-          } else if (window.location.pathname === "/organizations") {
-            setOrder(3);
-          } else if (window.location.pathname === "/insights") {
-            setOrder(4);
-          } else if (screamId) {
-            setOrder(1);
-            dispatch(openScreamFunc(screamId));
-          } else if (projectRoomId) {
-            setOrder(2);
-            dispatch(openProjectRoomFunc(projectRoomId, true));
-          } else if (organizationId) {
-            setOrder(3);
-            dispatch(openOrganizationFunc(true, organizationId));
-          }
-        });
+        dispatch(getOrganizations(mapViewport));
+        dispatch(getProjects(mapViewport));
+        dispatch(getScreams(mapViewport));
+
+        if (window.location.pathname === "/projectRooms") {
+          setOrder(2);
+        } else if (window.location.pathname === "/organizations") {
+          setOrder(3);
+        } else if (window.location.pathname === "/insights") {
+          setOrder(4);
+        } else if (screamId) {
+          setOrder(1);
+          dispatch(openScreamFunc(screamId));
+        } else if (projectRoomId) {
+          setOrder(2);
+          dispatch(openProjectRoomFunc(projectRoomId, true));
+        } else if (organizationId) {
+          setOrder(3);
+          dispatch(openOrganizationFunc(true, organizationId));
+        }
       }
     }
   }, [initialMapViewport]);
@@ -422,7 +421,8 @@ const Main = () => {
       {!loading &&
         !loadingProjects &&
         isMobileCustom &&
-        (order === 1 || openScream || openAccount) && (
+        !openScream &&
+        (order === 1 || openAccount) && (
           <PostScream
             loadingProjects={loadingProjects}
             projectsData={projects}

@@ -44,6 +44,7 @@ export const EngagementWrapper = styled.div`
   top: 0;
   right: 18px;
   width: 250px;
+  z-index: 11;
 `;
 
 export const ColorDot = styled.div`

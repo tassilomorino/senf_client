@@ -15,8 +15,7 @@ import { SubmitButton } from "../CustomButtons/SubmitButton";
 export const DesktopMapButtons = memo(({ viewport, mapRef }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const openInfoPage = useSelector((state) => state.UI.openInfoPage);
-  const openScream = useSelector((state) => state.UI.openScream);
+  const loading = useSelector((state) => state.data.loading);
   const initialMapBounds = useSelector((state) => state.data.initialMapBounds);
   const initialMapViewport = useSelector(
     (state) => state.data.initialMapViewport
@@ -56,44 +55,39 @@ export const DesktopMapButtons = memo(({ viewport, mapRef }) => {
     dispatch(closeScream());
   };
 
-  return (
-    !openInfoPage &&
-    !openScream && (
-      <div
-      // style={isMobileCustom ? { transform: "scale(0.8)" } : {}}
-      >
-        {isMobileCustom ? (
-          <SubmitButton
-            text={t("Ideen im Bereich anzeigen")}
-            backgroundColor="white"
-            textColor="#353535"
-            position="fixed"
-            bottom="130px"
-            animation={true}
-            handleButtonClick={() => handleMapBoundsSet(viewport)}
-            smallSubmitButton={true}
-          />
-        ) : (
-          <CustomButton
-            text={t("map_filterIdeas")}
-            backgroundColor="white"
-            textColor="#353535"
-            position="fixed"
-            top="40px"
-            animation={true}
-            handleButtonClick={() => handleMapBoundsSet(viewport)}
-          />
-        )}
+  return isMobileCustom && !loading ? (
+    <SubmitButton
+      text={t("Ideen im Bereich anzeigen")}
+      backgroundColor="white"
+      textColor="#353535"
+      position="fixed"
+      top="70px"
+      animation={true}
+      handleButtonClick={() => handleMapBoundsSet(viewport)}
+      smallSubmitButton={true}
+    />
+  ) : (
+    !loading && (
+      <React.Fragment>
+        <CustomButton
+          text={t("map_filterIdeas")}
+          backgroundColor="white"
+          textColor="#353535"
+          position="fixed"
+          top="40px"
+          animation={true}
+          handleButtonClick={() => handleMapBoundsSet(viewport)}
+        />
         <CustomIconButton
           name="CircularArrow"
           margin="0px"
           position="fixed"
           top="40px"
-          marginLeft="calc(50% + 200px)"
+          marginLeft="calc(50% + 220px)"
           handleButtonClick={handleMapBoundsReset}
           animation={true}
         />
-      </div>
+      </React.Fragment>
     )
   );
 });

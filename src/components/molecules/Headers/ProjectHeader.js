@@ -131,6 +131,10 @@ const ProjectHeader = ({
             top: "0",
             left: 0,
             zIndex: -1,
+            filter:
+              order === 2
+                ? "drop-shadow( 0px 8px 40px rgba(0, 0, 0, .2))"
+                : "none",
           }}
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

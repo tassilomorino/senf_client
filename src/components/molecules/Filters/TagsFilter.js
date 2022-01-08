@@ -14,10 +14,14 @@ import organizationTypes from "../../../data/organizationTypes";
 import { useTranslation } from "react-i18next";
 
 import styled from "styled-components";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 const FilterWrapperMobile = styled.div`
   z-index: 15;
-  position: relative;
+  position: ${(props) =>
+    props.placing !== "list" && props.placing !== "insights" && isMobileCustom
+      ? "fixed"
+      : "relative"};
 
   top: ${(props) =>
     props.placing === "list"
