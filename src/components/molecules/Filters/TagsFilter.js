@@ -32,7 +32,7 @@ const FilterWrapperMobile = styled.div`
 
   bottom: ${(props) =>
     props.placing !== "list" && props.placing !== "insights" && isMobileCustom
-      ? "110px"
+      ? "100px"
       : "none"};
   width: 100%;
 

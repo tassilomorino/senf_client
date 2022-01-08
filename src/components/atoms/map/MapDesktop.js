@@ -341,9 +341,12 @@ const MapDesktop = ({
 
           {order === 1 || openScream || openProjectRoom ? (
             <React.Fragment>
-              {!openInfoPage && !openScream && !openProjectRoom && (
-                <DesktopMapButtons viewport={mapViewport} mapRef={mapRef} />
-              )}
+              {!openInfoPage &&
+                !openScream &&
+                !openProjectRoom &&
+                !isMobileCustom && (
+                  <DesktopMapButtons viewport={mapViewport} mapRef={mapRef} />
+                )}
 
               <Source id="geojsonIdeas" type="geojson" data={geojsonIdeas} />
               <Layer

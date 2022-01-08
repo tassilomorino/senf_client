@@ -19,7 +19,7 @@ import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
 //ICONS
 import Logo from "../../../images/logo.png";
-import profile_yellow from "../../../images/icons/profile_grey.png";
+import profile_yellow from "../../../images/headerProfile.png";
 import Noprofile from "../../../images/icons/profile_grey.png";
 import Info from "../../../images/icons/info_grey.png";
 import InsightsIcon from "../../../images/icons/insights_yellow.png";
@@ -68,8 +68,8 @@ const ProfileButtonContainer = styled.div`
   position: absolute;
   z-index: 999;
   width: 30px;
-  left: 20px;
-  top: 73px;
+  right: 40px;
+  top: 0px;
   height: 30px;
   font-size: 0;
   pointer-events: pointer;
@@ -157,7 +157,7 @@ const Topbar = ({ order, handleClick }) => {
               handleButtonClick={openTheAccount}
               dataCy="profile-button"
             />
-            <img src={profile_yellow} width="30" alt="profileImage" />
+            <img src={profile_yellow} width="70" alt="profileImage" />
           </ProfileButtonContainer>
         )}
         {/* <ScrollTabs
