@@ -19,22 +19,24 @@ import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
 //ICONS
 import Logo from "../../../images/logo.png";
-import profile_yellow from "../../../images/icons/profile_yellow.png";
-import Noprofile from "../../../images/noprofile.png";
-import Info from "../../../images/icons/info.png";
+import profile_yellow from "../../../images/icons/profile_grey.png";
+import Noprofile from "../../../images/icons/profile_grey.png";
+import Info from "../../../images/icons/info_grey.png";
 import InsightsIcon from "../../../images/icons/insights_yellow.png";
+import Header from "../../../images/header.png";
 
 const Wrapper = styled.div`
-  z-index: 99;
+  z-index: 9;
   position: fixed;
 
   width: 100vw;
   /* height: 7.5em; */
 
   height: 60px;
-  background-color: white;
-  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
-  top: ${(props) => (props.moveUp ? "-90px" : "0px")};
+  /* background-color: white;
+  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2); */
+  opacity: ${(props) => (props.moveUp ? "0" : "1")};
+
   transition: 1s;
   animation: TopbarEnterAnimation 2s;
 
@@ -66,8 +68,8 @@ const ProfileButtonContainer = styled.div`
   position: absolute;
   z-index: 999;
   width: 30px;
-  right: 20px;
-  top: 18px;
+  left: 20px;
+  top: 73px;
   height: 30px;
   font-size: 0;
   pointer-events: pointer;
@@ -88,7 +90,7 @@ const InlineInfoButtonContainer = styled.div`
   position: absolute;
   z-index: 999;
   width: 30px;
-  left: 20px;
+  left: 110px;
   top: 18px;
   height: 30px;
   font-size: 0;
@@ -130,18 +132,19 @@ const Topbar = ({ order, handleClick }) => {
           swipePosition === "top"
         }
       >
+        <img src={Header} width="200px" />
         <InlineInfoButtonContainer>
           <InlineInformationPage />
           <img src={Info} width="30" alt="EndImage" />
         </InlineInfoButtonContainer>
 
-        <LogoContainer>
+        {/* <LogoContainer>
           <img src={Logo} width="100px" alt="logo"></img>
-        </LogoContainer>
+        </LogoContainer> */}
 
-        <InsightsButtonContainer onClick={() => handleClick(4)}>
+        {/* <InsightsButtonContainer onClick={() => handleClick(4)}>
           <img src={InsightsIcon} width="30" alt="profilePlaceHolderImage" />
-        </InsightsButtonContainer>
+        </InsightsButtonContainer> */}
 
         {!authenticated ? (
           <ProfileButtonContainer>
