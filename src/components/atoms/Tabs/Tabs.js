@@ -85,16 +85,18 @@ const Tabs = ({
     return (
       !loading && (
         <React.Fragment>
-          <Tab
-            i={i + 1}
-            active={order === i + 1}
-            onClick={() => handleClick(i + 1)}
-          >
-            <TabText>{tabLabel}</TabText>
-            <ImgWrapper active={order === i + 1}>
-              <img src={Line} width="100%" height="100%" />
-            </ImgWrapper>
-          </Tab>{" "}
+          {tabLabel && (
+            <Tab
+              i={i + 1}
+              active={order === i + 1}
+              onClick={() => handleClick(i + 1)}
+            >
+              <TabText>{tabLabel}</TabText>
+              <ImgWrapper active={order === i + 1}>
+                <img src={Line} width="100%" height="100%" />
+              </ImgWrapper>
+            </Tab>
+          )}
           {/* {i !== tabLabels.length - 1 && (
             <TabLine i={i + 1.5} lineColor={lineColor} />
           )}{" "} */}

@@ -22,6 +22,7 @@ import TagsFilter from "../../molecules/Filters/TagsFilter";
 import Tabs from "../../atoms/Tabs/Tabs";
 import { MenuData } from "../../../data/MenuData";
 import Wave from "../../atoms/Backgrounds/Wave";
+import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 
 const Content = styled.div`
   margin-top: 0px;
@@ -126,6 +127,7 @@ const SwipeList = ({
 }) => {
   const dispatch = useDispatch();
   const openScream = useSelector((state) => state.UI.openScream);
+  const project = useSelector((state) => state.data.project);
   const [searchOpen, setSearchOpen] = useState(false);
   const mapBounds = useSelector((state) => state.data.mapBounds);
 
@@ -268,7 +270,9 @@ const SwipeList = ({
       >
         {mapBounds?.latitude1 !== 0 && (
           <React.Fragment>
-            <ListHeaderWrapper style={listHeaderProps}>
+            <ListHeaderWrapper
+              style={order === 3 ? { height: "60px" } : listHeaderProps}
+            >
               <animated.div {...bind()} style={props} style={listHeaderProps}>
                 <div style={{ height: "60px", pointerEvents: "all" }}>
                   <Tabs
@@ -362,7 +366,7 @@ const SwipeList = ({
               )}
 
               <Wave />
-              {!loading && (
+              {!loading && (order === 1 || order === 2) && (
                 <List
                   swipeListType={swipeListType}
                   type={type}
@@ -371,6 +375,12 @@ const SwipeList = ({
                   dropdown={dropdown}
                   dataFinal={dataFinal}
                   projectsData={projectsData}
+                  handleClick={handleClick}
+                />
+              )}
+              {order === 3 && (
+                <CalendarComponent
+                  projectScreams={project?.screams}
                   handleClick={handleClick}
                 />
               )}

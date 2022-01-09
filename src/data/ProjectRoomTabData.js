@@ -8,6 +8,7 @@ export const ProjectRoomTabData = [
       <Translation>{(t, { i18n }) => <span>{t("ideas")}</span>}</Translation>
     ),
   },
+  {},
   // {
   //   text: (
   //     <Translation>{(t, { i18n }) => <span>{t("info")}</span>}</Translation>

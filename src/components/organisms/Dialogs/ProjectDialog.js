@@ -145,7 +145,7 @@ const ProjectDialog = ({
       status === "None"
   );
 
-  const TabSlicer = project?.calendar ? 2 : 1;
+  const TabSlicer = project?.calendar ? 3 : 1;
 
   return (
     <React.Fragment>
@@ -159,7 +159,7 @@ const ProjectDialog = ({
         handleClose={handleClose}
         handleClick={handleClick}
       />
-      {isMobileCustom && (order === 1 || order === 2) && (
+      {isMobileCustom && (order === 1 || order === 3) && (
         <PostScream
           loadingProjects={loadingProjects}
           projectsData={projects}
@@ -168,9 +168,9 @@ const ProjectDialog = ({
       )}
       {!isMobileCustom && order === 0 && <MapHider />}
       <Wrapper>
-        {!isMobileCustom || (isMobileCustom && order !== 1 && <Background />)}
+        {!isMobileCustom || (isMobileCustom && order === 0 && <Background />)}
 
-        {(order === 1 || order === 2) && (
+        {(order === 1 || order === 3) && (
           <SwipeList
             swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}
             type="projectIdeas"
@@ -232,7 +232,7 @@ const ProjectDialog = ({
             </MainAnimations>
           </div>
         )}
-        {order === 2 && (
+        {/* {order === 2 && (
           <React.Fragment>
             <Break />
 
@@ -250,7 +250,7 @@ const ProjectDialog = ({
               />
             </MainAnimations>
           </React.Fragment>
-        )}
+        )} */}
       </Wrapper>
     </React.Fragment>
   );

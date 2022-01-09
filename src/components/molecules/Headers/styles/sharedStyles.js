@@ -75,7 +75,6 @@ export const SVGWrapper = styled.div`
   overflow-x: hidden;
 
   @media (min-width: 768px) {
-    left: 200px;
     width: 400px;
     animation: none;
   }
