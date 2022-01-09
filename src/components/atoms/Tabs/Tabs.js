@@ -43,6 +43,7 @@ const Tab = styled.div`
   animation: ${enterAnimation} ${(props) => props.i * 0.3}s;
 
   opacity: ${(props) => (props.active ? "1" : "0.6")};
+  pointer-events: all;
 `;
 const TabText = styled.h2``;
 
@@ -56,10 +57,10 @@ const UnderLine = styled.div`
 
 const ImgWrapper = styled.div`
   opacity: ${(props) => (props.active ? "1" : "0")};
-  margin-top: 39px;
+  top: 70%;
   position: absolute;
   width: -webkit-fill-available;
-  z-index: -1;
+  z-index: 1;
   height: 30px;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
   animation: ${(props) => (props.active ? "ImgWrapperAnimation 0.5s" : "none")};

@@ -60,7 +60,6 @@ const ListWrapper = styled.div`
   @media (min-width: 768px) {
     width: 400px;
     top: 110px;
-    position: relative;
   }
 `;
 
@@ -127,6 +126,7 @@ const SwipeList = ({
 }) => {
   const dispatch = useDispatch();
   const openScream = useSelector((state) => state.UI.openScream);
+  const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
   const project = useSelector((state) => state.data.project);
   const [searchOpen, setSearchOpen] = useState(false);
   const mapBounds = useSelector((state) => state.data.mapBounds);
@@ -392,31 +392,66 @@ const SwipeList = ({
   ) : (
     <Content>
       <Background />
-      <Toolbar
-        swipeListType={swipeListType}
-        loading={loading}
-        handleDropdown={handleDropdown}
-        dataFinalLength={dataFinal.length}
-        setSearchOpen={setSearchOpen}
-        searchOpen={searchOpen}
-        setSearchTerm={setSearchTerm}
-        searchTerm={searchTerm}
-        type={type}
-      />{" "}
-      {searchOpen ? (
-        <div style={{ height: "60px", transition: "0.5s" }} />
-      ) : (
-        <div style={{ height: "0px", transition: "0.5s" }} />
+      {openProjectRoom && (
+        <div
+          style={{
+            position: "absolute",
+            marginLeft: "50%",
+            transform: "translateX(-50%)",
+          }}
+        >
+          <Tabs
+            loading={loading}
+            handleClick={handleClick}
+            order={order}
+            tabLabels={tabLabels}
+            marginTop="25px"
+            marginBottom="0px"
+          />
+        </div>
       )}
+      {(order == 1 || order === 2) && (
+        <React.Fragment>
+          <Toolbar
+            swipeListType={swipeListType}
+            loading={loading}
+            handleDropdown={handleDropdown}
+            dataFinalLength={dataFinal.length}
+            setSearchOpen={setSearchOpen}
+            searchOpen={searchOpen}
+            setSearchTerm={setSearchTerm}
+            searchTerm={searchTerm}
+            type={openProjectRoom && tabLabels.length > 1 ? "underTabs" : type}
+          />
+          <div
+            style={
+              searchOpen
+                ? { height: "60px", transition: "0.5s" }
+                : { height: "0px", transition: "0.5s" }
+            }
+          />
+        </React.Fragment>
+      )}
+
       <ListWrapper>
-        <List
-          swipeListType={swipeListType}
-          type={type}
-          loading={loading}
-          dropdown={dropdown}
-          dataFinal={dataFinal}
-          projectsData={projectsData}
-        />
+        {!loading && (order === 1 || order === 2) && (
+          <List
+            swipeListType={swipeListType}
+            type={type}
+            order={order}
+            loading={loading}
+            dropdown={dropdown}
+            dataFinal={dataFinal}
+            projectsData={projectsData}
+            handleClick={handleClick}
+          />
+        )}
+        {order === 3 && (
+          <CalendarComponent
+            projectScreams={project?.screams}
+            handleClick={handleClick}
+          />
+        )}
       </ListWrapper>
     </Content>
   );

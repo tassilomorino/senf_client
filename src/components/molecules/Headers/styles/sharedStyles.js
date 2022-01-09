@@ -82,8 +82,8 @@ export const SVGWrapper = styled.div`
 
 export const StyledIcon = styled.img`
   width: 30px;
-  top: 80px;
-  left: calc(50% - 30px);
+  top: 78px;
+  left: calc(100% - 53px);
   position: absolute;
   z-index: 2;
   pointer-events: all;

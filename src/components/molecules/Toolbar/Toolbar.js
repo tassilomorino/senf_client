@@ -31,7 +31,7 @@ const Wrapper = styled.div`
   flex-flow: wrap;
   @media (min-width: 768px) {
     position: fixed;
-    top: ${(props) => (props.type === "standalone" ? "30px" : "100px")};
+    top: ${(props) => (props.type === "standalone" ? "30px" : "110px")};
     z-index: 99;
     width: 380px;
     padding: 10px 10px 20px 10px;
