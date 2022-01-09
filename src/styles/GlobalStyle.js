@@ -39,6 +39,7 @@ export const StyledText = styled.p`
   line-height: 20x;
   color: ${(props) => (props.color ? props.color : "#353535")};
   text-align: ${(props) => (props.textAlign ? props.textAlign : "left")};
+  margin-left: ${(props) => (props.marginLeft ? props.marginLeft : "0")};
 `;
 export const StyledSmallText = styled.p`
   margin: 0;

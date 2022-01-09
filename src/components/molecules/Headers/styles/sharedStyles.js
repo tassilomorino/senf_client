@@ -5,9 +5,8 @@ import styled from "styled-components";
 export const FixedWrapper = styled.div`
   z-index: 91;
   position: fixed;
-  width: 100%;
-  overflow: visible;
-  height: 50px;
+  overflow: hidden;
+  height: 200px;
   top: ${(props) => (props.moveUp ? "-120px" : "0px")};
   padding-top: 10px;
 
@@ -15,7 +14,7 @@ export const FixedWrapper = styled.div`
   left: 0%;
   border-radius: 0px 0px;
   animation: downAnimation 1.7s ease-in-out;
-  pointer-events: all;
+  pointer-events: none;
 
   @media (min-width: 768px) {
     left: 200px;
@@ -35,9 +34,18 @@ export const FixedWrapper = styled.div`
   }
 `;
 
+export const InnerWrapper = styled.div`
+  position: ${(props) => (props.isMobileCustom ? "fixed" : "absolute")};
+  width: ${(props) => (props.order === 0 ? "120%" : "100%")};
+  height: 50px;
+  top: 0px;
+  transition: 0.4s;
+  pointer-events: all;
+`;
+
 export const FlexWrapper = styled.div`
   position: relative;
-  width: 95%;
+  width: 78.5%;
   height: 50px;
   top: 0px;
   left: 0;
@@ -49,13 +57,16 @@ export const FlexWrapper = styled.div`
 
 export const ImgWrapper = styled.div`
   position: relative;
-  width: 40px;
-  height: 40px;
+  width: ${(props) => (props.order === 0 ? "60px" : "0px")};
+  height: ${(props) => (props.order === 0 ? "60px" : "0px")};
+  top: 15px;
   background-color: white;
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.8);
   z-index: 3;
+  margin-left: auto;
+  transition: 0.5s;
 `;
 export const StyledImg = styled.img`
   flex-shrink: 0;
@@ -66,23 +77,17 @@ export const StyledImg = styled.img`
 
 export const SVGWrapper = styled.div`
   position: absolute;
-  top: -55px;
+  top: 0px;
   left: 0;
   pointer-events: none;
   z-index: -1;
   width: 100%;
   height: 300px;
-  overflow-x: hidden;
-
-  @media (min-width: 768px) {
-    width: 400px;
-    animation: none;
-  }
 `;
 
 export const StyledIcon = styled.img`
   width: 30px;
-  top: 78px;
+  top: 20px;
   left: calc(100% - 53px);
   position: absolute;
   z-index: 2;
@@ -90,10 +95,6 @@ export const StyledIcon = styled.img`
 `;
 
 export const TitleWrapper = styled.div`
-  font-size: 18px;
-  font-family: PlayfairDisplay-Bold;
-  color: #353535;
-  text-align: center;
   width: 73%;
   margin-top: 15px;
   margin-bottom: 20px;

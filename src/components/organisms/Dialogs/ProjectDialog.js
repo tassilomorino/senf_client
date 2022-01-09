@@ -152,6 +152,7 @@ const ProjectDialog = ({
       <ProjectHeader
         imgUrl={project?.imgUrl}
         title={project?.title}
+        owner={project?.owner}
         loading={loading}
         calendar={project?.calendar}
         order={order}
