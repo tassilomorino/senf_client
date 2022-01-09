@@ -20,13 +20,12 @@ import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 //ICONS
 import Logo from "../../../images/logo.png";
 import profile_yellow from "../../../images/headerProfile.png";
-import Noprofile from "../../../images/icons/profile_grey.png";
+import Noprofile from "../../../images/headerProfile.png";
 import Info from "../../../images/icons/info_grey.png";
 import InsightsIcon from "../../../images/icons/insights_yellow.png";
 import Header from "../../../images/header.png";
 
 const Wrapper = styled.div`
-  z-index: 9;
   position: fixed;
 
   width: 100vw;
@@ -35,9 +34,11 @@ const Wrapper = styled.div`
   height: 60px;
   /* background-color: white;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2); */
-  opacity: ${(props) => (props.moveUp ? "0" : "1")};
+  top: ${(props) => (props.moveUp ? "-90px" : "0px")};
 
-  transition: 1s;
+  opacity: ${(props) => (props.moveUp ? "0.5" : "1")};
+  transition: 0.4s;
+  z-index: 1;
   animation: TopbarEnterAnimation 2s;
 
   @keyframes TopbarEnterAnimation {

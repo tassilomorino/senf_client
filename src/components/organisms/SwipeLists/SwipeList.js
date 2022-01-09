@@ -113,6 +113,7 @@ const ClickBackground = styled.div`
 const SwipeList = ({
   swipeListType,
   type,
+  tabLabels,
   loading,
   order,
   dropdown,
@@ -274,7 +275,7 @@ const SwipeList = ({
                     loading={loading}
                     handleClick={handleClick}
                     order={order}
-                    tabLabels={MenuData.map((item) => item.text).slice(0, 2)}
+                    tabLabels={tabLabels}
                     marginTop={"20px"}
                     marginBottom={"20px"}
                   />
@@ -300,32 +301,6 @@ const SwipeList = ({
             {/* <ShadowBox display={shadow ? "block" : "none"} /> */}
 
             <ListWrapper ref={ref} id="ListWrapper">
-              {order === 2 && (
-                <SlideUpSection style={slideUpSectionProps}>
-                  <OrganizationsIntroWrapper>
-                    <OrganizationsIntro>
-                      Entdecke die Organisationen hinter den Projekträumen.
-                    </OrganizationsIntro>
-                    <CustomIconButton
-                      name="ArrowRight"
-                      position="relative"
-                      top="20px"
-                      backgroundColor="#FFF0BC"
-                      handleButtonClick={() => handleClick(3)}
-                    />
-                  </OrganizationsIntroWrapper>
-                  <Toolbar
-                    swipeListType={swipeListType}
-                    loading={loading}
-                    handleDropdown={handleDropdown}
-                    dataFinalLength={dataFinal.length}
-                    setSearchOpen={setSearchOpen}
-                    searchOpen={searchOpen}
-                    setSearchTerm={setSearchTerm}
-                    searchTerm={searchTerm}
-                  />{" "}
-                </SlideUpSection>
-              )}
               {order === 1 && (
                 <SlideUpSection style={slideUpSectionProps}>
                   <OrganizationsIntroWrapper>
@@ -352,6 +327,34 @@ const SwipeList = ({
                   />{" "}
                 </SlideUpSection>
               )}
+
+              {order === 2 && (
+                <SlideUpSection style={slideUpSectionProps}>
+                  <OrganizationsIntroWrapper>
+                    <OrganizationsIntro>
+                      Entdecke die Organisationen hinter den Projekträumen.
+                    </OrganizationsIntro>
+                    <CustomIconButton
+                      name="ArrowRight"
+                      position="relative"
+                      top="20px"
+                      backgroundColor="#FFF0BC"
+                      handleButtonClick={() => handleClick(3)}
+                    />
+                  </OrganizationsIntroWrapper>
+                  <Toolbar
+                    swipeListType={swipeListType}
+                    loading={loading}
+                    handleDropdown={handleDropdown}
+                    dataFinalLength={dataFinal.length}
+                    setSearchOpen={setSearchOpen}
+                    searchOpen={searchOpen}
+                    setSearchTerm={setSearchTerm}
+                    searchTerm={searchTerm}
+                  />{" "}
+                </SlideUpSection>
+              )}
+
               {searchOpen ? (
                 <div style={{ height: "60px", transition: "0.5s" }} />
               ) : (

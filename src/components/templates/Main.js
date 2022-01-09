@@ -58,6 +58,7 @@ import CreateProjectDialog from "../organisms/CreateProject/CreateProjectDialog"
 import OrganizationDialog from "../organisms/Dialogs/OrganizationDialog";
 import OrganizationsPage from "../organisms/SubPages/OrganizationsPage";
 import styled from "styled-components";
+import { MenuData } from "../../data/MenuData";
 
 const MainColumnWrapper = styled.div`
   width: 100vw;
@@ -442,6 +443,7 @@ const Main = () => {
               <SwipeList
                 swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}
                 type="standalone"
+                tabLabels={MenuData.map((item) => item.text).slice(0, 2)}
                 loading={order === 1 ? loading : loadingProjects}
                 order={order}
                 dataFinal={order === 1 ? dataFinal : sortedProjectRooms}

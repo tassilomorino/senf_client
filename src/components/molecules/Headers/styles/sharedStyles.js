@@ -8,7 +8,7 @@ export const FixedWrapper = styled.div`
   width: 100%;
   overflow: visible;
   height: 50px;
-  top: ${(props) => (props.moveUp ? "-90px" : "0px")};
+  top: ${(props) => (props.moveUp ? "-120px" : "0px")};
   padding-top: 10px;
 
   transition: 1s;
@@ -65,11 +65,11 @@ export const StyledImg = styled.img`
 `;
 
 export const SVGWrapper = styled.div`
-  position: fixed;
+  position: absolute;
   top: -55px;
   left: 0;
   pointer-events: none;
-  z-index: 9;
+  z-index: -1;
   width: 100%;
   height: 300px;
   overflow-x: hidden;

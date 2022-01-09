@@ -26,6 +26,7 @@ import _ from "lodash";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import { useTranslation } from "react-i18next";
 import PostScream from "../PostIdea/PostScream";
+import { ProjectRoomTabData } from "../../../data/ProjectRoomTabData";
 
 const Wrapper = styled.div`
   @media (min-width: 768px) {
@@ -62,7 +63,7 @@ const ProjectDialog = ({
 }) => {
   const { t } = useTranslation();
   const [path, setPath] = useState("");
-  const [order, setOrder] = useState(2);
+  const [order, setOrder] = useState(0);
   const [dropdown, setDropdown] = useState("newest");
 
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
@@ -95,7 +96,7 @@ const ProjectDialog = ({
     (order) => {
       setOrder(order);
 
-      if (order === 2) {
+      if (order === 0) {
         window.scrollTo({
           top: 0,
           left: 0,
@@ -144,6 +145,8 @@ const ProjectDialog = ({
       status === "None"
   );
 
+  const TabSlicer = project?.calendar ? 2 : 1;
+
   return (
     <React.Fragment>
       <ProjectHeader
@@ -156,21 +159,25 @@ const ProjectDialog = ({
         handleClose={handleClose}
         handleClick={handleClick}
       />
-      {isMobileCustom && (order === 1 || order === 3) && (
+      {isMobileCustom && (order === 1 || order === 2) && (
         <PostScream
           loadingProjects={loadingProjects}
           projectsData={projects}
           project={project}
         />
       )}
-      {!isMobileCustom && order === 2 && <MapHider />}
+      {!isMobileCustom && order === 0 && <MapHider />}
       <Wrapper>
         {!isMobileCustom || (isMobileCustom && order !== 1 && <Background />)}
 
-        {order === 1 && (
+        {(order === 1 || order === 2) && (
           <SwipeList
-            swipeListType="ideas"
+            swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}
             type="projectIdeas"
+            tabLabels={ProjectRoomTabData.map((item) => item.text).slice(
+              0,
+              TabSlicer
+            )}
             loading={loading}
             order={order}
             dataFinal={dataFinal}
@@ -183,9 +190,10 @@ const ProjectDialog = ({
             dataFinalMap={dataFinalMap}
             setSearchTerm={setSearchTerm}
             searchTerm={searchTerm}
+            handleClick={handleClick}
           />
         )}
-        {order === 2 && (
+        {order === 0 && (
           <div
             style={{
               overflow: "scroll",
@@ -224,7 +232,7 @@ const ProjectDialog = ({
             </MainAnimations>
           </div>
         )}
-        {order === 3 && (
+        {order === 2 && (
           <React.Fragment>
             <Break />
 

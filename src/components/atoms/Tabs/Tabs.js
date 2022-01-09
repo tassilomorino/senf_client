@@ -30,6 +30,7 @@ const FlexWrapper = styled.div`
   justify-content: center;
 `;
 const Tab = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -56,7 +57,7 @@ const ImgWrapper = styled.div`
   opacity: ${(props) => (props.active ? "1" : "0")};
   margin-top: 5px;
   position: absolute;
-  width: 120px;
+  width: -webkit-fill-available;
   z-index: -1;
   height: 25px;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
@@ -91,7 +92,6 @@ const Tabs = ({
           >
             <TabText>{tabLabel}</TabText>
             <ImgWrapper active={order === i + 1}>
-              {" "}
               <img src={Line} width="100%" height="100%" />
             </ImgWrapper>
           </Tab>{" "}
