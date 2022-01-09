@@ -35,8 +35,6 @@ const Wrapper = styled.div`
   /* background-color: white;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2); */
   top: ${(props) => (props.moveUp ? "-90px" : "0px")};
-
-  opacity: ${(props) => (props.moveUp ? "0.5" : "1")};
   transition: 0.4s;
   z-index: 1;
   animation: TopbarEnterAnimation 2s;
@@ -150,7 +148,7 @@ const Topbar = ({ order, handleClick }) => {
         {!authenticated ? (
           <ProfileButtonContainer>
             <LoginRegistration />
-            <img src={Noprofile} width="30" alt="profilePlaceHolderImage" />
+            <img src={Noprofile} width="70" alt="profilePlaceHolderImage" />
           </ProfileButtonContainer>
         ) : (
           <ProfileButtonContainer>

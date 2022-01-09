@@ -423,7 +423,8 @@ const Main = () => {
         !loadingProjects &&
         isMobileCustom &&
         !openScream &&
-        (order === 1 || openAccount) && (
+        !openAccount &&
+        order === 1 && (
           <PostScream
             loadingProjects={loadingProjects}
             projectsData={projects}

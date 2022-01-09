@@ -58,15 +58,6 @@ const ProjectHeader = ({
 
   return (
     <React.Fragment>
-      {/* {shareOpen && (
-        <ShareModal
-          screamId={project}
-          title={title}
-          path={path}
-          setShareOpen={setShareOpen}
-        />
-      )} */}
-
       <FixedWrapper moveUp={openScream || swipePosition === "top"} id="wrapper">
         <StyledIcon
           onClick={() => handleClick(0)}
@@ -93,34 +84,8 @@ const ProjectHeader = ({
           </ImgWrapper>
         </FlexWrapper>
 
-        {/* <div style={{ position: "absolute", top: "20px", right: "10px" }}>
-          <CustomIconButton
-            name="Share"
-            margin="0px"
-            left="calc(100% - 50px)"
-            position="relative"
-            handleButtonClick={handleShare}
-          />
-        </div> */}
-
-        {/* <div style={{ position: "absolute", top: "10px", right: "10px" }}>
-        <ShareModal screamId={project} title={title} path={path} />
-      </div> */}
-
         <StyledText>{owner}</StyledText>
-        {/* <Tabs
-          loading={loading}
-          handleClick={handleClick}
-          order={order}
-          tabLabels={
-            calendar
-              ? ProjectTabData.map((item) => item.text)
-              : ProjectTabData.map((item) => item.text).slice(0, 2)
-          }
-          marginTop={"0px"}
-          marginBottom={"0px"}
-          lineColor={"#cecece"}
-        ></Tabs> */}
+
         <SVGWrapper>
           <svg
             width="100%"

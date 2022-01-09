@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { memo } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import SortingSelect from "../../atoms/Selects/SortingSelect";
 import styled from "styled-components";
@@ -109,6 +109,7 @@ const Toolbar = ({
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
 
   const setSearch = () => {
     setSearchOpen(!searchOpen);
@@ -122,9 +123,30 @@ const Toolbar = ({
     dispatch(openCreateProjectRoomFunc(true));
   };
 
+  const openRequestProjectRoom = () => {
+    var link =
+      "mailto:dein@senf.koeln" + "?subject=" + escape("Projektraum-Anfrage");
+    // +
+    // "&body=" +
+    // escape(
+    //   "Projektraum-Titel:" +
+    //     "\n" +
+    //     "\n" +
+    //     "Worum geht's:" +
+    //     "\n" +
+    //     "\n" +
+    //     "Projektzeitraum:" +
+    //     "\n" +
+    //     "\n" +
+    //     "Logo + Cover-Bild:"
+    // );
+    window.location.href = link;
+  };
+
   const openCreateOrganization = () => {
     dispatch(stateCreateOrganizationsFunc(true));
   };
+
   return (
     !loading && (
       <Wrapper type={type} searchOpen={searchOpen}>
@@ -159,7 +181,13 @@ const Toolbar = ({
           />
         </SearchIconButton>
         {swipeListType === "projectRoomOverview" ? (
-          <AddIconButton onClick={openCreateProjectRoom}>
+          <AddIconButton
+            onClick={
+              user?.organizationId?.length
+                ? openCreateProjectRoom
+                : openRequestProjectRoom
+            }
+          >
             <img src={AddIcon} width="20px" style={{ marginLeft: "auto" }} />
           </AddIconButton>
         ) : (

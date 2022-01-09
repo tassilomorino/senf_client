@@ -46,20 +46,21 @@ const Tab = styled.div`
 `;
 const TabText = styled.h2``;
 
-const TabLine = styled.div`
-  height: 3px;
-  width: 50px;
+const UnderLine = styled.div`
+  height: 2px;
+  width: calc(100% - 30px);
   background-color: #353535;
-  margin-left: 70px;
+  border-radius: 15px;
+  margin-left: 15px;
 `;
 
 const ImgWrapper = styled.div`
   opacity: ${(props) => (props.active ? "1" : "0")};
-  margin-top: 5px;
+  margin-top: 39px;
   position: absolute;
   width: -webkit-fill-available;
   z-index: -1;
-  height: 25px;
+  height: 30px;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
   animation: ${(props) => (props.active ? "ImgWrapperAnimation 0.5s" : "none")};
 
@@ -93,7 +94,11 @@ const Tabs = ({
             >
               <TabText>{tabLabel}</TabText>
               <ImgWrapper active={order === i + 1}>
-                <img src={Line} width="100%" height="100%" />
+                <img
+                  src={Line}
+                  style={{ width: "108% ", marginLeft: "-5%" }}
+                  height="20px"
+                />
               </ImgWrapper>
             </Tab>
           )}

@@ -15,6 +15,9 @@ import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 
 import _ from "lodash";
+import { AccountTabData } from "../../../data/AccountTabData";
+import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
+import { useTranslation } from "react-i18next";
 
 const Wrapper = styled.div`
   @media (min-width: 768px) {
@@ -32,6 +35,7 @@ const Break = styled.div`
 `;
 
 const Account = ({ dataFinalMap }) => {
+  const { t } = useTranslation();
   const loadingMyScreams = useSelector((state) => state.data.loadingMyScreams);
   const mapViewport = useSelector((state) => state.data.mapViewport);
   const mapBounds = useSelector((state) => state.data.mapBounds);
@@ -104,6 +108,7 @@ const Account = ({ dataFinalMap }) => {
           <SwipeList
             swipeListType="ideas"
             type="myIdeas"
+            tabLabels={AccountTabData.map((item) => item.text).slice(0, 1)}
             loading={loadingMyScreams}
             order={order}
             dataFinal={dataFinal}
@@ -117,7 +122,7 @@ const Account = ({ dataFinalMap }) => {
           />
         )}
 
-        {order === 2 && (
+        {order === 0 && (
           <div
             style={{
               overflow: "scroll",
@@ -125,6 +130,17 @@ const Account = ({ dataFinalMap }) => {
               pointerEvents: "all",
             }}
           >
+            <SubmitButton
+              text={t("showIdeas")}
+              zIndex="9"
+              backgroundColor={isMobileCustom ? "#353535" : "white"}
+              textColor={isMobileCustom ? "white" : "#353535"}
+              position="fixed"
+              bottom={isMobileCustom ? "10px" : "50%"}
+              left={isMobileCustom ? "0" : "calc(600px + ((100% - 600px)/2)) "}
+              marginLeft={isMobileCustom ? "50%" : "0"}
+              handleButtonClick={() => handleClick(1)}
+            />
             <Break />
             <MainAnimations
               transition="0.5s"

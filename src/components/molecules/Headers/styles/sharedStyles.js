@@ -11,7 +11,7 @@ export const FixedWrapper = styled.div`
   top: ${(props) => (props.moveUp ? "-120px" : "0px")};
   padding-top: 10px;
 
-  transition: 1s;
+  transition: 0.4s;
   left: 0%;
   border-radius: 0px 0px;
   animation: downAnimation 1.7s ease-in-out;
