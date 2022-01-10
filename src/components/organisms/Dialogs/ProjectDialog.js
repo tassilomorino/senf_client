@@ -52,7 +52,7 @@ const MapHider = styled.div`
   left: 600px;
   background-color: #000;
   opacity: 0.6;
-  z-index: 0;
+  z-index: 9;
 `;
 
 const ProjectDialog = ({

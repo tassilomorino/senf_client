@@ -71,12 +71,13 @@ const MainColumnWrapper = styled.div`
 
   @media (min-width: 768px) {
     margin-left: 200px;
-    width: 400px;
+    /* width: 400px; */
     height: 100vh;
     overflow-y: scroll;
     z-index: 90;
     top: 0;
     position: fixed;
+    overflow-x: visible;
   }
 `;
 const Main = () => {
@@ -434,7 +435,9 @@ const Main = () => {
 
       {!openInfoPage && (
         <MainColumnWrapper>
-          {loading && !isMobileCustom && <Loader />}
+          {(loading || loadingIdea) && !isMobileCustom && (
+            <Loader left="200px" width="400px" />
+          )}
 
           {!openProjectRoom &&
             !openAccount &&

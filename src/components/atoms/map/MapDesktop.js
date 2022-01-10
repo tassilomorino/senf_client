@@ -295,6 +295,7 @@ const MapDesktop = ({
                   top: "0",
                   height: "100%",
                   transform: "scale(1)",
+                  zIndex: "-1",
                 }
           }
           mapStyle="mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6"

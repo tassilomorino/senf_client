@@ -110,6 +110,13 @@ const ClickBackground = styled.div`
   top: 0;
 `;
 
+const DesktopTabWrapper = styled.div`
+  position: absolute;
+  margin-left: 200px;
+  transform: translateX(-50%);
+  width: 400px;
+`;
+
 const SwipeList = ({
   swipeListType,
   type,
@@ -393,13 +400,7 @@ const SwipeList = ({
     <Content>
       <Background />
       {openProjectRoom && (
-        <div
-          style={{
-            position: "absolute",
-            marginLeft: "50%",
-            transform: "translateX(-50%)",
-          }}
-        >
+        <DesktopTabWrapper>
           <Tabs
             loading={loading}
             handleClick={handleClick}
@@ -408,7 +409,7 @@ const SwipeList = ({
             marginTop="25px"
             marginBottom="0px"
           />
-        </div>
+        </DesktopTabWrapper>
       )}
       {(order == 1 || order === 2) && (
         <React.Fragment>

@@ -8,21 +8,26 @@ import Logo from "../../../images/AddPlease.png";
 import { Background } from "./GradientBackgrounds";
 
 const Wrapper = styled.div`
-  z-index: 99;
+  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
 
   height: 100%;
-  width: 100%;
+  width: ${(props) => (props.width ? props.width : "100%")};
   top: 0;
-  left: 0;
+  left: ${(props) => (props.left ? props.left : 0)};
   position: fixed;
 
-  @media (min-width: 768px) {
-    position: relative;
-  }
+  background: rgb(254, 217, 87);
+  background: linear-gradient(
+    180deg,
+    rgba(254, 217, 87, 1) 0%,
+    rgba(254, 217, 87, 1) 6%,
+    rgba(255, 218, 83, 1) 41%,
+    rgba(255, 255, 255, 1) 100%
+  );
 `;
 
 const LoaderImg = styled.img`
@@ -78,23 +83,10 @@ const LoaderImg = styled.img`
     }
   }
 `;
-const Loader = () => {
+const Loader = ({ left, width }) => {
   return (
-    <Wrapper>
+    <Wrapper left={left} width={width}>
       <LoaderImg src={lamploader} alt="loader-icon" />
-      <Background />
-      {/* <div
-        style={{
-          width: "100%",
-          height: "120px",
-          backgroundColor: "#fed947",
-          bottom: 0,
-          position: "fixed",
-          borderRadius: "20px 20px 0 0px",
-        }}
-      /> */}
-
-      {/* <img src={lamploader} className="lamploader" alt="loader-icon" /> */}
     </Wrapper>
   );
 };

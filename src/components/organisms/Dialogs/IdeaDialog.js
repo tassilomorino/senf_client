@@ -215,7 +215,7 @@ const IdeaDialog = () => {
   );
   const content = (
     <Wrapper>
-      {!loadingIdea ? (
+      {!loadingIdea && (
         <React.Fragment>
           <ButtonsContainer>
             <CustomIconButton name="Share" handleButtonClick={handleShare} />
@@ -242,8 +242,6 @@ const IdeaDialog = () => {
             <div style={{ height: "200px" }} />
           )}
         </React.Fragment>
-      ) : (
-        <Loader />
       )}
     </Wrapper>
   );

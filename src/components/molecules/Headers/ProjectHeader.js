@@ -94,11 +94,12 @@ const ProjectHeader = ({
               position: "absolute",
               top: "0",
               left: 0,
-              zIndex: -1,
+              zIndex: 3,
               filter:
                 order === 0
                   ? "drop-shadow( 0px 8px 40px rgba(0, 0, 0, .2))"
                   : "none",
+              transition: "0.7s",
             }}
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
