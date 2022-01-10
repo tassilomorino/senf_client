@@ -19,8 +19,9 @@ import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { Wrapper } from "./styles/sharedStyles";
 import { TagsFilter } from "../../molecules/Filters/TagsFilter";
-import { Tabs } from "@material-ui/core";
 import { MenuData } from "../../../data/MenuData";
+import { StyledH2 } from "../../../styles/GlobalStyle";
+import Tabs from "../../atoms/Tabs/Tabs";
 
 const OuterInnerWrapper = styled.div`
   overflow-y: scroll;
@@ -44,7 +45,6 @@ const NoIdeasYet = styled.div`
 `;
 
 const Title = styled.h2`
-  font-family: PlayfairDisplay-Bold;
   font-size: 22px;
   font-weight: 100;
   color: #353535;
@@ -170,10 +170,18 @@ const OrganizationsPage = ({ handleClick, order, loading }) => {
           margin="10px"
           backgroundColor="#FFF0BC"
           handleButtonClick={() => handleClick(2)}
+          zIndex={99}
         />
       )}
 
-      <Title>{t("organizations")}</Title>
+      <Tabs
+        loading={false}
+        handleClick={handleClick}
+        order={1}
+        tabLabels={MenuData.map((item) => item.text).slice(2, 3)}
+        marginTop={"20px"}
+        marginBottom={"20px"}
+      />
 
       <TagsFilter
         placing="list"

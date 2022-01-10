@@ -24,6 +24,8 @@ import { Wrapper } from "./styles/sharedStyles";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { StyledH2 } from "../../../styles/GlobalStyle";
+import Tabs from "../../atoms/Tabs/Tabs";
+import { MenuData } from "../../../data/MenuData";
 
 const CoverWrapper = styled.div`
   margin-left: 2.5%;
@@ -136,6 +138,15 @@ const InsightsPage = ({ handleClick }) => {
           handleButtonClick={() => handleClick(2)}
         />
       )}
+
+      <Tabs
+        loading={false}
+        handleClick={handleClick}
+        order={1}
+        tabLabels={MenuData.map((item) => item.text).slice(3, 4)}
+        marginTop={"20px"}
+        marginBottom={"0px"}
+      />
       <MainAnimations transition="0.5s" display="block" paddingBottom="2em">
         <Keyindicators
           screams={screams}
