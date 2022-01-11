@@ -237,6 +237,8 @@ const Main = () => {
       setOrder(order);
       dispatch(closeScream());
       dispatch(openProjectRoomFunc(null, false));
+      dispatch(openOrganizationFunc(null, false));
+
       dispatch(closeAccountFunc());
       dispatch(handleTopicSelectorRedux("all"));
 

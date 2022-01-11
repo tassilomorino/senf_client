@@ -29,6 +29,7 @@ export const getProjects = (mapViewport) => async (dispatch) => {
     .collectionGroup("projectRooms")
     // .where("centerLat", "<", Number(mapViewport?.latitude) + 1)
     // .where("centerLat", ">", Number(mapViewport?.latitude) - 1)
+    .where("status", "==", "active")
     .orderBy("createdAt", "desc")
     .get();
   // : await db.collection("projects").orderBy("createdAt", "desc").get();
@@ -40,36 +41,41 @@ export const getProjects = (mapViewport) => async (dispatch) => {
         `/organizationsData/${doc.data().organizationId}/${doc.id}/thumbnail`
       )
       .getDownloadURL()
-      .then((image) => {
-        const docData = {
-          projectRoomId: doc.data().projectRoomId,
-          title: doc.data().title,
-          description: doc.data().description.substr(0, 180),
-          owner: doc.data().owner,
-          createdAt: doc.data().createdAt,
-          startDate: doc.data().startDate,
-          endDate: doc.data().endDate,
-          status: doc.data().status,
-          geoData: doc.data().geoData,
-          centerLat: doc.data().centerLat,
-          centerLong: doc.data().centerLong,
-          zoom: doc.data().zoom,
+      .then(onResolve, onReject);
 
-          calendar: doc.data().calendar,
-          organizationId: doc.data().organizationId,
-          // weblink: doc.data().weblink,
-          Thema: doc.data().Thema,
-          organizationType: doc.data().organizationType,
-          imgUrl: image,
-        };
-        projects.push(docData);
-        if (projects.length === ref.size) {
-          dispatch({
-            type: SET_PROJECTS,
-            payload: projects,
-          });
-        }
-      });
+    function onResolve(image) {
+      const docData = {
+        projectRoomId: doc.data().projectRoomId,
+        title: doc.data().title,
+        description: doc.data().description.substr(0, 180),
+        owner: doc.data().owner,
+        createdAt: doc.data().createdAt,
+        startDate: doc.data().startDate,
+        endDate: doc.data().endDate,
+        status: doc.data().status,
+        geoData: doc.data().geoData,
+        centerLat: doc.data().centerLat,
+        centerLong: doc.data().centerLong,
+        zoom: doc.data().zoom,
+
+        calendar: doc.data().calendar,
+        organizationId: doc.data().organizationId,
+        // weblink: doc.data().weblink,
+        Thema: doc.data().Thema,
+        organizationType: doc.data().organizationType,
+        imgUrl: image,
+      };
+      projects.push(docData);
+      if (projects.length === ref.size) {
+        dispatch({
+          type: SET_PROJECTS,
+          payload: projects,
+        });
+      }
+    }
+    function onReject(error) {
+      projects.push(doc.data());
+    }
   });
 };
 

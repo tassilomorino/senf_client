@@ -23,18 +23,25 @@ import { MenuData } from "../../../data/MenuData";
 import { StyledH2 } from "../../../styles/GlobalStyle";
 import Tabs from "../../atoms/Tabs/Tabs";
 
-const OuterInnerWrapper = styled.div`
+const InnerWrapper = styled.div`
   overflow-y: scroll;
   pointer-events: all;
-  height: 100%;
+  height: calc(100% - 120px);
   width: 100%;
+  margin-top: ${(props) => (props.isMobileCustom ? "120px" : "120px")};
+  overflow: scroll;
 `;
 
-const InnerWrapper = styled.div`
-  margin-top: ${(props) => (props.isMobileCustom ? "10px" : "120px")};
-  pointer-events: all;
+const TitleWrapper = styled.div`
+  position: fixed;
+  width: 100%;
+  background-color: #fed957;
+  z-index: 10;
+  height: 100px;
+  @media (min-width: 768px) {
+    width: 400px;
+  }
 `;
-
 const NoIdeasYet = styled.div`
   position: relative;
   font-size: 15pt;
@@ -173,22 +180,24 @@ const OrganizationsPage = ({ handleClick, order, loading }) => {
           zIndex={99}
         />
       )}
+      <TitleWrapper>
+        <Tabs
+          loading={false}
+          handleClick={handleClick}
+          order={1}
+          tabLabels={MenuData.map((item) => item.text).slice(2, 3)}
+          marginTop={"20px"}
+          marginBottom={"20px"}
+        />
 
-      <Tabs
-        loading={false}
-        handleClick={handleClick}
-        order={1}
-        tabLabels={MenuData.map((item) => item.text).slice(2, 3)}
-        marginTop={"20px"}
-        marginBottom={"20px"}
-      />
-
-      <TagsFilter
-        placing="list"
-        type={order === 1 ? "topics" : "organizationType"}
-      />
-
-      <OuterInnerWrapper>
+        {isMobileCustom && (
+          <TagsFilter
+            placing="list"
+            type={order === 1 ? "topics" : "organizationType"}
+          />
+        )}
+      </TitleWrapper>
+      <InnerWrapper isMobileCustom={isMobileCustom}>
         <Toolbar
           swipeListType="organizationOverview"
           type="standalone"
@@ -201,20 +210,18 @@ const OrganizationsPage = ({ handleClick, order, loading }) => {
           searchTerm={searchTerm}
         />
 
-        <InnerWrapper isMobileCustom={isMobileCustom}>
-          {!loadingOrganizations ? (
-            <InfiniteScroll
-              loadMore={() => loadMore()}
-              hasMore={hasMoreItems}
-              useWindow={false}
-            >
-              {showItems(dataFinal)}
-            </InfiniteScroll>
-          ) : (
-            <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>
-          )}
-        </InnerWrapper>
-      </OuterInnerWrapper>
+        {!loadingOrganizations ? (
+          <InfiniteScroll
+            loadMore={() => loadMore()}
+            hasMore={hasMoreItems}
+            useWindow={false}
+          >
+            {showItems(dataFinal)}
+          </InfiniteScroll>
+        ) : (
+          <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>
+        )}
+      </InnerWrapper>
     </Wrapper>
   );
 };
