@@ -14,7 +14,7 @@ import {
   openOrganizationFunc,
   stateCreateOrganizationsFunc,
 } from "../../../redux/actions/organizationActions";
-import { StyledH2 } from "../../../styles/GlobalStyle";
+import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
 
 const Wrapper = styled.div`
   display: flex;
@@ -97,8 +97,10 @@ export const OrganizationCard = (props) => {
   const {
     organization: { title, owner, imgUrl, organizationId },
   } = props;
+
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const pushEditOrganizationId = () => {
+  const handleEdit = () => {
     localStorage.setItem("createOrganizationId", organizationId);
     dispatch(stateCreateOrganizationsFunc(true));
   };
@@ -110,17 +112,20 @@ export const OrganizationCard = (props) => {
   return (
     <Wrapper>
       <ExpandButton handleButtonClick={pushOrganizationId} />
-      <CustomIconButton
-        name="Menu"
-        iconWidth="70%"
-        handleButtonClick={() => pushEditOrganizationId()}
-        position="absolute"
-        left="calc(100% - 54px)"
-        margin="2px"
-        top="2px"
-        backgroundColor="transparent"
-        shadow={false}
-      />
+      {user?.organizationId?.includes(organizationId) && (
+        <CustomIconButton
+          name="Menu"
+          iconWidth="70%"
+          handleButtonClick={() => handleEdit()}
+          position="absolute"
+          left="calc(100% - 54px)"
+          margin="2px"
+          top="0px"
+          backgroundColor="transparent"
+          shadow={false}
+          zIndex="99"
+        />
+      )}
       <LogoWrapper>
         <StyledImg src={imgUrl} width="100%" alt="profile" />
       </LogoWrapper>
@@ -130,8 +135,9 @@ export const OrganizationCard = (props) => {
         <StyledH2 fontWeight="900">{title}</StyledH2>
       </Title>
       <Summary>
-        Kurzbeschreibung unserer tolllen Organisation. Was machen wir, wer sind
-        wir etc...
+        <StyledText>
+          Kurzbeschreibung unserer tolllen Organisation und was wir machen.
+        </StyledText>
       </Summary>
     </Wrapper>
   );

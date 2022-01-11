@@ -57,6 +57,7 @@ const IdeaCard = ({
   color,
 }) => {
   const ideaCardProject = project;
+
   dayjs.extend(relativeTime);
   const dispatch = useDispatch();
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
@@ -68,12 +69,15 @@ const IdeaCard = ({
     dispatch(openProjectRoomFunc(project, true));
   };
 
-  const projectsDataFinal = [];
+  const projectRoomDataFinal = [];
 
   if (projectsData) {
     projectsData.forEach(({ projectRoomId, title }) => {
       if (ideaCardProject === projectRoomId) {
-        projectsDataFinal.push(title);
+        projectRoomDataFinal.push(
+          projectRoomId.includes(ideaCardProject),
+          title
+        );
       }
     });
   }
@@ -100,20 +104,23 @@ const IdeaCard = ({
         </BodyText>
         <Gradient />
         <br />
-        {!openProjectRoom && ideaCardProject && projectsData && (
-          <>
-            <Gradient2></Gradient2>
-            <ProjectOpenButton onClick={fetchDataProject}>
-              <img
-                src={ProjectRoomIcon}
-                width="20px"
-                style={{ paddingRight: "10px", alignSelf: "center" }}
-                alt="ProjectRoomIcon"
-              />
-              {projectsDataFinal}
-            </ProjectOpenButton>
-          </>
-        )}
+        {!openProjectRoom &&
+          projectsData &&
+          ideaCardProject &&
+          projectRoomDataFinal[0] && (
+            <React.Fragment>
+              <Gradient2></Gradient2>
+              <ProjectOpenButton onClick={fetchDataProject}>
+                <img
+                  src={ProjectRoomIcon}
+                  width="20px"
+                  style={{ paddingRight: "10px", alignSelf: "center" }}
+                  alt="ProjectRoomIcon"
+                />
+                {projectRoomDataFinal[1]}
+              </ProjectOpenButton>
+            </React.Fragment>
+          )}
         <ExpandButton handleButtonClick={fetchDataScream} />
       </CardContent>
     </Card>
