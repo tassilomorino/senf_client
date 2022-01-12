@@ -79,6 +79,7 @@ export const ProjectCard = (props) => {
       description,
       status,
       organizationId,
+      color,
     },
   } = props;
   const user = useSelector((state) => state.user);
@@ -125,8 +126,8 @@ export const ProjectCard = (props) => {
             <StyledImg src={imgUrl} width="100%" alt="profile" />
           </ImgWrapper>
           <RightWrapper>
-            <ColorDot color="rgb(248, 169, 160)" />
-            <DistrictHeader color="rgb(248, 169, 160)">
+            <ColorDot color={color} />
+            <DistrictHeader color={color}>
               <h4>{owner}</h4>
             </DistrictHeader>
 

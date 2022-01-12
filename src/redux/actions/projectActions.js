@@ -17,6 +17,7 @@ import {
 } from "../types";
 import setColorByTopic from "../../data/setColorByTopic";
 import { setSwipePositionDown } from "./UiActions";
+import setColorByOrganizationType from "../../data/setColorByOrganizationType";
 
 // Get all projects
 export const getProjects = (mapViewport) => async (dispatch) => {
@@ -65,6 +66,7 @@ export const getProjects = (mapViewport) => async (dispatch) => {
         Thema: doc.data().Thema,
         organizationType: doc.data().organizationType,
         imgUrl: image,
+        color: setColorByOrganizationType(doc.data().organizationType),
       };
       projects.push(docData);
       if (projects.length === ref.size) {

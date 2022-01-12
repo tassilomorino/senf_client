@@ -426,7 +426,9 @@ const Main = () => {
 
   console.log(dataFinalProjectRooms);
   const dataFinalMapProjects = projects?.filter(
-    ({ status }) => status === "active"
+    ({ status, organizationType }) =>
+      status === "active" &&
+      selectedOrganizationTypes.includes(organizationType)
   );
 
   return (
