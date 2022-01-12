@@ -48,6 +48,7 @@ const StyledImg = styled.img`
 
 const CreateProjectPage4 = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();
+  const [nextClicked, setNextClicked] = useState(false);
 
   const [mapOpen, setMapOpen] = useState(false);
   const mapViewport = useSelector((state) => state.data.mapViewport);
@@ -102,6 +103,14 @@ const CreateProjectPage4 = ({ onClickNext, onClickPrev }) => {
     fetchData();
   }, []);
 
+  const handleNext = () => {
+    setNextClicked(true);
+
+    setTimeout(() => {
+      onClickNext();
+    }, 200);
+  };
+
   return (
     <React.Fragment>
       <MapDialog
@@ -146,8 +155,8 @@ const CreateProjectPage4 = ({ onClickNext, onClickPrev }) => {
             textColor="#353535"
             top={document.body.clientWidth > 768 ? "100px" : "70px"}
             left="0"
-            handleButtonClick={onClickNext}
-            disabled={!data}
+            disabled={!data || nextClicked}
+            loading={nextClicked}
             //   keySubmitRef={keySubmitRef}
           />
           <SubmitButton

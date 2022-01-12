@@ -27,7 +27,7 @@ const SelectContainer = styled.div`
 
 const CreateProjectPage1 = ({ onClickNext }) => {
   const { t } = useTranslation();
-
+  const [nextClicked, setNextClicked] = useState(false);
   const organizations = useSelector((state) => state.data.organizations);
   const [selectedOrganizationId, setSelectedOrganizationId] = useState(null);
   const [selectedOrganizationName, setSelectedOrganizationName] =
@@ -83,6 +83,8 @@ const CreateProjectPage1 = ({ onClickNext }) => {
   }, []);
 
   const handleNext = async () => {
+    setNextClicked(true);
+
     const db = firebase.firestore();
 
     //CREATING A NEW PROJECTROOM
@@ -90,6 +92,7 @@ const CreateProjectPage1 = ({ onClickNext }) => {
       createdAt: new Date().toISOString(),
       owner: selectedOrganizationName,
       organizationId: selectedOrganizationId,
+      status: "uncompleted",
     };
 
     await db
@@ -99,15 +102,17 @@ const CreateProjectPage1 = ({ onClickNext }) => {
       .add(newProject)
       .then((doc) => {
         doc.update({ projectRoomId: doc.id });
-        localStorage.setItem("createProjectRoomId", doc.id);
         localStorage.setItem(
           "createProjectRoomOrganizationId",
           selectedOrganizationId
         );
+        localStorage.setItem("createProjectRoomId", doc.id);
       })
 
       .then(() => {
-        onClickNext();
+        setTimeout(() => {
+          onClickNext();
+        }, 200);
       });
   };
 
@@ -146,7 +151,9 @@ const CreateProjectPage1 = ({ onClickNext }) => {
         top={document.body.clientWidth > 768 ? "100px" : "70px"}
         left="0"
         handleButtonClick={handleNext}
-        disabled={!selectedOrganizationId}
+        disabled={!selectedOrganizationId || nextClicked}
+        loading={nextClicked}
+
         //   keySubmitRef={keySubmitRef}
       />
     </React.Fragment>

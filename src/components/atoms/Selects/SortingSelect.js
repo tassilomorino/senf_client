@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
@@ -67,11 +67,10 @@ const ListItem = styled("li")`
   }
 `;
 
-const SortingSelect = ({ label, handleDropdown, placing }) => {
+const SortingSelect = ({ label, handleDropdown, placing, dropdown }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("newest");
   const [selectedLabel, setSelectedLabel] = useState(t("newest"));
 
   const outerRef = useRef();
@@ -87,6 +86,12 @@ const SortingSelect = ({ label, handleDropdown, placing }) => {
     { name: "zToA", label: t("zToA") },
   ];
 
+  useEffect(() => {
+    if (dropdown === "newest") {
+      setSelectedLabel(t("newest"));
+    }
+  }, [dropdown]);
+
   const handleToggle = () => {
     setOpen(!open);
     if (isMobileCustom) {
@@ -95,7 +100,6 @@ const SortingSelect = ({ label, handleDropdown, placing }) => {
   };
 
   const onOptionClicked = (value, label) => () => {
-    setSelectedOption(value);
     setSelectedLabel(label);
     handleDropdown(value);
     setOpen(false);
@@ -128,7 +132,7 @@ const SortingSelect = ({ label, handleDropdown, placing }) => {
                       onClick={onOptionClicked(option.name, option.label)}
                       key={Math.random()}
                     >
-                      {option.name === selectedOption ? (
+                      {option.name === dropdown ? (
                         <StyledH2 fontWeight="900">{option.label}</StyledH2>
                       ) : (
                         <h2>{option.label}</h2>
@@ -140,7 +144,7 @@ const SortingSelect = ({ label, handleDropdown, placing }) => {
                       onClick={onOptionClicked(option.name, option.label)}
                       key={Math.random()}
                     >
-                      {option.name === selectedOption ? (
+                      {option.name === dropdown ? (
                         <StyledH2 fontWeight="900">{option.label}</StyledH2>
                       ) : (
                         <h2>{option.label}</h2>

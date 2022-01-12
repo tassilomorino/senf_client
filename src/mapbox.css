@@ -17,3 +17,9 @@
   display: none;
   opacity: 0;
 }
+
+
+.mapboxgl-ctrl-group {
+display:none
+
+} 

@@ -12,6 +12,11 @@ import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 //images
 import { ButtonsWrapper, Title } from "./styles/sharedStyles";
 
+//firebase
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/storage";
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;

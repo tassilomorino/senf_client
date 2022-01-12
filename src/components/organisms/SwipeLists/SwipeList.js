@@ -123,8 +123,8 @@ const SwipeList = ({
   tabLabels,
   loading,
   order,
-  dropdown,
   handleDropdown,
+  dropdown,
   dataFinal,
   projectsData,
   setSearchTerm,
@@ -330,6 +330,7 @@ const SwipeList = ({
                     swipeListType={swipeListType}
                     loading={loading}
                     handleDropdown={handleDropdown}
+                    dropdown={dropdown}
                     dataFinalLength={dataFinal.length}
                     setSearchOpen={setSearchOpen}
                     searchOpen={searchOpen}
@@ -357,6 +358,7 @@ const SwipeList = ({
                     swipeListType={swipeListType}
                     loading={loading}
                     handleDropdown={handleDropdown}
+                    dropdown={dropdown}
                     dataFinalLength={dataFinal.length}
                     setSearchOpen={setSearchOpen}
                     searchOpen={searchOpen}
@@ -417,6 +419,7 @@ const SwipeList = ({
             swipeListType={swipeListType}
             loading={loading}
             handleDropdown={handleDropdown}
+            dropdown={dropdown}
             dataFinalLength={dataFinal.length}
             setSearchOpen={setSearchOpen}
             searchOpen={searchOpen}

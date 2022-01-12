@@ -67,8 +67,8 @@ const StyledImg = styled.img`
 
 const CreateProjectPage3 = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const [nextClicked, setNextClicked] = useState(false);
 
   const fileName = null;
 
@@ -126,6 +126,14 @@ const CreateProjectPage3 = ({ onClickNext, onClickPrev }) => {
     }
   }, [uploadedImage]);
 
+  const handleNext = () => {
+    setNextClicked(true);
+
+    setTimeout(() => {
+      onClickNext();
+    }, 200);
+  };
+
   return (
     <Wrapper>
       <Title> Bild hochladen</Title>
@@ -166,9 +174,10 @@ const CreateProjectPage3 = ({ onClickNext, onClickPrev }) => {
           textColor="#353535"
           top={document.body.clientWidth > 768 ? "100px" : "70px"}
           left="0"
-          handleButtonClick={onClickNext}
-          disabled={!uploadedImage}
+          handleButtonClick={handleNext}
           //   keySubmitRef={keySubmitRef}
+          disabled={!uploadedImage || nextClicked}
+          loading={nextClicked}
         />
         <SubmitButton
           text={t("back")}

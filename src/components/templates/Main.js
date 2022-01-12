@@ -111,10 +111,16 @@ const Main = () => {
 
   const projects = useSelector((state) => state.data.projects);
   const project = useSelector((state) => state.data.project);
+
+  const organizations = useSelector((state) => state.data.organizations);
+
   const mapBounds = useSelector((state) => state.data.mapBounds);
 
   const mapViewport = useSelector((state) => state.data.mapViewport);
   const selectedTopics = useSelector((state) => state.data.topics);
+  const selectedOrganizationTypes = useSelector(
+    (state) => state.data.organizationTypes
+  );
 
   const [order, setOrder] = useState(1);
   const swipePosition = useSelector((state) => state.UI.swipePosition);
@@ -235,6 +241,8 @@ const Main = () => {
   const handleClick = useCallback(
     (order) => {
       setOrder(order);
+      setSearchTerm("");
+      setDropdown("newest");
       dispatch(closeScream());
       dispatch(openProjectRoomFunc(null, false));
       dispatch(openOrganizationFunc(null, false));
@@ -272,29 +280,32 @@ const Main = () => {
     (viewport) => {
       dispatch(setMapViewport(viewport));
 
-      if (isMobileCustom) {
-        const map = mapRef.current.getMap();
-        var canvas = map.getCanvas(),
-          w = canvas.width,
-          h = canvas.height,
-          NW = map.unproject([0, 0]).toArray(),
-          SE = map.unproject([w, h]).toArray();
-        var boundsRar = [NW, SE];
+      // if (isMobileCustom) {
+      //   const map = mapRef.current.getMap();
+      //   var canvas = map.getCanvas(),
+      //     w = canvas.width,
+      //     h = canvas.height,
+      //     NW = map.unproject([0, 0]).toArray(),
+      //     SE = map.unproject([w, h]).toArray();
+      //   var boundsRar = [NW, SE];
 
-        const bounds = {
-          latitude1: boundsRar[0][1],
-          latitude2: boundsRar[1][1],
-          longitude2: boundsRar[0][0],
-          longitude3: boundsRar[1][0],
-        };
+      //   const bounds = {
+      //     latitude1: boundsRar[0][1],
+      //     latitude2: boundsRar[1][1],
+      //     longitude2: boundsRar[0][0],
+      //     longitude3: boundsRar[1][0],
+      //   };
 
-        dispatch(setMapBounds(bounds));
-      }
+      //   dispatch(setMapBounds(bounds));
+      // }
     },
     [dispatch]
   );
 
   const [searchTerm, setSearchTerm] = useState("");
+
+  //IDEAS
+
   const screamsSearched = useMemo(
     () =>
       screams?.filter((val) => {
@@ -313,29 +324,13 @@ const Main = () => {
     [screams, searchTerm]
   );
 
-  const sortedProjectRooms = _.orderBy(projects, "createdAt", "desc");
-  // const sortedScreams =
-  //   dropdown === "newest"
-  //     ? screamsSearched?.sort(function (a, b) {
-  //         if (a.createdAt > b.createdAt) {
-  //           return -1;
-  //         }
-  //         return 0;
-  //       })
-  //     : screamsSearched?.sort(function (a, b) {
-  //         if (a.likeCount > b.likeCount) {
-  //           return -1;
-  //         }
-  //         return 0;
-  //       });
-
-  const dataFinal = useMemo(() => {
-    const sortedScreams =
+  const dataFinalIdeas = useMemo(() => {
+    const sortedIdeas =
       dropdown === "newest"
         ? _.orderBy(screamsSearched, "createdAt", "desc")
         : _.orderBy(screamsSearched, "likeCount", "desc");
 
-    return sortedScreams.filter(
+    return sortedIdeas.filter(
       ({ lat, long, Thema, status }) =>
         selectedTopics.includes(Thema) &&
         lat <= mapBounds?.latitude1 &&
@@ -353,10 +348,6 @@ const Main = () => {
     dropdown,
     screamsSearched,
   ]);
-
-  const dataFinalMapProjects = projects?.filter(
-    ({ status }) => status === "active"
-  );
 
   const dataFinalMap = useMemo(
     () =>
@@ -381,6 +372,61 @@ const Main = () => {
       screamsSearched,
       selectedTopics,
     ]
+  );
+
+  //PROJECTROOMS
+
+  // const projectRoomsWithOrganizationType = [];
+
+  // organizations.forEach(({ organizationId, organizationType }) => {
+  //   console.log(projects);
+  //   if (projects.organizationId === organizationId) {
+  //     projectRoomsWithOrganizationType.push(
+  //       projectRoomId.includes(organizationId),
+  //       organizationType
+  //     );
+  //   }
+  // });
+
+  const projectRoomsSearched = useMemo(
+    () =>
+      projects?.filter((val) => {
+        if (searchTerm === "") {
+          return val;
+        } else if (
+          val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          val.description.toLowerCase().includes(searchTerm.toLowerCase())
+        ) {
+          return val;
+        }
+      }),
+    [projects, searchTerm]
+  );
+
+  const sortedProjectRooms =
+    dropdown === "newest"
+      ? _.orderBy(projectRoomsSearched, "createdAt", "desc")
+      : dropdown === "aToZ"
+      ? _.orderBy(
+          projectRoomsSearched,
+          [(pr) => pr.title.toLowerCase()],
+          ["asc"]
+        )
+      : _.orderBy(
+          projectRoomsSearched,
+          [(pr) => pr.title.toLowerCase()],
+          ["desc"]
+        );
+
+  const dataFinalProjectRooms = useMemo(() => {
+    return sortedProjectRooms.filter(({ organizationType }) =>
+      selectedOrganizationTypes.includes(organizationType)
+    );
+  }, [selectedOrganizationTypes, dropdown, projectRoomsSearched]);
+
+  console.log(dataFinalProjectRooms);
+  const dataFinalMapProjects = projects?.filter(
+    ({ status }) => status === "active"
   );
 
   return (
@@ -430,8 +476,8 @@ const Main = () => {
         order === 1 && (
           <PostScream
             loadingProjects={loadingProjects}
-            projectsData={projects}
-            project={project}
+            projectsData={dataFinalProjectRooms}
+            project={dataFinalProjectRooms}
           />
         )}
 
@@ -452,11 +498,11 @@ const Main = () => {
                 tabLabels={MenuData.map((item) => item.text).slice(0, 2)}
                 loading={order === 1 ? loading : loadingProjects}
                 order={order}
-                dataFinal={order === 1 ? dataFinal : sortedProjectRooms}
+                dataFinal={order === 1 ? dataFinalIdeas : dataFinalProjectRooms}
                 dataFinalMap={dataFinalMap}
                 viewport={mapViewport}
                 handleDropdown={handleDropdown}
-                projectsData={sortedProjectRooms}
+                projectsData={dataFinalProjectRooms}
                 dropdown={dropdown}
                 setSearchTerm={setSearchTerm}
                 searchTerm={searchTerm}
@@ -469,7 +515,7 @@ const Main = () => {
               loading={loading}
               handleClick={handleClick}
               loadingProjects={loadingProjects}
-              projectsData={projects}
+              projectsData={dataFinalProjectRooms}
             />
           )}
           {openOrganization && (
@@ -480,7 +526,7 @@ const Main = () => {
               handleClick={handleClick}
               loadingProjects={false}
               // loadingOrganizations={loadingOrganizations}
-              projectsData={projects}
+              projectsData={dataFinalProjectRooms}
             />
           )}
 

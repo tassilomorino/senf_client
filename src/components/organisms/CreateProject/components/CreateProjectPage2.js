@@ -40,11 +40,8 @@ const ButttonsWrapper = styled.div`
 
 const CreateProjectPage2 = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const createProjectFormData = useSelector(
-    (state) => state.formData.createProjectFormData
-  );
-  const [title, setTitle] = useState(null);
+  const [nextClicked, setNextClicked] = useState(false);
+
   const [weblinkOpen, setWeblinkOpen] = useState(false);
   const [weblink, setWeblink] = useState(null);
   const [weblinkTitle, setWeblinkTitle] = useState(null);
@@ -89,7 +86,6 @@ const CreateProjectPage2 = ({ onClickNext, onClickPrev }) => {
           console.log("No such document!");
         } else {
           const data = ref.data();
-          setTitle(data.title);
 
           if (data.contact) {
             setContact(data.contact);
@@ -106,6 +102,8 @@ const CreateProjectPage2 = ({ onClickNext, onClickPrev }) => {
   }, []);
 
   const handleNext = async () => {
+    setNextClicked(true);
+
     const db = firebase.firestore();
     if (
       typeof Storage !== "undefined" &&
@@ -124,7 +122,9 @@ const CreateProjectPage2 = ({ onClickNext, onClickPrev }) => {
         .collection("projectRooms")
         .doc(localStorage.getItem("createProjectRoomId"));
       return ref.update(updateProject).then(() => {
-        onClickNext();
+        setTimeout(() => {
+          onClickNext();
+        }, 200);
       });
     }
   };
@@ -205,6 +205,8 @@ const CreateProjectPage2 = ({ onClickNext, onClickPrev }) => {
           top={document.body.clientWidth > 768 ? "100px" : "70px"}
           left="0"
           handleButtonClick={handleNext}
+          disabled={nextClicked}
+          loading={nextClicked}
           //   keySubmitRef={keySubmitRef}
         />
         <SubmitButton

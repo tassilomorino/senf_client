@@ -100,6 +100,7 @@ const Toolbar = ({
   loading,
   type,
   handleDropdown,
+  dropdown,
   handleClickSwipe,
   dataFinalLength,
   setSearchOpen,
@@ -151,11 +152,16 @@ const Toolbar = ({
     !loading && (
       <Wrapper type={type} searchOpen={searchOpen}>
         {swipeListType === "ideas" ? (
-          <SortingSelect label={t("ideas")} handleDropdown={handleDropdown} />
+          <SortingSelect
+            label={t("ideas")}
+            handleDropdown={handleDropdown}
+            dropdown={dropdown}
+          />
         ) : swipeListType === "projectRoomOverview" ? (
           <SortingSelect
             label={t("projectRooms")}
             handleDropdown={handleDropdown}
+            dropdown={dropdown}
             placing="basicSorting"
           />
         ) : (
@@ -163,6 +169,7 @@ const Toolbar = ({
             <SortingSelect
               label={t("organizations")}
               handleDropdown={handleDropdown}
+              dropdown={dropdown}
               placing="basicSorting"
             />
           )

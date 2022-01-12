@@ -154,6 +154,7 @@ const MapDialog = ({
           viewportChangeOptions={{
             duration: 2700,
           }}
+          displayControlsDefault={false}
         >
           {/* <FullscreenControl
             position="top-right"

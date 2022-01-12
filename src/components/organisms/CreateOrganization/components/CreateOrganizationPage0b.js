@@ -118,7 +118,7 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
         organizationType: organizationType,
         userIds: [userId],
         createdAt: new Date().toISOString(),
-        status: "deactivated",
+        status: "uncompleted",
       };
 
       const userRef = await db.collection("users").doc(userId);

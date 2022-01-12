@@ -22,6 +22,7 @@ import CustomSelect from "../../../atoms/Selects/CustomSelect";
 const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();
   const [outsideClick, setOutsideClick] = useState(false);
+  const [nextClicked, setNextClicked] = useState(false);
 
   const outerRef = useRef();
   useOnClickOutside(outerRef, () => {
@@ -77,7 +78,7 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
         formik.setFieldValue("description", data.description);
         setTimeout(() => {
           formik.setFieldTouched("title", true);
-        }, 1000);
+        }, 1);
       }
     }
 
@@ -90,6 +91,8 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
   }, []);
 
   const handleNext = async () => {
+    setNextClicked(true);
+
     const db = firebase.firestore();
 
     if (
@@ -109,7 +112,9 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
         .doc(localStorage.getItem("createProjectRoomId"));
 
       return ref.update(updateProject).then(() => {
-        onClickNext();
+        setTimeout(() => {
+          onClickNext();
+        }, 200);
       });
     } else {
     }
@@ -181,7 +186,8 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
           top={document.body.clientWidth > 768 ? "100px" : "70px"}
           left="0"
           handleButtonClick={handleNext}
-          disabled={!formik.isValid}
+          disabled={!formik.isValid || nextClicked}
+          loading={nextClicked}
           //   keySubmitRef={keySubmitRef}
         />
       </ButtonsWrapper>
