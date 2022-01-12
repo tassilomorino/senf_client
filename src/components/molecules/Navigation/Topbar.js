@@ -19,11 +19,16 @@ import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
 //ICONS
 import Logo from "../../../images/logo.png";
-import profile_yellow from "../../../images/headerProfile.png";
-import Noprofile from "../../../images/headerProfile.png";
+import profile_yellow from "../../../images/icons/profile_grey.png";
+import Noprofile from "../../../images/icons/profile_grey.png";
+import ProfileShape from "../../../images/shapes/profileShape.png";
+
 import Info from "../../../images/icons/info_grey.png";
 import InsightsIcon from "../../../images/icons/insights_yellow.png";
+import Circle_grey from "../../../images/icons/circle_grey.png";
+
 import Header from "../../../images/header.png";
+import { StyledH2 } from "../../../styles/GlobalStyle";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -65,13 +70,21 @@ const LogoContainer = styled.div`
 
 const ProfileButtonContainer = styled.div`
   position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 999;
-  width: 30px;
-  right: 40px;
-  top: 0px;
-  height: 30px;
+  width: 50px;
+  right: 10px;
+  top: 8px;
+  height: 50px;
   font-size: 0;
   pointer-events: pointer;
+  filter: drop-shadow(0px 8px 10px rgba(0, 0, 0, 0.2));
+`;
+
+const CenteredImg = styled.img`
+  position: absolute;
 `;
 
 const InsightsButtonContainer = styled.div`
@@ -98,7 +111,7 @@ const InlineInfoButtonContainer = styled.div`
 
 const Topbar = ({ order, handleClick }) => {
   const loading = useSelector((state) => state.data.loading);
-  const authenticated = useSelector((state) => state.user.authenticated);
+  const user = useSelector((state) => state.user);
   const openScream = useSelector((state) => state.UI.openScream);
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
   const openAccount = useSelector((state) => state.UI.openAccount);
@@ -132,6 +145,21 @@ const Topbar = ({ order, handleClick }) => {
         }
       >
         <img src={Header} width="200px" />
+        <img
+          src={Logo}
+          width="90px"
+          style={{
+            paddingTop: "10px",
+            paddingBottom: "10px",
+            paddingLeft: "5px",
+            borderRadius: "15px",
+
+            position: "absolute",
+            top: 0,
+            left: 0,
+            backgroundColor: "white",
+          }}
+        />
         <InlineInfoButtonContainer>
           <InlineInformationPage />
           <img src={Info} width="30" alt="EndImage" />
@@ -145,10 +173,19 @@ const Topbar = ({ order, handleClick }) => {
           <img src={InsightsIcon} width="30" alt="profilePlaceHolderImage" />
         </InsightsButtonContainer> */}
 
-        {!authenticated ? (
+        {!user.authenticated ? (
           <ProfileButtonContainer>
             <LoginRegistration />
-            <img src={Noprofile} width="70" alt="profilePlaceHolderImage" />
+            <CenteredImg
+              src={ProfileShape}
+              width="50"
+              alt="profilePlaceHolderImage"
+            />
+            <CenteredImg
+              src={Noprofile}
+              width="30"
+              alt="profilePlaceHolderImage"
+            />
           </ProfileButtonContainer>
         ) : (
           <ProfileButtonContainer>
@@ -156,7 +193,15 @@ const Topbar = ({ order, handleClick }) => {
               handleButtonClick={openTheAccount}
               dataCy="profile-button"
             />
-            <img src={profile_yellow} width="70" alt="profileImage" />
+            <CenteredImg
+              src={ProfileShape}
+              width="50"
+              alt="profilePlaceHolderImage"
+            />
+            <StyledH2 fontWeight="600" zIndex="9">
+              {user?.handle?.slice(0, 1)}
+            </StyledH2>
+            <CenteredImg src={Circle_grey} width="30" alt="profileImage" />
           </ProfileButtonContainer>
         )}
         {/* <ScrollTabs

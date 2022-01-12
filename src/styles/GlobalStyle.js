@@ -15,6 +15,7 @@ export const StyledA = styled.a`
 export const StyledH2 = styled.h2`
   font-weight: ${(props) => (props.fontWeight ? props.fontWeight : 400)};
   text-align: ${(props) => (props.textAlign ? props.textAlign : "left")};
+  z-index: ${(props) => (props.zIndex ? props.zIndex : "0")};
 `;
 
 export const StyledH3 = styled.h3`

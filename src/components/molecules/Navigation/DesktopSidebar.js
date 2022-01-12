@@ -24,6 +24,8 @@ import Insta from "../../../images/icons/socialmedia/insta.png";
 import Facebook from "../../../images/icons/socialmedia/facebook.png";
 import profile_yellow from "../../../images/icons/profile_yellow.png";
 import profile_grey from "../../../images/icons/profile_grey.png";
+import Circle_grey from "../../../images/icons/circle_grey.png";
+import Circle_yellow from "../../../images/icons/circle_yellow.png";
 import Noprofile from "../../../images/noprofile.png";
 import PostScream from "../../organisms/PostIdea/PostScream";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
@@ -36,7 +38,7 @@ import {
 import { Logo, Tabs } from "./styles/sharedStyles";
 import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
 import styled from "styled-components";
-import { SideBarTabs } from "../../../styles/GlobalStyle";
+import { SideBarTabs, StyledH2 } from "../../../styles/GlobalStyle";
 
 const FilterWrapper = styled.div`
   overflow: hidden;
@@ -60,8 +62,8 @@ const DesktopSidebar = ({
   const projects = useSelector((state) => state.data.projects);
   const loadingProjects = useSelector((state) => state.data.loadingProjects);
 
-  const authenticated = useSelector((state) => state.user.authenticated);
-  const userId = useSelector((state) => state.user.userId);
+  const user = useSelector((state) => state.user);
+  const userId = user.userId;
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -89,11 +91,11 @@ const DesktopSidebar = ({
       </Logo>
       <SelectLanguageButton />
       <InlineInformationPageDesktop />
-      {!authenticated ? (
+      {!user.authenticated ? (
         <SideBarTabs>
           <RegistrationAndLogin />
           <img
-            src={Noprofile}
+            src={profile_yellow}
             width="35"
             alt="EndImage"
             style={{ paddingRight: "10px" }}
@@ -106,8 +108,22 @@ const DesktopSidebar = ({
             handleButtonClick={openTheAccount}
             dataCy="profile-button"
           />
+
+          <StyledH2
+            fontWeight="600"
+            zIndex="9"
+            style={{
+              position: "absolute",
+              marginLeft: "12px",
+              marginTop: "2px",
+              color: openAccount ? "#353535" : "#fed957",
+            }}
+          >
+            {user?.handle?.slice(0, 1)}
+          </StyledH2>
+
           <img
-            src={openAccount ? profile_grey : profile_yellow}
+            src={openAccount ? Circle_grey : Circle_yellow}
             width="35"
             alt="EndImage"
             style={{ paddingRight: "10px" }}
@@ -153,7 +169,7 @@ const DesktopSidebar = ({
         handleClick={handleClick}
         openAccount={openAccount}
       />
-      <FilterWrapper active={order === 2 && !openProjectRoom}>
+      <FilterWrapper active={order === 2 && !openProjectRoom && !openAccount}>
         <TagsFilter column type="organizationType" />
       </FilterWrapper>
       <FilterWrapper active={openProjectRoom}>
@@ -173,7 +189,7 @@ const DesktopSidebar = ({
         handleClick={handleClick}
         openAccount={openAccount}
       />
-      <FilterWrapper active={order === 3}>
+      <FilterWrapper active={order === 3 && !openProjectRoom && !openAccount}>
         <TagsFilter
           column
           type={openOrganization ? "topics" : "organizationType"}
