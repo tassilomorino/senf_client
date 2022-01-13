@@ -1,7 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 //firebase
@@ -9,13 +8,18 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
 
+//compoennts
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
+//images
 import NotDoneImage from "../../../../images/Not_connected.png";
-import { Title } from "./styles/sharedStyles";
 
-const CreateProjectPage0 = ({ set }) => {
+//styles
+import { Title } from "../../CreateOrganization/styles/sharedStyles";
+
+const CreateOrganizationPage0 = ({ onClickNext }) => {
   const { t } = useTranslation();
+
   const [title, setTitle] = useState(null);
 
   useEffect(() => {
@@ -24,9 +28,7 @@ const CreateProjectPage0 = ({ set }) => {
 
       const ref = await db
         .collection("organizations")
-        .doc(localStorage.getItem("createProjectRoomOrganizationId"))
-        .collection("projectRooms")
-        .doc(localStorage.getItem("createProjectRoomId"))
+        .doc(localStorage.getItem("createOrganizationId"))
         .get();
 
       if (!ref.exists) {
@@ -39,7 +41,7 @@ const CreateProjectPage0 = ({ set }) => {
 
     if (
       typeof Storage !== "undefined" &&
-      localStorage.getItem("createProjectRoomId")
+      localStorage.getItem("createOrganizationId")
     ) {
       fetchData();
     }
@@ -50,9 +52,8 @@ const CreateProjectPage0 = ({ set }) => {
       "Bist du sicher, dass du die Erstellung des Projektraums neustarten möchtest?"
     );
     if (answer) {
-      localStorage.removeItem("createProjectRoomId");
-
-      set(1);
+      localStorage.removeItem("createOrganizationId");
+      onClickNext();
     } else {
       //some code
     }
@@ -61,7 +62,7 @@ const CreateProjectPage0 = ({ set }) => {
   return (
     <div>
       <Title>
-        Du bist noch dabei, deinen Projektraum {title && `"${title}"`}
+        Du bist noch dabei, deine Organisation {title && `"${title}"`}
         zu erstellen{" "}
       </Title>
       <br />
@@ -75,7 +76,7 @@ const CreateProjectPage0 = ({ set }) => {
         position="relative"
         top="50px"
         left="0"
-        handleButtonClick={() => set(2)}
+        handleButtonClick={onClickNext}
         // disabled={!formikCreateProjectStore.isValid}
         //   keySubmitRef={keySubmitRef}
       />
@@ -95,4 +96,4 @@ const CreateProjectPage0 = ({ set }) => {
   );
 };
 
-export default CreateProjectPage0;
+export default CreateOrganizationPage0;

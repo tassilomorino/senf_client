@@ -36,7 +36,7 @@ import { handleTopicSelectorRedux } from "../../redux/actions/UiActions";
 import InsightsPage from "../organisms/SubPages/InsightsPage";
 import DesktopSidebar from "../molecules/Navigation/DesktopSidebar";
 import Topbar from "../molecules/Navigation/Topbar";
-import MapDesktop from "../atoms/map/MapDesktop";
+import Map from "../atoms/map/Map";
 import SwipeList from "../organisms/SwipeLists/SwipeList";
 import IdeaDialog from "../organisms/Dialogs/IdeaDialog";
 import ProjectDialog from "../organisms/Dialogs/ProjectDialog";
@@ -53,8 +53,8 @@ import {
   getOrganizations,
   openOrganizationFunc,
 } from "../../redux/actions/organizationActions";
-import CreateOrganizationDialog from "../organisms/CreateOrganization/CreateOrganizationDialog";
-import CreateProjectDialog from "../organisms/CreateProject/CreateProjectDialog";
+import CreateOrganizationDialog from "../organisms/Create_Organisation_Projectrooms/CreateOrganizationDialog";
+import CreateProjectDialog from "../organisms/Create_Organisation_Projectrooms/CreateProjectDialog";
 import OrganizationDialog from "../organisms/Dialogs/OrganizationDialog";
 import OrganizationsPage from "../organisms/SubPages/OrganizationsPage";
 import styled from "styled-components";
@@ -424,7 +424,6 @@ const Main = () => {
     );
   }, [selectedOrganizationTypes, dropdown, projectRoomsSearched]);
 
-  console.log(dataFinalProjectRooms);
   const dataFinalMapProjects = projects?.filter(
     ({ status, organizationType }) =>
       status === "active" &&
@@ -444,7 +443,7 @@ const Main = () => {
           setChangeLocationModalOpen={setChangeLocationModalOpen}
         />
       )}
-      <MapDesktop
+      <Map
         order={order}
         dataFinal={dataFinalMap}
         loading={loading}

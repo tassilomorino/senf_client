@@ -25,7 +25,7 @@ import MapGL, {
 import bbox from "@turf/bbox";
 
 import NoLocationPopUp from "./NoLocationPopUp";
-import { DesktopMapButtons } from "./DesktopMapButtons";
+import { MapFilter } from "./MapFilter";
 import { PatternBackground } from "./styles/sharedStyles";
 import { useParams } from "react-router";
 
@@ -83,7 +83,7 @@ const Bar = styled.div`
   top: 10px;
 `;
 
-const MapDesktop = ({
+const Map = ({
   loadingProjects,
   dataFinal,
   geoData,
@@ -342,12 +342,9 @@ const MapDesktop = ({
 
           {order === 1 || openScream || openProjectRoom ? (
             <React.Fragment>
-              {!openInfoPage &&
-                !openScream &&
-                !openProjectRoom &&
-                !isMobileCustom && (
-                  <DesktopMapButtons viewport={mapViewport} mapRef={mapRef} />
-                )}
+              {!openInfoPage && !openScream && !openProjectRoom && (
+                <MapFilter viewport={mapViewport} mapRef={mapRef} />
+              )}
 
               <Source id="geojsonIdeas" type="geojson" data={geojsonIdeas} />
               <Layer
@@ -557,4 +554,4 @@ const MapDesktop = ({
   );
 };
 
-export default memo(MapDesktop);
+export default memo(Map);

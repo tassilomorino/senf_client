@@ -21,6 +21,28 @@ const enterAnimation = keyframes`
 }
     `;
 
+const plopAnimation = keyframes`
+  0% {
+      opacity: 0;
+      transform: scale(0.7) translateX(-50%);
+    }
+  
+    80% {
+      opacity: 0;
+      transform: scale(0.7) translateX(-50%);
+    }
+  
+    90% {
+      opacity: 1;
+      transform: scale(1.1) translateX(-50%);
+    }
+  
+    100% {
+      opacity: 1;
+      transform: scale(1) translateX(-50%);
+    }
+`;
+
 const WideButton = styled.button`
   border-radius: 30px;
   text-transform: none;
@@ -50,10 +72,14 @@ const WideButton = styled.button`
   position: ${(props) => props.position};
   z-index: ${(props) => props.zIndex};
   animation: ${(props) =>
-    props.animation &&
-    css`
-      ${enterAnimation} 2s
-    `};
+    props.animation === true
+      ? css`
+          ${enterAnimation} 2s
+        `
+      : props.animation === "plop" &&
+        css`
+          ${plopAnimation} 2s
+        `};
 `;
 
 const LoaderWrapper = styled.span`

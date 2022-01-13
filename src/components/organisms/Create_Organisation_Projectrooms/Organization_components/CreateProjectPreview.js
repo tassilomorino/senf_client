@@ -10,7 +10,10 @@ import styled from "styled-components";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
 //images
-import { ButtonsWrapper, Title } from "./styles/sharedStyles";
+import {
+  ButtonsWrapper,
+  Title,
+} from "../../CreateOrganization/styles/sharedStyles";
 
 //firebase
 import firebase from "firebase/app";

@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { CustomButton, CustomIconButton } from "../CustomButtons/CustomButton";
@@ -12,14 +12,16 @@ import {
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { SubmitButton } from "../CustomButtons/SubmitButton";
 
-export const DesktopMapButtons = memo(({ viewport, mapRef }) => {
+export const MapFilter = memo(({ viewport, mapRef }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.data.loading);
   const initialMapBounds = useSelector((state) => state.data.initialMapBounds);
+
   const initialMapViewport = useSelector(
     (state) => state.data.initialMapViewport
   );
+  const [waitTime, setWaitTime] = useState(null);
 
   const handleMapBoundsSet = (viewport) => {
     const map = mapRef.current.getMap();
@@ -38,6 +40,11 @@ export const DesktopMapButtons = memo(({ viewport, mapRef }) => {
     };
 
     dispatch(setMapBounds(bounds));
+    setWaitTime(true);
+
+    setTimeout(() => {
+      setWaitTime(null);
+    }, 5000);
 
     dispatch(closeScream());
 
@@ -55,19 +62,22 @@ export const DesktopMapButtons = memo(({ viewport, mapRef }) => {
     dispatch(closeScream());
   };
 
-  return isMobileCustom && !loading ? (
+  return isMobileCustom &&
+    !loading &&
+    viewport !== initialMapViewport &&
+    !waitTime ? (
     <SubmitButton
       text={t("Ideen im Bereich anzeigen")}
       backgroundColor="white"
       textColor="#353535"
       position="fixed"
       top="70px"
-      animation={true}
+      animation="plop"
       handleButtonClick={() => handleMapBoundsSet(viewport)}
       smallSubmitButton={true}
     />
   ) : (
-    !loading && (
+    !loading && viewport !== initialMapViewport && !waitTime && (
       <React.Fragment>
         <CustomButton
           text={t("map_filterIdeas")}
@@ -78,7 +88,7 @@ export const DesktopMapButtons = memo(({ viewport, mapRef }) => {
           animation={true}
           handleButtonClick={() => handleMapBoundsSet(viewport)}
         />
-        <CustomIconButton
+        {/* <CustomIconButton
           name="CircularArrow"
           margin="0px"
           position="fixed"
@@ -86,7 +96,7 @@ export const DesktopMapButtons = memo(({ viewport, mapRef }) => {
           marginLeft="calc(50% + 220px)"
           handleButtonClick={handleMapBoundsReset}
           animation={true}
-        />
+        /> */}
       </React.Fragment>
     )
   );

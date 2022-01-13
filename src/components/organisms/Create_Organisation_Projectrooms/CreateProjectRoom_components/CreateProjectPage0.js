@@ -1,6 +1,7 @@
 /** @format */
 
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 //firebase
@@ -8,18 +9,19 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
 
-//compoennts
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
-//images
 import NotDoneImage from "../../../../images/Not_connected.png";
+import {
+  ComponentInnerWrapper,
+  ComponentWrapper,
+  Title,
+} from "../styles/sharedStyles";
+import Navigation from "../Components/Navigation";
+import { StyledH2 } from "../../../../styles/GlobalStyle";
 
-//styles
-import { Title } from "./styles/sharedStyles";
-
-const CreateOrganizationPage0 = ({ onClickNext }) => {
+const CreateProjectPage0 = ({ set }) => {
   const { t } = useTranslation();
-
   const [title, setTitle] = useState(null);
 
   useEffect(() => {
@@ -28,7 +30,9 @@ const CreateOrganizationPage0 = ({ onClickNext }) => {
 
       const ref = await db
         .collection("organizations")
-        .doc(localStorage.getItem("createOrganizationId"))
+        .doc(localStorage.getItem("createProjectRoomOrganizationId"))
+        .collection("projectRooms")
+        .doc(localStorage.getItem("createProjectRoomId"))
         .get();
 
       if (!ref.exists) {
@@ -41,7 +45,7 @@ const CreateOrganizationPage0 = ({ onClickNext }) => {
 
     if (
       typeof Storage !== "undefined" &&
-      localStorage.getItem("createOrganizationId")
+      localStorage.getItem("createProjectRoomId")
     ) {
       fetchData();
     }
@@ -52,23 +56,33 @@ const CreateOrganizationPage0 = ({ onClickNext }) => {
       "Bist du sicher, dass du die Erstellung des Projektraums neustarten möchtest?"
     );
     if (answer) {
-      localStorage.removeItem("createOrganizationId");
-      onClickNext();
+      localStorage.removeItem("createProjectRoomId");
+
+      set(1);
     } else {
       //some code
     }
   };
 
   return (
-    <div>
-      <Title>
-        Du bist noch dabei, deine Organisation {title && `"${title}"`}
-        zu erstellen{" "}
-      </Title>
-      <br />
+    <React.Fragment>
+      <ComponentWrapper>
+        <ComponentInnerWrapper>
+          <StyledH2 fontWeight="900" textAlign="center">
+            Du bist noch dabei, deinen Projektraum {title && `"${title}"`}
+            zu erstellen{" "}
+          </StyledH2>
+          <br />
 
-      <img src={NotDoneImage} width="60%" alt="NotDoneImage" />
-      <SubmitButton
+          <img
+            src={NotDoneImage}
+            width="60%"
+            style={{ marginLeft: "20%", marginTop: "10%" }}
+            alt="NotDoneImage"
+          />
+        </ComponentInnerWrapper>
+
+        {/* <SubmitButton
         text={t("continue_creation")}
         zIndex="9"
         backgroundColor="#353535"
@@ -76,7 +90,7 @@ const CreateOrganizationPage0 = ({ onClickNext }) => {
         position="relative"
         top="50px"
         left="0"
-        handleButtonClick={onClickNext}
+        handleButtonClick={() => set(2)}
         // disabled={!formikCreateProjectStore.isValid}
         //   keySubmitRef={keySubmitRef}
       />
@@ -91,9 +105,18 @@ const CreateOrganizationPage0 = ({ onClickNext }) => {
         handleButtonClick={handleRestart}
         // disabled={!formikCreateProjectStore.isValid}
         //   keySubmitRef={keySubmitRef}
+      /> */}
+      </ComponentWrapper>
+      <Navigation
+        nextLabel={t("continue_creation")}
+        prevLabel={t("restart")}
+        handleNext={() => set(2)}
+        handlePrev={handleRestart}
+        // disabled={}
+        // loading={}
       />
-    </div>
+    </React.Fragment>
   );
 };
 
-export default CreateOrganizationPage0;
+export default CreateProjectPage0;

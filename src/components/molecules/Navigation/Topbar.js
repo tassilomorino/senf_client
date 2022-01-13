@@ -144,7 +144,7 @@ const Topbar = ({ order, handleClick }) => {
           swipePosition === "top"
         }
       >
-        <img src={Header} width="200px" />
+        <img src={Header} width="200px" style={{ pointerEvents: "none" }} />
         <img
           src={Logo}
           width="90px"

@@ -16,7 +16,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
 
-import { SubTitle, Title } from "./styles/sharedStyles";
+import { SubTitle, Title } from "../styles/sharedStyles";
 import CustomSelect from "../../../atoms/Selects/CustomSelect";
 import { OrganizationCard } from "../../../molecules/Cards/OrganizationCard";
 

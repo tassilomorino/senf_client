@@ -34,6 +34,17 @@ const Break = styled.div`
   }
 `;
 
+const MapHider = styled.div`
+  width: calc(100% - 600px);
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 600px;
+  background-color: #000;
+  opacity: 0.6;
+  z-index: 9;
+`;
+
 const Account = ({ dataFinalMap }) => {
   const { t } = useTranslation();
   const loadingMyScreams = useSelector((state) => state.data.loadingMyScreams);
@@ -101,6 +112,7 @@ const Account = ({ dataFinalMap }) => {
         handleClose={handleClose}
         handleClick={handleClick}
       />
+      {!isMobileCustom && order === 0 && <MapHider />}
 
       <Wrapper>
         {!isMobileCustom || (isMobileCustom && order !== 1 && <Background />)}

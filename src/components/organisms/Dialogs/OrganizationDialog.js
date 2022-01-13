@@ -21,9 +21,11 @@ import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 
 import _ from "lodash";
-import OrganizationHeader from "../../molecules/Headers/OrganizationHeader";
 import { openOrganizationFunc } from "../../../redux/actions/organizationActions";
 import SwipeList from "../SwipeLists/SwipeList";
+import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
+import { useTranslation } from "react-i18next";
+import { MenuData } from "../../../data/MenuData";
 
 const Wrapper = styled.div`
   @media (min-width: 768px) {
@@ -41,14 +43,26 @@ const Break = styled.div`
   }
 `;
 
+const MapHider = styled.div`
+  width: calc(100% - 600px);
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 600px;
+  background-color: #000;
+  opacity: 0.6;
+  z-index: 9;
+`;
+
 const OrganizationDialog = ({
   viewport,
   projectsData,
   loadingProjects,
   dataFinalMap,
 }) => {
+  const { t } = useTranslation();
   const [path, setPath] = useState("");
-  const [order, setOrder] = useState(1);
+  const [order, setOrder] = useState(0);
   const [dropdown, setDropdown] = useState("newest");
 
   const openOrganization = useSelector((state) => state.UI.openOrganization);
@@ -56,8 +70,6 @@ const OrganizationDialog = ({
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.UI.loading);
   const mapViewport = useSelector((state) => state.data.mapViewport);
-
-  const { title, imgUrl, description, weblink, contact } = organization;
 
   useEffect(() => {
     dispatch(handleTopicSelectorRedux("all"));
@@ -88,7 +100,7 @@ const OrganizationDialog = ({
     setDropdown(value);
   };
 
-  const dataRar = organization.projectRooms;
+  const dataRar = organization?.projectRooms;
 
   const [searchTerm, setSearchTerm] = useState("");
   const screamsSearched = dataRar?.filter((val) => {
@@ -124,9 +136,10 @@ const OrganizationDialog = ({
   return (
     openOrganization && (
       <React.Fragment>
-        <OrganizationHeader
-          imgUrl={imgUrl}
-          title={title}
+        <ProjectHeader
+          imgUrl={organization?.imgUrl}
+          title={organization?.title}
+          owner={organization?.organizationType}
           loading={loading}
           order={order}
           path={path}
@@ -134,6 +147,7 @@ const OrganizationDialog = ({
           handleClose={handleClose}
           handleClick={handleClick}
         />
+        {!isMobileCustom && order === 0 && <MapHider />}
 
         <Wrapper>
           {!isMobileCustom || (isMobileCustom && order !== 1 && <Background />)}
@@ -142,6 +156,7 @@ const OrganizationDialog = ({
             <SwipeList
               swipeListType="projectRoomOverview"
               loading={loadingProjects}
+              tabLabels={MenuData.map((item) => item.text).slice(1, 2)}
               order={order}
               dataFinal={dataFinal}
               dataFinalLength={dataFinal.length}
@@ -155,7 +170,7 @@ const OrganizationDialog = ({
             />
           )}
 
-          {order === 2 && (
+          {order === 0 && (
             <div
               style={{
                 overflow: "scroll",
@@ -163,6 +178,19 @@ const OrganizationDialog = ({
                 pointerEvents: "all",
               }}
             >
+              <SubmitButton
+                text={t("Projekträume anzeigen")}
+                zIndex="9"
+                backgroundColor={isMobileCustom ? "#353535" : "white"}
+                textColor={isMobileCustom ? "white" : "#353535"}
+                position="fixed"
+                bottom={isMobileCustom ? "10px" : "50%"}
+                left={
+                  isMobileCustom ? "0" : "calc(600px + ((100% - 600px)/2)) "
+                }
+                marginLeft={isMobileCustom ? "50%" : "0"}
+                handleButtonClick={() => handleClick(1)}
+              />
               <Break />
 
               <MainAnimations
@@ -172,9 +200,9 @@ const OrganizationDialog = ({
                 height="100%"
               >
                 <ProjectInfo
-                  description={description}
-                  weblink={weblink}
-                  contact={contact}
+                  description={organization?.description}
+                  weblink={organization?.weblink}
+                  contact={organization?.contact}
                 />
                 <br />
               </MainAnimations>

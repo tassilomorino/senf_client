@@ -72,7 +72,6 @@ const IdeaCard = ({
   const projectRoomDataFinal = [];
 
   if (projectsData) {
-    console.log(projectsData);
     projectsData.forEach(({ projectRoomId, title }) => {
       if (ideaCardProject === projectRoomId) {
         projectRoomDataFinal.push(

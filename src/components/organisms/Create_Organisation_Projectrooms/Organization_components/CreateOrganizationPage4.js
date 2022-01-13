@@ -10,7 +10,11 @@ import "firebase/firestore";
 import "firebase/storage";
 
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
-import { Title, SubTitle, ButtonsWrapper } from "./styles/sharedStyles";
+import {
+  Title,
+  SubTitle,
+  ButtonsWrapper,
+} from "../../CreateOrganization/styles/sharedStyles";
 import Searchbar from "../../../atoms/Searchbar/Searchbar";
 
 const Wrapper = styled.div`

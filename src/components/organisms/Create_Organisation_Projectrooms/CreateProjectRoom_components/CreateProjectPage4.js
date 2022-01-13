@@ -14,7 +14,7 @@ import {
   SubTitle,
   ButtonsWrapper,
   CreateProjectTitle,
-} from "./styles/sharedStyles";
+} from "../styles/sharedStyles";
 
 //firebase
 import firebase from "firebase/app";

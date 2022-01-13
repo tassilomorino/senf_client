@@ -1,35 +1,32 @@
 /** @format */
 
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import { useTransition, animated } from "@react-spring/web";
 
-//firebase
-import firebase from "firebase/app";
-import "firebase/firestore";
-
 //Components
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import MainDialog from "../../atoms/Layout/MainDialog";
-import CreateProjectPage0 from "./components/CreateProjectPage0";
-import CreateProjectPage0a from "./components/CreateProjectPage0a";
-import CreateProjectPage1 from "./components/CreateProjectPage1";
-import CreateProjectPage2 from "./components/CreateProjectPage2";
-import CreateProjectPage3 from "./components/CreateProjectPage3";
-import CreateProjectPage4 from "./components/CreateProjectPage4";
-import CreateProjectPagePreview from "./components/CreateProjectPreview";
-import { openCreateProjectRoomFunc } from "../../../redux/actions/projectActions";
-import { CreateProjectTitle } from "./components/styles/sharedStyles";
+import CreateOrganizationPage0 from "./Organization_components/CreateOrganizationPage0";
+import CreateOrganizationPage0a from "./Organization_components/CreateOrganizationPage0a";
+import CreateOrganizationPage0b from "./Organization_components/CreateOrganizationPage0b";
+import CreateOrganizationPage1 from "./Organization_components/CreateOrganizationPage1";
+import CreateOrganizationPage2 from "./Organization_components/CreateOrganizationPage2";
+import CreateOrganizationPage3 from "./Organization_components/CreateOrganizationPage3";
+import CreateOrganizationPage4 from "./Organization_components/CreateOrganizationPage4";
+import CreateOrganizationPagePreview from "./Organization_components/CreateProjectPreview";
+import FinishedCreatingOrganization from "./Organization_components/FinishedCreatingOrganization";
+import { stateCreateOrganizationsFunc } from "../../../redux/actions/organizationActions";
 
 const InnerWrapper = styled.div`
   text-align: center;
-  margin-top: 0px;
+  margin-top: 40px;
   position: relative;
 
   @media (min-width: 768px) {
-    margin-top: 0px;
+    margin-top: 40px;
   }
 `;
 
@@ -52,53 +49,22 @@ const CurrentStep = styled.div`
 `;
 
 const CreateProjectDialog = () => {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [title, setTitle] = useState(null);
+  const { t } = useTranslation();
 
   const [index, set] = useState(1);
 
   useEffect(() => {
     if (
       typeof Storage !== "undefined" &&
-      localStorage.getItem("createProjectRoomId")
+      localStorage.getItem("createOrganizationId")
     ) {
-      if (localStorage.getItem("createProjectPostEdit")) {
-        set(pages.length - 1);
-      } else {
-        set(0);
-      }
+      set(0);
     }
-  }, []);
-
-  useEffect(() => {
-    async function fetchData() {
-      const db = firebase.firestore();
-      if (
-        typeof Storage !== "undefined" &&
-        localStorage.getItem("createProjectRoomId")
-      ) {
-        const ref = await db
-          .collection("organizations")
-          .doc(localStorage.getItem("createProjectRoomOrganizationId"))
-          .collection("projectRooms")
-          .doc(localStorage.getItem("createProjectRoomId"))
-          .get();
-
-        if (!ref.exists) {
-          console.log("No such document!");
-        } else {
-          const data = ref.data();
-          setTitle(data.title);
-        }
-      }
-    }
-    fetchData();
   }, []);
 
   const [fromValue, setFrom] = useState(-100);
   const [leaveValue, setLeave] = useState(15);
-
   const onClickPrev = useCallback(() => {
     set((state) => state - 1);
     setFrom(-30);
@@ -129,8 +95,7 @@ const CreateProjectDialog = () => {
   });
 
   const setClose = () => {
-    dispatch(openCreateProjectRoomFunc(false));
-    localStorage.removeItem("createProjectPostEdit");
+    dispatch(stateCreateOrganizationsFunc(false));
   };
 
   const pages = [
@@ -143,7 +108,7 @@ const CreateProjectDialog = () => {
           position: "absolute",
         }}
       >
-        <CreateProjectPage0 set={set} />
+        <CreateOrganizationPage0 onClickNext={onClickNext} />
       </animated.div>
     ),
     ({ style }) => (
@@ -155,7 +120,10 @@ const CreateProjectDialog = () => {
           position: "absolute",
         }}
       >
-        <CreateProjectPage0a onClickNext={onClickNext} />
+        <CreateOrganizationPage0a
+          onClickNext={onClickNext}
+          onClickPrev={onClickPrev}
+        />
       </animated.div>
     ),
     ({ style }) => (
@@ -167,7 +135,10 @@ const CreateProjectDialog = () => {
           position: "absolute",
         }}
       >
-        <CreateProjectPage1 onClickNext={onClickNext} />
+        <CreateOrganizationPage0b
+          onClickNext={onClickNext}
+          onClickPrev={onClickPrev}
+        />
       </animated.div>
     ),
     ({ style }) => (
@@ -179,7 +150,22 @@ const CreateProjectDialog = () => {
           position: "absolute",
         }}
       >
-        <CreateProjectPage2
+        <CreateOrganizationPage1
+          onClickNext={onClickNext}
+          onClickPrev={onClickPrev}
+        />
+      </animated.div>
+    ),
+    ({ style }) => (
+      <animated.div
+        style={{
+          ...style,
+
+          width: "100%",
+          position: "absolute",
+        }}
+      >
+        <CreateOrganizationPage2
           onClickNext={onClickNext}
           onClickPrev={onClickPrev}
         />
@@ -193,7 +179,7 @@ const CreateProjectDialog = () => {
           position: "absolute",
         }}
       >
-        <CreateProjectPage3
+        <CreateOrganizationPage3
           onClickNext={onClickNext}
           onClickPrev={onClickPrev}
         />
@@ -207,7 +193,7 @@ const CreateProjectDialog = () => {
           position: "absolute",
         }}
       >
-        <CreateProjectPage4
+        <CreateOrganizationPage4
           onClickNext={onClickNext}
           onClickPrev={onClickPrev}
         />
@@ -221,9 +207,23 @@ const CreateProjectDialog = () => {
           position: "absolute",
         }}
       >
-        <CreateProjectPagePreview
+        <CreateOrganizationPagePreview
+          onClickNext={onClickNext}
           onClickPrev={onClickPrev}
-          setClose={setClose}
+        />
+      </animated.div>
+    ),
+    ({ style }) => (
+      <animated.div
+        style={{
+          ...style,
+          width: "100%",
+          position: "absolute",
+        }}
+      >
+        <FinishedCreatingOrganization
+          onClickPrev={onClickPrev}
+          setCreateOrganizationIsOpen={setClose}
           set={set}
         />
       </animated.div>
@@ -237,10 +237,6 @@ const CreateProjectDialog = () => {
       <ProgressLine>
         <CurrentStep index={currentStep} />
       </ProgressLine>
-      <CreateProjectTitle>
-        {index !== 0 && index !== 1 && index !== 2 && title}
-      </CreateProjectTitle>
-
       <CustomIconButton
         name="Close"
         position="fixed"

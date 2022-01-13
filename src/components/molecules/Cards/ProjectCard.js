@@ -117,7 +117,7 @@ export const ProjectCard = (props) => {
         <ExpandButton handleButtonClick={() => pushScreamId()} />
         <FlexWrapper>
           <ImgWrapper>
-            {status === "deactivated" && (
+            {status === "archived" && (
               <ImgWrapperOverlay>
                 <img src={notPublishedIcon} alt="UploadImageIcon" width="50%" />
               </ImgWrapperOverlay>

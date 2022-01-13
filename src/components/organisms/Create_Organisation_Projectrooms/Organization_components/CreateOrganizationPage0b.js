@@ -17,7 +17,11 @@ import "firebase/firestore";
 import "firebase/storage";
 
 import { useOnClickOutside } from "../../../../hooks/useOnClickOutside";
-import { ButtonsWrapper, SubTitle, Title } from "./styles/sharedStyles";
+import {
+  ButtonsWrapper,
+  SubTitle,
+  Title,
+} from "../../CreateOrganization/styles/sharedStyles";
 import AgegroupsCover from "../../../../images/insightsCovers/agegroups-cover.jpg";
 
 const CoverWrapper = styled.div`

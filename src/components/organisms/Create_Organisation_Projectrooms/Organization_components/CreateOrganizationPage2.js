@@ -19,11 +19,11 @@ import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 //images
 import {
   ButtonsWrapper,
-  CreateProjectTitle,
   SubTitle,
   Title,
-} from "./styles/sharedStyles";
+} from "../../CreateOrganization/styles/sharedStyles";
 import Contact from "../../../molecules/Modals/Post_Edit_ModalComponents/Contact";
+import Geocoder from "react-mapbox-gl-geocoder";
 
 const Wrapper = styled.div`
   display: flex;
@@ -38,9 +38,17 @@ const ButttonsWrapper = styled.div`
   margin-top: 20px;
 `;
 
-const CreateProjectPage2 = ({ onClickNext, onClickPrev }) => {
+const GeocoderWrapper = styled.div`
+  margin-top: 30px;
+  width: 80%;
+`;
+
+const CreateOrganizationPage2 = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();
-  const [nextClicked, setNextClicked] = useState(false);
+
+  const [address, setAddress] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+  const [latitude, setLatitude] = useState(null);
 
   const [weblinkOpen, setWeblinkOpen] = useState(false);
   const [weblink, setWeblink] = useState(null);
@@ -73,13 +81,11 @@ const CreateProjectPage2 = ({ onClickNext, onClickPrev }) => {
       const db = firebase.firestore();
       if (
         typeof Storage !== "undefined" &&
-        localStorage.getItem("createProjectRoomId")
+        localStorage.getItem("createOrganizationId")
       ) {
         const ref = await db
           .collection("organizations")
-          .doc(localStorage.getItem("createProjectRoomOrganizationId"))
-          .collection("projectRooms")
-          .doc(localStorage.getItem("createProjectRoomId"))
+          .doc(localStorage.getItem("createOrganizationId"))
           .get();
 
         if (!ref.exists) {
@@ -95,19 +101,49 @@ const CreateProjectPage2 = ({ onClickNext, onClickPrev }) => {
             setWeblink(data.weblink);
             setWeblinkTitle(data.weblinkTitle);
           }
+
+          if (data.address) {
+            setAddress(data.address);
+          }
         }
       }
     }
     fetchData();
   }, []);
 
-  const handleNext = async () => {
-    setNextClicked(true);
+  const MyInput = (props) => (
+    <input
+      {...props}
+      placeholder={address ? address : "Addresse eingeben..."}
+      id="geocoder"
+      autocomplete="off"
+    />
+  );
 
+  const geocode = (viewport) => {
+    const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+    const geocodingClient = mbxGeocoding({
+      accessToken: process.env.REACT_APP_MAPBOX_ACCESS_TOKEN,
+    });
+    geocodingClient
+      .reverseGeocode({
+        query: [viewport.longitude, viewport.latitude],
+        limit: 1,
+      })
+      .send()
+      .then((response) => {
+        const match = response.body;
+        setAddress(match.features[0].place_name);
+        setLongitude(match.features[0].center[0]);
+        setLatitude(match.features[0].center[1]);
+      });
+  };
+
+  const handleNext = async () => {
     const db = firebase.firestore();
     if (
       typeof Storage !== "undefined" &&
-      localStorage.getItem("createProjectRoomId")
+      localStorage.getItem("createOrganizationId")
     ) {
       //UPDATING AN EXISTING PROJECTROOM
       const updateProject = {
@@ -115,16 +151,15 @@ const CreateProjectPage2 = ({ onClickNext, onClickPrev }) => {
         weblink: weblink,
         contactTitle: contactTitle,
         contact: contact,
+        address: address,
+        longitude: longitude,
+        latitude: latitude,
       };
       const ref = await db
         .collection("organizations")
-        .doc(localStorage.getItem("createProjectRoomOrganizationId"))
-        .collection("projectRooms")
-        .doc(localStorage.getItem("createProjectRoomId"));
+        .doc(localStorage.getItem("createOrganizationId"));
       return ref.update(updateProject).then(() => {
-        setTimeout(() => {
-          onClickNext();
-        }, 200);
+        onClickNext();
       });
     }
   };
@@ -169,7 +204,7 @@ const CreateProjectPage2 = ({ onClickNext, onClickPrev }) => {
 
       <SubTitle>
         Füge deine Kontaktdaten (E-mail, Link) hinzu, um erreichbar zu sein und
-        deine .
+        deine Organisation zu vertreten.
       </SubTitle>
 
       <ButttonsWrapper>
@@ -196,18 +231,32 @@ const CreateProjectPage2 = ({ onClickNext, onClickPrev }) => {
         />
       </ButttonsWrapper>
 
+      <GeocoderWrapper>
+        <Geocoder
+          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+          onSelected={geocode}
+          // {...viewport}
+          hideOnSelect={true}
+          limit={3}
+          // queryParams={queryParams}
+          id="geocoder-edit"
+          className="geocoder-edit"
+          inputComponent={MyInput}
+          updateInputOnSelect
+        />
+      </GeocoderWrapper>
+
       <ButtonsWrapper>
         <SubmitButton
           text={t("next")}
           zIndex="9"
           backgroundColor="white"
           textColor="#353535"
-          top={document.body.clientWidth > 768 ? "100px" : "70px"}
-          left="0"
+          transformX="none"
+          marginLeft="0"
           handleButtonClick={handleNext}
-          disabled={nextClicked}
-          loading={nextClicked}
-          //   keySubmitRef={keySubmitRef}
+          // disabled={!formikCreateProjectStore.isValid}
+          // keySubmitRef={keySubmitRef}
         />
         <SubmitButton
           text={t("back")}
@@ -224,4 +273,4 @@ const CreateProjectPage2 = ({ onClickNext, onClickPrev }) => {
   );
 };
 
-export default CreateProjectPage2;
+export default CreateOrganizationPage2;

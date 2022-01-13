@@ -14,7 +14,7 @@ import "firebase/storage";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
 //images
-import { ButtonsWrapper, Title } from "./styles/sharedStyles";
+import { ButtonsWrapper, Title } from "../styles/sharedStyles";
 import EditIcon from "../../../../images/icons/pen.png";
 import CheckIcon from "../../../../images/icons/check.png";
 import MissingIcon from "../../../../images/icons/close.png";
@@ -118,7 +118,7 @@ const CreateProjectPagePreview = ({ onClickPrev, setClose, set }) => {
     }
   }, []);
 
-  const handleDeactivate = async () => {
+  const handleArchive = async () => {
     const db = firebase.firestore();
 
     if (
@@ -131,7 +131,7 @@ const CreateProjectPagePreview = ({ onClickPrev, setClose, set }) => {
         .collection("projectRooms")
         .doc(localStorage.getItem("createProjectRoomId"));
 
-      return ref.update({ status: "deactivated" }).then(() => {
+      return ref.update({ status: "archived" }).then(() => {
         dispatch(getProjects());
 
         setClose();
@@ -209,13 +209,13 @@ const CreateProjectPagePreview = ({ onClickPrev, setClose, set }) => {
       <ButtonsWrapper>
         {status && (
           <SubmitButton
-            text={t("Deaktivieren")}
+            text={t("Archivieren")}
             zIndex="9"
             backgroundColor="transparent"
             textColor="#353535"
             top={document.body.clientWidth > 768 ? "100px" : "70px"}
             left="0"
-            handleButtonClick={handleDeactivate}
+            handleButtonClick={handleArchive}
             /*  disabled={!data} */
             //   keySubmitRef={keySubmitRef}
           />

@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { useState, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 
 import { TextField } from "@material-ui/core";
@@ -16,13 +17,15 @@ import "firebase/firestore";
 import "firebase/storage";
 
 import { useOnClickOutside } from "../../../../hooks/useOnClickOutside";
-import { SubTitle, Title, ButtonsWrapper } from "./styles/sharedStyles";
-import CustomSelect from "../../../atoms/Selects/CustomSelect";
+import {
+  ButtonsWrapper,
+  SubTitle,
+  Title,
+} from "../../CreateOrganization/styles/sharedStyles";
 
-const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
+const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();
   const [outsideClick, setOutsideClick] = useState(false);
-  const [nextClicked, setNextClicked] = useState(false);
 
   const outerRef = useRef();
   useOnClickOutside(outerRef, () => {
@@ -34,7 +37,7 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
 
   const [title, setTitle] = useState(null);
 
-  const validationSchema = yup.object({
+  const createProjectValidationSchema = yup.object({
     title: yup
       .string()
       .required(t("enter_email"))
@@ -45,7 +48,7 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
       .string()
       .required(t("enter_email"))
       .min(10, t("username_too_short"))
-      .max(3000, t("username_too_long")),
+      .max(1000, t("username_too_long")),
   });
 
   const formik = useFormik({
@@ -53,7 +56,7 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
       title: "",
       description: "",
     },
-    validationSchema: validationSchema,
+    validationSchema: createProjectValidationSchema,
     validateOnChange: true,
     validateOnBlur: true,
   });
@@ -64,9 +67,7 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
 
       const ref = await db
         .collection("organizations")
-        .doc(localStorage.getItem("createProjectRoomOrganizationId"))
-        .collection("projectRooms")
-        .doc(localStorage.getItem("createProjectRoomId"))
+        .doc(localStorage.getItem("createOrganizationId"))
         .get();
 
       if (!ref.exists) {
@@ -74,30 +75,27 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
       } else {
         const data = ref.data();
         setTitle(data.title);
+
         formik.setFieldValue("title", data.title);
         formik.setFieldValue("description", data.description);
-        setTimeout(() => {
-          formik.setFieldTouched("title", true);
-        }, 1);
+        setTimeout(() => formik.setFieldTouched("title", true));
       }
     }
 
     if (
       typeof Storage !== "undefined" &&
-      localStorage.getItem("createProjectRoomId")
+      localStorage.getItem("createOrganizationId")
     ) {
       fetchData();
     }
   }, []);
 
   const handleNext = async () => {
-    setNextClicked(true);
-
     const db = firebase.firestore();
 
     if (
       typeof Storage !== "undefined" &&
-      localStorage.getItem("createProjectRoomId")
+      localStorage.getItem("createOrganizationId")
     ) {
       //UPDATING AN EXISTING PROJECTROOM
       const updateProject = {
@@ -107,16 +105,11 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
 
       const ref = await db
         .collection("organizations")
-        .doc(localStorage.getItem("createProjectRoomOrganizationId"))
-        .collection("projectRooms")
-        .doc(localStorage.getItem("createProjectRoomId"));
+        .doc(localStorage.getItem("createOrganizationId"));
 
       return ref.update(updateProject).then(() => {
-        setTimeout(() => {
-          onClickNext();
-        }, 200);
+        onClickNext();
       });
-    } else {
     }
   };
 
@@ -124,19 +117,15 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
     <div ref={outerRef}>
       <Title>
         {title ? (
-          <span>Projektinfos bearbeiten</span>
+          <span>Organisationsinfos bearbeiten</span>
         ) : (
           <span>
-            Erstelle deinen <br />
-            Projektraum
+            Erstelle deine <br />
+            Organisation
           </span>
         )}
       </Title>
-      <SubTitle>
-        Wähle einen passenden Projektnamen sowie eine Projektraumbeschreibung,
-        die zum einen informiert und zum anderen auffordert Ideen beizutragen
-        und sich einzubringen.
-      </SubTitle>
+      <SubTitle>sdjhaskjdhas jkhashda skjdh asjkdhaskjdhs shjajkdsh</SubTitle>
 
       <TextField
         id="outlined-name"
@@ -186,8 +175,17 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
           top={document.body.clientWidth > 768 ? "100px" : "70px"}
           left="0"
           handleButtonClick={handleNext}
-          disabled={!formik.isValid || nextClicked}
-          loading={nextClicked}
+          disabled={!formik.isValid}
+          //   keySubmitRef={keySubmitRef}
+        />
+        <SubmitButton
+          text={t("back")}
+          zIndex="9"
+          backgroundColor="transparent"
+          shadow={false}
+          textColor="#353535"
+          left="0"
+          handleButtonClick={onClickPrev}
           //   keySubmitRef={keySubmitRef}
         />
       </ButtonsWrapper>
@@ -195,4 +193,4 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
   );
 };
 
-export default CreateProjectPage1;
+export default CreateOrganizationPage1;
