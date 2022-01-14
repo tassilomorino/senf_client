@@ -150,21 +150,21 @@ const CreateProjectDialog = () => {
       </PageWrapper>
     ),
     ({ style }) => (
-      <animated.div>
+      <PageWrapper>
         <CreateProjectPage4
           onClickNext={onClickNext}
           onClickPrev={onClickPrev}
         />
-      </animated.div>
+      </PageWrapper>
     ),
     ({ style }) => (
-      <animated.div>
+      <PageWrapper>
         <CreateProjectPagePreview
           onClickPrev={onClickPrev}
           setClose={setClose}
           set={set}
         />
-      </animated.div>
+      </PageWrapper>
     ),
   ];
 

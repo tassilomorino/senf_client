@@ -29,17 +29,9 @@ import Contact from "../../../molecules/Modals/Post_Edit_ModalComponents/Contact
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
 const ButttonsWrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 20px;
 `;
 
 const CreateProjectPage2 = ({ onClickNext, onClickPrev }) => {
@@ -175,7 +167,7 @@ const CreateProjectPage2 = ({ onClickNext, onClickPrev }) => {
             Kontaktdaten hinzufügen
           </StyledH2>
 
-          <StyledH3 fontWeight="900" textAlign="center">
+          <StyledH3 fontWeight="900" textAlign="center" margin="20px">
             Füge deine Kontaktdaten (E-mail, Link) hinzu, um erreichbar zu sein
             und deine .
           </StyledH3>

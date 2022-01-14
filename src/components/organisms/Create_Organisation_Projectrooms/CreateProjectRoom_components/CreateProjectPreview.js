@@ -14,7 +14,12 @@ import "firebase/storage";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
 //images
-import { ButtonsWrapper, Title } from "../styles/sharedStyles";
+import {
+  ButtonsWrapper,
+  ComponentInnerWrapper,
+  ComponentWrapper,
+  Title,
+} from "../styles/sharedStyles";
 import EditIcon from "../../../../images/icons/pen.png";
 import CheckIcon from "../../../../images/icons/check.png";
 import MissingIcon from "../../../../images/icons/close.png";
@@ -24,6 +29,8 @@ import {
   getProjects,
   reloadProjects,
 } from "../../../../redux/actions/projectActions";
+import { StyledH2 } from "../../../../styles/GlobalStyle";
+import Navigation from "../Components/Navigation";
 
 const Wrapper = styled.div`
   display: flex;
@@ -33,7 +40,7 @@ const Wrapper = styled.div`
 `;
 
 const ListItemWrapper = styled.div`
-  width: 80%;
+  width: 100%;
   display: flex;
   margin-bottom: 10px;
 `;
@@ -170,79 +177,82 @@ const CreateProjectPagePreview = ({ onClickPrev, setClose, set }) => {
     }
   };
   return (
-    <Wrapper>
-      <Title> Übersicht</Title>
+    <React.Fragment>
+      <ComponentWrapper>
+        <ComponentInnerWrapper>
+          <StyledH2 fontWeight="900" textAlign="center">
+            Übersicht
+          </StyledH2>
 
-      <ListItemWrapper>
-        <ListItem>
-          <ExpandButton handleButtonClick={() => set(2)} />
-          <ListItemTitle>Infos</ListItemTitle>
-          <img src={EditIcon} width="20px" style={{ paddingRight: "20px" }} />
-        </ListItem>
-        <ListItemStatus>
-          <img src={infosProvided ? CheckIcon : MissingIcon} width="30px" />
-        </ListItemStatus>{" "}
-      </ListItemWrapper>
-      <ListItemWrapper>
-        <ListItem>
-          <ListItemTitle>Gebiet</ListItemTitle>
-          <img src={EditIcon} width="20px" style={{ paddingRight: "20px" }} />
-        </ListItem>
-        <ListItemStatus>
-          <img src={infosProvided ? MissingIcon : MissingIcon} width="30px" />
-        </ListItemStatus>{" "}
-      </ListItemWrapper>
+          <ListItemWrapper>
+            <ListItem>
+              <ExpandButton handleButtonClick={() => set(2)} />
+              <ListItemTitle>Infos</ListItemTitle>
+              <img
+                src={EditIcon}
+                width="20px"
+                style={{ paddingRight: "20px" }}
+              />
+            </ListItem>
+            <ListItemStatus>
+              <img src={infosProvided ? CheckIcon : MissingIcon} width="30px" />
+            </ListItemStatus>{" "}
+          </ListItemWrapper>
+          <ListItemWrapper>
+            <ListItem>
+              <ListItemTitle>Gebiet</ListItemTitle>
+              <img
+                src={EditIcon}
+                width="20px"
+                style={{ paddingRight: "20px" }}
+              />
+            </ListItem>
+            <ListItemStatus>
+              <img
+                src={infosProvided ? MissingIcon : MissingIcon}
+                width="30px"
+              />
+            </ListItemStatus>{" "}
+          </ListItemWrapper>
 
-      {openPreview && (
-        <FrameWrapper>
-          <iframe
-            src={`http://localhost:3000/projectrooms/${localStorage.getItem(
-              "createProjectRoomId"
-            )}`}
-            height="100%"
-            width="100%"
-            frameBorder="0"
-          />
-        </FrameWrapper>
-      )}
+          {openPreview && (
+            <FrameWrapper>
+              <iframe
+                src={`http://localhost:3000/projectrooms/${localStorage.getItem(
+                  "createProjectRoomId"
+                )}`}
+                height="100%"
+                width="100%"
+                frameBorder="0"
+              />
+            </FrameWrapper>
+          )}
 
-      <ButtonsWrapper>
-        {status && (
-          <SubmitButton
-            text={t("Archivieren")}
-            zIndex="9"
-            backgroundColor="transparent"
-            textColor="#353535"
-            top={document.body.clientWidth > 768 ? "100px" : "70px"}
-            left="0"
-            handleButtonClick={handleArchive}
-            /*  disabled={!data} */
-            //   keySubmitRef={keySubmitRef}
-          />
-        )}
-        <SubmitButton
-          text={t("Veröffentlichen")}
-          zIndex="9"
-          backgroundColor="white"
-          textColor="#353535"
-          top={document.body.clientWidth > 768 ? "100px" : "70px"}
-          left="0"
-          handleButtonClick={handlePublish}
-          /*  disabled={!data} */
-          //   keySubmitRef={keySubmitRef}
-        />
-        <SubmitButton
-          text={t("back")}
-          zIndex="9"
-          backgroundColor="transparent"
-          shadow={false}
-          textColor="#353535"
-          left="0"
-          handleButtonClick={onClickPrev}
-          //   keySubmitRef={keySubmitRef}
-        />
-      </ButtonsWrapper>
-    </Wrapper>
+          {status && (
+            <SubmitButton
+              text={t("Archivieren")}
+              zIndex="9"
+              backgroundColor="transparent"
+              textColor="#353535"
+              top={document.body.clientWidth > 768 ? "100px" : "70px"}
+              left="0"
+              handleButtonClick={handleArchive}
+              /*  disabled={!data} */
+              //   keySubmitRef={keySubmitRef}
+            />
+          )}
+        </ComponentInnerWrapper>
+      </ComponentWrapper>
+
+      <Navigation
+        nextLabel={t("Veröffentlichen")}
+        prevLabel={t("back")}
+        handleNext={handlePublish}
+        handlePrev={onClickPrev}
+        // disabled={!data || nextClicked}
+        // loading={nextClicked}
+      />
+    </React.Fragment>
   );
 };
 

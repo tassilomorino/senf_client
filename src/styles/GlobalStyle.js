@@ -19,7 +19,7 @@ export const StyledH2 = styled.h2`
 `;
 
 export const StyledH3 = styled.h3`
-  margin: 0;
+  margin: ${(props) => (props.margin ? props.margin : "0")};
   padding: 0;
   text-align: ${(props) => (props.textAlign ? props.textAlign : "left")};
 `;
@@ -49,8 +49,11 @@ export const StyledSmallText = styled.p`
   color: #353535;
 `;
 
-export const CenteredStyledText = styled(StyledText)`
-  text-align: center;
+export const StyledImg = styled.img`
+  flex-shrink: 0;
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
 `;
 
 export const SideBarTabs = styled(StyledH3)`

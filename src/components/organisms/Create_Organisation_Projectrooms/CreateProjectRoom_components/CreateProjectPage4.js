@@ -14,12 +14,16 @@ import {
   SubTitle,
   ButtonsWrapper,
   CreateProjectTitle,
+  ComponentWrapper,
+  ComponentInnerWrapper,
 } from "../styles/sharedStyles";
 
 //firebase
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
+import Navigation from "../Components/Navigation";
+import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 
 const Wrapper = styled.div`
   display: flex;
@@ -38,6 +42,7 @@ const DrawMapButton = styled.label`
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  margin-left: calc(50% - 75px);
 `;
 
 const StyledImg = styled.img`
@@ -124,53 +129,42 @@ const CreateProjectPage4 = ({ onClickNext, onClickPrev }) => {
         setViewport={setViewport}
       />
 
-      <Wrapper>
-        <Title>Gebiet festlegen</Title>
-        <SubTitle>
-          Mit deinem individeullen Projektraum kannst du ortsbezogen Ideen
-          sammeln. Zeichne das Gebiet ein!
-        </SubTitle>
+      <ComponentWrapper>
+        <ComponentInnerWrapper>
+          <StyledH2 fontWeight="900" textAlign="center">
+            Gebiet festlegen
+          </StyledH2>
+          <StyledH3 textAlign="center" margin="20px">
+            Mit deinem individeullen Projektraum kannst du ortsbezogen Ideen
+            sammeln. Zeichne das Gebiet ein!
+          </StyledH3>
 
-        <DrawMapButton onClick={setMapOpen}>
-          {data ? (
-            <MapPreview
-              mapOpen={mapOpen}
-              setMapOpen={setMapOpen}
-              viewport={viewport}
-              mapRef={mapRef}
-              _onViewportChange={_onViewportChange}
-              data={data}
-              setData={setData}
-            />
-          ) : (
-            <StyledImg src={DrawMapImage} />
-          )}
-        </DrawMapButton>
+          <DrawMapButton onClick={setMapOpen}>
+            {data ? (
+              <MapPreview
+                mapOpen={mapOpen}
+                setMapOpen={setMapOpen}
+                viewport={viewport}
+                mapRef={mapRef}
+                _onViewportChange={_onViewportChange}
+                data={data}
+                setData={setData}
+              />
+            ) : (
+              <StyledImg src={DrawMapImage} />
+            )}
+          </DrawMapButton>
+        </ComponentInnerWrapper>
+      </ComponentWrapper>
 
-        <ButtonsWrapper>
-          <SubmitButton
-            text={t("next")}
-            zIndex="9"
-            backgroundColor="white"
-            textColor="#353535"
-            top={document.body.clientWidth > 768 ? "100px" : "70px"}
-            left="0"
-            disabled={!data || nextClicked}
-            loading={nextClicked}
-            //   keySubmitRef={keySubmitRef}
-          />
-          <SubmitButton
-            text={t("back")}
-            zIndex="9"
-            backgroundColor="transparent"
-            shadow={false}
-            textColor="#353535"
-            left="0"
-            handleButtonClick={onClickPrev}
-            //   keySubmitRef={keySubmitRef}
-          />
-        </ButtonsWrapper>
-      </Wrapper>
+      <Navigation
+        nextLabel={t("next")}
+        prevLabel={t("back")}
+        handleNext={handleNext}
+        handlePrev={onClickPrev}
+        disabled={!data || nextClicked}
+        loading={nextClicked}
+      />
     </React.Fragment>
   );
 };

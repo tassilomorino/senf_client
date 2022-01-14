@@ -48,6 +48,7 @@ const StyledLabel = styled.label`
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  margin-left: calc(50% - 75px);
 `;
 
 const StyledIconWrapper = styled.div`
@@ -143,10 +144,9 @@ const CreateProjectPage3 = ({ onClickNext, onClickPrev }) => {
       <ComponentWrapper>
         <ComponentInnerWrapper>
           <StyledH2 fontWeight="900" textAlign="center">
-            {" "}
             Bild hochladen
           </StyledH2>
-          <StyledH3 textAlign="center">
+          <StyledH3 textAlign="center" margin="20px">
             Lade ein aussagekräftiges Bild für den Projektraum hoch und wähle
             dabei nach Möglichkeit ein thematisch passendes Motiv.
           </StyledH3>

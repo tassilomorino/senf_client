@@ -142,7 +142,7 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
               </span>
             )}
           </StyledH2>
-          <StyledH3 textAlign="center">
+          <StyledH3 textAlign="center" margin="20px">
             Wähle einen passenden Projektnamen sowie eine
             Projektraumbeschreibung, die zum einen informiert und zum anderen
             auffordert Ideen beizutragen und sich einzubringen.

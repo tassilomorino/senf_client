@@ -24,7 +24,7 @@ const ProgressLine = styled.div`
   max-width: 400px;
   top: 10px;
 
-  background-color: rgb(255, 255, 255, 1);
+  background-color: #fed957;
   border-radius: 10px;
   position: relative;
 `;

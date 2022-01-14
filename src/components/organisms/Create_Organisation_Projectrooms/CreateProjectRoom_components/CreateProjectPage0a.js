@@ -16,13 +16,29 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
 
-import { SubTitle, Title } from "../styles/sharedStyles";
+import {
+  ComponentInnerWrapper,
+  ComponentWrapper,
+} from "../styles/sharedStyles";
 import CustomSelect from "../../../atoms/Selects/CustomSelect";
-import { OrganizationCard } from "../../../molecules/Cards/OrganizationCard";
+import { StyledH2, StyledH3, StyledImg } from "../../../../styles/GlobalStyle";
+import Navigation from "../Components/Navigation";
 
 const SelectContainer = styled.div`
   display: flex;
   justify-content: center;
+`;
+
+const OrganizationCard = styled.div`
+  height: 300px;
+`;
+const ImgWrapper = styled.div`
+  width: 200px;
+  height: 200px;
+  background-color: white;
+  border-radius: 18px;
+  position: relative;
+  overflow: hidden;
 `;
 
 const CreateProjectPage1 = ({ onClickNext }) => {
@@ -118,43 +134,45 @@ const CreateProjectPage1 = ({ onClickNext }) => {
 
   return (
     <React.Fragment>
-      <Title>Wähle die Organisation</Title>
-      <SubTitle>
-        Wähle einen passenden Projektnamen sowie eine Projektraumbeschreibung,
-        die zum einen informiert und zum anderen auffordert Ideen beizutragen
-        und sich einzubringen.
-      </SubTitle>
+      <ComponentWrapper>
+        <ComponentInnerWrapper>
+          <StyledH2 fontWeight="900" textAlign="center">
+            Übersicht
+          </StyledH2>
+          <StyledH3 textAlign="center" margin="20px">
+            Wähle einen passenden Projektnamen sowie eine
+            Projektraumbeschreibung, die zum einen informiert und zum anderen
+            auffordert Ideen beizutragen und sich einzubringen.
+          </StyledH3>
 
-      <SelectContainer>
-        <CustomSelect
-          name={"project"}
-          value={selectedOrganizationId}
-          initialValue={""}
-          options={optionsOrganizationsArray}
-          handleDropdown={handleDropdown}
-        />
-      </SelectContainer>
+          <SelectContainer>
+            <CustomSelect
+              name={"project"}
+              value={selectedOrganizationId}
+              initialValue={""}
+              options={optionsOrganizationsArray}
+              handleDropdown={handleDropdown}
+            />
+          </SelectContainer>
 
-      {myOrganizations.map((organization) => (
-        <OrganizationCard
-          key={organization.organizationId}
-          organization={organization}
-        />
-      ))}
+          {myOrganizations.map((organization) => (
+            <OrganizationCard>
+              <ImgWrapper>
+                <StyledImg src={organization.imgUrl} width="100%" />
+              </ImgWrapper>
+              <StyledH2 fontWeight="900" textAlign="center">
+                {organization.title}
+              </StyledH2>
+            </OrganizationCard>
+          ))}
+        </ComponentInnerWrapper>
+      </ComponentWrapper>
 
-      <SubmitButton
-        text={t("lets_go")}
-        zIndex="9"
-        backgroundColor="white"
-        textColor="#353535"
-        position="relative"
-        top={document.body.clientWidth > 768 ? "100px" : "70px"}
-        left="0"
-        handleButtonClick={handleNext}
+      <Navigation
+        nextLabel={t("lets_go")}
+        handleNext={handleNext}
         disabled={!selectedOrganizationId || nextClicked}
         loading={nextClicked}
-
-        //   keySubmitRef={keySubmitRef}
       />
     </React.Fragment>
   );
