@@ -1,14 +1,12 @@
 /** @format */
 
 import React, { useState, useEffect, useRef } from "react";
-import _ from "lodash";
 
 import { TextField } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
 //firebase
 import firebase from "firebase/app";
@@ -17,15 +15,11 @@ import "firebase/storage";
 
 import { useOnClickOutside } from "../../../../hooks/useOnClickOutside";
 import {
-  SubTitle,
-  Title,
-  ButtonsWrapper,
   ComponentWrapper,
   ComponentInnerWrapper,
 } from "../styles/sharedStyles";
-import CustomSelect from "../../../atoms/Selects/CustomSelect";
 import Navigation from "../Components/Navigation";
-import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
+import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 
 const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();
@@ -67,6 +61,8 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
   });
 
   useEffect(() => {
+    formik.setFieldTouched("title", true);
+
     async function fetchData() {
       const db = firebase.firestore();
 
@@ -84,9 +80,6 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
         setTitle(data.title);
         formik.setFieldValue("title", data.title);
         formik.setFieldValue("description", data.description);
-        setTimeout(() => {
-          formik.setFieldTouched("title", true);
-        }, 1);
       }
     }
 

@@ -4,22 +4,22 @@
  * @format
  */
 
-import { SET_CREATE_PROJECT_FORM_DATA } from "../types";
+// import { SET_CREATE_PROJECT_FORM_DATA } from "../types";
 
-const initialState = {
-  createProjectFormData: null,
-  createOrganizationFormData: null,
-};
+// const initialState = {
+//   createProjectFormData: null,
+//   createOrganizationFormData: null,
+// };
 
-export default function (state = initialState, action) {
-  switch (action.type) {
-    case SET_CREATE_PROJECT_FORM_DATA:
-      return {
-        ...state,
-        createProjectFormData: action.payload,
-      };
+// export default function (state = initialState, action) {
+//   switch (action.type) {
+//     case SET_CREATE_PROJECT_FORM_DATA:
+//       return {
+//         ...state,
+//         createProjectFormData: action.payload,
+//       };
 
-    default:
-      return state;
-  }
-}
+//     default:
+//       return state;
+//   }
+// }

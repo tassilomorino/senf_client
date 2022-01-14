@@ -1,19 +1,14 @@
 /** @format */
 
 import React, { useState, useRef, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import MapDialog from "./MapDialog";
 
 import DrawMapImage from "../../../../images/drawMap.jpg";
-import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 import MapPreview from "./MapPreview";
 import {
-  Title,
-  SubTitle,
-  ButtonsWrapper,
-  CreateProjectTitle,
   ComponentWrapper,
   ComponentInnerWrapper,
 } from "../styles/sharedStyles";
@@ -24,13 +19,6 @@ import "firebase/firestore";
 import "firebase/storage";
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
 
 const DrawMapButton = styled.label`
   width: 150px;

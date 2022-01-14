@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
@@ -14,16 +13,11 @@ import "firebase/storage";
 //Components
 import Weblink from "../../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
 import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
-import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
 //images
 import {
-  ButtonsWrapper,
   ComponentInnerWrapper,
   ComponentWrapper,
-  CreateProjectTitle,
-  SubTitle,
-  Title,
 } from "../styles/sharedStyles";
 import Contact from "../../../molecules/Modals/Post_Edit_ModalComponents/Contact";
 import Navigation from "../Components/Navigation";

@@ -1,7 +1,6 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 //firebase
@@ -9,13 +8,10 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
 
-import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
-
 import NotDoneImage from "../../../../images/Not_connected.png";
 import {
   ComponentInnerWrapper,
   ComponentWrapper,
-  Title,
 } from "../styles/sharedStyles";
 import Navigation from "../Components/Navigation";
 import { StyledH2 } from "../../../../styles/GlobalStyle";
@@ -81,31 +77,6 @@ const CreateProjectPage0 = ({ set }) => {
             alt="NotDoneImage"
           />
         </ComponentInnerWrapper>
-
-        {/* <SubmitButton
-        text={t("continue_creation")}
-        zIndex="9"
-        backgroundColor="#353535"
-        textColor="white"
-        position="relative"
-        top="50px"
-        left="0"
-        handleButtonClick={() => set(2)}
-        // disabled={!formikCreateProjectStore.isValid}
-        //   keySubmitRef={keySubmitRef}
-      />
-
-      <SubmitButton
-        text={t("restart")}
-        zIndex="9"
-        backgroundColor="rgb(255,255,255,0.5)"
-        textColor="#353535"
-        position="relative"
-        top="70px"
-        handleButtonClick={handleRestart}
-        // disabled={!formikCreateProjectStore.isValid}
-        //   keySubmitRef={keySubmitRef}
-      /> */}
       </ComponentWrapper>
       <Navigation
         nextLabel={t("continue_creation")}

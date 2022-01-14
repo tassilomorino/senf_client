@@ -1,7 +1,6 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import imageCompression from "browser-image-compression";
@@ -11,32 +10,17 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
 
-//redux
-import { createProjectSaveData } from "../../../../redux/actions/formDataActions";
-
 //Components
-import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
-
-//images
-import UploadImageIcon from "../../../../images/icons/uploadImage.png";
-import { CircularProgress } from "@material-ui/core";
 import {
-  ButtonsWrapper,
   ComponentInnerWrapper,
   ComponentWrapper,
-  CreateProjectTitle,
-  SubTitle,
-  Title,
 } from "../styles/sharedStyles";
 import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 import Navigation from "../Components/Navigation";
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
+//images
+import UploadImageIcon from "../../../../images/icons/uploadImage.png";
+import { CircularProgress } from "@material-ui/core";
 
 const StyledLabel = styled.label`
   width: 150px;
@@ -74,8 +58,6 @@ const CreateProjectPage3 = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [nextClicked, setNextClicked] = useState(false);
-
-  const fileName = null;
 
   const [uploadedImage, setUploadedImage] = useState(null);
   const [uploadImageHover, setUploadImageHover] = useState(false);

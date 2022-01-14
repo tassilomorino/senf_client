@@ -1,15 +1,11 @@
 /** @format */
 
-import React, { useState, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import _ from "lodash";
 
-import { TextField } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { useFormik } from "formik";
-import * as yup from "yup";
-import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
 //firebase
 import firebase from "firebase/app";
@@ -20,25 +16,33 @@ import {
   ComponentInnerWrapper,
   ComponentWrapper,
 } from "../styles/sharedStyles";
-import CustomSelect from "../../../atoms/Selects/CustomSelect";
 import { StyledH2, StyledH3, StyledImg } from "../../../../styles/GlobalStyle";
 import Navigation from "../Components/Navigation";
 
-const SelectContainer = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
 const OrganizationCard = styled.div`
-  height: 300px;
+  height: 280px;
+  width: 250px;
+  background-color: #ffe898;
+  position: relative;
+  margin: 20px calc(50% - 125px);
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  outline: ${(props) =>
+    props.selectedOrganization ? "3px solid #353535 " : "3px solid white"};
+
+  outline-offset: -3px;
 `;
 const ImgWrapper = styled.div`
   width: 200px;
   height: 200px;
   background-color: white;
-  border-radius: 18px;
+  border-radius: 100%;
   position: relative;
   overflow: hidden;
+  margin-top: 20px;
 `;
 
 const CreateProjectPage1 = ({ onClickNext }) => {
@@ -52,16 +56,6 @@ const CreateProjectPage1 = ({ onClickNext }) => {
   const myOrganizations = organizations.filter(({ organizationId }) =>
     organizationId.includes(organizationId)
   );
-
-  const optionsOrganizationsArray = _.orderBy(
-    myOrganizations,
-    "createdAt",
-    "desc"
-  ).map((organization) => ({
-    name: organization.organizationId,
-    label: organization.title,
-    img: organization.imgUrl,
-  }));
 
   const handleDropdown = (value) => {
     setSelectedOrganizationId(value);
@@ -145,22 +139,17 @@ const CreateProjectPage1 = ({ onClickNext }) => {
             auffordert Ideen beizutragen und sich einzubringen.
           </StyledH3>
 
-          <SelectContainer>
-            <CustomSelect
-              name={"project"}
-              value={selectedOrganizationId}
-              initialValue={""}
-              options={optionsOrganizationsArray}
-              handleDropdown={handleDropdown}
-            />
-          </SelectContainer>
-
           {myOrganizations.map((organization) => (
-            <OrganizationCard>
+            <OrganizationCard
+              onClick={() => handleDropdown(organization.organizationId)}
+              selectedOrganization={
+                organization.organizationId === selectedOrganizationId
+              }
+            >
               <ImgWrapper>
                 <StyledImg src={organization.imgUrl} width="100%" />
               </ImgWrapper>
-              <StyledH2 fontWeight="900" textAlign="center">
+              <StyledH2 fontWeight="900" textAlign="center" margin="20px 0 0 0">
                 {organization.title}
               </StyledH2>
             </OrganizationCard>

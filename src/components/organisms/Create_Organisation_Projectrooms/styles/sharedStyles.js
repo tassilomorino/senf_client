@@ -8,14 +8,12 @@ export const PageWrapper = styled(animated.div)`
   width: 100vw;
   height: calc(100vh - 70px);
   position: fixed;
-  overflow: scroll;
 `;
 export const ComponentWrapper = styled.div`
-  height: calc(100% - 70px)
+  height: calc(100% - 70px);
   width: 100vw;
   top: 70px;
-  padding-bottom: 100px;
-
+  overflow: scroll;
   @media (min-width: 768px) {
     max-width: 600px;
     margin-left: 50%;
@@ -25,6 +23,7 @@ export const ComponentWrapper = styled.div`
 
 export const ComponentInnerWrapper = styled.div`
   height: 100%;
+
   width: 80%;
   margin-left: 10%;
   margin-top: 20px;

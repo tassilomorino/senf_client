@@ -53,8 +53,7 @@ import {
   getOrganizations,
   openOrganizationFunc,
 } from "../../redux/actions/organizationActions";
-import CreateOrganizationDialog from "../organisms/Create_Organisation_Projectrooms/CreateOrganizationDialog";
-import CreateProjectDialog from "../organisms/Create_Organisation_Projectrooms/CreateProjectDialog";
+import CreateMainComponent from "../organisms/Create_Organisation_Projectrooms/CreateMainComponent";
 import OrganizationDialog from "../organisms/Dialogs/OrganizationDialog";
 import OrganizationsPage from "../organisms/SubPages/OrganizationsPage";
 import styled from "styled-components";
@@ -557,8 +556,18 @@ const Main = () => {
           setChangeLocationModalOpen={setChangeLocationModalOpen}
         />
       )}
-      {openCreateOrganization && <CreateOrganizationDialog />}
-      {openCreateProjectRoom && <CreateProjectDialog />}
+
+      {(openCreateProjectRoom || openCreateOrganization) && (
+        <CreateMainComponent
+          type={
+            openCreateProjectRoom
+              ? "projectRoom"
+              : openCreateOrganization
+              ? "organization"
+              : null
+          }
+        />
+      )}
     </React.Fragment>
   );
 };

@@ -19,6 +19,7 @@ import CreateOrganizationPage4 from "./Organization_components/CreateOrganizatio
 import CreateOrganizationPagePreview from "./Organization_components/CreateProjectPreview";
 import FinishedCreatingOrganization from "./Organization_components/FinishedCreatingOrganization";
 import { stateCreateOrganizationsFunc } from "../../../redux/actions/organizationActions";
+import TopNavigation from "./Components/TopNavigation";
 
 const InnerWrapper = styled.div`
   text-align: center;
@@ -234,15 +235,20 @@ const CreateProjectDialog = () => {
 
   return (
     <MainDialog isOpen={true}>
-      <ProgressLine>
-        <CurrentStep index={currentStep} />
-      </ProgressLine>
+      <TopNavigation
+        index={currentStep}
+        // title={index !== 0 && index !== 1 && index !== 2 && title}
+      />
+
       <CustomIconButton
         name="Close"
         position="fixed"
-        margin={document.body.clientWidth > 768 ? "40px" : "10px"}
+        margin={document.body.clientWidth > 768 ? "10px" : "10px"}
         left="0"
         top="0"
+        zIndex={2}
+        backgroundColor="transparent"
+        shadow={false}
         handleButtonClick={setClose}
       />
 
