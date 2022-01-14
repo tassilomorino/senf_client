@@ -17,11 +17,7 @@ import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
 //images
-import {
-  ButtonsWrapper,
-  SubTitle,
-  Title,
-} from "../../CreateOrganization/styles/sharedStyles";
+import { ButtonsWrapper, SubTitle, Title } from "../styles/sharedStyles";
 import Contact from "../../../molecules/Modals/Post_Edit_ModalComponents/Contact";
 import Geocoder from "react-mapbox-gl-geocoder";
 

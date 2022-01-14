@@ -15,7 +15,7 @@ import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 import NotDoneImage from "../../../../images/Not_connected.png";
 
 //styles
-import { Title } from "../../CreateOrganization/styles/sharedStyles";
+import { Title } from "../styles/sharedStyles";
 
 const CreateOrganizationPage0 = ({ onClickNext }) => {
   const { t } = useTranslation();

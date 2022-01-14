@@ -6,11 +6,7 @@ import { useTranslation } from "react-i18next";
 
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
-import {
-  ButtonsWrapper,
-  SubTitle,
-  Title,
-} from "../../CreateOrganization/styles/sharedStyles";
+import { ButtonsWrapper, SubTitle, Title } from "../styles/sharedStyles";
 import styled from "styled-components";
 import CheckBox from "../../../atoms/CheckBox/CheckBox";
 

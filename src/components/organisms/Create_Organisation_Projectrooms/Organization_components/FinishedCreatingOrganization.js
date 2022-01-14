@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import FinishedCreating from "../../../atoms/Backgrounds/FinishedCreating";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
-import { Title } from "../../CreateOrganization/styles/sharedStyles";
+import { Title } from "../styles/sharedStyles";
 
 const Wrapper = styled.div`
   display: flex;

@@ -17,11 +17,7 @@ import "firebase/firestore";
 import "firebase/storage";
 
 import { useOnClickOutside } from "../../../../hooks/useOnClickOutside";
-import {
-  ButtonsWrapper,
-  SubTitle,
-  Title,
-} from "../../CreateOrganization/styles/sharedStyles";
+import { ButtonsWrapper, SubTitle, Title } from "../styles/sharedStyles";
 
 const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();

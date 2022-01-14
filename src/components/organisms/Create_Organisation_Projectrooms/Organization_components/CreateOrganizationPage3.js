@@ -20,11 +20,7 @@ import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 //images
 import UploadImageIcon from "../../../../images/icons/uploadImage.png";
 import { CircularProgress } from "@material-ui/core";
-import {
-  ButtonsWrapper,
-  SubTitle,
-  Title,
-} from "../../CreateOrganization/styles/sharedStyles";
+import { ButtonsWrapper, SubTitle, Title } from "../styles/sharedStyles";
 
 const Wrapper = styled.div`
   display: flex;
