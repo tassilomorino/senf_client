@@ -52,6 +52,8 @@ const CreateProjectPage1 = ({ onClickNext }) => {
   const [selectedOrganizationId, setSelectedOrganizationId] = useState(null);
   const [selectedOrganizationName, setSelectedOrganizationName] =
     useState(null);
+  const [selectedOrganizationType, setSelectedOrganizationType] =
+    useState(null);
 
   const myOrganizations = organizations.filter(({ organizationId }) =>
     organizationId.includes(organizationId)
@@ -63,6 +65,7 @@ const CreateProjectPage1 = ({ onClickNext }) => {
       ({ organizationId }) => value.includes(organizationId)
     );
     setSelectedOrganizationName(selectedOrganizationName[0].title);
+    setSelectedOrganizationType(selectedOrganizationName[0].organizationType);
   };
 
   useEffect(() => {
@@ -102,6 +105,7 @@ const CreateProjectPage1 = ({ onClickNext }) => {
       createdAt: new Date().toISOString(),
       owner: selectedOrganizationName,
       organizationId: selectedOrganizationId,
+      organizationType: selectedOrganizationType,
       status: "uncompleted",
     };
 

@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useState, useCallback, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import { useTransition, animated } from "@react-spring/web";
@@ -29,7 +29,7 @@ import CreateOrganizationPage1 from "./Organization_components/CreateOrganizatio
 import CreateOrganizationPage2 from "./Organization_components/CreateOrganizationPage2";
 import CreateOrganizationPage3 from "./Organization_components/CreateOrganizationPage3";
 import CreateOrganizationPage4 from "./Organization_components/CreateOrganizationPage4";
-import CreateOrganizationPagePreview from "./Organization_components/CreateProjectPreview";
+import CreateOrganizationPagePreview from "./Organization_components/CreateOrganizationPreview";
 
 //Redux
 import FinishedCreatingOrganization from "./Organization_components/FinishedCreatingOrganization";
@@ -37,6 +37,12 @@ import { stateCreateOrganizationsFunc } from "../../../redux/actions/organizatio
 import { openCreateProjectRoomFunc } from "../../../redux/actions/projectActions";
 
 const CreateProjectDialog = ({ type }) => {
+  const openCreateProjectRoom = useSelector(
+    (state) => state.UI.openCreateProjectRoom
+  );
+  const openCreateOrganization = useSelector(
+    (state) => state.UI.openCreateOrganization
+  );
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [title, setTitle] = useState(null);
@@ -44,37 +50,57 @@ const CreateProjectDialog = ({ type }) => {
   const [index, set] = useState(1);
 
   useEffect(() => {
-    if (
-      typeof Storage !== "undefined" &&
-      localStorage.getItem("createProjectRoomId")
-    ) {
-      if (localStorage.getItem("createProjectPostEdit")) {
-        set(pages.length - 1);
-      } else {
-        set(0);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
     async function fetchData() {
       const db = firebase.firestore();
-      if (
-        typeof Storage !== "undefined" &&
-        localStorage.getItem("createProjectRoomId")
-      ) {
-        const ref = await db
-          .collection("organizations")
-          .doc(localStorage.getItem("createProjectRoomOrganizationId"))
-          .collection("projectRooms")
-          .doc(localStorage.getItem("createProjectRoomId"))
-          .get();
+      if (openCreateProjectRoom) {
+        if (
+          typeof Storage !== "undefined" &&
+          localStorage.getItem("createProjectRoomId")
+        ) {
+          const ref = await db
+            .collection("organizations")
+            .doc(localStorage.getItem("createProjectRoomOrganizationId"))
+            .collection("projectRooms")
+            .doc(localStorage.getItem("createProjectRoomId"))
+            .get();
 
-        if (!ref.exists) {
-          console.log("No such document!");
-        } else {
-          const data = ref.data();
-          setTitle(data.title);
+          if (!ref.exists) {
+            console.log("No such document!");
+          } else {
+            const data = ref.data();
+            setTitle(data.title);
+
+            if (localStorage.getItem("createProjectPostEdit")) {
+              set(pages.length - 1);
+            } else {
+              set(0);
+            }
+          }
+        }
+      } else if (openCreateOrganization) {
+        if (
+          typeof Storage !== "undefined" &&
+          localStorage.getItem("createOrganizationId")
+        ) {
+          const ref = await db
+            .collection("organizations")
+            .doc(localStorage.getItem("createOrganizationId"))
+            .get();
+
+          if (!ref.exists) {
+            console.log("No such document!");
+          } else {
+            const data = ref.data();
+            setTitle(data.title);
+
+            if (localStorage.getItem("createOrganizationPostEdit")) {
+              console.log(localStorage);
+              set(pages.length - 1);
+            } else {
+              set(0);
+              console.log(localStorage);
+            }
+          }
         }
       }
     }
@@ -103,8 +129,6 @@ const CreateProjectDialog = ({ type }) => {
     // },
     enter: {
       opacity: 1,
-      transform: "translateX(0%)",
-      animation: "smallEnteranimation 1s",
     },
     // leave: {
     //   opacity: 0,
@@ -118,17 +142,14 @@ const CreateProjectDialog = ({ type }) => {
     dispatch(stateCreateOrganizationsFunc(false));
 
     localStorage.removeItem("createProjectPostEdit");
+    localStorage.removeItem("createOrganizationPostEdit");
   };
 
   const pages =
     type === "projectRoom"
       ? [
           ({ style }) => (
-            <PageWrapper
-              style={{
-                ...style,
-              }}
-            >
+            <PageWrapper>
               <CreateProjectPage0 set={set} />
             </PageWrapper>
           ),
@@ -182,11 +203,7 @@ const CreateProjectDialog = ({ type }) => {
         ]
       : [
           ({ style }) => (
-            <PageWrapper
-              style={{
-                ...style,
-              }}
-            >
+            <PageWrapper>
               <CreateOrganizationPage0 onClickNext={onClickNext} />
             </PageWrapper>
           ),
@@ -246,15 +263,15 @@ const CreateProjectDialog = ({ type }) => {
               />
             </PageWrapper>
           ),
-          ({ style }) => (
-            <PageWrapper>
-              <FinishedCreatingOrganization
-                onClickPrev={onClickPrev}
-                setCreateOrganizationIsOpen={setClose}
-                set={set}
-              />
-            </PageWrapper>
-          ),
+          // ({ style }) => (
+          //   <PageWrapper>
+          //     <FinishedCreatingOrganization
+          //       onClickPrev={onClickPrev}
+          //       setCreateOrganizationIsOpen={setClose}
+          //       set={set}
+          //     />
+          //   </PageWrapper>
+          // ),
         ];
 
   const currentStep = (100 / (pages.length - 1)) * index;

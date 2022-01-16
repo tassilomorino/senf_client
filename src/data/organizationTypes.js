@@ -1,6 +1,7 @@
 /** @format */
 import React from "react";
 import { Translation } from "react-i18next";
+import Image from "../images/insightsCovers/agegroups-cover.jpg";
 
 const organizationTypes = [
   {
@@ -11,6 +12,7 @@ const organizationTypes = [
       </Translation>
     ),
     color: "#f8a9a0",
+    img: Image,
   },
   {
     name: "Initiativen", //  Initiatives
@@ -20,6 +22,7 @@ const organizationTypes = [
       </Translation>
     ),
     color: "#d2a6e5",
+    img: Image,
   },
   {
     name: "Planungsbüros", //  Planners
@@ -29,6 +32,7 @@ const organizationTypes = [
       </Translation>
     ),
     color: "#92b7b2",
+    img: Image,
   },
   {
     name: "Politik", //  Politics
@@ -38,6 +42,7 @@ const organizationTypes = [
       </Translation>
     ),
     color: "#ffc473",
+    img: Image,
   },
   {
     name: "Stadverwaltung", //  Administration
@@ -47,6 +52,7 @@ const organizationTypes = [
       </Translation>
     ),
     color: "#d92d46",
+    img: Image,
   },
   {
     name: "Presse", //  Press
@@ -56,6 +62,7 @@ const organizationTypes = [
       </Translation>
     ),
     color: "#7293b9",
+    img: Image,
   },
   {
     name: "Sonstige", //  Others
@@ -65,6 +72,7 @@ const organizationTypes = [
       </Translation>
     ),
     color: "#f1cb00",
+    img: Image,
   },
 ];
 

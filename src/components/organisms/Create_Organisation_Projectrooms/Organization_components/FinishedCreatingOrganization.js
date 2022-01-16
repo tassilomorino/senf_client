@@ -18,7 +18,6 @@ const FinishedCreatingOrganization = ({ setCreateOrganizationIsOpen, set }) => {
   const { t } = useTranslation();
 
   const handleFinish = () => {
-    localStorage.removeItem("createOrganizationId");
     set(1);
     setCreateOrganizationIsOpen(false);
   };

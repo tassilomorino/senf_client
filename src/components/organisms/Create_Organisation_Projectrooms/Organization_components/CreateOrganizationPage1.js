@@ -17,10 +17,20 @@ import "firebase/firestore";
 import "firebase/storage";
 
 import { useOnClickOutside } from "../../../../hooks/useOnClickOutside";
-import { ButtonsWrapper, SubTitle, Title } from "../styles/sharedStyles";
+import {
+  ButtonsWrapper,
+  ComponentInnerWrapper,
+  ComponentWrapper,
+  SubTitle,
+  Title,
+} from "../styles/sharedStyles";
+import Navigation from "../Components/Navigation";
+import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 
 const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();
+  const [nextClicked, setNextClicked] = useState(false);
+
   const [outsideClick, setOutsideClick] = useState(false);
 
   const outerRef = useRef();
@@ -58,6 +68,8 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
   });
 
   useEffect(() => {
+    formik.setFieldTouched("title", true);
+
     async function fetchData() {
       const db = firebase.firestore();
 
@@ -74,7 +86,6 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
 
         formik.setFieldValue("title", data.title);
         formik.setFieldValue("description", data.description);
-        setTimeout(() => formik.setFieldTouched("title", true));
       }
     }
 
@@ -87,6 +98,8 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
   }, []);
 
   const handleNext = async () => {
+    setNextClicked(true);
+
     const db = firebase.firestore();
 
     if (
@@ -104,88 +117,74 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
         .doc(localStorage.getItem("createOrganizationId"));
 
       return ref.update(updateProject).then(() => {
-        onClickNext();
+        setTimeout(() => {
+          onClickNext();
+        }, 200);
       });
     }
   };
 
   return (
-    <div ref={outerRef}>
-      <Title>
-        {title ? (
-          <span>Organisationsinfos bearbeiten</span>
-        ) : (
-          <span>
-            Erstelle deine <br />
-            Organisation
-          </span>
-        )}
-      </Title>
-      <SubTitle>sdjhaskjdhas jkhashda skjdh asjkdhaskjdhs shjajkdsh</SubTitle>
+    <React.Fragment>
+      <ComponentWrapper ref={outerRef}>
+        <ComponentInnerWrapper>
+          <StyledH2 fontWeight="900" textAlign="center">
+            <span>Organisationsinfos bearbeiten</span>
+          </StyledH2>
+          <StyledH3 textAlign="center" margin="20px">
+            sdjhaskjdhas jkhashda skjdh asjkdhaskjdhs shjajkdsh
+          </StyledH3>
 
-      <TextField
-        id="outlined-name"
-        name="title"
-        type="title"
-        label={t("projectRoom_title")}
-        margin="normal"
-        variant="outlined"
-        multiline
-        style={{
-          backgroundColor: "white",
-          borderRadius: "5px",
-          width: "80%",
-        }}
-        value={formik.values.title}
-        onChange={formik.handleChange}
-        error={outsideClick && Boolean(formik.errors.title)}
-        helperText={outsideClick && formik.errors.title}
-      />
-      <TextField
-        id="outlined-name"
-        name="description"
-        type="description"
-        label={t("projectRoom_description")}
-        margin="normal"
-        multiline
-        minRows="10"
-        maxRows="12"
-        variant="outlined"
-        style={{
-          backgroundColor: "white",
-          borderRadius: "5px",
-          width: "80%",
-        }}
-        value={formik.values.description}
-        onChange={formik.handleChange}
-        error={outsideClick && Boolean(formik.errors.description)}
-        helperText={outsideClick && formik.errors.description}
-      />
+          <TextField
+            id="outlined-name"
+            name="title"
+            type="title"
+            label={t("projectRoom_title")}
+            margin="normal"
+            variant="outlined"
+            multiline
+            style={{
+              backgroundColor: "white",
+              borderRadius: "5px",
+              width: "100%",
+            }}
+            value={formik.values.title}
+            onChange={formik.handleChange}
+            error={outsideClick && Boolean(formik.errors.title)}
+            helperText={outsideClick && formik.errors.title}
+          />
+          <TextField
+            id="outlined-name"
+            name="description"
+            type="description"
+            label={t("projectRoom_description")}
+            margin="normal"
+            multiline
+            minRows="10"
+            maxRows="12"
+            variant="outlined"
+            style={{
+              backgroundColor: "white",
+              borderRadius: "5px",
+              width: "100%",
+            }}
+            value={formik.values.description}
+            onChange={formik.handleChange}
+            error={outsideClick && Boolean(formik.errors.description)}
+            helperText={outsideClick && formik.errors.description}
+          />
+        </ComponentInnerWrapper>
+      </ComponentWrapper>
 
-      <ButtonsWrapper>
-        <SubmitButton
-          text={t("next")}
-          zIndex="9"
-          backgroundColor="white"
-          textColor="#353535"
-          top={document.body.clientWidth > 768 ? "100px" : "70px"}
-          left="0"
-          handleButtonClick={handleNext}
-          disabled={!formik.isValid}
-          //   keySubmitRef={keySubmitRef}
-        />
-        <SubmitButton
-          text={t("back")}
-          zIndex="9"
-          backgroundColor="transparent"
-          shadow={false}
-          textColor="#353535"
-          left="0"
-          handleButtonClick={onClickPrev}
-          //   keySubmitRef={keySubmitRef}
-        />
-      </ButtonsWrapper>
-    </div>
+      <Navigation
+        nextLabel={t("next")}
+        prevLabel={t("back")}
+        handleNext={handleNext}
+        handlePrev={onClickPrev}
+        disabled={!formik.isValid || nextClicked}
+        loading={nextClicked}
+      />
+    </React.Fragment>
   );
 };
 

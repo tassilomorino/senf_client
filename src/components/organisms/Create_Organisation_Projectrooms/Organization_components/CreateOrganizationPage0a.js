@@ -1,12 +1,11 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-
-import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
-
-import { ButtonsWrapper, SubTitle, Title } from "../styles/sharedStyles";
+import {
+  ComponentInnerWrapper,
+  ComponentWrapper,
+} from "../styles/sharedStyles";
 import styled from "styled-components";
 import CheckBox from "../../../atoms/CheckBox/CheckBox";
 
@@ -14,6 +13,8 @@ import CheckBox from "../../../atoms/CheckBox/CheckBox";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
+import Navigation from "../Components/Navigation";
+import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 
 const Header = styled.h3`
   font-size: 18px;
@@ -57,6 +58,7 @@ const CheckBoxLabel = styled.label`
 const CreateOrganizationPage0 = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();
   const [selected, setSelected] = useState(false);
+  const [nextClicked, setNextClicked] = useState(false);
 
   useEffect(() => {
     if (
@@ -67,72 +69,73 @@ const CreateOrganizationPage0 = ({ onClickNext, onClickPrev }) => {
     }
   }, []);
 
+  const handleNext = () => {
+    setNextClicked(true);
+
+    setTimeout(() => {
+      onClickNext();
+    }, 200);
+  };
+
   return (
-    <div>
-      <Title>Organisationsprofil erstellen</Title>
-      <br />
-      <SubTitle>
-        {" "}
-        Von dem Nachbarschaftsverein über Planungsbüros bis zu politischen
-        Parteien – Hier könnt ihr ein Organisationsprofil für euer Vorhaben
-        erstellen.{" "}
-      </SubTitle>
-      <Header> Vorteile von einem Organisationprofil:</Header>
+    <React.Fragment>
+      <ComponentWrapper>
+        <ComponentInnerWrapper>
+          <StyledH2 fontWeight="900" textAlign="center">
+            Organisationsprofil erstellen
+          </StyledH2>
+          <StyledH3 textAlign="center" margin="20px">
+            Von dem Nachbarschaftsverein über Planungsbüros bis zu politischen
+            Parteien – Hier könnt ihr ein Organisationsprofil für euer Vorhaben
+            erstellen.
+          </StyledH3>
 
-      <StyledUL>
-        <StyledLi>
-          Werdet sichtbar – beschreibt euer Vorhaben und informiert interssierte
-          Personen
-        </StyledLi>{" "}
-        <StyledLi>
-          Werdet sichtbar – beschreibt euer Vorhaben und informiert interssierte
-          Personen
-        </StyledLi>{" "}
-        <StyledLi>
-          Verbessert eure Erreichbarkeit durch das Hinterlegen eurer
-          Kontaktdaten
-        </StyledLi>{" "}
-        <StyledLi>
-          Mitmachen! Vernetzt euch mit anderen, plant eure Projekte und tauscht
-          euch aus{" "}
-        </StyledLi>
-      </StyledUL>
-      <CheckBoxWrapper>
-        <CheckBox
-          selected={selected}
-          name="CheckBox"
-          handleInputChange={() => setSelected(!selected)}
-        />
-        <CheckBoxLabel>
-          Bestätige, dass du Teil einer Organisation bist und berechtigt eine
-          Profilseite zu erstellen.
-        </CheckBoxLabel>
-      </CheckBoxWrapper>
+          <br />
 
-      <ButtonsWrapper>
-        <SubmitButton
-          text={t("start")}
-          zIndex="9"
-          backgroundColor="#353535"
-          textColor="white"
-          top="50px"
-          left="0"
-          handleButtonClick={onClickNext}
-          disabled={!selected}
-          //   keySubmitRef={keySubmitRef}
-        />
-        <SubmitButton
-          text={t("back")}
-          zIndex="9"
-          backgroundColor="transparent"
-          shadow={false}
-          textColor="#353535"
-          left="0"
-          handleButtonClick={onClickPrev}
-          //   keySubmitRef={keySubmitRef}
-        />
-      </ButtonsWrapper>
-    </div>
+          <StyledH3 textAlign="center">
+            {" "}
+            Vorteile von einem Organisationprofil:
+          </StyledH3>
+
+          <StyledUL>
+            <StyledLi>
+              Werdet sichtbar – beschreibt euer Vorhaben und informiert
+              interssierte Personen
+            </StyledLi>{" "}
+            <StyledLi>
+              Werdet sichtbar – beschreibt euer Vorhaben und informiert
+              interssierte Personen
+            </StyledLi>{" "}
+            <StyledLi>
+              Verbessert eure Erreichbarkeit durch das Hinterlegen eurer
+              Kontaktdaten
+            </StyledLi>{" "}
+            <StyledLi>
+              Mitmachen! Vernetzt euch mit anderen, plant eure Projekte und
+              tauscht euch aus{" "}
+            </StyledLi>
+          </StyledUL>
+          <CheckBoxWrapper>
+            <CheckBox
+              selected={selected}
+              name="CheckBox"
+              handleInputChange={() => setSelected(!selected)}
+            />
+            <CheckBoxLabel>
+              Bestätige, dass du Teil einer Organisation bist und berechtigt
+              eine Profilseite zu erstellen.
+            </CheckBoxLabel>
+          </CheckBoxWrapper>
+        </ComponentInnerWrapper>
+      </ComponentWrapper>
+
+      <Navigation
+        nextLabel={t("lets_go")}
+        handleNext={handleNext}
+        disabled={!selected || nextClicked}
+        loading={nextClicked}
+      />
+    </React.Fragment>
   );
 };
 

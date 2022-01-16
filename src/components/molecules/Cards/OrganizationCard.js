@@ -100,8 +100,11 @@ export const OrganizationCard = (props) => {
 
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+
   const handleEdit = () => {
     localStorage.setItem("createOrganizationId", organizationId);
+    localStorage.setItem("createOrganizationPostEdit", true);
+
     dispatch(stateCreateOrganizationsFunc(true));
   };
 

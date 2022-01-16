@@ -17,9 +17,17 @@ import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
 //images
-import { ButtonsWrapper, SubTitle, Title } from "../styles/sharedStyles";
+import {
+  ButtonsWrapper,
+  ComponentInnerWrapper,
+  ComponentWrapper,
+  SubTitle,
+  Title,
+} from "../styles/sharedStyles";
 import Contact from "../../../molecules/Modals/Post_Edit_ModalComponents/Contact";
 import Geocoder from "react-mapbox-gl-geocoder";
+import Navigation from "../Components/Navigation";
+import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 
 const Wrapper = styled.div`
   display: flex;
@@ -36,11 +44,12 @@ const ButttonsWrapper = styled.div`
 
 const GeocoderWrapper = styled.div`
   margin-top: 30px;
-  width: 80%;
+  width: 100%;
 `;
 
 const CreateOrganizationPage2 = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();
+  const [nextClicked, setNextClicked] = useState(false);
 
   const [address, setAddress] = useState(null);
   const [longitude, setLongitude] = useState(null);
@@ -136,6 +145,8 @@ const CreateOrganizationPage2 = ({ onClickNext, onClickPrev }) => {
   };
 
   const handleNext = async () => {
+    setNextClicked(true);
+
     const db = firebase.firestore();
     if (
       typeof Storage !== "undefined" &&
@@ -155,117 +166,107 @@ const CreateOrganizationPage2 = ({ onClickNext, onClickPrev }) => {
         .collection("organizations")
         .doc(localStorage.getItem("createOrganizationId"));
       return ref.update(updateProject).then(() => {
-        onClickNext();
+        setTimeout(() => {
+          onClickNext();
+        }, 200);
       });
     }
   };
 
   return (
-    <Wrapper>
-      {ReactDOM.createPortal(
-        <React.Fragment>
-          {weblinkOpen && (
-            <Weblink
-              handleCloseWeblink={handleCloseWeblink}
-              handleSaveWeblink={handleSaveWeblink}
-              weblinkTitle={weblinkTitle}
-              weblink={weblink}
-              setWeblinkTitle={setWeblinkTitle}
-              setWeblink={setWeblink}
-              setWeblinkOpen={setWeblinkOpen}
-            />
+    <React.Fragment>
+      <ComponentWrapper>
+        <ComponentInnerWrapper>
+          {ReactDOM.createPortal(
+            <React.Fragment>
+              {weblinkOpen && (
+                <Weblink
+                  handleCloseWeblink={handleCloseWeblink}
+                  handleSaveWeblink={handleSaveWeblink}
+                  weblinkTitle={weblinkTitle}
+                  weblink={weblink}
+                  setWeblinkTitle={setWeblinkTitle}
+                  setWeblink={setWeblink}
+                  setWeblinkOpen={setWeblinkOpen}
+                />
+              )}
+            </React.Fragment>,
+            document.getElementById("portal-root-modal")
           )}
-        </React.Fragment>,
-        document.getElementById("portal-root-modal")
-      )}
 
-      {ReactDOM.createPortal(
-        <React.Fragment>
-          {contactOpen && (
-            <Contact
-              handleCloseContact={handleCloseContact}
-              handleSaveContact={handleSaveContact}
-              contactTitle={contactTitle}
-              contact={contact}
-              setContactTitle={setContactTitle}
-              setContact={setContact}
-              setContactOpen={setContactOpen}
-            />
+          {ReactDOM.createPortal(
+            <React.Fragment>
+              {contactOpen && (
+                <Contact
+                  handleCloseContact={handleCloseContact}
+                  handleSaveContact={handleSaveContact}
+                  contactTitle={contactTitle}
+                  contact={contact}
+                  setContactTitle={setContactTitle}
+                  setContact={setContact}
+                  setContactOpen={setContactOpen}
+                />
+              )}
+            </React.Fragment>,
+            document.getElementById("portal-root-modal")
           )}
-        </React.Fragment>,
-        document.getElementById("portal-root-modal")
-      )}
 
-      <Title> Kontaktdaten hinzufügen</Title>
+          <StyledH2 fontWeight="900" textAlign="center">
+            Kontaktdaten hinzufügen
+          </StyledH2>
+          <StyledH3 textAlign="center" margin="20px">
+            Füge deine Kontaktdaten (E-mail, Link) hinzu, um erreichbar zu sein
+            und deine Organisation zu vertreten.{" "}
+          </StyledH3>
 
-      <SubTitle>
-        Füge deine Kontaktdaten (E-mail, Link) hinzu, um erreichbar zu sein und
-        deine Organisation zu vertreten.
-      </SubTitle>
+          <ButttonsWrapper>
+            <CustomIconButton
+              name="Weblink"
+              position="relative"
+              iconWidth="80%"
+              backgroundColor={
+                weblink !== null && weblinkTitle !== null ? "#fed957" : "white"
+              }
+              handleButtonClick={() => setWeblinkOpen(true)}
+            />
 
-      <ButttonsWrapper>
-        <CustomIconButton
-          name="Weblink"
-          position="relative"
-          iconWidth="80%"
-          backgroundColor={
-            weblink !== null && weblinkTitle !== null ? "#fed957" : "white"
-          }
-          handleButtonClick={() => setWeblinkOpen(true)}
-        />
+            <CustomIconButton
+              name="Contact"
+              position="relative"
+              marginLeft="20px"
+              iconWidth="80%"
+              zIndex={0}
+              backgroundColor={
+                contact !== null && contactTitle !== null ? "#fed957" : "white"
+              }
+              handleButtonClick={() => setContactOpen(true)}
+            />
+          </ButttonsWrapper>
 
-        <CustomIconButton
-          name="Contact"
-          position="relative"
-          marginLeft="20px"
-          iconWidth="80%"
-          zIndex={0}
-          backgroundColor={
-            contact !== null && contactTitle !== null ? "#fed957" : "white"
-          }
-          handleButtonClick={() => setContactOpen(true)}
-        />
-      </ButttonsWrapper>
+          <GeocoderWrapper>
+            <Geocoder
+              mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+              onSelected={geocode}
+              // {...viewport}
+              hideOnSelect={true}
+              limit={3}
+              // queryParams={queryParams}
+              id="geocoder-edit"
+              className="geocoder-edit"
+              inputComponent={MyInput}
+              updateInputOnSelect
+            />
+          </GeocoderWrapper>
+        </ComponentInnerWrapper>
+      </ComponentWrapper>
 
-      <GeocoderWrapper>
-        <Geocoder
-          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-          onSelected={geocode}
-          // {...viewport}
-          hideOnSelect={true}
-          limit={3}
-          // queryParams={queryParams}
-          id="geocoder-edit"
-          className="geocoder-edit"
-          inputComponent={MyInput}
-          updateInputOnSelect
-        />
-      </GeocoderWrapper>
-
-      <ButtonsWrapper>
-        <SubmitButton
-          text={t("next")}
-          zIndex="9"
-          backgroundColor="white"
-          textColor="#353535"
-          transformX="none"
-          marginLeft="0"
-          handleButtonClick={handleNext}
-          // disabled={!formikCreateProjectStore.isValid}
-          // keySubmitRef={keySubmitRef}
-        />
-        <SubmitButton
-          text={t("back")}
-          zIndex="9"
-          backgroundColor="transparent"
-          shadow={false}
-          textColor="#353535"
-          left="0"
-          handleButtonClick={onClickPrev}
-          //   keySubmitRef={keySubmitRef}
-        />
-      </ButtonsWrapper>
-    </Wrapper>
+      <Navigation
+        nextLabel={t("next")}
+        prevLabel={t("back")}
+        handleNext={handleNext}
+        handlePrev={onClickPrev}
+      />
+    </React.Fragment>
   );
 };
 

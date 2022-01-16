@@ -20,14 +20,12 @@ import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 //images
 import UploadImageIcon from "../../../../images/icons/uploadImage.png";
 import { CircularProgress } from "@material-ui/core";
-import { ButtonsWrapper, SubTitle, Title } from "../styles/sharedStyles";
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
+import {
+  ComponentInnerWrapper,
+  ComponentWrapper,
+} from "../styles/sharedStyles";
+import Navigation from "../Components/Navigation";
+import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 
 const StyledLabel = styled.label`
   width: 150px;
@@ -39,6 +37,7 @@ const StyledLabel = styled.label`
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  margin-left: calc(50% - 75px);
 `;
 
 const StyledIconWrapper = styled.div`
@@ -62,10 +61,9 @@ const StyledImg = styled.img`
 
 const CreateOrganizationPage3 = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const [nextClicked, setNextClicked] = useState(false);
 
-  const fileName = null;
+  const [loading, setLoading] = useState(false);
 
   const [uploadedImage, setUploadedImage] = useState(null);
   const [uploadImageHover, setUploadImageHover] = useState(false);
@@ -121,61 +119,65 @@ const CreateOrganizationPage3 = ({ onClickNext, onClickPrev }) => {
     }
   }, [uploadedImage]);
 
+  const handleNext = () => {
+    setNextClicked(true);
+
+    setTimeout(() => {
+      onClickNext();
+    }, 200);
+  };
+
   return (
-    <Wrapper>
-      <Title> Bild hochladen</Title>
-      <SubTitle>
-        Lade ein aussagekräftiges Bild für den Projektraum hoch und wähle dabei
-        nach Möglichkeit ein thematisch passendes Motiv.
-      </SubTitle>
+    <React.Fragment>
+      <ComponentWrapper>
+        <ComponentInnerWrapper>
+          <StyledH2 fontWeight="900" textAlign="center">
+            Bild hochladen
+          </StyledH2>
+          <StyledH3 textAlign="center" margin="20px">
+            Lade ein aussagekräftiges Bild für den Projektraum hoch und wähle
+            dabei nach Möglichkeit ein thematisch passendes Motiv.{" "}
+          </StyledH3>
 
-      <StyledLabel
-        onMouseEnter={() => setUploadImageHover(true)}
-        onMouseLeave={() => setUploadImageHover(false)}
-        htmlFor="imageUploader"
-      >
-        {(!uploadedImage || uploadImageHover) && (
-          <StyledIconWrapper>
-            {loading ? (
-              <CircularProgress size={50} thickness={2} />
-            ) : (
-              <img src={UploadImageIcon} alt="UploadImageIcon" width="50%" />
+          <StyledLabel
+            onMouseEnter={() => setUploadImageHover(true)}
+            onMouseLeave={() => setUploadImageHover(false)}
+            htmlFor="imageUploader"
+          >
+            {(!uploadedImage || uploadImageHover) && (
+              <StyledIconWrapper>
+                {loading ? (
+                  <CircularProgress size={50} thickness={2} />
+                ) : (
+                  <img
+                    src={UploadImageIcon}
+                    alt="UploadImageIcon"
+                    width="50%"
+                  />
+                )}
+              </StyledIconWrapper>
             )}
-          </StyledIconWrapper>
-        )}
 
-        {uploadedImage && <StyledImg src={uploadedImage} width="100%" />}
-      </StyledLabel>
-      <input
-        type="file"
-        onChange={(event) => handleImageUpload(event)}
-        style={{ display: "none" }}
-        id="imageUploader"
+            {uploadedImage && <StyledImg src={uploadedImage} width="100%" />}
+          </StyledLabel>
+          <input
+            type="file"
+            onChange={(event) => handleImageUpload(event)}
+            style={{ display: "none" }}
+            id="imageUploader"
+          />
+        </ComponentInnerWrapper>
+      </ComponentWrapper>
+
+      <Navigation
+        nextLabel={t("next")}
+        prevLabel={t("back")}
+        handleNext={handleNext}
+        handlePrev={onClickPrev}
+        disabled={!uploadedImage || nextClicked}
+        loading={nextClicked}
       />
-      <ButtonsWrapper>
-        <SubmitButton
-          text={t("next")}
-          zIndex="9"
-          backgroundColor="white"
-          textColor="#353535"
-          transformX="none"
-          marginLeft="0"
-          handleButtonClick={onClickNext}
-          // disabled={!formikCreateProjectStore.isValid}
-          // keySubmitRef={keySubmitRef}
-        />
-        <SubmitButton
-          text={t("back")}
-          zIndex="9"
-          backgroundColor="transparent"
-          shadow={false}
-          textColor="#353535"
-          left="0"
-          handleButtonClick={onClickPrev}
-          //   keySubmitRef={keySubmitRef}
-        />
-      </ButtonsWrapper>
-    </Wrapper>
+    </React.Fragment>
   );
 };
 

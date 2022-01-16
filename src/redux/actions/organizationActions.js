@@ -41,8 +41,8 @@ export const getOrganizations = (mapViewport) => async (dispatch) => {
 
     function onResolve(image) {
       const docData = {
+        ...doc.data(),
         organizationId: doc.id,
-        title: doc.data().title,
         imgUrl: image,
       };
       organizations.push(docData);

@@ -418,6 +418,7 @@ const Main = () => {
         );
 
   const dataFinalProjectRooms = useMemo(() => {
+    console.log(sortedProjectRooms);
     return sortedProjectRooms.filter(({ organizationType }) =>
       selectedOrganizationTypes.includes(organizationType)
     );

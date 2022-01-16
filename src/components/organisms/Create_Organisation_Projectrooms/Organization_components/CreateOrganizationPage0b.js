@@ -4,21 +4,20 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 
-import { TextField } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { useFormik } from "formik";
-import * as yup from "yup";
-import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
-
 //firebase
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
 
-import { useOnClickOutside } from "../../../../hooks/useOnClickOutside";
-import { ButtonsWrapper, SubTitle, Title } from "../styles/sharedStyles";
-import AgegroupsCover from "../../../../images/insightsCovers/agegroups-cover.jpg";
+import {
+  ComponentInnerWrapper,
+  ComponentWrapper,
+} from "../styles/sharedStyles";
+import Navigation from "../Components/Navigation";
+import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
+import organizationTypes from "../../../../data/organizationTypes";
 
 const CoverWrapper = styled.div`
   margin-left: 10%;
@@ -54,6 +53,7 @@ const CoverImg = styled.img`
 `;
 const CoverTitle = styled.span`
   font-size: 18px;
+  font-weight: 900;
   /* font-family: PlayfairDisplay-Bold; */
   color: #353535;
   text-align: center;
@@ -64,6 +64,7 @@ const CoverTitle = styled.span`
 
 const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();
+  const [nextClicked, setNextClicked] = useState(false);
   const [organizationType, setOrganizationType] = useState(null);
 
   const userId = useSelector((state) => state.user.userId);
@@ -94,6 +95,7 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
   }, []);
 
   const handleNext = async () => {
+    setNextClicked(true);
     const db = firebase.firestore();
 
     if (
@@ -110,7 +112,9 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
         .doc(localStorage.getItem("createOrganizationId"));
 
       return ref.update(updateProject).then(() => {
-        onClickNext();
+        setTimeout(() => {
+          onClickNext();
+        }, 200);
       });
     } else {
       //CREATING A NEW PROJECTROOM
@@ -135,78 +139,48 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
         })
 
         .then(() => {
-          onClickNext();
+          setTimeout(() => {
+            onClickNext();
+          }, 200);
         });
     }
   };
 
   return (
-    <div>
-      <Title>Welche Art von Organisation seid ihr?</Title>
-      <SubTitle>sdjhaskjdhas jkhashda skjdh asjkdhaskjdhs shjajkdsh</SubTitle>
+    <React.Fragment>
+      <ComponentWrapper>
+        <ComponentInnerWrapper>
+          <StyledH2 fontWeight="900" textAlign="center">
+            Welche Art von Organisation seid ihr?
+          </StyledH2>
+          <StyledH3 textAlign="center" margin="20px">
+            sdjhaskjdhas jkhashda skjdh asjkdhaskjdhs shjajkdsh
+          </StyledH3>
 
-      <CoverWrapper>
-        <Covers
-          animation="coverAnimation 0.5s ease-in-out"
-          onClick={() => setOrganizationType(1)}
-          selectedOrganization={organizationType === 1}
-        >
-          <CoverTitle>{t("Bürgerinitiative")}</CoverTitle>
-          <CoverImg src={AgegroupsCover} alt="insights-topic-cover" />
-        </Covers>
+          <CoverWrapper>
+            {organizationTypes.map(({ name, label, img }) => (
+              <Covers
+                animation="coverAnimation 0.5s ease-in-out"
+                onClick={() => setOrganizationType(name)}
+                selectedOrganization={organizationType === name}
+              >
+                <CoverTitle>{label}</CoverTitle>
+                <CoverImg src={img} alt="organizationType-cover" />
+              </Covers>
+            ))}
+          </CoverWrapper>
+        </ComponentInnerWrapper>
+      </ComponentWrapper>
 
-        <Covers
-          animation="coverAnimation 0.75s ease-in-out"
-          onClick={() => setOrganizationType(2)}
-          selectedOrganization={organizationType === 2}
-        >
-          <CoverTitle>{t("Verein")}</CoverTitle>
-          <CoverImg src={AgegroupsCover} alt="insights-districts-cover" />
-        </Covers>
-
-        <Covers
-          animation="coverAnimation 1.25s ease-in-out"
-          onClick={() => setOrganizationType(3)}
-          selectedOrganization={organizationType === 3}
-        >
-          <CoverTitle>{t("Planungsbüro")}</CoverTitle>
-          <CoverImg src={AgegroupsCover} alt="insights-agegroups-cover" />
-        </Covers>
-        <Covers
-          animation="coverAnimation 1s ease-in-out"
-          onClick={() => setOrganizationType(4)}
-          selectedOrganization={organizationType === 4}
-        >
-          <CoverTitle>{t("toolbox")}</CoverTitle>
-          <CoverImg src={AgegroupsCover} alt="insights-keywords-cover" />{" "}
-          {/* <WordcloudDialog /> */}
-        </Covers>
-      </CoverWrapper>
-
-      <ButtonsWrapper>
-        <SubmitButton
-          text={t("next")}
-          zIndex="9"
-          backgroundColor="white"
-          textColor="#353535"
-          top={document.body.clientWidth > 768 ? "100px" : "70px"}
-          left="0"
-          handleButtonClick={handleNext}
-          disabled={!organizationType}
-          //   keySubmitRef={keySubmitRef}
-        />
-        <SubmitButton
-          text={t("back")}
-          zIndex="9"
-          backgroundColor="transparent"
-          shadow={false}
-          textColor="#353535"
-          left="0"
-          handleButtonClick={onClickPrev}
-          //   keySubmitRef={keySubmitRef}
-        />
-      </ButtonsWrapper>
-    </div>
+      <Navigation
+        nextLabel={t("next")}
+        prevLabel={t("back")}
+        handleNext={handleNext}
+        handlePrev={onClickPrev}
+        disabled={!organizationType || nextClicked}
+        loading={nextClicked}
+      />
+    </React.Fragment>
   );
 };
 

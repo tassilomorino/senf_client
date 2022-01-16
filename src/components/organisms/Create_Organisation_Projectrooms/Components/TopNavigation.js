@@ -15,7 +15,7 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   background-color: #ffe898;
-  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2); */
 `;
 
 const ProgressLine = styled.div`

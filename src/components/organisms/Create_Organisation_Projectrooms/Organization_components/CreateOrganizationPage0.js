@@ -15,7 +15,12 @@ import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 import NotDoneImage from "../../../../images/Not_connected.png";
 
 //styles
-import { Title } from "../styles/sharedStyles";
+import {
+  ComponentInnerWrapper,
+  ComponentWrapper,
+} from "../styles/sharedStyles";
+import { StyledH2 } from "../../../../styles/GlobalStyle";
+import Navigation from "../Components/Navigation";
 
 const CreateOrganizationPage0 = ({ onClickNext }) => {
   const { t } = useTranslation();
@@ -60,39 +65,32 @@ const CreateOrganizationPage0 = ({ onClickNext }) => {
   };
 
   return (
-    <div>
-      <Title>
-        Du bist noch dabei, deine Organisation {title && `"${title}"`}
-        zu erstellen{" "}
-      </Title>
-      <br />
+    <React.Fragment>
+      <ComponentWrapper>
+        <ComponentInnerWrapper>
+          <StyledH2 fontWeight="900" textAlign="center">
+            Du bist noch dabei, deine Organisation {title && `"${title}"`}
+            zu erstellen{" "}
+          </StyledH2>
+          <br />
 
-      <img src={NotDoneImage} width="60%" alt="NotDoneImage" />
-      <SubmitButton
-        text={t("continue_creation")}
-        zIndex="9"
-        backgroundColor="#353535"
-        textColor="white"
-        position="relative"
-        top="50px"
-        left="0"
-        handleButtonClick={onClickNext}
-        // disabled={!formikCreateProjectStore.isValid}
-        //   keySubmitRef={keySubmitRef}
+          <img
+            src={NotDoneImage}
+            width="60%"
+            style={{ marginLeft: "20%", marginTop: "10%" }}
+            alt="NotDoneImage"
+          />
+        </ComponentInnerWrapper>
+      </ComponentWrapper>
+      <Navigation
+        nextLabel={t("continue_creation")}
+        prevLabel={t("restart")}
+        handleNext={onClickNext}
+        handlePrev={handleRestart}
+        // disabled={}
+        // loading={}
       />
-
-      <SubmitButton
-        text={t("restart")}
-        zIndex="9"
-        backgroundColor="rgb(255,255,255,0.5)"
-        textColor="#353535"
-        position="relative"
-        top="70px"
-        handleButtonClick={handleRestart}
-        // disabled={!formikCreateProjectStore.isValid}
-        //   keySubmitRef={keySubmitRef}
-      />
-    </div>
+    </React.Fragment>
   );
 };
 
