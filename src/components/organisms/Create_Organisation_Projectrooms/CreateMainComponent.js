@@ -53,6 +53,11 @@ const CreateProjectDialog = ({ type }) => {
     async function fetchData() {
       const db = firebase.firestore();
       if (openCreateProjectRoom) {
+        if (localStorage.getItem("createProjectPostEdit")) {
+          set(pages.length - 1);
+        } else {
+          set(0);
+        }
         if (
           typeof Storage !== "undefined" &&
           localStorage.getItem("createProjectRoomId")
@@ -69,15 +74,16 @@ const CreateProjectDialog = ({ type }) => {
           } else {
             const data = ref.data();
             setTitle(data.title);
-
-            if (localStorage.getItem("createProjectPostEdit")) {
-              set(pages.length - 1);
-            } else {
-              set(0);
-            }
           }
         }
       } else if (openCreateOrganization) {
+        if (localStorage.getItem("createOrganizationPostEdit")) {
+          console.log(localStorage);
+          set(pages.length - 1);
+        } else {
+          set(0);
+        }
+
         if (
           typeof Storage !== "undefined" &&
           localStorage.getItem("createOrganizationId")
@@ -92,14 +98,6 @@ const CreateProjectDialog = ({ type }) => {
           } else {
             const data = ref.data();
             setTitle(data.title);
-
-            if (localStorage.getItem("createOrganizationPostEdit")) {
-              console.log(localStorage);
-              set(pages.length - 1);
-            } else {
-              set(0);
-              console.log(localStorage);
-            }
           }
         }
       }
