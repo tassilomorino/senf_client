@@ -117,8 +117,8 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
         }, 200);
       });
     } else {
-      //CREATING A NEW PROJECTROOM
-      const newProject = {
+      //CREATING A NEW ORGANIZATION
+      const newOrganization = {
         organizationType: organizationType,
         userIds: [userId],
         createdAt: new Date().toISOString(),
@@ -129,7 +129,7 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
       const organizatinRef = await db.collection("organizations");
 
       organizatinRef
-        .add(newProject)
+        .add(newOrganization)
         .then((doc) => {
           localStorage.setItem("createOrganizationId", doc.id);
 

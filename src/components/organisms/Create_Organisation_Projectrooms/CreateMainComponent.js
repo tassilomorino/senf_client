@@ -258,6 +258,7 @@ const CreateProjectDialog = ({ type }) => {
               <CreateOrganizationPagePreview
                 onClickNext={onClickNext}
                 onClickPrev={onClickPrev}
+                setClose={setClose}
               />
             </PageWrapper>
           ),

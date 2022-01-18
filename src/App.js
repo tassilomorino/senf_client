@@ -176,6 +176,7 @@ const App = () => {
         store.dispatch({ type: SET_AUTHENTICATED });
         store.dispatch(getUserData(user.uid));
         setIsAuthed(true);
+        console.log(user.uid);
       } else if (user) {
         //a new user is registrating
       } else {

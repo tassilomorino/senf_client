@@ -4,10 +4,10 @@ import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import MapDialog from "./MapDialog";
+import MapDialog from "../Components/MapDialog";
 
 import DrawMapImage from "../../../../images/drawMap.jpg";
-import MapPreview from "./MapPreview";
+import MapPreview from "../Components/MapPreview";
 import {
   ComponentWrapper,
   ComponentInnerWrapper,

@@ -15,6 +15,7 @@ import {
   stateCreateOrganizationsFunc,
 } from "../../../redux/actions/organizationActions";
 import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
+import organizationTypes from "../../../data/organizationTypes";
 
 const Wrapper = styled.div`
   display: flex;
@@ -95,7 +96,14 @@ const Summary = styled.div`
 
 export const OrganizationCard = (props) => {
   const {
-    organization: { title, owner, imgUrl, organizationId },
+    organization: {
+      title,
+      owner,
+      imgUrl,
+      organizationId,
+      userIds,
+      organizationType,
+    },
   } = props;
 
   const user = useSelector((state) => state.user);
@@ -108,14 +116,14 @@ export const OrganizationCard = (props) => {
     dispatch(stateCreateOrganizationsFunc(true));
   };
 
-  const pushOrganizationId = () => {
+  const handleOpenOrganization = () => {
     dispatch(openOrganizationFunc(true, organizationId));
   };
 
   return (
     <Wrapper>
-      <ExpandButton handleButtonClick={pushOrganizationId} />
-      {user?.organizationId?.includes(organizationId) && (
+      <ExpandButton handleButtonClick={handleOpenOrganization} />
+      {userIds.includes(user.userId) && (
         <CustomIconButton
           name="Menu"
           iconWidth="70%"
@@ -132,7 +140,7 @@ export const OrganizationCard = (props) => {
       <LogoWrapper>
         <StyledImg src={imgUrl} width="100%" alt="profile" />
       </LogoWrapper>
-      <OrganizationType>Planungsbüro</OrganizationType>
+      <OrganizationType>{organizationType}</OrganizationType>
 
       <Title>
         <StyledH2 fontWeight="900">{title}</StyledH2>

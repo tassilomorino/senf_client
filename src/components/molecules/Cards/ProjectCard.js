@@ -9,8 +9,6 @@ import {
   openProjectRoomFunc,
 } from "../../../redux/actions/projectActions";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
-import AddIcon from "../../../images/icons/plus_grey.png";
-import { useTranslation } from "react-i18next";
 
 import styled from "styled-components";
 import notPublishedIcon from "../../../images/icons/notPublished.png";
@@ -82,14 +80,16 @@ export const ProjectCard = (props) => {
       color,
     },
   } = props;
+
+  const cardOrganizationId = organizationId;
   const user = useSelector((state) => state.user);
+  const organizations = useSelector((state) => state.data.organizations);
   const dispatch = useDispatch();
 
   const pushScreamId = () => {
     dispatch(openProjectRoomFunc(projectRoomId, true));
   };
   const handleEdit = () => {
-    console.log(organizationId, projectRoomId);
     localStorage.setItem("createProjectRoomOrganizationId", organizationId);
     localStorage.setItem("createProjectRoomId", projectRoomId);
     localStorage.setItem("createProjectPostEdit", true);
@@ -97,10 +97,20 @@ export const ProjectCard = (props) => {
     dispatch(openCreateProjectRoomFunc(true));
   };
 
+  const organizationCardData = [];
+
+  if (organizations) {
+    organizations.forEach(({ organizationId, userIds }) => {
+      if (cardOrganizationId === organizationId) {
+        organizationCardData.push(userIds);
+      }
+    });
+  }
+
   return (
     <Card project={true}>
       <CardContent>
-        {user?.organizationId?.includes(organizationId) && (
+        {organizationCardData[0].includes(user.userId) && (
           <CustomIconButton
             name="Menu"
             iconWidth="70%"
@@ -144,65 +154,3 @@ export const ProjectCard = (props) => {
     </Card>
   );
 };
-
-// export const CreateProject = ({ setCreateProjectDialogIsOpen }) => {
-//   const { t } = useTranslation();
-//   const isOrgModerator = useSelector((state) => state.user.isOrgModerator);
-//   const handle = useSelector((state) => state.user.handle);
-
-//   const requestProject = () => {
-//     var link =
-//       "mailto:dein@senf.koeln" + "?subject=" + escape("Projektraum-Anfrage");
-//     // +
-//     // "&body=" +
-//     // escape(
-//     //   "Projektraum-Titel:" +
-//     //     "\n" +
-//     //     "\n" +
-//     //     "Worum geht's:" +
-//     //     "\n" +
-//     //     "\n" +
-//     //     "Projektzeitraum:" +
-//     //     "\n" +
-//     //     "\n" +
-//     //     "Logo + Cover-Bild:"
-//     // );
-//     window.location.href = link;
-//   };
-
-//   return (
-//     <Card>
-//       <ExpandButton
-//         handleButtonClick={
-//           !isOrgModerator ? requestProject : setCreateProjectDialogIsOpen
-//         }
-//       />
-//       <LeftWrapper>
-//         <img
-//           src={AddIcon}
-//           width="100%"
-//           alt="profile"
-//           style={{ width: "50%", marginLeft: "25%" }}
-//         />
-//       </LeftWrapper>
-//       <RightWrapper>
-//         {!isOrgModerator ? (
-//           <React.Fragment>
-//             <Owner> {t("projectrooms_request_overTitle")} </Owner>
-//             <Title> {t("projectrooms_request_title")}</Title>
-//             <Date>{t("projectrooms_request_subTitle")}</Date>
-//           </React.Fragment>
-//         ) : (
-//           <React.Fragment>
-//             <Owner>
-//               {" "}
-//               {t("für")} {handle}
-//             </Owner>
-//             <Title> {t("Projektraum erstellen")}</Title>
-//             <Date>{t("projectrooms_request_subTitle")}</Date>
-//           </React.Fragment>
-//         )}
-//       </RightWrapper>
-//     </Card>
-//   );
-// };

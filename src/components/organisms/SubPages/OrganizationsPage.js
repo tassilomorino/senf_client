@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 
@@ -67,10 +67,10 @@ const Title = styled.h2`
 const OrganizationsPage = ({ handleClick, order, loading }) => {
   const { t } = useTranslation();
   const [searchOpen, setSearchOpen] = useState(false);
+  const selectedOrganizationTypes = useSelector(
+    (state) => state.data.organizationTypes
+  );
 
-  const mapViewport = useSelector((state) => state.data.mapViewport);
-  const mapBounds = useSelector((state) => state.data.mapBounds);
-  const selectedTopics = useSelector((state) => state.data.topics);
   const organizations = useSelector((state) => state.data.organizations);
   // const user = useSelector((state) => state.user);
   const loadingOrganizations = useSelector(
@@ -81,7 +81,6 @@ const OrganizationsPage = ({ handleClick, order, loading }) => {
   // const prevDropdown = usePrevious({ dropdown });
 
   const [dropdown, setDropdown] = useState("newest");
-  const dispatch = useDispatch();
 
   const handleDropdown = (value) => {
     setDropdown(value);
@@ -105,19 +104,23 @@ const OrganizationsPage = ({ handleClick, order, loading }) => {
   const sortedOrganizations =
     dropdown === "newest"
       ? _.orderBy(organizationsSearched, "createdAt", "desc")
-      : _.orderBy(organizationsSearched, "likeCount", "desc");
+      : dropdown === "aToZ"
+      ? _.orderBy(
+          organizationsSearched,
+          [(pr) => pr.title.toLowerCase()],
+          ["asc"]
+        )
+      : _.orderBy(
+          organizationsSearched,
+          [(pr) => pr.title.toLowerCase()],
+          ["desc"]
+        );
 
-  const dataFinal = sortedOrganizations;
-  // ? sortedOrganizations.filter(
-  //  ({ Thema, status, lat, long }) => selectedTopics.includes(Thema)
-
-  //   && lat <= mapBounds?.latitude1 &&
-  //   lat >= mapBounds?.latitude2 &&
-  //   long >= mapBounds?.longitude2 &&
-  //   long <= mapBounds?.longitude3 &&
-  //   status === "None"
-  //   )
-  // : [];
+  const dataFinal = useMemo(() => {
+    return sortedOrganizations.filter(({ organizationType }) =>
+      selectedOrganizationTypes.includes(organizationType)
+    );
+  }, [selectedOrganizationTypes, dropdown, organizationsSearched]);
 
   const dataFinalLength = dataFinal.length;
 
