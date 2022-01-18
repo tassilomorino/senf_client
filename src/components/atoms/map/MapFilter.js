@@ -11,6 +11,7 @@ import {
 } from "../../../redux/actions/mapActions";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { SubmitButton } from "../CustomButtons/SubmitButton";
+import { setSwipePositionUp } from "../../../redux/actions/UiActions";
 
 export const MapFilter = memo(({ viewport, mapRef }) => {
   const { t } = useTranslation();
@@ -40,11 +41,13 @@ export const MapFilter = memo(({ viewport, mapRef }) => {
     };
 
     dispatch(setMapBounds(bounds));
+    dispatch(setSwipePositionUp());
+
     setWaitTime(true);
 
     setTimeout(() => {
       setWaitTime(null);
-    }, 5000);
+    }, 3000);
 
     dispatch(closeScream());
 
@@ -62,42 +65,21 @@ export const MapFilter = memo(({ viewport, mapRef }) => {
     dispatch(closeScream());
   };
 
-  return isMobileCustom &&
+  return (
     !loading &&
     viewport !== initialMapViewport &&
-    !waitTime ? (
-    <SubmitButton
-      text={t("Ideen im Bereich anzeigen")}
-      backgroundColor="white"
-      textColor="#353535"
-      position="fixed"
-      top="70px"
-      animation="plop"
-      handleButtonClick={() => handleMapBoundsSet(viewport)}
-      smallSubmitButton={true}
-    />
-  ) : (
-    !loading && viewport !== initialMapViewport && !waitTime && (
-      <React.Fragment>
-        <CustomButton
-          text={t("map_filterIdeas")}
-          backgroundColor="white"
-          textColor="#353535"
-          position="fixed"
-          top="40px"
-          animation={true}
-          handleButtonClick={() => handleMapBoundsSet(viewport)}
-        />
-        {/* <CustomIconButton
-          name="CircularArrow"
-          margin="0px"
-          position="fixed"
-          top="40px"
-          marginLeft="calc(50% + 220px)"
-          handleButtonClick={handleMapBoundsReset}
-          animation={true}
-        /> */}
-      </React.Fragment>
+    !waitTime && (
+      <SubmitButton
+        text={t("Ideen im Bereich anzeigen")}
+        backgroundColor="rgb(255, 255, 255, 0.6)"
+        textColor="#353535"
+        position="fixed"
+        top={isMobileCustom ? "30px" : "40px"}
+        animation="plop"
+        handleButtonClick={() => handleMapBoundsSet(viewport)}
+        smallSubmitButton={isMobileCustom && true}
+        backdropFilter={true}
+      />
     )
   );
 });

@@ -8,7 +8,7 @@ import { closeAccountFunc } from "../../../redux/actions/accountActions";
 
 //Components
 import SwipeList from "../SwipeLists/SwipeList";
-import AccountHeader from "../../molecules/Headers/AccountHeader";
+import Header from "../../molecules/Headers/Header";
 import AccountSettings from "../../molecules/DialogInlineComponents/AccountSettings";
 import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
 import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
@@ -106,8 +106,9 @@ const Account = ({ dataFinalMap }) => {
 
   return (
     <React.Fragment>
-      <AccountHeader
-        loading={false}
+      <Header
+        type="account"
+        loading={loadingMyScreams}
         order={order}
         handleClose={handleClose}
         handleClick={handleClick}

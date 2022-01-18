@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Checkbox from "@material-ui/core/Checkbox";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import {
   handleTopicSelectorRedux,
@@ -96,7 +95,7 @@ const Tag = styled.button`
 
   align-items: center;
   background-color: white;
-  padding: 5px;
+  padding: 7px;
   padding-right: 10px;
   margin-right: 5px;
   border-radius: 8px;
@@ -106,16 +105,17 @@ const Tag = styled.button`
       : "none"};
   background-color: ${(props) =>
     props.checked
-      ? ` white`
+      ? ` rgb(255, 255, 255, 1)`
       : props.placing !== "list"
-      ? "#ECECEC"
+      ? "rgb(236, 236, 236, 0.6)"
       : "#FFE898"};
+
   outline-offset: -2px;
+  backdrop-filter: blur(10px);
 
   @media (min-width: 768px) {
     box-shadow: none;
     margin-top: 5px;
-    padding: 0px;
     padding-right: 10px;
     font-size: 14px;
 
@@ -124,6 +124,20 @@ const Tag = styled.button`
     }
   }
 `;
+
+const Checkbox = styled.div`
+  width: 13px;
+  position: relative;
+  height: 13px;
+  border-radius: 6px;
+  flex-grow: 0;
+
+  background-color: ${(props) => props.color && props.color};
+
+  margin-right: 10px;
+  margin-left: 3px;
+`;
+const Span = styled.span``;
 
 export function TagsFilter({ loading, placing, type, inline, column }) {
   const openScream = useSelector((state) => state.UI.openScream);
@@ -166,11 +180,7 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
             }
             color="#000000"
           >
-            <Checkbox
-              color="default"
-              icon={<FiberManualRecordIcon />}
-              style={{ color: "#000000", padding: "5px" }}
-            />
+            <Checkbox color="#000000" />
 
             {type === "topics" ? t("topics_all") : t("organizationTypes_all")}
           </Tag>
@@ -185,14 +195,9 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
                   }
                   color={topic.color}
                 >
-                  <Checkbox
-                    color="default"
-                    icon={<FiberManualRecordIcon />}
-                    data-cy={topic.name}
-                    style={{ color: topic.color, padding: "5px" }}
-                  />
+                  <Checkbox color={topic.color} data-cy={topic.name} />
 
-                  {topic.label}
+                  <Span>{topic.label}</Span>
                 </Tag>
               ))
             : organizationTypes.map((organizationTypes, i) => (
@@ -213,10 +218,8 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
                   color={organizationTypes.color}
                 >
                   <Checkbox
-                    color="default"
-                    icon={<FiberManualRecordIcon />}
+                    color={organizationTypes.color}
                     data-cy={organizationTypes.name}
-                    style={{ color: organizationTypes.color, padding: "5px" }}
                   />
 
                   {organizationTypes.label}

@@ -5,15 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 // Redux stuff
 import { clearErrors } from "../../../redux/actions/errorsActions";
-import {
-  setMapBounds,
-  setMapViewport,
-} from "../../../redux/actions/mapActions";
 
 //Components
-import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 
-import ProjectHeader from "../../molecules/Headers/ProjectHeader";
+import Header from "../../molecules/Headers/Header";
 import ProjectInfo from "../../molecules/DialogInlineComponents/ProjectInfo";
 import styled from "styled-components";
 import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
@@ -136,7 +131,7 @@ const OrganizationDialog = ({
   return (
     openOrganization && (
       <React.Fragment>
-        <ProjectHeader
+        <Header
           imgUrl={organization?.imgUrl}
           title={organization?.title}
           owner={organization?.organizationType}

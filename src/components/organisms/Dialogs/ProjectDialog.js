@@ -15,10 +15,9 @@ import {
 import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 
 import SwipeList from "../SwipeLists/SwipeList";
-import ProjectHeader from "../../molecules/Headers/ProjectHeader";
+import Header from "../../molecules/Headers/Header";
 import ProjectInfo from "../../molecules/DialogInlineComponents/ProjectInfo";
 import styled from "styled-components";
-import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
 import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 
@@ -72,7 +71,7 @@ const ProjectDialog = ({
   const projects = useSelector((state) => state.data.projects);
 
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.UI.loading);
+  const loading = useSelector((state) => state.data.loading);
   const mapBounds = useSelector((state) => state.data.mapBounds);
 
   const initialMapViewport = useSelector(
@@ -149,7 +148,7 @@ const ProjectDialog = ({
 
   return (
     <React.Fragment>
-      <ProjectHeader
+      <Header
         imgUrl={project?.imgUrl}
         title={project?.title}
         owner={project?.owner}
@@ -160,6 +159,7 @@ const ProjectDialog = ({
         handleClose={handleClose}
         handleClick={handleClick}
       />
+
       {isMobileCustom && (order === 1 || order === 3) && (
         <PostScream
           loadingProjects={loadingProjects}
@@ -205,32 +205,37 @@ const ProjectDialog = ({
             <SubmitButton
               text={t("showIdeas")}
               zIndex="9"
-              backgroundColor={isMobileCustom ? "#353535" : "white"}
-              textColor={isMobileCustom ? "white" : "#353535"}
+              backgroundColor={"#353535"}
+              textColor={"white"}
               position="fixed"
-              bottom={isMobileCustom ? "10px" : "50%"}
-              left={isMobileCustom ? "0" : "calc(600px + ((100% - 600px)/2)) "}
-              marginLeft={isMobileCustom ? "50%" : "0"}
+              bottom={"10px"}
+              left={"0"}
+              marginLeft={isMobileCustom ? "50%" : "400px"}
               handleButtonClick={() => handleClick(1)}
             />
-            <Break />
 
-            <MainAnimations
-              transition="0.5s"
-              display="block"
-              paddingBottom="2em"
-              height="100%"
-            >
-              <ProjectInfo
-                description={project?.description}
-                weblink={project?.weblink}
-                contact={project?.contact}
-                startDate={project?.startDate}
-                endDate={project?.endDate}
-                owner={project?.owner}
+            {!isMobileCustom && (
+              <SubmitButton
+                text={t("showIdeas")}
+                zIndex="9"
+                backgroundColor={"white"}
+                textColor={"#353535"}
+                position="fixed"
+                bottom={"50%"}
+                left={"calc(600px + ((100% - 600px)/2)) "}
+                marginLeft={isMobileCustom ? "50%" : "0"}
+                handleButtonClick={() => handleClick(1)}
               />
-              <br />
-            </MainAnimations>
+            )}
+
+            <ProjectInfo
+              description={project?.description}
+              weblink={project?.weblink}
+              contact={project?.contact}
+              startDate={project?.startDate}
+              endDate={project?.endDate}
+              owner={project?.owner}
+            />
           </div>
         )}
         {/* {order === 2 && (

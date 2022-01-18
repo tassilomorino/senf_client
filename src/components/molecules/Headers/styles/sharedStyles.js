@@ -36,11 +36,15 @@ export const FixedWrapper = styled.div`
 
 export const InnerWrapper = styled.div`
   position: ${(props) => (props.isMobileCustom ? "fixed" : "absolute")};
-  width: ${(props) => (props.order === 0 ? "120%" : "100%")};
+  width: calc(100% - 20px);
   height: 50px;
   top: 0px;
   transition: 0.4s;
   pointer-events: all;
+  background-color: rgb(255, 255, 255, 0.6);
+  margin: 10px;
+  border-radius: 18px;
+  backdrop-filter: blur(10px);
 `;
 
 export const FlexWrapper = styled.div`
@@ -52,7 +56,8 @@ export const FlexWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  white-space: nowrap;
 `;
 
 export const ImgWrapper = styled.div`
@@ -87,7 +92,7 @@ export const SVGWrapper = styled.div`
 
 export const StyledIcon = styled.img`
   width: 30px;
-  top: 20px;
+  top: 10px;
   left: calc(100% - 53px);
   position: absolute;
   z-index: 2;

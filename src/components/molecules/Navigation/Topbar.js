@@ -36,36 +36,38 @@ const Wrapper = styled.div`
   width: 100vw;
   /* height: 7.5em; */
 
-  height: 60px;
   /* background-color: white;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2); */
   top: ${(props) => (props.moveUp ? "-90px" : "0px")};
   transition: 0.4s;
   z-index: 1;
-  animation: TopbarEnterAnimation 2s;
+  /* animation: TopbarEnterAnimation 2s;
 
   @keyframes TopbarEnterAnimation {
     0% {
-      opacity: 0;
       transform: translateY(-100%);
     }
     50% {
-      opacity: 1;
       transform: translateY(-100%);
     }
     100% {
-      opacity: 1;
       transform: translateY(0%);
-    }
+    } */
   }
 `;
 
 const LogoContainer = styled.div`
-  position: absolute;
+  position: fixed;
   top: 10px;
-  width: 100%;
+  height: 50px;
+  width: 150px;
+  margin-left: calc(50% - 75px);
   z-index: 99;
   text-align: center;
+  background-color: rgb(255, 255, 255, 0.6);
+  border-radius: 18px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.8);
 `;
 
 const ProfileButtonContainer = styled.div`
@@ -75,12 +77,15 @@ const ProfileButtonContainer = styled.div`
   align-items: center;
   z-index: 999;
   width: 50px;
-  right: 10px;
-  top: 8px;
+  right: 23px;
+  top: 23px;
   height: 50px;
   font-size: 0;
   pointer-events: pointer;
-  filter: drop-shadow(0px 8px 10px rgba(0, 0, 0, 0.2));
+  background-color: rgb(254, 217, 87, 0.6);
+  border-radius: 100%;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.8);
 `;
 
 const CenteredImg = styled.img`
@@ -100,13 +105,20 @@ const InsightsButtonContainer = styled.div`
 
 const InlineInfoButtonContainer = styled.div`
   position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 999;
-  width: 30px;
-  left: 110px;
-  top: 18px;
-  height: 30px;
+  width: 50px;
+  left: 23px;
+  top: 23px;
+  height: 50px;
   font-size: 0;
   pointer-events: pointer;
+  background-color: rgb(254, 217, 87, 0.6);
+  border-radius: 100%;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.8);
 `;
 
 const Topbar = ({ order, handleClick }) => {
@@ -144,22 +156,6 @@ const Topbar = ({ order, handleClick }) => {
           swipePosition === "top"
         }
       >
-        <img src={Header} width="200px" style={{ pointerEvents: "none" }} />
-        <img
-          src={Logo}
-          width="90px"
-          style={{
-            paddingTop: "10px",
-            paddingBottom: "10px",
-            paddingLeft: "5px",
-            borderRadius: "15px",
-
-            position: "absolute",
-            top: 0,
-            left: 0,
-            backgroundColor: "white",
-          }}
-        />
         <InlineInfoButtonContainer>
           <InlineInformationPage />
           <img src={Info} width="30" alt="EndImage" />
@@ -176,11 +172,7 @@ const Topbar = ({ order, handleClick }) => {
         {!user.authenticated ? (
           <ProfileButtonContainer>
             <LoginRegistration />
-            <CenteredImg
-              src={ProfileShape}
-              width="50"
-              alt="profilePlaceHolderImage"
-            />
+
             <CenteredImg
               src={Noprofile}
               width="30"
@@ -193,11 +185,7 @@ const Topbar = ({ order, handleClick }) => {
               handleButtonClick={openTheAccount}
               dataCy="profile-button"
             />
-            <CenteredImg
-              src={ProfileShape}
-              width="50"
-              alt="profilePlaceHolderImage"
-            />
+
             <StyledH2 fontWeight="600" zIndex="9">
               {user?.handle?.slice(0, 1)}
             </StyledH2>

@@ -51,6 +51,9 @@ const WideButton = styled.button`
   font-size: ${(props) => props.smallSubmitButton && "15px"};
   box-shadow: ${(props) =>
     props.shadow === false ? "" : "rgb(38, 57, 77, 0.7) 0px 20px 30px -15px;"};
+
+  backdrop-filter: ${(props) => props.backdropFilter && "blur(10px)"};
+
   padding-left: ${(props) => (props.smallSubmitButton ? "15px" : "30px")};
   padding-right: ${(props) => (props.smallSubmitButton ? "15px" : "30px")};
   min-width: ${(props) => (props.smallSubmitButton ? "70px" : "180px")};
@@ -110,6 +113,7 @@ export const SubmitButton = ({
   loading,
   disabled,
   shadow,
+  backdropFilter,
 
   handleButtonClick,
   smallSubmitButton,
@@ -139,6 +143,7 @@ export const SubmitButton = ({
       smallSubmitButton={smallSubmitButton}
       ref={keySubmitRef}
       shadow={shadow}
+      backdropFilter={backdropFilter}
     >
       {text}
       {iconRight && (
