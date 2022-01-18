@@ -6,6 +6,7 @@ import "./styles/mapbox-gl.css";
 import "./App.css";
 import "./AppDesktop.css";
 import "./AppIpad.css";
+import "./mapbox.css";
 
 import firebaseConfig from "./firebase";
 import firebase from "firebase/app";
@@ -55,6 +56,7 @@ import { getBuildDate } from "./util/utils";
 import Cookiebanner from "./components/organisms/Cookiebanner/Cookiebanner";
 import { setViewport } from "./MapAnimations";
 import detectLocation from "./util/detectLocation";
+import GlobalStyles from "./styles/GlobalStyles";
 
 i18n
   //.use(LanguageDetector)
@@ -174,6 +176,7 @@ const App = () => {
         store.dispatch({ type: SET_AUTHENTICATED });
         store.dispatch(getUserData(user.uid));
         setIsAuthed(true);
+        console.log(user.uid);
       } else if (user) {
         //a new user is registrating
       } else {
@@ -197,6 +200,7 @@ const App = () => {
   return (
     <MuiThemeProvider theme={theme}>
       <Provider store={store}>
+        <GlobalStyles />
         <Router>
           <Cookiebanner />
 
@@ -213,7 +217,8 @@ const App = () => {
           <div className="container">
             <Switch>
               <Route exact path="/" component={Main} />
-              <Route exact path="/projects" component={Main} />
+              <Route exact path="/projectRooms" component={Main} />
+              <Route exact path="/organizations" component={Main} />
               <Route exact path="/start" component={IntroductionInformation} />
               <Route exact path="/intro" component={Welcome} />
               <Route exact path="/datenschutz" component={datenschutz} />
@@ -233,6 +238,18 @@ const App = () => {
               <Route exact path="/blank" component={blank} />
 
               <Route exact path="/:screamId" component={Main} />
+
+              <Route
+                exact
+                path="/projectRooms/:projectRoomId"
+                component={Main}
+              />
+              <Route
+                exact
+                path="/organizations/:organizationId"
+                component={Main}
+              />
+
               <Route path="*" component={Main} />
             </Switch>
           </div>
@@ -244,4 +261,3 @@ const App = () => {
 console.log(getBuildDate(packageJson.buildDate));
 
 export default App;
-/* export default withClearCache(MainApp); */
