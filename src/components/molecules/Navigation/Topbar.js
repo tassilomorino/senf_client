@@ -82,7 +82,7 @@ const ProfileButtonContainer = styled.div`
   height: 50px;
   font-size: 0;
   pointer-events: pointer;
-  background-color: rgb(254, 217, 87, 0.6);
+  background-color: rgb(255, 255, 255, 0.6);
   border-radius: 100%;
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.8);
@@ -115,7 +115,7 @@ const InlineInfoButtonContainer = styled.div`
   height: 50px;
   font-size: 0;
   pointer-events: pointer;
-  background-color: rgb(254, 217, 87, 0.6);
+  background-color: rgb(255, 255, 255, 0.6);
   border-radius: 100%;
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.8);
