@@ -20,7 +20,7 @@ const MapWrapper = styled.div`
 
 const MapPreview = ({ viewport, data }) => {
   return (
-    <MapWrapper>
+    <MapWrapper id="drawMapPreview">
       {viewport && (
         <MapGL
           mapStyle="mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6"
@@ -36,6 +36,7 @@ const MapPreview = ({ viewport, data }) => {
           viewportChangeOptions={{
             duration: 2700,
           }}
+          attributionControl={false}
         >
           <Draw data={data} />
         </MapGL>

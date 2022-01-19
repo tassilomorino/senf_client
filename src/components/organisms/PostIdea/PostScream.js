@@ -508,6 +508,13 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
         BackdropProps={{ classes: { root: classes.root } }}
         PaperProps={{ classes: { root: classes.paper } }}
       >
+        <CustomIconButton
+          name="Close"
+          position="fixed"
+          margin={document.body.clientWidth > 768 ? "40px" : "10px"}
+          handleButtonClick={handleClose}
+          zIndex="1"
+        />
         {!user.authenticated && (
           <div
             className={
@@ -626,15 +633,6 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
           setContactOpen={setContactOpen}
           setCalendarOpen={setCalendarOpen}
           checkIfCalendar={checkIfCalendar}
-        />
-        <CustomIconButton
-          name="Close"
-          position="fixed"
-          margin={
-            document.body.clientWidth > 768 ? "40px" : "18px 0px 0px 13px"
-          }
-          handleButtonClick={handleClose}
-          zIndex="1"
         />
       </Dialog>
     </Fragment>

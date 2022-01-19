@@ -46,6 +46,8 @@ import {
 import { useTranslation } from "react-i18next";
 import { createProjectSaveData } from "../../../../redux/actions/formDataActions";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
+import { StyledH2 } from "../../../../styles/GlobalStyle";
+import { isMobileCustom } from "../../../../util/customDeviceDetect";
 
 const MapWrapper = styled.div`
   width: 100%;
@@ -76,18 +78,18 @@ const NavigationButtonsContainer = styled.div`
   height: 50px;
 `;
 
-const Title = styled.h2`
-  font-family: PlayfairDisplay-Bold;
-  font-size: 32px;
-  font-weight: 100;
+const Title = styled.div`
   margin-left: 50%;
   transform: translateX(-50%);
   color: #353535;
   align-self: center;
   position: fixed;
-  top: 40px;
-  text-shadow: 0 0 0.4em white, 0 0 0.4em white, 0 0 0.4em white,
-    0 0 0.4em white, 0 0 0.2em white;
+  top: ${(props) => (props.isMobileCustom ? "10px" : "40px")};
+  background-color: rgb(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  white-space: nowrap;
+  padding: 14px;
 `;
 
 const Reactangle = styled.div`
@@ -287,12 +289,13 @@ const MapDialog = ({
   // };
 
   return ReactDOM.createPortal(
-    <MapWrapper mapOpen={mapOpen}>
+    <MapWrapper mapOpen={mapOpen} id="drawMapWindow">
       <CustomIconButton
         name="Close"
         position="fixed"
         margin={document.body.clientWidth > 768 ? "40px" : "10px"}
         left="0"
+        zIndex={999}
         handleButtonClick={handleClose}
       />
 
@@ -315,14 +318,12 @@ const MapDialog = ({
             duration: 2700,
           }}
         >
-          {!step2 ? (
-            <Title>Zeichne das Gebiet ein</Title>
-          ) : (
-            <React.Fragment>
-              <Title>Wähle die Ansicht</Title>
-              <Reactangle />
-            </React.Fragment>
-          )}
+          <Title isMobileCustom={isMobileCustom}>
+            <StyledH2 fontWeight="900" textAlign="center">
+              Zeichne das Gebiet ein
+            </StyledH2>
+          </Title>
+
           <Draw
             ref={drawRef}
             data={data}
