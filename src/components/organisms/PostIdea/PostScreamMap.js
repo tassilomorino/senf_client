@@ -16,7 +16,7 @@ import { StyledText } from "../../../styles/GlobalStyle";
 
 const AdressLinePlaceHolderDiv = styled.div`
   position: fixed;
-  top: 20px;
+  top: 10px;
   left: 70px;
   width: calc(80% - 85px);
 
@@ -88,8 +88,7 @@ const PostScreamMap = ({
   const queryParams = {
     bbox: [6.7, 50.8, 7.2, 51],
   };
-  const addressLine =
-    !address  ? t("input_address") : address;
+  const addressLine = !address ? t("input_address") : address;
 
   const data =
     !loadingProjects && geoData !== ""
@@ -129,6 +128,7 @@ const PostScreamMap = ({
         viewportChangeOptions={{
           duration: 2700,
         }}
+       
       >
         <Source id="geodata" type="geojson" data={data} />
         <Layer
