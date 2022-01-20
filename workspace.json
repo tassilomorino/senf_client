@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "projects": {
+    "home": "libs/home",
+    "senf-client": "apps/senf-client",
+    "senf-chatbox": "apps/senf-chatbox/",
+    "senf-monitoring": "apps/senf-monitoring",
+
+    "ui": "libs/ui"
+  }
+}
