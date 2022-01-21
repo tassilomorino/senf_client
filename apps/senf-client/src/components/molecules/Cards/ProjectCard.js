@@ -110,7 +110,7 @@ export const ProjectCard = (props) => {
   return (
     <Card project={true}>
       <CardContent>
-        {organizationCardData[0].includes(user.userId) && (
+        {organizationCardData[0]?.includes(user.userId) && (
           <CustomIconButton
             name="Menu"
             iconWidth="70%"

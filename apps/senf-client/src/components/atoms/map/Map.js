@@ -102,6 +102,8 @@ const Map = ({
   const mapLoaded = useSelector((state) => state.data.mapLoaded);
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openScream = useSelector((state) => state.UI.openScream);
+  const openAccount = useSelector((state) => state.UI.openAccount);
+
   const scream = useSelector((state) => state.data.scream);
   const [hoverId, setHoverId] = useState("");
   const swipePosition = useSelector((state) => state.UI.swipePosition);
@@ -340,7 +342,7 @@ const Map = ({
               </React.Fragment>
             )}
 
-          {order === 1 || openScream || openProjectRoom ? (
+          {order === 1 || openScream || openProjectRoom || openAccount ? (
             <React.Fragment>
               {!openInfoPage && !openScream && !openProjectRoom && (
                 <MapFilter viewport={mapViewport} mapRef={mapRef} />

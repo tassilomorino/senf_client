@@ -13,7 +13,7 @@ import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 //Components
 import RegistrationAndLogin from "../../organisms/Auth/LoginRegistration";
 import InlineInformationPageDesktop from "../../organisms/infocomponents/InlineInformationPageDesktop";
-import SelectLanguageButton from "../../atoms/CustomButtons/SelectLanguageButton";
+import SelectLanguageButton from "../../atoms/Selects/SelectLanguageButton";
 import TagsFilter from "../Filters/TagsFilter";
 import { MenuItem } from "./MenuItem";
 import { MenuData } from "../../../data/MenuData";
@@ -26,7 +26,7 @@ import profile_yellow from "../../../images/icons/profile_yellow.png";
 import profile_grey from "../../../images/icons/profile_grey.png";
 import Circle_grey from "../../../images/icons/circle_grey.png";
 import Circle_yellow from "../../../images/icons/circle_yellow.png";
-import Noprofile from "../../../images/noprofile.png";
+import Noprofile from "../../../images/icons/noprofile.png";
 import PostScream from "../../organisms/PostIdea/PostScream";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
@@ -47,6 +47,12 @@ const FilterWrapper = styled.div`
   max-height: ${(props) => (props.active ? "1000px" : "0px")};
   left: 30px;
   top: 70px;
+`;
+const SelectLanguageWrapper = styled.div`
+  position: absolute;
+  z-index: 99999;
+  top: 50px;
+  left: 145px;
 `;
 
 const DesktopSidebar = ({
@@ -89,51 +95,10 @@ const DesktopSidebar = ({
       <Logo>
         <img src={LogoImg} width="100px" alt="logoWeb"></img>
       </Logo>
-      <SelectLanguageButton />
-      <InlineInformationPageDesktop />
-      {!user.authenticated ? (
-        <SideBarTabs>
-          <RegistrationAndLogin />
-          <img
-            src={profile_yellow}
-            width="35"
-            alt="EndImage"
-            style={{ paddingRight: "10px" }}
-          />
-          {t("login")}
-        </SideBarTabs>
-      ) : (
-        <SideBarTabs fontWeight={openAccount && "900"}>
-          <ExpandButton
-            handleButtonClick={openTheAccount}
-            dataCy="profile-button"
-          />
+      <SelectLanguageWrapper>
+        <SelectLanguageButton />
+      </SelectLanguageWrapper>
 
-          <StyledH2
-            fontWeight="600"
-            zIndex="9"
-            style={{
-              position: "absolute",
-              marginLeft: "12px",
-              marginTop: "2px",
-              color: openAccount ? "#353535" : "#fed957",
-            }}
-          >
-            {user?.handle?.slice(0, 1)}
-          </StyledH2>
-
-          <img
-            src={openAccount ? Circle_grey : Circle_yellow}
-            width="35"
-            alt="EndImage"
-            style={{ paddingRight: "10px" }}
-          />
-          {t("profile")}
-        </SideBarTabs>
-      )}
-      <FilterWrapper active={openAccount}>
-        <TagsFilter column loading={loading} type="topics" />
-      </FilterWrapper>
       <PostScream loadingProjects={loadingProjects} projectsData={projects} />
       <MenuItem
         key={1}
@@ -205,6 +170,63 @@ const DesktopSidebar = ({
         handleClick={handleClick}
         openAccount={openAccount}
       />
+
+      <div
+        style={{
+          position: "absolute",
+          left: "20px",
+          width: "160px",
+          height: "1px",
+          backgroundColor: "#cecece",
+          marginTop: "85px",
+        }}
+      />
+      <br />
+      {!user.authenticated ? (
+        <SideBarTabs>
+          <RegistrationAndLogin />
+          <img
+            src={Noprofile}
+            width="35"
+            alt="EndImage"
+            style={{ paddingRight: "10px" }}
+          />
+          {t("login")}
+        </SideBarTabs>
+      ) : (
+        <SideBarTabs fontWeight={openAccount && "900"}>
+          <ExpandButton
+            handleButtonClick={openTheAccount}
+            dataCy="profile-button"
+          />
+
+          {/* <StyledH2
+            fontWeight="600"
+            zIndex="9"
+            style={{
+              position: "absolute",
+              marginLeft: "12px",
+              marginTop: "2px",
+              color: openAccount ? "#353535" : "#fed957",
+            }}
+          >
+            {user?.handle?.slice(0, 1)}
+          </StyledH2> */}
+
+          <img
+            src={openAccount ? profile_grey : profile_yellow}
+            width="35"
+            alt="EndImage"
+            style={{ paddingRight: "10px" }}
+          />
+          {t("profile")}
+        </SideBarTabs>
+      )}
+      <FilterWrapper active={openAccount}>
+        <TagsFilter column loading={loading} type="topics" />
+      </FilterWrapper>
+      <InlineInformationPageDesktop />
+
       <div
         style={{
           position: "relative",
@@ -212,7 +234,7 @@ const DesktopSidebar = ({
           width: "160px",
           height: "100px",
         }}
-      ></div>{" "}
+      />
       {/* {process.env.REACT_APP_INTERNATIONAL &&
           process.env.REACT_APP_INTERNATIONAL === "true" && (
             <CustomButton handleButtonClick={setChangeLocationModalOpen}>

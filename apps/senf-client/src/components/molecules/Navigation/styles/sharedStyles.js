@@ -5,12 +5,12 @@ import styled from "styled-components";
 export const Logo = styled.div`
   position: fixed;
   width: 180px;
-  z-index: 99999;
+  z-index: 99998;
 
   padding-bottom: 10;
   font-size: 40;
   margin-left: 20px;
-  padding-top: 35px;
+  padding-top: 45px;
   margin-top: 0;
   /* animation: logoAnimation 2.5s; */
   background-color: #f8f8f8;
