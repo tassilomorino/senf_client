@@ -52,7 +52,8 @@ const SelectLanguageWrapper = styled.div`
   position: fixed;
   z-index: 99999;
   margin-left: 145px;
-  padding-top: 45px;
+  bottom: 10px;
+  z-index: 99999999;
 `;
 
 const DesktopSidebar = ({
