@@ -95,7 +95,6 @@ export const reloadScreams = () => async (dispatch) => {
       projectId: doc.data().project,
       color: setColorByTopic(doc.data().Thema),
     };
-
     screams.push(docData);
   });
 
