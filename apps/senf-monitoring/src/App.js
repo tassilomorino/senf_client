@@ -96,6 +96,8 @@ const App = () => {
     <div className="tabletLandscapeNote">{t("rotate_tablet")} </div>
   ) : null;
 
+  console.log();
+
   return (
     <MuiThemeProvider theme={theme}>
       <Provider store={store}>
