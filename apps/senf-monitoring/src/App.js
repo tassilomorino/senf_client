@@ -96,7 +96,7 @@ const App = () => {
   const tabletNote = isTablet ? (
     <div className="tabletLandscapeNote">{t("rotate_tablet")} </div>
   ) : null;
-  console.log("deploy test, remove it");
+
   return (
     <MuiThemeProvider theme={theme}>
       <Provider store={store}>
