@@ -109,7 +109,6 @@ const App = () => {
           )} */}
 
           <div className="landscapeNote">{t("rotate_phone")}</div>
-
           <div className="container">
             <Switch>
               <Route exact path="/" component={MonitoringBoard} />
