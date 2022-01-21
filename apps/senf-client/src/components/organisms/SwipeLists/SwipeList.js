@@ -24,6 +24,22 @@ import { MenuData } from "../../../data/MenuData";
 import Wave from "../../atoms/Backgrounds/Wave";
 import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 
+const DragWrapper = styled(animated.div)`
+  overscroll-behavior: contain;
+  width: 100%;
+  height: 100%;
+  background: rgb(254, 217, 87);
+  background: linear-gradient(
+    180deg,
+    rgba(254, 217, 87, 1) 0%,
+    rgba(255, 218, 83, 1) 50%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  border-radius: 20px;
+  position: absolute;
+  z-index: 995;
+  animation: dragEnterAnimation 0.5s;
+`;
 const Content = styled.div`
   margin-top: 0px;
   padding-bottom: 150px;
@@ -271,8 +287,8 @@ const SwipeList = ({
 
   return isMobileCustom ? (
     <React.Fragment>
-      <animated.div
-        className={!loading && !openScream ? "drag" : "drag_hide"}
+      <DragWrapper
+        className={!loading && !openScream ? "" : "drag_hide"}
         style={props}
       >
         {mapBounds?.latitude1 !== 0 && (
@@ -396,7 +412,7 @@ const SwipeList = ({
             </ListWrapper>
           </React.Fragment>
         )}
-      </animated.div>
+      </DragWrapper>
     </React.Fragment>
   ) : (
     <Content>

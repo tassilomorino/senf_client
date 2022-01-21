@@ -17,7 +17,7 @@ import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
 //ICONS
 import Logo from "../../../images/logo.png";
-import Profile_grey from "../../../images/icons/profile_grey.png";
+import Profile_grey from "../../../images/icons/profile_yellow.png";
 import Noprofile from "../../../images/icons/noprofile.png";
 import ProfileShape from "../../../images/shapes/profileShape.png";
 
