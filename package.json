@@ -50,7 +50,6 @@
   "devDependencies": {
     "@babel/core": "7.12.13",
     "@babel/preset-typescript": "7.12.13",
-    "@craco/craco": "^6.4.3",
     "@nrwl/cli": "13.3.12",
     "@nrwl/cypress": "13.3.12",
     "@nrwl/eslint-plugin-nx": "13.3.12",
