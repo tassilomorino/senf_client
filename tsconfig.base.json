@@ -15,8 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@senf-workspace/home": ["libs/home/src/index.js"],
-      "@senf-workspace/ui": ["libs/ui/src/index.js"]
+      "@senf/home": ["libs/home/src/index.js"],
+      "@senf/ui": ["libs/ui/src/index.js"]
     }
   },
   "exclude": ["node_modules", "tmp"]

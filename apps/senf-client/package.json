@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^6.4.3",
     "@fullcalendar/core": "^5.10.1",
     "@fullcalendar/list": "^5.10.1",
     "@fullcalendar/react": "^5.10.1",
@@ -90,7 +91,8 @@
     "cypress-firebase": "^2.0.0",
     "cypress-wait-until": "^1.7.1",
     "prettier": "^2.5.0",
-    "start-server-and-test": "^1.13.1"
+    "start-server-and-test": "^1.13.1",
+    "tsconfig-paths-webpack-plugin": "^3.5.2"
   },
-  "buildDate": 1641217740037
+  "buildDate": 1642801145975
 }

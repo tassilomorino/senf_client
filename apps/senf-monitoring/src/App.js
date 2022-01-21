@@ -121,4 +121,3 @@ const App = () => {
 console.log(getBuildDate(packageJson.buildDate));
 
 export default App;
-/* export default withClearCache(MainApp); */
