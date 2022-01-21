@@ -49,10 +49,10 @@ const FilterWrapper = styled.div`
   top: 70px;
 `;
 const SelectLanguageWrapper = styled.div`
-  position: absolute;
+  position: fixed;
   z-index: 99999;
-  top: 50px;
-  left: 145px;
+  margin-left: 145px;
+  padding-top: 45px;
 `;
 
 const DesktopSidebar = ({
@@ -232,7 +232,7 @@ const DesktopSidebar = ({
           position: "relative",
           left: "20px",
           width: "160px",
-          height: "100px",
+          height: "150px",
         }}
       />
       {/* {process.env.REACT_APP_INTERNATIONAL &&

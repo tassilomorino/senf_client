@@ -14,7 +14,6 @@ import "firebase/firestore";
 import { useTranslation } from "react-i18next";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { createTheme } from "@material-ui/core/styles/";
-
 import themeFile from "./util/theme";
 //Redux
 import { Provider } from "react-redux";
@@ -110,7 +109,6 @@ const App = () => {
           )} */}
 
           <div className="landscapeNote">{t("rotate_phone")}</div>
-
           <div className="container">
             <Switch>
               <Route exact path="/" component={MonitoringBoard} />
