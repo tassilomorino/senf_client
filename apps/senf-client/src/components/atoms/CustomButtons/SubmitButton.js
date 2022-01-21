@@ -24,22 +24,22 @@ const enterAnimation = keyframes`
 const plopAnimation = keyframes`
   0% {
       opacity: 0;
-      transform: scale(0.7) translateX(-50%);
+      transform: scale(0.7) ;
     }
   
     80% {
       opacity: 0;
-      transform: scale(0.7) translateX(-50%);
+      transform: scale(0.7) ;
     }
   
     90% {
       opacity: 1;
-      transform: scale(1.1) translateX(-50%);
+      transform: scale(1.1);
     }
   
     100% {
       opacity: 1;
-      transform: scale(1) translateX(-50%);
+      transform: scale(1) ;
     }
 `;
 

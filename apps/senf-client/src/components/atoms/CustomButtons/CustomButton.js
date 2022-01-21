@@ -150,13 +150,15 @@ const enterAnimationRound = keyframes`
     `;
 
 const IconButton = styled.button`
-  width: 50px;
-  height: 50px;
+  width: ${(props) => (props.small ? "35px" : "50px")};
+  height: ${(props) => (props.small ? "35px" : "50px")};
   overflow: hidden;
   color: #353535;
   border-radius: 100%;
   box-shadow: ${(props) =>
     props.shadow === false ? "" : "rgb(38, 57, 77, 0.7) 0px 20px 30px -15px;"};
+  backdrop-filter: ${(props) => props.backdropFilter && "blur(10px)"};
+
   background-color: ${(props) =>
     props.backgroundColor ? props.backgroundColor : "white"};
   display: flex;
@@ -198,6 +200,8 @@ export const CustomIconButton = ({
   handleButtonClick,
   animation,
   iconWidth,
+  small,
+  backdropFilter,
 }) => {
   const Icon = Icons[name];
   return (
@@ -213,6 +217,8 @@ export const CustomIconButton = ({
       animation={animation}
       shadow={shadow}
       backgroundColor={backgroundColor}
+      small={small}
+      backdropFilter={backdropFilter}
     >
       {children}
       <img src={Icon} width={iconWidth ? iconWidth : "20px"} alt="icon" />

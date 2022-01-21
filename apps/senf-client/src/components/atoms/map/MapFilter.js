@@ -12,7 +12,20 @@ import {
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { SubmitButton } from "../CustomButtons/SubmitButton";
 import { setSwipePositionUp } from "../../../redux/actions/UiActions";
+import styled from "styled-components";
 
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  margin-top: 65px;
+
+  @media (min-width: 768px) {
+    margin-top: 40px;
+    left: 600px;
+  }
+`;
 export const MapFilter = memo(({ viewport, mapRef }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -69,17 +82,31 @@ export const MapFilter = memo(({ viewport, mapRef }) => {
     !loading &&
     viewport !== initialMapViewport &&
     !waitTime && (
-      <SubmitButton
-        text={t("Ideen im Bereich anzeigen")}
-        backgroundColor="rgb(255, 255, 255, 0.6)"
-        textColor="#353535"
-        position="fixed"
-        top={isMobileCustom ? "30px" : "40px"}
-        animation="plop"
-        handleButtonClick={() => handleMapBoundsSet(viewport)}
-        smallSubmitButton={isMobileCustom && true}
-        backdropFilter={true}
-      />
+      <Wrapper>
+        <SubmitButton
+          text={t("Ideen im Bereich anzeigen")}
+          backgroundColor="rgb(255, 255, 255, 0.6)"
+          textColor="#353535"
+          position="relative"
+          animation="plop"
+          marginLeft="0px"
+          transformX={"none"}
+          handleButtonClick={() => handleMapBoundsSet(viewport)}
+          smallSubmitButton={isMobileCustom && true}
+          backdropFilter={true}
+        />
+        <CustomIconButton
+          name="CircularArrow"
+          margin="0px"
+          marginLeft="5px"
+          position="relative"
+          backgroundColor="rgb(255,255,255,0.6)"
+          handleButtonClick={handleMapBoundsReset}
+          animation={true}
+          small={isMobileCustom && true}
+          backdropFilter={true}
+        />
+      </Wrapper>
     )
   );
 });

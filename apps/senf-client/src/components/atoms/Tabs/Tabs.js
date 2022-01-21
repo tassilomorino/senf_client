@@ -47,14 +47,6 @@ const Tab = styled.div`
 `;
 const TabText = styled.h2``;
 
-const UnderLine = styled.div`
-  height: 2px;
-  width: calc(100% - 30px);
-  background-color: #353535;
-  border-radius: 15px;
-  margin-left: 15px;
-`;
-
 const ImgWrapper = styled.div`
   opacity: ${(props) => (props.active ? "1" : "0")};
   top: 70%;
@@ -97,8 +89,9 @@ const Tabs = ({
               <ImgWrapper active={order === i + 1}>
                 <img
                   src={Line}
-                  style={{ width: "108% ", marginLeft: "-5%" }}
-                  height="20px"
+                  style={{ width: "calc(100% - 20px)" }}
+                  height="7px"
+                  marginLeft="10px"
                 />
               </ImgWrapper>
             </Tab>

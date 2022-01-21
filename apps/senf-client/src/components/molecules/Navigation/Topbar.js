@@ -13,21 +13,18 @@ import {
 //COMPONENTS
 import LoginRegistration from "../../organisms/Auth/LoginRegistration";
 import InlineInformationPage from "../../organisms/infocomponents/InlineInformationPage";
-import ScrollTabs from "../../atoms/Tabs/ScrollTabs";
-import { MenuData } from "../../../data/MenuData";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
 //ICONS
 import Logo from "../../../images/logo.png";
-import profile_yellow from "../../../images/icons/profile_grey.png";
-import Noprofile from "../../../images/icons/profile_grey.png";
+import Profile_grey from "../../../images/icons/profile_yellow.png";
+import Noprofile from "../../../images/icons/noprofile.png";
 import ProfileShape from "../../../images/shapes/profileShape.png";
 
-import Info from "../../../images/icons/info_grey.png";
+import Info from "../../../images/icons/info.png";
 import InsightsIcon from "../../../images/icons/insights_yellow.png";
 import Circle_grey from "../../../images/icons/circle_grey.png";
 
-import Header from "../../../images/header.png";
 import { StyledH2 } from "../../../styles/GlobalStyle";
 
 const Wrapper = styled.div`
@@ -57,17 +54,17 @@ const Wrapper = styled.div`
 `;
 
 const LogoContainer = styled.div`
-  position: fixed;
-  top: 10px;
-  height: 50px;
+  position: absolute;
+  top: 0px;
+  height: 55px;
   width: 150px;
   margin-left: calc(50% - 75px);
   z-index: 99;
   text-align: center;
-  background-color: rgb(255, 255, 255, 0.6);
-  border-radius: 18px;
+  background-color: rgb(255, 255, 255, 0.8);
+  border-radius: 0 0 18px 18px;
   backdrop-filter: blur(10px);
-  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
 `;
 
 const ProfileButtonContainer = styled.div`
@@ -77,12 +74,12 @@ const ProfileButtonContainer = styled.div`
   align-items: center;
   z-index: 999;
   width: 50px;
-  right: 23px;
-  top: 23px;
+  right: 35px;
+  top: 5px;
   height: 50px;
   font-size: 0;
   pointer-events: pointer;
-  background-color: rgb(255, 255, 255, 0.6);
+  background-color: rgb(255, 255, 255, 0.8);
   border-radius: 100%;
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.8);
@@ -92,17 +89,6 @@ const CenteredImg = styled.img`
   position: absolute;
 `;
 
-const InsightsButtonContainer = styled.div`
-  position: absolute;
-  z-index: 999;
-  width: 30px;
-  right: 60px;
-  top: 18px;
-  height: 30px;
-  font-size: 0;
-  pointer-events: pointer;
-`;
-
 const InlineInfoButtonContainer = styled.div`
   position: absolute;
   display: flex;
@@ -110,12 +96,12 @@ const InlineInfoButtonContainer = styled.div`
   align-items: center;
   z-index: 999;
   width: 50px;
-  left: 23px;
-  top: 23px;
+  left: 35px;
+  top: 5px;
   height: 50px;
   font-size: 0;
   pointer-events: pointer;
-  background-color: rgb(255, 255, 255, 0.6);
+  background-color: rgb(255, 255, 255, 0.8);
   border-radius: 100%;
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.8);
@@ -161,9 +147,14 @@ const Topbar = ({ order, handleClick }) => {
           <img src={Info} width="30" alt="EndImage" />
         </InlineInfoButtonContainer>
 
-        {/* <LogoContainer>
-          <img src={Logo} width="100px" alt="logo"></img>
-        </LogoContainer> */}
+        <LogoContainer>
+          <img
+            src={Logo}
+            width="100px"
+            alt="logo"
+            style={{ marginTop: "5px" }}
+          ></img>
+        </LogoContainer>
 
         {/* <InsightsButtonContainer onClick={() => handleClick(4)}>
           <img src={InsightsIcon} width="30" alt="profilePlaceHolderImage" />
@@ -186,10 +177,10 @@ const Topbar = ({ order, handleClick }) => {
               dataCy="profile-button"
             />
 
-            <StyledH2 fontWeight="600" zIndex="9">
+            {/* <StyledH2 fontWeight="600" zIndex="9">
               {user?.handle?.slice(0, 1)}
-            </StyledH2>
-            <CenteredImg src={Circle_grey} width="30" alt="profileImage" />
+            </StyledH2> */}
+            <CenteredImg src={Profile_grey} width="30" alt="profileImage" />
           </ProfileButtonContainer>
         )}
         {/* <ScrollTabs
