@@ -5,9 +5,9 @@ module.exports = {
   webpack: {
     configure: (config, { paths }) => {
       //overwrite build path
-      paths.appBuild = config.output.path = path.resolve(
-        "../../dist/apps/senf-chatbox"
-      );
+      /*  paths.appBuild = config.output.path = path.resolve(
+        "../../dist/apps/senf-workspace"
+      ); */
 
       // Remove guard against importing modules outside of `src`.
       // Needed for workspace projects.
