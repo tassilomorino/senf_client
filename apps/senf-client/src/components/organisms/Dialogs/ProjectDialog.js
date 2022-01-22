@@ -18,7 +18,7 @@ import SwipeList from "../SwipeLists/SwipeList";
 import Header from "../../molecules/Headers/Header";
 import ProjectInfo from "../../molecules/DialogInlineComponents/ProjectInfo";
 import styled from "styled-components";
-import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
+import { ModalBackground } from "../../atoms/Backgrounds/ModalBackground";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 
 import _ from "lodash";
@@ -26,10 +26,11 @@ import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import { useTranslation } from "react-i18next";
 import PostScream from "../PostIdea/PostScream";
 import { ProjectRoomTabData } from "../../../data/ProjectRoomTabData";
+import { isMobile } from "react-device-detect";
 
 const Wrapper = styled.div`
   @media (min-width: 768px) {
-    padding-top: 70px;
+    padding-top: 60px;
   }
 `;
 
@@ -62,7 +63,9 @@ const ProjectDialog = ({
 }) => {
   const { t } = useTranslation();
   const [path, setPath] = useState("");
-  const [order, setOrder] = useState(0);
+  const [order, setOrder] = useState(1);
+  const [infoOpen, setInfoOpen] = useState(true);
+
   const [dropdown, setDropdown] = useState("newest");
 
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
@@ -149,6 +152,8 @@ const ProjectDialog = ({
   return (
     <React.Fragment>
       <Header
+        infoOpen={infoOpen}
+        setInfoOpen={setInfoOpen}
         imgUrl={project?.imgUrl}
         title={project?.title}
         owner={project?.owner}
@@ -160,41 +165,52 @@ const ProjectDialog = ({
         handleClick={handleClick}
       />
 
-      {isMobileCustom && (order === 1 || order === 3) && (
+      {isMobileCustom && !infoOpen && (
         <PostScream
           loadingProjects={loadingProjects}
           projectsData={projects}
           project={project}
         />
       )}
-      {!isMobileCustom && order === 0 && <MapHider />}
-      <Wrapper>
-        {!isMobileCustom || (isMobileCustom && order === 0 && <Background />)}
 
-        {(order === 1 || order === 3) && (
-          <SwipeList
-            swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}
-            type="projectIdeas"
-            tabLabels={ProjectRoomTabData.map((item) => item.text).slice(
-              0,
-              TabSlicer
-            )}
-            loading={loading}
-            order={order}
-            dataFinal={dataFinal}
-            geoData={project?.geoData}
-            viewport={viewport}
-            handleDropdown={handleDropdown}
-            dropdown={dropdown}
-            projectsData={projectsData}
-            loadingProjects={loadingProjects}
-            dataFinalMap={dataFinalMap}
-            setSearchTerm={setSearchTerm}
-            searchTerm={searchTerm}
-            handleClick={handleClick}
-          />
-        )}
-        {order === 0 && (
+      {/* {!isMobileCustom ||
+          (isMobileCustom && order === 0 && <ModalBackground />)} */}
+
+      <ProjectInfo
+        infoOpen={infoOpen}
+        description={project?.description}
+        weblink={project?.weblink}
+        contact={project?.contact}
+        startDate={project?.startDate}
+        endDate={project?.endDate}
+        owner={project?.owner}
+        infoOpen={infoOpen}
+      />
+
+      {(!infoOpen || !isMobileCustom) && (
+        <SwipeList
+          swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}
+          type="projectIdeas"
+          tabLabels={ProjectRoomTabData.map((item) => item.text).slice(
+            0,
+            TabSlicer
+          )}
+          loading={loading}
+          order={order}
+          dataFinal={dataFinal}
+          geoData={project?.geoData}
+          viewport={viewport}
+          handleDropdown={handleDropdown}
+          dropdown={dropdown}
+          projectsData={projectsData}
+          loadingProjects={loadingProjects}
+          dataFinalMap={dataFinalMap}
+          setSearchTerm={setSearchTerm}
+          searchTerm={searchTerm}
+          handleClick={handleClick}
+        />
+      )}
+      {/* {infoOpen && (
           <div
             style={{
               overflow: "scroll",
@@ -211,7 +227,7 @@ const ProjectDialog = ({
               bottom={"10px"}
               left={"0"}
               marginLeft={isMobileCustom ? "50%" : "400px"}
-              handleButtonClick={() => handleClick(1)}
+              handleButtonClick={() => setInfoOpen(false)}
             />
 
             {!isMobileCustom && (
@@ -224,40 +240,9 @@ const ProjectDialog = ({
                 bottom={"50%"}
                 left={"calc(600px + ((100% - 600px)/2)) "}
                 marginLeft={isMobileCustom ? "50%" : "0"}
-                handleButtonClick={() => handleClick(1)}
+                handleButtonClick={() => setInfoOpen(false)}
               />
-            )}
-
-            <ProjectInfo
-              description={project?.description}
-              weblink={project?.weblink}
-              contact={project?.contact}
-              startDate={project?.startDate}
-              endDate={project?.endDate}
-              owner={project?.owner}
-            />
-          </div>
-        )}
-        {/* {order === 2 && (
-          <React.Fragment>
-            <Break />
-
-            <MainAnimations
-              transition="0.5s"
-              display="block"
-              paddingBottom="2em"
-              height="100%"
-              position={document.body.clientWidth > 768 && "fixed"}
-              top={document.body.clientWidth > 768 && "100px"}
-            >
-              <CalendarComponent
-                projectScreams={project?.screams}
-                handleClick={handleClick}
-              />
-            </MainAnimations>
-          </React.Fragment>
-        )} */}
-      </Wrapper>
+            )} */}
     </React.Fragment>
   );
 };

@@ -10,22 +10,28 @@ import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 const Card = styled.div`
-  z-index: 99;
-  position: relative;
+  position: fixed;
+
+  z-index: 9999;
   display: flex;
-  margin-top: ${(props) => (props.isMobileCustom ? " 80px" : "10px")};
+  margin-top: ${(props) => (props.isMobileCustom ? " 60px" : "0px")};
   margin-left: 10px;
-  margin-bottom: 250px;
 
   width: ${(props) => (props.isMobileCustom ? " calc(100% - 20px)" : "380px")};
 
-  border-radius: 20px;
+  border-radius: 0 0 18px 18px;
   height: auto;
+  max-height: ${(props) => (props.infoOpen ? "400px" : "0px")};
+  transition: 0.5s;
+  overflow: scroll;
   background-color: white;
-  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0);
+  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.4);
   pointer-events: all;
-  z-index: 0;
-  animation: enteranimation 2s;
+  animation: clippathDownAnimation 0.5s;
+
+  @media (min-width: 768px) {
+    position: relative;
+  }
 `;
 
 const Content = styled.div`
@@ -36,23 +42,8 @@ const Content = styled.div`
   line-height: 22, 666666666666664px !important;
 `;
 
-const Button = styled.button`
-  border-radius: 20px;
-  text-transform: none;
-  background-color: white;
-  height: 40px;
-  box-shadow: none;
-  padding-right: 15px;
-  padding-left: 15px;
-  background-color: rgb(254, 217, 87);
-  margin-right: 5px;
-  box-shadow: rgb(38, 57, 77, 0) 0px 20px 30px -16px;
-  margin-top: 10px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
 const ProjectInfo = ({
+  infoOpen,
   description,
   weblink,
   contact,
@@ -70,7 +61,7 @@ const ProjectInfo = ({
   const { t } = useTranslation();
   return (
     !loading && (
-      <Card isMobileCustom={isMobileCustom}>
+      <Card isMobileCustom={isMobileCustom} infoOpen={infoOpen}>
         <Content>
           <StyledH2 fontWeight="900"> {t("what_is_it_about")}</StyledH2>
 

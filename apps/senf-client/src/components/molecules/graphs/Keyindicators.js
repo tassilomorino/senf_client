@@ -41,10 +41,7 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
       {screams.length === 0 ? (
         <Indicator>
           <CircularProgress size={12} thickness={2} />
-          <StyledH3>
-            {" "}
-            {screams.length} {screams.length === 1 ? t("idea") : t("ideas")}
-          </StyledH3>
+          <StyledH3 textAlign="center">{t("ideas")}</StyledH3>
         </Indicator>
       ) : (
         <Indicator>
@@ -57,8 +54,7 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
             }}
             alt="lamploader"
           />
-          <StyledH3>
-            {" "}
+          <StyledH3 textAlign="center">
             {screams.length} {screams.length === 1 ? t("idea") : t("ideas")}
           </StyledH3>
         </Indicator>
@@ -66,7 +62,7 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
       {likesLength === 0 ? (
         <Indicator>
           <CircularProgress size={12} thickness={2} />
-          <StyledH3> Votes</StyledH3>
+          <StyledH3 textAlign="center"> Votes</StyledH3>
         </Indicator>
       ) : (
         <Indicator>
@@ -76,7 +72,7 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
             alt="lamploader"
             style={{ paddingBottom: "10px" }}
           />
-          <StyledH3>{likesLength} Votes</StyledH3>
+          <StyledH3 textAlign="center"> {likesLength} Votes</StyledH3>
         </Indicator>
       )}
 
@@ -93,7 +89,7 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
             alt="lamploader"
             style={{ paddingBottom: "10px" }}
           />
-          <StyledH3>
+          <StyledH3 textAlign="center">
             {commentslength}{" "}
             {commentslength === 1 ? t("comment") : t("comments")}
           </StyledH3>

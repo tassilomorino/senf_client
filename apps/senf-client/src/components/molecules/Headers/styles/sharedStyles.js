@@ -6,7 +6,7 @@ export const FixedWrapper = styled.div`
   z-index: 91;
   position: fixed;
   overflow: hidden;
-  height: 200px;
+  height: 50px;
   top: ${(props) => (props.moveUp ? "-120px" : "0px")};
   padding-top: 10px;
 
@@ -17,8 +17,9 @@ export const FixedWrapper = styled.div`
   pointer-events: none;
 
   @media (min-width: 768px) {
-    left: 200px;
+    left: 0px;
     width: 400px;
+    position: relative;
   }
 
   @keyframes downAnimation {
@@ -41,10 +42,11 @@ export const InnerWrapper = styled.div`
   top: 0px;
   transition: 0.4s;
   pointer-events: all;
-  background-color: rgb(255, 255, 255, 0.6);
+  background-color: rgb(255, 255, 255, 0.4);
   margin: 10px;
-  border-radius: 18px;
+  border-radius: ${(props) => (props.infoOpen ? "18px 18px 0px 0px" : "18px")};
   backdrop-filter: blur(10px);
+  transition: 0.5;
 `;
 
 export const FlexWrapper = styled.div`

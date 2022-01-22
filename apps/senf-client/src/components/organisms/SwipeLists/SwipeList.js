@@ -75,7 +75,6 @@ const ListWrapper = styled.div`
 
   @media (min-width: 768px) {
     width: 400px;
-    top: 110px;
   }
 `;
 

@@ -132,10 +132,11 @@ const InsightsPage = ({ handleClick }) => {
       {isMobileCustom && (
         <CustomIconButton
           name="ArrowLeft"
-          position="relative"
+          position="fixed"
           margin="10px"
           backgroundColor="#FFF0BC"
           handleButtonClick={() => handleClick(2)}
+          zIndex={99}
         />
       )}
 
@@ -145,7 +146,7 @@ const InsightsPage = ({ handleClick }) => {
         order={1}
         tabLabels={MenuData.map((item) => item.text).slice(3, 4)}
         marginTop={"20px"}
-        marginBottom={"0px"}
+        marginBottom={"20px"}
       />
       <MainAnimations transition="0.5s" display="block" paddingBottom="2em">
         <Keyindicators

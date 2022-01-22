@@ -74,7 +74,25 @@ const ProfileButtonContainer = styled.div`
   align-items: center;
   z-index: 999;
   width: 50px;
-  right: 35px;
+  right: 20px;
+  top: 5px;
+  height: 50px;
+  font-size: 0;
+  pointer-events: pointer;
+  background-color: rgb(255, 255, 255, 0.8);
+  border-radius: 100%;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.8);
+`;
+
+const InlineInfoButtonContainer = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  width: 50px;
+  left: 20px;
   top: 5px;
   height: 50px;
   font-size: 0;
@@ -87,24 +105,6 @@ const ProfileButtonContainer = styled.div`
 
 const CenteredImg = styled.img`
   position: absolute;
-`;
-
-const InlineInfoButtonContainer = styled.div`
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-  width: 50px;
-  left: 35px;
-  top: 5px;
-  height: 50px;
-  font-size: 0;
-  pointer-events: pointer;
-  background-color: rgb(255, 255, 255, 0.8);
-  border-radius: 100%;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.8);
 `;
 
 const Topbar = ({ order, handleClick }) => {

@@ -23,6 +23,8 @@ import { truncateString } from "../../../hooks/truncateString";
 
 const Header = ({
   type,
+  infoOpen,
+  setInfoOpen,
   imgUrl,
   title,
   loading,
@@ -74,15 +76,12 @@ const Header = ({
 
   return (
     <FixedWrapper moveUp={openScream || swipePosition === "top"}>
-      <InnerWrapper order={order} isMobileCustom={isMobileCustom} id="wrapper">
-        <StyledIcon
-          onClick={() => handleClick(0)}
-          src={type === "account" ? SettingsIcon : InfoIcon}
-          width="100%"
-          alt="project-thumbnail"
-          style={{ opacity: order === 0 ? 0 : 1 }}
-        />
-
+      <InnerWrapper
+        order={order}
+        isMobileCustom={isMobileCustom}
+        id="wrapper"
+        infoOpen={infoOpen}
+      >
         <FlexWrapper>
           <CustomIconButton
             name="ArrowLeft"
@@ -96,12 +95,19 @@ const Header = ({
               ? truncateString("Hey " + userHandle, amount)
               : title && truncateString(title, amount)}
           </StyledH2>
+
           {/* <ImgWrapper order={order}>
             {imgUrl && (
               <StyledImg src={imgUrl} width="100%" alt="project-thumbnail" />
             )}
           </ImgWrapper> */}
         </FlexWrapper>
+        <StyledIcon
+          onClick={() => setInfoOpen(!infoOpen)}
+          src={type === "account" ? SettingsIcon : InfoIcon}
+          width="100%"
+          alt="project-thumbnail"
+        />
 
         {/* {order === 0 && <StyledText marginLeft="50px">{owner}</StyledText>} */}
       </InnerWrapper>

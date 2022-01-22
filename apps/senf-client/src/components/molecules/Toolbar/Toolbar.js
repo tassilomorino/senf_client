@@ -30,11 +30,11 @@ const Wrapper = styled.div`
   pointer-events: none;
   flex-flow: wrap;
   @media (min-width: 768px) {
-    position: fixed;
-    top: ${(props) => (props.type === "standalone" ? "30px" : "110px")};
+    position: relative;
+    margin-top: ${(props) => (props.type === "standalone" ? "30px" : "50px")};
     z-index: 99;
     width: 380px;
-    padding: 10px 10px 20px 10px;
+    padding: 10px 10px 10px 10px;
   }
 
   @keyframes ToolbarAnimation {

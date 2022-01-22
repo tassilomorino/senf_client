@@ -7,6 +7,8 @@ import "./App.css";
 import "./AppDesktop.css";
 import "./AppIpad.css";
 import "./mapbox.css";
+import "./Animations.css";
+
 
 import firebaseConfig from "./firebase";
 import firebase from "firebase/app";
@@ -37,7 +39,6 @@ import datenschutz from "./components/organisms/infocomponents/legal/datenschutz
 import agb from "./components/organisms/infocomponents/legal/agb";
 import cookieConfigurator from "./components/organisms/infocomponents/legal/cookieConfigurator";
 
-import MonitoringBoard from "./components/templates/MonitoringBoard";
 import blank from "./pages/Blank";
 import axios from "axios";
 
@@ -221,7 +222,6 @@ const App = () => {
               <Route exact path="/intro" component={Welcome} />
               <Route exact path="/datenschutz" component={datenschutz} />
               <Route exact path="/agb" component={agb} />
-              <Route exact path="/monitoring" component={MonitoringBoard} />
 
               <Route exact path="/verify" component={Verification} />
 

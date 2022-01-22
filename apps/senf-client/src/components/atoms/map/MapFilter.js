@@ -18,8 +18,8 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-
-  margin-top: 65px;
+  position: fixed;
+  bottom: 130px;
 
   @media (min-width: 768px) {
     margin-top: 40px;

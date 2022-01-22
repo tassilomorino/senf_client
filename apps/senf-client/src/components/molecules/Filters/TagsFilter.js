@@ -29,9 +29,9 @@ const FilterWrapperMobile = styled.div`
       ? "20px"
       : "none"};
 
-  bottom: ${(props) =>
+  top: ${(props) =>
     props.placing !== "list" && props.placing !== "insights" && isMobileCustom
-      ? "100px"
+      ? "60px"
       : "none"};
   width: 100%;
 
@@ -41,7 +41,7 @@ const FilterWrapperMobile = styled.div`
   padding-bottom: 20px;
   padding-top: 20px;
   margin-top: -20px;
-  padding-left: ${(props) => (props.openScream ? "60px" : "0px")};
+  opacity: ${(props) => (props.hide ? "0" : "1")};
   animation: FilterWrapperMobileAnimation 1s;
   @keyframes FilterWrapperMobileAnimation {
     0% {
@@ -163,7 +163,11 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
         openScream={openScream}
         id="Wrapper"
         placing={placing}
-        moveUp={swipePosition === "top"}
+        hide={
+          swipePosition === "top" &&
+          placing !== "list" &&
+          placing !== "insights"
+        }
       >
         <FilterInnerWrapperMobile column={column}>
           <Tag

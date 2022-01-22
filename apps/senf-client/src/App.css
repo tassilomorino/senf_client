@@ -776,35 +776,6 @@ input:focus {
   }
 }
 
-@keyframes enteranimation {
-  0% {
-    opacity: 0;
-    transform: translateY(10%);
-  }
-
-  50% {
-    opacity: 0;
-    transform: translateY(10%);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0%);
-  }
-}
-
-@keyframes smallEnteranimation {
-  0% {
-    opacity: 0;
-    transform: translateY(3%);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0%);
-  }
-}
-
 .drag_hide {
   pointer-events: none;
   opacity: 0;
