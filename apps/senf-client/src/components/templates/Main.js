@@ -101,6 +101,7 @@ const Main = () => {
   const myScreams = useSelector((state) => state.data.myScreams);
 
   const loading = useSelector((state) => state.data.loading);
+  const loadingUI = useSelector((state) => state.UI.loading);
   const loadingProjects = useSelector((state) => state.data.loadingProjects);
   const loadingOrganizations = useSelector(
     (state) => state.data.loadingOrganizations
@@ -455,6 +456,7 @@ const Main = () => {
       />
 
       {!loading &&
+        !loadingUI &&
         !loadingProjects &&
         isMobileCustom &&
         !openScream &&

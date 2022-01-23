@@ -5,6 +5,8 @@ import styled, { css, keyframes } from "styled-components";
 import CloseIcon from "../../../images/icons/close.png";
 import ArrowLeftIcon from "../../../images/icons/arrow-left.png";
 import ArrowRightIcon from "../../../images/icons/arrow-right.png";
+import ArrowUpIcon from "../../../images/icons/arrow-up.png";
+
 import CircularArrowIcon from "../../../images/icons/circular-arrow.png";
 import ShareIcon from "../../../images/icons/share.png";
 import MenuIcon from "../../../images/icons/menu.png";
@@ -113,7 +115,7 @@ const Icons = {
   Close: CloseIcon,
   ArrowLeft: ArrowLeftIcon,
   ArrowRight: ArrowRightIcon,
-
+  ArrowUp: ArrowUpIcon,
   CircularArrow: CircularArrowIcon,
   Share: ShareIcon,
   Menu: MenuIcon,

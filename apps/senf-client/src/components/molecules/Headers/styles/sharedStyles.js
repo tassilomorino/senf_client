@@ -13,7 +13,7 @@ export const FixedWrapper = styled.div`
   transition: 0.4s;
   left: 0%;
   border-radius: 0px 0px;
-  animation: downAnimation 1.7s ease-in-out;
+  animation: downAnimation 0.7s ease-in-out;
   pointer-events: none;
 
   @media (min-width: 768px) {
@@ -42,7 +42,7 @@ export const InnerWrapper = styled.div`
   top: 0px;
   transition: 0.4s;
   pointer-events: all;
-  background-color: rgb(255, 255, 255, 0.4);
+  background-color: rgb(255, 255, 255, 0.6);
   margin: 10px;
   border-radius: ${(props) => (props.infoOpen ? "18px 18px 0px 0px" : "18px")};
   backdrop-filter: blur(10px);

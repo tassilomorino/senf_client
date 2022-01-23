@@ -151,20 +151,6 @@ const ProjectDialog = ({
 
   return (
     <React.Fragment>
-      <Header
-        infoOpen={infoOpen}
-        setInfoOpen={setInfoOpen}
-        imgUrl={project?.imgUrl}
-        title={project?.title}
-        owner={project?.owner}
-        loading={loading}
-        calendar={project?.calendar}
-        order={order}
-        path={path}
-        handleClose={handleClose}
-        handleClick={handleClick}
-      />
-
       {isMobileCustom && !infoOpen && (
         <PostScream
           loadingProjects={loadingProjects}
@@ -172,20 +158,37 @@ const ProjectDialog = ({
           project={project}
         />
       )}
+      {project && (
+        <Header
+          infoOpen={infoOpen}
+          setInfoOpen={setInfoOpen}
+          imgUrl={project?.imgUrl}
+          title={project?.title}
+          owner={project?.owner}
+          loading={loading}
+          calendar={project?.calendar}
+          order={order}
+          path={path}
+          handleClose={handleClose}
+          handleClick={handleClick}
+        />
+      )}
+      {project && (
+        <ProjectInfo
+          infoOpen={infoOpen}
+          description={project?.description}
+          weblink={project?.weblink}
+          contact={project?.contact}
+          startDate={project?.startDate}
+          endDate={project?.endDate}
+          owner={project?.owner}
+          infoOpen={infoOpen}
+          setInfoOpen={setInfoOpen}
+        />
+      )}
 
       {/* {!isMobileCustom ||
           (isMobileCustom && order === 0 && <ModalBackground />)} */}
-
-      <ProjectInfo
-        infoOpen={infoOpen}
-        description={project?.description}
-        weblink={project?.weblink}
-        contact={project?.contact}
-        startDate={project?.startDate}
-        endDate={project?.endDate}
-        owner={project?.owner}
-        infoOpen={infoOpen}
-      />
 
       {(!infoOpen || !isMobileCustom) && (
         <SwipeList

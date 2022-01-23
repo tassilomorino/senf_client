@@ -102,12 +102,15 @@ const Header = ({
             )}
           </ImgWrapper> */}
         </FlexWrapper>
-        <StyledIcon
-          onClick={() => setInfoOpen(!infoOpen)}
-          src={type === "account" ? SettingsIcon : InfoIcon}
-          width="100%"
-          alt="project-thumbnail"
-        />
+
+        {!infoOpen && (
+          <StyledIcon
+            onClick={() => setInfoOpen(!infoOpen)}
+            src={type === "account" ? SettingsIcon : InfoIcon}
+            width="100%"
+            alt="project-thumbnail"
+          />
+        )}
 
         {/* {order === 0 && <StyledText marginLeft="50px">{owner}</StyledText>} */}
       </InnerWrapper>

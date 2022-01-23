@@ -8,7 +8,8 @@ import { useTranslation } from "react-i18next";
 import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-
+import ProjectInfoSwiper from "./ProjectInfoSwiper";
+import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 const Card = styled.div`
   position: fixed;
 
@@ -23,7 +24,7 @@ const Card = styled.div`
   height: auto;
   max-height: ${(props) => (props.infoOpen ? "400px" : "0px")};
   transition: 0.5s;
-  overflow: scroll;
+  overflow: hidden;
   background-color: white;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.4);
   pointer-events: all;
@@ -34,16 +35,15 @@ const Card = styled.div`
   }
 `;
 
-const Content = styled.div`
-  width: 100%;
-  padding: 15px;
-  object-fit: cover;
-  font-size: 18, 666666666666664px !important;
-  line-height: 22, 666666666666664px !important;
+const CloseTextWrapper = styled.div`
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
 `;
 
 const ProjectInfo = ({
   infoOpen,
+  setInfoOpen,
   description,
   weblink,
   contact,
@@ -51,6 +51,7 @@ const ProjectInfo = ({
   endDate,
   owner,
 }) => {
+  const { t } = useTranslation();
   const loading = useSelector((state) => state.data.loading);
   const openLink = (weblink) => {
     window.open(`https://${weblink}`, "_blank");
@@ -58,16 +59,17 @@ const ProjectInfo = ({
   const openMail = (contact) => {
     window.location.href = "mailto:" + contact;
   };
-  const { t } = useTranslation();
+
   return (
     !loading && (
       <Card isMobileCustom={isMobileCustom} infoOpen={infoOpen}>
-        <Content>
-          <StyledH2 fontWeight="900"> {t("what_is_it_about")}</StyledH2>
-
-          <StyledText>{description}</StyledText>
-
-          <div
+        <ProjectInfoSwiper />
+        <CloseTextWrapper onClick={() => setInfoOpen(false)}>
+          <StyledText textAlign="center" margin="20px" marginLeft="20px">
+            Schließen
+          </StyledText>
+        </CloseTextWrapper>
+        {/* <div
             style={{ display: "flex", flexDirection: "row", marginTop: "20px" }}
           >
             {weblink && (
@@ -119,8 +121,7 @@ const ProjectInfo = ({
 
           <StyledH2 fontWeight="900">{t("Initiators")}</StyledH2>
           <StyledText>{owner}</StyledText>
-          <br />
-        </Content>
+          <br /> */}
       </Card>
     )
   );
