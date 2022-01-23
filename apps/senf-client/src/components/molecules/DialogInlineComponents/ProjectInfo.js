@@ -21,8 +21,8 @@ const Card = styled.div`
   width: ${(props) => (props.isMobileCustom ? " calc(100% - 20px)" : "380px")};
 
   border-radius: 0 0 18px 18px;
-  height: auto;
-  max-height: ${(props) => (props.infoOpen ? "400px" : "0px")};
+  height: ${(props) => (props.infoOpen ? "400px" : "0px")};
+  max-height: 90%;
   transition: 0.5s;
   overflow: hidden;
   background-color: white;

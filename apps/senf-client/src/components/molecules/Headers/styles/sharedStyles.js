@@ -42,7 +42,7 @@ export const InnerWrapper = styled.div`
   top: 0px;
   transition: 0.4s;
   pointer-events: all;
-  background-color: rgb(255, 255, 255, 0.6);
+  background-color: rgb(255, 255, 255, 0.8);
   margin: 10px;
   border-radius: ${(props) => (props.infoOpen ? "18px 18px 0px 0px" : "18px")};
   backdrop-filter: blur(10px);
