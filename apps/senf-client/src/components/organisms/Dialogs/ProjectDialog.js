@@ -26,34 +26,6 @@ import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import { useTranslation } from "react-i18next";
 import PostScream from "../PostIdea/PostScream";
 import { ProjectRoomTabData } from "../../../data/ProjectRoomTabData";
-import { isMobile } from "react-device-detect";
-
-const Wrapper = styled.div`
-  @media (min-width: 768px) {
-    padding-top: 60px;
-  }
-`;
-
-const Break = styled.div`
-  position: relative;
-  height: 110px;
-  width: 100%;
-
-  @media (min-width: 768px) {
-    height: 30px;
-  }
-`;
-
-const MapHider = styled.div`
-  width: calc(100% - 600px);
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 600px;
-  background-color: #000;
-  opacity: 0.6;
-  z-index: 9;
-`;
 
 const ProjectDialog = ({
   viewport,
@@ -75,6 +47,8 @@ const ProjectDialog = ({
 
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.data.loading);
+  const loadingUI = useSelector((state) => state.UI.loading);
+
   const mapBounds = useSelector((state) => state.data.mapBounds);
 
   const initialMapViewport = useSelector(
@@ -190,7 +164,7 @@ const ProjectDialog = ({
       {/* {!isMobileCustom ||
           (isMobileCustom && order === 0 && <ModalBackground />)} */}
 
-      {(!infoOpen || !isMobileCustom) && (
+      {(!infoOpen || (!isMobileCustom && !loadingUI)) && (
         <SwipeList
           swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}
           type="projectIdeas"

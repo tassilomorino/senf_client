@@ -159,6 +159,9 @@ const IconButton = styled.button`
   border-radius: 100%;
   box-shadow: ${(props) =>
     props.shadow === false ? "" : "rgb(38, 57, 77, 0.7) 0px 20px 30px -15px;"};
+
+  -webkit-backdrop-filter: ${(props) => props.backdropFilter && "blur(10px)"};
+
   backdrop-filter: ${(props) => props.backdropFilter && "blur(10px)"};
 
   background-color: ${(props) =>

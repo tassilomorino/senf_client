@@ -30,7 +30,10 @@ import {
   setInitialMapBounds,
   setMapViewport,
 } from "../../redux/actions/mapActions";
-import { handleTopicSelectorRedux } from "../../redux/actions/UiActions";
+import {
+  handleTopicSelectorRedux,
+  setSwipePositionDown,
+} from "../../redux/actions/UiActions";
 
 //Components
 import InsightsPage from "../organisms/SubPages/InsightsPage";
@@ -79,6 +82,17 @@ const MainColumnWrapper = styled.div`
     overflow-x: visible;
   }
 `;
+const MobileMapClickBackground = styled.div`
+  height: 100vh;
+  width: 100vw;
+  background-color: rgb(0, 0, 0, 0.5);
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  opacity: ${(props) => (props.show ? 1 : 0)};
+  transition: 0.5s;
+  pointer-events: ${(props) => (props.show ? "all" : "none")};
+`;
 const Main = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -124,6 +138,10 @@ const Main = () => {
 
   const [order, setOrder] = useState(1);
   const swipePosition = useSelector((state) => state.UI.swipePosition);
+
+  const setSwipeDown = () => {
+    dispatch(setSwipePositionDown());
+  };
   const [dropdown, setDropdown] = useState("newest");
   const [changeLocationModalOpen, setChangeLocationModalOpen] = useState(false);
 
@@ -441,6 +459,13 @@ const Main = () => {
           handleClick={handleClick}
           order={order}
           setChangeLocationModalOpen={setChangeLocationModalOpen}
+        />
+      )}
+
+      {isMobileCustom && !openScream && (
+        <MobileMapClickBackground
+          show={swipePosition === "top"}
+          onClick={setSwipeDown}
         />
       )}
       <Map

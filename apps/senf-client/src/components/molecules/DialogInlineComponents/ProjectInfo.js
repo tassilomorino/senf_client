@@ -5,7 +5,11 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 // Images
-import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
+import {
+  StyledH2,
+  StyledSmallText,
+  StyledText,
+} from "../../../styles/GlobalStyle";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import ProjectInfoSwiper from "./ProjectInfoSwiper";
@@ -52,7 +56,7 @@ const ProjectInfo = ({
   owner,
 }) => {
   const { t } = useTranslation();
-  const loading = useSelector((state) => state.data.loading);
+  const loading = useSelector((state) => state.UI.loading);
   const openLink = (weblink) => {
     window.open(`https://${weblink}`, "_blank");
   };
@@ -63,11 +67,16 @@ const ProjectInfo = ({
   return (
     !loading && (
       <Card isMobileCustom={isMobileCustom} infoOpen={infoOpen}>
-        <ProjectInfoSwiper />
+        <ProjectInfoSwiper setInfoOpen={setInfoOpen} />
         <CloseTextWrapper onClick={() => setInfoOpen(false)}>
-          <StyledText textAlign="center" margin="20px" marginLeft="20px">
-            Schließen
-          </StyledText>
+          <StyledText margin="0px 0px 5px 0px">Schließen</StyledText>
+          <StyledSmallText
+            margin="0px 0px 0px 0px"
+            marginLeft="20px"
+            style={{ opacity: 0.5 }}
+          >
+            Nicht mehr anzeigen
+          </StyledSmallText>
         </CloseTextWrapper>
         {/* <div
             style={{ display: "flex", flexDirection: "row", marginTop: "20px" }}

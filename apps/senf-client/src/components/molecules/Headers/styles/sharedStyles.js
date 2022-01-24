@@ -7,31 +7,18 @@ export const FixedWrapper = styled.div`
   position: fixed;
   overflow: hidden;
   height: 50px;
-  top: ${(props) => (props.moveUp ? "-120px" : "0px")};
+  top: ${(props) => (props.moveUp ? "120px" : "0px")};
   padding-top: 10px;
 
   transition: 0.4s;
   left: 0%;
   border-radius: 0px 0px;
-  animation: downAnimation 0.7s ease-in-out;
   pointer-events: none;
 
   @media (min-width: 768px) {
     left: 0px;
     width: 400px;
     position: relative;
-  }
-
-  @keyframes downAnimation {
-    0% {
-      transform: translateY(-100%);
-    }
-    50% {
-      transform: translateY(-100%);
-    }
-    100% {
-      transform: translateY(0%);
-    }
   }
 `;
 
@@ -42,9 +29,10 @@ export const InnerWrapper = styled.div`
   top: 0px;
   transition: 0.4s;
   pointer-events: all;
-  background-color: rgb(255, 255, 255, 0.8);
+  background-color: rgb(255, 255, 255, 0.6);
   margin: 10px;
   border-radius: ${(props) => (props.infoOpen ? "18px 18px 0px 0px" : "18px")};
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   transition: 0.5;
 `;

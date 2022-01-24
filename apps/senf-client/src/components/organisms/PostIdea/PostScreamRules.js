@@ -21,6 +21,7 @@ const Card = styled.div`
   border-radius: 20px;
   left: 0;
   box-shadow: 0 8px 40px -12px rgb(0 0 0 / 20%);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   width: 90vw;
   margin-left: 2.5vw;

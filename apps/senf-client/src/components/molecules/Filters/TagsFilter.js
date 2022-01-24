@@ -16,7 +16,7 @@ import styled from "styled-components";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 const FilterWrapperMobile = styled.div`
-  z-index: 15;
+  z-index: 1;
   position: ${(props) =>
     props.placing !== "list" && props.placing !== "insights" && isMobileCustom
       ? "fixed"
@@ -41,7 +41,6 @@ const FilterWrapperMobile = styled.div`
   padding-bottom: 20px;
   padding-top: 20px;
   margin-top: -20px;
-  opacity: ${(props) => (props.hide ? "0" : "1")};
   animation: FilterWrapperMobileAnimation 1s;
   @keyframes FilterWrapperMobileAnimation {
     0% {
@@ -111,6 +110,8 @@ const Tag = styled.button`
       : "#FFE898"};
 
   outline-offset: -2px;
+  -webkit-backdrop-filter: blur(10px);
+
   backdrop-filter: blur(10px);
 
   @media (min-width: 768px) {
@@ -163,11 +164,6 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
         openScream={openScream}
         id="Wrapper"
         placing={placing}
-        hide={
-          swipePosition === "top" &&
-          placing !== "list" &&
-          placing !== "insights"
-        }
       >
         <FilterInnerWrapperMobile column={column}>
           <Tag

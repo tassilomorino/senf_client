@@ -20,10 +20,14 @@ const Wrapper = styled.div`
   width: 100%;
   position: fixed;
   bottom: 130px;
+  pointer-events: none;
 
   @media (min-width: 768px) {
+    position: relative;
     margin-top: 40px;
-    left: 600px;
+    left: 0px;
+    top: 0;
+    bottom: none;
   }
 `;
 export const MapFilter = memo(({ viewport, mapRef }) => {
@@ -83,29 +87,32 @@ export const MapFilter = memo(({ viewport, mapRef }) => {
     viewport !== initialMapViewport &&
     !waitTime && (
       <Wrapper>
-        <SubmitButton
-          text={t("Ideen im Bereich anzeigen")}
-          backgroundColor="rgb(255, 255, 255, 0.6)"
-          textColor="#353535"
-          position="relative"
-          animation="plop"
-          marginLeft="0px"
-          transformX={"none"}
-          handleButtonClick={() => handleMapBoundsSet(viewport)}
-          smallSubmitButton={isMobileCustom && true}
-          backdropFilter={true}
-        />
-        <CustomIconButton
-          name="CircularArrow"
-          margin="0px"
-          marginLeft="5px"
-          position="relative"
-          backgroundColor="rgb(255,255,255,0.6)"
-          handleButtonClick={handleMapBoundsReset}
-          animation={true}
-          small={isMobileCustom && true}
-          backdropFilter={true}
-        />
+        <div style={{ pointerEvents: "all" }}>
+          <SubmitButton
+            text={t("Ideen im Bereich anzeigen")}
+            backgroundColor="rgb(255, 255, 255, 0.6)"
+            textColor="#353535"
+            position="relative"
+            animation="plop"
+            marginLeft="0px"
+            transformX={"none"}
+            handleButtonClick={() => handleMapBoundsSet(viewport)}
+            smallSubmitButton={isMobileCustom && true}
+            backdropFilter={true}
+          />
+        </div>
+        <div style={{ pointerEvents: "all", marginLeft: "5px" }}>
+          <CustomIconButton
+            name="CircularArrow"
+            margin="0px"
+            position="relative"
+            backgroundColor="rgb(255,255,255,0.6)"
+            handleButtonClick={handleMapBoundsReset}
+            animation={true}
+            small={isMobileCustom && true}
+            backdropFilter={true}
+          />
+        </div>
       </Wrapper>
     )
   );

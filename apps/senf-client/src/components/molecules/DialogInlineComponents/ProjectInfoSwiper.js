@@ -45,10 +45,11 @@ const HorizontalSwipeCard = styled(animated.div)`
 
 const ArrowWrapper = styled.div`
   bottom: 20px;
-  width: 100%;
+  width: calc(50% + 25px);
   position: absolute;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
+  z-index: 9;
 `;
 
 const ArrowLeft = styled.div`
@@ -77,12 +78,12 @@ const DotWrapper = styled.div`
   top: 0;
 `;
 const Dot = styled.div`
-  width: 12px;
-  height: 12px;
-  border-radius: 10px;
+  width: 25%;
+  height: 5px;
+  border-radius: 2px;
   background-color: #fed957;
   opacity: ${(props) => (props.active ? 1 : 0.5)};
-  margin: 20px 5px 10px 5px;
+  margin: 0px 0px 0px 0px;
 `;
 
 const pages = [
@@ -108,7 +109,7 @@ const pages = [
     id: 3,
   },
 ];
-const ProjectInfoSwiper = ({}) => {
+const ProjectInfoSwiper = ({ setInfoOpen }) => {
   const [active, setActive] = useState(0);
 
   const [props, set] = useSpring(() => ({
@@ -157,22 +158,19 @@ const ProjectInfoSwiper = ({}) => {
       <FlexWrapper>
         <ArrowWrapper>
           {active !== 0 && (
-            <ArrowLeft onClick={handlePrev}>
-              <img
-                src={Arrow}
-                width="18px"
-                style={{ transform: "rotate(90deg)" }}
-              />
-            </ArrowLeft>
+            <CustomIconButton
+              name="ArrowLeft"
+              backgroundColor="transparent"
+              shadow={false}
+              handleButtonClick={handlePrev}
+            />
           )}
-          {active !== 3 && (
-            <ArrowRight onClick={handleNext}>
-              <img
-                src={Arrow}
-                width="18px"
-                style={{ transform: "rotate(90deg)" }}
-              />
-            </ArrowRight>
+          {active !== pages.length - 1 && (
+            <CustomIconButton
+              name="ArrowRight"
+              backgroundColor="#fed957"
+              handleButtonClick={handleNext}
+            />
           )}
         </ArrowWrapper>
         <DotWrapper>

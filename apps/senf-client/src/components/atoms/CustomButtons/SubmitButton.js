@@ -52,6 +52,7 @@ const WideButton = styled.button`
   box-shadow: ${(props) =>
     props.shadow === false ? "" : "rgb(38, 57, 77, 0.7) 0px 20px 30px -15px;"};
 
+  -webkit-backdrop-filter: ${(props) => props.backdropFilter && "blur(10px)"};
   backdrop-filter: ${(props) => props.backdropFilter && "blur(10px)"};
 
   padding-left: ${(props) => (props.smallSubmitButton ? "15px" : "30px")};
