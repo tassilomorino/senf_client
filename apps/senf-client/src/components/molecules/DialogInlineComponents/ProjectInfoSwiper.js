@@ -86,30 +86,7 @@ const Dot = styled.div`
   margin: 0px 0px 0px 0px;
 `;
 
-const pages = [
-  {
-    title: "Worum geht's",
-    text: "Mit einem mobilen, multifunktionalen und niedrigschwelligen Begegnungsort können Angebote in den öffentlichen Raum getragen werden und ermöglicht dadurch eine bewusstere Wahrnehmung und einfachere Begegnung der eigenen Nachbar:innen, Anwohner:innen des Stadtteils und der Umgebung.",
-
-    id: 0,
-  },
-  {
-    title: "Wie's weitergeht",
-    text: "Mit einem mobilen, multifunktionalen und niedrigschwelligen Begegnungsort können Angebote in den öffentlichen Raum getragen werden und ermöglicht dadurch eine bewusstere Wahrnehmung und einfachere Begegnung der eigenen Nachbar:innen, Anwohner:innen des Stadtteils und der Umgebung.",
-    id: 1,
-  },
-  {
-    title: "Was unsere Motivation ist",
-    text: "Mit einem mobilen, multifunktionalen und niedrigschwelligen Begegnungsort können Angebote in den öffentlichen Raum getragen werden und ermöglicht dadurch eine bewusstere Wahrnehmung und einfachere Begegnung der eigenen Nachbar:innen, Anwohner:innen des Stadtteils und der Umgebung.",
-    id: 2,
-  },
-  {
-    title: "Noch ein Titel",
-    text: "Mit einem mobilen, multifunktionalen und niedrigschwelligen Begegnungsort können Angebote in den öffentlichen Raum getragen werden und ermöglicht dadurch eine bewusstere Wahrnehmung und einfachere Begegnung der eigenen Nachbar:innen, Anwohner:innen des Stadtteils und der Umgebung.",
-    id: 3,
-  },
-];
-const ProjectInfoSwiper = ({ setInfoOpen }) => {
+const ProjectInfoSwiper = ({ setInfoOpen, pages }) => {
   const [active, setActive] = useState(0);
 
   const [props, set] = useSpring(() => ({

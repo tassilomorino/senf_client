@@ -38,7 +38,6 @@ const Wrapper = styled.div`
   transition: 0.4s;
   z-index: 1;
   transform: ${(props) => (props.moveUp ? "scale(0.8)" : "scale(1)")};
-
   opacity:${(props) => (props.moveUp ? "0" : "1")};
 
   /* animation: TopbarEnterAnimation 2s;

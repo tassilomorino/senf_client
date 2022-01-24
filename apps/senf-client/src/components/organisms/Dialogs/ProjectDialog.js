@@ -16,7 +16,7 @@ import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 
 import SwipeList from "../SwipeLists/SwipeList";
 import Header from "../../molecules/Headers/Header";
-import ProjectInfo from "../../molecules/DialogInlineComponents/ProjectInfo";
+import InfoModal from "../../molecules/DialogInlineComponents/InfoModal";
 import styled from "styled-components";
 import { ModalBackground } from "../../atoms/Backgrounds/ModalBackground";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
@@ -148,8 +148,7 @@ const ProjectDialog = ({
         />
       )}
       {project && (
-        <ProjectInfo
-          infoOpen={infoOpen}
+        <InfoModal
           description={project?.description}
           weblink={project?.weblink}
           contact={project?.contact}
@@ -187,39 +186,6 @@ const ProjectDialog = ({
           handleClick={handleClick}
         />
       )}
-      {/* {infoOpen && (
-          <div
-            style={{
-              overflow: "scroll",
-              height: "100vh",
-              pointerEvents: "all",
-            }}
-          >
-            <SubmitButton
-              text={t("showIdeas")}
-              zIndex="9"
-              backgroundColor={"#353535"}
-              textColor={"white"}
-              position="fixed"
-              bottom={"10px"}
-              left={"0"}
-              marginLeft={isMobileCustom ? "50%" : "400px"}
-              handleButtonClick={() => setInfoOpen(false)}
-            />
-
-            {!isMobileCustom && (
-              <SubmitButton
-                text={t("showIdeas")}
-                zIndex="9"
-                backgroundColor={"white"}
-                textColor={"#353535"}
-                position="fixed"
-                bottom={"50%"}
-                left={"calc(600px + ((100% - 600px)/2)) "}
-                marginLeft={isMobileCustom ? "50%" : "0"}
-                handleButtonClick={() => setInfoOpen(false)}
-              />
-            )} */}
     </React.Fragment>
   );
 };

@@ -8,7 +8,7 @@ export const FixedWrapper = styled.div`
   overflow: hidden;
   height: 50px;
   width: 100%;
-  margin: 10px 10px 10px 20px;
+  margin: 10px 10px 10px 10px;
   top: 0px;
   transform: ${(props) => (props.moveUp ? "scale(0.8)" : "scale(1)")};
   opacity: ${(props) => (props.moveUp ? "0" : "1")};
@@ -28,7 +28,7 @@ export const FixedWrapper = styled.div`
 
 export const InnerWrapper = styled.div`
   position: ${(props) => (props.isMobileCustom ? "fixed" : "absolute")};
-  width: calc(100% - 40px);
+  width: calc(100% - 20px);
   height: 50px;
   top: 0px;
   transition: 0.4s;

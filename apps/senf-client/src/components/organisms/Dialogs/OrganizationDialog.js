@@ -9,7 +9,7 @@ import { clearErrors } from "../../../redux/actions/errorsActions";
 //Components
 
 import Header from "../../molecules/Headers/Header";
-import ProjectInfo from "../../molecules/DialogInlineComponents/ProjectInfo";
+import InfoModal from "../../molecules/DialogInlineComponents/InfoModal";
 import styled from "styled-components";
 import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
 import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
@@ -194,7 +194,7 @@ const OrganizationDialog = ({
                 paddingBottom="2em"
                 height="100%"
               >
-                <ProjectInfo
+                <InfoModal
                   description={organization?.description}
                   weblink={organization?.weblink}
                   contact={organization?.contact}
