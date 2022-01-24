@@ -179,6 +179,7 @@ const IconButton = styled.button`
   left: ${(props) => props.left && props.left};
   margin: ${(props) => props.margin && props.margin};
   margin-left: ${(props) => props.marginLeft};
+  pointer-events: all;
   animation: ${(props) =>
     props.animation &&
     css`

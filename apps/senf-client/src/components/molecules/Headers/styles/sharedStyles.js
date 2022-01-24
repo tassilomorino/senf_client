@@ -7,7 +7,11 @@ export const FixedWrapper = styled.div`
   position: fixed;
   overflow: hidden;
   height: 50px;
-  top: ${(props) => (props.moveUp ? "120px" : "0px")};
+  width: 100%;
+  margin: 10px 10px 10px 20px;
+  top: 0px;
+  transform: ${(props) => (props.moveUp ? "scale(0.8)" : "scale(1)")};
+  opacity: ${(props) => (props.moveUp ? "0" : "1")};
   padding-top: 10px;
 
   transition: 0.4s;
@@ -24,13 +28,13 @@ export const FixedWrapper = styled.div`
 
 export const InnerWrapper = styled.div`
   position: ${(props) => (props.isMobileCustom ? "fixed" : "absolute")};
-  width: calc(100% - 20px);
+  width: calc(100% - 40px);
   height: 50px;
   top: 0px;
   transition: 0.4s;
   pointer-events: all;
   background-color: rgb(255, 255, 255, 0.6);
-  margin: 10px;
+
   border-radius: ${(props) => (props.infoOpen ? "18px 18px 0px 0px" : "18px")};
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);

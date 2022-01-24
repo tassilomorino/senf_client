@@ -87,32 +87,29 @@ export const MapFilter = memo(({ viewport, mapRef }) => {
     viewport !== initialMapViewport &&
     !waitTime && (
       <Wrapper>
-        <div style={{ pointerEvents: "all" }}>
-          <SubmitButton
-            text={t("Ideen im Bereich anzeigen")}
-            backgroundColor="rgb(255, 255, 255, 0.6)"
-            textColor="#353535"
-            position="relative"
-            animation="plop"
-            marginLeft="0px"
-            transformX={"none"}
-            handleButtonClick={() => handleMapBoundsSet(viewport)}
-            smallSubmitButton={isMobileCustom && true}
-            backdropFilter={true}
-          />
-        </div>
-        <div style={{ pointerEvents: "all", marginLeft: "5px" }}>
-          <CustomIconButton
-            name="CircularArrow"
-            margin="0px"
-            position="relative"
-            backgroundColor="rgb(255,255,255,0.6)"
-            handleButtonClick={handleMapBoundsReset}
-            animation={true}
-            small={isMobileCustom && true}
-            backdropFilter={true}
-          />
-        </div>
+        <SubmitButton
+          text={t("Ideen im Bereich anzeigen")}
+          backgroundColor="rgb(255, 255, 255, 0.6)"
+          textColor="#353535"
+          position="relative"
+          animation="plop"
+          marginLeft="0px"
+          transformX={"none"}
+          handleButtonClick={() => handleMapBoundsSet(viewport)}
+          smallSubmitButton={isMobileCustom && true}
+          backdropFilter={true}
+        />
+        <CustomIconButton
+          name="CircularArrow"
+          margin="0px"
+          position="relative"
+          backgroundColor="rgb(255,255,255,0.6)"
+          handleButtonClick={handleMapBoundsReset}
+          animation={true}
+          small={isMobileCustom && true}
+          backdropFilter={true}
+          marginLeft="5px"
+        />
       </Wrapper>
     )
   );

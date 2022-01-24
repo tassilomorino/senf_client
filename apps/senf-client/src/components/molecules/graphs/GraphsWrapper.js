@@ -36,7 +36,7 @@ const ClickBlocker = styled.div`
   z-index: 9;
 `;
 
-const GraphsWrapper = ({ title, subTitle, plot }) => {
+const GraphsWrapper = ({ graphType, title, subTitle, plot }) => {
   return (
     <Wrapper>
       <InnerWrapper>
@@ -47,7 +47,9 @@ const GraphsWrapper = ({ title, subTitle, plot }) => {
 
           <StyledText textAlign="center">{subTitle}</StyledText>
         </TextWrapper>
-        <TagsFilter placing="insights" type="topics" />
+        {graphType !== "topicsSum" && (
+          <TagsFilter placing="insights" type="topics" />
+        )}
       </InnerWrapper>
       <ClickBlocker />
       {plot}

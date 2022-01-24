@@ -75,6 +75,7 @@ const WideButton = styled.button`
 
   position: ${(props) => props.position};
   z-index: ${(props) => props.zIndex};
+  pointer-events: all;
   animation: ${(props) =>
     props.animation === true
       ? css`
