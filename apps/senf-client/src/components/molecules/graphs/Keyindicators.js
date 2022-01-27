@@ -38,63 +38,55 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
 
   return (
     <Wrapper>
-      {screams.length === 0 ? (
-        <Indicator>
+      <Indicator>
+        <img
+          src={lamploader}
+          width="35px"
+          style={{
+            transform: "rotate(35deg) translateY(-1px)",
+            paddingBottom: "10px",
+          }}
+          alt="lamploader"
+        />
+        {screams.length === 0 ? (
           <CircularProgress size={12} thickness={2} />
-          <StyledH3 textAlign="center">{t("ideas")}</StyledH3>
-        </Indicator>
-      ) : (
-        <Indicator>
-          <img
-            src={lamploader}
-            width="35px"
-            style={{
-              transform: "rotate(35deg) translateY(-1px)",
-              paddingBottom: "10px",
-            }}
-            alt="lamploader"
-          />
+        ) : (
           <StyledH3 textAlign="center">
             {screams.length} {screams.length === 1 ? t("idea") : t("ideas")}
           </StyledH3>
-        </Indicator>
-      )}
-      {likesLength === 0 ? (
-        <Indicator>
-          <CircularProgress size={12} thickness={2} />
-          <StyledH3 textAlign="center"> Votes</StyledH3>
-        </Indicator>
-      ) : (
-        <Indicator>
-          <img
-            src={HandFull}
-            width="25px"
-            alt="lamploader"
-            style={{ paddingBottom: "10px" }}
-          />
-          <StyledH3 textAlign="center"> {likesLength} Votes</StyledH3>
-        </Indicator>
-      )}
+        )}
+      </Indicator>
 
-      {commentslength === 0 ? (
-        <Indicator>
+      <Indicator>
+        <img
+          src={HandFull}
+          width="25px"
+          alt="lamploader"
+          style={{ paddingBottom: "10px" }}
+        />
+        {!likesLength ? (
           <CircularProgress size={12} thickness={2} />
-          <StyledH2> {t("comments")}</StyledH2>
-        </Indicator>
-      ) : (
-        <Indicator>
-          <img
-            src={ChatBorder}
-            width="25px"
-            alt="lamploader"
-            style={{ paddingBottom: "10px" }}
-          />
+        ) : (
+          <StyledH3 textAlign="center"> {likesLength} Votes</StyledH3>
+        )}
+      </Indicator>
+
+      <Indicator>
+        <img
+          src={ChatBorder}
+          width="25px"
+          alt="lamploader"
+          style={{ paddingBottom: "10px" }}
+        />{" "}
+        {!commentslength ? (
+          <CircularProgress size={12} thickness={2} />
+        ) : (
           <StyledH3 textAlign="center">
             {commentslength}{" "}
             {commentslength === 1 ? t("comment") : t("comments")}
           </StyledH3>
-        </Indicator>
-      )}
+        )}
+      </Indicator>
     </Wrapper>
   );
 };

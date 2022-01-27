@@ -110,6 +110,9 @@ const Main = () => {
   const openCreateProjectRoom = useSelector(
     (state) => state.UI.openCreateProjectRoom
   );
+  const [openInsightsPage, setOpenInsightsPage] = useState(false);
+  const [openOrganizationsPage, setOpenOrganizationsPage] = useState(false);
+
   const voted = useSelector((state) => state.UI.voted);
   const screams = useSelector((state) => state.data.screams);
   const myScreams = useSelector((state) => state.data.myScreams);
@@ -261,6 +264,8 @@ const Main = () => {
       setOrder(order);
       setSearchTerm("");
       setDropdown("newest");
+      setOpenInsightsPage(false);
+      setOpenOrganizationsPage(false);
       dispatch(closeScream());
       dispatch(openProjectRoomFunc(null, false));
       dispatch(openOrganizationFunc(null, false));
@@ -521,7 +526,6 @@ const Main = () => {
             (order === 1 || order === 2) && (
               <SwipeList
                 swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}
-                type="standalone"
                 tabLabels={MenuData.map((item) => item.text).slice(0, 2)}
                 loading={order === 1 ? loading : loadingProjects}
                 order={order}
@@ -534,6 +538,8 @@ const Main = () => {
                 setSearchTerm={setSearchTerm}
                 searchTerm={searchTerm}
                 handleClick={handleClick}
+                setOpenInsightsPage={setOpenInsightsPage}
+                setOpenOrganizationsPage={setOpenOrganizationsPage}
               />
             )}
 
@@ -543,6 +549,7 @@ const Main = () => {
               handleClick={handleClick}
               loadingProjects={loadingProjects}
               projectsData={dataFinalProjectRooms}
+              setOpenInsightsPage={setOpenInsightsPage}
             />
           )}
           {openOrganization && (
@@ -567,13 +574,22 @@ const Main = () => {
         !openProjectRoom &&
         !openAccount &&
         !openOrganization &&
-        order === 3 && <OrganizationsPage handleClick={handleClick} />}
+        openOrganizationsPage && (
+          <OrganizationsPage
+            order={order}
+            setOpenOrganizationsPage={setOpenOrganizationsPage}
+          />
+        )}
 
       {!openInfoPage &&
-        !openProjectRoom &&
         !openAccount &&
         !openOrganization &&
-        order === 4 && <InsightsPage handleClick={handleClick} />}
+        openInsightsPage && (
+          <InsightsPage
+            setOpenInsightsPage={setOpenInsightsPage}
+            projectRoomId={project?.projectRoomId}
+          />
+        )}
 
       <ErrorBackground loading={loading} />
 

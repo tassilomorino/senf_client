@@ -15,5 +15,5 @@ export const PatternBackground = styled.div`
   width: 100%;
   height: 100%;
   position: fixed;
-  z-index: 2;
+  z-index: 0;
 `;

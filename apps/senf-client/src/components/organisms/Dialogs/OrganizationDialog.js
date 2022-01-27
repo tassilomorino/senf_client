@@ -23,9 +23,9 @@ import { useTranslation } from "react-i18next";
 import { MenuData } from "../../../data/MenuData";
 
 const Wrapper = styled.div`
-  @media (min-width: 768px) {
+  /* @media (min-width: 768px) {
     padding-top: 70px;
-  }
+  } */
 `;
 
 const Break = styled.div`

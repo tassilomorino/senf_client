@@ -22,9 +22,9 @@ import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import { useTranslation } from "react-i18next";
 
 const Wrapper = styled.div`
-  @media (min-width: 768px) {
+  /* @media (min-width: 768px) {
     padding-top: 70px;
-  }
+  } */
 `;
 const Break = styled.div`
   position: relative;

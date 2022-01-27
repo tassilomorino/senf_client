@@ -32,6 +32,7 @@ const ProjectDialog = ({
   projectsData,
   loadingProjects,
   dataFinalMap,
+  setOpenInsightsPage,
 }) => {
   const { t } = useTranslation();
   const [path, setPath] = useState("");
@@ -166,7 +167,6 @@ const ProjectDialog = ({
       {(!infoOpen || (!isMobileCustom && !loadingUI)) && (
         <SwipeList
           swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}
-          type="projectIdeas"
           tabLabels={ProjectRoomTabData.map((item) => item.text).slice(
             0,
             TabSlicer
@@ -184,6 +184,7 @@ const ProjectDialog = ({
           setSearchTerm={setSearchTerm}
           searchTerm={searchTerm}
           handleClick={handleClick}
+          setOpenInsightsPage={setOpenInsightsPage}
         />
       )}
     </React.Fragment>

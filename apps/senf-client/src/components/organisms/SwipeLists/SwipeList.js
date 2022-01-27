@@ -39,6 +39,11 @@ const DragWrapper = styled(animated.div)`
   position: absolute;
   z-index: 995;
   animation: dragEnterAnimation 0.5s;
+
+  @media (min-width: 768px) {
+    width: 400px;
+    animation: none;
+  }
 `;
 const Content = styled.div`
   margin-top: 0px;
@@ -60,7 +65,7 @@ const ListHeaderWrapper = styled(animated.div)`
   position: sticky;
 
   border-radius: 20px 20px 0 0;
-  overflow: hidden;
+  overflow: ${(props) => (props.isMobileCustom ? "hidden" : "visble")};
 `;
 
 const ListWrapper = styled.div`
@@ -75,6 +80,8 @@ const ListWrapper = styled.div`
 
   @media (min-width: 768px) {
     width: 400px;
+    overflow-x: hidden;
+    padding-top: ${(props) => (props.openProjectRoom ? "80px" : "40px")};
   }
 `;
 
@@ -83,6 +90,9 @@ const SlideUpSection = styled(animated.div)`
   position: relative;
   z-index: 9;
   overflow: hidden;
+  /* @media (min-width: 768px) {
+    margin-top: 40px;
+  } */
 `;
 const OrganizationsIntroWrapper = styled.div`
   display: flex;
@@ -128,13 +138,17 @@ const ClickBackground = styled.div`
 const DesktopTabWrapper = styled.div`
   position: absolute;
   margin-left: 200px;
+
+  height: 50px;
   transform: translateX(-50%);
   width: 400px;
+  z-index: 990;
+  background-color: #fed957;
+  padding-bottom: 20px;
 `;
 
 const SwipeList = ({
   swipeListType,
-  type,
   tabLabels,
   loading,
   order,
@@ -145,10 +159,13 @@ const SwipeList = ({
   setSearchTerm,
   searchTerm,
   handleClick,
+  setOpenInsightsPage,
+  setOpenOrganizationsPage,
 }) => {
   const dispatch = useDispatch();
   const openScream = useSelector((state) => state.UI.openScream);
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
+  const openAccount = useSelector((state) => state.UI.openAccount);
   const project = useSelector((state) => state.data.project);
   const [searchOpen, setSearchOpen] = useState(false);
   const mapBounds = useSelector((state) => state.data.mapBounds);
@@ -168,10 +185,9 @@ const SwipeList = ({
 
   const [slideUpSectionProps, setSlideUpSectionProps] = useSpring(() => ({
     transform: `translateY(${0}px)`,
-    height: "0px",
+    height: isMobileCustom ? "0px" : "160px",
     position: "relative",
     top: 0,
-    overflow: "hidden",
     zIndex: 91,
   }));
 
@@ -230,13 +246,19 @@ const SwipeList = ({
   }, [openScream]);
 
   useEffect(() => {
-    if (swipePosition === "bottom") {
+    if (isMobileCustom && swipePosition === "bottom") {
       setSwipeDown();
     }
-    if (swipePosition === "top") {
+    if (isMobileCustom && swipePosition === "top") {
       setSwipeUp();
     }
   }, [swipePosition]);
+
+  // useEffect(() => {
+  //   if (!isMobileCustom) {
+  //     setSwipeUp();
+  //   }
+  // }, []);
 
   const bind = useDrag(
     ({ last, down, movement: [, my], offset: [, y] }) => {
@@ -284,6 +306,66 @@ const SwipeList = ({
 
   const ref = useRef();
 
+  const sectionFastLinks = !openAccount && (
+    <React.Fragment>
+      {order === 1 && (
+        <SlideUpSection style={slideUpSectionProps}>
+          <OrganizationsIntroWrapper>
+            <OrganizationsIntro>
+              Verschaff dir einen schnellen Einblick durch Statistiken.
+            </OrganizationsIntro>
+            <CustomIconButton
+              name="ArrowRight"
+              position="relative"
+              top="20px"
+              backgroundColor="#FFF0BC"
+              handleButtonClick={() => setOpenInsightsPage(true)}
+            />
+          </OrganizationsIntroWrapper>
+          <Toolbar
+            swipeListType={swipeListType}
+            loading={loading}
+            handleDropdown={handleDropdown}
+            dropdown={dropdown}
+            dataFinalLength={dataFinal.length}
+            setSearchOpen={setSearchOpen}
+            searchOpen={searchOpen}
+            setSearchTerm={setSearchTerm}
+            searchTerm={searchTerm}
+            marginTop={"0px"}
+          />
+        </SlideUpSection>
+      )}
+      {order === 2 && (
+        <SlideUpSection style={slideUpSectionProps}>
+          <OrganizationsIntroWrapper>
+            <OrganizationsIntro>
+              Entdecke die Organisationen hinter den Projekträumen.
+            </OrganizationsIntro>
+            <CustomIconButton
+              name="ArrowRight"
+              position="relative"
+              top="20px"
+              backgroundColor="#FFF0BC"
+              handleButtonClick={() => setOpenOrganizationsPage(true)}
+            />
+          </OrganizationsIntroWrapper>
+          <Toolbar
+            swipeListType={swipeListType}
+            loading={loading}
+            handleDropdown={handleDropdown}
+            dropdown={dropdown}
+            dataFinalLength={dataFinal.length}
+            setSearchOpen={setSearchOpen}
+            searchOpen={searchOpen}
+            setSearchTerm={setSearchTerm}
+            searchTerm={searchTerm}
+            marginTop={"0px"}
+          />{" "}
+        </SlideUpSection>
+      )}
+    </React.Fragment>
+  );
   return isMobileCustom ? (
     <React.Fragment>
       <DragWrapper
@@ -293,6 +375,7 @@ const SwipeList = ({
         {mapBounds?.latitude1 !== 0 && (
           <React.Fragment>
             <ListHeaderWrapper
+              isMobileCustom={true}
               style={order === 3 ? { height: "60px" } : listHeaderProps}
             >
               <animated.div {...bind()} style={props} style={listHeaderProps}>
@@ -327,61 +410,7 @@ const SwipeList = ({
             {/* <ShadowBox display={shadow ? "block" : "none"} /> */}
 
             <ListWrapper ref={ref} id="ListWrapper">
-              {order === 1 && (
-                <SlideUpSection style={slideUpSectionProps}>
-                  <OrganizationsIntroWrapper>
-                    <OrganizationsIntro>
-                      Verschaff dir einen schnellen Einblick durch Statistiken.
-                    </OrganizationsIntro>
-                    <CustomIconButton
-                      name="ArrowRight"
-                      position="relative"
-                      top="20px"
-                      backgroundColor="#FFF0BC"
-                      handleButtonClick={() => handleClick(4)}
-                    />
-                  </OrganizationsIntroWrapper>
-                  <Toolbar
-                    swipeListType={swipeListType}
-                    loading={loading}
-                    handleDropdown={handleDropdown}
-                    dropdown={dropdown}
-                    dataFinalLength={dataFinal.length}
-                    setSearchOpen={setSearchOpen}
-                    searchOpen={searchOpen}
-                    setSearchTerm={setSearchTerm}
-                    searchTerm={searchTerm}
-                  />{" "}
-                </SlideUpSection>
-              )}
-
-              {order === 2 && (
-                <SlideUpSection style={slideUpSectionProps}>
-                  <OrganizationsIntroWrapper>
-                    <OrganizationsIntro>
-                      Entdecke die Organisationen hinter den Projekträumen.
-                    </OrganizationsIntro>
-                    <CustomIconButton
-                      name="ArrowRight"
-                      position="relative"
-                      top="20px"
-                      backgroundColor="#FFF0BC"
-                      handleButtonClick={() => handleClick(3)}
-                    />
-                  </OrganizationsIntroWrapper>
-                  <Toolbar
-                    swipeListType={swipeListType}
-                    loading={loading}
-                    handleDropdown={handleDropdown}
-                    dropdown={dropdown}
-                    dataFinalLength={dataFinal.length}
-                    setSearchOpen={setSearchOpen}
-                    searchOpen={searchOpen}
-                    setSearchTerm={setSearchTerm}
-                    searchTerm={searchTerm}
-                  />{" "}
-                </SlideUpSection>
-              )}
+              {sectionFastLinks}
 
               {searchOpen ? (
                 <div style={{ height: "60px", transition: "0.5s" }} />
@@ -393,7 +422,6 @@ const SwipeList = ({
               {!loading && (order === 1 || order === 2) && (
                 <List
                   swipeListType={swipeListType}
-                  type={type}
                   order={order}
                   loading={loading}
                   dropdown={dropdown}
@@ -414,65 +442,45 @@ const SwipeList = ({
       </DragWrapper>
     </React.Fragment>
   ) : (
-    <Content>
-      <Background />
-      {openProjectRoom && (
-        <DesktopTabWrapper>
-          <Tabs
-            loading={loading}
-            handleClick={handleClick}
-            order={order}
-            tabLabels={tabLabels}
-            marginTop="25px"
-            marginBottom="0px"
-          />
-        </DesktopTabWrapper>
-      )}
-      {(order == 1 || order === 2) && (
-        <React.Fragment>
-          <Toolbar
-            swipeListType={swipeListType}
-            loading={loading}
-            handleDropdown={handleDropdown}
-            dropdown={dropdown}
-            dataFinalLength={dataFinal.length}
-            setSearchOpen={setSearchOpen}
-            searchOpen={searchOpen}
-            setSearchTerm={setSearchTerm}
-            searchTerm={searchTerm}
-            type={openProjectRoom && tabLabels.length > 1 ? "underTabs" : type}
-          />
-          <div
-            style={
-              searchOpen
-                ? { height: "60px", transition: "0.5s" }
-                : { height: "0px", transition: "0.5s" }
-            }
-          />
-        </React.Fragment>
-      )}
+    <DragWrapper>
+      <Content>
+        {/* <Background /> */}
+        {openProjectRoom && (
+          <DesktopTabWrapper>
+            <Tabs
+              loading={loading}
+              handleClick={handleClick}
+              order={order}
+              tabLabels={tabLabels}
+              marginTop="25px"
+              marginBottom="0px"
+            />
+          </DesktopTabWrapper>
+        )}
 
-      <ListWrapper>
-        {!loading && (order === 1 || order === 2) && (
-          <List
-            swipeListType={swipeListType}
-            type={type}
-            order={order}
-            loading={loading}
-            dropdown={dropdown}
-            dataFinal={dataFinal}
-            projectsData={projectsData}
-            handleClick={handleClick}
-          />
-        )}
-        {order === 3 && (
-          <CalendarComponent
-            projectScreams={project?.screams}
-            handleClick={handleClick}
-          />
-        )}
-      </ListWrapper>
-    </Content>
+        <ListWrapper openProjectRoom={openProjectRoom}>
+          {sectionFastLinks}
+          <Wave />
+          {!loading && (order === 1 || order === 2) && (
+            <List
+              swipeListType={swipeListType}
+              order={order}
+              loading={loading}
+              dropdown={dropdown}
+              dataFinal={dataFinal}
+              projectsData={projectsData}
+              handleClick={handleClick}
+            />
+          )}
+          {order === 3 && (
+            <CalendarComponent
+              projectScreams={project?.screams}
+              handleClick={handleClick}
+            />
+          )}
+        </ListWrapper>
+      </Content>
+    </DragWrapper>
   );
 };
 

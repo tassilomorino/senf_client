@@ -1,3 +1,4 @@
+import { isMobileCustom } from "apps/senf-client/src/util/customDeviceDetect";
 import React, { useState, useEffect, useCallback } from "react";
 
 const WaveCanvas = ({ canvasRef, props }) => {
@@ -23,9 +24,11 @@ const WaveCanvas = ({ canvasRef, props }) => {
         transform: "rotate(-6deg) translateX(-50px)",
         display: "block",
         width: "600px",
-        height: `calc(100% - (80px + ${scrollPercentage}px))`,
+        height: isMobileCustom
+          ? `calc(100% - (-30px + ${scrollPercentage}px))`
+          : `calc(100% - (-0px + ${scrollPercentage}px))`,
         bottom: 0,
-        position: "fixed",
+        position: "absolute",
         opacity: scrollOpacity,
       }}
       ref={canvasRef}

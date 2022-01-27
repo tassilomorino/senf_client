@@ -91,7 +91,7 @@ function SelectLanguageButtons() {
       (x) => x.name === langFromCookie
     );
 
-    setSelectedLabel(selectedObj.label);
+    setSelectedLabel(selectedObj?.label);
   }, [langFromCookie]);
 
   const handleChange = (value, label) => {

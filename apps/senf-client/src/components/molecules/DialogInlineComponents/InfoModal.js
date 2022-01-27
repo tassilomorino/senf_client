@@ -34,9 +34,9 @@ const Card = styled.div`
   pointer-events: all;
   animation: clippathDownAnimation 0.5s;
 
-  @media (min-width: 768px) {
+  /* @media (min-width: 768px) {
     position: relative;
-  }
+  } */
 `;
 
 const CloseTextWrapper = styled.div`

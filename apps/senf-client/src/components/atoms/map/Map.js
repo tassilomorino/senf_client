@@ -61,8 +61,6 @@ const PinComponent = styled.img`
   z-index: -1;
 `;
 
-
-
 const Bar = styled.div`
   position: fixed;
   width: 40px;
@@ -96,7 +94,6 @@ const Map = ({
 
   const scream = useSelector((state) => state.data.scream);
   const [hoverId, setHoverId] = useState("");
-  
 
   const handlleMapLoaded = () => {
     dispatch(setMapLoaded());
@@ -301,7 +298,6 @@ const Map = ({
           }}
           onLoad={handlleMapLoaded}
         >
-          
           {!isMobileCustom && (
             <NavigationControl showCompass showZoom position="top-right" />
           )}

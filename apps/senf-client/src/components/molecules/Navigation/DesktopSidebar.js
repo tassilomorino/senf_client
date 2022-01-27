@@ -99,8 +99,52 @@ const DesktopSidebar = ({
       <SelectLanguageWrapper>
         <SelectLanguageButton />
       </SelectLanguageWrapper>
+      <br />{" "}
+      {!user.authenticated ? (
+        <SideBarTabs>
+          <RegistrationAndLogin />
+          <img
+            src={Noprofile}
+            width="35"
+            alt="EndImage"
+            style={{ paddingRight: "10px" }}
+          />
+          {t("login")}
+        </SideBarTabs>
+      ) : (
+        <SideBarTabs fontWeight={openAccount && "900"}>
+          <ExpandButton
+            handleButtonClick={openTheAccount}
+            dataCy="profile-button"
+          />
 
+          {/* <StyledH2
+            fontWeight="600"
+            zIndex="9"
+            style={{
+              position: "absolute",
+              marginLeft: "12px",
+              marginTop: "2px",
+              color: openAccount ? "#353535" : "#fed957",
+            }}
+          >
+            {user?.handle?.slice(0, 1)}
+          </StyledH2> */}
+
+          <img
+            src={openAccount ? profile_grey : profile_yellow}
+            width="35"
+            alt="EndImage"
+            style={{ paddingRight: "10px" }}
+          />
+          {t("profile")}
+        </SideBarTabs>
+      )}
+      <FilterWrapper active={openAccount}>
+        <TagsFilter column loading={loading} type="topics" />
+      </FilterWrapper>
       <PostScream loadingProjects={loadingProjects} projectsData={projects} />
+      <br />
       <MenuItem
         key={1}
         order={order}
@@ -145,33 +189,6 @@ const DesktopSidebar = ({
           type={openProjectRoom ? "topics" : "organizationType"}
         />
       </FilterWrapper>
-      <MenuItem
-        key={3}
-        order={order}
-        index={3}
-        isSelectedIcon={MenuData[2].isSelectedIcon}
-        isNotSelectedIcon={MenuData[2].isNotSelectedIcon}
-        text={MenuData[2].text}
-        handleClick={handleClick}
-        openAccount={openAccount}
-      />
-      <FilterWrapper active={order === 3 && !openProjectRoom && !openAccount}>
-        <TagsFilter
-          column
-          type={openOrganization ? "topics" : "organizationType"}
-        />
-      </FilterWrapper>
-      <MenuItem
-        key={4}
-        order={order}
-        index={4}
-        isSelectedIcon={MenuData[3].isSelectedIcon}
-        isNotSelectedIcon={MenuData[3].isNotSelectedIcon}
-        text={MenuData[3].text}
-        handleClick={handleClick}
-        openAccount={openAccount}
-      />
-
       <div
         style={{
           position: "absolute",
@@ -183,51 +200,7 @@ const DesktopSidebar = ({
         }}
       />
       <br />
-      {!user.authenticated ? (
-        <SideBarTabs>
-          <RegistrationAndLogin />
-          <img
-            src={Noprofile}
-            width="35"
-            alt="EndImage"
-            style={{ paddingRight: "10px" }}
-          />
-          {t("login")}
-        </SideBarTabs>
-      ) : (
-        <SideBarTabs fontWeight={openAccount && "900"}>
-          <ExpandButton
-            handleButtonClick={openTheAccount}
-            dataCy="profile-button"
-          />
-
-          {/* <StyledH2
-            fontWeight="600"
-            zIndex="9"
-            style={{
-              position: "absolute",
-              marginLeft: "12px",
-              marginTop: "2px",
-              color: openAccount ? "#353535" : "#fed957",
-            }}
-          >
-            {user?.handle?.slice(0, 1)}
-          </StyledH2> */}
-
-          <img
-            src={openAccount ? profile_grey : profile_yellow}
-            width="35"
-            alt="EndImage"
-            style={{ paddingRight: "10px" }}
-          />
-          {t("profile")}
-        </SideBarTabs>
-      )}
-      <FilterWrapper active={openAccount}>
-        <TagsFilter column loading={loading} type="topics" />
-      </FilterWrapper>
       <InlineInformationPageDesktop />
-
       <div
         style={{
           position: "relative",

@@ -104,8 +104,8 @@ const OpenButtonDesktop = styled.button`
   border: 0px white solid;
   border-radius: 40px;
   top: 85px;
-  margin-top: 25px;
-  margin-bottom: 20px;
+
+  margin-bottom: 0px;
   color: white;
   animation: none;
 
