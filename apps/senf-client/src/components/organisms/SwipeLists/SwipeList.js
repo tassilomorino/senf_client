@@ -189,6 +189,7 @@ const SwipeList = ({
     position: "relative",
     top: 0,
     zIndex: 91,
+    overflow: "hidden",
   }));
 
   const [listHeaderProps, setListHeaderProps] = useSpring(() => ({

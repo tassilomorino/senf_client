@@ -19,7 +19,8 @@ const Wrapper = styled.div`
   justify-content: center;
   width: 100%;
   position: fixed;
-  top: calc(100% - 170px);
+  top: calc((var(--vh, 1vh) * 100) - 170px);
+
   pointer-events: none;
 
   @media (min-width: 768px) {

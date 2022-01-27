@@ -9,7 +9,6 @@ import "./AppIpad.css";
 import "./mapbox.css";
 import "./Animations.css";
 
-
 import firebaseConfig from "./firebase";
 import firebase from "firebase/app";
 import "firebase/auth";
