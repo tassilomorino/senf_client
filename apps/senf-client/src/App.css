@@ -150,17 +150,6 @@
   font-size: 24pt;
 }
 
-.Maploader {
-  position: fixed;
-  z-index: 97;
-  width: 100vw;
-}
-
-.Maploaderbackground {
-  z-index: 97;
-  width: 100vw;
-}
-
 .MainBackground {
   position: fixed;
   background-attachment: fixed;
@@ -773,35 +762,6 @@ input:focus {
     color: white;
     text-align: center;
     font-family: "Playfair Display", serif;
-  }
-}
-
-@keyframes enteranimation {
-  0% {
-    opacity: 0;
-    transform: translateY(10%);
-  }
-
-  50% {
-    opacity: 0;
-    transform: translateY(10%);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0%);
-  }
-}
-
-@keyframes smallEnteranimation {
-  0% {
-    opacity: 0;
-    transform: translateY(3%);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0%);
   }
 }
 

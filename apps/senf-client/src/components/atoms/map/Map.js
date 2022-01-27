@@ -61,18 +61,6 @@ const PinComponent = styled.img`
   z-index: -1;
 `;
 
-const ClickBackground = styled.div`
-  height: 100vh;
-  width: 100vw;
-  background-color: rgb(0, 0, 0, 0.5);
-  z-index: 9999;
-  position: fixed;
-  top: 0;
-  opacity: ${(props) => (props.show ? 1 : 0)};
-  transition: 0.5s;
-  pointer-events: ${(props) => (props.show ? "all" : "none")};
-`;
-
 const Bar = styled.div`
   position: fixed;
   width: 40px;
@@ -106,11 +94,6 @@ const Map = ({
 
   const scream = useSelector((state) => state.data.scream);
   const [hoverId, setHoverId] = useState("");
-  const swipePosition = useSelector((state) => state.UI.swipePosition);
-
-  const setSwipeDown = () => {
-    dispatch(setSwipePositionDown());
-  };
 
   const handlleMapLoaded = () => {
     dispatch(setMapLoaded());
@@ -315,12 +298,6 @@ const Map = ({
           }}
           onLoad={handlleMapLoaded}
         >
-          {isMobileCustom && !openScream && (
-            <ClickBackground
-              show={swipePosition === "top"}
-              onClick={setSwipeDown}
-            />
-          )}
           {!isMobileCustom && (
             <NavigationControl showCompass showZoom position="top-right" />
           )}

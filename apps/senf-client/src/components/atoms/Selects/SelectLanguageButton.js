@@ -25,8 +25,8 @@ const DropDownButton = styled.button`
   justify-content: center;
   background-color: transparent;
   pointer-events: auto;
-  color: white;
-  background-color: #fed957;
+  color: #353535;
+  background-color: transparent;
   padding: 6px;
   border-radius: 15px;
 `;
@@ -44,6 +44,8 @@ const DropDownListContainer = styled.div`
   min-width: 50px;
   width: 50px;
   height: auto;
+  transform: translateY(-100%) translateX(-15%);
+  margin-top: -40px;
   box-sizing: border-box;
   z-index: 99;
   pointer-events: auto;
@@ -89,7 +91,7 @@ function SelectLanguageButtons() {
       (x) => x.name === langFromCookie
     );
 
-    setSelectedLabel(selectedObj.label);
+    setSelectedLabel(selectedObj?.label);
   }, [langFromCookie]);
 
   const handleChange = (value, label) => {

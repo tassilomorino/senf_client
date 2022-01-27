@@ -18,22 +18,33 @@ import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
 import organizationTypes from "../../../data/organizationTypes";
 
 const Wrapper = styled.div`
-  display: flex;
+  width: 100%;
+  height: 0;
+  z-index: 9;
+  float: left;
+  position: relative;
+  animation: ${(props) => props.animation};
+  overflow: hidden;
+  border-radius: 25px;
+  background-color: white;
+  margin: 0;
+  padding: 0;
+  padding-bottom: calc(100% + 60px);
+
+  /* display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
-
   position: relative;
-  width: calc(95% - 20px);
-  margin-left: 2.5%;
+  width: calc(100% - 20px);
+  margin-left: 10px;
   margin-bottom: 10px;
   height: 130px;
   overflow: hidden;
 
   background-color: #ffffff;
   box-shadow: 0px 4px 4px rgba(161, 117, 0, 0.1);
-  border-radius: 18px;
+  border-radius: 18px; */
   animation: OrganizationCardAnimation 0.8s;
 
   @keyframes OrganizationCardAnimation {
@@ -49,9 +60,10 @@ const Wrapper = styled.div`
 `;
 
 const LogoWrapper = styled.div`
-  position: relative;
-  width: 130px;
-  height: 130px;
+  position: absolute;
+  width: calc(100% - 20px);
+  height: calc(100% - 60px);
+  margin: 10px;
   flex: none;
   border-radius: 18px;
   overflow: hidden;
@@ -82,16 +94,9 @@ const OrganizationType = styled.h4`
 const Title = styled.h2`
   position: absolute;
   height: 22px;
-  left: 154px;
-  top: 28px;
-`;
-
-const Summary = styled.div`
-  position: absolute;
-  height: 60px;
-  left: 154px;
-  right: 10px;
-  top: 54px;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 15px;
 `;
 
 export const OrganizationCard = (props) => {
@@ -140,16 +145,16 @@ export const OrganizationCard = (props) => {
       <LogoWrapper>
         <StyledImg src={imgUrl} width="100%" alt="profile" />
       </LogoWrapper>
-      <OrganizationType>{organizationType}</OrganizationType>
+      {/* <OrganizationType>{organizationType}</OrganizationType> */}
 
       <Title>
         <StyledH2 fontWeight="900">{title}</StyledH2>
       </Title>
-      <Summary>
+      {/* <Summary>
         <StyledText>
           Kurzbeschreibung unserer tolllen Organisation und was wir machen.
         </StyledText>
-      </Summary>
+      </Summary> */}
     </Wrapper>
   );
 };

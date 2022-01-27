@@ -5,6 +5,8 @@ import styled, { css, keyframes } from "styled-components";
 import CloseIcon from "../../../images/icons/close.png";
 import ArrowLeftIcon from "../../../images/icons/arrow-left.png";
 import ArrowRightIcon from "../../../images/icons/arrow-right.png";
+import ArrowUpIcon from "../../../images/icons/arrow-up.png";
+
 import CircularArrowIcon from "../../../images/icons/circular-arrow.png";
 import ShareIcon from "../../../images/icons/share.png";
 import MenuIcon from "../../../images/icons/menu.png";
@@ -113,7 +115,7 @@ const Icons = {
   Close: CloseIcon,
   ArrowLeft: ArrowLeftIcon,
   ArrowRight: ArrowRightIcon,
-
+  ArrowUp: ArrowUpIcon,
   CircularArrow: CircularArrowIcon,
   Share: ShareIcon,
   Menu: MenuIcon,
@@ -157,6 +159,9 @@ const IconButton = styled.button`
   border-radius: 100%;
   box-shadow: ${(props) =>
     props.shadow === false ? "" : "rgb(38, 57, 77, 0.7) 0px 20px 30px -15px;"};
+
+  -webkit-backdrop-filter: ${(props) => props.backdropFilter && "blur(10px)"};
+
   backdrop-filter: ${(props) => props.backdropFilter && "blur(10px)"};
 
   background-color: ${(props) =>
@@ -174,6 +179,7 @@ const IconButton = styled.button`
   left: ${(props) => props.left && props.left};
   margin: ${(props) => props.margin && props.margin};
   margin-left: ${(props) => props.marginLeft};
+  pointer-events: all;
   animation: ${(props) =>
     props.animation &&
     css`

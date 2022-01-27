@@ -308,6 +308,7 @@ const Thema = ({ screams }) => {
       title={t("topics")}
       subTitle={t("topics_explained")}
       plot={plot}
+      graphType="topicsSum"
     />
   );
 };

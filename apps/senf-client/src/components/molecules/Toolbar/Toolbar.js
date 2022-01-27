@@ -30,11 +30,11 @@ const Wrapper = styled.div`
   pointer-events: none;
   flex-flow: wrap;
   @media (min-width: 768px) {
-    position: fixed;
-    top: ${(props) => (props.type === "standalone" ? "30px" : "110px")};
+    position: relative;
+    margin-top: ${(props) => (props.marginTop ? props.marginTop : "30px")};
     z-index: 99;
-    width: 380px;
-    padding: 10px 10px 20px 10px;
+
+    padding: 10px 10px 10px 10px;
   }
 
   @keyframes ToolbarAnimation {
@@ -98,7 +98,7 @@ const AddIconButton = styled.button`
 const Toolbar = ({
   swipeListType,
   loading,
-  type,
+  marginTop,
   handleDropdown,
   dropdown,
   handleClickSwipe,
@@ -150,7 +150,7 @@ const Toolbar = ({
 
   return (
     !loading && (
-      <Wrapper type={type} searchOpen={searchOpen}>
+      <Wrapper marginTop={marginTop} searchOpen={searchOpen}>
         {swipeListType === "ideas" ? (
           <SortingSelect
             label={t("ideas")}

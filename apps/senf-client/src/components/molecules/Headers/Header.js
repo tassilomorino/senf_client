@@ -20,12 +20,14 @@ import {
 } from "./styles/sharedStyles";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { truncateString } from "../../../hooks/truncateString";
+import { CircularProgress } from "@material-ui/core";
 
 const Header = ({
   type,
+  infoOpen,
+  setInfoOpen,
   imgUrl,
   title,
-  loading,
   calendar,
   order,
   handleClose,
@@ -33,6 +35,8 @@ const Header = ({
   path,
   owner,
 }) => {
+  const loading = useSelector((state) => state.UI.loading);
+
   const handle = useSelector((state) => state.user.handle);
   const userHandle = handle ? handle : "...";
 
@@ -41,6 +45,33 @@ const Header = ({
   // const [shareOpen, setShareOpen] = useState(false);
   const [amount, setAmount] = useState(34);
 
+  console.log(
+    7.95 +
+      45.29 +
+      12.09 +
+      3.18 +
+      16.39 +
+      6.15 +
+      4.07 +
+      3.37 +
+      14.24 +
+      2.69 +
+      166.0 +
+      4.5 +
+      3.91 +
+      0.84 +
+      3.4 +
+      2.51 +
+      10.76 +
+      14.31 +
+      2.96 +
+      5.92 +
+      11.52 +
+      6.58 +
+      15.79 +
+      399.0 +
+      245.0
+  );
   useEffect(() => {
     if (isMobileCustom) {
       const amount = order !== 0 ? 26 : 32;
@@ -73,16 +104,23 @@ const Header = ({
   // };
 
   return (
-    <FixedWrapper moveUp={openScream || swipePosition === "top"}>
-      <InnerWrapper order={order} isMobileCustom={isMobileCustom} id="wrapper">
-        <StyledIcon
-          onClick={() => handleClick(0)}
-          src={type === "account" ? SettingsIcon : InfoIcon}
-          width="100%"
-          alt="project-thumbnail"
-          style={{ opacity: order === 0 ? 0 : 1 }}
-        />
-
+    <FixedWrapper moveUp={(openScream || swipePosition === "top") && !infoOpen}>
+      <InnerWrapper
+        order={order}
+        isMobileCustom={isMobileCustom}
+        id="wrapper"
+        infoOpen={infoOpen}
+      >
+        {loading && (
+          <CircularProgress
+            size={30}
+            style={{
+              marginLeft: "calc(50% - 15px)",
+              marginTop: " 10px",
+              position: "absolute",
+            }}
+          />
+        )}
         <FlexWrapper>
           <CustomIconButton
             name="ArrowLeft"
@@ -96,12 +134,22 @@ const Header = ({
               ? truncateString("Hey " + userHandle, amount)
               : title && truncateString(title, amount)}
           </StyledH2>
+
           {/* <ImgWrapper order={order}>
             {imgUrl && (
               <StyledImg src={imgUrl} width="100%" alt="project-thumbnail" />
             )}
           </ImgWrapper> */}
         </FlexWrapper>
+
+        {!infoOpen && (
+          <StyledIcon
+            onClick={() => setInfoOpen(!infoOpen)}
+            src={type === "account" ? SettingsIcon : InfoIcon}
+            width="100%"
+            alt="project-thumbnail"
+          />
+        )}
 
         {/* {order === 0 && <StyledText marginLeft="50px">{owner}</StyledText>} */}
       </InnerWrapper>

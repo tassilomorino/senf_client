@@ -17,7 +17,7 @@ import Toolbar from "../../molecules/Toolbar/Toolbar";
 import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-import { Wrapper } from "./styles/sharedStyles";
+import { Covers, CoverWrapper, Wrapper } from "./styles/sharedStyles";
 import { TagsFilter } from "../../molecules/Filters/TagsFilter";
 import { MenuData } from "../../../data/MenuData";
 import { StyledH2 } from "../../../styles/GlobalStyle";
@@ -28,18 +28,20 @@ const InnerWrapper = styled.div`
   pointer-events: all;
   height: calc(100% - 120px);
   width: 100%;
-  margin-top: ${(props) => (props.isMobileCustom ? "120px" : "120px")};
+  margin-top: ${(props) => (props.isMobileCustom ? "120px" : "0px")};
   overflow: scroll;
 `;
 
-const TitleWrapper = styled.div`
-  position: fixed;
+const HeaderWrapper = styled.div`
+  position: sticky;
   width: 100%;
+  top: 20px;
   background-color: #fed957;
-  z-index: 10;
+  z-index: 25;
   height: 100px;
   @media (min-width: 768px) {
     width: 400px;
+    height: 100px;
   }
 `;
 const NoIdeasYet = styled.div`
@@ -51,22 +53,15 @@ const NoIdeasYet = styled.div`
   text-align: center;
 `;
 
-const Title = styled.h2`
-  font-size: 22px;
-  font-weight: 100;
-  color: #353535;
-  align-self: center;
-  margin-top: 20px;
-  text-align: center;
-
-  @media (min-width: 768px) {
-    font-size: 32px;
-  }
-`;
-
-const OrganizationsPage = ({ handleClick, order, loading }) => {
+const OrganizationsPage = ({ setOpenOrganizationsPage, order, loading }) => {
   const { t } = useTranslation();
   const [searchOpen, setSearchOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(true);
+  }, []);
+
   const selectedOrganizationTypes = useSelector(
     (state) => state.data.organizationTypes
   );
@@ -172,25 +167,23 @@ const OrganizationsPage = ({ handleClick, order, loading }) => {
   };
 
   return (
-    <Wrapper>
-      {isMobileCustom && (
-        <CustomIconButton
-          name="ArrowLeft"
-          position="fixed"
-          margin="10px"
-          backgroundColor="#FFF0BC"
-          handleButtonClick={() => handleClick(2)}
-          zIndex={99}
-        />
-      )}
-      <TitleWrapper>
+    <Wrapper order={open}>
+      <CustomIconButton
+        name="ArrowLeft"
+        position="fixed"
+        margin="10px"
+        backgroundColor="#FFF0BC"
+        handleButtonClick={() => setOpenOrganizationsPage(false)}
+        zIndex={99}
+      />
+
+      <HeaderWrapper>
         <Tabs
           loading={false}
-          handleClick={handleClick}
           order={1}
           tabLabels={MenuData.map((item) => item.text).slice(2, 3)}
           marginTop={"20px"}
-          marginBottom={"20px"}
+          marginBottom={"0px"}
         />
 
         {isMobileCustom && (
@@ -199,19 +192,35 @@ const OrganizationsPage = ({ handleClick, order, loading }) => {
             type={order === 1 ? "topics" : "organizationType"}
           />
         )}
-      </TitleWrapper>
+
+        {!isMobileCustom && (
+          <Toolbar
+            swipeListType="organizationOverview"
+            marginTop="0px"
+            loading={loadingOrganizations}
+            handleDropdown={handleDropdown}
+            dataFinalLength={dataFinalLength}
+            setSearchOpen={setSearchOpen}
+            searchOpen={searchOpen}
+            setSearchTerm={setSearchTerm}
+            searchTerm={searchTerm}
+          />
+        )}
+      </HeaderWrapper>
       <InnerWrapper isMobileCustom={isMobileCustom}>
-        <Toolbar
-          swipeListType="organizationOverview"
-          type="standalone"
-          loading={loadingOrganizations}
-          handleDropdown={handleDropdown}
-          dataFinalLength={dataFinalLength}
-          setSearchOpen={setSearchOpen}
-          searchOpen={searchOpen}
-          setSearchTerm={setSearchTerm}
-          searchTerm={searchTerm}
-        />
+        {isMobileCustom && (
+          <Toolbar
+            swipeListType="organizationOverview"
+            type="standalone"
+            loading={loadingOrganizations}
+            handleDropdown={handleDropdown}
+            dataFinalLength={dataFinalLength}
+            setSearchOpen={setSearchOpen}
+            searchOpen={searchOpen}
+            setSearchTerm={setSearchTerm}
+            searchTerm={searchTerm}
+          />
+        )}
 
         {!loadingOrganizations ? (
           <InfiniteScroll
@@ -219,7 +228,7 @@ const OrganizationsPage = ({ handleClick, order, loading }) => {
             hasMore={hasMoreItems}
             useWindow={false}
           >
-            {showItems(dataFinal)}
+            <CoverWrapper>{showItems(dataFinal)}</CoverWrapper>
           </InfiniteScroll>
         ) : (
           <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>

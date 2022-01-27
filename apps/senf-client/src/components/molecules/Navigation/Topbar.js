@@ -35,9 +35,11 @@ const Wrapper = styled.div`
 
   /* background-color: white;
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2); */
-  top: ${(props) => (props.moveUp ? "-90px" : "0px")};
   transition: 0.4s;
   z-index: 1;
+  transform: ${(props) => (props.moveUp ? "scale(0.8)" : "scale(1)")};
+  opacity:${(props) => (props.moveUp ? "0" : "1")};
+
   /* animation: TopbarEnterAnimation 2s;
 
   @keyframes TopbarEnterAnimation {
@@ -63,6 +65,7 @@ const LogoContainer = styled.div`
   text-align: center;
   background-color: rgb(255, 255, 255, 0.8);
   border-radius: 0 0 18px 18px;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
 `;
@@ -74,19 +77,16 @@ const ProfileButtonContainer = styled.div`
   align-items: center;
   z-index: 999;
   width: 50px;
-  right: 35px;
+  right: 20px;
   top: 5px;
   height: 50px;
   font-size: 0;
   pointer-events: pointer;
   background-color: rgb(255, 255, 255, 0.8);
   border-radius: 100%;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.8);
-`;
-
-const CenteredImg = styled.img`
-  position: absolute;
 `;
 
 const InlineInfoButtonContainer = styled.div`
@@ -96,15 +96,20 @@ const InlineInfoButtonContainer = styled.div`
   align-items: center;
   z-index: 999;
   width: 50px;
-  left: 35px;
+  left: 20px;
   top: 5px;
   height: 50px;
   font-size: 0;
   pointer-events: pointer;
   background-color: rgb(255, 255, 255, 0.8);
   border-radius: 100%;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.8);
+`;
+
+const CenteredImg = styled.img`
+  position: absolute;
 `;
 
 const Topbar = ({ order, handleClick }) => {

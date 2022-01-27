@@ -1,9 +1,10 @@
+import { isMobileCustom } from "apps/senf-client/src/util/customDeviceDetect";
 import React, { useRef, useEffect } from "react";
 import WaveCanvas from "./WaveCanvas";
 
 const Wave = (props) => {
   const { devicePixelRatio: ratio = 1 } = window;
-  const waveTotal = 10;
+  const waveTotal = isMobileCustom ? 10 : 30;
   const waveHeight = 50;
   const waveSpeed = 0.15;
 
@@ -33,10 +34,10 @@ const Wave = (props) => {
 
     // Wave gradient
     const gradient = ctx.createRadialGradient(100, 0, 500, 100, 250, 1500);
-    gradient.addColorStop(0, "#0373FF");
-    gradient.addColorStop(0.45, "#050F63");
-    gradient.addColorStop(1, "#060A33");
-    ctx.fillStyle = "#FFE898";
+    gradient.addColorStop(0, "#FFE898");
+    gradient.addColorStop(0.25, "#FFE898");
+    gradient.addColorStop(0.6, "rgba(255,255,255,0)");
+    ctx.fillStyle = gradient;
 
     ctx.beginPath();
     ctx.moveTo(0, ctx.canvas.height);

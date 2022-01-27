@@ -493,16 +493,7 @@ button:disabled {
   font-size: 24pt;
 }
 
-.Maploader {
-  position: fixed;
-  z-index: 97;
-  width: 100vw;
-}
 
-.Maploaderbackground {
-  z-index: 97;
-  width: 100vw;
-}
 
 .MainBackground {
   position: fixed;

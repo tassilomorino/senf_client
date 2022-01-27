@@ -16,9 +16,9 @@ import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 
 import SwipeList from "../SwipeLists/SwipeList";
 import Header from "../../molecules/Headers/Header";
-import ProjectInfo from "../../molecules/DialogInlineComponents/ProjectInfo";
+import InfoModal from "../../molecules/DialogInlineComponents/InfoModal";
 import styled from "styled-components";
-import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
+import { ModalBackground } from "../../atoms/Backgrounds/ModalBackground";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 
 import _ from "lodash";
@@ -27,42 +27,18 @@ import { useTranslation } from "react-i18next";
 import PostScream from "../PostIdea/PostScream";
 import { ProjectRoomTabData } from "../../../data/ProjectRoomTabData";
 
-const Wrapper = styled.div`
-  @media (min-width: 768px) {
-    padding-top: 70px;
-  }
-`;
-
-const Break = styled.div`
-  position: relative;
-  height: 110px;
-  width: 100%;
-
-  @media (min-width: 768px) {
-    height: 30px;
-  }
-`;
-
-const MapHider = styled.div`
-  width: calc(100% - 600px);
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 600px;
-  background-color: #000;
-  opacity: 0.6;
-  z-index: 9;
-`;
-
 const ProjectDialog = ({
   viewport,
   projectsData,
   loadingProjects,
   dataFinalMap,
+  setOpenInsightsPage,
 }) => {
   const { t } = useTranslation();
   const [path, setPath] = useState("");
-  const [order, setOrder] = useState(0);
+  const [order, setOrder] = useState(1);
+  const [infoOpen, setInfoOpen] = useState(true);
+
   const [dropdown, setDropdown] = useState("newest");
 
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
@@ -72,6 +48,8 @@ const ProjectDialog = ({
 
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.data.loading);
+  const loadingUI = useSelector((state) => state.UI.loading);
+
   const mapBounds = useSelector((state) => state.data.mapBounds);
 
   const initialMapViewport = useSelector(
@@ -148,116 +126,67 @@ const ProjectDialog = ({
 
   return (
     <React.Fragment>
-      <Header
-        imgUrl={project?.imgUrl}
-        title={project?.title}
-        owner={project?.owner}
-        loading={loading}
-        calendar={project?.calendar}
-        order={order}
-        path={path}
-        handleClose={handleClose}
-        handleClick={handleClick}
-      />
-
-      {isMobileCustom && (order === 1 || order === 3) && (
+      {isMobileCustom && !infoOpen && (
         <PostScream
           loadingProjects={loadingProjects}
           projectsData={projects}
           project={project}
         />
       )}
-      {!isMobileCustom && order === 0 && <MapHider />}
-      <Wrapper>
-        {!isMobileCustom || (isMobileCustom && order === 0 && <Background />)}
+      {project && (
+        <Header
+          infoOpen={infoOpen}
+          setInfoOpen={setInfoOpen}
+          imgUrl={project?.imgUrl}
+          title={project?.title}
+          owner={project?.owner}
+          loading={loading}
+          calendar={project?.calendar}
+          order={order}
+          path={path}
+          handleClose={handleClose}
+          handleClick={handleClick}
+        />
+      )}
+      {project && (
+        <InfoModal
+          description={project?.description}
+          weblink={project?.weblink}
+          contact={project?.contact}
+          startDate={project?.startDate}
+          endDate={project?.endDate}
+          owner={project?.owner}
+          infoOpen={infoOpen}
+          setInfoOpen={setInfoOpen}
+        />
+      )}
 
-        {(order === 1 || order === 3) && (
-          <SwipeList
-            swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}
-            type="projectIdeas"
-            tabLabels={ProjectRoomTabData.map((item) => item.text).slice(
-              0,
-              TabSlicer
-            )}
-            loading={loading}
-            order={order}
-            dataFinal={dataFinal}
-            geoData={project?.geoData}
-            viewport={viewport}
-            handleDropdown={handleDropdown}
-            dropdown={dropdown}
-            projectsData={projectsData}
-            loadingProjects={loadingProjects}
-            dataFinalMap={dataFinalMap}
-            setSearchTerm={setSearchTerm}
-            searchTerm={searchTerm}
-            handleClick={handleClick}
-          />
-        )}
-        {order === 0 && (
-          <div
-            style={{
-              overflow: "scroll",
-              height: "100vh",
-              pointerEvents: "all",
-            }}
-          >
-            <SubmitButton
-              text={t("showIdeas")}
-              zIndex="9"
-              backgroundColor={"#353535"}
-              textColor={"white"}
-              position="fixed"
-              bottom={"10px"}
-              left={"0"}
-              marginLeft={isMobileCustom ? "50%" : "400px"}
-              handleButtonClick={() => handleClick(1)}
-            />
+      {/* {!isMobileCustom ||
+          (isMobileCustom && order === 0 && <ModalBackground />)} */}
 
-            {!isMobileCustom && (
-              <SubmitButton
-                text={t("showIdeas")}
-                zIndex="9"
-                backgroundColor={"white"}
-                textColor={"#353535"}
-                position="fixed"
-                bottom={"50%"}
-                left={"calc(600px + ((100% - 600px)/2)) "}
-                marginLeft={isMobileCustom ? "50%" : "0"}
-                handleButtonClick={() => handleClick(1)}
-              />
-            )}
-
-            <ProjectInfo
-              description={project?.description}
-              weblink={project?.weblink}
-              contact={project?.contact}
-              startDate={project?.startDate}
-              endDate={project?.endDate}
-              owner={project?.owner}
-            />
-          </div>
-        )}
-        {/* {order === 2 && (
-          <React.Fragment>
-            <Break />
-
-            <MainAnimations
-              transition="0.5s"
-              display="block"
-              paddingBottom="2em"
-              height="100%"
-              position={document.body.clientWidth > 768 && "fixed"}
-              top={document.body.clientWidth > 768 && "100px"}
-            >
-              <CalendarComponent
-                projectScreams={project?.screams}
-                handleClick={handleClick}
-              />
-            </MainAnimations>
-          </React.Fragment>
-        )} */}
-      </Wrapper>
+      {(!infoOpen || (!isMobileCustom && !loadingUI)) && (
+        <SwipeList
+          swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}
+          tabLabels={ProjectRoomTabData.map((item) => item.text).slice(
+            0,
+            TabSlicer
+          )}
+          loading={loading}
+          order={order}
+          dataFinal={dataFinal}
+          geoData={project?.geoData}
+          viewport={viewport}
+          handleDropdown={handleDropdown}
+          dropdown={dropdown}
+          projectsData={projectsData}
+          loadingProjects={loadingProjects}
+          dataFinalMap={dataFinalMap}
+          setSearchTerm={setSearchTerm}
+          searchTerm={searchTerm}
+          handleClick={handleClick}
+          setOpenInsightsPage={setOpenInsightsPage}
+        />
+      )}
     </React.Fragment>
   );
 };

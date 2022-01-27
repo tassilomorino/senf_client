@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useState, useEffect, memo } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 //Components
 import Keyindicators from "../../molecules/graphs/Keyindicators";
 import ThemenDialog from "../../molecules/graphs/themendialog";
@@ -20,37 +20,13 @@ import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
-import { Wrapper } from "./styles/sharedStyles";
+import { Covers, CoverWrapper, Wrapper } from "./styles/sharedStyles";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { StyledH2 } from "../../../styles/GlobalStyle";
 import Tabs from "../../atoms/Tabs/Tabs";
 import { MenuData } from "../../../data/MenuData";
 
-const CoverWrapper = styled.div`
-  margin-left: 2.5%;
-  width: 95%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 10px 10px;
-  grid-template-areas:
-    ". ."
-    ". .";
-`;
-const Covers = styled.div`
-  width: 100%;
-  height: 100%;
-  z-index: 9;
-  float: left;
-  position: relative;
-  animation: ${(props) => props.animation};
-  overflow: hidden;
-  border-radius: 25px;
-  background-color: white;
-  margin: 0;
-  padding: 0;
-`;
 const CoverImg = styled.img`
   width: 100%;
   height: 100%;
@@ -61,23 +37,33 @@ const CoverTitle = styled.div`
   top: 30px;
 `;
 
-const InsightsPage = ({ handleClick }) => {
+const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
   const { t } = useTranslation();
   const db = firebase.firestore();
+  const [open, setOpen] = useState(false);
 
   const [screams, setScreams] = useState("");
   const [likes, setLikes] = useState("");
   const [likesLength, setLikesLength] = useState("");
   const [commentsLength, setCommentsLength] = useState("");
 
+  useEffect(() => {
+    setOpen(true);
+  }, []);
+
   //const mapViewport = useSelector((state) => state.data.mapViewport);
   const fetchDataScreams = async () => {
-    const ref = await db
-      .collection("screams")
-      /*   .where("lat", "<", Number(mapViewport.latitude) + 1)
+    const ref = projectRoomId
+      ? await db
+          .collection("screams")
+          .where("project", "==", projectRoomId)
+          .get()
+      : await db
+          .collection("screams")
+          /*   .where("lat", "<", Number(mapViewport.latitude) + 1)
       .where("lat", ">", Number(mapViewport.latitude) - 1) */
 
-      .get();
+          .get();
 
     const screams = [];
     ref.docs.forEach((doc) => {
@@ -118,83 +104,128 @@ const InsightsPage = ({ handleClick }) => {
     setCommentsLength(commentsLength);
   };
 
+  const fetchDataProjectRoom = async () => {
+    const screamIds = [];
+    const screamsRef = await db
+      .collection("screams")
+      .where("project", "==", projectRoomId)
+      .get();
+
+    const screamsRefSize = screamsRef.size;
+    screamsRef.docs.forEach(async (doc) => {
+      screamIds.push(doc.id);
+      console.log(screamsRefSize, screamIds.length);
+      if (screamIds.length === screamsRefSize) {
+        console.log(screamIds);
+        const commentsRef = await db
+          .collection("comments")
+          .where("screamId", "in", screamIds)
+          .orderBy("createdAt", "desc")
+          .get();
+
+        const commentsLength = commentsRef.size;
+        setCommentsLength(commentsLength);
+
+        const ref = await db
+          .collection("likes")
+          .where("screamId", "in", screamIds)
+          .orderBy("createdAt", "desc")
+          .get();
+
+        const likesLength = ref.size;
+        setLikesLength(likesLength);
+
+        const likes = [];
+        ref.docs.forEach((doc) => {
+          const docData = {
+            age: doc.data().age,
+            Thema: doc.data().Thema,
+          };
+          likes.push(docData);
+        });
+        setLikes(likes);
+      }
+    });
+  };
+
   useEffect(() => {
     fetchDataScreams();
-    fetchDataLikes();
-    fetchDataComments();
+
+    if (projectRoomId) {
+      fetchDataProjectRoom();
+    } else {
+      fetchDataLikes();
+      fetchDataComments();
+    }
   }, []);
 
   const handleLink = () => {
     window.open("https://wiki.agorakoeln.de/", "_blank");
   };
   return (
-    <Wrapper>
-      {isMobileCustom && (
-        <CustomIconButton
-          name="ArrowLeft"
-          position="relative"
-          margin="10px"
-          backgroundColor="#FFF0BC"
-          handleButtonClick={() => handleClick(2)}
-        />
-      )}
+    <Wrapper order={open}>
+      <CustomIconButton
+        name="ArrowLeft"
+        position="fixed"
+        margin="10px"
+        backgroundColor="#FFF0BC"
+        handleButtonClick={() => setOpenInsightsPage(false)}
+        zIndex={99}
+      />
 
       <Tabs
         loading={false}
-        handleClick={handleClick}
         order={1}
         tabLabels={MenuData.map((item) => item.text).slice(3, 4)}
         marginTop={"20px"}
-        marginBottom={"0px"}
+        marginBottom={"20px"}
       />
-      <MainAnimations transition="0.5s" display="block" paddingBottom="2em">
-        <Keyindicators
-          screams={screams}
-          likesLength={likesLength}
-          commentslength={commentsLength}
-        />
-        <CoverWrapper>
-          <Covers animation="coverAnimation 0.5s ease-in-out">
-            <CoverTitle>
-              <StyledH2 fontWeight="900" textAlign="center">
-                {t("topics")}
-              </StyledH2>
-            </CoverTitle>
-            <CoverImg src={Themencover} alt="insights-topic-cover" />
-            <ThemenDialog screams={screams} />
-          </Covers>
+      <Keyindicators
+        screams={screams}
+        likesLength={likesLength}
+        commentslength={commentsLength}
+      />
+      <CoverWrapper>
+        <Covers animation="enteranimation 0.5s ease-in-out">
+          <CoverTitle>
+            <StyledH2 fontWeight="900" textAlign="center">
+              {t("topics")}
+            </StyledH2>
+          </CoverTitle>
+          <CoverImg src={Themencover} alt="insights-topic-cover" />
+          <ThemenDialog screams={screams} />
+        </Covers>
 
-          <Covers animation="coverAnimation 0.75s ease-in-out">
-            <CoverTitle>
-              <StyledH2 fontWeight="900" textAlign="center">
-                {t("districts")}
-              </StyledH2>
-            </CoverTitle>
-            <CoverImg src={DistrictsCover} alt="insights-districts-cover" />
-            <DistrictsDialog screams={screams} />
-          </Covers>
+        <Covers animation="enteranimation 0.75s ease-in-out">
+          <CoverTitle>
+            <StyledH2 fontWeight="900" textAlign="center">
+              {t("districts")}
+            </StyledH2>
+          </CoverTitle>
+          <CoverImg src={DistrictsCover} alt="insights-districts-cover" />
+          <DistrictsDialog screams={screams} />
+        </Covers>
 
-          <Covers animation="coverAnimation 1.25s ease-in-out">
-            <CoverTitle>
-              <StyledH2 fontWeight="900" textAlign="center">
-                {t("agegroups")}
-              </StyledH2>
-            </CoverTitle>
-            <CoverImg src={AgegroupsCover} alt="insights-agegroups-cover" />
-            <AgegroupDialog screams={screams} likes={likes} />
-          </Covers>
-          <Covers animation="coverAnimation 1s ease-in-out">
-            <CoverTitle>
-              <StyledH2 fontWeight="900" textAlign="center">
-                {t("toolbox")}
-              </StyledH2>
-            </CoverTitle>
-            <CoverImg src={KeywordsCover} alt="insights-keywords-cover" />
-            <ExpandButton handleButtonClick={() => handleLink()} />
-            {/* <WordcloudDialog /> */}
-          </Covers>
-        </CoverWrapper>
-      </MainAnimations>
+        <Covers animation="enteranimation 1.25s ease-in-out">
+          <CoverTitle>
+            <StyledH2 fontWeight="900" textAlign="center">
+              {t("agegroups")}
+            </StyledH2>
+          </CoverTitle>
+          <CoverImg src={AgegroupsCover} alt="insights-agegroups-cover" />
+          <AgegroupDialog screams={screams} likes={likes} />
+        </Covers>
+        <Covers animation="enteranimation 1s ease-in-out">
+          <CoverTitle>
+            <StyledH2 fontWeight="900" textAlign="center">
+              {t("toolbox")}
+            </StyledH2>
+          </CoverTitle>
+          <CoverImg src={KeywordsCover} alt="insights-keywords-cover" />
+          <ExpandButton handleButtonClick={() => handleLink()} />
+          {/* <WordcloudDialog /> */}
+        </Covers>
+      </CoverWrapper>
     </Wrapper>
   );
 };

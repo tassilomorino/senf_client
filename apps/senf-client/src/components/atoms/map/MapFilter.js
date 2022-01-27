@@ -18,12 +18,16 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-
-  margin-top: 65px;
+  position: fixed;
+  top: calc(100% - 170px);
+  pointer-events: none;
 
   @media (min-width: 768px) {
+    position: relative;
     margin-top: 40px;
-    left: 600px;
+    left: 0px;
+    top: 0;
+    bottom: none;
   }
 `;
 export const MapFilter = memo(({ viewport, mapRef }) => {
@@ -98,13 +102,13 @@ export const MapFilter = memo(({ viewport, mapRef }) => {
         <CustomIconButton
           name="CircularArrow"
           margin="0px"
-          marginLeft="5px"
           position="relative"
           backgroundColor="rgb(255,255,255,0.6)"
           handleButtonClick={handleMapBoundsReset}
           animation={true}
           small={isMobileCustom && true}
           backdropFilter={true}
+          marginLeft="5px"
         />
       </Wrapper>
     )

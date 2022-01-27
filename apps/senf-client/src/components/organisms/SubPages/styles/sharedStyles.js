@@ -20,12 +20,13 @@ export const Wrapper = styled.div`
 
   @media (min-width: 768px) {
     margin-left: 200px;
-    width: 400px;
+    width: ${(props) => (props.order ? "calc(100vw - 200px)" : "400px")};
     height: 100vh;
     overflow-y: scroll;
     z-index: 90;
     top: 0;
     position: fixed;
+    transition: 0.5s;
   }
 
   /* @keyframes OrganizationPageAnimation {
@@ -38,4 +39,39 @@ export const Wrapper = styled.div`
     opacity: 1;
   }
 } */
+`;
+
+export const CoverWrapper = styled.div`
+  margin-left: 2.5%;
+  width: 95%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px 10px;
+  grid-template-areas:
+    ". ."
+    ". .";
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+  }
+
+  @media (min-width: 1068px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+  }
+`;
+
+export const Covers = styled.div`
+  width: 100%;
+  height: 100%;
+  z-index: 9;
+  float: left;
+  position: relative;
+  animation: ${(props) => props.animation};
+  overflow: hidden;
+  border-radius: 25px;
+  background-color: white;
+  margin: 0;
+  padding: 0;
 `;
