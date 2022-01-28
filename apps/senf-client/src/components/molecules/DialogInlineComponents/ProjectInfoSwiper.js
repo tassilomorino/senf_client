@@ -140,7 +140,7 @@ const ProjectInfoSwiper = ({ setInfoOpen, pages }) => {
       <FlexWrapper>
         {pages.map(({ title, text, id }) => (
           <HorizontalSwipeCard {...bind()} active={id === active} style={props}>
-            <StyledH2
+            {/*  <StyledH2
               fontWeight="900"
               textAlign="center"
               active={id === active}
@@ -150,9 +150,9 @@ const ProjectInfoSwiper = ({ setInfoOpen, pages }) => {
                 : active === 0
                 ? truncateString(title, 14)
                 : truncateString(title, 9)}
-            </StyledH2>
+            </StyledH2> */}
             <StyledText textAlign="center" margin="20px" marginLeft="20px">
-              {text}
+              <span style={{ fontWeight: "900" }}> {title}</span> {text}
             </StyledText>
 
             {/* {id === active && (

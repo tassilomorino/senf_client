@@ -3,7 +3,7 @@
 import styled from "styled-components";
 
 export const FixedWrapper = styled.div`
-  z-index: 91;
+  z-index: 999;
   position: fixed;
   overflow: hidden;
   height: 50px;
@@ -32,7 +32,8 @@ export const InnerWrapper = styled.div`
   top: 0px;
   transition: 0.4s;
   pointer-events: all;
-  background-color: rgb(255, 255, 255, 0.6);
+  background-color: ${(props) =>
+    props.infoOpen ? "#fff7dd" : "rgb(255, 255, 255, 0.6)"};
 
   border-radius: ${(props) => (props.infoOpen ? "18px 18px 0px 0px" : "18px")};
   -webkit-backdrop-filter: blur(10px);

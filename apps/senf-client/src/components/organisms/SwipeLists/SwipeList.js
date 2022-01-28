@@ -81,7 +81,7 @@ const ListWrapper = styled.div`
   @media (min-width: 768px) {
     width: 400px;
     overflow-x: hidden;
-    padding-top: ${(props) => (props.openProjectRoom ? "80px" : "40px")};
+    padding-top: ${(props) => (props.openProjectRoom ? "20px" : "40px")};
   }
 `;
 
@@ -137,15 +137,16 @@ const ClickBackground = styled.div`
 `;
 
 const DesktopTabWrapper = styled.div`
-  position: absolute;
+  position: relative;
   margin-left: 200px;
 
-  height: 50px;
+  height: 40px;
   transform: translateX(-50%);
   width: 400px;
-  z-index: 990;
+
   background-color: #fed957;
-  padding-bottom: 20px;
+  padding-bottom: 0px;
+  z-index: 99;
 `;
 
 const SwipeList = ({
