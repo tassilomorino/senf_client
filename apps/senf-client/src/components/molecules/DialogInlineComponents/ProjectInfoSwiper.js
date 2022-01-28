@@ -17,7 +17,13 @@ import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 350px;
+  margin: 0px;
+
+  height: auto;
+  margin-top: 20px;
+  /* border: 2px solid #fed957;
+  border-radius: 18px;
+  background-color: #fff7dd; */
 `;
 
 const FlexWrapper = styled.div`
@@ -29,7 +35,7 @@ const FlexWrapper = styled.div`
 
 const HorizontalSwipeCard = styled(animated.div)`
   width: 100%;
-  height: 330px;
+  height: auto;
 
   flex: none;
 
@@ -43,9 +49,9 @@ const HorizontalSwipeCard = styled(animated.div)`
 `;
 
 const ArrowWrapper = styled.div`
-  top: 300px;
+  top: 10px;
   width: 100%;
-  position: absolute;
+  position: relative;
   display: flex;
   justify-content: center;
   z-index: 9;
@@ -72,9 +78,9 @@ const ArrowRight = styled(ArrowLeft)`
 const DotWrapper = styled.div`
   display: flex;
   justify-content: center;
-  position: absolute;
+  position: relative;
   width: 100%;
-  top: 0;
+  top: 10px;
 `;
 const Dot = styled.div`
   width: 12px;
@@ -132,40 +138,6 @@ const ProjectInfoSwiper = ({ setInfoOpen, pages }) => {
   return (
     <Wrapper>
       <FlexWrapper>
-        <ArrowWrapper>
-          <div
-            style={active !== 0 ? {} : { pointerEvents: "none", opacity: 0.5 }}
-          >
-            <CustomIconButton
-              name="ArrowLeft"
-              backgroundColor="#fed957"
-              shadow={false}
-              handleButtonClick={handlePrev}
-              small={true}
-            />
-          </div>
-
-          <div
-            style={
-              active !== pages.length - 1
-                ? {}
-                : { pointerEvents: "none", opacity: 0.5 }
-            }
-          >
-            <CustomIconButton
-              name="ArrowRight"
-              backgroundColor="#fed957"
-              marginLeft="10px"
-              handleButtonClick={handleNext}
-              small={true}
-            />
-          </div>
-        </ArrowWrapper>
-        <DotWrapper>
-          {pages.map(({ id }) => (
-            <Dot active={id === active} />
-          ))}
-        </DotWrapper>
         {pages.map(({ title, text, id }) => (
           <HorizontalSwipeCard {...bind()} active={id === active} style={props}>
             <StyledH2
@@ -200,6 +172,43 @@ const ProjectInfoSwiper = ({ setInfoOpen, pages }) => {
           </HorizontalSwipeCard>
         ))}
       </FlexWrapper>
+
+      <ArrowWrapper>
+        <div
+          style={active !== 0 ? {} : { pointerEvents: "none", opacity: 0.5 }}
+        >
+          <CustomIconButton
+            name="ArrowLeft"
+            backgroundColor={active !== 0 ? "#fed957" : "#F4EACA"}
+            shadow={false}
+            handleButtonClick={handlePrev}
+            small={true}
+          />
+        </div>
+
+        <div
+          style={
+            active !== pages.length - 1
+              ? {}
+              : { pointerEvents: "none", opacity: 0.5 }
+          }
+        >
+          <CustomIconButton
+            name="ArrowRight"
+            backgroundColor={
+              active !== pages.length - 1 ? "#fed957" : "#F4EACA"
+            }
+            marginLeft="10px"
+            handleButtonClick={handleNext}
+            small={true}
+          />
+        </div>
+      </ArrowWrapper>
+      {/* <DotWrapper>
+        {pages.map(({ id }) => (
+          <Dot active={id === active} />
+        ))}
+      </DotWrapper> */}
     </Wrapper>
   );
 };

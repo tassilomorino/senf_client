@@ -120,11 +120,13 @@ export const loadProjectRoomData = (projectRoomId) => async (dispatch) => {
     storageRef
       .child(
         `/organizationsData/${doc.data().organizationId}/${doc.id}/thumbnail`
+
+        // `/organizationsData/${doc.data().organizationId}/${doc.id}/thumbnail`
       )
       .getDownloadURL()
       .then((image) => {
         const projectRoom = doc.data();
-        projectRoom.imgUrl = image;
+        projectRoom.ownerImg = image;
         projectRoom.screams = [];
 
         screamsRef.docs.forEach((doc) =>

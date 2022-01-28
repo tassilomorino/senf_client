@@ -46,6 +46,7 @@ const ProjectDialog = ({
   const project = useSelector((state) => state.data.project);
   const projects = useSelector((state) => state.data.projects);
 
+  console.log(project);
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.data.loading);
   const loadingUI = useSelector((state) => state.UI.loading);
@@ -137,9 +138,7 @@ const ProjectDialog = ({
         <Header
           infoOpen={infoOpen}
           setInfoOpen={setInfoOpen}
-          imgUrl={project?.imgUrl}
           title={project?.title}
-          owner={project?.owner}
           loading={loading}
           calendar={project?.calendar}
           order={order}
@@ -156,6 +155,7 @@ const ProjectDialog = ({
           startDate={project?.startDate}
           endDate={project?.endDate}
           owner={project?.owner}
+          ownerImg={project?.ownerImg}
           infoOpen={infoOpen}
           setInfoOpen={setInfoOpen}
         />

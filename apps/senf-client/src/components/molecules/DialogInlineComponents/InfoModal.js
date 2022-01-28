@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import {
   StyledH2,
   StyledH3,
+  StyledImg,
   StyledSmallText,
   StyledText,
 } from "../../../styles/GlobalStyle";
@@ -27,10 +28,11 @@ const Card = styled.div`
 
   border-radius: 0 0 18px 18px;
   height: ${(props) => (props.infoOpen ? "1400px" : "0px")};
-  max-height: 90%;
+  max-height: calc(100% - 70px);
   transition: 0.5s;
-  overflow: hidden;
-  background-color: white;
+  overflow: scroll;
+  background-color: rgb(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.4);
   pointer-events: all;
   animation: clippathDownAnimation 0.5s;
@@ -39,11 +41,45 @@ const Card = styled.div`
     position: relative;
   } */
 `;
-
-const CloseTextWrapper = styled.div`
+const CardInnerWrapper = styled.div`
+  height: calc(100% - 60px);
+  overflow: scroll;
+  background-color: #fff7dd;
+  /* box-shadow: inset 0 -10px 10px -10px #000000; */
+`;
+const LowerWrapper = styled.div`
+  position: relative;
+  background-color: #fed957;
+  height: 30vh;
+  margin-top: 100px;
+`;
+const OwnerWrapper = styled.div`
   position: absolute;
-  bottom: 10px;
-  right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 60px;
+
+  width: calc(100% - 40px);
+  margin-left: 20px;
+`;
+const OrganizationLogoWrapper = styled.div`
+  width: 60px;
+  height: 60px;
+  background-color: white;
+  border-radius: 100%;
+  overflow: hidden;
+`;
+const CloseTextWrapper = styled.div`
+  position: fixed;
+
+  display: flex;
+  justify-content: space-between;
+  bottom: 0px;
+
+  width: calc(100% - 40px);
+  padding: 20px;
+  margin-left: 0px;
 `;
 
 const ProjectInfo = ({
@@ -55,6 +91,7 @@ const ProjectInfo = ({
   startDate,
   endDate,
   owner,
+  ownerImg,
 }) => {
   const { t } = useTranslation();
   const loading = useSelector((state) => state.UI.loading);
@@ -88,24 +125,87 @@ const ProjectInfo = ({
       id: 3,
     },
   ];
-
   return (
     !loading && (
       <Card isMobileCustom={isMobileCustom} infoOpen={infoOpen}>
-        <ProjectInfoSwiper setInfoOpen={setInfoOpen} pages={pages} />
-        <StyledH3 textAlign="center" margin="0px 0px 5px 0px">
+        <CardInnerWrapper>
+          <ProjectInfoSwiper setInfoOpen={setInfoOpen} pages={pages} />
+          {/* <StyledH3 textAlign="center" margin="0px 0px 5px 0px">
           Kontakt
-        </StyledH3>
+        </StyledH3> */}
 
+          <LowerWrapper>
+            <div
+              style={{
+                position: "absolute",
+                bottom: "150px",
+                zIndex: 9,
+                marginLeft: "50%",
+                transform: "translateX(-50%)",
+              }}
+            >
+              {weblink && (
+                <SubmitButton
+                  text={t("more_info")}
+                  zIndex="999"
+                  backgroundColor="white"
+                  textColor="#353535"
+                  onClick={() => openLink(weblink)}
+                  shadow={false}
+                  smallSubmitButton={true}
+                  iconLeft={true}
+                  name="Weblink"
+                  iconWidth="16px"
+                />
+              )}
+              {contact && (
+                <SubmitButton
+                  text={t("contact")}
+                  zIndex="999"
+                  backgroundColor="white"
+                  textColor="#353535"
+                  onClick={() => openMail(contact)}
+                  shadow={false}
+                  smallSubmitButton={true}
+                  iconLeft={true}
+                  name="Contact"
+                  iconWidth="22px"
+                  margin="5px 0px 0px 0px"
+                />
+              )}
+            </div>
+
+            <svg
+              width="100%"
+              height="256px"
+              preserveAspectRatio="none"
+              viewBox="0 0 100% 100%"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{ marginTop: "-100px" }}
+            >
+              <path
+                d="M171.395 45.7513C70.8434 16.0674 15.2351 51.7064 0 73.2365V278H402V10.8039C348.815 -13.383 323.357 8.61124 311.822 22.7511C292.936 45.9001 271.947 75.4353 171.395 45.7513Z"
+                fill="#fed957"
+              />
+            </svg>
+
+            <OwnerWrapper>
+              <OrganizationLogoWrapper>
+                <StyledImg src={ownerImg} width="100%" alt="organizationIcon" />
+              </OrganizationLogoWrapper>
+              <div style={{ marginLeft: "10px" }}>
+                <StyledText>Ein Projektraum von:</StyledText>
+                <StyledH3 fontWeight="900">{owner}</StyledH3>
+              </div>
+            </OwnerWrapper>
+          </LowerWrapper>
+        </CardInnerWrapper>
         <CloseTextWrapper onClick={() => setInfoOpen(false)}>
-          <StyledText margin="0px 0px 5px 0px">Schließen</StyledText>
-          <StyledSmallText
-            margin="0px 0px 0px 0px"
-            marginLeft="20px"
-            style={{ opacity: 0.5 }}
-          >
+          <StyledSmallText style={{ opacity: 0.5 }}>
             Nicht mehr anzeigen
           </StyledSmallText>
+          <StyledText>Schließen</StyledText>
         </CloseTextWrapper>
       </Card>
     )
