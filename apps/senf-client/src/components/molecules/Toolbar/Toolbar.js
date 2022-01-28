@@ -17,6 +17,7 @@ import { setSwipePositionUp } from "../../../redux/actions/UiActions";
 import Searchbar from "../../atoms/Searchbar/Searchbar";
 import { openCreateProjectRoomFunc } from "../../../redux/actions/projectActions";
 import { stateCreateOrganizationsFunc } from "../../../redux/actions/organizationActions";
+import CustomSelect from "../../atoms/Selects/CustomSelect";
 
 const Wrapper = styled.div`
   display: flex;
@@ -152,25 +153,45 @@ const Toolbar = ({
     !loading && (
       <Wrapper marginTop={marginTop} searchOpen={searchOpen}>
         {swipeListType === "ideas" ? (
-          <SortingSelect
-            label={t("ideas")}
+          <CustomSelect
+            name={t("newest_ideas")}
+            value={dropdown}
+            initialValue={dropdown}
+            options={[
+              { name: "newest", label: t("newest_ideas") },
+              { name: "hottest", label: t("hottest_ideas") },
+            ]}
             handleDropdown={handleDropdown}
-            dropdown={dropdown}
           />
-        ) : swipeListType === "projectRoomOverview" ? (
-          <SortingSelect
-            label={t("projectRooms")}
+        ) : // <SortingSelect
+        //   label={t("ideas")}
+        //   handleDropdown={handleDropdown}
+        //   dropdown={dropdown}
+        // />
+        swipeListType === "projectRoomOverview" ? (
+          <CustomSelect
+            name={t("newest_projectrooms")}
+            value={dropdown}
+            initialValue={dropdown}
+            options={[
+              { name: "newest", label: t("newest_projectrooms") },
+              { name: "aToZ", label: t("aToZ_projectrooms") },
+              { name: "zToA", label: t("zToA_projectrooms") },
+            ]}
             handleDropdown={handleDropdown}
-            dropdown={dropdown}
-            placing="basicSorting"
           />
         ) : (
           swipeListType === "organizationOverview" && (
-            <SortingSelect
-              label={t("organizations")}
+            <CustomSelect
+              name={t("newest_organizations")}
+              value={dropdown}
+              initialValue={dropdown}
+              options={[
+                { name: "newest", label: t("newest_organizations") },
+                { name: "aToZ", label: t("aToZ_organizations") },
+                { name: "zToA", label: t("zToA_organizations") },
+              ]}
               handleDropdown={handleDropdown}
-              dropdown={dropdown}
-              placing="basicSorting"
             />
           )
         )}
