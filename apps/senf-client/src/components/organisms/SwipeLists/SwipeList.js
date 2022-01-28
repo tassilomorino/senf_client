@@ -90,6 +90,7 @@ const SlideUpSection = styled(animated.div)`
   position: relative;
   z-index: 9;
   overflow: hidden;
+
   /* @media (min-width: 768px) {
     margin-top: 40px;
   } */
@@ -169,9 +170,8 @@ const SwipeList = ({
   const project = useSelector((state) => state.data.project);
   const [searchOpen, setSearchOpen] = useState(false);
   const mapBounds = useSelector((state) => state.data.mapBounds);
-
   const swipePosition = useSelector((state) => state.UI.swipePosition);
-  const [scrollTop, setScrollTop] = useState(0);
+
   const [props, set] = useSpring(() => ({
     x: 0,
     y: 0,
@@ -180,7 +180,6 @@ const SwipeList = ({
     overflow: "scroll",
     touchAction: "none",
     userSelect: "none",
-    overflow: "hidden",
   }));
 
   const [slideUpSectionProps, setSlideUpSectionProps] = useSpring(() => ({
@@ -255,12 +254,6 @@ const SwipeList = ({
     }
   }, [swipePosition]);
 
-  // useEffect(() => {
-  //   if (!isMobileCustom) {
-  //     setSwipeUp();
-  //   }
-  // }, []);
-
   const bind = useDrag(
     ({ last, down, movement: [, my], offset: [, y] }) => {
       if (last && my > 50) {
@@ -307,7 +300,7 @@ const SwipeList = ({
 
   const ref = useRef();
 
-  const sectionFastLinks = !openAccount && (
+  const sectionFastLinks = !openAccount && swipePosition === "top" && (
     <React.Fragment>
       {order === 1 && (
         <SlideUpSection style={slideUpSectionProps}>
@@ -407,9 +400,6 @@ const SwipeList = ({
                 </div>
               </animated.div>
             </ListHeaderWrapper>
-
-            {/* <ShadowBox display={shadow ? "block" : "none"} /> */}
-
             <ListWrapper ref={ref} id="ListWrapper">
               {sectionFastLinks}
 
@@ -445,7 +435,6 @@ const SwipeList = ({
   ) : (
     <DragWrapper>
       <Content>
-        {/* <Background /> */}
         {openProjectRoom && (
           <DesktopTabWrapper>
             <Tabs

@@ -30,6 +30,7 @@ const WaveCanvas = ({ canvasRef, props }) => {
         bottom: 0,
         position: "absolute",
         opacity: scrollOpacity,
+        zIndex: -1,
       }}
       ref={canvasRef}
       {...props}

@@ -17,20 +17,19 @@ import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 100%;
+  height: 350px;
 `;
 
 const FlexWrapper = styled.div`
   display: flex;
   flex: none;
-
   width: 100%;
   height: 100%;
 `;
 
 const HorizontalSwipeCard = styled(animated.div)`
   width: 100%;
-  height: 400px;
+  height: 330px;
 
   flex: none;
 
@@ -44,11 +43,11 @@ const HorizontalSwipeCard = styled(animated.div)`
 `;
 
 const ArrowWrapper = styled.div`
-  bottom: 20px;
-  width: calc(50% + 25px);
+  top: 300px;
+  width: 100%;
   position: absolute;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   z-index: 9;
 `;
 
@@ -63,11 +62,11 @@ const ArrowLeft = styled.div`
   pointer-events: all;
   opacity: 1;
   transition: 0.5s;
+  background-color: #fed957;
 `;
 
 const ArrowRight = styled(ArrowLeft)`
   transform: rotate(180deg);
-  background-color: #fed957;
 `;
 
 const DotWrapper = styled.div`
@@ -78,12 +77,12 @@ const DotWrapper = styled.div`
   top: 0;
 `;
 const Dot = styled.div`
-  width: 25%;
-  height: 5px;
-  border-radius: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 100%;
   background-color: #fed957;
   opacity: ${(props) => (props.active ? 1 : 0.5)};
-  margin: 0px 0px 0px 0px;
+  margin: 10px 10px 10px 10px;
 `;
 
 const ProjectInfoSwiper = ({ setInfoOpen, pages }) => {
@@ -134,21 +133,33 @@ const ProjectInfoSwiper = ({ setInfoOpen, pages }) => {
     <Wrapper>
       <FlexWrapper>
         <ArrowWrapper>
-          {active !== 0 && (
+          <div
+            style={active !== 0 ? {} : { pointerEvents: "none", opacity: 0.5 }}
+          >
             <CustomIconButton
               name="ArrowLeft"
-              backgroundColor="transparent"
+              backgroundColor="#fed957"
               shadow={false}
               handleButtonClick={handlePrev}
+              small={true}
             />
-          )}
-          {active !== pages.length - 1 && (
+          </div>
+
+          <div
+            style={
+              active !== pages.length - 1
+                ? {}
+                : { pointerEvents: "none", opacity: 0.5 }
+            }
+          >
             <CustomIconButton
               name="ArrowRight"
               backgroundColor="#fed957"
+              marginLeft="10px"
               handleButtonClick={handleNext}
+              small={true}
             />
-          )}
+          </div>
         </ArrowWrapper>
         <DotWrapper>
           {pages.map(({ id }) => (

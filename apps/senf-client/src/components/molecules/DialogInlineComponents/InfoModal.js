@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 // Images
 import {
   StyledH2,
+  StyledH3,
   StyledSmallText,
   StyledText,
 } from "../../../styles/GlobalStyle";
@@ -18,14 +19,14 @@ const Card = styled.div`
   position: fixed;
 
   z-index: 9999;
-  display: flex;
+
   margin-top: ${(props) => (props.isMobileCustom ? " 60px" : "0px")};
   margin-left: 10px;
 
   width: ${(props) => (props.isMobileCustom ? " calc(100% - 20px)" : "380px")};
 
   border-radius: 0 0 18px 18px;
-  height: ${(props) => (props.infoOpen ? "400px" : "0px")};
+  height: ${(props) => (props.infoOpen ? "1400px" : "0px")};
   max-height: 90%;
   transition: 0.5s;
   overflow: hidden;
@@ -92,6 +93,10 @@ const ProjectInfo = ({
     !loading && (
       <Card isMobileCustom={isMobileCustom} infoOpen={infoOpen}>
         <ProjectInfoSwiper setInfoOpen={setInfoOpen} pages={pages} />
+        <StyledH3 textAlign="center" margin="0px 0px 5px 0px">
+          Kontakt
+        </StyledH3>
+
         <CloseTextWrapper onClick={() => setInfoOpen(false)}>
           <StyledText margin="0px 0px 5px 0px">Schließen</StyledText>
           <StyledSmallText
