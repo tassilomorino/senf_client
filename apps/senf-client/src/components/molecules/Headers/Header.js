@@ -101,7 +101,15 @@ const Header = ({
             backgroundColor="transparent"
             handleButtonClick={handleClose}
           />
-          <StyledH2 fontWeight="900">
+          <StyledH2
+            fontWeight="900"
+            textAlign="center"
+            style={
+              infoOpen
+                ? { width: "100%", transition: "0.5s" }
+                : { width: "0%", transition: "0.5s" }
+            }
+          >
             {type === "account"
               ? truncateString("Hey " + userHandle, amount)
               : title && truncateString(title, amount)}

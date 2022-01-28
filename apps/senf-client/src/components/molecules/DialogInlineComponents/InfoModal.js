@@ -20,21 +20,21 @@ import { ModalBackground } from "../../atoms/Backgrounds/ModalBackground";
 const Card = styled.div`
   position: fixed;
 
-  z-index: 9999;
+  z-index: 997;
 
-  margin-top: ${(props) => (props.isMobileCustom ? " 60px" : "0px")};
+  margin-top: ${(props) => (props.isMobileCustom ? " 10px" : "-50px")};
   margin-left: 10px;
 
   width: ${(props) => (props.isMobileCustom ? " calc(100% - 20px)" : "380px")};
 
-  border-radius: 0 0 18px 18px;
+  border-radius: 18px;
   height: ${(props) => (props.infoOpen ? "1400px" : "0px")};
-  max-height: calc(100% - 70px);
+  max-height: calc(100% - 20px);
   transition: 0.5s;
   overflow: hidden;
   background-color: rgb(255, 255, 255, 0.6);
   backdrop-filter: ${(props) => (props.infoOpen ? "blur(10px)" : "none")};
-  box-shadow: 0 8px 40px -32px rgba(0, 0, 0, 0.4);
+  /* box-shadow: 0 8px 40px -35px rgba(0, 0, 0, 0.4); */
   pointer-events: all;
   animation: clippathDownAnimation 0.5s;
 
@@ -53,7 +53,7 @@ const CardInnerWrapper = styled.div`
 const LowerWrapper = styled.div`
   position: relative;
   background-color: #fed957;
-  height: 30vh;
+  height: 40vh;
   margin-top: 100px;
   padding-bottom: 100px;
 `;
@@ -232,7 +232,7 @@ const ProjectInfo = ({
             <Gradient />
           </CardInnerWrapper>
           <SubmitButton
-            text={t("Schließen")}
+            text={t("Zum Projektraum")}
             handleButtonClick={() => setInfoOpen(false)}
             zIndex="999"
             position={"absolute"}

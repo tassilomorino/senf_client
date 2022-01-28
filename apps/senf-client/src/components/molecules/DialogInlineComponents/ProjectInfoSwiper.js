@@ -9,9 +9,6 @@ import { useDrag } from "@use-gesture/react";
 
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
-import Arrow from "../../../images/icons/arrow.png";
-import { truncateString } from "../../../hooks/truncateString";
-import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { StyledH2, StyledText } from "apps/senf-client/src/styles/GlobalStyle";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 
@@ -20,7 +17,7 @@ const Wrapper = styled.div`
   margin: 0px;
 
   height: auto;
-  margin-top: 20px;
+  margin-top: 50px;
   /* border: 2px solid #fed957;
   border-radius: 18px;
   background-color: #fff7dd; */

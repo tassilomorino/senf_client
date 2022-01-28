@@ -30,7 +30,8 @@ export const InnerWrapper = styled.div`
   width: calc(100% - 20px);
   height: 50px;
   top: 0px;
-  transition: 0.4s;
+  transition: 0.2s;
+
   pointer-events: all;
   background-color: ${(props) =>
     props.infoOpen ? "#fff7dd" : "rgb(255, 255, 255, 0.6)"};
@@ -43,7 +44,7 @@ export const InnerWrapper = styled.div`
 
 export const FlexWrapper = styled.div`
   position: relative;
-  width: 78.5%;
+  width: calc(100% - 50px);
   height: 50px;
   top: 0px;
   left: 0;

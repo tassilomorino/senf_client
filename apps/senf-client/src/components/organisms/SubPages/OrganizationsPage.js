@@ -199,6 +199,7 @@ const OrganizationsPage = ({ setOpenOrganizationsPage, order, loading }) => {
             marginTop="0px"
             loading={loadingOrganizations}
             handleDropdown={handleDropdown}
+            dropdown={dropdown}
             dataFinalLength={dataFinalLength}
             setSearchOpen={setSearchOpen}
             searchOpen={searchOpen}
