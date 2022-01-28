@@ -77,7 +77,7 @@ const ListWrapper = styled.div`
   top: 0;
   pointer-events: all;
   animation: cardanimation 0.8s ease-in-out;
-
+  z-index: 999999;
   @media (min-width: 768px) {
     width: 400px;
     overflow-x: hidden;
@@ -88,7 +88,7 @@ const ListWrapper = styled.div`
 const SlideUpSection = styled(animated.div)`
   height: 140px;
   position: relative;
-  z-index: 9;
+  z-index: 0;
   overflow: hidden;
 
   /* @media (min-width: 768px) {
@@ -187,7 +187,7 @@ const SwipeList = ({
     height: isMobileCustom ? "0px" : "160px",
     position: "relative",
     top: 0,
-    zIndex: 91,
+    zIndex: -1,
     overflow: "hidden",
   }));
 
@@ -300,7 +300,7 @@ const SwipeList = ({
 
   const ref = useRef();
 
-  const sectionFastLinks = !openAccount && swipePosition === "top" && (
+  const sectionFastLinks = !openAccount && (
     <React.Fragment>
       {order === 1 && (
         <SlideUpSection style={slideUpSectionProps}>
@@ -380,7 +380,7 @@ const SwipeList = ({
                     order={order}
                     tabLabels={tabLabels}
                     marginTop={"20px"}
-                    marginBottom={"20px"}
+                    marginBottom={"15px"}
                   />
 
                   {(order === 1 || order === 2) && (
