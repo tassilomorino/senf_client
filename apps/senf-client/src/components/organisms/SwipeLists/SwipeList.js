@@ -307,7 +307,8 @@ const SwipeList = ({
         <SlideUpSection style={slideUpSectionProps}>
           <OrganizationsIntroWrapper>
             <OrganizationsIntro>
-              Verschaff dir einen schnellen Einblick durch Statistiken.
+              Verschaff dir einen schnellen Einblick durch{" "}
+              <span style={{ fontWeight: "900" }}>Statistiken</span>.
             </OrganizationsIntro>
             <CustomIconButton
               name="ArrowRight"
@@ -335,7 +336,9 @@ const SwipeList = ({
         <SlideUpSection style={slideUpSectionProps}>
           <OrganizationsIntroWrapper>
             <OrganizationsIntro>
-              Entdecke die Organisationen hinter den Projekträumen.
+              Entdecke die{" "}
+              <span style={{ fontWeight: "900" }}>Organisationen </span>hinter
+              den Projekträumen.
             </OrganizationsIntro>
             <CustomIconButton
               name="ArrowRight"

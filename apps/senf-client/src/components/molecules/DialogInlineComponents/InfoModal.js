@@ -28,7 +28,7 @@ const Card = styled.div`
   width: ${(props) => (props.isMobileCustom ? " calc(100% - 20px)" : "380px")};
 
   border-radius: 18px;
-  height: ${(props) => (props.infoOpen ? "1400px" : "0px")};
+  height: ${(props) => (props.infoOpen ? "700px" : "0px")};
   max-height: calc(100% - 20px);
   transition: 0.5s;
   overflow: hidden;
@@ -53,9 +53,9 @@ const CardInnerWrapper = styled.div`
 const LowerWrapper = styled.div`
   position: relative;
   background-color: #fed957;
-  height: 40vh;
+  height: 260px;
   margin-top: 100px;
-  padding-bottom: 100px;
+  padding-bottom: 80px;
 `;
 
 const Gradient = styled.div`

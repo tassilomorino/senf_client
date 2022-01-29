@@ -39,6 +39,7 @@ import { Logo, Tabs } from "./styles/sharedStyles";
 import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
 import styled from "styled-components";
 import { SideBarTabs, StyledH2 } from "../../../styles/GlobalStyle";
+import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 
 const FilterWrapper = styled.div`
   overflow: hidden;
@@ -209,12 +210,14 @@ const DesktopSidebar = ({
           height: "150px",
         }}
       />
-      {/* {process.env.REACT_APP_INTERNATIONAL &&
-          process.env.REACT_APP_INTERNATIONAL === "true" && (
-            <CustomButton handleButtonClick={setChangeLocationModalOpen}>
-              Stadt ändern
-            </CustomButton>
-          )} */}
+      {process.env.REACT_APP_INTERNATIONAL &&
+        process.env.REACT_APP_INTERNATIONAL === "true" && (
+          <SubmitButton
+            handleButtonClick={setChangeLocationModalOpen}
+            shadow={false}
+            text="Stadt ändern"
+          ></SubmitButton>
+        )}
       <a
         href="https://www.facebook.com/senf.koeln/"
         rel="noopener noreferrer"
