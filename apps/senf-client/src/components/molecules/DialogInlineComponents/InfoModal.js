@@ -152,7 +152,7 @@ const ProjectInfo = ({
       <React.Fragment>
         {infoOpen && <ModalBackground onClick={() => setInfoOpen(false)} />}
         <Card isMobileCustom={isMobileCustom} infoOpen={infoOpen}>
-          <CardInnerWrapper>
+          <CardInnerWrapper id="SwiperOuterWrapper">
             <ProjectInfoSwiper setInfoOpen={setInfoOpen} pages={pages} />
             {/* <StyledH3 textAlign="center" margin="0px 0px 5px 0px">
           Kontakt

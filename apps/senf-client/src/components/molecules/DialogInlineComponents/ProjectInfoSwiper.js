@@ -107,7 +107,7 @@ const ProjectInfoSwiper = ({ setInfoOpen, pages }) => {
   };
 
   const bind = useDrag(
-    ({ event, down, distance, last, direction, movement: [mx] }) => {
+    ({ event, down, distance, last, direction, movement: [mx, my] }) => {
       if (last && distance[0] > 50) {
         event.preventDefault();
         if (direction[0] === 1) {
@@ -117,6 +117,15 @@ const ProjectInfoSwiper = ({ setInfoOpen, pages }) => {
         }
       }
       set({ x: down ? mx : 0 });
+
+      if (distance[1] > 50) {
+        const element = document.getElementById("SwiperOuterWrapper");
+        console.log(my);
+        element?.scrollTo({
+          top: -my,
+          left: 0,
+        });
+      }
     }
   );
 
