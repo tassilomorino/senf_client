@@ -57,14 +57,14 @@ const Wrapper = styled.div`
 
 const LogoContainer = styled.div`
   position: absolute;
-  top: 0px;
-  height: 55px;
-  width: 150px;
-  margin-left: calc(50% - 75px);
+  top: 10px;
+  height: 50px;
+  width: calc(100% - 40px);
+  margin-left: 20px;
   z-index: 99;
   text-align: center;
-  background-color: rgb(255, 255, 255, 0.8);
-  border-radius: 0 0 18px 18px;
+  background-color: rgb(255, 255, 255, 0.6);
+  border-radius: 18px;
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
@@ -78,15 +78,15 @@ const ProfileButtonContainer = styled.div`
   z-index: 999;
   width: 50px;
   right: 20px;
-  top: 5px;
+  top: 10px;
   height: 50px;
   font-size: 0;
   pointer-events: pointer;
-  background-color: rgb(255, 255, 255, 0.8);
+  /* background-color: rgb(255, 255, 255, 0.8);
   border-radius: 100%;
   -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.8);
+   backdrop-filter: blur(10px);
+  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.8); */
 `;
 
 const InlineInfoButtonContainer = styled.div`
@@ -97,15 +97,15 @@ const InlineInfoButtonContainer = styled.div`
   z-index: 999;
   width: 50px;
   left: 20px;
-  top: 5px;
+  top: 10px;
   height: 50px;
   font-size: 0;
   pointer-events: pointer;
-  background-color: rgb(255, 255, 255, 0.8);
+  /* background-color: rgb(255, 255, 255, 0.8);
   border-radius: 100%;
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.8); */
 `;
 
 const CenteredImg = styled.img`
