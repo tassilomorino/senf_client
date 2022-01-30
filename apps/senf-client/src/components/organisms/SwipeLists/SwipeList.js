@@ -429,7 +429,7 @@ const SwipeList = ({
                 projectScreams={project?.screams}
                 handleClick={handleClick}
               />
-            )}{" "}
+            )}
             <Wave />
           </ListWrapper>
         </React.Fragment>
