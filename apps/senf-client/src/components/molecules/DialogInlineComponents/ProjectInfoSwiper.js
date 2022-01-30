@@ -120,10 +120,10 @@ const ProjectInfoSwiper = ({ setInfoOpen, pages }) => {
 
       if (distance[1] > 50) {
         const element = document.getElementById("SwiperOuterWrapper");
-        console.log(my);
         element?.scrollTo({
           top: -my,
           left: 0,
+          behavior: "smooth",
         });
       }
     }

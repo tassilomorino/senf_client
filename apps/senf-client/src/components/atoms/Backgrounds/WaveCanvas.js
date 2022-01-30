@@ -25,7 +25,7 @@ const WaveCanvas = ({ canvasRef, props }) => {
         display: "block",
         width: "600px",
         height: isMobileCustom
-          ? `calc(100% - (-30px + ${scrollPercentage}px))`
+          ? `calc(100% - (100px + ${scrollPercentage}px))`
           : `calc(100% - (-0px + ${scrollPercentage}px))`,
         bottom: 0,
         position: "absolute",

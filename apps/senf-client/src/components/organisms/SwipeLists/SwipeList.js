@@ -187,6 +187,7 @@ const SwipeList = ({
     transform: `translateY(${0}px)`,
     height: isMobileCustom ? "0px" : "160px",
     position: "relative",
+
     top: 0,
     zIndex: -1,
     overflow: "hidden",
@@ -413,7 +414,6 @@ const SwipeList = ({
                 <div style={{ height: "0px", transition: "0.5s" }} />
               )}
 
-              <Wave />
               {!loading && (order === 1 || order === 2) && (
                 <List
                   swipeListType={swipeListType}
@@ -432,6 +432,7 @@ const SwipeList = ({
                 />
               )}
             </ListWrapper>
+            <Wave />
           </React.Fragment>
         )}
       </DragWrapper>
