@@ -1,9 +1,11 @@
 /** @format */
 
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
+import { logoutUser } from "../../../redux/actions/userActions";
+
 // Images
 import {
   StyledH2,
@@ -28,7 +30,7 @@ const Card = styled.div`
   width: ${(props) => (props.isMobileCustom ? " calc(100% - 20px)" : "380px")};
 
   border-radius: 18px;
-  height: ${(props) => (props.infoOpen ? "700px" : "0px")};
+  height: ${(props) => (props.infoOpen ? "auto" : "0px")};
   max-height: calc(100% - 20px);
   transition: 0.5s;
   overflow: hidden;
@@ -55,23 +57,37 @@ const LowerWrapper = styled.div`
   background-color: #fed957;
   height: 260px;
   margin-top: 100px;
-  padding-bottom: 80px;
+  padding-bottom: ${(props) =>
+    props.weblink && props.contact ? "80px" : "0px"};
+`;
+
+const ButtonsWrapper = styled.div`
+  position: absolute;
+  bottom: ${(props) =>
+    props.weblink && props.contact
+      ? "250px"
+      : !props.contact || !props.weblink
+      ? "230px"
+      : "150px"};
+  z-index: 9;
+  margin-left: 50%;
+  transform: translateX(-50%);
 `;
 
 const Gradient = styled.div`
+  position: absolute;
+  pointer-events: none;
+  z-index: 9;
+  bottom: 0px;
+  width: 100%;
+  height: 100px;
+  background: rgb(0, 0, 0);
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
   @media screen and (max-height: 668px) {
-    position: absolute;
-    pointer-events: none;
-    z-index: 9;
-    bottom: 0px;
-    width: 100%;
-    height: 100px;
-    background: rgb(0, 0, 0);
-    background: linear-gradient(
-      0deg,
-      rgba(0, 0, 0, 0.5) 0%,
-      rgba(0, 0, 0, 0) 100%
-    );
   }
 `;
 const OwnerWrapper = styled.div`
@@ -79,7 +95,7 @@ const OwnerWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  bottom: 160px;
+  bottom: 140px;
 
   width: calc(100% - 40px);
   margin-left: 20px;
@@ -104,6 +120,15 @@ const CloseTextWrapper = styled.div`
   margin-left: 0px;
 `;
 
+const DeleteButton = styled.div`
+  width: 100%;
+  text-align: center;
+  margin-top: 30px;
+  text-decoration: underline;
+  position: relative;
+  cursor: pointer;
+`;
+
 const ProjectInfo = ({
   infoOpen,
   setInfoOpen,
@@ -116,12 +141,41 @@ const ProjectInfo = ({
   ownerImg,
 }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
   const loading = useSelector((state) => state.UI.loading);
+  const handle = useSelector((state) => state.user.handle);
+
+  const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
+  const openAccount = useSelector((state) => state.UI.openAccount);
+
   const openLink = (weblink) => {
     window.open(`https://${weblink}`, "_blank");
   };
   const openMail = (contact) => {
     window.location.href = "mailto:" + contact;
+  };
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+  };
+
+  const deleteAccount = () => {
+    var link =
+      "mailto:dein@senf.koeln" +
+      "?subject=" +
+      escape("Bitte um Account-loeschung") +
+      "&body=" +
+      escape(
+        "Bitte loeschen Sie meinen Account." +
+          "\n" +
+          "\n" +
+          "Mein Nutzername lautet:" +
+          "\n" +
+          "\n" +
+          handle
+      );
+    window.location.href = link;
   };
 
   const pages = [
@@ -153,21 +207,29 @@ const ProjectInfo = ({
         {infoOpen && <ModalBackground onClick={() => setInfoOpen(false)} />}
         <Card isMobileCustom={isMobileCustom} infoOpen={infoOpen}>
           <CardInnerWrapper id="SwiperOuterWrapper">
-            <ProjectInfoSwiper setInfoOpen={setInfoOpen} pages={pages} />
+            {openProjectRoom && (
+              <ProjectInfoSwiper setInfoOpen={setInfoOpen} pages={pages} />
+            )}
+            {openAccount && (
+              <StyledText
+                textAlign="center"
+                margin="80px 20px 20px 20px "
+                marginLeft="20px"
+              >
+                {t("account_contact")}
+                <br />
+                <br />
+                {t("your")} Senf.koeln-Team
+                <br />
+              </StyledText>
+            )}
+
             {/* <StyledH3 textAlign="center" margin="0px 0px 5px 0px">
           Kontakt
         </StyledH3> */}
 
-            <LowerWrapper>
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "250px",
-                  zIndex: 9,
-                  marginLeft: "50%",
-                  transform: "translateX(-50%)",
-                }}
-              >
+            <LowerWrapper weblink={weblink} contact={contact}>
+              <ButtonsWrapper>
                 {weblink && (
                   <SubmitButton
                     text={t("more_info")}
@@ -198,7 +260,7 @@ const ProjectInfo = ({
                     margin="5px 0px 0px 0px"
                   />
                 )}
-              </div>
+              </ButtonsWrapper>
 
               <svg
                 width="100%"
@@ -214,20 +276,42 @@ const ProjectInfo = ({
                   fill="#fed957"
                 />
               </svg>
-
-              <OwnerWrapper>
-                <OrganizationLogoWrapper>
-                  <StyledImg
-                    src={ownerImg}
-                    width="100%"
-                    alt="organizationIcon"
+              {openProjectRoom && (
+                <OwnerWrapper>
+                  <OrganizationLogoWrapper>
+                    <StyledImg
+                      src={ownerImg}
+                      width="100%"
+                      alt="organizationIcon"
+                    />
+                  </OrganizationLogoWrapper>
+                  <div style={{ marginLeft: "10px" }}>
+                    <StyledText>Ein Projektraum von:</StyledText>
+                    <StyledH3 fontWeight="900">{owner}</StyledH3>
+                  </div>
+                </OwnerWrapper>
+              )}
+              {openAccount && (
+                <ButtonsWrapper>
+                  <SubmitButton
+                    text={t("logout")}
+                    zIndex="999"
+                    backgroundColor="white"
+                    textColor="#353535"
+                    onClick={handleLogout}
+                    shadow={false}
+                    smallSubmitButton={true}
+                    iconLeft={true}
+                    name="Contact"
+                    iconWidth="22px"
+                    margin="5px 0px 0px 0px"
                   />
-                </OrganizationLogoWrapper>
-                <div style={{ marginLeft: "10px" }}>
-                  <StyledText>Ein Projektraum von:</StyledText>
-                  <StyledH3 fontWeight="900">{owner}</StyledH3>
-                </div>
-              </OwnerWrapper>
+
+                  <DeleteButton onClick={deleteAccount}>
+                    {t("deteleAccount")}
+                  </DeleteButton>
+                </ButtonsWrapper>
+              )}
             </LowerWrapper>
             <Gradient />
           </CardInnerWrapper>
@@ -242,19 +326,6 @@ const ProjectInfo = ({
             shadow={false}
             margin="0 0 0 0"
           />
-          {/* <CloseTextWrapper onClick={() => setInfoOpen(false)}>
-          <StyledSmallText style={{ opacity: 0.5 }}>
-            Nicht mehr anzeigen
-          </StyledSmallText>
-          <SubmitButton
-            text={t("close")}
-            zIndex="999"
-            backgroundColor="white"
-            textColor="#353535"
-            shadow={false}
-            margin="0 0 0 0"
-          />
-        </CloseTextWrapper> */}
         </Card>
       </React.Fragment>
     )
