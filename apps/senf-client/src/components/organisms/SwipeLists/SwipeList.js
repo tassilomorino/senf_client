@@ -26,6 +26,8 @@ import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 
 const DragWrapper = styled(animated.div)`
   overscroll-behavior: contain;
+  overflow-x: hidden;
+
   width: 100%;
   height: 100%;
   background: rgb(254, 217, 87);
@@ -366,77 +368,73 @@ const SwipeList = ({
     </React.Fragment>
   );
   return isMobileCustom ? (
-    <React.Fragment>
-      <DragWrapper
-        className={!loading && !openScream ? "" : "drag_hide"}
-        style={props}
-      >
-        {mapBounds?.latitude1 !== 0 && (
-          <React.Fragment>
-            <ListHeaderWrapper
-              isMobileCustom={true}
-              style={order === 3 ? { height: "60px" } : listHeaderProps}
-            >
-              <animated.div {...bind()} style={props} style={listHeaderProps}>
-                <div style={{ height: "60px", pointerEvents: "all" }}>
-                  <Tabs
-                    loading={loading}
-                    handleClick={handleClick}
-                    order={order}
-                    tabLabels={tabLabels}
-                    marginTop={"20px"}
-                    marginBottom={"15px"}
-                  />
-
-                  {(order === 1 || order === 2) && (
-                    <TagsFilter
-                      placing="list"
-                      type={order === 1 ? "topics" : "organizationType"}
-                    />
-                  )}
-
-                  <ClickBackground
-                    onClick={
-                      swipePosition === "bottom"
-                        ? () => setSwipeUp()
-                        : () => setSwipeDown()
-                    }
-                  />
-                </div>
-              </animated.div>
-            </ListHeaderWrapper>
-            <ListWrapper ref={ref} id="ListWrapper">
-              {sectionFastLinks}
-
-              {searchOpen ? (
-                <div style={{ height: "60px", transition: "0.5s" }} />
-              ) : (
-                <div style={{ height: "0px", transition: "0.5s" }} />
-              )}
-
-              {!loading && (order === 1 || order === 2) && (
-                <List
-                  swipeListType={swipeListType}
-                  order={order}
+    <DragWrapper
+      className={!loading && !openScream ? "" : "drag_hide"}
+      style={props}
+    >
+      {mapBounds?.latitude1 !== 0 && (
+        <React.Fragment>
+          <ListHeaderWrapper
+            isMobileCustom={true}
+            style={order === 3 ? { height: "60px" } : listHeaderProps}
+          >
+            <animated.div {...bind()} style={props} style={listHeaderProps}>
+              <div style={{ height: "60px", pointerEvents: "all" }}>
+                <Tabs
                   loading={loading}
-                  dropdown={dropdown}
-                  dataFinal={dataFinal}
-                  projectsData={projectsData}
                   handleClick={handleClick}
+                  order={order}
+                  tabLabels={tabLabels}
+                  marginTop={"20px"}
+                  marginBottom={"15px"}
                 />
-              )}
-              {order === 3 && (
-                <CalendarComponent
-                  projectScreams={project?.screams}
-                  handleClick={handleClick}
+
+                {(order === 1 || order === 2) && (
+                  <TagsFilter
+                    placing="list"
+                    type={order === 1 ? "topics" : "organizationType"}
+                  />
+                )}
+
+                <ClickBackground
+                  onClick={
+                    swipePosition === "bottom"
+                      ? () => setSwipeUp()
+                      : () => setSwipeDown()
+                  }
                 />
-              )}
-            </ListWrapper>
+              </div>
+            </animated.div>
+          </ListHeaderWrapper>
+          <ListWrapper ref={ref} id="ListWrapper">
+            {sectionFastLinks}
+            {searchOpen ? (
+              <div style={{ height: "60px", transition: "0.5s" }} />
+            ) : (
+              <div style={{ height: "0px", transition: "0.5s" }} />
+            )}
+            {!loading && (order === 1 || order === 2) && (
+              <List
+                swipeListType={swipeListType}
+                order={order}
+                loading={loading}
+                dropdown={dropdown}
+                dataFinal={dataFinal}
+                projectsData={projectsData}
+                handleClick={handleClick}
+              />
+            )}
+            {order === 3 && (
+              <CalendarComponent
+                projectScreams={project?.screams}
+                handleClick={handleClick}
+              />
+            )}{" "}
             <Wave />
-          </React.Fragment>
-        )}
-      </DragWrapper>
-    </React.Fragment>
+          </ListWrapper>
+        </React.Fragment>
+      )}
+    </DragWrapper>
   ) : (
     <DragWrapper>
       <Content>
