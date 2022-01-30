@@ -66,7 +66,7 @@ const ButtonsWrapper = styled.div`
   bottom: ${(props) =>
     props.weblink && props.contact
       ? "250px"
-      : !props.contact || !props.weblink
+      : (!props.contact || !props.weblink) && props.openProjectRoom
       ? "230px"
       : "150px"};
   z-index: 9;
@@ -129,7 +129,7 @@ const DeleteButton = styled.div`
   cursor: pointer;
 `;
 
-const ProjectInfo = ({
+const InfoModal = ({
   infoOpen,
   setInfoOpen,
   description,
@@ -228,7 +228,11 @@ const ProjectInfo = ({
           Kontakt
         </StyledH3> */}
 
-            <LowerWrapper weblink={weblink} contact={contact}>
+            <LowerWrapper
+              weblink={weblink}
+              contact={contact}
+              openProjectRoom={openProjectRoom}
+            >
               <ButtonsWrapper>
                 {weblink && (
                   <SubmitButton
@@ -302,7 +306,7 @@ const ProjectInfo = ({
                     shadow={false}
                     smallSubmitButton={true}
                     iconLeft={true}
-                    name="Contact"
+                    name="Logout"
                     iconWidth="22px"
                     margin="5px 0px 0px 0px"
                   />
@@ -316,7 +320,9 @@ const ProjectInfo = ({
             <Gradient />
           </CardInnerWrapper>
           <SubmitButton
-            text={t("Zum Projektraum")}
+            text={
+              openProjectRoom ? t("Projektraum anzeigen") : t("Profil anzeigen")
+            }
             handleButtonClick={() => setInfoOpen(false)}
             zIndex="999"
             position={"absolute"}
@@ -332,4 +338,4 @@ const ProjectInfo = ({
   );
 };
 
-export default ProjectInfo;
+export default InfoModal;

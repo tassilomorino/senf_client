@@ -4,6 +4,7 @@ import styled, { css, keyframes } from "styled-components";
 import { CircularProgress } from "@material-ui/core";
 import ContactIcon from "../../../images/icons/mail.png";
 import WeblinkIcon from "../../../images/icons/weblink.png";
+import LogoutIcon from "../../../images/icons/logout.png";
 
 const enterAnimation = keyframes`
        0% {
@@ -99,6 +100,7 @@ const LoaderWrapper = styled.span`
 const Icons = {
   Contact: ContactIcon,
   Weblink: WeblinkIcon,
+  Logout: LogoutIcon,
 };
 export const SubmitButton = ({
   text,
