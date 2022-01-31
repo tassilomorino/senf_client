@@ -29,6 +29,17 @@
   "aToZ": "A > Z",
   "zToA": "Z > A",
 
+  "newest_ideas": "Neuste Ideen",
+  "hottest_ideas": "Schärfste Ideen",
+
+  "newest_projectrooms": "Neuste Projekträume",
+  "aToZ_projectrooms": "A > Z Projekträume",
+  "zToA_projectrooms": "Z > A Projekträume",
+
+  "newest_organizations": "Neuste Organisationen",
+  "aToZ_organizations": "A > Z Organisationen",
+  "zToA_organizations": "Z > A Organisationen",
+
   "noMoreIdeas": "Keine weiteren Ideen im ausgewählten Kartenbereich",
   "noMoreProjectRooms": "Keine weiteren Projekträume im ausgewählten Kartenbereich",
   "noContentIdeas": "Mit den ausgewählten Filtern findest du noch keine Ideen.",

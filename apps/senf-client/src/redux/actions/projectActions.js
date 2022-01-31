@@ -18,6 +18,8 @@ import {
 import setColorByTopic from "../../data/setColorByTopic";
 import { setSwipePositionDown } from "./UiActions";
 import setColorByOrganizationType from "../../data/setColorByOrganizationType";
+import store from "../store";
+import { setMapBounds } from "./mapActions";
 
 // Get all projects
 export const getProjects = (mapViewport) => async (dispatch) => {
@@ -87,6 +89,8 @@ export const getProjects = (mapViewport) => async (dispatch) => {
 export const openProjectRoomFunc =
   (projectRoomId, state) => async (dispatch) => {
     if (state === true) {
+      dispatch(setMapBounds(store.getState().data.initialMapBounds));
+
       dispatch({ type: LOADING_UI });
       dispatch({ type: OPEN_PROJECTROOM });
       dispatch(setSwipePositionDown());
@@ -120,11 +124,13 @@ export const loadProjectRoomData = (projectRoomId) => async (dispatch) => {
     storageRef
       .child(
         `/organizationsData/${doc.data().organizationId}/${doc.id}/thumbnail`
+
+        // `/organizationsData/${doc.data().organizationId}/${doc.id}/thumbnail`
       )
       .getDownloadURL()
       .then((image) => {
         const projectRoom = doc.data();
-        projectRoom.imgUrl = image;
+        projectRoom.ownerImg = image;
         projectRoom.screams = [];
 
         screamsRef.docs.forEach((doc) =>

@@ -138,6 +138,19 @@ const Checkbox = styled.div`
   margin-right: 10px;
   margin-left: 3px;
 `;
+
+const Icon = styled.div`
+  width: 16px;
+  position: relative;
+  height: 16px;
+
+  flex-grow: 0;
+
+  /* background-color: ${(props) => props.color && props.color}; */
+
+  margin-right: 10px;
+  margin-left: 3px;
+`;
 const Span = styled.span``;
 
 export function TagsFilter({ loading, placing, type, inline, column }) {
@@ -180,7 +193,14 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
             }
             color="#000000"
           >
-            <Checkbox color="#000000" />
+            <Icon>
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14">
+                <path
+                  d="M 3 0 C 4.657 0 6 1.343 6 3 C 6 4.657 4.657 6 3 6 C 1.343 6 0 4.657 0 3 C 0 1.343 1.343 0 3 0 Z M 11 0 C 12.657 0 14 1.343 14 3 C 14 4.657 12.657 6 11 6 C 9.343 6 8 4.657 8 3 C 8 1.343 9.343 0 11 0 Z M 3 8 C 4.657 8 6 9.343 6 11 C 6 12.657 4.657 14 3 14 C 1.343 14 0 12.657 0 11 C 0 9.343 1.343 8 3 8 Z M 11 8 C 12.657 8 14 9.343 14 11 C 14 12.657 12.657 14 11 14 C 9.343 14 8 12.657 8 11 C 8 9.343 9.343 8 11 8 Z"
+                  fill="hsl(0, 0%, 0%)"
+                ></path>
+              </svg>
+            </Icon>
 
             {type === "topics" ? t("topics_all") : t("organizationTypes_all")}
           </Tag>
@@ -217,10 +237,9 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
                   }
                   color={organizationTypes.color}
                 >
-                  <Checkbox
-                    color={organizationTypes.color}
-                    data-cy={organizationTypes.name}
-                  />
+                  <Icon data-cy={organizationTypes.name}>
+                    {organizationTypes.svgIcon}
+                  </Icon>
 
                   {organizationTypes.label}
                 </Tag>

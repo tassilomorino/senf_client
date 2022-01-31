@@ -523,6 +523,7 @@ const Main = () => {
             !openAccount &&
             !loadingProjects &&
             !loading &&
+            !openOrganization &&
             (order === 1 || order === 2) && (
               <SwipeList
                 swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}

@@ -14,7 +14,7 @@ import {
   openOrganizationFunc,
   stateCreateOrganizationsFunc,
 } from "../../../redux/actions/organizationActions";
-import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
+import { StyledH2, StyledImg, StyledText } from "../../../styles/GlobalStyle";
 import organizationTypes from "../../../data/organizationTypes";
 
 const Wrapper = styled.div`
@@ -67,13 +67,6 @@ const LogoWrapper = styled.div`
   flex: none;
   border-radius: 18px;
   overflow: hidden;
-`;
-
-const StyledImg = styled.img`
-  flex-shrink: 0;
-  min-width: 100%;
-  min-height: 100%;
-  object-fit: cover;
 `;
 
 const OrganizationType = styled.h4`

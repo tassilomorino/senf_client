@@ -418,21 +418,22 @@ const Map = ({
                   ],
                 }}
               />
-
-              <Layer
-                id="geojsonIdeasText"
-                source="geojsonIdeas"
-                type="symbol"
-                filter={["==", ["get", "screamId"], hoverId]}
-                layout={{
-                  "text-field": ["get", "title"],
-                  "text-anchor": "left",
-                  "text-offset": [1, 0],
-                  "text-font": ["DIN Offc Pro Bold", "Arial Unicode MS Bold"],
-                  "text-justify": "left",
-                  "text-size": 16,
-                }}
-              />
+              {!isMobileCustom && (
+                <Layer
+                  id="geojsonIdeasText"
+                  source="geojsonIdeas"
+                  type="symbol"
+                  filter={["==", ["get", "screamId"], hoverId]}
+                  layout={{
+                    "text-field": ["get", "title"],
+                    "text-anchor": "left",
+                    "text-offset": [1, 0],
+                    "text-font": ["DIN Offc Pro Bold", "Arial Unicode MS Bold"],
+                    "text-justify": "left",
+                    "text-size": 16,
+                  }}
+                />
+              )}
               {openScream && scream.lat && (
                 <Marker
                   key={scream.screamId}
@@ -510,21 +511,23 @@ const Map = ({
                   "icon-allow-overlap": true,
                 }}
               />
-              <Layer
-                id="geojsonProjectRoomsText"
-                source="geojsonProjectRooms"
-                type="symbol"
-                filter={["==", ["get", "projectRoomId"], hoverId]}
-                layout={{
-                  "text-field": ["get", "title"],
-                  "text-anchor": "left",
-                  "text-offset": [0.5, -1.5],
-                  "text-font": ["DIN Offc Pro Bold", "Arial Unicode MS Bold"],
-                  "text-justify": "left",
-                  "text-size": 16,
-                  "text-allow-overlap": true,
-                }}
-              />
+              {!isMobileCustom && (
+                <Layer
+                  id="geojsonProjectRoomsText"
+                  source="geojsonProjectRooms"
+                  type="symbol"
+                  filter={["==", ["get", "projectRoomId"], hoverId]}
+                  layout={{
+                    "text-field": ["get", "title"],
+                    "text-anchor": "left",
+                    "text-offset": [0.5, -1.5],
+                    "text-font": ["DIN Offc Pro Bold", "Arial Unicode MS Bold"],
+                    "text-justify": "left",
+                    "text-size": 16,
+                    "text-allow-overlap": true,
+                  }}
+                />
+              )}
             </React.Fragment>
           )}
         </MapGL>

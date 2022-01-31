@@ -22,6 +22,7 @@ const DropDownButton = styled.button`
   border-radius: 10px;
   /* border: 0.5px solid #353535; */
   background-color: transparent;
+  pointer-events: all;
 `;
 
 const DropDownListContainer = styled.div`

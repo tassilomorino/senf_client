@@ -117,7 +117,7 @@ const OrganizationsPage = ({ setOpenOrganizationsPage, order, loading }) => {
     );
   }, [selectedOrganizationTypes, dropdown, organizationsSearched]);
 
-  const dataFinalLength = dataFinal.length;
+  const dataFinalLength = dataFinal?.length;
 
   useEffect(() => {
     if (!loadingOrganizations) {
@@ -137,7 +137,7 @@ const OrganizationsPage = ({ setOpenOrganizationsPage, order, loading }) => {
 
   const showItems = (organizations) => {
     var items = [];
-    if (organizations.length !== 0) {
+    if (organizations?.length !== 0) {
       for (var i = 0; i < listItems; i++) {
         items.push(
           organizations[i]?.organizationId && (
@@ -153,11 +153,11 @@ const OrganizationsPage = ({ setOpenOrganizationsPage, order, loading }) => {
   };
 
   const loadMore = () => {
-    if (!loadingOrganizations && dataFinal.length === 0) {
+    if (!loadingOrganizations && dataFinal?.length === 0) {
       sethasMoreItems(false);
     }
 
-    if (listItems === dataFinal.length) {
+    if (listItems === dataFinal?.length) {
       sethasMoreItems(false);
     } else {
       setTimeout(() => {
@@ -199,6 +199,7 @@ const OrganizationsPage = ({ setOpenOrganizationsPage, order, loading }) => {
             marginTop="0px"
             loading={loadingOrganizations}
             handleDropdown={handleDropdown}
+            dropdown={dropdown}
             dataFinalLength={dataFinalLength}
             setSearchOpen={setSearchOpen}
             searchOpen={searchOpen}
@@ -214,6 +215,7 @@ const OrganizationsPage = ({ setOpenOrganizationsPage, order, loading }) => {
             type="standalone"
             loading={loadingOrganizations}
             handleDropdown={handleDropdown}
+            dropdown={dropdown}
             dataFinalLength={dataFinalLength}
             setSearchOpen={setSearchOpen}
             searchOpen={searchOpen}

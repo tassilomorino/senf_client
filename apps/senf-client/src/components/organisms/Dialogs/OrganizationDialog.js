@@ -23,9 +23,12 @@ import { useTranslation } from "react-i18next";
 import { MenuData } from "../../../data/MenuData";
 
 const Wrapper = styled.div`
-  /* @media (min-width: 768px) {
-    padding-top: 70px;
-  } */
+  @media (min-width: 768px) {
+    /* width: 100vw;
+    background-color: green;
+    height: 100%;
+    top: 0; */
+  }
 `;
 
 const Break = styled.div`
@@ -57,7 +60,7 @@ const OrganizationDialog = ({
 }) => {
   const { t } = useTranslation();
   const [path, setPath] = useState("");
-  const [order, setOrder] = useState(0);
+  const [order, setOrder] = useState(1);
   const [dropdown, setDropdown] = useState("newest");
 
   const openOrganization = useSelector((state) => state.UI.openOrganization);
@@ -130,7 +133,7 @@ const OrganizationDialog = ({
 
   return (
     openOrganization && (
-      <React.Fragment>
+      <Wrapper>
         <Header
           imgUrl={organization?.imgUrl}
           title={organization?.title}
@@ -142,69 +145,32 @@ const OrganizationDialog = ({
           handleClose={handleClose}
           handleClick={handleClick}
         />
-        {!isMobileCustom && order === 0 && <MapHider />}
+        {/* {!isMobileCustom && order === 0 && <MapHider />} */}
 
-        <Wrapper>
-          {!isMobileCustom || (isMobileCustom && order !== 1 && <Background />)}
-
-          {order === 1 && (
-            <SwipeList
-              swipeListType="projectRoomOverview"
-              loading={loadingProjects}
-              tabLabels={MenuData.map((item) => item.text).slice(1, 2)}
-              order={order}
-              dataFinal={dataFinal}
-              dataFinalLength={dataFinal.length}
-              dataFinalMap={dataFinalMap}
-              viewport={mapViewport}
-              handleDropdown={handleDropdown}
-              projectsData={projectsData}
-              dropdown={dropdown}
-              setSearchTerm={setSearchTerm}
-              searchTerm={searchTerm}
-            />
-          )}
-
-          {order === 0 && (
-            <div
-              style={{
-                overflow: "scroll",
-                height: "100vh",
-                pointerEvents: "all",
-              }}
-            >
-              <SubmitButton
-                text={t("Projekträume anzeigen")}
-                zIndex="9"
-                backgroundColor={isMobileCustom ? "#353535" : "white"}
-                textColor={isMobileCustom ? "white" : "#353535"}
-                position="fixed"
-                bottom={isMobileCustom ? "10px" : "50%"}
-                left={
-                  isMobileCustom ? "0" : "calc(600px + ((100% - 600px)/2)) "
-                }
-                marginLeft={isMobileCustom ? "50%" : "0"}
-                handleButtonClick={() => handleClick(1)}
-              />
-              <Break />
-
-              <MainAnimations
-                transition="0.5s"
-                display="block"
-                paddingBottom="2em"
-                height="100%"
-              >
-                <InfoModal
-                  description={organization?.description}
-                  weblink={organization?.weblink}
-                  contact={organization?.contact}
-                />
-                <br />
-              </MainAnimations>
-            </div>
-          )}
-        </Wrapper>
-      </React.Fragment>
+        {/* {!isMobileCustom || (isMobileCustom && order !== 1 && <Background />)} */}
+        {order === 1 && (
+          <SwipeList
+            swipeListType="projectRoomOverview"
+            loading={loadingProjects}
+            tabLabels={MenuData.map((item) => item.text).slice(1, 2)}
+            order={order}
+            dataFinal={dataFinal}
+            dataFinalLength={dataFinal.length}
+            dataFinalMap={dataFinalMap}
+            viewport={mapViewport}
+            handleDropdown={handleDropdown}
+            projectsData={projectsData}
+            dropdown={dropdown}
+            setSearchTerm={setSearchTerm}
+            searchTerm={searchTerm}
+          />
+        )}
+        <InfoModal
+          description={organization?.description}
+          weblink={organization?.weblink}
+          contact={organization?.contact}
+        />
+      </Wrapper>
     )
   );
 };

@@ -4,6 +4,7 @@ import styled, { css, keyframes } from "styled-components";
 import { CircularProgress } from "@material-ui/core";
 import ContactIcon from "../../../images/icons/mail.png";
 import WeblinkIcon from "../../../images/icons/weblink.png";
+import LogoutIcon from "../../../images/icons/logout.png";
 
 const enterAnimation = keyframes`
        0% {
@@ -64,7 +65,7 @@ const WideButton = styled.button`
   transform: ${(props) =>
     props.transformX ? props.transformX : "translateX(-50%)"};
   cursor: pointer;
-
+  margin: ${(props) => (props.margin ? props.margin : "0")};
   margin-left: ${(props) => (props.marginLeft ? props.marginLeft : "50%")};
 
   background-color: ${(props) => props.backgroundColor};
@@ -99,6 +100,7 @@ const LoaderWrapper = styled.span`
 const Icons = {
   Contact: ContactIcon,
   Weblink: WeblinkIcon,
+  Logout: LogoutIcon,
 };
 export const SubmitButton = ({
   text,
@@ -107,6 +109,7 @@ export const SubmitButton = ({
   position,
   bottom,
   top,
+  margin,
   marginLeft,
   transformX,
   left,
@@ -122,6 +125,7 @@ export const SubmitButton = ({
   keySubmitRef,
 
   iconRight,
+  iconLeft,
   name,
   iconWidth,
 }) => {
@@ -136,6 +140,7 @@ export const SubmitButton = ({
       bottom={bottom}
       left={left}
       top={top}
+      margin={margin}
       marginLeft={marginLeft}
       transformX={transformX}
       zIndex={zIndex}
@@ -147,6 +152,14 @@ export const SubmitButton = ({
       shadow={shadow}
       backdropFilter={backdropFilter}
     >
+      {iconLeft && (
+        <img
+          src={Icon}
+          width={iconWidth ? iconWidth : "20px"}
+          alt="icon"
+          style={{ paddingRight: "10px" }}
+        />
+      )}
       {text}
       {iconRight && (
         <img
