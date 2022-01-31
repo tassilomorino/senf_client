@@ -30,8 +30,15 @@ const Card = styled.div`
   width: ${(props) => (props.isMobileCustom ? " calc(100% - 20px)" : "380px")};
 
   border-radius: 18px;
-  height: ${(props) => (props.infoOpen ? "auto" : "0px")};
-  max-height: calc(100% - 20px);
+  height: ${(props) =>
+    props.openAccount
+      ? "500px"
+      : props.weblink && props.contact
+      ? "700px"
+      : props.contact || props.weblink
+      ? "650px"
+      : "600px"};
+  max-height: ${(props) => (props.infoOpen ? "calc(100% - 20px)" : "0px")};
   transition: 0.5s;
   overflow: hidden;
   background-color: rgb(255, 255, 255, 0.6);
@@ -45,7 +52,7 @@ const Card = styled.div`
   } */
 `;
 const CardInnerWrapper = styled.div`
-  height: calc(100% - 0px);
+  height: 100%;
   width: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -55,18 +62,25 @@ const CardInnerWrapper = styled.div`
 const LowerWrapper = styled.div`
   position: relative;
   background-color: #fed957;
-  height: 260px;
   margin-top: 100px;
-  padding-bottom: ${(props) =>
-    props.weblink && props.contact ? "80px" : "0px"};
+  height: ${(props) =>
+    props.openAccount
+      ? "250px"
+      : props.weblink && props.contact
+      ? "320px"
+      : props.weblink || props.contact
+      ? "250px"
+      : "200px"};
 `;
 
 const ButtonsWrapper = styled.div`
   position: absolute;
   bottom: ${(props) =>
-    props.weblink && props.contact
+    props.openAccount
+      ? "170px"
+      : props.weblink && props.contact
       ? "250px"
-      : (!props.contact || !props.weblink) && props.openProjectRoom
+      : !props.contact || !props.weblink
       ? "230px"
       : "150px"};
   z-index: 9;
@@ -205,7 +219,14 @@ const InfoModal = ({
     !loading && (
       <React.Fragment>
         {infoOpen && <ModalBackground onClick={() => setInfoOpen(false)} />}
-        <Card isMobileCustom={isMobileCustom} infoOpen={infoOpen}>
+        <Card
+          isMobileCustom={isMobileCustom}
+          infoOpen={infoOpen}
+          weblink={weblink}
+          contact={contact}
+          openProjectRoom={openProjectRoom}
+          openAccount={openAccount}
+        >
           <CardInnerWrapper id="SwiperOuterWrapper">
             {openProjectRoom && (
               <ProjectInfoSwiper setInfoOpen={setInfoOpen} pages={pages} />
@@ -232,6 +253,7 @@ const InfoModal = ({
               weblink={weblink}
               contact={contact}
               openProjectRoom={openProjectRoom}
+              openAccount={openAccount}
             >
               <ButtonsWrapper>
                 {weblink && (
@@ -296,13 +318,13 @@ const InfoModal = ({
                 </OwnerWrapper>
               )}
               {openAccount && (
-                <ButtonsWrapper>
+                <ButtonsWrapper openAccount={openAccount}>
                   <SubmitButton
                     text={t("logout")}
                     zIndex="999"
                     backgroundColor="white"
                     textColor="#353535"
-                    onClick={handleLogout}
+                    handleButtonClick={handleLogout}
                     shadow={false}
                     smallSubmitButton={true}
                     iconLeft={true}
