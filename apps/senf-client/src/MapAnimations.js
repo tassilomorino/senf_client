@@ -44,8 +44,9 @@ export const setViewport = () => {
     duration: 2700,
     pitch: 30,
   };
-
-  store.dispatch(setInitialMapViewport(zoomedViewport));
+  setTimeout(() => {
+    store.dispatch(setInitialMapViewport(zoomedViewport));
+  }, 1000);
   setBeforeMapbounds();
 };
 

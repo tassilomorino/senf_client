@@ -88,6 +88,8 @@ const Map = ({
     (state) => state.data.initialMapViewport
   );
   const mapLoaded = useSelector((state) => state.data.mapLoaded);
+  const [showPatternBackground, setShowPatternBackground] = useState(true);
+
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openScream = useSelector((state) => state.UI.openScream);
   const openAccount = useSelector((state) => state.UI.openAccount);
@@ -96,6 +98,9 @@ const Map = ({
   const [hoverId, setHoverId] = useState("");
 
   const handlleMapLoaded = () => {
+    setTimeout(() => {
+      setShowPatternBackground(false);
+    }, 1000);
     dispatch(setMapLoaded());
 
     if (
@@ -251,7 +256,7 @@ const Map = ({
   return (
     mapViewport && (
       <React.Fragment>
-        {!mapLoaded && <PatternBackground />}
+        {showPatternBackground && <PatternBackground />}
 
         <MapGL
           ref={mapRef}
@@ -272,6 +277,7 @@ const Map = ({
                   height: "100vh",
                   top: "0",
                   transform: "scale(1)",
+                  zIndex: "-1",
                 }
               : {
                   position: "fixed",

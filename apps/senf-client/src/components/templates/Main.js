@@ -281,7 +281,12 @@ const Main = () => {
 
       dispatch(closeAccountFunc());
       dispatch(handleTopicSelectorRedux("all"));
+      const ListWrapper = document.getElementById("ListWrapper");
 
+      ListWrapper?.scrollTo({
+        top: 0,
+        left: 0,
+      });
       if (order === 1) {
         window.history.pushState(null, null, "/");
       }
@@ -293,12 +298,6 @@ const Main = () => {
       }
       if (order === 4) {
         window.history.pushState(null, null, "/insights");
-
-        window.scrollTo({
-          top: 0,
-          left: 0,
-          behavior: "smooth",
-        });
       }
     },
     [dispatch]

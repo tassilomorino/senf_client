@@ -456,7 +456,7 @@ const SwipeList = ({
           </DesktopTabWrapper>
         )}
 
-        <ListWrapper openProjectRoom={openProjectRoom}>
+        <ListWrapper openProjectRoom={openProjectRoom} id="ListWrapper">
           {sectionFastLinks}
           <Wave />
           {!loading && (order === 1 || order === 2) && (
