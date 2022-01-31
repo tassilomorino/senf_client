@@ -406,7 +406,14 @@ const SwipeList = ({
               </div>
             </animated.div>
           </ListHeaderWrapper>
-          <ListWrapper ref={ref} id="ListWrapper">
+          <ListWrapper
+            ref={ref}
+            id="ListWrapper"
+            onTouchStart={
+              swipePosition === "bottom" ? () => setSwipeUp() : null
+            }
+            style={swipePosition === "bottom" ? { overflow: "hidden" } : null}
+          >
             {sectionFastLinks}
             {searchOpen ? (
               <div style={{ height: "60px", transition: "0.5s" }} />
