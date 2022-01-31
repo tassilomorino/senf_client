@@ -141,11 +141,9 @@ const ClickBackground = styled.div`
 const DesktopTabWrapper = styled.div`
   position: relative;
   margin-left: 200px;
-
   height: 40px;
   transform: translateX(-50%);
   width: 400px;
-
   background-color: #fed957;
   padding-bottom: 0px;
   z-index: 99;
