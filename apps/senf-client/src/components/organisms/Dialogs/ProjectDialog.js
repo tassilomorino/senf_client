@@ -46,10 +46,10 @@ const ProjectDialog = ({
   const project = useSelector((state) => state.data.project);
   const projects = useSelector((state) => state.data.projects);
 
-  console.log(project);
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.data.loading);
-  const loadingUI = useSelector((state) => state.UI.loading);
+  const loadingProjectRoom = useSelector(
+    (state) => state.data.loadingProjectRoom
+  );
 
   const mapBounds = useSelector((state) => state.data.mapBounds);
 
@@ -134,12 +134,11 @@ const ProjectDialog = ({
           project={project}
         />
       )}
-      {project && (
+      {project && !loadingProjectRoom && (
         <Header
           infoOpen={infoOpen}
           setInfoOpen={setInfoOpen}
           title={project?.title}
-          loading={loading}
           calendar={project?.calendar}
           order={order}
           path={path}
@@ -147,7 +146,7 @@ const ProjectDialog = ({
           handleClick={handleClick}
         />
       )}
-      {project && (
+      {project && !loadingProjectRoom && (
         <InfoModal
           description={project?.description}
           weblink={project?.weblink}
@@ -164,14 +163,14 @@ const ProjectDialog = ({
       {/* {!isMobileCustom ||
           (isMobileCustom && order === 0 && <ModalBackground />)} */}
 
-      {(!infoOpen || (!isMobileCustom && !loadingUI)) && (
+      {(!infoOpen || (!isMobileCustom && !loadingProjectRoom)) && (
         <SwipeList
           swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}
           tabLabels={ProjectRoomTabData.map((item) => item.text).slice(
             0,
             TabSlicer
           )}
-          loading={loading}
+          loading={loadingProjectRoom}
           order={order}
           dataFinal={dataFinal}
           geoData={project?.geoData}

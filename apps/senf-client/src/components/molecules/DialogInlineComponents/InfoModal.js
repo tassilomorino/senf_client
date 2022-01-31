@@ -157,7 +157,7 @@ const InfoModal = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const loading = useSelector((state) => state.UI.loading);
+  const loading = useSelector((state) => state.data.loading);
   const handle = useSelector((state) => state.user.handle);
 
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);

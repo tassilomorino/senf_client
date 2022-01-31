@@ -27,6 +27,7 @@ import {
   LOADING_ORGANIZATIONS_DATA,
   LOADING_MYSCREAMS_DATA,
   SET_PROJECTS,
+  LOADING_PROJECT_DATA,
   SET_PROJECT,
   SET_ORGANIZATIONS,
   SET_ORGANIZATION,
@@ -40,6 +41,7 @@ import {
   SET_INITIAL_MAP_VIEWPORT,
   SET_TOPICS,
   SET_ORGANIZATION_TYPES,
+  LOADING_PROJECTROOM_DATA,
 } from "../types";
 
 const defaultTopics = [
@@ -75,6 +77,7 @@ const initialState = {
   loadingProjects: true,
   loadingOrganizations: true,
   loadingMyScreams: false,
+  loadingProjectRoom: false,
   scream_user: {},
   full_screams: [],
   cookie_settings: "",
@@ -214,10 +217,17 @@ export default function (state = initialState, action) {
         loadingProjects: false,
       };
 
+    case LOADING_PROJECTROOM_DATA:
+      return {
+        ...state,
+        loadingProjectRoom: true,
+      };
+
     case SET_PROJECT:
       return {
         ...state,
         project: action.payload,
+        loadingProjectRoom: false,
         // projectScreams: action.payload,
         // loadingProjectScreams: false,
       };

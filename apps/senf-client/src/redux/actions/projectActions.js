@@ -14,6 +14,9 @@ import {
   OPEN_PROJECTROOM,
   CLOSE_PROJECT,
   OPEN_CREATE_PROJECTROOM,
+  LOADING_DATA,
+  STOP_LOADING_DATA,
+  LOADING_PROJECTROOM_DATA,
 } from "../types";
 import setColorByTopic from "../../data/setColorByTopic";
 import { setSwipePositionDown } from "./UiActions";
@@ -91,7 +94,7 @@ export const openProjectRoomFunc =
     if (state === true) {
       dispatch(setMapBounds(store.getState().data.initialMapBounds));
 
-      dispatch({ type: LOADING_UI });
+      dispatch({ type: LOADING_PROJECTROOM_DATA });
       dispatch({ type: OPEN_PROJECTROOM });
       dispatch(setSwipePositionDown());
       dispatch(loadProjectRoomData(projectRoomId));
@@ -143,7 +146,6 @@ export const loadProjectRoomData = (projectRoomId) => async (dispatch) => {
         );
 
         dispatch({ type: SET_PROJECT, payload: projectRoom });
-        dispatch({ type: STOP_LOADING_UI });
       });
   });
 };

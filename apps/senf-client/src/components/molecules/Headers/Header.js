@@ -34,8 +34,6 @@ const Header = ({
   handleClick,
   path,
 }) => {
-  const loading = useSelector((state) => state.UI.loading);
-
   const handle = useSelector((state) => state.user.handle);
   const userHandle = handle ? handle : "...";
 
@@ -83,7 +81,7 @@ const Header = ({
         id="wrapper"
         infoOpen={infoOpen}
       >
-        {loading && (
+        {/* {loading && (
           <CircularProgress
             size={30}
             style={{
@@ -92,7 +90,7 @@ const Header = ({
               position: "absolute",
             }}
           />
-        )}
+        )} */}
         <FlexWrapper>
           <CustomIconButton
             name="ArrowLeft"

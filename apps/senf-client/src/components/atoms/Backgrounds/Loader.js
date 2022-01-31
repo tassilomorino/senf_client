@@ -3,7 +3,9 @@
 import React from "react";
 import styled from "styled-components";
 //ICONS
-import lamploader from "../../../images/lamp.png";
+import Lamp_white from "../../../images/lamp.png";
+import Lamp_yellow from "../../../images/lamp_yellow.png";
+
 import Logo from "../../../images/AddPlease.png";
 import { Background } from "./GradientBackgrounds";
 
@@ -20,14 +22,11 @@ const Wrapper = styled.div`
   left: ${(props) => (props.left ? props.left : 0)};
   position: fixed;
 
-  background: rgb(254, 217, 87);
-  background: linear-gradient(
-    180deg,
-    rgba(254, 217, 87, 1) 0%,
-    rgba(254, 217, 87, 1) 6%,
-    rgba(255, 218, 83, 1) 41%,
-    rgba(255, 255, 255, 1) 100%
-  );
+  background: ${(props) => (props.withoutBg ? "none" : "rgb(254, 217, 87)")};
+  background: ${(props) =>
+    props.withoutBg
+      ? "none"
+      : "linear-gradient(180deg, rgba(254, 217, 87, 1) 0%, rgba(254, 217, 87, 1) 6%, rgba(255, 218, 83, 1) 41%, rgba(255, 255, 255, 1) 100%)"};
 `;
 
 const LoaderImg = styled.img`
@@ -83,10 +82,10 @@ const LoaderImg = styled.img`
     }
   }
 `;
-const Loader = ({ left, width }) => {
+const Loader = ({ left, width, withoutBg }) => {
   return (
-    <Wrapper left={left} width={width}>
-      <LoaderImg src={lamploader} alt="loader-icon" />
+    <Wrapper left={left} width={width} withoutBg={withoutBg}>
+      <LoaderImg src={withoutBg ? Lamp_yellow : Lamp_white} alt="loader-icon" />
     </Wrapper>
   );
 };
