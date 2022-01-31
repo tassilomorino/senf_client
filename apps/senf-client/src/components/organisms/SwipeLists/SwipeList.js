@@ -302,69 +302,71 @@ const SwipeList = ({
 
   const ref = useRef();
 
-  const sectionFastLinks = !openAccount && (
-    <React.Fragment>
-      {order === 1 && (
-        <SlideUpSection style={slideUpSectionProps}>
-          <OrganizationsIntroWrapper>
-            <OrganizationsIntro>
-              Verschaff dir einen schnellen Einblick durch{" "}
-              <span style={{ fontWeight: "900" }}>Statistiken</span>.
-            </OrganizationsIntro>
-            <CustomIconButton
-              name="ArrowRight"
-              position="relative"
-              top="20px"
-              backgroundColor="#FFF0BC"
-              handleButtonClick={() => setOpenInsightsPage(true)}
+  const sectionFastLinks = !openAccount &&
+    dataFinal &&
+    dataFinal.length > 0 && (
+      <React.Fragment>
+        {order === 1 && (
+          <SlideUpSection style={slideUpSectionProps}>
+            <OrganizationsIntroWrapper>
+              <OrganizationsIntro>
+                Verschaff dir einen schnellen Einblick durch{" "}
+                <span style={{ fontWeight: "900" }}>Statistiken</span>.
+              </OrganizationsIntro>
+              <CustomIconButton
+                name="ArrowRight"
+                position="relative"
+                top="20px"
+                backgroundColor="#FFF0BC"
+                handleButtonClick={() => setOpenInsightsPage(true)}
+              />
+            </OrganizationsIntroWrapper>
+            <Toolbar
+              swipeListType={swipeListType}
+              loading={loading}
+              handleDropdown={handleDropdown}
+              dropdown={dropdown}
+              dataFinalLength={dataFinal.length}
+              setSearchOpen={setSearchOpen}
+              searchOpen={searchOpen}
+              setSearchTerm={setSearchTerm}
+              searchTerm={searchTerm}
+              marginTop={"0px"}
             />
-          </OrganizationsIntroWrapper>
-          <Toolbar
-            swipeListType={swipeListType}
-            loading={loading}
-            handleDropdown={handleDropdown}
-            dropdown={dropdown}
-            dataFinalLength={dataFinal.length}
-            setSearchOpen={setSearchOpen}
-            searchOpen={searchOpen}
-            setSearchTerm={setSearchTerm}
-            searchTerm={searchTerm}
-            marginTop={"0px"}
-          />
-        </SlideUpSection>
-      )}
-      {order === 2 && (
-        <SlideUpSection style={slideUpSectionProps}>
-          <OrganizationsIntroWrapper>
-            <OrganizationsIntro>
-              Entdecke die{" "}
-              <span style={{ fontWeight: "900" }}>Organisationen </span>hinter
-              den Projekträumen.
-            </OrganizationsIntro>
-            <CustomIconButton
-              name="ArrowRight"
-              position="relative"
-              top="20px"
-              backgroundColor="#FFF0BC"
-              handleButtonClick={() => setOpenOrganizationsPage(true)}
-            />
-          </OrganizationsIntroWrapper>
-          <Toolbar
-            swipeListType={swipeListType}
-            loading={loading}
-            handleDropdown={handleDropdown}
-            dropdown={dropdown}
-            dataFinalLength={dataFinal.length}
-            setSearchOpen={setSearchOpen}
-            searchOpen={searchOpen}
-            setSearchTerm={setSearchTerm}
-            searchTerm={searchTerm}
-            marginTop={"0px"}
-          />{" "}
-        </SlideUpSection>
-      )}
-    </React.Fragment>
-  );
+          </SlideUpSection>
+        )}
+        {order === 2 && (
+          <SlideUpSection style={slideUpSectionProps}>
+            <OrganizationsIntroWrapper>
+              <OrganizationsIntro>
+                Entdecke die{" "}
+                <span style={{ fontWeight: "900" }}>Organisationen </span>hinter
+                den Projekträumen.
+              </OrganizationsIntro>
+              <CustomIconButton
+                name="ArrowRight"
+                position="relative"
+                top="20px"
+                backgroundColor="#FFF0BC"
+                handleButtonClick={() => setOpenOrganizationsPage(true)}
+              />
+            </OrganizationsIntroWrapper>
+            <Toolbar
+              swipeListType={swipeListType}
+              loading={loading}
+              handleDropdown={handleDropdown}
+              dropdown={dropdown}
+              dataFinalLength={dataFinal.length}
+              setSearchOpen={setSearchOpen}
+              searchOpen={searchOpen}
+              setSearchTerm={setSearchTerm}
+              searchTerm={searchTerm}
+              marginTop={"0px"}
+            />{" "}
+          </SlideUpSection>
+        )}
+      </React.Fragment>
+    );
   return isMobileCustom ? (
     <DragWrapper
       className={!loading && !openScream ? "" : "drag_hide"}
