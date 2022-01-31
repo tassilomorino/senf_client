@@ -59,8 +59,8 @@ const LogoContainer = styled.div`
   position: absolute;
   top: 10px;
   height: 50px;
-  width: calc(100% - 40px);
-  margin-left: 20px;
+  width: calc(100% - 20px);
+  margin-left: 10px;
   z-index: 99;
   text-align: center;
   background-color: rgb(255, 255, 255, 0.6);
@@ -77,7 +77,7 @@ const ProfileButtonContainer = styled.div`
   align-items: center;
   z-index: 999;
   width: 50px;
-  right: 20px;
+  left: 10px;
   top: 10px;
   height: 50px;
   font-size: 0;
@@ -96,7 +96,7 @@ const InlineInfoButtonContainer = styled.div`
   align-items: center;
   z-index: 999;
   width: 50px;
-  left: 20px;
+  right: 10px;
   top: 10px;
   height: 50px;
   font-size: 0;
