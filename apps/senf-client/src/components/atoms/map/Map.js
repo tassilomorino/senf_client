@@ -127,33 +127,33 @@ const Map = ({
     geoData !== "" &&
     JSON.parse(geoData);
 
-  let dataNoLocation = [];
-  let dataFinalMap = [];
   let geojsonIdeas = { type: "FeatureCollection", features: [] };
   let geojsonProjectRooms = { type: "FeatureCollection", features: [] };
 
-  if (dataFinal !== undefined && dataFinal.length > 0) {
-    dataFinal.forEach((element) => {
-      if (element.lat === 50.93864020643174) {
-        dataNoLocation.push(element);
-      }
-    });
-  }
+  // let dataNoLocation = [];
+  // let dataFinalMap = [];
+  // if (dataFinal !== undefined && dataFinal.length > 0) {
+  //   dataFinal.forEach((element) => {
+  //     if (element.lat === 50.93864020643174) {
+  //       dataNoLocation.push(element);
+  //     }
+  //   });
+  // }
 
-  if (dataFinal !== undefined && dataNoLocation.length > 1) {
-    dataFinal.forEach((element) => {
-      if (element.lat !== 50.93864020643174) {
-        dataFinalMap.push(element);
-      }
-    });
-  }
-  if (dataFinal !== undefined && dataNoLocation.length < 2) {
-    dataFinal.forEach((element) => {
-      dataFinalMap.push(element);
-    });
-  }
+  // if (dataFinal !== undefined && dataNoLocation.length > 1) {
+  //   dataFinal.forEach((element) => {
+  //     if (element.lat !== 50.93864020643174) {
+  //       dataFinalMap.push(element);
+  //     }
+  //   });
+  // }
+  // if (dataFinal !== undefined && dataNoLocation.length < 2) {
+  //   dataFinal.forEach((element) => {
+  //     dataFinalMap.push(element);
+  //   });
+  // }
 
-  for (let point of dataFinalMap) {
+  for (let point of dataFinal) {
     let properties = point;
     properties.circleRadius = 5 + point.likeCount / 7;
     properties.circleBlurRadius = 14 + point.likeCount / 7;
@@ -162,7 +162,7 @@ const Map = ({
     delete properties.latitude;
 
     const unique =
-      dataFinalMap.filter((item) => item.long === point.long).length === 1;
+      dataFinal.filter((item) => item.long === point.long).length === 1;
 
     if (unique) {
       let feature = {
@@ -332,7 +332,7 @@ const Map = ({
               )}
 
               <Source id="geojsonIdeas" type="geojson" data={geojsonIdeas} />
-              <Layer
+              {/* <Layer
                 id="geojsonIdeasblur"
                 source="geojsonIdeas"
                 type="circle"
@@ -357,7 +357,7 @@ const Map = ({
                   "circle-blur": 1,
                   "circle-opacity": 0.15,
                 }}
-              />
+              /> */}
 
               <Layer
                 id="geojsonIdeas"
@@ -457,7 +457,7 @@ const Map = ({
                 </Marker>
               )}
 
-              <NoLocationPopUp dataNoLocation={dataNoLocation} />
+              {/* <NoLocationPopUp dataNoLocation={dataNoLocation} /> */}
             </React.Fragment>
           ) : (
             <React.Fragment>

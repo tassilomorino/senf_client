@@ -339,7 +339,7 @@ const InfoModal = ({
                 </ButtonsWrapper>
               )}
             </LowerWrapper>
-            <Gradient />
+            {/* <Gradient /> */}
           </CardInnerWrapper>
           <SubmitButton
             text={
@@ -349,9 +349,8 @@ const InfoModal = ({
             zIndex="999"
             position={"absolute"}
             bottom="10px"
-            backgroundColor="white"
-            textColor="#353535"
-            shadow={false}
+            backgroundColor="#353535"
+            textColor="white"
             margin="0 0 0 0"
           />
         </Card>

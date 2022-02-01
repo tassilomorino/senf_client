@@ -8,6 +8,7 @@ export const Wrapper = styled.div`
   top: 0;
   position: fixed;
   pointer-events: all;
+  overflow: scroll;
   background: rgb(254, 217, 87);
   background: linear-gradient(
     180deg,
@@ -39,6 +40,31 @@ export const Wrapper = styled.div`
     opacity: 1;
   }
 } */
+`;
+
+export const InsightsCoversWrapper = styled.div`
+  margin-left: 50%;
+  padding-bottom: 200px;
+  transform: translateX(-50%);
+  width: calc(100% - 20px);
+  max-width: 800px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px 10px;
+  grid-template-areas:
+    ". ."
+    ". .";
+  @media (min-width: 768px) {
+    margin-top: 50px;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+  }
+
+  @media (min-width: 1068px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+  }
 `;
 
 export const CoverWrapper = styled.div`
