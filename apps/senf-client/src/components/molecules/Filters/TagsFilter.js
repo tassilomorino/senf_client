@@ -196,7 +196,7 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
               placing !== "insights" &&
               isMobileCustom &&
               (openScream ||
-                (openProjectRoom && !project.screams) ||
+                (openProjectRoom && !project?.screams) ||
                 openAccount ||
                 openOrganization ||
                 swipePosition === "top")
@@ -239,7 +239,7 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
                     placing !== "insights" &&
                     isMobileCustom &&
                     (openScream ||
-                      (openProjectRoom && !project.screams) ||
+                      (openProjectRoom && !project?.screams) ||
                       openAccount ||
                       openOrganization ||
                       swipePosition === "top")
@@ -271,7 +271,7 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
                     placing !== "insights" &&
                     isMobileCustom &&
                     (openScream ||
-                      (openProjectRoom && !project.screams) ||
+                      (openProjectRoom && !project?.screams) ||
                       openAccount ||
                       openOrganization ||
                       swipePosition === "top")
