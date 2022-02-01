@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 
 import styled from "styled-components";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
+import ProjectInfoSwiper from "../DialogInlineComponents/ProjectInfoSwiper";
 
 const FilterWrapperMobile = styled.div`
   z-index: 1;
@@ -114,6 +115,10 @@ const Tag = styled.button`
 
   backdrop-filter: blur(10px);
 
+  transform: ${(props) => (props.hide ? "scale(0.8)" : "scale(1)")};
+  opacity: ${(props) => (props.hide ? "0" : "1")};
+  transition: 0.4s;
+
   @media (min-width: 768px) {
     box-shadow: none;
     margin-top: 5px;
@@ -155,11 +160,16 @@ const Span = styled.span``;
 
 export function TagsFilter({ loading, placing, type, inline, column }) {
   const openScream = useSelector((state) => state.UI.openScream);
+  const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
+  const project = useSelector((state) => state.data.project);
+  const openAccount = useSelector((state) => state.UI.openAccount);
+  const openOrganization = useSelector((state) => state.UI.openOrganization);
+  const swipePosition = useSelector((state) => state.UI.swipePosition);
+
   const selectedTopics = useSelector((state) => state.data.topics);
   const selectedOrganizationTypes = useSelector(
     (state) => state.data.organizationTypes
   );
-  const swipePosition = useSelector((state) => state.UI.swipePosition);
   const [moveLeft, setMoveLeft] = useState(false);
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -181,6 +191,16 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
         <FilterInnerWrapperMobile column={column}>
           <Tag
             placing={placing}
+            hide={
+              placing !== "list" &&
+              placing !== "insights" &&
+              isMobileCustom &&
+              (openScream ||
+                (openProjectRoom && !project.screams) ||
+                openAccount ||
+                openOrganization ||
+                swipePosition === "top")
+            }
             onClick={
               type === "topics"
                 ? () => dispatch(handleTopicSelectorRedux("all"))
@@ -214,6 +234,16 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
                     selectedTopics.length !== 7
                   }
                   color={topic.color}
+                  hide={
+                    placing !== "list" &&
+                    placing !== "insights" &&
+                    isMobileCustom &&
+                    (openScream ||
+                      (openProjectRoom && !project.screams) ||
+                      openAccount ||
+                      openOrganization ||
+                      swipePosition === "top")
+                  }
                 >
                   <Checkbox color={topic.color} data-cy={topic.name} />
 
@@ -236,6 +266,16 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
                     ) && selectedOrganizationTypes.length !== 7
                   }
                   color={organizationTypes.color}
+                  hide={
+                    placing !== "list" &&
+                    placing !== "insights" &&
+                    isMobileCustom &&
+                    (openScream ||
+                      (openProjectRoom && !project.screams) ||
+                      openAccount ||
+                      openOrganization ||
+                      swipePosition === "top")
+                  }
                 >
                   <Icon data-cy={organizationTypes.name}>
                     {organizationTypes.svgIcon}
