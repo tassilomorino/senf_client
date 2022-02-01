@@ -61,7 +61,7 @@ const FilterWrapperMobile = styled.div`
 `;
 
 const FilterInnerWrapperMobile = styled.div`
-  padding-left: 10px;
+  padding-left: 0px;
   padding-right: 20px;
   margin: 5px;
   margin-left: 10px;
