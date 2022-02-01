@@ -68,6 +68,7 @@ const FlexWrapper = styled.div`
 const TopFlexWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
+  margin-bottom: 10px;
 `;
 const RightWrapper = styled.div`
   padding-right: 20px;
