@@ -178,7 +178,7 @@ const SwipeList = ({
     y: 0,
     scale: 1,
     transform: `translateY(${window.innerHeight - 120}px)`,
-    overflow: "scroll",
+    overflow: "hidden",
     touchAction: "none",
     userSelect: "none",
   }));
