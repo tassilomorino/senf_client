@@ -153,56 +153,58 @@ const Map = ({
   //   });
   // }
 
-  for (let point of dataFinal) {
-    let properties = point;
-    properties.circleRadius = 5 + point.likeCount / 7;
-    properties.circleBlurRadius = 14 + point.likeCount / 7;
+  if (dataFinal) {
+    for (let point of dataFinal) {
+      let properties = point;
+      properties.circleRadius = 5 + point.likeCount / 7;
+      properties.circleBlurRadius = 14 + point.likeCount / 7;
 
-    delete properties.longitude;
-    delete properties.latitude;
+      delete properties.longitude;
+      delete properties.latitude;
 
-    const unique =
-      dataFinal.filter((item) => item.long === point.long).length === 1;
+      const unique =
+        dataFinal.filter((item) => item.long === point.long).length === 1;
 
-    if (unique) {
-      let feature = {
-        type: "Feature",
-        geometry: { type: "Point", coordinates: [point.long, point.lat] },
-        properties: properties,
-      };
-      geojsonIdeas.features.push(feature);
-    } else {
-      function generateHash(string) {
-        var hash = 0;
-        if (string.length == 0) return hash;
-        for (let i = 0; i < string.length; i++) {
-          var charCode = string.charCodeAt(i);
-          hash = (hash << 7) - hash + charCode;
-          hash = hash & hash;
+      if (unique) {
+        let feature = {
+          type: "Feature",
+          geometry: { type: "Point", coordinates: [point.long, point.lat] },
+          properties: properties,
+        };
+        geojsonIdeas.features.push(feature);
+      } else {
+        function generateHash(string) {
+          var hash = 0;
+          if (string.length == 0) return hash;
+          for (let i = 0; i < string.length; i++) {
+            var charCode = string.charCodeAt(i);
+            hash = (hash << 7) - hash + charCode;
+            hash = hash & hash;
+          }
+          return hash;
         }
-        return hash;
+
+        function reversedNum(num) {
+          return (
+            parseFloat(num.toString().split("").reverse().join("")) *
+            Math.sign(num)
+          );
+        }
+        const hash = generateHash(point.screamId);
+
+        point.long = point.long + hash / 100000000000000;
+        point.lat = point.lat + reversedNum(hash) / 100000000000000;
+
+        let feature = {
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: [point.long, point.lat],
+          },
+          properties: properties,
+        };
+        geojsonIdeas.features.push(feature);
       }
-
-      function reversedNum(num) {
-        return (
-          parseFloat(num.toString().split("").reverse().join("")) *
-          Math.sign(num)
-        );
-      }
-      const hash = generateHash(point.screamId);
-
-      point.long = point.long + hash / 100000000000000;
-      point.lat = point.lat + reversedNum(hash) / 100000000000000;
-
-      let feature = {
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: [point.long, point.lat],
-        },
-        properties: properties,
-      };
-      geojsonIdeas.features.push(feature);
     }
   }
 
