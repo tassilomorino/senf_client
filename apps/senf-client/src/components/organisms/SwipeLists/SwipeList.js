@@ -1,7 +1,7 @@
 /** @format */
 import React, { useEffect, useState, memo, useCallback, useRef } from "react";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-
+import { Trans } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useSpring, animated } from "@react-spring/web";
@@ -310,8 +310,9 @@ const SwipeList = ({
           <SlideUpSection style={slideUpSectionProps}>
             <OrganizationsIntroWrapper>
               <OrganizationsIntro>
-                Verschaff dir einen schnellen Einblick durch{" "}
-                <span style={{ fontWeight: "900" }}>Statistiken</span>.
+                <Trans i18nKey="list_fastlink_statistics">
+                  .<span style={{ fontWeight: "900" }}>.</span>.
+                </Trans>
               </OrganizationsIntro>
               <CustomIconButton
                 name="ArrowRight"
@@ -339,9 +340,9 @@ const SwipeList = ({
           <SlideUpSection style={slideUpSectionProps}>
             <OrganizationsIntroWrapper>
               <OrganizationsIntro>
-                Entdecke die{" "}
-                <span style={{ fontWeight: "900" }}>Organisationen </span>hinter
-                den Projekträumen.
+                <Trans i18nKey="list_fastlink_organizations">
+                  .<span style={{ fontWeight: "900" }}>.</span>.
+                </Trans>
               </OrganizationsIntro>
               <CustomIconButton
                 name="ArrowRight"

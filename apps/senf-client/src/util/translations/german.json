@@ -136,6 +136,9 @@
   "keywords": "Keywords",
   "keywords_explained": "Die Keywords geben einen schnellen Einblick in die Gesprächsthemen.Umso mehr Ideen geteilt werden, desto aussagekräftiger werden dieseEinblicke.",
 
+  "list_fastlink_statistics": "Verschaff dir einen Einblick durch <1> Statistiken</1>.",
+  "list_fastlink_organizations": "Entdecke die <1>Organisationen</1> hinter den Projekträumen.",
+
   "map_filterIdeas": "Ideen im Kartenbereich in der Liste anzeigen",
   "dialogScream_what_do_you_think": "Was hältst du von der Idee?",
   "dialogScream_opinion": "Rege den Meinungsaustausch hier an!",
