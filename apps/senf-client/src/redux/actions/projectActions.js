@@ -14,10 +14,13 @@ import {
   OPEN_PROJECTROOM,
   CLOSE_PROJECT,
   OPEN_CREATE_PROJECTROOM,
+  LOADING_DATA,
+  STOP_LOADING_DATA,
+  LOADING_PROJECTROOM_DATA,
 } from "../types";
 import setColorByTopic from "../../data/setColorByTopic";
 import { setSwipePositionDown } from "./UiActions";
-import setColorByOrganizationType from "../../data/setColorByOrganizationType";
+import setIconByOrganizationType from "../../data/setIconByOrganizationType";
 import store from "../store";
 import { setMapBounds } from "./mapActions";
 
@@ -68,7 +71,7 @@ export const getProjects = (mapViewport) => async (dispatch) => {
         Thema: doc.data().Thema,
         organizationType: doc.data().organizationType,
         imgUrl: image,
-        color: setColorByOrganizationType(doc.data().organizationType),
+        icon: setIconByOrganizationType(doc.data().organizationType),
       };
       projects.push(docData);
       if (projects.length === ref.size) {
@@ -91,7 +94,7 @@ export const openProjectRoomFunc =
     if (state === true) {
       dispatch(setMapBounds(store.getState().data.initialMapBounds));
 
-      dispatch({ type: LOADING_UI });
+      dispatch({ type: LOADING_PROJECTROOM_DATA });
       dispatch({ type: OPEN_PROJECTROOM });
       dispatch(setSwipePositionDown());
       dispatch(loadProjectRoomData(projectRoomId));
@@ -143,7 +146,6 @@ export const loadProjectRoomData = (projectRoomId) => async (dispatch) => {
         );
 
         dispatch({ type: SET_PROJECT, payload: projectRoom });
-        dispatch({ type: STOP_LOADING_UI });
       });
   });
 };

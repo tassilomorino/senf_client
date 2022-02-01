@@ -5,10 +5,10 @@
   "contact": "Contact",
   "imprint": "Imprint",
   "accept": "Accept",
-  "back":"Back",
+  "back": "Back",
   "send": "Send",
   "next": "Next",
-  "save":"Save",
+  "save": "Save",
   "to": "To:",
   "details": "Details",
   "monitoring": "Monitoring",
@@ -22,8 +22,21 @@
   "withoutLocationShort": "No location",
   "confirmLocation": "Confirm location",
 
-  "newest": "newest",
-  "hottest": "hottest",
+  "newest": "Newest",
+  "hottest": "Hottest",
+  "aToZ": "A > Z",
+  "zToA": "Z > A",
+
+  "newest_ideas": "Newest Ideas",
+  "hottest_ideas": "Hottest Ideas",
+
+  "newest_projectrooms": "Newest Projectrooms",
+  "aToZ_projectrooms": "A > Z Projectrooms",
+  "zToA_projectrooms": "Z > A Projectrooms",
+
+  "newest_organizations": "Newest Organizations",
+  "aToZ_organizations": "A > Z Organizations",
+  "zToA_organizations": "Z > A Organizations",
 
   "noMoreIdeas": "No further ideas",
   "noContentIdeas": "With the filters selected, you won't find any ideas yet.",
@@ -116,6 +129,9 @@
   "keywords": "Keywords",
   "keywords_explained": "The keywords give a quick glimpse into the topics of conversation.The more ideas are shared, the more meaningful these insights become.",
 
+  "list_fastlink_statistics": "Get an insight through our informing <1>Statistics</1>.",
+  "list_fastlink_organizations": "Discover the <1>Organizations</1> behind the Projectrooms.",
+
   "map_filterIdeas": "Show ideas within the map area in the list",
   "dialogScream_what_do_you_think": "What do you think of the idea?",
   "dialogScream_opinion": "We encourage to leave an opinion!",
@@ -151,5 +167,14 @@
   "infopage_block3_subtitle": "We have already been able to form fantastic collaborations. If our way of thinking appeals to you too, let's get in touch!",
   "infopage_illustrator": "Illustrator: Gizem Güvendag",
 
-  "account_contact": "We look forward to your participation! Do you like Senf ? Is something bothering you ? Feel free to get in touch and tell us what you notice !"
+  "account_contact": "We look forward to your participation! Do you like Senf ? Is something bothering you ? Feel free to get in touch and tell us what you notice !",
+
+  "organizationTypes_all": "All Organizations",
+  "organizationTypes_association": "Associations",
+  "organizationTypes_initiatives": "Initiatives",
+  "organizationTypes_planners": "Planning agencies",
+  "organizationTypes_politics": "Politics",
+  "organizationTypes_administration": "City administration",
+  "organizationTypes_press": "Press",
+  "organizationTypes_other": "Other"
 }

@@ -37,8 +37,8 @@ const Wrapper = styled.div`
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2); */
   transition: 0.4s;
   z-index: 1;
-  transform: ${(props) => (props.moveUp ? "scale(0.8)" : "scale(1)")};
-  opacity:${(props) => (props.moveUp ? "0" : "1")};
+  transform: ${(props) => (props.hide ? "scale(0.8)" : "scale(1)")};
+  opacity:${(props) => (props.hide ? "0" : "1")};
 
   /* animation: TopbarEnterAnimation 2s;
 
@@ -139,7 +139,7 @@ const Topbar = ({ order, handleClick }) => {
     !loading &&
     isMobileCustom && (
       <Wrapper
-        moveUp={
+        hide={
           openScream ||
           openProjectRoom ||
           openAccount ||

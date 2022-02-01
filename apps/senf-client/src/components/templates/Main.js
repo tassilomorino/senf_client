@@ -116,6 +116,7 @@ const Main = () => {
   const voted = useSelector((state) => state.UI.voted);
   const screams = useSelector((state) => state.data.screams);
   const myScreams = useSelector((state) => state.data.myScreams);
+  const [initialLoading, setInitialLoading] = useState(true);
 
   const loading = useSelector((state) => state.data.loading);
   const loadingUI = useSelector((state) => state.UI.loading);
@@ -125,6 +126,9 @@ const Main = () => {
   );
 
   const loadingIdea = useSelector((state) => state.data.loadingIdea);
+  const loadingProjectRoom = useSelector(
+    (state) => state.data.loadingProjectRoom
+  );
 
   const projects = useSelector((state) => state.data.projects);
   const project = useSelector((state) => state.data.project);
@@ -235,9 +239,17 @@ const Main = () => {
       history.push("/intro");
     } else {
       if (mapViewport && mapViewport.latitude !== 0) {
-        dispatch(getOrganizations(mapViewport));
-        dispatch(getProjects(mapViewport));
-        dispatch(getScreams(mapViewport));
+        Promise.all([
+          dispatch(getOrganizations(mapViewport)),
+          dispatch(getProjects(mapViewport)),
+          dispatch(getScreams(mapViewport)),
+          screamId && dispatch(openScreamFunc(screamId)),
+          projectRoomId && dispatch(openProjectRoomFunc(projectRoomId, true)),
+          organizationId &&
+            dispatch(openOrganizationFunc(true, organizationId)),
+        ]).then((values) => {
+          setInitialLoading(false);
+        });
 
         if (window.location.pathname === "/projectRooms") {
           setOrder(2);
@@ -247,13 +259,10 @@ const Main = () => {
           setOrder(4);
         } else if (screamId) {
           setOrder(1);
-          dispatch(openScreamFunc(screamId));
         } else if (projectRoomId) {
           setOrder(2);
-          dispatch(openProjectRoomFunc(projectRoomId, true));
         } else if (organizationId) {
           setOrder(3);
-          dispatch(openOrganizationFunc(true, organizationId));
         }
       }
     }
@@ -272,7 +281,12 @@ const Main = () => {
 
       dispatch(closeAccountFunc());
       dispatch(handleTopicSelectorRedux("all"));
+      const ListWrapper = document.getElementById("ListWrapper");
 
+      ListWrapper?.scrollTo({
+        top: 0,
+        left: 0,
+      });
       if (order === 1) {
         window.history.pushState(null, null, "/");
       }
@@ -284,12 +298,6 @@ const Main = () => {
       }
       if (order === 4) {
         window.history.pushState(null, null, "/insights");
-
-        window.scrollTo({
-          top: 0,
-          left: 0,
-          behavior: "smooth",
-        });
       }
     },
     [dispatch]
@@ -455,7 +463,8 @@ const Main = () => {
 
   return (
     <React.Fragment>
-      {loading && isMobileCustom && <Loader />}
+      {(initialLoading || loadingIdea || loadingProjectRoom) &&
+        isMobileCustom && <Loader withoutBg={true} />}
 
       {isMobileCustom ? (
         <Topbar loading={loading} handleClick={handleClick} order={order} />
@@ -515,9 +524,8 @@ const Main = () => {
 
       {!openInfoPage && (
         <MainColumnWrapper>
-          {(loading || loadingIdea) && !isMobileCustom && (
-            <Loader left="200px" width="400px" />
-          )}
+          {(initialLoading || loadingIdea || loadingProjectRoom) &&
+            !isMobileCustom && <Loader left="200px" width="400px" />}
 
           {!openProjectRoom &&
             !openAccount &&

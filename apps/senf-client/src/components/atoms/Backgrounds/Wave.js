@@ -1,5 +1,5 @@
+import React, { useRef, useEffect, memo } from "react";
 import { isMobileCustom } from "apps/senf-client/src/util/customDeviceDetect";
-import React, { useRef, useEffect } from "react";
 import WaveCanvas from "./WaveCanvas";
 
 const Wave = (props) => {
@@ -148,15 +148,15 @@ const Wave = (props) => {
 
     render();
 
-    window.addEventListener("resize", resizeCanvasToDisplaySize);
+    // window.addEventListener("resize", resizeCanvasToDisplaySize);
 
-    return () => {
-      window.cancelAnimationFrame(animationFrameId);
-      window.removeEventListener("resize", resizeCanvasToDisplaySize);
-    };
+    // return () => {
+    //   window.cancelAnimationFrame(animationFrameId);
+    //   window.removeEventListener("resize", resizeCanvasToDisplaySize);
+    // };
   }, []);
 
   return <WaveCanvas canvasRef={canvasRef} props={props} />;
 };
 
-export default Wave;
+export default memo(Wave);

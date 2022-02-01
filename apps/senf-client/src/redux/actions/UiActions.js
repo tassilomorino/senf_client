@@ -9,6 +9,19 @@ import {
   SET_ORGANIZATION_TYPES,
 } from "../types";
 
+// export const loadingDataInitially = (state) => (dispatch) => {
+//   if(state){
+//     dispatch({
+//       type: START_INITITAL_LOADING,
+//     });
+//   }else{
+//     dispatch({
+//       type: STOP_INITITAL_LOADING,
+//     });
+//   }
+
+// };
+
 export const setInfoPageOpen = () => (dispatch) => {
   dispatch({
     type: SET_INFOPAGE_OPEN,

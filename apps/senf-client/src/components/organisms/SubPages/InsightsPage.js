@@ -20,7 +20,7 @@ import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
-import { Covers, CoverWrapper, Wrapper } from "./styles/sharedStyles";
+import { Covers, InsightsCoversWrapper, Wrapper } from "./styles/sharedStyles";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { StyledH2 } from "../../../styles/GlobalStyle";
@@ -185,7 +185,7 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
         likesLength={likesLength}
         commentslength={commentsLength}
       />
-      <CoverWrapper>
+      <InsightsCoversWrapper>
         <Covers animation="enteranimation 0.5s ease-in-out">
           <CoverTitle>
             <StyledH2 fontWeight="900" textAlign="center">
@@ -225,7 +225,7 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
           <ExpandButton handleButtonClick={() => handleLink()} />
           {/* <WordcloudDialog /> */}
         </Covers>
-      </CoverWrapper>
+      </InsightsCoversWrapper>
     </Wrapper>
   );
 };

@@ -157,7 +157,7 @@ const InfoModal = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const loading = useSelector((state) => state.UI.loading);
+  const loading = useSelector((state) => state.data.loading);
   const handle = useSelector((state) => state.user.handle);
 
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
@@ -339,7 +339,7 @@ const InfoModal = ({
                 </ButtonsWrapper>
               )}
             </LowerWrapper>
-            <Gradient />
+            {/* <Gradient /> */}
           </CardInnerWrapper>
           <SubmitButton
             text={
@@ -349,9 +349,8 @@ const InfoModal = ({
             zIndex="999"
             position={"absolute"}
             bottom="10px"
-            backgroundColor="white"
-            textColor="#353535"
-            shadow={false}
+            backgroundColor="#353535"
+            textColor="white"
             margin="0 0 0 0"
           />
         </Card>

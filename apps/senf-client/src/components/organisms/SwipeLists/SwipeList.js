@@ -1,7 +1,7 @@
 /** @format */
 import React, { useEffect, useState, memo, useCallback, useRef } from "react";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-
+import { Trans } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useSpring, animated } from "@react-spring/web";
@@ -178,7 +178,7 @@ const SwipeList = ({
     y: 0,
     scale: 1,
     transform: `translateY(${window.innerHeight - 120}px)`,
-    overflow: "scroll",
+    overflow: "hidden",
     touchAction: "none",
     userSelect: "none",
   }));
@@ -302,69 +302,72 @@ const SwipeList = ({
 
   const ref = useRef();
 
-  const sectionFastLinks = !openAccount && (
-    <React.Fragment>
-      {order === 1 && (
-        <SlideUpSection style={slideUpSectionProps}>
-          <OrganizationsIntroWrapper>
-            <OrganizationsIntro>
-              Verschaff dir einen schnellen Einblick durch{" "}
-              <span style={{ fontWeight: "900" }}>Statistiken</span>.
-            </OrganizationsIntro>
-            <CustomIconButton
-              name="ArrowRight"
-              position="relative"
-              top="20px"
-              backgroundColor="#FFF0BC"
-              handleButtonClick={() => setOpenInsightsPage(true)}
+  const sectionFastLinks = !openAccount &&
+    dataFinal &&
+    dataFinal.length > 0 && (
+      <React.Fragment>
+        {order === 1 && (
+          <SlideUpSection style={slideUpSectionProps}>
+            <OrganizationsIntroWrapper>
+              <OrganizationsIntro>
+                <Trans i18nKey="list_fastlink_statistics">
+                  .<span style={{ fontWeight: "900" }}>.</span>.
+                </Trans>
+              </OrganizationsIntro>
+              <CustomIconButton
+                name="ArrowRight"
+                position="relative"
+                top="20px"
+                backgroundColor="#FFF0BC"
+                handleButtonClick={() => setOpenInsightsPage(true)}
+              />
+            </OrganizationsIntroWrapper>
+            <Toolbar
+              swipeListType={swipeListType}
+              loading={loading}
+              handleDropdown={handleDropdown}
+              dropdown={dropdown}
+              dataFinalLength={dataFinal.length}
+              setSearchOpen={setSearchOpen}
+              searchOpen={searchOpen}
+              setSearchTerm={setSearchTerm}
+              searchTerm={searchTerm}
+              marginTop={"0px"}
             />
-          </OrganizationsIntroWrapper>
-          <Toolbar
-            swipeListType={swipeListType}
-            loading={loading}
-            handleDropdown={handleDropdown}
-            dropdown={dropdown}
-            dataFinalLength={dataFinal.length}
-            setSearchOpen={setSearchOpen}
-            searchOpen={searchOpen}
-            setSearchTerm={setSearchTerm}
-            searchTerm={searchTerm}
-            marginTop={"0px"}
-          />
-        </SlideUpSection>
-      )}
-      {order === 2 && (
-        <SlideUpSection style={slideUpSectionProps}>
-          <OrganizationsIntroWrapper>
-            <OrganizationsIntro>
-              Entdecke die{" "}
-              <span style={{ fontWeight: "900" }}>Organisationen </span>hinter
-              den Projekträumen.
-            </OrganizationsIntro>
-            <CustomIconButton
-              name="ArrowRight"
-              position="relative"
-              top="20px"
-              backgroundColor="#FFF0BC"
-              handleButtonClick={() => setOpenOrganizationsPage(true)}
-            />
-          </OrganizationsIntroWrapper>
-          <Toolbar
-            swipeListType={swipeListType}
-            loading={loading}
-            handleDropdown={handleDropdown}
-            dropdown={dropdown}
-            dataFinalLength={dataFinal.length}
-            setSearchOpen={setSearchOpen}
-            searchOpen={searchOpen}
-            setSearchTerm={setSearchTerm}
-            searchTerm={searchTerm}
-            marginTop={"0px"}
-          />{" "}
-        </SlideUpSection>
-      )}
-    </React.Fragment>
-  );
+          </SlideUpSection>
+        )}
+        {order === 2 && (
+          <SlideUpSection style={slideUpSectionProps}>
+            <OrganizationsIntroWrapper>
+              <OrganizationsIntro>
+                <Trans i18nKey="list_fastlink_organizations">
+                  .<span style={{ fontWeight: "900" }}>.</span>.
+                </Trans>
+              </OrganizationsIntro>
+              <CustomIconButton
+                name="ArrowRight"
+                position="relative"
+                top="20px"
+                backgroundColor="#FFF0BC"
+                handleButtonClick={() => setOpenOrganizationsPage(true)}
+              />
+            </OrganizationsIntroWrapper>
+            <Toolbar
+              swipeListType={swipeListType}
+              loading={loading}
+              handleDropdown={handleDropdown}
+              dropdown={dropdown}
+              dataFinalLength={dataFinal.length}
+              setSearchOpen={setSearchOpen}
+              searchOpen={searchOpen}
+              setSearchTerm={setSearchTerm}
+              searchTerm={searchTerm}
+              marginTop={"0px"}
+            />{" "}
+          </SlideUpSection>
+        )}
+      </React.Fragment>
+    );
   return isMobileCustom ? (
     <DragWrapper
       className={!loading && !openScream ? "" : "drag_hide"}
@@ -456,7 +459,7 @@ const SwipeList = ({
           </DesktopTabWrapper>
         )}
 
-        <ListWrapper openProjectRoom={openProjectRoom}>
+        <ListWrapper openProjectRoom={openProjectRoom} id="ListWrapper">
           {sectionFastLinks}
           <Wave />
           {!loading && (order === 1 || order === 2) && (

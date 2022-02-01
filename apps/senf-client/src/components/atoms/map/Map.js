@@ -88,6 +88,8 @@ const Map = ({
     (state) => state.data.initialMapViewport
   );
   const mapLoaded = useSelector((state) => state.data.mapLoaded);
+  const [showPatternBackground, setShowPatternBackground] = useState(true);
+
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openScream = useSelector((state) => state.UI.openScream);
   const openAccount = useSelector((state) => state.UI.openAccount);
@@ -96,6 +98,9 @@ const Map = ({
   const [hoverId, setHoverId] = useState("");
 
   const handlleMapLoaded = () => {
+    setTimeout(() => {
+      setShowPatternBackground(false);
+    }, 1000);
     dispatch(setMapLoaded());
 
     if (
@@ -122,82 +127,84 @@ const Map = ({
     geoData !== "" &&
     JSON.parse(geoData);
 
-  let dataNoLocation = [];
-  let dataFinalMap = [];
   let geojsonIdeas = { type: "FeatureCollection", features: [] };
   let geojsonProjectRooms = { type: "FeatureCollection", features: [] };
 
-  if (dataFinal !== undefined && dataFinal.length > 0) {
-    dataFinal.forEach((element) => {
-      if (element.lat === 50.93864020643174) {
-        dataNoLocation.push(element);
-      }
-    });
-  }
+  // let dataNoLocation = [];
+  // let dataFinalMap = [];
+  // if (dataFinal !== undefined && dataFinal.length > 0) {
+  //   dataFinal.forEach((element) => {
+  //     if (element.lat === 50.93864020643174) {
+  //       dataNoLocation.push(element);
+  //     }
+  //   });
+  // }
 
-  if (dataFinal !== undefined && dataNoLocation.length > 1) {
-    dataFinal.forEach((element) => {
-      if (element.lat !== 50.93864020643174) {
-        dataFinalMap.push(element);
-      }
-    });
-  }
-  if (dataFinal !== undefined && dataNoLocation.length < 2) {
-    dataFinal.forEach((element) => {
-      dataFinalMap.push(element);
-    });
-  }
+  // if (dataFinal !== undefined && dataNoLocation.length > 1) {
+  //   dataFinal.forEach((element) => {
+  //     if (element.lat !== 50.93864020643174) {
+  //       dataFinalMap.push(element);
+  //     }
+  //   });
+  // }
+  // if (dataFinal !== undefined && dataNoLocation.length < 2) {
+  //   dataFinal.forEach((element) => {
+  //     dataFinalMap.push(element);
+  //   });
+  // }
 
-  for (let point of dataFinalMap) {
-    let properties = point;
-    properties.circleRadius = 5 + point.likeCount / 7;
-    properties.circleBlurRadius = 14 + point.likeCount / 7;
+  if (dataFinal) {
+    for (let point of dataFinal) {
+      let properties = point;
+      properties.circleRadius = 5 + point.likeCount / 7;
+      properties.circleBlurRadius = 14 + point.likeCount / 7;
 
-    delete properties.longitude;
-    delete properties.latitude;
+      delete properties.longitude;
+      delete properties.latitude;
 
-    const unique =
-      dataFinalMap.filter((item) => item.long === point.long).length === 1;
+      const unique =
+        dataFinal.filter((item) => item.long === point.long).length === 1;
 
-    if (unique) {
-      let feature = {
-        type: "Feature",
-        geometry: { type: "Point", coordinates: [point.long, point.lat] },
-        properties: properties,
-      };
-      geojsonIdeas.features.push(feature);
-    } else {
-      function generateHash(string) {
-        var hash = 0;
-        if (string.length == 0) return hash;
-        for (let i = 0; i < string.length; i++) {
-          var charCode = string.charCodeAt(i);
-          hash = (hash << 7) - hash + charCode;
-          hash = hash & hash;
+      if (unique) {
+        let feature = {
+          type: "Feature",
+          geometry: { type: "Point", coordinates: [point.long, point.lat] },
+          properties: properties,
+        };
+        geojsonIdeas.features.push(feature);
+      } else {
+        function generateHash(string) {
+          var hash = 0;
+          if (string.length == 0) return hash;
+          for (let i = 0; i < string.length; i++) {
+            var charCode = string.charCodeAt(i);
+            hash = (hash << 7) - hash + charCode;
+            hash = hash & hash;
+          }
+          return hash;
         }
-        return hash;
+
+        function reversedNum(num) {
+          return (
+            parseFloat(num.toString().split("").reverse().join("")) *
+            Math.sign(num)
+          );
+        }
+        const hash = generateHash(point.screamId);
+
+        point.long = point.long + hash / 100000000000000;
+        point.lat = point.lat + reversedNum(hash) / 100000000000000;
+
+        let feature = {
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: [point.long, point.lat],
+          },
+          properties: properties,
+        };
+        geojsonIdeas.features.push(feature);
       }
-
-      function reversedNum(num) {
-        return (
-          parseFloat(num.toString().split("").reverse().join("")) *
-          Math.sign(num)
-        );
-      }
-      const hash = generateHash(point.screamId);
-
-      point.long = point.long + hash / 100000000000000;
-      point.lat = point.lat + reversedNum(hash) / 100000000000000;
-
-      let feature = {
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: [point.long, point.lat],
-        },
-        properties: properties,
-      };
-      geojsonIdeas.features.push(feature);
     }
   }
 
@@ -251,7 +258,7 @@ const Map = ({
   return (
     mapViewport && (
       <React.Fragment>
-        {!mapLoaded && <PatternBackground />}
+        {showPatternBackground && <PatternBackground />}
 
         <MapGL
           ref={mapRef}
@@ -272,6 +279,7 @@ const Map = ({
                   height: "100vh",
                   top: "0",
                   transform: "scale(1)",
+                  zIndex: "-1",
                 }
               : {
                   position: "fixed",
@@ -326,7 +334,7 @@ const Map = ({
               )}
 
               <Source id="geojsonIdeas" type="geojson" data={geojsonIdeas} />
-              <Layer
+              {/* <Layer
                 id="geojsonIdeasblur"
                 source="geojsonIdeas"
                 type="circle"
@@ -351,7 +359,7 @@ const Map = ({
                   "circle-blur": 1,
                   "circle-opacity": 0.15,
                 }}
-              />
+              /> */}
 
               <Layer
                 id="geojsonIdeas"
@@ -451,7 +459,7 @@ const Map = ({
                 </Marker>
               )}
 
-              <NoLocationPopUp dataNoLocation={dataNoLocation} />
+              {/* <NoLocationPopUp dataNoLocation={dataNoLocation} /> */}
             </React.Fragment>
           ) : (
             <React.Fragment>
