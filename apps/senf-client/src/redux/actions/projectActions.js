@@ -20,7 +20,7 @@ import {
 } from "../types";
 import setColorByTopic from "../../data/setColorByTopic";
 import { setSwipePositionDown } from "./UiActions";
-import setColorByOrganizationType from "../../data/setColorByOrganizationType";
+import setIconByOrganizationType from "../../data/setIconByOrganizationType";
 import store from "../store";
 import { setMapBounds } from "./mapActions";
 
@@ -71,7 +71,7 @@ export const getProjects = (mapViewport) => async (dispatch) => {
         Thema: doc.data().Thema,
         organizationType: doc.data().organizationType,
         imgUrl: image,
-        color: setColorByOrganizationType(doc.data().organizationType),
+        icon: setIconByOrganizationType(doc.data().organizationType),
       };
       projects.push(docData);
       if (projects.length === ref.size) {

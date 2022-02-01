@@ -23,6 +23,7 @@ import {
   Gradient,
 } from "./styles/sharedStyles";
 import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
+import organizationTypes from "../../../data/organizationTypes";
 
 const ImgWrapper = styled.div`
   position: relative;
@@ -60,11 +61,24 @@ const StyledImg = styled.img`
 
 const FlexWrapper = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   margin-bottom: 10px;
 `;
+
+const TopFlexWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+`;
 const RightWrapper = styled.div`
-  margin-left: 10px;
+  padding-right: 20px;
+`;
+
+const Icon = styled.div`
+  width: 16px;
+  height: 16px;
+  flex-grow: 0;
+  margin-right: 10px;
+  margin-left: 3px;
 `;
 
 export const ProjectCard = (props) => {
@@ -77,7 +91,7 @@ export const ProjectCard = (props) => {
       description,
       status,
       organizationId,
-      color,
+      icon,
     },
   } = props;
 
@@ -118,7 +132,7 @@ export const ProjectCard = (props) => {
             position="absolute"
             left="calc(100% - 54px)"
             margin="2px"
-            top="0px"
+            bottom="0px"
             backgroundColor="transparent"
             shadow={false}
             zIndex="99"
@@ -126,6 +140,17 @@ export const ProjectCard = (props) => {
         )}
         <ExpandButton handleButtonClick={() => pushScreamId()} />
         <FlexWrapper>
+          <RightWrapper>
+            <TopFlexWrapper>
+              <Icon>{icon}</Icon>
+
+              <h4>{owner}</h4>
+            </TopFlexWrapper>
+
+            <CardTitle>
+              <StyledH2 fontWeight="900">{title}</StyledH2>
+            </CardTitle>
+          </RightWrapper>
           <ImgWrapper>
             {status === "archived" && (
               <ImgWrapperOverlay>
@@ -135,16 +160,6 @@ export const ProjectCard = (props) => {
 
             <StyledImg src={imgUrl} width="100%" alt="profile" />
           </ImgWrapper>
-          <RightWrapper>
-            <ColorDot color={color} />
-            <DistrictHeader color={color}>
-              <h4>{owner}</h4>
-            </DistrictHeader>
-
-            <CardTitle>
-              <StyledH2 fontWeight="900">{title}</StyledH2>
-            </CardTitle>
-          </RightWrapper>
         </FlexWrapper>
         <BodyText>
           <StyledText>{description} </StyledText>
