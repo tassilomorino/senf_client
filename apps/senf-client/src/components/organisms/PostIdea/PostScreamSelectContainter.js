@@ -106,23 +106,24 @@ const PostScreamSelectContainter = ({
           handleDropdown={handleDropdownProject}
         />
       </ProjectSelectWrapper>
-      <FlexWrapper>
-        <img src={LocationIcon} width="20px" style={{ paddingRight: "5px" }} />
-        <StyledH4 style={{ width: "130px" }}>
+      {/* <FlexWrapper> */}
+      {/* <img src={LocationIcon} width="20px" style={{ paddingRight: "5px" }} /> */}
+      {/* <StyledH4 style={{ width: "130px" }}>
           {address ? truncateString(address, 30) : t("Ort festlegen")}
-        </StyledH4>
-        <SubmitButton
-          text={t("confirmLocation")}
-          zIndex="999"
-          backgroundColor="#fed957"
-          textColor="#353535"
-          handleButtonClick={handleLocationDecided}
-          shadow={false}
-          marginLeft="auto"
-          transformX="none"
-          disabled={!address}
-        />
-      </FlexWrapper>
+        </StyledH4> */}
+      <SubmitButton
+        text={t("confirmLocation")}
+        zIndex="999"
+        backgroundColor="#fed957"
+        textColor="#353535"
+        handleButtonClick={handleLocationDecided}
+        shadow={false}
+        margin="20px 0px 0px 0px"
+        // marginLeft="auto"
+        // transformX="none"
+        disabled={!address}
+      />
+      {/* </FlexWrapper> */}
     </Wrapper>
   );
 };
