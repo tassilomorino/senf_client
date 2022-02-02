@@ -39,12 +39,17 @@
   "zToA_organizations": "Z > A Organizations",
 
   "noMoreIdeas": "No further ideas",
-  "noContentIdeas": "With the filters selected, you won't find any ideas yet.",
+  "noContentIdeas": "No ideas match the selected filters.",
   "noSharedIdeas": "You haven't shared an idea yet.You are creative! Share your ideas!",
   "noIdeasWithFilter": "You haven't shared any ideas with selected filters yet.",
   "noProjectIdeas": "No idea has been shared for this project space. Be the first and share your idea!",
   "idea": "Idea",
   "ideas": "Ideas",
+  "projectRoom": "Projectroom",
+  "projectRooms": "Projectrooms",
+  "organization": "Organization",
+  "organizations": "Organizations",
+
   "opinion": "What is your opinion ?",
   "comment": "Comment",
   "comments": "Comments",

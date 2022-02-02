@@ -262,7 +262,7 @@ const InfoModal = ({
                     zIndex="999"
                     backgroundColor="white"
                     textColor="#353535"
-                    onClick={() => openLink(weblink)}
+                    handleButtonClick={() => openLink(weblink)}
                     shadow={false}
                     smallSubmitButton={true}
                     iconLeft={true}
@@ -277,7 +277,7 @@ const InfoModal = ({
                     zIndex="999"
                     backgroundColor="white"
                     textColor="#353535"
-                    onClick={() => openMail(contact)}
+                    handleButtonClick={() => openMail(contact)}
                     shadow={false}
                     smallSubmitButton={true}
                     iconLeft={true}

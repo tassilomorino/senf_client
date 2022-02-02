@@ -150,7 +150,7 @@ const OrganizationDialog = ({
         {/* {!isMobileCustom || (isMobileCustom && order !== 1 && <Background />)} */}
         {order === 1 && (
           <SwipeList
-            swipeListType="projectRoomOverview"
+            swipeListType="organizationsOverview"
             loading={loadingProjects}
             tabLabels={MenuData.map((item) => item.text).slice(1, 2)}
             order={order}

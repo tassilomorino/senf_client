@@ -252,7 +252,7 @@ const IdeaCardBig = ({ classes, setClicked }) => {
               zIndex="999"
               backgroundColor="#fed957"
               textColor="#353535"
-              onClick={() => openLink(convertedLink)}
+              handleButtonClick={() => openLink(convertedLink)}
               shadow={false}
               smallSubmitButton={true}
               iconRight={true}
@@ -268,7 +268,7 @@ const IdeaCardBig = ({ classes, setClicked }) => {
               zIndex="999"
               backgroundColor="#fed957"
               textColor="#353535"
-              onClick={() => openMail(contact)}
+              handleButtonClick={() => openMail(contact)}
               shadow={false}
               smallSubmitButton={true}
               iconRight={true}

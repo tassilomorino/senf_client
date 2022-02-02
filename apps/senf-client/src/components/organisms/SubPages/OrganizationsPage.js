@@ -28,8 +28,9 @@ const InnerWrapper = styled.div`
   pointer-events: all;
   height: calc(100% - 120px);
   width: 100%;
-  margin-top: ${(props) => (props.isMobileCustom ? "120px" : "0px")};
+  margin-top: ${(props) => (props.isMobileCustom ? "0px" : "0px")};
   overflow: scroll;
+  background-color: #ffe898;
 `;
 
 const HeaderWrapper = styled.div`
@@ -40,8 +41,10 @@ const HeaderWrapper = styled.div`
   z-index: 25;
   height: 100px;
   @media (min-width: 768px) {
-    width: 400px;
-    height: 100px;
+    width: 600px;
+    height: 120px;
+    margin-left: 50%;
+    transform: translateX(-50%);
   }
 `;
 const NoIdeasYet = styled.div`
@@ -85,13 +88,7 @@ const OrganizationsPage = ({ setOpenOrganizationsPage, order, loading }) => {
   const organizationsSearched = organizations?.filter((val) => {
     if (searchTerm === "") {
       return val;
-    } else if (
-      val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.Stadtteil?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.Stadtbezirk?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.locationHeader?.toLowerCase().includes(searchTerm.toLowerCase())
-    ) {
+    } else if (val.title.toLowerCase().includes(searchTerm.toLowerCase())) {
       return val;
     }
   });
@@ -119,31 +116,35 @@ const OrganizationsPage = ({ setOpenOrganizationsPage, order, loading }) => {
 
   const dataFinalLength = dataFinal?.length;
 
-  useEffect(() => {
-    if (!loadingOrganizations) {
-      const element = document.getElementById("List");
-      element?.scrollTo({
-        top: 0,
-        left: 0,
-      });
+  // useEffect(() => {
+  //   if (!loadingOrganizations) {
+  //     const element = document.getElementById("List");
+  //     element?.scrollTo({
+  //       top: 0,
+  //       left: 0,
+  //     });
 
-      setListItems(1);
-      sethasMoreItems(true);
-    }
-  }, [loadingOrganizations]);
+  //     setListItems(1);
+  //     sethasMoreItems(true);
+  //   }
+  // }, [loadingOrganizations]);
   const itemsPerPage = 1;
   const [hasMoreItems, sethasMoreItems] = useState(true);
   const [listItems, setListItems] = useState(itemsPerPage);
 
-  const showItems = (organizations) => {
+  console.log(dataFinal);
+
+  const showItems = (dataFinal) => {
     var items = [];
-    if (organizations?.length !== 0) {
+
+    if (dataFinal?.length !== 0) {
       for (var i = 0; i < listItems; i++) {
+        console.log(items);
         items.push(
-          organizations[i]?.organizationId && (
+          dataFinal[i]?.organizationId && (
             <OrganizationCard
-              key={organizations[i]?.organizationId}
-              organization={organizations[i]}
+              key={dataFinal[i]?.organizationId}
+              organization={dataFinal[i]}
             />
           )
         );
@@ -153,12 +154,9 @@ const OrganizationsPage = ({ setOpenOrganizationsPage, order, loading }) => {
   };
 
   const loadMore = () => {
-    if (!loadingOrganizations && dataFinal?.length === 0) {
+    if (listItems === dataFinal.length) {
       sethasMoreItems(false);
-    }
-
-    if (listItems === dataFinal?.length) {
-      sethasMoreItems(false);
+      alert(listItems);
     } else {
       setTimeout(() => {
         setListItems(listItems + itemsPerPage);
@@ -183,7 +181,7 @@ const OrganizationsPage = ({ setOpenOrganizationsPage, order, loading }) => {
           order={1}
           tabLabels={MenuData.map((item) => item.text).slice(2, 3)}
           marginTop={"20px"}
-          marginBottom={"0px"}
+          marginBottom={"20px"}
         />
 
         {isMobileCustom && (

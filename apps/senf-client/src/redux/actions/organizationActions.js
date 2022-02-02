@@ -56,7 +56,7 @@ export const getOrganizations = (mapViewport) => async (dispatch) => {
 
     function onReject() {
       console.log("error loading organizations");
-      organizations.push(doc.data());
+      alert("nooo");
     }
   });
 };

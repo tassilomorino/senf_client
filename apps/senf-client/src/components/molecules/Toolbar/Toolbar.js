@@ -25,7 +25,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   height: 50px;
   transition: height 0.5s;
-  padding: 0px 2.5% 10px 2.5%;
+  padding: 0px 10px 10px 10px;
 
   animation: ToolbarAnimation 0.7s;
   pointer-events: none;
@@ -34,8 +34,6 @@ const Wrapper = styled.div`
     position: relative;
     margin-top: ${(props) => (props.marginTop ? props.marginTop : "30px")};
     z-index: 99;
-
-    padding: 10px 10px 10px 10px;
   }
 
   @keyframes ToolbarAnimation {
@@ -71,16 +69,13 @@ const SearchIconButton = styled.button`
   height: 40px;
   padding: 10px;
   border-radius: 10px;
-  background-color: transparent;
   pointer-events: auto;
   margin-left: auto;
   margin-right: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
-  border: ${(props) =>
-    props.searchTerm !== "" && !props.searchOpen
-      ? "1px solid white"
-      : "none"}; ;
+  background-color: ${(props) =>
+    props.searchTerm !== "" ? "white" : "transparent"}; ;
 `;
 
 const AddIconButton = styled.button`
