@@ -60,9 +60,6 @@ const BodyText = styled.p`
   white-space: none;
   position: relative;
   width: 100%;
-
-  overflow: hidden;
-  max-height: 4.8em;
   margin-top: 0;
 `;
 
@@ -235,15 +232,15 @@ const IdeaCardBig = ({ classes, setClicked }) => {
         <CardTitle>
           <StyledH2 fontWeight="900">{title}</StyledH2>
         </CardTitle>
-        <BodyText>
-          <StyledText>{body} </StyledText>
-        </BodyText>
+
+        <StyledText>{body} </StyledText>
 
         <div
           style={{
             display: "flex",
             flexDirection: "row",
             flexWrap: "wrap",
+            marginTop: "10px",
           }}
         >
           {weblink && (
