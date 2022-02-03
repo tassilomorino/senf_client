@@ -26,11 +26,13 @@ import {
   DistrictHeader,
   EngagementWrapper,
   Gradient,
+  Icon,
   ProjectOpenButton,
 } from "./styles/sharedStyles";
 import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
 
 import ProjectRoomIcon from "../../../images/icons/projectRoomIcon.png";
+import setIconByOrganizationType from "apps/senf-client/src/data/setIconByOrganizationType";
 
 const Gradient2 = styled.div`
   width: 100%;
@@ -72,11 +74,14 @@ const IdeaCard = ({
   const projectRoomDataFinal = [];
 
   if (projectsData) {
-    projectsData.forEach(({ projectRoomId, title }) => {
+    projectsData.forEach(({ projectRoomId, title, organizationType }) => {
+      const svgIcon = setIconByOrganizationType(organizationType);
+
       if (ideaCardProject === projectRoomId) {
         projectRoomDataFinal.push(
           projectRoomId.includes(ideaCardProject),
-          title
+          title,
+          svgIcon
         );
       }
     });
@@ -111,12 +116,7 @@ const IdeaCard = ({
             <React.Fragment>
               <Gradient2></Gradient2>
               <ProjectOpenButton onClick={fetchDataProject}>
-                <img
-                  src={ProjectRoomIcon}
-                  width="20px"
-                  style={{ paddingRight: "10px", alignSelf: "center" }}
-                  alt="ProjectRoomIcon"
-                />
+                <Icon>{projectRoomDataFinal[2]}</Icon>
                 {projectRoomDataFinal[1]}
               </ProjectOpenButton>
             </React.Fragment>

@@ -15,15 +15,12 @@ import CalendarIcon from "../../../images/icons/calendar.png";
 import PenIcon from "../../../images/icons/pen.png";
 import LocationIcon from "../../../images/icons/location.png";
 
-import WeblinkIcon from "../../../images/icons/weblink.png";
-import contactIcon from "../../../images/icons/mail.png";
-import ProjectRoomIcon from "../../../images/icons/projectRoomIcon.png";
-
 import {
   CardTitle,
   ColorDot,
   DistrictHeader,
   EngagementWrapper,
+  Icon,
   ProjectOpenButton,
 } from "./styles/sharedStyles";
 import CommentButton from "../../atoms/CustomButtons/CommentButton";
@@ -33,6 +30,7 @@ import {
   StyledText,
 } from "../../../styles/GlobalStyle";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
+import setIconByOrganizationType from "apps/senf-client/src/data/setIconByOrganizationType";
 
 const Card = styled.div`
   z-index: 99;
@@ -174,12 +172,17 @@ const IdeaCardBig = ({ classes, setClicked }) => {
   const openMail = (contact) => {
     window.location.href = "mailto:" + contact;
   };
-
-  const projectsDataFinal = [];
+  const projectRoomDataFinal = [];
   if (projects) {
-    projects.forEach(({ projectRoomId, title }) => {
+    projects.forEach(({ projectRoomId, title, organizationType }) => {
+      const svgIcon = setIconByOrganizationType(organizationType);
+
       if (project === projectRoomId) {
-        projectsDataFinal.push(title);
+        projectRoomDataFinal.push(
+          projectRoomId.includes(project),
+          title,
+          svgIcon
+        );
       }
     });
   }
@@ -327,14 +330,8 @@ const IdeaCardBig = ({ classes, setClicked }) => {
 
           {project && (
             <ProjectOpenButton onClick={() => openTheProject(project)}>
-              <img
-                src={ProjectRoomIcon}
-                width="20px"
-                style={{ paddingRight: "10px", alignSelf: "center" }}
-                alt="ProjectRoomIcon"
-              />
-
-              {projectsDataFinal}
+              <Icon>{projectRoomDataFinal[2]}</Icon>
+              {projectRoomDataFinal[1]}
             </ProjectOpenButton>
           )}
         </div>

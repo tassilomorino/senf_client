@@ -30,17 +30,18 @@ const Card = styled.div`
   width: ${(props) => (props.isMobileCustom ? " calc(100% - 20px)" : "380px")};
 
   border-radius: 18px;
-  height: ${(props) =>
+  height: auto;
+  /* height: ${(props) =>
     props.openAccount
       ? "500px"
       : props.weblink && props.contact
       ? "700px"
       : props.contact || props.weblink
       ? "650px"
-      : "600px"};
+      : "600px"}; */
   max-height: ${(props) => (props.infoOpen ? "calc(100% - 20px)" : "0px")};
   transition: 0.5s;
-  overflow: hidden;
+  overflow: scroll;
   background-color: rgb(255, 255, 255, 0.6);
   backdrop-filter: ${(props) => (props.infoOpen ? "blur(10px)" : "none")};
   /* box-shadow: 0 8px 40px -35px rgba(0, 0, 0, 0.4); */
@@ -58,6 +59,7 @@ const CardInnerWrapper = styled.div`
   overflow-x: hidden;
   background-color: #fff7dd;
   /* box-shadow: inset 0 -10px 10px -10px #000000; */
+  position: relative;
 `;
 const LowerWrapper = styled.div`
   position: relative;
@@ -344,19 +346,37 @@ const InfoModal = ({
             </LowerWrapper>
             {/* <Gradient /> */}
           </CardInnerWrapper>
+          {!isMobileCustom && (
+            <SubmitButton
+              text={
+                openProjectRoom
+                  ? t("Projektraum anzeigen")
+                  : t("Profil anzeigen")
+              }
+              handleButtonClick={() => setInfoOpen(false)}
+              zIndex="999"
+              position="fixed"
+              bottom="20px"
+              backgroundColor="#353535"
+              textColor="white"
+              margin="0 0 0 0"
+            />
+          )}
+        </Card>
+        {isMobileCustom && (
           <SubmitButton
             text={
               openProjectRoom ? t("Projektraum anzeigen") : t("Profil anzeigen")
             }
             handleButtonClick={() => setInfoOpen(false)}
             zIndex="999"
-            position={"absolute"}
-            bottom="10px"
+            position="fixed"
+            bottom="20px"
             backgroundColor="#353535"
             textColor="white"
             margin="0 0 0 0"
           />
-        </Card>
+        )}
       </React.Fragment>
     )
   );

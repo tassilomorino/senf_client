@@ -533,6 +533,12 @@ const Map = ({
                     "text-justify": "left",
                     "text-size": 16,
                     "text-allow-overlap": true,
+                    "text-padding": 5,
+                  }}
+                  paint={{
+                    "text-color": "#202",
+                    "text-halo-color": "#fff",
+                    "text-halo-width": 22,
                   }}
                 />
               )}

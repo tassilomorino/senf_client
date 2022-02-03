@@ -57,6 +57,14 @@ export const ColorDot = styled.div`
   opacity: 1;
   float: left;
 `;
+export const Icon = styled.div`
+  width: 16px;
+  position: relative;
+  height: 16px;
+  flex-grow: 0;
+  margin-right: 10px;
+  margin-left: 3px;
+`;
 
 export const DistrictHeader = styled.div`
   float: left;

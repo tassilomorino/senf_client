@@ -114,6 +114,7 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
           "description_learnmore",
           data.description_learnmore
         );
+        formik.setFieldValue("description_learnmore", data.brief);
       }
     }
 

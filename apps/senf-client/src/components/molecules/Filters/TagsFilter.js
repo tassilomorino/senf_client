@@ -143,11 +143,7 @@ const Icon = styled.div`
   width: 16px;
   position: relative;
   height: 16px;
-
   flex-grow: 0;
-
-  /* background-color: ${(props) => props.color && props.color}; */
-
   margin-right: 10px;
   margin-left: 3px;
 `;

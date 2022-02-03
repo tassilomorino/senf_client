@@ -54,7 +54,7 @@ export const getProjects = (mapViewport) => async (dispatch) => {
         projectRoomId: doc.data().projectRoomId,
 
         title: doc.data().title,
-        description_about: doc.data().description_about?.substr(0, 180),
+        brief: doc.data().brief,
         owner: doc.data().owner,
         createdAt: doc.data().createdAt,
         startDate: doc.data().startDate,
