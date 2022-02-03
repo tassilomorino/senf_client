@@ -8,7 +8,7 @@ const setIconByOrganizationType = (organizationType) => {
       icon = organizationTypes[0].svgIcon;
       break;
     case organizationTypes[1].name:
-      icon = organizationTypes[1].icon;
+      icon = organizationTypes[1].svgIcon;
       break;
     case organizationTypes[2].name:
       icon = organizationTypes[2].svgIcon;
