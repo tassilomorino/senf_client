@@ -157,7 +157,11 @@ const ProjectInfoSwiper = ({ setInfoOpen, pages }) => {
                 ? truncateString(title, 14)
                 : truncateString(title, 9)}
             </StyledH2> */}
-            <StyledText textAlign="center" margin="20px" marginLeft="20px">
+            <StyledText
+              textAlign="center"
+              margin="10px 20px 20px 20px"
+              marginLeft="20px"
+            >
               <span style={{ fontWeight: "900" }}> {title}</span> {text}
             </StyledText>
 
