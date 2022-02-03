@@ -89,7 +89,7 @@ export const ProjectCard = (props) => {
       title,
       owner,
       imgUrl,
-      description,
+      brief,
       status,
       organizationId,
       icon,
@@ -163,7 +163,7 @@ export const ProjectCard = (props) => {
           </ImgWrapper>
         </FlexWrapper>
         <BodyText>
-          <StyledText>{description} </StyledText>
+          <StyledText>{brief} </StyledText>
         </BodyText>
         <Gradient />
       </CardContent>

@@ -146,7 +146,10 @@ const DeleteButton = styled.div`
 const InfoModal = ({
   infoOpen,
   setInfoOpen,
-  description,
+  description_about,
+  description_motivation,
+  description_procedure,
+  description_learnmore,
   weblink,
   contact,
   startDate,
@@ -195,23 +198,23 @@ const InfoModal = ({
   const pages = [
     {
       title: "Es geht um ",
-      text: "einen mobilen, multifunktionalen und niedrigschwelligen Begegnungsort können Angebote in den öffentlichen Raum getragen werden und ermöglicht dadurch eine bewusstere Wahrnehmung und einfachere Begegnung der eigenen Nachbar:innen, Anwohner:innen des Stadtteils und der Umgebung.",
+      text: description_about,
 
       id: 0,
     },
     {
       title: "Mit den Ideen werden wir ",
-      text: "einen mobilen, multifunktionalen und niedrigschwelligen Begegnungsort können Angebote in den öffentlichen Raum getragen werden und ermöglicht dadurch eine bewusstere Wahrnehmung und einfachere Begegnung der eigenen Nachbar:innen, Anwohner:innen des Stadtteils und der Umgebung.",
+      text: description_motivation,
       id: 1,
     },
     {
       title: "Unsere Motivation ist ",
-      text: "ein mobiles, multifunktionalen und niedrigschwelligen Begegnungsort können Angebote in den öffentlichen Raum getragen werden und ermöglicht dadurch eine bewusstere Wahrnehmung und einfachere Begegnung der eigenen Nachbar:innen, Anwohner:innen des Stadtteils und der Umgebung.",
+      text: description_procedure,
       id: 2,
     },
     {
       title: "Wenn du mehr erfahren willst, ",
-      text: "kannst du einem mobilen, multifunktionalen und niedrigschwelligen Begegnungsort können Angebote in den öffentlichen Raum getragen werden und ermöglicht dadurch eine bewusstere Wahrnehmung und einfachere Begegnung der eigenen Nachbar:innen, Anwohner:innen des Stadtteils und der Umgebung.",
+      text: description_learnmore,
       id: 3,
     },
   ];
