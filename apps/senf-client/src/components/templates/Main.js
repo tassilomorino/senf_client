@@ -425,12 +425,24 @@ const Main = () => {
         if (searchTerm === "") {
           return val;
         } else if (
-          val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          val.description.toLowerCase().includes(searchTerm.toLowerCase())
+          val.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          val.description_about
+            ?.toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          val.description_motivation
+            ?.toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          val.description_procedure
+            ?.toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          val.description_learnmore
+            ?.toLowerCase()
+            .includes(searchTerm.toLowerCase())
         ) {
           return val;
         }
       }),
+
     [projects, searchTerm]
   );
 
@@ -460,6 +472,37 @@ const Main = () => {
       status === "active" &&
       selectedOrganizationTypes.includes(organizationType)
   );
+
+  //ORGANIZATIONS
+
+  const organizationsSearched = organizations?.filter((val) => {
+    if (searchTerm === "") {
+      return val;
+    } else if (val.title.toLowerCase().includes(searchTerm.toLowerCase())) {
+      return val;
+    }
+  });
+
+  const sortedOrganizations =
+    dropdown === "newest"
+      ? _.orderBy(organizationsSearched, "createdAt", "desc")
+      : dropdown === "aToZ"
+      ? _.orderBy(
+          organizationsSearched,
+          [(pr) => pr.title.toLowerCase()],
+          ["asc"]
+        )
+      : _.orderBy(
+          organizationsSearched,
+          [(pr) => pr.title.toLowerCase()],
+          ["desc"]
+        );
+
+  const dataFinalOrganizations = useMemo(() => {
+    return sortedOrganizations.filter(({ organizationType }) =>
+      selectedOrganizationTypes.includes(organizationType)
+    );
+  }, [selectedOrganizationTypes, dropdown, organizationsSearched]);
 
   return (
     <React.Fragment>
@@ -583,10 +626,17 @@ const Main = () => {
         !openProjectRoom &&
         !openAccount &&
         !openOrganization &&
-        openOrganizationsPage && (
+        openOrganizationsPage &&
+        !loadingOrganizations && (
           <OrganizationsPage
             order={order}
             setOpenOrganizationsPage={setOpenOrganizationsPage}
+            dataFinal={dataFinalOrganizations}
+            dropdown={dropdown}
+            handleDropdown={handleDropdown}
+            setDropdown={setDropdown}
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
           />
         )}
 
