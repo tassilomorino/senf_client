@@ -45,6 +45,7 @@ const DragWrapper = styled(animated.div)`
   @media (min-width: 768px) {
     width: 400px;
     animation: none;
+    border-radius: 0px;
   }
 `;
 const Content = styled.div`

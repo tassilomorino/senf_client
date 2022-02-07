@@ -516,6 +516,7 @@ const Main = () => {
           handleClick={handleClick}
           order={order}
           setChangeLocationModalOpen={setChangeLocationModalOpen}
+          loading={initialLoading}
         />
       )}
 
@@ -572,14 +573,13 @@ const Main = () => {
 
           {!openProjectRoom &&
             !openAccount &&
-            !loadingProjects &&
-            !loading &&
+            !initialLoading &&
             !openOrganization &&
-            (order === 1 || order === 2) && (
+            (order === 1 || (order === 2 && !loadingProjects)) && (
               <SwipeList
                 swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}
                 tabLabels={MenuData.map((item) => item.text).slice(0, 2)}
-                loading={order === 1 ? loading : loadingProjects}
+                loading={initialLoading}
                 order={order}
                 dataFinal={order === 1 ? dataFinalIdeas : dataFinalProjectRooms}
                 dataFinalMap={dataFinalMap}

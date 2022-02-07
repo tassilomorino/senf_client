@@ -180,7 +180,9 @@ const DesktopSidebar = ({
         handleClick={handleClick}
         openAccount={openAccount}
       />
-      <FilterWrapper active={order === 2 && !openProjectRoom && !openAccount}>
+      <FilterWrapper
+        active={order === 2 && !openProjectRoom && !openAccount && !loading}
+      >
         <TagsFilter column type="organizationType" />
       </FilterWrapper>
       <FilterWrapper active={openProjectRoom}>
