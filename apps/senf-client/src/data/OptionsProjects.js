@@ -7,9 +7,7 @@ export function OptionsProjects() {
   const projects = useSelector((state) => state.data.projects);
   const { t } = useTranslation();
 
-  const optionsProjectsInitial = [
-    { name: "", label: "Allgemein (Alle Ideen)" },
-  ];
+  const optionsProjectsInitial = [{ name: "", label: t("all_ideas") }];
   const optionsProjectsArray = projects
     ?.sort(function (a, b) {
       if (a.createdAt > b.createdAt) {

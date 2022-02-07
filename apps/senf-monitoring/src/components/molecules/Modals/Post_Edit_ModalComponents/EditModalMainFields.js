@@ -7,6 +7,7 @@ import { OptionsProjects } from "../../../../data/OptionsProjects";
 import { OptionsTopics } from "../../../../data/OptionsTopics";
 import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 import CustomSelect from "../../../atoms/Selects/CustomSelect";
+import { useTranslation } from "react-i18next";
 
 const EditModalMainFields = ({
   project,
@@ -29,6 +30,8 @@ const EditModalMainFields = ({
   selectedDays,
   setCalendarOpen,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="textFields">
       <div
@@ -100,7 +103,7 @@ const EditModalMainFields = ({
         <CustomSelect
           name={"topic"}
           value={topic}
-          initialValue={"Wähle das Thema aus"}
+          initialValue={t("select_topic")}
           options={OptionsTopics()}
           handleDropdown={handleDropdown}
         />

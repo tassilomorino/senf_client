@@ -317,7 +317,7 @@ const InfoModal = ({
                     />
                   </OrganizationLogoWrapper>
                   <div style={{ marginLeft: "10px" }}>
-                    <StyledText>Ein Projektraum von:</StyledText>
+                    <StyledText>{t("projectroom_of")}</StyledText>
                     <StyledH3 fontWeight="900">{owner}</StyledH3>
                   </div>
                 </OwnerWrapper>
@@ -348,11 +348,7 @@ const InfoModal = ({
           </CardInnerWrapper>
           {!isMobileCustom && infoOpen && (
             <SubmitButton
-              text={
-                openProjectRoom
-                  ? t("Projektraum anzeigen")
-                  : t("Profil anzeigen")
-              }
+              text={openProjectRoom ? t("show_projectroom") : t("show_profile")}
               handleButtonClick={() => setInfoOpen(false)}
               zIndex="999"
               position="fixed"
@@ -365,9 +361,7 @@ const InfoModal = ({
         </Card>
         {isMobileCustom && infoOpen && (
           <SubmitButton
-            text={
-              openProjectRoom ? t("Projektraum anzeigen") : t("Profil anzeigen")
-            }
+            text={openProjectRoom ? t("show_projectroom") : t("show_profile")}
             handleButtonClick={() => setInfoOpen(false)}
             zIndex="999"
             position="fixed"

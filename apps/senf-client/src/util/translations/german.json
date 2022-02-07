@@ -49,6 +49,7 @@
   "noProjectIdeas": "Zu diesem Projektraum wurde bisher noch keine Idee geteilt. Sei die/der erste und teile deine Idee!",
   "idea": "Idee",
   "ideas": "Ideen",
+  "all_ideas": "Allgemein (Alle Ideen)",
   "projectRoom": "Projektraum",
   "projectRooms": "Projekträume",
   "organization": "Organisation",
@@ -143,11 +144,13 @@
   "map_filterIdeas": "Ideen im Kartenbereich in der Liste anzeigen",
   "dialogScream_what_do_you_think": "Was hältst du von der Idee?",
   "dialogScream_opinion": "Rege den Meinungsaustausch hier an!",
+  "share_link": "Teile den Link!",
   "postScream_newIdea": "Neue Idee",
   "postScream_shareIdea": "Idee teilen",
   "postScream_ideaTitle": "Titel deiner Idee",
   "postScream_ideaBody": "Beschreibung deiner Idee",
   "input_address": "Adresse eingeben",
+  "select_topic": "Wähle das Thema aus",
 
   "rules": "Regeln",
   "rules_title": "Ein paar Worte",
@@ -175,12 +178,15 @@
   "infopage_block3_subtitle": "Wir konnten bereits tolle Kooperationen eingehen. Wenn auch dich unsere Denkweise anspricht, lass uns quatschen!",
   "infopage_illustrator": "Illustratorin: Gizem Güvendag",
 
-  "account_contact": "Wir freuen uns über deine Beteiligung! Gefällt dir Senf? Stört dich etwas? Melde dich gerne und sag uns, was dir auffällt!",
-
   "restart": "Neustarten",
   "continue_creation": "Erstellung fortsetzen",
   "projectRoom_title": "Projektraum-Name",
   "projectRoom_description": "Beschreibungstext (max. 1000 Zeichen)",
+
+  "account_contact": "Wir freuen uns über deine Beteiligung! Gefällt dir Senf? Stört dich etwas? Melde dich gerne und sag uns, was dir auffällt!",
+  "show_profile": "Show Profile",
+  "show_projectroom": "Projektraum anzeigen",
+  "projectroom_of": "Ein Projektraum von:",
 
   "organizationTypes_all": "Alle",
   "organizationTypes_association": "Vereine",

@@ -8,7 +8,7 @@ import { OptionsTopics } from "../../../../data/OptionsTopics";
 import { StyledH3 } from "../../../../styles/GlobalStyle";
 import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 import CustomSelect from "../../../atoms/Selects/CustomSelect";
-
+import { useTranslation } from "react-i18next";
 const EditModalMainFields = ({
   project,
   handleDropdownProject,
@@ -31,6 +31,7 @@ const EditModalMainFields = ({
   selectedDays,
   setCalendarOpen,
 }) => {
+  const { t } = useTranslation();
   const queryParams = {
     bbox: [6.7, 50.8, 7.2, 51],
   };
@@ -53,11 +54,11 @@ const EditModalMainFields = ({
           alignItems: "center",
         }}
       >
-        <StyledH3>An: </StyledH3>
+        <StyledH3>{t("to")}</StyledH3>
         <CustomSelect
           name={"project"}
           value={project}
-          initialValue={"Allgemein (Alle Ideen)"}
+          initialValue={t("all_ideas")}
           options={OptionsProjects()}
           handleDropdown={handleDropdownProject}
         />
@@ -123,7 +124,7 @@ const EditModalMainFields = ({
         <CustomSelect
           name={"topic"}
           value={topic}
-          initialValue={"Wähle das Thema aus"}
+          initialValue={t("select_topic")}
           options={OptionsTopics()}
           handleDropdown={handleDropdown}
         />

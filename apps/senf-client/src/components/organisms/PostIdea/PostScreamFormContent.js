@@ -232,7 +232,7 @@ const PostScreamFormContent = ({
           <CustomSelect
             name={"topic"}
             value={topic}
-            initialValue={"Wähle das Thema aus"}
+            initialValue={t("select_topic")}
             options={OptionsTopics()}
             handleDropdown={handleDropdown}
           />

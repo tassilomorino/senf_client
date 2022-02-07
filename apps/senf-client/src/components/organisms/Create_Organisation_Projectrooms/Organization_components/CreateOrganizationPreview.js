@@ -32,6 +32,7 @@ import {
 import { StyledH2 } from "../../../../styles/GlobalStyle";
 import Navigation from "../Components/Navigation";
 
+import { getOrganizations } from "../../../../redux/actions/organizationActions";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -158,10 +159,12 @@ const CreateOrganizationPreview = ({ onClickPrev, setClose, set }) => {
 
       return ref.update({ status: "active" }).then(() => {
         // dispatch(getProjects());
-        setClose();
-
+        dispatch(getOrganizations());
         //REMOVE LOCALSTORAGE
         localStorage.removeItem("createOrganizationId");
+        setTimeout(() => {
+          setClose();
+        }, 1000);
       });
     }
   };

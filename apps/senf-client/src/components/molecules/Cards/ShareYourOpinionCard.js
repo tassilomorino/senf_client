@@ -39,7 +39,9 @@ const ShareYourOpinionCard = ({ screamId, clicked }) => {
             {t("dialogScream_what_do_you_think")} <br />
           </StyledH2>
         )}
-        <StyledH2 fontWeight="900">{t("dialogScream_opinion")}</StyledH2>
+        <StyledH2 fontWeight="900" textAlign="center">
+          {t("dialogScream_opinion")}
+        </StyledH2>
 
         {!authenticated ? (
           <CustomButton
