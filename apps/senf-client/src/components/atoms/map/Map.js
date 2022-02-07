@@ -515,7 +515,7 @@ const Map = ({
                     20,
                     0.4,
                   ],
-                  "icon-anchor": "bottom",
+                  "icon-anchor": "center",
                   "icon-allow-overlap": true,
                 }}
               />

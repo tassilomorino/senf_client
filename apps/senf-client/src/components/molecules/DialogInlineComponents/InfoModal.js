@@ -346,7 +346,7 @@ const InfoModal = ({
             </LowerWrapper>
             {/* <Gradient /> */}
           </CardInnerWrapper>
-          {!isMobileCustom && (
+          {!isMobileCustom && infoOpen && (
             <SubmitButton
               text={
                 openProjectRoom
@@ -363,7 +363,7 @@ const InfoModal = ({
             />
           )}
         </Card>
-        {isMobileCustom && (
+        {isMobileCustom && infoOpen && (
           <SubmitButton
             text={
               openProjectRoom ? t("Projektraum anzeigen") : t("Profil anzeigen")

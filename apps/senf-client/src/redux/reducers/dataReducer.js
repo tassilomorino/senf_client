@@ -232,12 +232,6 @@ export default function (state = initialState, action) {
         // loadingProjectScreams: false,
       };
 
-    case LOADING_ORGANIZATIONS_DATA:
-      return {
-        ...state,
-        loadingOrganizations: true,
-      };
-
     case SET_ORGANIZATIONS:
       return {
         ...state,

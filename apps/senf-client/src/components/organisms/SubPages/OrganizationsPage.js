@@ -32,6 +32,8 @@ const InnerWrapper = styled.div`
   margin-top: ${(props) => (props.isMobileCustom ? "0px" : "0px")};
   overflow: scroll;
   background-color: #ffe898;
+  display: flex;
+  justify-content: center;
 `;
 
 const HeaderWrapper = styled.div`
@@ -76,10 +78,6 @@ const OrganizationsPage = ({
     setOpen(true);
   }, []);
 
-  const loadingOrganizations = useSelector(
-    (state) => state.data.loadingOrganizations
-  );
-
   const dataFinalLength = dataFinal.length;
   const prevdataFinalLength = usePrevious({ dataFinalLength });
   const prevDropdown = usePrevious({ dropdown });
@@ -95,7 +93,7 @@ const OrganizationsPage = ({
       setListItems(1);
       sethasMoreItems(true);
     }
-  }, [loadingOrganizations, dropdown, dataFinalLength]);
+  }, [loading, dropdown, dataFinalLength]);
 
   const itemsPerPage = 1;
   const [hasMoreItems, sethasMoreItems] = useState(true);
@@ -103,24 +101,27 @@ const OrganizationsPage = ({
 
   const showItems = (dataFinal) => {
     var items = [];
-
-    for (var i = 0; i < listItems; i++) {
-      items.push(
-        dataFinal[i]?.organizationId && (
-          <OrganizationCard
-            key={dataFinal[i]?.organizationId}
-            organization={dataFinal[i]}
-          />
-        )
-      );
+    if (dataFinalLength !== 0) {
+      for (var i = 0; i < listItems; i++) {
+        items.push(
+          dataFinal[i]?.organizationId && (
+            <OrganizationCard
+              key={dataFinal[i]?.organizationId}
+              organization={dataFinal[i]}
+            />
+          )
+        );
+      }
+      return items;
     }
-    return items;
   };
 
   const loadMore = () => {
+    console.log(listItems, dataFinal.length);
     if (listItems === dataFinal.length) {
       sethasMoreItems(false);
     } else {
+      console.log(listItems);
       setTimeout(() => {
         setListItems(listItems + itemsPerPage);
       }, 100);
@@ -128,7 +129,7 @@ const OrganizationsPage = ({
   };
 
   return (
-    !loadingOrganizations && (
+    !loading && (
       <Wrapper order={open}>
         <CustomIconButton
           name="ArrowLeft"
@@ -159,7 +160,7 @@ const OrganizationsPage = ({
             <Toolbar
               swipeListType="organizationOverview"
               marginTop="0px"
-              loading={loadingOrganizations}
+              loading={loading}
               handleDropdown={handleDropdown}
               dropdown={dropdown}
               dataFinalLength={dataFinalLength}
@@ -175,7 +176,7 @@ const OrganizationsPage = ({
             <Toolbar
               swipeListType="organizationOverview"
               type="standalone"
-              loading={loadingOrganizations}
+              loading={loading}
               handleDropdown={handleDropdown}
               dropdown={dropdown}
               dataFinalLength={dataFinalLength}
@@ -186,13 +187,14 @@ const OrganizationsPage = ({
             />
           )}
 
-          {!loadingOrganizations ? (
+          {!loading ? (
             <InfiniteScroll
               loadMore={() => loadMore()}
               hasMore={hasMoreItems}
+              // loader={<SkeletonCard dataFinalLength={dataFinalLength === 0} />}
               useWindow={false}
             >
-              <CoverWrapper>{showItems(dataFinal)}</CoverWrapper>
+              {showItems(dataFinal)}
             </InfiniteScroll>
           ) : (
             <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>

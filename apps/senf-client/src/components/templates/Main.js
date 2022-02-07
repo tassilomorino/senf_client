@@ -606,11 +606,11 @@ const Main = () => {
           )}
           {openOrganization && (
             <OrganizationDialog
-              loading={loading}
               openOrganization={openOrganization}
               dataFinalMap={dataFinalMap}
               handleClick={handleClick}
               loadingProjects={false}
+              loading={loadingOrganizations}
               // loadingOrganizations={loadingOrganizations}
               projectsData={dataFinalProjectRooms}
             />

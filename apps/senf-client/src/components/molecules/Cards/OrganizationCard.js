@@ -18,7 +18,19 @@ import { StyledH2, StyledImg, StyledText } from "../../../styles/GlobalStyle";
 import organizationTypes from "../../../data/organizationTypes";
 
 const Wrapper = styled.div`
-  width: 100%;
+  width: 200px;
+  height: 200px;
+  z-index: 9;
+  float: left;
+  position: relative;
+  animation: ${(props) => props.animation};
+  overflow: hidden;
+  border-radius: 25px;
+  background-color: white;
+  margin: 10px;
+  padding: 0;
+
+  /* width: 100%;
   height: 0;
   z-index: 9;
   float: left;
@@ -29,7 +41,7 @@ const Wrapper = styled.div`
   background-color: white;
   margin: 0;
   padding: 0;
-  padding-bottom: calc(100% + 60px);
+  padding-bottom: calc(100% + 60px); */
 
   /* display: flex;
   flex-direction: row;
