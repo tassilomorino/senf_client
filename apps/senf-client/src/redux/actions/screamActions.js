@@ -4,7 +4,9 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import moment from "moment";
 import { clearErrors } from "./errorsActions";
-import { loadProjectRoomData, openProjectRoomFunc } from "./projectActions";
+import { loadProjectRoomData } from "./projectActions";
+import store from "../store";
+
 import {
   SET_SCREAMS,
   LOADING_DATA,
@@ -134,8 +136,11 @@ export const openScreamFunc = (screamId) => async (dispatch) => {
     );
 
     // window.location = "#" + scream.lat + "#" + scream.long;
+    const projectroomPath = store.getState().UI.openProjectRoom
+      ? "/projectRooms/" + store.getState().data.project.projectRoomId
+      : "";
 
-    const newPath = `/${screamId}`;
+    const newPath = `${projectroomPath}/${screamId}`;
     window.history.pushState(null, null, newPath);
     dispatch({ type: SET_SCREAM, payload: scream });
   }
@@ -166,6 +171,10 @@ export const reloadScreamFunc = (screamId) => async (dispatch) => {
 };
 
 export const closeScream = () => (dispatch) => {
+  const projectroomPath = store.getState().UI.openProjectRoom
+    ? "/projectRooms/" + store.getState().data.project.projectRoomId
+    : "/";
+
   dispatch({ type: CLOSE_SCREAM });
 
   // IF IT BECOMES NECESSARY (IF IN PROJECTROOM, GET PROJECTSCREAMS)
@@ -173,7 +182,7 @@ export const closeScream = () => (dispatch) => {
   //   dispatch(reloadScreams());
   // }, 100);
 
-  window.history.pushState(null, null, "/");
+  window.history.pushState(null, null, projectroomPath);
 };
 
 // Post an idea
@@ -181,7 +190,7 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
   console.log(history, user);
   const db = firebase.firestore();
 
-  dispatch({ type: LOADING_UI });
+  dispatch({ type: LOADING_DATA });
 
   if (newScream.title.trim() === "") {
     dispatch({
@@ -247,7 +256,6 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
             dispatch(loadProjectRoomData(newScream.project));
           }
 
-          history.push(`/${resScream.screamId}`);
           const screamId = resScream.screamId;
           dispatch(openScreamFunc(screamId));
         }, 100);
@@ -283,6 +291,9 @@ export const editScreamFunc = (editScream) => async (dispatch) => {
 
 // Delete your idea
 export const deleteScream = (screamId, user) => async (dispatch) => {
+  const projectroomPath = store.getState().UI.openProjectRoom
+    ? "/projectRooms/" + store.getState().data.project.projectRoomId
+    : "/";
   const db = firebase.firestore();
   const ref = db.collection("screams").doc(screamId);
   const doc = await ref.get();
@@ -297,14 +308,17 @@ export const deleteScream = (screamId, user) => async (dispatch) => {
   //   // return res.status(403).json({ error: "Unauthorized" });
   // }
   else {
+    window.history.pushState(null, null, projectroomPath);
+
     dispatch({
       type: DELETE_SCREAM,
       payload: screamId,
     });
     ref.delete().then(() => {
-      window.history.pushState(null, null, "/");
-      window.location.reload(false);
-      dispatch(clearErrors());
+      setTimeout(() => {
+        window.location.reload(false);
+        dispatch(clearErrors());
+      }, 100);
     });
   }
 };

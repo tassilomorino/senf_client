@@ -27,10 +27,10 @@ import organizationTypes from "../../../data/organizationTypes";
 
 const ImgWrapper = styled.div`
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 130px;
+  height: 12.7em;
   background-color: white;
-  border-radius: 18px;
+  border-radius: 18px 0px 0px 18px;
 
   display: flex;
   position: relative;
@@ -39,6 +39,7 @@ const ImgWrapper = styled.div`
   text-align: center;
   overflow: hidden;
   flex-shrink: 0;
+  margin: -10px -10px;
 `;
 
 const ImgWrapperOverlay = styled.div`
@@ -71,7 +72,8 @@ const TopFlexWrapper = styled.div`
   margin-bottom: 10px;
 `;
 const RightWrapper = styled.div`
-  padding-right: 20px;
+  position: absolute;
+  left: 150px;
 `;
 
 const Icon = styled.div`
@@ -141,6 +143,15 @@ export const ProjectCard = (props) => {
         )}
         <ExpandButton handleButtonClick={() => pushScreamId()} />
         <FlexWrapper>
+          <ImgWrapper>
+            {status === "archived" && (
+              <ImgWrapperOverlay>
+                <img src={notPublishedIcon} alt="UploadImageIcon" width="50%" />
+              </ImgWrapperOverlay>
+            )}
+
+            <StyledImg src={imgUrl} width="100%" alt="profile" />
+          </ImgWrapper>
           <RightWrapper>
             <TopFlexWrapper>
               <Icon>{icon}</Icon>
@@ -151,21 +162,12 @@ export const ProjectCard = (props) => {
             <CardTitle>
               <StyledH2 fontWeight="900">{title}</StyledH2>
             </CardTitle>
+            <BodyText>
+              <StyledText>{brief} </StyledText>
+            </BodyText>
+            {/* <Gradient /> */}
           </RightWrapper>
-          <ImgWrapper>
-            {status === "archived" && (
-              <ImgWrapperOverlay>
-                <img src={notPublishedIcon} alt="UploadImageIcon" width="50%" />
-              </ImgWrapperOverlay>
-            )}
-
-            <StyledImg src={imgUrl} width="100%" alt="profile" />
-          </ImgWrapper>
         </FlexWrapper>
-        <BodyText>
-          <StyledText>{brief} </StyledText>
-        </BodyText>
-        <Gradient />
       </CardContent>
     </Card>
   );

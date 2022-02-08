@@ -243,8 +243,8 @@ const Main = () => {
           dispatch(getOrganizations(mapViewport)),
           dispatch(getProjects(mapViewport)),
           dispatch(getScreams(mapViewport)),
-          screamId && dispatch(openScreamFunc(screamId)),
           projectRoomId && dispatch(openProjectRoomFunc(projectRoomId, true)),
+          screamId && dispatch(openScreamFunc(screamId)),
           organizationId &&
             dispatch(openOrganizationFunc(true, organizationId)),
         ]).then((values) => {

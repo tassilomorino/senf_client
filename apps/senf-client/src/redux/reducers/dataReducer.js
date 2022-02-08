@@ -187,6 +187,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         screams: [action.payload, ...state.screams],
+        loading: false,
       };
 
     case EDIT_SCREAM:
