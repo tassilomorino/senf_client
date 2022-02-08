@@ -39,7 +39,48 @@ import Bubble7 from "../../../images/bubbles/bubble7.png";
 
 import { openProjectRoomFunc } from "../../../redux/actions/projectActions";
 import { setSwipePositionDown } from "../../../redux/actions/UiActions";
+import { StyledSmallText } from "apps/senf-client/src/styles/GlobalStyle";
 
+const StyledMarker = styled.div`
+  box-sizing: border-box;
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 6px 6px 6px;
+  box-shadow: 0px 4px 6px -2px rgba(186, 160, 79, 0.2);
+  background-color: #faf8f3;
+  overflow: visible;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  max-width: 250px;
+  margin-bottom: ${(props) => (props.order === 1 ? "80px" : "130px")};
+  position: relative;
+`;
+
+const StyledTail1 = styled.div`
+  position: absolute;
+  top: 100%;
+  left: calc(50% - 10px);
+  width: 0;
+  height: 0;
+  border-color: rgba(255, 255, 255, 0.8) transparent transparent transparent;
+  border-width: 10px;
+  border-style: solid;
+`;
+
+const StyledTail2 = styled.div`
+  position: absolute;
+  top: calc(100% - 2px);
+  left: calc(50% - 10px);
+  width: 0;
+  height: 0;
+  border-color: #f9f9f9 transparent transparent transparent;
+  border-width: 10px;
+  border-style: solid;
+`;
 const Wrapper = styled.div`
   z-index: 9;
   margin: 0px;
@@ -96,6 +137,9 @@ const Map = ({
 
   const scream = useSelector((state) => state.data.scream);
   const [hoverId, setHoverId] = useState("");
+  const [hoverLat, setHoverLat] = useState("");
+  const [hoverLong, setHoverLong] = useState("");
+  const [hoverTitle, setHoverTitle] = useState("");
 
   const handlleMapLoaded = () => {
     setTimeout(() => {
@@ -224,11 +268,19 @@ const Map = ({
   const onHoverIdea = (event) => {
     if (event.features.length > 0) {
       setHoverId(event.features[0].properties.screamId);
+      setHoverLat(event.features[0].properties.lat);
+      setHoverLong(event.features[0].properties.long);
+      setHoverTitle(event.features[0].properties.title);
     }
   };
 
-  const onLeaveIdea = (event) => {
-    setHoverId("");
+  const onLeave = (event) => {
+    if (event.features.length < 1) {
+      setHoverId("");
+      setHoverLat("");
+      setHoverLong("");
+      setHoverTitle("");
+    }
   };
 
   const onClickIdea = (event) => {
@@ -240,11 +292,10 @@ const Map = ({
   const onHoverProjectRoom = (event) => {
     if (event.features.length > 0) {
       setHoverId(event.features[0].properties.projectRoomId);
+      setHoverLat(event.features[0].properties.centerLat);
+      setHoverLong(event.features[0].properties.centerLong);
+      setHoverTitle(event.features[0].properties.title);
     }
-  };
-
-  const onLeaveProjectRoom = (event) => {
-    setHoverId("");
   };
 
   const onClickProjectRoom = (event) => {
@@ -327,6 +378,16 @@ const Map = ({
               </React.Fragment>
             )}
 
+          {!isMobileCustom && hoverLong !== "" && (
+            <Marker longitude={hoverLong} latitude={hoverLat} order={order}>
+              <StyledMarker>
+                <StyledSmallText> {hoverTitle}</StyledSmallText>
+                <StyledTail1 />
+                <StyledTail2 />
+              </StyledMarker>
+            </Marker>
+          )}
+
           {order === 1 || openScream || openProjectRoom || openAccount ? (
             <React.Fragment>
               {!openInfoPage && !openScream && !openProjectRoom && (
@@ -366,7 +427,7 @@ const Map = ({
                 source="geojsonIdeas"
                 type="circle"
                 onHover={onHoverIdea}
-                onLeave={onLeaveIdea}
+                onLeave={onLeave}
                 onClick={onClickIdea}
                 paint={{
                   // "circle-radius": {
@@ -426,22 +487,7 @@ const Map = ({
                   ],
                 }}
               />
-              {!isMobileCustom && (
-                <Layer
-                  id="geojsonIdeasText"
-                  source="geojsonIdeas"
-                  type="symbol"
-                  filter={["==", ["get", "screamId"], hoverId]}
-                  layout={{
-                    "text-field": ["get", "title"],
-                    "text-anchor": "left",
-                    "text-offset": [1, 0],
-                    "text-font": ["DIN Offc Pro Bold", "Arial Unicode MS Bold"],
-                    "text-justify": "left",
-                    "text-size": 16,
-                  }}
-                />
-              )}
+
               {openScream && scream.lat && (
                 <Marker
                   key={scream.screamId}
@@ -480,7 +526,7 @@ const Map = ({
                 source="geojsonProjectRooms"
                 type="symbol"
                 onHover={onHoverProjectRoom}
-                onLeave={onLeaveProjectRoom}
+                onLeave={onLeave}
                 onClick={onClickProjectRoom}
                 layout={{
                   "icon-image": [
@@ -519,29 +565,6 @@ const Map = ({
                   "icon-allow-overlap": true,
                 }}
               />
-              {!isMobileCustom && (
-                <Layer
-                  id="geojsonProjectRoomsText"
-                  source="geojsonProjectRooms"
-                  type="symbol"
-                  filter={["==", ["get", "projectRoomId"], hoverId]}
-                  layout={{
-                    "text-field": ["get", "title"],
-                    "text-anchor": "left",
-                    "text-offset": [0.5, -1.5],
-                    "text-font": ["DIN Offc Pro Bold", "Arial Unicode MS Bold"],
-                    "text-justify": "left",
-                    "text-size": 16,
-                    "text-allow-overlap": true,
-                    "text-padding": 5,
-                  }}
-                  paint={{
-                    "text-color": "#202",
-                    "text-halo-color": "#fff",
-                    "text-halo-width": 22,
-                  }}
-                />
-              )}
             </React.Fragment>
           )}
         </MapGL>
