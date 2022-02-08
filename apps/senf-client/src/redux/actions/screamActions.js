@@ -171,9 +171,10 @@ export const reloadScreamFunc = (screamId) => async (dispatch) => {
 };
 
 export const closeScream = () => (dispatch) => {
-  const projectroomPath = store.getState().UI.openProjectRoom
-    ? "/projectRooms/" + store.getState().data.project.projectRoomId
-    : "/";
+  const projectroomPath =
+    store.getState().UI.openProjectRoom && store.getState().data.project
+      ? "/projectRooms/" + store.getState().data.project.projectRoomId
+      : "/";
 
   dispatch({ type: CLOSE_SCREAM });
 

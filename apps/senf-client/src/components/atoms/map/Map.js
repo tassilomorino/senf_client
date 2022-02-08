@@ -50,13 +50,13 @@ const StyledMarker = styled.div`
   justify-content: center;
   align-items: center;
   padding: 6px 6px 6px 6px;
-  box-shadow: 0px 4px 6px -2px rgba(186, 160, 79, 0.2);
+  box-shadow: 0px 4px 6px -2px rgba(186, 160, 79, 0.5);
   background-color: #faf8f3;
   overflow: visible;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.8);
   max-width: 250px;
-  margin-bottom: ${(props) => (props.order === 1 ? "80px" : "130px")};
+  margin-bottom: ${(props) => (props.order === 1 ? "40%" : "100%")};
   position: relative;
 `;
 
@@ -69,6 +69,7 @@ const StyledTail1 = styled.div`
   border-color: rgba(255, 255, 255, 0.8) transparent transparent transparent;
   border-width: 10px;
   border-style: solid;
+  backdrop-filter: drop-shadow(1px 1px 2px rgba(186, 160, 79, 0.5));
 `;
 
 const StyledTail2 = styled.div`
@@ -286,6 +287,12 @@ const Map = ({
   const onClickIdea = (event) => {
     if (event.features.length > 0) {
       dispatch(openScreamFunc(event.features[0].properties.screamId));
+      setTimeout(() => {
+        setHoverId("");
+        setHoverLat("");
+        setHoverLong("");
+        setHoverTitle("");
+      }, 1000);
     }
   };
 
@@ -303,6 +310,12 @@ const Map = ({
       dispatch(
         openProjectRoomFunc(event.features[0].properties.projectRoomId, true)
       );
+      setTimeout(() => {
+        setHoverId("");
+        setHoverLat("");
+        setHoverLong("");
+        setHoverTitle("");
+      }, 4000);
     }
   };
 
@@ -379,8 +392,8 @@ const Map = ({
             )}
 
           {!isMobileCustom && hoverLong !== "" && (
-            <Marker longitude={hoverLong} latitude={hoverLat} order={order}>
-              <StyledMarker>
+            <Marker longitude={hoverLong} latitude={hoverLat}>
+              <StyledMarker order={order}>
                 <StyledSmallText> {hoverTitle}</StyledSmallText>
                 <StyledTail1 />
                 <StyledTail2 />
