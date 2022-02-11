@@ -29,13 +29,13 @@ import { MapFilter } from "./MapFilter";
 import { PatternBackground } from "./styles/sharedStyles";
 import { useParams } from "react-router";
 
-import Bubble1 from "../../../images/bubbles/bubble1.png";
-import Bubble2 from "../../../images/bubbles/bubble2.png";
-import Bubble3 from "../../../images/bubbles/bubble3.png";
-import Bubble4 from "../../../images/bubbles/bubble4.png";
-import Bubble5 from "../../../images/bubbles/bubble5.png";
-import Bubble6 from "../../../images/bubbles/bubble6.png";
-import Bubble7 from "../../../images/bubbles/bubble7.png";
+import Bubble1 from "../../../images/bubbles/marker1.png";
+import Bubble2 from "../../../images/bubbles/marker2.png";
+import Bubble3 from "../../../images/bubbles/marker3.png";
+import Bubble4 from "../../../images/bubbles/marker4.png";
+import Bubble5 from "../../../images/bubbles/marker5.png";
+import Bubble6 from "../../../images/bubbles/marker5.png";
+import Bubble7 from "../../../images/bubbles/marker5.png";
 
 import { openProjectRoomFunc } from "../../../redux/actions/projectActions";
 import { setSwipePositionDown } from "../../../redux/actions/UiActions";
@@ -202,10 +202,18 @@ const Map = ({
     for (let point of dataFinal) {
       let properties = point;
       properties.circleRadius = 5 + point.likeCount / 7;
-      properties.circleBlurRadius = 14 + point.likeCount / 7;
-
-      delete properties.longitude;
-      delete properties.latitude;
+      // properties.circleBlurRadius = 14 + point.likeCount / 7;
+      console.log(properties);
+      // delete properties.longitude;
+      // delete properties.latitude;
+      // delete properties.Stadtteil;
+      // delete properties.Thema;
+      // delete properties.createdAt;
+      // delete properties.body;
+      // delete properties.status;
+      // delete properties.commentCount;
+      // delete properties.project;
+      // delete properties.projectId;
 
       const unique =
         dataFinal.filter((item) => item.long === point.long).length === 1;
@@ -255,6 +263,20 @@ const Map = ({
 
   for (let point of projects) {
     let properties = point;
+
+    // delete properties.Thema;
+    // delete properties.brief;
+    // delete properties.calendar;
+    // delete properties.createdAt;
+    // delete properties.endDate;
+    // delete properties.icon;
+    // delete properties.imgUrl;
+    // delete properties.geoData;
+    // delete properties.organizationId;
+    // delete properties.owner;
+    // delete properties.startDate;
+    // delete properties.status;
+    // delete properties.zoom;
 
     let feature = {
       type: "Feature",
@@ -546,17 +568,17 @@ const Map = ({
                     "match",
                     ["get", "organizationType"],
                     "Vereine",
-                    "Bubble6",
+                    "Bubble1",
                     "Inititiven",
                     "Bubble2",
                     "Planungsbüros",
                     "Bubble3",
                     "Politik",
-                    "Bubble1",
+                    "Bubble4",
                     "Stadtverwaltung",
                     "Bubble5",
                     "Presse",
-                    "Bubble4",
+                    "Bubble6",
                     "Bubble7",
                   ],
                   "icon-size": [
@@ -568,11 +590,11 @@ const Map = ({
                     0.01,
 
                     10,
-                    0.05,
+                    0.2,
 
                     // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
                     20,
-                    0.4,
+                    0.6,
                   ],
                   "icon-anchor": "center",
                   "icon-allow-overlap": true,

@@ -214,7 +214,8 @@ const Toolbar = ({
             <img src={AddIcon} width="20px" style={{ marginLeft: "auto" }} />
           </AddIconButton>
         ) : (
-          swipeListType === "organizationOverview" && (
+          swipeListType === "organizationOverview" &&
+          user.authenticated && (
             <AddIconButton onClick={openCreateOrganization}>
               <img src={AddIcon} width="20px" style={{ marginLeft: "auto" }} />
             </AddIconButton>

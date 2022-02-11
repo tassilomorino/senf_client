@@ -13,7 +13,12 @@ export const Card = styled.div`
   margin-right: auto;
   border-radius: 20px;
   margin-bottom: 10px;
-  height: ${(props) => (props.project ? "13.5em" : "11em")};
+  height: ${(props) =>
+    props.project
+      ? "13.5em"
+      : props.type === "projectRoomCard"
+      ? "220px"
+      : "11em"};
   overflow: hidden;
   animation: IdeaCardAnimation 0.8s;
 

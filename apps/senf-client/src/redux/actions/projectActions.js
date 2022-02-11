@@ -41,7 +41,12 @@ export const getProjects = (mapViewport) => async (dispatch) => {
   // : await db.collection("projects").orderBy("createdAt", "desc").get();
 
   const projects = [];
-  ref.docs.forEach((doc) => {
+  ref.docs.forEach(async (doc) => {
+    // const screamsRef = await db
+    //   .collection("screams")
+    //   .where("project", "==", doc.id)
+    //   .get();
+
     storageRef
       .child(
         `/organizationsData/${doc.data().organizationId}/${doc.id}/thumbnail`
@@ -57,8 +62,8 @@ export const getProjects = (mapViewport) => async (dispatch) => {
         brief: doc.data().brief,
         owner: doc.data().owner,
         createdAt: doc.data().createdAt,
-        startDate: doc.data().startDate,
-        endDate: doc.data().endDate,
+        // startDate: doc.data().startDate,
+        // endDate: doc.data().endDate,
         status: doc.data().status,
         geoData: doc.data().geoData,
         centerLat: doc.data().centerLat,
@@ -72,6 +77,7 @@ export const getProjects = (mapViewport) => async (dispatch) => {
         organizationType: doc.data().organizationType,
         imgUrl: image,
         icon: setIconByOrganizationType(doc.data().organizationType),
+        // ideasSize: newOne.length,
       };
       projects.push(docData);
       if (projects.length === ref.size) {
@@ -80,6 +86,23 @@ export const getProjects = (mapViewport) => async (dispatch) => {
           payload: projects,
         });
       }
+
+      // storageRef
+      //   .child(`/organizationsData/${doc.data().organizationId}/logo/logo`)
+      //   .getDownloadURL()
+      //   .then(onResolveSecond, onReject);
+
+      // function onResolveSecond(logo) {
+      //   docData.organizationLogo = logo;
+
+      //   projects.push(docData);
+      //   if (projects.length === ref.size) {
+      //     dispatch({
+      //       type: SET_PROJECTS,
+      //       payload: projects,
+      //     });
+      //   }
+      // }
     }
     function onReject(error) {
       projects.push(doc.data());

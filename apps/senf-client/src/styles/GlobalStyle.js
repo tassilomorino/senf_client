@@ -29,6 +29,7 @@ export const StyledH4 = styled.h4`
   margin: 0;
   padding: 0;
   font-size: 15px;
+  margin: ${(props) => (props.margin ? props.margin : "0")};
 `;
 
 export const StyledLi = styled.li`

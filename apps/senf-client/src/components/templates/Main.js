@@ -61,6 +61,7 @@ import OrganizationDialog from "../organisms/Dialogs/OrganizationDialog";
 import OrganizationsPage from "../organisms/SubPages/OrganizationsPage";
 import styled from "styled-components";
 import { MenuData } from "../../data/MenuData";
+import { pick } from "../../hooks/pick";
 
 const MainColumnWrapper = styled.div`
   width: 100vw;
@@ -380,7 +381,7 @@ const Main = () => {
     screamsSearched,
   ]);
 
-  const dataFinalMap = useMemo(
+  const dataMap = useMemo(
     () =>
       openProjectRoom
         ? project?.screams?.filter(
@@ -405,19 +406,8 @@ const Main = () => {
     ]
   );
 
-  //PROJECTROOMS
-
-  // const projectRoomsWithOrganizationType = [];
-
-  // organizations.forEach(({ organizationId, organizationType }) => {
-  //   console.log(projects);
-  //   if (projects.organizationId === organizationId) {
-  //     projectRoomsWithOrganizationType.push(
-  //       projectRoomId.includes(organizationId),
-  //       organizationType
-  //     );
-  //   }
-  // });
+  const filter = ["title", "lat", "long", "screamId", "color", "likeCount"];
+  const dataFinalMap = dataMap.map((object) => pick(filter, object));
 
   const projectRoomsSearched = useMemo(
     () =>
@@ -467,10 +457,21 @@ const Main = () => {
     );
   }, [selectedOrganizationTypes, dropdown, projectRoomsSearched]);
 
-  const dataFinalMapProjects = projects?.filter(
+  const dataMapProjects = projects?.filter(
     ({ status, organizationType }) =>
       status === "active" &&
       selectedOrganizationTypes.includes(organizationType)
+  );
+
+  const projectroomsFilter = [
+    "title",
+    "centerLat",
+    "centerLong",
+    "projectRoomId",
+    "organizationType",
+  ];
+  const dataFinalMapProjects = dataMapProjects.map((object) =>
+    pick(projectroomsFilter, object)
   );
 
   //ORGANIZATIONS

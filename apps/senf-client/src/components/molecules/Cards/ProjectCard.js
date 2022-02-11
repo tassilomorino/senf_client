@@ -1,6 +1,6 @@
 /** @format */
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +12,8 @@ import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
 import styled from "styled-components";
 import notPublishedIcon from "../../../images/icons/notPublished.png";
+import bulb from "../../../images/svgIcons/bulb.svg";
+
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import {
   BodyText,
@@ -22,15 +24,25 @@ import {
   DistrictHeader,
   Gradient,
 } from "./styles/sharedStyles";
-import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
+import {
+  StyledH2,
+  StyledH3,
+  StyledH4,
+  StyledImg,
+  StyledText,
+} from "../../../styles/GlobalStyle";
 import organizationTypes from "../../../data/organizationTypes";
+
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/storage";
 
 const ImgWrapper = styled.div`
   position: relative;
-  width: 130px;
-  height: 12.7em;
+  width: calc(100% + 30px);
+  height: 70px;
   background-color: white;
-  border-radius: 18px 0px 0px 18px;
+  border-radius: 18px;
 
   display: flex;
   position: relative;
@@ -39,7 +51,7 @@ const ImgWrapper = styled.div`
   text-align: center;
   overflow: hidden;
   flex-shrink: 0;
-  margin: -10px -10px;
+  margin: -15px -15px;
 `;
 
 const ImgWrapperOverlay = styled.div`
@@ -52,12 +64,6 @@ const ImgWrapperOverlay = styled.div`
   align-items: center;
   background-color: rgb(255, 255, 255, 0.8);
   border-radius: 18px;
-`;
-const StyledImg = styled.img`
-  flex-shrink: 0;
-  min-width: 100%;
-  min-height: 100%;
-  object-fit: cover;
 `;
 
 const FlexWrapper = styled.div`
@@ -72,16 +78,35 @@ const TopFlexWrapper = styled.div`
   margin-bottom: 10px;
 `;
 const RightWrapper = styled.div`
-  position: absolute;
-  left: 150px;
+  position: relative;
 `;
 
 const Icon = styled.div`
   width: 16px;
   height: 16px;
   flex-grow: 0;
-  margin-right: 10px;
-  margin-left: 3px;
+  margin-right: ${(props) => (props.marginRight ? props.marginRight : "10px")};
+  margin-left: ${(props) => (props.marginLeft ? props.marginLeft : "3px")};
+`;
+
+const OrganizationLogo = styled.div`
+  width: 32px;
+  height: 32px;
+  box-shadow: 0px 4px 10px -4px #c3baa2;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-left: 5px;
+  margin-right: 15px;
+`;
+
+const BottomBar = styled.div`
+  display: flex;
+  align-items: center;
+  position: absolute;
+  bottom: 5px;
+  width: calc(100% - 30px);
+  height: 40px;
 `;
 
 export const ProjectCard = (props) => {
@@ -98,8 +123,11 @@ export const ProjectCard = (props) => {
     },
   } = props;
 
+  const [logo, setLogo] = useState(null);
   const cardOrganizationId = organizationId;
   const user = useSelector((state) => state.user);
+  const screams = useSelector((state) => state.data.screams);
+
   const organizations = useSelector((state) => state.data.organizations);
   const dispatch = useDispatch();
 
@@ -124,8 +152,20 @@ export const ProjectCard = (props) => {
     });
   }
 
+  const ideasSize = screams.filter(({ project }) => project === projectRoomId);
+  const storageRef = firebase.storage().ref();
+
+  storageRef
+    .child(`/organizationsData/${organizationId}/logo/logo`)
+    .getDownloadURL()
+    .then(onResolve);
+
+  function onResolve(logo) {
+    setLogo(logo);
+  }
+
   return (
-    <Card project={true}>
+    <Card type="projectRoomCard">
       <CardContent>
         {organizationCardData[0]?.includes(user.userId) && (
           <CustomIconButton
@@ -135,39 +175,50 @@ export const ProjectCard = (props) => {
             position="absolute"
             left="calc(100% - 54px)"
             margin="2px"
-            bottom="0px"
+            top="0px"
             backgroundColor="transparent"
             shadow={false}
             zIndex="99"
           />
         )}
         <ExpandButton handleButtonClick={() => pushScreamId()} />
-        <FlexWrapper>
-          <ImgWrapper>
-            {status === "archived" && (
-              <ImgWrapperOverlay>
-                <img src={notPublishedIcon} alt="UploadImageIcon" width="50%" />
-              </ImgWrapperOverlay>
+
+        <ImgWrapper>
+          {status === "archived" && (
+            <ImgWrapperOverlay>
+              <img src={notPublishedIcon} alt="UploadImageIcon" width="50%" />
+            </ImgWrapperOverlay>
+          )}
+
+          <StyledImg src={imgUrl} width="100%" alt="profile" />
+        </ImgWrapper>
+        <RightWrapper>
+          <TopFlexWrapper></TopFlexWrapper>
+
+          <CardTitle>
+            <StyledH2 fontWeight="900">{title}</StyledH2>
+          </CardTitle>
+          <BodyText>
+            <StyledText>{brief} </StyledText>
+          </BodyText>
+          {/* <Gradient /> */}
+        </RightWrapper>
+        <BottomBar>
+          <Icon>{icon}</Icon>
+          <OrganizationLogo>
+            {logo && (
+              <StyledImg src={logo} width="100%" alt="organizationLogo" />
             )}
+          </OrganizationLogo>
 
-            <StyledImg src={imgUrl} width="100%" alt="profile" />
-          </ImgWrapper>
-          <RightWrapper>
-            <TopFlexWrapper>
-              <Icon>{icon}</Icon>
+          <StyledH4>{owner}</StyledH4>
 
-              <h4>{owner}</h4>
-            </TopFlexWrapper>
+          <Icon marginLeft="auto" marginRight="5px">
+            <img src={bulb} />
+          </Icon>
 
-            <CardTitle>
-              <StyledH2 fontWeight="900">{title}</StyledH2>
-            </CardTitle>
-            <BodyText>
-              <StyledText>{brief} </StyledText>
-            </BodyText>
-            {/* <Gradient /> */}
-          </RightWrapper>
-        </FlexWrapper>
+          <StyledH4>{ideasSize.length}</StyledH4>
+        </BottomBar>
       </CardContent>
     </Card>
   );

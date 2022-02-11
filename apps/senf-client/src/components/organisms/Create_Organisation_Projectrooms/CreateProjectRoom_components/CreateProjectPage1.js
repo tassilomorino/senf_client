@@ -46,7 +46,7 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
       .string()
       .required(t("enter_email"))
       .min(3, t("username_too_short"))
-      .max(40, t("username_too_long")),
+      .max(300, t("username_too_long")),
 
     description_about: yup
       .string()
