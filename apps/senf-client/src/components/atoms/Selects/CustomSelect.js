@@ -168,7 +168,7 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
 
         <img
           src={Arrow}
-          width="20px"
+          width="13px"
           style={{
             paddingLeft: "10px",
             transition: "0.5s",

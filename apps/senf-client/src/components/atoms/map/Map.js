@@ -207,7 +207,6 @@ const Map = ({
       let properties = point;
       properties.circleRadius = 5 + point.likeCount / 7;
       // properties.circleBlurRadius = 14 + point.likeCount / 7;
-      console.log(properties);
       // delete properties.longitude;
       // delete properties.latitude;
       // delete properties.Stadtteil;

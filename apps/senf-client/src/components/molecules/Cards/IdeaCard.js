@@ -55,10 +55,10 @@ const IdeaCard = ({
   likeCount,
   commentCount,
   Stadtteil,
-  project,
+  projectRoomId,
   color,
 }) => {
-  const ideaCardProject = project;
+  const ideaCardProjectRoomId = projectRoomId;
 
   dayjs.extend(relativeTime);
   const dispatch = useDispatch();
@@ -68,18 +68,17 @@ const IdeaCard = ({
   };
 
   const fetchDataProject = () => {
-    dispatch(openProjectRoomFunc(project, true));
+    dispatch(openProjectRoomFunc(projectRoomId, true));
   };
 
   const projectRoomDataFinal = [];
-
   if (projectsData) {
     projectsData.forEach(({ projectRoomId, title, organizationType }) => {
       const svgIcon = setIconByOrganizationType(organizationType);
 
-      if (ideaCardProject === projectRoomId) {
+      if (ideaCardProjectRoomId === projectRoomId) {
         projectRoomDataFinal.push(
-          projectRoomId.includes(ideaCardProject),
+          projectRoomId.includes(ideaCardProjectRoomId),
           title,
           svgIcon
         );
@@ -88,7 +87,7 @@ const IdeaCard = ({
   }
 
   return (
-    <Card project={!openProjectRoom && project && projectsData}>
+    <Card project={!openProjectRoom && projectRoomId && projectsData}>
       <CardContent>
         <ColorDot color={color} />
         <DistrictHeader color={color}>
@@ -111,7 +110,7 @@ const IdeaCard = ({
         <br />
         {!openProjectRoom &&
           projectsData &&
-          ideaCardProject &&
+          ideaCardProjectRoomId &&
           projectRoomDataFinal[0] && (
             <React.Fragment>
               <Gradient2></Gradient2>

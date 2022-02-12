@@ -350,7 +350,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
       neighborhood,
       lat: viewport.latitude,
       long: viewport.longitude,
-      project: projectSelected,
+      projectRoomId: projectSelected,
       Thema: topic,
       weblinkTitle,
       weblink,

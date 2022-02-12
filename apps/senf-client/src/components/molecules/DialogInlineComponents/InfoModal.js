@@ -206,20 +206,27 @@ const InfoModal = ({
     },
     {
       title: "Mit den Ideen werden wir ",
-      text: description_motivation,
+      text: description_procedure,
       id: 1,
     },
-    {
+  ];
+
+  if (description_motivation) {
+    pages.push({
       title: "Unsere Motivation ist ",
-      text: description_procedure,
+      text: description_motivation,
       id: 2,
-    },
-    {
+    });
+  }
+
+  if (description_learnmore) {
+    pages.push({
       title: "Wenn du mehr erfahren willst, ",
       text: description_learnmore,
       id: 3,
-    },
-  ];
+    });
+  }
+
   return (
     !loading && (
       <React.Fragment>

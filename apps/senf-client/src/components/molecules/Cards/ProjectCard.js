@@ -38,7 +38,7 @@ import "firebase/firestore";
 import "firebase/storage";
 
 const ImgWrapper = styled.div`
-  position: relative;
+  /* position: relative;
   width: calc(100% + 30px);
   height: 70px;
   background-color: white;
@@ -51,7 +51,18 @@ const ImgWrapper = styled.div`
   text-align: center;
   overflow: hidden;
   flex-shrink: 0;
-  margin: -15px -15px;
+  margin: -15px -15px; */
+
+  box-sizing: border-box;
+  width: 118px;
+  height: 118px;
+  overflow: visible;
+  background-image: url(${(props) => props.img});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 10px;
+  border: 1px solid rgba(195, 186, 162, 0.5);
 `;
 
 const ImgWrapperOverlay = styled.div`
@@ -78,7 +89,12 @@ const TopFlexWrapper = styled.div`
   margin-bottom: 10px;
 `;
 const RightWrapper = styled.div`
-  position: relative;
+  position: absolute;
+  top: 50px;
+  left: 140px;
+  height: 118px;
+  display: flex;
+  align-items: center;
 `;
 
 const Icon = styled.div`
@@ -123,6 +139,8 @@ export const ProjectCard = (props) => {
     },
   } = props;
 
+  const thisProjectRoomId = projectRoomId;
+
   const [logo, setLogo] = useState(null);
   const cardOrganizationId = organizationId;
   const user = useSelector((state) => state.user);
@@ -132,11 +150,11 @@ export const ProjectCard = (props) => {
   const dispatch = useDispatch();
 
   const pushScreamId = () => {
-    dispatch(openProjectRoomFunc(projectRoomId, true));
+    dispatch(openProjectRoomFunc(thisProjectRoomId, true));
   };
   const handleEdit = () => {
     localStorage.setItem("createProjectRoomOrganizationId", organizationId);
-    localStorage.setItem("createProjectRoomId", projectRoomId);
+    localStorage.setItem("createProjectRoomId", thisProjectRoomId);
     localStorage.setItem("createProjectPostEdit", true);
 
     dispatch(openCreateProjectRoomFunc(true));
@@ -152,7 +170,9 @@ export const ProjectCard = (props) => {
     });
   }
 
-  const ideasSize = screams.filter(({ project }) => project === projectRoomId);
+  const ideasSize = screams.filter(
+    ({ projectRoomId }) => projectRoomId === thisProjectRoomId
+  );
   const storageRef = firebase.storage().ref();
 
   storageRef
@@ -182,26 +202,18 @@ export const ProjectCard = (props) => {
           />
         )}
         <ExpandButton handleButtonClick={() => pushScreamId()} />
-
-        <ImgWrapper>
+        <CardTitle>
+          <StyledH2 fontWeight="900">{title}</StyledH2>
+        </CardTitle>
+        <ImgWrapper img={imgUrl}>
           {status === "archived" && (
             <ImgWrapperOverlay>
               <img src={notPublishedIcon} alt="UploadImageIcon" width="50%" />
             </ImgWrapperOverlay>
           )}
-
-          <StyledImg src={imgUrl} width="100%" alt="profile" />
         </ImgWrapper>
         <RightWrapper>
-          <TopFlexWrapper></TopFlexWrapper>
-
-          <CardTitle>
-            <StyledH2 fontWeight="900">{title}</StyledH2>
-          </CardTitle>
-          <BodyText>
-            <StyledText>{brief} </StyledText>
-          </BodyText>
-          {/* <Gradient /> */}
+          <StyledText>{brief} </StyledText>
         </RightWrapper>
         <BottomBar>
           <Icon>{icon}</Icon>

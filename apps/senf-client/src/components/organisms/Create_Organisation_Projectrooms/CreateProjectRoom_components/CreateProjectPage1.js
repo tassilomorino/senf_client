@@ -46,21 +46,15 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
       .string()
       .required(t("enter_email"))
       .min(3, t("username_too_short"))
-      .max(300, t("username_too_long")),
+      .max(500, t("username_too_long")),
 
     description_about: yup
       .string()
       .required(t("enter_email"))
       .min(10, t("username_too_short"))
-      .max(3000, t("username_too_long")),
+      .max(5000, t("username_too_long")),
 
     description_procedure: yup
-      .string()
-      .required(t("enter_email"))
-      .min(10, t("username_too_short"))
-      .max(3000, t("username_too_long")),
-
-    description_motivation: yup
       .string()
       .required(t("enter_email"))
       .min(10, t("username_too_short"))
@@ -100,7 +94,7 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
         const data = ref.data();
         setTitle(data.title);
         formik.setFieldValue("title", data.title);
-        formik.setFieldValue("title", data.brief);
+        formik.setFieldValue("brief", data.brief);
         formik.setFieldValue("description_about", data.description_about);
         formik.setFieldValue(
           "description_procedure",
@@ -114,7 +108,6 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
           "description_learnmore",
           data.description_learnmore
         );
-        formik.setFieldValue("description_learnmore", data.brief);
       }
     }
 
@@ -141,7 +134,9 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
         brief: formik.values.brief,
         description_about: formik.values.description_about,
         description_procedure: formik.values.description_procedure,
-        description_motivation: formik.values.description_motivation,
+        description_motivation: formik.values.description_motivation
+          ? formik.values.description_motivation
+          : null,
         description_learnmore: formik.values.description_learnmore
           ? formik.values.description_learnmore
           : null,

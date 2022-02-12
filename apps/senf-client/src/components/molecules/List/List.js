@@ -90,7 +90,7 @@ const List = ({
                 likeCount={dataFinal[i]?.likeCount}
                 commentCount={dataFinal[i]?.commentCount}
                 Stadtteil={dataFinal[i]?.Stadtteil}
-                project={dataFinal[i]?.project}
+                projectRoomId={dataFinal[i]?.projectRoomId}
                 color={dataFinal[i]?.color}
                 projectsData={projectsData}
               />

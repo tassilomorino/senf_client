@@ -142,7 +142,7 @@ export const loadProjectRoomData = (projectRoomId) => async (dispatch) => {
 
   const screamsRef = await db
     .collection("screams")
-    .where("project", "==", projectRoomId)
+    .where("projectRoomId", "==", projectRoomId)
     .orderBy("createdAt", "desc")
     .get();
 

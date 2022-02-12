@@ -142,13 +142,16 @@ const IdeaCardBig = ({ classes, setClicked }) => {
     commentCount,
     userHandle,
     color,
-    project,
+    projectRoomId,
     weblink,
     weblinkTitle,
     contact,
     contactTitle,
     selectedUnix,
   } = useSelector((state) => state.data.scream);
+
+  const ideaCardProjectRoomId = projectRoomId;
+
   const projects = useSelector((state) => state.data.projects);
 
   const convertedLinkRaw = weblink && linkify.find(weblink);
@@ -177,9 +180,9 @@ const IdeaCardBig = ({ classes, setClicked }) => {
     projects.forEach(({ projectRoomId, title, organizationType }) => {
       const svgIcon = setIconByOrganizationType(organizationType);
 
-      if (project === projectRoomId) {
+      if (ideaCardProjectRoomId === projectRoomId) {
         projectRoomDataFinal.push(
-          projectRoomId.includes(project),
+          projectRoomId.includes(ideaCardProjectRoomId),
           title,
           svgIcon
         );
@@ -219,7 +222,7 @@ const IdeaCardBig = ({ classes, setClicked }) => {
   }
 
   return (
-    <Card project={project ? true : false}>
+    <Card project={projectRoomId ? true : false}>
       <Content>
         <ColorDot color={color} />
         <DistrictHeader color={color}>
@@ -328,8 +331,8 @@ const IdeaCardBig = ({ classes, setClicked }) => {
             </StyledSmallText>
           </div>
 
-          {project && (
-            <ProjectOpenButton onClick={() => openTheProject(project)}>
+          {projectRoomId && (
+            <ProjectOpenButton onClick={() => openTheProject(projectRoomId)}>
               <Icon>{projectRoomDataFinal[2]}</Icon>
               {projectRoomDataFinal[1]}
             </ProjectOpenButton>

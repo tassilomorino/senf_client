@@ -50,8 +50,7 @@ export const getScreams = (mapViewport) => async (dispatch) => {
           status: doc.data().status,
           Thema: doc.data().Thema,
           Stadtteil: doc.data().Stadtteil,
-          project: doc.data().project,
-          projectId: doc.data().project,
+          projectRoomId: doc.data().projectRoomId,
           color: setColorByTopic(doc.data().Thema),
         };
 
@@ -93,8 +92,7 @@ export const reloadScreams = () => async (dispatch) => {
       status: doc.data().status,
       Thema: doc.data().Thema,
       Stadtteil: doc.data().Stadtteil,
-      project: doc.data().project,
-      projectId: doc.data().project,
+      projectRoomId: doc.data().projectRoomId,
       color: setColorByTopic(doc.data().Thema),
     };
 
@@ -125,6 +123,10 @@ export const openScreamFunc = (screamId) => async (dispatch) => {
 
   if (!ref.exists) {
     console.log("No such document!");
+    dispatch({ type: CLOSE_SCREAM });
+    dispatch({ type: SET_SCREAM, payload: {} });
+    window.history.pushState(null, null, "/");
+    throw new Error("Idea not found");
   } else {
     const scream = ref.data();
     scream.screamId = ref.id;
@@ -223,7 +225,7 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
       likeCount: 0,
       commentCount: 0,
       status: "None",
-      project: newScream.project,
+      projectRoomId: newScream.projectRoomId,
     };
 
     if (newScream.Thema === "" || newScream.Thema === undefined) {

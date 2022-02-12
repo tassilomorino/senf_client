@@ -240,7 +240,7 @@ const Main = () => {
       history.push("/intro");
     } else {
       if (mapViewport && mapViewport.latitude !== 0) {
-        Promise.all([
+        const allPromise = Promise.all([
           dispatch(getOrganizations(mapViewport)),
           dispatch(getProjects(mapViewport)),
           dispatch(getScreams(mapViewport)),
@@ -248,9 +248,14 @@ const Main = () => {
           screamId && dispatch(openScreamFunc(screamId)),
           organizationId &&
             dispatch(openOrganizationFunc(true, organizationId)),
-        ]).then((values) => {
-          setInitialLoading(false);
-        });
+        ]);
+        allPromise
+          .then((values) => {
+            setInitialLoading(false); // [valueOfPromise1, valueOfPromise2, ...]
+          })
+          .catch((error) => {
+            setInitialLoading(false); // rejectReason of any first rejected promise
+          });
 
         if (window.location.pathname === "/projectRooms") {
           setOrder(2);

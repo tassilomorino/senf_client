@@ -23,6 +23,7 @@ import Tabs from "../../atoms/Tabs/Tabs";
 import { MenuData } from "../../../data/MenuData";
 import Wave from "../../atoms/Backgrounds/Wave";
 import CalendarComponent from "../../atoms/calendar/CalendarComponent";
+import { StyledText } from "apps/senf-client/src/styles/GlobalStyle";
 
 const DragWrapper = styled(animated.div)`
   overscroll-behavior: contain;
@@ -345,18 +346,28 @@ const SwipeList = ({
         {order === 2 && (
           <animated.div style={slideUpSectionProps}>
             <OrganizationsIntroWrapper>
-              <OrganizationsIntro>
-                <Trans i18nKey="list_fastlink_organizations">
-                  .<span style={{ fontWeight: "900" }}>.</span>.
-                </Trans>
-              </OrganizationsIntro>
-              <CustomIconButton
-                name="ArrowRight"
-                position="relative"
-                top="20px"
-                backgroundColor="#FFF0BC"
-                handleButtonClick={() => setOpenOrganizationsPage(true)}
-              />
+              {process.env.REACT_APP_ORGANIZATIONSTAB === true ? (
+                <React.Fragment>
+                  <OrganizationsIntro>
+                    <Trans i18nKey="list_fastlink_organizations">
+                      .<span style={{ fontWeight: "900" }}>.</span>.
+                    </Trans>
+                  </OrganizationsIntro>
+                  <CustomIconButton
+                    name="ArrowRight"
+                    position="relative"
+                    top="20px"
+                    backgroundColor="#FFF0BC"
+                    handleButtonClick={() => setOpenOrganizationsPage(true)}
+                  />
+                </React.Fragment>
+              ) : (
+                <StyledText margin="0px 20px" marginLeft="20px">
+                  Gemeinsam mit Organisationen suchen wir zu spezifischen
+                  Themen/ Orten eure Ideen. In den jeweiligen Projekträumen
+                  könnt ihr mitwirken!
+                </StyledText>
+              )}
             </OrganizationsIntroWrapper>
             <Toolbar
               swipeListType={swipeListType}
