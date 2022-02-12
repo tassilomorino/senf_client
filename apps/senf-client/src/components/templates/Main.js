@@ -407,7 +407,7 @@ const Main = () => {
   );
 
   const filter = ["title", "lat", "long", "screamId", "color", "likeCount"];
-  const dataFinalMap = dataMap.map((object) => pick(filter, object));
+  const dataFinalMap = dataMap?.map((object) => pick(filter, object));
 
   const projectRoomsSearched = useMemo(
     () =>
@@ -470,7 +470,7 @@ const Main = () => {
     "projectRoomId",
     "organizationType",
   ];
-  const dataFinalMapProjects = dataMapProjects.map((object) =>
+  const dataFinalMapProjects = dataMapProjects?.map((object) =>
     pick(projectroomsFilter, object)
   );
 

@@ -29,13 +29,13 @@ import { MapFilter } from "./MapFilter";
 import { PatternBackground } from "./styles/sharedStyles";
 import { useParams } from "react-router";
 
-import Bubble1 from "../../../images/bubbles/marker1.png";
-import Bubble2 from "../../../images/bubbles/marker2.png";
-import Bubble3 from "../../../images/bubbles/marker3.png";
-import Bubble4 from "../../../images/bubbles/marker4.png";
-import Bubble5 from "../../../images/bubbles/marker5.png";
-import Bubble6 from "../../../images/bubbles/marker5.png";
-import Bubble7 from "../../../images/bubbles/marker5.png";
+import Marker1 from "../../../images/markers/marker1.png";
+import Marker2 from "../../../images/markers/marker2.png";
+import Marker3 from "../../../images/markers/marker3.png";
+import Marker4 from "../../../images/markers/marker4.png";
+import Marker5 from "../../../images/markers/marker5.png";
+import Marker6 from "../../../images/markers/marker5.png";
+import Marker7 from "../../../images/markers/marker5.png";
 
 import { openProjectRoomFunc } from "../../../redux/actions/projectActions";
 import { setSwipePositionDown } from "../../../redux/actions/UiActions";
@@ -56,7 +56,11 @@ const StyledMarker = styled.div`
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.8);
   max-width: 250px;
-  margin-bottom: ${(props) => (props.order === 1 ? "40%" : "100%")};
+  margin-bottom: ${(props) => (props.order === 1 ? "40%" : "29px")};
+  margin-left: ${(props) => (props.order === 1 ? "0" : "25px")};
+
+  /* min-height: ${(props) => (props.order === 2 ? "50px" : null)}; */
+
   position: relative;
 `;
 
@@ -414,11 +418,15 @@ const Map = ({
             )}
 
           {!isMobileCustom && hoverLong !== "" && (
-            <Marker longitude={hoverLong} latitude={hoverLat}>
+            <Marker
+              longitude={hoverLong}
+              latitude={hoverLat}
+              anchor={order === 1 ? "center" : "left"}
+            >
               <StyledMarker order={order}>
                 <StyledSmallText> {hoverTitle}</StyledSmallText>
-                <StyledTail1 />
-                <StyledTail2 />
+                {order === 1 && <StyledTail1 />}
+                {order === 1 && <StyledTail2 />}
               </StyledMarker>
             </Marker>
           )}
@@ -544,13 +552,13 @@ const Map = ({
             </React.Fragment>
           ) : (
             <React.Fragment>
-              <Image id="Bubble1" image={Bubble1} />
-              <Image id="Bubble2" image={Bubble2} />
-              <Image id="Bubble3" image={Bubble3} />
-              <Image id="Bubble4" image={Bubble4} />
-              <Image id="Bubble5" image={Bubble5} />
-              <Image id="Bubble6" image={Bubble6} />
-              <Image id="Bubble7" image={Bubble7} />
+              <Image id="Marker1" image={Marker1} />
+              <Image id="Marker2" image={Marker2} />
+              <Image id="Marker3" image={Marker3} />
+              <Image id="Marker4" image={Marker4} />
+              <Image id="Marker5" image={Marker5} />
+              <Image id="Marker6" image={Marker6} />
+              <Image id="Marker7" image={Marker7} />
               <Source
                 id="geojsonProjectRooms"
                 type="geojson"
@@ -568,18 +576,18 @@ const Map = ({
                     "match",
                     ["get", "organizationType"],
                     "Vereine",
-                    "Bubble1",
-                    "Inititiven",
-                    "Bubble2",
+                    "Marker1",
+                    "Initiativen",
+                    "Marker2",
                     "Planungsbüros",
-                    "Bubble3",
+                    "Marker3",
                     "Politik",
-                    "Bubble4",
+                    "Marker4",
                     "Stadtverwaltung",
-                    "Bubble5",
+                    "Marker5",
                     "Presse",
-                    "Bubble6",
-                    "Bubble7",
+                    "Marker6",
+                    "Marker7",
                   ],
                   "icon-size": [
                     "interpolate",
@@ -592,9 +600,11 @@ const Map = ({
                     10,
                     0.2,
 
+                    13,
+                    0.3,
                     // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
                     20,
-                    0.6,
+                    0.3,
                   ],
                   "icon-anchor": "center",
                   "icon-allow-overlap": true,
