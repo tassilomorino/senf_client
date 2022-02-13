@@ -64,7 +64,7 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
           alt="lamploader"
           style={{ paddingBottom: "10px" }}
         />
-        {!likesLength ? (
+        {likesLength === null ? (
           <CircularProgress size={12} thickness={2} />
         ) : (
           <StyledH3 textAlign="center"> {likesLength} Votes</StyledH3>
@@ -78,7 +78,7 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
           alt="lamploader"
           style={{ paddingBottom: "10px" }}
         />{" "}
-        {!commentslength ? (
+        {commentslength === null ? (
           <CircularProgress size={12} thickness={2} />
         ) : (
           <StyledH3 textAlign="center">
