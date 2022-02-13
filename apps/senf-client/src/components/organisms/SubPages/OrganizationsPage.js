@@ -22,14 +22,18 @@ import { TagsFilter } from "../../molecules/Filters/TagsFilter";
 import { MenuData } from "../../../data/MenuData";
 import { StyledH2 } from "../../../styles/GlobalStyle";
 import Tabs from "../../atoms/Tabs/Tabs";
+import { usePrevious } from "apps/senf-client/src/hooks/usePrevious";
 
 const InnerWrapper = styled.div`
   overflow-y: scroll;
   pointer-events: all;
   height: calc(100% - 120px);
   width: 100%;
-  margin-top: ${(props) => (props.isMobileCustom ? "120px" : "0px")};
+  margin-top: ${(props) => (props.isMobileCustom ? "0px" : "0px")};
   overflow: scroll;
+  background-color: #ffe898;
+  display: flex;
+  justify-content: center;
 `;
 
 const HeaderWrapper = styled.div`
@@ -40,8 +44,10 @@ const HeaderWrapper = styled.div`
   z-index: 25;
   height: 100px;
   @media (min-width: 768px) {
-    width: 400px;
-    height: 100px;
+    width: 600px;
+    height: 120px;
+    margin-left: 50%;
+    transform: translateX(-50%);
   }
 `;
 const NoIdeasYet = styled.div`
@@ -53,7 +59,17 @@ const NoIdeasYet = styled.div`
   text-align: center;
 `;
 
-const OrganizationsPage = ({ setOpenOrganizationsPage, order, loading }) => {
+const OrganizationsPage = ({
+  setOpenOrganizationsPage,
+  order,
+  loading,
+  dataFinal,
+  dropdown,
+  handleDropdown,
+  setDropdown,
+  searchTerm,
+  setSearchTerm,
+}) => {
   const { t } = useTranslation();
   const [searchOpen, setSearchOpen] = useState(false);
   const [open, setOpen] = useState(false);
@@ -62,88 +78,36 @@ const OrganizationsPage = ({ setOpenOrganizationsPage, order, loading }) => {
     setOpen(true);
   }, []);
 
-  const selectedOrganizationTypes = useSelector(
-    (state) => state.data.organizationTypes
-  );
-
-  const organizations = useSelector((state) => state.data.organizations);
-  // const user = useSelector((state) => state.user);
-  const loadingOrganizations = useSelector(
-    (state) => state.data.loadingOrganizations
-  );
-
-  // const prevdataFinalLength = usePrevious({ dataFinalLength });
-  // const prevDropdown = usePrevious({ dropdown });
-
-  const [dropdown, setDropdown] = useState("newest");
-
-  const handleDropdown = (value) => {
-    setDropdown(value);
-  };
-
-  const [searchTerm, setSearchTerm] = useState("");
-  const organizationsSearched = organizations?.filter((val) => {
-    if (searchTerm === "") {
-      return val;
-    } else if (
-      val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.Stadtteil?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.Stadtbezirk?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.locationHeader?.toLowerCase().includes(searchTerm.toLowerCase())
-    ) {
-      return val;
-    }
-  });
-
-  const sortedOrganizations =
-    dropdown === "newest"
-      ? _.orderBy(organizationsSearched, "createdAt", "desc")
-      : dropdown === "aToZ"
-      ? _.orderBy(
-          organizationsSearched,
-          [(pr) => pr.title.toLowerCase()],
-          ["asc"]
-        )
-      : _.orderBy(
-          organizationsSearched,
-          [(pr) => pr.title.toLowerCase()],
-          ["desc"]
-        );
-
-  const dataFinal = useMemo(() => {
-    return sortedOrganizations.filter(({ organizationType }) =>
-      selectedOrganizationTypes.includes(organizationType)
-    );
-  }, [selectedOrganizationTypes, dropdown, organizationsSearched]);
-
-  const dataFinalLength = dataFinal?.length;
+  const dataFinalLength = dataFinal.length;
+  const prevdataFinalLength = usePrevious({ dataFinalLength });
+  const prevDropdown = usePrevious({ dropdown });
 
   useEffect(() => {
-    if (!loadingOrganizations) {
-      const element = document.getElementById("List");
-      element?.scrollTo({
-        top: 0,
-        left: 0,
-      });
-
+    if (
+      (dataFinalLength &&
+        prevdataFinalLength &&
+        prevdataFinalLength.dataFinalLength !== dataFinalLength) ||
+      (dropdown && prevDropdown && prevDropdown.dropdown !== dropdown)
+    ) {
+      console.log(dataFinalLength);
       setListItems(1);
       sethasMoreItems(true);
     }
-  }, [loadingOrganizations]);
+  }, [loading, dropdown, dataFinalLength]);
+
   const itemsPerPage = 1;
   const [hasMoreItems, sethasMoreItems] = useState(true);
   const [listItems, setListItems] = useState(itemsPerPage);
 
-  const showItems = (organizations) => {
+  const showItems = (dataFinal) => {
     var items = [];
-    if (organizations?.length !== 0) {
+    if (dataFinalLength !== 0) {
       for (var i = 0; i < listItems; i++) {
         items.push(
-          organizations[i]?.organizationId && (
+          dataFinal[i]?.organizationId && (
             <OrganizationCard
-              key={organizations[i]?.organizationId}
-              organization={organizations[i]}
+              key={dataFinal[i]?.organizationId}
+              organization={dataFinal[i]}
             />
           )
         );
@@ -153,13 +117,11 @@ const OrganizationsPage = ({ setOpenOrganizationsPage, order, loading }) => {
   };
 
   const loadMore = () => {
-    if (!loadingOrganizations && dataFinal?.length === 0) {
-      sethasMoreItems(false);
-    }
-
-    if (listItems === dataFinal?.length) {
+    console.log(listItems, dataFinal.length);
+    if (listItems === dataFinal.length) {
       sethasMoreItems(false);
     } else {
+      console.log(listItems);
       setTimeout(() => {
         setListItems(listItems + itemsPerPage);
       }, 100);
@@ -167,76 +129,79 @@ const OrganizationsPage = ({ setOpenOrganizationsPage, order, loading }) => {
   };
 
   return (
-    <Wrapper order={open}>
-      <CustomIconButton
-        name="ArrowLeft"
-        position="fixed"
-        margin="10px"
-        backgroundColor="#FFF0BC"
-        handleButtonClick={() => setOpenOrganizationsPage(false)}
-        zIndex={99}
-      />
-
-      <HeaderWrapper>
-        <Tabs
-          loading={false}
-          order={1}
-          tabLabels={MenuData.map((item) => item.text).slice(2, 3)}
-          marginTop={"20px"}
-          marginBottom={"0px"}
+    !loading && (
+      <Wrapper order={open}>
+        <CustomIconButton
+          name="ArrowLeft"
+          position="fixed"
+          margin="10px"
+          backgroundColor="#FFF0BC"
+          handleButtonClick={() => setOpenOrganizationsPage(false)}
+          zIndex={99}
         />
 
-        {isMobileCustom && (
-          <TagsFilter
-            placing="list"
-            type={order === 1 ? "topics" : "organizationType"}
+        <HeaderWrapper>
+          <Tabs
+            loading={false}
+            order={1}
+            tabLabels={MenuData.map((item) => item.text).slice(2, 3)}
+            marginTop={"20px"}
+            marginBottom={"20px"}
           />
-        )}
 
-        {!isMobileCustom && (
-          <Toolbar
-            swipeListType="organizationOverview"
-            marginTop="0px"
-            loading={loadingOrganizations}
-            handleDropdown={handleDropdown}
-            dropdown={dropdown}
-            dataFinalLength={dataFinalLength}
-            setSearchOpen={setSearchOpen}
-            searchOpen={searchOpen}
-            setSearchTerm={setSearchTerm}
-            searchTerm={searchTerm}
-          />
-        )}
-      </HeaderWrapper>
-      <InnerWrapper isMobileCustom={isMobileCustom}>
-        {isMobileCustom && (
-          <Toolbar
-            swipeListType="organizationOverview"
-            type="standalone"
-            loading={loadingOrganizations}
-            handleDropdown={handleDropdown}
-            dropdown={dropdown}
-            dataFinalLength={dataFinalLength}
-            setSearchOpen={setSearchOpen}
-            searchOpen={searchOpen}
-            setSearchTerm={setSearchTerm}
-            searchTerm={searchTerm}
-          />
-        )}
+          {isMobileCustom && (
+            <TagsFilter
+              placing="list"
+              type={order === 1 ? "topics" : "organizationType"}
+            />
+          )}
 
-        {!loadingOrganizations ? (
-          <InfiniteScroll
-            loadMore={() => loadMore()}
-            hasMore={hasMoreItems}
-            useWindow={false}
-          >
-            <CoverWrapper>{showItems(dataFinal)}</CoverWrapper>
-          </InfiniteScroll>
-        ) : (
-          <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>
-        )}
-      </InnerWrapper>
-    </Wrapper>
+          {!isMobileCustom && (
+            <Toolbar
+              swipeListType="organizationOverview"
+              marginTop="0px"
+              loading={loading}
+              handleDropdown={handleDropdown}
+              dropdown={dropdown}
+              dataFinalLength={dataFinalLength}
+              setSearchOpen={setSearchOpen}
+              searchOpen={searchOpen}
+              setSearchTerm={setSearchTerm}
+              searchTerm={searchTerm}
+            />
+          )}
+        </HeaderWrapper>
+        <InnerWrapper isMobileCustom={isMobileCustom}>
+          {isMobileCustom && (
+            <Toolbar
+              swipeListType="organizationOverview"
+              type="standalone"
+              loading={loading}
+              handleDropdown={handleDropdown}
+              dropdown={dropdown}
+              dataFinalLength={dataFinalLength}
+              setSearchOpen={setSearchOpen}
+              searchOpen={searchOpen}
+              setSearchTerm={setSearchTerm}
+              searchTerm={searchTerm}
+            />
+          )}
+
+          {!loading ? (
+            <InfiniteScroll
+              loadMore={() => loadMore()}
+              hasMore={hasMoreItems}
+              // loader={<SkeletonCard dataFinalLength={dataFinalLength === 0} />}
+              useWindow={false}
+            >
+              {showItems(dataFinal)}
+            </InfiniteScroll>
+          ) : (
+            <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>
+          )}
+        </InnerWrapper>
+      </Wrapper>
+    )
   );
 };
 

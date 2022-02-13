@@ -101,7 +101,7 @@ const PostScreamSelectContainter = ({
         <CustomSelect
           name={"project"}
           value={projectSelected}
-          initialValue={"Allgemein (Alle Ideen)"}
+          initialValue={t("all_ideas")}
           options={OptionsProjects()}
           handleDropdown={handleDropdownProject}
         />

@@ -42,8 +42,19 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
       .required(t("enter_email"))
       .min(3, t("username_too_short"))
       .max(40, t("username_too_long")),
+    brief: yup
+      .string()
+      .required(t("enter_email"))
+      .min(3, t("username_too_short"))
+      .max(500, t("username_too_long")),
 
-    description: yup
+    description_about: yup
+      .string()
+      .required(t("enter_email"))
+      .min(10, t("username_too_short"))
+      .max(5000, t("username_too_long")),
+
+    description_procedure: yup
       .string()
       .required(t("enter_email"))
       .min(10, t("username_too_short"))
@@ -53,7 +64,11 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
   const formik = useFormik({
     initialValues: {
       title: "",
-      description: "",
+      brief: "",
+      description_about: "",
+      description_procedure: "",
+      description_motivation: "",
+      description_learnmore: "",
     },
     validationSchema: validationSchema,
     validateOnChange: true,
@@ -79,7 +94,20 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
         const data = ref.data();
         setTitle(data.title);
         formik.setFieldValue("title", data.title);
-        formik.setFieldValue("description", data.description);
+        formik.setFieldValue("brief", data.brief);
+        formik.setFieldValue("description_about", data.description_about);
+        formik.setFieldValue(
+          "description_procedure",
+          data.description_procedure
+        );
+        formik.setFieldValue(
+          "description_motivation",
+          data.description_motivation
+        );
+        formik.setFieldValue(
+          "description_learnmore",
+          data.description_learnmore
+        );
       }
     }
 
@@ -103,7 +131,15 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
       //UPDATING AN EXISTING PROJECTROOM
       const updateProject = {
         title: formik.values.title,
-        description: formik.values.description,
+        brief: formik.values.brief,
+        description_about: formik.values.description_about,
+        description_procedure: formik.values.description_procedure,
+        description_motivation: formik.values.description_motivation
+          ? formik.values.description_motivation
+          : null,
+        description_learnmore: formik.values.description_learnmore
+          ? formik.values.description_learnmore
+          : null,
       };
 
       const ref = await db
@@ -159,25 +195,108 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
             error={outsideClick && Boolean(formik.errors.title)}
             helperText={outsideClick && formik.errors.title}
           />
+
           <TextField
             id="outlined-name"
-            name="description"
-            type="description"
-            label={t("projectRoom_description")}
+            name="brief"
+            type="brief"
+            label={t("Kurzbeschreibung")}
             margin="normal"
             multiline
-            minRows="10"
-            maxRows="12"
+            minRows="4"
+            maxRows="6"
             variant="outlined"
             style={{
               backgroundColor: "white",
               borderRadius: "5px",
               width: "100%",
             }}
-            value={formik.values.description}
+            value={formik.values.brief}
             onChange={formik.handleChange}
-            error={outsideClick && Boolean(formik.errors.description)}
-            helperText={outsideClick && formik.errors.description}
+            error={outsideClick && Boolean(formik.errors.brief)}
+            helperText={outsideClick && formik.errors.brief}
+          />
+          <TextField
+            id="outlined-name"
+            name="description_about"
+            type="description_about"
+            label={t("Es geht um...")}
+            margin="normal"
+            multiline
+            minRows="4"
+            maxRows="6"
+            variant="outlined"
+            style={{
+              backgroundColor: "white",
+              borderRadius: "5px",
+              width: "100%",
+            }}
+            value={formik.values.description_about}
+            onChange={formik.handleChange}
+            error={outsideClick && Boolean(formik.errors.description_about)}
+            helperText={outsideClick && formik.errors.description_about}
+          />
+          <TextField
+            id="outlined-name"
+            name="description_procedure"
+            type="description_procedure"
+            label={t("Mit den Ideen werden wir...")}
+            margin="normal"
+            multiline
+            minRows="4"
+            maxRows="6"
+            variant="outlined"
+            style={{
+              backgroundColor: "white",
+              borderRadius: "5px",
+              width: "100%",
+            }}
+            value={formik.values.description_procedure}
+            onChange={formik.handleChange}
+            error={outsideClick && Boolean(formik.errors.description_procedure)}
+            helperText={outsideClick && formik.errors.description_procedure}
+          />
+
+          <TextField
+            id="outlined-name"
+            name="description_motivation"
+            type="description_motivation"
+            label={t("Unsere Motivation ist...")}
+            margin="normal"
+            multiline
+            minRows="4"
+            maxRows="6"
+            variant="outlined"
+            style={{
+              backgroundColor: "white",
+              borderRadius: "5px",
+              width: "100%",
+            }}
+            value={formik.values.description_motivation}
+            onChange={formik.handleChange}
+            error={
+              outsideClick && Boolean(formik.errors.description_motivation)
+            }
+            helperText={outsideClick && formik.errors.description_motivation}
+          />
+
+          <TextField
+            id="outlined-name"
+            name="description_learnmore"
+            type="description_learnmore"
+            label={t("Wenn du mehr erfahren willst...")}
+            margin="normal"
+            multiline
+            minRows="4"
+            maxRows="6"
+            variant="outlined"
+            style={{
+              backgroundColor: "white",
+              borderRadius: "5px",
+              width: "100%",
+            }}
+            value={formik.values.description_learnmore}
+            onChange={formik.handleChange}
           />
         </ComponentInnerWrapper>
       </ComponentWrapper>

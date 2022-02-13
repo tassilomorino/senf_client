@@ -15,15 +15,12 @@ import CalendarIcon from "../../../images/icons/calendar.png";
 import PenIcon from "../../../images/icons/pen.png";
 import LocationIcon from "../../../images/icons/location.png";
 
-import WeblinkIcon from "../../../images/icons/weblink.png";
-import contactIcon from "../../../images/icons/mail.png";
-import ProjectRoomIcon from "../../../images/icons/projectRoomIcon.png";
-
 import {
   CardTitle,
   ColorDot,
   DistrictHeader,
   EngagementWrapper,
+  Icon,
   ProjectOpenButton,
 } from "./styles/sharedStyles";
 import CommentButton from "../../atoms/CustomButtons/CommentButton";
@@ -33,6 +30,7 @@ import {
   StyledText,
 } from "../../../styles/GlobalStyle";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
+import setIconByOrganizationType from "apps/senf-client/src/data/setIconByOrganizationType";
 
 const Card = styled.div`
   z-index: 99;
@@ -60,9 +58,6 @@ const BodyText = styled.p`
   white-space: none;
   position: relative;
   width: 100%;
-
-  overflow: hidden;
-  max-height: 4.8em;
   margin-top: 0;
 `;
 
@@ -147,13 +142,16 @@ const IdeaCardBig = ({ classes, setClicked }) => {
     commentCount,
     userHandle,
     color,
-    project,
+    projectRoomId,
     weblink,
     weblinkTitle,
     contact,
     contactTitle,
     selectedUnix,
   } = useSelector((state) => state.data.scream);
+
+  const ideaCardProjectRoomId = projectRoomId;
+
   const projects = useSelector((state) => state.data.projects);
 
   const convertedLinkRaw = weblink && linkify.find(weblink);
@@ -177,12 +175,17 @@ const IdeaCardBig = ({ classes, setClicked }) => {
   const openMail = (contact) => {
     window.location.href = "mailto:" + contact;
   };
-
-  const projectsDataFinal = [];
+  const projectRoomDataFinal = [];
   if (projects) {
-    projects.forEach(({ projectRoomId, title }) => {
-      if (project === projectRoomId) {
-        projectsDataFinal.push(title);
+    projects.forEach(({ projectRoomId, title, organizationType }) => {
+      const svgIcon = setIconByOrganizationType(organizationType);
+
+      if (ideaCardProjectRoomId === projectRoomId) {
+        projectRoomDataFinal.push(
+          projectRoomId.includes(ideaCardProjectRoomId),
+          title,
+          svgIcon
+        );
       }
     });
   }
@@ -219,7 +222,7 @@ const IdeaCardBig = ({ classes, setClicked }) => {
   }
 
   return (
-    <Card project={project ? true : false}>
+    <Card project={projectRoomId ? true : false}>
       <Content>
         <ColorDot color={color} />
         <DistrictHeader color={color}>
@@ -235,15 +238,15 @@ const IdeaCardBig = ({ classes, setClicked }) => {
         <CardTitle>
           <StyledH2 fontWeight="900">{title}</StyledH2>
         </CardTitle>
-        <BodyText>
-          <StyledText>{body} </StyledText>
-        </BodyText>
+
+        <StyledText>{body} </StyledText>
 
         <div
           style={{
             display: "flex",
             flexDirection: "row",
             flexWrap: "wrap",
+            marginTop: "10px",
           }}
         >
           {weblink && (
@@ -252,7 +255,7 @@ const IdeaCardBig = ({ classes, setClicked }) => {
               zIndex="999"
               backgroundColor="#fed957"
               textColor="#353535"
-              onClick={() => openLink(convertedLink)}
+              handleButtonClick={() => openLink(convertedLink)}
               shadow={false}
               smallSubmitButton={true}
               iconRight={true}
@@ -268,7 +271,7 @@ const IdeaCardBig = ({ classes, setClicked }) => {
               zIndex="999"
               backgroundColor="#fed957"
               textColor="#353535"
-              onClick={() => openMail(contact)}
+              handleButtonClick={() => openMail(contact)}
               shadow={false}
               smallSubmitButton={true}
               iconRight={true}
@@ -328,16 +331,10 @@ const IdeaCardBig = ({ classes, setClicked }) => {
             </StyledSmallText>
           </div>
 
-          {project && (
-            <ProjectOpenButton onClick={() => openTheProject(project)}>
-              <img
-                src={ProjectRoomIcon}
-                width="20px"
-                style={{ paddingRight: "10px", alignSelf: "center" }}
-                alt="ProjectRoomIcon"
-              />
-
-              {projectsDataFinal}
+          {projectRoomId && (
+            <ProjectOpenButton onClick={() => openTheProject(projectRoomId)}>
+              <Icon>{projectRoomDataFinal[2]}</Icon>
+              {projectRoomDataFinal[1]}
             </ProjectOpenButton>
           )}
         </div>

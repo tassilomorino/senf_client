@@ -23,6 +23,7 @@ import Tabs from "../../atoms/Tabs/Tabs";
 import { MenuData } from "../../../data/MenuData";
 import Wave from "../../atoms/Backgrounds/Wave";
 import CalendarComponent from "../../atoms/calendar/CalendarComponent";
+import { StyledText } from "apps/senf-client/src/styles/GlobalStyle";
 
 const DragWrapper = styled(animated.div)`
   overscroll-behavior: contain;
@@ -45,6 +46,7 @@ const DragWrapper = styled(animated.div)`
   @media (min-width: 768px) {
     width: 400px;
     animation: none;
+    border-radius: 0px;
   }
 `;
 const Content = styled.div`
@@ -87,16 +89,6 @@ const ListWrapper = styled.div`
   }
 `;
 
-const SlideUpSection = styled(animated.div)`
-  height: 140px;
-  position: relative;
-  z-index: 0;
-  overflow: hidden;
-
-  /* @media (min-width: 768px) {
-    margin-top: 40px;
-  } */
-`;
 const OrganizationsIntroWrapper = styled.div`
   display: flex;
 `;
@@ -151,6 +143,7 @@ const DesktopTabWrapper = styled.div`
 
 const SwipeList = ({
   swipeListType,
+  type,
   tabLabels,
   loading,
   order,
@@ -185,9 +178,8 @@ const SwipeList = ({
 
   const [slideUpSectionProps, setSlideUpSectionProps] = useSpring(() => ({
     transform: `translateY(${0}px)`,
-    height: isMobileCustom ? "0px" : "160px",
+    height: isMobileCustom ? "0px" : "150px",
     position: "relative",
-
     top: 0,
     zIndex: -1,
     overflow: "hidden",
@@ -224,6 +216,7 @@ const SwipeList = ({
     setListHeaderProps({
       height: "60px",
     });
+    setSearchOpen(false);
   };
 
   useEffect(() => {
@@ -256,6 +249,19 @@ const SwipeList = ({
     }
   }, [swipePosition]);
 
+  useEffect(() => {
+    if (searchOpen) {
+      setSlideUpSectionProps({
+        height: "210px",
+      });
+    }
+    if (!searchOpen && (swipePosition !== "bottom" || !isMobileCustom)) {
+      setSlideUpSectionProps({
+        height: "150px",
+      });
+    }
+  }, [searchOpen]);
+
   const bind = useDrag(
     ({ last, down, movement: [, my], offset: [, y] }) => {
       if (last && my > 50) {
@@ -271,6 +277,7 @@ const SwipeList = ({
         setListHeaderProps({
           height: "60px",
         });
+        setSearchOpen(false);
       }
 
       if (last && my < -50) {
@@ -304,10 +311,10 @@ const SwipeList = ({
 
   const sectionFastLinks = !openAccount &&
     dataFinal &&
-    dataFinal.length > 0 && (
+    (dataFinal.length > 0 || searchTerm !== "") && (
       <React.Fragment>
         {order === 1 && (
-          <SlideUpSection style={slideUpSectionProps}>
+          <animated.div style={slideUpSectionProps}>
             <OrganizationsIntroWrapper>
               <OrganizationsIntro>
                 <Trans i18nKey="list_fastlink_statistics">
@@ -334,23 +341,33 @@ const SwipeList = ({
               searchTerm={searchTerm}
               marginTop={"0px"}
             />
-          </SlideUpSection>
+          </animated.div>
         )}
         {order === 2 && (
-          <SlideUpSection style={slideUpSectionProps}>
+          <animated.div style={slideUpSectionProps}>
             <OrganizationsIntroWrapper>
-              <OrganizationsIntro>
-                <Trans i18nKey="list_fastlink_organizations">
-                  .<span style={{ fontWeight: "900" }}>.</span>.
-                </Trans>
-              </OrganizationsIntro>
-              <CustomIconButton
-                name="ArrowRight"
-                position="relative"
-                top="20px"
-                backgroundColor="#FFF0BC"
-                handleButtonClick={() => setOpenOrganizationsPage(true)}
-              />
+              {process.env.REACT_APP_ORGANIZATIONSTAB === true ? (
+                <React.Fragment>
+                  <OrganizationsIntro>
+                    <Trans i18nKey="list_fastlink_organizations">
+                      .<span style={{ fontWeight: "900" }}>.</span>.
+                    </Trans>
+                  </OrganizationsIntro>
+                  <CustomIconButton
+                    name="ArrowRight"
+                    position="relative"
+                    top="20px"
+                    backgroundColor="#FFF0BC"
+                    handleButtonClick={() => setOpenOrganizationsPage(true)}
+                  />
+                </React.Fragment>
+              ) : (
+                <StyledText margin="0px 20px" marginLeft="20px">
+                  Gemeinsam mit Organisationen suchen wir zu spezifischen
+                  Themen/ Orten eure Ideen. In den jeweiligen Projekträumen
+                  könnt ihr mitwirken!
+                </StyledText>
+              )}
             </OrganizationsIntroWrapper>
             <Toolbar
               swipeListType={swipeListType}
@@ -364,7 +381,7 @@ const SwipeList = ({
               searchTerm={searchTerm}
               marginTop={"0px"}
             />{" "}
-          </SlideUpSection>
+          </animated.div>
         )}
       </React.Fragment>
     );
@@ -416,14 +433,27 @@ const SwipeList = ({
             style={swipePosition === "bottom" ? { overflow: "hidden" } : null}
           >
             {sectionFastLinks}
-            {searchOpen ? (
-              <div style={{ height: "60px", transition: "0.5s" }} />
-            ) : (
-              <div style={{ height: "0px", transition: "0.5s" }} />
-            )}
+
+            {/* <div
+              style={
+                searchOpen
+                  ? {
+                      height: "60px",
+                      transition: "0.5s",
+                      position: "relative",
+                    }
+                  : {
+                      height: "0px",
+                      transition: "0.5s",
+                      position: "relative",
+                    }
+              }
+            /> */}
+
             {!loading && (order === 1 || order === 2) && (
               <List
                 swipeListType={swipeListType}
+                type={type}
                 order={order}
                 loading={loading}
                 dropdown={dropdown}
@@ -465,6 +495,7 @@ const SwipeList = ({
           {!loading && (order === 1 || order === 2) && (
             <List
               swipeListType={swipeListType}
+              type={type}
               order={order}
               loading={loading}
               dropdown={dropdown}

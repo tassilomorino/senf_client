@@ -11,8 +11,6 @@ import SwipeList from "../SwipeLists/SwipeList";
 import Header from "../../molecules/Headers/Header";
 import InfoModal from "../../molecules/DialogInlineComponents/InfoModal";
 
-import AccountSettings from "../../molecules/DialogInlineComponents/AccountSettings";
-import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
 import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 

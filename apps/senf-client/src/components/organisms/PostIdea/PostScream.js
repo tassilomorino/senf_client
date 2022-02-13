@@ -111,6 +111,8 @@ const OpenButtonDesktop = styled.button`
 
   box-shadow: rgb(0, 0, 0, 0) 0px 20px 20px -15px;
   transition: 0.5s;
+  pointer-events: ${(props) => (props.loading ? "none" : "all")};
+  opacity: ${(props) => (props.loading ? "0.5" : "1")};
 `;
 
 const styles = {
@@ -348,7 +350,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
       neighborhood,
       lat: viewport.latitude,
       long: viewport.longitude,
-      project: projectSelected,
+      projectRoomId: projectSelected,
       Thema: topic,
       weblinkTitle,
       weblink,
@@ -477,7 +479,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
   return (
     <Fragment>
       {!isMobileCustom ? (
-        <OpenButtonDesktop onClick={handleOpen}>
+        <OpenButtonDesktop onClick={handleOpen} loading={loading}>
           <img
             src={AddIcon}
             width="25"

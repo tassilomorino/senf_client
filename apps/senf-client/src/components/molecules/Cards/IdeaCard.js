@@ -26,11 +26,13 @@ import {
   DistrictHeader,
   EngagementWrapper,
   Gradient,
+  Icon,
   ProjectOpenButton,
 } from "./styles/sharedStyles";
 import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
 
 import ProjectRoomIcon from "../../../images/icons/projectRoomIcon.png";
+import setIconByOrganizationType from "apps/senf-client/src/data/setIconByOrganizationType";
 
 const Gradient2 = styled.div`
   width: 100%;
@@ -53,10 +55,10 @@ const IdeaCard = ({
   likeCount,
   commentCount,
   Stadtteil,
-  project,
+  projectRoomId,
   color,
 }) => {
-  const ideaCardProject = project;
+  const ideaCardProjectRoomId = projectRoomId;
 
   dayjs.extend(relativeTime);
   const dispatch = useDispatch();
@@ -66,24 +68,26 @@ const IdeaCard = ({
   };
 
   const fetchDataProject = () => {
-    dispatch(openProjectRoomFunc(project, true));
+    dispatch(openProjectRoomFunc(projectRoomId, true));
   };
 
   const projectRoomDataFinal = [];
-
   if (projectsData) {
-    projectsData.forEach(({ projectRoomId, title }) => {
-      if (ideaCardProject === projectRoomId) {
+    projectsData.forEach(({ projectRoomId, title, organizationType }) => {
+      const svgIcon = setIconByOrganizationType(organizationType);
+
+      if (ideaCardProjectRoomId === projectRoomId) {
         projectRoomDataFinal.push(
-          projectRoomId.includes(ideaCardProject),
-          title
+          projectRoomId.includes(ideaCardProjectRoomId),
+          title,
+          svgIcon
         );
       }
     });
   }
 
   return (
-    <Card project={!openProjectRoom && project && projectsData}>
+    <Card project={!openProjectRoom && projectRoomId && projectsData}>
       <CardContent>
         <ColorDot color={color} />
         <DistrictHeader color={color}>
@@ -106,17 +110,12 @@ const IdeaCard = ({
         <br />
         {!openProjectRoom &&
           projectsData &&
-          ideaCardProject &&
+          ideaCardProjectRoomId &&
           projectRoomDataFinal[0] && (
             <React.Fragment>
               <Gradient2></Gradient2>
               <ProjectOpenButton onClick={fetchDataProject}>
-                <img
-                  src={ProjectRoomIcon}
-                  width="20px"
-                  style={{ paddingRight: "10px", alignSelf: "center" }}
-                  alt="ProjectRoomIcon"
-                />
+                <Icon>{projectRoomDataFinal[2]}</Icon>
                 {projectRoomDataFinal[1]}
               </ProjectOpenButton>
             </React.Fragment>

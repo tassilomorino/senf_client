@@ -15,6 +15,7 @@ import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 import MainModal from "../../atoms/Layout/MainModal";
 import { StyledH2 } from "../../../styles/GlobalStyle";
 import styled from "styled-components";
+import { useTranslation } from "react-i18next";
 
 const Title = styled.div`
   width: 100%;
@@ -56,10 +57,13 @@ const styles = {
 };
 
 const ShareModal = ({ classes, path, setShareOpen }) => {
+  const { t } = useTranslation();
   return (
     <MainModal handleButtonClick={() => setShareOpen(false)}>
       <Title>
-        <StyledH2 fontWeight="900">Teile den Link per</StyledH2>
+        <StyledH2 fontWeight="900" textAlign="center">
+          {t("share_link")}
+        </StyledH2>
       </Title>
 
       <div className={classes.functions}>

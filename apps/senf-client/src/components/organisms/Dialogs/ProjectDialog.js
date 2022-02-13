@@ -148,7 +148,10 @@ const ProjectDialog = ({
       )}
       {project && !loadingProjectRoom && (
         <InfoModal
-          description={project?.description}
+          description_about={project?.description_about}
+          description_motivation={project?.description_motivation}
+          description_procedure={project?.description_procedure}
+          description_learnmore={project?.description_learnmore}
           weblink={project?.weblink}
           contact={project?.contact}
           startDate={project?.startDate}
@@ -165,6 +168,7 @@ const ProjectDialog = ({
 
       {(!infoOpen || (!isMobileCustom && !loadingProjectRoom)) && (
         <SwipeList
+          type="projectIdeas"
           swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}
           tabLabels={ProjectRoomTabData.map((item) => item.text).slice(
             0,

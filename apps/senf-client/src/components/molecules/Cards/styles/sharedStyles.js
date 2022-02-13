@@ -13,7 +13,12 @@ export const Card = styled.div`
   margin-right: auto;
   border-radius: 20px;
   margin-bottom: 10px;
-  height: ${(props) => (props.project ? "13.5em" : "11em")};
+  height: ${(props) =>
+    props.project
+      ? "13.5em"
+      : props.type === "projectRoomCard"
+      ? "220px"
+      : "11em"};
   overflow: hidden;
   animation: IdeaCardAnimation 0.8s;
 
@@ -56,6 +61,14 @@ export const ColorDot = styled.div`
   background-color: ${(props) => props.color};
   opacity: 1;
   float: left;
+`;
+export const Icon = styled.div`
+  width: 16px;
+  position: relative;
+  height: 16px;
+  flex-grow: 0;
+  margin-right: 10px;
+  margin-left: 3px;
 `;
 
 export const DistrictHeader = styled.div`

@@ -1,11 +1,8 @@
 /** @format */
 
 import React from "react";
-import {
-  MuiThemeProvider,
-  NativeSelect,
-} from "@material-ui/core";
-import {createTheme} from "@material-ui/core/styles/";
+import { MuiThemeProvider, NativeSelect } from "@material-ui/core";
+import { createTheme } from "@material-ui/core/styles/";
 //Images
 import Arrow from "../../../images/icons/arrow.png";
 import { useTranslation } from "react-i18next";
@@ -29,8 +26,6 @@ const theme = createTheme({
     },
   },
 });
-
-//Initialvalue =  Allgemein (Alle Ideen)
 
 const Select = ({ name, value, initialValue, valuesArray, handleDropdown }) => {
   const { t } = useTranslation();

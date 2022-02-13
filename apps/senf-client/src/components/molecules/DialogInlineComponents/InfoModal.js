@@ -30,17 +30,18 @@ const Card = styled.div`
   width: ${(props) => (props.isMobileCustom ? " calc(100% - 20px)" : "380px")};
 
   border-radius: 18px;
-  height: ${(props) =>
+  height: auto;
+  /* height: ${(props) =>
     props.openAccount
       ? "500px"
       : props.weblink && props.contact
       ? "700px"
       : props.contact || props.weblink
       ? "650px"
-      : "600px"};
+      : "600px"}; */
   max-height: ${(props) => (props.infoOpen ? "calc(100% - 20px)" : "0px")};
   transition: 0.5s;
-  overflow: hidden;
+  overflow: scroll;
   background-color: rgb(255, 255, 255, 0.6);
   backdrop-filter: ${(props) => (props.infoOpen ? "blur(10px)" : "none")};
   /* box-shadow: 0 8px 40px -35px rgba(0, 0, 0, 0.4); */
@@ -58,6 +59,7 @@ const CardInnerWrapper = styled.div`
   overflow-x: hidden;
   background-color: #fff7dd;
   /* box-shadow: inset 0 -10px 10px -10px #000000; */
+  position: relative;
 `;
 const LowerWrapper = styled.div`
   position: relative;
@@ -146,7 +148,10 @@ const DeleteButton = styled.div`
 const InfoModal = ({
   infoOpen,
   setInfoOpen,
-  description,
+  description_about,
+  description_motivation,
+  description_procedure,
+  description_learnmore,
   weblink,
   contact,
   startDate,
@@ -195,26 +200,33 @@ const InfoModal = ({
   const pages = [
     {
       title: "Es geht um ",
-      text: "einen mobilen, multifunktionalen und niedrigschwelligen Begegnungsort können Angebote in den öffentlichen Raum getragen werden und ermöglicht dadurch eine bewusstere Wahrnehmung und einfachere Begegnung der eigenen Nachbar:innen, Anwohner:innen des Stadtteils und der Umgebung.",
+      text: description_about,
 
       id: 0,
     },
     {
       title: "Mit den Ideen werden wir ",
-      text: "einen mobilen, multifunktionalen und niedrigschwelligen Begegnungsort können Angebote in den öffentlichen Raum getragen werden und ermöglicht dadurch eine bewusstere Wahrnehmung und einfachere Begegnung der eigenen Nachbar:innen, Anwohner:innen des Stadtteils und der Umgebung.",
+      text: description_procedure,
       id: 1,
     },
-    {
-      title: "Unsere Motivation ist ",
-      text: "ein mobiles, multifunktionalen und niedrigschwelligen Begegnungsort können Angebote in den öffentlichen Raum getragen werden und ermöglicht dadurch eine bewusstere Wahrnehmung und einfachere Begegnung der eigenen Nachbar:innen, Anwohner:innen des Stadtteils und der Umgebung.",
-      id: 2,
-    },
-    {
-      title: "Wenn du mehr erfahren willst, ",
-      text: "kannst du einem mobilen, multifunktionalen und niedrigschwelligen Begegnungsort können Angebote in den öffentlichen Raum getragen werden und ermöglicht dadurch eine bewusstere Wahrnehmung und einfachere Begegnung der eigenen Nachbar:innen, Anwohner:innen des Stadtteils und der Umgebung.",
-      id: 3,
-    },
   ];
+
+  if (description_motivation) {
+    pages.push({
+      title: "Unsere Motivation ist ",
+      text: description_motivation,
+      id: 2,
+    });
+  }
+
+  if (description_learnmore) {
+    pages.push({
+      title: "Wenn du mehr erfahren willst, ",
+      text: description_learnmore,
+      id: 3,
+    });
+  }
+
   return (
     !loading && (
       <React.Fragment>
@@ -262,7 +274,7 @@ const InfoModal = ({
                     zIndex="999"
                     backgroundColor="white"
                     textColor="#353535"
-                    onClick={() => openLink(weblink)}
+                    handleButtonClick={() => openLink(weblink)}
                     shadow={false}
                     smallSubmitButton={true}
                     iconLeft={true}
@@ -277,7 +289,7 @@ const InfoModal = ({
                     zIndex="999"
                     backgroundColor="white"
                     textColor="#353535"
-                    onClick={() => openMail(contact)}
+                    handleButtonClick={() => openMail(contact)}
                     shadow={false}
                     smallSubmitButton={true}
                     iconLeft={true}
@@ -312,7 +324,7 @@ const InfoModal = ({
                     />
                   </OrganizationLogoWrapper>
                   <div style={{ marginLeft: "10px" }}>
-                    <StyledText>Ein Projektraum von:</StyledText>
+                    <StyledText>{t("projectroom_of")}</StyledText>
                     <StyledH3 fontWeight="900">{owner}</StyledH3>
                   </div>
                 </OwnerWrapper>
@@ -341,19 +353,31 @@ const InfoModal = ({
             </LowerWrapper>
             {/* <Gradient /> */}
           </CardInnerWrapper>
+          {!isMobileCustom && infoOpen && (
+            <SubmitButton
+              text={openProjectRoom ? t("show_projectroom") : t("show_profile")}
+              handleButtonClick={() => setInfoOpen(false)}
+              zIndex="999"
+              position="fixed"
+              bottom="20px"
+              backgroundColor="#353535"
+              textColor="white"
+              margin="0 0 0 0"
+            />
+          )}
+        </Card>
+        {isMobileCustom && infoOpen && (
           <SubmitButton
-            text={
-              openProjectRoom ? t("Projektraum anzeigen") : t("Profil anzeigen")
-            }
+            text={openProjectRoom ? t("show_projectroom") : t("show_profile")}
             handleButtonClick={() => setInfoOpen(false)}
             zIndex="999"
-            position={"absolute"}
-            bottom="10px"
+            position="fixed"
+            bottom="20px"
             backgroundColor="#353535"
             textColor="white"
             margin="0 0 0 0"
           />
-        </Card>
+        )}
       </React.Fragment>
     )
   );

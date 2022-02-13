@@ -42,7 +42,7 @@ export const Wrapper = styled.div`
 } */
 `;
 
-export const InsightsCoversWrapper = styled.div`
+export const CoverWrapper = styled.div`
   margin-left: 50%;
   padding-bottom: 200px;
   transform: translateX(-50%);
@@ -64,27 +64,6 @@ export const InsightsCoversWrapper = styled.div`
   @media (min-width: 1068px) {
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr;
-  }
-`;
-
-export const CoverWrapper = styled.div`
-  margin-left: 2.5%;
-  width: 95%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 10px 10px;
-  grid-template-areas:
-    ". ."
-    ". .";
-  @media (min-width: 768px) {
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-  }
-
-  @media (min-width: 1068px) {
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
   }
 `;
 

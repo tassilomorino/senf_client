@@ -17,8 +17,6 @@ import {
 
 // Get all projects
 export const getOrganizations = (mapViewport) => async (dispatch) => {
-  dispatch({ type: LOADING_ORGANIZATIONS_DATA });
-
   const db = firebase.firestore();
   const storageRef = firebase.storage().ref();
 
@@ -56,7 +54,6 @@ export const getOrganizations = (mapViewport) => async (dispatch) => {
 
     function onReject() {
       console.log("error loading organizations");
-      organizations.push(doc.data());
     }
   });
 };

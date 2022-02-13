@@ -29,17 +29,63 @@ import { MapFilter } from "./MapFilter";
 import { PatternBackground } from "./styles/sharedStyles";
 import { useParams } from "react-router";
 
-import Bubble1 from "../../../images/bubbles/bubble1.png";
-import Bubble2 from "../../../images/bubbles/bubble2.png";
-import Bubble3 from "../../../images/bubbles/bubble3.png";
-import Bubble4 from "../../../images/bubbles/bubble4.png";
-import Bubble5 from "../../../images/bubbles/bubble5.png";
-import Bubble6 from "../../../images/bubbles/bubble6.png";
-import Bubble7 from "../../../images/bubbles/bubble7.png";
+import Marker1 from "../../../images/markers/marker1.png";
+import Marker2 from "../../../images/markers/marker2.png";
+import Marker3 from "../../../images/markers/marker3.png";
+import Marker4 from "../../../images/markers/marker4.png";
+import Marker5 from "../../../images/markers/marker5.png";
+import Marker6 from "../../../images/markers/marker5.png";
+import Marker7 from "../../../images/markers/marker5.png";
 
 import { openProjectRoomFunc } from "../../../redux/actions/projectActions";
 import { setSwipePositionDown } from "../../../redux/actions/UiActions";
+import { StyledSmallText } from "apps/senf-client/src/styles/GlobalStyle";
 
+const StyledMarker = styled.div`
+  box-sizing: border-box;
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 6px 6px 6px;
+  box-shadow: 0px 4px 6px -2px rgba(186, 160, 79, 0.5);
+  background-color: #faf8f3;
+  overflow: visible;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  max-width: 250px;
+  margin-bottom: ${(props) => (props.order === 1 ? "40%" : "29px")};
+  margin-left: ${(props) => (props.order === 1 ? "0" : "25px")};
+
+  /* min-height: ${(props) => (props.order === 2 ? "50px" : null)}; */
+
+  position: relative;
+`;
+
+const StyledTail1 = styled.div`
+  position: absolute;
+  top: 100%;
+  left: calc(50% - 10px);
+  width: 0;
+  height: 0;
+  border-color: rgba(255, 255, 255, 0.8) transparent transparent transparent;
+  border-width: 10px;
+  border-style: solid;
+  backdrop-filter: drop-shadow(1px 1px 2px rgba(186, 160, 79, 0.5));
+`;
+
+const StyledTail2 = styled.div`
+  position: absolute;
+  top: calc(100% - 2px);
+  left: calc(50% - 10px);
+  width: 0;
+  height: 0;
+  border-color: #f9f9f9 transparent transparent transparent;
+  border-width: 10px;
+  border-style: solid;
+`;
 const Wrapper = styled.div`
   z-index: 9;
   margin: 0px;
@@ -96,6 +142,9 @@ const Map = ({
 
   const scream = useSelector((state) => state.data.scream);
   const [hoverId, setHoverId] = useState("");
+  const [hoverLat, setHoverLat] = useState("");
+  const [hoverLong, setHoverLong] = useState("");
+  const [hoverTitle, setHoverTitle] = useState("");
 
   const handlleMapLoaded = () => {
     setTimeout(() => {
@@ -157,10 +206,17 @@ const Map = ({
     for (let point of dataFinal) {
       let properties = point;
       properties.circleRadius = 5 + point.likeCount / 7;
-      properties.circleBlurRadius = 14 + point.likeCount / 7;
-
-      delete properties.longitude;
-      delete properties.latitude;
+      // properties.circleBlurRadius = 14 + point.likeCount / 7;
+      // delete properties.longitude;
+      // delete properties.latitude;
+      // delete properties.Stadtteil;
+      // delete properties.Thema;
+      // delete properties.createdAt;
+      // delete properties.body;
+      // delete properties.status;
+      // delete properties.commentCount;
+      // delete properties.project;
+      // delete properties.projectId;
 
       const unique =
         dataFinal.filter((item) => item.long === point.long).length === 1;
@@ -211,6 +267,20 @@ const Map = ({
   for (let point of projects) {
     let properties = point;
 
+    // delete properties.Thema;
+    // delete properties.brief;
+    // delete properties.calendar;
+    // delete properties.createdAt;
+    // delete properties.endDate;
+    // delete properties.icon;
+    // delete properties.imgUrl;
+    // delete properties.geoData;
+    // delete properties.organizationId;
+    // delete properties.owner;
+    // delete properties.startDate;
+    // delete properties.status;
+    // delete properties.zoom;
+
     let feature = {
       type: "Feature",
       geometry: {
@@ -224,27 +294,40 @@ const Map = ({
   const onHoverIdea = (event) => {
     if (event.features.length > 0) {
       setHoverId(event.features[0].properties.screamId);
+      setHoverLat(event.features[0].properties.lat);
+      setHoverLong(event.features[0].properties.long);
+      setHoverTitle(event.features[0].properties.title);
     }
   };
 
-  const onLeaveIdea = (event) => {
-    setHoverId("");
+  const onLeave = (event) => {
+    if (event.features.length < 1) {
+      setHoverId("");
+      setHoverLat("");
+      setHoverLong("");
+      setHoverTitle("");
+    }
   };
 
   const onClickIdea = (event) => {
     if (event.features.length > 0) {
       dispatch(openScreamFunc(event.features[0].properties.screamId));
+      setTimeout(() => {
+        setHoverId("");
+        setHoverLat("");
+        setHoverLong("");
+        setHoverTitle("");
+      }, 1000);
     }
   };
 
   const onHoverProjectRoom = (event) => {
     if (event.features.length > 0) {
       setHoverId(event.features[0].properties.projectRoomId);
+      setHoverLat(event.features[0].properties.centerLat);
+      setHoverLong(event.features[0].properties.centerLong);
+      setHoverTitle(event.features[0].properties.title);
     }
-  };
-
-  const onLeaveProjectRoom = (event) => {
-    setHoverId("");
   };
 
   const onClickProjectRoom = (event) => {
@@ -252,6 +335,12 @@ const Map = ({
       dispatch(
         openProjectRoomFunc(event.features[0].properties.projectRoomId, true)
       );
+      setTimeout(() => {
+        setHoverId("");
+        setHoverLat("");
+        setHoverLong("");
+        setHoverTitle("");
+      }, 4000);
     }
   };
 
@@ -327,6 +416,20 @@ const Map = ({
               </React.Fragment>
             )}
 
+          {!isMobileCustom && hoverLong !== "" && (
+            <Marker
+              longitude={hoverLong}
+              latitude={hoverLat}
+              anchor={order === 1 ? "center" : "left"}
+            >
+              <StyledMarker order={order}>
+                <StyledSmallText> {hoverTitle}</StyledSmallText>
+                {order === 1 && <StyledTail1 />}
+                {order === 1 && <StyledTail2 />}
+              </StyledMarker>
+            </Marker>
+          )}
+
           {order === 1 || openScream || openProjectRoom || openAccount ? (
             <React.Fragment>
               {!openInfoPage && !openScream && !openProjectRoom && (
@@ -366,7 +469,7 @@ const Map = ({
                 source="geojsonIdeas"
                 type="circle"
                 onHover={onHoverIdea}
-                onLeave={onLeaveIdea}
+                onLeave={onLeave}
                 onClick={onClickIdea}
                 paint={{
                   // "circle-radius": {
@@ -426,22 +529,7 @@ const Map = ({
                   ],
                 }}
               />
-              {!isMobileCustom && (
-                <Layer
-                  id="geojsonIdeasText"
-                  source="geojsonIdeas"
-                  type="symbol"
-                  filter={["==", ["get", "screamId"], hoverId]}
-                  layout={{
-                    "text-field": ["get", "title"],
-                    "text-anchor": "left",
-                    "text-offset": [1, 0],
-                    "text-font": ["DIN Offc Pro Bold", "Arial Unicode MS Bold"],
-                    "text-justify": "left",
-                    "text-size": 16,
-                  }}
-                />
-              )}
+
               {openScream && scream.lat && (
                 <Marker
                   key={scream.screamId}
@@ -463,13 +551,13 @@ const Map = ({
             </React.Fragment>
           ) : (
             <React.Fragment>
-              <Image id="Bubble1" image={Bubble1} />
-              <Image id="Bubble2" image={Bubble2} />
-              <Image id="Bubble3" image={Bubble3} />
-              <Image id="Bubble4" image={Bubble4} />
-              <Image id="Bubble5" image={Bubble5} />
-              <Image id="Bubble6" image={Bubble6} />
-              <Image id="Bubble7" image={Bubble7} />
+              <Image id="Marker1" image={Marker1} />
+              <Image id="Marker2" image={Marker2} />
+              <Image id="Marker3" image={Marker3} />
+              <Image id="Marker4" image={Marker4} />
+              <Image id="Marker5" image={Marker5} />
+              <Image id="Marker6" image={Marker6} />
+              <Image id="Marker7" image={Marker7} />
               <Source
                 id="geojsonProjectRooms"
                 type="geojson"
@@ -480,25 +568,25 @@ const Map = ({
                 source="geojsonProjectRooms"
                 type="symbol"
                 onHover={onHoverProjectRoom}
-                onLeave={onLeaveProjectRoom}
+                onLeave={onLeave}
                 onClick={onClickProjectRoom}
                 layout={{
                   "icon-image": [
                     "match",
                     ["get", "organizationType"],
                     "Vereine",
-                    "Bubble6",
-                    "Inititiven",
-                    "Bubble2",
+                    "Marker1",
+                    "Initiativen",
+                    "Marker2",
                     "Planungsbüros",
-                    "Bubble3",
+                    "Marker3",
                     "Politik",
-                    "Bubble1",
+                    "Marker4",
                     "Stadtverwaltung",
-                    "Bubble5",
+                    "Marker5",
                     "Presse",
-                    "Bubble4",
-                    "Bubble7",
+                    "Marker6",
+                    "Marker7",
                   ],
                   "icon-size": [
                     "interpolate",
@@ -509,33 +597,18 @@ const Map = ({
                     0.01,
 
                     10,
-                    0.05,
+                    0.2,
 
+                    13,
+                    0.3,
                     // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
                     20,
-                    0.4,
+                    0.3,
                   ],
-                  "icon-anchor": "bottom",
+                  "icon-anchor": "center",
                   "icon-allow-overlap": true,
                 }}
               />
-              {!isMobileCustom && (
-                <Layer
-                  id="geojsonProjectRoomsText"
-                  source="geojsonProjectRooms"
-                  type="symbol"
-                  filter={["==", ["get", "projectRoomId"], hoverId]}
-                  layout={{
-                    "text-field": ["get", "title"],
-                    "text-anchor": "left",
-                    "text-offset": [0.5, -1.5],
-                    "text-font": ["DIN Offc Pro Bold", "Arial Unicode MS Bold"],
-                    "text-justify": "left",
-                    "text-size": 16,
-                    "text-allow-overlap": true,
-                  }}
-                />
-              )}
             </React.Fragment>
           )}
         </MapGL>

@@ -187,6 +187,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         screams: [action.payload, ...state.screams],
+        loading: false,
       };
 
     case EDIT_SCREAM:
@@ -230,12 +231,6 @@ export default function (state = initialState, action) {
         loadingProjectRoom: false,
         // projectScreams: action.payload,
         // loadingProjectScreams: false,
-      };
-
-    case LOADING_ORGANIZATIONS_DATA:
-      return {
-        ...state,
-        loadingOrganizations: true,
       };
 
     case SET_ORGANIZATIONS:

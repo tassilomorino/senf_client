@@ -1,6 +1,6 @@
 /** @format */
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +12,8 @@ import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
 import styled from "styled-components";
 import notPublishedIcon from "../../../images/icons/notPublished.png";
+import bulb from "../../../images/svgIcons/bulb.svg";
+
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import {
   BodyText,
@@ -22,13 +24,23 @@ import {
   DistrictHeader,
   Gradient,
 } from "./styles/sharedStyles";
-import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
+import {
+  StyledH2,
+  StyledH3,
+  StyledH4,
+  StyledImg,
+  StyledText,
+} from "../../../styles/GlobalStyle";
 import organizationTypes from "../../../data/organizationTypes";
 
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/storage";
+
 const ImgWrapper = styled.div`
-  position: relative;
-  width: 80px;
-  height: 80px;
+  /* position: relative;
+  width: calc(100% + 30px);
+  height: 70px;
   background-color: white;
   border-radius: 18px;
 
@@ -39,6 +51,18 @@ const ImgWrapper = styled.div`
   text-align: center;
   overflow: hidden;
   flex-shrink: 0;
+  margin: -15px -15px; */
+
+  box-sizing: border-box;
+  width: 118px;
+  height: 118px;
+  overflow: visible;
+  background-image: url(${(props) => props.img});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 10px;
+  border: 1px solid rgba(195, 186, 162, 0.5);
 `;
 
 const ImgWrapperOverlay = styled.div`
@@ -51,12 +75,6 @@ const ImgWrapperOverlay = styled.div`
   align-items: center;
   background-color: rgb(255, 255, 255, 0.8);
   border-radius: 18px;
-`;
-const StyledImg = styled.img`
-  flex-shrink: 0;
-  min-width: 100%;
-  min-height: 100%;
-  object-fit: cover;
 `;
 
 const FlexWrapper = styled.div`
@@ -71,15 +89,40 @@ const TopFlexWrapper = styled.div`
   margin-bottom: 10px;
 `;
 const RightWrapper = styled.div`
-  padding-right: 20px;
+  position: absolute;
+  top: 50px;
+  left: 140px;
+  height: 118px;
+  display: flex;
+  align-items: center;
 `;
 
 const Icon = styled.div`
   width: 16px;
   height: 16px;
   flex-grow: 0;
-  margin-right: 10px;
-  margin-left: 3px;
+  margin-right: ${(props) => (props.marginRight ? props.marginRight : "10px")};
+  margin-left: ${(props) => (props.marginLeft ? props.marginLeft : "3px")};
+`;
+
+const OrganizationLogo = styled.div`
+  width: 32px;
+  height: 32px;
+  box-shadow: 0px 4px 10px -4px #c3baa2;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-left: 5px;
+  margin-right: 15px;
+`;
+
+const BottomBar = styled.div`
+  display: flex;
+  align-items: center;
+  position: absolute;
+  bottom: 5px;
+  width: calc(100% - 30px);
+  height: 40px;
 `;
 
 export const ProjectCard = (props) => {
@@ -89,24 +132,29 @@ export const ProjectCard = (props) => {
       title,
       owner,
       imgUrl,
-      description,
+      brief,
       status,
       organizationId,
       icon,
     },
   } = props;
 
+  const thisProjectRoomId = projectRoomId;
+
+  const [logo, setLogo] = useState(null);
   const cardOrganizationId = organizationId;
   const user = useSelector((state) => state.user);
+  const screams = useSelector((state) => state.data.screams);
+
   const organizations = useSelector((state) => state.data.organizations);
   const dispatch = useDispatch();
 
   const pushScreamId = () => {
-    dispatch(openProjectRoomFunc(projectRoomId, true));
+    dispatch(openProjectRoomFunc(thisProjectRoomId, true));
   };
   const handleEdit = () => {
     localStorage.setItem("createProjectRoomOrganizationId", organizationId);
-    localStorage.setItem("createProjectRoomId", projectRoomId);
+    localStorage.setItem("createProjectRoomId", thisProjectRoomId);
     localStorage.setItem("createProjectPostEdit", true);
 
     dispatch(openCreateProjectRoomFunc(true));
@@ -122,8 +170,22 @@ export const ProjectCard = (props) => {
     });
   }
 
+  const ideasSize = screams.filter(
+    ({ projectRoomId }) => projectRoomId === thisProjectRoomId
+  );
+  const storageRef = firebase.storage().ref();
+
+  storageRef
+    .child(`/organizationsData/${organizationId}/logo/logo`)
+    .getDownloadURL()
+    .then(onResolve);
+
+  function onResolve(logo) {
+    setLogo(logo);
+  }
+
   return (
-    <Card project={true}>
+    <Card type="projectRoomCard">
       <CardContent>
         {organizationCardData[0]?.includes(user.userId) && (
           <CustomIconButton
@@ -133,39 +195,42 @@ export const ProjectCard = (props) => {
             position="absolute"
             left="calc(100% - 54px)"
             margin="2px"
-            bottom="0px"
+            top="0px"
             backgroundColor="transparent"
             shadow={false}
             zIndex="99"
           />
         )}
         <ExpandButton handleButtonClick={() => pushScreamId()} />
-        <FlexWrapper>
-          <RightWrapper>
-            <TopFlexWrapper>
-              <Icon>{icon}</Icon>
-
-              <h4>{owner}</h4>
-            </TopFlexWrapper>
-
-            <CardTitle>
-              <StyledH2 fontWeight="900">{title}</StyledH2>
-            </CardTitle>
-          </RightWrapper>
-          <ImgWrapper>
-            {status === "archived" && (
-              <ImgWrapperOverlay>
-                <img src={notPublishedIcon} alt="UploadImageIcon" width="50%" />
-              </ImgWrapperOverlay>
+        <CardTitle>
+          <StyledH2 fontWeight="900">{title}</StyledH2>
+        </CardTitle>
+        <ImgWrapper img={imgUrl}>
+          {status === "archived" && (
+            <ImgWrapperOverlay>
+              <img src={notPublishedIcon} alt="UploadImageIcon" width="50%" />
+            </ImgWrapperOverlay>
+          )}
+        </ImgWrapper>
+        <RightWrapper>
+          <StyledText>{brief} </StyledText>
+        </RightWrapper>
+        <BottomBar>
+          <Icon>{icon}</Icon>
+          <OrganizationLogo>
+            {logo && (
+              <StyledImg src={logo} width="100%" alt="organizationLogo" />
             )}
+          </OrganizationLogo>
 
-            <StyledImg src={imgUrl} width="100%" alt="profile" />
-          </ImgWrapper>
-        </FlexWrapper>
-        <BodyText>
-          <StyledText>{description} </StyledText>
-        </BodyText>
-        <Gradient />
+          <StyledH4>{owner}</StyledH4>
+
+          <Icon marginLeft="auto" marginRight="5px">
+            <img src={bulb} />
+          </Icon>
+
+          <StyledH4>{ideasSize.length}</StyledH4>
+        </BottomBar>
       </CardContent>
     </Card>
   );
