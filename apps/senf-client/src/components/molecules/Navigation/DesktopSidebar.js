@@ -167,7 +167,9 @@ const DesktopSidebar = ({
             marginBottom: "30px",
           }}
         /> */}
-      <FilterWrapper active={order === 1 && !loading && !openAccount}>
+      <FilterWrapper
+        active={order === 1 && !loading && !openAccount && !openProjectRoom}
+      >
         <TagsFilter column loading={loading} type="topics" />
       </FilterWrapper>
       <MenuItem

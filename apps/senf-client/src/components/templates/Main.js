@@ -186,6 +186,7 @@ const Main = () => {
       openProjectRoom &&
       project &&
       project.centerLong !== undefined &&
+      !openScream &&
       mapViewport.latitude !== 0 &&
       mapRef.current &&
       mapLoaded
@@ -263,10 +264,10 @@ const Main = () => {
           setOrder(3);
         } else if (window.location.pathname === "/insights") {
           setOrder(4);
-        } else if (screamId) {
-          setOrder(1);
         } else if (projectRoomId) {
           setOrder(2);
+        } else if (screamId) {
+          setOrder(1);
         } else if (organizationId) {
           setOrder(3);
         }

@@ -81,12 +81,6 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
 
   const fetchDataLikes = async () => {
     const ref = await db.collection("likes").orderBy("createdAt", "desc").get();
-
-    // if (ref.size < 1) {
-    //   setLikesLength(0);
-    //   setLikes(0);
-    //   return;
-    // }
     const likesLength = ref.size;
     setLikesLength(likesLength);
 
