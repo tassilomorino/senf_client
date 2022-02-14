@@ -175,6 +175,11 @@ export const loadProjectRoomData = (projectRoomId) => async (dispatch) => {
             body: doc.data().body.substr(0, 120),
           })
         );
+
+        dispatch({
+          type: SET_PROJECT,
+          payload: projectRoom,
+        });
       });
   });
 };
