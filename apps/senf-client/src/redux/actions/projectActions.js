@@ -27,95 +27,93 @@ import { setMapBounds } from "./mapActions";
 // Get all projects
 export const getProjects = (mapViewport) => async (dispatch) => {
   dispatch({ type: LOADING_PROJECTS_DATA });
+  dispatch({ type: SET_PROJECTS, payload: [] });
 
-  const db = firebase.firestore();
-  const storageRef = firebase.storage().ref();
+  // const db = firebase.firestore();
+  // const storageRef = firebase.storage().ref();
 
-  const ref = await db
-    .collectionGroup("projectRooms")
-    // .where("centerLat", "<", Number(mapViewport?.latitude) + 1)
-    // .where("centerLat", ">", Number(mapViewport?.latitude) - 1)
-    .where("status", "==", "active")
-    .orderBy("createdAt", "desc")
-    .get();
-  // : await db.collection("projects").orderBy("createdAt", "desc").get();
-  console.log(ref, ref.size);
-  if (ref.size < 1 || !ref) {
-    dispatch({ type: SET_PROJECTS, payload: [] });
-  }
-  const projects = [];
-  ref.docs.forEach(async (doc) => {
-    // const screamsRef = await db
-    //   .collection("screams")
-    //   .where("project", "==", doc.id)
-    //   .get();
+  // const ref = await db
+  //   .collectionGroup("projectRooms")
+  //   // .where("centerLat", "<", Number(mapViewport?.latitude) + 1)
+  //   // .where("centerLat", ">", Number(mapViewport?.latitude) - 1)
+  //   .where("status", "==", "active")
+  //   .orderBy("createdAt", "desc")
+  //   .get();
+  // // : await db.collection("projects").orderBy("createdAt", "desc").get();
 
-    storageRef
-      .child(
-        `/organizationsData/${doc.data().organizationId}/${doc.id}/thumbnail`
-      )
-      .getDownloadURL()
-      .then(onResolve, onReject);
+  // const projects = [];
+  // ref.docs.forEach(async (doc) => {
+  //   // const screamsRef = await db
+  //   //   .collection("screams")
+  //   //   .where("project", "==", doc.id)
+  //   //   .get();
 
-    function onResolve(image) {
-      const docData = {
-        projectRoomId: doc.data().projectRoomId,
+  //   storageRef
+  //     .child(
+  //       `/organizationsData/${doc.data().organizationId}/${doc.id}/thumbnail`
+  //     )
+  //     .getDownloadURL()
+  //     .then(onResolve, onReject);
 
-        title: doc.data().title,
-        brief: doc.data().brief,
-        owner: doc.data().owner,
-        createdAt: doc.data().createdAt,
-        // startDate: doc.data().startDate,
-        // endDate: doc.data().endDate,
-        status: doc.data().status,
-        geoData: doc.data().geoData,
-        centerLat: doc.data().centerLat,
-        centerLong: doc.data().centerLong,
-        zoom: doc.data().zoom,
+  //   function onResolve(image) {
+  //     const docData = {
+  //       projectRoomId: doc.data().projectRoomId,
 
-        calendar: doc.data().calendar,
-        organizationId: doc.data().organizationId,
-        // weblink: doc.data().weblink,
-        Thema: doc.data().Thema,
-        organizationType: doc.data().organizationType,
-        imgUrl: image,
-        icon: setIconByOrganizationType(doc.data().organizationType),
-        // ideasSize: newOne.length,
-      };
-      projects.push(docData);
-      if (projects.length === ref.size) {
-        dispatch({
-          type: SET_PROJECTS,
-          payload: projects,
-        });
-      }
+  //       title: doc.data().title,
+  //       brief: doc.data().brief,
+  //       owner: doc.data().owner,
+  //       createdAt: doc.data().createdAt,
+  //       // startDate: doc.data().startDate,
+  //       // endDate: doc.data().endDate,
+  //       status: doc.data().status,
+  //       geoData: doc.data().geoData,
+  //       centerLat: doc.data().centerLat,
+  //       centerLong: doc.data().centerLong,
+  //       zoom: doc.data().zoom,
 
-      // storageRef
-      //   .child(`/organizationsData/${doc.data().organizationId}/logo/logo`)
-      //   .getDownloadURL()
-      //   .then(onResolveSecond, onReject);
+  //       calendar: doc.data().calendar,
+  //       organizationId: doc.data().organizationId,
+  //       // weblink: doc.data().weblink,
+  //       Thema: doc.data().Thema,
+  //       organizationType: doc.data().organizationType,
+  //       imgUrl: image,
+  //       icon: setIconByOrganizationType(doc.data().organizationType),
+  //       // ideasSize: newOne.length,
+  //     };
+  //     projects.push(docData);
+  //     if (projects.length === ref.size) {
+  //       dispatch({
+  //         type: SET_PROJECTS,
+  //         payload: projects,
+  //       });
+  //     }
 
-      // function onResolveSecond(logo) {
-      //   docData.organizationLogo = logo;
+  //     // storageRef
+  //     //   .child(`/organizationsData/${doc.data().organizationId}/logo/logo`)
+  //     //   .getDownloadURL()
+  //     //   .then(onResolveSecond, onReject);
 
-      //   projects.push(docData);
-      //   if (projects.length === ref.size) {
-      //     dispatch({
-      //       type: SET_PROJECTS,
-      //       payload: projects,
-      //     });
-      //   }
-      // }
-    }
-    function onReject(error) {
-      projects.push(doc.data());
+  //     // function onResolveSecond(logo) {
+  //     //   docData.organizationLogo = logo;
 
-      dispatch({
-        type: SET_PROJECTS,
-        payload: projects,
-      });
-    }
-  });
+  //     //   projects.push(docData);
+  //     //   if (projects.length === ref.size) {
+  //     //     dispatch({
+  //     //       type: SET_PROJECTS,
+  //     //       payload: projects,
+  //     //     });
+  //     //   }
+  //     // }
+  //   }
+  //   function onReject(error) {
+  //     projects.push(doc.data());
+
+  //     dispatch({
+  //       type: SET_PROJECTS,
+  //       payload: projects,
+  //     });
+  //   }
+  // });
 };
 
 // Open a project
