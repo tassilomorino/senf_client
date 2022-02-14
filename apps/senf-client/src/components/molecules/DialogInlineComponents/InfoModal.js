@@ -166,6 +166,8 @@ const InfoModal = ({
   const handle = useSelector((state) => state.user.handle);
 
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
+  const openScream = useSelector((state) => state.UI.openScream);
+
   const openAccount = useSelector((state) => state.UI.openAccount);
 
   const openLink = (weblink) => {
@@ -230,7 +232,9 @@ const InfoModal = ({
   return (
     !loading && (
       <React.Fragment>
-        {infoOpen && <ModalBackground onClick={() => setInfoOpen(false)} />}
+        {infoOpen && !openScream && (
+          <ModalBackground onClick={() => setInfoOpen(false)} />
+        )}
         <Card
           isMobileCustom={isMobileCustom}
           infoOpen={infoOpen}

@@ -36,6 +36,7 @@ import organizationTypes from "../../../data/organizationTypes";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
+import { truncateString } from "apps/senf-client/src/hooks/truncateString";
 
 const ImgWrapper = styled.div`
   /* position: relative;
@@ -92,6 +93,7 @@ const RightWrapper = styled.div`
   position: absolute;
   top: 50px;
   left: 140px;
+  padding-right: 5px;
   height: 118px;
   display: flex;
   align-items: center;
@@ -196,14 +198,22 @@ export const ProjectCard = (props) => {
             left="calc(100% - 54px)"
             margin="2px"
             top="0px"
-            backgroundColor="transparent"
-            shadow={false}
             zIndex="99"
           />
         )}
         <ExpandButton handleButtonClick={() => pushScreamId()} />
         <CardTitle>
-          <StyledH2 fontWeight="900">{title}</StyledH2>
+          <StyledH2 fontWeight="900">
+            {title &&
+              truncateString(
+                title,
+                document.body.clientWidth < 350
+                  ? 28
+                  : document.body.clientWidth < 380
+                  ? 35
+                  : 40
+              )}
+          </StyledH2>
         </CardTitle>
         <ImgWrapper img={imgUrl}>
           {status === "archived" && (
@@ -213,7 +223,17 @@ export const ProjectCard = (props) => {
           )}
         </ImgWrapper>
         <RightWrapper>
-          <StyledText>{brief} </StyledText>
+          <StyledText smallText={document.body.clientWidth < 350}>
+            {brief &&
+              truncateString(
+                brief,
+                document.body.clientWidth < 350
+                  ? 90
+                  : document.body.clientWidth < 380
+                  ? 100
+                  : 130
+              )}
+          </StyledText>
         </RightWrapper>
         <BottomBar>
           <Icon>{icon}</Icon>
@@ -223,7 +243,16 @@ export const ProjectCard = (props) => {
             )}
           </OrganizationLogo>
 
-          <StyledH4>{owner}</StyledH4>
+          <StyledH4>
+            {truncateString(
+              owner,
+              document.body.clientWidth < 350
+                ? 20
+                : document.body.clientWidth < 380
+                ? 30
+                : 40
+            )}
+          </StyledH4>
 
           <Icon marginLeft="auto" marginRight="5px">
             <img src={bulb} />

@@ -43,9 +43,9 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
   const [open, setOpen] = useState(false);
 
   const [screams, setScreams] = useState("");
-  const [likes, setLikes] = useState("");
-  const [likesLength, setLikesLength] = useState("");
-  const [commentsLength, setCommentsLength] = useState("");
+  const [likes, setLikes] = useState(null);
+  const [likesLength, setLikesLength] = useState(null);
+  const [commentsLength, setCommentsLength] = useState(null);
 
   useEffect(() => {
     setOpen(true);
@@ -56,7 +56,7 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
     const ref = projectRoomId
       ? await db
           .collection("screams")
-          .where("project", "==", projectRoomId)
+          .where("projectRoomId", "==", projectRoomId)
           .get()
       : await db
           .collection("screams")
@@ -108,7 +108,7 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
     const screamIds = [];
     const screamsRef = await db
       .collection("screams")
-      .where("project", "==", projectRoomId)
+      .where("projectRoomId", "==", projectRoomId)
       .get();
 
     const screamsRefSize = screamsRef.size;

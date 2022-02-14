@@ -38,8 +38,8 @@ export const StyledLi = styled.li`
 
 export const StyledText = styled.p`
   margin: 0;
-  font-size: 17px;
-  line-height: 20x;
+  font-size: ${(props) => (props.smallText ? "15px" : "17px")};
+  line-height: 20px;
   color: ${(props) => (props.color ? props.color : "#353535")};
   text-align: ${(props) => (props.textAlign ? props.textAlign : "left")};
   margin: ${(props) => (props.margin ? props.margin : "0")};
