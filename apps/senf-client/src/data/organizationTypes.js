@@ -2,7 +2,6 @@
 import React from "react";
 import { Translation } from "react-i18next";
 import Image from "../images/insightsCovers/agegroups-cover.jpg";
-import InitiativesIcon from "../images/icons/organizationTypes/initiatives.png";
 
 const organizationTypes = [
   {
@@ -14,7 +13,6 @@ const organizationTypes = [
     ),
     color: "#f8a9a0",
     img: Image,
-    icon: InitiativesIcon,
     svgIcon: (
       <svg id="Bold" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
         <path d="M9.24,6.06a3,3,0,0,1,.57.27,3.45,3.45,0,0,1,1.1,1,.57.57,0,0,0,.76.16,2.68,2.68,0,0,1,1.59-.36.41.41,0,0,0,.44-.55,3,3,0,0,0-2.39-1.79,3.11,3.11,0,0,0-2.17.6C9,5.58,9,5.68,9,5.79S9.05,6,9.24,6.06Z" />
