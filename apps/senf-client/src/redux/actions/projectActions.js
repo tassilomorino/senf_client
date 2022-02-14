@@ -106,6 +106,11 @@ export const getProjects = (mapViewport) => async (dispatch) => {
     }
     function onReject(error) {
       projects.push(doc.data());
+
+      dispatch({
+        type: SET_PROJECTS,
+        payload: projects,
+      });
     }
   });
 };
