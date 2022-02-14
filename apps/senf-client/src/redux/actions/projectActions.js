@@ -27,7 +27,7 @@ import { setMapBounds } from "./mapActions";
 // Get all projects
 export const getProjects = (mapViewport) => async (dispatch) => {
   dispatch({ type: LOADING_PROJECTS_DATA });
-  dispatch({ type: SET_PROJECT, payload: {} });
+  dispatch({ type: SET_PROJECTS, payload: {} });
 
   const db = firebase.firestore();
   const storageRef = firebase.storage().ref();
