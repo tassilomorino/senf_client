@@ -255,8 +255,8 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
         });
         setTimeout(() => {
           dispatch(reloadScreams());
-          if (newScream.project) {
-            dispatch(loadProjectRoomData(newScream.project));
+          if (newScream.projectRoomId) {
+            dispatch(loadProjectRoomData(newScream.projectRoomId));
           }
 
           const screamId = resScream.screamId;

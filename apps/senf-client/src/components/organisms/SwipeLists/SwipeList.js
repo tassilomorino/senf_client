@@ -476,7 +476,7 @@ const SwipeList = ({
   ) : (
     <DragWrapper>
       <Content>
-        {openProjectRoom && (
+        {openProjectRoom && tabLabels.length > 1 && (
           <DesktopTabWrapper>
             <Tabs
               loading={loading}
