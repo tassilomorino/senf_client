@@ -28,6 +28,12 @@ export const getOrganizations = (mapViewport) => async (dispatch) => {
     .where("status", "==", "active")
     .get();
 
+  if (ref.size < 1) {
+    dispatch({
+      type: SET_ORGANIZATIONS,
+      payload: [],
+    });
+  }
   // : await db.collection("projects").orderBy("createdAt", "desc").get();
 
   const organizations = [];
