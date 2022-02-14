@@ -27,7 +27,6 @@ import { setMapBounds } from "./mapActions";
 // Get all projects
 export const getProjects = (mapViewport) => async (dispatch) => {
   dispatch({ type: LOADING_PROJECTS_DATA });
-  dispatch({ type: SET_PROJECTS, payload: {} });
 
   const db = firebase.firestore();
   const storageRef = firebase.storage().ref();
@@ -41,6 +40,9 @@ export const getProjects = (mapViewport) => async (dispatch) => {
     .get();
   // : await db.collection("projects").orderBy("createdAt", "desc").get();
 
+  if (!ref) {
+    dispatch({ type: SET_PROJECTS, payload: [] });
+  }
   const projects = [];
   ref.docs.forEach(async (doc) => {
     // const screamsRef = await db
