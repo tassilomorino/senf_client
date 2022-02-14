@@ -39,8 +39,8 @@ export const getProjects = (mapViewport) => async (dispatch) => {
     .orderBy("createdAt", "desc")
     .get();
   // : await db.collection("projects").orderBy("createdAt", "desc").get();
-
-  if (ref.size < 1) {
+  console.log(ref, ref.size);
+  if (ref.size < 1 || !ref) {
     dispatch({ type: SET_PROJECTS, payload: [] });
   }
   const projects = [];
