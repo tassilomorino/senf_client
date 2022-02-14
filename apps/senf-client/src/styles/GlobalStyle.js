@@ -44,6 +44,8 @@ export const StyledText = styled.p`
   text-align: ${(props) => (props.textAlign ? props.textAlign : "left")};
   margin: ${(props) => (props.margin ? props.margin : "0")};
   margin-left: ${(props) => (props.marginLeft ? props.marginLeft : "0")};
+  user-select: none;
+  pointer-events: none;
 `;
 export const StyledSmallText = styled.p`
   margin: 0;
