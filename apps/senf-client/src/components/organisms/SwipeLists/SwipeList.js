@@ -489,7 +489,7 @@ const SwipeList = ({
 
         <ListWrapper openProjectRoom={openProjectRoom} id="ListWrapper">
           {sectionFastLinks}
-          <Wave />
+
           {!loading && (order === 1 || order === 2) && (
             <List
               swipeListType={swipeListType}
@@ -509,6 +509,7 @@ const SwipeList = ({
             />
           )}
         </ListWrapper>
+        <Wave />
       </Content>
     </DragWrapper>
   );

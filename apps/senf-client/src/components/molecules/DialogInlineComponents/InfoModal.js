@@ -19,6 +19,8 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 import ProjectInfoSwiper from "./ProjectInfoSwiper";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import { ModalBackground } from "../../atoms/Backgrounds/ModalBackground";
+import * as linkify from "linkifyjs";
+
 const Card = styled.div`
   position: fixed;
 
@@ -159,6 +161,10 @@ const InfoModal = ({
   owner,
   ownerImg,
 }) => {
+  const convertedLinkRaw = weblink && linkify.find(weblink);
+  const convertedLink =
+    weblink && convertedLinkRaw[0] !== undefined && convertedLinkRaw[0].href;
+
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -170,8 +176,8 @@ const InfoModal = ({
 
   const openAccount = useSelector((state) => state.UI.openAccount);
 
-  const openLink = (weblink) => {
-    window.open(`https://${weblink}`, "_blank");
+  const openLink = (convertedLink) => {
+    window.open(convertedLink, "_blank");
   };
   const openMail = (contact) => {
     window.location.href = "mailto:" + contact;
