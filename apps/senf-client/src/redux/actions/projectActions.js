@@ -27,6 +27,7 @@ import { setMapBounds } from "./mapActions";
 // Get all projects
 export const getProjects = (mapViewport) => async (dispatch) => {
   dispatch({ type: LOADING_PROJECTS_DATA });
+  dispatch({ type: SET_PROJECT, payload: {} });
 
   const db = firebase.firestore();
   const storageRef = firebase.storage().ref();
@@ -172,8 +173,6 @@ export const loadProjectRoomData = (projectRoomId) => async (dispatch) => {
             body: doc.data().body.substr(0, 120),
           })
         );
-
-        dispatch({ type: SET_PROJECT, payload: projectRoom });
       });
   });
 };
