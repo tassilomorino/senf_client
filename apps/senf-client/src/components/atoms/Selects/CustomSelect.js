@@ -35,7 +35,7 @@ const DropDownListContainer = styled.div`
   position: fixed;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   left: 0;
   top: 50%;
   left: 50%;
@@ -63,7 +63,7 @@ const Background = styled.div`
 const DropDownList = styled.ul`
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overflow: scroll;
   border-radius: 10px;
   width: 100%;
 `;
@@ -118,7 +118,7 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
 
   useEffect(() => {
     if (document.body.clientWidth < 350) {
-      setDropDownButtonAmount(18);
+      setDropDownButtonAmount(19);
     } else if (document.body.clientWidth < 400) {
       setDropDownButtonAmount(25);
     }
@@ -189,23 +189,19 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
                   >
                     {option.name === selectedOption ||
                     option.label === selectedOption ? (
-                      <StyledLi fontWeight="900">
+                      <React.Fragment>
                         {option.color && <ColorDot color={option.color} />}
                         {option.img && <Img src={option.img} />}
-                        {truncateString(
-                          option.label,
-                          dropDownButtonAmount * 0.9
-                        )}
-                      </StyledLi>
+                        <span style={{ fontWeight: "900" }}>
+                          {option.label}
+                        </span>
+                      </React.Fragment>
                     ) : (
                       <React.Fragment>
                         {" "}
                         {option.color && <ColorDot color={option.color} />}
                         {option.img && <Img src={option.img} />}
-                        {truncateString(
-                          option.label,
-                          dropDownButtonAmount * 1.2
-                        )}
+                        {option.label}
                       </React.Fragment>
                     )}
                   </ListItem>
