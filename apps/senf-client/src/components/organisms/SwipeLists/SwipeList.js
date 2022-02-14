@@ -361,7 +361,7 @@ const SwipeList = ({
               </React.Fragment>
             ) : (
               <StyledText margin="0px 20px" marginLeft="20px">
-                Gemeinsam mit Organisationen suchen wir zu spezifischen Themen/
+                Gemeinsam mit Organisationen suchen wir zu spezifischen Themen /
                 Orten eure Ideen. In den jeweiligen Projekträumen könnt ihr
                 mitwirken!
               </StyledText>

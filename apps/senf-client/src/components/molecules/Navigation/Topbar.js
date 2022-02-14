@@ -19,11 +19,8 @@ import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import Logo from "../../../images/logo.png";
 import Profile_grey from "../../../images/icons/profile_yellow.png";
 import Noprofile from "../../../images/icons/noprofile.png";
-import ProfileShape from "../../../images/shapes/profileShape.png";
 
 import Info from "../../../images/icons/info.png";
-import InsightsIcon from "../../../images/icons/insights_yellow.png";
-import Circle_grey from "../../../images/icons/circle_grey.png";
 
 import { StyledH2 } from "../../../styles/GlobalStyle";
 
