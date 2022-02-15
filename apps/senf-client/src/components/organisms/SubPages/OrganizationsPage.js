@@ -118,7 +118,11 @@ const OrganizationsPage = ({
 
   const loadMore = () => {
     console.log(listItems, dataFinal.length);
-    if (listItems === dataFinal.length) {
+    if (
+      !dataFinal ||
+      dataFinal.length === 0 ||
+      listItems === dataFinal.length
+    ) {
       sethasMoreItems(false);
     } else {
       console.log(listItems);

@@ -6,9 +6,6 @@ import styled from "styled-components";
 import Lamp_white from "../../../images/lamp.png";
 import Lamp_yellow from "../../../images/lamp_yellow.png";
 
-import Logo from "../../../images/AddPlease.png";
-import { Background } from "./GradientBackgrounds";
-
 const Wrapper = styled.div`
   z-index: 9999;
   display: flex;

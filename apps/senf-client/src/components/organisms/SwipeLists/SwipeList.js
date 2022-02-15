@@ -309,96 +309,80 @@ const SwipeList = ({
 
   const ref = useRef();
 
-  const sectionFastLinks = !openAccount &&
-    dataFinal &&
-    (dataFinal.length > 0 || searchTerm !== "") && (
-      <React.Fragment>
-        {order === 1 && (
-          <animated.div style={slideUpSectionProps}>
-            <OrganizationsIntroWrapper>
-              <OrganizationsIntro>
-                <Trans i18nKey="list_fastlink_statistics">
-                  .<span style={{ fontWeight: "900" }}>.</span>.
-                </Trans>
-              </OrganizationsIntro>
-              <CustomIconButton
-                name="ArrowRight"
-                position="relative"
-                top="20px"
-                backgroundColor="#FFF0BC"
-                handleButtonClick={() => setOpenInsightsPage(true)}
-              />
-            </OrganizationsIntroWrapper>
-            <Toolbar
-              swipeListType={swipeListType}
-              loading={loading}
-              handleDropdown={handleDropdown}
-              dropdown={dropdown}
-              dataFinalLength={dataFinal.length}
-              setSearchOpen={setSearchOpen}
-              searchOpen={searchOpen}
-              setSearchTerm={setSearchTerm}
-              searchTerm={searchTerm}
-              marginTop={"0px"}
+  const sectionFastLinks = !openAccount && dataFinal && (
+    <React.Fragment>
+      {order === 1 && (dataFinal.length > 0 || searchTerm !== "") && (
+        <animated.div style={slideUpSectionProps}>
+          <OrganizationsIntroWrapper>
+            <OrganizationsIntro>
+              <Trans i18nKey="list_fastlink_statistics">
+                .<span style={{ fontWeight: "900" }}>.</span>.
+              </Trans>
+            </OrganizationsIntro>
+            <CustomIconButton
+              name="ArrowRight"
+              position="relative"
+              top="20px"
+              backgroundColor="#FFF0BC"
+              handleButtonClick={() => setOpenInsightsPage(true)}
             />
-          </animated.div>
-        )}
-        {order === 2 && (
-          <animated.div style={slideUpSectionProps}>
-            <OrganizationsIntroWrapper>
-              {process.env.REACT_APP_ORGANIZATIONSTAB === true ? (
-                <React.Fragment>
-                  <OrganizationsIntro>
-                    <Trans i18nKey="list_fastlink_organizations">
-                      .<span style={{ fontWeight: "900" }}>.</span>.
-                    </Trans>
-                  </OrganizationsIntro>
-                  <CustomIconButton
-                    name="ArrowRight"
-                    position="relative"
-                    top="20px"
-                    backgroundColor="#FFF0BC"
-                    handleButtonClick={() => setOpenOrganizationsPage(true)}
-                  />
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  <OrganizationsIntro>
-                    <Trans i18nKey="list_fastlink_organizations">
-                      .<span style={{ fontWeight: "900" }}>.</span>.
-                    </Trans>
-                  </OrganizationsIntro>
-                  <CustomIconButton
-                    name="ArrowRight"
-                    position="relative"
-                    top="20px"
-                    backgroundColor="#FFF0BC"
-                    handleButtonClick={() => setOpenOrganizationsPage(true)}
-                  />
-                </React.Fragment>
-                // <StyledText margin="0px 20px" marginLeft="20px">
-                //   Gemeinsam mit Organisationen suchen wir zu spezifischen
-                //   Themen/ Orten eure Ideen. In den jeweiligen Projekträumen
-                //   könnt ihr mitwirken!
-                // </StyledText>
-              )}
-            </OrganizationsIntroWrapper>
-            <Toolbar
-              swipeListType={swipeListType}
-              loading={loading}
-              handleDropdown={handleDropdown}
-              dropdown={dropdown}
-              dataFinalLength={dataFinal.length}
-              setSearchOpen={setSearchOpen}
-              searchOpen={searchOpen}
-              setSearchTerm={setSearchTerm}
-              searchTerm={searchTerm}
-              marginTop={"0px"}
-            />{" "}
-          </animated.div>
-        )}
-      </React.Fragment>
-    );
+          </OrganizationsIntroWrapper>
+          <Toolbar
+            swipeListType={swipeListType}
+            loading={loading}
+            handleDropdown={handleDropdown}
+            dropdown={dropdown}
+            dataFinalLength={dataFinal.length}
+            setSearchOpen={setSearchOpen}
+            searchOpen={searchOpen}
+            setSearchTerm={setSearchTerm}
+            searchTerm={searchTerm}
+            marginTop={"0px"}
+          />
+        </animated.div>
+      )}
+      {order === 2 && (
+        <animated.div style={slideUpSectionProps}>
+          <OrganizationsIntroWrapper>
+            {process.env.REACT_APP_ORGANIZATIONSTAB === true ? (
+              <React.Fragment>
+                <OrganizationsIntro>
+                  <Trans i18nKey="list_fastlink_organizations">
+                    .<span style={{ fontWeight: "900" }}>.</span>.
+                  </Trans>
+                </OrganizationsIntro>
+                <CustomIconButton
+                  name="ArrowRight"
+                  position="relative"
+                  top="20px"
+                  backgroundColor="#FFF0BC"
+                  handleButtonClick={() => setOpenOrganizationsPage(true)}
+                />
+              </React.Fragment>
+            ) : (
+              <StyledText margin="0px 20px" marginLeft="20px">
+                Gemeinsam mit Organisationen suchen wir zu spezifischen Themen /
+                Orten eure Ideen. In den jeweiligen Projekträumen könnt ihr
+                mitwirken!
+              </StyledText>
+            )}
+          </OrganizationsIntroWrapper>
+          <Toolbar
+            swipeListType={swipeListType}
+            loading={loading}
+            handleDropdown={handleDropdown}
+            dropdown={dropdown}
+            dataFinalLength={dataFinal.length}
+            setSearchOpen={setSearchOpen}
+            searchOpen={searchOpen}
+            setSearchTerm={setSearchTerm}
+            searchTerm={searchTerm}
+            marginTop={"0px"}
+          />{" "}
+        </animated.div>
+      )}
+    </React.Fragment>
+  );
   return isMobileCustom ? (
     <DragWrapper
       className={!loading && !openScream ? "" : "drag_hide"}
@@ -505,7 +489,7 @@ const SwipeList = ({
 
         <ListWrapper openProjectRoom={openProjectRoom} id="ListWrapper">
           {sectionFastLinks}
-          <Wave />
+
           {!loading && (order === 1 || order === 2) && (
             <List
               swipeListType={swipeListType}
@@ -525,6 +509,7 @@ const SwipeList = ({
             />
           )}
         </ListWrapper>
+        <Wave />
       </Content>
     </DragWrapper>
   );

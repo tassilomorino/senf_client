@@ -221,7 +221,7 @@ const IdeaDialog = () => {
             <CustomIconButton name="Share" handleButtonClick={handleShare} />
             <CustomIconButton
               name="Menu"
-              iconWidth="70%"
+              iconWidth="25px"
               handleButtonClick={() => setMenuOpen(true)}
             />
           </ButtonsContainer>

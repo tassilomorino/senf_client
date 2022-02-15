@@ -170,7 +170,7 @@ const CreateProjectPage2 = ({ onClickNext, onClickPrev }) => {
             <CustomIconButton
               name="Weblink"
               position="relative"
-              iconWidth="80%"
+              iconWidth="25px"
               backgroundColor={
                 weblink !== null && weblinkTitle !== null ? "#fed957" : "white"
               }
@@ -181,7 +181,7 @@ const CreateProjectPage2 = ({ onClickNext, onClickPrev }) => {
               name="Contact"
               position="relative"
               marginLeft="20px"
-              iconWidth="80%"
+              iconWidth="25px"
               zIndex={0}
               backgroundColor={
                 contact !== null && contactTitle !== null ? "#fed957" : "white"

@@ -40,6 +40,9 @@ export const getProjects = (mapViewport) => async (dispatch) => {
     .get();
   // : await db.collection("projects").orderBy("createdAt", "desc").get();
 
+  if (ref.size < 1 || !ref) {
+    dispatch({ type: SET_PROJECTS, payload: [] });
+  }
   const projects = [];
   ref.docs.forEach(async (doc) => {
     // const screamsRef = await db
@@ -106,6 +109,11 @@ export const getProjects = (mapViewport) => async (dispatch) => {
     }
     function onReject(error) {
       projects.push(doc.data());
+
+      dispatch({
+        type: SET_PROJECTS,
+        payload: projects,
+      });
     }
   });
 };
@@ -168,7 +176,10 @@ export const loadProjectRoomData = (projectRoomId) => async (dispatch) => {
           })
         );
 
-        dispatch({ type: SET_PROJECT, payload: projectRoom });
+        dispatch({
+          type: SET_PROJECT,
+          payload: projectRoom,
+        });
       });
   });
 };

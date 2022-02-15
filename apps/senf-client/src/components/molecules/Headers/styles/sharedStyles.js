@@ -5,7 +5,7 @@ import styled from "styled-components";
 export const FixedWrapper = styled.div`
   z-index: 999;
   position: fixed;
-  overflow: hidden;
+
   height: 50px;
   width: 100%;
   margin: 10px 10px 0px 10px;
@@ -50,7 +50,7 @@ export const FlexWrapper = styled.div`
   left: 0;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   white-space: nowrap;
 `;
