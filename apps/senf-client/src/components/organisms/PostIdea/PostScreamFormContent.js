@@ -195,7 +195,7 @@ const PostScreamFormContent = ({
           name="Weblink"
           position="absolute"
           bottom="70px"
-          iconWidth="80%"
+          iconWidth="25px"
           zIndex={0}
           backgroundColor={
             weblink !== null && weblinkTitle !== null ? "#fed957" : "white"
@@ -207,7 +207,7 @@ const PostScreamFormContent = ({
           position="absolute"
           bottom="70px"
           marginLeft="60px"
-          iconWidth="80%"
+          iconWidth="25px"
           zIndex={0}
           backgroundColor={
             contact !== null && contactTitle !== null ? "#fed957" : "white"
@@ -220,7 +220,7 @@ const PostScreamFormContent = ({
             position="absolute"
             bottom="70px"
             marginLeft="120px"
-            iconWidth="70%"
+            iconWidth="25px"
             zIndex={0}
             backgroundColor={selectedDays.length === 0 ? "white" : "#fed957"}
             handleButtonClick={() => setCalendarOpen(true)}
