@@ -9,7 +9,6 @@ import { useHistory } from "react-router";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import Swipe from "react-easy-swipe";
-
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 
@@ -23,10 +22,11 @@ import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 import RegistrationFormComponent from "./RegistrationFormComponent";
 import LoginFormComponent from "./LoginFormComponent";
+import ResetPassword from "../../organisms/Auth/ResetPassword";
 import { useTranslation } from "react-i18next";
 import { getUserData } from "../../../redux/actions/userActions";
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
-
+import { Form } from "@senf/ui";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -458,6 +458,35 @@ const LoginRegistration = ({ classes }) => {
                 keySubmitRef={keySubmitRef}
               />
             ) : (
+              /*  <Form
+                inputItems={[
+                  { name: "email", type: "email", placeholder: "E-Mail" },
+                  {
+                    name: "password",
+                    type: "password",
+                    placeholder: "Password",
+                  },
+                  {
+                    name: "confirmPassword",
+                    type: "password",
+                    placeholder: "Confirm Password",
+                  },
+                  {
+                    name: "username",
+                    type: "username",
+                    placeholder: "Username",
+                  },
+                ]}
+                genderField={true}
+                ageField={true}
+                handleSubmit={handleSubmitLogin}
+                handleToggle={handleToggle}
+                formik={formikRegisterStore}
+                outsideClick={outsideClick}
+                errorMessage="login error"
+                ResetPasswordComponent={<ResetPassword />}
+                registerForm={true}
+              /> */
               <RegistrationFormComponent
                 classes={classes}
                 loading={loading}
