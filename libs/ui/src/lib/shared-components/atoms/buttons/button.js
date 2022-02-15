@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styled, { css } from "styled-components";
 import enterAnimation from "../../../shared/animations";
 import plopAnimation from "../../../shared/animations";
-//import { ReactComponent as Icon } from "../../../shared/dot.svg";
+import { ReactComponent as Icon } from "../../../shared/dot.svg";
 import "../../../shared/styles";
 import * as Styles from "../../../shared/styles";
 //const StyledIcon = styled(Icon)``;
@@ -89,7 +89,7 @@ export const Button = ({
       bottom={bottom}
       zIndex={zIndex}
     >
-      {/* {icon && <StyledIcon />} */}
+      {icon && <Icon />}
       <StyledText>{text}</StyledText>
     </StyledButton>
   );
