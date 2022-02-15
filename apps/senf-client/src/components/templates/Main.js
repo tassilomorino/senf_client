@@ -565,6 +565,7 @@ const Main = () => {
         isMobileCustom &&
         !openScream &&
         !openAccount &&
+        !openProjectRoom &&
         order === 1 && (
           <PostScream
             loadingProjects={loadingProjects}
