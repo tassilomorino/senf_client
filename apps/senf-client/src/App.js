@@ -18,7 +18,7 @@ import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { createTheme } from "@material-ui/core/styles/";
 
 import themeFile from "./util/theme";
-//Redux
+// Redux
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import { SET_AUTHENTICATED } from "./redux/types";
