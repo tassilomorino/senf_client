@@ -192,7 +192,7 @@ export const ProjectCard = (props) => {
         {organizationCardData[0]?.includes(user.userId) && (
           <CustomIconButton
             name="Menu"
-            iconWidth="70%"
+            iconWidth="25px"
             handleButtonClick={() => handleEdit()}
             position="absolute"
             left="calc(100% - 54px)"

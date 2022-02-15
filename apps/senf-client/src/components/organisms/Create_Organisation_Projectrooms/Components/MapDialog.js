@@ -337,7 +337,7 @@ const MapDialog = ({
               {data ? (
                 <CustomIconButton
                   name="Trash"
-                  iconWidth="80%"
+                  iconWidth="25px"
                   position="relative"
                   backgroundColor="white"
                   handleButtonClick={() => handleDelete(data)}
@@ -345,7 +345,7 @@ const MapDialog = ({
               ) : (
                 <CustomIconButton
                   name="Check"
-                  iconWidth="80%"
+                  iconWidth="25px"
                   position="relative"
                   backgroundColor="white"
                   handleButtonClick={handleSet}

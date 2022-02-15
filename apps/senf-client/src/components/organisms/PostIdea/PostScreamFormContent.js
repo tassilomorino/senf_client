@@ -220,7 +220,7 @@ const PostScreamFormContent = ({
             position="absolute"
             bottom="70px"
             marginLeft="120px"
-            iconWidth="25px"
+            iconWidth="23px"
             zIndex={0}
             backgroundColor={selectedDays.length === 0 ? "white" : "#fed957"}
             handleButtonClick={() => setCalendarOpen(true)}
