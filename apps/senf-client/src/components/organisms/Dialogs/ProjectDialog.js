@@ -29,7 +29,7 @@ import { ProjectRoomTabData } from "../../../data/ProjectRoomTabData";
 
 const ProjectDialog = ({
   viewport,
-  projectsData,
+  dataFinalProjectRooms,
   loadingProjects,
   dataFinalMap,
   setOpenInsightsPage,
@@ -127,13 +127,13 @@ const ProjectDialog = ({
 
   return (
     <React.Fragment>
-      {isMobileCustom && !infoOpen && (
+      {/* {isMobileCustom && !infoOpen && (
         <PostScream
           loadingProjects={loadingProjects}
           projectsData={projects}
           project={project}
         />
-      )}
+      )} */}
       {project && !loadingProjectRoom && (
         <Header
           infoOpen={infoOpen}
@@ -181,7 +181,7 @@ const ProjectDialog = ({
           viewport={viewport}
           handleDropdown={handleDropdown}
           dropdown={dropdown}
-          projectsData={projectsData}
+          dataFinalProjectRooms={dataFinalProjectRooms}
           loadingProjects={loadingProjects}
           dataFinalMap={dataFinalMap}
           setSearchTerm={setSearchTerm}

@@ -560,7 +560,7 @@ const Main = () => {
             }
           />
         )}
-      {!loading &&
+      {/* {!loading &&
         !loadingProjects &&
         isMobileCustom &&
         !openScream &&
@@ -572,7 +572,7 @@ const Main = () => {
             projectsData={dataFinalProjectRooms}
             project={dataFinalProjectRooms}
           />
-        )}
+        )} */}
 
       {!openInfoPage && (
         <MainColumnWrapper>
@@ -593,7 +593,7 @@ const Main = () => {
                 dataFinalMap={dataFinalMap}
                 viewport={mapViewport}
                 handleDropdown={handleDropdown}
-                projectsData={dataFinalProjectRooms}
+                dataFinalProjectRooms={dataFinalProjectRooms}
                 dropdown={dropdown}
                 setSearchTerm={setSearchTerm}
                 searchTerm={searchTerm}
@@ -608,7 +608,7 @@ const Main = () => {
               loading={loading}
               handleClick={handleClick}
               loadingProjects={loadingProjects}
-              projectsData={dataFinalProjectRooms}
+              dataFinalProjectRooms={dataFinalProjectRooms}
               setOpenInsightsPage={setOpenInsightsPage}
             />
           )}

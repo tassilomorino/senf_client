@@ -24,6 +24,7 @@ import { MenuData } from "../../../data/MenuData";
 import Wave from "../../atoms/Backgrounds/Wave";
 import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 import { StyledText } from "apps/senf-client/src/styles/GlobalStyle";
+import PostScream from "../PostIdea/PostScream";
 
 const DragWrapper = styled(animated.div)`
   overscroll-behavior: contain;
@@ -150,7 +151,7 @@ const SwipeList = ({
   handleDropdown,
   dropdown,
   dataFinal,
-  projectsData,
+  dataFinalProjectRooms,
   setSearchTerm,
   searchTerm,
   handleClick,
@@ -158,6 +159,9 @@ const SwipeList = ({
   setOpenOrganizationsPage,
 }) => {
   const dispatch = useDispatch();
+
+  const loadingProjects = useSelector((state) => state.data.loadingProjects);
+
   const openScream = useSelector((state) => state.UI.openScream);
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
   const openAccount = useSelector((state) => state.UI.openAccount);
@@ -171,7 +175,7 @@ const SwipeList = ({
     y: 0,
     scale: 1,
     transform: `translateY(${window.innerHeight - 120}px)`,
-    overflow: "hidden",
+    overflow: "visible",
     touchAction: "none",
     userSelect: "none",
   }));
@@ -344,7 +348,7 @@ const SwipeList = ({
       {order === 2 && (
         <animated.div style={slideUpSectionProps}>
           <OrganizationsIntroWrapper>
-            {process.env.REACT_APP_ORGANIZATIONSTAB === true ? (
+            {process.env.REACT_APP_ORGANIZATIONSTAB === "true" ? (
               <React.Fragment>
                 <OrganizationsIntro>
                   <Trans i18nKey="list_fastlink_organizations">
@@ -388,6 +392,14 @@ const SwipeList = ({
       className={!loading && !openScream ? "" : "drag_hide"}
       style={props}
     >
+      {!loading && !loadingProjects && isMobileCustom && !openScream && (
+        <PostScream
+          loadingProjects={loadingProjects}
+          projectsData={dataFinalProjectRooms}
+          project={project}
+        />
+      )}
+
       {mapBounds?.latitude1 !== 0 && (
         <React.Fragment>
           <ListHeaderWrapper
@@ -456,7 +468,7 @@ const SwipeList = ({
                 loading={loading}
                 dropdown={dropdown}
                 dataFinal={dataFinal}
-                projectsData={projectsData}
+                projectsData={dataFinalProjectRooms}
                 handleClick={handleClick}
               />
             )}
@@ -498,7 +510,7 @@ const SwipeList = ({
               loading={loading}
               dropdown={dropdown}
               dataFinal={dataFinal}
-              projectsData={projectsData}
+              projectsData={dataFinalProjectRooms}
               handleClick={handleClick}
             />
           )}

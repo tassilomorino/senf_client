@@ -27,25 +27,39 @@ const TabWrapper = styled.div`
 `;
 const FlexWrapper = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  margin-left: 14px;
 `;
 const Tab = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   text-align: center;
   height: 100%;
   width: auto;
-  padding-right: 15px;
+  padding-right: 5px;
   padding-left: 15px;
   animation: ${enterAnimation} ${(props) => props.i * 0.3}s;
 
-  opacity: ${(props) => (props.active ? "1" : "0.6")};
   pointer-events: all;
 `;
-const TabText = styled.h2``;
+const TabText = styled.h2`
+  width: auto; /* 107px */
+  height: auto; /* 26px */
+  flex-shrink: 0;
+  white-space: pre;
+  overflow: visible;
+  font-weight: 800;
+  font-style: normal;
+  font-family: "Nunito", serif;
+  font-size: 22px;
+  letter-spacing: 0px;
+  line-height: 1.2;
+
+  color: ${(props) => (props.active ? "rgba(0, 0, 0, 0.8)" : "#d6ab00")};
+`;
 
 const ImgWrapper = styled.div`
   opacity: ${(props) => (props.active ? "1" : "0")};
@@ -85,15 +99,15 @@ const Tabs = ({
               active={order === i + 1}
               onClick={() => handleClick(i + 1)}
             >
-              <TabText>{tabLabel}</TabText>
-              <ImgWrapper active={order === i + 1}>
+              <TabText active={order === i + 1}>{tabLabel}</TabText>
+              {/* <ImgWrapper active={order === i + 1}>
                 <img
                   src={Line}
                   style={{ width: "calc(100% - 20px)" }}
                   height="7px"
                   marginLeft="10px"
                 />
-              </ImgWrapper>
+              </ImgWrapper> */}
             </Tab>
           )}
           {/* {i !== tabLabels.length - 1 && (

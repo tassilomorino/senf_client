@@ -13,7 +13,7 @@ import Slide from "@material-ui/core/Slide";
 import RegistrationAndLogin from "../../organisms/Auth/LoginRegistration";
 
 //ICONS
-import AddIcon from "../../../images/icons/plus_white.png";
+import AddIcon from "../../../images/svgIcons/plus.svg";
 
 // REDUX STUFF
 import { useDispatch, useSelector } from "react-redux";
@@ -31,6 +31,28 @@ import styled, { keyframes } from "styled-components";
 import Weblink from "../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
 import Contact from "../../molecules/Modals/Post_Edit_ModalComponents/Contact";
 import InlineDatePicker from "../../molecules/Modals/Post_Edit_ModalComponents/InlineDatePicker";
+
+const StyledButton = styled.button`
+box-sizing: border-box;
+ width: 68px;
+ height: 68px;
+ box-shadow: 0px 12px 18px -8px  rgba(186, 160, 79, 0.2), 0px -4px 10px 4px  rgba(255, 255, 255, 0.2);
+ background-color: #fcfbf8;
+ overflow: visible;
+ aspect-ratio: 1 / 1;
+ border-radius: 28px;
+ border: 2px solid  #ffffff) ;
+
+ position: fixed;
+ margin-top: ${(props) => (props.isInstagram ? "95px" : "-25px")};
+ z-index: ${(props) => (props.openScream ? 0 : 999)};
+ display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  right:20px;
+  pointer-events:all;
+ `;
 
 const OpenButtonMobile = styled.button`
   z-index: 99;
@@ -87,7 +109,7 @@ const OpenButtonMobile = styled.button`
 const OpenButtonDesktop = styled.button`
   z-index: 9999;
   width: 160px;
-  height: 40px;
+  height: 46px;
   padding: 0;
   padding-left: 10px;
   padding-right: 10px;
@@ -103,7 +125,7 @@ const OpenButtonDesktop = styled.button`
   background-color: #353535;
 
   border: 0px white solid;
-  border-radius: 40px;
+  border-radius: 20px;
   top: 85px;
 
   margin-bottom: 0px;
@@ -114,6 +136,7 @@ const OpenButtonDesktop = styled.button`
   transition: 0.5s;
   pointer-events: ${(props) => (props.loading ? "none" : "all")};
   opacity: ${(props) => (props.loading ? "0.5" : "1")};
+  cursor: pointer;
 `;
 
 const styles = {
@@ -485,13 +508,13 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
             src={AddIcon}
             width="25"
             alt="AddIcon"
-            style={{ paddingRight: "10px" }}
+            style={{ paddingRight: "10px", filter: "brightness(1000%)" }}
           />
           {t("postScream_newIdea")}
         </OpenButtonDesktop>
       ) : (
         !loading && (
-          <OpenButtonMobile
+          <StyledButton
             onClick={handleOpen}
             openScream={openScream}
             isInstagram={
@@ -500,7 +523,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
             }
           >
             <img src={AddIcon} width="25" alt="AddIcon" />
-          </OpenButtonMobile>
+          </StyledButton>
         )
       )}
 
