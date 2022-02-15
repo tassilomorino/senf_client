@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import styled, { css } from "styled-components";
 import enterAnimation from "../../../shared/animations";
 import plopAnimation from "../../../shared/animations";
-import { ReactComponent as Icon } from "../../../shared/dot.svg";
+//import { ReactComponent as Icon } from "../../../shared/dot.svg";
 import "../../../shared/styles";
 import * as Styles from "../../../shared/styles";
-const StyledIcon = styled(Icon)``;
+//const StyledIcon = styled(Icon)``;
 
 const ButtonBase = css`
   box-sizing: border-box;
@@ -89,7 +89,7 @@ export const Button = ({
       bottom={bottom}
       zIndex={zIndex}
     >
-      {icon && <StyledIcon />}
+      {/* {icon && <StyledIcon />} */}
       <StyledText>{text}</StyledText>
     </StyledButton>
   );
