@@ -1,5 +1,3 @@
-import { css } from "@storybook/theming";
-
 // Global style variables
 export const background = {
   positive: "#",

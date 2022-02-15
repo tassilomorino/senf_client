@@ -1,5 +1,5 @@
 // Handy CSS animations for micro-interactions
-import { css, keyframes } from "@storybook/theming";
+import { css, keyframes } from "styled-components";
 import { color } from "./styles";
 
 export const easing = {
