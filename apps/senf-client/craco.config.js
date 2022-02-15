@@ -23,7 +23,11 @@ module.exports = {
           mainFields: ["module", "main"],
         })
       );
-
+      config.module.rules.push({
+        test: /\.svg$/i,
+        issuer: /\.[jt]sx?$/,
+        use: ["@svgr/webpack"],
+      });
       // Replace include option for babel loader with exclude
       // so babel will handle workspace projects as well.
       config.module.rules[1].oneOf.forEach((r) => {
