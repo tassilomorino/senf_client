@@ -311,6 +311,7 @@ const DistrictsGraph = ({ classes, screams }) => {
       tickmode: "array", // If "array", the placement of the ticks is set via `tickvals` and the tick text is `ticktext`.
       tickvals: [-500, -250, -100, -50, 0, 50, 100, 250, 500],
       ticktext: ["500", "250", "100", "50", "|", "50", "100", "250", "500"],
+      nticks: 2,
       linecolor: "white",
     },
     yaxis: {

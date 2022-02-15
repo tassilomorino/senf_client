@@ -179,44 +179,10 @@ const Map = ({
   let geojsonIdeas = { type: "FeatureCollection", features: [] };
   let geojsonProjectRooms = { type: "FeatureCollection", features: [] };
 
-  // let dataNoLocation = [];
-  // let dataFinalMap = [];
-  // if (dataFinal !== undefined && dataFinal.length > 0) {
-  //   dataFinal.forEach((element) => {
-  //     if (element.lat === 50.93864020643174) {
-  //       dataNoLocation.push(element);
-  //     }
-  //   });
-  // }
-
-  // if (dataFinal !== undefined && dataNoLocation.length > 1) {
-  //   dataFinal.forEach((element) => {
-  //     if (element.lat !== 50.93864020643174) {
-  //       dataFinalMap.push(element);
-  //     }
-  //   });
-  // }
-  // if (dataFinal !== undefined && dataNoLocation.length < 2) {
-  //   dataFinal.forEach((element) => {
-  //     dataFinalMap.push(element);
-  //   });
-  // }
-
   if (dataFinal) {
     for (let point of dataFinal) {
       let properties = point;
       properties.circleRadius = 5 + point.likeCount / 7;
-      // properties.circleBlurRadius = 14 + point.likeCount / 7;
-      // delete properties.longitude;
-      // delete properties.latitude;
-      // delete properties.Stadtteil;
-      // delete properties.Thema;
-      // delete properties.createdAt;
-      // delete properties.body;
-      // delete properties.status;
-      // delete properties.commentCount;
-      // delete properties.project;
-      // delete properties.projectId;
 
       const unique =
         dataFinal.filter((item) => item.long === point.long).length === 1;
@@ -266,20 +232,6 @@ const Map = ({
 
   for (let point of projects) {
     let properties = point;
-
-    // delete properties.Thema;
-    // delete properties.brief;
-    // delete properties.calendar;
-    // delete properties.createdAt;
-    // delete properties.endDate;
-    // delete properties.icon;
-    // delete properties.imgUrl;
-    // delete properties.geoData;
-    // delete properties.organizationId;
-    // delete properties.owner;
-    // delete properties.startDate;
-    // delete properties.status;
-    // delete properties.zoom;
 
     let feature = {
       type: "Feature",
