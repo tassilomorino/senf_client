@@ -94,7 +94,7 @@ const Header = ({
         <FlexWrapper>
           <CustomIconButton
             name="ArrowLeft"
-            top="10px"
+            top="0px"
             shadow={false}
             backgroundColor="transparent"
             handleButtonClick={handleClose}
@@ -102,15 +102,26 @@ const Header = ({
           <StyledH2
             fontWeight="900"
             textAlign="center"
+            margin="13px 0px"
             style={
               infoOpen
-                ? { width: "100%", transition: "0.5s" }
-                : { width: "0%", transition: "0.5s" }
+                ? { width: "90%", transition: "1.5s", whiteSpace: "normal" }
+                : { width: "90%", transition: "1.5s" }
             }
           >
             {type === "account"
               ? truncateString("Hey " + userHandle, amount)
-              : title && truncateString(title, amount)}
+              : infoOpen
+              ? title && title
+              : title &&
+                truncateString(
+                  title,
+                  document.body.clientWidth < 350
+                    ? 19
+                    : document.body.clientWidth < 380
+                    ? 25
+                    : 29
+                )}
           </StyledH2>
 
           {/* <ImgWrapper order={order}>
