@@ -1,5 +1,4 @@
 import { css } from "@storybook/theming";
-import { rgba } from "polished";
 
 // Global style variables
 export const background = {
