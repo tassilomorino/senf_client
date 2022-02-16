@@ -52,6 +52,14 @@ box-sizing: border-box;
   text-align: center;
   right:20px;
   pointer-events:all;
+  transition:0.2s;
+
+
+  &:hover{
+    transition:0.2s;
+    width: 74px;
+  height: 74px;
+  }
  `;
 
 const OpenButtonMobile = styled.button`
