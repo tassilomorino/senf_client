@@ -61,7 +61,7 @@ import OrganizationDialog from "../organisms/Dialogs/OrganizationDialog";
 import OrganizationsPage from "../organisms/SubPages/OrganizationsPage";
 import styled from "styled-components";
 import { MenuData } from "../../data/MenuData";
-import { pick } from "../../hooks/pick";
+import { pick } from "../../util/helpers";
 
 const MainColumnWrapper = styled.div`
   width: 100vw;

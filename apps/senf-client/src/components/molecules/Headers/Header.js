@@ -19,7 +19,7 @@ import {
   InnerWrapper,
 } from "./styles/sharedStyles";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-import { truncateString } from "../../../hooks/truncateString";
+import { truncateString } from "../../../util/helpers";
 import { CircularProgress } from "@material-ui/core";
 
 const Header = ({

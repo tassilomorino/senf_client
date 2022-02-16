@@ -10,7 +10,7 @@ import { useDrag } from "@use-gesture/react";
 import ExpandButton from "../atoms/CustomButtons/ExpandButton";
 
 import Arrow from "../../../images/icons/arrow.png";
-import { truncateString } from "../../hooks/truncateString";
+import { truncateString } from "../../util/helpers";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
 const Wrapper = styled.div`

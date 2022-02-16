@@ -36,7 +36,7 @@ import organizationTypes from "../../../data/organizationTypes";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
-import { truncateString } from "apps/senf-client/src/hooks/truncateString";
+import { truncateString } from "apps/senf-client/src/util/helpers";
 
 const ImgWrapper = styled.div`
   /* position: relative;
