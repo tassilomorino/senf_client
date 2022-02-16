@@ -112,7 +112,7 @@ function get_local_storage_status() {
     localStorage.setItem("test", test);
     localStorage.removeItem("test");
   } catch (e) {
-    // browser specific checks if local storage was exceeded
+    //  browser specific checks if local storage was exceeded
     if (
       e.name === "QUATA_EXCEEDED_ERR" || // Chrome
       e.name === "NS_ERROR_DOM_QUATA_REACHED" //Firefox/Safari
