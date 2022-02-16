@@ -363,31 +363,19 @@ const InfoModal = ({
             </LowerWrapper>
             {/* <Gradient /> */}
           </CardInnerWrapper>
-          {!isMobileCustom && infoOpen && (
+          {infoOpen && (
             <SubmitButton
               text={openProjectRoom ? t("show_projectroom") : t("show_profile")}
               handleButtonClick={() => setInfoOpen(false)}
               zIndex="999"
-              position="fixed"
-              bottom="20px"
+              position="absolute"
+              bottom="10px"
               backgroundColor="#353535"
               textColor="white"
               margin="0 0 0 0"
             />
           )}
         </Card>
-        {isMobileCustom && infoOpen && (
-          <SubmitButton
-            text={openProjectRoom ? t("show_projectroom") : t("show_profile")}
-            handleButtonClick={() => setInfoOpen(false)}
-            zIndex="999"
-            position="fixed"
-            bottom="20px"
-            backgroundColor="#353535"
-            textColor="white"
-            margin="0 0 0 0"
-          />
-        )}
       </React.Fragment>
     )
   );
