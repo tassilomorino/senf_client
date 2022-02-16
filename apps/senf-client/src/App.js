@@ -29,10 +29,8 @@ import { setInfoPageOpen } from "./redux/actions/UiActions";
 //Pages
 import Main from "./components/templates/Main";
 import IntroductionInformation from "./components/organisms/infocomponents/IntroductionInformation";
-
 import Welcome from "./components/organisms/infocomponents/Welcome";
 import Verification from "./pages/Verification";
-
 import impressum from "./components/organisms/infocomponents/legal/impressum";
 import datenschutz from "./components/organisms/infocomponents/legal/datenschutz";
 import agb from "./components/organisms/infocomponents/legal/agb";
@@ -44,10 +42,8 @@ import axios from "axios";
 import { isTablet } from "react-device-detect";
 import Cookies from "universal-cookie";
 
-import i18n from "i18next";
-import { useTranslation, initReactI18next } from "react-i18next";
-import translationEN from "./util/translations/english.json";
-import translationDE from "./util/translations/german.json";
+import { useTranslation } from "react-i18next";
+
 import { isMobileCustom } from "./util/customDeviceDetect";
 
 import packageJson from "../package.json";
@@ -58,31 +54,7 @@ import { setViewport } from "./MapAnimations";
 import detectLocation from "./util/detectLocation";
 import GlobalStyles from "./styles/GlobalStyles";
 
-i18n
-  //.use(LanguageDetector)
-  .use(initReactI18next) // passes i18n down to react-i18next
-  .init({
-    debug: false,
-    supportedLngs: ["de", "en"],
-    // the translations
-    // (tip move them in a JSON file and import them,
-    // or even better, manage them via a UI: https://react.i18next.com/guides/multiple-translation-files#manage-your-translations-with-a-management-gui)
-    resources: {
-      en: {
-        translation: translationEN,
-      },
-      de: {
-        translation: translationDE,
-      },
-    },
-    //lng: localStorage.getItem("lang"), // if you're using a language detector, do not define the lng option
-
-    fallbackLng: "en",
-
-    interpolation: {
-      escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
-    },
-  });
+import "./util/i18n"; // i18n configuration
 detectLocation(); // detect location and set i18n language
 const cookies = new Cookies();
 require("intersection-observer");
