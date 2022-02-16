@@ -51,7 +51,7 @@ import translationDE from "./util/translations/german.json";
 import { isMobileCustom } from "./util/customDeviceDetect";
 
 import packageJson from "../package.json";
-import { getBuildDate } from "./util/utils";
+import { getBuildDate } from "./util/helpers";
 //import withClearCache from "./ClearCache";
 import Cookiebanner from "./components/organisms/Cookiebanner/Cookiebanner";
 import { setViewport } from "./MapAnimations";

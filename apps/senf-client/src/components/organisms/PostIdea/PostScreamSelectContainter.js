@@ -9,7 +9,7 @@ import styled from "styled-components";
 import { StyledH3, StyledH4 } from "../../../styles/GlobalStyle";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import LocationIcon from "../../../images/icons/location.png";
-import { truncateString } from "../../../hooks/truncateString";
+import { truncateString } from "../../../util/helpers";
 
 const Wrapper = styled.div`
   height: 130px;
