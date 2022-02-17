@@ -50,8 +50,13 @@ export const StyledText = styled.p`
   margin: ${(props) => (props.margin ? props.margin : "0")};
   margin-left: ${(props) => (props.marginLeft ? props.marginLeft : "0")};
 
-  pointer-events: all;
-  touch-action: none;
+  user-select: none;
+  pointer-events: none;
+
+  @media (min-width: 768px) {
+    user-select: auto;
+    pointer-events: all;
+  }
 `;
 export const StyledSmallText = styled.p`
   margin: 0;
