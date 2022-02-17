@@ -600,6 +600,7 @@ const Main = () => {
                 handleClick={handleClick}
                 setOpenInsightsPage={setOpenInsightsPage}
                 setOpenOrganizationsPage={setOpenOrganizationsPage}
+                openOrganizationsPage={openOrganizationsPage}
               />
             )}
 

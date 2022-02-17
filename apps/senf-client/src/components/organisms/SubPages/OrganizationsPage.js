@@ -23,6 +23,33 @@ import { MenuData } from "../../../data/MenuData";
 import { StyledH2 } from "../../../styles/GlobalStyle";
 import Tabs from "../../atoms/Tabs/Tabs";
 import { usePrevious } from "apps/senf-client/src/hooks/usePrevious";
+import { useSpring, animated } from "@react-spring/web";
+import { useDrag } from "@use-gesture/react";
+
+const DragWrapper = styled(animated.div)`
+  overscroll-behavior: contain;
+  overflow-x: hidden;
+
+  width: 100%;
+  height: 100%;
+  background: rgb(254, 217, 87);
+  background: linear-gradient(
+    180deg,
+    rgba(254, 217, 87, 1) 0%,
+    rgba(255, 218, 83, 1) 50%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  border-radius: 20px;
+  position: absolute;
+  z-index: 995;
+  animation: organizationOverviewEnterAnimation 0.5s;
+
+  @media (min-width: 768px) {
+    width: 400px;
+    animation: none;
+    border-radius: 0px;
+  }
+`;
 
 const InnerWrapper = styled.div`
   overflow-y: scroll;
@@ -32,11 +59,16 @@ const InnerWrapper = styled.div`
   margin-top: ${(props) => (props.isMobileCustom ? "0px" : "0px")};
   overflow: scroll;
   background-color: #ffe898;
-  display: flex;
+
   justify-content: center;
+  position: relative;
 `;
 
-const HeaderWrapper = styled.div`
+const FlexWrapper = styled.div`
+  display: flex;
+`;
+
+const HeaderWrapper = styled(animated.div)`
   position: sticky;
   width: 100%;
   top: 20px;
@@ -77,6 +109,55 @@ const OrganizationsPage = ({
   useEffect(() => {
     setOpen(true);
   }, []);
+
+  const [props, set] = useSpring(() => ({
+    x: 0,
+    y: 0,
+    scale: 1,
+    transform: `translateY(${30}px)`,
+    overflow: "hidden",
+    touchAction: "none",
+    userSelect: "none",
+  }));
+
+  const bind = useDrag(
+    ({ last, down, movement: [, my], offset: [, y] }) => {
+      if (last && my > 50) {
+        set({
+          transform: `translateY(${window.innerHeight}px)`,
+          touchAction: "none",
+        });
+
+        setTimeout(() => {
+          setOpenOrganizationsPage(false);
+        }, 500);
+        setTimeout(() => {
+          set({
+            transform: `translateY(${30}px)`,
+            touchAction: "none",
+          });
+        }, 600);
+      }
+
+      set({ y: down ? my : 0 });
+    },
+    {
+      pointer: { touch: true },
+      bounds: {
+        enabled: true,
+      },
+    }
+  );
+
+  const setClose = () => {
+    set({
+      transform: `translateY(${window.innerHeight}px)`,
+      touchAction: "none",
+    });
+    setTimeout(() => {
+      setOpenOrganizationsPage(false);
+    }, 500);
+  };
 
   const dataFinalLength = dataFinal.length;
   const prevdataFinalLength = usePrevious({ dataFinalLength });
@@ -132,7 +213,81 @@ const OrganizationsPage = ({
     }
   };
 
-  return (
+  return !loading && isMobileCustom ? (
+    <DragWrapper className={!loading ? "" : "drag_hide"} style={props}>
+      <HeaderWrapper {...bind()}>
+        <CustomIconButton
+          name="ArrowDown"
+          position="fixed"
+          margin="-10px 0px"
+          backgroundColor="transparent"
+          shadow={false}
+          handleButtonClick={setClose}
+          zIndex={99}
+        />
+
+        <Tabs
+          loading={false}
+          order={1}
+          tabLabels={MenuData.map((item) => item.text).slice(2, 3)}
+          marginTop={"20px"}
+          marginBottom={"20px"}
+        />
+
+        {isMobileCustom && (
+          <TagsFilter
+            placing="list"
+            type={order === 1 ? "topics" : "organizationType"}
+          />
+        )}
+
+        {!isMobileCustom && (
+          <Toolbar
+            swipeListType="organizationOverview"
+            marginTop="0px"
+            loading={loading}
+            handleDropdown={handleDropdown}
+            dropdown={dropdown}
+            dataFinalLength={dataFinalLength}
+            setSearchOpen={setSearchOpen}
+            searchOpen={searchOpen}
+            setSearchTerm={setSearchTerm}
+            searchTerm={searchTerm}
+          />
+        )}
+      </HeaderWrapper>
+      <InnerWrapper isMobileCustom={isMobileCustom}>
+        {isMobileCustom && (
+          <Toolbar
+            swipeListType="organizationOverview"
+            type="standalone"
+            loading={loading}
+            handleDropdown={handleDropdown}
+            dropdown={dropdown}
+            dataFinalLength={dataFinalLength}
+            setSearchOpen={setSearchOpen}
+            searchOpen={searchOpen}
+            setSearchTerm={setSearchTerm}
+            searchTerm={searchTerm}
+          />
+        )}
+        <FlexWrapper isMobileCustom={isMobileCustom}>
+          {!loading ? (
+            <InfiniteScroll
+              loadMore={() => loadMore()}
+              hasMore={hasMoreItems}
+              // loader={<SkeletonCard dataFinalLength={dataFinalLength === 0} />}
+              useWindow={false}
+            >
+              {showItems(dataFinal)}
+            </InfiniteScroll>
+          ) : (
+            <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>
+          )}
+        </FlexWrapper>
+      </InnerWrapper>
+    </DragWrapper>
+  ) : (
     !loading && (
       <Wrapper order={open}>
         <CustomIconButton
