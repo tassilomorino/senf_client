@@ -10,6 +10,11 @@ export const StyledA = styled.a`
   text-decoration: ${(props) =>
     props.textDecoration ? props.textDecoration : "none"};
   color: ${(props) => (props.color ? props.color : "#353535")};
+  pointer-events: all;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 export const StyledH2 = styled.h2`
@@ -45,7 +50,6 @@ export const StyledText = styled.p`
   margin: ${(props) => (props.margin ? props.margin : "0")};
   margin-left: ${(props) => (props.marginLeft ? props.marginLeft : "0")};
   user-select: none;
-  pointer-events: none;
 `;
 export const StyledSmallText = styled.p`
   margin: 0;
