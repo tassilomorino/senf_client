@@ -1,12 +1,13 @@
-import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Navbar from './components/Navbar';
-import Register from './pages/Register';
-import Login from './pages/Login';
-import AuthProvider from './context/auth';
-import PrivateRoute from './components/PrivateRoute';
-import Home from './pages/Home'
-import Profile from './pages/Profile';
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Helmet } from "react-helmet";
+import Navbar from "./components/Navbar";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import AuthProvider from "./context/auth";
+import PrivateRoute from "./components/PrivateRoute";
+import Home from "./pages/Home";
+import Profile from "./pages/Profile";
 
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
@@ -35,22 +36,29 @@ i18n
     },
   });
 
-
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route exact path='/register' element={<Register />} />
-          <Route exact path='/login' element={<Login />} />
-          <Route exact path='/' element={<PrivateRoute />}>
-          <Route exact path='/profile' element={<Profile />} />
-            <Route exact path='/' element={<Home />} />
-          </Route>
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <>
+      {process.env.REACT_APP_NO_CRAWL && (
+        /* only for senf-workspace-test.netlify.app */
+        <Helmet>
+          <meta name="robots" content="noindex" />
+        </Helmet>
+      )}
+      <AuthProvider>
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route exact path="/register" element={<Register />} />
+            <Route exact path="/login" element={<Login />} />
+            <Route exact path="/" element={<PrivateRoute />}>
+              <Route exact path="/profile" element={<Profile />} />
+              <Route exact path="/" element={<Home />} />
+            </Route>
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </>
   );
 }
 
