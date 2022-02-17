@@ -2,7 +2,7 @@ import { Link } from "@material-ui/core";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { StyledText } from "../../../styles/GlobalStyle";
+import { StyledA, StyledText } from "../../../styles/GlobalStyle";
 
 const Wrapper = styled.div`
   position: ${(props) => (props.position ? props.position : "fixed")};
@@ -21,21 +21,21 @@ const Footer = ({ color, position, top, bottom }) => {
   const { t } = useTranslation();
   return (
     <Wrapper position={position} top={top} bottom={bottom}>
-      <Link to="/impressum">
-        <StyledText color={color}>{t("imprint")}</StyledText>
-      </Link>
+      <StyledA href="/impressum" color={color}>
+        {t("imprint")}
+      </StyledA>
 
-      <Link to="/datenschutz">
-        <StyledText
-          color={color}
-          style={{ paddingLeft: "5px", paddingRight: "5px" }}
-        >
-          | {t("dataPrivacy")} |
-        </StyledText>
-      </Link>
-      <Link to="/agb">
-        <StyledText color={color}>{t("termsAndConditions")}</StyledText>
-      </Link>
+      <StyledA
+        href="/datenschutz"
+        color={color}
+        style={{ paddingLeft: "5px", paddingRight: "5px" }}
+      >
+        | {t("dataPrivacy")} |
+      </StyledA>
+
+      <StyledA href="/agb" color={color}>
+        {t("termsAndConditions")}
+      </StyledA>
     </Wrapper>
   );
 };

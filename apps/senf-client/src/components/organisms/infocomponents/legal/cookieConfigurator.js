@@ -33,6 +33,8 @@ const Line = styled.div`
 const Header = styled.h2`
   width: auto;
   top: 0;
+  font-weight: 900;
+  font-size: 20px;
 `;
 
 const Wrapper = styled.div`
@@ -119,6 +121,7 @@ const CookieConfigurator = ({ classes }) => {
           Dieses Tool ermöglicht es dir, verschiedene Cookie-Kategorien zu
           aktivieren. Du kannst die Einstellungen jederzeit ändern.
         </p>
+        <br /> <br />
         <HeaderSwitchWrapper style={{ pointerEvents: "none" }}>
           <Header>Notwendige Cookies</Header>
           <Switch
@@ -141,12 +144,14 @@ const CookieConfigurator = ({ classes }) => {
         <ListTitle>Speicherdauer</ListTitle> <ListItem>3 Monate</ListItem>
         <Line />
         <ListTitle>Anbieter</ListTitle> <ListItem>Senf</ListItem>
-        <ListTitle>Name</ListTitle> <ListItem>Cookie_Rules</ListItem>
+        <ListTitle>Name</ListTitle> <ListItem>language</ListItem>
         <ListTitle>Zweck</ListTitle>{" "}
         <ListItem>
-          Speichert, dass Nutzer den Regeln des Ideen-teilens zugestimmt haben.
+          Speichert die Spracheinstellung des Nutzers und leitet ihn beim
+          erneuten Seitenaufruf direkt auf die von ihm gewählte Version weiter{" "}
         </ListItem>
         <ListTitle>Speicherdauer</ListTitle> <ListItem>3 Monate</ListItem>
+        <br /> <br />
         <HeaderSwitchWrapper>
           <Header>Service-verbessernde-Cookies</Header>
           <Switch
@@ -161,55 +166,24 @@ const CookieConfigurator = ({ classes }) => {
           kann.
         </p>
         <Line />
-        <ListTitle>Anbieter</ListTitle> <ListItem>Senf</ListItem>
+        <ListTitle>Anbieter</ListTitle> <ListItem>Google</ListItem>
         <ListTitle>Name</ListTitle> <ListItem>_ga</ListItem>
         <ListTitle>Zweck</ListTitle>{" "}
         <ListItem>Google Analytics-Cookie zur Benutzeridentifizierung</ListItem>
         <ListTitle>Speicherdauer</ListTitle> <ListItem>2 Jahre</ListItem>
         <Line />
-        <ListTitle>Anbieter</ListTitle> <ListItem>Senf</ListItem>
+        <ListTitle>Anbieter</ListTitle> <ListItem>Google</ListItem>
         <ListTitle>Name</ListTitle> <ListItem>_gid</ListItem>
         <ListTitle>Zweck</ListTitle>{" "}
         <ListItem>Google Analytics-Cookie zur Benutzeridentifizierung</ListItem>
         <ListTitle>Speicherdauer</ListTitle> <ListItem>24 Stunden</ListItem>
         <Line />
-        <ListTitle>Anbieter</ListTitle> <ListItem>Senf</ListItem>
+        <ListTitle>Anbieter</ListTitle> <ListItem>Google</ListItem>
         <ListTitle>Name</ListTitle> <ListItem>_gat</ListItem>
-        <ListTitle>Zweck</ListTitle>{" "}
+        <ListTitle>Zweck</ListTitle>
         <ListItem>Drosselung der Anforderungsrate</ListItem>
         <ListTitle>Speicherdauer</ListTitle> <ListItem>1 Minute</ListItem>
-        <Line />
-        <ListTitle>Anbieter</ListTitle> <ListItem>Google</ListItem>
-        <ListTitle>Name</ListTitle> <ListItem>1P_JAR</ListItem>
-        <ListTitle>Zweck</ListTitle>{" "}
-        <ListItem>
-          Wird zur Optimierung von Werbung von Google DoubleClick eingesetzt, um
-          für Nutzer relevante Anzeigen bereitzustellen, Berichte zur
-          Kampagnenleistung zu verbessern oder um zu vermeiden, dass ein Nutzer
-          dieselben Anzeigen mehrmals sieht.
-        </ListItem>
-        <ListTitle>Speicherdauer</ListTitle> <ListItem>1 Monat</ListItem>
-        <Line />
-        <ListTitle>Anbieter</ListTitle> <ListItem>Google</ListItem>
-        <ListTitle>Name</ListTitle> <ListItem>NID</ListItem>
-        <ListTitle>Zweck</ListTitle>{" "}
-        <ListItem>
-          Das NID-Cookie enthält eine eindeutige ID, über die Google Ihre
-          bevorzugten Einstellungen und andere Informationen speichert,
-          insbesondere Ihre bevorzugte Sprache (z. B. Deutsch), wie viele
-          Suchergebnisse pro Seite angezeigt werden sollen (z. B. 10 oder 20)
-          und ob der Google SafeSearch-Filter
-        </ListItem>
-        <ListTitle>Speicherdauer</ListTitle> <ListItem>6 Monate</ListItem>
-        <Line />
-        <ListTitle>Anbieter</ListTitle> <ListItem>Google</ListItem>
-        <ListTitle>Name</ListTitle> <ListItem>CONSENT</ListItem>
-        <ListTitle>Zweck</ListTitle>{" "}
-        <ListItem>
-          Speichert deine Bestätigung zur Verwendung der Cookies für die
-          Standort-Ermittlung
-        </ListItem>
-        <ListTitle>Speicherdauer</ListTitle> <ListItem>18 Jahre</ListItem>
+        <br /> <br />
       </Wrapper>
     </div>
   );
