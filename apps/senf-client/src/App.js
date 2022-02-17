@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import "./styles/mapbox-gl.css";
 import "./App.css";
 import "./AppDesktop.css";
@@ -170,65 +171,77 @@ const App = () => {
   ) : null;
 
   return (
-    <MuiThemeProvider theme={theme}>
-      <Provider store={store}>
-        <GlobalStyles />
-        <Router>
-          <Cookiebanner />
-          {tabletNote}
-          {/* {isTablet && (
+    <>
+      {process.env.REACT_APP_NO_CRAWL && (
+        /* only for senf-client-test.netlify.app */
+        <Helmet>
+          <meta name="robots" content="noindex" />
+        </Helmet>
+      )}
+      <MuiThemeProvider theme={theme}>
+        <Provider store={store}>
+          <GlobalStyles />
+          <Router>
+            <Cookiebanner />
+            {tabletNote}
+            {/* {isTablet && (
             <div className="switchDevice">
               Bitte öffne Senf.koeln auf deinem Smartphone oder
               Desktop-Computer. Die Tablet-Version kommt bald wieder :)
             </div>
           )} */}
-          <div className="landscapeNote">{t("rotate_phone")}</div>
+            <div className="landscapeNote">{t("rotate_phone")}</div>
 
-          <div className="container">
-            <Switch>
-              <Route exact path="/" component={Main} />
-              <Route exact path="/projectRooms" component={Main} />
-              <Route exact path="/organizations" component={Main} />
-              <Route exact path="/start" component={IntroductionInformation} />
-              <Route exact path="/intro" component={Welcome} />
-              <Route exact path="/datenschutz" component={datenschutz} />
-              <Route exact path="/agb" component={agb} />
+            <div className="container">
+              <Switch>
+                <Route exact path="/" component={Main} />
+                <Route exact path="/projectRooms" component={Main} />
+                <Route exact path="/organizations" component={Main} />
+                <Route
+                  exact
+                  path="/start"
+                  component={IntroductionInformation}
+                />
+                <Route exact path="/intro" component={Welcome} />
+                <Route exact path="/datenschutz" component={datenschutz} />
+                <Route exact path="/agb" component={agb} />
 
-              <Route exact path="/verify" component={Verification} />
+                <Route exact path="/verify" component={Verification} />
 
-              <Route
-                exact
-                path="/cookieConfigurator"
-                component={cookieConfigurator}
-              />
+                <Route
+                  exact
+                  path="/cookieConfigurator"
+                  component={cookieConfigurator}
+                />
 
-              <Route exact path="/impressum" component={impressum} />
+                <Route exact path="/impressum" component={impressum} />
 
-              <Route exact path="/blank" component={blank} />
+                <Route exact path="/blank" component={blank} />
 
-              <Route exact path="/:screamId" component={Main} />
-              <Route
-                exact
-                path="/projectRooms/:projectRoomId/:screamId"
-                component={Main}
-              />
-              <Route
-                exact
-                path="/projectRooms/:projectRoomId"
-                component={Main}
-              />
-              <Route
-                exact
-                path="/organizations/:organizationId"
-                component={Main}
-              />
+                <Route exact path="/:screamId" component={Main} />
+                <Route
+                  exact
+                  path="/projectRooms/:projectRoomId/:screamId"
+                  component={Main}
+                />
+                <Route
+                  exact
+                  path="/projectRooms/:projectRoomId"
+                  component={Main}
+                />
+                <Route
+                  exact
+                  path="/organizations/:organizationId"
+                  component={Main}
+                />
 
-              <Route path="*" component={Main} />
-            </Switch>
-          </div>
-        </Router>
-      </Provider>
-    </MuiThemeProvider>
+                <Route path="*" component={Main} />
+              </Switch>
+            </div>
+          </Router>
+        </Provider>
+      </MuiThemeProvider>
+    </>
   );
 };
 console.log(getBuildDate(packageJson.buildDate));
