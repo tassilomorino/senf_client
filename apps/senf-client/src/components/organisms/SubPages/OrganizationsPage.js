@@ -51,6 +51,16 @@ const DragWrapper = styled(animated.div)`
   }
 `;
 
+const ClickBackground = styled.div`
+  width: 100%;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  z-index: 994;
+  pointer-events: auto;
+  top: 0;
+`;
+
 const InnerWrapper = styled.div`
   overflow-y: scroll;
   pointer-events: all;
@@ -130,7 +140,7 @@ const OrganizationsPage = ({
 
         setTimeout(() => {
           setOpenOrganizationsPage(false);
-        }, 500);
+        }, 200);
         setTimeout(() => {
           set({
             transform: `translateY(${30}px)`,
@@ -156,7 +166,7 @@ const OrganizationsPage = ({
     });
     setTimeout(() => {
       setOpenOrganizationsPage(false);
-    }, 500);
+    }, 200);
   };
 
   const dataFinalLength = dataFinal.length;
@@ -214,79 +224,83 @@ const OrganizationsPage = ({
   };
 
   return !loading && isMobileCustom ? (
-    <DragWrapper className={!loading ? "" : "drag_hide"} style={props}>
-      <HeaderWrapper {...bind()}>
-        <CustomIconButton
-          name="ArrowDown"
-          position="fixed"
-          margin="-10px 0px"
-          backgroundColor="transparent"
-          shadow={false}
-          handleButtonClick={setClose}
-          zIndex={99}
-        />
+    <React.Fragment>
+      <ClickBackground onClick={setClose} />
 
-        <Tabs
-          loading={false}
-          order={1}
-          tabLabels={MenuData.map((item) => item.text).slice(2, 3)}
-          marginTop={"20px"}
-          marginBottom={"20px"}
-        />
+      <DragWrapper className={!loading ? "" : "drag_hide"} style={props}>
+        <HeaderWrapper {...bind()}>
+          <CustomIconButton
+            name="ArrowDown"
+            position="fixed"
+            margin="-10px 0px"
+            backgroundColor="transparent"
+            shadow={false}
+            handleButtonClick={setClose}
+            zIndex={99}
+          />
 
-        {isMobileCustom && (
-          <TagsFilter
-            placing="list"
-            type={order === 1 ? "topics" : "organizationType"}
+          <Tabs
+            loading={false}
+            order={1}
+            tabLabels={MenuData.map((item) => item.text).slice(2, 3)}
+            marginTop={"20px"}
+            marginBottom={"20px"}
           />
-        )}
 
-        {!isMobileCustom && (
-          <Toolbar
-            swipeListType="organizationOverview"
-            marginTop="0px"
-            loading={loading}
-            handleDropdown={handleDropdown}
-            dropdown={dropdown}
-            dataFinalLength={dataFinalLength}
-            setSearchOpen={setSearchOpen}
-            searchOpen={searchOpen}
-            setSearchTerm={setSearchTerm}
-            searchTerm={searchTerm}
-          />
-        )}
-      </HeaderWrapper>
-      <InnerWrapper isMobileCustom={isMobileCustom}>
-        {isMobileCustom && (
-          <Toolbar
-            swipeListType="organizationOverview"
-            type="standalone"
-            loading={loading}
-            handleDropdown={handleDropdown}
-            dropdown={dropdown}
-            dataFinalLength={dataFinalLength}
-            setSearchOpen={setSearchOpen}
-            searchOpen={searchOpen}
-            setSearchTerm={setSearchTerm}
-            searchTerm={searchTerm}
-          />
-        )}
-        <FlexWrapper isMobileCustom={isMobileCustom}>
-          {!loading ? (
-            <InfiniteScroll
-              loadMore={() => loadMore()}
-              hasMore={hasMoreItems}
-              // loader={<SkeletonCard dataFinalLength={dataFinalLength === 0} />}
-              useWindow={false}
-            >
-              {showItems(dataFinal)}
-            </InfiniteScroll>
-          ) : (
-            <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>
+          {isMobileCustom && (
+            <TagsFilter
+              placing="list"
+              type={order === 1 ? "topics" : "organizationType"}
+            />
           )}
-        </FlexWrapper>
-      </InnerWrapper>
-    </DragWrapper>
+
+          {!isMobileCustom && (
+            <Toolbar
+              swipeListType="organizationOverview"
+              marginTop="0px"
+              loading={loading}
+              handleDropdown={handleDropdown}
+              dropdown={dropdown}
+              dataFinalLength={dataFinalLength}
+              setSearchOpen={setSearchOpen}
+              searchOpen={searchOpen}
+              setSearchTerm={setSearchTerm}
+              searchTerm={searchTerm}
+            />
+          )}
+        </HeaderWrapper>
+        <InnerWrapper isMobileCustom={isMobileCustom}>
+          {isMobileCustom && (
+            <Toolbar
+              swipeListType="organizationOverview"
+              type="standalone"
+              loading={loading}
+              handleDropdown={handleDropdown}
+              dropdown={dropdown}
+              dataFinalLength={dataFinalLength}
+              setSearchOpen={setSearchOpen}
+              searchOpen={searchOpen}
+              setSearchTerm={setSearchTerm}
+              searchTerm={searchTerm}
+            />
+          )}
+          <FlexWrapper isMobileCustom={isMobileCustom}>
+            {!loading ? (
+              <InfiniteScroll
+                loadMore={() => loadMore()}
+                hasMore={hasMoreItems}
+                // loader={<SkeletonCard dataFinalLength={dataFinalLength === 0} />}
+                useWindow={false}
+              >
+                {showItems(dataFinal)}
+              </InfiniteScroll>
+            ) : (
+              <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>
+            )}
+          </FlexWrapper>
+        </InnerWrapper>
+      </DragWrapper>
+    </React.Fragment>
   ) : (
     !loading && (
       <Wrapper order={open}>
