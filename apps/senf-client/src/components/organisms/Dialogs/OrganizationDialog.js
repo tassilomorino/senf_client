@@ -22,6 +22,7 @@ import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import { useTranslation } from "react-i18next";
 import { MenuData } from "../../../data/MenuData";
 import CalendarComponent from "../../atoms/calendar/CalendarComponent";
+import { StyledH2, StyledText } from "apps/senf-client/src/styles/GlobalStyle";
 
 export const Wrapper = styled.div`
   width: 100vw;
@@ -67,8 +68,23 @@ export const Wrapper = styled.div`
 
 const CalendarWrapper = styled.div`
   position: absolute;
-  top: 50px;
+  padding-top: 50px;
+  top: 0;
   right: 0;
+  background-color: #fed957;
+  border-left: 2px solid white;
+`;
+
+const InfoWidget = styled.div`
+  position: relative;
+  width: 350px;
+  height: auto;
+  z-index: 99;
+  margin-top: 20px;
+  left: 10px;
+  background-color: white;
+  border-radius: 18px;
+  padding: 15px;
 `;
 
 const Break = styled.div`
@@ -107,6 +123,10 @@ const OrganizationDialog = ({
   const organization = useSelector((state) => state.data.organization);
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.UI.loading);
+  const loadingOrganization = useSelector(
+    (state) => state.UI.loadingOrganization
+  );
+
   const mapViewport = useSelector((state) => state.data.mapViewport);
 
   useEffect(() => {
@@ -170,6 +190,7 @@ const OrganizationDialog = ({
   //     long <= mapBounds?.longitude3 &&
   //     status === "None"
   // );
+  console.log(dataRar, dataFinal);
 
   return (
     openOrganization && (
@@ -188,28 +209,52 @@ const OrganizationDialog = ({
         {/* {!isMobileCustom && order === 0 && <MapHider />} */}
 
         {/* {!isMobileCustom || (isMobileCustom && order !== 1 && <Background />)} */}
-        {order === 1 && (
-          <SwipeList
-            swipeListType="organizationsOverview"
-            loading={loadingProjects}
-            tabLabels={MenuData.map((item) => item.text).slice(1, 2)}
-            order={order}
-            dataFinal={dataFinal}
-            dataFinalLength={dataFinal.length}
-            dataFinalMap={dataFinalMap}
-            viewport={mapViewport}
-            handleDropdown={handleDropdown}
-            projectsData={projectsData}
-            dropdown={dropdown}
-            setSearchTerm={setSearchTerm}
-            searchTerm={searchTerm}
-          />
-        )}
-        <InfoModal
-          description={organization?.description}
-          weblink={organization?.weblink}
-          contact={organization?.contact}
-        />
+        <div
+          style={{
+            width: "400px",
+            height: "100vh",
+            position: "fixed",
+            left: "600px",
+            top: "0px",
+            zIndex: 999999999,
+          }}
+        >
+          {order === 1 && (
+            <SwipeList
+              swipeListType="projectRoomOverview"
+              loading={loadingOrganization}
+              tabLabels={MenuData.map((item) => item.text).slice(1, 2)}
+              order={2}
+              dataFinal={dataFinal}
+              dataFinalLength={dataFinal.length}
+              dataFinalMap={dataFinalMap}
+              viewport={mapViewport}
+              handleDropdown={handleDropdown}
+              projectsData={projectsData}
+              dropdown={dropdown}
+              setSearchTerm={setSearchTerm}
+              searchTerm={searchTerm}
+            />
+          )}
+        </div>
+
+        <InfoWidget>
+          <StyledH2 fontWeight="900">Über uns</StyledH2>
+          <StyledText>{organization?.description}</StyledText>
+        </InfoWidget>
+
+        <InfoWidget>
+          <StyledH2 fontWeight="900">Kontakt</StyledH2>
+          <br />
+          <StyledText>{organization?.contact}</StyledText>
+          <StyledText>{organization?.weblink}</StyledText>
+          Insta? Facebook? Twitter?
+        </InfoWidget>
+        <InfoWidget>
+          <StyledH2 fontWeight="900">Adresse</StyledH2>
+          <br />
+          <StyledText>{organization?.address}</StyledText>
+        </InfoWidget>
 
         <CalendarWrapper>
           <CalendarComponent
