@@ -30,7 +30,7 @@ import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import styled, { keyframes } from "styled-components";
 import Weblink from "../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
 import Contact from "../../molecules/Modals/Post_Edit_ModalComponents/Contact";
-import InlineDatePicker from "../../molecules/Modals/Post_Edit_ModalComponents/InlineDatePicker";
+import InlineDatePickerModal from "../../molecules/Modals/InlineDatePickerModal";
 
 const OpenButtonMobile = styled.button`
   z-index: 99;
@@ -575,7 +575,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
           />
         )}
         {calendarOpen && (
-          <InlineDatePicker
+          <InlineDatePickerModal
             setCalendarOpen={setCalendarOpen}
             handleCloseCalendar={handleCloseCalendar}
             handleSaveCalendar={handleSaveCalendar}

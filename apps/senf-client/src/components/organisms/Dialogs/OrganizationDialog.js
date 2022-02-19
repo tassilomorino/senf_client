@@ -21,6 +21,7 @@ import SwipeList from "../SwipeLists/SwipeList";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import { useTranslation } from "react-i18next";
 import { MenuData } from "../../../data/MenuData";
+import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 
 export const Wrapper = styled.div`
   width: 100vw;
@@ -62,6 +63,12 @@ export const Wrapper = styled.div`
     opacity: 1;
   }
 } */
+`;
+
+const CalendarWrapper = styled.div`
+  position: absolute;
+  top: 50px;
+  right: 0;
 `;
 
 const Break = styled.div`
@@ -203,6 +210,12 @@ const OrganizationDialog = ({
           weblink={organization?.weblink}
           contact={organization?.contact}
         />
+
+        <CalendarWrapper>
+          <CalendarComponent
+            googleCalendarId={organization?.googleCalendarId}
+          />
+        </CalendarWrapper>
       </Wrapper>
     )
   );

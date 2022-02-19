@@ -72,6 +72,9 @@ const InnerWrapper = styled.div`
 
   justify-content: center;
   position: relative;
+  @media (min-width: 768px) {
+    display: flex;
+  }
 `;
 
 const FlexWrapper = styled.div`
@@ -140,13 +143,13 @@ const OrganizationsPage = ({
 
         setTimeout(() => {
           setOpenOrganizationsPage(false);
-        }, 200);
+        }, 150);
         setTimeout(() => {
           set({
             transform: `translateY(${30}px)`,
             touchAction: "none",
           });
-        }, 600);
+        }, 300);
       }
 
       set({ y: down ? my : 0 });
@@ -166,7 +169,7 @@ const OrganizationsPage = ({
     });
     setTimeout(() => {
       setOpenOrganizationsPage(false);
-    }, 200);
+    }, 150);
   };
 
   const dataFinalLength = dataFinal.length;

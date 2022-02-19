@@ -11,9 +11,11 @@ import { formatDate } from "@fullcalendar/react";
 import listMonth from "@fullcalendar/list";
 import { openScreamFunc } from "../../../redux/actions/screamActions";
 // Redux stuff
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import googleCalendarPlugin from "@fullcalendar/google-calendar";
 
 import "./Fullcalendar.css";
+import MainModal from "../Layout/MainModal";
 
 let str = formatDate(new Date(), {
   month: "long",
@@ -33,11 +35,14 @@ const CalendarWrapper = styled.div`
   padding-bottom: 50vh;
   pointer-events: all;
 `;
-const CalendarComponent = ({ projectScreams, ...props }) => {
+const CalendarComponent = ({ projectScreams, googleCalendarId, ...props }) => {
+  const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
+
   const dispatch = useDispatch();
   const cookies = new Cookies();
   const [initState, setInitState] = useState({
     calendarWeekends: true,
+
     calendarEvents: [
       // initial event data
       {
@@ -49,43 +54,63 @@ const CalendarComponent = ({ projectScreams, ...props }) => {
   });
 
   useEffect(() => {
+    if (googleCalendarId) {
+      setInitState({
+        ...initState,
+        events: {
+          googleCalendarId: googleCalendarId,
+        },
+      });
+    }
+  }, [googleCalendarId]);
+
+  useEffect(() => {
     const data = [];
     let i;
     let u;
-    for (i = 0; i < projectScreams.length; i++) {
-      if (
-        projectScreams[i].selectedUnix === undefined ||
-        projectScreams[i].selectedUnix === null
-      ) {
-        continue;
-      }
-      for (u = 0; u < projectScreams[i].selectedUnix.length; u++) {
-        const eventObject = {
-          title: projectScreams[i].title,
-          date: new Date(projectScreams[i].selectedUnix[u] * 1000),
-          id: projectScreams[i].screamId,
-        };
-        data.push(eventObject);
-      }
-    }
 
-    setInitState({ ...initState, calendarEvents: data });
+    if (projectScreams) {
+      for (i = 0; i < projectScreams.length; i++) {
+        if (
+          projectScreams[i].selectedUnix === undefined ||
+          projectScreams[i].selectedUnix === null
+        ) {
+          continue;
+        }
+        for (u = 0; u < projectScreams[i].selectedUnix.length; u++) {
+          const eventObject = {
+            title: projectScreams[i].title,
+            date: new Date(projectScreams[i].selectedUnix[u] * 1000),
+            id: projectScreams[i].screamId,
+          };
+          data.push(eventObject);
+        }
+      }
+
+      setInitState({ ...initState, calendarEvents: data });
+    }
   }, []);
 
   const handleEventClick = ({ event, el }) => {
-    const screamId = event.id;
-    dispatch(openScreamFunc(screamId));
-    props.handleClick(1);
+    if (projectScreams) {
+      const screamId = event.id;
+      dispatch(openScreamFunc(screamId));
+      props.handleClick(1);
+    } else {
+      console.log(event);
+    }
   };
   const lang = cookies.get("language");
   return (
     <CalendarWrapper>
       <FullCalendar
-        plugins={[listMonth]}
+        plugins={[listMonth, googleCalendarPlugin]}
+        googleCalendarApiKey={process.env.REACT_APP_GOOGLE_CALENDAR_API_KEY}
         initialView="listMonth"
-        events={initState.calendarEvents}
+        events={openProjectRoom ? initState.calendarEvents : initState.events}
         locale={lang === "de" ? deLocale : enLocale}
-        eventClick={handleEventClick}
+        // eventContent={openProjectRoom ? null : renderEventContent}
+        eventClick={openProjectRoom ? handleEventClick : null}
       />
     </CalendarWrapper>
   );
