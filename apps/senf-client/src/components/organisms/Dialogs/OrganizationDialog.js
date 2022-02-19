@@ -78,8 +78,9 @@ const CalendarWrapper = styled.div`
 const InfoWidget = styled.div`
   position: relative;
   width: 350px;
+  max-width: calc(100% - 50px);
   height: auto;
-  z-index: 99;
+  z-index: 1;
   margin-top: 20px;
   left: 10px;
   background-color: white;
@@ -210,14 +211,27 @@ const OrganizationDialog = ({
 
         {/* {!isMobileCustom || (isMobileCustom && order !== 1 && <Background />)} */}
         <div
-          style={{
-            width: "400px",
-            height: "100vh",
-            position: "fixed",
-            left: "600px",
-            top: "0px",
-            zIndex: 999999999,
-          }}
+          style={
+            !isMobileCustom
+              ? {
+                  width: "400px",
+                  height: "100vh",
+                  position: "fixed",
+                  left: "600px",
+                  top: "0px",
+                  zIndex: 999999999,
+                }
+              : {
+                  position: "fixed",
+                  width: "400px",
+                  maxWidth: "100%",
+                  height: "100vh",
+                  top: 0,
+                  zIndex: 999999999,
+                  left: 0,
+                  pointerEvents: "none",
+                }
+          }
         >
           {order === 1 && (
             <SwipeList
@@ -237,7 +251,9 @@ const OrganizationDialog = ({
             />
           )}
         </div>
-
+        <br />
+        <br />
+        <br />
         <InfoWidget>
           <StyledH2 fontWeight="900">Über uns</StyledH2>
           <StyledText>{organization?.description}</StyledText>
@@ -255,12 +271,13 @@ const OrganizationDialog = ({
           <br />
           <StyledText>{organization?.address}</StyledText>
         </InfoWidget>
-
-        <CalendarWrapper>
-          <CalendarComponent
-            googleCalendarId={organization?.googleCalendarId}
-          />
-        </CalendarWrapper>
+        {!isMobileCustom && (
+          <CalendarWrapper>
+            <CalendarComponent
+              googleCalendarId={organization?.googleCalendarId}
+            />
+          </CalendarWrapper>
+        )}
       </Wrapper>
     )
   );
