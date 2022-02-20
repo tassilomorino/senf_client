@@ -534,7 +534,7 @@ const Main = () => {
           onClick={setSwipeDown}
         />
       )}
-      {/* <Map
+      <Map
         order={order}
         dataFinal={dataFinalMap}
         loading={loading}
@@ -544,7 +544,7 @@ const Main = () => {
         geoData={project && openProjectRoom && project.geoData}
         mapRef={mapRef}
         projects={dataFinalMapProjects}
-      /> */}
+      />
 
       {!loading &&
         !loadingUI &&
