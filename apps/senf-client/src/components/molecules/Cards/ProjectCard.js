@@ -132,7 +132,6 @@ export const ProjectCard = (props) => {
     project: {
       projectRoomId,
       title,
-      owner,
       imgUrl,
       brief,
       status,
@@ -165,9 +164,9 @@ export const ProjectCard = (props) => {
   const organizationCardData = [];
 
   if (organizations) {
-    organizations.forEach(({ organizationId, userIds }) => {
+    organizations.forEach(({ organizationId, userIds, title }) => {
       if (cardOrganizationId === organizationId) {
-        organizationCardData.push(userIds);
+        organizationCardData.push(userIds, title);
       }
     });
   }
@@ -245,7 +244,7 @@ export const ProjectCard = (props) => {
 
           <StyledH4>
             {truncateString(
-              owner,
+              organizationCardData[1],
               document.body.clientWidth < 350
                 ? 20
                 : document.body.clientWidth < 380

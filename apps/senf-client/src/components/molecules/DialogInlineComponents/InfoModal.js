@@ -156,11 +156,10 @@ const InfoModal = ({
   description_learnmore,
   weblink,
   contact,
-  startDate,
-  endDate,
-  owner,
   ownerImg,
+  organizationId,
 }) => {
+  const cardOrganizationId = organizationId;
   const convertedLinkRaw = weblink && linkify.find(weblink);
   const convertedLink =
     weblink && convertedLinkRaw[0] !== undefined && convertedLinkRaw[0].href;
@@ -170,6 +169,7 @@ const InfoModal = ({
 
   const loading = useSelector((state) => state.data.loading);
   const handle = useSelector((state) => state.user.handle);
+  const organizations = useSelector((state) => state.data.organizations);
 
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
   const openScream = useSelector((state) => state.UI.openScream);
@@ -232,6 +232,16 @@ const InfoModal = ({
       title: "Wenn du mehr erfahren willst, ",
       text: description_learnmore,
       id: 3,
+    });
+  }
+
+  const organizationCardData = [];
+
+  if (organizations) {
+    organizations.forEach(({ organizationId, userIds, title }) => {
+      if (cardOrganizationId === organizationId) {
+        organizationCardData.push(userIds, title);
+      }
     });
   }
 
@@ -335,7 +345,9 @@ const InfoModal = ({
                   </OrganizationLogoWrapper>
                   <div style={{ marginLeft: "10px" }}>
                     <StyledText>{t("projectroom_of")}</StyledText>
-                    <StyledH3 fontWeight="900">{owner}</StyledH3>
+                    <StyledH3 fontWeight="900">
+                      {organizationCardData[1]}
+                    </StyledH3>
                   </div>
                 </OwnerWrapper>
               )}
