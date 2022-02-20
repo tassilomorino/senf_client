@@ -243,14 +243,15 @@ export const ProjectCard = (props) => {
           </OrganizationLogo>
 
           <StyledH4>
-            {truncateString(
-              organizationCardData[1],
-              document.body.clientWidth < 350
-                ? 20
-                : document.body.clientWidth < 380
-                ? 30
-                : 40
-            )}
+            {organizationCardData[1] &&
+              truncateString(
+                organizationCardData[1],
+                document.body.clientWidth < 350
+                  ? 20
+                  : document.body.clientWidth < 380
+                  ? 30
+                  : 40
+              )}
           </StyledH4>
 
           <Icon marginLeft="auto" marginRight="5px">

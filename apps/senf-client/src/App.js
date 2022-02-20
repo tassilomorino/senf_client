@@ -163,6 +163,19 @@ const App = () => {
 
   useEffect(() => {
     setViewport();
+
+    /* iOS re-orientation fix */
+    if (
+      navigator.userAgent.match(/iPhone/i) ||
+      navigator.userAgent.match(/iPad/i)
+    ) {
+      /* iOS hides Safari address bar */
+      window.addEventListener("load", function () {
+        setTimeout(function () {
+          window.scrollTo(0, 1);
+        }, 5000);
+      });
+    }
   }, []);
 
   const tabletNote = isTablet ? (
@@ -184,7 +197,7 @@ const App = () => {
           )} */}
           <div className="landscapeNote">{t("rotate_phone")}</div>
 
-          <div className="container">
+          <div className="container" id="container">
             <Switch>
               <Route exact path="/" component={Main} />
               <Route exact path="/projectRooms" component={Main} />

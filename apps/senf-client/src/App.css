@@ -46,6 +46,13 @@
       format("truetype");
 }
 
+#root{
+  height: 200%;
+  width: 100%;
+  position: relative;
+
+}
+
 .Terms {
   text-decoration: underline;
   cursor: pointer;

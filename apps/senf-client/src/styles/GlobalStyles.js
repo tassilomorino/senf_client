@@ -2,8 +2,10 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
   html {
-  overflow: hidden;
+  overflow: auto;
   width: 100%;
+  position: relative; height: 100%; 
+
 }
 
 
@@ -13,8 +15,9 @@ const GlobalStyles = createGlobalStyle`
   font-family: 'Nunito', sans-serif;
     font-weight: 300;
     font-size: 14px;
-      /* overflow: scroll; */
-
+       overflow: scroll; 
+       position: relative; height: 100%; overflow: scroll;
+       padding-bottom:100px;
 
   background-attachment: fixed;
   background-image: linear-gradient(
@@ -29,18 +32,20 @@ const GlobalStyles = createGlobalStyle`
   top: 0;
   width: 100%;
 
-  -ms-overflow-style: none;
+  /* -ms-overflow-style: none; */
   /* IE and Edge */
   scrollbar-width: none;
   /* Firefox */
 
-  height: 100%;
-  position: fixed;
+  height: 101%;
+  /* position: fixed; */
   /* prevent overscroll bounce*/
-  overscroll-behavior-y: contain;
+  /* overscroll-behavior-y: contain;
   overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch; */
 }
+
+
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 body::-webkit-scrollbar {
