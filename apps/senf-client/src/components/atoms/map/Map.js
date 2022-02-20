@@ -29,6 +29,8 @@ import { MapFilter } from "./MapFilter";
 import { PatternBackground } from "./styles/sharedStyles";
 import { useParams } from "react-router";
 
+import Circle1 from "../../../images/markers/circle1.png";
+
 import Marker1 from "../../../images/markers/marker1.png";
 import Marker2 from "../../../images/markers/marker2.png";
 import Marker3 from "../../../images/markers/marker3.png";
@@ -415,71 +417,110 @@ const Map = ({
                   "circle-opacity": 0.15,
                 }}
               /> */}
+              <Image id="Circle1" image={Circle1} />
 
               <Layer
                 id="geojsonIdeas"
                 source="geojsonIdeas"
-                type="circle"
+                type="symbol"
                 onHover={onHoverIdea}
                 onLeave={onLeave}
                 onClick={onClickIdea}
-                paint={{
-                  // "circle-radius": {
-                  //   base: ["get", "likeCount"],
-                  //   stops: [
-                  //     [12, 3],
-                  //     [22, 180],
-                  //   ],
-                  // },
-
-                  "circle-radius": [
+                layout={{
+                  "icon-image": [
+                    "match",
+                    ["get", "Thema"],
+                    "Vereine",
+                    "Marker1",
+                    "Initiativen",
+                    "Marker1",
+                    "Planungsbüros",
+                    "Marker1",
+                    "Politik",
+                    "Marker1",
+                    "Stadtverwaltung",
+                    "Marker1",
+                    "Presse",
+                    "Marker1",
+                    "Circle1",
+                  ],
+                  "icon-size": [
                     "interpolate",
                     ["linear"],
                     ["zoom"],
                     // when zoom is 0, set each feature's circle radius to the value of its "rating" property
                     0,
-                    ["*", 0.1, ["get", "circleRadius"]],
+                    ["*", 0.01, ["get", "circleRadius"]],
 
                     10,
-                    ["*", 0.4, ["get", "circleRadius"]],
+                    ["*", 0.01, ["get", "circleRadius"]],
 
+                    13,
+                    ["*", 0.03, ["get", "circleRadius"]],
                     // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
-                    14,
-                    ["*", 1.5, ["get", "circleRadius"]],
                     20,
-                    ["*", 1.2, ["get", "circleRadius"]],
+                    ["*", 0.05, ["get", "circleRadius"]],
                   ],
-                  "circle-color": ["get", "color"],
-                  // "circle-color": [
-                  //   "match",
-                  //   ["get", "Thema"],
-                  //   "Rad",
-                  //   "blue",
-                  //   "Umwelt und Grün",
-                  //   "#223b53",
-                  //   "Verkehr",
-                  //   "#e55e5e",
-                  //   "Asian",
-                  //   "#3bb2d0",
-                  //   /* other */ "#ccc",
-                  // ],
-                  "circle-stroke-color": "#fff",
-                  "circle-stroke-width": [
-                    "interpolate",
-                    ["linear"],
-                    ["zoom"],
-                    // when zoom is 0, set each feature's circle radius to the value of its "rating" property
-                    0,
-                    0.1,
-
-                    10,
-                    0.4,
-
-                    // when zoom is 20, set each feature's circle radius to four times the value of its "rating" property
-                    20,
-                    3,
-                  ],
+                  "icon-anchor": "center",
+                  "icon-allow-overlap": false,
                 }}
+                // paint={{
+                //   // "circle-radius": {
+                //   //   base: ["get", "likeCount"],
+                //   //   stops: [
+                //   //     [12, 3],
+                //   //     [22, 180],
+                //   //   ],
+                //   // },
+
+                //   "circle-radius": [
+                //     "interpolate",
+                //     ["linear"],
+                //     ["zoom"],
+                //     // when zoom is 0, set each feature's circle radius to the value of its "rating" property
+                //     0,
+                //     ["*", 0.1, ["get", "circleRadius"]],
+
+                //     10,
+                //     ["*", 0.4, ["get", "circleRadius"]],
+
+                //     // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
+                //     14,
+                //     ["*", 1.5, ["get", "circleRadius"]],
+                //     20,
+                //     ["*", 1.2, ["get", "circleRadius"]],
+                //   ],
+                //   "circle-color": ["get", "color"],
+                //   // "circle-color": [
+                //   //   "match",
+                //   //   ["get", "Thema"],
+                //   //   "Rad",
+                //   //   "blue",
+                //   //   "Umwelt und Grün",
+                //   //   "#223b53",
+                //   //   "Verkehr",
+                //   //   "#e55e5e",
+                //   //   "Asian",
+                //   //   "#3bb2d0",
+                //   //   /* other */ "#ccc",
+                //   // ],
+                //   "circle-stroke-color": "#fff",
+                //   "circle-stroke-width": [
+                //     "interpolate",
+                //     ["linear"],
+                //     ["zoom"],
+                //     // when zoom is 0, set each feature's circle radius to the value of its "rating" property
+                //     0,
+                //     0.1,
+
+                //     10,
+                //     0.4,
+
+                //     // when zoom is 20, set each feature's circle radius to four times the value of its "rating" property
+                //     20,
+                //     3,
+                //   ],
+                // }}
               />
 
               {openScream && scream.lat && (
