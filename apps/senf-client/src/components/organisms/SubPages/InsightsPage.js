@@ -106,6 +106,8 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
 
   const fetchDataProjectRoom = async () => {
     const screamIds = [];
+    const comments = [];
+    const likes = [];
     const screamsRef = await db
       .collection("screams")
       .where("projectRoomId", "==", projectRoomId)
@@ -115,34 +117,37 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
     screamsRef.docs.forEach(async (doc) => {
       screamIds.push(doc.id);
 
+      const commentsRef = await db
+        .collection("comments")
+        .where("screamId", "==", doc.id)
+        .orderBy("createdAt", "desc")
+        .get();
+
+      commentsRef.forEach((doc) => {
+        const docData = {
+          Thema: doc.data().Thema,
+        };
+        comments.push(docData);
+      });
+
+      const ref = await db
+        .collection("likes")
+        .where("screamId", "==", doc.id)
+        .orderBy("createdAt", "desc")
+        .get();
+
+      ref.forEach((doc) => {
+        const docData = {
+          age: doc.data().age,
+          Thema: doc.data().Thema,
+        };
+        likes.push(docData);
+      });
+
       if (screamIds.length === screamsRefSize) {
-        const commentsRef = await db
-          .collection("comments")
-          .where("screamId", "in", screamIds)
-          .orderBy("createdAt", "desc")
-          .get();
-
-        const ref = await db
-          .collection("likes")
-          .where("screamId", "in", screamIds)
-          .orderBy("createdAt", "desc")
-          .get();
-
-        const likes = [];
-        ref.docs.forEach((doc) => {
-          const docData = {
-            age: doc.data().age,
-            Thema: doc.data().Thema,
-          };
-          likes.push(docData);
-        });
         setLikes(likes);
-
-        const commentsLength = commentsRef.size;
-        setCommentsLength(commentsLength);
-
-        const likesLength = ref.size;
-        setLikesLength(likesLength);
+        setCommentsLength(comments.length);
+        setLikesLength(likes.length);
       }
     });
   };
