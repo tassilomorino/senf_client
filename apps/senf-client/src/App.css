@@ -770,16 +770,6 @@ input:focus {
   opacity: 0;
 }
 
-@keyframes dragEnterAnimation {
-  0% {
-    transform: translateY(120%);
-  }
-
-  100% {
-    transform: translateY(calc(100% - 120px));
-  }
-}
-
 .wrapperScreamDialog {
   width: 100vw;
   margin-top: 0vh;

@@ -106,6 +106,8 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
 
   const fetchDataProjectRoom = async () => {
     const screamIds = [];
+    const comments = [];
+    const likes = [];
     const screamsRef = await db
       .collection("screams")
       .where("projectRoomId", "==", projectRoomId)
@@ -114,36 +116,38 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
     const screamsRefSize = screamsRef.size;
     screamsRef.docs.forEach(async (doc) => {
       screamIds.push(doc.id);
-      console.log(screamsRefSize, screamIds.length);
+
+      const commentsRef = await db
+        .collection("comments")
+        .where("screamId", "==", doc.id)
+        .orderBy("createdAt", "desc")
+        .get();
+
+      commentsRef.forEach((doc) => {
+        const docData = {
+          Thema: doc.data().Thema,
+        };
+        comments.push(docData);
+      });
+
+      const ref = await db
+        .collection("likes")
+        .where("screamId", "==", doc.id)
+        .orderBy("createdAt", "desc")
+        .get();
+
+      ref.forEach((doc) => {
+        const docData = {
+          age: doc.data().age,
+          Thema: doc.data().Thema,
+        };
+        likes.push(docData);
+      });
+
       if (screamIds.length === screamsRefSize) {
-        console.log(screamIds);
-        const commentsRef = await db
-          .collection("comments")
-          .where("screamId", "in", screamIds)
-          .orderBy("createdAt", "desc")
-          .get();
-
-        const commentsLength = commentsRef.size;
-        setCommentsLength(commentsLength);
-
-        const ref = await db
-          .collection("likes")
-          .where("screamId", "in", screamIds)
-          .orderBy("createdAt", "desc")
-          .get();
-
-        const likesLength = ref.size;
-        setLikesLength(likesLength);
-
-        const likes = [];
-        ref.docs.forEach((doc) => {
-          const docData = {
-            age: doc.data().age,
-            Thema: doc.data().Thema,
-          };
-          likes.push(docData);
-        });
         setLikes(likes);
+        setCommentsLength(comments.length);
+        setLikesLength(likes.length);
       }
     });
   };

@@ -29,6 +29,8 @@ import CreateOrganizationPage1 from "./Organization_components/CreateOrganizatio
 import CreateOrganizationPage2 from "./Organization_components/CreateOrganizationPage2";
 import CreateOrganizationPage3 from "./Organization_components/CreateOrganizationPage3";
 import CreateOrganizationPage4 from "./Organization_components/CreateOrganizationPage4";
+import CreateOrganizationPage5 from "./Organization_components/CreateOrganizationPage5";
+
 import CreateOrganizationPagePreview from "./Organization_components/CreateOrganizationPreview";
 
 //Redux
@@ -248,6 +250,14 @@ const CreateProjectDialog = ({ type }) => {
           ({ style }) => (
             <PageWrapper>
               <CreateOrganizationPage4
+                onClickNext={onClickNext}
+                onClickPrev={onClickPrev}
+              />
+            </PageWrapper>
+          ),
+          ({ style }) => (
+            <PageWrapper>
+              <CreateOrganizationPage5
                 onClickNext={onClickNext}
                 onClickPrev={onClickPrev}
               />

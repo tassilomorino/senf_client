@@ -42,6 +42,8 @@ const DragWrapper = styled(animated.div)`
   position: absolute;
   z-index: 995;
   animation: dragEnterAnimation 0.5s;
+  transform: ${(props) =>
+    props.openOrganizationsPage && "scale(1.9) translateY(-20px)"};
 
   @media (min-width: 768px) {
     width: 400px;
@@ -156,6 +158,7 @@ const SwipeList = ({
   handleClick,
   setOpenInsightsPage,
   setOpenOrganizationsPage,
+  openOrganizationsPage,
 }) => {
   const dispatch = useDispatch();
   const openScream = useSelector((state) => state.UI.openScream);
@@ -262,8 +265,17 @@ const SwipeList = ({
     }
   }, [searchOpen]);
 
+  useEffect(() => {
+    set({
+      transition: "0.5s",
+    });
+  }, [openOrganizationsPage]);
+
   const bind = useDrag(
     ({ last, down, movement: [, my], offset: [, y] }) => {
+      set({
+        transition: "0s",
+      });
       if (last && my > 50) {
         set({
           transform: `translateY(${window.innerHeight - 120}px)`,
@@ -344,7 +356,7 @@ const SwipeList = ({
       {order === 2 && (
         <animated.div style={slideUpSectionProps}>
           <OrganizationsIntroWrapper>
-            {process.env.REACT_APP_ORGANIZATIONSTAB === true ? (
+            {process.env.REACT_APP_ORGANIZATIONSTAB === "true" ? (
               <React.Fragment>
                 <OrganizationsIntro>
                   <Trans i18nKey="list_fastlink_organizations">
@@ -386,7 +398,17 @@ const SwipeList = ({
   return isMobileCustom ? (
     <DragWrapper
       className={!loading && !openScream ? "" : "drag_hide"}
-      style={props}
+      style={
+        openOrganizationsPage
+          ? {
+              scale: 0.9,
+              transform: `translateY(${-20}px)`,
+              filter: "brightness(50%)",
+              transition: "0.5s",
+            }
+          : props
+      }
+      openOrganizationsPage={openOrganizationsPage}
     >
       {mapBounds?.latitude1 !== 0 && (
         <React.Fragment>

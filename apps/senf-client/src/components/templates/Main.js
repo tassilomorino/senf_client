@@ -261,9 +261,10 @@ const Main = () => {
         if (window.location.pathname === "/projectRooms") {
           setOrder(2);
         } else if (window.location.pathname === "/organizations") {
-          setOrder(3);
+          setOrder(2);
+          setOpenOrganizationsPage(true);
         } else if (window.location.pathname === "/insights") {
-          setOrder(4);
+          // setOrder(4);
         } else if (projectRoomId) {
           setOrder(2);
         } else if (screamId) {
@@ -600,6 +601,7 @@ const Main = () => {
                 handleClick={handleClick}
                 setOpenInsightsPage={setOpenInsightsPage}
                 setOpenOrganizationsPage={setOpenOrganizationsPage}
+                openOrganizationsPage={openOrganizationsPage}
               />
             )}
 

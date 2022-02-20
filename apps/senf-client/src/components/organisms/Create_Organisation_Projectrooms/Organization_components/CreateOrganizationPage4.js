@@ -1,8 +1,8 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-
-import { useSelector } from "react-redux";
+import ReactDOM from "react-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
@@ -11,17 +11,28 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
 
+//Components
+import Weblink from "../../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
+import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
+
+import { useOnClickOutside } from "../../../../hooks/useOnClickOutside";
+
+//images
 import {
-  Title,
-  SubTitle,
   ButtonsWrapper,
   ComponentInnerWrapper,
   ComponentWrapper,
+  SubTitle,
+  Title,
 } from "../styles/sharedStyles";
-import Searchbar from "../../../atoms/Searchbar/Searchbar";
-import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
+import Contact from "../../../molecules/Modals/Post_Edit_ModalComponents/Contact";
+import Geocoder from "react-mapbox-gl-geocoder";
 import Navigation from "../Components/Navigation";
+import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
+import InlineDatePicker from "../../../atoms/InlineDatePicker/InlineDatePicker";
+import { TextField } from "@material-ui/core";
+import { useFormik } from "formik";
 
 const Wrapper = styled.div`
   display: flex;
@@ -30,73 +41,52 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const SearchbarWrapper = styled.div`
-  width: 100%;
-`;
-
-const User = styled.div`
-  width: 100%;
-  height: 50px;
-  border-radius: 50px;
-  background-color: #353535;
+const ButttonsWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
+  justify-content: center;
+  margin-top: 20px;
 `;
 
-const UserName = styled.div`
-  color: white;
-  margin-left: 20px;
-`;
-
-const EditIcon = styled.div`
-  font-size: 20px;
-  margin-left: 0px;
-  color: white;
-  padding-right: 20px;
+const GeocoderWrapper = styled.div`
+  margin-top: 30px;
+  width: 100%;
 `;
 
 const CreateOrganizationPage4 = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
+  const [outsideClick, setOutsideClick] = useState(false);
 
-  const user = useSelector((state) => state.user);
+  //  const [googleCalendarId, setGoogleCalendarId] = useState("");
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [authorizedUserIds, setAuthorizedUserIds] = useState(null);
-  const [authorizedUserNames, setAuthorizedUserNames] = useState(null);
-  const [userList, setUsersList] = useState(null);
+  // const [selectedDays, setSelectedDays] = useState([]);
+  // const [selectedUnix, setSelectedUnix] = useState([]);
 
-  const search = async (e) => {
-    const db = firebase.firestore();
-    if (e.key === "Enter") {
-      const postRef = db.collection("users");
-      const users = [];
-      // define queries
-      const usersRef = await postRef
-        .orderBy("handle")
-        .startAt(searchTerm)
-        .endAt(searchTerm + "~")
-        .get();
+  // const handleChangeCalendar = (selectedDays) => {
+  //   const selectedUnix = [];
+  //   var i;
+  //   for (i = 0; i < selectedDays.length; i++) {
+  //     selectedUnix[i] = selectedDays[i]["unix"];
+  //   }
 
-      // get queries
-      usersRef.docs.forEach((doc) => {
-        users.push(doc.data());
+  //   setSelectedDays(selectedDays);
+  //   setSelectedUnix(selectedUnix);
+  // };
 
-        if (usersRef.size === users.length) {
-          setUsersList(users);
-        }
-      });
-    }
-  };
+  const formik = useFormik({
+    initialValues: {
+      googleCalendarId: "",
+    },
+    validateOnChange: true,
+    validateOnBlur: true,
+  });
 
-  async function fetchData() {
-    const db = firebase.firestore();
-    if (
-      typeof Storage !== "undefined" &&
-      localStorage.getItem("createOrganizationId")
-    ) {
+  useEffect(() => {
+    formik.setFieldTouched("googleCalendarId", true);
+
+    async function fetchData() {
+      const db = firebase.firestore();
+
       const ref = await db
         .collection("organizations")
         .doc(localStorage.getItem("createOrganizationId"))
@@ -106,98 +96,40 @@ const CreateOrganizationPage4 = ({ onClickNext, onClickPrev }) => {
         console.log("No such document!");
       } else {
         const data = ref.data();
+        // setGoogleCalendarId(data.title);
 
-        if (data.userIds) {
-          const refUsers = await db
-            .collection("users")
-            .where("userId", "in", data.userIds)
-            .get();
-
-          const authorizedUserNamesRaw = [];
-
-          refUsers.docs.forEach((doc) =>
-            authorizedUserNamesRaw.push({ ...doc.data() })
-          );
-          setAuthorizedUserNames(authorizedUserNamesRaw);
-          setAuthorizedUserIds(data.userIds);
-        }
+        formik.setFieldValue("googleCalendarId", data.googleCalendarId);
       }
     }
-  }
 
-  useEffect(() => {
-    fetchData();
+    if (
+      typeof Storage !== "undefined" &&
+      localStorage.getItem("createOrganizationId")
+    ) {
+      fetchData();
+    }
   }, []);
-
-  const handleRemove = async (userId) => {
-    if (userId === user.userId) {
-      alert("You can not remove yourself from the list of moderators");
-      return;
-    }
-    const db = firebase.firestore();
-
-    if (
-      typeof Storage !== "undefined" &&
-      localStorage.getItem("createOrganizationId")
-    ) {
-      const update = {
-        userIds: firebase.firestore.FieldValue.arrayRemove(userId),
-      };
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createOrganizationId"));
-      return ref.update(update).then(() => {
-        fetchData();
-      });
-    }
-  };
-
-  const handleAdd = async (userId) => {
-    const db = firebase.firestore();
-
-    if (
-      typeof Storage !== "undefined" &&
-      localStorage.getItem("createOrganizationId")
-    ) {
-      const update = {
-        userIds: firebase.firestore.FieldValue.arrayUnion(userId),
-      };
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createOrganizationId"));
-      return ref.update(update).then(() => {
-        fetchData();
-      });
-    }
-  };
 
   const handleNext = async () => {
     setNextClicked(true);
 
     const db = firebase.firestore();
-
-    //Remove organizationid from UserArray
-    // userRef.update({
-    //   organizationId: firebase.firestore.FieldValue.arrayRemove(doc.id),
-    // });
-
     if (
       typeof Storage !== "undefined" &&
       localStorage.getItem("createOrganizationId")
     ) {
       //UPDATING AN EXISTING PROJECTROOM
-      // const updateProject = {
-      //   userIds: firebase.firestore.FieldValue.arrayUnion(authorizedUserIds),
-      // };
-      // const ref = await db
-      //   .collection("organizations")
-      //   .doc(localStorage.getItem("createOrganizationId"));
-      // return ref.update(updateProject).then(() => {
-      //   onClickNext();
-      // });
-      setTimeout(() => {
-        onClickNext();
-      }, 200);
+      const updateProject = {
+        googleCalendarId: formik.values.googleCalendarId,
+      };
+      const ref = await db
+        .collection("organizations")
+        .doc(localStorage.getItem("createOrganizationId"));
+      return ref.update(updateProject).then(() => {
+        setTimeout(() => {
+          onClickNext();
+        }, 200);
+      });
     }
   };
 
@@ -206,43 +138,39 @@ const CreateOrganizationPage4 = ({ onClickNext, onClickPrev }) => {
       <ComponentWrapper>
         <ComponentInnerWrapper>
           <StyledH2 fontWeight="900" textAlign="center">
-            Füge weitere Mitglieder deiner Organisation hinzu
+            Kalendereinträge hinzufügen
           </StyledH2>
           <StyledH3 textAlign="center" margin="20px">
-            sadklsdjas askjddkashd kajs
+            Füge Kalendereinträge hinzu
           </StyledH3>
-          <br />
-          {authorizedUserNames &&
-            authorizedUserNames.map(({ handle, userId }) => (
-              <User onClick={() => handleRemove(userId)}>
-                <UserName>{handle}</UserName>
-                {userId !== user.userId && <EditIcon> -</EditIcon>}
-              </User>
-            ))}
-          <br /> <br />
-          <SearchbarWrapper>
-            <Searchbar
-              placeholder="Teammitglieder:innen hinzufügen..."
-              setSearchTerm={setSearchTerm}
-              searchTerm={searchTerm}
-              handleSearch={search}
-              backgroundColor="#f8f8f8"
-            />
-          </SearchbarWrapper>
-          {userList &&
-            userList.map(({ handle, userId }) => (
-              <User onClick={() => handleAdd(userId)}>
-                <UserName>{handle}</UserName>
-                <EditIcon> +</EditIcon>
-              </User>
-            ))}
-          <br /> <br />
-          <StyledH2 textAlign="center" fontWeight="900">
-            Lade deine Teammitglieder:innen zu Senf ein
-          </StyledH2>
-          <StyledH3 textAlign="center" margin="20px">
-            https://dummy-einladungslink.app
-          </StyledH3>
+
+          <p style={{ widthh: "100%", textAlign: "center" }}>
+            Zuerst Datum, dann Zeit auswählen.
+          </p>
+
+          <TextField
+            id="outlined-name"
+            name="googleCalendarId"
+            type="googleCalendarId"
+            label={t("googleCalendarId")}
+            margin="normal"
+            variant="outlined"
+            multiline
+            style={{
+              backgroundColor: "white",
+              borderRadius: "5px",
+              width: "100%",
+            }}
+            value={formik.values.googleCalendarId}
+            onChange={formik.handleChange}
+            error={outsideClick && Boolean(formik.errors.googleCalendarId)}
+            helperText={outsideClick && formik.errors.googleCalendarId}
+          />
+
+          {/* <InlineDatePicker
+            handleChangeCalendar={handleChangeCalendar}
+            selectedDays={selectedDays}
+          /> */}
         </ComponentInnerWrapper>
       </ComponentWrapper>
 
@@ -251,8 +179,7 @@ const CreateOrganizationPage4 = ({ onClickNext, onClickPrev }) => {
         prevLabel={t("back")}
         handleNext={handleNext}
         handlePrev={onClickPrev}
-        // disabled={!data || nextClicked}
-        // loading={nextClicked}
+        disabled={nextClicked}
       />
     </React.Fragment>
   );
