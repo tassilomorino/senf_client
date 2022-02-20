@@ -32,7 +32,7 @@ const FilterWrapper = styled.div`
 
 // })
 
-const AgegroupGraph = ({ classes, screams, likes }) => {
+const AgegroupGraph = ({ screams, likes }) => {
   const { t } = useTranslation();
 
   const selectedTopics = useSelector((state) => state.data.topics);
@@ -40,7 +40,7 @@ const AgegroupGraph = ({ classes, screams, likes }) => {
   const screamsFiltered = screams
     ? screams.filter(({ Thema }) => selectedTopics.includes(Thema))
     : [];
-  //console.log(likes);
+  console.log(likes);
 
   const likesFiltered = likes
     ? likes.filter(({ Thema }) => selectedTopics.includes(Thema))

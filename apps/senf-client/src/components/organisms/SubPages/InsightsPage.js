@@ -114,26 +114,19 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
     const screamsRefSize = screamsRef.size;
     screamsRef.docs.forEach(async (doc) => {
       screamIds.push(doc.id);
-      console.log(screamsRefSize, screamIds.length);
+
       if (screamIds.length === screamsRefSize) {
-        console.log(screamIds);
         const commentsRef = await db
           .collection("comments")
           .where("screamId", "in", screamIds)
           .orderBy("createdAt", "desc")
           .get();
 
-        const commentsLength = commentsRef.size;
-        setCommentsLength(commentsLength);
-
         const ref = await db
           .collection("likes")
           .where("screamId", "in", screamIds)
           .orderBy("createdAt", "desc")
           .get();
-
-        const likesLength = ref.size;
-        setLikesLength(likesLength);
 
         const likes = [];
         ref.docs.forEach((doc) => {
@@ -144,6 +137,12 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
           likes.push(docData);
         });
         setLikes(likes);
+
+        const commentsLength = commentsRef.size;
+        setCommentsLength(commentsLength);
+
+        const likesLength = ref.size;
+        setLikesLength(likesLength);
       }
     });
   };
