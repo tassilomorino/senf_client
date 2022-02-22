@@ -261,9 +261,10 @@ const Main = () => {
         if (window.location.pathname === "/projectRooms") {
           setOrder(2);
         } else if (window.location.pathname === "/organizations") {
-          setOrder(3);
+          setOrder(2);
+          setOpenOrganizationsPage(true);
         } else if (window.location.pathname === "/insights") {
-          setOrder(4);
+          // setOrder(4);
         } else if (projectRoomId) {
           setOrder(2);
         } else if (screamId) {
@@ -344,23 +345,19 @@ const Main = () => {
 
   //IDEAS
 
-  const screamsSearched = useMemo(
-    () =>
-      screams?.filter((val) => {
-        if (searchTerm === "") {
-          return val;
-        } else if (
-          val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          val.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          val.Stadtteil?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          val.Stadtbezirk?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          val.locationHeader?.toLowerCase().includes(searchTerm.toLowerCase())
-        ) {
-          return val;
-        }
-      }),
-    [screams, searchTerm]
-  );
+  const screamsSearched = screams?.filter((val) => {
+    if (searchTerm === "") {
+      return val;
+    } else if (
+      val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.Stadtteil?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.Stadtbezirk?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.locationHeader?.toLowerCase().includes(searchTerm.toLowerCase())
+    ) {
+      return val;
+    }
+  });
 
   const dataFinalIdeas = useMemo(() => {
     const sortedIdeas =
@@ -600,6 +597,7 @@ const Main = () => {
                 handleClick={handleClick}
                 setOpenInsightsPage={setOpenInsightsPage}
                 setOpenOrganizationsPage={setOpenOrganizationsPage}
+                openOrganizationsPage={openOrganizationsPage}
               />
             )}
 

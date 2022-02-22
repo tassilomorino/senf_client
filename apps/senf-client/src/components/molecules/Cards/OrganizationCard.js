@@ -20,6 +20,7 @@ import organizationTypes from "../../../data/organizationTypes";
 const Wrapper = styled.div`
   width: 200px;
   height: 200px;
+  max-width: calc(50% - 20px);
   z-index: 9;
   float: left;
   position: relative;

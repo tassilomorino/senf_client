@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-
+import { Helmet } from "react-helmet";
 import "./App.css";
 import "./AppDesktop.css";
 import "./AppIpad.css";
@@ -99,29 +99,37 @@ const App = () => {
   console.log();
 
   return (
-    <MuiThemeProvider theme={theme}>
-      <Provider store={store}>
-        <Router>
-          {tabletNote}
-          {/* {isTablet && (
+    <>
+      {process.env.REACT_APP_NO_CRAWL && (
+        /* only for senf-monitoring-test.netlify.app */
+        <Helmet>
+          <meta name="robots" content="noindex" />
+        </Helmet>
+      )}
+      <MuiThemeProvider theme={theme}>
+        <Provider store={store}>
+          <Router>
+            {tabletNote}
+            {/* {isTablet && (
             <div className="switchDevice">
               Bitte öffne Senf.koeln auf deinem Smartphone oder
               Desktop-Computer. Die Tablet-Version kommt bald wieder :)
             </div>
           )} */}
 
-          <div className="landscapeNote">{t("rotate_phone")}</div>
-          <div className="container">
-            <Switch>
-              <Route exact path="/" component={MonitoringBoard} />
-              <Route exact path="/datenschutz" component={datenschutz} />
-              <Route exact path="/agb" component={agb} />
-              <Route exact path="/verify" component={Verification} />
-            </Switch>
-          </div>
-        </Router>
-      </Provider>
-    </MuiThemeProvider>
+            <div className="landscapeNote">{t("rotate_phone")}</div>
+            <div className="container">
+              <Switch>
+                <Route exact path="/" component={MonitoringBoard} />
+                <Route exact path="/datenschutz" component={datenschutz} />
+                <Route exact path="/agb" component={agb} />
+                <Route exact path="/verify" component={Verification} />
+              </Switch>
+            </div>
+          </Router>
+        </Provider>
+      </MuiThemeProvider>
+    </>
   );
 };
 console.log(getBuildDate(packageJson.buildDate));

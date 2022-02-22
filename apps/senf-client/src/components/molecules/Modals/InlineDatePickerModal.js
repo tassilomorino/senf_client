@@ -1,15 +1,12 @@
 /** @format */
 import React from "react";
 
-import DatePanel from "react-multi-date-picker/plugins/date_panel";
-import { Calendar } from "react-multi-date-picker";
-import TimePicker from "react-multi-date-picker/plugins/time_picker";
-
 import withStyles from "@material-ui/core/styles/withStyles";
 
 // MUI Stuff
 import Button from "@material-ui/core/Button";
-import MainModal from "../../../atoms/Layout/MainModal";
+import MainModal from "../../atoms/Layout/MainModal";
+import InlineDatePicker from "../../atoms/InlineDatePicker/InlineDatePicker";
 
 const styles = {
   paper: {
@@ -45,19 +42,14 @@ const styles = {
   },
 };
 
-const InlineDatePicker = ({
+const InlineDatePickerModal = ({
   classes,
-
   setCalendarOpen,
   handleChangeCalendar,
   handleCloseCalendar,
   handleSaveCalendar,
   selectedDays,
 }) => {
-  const tomorrow = new Date();
-
-  tomorrow.setDate(tomorrow.getDate() + 1);
-
   return (
     <MainModal handleButtonClick={() => setCalendarOpen(false)} zIndex={999}>
       <h3 className="modal_title">Datum hinzufügen:</h3>
@@ -66,46 +58,10 @@ const InlineDatePicker = ({
         Zuerst Datum, dann Zeit auswählen.
       </p>
 
-      <div className="textFields">
-        <Calendar
-          weekStartDayIndex={1}
-          weekDays={["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"]}
-          months={[
-            "Januar",
-            "Februar",
-            "März",
-            "April",
-            "Mai",
-            "Juni",
-            "Juli",
-            "August",
-            "September",
-            "Oktober",
-            "November",
-            "Dezember",
-          ]}
-          value={selectedDays}
-          onChange={handleChangeCalendar}
-          format="D. MMMM HH:mm"
-          sort
-          shadow={false}
-          plugins={[
-            <DatePanel
-              header="Ausgewählte Daten"
-              position="bottom"
-              markFocused
-            />,
-            <TimePicker
-              position="right"
-              hideSeconds
-              timeFormat="HH:mm"
-              showTimeInput
-              style={{ minWidth: "100px" }}
-            />,
-          ]}
-        ></Calendar>
-      </div>
-
+      <InlineDatePicker
+        handleChangeCalendar={handleChangeCalendar}
+        selectedDays={selectedDays}
+      />
       <div className="buttons">
         <Button className={classes.button} onClick={handleCloseCalendar}>
           {selectedDays !== [] ? "Löschen" : "Abbrechen"}
@@ -124,4 +80,4 @@ const InlineDatePicker = ({
   );
 };
 
-export default withStyles(styles)(InlineDatePicker);
+export default withStyles(styles)(InlineDatePickerModal);
