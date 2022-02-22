@@ -1,10 +1,10 @@
 /** @format */
-
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router";
 import withStyles from "@material-ui/core/styles/withStyles";
+
 // MUI Stuff
 import Button from "@material-ui/core/Button";
 
@@ -13,28 +13,31 @@ import {
   getUserEmail,
 } from "../../../redux/actions/screamActions";
 
-import Weblink from "./Post_Edit_ModalComponents/Weblink";
-import Contact from "./Post_Edit_ModalComponents/Contact";
-import InlineDatePicker from "./Post_Edit_ModalComponents/InlineDatePicker";
+import contactIcon from "../../../images/icons/mail.png";
+import menuIcon from "../../../images/icons/menu.png";
+import shareBorderIcon from "../../../images/icons/shareBorder.png";
+import weblinkIcon from "../../../images/icons/weblink.png";
 
-import MainModal from "../../atoms/Layout/MainModal";
+import downloadIcon from "../../../images/icons/file.png";
 
-import EditModalMainFields from "./Post_Edit_ModalComponents/EditModalMainFields";
 import Tabs from "../../atoms/Tabs/Tabs";
 import { EditScreamTabData } from "../../../data/EditScreamTabData";
-import AdminEditModalMainFields from "./Post_Edit_ModalComponents/AdminEditModalMainFields";
+import setColorByTopic from "../../../data/setColorByTopic";
+import EditModalMainFields from "../../molecules/Modals/Post_Edit_ModalComponents/EditModalMainFields";
+import AdminEditModalMainFields from "../../molecules/Modals/Post_Edit_ModalComponents/AdminEditModalMainFields";
+
 const styles = {
   root: {
-    zIndex: 7,
-  },
-  paper: {
-    borderRadius: "20px",
-    zIndex: 7,
-    // width: "95%",
-    margin: "2.5%",
-    maxWidth: "400px",
+    backgroundColor: "rgb(0,0,0,0.1)",
+    padding: "0",
   },
 
+  paper: {
+    backgroundColor: "transparent",
+    boxShadow: "none",
+    // overflow: "hidden",
+    padding: "0",
+  },
   button: {
     fontSize: 20,
     textAlign: "center",
@@ -54,15 +57,15 @@ const styles = {
   },
 };
 
-const AdminEditModal = ({
-  setAdminEditOpen,
-  setMenuOpen,
-  adminEditOpen,
+const MonitoringEditScream = ({
+  monitoringEditOpen,
+  setMonitoringEditOpen,
   classes,
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
+  const loadingIdea = useSelector((state) => state.data.loadingIdea);
   const [order, setOrder] = useState(1);
   const [status, setStatus] = useState("");
   const [notes, setNotes] = useState("");
@@ -140,7 +143,7 @@ const AdminEditModal = ({
       setSelectedDays(selectedDays);
       setSelectedUnix(scream.selectedUnix);
     }
-  }, [adminEditOpen, scream]);
+  }, [monitoringEditOpen, scream]);
 
   const handleDropdown = (value) => {
     setTopic(value);
@@ -208,7 +211,7 @@ const AdminEditModal = ({
   const geocode = (viewport) => {
     const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
     const geocodingClient = mbxGeocoding({
-      accessToken: process.env.REACT_APP_MAPBOX_ACCESS_TOKEN,
+      accessToken: import.meta.env.REACT_APP_MAPBOX_ACCESS_TOKEN,
     });
     geocodingClient
       .reverseGeocode({
@@ -265,65 +268,131 @@ const AdminEditModal = ({
       editScream.selectedUnix = selectedUnix;
     }
 
-    dispatch(editScreamFunc(editScream, history)).then(() => {
-      setAdminEditOpen(false);
-      setMenuOpen(false);
-    });
+    dispatch(editScreamFunc(editScream, history)).then(() => {});
   };
 
-  return (
+  return !loadingIdea ? (
     <React.Fragment>
-      {weblinkOpen && (
-        <Weblink
-          handleCloseWeblink={handleCloseWeblink}
-          handleSaveWeblink={handleSaveWeblink}
-          weblinkTitle={weblinkTitle}
-          weblink={weblink}
-          setWeblinkTitle={setWeblinkTitle}
-          setWeblink={setWeblink}
-          setWeblinkOpen={setWeblinkOpen}
-        />
-      )}
-      {contactOpen && (
-        <Contact
-          handleCloseContact={handleCloseContact}
-          handleSaveContact={handleSaveContact}
-          contactTitle={contactTitle}
-          contact={contact}
-          setContactTitle={setContactTitle}
-          setContact={setContact}
-          setContactOpen={setContactOpen}
-        />
-      )}
-      {calendarOpen && (
-        <InlineDatePicker
-          setCalendarOpen={setCalendarOpen}
-          handleCloseCalendar={handleCloseCalendar}
-          handleSaveCalendar={handleSaveCalendar}
-          handleChangeCalendar={handleChangeCalendar}
-          selectedDays={selectedDays}
-        />
-      )}
-
-      <MainModal handleButtonClick={() => setAdminEditOpen(false)}>
+      <div className="wrapperMonitoringDialog">
         <div
           style={{
             width: "100%",
-            height: "110px",
+            height: "auto",
             backgroundColor: "#f8f8f8",
+            paddingBottom: "5px",
           }}
         >
-          <h3 className="modal_title">Idee bearbeiten (Admin)</h3>
+          <div style={{ display: "flex" }}>
+            <div
+              style={{
+                width: "15px",
+                marginTop: "20px",
+                marginLeft: "20px",
+                marginRight: "10px",
+              }}
+            >
+              <div
+                style={{
+                  width: "15px",
+                  height: "15px",
+                  borderRadius: "100%",
+                  border: "0.5px white solid",
+                  backgroundColor: setColorByTopic(scream.Thema),
+                }}
+              />
+            </div>
 
+            <div style={{ width: "110px", marginTop: "20px" }}>
+              {scream.Stadtteil}
+            </div>
+          </div>
+          <div
+            style={{
+              width: "300px",
+              margin: "10px",
+              marginLeft: "20px",
+              fontFamily: "Futura PT W01-Bold",
+              fontSize: "20px",
+            }}
+          >
+            {title}{" "}
+          </div>
+          <div
+            style={{
+              width: "200px",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              borderRadius: "20px",
+            }}
+          >
+            <div style={{ width: "20px", margin: "10px" }}>
+              {" "}
+              <a href={"mailto:hi@gmail.com?subject=" + escape(title)}>
+                <img
+                  src={weblinkIcon}
+                  style={{ paddingLeft: "15px" }}
+                  width="18"
+                  alt="WeblinkIcon"
+                />
+              </a>
+            </div>
+            <div style={{ width: "20px", margin: "10px" }}>
+              {" "}
+              <a href={"mailto:hi@gmail.com?subject=" + escape(title)}>
+                <img
+                  src={downloadIcon}
+                  style={{ paddingLeft: "9px" }}
+                  width="22"
+                  alt="WeblinkIcon"
+                />
+              </a>
+            </div>
+            <div style={{ width: "20px", margin: "10px" }}>
+              {" "}
+              <a href={"mailto:hi@gmail.com?subject=" + escape(title)}>
+                <img
+                  src={contactIcon}
+                  style={{ paddingLeft: "9px" }}
+                  width="22"
+                  alt="WeblinkIcon"
+                />
+              </a>
+            </div>
+
+            <div style={{ width: "30px", margin: "10px" }}>
+              {" "}
+              <a href={"mailto:hi@gmail.com?subject=" + escape(title)}>
+                <img
+                  src={shareBorderIcon}
+                  style={{ paddingLeft: "9px" }}
+                  width="22"
+                  alt="WeblinkIcon"
+                />
+              </a>
+            </div>
+
+            <div style={{ width: "50px", margin: "10px" }}>
+              {" "}
+              <img
+                src={menuIcon}
+                style={{ paddingTop: "5px" }}
+                width="30"
+                alt="WeblinkIcon"
+              />
+            </div>
+          </div>
           <Tabs
+            loading={loadingIdea}
             handleClick={setOrder}
             order={order}
             tabLabels={EditScreamTabData.map((item) => item.text)}
-            marginTop={"0"}
+            marginTop={"20px"}
             marginBottom={"20px"}
             lineColor={"white"}
           ></Tabs>
         </div>
+
         {order === 1 ? (
           <EditModalMainFields
             project={project}
@@ -355,10 +424,11 @@ const AdminEditModal = ({
             setNotes={setNotes}
           />
         )}
+
         <div className="buttons">
           <Button
             className={classes.button}
-            onClick={() => setAdminEditOpen(false)}
+            onClick={() => setMonitoringEditOpen(false)}
           >
             Abbrechen
           </Button>
@@ -374,9 +444,9 @@ const AdminEditModal = ({
             Speichern
           </Button>
         </div>
-      </MainModal>
+      </div>
     </React.Fragment>
-  );
+  ) : null;
 };
 
-export default withStyles(styles)(AdminEditModal);
+export default withStyles(styles)(MonitoringEditScream);

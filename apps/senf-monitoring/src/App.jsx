@@ -55,13 +55,13 @@ if (!firebase.apps.length) {
   firebase.app(); // if already initialized, use that one
 }
 
-axios.defaults.baseURL = process.env.REACT_APP_DB_BASE_URL;
+axios.defaults.baseURL = import.meta.env.REACT_APP_DB_BASE_URL;
 
 const theme = createTheme(themeFile);
 
-console.log(process.env.REACT_APP_STAGE);
+console.log(import.meta.env.REACT_APP_STAGE);
 
-// if (process.env.REACT_APP_STAGE === "development") {
+// if (import.meta.env.REACT_APP_STAGE === "development") {
 //   const whyDidYouRender = require("@welldone-software/why-did-you-render");
 //   whyDidYouRender(React, {
 //     trackAllPureComponents: true,
