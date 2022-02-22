@@ -43,7 +43,7 @@ registerRoute(
 
     return true;
   },
-  createHandlerBoundToURL(import.meta.env.BASE_URL + "/index.html")
+  createHandlerBoundToURL("/index.html")
 );
 
 registerRoute(
