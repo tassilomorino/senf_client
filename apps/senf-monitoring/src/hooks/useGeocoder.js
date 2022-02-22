@@ -10,7 +10,7 @@ const useGeocoder = () => {
       const endpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places/${
         event.target.value
       }.json?bbox=6.7,50.8,7.2,51&limit=3&access_token=${
-        import.meta.env.VITE_APP_MAPBOX_ACCESS_TOKEN
+        import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
       }&autocomplete=true`;
       const response = await fetch(endpoint);
       const results = await response.json();
