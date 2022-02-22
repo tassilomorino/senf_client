@@ -345,23 +345,19 @@ const Main = () => {
 
   //IDEAS
 
-  const screamsSearched = useMemo(
-    () =>
-      screams?.filter((val) => {
-        if (searchTerm === "") {
-          return val;
-        } else if (
-          val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          val.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          val.Stadtteil?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          val.Stadtbezirk?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          val.locationHeader?.toLowerCase().includes(searchTerm.toLowerCase())
-        ) {
-          return val;
-        }
-      }),
-    [screams, searchTerm]
-  );
+  const screamsSearched = screams?.filter((val) => {
+    if (searchTerm === "") {
+      return val;
+    } else if (
+      val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.Stadtteil?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.Stadtbezirk?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.locationHeader?.toLowerCase().includes(searchTerm.toLowerCase())
+    ) {
+      return val;
+    }
+  });
 
   const dataFinalIdeas = useMemo(() => {
     const sortedIdeas =
