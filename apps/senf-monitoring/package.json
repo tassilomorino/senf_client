@@ -40,17 +40,15 @@
   "scripts": {
     "analyze": "source-map-explorer '../../dist/apps/senf-monitoring/static/js/*.js'",
     "serve": "npm start",
-    "start": "craco start",
+    "start": "vite",
     "start:silent": "BROWSER=none PORT=3000 craco start",
-    "build": "node ./update-build.js && craco build",
+    "build": "node ./update-build.js && vite build",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "cypress:ci": "start-server-and-test start:silent http://localhost:3000 cy:run",
     "cypress": "start-server-and-test start:silent http://localhost:3000 cy:open",
     "lint": "eslint .",
-    "format": "prettier --write \"./**/*.{js,jsx,json}\" --config ./.prettierrc",
-    "vite:start": "vite",
-    "vite:build": "vite build"
+    "format": "prettier --write \"./**/*.{js,jsx,json}\" --config ./.prettierrc"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -78,5 +76,5 @@
     "vite": "^2.8.4",
     "vite-react-jsx": "^1.1.2"
   },
-  "buildDate": 1645281856905
+  "buildDate": 1645547073858
 }
