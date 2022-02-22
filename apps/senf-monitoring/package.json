@@ -76,8 +76,7 @@
     "start-server-and-test": "^1.13.1",
     "tsconfig-paths-webpack-plugin": "^3.5.2",
     "vite": "^2.8.4",
-    "vite-react-jsx": "^1.1.2",
-    "vite-tsconfig-paths": "^3.4.0"
+    "vite-react-jsx": "^1.1.2"
   },
   "buildDate": 1645281856905
 }
