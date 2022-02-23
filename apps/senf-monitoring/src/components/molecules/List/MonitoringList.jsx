@@ -52,7 +52,7 @@ const MonitoringList = ({
     }
   }, [dropdown, dataFinalLength]);
   const itemsPerPage = 100;
-  const [hasMoreItems, sethasMoreItems] = useState(true);
+  const [hasMoreItems, sethasMoreItems] = useState(false);
   const [listItems, setListItems] = useState(itemsPerPage);
 
   const showItems = (dataFinal) => {
