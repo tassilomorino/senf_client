@@ -5,7 +5,14 @@ const pwaOptions = {
     enabled: true,
   },
   registerType: "autoUpdate",
-  includeAssets: ["favicon.ico", "robots.txt", "apple-touch-icon.png"],
+  includeAssets: [
+    "favicon.ico",
+    "robots.txt",
+    "assets/*.ttf",
+    "assets/*.woff",
+    "assets/*.woff2",
+    "assets/*.png",
+  ],
   manifest: {
     name: "Senf.koeln",
     short_name: "Senf ",
