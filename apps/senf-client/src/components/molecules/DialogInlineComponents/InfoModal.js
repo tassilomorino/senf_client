@@ -41,7 +41,7 @@ const Card = styled.div`
       : props.contact || props.weblink
       ? "650px"
       : "600px"}; */
-  max-height: ${(props) => (props.infoOpen ? "calc(100% - 20px)" : "0px")};
+  max-height: ${(props) => (props.infoOpen ? "calc(100% - 40px)" : "0px")};
   transition: 0.5s;
   overflow: scroll;
   background-color: rgb(255, 255, 255, 0.6);
@@ -62,6 +62,13 @@ const CardInnerWrapper = styled.div`
   background-color: #fff7dd;
   /* box-shadow: inset 0 -10px 10px -10px #000000; */
   position: relative;
+`;
+
+const FixedButtonWrapper = styled.div`
+  height: 0px;
+  position: sticky;
+  bottom: 0;
+  transform: translateY(-50px);
 `;
 const LowerWrapper = styled.div`
   position: relative;
@@ -277,10 +284,6 @@ const InfoModal = ({
               </StyledText>
             )}
 
-            {/* <StyledH3 textAlign="center" margin="0px 0px 5px 0px">
-          Kontakt
-        </StyledH3> */}
-
             <LowerWrapper
               weblink={weblink}
               contact={contact}
@@ -376,16 +379,20 @@ const InfoModal = ({
             {/* <Gradient /> */}
           </CardInnerWrapper>
           {infoOpen && (
-            <SubmitButton
-              text={openProjectRoom ? t("show_projectroom") : t("show_profile")}
-              handleButtonClick={() => setInfoOpen(false)}
-              zIndex="999"
-              position="absolute"
-              bottom="10px"
-              backgroundColor="#353535"
-              textColor="white"
-              margin="0 0 0 0"
-            />
+            <FixedButtonWrapper>
+              <SubmitButton
+                text={
+                  openProjectRoom ? t("show_projectroom") : t("show_profile")
+                }
+                handleButtonClick={() => setInfoOpen(false)}
+                zIndex="999"
+                position="relative"
+                bottom="10px"
+                backgroundColor="#353535"
+                textColor="white"
+                margin="0 0 0 0"
+              />
+            </FixedButtonWrapper>
           )}
         </Card>
       </React.Fragment>
