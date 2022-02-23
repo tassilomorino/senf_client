@@ -43,7 +43,6 @@
     "serve": "npm start",
     "start": "vite",
     "preview": "vite preview",
-    "start:silent": "BROWSER=none PORT=3000 craco start",
     "build": "node ./update-build.js && vite build",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
