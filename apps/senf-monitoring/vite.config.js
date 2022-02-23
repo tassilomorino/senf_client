@@ -5,14 +5,10 @@ const pwaOptions = {
     enabled: true,
   },
   registerType: "autoUpdate",
-  includeAssets: [
-    "favicon.ico",
-    "robots.txt",
-    "assets/*.ttf",
-    "assets/*.woff",
-    "assets/*.woff2",
-    "assets/*.png",
-  ],
+  includeAssets: [],
+  workbox: {
+    globPatterns: ["**/*.{js,css,html,png,svg,ico,txt,woff,woff2,ttf}"],
+  },
   manifest: {
     name: "Senf.koeln",
     short_name: "Senf ",
