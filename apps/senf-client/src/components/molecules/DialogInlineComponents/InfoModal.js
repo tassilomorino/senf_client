@@ -63,6 +63,13 @@ const CardInnerWrapper = styled.div`
   /* box-shadow: inset 0 -10px 10px -10px #000000; */
   position: relative;
 `;
+
+const FixedButtonWrapper = styled.div`
+  height: 0px;
+  position: sticky;
+  bottom: 0;
+  transform: translateY(-50px);
+`;
 const LowerWrapper = styled.div`
   position: relative;
   background-color: #fed957;
@@ -376,16 +383,20 @@ const InfoModal = ({
             {/* <Gradient /> */}
           </CardInnerWrapper>
           {infoOpen && (
-            <SubmitButton
-              text={openProjectRoom ? t("show_projectroom") : t("show_profile")}
-              handleButtonClick={() => setInfoOpen(false)}
-              zIndex="999"
-              position="absolute"
-              bottom="10px"
-              backgroundColor="#353535"
-              textColor="white"
-              margin="0 0 0 0"
-            />
+            <FixedButtonWrapper>
+              <SubmitButton
+                text={
+                  openProjectRoom ? t("show_projectroom") : t("show_profile")
+                }
+                handleButtonClick={() => setInfoOpen(false)}
+                zIndex="999"
+                position="relative"
+                bottom="10px"
+                backgroundColor="#353535"
+                textColor="white"
+                margin="0 0 0 0"
+              />
+            </FixedButtonWrapper>
           )}
         </Card>
       </React.Fragment>
