@@ -42,6 +42,7 @@
     "analyze": "source-map-explorer '../../dist/apps/senf-monitoring/static/js/*.js'",
     "serve": "npm start",
     "start": "vite",
+    "preview": "vite preview",
     "start:silent": "BROWSER=none PORT=3000 craco start",
     "build": "node ./update-build.js && vite build",
     "cy:open": "cypress open",
@@ -75,7 +76,8 @@
     "start-server-and-test": "^1.13.1",
     "tsconfig-paths-webpack-plugin": "^3.5.2",
     "vite": "^2.8.4",
+    "vite-plugin-pwa": "^0.11.13",
     "vite-react-jsx": "^1.1.2"
   },
-  "buildDate": 1645547073858
+  "buildDate": 1645612245854
 }
