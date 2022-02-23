@@ -100,7 +100,7 @@ const App = () => {
 
   return (
     <>
-      {process.env.VITE_NO_CRAWL && (
+      {import.meta.env.VITE_NO_CRAWL && (
         /* only for senf-monitoring-test.netlify.app */
         <Helmet>
           <meta name="robots" content="noindex" />
