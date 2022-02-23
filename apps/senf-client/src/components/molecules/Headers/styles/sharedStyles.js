@@ -6,7 +6,7 @@ export const FixedWrapper = styled.div`
   z-index: 999;
   position: fixed;
 
-  height: 50px;
+  height: ${(props) => (props.infoOpen ? "70px" : "50px")};
   width: 100%;
   margin: 10px 10px 0px 10px;
   top: 0px;
@@ -28,7 +28,7 @@ export const FixedWrapper = styled.div`
 export const InnerWrapper = styled.div`
   position: ${(props) => (props.isMobileCustom ? "fixed" : "absolute")};
   width: calc(100% - 20px);
-  height: 50px;
+  height: ${(props) => (props.infoOpen ? "70px" : "50px")};
   top: 0px;
   transition: 0.2s;
 

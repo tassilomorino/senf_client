@@ -41,7 +41,7 @@ const Card = styled.div`
       : props.contact || props.weblink
       ? "650px"
       : "600px"}; */
-  max-height: ${(props) => (props.infoOpen ? "calc(100% - 20px)" : "0px")};
+  max-height: ${(props) => (props.infoOpen ? "calc(100% - 40px)" : "0px")};
   transition: 0.5s;
   overflow: scroll;
   background-color: rgb(255, 255, 255, 0.6);
