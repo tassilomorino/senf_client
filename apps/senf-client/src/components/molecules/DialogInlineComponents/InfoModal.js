@@ -284,10 +284,6 @@ const InfoModal = ({
               </StyledText>
             )}
 
-            {/* <StyledH3 textAlign="center" margin="0px 0px 5px 0px">
-          Kontakt
-        </StyledH3> */}
-
             <LowerWrapper
               weblink={weblink}
               contact={contact}
