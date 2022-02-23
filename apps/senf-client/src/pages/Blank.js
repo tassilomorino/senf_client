@@ -1,7 +1,7 @@
 /** @format */
 
 import React from "react";
-
+import { Button } from "senf-atomic-design-system";
 const Blank = () => {
   return (
     <div
@@ -18,7 +18,17 @@ const Blank = () => {
         justifyContent: "content",
         textAlign: "center",
       }}
-    ></div>
+    >
+      <Button
+        handleButtonClick={() => alert("hi")}
+        size="large"
+        text={"hi"}
+        zIndex="999"
+        backgroundColor="#fed957"
+        width="50px"
+        textColor="#353535"
+      />
+    </div>
   );
 };
 
