@@ -15,50 +15,28 @@ import {
   stateCreateOrganizationsFunc,
 } from "../../../redux/actions/organizationActions";
 import { StyledH2, StyledImg, StyledText } from "../../../styles/GlobalStyle";
-import organizationTypes from "../../../data/organizationTypes";
+import setIconByOrganizationType from "../../../data/setIconByOrganizationType";
 
 const Wrapper = styled.div`
-  width: 200px;
-  height: 200px;
-  max-width: calc(50% - 20px);
-  z-index: 9;
   float: left;
-  position: relative;
-  animation: ${(props) => props.animation};
-  overflow: hidden;
-  border-radius: 25px;
-  background-color: white;
-  margin: 10px;
-  padding: 0;
-
-  /* width: 100%;
-  height: 0;
-  z-index: 9;
-  float: left;
-  position: relative;
-  animation: ${(props) => props.animation};
-  overflow: hidden;
-  border-radius: 25px;
-  background-color: white;
-  margin: 0;
-  padding: 0;
-  padding-bottom: calc(100% + 60px); */
-
-  /* display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  width: calc(100% - 20px);
-  margin-left: 10px;
-  margin-bottom: 10px;
-  height: 130px;
+  margin: 10px 0px 0px 10px;
   overflow: hidden;
 
-  background-color: #ffffff;
-  box-shadow: 0px 4px 4px rgba(161, 117, 0, 0.1);
-  border-radius: 18px; */
+  position: relative;
+  box-sizing: border-box;
+
+  width: 178px;
+  height: auto;
+  box-shadow: 0px 12px 18px -8px rgba(186, 160, 79, 0.2),
+    0px -4px 10px 4px rgba(255, 255, 255, 0.2);
+  background-color: #fcfbf8;
+  border-radius: 18px;
+  border: 2px solid #ffffff;
   animation: OrganizationCardAnimation 0.8s;
+
+  @media (max-width: 768px) {
+    width: calc(50% - 15px);
+  }
 
   @keyframes OrganizationCardAnimation {
     0% {
@@ -73,36 +51,106 @@ const Wrapper = styled.div`
 `;
 
 const LogoWrapper = styled.div`
-  position: absolute;
+  /* position: absolute;
   width: calc(100% - 20px);
   height: calc(100% - 60px);
   margin: 10px;
   flex: none;
   border-radius: 18px;
-  overflow: hidden;
-`;
-
-const OrganizationType = styled.h4`
-  position: absolute;
-  height: 16px;
-  left: 154px;
-  right: 10px;
-  top: 6px;
-
-  /* identical to box height, or 114% */
-
-  display: flex;
-  align-items: center;
-
-  color: rgba(0, 0, 0, 0.5);
-`;
-
-const Title = styled.h2`
-  position: absolute;
-  height: 22px;
-  left: 50%;
+  overflow: hidden; */
+  position: relative;
+  margin-top: 10px;
+  margin-left: 50%;
   transform: translateX(-50%);
-  bottom: 15px;
+  overflow: hidden;
+  box-sizing: border-box;
+  width: calc(100% - 20px);
+  padding-bottom: auto;
+  aspect-ratio: 1;
+  background-color: #ffffff;
+  overflow: visible;
+  border-radius: 10px;
+  border: 1px solid rgba(195, 186, 162, 0.2);
+`;
+
+const Thumbnail = styled.div`
+  width: calc(100% - 20px);
+  height: auto;
+  aspect-ratio: 1;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  margin-top: 10px;
+  overflow: visible;
+  background-image: url(${(props) => props.logo});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 10px;
+`;
+
+const LogoPlacer = styled.div`
+  box-sizing: border-box;
+  width: 28px;
+  height: 28px;
+  box-shadow: 0px 6px 8px -1px rgba(186, 160, 79, 0.2),
+    0px -2px 5px 2px rgba(255, 255, 255, 0.2);
+  background-color: #faf8f3;
+  overflow: visible;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  margin: 134px 134px 69px 16px;
+  position: absolute;
+  bottom: 0;
+
+  @media (max-width: 368px) {
+    top: -32px;
+  }
+`;
+
+const Icon = styled.div`
+  margin: 5px;
+`;
+
+const Title = styled.h3`
+  width: 146px;
+  height: 24px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow: hidden;
+  font-weight: 500;
+  font-style: normal;
+  font-family: "Nunito", serif;
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 16px;
+  letter-spacing: 0px;
+  line-height: 1.5;
+  text-align: left;
+
+  top: 0;
+  position: relative;
+  margin: 8px 16px 0px 16px;
+`;
+
+const SubTitle = styled.div`
+  height: auto; /* 18px */
+  width: auto;
+  white-space: nowrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow: hidden;
+  font-weight: 500;
+  font-style: normal;
+  font-family: "Nunito", serif;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 14px;
+  letter-spacing: 0px;
+  line-height: 1.3;
+  text-align: left;
+  margin: 0px 0px 12px 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const OrganizationCard = (props) => {
@@ -116,8 +164,11 @@ export const OrganizationCard = (props) => {
       organizationType,
     },
   } = props;
+  const thisOrganizationId = organizationId;
 
   const user = useSelector((state) => state.user);
+  const projects = useSelector((state) => state.data.projects);
+
   const dispatch = useDispatch();
 
   const handleEdit = () => {
@@ -130,6 +181,10 @@ export const OrganizationCard = (props) => {
   const handleOpenOrganization = () => {
     dispatch(openOrganizationFunc(true, organizationId));
   };
+
+  const projectRoomsSize = projects?.filter(
+    ({ organizationId }) => organizationId === thisOrganizationId
+  ).length;
 
   return (
     <Wrapper>
@@ -149,18 +204,17 @@ export const OrganizationCard = (props) => {
         />
       )}
       <LogoWrapper>
-        <StyledImg src={imgUrl} width="100%" alt="profile" />
+        <Thumbnail logo={imgUrl} width="100%" alt="profile" />
       </LogoWrapper>
-      {/* <OrganizationType>{organizationType}</OrganizationType> */}
 
-      <Title>
-        <StyledH2 fontWeight="900">{title}</StyledH2>
-      </Title>
-      {/* <Summary>
-        <StyledText>
-          Kurzbeschreibung unserer tolllen Organisation und was wir machen.
-        </StyledText>
-      </Summary> */}
+      <LogoPlacer>
+        <Icon>{setIconByOrganizationType(organizationType)}</Icon>
+      </LogoPlacer>
+      <Title>{title}</Title>
+      <SubTitle>
+        {projectRoomsSize}{" "}
+        {projectRoomsSize === 1 ? "aktiver Projektraum" : "aktive Projekträume"}
+      </SubTitle>
     </Wrapper>
   );
 };

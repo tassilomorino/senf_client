@@ -16,7 +16,6 @@ import AddIcon from "../../../images/icons/plus_white.png";
 import { setSwipePositionUp } from "../../../redux/actions/UiActions";
 import Searchbar from "../../atoms/Searchbar/Searchbar";
 import { openCreateProjectRoomFunc } from "../../../redux/actions/projectActions";
-import { stateCreateOrganizationsFunc } from "../../../redux/actions/organizationActions";
 import CustomSelect from "../../atoms/Selects/CustomSelect";
 
 const Wrapper = styled.div`
@@ -106,7 +105,6 @@ const Toolbar = ({
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
 
   const setSearch = () => {
     setSearchOpen(!searchOpen);
@@ -114,34 +112,6 @@ const Toolbar = ({
     if (isMobileCustom) {
       dispatch(setSwipePositionUp());
     }
-  };
-
-  const openCreateProjectRoom = () => {
-    dispatch(openCreateProjectRoomFunc(true));
-  };
-
-  const openRequestProjectRoom = () => {
-    var link =
-      "mailto:dein@senf.koeln" + "?subject=" + escape("Projektraum-Anfrage");
-    // +
-    // "&body=" +
-    // escape(
-    //   "Projektraum-Titel:" +
-    //     "\n" +
-    //     "\n" +
-    //     "Worum geht's:" +
-    //     "\n" +
-    //     "\n" +
-    //     "Projektzeitraum:" +
-    //     "\n" +
-    //     "\n" +
-    //     "Logo + Cover-Bild:"
-    // );
-    window.location.href = link;
-  };
-
-  const openCreateOrganization = () => {
-    dispatch(stateCreateOrganizationsFunc(true));
   };
 
   return (
@@ -203,24 +173,6 @@ const Toolbar = ({
             alt=""
           />
         </SearchIconButton>
-        {swipeListType === "projectRoomOverview" ? (
-          <AddIconButton
-            onClick={
-              user?.organizationId?.length
-                ? openCreateProjectRoom
-                : openRequestProjectRoom
-            }
-          >
-            <img src={AddIcon} width="20px" style={{ marginLeft: "auto" }} />
-          </AddIconButton>
-        ) : (
-          swipeListType === "organizationOverview" &&
-          user.authenticated && (
-            <AddIconButton onClick={openCreateOrganization}>
-              <img src={AddIcon} width="20px" style={{ marginLeft: "auto" }} />
-            </AddIconButton>
-          )
-        )}
 
         {isMobileCustom && <Background onClick={handleClickSwipe} />}
         {searchOpen && (

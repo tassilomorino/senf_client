@@ -25,6 +25,8 @@ import Tabs from "../../atoms/Tabs/Tabs";
 import { usePrevious } from "apps/senf-client/src/hooks/usePrevious";
 import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
+import DashedButton from "../../atoms/CustomButtons/DashedButton";
+import { stateCreateOrganizationsFunc } from "../../../redux/actions/organizationActions";
 
 const DragWrapper = styled(animated.div)`
   overscroll-behavior: contain;
@@ -74,11 +76,13 @@ const InnerWrapper = styled.div`
   position: relative;
   @media (min-width: 768px) {
     display: flex;
+    height: calc(100% - 140px);
   }
 `;
 
 const FlexWrapper = styled.div`
   display: flex;
+  padding-bottom: 200px;
 `;
 
 const HeaderWrapper = styled(animated.div)`
@@ -104,6 +108,18 @@ const NoIdeasYet = styled.div`
   text-align: center;
 `;
 
+const ButtonWrapper = styled.div`
+  width: calc(100% - 20px);
+  margin: 0px 10px;
+
+  @media (min-width: 768px) {
+    width: 300px;
+    position: fixed;
+    top: 55px;
+    right: 60px;
+  }
+`;
+
 const OrganizationsPage = ({
   setOpenOrganizationsPage,
   order,
@@ -118,7 +134,8 @@ const OrganizationsPage = ({
   const { t } = useTranslation();
   const [searchOpen, setSearchOpen] = useState(false);
   const [open, setOpen] = useState(false);
-
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   useEffect(() => {
     setOpen(true);
   }, []);
@@ -226,6 +243,10 @@ const OrganizationsPage = ({
     }
   };
 
+  const openCreateOrganization = () => {
+    dispatch(stateCreateOrganizationsFunc(true));
+  };
+
   return !loading && isMobileCustom ? (
     <React.Fragment>
       <ClickBackground onClick={setClose} />
@@ -287,6 +308,20 @@ const OrganizationsPage = ({
               searchTerm={searchTerm}
             />
           )}
+
+          <ButtonWrapper>
+            <DashedButton
+              handleButtonClick={
+                user.authenticated
+                  ? openCreateOrganization
+                  : () =>
+                      alert("bitte melde dich erst mit deinem Senf-Profil an")
+              }
+            >
+              Organisationsprofil anlegen
+            </DashedButton>
+          </ButtonWrapper>
+
           <FlexWrapper isMobileCustom={isMobileCustom}>
             {!loading ? (
               <InfiniteScroll
@@ -346,23 +381,20 @@ const OrganizationsPage = ({
               searchTerm={searchTerm}
             />
           )}
+          <ButtonWrapper>
+            <DashedButton
+              handleButtonClick={
+                user.authenticated
+                  ? openCreateOrganization
+                  : () =>
+                      alert("bitte melde dich erst mit deinem Senf-Profil an")
+              }
+            >
+              Organisationsprofil anlegen
+            </DashedButton>
+          </ButtonWrapper>
         </HeaderWrapper>
         <InnerWrapper isMobileCustom={isMobileCustom}>
-          {isMobileCustom && (
-            <Toolbar
-              swipeListType="organizationOverview"
-              type="standalone"
-              loading={loading}
-              handleDropdown={handleDropdown}
-              dropdown={dropdown}
-              dataFinalLength={dataFinalLength}
-              setSearchOpen={setSearchOpen}
-              searchOpen={searchOpen}
-              setSearchTerm={setSearchTerm}
-              searchTerm={searchTerm}
-            />
-          )}
-
           {!loading ? (
             <InfiniteScroll
               loadMore={() => loadMore()}

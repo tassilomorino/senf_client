@@ -33,6 +33,7 @@ import {
 import {
   handleTopicSelectorRedux,
   setSwipePositionDown,
+  setSwipePositionUp,
 } from "../../redux/actions/UiActions";
 
 //Components
@@ -262,6 +263,7 @@ const Main = () => {
           setOrder(2);
         } else if (window.location.pathname === "/organizations") {
           setOrder(2);
+          dispatch(setSwipePositionUp());
           setOpenOrganizationsPage(true);
         } else if (window.location.pathname === "/insights") {
           // setOrder(4);
