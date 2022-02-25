@@ -169,7 +169,7 @@ const ProjectDialog = ({
       {(!infoOpen || (!isMobileCustom && !loadingProjectRoom)) && (
         <SwipeList
           type="projectIdeas"
-          swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}
+          swipeListType="ideas"
           tabLabels={ProjectRoomTabData.map((item) => item.text).slice(
             0,
             TabSlicer

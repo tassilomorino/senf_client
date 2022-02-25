@@ -152,6 +152,7 @@ export const loadOrganizationData = (organizationId) => async (dispatch) => {
             ...doc.data(),
             projectRoomId: doc.id,
             imgUrl: projectRoomImage,
+            organizationType: doc.data().organizationType,
           });
           dispatch({ type: SET_ORGANIZATION, payload: organization });
           dispatch({ type: STOP_LOADING_DATA });

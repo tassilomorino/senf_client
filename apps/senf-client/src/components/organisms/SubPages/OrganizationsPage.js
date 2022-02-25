@@ -25,7 +25,7 @@ import Tabs from "../../atoms/Tabs/Tabs";
 import { usePrevious } from "apps/senf-client/src/hooks/usePrevious";
 import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
-import DashedButton from "../../atoms/CustomButtons/DashedButton";
+import NewButton from "../../atoms/CustomButtons/NewButton";
 import { stateCreateOrganizationsFunc } from "../../../redux/actions/organizationActions";
 
 const DragWrapper = styled(animated.div)`
@@ -310,7 +310,8 @@ const OrganizationsPage = ({
           )}
 
           <ButtonWrapper>
-            <DashedButton
+            <NewButton
+              borderType="dashed"
               handleButtonClick={
                 user.authenticated
                   ? openCreateOrganization
@@ -319,7 +320,7 @@ const OrganizationsPage = ({
               }
             >
               Organisationsprofil anlegen
-            </DashedButton>
+            </NewButton>
           </ButtonWrapper>
 
           <FlexWrapper isMobileCustom={isMobileCustom}>
@@ -382,7 +383,8 @@ const OrganizationsPage = ({
             />
           )}
           <ButtonWrapper>
-            <DashedButton
+            <NewButton
+              borderType="dashed"
               handleButtonClick={
                 user.authenticated
                   ? openCreateOrganization
@@ -391,7 +393,7 @@ const OrganizationsPage = ({
               }
             >
               Organisationsprofil anlegen
-            </DashedButton>
+            </NewButton>
           </ButtonWrapper>
         </HeaderWrapper>
         <InnerWrapper isMobileCustom={isMobileCustom}>

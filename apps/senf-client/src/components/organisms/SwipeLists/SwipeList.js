@@ -25,7 +25,7 @@ import Wave from "../../atoms/Backgrounds/Wave";
 import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 import { StyledText } from "apps/senf-client/src/styles/GlobalStyle";
 import { openCreateProjectRoomFunc } from "apps/senf-client/src/redux/actions/projectActions";
-import DashedButton from "../../atoms/CustomButtons/DashedButton";
+import NewButton from "../../atoms/CustomButtons/NewButton";
 
 const DragWrapper = styled(animated.div)`
   overscroll-behavior: contain;
@@ -505,7 +505,8 @@ const SwipeList = ({
             {swipeListType === "projectRoomOverview" &&
               swipePosition === "top" && (
                 <ButtonWrapper>
-                  <DashedButton
+                  <NewButton
+                    borderType="dashed"
                     handleButtonClick={
                       user?.organizationId?.length
                         ? openCreateProjectRoom
@@ -513,7 +514,7 @@ const SwipeList = ({
                     }
                   >
                     Projektraum anlegen
-                  </DashedButton>
+                  </NewButton>
                 </ButtonWrapper>
               )}
 
@@ -561,7 +562,8 @@ const SwipeList = ({
 
           {swipeListType === "projectRoomOverview" && (
             <ButtonWrapper>
-              <DashedButton
+              <NewButton
+                borderType="dashed"
                 handleButtonClick={
                   user?.organizationId?.length
                     ? openCreateProjectRoom
@@ -569,7 +571,7 @@ const SwipeList = ({
                 }
               >
                 Projektraum anlegen
-              </DashedButton>
+              </NewButton>
             </ButtonWrapper>
           )}
 
