@@ -64,7 +64,6 @@ const ProjectDialog = ({
   }, [openProjectRoom]);
 
   const handleClose = useCallback(() => {
-    console.log(initialMapViewport);
     dispatch(openProjectRoomFunc(null, false));
     dispatch(clearErrors());
     dispatch(setMapViewport(initialMapViewport));

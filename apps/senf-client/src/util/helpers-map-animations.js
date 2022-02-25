@@ -8,9 +8,9 @@ import {
   setInitialMapViewport,
   setMapBounds,
   setMapViewport,
-} from "./redux/actions/mapActions";
-import { isMobileCustom } from "./util/customDeviceDetect";
-import store from "./redux/store";
+} from "../redux/actions/mapActions";
+import { isMobileCustom } from "./customDeviceDetect";
+import store from "../redux/store";
 
 export const setViewport = () => {
   window.store = store;
@@ -71,6 +71,5 @@ export const setBeforeMapbounds = () => {
         : 6.958725744885521 + 1,
   };
 
-  console.log(bounds, "localStorage?:", localStorage.getItem("longitude"));
   store.dispatch(setMapBounds(bounds));
 };

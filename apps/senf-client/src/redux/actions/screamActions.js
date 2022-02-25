@@ -52,6 +52,7 @@ export const getScreams = (mapViewport) => async (dispatch) => {
           Stadtteil: doc.data().Stadtteil,
           projectRoomId: doc.data().projectRoomId,
           color: setColorByTopic(doc.data().Thema),
+          locationHeader: doc.data().locationHeader,
         };
 
         screams.push(docData);

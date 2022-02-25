@@ -27,7 +27,7 @@ export const Wrapper = styled.div`
     z-index: 90;
     top: 0;
     position: fixed;
-    transition: 0.5s;
+    transition: 0.3s;
   }
 
   /* @keyframes OrganizationPageAnimation {

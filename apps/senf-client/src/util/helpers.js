@@ -1,6 +1,8 @@
 /* helper functions for the application */
 
 import moment from "moment";
+import _ from "lodash";
+
 /**
  * Function returning the build date(as per provided epoch)
  * @param epoch Time in milliseconds
@@ -44,4 +46,55 @@ export function truncateString(str, num) {
     return str;
   }
   return str.slice(0, num) + "...";
+}
+
+export function search(items, searchTerm, variables) {
+  return items.filter((val) => {
+    if (searchTerm === "") {
+      return val;
+    } else if (
+      val[variables[0]]?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val[variables[1]]?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val[variables[2]]?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val[variables[3]]?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val[variables[4]]?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val[variables[5]]?.toLowerCase().includes(searchTerm.toLowerCase())
+    ) {
+      return val;
+    }
+  });
+}
+
+export function sort(items, dropdown) {
+  return dropdown === "newest"
+    ? _.orderBy(items, "createdAt", "desc")
+    : dropdown === "hottest"
+    ? _.orderBy(items, "likeCount", "desc")
+    : dropdown === "aToZ"
+    ? _.orderBy(items, [(pr) => pr.title.toLowerCase()], ["asc"])
+    : _.orderBy(items, [(pr) => pr.title.toLowerCase()], ["desc"]);
+}
+
+export function filterByTagFilter(items, selectedTags, tagsType) {
+  if (tagsType === "Thema") {
+    return items.filter(({ Thema }) => selectedTags.includes(Thema));
+  } else {
+    return items.filter(({ organizationType }) =>
+      selectedTags.includes(organizationType)
+    );
+  }
+}
+
+export function filterByStatus(items) {
+  return items.filter(({ status }) => status === "None");
+}
+
+export function filterByGeodata(items, mapBounds) {
+  return items.filter(
+    ({ lat, long }) =>
+      lat <= mapBounds?.latitude1 &&
+      lat >= mapBounds?.latitude2 &&
+      long >= mapBounds?.longitude2 &&
+      long <= mapBounds?.longitude3
+  );
 }

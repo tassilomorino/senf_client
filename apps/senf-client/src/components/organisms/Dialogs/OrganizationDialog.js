@@ -32,16 +32,18 @@ import NewButton from "../../atoms/CustomButtons/NewButton";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import Loader from "../../atoms/Backgrounds/Loader";
 import List from "../../molecules/List/List";
+import { SVGWrapper } from "../../molecules/Headers/styles/sharedStyles";
 
 export const Wrapper = styled.div`
-  width: 100vw;
+  width: 100%;
   height: 100%;
   margin-top: 0vh;
   z-index: 99;
   top: 0;
   position: fixed;
   pointer-events: all;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
   background: rgb(254, 217, 87);
   background: linear-gradient(
     180deg,
@@ -54,9 +56,10 @@ export const Wrapper = styled.div`
 
   @media (min-width: 768px) {
     margin-left: 0px;
-    width: calc(100vw - 200px);
+    width: 400px;
     height: 100vh;
     overflow-y: scroll;
+    overflow-x: hidden;
     z-index: 90;
     top: 0;
     position: fixed;
@@ -295,21 +298,24 @@ const OrganizationDialog = ({
         handleButtonClick={() => handleClose()}
         zIndex={99}
       />
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="390"
-        height="466"
-        style={{
-          position: "absolute",
-          zIndex: -1,
-          marginTop: "50px",
-        }}
-      >
-        <path
-          d="M 390 465.5 L 0 465.5 L 0 72.799 C 0 72.799 36.092 37.746 111.8 47.312 C 187.508 56.878 219.827 63.443 257.92 54.074 C 296.013 44.705 304.708 18.224 331.24 6.221 C 357.772 -5.781 390 6.221 390 6.221 Z"
-          fill="rgb(249, 241, 215)"
-        ></path>
-      </svg>
+      <SVGWrapper>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="100%"
+          height="466"
+          style={{
+            position: "absolute",
+            zIndex: -1,
+            marginTop: "50px",
+            transform: "scale(1.06)",
+          }}
+        >
+          <path
+            d="M 390 465.5 L 0 465.5 L 0 72.799 C 0 72.799 36.092 37.746 111.8 47.312 C 187.508 56.878 219.827 63.443 257.92 54.074 C 296.013 44.705 304.708 18.224 331.24 6.221 C 357.772 -5.781 390 6.221 390 6.221 Z"
+            fill="rgb(249, 241, 215)"
+          ></path>
+        </svg>
+      </SVGWrapper>
       <LogoWrapper>
         <Logo imgUrl={organization.imgUrl} />
       </LogoWrapper>
@@ -351,16 +357,18 @@ const OrganizationDialog = ({
         />
       </ListWrapper>
 
-      {!isMobileCustom && (
+      {/* {!isMobileCustom && (
         <CalendarWrapper>
           <CalendarComponent
             googleCalendarId={organization?.googleCalendarId}
           />
         </CalendarWrapper>
-      )}
+      )} */}
     </Wrapper>
   ) : (
-    <Loader> </Loader>
+    <Wrapper>
+      <Loader />
+    </Wrapper>
   );
 };
 
