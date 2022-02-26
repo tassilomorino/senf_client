@@ -20,7 +20,6 @@ import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import TagsFilter from "../../molecules/Filters/TagsFilter";
 import Tabs from "../../atoms/Tabs/Tabs";
-import { MenuData } from "../../../data/MenuData";
 import Wave from "../../atoms/Backgrounds/Wave";
 import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 import { StyledText } from "apps/senf-client/src/styles/GlobalStyle";
