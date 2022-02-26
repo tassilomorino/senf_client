@@ -196,7 +196,7 @@ const MapDialog = ({
       const [minLng, minLat, maxLng, maxLat] = bbox(data);
 
       const size = maxLat - minLat + maxLng - minLng;
-      console.log(size);
+
       const newZoom =
         size < 0.005
           ? 17

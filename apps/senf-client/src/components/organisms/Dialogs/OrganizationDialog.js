@@ -60,10 +60,12 @@ export const Wrapper = styled.div`
     height: 100vh;
     overflow-y: scroll;
     overflow-x: hidden;
-    z-index: 90;
+    z-index: 999990;
     top: 0;
     position: fixed;
     transition: 0.5s;
+    left: calc(100vw - 400px);
+    box-shadow: 0 8px 30px -12px rgba(0, 0, 0, 0.9);
   }
 
   /* @keyframes OrganizationPageAnimation {
@@ -209,6 +211,7 @@ const OrganizationDialog = ({
   projectsData,
   loadingProjects,
   dataFinalMap,
+  setOpenOrganizationsPage,
 }) => {
   const { t } = useTranslation();
   const [path, setPath] = useState("");
@@ -233,6 +236,7 @@ const OrganizationDialog = ({
 
   const handleClose = () => {
     dispatch(openOrganizationFunc(false));
+    setOpenOrganizationsPage(true);
     dispatch(clearErrors());
   };
 
@@ -291,7 +295,7 @@ const OrganizationDialog = ({
   return openOrganization && organization ? (
     <Wrapper>
       <CustomIconButton
-        name="ArrowLeft"
+        name="Close"
         position="fixed"
         margin="10px"
         backgroundColor="#FFF0BC"
@@ -366,9 +370,7 @@ const OrganizationDialog = ({
       )} */}
     </Wrapper>
   ) : (
-    <Wrapper>
-      <Loader />
-    </Wrapper>
+    <Loader left="calc(100vw - 400px)" width="400px" />
   );
 };
 
