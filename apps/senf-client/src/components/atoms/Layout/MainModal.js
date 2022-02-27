@@ -36,7 +36,7 @@ const InnerWrapper = styled.div`
   align-items: space-around;
 
   z-index: 99992;
-  overflow: hidden;
+  overflow: scroll;
 `;
 
 const MainModal = ({ handleButtonClick, children, zIndex }) => {

@@ -75,14 +75,9 @@ export const stateCreateOrganizationsFunc = (state) => async (dispatch) => {
 export const openOrganizationFunc =
   (state, organizationId) => async (dispatch) => {
     if (state === true) {
-      dispatch({ type: LOADING_DATA });
       dispatch({
         type: OPEN_ORGANIZATION,
-        payload: null,
-      });
-      dispatch({
-        type: OPEN_ORGANIZATION,
-        payload: state,
+        payload: true,
       });
       dispatch(loadOrganizationData(organizationId));
       dispatch(closeScream());
@@ -90,10 +85,9 @@ export const openOrganizationFunc =
       window.history.pushState(null, null, newPath);
     } else {
       dispatch({ type: SET_ORGANIZATION, payload: null });
-
       dispatch({
         type: OPEN_ORGANIZATION,
-        payload: null,
+        payload: false,
       });
       window.history.pushState(null, null, "/organizations");
     }
@@ -104,6 +98,12 @@ export const loadOrganizationData = (organizationId) => async (dispatch) => {
   const storageRef = firebase.storage().ref();
   const ref = await db.collection("organizations").doc(organizationId).get();
 
+  const organization = ref.data();
+  organization.organizationId = ref.id;
+  organization.projectRooms = [];
+
+  dispatch({ type: SET_ORGANIZATION, payload: organization });
+
   if (!ref.exists) {
     console.log("No such document!");
   } else {
@@ -111,13 +111,10 @@ export const loadOrganizationData = (organizationId) => async (dispatch) => {
       .child(`/organizationsData/${organizationId}/logo/logo`)
       .getDownloadURL()
       .then((organizationImage) => {
-        const organization = ref.data();
         organization.imgUrl = organizationImage;
-        organization.organizationId = ref.id;
-        organization.projectRooms = [];
-
         dispatch({ type: SET_ORGANIZATION, payload: organization });
-
+      })
+      .then(() => {
         dispatch(loadOrganizationProjectRooms(organizationId, organization));
       });
   }

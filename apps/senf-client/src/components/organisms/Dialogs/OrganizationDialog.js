@@ -1,6 +1,8 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
+
 import { useDispatch, useSelector } from "react-redux";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 // Redux stuff
@@ -33,6 +35,9 @@ import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import Loader from "../../atoms/Backgrounds/Loader";
 import List from "../../molecules/List/List";
 import { SVGWrapper } from "../../molecules/Headers/styles/sharedStyles";
+import MainModal from "../../atoms/Layout/MainModal";
+import Tabs from "../../atoms/Tabs/Tabs";
+import { OrganizationTabData } from "apps/senf-client/src/data/OrganizationTabData";
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -60,7 +65,7 @@ export const Wrapper = styled.div`
     height: 100vh;
     overflow-y: scroll;
     overflow-x: hidden;
-    z-index: 999990;
+    z-index: 990;
     top: 0;
     position: fixed;
     transition: 0.5s;
@@ -81,12 +86,13 @@ export const Wrapper = styled.div`
 `;
 
 const CalendarWrapper = styled.div`
-  position: absolute;
+  position: fixed;
   padding-top: 50px;
   top: 0;
-  right: 0;
+  right: 400px;
   background-color: #fed957;
   border-left: 2px solid white;
+  z-index: 999;
 `;
 
 const InfoWidget = styled.div`
@@ -214,6 +220,11 @@ const OrganizationDialog = ({
   setOpenOrganizationsPage,
 }) => {
   const { t } = useTranslation();
+  const [infoOpen, setInfoOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
+  const [calendarOpen, setCalendarOpen] = useState(false);
+  const [faqOpen, setFaqOpen] = useState(false);
+
   const [path, setPath] = useState("");
   const [order, setOrder] = useState(1);
   const [dropdown, setDropdown] = useState("newest");
@@ -294,6 +305,59 @@ const OrganizationDialog = ({
 
   return openOrganization && organization ? (
     <Wrapper>
+      {ReactDOM.createPortal(
+        <React.Fragment>
+          {contactOpen && (
+            <MainModal handleButtonClick={() => setContactOpen(false)}>
+              <StyledH2
+                fontWeight="900"
+                margin="15px 0px 0px 0px"
+                textAlign="center"
+              >
+                Kontakt
+              </StyledH2>
+              <br />
+              <StyledText
+                margin="0px 15px 15px 15px"
+                marginLeft="15px"
+                textAlign="center"
+              >
+                {organization?.contact}
+              </StyledText>
+              <StyledText
+                margin="0px 15px 15px 15px"
+                marginLeft="15px"
+                textAlign="center"
+              >
+                {organization?.weblink}
+              </StyledText>
+            </MainModal>
+          )}
+        </React.Fragment>,
+        document.getElementById("portal-root-modal")
+      )}
+
+      {ReactDOM.createPortal(
+        <React.Fragment>
+          {infoOpen && (
+            <MainModal handleButtonClick={() => setInfoOpen(false)}>
+              <StyledH2
+                fontWeight="900"
+                margin="15px 0px 0px 0px"
+                textAlign="center"
+              >
+                Informationen
+              </StyledH2>
+              <br />
+              <StyledText margin="0px 15px 15px 15px" marginLeft="15px">
+                {organization?.description}
+              </StyledText>
+            </MainModal>
+          )}
+        </React.Fragment>,
+        document.getElementById("portal-root-modal")
+      )}
+
       <CustomIconButton
         name="Close"
         position="fixed"
@@ -333,12 +397,26 @@ const OrganizationDialog = ({
       </FlexBox>
 
       <FlexBox>
-        <NewButton>Kontakt</NewButton>
-        <NewButton margin="0px 10px 0px 10px">Kalender</NewButton>
-        <NewButton>FAQ</NewButton>
+        <NewButton handleButtonClick={() => setContactOpen(true)}>
+          Kontakt
+        </NewButton>
+        {/* <NewButton
+          margin="0px 10px 0px 10px"
+          handleButtonClick={() => setCalendarOpen(true)}
+        >
+          Kalender
+        </NewButton> */}
+        {organization.faq && (
+          <NewButton
+            margin="0px 0px 0px 10px"
+            handleButtonClick={() => setFaqOpen(true)}
+          >
+            FAQ
+          </NewButton>
+        )}
       </FlexBox>
 
-      <InfoWidget>
+      <InfoWidget onClick={() => setInfoOpen(true)}>
         <StyledH2 fontWeight="700">Informationen </StyledH2>
         <StyledText>{organization?.description}</StyledText>
       </InfoWidget>
@@ -346,27 +424,46 @@ const OrganizationDialog = ({
       <Divider />
 
       <ListWrapper>
-        <StyledH2 fontWeight="700" margin="16px 24px 14px 24px">
-          Unsere Projekträume
-        </StyledH2>
-
-        <List
-          swipeListType="projectRoomOverview"
-          order={2}
-          loading={loading}
-          dropdown={dropdown}
-          dataFinal={dataFinal}
-          projectsData={projectsData}
-          handleClick={handleClick}
+        <Tabs
+          loading={false}
+          order={order}
+          tabLabels={
+            organization.calendar
+              ? OrganizationTabData.map((item) => item.text)
+              : OrganizationTabData.map((item) => item.text).slice(0, 1)
+          }
+          marginTop={"20px"}
+          marginBottom={"40px"}
+          handleClick={setOrder}
         />
-      </ListWrapper>
 
-      {/* {!isMobileCustom && (
-        <CalendarWrapper>
+        {order === 1 ? (
+          <List
+            swipeListType="projectRoomOverview"
+            order={2}
+            loading={loading}
+            dropdown={dropdown}
+            dataFinal={dataFinal}
+            projectsData={projectsData}
+            handleClick={handleClick}
+          />
+        ) : (
           <CalendarComponent
             googleCalendarId={organization?.googleCalendarId}
           />
-        </CalendarWrapper>
+        )}
+      </ListWrapper>
+      {/* {ReactDOM.createPortal(
+        <React.Fragment>
+          {!isMobileCustom && calendarOpen && (
+            <CalendarWrapper>
+              <CalendarComponent
+                googleCalendarId={organization?.googleCalendarId}
+              />
+            </CalendarWrapper>
+          )}
+        </React.Fragment>,
+        document.getElementById("portal-root-modal")
       )} */}
     </Wrapper>
   ) : (
