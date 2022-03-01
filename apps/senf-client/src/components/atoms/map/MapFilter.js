@@ -79,7 +79,6 @@ export const MapFilter = memo(({ viewport, mapRef }) => {
   const handleMapBoundsReset = () => {
     dispatch(setMapViewport(initialMapViewport));
     dispatch(setMapBounds(initialMapBounds));
-
     dispatch(closeScream());
   };
 

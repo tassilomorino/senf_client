@@ -75,10 +75,9 @@ export const stateCreateOrganizationsFunc = (state) => async (dispatch) => {
 export const openOrganizationFunc =
   (state, organizationId) => async (dispatch) => {
     if (state === true) {
-      dispatch({ type: LOADING_DATA });
       dispatch({
         type: OPEN_ORGANIZATION,
-        payload: state,
+        payload: true,
       });
       dispatch(loadOrganizationData(organizationId));
       dispatch(closeScream());
@@ -86,106 +85,105 @@ export const openOrganizationFunc =
       window.history.pushState(null, null, newPath);
     } else {
       dispatch({ type: SET_ORGANIZATION, payload: null });
-
       dispatch({
         type: OPEN_ORGANIZATION,
-        payload: null,
+        payload: false,
       });
       window.history.pushState(null, null, "/organizations");
     }
   };
 
 export const loadOrganizationData = (organizationId) => async (dispatch) => {
-  // dispatch({ type: LOADING_UI });
-
   const db = firebase.firestore();
   const storageRef = firebase.storage().ref();
-
   const ref = await db.collection("organizations").doc(organizationId).get();
 
-  const projectRoomsRef = await db
-    .collection("organizations")
-    .doc(organizationId)
-    .collection("projectRooms")
-    .where("status", "==", "active")
-    .orderBy("createdAt", "desc")
-    .get();
+  const organization = ref.data();
+  organization.organizationId = ref.id;
+  organization.projectRooms = [];
 
-  const archivedProjectRoomsRef = await db
-    .collection("organizations")
-    .doc(organizationId)
-    .collection("projectRooms")
-    .where("status", "==", "archived")
-    .orderBy("createdAt", "desc")
-    .get();
+  dispatch({ type: SET_ORGANIZATION, payload: organization });
 
   if (!ref.exists) {
     console.log("No such document!");
   } else {
-    const organization = ref.data();
-
     storageRef
-      .child(`/organizationsData/${ref.id}/logo/logo`)
+      .child(`/organizationsData/${organizationId}/logo/logo`)
       .getDownloadURL()
-      .then(onResolveOrg, onRejectOrg);
-
-    function onResolveOrg(organizationImage) {
-      organization.imgUrl = organizationImage;
-      organization.organizationId = ref.id;
-      organization.projectRooms = [];
-
-      if (!projectRoomsRef.exists) {
+      .then((organizationImage) => {
+        organization.imgUrl = organizationImage;
         dispatch({ type: SET_ORGANIZATION, payload: organization });
-        dispatch({ type: STOP_LOADING_DATA });
-      }
-
-      projectRoomsRef.docs.forEach((doc) => {
-        storageRef
-          .child(
-            `/organizationsData/${organization.organizationId}/${doc.id}/thumbnail`
-          )
-          .getDownloadURL()
-          .then(onResolvePr, onRejectPr);
-
-        function onResolvePr(projectRoomImage) {
-          organization.projectRooms.push({
-            ...doc.data(),
-            projectRoomId: doc.id,
-            imgUrl: projectRoomImage,
-          });
-          dispatch({ type: SET_ORGANIZATION, payload: organization });
-          dispatch({ type: STOP_LOADING_DATA });
-        }
-        function onRejectPr(error) {
-          console.log("error Pr");
-        }
+      })
+      .then(() => {
+        dispatch(loadOrganizationProjectRooms(organizationId, organization));
       });
-
-      archivedProjectRoomsRef.docs.forEach((doc) => {
-        storageRef
-          .child(
-            `/organizationsData/${organization.organizationId}/${doc.id}/thumbnail`
-          )
-          .getDownloadURL()
-          .then(onResolvePr, onRejectPr);
-
-        function onResolvePr(projectRoomImage) {
-          organization.projectRooms.push({
-            ...doc.data(),
-            projectRoomId: doc.id,
-            imgUrl: projectRoomImage,
-          });
-          dispatch({ type: SET_ORGANIZATION, payload: organization });
-          dispatch({ type: STOP_LOADING_DATA });
-        }
-        function onRejectPr(error) {
-          console.log("error Pr");
-        }
-      });
-    }
-
-    function onRejectOrg(error) {
-      console.log("error Org");
-    }
   }
 };
+
+export const loadOrganizationProjectRooms =
+  (organizationId, organization) => async (dispatch) => {
+    const db = firebase.firestore();
+    const storageRef = firebase.storage().ref();
+
+    const projectRoomsRef = await db
+      .collection("organizations")
+      .doc(organizationId)
+      .collection("projectRooms")
+      .where("status", "==", "active")
+      .orderBy("createdAt", "desc")
+      .get();
+    if (!projectRoomsRef.exists) {
+      console.log("no prs in loadOrganizationProjectRooms");
+    }
+
+    projectRoomsRef.docs.forEach((doc) => {
+      storageRef
+        .child(
+          `/organizationsData/${organization.organizationId}/${doc.id}/thumbnail`
+        )
+        .getDownloadURL()
+        .then(onResolvePr, onRejectPr);
+
+      function onResolvePr(projectRoomImage) {
+        organization.projectRooms.push({
+          ...doc.data(),
+          projectRoomId: doc.id,
+          imgUrl: projectRoomImage,
+          organizationType: doc.data().organizationType,
+        });
+        dispatch({ type: SET_ORGANIZATION, payload: organization });
+        // dispatch({ type: STOP_LOADING_DATA });
+      }
+      function onRejectPr(error) {
+        console.log("error Pr");
+      }
+    });
+  };
+
+/*   export const loadOrganizationProjectRoomsArchived =
+  (organizationId, organization) => async (dispatch) => {
+
+
+     archivedProjectRoomsRef.docs.forEach((doc) => {
+        storageRef
+          .child(
+            `/organizationsData/${organization.organizationId}/${doc.id}/thumbnail`
+          )
+          .getDownloadURL()
+          .then(onResolvePr, onRejectPr);
+
+        function onResolvePr(projectRoomImage) {
+          organization.projectRooms.push({
+            ...doc.data(),
+            projectRoomId: doc.id,
+            imgUrl: projectRoomImage,
+          });
+          dispatch({ type: SET_ORGANIZATION, payload: organization });
+          dispatch({ type: STOP_LOADING_DATA });
+        }
+        function onRejectPr(error) {
+          console.log("error Pr");
+        }
+      });
+  }
+ */

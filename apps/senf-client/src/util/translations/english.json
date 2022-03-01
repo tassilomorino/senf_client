@@ -34,9 +34,9 @@
   "aToZ_projectrooms": "A > Z Projectrooms",
   "zToA_projectrooms": "Z > A Projectrooms",
 
-  "newest_organizations": "Newest Organizations",
-  "aToZ_organizations": "A > Z Organizations",
-  "zToA_organizations": "Z > A Organizations",
+  "newest_organizations": "Newest",
+  "aToZ_organizations": "A > Z",
+  "zToA_organizations": "Z > A",
 
   "noMoreIdeas": "No further ideas",
   "noContentIdeas": "No ideas match the selected filters.",

@@ -21,13 +21,14 @@ export const Wrapper = styled.div`
 
   @media (min-width: 768px) {
     margin-left: 200px;
-    width: ${(props) => (props.order ? "calc(100vw - 200px)" : "400px")};
+    width: ${(props) => (props.order ? "calc(100vw - 610px)" : "400px")};
     height: 100vh;
     overflow-y: scroll;
     z-index: 90;
     top: 0;
     position: fixed;
-    transition: 0.5s;
+    transition: 0.3s;
+    box-shadow: 40px 8px 30px -12px rgba(0, 0, 0, 0.2);
   }
 
   /* @keyframes OrganizationPageAnimation {

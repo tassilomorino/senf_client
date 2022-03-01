@@ -64,7 +64,6 @@ const ProjectDialog = ({
   }, [openProjectRoom]);
 
   const handleClose = useCallback(() => {
-    console.log(initialMapViewport);
     dispatch(openProjectRoomFunc(null, false));
     dispatch(clearErrors());
     dispatch(setMapViewport(initialMapViewport));
@@ -169,7 +168,7 @@ const ProjectDialog = ({
       {(!infoOpen || (!isMobileCustom && !loadingProjectRoom)) && (
         <SwipeList
           type="projectIdeas"
-          swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}
+          swipeListType="ideas"
           tabLabels={ProjectRoomTabData.map((item) => item.text).slice(
             0,
             TabSlicer

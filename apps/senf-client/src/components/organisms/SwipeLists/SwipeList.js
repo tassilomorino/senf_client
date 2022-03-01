@@ -20,10 +20,11 @@ import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import TagsFilter from "../../molecules/Filters/TagsFilter";
 import Tabs from "../../atoms/Tabs/Tabs";
-import { MenuData } from "../../../data/MenuData";
 import Wave from "../../atoms/Backgrounds/Wave";
 import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 import { StyledText } from "apps/senf-client/src/styles/GlobalStyle";
+import { openCreateProjectRoomFunc } from "apps/senf-client/src/redux/actions/projectActions";
+import NewButton from "../../atoms/CustomButtons/NewButton";
 
 const DragWrapper = styled(animated.div)`
   overscroll-behavior: contain;
@@ -143,6 +144,11 @@ const DesktopTabWrapper = styled.div`
   z-index: 99;
 `;
 
+const ButtonWrapper = styled.div`
+  width: calc(100% - 20px);
+  margin: 0px 10px 10px 10px;
+`;
+
 const SwipeList = ({
   swipeListType,
   type,
@@ -168,6 +174,32 @@ const SwipeList = ({
   const [searchOpen, setSearchOpen] = useState(false);
   const mapBounds = useSelector((state) => state.data.mapBounds);
   const swipePosition = useSelector((state) => state.UI.swipePosition);
+
+  const user = useSelector((state) => state.user);
+
+  const openCreateProjectRoom = () => {
+    dispatch(openCreateProjectRoomFunc(true));
+  };
+
+  const openRequestProjectRoom = () => {
+    var link =
+      "mailto:dein@senf.koeln" + "?subject=" + escape("Projektraum-Anfrage");
+    // +
+    // "&body=" +
+    // escape(
+    //   "Projektraum-Titel:" +
+    //     "\n" +
+    //     "\n" +
+    //     "Worum geht's:" +
+    //     "\n" +
+    //     "\n" +
+    //     "Projektzeitraum:" +
+    //     "\n" +
+    //     "\n" +
+    //     "Logo + Cover-Bild:"
+    // );
+    window.location.href = link;
+  };
 
   const [props, set] = useSpring(() => ({
     x: 0,
@@ -469,6 +501,21 @@ const SwipeList = ({
                     }
               }
             /> */}
+            {swipeListType === "projectRoomOverview" &&
+              swipePosition === "top" && (
+                <ButtonWrapper>
+                  <NewButton
+                    borderType="dashed"
+                    handleButtonClick={
+                      user?.organizationId?.length
+                        ? openCreateProjectRoom
+                        : openRequestProjectRoom
+                    }
+                  >
+                    Projektraum anlegen
+                  </NewButton>
+                </ButtonWrapper>
+              )}
 
             {!loading && (order === 1 || order === 2) && (
               <List
@@ -511,6 +558,21 @@ const SwipeList = ({
 
         <ListWrapper openProjectRoom={openProjectRoom} id="ListWrapper">
           {sectionFastLinks}
+
+          {swipeListType === "projectRoomOverview" && (
+            <ButtonWrapper>
+              <NewButton
+                borderType="dashed"
+                handleButtonClick={
+                  user?.organizationId?.length
+                    ? openCreateProjectRoom
+                    : openRequestProjectRoom
+                }
+              >
+                Projektraum anlegen
+              </NewButton>
+            </ButtonWrapper>
+          )}
 
           {!loading && (order === 1 || order === 2) && (
             <List

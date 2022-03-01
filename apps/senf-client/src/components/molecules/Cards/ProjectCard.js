@@ -173,7 +173,7 @@ export const ProjectCard = (props) => {
 
   const ideasSize = screams.filter(
     ({ projectRoomId }) => projectRoomId === thisProjectRoomId
-  );
+  ).length;
   const storageRef = firebase.storage().ref();
 
   storageRef
@@ -258,7 +258,7 @@ export const ProjectCard = (props) => {
             <img src={bulb} />
           </Icon>
 
-          <StyledH4>{ideasSize.length}</StyledH4>
+          <StyledH4>{ideasSize}</StyledH4>
         </BottomBar>
       </CardContent>
     </Card>

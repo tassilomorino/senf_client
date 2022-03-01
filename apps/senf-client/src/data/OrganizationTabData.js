@@ -10,11 +10,7 @@ export const OrganizationTabData = [
       </Translation>
     ),
   },
-  {
-    text: (
-      <Translation>{(t, { i18n }) => <span>{t("info")}</span>}</Translation>
-    ),
-  },
+
   {
     text: (
       <Translation>{(t, { i18n }) => <span>{t("calendar")}</span>}</Translation>
