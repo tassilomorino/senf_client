@@ -169,8 +169,11 @@ const Logo = styled.div`
   background-repeat: no-repeat;
   background-position: center;
   border-radius: 10px;
-  margin: 20px;
   border: 1px solid white;
+
+  margin-left: 50%;
+  margin-top: 50%;
+  transform: translateX(-50%) translateY(-50%);
 `;
 
 const LogoPlacer = styled.div`
@@ -428,7 +431,7 @@ const OrganizationDialog = ({
           loading={false}
           order={order}
           tabLabels={
-            organization.calendar
+            organization.googleCalendarId
               ? OrganizationTabData.map((item) => item.text)
               : OrganizationTabData.map((item) => item.text).slice(0, 1)
           }

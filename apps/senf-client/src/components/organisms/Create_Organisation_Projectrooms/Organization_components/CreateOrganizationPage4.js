@@ -97,8 +97,9 @@ const CreateOrganizationPage4 = ({ onClickNext, onClickPrev }) => {
       } else {
         const data = ref.data();
         // setGoogleCalendarId(data.title);
-
-        formik.setFieldValue("googleCalendarId", data.googleCalendarId);
+        if (data.googleCalendarId) {
+          formik.setFieldValue("googleCalendarId", data.googleCalendarId);
+        }
       }
     }
 
@@ -115,6 +116,7 @@ const CreateOrganizationPage4 = ({ onClickNext, onClickPrev }) => {
 
     const db = firebase.firestore();
     if (
+      formik.values.googleCalendarId &&
       typeof Storage !== "undefined" &&
       localStorage.getItem("createOrganizationId")
     ) {
@@ -130,6 +132,8 @@ const CreateOrganizationPage4 = ({ onClickNext, onClickPrev }) => {
           onClickNext();
         }, 200);
       });
+    } else {
+      onClickNext();
     }
   };
 
@@ -163,8 +167,6 @@ const CreateOrganizationPage4 = ({ onClickNext, onClickPrev }) => {
             }}
             value={formik.values.googleCalendarId}
             onChange={formik.handleChange}
-            error={outsideClick && Boolean(formik.errors.googleCalendarId)}
-            helperText={outsideClick && formik.errors.googleCalendarId}
           />
 
           {/* <InlineDatePicker
