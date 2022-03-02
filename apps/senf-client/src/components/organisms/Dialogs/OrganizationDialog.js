@@ -38,6 +38,7 @@ import { SVGWrapper } from "../../molecules/Headers/styles/sharedStyles";
 import MainModal from "../../atoms/Layout/MainModal";
 import Tabs from "../../atoms/Tabs/Tabs";
 import { OrganizationTabData } from "apps/senf-client/src/data/OrganizationTabData";
+import { Accordion } from "../../molecules/Accordion/Accordion";
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -304,7 +305,6 @@ const OrganizationDialog = ({
   //     long <= mapBounds?.longitude3 &&
   //     status === "None"
   // );
-  console.log(dataRar, dataFinal);
 
   return openOrganization && organization ? (
     <Wrapper>
@@ -340,6 +340,24 @@ const OrganizationDialog = ({
         document.getElementById("portal-root-modal")
       )}
 
+      {ReactDOM.createPortal(
+        <React.Fragment>
+          {faqOpen && (
+            <MainModal handleButtonClick={() => setFaqOpen(false)}>
+              <StyledH2
+                fontWeight="900"
+                margin="15px 0px 0px 0px"
+                textAlign="center"
+              >
+                FAQ
+              </StyledH2>
+              <br />
+              <Accordion data={organization?.faqs} />
+            </MainModal>
+          )}
+        </React.Fragment>,
+        document.getElementById("portal-root-modal")
+      )}
       {ReactDOM.createPortal(
         <React.Fragment>
           {infoOpen && (
@@ -409,7 +427,7 @@ const OrganizationDialog = ({
         >
           Kalender
         </NewButton> */}
-        {organization.faq && (
+        {organization.faqs && (
           <NewButton
             margin="0px 0px 0px 10px"
             handleButtonClick={() => setFaqOpen(true)}
