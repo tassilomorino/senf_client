@@ -127,7 +127,7 @@ const BottomBar = styled.div`
   height: 40px;
 `;
 
-export const ProjectCard = (props) => {
+export const ProjectCard = React.memo((props) => {
   const {
     project: {
       projectRoomId,
@@ -164,7 +164,7 @@ export const ProjectCard = (props) => {
   const organizationCardData = [];
 
   if (organizations) {
-    organizations.forEach(({ organizationId, userIds, title }) => {
+    organizations.map(({ organizationId, userIds, title }) => {
       if (cardOrganizationId === organizationId) {
         organizationCardData.push(userIds, title);
       }
@@ -174,16 +174,17 @@ export const ProjectCard = (props) => {
   const ideasSize = screams.filter(
     ({ projectRoomId }) => projectRoomId === thisProjectRoomId
   ).length;
-  const storageRef = firebase.storage().ref();
 
-  storageRef
-    .child(`/organizationsData/${organizationId}/logo/logo`)
-    .getDownloadURL()
-    .then(onResolve);
-
-  function onResolve(logo) {
-    setLogo(logo);
-  }
+  useEffect(() => {
+    function onResolve(logo) {
+      setLogo(logo);
+    }
+    const storageRef = firebase.storage().ref();
+    storageRef
+      .child(`/organizationsData/${organizationId}/logo/logo`)
+      .getDownloadURL()
+      .then(onResolve);
+  }, [organizationId]);
 
   return (
     <Card type="projectRoomCard">
@@ -263,4 +264,4 @@ export const ProjectCard = (props) => {
       </CardContent>
     </Card>
   );
-};
+});
