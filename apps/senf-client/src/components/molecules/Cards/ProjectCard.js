@@ -185,7 +185,7 @@ const ProjectCard = (props) => {
       .getDownloadURL()
       .then(onResolve);
   }, [organizationId]);
-  console.log(organizationCardData);
+
   return (
     <Card type="projectRoomCard">
       <CardContent>
