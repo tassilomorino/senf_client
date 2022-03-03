@@ -36,7 +36,9 @@ export function MenuItem({
   openAccount,
 }) {
   return (
-    <SideBarTabs fontWeight={order === index && !openAccount && "900"}>
+    <SideBarTabs
+      fontWeight={order === index && !openAccount ? "900" : undefined}
+    >
       <ExpandButton handleButtonClick={() => handleClick(index)} />
       <img
         src={
