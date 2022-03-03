@@ -73,7 +73,7 @@ const IdeaCard = ({
 
   const projectRoomDataFinal = [];
   if (projectsData) {
-    projectsData.forEach(({ projectRoomId, title, organizationType }) => {
+    projectsData.map(({ projectRoomId, title, organizationType }) => {
       const svgIcon = setIconByOrganizationType(organizationType);
 
       if (ideaCardProjectRoomId === projectRoomId) {
@@ -103,9 +103,9 @@ const IdeaCard = ({
         <CardTitle>
           <StyledH2 fontWeight="900">{title}</StyledH2>
         </CardTitle>
-        <BodyText>
-          <StyledText>{body} </StyledText>
-        </BodyText>
+
+        <StyledText>{body} </StyledText>
+
         <Gradient />
         <br />
         {!openProjectRoom &&
