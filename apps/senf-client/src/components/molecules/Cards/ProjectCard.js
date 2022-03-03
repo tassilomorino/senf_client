@@ -127,7 +127,7 @@ const BottomBar = styled.div`
   height: 40px;
 `;
 
-export const ProjectCard = React.memo((props) => {
+const ProjectCard = (props) => {
   const {
     project: {
       projectRoomId,
@@ -185,7 +185,7 @@ export const ProjectCard = React.memo((props) => {
       .getDownloadURL()
       .then(onResolve);
   }, [organizationId]);
-
+  console.log(organizationCardData);
   return (
     <Card type="projectRoomCard">
       <CardContent>
@@ -264,4 +264,5 @@ export const ProjectCard = React.memo((props) => {
       </CardContent>
     </Card>
   );
-});
+};
+export default React.memo(ProjectCard);
