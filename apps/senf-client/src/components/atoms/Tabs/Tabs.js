@@ -1,4 +1,5 @@
 /** @format */
+import { StyledH2 } from "apps/senf-client/src/styles/GlobalStyle";
 import React from "react";
 import styled, { keyframes } from "styled-components";
 import Line from "../../../images/line.png";
@@ -45,7 +46,6 @@ const Tab = styled.div`
   opacity: ${(props) => (props.active ? "1" : "0.6")};
   pointer-events: all;
 `;
-const TabText = styled.h2``;
 
 const ImgWrapper = styled.div`
   opacity: ${(props) => (props.active ? "1" : "0")};
@@ -85,7 +85,7 @@ const Tabs = ({
               active={order === i + 1}
               onClick={() => handleClick(i + 1)}
             >
-              <TabText>{tabLabel}</TabText>
+              <StyledH2>{tabLabel}</StyledH2>
               <ImgWrapper active={order === i + 1}>
                 <img
                   src={Line}

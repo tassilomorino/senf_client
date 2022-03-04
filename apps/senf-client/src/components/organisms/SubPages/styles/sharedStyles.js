@@ -10,13 +10,7 @@ export const Wrapper = styled.div`
   pointer-events: all;
   overflow: scroll;
   background: rgb(254, 217, 87);
-  background: linear-gradient(
-    180deg,
-    rgba(254, 217, 87, 1) 0%,
-    rgba(254, 217, 87, 1) 6%,
-    rgba(255, 218, 83, 1) 41%,
-    rgba(255, 255, 255, 1) 100%
-  );
+  background: rgb(249, 241, 215);
   /* animation: OrganizationPageAnimation 0.2s; */
 
   @media (min-width: 768px) {
