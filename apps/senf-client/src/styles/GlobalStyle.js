@@ -71,6 +71,7 @@ export const StyledImg = styled.img`
   min-width: 100%;
   min-height: 100%;
   object-fit: cover;
+  position: relative;
 `;
 
 export const SideBarTabs = styled(StyledH3)`
