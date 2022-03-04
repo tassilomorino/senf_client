@@ -44,7 +44,7 @@ export const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   margin-top: 0vh;
-  z-index: 99;
+  z-index: 998;
   top: 0;
   position: fixed;
   pointer-events: all;

@@ -78,6 +78,7 @@ const InnerWrapper = styled.div`
   max-width: 800px;
   display: grid;
   display: flex;
+  flex-direction: column;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 10px 10px;
