@@ -1,5 +1,6 @@
 /** @format */
 
+import { StyledText } from "apps/senf-client/src/styles/GlobalStyle";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -14,7 +15,7 @@ export const NoMoreMainContent = ({ dataFinalLength }) => {
       ... <br /> {t("noMoreIdeas")} <br />
     </NoMore>
   ) : (
-    <NoContent>{t("noContentIdeas")}</NoContent>
+    <StyledText marginLeft="24px">{t("noContentIdeas")}</StyledText>
   );
 };
 
@@ -26,9 +27,9 @@ export const NoMoreProjectRooms = ({ dataFinalLength }) => {
       ... <br /> {t("noMoreProjectRooms")} <br />
     </NoMore>
   ) : openOrganization ? (
-    <NoContent>{t("noOrganizationProjectRooms")}</NoContent>
+    <StyledText marginLeft="24px">{t("noOrganizationProjectRooms")}</StyledText>
   ) : (
-    <NoContent>{t("noProjectRooms")}</NoContent>
+    <StyledText marginLeft="24px">{t("noProjectRooms")}</StyledText>
   );
 };
 
@@ -42,9 +43,9 @@ export const NoMoreMyContent = ({ dataFinalLength, loading }) => {
       ... <br /> {t("noMoreIdeas")} <br />
     </NoMore>
   ) : myScreams === undefined || myScreams === 0 ? (
-    <NoContent>{t("noSharedIdeas")}</NoContent>
+    <StyledText marginLeft="24px">{t("noSharedIdeas")}</StyledText>
   ) : (
-    <NoContent> {t("noIdeasWithFilter")}</NoContent>
+    <StyledText marginLeft="24px"> {t("noIdeasWithFilter")}</StyledText>
   );
 };
 
@@ -59,8 +60,8 @@ export const NoMoreProjectsContent = ({ dataFinalLength, loading }) => {
     </NoMore>
   ) : !loading &&
     (project?.screams === undefined || project?.screams?.length === 0) ? (
-    <NoContent>{t("noProjectIdeas")}</NoContent>
+    <StyledText marginLeft="24px">{t("noProjectIdeas")}</StyledText>
   ) : (
-    <NoContent>{t("noContentIdeas")}</NoContent>
+    <StyledText marginLeft="24px">{t("noContentIdeas")}</StyledText>
   );
 };

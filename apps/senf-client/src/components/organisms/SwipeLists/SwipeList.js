@@ -25,6 +25,7 @@ import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 import { StyledText } from "apps/senf-client/src/styles/GlobalStyle";
 import { openCreateProjectRoomFunc } from "apps/senf-client/src/redux/actions/projectActions";
 import NewButton from "../../atoms/CustomButtons/NewButton";
+import PostScream from "../PostIdea/PostScream";
 
 const DragWrapper = styled(animated.div)`
   overscroll-behavior: contain;
@@ -51,6 +52,17 @@ const DragWrapper = styled(animated.div)`
     animation: none;
     border-radius: 0px;
   }
+`;
+
+const HandleBar = styled.div`
+  width: 50px;
+  height: 2px;
+  background-color: #f2c71c;
+  overflow: visible;
+  border-radius: 1px;
+  margin-top: 8px;
+  margin-left: 50%;
+  transform: translateX(-50%);
 `;
 const Content = styled.div`
   margin-top: 0px;
@@ -158,7 +170,7 @@ const SwipeList = ({
   handleDropdown,
   dropdown,
   dataFinal,
-  projectsData,
+  dataFinalProjectRooms,
   setSearchTerm,
   searchTerm,
   handleClick,
@@ -167,6 +179,7 @@ const SwipeList = ({
   openOrganizationsPage,
 }) => {
   const dispatch = useDispatch();
+  const loadingProjects = useSelector((state) => state.data.loadingProjects);
   const openScream = useSelector((state) => state.UI.openScream);
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
   const openAccount = useSelector((state) => state.UI.openAccount);
@@ -206,7 +219,7 @@ const SwipeList = ({
     y: 0,
     scale: 1,
     transform: `translateY(${window.innerHeight - 120}px)`,
-    overflow: "hidden",
+    overflow: "visible",
     touchAction: "none",
     userSelect: "none",
   }));
@@ -427,11 +440,20 @@ const SwipeList = ({
               transform: `translateY(${-20}px)`,
               filter: "brightness(50%)",
               transition: "0.5s",
+              overflow: "visible",
             }
           : props
       }
       openOrganizationsPage={openOrganizationsPage}
     >
+      <HandleBar />
+      {!loading && !loadingProjects && isMobileCustom && !openScream && (
+        <PostScream
+          loadingProjects={loadingProjects}
+          projectsData={dataFinalProjectRooms}
+          project={project}
+        />
+      )}
       {mapBounds?.latitude1 !== 0 && (
         <React.Fragment>
           <ListHeaderWrapper
@@ -445,8 +467,9 @@ const SwipeList = ({
                   handleClick={handleClick}
                   order={order}
                   tabLabels={tabLabels}
-                  marginTop={"20px"}
+                  marginTop={"15px"}
                   marginBottom={"15px"}
+                  secondaryColor="#d6ab00"
                 />
 
                 {(order === 1 || order === 2) && (
@@ -515,7 +538,7 @@ const SwipeList = ({
                 loading={loading}
                 dropdown={dropdown}
                 dataFinal={dataFinal}
-                projectsData={projectsData}
+                projectsData={dataFinalProjectRooms}
                 handleClick={handleClick}
               />
             )}
@@ -572,7 +595,7 @@ const SwipeList = ({
               loading={loading}
               dropdown={dropdown}
               dataFinal={dataFinal}
-              projectsData={projectsData}
+              projectsData={dataFinalProjectRooms}
               handleClick={handleClick}
             />
           )}

@@ -18,6 +18,8 @@ export const StyledA = styled.a`
 `;
 
 export const StyledH2 = styled.h2`
+  font-size: ${(props) => (props.fontSize ? props.fontSize : "18px")};
+
   font-weight: ${(props) => (props.fontWeight ? props.fontWeight : 600)};
   text-align: ${(props) => (props.textAlign ? props.textAlign : "left")};
   z-index: ${(props) => (props.zIndex ? props.zIndex : "0")};

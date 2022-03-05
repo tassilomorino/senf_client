@@ -428,18 +428,6 @@ const Main = () => {
               />
             )}
           <Topbar loading={loading} handleClick={handleClick} order={order} />
-          {!loading &&
-            !loadingProjects &&
-            !openScream &&
-            !openAccount &&
-            !openProjectRoom &&
-            order === 1 && (
-              <PostScream
-                loadingProjects={loadingProjects}
-                projectsData={dataFinalProjectRooms}
-                project={dataFinalProjectRooms}
-              />
-            )}
         </React.Fragment>
       ) : (
         <DesktopSidebar
@@ -479,7 +467,7 @@ const Main = () => {
                 dataFinalMap={dataFinalMap}
                 viewport={mapViewport}
                 handleDropdown={handleDropdown}
-                projectsData={dataFinalProjectRooms}
+                dataFinalProjectRooms={dataFinalProjectRooms}
                 dropdown={dropdown}
                 setSearchTerm={setSearchTerm}
                 searchTerm={searchTerm}
@@ -495,7 +483,7 @@ const Main = () => {
               loading={loading}
               handleClick={handleClick}
               loadingProjects={loadingProjects}
-              projectsData={dataFinalProjectRooms}
+              dataFinalProjectRooms={dataFinalProjectRooms}
               setOpenInsightsPage={setOpenInsightsPage}
             />
           )}

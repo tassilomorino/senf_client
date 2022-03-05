@@ -141,7 +141,9 @@ const ButtonWrapper = styled.div`
     right: 60px;
   }
 `;
-
+const TabsWrapper = styled.div`
+  margin-left: 20px;
+`;
 const OrganizationsPage = ({
   setOpenOrganizationsPage,
   order,
@@ -293,14 +295,15 @@ const OrganizationsPage = ({
             handleButtonClick={setClose}
             zIndex={99}
           />
-
-          <Tabs
-            loading={false}
-            order={1}
-            tabLabels={MenuData.map((item) => item.text).slice(2, 3)}
-            marginTop={"20px"}
-            marginBottom={"20px"}
-          />
+          <TabsWrapper>
+            <Tabs
+              loading={false}
+              order={1}
+              tabLabels={MenuData.map((item) => item.text).slice(2, 3)}
+              marginTop={"20px"}
+              marginBottom={"20px"}
+            />
+          </TabsWrapper>
 
           {isMobileCustom && (
             <TagsFilter

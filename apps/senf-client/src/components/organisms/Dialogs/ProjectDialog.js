@@ -32,7 +32,7 @@ const Wrapper = styled.div`
 `;
 const ProjectDialog = ({
   viewport,
-  projectsData,
+  dataFinalProjectRooms,
   loadingProjects,
   dataFinalMap,
   setOpenInsightsPage,
@@ -129,13 +129,6 @@ const ProjectDialog = ({
 
   return (
     <Wrapper>
-      {isMobileCustom && !infoOpen && (
-        <PostScream
-          loadingProjects={loadingProjects}
-          projectsData={projects}
-          project={project}
-        />
-      )}
       {project && !loadingProjectRoom && (
         <Header
           infoOpen={infoOpen}
@@ -183,7 +176,7 @@ const ProjectDialog = ({
           viewport={viewport}
           handleDropdown={handleDropdown}
           dropdown={dropdown}
-          projectsData={projectsData}
+          dataFinalProjectRooms={dataFinalProjectRooms}
           loadingProjects={loadingProjects}
           dataFinalMap={dataFinalMap}
           setSearchTerm={setSearchTerm}

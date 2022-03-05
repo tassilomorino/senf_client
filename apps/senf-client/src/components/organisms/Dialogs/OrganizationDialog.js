@@ -468,8 +468,10 @@ const OrganizationDialog = ({
               : OrganizationTabData.map((item) => item.text).slice(0, 1)
           }
           marginTop={"20px"}
-          marginBottom={"40px"}
+          marginBottom={"20px"}
           handleClick={setOrder}
+          type="secondary"
+          secondaryColor="rgb(0,0,0,0.4)"
         />
 
         {order === 1 ? (
