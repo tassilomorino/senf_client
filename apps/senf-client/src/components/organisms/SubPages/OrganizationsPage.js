@@ -70,15 +70,30 @@ const InnerWrapper = styled.div`
   width: 100%;
   margin-top: ${(props) => (props.isMobileCustom ? "0px" : "0px")};
   overflow: scroll;
-  background-color: #ffe898;
 
-  justify-content: center;
-  position: relative;
+  margin-left: 50%;
+  padding-bottom: 200px;
+  transform: translateX(-50%);
+  width: calc(100% - 20px);
+  max-width: 800px;
+  display: grid;
+  display: flex;
+  flex-direction: column;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px 10px;
+  grid-template-areas:
+    ". ."
+    ". .";
   @media (min-width: 768px) {
-    display: flex;
-    height: calc(100% - 140px);
-    width: calc(100vw - 610px);
-    background-color: rgb(249, 241, 215);
+    margin-top: 50px;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+  }
+
+  @media (min-width: 1068px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
   }
 `;
 
@@ -141,6 +156,7 @@ const OrganizationsPage = ({
   setSearchTerm,
 }) => {
   const { t } = useTranslation();
+
   const [searchOpen, setSearchOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const user = useSelector((state) => state.user);
@@ -256,6 +272,14 @@ const OrganizationsPage = ({
     dispatch(stateCreateOrganizationsFunc(true));
   };
 
+  const openRequestOrganization = () => {
+    var link =
+      "mailto:dein@senf.koeln" +
+      "?subject=" +
+      escape("Anfrage: Anlegen eines Organisationsprofils");
+
+    window.location.href = link;
+  };
   return !loading && isMobileCustom ? (
     <React.Fragment>
       <ClickBackground onClick={setClose} />
@@ -317,20 +341,20 @@ const OrganizationsPage = ({
               searchTerm={searchTerm}
             />
           )}
-
-          <ButtonWrapper>
-            <NewButton
-              borderType="dashed"
-              handleButtonClick={
-                user.authenticated
-                  ? openCreateOrganization
-                  : () =>
-                      alert("bitte melde dich erst mit deinem Senf-Profil an")
-              }
-            >
-              Organisationsprofil anlegen
-            </NewButton>
-          </ButtonWrapper>
+          {user.handle === "Senf.koeln" && (
+            <ButtonWrapper>
+              <NewButton
+                borderType="dashed"
+                handleButtonClick={
+                  user.authenticated && user.handle === "Senf.koeln"
+                    ? openCreateOrganization
+                    : openRequestOrganization
+                }
+              >
+                Organisationsprofil anlegen
+              </NewButton>
+            </ButtonWrapper>
+          )}
 
           <FlexWrapper isMobileCustom={isMobileCustom}>
             {!loading ? (
@@ -405,14 +429,14 @@ const OrganizationsPage = ({
               searchTerm={searchTerm}
             />
           )}
+
           <ButtonWrapper>
             <NewButton
               borderType="dashed"
               handleButtonClick={
-                user.authenticated
+                user.authenticated && user.handle === "Senf.koeln"
                   ? openCreateOrganization
-                  : () =>
-                      alert("bitte melde dich erst mit deinem Senf-Profil an")
+                  : openRequestOrganization
               }
             >
               Organisationsprofil anlegen

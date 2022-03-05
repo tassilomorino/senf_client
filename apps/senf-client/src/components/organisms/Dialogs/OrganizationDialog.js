@@ -8,7 +8,9 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 // Redux stuff
 import { clearErrors } from "../../../redux/actions/errorsActions";
 
-//Components
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/storage";
 
 import Header from "../../molecules/Headers/Header";
 import InfoModal from "../../molecules/DialogInlineComponents/InfoModal";
@@ -38,12 +40,13 @@ import { SVGWrapper } from "../../molecules/Headers/styles/sharedStyles";
 import MainModal from "../../atoms/Layout/MainModal";
 import Tabs from "../../atoms/Tabs/Tabs";
 import { OrganizationTabData } from "apps/senf-client/src/data/OrganizationTabData";
+import { Accordion } from "../../molecules/Accordion/Accordion";
 
 export const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   margin-top: 0vh;
-  z-index: 99;
+  z-index: 998;
   top: 0;
   position: fixed;
   pointer-events: all;
@@ -231,6 +234,7 @@ const OrganizationDialog = ({
   const [path, setPath] = useState("");
   const [order, setOrder] = useState(1);
   const [dropdown, setDropdown] = useState("newest");
+  const [logo, setLogo] = useState(null);
 
   const openOrganization = useSelector((state) => state.UI.openOrganization);
   const organization = useSelector((state) => state.data.organization);
@@ -241,6 +245,19 @@ const OrganizationDialog = ({
   );
 
   const mapViewport = useSelector((state) => state.data.mapViewport);
+
+  useEffect(() => {
+    if (organization && organization.organizationId) {
+      function onResolve(logo) {
+        setLogo(logo);
+      }
+      const storageRef = firebase.storage().ref();
+      storageRef
+        .child(`/organizationsData/${organization.organizationId}/logo/logo`)
+        .getDownloadURL()
+        .then(onResolve);
+    }
+  }, [openOrganization, organization?.organizationId]);
 
   useEffect(() => {
     dispatch(handleTopicSelectorRedux("all"));
@@ -304,7 +321,6 @@ const OrganizationDialog = ({
   //     long <= mapBounds?.longitude3 &&
   //     status === "None"
   // );
-  console.log(dataRar, dataFinal);
 
   return openOrganization && organization ? (
     <Wrapper>
@@ -340,6 +356,24 @@ const OrganizationDialog = ({
         document.getElementById("portal-root-modal")
       )}
 
+      {ReactDOM.createPortal(
+        <React.Fragment>
+          {faqOpen && (
+            <MainModal handleButtonClick={() => setFaqOpen(false)}>
+              <StyledH2
+                fontWeight="900"
+                margin="15px 0px 0px 0px"
+                textAlign="center"
+              >
+                FAQ
+              </StyledH2>
+              <br />
+              <Accordion data={organization?.faqs} />
+            </MainModal>
+          )}
+        </React.Fragment>,
+        document.getElementById("portal-root-modal")
+      )}
       {ReactDOM.createPortal(
         <React.Fragment>
           {infoOpen && (
@@ -388,7 +422,7 @@ const OrganizationDialog = ({
         </svg>
       </SVGWrapper>
       <LogoWrapper>
-        <Logo imgUrl={organization.imgUrl} />
+        <Logo imgUrl={logo} />
       </LogoWrapper>
       <FlexBox>
         <LogoPlacer>
@@ -409,7 +443,7 @@ const OrganizationDialog = ({
         >
           Kalender
         </NewButton> */}
-        {organization.faq && (
+        {organization.faqs && (
           <NewButton
             margin="0px 0px 0px 10px"
             handleButtonClick={() => setFaqOpen(true)}

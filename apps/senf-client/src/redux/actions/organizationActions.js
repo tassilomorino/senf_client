@@ -95,7 +95,6 @@ export const openOrganizationFunc =
 
 export const loadOrganizationData = (organizationId) => async (dispatch) => {
   const db = firebase.firestore();
-  const storageRef = firebase.storage().ref();
   const ref = await db.collection("organizations").doc(organizationId).get();
 
   const organization = ref.data();
@@ -103,21 +102,7 @@ export const loadOrganizationData = (organizationId) => async (dispatch) => {
   organization.projectRooms = [];
 
   dispatch({ type: SET_ORGANIZATION, payload: organization });
-
-  if (!ref.exists) {
-    console.log("No such document!");
-  } else {
-    storageRef
-      .child(`/organizationsData/${organizationId}/logo/logo`)
-      .getDownloadURL()
-      .then((organizationImage) => {
-        organization.imgUrl = organizationImage;
-        dispatch({ type: SET_ORGANIZATION, payload: organization });
-      })
-      .then(() => {
-        dispatch(loadOrganizationProjectRooms(organizationId, organization));
-      });
-  }
+  dispatch(loadOrganizationProjectRooms(organizationId, organization));
 };
 
 export const loadOrganizationProjectRooms =

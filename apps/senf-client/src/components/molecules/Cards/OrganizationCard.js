@@ -1,6 +1,6 @@
 /** @format */
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -29,9 +29,9 @@ const Wrapper = styled.div`
   height: auto;
   box-shadow: 0px 12px 18px -8px rgba(186, 160, 79, 0.2),
     0px -4px 10px 4px rgba(255, 255, 255, 0.2);
-  background-color: #fcfbf8;
+  background-color: ${(props) => (props.active ? "#feecab" : "#fcfbf8")};
   border-radius: 18px;
-  border: 2px solid #ffffff;
+  border: 2px solid ${(props) => (props.active ? "#e8ba02" : "#ffffff")};
   animation: OrganizationCardAnimation 0.8s;
 
   @media (max-width: 768px) {
@@ -62,30 +62,45 @@ const LogoWrapper = styled.div`
   margin-top: 10px;
   margin-left: 50%;
   transform: translateX(-50%);
-  overflow: hidden;
   box-sizing: border-box;
+  width: 158px;
+  height: 0;
   width: calc(100% - 20px);
-  padding-bottom: auto;
-  aspect-ratio: 1;
+  padding-bottom: calc(100% - 20px);
+
   background-color: #ffffff;
-  overflow: visible;
   border-radius: 10px;
   border: 1px solid rgba(195, 186, 162, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
 `;
 
 const Thumbnail = styled.div`
-  width: calc(100% - 20px);
-  height: auto;
+  /* width: calc(100% - 20px);
+  height: calc(100% - 20px);
   aspect-ratio: 1;
   margin-left: 50%;
   transform: translateX(-50%);
   margin-top: 10px;
+  overflow: hidden;
+  border-radius: 10px;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: hidden; */
+  margin-top: 10px;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  box-sizing: border-box;
+
+  width: calc(100% - 20px);
+  padding-bottom: calc(100% - 20px);
   overflow: visible;
-  background-image: url(${(props) => props.logo});
+  background-image: url(${(props) => props.img});
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   border-radius: 10px;
+  border: 1px solid rgba(195, 186, 162, 0.5);
 `;
 
 const LogoPlacer = styled.div`
@@ -157,14 +172,14 @@ export const OrganizationCard = (props) => {
   const {
     organization: {
       title,
-      owner,
       imgUrl,
-      organizationId,
+      organizationId: thisOrganizationId,
       userIds,
       organizationType,
     },
   } = props;
-  const thisOrganizationId = organizationId;
+
+  const organization = useSelector((state) => state.data.organization);
 
   const user = useSelector((state) => state.user);
   const projects = useSelector((state) => state.data.projects);
@@ -172,14 +187,14 @@ export const OrganizationCard = (props) => {
   const dispatch = useDispatch();
 
   const handleEdit = () => {
-    localStorage.setItem("createOrganizationId", organizationId);
+    localStorage.setItem("createOrganizationId", thisOrganizationId);
     localStorage.setItem("createOrganizationPostEdit", true);
 
     dispatch(stateCreateOrganizationsFunc(true));
   };
 
   const handleOpenOrganization = () => {
-    dispatch(openOrganizationFunc(true, organizationId));
+    dispatch(openOrganizationFunc(true, thisOrganizationId));
   };
 
   const projectRoomsSize = projects?.filter(
@@ -187,7 +202,7 @@ export const OrganizationCard = (props) => {
   ).length;
 
   return (
-    <Wrapper>
+    <Wrapper active={thisOrganizationId === organization?.organizationId}>
       <ExpandButton handleButtonClick={handleOpenOrganization} />
       {userIds.includes(user.userId) && (
         <CustomIconButton
@@ -204,7 +219,7 @@ export const OrganizationCard = (props) => {
         />
       )}
       <LogoWrapper>
-        <Thumbnail logo={imgUrl} width="100%" alt="profile" />
+        <Thumbnail img={imgUrl}></Thumbnail>
       </LogoWrapper>
 
       <LogoPlacer>

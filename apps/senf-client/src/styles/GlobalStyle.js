@@ -18,7 +18,7 @@ export const StyledA = styled.a`
 `;
 
 export const StyledH2 = styled.h2`
-  font-weight: ${(props) => (props.fontWeight ? props.fontWeight : 400)};
+  font-weight: ${(props) => (props.fontWeight ? props.fontWeight : 600)};
   text-align: ${(props) => (props.textAlign ? props.textAlign : "left")};
   z-index: ${(props) => (props.zIndex ? props.zIndex : "0")};
   margin: ${(props) => (props.margin ? props.margin : "0")};
@@ -28,6 +28,7 @@ export const StyledH3 = styled.h3`
   margin: ${(props) => (props.margin ? props.margin : "0")};
   padding: 0;
   text-align: ${(props) => (props.textAlign ? props.textAlign : "left")};
+  font-weight: ${(props) => (props.fontWeight ? props.fontWeight : 700)};
 `;
 
 export const StyledH4 = styled.h4`
@@ -49,7 +50,7 @@ export const StyledText = styled.p`
   text-align: ${(props) => (props.textAlign ? props.textAlign : "left")};
   margin: ${(props) => (props.margin ? props.margin : "0")};
   margin-left: ${(props) => (props.marginLeft ? props.marginLeft : "0")};
-
+  white-space: pre-line;
   user-select: none;
   pointer-events: none;
 
@@ -70,6 +71,7 @@ export const StyledImg = styled.img`
   min-width: 100%;
   min-height: 100%;
   object-fit: cover;
+  position: relative;
 `;
 
 export const SideBarTabs = styled(StyledH3)`
