@@ -7,9 +7,8 @@ import { useTranslation } from "react-i18next";
 import { useTransition, animated } from "@react-spring/web";
 
 //firebase
-import firebase from "firebase/app";
-import "firebase/firestore";
-
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
 //Components
 import { PageWrapper } from "./styles/sharedStyles";
 import TopNavigation from "./Components/TopNavigation";

@@ -14,8 +14,8 @@ import DistrictsCover from "../../../images/insightsCovers/districts-cover.jpg";
 import KeywordsCover from "../../../images/insightsCovers/keywords-cover.jpg";
 import AgegroupsCover from "../../../images/insightsCovers/agegroups-cover.jpg";
 
-import firebase from "firebase/app";
-import "firebase/firestore";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
 import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";

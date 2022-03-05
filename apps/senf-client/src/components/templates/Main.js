@@ -137,6 +137,9 @@ const Main = () => {
   const loadingProjectRoom = useSelector(
     (state) => state.data.loadingProjectRoom
   );
+  const loadingOrganization = useSelector(
+    (state) => state.data.loadingOrganization
+  );
 
   const projects = useSelector((state) => state.data.projects);
   const project = useSelector((state) => state.data.project);
@@ -503,7 +506,7 @@ const Main = () => {
         </MainColumnWrapper>
       )}
 
-      {openOrganization && (
+      {openOrganization && !loadingOrganization && (
         <OrganizationDialog
           openOrganization={openOrganization}
           dataFinalMap={dataFinalMap}

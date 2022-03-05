@@ -20,11 +20,13 @@ export const NoMoreMainContent = ({ dataFinalLength }) => {
 
 export const NoMoreProjectRooms = ({ dataFinalLength }) => {
   const { t } = useTranslation();
-
+  const openOrganization = useSelector((state) => state.UI.openOrganization);
   return dataFinalLength && dataFinalLength > 0 ? (
     <NoMore>
       ... <br /> {t("noMoreProjectRooms")} <br />
     </NoMore>
+  ) : openOrganization ? (
+    <NoContent>{t("noOrganizationProjectRooms")}</NoContent>
   ) : (
     <NoContent>{t("noProjectRooms")}</NoContent>
   );

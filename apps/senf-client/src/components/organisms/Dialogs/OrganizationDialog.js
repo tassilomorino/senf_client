@@ -2,15 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
+import { useParams } from "react-router";
 
 import { useDispatch, useSelector } from "react-redux";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 // Redux stuff
 import { clearErrors } from "../../../redux/actions/errorsActions";
 
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 import Header from "../../molecules/Headers/Header";
 import InfoModal from "../../molecules/DialogInlineComponents/InfoModal";
@@ -241,23 +240,22 @@ const OrganizationDialog = ({
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.UI.loading);
   const loadingOrganization = useSelector(
-    (state) => state.UI.loadingOrganization
+    (state) => state.data.loadingOrganization
   );
 
   const mapViewport = useSelector((state) => state.data.mapViewport);
 
   useEffect(() => {
-    if (organization && organization.organizationId) {
-      function onResolve(logo) {
+    setLogo(null);
+    // console.log( window.location.pathname.slice(15, 35));
+    if (!loadingOrganization && organization && organization.organizationId) {
+      const path = `organizationsData/${organization.organizationId}/logo/logo`;
+      const storage = getStorage();
+      getDownloadURL(ref(storage, path)).then((logo) => {
         setLogo(logo);
-      }
-      const storageRef = firebase.storage().ref();
-      storageRef
-        .child(`/organizationsData/${organization.organizationId}/logo/logo`)
-        .getDownloadURL()
-        .then(onResolve);
+      });
     }
-  }, [openOrganization, organization?.organizationId]);
+  }, [loadingOrganization]);
 
   useEffect(() => {
     dispatch(handleTopicSelectorRedux("all"));
@@ -322,7 +320,7 @@ const OrganizationDialog = ({
   //     status === "None"
   // );
 
-  return openOrganization && organization ? (
+  return !loadingOrganization ? (
     <Wrapper>
       {ReactDOM.createPortal(
         <React.Fragment>

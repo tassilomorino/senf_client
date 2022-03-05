@@ -3,8 +3,9 @@
 import React, { useState, Fragment, useEffect, useRef, memo } from "react";
 import { useDispatch } from "react-redux";
 import { SET_AUTHENTICATED } from "../../../redux/types";
-import firebase from "firebase/app";
-import "firebase/auth";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+
 import { useHistory } from "react-router";
 import { useFormik } from "formik";
 import * as yup from "yup";
