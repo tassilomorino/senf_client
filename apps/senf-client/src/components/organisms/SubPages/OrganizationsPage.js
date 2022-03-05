@@ -39,7 +39,7 @@ const DragWrapper = styled(animated.div)`
     rgba(255, 218, 83, 1) 50%,
     rgba(255, 255, 255, 1) 100%
   );
-  border-radius: 20px;
+  border-radius: 24px;
   position: absolute;
   z-index: 995;
   animation: organizationOverviewEnterAnimation 0.5s;
@@ -143,6 +143,18 @@ const ButtonWrapper = styled.div`
 `;
 const TabsWrapper = styled.div`
   margin-left: 20px;
+`;
+
+const HandleBar = styled.div`
+  width: 50px;
+  height: 2px;
+  background-color: #f2c71c;
+  overflow: visible;
+  border-radius: 1px;
+  margin-top: 8px;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
 `;
 const OrganizationsPage = ({
   setOpenOrganizationsPage,
@@ -285,6 +297,7 @@ const OrganizationsPage = ({
       <ClickBackground onClick={setClose} />
 
       <DragWrapper className={!loading ? "" : "drag_hide"} style={props}>
+        <HandleBar />
         <HeaderWrapper {...bind()}>
           <CustomIconButton
             name="ArrowDown"
