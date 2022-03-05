@@ -40,6 +40,7 @@ import MainModal from "../../atoms/Layout/MainModal";
 import Tabs from "../../atoms/Tabs/Tabs";
 import { OrganizationTabData } from "apps/senf-client/src/data/OrganizationTabData";
 import { Accordion } from "../../molecules/Accordion/Accordion";
+import Arrow from "../../../images/icons/arrow-right.png";
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -51,14 +52,8 @@ export const Wrapper = styled.div`
   pointer-events: all;
   overflow-y: scroll;
   overflow-x: hidden;
-  background: rgb(254, 217, 87);
-  background: linear-gradient(
-    180deg,
-    rgba(254, 217, 87, 1) 0%,
-    rgba(254, 217, 87, 1) 6%,
-    rgba(255, 218, 83, 1) 41%,
-    rgba(255, 255, 255, 1) 100%
-  );
+
+  background-color: rgb(249, 241, 215);
   /* animation: OrganizationPageAnimation 0.2s; */
 
   @media (min-width: 768px) {
@@ -116,10 +111,10 @@ const InfoWidget = styled.div`
   text-align: left;
 
   margin: 0px 16px 0px 24px;
-  height: 90px;
+  height: ${(props) => (props.infoOpen ? "auto" : "90px")};
   overflow: hidden;
   text-overflow: ellipsis;
-  display: -webkit-box;
+  display: ${(props) => (props.infoOpen ? "block" : "-webkit-box")};
   -webkit-line-clamp: 4; /* number of lines to show */
   line-clamp: 4;
   -webkit-box-orient: vertical;
@@ -372,26 +367,6 @@ const OrganizationDialog = ({
         </React.Fragment>,
         document.getElementById("portal-root-modal")
       )}
-      {ReactDOM.createPortal(
-        <React.Fragment>
-          {infoOpen && (
-            <MainModal handleButtonClick={() => setInfoOpen(false)}>
-              <StyledH2
-                fontWeight="900"
-                margin="15px 0px 0px 0px"
-                textAlign="center"
-              >
-                Informationen
-              </StyledH2>
-              <br />
-              <StyledText margin="0px 15px 15px 15px" marginLeft="15px">
-                {organization?.description}
-              </StyledText>
-            </MainModal>
-          )}
-        </React.Fragment>,
-        document.getElementById("portal-root-modal")
-      )}
 
       <CustomIconButton
         name="Close"
@@ -409,14 +384,14 @@ const OrganizationDialog = ({
           style={{
             position: "absolute",
             zIndex: -1,
-            marginTop: "50px",
-            transform: "scale(1.06)",
+            marginTop: "40px",
+            transform: "scale(1.2)",
           }}
         >
           <path
-            d="M 390 465.5 L 0 465.5 L 0 72.799 C 0 72.799 36.092 37.746 111.8 47.312 C 187.508 56.878 219.827 63.443 257.92 54.074 C 296.013 44.705 304.708 18.224 331.24 6.221 C 357.772 -5.781 390 6.221 390 6.221 Z"
-            fill="rgb(249, 241, 215)"
-          ></path>
+            d="M0.5 106.5V0.5L375.5 0V38.5C361 35.5 333 41 316 61C290.075 91.5 237.5 111.5 143 91.5C67.4 75.5 16 94.6667 0.5 106.5Z"
+            fill="#FED957"
+          />
         </svg>
       </SVGWrapper>
       <LogoWrapper>
@@ -451,8 +426,22 @@ const OrganizationDialog = ({
         )}
       </FlexBox>
 
-      <InfoWidget onClick={() => setInfoOpen(true)}>
-        <StyledH2 fontWeight="700">Informationen </StyledH2>
+      <InfoWidget onClick={() => setInfoOpen(!infoOpen)} infoOpen={infoOpen}>
+        <StyledH2 fontWeight="700">
+          Informationen{" "}
+          <img
+            src={Arrow}
+            width="13px"
+            style={{
+              position: "absolute",
+              marginTop: "7px",
+              marginLeft: "4px",
+              pointerEvents: "none",
+              transform: infoOpen ? "rotate(-90deg)" : "rotate(0deg)",
+              transition: "0.3s",
+            }}
+          ></img>
+        </StyledH2>
         <StyledText>{organization?.description}</StyledText>
       </InfoWidget>
 

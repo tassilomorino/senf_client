@@ -20,6 +20,7 @@ const Wrapper = styled.div`
   width: 100%;
   position: fixed;
   top: calc((var(--vh, 1vh) * 100) - 170px);
+  left: -20px;
 
   pointer-events: none;
 

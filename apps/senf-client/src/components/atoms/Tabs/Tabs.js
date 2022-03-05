@@ -98,7 +98,7 @@ const Tabs = ({
                     ? "18px"
                     : document.body.clientWidth > 368
                     ? "22px"
-                    : "18px"
+                    : "19px"
                 }
               >
                 {tabLabel}
