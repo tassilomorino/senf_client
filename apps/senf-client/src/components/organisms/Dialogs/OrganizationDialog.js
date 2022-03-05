@@ -8,7 +8,9 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 // Redux stuff
 import { clearErrors } from "../../../redux/actions/errorsActions";
 
-//Components
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/storage";
 
 import Header from "../../molecules/Headers/Header";
 import InfoModal from "../../molecules/DialogInlineComponents/InfoModal";
@@ -232,6 +234,7 @@ const OrganizationDialog = ({
   const [path, setPath] = useState("");
   const [order, setOrder] = useState(1);
   const [dropdown, setDropdown] = useState("newest");
+  const [logo, setLogo] = useState(null);
 
   const openOrganization = useSelector((state) => state.UI.openOrganization);
   const organization = useSelector((state) => state.data.organization);
@@ -242,6 +245,19 @@ const OrganizationDialog = ({
   );
 
   const mapViewport = useSelector((state) => state.data.mapViewport);
+
+  useEffect(() => {
+    if (organization && organization.organizationId) {
+      function onResolve(logo) {
+        setLogo(logo);
+      }
+      const storageRef = firebase.storage().ref();
+      storageRef
+        .child(`/organizationsData/${organization.organizationId}/logo/logo`)
+        .getDownloadURL()
+        .then(onResolve);
+    }
+  }, [openOrganization, organization?.organizationId]);
 
   useEffect(() => {
     dispatch(handleTopicSelectorRedux("all"));
@@ -406,7 +422,7 @@ const OrganizationDialog = ({
         </svg>
       </SVGWrapper>
       <LogoWrapper>
-        <Logo imgUrl={organization.imgUrl} />
+        <Logo imgUrl={logo} />
       </LogoWrapper>
       <FlexBox>
         <LogoPlacer>
