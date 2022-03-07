@@ -212,6 +212,13 @@ const ListWrapper = styled.div`
   padding-bottom: 200px;
 `;
 
+// const Divider = styled.div`
+//   width: 95%;
+//   height: 1px;
+//   background-color: rgba(186, 160, 79, 0.2);
+//   overflow: visible;
+// `;
+
 const OrganizationDialog = ({
   viewport,
   projectsData,
@@ -329,6 +336,8 @@ const OrganizationDialog = ({
                 Kontakt
               </StyledH2>
               <br />
+              <Divider />
+
               <StyledText
                 margin="0px 15px 15px 15px"
                 marginLeft="15px"
@@ -336,6 +345,7 @@ const OrganizationDialog = ({
               >
                 {organization?.contact}
               </StyledText>
+              <Divider />
               <StyledText
                 margin="0px 15px 15px 15px"
                 marginLeft="15px"
@@ -361,6 +371,8 @@ const OrganizationDialog = ({
                 FAQ
               </StyledH2>
               <br />
+              <Divider />
+
               <Accordion data={organization?.faqs} />
             </MainModal>
           )}

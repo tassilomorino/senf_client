@@ -565,6 +565,7 @@ const SwipeList = ({
               tabLabels={tabLabels}
               marginTop="25px"
               marginBottom="0px"
+              secondaryColor="#d6ab00"
             />
           </DesktopTabWrapper>
         )}

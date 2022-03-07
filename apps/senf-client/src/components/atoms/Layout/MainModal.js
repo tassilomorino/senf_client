@@ -31,12 +31,13 @@ const InnerWrapper = styled.div`
   min-height: 150px;
   background-color: white;
   border-radius: 20px;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  align-items: space-around;
+  align-items: space-around; */
 
   z-index: 99992;
-  overflow: scroll;
+  overflow-y: scroll;
+  max-height: 95%;
 `;
 
 const MainModal = ({ handleButtonClick, children, zIndex }) => {
