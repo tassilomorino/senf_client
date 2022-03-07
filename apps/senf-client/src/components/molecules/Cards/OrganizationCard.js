@@ -174,24 +174,15 @@ export const OrganizationCard = (props) => {
       title,
       imgUrl,
       organizationId: thisOrganizationId,
-      userIds,
       organizationType,
     },
   } = props;
 
   const organization = useSelector((state) => state.data.organization);
 
-  const user = useSelector((state) => state.user);
   const projects = useSelector((state) => state.data.projects);
 
   const dispatch = useDispatch();
-
-  const handleEdit = () => {
-    localStorage.setItem("createOrganizationId", thisOrganizationId);
-    localStorage.setItem("createOrganizationPostEdit", true);
-
-    dispatch(stateCreateOrganizationsFunc(true));
-  };
 
   const handleOpenOrganization = () => {
     dispatch(openOrganizationFunc(true, thisOrganizationId));
@@ -204,20 +195,7 @@ export const OrganizationCard = (props) => {
   return (
     <Wrapper active={thisOrganizationId === organization?.organizationId}>
       <ExpandButton handleButtonClick={handleOpenOrganization} />
-      {userIds.includes(user.userId) && (
-        <CustomIconButton
-          name="Menu"
-          iconWidth="25px"
-          handleButtonClick={() => handleEdit()}
-          position="absolute"
-          left="calc(100% - 54px)"
-          margin="2px"
-          top="0px"
-          backgroundColor="transparent"
-          shadow={false}
-          zIndex="99"
-        />
-      )}
+
       <LogoWrapper>
         <Thumbnail img={imgUrl}></Thumbnail>
       </LogoWrapper>

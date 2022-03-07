@@ -154,6 +154,8 @@ const DesktopTabWrapper = styled.div`
   background-color: #fed957;
   padding-bottom: 0px;
   z-index: 99;
+  top: 0;
+  padding-top: 25px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -174,9 +176,10 @@ const SwipeList = ({
   setSearchTerm,
   searchTerm,
   handleClick,
-  setOpenInsightsPage,
   setOpenOrganizationsPage,
   openOrganizationsPage,
+  openInsightsPage,
+  setOpenInsightsPage,
 }) => {
   const dispatch = useDispatch();
   const loadingProjects = useSelector((state) => state.data.loadingProjects);
@@ -314,7 +317,7 @@ const SwipeList = ({
     set({
       transition: "0.5s",
     });
-  }, [openOrganizationsPage]);
+  }, [openOrganizationsPage, openInsightsPage]);
 
   const bind = useDrag(
     ({ last, down, movement: [, my], offset: [, y] }) => {
@@ -434,7 +437,7 @@ const SwipeList = ({
     <DragWrapper
       className={!loading && !openScream ? "" : "drag_hide"}
       style={
-        openOrganizationsPage
+        openOrganizationsPage || openInsightsPage
           ? {
               scale: 0.9,
               transform: `translateY(${-20}px)`,
@@ -563,8 +566,7 @@ const SwipeList = ({
               handleClick={handleClick}
               order={order}
               tabLabels={tabLabels}
-              marginTop="25px"
-              marginBottom="0px"
+              secondaryColor="#d6ab00"
             />
           </DesktopTabWrapper>
         )}

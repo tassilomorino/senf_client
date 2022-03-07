@@ -474,6 +474,8 @@ const Main = () => {
                 setOpenInsightsPage={setOpenInsightsPage}
                 setOpenOrganizationsPage={setOpenOrganizationsPage}
                 openOrganizationsPage={openOrganizationsPage}
+                openInsightsPage={openInsightsPage}
+                setOpenInsightsPage={setOpenInsightsPage}
               />
             )}
 

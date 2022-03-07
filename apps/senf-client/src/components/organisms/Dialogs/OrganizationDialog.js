@@ -19,7 +19,10 @@ import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 
 import _ from "lodash";
-import { openOrganizationFunc } from "../../../redux/actions/organizationActions";
+import {
+  openOrganizationFunc,
+  stateCreateOrganizationsFunc,
+} from "../../../redux/actions/organizationActions";
 import SwipeList from "../SwipeLists/SwipeList";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import { useTranslation } from "react-i18next";
@@ -41,6 +44,7 @@ import Tabs from "../../atoms/Tabs/Tabs";
 import { OrganizationTabData } from "apps/senf-client/src/data/OrganizationTabData";
 import { Accordion } from "../../molecules/Accordion/Accordion";
 import Arrow from "../../../images/icons/arrow-right.png";
+import { openLink, openMail } from "apps/senf-client/src/util/helpers";
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -212,6 +216,13 @@ const ListWrapper = styled.div`
   padding-bottom: 200px;
 `;
 
+// const Divider = styled.div`
+//   width: 95%;
+//   height: 1px;
+//   background-color: rgba(186, 160, 79, 0.2);
+//   overflow: visible;
+// `;
+
 const OrganizationDialog = ({
   viewport,
   projectsData,
@@ -230,6 +241,8 @@ const OrganizationDialog = ({
   const [dropdown, setDropdown] = useState("newest");
   const [logo, setLogo] = useState(null);
 
+  const user = useSelector((state) => state.user);
+
   const openOrganization = useSelector((state) => state.UI.openOrganization);
   const organization = useSelector((state) => state.data.organization);
   const dispatch = useDispatch();
@@ -237,6 +250,13 @@ const OrganizationDialog = ({
   const loadingOrganization = useSelector(
     (state) => state.data.loadingOrganization
   );
+
+  const handleEdit = () => {
+    localStorage.setItem("createOrganizationId", organization?.organizationId);
+    localStorage.setItem("createOrganizationPostEdit", true);
+
+    dispatch(stateCreateOrganizationsFunc(true));
+  };
 
   const mapViewport = useSelector((state) => state.data.mapViewport);
 
@@ -329,20 +349,31 @@ const OrganizationDialog = ({
                 Kontakt
               </StyledH2>
               <br />
+              <Divider />
+
               <StyledText
                 margin="0px 15px 15px 15px"
-                marginLeft="15px"
-                textAlign="center"
+                marginLeft="24px"
+                onClick={() => openMail(organization?.contact)}
               >
                 {organization?.contact}
               </StyledText>
+              <Divider />
               <StyledText
                 margin="0px 15px 15px 15px"
-                marginLeft="15px"
-                textAlign="center"
+                marginLeft="24px"
+                onClick={() => openLink(organization?.weblink)}
               >
                 {organization?.weblink}
               </StyledText>
+              {organization?.address && (
+                <React.Fragment>
+                  <Divider />
+                  <StyledText margin="0px 15px 15px 15px" marginLeft="24px">
+                    {organization?.address}
+                  </StyledText>
+                </React.Fragment>
+              )}
             </MainModal>
           )}
         </React.Fragment>,
@@ -361,6 +392,8 @@ const OrganizationDialog = ({
                 FAQ
               </StyledH2>
               <br />
+              <Divider />
+
               <Accordion data={organization?.faqs} />
             </MainModal>
           )}
@@ -376,6 +409,19 @@ const OrganizationDialog = ({
         handleButtonClick={() => handleClose()}
         zIndex={99}
       />
+
+      {organization?.userIds.includes(user.userId) && (
+        <CustomIconButton
+          name="Menu"
+          iconWidth="25px"
+          handleButtonClick={() => handleEdit()}
+          position="absolute"
+          left="calc(100% - 60px)"
+          top="10px"
+          backgroundColor="#FFF0BC"
+          zIndex="99"
+        />
+      )}
       <SVGWrapper>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -460,7 +506,7 @@ const OrganizationDialog = ({
           marginBottom={"20px"}
           handleClick={setOrder}
           type="secondary"
-          secondaryColor="rgb(0,0,0,0.4)"
+          secondaryColor="rgba(186, 160, 79, 0.8)"
         />
 
         {order === 1 ? (
