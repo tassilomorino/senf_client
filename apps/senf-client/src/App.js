@@ -1,8 +1,8 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./styles/mapbox-gl.css";
 import "./App.css";
 import "./AppDesktop.css";
@@ -163,9 +163,22 @@ const App = () => {
   return (
     <>
       {process.env.REACT_APP_NO_CRAWL && (
-        /* only for senf-client-test.netlify.app */
+        /* disable google crawling for senf-client-test.netlify.app */
         <Helmet>
           <meta name="robots" content="noindex" />
+        </Helmet>
+      )}
+      {process.env.REACT_APP_STATS && (
+        /* Add statistics for senf.koeln
+        https://umami-xi-nine.vercel.app/
+        */
+        <Helmet>
+          <script
+            async
+            defer
+            data-website-id="17c8a5a3-76cb-43c6-971a-04dbd6a7a325"
+            src="https://umami-xi-nine.vercel.app/senf-stat.js"
+          ></script>
         </Helmet>
       )}
       <MuiThemeProvider theme={theme}>
