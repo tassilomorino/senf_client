@@ -68,7 +68,7 @@ const InnerWrapper = styled.div`
   width: 100%;
   margin-top: ${(props) => (props.isMobileCustom ? "0px" : "0px")};
   overflow: scroll;
-
+  z-index: 1;
   margin-left: 50%;
   padding-bottom: 200px;
   transform: translateX(-50%);
@@ -102,9 +102,11 @@ const FlexWrapper = styled.div`
 
 const SVGWrapper = styled.div`
   background-color: rgb(249, 241, 215);
-  height: 220px;
+  height: 150px;
   width: 100%;
-  position: absolute;
+  position: sticky;
+  top: 0;
+  z-index: 2;
 `;
 const HeaderWrapper = styled(animated.div)`
   position: sticky;
@@ -114,9 +116,12 @@ const HeaderWrapper = styled(animated.div)`
   z-index: 25;
   height: 100px;
   @media (min-width: 768px) {
+    position: absolute;
+
     width: 600px;
     height: 120px;
     margin-left: 50%;
+    top: 0;
     transform: translateX(-50%);
     background-color: transparent;
   }
@@ -137,7 +142,7 @@ const ButtonWrapper = styled.div`
   @media (min-width: 768px) {
     width: 300px;
     position: fixed;
-    top: 75px;
+    top: 102px;
     right: 60px;
   }
 `;
@@ -403,6 +408,50 @@ const OrganizationsPage = ({
           zIndex={99}
         />
         <SVGWrapper>
+          <HeaderWrapper>
+            <Tabs
+              loading={false}
+              order={1}
+              tabLabels={MenuData.map((item) => item.text).slice(2, 3)}
+              marginTop={"20px"}
+              marginBottom={"40px"}
+            />
+
+            {isMobileCustom && (
+              <TagsFilter
+                placing="list"
+                type={order === 1 ? "topics" : "organizationType"}
+              />
+            )}
+
+            {!isMobileCustom && (
+              <Toolbar
+                swipeListType="organizationOverview"
+                marginTop="0px"
+                loading={loading}
+                handleDropdown={handleDropdown}
+                dropdown={dropdown}
+                dataFinalLength={dataFinalLength}
+                setSearchOpen={setSearchOpen}
+                searchOpen={searchOpen}
+                setSearchTerm={setSearchTerm}
+                searchTerm={searchTerm}
+              />
+            )}
+
+            <ButtonWrapper>
+              <NewButton
+                borderType="dashed"
+                handleButtonClick={
+                  user.authenticated && user.handle === "Senf.koeln"
+                    ? openCreateOrganization
+                    : openRequestOrganization
+                }
+              >
+                Organisationsprofil anlegen
+              </NewButton>
+            </ButtonWrapper>
+          </HeaderWrapper>
           <svg
             width="100%"
             height="126"
@@ -417,50 +466,7 @@ const OrganizationsPage = ({
             />
           </svg>
         </SVGWrapper>
-        <HeaderWrapper>
-          <Tabs
-            loading={false}
-            order={1}
-            tabLabels={MenuData.map((item) => item.text).slice(2, 3)}
-            marginTop={"20px"}
-            marginBottom={"40px"}
-          />
 
-          {isMobileCustom && (
-            <TagsFilter
-              placing="list"
-              type={order === 1 ? "topics" : "organizationType"}
-            />
-          )}
-
-          {!isMobileCustom && (
-            <Toolbar
-              swipeListType="organizationOverview"
-              marginTop="0px"
-              loading={loading}
-              handleDropdown={handleDropdown}
-              dropdown={dropdown}
-              dataFinalLength={dataFinalLength}
-              setSearchOpen={setSearchOpen}
-              searchOpen={searchOpen}
-              setSearchTerm={setSearchTerm}
-              searchTerm={searchTerm}
-            />
-          )}
-
-          <ButtonWrapper>
-            <NewButton
-              borderType="dashed"
-              handleButtonClick={
-                user.authenticated && user.handle === "Senf.koeln"
-                  ? openCreateOrganization
-                  : openRequestOrganization
-              }
-            >
-              Organisationsprofil anlegen
-            </NewButton>
-          </ButtonWrapper>
-        </HeaderWrapper>
         <InnerWrapper isMobileCustom={isMobileCustom}>
           {!loading ? (
             <InfiniteScroll

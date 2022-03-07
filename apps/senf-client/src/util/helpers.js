@@ -3,6 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import moment from "moment";
 import _ from "lodash";
 import ResizeObserver from "resize-observer-polyfill";
+import * as linkify from "linkifyjs";
 
 /**
  * Function returning the build date(as per provided epoch)
@@ -111,3 +112,14 @@ export function useMeasure() {
   }, []);
   return [{ ref }, bounds];
 }
+
+export const openLink = (weblink) => {
+  const convertedLinkRaw = weblink && linkify.find(weblink);
+  const convertedLink =
+    weblink && convertedLinkRaw[0] !== undefined && convertedLinkRaw[0].href;
+
+  window.open(convertedLink, "_blank");
+};
+export const openMail = (contact) => {
+  window.location.href = "mailto:" + contact;
+};

@@ -154,6 +154,8 @@ const DesktopTabWrapper = styled.div`
   background-color: #fed957;
   padding-bottom: 0px;
   z-index: 99;
+  top: 0;
+  padding-top: 25px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -563,8 +565,6 @@ const SwipeList = ({
               handleClick={handleClick}
               order={order}
               tabLabels={tabLabels}
-              marginTop="25px"
-              marginBottom="0px"
               secondaryColor="#d6ab00"
             />
           </DesktopTabWrapper>
