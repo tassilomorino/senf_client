@@ -1,5 +1,3 @@
-/** @format */
-
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,47 +32,30 @@ import InlineDatePicker from "../../../atoms/InlineDatePicker/InlineDatePicker";
 import { TextField } from "@material-ui/core";
 import { useFormik } from "formik";
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ButttonsWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-`;
-
-const GeocoderWrapper = styled.div`
-  margin-top: 30px;
-  width: 100%;
-`;
-
 const CreateOrganizationPage5 = ({ onClickNext, onClickPrev }) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
-  const [outsideClick, setOutsideClick] = useState(false);
-  const [faqs, setFaqs] = useState([{ questionn: "", answer: "" }]);
-
-  const handleAddQaA = () => {
-    setFaqs([...faqs, { question: "", answer: "" }]);
-
-    console.log(faqs);
-  };
-
-  const handleRemoveQaA = (index) => {
-    let data = [...faqs];
-    data.splice(index, 1);
-    setFaqs(data);
-  };
+  const [formFields, setFormFields] = useState([{ question: "", answer: "" }]);
 
   const handleFormChange = (event, index) => {
-    let data = [...faqs];
-    console.log(data);
+    let data = [...formFields];
     data[index][event.target.name] = event.target.value;
-    setFaqs(data);
+    setFormFields(data);
+  };
+
+  const addFields = () => {
+    let object = {
+      question: "",
+      answer: "",
+    };
+
+    setFormFields([...formFields, object]);
+  };
+
+  const removeFields = (index) => {
+    let data = [...formFields];
+    data.splice(index, 1);
+    setFormFields(data);
   };
 
   useEffect(() => {
@@ -91,7 +72,7 @@ const CreateOrganizationPage5 = ({ onClickNext, onClickPrev }) => {
       } else {
         const data = ref.data();
         if (data.faqs) {
-          setFaqs(data.faqs);
+          setFormFields(data.faqs);
         }
       }
     }
@@ -106,7 +87,6 @@ const CreateOrganizationPage5 = ({ onClickNext, onClickPrev }) => {
 
   const handleNext = async () => {
     setNextClicked(true);
-
     const db = firebase.firestore();
     if (
       typeof Storage !== "undefined" &&
@@ -114,7 +94,7 @@ const CreateOrganizationPage5 = ({ onClickNext, onClickPrev }) => {
     ) {
       //UPDATING AN EXISTING PROJECTROOM
       const updateProject = {
-        faqs: faqs,
+        faqs: formFields[0].question !== "" ? formFields : null,
       };
       const ref = await db
         .collection("organizations")
@@ -138,14 +118,15 @@ const CreateOrganizationPage5 = ({ onClickNext, onClickPrev }) => {
             Füge FAQ's hinzu, um den Nutzer:innen einen schnellen Einblick zu
             gewähren.
           </StyledH3>
-          <div style={{ zIndex: 99 }}>
-            {faqs &&
-              faqs.map((form, index) => (
-                <React.Fragment>
+
+          <form>
+            {formFields.map((form, index) => {
+              return (
+                <div key={index} style={{ flex: "none", marginBottom: "20px" }}>
                   <TextField
                     id="outlined-name"
-                    name={form.question}
-                    type={form.question}
+                    name="question"
+                    type="question"
                     label={t("question")}
                     margin="normal"
                     variant="outlined"
@@ -158,15 +139,16 @@ const CreateOrganizationPage5 = ({ onClickNext, onClickPrev }) => {
                     value={form.question}
                     onChange={(event) => handleFormChange(event, index)}
                   />
+
                   <TextField
                     id="outlined-name"
-                    name={form.answer}
-                    type={form.answer}
+                    name="answer"
+                    type="answer"
                     label={t("answer")}
                     margin="normal"
                     variant="outlined"
                     multiline
-                    rows={3}
+                    min-rows={3}
                     style={{
                       backgroundColor: "white",
                       borderRadius: "5px",
@@ -176,11 +158,13 @@ const CreateOrganizationPage5 = ({ onClickNext, onClickPrev }) => {
                     value={form.answer}
                     onChange={(event) => handleFormChange(event, index)}
                   />
-                </React.Fragment>
-              ))}
-            <button onClick={handleAddQaA}> + </button>
-            <button onClick={handleRemoveQaA}> - </button>
-          </div>
+                  <button onClick={() => removeFields(index)}>Remove</button>
+                </div>
+              );
+            })}
+          </form>
+          <button onClick={addFields}>Add More..</button>
+          <br />
         </ComponentInnerWrapper>
       </ComponentWrapper>
 

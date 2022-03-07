@@ -1,7 +1,8 @@
 /* helper functions for the application */
-
+import { useRef, useState, useEffect } from "react";
 import moment from "moment";
 import _ from "lodash";
+import ResizeObserver from "resize-observer-polyfill";
 
 /**
  * Function returning the build date(as per provided epoch)
@@ -96,4 +97,17 @@ export function filterByGeodata(items, mapBounds) {
       long >= mapBounds?.longitude2 &&
       long <= mapBounds?.longitude3
   );
+}
+
+export function useMeasure() {
+  const ref = useRef();
+  const [bounds, set] = useState({ left: 0, top: 0, width: 0, height: 0 });
+  const [ro] = useState(
+    () => new ResizeObserver(([entry]) => set(entry.contentRect))
+  );
+  useEffect(() => {
+    if (ref.current) ro.observe(ref.current);
+    return () => ro.disconnect();
+  }, []);
+  return [{ ref }, bounds];
 }

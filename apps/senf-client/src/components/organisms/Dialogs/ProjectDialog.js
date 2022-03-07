@@ -27,6 +27,9 @@ import { useTranslation } from "react-i18next";
 import PostScream from "../PostIdea/PostScream";
 import { ProjectRoomTabData } from "../../../data/ProjectRoomTabData";
 
+const Wrapper = styled.div`
+  z-index: 999;
+`;
 const ProjectDialog = ({
   viewport,
   projectsData,
@@ -125,7 +128,7 @@ const ProjectDialog = ({
   const TabSlicer = project?.calendar ? 3 : 1;
 
   return (
-    <React.Fragment>
+    <Wrapper>
       {isMobileCustom && !infoOpen && (
         <PostScream
           loadingProjects={loadingProjects}
@@ -189,7 +192,7 @@ const ProjectDialog = ({
           setOpenInsightsPage={setOpenInsightsPage}
         />
       )}
-    </React.Fragment>
+    </Wrapper>
   );
 };
 

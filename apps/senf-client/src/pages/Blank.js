@@ -1,7 +1,7 @@
 /** @format */
 
 import React from "react";
-
+import { Accordion } from "../components/molecules/Accordion/Accordion";
 const Blank = () => {
   return (
     <div
@@ -18,7 +18,9 @@ const Blank = () => {
         justifyContent: "content",
         textAlign: "center",
       }}
-    ></div>
+    >
+      {/* <Accordion></Accordion> */}
+    </div>
   );
 };
 

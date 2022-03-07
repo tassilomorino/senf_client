@@ -3,6 +3,7 @@
 import React, { useState, useEffect, memo } from "react";
 import { useSelector } from "react-redux";
 import IdeaCard from "../Cards/IdeaCard";
+import ProjectCard from "../Cards/ProjectCard";
 import {
   NoMoreMainContent,
   NoMoreMyContent,
@@ -14,7 +15,7 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
 import { usePrevious } from "../../../hooks/usePrevious";
-import { ProjectCard } from "../Cards/ProjectCard";
+
 import { useTranslation } from "react-i18next";
 import { NoMore } from "./styles/sharedStyles";
 
@@ -69,7 +70,7 @@ const List = ({
     var items = [];
     if (dataFinalLength !== 0) {
       for (var i = 0; i < listItems; i++) {
-        if (swipeListType === "projectRoomOverview" ) {
+        if (swipeListType === "projectRoomOverview") {
           items.push(
             dataFinal[i]?.projectRoomId && (
               <ProjectCard
