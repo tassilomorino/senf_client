@@ -190,7 +190,6 @@ const SwipeList = ({
   const [searchOpen, setSearchOpen] = useState(false);
   const mapBounds = useSelector((state) => state.data.mapBounds);
   const swipePosition = useSelector((state) => state.UI.swipePosition);
-
   const user = useSelector((state) => state.user);
 
   const openCreateProjectRoom = () => {
