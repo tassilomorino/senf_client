@@ -172,12 +172,14 @@ const App = () => {
         //CHANGE IT TO REACT_APP_STATISTICS.
         /* Add statistics for senf.koeln */
 
-        <script
-          async
-          defer
-          data-website-id="17c8a5a3-76cb-43c6-971a-04dbd6a7a325"
-          src="https://umami-xi-nine.vercel.app/senf-stat.js"
-        ></script>
+        <Helmet>
+          <script
+            async
+            defer
+            data-website-id="17c8a5a3-76cb-43c6-971a-04dbd6a7a325"
+            src="https://umami-xi-nine.vercel.app/senf-stat.js"
+          ></script>
+        </Helmet>
       )}
       <MuiThemeProvider theme={theme}>
         <Provider store={store}>
