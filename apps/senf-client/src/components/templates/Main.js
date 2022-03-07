@@ -474,7 +474,6 @@ const Main = () => {
                 order={order}
                 dataFinal={order === 1 ? dataFinalIdeas : dataFinalProjectRooms}
                 dataFinalMap={dataFinalMap}
-                viewport={mapViewport}
                 handleDropdown={handleDropdown}
                 projectsData={dataFinalProjectRooms}
                 dropdown={dropdown}
