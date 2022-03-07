@@ -438,7 +438,7 @@ const SwipeList = ({
           ? {
               scale: 0.9,
               transform: `translateY(${-20}px)`,
-              filter: "brightness(50%)",
+              filter: "brightness(80%)",
               transition: "0.5s",
               overflow: "visible",
             }

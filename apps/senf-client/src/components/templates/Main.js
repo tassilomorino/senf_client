@@ -93,7 +93,7 @@ const MainColumnWrapper = styled.div`
 const MobileMapClickBackground = styled.div`
   height: 100vh;
   width: 100vw;
-  background-color: rgb(0, 0, 0, 0.5);
+  background-color: rgb(0, 0, 0, 0);
   z-index: 10;
   position: fixed;
   top: 0;

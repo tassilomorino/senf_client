@@ -4,6 +4,8 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 import "firebase/compat/storage";
 
+import { isMobileCustom } from "../../util/customDeviceDetect";
+
 import { closeScream } from "./screamActions";
 import {
   LOADING_ORGANIZATIONS_DATA,
@@ -87,12 +89,19 @@ export const openOrganizationFunc =
       dispatch(closeScream());
       const newPath = `/organizations/${organizationId}`;
       window.history.pushState(null, null, newPath);
+    } else if (state === "hide") {
+      if (isMobileCustom) {
+        dispatch({
+          type: OPEN_ORGANIZATION,
+          payload: false,
+        });
+      }
     } else {
-      dispatch({ type: SET_ORGANIZATION, payload: null });
       dispatch({
         type: OPEN_ORGANIZATION,
         payload: false,
       });
+      dispatch({ type: SET_ORGANIZATION, payload: null });
       window.history.pushState(null, null, "/organizations");
     }
   };

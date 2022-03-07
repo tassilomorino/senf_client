@@ -175,6 +175,7 @@ const OrganizationsPage = ({
   const dispatch = useDispatch();
   useEffect(() => {
     setOpen(true);
+    // window.history.pushState(null, null, "/organizations");
   }, []);
 
   const [props, set] = useSpring(() => ({
@@ -196,6 +197,7 @@ const OrganizationsPage = ({
         });
 
         setTimeout(() => {
+          window.history.pushState(null, null, "/projectRooms");
           setOpenOrganizationsPage(false);
         }, 150);
         setTimeout(() => {
@@ -222,6 +224,8 @@ const OrganizationsPage = ({
       touchAction: "none",
     });
     setTimeout(() => {
+      window.history.pushState(null, null, "/projectRooms");
+
       setOpenOrganizationsPage(false);
     }, 150);
   };
