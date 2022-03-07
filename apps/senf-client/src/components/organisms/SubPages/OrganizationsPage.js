@@ -15,7 +15,16 @@ import Toolbar from "../../molecules/Toolbar/Toolbar";
 import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-import { Covers, CoverWrapper, Wrapper } from "./styles/sharedStyles";
+import {
+  Covers,
+  CoverWrapper,
+  Wrapper,
+  HeaderWrapper,
+  SVGWrapper,
+  ClickBackground,
+  DragWrapper,
+  HandleBar,
+} from "./styles/sharedStyles";
 import { TagsFilter } from "../../molecules/Filters/TagsFilter";
 import { MenuData } from "../../../data/MenuData";
 import { StyledH2 } from "../../../styles/GlobalStyle";
@@ -25,41 +34,6 @@ import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 import NewButton from "../../atoms/CustomButtons/NewButton";
 import { stateCreateOrganizationsFunc } from "../../../redux/actions/organizationActions";
-
-const DragWrapper = styled(animated.div)`
-  overscroll-behavior: contain;
-  overflow-x: hidden;
-
-  width: 100%;
-  height: 100%;
-  background: rgb(254, 217, 87);
-  background: linear-gradient(
-    180deg,
-    rgba(254, 217, 87, 1) 0%,
-    rgba(255, 218, 83, 1) 50%,
-    rgba(255, 255, 255, 1) 100%
-  );
-  border-radius: 24px;
-  position: absolute;
-  z-index: 995;
-  animation: organizationOverviewEnterAnimation 0.5s;
-
-  @media (min-width: 768px) {
-    width: 400px;
-    animation: none;
-    border-radius: 0px;
-  }
-`;
-
-const ClickBackground = styled.div`
-  width: 100%;
-  height: 100%;
-  left: 0;
-  position: fixed;
-  z-index: 994;
-  pointer-events: auto;
-  top: 0;
-`;
 
 const InnerWrapper = styled.div`
   overflow-y: scroll;
@@ -100,32 +74,6 @@ const FlexWrapper = styled.div`
   padding-bottom: 200px;
 `;
 
-const SVGWrapper = styled.div`
-  background-color: rgb(249, 241, 215);
-  height: 150px;
-  width: 100%;
-  position: sticky;
-  top: 0;
-  z-index: 2;
-`;
-const HeaderWrapper = styled(animated.div)`
-  position: sticky;
-  width: 100%;
-  top: 20px;
-  background-color: #fed957;
-  z-index: 25;
-  height: 100px;
-  @media (min-width: 768px) {
-    position: absolute;
-
-    width: 600px;
-    height: 120px;
-    margin-left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-    background-color: transparent;
-  }
-`;
 const NoIdeasYet = styled.div`
   position: relative;
   font-size: 15pt;
@@ -150,17 +98,6 @@ const TabsWrapper = styled.div`
   margin-left: 20px;
 `;
 
-const HandleBar = styled.div`
-  width: 50px;
-  height: 2px;
-  background-color: #f2c71c;
-  overflow: visible;
-  border-radius: 1px;
-  margin-top: 8px;
-  margin-left: 50%;
-  transform: translateX(-50%);
-  position: absolute;
-`;
 const OrganizationsPage = ({
   setOpenOrganizationsPage,
   order,
@@ -318,13 +255,14 @@ const OrganizationsPage = ({
             zIndex={99}
           />
           <TabsWrapper>
-            <Tabs
-              loading={false}
-              order={1}
-              tabLabels={MenuData.map((item) => item.text).slice(2, 3)}
-              marginTop={"20px"}
-              marginBottom={"20px"}
-            />
+            <StyledH2
+              fontWeight="900"
+              fontSize={document.body.clientWidth > 368 ? "22px" : "19px"}
+              textAlign="center"
+              margin="10px 0px"
+            >
+              {MenuData.map((item) => item.text).slice(2, 3)}
+            </StyledH2>
           </TabsWrapper>
 
           {isMobileCustom && (
@@ -409,13 +347,14 @@ const OrganizationsPage = ({
         />
         <SVGWrapper>
           <HeaderWrapper>
-            <Tabs
-              loading={false}
-              order={1}
-              tabLabels={MenuData.map((item) => item.text).slice(2, 3)}
-              marginTop={"20px"}
-              marginBottom={"40px"}
-            />
+            <StyledH2
+              fontWeight="900"
+              fontSize={document.body.clientWidth > 368 ? "22px" : "19px"}
+              textAlign="center"
+              margin="20px 0px 40px 0px"
+            >
+              {MenuData.map((item) => item.text).slice(2, 3)}
+            </StyledH2>
 
             {isMobileCustom && (
               <TagsFilter

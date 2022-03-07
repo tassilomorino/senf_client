@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { animated } from "@react-spring/web";
 
 export const Wrapper = styled.div`
   width: 100vw;
@@ -37,6 +38,41 @@ export const Wrapper = styled.div`
 } */
 `;
 
+export const DragWrapper = styled(animated.div)`
+  overscroll-behavior: contain;
+  overflow-x: hidden;
+
+  width: 100%;
+  height: 100%;
+  background: rgb(254, 217, 87);
+  background: linear-gradient(
+    180deg,
+    rgba(254, 217, 87, 1) 0%,
+    rgba(255, 218, 83, 1) 50%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  border-radius: 24px;
+  position: absolute;
+  z-index: 995;
+  animation: organizationOverviewEnterAnimation 0.5s;
+
+  @media (min-width: 768px) {
+    width: 400px;
+    animation: none;
+    border-radius: 0px;
+  }
+`;
+
+export const ClickBackground = styled.div`
+  width: 100%;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  z-index: 994;
+  pointer-events: auto;
+  top: 0;
+`;
+
 export const CoverWrapper = styled.div`
   margin-left: 50%;
   padding-bottom: 200px;
@@ -52,13 +88,16 @@ export const CoverWrapper = styled.div`
     ". .";
   @media (min-width: 768px) {
     margin-top: 50px;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
   }
 
-  @media (min-width: 1068px) {
+  @media (min-width: 1100px) {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+  }
+
+  @media (min-width: 1468px) {
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
   }
 `;
 
@@ -74,4 +113,44 @@ export const Covers = styled.div`
   background-color: white;
   margin: 0;
   padding: 0;
+`;
+
+export const SVGWrapper = styled.div`
+  background-color: rgb(249, 241, 215);
+  height: 150px;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+`;
+
+export const HeaderWrapper = styled(animated.div)`
+  position: sticky;
+  width: 100%;
+  top: 20px;
+  background-color: #fed957;
+  z-index: 25;
+  height: 100px;
+  @media (min-width: 768px) {
+    position: absolute;
+
+    width: 600px;
+    height: 120px;
+    margin-left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    background-color: transparent;
+  }
+`;
+
+export const HandleBar = styled.div`
+  width: 50px;
+  height: 2px;
+  background-color: #f2c71c;
+  overflow: visible;
+  border-radius: 1px;
+  margin-top: 8px;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
 `;

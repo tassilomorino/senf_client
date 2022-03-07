@@ -20,12 +20,24 @@ import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
-import { Covers, CoverWrapper, Wrapper } from "./styles/sharedStyles";
+import {
+  Covers,
+  CoverWrapper,
+  Wrapper,
+  SVGWrapper,
+  HeaderWrapper,
+  DragWrapper,
+  ClickBackground,
+  HandleBar,
+} from "./styles/sharedStyles";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { StyledH2 } from "../../../styles/GlobalStyle";
 import Tabs from "../../atoms/Tabs/Tabs";
 import { MenuData } from "../../../data/MenuData";
+
+import { useSpring, animated } from "@react-spring/web";
+import { useDrag } from "@use-gesture/react";
 
 const CoverImg = styled.img`
   width: 100%;
@@ -50,6 +62,56 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
   useEffect(() => {
     setOpen(true);
   }, []);
+
+  const [props, set] = useSpring(() => ({
+    x: 0,
+    y: 0,
+    scale: 1,
+    transform: `translateY(${30}px)`,
+    overflow: "hidden",
+    touchAction: "none",
+    userSelect: "none",
+  }));
+
+  const bind = useDrag(
+    ({ last, down, movement: [, my], offset: [, y] }) => {
+      if (last && my > 50) {
+        set({
+          transform: `translateY(${window.innerHeight}px)`,
+          touchAction: "none",
+        });
+
+        setTimeout(() => {
+          window.history.pushState(null, null, "/projectRooms");
+          setOpenInsightsPage(false);
+        }, 150);
+        setTimeout(() => {
+          set({
+            transform: `translateY(${30}px)`,
+            touchAction: "none",
+          });
+        }, 300);
+      }
+
+      set({ y: down ? my : 0 });
+    },
+    {
+      pointer: { touch: true },
+      bounds: {
+        enabled: true,
+      },
+    }
+  );
+
+  const setClose = () => {
+    set({
+      transform: `translateY(${window.innerHeight}px)`,
+      touchAction: "none",
+    });
+    setTimeout(() => {
+      setOpenInsightsPage(false);
+    }, 150);
+  };
 
   //const mapViewport = useSelector((state) => state.data.mapViewport);
   const fetchDataScreams = async () => {
@@ -166,24 +228,47 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
   const handleLink = () => {
     window.open("https://wiki.agorakoeln.de/", "_blank");
   };
-  return (
-    <Wrapper order={open}>
-      <CustomIconButton
-        name="ArrowLeft"
-        position="fixed"
-        margin="10px"
-        backgroundColor="#FFF0BC"
-        handleButtonClick={() => setOpenInsightsPage(false)}
-        zIndex={99}
-      />
 
-      <Tabs
-        loading={false}
-        order={1}
-        tabLabels={MenuData.map((item) => item.text).slice(3, 4)}
-        marginTop={"20px"}
-        marginBottom={"20px"}
-      />
+  const content = (
+    <React.Fragment order={open}>
+      {!isMobileCustom && (
+        <React.Fragment>
+          <CustomIconButton
+            name="ArrowLeft"
+            position="fixed"
+            margin="10px"
+            backgroundColor="#FFF0BC"
+            handleButtonClick={() => setOpenInsightsPage(false)}
+            zIndex={99}
+          />
+
+          <SVGWrapper>
+            <HeaderWrapper>
+              <StyledH2
+                fontWeight="900"
+                fontSize={document.body.clientWidth > 368 ? "22px" : "19px"}
+                textAlign="center"
+                margin="20px 0px"
+              >
+                {MenuData.map((item) => item.text).slice(3, 4)}
+              </StyledH2>
+            </HeaderWrapper>
+            <svg
+              width="100%"
+              height="126"
+              viewBox="0 0 1100 126"
+              preserveAspectRatio="none"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0 125.5V0.5H1130.5V99C1025 143 974.588 95.9476 942.5 83C828.5 37 819 43.5 704 62.5C558 86.6217 307.5 44.5 196 99C128.785 131.854 37.1667 124.667 0 125.5Z"
+                fill="#FED957"
+              />
+            </svg>
+          </SVGWrapper>
+        </React.Fragment>
+      )}
       <Keyindicators
         screams={screams}
         likesLength={likesLength}
@@ -230,7 +315,38 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
           {/* <WordcloudDialog /> */}
         </Covers>
       </CoverWrapper>
-    </Wrapper>
+    </React.Fragment>
+  );
+  return isMobileCustom ? (
+    <React.Fragment>
+      <ClickBackground onClick={setClose} />
+
+      <DragWrapper style={props}>
+        <HandleBar />
+        <HeaderWrapper {...bind()}>
+          <CustomIconButton
+            name="ArrowDown"
+            position="fixed"
+            margin="-10px 0px"
+            backgroundColor="transparent"
+            shadow={false}
+            handleButtonClick={setClose}
+            zIndex={99}
+          />
+          <StyledH2
+            fontWeight="900"
+            fontSize={document.body.clientWidth > 368 ? "22px" : "19px"}
+            textAlign="center"
+            margin="20px 0px"
+          >
+            {MenuData.map((item) => item.text).slice(3, 4)}
+          </StyledH2>
+        </HeaderWrapper>
+        {content}
+      </DragWrapper>
+    </React.Fragment>
+  ) : (
+    <Wrapper order={open}>{content}</Wrapper>
   );
 };
 
