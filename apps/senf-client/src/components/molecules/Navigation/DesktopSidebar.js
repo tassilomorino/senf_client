@@ -113,7 +113,7 @@ const DesktopSidebar = ({
           {t("login")}
         </SideBarTabs>
       ) : (
-        <SideBarTabs fontWeight={openAccount && "900"}>
+        <SideBarTabs fontWeight={openAccount ? "900" : undefined}>
           <ExpandButton
             handleButtonClick={openTheAccount}
             dataCy="profile-button"

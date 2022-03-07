@@ -49,20 +49,19 @@ export function truncateString(str, num) {
   return str.slice(0, num) + "...";
 }
 
-export function search(items, searchTerm, variables) {
-  return items.filter((val) => {
-    if (searchTerm === "") {
-      return val;
-    } else if (
-      val[variables[0]]?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val[variables[1]]?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val[variables[2]]?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val[variables[3]]?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val[variables[4]]?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val[variables[5]]?.toLowerCase().includes(searchTerm.toLowerCase())
-    ) {
-      return val;
-    }
+export function search(dbData, userInput, dbDataKeys) {
+  const sanitizedUserInput = userInput.toString().toLowerCase();
+
+  if (userInput === "") {
+    return dbData;
+  }
+  return dbData.filter((object) => {
+    return dbDataKeys.some((dbDataKey) => {
+      return object[dbDataKey]
+        ?.toString()
+        .toLowerCase()
+        .includes(sanitizedUserInput);
+    });
   });
 }
 

@@ -25,6 +25,7 @@ export const StyledH2 = styled.h2`
 `;
 
 export const StyledH3 = styled.h3`
+  font-weight: ${(props) => (props.fontWeight ? props.fontWeight : 400)};
   margin: ${(props) => (props.margin ? props.margin : "0")};
   padding: 0;
   text-align: ${(props) => (props.textAlign ? props.textAlign : "left")};

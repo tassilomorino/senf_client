@@ -223,6 +223,7 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
           {type === "topics"
             ? topics.map((topic, i) => (
                 <Tag
+                  key={topic.name}
                   placing={placing}
                   onClick={() => dispatch(handleTopicSelectorRedux(topic.name))}
                   checked={
@@ -248,6 +249,7 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
               ))
             : organizationTypes.map((organizationTypes, i) => (
                 <Tag
+                  key={organizationTypes.name}
                   placing={placing}
                   onClick={() =>
                     dispatch(
