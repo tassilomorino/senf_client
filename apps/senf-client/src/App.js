@@ -1,8 +1,8 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./styles/mapbox-gl.css";
 import "./App.css";
 import "./AppDesktop.css";
@@ -168,10 +168,10 @@ const App = () => {
           <meta name="robots" content="noindex" />
         </Helmet>
       )}
-      {process.env.REACT_APP_NO_CRAWL && (
-        //CHANGE IT TO REACT_APP_STATISTICS.
-        /* Add statistics for senf.koeln */
-
+      {process.env.REACT_APP_STATS && (
+        /* Add statistics for senf.koeln
+        https://umami-xi-nine.vercel.app/
+        */
         <Helmet>
           <script
             async
