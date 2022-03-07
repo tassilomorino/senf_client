@@ -4,8 +4,6 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 
-import firebase from "firebase/app";
-import "firebase/firestore";
 import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
@@ -41,7 +39,7 @@ const DragWrapper = styled(animated.div)`
     rgba(255, 218, 83, 1) 50%,
     rgba(255, 255, 255, 1) 100%
   );
-  border-radius: 20px;
+  border-radius: 24px;
   position: absolute;
   z-index: 995;
   animation: organizationOverviewEnterAnimation 0.5s;
@@ -143,7 +141,21 @@ const ButtonWrapper = styled.div`
     right: 60px;
   }
 `;
+const TabsWrapper = styled.div`
+  margin-left: 20px;
+`;
 
+const HandleBar = styled.div`
+  width: 50px;
+  height: 2px;
+  background-color: #f2c71c;
+  overflow: visible;
+  border-radius: 1px;
+  margin-top: 8px;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+`;
 const OrganizationsPage = ({
   setOpenOrganizationsPage,
   order,
@@ -163,6 +175,7 @@ const OrganizationsPage = ({
   const dispatch = useDispatch();
   useEffect(() => {
     setOpen(true);
+    // window.history.pushState(null, null, "/organizations");
   }, []);
 
   const [props, set] = useSpring(() => ({
@@ -184,6 +197,7 @@ const OrganizationsPage = ({
         });
 
         setTimeout(() => {
+          window.history.pushState(null, null, "/projectRooms");
           setOpenOrganizationsPage(false);
         }, 150);
         setTimeout(() => {
@@ -210,6 +224,8 @@ const OrganizationsPage = ({
       touchAction: "none",
     });
     setTimeout(() => {
+      window.history.pushState(null, null, "/projectRooms");
+
       setOpenOrganizationsPage(false);
     }, 150);
   };
@@ -285,6 +301,7 @@ const OrganizationsPage = ({
       <ClickBackground onClick={setClose} />
 
       <DragWrapper className={!loading ? "" : "drag_hide"} style={props}>
+        <HandleBar />
         <HeaderWrapper {...bind()}>
           <CustomIconButton
             name="ArrowDown"
@@ -295,14 +312,15 @@ const OrganizationsPage = ({
             handleButtonClick={setClose}
             zIndex={99}
           />
-
-          <Tabs
-            loading={false}
-            order={1}
-            tabLabels={MenuData.map((item) => item.text).slice(2, 3)}
-            marginTop={"20px"}
-            marginBottom={"20px"}
-          />
+          <TabsWrapper>
+            <Tabs
+              loading={false}
+              order={1}
+              tabLabels={MenuData.map((item) => item.text).slice(2, 3)}
+              marginTop={"20px"}
+              marginBottom={"20px"}
+            />
+          </TabsWrapper>
 
           {isMobileCustom && (
             <TagsFilter

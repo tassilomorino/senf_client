@@ -1,12 +1,15 @@
 /** @format */
 
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/storage";
+
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 import { closeScream } from "./screamActions";
 import {
   LOADING_ORGANIZATIONS_DATA,
+  LOADING_ORGANIZATION_DATA,
   SET_ORGANIZATIONS,
   OPEN_CREATE_ORGANIZATION,
   OPEN_ORGANIZATION,
@@ -14,6 +17,7 @@ import {
   LOADING_DATA,
   STOP_LOADING_DATA,
 } from "../types";
+import setIconByOrganizationType from "../../data/setIconByOrganizationType";
 
 // Get all projects
 export const getOrganizations = (mapViewport) => async (dispatch) => {
@@ -75,6 +79,8 @@ export const stateCreateOrganizationsFunc = (state) => async (dispatch) => {
 export const openOrganizationFunc =
   (state, organizationId) => async (dispatch) => {
     if (state === true) {
+      dispatch({ type: LOADING_ORGANIZATION_DATA });
+
       dispatch({
         type: OPEN_ORGANIZATION,
         payload: true,
@@ -83,12 +89,19 @@ export const openOrganizationFunc =
       dispatch(closeScream());
       const newPath = `/organizations/${organizationId}`;
       window.history.pushState(null, null, newPath);
+    } else if (state === "hide") {
+      if (isMobileCustom) {
+        dispatch({
+          type: OPEN_ORGANIZATION,
+          payload: false,
+        });
+      }
     } else {
-      dispatch({ type: SET_ORGANIZATION, payload: null });
       dispatch({
         type: OPEN_ORGANIZATION,
         payload: false,
       });
+      dispatch({ type: SET_ORGANIZATION, payload: null });
       window.history.pushState(null, null, "/organizations");
     }
   };
@@ -101,7 +114,6 @@ export const loadOrganizationData = (organizationId) => async (dispatch) => {
   organization.organizationId = ref.id;
   organization.projectRooms = [];
 
-  dispatch({ type: SET_ORGANIZATION, payload: organization });
   dispatch(loadOrganizationProjectRooms(organizationId, organization));
 };
 
@@ -119,6 +131,7 @@ export const loadOrganizationProjectRooms =
       .get();
     if (!projectRoomsRef.exists) {
       console.log("no prs in loadOrganizationProjectRooms");
+      dispatch({ type: SET_ORGANIZATION, payload: organization });
     }
 
     projectRoomsRef.docs.forEach((doc) => {
@@ -135,12 +148,13 @@ export const loadOrganizationProjectRooms =
           projectRoomId: doc.id,
           imgUrl: projectRoomImage,
           organizationType: doc.data().organizationType,
+          icon: setIconByOrganizationType(doc.data().organizationType),
         });
         dispatch({ type: SET_ORGANIZATION, payload: organization });
         // dispatch({ type: STOP_LOADING_DATA });
       }
       function onRejectPr(error) {
-        console.log("error Pr");
+        dispatch({ type: SET_ORGANIZATION, payload: organization });
       }
     });
   };

@@ -1,6 +1,6 @@
 /** @format */
-import firebase from "firebase/app";
-import "firebase/firestore";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
 
 import { SET_USER, SET_UNAUTHENTICATED } from "../types";
 import { closeAccountFunc } from "./accountActions";

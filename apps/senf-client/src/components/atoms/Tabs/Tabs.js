@@ -28,7 +28,8 @@ const TabWrapper = styled.div`
 `;
 const FlexWrapper = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  margin-left: 24px;
 `;
 const Tab = styled.div`
   position: relative;
@@ -40,10 +41,10 @@ const Tab = styled.div`
   height: 100%;
   width: auto;
   padding-right: 15px;
-  padding-left: 15px;
   animation: ${enterAnimation} ${(props) => props.i * 0.3}s;
 
-  opacity: ${(props) => (props.active ? "1" : "0.6")};
+  color: ${(props) =>
+    props.active ? "rgba(0, 0, 0, 0.8)" : props.secondaryColor};
   pointer-events: all;
 `;
 
@@ -74,6 +75,8 @@ const Tabs = ({
   tabLabels,
   marginTop,
   marginBottom,
+  secondaryColor,
+  type,
 }) => {
   const tab = tabLabels.map((tabLabel, i) => {
     return (
@@ -83,17 +86,31 @@ const Tabs = ({
             <Tab
               i={i + 1}
               active={order === i + 1}
-              onClick={() => handleClick(i + 1)}
+              onClick={() => {
+                handleClick && handleClick(i + 1);
+              }}
+              secondaryColor={secondaryColor}
             >
-              <StyledH2>{tabLabel}</StyledH2>
-              <ImgWrapper active={order === i + 1}>
+              <StyledH2
+                fontWeight="900"
+                fontSize={
+                  type === "secondary"
+                    ? "18px"
+                    : document.body.clientWidth > 368
+                    ? "22px"
+                    : "19px"
+                }
+              >
+                {tabLabel}
+              </StyledH2>
+              {/* <ImgWrapper active={order === i + 1}>
                 <img
                   src={Line}
                   style={{ width: "calc(100% - 20px)" }}
                   height="7px"
                   marginLeft="10px"
                 />
-              </ImgWrapper>
+              </ImgWrapper> */}
             </Tab>
           )}
           {/* {i !== tabLabels.length - 1 && (

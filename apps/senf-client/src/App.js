@@ -11,9 +11,9 @@ import "./mapbox.css";
 import "./Animations.css";
 
 import firebaseConfig from "./firebase";
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
 
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { createTheme } from "@material-ui/core/styles/";
@@ -55,26 +55,15 @@ import { setViewport } from "./util/helpers-map-animations";
 import detectLocation from "./util/detectLocation";
 import GlobalStyles from "./styles/GlobalStyles";
 
+import firebaseApp from "./firebase";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 import "./util/i18n"; // i18n configuration
 detectLocation(); // detect location and set i18n language
 const cookies = new Cookies();
 require("intersection-observer");
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-  firebase
-    .firestore()
-    .enablePersistence()
-    .then(() => firebase.firestore())
-    .catch((err) => {
-      console.log(err);
-      return firebase.firestore();
-    });
-} else {
-  firebase.app(); // if already initialized, use that one
-}
-
-axios.defaults.baseURL = process.env.REACT_APP_DB_BASE_URL;
+const auth = getAuth(firebaseApp);
 
 const theme = createTheme(themeFile);
 
@@ -143,9 +132,10 @@ const App = () => {
   const { t } = useTranslation();
 
   const [isAuthed, setIsAuthed] = useState(false);
+
   const userState = () => {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user && user.emailVerified) {
+    onAuthStateChanged(auth, (user) => {
+      if (user && user.uid && user.emailVerified) {
         store.dispatch({ type: SET_AUTHENTICATED });
         store.dispatch(getUserData(user.uid));
         setIsAuthed(true);

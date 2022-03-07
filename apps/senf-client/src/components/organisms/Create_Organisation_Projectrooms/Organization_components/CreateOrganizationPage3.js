@@ -7,9 +7,9 @@ import styled from "styled-components";
 import imageCompression from "browser-image-compression";
 
 //firebase
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/storage";
 
 //redux
 import { createProjectSaveData } from "../../../../redux/actions/formDataActions";

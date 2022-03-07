@@ -33,10 +33,11 @@ import {
 } from "../../../styles/GlobalStyle";
 import organizationTypes from "../../../data/organizationTypes";
 
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/storage";
 import { truncateString } from "apps/senf-client/src/util/helpers";
+import { openOrganizationFunc } from "apps/senf-client/src/redux/actions/organizationActions";
 
 const ImgWrapper = styled.div`
   /* position: relative;
@@ -148,10 +149,15 @@ const ProjectCard = (props) => {
   const screams = useSelector((state) => state.data.screams);
 
   const organizations = useSelector((state) => state.data.organizations);
+  const openOrganization = useSelector((state) => state.UI.openOrganization);
   const dispatch = useDispatch();
 
   const pushScreamId = () => {
     dispatch(openProjectRoomFunc(thisProjectRoomId, true));
+
+    if (openOrganization) {
+      dispatch(openOrganizationFunc("hide", null));
+    }
   };
   const handleEdit = () => {
     localStorage.setItem("createProjectRoomOrganizationId", organizationId);

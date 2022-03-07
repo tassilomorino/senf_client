@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const NoMore = styled.h2`
+export const NoMore = styled.h3`
   color: rgb(87, 87, 87);
   position: absolute;
   margin-top: 0vh;
@@ -23,10 +23,10 @@ export const NoMore = styled.h2`
 
 export const NoContent = styled.div`
   position: relative;
-  font-size: 15pt;
+  font-size: 16px;
   color: #414345;
   width: 80%;
-  margin-left: 10%;
-  text-align: center;
+  margin-left: 24px;
+  text-align: left;
   z-index: 10;
 `;

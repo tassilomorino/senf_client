@@ -12,9 +12,9 @@ import * as yup from "yup";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
 //firebase
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/storage";
 
 import { useOnClickOutside } from "../../../../hooks/useOnClickOutside";
 import {

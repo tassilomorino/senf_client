@@ -93,7 +93,7 @@ const MainColumnWrapper = styled.div`
 const MobileMapClickBackground = styled.div`
   height: 100vh;
   width: 100vw;
-  background-color: rgb(0, 0, 0, 0.5);
+  background-color: rgb(0, 0, 0, 0);
   z-index: 10;
   position: fixed;
   top: 0;
@@ -136,6 +136,9 @@ const Main = () => {
   const loadingIdea = useSelector((state) => state.data.loadingIdea);
   const loadingProjectRoom = useSelector(
     (state) => state.data.loadingProjectRoom
+  );
+  const loadingOrganization = useSelector(
+    (state) => state.data.loadingOrganization
   );
 
   const projects = useSelector((state) => state.data.projects);
@@ -425,18 +428,6 @@ const Main = () => {
               />
             )}
           <Topbar loading={loading} handleClick={handleClick} order={order} />
-          {!loading &&
-            !loadingProjects &&
-            !openScream &&
-            !openAccount &&
-            !openProjectRoom &&
-            order === 1 && (
-              <PostScream
-                loadingProjects={loadingProjects}
-                projectsData={dataFinalProjectRooms}
-                project={dataFinalProjectRooms}
-              />
-            )}
         </React.Fragment>
       ) : (
         <DesktopSidebar
@@ -475,7 +466,7 @@ const Main = () => {
                 dataFinal={order === 1 ? dataFinalIdeas : dataFinalProjectRooms}
                 dataFinalMap={dataFinalMap}
                 handleDropdown={handleDropdown}
-                projectsData={dataFinalProjectRooms}
+                dataFinalProjectRooms={dataFinalProjectRooms}
                 dropdown={dropdown}
                 setSearchTerm={setSearchTerm}
                 searchTerm={searchTerm}
@@ -491,7 +482,7 @@ const Main = () => {
               loading={loading}
               handleClick={handleClick}
               loadingProjects={loadingProjects}
-              projectsData={dataFinalProjectRooms}
+              dataFinalProjectRooms={dataFinalProjectRooms}
               setOpenInsightsPage={setOpenInsightsPage}
             />
           )}
@@ -502,7 +493,7 @@ const Main = () => {
         </MainColumnWrapper>
       )}
 
-      {openOrganization && (
+      {openOrganization && !loadingOrganization && (
         <OrganizationDialog
           openOrganization={openOrganization}
           dataFinalMap={dataFinalMap}

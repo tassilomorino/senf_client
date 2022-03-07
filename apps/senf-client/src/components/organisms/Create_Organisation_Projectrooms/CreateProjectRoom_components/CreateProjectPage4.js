@@ -14,8 +14,9 @@ import {
 } from "../styles/sharedStyles";
 
 //firebase
-import firebase from "firebase/app";
-import "firebase/firestore";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/storage";
 import "firebase/storage";
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
