@@ -169,7 +169,7 @@ const App = () => {
         </Helmet>
       )}
       {process.env.REACT_APP_NO_CRAWL && (
-        //CHANGE IT TO REACT_APP_STATISTICS
+        //CHANGE IT TO REACT_APP_STATISTICS.
         /* Add statistics for senf.koeln */
 
         <Helmet>
