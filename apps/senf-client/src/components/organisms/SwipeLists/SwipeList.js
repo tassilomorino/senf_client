@@ -536,12 +536,10 @@ const SwipeList = ({
               <List
                 swipeListType={swipeListType}
                 type={type}
-                order={order}
                 loading={loading}
                 dropdown={dropdown}
                 dataFinal={dataFinal}
                 projectsData={dataFinalProjectRooms}
-                handleClick={handleClick}
               />
             )}
             {order === 3 && (
@@ -592,12 +590,10 @@ const SwipeList = ({
             <List
               swipeListType={swipeListType}
               type={type}
-              order={order}
               loading={loading}
               dropdown={dropdown}
               dataFinal={dataFinal}
               projectsData={dataFinalProjectRooms}
-              handleClick={handleClick}
             />
           )}
           {order === 3 && (

@@ -34,6 +34,7 @@ import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 import NewButton from "../../atoms/CustomButtons/NewButton";
 import { stateCreateOrganizationsFunc } from "../../../redux/actions/organizationActions";
+import List from "../../molecules/List/List";
 
 const InnerWrapper = styled.div`
   overflow-y: scroll;
@@ -69,8 +70,7 @@ const InnerWrapper = styled.div`
   }
 `;
 
-const FlexWrapper = styled.div`
-  display: flex;
+const ListWrapper = styled.div`
   padding-bottom: 200px;
 `;
 
@@ -108,6 +108,7 @@ const OrganizationsPage = ({
   setDropdown,
   searchTerm,
   setSearchTerm,
+  dataFinalProjectRooms,
 }) => {
   const { t } = useTranslation();
 
@@ -173,58 +174,6 @@ const OrganizationsPage = ({
   };
 
   const dataFinalLength = dataFinal.length;
-  const prevdataFinalLength = usePrevious({ dataFinalLength });
-  const prevDropdown = usePrevious({ dropdown });
-
-  useEffect(() => {
-    if (
-      (dataFinalLength &&
-        prevdataFinalLength &&
-        prevdataFinalLength.dataFinalLength !== dataFinalLength) ||
-      (dropdown && prevDropdown && prevDropdown.dropdown !== dropdown)
-    ) {
-      console.log(dataFinalLength);
-      setListItems(1);
-      sethasMoreItems(true);
-    }
-  }, [loading, dropdown, dataFinalLength]);
-
-  const itemsPerPage = 1;
-  const [hasMoreItems, sethasMoreItems] = useState(true);
-  const [listItems, setListItems] = useState(itemsPerPage);
-
-  const showItems = (dataFinal) => {
-    var items = [];
-    if (dataFinalLength !== 0) {
-      for (var i = 0; i < listItems; i++) {
-        items.push(
-          dataFinal[i]?.organizationId && (
-            <OrganizationCard
-              key={dataFinal[i]?.organizationId}
-              organization={dataFinal[i]}
-            />
-          )
-        );
-      }
-      return items;
-    }
-  };
-
-  const loadMore = () => {
-    console.log(listItems, dataFinal.length);
-    if (
-      !dataFinal ||
-      dataFinal.length === 0 ||
-      listItems === dataFinal.length
-    ) {
-      sethasMoreItems(false);
-    } else {
-      console.log(listItems);
-      setTimeout(() => {
-        setListItems(listItems + itemsPerPage);
-      }, 100);
-    }
-  };
 
   const openCreateOrganization = () => {
     dispatch(stateCreateOrganizationsFunc(true));
@@ -317,20 +266,16 @@ const OrganizationsPage = ({
             </ButtonWrapper>
           )}
 
-          <FlexWrapper isMobileCustom={isMobileCustom}>
-            {!loading ? (
-              <InfiniteScroll
-                loadMore={() => loadMore()}
-                hasMore={hasMoreItems}
-                // loader={<SkeletonCard dataFinalLength={dataFinalLength === 0} />}
-                useWindow={false}
-              >
-                {showItems(dataFinal)}
-              </InfiniteScroll>
-            ) : (
-              <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>
-            )}
-          </FlexWrapper>
+          <ListWrapper>
+            <List
+              swipeListType="organizationsOverview"
+              type="organizationsOverview"
+              loading={loading}
+              dropdown={dropdown}
+              dataFinal={dataFinal}
+              projectsData={dataFinalProjectRooms}
+            />
+          </ListWrapper>
         </InnerWrapper>
       </DragWrapper>
     </React.Fragment>
@@ -407,18 +352,14 @@ const OrganizationsPage = ({
         </SVGWrapper>
 
         <InnerWrapper isMobileCustom={isMobileCustom}>
-          {!loading ? (
-            <InfiniteScroll
-              loadMore={() => loadMore()}
-              hasMore={hasMoreItems}
-              // loader={<SkeletonCard dataFinalLength={dataFinalLength === 0} />}
-              useWindow={false}
-            >
-              {showItems(dataFinal)}
-            </InfiniteScroll>
-          ) : (
-            <NoIdeasYet>{t("projectrooms_loader")}</NoIdeasYet>
-          )}
+          <List
+            swipeListType="organizationsOverview"
+            type="organizationsOverview"
+            loading={loading}
+            dropdown={dropdown}
+            dataFinal={dataFinal}
+            projectsData={dataFinalProjectRooms}
+          />
         </InnerWrapper>
       </Wrapper>
     )

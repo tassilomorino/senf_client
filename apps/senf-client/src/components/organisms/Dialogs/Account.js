@@ -120,23 +120,22 @@ const Account = ({ dataFinalMap }) => {
 
       <Wrapper>
         {!isMobileCustom || (isMobileCustom && order !== 1 && <Background />)}
-        {order === 1 && (
-          <SwipeList
-            swipeListType="ideas"
-            type="myIdeas"
-            tabLabels={AccountTabData.map((item) => item.text).slice(0, 1)}
-            loading={loadingMyScreams}
-            order={order}
-            dataFinal={dataFinal}
-            dataFinalLength={dataFinal.length}
-            viewport={mapViewport}
-            handleDropdown={handleDropdown}
-            dropdown={dropdown}
-            dataFinalMap={dataFinalMap}
-            setSearchTerm={setSearchTerm}
-            searchTerm={searchTerm}
-          />
-        )}
+
+        <SwipeList
+          swipeListType="ideas"
+          type="myIdeas"
+          tabLabels={AccountTabData.map((item) => item.text).slice(0, 2)}
+          loading={loadingMyScreams}
+          order={order}
+          dataFinal={dataFinal}
+          dataFinalLength={dataFinal.length}
+          viewport={mapViewport}
+          handleDropdown={handleDropdown}
+          dropdown={dropdown}
+          dataFinalMap={dataFinalMap}
+          setSearchTerm={setSearchTerm}
+          searchTerm={searchTerm}
+        />
 
         {myScreams && (
           <InfoModal infoOpen={infoOpen} setInfoOpen={setInfoOpen} />
