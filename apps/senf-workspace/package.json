@@ -49,7 +49,7 @@
   },
   "devDependencies": {
     "tsconfig-paths-webpack-plugin": "^3.5.2",
-    "vite": "^2.6.0",
+    "vite": "^2.8.6",
     "vite-react-jsx": "^1.1.2"
   }
 }
