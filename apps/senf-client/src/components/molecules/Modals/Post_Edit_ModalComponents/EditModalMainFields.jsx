@@ -65,7 +65,7 @@ const EditModalMainFields = ({
       </div>
 
       <Geocoder
-        mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+        mapboxApiAccessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
         onSelected={onSelected}
         {...viewport}
         hideOnSelect={true}

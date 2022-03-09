@@ -104,9 +104,9 @@ if (get_local_storage_status() === "unavailable") {
   );
 }
 
-console.log(process.env.REACT_APP_STAGE);
+console.log(import.meta.env.MODE);
 
-// if (process.env.REACT_APP_STAGE === "development") {
+// if (import.meta.env.MODE === "development") {
 //   const whyDidYouRender = require("@welldone-software/why-did-you-render");
 //   whyDidYouRender(React, {
 //     trackAllPureComponents: true,
@@ -162,13 +162,13 @@ const App = () => {
 
   return (
     <>
-      {process.env.REACT_APP_NO_CRAWL && (
+      {import.meta.env.VITE_NO_CRAWL && (
         /* disable google crawling for senf-client-test.netlify.app */
         <Helmet>
           <meta name="robots" content="noindex" />
         </Helmet>
       )}
-      {process.env.REACT_APP_STATS && (
+      {import.meta.env.VITE_STATS && (
         /* Add statistics for senf.koeln
         https://umami-xi-nine.vercel.app/
         */

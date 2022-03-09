@@ -105,7 +105,7 @@ const CalendarComponent = ({ projectScreams, googleCalendarId, ...props }) => {
     <CalendarWrapper>
       <FullCalendar
         plugins={[listMonth, googleCalendarPlugin]}
-        googleCalendarApiKey={process.env.REACT_APP_GOOGLE_CALENDAR_API_KEY}
+        googleCalendarApiKey={import.meta.env.VITE_GOOGLE_CALENDAR_API_KEY}
         initialView="listMonth"
         events={openProjectRoom ? initState.calendarEvents : initState.events}
         locale={lang === "de" ? deLocale : enLocale}

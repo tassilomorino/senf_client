@@ -357,7 +357,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
   const geocode = (viewport) => {
     const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
     const geocodingClient = mbxGeocoding({
-      accessToken: process.env.REACT_APP_MAPBOX_ACCESS_TOKEN,
+      accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,
     });
     geocodingClient
       .reverseGeocode({

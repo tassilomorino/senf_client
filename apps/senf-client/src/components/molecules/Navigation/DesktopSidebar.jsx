@@ -214,8 +214,8 @@ const DesktopSidebar = ({
           height: "150px",
         }}
       />
-      {process.env.REACT_APP_INTERNATIONAL &&
-        process.env.REACT_APP_INTERNATIONAL === "true" && (
+      {import.meta.env.VITE_INTERNATIONAL &&
+        import.meta.env.VITE_INTERNATIONAL === "true" && (
           <SubmitButton
             handleButtonClick={setChangeLocationModalOpen}
             shadow={false}

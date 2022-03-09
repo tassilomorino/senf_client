@@ -104,7 +104,7 @@ const PostScreamMap = ({
   return (
     viewport && (
       <MapGL
-        accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+        accessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
         mapStyle="mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6"
         {...viewport}
         maxZoom={18}
@@ -128,7 +128,6 @@ const PostScreamMap = ({
         viewportChangeOptions={{
           duration: 2700,
         }}
-       
       >
         <Source id="geodata" type="geojson" data={data} />
         <Layer
@@ -149,7 +148,7 @@ const PostScreamMap = ({
           }
         >
           <Geocoder
-            mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+            mapboxApiAccessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
             onSelected={onSelected}
             viewport={viewport}
             hideOnSelect={true}

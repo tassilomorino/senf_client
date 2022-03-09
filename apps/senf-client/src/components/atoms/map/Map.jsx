@@ -339,7 +339,7 @@ const Map = ({
                 }
           }
           mapStyle="mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6"
-          accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+          accessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
           minZoom={7}
           latitude={mapViewport.latitude}
           longitude={mapViewport.longitude}

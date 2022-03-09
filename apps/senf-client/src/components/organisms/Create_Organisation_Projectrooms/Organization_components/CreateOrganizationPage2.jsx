@@ -127,7 +127,7 @@ const CreateOrganizationPage2 = ({ onClickNext, onClickPrev }) => {
   const geocode = (viewport) => {
     const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
     const geocodingClient = mbxGeocoding({
-      accessToken: process.env.REACT_APP_MAPBOX_ACCESS_TOKEN,
+      accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,
     });
     geocodingClient
       .reverseGeocode({
@@ -244,7 +244,7 @@ const CreateOrganizationPage2 = ({ onClickNext, onClickPrev }) => {
 
           <GeocoderWrapper>
             <Geocoder
-              mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+              mapboxApiAccessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
               onSelected={geocode}
               // {...viewport}
               hideOnSelect={true}
