@@ -167,15 +167,18 @@ const ProjectCard = (props) => {
     dispatch(openCreateProjectRoomFunc(true));
   };
 
-  const organizationCardData = [];
+  const [organizationCardData, setOrganizationCardData] = useState([]);
 
-  if (organizations) {
-    organizations.map(({ organizationId, userIds, title }) => {
-      if (cardOrganizationId === organizationId) {
-        organizationCardData.push(userIds, title);
-      }
-    });
-  }
+  useEffect(() => {
+    if (organizations) {
+      organizations.map(({ organizationId, userIds, title }) => {
+        console.log(organizations);
+        if (cardOrganizationId === organizationId) {
+          setOrganizationCardData([...organizationCardData, userIds, title]);
+        }
+      });
+    }
+  }, [organizations]);
 
   const ideasSize = screams.filter(
     ({ projectRoomId }) => projectRoomId === thisProjectRoomId

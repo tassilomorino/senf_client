@@ -101,6 +101,7 @@ const ListWrapper = styled.div`
     width: 400px;
     overflow-x: hidden;
     padding-top: ${(props) => (props.openProjectRoom ? "20px" : "40px")};
+    height: ${(props) => (props.openAccount ? "calc(100vh - 150px)" : "100vh")};
   }
 `;
 
@@ -190,7 +191,6 @@ const SwipeList = ({
   const [searchOpen, setSearchOpen] = useState(false);
   const mapBounds = useSelector((state) => state.data.mapBounds);
   const swipePosition = useSelector((state) => state.UI.swipePosition);
-
   const user = useSelector((state) => state.user);
 
   const openCreateProjectRoom = () => {
@@ -533,19 +533,18 @@ const SwipeList = ({
                 </ButtonWrapper>
               )}
 
-            {!loading && (order === 1 || order === 2) && (
-              <List
-                swipeListType={swipeListType}
-                type={type}
-                order={order}
-                loading={loading}
-                dropdown={dropdown}
-                dataFinal={dataFinal}
-                projectsData={dataFinalProjectRooms}
-                handleClick={handleClick}
-              />
-            )}
-            {order === 3 && (
+            {!loading &&
+              (order === 1 || order === 2 || (order === 3 && openAccount)) && (
+                <List
+                  swipeListType={swipeListType}
+                  type={type}
+                  loading={loading}
+                  dropdown={dropdown}
+                  dataFinal={dataFinal}
+                  projectsData={dataFinalProjectRooms}
+                />
+              )}
+            {order === 3 && openProjectRoom && (
               <CalendarComponent
                 projectScreams={project?.screams}
                 handleClick={handleClick}
@@ -559,19 +558,24 @@ const SwipeList = ({
   ) : (
     <DragWrapper>
       <Content>
-        {openProjectRoom && tabLabels.length > 1 && (
-          <DesktopTabWrapper>
-            <Tabs
-              loading={loading}
-              handleClick={handleClick}
-              order={order}
-              tabLabels={tabLabels}
-              secondaryColor="#d6ab00"
-            />
-          </DesktopTabWrapper>
-        )}
+        {openProjectRoom ||
+          (openAccount && (
+            <DesktopTabWrapper>
+              <Tabs
+                loading={loading}
+                handleClick={handleClick}
+                order={order}
+                tabLabels={tabLabels}
+                secondaryColor="#d6ab00"
+              />
+            </DesktopTabWrapper>
+          ))}
 
-        <ListWrapper openProjectRoom={openProjectRoom} id="ListWrapper">
+        <ListWrapper
+          openProjectRoom={openProjectRoom}
+          openAccount={openAccount}
+          id="ListWrapper"
+        >
           {sectionFastLinks}
 
           {swipeListType === "projectRoomOverview" && (
@@ -589,19 +593,18 @@ const SwipeList = ({
             </ButtonWrapper>
           )}
 
-          {!loading && (order === 1 || order === 2) && (
-            <List
-              swipeListType={swipeListType}
-              type={type}
-              order={order}
-              loading={loading}
-              dropdown={dropdown}
-              dataFinal={dataFinal}
-              projectsData={dataFinalProjectRooms}
-              handleClick={handleClick}
-            />
-          )}
-          {order === 3 && (
+          {!loading &&
+            (order === 1 || order === 2 || (order === 3 && openAccount)) && (
+              <List
+                swipeListType={swipeListType}
+                type={type}
+                loading={loading}
+                dropdown={dropdown}
+                dataFinal={dataFinal}
+                projectsData={dataFinalProjectRooms}
+              />
+            )}
+          {order === 3 && openProjectRoom && (
             <CalendarComponent
               projectScreams={project?.screams}
               handleClick={handleClick}

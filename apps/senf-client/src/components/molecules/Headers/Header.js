@@ -76,7 +76,7 @@ const Header = ({
   return (
     <FixedWrapper
       infoOpen={infoOpen}
-      moveUp={(openScream || swipePosition === "top") && !infoOpen}
+      moveUp={openScream || (isMobileCustom && swipePosition === "top")}
     >
       <InnerWrapper
         order={order}

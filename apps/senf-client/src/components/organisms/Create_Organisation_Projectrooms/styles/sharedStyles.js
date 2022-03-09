@@ -6,14 +6,16 @@ import { animated } from "@react-spring/web";
 export const PageWrapper = styled(animated.div)`
   top: 70px;
   width: 100vw;
-  height: calc(100vh - 140px);
+  height: 100vh;
   position: fixed;
   overflow: scroll;
+  background-color: rgb(249, 241, 215);
 `;
 export const ComponentWrapper = styled.div`
-  height: calc(100% - 70px);
+  height: auto;
   width: 100vw;
   top: 70px;
+  padding-bottom: 300px;
 
   @media (min-width: 768px) {
     max-width: 600px;
@@ -27,7 +29,7 @@ export const ComponentInnerWrapper = styled.div`
 
   width: 80%;
   margin-left: 10%;
-  margin-top: 20px;
+  margin-top: 60px;
 `;
 
 export const SubTitle = styled.h3`

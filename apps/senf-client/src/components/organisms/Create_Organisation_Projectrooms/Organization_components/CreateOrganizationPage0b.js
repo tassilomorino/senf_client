@@ -16,7 +16,7 @@ import {
   ComponentWrapper,
 } from "../styles/sharedStyles";
 import Navigation from "../Components/Navigation";
-import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
+import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 import organizationTypes from "../../../../data/organizationTypes";
 
 const CoverWrapper = styled.div`
@@ -62,7 +62,12 @@ const CoverTitle = styled.span`
   top: 30px;
 `;
 
-const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
+const CreateOrganizationPage1 = ({
+  onClickNext,
+  onClickPrev,
+  set,
+  pagesData,
+}) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
   const [organizationType, setOrganizationType] = useState(null);
@@ -150,11 +155,8 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH2 fontWeight="900" textAlign="center">
-            Welche Art von Organisation seid ihr?
-          </StyledH2>
           <StyledH3 textAlign="center" margin="20px">
-            sdjhaskjdhas jkhashda skjdh asjkdhaskjdhs shjajkdsh
+            Welche Art von Organisation seid ihr?
           </StyledH3>
 
           <CoverWrapper>
@@ -177,6 +179,8 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
         prevLabel={t("back")}
         handleNext={handleNext}
         handlePrev={onClickPrev}
+        set={set}
+        pagesData={pagesData}
         disabled={!organizationType || nextClicked}
         loading={nextClicked}
       />

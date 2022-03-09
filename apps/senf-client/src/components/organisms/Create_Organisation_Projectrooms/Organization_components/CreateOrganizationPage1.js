@@ -25,9 +25,14 @@ import {
   Title,
 } from "../styles/sharedStyles";
 import Navigation from "../Components/Navigation";
-import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
+import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 
-const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
+const CreateOrganizationPage1 = ({
+  onClickNext,
+  onClickPrev,
+  set,
+  pagesData,
+}) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
 
@@ -128,12 +133,9 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
     <React.Fragment>
       <ComponentWrapper ref={outerRef}>
         <ComponentInnerWrapper>
-          <StyledH2 fontWeight="900" textAlign="center">
-            <span>Organisationsinfos bearbeiten</span>
-          </StyledH2>
-          <StyledH3 textAlign="center" margin="20px">
-            sdjhaskjdhas jkhashda skjdh asjkdhaskjdhs shjajkdsh
-          </StyledH3>
+          <StyledText textAlign="center" margin="20px">
+            Bearbeite deine Organisationsinfos{" "}
+          </StyledText>
 
           <TextField
             id="outlined-name"
@@ -181,6 +183,8 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
         prevLabel={t("back")}
         handleNext={handleNext}
         handlePrev={onClickPrev}
+        set={set}
+        pagesData={pagesData}
         disabled={!formik.isValid || nextClicked}
         loading={nextClicked}
       />

@@ -75,7 +75,7 @@ export const ClickBackground = styled.div`
 
 export const CoverWrapper = styled.div`
   margin-left: 50%;
-  padding-bottom: 200px;
+  padding-bottom: 300px;
   transform: translateX(-50%);
   width: calc(100% - 20px);
   max-width: 800px;

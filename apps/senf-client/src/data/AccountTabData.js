@@ -10,10 +10,12 @@ export const AccountTabData = [
       </Translation>
     ),
   },
+
+  {},
   {
     text: (
       <Translation>
-        {(t, { i18n }) => <span>{t("your_settings")}</span>}
+        {(t, { i18n }) => <span>{t("Organisationen")}</span>}
       </Translation>
     ),
   },
