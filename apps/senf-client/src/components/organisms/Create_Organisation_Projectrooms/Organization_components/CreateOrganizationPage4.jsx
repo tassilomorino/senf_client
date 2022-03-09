@@ -26,7 +26,7 @@ import {
   Title,
 } from "../styles/sharedStyles";
 import Contact from "../../../molecules/Modals/Post_Edit_ModalComponents/Contact";
-import Geocoder from "react-mapbox-gl-geocoder";
+//import Geocoder from "react-mapbox-gl-geocoder";
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 import InlineDatePicker from "../../../atoms/InlineDatePicker/InlineDatePicker";
