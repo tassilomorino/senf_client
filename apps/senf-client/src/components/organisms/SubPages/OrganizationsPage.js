@@ -251,20 +251,18 @@ const OrganizationsPage = ({
               searchTerm={searchTerm}
             />
           )}
-          {user.handle === "Senf.koeln" && (
-            <ButtonWrapper>
-              <NewButton
-                borderType="dashed"
-                handleButtonClick={
-                  user.authenticated && user.handle === "Senf.koeln"
-                    ? openCreateOrganization
-                    : openRequestOrganization
-                }
-              >
-                Organisationsprofil anlegen
-              </NewButton>
-            </ButtonWrapper>
-          )}
+          <ButtonWrapper>
+            <NewButton
+              borderType="dashed"
+              handleButtonClick={
+                user.authenticated && user.handle === "Senf.koeln"
+                  ? openCreateOrganization
+                  : openRequestOrganization
+              }
+            >
+              Organisationsprofil anlegen
+            </NewButton>
+          </ButtonWrapper>
 
           <ListWrapper>
             <List
