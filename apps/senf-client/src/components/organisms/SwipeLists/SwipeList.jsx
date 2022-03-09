@@ -22,8 +22,7 @@ import TagsFilter from "../../molecules/Filters/TagsFilter";
 import Tabs from "../../atoms/Tabs/Tabs";
 import Wave from "../../atoms/Backgrounds/Wave";
 import CalendarComponent from "../../atoms/calendar/CalendarComponent";
-import { StyledText } from "apps/senf-client/src/styles/GlobalStyle";
-import { openCreateProjectRoomFunc } from "apps/senf-client/src/redux/actions/projectActions";
+import { openCreateProjectRoomFunc } from "../../../redux/actions/projectActions";
 import NewButton from "../../atoms/CustomButtons/NewButton";
 import PostScream from "../PostIdea/PostScream";
 

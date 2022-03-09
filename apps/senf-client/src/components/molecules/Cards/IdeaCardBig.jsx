@@ -30,7 +30,7 @@ import {
   StyledText,
 } from "../../../styles/GlobalStyle";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
-import setIconByOrganizationType from "apps/senf-client/src/data/setIconByOrganizationType";
+import setIconByOrganizationType from "../../../data/setIconByOrganizationType";
 
 const Card = styled.div`
   z-index: 99;

@@ -5,7 +5,7 @@ import { usePrevious } from "../../../hooks/usePrevious";
 import { useMeasure } from "../../../util/helpers";
 import styled from "styled-components";
 import "./styles/styles.css";
-import { StyledH3, StyledText } from "apps/senf-client/src/styles/GlobalStyle";
+import { StyledH3, StyledText } from "../../../styles/GlobalStyle";
 const AccordionWrapper = styled.ul`
   list-style: none;
   margin: 0;

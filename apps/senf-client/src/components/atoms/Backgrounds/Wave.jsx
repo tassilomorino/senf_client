@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, memo } from "react";
-import { isMobileCustom } from "apps/senf-client/src/util/customDeviceDetect";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 import WaveCanvas from "./WaveCanvas";
 
 const Wave = (props) => {

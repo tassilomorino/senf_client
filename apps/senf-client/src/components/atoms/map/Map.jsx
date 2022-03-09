@@ -39,7 +39,7 @@ import Marker7 from "../../../images/markers/marker5.png";
 
 import { openProjectRoomFunc } from "../../../redux/actions/projectActions";
 import { setSwipePositionDown } from "../../../redux/actions/UiActions";
-import { StyledSmallText } from "apps/senf-client/src/styles/GlobalStyle";
+import { StyledSmallText } from "../../../styles/GlobalStyle";
 
 const StyledMarker = styled.div`
   box-sizing: border-box;

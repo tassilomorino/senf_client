@@ -26,7 +26,7 @@ import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import { useTranslation } from "react-i18next";
 import PostScream from "../PostIdea/PostScream";
 import { ProjectRoomTabData } from "../../../data/ProjectRoomTabData";
-import { openOrganizationFunc } from "apps/senf-client/src/redux/actions/organizationActions";
+import { openOrganizationFunc } from "../../../../src/redux/actions/organizationActions";
 
 const Wrapper = styled.div`
   z-index: 999;

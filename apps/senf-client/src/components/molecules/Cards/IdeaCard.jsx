@@ -32,7 +32,7 @@ import {
 import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
 
 import ProjectRoomIcon from "../../../images/icons/projectRoomIcon.png";
-import setIconByOrganizationType from "apps/senf-client/src/data/setIconByOrganizationType";
+import setIconByOrganizationType from "../../../data/setIconByOrganizationType";
 
 const Gradient2 = styled.div`
   width: 100%;

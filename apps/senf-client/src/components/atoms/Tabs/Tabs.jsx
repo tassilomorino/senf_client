@@ -1,5 +1,5 @@
 /** @format */
-import { StyledH2 } from "apps/senf-client/src/styles/GlobalStyle";
+import { StyledH2 } from "../../../styles/GlobalStyle";
 import React from "react";
 import styled, { keyframes } from "styled-components";
 import Line from "../../../images/line.png";

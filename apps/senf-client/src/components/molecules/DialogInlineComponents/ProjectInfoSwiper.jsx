@@ -9,7 +9,7 @@ import { useDrag } from "@use-gesture/react";
 
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
-import { StyledH2, StyledText } from "apps/senf-client/src/styles/GlobalStyle";
+import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 
 const Wrapper = styled.div`

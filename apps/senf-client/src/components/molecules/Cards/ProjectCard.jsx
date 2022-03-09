@@ -36,8 +36,8 @@ import organizationTypes from "../../../data/organizationTypes";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 import "firebase/compat/storage";
-import { truncateString } from "apps/senf-client/src/util/helpers";
-import { openOrganizationFunc } from "apps/senf-client/src/redux/actions/organizationActions";
+import { truncateString } from "../../../util/helpers";
+import { openOrganizationFunc } from "../../../redux/actions/organizationActions";
 
 const ImgWrapper = styled.div`
   /* position: relative;

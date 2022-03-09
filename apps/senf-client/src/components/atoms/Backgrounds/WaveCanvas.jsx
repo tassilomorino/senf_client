@@ -1,4 +1,4 @@
-import { isMobileCustom } from "apps/senf-client/src/util/customDeviceDetect";
+import { isMobileCustom } from "../../../../src/util/customDeviceDetect";
 import React, { useState, useEffect, useCallback } from "react";
 
 const WaveCanvas = ({ canvasRef, props }) => {

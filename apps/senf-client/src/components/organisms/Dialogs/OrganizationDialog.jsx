@@ -32,8 +32,8 @@ import {
   StyledH2,
   StyledH3,
   StyledText,
-} from "apps/senf-client/src/styles/GlobalStyle";
-import setIconByOrganizationType from "apps/senf-client/src/data/setIconByOrganizationType";
+} from "../../../../src/styles/GlobalStyle";
+import setIconByOrganizationType from "../../../data/setIconByOrganizationType";
 import NewButton from "../../atoms/CustomButtons/NewButton";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import Loader from "../../atoms/Backgrounds/Loader";
@@ -41,10 +41,10 @@ import List from "../../molecules/List/List";
 import { SVGWrapper } from "../../molecules/Headers/styles/sharedStyles";
 import MainModal from "../../atoms/Layout/MainModal";
 import Tabs from "../../atoms/Tabs/Tabs";
-import { OrganizationTabData } from "apps/senf-client/src/data/OrganizationTabData";
+import { OrganizationTabData } from "../../../data/OrganizationTabData";
 import { Accordion } from "../../molecules/Accordion/Accordion";
 import Arrow from "../../../images/icons/arrow-right.png";
-import { openLink, openMail } from "apps/senf-client/src/util/helpers";
+import { openLink, openMail } from "../../../util/helpers";
 
 export const Wrapper = styled.div`
   width: 100%;

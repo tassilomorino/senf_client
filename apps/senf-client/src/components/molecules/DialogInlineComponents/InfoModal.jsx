@@ -19,7 +19,7 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 import ProjectInfoSwiper from "./ProjectInfoSwiper";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import { ModalBackground } from "../../atoms/Backgrounds/ModalBackground";
-import { openLink, openMail } from "apps/senf-client/src/util/helpers";
+import { openLink, openMail } from "../../../util/helpers";
 
 const Card = styled.div`
   position: fixed;

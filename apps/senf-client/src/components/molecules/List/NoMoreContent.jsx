@@ -1,6 +1,6 @@
 /** @format */
 
-import { StyledText } from "apps/senf-client/src/styles/GlobalStyle";
+import { StyledText } from "../../../styles/GlobalStyle";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
