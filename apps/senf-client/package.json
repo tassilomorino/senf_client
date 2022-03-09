@@ -62,10 +62,10 @@
   },
   "scripts": {
     "analyze": "source-map-explorer '../../dist/apps/senf-client/static/js/*.js'",
-    "start": "craco start",
+    "start": "vite",
     "serve": "npm start",
     "start:silent": "BROWSER=none PORT=3000 craco start",
-    "build": "node ./update-build.js && craco build",
+    "build": "vite build",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "cypress:ci": "start-server-and-test start:silent http://localhost:3000 cy:run",
@@ -90,13 +90,15 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^4.3.5",
+    "@vitejs/plugin-react": "^1.2.0",
     "@welldone-software/why-did-you-render": "^6.2.1",
     "cypress": "^8.1.0",
     "cypress-firebase": "^2.0.0",
     "cypress-wait-until": "^1.7.1",
     "prettier": "^2.5.0",
     "start-server-and-test": "^1.13.1",
-    "tsconfig-paths-webpack-plugin": "^3.5.2"
+    "tsconfig-paths-webpack-plugin": "^3.5.2",
+    "vite": "^2.8.6"
   },
   "buildDate": 1642801145975
 }
