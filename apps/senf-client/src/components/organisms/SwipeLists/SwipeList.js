@@ -101,6 +101,7 @@ const ListWrapper = styled.div`
     width: 400px;
     overflow-x: hidden;
     padding-top: ${(props) => (props.openProjectRoom ? "20px" : "40px")};
+    height: ${(props) => (props.openAccount ? "calc(100vh - 150px)" : "100vh")};
   }
 `;
 
@@ -570,7 +571,11 @@ const SwipeList = ({
             </DesktopTabWrapper>
           ))}
 
-        <ListWrapper openProjectRoom={openProjectRoom} id="ListWrapper">
+        <ListWrapper
+          openProjectRoom={openProjectRoom}
+          openAccount={openAccount}
+          id="ListWrapper"
+        >
           {sectionFastLinks}
 
           {swipeListType === "projectRoomOverview" && (

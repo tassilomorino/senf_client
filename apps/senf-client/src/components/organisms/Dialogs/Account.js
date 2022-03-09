@@ -121,23 +121,18 @@ const Account = ({ dataFinalMap }) => {
       .collection("organizations")
       // .where("centerLat", "<", Number(mapViewport.latitude) + 1)
       // .where("centerLat", ">", Number(mapViewport.latitude) - 1)
-      // .orderBy("createdAt", "desc")
+      .orderBy("createdAt", "desc")
 
       .where("userIds", "array-contains", user.userId)
 
       .get();
-
-    if (ref.size < 1) {
-      setMyOrganizations([]);
-    }
-    // : await db.collection("projects").orderBy("createdAt", "desc").get();
 
     const organizations = [];
     ref.docs.forEach((doc) => {
       storageRef
         .child(`/organizationsData/${doc.id}/logo/logo`)
         .getDownloadURL()
-        .then(onResolve);
+        .then(onResolve, onReject);
 
       function onResolve(image) {
         const docData = {
@@ -148,13 +143,24 @@ const Account = ({ dataFinalMap }) => {
         organizations.push(docData);
         if (organizations.length === ref.size) {
           setMyOrganizations(organizations);
+          console.log(organizations);
+        }
+      }
+      function onReject() {
+        const docData = {
+          ...doc.data(),
+          organizationId: doc.id,
+        };
+        organizations.push(docData);
+        if (organizations.length === ref.size) {
+          setMyOrganizations(organizations);
+          console.log(organizations);
         }
       }
     });
   }, []);
 
   const dataFinalOrganizations = myOrganizations;
-  const TabSlicer = myOrganizations.length ? 3 : 1;
 
   return (
     <React.Fragment>
@@ -175,7 +181,7 @@ const Account = ({ dataFinalMap }) => {
           type="myIdeas"
           tabLabels={AccountTabData.map((item) => item.text).slice(
             0,
-            TabSlicer
+            myOrganizations.length > 0 ? 3 : 1
           )}
           loading={loadingMyScreams}
           order={order}

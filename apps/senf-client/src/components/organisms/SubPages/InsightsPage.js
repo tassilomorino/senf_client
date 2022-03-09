@@ -49,6 +49,22 @@ const CoverTitle = styled.div`
   top: 30px;
 `;
 
+const ListWrapper = styled.div`
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
+  width: 100%;
+  top: 0;
+  pointer-events: all;
+  animation: cardanimation 0.8s ease-in-out;
+  z-index: 999999;
+  @media (min-width: 768px) {
+    width: 400px;
+    overflow-x: hidden;
+  }
+`;
+
 const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
   const { t } = useTranslation();
   const db = firebase.firestore();
@@ -230,7 +246,7 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
   };
 
   const content = (
-    <React.Fragment order={open}>
+    <ListWrapper order={open}>
       {!isMobileCustom && (
         <React.Fragment>
           <CustomIconButton
@@ -315,7 +331,7 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
           {/* <WordcloudDialog /> */}
         </Covers>
       </CoverWrapper>
-    </React.Fragment>
+    </ListWrapper>
   );
   return isMobileCustom ? (
     <React.Fragment>
