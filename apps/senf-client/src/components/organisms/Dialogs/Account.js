@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
@@ -18,6 +18,10 @@ import _ from "lodash";
 import { AccountTabData } from "../../../data/AccountTabData";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import { useTranslation } from "react-i18next";
+
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/storage";
 
 const Wrapper = styled.div`
   /* @media (min-width: 768px) {
@@ -53,7 +57,11 @@ const Account = ({ dataFinalMap }) => {
   const mapBounds = useSelector((state) => state.data.mapBounds);
   const selectedTopics = useSelector((state) => state.data.topics);
   const myScreams = useSelector((state) => state.data.myScreams);
-  // const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
+  const organizations = useSelector((state) => state.data.organizations);
+
+  const [foundOrganizations, setFoundOrganizations] = useState(false);
+  const [myOrganizations, setMyOrganizations] = useState([]);
 
   const [dropdown, setDropdown] = useState("newest");
   const [order, setOrder] = useState(1);
@@ -105,6 +113,49 @@ const Account = ({ dataFinalMap }) => {
       )
     : [];
 
+  useEffect(async () => {
+    const db = firebase.firestore();
+    const storageRef = firebase.storage().ref();
+
+    const ref = await db
+      .collection("organizations")
+      // .where("centerLat", "<", Number(mapViewport.latitude) + 1)
+      // .where("centerLat", ">", Number(mapViewport.latitude) - 1)
+      // .orderBy("createdAt", "desc")
+
+      .where("userIds", "array-contains", user.userId)
+
+      .get();
+
+    if (ref.size < 1) {
+      setMyOrganizations([]);
+    }
+    // : await db.collection("projects").orderBy("createdAt", "desc").get();
+
+    const organizations = [];
+    ref.docs.forEach((doc) => {
+      storageRef
+        .child(`/organizationsData/${doc.id}/logo/logo`)
+        .getDownloadURL()
+        .then(onResolve);
+
+      function onResolve(image) {
+        const docData = {
+          ...doc.data(),
+          organizationId: doc.id,
+          imgUrl: image,
+        };
+        organizations.push(docData);
+        if (organizations.length === ref.size) {
+          setMyOrganizations(organizations);
+        }
+      }
+    });
+  }, []);
+
+  const dataFinalOrganizations = myOrganizations;
+  const TabSlicer = myOrganizations.length ? 3 : 1;
+
   return (
     <React.Fragment>
       <Header
@@ -119,15 +170,17 @@ const Account = ({ dataFinalMap }) => {
       {!isMobileCustom && order === 0 && <MapHider />}
 
       <Wrapper>
-        {!isMobileCustom || (isMobileCustom && order !== 1 && <Background />)}
-
         <SwipeList
-          swipeListType="ideas"
+          swipeListType={order === 1 ? "ideas" : "organizationsOverview"}
           type="myIdeas"
-          tabLabels={AccountTabData.map((item) => item.text).slice(0, 2)}
+          tabLabels={AccountTabData.map((item) => item.text).slice(
+            0,
+            TabSlicer
+          )}
           loading={loadingMyScreams}
           order={order}
-          dataFinal={dataFinal}
+          handleClick={handleClick}
+          dataFinal={order === 1 ? dataFinal : dataFinalOrganizations}
           dataFinalLength={dataFinal.length}
           viewport={mapViewport}
           handleDropdown={handleDropdown}

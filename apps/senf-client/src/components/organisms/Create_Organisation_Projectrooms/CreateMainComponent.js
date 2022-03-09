@@ -144,7 +144,7 @@ const CreateProjectDialog = ({ type }) => {
     localStorage.removeItem("createProjectPostEdit");
     localStorage.removeItem("createOrganizationPostEdit");
   };
-
+  const pagesData = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
   const pages =
     type === "projectRoom"
       ? [
@@ -220,6 +220,8 @@ const CreateProjectDialog = ({ type }) => {
               <CreateOrganizationPage0b
                 onClickNext={onClickNext}
                 onClickPrev={onClickPrev}
+                set={set}
+                pagesData={pagesData}
               />
             </PageWrapper>
           ),
@@ -228,6 +230,8 @@ const CreateProjectDialog = ({ type }) => {
               <CreateOrganizationPage1
                 onClickNext={onClickNext}
                 onClickPrev={onClickPrev}
+                set={set}
+                pagesData={pagesData}
               />
             </PageWrapper>
           ),
@@ -236,6 +240,8 @@ const CreateProjectDialog = ({ type }) => {
               <CreateOrganizationPage2
                 onClickNext={onClickNext}
                 onClickPrev={onClickPrev}
+                set={set}
+                pagesData={pagesData}
               />
             </PageWrapper>
           ),
@@ -244,6 +250,8 @@ const CreateProjectDialog = ({ type }) => {
               <CreateOrganizationPage3
                 onClickNext={onClickNext}
                 onClickPrev={onClickPrev}
+                set={set}
+                pagesData={pagesData}
               />
             </PageWrapper>
           ),
@@ -252,6 +260,8 @@ const CreateProjectDialog = ({ type }) => {
               <CreateOrganizationPage4
                 onClickNext={onClickNext}
                 onClickPrev={onClickPrev}
+                set={set}
+                pagesData={pagesData}
               />
             </PageWrapper>
           ),
@@ -260,6 +270,8 @@ const CreateProjectDialog = ({ type }) => {
               <CreateOrganizationPage5
                 onClickNext={onClickNext}
                 onClickPrev={onClickPrev}
+                set={set}
+                pagesData={pagesData}
               />
             </PageWrapper>
           ),
@@ -268,6 +280,8 @@ const CreateProjectDialog = ({ type }) => {
               <CreateOrganizationPage6
                 onClickNext={onClickNext}
                 onClickPrev={onClickPrev}
+                set={set}
+                pagesData={pagesData}
               />
             </PageWrapper>
           ),
@@ -277,6 +291,7 @@ const CreateProjectDialog = ({ type }) => {
                 onClickNext={onClickNext}
                 onClickPrev={onClickPrev}
                 setClose={setClose}
+                set={set}
               />
             </PageWrapper>
           ),
@@ -296,7 +311,8 @@ const CreateProjectDialog = ({ type }) => {
   return (
     <MainDialog isOpen={true}>
       <TopNavigation
-        index={currentStep}
+        currentStep={currentStep}
+        index={index}
         title={index !== 0 && index !== 1 && index !== 2 && title}
       />
 

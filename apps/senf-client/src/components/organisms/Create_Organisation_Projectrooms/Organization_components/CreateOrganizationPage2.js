@@ -27,7 +27,7 @@ import {
 import Contact from "../../../molecules/Modals/Post_Edit_ModalComponents/Contact";
 import Geocoder from "react-mapbox-gl-geocoder";
 import Navigation from "../Components/Navigation";
-import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
+import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 import { TextField } from "@material-ui/core";
 import { useFormik } from "formik";
 
@@ -49,7 +49,12 @@ const GeocoderWrapper = styled.div`
   width: 100%;
 `;
 
-const CreateOrganizationPage2 = ({ onClickNext, onClickPrev }) => {
+const CreateOrganizationPage2 = ({
+  onClickNext,
+  onClickPrev,
+  set,
+  pagesData,
+}) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
 
@@ -179,9 +184,6 @@ const CreateOrganizationPage2 = ({ onClickNext, onClickPrev }) => {
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH2 fontWeight="900" textAlign="center">
-            Kontaktdaten hinzufügen
-          </StyledH2>
           <StyledH3 textAlign="center" margin="20px">
             Füge deine Kontaktdaten (E-mail, Link) hinzu, um erreichbar zu sein
             und deine Organisation zu vertreten.{" "}
@@ -240,6 +242,8 @@ const CreateOrganizationPage2 = ({ onClickNext, onClickPrev }) => {
         prevLabel={t("back")}
         handleNext={handleNext}
         handlePrev={onClickPrev}
+        set={set}
+        pagesData={pagesData}
       />
     </React.Fragment>
   );

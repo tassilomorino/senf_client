@@ -15,7 +15,7 @@ const SwitchLabel = styled.label`
   width: 40px;
   height: 20px;
   border-radius: 50px;
-  border: 2px solid gray;
+  border: 2px solid rgba(186, 160, 79, 0.8);
   position: relative;
   transition: background-color 0.2s;
 `;
@@ -29,7 +29,8 @@ const SwitchButton = styled.span`
   height: 18px;
   border-radius: 22.5px;
   transition: 0.2s;
-  background: grey;
+  background: ${(props) =>
+    props.toggled ? "#00857b" : "rgba(186, 160, 79, 0.8)"};
   box-shadow: 0 0 2px 0 rgba(10, 10, 10, 0.29);
   ${SwitchInput}:checked + ${SwitchLabel} & {
     left: calc(100% - 1px);
@@ -52,7 +53,7 @@ const Switch = ({ id, toggled, onChange }) => {
         onChange={onChange}
       />
       <SwitchLabel className="switch-label" htmlFor={id}>
-        <SwitchButton className="switch-button" />
+        <SwitchButton toggled={toggled} className="switch-button" />
       </SwitchLabel>
     </>
   );

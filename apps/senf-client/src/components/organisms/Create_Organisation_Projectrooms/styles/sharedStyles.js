@@ -9,6 +9,7 @@ export const PageWrapper = styled(animated.div)`
   height: 100vh;
   position: fixed;
   overflow: scroll;
+  background-color: rgb(249, 241, 215);
 `;
 export const ComponentWrapper = styled.div`
   height: auto;
@@ -28,7 +29,7 @@ export const ComponentInnerWrapper = styled.div`
 
   width: 80%;
   margin-left: 10%;
-  margin-top: 20px;
+  margin-top: 60px;
 `;
 
 export const SubTitle = styled.h3`

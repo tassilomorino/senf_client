@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 // Redux
 import { useDispatch, useSelector } from "react-redux";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
-import AddIcon from "../../../images/icons/plus_grey.png";
+import NotPublishedIcon from "../../../images/icons/notPublished.png";
 import { useTranslation } from "react-i18next";
 
 import styled from "styled-components";
@@ -14,7 +14,12 @@ import {
   openOrganizationFunc,
   stateCreateOrganizationsFunc,
 } from "../../../redux/actions/organizationActions";
-import { StyledH2, StyledImg, StyledText } from "../../../styles/GlobalStyle";
+import {
+  StyledH2,
+  StyledH3,
+  StyledImg,
+  StyledText,
+} from "../../../styles/GlobalStyle";
 import setIconByOrganizationType from "../../../data/setIconByOrganizationType";
 
 const Wrapper = styled.div`
@@ -32,6 +37,9 @@ const Wrapper = styled.div`
   background-color: ${(props) => (props.active ? "#feecab" : "#fcfbf8")};
   border-radius: 18px;
   border: 2px solid ${(props) => (props.active ? "#e8ba02" : "#ffffff")};
+
+  opacity: ${(props) => (props.status === "deactivated" ? "0.6" : "1")};
+
   animation: OrganizationCardAnimation 0.8s;
 
   @media (max-width: 768px) {
@@ -168,6 +176,15 @@ const SubTitle = styled.div`
   text-overflow: ellipsis;
 `;
 
+const DeactivatedWrapper = styled.div`
+  position: absolute;
+  top: 40px;
+  z-index: 5;
+  color: white;
+  width: 50%;
+  margin-left: 25%;
+`;
+
 export const OrganizationCard = (props) => {
   const {
     organization: {
@@ -175,6 +192,7 @@ export const OrganizationCard = (props) => {
       imgUrl,
       organizationId: thisOrganizationId,
       organizationType,
+      status,
     },
   } = props;
 
@@ -193,7 +211,15 @@ export const OrganizationCard = (props) => {
   ).length;
 
   return (
-    <Wrapper active={thisOrganizationId === organization?.organizationId}>
+    <Wrapper
+      status={status}
+      active={thisOrganizationId === organization?.organizationId}
+    >
+      {status === "deactivated" && (
+        <DeactivatedWrapper>
+          <img src={NotPublishedIcon} width="100%" />
+        </DeactivatedWrapper>
+      )}
       <ExpandButton handleButtonClick={handleOpenOrganization} />
 
       <LogoWrapper>

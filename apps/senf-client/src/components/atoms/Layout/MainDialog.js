@@ -32,7 +32,7 @@ const Wrapper = styled.div`
     rgba(255, 218, 83, 1) 41%,
     rgba(255, 255, 255, 1) 100%
   ); */
-  background-color: #fed957;
+  background-color: rgb(249, 241, 215);
   /* background-attachment: fixed;
   background-image: linear-gradient(to bottom, #ffd19b, #ffda53, #ffffff);
   background-repeat: no-repeat;

@@ -532,17 +532,18 @@ const SwipeList = ({
                 </ButtonWrapper>
               )}
 
-            {!loading && (order === 1 || order === 2) && (
-              <List
-                swipeListType={swipeListType}
-                type={type}
-                loading={loading}
-                dropdown={dropdown}
-                dataFinal={dataFinal}
-                projectsData={dataFinalProjectRooms}
-              />
-            )}
-            {order === 3 && (
+            {!loading &&
+              (order === 1 || order === 2 || (order === 3 && openAccount)) && (
+                <List
+                  swipeListType={swipeListType}
+                  type={type}
+                  loading={loading}
+                  dropdown={dropdown}
+                  dataFinal={dataFinal}
+                  projectsData={dataFinalProjectRooms}
+                />
+              )}
+            {order === 3 && openProjectRoom && (
               <CalendarComponent
                 projectScreams={project?.screams}
                 handleClick={handleClick}
@@ -556,17 +557,18 @@ const SwipeList = ({
   ) : (
     <DragWrapper>
       <Content>
-        {openProjectRoom && tabLabels.length > 1 && (
-          <DesktopTabWrapper>
-            <Tabs
-              loading={loading}
-              handleClick={handleClick}
-              order={order}
-              tabLabels={tabLabels}
-              secondaryColor="#d6ab00"
-            />
-          </DesktopTabWrapper>
-        )}
+        {openProjectRoom ||
+          (openAccount && (
+            <DesktopTabWrapper>
+              <Tabs
+                loading={loading}
+                handleClick={handleClick}
+                order={order}
+                tabLabels={tabLabels}
+                secondaryColor="#d6ab00"
+              />
+            </DesktopTabWrapper>
+          ))}
 
         <ListWrapper openProjectRoom={openProjectRoom} id="ListWrapper">
           {sectionFastLinks}
@@ -586,17 +588,18 @@ const SwipeList = ({
             </ButtonWrapper>
           )}
 
-          {!loading && (order === 1 || order === 2) && (
-            <List
-              swipeListType={swipeListType}
-              type={type}
-              loading={loading}
-              dropdown={dropdown}
-              dataFinal={dataFinal}
-              projectsData={dataFinalProjectRooms}
-            />
-          )}
-          {order === 3 && (
+          {!loading &&
+            (order === 1 || order === 2 || (order === 3 && openAccount)) && (
+              <List
+                swipeListType={swipeListType}
+                type={type}
+                loading={loading}
+                dropdown={dropdown}
+                dataFinal={dataFinal}
+                projectsData={dataFinalProjectRooms}
+              />
+            )}
+          {order === 3 && openProjectRoom && (
             <CalendarComponent
               projectScreams={project?.screams}
               handleClick={handleClick}
