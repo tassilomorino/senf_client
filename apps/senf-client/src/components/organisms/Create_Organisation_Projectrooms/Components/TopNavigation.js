@@ -1,8 +1,15 @@
-import { StyledH2 } from "apps/senf-client/src/styles/GlobalStyle";
-import React from "react";
+import { StyledH2, StyledH3 } from "apps/senf-client/src/styles/GlobalStyle";
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
+import MainModal from "../../../atoms/Layout/MainModal";
+import SettingsIcon from "../../../../images/icons/settings.png";
+import ExpandButton from "../../../atoms/CustomButtons/ExpandButton";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import { doc, deleteDoc } from "firebase/firestore";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -72,7 +79,31 @@ const SVGWrapper2 = styled.div`
   );
 `;
 
+const ButtonWrapper = styled.div`
+  width: 100%;
+  height: ${(props) => (props.standalone ? "100px" : "50px")};
+  position: relative;
+  z-index: 999;
+  overflow: hidden;
+`;
+const Line = styled.div`
+  height: 1px;
+  width: 100%;
+  background-color: grey;
+  position: relative;
+`;
+
+export const StyledIcon = styled.img`
+  width: 30px;
+  top: 20px;
+  left: calc(100% - 60px);
+  position: absolute;
+  z-index: 2;
+  pointer-events: all;
+`;
+
 const TopNavigation = ({ index, title, currentStep }) => {
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const { t } = useTranslation();
 
   const pageTitle = () => {
@@ -109,8 +140,55 @@ const TopNavigation = ({ index, title, currentStep }) => {
     }
     return title;
   };
+  const handleDelete = async () => {
+    const db = firebase.firestore();
+
+    var answer = window.confirm(
+      "Bist du sicher, dass du die Organisation löschen möchtest?"
+    );
+    if (answer) {
+      await deleteDoc(
+        doc(db, "organizations", localStorage.getItem("createOrganizationId"))
+      ).then(() => {
+        window.location.reload(false);
+      });
+
+      //some code
+    } else {
+      //some code
+    }
+  };
   return (
     <Wrapper>
+      {ReactDOM.createPortal(
+        <React.Fragment>
+          {settingsOpen && (
+            <MainModal handleButtonClick={() => setSettingsOpen(false)}>
+              <StyledH2
+                fontWeight="900"
+                margin="15px 0px 0px 0px"
+                textAlign="center"
+              >
+                Möchtest du diese Organisation wieder löschen?
+              </StyledH2>
+              <br />
+              <ButtonWrapper>
+                <ExpandButton handleButtonClick={handleDelete}>
+                  <StyledH3> Organisation löschen</StyledH3>
+                </ExpandButton>
+              </ButtonWrapper>
+              <Line />
+              <ButtonWrapper>
+                <ExpandButton handleButtonClick={() => setSettingsOpen(false)}>
+                  <StyledH3> Abbrechen</StyledH3>
+                </ExpandButton>
+              </ButtonWrapper>
+            </MainModal>
+          )}
+        </React.Fragment>,
+        document.getElementById("portal-root-modal")
+      )}
+
       {/* <ProgressLine>
         <CurrentStep index={index} />
       </ProgressLine> */}
@@ -118,6 +196,14 @@ const TopNavigation = ({ index, title, currentStep }) => {
       <StyledH2 fontWeight="900" textAlign="center">
         {pageTitle()}
       </StyledH2>
+
+      <StyledIcon
+        onClick={() => setSettingsOpen(true)}
+        src={SettingsIcon}
+        width="100%"
+        alt="project-thumbnail"
+      />
+
       <SVGWrapper>
         <svg
           width="100%"

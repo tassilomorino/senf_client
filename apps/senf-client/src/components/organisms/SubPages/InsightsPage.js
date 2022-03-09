@@ -57,12 +57,7 @@ const ListWrapper = styled.div`
   width: 100%;
   top: 0;
   pointer-events: all;
-  animation: cardanimation 0.8s ease-in-out;
   z-index: 999999;
-  @media (min-width: 768px) {
-    width: 400px;
-    overflow-x: hidden;
-  }
 `;
 
 const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {

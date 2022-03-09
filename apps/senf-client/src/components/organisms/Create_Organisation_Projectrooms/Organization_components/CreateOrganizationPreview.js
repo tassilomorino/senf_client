@@ -273,14 +273,22 @@ const CreateOrganizationPreview = ({ onClickPrev, setClose, set }) => {
               onChange={handleSwitch}
             />
             <FlexWrapper>
-              <StyledH3 fontWeight={status === false ? 700 : 400}>
+              <StyledH3
+                status={status}
+                fontWeight={700}
+                opacity={status !== true ? 1 : 0.4}
+              >
                 Deaktiviert
               </StyledH3>
               <StyledH3 fontWeight="400" margin="0px 20px">
                 {" "}
                  |
               </StyledH3>
-              <StyledH3 fontWeight={status === true ? 700 : 400}>
+              <StyledH3
+                status={status}
+                fontWeight={700}
+                opacity={status === true ? 1 : 0.4}
+              >
                 Öffentlich
               </StyledH3>
             </FlexWrapper>
@@ -288,26 +296,6 @@ const CreateOrganizationPreview = ({ onClickPrev, setClose, set }) => {
           <br />
           <br />
           <br />
-          <Divider />
-          <br />
-          <br />
-          <br />
-          <StyledH2 fontWeight="900" textAlign="center">
-            Wenn du das Organisationsprofil löschen möchtest, bitte kontaktiere
-            uns!
-          </StyledH2>
-          <br />
-          <SubmitButton
-            text={t("contact")}
-            zIndex="9"
-            textColor="#353535"
-            backgroundColor="white"
-            top={document.body.clientWidth > 768 ? "100px" : "70px"}
-            left="0"
-            handleButtonClick={() => console.log("sadasdasd")}
-            /*  disabled={!data} */
-            //   keySubmitRef={keySubmitRef}
-          />
         </ComponentInnerWrapper>
       </ComponentWrapper>
 
