@@ -61,7 +61,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import "./util/i18n"; // i18n configuration
 detectLocation(); // detect location and set i18n language
 const cookies = new Cookies();
-require("intersection-observer");
+//require("intersection-observer");
 
 const auth = getAuth(firebaseApp);
 
