@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 //Graphs
 import createPlotlyComponent from "react-plotlyjs";
 //See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
-import Plotly from "plotly.js/dist/plotly-cartesian.min";
+import Plotly from "plotly.js-cartesian-dist";
 import GraphsWrapper from "./GraphsWrapper";
 const PlotlyComponent = createPlotlyComponent(Plotly);
 
