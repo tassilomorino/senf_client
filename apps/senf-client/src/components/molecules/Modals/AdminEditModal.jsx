@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router";
 import withStyles from "@material-ui/core/styles/withStyles";
+import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
 // MUI Stuff
 import Button from "@material-ui/core/Button";
 
@@ -205,7 +206,6 @@ const AdminEditModal = ({
   };
 
   const geocode = (viewport) => {
-    const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
     const geocodingClient = mbxGeocoding({
       accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,
     });

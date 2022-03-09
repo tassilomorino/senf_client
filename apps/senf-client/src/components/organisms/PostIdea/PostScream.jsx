@@ -4,6 +4,7 @@ import React, { useState, Fragment, memo } from "react";
 import { useHistory } from "react-router";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { useTranslation } from "react-i18next";
+import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
 // MUI Stuff
 import Dialog from "@material-ui/core/Dialog";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -35,33 +36,34 @@ import Contact from "../../molecules/Modals/Post_Edit_ModalComponents/Contact";
 import InlineDatePickerModal from "../../molecules/Modals/InlineDatePickerModal";
 
 const StyledButton = styled.button`
-box-sizing: border-box;
- width: 68px;
- height: 68px;
- box-shadow: 0px 12px 18px -8px  rgba(186, 160, 79, 0.2), 0px -4px 10px 4px  rgba(255, 255, 255, 0.2);
- background-color: #fcfbf8;
- overflow: visible;
- aspect-ratio: 1 / 1;
- border-radius: 28px;
- border: 2px solid  #ffffff) ;
- position: fixed;
- margin-top: ${(props) => (props.swipePosition === "top" ? "-5px" : "-34px")};
- z-index: ${(props) => (props.openScream ? 0 : 999)};
- display: flex;
+  box-sizing: border-box;
+  width: 68px;
+  height: 68px;
+  box-shadow: 0px 12px 18px -8px rgba(186, 160, 79, 0.2),
+    0px -4px 10px 4px rgba(255, 255, 255, 0.2);
+  background-color: #fcfbf8;
+  overflow: visible;
+  aspect-ratio: 1 / 1;
+  border-radius: 28px;
+  border: 2px solid #ffffff;
+  position: fixed;
+  margin-top: ${(props) => (props.swipePosition === "top" ? "-5px" : "-34px")};
+  z-index: ${(props) => (props.openScream ? 0 : 999)};
+  display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  right:${(props) => (props.swipePosition === "top" ? "5px" : "20px")};;
-  pointer-events:all;
-  transition:0.2s;
+  right: ${(props) => (props.swipePosition === "top" ? "5px" : "20px")};
+  pointer-events: all;
+  transition: 0.2s;
   transform: ${(props) =>
     props.swipePosition === "top" ? "scale(0.8)" : "none"};
-  &:hover{
-    transition:0.2s;
+  &:hover {
+    transition: 0.2s;
     width: 74px;
-  height: 74px;
+    height: 74px;
   }
- `;
+`;
 
 const OpenButtonDesktop = styled.button`
   z-index: 9999;
@@ -355,7 +357,6 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
   };
 
   const geocode = (viewport) => {
-    const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
     const geocodingClient = mbxGeocoding({
       accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,
     });

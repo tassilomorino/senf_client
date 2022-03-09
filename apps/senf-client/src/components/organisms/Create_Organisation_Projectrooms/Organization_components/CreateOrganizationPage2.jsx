@@ -5,7 +5,7 @@ import ReactDOM from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-
+import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
 //firebase
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
@@ -125,7 +125,6 @@ const CreateOrganizationPage2 = ({ onClickNext, onClickPrev }) => {
   );
 
   const geocode = (viewport) => {
-    const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
     const geocodingClient = mbxGeocoding({
       accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,
     });

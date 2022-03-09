@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
+import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
 // MUI Stuff
 import Button from "@material-ui/core/Button";
 
@@ -191,7 +192,6 @@ const EditModal = ({ setEditOpen, setMenuOpen, editOpen, classes }) => {
   };
 
   const geocode = (viewport) => {
-    const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
     const geocodingClient = mbxGeocoding({
       accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,
     });
