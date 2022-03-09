@@ -9,7 +9,7 @@ import EditModal from "./EditModal";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import MainModal from "../../atoms/Layout/MainModal";
 import AdminEditModal from "./AdminEditModal";
-import { StyledH3 } from "../../../styles/GlobalStyle";
+import { StyledH3, StyledH4 } from "../../../styles/GlobalStyle";
 
 const ButtonWrapper = styled.div`
   width: 100%;
@@ -94,12 +94,12 @@ const MenuModal = ({ setMenuOpen, screamId, userHandle }) => {
             <React.Fragment>
               <ButtonWrapper>
                 <ExpandButton handleButtonClick={() => setAdminEditOpen(true)}>
-                  <StyledH3> Idee bearbeiten (Admin)</StyledH3>
+                  <StyledH3 fontWeight={400}> Idee bearbeiten (Admin)</StyledH3>
                 </ExpandButton>
               </ButtonWrapper>
               <ButtonWrapper>
                 <ExpandButton handleButtonClick={deleteTheScream}>
-                  <StyledH3> Idee löschen (Admin)</StyledH3>
+                  <StyledH3 fontWeight={400}> Idee löschen (Admin)</StyledH3>
                 </ExpandButton>
               </ButtonWrapper>
             </React.Fragment>
@@ -108,12 +108,12 @@ const MenuModal = ({ setMenuOpen, screamId, userHandle }) => {
             <React.Fragment>
               <ButtonWrapper>
                 <ExpandButton handleButtonClick={() => setEditOpen(true)}>
-                  <StyledH3> Idee bearbeiten </StyledH3>
+                  <StyledH3 fontWeight={400}> Idee bearbeiten </StyledH3>
                 </ExpandButton>
               </ButtonWrapper>
               <ButtonWrapper>
                 <ExpandButton handleButtonClick={deleteTheScream}>
-                  <StyledH3> Idee löschen</StyledH3>
+                  <StyledH3 fontWeight={400}> Idee löschen</StyledH3>
                 </ExpandButton>
               </ButtonWrapper>
             </React.Fragment>
@@ -127,13 +127,13 @@ const MenuModal = ({ setMenuOpen, screamId, userHandle }) => {
             }
           >
             <ExpandButton handleButtonClick={reportScream}>
-              <StyledH3>Melden</StyledH3>
+              <StyledH3 fontWeight={400}>Melden</StyledH3>
             </ExpandButton>
           </ButtonWrapper>
           <Line />
           <ButtonWrapper>
             <ExpandButton handleButtonClick={() => setMenuOpen(false)}>
-              <StyledH3> Abbrechen</StyledH3>
+              <StyledH3 fontWeight={400}> Abbrechen</StyledH3>
             </ExpandButton>
           </ButtonWrapper>
         </MainModal>
