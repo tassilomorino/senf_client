@@ -109,7 +109,7 @@ const Span = styled.span`
 
 const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
   const [open, setOpen] = useState(false);
-
+  const DOMElement = document.getElementById("portal-root-modal");
   const [selectedOption, setSelectedOption] = useState(
     value === "" ? initialValue : value
   );
@@ -158,7 +158,6 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
     <React.Fragment>
       <DropDownButton onClick={handleToggle} style={{ zIndex: 999 }}>
         <StyledH3 fontWeight="400">
-
           {truncateString(selectedLabel, dropDownButtonAmount)}
         </StyledH3>
 
@@ -173,8 +172,9 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
         />
       </DropDownButton>
 
-      {ReactDOM.createPortal(
-        open && (
+      {open &&
+        DOMElement !== null &&
+        ReactDOM.createPortal(
           <React.Fragment>
             <DropDownListContainer id="container">
               <DropDownList>
@@ -206,10 +206,9 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
             </DropDownListContainer>
 
             <Background onClick={() => setOpen(false)} />
-          </React.Fragment>
-        ),
-        document.getElementById("portal-root-modal")
-      )}
+          </React.Fragment>,
+          document.getElementById("portal-root-modal")
+        )}
     </React.Fragment>
   );
 };
