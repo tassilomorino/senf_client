@@ -31,10 +31,7 @@ import PostScream from "../../organisms/PostIdea/PostScream";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import { closeScream } from "../../../redux/actions/screamActions";
-import {
-  closeProject,
-  openProjectRoomFunc,
-} from "../../../redux/actions/projectActions";
+import { openProjectRoomFunc } from "../../../redux/actions/projectActions";
 import { Logo, Tabs } from "./styles/sharedStyles";
 import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
 import styled from "styled-components";

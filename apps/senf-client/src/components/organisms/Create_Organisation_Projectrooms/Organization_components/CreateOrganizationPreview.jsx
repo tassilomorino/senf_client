@@ -26,8 +26,7 @@ import MissingIcon from "../../../../images/icons/close.png";
 import ExpandButton from "../../../atoms/CustomButtons/ExpandButton";
 import { set } from "lodash-es";
 import {
-  getProjects,
-  reloadProjects,
+  getProjects /* reloadProjects */,
 } from "../../../../redux/actions/projectActions";
 import { StyledH2 } from "../../../../styles/GlobalStyle";
 import Navigation from "../Components/Navigation";

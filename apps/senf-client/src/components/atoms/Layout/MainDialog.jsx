@@ -5,11 +5,11 @@ import ReactDOM from "react-dom";
 
 import styled from "styled-components";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-import {
+/* import {
   BackgroundDesktop,
   BackgroundMobile,
 } from "../Backgrounds/GradientBackgrounds";
-
+ */
 const portalRoot = document.getElementById("portal-root-dialog");
 
 const Wrapper = styled.div`
