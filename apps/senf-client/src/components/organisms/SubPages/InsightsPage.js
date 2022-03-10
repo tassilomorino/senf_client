@@ -29,6 +29,7 @@ import {
   DragWrapper,
   ClickBackground,
   HandleBar,
+  SVGWrapperMobile,
 } from "./styles/sharedStyles";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
@@ -333,12 +334,12 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
       <ClickBackground onClick={setClose} />
 
       <DragWrapper style={props}>
-        <HandleBar />
         <HeaderWrapper {...bind()}>
+          <HandleBar />
           <CustomIconButton
             name="ArrowDown"
             position="fixed"
-            margin="-10px 0px"
+            margin="0px 0px"
             backgroundColor="transparent"
             shadow={false}
             handleButtonClick={setClose}
@@ -352,6 +353,21 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
           >
             {MenuData.map((item) => item.text).slice(3, 4)}
           </StyledH2>
+          <SVGWrapperMobile>
+            <svg
+              width="100%"
+              height="100%"
+              viewBox="0 0 100% 100%"
+              preserveAspectRatio="none"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M139 84.5C65 68.9 22 91 0 107.5V0H390.5V54C363.5 45.5 334 47 313.5 63.5C288.5 83.6219 231.5 104 139 84.5Z"
+                fill="#FED957"
+              />
+            </svg>
+          </SVGWrapperMobile>
         </HeaderWrapper>
         {content}
       </DragWrapper>

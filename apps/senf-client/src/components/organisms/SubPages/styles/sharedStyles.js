@@ -44,13 +44,14 @@ export const DragWrapper = styled(animated.div)`
 
   width: 100%;
   height: 100%;
-  background: rgb(254, 217, 87);
+  /* background: rgb(254, 217, 87);
   background: linear-gradient(
     180deg,
     rgba(254, 217, 87, 1) 0%,
     rgba(255, 218, 83, 1) 50%,
     rgba(255, 255, 255, 1) 100%
-  );
+  ); */
+  background-color: rgb(249, 241, 215);
   border-radius: 24px;
   position: absolute;
   z-index: 995;
@@ -117,18 +118,27 @@ export const Covers = styled.div`
 
 export const SVGWrapper = styled.div`
   background-color: rgb(249, 241, 215);
-  height: 150px;
   width: 100%;
   position: sticky;
   top: 0;
   z-index: 2;
+  height: ${(props) => (props.searchOpen ? "210px" : "150px")};
+`;
+
+export const SVGWrapperMobile = styled.div`
+  background-color: rgb(249, 241, 215);
+  width: 100%;
+  height: 110px;
+  position: absolute;
+  top: 0;
+  z-index: -2;
 `;
 
 export const HeaderWrapper = styled(animated.div)`
   position: sticky;
   width: 100%;
-  top: 20px;
-  background-color: #fed957;
+  padding-top: 10px;
+  /* background-color: #fed957; */
   z-index: 25;
   height: 100px;
   @media (min-width: 768px) {
@@ -149,7 +159,7 @@ export const HandleBar = styled.div`
   background-color: #f2c71c;
   overflow: visible;
   border-radius: 1px;
-  margin-top: 8px;
+  margin-top: 0px;
   margin-left: 50%;
   transform: translateX(-50%);
   position: absolute;

@@ -21,6 +21,7 @@ import {
   Wrapper,
   HeaderWrapper,
   SVGWrapper,
+  SVGWrapperMobile,
   ClickBackground,
   DragWrapper,
   HandleBar,
@@ -41,7 +42,7 @@ const InnerWrapper = styled.div`
   pointer-events: all;
   height: calc(100% - 120px);
   width: 100%;
-  margin-top: ${(props) => (props.isMobileCustom ? "0px" : "0px")};
+  margin-top: ${(props) => (props.isMobileCustom ? "-10px" : "0px")};
   overflow: scroll;
   z-index: 1;
   margin-left: 50%;
@@ -49,25 +50,9 @@ const InnerWrapper = styled.div`
   transform: translateX(-50%);
   width: calc(100% - 20px);
   max-width: 800px;
-  display: grid;
+
   display: flex;
   flex-direction: column;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 10px 10px;
-  grid-template-areas:
-    ". ."
-    ". .";
-  @media (min-width: 768px) {
-    margin-top: 50px;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-  }
-
-  @media (min-width: 1068px) {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
-  }
 `;
 
 const ListWrapper = styled.div`
@@ -90,7 +75,7 @@ const ButtonWrapper = styled.div`
   @media (min-width: 768px) {
     width: 300px;
     position: fixed;
-    top: 102px;
+    top: 112px;
     right: 60px;
   }
 `;
@@ -192,12 +177,12 @@ const OrganizationsPage = ({
       <ClickBackground onClick={setClose} />
 
       <DragWrapper className={!loading ? "" : "drag_hide"} style={props}>
-        <HandleBar />
         <HeaderWrapper {...bind()}>
+          <HandleBar />
           <CustomIconButton
             name="ArrowDown"
             position="fixed"
-            margin="-10px 0px"
+            margin="0px 0px"
             backgroundColor="transparent"
             shadow={false}
             handleButtonClick={setClose}
@@ -214,43 +199,40 @@ const OrganizationsPage = ({
             </StyledH2>
           </TabsWrapper>
 
-          {isMobileCustom && (
-            <TagsFilter
-              placing="list"
-              type={order === 1 ? "topics" : "organizationType"}
-            />
-          )}
-
-          {!isMobileCustom && (
-            <Toolbar
-              swipeListType="organizationOverview"
-              marginTop="0px"
-              loading={loading}
-              handleDropdown={handleDropdown}
-              dropdown={dropdown}
-              dataFinalLength={dataFinalLength}
-              setSearchOpen={setSearchOpen}
-              searchOpen={searchOpen}
-              setSearchTerm={setSearchTerm}
-              searchTerm={searchTerm}
-            />
-          )}
+          <TagsFilter
+            placing="list"
+            type={order === 1 ? "topics" : "organizationType"}
+          />
+          <SVGWrapperMobile>
+            <svg
+              width="100%"
+              height="100%"
+              viewBox="0 0 100% 100%"
+              preserveAspectRatio="none"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M139 84.5C65 68.9 22 91 0 107.5V0H390.5V54C363.5 45.5 334 47 313.5 63.5C288.5 83.6219 231.5 104 139 84.5Z"
+                fill="#FED957"
+              />
+            </svg>
+          </SVGWrapperMobile>
         </HeaderWrapper>
         <InnerWrapper isMobileCustom={isMobileCustom}>
-          {isMobileCustom && (
-            <Toolbar
-              swipeListType="organizationOverview"
-              type="standalone"
-              loading={loading}
-              handleDropdown={handleDropdown}
-              dropdown={dropdown}
-              dataFinalLength={dataFinalLength}
-              setSearchOpen={setSearchOpen}
-              searchOpen={searchOpen}
-              setSearchTerm={setSearchTerm}
-              searchTerm={searchTerm}
-            />
-          )}
+          <Toolbar
+            swipeListType="organizationsOverview"
+            type="standalone"
+            loading={loading}
+            handleDropdown={handleDropdown}
+            dropdown={dropdown}
+            dataFinalLength={dataFinalLength}
+            setSearchOpen={setSearchOpen}
+            searchOpen={searchOpen}
+            setSearchTerm={setSearchTerm}
+            searchTerm={searchTerm}
+          />
+
           <ButtonWrapper>
             <NewButton
               borderType="dashed"
@@ -288,7 +270,7 @@ const OrganizationsPage = ({
           handleButtonClick={() => setOpenOrganizationsPage(false)}
           zIndex={99}
         />
-        <SVGWrapper>
+        <SVGWrapper searchOpen={searchOpen}>
           <HeaderWrapper>
             <StyledH2
               fontWeight="900"
@@ -299,27 +281,18 @@ const OrganizationsPage = ({
               {MenuData.map((item) => item.text).slice(2, 3)}
             </StyledH2>
 
-            {isMobileCustom && (
-              <TagsFilter
-                placing="list"
-                type={order === 1 ? "topics" : "organizationType"}
-              />
-            )}
-
-            {!isMobileCustom && (
-              <Toolbar
-                swipeListType="organizationOverview"
-                marginTop="0px"
-                loading={loading}
-                handleDropdown={handleDropdown}
-                dropdown={dropdown}
-                dataFinalLength={dataFinalLength}
-                setSearchOpen={setSearchOpen}
-                searchOpen={searchOpen}
-                setSearchTerm={setSearchTerm}
-                searchTerm={searchTerm}
-              />
-            )}
+            <Toolbar
+              swipeListType="organizationsOverview"
+              marginTop="0px"
+              loading={loading}
+              handleDropdown={handleDropdown}
+              dropdown={dropdown}
+              dataFinalLength={dataFinalLength}
+              setSearchOpen={setSearchOpen}
+              searchOpen={searchOpen}
+              setSearchTerm={setSearchTerm}
+              searchTerm={searchTerm}
+            />
 
             <ButtonWrapper>
               <NewButton
