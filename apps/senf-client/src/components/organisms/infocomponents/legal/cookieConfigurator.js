@@ -153,7 +153,7 @@ const CookieConfigurator = ({ classes }) => {
         <ListTitle>Speicherdauer</ListTitle> <ListItem>3 Monate</ListItem>
         <br /> <br />
         <HeaderSwitchWrapper>
-          <Header>Service-verbessernde-Cookies</Header>
+          <Header>Statistik-Cookies</Header>
           <Switch
             id="test-switch2"
             toggled={location}
@@ -161,12 +161,16 @@ const CookieConfigurator = ({ classes }) => {
           />
         </HeaderSwitchWrapper>
         <p>
-          Die Service verbessernden Cookies erlauben es, dass sowohl Funktionen
-          wie der Kartendienst oder auch die Analyse der Ergebnisse geschehen
-          kann.
+          Statistik-Cookies helfen Websitebetreibern zu verstehen, wie Nutzer
+          mit Websites interagieren, indem Informationen anonym gesammelt und
+          gemeldet werden. Sofern Sie Cookies aus dieser Kategorie zulassen und
+          zu einem späteren Zeitpunkt wieder blockieren, können bereits gesetzte
+          Cookies aus technischen Gründen auf Ihrem Gerät verbleiben. Sie können
+          diese dann jederzeit manuell löschen.
         </p>
         <Line />
-        <ListTitle>Anbieter</ListTitle> <ListItem>Google</ListItem>
+        <p>Im Moment verwenden wir keine Cookies dieser Art. </p>
+        {/* <ListTitle>Anbieter</ListTitle> <ListItem>Google</ListItem>
         <ListTitle>Name</ListTitle> <ListItem>_ga</ListItem>
         <ListTitle>Zweck</ListTitle>{" "}
         <ListItem>Google Analytics-Cookie zur Benutzeridentifizierung</ListItem>
@@ -182,7 +186,7 @@ const CookieConfigurator = ({ classes }) => {
         <ListTitle>Name</ListTitle> <ListItem>_gat</ListItem>
         <ListTitle>Zweck</ListTitle>
         <ListItem>Drosselung der Anforderungsrate</ListItem>
-        <ListTitle>Speicherdauer</ListTitle> <ListItem>1 Minute</ListItem>
+        <ListTitle>Speicherdauer</ListTitle> <ListItem>1 Minute</ListItem> */}
         <br /> <br />
       </Wrapper>
     </div>
