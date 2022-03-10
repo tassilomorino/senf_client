@@ -58,6 +58,7 @@
     "analyze": "source-map-explorer '../../dist/apps/senf-client/static/js/*.js'",
     "start": "vite --force",
     "serve": "npm start",
+    "preview": "vite preview",
     "start:silent": "BROWSER=none PORT=3000 craco start",
     "build": "vite build",
     "cy:open": "cypress open",
