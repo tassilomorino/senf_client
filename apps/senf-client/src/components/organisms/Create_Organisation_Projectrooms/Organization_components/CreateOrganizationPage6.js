@@ -10,6 +10,7 @@ import styled from "styled-components";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 import "firebase/compat/storage";
+import { getDocs, getDoc } from "firebase/firestore";
 
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 import {
@@ -20,7 +21,12 @@ import {
   ComponentWrapper,
 } from "../styles/sharedStyles";
 import Searchbar from "../../../atoms/Searchbar/Searchbar";
-import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
+import {
+  StyledH2,
+  StyledH3,
+  StyledH4,
+  StyledText,
+} from "../../../../styles/GlobalStyle";
 import Navigation from "../Components/Navigation";
 
 const Wrapper = styled.div`
@@ -35,26 +41,53 @@ const SearchbarWrapper = styled.div`
 `;
 
 const User = styled.div`
-  width: 100%;
+  width: max-content;
   height: 50px;
-  border-radius: 50px;
-  background-color: #353535;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 10px;
+
+  box-sizing: border-box;
+
+  padding: 0px 20px;
+
+  box-shadow: 0px 12px 18px -8px rgba(186, 160, 79, 0.2),
+    0px -4px 10px 4px rgba(255, 255, 255, 0.2);
+  background-color: #fcfbf8;
+  overflow: visible;
+  border-radius: 18px;
+  border: 2px solid #ffffff;
+  margin-right: 10px;
+  transition: 0.4s;
 `;
 
-const UserName = styled.div`
-  color: white;
-  margin-left: 20px;
+const RemovableUser = styled(User)`
+  &:hover {
+    background-color: #ff3c3e;
+    border: 2px solid #ca3336;
+  }
+`;
+
+const AddableUser = styled(User)`
+  &:hover {
+    background-color: #009a8e;
+    border: 2px solid #00857b;
+  }
 `;
 
 const EditIcon = styled.div`
   font-size: 20px;
-  margin-left: 0px;
-  color: white;
-  padding-right: 20px;
+  margin-left: 20px;
+`;
+
+const Divider = styled.div`
+  width: 90%;
+  height: 1px;
+  background-color: rgba(186, 160, 79, 0.2);
+  overflow: visible;
+  margin: 10px 24px 10px 24px;
 `;
 
 const CreateOrganizationPage6 = ({
@@ -77,23 +110,54 @@ const CreateOrganizationPage6 = ({
   const search = async (e) => {
     const db = firebase.firestore();
     if (e.key === "Enter") {
-      const postRef = db.collection("users");
       const users = [];
       // define queries
-      const usersRef = await postRef
-        .orderBy("handle")
-        .startAt(searchTerm)
-        .endAt(searchTerm + "~")
-        .get();
 
-      // get queries
-      usersRef.docs.forEach((doc) => {
-        users.push(doc.data());
+      if (searchTerm.includes("@")) {
+        const postRef = db.collectionGroup("Private");
 
-        if (usersRef.size === users.length) {
-          setUsersList(users);
+        const usersRef = await postRef
+          .orderBy("email")
+          .startAt(searchTerm)
+          .endAt(searchTerm + "~")
+          .get();
+
+        // get queries
+        // usersRef.docs.forEach((doc) => {
+        //   users.push(doc.data());
+
+        //   if (usersRef.size === users.length) {
+        //     setUsersList(users);
+        //   }
+        // });
+
+        for (const doc of usersRef.docs) {
+          const parentDoc = await getDoc(doc.ref.parent.parent);
+
+          users.push(parentDoc.data());
+
+          if (usersRef.size === users.length) {
+            setUsersList(users);
+          }
         }
-      });
+      } else {
+        const postRef = db.collection("users");
+
+        const usersRef = await postRef
+          .orderBy("handle")
+          .startAt(searchTerm)
+          .endAt(searchTerm + "~")
+          .get();
+
+        // get queries
+        usersRef.docs.forEach((doc) => {
+          users.push(doc.data());
+
+          if (usersRef.size === users.length) {
+            setUsersList(users);
+          }
+        });
+      }
     }
   };
 
@@ -218,31 +282,47 @@ const CreateOrganizationPage6 = ({
           <StyledH3 textAlign="center" margin="20px">
             {pagesData[index].subTitle}
           </StyledH3>
-          <br />
-          {authorizedUserNames &&
-            authorizedUserNames.map(({ handle, userId }) => (
-              <User onClick={() => handleRemove(userId)}>
-                <UserName>{handle}</UserName>
-                {userId !== user.userId && <EditIcon> -</EditIcon>}
-              </User>
-            ))}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            {authorizedUserNames &&
+              authorizedUserNames.map(({ handle, userId }) => (
+                <RemovableUser onClick={() => handleRemove(userId)}>
+                  <StyledH4>{handle}</StyledH4>
+                  {userId !== user.userId && <EditIcon> -</EditIcon>}
+                </RemovableUser>
+              ))}
+          </div>
           <br /> <br />
+          <Divider />
+          <StyledH3 textAlign="center" margin="20px">
+            {pagesData[index].subTitle2}
+          </StyledH3>
           <SearchbarWrapper>
             <Searchbar
-              placeholder="Teammitglieder:innen hinzufügen..."
+              placeholder="Durchsuche Nutzernamen oder Email-Adressen..."
               setSearchTerm={setSearchTerm}
               searchTerm={searchTerm}
               handleSearch={search}
               backgroundColor="#f8f8f8"
             />
           </SearchbarWrapper>
-          {userList &&
-            userList.map(({ handle, userId }) => (
-              <User onClick={() => handleAdd(userId)}>
-                <UserName>{handle}</UserName>
-                <EditIcon> +</EditIcon>
-              </User>
-            ))}
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            {userList &&
+              userList.map(({ handle, userId }) => (
+                <React.Fragment>
+                  {!authorizedUserIds.includes(userId) && (
+                    <AddableUser onClick={() => handleAdd(userId)}>
+                      <StyledH4>{handle}</StyledH4>
+                      <EditIcon> +</EditIcon>
+                    </AddableUser>
+                  )}
+                </React.Fragment>
+              ))}
+          </div>
           <br /> <br />
           {/* <StyledH2 textAlign="center" fontWeight="900">
             Lade deine Teammitglieder:innen zu Senf ein

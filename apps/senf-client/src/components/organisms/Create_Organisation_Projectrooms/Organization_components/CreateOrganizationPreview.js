@@ -138,7 +138,7 @@ const CreateOrganizationPreview = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [openPreview, setOpenPreview] = useState(false);
-  const [status, setStatus] = useState(false);
+  const [status, setStatus] = useState(true);
 
   const [infosProvided, setInfosProvided] = useState(false);
 
@@ -155,8 +155,12 @@ const CreateOrganizationPreview = ({
         console.log("No such document!");
       } else {
         const data = ref.data();
-        if (data.status === "active") {
-          setStatus(true);
+        if (
+          !data.status ||
+          data.status === "deactivated" ||
+          data.status === "uncompleted"
+        ) {
+          setStatus(false);
         }
         if (data.title && data.description) {
           setInfosProvided(true);

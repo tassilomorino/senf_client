@@ -191,6 +191,7 @@ const CreateProjectDialog = ({ type }) => {
     {
       title: t("createOrganizationPage6Title"),
       subTitle: t("createOrganizationPage6SubTitle"),
+      subTitle2: t("createOrganizationPage6SubTitle2"),
     },
     {
       title: t("createOrganizationPage7Title"),
