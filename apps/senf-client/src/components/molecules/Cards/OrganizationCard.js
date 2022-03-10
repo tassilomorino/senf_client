@@ -38,7 +38,10 @@ const Wrapper = styled.div`
   border-radius: 18px;
   border: 2px solid ${(props) => (props.active ? "#e8ba02" : "#ffffff")};
 
-  opacity: ${(props) => (props.status === "deactivated" ? "0.6" : "1")};
+  filter: ${(props) =>
+    props.status === "deactivated" || props.status === "uncompleted"
+      ? "brightness(0.6)"
+      : "brightness(1)"};
 
   animation: OrganizationCardAnimation 0.8s;
 
@@ -218,7 +221,7 @@ export const OrganizationCard = (props) => {
       status={status}
       active={thisOrganizationId === organization?.organizationId}
     >
-      {status === "deactivated" && (
+      {(status === "deactivated" || status === "uncompleted") && (
         <DeactivatedWrapper>
           <img src={NotPublishedIcon} width="100%" />
         </DeactivatedWrapper>

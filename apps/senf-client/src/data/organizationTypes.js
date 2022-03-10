@@ -96,7 +96,7 @@ const organizationTypes = [
     ),
   },
   {
-    name: "Stadverwaltung", //  Administration
+    name: "Stadtverwaltung", //  Administration
     label: (
       <Translation>
         {(t, { i18n }) => <span>{t("organizationTypes_administration")}</span>}

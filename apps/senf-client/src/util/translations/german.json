@@ -2,7 +2,13 @@
   "rotate_tablet": "Bitte rotiere dein Tablet",
   "rotate_phone": "Bitte rotiere dein Smartphone",
 
+  "close": "Schließen",
+  "question": "Frage",
+  "answer": "Antwort",
+
   "contact": "Kontakt",
+  "contact-address": "Kontakt-E-Mail",
+  "external-link": "Externer Link ",
   "imprint": "Impressum",
   "accept": "Akzeptieren",
   "send": "Senden",
@@ -197,5 +203,38 @@
   "organizationTypes_politics": "Politik",
   "organizationTypes_administration": "Stadtverwaltung",
   "organizationTypes_press": "Presse",
-  "organizationTypes_other": "Sonstige"
+  "organizationTypes_other": "Sonstige",
+
+  "organization_is_deactivated": "Diese Organisation ist deaktiviert worden und ist momentatn nicht öffentlich.",
+  "organization_is_uncompleted": "Diese Organisation ist noch nicht fertiggestellt und noch nicht öffentlich.",
+
+  "createOrganizationPage0aTitle": "Organisationsprofil erstellen",
+  "createOrganizationPage0aSubTitle": "Von dem Nachbarschaftsverein über Planungsbüros bis zu politischen Parteien – Hier könnt ihr ein Organisationsprofil für euer Vorhaben erstellen.",
+
+  "createOrganizationPage0bTitle": "Organisationstyp",
+  "createOrganizationPage0bSubTitle": "Welche Art von Organisation seid ihr?",
+
+  "createOrganizationPage1Title": "Infos",
+  "createOrganizationPage1SubTitle": "Bearbeite deine Organisations-Infos.",
+  "createOrganizationPage1_FieldName_Title": "Organisations-Name",
+
+  "createOrganizationPage2Title": "Kontakt",
+  "createOrganizationPage2SubTitle": "Seid erreichbar für alle, die an eurer Organisation und euren Vorhaben interessiert sind.",
+
+  "createOrganizationPage3Title": "Logo",
+  "createOrganizationPage3SubTitle": "Lade euer Logo hoch oder wähle ein thematisch passendes Motiv.",
+
+  "createOrganizationPage4Title": "Kalender",
+  "createOrganizationPage4SubTitle": "Egal, ob regelmäßige Stammtische oder tolle Events. Macht eure Termine über den Kalender sichtbar!",
+  "googleCalendarId": "Google-Calendar-Id",
+  "how_to_find_google_calendar_id": "Wie finde ich unsere Google-Calendar-Id?",
+
+  "createOrganizationPage5Title": "FAQ",
+  "createOrganizationPage5SubTitle": "Legt einen FAQ an, um eventuelle Fragen, der interessierten Nutzer:innen beantworten zu können.",
+
+  "createOrganizationPage6Title": "Teammitglieder",
+  "createOrganizationPage6SubTitle": "Füge weitere Mitglieder:innen deiner Organisation hinzu.",
+
+  "createOrganizationPage7Title": "Übersicht",
+  "createOrganizationPage7SubTitle": "Willst du an den Angaben etwas verändern?"
 }

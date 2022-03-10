@@ -445,6 +445,18 @@ const OrganizationDialog = ({
       <LogoWrapper>
         <Logo imgUrl={logo} />
       </LogoWrapper>
+
+      {organization?.status === "deactivated" ? (
+        <StyledH3 margin="24px" color="#ca3336">
+          {t("organization_is_deactivated")}
+        </StyledH3>
+      ) : (
+        organization?.status === "uncompleted" && (
+          <StyledH3 margin="24px" color="#ca3336">
+            {t("organization_is_uncompleted")}
+          </StyledH3>
+        )
+      )}
       <FlexBox>
         <LogoPlacer>
           <Icon>
@@ -456,7 +468,7 @@ const OrganizationDialog = ({
 
       <FlexBox>
         <NewButton handleButtonClick={() => setContactOpen(true)}>
-          Kontakt
+          {t("contact")}
         </NewButton>
         {/* <NewButton
           margin="0px 10px 0px 10px"

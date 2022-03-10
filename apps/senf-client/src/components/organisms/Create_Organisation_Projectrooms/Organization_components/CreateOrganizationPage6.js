@@ -62,6 +62,7 @@ const CreateOrganizationPage6 = ({
   onClickPrev,
   set,
   pagesData,
+  index,
 }) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
@@ -215,7 +216,7 @@ const CreateOrganizationPage6 = ({
       <ComponentWrapper>
         <ComponentInnerWrapper>
           <StyledH3 textAlign="center" margin="20px">
-            Füge weitere Mitglieder deiner Organisation hinzu
+            {pagesData[index].subTitle}
           </StyledH3>
           <br />
           {authorizedUserNames &&
@@ -243,12 +244,12 @@ const CreateOrganizationPage6 = ({
               </User>
             ))}
           <br /> <br />
-          <StyledH2 textAlign="center" fontWeight="900">
+          {/* <StyledH2 textAlign="center" fontWeight="900">
             Lade deine Teammitglieder:innen zu Senf ein
           </StyledH2>
           <StyledH3 textAlign="center" margin="20px">
             https://dummy-einladungslink.app
-          </StyledH3>
+          </StyledH3> */}
         </ComponentInnerWrapper>
       </ComponentWrapper>
 
@@ -258,6 +259,7 @@ const CreateOrganizationPage6 = ({
         handleNext={handleNext}
         handlePrev={onClickPrev}
         set={set}
+        index={index}
         pagesData={pagesData}
         // disabled={!data || nextClicked}
         // loading={nextClicked}

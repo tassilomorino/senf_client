@@ -10,6 +10,7 @@ import Button from "@material-ui/core/Button";
 
 import { TextField } from "@material-ui/core";
 import MainModal from "../../../atoms/Layout/MainModal";
+import { useTranslation } from "react-i18next";
 
 const styles = {
   paper: {
@@ -39,6 +40,7 @@ const Contact = ({
   handleCloseContact,
   handleSaveContact,
 }) => {
+  const { t } = useTranslation();
   return (
     <MainModal handleButtonClick={() => setContactOpen(false)} zIndex={999999}>
       <h3 className="modal_title">Kontaktdaten öffentlich zeigen</h3>
@@ -61,7 +63,7 @@ const Contact = ({
           id="contact"
           name="contact"
           type="text"
-          label="Kontaktdaten "
+          label={t("contact-address")}
           placeholder="max@mail.de"
           margin="normal"
           color="transparent"

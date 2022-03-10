@@ -54,6 +54,7 @@ const CreateOrganizationPage2 = ({
   onClickPrev,
   set,
   pagesData,
+  index,
 }) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
@@ -128,7 +129,7 @@ const CreateOrganizationPage2 = ({
   const MyInput = (props) => (
     <input
       {...props}
-      placeholder={address ? address : "Addresse eingeben..."}
+      placeholder={address ? address : "Addresse der Organisation"}
       id="geocoder"
       autocomplete="off"
     />
@@ -189,15 +190,14 @@ const CreateOrganizationPage2 = ({
       <ComponentWrapper>
         <ComponentInnerWrapper>
           <StyledH3 textAlign="center" margin="20px">
-            Füge deine Kontaktdaten (E-mail, Link) hinzu, um erreichbar zu sein
-            und deine Organisation zu vertreten.{" "}
+            {pagesData[index].subTitle}
           </StyledH3>
 
           <TextField
             id="outlined-name"
             name="contact"
             type="contact"
-            label={t("Kontaktdaten")}
+            label={t("contact-address")}
             margin="normal"
             variant="outlined"
             style={{
@@ -212,7 +212,7 @@ const CreateOrganizationPage2 = ({
             id="outlined-name"
             name="weblink"
             type="weblink"
-            label={t("Link")}
+            label={t("external-link")}
             margin="normal"
             variant="outlined"
             style={{
@@ -247,6 +247,7 @@ const CreateOrganizationPage2 = ({
         handleNext={handleNext}
         handlePrev={onClickPrev}
         set={set}
+        index={index}
         pagesData={pagesData}
       />
     </React.Fragment>
