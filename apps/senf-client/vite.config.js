@@ -4,12 +4,6 @@ import { esbuildCommonjs, viteCommonjs } from "@originjs/vite-plugin-commonjs";
 
 export default defineConfig(({ command, mode }) => {
   return {
-    plugins: [react(), viteCommonjs({ include: ["@urbica/react-map-gl"] })],
-    define: mode === "development" ? { global: "window" } : {},
-    optimizeDeps: {
-      esbuildOptions: {
-        plugins: [esbuildCommonjs(["@urbica/react-map-gl"])],
-      },
-    },
+    plugins: [react()],
   };
 });
