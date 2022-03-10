@@ -450,7 +450,7 @@ const SwipeList = ({
       openOrganizationsPage={openOrganizationsPage}
     >
       <HandleBar />
-      {!loading && !loadingProjects && isMobileCustom && !openScream && (
+      {isMobileCustom && (
         <PostScream
           loadingProjects={loadingProjects}
           projectsData={dataFinalProjectRooms}
