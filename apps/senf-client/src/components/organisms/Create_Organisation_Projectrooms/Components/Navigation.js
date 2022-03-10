@@ -67,11 +67,7 @@ const Navigation = ({
           textColor="#353535"
           left="0"
           transformX="none"
-          handleButtonClick={
-            localStorage.getItem("createOrganizationPostEdit") === "true"
-              ? () => set(pagesData.length - 1)
-              : handleNext
-          }
+          handleButtonClick={handleNext}
           disabled={disabled}
           loading={loading}
           marginLeft="0"

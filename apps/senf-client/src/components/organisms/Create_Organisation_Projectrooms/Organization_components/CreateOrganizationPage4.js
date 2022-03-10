@@ -133,11 +133,19 @@ const CreateOrganizationPage4 = ({
         .doc(localStorage.getItem("createOrganizationId"));
       return ref.update(updateProject).then(() => {
         setTimeout(() => {
-          onClickNext();
+          if (localStorage.getItem("createOrganizationPostEdit") === "true") {
+            set(pagesData.length - 1);
+          } else {
+            onClickNext();
+          }
         }, 200);
       });
     } else {
-      onClickNext();
+      if (localStorage.getItem("createOrganizationPostEdit") === "true") {
+        set(pagesData.length - 1);
+      } else {
+        onClickNext();
+      }
     }
   };
 

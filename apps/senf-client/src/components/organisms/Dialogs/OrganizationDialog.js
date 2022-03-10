@@ -146,6 +146,7 @@ const MapHider = styled.div`
 const FlexBox = styled.div`
   display: flex;
   margin: 24px;
+  align-items: center;
 `;
 const LogoWrapper = styled.div`
   margin: 20px 50% 0px 50%;
@@ -197,7 +198,6 @@ const Icon = styled.div`
 const Title = styled.span`
   width: auto; /* 167px */
   height: auto; /* 28px */
-  white-space: pre;
   overflow: visible;
   font-weight: 700;
   font-style: normal;
@@ -206,8 +206,10 @@ const Title = styled.span`
   font-size: 20px;
   letter-spacing: 0px;
   line-height: 1.4;
-  text-align: center;
+
   margin-left: 12px;
+  text-align: left;
+  width: 90%;
 `;
 
 const ListWrapper = styled.div`

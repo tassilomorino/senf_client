@@ -201,7 +201,11 @@ const CreateOrganizationPage6 = ({
       //   onClickNext();
       // });
       setTimeout(() => {
-        onClickNext();
+        if (localStorage.getItem("createOrganizationPostEdit") === "true") {
+          set(pagesData.length - 1);
+        } else {
+          onClickNext();
+        }
       }, 200);
     }
   };

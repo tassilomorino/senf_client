@@ -135,7 +135,7 @@ const Icon = styled.div`
 `;
 
 const Title = styled.h3`
-  width: 146px;
+  width: 140px;
   height: 24px;
   white-space: pre-wrap;
   word-wrap: break-word;
@@ -149,10 +149,13 @@ const Title = styled.h3`
   letter-spacing: 0px;
   line-height: 1.5;
   text-align: left;
-
   top: 0;
   position: relative;
   margin: 8px 16px 0px 16px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const SubTitle = styled.div`
