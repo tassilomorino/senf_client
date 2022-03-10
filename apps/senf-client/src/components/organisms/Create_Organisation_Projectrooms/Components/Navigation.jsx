@@ -13,7 +13,7 @@ const ButtonsWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #ffe898;
+  background-color: rgb(249, 241, 215);
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
 `;
 
@@ -22,17 +22,24 @@ const Navigation = ({
   prevLabel,
   handleNext,
   handlePrev,
+  set,
+  pagesData,
   disabled,
   loading,
   color,
   backgroundColor,
 }) => {
+  console.log(localStorage.getItem("createOrganizationPostEdit"));
   const { t } = useTranslation();
   return (
     <ButtonsWrapper>
       {prevLabel && (
         <SubmitButton
-          text={prevLabel}
+          text={
+            localStorage.getItem("createOrganizationPostEdit") === "true"
+              ? "Zurück zur Übersicht"
+              : prevLabel
+          }
           zIndex="9"
           backgroundColor="transparent"
           shadow={false}
@@ -40,19 +47,31 @@ const Navigation = ({
           left="0"
           transformX="none"
           marginLeft="0"
-          handleButtonClick={handlePrev}
+          handleButtonClick={
+            localStorage.getItem("createOrganizationPostEdit") === "true"
+              ? () => set(pagesData.length - 1)
+              : handlePrev
+          }
           //   keySubmitRef={keySubmitRef}
         />
       )}
       {nextLabel && (
         <SubmitButton
-          text={nextLabel}
+          text={
+            localStorage.getItem("createOrganizationPostEdit") === "true"
+              ? "Speichern"
+              : nextLabel
+          }
           zIndex="9"
           backgroundColor="white"
           textColor="#353535"
           left="0"
           transformX="none"
-          handleButtonClick={handleNext}
+          handleButtonClick={
+            localStorage.getItem("createOrganizationPostEdit") === "true"
+              ? () => set(pagesData.length - 1)
+              : handleNext
+          }
           disabled={disabled}
           loading={loading}
           marginLeft="0"

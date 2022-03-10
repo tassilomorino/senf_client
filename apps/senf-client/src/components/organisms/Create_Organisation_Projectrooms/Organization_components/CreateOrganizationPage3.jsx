@@ -25,7 +25,7 @@ import {
   ComponentWrapper,
 } from "../styles/sharedStyles";
 import Navigation from "../Components/Navigation";
-import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
+import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 
 const StyledLabel = styled.label`
   width: 150px;
@@ -59,7 +59,12 @@ const StyledImg = styled.img`
   object-fit: cover;
 `;
 
-const CreateOrganizationPage3 = ({ onClickNext, onClickPrev }) => {
+const CreateOrganizationPage3 = ({
+  onClickNext,
+  onClickPrev,
+  set,
+  pagesData,
+}) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
 
@@ -131,12 +136,9 @@ const CreateOrganizationPage3 = ({ onClickNext, onClickPrev }) => {
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH2 fontWeight="900" textAlign="center">
-            Bild hochladen
-          </StyledH2>
           <StyledH3 textAlign="center" margin="20px">
-            Lade ein aussagekräftiges Bild für den Projektraum hoch und wähle
-            dabei nach Möglichkeit ein thematisch passendes Motiv.{" "}
+            Lade eure Logo hoch und wähle dabei nach Möglichkeit ein thematisch
+            passendes Motiv.{" "}
           </StyledH3>
 
           <StyledLabel
@@ -174,6 +176,8 @@ const CreateOrganizationPage3 = ({ onClickNext, onClickPrev }) => {
         prevLabel={t("back")}
         handleNext={handleNext}
         handlePrev={onClickPrev}
+        set={set}
+        pagesData={pagesData}
         disabled={!uploadedImage || nextClicked}
         loading={nextClicked}
       />

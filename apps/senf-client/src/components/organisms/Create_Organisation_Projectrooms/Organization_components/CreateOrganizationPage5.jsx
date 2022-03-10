@@ -27,12 +27,17 @@ import {
 import Contact from "../../../molecules/Modals/Post_Edit_ModalComponents/Contact";
 //import Geocoder from "react-mapbox-gl-geocoder";
 import Navigation from "../Components/Navigation";
-import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
+import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 import InlineDatePicker from "../../../atoms/InlineDatePicker/InlineDatePicker";
 import { TextField } from "@material-ui/core";
 import { useFormik } from "formik";
 
-const CreateOrganizationPage5 = ({ onClickNext, onClickPrev }) => {
+const CreateOrganizationPage5 = ({
+  onClickNext,
+  onClickPrev,
+  set,
+  pagesData,
+}) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
   const [formFields, setFormFields] = useState([{ question: "", answer: "" }]);
@@ -111,9 +116,6 @@ const CreateOrganizationPage5 = ({ onClickNext, onClickPrev }) => {
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH2 fontWeight="900" textAlign="center">
-            FAQ's hinzufügen
-          </StyledH2>
           <StyledH3 textAlign="center" margin="20px">
             Füge FAQ's hinzu, um den Nutzer:innen einen schnellen Einblick zu
             gewähren.
@@ -173,6 +175,8 @@ const CreateOrganizationPage5 = ({ onClickNext, onClickPrev }) => {
         prevLabel={t("back")}
         handleNext={handleNext}
         handlePrev={onClickPrev}
+        set={set}
+        pagesData={pagesData}
         disabled={nextClicked}
       />
     </React.Fragment>

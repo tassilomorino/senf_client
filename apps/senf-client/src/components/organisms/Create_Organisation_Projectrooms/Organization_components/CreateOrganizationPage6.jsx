@@ -20,7 +20,7 @@ import {
   ComponentWrapper,
 } from "../styles/sharedStyles";
 import Searchbar from "../../../atoms/Searchbar/Searchbar";
-import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
+import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 import Navigation from "../Components/Navigation";
 
 const Wrapper = styled.div`
@@ -57,7 +57,12 @@ const EditIcon = styled.div`
   padding-right: 20px;
 `;
 
-const CreateOrganizationPage6 = ({ onClickNext, onClickPrev }) => {
+const CreateOrganizationPage6 = ({
+  onClickNext,
+  onClickPrev,
+  set,
+  pagesData,
+}) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
 
@@ -205,11 +210,8 @@ const CreateOrganizationPage6 = ({ onClickNext, onClickPrev }) => {
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH2 fontWeight="900" textAlign="center">
-            Füge weitere Mitglieder deiner Organisation hinzu
-          </StyledH2>
           <StyledH3 textAlign="center" margin="20px">
-            sadklsdjas askjddkashd kajs
+            Füge weitere Mitglieder deiner Organisation hinzu
           </StyledH3>
           <br />
           {authorizedUserNames &&
@@ -251,6 +253,8 @@ const CreateOrganizationPage6 = ({ onClickNext, onClickPrev }) => {
         prevLabel={t("back")}
         handleNext={handleNext}
         handlePrev={onClickPrev}
+        set={set}
+        pagesData={pagesData}
         // disabled={!data || nextClicked}
         // loading={nextClicked}
       />

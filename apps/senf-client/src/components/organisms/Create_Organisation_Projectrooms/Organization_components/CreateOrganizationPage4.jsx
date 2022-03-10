@@ -28,7 +28,7 @@ import {
 import Contact from "../../../molecules/Modals/Post_Edit_ModalComponents/Contact";
 //import Geocoder from "react-mapbox-gl-geocoder";
 import Navigation from "../Components/Navigation";
-import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
+import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 import InlineDatePicker from "../../../atoms/InlineDatePicker/InlineDatePicker";
 import { TextField } from "@material-ui/core";
 import { useFormik } from "formik";
@@ -51,7 +51,12 @@ const GeocoderWrapper = styled.div`
   width: 100%;
 `;
 
-const CreateOrganizationPage4 = ({ onClickNext, onClickPrev }) => {
+const CreateOrganizationPage4 = ({
+  onClickNext,
+  onClickPrev,
+  set,
+  pagesData,
+}) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
   const [outsideClick, setOutsideClick] = useState(false);
@@ -140,16 +145,9 @@ const CreateOrganizationPage4 = ({ onClickNext, onClickPrev }) => {
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH2 fontWeight="900" textAlign="center">
-            Kalendereinträge hinzufügen
-          </StyledH2>
           <StyledH3 textAlign="center" margin="20px">
-            Füge Kalendereinträge hinzu
+            Füge deinen Google Kalender hinzu
           </StyledH3>
-
-          <p style={{ widthh: "100%", textAlign: "center" }}>
-            Zuerst Datum, dann Zeit auswählen.
-          </p>
 
           <TextField
             id="outlined-name"
@@ -180,6 +178,8 @@ const CreateOrganizationPage4 = ({ onClickNext, onClickPrev }) => {
         prevLabel={t("back")}
         handleNext={handleNext}
         handlePrev={onClickPrev}
+        set={set}
+        pagesData={pagesData}
         disabled={nextClicked}
       />
     </React.Fragment>

@@ -521,6 +521,7 @@ const Main = () => {
             setDropdown={setDropdown}
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
+            dataFinalProjectRooms={dataFinalProjectRooms}
           />
         )}
 

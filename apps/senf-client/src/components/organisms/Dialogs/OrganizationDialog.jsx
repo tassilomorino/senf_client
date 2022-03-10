@@ -512,12 +512,10 @@ const OrganizationDialog = ({
         {order === 1 ? (
           <List
             swipeListType="projectRoomOverview"
-            order={2}
             loading={loading}
             dropdown={dropdown}
             dataFinal={dataFinal}
             projectsData={projectsData}
-            handleClick={handleClick}
           />
         ) : (
           <CalendarComponent

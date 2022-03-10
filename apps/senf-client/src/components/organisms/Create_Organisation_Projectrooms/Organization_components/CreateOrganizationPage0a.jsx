@@ -14,7 +14,7 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 import "firebase/compat/storage";
 import Navigation from "../Components/Navigation";
-import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
+import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 
 const Header = styled.h3`
   font-size: 18px;
@@ -84,11 +84,11 @@ const CreateOrganizationPage0 = ({ onClickNext, onClickPrev }) => {
           <StyledH2 fontWeight="900" textAlign="center">
             Organisationsprofil erstellen
           </StyledH2>
-          <StyledH3 textAlign="center" margin="20px">
+          <StyledText textAlign="center" margin="20px">
             Von dem Nachbarschaftsverein über Planungsbüros bis zu politischen
             Parteien – Hier könnt ihr ein Organisationsprofil für euer Vorhaben
             erstellen.
-          </StyledH3>
+          </StyledText>
 
           <br />
 

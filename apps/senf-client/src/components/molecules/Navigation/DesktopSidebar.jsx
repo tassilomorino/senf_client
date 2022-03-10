@@ -74,10 +74,10 @@ const DesktopSidebar = ({
   const { t } = useTranslation();
 
   const openTheAccount = () => {
-    dispatch(openAccountFunc(userId));
-
-    dispatch(closeScream());
     dispatch(openProjectRoomFunc(null, false));
+    dispatch(closeScream());
+    dispatch(openAccountFunc(userId));
+    window.history.pushState(null, null, "/");
 
     dispatch(handleTopicSelectorRedux("all"));
   };

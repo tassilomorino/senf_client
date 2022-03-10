@@ -110,11 +110,15 @@ export const loadOrganizationData = (organizationId) => async (dispatch) => {
   const db = firebase.firestore();
   const ref = await db.collection("organizations").doc(organizationId).get();
 
-  const organization = ref.data();
-  organization.organizationId = ref.id;
-  organization.projectRooms = [];
+  if (!ref.exists) {
+    window.history.pushState(null, null, "/");
+  } else {
+    const organization = ref.data();
+    organization.organizationId = ref.id;
+    organization.projectRooms = [];
 
-  dispatch(loadOrganizationProjectRooms(organizationId, organization));
+    dispatch(loadOrganizationProjectRooms(organizationId, organization));
+  }
 };
 
 export const loadOrganizationProjectRooms =
