@@ -31,7 +31,9 @@ const CreateOrganizationPage1 = ({
   onClickNext,
   onClickPrev,
   set,
+  setTitle,
   pagesData,
+  index,
 }) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
@@ -45,8 +47,6 @@ const CreateOrganizationPage1 = ({
       setOutsideClick(false);
     }, 10000);
   });
-
-  const [title, setTitle] = useState(null);
 
   const createProjectValidationSchema = yup.object({
     title: yup
@@ -123,7 +123,12 @@ const CreateOrganizationPage1 = ({
 
       return ref.update(updateProject).then(() => {
         setTimeout(() => {
-          onClickNext();
+          setTitle(updateProject.title);
+          if (localStorage.getItem("createOrganizationPostEdit") === "true") {
+            set(pagesData.length - 1);
+          } else {
+            onClickNext();
+          }
         }, 200);
       });
     }
@@ -133,15 +138,15 @@ const CreateOrganizationPage1 = ({
     <React.Fragment>
       <ComponentWrapper ref={outerRef}>
         <ComponentInnerWrapper>
-          <StyledText textAlign="center" margin="20px">
-            Bearbeite deine Organisationsinfos{" "}
-          </StyledText>
+          <StyledH3 textAlign="center" margin="20px">
+            {pagesData[index].subTitle}
+          </StyledH3>
 
           <TextField
             id="outlined-name"
             name="title"
             type="title"
-            label={t("projectRoom_title")}
+            label={t("createOrganizationPage1_FieldName_Title")}
             margin="normal"
             variant="outlined"
             multiline
@@ -184,6 +189,7 @@ const CreateOrganizationPage1 = ({
         handleNext={handleNext}
         handlePrev={onClickPrev}
         set={set}
+        index={index}
         pagesData={pagesData}
         disabled={!formik.isValid || nextClicked}
         loading={nextClicked}

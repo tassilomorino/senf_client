@@ -46,7 +46,7 @@ const ListItemWrapper = styled.div`
   grid-auto-flow: row dense;
   grid-template-columns: 2fr 2fr;
   grid-template-rows: 2fr 2fr 2fr 2fr;
-  gap: 10px 10px;
+  gap: 10px 0px;
   grid-template-areas:
     ". ."
     ". ."
@@ -56,15 +56,16 @@ const ListItemWrapper = styled.div`
   align-content: center;
   justify-items: center;
   align-items: start;
-  width: max-content;
-  margin: auto;
+
+  margin-left: 50%;
+  transform: translateX(-50%);
   margin-top: 20px;
   margin-bottom: 20px;
 `;
 const ListItem = styled.div`
   height: 90px;
   width: 180px;
-
+  max-width: 95%;
   position: relative;
   display: flex;
   justify-content: center;
@@ -126,11 +127,18 @@ const FrameWrapper = styled.div`
   }
 `;
 
-const CreateOrganizationPreview = ({ onClickPrev, setClose, set }) => {
+const CreateOrganizationPreview = ({
+  onClickPrev,
+  setClose,
+  set,
+  pagesData,
+  listItems,
+  index,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [openPreview, setOpenPreview] = useState(false);
-  const [status, setStatus] = useState(false);
+  const [status, setStatus] = useState(true);
 
   const [infosProvided, setInfosProvided] = useState(false);
 
@@ -147,8 +155,12 @@ const CreateOrganizationPreview = ({ onClickPrev, setClose, set }) => {
         console.log("No such document!");
       } else {
         const data = ref.data();
-        if (data.status === "active") {
-          setStatus(true);
+        if (
+          !data.status ||
+          data.status === "deactivated" ||
+          data.status === "uncompleted"
+        ) {
+          setStatus(false);
         }
         if (data.title && data.description) {
           setInfosProvided(true);
@@ -208,7 +220,7 @@ const CreateOrganizationPreview = ({ onClickPrev, setClose, set }) => {
 
       return ref.update({ status: "active" }).then(() => {
         // dispatch(getProjects());
-        dispatch(getOrganizations());
+
         //REMOVE LOCALSTORAGE
         localStorage.removeItem("createOrganizationId");
         if (localStorage.getItem("createOrganizationPostEdit") !== "true") {
@@ -220,26 +232,17 @@ const CreateOrganizationPreview = ({ onClickPrev, setClose, set }) => {
     }
   };
 
-  const pages = [
-    { title: "Organisationstyp" },
-    { title: "Infos" },
-    { title: "Kontakt" },
-    { title: "Logo" },
-    { title: "Kalender" },
-    { title: "FAQ" },
-    { title: "Teammitglieder" },
-  ];
   return (
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
           <StyledH2 fontWeight="900" textAlign="center">
-            Willst du an den Angaben noch etwas verändern?
+            {pagesData[index].subTitle}
           </StyledH2>
           <ListItemWrapper>
-            {pages.map(({ title }, index) => (
+            {listItems.map(({ title }, index) => (
               <ListItem>
-                <ExpandButton handleButtonClick={() => set(index + 2)} />
+                <ExpandButton handleButtonClick={() => set(index + 1)} />
                 <StyledH3 textAlign="center">{title}</StyledH3>
               </ListItem>
             ))}
@@ -259,56 +262,61 @@ const CreateOrganizationPreview = ({ onClickPrev, setClose, set }) => {
           <br />
           <br />
           <br />
-          <Divider />
-          <br />
-          <br /> <br />
-          <StyledH2 fontWeight="900" textAlign="center">
-            Status des Organisationsprofils
-          </StyledH2>
-          <br />
-          <SwitchWrapper>
-            <Switch
-              id="deactivate-switch"
-              toggled={status}
-              onChange={handleSwitch}
-            />
-            <FlexWrapper>
-              <StyledH3
-                status={status}
-                fontWeight={700}
-                opacity={status !== true ? 1 : 0.4}
-              >
-                Deaktiviert
-              </StyledH3>
-              <StyledH3 fontWeight="400" margin="0px 20px">
-                {" "}
-                 |
-              </StyledH3>
-              <StyledH3
-                status={status}
-                fontWeight={700}
-                opacity={status === true ? 1 : 0.4}
-              >
-                Öffentlich
-              </StyledH3>
-            </FlexWrapper>
-          </SwitchWrapper>
-          <br />
-          <br />
-          <br />
+
+          {localStorage.getItem("createOrganizationPostEdit") === "true" && (
+            <React.Fragment>
+              <Divider />
+              <br />
+              <br />
+              <br />
+              <StyledH2 fontWeight="900" textAlign="center">
+                Status des Organisationsprofils
+              </StyledH2>
+              <br />
+              <SwitchWrapper>
+                <Switch
+                  id="deactivate-switch"
+                  toggled={status}
+                  onChange={handleSwitch}
+                />
+                <FlexWrapper>
+                  <StyledH3
+                    status={status}
+                    fontWeight={700}
+                    opacity={status !== true ? 1 : 0.4}
+                  >
+                    Deaktiviert
+                  </StyledH3>
+                  <StyledH3 fontWeight="400" margin="0px 20px">
+                    {" "}
+                     |
+                  </StyledH3>
+                  <StyledH3
+                    status={status}
+                    fontWeight={700}
+                    opacity={status === true ? 1 : 0.4}
+                  >
+                    Öffentlich
+                  </StyledH3>
+                </FlexWrapper>
+              </SwitchWrapper>
+              <br />
+            </React.Fragment>
+          )}
         </ComponentInnerWrapper>
       </ComponentWrapper>
 
-      {localStorage.getItem("createOrganizationPostEdit") !== "true" && (
-        <Navigation
-          nextLabel={t("Veröffentlichen")}
-          prevLabel={t("back")}
-          handleNext={handlePublish}
-          handlePrev={onClickPrev}
-          // disabled={!data || nextClicked}
-          // loading={nextClicked}
-        />
-      )}
+      <Navigation
+        nextLabel={t("Veröffentlichen")}
+        prevLabel={t("back")}
+        handleNext={handlePublish}
+        handlePrev={onClickPrev}
+        disabled={localStorage.getItem("createOrganizationPostEdit") === "true"}
+        pagesData={pagesData}
+        index={index}
+        setClose={setClose}
+        // loading={nextClicked}
+      />
     </React.Fragment>
   );
 };
