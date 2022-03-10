@@ -5,6 +5,7 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 import MapGL, { GeolocateControl, Source, Layer } from "@urbica/react-map-gl";
 
 //import Geocoder from "react-mapbox-gl-geocoder";
+import Geocoder from "../../atoms/map/Geocoder";
 
 import { useTranslation } from "react-i18next";
 
@@ -147,7 +148,7 @@ const PostScreamMap = ({
               : { display: "none" }
           }
         >
-          {/* <Geocoder
+          <Geocoder
             mapboxApiAccessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
             onSelected={onSelected}
             viewport={viewport}
@@ -156,7 +157,7 @@ const PostScreamMap = ({
             queryParams={queryParams}
             id="geocoder"
             transitionDuration={1000}
-          /> */}
+          />
           <AdressLinePlaceHolderDiv
             style={clicked === false ? { zIndex: 9999 } : { zIndex: 0 }}
           >

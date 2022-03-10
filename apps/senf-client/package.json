@@ -27,6 +27,7 @@
     "iplocation": "^7.2.0",
     "linkifyjs": "^3.0.3",
     "lodash": "^4.17.21",
+    "mapbox": "^1.0.0-beta10",
     "moment": "^2.29.1",
     "plotly.js-cartesian-dist": "^2.10.1",
     "public-ip": "^4.0.4",
@@ -39,7 +40,6 @@
     "react-infinite-scroller": "^1.2.5",
     "react-lazy-images": "^1.1.0",
     "react-map-gl": "^7.0.9",
-    "react-mapbox-gl-geocoder": "^1.1.0",
     "react-multi-date-picker": "^3.1.7",
     "react-plotlyjs": "^0.4.4",
     "react-redux": "^7.2.6",
@@ -51,11 +51,12 @@
     "source-map-explorer": "^2.5.2",
     "styled-components": "^5.3.3",
     "universal-cookie": "^4.0.4",
+    "viewport-mercator-project": "^7.0.4",
     "yup": "^0.32.11"
   },
   "scripts": {
     "analyze": "source-map-explorer '../../dist/apps/senf-client/static/js/*.js'",
-    "start": "vite",
+    "start": "vite --force",
     "serve": "npm start",
     "start:silent": "BROWSER=none PORT=3000 craco start",
     "build": "vite build",
@@ -82,6 +83,7 @@
     ]
   },
   "devDependencies": {
+    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@types/react-router-dom": "^4.3.5",
     "@vitejs/plugin-react": "^1.2.0",
     "@welldone-software/why-did-you-render": "^6.2.1",
