@@ -1,4 +1,4 @@
-import { StyledH2, StyledH3 } from "apps/senf-client/src/styles/GlobalStyle";
+import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { useTranslation } from "react-i18next";
