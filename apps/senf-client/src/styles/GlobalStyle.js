@@ -7,6 +7,8 @@ export const CenteredH2 = styled.h2`
 `;
 export const StyledA = styled.a`
   font-weight: ${(props) => (props.fontWeight ? props.fontWeight : 400)};
+  text-align: ${(props) => (props.textAlign ? props.textAlign : "left")};
+
   text-decoration: ${(props) =>
     props.textDecoration ? props.textDecoration : "none"};
   color: ${(props) => (props.color ? props.color : "#353535")};
@@ -27,11 +29,12 @@ export const StyledH2 = styled.h2`
 `;
 
 export const StyledH3 = styled.h3`
-  font-weight: ${(props) => (props.fontWeight ? props.fontWeight : 400)};
+  font-weight: ${(props) => (props.fontWeight ? props.fontWeight : 700)};
   margin: ${(props) => (props.margin ? props.margin : "0")};
   padding: 0;
   text-align: ${(props) => (props.textAlign ? props.textAlign : "left")};
   opacity: ${(props) => (props.opacity ? props.opacity : 1)};
+  color: ${(props) => (props.color ? props.color : undefined)};
 `;
 
 export const StyledH4 = styled.h4`

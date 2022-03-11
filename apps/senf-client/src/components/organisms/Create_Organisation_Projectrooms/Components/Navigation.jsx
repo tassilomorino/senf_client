@@ -23,6 +23,8 @@ const Navigation = ({
   handleNext,
   handlePrev,
   set,
+  setClose,
+  index,
   pagesData,
   disabled,
   loading,
@@ -36,7 +38,10 @@ const Navigation = ({
       {prevLabel && (
         <SubmitButton
           text={
-            localStorage.getItem("createOrganizationPostEdit") === "true"
+            localStorage.getItem("createOrganizationPostEdit") === "true" &&
+            pagesData.length - 1 === index
+              ? t("close")
+              : localStorage.getItem("createOrganizationPostEdit") === "true"
               ? "Zurück zur Übersicht"
               : prevLabel
           }
@@ -48,7 +53,10 @@ const Navigation = ({
           transformX="none"
           marginLeft="0"
           handleButtonClick={
-            localStorage.getItem("createOrganizationPostEdit") === "true"
+            localStorage.getItem("createOrganizationPostEdit") === "true" &&
+            pagesData.length - 1 === index
+              ? setClose
+              : localStorage.getItem("createOrganizationPostEdit") === "true"
               ? () => set(pagesData.length - 1)
               : handlePrev
           }
@@ -58,7 +66,10 @@ const Navigation = ({
       {nextLabel && (
         <SubmitButton
           text={
-            localStorage.getItem("createOrganizationPostEdit") === "true"
+            localStorage.getItem("createOrganizationPostEdit") === "true" &&
+            pagesData.length - 1 === index
+              ? "Gespeichert"
+              : localStorage.getItem("createOrganizationPostEdit") === "true"
               ? "Speichern"
               : nextLabel
           }
@@ -67,11 +78,7 @@ const Navigation = ({
           textColor="#353535"
           left="0"
           transformX="none"
-          handleButtonClick={
-            localStorage.getItem("createOrganizationPostEdit") === "true"
-              ? () => set(pagesData.length - 1)
-              : handleNext
-          }
+          handleButtonClick={handleNext}
           disabled={disabled}
           loading={loading}
           marginLeft="0"

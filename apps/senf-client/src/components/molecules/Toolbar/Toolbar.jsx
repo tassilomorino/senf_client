@@ -25,6 +25,8 @@ const Wrapper = styled.div`
   height: 50px;
   transition: height 0.5s;
   padding: 0px 10px 10px 10px;
+  padding-bottom: ${(props) => (props.searchOpen ? "70px" : "10px")};
+  transition: 0.5s;
 
   animation: ToolbarAnimation 0.7s;
   pointer-events: none;
@@ -146,7 +148,7 @@ const Toolbar = ({
             handleDropdown={handleDropdown}
           />
         ) : (
-          swipeListType === "organizationOverview" && (
+          swipeListType === "organizationsOverview" && (
             <CustomSelect
               name={t("newest_organizations")}
               value={dropdown}
@@ -177,7 +179,11 @@ const Toolbar = ({
         {isMobileCustom && <Background onClick={handleClickSwipe} />}
         {searchOpen && (
           <Searchbar
-            placeholder={t("searchBar")}
+            placeholder={
+              swipeListType === "organizationsOverview"
+                ? t("searchBarOrganizations")
+                : t("searchBar")
+            }
             setSearchTerm={setSearchTerm}
             searchTerm={searchTerm}
           />

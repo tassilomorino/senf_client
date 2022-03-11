@@ -7,6 +7,7 @@ import styled from "styled-components";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import MainModal from "../../atoms/Layout/MainModal";
 import { deleteComment } from "../../../redux/actions/commentActions";
+import { StyledH3 } from "apps/senf-client/src/styles/GlobalStyle";
 
 const ButtonWrapper = styled.div`
   width: 100%;
@@ -93,7 +94,7 @@ const CommentMenuModal = ({
           {authenticated && userHandle === handle && (
             <ButtonWrapper>
               <ExpandButton handleButtonClick={openConfirmMenu}>
-                {t("delete_comment")}
+                <StyledH3 fontWeight={400}>{t("delete_comment")}</StyledH3>
               </ExpandButton>
             </ButtonWrapper>
           )}
@@ -101,7 +102,10 @@ const CommentMenuModal = ({
           {authenticated && (isAdmin === true || isModerator === true) && (
             <ButtonWrapper>
               <ExpandButton handleButtonClick={openConfirmMenu}>
-                {t("delete_comment_admin")}
+                <StyledH3 fontWeight={400}>
+                  {" "}
+                  {t("delete_comment_admin")}
+                </StyledH3>
               </ExpandButton>
             </ButtonWrapper>
           )}
@@ -114,13 +118,13 @@ const CommentMenuModal = ({
             }
           >
             <ExpandButton handleButtonClick={reportComment}>
-              {t("report")}
+              <StyledH3 fontWeight={400}> {t("report")}</StyledH3>
             </ExpandButton>
           </ButtonWrapper>
           <Line />
           <ButtonWrapper>
             <ExpandButton handleButtonClick={() => setCommentMenuOpen(false)}>
-              {t("cancel")}
+              <StyledH3 fontWeight={400}> {t("cancel")}</StyledH3>
             </ExpandButton>
           </ButtonWrapper>
         </MainModal>
@@ -131,12 +135,12 @@ const CommentMenuModal = ({
           <Line />
           <ButtonWrapper warning>
             <ExpandButton handleButtonClick={deleteTheComment}>
-              {t("delete")}
+              <StyledH3 fontWeight={400}>{t("delete")}</StyledH3>
             </ExpandButton>
           </ButtonWrapper>
           <ButtonWrapper>
             <ExpandButton handleButtonClick={goBack}>
-              {t("cancel")}
+              <StyledH3 fontWeight={400}> {t("cancel")}</StyledH3>
             </ExpandButton>
           </ButtonWrapper>
         </MainModal>

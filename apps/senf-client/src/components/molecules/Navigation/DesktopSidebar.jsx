@@ -43,7 +43,7 @@ const FilterWrapper = styled.div`
   position: relative;
   height: auto;
   max-height: ${(props) => (props.active ? "1000px" : "0px")};
-  left: 30px;
+  left: 20px;
   top: 70px;
 `;
 const SelectLanguageWrapper = styled.div`

@@ -449,7 +449,7 @@ const SwipeList = ({
       openOrganizationsPage={openOrganizationsPage}
     >
       <HandleBar />
-      {!loading && !loadingProjects && isMobileCustom && !openScream && (
+      {isMobileCustom && (
         <PostScream
           loadingProjects={loadingProjects}
           projectsData={dataFinalProjectRooms}
@@ -501,21 +501,6 @@ const SwipeList = ({
           >
             {sectionFastLinks}
 
-            {/* <div
-              style={
-                searchOpen
-                  ? {
-                      height: "60px",
-                      transition: "0.5s",
-                      position: "relative",
-                    }
-                  : {
-                      height: "0px",
-                      transition: "0.5s",
-                      position: "relative",
-                    }
-              }
-            /> */}
             {swipeListType === "projectRoomOverview" &&
               swipePosition === "top" && (
                 <ButtonWrapper>

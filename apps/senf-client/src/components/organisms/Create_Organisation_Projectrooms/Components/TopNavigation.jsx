@@ -50,6 +50,7 @@ export const Title = styled.h4`
   text-align: center;
   width: 100%;
   top: 10px;
+  margin-bottom: 5px;
 `;
 
 const SVGWrapper = styled.div`
@@ -102,44 +103,10 @@ export const StyledIcon = styled.img`
   pointer-events: all;
 `;
 
-const TopNavigation = ({ index, title, currentStep }) => {
+const TopNavigation = ({ pagesData, index, title, currentStep, setClose }) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const { t } = useTranslation();
 
-  const pageTitle = () => {
-    let title;
-
-    switch (index) {
-      case 2:
-        title = "Organisationstyp";
-        break;
-      case 3:
-        title = "Infos";
-        break;
-      case 4:
-        title = "Kontakt";
-        break;
-      case 5:
-        title = "Logo";
-        break;
-      case 6:
-        title = "Kalender";
-        break;
-      case 7:
-        title = "FAQ";
-        break;
-
-      case 8:
-        title = "Teammitglieder";
-        break;
-      case 9:
-        title = "Übersicht";
-        break;
-      default:
-        title = "#f9db95";
-    }
-    return title;
-  };
   const handleDelete = async () => {
     const db = firebase.firestore();
 
@@ -150,7 +117,8 @@ const TopNavigation = ({ index, title, currentStep }) => {
       await deleteDoc(
         doc(db, "organizations", localStorage.getItem("createOrganizationId"))
       ).then(() => {
-        window.location.reload(false);
+        localStorage.removeItem("createOrganizationId");
+        setClose();
       });
 
       //some code
@@ -174,13 +142,13 @@ const TopNavigation = ({ index, title, currentStep }) => {
               <br />
               <ButtonWrapper>
                 <ExpandButton handleButtonClick={handleDelete}>
-                  <StyledH3> Organisation löschen</StyledH3>
+                  <StyledH3 fontWeight={400}> Organisation löschen</StyledH3>
                 </ExpandButton>
               </ButtonWrapper>
               <Line />
               <ButtonWrapper>
                 <ExpandButton handleButtonClick={() => setSettingsOpen(false)}>
-                  <StyledH3> Abbrechen</StyledH3>
+                  <StyledH3 fontWeight={400}> Abbrechen</StyledH3>
                 </ExpandButton>
               </ButtonWrapper>
             </MainModal>
@@ -193,8 +161,8 @@ const TopNavigation = ({ index, title, currentStep }) => {
         <CurrentStep index={index} />
       </ProgressLine> */}
       <Title>{title}</Title>
-      <StyledH2 fontWeight="900" textAlign="center">
-        {pageTitle()}
+      <StyledH2 fontWeight="900" textAlign="center" fontSize="24px">
+        {pagesData[index].title}
       </StyledH2>
 
       <StyledIcon

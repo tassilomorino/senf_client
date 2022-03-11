@@ -42,7 +42,7 @@ const FilterWrapperMobile = styled.div`
   padding-bottom: 20px;
   padding-top: 20px;
   margin-top: -20px;
-  animation: FilterWrapperMobileAnimation 1s;
+  /* animation: FilterWrapperMobileAnimation 1s;
   @keyframes FilterWrapperMobileAnimation {
     0% {
       margin-left: 100%;
@@ -51,7 +51,7 @@ const FilterWrapperMobile = styled.div`
     100% {
       margin-left: 10px;
     }
-  }
+  } */
 
   @media (min-width: 768px) {
     top: 0;
@@ -86,20 +86,23 @@ const FilterInnerWrapperMobile = styled.div`
 `;
 
 const Tag = styled.button`
-  text-align: left;
+  flex-shrink: 0;
+  width: auto; /* 62px */
+  height: auto; /* 16px */
+  white-space: pre;
+  overflow: visible;
+  font-weight: 600;
+  font-style: normal;
+  font-family: "Nunito", serif;
+  color: rgba(0, 0, 0, 0.8);
   font-size: 14px;
-  font-weight: 400;
-  display: flex;
+  letter-spacing: 0px;
+  line-height: 1.2;
+  text-align: center;
   cursor: pointer;
-  justify-content: flex-start;
 
-  align-items: center;
-  background-color: white;
-  padding: 7px;
-  padding-right: 10px;
   margin-right: 5px;
-  border-radius: 8px;
-  box-shadow: ${(props) =>
+  /* box-shadow: ${(props) =>
     props.placing !== "list" && props.placing !== "insights"
       ? "0 8px 30px -12px rgba(0, 0, 0, 0.8)"
       : "none"};
@@ -108,16 +111,43 @@ const Tag = styled.button`
       ? ` rgb(255, 255, 255, 1)`
       : props.placing !== "list"
       ? "rgb(236, 236, 236, 0.6)"
-      : "#FFE898"};
-
-  outline-offset: -2px;
-  -webkit-backdrop-filter: blur(10px);
-
-  backdrop-filter: blur(10px);
+      : "#FFE898"}; */
 
   transform: ${(props) => (props.hide ? "scale(0.8)" : "scale(1)")};
   opacity: ${(props) => (props.hide ? "0" : "1")};
   transition: 0.4s;
+
+  box-sizing: border-box;
+  width: auto; /* 104px */
+  height: 34px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 14px 10px 14px 10px;
+  box-shadow: 0px 4px 6px -2px rgba(186, 160, 79, 0.2),
+    0px -2px 5px 2px rgba(255, 255, 255, 0.2);
+  background-color: ${(props) =>
+    props.checked ? "#feecab" : props.placing !== "list" ? "#fff" : "#f3f1ec"};
+  overflow: visible;
+  border-radius: 10px;
+  border: ${(props) => (props.checked ? "2px" : "1px")} solid
+    ${(props) => (props.checked ? "#e8ba02" : "rgba(255, 255, 255, 0.3)")};
+
+
+
+    animation: tagsAnimation 0.4s;
+  @keyframes tagsAnimation {
+    0% {
+      transform:scale(0.8);
+  opacity:  0;
+    }
+
+    100% {
+      transform:scale(1));
+  opacity:  1;
+    }
+  };
 
   @media (min-width: 768px) {
     box-shadow: none;
@@ -126,7 +156,8 @@ const Tag = styled.button`
     font-size: 14px;
 
     &:hover {
-      background-color: #ffe898;
+      background-color: #fee381;
+      border: 2px solid #e8ba02;
     }
   }
 `;
@@ -188,14 +219,15 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
           <Tag
             placing={placing}
             hide={
-              placing !== "list" &&
-              placing !== "insights" &&
-              isMobileCustom &&
-              (openScream ||
-                (openProjectRoom && !project?.screams) ||
-                openAccount ||
-                openOrganization ||
-                swipePosition === "top")
+              (placing === "list" && swipePosition === "bottom") ||
+              (placing !== "list" &&
+                placing !== "insights" &&
+                isMobileCustom &&
+                (openScream ||
+                  (openProjectRoom && !project?.screams) ||
+                  openAccount ||
+                  openOrganization ||
+                  swipePosition === "top"))
             }
             onClick={
               type === "topics"
@@ -232,14 +264,15 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
                   }
                   color={topic.color}
                   hide={
-                    placing !== "list" &&
-                    placing !== "insights" &&
-                    isMobileCustom &&
-                    (openScream ||
-                      (openProjectRoom && !project?.screams) ||
-                      openAccount ||
-                      openOrganization ||
-                      swipePosition === "top")
+                    (placing === "list" && swipePosition === "bottom") ||
+                    (placing !== "list" &&
+                      placing !== "insights" &&
+                      isMobileCustom &&
+                      (openScream ||
+                        (openProjectRoom && !project?.screams) ||
+                        openAccount ||
+                        openOrganization ||
+                        swipePosition === "top"))
                   }
                 >
                   <Checkbox color={topic.color} data-cy={topic.name} />
@@ -265,14 +298,15 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
                   }
                   color={organizationTypes.color}
                   hide={
-                    placing !== "list" &&
-                    placing !== "insights" &&
-                    isMobileCustom &&
-                    (openScream ||
-                      (openProjectRoom && !project?.screams) ||
-                      openAccount ||
-                      openOrganization ||
-                      swipePosition === "top")
+                    (placing === "list" && swipePosition === "bottom") ||
+                    (placing !== "list" &&
+                      placing !== "insights" &&
+                      isMobileCustom &&
+                      (openScream ||
+                        (openProjectRoom && !project?.screams) ||
+                        openAccount ||
+                        openOrganization ||
+                        swipePosition === "top"))
                   }
                 >
                   <Icon data-cy={organizationTypes.name}>

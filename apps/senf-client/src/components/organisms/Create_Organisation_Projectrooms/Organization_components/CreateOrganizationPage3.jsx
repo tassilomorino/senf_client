@@ -64,6 +64,7 @@ const CreateOrganizationPage3 = ({
   onClickPrev,
   set,
   pagesData,
+  index,
 }) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
@@ -128,7 +129,11 @@ const CreateOrganizationPage3 = ({
     setNextClicked(true);
 
     setTimeout(() => {
-      onClickNext();
+      if (localStorage.getItem("createOrganizationPostEdit") === "true") {
+        set(pagesData.length - 1);
+      } else {
+        onClickNext();
+      }
     }, 200);
   };
 
@@ -137,8 +142,7 @@ const CreateOrganizationPage3 = ({
       <ComponentWrapper>
         <ComponentInnerWrapper>
           <StyledH3 textAlign="center" margin="20px">
-            Lade eure Logo hoch und wähle dabei nach Möglichkeit ein thematisch
-            passendes Motiv.{" "}
+            {pagesData[index].subTitle}
           </StyledH3>
 
           <StyledLabel
@@ -177,6 +181,7 @@ const CreateOrganizationPage3 = ({
         handleNext={handleNext}
         handlePrev={onClickPrev}
         set={set}
+        index={index}
         pagesData={pagesData}
         disabled={!uploadedImage || nextClicked}
         loading={nextClicked}

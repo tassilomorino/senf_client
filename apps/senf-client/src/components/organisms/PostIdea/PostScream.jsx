@@ -54,10 +54,12 @@ const StyledButton = styled.button`
   justify-content: center;
   text-align: center;
   right: ${(props) => (props.swipePosition === "top" ? "5px" : "20px")};
-  pointer-events: all;
   transition: 0.2s;
   transform: ${(props) =>
     props.swipePosition === "top" ? "scale(0.8)" : "none"};
+
+  pointer-events: ${(props) => (props.loading ? "none" : "all")};
+  /* opacity: ${(props) => (props.loading ? "0.5" : "1")}; */
   &:hover {
     transition: 0.2s;
     width: 74px;
@@ -471,19 +473,18 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
           {t("postScream_newIdea")}
         </OpenButtonDesktop>
       ) : (
-        !loading && (
-          <StyledButton
-            onClick={handleOpen}
-            openScream={openScream}
-            swipePosition={swipePosition}
-            isInstagram={
-              window.innerHeight === window.screen.height &&
-              navigator.userAgent.match(/instagram/i)
-            }
-          >
-            <img src={Plus} width="25" alt="AddIcon" />
-          </StyledButton>
-        )
+        <StyledButton
+          onClick={handleOpen}
+          openScream={openScream}
+          swipePosition={swipePosition}
+          loading={loading}
+          isInstagram={
+            window.innerHeight === window.screen.height &&
+            navigator.userAgent.match(/instagram/i)
+          }
+        >
+          <img src={Plus} width="25" alt="AddIcon" />
+        </StyledButton>
       )}
 
       <Dialog

@@ -38,7 +38,10 @@ const Wrapper = styled.div`
   border-radius: 18px;
   border: 2px solid ${(props) => (props.active ? "#e8ba02" : "#ffffff")};
 
-  opacity: ${(props) => (props.status === "deactivated" ? "0.6" : "1")};
+  filter: ${(props) =>
+    props.status === "deactivated" || props.status === "uncompleted"
+      ? "brightness(0.6)"
+      : "brightness(1)"};
 
   animation: OrganizationCardAnimation 0.8s;
 
@@ -135,7 +138,7 @@ const Icon = styled.div`
 `;
 
 const Title = styled.h3`
-  width: 146px;
+  width: 140px;
   height: 24px;
   white-space: pre-wrap;
   word-wrap: break-word;
@@ -149,10 +152,13 @@ const Title = styled.h3`
   letter-spacing: 0px;
   line-height: 1.5;
   text-align: left;
-
   top: 0;
   position: relative;
   margin: 8px 16px 0px 16px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const SubTitle = styled.div`
@@ -215,7 +221,7 @@ export const OrganizationCard = (props) => {
       status={status}
       active={thisOrganizationId === organization?.organizationId}
     >
-      {status === "deactivated" && (
+      {(status === "deactivated" || status === "uncompleted") && (
         <DeactivatedWrapper>
           <img src={NotPublishedIcon} width="100%" />
         </DeactivatedWrapper>

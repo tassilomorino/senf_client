@@ -28,10 +28,16 @@ import {
 import Contact from "../../../molecules/Modals/Post_Edit_ModalComponents/Contact";
 //import Geocoder from "react-mapbox-gl-geocoder";
 import Navigation from "../Components/Navigation";
-import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
+import {
+  StyledA,
+  StyledH2,
+  StyledH3,
+  StyledText,
+} from "../../../../styles/GlobalStyle";
 import InlineDatePicker from "../../../atoms/InlineDatePicker/InlineDatePicker";
 import { TextField } from "@material-ui/core";
 import { useFormik } from "formik";
+import MainModal from "../../../atoms/Layout/MainModal";
 
 const Wrapper = styled.div`
   display: flex;
@@ -56,10 +62,13 @@ const CreateOrganizationPage4 = ({
   onClickPrev,
   set,
   pagesData,
+  index,
 }) => {
   const { t } = useTranslation();
+
   const [nextClicked, setNextClicked] = useState(false);
   const [outsideClick, setOutsideClick] = useState(false);
+  const [infovideoOpen, setInfovideoOpen] = useState(false);
 
   //  const [googleCalendarId, setGoogleCalendarId] = useState("");
 
@@ -133,20 +142,54 @@ const CreateOrganizationPage4 = ({
         .doc(localStorage.getItem("createOrganizationId"));
       return ref.update(updateProject).then(() => {
         setTimeout(() => {
-          onClickNext();
+          if (localStorage.getItem("createOrganizationPostEdit") === "true") {
+            set(pagesData.length - 1);
+          } else {
+            onClickNext();
+          }
         }, 200);
       });
     } else {
-      onClickNext();
+      if (localStorage.getItem("createOrganizationPostEdit") === "true") {
+        set(pagesData.length - 1);
+      } else {
+        onClickNext();
+      }
     }
   };
 
   return (
     <React.Fragment>
+      {ReactDOM.createPortal(
+        <React.Fragment>
+          {infovideoOpen && (
+            <MainModal
+              handleButtonClick={() => setInfovideoOpen(false)}
+              autoWidth={true}
+            >
+              <div
+                style={{ width: "800px", height: "500px", maxWidth: "100%" }}
+              >
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src="https://www.youtube.com/embed/odjaLVz6ft8"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </MainModal>
+          )}
+        </React.Fragment>,
+        document.getElementById("portal-root-modal")
+      )}
+
       <ComponentWrapper>
         <ComponentInnerWrapper>
           <StyledH3 textAlign="center" margin="20px">
-            Füge deinen Google Kalender hinzu
+            {pagesData[index].subTitle}
           </StyledH3>
 
           <TextField
@@ -165,6 +208,18 @@ const CreateOrganizationPage4 = ({
             value={formik.values.googleCalendarId}
             onChange={formik.handleChange}
           />
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              marginTop: "20px",
+              justifyContent: "center",
+            }}
+          >
+            <StyledA textAlign="center" onClick={() => setInfovideoOpen(true)}>
+              {t("how_to_find_google_calendar_id")}
+            </StyledA>
+          </div>
 
           {/* <InlineDatePicker
             handleChangeCalendar={handleChangeCalendar}
@@ -179,6 +234,7 @@ const CreateOrganizationPage4 = ({
         handleNext={handleNext}
         handlePrev={onClickPrev}
         set={set}
+        index={index}
         pagesData={pagesData}
         disabled={nextClicked}
       />

@@ -2,7 +2,10 @@
   "rotate_tablet": "Please rotate your tablet",
   "rotate_phone": "Please rotate your smartphone",
 
+  "close": "Close",
+
   "contact": "Contact",
+  "contact-address": "Contact-E-Mail",
   "imprint": "Imprint",
   "accept": "Accept",
   "back": "Back",
@@ -104,6 +107,7 @@
   "enter_valid_email": "Enter a valid email",
 
   "searchBar": "Search titles and descriptions...",
+  "searchBarOrganizations": "Search titles...",
 
   "dataPrivacy": "Data privacy",
   "termsAndConditions": "T&Cs",
