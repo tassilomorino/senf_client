@@ -237,9 +237,10 @@ const OrganizationsPage = ({
             <NewButton
               borderType="dashed"
               handleButtonClick={
-                user.authenticated && user.handle === "Senf.koeln"
+                user.authenticated
                   ? openCreateOrganization
-                  : openRequestOrganization
+                  : () =>
+                      alert("Bitte melde dich erst mit deinem Senf-Account an!")
               }
             >
               Organisationsprofil anlegen
@@ -298,9 +299,12 @@ const OrganizationsPage = ({
               <NewButton
                 borderType="dashed"
                 handleButtonClick={
-                  user.authenticated && user.handle === "Senf.koeln"
+                  user.authenticated
                     ? openCreateOrganization
-                    : openRequestOrganization
+                    : () =>
+                        alert(
+                          "Bitte melde dich erst mit deinem Senf-Account an!"
+                        )
                 }
               >
                 Organisationsprofil anlegen

@@ -51,7 +51,7 @@ export const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   margin-top: 0vh;
-  z-index: 998;
+  z-index: 996;
   top: 0;
   position: fixed;
   pointer-events: all;
