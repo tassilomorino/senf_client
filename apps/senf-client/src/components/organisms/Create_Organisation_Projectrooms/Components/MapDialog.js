@@ -34,9 +34,9 @@ import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import bbox from "@turf/bbox";
 
 //firebase
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/storage";
 
 import styled from "styled-components";
 import {
@@ -196,7 +196,7 @@ const MapDialog = ({
       const [minLng, minLat, maxLng, maxLat] = bbox(data);
 
       const size = maxLat - minLat + maxLng - minLng;
-      console.log(size);
+
       const newZoom =
         size < 0.005
           ? 17

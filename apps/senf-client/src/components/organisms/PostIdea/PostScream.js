@@ -13,6 +13,8 @@ import Slide from "@material-ui/core/Slide";
 import RegistrationAndLogin from "../../organisms/Auth/LoginRegistration";
 
 //ICONS
+import Plus from "../../../images/svgIcons/plus.svg";
+
 import AddIcon from "../../../images/icons/plus_white.png";
 
 // REDUX STUFF
@@ -30,57 +32,37 @@ import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import styled, { keyframes } from "styled-components";
 import Weblink from "../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
 import Contact from "../../molecules/Modals/Post_Edit_ModalComponents/Contact";
-import InlineDatePicker from "../../molecules/Modals/Post_Edit_ModalComponents/InlineDatePicker";
+import InlineDatePickerModal from "../../molecules/Modals/InlineDatePickerModal";
 
-const OpenButtonMobile = styled.button`
-  z-index: 99;
-  width: 40px;
-  height: 40px;
-  padding: 22px;
+const StyledButton = styled.button`
+  box-sizing: border-box;
+  width: 68px;
+  height: 68px;
+  box-shadow: 0px 12px 18px -8px rgba(186, 160, 79, 0.2),
+    0px -4px 10px 4px rgba(255, 255, 255, 0.2);
+  background-color: #fcfbf8;
+  overflow: visible;
+  aspect-ratio: 1 / 1;
+  border-radius: 28px;
+  border: 2px solid #ffffff;
   position: fixed;
-  left: 50vw;
-  transform: translateX(-50%);
+  margin-top: ${(props) => (props.swipePosition === "top" ? "-5px" : "-34px")};
+  z-index: ${(props) => (props.openScream ? 0 : 999)};
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  background-color: rgb(87, 87, 87);
-  border: 1px white solid;
-  border-radius: 100%;
-  font-size: 0;
-  box-shadow: rgb(0, 0, 0, 0.8) 0px 20px 20px -15px;
-  z-index: ${(props) => (props.openScream ? 0 : 999)};
-  pointer-events: all;
+  right: ${(props) => (props.swipePosition === "top" ? "5px" : "20px")};
+  transition: 0.2s;
+  transform: ${(props) =>
+    props.swipePosition === "top" ? "scale(0.8)" : "none"};
 
-  animation: Pulse 5s ease-in-out infinite, AddButtonEnterAnimation 2.5s;
-
-  bottom: ${(props) => (props.isInstagram ? "35px" : "25px")};
-  left: 50vw;
-
-  @keyframes Pulse {
-    0% {
-      background-color: #ffd862;
-    }
-
-    50% {
-      background-color: #414345;
-    }
-
-    100% {
-      background-color: #ffd862;
-    }
-  }
-
-  @keyframes AddButtonEnterAnimation {
-    0% {
-      transform: translateY(400%) translateX(-50%);
-    }
-    50% {
-      transform: translateY(400%) translateX(-50%);
-    }
-    100% {
-      transform: translateY(0%) translateX(-50%);
-    }
+  pointer-events: ${(props) => (props.loading ? "none" : "all")};
+  /* opacity: ${(props) => (props.loading ? "0.5" : "1")}; */
+  &:hover {
+    transition: 0.2s;
+    width: 74px;
+    height: 74px;
   }
 `;
 
@@ -173,6 +155,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
   const dispatch = useDispatch();
   const openScream = useSelector((state) => state.UI.openScream);
   const loading = useSelector((state) => state.data.loading);
+  const swipePosition = useSelector((state) => state.UI.swipePosition);
 
   const project = useSelector((state) => state.data.project);
 
@@ -490,18 +473,18 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
           {t("postScream_newIdea")}
         </OpenButtonDesktop>
       ) : (
-        !loading && (
-          <OpenButtonMobile
-            onClick={handleOpen}
-            openScream={openScream}
-            isInstagram={
-              window.innerHeight === window.screen.height &&
-              navigator.userAgent.match(/instagram/i)
-            }
-          >
-            <img src={AddIcon} width="25" alt="AddIcon" />
-          </OpenButtonMobile>
-        )
+        <StyledButton
+          onClick={handleOpen}
+          openScream={openScream}
+          swipePosition={swipePosition}
+          loading={loading}
+          isInstagram={
+            window.innerHeight === window.screen.height &&
+            navigator.userAgent.match(/instagram/i)
+          }
+        >
+          <img src={Plus} width="25" alt="AddIcon" />
+        </StyledButton>
       )}
 
       <Dialog
@@ -575,7 +558,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
           />
         )}
         {calendarOpen && (
-          <InlineDatePicker
+          <InlineDatePickerModal
             setCalendarOpen={setCalendarOpen}
             handleCloseCalendar={handleCloseCalendar}
             handleSaveCalendar={handleSaveCalendar}

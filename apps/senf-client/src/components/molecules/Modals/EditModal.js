@@ -12,7 +12,7 @@ import { editScreamFunc } from "../../../redux/actions/screamActions";
 
 import Weblink from "./Post_Edit_ModalComponents/Weblink";
 import Contact from "./Post_Edit_ModalComponents/Contact";
-import InlineDatePicker from "./Post_Edit_ModalComponents/InlineDatePicker";
+import InlineDatePickerModal from "./InlineDatePickerModal";
 
 import MainModal from "../../atoms/Layout/MainModal";
 import { useTranslation } from "react-i18next";
@@ -279,7 +279,7 @@ const EditModal = ({ setEditOpen, setMenuOpen, editOpen, classes }) => {
         />
       )}
       {calendarOpen && (
-        <InlineDatePicker
+        <InlineDatePickerModal
           setCalendarOpen={setCalendarOpen}
           handleCloseCalendar={handleCloseCalendar}
           handleSaveCalendar={handleSaveCalendar}

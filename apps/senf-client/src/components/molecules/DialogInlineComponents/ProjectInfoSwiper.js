@@ -3,7 +3,7 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-
+import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 
@@ -17,7 +17,7 @@ const Wrapper = styled.div`
   margin: 0px;
 
   height: auto;
-  margin-top: 50px;
+  margin-top: ${(props) => (props.isMobileCustom ? "70px" : "50px")};
   /* border: 2px solid #fed957;
   border-radius: 18px;
   background-color: #fff7dd; */
@@ -142,7 +142,7 @@ const ProjectInfoSwiper = ({ setInfoOpen, pages }) => {
   }, [active]);
 
   return (
-    <Wrapper>
+    <Wrapper isMobileCustom={isMobileCustom}>
       <FlexWrapper>
         {pages.map(({ title, text, id }) => (
           <HorizontalSwipeCard {...bind()} active={id === active} style={props}>

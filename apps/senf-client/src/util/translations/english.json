@@ -2,7 +2,10 @@
   "rotate_tablet": "Please rotate your tablet",
   "rotate_phone": "Please rotate your smartphone",
 
+  "close": "Close",
+
   "contact": "Contact",
+  "contact-address": "Contact-E-Mail",
   "imprint": "Imprint",
   "accept": "Accept",
   "back": "Back",
@@ -34,9 +37,9 @@
   "aToZ_projectrooms": "A > Z Projectrooms",
   "zToA_projectrooms": "Z > A Projectrooms",
 
-  "newest_organizations": "Newest Organizations",
-  "aToZ_organizations": "A > Z Organizations",
-  "zToA_organizations": "Z > A Organizations",
+  "newest_organizations": "Newest",
+  "aToZ_organizations": "A > Z",
+  "zToA_organizations": "Z > A",
 
   "noMoreIdeas": "No further ideas",
   "noContentIdeas": "No ideas match the selected filters.",
@@ -104,6 +107,7 @@
   "enter_valid_email": "Enter a valid email",
 
   "searchBar": "Search titles and descriptions...",
+  "searchBarOrganizations": "Search titles...",
 
   "dataPrivacy": "Data privacy",
   "termsAndConditions": "T&Cs",

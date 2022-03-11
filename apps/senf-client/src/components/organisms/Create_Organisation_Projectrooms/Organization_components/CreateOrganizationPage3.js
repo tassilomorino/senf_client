@@ -7,9 +7,9 @@ import styled from "styled-components";
 import imageCompression from "browser-image-compression";
 
 //firebase
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/storage";
 
 //redux
 import { createProjectSaveData } from "../../../../redux/actions/formDataActions";
@@ -25,7 +25,7 @@ import {
   ComponentWrapper,
 } from "../styles/sharedStyles";
 import Navigation from "../Components/Navigation";
-import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
+import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 
 const StyledLabel = styled.label`
   width: 150px;
@@ -59,7 +59,13 @@ const StyledImg = styled.img`
   object-fit: cover;
 `;
 
-const CreateOrganizationPage3 = ({ onClickNext, onClickPrev }) => {
+const CreateOrganizationPage3 = ({
+  onClickNext,
+  onClickPrev,
+  set,
+  pagesData,
+  index,
+}) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
 
@@ -123,7 +129,11 @@ const CreateOrganizationPage3 = ({ onClickNext, onClickPrev }) => {
     setNextClicked(true);
 
     setTimeout(() => {
-      onClickNext();
+      if (localStorage.getItem("createOrganizationPostEdit") === "true") {
+        set(pagesData.length - 1);
+      } else {
+        onClickNext();
+      }
     }, 200);
   };
 
@@ -131,12 +141,8 @@ const CreateOrganizationPage3 = ({ onClickNext, onClickPrev }) => {
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH2 fontWeight="900" textAlign="center">
-            Bild hochladen
-          </StyledH2>
           <StyledH3 textAlign="center" margin="20px">
-            Lade ein aussagekräftiges Bild für den Projektraum hoch und wähle
-            dabei nach Möglichkeit ein thematisch passendes Motiv.{" "}
+            {pagesData[index].subTitle}
           </StyledH3>
 
           <StyledLabel
@@ -174,6 +180,9 @@ const CreateOrganizationPage3 = ({ onClickNext, onClickPrev }) => {
         prevLabel={t("back")}
         handleNext={handleNext}
         handlePrev={onClickPrev}
+        set={set}
+        index={index}
+        pagesData={pagesData}
         disabled={!uploadedImage || nextClicked}
         loading={nextClicked}
       />

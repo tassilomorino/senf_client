@@ -13,7 +13,7 @@ const ButtonsWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #ffe898;
+  background-color: rgb(249, 241, 215);
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
 `;
 
@@ -22,17 +22,29 @@ const Navigation = ({
   prevLabel,
   handleNext,
   handlePrev,
+  set,
+  setClose,
+  index,
+  pagesData,
   disabled,
   loading,
   color,
   backgroundColor,
 }) => {
+  console.log(localStorage.getItem("createOrganizationPostEdit"));
   const { t } = useTranslation();
   return (
     <ButtonsWrapper>
       {prevLabel && (
         <SubmitButton
-          text={prevLabel}
+          text={
+            localStorage.getItem("createOrganizationPostEdit") === "true" &&
+            pagesData.length - 1 === index
+              ? t("close")
+              : localStorage.getItem("createOrganizationPostEdit") === "true"
+              ? "Zurück zur Übersicht"
+              : prevLabel
+          }
           zIndex="9"
           backgroundColor="transparent"
           shadow={false}
@@ -40,13 +52,27 @@ const Navigation = ({
           left="0"
           transformX="none"
           marginLeft="0"
-          handleButtonClick={handlePrev}
+          handleButtonClick={
+            localStorage.getItem("createOrganizationPostEdit") === "true" &&
+            pagesData.length - 1 === index
+              ? setClose
+              : localStorage.getItem("createOrganizationPostEdit") === "true"
+              ? () => set(pagesData.length - 1)
+              : handlePrev
+          }
           //   keySubmitRef={keySubmitRef}
         />
       )}
       {nextLabel && (
         <SubmitButton
-          text={nextLabel}
+          text={
+            localStorage.getItem("createOrganizationPostEdit") === "true" &&
+            pagesData.length - 1 === index
+              ? "Gespeichert"
+              : localStorage.getItem("createOrganizationPostEdit") === "true"
+              ? "Speichern"
+              : nextLabel
+          }
           zIndex="9"
           backgroundColor="white"
           textColor="#353535"

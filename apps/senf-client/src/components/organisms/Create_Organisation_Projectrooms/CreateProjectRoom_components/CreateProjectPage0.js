@@ -4,9 +4,9 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 //firebase
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/storage";
 
 import NotDoneImage from "../../../../images/Not_connected.png";
 import {

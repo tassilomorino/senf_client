@@ -12,9 +12,9 @@ import * as yup from "yup";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
 //firebase
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/storage";
 
 import { useOnClickOutside } from "../../../../hooks/useOnClickOutside";
 import {
@@ -25,9 +25,16 @@ import {
   Title,
 } from "../styles/sharedStyles";
 import Navigation from "../Components/Navigation";
-import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
+import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 
-const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
+const CreateOrganizationPage1 = ({
+  onClickNext,
+  onClickPrev,
+  set,
+  setTitle,
+  pagesData,
+  index,
+}) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
 
@@ -40,8 +47,6 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
       setOutsideClick(false);
     }, 10000);
   });
-
-  const [title, setTitle] = useState(null);
 
   const createProjectValidationSchema = yup.object({
     title: yup
@@ -118,7 +123,12 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
 
       return ref.update(updateProject).then(() => {
         setTimeout(() => {
-          onClickNext();
+          setTitle(updateProject.title);
+          if (localStorage.getItem("createOrganizationPostEdit") === "true") {
+            set(pagesData.length - 1);
+          } else {
+            onClickNext();
+          }
         }, 200);
       });
     }
@@ -128,18 +138,15 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
     <React.Fragment>
       <ComponentWrapper ref={outerRef}>
         <ComponentInnerWrapper>
-          <StyledH2 fontWeight="900" textAlign="center">
-            <span>Organisationsinfos bearbeiten</span>
-          </StyledH2>
           <StyledH3 textAlign="center" margin="20px">
-            sdjhaskjdhas jkhashda skjdh asjkdhaskjdhs shjajkdsh
+            {pagesData[index].subTitle}
           </StyledH3>
 
           <TextField
             id="outlined-name"
             name="title"
             type="title"
-            label={t("projectRoom_title")}
+            label={t("createOrganizationPage1_FieldName_Title")}
             margin="normal"
             variant="outlined"
             multiline
@@ -181,6 +188,9 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
         prevLabel={t("back")}
         handleNext={handleNext}
         handlePrev={onClickPrev}
+        set={set}
+        index={index}
+        pagesData={pagesData}
         disabled={!formik.isValid || nextClicked}
         loading={nextClicked}
       />

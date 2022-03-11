@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./styles/mapbox-gl.css";
 import "./App.css";
@@ -10,9 +11,9 @@ import "./mapbox.css";
 import "./Animations.css";
 
 import firebaseConfig from "./firebase";
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
 
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { createTheme } from "@material-ui/core/styles/";
@@ -50,30 +51,19 @@ import packageJson from "../package.json";
 import { getBuildDate } from "./util/helpers";
 //import withClearCache from "./ClearCache";
 import Cookiebanner from "./components/organisms/Cookiebanner/Cookiebanner";
-import { setViewport } from "./MapAnimations";
+import { setViewport } from "./util/helpers-map-animations";
 import detectLocation from "./util/detectLocation";
 import GlobalStyles from "./styles/GlobalStyles";
+
+import firebaseApp from "./firebase";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import "./util/i18n"; // i18n configuration
 detectLocation(); // detect location and set i18n language
 const cookies = new Cookies();
 require("intersection-observer");
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-  firebase
-    .firestore()
-    .enablePersistence()
-    .then(() => firebase.firestore())
-    .catch((err) => {
-      console.log(err);
-      return firebase.firestore();
-    });
-} else {
-  firebase.app(); // if already initialized, use that one
-}
-
-axios.defaults.baseURL = process.env.REACT_APP_DB_BASE_URL;
+const auth = getAuth(firebaseApp);
 
 const theme = createTheme(themeFile);
 
@@ -142,9 +132,10 @@ const App = () => {
   const { t } = useTranslation();
 
   const [isAuthed, setIsAuthed] = useState(false);
+
   const userState = () => {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user && user.emailVerified) {
+    onAuthStateChanged(auth, (user) => {
+      if (user && user.uid && user.emailVerified) {
         store.dispatch({ type: SET_AUTHENTICATED });
         store.dispatch(getUserData(user.uid));
         setIsAuthed(true);
@@ -170,65 +161,90 @@ const App = () => {
   ) : null;
 
   return (
-    <MuiThemeProvider theme={theme}>
-      <Provider store={store}>
-        <GlobalStyles />
-        <Router>
-          <Cookiebanner />
-          {tabletNote}
-          {/* {isTablet && (
+    <>
+      {process.env.REACT_APP_NO_CRAWL && (
+        /* disable google crawling for senf-client-test.netlify.app */
+        <Helmet>
+          <meta name="robots" content="noindex" />
+        </Helmet>
+      )}
+      {process.env.REACT_APP_STATS && (
+        /* Add statistics for senf.koeln
+        https://umami-xi-nine.vercel.app/
+        */
+        <Helmet>
+          <script
+            async
+            defer
+            data-website-id="17c8a5a3-76cb-43c6-971a-04dbd6a7a325"
+            src="https://umami-xi-nine.vercel.app/senf-stat.js"
+          ></script>
+        </Helmet>
+      )}
+      <MuiThemeProvider theme={theme}>
+        <Provider store={store}>
+          <GlobalStyles />
+          <Router>
+            <Cookiebanner />
+            {tabletNote}
+            {/* {isTablet && (
             <div className="switchDevice">
               Bitte öffne Senf.koeln auf deinem Smartphone oder
               Desktop-Computer. Die Tablet-Version kommt bald wieder :)
             </div>
           )} */}
-          <div className="landscapeNote">{t("rotate_phone")}</div>
+            <div className="landscapeNote">{t("rotate_phone")}</div>
 
-          <div className="container">
-            <Switch>
-              <Route exact path="/" component={Main} />
-              <Route exact path="/projectRooms" component={Main} />
-              <Route exact path="/organizations" component={Main} />
-              <Route exact path="/start" component={IntroductionInformation} />
-              <Route exact path="/intro" component={Welcome} />
-              <Route exact path="/datenschutz" component={datenschutz} />
-              <Route exact path="/agb" component={agb} />
+            <div className="container">
+              <Switch>
+                <Route exact path="/" component={Main} />
+                <Route exact path="/projectRooms" component={Main} />
+                <Route exact path="/organizations" component={Main} />
+                <Route
+                  exact
+                  path="/start"
+                  component={IntroductionInformation}
+                />
+                <Route exact path="/intro" component={Welcome} />
+                <Route exact path="/datenschutz" component={datenschutz} />
+                <Route exact path="/agb" component={agb} />
 
-              <Route exact path="/verify" component={Verification} />
+                <Route exact path="/verify" component={Verification} />
 
-              <Route
-                exact
-                path="/cookieConfigurator"
-                component={cookieConfigurator}
-              />
+                <Route
+                  exact
+                  path="/cookieConfigurator"
+                  component={cookieConfigurator}
+                />
 
-              <Route exact path="/impressum" component={impressum} />
+                <Route exact path="/impressum" component={impressum} />
 
-              <Route exact path="/blank" component={blank} />
+                <Route exact path="/blank" component={blank} />
 
-              <Route exact path="/:screamId" component={Main} />
-              <Route
-                exact
-                path="/projectRooms/:projectRoomId/:screamId"
-                component={Main}
-              />
-              <Route
-                exact
-                path="/projectRooms/:projectRoomId"
-                component={Main}
-              />
-              <Route
-                exact
-                path="/organizations/:organizationId"
-                component={Main}
-              />
+                <Route exact path="/:screamId" component={Main} />
+                <Route
+                  exact
+                  path="/projectRooms/:projectRoomId/:screamId"
+                  component={Main}
+                />
+                <Route
+                  exact
+                  path="/projectRooms/:projectRoomId"
+                  component={Main}
+                />
+                <Route
+                  exact
+                  path="/organizations/:organizationId"
+                  component={Main}
+                />
 
-              <Route path="*" component={Main} />
-            </Switch>
-          </div>
-        </Router>
-      </Provider>
-    </MuiThemeProvider>
+                <Route path="*" component={Main} />
+              </Switch>
+            </div>
+          </Router>
+        </Provider>
+      </MuiThemeProvider>
+    </>
   );
 };
 console.log(getBuildDate(packageJson.buildDate));

@@ -46,7 +46,7 @@ const FilterWrapper = styled.div`
   position: relative;
   height: auto;
   max-height: ${(props) => (props.active ? "1000px" : "0px")};
-  left: 30px;
+  left: 20px;
   top: 70px;
 `;
 const SelectLanguageWrapper = styled.div`
@@ -77,10 +77,10 @@ const DesktopSidebar = ({
   const { t } = useTranslation();
 
   const openTheAccount = () => {
-    dispatch(openAccountFunc(userId));
-
-    dispatch(closeScream());
     dispatch(openProjectRoomFunc(null, false));
+    dispatch(closeScream());
+    dispatch(openAccountFunc(userId));
+    window.history.pushState(null, null, "/");
 
     dispatch(handleTopicSelectorRedux("all"));
   };
@@ -113,7 +113,7 @@ const DesktopSidebar = ({
           {t("login")}
         </SideBarTabs>
       ) : (
-        <SideBarTabs fontWeight={openAccount && "900"}>
+        <SideBarTabs fontWeight={openAccount ? "900" : undefined}>
           <ExpandButton
             handleButtonClick={openTheAccount}
             dataCy="profile-button"

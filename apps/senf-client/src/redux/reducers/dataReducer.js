@@ -31,6 +31,7 @@ import {
   SET_PROJECT,
   SET_ORGANIZATIONS,
   SET_ORGANIZATION,
+  LOADING_ORGANIZATION_DATA,
   SET_SCREAM_USER,
   SET_FULL_SCREAMS,
   SET_COOKIES,
@@ -76,6 +77,7 @@ const initialState = {
   loadingIdea: false,
   loadingProjects: true,
   loadingOrganizations: true,
+  loadingOrganization: false,
   loadingMyScreams: false,
   loadingProjectRoom: false,
   scream_user: {},
@@ -107,6 +109,12 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loadingIdea: true,
+      };
+
+    case LOADING_ORGANIZATION_DATA:
+      return {
+        ...state,
+        loadingOrganization: true,
       };
 
     case LOADING_MYSCREAMS_DATA:
@@ -244,6 +252,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         organization: action.payload,
+        loadingOrganization: false,
       };
     case SET_FULL_SCREAMS:
       return {

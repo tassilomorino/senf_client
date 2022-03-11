@@ -10,11 +10,11 @@ import styled from "styled-components";
 import CheckBox from "../../../atoms/CheckBox/CheckBox";
 
 //firebase
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/storage";
 import Navigation from "../Components/Navigation";
-import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
+import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 
 const Header = styled.h3`
   font-size: 18px;
@@ -55,7 +55,12 @@ const CheckBoxLabel = styled.label`
   font-weight: 100;
   margin-left: 20px;
 `;
-const CreateOrganizationPage0 = ({ onClickNext, onClickPrev }) => {
+const CreateOrganizationPage0 = ({
+  onClickNext,
+  onClickPrev,
+  pagesData,
+  index,
+}) => {
   const { t } = useTranslation();
   const [selected, setSelected] = useState(false);
   const [nextClicked, setNextClicked] = useState(false);
@@ -81,13 +86,8 @@ const CreateOrganizationPage0 = ({ onClickNext, onClickPrev }) => {
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH2 fontWeight="900" textAlign="center">
-            Organisationsprofil erstellen
-          </StyledH2>
           <StyledH3 textAlign="center" margin="20px">
-            Von dem Nachbarschaftsverein über Planungsbüros bis zu politischen
-            Parteien – Hier könnt ihr ein Organisationsprofil für euer Vorhaben
-            erstellen.
+            {pagesData[index].subTitle}
           </StyledH3>
 
           <br />
@@ -98,10 +98,6 @@ const CreateOrganizationPage0 = ({ onClickNext, onClickPrev }) => {
           </StyledH3>
 
           <StyledUL>
-            <StyledLi>
-              Werdet sichtbar – beschreibt euer Vorhaben und informiert
-              interssierte Personen
-            </StyledLi>{" "}
             <StyledLi>
               Werdet sichtbar – beschreibt euer Vorhaben und informiert
               interssierte Personen
@@ -122,8 +118,10 @@ const CreateOrganizationPage0 = ({ onClickNext, onClickPrev }) => {
               handleInputChange={() => setSelected(!selected)}
             />
             <CheckBoxLabel>
-              Bestätige, dass du Teil einer Organisation bist und berechtigt
-              eine Profilseite zu erstellen.
+              <StyledH3>
+                Bestätige, dass du Teil einer Organisation bist und berechtigt
+                eine Profilseite zu erstellen.
+              </StyledH3>
             </CheckBoxLabel>
           </CheckBoxWrapper>
         </ComponentInnerWrapper>
@@ -134,6 +132,7 @@ const CreateOrganizationPage0 = ({ onClickNext, onClickPrev }) => {
         handleNext={handleNext}
         disabled={!selected || nextClicked}
         loading={nextClicked}
+        pagesData={pagesData}
       />
     </React.Fragment>
   );

@@ -33,10 +33,11 @@ import {
 } from "../../../styles/GlobalStyle";
 import organizationTypes from "../../../data/organizationTypes";
 
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/storage";
 import { truncateString } from "apps/senf-client/src/util/helpers";
+import { openOrganizationFunc } from "apps/senf-client/src/redux/actions/organizationActions";
 
 const ImgWrapper = styled.div`
   /* position: relative;
@@ -127,12 +128,11 @@ const BottomBar = styled.div`
   height: 40px;
 `;
 
-export const ProjectCard = (props) => {
+const ProjectCard = (props) => {
   const {
     project: {
       projectRoomId,
       title,
-      owner,
       imgUrl,
       brief,
       status,
@@ -149,10 +149,15 @@ export const ProjectCard = (props) => {
   const screams = useSelector((state) => state.data.screams);
 
   const organizations = useSelector((state) => state.data.organizations);
+  const openOrganization = useSelector((state) => state.UI.openOrganization);
   const dispatch = useDispatch();
 
   const pushScreamId = () => {
     dispatch(openProjectRoomFunc(thisProjectRoomId, true));
+
+    if (openOrganization) {
+      dispatch(openOrganizationFunc("hide", null));
+    }
   };
   const handleEdit = () => {
     localStorage.setItem("createProjectRoomOrganizationId", organizationId);
@@ -162,29 +167,33 @@ export const ProjectCard = (props) => {
     dispatch(openCreateProjectRoomFunc(true));
   };
 
-  const organizationCardData = [];
+  const [organizationCardData, setOrganizationCardData] = useState([]);
 
-  if (organizations) {
-    organizations.forEach(({ organizationId, userIds }) => {
-      if (cardOrganizationId === organizationId) {
-        organizationCardData.push(userIds);
-      }
-    });
-  }
+  useEffect(() => {
+    if (organizations) {
+      organizations.map(({ organizationId, userIds, title }) => {
+        console.log(organizations);
+        if (cardOrganizationId === organizationId) {
+          setOrganizationCardData([...organizationCardData, userIds, title]);
+        }
+      });
+    }
+  }, [organizations]);
 
   const ideasSize = screams.filter(
     ({ projectRoomId }) => projectRoomId === thisProjectRoomId
-  );
-  const storageRef = firebase.storage().ref();
+  ).length;
 
-  storageRef
-    .child(`/organizationsData/${organizationId}/logo/logo`)
-    .getDownloadURL()
-    .then(onResolve);
-
-  function onResolve(logo) {
-    setLogo(logo);
-  }
+  useEffect(() => {
+    function onResolve(logo) {
+      setLogo(logo);
+    }
+    const storageRef = firebase.storage().ref();
+    storageRef
+      .child(`/organizationsData/${organizationId}/logo/logo`)
+      .getDownloadURL()
+      .then(onResolve);
+  }, [organizationId]);
 
   return (
     <Card type="projectRoomCard">
@@ -244,23 +253,25 @@ export const ProjectCard = (props) => {
           </OrganizationLogo>
 
           <StyledH4>
-            {truncateString(
-              owner,
-              document.body.clientWidth < 350
-                ? 20
-                : document.body.clientWidth < 380
-                ? 30
-                : 40
-            )}
+            {organizationCardData[1] &&
+              truncateString(
+                organizationCardData[1],
+                document.body.clientWidth < 350
+                  ? 20
+                  : document.body.clientWidth < 380
+                  ? 30
+                  : 40
+              )}
           </StyledH4>
 
           <Icon marginLeft="auto" marginRight="5px">
             <img src={bulb} />
           </Icon>
 
-          <StyledH4>{ideasSize.length}</StyledH4>
+          <StyledH4>{ideasSize}</StyledH4>
         </BottomBar>
       </CardContent>
     </Card>
   );
 };
+export default React.memo(ProjectCard);

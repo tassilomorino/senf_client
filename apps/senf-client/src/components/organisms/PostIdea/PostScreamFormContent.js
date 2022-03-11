@@ -227,7 +227,7 @@ const PostScreamFormContent = ({
           />
         </div>{" "}
         <SelectContainer>
-          <StyledH3>{t("topic")}: </StyledH3>
+          <StyledH3 fontWeight={400}>{t("topic")}: </StyledH3>
 
           <CustomSelect
             name={"topic"}

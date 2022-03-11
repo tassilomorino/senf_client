@@ -1,8 +1,8 @@
 /** @format */
 
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/storage";
 
 import { closeScream } from "./screamActions";
 import {
@@ -63,7 +63,7 @@ export const getProjects = (mapViewport) => async (dispatch) => {
 
         title: doc.data().title,
         brief: doc.data().brief,
-        owner: doc.data().owner,
+        // owner: doc.data().owner,
         createdAt: doc.data().createdAt,
         // startDate: doc.data().startDate,
         // endDate: doc.data().endDate,

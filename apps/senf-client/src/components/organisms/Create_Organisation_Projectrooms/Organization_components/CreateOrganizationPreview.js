@@ -6,9 +6,9 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 //firebase
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/storage";
 
 //Components
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
@@ -29,10 +29,11 @@ import {
   getProjects,
   reloadProjects,
 } from "../../../../redux/actions/projectActions";
-import { StyledH2 } from "../../../../styles/GlobalStyle";
+import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 import Navigation from "../Components/Navigation";
 
 import { getOrganizations } from "../../../../redux/actions/organizationActions";
+import Switch from "../../../atoms/CustomButtons/Switch";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -41,20 +42,41 @@ const Wrapper = styled.div`
 `;
 
 const ListItemWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  margin-bottom: 10px;
+  display: grid;
+  grid-auto-flow: row dense;
+  grid-template-columns: 2fr 2fr;
+  grid-template-rows: 2fr 2fr 2fr 2fr;
+  gap: 10px 0px;
+  grid-template-areas:
+    ". ."
+    ". ."
+    ". ."
+    ". .";
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  align-items: start;
+
+  margin-left: 50%;
+  transform: translateX(-50%);
+  margin-top: 20px;
+  margin-bottom: 20px;
 `;
 const ListItem = styled.div`
-  height: 50px;
-  width: calc(100% - 60px);
+  height: 90px;
+  width: 180px;
+  max-width: 95%;
   position: relative;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-
   background-color: white;
-  border-radius: 20px;
+  box-sizing: border-box;
+  box-shadow: 0px 12px 18px -8px rgba(186, 160, 79, 0.2),
+    0px -4px 10px 4px rgba(255, 255, 255, 0.2);
+  background-color: #fcfbf8;
+  border-radius: 18px;
+  border: 2px solid #ffffff;
   overflow: hidden;
 `;
 
@@ -67,6 +89,25 @@ const ListItemStatus = styled.div`
   display: flex;
   align-items: center;
   margin-left: 10px;
+`;
+
+const Divider = styled.div`
+  width: 90%;
+  height: 1px;
+  background-color: rgba(186, 160, 79, 0.2);
+  overflow: visible;
+  margin: 10px 24px 10px 24px;
+`;
+const SwitchWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+`;
+const FlexWrapper = styled.div`
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
 `;
 
 const FrameWrapper = styled.div`
@@ -86,11 +127,18 @@ const FrameWrapper = styled.div`
   }
 `;
 
-const CreateOrganizationPreview = ({ onClickPrev, setClose, set }) => {
+const CreateOrganizationPreview = ({
+  onClickPrev,
+  setClose,
+  set,
+  pagesData,
+  listItems,
+  index,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [openPreview, setOpenPreview] = useState(false);
-  const [status, setStatus] = useState(false);
+  const [status, setStatus] = useState(true);
 
   const [infosProvided, setInfosProvided] = useState(false);
 
@@ -107,8 +155,12 @@ const CreateOrganizationPreview = ({ onClickPrev, setClose, set }) => {
         console.log("No such document!");
       } else {
         const data = ref.data();
-        if (data.status) {
-          setStatus(true);
+        if (
+          !data.status ||
+          data.status === "deactivated" ||
+          data.status === "uncompleted"
+        ) {
+          setStatus(false);
         }
         if (data.title && data.description) {
           setInfosProvided(true);
@@ -124,8 +176,17 @@ const CreateOrganizationPreview = ({ onClickPrev, setClose, set }) => {
     }
   }, []);
 
+  const handleSwitch = () => {
+    if (status === false) {
+      handlePublish();
+    } else {
+      handleArchive();
+    }
+  };
+
   const handleArchive = async () => {
     const db = firebase.firestore();
+    setStatus(false);
 
     if (
       typeof Storage !== "undefined" &&
@@ -135,10 +196,9 @@ const CreateOrganizationPreview = ({ onClickPrev, setClose, set }) => {
         .collection("organizations")
         .doc(localStorage.getItem("createOrganizationId"));
 
-      return ref.update({ status: "archived" }).then(() => {
+      return ref.update({ status: "deactivated" }).then(() => {
         // dispatch(getProjects());
-
-        setClose();
+        // setClose();
         //REMOVE LOCALSTORAGE
         localStorage.removeItem("createOrganizationId");
       });
@@ -148,6 +208,7 @@ const CreateOrganizationPreview = ({ onClickPrev, setClose, set }) => {
 
   const handlePublish = async () => {
     const db = firebase.firestore();
+    setStatus(true);
 
     if (
       typeof Storage !== "undefined" &&
@@ -159,54 +220,33 @@ const CreateOrganizationPreview = ({ onClickPrev, setClose, set }) => {
 
       return ref.update({ status: "active" }).then(() => {
         // dispatch(getProjects());
-        dispatch(getOrganizations());
+
         //REMOVE LOCALSTORAGE
         localStorage.removeItem("createOrganizationId");
-        setTimeout(() => {
-          setClose();
-        }, 1000);
+        if (localStorage.getItem("createOrganizationPostEdit") !== "true") {
+          setTimeout(() => {
+            setClose();
+          }, 1000);
+        }
       });
     }
   };
+
   return (
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
           <StyledH2 fontWeight="900" textAlign="center">
-            Übersicht
+            {pagesData[index].subTitle}
           </StyledH2>
-
           <ListItemWrapper>
-            <ListItem>
-              <ExpandButton handleButtonClick={() => set(2)} />
-              <ListItemTitle>Infos</ListItemTitle>
-              <img
-                src={EditIcon}
-                width="20px"
-                style={{ paddingRight: "20px" }}
-              />
-            </ListItem>
-            <ListItemStatus>
-              <img src={infosProvided ? CheckIcon : MissingIcon} width="30px" />
-            </ListItemStatus>{" "}
+            {listItems.map(({ title }, index) => (
+              <ListItem>
+                <ExpandButton handleButtonClick={() => set(index + 1)} />
+                <StyledH3 textAlign="center">{title}</StyledH3>
+              </ListItem>
+            ))}
           </ListItemWrapper>
-          <ListItemWrapper>
-            <ListItem>
-              <ListItemTitle>Gebiet</ListItemTitle>
-              <img
-                src={EditIcon}
-                width="20px"
-                style={{ paddingRight: "20px" }}
-              />
-            </ListItem>
-            <ListItemStatus>
-              <img
-                src={infosProvided ? MissingIcon : MissingIcon}
-                width="30px"
-              />
-            </ListItemStatus>{" "}
-          </ListItemWrapper>
-
           {openPreview && (
             <FrameWrapper>
               <iframe
@@ -219,19 +259,49 @@ const CreateOrganizationPreview = ({ onClickPrev, setClose, set }) => {
               />
             </FrameWrapper>
           )}
+          <br />
+          <br />
+          <br />
 
-          {status && (
-            <SubmitButton
-              text={t("Archivieren")}
-              zIndex="9"
-              backgroundColor="transparent"
-              textColor="#353535"
-              top={document.body.clientWidth > 768 ? "100px" : "70px"}
-              left="0"
-              handleButtonClick={handleArchive}
-              /*  disabled={!data} */
-              //   keySubmitRef={keySubmitRef}
-            />
+          {localStorage.getItem("createOrganizationPostEdit") === "true" && (
+            <React.Fragment>
+              <Divider />
+              <br />
+              <br />
+              <br />
+              <StyledH2 fontWeight="900" textAlign="center">
+                Status des Organisationsprofils
+              </StyledH2>
+              <br />
+              <SwitchWrapper>
+                <Switch
+                  id="deactivate-switch"
+                  toggled={status}
+                  onChange={handleSwitch}
+                />
+                <FlexWrapper>
+                  <StyledH3
+                    status={status}
+                    fontWeight={700}
+                    opacity={status !== true ? 1 : 0.4}
+                  >
+                    Deaktiviert
+                  </StyledH3>
+                  <StyledH3 fontWeight="400" margin="0px 20px">
+                    {" "}
+                     |
+                  </StyledH3>
+                  <StyledH3
+                    status={status}
+                    fontWeight={700}
+                    opacity={status === true ? 1 : 0.4}
+                  >
+                    Öffentlich
+                  </StyledH3>
+                </FlexWrapper>
+              </SwitchWrapper>
+              <br />
+            </React.Fragment>
           )}
         </ComponentInnerWrapper>
       </ComponentWrapper>
@@ -241,7 +311,10 @@ const CreateOrganizationPreview = ({ onClickPrev, setClose, set }) => {
         prevLabel={t("back")}
         handleNext={handlePublish}
         handlePrev={onClickPrev}
-        // disabled={!data || nextClicked}
+        disabled={localStorage.getItem("createOrganizationPostEdit") === "true"}
+        pagesData={pagesData}
+        index={index}
+        setClose={setClose}
         // loading={nextClicked}
       />
     </React.Fragment>

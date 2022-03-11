@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect, memo } from "react";
+import React, { useState, useEffect, memo, useCallback } from "react";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
 //Redux
@@ -122,7 +122,6 @@ const Map = ({
   dataFinal,
   geoData,
   openProjectRoom,
-  _onViewportChange,
   mapRef,
   projects,
   order,
@@ -169,6 +168,13 @@ const Map = ({
       dispatch(setMapViewport(initialMapViewport));
     }, 1000);
   }, [initialMapViewport]);
+
+  const _onViewportChange = useCallback(
+    (viewport) => {
+      dispatch(setMapViewport(viewport));
+    },
+    [dispatch]
+  );
 
   const data =
     !loadingProjects &&

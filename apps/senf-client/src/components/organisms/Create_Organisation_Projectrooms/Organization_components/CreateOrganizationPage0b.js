@@ -7,16 +7,16 @@ import _ from "lodash";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 //firebase
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/storage";
 
 import {
   ComponentInnerWrapper,
   ComponentWrapper,
 } from "../styles/sharedStyles";
 import Navigation from "../Components/Navigation";
-import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
+import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 import organizationTypes from "../../../../data/organizationTypes";
 
 const CoverWrapper = styled.div`
@@ -25,7 +25,7 @@ const CoverWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 10px 10px;
+  gap: 20px 20px;
   grid-template-areas:
     ". ."
     ". .";
@@ -33,6 +33,7 @@ const CoverWrapper = styled.div`
 const Covers = styled.div`
   width: 100%;
   height: 100%;
+
   z-index: 9;
   float: left;
   position: relative;
@@ -42,14 +43,20 @@ const Covers = styled.div`
   background-color: white;
   margin: 0;
   padding: 0;
-  outline: ${(props) =>
-    props.selectedOrganization ? "3px solid #353535 " : ""};
 
-  outline-offset: -3px;
+  background-color: ${(props) =>
+    props.selectedOrganization ? "#feecab" : "#fcfbf8"};
+  border-radius: 18px;
+  border: 2px solid
+    ${(props) => (props.selectedOrganization ? "#e8ba02" : "#ffffff")};
+  box-shadow: 0px 12px 18px -8px rgba(186, 160, 79, 0.2),
+    0px -4px 10px 4px rgba(255, 255, 255, 0.2);
 `;
-const CoverImg = styled.img`
-  width: 100%;
-  height: 100%;
+const Icon = styled.div`
+  width: 30%;
+  height: 30%;
+
+  margin: 45% 35% 25% 35%;
 `;
 const CoverTitle = styled.span`
   font-size: 18px;
@@ -62,7 +69,13 @@ const CoverTitle = styled.span`
   top: 30px;
 `;
 
-const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
+const CreateOrganizationPage1 = ({
+  onClickNext,
+  onClickPrev,
+  set,
+  pagesData,
+  index,
+}) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
   const [organizationType, setOrganizationType] = useState(null);
@@ -113,7 +126,11 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
 
       return ref.update(updateProject).then(() => {
         setTimeout(() => {
-          onClickNext();
+          if (localStorage.getItem("createOrganizationPostEdit") === "true") {
+            set(pagesData.length - 1);
+          } else {
+            onClickNext();
+          }
         }, 200);
       });
     } else {
@@ -150,22 +167,19 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH2 fontWeight="900" textAlign="center">
-            Welche Art von Organisation seid ihr?
-          </StyledH2>
           <StyledH3 textAlign="center" margin="20px">
-            sdjhaskjdhas jkhashda skjdh asjkdhaskjdhs shjajkdsh
+            {pagesData[index].subTitle}
           </StyledH3>
 
           <CoverWrapper>
-            {organizationTypes.map(({ name, label, img }) => (
+            {organizationTypes.map(({ name, label, svgIcon }) => (
               <Covers
                 animation="coverAnimation 0.5s ease-in-out"
                 onClick={() => setOrganizationType(name)}
                 selectedOrganization={organizationType === name}
               >
                 <CoverTitle>{label}</CoverTitle>
-                <CoverImg src={img} alt="organizationType-cover" />
+                <Icon>{svgIcon}</Icon>
               </Covers>
             ))}
           </CoverWrapper>
@@ -177,6 +191,9 @@ const CreateOrganizationPage1 = ({ onClickNext, onClickPrev }) => {
         prevLabel={t("back")}
         handleNext={handleNext}
         handlePrev={onClickPrev}
+        set={set}
+        index={index}
+        pagesData={pagesData}
         disabled={!organizationType || nextClicked}
         loading={nextClicked}
       />

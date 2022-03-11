@@ -1,12 +1,15 @@
 /** @format */
 
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/storage";
+
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 import { closeScream } from "./screamActions";
 import {
   LOADING_ORGANIZATIONS_DATA,
+  LOADING_ORGANIZATION_DATA,
   SET_ORGANIZATIONS,
   OPEN_CREATE_ORGANIZATION,
   OPEN_ORGANIZATION,
@@ -14,6 +17,7 @@ import {
   LOADING_DATA,
   STOP_LOADING_DATA,
 } from "../types";
+import setIconByOrganizationType from "../../data/setIconByOrganizationType";
 
 // Get all projects
 export const getOrganizations = (mapViewport) => async (dispatch) => {
@@ -75,117 +79,114 @@ export const stateCreateOrganizationsFunc = (state) => async (dispatch) => {
 export const openOrganizationFunc =
   (state, organizationId) => async (dispatch) => {
     if (state === true) {
-      dispatch({ type: LOADING_DATA });
+      dispatch({ type: LOADING_ORGANIZATION_DATA });
+
       dispatch({
         type: OPEN_ORGANIZATION,
-        payload: state,
+        payload: true,
       });
       dispatch(loadOrganizationData(organizationId));
       dispatch(closeScream());
       const newPath = `/organizations/${organizationId}`;
       window.history.pushState(null, null, newPath);
+    } else if (state === "hide") {
+      if (isMobileCustom) {
+        dispatch({
+          type: OPEN_ORGANIZATION,
+          payload: false,
+        });
+      }
     } else {
-      dispatch({ type: SET_ORGANIZATION, payload: null });
-
       dispatch({
         type: OPEN_ORGANIZATION,
-        payload: null,
+        payload: false,
       });
+      dispatch({ type: SET_ORGANIZATION, payload: null });
       window.history.pushState(null, null, "/organizations");
     }
   };
 
 export const loadOrganizationData = (organizationId) => async (dispatch) => {
-  // dispatch({ type: LOADING_UI });
-
   const db = firebase.firestore();
-  const storageRef = firebase.storage().ref();
-
   const ref = await db.collection("organizations").doc(organizationId).get();
 
-  const projectRoomsRef = await db
-    .collection("organizations")
-    .doc(organizationId)
-    .collection("projectRooms")
-    .where("status", "==", "active")
-    .orderBy("createdAt", "desc")
-    .get();
-
-  const archivedProjectRoomsRef = await db
-    .collection("organizations")
-    .doc(organizationId)
-    .collection("projectRooms")
-    .where("status", "==", "archived")
-    .orderBy("createdAt", "desc")
-    .get();
-
   if (!ref.exists) {
-    console.log("No such document!");
+    window.history.pushState(null, null, "/");
   } else {
     const organization = ref.data();
+    organization.organizationId = ref.id;
+    organization.projectRooms = [];
 
-    storageRef
-      .child(`/organizationsData/${ref.id}/logo/logo`)
-      .getDownloadURL()
-      .then(onResolveOrg, onRejectOrg);
-
-    function onResolveOrg(organizationImage) {
-      organization.imgUrl = organizationImage;
-      organization.organizationId = ref.id;
-      organization.projectRooms = [];
-
-      if (!projectRoomsRef.exists) {
-        dispatch({ type: SET_ORGANIZATION, payload: organization });
-        dispatch({ type: STOP_LOADING_DATA });
-      }
-
-      projectRoomsRef.docs.forEach((doc) => {
-        storageRef
-          .child(
-            `/organizationsData/${organization.organizationId}/${doc.id}/thumbnail`
-          )
-          .getDownloadURL()
-          .then(onResolvePr, onRejectPr);
-
-        function onResolvePr(projectRoomImage) {
-          organization.projectRooms.push({
-            ...doc.data(),
-            projectRoomId: doc.id,
-            imgUrl: projectRoomImage,
-          });
-          dispatch({ type: SET_ORGANIZATION, payload: organization });
-          dispatch({ type: STOP_LOADING_DATA });
-        }
-        function onRejectPr(error) {
-          console.log("error Pr");
-        }
-      });
-
-      archivedProjectRoomsRef.docs.forEach((doc) => {
-        storageRef
-          .child(
-            `/organizationsData/${organization.organizationId}/${doc.id}/thumbnail`
-          )
-          .getDownloadURL()
-          .then(onResolvePr, onRejectPr);
-
-        function onResolvePr(projectRoomImage) {
-          organization.projectRooms.push({
-            ...doc.data(),
-            projectRoomId: doc.id,
-            imgUrl: projectRoomImage,
-          });
-          dispatch({ type: SET_ORGANIZATION, payload: organization });
-          dispatch({ type: STOP_LOADING_DATA });
-        }
-        function onRejectPr(error) {
-          console.log("error Pr");
-        }
-      });
-    }
-
-    function onRejectOrg(error) {
-      console.log("error Org");
-    }
+    dispatch(loadOrganizationProjectRooms(organizationId, organization));
   }
 };
+
+export const loadOrganizationProjectRooms =
+  (organizationId, organization) => async (dispatch) => {
+    const db = firebase.firestore();
+    const storageRef = firebase.storage().ref();
+
+    const projectRoomsRef = await db
+      .collection("organizations")
+      .doc(organizationId)
+      .collection("projectRooms")
+      .where("status", "==", "active")
+      .orderBy("createdAt", "desc")
+      .get();
+    if (!projectRoomsRef.exists) {
+      console.log("no prs in loadOrganizationProjectRooms");
+      dispatch({ type: SET_ORGANIZATION, payload: organization });
+    }
+
+    projectRoomsRef.docs.forEach((doc) => {
+      storageRef
+        .child(
+          `/organizationsData/${organization.organizationId}/${doc.id}/thumbnail`
+        )
+        .getDownloadURL()
+        .then(onResolvePr, onRejectPr);
+
+      function onResolvePr(projectRoomImage) {
+        organization.projectRooms.push({
+          ...doc.data(),
+          projectRoomId: doc.id,
+          imgUrl: projectRoomImage,
+          organizationType: doc.data().organizationType,
+          icon: setIconByOrganizationType(doc.data().organizationType),
+        });
+        dispatch({ type: SET_ORGANIZATION, payload: organization });
+        // dispatch({ type: STOP_LOADING_DATA });
+      }
+      function onRejectPr(error) {
+        dispatch({ type: SET_ORGANIZATION, payload: organization });
+      }
+    });
+  };
+
+/*   export const loadOrganizationProjectRoomsArchived =
+  (organizationId, organization) => async (dispatch) => {
+
+
+     archivedProjectRoomsRef.docs.forEach((doc) => {
+        storageRef
+          .child(
+            `/organizationsData/${organization.organizationId}/${doc.id}/thumbnail`
+          )
+          .getDownloadURL()
+          .then(onResolvePr, onRejectPr);
+
+        function onResolvePr(projectRoomImage) {
+          organization.projectRooms.push({
+            ...doc.data(),
+            projectRoomId: doc.id,
+            imgUrl: projectRoomImage,
+          });
+          dispatch({ type: SET_ORGANIZATION, payload: organization });
+          dispatch({ type: STOP_LOADING_DATA });
+        }
+        function onRejectPr(error) {
+          console.log("error Pr");
+        }
+      });
+  }
+ */

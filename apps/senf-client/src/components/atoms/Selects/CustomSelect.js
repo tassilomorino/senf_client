@@ -156,13 +156,8 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
   }
   return (
     <React.Fragment>
-      <DropDownButton
-        onClick={handleToggle}
-        class="dropbtn"
-        style={{ zIndex: 999 }}
-        id="dropDownButton"
-      >
-        <StyledH3>
+      <DropDownButton onClick={handleToggle} style={{ zIndex: 999 }}>
+        <StyledH3 fontWeight={400}>
           {truncateString(selectedLabel, dropDownButtonAmount)}
         </StyledH3>
 

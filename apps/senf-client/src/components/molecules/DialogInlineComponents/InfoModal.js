@@ -19,7 +19,7 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 import ProjectInfoSwiper from "./ProjectInfoSwiper";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import { ModalBackground } from "../../atoms/Backgrounds/ModalBackground";
-import * as linkify from "linkifyjs";
+import { openLink, openMail } from "apps/senf-client/src/util/helpers";
 
 const Card = styled.div`
   position: fixed;
@@ -62,6 +62,13 @@ const CardInnerWrapper = styled.div`
   background-color: #fff7dd;
   /* box-shadow: inset 0 -10px 10px -10px #000000; */
   position: relative;
+`;
+
+const FixedButtonWrapper = styled.div`
+  height: 0px;
+  position: sticky;
+  bottom: 0;
+  transform: translateY(-50px);
 `;
 const LowerWrapper = styled.div`
   position: relative;
@@ -156,32 +163,22 @@ const InfoModal = ({
   description_learnmore,
   weblink,
   contact,
-  startDate,
-  endDate,
-  owner,
   ownerImg,
+  organizationId,
 }) => {
-  const convertedLinkRaw = weblink && linkify.find(weblink);
-  const convertedLink =
-    weblink && convertedLinkRaw[0] !== undefined && convertedLinkRaw[0].href;
+  const cardOrganizationId = organizationId;
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const loading = useSelector((state) => state.data.loading);
   const handle = useSelector((state) => state.user.handle);
+  const organizations = useSelector((state) => state.data.organizations);
 
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
   const openScream = useSelector((state) => state.UI.openScream);
 
   const openAccount = useSelector((state) => state.UI.openAccount);
-
-  const openLink = (convertedLink) => {
-    window.open(convertedLink, "_blank");
-  };
-  const openMail = (contact) => {
-    window.location.href = "mailto:" + contact;
-  };
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -235,6 +232,16 @@ const InfoModal = ({
     });
   }
 
+  const organizationCardData = [];
+
+  if (organizations) {
+    organizations.forEach(({ organizationId, userIds, title }) => {
+      if (cardOrganizationId === organizationId) {
+        organizationCardData.push(userIds, title);
+      }
+    });
+  }
+
   return (
     !loading && (
       <React.Fragment>
@@ -266,10 +273,6 @@ const InfoModal = ({
                 <br />
               </StyledText>
             )}
-
-            {/* <StyledH3 textAlign="center" margin="0px 0px 5px 0px">
-          Kontakt
-        </StyledH3> */}
 
             <LowerWrapper
               weblink={weblink}
@@ -335,7 +338,9 @@ const InfoModal = ({
                   </OrganizationLogoWrapper>
                   <div style={{ marginLeft: "10px" }}>
                     <StyledText>{t("projectroom_of")}</StyledText>
-                    <StyledH3 fontWeight="900">{owner}</StyledH3>
+                    <StyledH3 fontWeight="900">
+                      {organizationCardData[1]}
+                    </StyledH3>
                   </div>
                 </OwnerWrapper>
               )}
@@ -364,16 +369,20 @@ const InfoModal = ({
             {/* <Gradient /> */}
           </CardInnerWrapper>
           {infoOpen && (
-            <SubmitButton
-              text={openProjectRoom ? t("show_projectroom") : t("show_profile")}
-              handleButtonClick={() => setInfoOpen(false)}
-              zIndex="999"
-              position="absolute"
-              bottom="10px"
-              backgroundColor="#353535"
-              textColor="white"
-              margin="0 0 0 0"
-            />
+            <FixedButtonWrapper>
+              <SubmitButton
+                text={
+                  openProjectRoom ? t("show_projectroom") : t("show_profile")
+                }
+                handleButtonClick={() => setInfoOpen(false)}
+                zIndex="999"
+                position="relative"
+                bottom="10px"
+                backgroundColor="#353535"
+                textColor="white"
+                margin="0 0 0 0"
+              />
+            </FixedButtonWrapper>
           )}
         </Card>
       </React.Fragment>

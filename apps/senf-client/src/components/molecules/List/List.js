@@ -3,6 +3,7 @@
 import React, { useState, useEffect, memo } from "react";
 import { useSelector } from "react-redux";
 import IdeaCard from "../Cards/IdeaCard";
+import ProjectCard from "../Cards/ProjectCard";
 import {
   NoMoreMainContent,
   NoMoreMyContent,
@@ -14,9 +15,10 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
 import { usePrevious } from "../../../hooks/usePrevious";
-import { ProjectCard } from "../Cards/ProjectCard";
+
 import { useTranslation } from "react-i18next";
 import { NoMore } from "./styles/sharedStyles";
+import { OrganizationCard } from "../Cards/OrganizationCard";
 
 const NoIdeasYet = styled.div`
   position: relative;
@@ -30,8 +32,6 @@ const NoIdeasYet = styled.div`
 const List = ({
   swipeListType,
   type,
-  order,
-  handleClick,
   loading,
   dropdown,
   dataFinal,
@@ -75,6 +75,15 @@ const List = ({
               <ProjectCard
                 key={dataFinal[i]?.projectRoomId}
                 project={dataFinal[i]}
+              />
+            )
+          );
+        } else if (swipeListType === "organizationsOverview") {
+          items.push(
+            dataFinal[i]?.organizationId && (
+              <OrganizationCard
+                key={dataFinal[i]?.organizationId}
+                organization={dataFinal[i]}
               />
             )
           );
@@ -137,7 +146,8 @@ const List = ({
               <NoMoreMainContent dataFinalLength={dataFinalLength} />
             )}
           </React.Fragment>
-        ) : !hasMoreItems | (dataFinalLength === 0) ? (
+        ) : swipeListType === "projectRoomOverview" &&
+          !hasMoreItems | (dataFinalLength === 0) ? (
           <NoMoreProjectRooms dataFinalLength={dataFinalLength} />
         ) : null}
 

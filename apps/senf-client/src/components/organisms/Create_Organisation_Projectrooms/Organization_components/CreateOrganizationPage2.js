@@ -5,12 +5,12 @@ import ReactDOM from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import * as yup from "yup";
 
 //firebase
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
-
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/storage";
 //Components
 import Weblink from "../../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
 import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
@@ -27,7 +27,9 @@ import {
 import Contact from "../../../molecules/Modals/Post_Edit_ModalComponents/Contact";
 import Geocoder from "react-mapbox-gl-geocoder";
 import Navigation from "../Components/Navigation";
-import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
+import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
+import { TextField } from "@material-ui/core";
+import { useFormik } from "formik";
 
 const Wrapper = styled.div`
   display: flex;
@@ -43,11 +45,17 @@ const ButttonsWrapper = styled.div`
 `;
 
 const GeocoderWrapper = styled.div`
-  margin-top: 30px;
+  margin-top: 20px;
   width: 100%;
 `;
 
-const CreateOrganizationPage2 = ({ onClickNext, onClickPrev }) => {
+const CreateOrganizationPage2 = ({
+  onClickNext,
+  onClickPrev,
+  set,
+  pagesData,
+  index,
+}) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
 
@@ -55,34 +63,38 @@ const CreateOrganizationPage2 = ({ onClickNext, onClickPrev }) => {
   const [longitude, setLongitude] = useState(null);
   const [latitude, setLatitude] = useState(null);
 
-  const [weblinkOpen, setWeblinkOpen] = useState(false);
   const [weblink, setWeblink] = useState(null);
-  const [weblinkTitle, setWeblinkTitle] = useState(null);
 
-  const [contactOpen, setContactOpen] = useState(false);
   const [contact, setContact] = useState(null);
-  const [contactTitle, setContactTitle] = useState(null);
 
-  const handleCloseWeblink = () => {
-    setWeblinkOpen(false);
-    setWeblink(null);
-    setWeblinkTitle(null);
-  };
-  const handleSaveWeblink = () => {
-    setWeblinkOpen(false);
-  };
+  const createProjectValidationSchema = yup.object({
+    title: yup
+      .string()
+      .required(t("enter_email"))
+      .min(3, t("username_too_short"))
+      .max(40, t("username_too_long")),
 
-  const handleCloseContact = () => {
-    setContactOpen(false);
-    setContact(null);
-    setContactTitle(null);
-  };
-  const handleSaveContact = () => {
-    setContactOpen(false);
-  };
+    description: yup
+      .string()
+      .required(t("enter_email"))
+      .min(10, t("username_too_short"))
+      .max(1000, t("username_too_long")),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      contact: "",
+      weblink: "",
+    },
+    validationSchema: createProjectValidationSchema,
+    validateOnChange: true,
+    validateOnBlur: true,
+  });
 
   useEffect(() => {
     async function fetchData() {
+      formik.setFieldTouched("contact", true);
+
       const db = firebase.firestore();
       if (
         typeof Storage !== "undefined" &&
@@ -99,12 +111,10 @@ const CreateOrganizationPage2 = ({ onClickNext, onClickPrev }) => {
           const data = ref.data();
 
           if (data.contact) {
-            setContact(data.contact);
-            setContactTitle(data.contactTitle);
+            formik.setFieldValue("contact", data.contact);
           }
           if (data.weblink) {
-            setWeblink(data.weblink);
-            setWeblinkTitle(data.weblinkTitle);
+            formik.setFieldValue("weblink", data.weblink);
           }
 
           if (data.address) {
@@ -119,7 +129,7 @@ const CreateOrganizationPage2 = ({ onClickNext, onClickPrev }) => {
   const MyInput = (props) => (
     <input
       {...props}
-      placeholder={address ? address : "Addresse eingeben..."}
+      placeholder={address ? address : "Addresse der Organisation"}
       id="geocoder"
       autocomplete="off"
     />
@@ -154,10 +164,8 @@ const CreateOrganizationPage2 = ({ onClickNext, onClickPrev }) => {
     ) {
       //UPDATING AN EXISTING PROJECTROOM
       const updateProject = {
-        weblinkTitle: weblinkTitle,
-        weblink: weblink,
-        contactTitle: contactTitle,
-        contact: contact,
+        weblink: formik.values.weblink,
+        contact: formik.values.contact,
         address: address,
         longitude: longitude,
         latitude: latitude,
@@ -167,7 +175,11 @@ const CreateOrganizationPage2 = ({ onClickNext, onClickPrev }) => {
         .doc(localStorage.getItem("createOrganizationId"));
       return ref.update(updateProject).then(() => {
         setTimeout(() => {
-          onClickNext();
+          if (localStorage.getItem("createOrganizationPostEdit") === "true") {
+            set(pagesData.length - 1);
+          } else {
+            onClickNext();
+          }
         }, 200);
       });
     }
@@ -177,71 +189,40 @@ const CreateOrganizationPage2 = ({ onClickNext, onClickPrev }) => {
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          {ReactDOM.createPortal(
-            <React.Fragment>
-              {weblinkOpen && (
-                <Weblink
-                  handleCloseWeblink={handleCloseWeblink}
-                  handleSaveWeblink={handleSaveWeblink}
-                  weblinkTitle={weblinkTitle}
-                  weblink={weblink}
-                  setWeblinkTitle={setWeblinkTitle}
-                  setWeblink={setWeblink}
-                  setWeblinkOpen={setWeblinkOpen}
-                />
-              )}
-            </React.Fragment>,
-            document.getElementById("portal-root-modal")
-          )}
-
-          {ReactDOM.createPortal(
-            <React.Fragment>
-              {contactOpen && (
-                <Contact
-                  handleCloseContact={handleCloseContact}
-                  handleSaveContact={handleSaveContact}
-                  contactTitle={contactTitle}
-                  contact={contact}
-                  setContactTitle={setContactTitle}
-                  setContact={setContact}
-                  setContactOpen={setContactOpen}
-                />
-              )}
-            </React.Fragment>,
-            document.getElementById("portal-root-modal")
-          )}
-
-          <StyledH2 fontWeight="900" textAlign="center">
-            Kontaktdaten hinzufügen
-          </StyledH2>
           <StyledH3 textAlign="center" margin="20px">
-            Füge deine Kontaktdaten (E-mail, Link) hinzu, um erreichbar zu sein
-            und deine Organisation zu vertreten.{" "}
+            {pagesData[index].subTitle}
           </StyledH3>
 
-          <ButttonsWrapper>
-            <CustomIconButton
-              name="Weblink"
-              position="relative"
-              iconWidth="25px"
-              backgroundColor={
-                weblink !== null && weblinkTitle !== null ? "#fed957" : "white"
-              }
-              handleButtonClick={() => setWeblinkOpen(true)}
-            />
-
-            <CustomIconButton
-              name="Contact"
-              position="relative"
-              marginLeft="20px"
-              iconWidth="25px"
-              zIndex={0}
-              backgroundColor={
-                contact !== null && contactTitle !== null ? "#fed957" : "white"
-              }
-              handleButtonClick={() => setContactOpen(true)}
-            />
-          </ButttonsWrapper>
+          <TextField
+            id="outlined-name"
+            name="contact"
+            type="contact"
+            label={t("contact-address")}
+            margin="normal"
+            variant="outlined"
+            style={{
+              backgroundColor: "white",
+              borderRadius: "5px",
+              width: "100%",
+            }}
+            value={formik.values.contact}
+            onChange={formik.handleChange}
+          />
+          <TextField
+            id="outlined-name"
+            name="weblink"
+            type="weblink"
+            label={t("external-link")}
+            margin="normal"
+            variant="outlined"
+            style={{
+              backgroundColor: "white",
+              borderRadius: "5px",
+              width: "100%",
+            }}
+            value={formik.values.weblink}
+            onChange={formik.handleChange}
+          />
 
           <GeocoderWrapper>
             <Geocoder
@@ -265,6 +246,9 @@ const CreateOrganizationPage2 = ({ onClickNext, onClickPrev }) => {
         prevLabel={t("back")}
         handleNext={handleNext}
         handlePrev={onClickPrev}
+        set={set}
+        index={index}
+        pagesData={pagesData}
       />
     </React.Fragment>
   );

@@ -74,7 +74,7 @@ const InlineInformationPageDesktop = () => {
   return (
     !isMobileCustom && (
       <Fragment>
-        <SideBarTabs fontWeight={openInfoPage && "900"}>
+        <SideBarTabs fontWeight={openInfoPage ? "900" : undefined}>
           <ExpandButton handleButtonClick={handleOpen} />
           <img src={Info} width="35" alt="EndImage" />
           <span className="inlineInfoIconText"> {t("info")}</span>

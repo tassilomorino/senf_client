@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useState } from "react";
-import { setViewport } from "../../../MapAnimations";
+import { setViewport } from "../../../util/helpers-map-animations";
 import MainModal from "../../atoms/Layout/MainModal";
 import Geolocate from "../../../images/icons/geolocate.png";
 import styled from "styled-components";

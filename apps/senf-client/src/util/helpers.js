@@ -1,6 +1,10 @@
 /* helper functions for the application */
-
+import { useRef, useState, useEffect } from "react";
 import moment from "moment";
+import _ from "lodash";
+import ResizeObserver from "resize-observer-polyfill";
+import * as linkify from "linkifyjs";
+
 /**
  * Function returning the build date(as per provided epoch)
  * @param epoch Time in milliseconds
@@ -45,3 +49,77 @@ export function truncateString(str, num) {
   }
   return str.slice(0, num) + "...";
 }
+
+export function search(dbData, userInput, dbDataKeys) {
+  const sanitizedUserInput = userInput.toString().toLowerCase();
+
+  if (userInput === "") {
+    return dbData;
+  }
+  return dbData.filter((object) => {
+    return dbDataKeys.some((dbDataKey) => {
+      return object[dbDataKey]
+        ?.toString()
+        .toLowerCase()
+        .includes(sanitizedUserInput);
+    });
+  });
+}
+
+export function sort(items, dropdown) {
+  return dropdown === "newest"
+    ? _.orderBy(items, "createdAt", "desc")
+    : dropdown === "hottest"
+    ? _.orderBy(items, "likeCount", "desc")
+    : dropdown === "aToZ"
+    ? _.orderBy(items, [(pr) => pr.title.toLowerCase()], ["asc"])
+    : _.orderBy(items, [(pr) => pr.title.toLowerCase()], ["desc"]);
+}
+
+export function filterByTagFilter(items, selectedTags, tagsType) {
+  if (tagsType === "Thema") {
+    return items.filter(({ Thema }) => selectedTags.includes(Thema));
+  } else {
+    return items.filter(({ organizationType }) =>
+      selectedTags.includes(organizationType)
+    );
+  }
+}
+
+export function filterByStatus(items) {
+  return items.filter(({ status }) => status === "None");
+}
+
+export function filterByGeodata(items, mapBounds) {
+  return items.filter(
+    ({ lat, long }) =>
+      lat <= mapBounds?.latitude1 &&
+      lat >= mapBounds?.latitude2 &&
+      long >= mapBounds?.longitude2 &&
+      long <= mapBounds?.longitude3
+  );
+}
+
+export function useMeasure() {
+  const ref = useRef();
+  const [bounds, set] = useState({ left: 0, top: 0, width: 0, height: 0 });
+  const [ro] = useState(
+    () => new ResizeObserver(([entry]) => set(entry.contentRect))
+  );
+  useEffect(() => {
+    if (ref.current) ro.observe(ref.current);
+    return () => ro.disconnect();
+  }, []);
+  return [{ ref }, bounds];
+}
+
+export const openLink = (weblink) => {
+  const convertedLinkRaw = weblink && linkify.find(weblink);
+  const convertedLink =
+    weblink && convertedLinkRaw[0] !== undefined && convertedLinkRaw[0].href;
+
+  window.open(convertedLink, "_blank");
+};
+export const openMail = (contact) => {
+  window.location.href = "mailto:" + contact;
+};

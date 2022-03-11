@@ -26,23 +26,24 @@ const Background = styled.div`
 `;
 
 const InnerWrapper = styled.div`
-  width: 400px;
+  width: ${(props) => (props.autoWidth ? "auto" : "400px")};
   max-width: 95%;
   min-height: 150px;
   background-color: white;
   border-radius: 20px;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  align-items: space-around;
+  align-items: space-around; */
 
   z-index: 99992;
-  overflow: hidden;
+  overflow-y: scroll;
+  max-height: 95%;
 `;
 
-const MainModal = ({ handleButtonClick, children, zIndex }) => {
+const MainModal = ({ handleButtonClick, children, zIndex, autoWidth }) => {
   return (
     <Wrapper zIndex={zIndex}>
-      <InnerWrapper>{children}</InnerWrapper>
+      <InnerWrapper autoWidth={autoWidth}> {children}</InnerWrapper>
       <Background onClick={handleButtonClick} />
     </Wrapper>
   );

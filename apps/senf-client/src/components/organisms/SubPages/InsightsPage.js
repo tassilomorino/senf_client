@@ -14,18 +14,31 @@ import DistrictsCover from "../../../images/insightsCovers/districts-cover.jpg";
 import KeywordsCover from "../../../images/insightsCovers/keywords-cover.jpg";
 import AgegroupsCover from "../../../images/insightsCovers/agegroups-cover.jpg";
 
-import firebase from "firebase/app";
-import "firebase/firestore";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
 import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
-import { Covers, CoverWrapper, Wrapper } from "./styles/sharedStyles";
+import {
+  Covers,
+  CoverWrapper,
+  Wrapper,
+  SVGWrapper,
+  HeaderWrapper,
+  DragWrapper,
+  ClickBackground,
+  HandleBar,
+  SVGWrapperMobile,
+} from "./styles/sharedStyles";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { StyledH2 } from "../../../styles/GlobalStyle";
 import Tabs from "../../atoms/Tabs/Tabs";
 import { MenuData } from "../../../data/MenuData";
+
+import { useSpring, animated } from "@react-spring/web";
+import { useDrag } from "@use-gesture/react";
 
 const CoverImg = styled.img`
   width: 100%;
@@ -35,6 +48,17 @@ const CoverTitle = styled.div`
   width: 100%;
   position: absolute;
   top: 30px;
+`;
+
+const ListWrapper = styled.div`
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
+  width: 100%;
+  top: 0;
+  pointer-events: all;
+  z-index: 999999;
 `;
 
 const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
@@ -50,6 +74,56 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
   useEffect(() => {
     setOpen(true);
   }, []);
+
+  const [props, set] = useSpring(() => ({
+    x: 0,
+    y: 0,
+    scale: 1,
+    transform: `translateY(${30}px)`,
+    overflow: "hidden",
+    touchAction: "none",
+    userSelect: "none",
+  }));
+
+  const bind = useDrag(
+    ({ last, down, movement: [, my], offset: [, y] }) => {
+      if (last && my > 50) {
+        set({
+          transform: `translateY(${window.innerHeight}px)`,
+          touchAction: "none",
+        });
+
+        setTimeout(() => {
+          window.history.pushState(null, null, "/projectRooms");
+          setOpenInsightsPage(false);
+        }, 150);
+        setTimeout(() => {
+          set({
+            transform: `translateY(${30}px)`,
+            touchAction: "none",
+          });
+        }, 300);
+      }
+
+      set({ y: down ? my : 0 });
+    },
+    {
+      pointer: { touch: true },
+      bounds: {
+        enabled: true,
+      },
+    }
+  );
+
+  const setClose = () => {
+    set({
+      transform: `translateY(${window.innerHeight}px)`,
+      touchAction: "none",
+    });
+    setTimeout(() => {
+      setOpenInsightsPage(false);
+    }, 150);
+  };
 
   //const mapViewport = useSelector((state) => state.data.mapViewport);
   const fetchDataScreams = async () => {
@@ -106,6 +180,8 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
 
   const fetchDataProjectRoom = async () => {
     const screamIds = [];
+    const comments = [];
+    const likes = [];
     const screamsRef = await db
       .collection("screams")
       .where("projectRoomId", "==", projectRoomId)
@@ -114,36 +190,38 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
     const screamsRefSize = screamsRef.size;
     screamsRef.docs.forEach(async (doc) => {
       screamIds.push(doc.id);
-      console.log(screamsRefSize, screamIds.length);
+
+      const commentsRef = await db
+        .collection("comments")
+        .where("screamId", "==", doc.id)
+        .orderBy("createdAt", "desc")
+        .get();
+
+      commentsRef.forEach((doc) => {
+        const docData = {
+          Thema: doc.data().Thema,
+        };
+        comments.push(docData);
+      });
+
+      const ref = await db
+        .collection("likes")
+        .where("screamId", "==", doc.id)
+        .orderBy("createdAt", "desc")
+        .get();
+
+      ref.forEach((doc) => {
+        const docData = {
+          age: doc.data().age,
+          Thema: doc.data().Thema,
+        };
+        likes.push(docData);
+      });
+
       if (screamIds.length === screamsRefSize) {
-        console.log(screamIds);
-        const commentsRef = await db
-          .collection("comments")
-          .where("screamId", "in", screamIds)
-          .orderBy("createdAt", "desc")
-          .get();
-
-        const commentsLength = commentsRef.size;
-        setCommentsLength(commentsLength);
-
-        const ref = await db
-          .collection("likes")
-          .where("screamId", "in", screamIds)
-          .orderBy("createdAt", "desc")
-          .get();
-
-        const likesLength = ref.size;
-        setLikesLength(likesLength);
-
-        const likes = [];
-        ref.docs.forEach((doc) => {
-          const docData = {
-            age: doc.data().age,
-            Thema: doc.data().Thema,
-          };
-          likes.push(docData);
-        });
         setLikes(likes);
+        setCommentsLength(comments.length);
+        setLikesLength(likes.length);
       }
     });
   };
@@ -162,24 +240,47 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
   const handleLink = () => {
     window.open("https://wiki.agorakoeln.de/", "_blank");
   };
-  return (
-    <Wrapper order={open}>
-      <CustomIconButton
-        name="ArrowLeft"
-        position="fixed"
-        margin="10px"
-        backgroundColor="#FFF0BC"
-        handleButtonClick={() => setOpenInsightsPage(false)}
-        zIndex={99}
-      />
 
-      <Tabs
-        loading={false}
-        order={1}
-        tabLabels={MenuData.map((item) => item.text).slice(3, 4)}
-        marginTop={"20px"}
-        marginBottom={"20px"}
-      />
+  const content = (
+    <ListWrapper order={open}>
+      {!isMobileCustom && (
+        <React.Fragment>
+          <CustomIconButton
+            name="ArrowLeft"
+            position="fixed"
+            margin="10px"
+            backgroundColor="#FFF0BC"
+            handleButtonClick={() => setOpenInsightsPage(false)}
+            zIndex={99}
+          />
+
+          <SVGWrapper>
+            <HeaderWrapper>
+              <StyledH2
+                fontWeight="900"
+                fontSize={document.body.clientWidth > 368 ? "22px" : "19px"}
+                textAlign="center"
+                margin="20px 0px"
+              >
+                {MenuData.map((item) => item.text).slice(3, 4)}
+              </StyledH2>
+            </HeaderWrapper>
+            <svg
+              width="100%"
+              height="126"
+              viewBox="0 0 1100 126"
+              preserveAspectRatio="none"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0 125.5V0.5H1130.5V99C1025 143 974.588 95.9476 942.5 83C828.5 37 819 43.5 704 62.5C558 86.6217 307.5 44.5 196 99C128.785 131.854 37.1667 124.667 0 125.5Z"
+                fill="#FED957"
+              />
+            </svg>
+          </SVGWrapper>
+        </React.Fragment>
+      )}
       <Keyindicators
         screams={screams}
         likesLength={likesLength}
@@ -226,7 +327,53 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
           {/* <WordcloudDialog /> */}
         </Covers>
       </CoverWrapper>
-    </Wrapper>
+    </ListWrapper>
+  );
+  return isMobileCustom ? (
+    <React.Fragment>
+      <ClickBackground onClick={setClose} />
+
+      <DragWrapper style={props}>
+        <HeaderWrapper {...bind()}>
+          <HandleBar />
+          <CustomIconButton
+            name="ArrowDown"
+            position="fixed"
+            margin="0px 0px"
+            backgroundColor="transparent"
+            shadow={false}
+            handleButtonClick={setClose}
+            zIndex={99}
+          />
+          <StyledH2
+            fontWeight="900"
+            fontSize={document.body.clientWidth > 368 ? "22px" : "19px"}
+            textAlign="center"
+            margin="20px 0px"
+          >
+            {MenuData.map((item) => item.text).slice(3, 4)}
+          </StyledH2>
+          <SVGWrapperMobile>
+            <svg
+              width="100%"
+              height="100%"
+              viewBox="0 0 100% 100%"
+              preserveAspectRatio="none"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M139 84.5C65 68.9 22 91 0 107.5V0H390.5V54C363.5 45.5 334 47 313.5 63.5C288.5 83.6219 231.5 104 139 84.5Z"
+                fill="#FED957"
+              />
+            </svg>
+          </SVGWrapperMobile>
+        </HeaderWrapper>
+        {content}
+      </DragWrapper>
+    </React.Fragment>
+  ) : (
+    <Wrapper order={open}>{content}</Wrapper>
   );
 };
 

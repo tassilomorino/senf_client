@@ -26,10 +26,14 @@ import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import { useTranslation } from "react-i18next";
 import PostScream from "../PostIdea/PostScream";
 import { ProjectRoomTabData } from "../../../data/ProjectRoomTabData";
+import { openOrganizationFunc } from "apps/senf-client/src/redux/actions/organizationActions";
 
+const Wrapper = styled.div`
+  z-index: 999;
+`;
 const ProjectDialog = ({
   viewport,
-  projectsData,
+  dataFinalProjectRooms,
   loadingProjects,
   dataFinalMap,
   setOpenInsightsPage,
@@ -45,6 +49,7 @@ const ProjectDialog = ({
 
   const project = useSelector((state) => state.data.project);
   const projects = useSelector((state) => state.data.projects);
+  const organization = useSelector((state) => state.data.organization);
 
   const dispatch = useDispatch();
   const loadingProjectRoom = useSelector(
@@ -64,10 +69,12 @@ const ProjectDialog = ({
   }, [openProjectRoom]);
 
   const handleClose = useCallback(() => {
-    console.log(initialMapViewport);
     dispatch(openProjectRoomFunc(null, false));
     dispatch(clearErrors());
     dispatch(setMapViewport(initialMapViewport));
+    if (organization) {
+      dispatch(openOrganizationFunc(true, organization.organizationId));
+    }
   }, [dispatch, initialMapViewport]);
 
   const handleClick = useCallback(
@@ -126,14 +133,7 @@ const ProjectDialog = ({
   const TabSlicer = project?.calendar ? 3 : 1;
 
   return (
-    <React.Fragment>
-      {isMobileCustom && !infoOpen && (
-        <PostScream
-          loadingProjects={loadingProjects}
-          projectsData={projects}
-          project={project}
-        />
-      )}
+    <Wrapper>
       {project && !loadingProjectRoom && (
         <Header
           infoOpen={infoOpen}
@@ -156,7 +156,7 @@ const ProjectDialog = ({
           contact={project?.contact}
           startDate={project?.startDate}
           endDate={project?.endDate}
-          owner={project?.owner}
+          organizationId={project?.organizationId}
           ownerImg={project?.ownerImg}
           infoOpen={infoOpen}
           setInfoOpen={setInfoOpen}
@@ -169,7 +169,7 @@ const ProjectDialog = ({
       {(!infoOpen || (!isMobileCustom && !loadingProjectRoom)) && (
         <SwipeList
           type="projectIdeas"
-          swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}
+          swipeListType="ideas"
           tabLabels={ProjectRoomTabData.map((item) => item.text).slice(
             0,
             TabSlicer
@@ -181,7 +181,7 @@ const ProjectDialog = ({
           viewport={viewport}
           handleDropdown={handleDropdown}
           dropdown={dropdown}
-          projectsData={projectsData}
+          dataFinalProjectRooms={dataFinalProjectRooms}
           loadingProjects={loadingProjects}
           dataFinalMap={dataFinalMap}
           setSearchTerm={setSearchTerm}
@@ -190,7 +190,7 @@ const ProjectDialog = ({
           setOpenInsightsPage={setOpenInsightsPage}
         />
       )}
-    </React.Fragment>
+    </Wrapper>
   );
 };
 
