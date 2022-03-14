@@ -28,6 +28,8 @@ import PostScream from "../PostIdea/PostScream";
 import { ProjectRoomTabData } from "../../../data/ProjectRoomTabData";
 import { openOrganizationFunc } from "apps/senf-client/src/redux/actions/organizationActions";
 
+import firebase from "firebase/compat/app";
+import "firebase/compat/storage";
 const Wrapper = styled.div`
   z-index: 999;
 `;
@@ -50,6 +52,7 @@ const ProjectDialog = ({
   const project = useSelector((state) => state.data.project);
   const projects = useSelector((state) => state.data.projects);
   const organization = useSelector((state) => state.data.organization);
+  const [organizationImage, setOrganizationImage] = useState(null);
 
   const dispatch = useDispatch();
   const loadingProjectRoom = useSelector(
@@ -76,6 +79,21 @@ const ProjectDialog = ({
       dispatch(openOrganizationFunc(true, organization.organizationId));
     }
   }, [dispatch, initialMapViewport]);
+
+  useEffect(async () => {
+    if (project && project.organizationId) {
+      const db = firebase.firestore();
+      const storageRef = firebase.storage().ref();
+      storageRef
+        .child(`/organizationsData/${project.organizationId}/logo/logo`)
+        .getDownloadURL()
+        .then(onResolve);
+
+      function onResolve(image) {
+        setOrganizationImage(image);
+      }
+    }
+  }, [project]);
 
   const handleClick = useCallback(
     (order) => {
@@ -157,7 +175,7 @@ const ProjectDialog = ({
           startDate={project?.startDate}
           endDate={project?.endDate}
           organizationId={project?.organizationId}
-          ownerImg={project?.ownerImg}
+          ownerImg={organizationImage}
           infoOpen={infoOpen}
           setInfoOpen={setInfoOpen}
         />

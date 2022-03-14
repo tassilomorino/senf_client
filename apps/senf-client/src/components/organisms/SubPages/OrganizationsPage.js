@@ -237,11 +237,16 @@ const OrganizationsPage = ({
             <NewButton
               borderType="dashed"
               handleButtonClick={
-                user.authenticated
+                user.authenticated && user.handle === "Senf.koeln"
                   ? openCreateOrganization
-                  : () =>
-                      alert("Bitte melde dich erst mit deinem Senf-Account an!")
+                  : openRequestOrganization
               }
+              // handleButtonClick={
+              //   user.authenticated
+              //     ? openCreateOrganization
+              //     : () =>
+              //         alert("Bitte melde dich erst mit deinem Senf-Account an!")
+              // }
             >
               Organisationsprofil anlegen
             </NewButton>
@@ -299,13 +304,18 @@ const OrganizationsPage = ({
               <NewButton
                 borderType="dashed"
                 handleButtonClick={
-                  user.authenticated
+                  user.authenticated && user.handle === "Senf.koeln"
                     ? openCreateOrganization
-                    : () =>
-                        alert(
-                          "Bitte melde dich erst mit deinem Senf-Account an!"
-                        )
+                    : openRequestOrganization
                 }
+                // handleButtonClick={
+                //   user.authenticated
+                //     ? openCreateOrganization
+                //     : () =>
+                //         alert(
+                //           "Bitte melde dich erst mit deinem Senf-Account an!"
+                //         )
+                // }
               >
                 Organisationsprofil anlegen
               </NewButton>

@@ -115,47 +115,26 @@ const Account = ({ dataFinalMap }) => {
 
   useEffect(async () => {
     const db = firebase.firestore();
-    const storageRef = firebase.storage().ref();
-
     const ref = await db
       .collection("organizations")
       // .where("centerLat", "<", Number(mapViewport.latitude) + 1)
       // .where("centerLat", ">", Number(mapViewport.latitude) - 1)
       .orderBy("createdAt", "desc")
-
       .where("userIds", "array-contains", user.userId)
-
       .get();
 
     const organizations = [];
-    ref.docs.forEach((doc) => {
-      storageRef
-        .child(`/organizationsData/${doc.id}/logo/logo`)
-        .getDownloadURL()
-        .then(onResolve, onReject);
 
-      function onResolve(image) {
-        const docData = {
-          ...doc.data(),
-          organizationId: doc.id,
-          imgUrl: image,
-        };
-        organizations.push(docData);
-        if (organizations.length === ref.size) {
-          setMyOrganizations(organizations);
-          console.log(organizations);
-        }
-      }
-      function onReject() {
-        const docData = {
-          ...doc.data(),
-          organizationId: doc.id,
-        };
-        organizations.push(docData);
-        if (organizations.length === ref.size) {
-          setMyOrganizations(organizations);
-          console.log(organizations);
-        }
+    ref.docs.forEach((doc) => {
+      const docData = {
+        ...doc.data(),
+        organizationId: doc.id,
+      };
+      organizations.push(docData);
+
+      if (organizations.length === ref.size) {
+        setMyOrganizations(organizations);
+        console.log(organizations);
       }
     });
   }, []);
