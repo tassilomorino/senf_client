@@ -130,15 +130,7 @@ const BottomBar = styled.div`
 
 const ProjectCard = (props) => {
   const {
-    project: {
-      projectRoomId,
-      title,
-      imgUrl,
-      brief,
-      status,
-      organizationId,
-      icon,
-    },
+    project: { projectRoomId, title, brief, status, organizationId, icon },
   } = props;
 
   const thisProjectRoomId = projectRoomId;
@@ -151,6 +143,27 @@ const ProjectCard = (props) => {
   const organizations = useSelector((state) => state.data.organizations);
   const openOrganization = useSelector((state) => state.UI.openOrganization);
   const dispatch = useDispatch();
+
+  const [projectRoomImage, setProjectRoomImage] = useState(null);
+
+  useEffect(() => {
+    function onResolve1(image) {
+      setProjectRoomImage(image);
+    }
+    function onResolve(logo) {
+      setLogo(logo);
+    }
+    const storageRef = firebase.storage().ref();
+    storageRef
+      .child(`/organizationsData/${organizationId}/logo/logo`)
+      .getDownloadURL()
+      .then(onResolve);
+
+    storageRef
+      .child(`/organizationsData/${organizationId}/${projectRoomId}/thumbnail`)
+      .getDownloadURL()
+      .then(onResolve1);
+  }, [organizationId]);
 
   const pushScreamId = () => {
     dispatch(openProjectRoomFunc(thisProjectRoomId, true));
@@ -184,17 +197,6 @@ const ProjectCard = (props) => {
     ({ projectRoomId }) => projectRoomId === thisProjectRoomId
   ).length;
 
-  useEffect(() => {
-    function onResolve(logo) {
-      setLogo(logo);
-    }
-    const storageRef = firebase.storage().ref();
-    storageRef
-      .child(`/organizationsData/${organizationId}/logo/logo`)
-      .getDownloadURL()
-      .then(onResolve);
-  }, [organizationId]);
-
   return (
     <Card type="projectRoomCard">
       <CardContent>
@@ -224,7 +226,7 @@ const ProjectCard = (props) => {
               )}
           </StyledH2>
         </CardTitle>
-        <ImgWrapper img={imgUrl}>
+        <ImgWrapper img={projectRoomImage}>
           {status === "archived" && (
             <ImgWrapperOverlay>
               <img src={notPublishedIcon} alt="UploadImageIcon" width="50%" />

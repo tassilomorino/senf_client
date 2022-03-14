@@ -191,5 +191,40 @@
   "organizationTypes_politics": "Politics",
   "organizationTypes_administration": "City administration",
   "organizationTypes_press": "Press",
-  "organizationTypes_other": "Other"
+  "organizationTypes_other": "Other",
+
+  "organization_is_deactivated": "This organization has been deactivated and is currently not public.",
+  "organization_is_uncompleted": "This organization is not yet completed and not yet public.",
+
+  "createOrganizationPage0aTitle": "Create organization profile",
+  "createOrganizationPage0aMobileTitle": "+ Organization",
+  "createOrganizationPage0aSubTitle": "From neighborhood associations to planning offices to political parties - here you can create an organization-profile for your venture.",
+
+  "createOrganizationPage0bTitle": "Organizationtype",
+  "createOrganizationPage0bSubTitle": "What kind of organization are you?",
+
+  "createOrganizationPage1Title": "Info",
+  "createOrganizationPage1SubTitle": "Edit your organization info.",
+  "createOrganizationPage1_FieldName_Title": "Organization-name",
+
+  "createOrganizationPage2Title": "Contact",
+  "createOrganizationPage2SubTitle": "Be contactable to all who are interested in your organization and your intentions.",
+
+  "createOrganizationPage3Title": "Logo",
+  "createOrganizationPage3SubTitle": "Upload your logo or choose a thematically appropriate motif.",
+
+  "createOrganizationPage4Title": "Calendar",
+  "createOrganizationPage4SubTitle": "Whether it's regular get-togethers or big events. Make your schedule visible via the calendar!",
+  "googleCalendarId": "Google-Calendar-Id",
+  "how_to_find_google_calendar_id": "How to find your Google-Calendar-Id?",
+
+  "createOrganizationPage5Title": "FAQ",
+  "createOrganizationPage5SubTitle": "Create FAQ's to be able to answer possible questions of interested visitors.",
+
+  "createOrganizationPage6Title": "Team members",
+  "createOrganizationPage6SubTitle": "Users authorized to edit the content of your organization:",
+  "createOrganizationPage6SubTitle2": "Add more members to your organization:",
+
+  "createOrganizationPage7Title": "Overview",
+  "createOrganizationPage7SubTitle": "Do you want to change any of the entries?"
 }

@@ -241,6 +241,12 @@ const OrganizationsPage = ({
                   ? openCreateOrganization
                   : openRequestOrganization
               }
+              // handleButtonClick={
+              //   user.authenticated
+              //     ? openCreateOrganization
+              //     : () =>
+              //         alert("Bitte melde dich erst mit deinem Senf-Account an!")
+              // }
             >
               Organisationsprofil anlegen
             </NewButton>
@@ -302,6 +308,14 @@ const OrganizationsPage = ({
                     ? openCreateOrganization
                     : openRequestOrganization
                 }
+                // handleButtonClick={
+                //   user.authenticated
+                //     ? openCreateOrganization
+                //     : () =>
+                //         alert(
+                //           "Bitte melde dich erst mit deinem Senf-Account an!"
+                //         )
+                // }
               >
                 Organisationsprofil anlegen
               </NewButton>

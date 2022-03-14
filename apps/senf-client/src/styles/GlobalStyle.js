@@ -13,6 +13,7 @@ export const StyledA = styled.a`
     props.textDecoration ? props.textDecoration : "none"};
   color: ${(props) => (props.color ? props.color : "#353535")};
   pointer-events: all;
+  margin: ${(props) => (props.margin ? props.margin : "0")};
 
   &:hover {
     text-decoration: underline;

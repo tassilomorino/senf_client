@@ -27,8 +27,12 @@ const Header = styled.h3`
 `;
 
 const StyledUL = styled.ol`
-  width: calc(90% - 40px);
-  margin-left: 5%;
+  width: 100%;
+  margin-left: -20px;
+  @media (min-width: 768px) {
+    width: calc(90% - 40px);
+    margin-left: 5%;
+  }
 `;
 const StyledLi = styled.li`
   text-align: left;
@@ -86,7 +90,7 @@ const CreateOrganizationPage0 = ({
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH3 textAlign="center" margin="20px">
+          <StyledH3 textAlign="center" margin="0">
             {pagesData[index].subTitle}
           </StyledH3>
 

@@ -22,6 +22,9 @@ import {
 } from "../../../styles/GlobalStyle";
 import setIconByOrganizationType from "../../../data/setIconByOrganizationType";
 
+import firebase from "firebase/compat/app";
+import "firebase/compat/storage";
+
 const Wrapper = styled.div`
   float: left;
   margin: 10px 0px 0px 10px;
@@ -195,18 +198,28 @@ export const OrganizationCard = (props) => {
   const {
     organization: {
       title,
-      imgUrl,
       organizationId: thisOrganizationId,
       organizationType,
       status,
     },
   } = props;
-
-  const organization = useSelector((state) => state.data.organization);
-
-  const projects = useSelector((state) => state.data.projects);
-
   const dispatch = useDispatch();
+  const organization = useSelector((state) => state.data.organization);
+  const projects = useSelector((state) => state.data.projects);
+  const [organizationImage, setOrganizationImage] = useState(null);
+
+  useEffect(async () => {
+    const db = firebase.firestore();
+    const storageRef = firebase.storage().ref();
+    storageRef
+      .child(`/organizationsData/${thisOrganizationId}/logo/logo`)
+      .getDownloadURL()
+      .then(onResolve);
+
+    function onResolve(image) {
+      setOrganizationImage(image);
+    }
+  }, []);
 
   const handleOpenOrganization = () => {
     dispatch(openOrganizationFunc(true, thisOrganizationId));
@@ -229,7 +242,7 @@ export const OrganizationCard = (props) => {
       <ExpandButton handleButtonClick={handleOpenOrganization} />
 
       <LogoWrapper>
-        <Thumbnail img={imgUrl}></Thumbnail>
+        <Thumbnail img={organizationImage}></Thumbnail>
       </LogoWrapper>
 
       <LogoPlacer>

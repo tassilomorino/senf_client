@@ -29,6 +29,7 @@ import { useTranslation } from "react-i18next";
 import { MenuData } from "../../../data/MenuData";
 import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 import {
+  StyledA,
   StyledH2,
   StyledH3,
   StyledText,
@@ -50,7 +51,7 @@ export const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   margin-top: 0vh;
-  z-index: 998;
+  z-index: 996;
   top: 0;
   position: fixed;
   pointer-events: all;
@@ -125,7 +126,7 @@ const InfoWidget = styled.div`
 `;
 
 const Divider = styled.div`
-  width: 342px;
+  width: calc(100% - 48px);
   height: 1px;
   background-color: rgba(186, 160, 79, 0.2);
   overflow: visible;
@@ -351,29 +352,36 @@ const OrganizationDialog = ({
                 Kontakt
               </StyledH2>
               <br />
-              <Divider />
+              {organization?.contact && (
+                <React.Fragment>
+                  <Divider />
 
-              <StyledText
-                margin="0px 15px 15px 15px"
-                marginLeft="24px"
-                onClick={() => openMail(organization?.contact)}
-              >
-                {organization?.contact}
-              </StyledText>
-              <Divider />
-              <StyledText
-                margin="0px 15px 15px 15px"
-                marginLeft="24px"
-                onClick={() => openLink(organization?.weblink)}
-              >
-                {organization?.weblink}
-              </StyledText>
+                  <StyledA
+                    margin="0px 24px 15px 24px"
+                    onClick={() => openMail(organization?.contact)}
+                  >
+                    {organization?.contact}
+                  </StyledA>
+                </React.Fragment>
+              )}
+              {organization?.weblink && (
+                <React.Fragment>
+                  <Divider />
+                  <StyledA
+                    margin="0px 24px 15px 24px"
+                    onClick={() => openLink(organization?.weblink)}
+                  >
+                    {organization?.weblink}
+                  </StyledA>
+                </React.Fragment>
+              )}
+
               {organization?.address && (
                 <React.Fragment>
                   <Divider />
-                  <StyledText margin="0px 15px 15px 15px" marginLeft="24px">
+                  <StyledA margin="0px 24px 15px 24px">
                     {organization?.address}
-                  </StyledText>
+                  </StyledA>
                 </React.Fragment>
               )}
             </MainModal>
@@ -467,9 +475,13 @@ const OrganizationDialog = ({
       </FlexBox>
 
       <FlexBox>
-        <NewButton handleButtonClick={() => setContactOpen(true)}>
-          {t("contact")}
-        </NewButton>
+        {(organization.contact ||
+          organization.weblink ||
+          organization.address) && (
+          <NewButton handleButtonClick={() => setContactOpen(true)}>
+            {t("contact")}
+          </NewButton>
+        )}
         {/* <NewButton
           margin="0px 10px 0px 10px"
           handleButtonClick={() => setCalendarOpen(true)}

@@ -2,7 +2,6 @@
 
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
-import "firebase/compat/storage";
 
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
@@ -22,8 +21,6 @@ import setIconByOrganizationType from "../../data/setIconByOrganizationType";
 // Get all projects
 export const getOrganizations = (mapViewport) => async (dispatch) => {
   const db = firebase.firestore();
-  const storageRef = firebase.storage().ref();
-
   const ref = await db
     .collection("organizations")
     // .where("centerLat", "<", Number(mapViewport.latitude) + 1)
@@ -42,28 +39,16 @@ export const getOrganizations = (mapViewport) => async (dispatch) => {
 
   const organizations = [];
   ref.docs.forEach((doc) => {
-    storageRef
-      .child(`/organizationsData/${doc.id}/logo/logo`)
-      .getDownloadURL()
-      .then(onResolve, onReject);
-
-    function onResolve(image) {
-      const docData = {
-        ...doc.data(),
-        organizationId: doc.id,
-        imgUrl: image,
-      };
-      organizations.push(docData);
-      if (organizations.length === ref.size) {
-        dispatch({
-          type: SET_ORGANIZATIONS,
-          payload: organizations,
-        });
-      }
-    }
-
-    function onReject() {
-      console.log("error loading organizations");
+    const docData = {
+      ...doc.data(),
+      organizationId: doc.id,
+    };
+    organizations.push(docData);
+    if (organizations.length === ref.size) {
+      dispatch({
+        type: SET_ORGANIZATIONS,
+        payload: organizations,
+      });
     }
   });
 };
@@ -124,7 +109,6 @@ export const loadOrganizationData = (organizationId) => async (dispatch) => {
 export const loadOrganizationProjectRooms =
   (organizationId, organization) => async (dispatch) => {
     const db = firebase.firestore();
-    const storageRef = firebase.storage().ref();
 
     const projectRoomsRef = await db
       .collection("organizations")
@@ -139,54 +123,12 @@ export const loadOrganizationProjectRooms =
     }
 
     projectRoomsRef.docs.forEach((doc) => {
-      storageRef
-        .child(
-          `/organizationsData/${organization.organizationId}/${doc.id}/thumbnail`
-        )
-        .getDownloadURL()
-        .then(onResolvePr, onRejectPr);
-
-      function onResolvePr(projectRoomImage) {
-        organization.projectRooms.push({
-          ...doc.data(),
-          projectRoomId: doc.id,
-          imgUrl: projectRoomImage,
-          organizationType: doc.data().organizationType,
-          icon: setIconByOrganizationType(doc.data().organizationType),
-        });
-        dispatch({ type: SET_ORGANIZATION, payload: organization });
-        // dispatch({ type: STOP_LOADING_DATA });
-      }
-      function onRejectPr(error) {
-        dispatch({ type: SET_ORGANIZATION, payload: organization });
-      }
+      organization.projectRooms.push({
+        ...doc.data(),
+        projectRoomId: doc.id,
+        organizationType: doc.data().organizationType,
+        icon: setIconByOrganizationType(doc.data().organizationType),
+      });
+      dispatch({ type: SET_ORGANIZATION, payload: organization });
     });
   };
-
-/*   export const loadOrganizationProjectRoomsArchived =
-  (organizationId, organization) => async (dispatch) => {
-
-
-     archivedProjectRoomsRef.docs.forEach((doc) => {
-        storageRef
-          .child(
-            `/organizationsData/${organization.organizationId}/${doc.id}/thumbnail`
-          )
-          .getDownloadURL()
-          .then(onResolvePr, onRejectPr);
-
-        function onResolvePr(projectRoomImage) {
-          organization.projectRooms.push({
-            ...doc.data(),
-            projectRoomId: doc.id,
-            imgUrl: projectRoomImage,
-          });
-          dispatch({ type: SET_ORGANIZATION, payload: organization });
-          dispatch({ type: STOP_LOADING_DATA });
-        }
-        function onRejectPr(error) {
-          console.log("error Pr");
-        }
-      });
-  }
- */
