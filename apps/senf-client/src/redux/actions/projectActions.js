@@ -2,7 +2,6 @@
 
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
-import "firebase/compat/storage";
 
 import { closeScream } from "./screamActions";
 import {
@@ -29,7 +28,6 @@ export const getProjects = (mapViewport) => async (dispatch) => {
   dispatch({ type: LOADING_PROJECTS_DATA });
 
   const db = firebase.firestore();
-  const storageRef = firebase.storage().ref();
 
   const ref = await db
     .collectionGroup("projectRooms")
@@ -45,71 +43,31 @@ export const getProjects = (mapViewport) => async (dispatch) => {
   }
   const projects = [];
   ref.docs.forEach(async (doc) => {
-    // const screamsRef = await db
-    //   .collection("screams")
-    //   .where("project", "==", doc.id)
-    //   .get();
+    const docData = {
+      projectRoomId: doc.data().projectRoomId,
 
-    storageRef
-      .child(
-        `/organizationsData/${doc.data().organizationId}/${doc.id}/thumbnail`
-      )
-      .getDownloadURL()
-      .then(onResolve, onReject);
+      title: doc.data().title,
+      brief: doc.data().brief,
+      // owner: doc.data().owner,
+      createdAt: doc.data().createdAt,
+      // startDate: doc.data().startDate,
+      // endDate: doc.data().endDate,
+      status: doc.data().status,
+      geoData: doc.data().geoData,
+      centerLat: doc.data().centerLat,
+      centerLong: doc.data().centerLong,
+      zoom: doc.data().zoom,
 
-    function onResolve(image) {
-      const docData = {
-        projectRoomId: doc.data().projectRoomId,
-
-        title: doc.data().title,
-        brief: doc.data().brief,
-        // owner: doc.data().owner,
-        createdAt: doc.data().createdAt,
-        // startDate: doc.data().startDate,
-        // endDate: doc.data().endDate,
-        status: doc.data().status,
-        geoData: doc.data().geoData,
-        centerLat: doc.data().centerLat,
-        centerLong: doc.data().centerLong,
-        zoom: doc.data().zoom,
-
-        calendar: doc.data().calendar,
-        organizationId: doc.data().organizationId,
-        // weblink: doc.data().weblink,
-        Thema: doc.data().Thema,
-        organizationType: doc.data().organizationType,
-        imgUrl: image,
-        icon: setIconByOrganizationType(doc.data().organizationType),
-        // ideasSize: newOne.length,
-      };
-      projects.push(docData);
-      if (projects.length === ref.size) {
-        dispatch({
-          type: SET_PROJECTS,
-          payload: projects,
-        });
-      }
-
-      // storageRef
-      //   .child(`/organizationsData/${doc.data().organizationId}/logo/logo`)
-      //   .getDownloadURL()
-      //   .then(onResolveSecond, onReject);
-
-      // function onResolveSecond(logo) {
-      //   docData.organizationLogo = logo;
-
-      //   projects.push(docData);
-      //   if (projects.length === ref.size) {
-      //     dispatch({
-      //       type: SET_PROJECTS,
-      //       payload: projects,
-      //     });
-      //   }
-      // }
-    }
-    function onReject(error) {
-      projects.push(doc.data());
-
+      calendar: doc.data().calendar,
+      organizationId: doc.data().organizationId,
+      // weblink: doc.data().weblink,
+      Thema: doc.data().Thema,
+      organizationType: doc.data().organizationType,
+      icon: setIconByOrganizationType(doc.data().organizationType),
+      // ideasSize: newOne.length,
+    };
+    projects.push(docData);
+    if (projects.length === ref.size) {
       dispatch({
         type: SET_PROJECTS,
         payload: projects,
@@ -141,8 +99,6 @@ export const openProjectRoomFunc =
   };
 export const loadProjectRoomData = (projectRoomId) => async (dispatch) => {
   const db = firebase.firestore();
-  const storageRef = firebase.storage().ref();
-
   const ref = await db
     .collectionGroup("projectRooms")
     .where("projectRoomId", "==", projectRoomId)
@@ -155,32 +111,22 @@ export const loadProjectRoomData = (projectRoomId) => async (dispatch) => {
     .get();
 
   ref.docs.forEach((doc) => {
-    storageRef
-      .child(
-        `/organizationsData/${doc.data().organizationId}/${doc.id}/thumbnail`
+    const projectRoom = doc.data();
+    projectRoom.screams = [];
 
-        // `/organizationsData/${doc.data().organizationId}/${doc.id}/thumbnail`
-      )
-      .getDownloadURL()
-      .then((image) => {
-        const projectRoom = doc.data();
-        projectRoom.ownerImg = image;
-        projectRoom.screams = [];
+    screamsRef.docs.forEach((doc) =>
+      projectRoom.screams.push({
+        ...doc.data(),
+        screamId: doc.id,
+        color: setColorByTopic(doc.data().Thema),
+        body: doc.data().body.substr(0, 120),
+      })
+    );
 
-        screamsRef.docs.forEach((doc) =>
-          projectRoom.screams.push({
-            ...doc.data(),
-            screamId: doc.id,
-            color: setColorByTopic(doc.data().Thema),
-            body: doc.data().body.substr(0, 120),
-          })
-        );
-
-        dispatch({
-          type: SET_PROJECT,
-          payload: projectRoom,
-        });
-      });
+    dispatch({
+      type: SET_PROJECT,
+      payload: projectRoom,
+    });
   });
 };
 

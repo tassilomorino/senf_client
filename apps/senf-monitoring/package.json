@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@craco/craco": "^6.4.3",
     "@mapbox/mapbox-sdk": "^0.13.2",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
@@ -24,18 +23,11 @@
     "react-infinite-scroller": "^1.2.5",
     "react-redux": "^7.2.6",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^5.0.0",
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.0",
     "source-map-explorer": "^2.5.2",
     "styled-components": "^5.3.3",
     "universal-cookie": "^4.0.4",
-    "workbox-cacheable-response": "^6.3.0",
-    "workbox-core": "^6.3.0",
-    "workbox-expiration": "^6.3.0",
-    "workbox-precaching": "^6.3.0",
-    "workbox-routing": "^6.3.0",
-    "workbox-strategies": "^6.3.0",
     "yup": "^0.32.11"
   },
   "scripts": {
@@ -68,15 +60,14 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^4.3.5",
+    "@vitejs/plugin-react": "^1.2.0",
     "@welldone-software/why-did-you-render": "^6.2.1",
     "cypress": "^8.1.0",
     "cypress-firebase": "^2.0.0",
     "cypress-wait-until": "^1.7.1",
     "start-server-and-test": "^1.13.1",
-    "tsconfig-paths-webpack-plugin": "^3.5.2",
-    "vite": "^2.8.4",
-    "vite-plugin-pwa": "^0.11.13",
-    "vite-react-jsx": "^1.1.2"
+    "vite": "^2.8.6",
+    "vite-plugin-pwa": "^0.11.13"
   },
   "buildDate": 1645612245854
 }

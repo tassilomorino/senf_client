@@ -10,6 +10,8 @@ import ExpandButton from "../../../atoms/CustomButtons/ExpandButton";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 import { doc, deleteDoc } from "firebase/firestore";
+import { isMobileCustom } from "apps/senf-client/src/util/customDeviceDetect";
+import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -43,14 +45,25 @@ const CurrentStep = styled.div`
   border-radius: 5px;
   background-color: white;
 `;
-
-export const Title = styled.h4`
+const TitlesWrapper = styled.div`
+  position: fixed;
+  height: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 10px;
+  width: calc(100% - 100px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+const Title = styled.h4`
   height: 30px;
   position: relative;
   text-align: center;
   width: 100%;
   top: 10px;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 `;
 
 const SVGWrapper = styled.div`
@@ -96,11 +109,17 @@ const Line = styled.div`
 
 export const StyledIcon = styled.img`
   width: 30px;
-  top: 20px;
-  left: calc(100% - 60px);
   position: absolute;
   z-index: 2;
   pointer-events: all;
+
+  top: 25px;
+  left: calc(100% - 55px);
+
+  @media (min-width: 768px) {
+    top: 20px;
+    left: calc(100% - 60px);
+  }
 `;
 
 const TopNavigation = ({ pagesData, index, title, currentStep, setClose }) => {
@@ -157,51 +176,106 @@ const TopNavigation = ({ pagesData, index, title, currentStep, setClose }) => {
         document.getElementById("portal-root-modal")
       )}
 
+      <CustomIconButton
+        name="Close"
+        position="fixed"
+        margin={document.body.clientWidth > 768 ? "10px" : "15px 5px"}
+        left="0"
+        top="0"
+        zIndex={2}
+        backgroundColor="transparent"
+        shadow={false}
+        handleButtonClick={setClose}
+      />
+
       {/* <ProgressLine>
         <CurrentStep index={index} />
       </ProgressLine> */}
-      <Title>{title}</Title>
-      <StyledH2 fontWeight="900" textAlign="center" fontSize="24px">
-        {pagesData[index].title}
-      </StyledH2>
+      <TitlesWrapper>
+        {title && <Title>{title}</Title>}
+        <StyledH2
+          fontWeight="900"
+          textAlign="center"
+          fontSize="24px"
+          margin="0px 50px"
+        >
+          {isMobileCustom && pagesData[index].mobileTitle
+            ? pagesData[index].mobileTitle
+            : pagesData[index].title}
+        </StyledH2>
+      </TitlesWrapper>
 
-      <StyledIcon
-        onClick={() => setSettingsOpen(true)}
-        src={SettingsIcon}
-        width="100%"
-        alt="project-thumbnail"
-      />
+      {index !== 0 && index !== 1 && (
+        <StyledIcon
+          onClick={() => setSettingsOpen(true)}
+          src={SettingsIcon}
+          width="100%"
+          alt="project-thumbnail"
+        />
+      )}
 
       <SVGWrapper>
-        <svg
-          width="100%"
-          height="156"
-          viewBox="0 0 1100 126"
-          preserveAspectRatio="none"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 125.5V0.5H1130.5V99C1025 143 974.588 95.9476 942.5 83C828.5 37 819 43.5 704 62.5C558 86.6217 307.5 44.5 196 99C128.785 131.854 37.1667 124.667 0 125.5Z"
-            fill="#FED957"
-          />
-        </svg>
+        {isMobileCustom ? (
+          <svg
+            width="100%"
+            height="106"
+            viewBox="0 0 400 127"
+            preserveAspectRatio="none"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0 109.5V0H421V102.5C370 118.5 359 106 343 103.5C322.158 100.243 296 93.3391 263.303 107.934C209.319 132.03 151.529 95.6048 85 118.5C46.0731 131.896 13.7423 108.668 0 109.5Z"
+              fill="#FED957"
+            />
+          </svg>
+        ) : (
+          <svg
+            width="100%"
+            height="156"
+            viewBox="0 0 1100 126"
+            preserveAspectRatio="none"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0 125.5V0.5H1130.5V99C1025 143 974.588 95.9476 942.5 83C828.5 37 819 43.5 704 62.5C558 86.6217 307.5 44.5 196 99C128.785 131.854 37.1667 124.667 0 125.5Z"
+              fill="#FED957"
+            />
+          </svg>
+        )}
       </SVGWrapper>
 
       <SVGWrapper2 currentStep={currentStep}>
-        <svg
-          width="100%"
-          height="156"
-          viewBox="0 0 1100 126"
-          preserveAspectRatio="none"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 125.5V0.5H1130.5V99C1025 143 974.588 95.9476 942.5 83C828.5 37 819 43.5 704 62.5C558 86.6217 307.5 44.5 196 99C128.785 131.854 37.1667 124.667 0 125.5Z"
-            fill="white"
-          />
-        </svg>
+        {isMobileCustom ? (
+          <svg
+            width="100%"
+            height="106"
+            viewBox="0 0 400 127"
+            preserveAspectRatio="none"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0 109.5V0H421V102.5C370 118.5 359 106 343 103.5C322.158 100.243 296 93.3391 263.303 107.934C209.319 132.03 151.529 95.6048 85 118.5C46.0731 131.896 13.7423 108.668 0 109.5Z"
+              fill="white"
+            />
+          </svg>
+        ) : (
+          <svg
+            width="100%"
+            height="156"
+            viewBox="0 0 1100 126"
+            preserveAspectRatio="none"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0 125.5V0.5H1130.5V99C1025 143 974.588 95.9476 942.5 83C828.5 37 819 43.5 704 62.5C558 86.6217 307.5 44.5 196 99C128.785 131.854 37.1667 124.667 0 125.5Z"
+              fill="white"
+            />
+          </svg>
+        )}
       </SVGWrapper2>
     </Wrapper>
   );

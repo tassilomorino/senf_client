@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 import Navbar from "./components/Navbar";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import AuthProvider from "./context/auth";
+import { AuthProvider } from "./context/auth";
 import PrivateRoute from "./components/PrivateRoute";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
@@ -39,7 +39,7 @@ i18n
 function App() {
   return (
     <>
-      {process.env.REACT_APP_NO_CRAWL && (
+      {import.meta.env.VITE_NO_CRAWL && (
         /* only for senf-workspace-test.netlify.app */
         <Helmet>
           <meta name="robots" content="noindex" />

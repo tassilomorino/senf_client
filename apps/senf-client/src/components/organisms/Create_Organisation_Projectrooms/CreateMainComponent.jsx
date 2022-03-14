@@ -162,6 +162,7 @@ const CreateProjectDialog = ({ type }) => {
   const pagesData = [
     {
       title: t("createOrganizationPage0aTitle"),
+      mobileTitle: t("createOrganizationPage0aMobileTitle"),
       subTitle: t("createOrganizationPage0aSubTitle"),
     },
     {
@@ -369,18 +370,6 @@ const CreateProjectDialog = ({ type }) => {
         pagesData={pagesData}
         title={title}
         setClose={setClose}
-      />
-
-      <CustomIconButton
-        name="Close"
-        position="fixed"
-        margin={document.body.clientWidth > 768 ? "10px" : "10px"}
-        left="0"
-        top="0"
-        zIndex={2}
-        backgroundColor="transparent"
-        shadow={false}
-        handleButtonClick={setClose}
       />
 
       {transitions((style, i) => {

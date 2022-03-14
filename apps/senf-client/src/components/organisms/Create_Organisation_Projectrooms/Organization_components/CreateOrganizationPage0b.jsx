@@ -20,8 +20,8 @@ import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 import organizationTypes from "../../../../data/organizationTypes";
 
 const CoverWrapper = styled.div`
-  margin-left: 10%;
-  width: 80%;
+  margin-left: 0%;
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
@@ -29,6 +29,12 @@ const CoverWrapper = styled.div`
   grid-template-areas:
     ". ."
     ". .";
+
+  @media (min-width: 768px) {
+    margin-left: 10%;
+    width: 80%;
+    padding-top: 20px;
+  }
 `;
 const Covers = styled.div`
   width: 100%;
@@ -59,7 +65,7 @@ const Icon = styled.div`
   margin: 45% 35% 25% 35%;
 `;
 const CoverTitle = styled.span`
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 900;
   /* font-family: PlayfairDisplay-Bold; */
   color: #353535;
@@ -67,6 +73,10 @@ const CoverTitle = styled.span`
   width: 100%;
   position: absolute;
   top: 30px;
+
+  @media (min-width: 768px) {
+    font-size: 18px;
+  }
 `;
 
 const CreateOrganizationPage1 = ({
