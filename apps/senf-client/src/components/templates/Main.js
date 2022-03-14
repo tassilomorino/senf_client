@@ -120,7 +120,7 @@ const Main = () => {
   );
   const [openInsightsPage, setOpenInsightsPage] = useState(false);
   const [openOrganizationsPage, setOpenOrganizationsPage] = useState(false);
-
+  const userLikes = useSelector((state) => state.user.likes);
   const voted = useSelector((state) => state.UI.voted);
   const screams = useSelector((state) => state.data.screams);
   const myScreams = useSelector((state) => state.data.myScreams);
@@ -537,7 +537,7 @@ const Main = () => {
 
       <ErrorBackground loading={loading} />
 
-      {voted && <ThanksForTheVote />}
+      {voted && userLikes.length <= 1 && <ThanksForTheVote />}
       {changeLocationModalOpen && (
         <ChangeLocationModal
           setChangeLocationModalOpen={setChangeLocationModalOpen}

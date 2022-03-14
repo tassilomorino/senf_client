@@ -1,5 +1,6 @@
-import reactJsx from "vite-react-jsx";
 import { VitePWA } from "vite-plugin-pwa";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 const pwaOptions = {
   devOptions: {
     enabled: true,
@@ -35,9 +36,7 @@ const pwaOptions = {
     ],
   },
 };
-export default {
-  plugins: [reactJsx(), VitePWA(pwaOptions)],
-  server: {
-    port: 4000,
-  },
-};
+
+export default defineConfig({
+  plugins: [react(), VitePWA(pwaOptions)],
+});
