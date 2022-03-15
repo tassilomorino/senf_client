@@ -2,7 +2,7 @@
 
 import { TextField } from "@material-ui/core";
 import React from "react";
-//import Geocoder from "react-mapbox-gl-geocoder";
+import Geocoder from "../../../atoms/map/Geocoder";
 import { OptionsProjects } from "../../../../data/OptionsProjects";
 import { OptionsTopics } from "../../../../data/OptionsTopics";
 import { StyledH3 } from "../../../../styles/GlobalStyle";
@@ -64,7 +64,7 @@ const EditModalMainFields = ({
         />
       </div>
 
-      {/*    <Geocoder
+      <Geocoder
         mapboxApiAccessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
         onSelected={onSelected}
         {...viewport}
@@ -75,7 +75,7 @@ const EditModalMainFields = ({
         className="geocoder-edit"
         inputComponent={MyInput}
         updateInputOnSelect
-      /> */}
+      />
 
       <TextField
         id="title"
