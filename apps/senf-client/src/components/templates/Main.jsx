@@ -36,7 +36,7 @@ import {
   setSwipePositionUp,
 } from "../../redux/actions/UiActions";
 
-//Components
+// Components
 import InsightsPage from "../organisms/SubPages/InsightsPage";
 import DesktopSidebar from "../molecules/Navigation/DesktopSidebar";
 import Topbar from "../molecules/Navigation/Topbar";
