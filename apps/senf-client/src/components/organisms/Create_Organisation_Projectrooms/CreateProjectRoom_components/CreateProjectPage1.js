@@ -21,7 +21,13 @@ import {
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 
-const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
+const CreateProjectPage1 = ({
+  onClickNext,
+  onClickPrev,
+  pagesData,
+  index,
+  setTitle,
+}) => {
   const { t } = useTranslation();
   const [outsideClick, setOutsideClick] = useState(false);
   const [nextClicked, setNextClicked] = useState(false);
@@ -33,8 +39,6 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
       setOutsideClick(false);
     }, 10000);
   });
-
-  const [title, setTitle] = useState(null);
 
   const validationSchema = yup.object({
     title: yup
@@ -161,20 +165,8 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
     <React.Fragment>
       <ComponentWrapper ref={outerRef}>
         <ComponentInnerWrapper>
-          <StyledH2 fontWeight="900" textAlign="center">
-            {title ? (
-              <span>Projektinfos bearbeiten</span>
-            ) : (
-              <span>
-                Erstelle deinen <br />
-                Projektraum
-              </span>
-            )}
-          </StyledH2>
           <StyledH3 textAlign="center" margin="20px">
-            Wähle einen passenden Projektnamen sowie eine
-            Projektraumbeschreibung, die zum einen informiert und zum anderen
-            auffordert Ideen beizutragen und sich einzubringen.
+            {pagesData[index].subTitle}
           </StyledH3>
 
           <TextField
@@ -306,6 +298,8 @@ const CreateProjectPage1 = ({ onClickNext, onClickPrev }) => {
         handleNext={handleNext}
         disabled={!formik.isValid || nextClicked}
         loading={nextClicked}
+        pagesData={pagesData}
+        index={index}
       />
     </React.Fragment>
   );

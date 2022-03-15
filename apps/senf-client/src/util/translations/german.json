@@ -238,5 +238,37 @@
   "createOrganizationPage6SubTitle2": "Füge weitere Mitglieder:innen deiner Organisation hinzu:",
 
   "createOrganizationPage7Title": "Übersicht",
-  "createOrganizationPage7SubTitle": "Willst du an den Angaben etwas verändern?"
+  "createOrganizationPage7SubTitle": "Willst du an den Angaben etwas verändern?",
+  "createOrganizationPage7ToggleTitle": "Status des Organisationsprofils",
+
+  "projectRoom_is_deactivated": "Diese Organisation ist deaktiviert worden und ist momentatn nicht öffentlich.",
+  "projectRoom_is_uncompleted": "Diese Organisation ist noch nicht fertiggestellt und noch nicht öffentlich.",
+
+  "createProjectRoomPage0aTitle": "Organisationsprofil auswählen",
+  "createProjectRoomPage0aMobileTitle": "Organisation wählen",
+  "createProjectRoomPage0aSubTitle": "Wähle die Organisation aus, für die du den Projektraum erstellen möchtest",
+
+  "createProjectRoomPage1Title": "Infos",
+  "createProjectRoomPage1SubTitle": "Wähle einen passenden Projektnamen sowie eine Projektraumbeschreibung, die zum einen informiert und zum anderen auffordert Ideen beizutragen und sich einzubringen.",
+  "createProjectRoomPage1_FieldName_Title": "Projektraum-Name",
+
+  "createProjectRoomPage2Title": "Kontakt",
+  "createProjectRoomPage2SubTitle": "Seid erreichbar für alle, die an diesem Projektraum und euren Vorhaben interessiert sind.",
+
+  "createProjectRoomPage3Title": "Bild",
+  "createProjectRoomPage3SubTitle": "Lade ein aussagekräftiges Bild für den Projektraum hoch und wähle dabei nach Möglichkeit ein thematisch passendes Motiv.",
+
+  "createProjectRoomPage4Title": "Gebiet",
+  "createProjectRoomPage4SubTitle": "Mit deinem individuellen Projektraum kannst du ortsbezogen Ideen sammeln. Zeichne das Gebiet ein!",
+
+  "createProjectRoomPage5Title": "Kalender",
+  "createProjectRoomPage5SubTitle": "Aktiviere den Kalender für deinen Projektraum!",
+
+  "createProjectRoomPage6Title": "Teammitglieder",
+  "createProjectRoomPage6SubTitle": "Zur Bearbeitung der Inhalte Ihrer Organisation bevollmächtigte Nutzer:innen:",
+  "createProjectRoomPage6SubTitle2": "Füge weitere Mitglieder:innen deiner Organisation hinzu:",
+
+  "createProjectRoomPage7Title": "Übersicht",
+  "createProjectRoomPage7SubTitle": "Willst du an den Angaben etwas verändern?",
+  "createProjectRoomPage7ToggleTitle": "Status des Projektraums"
 }

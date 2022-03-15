@@ -18,34 +18,27 @@ import {
 } from "../styles/sharedStyles";
 import { StyledH2, StyledH3, StyledImg } from "../../../../styles/GlobalStyle";
 import Navigation from "../Components/Navigation";
+import { InlineOrganizationCard } from "../Components/InlineOrganizationCard";
 
-const OrganizationCard = styled.div`
-  height: 280px;
-  width: 250px;
-  background-color: #ffe898;
-  position: relative;
-  margin: 20px calc(50% - 125px);
-  border-radius: 18px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  outline: ${(props) =>
-    props.selectedOrganization ? "3px solid #353535 " : "3px solid white"};
+const CoverWrapper = styled.div`
+  margin-left: 0%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px 20px;
+  grid-template-areas:
+    ". ."
+    ". .";
 
-  outline-offset: -3px;
-`;
-const ImgWrapper = styled.div`
-  width: 200px;
-  height: 200px;
-  background-color: white;
-  border-radius: 100%;
-  position: relative;
-  overflow: hidden;
-  margin-top: 20px;
+  @media (min-width: 768px) {
+    margin-left: 10%;
+    width: 80%;
+    padding-top: 20px;
+  }
 `;
 
-const CreateProjectPage1 = ({ onClickNext }) => {
+const CreateProjectPage1 = ({ onClickNext, pagesData, index }) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
   const organizations = useSelector((state) => state.data.organizations);
@@ -134,30 +127,22 @@ const CreateProjectPage1 = ({ onClickNext }) => {
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH2 fontWeight="900" textAlign="center">
-            Übersicht
-          </StyledH2>
           <StyledH3 textAlign="center" margin="20px">
-            Wähle einen passenden Projektnamen sowie eine
-            Projektraumbeschreibung, die zum einen informiert und zum anderen
-            auffordert Ideen beizutragen und sich einzubringen.
+            {pagesData[index].subTitle}
           </StyledH3>
-
-          {myOrganizations.map((organization) => (
-            <OrganizationCard
-              onClick={() => handleDropdown(organization.organizationId)}
-              selectedOrganization={
-                organization.organizationId === selectedOrganizationId
-              }
-            >
-              <ImgWrapper>
-                <StyledImg src={organization.imgUrl} width="100%" />
-              </ImgWrapper>
-              <StyledH2 fontWeight="900" textAlign="center" margin="20px 0 0 0">
-                {organization.title}
-              </StyledH2>
-            </OrganizationCard>
-          ))}
+          <CoverWrapper>
+            {myOrganizations.map(
+              ({ organizationId, title, organizationType }) => (
+                <InlineOrganizationCard
+                  organizationId={organizationId}
+                  title={title}
+                  organizationType={organizationType}
+                  handleDropdown={handleDropdown}
+                  selectedOrganizationId={selectedOrganizationId}
+                />
+              )
+            )}
+          </CoverWrapper>
         </ComponentInnerWrapper>
       </ComponentWrapper>
 
@@ -166,6 +151,8 @@ const CreateProjectPage1 = ({ onClickNext }) => {
         handleNext={handleNext}
         disabled={!selectedOrganizationId || nextClicked}
         loading={nextClicked}
+        pagesData={pagesData}
+        index={index}
       />
     </React.Fragment>
   );

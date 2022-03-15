@@ -14,7 +14,6 @@ import { PageWrapper } from "./styles/sharedStyles";
 import TopNavigation from "./Components/TopNavigation";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import MainDialog from "../../atoms/Layout/MainDialog";
-import CreateProjectPage0 from "./CreateProjectRoom_components/CreateProjectPage0";
 import CreateProjectPage0a from "./CreateProjectRoom_components/CreateProjectPage0a";
 import CreateProjectPage1 from "./CreateProjectRoom_components/CreateProjectPage1";
 import CreateProjectPage2 from "./CreateProjectRoom_components/CreateProjectPage2";
@@ -33,13 +32,13 @@ import CreateOrganizationPage6 from "./Organization_components/CreateOrganizatio
 import CreateOrganizationPagePreview from "./Organization_components/CreateOrganizationPreview";
 
 //Redux
-import FinishedCreatingOrganization from "./Organization_components/FinishedCreatingOrganization";
 import {
   getOrganizations,
   openOrganizationFunc,
   stateCreateOrganizationsFunc,
 } from "../../../redux/actions/organizationActions";
 import { openCreateProjectRoomFunc } from "../../../redux/actions/projectActions";
+import CreateProjectPage5 from "./CreateProjectRoom_components/CreateProjectPage5";
 
 const CreateProjectDialog = ({ type }) => {
   const openOrganization = useSelector((state) => state.UI.openOrganization);
@@ -51,23 +50,35 @@ const CreateProjectDialog = ({ type }) => {
   );
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [title, setTitle] = useState(null);
 
-  const [index, set] = useState(1);
+  const [projectRoomTitle, setProjectRoomTitle] = useState(null);
+  const [projectRoomContact, setProjectRoomContact] = useState(null);
+  const [projectRoomWeblink, setProjectRoomWeblink] = useState(null);
+  const [projectRoomImage, setProjectRoomImage] = useState(null);
+  const [projectRoomArea, setProjectRoomArea] = useState(null);
+  const [projectRoomCalendar, setProjectRoomCalendar] = useState(null);
+  const [projectRoomTeam, setProjectRoomTeam] = useState(null);
+
+  const [organizationTitle, setOrganizationTitle] = useState(null);
+
+  const [index, set] = useState(0);
 
   useEffect(() => {
     async function fetchData() {
       const db = firebase.firestore();
       if (openCreateProjectRoom) {
-        if (localStorage.getItem("createProjectPostEdit")) {
+        //IF EDITING A PROJECTROOM
+        if (localStorage.getItem("createProjectRoomPostEdit")) {
           set(pages.length - 1);
-        } else {
-          set(0);
         }
+
+        //IF CONTINUING TO WORK ON A PROJECTROOM
         if (
           typeof Storage !== "undefined" &&
           localStorage.getItem("createProjectRoomId")
         ) {
+          set(pages.length - 1);
+
           const ref = await db
             .collection("organizations")
             .doc(localStorage.getItem("createProjectRoomOrganizationId"))
@@ -79,16 +90,30 @@ const CreateProjectDialog = ({ type }) => {
             console.log("No such document!");
           } else {
             const data = ref.data();
-            setTitle(data.title);
+            if (data.title) {
+              setProjectRoomTitle(data.title);
+            }
+            if (data.contact) {
+              setProjectRoomContact(data.contact);
+            }
+            if (data.weblink) {
+              setProjectRoomWeblink(data.weblink);
+            }
+            // if(data.title){
+            //   setProjectRoomImage(data.title);
+            // }
+            if (data.geoData) {
+              setProjectRoomArea(data.geoData);
+            }
           }
         }
       } else if (openCreateOrganization) {
+        //IF EDITING A ORGANIZATION
         if (localStorage.getItem("createOrganizationPostEdit")) {
-          console.log(localStorage);
           set(pages.length - 1);
-        } else {
-          set(0);
         }
+
+        //IF CONTINUING TO WORK ON A ORGANIZATION
 
         if (
           typeof Storage !== "undefined" &&
@@ -103,7 +128,8 @@ const CreateProjectDialog = ({ type }) => {
             console.log("No such document!");
           } else {
             const data = ref.data();
-            setTitle(data.title);
+            setOrganizationTitle(data.title);
+            set(pages.length - 1);
           }
         }
       }
@@ -152,70 +178,112 @@ const CreateProjectDialog = ({ type }) => {
     dispatch(openCreateProjectRoomFunc(false));
     dispatch(stateCreateOrganizationsFunc(false));
 
-    localStorage.removeItem("createProjectPostEdit");
-
     if (localStorage.getItem("createOrganizationPostEdit") === "true") {
       localStorage.removeItem("createOrganizationId");
       localStorage.removeItem("createOrganizationPostEdit");
     }
+
+    if (localStorage.getItem("createProjectRoomPostEdit") === "true") {
+      localStorage.removeItem("createProjectRoomId");
+      localStorage.removeItem("createProjectRoomPostEdit");
+    }
   };
-  const pagesData = [
-    {
-      title: t("createOrganizationPage0aTitle"),
-      mobileTitle: t("createOrganizationPage0aMobileTitle"),
-      subTitle: t("createOrganizationPage0aSubTitle"),
-    },
-    {
-      title: t("createOrganizationPage0bTitle"),
-      subTitle: t("createOrganizationPage0bSubTitle"),
-    },
-    {
-      title: t("createOrganizationPage1Title"),
-      subTitle: t("createOrganizationPage1SubTitle"),
-    },
-    {
-      title: t("createOrganizationPage2Title"),
-      subTitle: t("createOrganizationPage2SubTitle"),
-    },
-    {
-      title: t("createOrganizationPage3Title"),
-      subTitle: t("createOrganizationPage3SubTitle"),
-    },
-    {
-      title: t("createOrganizationPage4Title"),
-      subTitle: t("createOrganizationPage4SubTitle"),
-    },
-    {
-      title: t("createOrganizationPage5Title"),
-      subTitle: t("createOrganizationPage5SubTitle"),
-    },
-    {
-      title: t("createOrganizationPage6Title"),
-      subTitle: t("createOrganizationPage6SubTitle"),
-      subTitle2: t("createOrganizationPage6SubTitle2"),
-    },
-    {
-      title: t("createOrganizationPage7Title"),
-      subTitle: t("createOrganizationPage7SubTitle"),
-    },
-  ];
+  const pagesData =
+    type === "projectRoom"
+      ? [
+          {
+            title: t("createProjectRoomPage0aTitle"),
+            mobileTitle: t("createProjectRoomPage0aMobileTitle"),
+            subTitle: t("createProjectRoomPage0aSubTitle"),
+          },
+
+          {
+            title: t("createProjectRoomPage1Title"),
+            subTitle: t("createProjectRoomPage1SubTitle"),
+          },
+          {
+            title: t("createProjectRoomPage2Title"),
+            subTitle: t("createProjectRoomPage2SubTitle"),
+          },
+          {
+            title: t("createProjectRoomPage3Title"),
+            subTitle: t("createProjectRoomPage3SubTitle"),
+          },
+          {
+            title: t("createProjectRoomPage4Title"),
+            subTitle: t("createProjectRoomPage4SubTitle"),
+          },
+          {
+            title: t("createProjectRoomPage5Title"),
+            subTitle: t("createProjectRoomPage5SubTitle"),
+          },
+
+          {
+            title: t("createProjectRoomPage7Title"),
+            subTitle: t("createProjectRoomPage7SubTitle"),
+          },
+        ]
+      : [
+          {
+            title: t("createOrganizationPage0aTitle"),
+            mobileTitle: t("createOrganizationPage0aMobileTitle"),
+            subTitle: t("createOrganizationPage0aSubTitle"),
+          },
+          {
+            title: t("createOrganizationPage0bTitle"),
+            subTitle: t("createOrganizationPage0bSubTitle"),
+          },
+          {
+            title: t("createOrganizationPage1Title"),
+            subTitle: t("createOrganizationPage1SubTitle"),
+          },
+          {
+            title: t("createOrganizationPage2Title"),
+            subTitle: t("createOrganizationPage2SubTitle"),
+          },
+          {
+            title: t("createOrganizationPage3Title"),
+            subTitle: t("createOrganizationPage3SubTitle"),
+          },
+          {
+            title: t("createOrganizationPage4Title"),
+            subTitle: t("createOrganizationPage4SubTitle"),
+          },
+          {
+            title: t("createOrganizationPage5Title"),
+            subTitle: t("createOrganizationPage5SubTitle"),
+          },
+          {
+            title: t("createOrganizationPage6Title"),
+            subTitle: t("createOrganizationPage6SubTitle"),
+            subTitle2: t("createOrganizationPage6SubTitle2"),
+          },
+          {
+            title: t("createOrganizationPage7Title"),
+            subTitle: t("createOrganizationPage7SubTitle"),
+          },
+        ];
 
   const pages =
     type === "projectRoom"
       ? [
           ({ style }) => (
             <PageWrapper>
-              <CreateProjectPage0 set={set} />
+              <CreateProjectPage0a
+                onClickNext={onClickNext}
+                pagesData={pagesData}
+                index={index}
+              />
             </PageWrapper>
           ),
           ({ style }) => (
             <PageWrapper>
-              <CreateProjectPage0a onClickNext={onClickNext} />
-            </PageWrapper>
-          ),
-          ({ style }) => (
-            <PageWrapper>
-              <CreateProjectPage1 onClickNext={onClickNext} />
+              <CreateProjectPage1
+                onClickNext={onClickNext}
+                pagesData={pagesData}
+                index={index}
+                setTitle={setProjectRoomTitle}
+              />
             </PageWrapper>
           ),
           ({ style }) => (
@@ -223,6 +291,8 @@ const CreateProjectDialog = ({ type }) => {
               <CreateProjectPage2
                 onClickNext={onClickNext}
                 onClickPrev={onClickPrev}
+                pagesData={pagesData}
+                index={index}
               />
             </PageWrapper>
           ),
@@ -235,6 +305,8 @@ const CreateProjectDialog = ({ type }) => {
               <CreateProjectPage3
                 onClickNext={onClickNext}
                 onClickPrev={onClickPrev}
+                pagesData={pagesData}
+                index={index}
               />
             </PageWrapper>
           ),
@@ -243,6 +315,18 @@ const CreateProjectDialog = ({ type }) => {
               <CreateProjectPage4
                 onClickNext={onClickNext}
                 onClickPrev={onClickPrev}
+                pagesData={pagesData}
+                index={index}
+              />
+            </PageWrapper>
+          ),
+          ({ style }) => (
+            <PageWrapper>
+              <CreateProjectPage5
+                onClickNext={onClickNext}
+                onClickPrev={onClickPrev}
+                pagesData={pagesData}
+                index={index}
               />
             </PageWrapper>
           ),
@@ -252,6 +336,10 @@ const CreateProjectDialog = ({ type }) => {
                 onClickPrev={onClickPrev}
                 setClose={setClose}
                 set={set}
+                pagesData={pagesData}
+                listItems={pagesData.slice(1, -1)}
+                index={index}
+                projectRoomTitle={projectRoomTitle}
               />
             </PageWrapper>
           ),
@@ -284,7 +372,7 @@ const CreateProjectDialog = ({ type }) => {
                 onClickNext={onClickNext}
                 onClickPrev={onClickPrev}
                 set={set}
-                setTitle={setTitle}
+                setTitle={setOrganizationTitle}
                 pagesData={pagesData}
                 index={index}
               />
@@ -368,7 +456,7 @@ const CreateProjectDialog = ({ type }) => {
         currentStep={currentStep}
         index={index}
         pagesData={pagesData}
-        title={title}
+        title={type === "projectRoom" ? projectRoomTitle : organizationTitle}
         setClose={setClose}
       />
 

@@ -95,7 +95,7 @@ const Header = ({
   const handleEdit = () => {
     localStorage.setItem("createProjectRoomOrganizationId", organizationId);
     localStorage.setItem("createProjectRoomId", projectRoomId);
-    localStorage.setItem("createProjectPostEdit", true);
+    localStorage.setItem("createProjectRoomPostEdit", true);
 
     dispatch(openCreateProjectRoomFunc(true));
   };

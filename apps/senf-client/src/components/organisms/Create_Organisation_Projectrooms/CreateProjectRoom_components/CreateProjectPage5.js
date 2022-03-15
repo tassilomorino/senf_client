@@ -40,19 +40,11 @@ const StyledImg = styled.img`
   object-fit: cover;
 `;
 
-const CreateProjectPage4 = ({ onClickNext, onClickPrev, pagesData, index }) => {
+const CreateProjectPage5 = ({ onClickNext, onClickPrev, pagesData, index }) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
 
-  const [mapOpen, setMapOpen] = useState(false);
-  const mapViewport = useSelector((state) => state.data.mapViewport);
-  const mapRef = useRef(null);
-  const [viewport, setViewport] = useState(null);
-  const [data, setData] = useState(null);
-
-  const _onViewportChange = (viewport) => {
-    setViewport(viewport);
-  };
+  const [calendar, setCalendar] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -72,24 +64,8 @@ const CreateProjectPage4 = ({ onClickNext, onClickPrev, pagesData, index }) => {
           console.log("No such document!");
         } else {
           const data = ref.data();
-          if (data.geoData) {
-            setData(JSON.parse(data.geoData));
-          }
-          if (data.centerLong) {
-            setViewport({
-              latitude: data.centerLat,
-              longitude: data.centerLong,
-              zoom: data.zoom,
-              pitch: 0,
-            });
-          } else {
-            const viewport = {
-              zoom: mapViewport.zoom,
-              latitude: mapViewport.latitude,
-              longitude: mapViewport.longitude,
-              transitionDuration: 1000,
-            };
-            setViewport(viewport);
+          if (data.calendar) {
+            setCalendar(data.calendar);
           }
         }
       }
@@ -107,38 +83,12 @@ const CreateProjectPage4 = ({ onClickNext, onClickPrev, pagesData, index }) => {
 
   return (
     <React.Fragment>
-      <MapDialog
-        mapOpen={mapOpen}
-        setMapOpen={setMapOpen}
-        viewport={viewport}
-        mapRef={mapRef}
-        _onViewportChange={_onViewportChange}
-        data={data}
-        setData={setData}
-        setViewport={setViewport}
-      />
-
       <ComponentWrapper>
         <ComponentInnerWrapper>
           <StyledH3 textAlign="center" margin="20px">
             {pagesData[index].subTitle}
           </StyledH3>
-
-          <DrawMapButton onClick={setMapOpen}>
-            {data ? (
-              <MapPreview
-                mapOpen={mapOpen}
-                setMapOpen={setMapOpen}
-                viewport={viewport}
-                mapRef={mapRef}
-                _onViewportChange={_onViewportChange}
-                data={data}
-                setData={setData}
-              />
-            ) : (
-              <StyledImg src={DrawMapImage} />
-            )}
-          </DrawMapButton>
+          Calendar-checkbox
         </ComponentInnerWrapper>
       </ComponentWrapper>
 
@@ -147,7 +97,7 @@ const CreateProjectPage4 = ({ onClickNext, onClickPrev, pagesData, index }) => {
         prevLabel={t("back")}
         handleNext={handleNext}
         handlePrev={onClickPrev}
-        disabled={!data || nextClicked}
+        // disabled={!data || nextClicked}
         loading={nextClicked}
         pagesData={pagesData}
         index={index}
@@ -156,4 +106,4 @@ const CreateProjectPage4 = ({ onClickNext, onClickPrev, pagesData, index }) => {
   );
 };
 
-export default CreateProjectPage4;
+export default CreateProjectPage5;

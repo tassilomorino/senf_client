@@ -54,7 +54,7 @@ const StyledImg = styled.img`
   object-fit: cover;
 `;
 
-const CreateProjectPage3 = ({ onClickNext, onClickPrev }) => {
+const CreateProjectPage3 = ({ onClickNext, onClickPrev, pagesData, index }) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [nextClicked, setNextClicked] = useState(false);
@@ -125,14 +125,9 @@ const CreateProjectPage3 = ({ onClickNext, onClickPrev }) => {
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH2 fontWeight="900" textAlign="center">
-            Bild hochladen
-          </StyledH2>
           <StyledH3 textAlign="center" margin="20px">
-            Lade ein aussagekräftiges Bild für den Projektraum hoch und wähle
-            dabei nach Möglichkeit ein thematisch passendes Motiv.
+            {pagesData[index].subTitle}
           </StyledH3>
-
           <StyledLabel
             onMouseEnter={() => setUploadImageHover(true)}
             onMouseLeave={() => setUploadImageHover(false)}
@@ -170,6 +165,8 @@ const CreateProjectPage3 = ({ onClickNext, onClickPrev }) => {
         handlePrev={onClickPrev}
         disabled={!uploadedImage || nextClicked}
         loading={nextClicked}
+        pagesData={pagesData}
+        index={index}
       />
     </React.Fragment>
   );

@@ -226,5 +226,8 @@
   "createOrganizationPage6SubTitle2": "Add more members to your organization:",
 
   "createOrganizationPage7Title": "Overview",
-  "createOrganizationPage7SubTitle": "Do you want to change any of the entries?"
+  "createOrganizationPage7SubTitle": "Do you want to change any of the entries?",
+  "createOrganizationPage7ToggleTitle": "Status des Organisationsprofils",
+
+  "createProjectRoomPage7ToggleTitle": "Status of the Projectroom"
 }
