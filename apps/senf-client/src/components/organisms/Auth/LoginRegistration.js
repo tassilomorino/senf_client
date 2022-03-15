@@ -328,7 +328,7 @@ const LoginRegistration = ({ classes }) => {
         } else {
           setLoading(false);
           setErrorMessage(
-            "Du hast dedine Email-Adresse noch nicht verifiziert!"
+            "Du hast deine Email-Adresse noch nicht verifiziert!"
           );
         }
       })
