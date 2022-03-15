@@ -328,7 +328,7 @@ const LoginRegistration = ({ classes }) => {
         } else {
           setLoading(false);
           setErrorMessage(
-            "Du hast dedine Email-Adresse noch nicht verifiziert!"
+            "Du hast deine Email-Adresse noch nicht verifiziert!"
           );
         }
       })
@@ -342,6 +342,8 @@ const LoginRegistration = ({ classes }) => {
 
   const handleSubmitRegister = async (event) => {
     event.preventDefault();
+
+    setLoading(true);
 
     const db = firebase.firestore();
     const usersRef = db.collection("users");
@@ -365,19 +367,29 @@ const LoginRegistration = ({ classes }) => {
         if (userCredential) {
           await db.collection("users").doc(userCredential.user.uid).set({
             handle: formikRegisterStore.values.username,
-            email: formikRegisterStore.values.email,
             age: formikRegisterStore.values.age,
             sex: formikRegisterStore.values.sex,
             createdAt: new Date().toISOString(),
             userId: userCredential.user.uid,
           });
+          await db
+            .collection("users")
+            .doc(userCredential.user.uid)
+            .collection("Private")
+            .doc(userCredential.user.uid)
+            .set({
+              email: formikRegisterStore.values.email,
+            });
         }
       })
       .then(async () => {
         const user = firebase.auth().currentUser;
         await user.sendEmailVerification();
+        setLoading(false);
       })
       .then(async () => {
+        setLoading(false);
+
         const emailWrapper = {
           email: formikRegisterStore.values.email,
         };
@@ -385,6 +397,7 @@ const LoginRegistration = ({ classes }) => {
       })
       .catch((err) => {
         setErrorMessage(err.message);
+        setLoading(false);
       });
   };
 
