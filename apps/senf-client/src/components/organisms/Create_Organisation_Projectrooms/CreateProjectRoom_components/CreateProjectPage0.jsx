@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 //firebase
@@ -8,23 +8,16 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 import "firebase/compat/storage";
 
-//compoennts
-import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
-
-//images
 import NotDoneImage from "../../../../images/Not_connected.png";
-
-//styles
 import {
   ComponentInnerWrapper,
   ComponentWrapper,
 } from "../styles/sharedStyles";
-import { StyledH2 } from "../../../../styles/GlobalStyle";
 import Navigation from "../Components/Navigation";
+import { StyledH2 } from "../../../../styles/GlobalStyle";
 
-const CreateOrganizationPage0 = ({ onClickNext }) => {
+const CreateProjectPage0 = ({ set }) => {
   const { t } = useTranslation();
-
   const [title, setTitle] = useState(null);
 
   useEffect(() => {
@@ -33,7 +26,9 @@ const CreateOrganizationPage0 = ({ onClickNext }) => {
 
       const ref = await db
         .collection("organizations")
-        .doc(localStorage.getItem("createOrganizationId"))
+        .doc(localStorage.getItem("createProjectRoomOrganizationId"))
+        .collection("projectRooms")
+        .doc(localStorage.getItem("createProjectRoomId"))
         .get();
 
       if (!ref.exists) {
@@ -46,7 +41,7 @@ const CreateOrganizationPage0 = ({ onClickNext }) => {
 
     if (
       typeof Storage !== "undefined" &&
-      localStorage.getItem("createOrganizationId")
+      localStorage.getItem("createProjectRoomId")
     ) {
       fetchData();
     }
@@ -57,8 +52,9 @@ const CreateOrganizationPage0 = ({ onClickNext }) => {
       "Bist du sicher, dass du die Erstellung des Projektraums neustarten möchtest?"
     );
     if (answer) {
-      localStorage.removeItem("createOrganizationId");
-      onClickNext();
+      localStorage.removeItem("createProjectRoomId");
+
+      set(1);
     } else {
       //some code
     }
@@ -69,7 +65,7 @@ const CreateOrganizationPage0 = ({ onClickNext }) => {
       <ComponentWrapper>
         <ComponentInnerWrapper>
           <StyledH2 fontWeight="900" textAlign="center">
-            Du bist noch dabei, deine Organisation {title && `"${title}"`}
+            Du bist noch dabei, deinen Projektraum {title && `"${title}"`}
             zu erstellen{" "}
           </StyledH2>
           <br />
@@ -85,7 +81,7 @@ const CreateOrganizationPage0 = ({ onClickNext }) => {
       <Navigation
         nextLabel={t("continue_creation")}
         prevLabel={t("restart")}
-        handleNext={onClickNext}
+        handleNext={() => set(2)}
         handlePrev={handleRestart}
         // disabled={}
         // loading={}
@@ -94,4 +90,4 @@ const CreateOrganizationPage0 = ({ onClickNext }) => {
   );
 };
 
-export default CreateOrganizationPage0;
+export default CreateProjectPage0;
