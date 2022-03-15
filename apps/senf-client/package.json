@@ -82,6 +82,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-router-dom": "^4.3.5",
     "@vitejs/plugin-react": "^1.2.0",
     "@welldone-software/why-did-you-render": "^6.2.1",
     "cypress": "^8.1.0",
