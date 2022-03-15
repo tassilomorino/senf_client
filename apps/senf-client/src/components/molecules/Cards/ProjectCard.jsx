@@ -185,7 +185,6 @@ const ProjectCard = (props) => {
   useEffect(() => {
     if (organizations) {
       organizations.map(({ organizationId, userIds, title }) => {
-        console.log(organizations);
         if (cardOrganizationId === organizationId) {
           setOrganizationCardData([...organizationCardData, userIds, title]);
         }
