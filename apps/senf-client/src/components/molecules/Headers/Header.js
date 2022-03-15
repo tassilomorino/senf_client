@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import ShareModal from "../Modals/ShareModal";
@@ -21,6 +21,7 @@ import {
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { truncateString } from "../../../util/helpers";
 import { CircularProgress } from "@material-ui/core";
+import { openCreateProjectRoomFunc } from "apps/senf-client/src/redux/actions/projectActions";
 
 const Header = ({
   type,
@@ -33,9 +34,15 @@ const Header = ({
   handleClose,
   handleClick,
   path,
+  organizationId,
+  projectRoomId,
 }) => {
+  const dispatch = useDispatch();
   const handle = useSelector((state) => state.user.handle);
   const userHandle = handle ? handle : "...";
+  const organizations = useSelector((state) => state.data.organizations);
+  const cardOrganizationId = organizationId;
+  const user = useSelector((state) => state.user);
 
   const openScream = useSelector((state) => state.UI.openScream);
   const swipePosition = useSelector((state) => state.UI.swipePosition);
@@ -72,6 +79,26 @@ const Header = ({
   //     setShareOpen(true);
   //   }
   // };
+  const [organizationCardData, setOrganizationCardData] = useState([]);
+
+  useEffect(() => {
+    if (organizations) {
+      organizations.map(({ organizationId, userIds, title }) => {
+        console.log(organizations);
+        if (cardOrganizationId === organizationId) {
+          setOrganizationCardData([...organizationCardData, userIds, title]);
+        }
+      });
+    }
+  }, [organizations]);
+
+  const handleEdit = () => {
+    localStorage.setItem("createProjectRoomOrganizationId", organizationId);
+    localStorage.setItem("createProjectRoomId", projectRoomId);
+    localStorage.setItem("createProjectPostEdit", true);
+
+    dispatch(openCreateProjectRoomFunc(true));
+  };
 
   return (
     <FixedWrapper
@@ -140,6 +167,19 @@ const Header = ({
             src={type === "account" ? SettingsIcon : InfoIcon}
             width="100%"
             alt="project-thumbnail"
+          />
+        )}
+
+        {infoOpen && organizationCardData[0]?.includes(user.userId) && (
+          <CustomIconButton
+            name="Menu"
+            iconWidth="25px"
+            handleButtonClick={() => handleEdit()}
+            position="absolute"
+            left="calc(100% - 54px)"
+            margin="2px"
+            top="0px"
+            zIndex="99"
           />
         )}
       </InnerWrapper>

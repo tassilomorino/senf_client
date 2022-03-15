@@ -137,7 +137,6 @@ const ProjectCard = (props) => {
 
   const [logo, setLogo] = useState(null);
   const cardOrganizationId = organizationId;
-  const user = useSelector((state) => state.user);
   const screams = useSelector((state) => state.data.screams);
 
   const organizations = useSelector((state) => state.data.organizations);
@@ -172,22 +171,15 @@ const ProjectCard = (props) => {
       dispatch(openOrganizationFunc("hide", null));
     }
   };
-  const handleEdit = () => {
-    localStorage.setItem("createProjectRoomOrganizationId", organizationId);
-    localStorage.setItem("createProjectRoomId", thisProjectRoomId);
-    localStorage.setItem("createProjectPostEdit", true);
-
-    dispatch(openCreateProjectRoomFunc(true));
-  };
 
   const [organizationCardData, setOrganizationCardData] = useState([]);
 
   useEffect(() => {
     if (organizations) {
-      organizations.map(({ organizationId, userIds, title }) => {
+      organizations.map(({ organizationId, title }) => {
         console.log(organizations);
         if (cardOrganizationId === organizationId) {
-          setOrganizationCardData([...organizationCardData, userIds, title]);
+          setOrganizationCardData([...organizationCardData, title]);
         }
       });
     }
@@ -200,18 +192,6 @@ const ProjectCard = (props) => {
   return (
     <Card type="projectRoomCard">
       <CardContent>
-        {organizationCardData[0]?.includes(user.userId) && (
-          <CustomIconButton
-            name="Menu"
-            iconWidth="25px"
-            handleButtonClick={() => handleEdit()}
-            position="absolute"
-            left="calc(100% - 54px)"
-            margin="2px"
-            top="0px"
-            zIndex="99"
-          />
-        )}
         <ExpandButton handleButtonClick={() => pushScreamId()} />
         <CardTitle>
           <StyledH2 fontWeight="900">
@@ -255,9 +235,9 @@ const ProjectCard = (props) => {
           </OrganizationLogo>
 
           <StyledH4>
-            {organizationCardData[1] &&
+            {organizationCardData[0] &&
               truncateString(
-                organizationCardData[1],
+                organizationCardData[0],
                 document.body.clientWidth < 350
                   ? 20
                   : document.body.clientWidth < 380
