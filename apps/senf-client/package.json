@@ -47,18 +47,15 @@
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.0",
     "resize-observer": "^1.0.4",
-    "source-map-explorer": "^2.5.2",
     "styled-components": "^5.3.3",
     "universal-cookie": "^4.0.4",
     "viewport-mercator-project": "^7.0.4",
     "yup": "^0.32.11"
   },
   "scripts": {
-    "analyze": "source-map-explorer '../../dist/apps/senf-client/static/js/*.js'",
     "start": "vite ",
     "serve": "npm start",
     "preview": "vite preview",
-    "start:silent": "BROWSER=none PORT=3000 craco start",
     "build": "vite build",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
@@ -90,6 +87,7 @@
     "cypress-firebase": "^2.0.0",
     "cypress-wait-until": "^1.7.1",
     "prettier": "^2.5.0",
+    "rollup-plugin-visualizer": "^5.6.0",
     "start-server-and-test": "^1.13.1",
     "vite": "^2.8.6"
   },
