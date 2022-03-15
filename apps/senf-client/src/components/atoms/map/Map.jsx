@@ -21,7 +21,7 @@ import MapGL, {
   Marker,
   NavigationControl,
   Image,
-} from "@urbica/react-map-gl";
+} from "../../../util/urbica/react-map-gl.esm";
 import bbox from "@turf/bbox";
 
 import NoLocationPopUp from "./NoLocationPopUp";

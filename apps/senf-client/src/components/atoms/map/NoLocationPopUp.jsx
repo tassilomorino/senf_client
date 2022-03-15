@@ -6,7 +6,7 @@ import { setResetMapBounds } from "../../../redux/actions/mapActions";
 
 import CloseIcon from "../../../images/icons/close.png";
 //Map Stuff
-import { Marker } from "@urbica/react-map-gl";
+import { Marker } from "../../../util/urbica/react-map-gl.esm";
 import { Trans, useTranslation } from "react-i18next";
 import { CustomButton } from "../CustomButtons/CustomButton";
 import { isMobileCustom } from "../../../util/customDeviceDetect";

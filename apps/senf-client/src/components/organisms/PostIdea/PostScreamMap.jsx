@@ -2,7 +2,11 @@
 
 import React from "react";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-import MapGL, { GeolocateControl, Source, Layer } from "@urbica/react-map-gl";
+import MapGL, {
+  GeolocateControl,
+  Source,
+  Layer,
+} from "../../../util/urbica/react-map-gl.esm";
 
 //import Geocoder from "react-mapbox-gl-geocoder";
 import Geocoder from "../../atoms/map/Geocoder";
