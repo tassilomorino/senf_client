@@ -28,7 +28,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ReactDOM from "react-dom";
 import MapGL from "../../../../util/urbica/react-map-gl.esm";
-import Draw from "@urbica/react-map-gl-draw";
+import Draw from "../../../../util/urbica/react-map-gl-draw.esm";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import bbox from "@turf/bbox";

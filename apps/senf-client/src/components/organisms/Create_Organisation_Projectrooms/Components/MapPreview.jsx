@@ -3,7 +3,7 @@
 import React from "react";
 
 import MapGL from "../../../../util/urbica/react-map-gl.esm";
-import Draw from "@urbica/react-map-gl-draw";
+import Draw from "../../../../util/urbica/react-map-gl-draw.esm";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 
