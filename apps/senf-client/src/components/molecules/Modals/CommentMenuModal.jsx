@@ -7,7 +7,7 @@ import styled from "styled-components";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import MainModal from "../../atoms/Layout/MainModal";
 import { deleteComment } from "../../../redux/actions/commentActions";
-import { StyledH3 } from "apps/senf-client/src/styles/GlobalStyle";
+import { StyledH3 } from "../../../styles/GlobalStyle";
 
 const ButtonWrapper = styled.div`
   width: 100%;

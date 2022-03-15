@@ -10,7 +10,7 @@ import ExpandButton from "../../../atoms/CustomButtons/ExpandButton";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 import { doc, deleteDoc } from "firebase/firestore";
-import { isMobileCustom } from "apps/senf-client/src/util/customDeviceDetect";
+import { isMobileCustom } from "../../../../util/customDeviceDetect";
 import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 
 const Wrapper = styled.div`
