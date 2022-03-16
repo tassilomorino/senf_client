@@ -127,6 +127,20 @@ const Toolbar = ({
             options={[
               { name: "newest", label: t("newest_ideas") },
               { name: "hottest", label: t("hottest_ideas") },
+              { name: "Unprocessed", label: t("unprocessed") },
+              { name: "Accepted", label: t("accepted") },
+              {
+                name: "Planning",
+                label: t("planning"),
+              },
+              {
+                name: "Implemented",
+                label: t("implemented"),
+              },
+              {
+                name: "Rejected",
+                label: t("rejected"),
+              },
             ]}
             handleDropdown={handleDropdown}
           />
