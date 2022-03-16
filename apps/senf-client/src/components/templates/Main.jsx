@@ -65,6 +65,7 @@ import { MenuData } from "../../data/MenuData";
 import {
   filterByGeodata,
   filterByTagFilter,
+  filterByStatus,
   pick,
   search,
   sort,
@@ -341,6 +342,11 @@ const Main = () => {
   ideasData = filterByTagFilter(ideasData, selectedTopics, "Thema");
 
   ideasData = sort(ideasData, dropdown);
+  ideasData = filterByStatus(ideasData, [
+    "Unprocessed",
+    "Accepted",
+    "Planning",
+  ]);
   const dataFinalIdeas = filterByGeodata(ideasData, mapBounds);
 
   //PROJECTROOMS
@@ -475,7 +481,6 @@ const Main = () => {
                 setOpenOrganizationsPage={setOpenOrganizationsPage}
                 openOrganizationsPage={openOrganizationsPage}
                 openInsightsPage={openInsightsPage}
-                setOpenInsightsPage={setOpenInsightsPage}
               />
             )}
 

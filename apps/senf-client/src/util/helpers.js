@@ -86,8 +86,8 @@ export function filterByTagFilter(items, selectedTags, tagsType) {
   }
 }
 
-export function filterByStatus(items) {
-  return items.filter(({ status }) => status === "None");
+export function filterByStatus(items, statuses) {
+  return items.filter(({ status }) => statuses.includes(status));
 }
 
 export function filterByGeodata(items, mapBounds) {
