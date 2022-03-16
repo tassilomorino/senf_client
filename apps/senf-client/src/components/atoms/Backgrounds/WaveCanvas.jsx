@@ -7,7 +7,7 @@ const WaveCanvas = ({ canvasRef, props }) => {
   // The scroll listener
   const handleScroll = useCallback(() => {
     const el = document.getElementById("ListWrapper");
-    console.log(el?.scrollTop);
+
     setScrollPercentage(el?.scrollTop * -1);
     setScrollOpacity(1 - el?.scrollTop / 1000);
   }, []);
