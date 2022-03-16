@@ -25,8 +25,15 @@
   "withoutLocationShort": "No location",
   "confirmLocation": "Confirm location",
 
+  "unprocessed": "Unprocessed",
+  "accepted": "Accepted",
+  "planning": "Planning",
+  "rejected": "Rejected",
+  "none": "None",
   "newest": "Newest",
   "hottest": "Hottest",
+  "submitted": "Submitted",
+  "implemented": "Implemented",
   "aToZ": "A > Z",
   "zToA": "Z > A",
 

@@ -30,8 +30,15 @@
   "withoutLocationShort": "Ohne Ort",
   "confirmLocation": "Ort bestätigen",
 
+  "unprocessed": "Unverarbeitetes",
+  "accepted": "Akzeptiert",
+  "planning": "Planung",
+  "rejected": "Abgelehnt",
+  "none": "Offen",
   "newest": "Neuste",
   "hottest": "Schärfste",
+  "submitted": "Eingereicht",
+  "implemented": "umgesetzt",
   "aToZ": "A > Z",
   "zToA": "Z > A",
 
