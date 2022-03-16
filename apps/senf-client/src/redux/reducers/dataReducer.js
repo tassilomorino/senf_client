@@ -1,3 +1,5 @@
+/* eslint-disable import/no-anonymous-default-export */
+
 /**
  * /* eslint-disable import/no-anonymous-default-export
  *
@@ -199,10 +201,19 @@ export default function (state = initialState, action) {
       };
 
     case EDIT_SCREAM:
-      return {
-        ...state,
-        screams: [action.payload, ...state.screams],
-      };
+      let screamIndex = state.screams.findIndex(
+        (scream) => scream.screamId === action.payload.screamId
+      );
+      if (screamIndex) {
+        let screamsCopy = [...state.screams];
+        screamsCopy[screamIndex] = {
+          ...screamsCopy[screamIndex],
+          ...action.payload,
+        };
+        return { ...state, screams: screamsCopy };
+      } else {
+        return { ...state };
+      }
 
     case SUBMIT_COMMENT:
       return {
