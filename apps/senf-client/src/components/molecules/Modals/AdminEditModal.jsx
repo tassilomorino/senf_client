@@ -64,70 +64,57 @@ const AdminEditModal = ({
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
-  const [order, setOrder] = useState(1);
-  const [status, setStatus] = useState("");
-  const [notes, setNotes] = useState("");
-
-  const [address, setAddress] = useState("Ohne Ortsangabe");
-  const [neighborhood, setNeighborhood] = useState("Ohne Ortsangabe");
-  const [fulladdress, setFulladdress] = useState("Ohne Ortsangabe");
 
   const projects = useSelector((state) => state.data.projects);
   const scream = useSelector((state) => state.data.scream);
-  const [checkIfCalendar, setCheckIfCalendar] = useState(false);
 
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
-  const [topic, setTopic] = useState("");
-  const [project, setProject] = useState("");
+  const [order, setOrder] = useState(1);
+  const [notes, setNotes] = useState(scream.notes ?? "");
+  const [datePicker, setDatePicker] = useState(false);
+
+  const [status, setStatus] = useState(scream.status ?? "");
+  const [address, setAddress] = useState(
+    scream.locationHeader ?? "Ohne Ortsangabe"
+  );
+  const [neighborhood, setNeighborhood] = useState(
+    scream.Stadtteil ?? "Ohne Ortsangabe"
+  );
+  const [fulladdress, setFulladdress] = useState(
+    scream.district ?? "Ohne Ortsangabe"
+  );
+
+  const [title, setTitle] = useState(scream.title ?? "");
+  const [body, setBody] = useState(scream.body ?? "");
+  const [topic, setTopic] = useState(scream.Thema ?? "");
+  const [projectRoomId, setProjectRoomId] = useState(
+    scream.projectRoomId ?? ""
+  );
 
   const [weblinkOpen, setWeblinkOpen] = useState(false);
-  const [weblink, setWeblink] = useState(null);
-  const [weblinkTitle, setWeblinkTitle] = useState(null);
+  const [weblink, setWeblink] = useState(scream.weblink ?? "");
+  const [weblinkTitle, setWeblinkTitle] = useState(scream.weblinkTitle ?? "");
 
   const [contactOpen, setContactOpen] = useState(false);
-  const [contact, setContact] = useState(null);
-  const [contactTitle, setContactTitle] = useState(null);
+  const [contact, setContact] = useState(scream.contact ?? "");
+  const [contactTitle, setContactTitle] = useState(scream.contactTitle ?? "");
 
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [selectedDays, setSelectedDays] = useState([]);
   const [selectedUnix, setSelectedUnix] = useState([]);
 
-  const [viewport, setViewport] = useState(null);
+  const [viewport, setViewport] = useState({
+    latitude: scream.lat ?? "",
+    longitude: scream.long ?? "",
+  });
 
   useEffect(() => {
     dispatch(getUserEmail(scream.userId));
-    setBody(scream.body);
-    setTitle(scream.title);
-    setTopic(scream.Thema);
-    setProject(scream.project);
-    setViewport({ latitude: scream.lat, longitude: scream.long });
 
-    setNeighborhood(scream.Stadtteil);
-    setAddress(scream.locationHeader);
-    setFulladdress(scream.district);
-    setStatus(scream.status);
-
-    projects.forEach((element) => {
-      if (scream.project === element.project) {
-        setCheckIfCalendar(element.calendar);
-      }
-      if (scream.project === "") {
-        setCheckIfCalendar(false);
+    projects.forEach((project) => {
+      if (scream.projectRoomId === project.projectRoomId) {
+        setDatePicker(project.calendar ?? false);
       }
     });
-
-    if (scream.notes) {
-      setNotes(scream.notes);
-    }
-    if (scream.weblink) {
-      setWeblink(scream.weblink);
-      setWeblinkTitle(scream.weblinkTitle);
-    }
-    if (scream.contact) {
-      setContact(scream.contact);
-      setContactTitle(scream.contactTitle);
-    }
 
     if (scream.selectedUnix) {
       const selectedDays = [];
@@ -140,21 +127,18 @@ const AdminEditModal = ({
       setSelectedDays(selectedDays);
       setSelectedUnix(scream.selectedUnix);
     }
-  }, [adminEditOpen, scream]);
+  }, [dispatch, projects, adminEditOpen, scream]);
 
   const handleDropdown = (value) => {
     setTopic(value);
   };
 
-  const handleDropdownProject = (value) => {
-    setProject(value);
+  const handleDropdownProject = (Id) => {
+    setProjectRoomId(Id);
 
-    projects.forEach((element) => {
-      if (value === element.project) {
-        setCheckIfCalendar(element.calendar);
-      }
-      if (value === "") {
-        setCheckIfCalendar(false);
+    projects.forEach((project) => {
+      if (Id === project.projectRoomId) {
+        setDatePicker(project.calendar ?? false);
       }
     });
   };
@@ -238,7 +222,7 @@ const AdminEditModal = ({
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(address, neighborhood);
+
     const editScream = {
       screamId: scream.screamId,
       body,
@@ -248,7 +232,7 @@ const AdminEditModal = ({
       Stadtteil: neighborhood,
       lat: viewport.latitude,
       long: viewport.longitude,
-      project,
+      projectRoomId,
       Thema: topic,
       weblinkTitle,
       weblink,
@@ -259,12 +243,12 @@ const AdminEditModal = ({
     };
 
     if (selectedUnix[0] === undefined) {
-      editScream.selectedUnix = null;
+      editScream.selectedUnix = [];
     } else {
       editScream.selectedUnix = selectedUnix;
     }
 
-    dispatch(editScreamFunc(editScream, history)).then(() => {
+    dispatch(editScreamFunc(editScream)).then(() => {
       setAdminEditOpen(false);
       setMenuOpen(false);
     });
@@ -325,7 +309,7 @@ const AdminEditModal = ({
         </div>
         {order === 1 ? (
           <EditModalMainFields
-            project={project}
+            projectRoomId={projectRoomId}
             handleDropdownProject={handleDropdownProject}
             onSelected={onSelected}
             viewport={viewport}
@@ -342,7 +326,7 @@ const AdminEditModal = ({
             contact={contact}
             contactTitle={contactTitle}
             setContactOpen={setContactOpen}
-            checkIfCalendar={checkIfCalendar}
+            datePicker={datePicker}
             selectedDays={selectedDays}
             setCalendarOpen={setCalendarOpen}
           />
