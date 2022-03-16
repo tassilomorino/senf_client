@@ -54,7 +54,13 @@ const StyledImg = styled.img`
   object-fit: cover;
 `;
 
-const CreateProjectPage3 = ({ onClickNext, onClickPrev, pagesData, index }) => {
+const CreateProjectPage3 = ({
+  onClickNext,
+  onClickPrev,
+  set,
+  pagesData,
+  index,
+}) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [nextClicked, setNextClicked] = useState(false);
@@ -117,7 +123,11 @@ const CreateProjectPage3 = ({ onClickNext, onClickPrev, pagesData, index }) => {
     setNextClicked(true);
 
     setTimeout(() => {
-      onClickNext();
+      if (localStorage.getItem("createProjectRoomPostEdit") === "true") {
+        set(pagesData.length - 1);
+      } else {
+        onClickNext();
+      }
     }, 200);
   };
 
@@ -163,6 +173,7 @@ const CreateProjectPage3 = ({ onClickNext, onClickPrev, pagesData, index }) => {
         prevLabel={t("back")}
         handleNext={handleNext}
         handlePrev={onClickPrev}
+        set={set}
         disabled={!uploadedImage || nextClicked}
         loading={nextClicked}
         pagesData={pagesData}

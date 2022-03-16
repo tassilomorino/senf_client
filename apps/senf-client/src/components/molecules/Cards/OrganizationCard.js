@@ -234,7 +234,7 @@ export const OrganizationCard = (props) => {
       status={status}
       active={thisOrganizationId === organization?.organizationId}
     >
-      {(status === "deactivated" || status === "uncompleted") && (
+      {status !== "active" && (
         <DeactivatedWrapper>
           <img src={NotPublishedIcon} width="100%" />
         </DeactivatedWrapper>

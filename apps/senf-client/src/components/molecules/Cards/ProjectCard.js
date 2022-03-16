@@ -11,7 +11,7 @@ import {
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
 import styled from "styled-components";
-import notPublishedIcon from "../../../images/icons/notPublished.png";
+import NotPublishedIcon from "../../../images/icons/notPublished.png";
 import bulb from "../../../images/svgIcons/bulb.svg";
 
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
@@ -67,16 +67,13 @@ const ImgWrapper = styled.div`
   border: 1px solid rgba(195, 186, 162, 0.5);
 `;
 
-const ImgWrapperOverlay = styled.div`
-  flex-shrink: 0;
-  width: 80px;
-  height: 80px;
+const DeactivatedWrapper = styled.div`
   position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(255, 255, 255, 0.8);
-  border-radius: 18px;
+  top: calc(50% - 60px);
+  z-index: 5;
+  color: white;
+  width: 30%;
+  margin-left: 35%;
 `;
 
 const FlexWrapper = styled.div`
@@ -177,7 +174,6 @@ const ProjectCard = (props) => {
   useEffect(() => {
     if (organizations) {
       organizations.map(({ organizationId, title }) => {
-        console.log(organizations);
         if (cardOrganizationId === organizationId) {
           setOrganizationCardData([...organizationCardData, title]);
         }
@@ -190,7 +186,12 @@ const ProjectCard = (props) => {
   ).length;
 
   return (
-    <Card type="projectRoomCard">
+    <Card type="projectRoomCard" status={status}>
+      {status !== "active" && (
+        <DeactivatedWrapper>
+          <img src={NotPublishedIcon} width="100%" />
+        </DeactivatedWrapper>
+      )}
       <CardContent>
         <ExpandButton handleButtonClick={() => pushScreamId()} />
         <CardTitle>
@@ -206,13 +207,7 @@ const ProjectCard = (props) => {
               )}
           </StyledH2>
         </CardTitle>
-        <ImgWrapper img={projectRoomImage}>
-          {status === "archived" && (
-            <ImgWrapperOverlay>
-              <img src={notPublishedIcon} alt="UploadImageIcon" width="50%" />
-            </ImgWrapperOverlay>
-          )}
-        </ImgWrapper>
+        <ImgWrapper img={projectRoomImage} />
         <RightWrapper>
           <StyledText smallText={document.body.clientWidth < 350}>
             {brief &&

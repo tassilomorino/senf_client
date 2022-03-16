@@ -37,17 +37,22 @@ import {
   openOrganizationFunc,
   stateCreateOrganizationsFunc,
 } from "../../../redux/actions/organizationActions";
-import { openCreateProjectRoomFunc } from "../../../redux/actions/projectActions";
+import {
+  openCreateProjectRoomFunc,
+  openProjectRoomFunc,
+} from "../../../redux/actions/projectActions";
 import CreateProjectPage5 from "./CreateProjectRoom_components/CreateProjectPage5";
 
 const CreateProjectDialog = ({ type }) => {
   const openOrganization = useSelector((state) => state.UI.openOrganization);
+  const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
   const openCreateProjectRoom = useSelector(
     (state) => state.UI.openCreateProjectRoom
   );
   const openCreateOrganization = useSelector(
     (state) => state.UI.openCreateOrganization
   );
+
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -170,13 +175,19 @@ const CreateProjectDialog = ({ type }) => {
   const setClose = () => {
     dispatch(getOrganizations());
 
-    if (openOrganization) {
+    dispatch(openCreateProjectRoomFunc(false));
+    dispatch(stateCreateOrganizationsFunc(false));
+
+    if (openOrganization && localStorage.getItem("createOrganizationId")) {
       dispatch(
         openOrganizationFunc(true, localStorage.getItem("createOrganizationId"))
       );
     }
-    dispatch(openCreateProjectRoomFunc(false));
-    dispatch(stateCreateOrganizationsFunc(false));
+    if (openProjectRoom && localStorage.getItem("createProjectRoomId")) {
+      dispatch(
+        openProjectRoomFunc(localStorage.getItem("createProjectRoomId"), true)
+      );
+    }
 
     if (localStorage.getItem("createOrganizationPostEdit") === "true") {
       localStorage.removeItem("createOrganizationId");
@@ -280,6 +291,7 @@ const CreateProjectDialog = ({ type }) => {
             <PageWrapper>
               <CreateProjectPage1
                 onClickNext={onClickNext}
+                set={set}
                 pagesData={pagesData}
                 index={index}
                 setTitle={setProjectRoomTitle}
@@ -291,6 +303,7 @@ const CreateProjectDialog = ({ type }) => {
               <CreateProjectPage2
                 onClickNext={onClickNext}
                 onClickPrev={onClickPrev}
+                set={set}
                 pagesData={pagesData}
                 index={index}
               />
@@ -305,6 +318,7 @@ const CreateProjectDialog = ({ type }) => {
               <CreateProjectPage3
                 onClickNext={onClickNext}
                 onClickPrev={onClickPrev}
+                set={set}
                 pagesData={pagesData}
                 index={index}
               />
@@ -315,6 +329,7 @@ const CreateProjectDialog = ({ type }) => {
               <CreateProjectPage4
                 onClickNext={onClickNext}
                 onClickPrev={onClickPrev}
+                set={set}
                 pagesData={pagesData}
                 index={index}
               />
@@ -325,6 +340,7 @@ const CreateProjectDialog = ({ type }) => {
               <CreateProjectPage5
                 onClickNext={onClickNext}
                 onClickPrev={onClickPrev}
+                set={set}
                 pagesData={pagesData}
                 index={index}
               />
@@ -458,6 +474,7 @@ const CreateProjectDialog = ({ type }) => {
         pagesData={pagesData}
         title={type === "projectRoom" ? projectRoomTitle : organizationTitle}
         setClose={setClose}
+        type={type}
       />
 
       {transitions((style, i) => {

@@ -24,6 +24,7 @@ import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 const CreateProjectPage1 = ({
   onClickNext,
   onClickPrev,
+  set,
   pagesData,
   index,
   setTitle,
@@ -154,7 +155,11 @@ const CreateProjectPage1 = ({
 
       return ref.update(updateProject).then(() => {
         setTimeout(() => {
-          onClickNext();
+          if (localStorage.getItem("createProjectRoomPostEdit") === "true") {
+            set(pagesData.length - 1);
+          } else {
+            onClickNext();
+          }
         }, 200);
       });
     } else {
@@ -294,8 +299,13 @@ const CreateProjectPage1 = ({
       </ComponentWrapper>
 
       <Navigation
+        handlePrev={
+          localStorage.getItem("createProjectRoomPostEdit") === "true"
+        }
+        prevLabel={localStorage.getItem("createProjectRoomPostEdit") === "true"}
         nextLabel={t("next")}
         handleNext={handleNext}
+        set={set}
         disabled={!formik.isValid || nextClicked}
         loading={nextClicked}
         pagesData={pagesData}

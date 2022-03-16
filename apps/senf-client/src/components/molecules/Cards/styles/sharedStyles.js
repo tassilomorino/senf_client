@@ -20,6 +20,12 @@ export const Card = styled.div`
       ? "220px"
       : "11em"};
   overflow: hidden;
+
+  filter: ${(props) =>
+    props.status === "deactivated" || props.status === "uncompleted"
+      ? "brightness(0.6)"
+      : "brightness(1)"};
+
   animation: IdeaCardAnimation 0.8s;
 
   @keyframes IdeaCardAnimation {

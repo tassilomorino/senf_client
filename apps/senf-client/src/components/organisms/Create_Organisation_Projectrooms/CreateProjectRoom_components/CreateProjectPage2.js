@@ -31,7 +31,13 @@ const ButttonsWrapper = styled.div`
   justify-content: center;
 `;
 
-const CreateProjectPage2 = ({ onClickNext, onClickPrev, pagesData, index }) => {
+const CreateProjectPage2 = ({
+  onClickNext,
+  onClickPrev,
+  set,
+  pagesData,
+  index,
+}) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
 
@@ -120,7 +126,11 @@ const CreateProjectPage2 = ({ onClickNext, onClickPrev, pagesData, index }) => {
         .doc(localStorage.getItem("createProjectRoomId"));
       return ref.update(updateProject).then(() => {
         setTimeout(() => {
-          onClickNext();
+          if (localStorage.getItem("createProjectRoomPostEdit") === "true") {
+            set(pagesData.length - 1);
+          } else {
+            onClickNext();
+          }
         }, 200);
       });
     }
@@ -208,6 +218,7 @@ const CreateProjectPage2 = ({ onClickNext, onClickPrev, pagesData, index }) => {
         prevLabel={t("back")}
         handleNext={handleNext}
         handlePrev={onClickPrev}
+        set={set}
         disabled={nextClicked}
         loading={nextClicked}
         pagesData={pagesData}
