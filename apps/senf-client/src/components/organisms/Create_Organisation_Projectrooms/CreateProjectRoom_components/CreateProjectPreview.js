@@ -201,6 +201,8 @@ const CreateProjectPagePreview = ({
               status={status}
               handlePublish={handlePublish}
               handleArchive={handleArchive}
+              activeLabel={t("public")}
+              deactivatedLabel={t("deactivated")}
             />
           )}
         </ComponentInnerWrapper>

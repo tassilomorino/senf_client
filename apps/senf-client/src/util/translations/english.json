@@ -3,6 +3,11 @@
   "rotate_phone": "Please rotate your smartphone",
 
   "close": "Close",
+  "question": "Question",
+  "answer": "Answer",
+  "active": "Active",
+  "deactivated": "Deactivated",
+  "public": "Public",
 
   "contact": "Contact",
   "contact-address": "Contact-E-Mail",

@@ -27,6 +27,8 @@ const ToggleStatusComponent = ({
   status,
   handlePublish,
   handleArchive,
+  activeLabel,
+  deactivatedLabel,
 }) => {
   const handleSwitch = () => {
     if (status === false) {
@@ -62,7 +64,7 @@ const ToggleStatusComponent = ({
             fontWeight={700}
             opacity={status !== true ? 1 : 0.4}
           >
-            Deaktiviert
+            {deactivatedLabel}
           </StyledH3>
           <StyledH3 fontWeight="400" margin="0px 20px">
             {" "}
@@ -73,7 +75,7 @@ const ToggleStatusComponent = ({
             fontWeight={700}
             opacity={status === true ? 1 : 0.4}
           >
-            Öffentlich
+            {activeLabel}
           </StyledH3>
         </FlexWrapper>
       </SwitchWrapper>

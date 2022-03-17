@@ -5,6 +5,9 @@
   "close": "Schließen",
   "question": "Frage",
   "answer": "Antwort",
+  "active": "Aktiv",
+  "deactivated": "Deaktiviert",
+  "public": "Öffentlich",
 
   "contact": "Kontakt",
   "contact-address": "Kontakt-E-Mail",
@@ -262,7 +265,7 @@
   "createProjectRoomPage4SubTitle": "Mit deinem individuellen Projektraum kannst du ortsbezogen Ideen sammeln. Zeichne das Gebiet ein!",
 
   "createProjectRoomPage5Title": "Kalender",
-  "createProjectRoomPage5SubTitle": "Aktiviere den Kalender für deinen Projektraum!",
+  "createProjectRoomPage5SubTitle": "Aktiviere den Kalender für deinen Projektraum, um sowohl Organisator:innen und Nutzer:innen zu ermöglichen Termingebundene Ideen und Vorschläge zu veröffentlichen!",
 
   "createProjectRoomPage6Title": "Teammitglieder",
   "createProjectRoomPage6SubTitle": "Zur Bearbeitung der Inhalte Ihrer Organisation bevollmächtigte Nutzer:innen:",
@@ -270,5 +273,7 @@
 
   "createProjectRoomPage7Title": "Übersicht",
   "createProjectRoomPage7SubTitle": "Willst du an den Angaben etwas verändern?",
-  "createProjectRoomPage7ToggleTitle": "Status des Projektraums"
+  "createProjectRoomPage7ToggleTitle": "Status des Projektraums",
+
+  "calendar_projectroom_explanaition": ""
 }
