@@ -21,6 +21,7 @@ import {
   StyledText,
 } from "../../../styles/GlobalStyle";
 import setIconByOrganizationType from "../../../data/setIconByOrganizationType";
+import NoImage from "../../../images/noImage.png";
 
 import firebase from "firebase/compat/app";
 import "firebase/compat/storage";
@@ -207,6 +208,7 @@ export const OrganizationCard = (props) => {
   const organization = useSelector((state) => state.data.organization);
   const projects = useSelector((state) => state.data.projects);
   const [organizationImage, setOrganizationImage] = useState(null);
+  const [placeHodlerImage, setPlaceHolderImage] = useState(false);
 
   useEffect(async () => {
     const db = firebase.firestore();
@@ -214,10 +216,13 @@ export const OrganizationCard = (props) => {
     storageRef
       .child(`/organizationsData/${thisOrganizationId}/logo/logo`)
       .getDownloadURL()
-      .then(onResolve);
+      .then(onResolve, onReject);
 
     function onResolve(image) {
       setOrganizationImage(image);
+    }
+    function onReject() {
+      setPlaceHolderImage(true);
     }
   }, []);
 
@@ -242,7 +247,11 @@ export const OrganizationCard = (props) => {
       <ExpandButton handleButtonClick={handleOpenOrganization} />
 
       <LogoWrapper>
-        <Thumbnail img={organizationImage}></Thumbnail>
+        <Thumbnail
+          img={
+            organizationImage ? organizationImage : placeHodlerImage && NoImage
+          }
+        ></Thumbnail>
       </LogoWrapper>
 
       <LogoPlacer>

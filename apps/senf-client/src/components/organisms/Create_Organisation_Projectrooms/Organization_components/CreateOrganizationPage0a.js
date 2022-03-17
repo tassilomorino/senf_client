@@ -15,6 +15,7 @@ import "firebase/compat/firestore";
 import "firebase/compat/storage";
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
+import InfoSwiper from "../Components/InfoSwiper";
 
 const Header = styled.h3`
   font-size: 18px;
@@ -96,25 +97,8 @@ const CreateOrganizationPage0 = ({
 
           <br />
 
-          <StyledH3 textAlign="center">
-            {" "}
-            Vorteile von einem Organisationprofil:
-          </StyledH3>
+          <InfoSwiper />
 
-          <StyledUL>
-            <StyledLi>
-              Werdet sichtbar – beschreibt euer Vorhaben und informiert
-              interssierte Personen
-            </StyledLi>{" "}
-            <StyledLi>
-              Verbessert eure Erreichbarkeit durch das Hinterlegen eurer
-              Kontaktdaten
-            </StyledLi>{" "}
-            <StyledLi>
-              Mitmachen! Vernetzt euch mit anderen, plant eure Projekte und
-              tauscht euch aus{" "}
-            </StyledLi>
-          </StyledUL>
           <CheckBoxWrapper>
             <CheckBox
               selected={selected}
@@ -123,8 +107,38 @@ const CreateOrganizationPage0 = ({
             />
             <CheckBoxLabel>
               <StyledH3>
-                Bestätige, dass du Teil einer Organisation bist und berechtigt
-                eine Profilseite zu erstellen.
+                Bestätige, dass du eine Organisation eintragen möchtest, die
+                sowohl das Thema Stadtentwicklung im Fokus hat, als auch in Köln
+                tätig ist.
+              </StyledH3>
+            </CheckBoxLabel>
+          </CheckBoxWrapper>
+
+          <CheckBoxWrapper>
+            <CheckBox
+              selected={selected}
+              name="CheckBox"
+              handleInputChange={() => setSelected(!selected)}
+            />
+            <CheckBoxLabel>
+              <StyledH3>
+                Bestätige, dass du Teil dieser Organisation bist und berechtigt
+                bist eine für diese Organisation eine Profilseite zu erstellen.
+              </StyledH3>
+            </CheckBoxLabel>
+          </CheckBoxWrapper>
+
+          <CheckBoxWrapper>
+            <CheckBox
+              selected={selected}
+              name="CheckBox"
+              handleInputChange={() => setSelected(!selected)}
+            />
+            <CheckBoxLabel>
+              <StyledH3>
+                Bestätige, dass du vestanden hast dass wir deine Organisation
+                prüfen und ggf. wieder löscchen müssen, falls Sie nicht in das
+                Muster fällt.
               </StyledH3>
             </CheckBoxLabel>
           </CheckBoxWrapper>
