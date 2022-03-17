@@ -209,7 +209,7 @@ const CreateOrganizationPage5 = ({
           <div style={{ display: "flex", justifyContent: "center" }}>
             <AddButton onClick={addFields}>
               <StyledText textAlign="center">
-                + Weitere FAQ's hinzufügeen
+                + Weitere FAQ hinzufügeen
               </StyledText>
             </AddButton>
           </div>
