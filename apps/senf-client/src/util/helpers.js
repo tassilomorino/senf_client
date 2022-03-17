@@ -2,7 +2,7 @@
 import { useRef, useState, useEffect } from "react";
 import moment from "moment";
 import _ from "lodash";
-import ResizeObserver from "resize-observer-polyfill";
+import { ResizeObserver } from "resize-observer";
 import * as linkify from "linkifyjs";
 
 /**
