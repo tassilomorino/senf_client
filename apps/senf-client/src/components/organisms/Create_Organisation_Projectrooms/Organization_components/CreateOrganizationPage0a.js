@@ -67,7 +67,10 @@ const CreateOrganizationPage0 = ({
   index,
 }) => {
   const { t } = useTranslation();
-  const [selected, setSelected] = useState(false);
+  const [checkBox1, setCheckBox1] = useState(false);
+  const [checkBox2, setCheckBox2] = useState(false);
+  const [checkBox3, setCheckBox3] = useState(false);
+
   const [nextClicked, setNextClicked] = useState(false);
 
   useEffect(() => {
@@ -75,7 +78,9 @@ const CreateOrganizationPage0 = ({
       typeof Storage !== "undefined" &&
       localStorage.getItem("createOrganizationId")
     ) {
-      setSelected(true);
+      setCheckBox1(true);
+      setCheckBox2(true);
+      setCheckBox3(true);
     }
   }, []);
 
@@ -101,45 +106,45 @@ const CreateOrganizationPage0 = ({
 
           <CheckBoxWrapper>
             <CheckBox
-              selected={selected}
+              selected={checkBox1}
               name="CheckBox"
-              handleInputChange={() => setSelected(!selected)}
+              handleInputChange={() => setCheckBox1(!checkBox1)}
             />
             <CheckBoxLabel>
-              <StyledH3>
+              <StyledText>
                 Bestätige, dass du eine Organisation eintragen möchtest, die
                 sowohl das Thema Stadtentwicklung im Fokus hat, als auch in Köln
                 tätig ist.
-              </StyledH3>
+              </StyledText>
             </CheckBoxLabel>
           </CheckBoxWrapper>
 
           <CheckBoxWrapper>
             <CheckBox
-              selected={selected}
+              selected={checkBox2}
               name="CheckBox"
-              handleInputChange={() => setSelected(!selected)}
+              handleInputChange={() => setCheckBox2(!checkBox2)}
             />
             <CheckBoxLabel>
-              <StyledH3>
+              <StyledText>
                 Bestätige, dass du Teil dieser Organisation bist und berechtigt
                 bist eine für diese Organisation eine Profilseite zu erstellen.
-              </StyledH3>
+              </StyledText>
             </CheckBoxLabel>
           </CheckBoxWrapper>
 
           <CheckBoxWrapper>
             <CheckBox
-              selected={selected}
+              selected={checkBox3}
               name="CheckBox"
-              handleInputChange={() => setSelected(!selected)}
+              handleInputChange={() => setCheckBox3(!checkBox3)}
             />
             <CheckBoxLabel>
-              <StyledH3>
+              <StyledText>
                 Bestätige, dass du vestanden hast dass wir deine Organisation
                 prüfen und ggf. wieder löscchen müssen, falls Sie nicht in das
                 Muster fällt.
-              </StyledH3>
+              </StyledText>
             </CheckBoxLabel>
           </CheckBoxWrapper>
         </ComponentInnerWrapper>
@@ -148,7 +153,7 @@ const CreateOrganizationPage0 = ({
       <Navigation
         nextLabel={t("lets_go")}
         handleNext={handleNext}
-        disabled={!selected || nextClicked}
+        disabled={!checkBox1 || !checkBox2 || !checkBox3 || nextClicked}
         loading={nextClicked}
         pagesData={pagesData}
       />

@@ -21,20 +21,28 @@ import Navigation from "../Components/Navigation";
 import { InlineOrganizationCard } from "../Components/InlineOrganizationCard";
 
 const CoverWrapper = styled.div`
-  margin-left: 0%;
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 20px 20px;
-  grid-template-areas:
-    ". ."
-    ". .";
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  position: absolute;
+  height: auto;
+  padding-bottom: 200px;
+  display: block;
 
   @media (min-width: 768px) {
+    position: relative;
+
     margin-left: 10%;
     width: 80%;
     padding-top: 20px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 20px 20px;
+    grid-template-areas:
+      ". ."
+      ". .";
   }
 `;
 
