@@ -123,8 +123,9 @@ const Main = () => {
   const voted = useSelector((state) => state.UI.voted);
   const screams = useSelector((state) => state.data.screams);
   const myScreams = useSelector((state) => state.data.myScreams);
-
-  const [initialLoading, setInitialLoading] = useState(false);
+  const initialDataLoading = useSelector(
+    (state) => state.data.initialDataLoading
+  );
   const loading = useSelector((state) => state.data.loading);
   const loadingUI = useSelector((state) => state.UI.loading);
   const loadingProjects = useSelector((state) => state.data.loadingProjects);
@@ -397,7 +398,7 @@ const Main = () => {
     <React.Fragment>
       {isMobileCustom ? (
         <React.Fragment>
-          {(initialLoading || loadingIdea || loadingProjectRoom) && (
+          {(initialDataLoading || loadingIdea || loadingProjectRoom) && (
             <Loader withoutBg={true} />
           )}
           {isMobileCustom && !openScream && (
@@ -427,7 +428,7 @@ const Main = () => {
           handleClick={handleClick}
           order={order}
           setChangeLocationModalOpen={setChangeLocationModalOpen}
-          loading={initialLoading}
+          loading={initialDataLoading}
         />
       )}
 
@@ -444,17 +445,17 @@ const Main = () => {
 
       {!openInfoPage && (
         <MainColumnWrapper>
-          {(initialLoading || loadingIdea || loadingProjectRoom) &&
+          {(initialDataLoading || loadingIdea || loadingProjectRoom) &&
             !isMobileCustom && <Loader left="200px" width="400px" />}
 
           {!openProjectRoom &&
             !openAccount &&
-            !initialLoading &&
+            !initialDataLoading &&
             (order === 1 || (order === 2 && !loadingProjects)) && (
               <SwipeList
                 swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}
                 tabLabels={MenuData.map((item) => item.text).slice(0, 2)}
-                loading={initialLoading}
+                loading={initialDataLoading}
                 order={order}
                 dataFinal={order === 1 ? dataFinalIdeas : dataFinalProjectRooms}
                 dataFinalMap={dataFinalMap}

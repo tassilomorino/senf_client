@@ -9,6 +9,7 @@ import store from "../store";
 
 import {
   SET_SCREAMS,
+  INITIAL_DATA_LOADING,
   LOADING_DATA,
   STOP_LOADING_DATA,
   DELETE_SCREAM,
@@ -61,6 +62,10 @@ export const getScreams = (mapViewport) => async (dispatch) => {
       dispatch({
         type: SET_SCREAMS,
         payload: screams,
+      });
+      dispatch({
+        type: INITIAL_DATA_LOADING,
+        payload: false,
       });
     })
     .catch((error) => {
