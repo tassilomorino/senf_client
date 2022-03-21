@@ -24,7 +24,6 @@ import {
   EDIT_SCREAM,
   SET_SCREAM,
   SUBMIT_COMMENT,
-  INITIAL_DATA_LOADING,
   LOADING_IDEA_DATA,
   LOADING_PROJECT_DATA,
   LOADING_PROJECTS_DATA,
@@ -89,7 +88,6 @@ const initialState = {
   project: {},
   comment: {},
   like: {},
-  initialDataLoading: true,
   loading: true,
   loadingIdea: false,
   loadingProjects: true,
@@ -115,11 +113,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loading: false,
-      };
-    case INITIAL_DATA_LOADING:
-      return {
-        ...state,
-        initialDataLoading: action.payload,
       };
     case LOADING_DATA:
       return {
