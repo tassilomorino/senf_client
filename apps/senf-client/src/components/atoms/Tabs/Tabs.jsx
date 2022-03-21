@@ -78,7 +78,7 @@ const Tabs = ({
   secondaryColor,
   type,
 }) => {
-  const tab = tabLabels.map((tabLabel, i) => {
+  const tab = tabLabels?.map((tabLabel, i) => {
     return (
       !loading && (
         <React.Fragment>

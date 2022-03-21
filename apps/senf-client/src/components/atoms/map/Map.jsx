@@ -170,15 +170,14 @@ const Map = ({
 
   const _onViewportChange = useCallback(
     (viewport) => {
-      // do I need to change viewport all the time ?
+      //how can I dispatch viewport every 2 seconds
+      //instead of every mouse scroll
       // thats the last thing wich causes rerenders
-
-      setTimeout(() => {
-        dispatch(setMapViewport(viewport));
-      }, 1500);
+      dispatch(setMapViewport(viewport));
     },
     [dispatch]
   );
+
   const data = useMemo(() => {
     if (!loadingProjects && geoData !== undefined && geoData !== "") {
       const jsonData = JSON.parse(geoData);
