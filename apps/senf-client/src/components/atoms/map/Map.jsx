@@ -146,9 +146,8 @@ const Map = ({
   const [hoverTitle, setHoverTitle] = useState("");
 
   const handlleMapLoaded = () => {
-    setTimeout(() => {
-      setShowPatternBackground(false);
-    }, 1000);
+    setShowPatternBackground(false);
+
     dispatch(setMapLoaded());
 
     if (
