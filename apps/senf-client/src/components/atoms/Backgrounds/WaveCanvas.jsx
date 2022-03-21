@@ -16,6 +16,9 @@ const WaveCanvas = ({ canvasRef, props }) => {
   useEffect(() => {
     const div = document.getElementById("ListWrapper");
     div?.addEventListener("scroll", handleScroll);
+    return () => {
+      div.removeEventListener("scroll", handleScroll);
+    };
   }, [handleScroll]);
   return (
     <canvas
