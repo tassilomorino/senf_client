@@ -163,7 +163,7 @@ const ProjectCard = (props) => {
       .child(`/organizationsData/${organizationId}/${projectRoomId}/thumbnail`)
       .getDownloadURL()
       .then(onResolve1);
-  }, [organizationId]);
+  }, [organizationId, projectRoomId]);
 
   const pushScreamId = () => {
     dispatch(openProjectRoomFunc(thisProjectRoomId, true));
