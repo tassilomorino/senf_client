@@ -145,7 +145,7 @@ const App = () => {
       }
     });
   };
-  useEffect(() => {
+  useLayoutEffect(() => {
     setViewport();
     const initialMapViewport = store.getState().data.initialMapViewport;
     store.dispatch(getScreams(initialMapViewport));
