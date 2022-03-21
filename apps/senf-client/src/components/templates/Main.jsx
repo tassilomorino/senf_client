@@ -13,8 +13,6 @@ import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
-import _ from "lodash";
-
 import {
   getScreams,
   closeScream,
@@ -126,7 +124,7 @@ const Main = () => {
   const screams = useSelector((state) => state.data.screams);
   const myScreams = useSelector((state) => state.data.myScreams);
 
-  const [initialLoading, setInitialLoading] = useState(true);
+  const [initialLoading, setInitialLoading] = useState(false);
   const loading = useSelector((state) => state.data.loading);
   const loadingUI = useSelector((state) => state.UI.loading);
   const loadingProjects = useSelector((state) => state.data.loadingProjects);
@@ -243,54 +241,43 @@ const Main = () => {
       }
     }
   }, [lat, long, loadingIdea, openScream]);
-
   useEffect(() => {
     if (
       cookie_settings !== "all" &&
       cookie_settings !== "minimum" &&
-      isMobileCustom &&
-      !screamId
+      isMobileCustom
     ) {
       history.push("/intro");
     } else {
-      if (mapViewport && mapViewport.latitude !== 0) {
-        const allPromise = Promise.all([
-          dispatch(getOrganizations(mapViewport)),
-          dispatch(getProjects(mapViewport)),
-          dispatch(getScreams(mapViewport)),
-          projectRoomId && dispatch(openProjectRoomFunc(projectRoomId, true)),
-          screamId && dispatch(openScreamFunc(screamId)),
-          organizationId &&
-            dispatch(openOrganizationFunc(true, organizationId)),
-        ]);
-        allPromise
-          .then((values) => {
-            setInitialLoading(false); // [valueOfPromise1, valueOfPromise2, ...]
-          })
-          .catch((error) => {
-            setInitialLoading(false); // rejectReason of any first rejected promise
-          });
-
-        if (window.location.pathname === "/projectRooms") {
-          setOrder(2);
-        } else if (window.location.pathname === "/organizations") {
-          setOrder(2);
-          dispatch(setSwipePositionUp());
-          setOpenOrganizationsPage(true);
-        } else if (window.location.pathname === "/insights") {
-          // setOrder(4);
-        } else if (projectRoomId) {
-          setOrder(2);
-        } else if (screamId) {
-          setOrder(1);
-        } else if (organizationId) {
-          setOrder(2);
-          dispatch(setSwipePositionUp());
-          setOpenOrganizationsPage(true);
-        }
-      }
+      history.push("/");
     }
-  }, [initialMapViewport]);
+  }, [cookie_settings, history]);
+
+  useEffect(() => {
+    projectRoomId && dispatch(openProjectRoomFunc(projectRoomId, true));
+    screamId && dispatch(openScreamFunc(screamId));
+    organizationId && dispatch(openOrganizationFunc(true, organizationId));
+  }, [dispatch, projectRoomId, screamId, organizationId]);
+
+  useEffect(() => {
+    if (window.location.pathname === "/projectRooms") {
+      setOrder(2);
+    } else if (window.location.pathname === "/organizations") {
+      setOrder(2);
+      dispatch(setSwipePositionUp());
+      setOpenOrganizationsPage(true);
+    } else if (window.location.pathname === "/insights") {
+      // setOrder(4);
+    } else if (projectRoomId) {
+      setOrder(2);
+    } else if (screamId) {
+      setOrder(1);
+    } else if (organizationId) {
+      setOrder(2);
+      dispatch(setSwipePositionUp());
+      setOpenOrganizationsPage(true);
+    }
+  }, [dispatch, organizationId, screamId, projectRoomId]);
 
   const handleClick = useCallback(
     (order) => {
