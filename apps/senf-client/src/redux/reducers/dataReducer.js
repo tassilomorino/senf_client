@@ -66,6 +66,19 @@ const defaultOrganizationTypes = [
   "Presse",
   "Sonstige",
 ];
+const TopViewport = {
+  latitude:
+    typeof Storage !== "undefined" && localStorage.getItem("latitude")
+      ? Number(localStorage.getItem("latitude"))
+      : 50.93864020643174,
+  longitude:
+    typeof Storage !== "undefined" && localStorage.getItem("longitude")
+      ? Number(localStorage.getItem("longitude"))
+      : 6.958725744885521,
+
+  zoom: isMobileCustom ? 8 : 9.2,
+  duration: 0,
+};
 const initialState = {
   projects: [],
   organizations: [],
@@ -87,7 +100,7 @@ const initialState = {
   cookie_settings: "",
   mapLoaded: false,
   mapViewport: null,
-  initialMapViewport: null,
+  initialMapViewport: TopViewport,
   initialMapBounds: null,
   mapBounds: null,
   topics: defaultTopics,

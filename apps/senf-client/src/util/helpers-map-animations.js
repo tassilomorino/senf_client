@@ -13,22 +13,8 @@ import { isMobileCustom } from "./customDeviceDetect";
 import store from "../redux/store";
 
 export const setViewport = () => {
-  window.store = store;
-
-  const TopViewport = {
-    latitude:
-      typeof Storage !== "undefined" && localStorage.getItem("latitude")
-        ? Number(localStorage.getItem("latitude"))
-        : 50.93864020643174,
-    longitude:
-      typeof Storage !== "undefined" && localStorage.getItem("longitude")
-        ? Number(localStorage.getItem("longitude"))
-        : 6.958725744885521,
-
-    zoom: isMobileCustom ? 8 : 9.2,
-    duration: 0,
-  };
-  store.dispatch(setMapViewport(TopViewport));
+  const initialMapViewport = store.getState().data.initialMapViewport;
+  store.dispatch(setMapViewport(initialMapViewport));
 
   const zoomedViewport = {
     latitude:

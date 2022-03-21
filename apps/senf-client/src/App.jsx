@@ -126,8 +126,6 @@ let vh = window.innerHeight * 0.01;
 // Then we set the value in the --vh custom property to the root of the document
 document.documentElement.style.setProperty("--vh", `${vh}px`);
 
-const initialMapViewport = store.getState().data.initialMapViewport;
-
 const App = () => {
   const { t } = useTranslation();
 
@@ -149,7 +147,7 @@ const App = () => {
   };
   useEffect(() => {
     setViewport();
-
+    const initialMapViewport = store.getState().data.initialMapViewport;
     store.dispatch(getScreams(initialMapViewport));
     store.dispatch(getOrganizations(initialMapViewport));
     store.dispatch(getProjects(initialMapViewport));
