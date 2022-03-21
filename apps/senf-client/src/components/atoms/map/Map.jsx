@@ -146,9 +146,8 @@ const Map = ({
   const [hoverTitle, setHoverTitle] = useState("");
 
   const handlleMapLoaded = () => {
-    setShowPatternBackground(false);
-
     dispatch(setMapLoaded());
+    setShowPatternBackground(false);
 
     if (
       !screamId &&
