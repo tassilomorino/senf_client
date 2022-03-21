@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, memo } from "react";
+import React, { useRef, useEffect, memo, useCallback } from "react";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import WaveCanvas from "./WaveCanvas";
 
@@ -62,8 +62,7 @@ const Wave = (props) => {
     ctx.closePath();
     ctx.fill();
   }
-
-  const draw = () => {
+  const draw = useCallback(() => {
     const ctx = contextRef.current;
 
     ctx.clearRect(0, 0, window.innerWidth, contextRef.current.canvas.height);
@@ -85,7 +84,7 @@ const Wave = (props) => {
     ]);
 
     drawWave();
-  };
+  }, []);
 
   function resizeCanvasToDisplaySize(canvas) {
     const { width } = canvasRef.current.getBoundingClientRect();
