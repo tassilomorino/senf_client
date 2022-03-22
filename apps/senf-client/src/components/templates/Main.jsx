@@ -336,7 +336,7 @@ const Main = () => {
     ]); */
     ideasData = filterByGeodata(ideasData, mapBounds);
     return ideasData;
-  }, [dropdown, searchTerm, selectedTopics, screams]);
+  }, [dropdown, searchTerm, selectedTopics, screams, mapBounds]);
 
   //PROJECTROOMS
   const dataFinalProjectRooms = useMemo(() => {
