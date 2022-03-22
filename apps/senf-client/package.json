@@ -28,6 +28,7 @@
     "linkifyjs": "^3.0.3",
     "lodash": "^4.17.21",
     "mapbox": "^1.0.0-beta10",
+    "mapbox-gl": "^2.7.1",
     "moment": "^2.29.1",
     "plotly.js-cartesian-dist": "^2.10.1",
     "public-ip": "^4.0.4",
