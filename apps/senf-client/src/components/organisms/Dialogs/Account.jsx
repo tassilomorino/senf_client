@@ -14,7 +14,7 @@ import InfoModal from "../../molecules/DialogInlineComponents/InfoModal";
 import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 
-import { orderBy as _orderBy } from "lodash";
+import orderBy from "lodash/orderBy";
 import { AccountTabData } from "../../../data/AccountTabData";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import { useTranslation } from "react-i18next";
@@ -98,8 +98,8 @@ const Account = ({ dataFinalMap }) => {
 
   const sortedScreams =
     dropdown === "newest"
-      ? _orderBy(screamsSearched, "createdAt", "desc")
-      : _orderBy(screamsSearched, "likeCount", "desc");
+      ? orderBy(screamsSearched, "createdAt", "desc")
+      : orderBy(screamsSearched, "likeCount", "desc");
 
   const dataFinal = sortedScreams
     ? sortedScreams.filter(

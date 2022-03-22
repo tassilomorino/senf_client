@@ -1,7 +1,7 @@
 /* helper functions for the application */
 import { useRef, useState, useEffect } from "react";
 import moment from "moment";
-import { orderBy as _orderBy } from "lodash";
+import orderBy from "lodash/orderBy";
 import { ResizeObserver } from "resize-observer";
 import * as linkify from "linkifyjs";
 
@@ -68,12 +68,12 @@ export function search(dbData, userInput, dbDataKeys) {
 
 export function sort(items, dropdown) {
   return dropdown === "newest"
-    ? _orderBy(items, "createdAt", "desc")
+    ? orderBy(items, "createdAt", "desc")
     : dropdown === "hottest"
-    ? _orderBy(items, "likeCount", "desc")
+    ? orderBy(items, "likeCount", "desc")
     : dropdown === "aToZ"
-    ? _orderBy(items, [(pr) => pr.title.toLowerCase()], ["asc"])
-    : _orderBy(items, [(pr) => pr.title.toLowerCase()], ["desc"]);
+    ? orderBy(items, [(pr) => pr.title.toLowerCase()], ["asc"])
+    : orderBy(items, [(pr) => pr.title.toLowerCase()], ["desc"]);
 }
 
 export function filterByTagFilter(items, selectedTags, tagsType) {

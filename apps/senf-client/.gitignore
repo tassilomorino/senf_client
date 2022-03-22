@@ -6,7 +6,10 @@
 /dist
 /dev-dist
 /tmp
-/out-tsc
+/out-tsc#
+
+#bundle analyzer
+stats.html
 
 # dependencies
 /node_modules

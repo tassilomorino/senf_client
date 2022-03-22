@@ -21,7 +21,7 @@ import styled from "styled-components";
 import { ModalBackground } from "../../atoms/Backgrounds/ModalBackground";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 
-import { orderBy as _orderBy } from "lodash";
+import orderBy from "lodash/orderBy";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import { useTranslation } from "react-i18next";
 import PostScream from "../PostIdea/PostScream";
@@ -135,8 +135,8 @@ const ProjectDialog = ({
 
   const sortedScreams =
     dropdown === "newest"
-      ? _orderBy(screamsSearched, "createdAt", "desc")
-      : _orderBy(screamsSearched, "likeCount", "desc");
+      ? orderBy(screamsSearched, "createdAt", "desc")
+      : orderBy(screamsSearched, "likeCount", "desc");
 
   const dataFinal = sortedScreams.filter(
     ({ Thema, status, lat, long }) =>
