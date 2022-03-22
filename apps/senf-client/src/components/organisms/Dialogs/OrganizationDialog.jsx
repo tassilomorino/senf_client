@@ -18,7 +18,7 @@ import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
 import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 
-import _ from "lodash";
+import { orderBy as _orderBy } from "lodash";
 import {
   openOrganizationFunc,
   stateCreateOrganizationsFunc,
@@ -324,8 +324,8 @@ const OrganizationDialog = ({
 
   const sortedScreams =
     dropdown === "newest"
-      ? _.orderBy(screamsSearched, "createdAt", "desc")
-      : _.orderBy(screamsSearched, "likeCount", "desc");
+      ? _orderBy(screamsSearched, "createdAt", "desc")
+      : _orderBy(screamsSearched, "likeCount", "desc");
 
   const dataFinal = sortedScreams;
   // .filter(
