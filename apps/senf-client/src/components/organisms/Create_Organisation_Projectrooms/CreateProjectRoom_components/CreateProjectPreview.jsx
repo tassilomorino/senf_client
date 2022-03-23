@@ -30,6 +30,8 @@ import {
 } from "../../../../redux/actions/projectActions";
 import { StyledH2 } from "../../../../styles/GlobalStyle";
 import Navigation from "../Components/Navigation";
+import ListItemsEdit from "../Components/ListItemsEdit";
+import ToggleStatusComponent from "../Components/ToggleStatusComponent";
 
 const Wrapper = styled.div`
   display: flex;
@@ -84,11 +86,19 @@ const FrameWrapper = styled.div`
   }
 `;
 
-const CreateProjectPagePreview = ({ onClickPrev, setClose, set }) => {
+const CreateProjectPagePreview = ({
+  onClickPrev,
+  setClose,
+  set,
+  listItems,
+  pagesData,
+  index,
+  projectRoomTitle,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [openPreview, setOpenPreview] = useState(false);
-  const [status, setStatus] = useState(false);
+  const [status, setStatus] = useState(true);
 
   const [infosProvided, setInfosProvided] = useState(false);
 
@@ -107,8 +117,12 @@ const CreateProjectPagePreview = ({ onClickPrev, setClose, set }) => {
         console.log("No such document!");
       } else {
         const data = ref.data();
-        if (data.status) {
-          setStatus(true);
+        if (
+          !data.status ||
+          data.status === "deactivated" ||
+          data.status === "uncompleted"
+        ) {
+          setStatus(false);
         }
         if (data.title && data.description) {
           setInfosProvided(true);
@@ -126,10 +140,11 @@ const CreateProjectPagePreview = ({ onClickPrev, setClose, set }) => {
 
   const handleArchive = async () => {
     const db = firebase.firestore();
+    setStatus(false);
 
     if (
       typeof Storage !== "undefined" &&
-      localStorage.getItem("createProjectRoomId")
+      localStorage.getItem("createOrganizationId")
     ) {
       const ref = await db
         .collection("organizations")
@@ -137,25 +152,18 @@ const CreateProjectPagePreview = ({ onClickPrev, setClose, set }) => {
         .collection("projectRooms")
         .doc(localStorage.getItem("createProjectRoomId"));
 
-      return ref.update({ status: "archived" }).then(() => {
-        dispatch(getProjects());
-
-        setClose();
-        //REMOVE LOCALSTORAGE
-        localStorage.removeItem("createProjectRoomOrganizationId");
-        localStorage.removeItem("createProjectRoomId");
-        localStorage.removeItem("createProjectPostEdit");
-      });
+      return ref.update({ status: "deactivated" }).then(() => {});
     } else {
     }
   };
 
   const handlePublish = async () => {
     const db = firebase.firestore();
+    setStatus(true);
 
     if (
       typeof Storage !== "undefined" &&
-      localStorage.getItem("createProjectRoomId")
+      localStorage.getItem("createOrganizationId")
     ) {
       const ref = await db
         .collection("organizations")
@@ -164,80 +172,36 @@ const CreateProjectPagePreview = ({ onClickPrev, setClose, set }) => {
         .doc(localStorage.getItem("createProjectRoomId"));
 
       return ref.update({ status: "active" }).then(() => {
-        dispatch(getProjects());
-
-        setClose();
-
-        //REMOVE LOCALSTORAGE
-        localStorage.removeItem("createProjectRoomOrganizationId");
-        localStorage.removeItem("createProjectRoomId");
-        localStorage.removeItem("createProjectPostEdit");
+        if (localStorage.getItem("createProjectRoomPostEdit") !== "true") {
+          setTimeout(() => {
+            setClose();
+          }, 1000);
+        }
       });
     }
   };
+
   return (
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
           <StyledH2 fontWeight="900" textAlign="center">
-            Übersicht
+            {pagesData[index].subTitle}
           </StyledH2>
+          <ListItemsEdit
+            listItems={listItems}
+            set={set}
+            info={projectRoomTitle}
+          />
 
-          <ListItemWrapper>
-            <ListItem>
-              <ExpandButton handleButtonClick={() => set(2)} />
-              <ListItemTitle>Infos</ListItemTitle>
-              <img
-                src={EditIcon}
-                width="20px"
-                style={{ paddingRight: "20px" }}
-              />
-            </ListItem>
-            <ListItemStatus>
-              <img src={infosProvided ? CheckIcon : MissingIcon} width="30px" />
-            </ListItemStatus>{" "}
-          </ListItemWrapper>
-          <ListItemWrapper>
-            <ListItem>
-              <ListItemTitle>Gebiet</ListItemTitle>
-              <img
-                src={EditIcon}
-                width="20px"
-                style={{ paddingRight: "20px" }}
-              />
-            </ListItem>
-            <ListItemStatus>
-              <img
-                src={infosProvided ? MissingIcon : MissingIcon}
-                width="30px"
-              />
-            </ListItemStatus>{" "}
-          </ListItemWrapper>
-
-          {openPreview && (
-            <FrameWrapper>
-              <iframe
-                src={`http://localhost:3000/projectrooms/${localStorage.getItem(
-                  "createProjectRoomId"
-                )}`}
-                height="100%"
-                width="100%"
-                frameBorder="0"
-              />
-            </FrameWrapper>
-          )}
-
-          {status && (
-            <SubmitButton
-              text={t("Archivieren")}
-              zIndex="9"
-              backgroundColor="transparent"
-              textColor="#353535"
-              top={document.body.clientWidth > 768 ? "100px" : "70px"}
-              left="0"
-              handleButtonClick={handleArchive}
-              /*  disabled={!data} */
-              //   keySubmitRef={keySubmitRef}
+          {localStorage.getItem("createProjectRoomPostEdit") === "true" && (
+            <ToggleStatusComponent
+              title={t("createProjectRoomPage7ToggleTitle")}
+              status={status}
+              handlePublish={handlePublish}
+              handleArchive={handleArchive}
+              activeLabel={t("public")}
+              deactivatedLabel={t("deactivated")}
             />
           )}
         </ComponentInnerWrapper>
@@ -248,7 +212,11 @@ const CreateProjectPagePreview = ({ onClickPrev, setClose, set }) => {
         prevLabel={t("back")}
         handleNext={handlePublish}
         handlePrev={onClickPrev}
-        // disabled={!data || nextClicked}
+        disabled={localStorage.getItem("createProjectRoomPostEdit") === "true"}
+        pagesData={pagesData}
+        index={index}
+        setClose={setClose}
+
         // loading={nextClicked}
       />
     </React.Fragment>

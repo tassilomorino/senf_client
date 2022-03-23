@@ -139,13 +139,12 @@ const ProjectDialog = ({
       : _.orderBy(screamsSearched, "likeCount", "desc");
 
   const dataFinal = sortedScreams.filter(
-    ({ Thema, status, lat, long }) =>
+    ({ Thema, lat, long }) =>
       selectedTopics.includes(Thema) &&
       lat <= mapBounds?.latitude1 &&
       lat >= mapBounds?.latitude2 &&
       long >= mapBounds?.longitude2 &&
-      long <= mapBounds?.longitude3 &&
-      status === "None"
+      long <= mapBounds?.longitude3
   );
 
   const TabSlicer = project?.calendar ? 3 : 1;
@@ -158,6 +157,8 @@ const ProjectDialog = ({
           setInfoOpen={setInfoOpen}
           title={project?.title}
           calendar={project?.calendar}
+          organizationId={project?.organizationId}
+          projectRoomId={project?.projectRoomId}
           order={order}
           path={path}
           handleClose={handleClose}

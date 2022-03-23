@@ -38,10 +38,12 @@ const Navigation = ({
       {prevLabel && (
         <SubmitButton
           text={
-            localStorage.getItem("createOrganizationPostEdit") === "true" &&
+            (localStorage.getItem("createOrganizationPostEdit") === "true" ||
+              localStorage.getItem("createProjectRoomPostEdit") === "true") &&
             pagesData.length - 1 === index
               ? t("close")
-              : localStorage.getItem("createOrganizationPostEdit") === "true"
+              : localStorage.getItem("createOrganizationPostEdit") === "true" ||
+                localStorage.getItem("createProjectRoomPostEdit") === "true"
               ? "Zurück zur Übersicht"
               : prevLabel
           }
@@ -53,10 +55,12 @@ const Navigation = ({
           transformX="none"
           marginLeft="0"
           handleButtonClick={
-            localStorage.getItem("createOrganizationPostEdit") === "true" &&
+            (localStorage.getItem("createOrganizationPostEdit") === "true" ||
+              localStorage.getItem("createProjectRoomPostEdit") === "true") &&
             pagesData.length - 1 === index
               ? setClose
-              : localStorage.getItem("createOrganizationPostEdit") === "true"
+              : localStorage.getItem("createOrganizationPostEdit") === "true" ||
+                localStorage.getItem("createProjectRoomPostEdit") === "true"
               ? () => set(pagesData.length - 1)
               : handlePrev
           }
@@ -66,10 +70,12 @@ const Navigation = ({
       {nextLabel && (
         <SubmitButton
           text={
-            localStorage.getItem("createOrganizationPostEdit") === "true" &&
+            (localStorage.getItem("createOrganizationPostEdit") === "true" ||
+              localStorage.getItem("createProjectRoomPostEdit") === "true") &&
             pagesData.length - 1 === index
               ? "Gespeichert"
-              : localStorage.getItem("createOrganizationPostEdit") === "true"
+              : localStorage.getItem("createOrganizationPostEdit") === "true" ||
+                localStorage.getItem("createProjectRoomPostEdit") === "true"
               ? "Speichern"
               : nextLabel
           }

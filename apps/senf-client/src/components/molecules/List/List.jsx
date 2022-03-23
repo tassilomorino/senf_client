@@ -69,7 +69,10 @@ const List = ({
     var items = [];
     if (dataFinalLength !== 0) {
       for (var i = 0; i < listItems; i++) {
-        if (swipeListType === "projectRoomOverview") {
+        if (
+          swipeListType === "projectRoomOverview" ||
+          swipeListType === "uncompletedOrDeactivatedProjectRoomOverview"
+        ) {
           items.push(
             dataFinal[i]?.projectRoomId && (
               <ProjectCard
@@ -160,7 +163,11 @@ const List = ({
             <NoIdeasYet>{t("projectrooms_loading_error")}</NoIdeasYet>
           )} */}
 
-        <div style={isMobileCustom ? { height: "70%" } : { height: "500px" }} />
+        {swipeListType !== "uncompletedOrDeactivatedProjectRoomOverview" && (
+          <div
+            style={isMobileCustom ? { height: "70%" } : { height: "500px" }}
+          />
+        )}
       </React.Fragment>
     )
   );

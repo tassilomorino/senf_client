@@ -15,6 +15,7 @@ import "firebase/compat/firestore";
 import "firebase/compat/storage";
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
+import InfoSwiper from "../Components/InfoSwiper";
 
 const Header = styled.h3`
   font-size: 18px;
@@ -47,11 +48,16 @@ const StyledLi = styled.li`
 `;
 const CheckBoxWrapper = styled.div`
   margin-top: 50px;
-  width: 80%;
-  margin-left: 10%;
+  width: 100%;
+  margin-left: 0%;
   text-align: left;
   display: flex;
   align-items: center;
+
+  @media (min-width: 768px) {
+    width: 80%;
+    margin-left: 10%;
+  }
 `;
 const CheckBoxLabel = styled.label`
   font-size: 18px;
@@ -66,7 +72,10 @@ const CreateOrganizationPage0 = ({
   index,
 }) => {
   const { t } = useTranslation();
-  const [selected, setSelected] = useState(false);
+  const [checkBox1, setCheckBox1] = useState(false);
+  const [checkBox2, setCheckBox2] = useState(false);
+  const [checkBox3, setCheckBox3] = useState(false);
+
   const [nextClicked, setNextClicked] = useState(false);
 
   useEffect(() => {
@@ -74,7 +83,9 @@ const CreateOrganizationPage0 = ({
       typeof Storage !== "undefined" &&
       localStorage.getItem("createOrganizationId")
     ) {
-      setSelected(true);
+      setCheckBox1(true);
+      setCheckBox2(true);
+      setCheckBox3(true);
     }
   }, []);
 
@@ -96,36 +107,48 @@ const CreateOrganizationPage0 = ({
 
           <br />
 
-          <StyledH3 textAlign="center">
-            {" "}
-            Vorteile von einem Organisationprofil:
-          </StyledH3>
+          <InfoSwiper />
 
-          <StyledUL>
-            <StyledLi>
-              Werdet sichtbar – beschreibt euer Vorhaben und informiert
-              interssierte Personen
-            </StyledLi>{" "}
-            <StyledLi>
-              Verbessert eure Erreichbarkeit durch das Hinterlegen eurer
-              Kontaktdaten
-            </StyledLi>{" "}
-            <StyledLi>
-              Mitmachen! Vernetzt euch mit anderen, plant eure Projekte und
-              tauscht euch aus{" "}
-            </StyledLi>
-          </StyledUL>
           <CheckBoxWrapper>
             <CheckBox
-              selected={selected}
+              selected={checkBox1}
               name="CheckBox"
-              handleInputChange={() => setSelected(!selected)}
+              handleInputChange={() => setCheckBox1(!checkBox1)}
             />
             <CheckBoxLabel>
-              <StyledH3>
-                Bestätige, dass du Teil einer Organisation bist und berechtigt
-                eine Profilseite zu erstellen.
-              </StyledH3>
+              <StyledText>
+                Ich möchte eine Organisation eintragen, die sich mit der
+                Stadtentwicklung in Köln beschäftigt.
+              </StyledText>
+            </CheckBoxLabel>
+          </CheckBoxWrapper>
+
+          <CheckBoxWrapper>
+            <CheckBox
+              selected={checkBox2}
+              name="CheckBox"
+              handleInputChange={() => setCheckBox2(!checkBox2)}
+            />
+            <CheckBoxLabel>
+              <StyledText>
+                Ich bestätige, dass ich Teil dieser Organisation und berechtigt
+                bin, eine Profilseite für diese Organisation zu erstellen.
+              </StyledText>
+            </CheckBoxLabel>
+          </CheckBoxWrapper>
+
+          <CheckBoxWrapper>
+            <CheckBox
+              selected={checkBox3}
+              name="CheckBox"
+              handleInputChange={() => setCheckBox3(!checkBox3)}
+            />
+            <CheckBoxLabel>
+              <StyledText>
+                Ich verstehe, dass dies eine Beteiligungsplattform ist und
+                verpflichte mich, diese Plattform nicht für reine Werbezwecke zu
+                verwenden.
+              </StyledText>
             </CheckBoxLabel>
           </CheckBoxWrapper>
         </ComponentInnerWrapper>
@@ -134,7 +157,7 @@ const CreateOrganizationPage0 = ({
       <Navigation
         nextLabel={t("lets_go")}
         handleNext={handleNext}
-        disabled={!selected || nextClicked}
+        disabled={!checkBox1 || !checkBox2 || !checkBox3 || nextClicked}
         loading={nextClicked}
         pagesData={pagesData}
       />

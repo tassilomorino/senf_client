@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
 import { useParams } from "react-router";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -45,7 +47,7 @@ import Tabs from "../../atoms/Tabs/Tabs";
 import { OrganizationTabData } from "../../../data/OrganizationTabData";
 import { Accordion } from "../../molecules/Accordion/Accordion";
 import Arrow from "../../../images/icons/arrow-right.png";
-import { openLink, openMail } from "../../../util/helpers";
+import { openLink, openMail, search, sort } from "../../../util/helpers";
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -245,6 +247,10 @@ const OrganizationDialog = ({
   const [logo, setLogo] = useState(null);
 
   const user = useSelector((state) => state.user);
+  const [
+    uncompletedOrDeactivatedProjectRooms,
+    setUncompletedOrDeactivatedProjectRooms,
+  ] = useState([]);
 
   const openOrganization = useSelector((state) => state.UI.openOrganization);
   const organization = useSelector((state) => state.data.organization);
@@ -305,38 +311,51 @@ const OrganizationDialog = ({
     setDropdown(value);
   };
 
-  const dataRar = organization?.projectRooms;
-
   const [searchTerm, setSearchTerm] = useState("");
-  const screamsSearched = dataRar?.filter((val) => {
-    if (searchTerm === "") {
-      return val;
-    } else if (
-      val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.Stadtteil?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.Stadtbezirk?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.locationHeader?.toLowerCase().includes(searchTerm.toLowerCase())
-    ) {
-      return val;
+
+  var projectRoomsData;
+  projectRoomsData = search(organization?.projectRooms, searchTerm, [
+    "title",
+    "brief",
+    "description_about",
+    "description_motivation",
+    "description_procedure",
+    "description_learnmore",
+  ]);
+
+  projectRoomsData = sort(projectRoomsData, dropdown);
+
+  const dataFinal = projectRoomsData;
+
+  useEffect(async () => {
+    if (organization) {
+      const db = firebase.firestore();
+      const data = [];
+
+      const projectRoomsRef = await db
+        .collection("organizations")
+        .doc(organization.organizationId)
+        .collection("projectRooms")
+        .where("status", "!=", "active")
+        .orderBy("status", "desc")
+        .orderBy("createdAt", "desc")
+        .get();
+      if (!projectRoomsRef.exists) {
+        console.log("no prs in loadOrganizationProjectRooms");
+      }
+
+      projectRoomsRef.docs.forEach((doc) => {
+        data.push({
+          ...doc.data(),
+          projectRoomId: doc.id,
+          organizationType: doc.data().organizationType,
+          icon: setIconByOrganizationType(doc.data().organizationType),
+        });
+        setUncompletedOrDeactivatedProjectRooms(data);
+        console.log(uncompletedOrDeactivatedProjectRooms);
+      });
     }
-  });
-
-  const sortedScreams =
-    dropdown === "newest"
-      ? _.orderBy(screamsSearched, "createdAt", "desc")
-      : _.orderBy(screamsSearched, "likeCount", "desc");
-
-  const dataFinal = sortedScreams;
-  // .filter(
-  //   ({ Thema, status, lat, long }) =>
-  //     selectedTopics.includes(Thema) &&
-  //     lat <= mapBounds?.latitude1 &&
-  //     lat >= mapBounds?.latitude2 &&
-  //     long >= mapBounds?.longitude2 &&
-  //     long <= mapBounds?.longitude3 &&
-  //     status === "None"
-  // );
+  }, [organization.organizationId]);
 
   return !loadingOrganization ? (
     <Wrapper>
@@ -536,13 +555,26 @@ const OrganizationDialog = ({
         />
 
         {order === 1 ? (
-          <List
-            swipeListType="projectRoomOverview"
-            loading={loading}
-            dropdown={dropdown}
-            dataFinal={dataFinal}
-            projectsData={projectsData}
-          />
+          <React.Fragment>
+            <React.Fragment>
+              <StyledH3 margin="24px"> Nur für dich sichtbar:</StyledH3>
+              <List
+                swipeListType="uncompletedOrDeactivatedProjectRoomOverview"
+                loading={loading}
+                dropdown={dropdown}
+                dataFinal={uncompletedOrDeactivatedProjectRooms}
+                projectsData={projectsData}
+              />
+            </React.Fragment>
+
+            <List
+              swipeListType="projectRoomOverview"
+              loading={loading}
+              dropdown={dropdown}
+              dataFinal={dataFinal}
+              projectsData={projectsData}
+            />
+          </React.Fragment>
         ) : (
           <CalendarComponent
             googleCalendarId={organization?.googleCalendarId}

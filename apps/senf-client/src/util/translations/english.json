@@ -3,6 +3,11 @@
   "rotate_phone": "Please rotate your smartphone",
 
   "close": "Close",
+  "question": "Question",
+  "answer": "Answer",
+  "active": "Active",
+  "deactivated": "Deactivated",
+  "public": "Public",
 
   "contact": "Contact",
   "contact-address": "Contact-E-Mail",
@@ -198,7 +203,7 @@
 
   "createOrganizationPage0aTitle": "Create organization profile",
   "createOrganizationPage0aMobileTitle": "+ Organization",
-  "createOrganizationPage0aSubTitle": "From neighborhood associations to planning offices to political parties - here you can create an organization-profile for your venture.",
+  "createOrganizationPage0aSubTitle": "From neighborhood associations to planning agencies to political parties, you can create a profile for your organization here.",
 
   "createOrganizationPage0bTitle": "Organizationtype",
   "createOrganizationPage0bSubTitle": "What kind of organization are you?",
@@ -226,5 +231,8 @@
   "createOrganizationPage6SubTitle2": "Add more members to your organization:",
 
   "createOrganizationPage7Title": "Overview",
-  "createOrganizationPage7SubTitle": "Do you want to change any of the entries?"
+  "createOrganizationPage7SubTitle": "Do you want to change any of the entries?",
+  "createOrganizationPage7ToggleTitle": "Status des Organisationsprofils",
+
+  "createProjectRoomPage7ToggleTitle": "Status of the Projectroom"
 }

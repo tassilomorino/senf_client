@@ -16,6 +16,7 @@ export const ComponentWrapper = styled.div`
   width: 100vw;
   top: 70px;
   padding-bottom: 300px;
+  overflow: hidden;
 
   @media (min-width: 768px) {
     max-width: 600px;

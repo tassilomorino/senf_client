@@ -1,30 +1,12 @@
-/** @format */
-
 import React, { useEffect, useState } from "react";
-
-// Redux
-import { useDispatch, useSelector } from "react-redux";
-import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
-import NotPublishedIcon from "../../../images/icons/notPublished.png";
-import { useTranslation } from "react-i18next";
-
 import styled from "styled-components";
-import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
-import {
-  openOrganizationFunc,
-  stateCreateOrganizationsFunc,
-} from "../../../redux/actions/organizationActions";
-import {
-  StyledH2,
-  StyledH3,
-  StyledImg,
-  StyledText,
-} from "../../../styles/GlobalStyle";
-import setIconByOrganizationType from "../../../data/setIconByOrganizationType";
-import NoImage from "../../../images/noImage.png";
-
 import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
 import "firebase/compat/storage";
+import { StyledH2, StyledImg } from "../../../../styles/GlobalStyle";
+import ExpandButton from "../../../atoms/CustomButtons/ExpandButton";
+import setIconByOrganizationType from "../../../../data/setIconByOrganizationType";
+import { useSelector } from "react-redux";
 
 const Wrapper = styled.div`
   float: left;
@@ -164,7 +146,6 @@ const Title = styled.h3`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
-
 const SubTitle = styled.div`
   height: auto; /* 18px */
   width: auto;
@@ -186,72 +167,40 @@ const SubTitle = styled.div`
   text-overflow: ellipsis;
 `;
 
-const DeactivatedWrapper = styled.div`
-  position: absolute;
-  top: 40px;
-  z-index: 5;
-  color: white;
-  width: 50%;
-  margin-left: 25%;
-`;
-
-export const OrganizationCard = (props) => {
-  const {
-    organization: {
-      title,
-      organizationId: thisOrganizationId,
-      organizationType,
-      status,
-    },
-  } = props;
-  const dispatch = useDispatch();
-  const organization = useSelector((state) => state.data.organization);
-  const projects = useSelector((state) => state.data.projects);
+export const InlineOrganizationCard = ({
+  organizationId,
+  title,
+  organizationType,
+  handleDropdown,
+  selectedOrganizationId,
+}) => {
+  const thisOrganizationId = organizationId;
   const [organizationImage, setOrganizationImage] = useState(null);
-  const [placeHodlerImage, setPlaceHolderImage] = useState(false);
+  const projects = useSelector((state) => state.data.projects);
 
   useEffect(async () => {
     const db = firebase.firestore();
     const storageRef = firebase.storage().ref();
     storageRef
-      .child(`/organizationsData/${thisOrganizationId}/logo/logo`)
+      .child(`/organizationsData/${organizationId}/logo/logo`)
       .getDownloadURL()
-      .then(onResolve, onReject);
+      .then(onResolve);
 
     function onResolve(image) {
       setOrganizationImage(image);
     }
-    function onReject() {
-      setPlaceHolderImage(true);
-    }
   }, []);
-
-  const handleOpenOrganization = () => {
-    dispatch(openOrganizationFunc(true, thisOrganizationId));
-  };
 
   const projectRoomsSize = projects?.filter(
     ({ organizationId }) => organizationId === thisOrganizationId
   ).length;
 
   return (
-    <Wrapper
-      status={status}
-      active={thisOrganizationId === organization?.organizationId}
-    >
-      {status !== "active" && (
-        <DeactivatedWrapper>
-          <img src={NotPublishedIcon} width="100%" />
-        </DeactivatedWrapper>
-      )}
-      <ExpandButton handleButtonClick={handleOpenOrganization} />
+    <Wrapper active={organizationId === selectedOrganizationId}>
+      <ExpandButton handleButtonClick={() => handleDropdown(organizationId)} />
 
       <LogoWrapper>
-        <Thumbnail
-          img={
-            organizationImage ? organizationImage : placeHodlerImage && NoImage
-          }
-        ></Thumbnail>
+        <Thumbnail img={organizationImage}></Thumbnail>
       </LogoWrapper>
 
       <LogoPlacer>
