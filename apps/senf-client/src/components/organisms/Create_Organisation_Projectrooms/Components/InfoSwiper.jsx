@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { useState, useCallback, useRef, useEffect } from "react";
+import { isMobileCustom } from "../../../../util/customDeviceDetect";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { useSpring, animated } from "@react-spring/web";
@@ -10,6 +11,7 @@ import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 import WeAreHere from "../../../../images/weAreHere.png";
 import WorkTogether from "../../../../images/workTogether.png";
+import OpenBook from "../../../../images/openBook.png";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -39,7 +41,8 @@ const HorizontalSwipeCard = styled(animated.div)`
 
   position: relative;
   overflow: hidden;
-  opacity: ${(props) => (props.active ? 1 : 0.5)};
+  opacity: ${(props) => (props.active ? 1 : props.isMobileCustom ? 0.5 : 0)};
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -145,20 +148,20 @@ const InfoSwiper = () => {
   const pages = [
     {
       title: "Werdet sichtbar",
-      text: "Beschreibt euer Vorhaben und informiert interssierte Personen",
+      text: "Zeigt der Community, dass ihr euch aktiv mit Bürgerbeteiligung beschäftigt",
       img: WeAreHere,
       id: 0,
     },
     {
       title: "Erstellt eure Projekträume",
-      text: "Als eigetragene Organisation könnt ihr Projekträume erstellen!",
+      text: "Als eingetragene Organisation könnt ihr Projekträume für eure Vorhaben erstellen",
       img: WorkTogether,
       id: 1,
     },
     {
-      title: "......",
-      text: ".............",
-      img: WorkTogether,
+      title: "Informiert",
+      text: "Fügt Beschreibungen, Kontakdaten und FAQs hinzu, um Interessierte zu informieren",
+      img: OpenBook,
       id: 2,
     },
   ];
@@ -167,7 +170,12 @@ const InfoSwiper = () => {
     <Wrapper>
       <FlexWrapper>
         {pages.map(({ title, text, id, img }) => (
-          <HorizontalSwipeCard {...bind()} active={id === active} style={props}>
+          <HorizontalSwipeCard
+            {...bind()}
+            active={id === active}
+            isMobileCustom={isMobileCustom}
+            style={props}
+          >
             <img src={img} height="200px" />
 
             <StyledH3 textAlign="center">{title}</StyledH3>

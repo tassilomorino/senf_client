@@ -112,9 +112,8 @@ const CreateOrganizationPage0 = ({
             />
             <CheckBoxLabel>
               <StyledText>
-                Bestätige, dass du eine Organisation eintragen möchtest, die
-                sowohl das Thema Stadtentwicklung im Fokus hat, als auch in Köln
-                tätig ist.
+                Ich möchte eine Organisation eintragen, die sich mit der
+                Stadtentwicklung in Köln beschäftigt.
               </StyledText>
             </CheckBoxLabel>
           </CheckBoxWrapper>
@@ -127,8 +126,8 @@ const CreateOrganizationPage0 = ({
             />
             <CheckBoxLabel>
               <StyledText>
-                Bestätige, dass du Teil dieser Organisation bist und berechtigt
-                bist eine für diese Organisation eine Profilseite zu erstellen.
+                Ich bestätige, dass ich Teil dieser Organisation und berechtigt
+                bin, eine Profilseite für diese Organisation zu erstellen.
               </StyledText>
             </CheckBoxLabel>
           </CheckBoxWrapper>
@@ -141,9 +140,9 @@ const CreateOrganizationPage0 = ({
             />
             <CheckBoxLabel>
               <StyledText>
-                Bestätige, dass du vestanden hast dass wir deine Organisation
-                prüfen und ggf. wieder löscchen müssen, falls Sie nicht in das
-                Muster fällt.
+                Ich verstehe, dass dies eine Beteiligungsplattform ist und
+                verpflichte mich, diese Plattform nicht für reine Werbezwecke zu
+                verwenden.
               </StyledText>
             </CheckBoxLabel>
           </CheckBoxWrapper>

@@ -25,6 +25,8 @@ import Tabs from "../../atoms/Tabs/Tabs";
 import Wave from "../../atoms/Backgrounds/Wave";
 import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 import { openCreateProjectRoomFunc } from "../../../redux/actions/projectActions";
+import { stateCreateOrganizationsFunc } from "../../../redux/actions/organizationActions";
+
 import NewButton from "../../atoms/CustomButtons/NewButton";
 import PostScream from "../PostIdea/PostScream";
 import MainModal from "../../atoms/Layout/MainModal";
@@ -205,6 +207,11 @@ const SwipeList = ({
 
   const [openCreateOrganizationFirst, setOpenCreateOrganizationFirst] =
     useState(false);
+
+  const openCreateOrganization = () => {
+    dispatch(stateCreateOrganizationsFunc(true));
+    setOpenCreateOrganizationFirst(false);
+  };
 
   const openCreateProjectRoom = () => {
     dispatch(openCreateProjectRoomFunc(true));
@@ -426,7 +433,7 @@ const SwipeList = ({
               backgroundColor="#fed957"
               textColor="#353535"
               margin="20px"
-              handleButtonClick={() => setOpenOrganizationsPage(true)}
+              handleButtonClick={openCreateOrganization}
             />
           </MainModal>,
           document.getElementById("portal-root-modal")
