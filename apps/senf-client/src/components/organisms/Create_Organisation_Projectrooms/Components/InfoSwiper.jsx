@@ -121,6 +121,7 @@ const InfoSwiper = () => {
           handleNext();
         }
       }
+
       // set({ x: down ? mx : 0 });
     }
   );
