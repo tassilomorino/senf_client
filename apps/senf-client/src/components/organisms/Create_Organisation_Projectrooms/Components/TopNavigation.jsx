@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import ReactDOM from "react-dom";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 import MainModal from "../../../atoms/Layout/MainModal";
 import SettingsIcon from "../../../../images/icons/settings.png";
 import ExpandButton from "../../../atoms/CustomButtons/ExpandButton";

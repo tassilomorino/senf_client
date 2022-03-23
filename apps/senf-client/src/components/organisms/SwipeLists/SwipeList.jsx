@@ -1,14 +1,16 @@
 /** @format */
 import React, { useEffect, useState, memo, useCallback, useRef } from "react";
+import ReactDOM from "react-dom";
+
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 
 import styled from "styled-components";
-
+import { StyledH3 } from "../../../styles/GlobalStyle";
 //Components
 import List from "../../molecules/List/List";
 import Toolbar from "../../molecules/Toolbar/Toolbar";
@@ -25,6 +27,9 @@ import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 import { openCreateProjectRoomFunc } from "../../../redux/actions/projectActions";
 import NewButton from "../../atoms/CustomButtons/NewButton";
 import PostScream from "../PostIdea/PostScream";
+import MainModal from "../../atoms/Layout/MainModal";
+import LoginRegistration from "../Auth/LoginRegistration";
+import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 
 const DragWrapper = styled(animated.div)`
   overscroll-behavior: contain;
@@ -181,6 +186,7 @@ const SwipeList = ({
   openInsightsPage,
   setOpenInsightsPage,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const loadingProjects = useSelector((state) => state.data.loadingProjects);
   const openScream = useSelector((state) => state.UI.openScream);
@@ -191,6 +197,14 @@ const SwipeList = ({
   const mapBounds = useSelector((state) => state.data.mapBounds);
   const swipePosition = useSelector((state) => state.UI.swipePosition);
   const user = useSelector((state) => state.user);
+
+  const [
+    openModalAuthenticateForProjectRoom,
+    setOpenModalAuthenticateForProjectRoom,
+  ] = useState(false);
+
+  const [openCreateOrganizationFirst, setOpenCreateOrganizationFirst] =
+    useState(false);
 
   const openCreateProjectRoom = () => {
     dispatch(openCreateProjectRoomFunc(true));
@@ -370,6 +384,54 @@ const SwipeList = ({
 
   const sectionFastLinks = !openAccount && dataFinal && (
     <React.Fragment>
+      {openModalAuthenticateForProjectRoom &&
+        ReactDOM.createPortal(
+          <MainModal
+            handleButtonClick={() =>
+              setOpenModalAuthenticateForProjectRoom(false)
+            }
+          >
+            <StyledH3 textAlign="center" margin="20px">
+              Um einen Projektraum anzulegen, musst du ein Organisationsprofil
+              angelegt haben. Um ein Organisationsprofil anzulegen, musst du
+              dich zuerst Anmelden/Registieren
+            </StyledH3>
+
+            <SubmitButton
+              text={t("login2")}
+              zIndex="999"
+              backgroundColor="#fed957"
+              textColor="#353535"
+              margin="20px"
+            >
+              <LoginRegistration />
+            </SubmitButton>
+          </MainModal>,
+          document.getElementById("portal-root-modal")
+        )}
+
+      {openCreateOrganizationFirst &&
+        ReactDOM.createPortal(
+          <MainModal
+            handleButtonClick={() => setOpenCreateOrganizationFirst(false)}
+          >
+            <StyledH3 textAlign="center" margin="20px">
+              Um einen Projektraum anzulegen, musst du ein Organisationsprofil
+              angelegt haben.
+            </StyledH3>
+
+            <SubmitButton
+              text={t("Organisation anlegen")}
+              zIndex="999"
+              backgroundColor="#fed957"
+              textColor="#353535"
+              margin="20px"
+              handleButtonClick={() => setOpenOrganizationsPage(true)}
+            />
+          </MainModal>,
+          document.getElementById("portal-root-modal")
+        )}
+
       {order === 1 && (dataFinal.length > 0 || searchTerm !== "") && (
         <animated.div style={slideUpSectionProps}>
           <OrganizationsIntroWrapper>
@@ -507,9 +569,13 @@ const SwipeList = ({
                   <NewButton
                     borderType="dashed"
                     handleButtonClick={
-                      user?.organizationId?.length
+                      !user.authenticated
+                        ? () => setOpenModalAuthenticateForProjectRoom(true)
+                        : !user?.organizationId?.length
+                        ? () => setOpenCreateOrganizationFirst(true)
+                        : user.handle === "Senf.koeln"
                         ? openCreateProjectRoom
-                        : openRequestProjectRoom
+                        : openCreateProjectRoom
                     }
                   >
                     Projektraum anlegen
@@ -567,9 +633,13 @@ const SwipeList = ({
               <NewButton
                 borderType="dashed"
                 handleButtonClick={
-                  user?.organizationId?.length
+                  !user.authenticated
+                    ? () => setOpenModalAuthenticateForProjectRoom(true)
+                    : !user?.organizationId?.length
+                    ? () => setOpenCreateOrganizationFirst(true)
+                    : user.handle === "Senf.koeln"
                     ? openCreateProjectRoom
-                    : openRequestProjectRoom
+                    : openCreateProjectRoom
                 }
               >
                 Projektraum anlegen

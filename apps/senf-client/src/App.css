@@ -715,7 +715,7 @@ input:focus {
   display: none;
 }
 
-@media screen and (min-aspect-ratio: 15/9) and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
+@media screen and (min-aspect-ratio: 15/9) and (orientation: landscape) {
   .landscapeNote {
     display: block;
     z-index: 99999;
