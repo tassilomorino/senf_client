@@ -583,7 +583,7 @@ const SwipeList = ({
                         ? () => setOpenCreateOrganizationFirst(true)
                         : user.handle === "Senf.koeln"
                         ? openCreateProjectRoom
-                        : openCreateProjectRoom
+                        : openRequestProjectRoom
                     }
                   >
                     Projektraum anlegen
@@ -647,7 +647,7 @@ const SwipeList = ({
                     ? () => setOpenCreateOrganizationFirst(true)
                     : user.handle === "Senf.koeln"
                     ? openCreateProjectRoom
-                    : openCreateProjectRoom
+                    : openRequestProjectRoom
                 }
               >
                 Projektraum anlegen

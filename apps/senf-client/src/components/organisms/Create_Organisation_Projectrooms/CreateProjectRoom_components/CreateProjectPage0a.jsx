@@ -50,6 +50,8 @@ const CreateProjectPage1 = ({ onClickNext, pagesData, index }) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
   const organizations = useSelector((state) => state.data.organizations);
+  const user = useSelector((state) => state.user);
+
   const [selectedOrganizationId, setSelectedOrganizationId] = useState(null);
   const [selectedOrganizationName, setSelectedOrganizationName] =
     useState(null);
@@ -57,7 +59,7 @@ const CreateProjectPage1 = ({ onClickNext, pagesData, index }) => {
     useState(null);
 
   const myOrganizations = organizations.filter(({ organizationId }) =>
-    organizationId.includes(organizationId)
+    organizationId.includes(user.organizationId)
   );
 
   const handleDropdown = (value) => {
