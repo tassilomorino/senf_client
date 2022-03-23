@@ -392,6 +392,7 @@ const SwipeList = ({
   const sectionFastLinks = !openAccount && dataFinal && (
     <React.Fragment>
       {openModalAuthenticateForProjectRoom &&
+        !user.authenticated &&
         ReactDOM.createPortal(
           <MainModal
             handleButtonClick={() =>
@@ -405,7 +406,7 @@ const SwipeList = ({
             </StyledH3>
 
             <SubmitButton
-              text={t("login2")}
+              text={t("login")}
               zIndex="999"
               backgroundColor="#fed957"
               textColor="#353535"

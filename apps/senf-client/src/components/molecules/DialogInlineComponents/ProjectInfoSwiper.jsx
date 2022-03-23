@@ -88,14 +88,15 @@ const Dot = styled.div`
   margin: 10px 10px 10px 10px;
 `;
 
-const ProjectInfoSwiper = ({ setInfoOpen, pages }) => {
+const ProjectInfoSwiper = ({ pages }) => {
   const [active, setActive] = useState(0);
 
   const [props, set] = useSpring(() => ({
     x: 0,
     transform: `translateX(0px)`,
-    overflow: "scroll",
-    touchAction: "none",
+    overflowY: "scroll",
+    overflowX: "hidden",
+    touchAction: "pan-y",
   }));
 
   const handlePrev = () => {
@@ -107,7 +108,7 @@ const ProjectInfoSwiper = ({ setInfoOpen, pages }) => {
   };
 
   const bind = useDrag(
-    ({ event, down, distance, last, direction, movement: [mx, my] }) => {
+    ({ event, down, distance, last, direction, movement: [mx] }) => {
       if (last && distance[0] > 50) {
         event.preventDefault();
         if (direction[0] === 1) {
@@ -116,16 +117,8 @@ const ProjectInfoSwiper = ({ setInfoOpen, pages }) => {
           handleNext();
         }
       }
-      set({ x: down ? mx : 0 });
 
-      if (distance[1] > 50) {
-        const element = document.getElementById("SwiperOuterWrapper");
-        element?.scrollTo({
-          top: -my,
-          left: 0,
-          behavior: "smooth",
-        });
-      }
+      // set({ x: down ? mx : 0 });
     }
   );
 
@@ -142,7 +135,7 @@ const ProjectInfoSwiper = ({ setInfoOpen, pages }) => {
   }, [active]);
 
   return (
-    <Wrapper isMobileCustom={isMobileCustom} id="SwiperOuterWrapper">
+    <Wrapper isMobileCustom={isMobileCustom}>
       <FlexWrapper>
         {pages.map(({ title, text, id }) => (
           <HorizontalSwipeCard {...bind()} active={id === active} style={props}>

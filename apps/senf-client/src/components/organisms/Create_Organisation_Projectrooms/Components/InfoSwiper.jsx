@@ -98,8 +98,9 @@ const InfoSwiper = () => {
   const [props, set] = useSpring(() => ({
     x: 0,
     transform: `translateX(0px)`,
-    overflow: "scroll",
-    touchAction: "none",
+    overflowY: "scroll",
+    overflowX: "hidden",
+    touchAction: "pan-y",
   }));
 
   const handlePrev = () => {
@@ -111,7 +112,7 @@ const InfoSwiper = () => {
   };
 
   const bind = useDrag(
-    ({ event, down, distance, last, direction, movement: [mx, my] }) => {
+    ({ event, down, distance, last, direction, movement: [mx] }) => {
       if (last && distance[0] > 50) {
         event.preventDefault();
         if (direction[0] === 1) {
@@ -120,16 +121,7 @@ const InfoSwiper = () => {
           handleNext();
         }
       }
-      set({ x: down ? mx : 0 });
-
-      if (distance[1] > 50) {
-        const element = document.getElementById("SwiperOuterWrapper");
-        element?.scrollTo({
-          top: -my,
-          left: 0,
-          behavior: "smooth",
-        });
-      }
+      // set({ x: down ? mx : 0 });
     }
   );
 

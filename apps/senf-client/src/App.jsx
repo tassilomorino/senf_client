@@ -188,9 +188,9 @@ const App = () => {
             <Cookiebanner />
             {tabletNote}
 
-            {/* {isMobileCustom && (
+            {isMobileCustom && (
               <div className="landscapeNote">{t("rotate_phone")}</div>
-            )} */}
+            )}
 
             <div className="container">
               <Switch>
