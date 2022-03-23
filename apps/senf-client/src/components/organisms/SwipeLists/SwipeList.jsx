@@ -399,9 +399,9 @@ const SwipeList = ({
             }
           >
             <StyledH3 textAlign="center" margin="20px">
-              Um einen Projektraum anzulegen, musst du ein Organisationsprofil
-              angelegt haben. Um ein Organisationsprofil anzulegen, musst du
-              dich zuerst Anmelden/Registieren
+              Um einen Projektraum anzulegen, muss dein Profil mit einem
+              Organisationsprofil verknüpft sein. Um ein Organisationsprofil
+              anzulegen, musst du dich zuerst Anmelden/Registieren
             </StyledH3>
 
             <SubmitButton
@@ -423,8 +423,8 @@ const SwipeList = ({
             handleButtonClick={() => setOpenCreateOrganizationFirst(false)}
           >
             <StyledH3 textAlign="center" margin="20px">
-              Um einen Projektraum anzulegen, musst du ein Organisationsprofil
-              angelegt haben.
+              Um einen Projektraum anzulegen, muss dein Profil mit einem
+              Organisationsprofil verknüpft sein.
             </StyledH3>
 
             <SubmitButton

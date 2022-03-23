@@ -48,11 +48,16 @@ const StyledLi = styled.li`
 `;
 const CheckBoxWrapper = styled.div`
   margin-top: 50px;
-  width: 80%;
-  margin-left: 10%;
+  width: 100%;
+  margin-left: 0%;
   text-align: left;
   display: flex;
   align-items: center;
+
+  @media (min-width: 768px) {
+    width: 80%;
+    margin-left: 10%;
+  }
 `;
 const CheckBoxLabel = styled.label`
   font-size: 18px;
