@@ -142,7 +142,7 @@ const ProjectInfoSwiper = ({ setInfoOpen, pages }) => {
   }, [active]);
 
   return (
-    <Wrapper isMobileCustom={isMobileCustom}>
+    <Wrapper isMobileCustom={isMobileCustom} id="SwiperOuterWrapper">
       <FlexWrapper>
         {pages.map(({ title, text, id }) => (
           <HorizontalSwipeCard {...bind()} active={id === active} style={props}>
