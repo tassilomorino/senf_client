@@ -134,11 +134,6 @@ const Wave = (props) => {
 
     // Size canvas with devicePixelRatio
     sizeCanvas();
-    return () => {
-      contextRef.current = null;
-      canvasRef.current = null;
-      nodesRef.current = null;
-    };
   }, []);
 
   useEffect(() => {
@@ -158,11 +153,6 @@ const Wave = (props) => {
     //   window.cancelAnimationFrame(animationFrameId);
     //   window.removeEventListener("resize", resizeCanvasToDisplaySize);
     // };
-    return () => {
-      contextRef.current = null;
-      canvasRef.current = null;
-      nodesRef.current = null;
-    };
   }, [draw]);
 
   return <WaveCanvas canvasRef={canvasRef} props={props} />;
