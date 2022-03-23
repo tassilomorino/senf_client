@@ -556,17 +556,18 @@ const OrganizationDialog = ({
 
         {order === 1 ? (
           <React.Fragment>
-            <React.Fragment>
-              <StyledH3 margin="24px"> Nur für dich sichtbar:</StyledH3>
-              <List
-                swipeListType="uncompletedOrDeactivatedProjectRoomOverview"
-                loading={loading}
-                dropdown={dropdown}
-                dataFinal={uncompletedOrDeactivatedProjectRooms}
-                projectsData={projectsData}
-              />
-            </React.Fragment>
-
+            {user.organizationId.includes(organization?.organizationId) && (
+              <React.Fragment>
+                <StyledH3 margin="24px"> Nur für dich sichtbar:</StyledH3>
+                <List
+                  swipeListType="uncompletedOrDeactivatedProjectRoomOverview"
+                  loading={loading}
+                  dropdown={dropdown}
+                  dataFinal={uncompletedOrDeactivatedProjectRooms}
+                  projectsData={projectsData}
+                />
+              </React.Fragment>
+            )}
             <List
               swipeListType="projectRoomOverview"
               loading={loading}
