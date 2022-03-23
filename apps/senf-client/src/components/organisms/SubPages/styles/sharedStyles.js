@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
 
   @media (min-width: 768px) {
     margin-left: 200px;
-    width: ${(props) => (props.order ? "calc(100vw - 610px)" : "400px")};
+    width: ${(props) => (props.order ? "calc(100vw - 605px)" : "400px")};
     height: 100vh;
     overflow-y: scroll;
     z-index: 90;

@@ -328,7 +328,10 @@ const OrganizationDialog = ({
   const dataFinal = projectRoomsData;
 
   useEffect(async () => {
-    if (organization) {
+    if (
+      organization &&
+      user.organizationId.includes(organization?.organizationId)
+    ) {
       const db = firebase.firestore();
       const data = [];
 
@@ -556,7 +559,7 @@ const OrganizationDialog = ({
 
         {order === 1 ? (
           <React.Fragment>
-            {user.organizationId.includes(organization?.organizationId) && (
+            {uncompletedOrDeactivatedProjectRooms.length ? (
               <React.Fragment>
                 <StyledH3 margin="24px"> Nur für dich sichtbar:</StyledH3>
                 <List
@@ -567,7 +570,7 @@ const OrganizationDialog = ({
                   projectsData={projectsData}
                 />
               </React.Fragment>
-            )}
+            ) : null}
             <List
               swipeListType="projectRoomOverview"
               loading={loading}
