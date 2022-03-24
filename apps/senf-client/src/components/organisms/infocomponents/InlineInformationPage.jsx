@@ -33,7 +33,10 @@ import FirstBad from "../../../images/firstbad.png";
 import CloseIcon from "../../../images/icons/close_yellow.png";
 
 import Logo from "../../../images/logo.png";
-import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
+import {
+  CustomButton,
+  CustomIconButton,
+} from "../../atoms/CustomButtons/CustomButton";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
 import MyButton from "../../../util/MyButton";
@@ -132,7 +135,6 @@ const InlineInformationPage = ({ classes }) => {
     // })`;
 
     bubble.style.clipPath = `circle(${value}% at 50% 50%)`;
-
     bubble.style.transformOrigin = "bottom";
 
     //  `;
@@ -150,8 +152,10 @@ const InlineInformationPage = ({ classes }) => {
   }, []);
 
   useEffect(() => {
-    const div = document.getElementById("InfoPage");
-    div?.addEventListener("scroll", handleScroll);
+    setTimeout(() => {
+      const div = document.getElementById("InfoPage");
+      div?.addEventListener("scroll", handleScroll);
+    }, 2000);
   }, [handleScroll]);
 
   // const ref = useRef(null);
@@ -205,10 +209,15 @@ const InlineInformationPage = ({ classes }) => {
 
       <MainDialog isOpen={true}>
         <Container id="InfoPage">
-          {/* <MyButton
-            onClick={() => setOpen(false)}
-            btnClassName={classes.closeButton}
-          >
+          <CustomIconButton
+            name="Close"
+            position="fixed"
+            left="0px"
+            margin={document.body.clientWidth > 768 ? "40px" : "10px"}
+            handleButtonClick={() => setOpen(false)}
+          />
+
+          {/*
             <img src={CloseIcon} width="20px" />
           </MyButton>
           <div className="logo1">
