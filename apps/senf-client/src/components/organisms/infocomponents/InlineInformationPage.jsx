@@ -49,6 +49,7 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import Bulb from "./components/Bulb";
 import Circle from "./components/Circle";
+import Cards from "./components/Cards";
 
 const Container = styled.div`
   height: 100%;
@@ -104,7 +105,7 @@ const styles = {
 };
 
 const InlineInformationPage = ({ classes }) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   const { t } = useTranslation();
 
@@ -117,6 +118,7 @@ const InlineInformationPage = ({ classes }) => {
 
   const [scrollValue, setScrollValue] = useState(0);
   const [visibleSecondHeadline, setVisibleSecondHeadline] = useState(false);
+  const [visibleCards, setVisibleCards] = useState(false);
 
   // The scroll listener
   const handleScroll = useCallback(() => {
@@ -137,6 +139,12 @@ const InlineInformationPage = ({ classes }) => {
       setVisibleSecondHeadline(true);
     } else {
       setVisibleSecondHeadline(false);
+    }
+
+    if (value > 50) {
+      setVisibleCards(true);
+    } else {
+      setVisibleCards(false);
     }
 
     // console.log(el?.scrollTop);
@@ -222,6 +230,8 @@ const InlineInformationPage = ({ classes }) => {
           <Bubble />
           <Bulb />
           <SecondHeadline visibleSecondHeadline={visibleSecondHeadline} />
+
+          {visibleCards && <Cards visibleCards={visibleCards} />}
 
           <Footer color="#353535" position="absolute" top="1850px" />
         </Container>
