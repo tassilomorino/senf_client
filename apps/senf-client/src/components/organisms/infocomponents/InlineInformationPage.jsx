@@ -1,9 +1,10 @@
 /** @format */
 
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useCallback, useRef } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
-
+import { useSpring } from "@react-spring/web";
 import { useTranslation } from "react-i18next";
+import MainDialog from "../../atoms/Layout/MainDialog";
 
 // MUI Stuff
 import Dialog from "@material-ui/core/Dialog";
@@ -37,6 +38,22 @@ import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
 import MyButton from "../../../util/MyButton";
 import Footer from "../../molecules/Footer/Footer";
+import Headline from "./components/Headline";
+import SecondHeadline from "./components/SecondHeadline";
+
+import Bubble from "./components/Bubble";
+import { useEffect } from "react";
+import styled from "styled-components";
+import Bulb from "./components/Bulb";
+import Circle from "./components/Circle";
+
+const Container = styled.div`
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
+  position: fixed;
+  background-color: white;
+`;
 
 const styles = {
   root: {
@@ -93,6 +110,92 @@ const InlineInformationPage = ({ classes }) => {
     window.location.href = link;
   };
 
+  useEffect(() => {
+    const bubble = document.getElementById("Circle");
+    // bubble.style.transform = "scale(0%)";
+    bubble.style.clipPath = `circle(${0}% at 50% 50%)`;
+  }, []);
+
+  const [scrollValue, setScrollValue] = useState(0);
+  const [visibleSecondHeadline, setVisibleSecondHeadline] = useState(false);
+
+  // The scroll listener
+  const handleScroll = useCallback(() => {
+    const el = document.getElementById("InfoPage");
+    const bubble = document.getElementById("Circle");
+
+    let value = el?.scrollTop / 10;
+
+    setScrollValue(value);
+    // bubble.style.transform = `scale(${value / 8 + "%"}) translateY(${
+    //   value / 5 + "px"
+    // })`;
+
+    bubble.style.clipPath = `circle(${value}% at 50% 50%)`;
+
+    bubble.style.transformOrigin = "bottom";
+
+    //  `;
+
+    console.log(value);
+
+    if (value > 30) {
+      setVisibleSecondHeadline(true);
+    } else {
+      setVisibleSecondHeadline(false);
+    }
+
+    // console.log(el?.scrollTop);
+    // setScrollValue(el?.scrollTop);
+  }, []);
+
+  useEffect(() => {
+    const div = document.getElementById("InfoPage");
+    div?.addEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
+  // const ref = useRef(null);
+  // const imgRef = useRef(null);
+  // const matrix = useRef(null);
+
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     const Matrix = new DOMMatrix();
+  //     matrix.current = Matrix;
+  //     const div = document.getElementById("InfoPage");
+  //     div?.addEventListener("scroll", onScroll);
+  //   }
+  //   return () => window.removeEventListener("scroll", onScroll);
+  // }, []);
+
+  // const onScroll = () => {
+  //   console.log(y, x);
+
+  //   if (!ref.current && !matrix.current) return;
+
+  //   const { innerHeight } = window;
+  //   const refRect = ref.current.getBoundingClientRect();
+  //   const imageRect = imgRef.current.getBoundingClientRect();
+
+  //   const xMulitplier = imageRect.width / innerHeight;
+
+  //   const x = Math.min(
+  //     0,
+  //     Math.max(-imageRect.width, xMulitplier * refRect.top)
+  //   );
+  //   const y =
+  //     refRect.bottom < innerHeight
+  //       ? Math.max(
+  //           -innerHeight / xMulitplier,
+  //           -1.5 * (innerHeight - refRect.bottom)
+  //         )
+  //       : 0;
+
+  //   console.log(y, x);
+  //   const position = matrix.current.translate(x, y, 0);
+  //   imgRef.current.style.transform = position.toString();
+  // };
+
   return (
     <Fragment>
       <ExpandButton
@@ -100,127 +203,27 @@ const InlineInformationPage = ({ classes }) => {
         dataCy="InlineInfo-button"
       />
 
-      <Dialog
-        open={open}
-        onClose={() => setOpen(false)}
-        BackdropProps={{ classes: { root: classes.root } }}
-        PaperProps={{ classes: { root: classes.paper } }}
-        fullScreen
-      >
-        <MyButton
-          onClick={() => setOpen(false)}
-          btnClassName={classes.closeButton}
-        >
-          <img src={CloseIcon} width="20px" />
-        </MyButton>
-        <div className="logo1">
-          <img src={Logo} width="100px" alt="logo1"></img>
-        </div>
+      <MainDialog isOpen={true}>
+        <Container id="InfoPage">
+          {/* <MyButton
+            onClick={() => setOpen(false)}
+            btnClassName={classes.closeButton}
+          >
+            <img src={CloseIcon} width="20px" />
+          </MyButton>
+          <div className="logo1">
+            <img src={Logo} width="100px" alt="logo1"></img>
+          </div> */}
 
-        <div className={classes.nav} />
-
-        <a
-          href="https://www.facebook.com/senf.koeln/"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <div className="facebook">
-            <img src={Facebook} width="25" alt="EndImage" />
-          </div>
-        </a>
-        <a
-          href="https://www.instagram.com/senf.koeln/"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <div className="insta">
-            <img src={Insta} width="25" alt="EndImage" />
-          </div>{" "}
-        </a>
-
-        <div className="wrapperMenu">
-          <div className="StartBackground" />
-
-          <LazyImage
-            src={TopPath}
-            className={classes.TopPath}
-            width="100%"
-            alt="Top_image_person_with_mustard_tube_good_quality"
-            placeholder={({ imageProps, ref }) => (
-              <img
-                ref={ref}
-                src={TopPathBad}
-                className={classes.TopPath}
-                width="100%"
-                alt="Top_image_person_with_mustard_tube_bad_quality"
-              />
-            )}
-            actual={({ imageProps }) => (
-              <img
-                {...imageProps}
-                alt="Top_image_person_with_mustard_tube_good_quality"
-              />
-            )}
-          />
-
-          <div className="FirstWrapper">
-            <span className="title1">{t("infopage_block1_title")}</span>
-
-            <span className="subTitle1">{t("infopage_block1_subtitle")}</span>
-            <LazyImage
-              src={First}
-              className="First"
-              width="100%"
-              alt="First_image_persons_idea_good_quality"
-              placeholder={({ imageProps, ref }) => (
-                <img
-                  ref={ref}
-                  src={FirstBad}
-                  className="First"
-                  width="100%"
-                  alt="First_image_persons_idea_bad_quality"
-                />
-              )}
-              actual={({ imageProps }) => (
-                <img
-                  {...imageProps}
-                  alt="First_image_persons_idea_good_quality"
-                />
-              )}
-            />
-          </div>
-
-          <span className="title2">{t("infopage_block2_title")}</span>
-
-          <span className="subTitle2">{t("infopage_block2_subtitle")}</span>
-          <img src={Second} className="Second" alt="TopPath" />
-
-          <span className="title3">{t("infopage_block3_title")}</span>
-
-          <span className="subTitle3">{t("infopage_block3_subtitle")}</span>
-
-          <img src={Third} className="Third" alt="TopPath" />
-
-          <CustomButton
-            text={t("showIdeas")}
-            backgroundColor="#353535"
-            textColor="white"
-            position="absolute"
-            top="1700px"
-            handleButtonClick={() => setOpen(false)}
-          />
-          <CustomButton
-            text={t("contact")}
-            backgroundColor="white"
-            textColor="#353535"
-            position="absolute"
-            top="1760px"
-            handleButtonClick={handleButtonContactClick}
-          />
+          <Headline />
+          <Circle scrollValue={scrollValue} />
+          <Bubble />
+          <Bulb />
+          <SecondHeadline visibleSecondHeadline={visibleSecondHeadline} />
 
           <Footer color="#353535" position="absolute" top="1850px" />
-        </div>
-      </Dialog>
+        </Container>
+      </MainDialog>
     </Fragment>
   );
 };
