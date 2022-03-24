@@ -108,16 +108,12 @@ const InlineInformationPage = ({ classes }) => {
 
   const { t } = useTranslation();
 
-  const handleButtonContactClick = () => {
-    var link = "mailto:dein@senf.koeln";
-    window.location.href = link;
-  };
-
   useEffect(() => {
-    const bubble = document.getElementById("Circle");
-    // bubble.style.transform = "scale(0%)";
-    bubble.style.clipPath = `circle(${0}% at 50% 50%)`;
-  }, []);
+    if (open) {
+      const bubble = document.getElementById("Circle");
+      bubble.style.clipPath = `circle(${0}% at 50% 50%)`;
+    }
+  }, [open]);
 
   const [scrollValue, setScrollValue] = useState(0);
   const [visibleSecondHeadline, setVisibleSecondHeadline] = useState(false);
@@ -130,10 +126,6 @@ const InlineInformationPage = ({ classes }) => {
     let value = el?.scrollTop / 10;
 
     setScrollValue(value);
-    // bubble.style.transform = `scale(${value / 8 + "%"}) translateY(${
-    //   value / 5 + "px"
-    // })`;
-
     bubble.style.clipPath = `circle(${value}% at 50% 50%)`;
     bubble.style.transformOrigin = "bottom";
 
@@ -152,11 +144,11 @@ const InlineInformationPage = ({ classes }) => {
   }, []);
 
   useEffect(() => {
-    setTimeout(() => {
+    if (open) {
       const div = document.getElementById("InfoPage");
       div?.addEventListener("scroll", handleScroll);
-    }, 2000);
-  }, [handleScroll]);
+    }
+  }, [handleScroll, open]);
 
   // const ref = useRef(null);
   // const imgRef = useRef(null);
@@ -207,12 +199,13 @@ const InlineInformationPage = ({ classes }) => {
         dataCy="InlineInfo-button"
       />
 
-      <MainDialog isOpen={true}>
+      <MainDialog isOpen={open}>
         <Container id="InfoPage">
           <CustomIconButton
             name="Close"
             position="fixed"
             left="0px"
+            zIndex={999}
             margin={document.body.clientWidth > 768 ? "40px" : "10px"}
             handleButtonClick={() => setOpen(false)}
           />

@@ -43,7 +43,7 @@ const trans = (x, y) => `translate3d(${x}px,${y}px,0) translate3d(-50%,-50%,0)`;
 const Bulb = ({ imgRef }) => {
   const ref = useRef(null);
   const [trail, api] = useTrail(1, (i) => ({
-    xy: [0, 0],
+    xy: [-50, -50],
     config: slow,
   }));
 
