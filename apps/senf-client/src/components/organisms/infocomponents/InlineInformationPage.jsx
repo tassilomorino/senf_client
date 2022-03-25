@@ -227,11 +227,11 @@ const InlineInformationPage = ({ classes }) => {
 
           <Headline />
           <Circle scrollValue={scrollValue} />
-          <Bubble />
+          {/*   <Bubble />
           <Bulb />
           <SecondHeadline visibleSecondHeadline={visibleSecondHeadline} />
 
-          {visibleCards && <Cards visibleCards={visibleCards} />}
+          {visibleCards && <Cards visibleCards={visibleCards} />} */}
 
           <Footer color="#353535" position="absolute" top="1850px" />
         </Container>
