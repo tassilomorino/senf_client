@@ -85,7 +85,7 @@ const trans = (x, y) => `translate3d(${x}px,${y}px,0) translate3d(-50%,-50%,0)`;
 const Bubble = ({ imgRef }) => {
   const ref = useRef(null);
   const [trail, api] = useTrail(3, (i) => ({
-    xy: [-50, -50],
+    xy: [window.innerWidth / 2, window.innerHeight],
     config: i === 0 ? fast : slow,
   }));
   //   const [ref, { left, top }] = useMeasure();

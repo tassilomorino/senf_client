@@ -50,6 +50,7 @@ import styled from "styled-components";
 import Bulb from "./components/Bulb";
 import Circle from "./components/Circle";
 import Cards from "./components/Cards";
+import Keywords from "./components/Keywords";
 
 const Container = styled.div`
   height: 100%;
@@ -109,11 +110,18 @@ const InlineInformationPage = ({ classes }) => {
   const [open, setOpen] = useState(true);
 
   const { t } = useTranslation();
+  const [counter, setCounter] = useState(0);
 
   useEffect(() => {
     if (open) {
+      // if (counter < 3) {
+      //   setInterval(function () {
+      //     setCounter(counter + 0.1);
+      //   }, 100);
+      // }
+
       const bubble = document.getElementById("Circle");
-      bubble.style.clipPath = `circle(${0}% at 50% 50%)`;
+      bubble.style.clipPath = `circle(${4}% at 50% 50%)`;
     }
   }, [open]);
 
@@ -129,8 +137,15 @@ const InlineInformationPage = ({ classes }) => {
     let value = el?.scrollTop / 10;
 
     setScrollValue(value);
-    bubble.style.clipPath = `circle(${value}% at 50% 50%)`;
+    bubble.style.clipPath = `circle(${4 + value}% at 50% 50%)`;
     bubble.style.transformOrigin = "bottom";
+
+    const keyword1 = document.getElementById("keyword1");
+    const keyword2 = document.getElementById("keyword2");
+    const keyword3 = document.getElementById("keyword3");
+    keyword1.style.transform = `translateX(${value * 8}px)`;
+    keyword2.style.transform = `translateX(${-value * 6}px)`;
+    keyword3.style.transform = `translateX(${value * 10}px)`;
 
     //  `;
 
@@ -229,7 +244,8 @@ const InlineInformationPage = ({ classes }) => {
           {/* <Bubble /> */}
           <Bulb />
           <SecondHeadline visibleSecondHeadline={visibleSecondHeadline} />
-          {visibleCards && <Cards visibleCards={visibleCards} />}
+          <Keywords />
+          {/* {visibleCards && <Cards visibleCards={visibleCards} />} */}
           <Footer color="#353535" position="absolute" top="1850px" />
         </Container>
       </MainDialog>
