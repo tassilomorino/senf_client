@@ -61,6 +61,11 @@ const Container = styled.div`
   background-color: rgb(249, 241, 215);
 `;
 
+const InnerContainer = styled.div`
+  height: 3000px;
+  width: 100%;
+`;
+
 const styles = {
   root: {
     backgroundColor: "white",
@@ -161,7 +166,7 @@ const InlineInformationPage = ({ classes }) => {
       setVisibleSecondHeadline(false);
     }
 
-    if (value > 50) {
+    if (value > 87) {
       setVisibleCards(true);
     } else {
       setVisibleCards(false);
@@ -237,6 +242,7 @@ const InlineInformationPage = ({ classes }) => {
             margin={document.body.clientWidth > 768 ? "40px" : "10px"}
             handleButtonClick={() => setOpen(false)}
           />
+
           {/*
             <img src={CloseIcon} width="20px" />
           </MyButton>
@@ -259,8 +265,8 @@ const InlineInformationPage = ({ classes }) => {
           <SecondHeadline
             visibleSecondHeadline={visibleSecondHeadline}
             textlines={[
-              { text: "Wie", color: "#ffff" },
-              { text: "funktioniert's?", color: "#ffff" },
+              { text: "Wie", color: "#F5C098" },
+              { text: "funktioniert's?", color: "#90D8B9" },
             ]}
           />
           {visibleCards && (

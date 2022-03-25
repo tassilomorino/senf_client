@@ -3,6 +3,8 @@ import { useSprings, animated, to as interpolate } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 import styled from "styled-components";
 import Img from "../../../../images/infoPage/howItWorks/decideLocation.jpg";
+import FormulateIdea from "../../../../images/infoPage/howItWorks/formulateIdea.jpg";
+
 import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 
 const StyledDeck = styled(animated.div)`
@@ -38,7 +40,7 @@ const StyledDeck = styled(animated.div)`
 
 const cards = [
   { img: Img, title: "Intuitiv" },
-  { img: Img, title: "Transparent" },
+  { img: FormulateIdea, title: "Transparent" },
   { img: Img, title: "Divers" },
 ];
 
@@ -48,7 +50,7 @@ const to = (i) => ({
   y: i * -4,
   scale: 1,
   rot: -10 + Math.random() * 20,
-  delay: i * 1000,
+  delay: i * 200,
 });
 const from = (_i) => ({ x: -1000, rot: 0, scale: 1.5, y: 0 });
 // This is being used down there in the view, it interpolates rotation and scale into a css transform
@@ -66,7 +68,7 @@ const Cards = ({ visibleCards }) => {
   // Create a gesture, we're interested in down-state, delta (current-pos - click-pos), direction and velocity
   const bind = useDrag(
     ({ args: [index], down, movement: [mx], direction: [xDir], velocity }) => {
-      const trigger = velocity > 0.2; // If you flick hard enough it should trigger the card to fly out
+      const trigger = velocity[1] > 0.02 || velocity[1] === 0; // If you flick hard enough it should trigger the card to fly out
       const dir = xDir < 0 ? -1 : 1; // Direction should either point left or right
       if (!down && trigger) gone.add(index); // If button/finger's up and trigger velocity is reached, we flag the card ready to fly out
       api.start((i) => {
@@ -88,10 +90,9 @@ const Cards = ({ visibleCards }) => {
         setTimeout(() => {
           gone.clear();
           api.start((i) => to(i));
-        }, 600);
+        }, 400);
     }
   );
-  // Now we're just mapping the animated values to our view, that's it. Btw, this component only renders once. :-)
   return (
     <>
       {props.map(({ x, y, rot, scale }, i) => (
