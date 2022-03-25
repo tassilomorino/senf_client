@@ -54,7 +54,8 @@ import Cards from "./components/Cards";
 const Container = styled.div`
   height: 100%;
   width: 100%;
-  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: scroll;
   position: fixed;
   background-color: white;
 `;
@@ -217,22 +218,18 @@ const InlineInformationPage = ({ classes }) => {
             margin={document.body.clientWidth > 768 ? "40px" : "10px"}
             handleButtonClick={() => setOpen(false)}
           />
-
           {/*
             <img src={CloseIcon} width="20px" />
           </MyButton>
           <div className="logo1">
             <img src={Logo} width="100px" alt="logo1"></img>
           </div> */}
-
           <Headline />
           <Circle scrollValue={scrollValue} />
-          {/*   <Bubble />
+          {/*   <Bubble />*/}
           <Bulb />
           <SecondHeadline visibleSecondHeadline={visibleSecondHeadline} />
-
-          {visibleCards && <Cards visibleCards={visibleCards} />} */}
-
+          {/* {visibleCards && <Cards visibleCards={visibleCards} />} */}
           <Footer color="#353535" position="absolute" top="1850px" />
         </Container>
       </MainDialog>
