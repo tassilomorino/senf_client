@@ -27,9 +27,13 @@ export const NoMoreProjectRooms = ({ dataFinalLength }) => {
       ... <br /> {t("noMoreProjectRooms")} <br />
     </NoMore>
   ) : openOrganization ? (
-    <StyledText marginLeft="24px">{t("noOrganizationProjectRooms")}</StyledText>
+    <StyledText marginLeft="24px" margin="0px 24px">
+      {t("noOrganizationProjectRooms")}
+    </StyledText>
   ) : (
-    <StyledText marginLeft="24px">{t("noProjectRooms")}</StyledText>
+    <StyledText marginLeft="24px" margin="0px 24px">
+      {t("noProjectRooms")}
+    </StyledText>
   );
 };
 

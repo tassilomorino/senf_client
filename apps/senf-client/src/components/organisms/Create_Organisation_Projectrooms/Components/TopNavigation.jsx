@@ -1,9 +1,8 @@
-import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import ReactDOM from "react-dom";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 import MainModal from "../../../atoms/Layout/MainModal";
 import SettingsIcon from "../../../../images/icons/settings.png";
 import ExpandButton from "../../../atoms/CustomButtons/ExpandButton";
@@ -12,7 +11,12 @@ import "firebase/compat/firestore";
 import { doc, deleteDoc } from "firebase/firestore";
 import { isMobileCustom } from "../../../../util/customDeviceDetect";
 import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
-
+import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
+import { stateCreateOrganizationsFunc } from "../../../../redux/actions/organizationActions";
+import {
+  openCreateProjectRoomFunc,
+  openProjectRoomFunc,
+} from "../../../../redux/actions/projectActions";
 const Wrapper = styled.div`
   position: fixed;
   top: 0px;
@@ -122,7 +126,15 @@ export const StyledIcon = styled.img`
   }
 `;
 
-const TopNavigation = ({ pagesData, index, title, currentStep, setClose }) => {
+const TopNavigation = ({
+  pagesData,
+  index,
+  title,
+  currentStep,
+  setClose,
+  type,
+}) => {
+  const dispatch = useDispatch();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const { t } = useTranslation();
 
@@ -133,16 +145,55 @@ const TopNavigation = ({ pagesData, index, title, currentStep, setClose }) => {
       "Bist du sicher, dass du die Organisation löschen möchtest?"
     );
     if (answer) {
-      await deleteDoc(
-        doc(db, "organizations", localStorage.getItem("createOrganizationId"))
-      ).then(() => {
-        localStorage.removeItem("createOrganizationId");
-        setClose();
-      });
+      if (type === "projectRoom") {
+        await deleteDoc(
+          doc(
+            db,
+            "organizations",
+            localStorage.getItem("createProjectRoomOrganizationId"),
+            "projectRooms",
+            localStorage.getItem("createProjectRoomId")
+          )
+        ).then(() => {
+          localStorage.removeItem("createProjectRoomOrganizationId");
+          localStorage.removeItem("createProjectRoomId");
+          setClose();
+          dispatch(openProjectRoomFunc(null, false));
+        });
+      } else {
+        await deleteDoc(
+          doc(db, "organizations", localStorage.getItem("createOrganizationId"))
+        ).then(() => {
+          localStorage.removeItem("createOrganizationId");
+          setClose();
+        });
+      }
 
       //some code
     } else {
       //some code
+    }
+  };
+
+  const handleRestart = async () => {
+    var answer = window.confirm(
+      "Wenn du den Prozess neustartest, wird die Organisation, die du gerade erstellst gelöscht"
+    );
+    if (answer) {
+      if (type === "projectRoom") {
+        localStorage.removeItem("createProjectRoomOrganizationId");
+        localStorage.removeItem("createProjectRoomId");
+        setClose();
+        setTimeout(() => {
+          dispatch(openCreateProjectRoomFunc(true));
+        }, 100);
+      } else {
+        localStorage.removeItem("createOrganizationId");
+        setClose();
+        setTimeout(() => {
+          dispatch(stateCreateOrganizationsFunc(true));
+        }, 100);
+      }
     }
   };
   return (
@@ -151,17 +202,19 @@ const TopNavigation = ({ pagesData, index, title, currentStep, setClose }) => {
         <React.Fragment>
           {settingsOpen && (
             <MainModal handleButtonClick={() => setSettingsOpen(false)}>
-              <StyledH2
-                fontWeight="900"
-                margin="15px 0px 0px 0px"
-                textAlign="center"
-              >
-                Möchtest du diese Organisation wieder löschen?
-              </StyledH2>
-              <br />
+              <ButtonWrapper>
+                <ExpandButton handleButtonClick={handleRestart}>
+                  <StyledH3 fontWeight={400}> Neustarten</StyledH3>
+                </ExpandButton>
+              </ButtonWrapper>
+
               <ButtonWrapper>
                 <ExpandButton handleButtonClick={handleDelete}>
-                  <StyledH3 fontWeight={400}> Organisation löschen</StyledH3>
+                  <StyledH3 fontWeight={400}>
+                    {type === "projectRoom"
+                      ? "Projektraum löschen"
+                      : "Organisation löschen"}
+                  </StyledH3>
                 </ExpandButton>
               </ButtonWrapper>
               <Line />

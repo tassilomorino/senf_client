@@ -5,6 +5,9 @@
   "close": "Schließen",
   "question": "Frage",
   "answer": "Antwort",
+  "active": "Aktiv",
+  "deactivated": "Deaktiviert",
+  "public": "Öffentlich",
 
   "contact": "Kontakt",
   "contact-address": "Kontakt-E-Mail",
@@ -185,6 +188,7 @@
   "cookiebanner_title": "Ohne Cookies geht's nicht.",
   "cookiebanner_text": "Für die Bereitstellung einiger Funktionen und die Verbesserung dieses Services brauchen wir Cookies. Falls du wirklich nur die technisch notwendigsten Cookies akzeptieren willst, klicke <2> hier</2> oder konfiguriere deine <5>Cookie-Einstellungen</5> .",
 
+  "infopage_headline": "Digitale\n Plattform für\n Bürger:innen-\nbeteiligung",
   "infopage_block1_title": "Du hast Ideen für\ndein Kölner Veedel?",
   "infopage_block1_subtitle": "Hier kannst du deine Ideen teilen und die der anderen sehen; in den Dialog treten und für Ideen, die dir gefallen stimmen!",
   "infopage_block2_title": "Eure Stimmen können\nlaut werden!",
@@ -217,7 +221,7 @@
 
   "createOrganizationPage0aTitle": "Organisationsprofil erstellen",
   "createOrganizationPage0aMobileTitle": "+ Organisation",
-  "createOrganizationPage0aSubTitle": "Von dem Nachbarschaftsverein über Planungsbüros bis zu politischen Parteien – Hier könnt ihr ein Organisationsprofil für euer Vorhaben erstellen.",
+  "createOrganizationPage0aSubTitle": "Von dem Nachbarschaftsverein über Planungsbüros bis zu politischen Parteien – Hier könnt ihr ein Profil für eure Organisation erstellen.",
 
   "createOrganizationPage0bTitle": "Organisationstyp",
   "createOrganizationPage0bSubTitle": "Welche Art von Organisation seid ihr?",
@@ -245,5 +249,39 @@
   "createOrganizationPage6SubTitle2": "Füge weitere Mitglieder:innen deiner Organisation hinzu:",
 
   "createOrganizationPage7Title": "Übersicht",
-  "createOrganizationPage7SubTitle": "Willst du an den Angaben etwas verändern?"
+  "createOrganizationPage7SubTitle": "Willst du an den Angaben etwas verändern?",
+  "createOrganizationPage7ToggleTitle": "Status des Organisationsprofils",
+
+  "projectRoom_is_deactivated": "Diese Organisation ist deaktiviert worden und ist momentatn nicht öffentlich.",
+  "projectRoom_is_uncompleted": "Diese Organisation ist noch nicht fertiggestellt und noch nicht öffentlich.",
+
+  "createProjectRoomPage0aTitle": "Organisationsprofil auswählen",
+  "createProjectRoomPage0aMobileTitle": "Organisation wählen",
+  "createProjectRoomPage0aSubTitle": "Wähle die Organisation aus, für die du den Projektraum erstellen möchtest",
+
+  "createProjectRoomPage1Title": "Infos",
+  "createProjectRoomPage1SubTitle": "Wähle einen passenden Projektnamen sowie eine Projektraumbeschreibung, die zum einen informiert und zum anderen auffordert Ideen beizutragen und sich einzubringen.",
+  "createProjectRoomPage1_FieldName_Title": "Projektraum-Name",
+
+  "createProjectRoomPage2Title": "Kontakt",
+  "createProjectRoomPage2SubTitle": "Seid erreichbar für alle, die an diesem Projektraum und euren Vorhaben interessiert sind.",
+
+  "createProjectRoomPage3Title": "Bild",
+  "createProjectRoomPage3SubTitle": "Lade ein aussagekräftiges Bild für den Projektraum hoch und wähle dabei nach Möglichkeit ein thematisch passendes Motiv.",
+
+  "createProjectRoomPage4Title": "Gebiet",
+  "createProjectRoomPage4SubTitle": "Mit deinem individuellen Projektraum kannst du ortsbezogen Ideen sammeln. Zeichne das Gebiet ein!",
+
+  "createProjectRoomPage5Title": "Kalender",
+  "createProjectRoomPage5SubTitle": "Aktiviere den Kalender für deinen Projektraum, um sowohl Organisator:innen und Nutzer:innen zu ermöglichen Termingebundene Ideen und Vorschläge zu veröffentlichen!",
+
+  "createProjectRoomPage6Title": "Teammitglieder",
+  "createProjectRoomPage6SubTitle": "Zur Bearbeitung der Inhalte Ihrer Organisation bevollmächtigte Nutzer:innen:",
+  "createProjectRoomPage6SubTitle2": "Füge weitere Mitglieder:innen deiner Organisation hinzu:",
+
+  "createProjectRoomPage7Title": "Übersicht",
+  "createProjectRoomPage7SubTitle": "Willst du an den Angaben etwas verändern?",
+  "createProjectRoomPage7ToggleTitle": "Status des Projektraums",
+
+  "calendar_projectroom_explanaition": ""
 }

@@ -65,10 +65,6 @@ const CreateOrganizationPage2 = ({
   const [longitude, setLongitude] = useState(null);
   const [latitude, setLatitude] = useState(null);
 
-  const [weblink, setWeblink] = useState(null);
-
-  const [contact, setContact] = useState(null);
-
   const createProjectValidationSchema = yup.object({
     title: yup
       .string()

@@ -11,7 +11,7 @@ import {
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
 import styled from "styled-components";
-import notPublishedIcon from "../../../images/icons/notPublished.png";
+import NotPublishedIcon from "../../../images/icons/notPublished.png";
 import bulb from "../../../images/svgIcons/bulb.svg";
 
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
@@ -67,16 +67,13 @@ const ImgWrapper = styled.div`
   border: 1px solid rgba(195, 186, 162, 0.5);
 `;
 
-const ImgWrapperOverlay = styled.div`
-  flex-shrink: 0;
-  width: 80px;
-  height: 80px;
+const DeactivatedWrapper = styled.div`
   position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(255, 255, 255, 0.8);
-  border-radius: 18px;
+  top: calc(50% - 60px);
+  z-index: 5;
+  color: white;
+  width: 30%;
+  margin-left: 35%;
 `;
 
 const FlexWrapper = styled.div`
@@ -137,7 +134,6 @@ const ProjectCard = (props) => {
 
   const [logo, setLogo] = useState(null);
   const cardOrganizationId = organizationId;
-  const user = useSelector((state) => state.user);
   const screams = useSelector((state) => state.data.screams);
 
   const organizations = useSelector((state) => state.data.organizations);
@@ -172,21 +168,14 @@ const ProjectCard = (props) => {
       dispatch(openOrganizationFunc("hide", null));
     }
   };
-  const handleEdit = () => {
-    localStorage.setItem("createProjectRoomOrganizationId", organizationId);
-    localStorage.setItem("createProjectRoomId", thisProjectRoomId);
-    localStorage.setItem("createProjectPostEdit", true);
-
-    dispatch(openCreateProjectRoomFunc(true));
-  };
 
   const [organizationCardData, setOrganizationCardData] = useState([]);
 
   useEffect(() => {
     if (organizations) {
-      organizations.map(({ organizationId, userIds, title }) => {
+      organizations.map(({ organizationId, title }) => {
         if (cardOrganizationId === organizationId) {
-          setOrganizationCardData([...organizationCardData, userIds, title]);
+          setOrganizationCardData([...organizationCardData, title]);
         }
       });
     }
@@ -197,20 +186,13 @@ const ProjectCard = (props) => {
   ).length;
 
   return (
-    <Card type="projectRoomCard">
+    <Card type="projectRoomCard" status={status}>
+      {status !== "active" && (
+        <DeactivatedWrapper>
+          <img src={NotPublishedIcon} width="100%" />
+        </DeactivatedWrapper>
+      )}
       <CardContent>
-        {organizationCardData[0]?.includes(user.userId) && (
-          <CustomIconButton
-            name="Menu"
-            iconWidth="25px"
-            handleButtonClick={() => handleEdit()}
-            position="absolute"
-            left="calc(100% - 54px)"
-            margin="2px"
-            top="0px"
-            zIndex="99"
-          />
-        )}
         <ExpandButton handleButtonClick={() => pushScreamId()} />
         <CardTitle>
           <StyledH2 fontWeight="900">
@@ -225,13 +207,7 @@ const ProjectCard = (props) => {
               )}
           </StyledH2>
         </CardTitle>
-        <ImgWrapper img={projectRoomImage}>
-          {status === "archived" && (
-            <ImgWrapperOverlay>
-              <img src={notPublishedIcon} alt="UploadImageIcon" width="50%" />
-            </ImgWrapperOverlay>
-          )}
-        </ImgWrapper>
+        <ImgWrapper img={projectRoomImage} />
         <RightWrapper>
           <StyledText smallText={document.body.clientWidth < 350}>
             {brief &&
@@ -254,9 +230,9 @@ const ProjectCard = (props) => {
           </OrganizationLogo>
 
           <StyledH4>
-            {organizationCardData[1] &&
+            {organizationCardData[0] &&
               truncateString(
-                organizationCardData[1],
+                organizationCardData[0],
                 document.body.clientWidth < 350
                   ? 20
                   : document.body.clientWidth < 380

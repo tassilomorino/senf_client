@@ -128,6 +128,7 @@ export const SubmitButton = ({
   iconLeft,
   name,
   iconWidth,
+  children,
 }) => {
   const Icon = Icons[name];
 
@@ -152,6 +153,7 @@ export const SubmitButton = ({
       shadow={shadow}
       backdropFilter={backdropFilter}
     >
+      {children && children}
       {iconLeft && (
         <img
           src={Icon}

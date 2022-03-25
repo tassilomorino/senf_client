@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { useState, useEffect, useMemo } from "react";
+import ReactDOM from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
@@ -35,6 +36,11 @@ import { useDrag } from "@use-gesture/react";
 import NewButton from "../../atoms/CustomButtons/NewButton";
 import { stateCreateOrganizationsFunc } from "../../../redux/actions/organizationActions";
 import List from "../../molecules/List/List";
+
+import MainModal from "../../atoms/Layout/MainModal";
+import LoginRegistration from "../Auth/LoginRegistration";
+import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
+import { StyledH3 } from "../../../styles/GlobalStyle";
 
 const InnerWrapper = styled.div`
   overflow-y: scroll;
@@ -100,6 +106,8 @@ const OrganizationsPage = ({
   const [open, setOpen] = useState(false);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [openModalAuthenticate, setOpenModalAuthenticate] = useState(false);
+
   useEffect(() => {
     setOpen(true);
     // window.history.pushState(null, null, "/organizations");
@@ -163,16 +171,31 @@ const OrganizationsPage = ({
     dispatch(stateCreateOrganizationsFunc(true));
   };
 
-  const openRequestOrganization = () => {
-    var link =
-      "mailto:dein@senf.koeln" +
-      "?subject=" +
-      escape("Anfrage: Anlegen eines Organisationsprofils");
+  const AuthenticateModal =
+    openModalAuthenticate &&
+    !user.authenticated &&
+    ReactDOM.createPortal(
+      <MainModal handleButtonClick={() => setOpenModalAuthenticate(false)}>
+        <StyledH3 textAlign="center" margin="20px">
+          Um ein Organisationsprofil anzulegen, musst du dich zuerst
+          Anmelden/Registieren
+        </StyledH3>
 
-    window.location.href = link;
-  };
+        <SubmitButton
+          text={t("login")}
+          zIndex="999"
+          backgroundColor="#fed957"
+          textColor="#353535"
+          margin="20px"
+        >
+          <LoginRegistration />
+        </SubmitButton>
+      </MainModal>,
+      document.getElementById("portal-root-modal")
+    );
   return !loading && isMobileCustom ? (
     <React.Fragment>
+      {AuthenticateModal}
       <ClickBackground onClick={setClose} />
 
       <DragWrapper className={!loading ? "" : "drag_hide"} style={props}>
@@ -235,17 +258,16 @@ const OrganizationsPage = ({
           <ButtonWrapper>
             <NewButton
               borderType="dashed"
-              handleButtonClick={
-                user.authenticated && user.handle === "Senf.koeln"
-                  ? openCreateOrganization
-                  : openRequestOrganization
-              }
               // handleButtonClick={
-              //   user.authenticated
+              //   user.authenticated && user.handle === "Senf.koeln"
               //     ? openCreateOrganization
-              //     : () =>
-              //         alert("Bitte melde dich erst mit deinem Senf-Account an!")
+              //     : openRequestOrganization
               // }
+              handleButtonClick={
+                user.authenticated
+                  ? openCreateOrganization
+                  : () => setOpenModalAuthenticate(true)
+              }
             >
               Organisationsprofil anlegen
             </NewButton>
@@ -267,6 +289,8 @@ const OrganizationsPage = ({
   ) : (
     !loading && (
       <Wrapper order={open}>
+        {AuthenticateModal}
+
         <CustomIconButton
           name="ArrowLeft"
           position="fixed"
@@ -302,19 +326,16 @@ const OrganizationsPage = ({
             <ButtonWrapper>
               <NewButton
                 borderType="dashed"
-                handleButtonClick={
-                  user.authenticated && user.handle === "Senf.koeln"
-                    ? openCreateOrganization
-                    : openRequestOrganization
-                }
                 // handleButtonClick={
-                //   user.authenticated
+                //   user.authenticated && user.handle === "Senf.koeln"
                 //     ? openCreateOrganization
-                //     : () =>
-                //         alert(
-                //           "Bitte melde dich erst mit deinem Senf-Account an!"
-                //         )
+                //     : openRequestOrganization
                 // }
+                handleButtonClick={
+                  user.authenticated
+                    ? openCreateOrganization
+                    : () => setOpenModalAuthenticate(true)
+                }
               >
                 Organisationsprofil anlegen
               </NewButton>

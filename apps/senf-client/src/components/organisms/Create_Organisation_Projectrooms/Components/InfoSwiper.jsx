@@ -1,16 +1,17 @@
 /** @format */
 
 import React, { useState, useCallback, useRef, useEffect } from "react";
+import { isMobileCustom } from "../../../../util/customDeviceDetect";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 
-import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
-
-import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
-import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
+import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
+import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
+import WeAreHere from "../../../../images/weAreHere.png";
+import WorkTogether from "../../../../images/workTogether.png";
+import OpenBook from "../../../../images/openBook.png";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -26,19 +27,22 @@ const Wrapper = styled.div`
 const FlexWrapper = styled.div`
   display: flex;
   flex: none;
+  justify-content: flex-start;
   width: 100%;
   height: 100%;
+  margin-left: 10%;
 `;
 
 const HorizontalSwipeCard = styled(animated.div)`
-  width: 100%;
+  width: 80%;
   height: auto;
 
   flex: none;
 
   position: relative;
   overflow: hidden;
-  opacity: ${(props) => (props.active ? 1 : 0.5)};
+  opacity: ${(props) => (props.active ? 1 : props.isMobileCustom ? 0.5 : 0)};
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -88,7 +92,7 @@ const Dot = styled.div`
   margin: 10px 10px 10px 10px;
 `;
 
-const ProjectInfoSwiper = ({ pages }) => {
+const InfoSwiper = () => {
   const [active, setActive] = useState(0);
 
   const [props, set] = useSpring(() => ({
@@ -134,44 +138,47 @@ const ProjectInfoSwiper = ({ pages }) => {
     }
   }, [active]);
 
+  const pages = [
+    {
+      title: "Werdet sichtbar",
+      text: "Zeigt der Community, dass ihr euch aktiv mit Bürgerbeteiligung beschäftigt",
+      img: WeAreHere,
+      id: 0,
+    },
+    {
+      title: "Erstellt eure Projekträume",
+      text: "Als eingetragene Organisation könnt ihr Projekträume für eure Vorhaben erstellen",
+      img: WorkTogether,
+      id: 1,
+    },
+    {
+      title: "Informiert",
+      text: "Fügt Beschreibungen, Kontakdaten und FAQs hinzu, um Interessierte zu informieren",
+      img: OpenBook,
+      id: 2,
+    },
+  ];
+
   return (
-    <Wrapper isMobileCustom={isMobileCustom}>
+    <Wrapper>
       <FlexWrapper>
-        {pages.map(({ title, text, id }) => (
-          <HorizontalSwipeCard {...bind()} active={id === active} style={props}>
-            {/*  <StyledH2
-              fontWeight="900"
-              textAlign="center"
-              active={id === active}
-            >
-              {id === active || isMobileCustom
-                ? title
-                : active === 0
-                ? truncateString(title, 14)
-                : truncateString(title, 9)}
-            </StyledH2> */}
+        {pages.map(({ title, text, id, img }) => (
+          <HorizontalSwipeCard
+            {...bind()}
+            active={id === active}
+            isMobileCustom={isMobileCustom}
+            style={props}
+          >
+            <img src={img} height="200px" />
+
+            <StyledH3 textAlign="center">{title}</StyledH3>
             <StyledText
               textAlign="center"
               margin="10px 20px 20px 20px"
               marginLeft="20px"
             >
-              <span style={{ fontWeight: "900" }}> {title}</span> {text}
+              {text}
             </StyledText>
-
-            {/* {id === active && (
-              <StyledText textAlign="center">{text}</StyledText>
-            )} */}
-
-            {/* {id === active && (
-              <ExpandButton handleButtonClick={handleOpenOrganizations} />
-            )}
-
-            {id === active - 1 && (
-              <ExpandButton handleButtonClick={handlePrev} />
-            )}
-            {id === active + 1 && (
-              <ExpandButton handleButtonClick={handleNext} />
-            )} */}
           </HorizontalSwipeCard>
         ))}
       </FlexWrapper>
@@ -216,4 +223,4 @@ const ProjectInfoSwiper = ({ pages }) => {
   );
 };
 
-export default ProjectInfoSwiper;
+export default InfoSwiper;

@@ -40,7 +40,13 @@ const StyledImg = styled.img`
   object-fit: cover;
 `;
 
-const CreateProjectPage4 = ({ onClickNext, onClickPrev }) => {
+const CreateProjectPage4 = ({
+  onClickNext,
+  onClickPrev,
+  set,
+  pagesData,
+  index,
+}) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
 
@@ -101,7 +107,11 @@ const CreateProjectPage4 = ({ onClickNext, onClickPrev }) => {
     setNextClicked(true);
 
     setTimeout(() => {
-      onClickNext();
+      if (localStorage.getItem("createProjectRoomPostEdit") === "true") {
+        set(pagesData.length - 1);
+      } else {
+        onClickNext();
+      }
     }, 200);
   };
 
@@ -120,12 +130,8 @@ const CreateProjectPage4 = ({ onClickNext, onClickPrev }) => {
 
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH2 fontWeight="900" textAlign="center">
-            Gebiet festlegen
-          </StyledH2>
           <StyledH3 textAlign="center" margin="20px">
-            Mit deinem individeullen Projektraum kannst du ortsbezogen Ideen
-            sammeln. Zeichne das Gebiet ein!
+            {pagesData[index].subTitle}
           </StyledH3>
 
           <DrawMapButton onClick={setMapOpen}>
@@ -151,8 +157,11 @@ const CreateProjectPage4 = ({ onClickNext, onClickPrev }) => {
         prevLabel={t("back")}
         handleNext={handleNext}
         handlePrev={onClickPrev}
+        set={set}
         disabled={!data || nextClicked}
         loading={nextClicked}
+        pagesData={pagesData}
+        index={index}
       />
     </React.Fragment>
   );
