@@ -67,26 +67,34 @@ export function search(dbData, userInput, dbDataKeys) {
 }
 
 export function sort(items, dropdown) {
-  return dropdown === "newest"
-    ? orderBy(items, "createdAt", "desc")
-    : dropdown === "hottest"
-    ? orderBy(items, "likeCount", "desc")
-    : dropdown === "aToZ"
-    ? orderBy(items, [(pr) => pr.title.toLowerCase()], ["asc"])
-    : orderBy(items, [(pr) => pr.title.toLowerCase()], ["desc"]);
+  switch (dropdown) {
+    case "newest":
+      return orderBy(items, "createdAt", "desc");
+    case "hottest":
+      return orderBy(items, "likeCount", "desc");
+    case "aToZ":
+      return orderBy(items, [(pr) => pr.title.toLowerCase()], ["asc"]);
+    case "zToA":
+      return orderBy(items, [(pr) => pr.title.toLowerCase()], ["desc"]);
+    default:
+      return items;
+  }
 }
 
-export function filterByTagFilter(items, selectedTags, tagsType) {
+export function filterByTagFilter(items, selectedTopics, tagsType) {
   if (tagsType === "Thema") {
-    return items.filter(({ Thema }) => selectedTags.includes(Thema));
+    return items.filter(({ Thema }) => selectedTopics.includes(Thema));
   } else {
     return items.filter(({ organizationType }) =>
-      selectedTags.includes(organizationType)
+      selectedTopics.includes(organizationType)
     );
   }
 }
 
 export function filterByStatus(items, statuses) {
+  if (statuses.length === 0) {
+    return items;
+  }
   return items.filter(({ status }) => statuses.includes(status));
 }
 

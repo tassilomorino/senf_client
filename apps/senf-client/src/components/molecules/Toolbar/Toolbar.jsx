@@ -17,6 +17,7 @@ import { setSwipePositionUp } from "../../../redux/actions/UiActions";
 import Searchbar from "../../atoms/Searchbar/Searchbar";
 import { openCreateProjectRoomFunc } from "../../../redux/actions/projectActions";
 import CustomSelect from "../../atoms/Selects/CustomSelect";
+import CustomSelectSortFilter from "../../atoms/Selects/CustomSelectSortFilter";
 
 const Wrapper = styled.div`
   display: flex;
@@ -97,7 +98,9 @@ const Toolbar = ({
   loading,
   marginTop,
   handleDropdown,
+  handleDropdownFilters,
   dropdown,
+  dropdownFilters,
   handleClickSwipe,
   dataFinalLength,
   setSearchOpen,
@@ -120,29 +123,24 @@ const Toolbar = ({
     !loading && (
       <Wrapper marginTop={marginTop} searchOpen={searchOpen}>
         {swipeListType === "ideas" ? (
-          <CustomSelect
+          <CustomSelectSortFilter
             name={t("newest_ideas")}
-            value={dropdown}
+            dropdown={dropdown}
+            dropdownFilters={dropdownFilters}
             initialValue={dropdown}
-            options={[
+            sorts={[
               { name: "newest", label: t("newest_ideas") },
               { name: "hottest", label: t("hottest_ideas") },
+            ]}
+            filters={[
               { name: "Unprocessed", label: t("unprocessed") },
               { name: "Accepted", label: t("accepted") },
-              {
-                name: "Planning",
-                label: t("planning"),
-              },
-              {
-                name: "Implemented",
-                label: t("implemented"),
-              },
-              {
-                name: "Rejected",
-                label: t("rejected"),
-              },
+              { name: "Planning", label: t("planning") },
+              { name: "Implemented", label: t("implemented") },
+              { name: "Rejected", label: t("rejected") },
             ]}
             handleDropdown={handleDropdown}
+            handleDropdownFilters={handleDropdownFilters}
           />
         ) : // <SortingSelect
         //   label={t("ideas")}

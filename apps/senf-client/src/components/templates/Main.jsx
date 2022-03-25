@@ -152,6 +152,7 @@ const Main = () => {
   const [order, setOrder] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [dropdown, setDropdown] = useState("newest");
+  const [dropdownFilters, setDropdownFilters] = useState([]);
 
   const swipePosition = useSelector((state) => state.UI.swipePosition);
   const setSwipeDown = () => {
@@ -315,6 +316,13 @@ const Main = () => {
   const handleDropdown = useCallback((value) => {
     setDropdown(value);
   }, []);
+  const handleDropdownFilters = (id) => {
+    if (dropdownFilters.includes(id)) {
+      setDropdownFilters(dropdownFilters.filter((filter) => filter !== id));
+    } else {
+      setDropdownFilters([...dropdownFilters, id]);
+    }
+  };
 
   //IDEAS
 
@@ -328,17 +336,22 @@ const Main = () => {
       "locationHeader",
     ]);
     ideasData = filterByTagFilter(ideasData, selectedTopics, "Thema");
+
     ideasData = sort(ideasData, dropdown);
-    /*  ideasData = filterByStatus(ideasData, [
-      "Unprocessed",
-      "Accepted",
-      "Planning",
-    ]); */
+    ideasData = filterByStatus(ideasData, dropdownFilters);
     ideasData = filterByGeodata(ideasData, mapBounds);
     return ideasData;
-  }, [dropdown, searchTerm, selectedTopics, screams, mapBounds]);
+  }, [
+    dropdown,
+    dropdownFilters,
+    searchTerm,
+    selectedTopics,
+    screams,
+    mapBounds,
+  ]);
 
   //PROJECTROOMS
+
   const dataFinalProjectRooms = useMemo(() => {
     let projectRoomsData;
     projectRoomsData = search(projects, searchTerm, [
@@ -488,8 +501,10 @@ const Main = () => {
                 dataFinal={order === 1 ? dataFinalIdeas : dataFinalProjectRooms}
                 dataFinalMap={dataFinalMap}
                 handleDropdown={handleDropdown}
+                handleDropdownFilters={handleDropdownFilters}
                 dataFinalProjectRooms={dataFinalProjectRooms}
                 dropdown={dropdown}
+                dropdownFilters={dropdownFilters}
                 setSearchTerm={setSearchTerm}
                 searchTerm={searchTerm}
                 handleClick={handleClick}

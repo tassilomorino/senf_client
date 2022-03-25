@@ -106,12 +106,21 @@ const Span = styled.span`
   justify-content: flex-start;
   align-items: center;
 `;
+const StyledCheckbox = styled.input``;
 
-const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
+const CustomSelectSortFilter = ({
+  dropdown,
+  dropdownFilters,
+  initialValue,
+  sorts,
+  filters,
+  handleDropdown,
+  handleDropdownFilters,
+}) => {
   const [open, setOpen] = useState(false);
   const DOMElement = document.getElementById("portal-root-modal");
   const [selectedOption, setSelectedOption] = useState(
-    value === "" ? initialValue : value
+    dropdown === "" ? initialValue : dropdown
   );
   const [selectedLabel, setSelectedLabel] = useState(initialValue);
   const [dropDownButtonAmount, setDropDownButtonAmount] = useState(28);
@@ -125,12 +134,12 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
   }, []);
 
   useEffect(() => {
-    for (const option of options) {
-      if (option.name === value) {
+    for (const option of sorts) {
+      if (option.name === dropdown) {
         setSelectedLabel(option.label);
       }
     }
-  }, [value, options]);
+  }, [dropdown, sorts]);
 
   const outerRef = useRef();
   useOnClickOutside(outerRef, () => setOpen(false));
@@ -179,7 +188,7 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
           <React.Fragment>
             <DropDownListContainer id="container">
               <DropDownList>
-                {options.map((option) => (
+                {sorts.map((option) => (
                   <ListItem
                     onClick={onOptionClicked(option.name, option.label)}
                     key={Math.random()}
@@ -203,6 +212,17 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
                     )}
                   </ListItem>
                 ))}
+                {filters.map((filter, i) => (
+                  <div>
+                    <input
+                      type="checkbox"
+                      id={filter}
+                      checked={dropdownFilters.includes(filter.name)}
+                      onChange={() => handleDropdownFilters(filter.name)}
+                    />
+                    <label htmlFor={filter}>{filter.name}</label>
+                  </div>
+                ))}
               </DropDownList>
             </DropDownListContainer>
 
@@ -214,4 +234,4 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
   );
 };
 
-export default CustomSelect;
+export default CustomSelectSortFilter;

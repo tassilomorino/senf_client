@@ -170,7 +170,9 @@ const SwipeList = ({
   loading,
   order,
   handleDropdown,
+  handleDropdownFilters,
   dropdown,
+  dropdownFilters,
   dataFinal,
   dataFinalProjectRooms,
   setSearchTerm,
@@ -370,7 +372,7 @@ const SwipeList = ({
 
   const sectionFastLinks = !openAccount && dataFinal && (
     <React.Fragment>
-      {order === 1 && (dataFinal.length > 0 || searchTerm !== "") && (
+      {order === 1 && (
         <animated.div style={slideUpSectionProps}>
           <OrganizationsIntroWrapper>
             <OrganizationsIntro>
@@ -390,6 +392,8 @@ const SwipeList = ({
             swipeListType={swipeListType}
             loading={loading}
             handleDropdown={handleDropdown}
+            dropdownFilters={dropdownFilters}
+            handleDropdownFilters={handleDropdownFilters}
             dropdown={dropdown}
             dataFinalLength={dataFinal.length}
             setSearchOpen={setSearchOpen}
