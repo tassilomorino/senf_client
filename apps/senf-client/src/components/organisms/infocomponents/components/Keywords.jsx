@@ -5,6 +5,7 @@ import { StyledH3 } from "../../../../styles/GlobalStyle";
 const Wrapper = styled.div`
   height: 300px;
   width: 100vw;
+  padding-bottom: 250px;
 
   z-index: 9999;
   position: relative;
@@ -23,6 +24,7 @@ const Keyword = styled.div`
   border-radius: 25px;
   left: ${(props) => props.left};
   position: relative;
+
   h3 {
     font-size: 30px;
     color: white;

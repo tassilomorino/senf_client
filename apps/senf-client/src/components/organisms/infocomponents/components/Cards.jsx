@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useSprings, animated, to as interpolate } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 import styled from "styled-components";
-import Img from "../../../../images/openBook.png";
-import { StyledH3 } from "../../../../styles/GlobalStyle";
+import Img from "../../../../images/infoPage/howItWorks/decideLocation.jpg";
+import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 
 const StyledDeck = styled(animated.div)`
   position: absolute;
@@ -19,17 +19,20 @@ const StyledDeck = styled(animated.div)`
     margin-top: 200px;
     transform: translatex(-50%);
     background-color: white;
-    background-size: auto 50%;
+    background-size: 80% 100%;
     background-repeat: no-repeat;
     background-position: center center;
-    width: 45vh;
-    max-width: 150px;
-    height: 85vh;
-    max-height: 285px;
+    width: 70vw;
+    max-width: 400px;
+    height: 100vw;
+    max-height: 600px;
     will-change: transform;
     border-radius: 10px;
-    box-shadow: 0 12.5px 100px -10px rgba(50, 50, 73, 0.4),
-      0 10px 10px -10px rgba(50, 50, 73, 0.3);
+    box-shadow: 0px 4px 6px -2px rgba(186, 160, 79, 0.4),
+      0px -2px 5px 2px rgba(255, 255, 255, 0.4);
+
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
   }
 `;
 
@@ -69,6 +72,7 @@ const Cards = ({ visibleCards }) => {
       api.start((i) => {
         if (index !== i) return; // We're only interested in changing spring-data for the current spring
         const isGone = gone.has(index);
+
         const x = isGone ? (200 + window.innerWidth) * dir : down ? mx : 0; // When a card is gone it flys out left or right, otherwise goes back to zero
         const rot = mx / 100 + (isGone ? dir * 10 * velocity : 0); // How much the card tilts, flicking it harder makes it rotate faster
         const scale = down ? 1.1 : 1; // Active cards lift up a bit
@@ -100,7 +104,7 @@ const Cards = ({ visibleCards }) => {
               backgroundImage: `url(${cards[i].img})`,
             }}
           >
-            <StyledH3 textAlign="center">{cards[i].title}</StyledH3>
+            {/* <StyledH3 textAlign="center">{cards[i].title}</StyledH3> */}
           </animated.div>
         </StyledDeck>
       ))}

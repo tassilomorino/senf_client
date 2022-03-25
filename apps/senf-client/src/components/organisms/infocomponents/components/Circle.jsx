@@ -38,6 +38,7 @@ const HooksMain = styled.div`
   div:nth-child(1) {
     width: 1500px;
     height: 1500px;
+    border-radius: 100%;
   }
 `;
 
@@ -45,7 +46,7 @@ const fast = { tension: 1200, friction: 40 };
 const slow = { mass: 10, tension: 200, friction: 50 };
 const trans = (x, y) => `translate3d(${x}px,${y}px,0) translate3d(-50%,-50%,0)`;
 
-const Circle = ({ imgRef }) => {
+const Circle = ({ scrollValue }) => {
   const ref = useRef(null);
   const [trail, api] = useTrail(1, (i) => ({
     xy: [window.innerWidth / 2, window.innerHeight + 200],
@@ -61,13 +62,13 @@ const Circle = ({ imgRef }) => {
     setTimeout(() => {
       api.start({ xy: [window.innerWidth / 2, window.innerHeight / 1.1] });
 
-      setInterval(function () {
+      var firstInterval = setInterval(function () {
         api.start({
           xy: [window.innerWidth / 2.1, window.innerHeight / 1.08],
         });
       }, 2500);
 
-      setInterval(function () {
+      var secondInterval = setInterval(function () {
         api.start({
           xy: [window.innerWidth / 1.7, window.innerHeight / 1.09],
         });
@@ -77,13 +78,17 @@ const Circle = ({ imgRef }) => {
           xy: [window.innerWidth / 2.1, window.innerHeight / 1.25],
         });
       }, 7000);
+      if (scrollValue > 30) {
+        clearInterval(firstInterval);
+        clearInterval(secondInterval);
+      }
     }, 2000);
   }, []);
   return (
     <Container ref={ref}>
       <HooksMain
-        ref={imgRef}
-        //   onMouseMove={handleMouseMove}
+
+      //   onMouseMove={handleMouseMove}
       >
         {trail.map((props, index) => (
           <animated.div

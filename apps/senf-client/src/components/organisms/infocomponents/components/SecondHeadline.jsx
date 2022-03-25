@@ -10,6 +10,10 @@ const TrailsText = styled.div`
   height: 50px;
   will-change: transform, opacity;
   overflow: visible;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const HeadlineText = styled.h1`
@@ -20,6 +24,7 @@ const HeadlineText = styled.h1`
   letter-spacing: -0.05em;
   height: 20px;
   display: inline-block;
+  text-align: center;
 `;
 
 const Line = styled.div`
@@ -61,18 +66,17 @@ const Trail = ({ open, children }) => {
   );
 };
 
-const SecondHeadline = ({ visibleSecondHeadline }) => {
+const SecondHeadline = ({ visibleSecondHeadline, textlines }) => {
   const { t } = useTranslation();
 
   return (
     <Container>
       <Trail open={visibleSecondHeadline}>
-        <HeadlineText>
-          {t("infopage_secondHeadline_1")} <Line color="#939FF3" />
-        </HeadlineText>
-        <HeadlineText>
-          {t("infopage_secondHeadline_2")} <Line color="#90D8B9" />
-        </HeadlineText>
+        {textlines.map(({ text, color }) => (
+          <HeadlineText>
+            {t(text)} <Line color={color} />
+          </HeadlineText>
+        ))}
       </Trail>
     </Container>
   );

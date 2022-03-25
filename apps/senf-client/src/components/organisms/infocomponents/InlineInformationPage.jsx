@@ -58,7 +58,7 @@ const Container = styled.div`
   overflow-x: hidden;
   overflow-y: scroll;
   position: fixed;
-  background-color: white;
+  background-color: rgb(249, 241, 215);
 `;
 
 const styles = {
@@ -143,6 +143,10 @@ const InlineInformationPage = ({ classes }) => {
     const keyword1 = document.getElementById("keyword1");
     const keyword2 = document.getElementById("keyword2");
     const keyword3 = document.getElementById("keyword3");
+    keyword1.style.transition = "0.1s";
+    keyword2.style.transition = "0.1s";
+    keyword3.style.transition = "0.1s";
+
     keyword1.style.transform = `translateX(${value * 8}px)`;
     keyword2.style.transform = `translateX(${-value * 6}px)`;
     keyword3.style.transform = `translateX(${value * 10}px)`;
@@ -243,10 +247,35 @@ const InlineInformationPage = ({ classes }) => {
           <Circle scrollValue={scrollValue} />
           {/* <Bubble /> */}
           <Bulb />
-          <SecondHeadline visibleSecondHeadline={visibleSecondHeadline} />
+          <SecondHeadline
+            visibleSecondHeadline={visibleSecondHeadline}
+            textlines={[
+              { text: "infopage_secondHeadline_1", color: "#ffff" },
+              { text: "infopage_secondHeadline_2", color: "#ffff" },
+            ]}
+          />
           <Keywords />
-          {/* {visibleCards && <Cards visibleCards={visibleCards} />} */}
-          <Footer color="#353535" position="absolute" top="1850px" />
+
+          <SecondHeadline
+            visibleSecondHeadline={visibleSecondHeadline}
+            textlines={[
+              { text: "Wie", color: "#ffff" },
+              { text: "funktioniert's?", color: "#ffff" },
+            ]}
+          />
+          {visibleCards && (
+            <div
+              style={{
+                position: "relative",
+                height: "600px",
+                paddingBottom: "200px",
+              }}
+            >
+              <Cards visibleCards={visibleCards} />
+            </div>
+          )}
+
+          {/* <Footer color="#353535" position="absolute" top="1850px" /> */}
         </Container>
       </MainDialog>
     </Fragment>
