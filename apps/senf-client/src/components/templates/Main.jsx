@@ -248,8 +248,6 @@ const Main = () => {
       isMobileCustom
     ) {
       history.push("/intro");
-    } else {
-      history.push("/");
     }
   }, [cookie_settings, history]);
 
