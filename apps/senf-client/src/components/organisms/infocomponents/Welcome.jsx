@@ -19,7 +19,7 @@ import { Link } from "react-router-dom";
 //CHECK DEVICE
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
-import Footer from "../../molecules/Footer/Footer";
+import FooterLinks from "../../molecules/Footer/FooterLinks";
 
 const styles = {
   wrapper: {
@@ -101,7 +101,7 @@ const Welcome = ({ classes }) => {
           handleButtonClick={handleButtonClick}
         />
 
-        <Footer color="#353535" bottom="0px" />
+        <FooterLinks color="#353535" bottom="0px" />
       </div>
     </div>
   );

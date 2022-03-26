@@ -17,7 +17,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
 `;
-const Footer = ({ color, position, top, bottom }) => {
+const FooterLinks = ({ color, position, top, bottom }) => {
   const { t } = useTranslation();
   return (
     <Wrapper position={position} top={top} bottom={bottom}>
@@ -40,4 +40,4 @@ const Footer = ({ color, position, top, bottom }) => {
   );
 };
 
-export default Footer;
+export default FooterLinks;

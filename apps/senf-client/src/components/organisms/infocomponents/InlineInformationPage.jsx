@@ -40,7 +40,6 @@ import {
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
 import MyButton from "../../../util/MyButton";
-import Footer from "../../molecules/Footer/Footer";
 import Headline from "./components/Headline";
 import SecondHeadline from "./components/SecondHeadline";
 
@@ -51,6 +50,8 @@ import Bulb from "./components/Bulb";
 import Circle from "./components/Circle";
 import Cards from "./components/Cards";
 import Keywords from "./components/Keywords";
+import Partners from "./components/Partners";
+import Footer from "./components/Footer";
 
 const Container = styled.div`
   height: 100%;
@@ -280,8 +281,8 @@ const InlineInformationPage = ({ classes }) => {
               <Cards visibleCards={visibleCards} />
             </div>
           )}
-
-          {/* <Footer color="#353535" position="absolute" top="1850px" /> */}
+          <Partners />
+          <Footer />
         </Container>
       </MainDialog>
     </Fragment>

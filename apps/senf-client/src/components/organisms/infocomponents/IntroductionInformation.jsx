@@ -26,7 +26,7 @@ import { Link } from "react-router-dom";
 //DETECT DEVICE
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
-import Footer from "../../molecules/Footer/Footer";
+import FooterLinks from "../../molecules/Footer/FooterLinks";
 import { StyledText } from "../../../styles/GlobalStyle";
 
 const styles = {
@@ -222,8 +222,7 @@ const IntroductionInformation = ({ classes }) => {
               handleButtonClick={handleButtonContactClick}
             />
 
-            <Footer color="#353535" position="absolute" top="1800px" />
-
+            <FooterLinks color="#353535" position="absolute" top="1800px" />
           </Grid>
         </Grid>
       </div>

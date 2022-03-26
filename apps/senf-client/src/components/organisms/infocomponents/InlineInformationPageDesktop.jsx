@@ -37,7 +37,7 @@ import {
 } from "../../atoms/CustomButtons/CustomButton";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import { SideBarTabs, StyledText } from "../../../styles/GlobalStyle";
-import Footer from "../../molecules/Footer/Footer";
+import FooterLinks from "../../molecules/Footer/FooterLinks";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -161,7 +161,7 @@ const InlineInformationPageDesktop = () => {
                   handleButtonClick={handleButtonContactClick}
                 />
 
-                <Footer color="#353535" position="absolute" top="2750px" />
+                <FooterLinks color="#353535" position="absolute" top="2750px" />
               </div>
             </DialogContent>
           </Dialog>

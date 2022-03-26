@@ -10,7 +10,7 @@ import { setInfoPageClosed } from "../../../redux/actions/UiActions";
 import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
-import Footer from "../../molecules/Footer/Footer";
+import FooterLinks from "../../molecules/Footer/FooterLinks";
 
 const Wrapper = styled.div`
   z-index: 9995;
@@ -97,7 +97,7 @@ const Cookiebanner = () => {
         zIndex="9999"
         handleButtonClick={() => handleCookies("all")}
       />
-      <Footer color="#c9c9c9" bottom="0px" />
+      <FooterLinks color="#c9c9c9" bottom="0px" />
     </React.Fragment>
   ) : (
     cookie_settings !== "all" &&
