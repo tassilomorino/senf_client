@@ -123,6 +123,7 @@ const Toolbar = ({
       <Wrapper marginTop={marginTop} searchOpen={searchOpen}>
         {swipeListType === "ideas" ? (
           <CustomSelect
+            overflow={"none"}
             initialValue={t("newest_ideas")}
             dropdown={dropdown}
             dropdownStatus={dropdownStatus}

@@ -44,7 +44,7 @@ const DropDownListContainer = styled.div`
   max-width: 400px;
   height: auto;
   max-height: 80vh;
-  overflow: scroll;
+  overflow: ${(props) => (props.overflow ? props.overflow : "scroll")};
   box-sizing: border-box;
   z-index: 99999;
   border-radius: 20px;
@@ -63,7 +63,7 @@ const Background = styled.div`
 const DropDownList = styled.ul`
   margin: 0;
   padding: 0;
-  overflow: scroll;
+  overflow: ${(props) => (props.overflow ? props.overflow : "scroll")};
   border-radius: 10px;
   width: 100%;
 `;
@@ -108,6 +108,7 @@ const Span = styled.span`
 `;
 
 const CustomSelect = ({
+  overflow,
   value,
   initialValue,
   options,
@@ -186,59 +187,76 @@ const CustomSelect = ({
         ReactDOM.createPortal(
           <React.Fragment>
             <DropDownListContainer id="container">
-              <DropDownList>
-                {options?.map((option) => (
-                  <ListItem
-                    onClick={onOptionClicked(option.name, option.label)}
-                    key={Math.random()}
-                  >
-                    <React.Fragment>
-                      {option.color && <ColorDot color={option.color} />}
-                      {option.img && <Img src={option.img} />}
-                      <span
-                        style={
-                          option.name === selectedOption ||
-                          option.label === selectedOption
-                            ? { fontWeight: "900" }
-                            : {}
-                        }
+              <DropDownList overflow={overflow}>
+                {options && (
+                  <>
+                    {options?.map((option) => (
+                      <ListItem
+                        onClick={onOptionClicked(option.name, option.label)}
+                        key={Math.random()}
                       >
-                        {option.label}
-                      </span>
-                    </React.Fragment>
-                  </ListItem>
-                ))}
-                {sortOptions?.map((option) => (
-                  <ListItem
-                    onClick={onOptionClicked(option.name, option.label)}
-                    key={Math.random()}
-                  >
-                    <React.Fragment>
-                      <span
-                        style={
-                          option.name === selectedOption ||
-                          option.label === selectedOption
-                            ? { fontWeight: "900" }
-                            : {}
-                        }
+                        <React.Fragment>
+                          {option.color && <ColorDot color={option.color} />}
+                          {option.img && <Img src={option.img} />}
+                          <span
+                            style={
+                              option.name === selectedOption ||
+                              option.label === selectedOption
+                                ? { fontWeight: "900" }
+                                : {}
+                            }
+                          >
+                            {option.label}
+                          </span>
+                        </React.Fragment>
+                      </ListItem>
+                    ))}
+                  </>
+                )}
+                {sortOptions && (
+                  <>
+                    <StyledH3 textAlign={"center"} padding={"10px"}>
+                      Sort By
+                    </StyledH3>
+                    <hr />
+                    {sortOptions?.map((option) => (
+                      <ListItem
+                        onClick={onOptionClicked(option.name, option.label)}
+                        key={Math.random()}
                       >
-                        {option.label}
-                      </span>
-                    </React.Fragment>
-                  </ListItem>
-                ))}
-
-                {statusOptions?.map((filter, i) => (
-                  <div>
-                    <input
-                      type="checkbox"
-                      id={filter}
-                      checked={dropdownStatus.includes(filter.name)}
-                      onChange={() => handleDropdownStatus(filter.name)}
-                    />
-                    <label htmlFor={filter}>{filter.label}</label>
-                  </div>
-                ))}
+                        <React.Fragment>
+                          <span
+                            style={
+                              option.name === selectedOption ||
+                              option.label === selectedOption
+                                ? { fontWeight: "900" }
+                                : {}
+                            }
+                          >
+                            {option.label}
+                          </span>
+                        </React.Fragment>
+                      </ListItem>
+                    ))}
+                  </>
+                )}
+                {statusOptions && (
+                  <>
+                    <StyledH3 textAlign={"center"}>Filter By</StyledH3>
+                    <hr />
+                    {statusOptions?.map((filter, i) => (
+                      <div>
+                        <input
+                          type="checkbox"
+                          id={filter}
+                          checked={dropdownStatus.includes(filter.name)}
+                          onChange={() => handleDropdownStatus(filter.name)}
+                        />
+                        <label htmlFor={filter}>{filter.label}</label>
+                      </div>
+                    ))}
+                  </>
+                )}
               </DropDownList>
             </DropDownListContainer>
 
