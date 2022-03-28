@@ -117,17 +117,16 @@ const Toolbar = ({
       dispatch(setSwipePositionUp());
     }
   };
-
+  console.log(dropdown, "dropdown");
   return (
     !loading && (
       <Wrapper marginTop={marginTop} searchOpen={searchOpen}>
         {swipeListType === "ideas" ? (
           <CustomSelect
-            name={t("newest_ideas")}
+            initialValue={t("newest_ideas")}
             dropdown={dropdown}
             dropdownStatus={dropdownStatus}
-            initialValue={dropdown}
-            options={[
+            sortOptions={[
               { name: "newest", label: t("newest_ideas") },
               { name: "hottest", label: t("hottest_ideas") },
             ]}
@@ -146,12 +145,13 @@ const Toolbar = ({
         //   handleDropdown={handleDropdown}
         //   dropdown={dropdown}
         // />
+
         swipeListType === "projectRoomOverview" ? (
           <CustomSelect
             name={t("newest_projectrooms")}
             value={dropdown}
             initialValue={dropdown}
-            options={[
+            sortOptions={[
               { name: "newest", label: t("newest_projectrooms") },
               { name: "aToZ", label: t("aToZ_projectrooms") },
               { name: "zToA", label: t("zToA_projectrooms") },
@@ -164,7 +164,7 @@ const Toolbar = ({
               name={t("newest_organizations")}
               value={dropdown}
               initialValue={dropdown}
-              options={[
+              sortOptions={[
                 { name: "newest", label: t("newest_organizations") },
                 { name: "aToZ", label: t("aToZ_organizations") },
                 { name: "zToA", label: t("zToA_organizations") },

@@ -111,6 +111,7 @@ const CustomSelect = ({
   value,
   initialValue,
   options,
+  sortOptions,
   statusOptions,
   dropdownStatus,
   handleDropdown,
@@ -118,10 +119,8 @@ const CustomSelect = ({
 }) => {
   const [open, setOpen] = useState(false);
   const DOMElement = document.getElementById("portal-root-modal");
-  const [selectedOption, setSelectedOption] = useState(
-    value === "" ? initialValue : value
-  );
-  const [selectedLabel, setSelectedLabel] = useState(initialValue);
+  const [selectedOption, setSelectedOption] = useState(initialValue ?? value);
+  const [selectedLabel, setSelectedLabel] = useState(initialValue ?? value);
   const [dropDownButtonAmount, setDropDownButtonAmount] = useState(28);
 
   useEffect(() => {
@@ -132,13 +131,14 @@ const CustomSelect = ({
     }
   }, []);
 
+  /*   
   useEffect(() => {
     for (const option of options) {
       if (option.name === value) {
         setSelectedLabel(option.label);
       }
     }
-  }, [value, options]);
+  }, [value, options]); */
 
   const outerRef = useRef();
   useOnClickOutside(outerRef, () => setOpen(false));
@@ -187,30 +187,47 @@ const CustomSelect = ({
           <React.Fragment>
             <DropDownListContainer id="container">
               <DropDownList>
-                {options.map((option) => (
+                {options?.map((option) => (
                   <ListItem
                     onClick={onOptionClicked(option.name, option.label)}
                     key={Math.random()}
                   >
-                    {option.name === selectedOption ||
-                    option.label === selectedOption ? (
-                      <React.Fragment>
-                        {option.color && <ColorDot color={option.color} />}
-                        {option.img && <Img src={option.img} />}
-                        <span style={{ fontWeight: "900" }}>
-                          {option.label}
-                        </span>
-                      </React.Fragment>
-                    ) : (
-                      <React.Fragment>
-                        {" "}
-                        {option.color && <ColorDot color={option.color} />}
-                        {option.img && <Img src={option.img} />}
+                    <React.Fragment>
+                      {option.color && <ColorDot color={option.color} />}
+                      {option.img && <Img src={option.img} />}
+                      <span
+                        style={
+                          option.name === selectedOption ||
+                          option.label === selectedOption
+                            ? { fontWeight: "900" }
+                            : {}
+                        }
+                      >
                         {option.label}
-                      </React.Fragment>
-                    )}
+                      </span>
+                    </React.Fragment>
                   </ListItem>
                 ))}
+                {sortOptions?.map((option) => (
+                  <ListItem
+                    onClick={onOptionClicked(option.name, option.label)}
+                    key={Math.random()}
+                  >
+                    <React.Fragment>
+                      <span
+                        style={
+                          option.name === selectedOption ||
+                          option.label === selectedOption
+                            ? { fontWeight: "900" }
+                            : {}
+                        }
+                      >
+                        {option.label}
+                      </span>
+                    </React.Fragment>
+                  </ListItem>
+                ))}
+
                 {statusOptions?.map((filter, i) => (
                   <div>
                     <input
@@ -219,7 +236,7 @@ const CustomSelect = ({
                       checked={dropdownStatus.includes(filter.name)}
                       onChange={() => handleDropdownStatus(filter.name)}
                     />
-                    <label htmlFor={filter}>{filter.name}</label>
+                    <label htmlFor={filter}>{filter.label}</label>
                   </div>
                 ))}
               </DropDownList>
