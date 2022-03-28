@@ -346,6 +346,7 @@ const Main = () => {
     selectedTopics,
     screams,
     mapBounds,
+    userLikes,
   ]);
 
   //PROJECTROOMS
