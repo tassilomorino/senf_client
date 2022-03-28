@@ -17,7 +17,6 @@ import { setSwipePositionUp } from "../../../redux/actions/UiActions";
 import Searchbar from "../../atoms/Searchbar/Searchbar";
 import { openCreateProjectRoomFunc } from "../../../redux/actions/projectActions";
 import CustomSelect from "../../atoms/Selects/CustomSelect";
-import CustomSelectSortFilter from "../../atoms/Selects/CustomSelectSortFilter";
 
 const Wrapper = styled.div`
   display: flex;
@@ -98,9 +97,9 @@ const Toolbar = ({
   loading,
   marginTop,
   handleDropdown,
-  handleDropdownFilters,
+  handledropdownStatus,
   dropdown,
-  dropdownFilters,
+  dropdownStatus,
   handleClickSwipe,
   dataFinalLength,
   setSearchOpen,
@@ -123,16 +122,16 @@ const Toolbar = ({
     !loading && (
       <Wrapper marginTop={marginTop} searchOpen={searchOpen}>
         {swipeListType === "ideas" ? (
-          <CustomSelectSortFilter
+          <CustomSelect
             name={t("newest_ideas")}
             dropdown={dropdown}
-            dropdownFilters={dropdownFilters}
+            dropdownStatus={dropdownStatus}
             initialValue={dropdown}
-            sorts={[
+            options={[
               { name: "newest", label: t("newest_ideas") },
               { name: "hottest", label: t("hottest_ideas") },
             ]}
-            filters={[
+            statusOptions={[
               { name: "Unprocessed", label: t("unprocessed") },
               { name: "Accepted", label: t("accepted") },
               { name: "Planning", label: t("planning") },
@@ -140,7 +139,7 @@ const Toolbar = ({
               { name: "Rejected", label: t("rejected") },
             ]}
             handleDropdown={handleDropdown}
-            handleDropdownFilters={handleDropdownFilters}
+            handleDropdownStatus={handledropdownStatus}
           />
         ) : // <SortingSelect
         //   label={t("ideas")}

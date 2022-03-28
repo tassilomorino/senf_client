@@ -107,7 +107,15 @@ const Span = styled.span`
   align-items: center;
 `;
 
-const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
+const CustomSelect = ({
+  value,
+  initialValue,
+  options,
+  statusOptions,
+  dropdownStatus,
+  handleDropdown,
+  handleDropdownStatus,
+}) => {
   const [open, setOpen] = useState(false);
   const DOMElement = document.getElementById("portal-root-modal");
   const [selectedOption, setSelectedOption] = useState(
@@ -202,6 +210,17 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
                       </React.Fragment>
                     )}
                   </ListItem>
+                ))}
+                {statusOptions?.map((filter, i) => (
+                  <div>
+                    <input
+                      type="checkbox"
+                      id={filter}
+                      checked={dropdownStatus.includes(filter.name)}
+                      onChange={() => handleDropdownStatus(filter.name)}
+                    />
+                    <label htmlFor={filter}>{filter.name}</label>
+                  </div>
                 ))}
               </DropDownList>
             </DropDownListContainer>

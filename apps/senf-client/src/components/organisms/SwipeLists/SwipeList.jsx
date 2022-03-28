@@ -177,9 +177,9 @@ const SwipeList = ({
   loading,
   order,
   handleDropdown,
-  handleDropdownFilters,
+  handledropdownStatus,
   dropdown,
-  dropdownFilters,
+  dropdownStatus,
   dataFinal,
   dataFinalProjectRooms,
   setSearchTerm,
@@ -462,8 +462,8 @@ const SwipeList = ({
             swipeListType={swipeListType}
             loading={loading}
             handleDropdown={handleDropdown}
-            dropdownFilters={dropdownFilters}
-            handleDropdownFilters={handleDropdownFilters}
+            dropdownStatus={dropdownStatus}
+            handledropdownStatus={handledropdownStatus}
             dropdown={dropdown}
             dataFinalLength={dataFinal.length}
             setSearchOpen={setSearchOpen}

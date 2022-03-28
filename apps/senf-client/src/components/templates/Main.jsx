@@ -152,7 +152,7 @@ const Main = () => {
   const [order, setOrder] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [dropdown, setDropdown] = useState("newest");
-  const [dropdownFilters, setDropdownFilters] = useState([]);
+  const [dropdownStatus, setdropdownStatus] = useState([]);
 
   const swipePosition = useSelector((state) => state.UI.swipePosition);
   const setSwipeDown = () => {
@@ -314,11 +314,11 @@ const Main = () => {
   const handleDropdown = useCallback((value) => {
     setDropdown(value);
   }, []);
-  const handleDropdownFilters = (id) => {
-    if (dropdownFilters.includes(id)) {
-      setDropdownFilters(dropdownFilters.filter((filter) => filter !== id));
+  const handledropdownStatus = (id) => {
+    if (dropdownStatus.includes(id)) {
+      setdropdownStatus(dropdownStatus.filter((filter) => filter !== id));
     } else {
-      setDropdownFilters([...dropdownFilters, id]);
+      setdropdownStatus([...dropdownStatus, id]);
     }
   };
 
@@ -336,12 +336,12 @@ const Main = () => {
     ideasData = filterByTagFilter(ideasData, selectedTopics, "Thema");
 
     ideasData = sort(ideasData, dropdown);
-    ideasData = filterByStatus(ideasData, dropdownFilters);
+    ideasData = filterByStatus(ideasData, dropdownStatus);
     ideasData = filterByGeodata(ideasData, mapBounds);
     return ideasData;
   }, [
     dropdown,
-    dropdownFilters,
+    dropdownStatus,
     searchTerm,
     selectedTopics,
     screams,
@@ -500,10 +500,10 @@ const Main = () => {
                 dataFinal={order === 1 ? dataFinalIdeas : dataFinalProjectRooms}
                 dataFinalMap={dataFinalMap}
                 handleDropdown={handleDropdown}
-                handleDropdownFilters={handleDropdownFilters}
+                handledropdownStatus={handledropdownStatus}
                 dataFinalProjectRooms={dataFinalProjectRooms}
                 dropdown={dropdown}
-                dropdownFilters={dropdownFilters}
+                dropdownStatus={dropdownStatus}
                 setSearchTerm={setSearchTerm}
                 searchTerm={searchTerm}
                 handleClick={handleClick}
