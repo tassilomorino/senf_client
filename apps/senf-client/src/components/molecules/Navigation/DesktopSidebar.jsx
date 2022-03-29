@@ -37,6 +37,7 @@ import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
 import styled from "styled-components";
 import { SideBarTabs, StyledH2 } from "../../../styles/GlobalStyle";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
+import InlineInformationPage from "../../organisms/infocomponents/InlineInformationPage";
 
 const FilterWrapper = styled.div`
   overflow: hidden;
@@ -202,7 +203,8 @@ const DesktopSidebar = ({
         }}
       />
       <br />
-      <InlineInformationPageDesktop />
+      <InlineInformationPage />
+      {/* <InlineInformationPageDesktop /> */}
       <div
         style={{
           position: "relative",

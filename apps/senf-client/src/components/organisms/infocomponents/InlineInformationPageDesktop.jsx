@@ -71,6 +71,7 @@ const InlineInformationPageDesktop = () => {
     var link = "mailto:dein@senf.koeln";
     window.location.href = link;
   }, []);
+
   return (
     !isMobileCustom && (
       <Fragment>

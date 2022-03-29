@@ -50,7 +50,7 @@ const to = (i) => ({
   y: i * -4,
   scale: 1,
   rot: -10 + Math.random() * 20,
-  delay: i * 200,
+  delay: i * 500,
 });
 const from = (_i) => ({ x: -1000, rot: 0, scale: 1.5, y: 0 });
 // This is being used down there in the view, it interpolates rotation and scale into a css transform

@@ -73,11 +73,11 @@ const Circle = ({ scrollValue }) => {
           xy: [window.innerWidth / 1.7, window.innerHeight / 1.09],
         });
       }, 4000);
-      setInterval(function () {
-        api.start({
-          xy: [window.innerWidth / 2.1, window.innerHeight / 1.25],
-        });
-      }, 7000);
+      // setInterval(function () {
+      //   api.start({
+      //     xy: [window.innerWidth / 2.1, window.innerHeight / 1.25],
+      //   });
+      // }, 7000);
       if (scrollValue > 30) {
         clearInterval(firstInterval);
         clearInterval(secondInterval);

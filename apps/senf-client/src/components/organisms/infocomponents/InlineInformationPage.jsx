@@ -52,6 +52,12 @@ import Cards from "./components/Cards";
 import Keywords from "./components/Keywords";
 import Partners from "./components/Partners";
 import Footer from "./components/Footer";
+import HorizontalScrollSection from "./components/HorizontalScrollSection";
+import CreditsSection from "./components/CreditsSection";
+import { StyledA, StyledText } from "../../../styles/GlobalStyle";
+import UnderlinedText from "./components/UnderlinedText";
+import DecideLocationImg from "../../../images/infoPage/howItWorks/DecideLocationImg.png";
+import FormulateIdeaImg from "../../../images/infoPage/howItWorks/FormulateIdeaImg.png";
 
 const Container = styled.div`
   height: 100%;
@@ -67,54 +73,18 @@ const InnerContainer = styled.div`
   width: 100%;
 `;
 
-const styles = {
-  root: {
-    backgroundColor: "white",
-    padding: "0",
-  },
+const HowToCard1 = styled.div``;
+const HowToCard2 = styled.div`
+  margin-top: 70px;
+`;
 
-  paper: {
-    backgroundColor: "white",
-    boxShadow: "none",
-    padding: "0",
-  },
+const Img = styled.img`
+  margin-left: 50%;
+  transform: translateX(-50%);
+`;
 
-  closeButton: {
-    zIndex: 9999,
-    position: "fixed",
-    top: "0px",
-    left: "15px",
-    width: "40px",
-    marginTop: "10px",
-    color: "#ffd388",
-    transform: "scale(1.5)",
-  },
-
-  nav: {
-    width: "100vw",
-    height: "80px",
-    position: "fixed",
-    backgroundColor: "white",
-    zIndex: 98,
-  },
-
-  TopPath: {
-    position: "absolute",
-    top: "0",
-    width: "100vw",
-  },
-
-  FirstImage: {
-    position: "absolute",
-    top: "24vw",
-    width: "75vw",
-    marginLeft: "15.3vw",
-  },
-};
-
-const InlineInformationPage = ({ classes }) => {
+const InlineInformationPage = ({}) => {
   const [open, setOpen] = useState(true);
-
   const { t } = useTranslation();
   const [counter, setCounter] = useState(0);
 
@@ -137,6 +107,10 @@ const InlineInformationPage = ({ classes }) => {
 
   // The scroll listener
   const handleScroll = useCallback(() => {
+    const horizontal = document.querySelector("#horizontal");
+    const sticky = document.querySelector("#sticky");
+    horizontal.style.transform = `translateX(-${sticky.offsetTop}px)`;
+
     const el = document.getElementById("InfoPage");
     const bubble = document.getElementById("Circle");
 
@@ -184,48 +158,6 @@ const InlineInformationPage = ({ classes }) => {
     }
   }, [handleScroll, open]);
 
-  // const ref = useRef(null);
-  // const imgRef = useRef(null);
-  // const matrix = useRef(null);
-
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     const Matrix = new DOMMatrix();
-  //     matrix.current = Matrix;
-  //     const div = document.getElementById("InfoPage");
-  //     div?.addEventListener("scroll", onScroll);
-  //   }
-  //   return () => window.removeEventListener("scroll", onScroll);
-  // }, []);
-
-  // const onScroll = () => {
-  //   console.log(y, x);
-
-  //   if (!ref.current && !matrix.current) return;
-
-  //   const { innerHeight } = window;
-  //   const refRect = ref.current.getBoundingClientRect();
-  //   const imageRect = imgRef.current.getBoundingClientRect();
-
-  //   const xMulitplier = imageRect.width / innerHeight;
-
-  //   const x = Math.min(
-  //     0,
-  //     Math.max(-imageRect.width, xMulitplier * refRect.top)
-  //   );
-  //   const y =
-  //     refRect.bottom < innerHeight
-  //       ? Math.max(
-  //           -innerHeight / xMulitplier,
-  //           -1.5 * (innerHeight - refRect.bottom)
-  //         )
-  //       : 0;
-
-  //   console.log(y, x);
-  //   const position = matrix.current.translate(x, y, 0);
-  //   imgRef.current.style.transform = position.toString();
-  // };
-
   return (
     <Fragment>
       <ExpandButton
@@ -250,7 +182,10 @@ const InlineInformationPage = ({ classes }) => {
           <div className="logo1">
             <img src={Logo} width="100px" alt="logo1"></img>
           </div> */}
+
           <Headline />
+
+          <StyledA>Direkt zur Plattform </StyledA>
           <Circle scrollValue={scrollValue} />
           {/* <Bubble /> */}
           <Bulb />
@@ -263,24 +198,53 @@ const InlineInformationPage = ({ classes }) => {
           />
           <Keywords />
 
-          <SecondHeadline
+          {/* <SecondHeadline
             visibleSecondHeadline={visibleSecondHeadline}
             textlines={[
               { text: "Wie", color: "#F5C098" },
               { text: "funktioniert's?", color: "#90D8B9" },
             ]}
           />
-          {visibleCards && (
-            <div
+           <div
               style={{
                 position: "relative",
-                height: "600px",
-                paddingBottom: "200px",
+                height: "400px",
               }}
             >
               <Cards visibleCards={visibleCards} />
-            </div>
-          )}
+            </div> */}
+
+          <HowToCard1>
+            <UnderlinedText
+              visibleHeadline={visibleCards}
+              textlines={[
+                { text: "Einfach", color: "#94DFF3" },
+                { text: "den", color: "" },
+                { breakBoolean: true },
+                { text: "Ort", color: "" },
+                { text: "auswählen", color: "" },
+              ]}
+            />
+            <Img src={DecideLocationImg} width="250px" />
+          </HowToCard1>
+
+          <HowToCard2>
+            <UnderlinedText
+              visibleHeadline={visibleCards}
+              textlines={[
+                { text: "Idee", color: "#F5C098" },
+                { text: "formulieren", color: "" },
+                { breakBoolean: true },
+                { text: "und", color: "" },
+                { text: "teilen", color: "#90D8B9" },
+              ]}
+            />
+            <Img src={FormulateIdeaImg} width="250px" />
+          </HowToCard2>
+
+          <HorizontalScrollSection />
+          <CreditsSection />
+
           <Partners />
           <Footer />
         </Container>
@@ -289,4 +253,4 @@ const InlineInformationPage = ({ classes }) => {
   );
 };
 
-export default withStyles(styles)(InlineInformationPage);
+export default InlineInformationPage;
