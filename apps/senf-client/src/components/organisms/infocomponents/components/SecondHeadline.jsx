@@ -13,7 +13,8 @@ const TrailsText = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: ${(props) =>
+    props.textAlign === "left" ? "flex-start" : "center"};
 `;
 
 const HeadlineText = styled.h1`
@@ -41,9 +42,10 @@ const Container = styled.div`
   align-items: center;
   height: 100px;
   justify-content: center;
+  margin-top: ${(props) => (props.marginTop ? props.marginTop : 0)};
 `;
 
-const Trail = ({ open, children }) => {
+const Trail = ({ open, children, textAlign }) => {
   const items = React.Children.toArray(children);
   const trail = useTrail(items.length, {
     config: { mass: 1, tension: 4000, friction: 500 },
@@ -56,7 +58,7 @@ const Trail = ({ open, children }) => {
   return (
     <div>
       {trail.map(({ height, ...style }, index) => (
-        <TrailsText>
+        <TrailsText textAlign={textAlign}>
           <a.div key={index} style={style}>
             <a.div style={{ height }}>{items[index]}</a.div>
           </a.div>
@@ -66,12 +68,17 @@ const Trail = ({ open, children }) => {
   );
 };
 
-const SecondHeadline = ({ visibleSecondHeadline, textlines }) => {
+const SecondHeadline = ({
+  visibleSecondHeadline,
+  textlines,
+  textAlign,
+  marginTop,
+}) => {
   const { t } = useTranslation();
 
   return (
-    <Container>
-      <Trail open={visibleSecondHeadline}>
+    <Container marginTop={marginTop}>
+      <Trail open={visibleSecondHeadline} textAlign={textAlign}>
         {textlines.map(({ text, color }) => (
           <HeadlineText>
             {t(text)} <Line color={color} />

@@ -56,8 +56,8 @@ import HorizontalScrollSection from "./components/HorizontalScrollSection";
 import CreditsSection from "./components/CreditsSection";
 import { StyledA, StyledText } from "../../../styles/GlobalStyle";
 import UnderlinedText from "./components/UnderlinedText";
-import DecideLocationImg from "../../../images/infoPage/howItWorks/DecideLocationImg.png";
-import FormulateIdeaImg from "../../../images/infoPage/howItWorks/FormulateIdeaImg.png";
+import DecideLocationImg from "../../../images/infoPage/howItWorks/decideLocationImg.png";
+import FormulateIdeaImg from "../../../images/infoPage/howItWorks/formulateIdeaImg.png";
 
 const Container = styled.div`
   height: 100%;
@@ -102,6 +102,8 @@ const InlineInformationPage = ({}) => {
   }, [open]);
 
   const [scrollValue, setScrollValue] = useState(0);
+  const [visibleFirstHeadline, setVisibleFirstHeadline] = useState(true);
+
   const [visibleSecondHeadline, setVisibleSecondHeadline] = useState(false);
   const [visibleCards, setVisibleCards] = useState(false);
 
@@ -134,6 +136,12 @@ const InlineInformationPage = ({}) => {
     //  `;
 
     console.log(value);
+
+    if (value > 10) {
+      setVisibleFirstHeadline(false);
+    } else {
+      setVisibleFirstHeadline(true);
+    }
 
     if (value > 30) {
       setVisibleSecondHeadline(true);
@@ -183,13 +191,24 @@ const InlineInformationPage = ({}) => {
             <img src={Logo} width="100px" alt="logo1"></img>
           </div> */}
 
-          <Headline />
+          <SecondHeadline
+            marginTop="30vh"
+            textAlign="left"
+            visibleSecondHeadline={visibleFirstHeadline}
+            textlines={[
+              { text: "infopage_headline_1", color: "#939FF3" },
+              { text: "infopage_headline_2", color: "#F5C098" },
+              { text: "infopage_headline_3", color: "#90D8B9" },
+              { text: "infopage_headline_4", color: "#E69081" },
+            ]}
+          />
 
-          <StyledA>Direkt zur Plattform </StyledA>
+          {/* <StyledA >Direkt zur Plattform </StyledA> */}
           <Circle scrollValue={scrollValue} />
           {/* <Bubble /> */}
           <Bulb />
           <SecondHeadline
+            marginTop="60vh"
             visibleSecondHeadline={visibleSecondHeadline}
             textlines={[
               { text: "infopage_secondHeadline_1", color: "#ffff" },
