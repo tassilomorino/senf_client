@@ -65,7 +65,7 @@ const Container = styled.div`
   overflow-x: hidden;
   overflow-y: scroll;
   position: fixed;
-  background-color: rgb(249, 241, 215);
+  background-color: white;
 `;
 
 const InnerContainer = styled.div`
@@ -208,7 +208,7 @@ const InlineInformationPage = ({}) => {
           {/* <Bubble /> */}
           <Bulb />
           <SecondHeadline
-            marginTop="60vh"
+            marginTop="40vh"
             visibleSecondHeadline={visibleSecondHeadline}
             textlines={[
               { text: "infopage_secondHeadline_1", color: "#ffff" },
