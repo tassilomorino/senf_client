@@ -80,7 +80,12 @@ const HowToCard2 = styled.div`
 
 const Img = styled.img`
   margin-left: 50%;
-  transform: translateX(-50%);
+  transform: ${(props) =>
+    props.visible
+      ? "translateX(-50%) translateY(0px)"
+      : "translateX(-40%) translateY(10px)"};
+  opacity: ${(props) => (props.visible ? "1" : "0")};
+  transition: 0.5s;
 `;
 
 const InlineInformationPage = ({}) => {
@@ -106,6 +111,7 @@ const InlineInformationPage = ({}) => {
 
   const [visibleSecondHeadline, setVisibleSecondHeadline] = useState(false);
   const [visibleCards, setVisibleCards] = useState(false);
+  const [visibleCards2, setVisibleCards2] = useState(false);
 
   // The scroll listener
   const handleScroll = useCallback(() => {
@@ -149,10 +155,16 @@ const InlineInformationPage = ({}) => {
       setVisibleSecondHeadline(false);
     }
 
-    if (value > 87) {
+    if (value > 100) {
       setVisibleCards(true);
     } else {
       setVisibleCards(false);
+    }
+
+    if (value > 132) {
+      setVisibleCards2(true);
+    } else {
+      setVisibleCards2(false);
     }
 
     // console.log(el?.scrollTop);
@@ -192,7 +204,7 @@ const InlineInformationPage = ({}) => {
           </div> */}
 
           <SecondHeadline
-            marginTop="30vh"
+            height="100%"
             textAlign="left"
             visibleSecondHeadline={visibleFirstHeadline}
             textlines={[
@@ -244,12 +256,12 @@ const InlineInformationPage = ({}) => {
                 { text: "auswählen", color: "" },
               ]}
             />
-            <Img src={DecideLocationImg} width="250px" />
+            <Img src={DecideLocationImg} width="250px" visible={visibleCards} />
           </HowToCard1>
 
           <HowToCard2>
             <UnderlinedText
-              visibleHeadline={visibleCards}
+              visibleHeadline={visibleCards2}
               textlines={[
                 { text: "Idee", color: "#F5C098" },
                 { text: "formulieren", color: "" },
@@ -258,7 +270,7 @@ const InlineInformationPage = ({}) => {
                 { text: "teilen", color: "#90D8B9" },
               ]}
             />
-            <Img src={FormulateIdeaImg} width="250px" />
+            <Img src={FormulateIdeaImg} width="250px" visible={visibleCards2} />
           </HowToCard2>
 
           <HorizontalScrollSection />

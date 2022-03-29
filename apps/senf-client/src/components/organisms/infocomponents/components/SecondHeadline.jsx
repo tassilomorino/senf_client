@@ -40,9 +40,8 @@ const Line = styled.div`
 const Container = styled.div`
   display: flex;
   align-items: center;
-  height: 100px;
   justify-content: center;
-  margin-top: ${(props) => (props.marginTop ? props.marginTop : 0)};
+  height: ${(props) => (props.height ? props.height : "100px")};
 `;
 
 const Trail = ({ open, children, textAlign }) => {
@@ -73,11 +72,12 @@ const SecondHeadline = ({
   textlines,
   textAlign,
   marginTop,
+  height,
 }) => {
   const { t } = useTranslation();
 
   return (
-    <Container marginTop={marginTop}>
+    <Container marginTop={marginTop} height={height}>
       <Trail open={visibleSecondHeadline} textAlign={textAlign}>
         {textlines.map(({ text, color }) => (
           <HeadlineText>
