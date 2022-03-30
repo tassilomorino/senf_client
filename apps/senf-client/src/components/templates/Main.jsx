@@ -161,7 +161,7 @@ const Main = () => {
 
   const [changeLocationModalOpen, setChangeLocationModalOpen] = useState(false);
   const mapRef = useRef(null);
-  const mapViewport = useSelector((state) => state.data.mapViewport);
+
   const mapBounds = useSelector((state) => state.data.mapBounds);
   const mapLoaded = useSelector((state) => state.data.mapLoaded);
   const { lat, long } = useSelector((state) => state.data.scream);
@@ -171,7 +171,7 @@ const Main = () => {
 
   //Initial-ZOOM
   useEffect(() => {
-    if (mapViewport?.latitude !== 0 && mapRef?.current && mapLoaded) {
+    if (mapRef?.current && mapLoaded) {
       const map = mapRef.current.getMap();
       var canvas = map.getCanvas(),
         w = canvas.width,
@@ -198,7 +198,6 @@ const Main = () => {
       project &&
       project.centerLong !== undefined &&
       !openScream &&
-      mapViewport.latitude !== 0 &&
       mapRef.current &&
       mapLoaded
     ) {
@@ -219,13 +218,7 @@ const Main = () => {
   //IDEA-ZOOM
   const prevLat = usePrevious({ lat });
   useEffect(() => {
-    if (
-      openScream &&
-      !loadingIdea &&
-      mapViewport.latitude !== 0 &&
-      mapRef.current &&
-      mapLoaded
-    ) {
+    if (openScream && !loadingIdea && mapRef.current && mapLoaded) {
       if (lat && prevLat && prevLat.lat !== lat) {
         setTimeout(() => {
           dispatch(
@@ -314,13 +307,16 @@ const Main = () => {
   const handleDropdown = useCallback((value) => {
     setDropdown(value);
   }, []);
-  const handledropdownStatus = (id) => {
-    if (dropdownStatus.includes(id)) {
-      setdropdownStatus(dropdownStatus.filter((filter) => filter !== id));
-    } else {
-      setdropdownStatus([...dropdownStatus, id]);
-    }
-  };
+  const handledropdownStatus = useCallback(
+    (id) => {
+      if (dropdownStatus.includes(id)) {
+        setdropdownStatus(dropdownStatus.filter((filter) => filter !== id));
+      } else {
+        setdropdownStatus([...dropdownStatus, id]);
+      }
+    },
+    [dropdownStatus]
+  );
 
   //IDEAS
 
