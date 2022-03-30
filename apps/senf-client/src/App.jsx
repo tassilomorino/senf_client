@@ -7,10 +7,10 @@ import firebaseApp from "./firebase";
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import "./styles/mapbox-gl.css";
-import "./styles/mapbox.css";
 import "./styles/App.css";
 import "./styles/AppDesktop.css";
 import "./styles/AppIpad.css";
+import "./styles/mapbox.css";
 import "./styles/Animations.css";
 
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
