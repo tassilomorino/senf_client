@@ -134,7 +134,6 @@ const Account = ({ dataFinalMap }) => {
 
       if (organizations.length === ref.size) {
         setMyOrganizations(organizations);
-        console.log(organizations);
       }
     });
   }, []);
