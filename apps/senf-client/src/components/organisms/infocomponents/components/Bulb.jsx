@@ -11,6 +11,7 @@ const Container = styled.div`
   will-change: transform, opacity;
   overflow: visible;
   top: 0;
+  z-index: 1;
 `;
 
 const HooksMain = styled.div`

@@ -41,7 +41,6 @@ import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
 import MyButton from "../../../util/MyButton";
 import Headline from "./components/Headline";
-import SecondHeadline from "./components/SecondHeadline";
 
 import Bubble from "./components/Bubble";
 import { useEffect } from "react";
@@ -58,6 +57,7 @@ import { StyledA, StyledText } from "../../../styles/GlobalStyle";
 import UnderlinedText from "./components/UnderlinedText";
 import DecideLocationImg from "../../../images/infoPage/howItWorks/decideLocationImg.png";
 import FormulateIdeaImg from "../../../images/infoPage/howItWorks/formulateIdeaImg.png";
+import SecondHeadline from "./components/SecondHeadline";
 
 const Container = styled.div`
   height: 100%;
@@ -103,8 +103,12 @@ const InlineInformationPage = ({}) => {
       //   }, 100);
       // }
 
-      const bubble = document.getElementById("Circle");
-      bubble.style.clipPath = `circle(${4}% at 50% 50%)`;
+      const circle = document.getElementById("Circle");
+      circle.style.clipPath = `circle(${4}% at 50% 50%)`;
+
+      const circle2 = document.getElementById("Circle2");
+
+      circle2.style.clipPath = `circle(${0}% at 50% 50%)`;
     }
   }, [open]);
 
@@ -115,6 +119,8 @@ const InlineInformationPage = ({}) => {
   const [visibleCards, setVisibleCards] = useState(false);
   const [visibleCards2, setVisibleCards2] = useState(false);
 
+  const [visibleCircle2, setVisibleCircle2] = useState(false);
+
   // The scroll listener
   const handleScroll = useCallback(() => {
     const horizontal = document.querySelector("#horizontal");
@@ -122,13 +128,17 @@ const InlineInformationPage = ({}) => {
     horizontal.style.transform = `translateX(-${sticky.offsetTop}px)`;
 
     const el = document.getElementById("InfoPage");
-    const bubble = document.getElementById("Circle");
+    const circle = document.getElementById("Circle");
 
     let value = el?.scrollTop / 10;
 
     setScrollValue(value);
-    bubble.style.clipPath = `circle(${4 + value}% at 50% 50%)`;
-    bubble.style.transformOrigin = "bottom";
+    circle.style.clipPath = `circle(${4 + value}% at 50% 50%)`;
+    circle.style.transformOrigin = "bottom";
+
+    const circle2 = document.getElementById("Circle2");
+    circle2.style.clipPath = `circle(${-400 + value}% at 50% 50%)`;
+    circle2.style.transformOrigin = "bottom";
 
     const keyword1 = document.getElementById("keyword1");
     const keyword2 = document.getElementById("keyword2");
@@ -151,7 +161,7 @@ const InlineInformationPage = ({}) => {
       setVisibleFirstHeadline(true);
     }
 
-    if (value > 30) {
+    if (value > 5 && value < 135) {
       setVisibleSecondHeadline(true);
     } else {
       setVisibleSecondHeadline(false);
@@ -167,6 +177,12 @@ const InlineInformationPage = ({}) => {
       setVisibleCards2(true);
     } else {
       setVisibleCards2(false);
+    }
+
+    if (value > 350) {
+      setVisibleCircle2(true);
+    } else {
+      setVisibleCircle2(false);
     }
 
     // console.log(el?.scrollTop);
@@ -197,69 +213,27 @@ const InlineInformationPage = ({}) => {
             margin={document.body.clientWidth > 768 ? "40px" : "10px"}
             handleButtonClick={() => setOpen(false)}
           />
-          {/*
-            <img src={CloseIcon} width="20px" />
-          </MyButton>
-          <div className="logo1">
-            <img src={Logo} width="100px" alt="logo1"></img>
-          </div> */}
-          {/* <SecondHeadline
+
+          <Headline
             height="100%"
             textAlign="left"
-            visibleSecondHeadline={visibleFirstHeadline}
+            visible={visibleFirstHeadline}
             textlines={[
               { text: "infopage_headline_1", color: "#939FF3" },
               { text: "infopage_headline_2", color: "#F5C098" },
               { text: "infopage_headline_3", color: "#90D8B9" },
               { text: "infopage_headline_4", color: "#E69081" },
             ]}
-          /> */}
-          <br /> <br /> <br /> <br /> <br /> <br />
-          <br /> <br /> <br /> <br />
-          <UnderlinedText
-            visibleHeadline={visibleFirstHeadline}
-            textlines={[
-              { text: "Digitale", color: "#939FF3" },
-              { breakBoolean: true },
-
-              { text: "Plattform", color: "#F5C098" },
-              { text: "für", color: "#F5C098" },
-
-              { breakBoolean: true },
-              { text: "Bürgerinnen-", color: "#90D8B9" },
-              { breakBoolean: true },
-
-              { text: "Beteiligung", color: "#E69081" },
-            ]}
           />
+
           {/* <StyledA >Direkt zur Plattform </StyledA> */}
-          <Circle scrollValue={scrollValue} />
-          {/* <Bubble /> */}
+          <Circle id="Circle" scrollValue={scrollValue} />
           <Bulb />
-          <SecondHeadline
-            marginTop="40vh"
-            visibleSecondHeadline={visibleSecondHeadline}
-            textlines={[
-              { text: "infopage_secondHeadline_1", color: "#ffff" },
-              { text: "infopage_secondHeadline_2", color: "#ffff" },
-            ]}
-          />
+
+          <SecondHeadline visible={visibleSecondHeadline} />
+
           <Keywords />
-          {/* <SecondHeadline
-            visibleSecondHeadline={visibleSecondHeadline}
-            textlines={[
-              { text: "Wie", color: "#F5C098" },
-              { text: "funktioniert's?", color: "#90D8B9" },
-            ]}
-          />
-           <div
-              style={{
-                position: "relative",
-                height: "400px",
-              }}
-            >
-              <Cards visibleCards={visibleCards} />
-            </div> */}
+
           <HowToCard1>
             <UnderlinedText
               visibleHeadline={visibleCards}
@@ -273,6 +247,7 @@ const InlineInformationPage = ({}) => {
             />
             <Img src={DecideLocationImg} width="250px" visible={visibleCards} />
           </HowToCard1>
+
           <HowToCard2>
             <UnderlinedText
               visibleHeadline={visibleCards2}
@@ -286,8 +261,13 @@ const InlineInformationPage = ({}) => {
             />
             <Img src={FormulateIdeaImg} width="250px" visible={visibleCards2} />
           </HowToCard2>
+
           <HorizontalScrollSection />
+
+          <Circle id="Circle2" scrollValue={scrollValue} top="530vh" />
+
           <CreditsSection />
+
           <Partners />
           <Footer />
         </Container>

@@ -63,12 +63,7 @@ const Trail = ({ open, children, textlines }) => {
   });
   return (
     <div
-      style={{
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "flex-start",
-        marginLeft: "20px",
-      }}
+      style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
     >
       {trail.map(({ height, ...style }, index) => (
         <TrailsText

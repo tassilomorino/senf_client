@@ -5,11 +5,11 @@ import { StyledH3 } from "../../../../styles/GlobalStyle";
 const Wrapper = styled.div`
   height: 250px;
   width: 100vw;
-  padding-bottom: 200px;
+  padding-bottom: 800px;
 
   z-index: 9999;
-  position: relative;
-  margin-top: 100px;
+  position: sticky;
+  top: 200px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

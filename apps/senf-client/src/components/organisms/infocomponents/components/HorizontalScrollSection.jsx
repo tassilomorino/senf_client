@@ -66,12 +66,12 @@ const Article = styled.article`
 
 const Title = styled.h3`
   position: sticky;
-  height: 100px;
-  font-size: 25px;
+  height: 50px;
+  font-size: 30px;
   text-align: center;
   width: 90vw;
   margin-left: 5vw;
-  color: white;
+  color: #353535;
   z-index: 1;
   font-weight: 700;
   margin-top: 100px;
@@ -87,13 +87,25 @@ const Img = styled.img`
 
 const pages = [
   {
-    title: "Organisationsprofile",
+    title: "327 Ideen",
     subTitle:
       "Von der Initiative bis zum Planungsbüro – erstellt euch ein eigenes Profil",
     img: WorkTogether,
   },
   {
-    title: "Individuelle Projekträume",
+    title: "32 Anträge",
+    subTitle:
+      "Sammelt Ideen für spezifische Ort und Anlässe in interaktiven Räumen",
+    img: OpenBook,
+  },
+  {
+    title: "12  Stellungnahmen",
+    subTitle:
+      "Von der Initiative bis zum Planungsbüro – erstellt euch ein eigenes Profil",
+    img: WorkTogether,
+  },
+  {
+    title: "3 Implementiert",
     subTitle:
       "Sammelt Ideen für spezifische Ort und Anlässe in interaktiven Räumen",
     img: OpenBook,
@@ -123,8 +135,8 @@ const HorizontalScrollSection = () => {
       <SpaceHolder id="space-holder">
         <Sticky id="sticky">
           <Title>
-            Beteiligung modern & maßgeschneidert: <br /> Von Inititativen bis
-            Planungsbüros!
+            Wir setzen uns <br />
+            für euch ein!
           </Title>
           <Img src={SectionBackground} width="100%" />
 

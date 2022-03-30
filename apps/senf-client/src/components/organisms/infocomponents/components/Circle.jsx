@@ -10,7 +10,8 @@ const Container = styled.div`
   height: 100%;
   will-change: transform, opacity;
   overflow: visible;
-  top: 0;
+  top: ${(props) => (props.top ? props.top : 0)};
+  z-index: 1;
 `;
 
 const HooksMain = styled.div`
@@ -36,8 +37,8 @@ const HooksMain = styled.div`
   }
 
   div:nth-child(1) {
-    width: 1300px;
-    height: 1300px;
+    width: 1600px;
+    height: 1600px;
     border-radius: 100%;
   }
 `;
@@ -46,7 +47,7 @@ const fast = { tension: 1200, friction: 40 };
 const slow = { mass: 10, tension: 200, friction: 50 };
 const trans = (x, y) => `translate3d(${x}px,${y}px,0) translate3d(-50%,-50%,0)`;
 
-const Circle = ({ scrollValue }) => {
+const Circle = ({ scrollValue, id, top }) => {
   const ref = useRef(null);
   const [trail, api] = useTrail(1, (i) => ({
     xy: [window.innerWidth / 2, window.innerHeight + 200],
@@ -85,14 +86,14 @@ const Circle = ({ scrollValue }) => {
     }, 2000);
   }, []);
   return (
-    <Container ref={ref}>
+    <Container ref={ref} top={top}>
       <HooksMain
 
       //   onMouseMove={handleMouseMove}
       >
         {trail.map((props, index) => (
           <animated.div
-            id="Circle"
+            id={id}
             key={index}
             style={{ transform: props.xy.to(trans) }}
           ></animated.div>

@@ -7,19 +7,24 @@ import { useTranslation } from "react-i18next";
 const TrailsText = styled.div`
   position: relative;
   width: 100%;
-  height: 50px;
+  height: 60px;
   will-change: transform, opacity;
   overflow: visible;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 `;
 
 const HeadlineText = styled.h1`
   line-height: 50px;
   color: black;
-  font-size: 36px;
+  font-size: 40px;
   font-weight: 800;
   letter-spacing: -0.05em;
-  height: 20px;
+  height: 30px;
   display: inline-block;
+  text-align: center;
 `;
 
 const Line = styled.div`
@@ -34,8 +39,9 @@ const Line = styled.div`
 const Container = styled.div`
   display: flex;
   align-items: center;
-  height: 100%;
-  justify-content: center;
+  justify-content: flex-start;
+  height: 70%;
+  margin-left: 24px;
 `;
 
 const Trail = ({ open, children }) => {
@@ -45,7 +51,7 @@ const Trail = ({ open, children }) => {
     opacity: open ? 1 : 0,
     x: open ? 0 : 40,
     scale: open ? 1 : 0.95,
-    height: open ? 110 : 0,
+    height: open ? 0 : 0,
     from: { opacity: 0, x: 20, height: 0 },
   });
   return (
@@ -61,32 +67,17 @@ const Trail = ({ open, children }) => {
   );
 };
 
-const Headline = () => {
-  const [open, set] = useState(false);
+const Headline = ({ visible, textlines }) => {
   const { t } = useTranslation();
-
-  useEffect(() => {
-    setTimeout(() => {
-      set(true);
-    }, 500);
-  }, []);
 
   return (
     <Container>
-      <Trail open={open}>
-        <HeadlineText>
-          {t("infopage_headline_1")} <Line color="#939FF3" />
-        </HeadlineText>
-
-        <HeadlineText>
-          {t("infopage_headline_2")} <Line color="#F5C098" />
-        </HeadlineText>
-        <HeadlineText>
-          {t("infopage_headline_3")} <Line color="#90D8B9" />
-        </HeadlineText>
-        <HeadlineText>
-          {t("infopage_headline_4")} <Line color="#E69081" />
-        </HeadlineText>
+      <Trail open={visible}>
+        {textlines.map(({ text, color }) => (
+          <HeadlineText>
+            {t(text)} <Line color={color} />
+          </HeadlineText>
+        ))}
       </Trail>
     </Container>
   );
