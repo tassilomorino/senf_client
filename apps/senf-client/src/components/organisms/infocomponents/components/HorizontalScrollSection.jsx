@@ -66,11 +66,11 @@ const Article = styled.article`
 
 const Title = styled.h3`
   position: sticky;
-  height: 50px;
-  font-size: 30px;
+  height: 100px;
+  font-size: 25px;
   text-align: center;
-  width: 80vw;
-  margin-left: 10vw;
+  width: 90vw;
+  margin-left: 5vw;
   color: white;
   z-index: 1;
   font-weight: 700;
@@ -122,7 +122,10 @@ const HorizontalScrollSection = () => {
     <Container>
       <SpaceHolder id="space-holder">
         <Sticky id="sticky">
-          <Title>Macht es zu eurer Plattform</Title>
+          <Title>
+            Beteiligung modern & maßgeschneidert: <br /> Von Inititativen bis
+            Planungsbüros!
+          </Title>
           <Img src={SectionBackground} width="100%" />
 
           <Horizontal id="horizontal">

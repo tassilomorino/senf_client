@@ -3,9 +3,9 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { StyledH3 } from "../../../../styles/GlobalStyle";
 const Wrapper = styled.div`
-  height: 300px;
+  height: 250px;
   width: 100vw;
-  padding-bottom: 250px;
+  padding-bottom: 200px;
 
   z-index: 9999;
   position: relative;

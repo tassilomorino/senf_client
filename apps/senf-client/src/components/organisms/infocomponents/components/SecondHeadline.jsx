@@ -41,7 +41,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: ${(props) => (props.height ? props.height : "100px")};
+  height: ${(props) => (props.height ? props.height : "150px")};
 `;
 
 const Trail = ({ open, children, textAlign }) => {

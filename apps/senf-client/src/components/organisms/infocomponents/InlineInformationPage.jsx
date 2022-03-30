@@ -73,9 +73,11 @@ const InnerContainer = styled.div`
   width: 100%;
 `;
 
-const HowToCard1 = styled.div``;
+const HowToCard1 = styled.div`
+  margin-bottom: 70px;
+`;
 const HowToCard2 = styled.div`
-  margin-top: 70px;
+  margin-bottom: 70px;
 `;
 
 const Img = styled.img`
@@ -155,7 +157,7 @@ const InlineInformationPage = ({}) => {
       setVisibleSecondHeadline(false);
     }
 
-    if (value > 100) {
+    if (value > 80) {
       setVisibleCards(true);
     } else {
       setVisibleCards(false);
@@ -195,15 +197,13 @@ const InlineInformationPage = ({}) => {
             margin={document.body.clientWidth > 768 ? "40px" : "10px"}
             handleButtonClick={() => setOpen(false)}
           />
-
           {/*
             <img src={CloseIcon} width="20px" />
           </MyButton>
           <div className="logo1">
             <img src={Logo} width="100px" alt="logo1"></img>
           </div> */}
-
-          <SecondHeadline
+          {/* <SecondHeadline
             height="100%"
             textAlign="left"
             visibleSecondHeadline={visibleFirstHeadline}
@@ -213,8 +213,25 @@ const InlineInformationPage = ({}) => {
               { text: "infopage_headline_3", color: "#90D8B9" },
               { text: "infopage_headline_4", color: "#E69081" },
             ]}
-          />
+          /> */}
+          <br /> <br /> <br /> <br /> <br /> <br />
+          <br /> <br /> <br /> <br />
+          <UnderlinedText
+            visibleHeadline={visibleFirstHeadline}
+            textlines={[
+              { text: "Digitale", color: "#939FF3" },
+              { breakBoolean: true },
 
+              { text: "Plattform", color: "#F5C098" },
+              { text: "für", color: "#F5C098" },
+
+              { breakBoolean: true },
+              { text: "Bürgerinnen-", color: "#90D8B9" },
+              { breakBoolean: true },
+
+              { text: "Beteiligung", color: "#E69081" },
+            ]}
+          />
           {/* <StyledA >Direkt zur Plattform </StyledA> */}
           <Circle scrollValue={scrollValue} />
           {/* <Bubble /> */}
@@ -228,7 +245,6 @@ const InlineInformationPage = ({}) => {
             ]}
           />
           <Keywords />
-
           {/* <SecondHeadline
             visibleSecondHeadline={visibleSecondHeadline}
             textlines={[
@@ -244,7 +260,6 @@ const InlineInformationPage = ({}) => {
             >
               <Cards visibleCards={visibleCards} />
             </div> */}
-
           <HowToCard1>
             <UnderlinedText
               visibleHeadline={visibleCards}
@@ -258,7 +273,6 @@ const InlineInformationPage = ({}) => {
             />
             <Img src={DecideLocationImg} width="250px" visible={visibleCards} />
           </HowToCard1>
-
           <HowToCard2>
             <UnderlinedText
               visibleHeadline={visibleCards2}
@@ -272,10 +286,8 @@ const InlineInformationPage = ({}) => {
             />
             <Img src={FormulateIdeaImg} width="250px" visible={visibleCards2} />
           </HowToCard2>
-
           <HorizontalScrollSection />
           <CreditsSection />
-
           <Partners />
           <Footer />
         </Container>

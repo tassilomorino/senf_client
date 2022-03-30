@@ -36,8 +36,8 @@ const HooksMain = styled.div`
   }
 
   div:nth-child(1) {
-    width: 1500px;
-    height: 1500px;
+    width: 1300px;
+    height: 1300px;
     border-radius: 100%;
   }
 `;
