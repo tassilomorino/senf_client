@@ -58,6 +58,7 @@ import UnderlinedText from "./components/UnderlinedText";
 import DecideLocationImg from "../../../images/infoPage/howItWorks/decideLocationImg.png";
 import FormulateIdeaImg from "../../../images/infoPage/howItWorks/formulateIdeaImg.png";
 import SecondHeadline from "./components/SecondHeadline";
+import Tags from "./components/Tags";
 
 const Container = styled.div`
   height: 100%;
@@ -105,17 +106,17 @@ const InlineInformationPage = ({}) => {
 
       const circle = document.getElementById("Circle");
       circle.style.clipPath = `circle(${4}% at 50% 50%)`;
-
-      const circle2 = document.getElementById("Circle2");
-
-      circle2.style.clipPath = `circle(${0}% at 50% 50%)`;
     }
   }, [open]);
 
   const [scrollValue, setScrollValue] = useState(0);
   const [visibleFirstHeadline, setVisibleFirstHeadline] = useState(true);
 
-  const [visibleSecondHeadline, setVisibleSecondHeadline] = useState(false);
+  const [visibleSecondaryHeadline1, setVisibleSecondaryHeadline1] =
+    useState(false);
+  const [visibleSecondaryHeadline2, setVisibleSecondaryHeadline2] =
+    useState(false);
+
   const [visibleCards, setVisibleCards] = useState(false);
   const [visibleCards2, setVisibleCards2] = useState(false);
 
@@ -137,7 +138,10 @@ const InlineInformationPage = ({}) => {
     circle.style.transformOrigin = "bottom";
 
     const circle2 = document.getElementById("Circle2");
-    circle2.style.clipPath = `circle(${-400 + value}% at 50% 50%)`;
+
+    circle2.style.clipPath = `circle(${
+      value > 368 ? -364 + value : 4
+    }% at 50% 50%)`;
     circle2.style.transformOrigin = "bottom";
 
     const keyword1 = document.getElementById("keyword1");
@@ -151,7 +155,27 @@ const InlineInformationPage = ({}) => {
     keyword2.style.transform = `translateX(${-value * 6}px)`;
     keyword3.style.transform = `translateX(${value * 10}px)`;
 
-    //  `;
+    const tag1 = document.getElementById("tag1");
+    const tag2 = document.getElementById("tag2");
+    const tag3 = document.getElementById("tag3");
+    const tag4 = document.getElementById("tag4");
+    const tag5 = document.getElementById("tag5");
+    const tag6 = document.getElementById("tag6");
+    tag1.style.transition = "0.1s";
+    tag2.style.transition = "0.1s";
+    tag3.style.transition = "0.1s";
+    tag4.style.transition = "0.1s";
+    tag5.style.transition = "0.1s";
+    tag6.style.transition = "0.1s";
+
+    let secondValue = el?.scrollTop / 10 - 480;
+
+    tag1.style.transform = `translateX(${secondValue * 8}px)`;
+    tag2.style.transform = `translateX(${-secondValue * 6}px)`;
+    tag3.style.transform = `translateX(${secondValue * 10}px)`;
+    tag4.style.transform = `translateX(${-secondValue * 8}px)`;
+    tag5.style.transform = `translateX(${secondValue * 6}px)`;
+    tag6.style.transform = `translateX(${-secondValue * 10}px)`;
 
     console.log(value);
 
@@ -162,9 +186,9 @@ const InlineInformationPage = ({}) => {
     }
 
     if (value > 5 && value < 135) {
-      setVisibleSecondHeadline(true);
+      setVisibleSecondaryHeadline1(true);
     } else {
-      setVisibleSecondHeadline(false);
+      setVisibleSecondaryHeadline1(false);
     }
 
     if (value > 80) {
@@ -178,12 +202,17 @@ const InlineInformationPage = ({}) => {
     } else {
       setVisibleCards2(false);
     }
-
-    if (value > 350) {
-      setVisibleCircle2(true);
+    if (value > 355 && value < 535) {
+      setVisibleSecondaryHeadline2(true);
     } else {
-      setVisibleCircle2(false);
+      setVisibleSecondaryHeadline2(false);
     }
+
+    // if (value > 350) {
+    //   setVisibleCircle2(true);
+    // } else {
+    //   setVisibleCircle2(false);
+    // }
 
     // console.log(el?.scrollTop);
     // setScrollValue(el?.scrollTop);
@@ -230,7 +259,13 @@ const InlineInformationPage = ({}) => {
           <Circle id="Circle" scrollValue={scrollValue} />
           <Bulb />
 
-          <SecondHeadline visible={visibleSecondHeadline} />
+          <SecondHeadline
+            visible={visibleSecondaryHeadline1}
+            textlines={[
+              { text: "infopage_addMustard_1" },
+              { text: "infopage_addMustard_2" },
+            ]}
+          />
 
           <Keywords />
 
@@ -264,7 +299,16 @@ const InlineInformationPage = ({}) => {
 
           <HorizontalScrollSection />
 
-          <Circle id="Circle2" scrollValue={scrollValue} top="530vh" />
+          <Circle id="Circle2" scrollValue={scrollValue} top="540vh" />
+          <SecondHeadline
+            visible={visibleSecondaryHeadline2}
+            textlines={[
+              { text: "infopage_organizationsHeadline_1" },
+              { text: "infopage_organizationsHeadline_2" },
+            ]}
+          />
+
+          <Tags />
 
           <CreditsSection />
 
