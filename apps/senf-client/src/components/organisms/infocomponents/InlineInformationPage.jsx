@@ -124,9 +124,15 @@ const InlineInformationPage = ({}) => {
 
   // The scroll listener
   const handleScroll = useCallback(() => {
-    const horizontal = document.querySelector("#horizontal");
-    const sticky = document.querySelector("#sticky");
-    horizontal.style.transform = `translateX(-${sticky.offsetTop}px)`;
+    //HORIZONTAL SECTION 1
+    const horizontal1 = document.querySelector("#horizontal1");
+    const sticky1 = document.querySelector("#sticky1");
+    horizontal1.style.transform = `translateX(-${sticky1.offsetTop}px)`;
+
+    //HORIZONTAL SECTION 2
+    const horizontal2 = document.querySelector("#horizontal2");
+    const sticky2 = document.querySelector("#sticky2");
+    horizontal2.style.transform = `translateX(-${sticky2.offsetTop}px)`;
 
     const el = document.getElementById("InfoPage");
     const circle = document.getElementById("Circle");
@@ -297,7 +303,7 @@ const InlineInformationPage = ({}) => {
             <Img src={FormulateIdeaImg} width="250px" visible={visibleCards2} />
           </HowToCard2>
 
-          <HorizontalScrollSection />
+          <HorizontalScrollSection id="1" />
 
           <Circle id="Circle2" scrollValue={scrollValue} top="540vh" />
           <SecondHeadline
@@ -310,9 +316,35 @@ const InlineInformationPage = ({}) => {
 
           <Tags />
 
-          <CreditsSection />
+          <HowToCard1>
+            <UnderlinedText
+              visibleHeadline={visibleCards}
+              textlines={[
+                { text: "Profile", color: "" },
+                { text: "für", color: "" },
+                { breakBoolean: true },
+                { text: "Organisationen", color: "#90D8B9" },
+              ]}
+            />
+            <Img src={DecideLocationImg} width="250px" visible={visibleCards} />
+          </HowToCard1>
 
-          <Partners />
+          <HowToCard2>
+            <UnderlinedText
+              visibleHeadline={visibleCards2}
+              textlines={[
+                { text: "Individuelle", color: "" },
+                { breakBoolean: true },
+                { text: "Projekträume", color: "#94DFF3" },
+              ]}
+            />
+            <Img src={FormulateIdeaImg} width="250px" visible={visibleCards2} />
+          </HowToCard2>
+
+          <HorizontalScrollSection id="2" />
+          {/* <CreditsSection />
+
+          <Partners /> */}
           <Footer />
         </Container>
       </MainDialog>
