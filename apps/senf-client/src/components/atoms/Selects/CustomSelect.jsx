@@ -106,6 +106,14 @@ const Span = styled.span`
   justify-content: flex-start;
   align-items: center;
 `;
+const StyledDivider = styled.div`
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  width: 80%;
+  margin: 0 auto;
+`;
+
+const StyledInputRadio = styled.input``;
+const StyledInputRadioLabel = styled.label``;
 
 const CustomSelect = ({
   overflow,
@@ -132,14 +140,23 @@ const CustomSelect = ({
     }
   }, []);
 
-  /*   
   useEffect(() => {
-    for (const option of options) {
-      if (option.name === value) {
-        setSelectedLabel(option.label);
+    if (options) {
+      for (const option of options) {
+        if (option.name === value) {
+          setSelectedLabel(option.label);
+        }
       }
     }
-  }, [value, options]); */
+
+    if (sortOptions) {
+      for (const option of sortOptions) {
+        if (option.name === value) {
+          setSelectedLabel(option.label);
+        }
+      }
+    }
+  }, [value, options, sortOptions]);
 
   const outerRef = useRef();
   useOnClickOutside(outerRef, () => setOpen(false));
@@ -154,7 +171,7 @@ const CustomSelect = ({
     setSelectedOption(value);
     setSelectedLabel(label);
     handleDropdown(value);
-    setOpen(false);
+    //setOpen(false);
   };
 
   function truncateString(str, num) {
@@ -218,34 +235,32 @@ const CustomSelect = ({
                     <StyledH3 textAlign={"center"} padding={"10px"}>
                       Sort By
                     </StyledH3>
-                    <hr />
-                    {sortOptions?.map((option) => (
-                      <ListItem
-                        onClick={onOptionClicked(option.name, option.label)}
-                        key={Math.random()}
-                      >
-                        <React.Fragment>
-                          <span
-                            style={
-                              option.name === selectedOption ||
-                              option.label === selectedOption
-                                ? { fontWeight: "900" }
-                                : {}
-                            }
-                          >
-                            {option.label}
-                          </span>
-                        </React.Fragment>
-                      </ListItem>
+                    <StyledDivider />
+                    {sortOptions?.map((sortOption) => (
+                      <>
+                        <StyledInputRadio
+                          type={"radio"}
+                          id={sortOption}
+                          checked={selectedOption.includes(sortOption.name)}
+                          onChange={onOptionClicked(
+                            sortOption.name,
+                            sortOption.label
+                          )}
+                        />
+
+                        <StyledInputRadioLabel htmlFor={sortOption}>
+                          {sortOption.label}
+                        </StyledInputRadioLabel>
+                      </>
                     ))}
                   </>
                 )}
                 {statusOptions && (
                   <>
                     <StyledH3 textAlign={"center"}>Filter By</StyledH3>
-                    <hr />
+                    <StyledDivider />
                     {statusOptions?.map((filter, i) => (
-                      <div>
+                      <>
                         <input
                           type="checkbox"
                           id={filter}
@@ -253,7 +268,7 @@ const CustomSelect = ({
                           onChange={() => handleDropdownStatus(filter.name)}
                         />
                         <label htmlFor={filter}>{filter.label}</label>
-                      </div>
+                      </>
                     ))}
                   </>
                 )}

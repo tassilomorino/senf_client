@@ -124,8 +124,7 @@ const Toolbar = ({
         {swipeListType === "ideas" ? (
           <CustomSelect
             overflow={"none"}
-            initialValue={t("newest_ideas")}
-            dropdown={dropdown}
+            value={dropdown}
             dropdownStatus={dropdownStatus}
             sortOptions={[
               { name: "newest", label: t("newest_ideas") },
