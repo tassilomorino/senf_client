@@ -148,6 +148,7 @@ const Toolbar = ({
 
         swipeListType === "projectRoomOverview" ? (
           <CustomSelect
+            overflow={"none"}
             name={t("newest_projectrooms")}
             value={dropdown}
             initialValue={dropdown}

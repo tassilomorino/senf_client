@@ -10,6 +10,7 @@ import Arrow from "../../../images/icons/arrow.png";
 //Components
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import { StyledH3, StyledLi } from "../../../styles/GlobalStyle";
+import CheckBox from "../CheckBox/CheckBox";
 
 const DropDownButton = styled.button`
   color: #353535;
@@ -35,8 +36,6 @@ const DropDownListContainer = styled.div`
   position: fixed;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  left: 0;
   top: 50%;
   left: 50%;
   transform: translateY(-50%) translateX(-50%);
@@ -44,7 +43,7 @@ const DropDownListContainer = styled.div`
   max-width: 400px;
   height: auto;
   max-height: 80vh;
-  overflow: ${(props) => (props.overflow ? props.overflow : "scroll")};
+  overflow-y: ${(props) => (props.overflow ? props.overflow : "scroll")};
   box-sizing: border-box;
   z-index: 99999;
   border-radius: 20px;
@@ -61,9 +60,7 @@ const Background = styled.div`
 `;
 
 const DropDownList = styled.ul`
-  margin: 0;
-  padding: 0;
-  overflow: ${(props) => (props.overflow ? props.overflow : "scroll")};
+  overflow-y: ${(props) => (props.overflow ? props.overflow : "scroll")};
   border-radius: 10px;
   width: 100%;
 `;
@@ -101,19 +98,26 @@ const Img = styled.img`
   margin-right: 10px;
 `;
 
-const Span = styled.span`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-`;
 const StyledDivider = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  width: 80%;
-  margin: 0 auto;
+  width: 90%;
+
+  display: flex;
+
+  margin-bottom: 20px;
 `;
 
-const StyledInputRadio = styled.input``;
-const StyledInputRadioLabel = styled.label``;
+const CheckBoxWrapper = styled.div`
+  display: flex;
+
+  margin-top: 10px;
+`;
+const CheckBoxLabel = styled.label`
+  font-size: 18px;
+  color: #353535;
+  font-weight: 100;
+  margin-left: 20px;
+`;
 
 const CustomSelect = ({
   overflow,
@@ -238,36 +242,54 @@ const CustomSelect = ({
                     <StyledDivider />
                     {sortOptions?.map((sortOption) => (
                       <>
-                        <StyledInputRadio
-                          type={"radio"}
-                          id={sortOption}
-                          checked={selectedOption.includes(sortOption.name)}
-                          onChange={onOptionClicked(
-                            sortOption.name,
-                            sortOption.label
-                          )}
-                        />
+                        <CheckBoxWrapper>
+                          <CheckBox
+                            type={"radio"}
+                            selected={selectedOption.includes(sortOption.name)}
+                            handleInputChange={onOptionClicked(
+                              sortOption.name,
+                              sortOption.label
+                            )}
+                          />
 
-                        <StyledInputRadioLabel htmlFor={sortOption}>
-                          {sortOption.label}
-                        </StyledInputRadioLabel>
+                          <CheckBoxLabel htmlFor={sortOption}>
+                            {sortOption.label}
+                          </CheckBoxLabel>
+                        </CheckBoxWrapper>
                       </>
                     ))}
                   </>
                 )}
                 {statusOptions && (
                   <>
-                    <StyledH3 textAlign={"center"}>Filter By</StyledH3>
+                    <StyledH3
+                      textAlign={"center"}
+                      padding={"10px"}
+                      margin={"25px 0px 0px"}
+                    >
+                      Filter By
+                    </StyledH3>
                     <StyledDivider />
                     {statusOptions?.map((filter, i) => (
                       <>
-                        <input
+                        {/*    <input
                           type="checkbox"
                           id={filter}
                           checked={dropdownStatus.includes(filter.name)}
                           onChange={() => handleDropdownStatus(filter.name)}
                         />
                         <label htmlFor={filter}>{filter.label}</label>
+                         */}
+                        <CheckBoxWrapper>
+                          <CheckBox
+                            name={filter.label}
+                            selected={dropdownStatus.includes(filter.name)}
+                            handleInputChange={() =>
+                              handleDropdownStatus(filter.name)
+                            }
+                          />
+                          <CheckBoxLabel>{filter.label}</CheckBoxLabel>
+                        </CheckBoxWrapper>
                       </>
                     ))}
                   </>
