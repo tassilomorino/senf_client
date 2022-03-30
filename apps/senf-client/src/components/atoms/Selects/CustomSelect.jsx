@@ -170,12 +170,12 @@ const CustomSelect = ({
 
     setOpen(!open);
   };
-
-  const onOptionClicked = (value, label) => () => {
+  let dontCloseWindow = true;
+  const onOptionClicked = (value, label, dontCloseWindow) => () => {
     setSelectedOption(value);
     setSelectedLabel(label);
     handleDropdown(value);
-    //setOpen(false);
+    dontCloseWindow ? setOpen(true) : setOpen(false);
   };
 
   function truncateString(str, num) {
@@ -184,6 +184,7 @@ const CustomSelect = ({
     }
     return str.slice(0, num) + "...";
   }
+
   return (
     <React.Fragment>
       <DropDownButton onClick={handleToggle} style={{ zIndex: 999 }}>
@@ -248,7 +249,8 @@ const CustomSelect = ({
                             selected={selectedOption.includes(sortOption.name)}
                             handleInputChange={onOptionClicked(
                               sortOption.name,
-                              sortOption.label
+                              sortOption.label,
+                              dontCloseWindow
                             )}
                           />
 
