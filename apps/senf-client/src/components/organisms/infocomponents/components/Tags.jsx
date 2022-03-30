@@ -6,7 +6,7 @@ import { StyledH3 } from "../../../../styles/GlobalStyle";
 const Wrapper = styled.div`
   height: 250px;
   width: 100vw;
-  padding-bottom: 800px;
+  padding-bottom: 900px;
 
   z-index: 9999;
   position: sticky;

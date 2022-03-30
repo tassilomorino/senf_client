@@ -144,7 +144,7 @@ const organizationTypes = [
         <path d="M3.17,12h5a.51.51,0,0,1,.5.5v.33a.5.5,0,0,1-.5.5h-5a.49.49,0,0,1-.5-.49v-.34a.5.5,0,0,1,.49-.5Z" />
       </svg>
     ),
-    infoPageLeft: "0%",
+    infoPageLeft: "-100%",
   },
   {
     name: "Sonstige", //  Others

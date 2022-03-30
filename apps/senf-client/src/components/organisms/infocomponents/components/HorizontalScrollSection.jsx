@@ -6,10 +6,22 @@ import WorkTogether from "../../../../images/workTogether.png";
 import OpenBook from "../../../../images/openBook.png";
 
 import Klug from "../../../../images/infoPage/partnerLogos/klug.png";
+import GrnKln from "../../../../images/infoPage/partnerLogos/grn_kln.png";
+import Agora from "../../../../images/infoPage/partnerLogos/agora.png";
+
 import Ksta from "../../../../images/infoPage/partnerLogos/ksta.png";
 import Gaffel from "../../../../images/infoPage/partnerLogos/gaffel.png";
+import Ww from "../../../../images/infoPage/partnerLogos/ww.png";
+import Baudata from "../../../../images/infoPage/partnerLogos/baudata.png";
+import Kfa from "../../../../images/infoPage/partnerLogos/kfa.png";
+import MinhaGalera from "../../../../images/infoPage/partnerLogos/minhaGalera.png";
+import Jh_uh from "../../../../images/infoPage/partnerLogos/jh_uh.png";
+import Eps from "../../../../images/infoPage/partnerLogos/eps.png";
+import Av from "../../../../images/infoPage/partnerLogos/av.png";
+import Np from "../../../../images/infoPage/partnerLogos/np.png";
+import Sk from "../../../../images/infoPage/partnerLogos/sk.png";
 
-import { StyledH3, StyledText } from "../../../../styles/GlobalStyle";
+import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 const Container = styled.section`
   position: relative;
   width: 100%;
@@ -89,6 +101,19 @@ const Img = styled.img`
   z-index: 0;
 `;
 
+const Flex = styled.div`
+  width: calc(100% - 20px);
+  position: relative;
+  display: flex;
+  flex-flow: wrap;
+  align-items: center;
+  margin: 10px;
+`;
+
+const Logo = styled.img`
+  padding: 5px 10px;
+`;
+
 const HorizontalScrollSection = ({ id }) => {
   useEffect(() => {
     const spaceHolder = document.querySelector("#space-holder" + id);
@@ -144,18 +169,18 @@ const HorizontalScrollSection = ({ id }) => {
       width: "70px",
     },
     {
-      img: Gaffel,
+      img: GrnKln,
       title: "Mildred Utku, Die Grünen Köln",
       subTitle:
         "Senf.koeln stärkt mit ihrer Plattform die Bürger*innenbeteiligung und kann somit eine Grundlage schaffen um fundierte Entscheidungen zu treffen, die in Planungen und Beschlüsse mit einfließen können um mehr Akzeptanz in der Nachbarschaft herzustellen.",
-      width: "70px",
+      width: "50px",
     },
     {
-      img: Ksta,
+      img: Agora,
       title: "Martin Herrndorf, AGORA Köln",
       subTitle:
         "Mithilfe von Senf.koeln haben wir bereits während unserer Veranstaltungen, wie dem „BarCamp – Nachbarschaft macht Zukunft“, die Möglichkeit, Ergebnisse festzuhalten und Ideen der Teilnehmer:innen zu sammeln.",
-      width: "200px",
+      width: "150px",
     },
   ];
 
@@ -213,7 +238,28 @@ const HorizontalScrollSection = ({ id }) => {
                     </StyledH3>
                   </Article>
                 ))}
-                <Article>logoooos</Article>
+                <Article>
+                  <StyledH2
+                    textAlign="center"
+                    margin="20px 20px 0px 20px"
+                    style={{ fontSize: "25px" }}
+                  >
+                    &#128588; &ensp; &#128588;&ensp; &#128588;
+                  </StyledH2>
+                  <Flex>
+                    <Logo src={Ksta} width="150px" />
+                    <Logo src={Gaffel} width="70px" />
+                    <Logo src={Ww} width="100px" />
+                    <Logo src={Baudata} width="50px" />
+                    <Logo src={Kfa} width="50px" />
+                    <Logo src={MinhaGalera} width="100px" />
+                    <Logo src={Jh_uh} width="100px" />
+                    <Logo src={Eps} width="100px" />
+                    <Logo src={Av} width="100px" />
+                    <Logo src={Np} width="100px" />
+                    <Logo src={Sk} width="100px" />
+                  </Flex>
+                </Article>
               </CardsSection>
             )}
           </Horizontal>

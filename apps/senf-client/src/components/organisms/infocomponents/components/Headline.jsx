@@ -40,7 +40,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  height: 70%;
+  height: 50%;
   margin-left: 24px;
 `;
 

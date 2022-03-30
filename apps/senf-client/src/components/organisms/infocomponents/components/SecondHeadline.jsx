@@ -10,13 +10,13 @@ const Text = styled.div`
   z-index: 99;
   position: sticky;
   top: 50px;
-  margin-top: -70px;
+  margin-top: ${(props) => (props.marginTop ? props.marginTop : 0)};
   opacity: ${(props) => (props.visible ? 1 : 0)};
 `;
-const SecondHeadline = ({ visible, textlines }) => {
+const SecondHeadline = ({ id, visible, textlines, marginTop }) => {
   const { t } = useTranslation();
   return (
-    <Text visible={visible}>
+    <Text visible={visible} marginTop={marginTop} id={id}>
       {textlines.map(({ text }) => (
         <span style={{ display: "block" }}>{t(text)} </span>
       ))}

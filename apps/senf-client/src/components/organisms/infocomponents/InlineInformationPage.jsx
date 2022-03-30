@@ -1,64 +1,25 @@
 /** @format */
 
 import React, { Fragment, useState, useCallback, useRef } from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { useSpring } from "@react-spring/web";
 import { useTranslation } from "react-i18next";
-import MainDialog from "../../atoms/Layout/MainDialog";
 
-// MUI Stuff
-import Dialog from "@material-ui/core/Dialog";
-
-// Redux stuff
-import { Link } from "react-router-dom";
-
-//LazyLoad
-import { LazyImage } from "react-lazy-images";
-
-//IMAGES
-
-import Insta from "../../../images/icons/socialmedia/insta.png";
-import Facebook from "../../../images/icons/socialmedia/facebook.png";
-
-import TopPath from "../../../images/topPathNew.png";
-import First from "../../../images/first.png";
-import Second from "../../../images/secondImage.png";
-import Third from "../../../images/letstalkbubble.png";
-
-//IMAGES BAD
-import TopPathBad from "../../../images/toppathbad.png";
-import FirstBad from "../../../images/firstbad.png";
-
-//ICON TO OPEN THE INFOMENU
-import CloseIcon from "../../../images/icons/close_yellow.png";
-
-import Logo from "../../../images/logo.png";
-import {
-  CustomButton,
-  CustomIconButton,
-} from "../../atoms/CustomButtons/CustomButton";
+import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
-import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
-import MyButton from "../../../util/MyButton";
 import Headline from "./components/Headline";
 
-import Bubble from "./components/Bubble";
 import { useEffect } from "react";
 import styled from "styled-components";
 import Bulb from "./components/Bulb";
 import Circle from "./components/Circle";
-import Cards from "./components/Cards";
 import Keywords from "./components/Keywords";
-import Partners from "./components/Partners";
 import Footer from "./components/Footer";
 import HorizontalScrollSection from "./components/HorizontalScrollSection";
-import CreditsSection from "./components/CreditsSection";
-import { StyledA, StyledText } from "../../../styles/GlobalStyle";
 import UnderlinedText from "./components/UnderlinedText";
 import DecideLocationImg from "../../../images/infoPage/howItWorks/decideLocationImg.png";
 import FormulateIdeaImg from "../../../images/infoPage/howItWorks/formulateIdeaImg.png";
 import SecondHeadline from "./components/SecondHeadline";
 import Tags from "./components/Tags";
+import InfoPageDialog from "../../atoms/Layout/InfoPageDialog";
 
 const Container = styled.div`
   height: 100%;
@@ -136,12 +97,29 @@ const InlineInformationPage = ({}) => {
 
     const el = document.getElementById("InfoPage");
     const circle = document.getElementById("Circle");
+    const addMustard = document.getElementById("addMustard");
+    const sectionOrganizationHeadline = document.getElementById(
+      "sectionOrganizationHeadline"
+    );
 
     let value = el?.scrollTop / 10;
 
     setScrollValue(value);
     circle.style.clipPath = `circle(${4 + value}% at 50% 50%)`;
     circle.style.transformOrigin = "bottom";
+
+    if (value < 120) {
+      addMustard.style.opacity = `${-5 + value / 3}`;
+    } else {
+      addMustard.style.opacity = `${2.2 - value / 100}%`;
+    }
+
+    if (value < 480) {
+      sectionOrganizationHeadline.style.opacity = `${-128 + value / 3}`;
+      console.log("Heree", -140 + value / 3);
+    } else {
+      sectionOrganizationHeadline.style.opacity = `${2.2 - value / 100}%`;
+    }
 
     const circle2 = document.getElementById("Circle2");
 
@@ -238,11 +216,11 @@ const InlineInformationPage = ({}) => {
         dataCy="InlineInfo-button"
       />
 
-      <MainDialog isOpen={open}>
+      <InfoPageDialog isOpen={open}>
         <Container id="InfoPage">
           <CustomIconButton
             name="Close"
-            position="fixed"
+            position="relative"
             left="0px"
             zIndex={999}
             margin={document.body.clientWidth > 768 ? "40px" : "10px"}
@@ -250,8 +228,6 @@ const InlineInformationPage = ({}) => {
           />
 
           <Headline
-            height="100%"
-            textAlign="left"
             visible={visibleFirstHeadline}
             textlines={[
               { text: "infopage_headline_1", color: "#939FF3" },
@@ -266,6 +242,8 @@ const InlineInformationPage = ({}) => {
           <Bulb />
 
           <SecondHeadline
+            id="addMustard"
+            marginTop="-70px"
             visible={visibleSecondaryHeadline1}
             textlines={[
               { text: "infopage_addMustard_1" },
@@ -307,6 +285,8 @@ const InlineInformationPage = ({}) => {
 
           <Circle id="Circle2" scrollValue={scrollValue} top="540vh" />
           <SecondHeadline
+            id="sectionOrganizationHeadline"
+            marginTop="-410px"
             visible={visibleSecondaryHeadline2}
             textlines={[
               { text: "infopage_organizationsHeadline_1" },
@@ -347,7 +327,7 @@ const InlineInformationPage = ({}) => {
           <Partners /> */}
           <Footer />
         </Container>
-      </MainDialog>
+      </InfoPageDialog>
     </Fragment>
   );
 };

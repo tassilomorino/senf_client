@@ -4,6 +4,7 @@ import { useTrail, animated } from "@react-spring/web";
 import styled from "styled-components";
 import { useEffect } from "react";
 import Bulb from "../../../../images/lamp.png";
+import SecondHeadline from "./SecondHeadline";
 const Container = styled.div`
   position: absolute;
   width: 100%;
@@ -96,7 +97,16 @@ const Circle = ({ scrollValue, id, top }) => {
             id={id}
             key={index}
             style={{ transform: props.xy.to(trans) }}
-          ></animated.div>
+          >
+            {/* <SecondHeadline
+              marginTop="570px"
+              visible={true}
+              textlines={[
+                { text: "infopage_addMustard_1" },
+                { text: "infopage_addMustard_2" },
+              ]}
+            /> */}
+          </animated.div>
         ))}
       </HooksMain>
     </Container>
