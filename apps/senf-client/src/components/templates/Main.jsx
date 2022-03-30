@@ -67,6 +67,7 @@ import {
   pick,
   search,
   sort,
+  countStatusOfScreams,
 } from "../../util/helpers";
 
 const MainColumnWrapper = styled.div`
@@ -345,6 +346,11 @@ const Main = () => {
     userLikes,
   ]);
 
+  const dropdownStatusNumbers = useMemo(
+    () => countStatusOfScreams(screams),
+    [screams]
+  );
+
   //PROJECTROOMS
 
   const dataFinalProjectRooms = useMemo(() => {
@@ -500,6 +506,7 @@ const Main = () => {
                 dataFinalProjectRooms={dataFinalProjectRooms}
                 dropdown={dropdown}
                 dropdownStatus={dropdownStatus}
+                dropdownStatusNumbers={dropdownStatusNumbers}
                 setSearchTerm={setSearchTerm}
                 searchTerm={searchTerm}
                 handleClick={handleClick}

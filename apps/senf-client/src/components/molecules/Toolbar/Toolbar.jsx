@@ -100,6 +100,7 @@ const Toolbar = ({
   handledropdownStatus,
   dropdown,
   dropdownStatus,
+  dropdownStatusNumbers,
   handleClickSwipe,
   dataFinalLength,
   setSearchOpen,
@@ -126,6 +127,7 @@ const Toolbar = ({
             overflow={"none"}
             value={dropdown}
             dropdownStatus={dropdownStatus}
+            dropdownStatusNumbers={dropdownStatusNumbers}
             sortOptions={[
               { name: "newest", label: t("newest_ideas") },
               { name: "hottest", label: t("hottest_ideas") },

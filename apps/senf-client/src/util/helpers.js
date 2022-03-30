@@ -98,6 +98,25 @@ export function filterByStatus(items, statuses) {
   return items.filter(({ status }) => statuses.includes(status));
 }
 
+export function countStatusOfScreams(screams) {
+  let statuses = {
+    Unprocessed: 0,
+    Accepted: 0,
+    Planning: 0,
+    Implemented: 0,
+    Rejected: 0,
+  };
+
+  for (const iterator of Object.keys(statuses)) {
+    const numOfIdeas = screams.filter(
+      ({ status }) => status === iterator
+    ).length;
+    statuses[iterator] = numOfIdeas;
+  }
+
+  return statuses;
+}
+
 export function filterByGeodata(items, mapBounds) {
   return items.filter(
     ({ lat, long }) =>

@@ -180,6 +180,7 @@ const SwipeList = ({
   handledropdownStatus,
   dropdown,
   dropdownStatus,
+  dropdownStatusNumbers,
   dataFinal,
   dataFinalProjectRooms,
   setSearchTerm,
@@ -463,6 +464,7 @@ const SwipeList = ({
             loading={loading}
             handleDropdown={handleDropdown}
             dropdownStatus={dropdownStatus}
+            dropdownStatusNumbers={dropdownStatusNumbers}
             handledropdownStatus={handledropdownStatus}
             dropdown={dropdown}
             dataFinalLength={dataFinal.length}

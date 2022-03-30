@@ -127,6 +127,7 @@ const CustomSelect = ({
   sortOptions,
   statusOptions,
   dropdownStatus,
+  dropdownStatusNumbers,
   handleDropdown,
   handleDropdownStatus,
 }) => {
@@ -290,7 +291,10 @@ const CustomSelect = ({
                               handleDropdownStatus(filter.name)
                             }
                           />
-                          <CheckBoxLabel>{filter.label}</CheckBoxLabel>
+                          <CheckBoxLabel>
+                            {filter.label} ({dropdownStatusNumbers[filter.name]}
+                            )
+                          </CheckBoxLabel>
                         </CheckBoxWrapper>
                       </>
                     ))}
