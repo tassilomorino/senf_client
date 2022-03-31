@@ -224,7 +224,7 @@ const CustomSelect = ({
                           <span
                             style={
                               option.name === selectedOption ||
-                              option.label === selectedOption
+                              option.label === selectedLabel
                                 ? { fontWeight: "900" }
                                 : {}
                             }
