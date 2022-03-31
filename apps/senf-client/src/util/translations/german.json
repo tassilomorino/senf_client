@@ -92,6 +92,8 @@
   "logout": "Ausloggen",
   "report": "Melden",
   "cancel": "Abbrechen",
+  "edit_idea": "Idee bearbeiten",
+  "delete_idea": "Idee löschen",
   "delete": "Löschen",
   "deteleAccount": "Konto löschen",
   "delete_comment": "Kommentar löschen",
