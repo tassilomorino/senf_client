@@ -2,7 +2,10 @@ import React from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
 import SectionBackground from "../../../../images/infoPage/shapes/sectionSticky.png";
-import WorkTogether from "../../../../images/workTogether.png";
+import Ideas from "../../../../images/infoPage/howItWorks/ideas.png";
+import Submitted from "../../../../images/infoPage/howItWorks/submitted.png";
+import Statement from "../../../../images/infoPage/howItWorks/statement.png";
+
 import OpenBook from "../../../../images/openBook.png";
 
 import Klug from "../../../../images/infoPage/partnerLogos/klug.png";
@@ -141,28 +144,28 @@ const HorizontalScrollSection = ({ id }) => {
 
   const pages = [
     {
-      title: "",
+      title: "327 Ideen",
       subTitle:
         "Von der Initiative bis zum Planungsbüro – erstellt euch ein eigenes Profil",
-      img: WorkTogether,
+      img: Ideas,
     },
     {
       title: "32 Anträge",
       subTitle:
         "Sammelt Ideen für spezifische Ort und Anlässe in interaktiven Räumen",
-      img: OpenBook,
+      img: Submitted,
     },
     {
       title: "12  Stellungnahmen",
       subTitle:
         "Von der Initiative bis zum Planungsbüro – erstellt euch ein eigenes Profil",
-      img: WorkTogether,
+      img: Statement,
     },
     {
       title: "3 Implementiert",
       subTitle:
         "Sammelt Ideen für spezifische Ort und Anlässe in interaktiven Räumen",
-      img: OpenBook,
+      img: Statement,
     },
   ];
   const credits = [
@@ -215,7 +218,7 @@ const HorizontalScrollSection = ({ id }) => {
                     <StyledH3 textAlign="center" margin="20px 20px 0px 20px">
                       {title}
                     </StyledH3>
-                    <img src={img} width="70%" style={{ marginLeft: "15%" }} />
+                    <img src={img} width="90%" style={{ marginLeft: "5%" }} />
                     <StyledText textAlign="center" margin="0px 20px 20px 20px">
                       {subTitle}
                     </StyledText>

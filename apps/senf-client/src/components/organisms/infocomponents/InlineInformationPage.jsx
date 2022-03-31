@@ -155,6 +155,11 @@ const InlineInformationPage = ({}) => {
     }% at 50% 50%)`;
     circle3.style.transformOrigin = "bottom";
 
+    const infoPageBulb = document.getElementById("infoPageBulb");
+    infoPageBulb.style.transform = `scale(${
+      value < 20 ? 1 - value / 20 : 0
+    }) translateX(-50%) translateY(-50%)`;
+
     if (value < 120) {
       addMustard.style.opacity = `${-5 + value / 3}`;
     } else {
@@ -192,7 +197,14 @@ const InlineInformationPage = ({}) => {
     tag5.style.transition = "0.1s";
     tag6.style.transition = "0.1s";
 
-    let secondValue = el?.scrollTop / 10 - 480;
+    let secondValue = el?.scrollTop / 10 - 408;
+
+    console.log(secondValue);
+
+    const showOthersImage = document.getElementById("showOthersImage");
+    showOthersImage.style.transform = `scale(${
+      secondValue / 20 > 1 ? 0 : secondValue < 0 ? 1 : 1 - secondValue / 20
+    }) translateX(-50%) translateY(-50%)`;
 
     tag1.style.transform = `translateX(${secondValue * 8}px)`;
     tag2.style.transform = `translateX(${-secondValue * 10}px)`;

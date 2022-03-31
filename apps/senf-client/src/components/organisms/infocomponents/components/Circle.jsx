@@ -109,6 +109,7 @@ const Circle = ({ scrollValue, id, marginTop }) => {
             {id === "Circle" ? (
               <img
                 src={BulbImg}
+                id="infoPageBulb"
                 width="100px"
                 style={{
                   marginLeft: "50%",
@@ -120,6 +121,7 @@ const Circle = ({ scrollValue, id, marginTop }) => {
             ) : id === "Circle2" ? (
               <img
                 src={ShowOthers}
+                id="showOthersImage"
                 width="250px"
                 style={{
                   marginLeft: "calc(50% - 50px)",
