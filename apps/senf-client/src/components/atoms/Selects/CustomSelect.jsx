@@ -115,7 +115,7 @@ const CheckBoxWrapper = styled.div`
 const CheckBoxLabel = styled.label`
   font-size: 18px;
   color: #353535;
-  font-weight: 100;
+  font-weight: ${(props) => (props.selected ? "600" : "100")};
   margin-left: 20px;
 `;
 
@@ -255,7 +255,10 @@ const CustomSelect = ({
                             )}
                           />
 
-                          <CheckBoxLabel htmlFor={sortOption}>
+                          <CheckBoxLabel
+                            htmlFor={sortOption}
+                            selected={selectedOption.includes(sortOption.name)}
+                          >
                             {sortOption.label}
                           </CheckBoxLabel>
                         </CheckBoxWrapper>
@@ -291,7 +294,9 @@ const CustomSelect = ({
                               handleDropdownStatus(filter.name)
                             }
                           />
-                          <CheckBoxLabel>
+                          <CheckBoxLabel
+                            selected={dropdownStatus.includes(filter.name)}
+                          >
                             {filter.label} ({dropdownStatusNumbers[filter.name]}
                             )
                           </CheckBoxLabel>
