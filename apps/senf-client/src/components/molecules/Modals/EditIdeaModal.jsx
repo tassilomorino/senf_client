@@ -22,7 +22,10 @@ import MainModal from "../../atoms/Layout/MainModal";
 
 import EditModalMainFields from "./Post_Edit_ModalComponents/EditModalMainFields";
 import Tabs from "../../atoms/Tabs/Tabs";
-import { EditScreamTabData } from "../../../data/EditScreamTabData";
+import {
+  EditScreamTabData,
+  EditScreamTabDataAsAdmin,
+} from "../../../data/EditScreamTabData";
 import AdminEditModalMainFields from "./Post_Edit_ModalComponents/AdminEditModalMainFields";
 const styles = {
   root: {
@@ -56,9 +59,12 @@ const styles = {
 };
 
 const AdminEditModal = ({
-  setAdminEditOpen,
+  isAdmin,
+  isModerator,
+  isUser,
+  setEditOpen,
   setMenuOpen,
-  adminEditOpen,
+  editOpen,
   classes,
 }) => {
   const { t } = useTranslation();
@@ -127,7 +133,7 @@ const AdminEditModal = ({
       setSelectedDays(selectedDays);
       setSelectedUnix(scream.selectedUnix);
     }
-  }, [dispatch, projects, adminEditOpen, scream]);
+  }, [dispatch, projects, editOpen, scream]);
 
   const handleDropdown = (value) => {
     setTopic(value);
@@ -249,7 +255,7 @@ const AdminEditModal = ({
     }
 
     dispatch(editScreamFunc(editScream)).then(() => {
-      setAdminEditOpen(false);
+      setEditOpen(false);
       setMenuOpen(false);
     });
   };
@@ -288,7 +294,7 @@ const AdminEditModal = ({
         />
       )}
 
-      <MainModal handleButtonClick={() => setAdminEditOpen(false)}>
+      <MainModal handleButtonClick={() => setEditOpen(false)}>
         <div
           style={{
             width: "100%",
@@ -296,16 +302,28 @@ const AdminEditModal = ({
             backgroundColor: "#f8f8f8",
           }}
         >
-          <h3 className="modal_title">Idee bearbeiten (Admin)</h3>
-
-          <Tabs
-            handleClick={setOrder}
-            order={order}
-            tabLabels={EditScreamTabData.map((item) => item.text)}
-            marginTop={"0"}
-            marginBottom={"20px"}
-            lineColor={"white"}
-          ></Tabs>
+          <h3 className="modal_title">{t("edit_idea")}</h3>
+          {isAdmin || isModerator ? (
+            // show "Details and monitoring sections"
+            <Tabs
+              handleClick={setOrder}
+              order={order}
+              tabLabels={EditScreamTabDataAsAdmin.map((item) => item.text)}
+              marginTop={"0"}
+              marginBottom={"20px"}
+              lineColor={"white"}
+            ></Tabs>
+          ) : (
+            // show "Details section only"
+            <Tabs
+              handleClick={setOrder}
+              order={order}
+              tabLabels={EditScreamTabData.map((item) => item.text)}
+              marginTop={"0"}
+              marginBottom={"20px"}
+              lineColor={"white"}
+            ></Tabs>
+          )}
         </div>
         {order === 1 ? (
           <EditModalMainFields
@@ -330,20 +348,17 @@ const AdminEditModal = ({
             selectedDays={selectedDays}
             setCalendarOpen={setCalendarOpen}
           />
-        ) : (
+        ) : isAdmin || isModerator ? (
           <AdminEditModalMainFields
             status={status}
             setStatus={setStatus}
             notes={notes}
             setNotes={setNotes}
           />
-        )}
+        ) : null}
         <div className="buttons">
-          <Button
-            className={classes.button}
-            onClick={() => setAdminEditOpen(false)}
-          >
-            Abbrechen
+          <Button className={classes.button} onClick={() => setEditOpen(false)}>
+            {t("cancel")}
           </Button>
           <Button
             className={classes.button}
@@ -354,7 +369,7 @@ const AdminEditModal = ({
                 : {}
             }
           >
-            Speichern
+            {t("save")}
           </Button>
         </div>
       </MainModal>
