@@ -145,26 +145,23 @@ const HorizontalScrollSection = ({ id }) => {
   const pages = [
     {
       title: "327 Ideen",
-      subTitle:
-        "Von der Initiative bis zum Planungsbüro – erstellt euch ein eigenes Profil",
+      subTitle: "Jede konstruktive Idee für den Stadtraum ist wertvoll! ",
       img: Ideas,
     },
     {
       title: "32 Anträge",
       subTitle:
-        "Sammelt Ideen für spezifische Ort und Anlässe in interaktiven Räumen",
+        "Als aufgewertete Anträge schaffen wir höhere Erfolgschancen für die jewiligen Ideen",
       img: Submitted,
     },
     {
-      title: "12  Stellungnahmen",
-      subTitle:
-        "Von der Initiative bis zum Planungsbüro – erstellt euch ein eigenes Profil",
+      title: "12 Stellungnahmen",
+      subTitle: "Prozesse sind langwierig, aber dran bleiben ist die Devise",
       img: Statement,
     },
     {
       title: "3 Implementiert",
-      subTitle:
-        "Sammelt Ideen für spezifische Ort und Anlässe in interaktiven Räumen",
+      subTitle: "Wir setzen alles daran, dass eure Stimmen gehört werden!",
       img: Statement,
     },
   ];
@@ -219,7 +216,11 @@ const HorizontalScrollSection = ({ id }) => {
                       {title}
                     </StyledH3>
                     <img src={img} width="90%" style={{ marginLeft: "5%" }} />
-                    <StyledText textAlign="center" margin="0px 20px 20px 20px">
+                    <StyledText
+                      textAlign="center"
+                      margin="0px 20px 20px 20px"
+                      marginLeft="20px"
+                    >
                       {subTitle}
                     </StyledText>
                   </Article>
@@ -238,7 +239,11 @@ const HorizontalScrollSection = ({ id }) => {
                         marginTop: "20px",
                       }}
                     />
-                    <StyledText textAlign="center" margin="10px 20px 20px 20px">
+                    <StyledText
+                      textAlign="center"
+                      margin="10px 20px 20px 20px"
+                      marginLeft="20px"
+                    >
                       {subTitle}
                     </StyledText>
                     <StyledH3 textAlign="center" margin="20px 20px 20px 20px">
