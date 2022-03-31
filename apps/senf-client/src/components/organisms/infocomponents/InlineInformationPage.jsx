@@ -1,6 +1,8 @@
 /** @format */
 
 import React, { Fragment, useState, useCallback, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 import { useTranslation } from "react-i18next";
 
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
@@ -9,7 +11,6 @@ import Headline from "./components/Headline";
 
 import { useEffect } from "react";
 import styled from "styled-components";
-import Bulb from "./components/Bulb";
 import Circle from "./components/Circle";
 import Keywords from "./components/Keywords";
 import Footer from "./components/Footer";
@@ -20,14 +21,29 @@ import FormulateIdeaImg from "../../../images/infoPage/howItWorks/formulateIdeaI
 import SecondHeadline from "./components/SecondHeadline";
 import Tags from "./components/Tags";
 import InfoPageDialog from "../../atoms/Layout/InfoPageDialog";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
+import { SideBarTabs } from "../../../styles/GlobalStyle";
+import Info from "../../../images/icons/info.png";
+import {
+  setInfoPageClosed,
+  setInfoPageOpen,
+} from "../../../redux/actions/UiActions";
 
 const Container = styled.div`
   height: 100%;
   width: 100%;
   overflow-x: hidden;
   overflow-y: scroll;
-  position: fixed;
   background-color: white;
+  position: fixed;
+  @media (min-width: 768px) {
+    width: 800px;
+    height: calc(100% - 200px);
+    margin-left: 50vw;
+    margin-top: 50vh;
+    transform: translateX(-50%) translateY(-50%);
+    border-radius: 18px;
+  }
 `;
 
 const InnerContainer = styled.div`
@@ -37,9 +53,16 @@ const InnerContainer = styled.div`
 
 const HowToCard1 = styled.div`
   margin-bottom: 70px;
+  @media (min-width: 768px) {
+    margin-left: -300px;
+  }
 `;
 const HowToCard2 = styled.div`
   margin-bottom: 70px;
+  @media (min-width: 768px) {
+    margin-left: 300px;
+    margin-top: -250px;
+  }
 `;
 
 const Img = styled.img`
@@ -53,12 +76,24 @@ const Img = styled.img`
 `;
 
 const InlineInformationPage = ({}) => {
-  const [open, setOpen] = useState(true);
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  const { cookie_settings } = useSelector((state) => state.data);
+  const { loading, openInfoPage } = useSelector((state) => state.UI);
+
+  const handleOpen = useCallback(() => {
+    dispatch(setInfoPageOpen());
+  }, [dispatch]);
+
+  const handleClose = useCallback(() => {
+    dispatch(setInfoPageClosed());
+  }, [dispatch]);
+
   const [counter, setCounter] = useState(0);
 
   useEffect(() => {
-    if (open) {
+    if (openInfoPage) {
       // if (counter < 3) {
       //   setInterval(function () {
       //     setCounter(counter + 0.1);
@@ -68,7 +103,7 @@ const InlineInformationPage = ({}) => {
       const circle = document.getElementById("Circle");
       circle.style.clipPath = `circle(${4}% at 50% 50%)`;
     }
-  }, [open]);
+  }, [openInfoPage]);
 
   const [scrollValue, setScrollValue] = useState(0);
   const [visibleFirstHeadline, setVisibleFirstHeadline] = useState(true);
@@ -96,7 +131,6 @@ const InlineInformationPage = ({}) => {
     horizontal2.style.transform = `translateX(-${sticky2.offsetTop}px)`;
 
     const el = document.getElementById("InfoPage");
-    const circle = document.getElementById("Circle");
     const addMustard = document.getElementById("addMustard");
     const sectionOrganizationHeadline = document.getElementById(
       "sectionOrganizationHeadline"
@@ -105,8 +139,21 @@ const InlineInformationPage = ({}) => {
     let value = el?.scrollTop / 10;
 
     setScrollValue(value);
+    const circle = document.getElementById("Circle");
     circle.style.clipPath = `circle(${4 + value}% at 50% 50%)`;
     circle.style.transformOrigin = "bottom";
+
+    const circle2 = document.getElementById("Circle2");
+    circle2.style.clipPath = `circle(${
+      value > 408 ? -404 + value : 4
+    }% at 50% 50%)`;
+    circle2.style.transformOrigin = "bottom";
+
+    const circle3 = document.getElementById("Circle3");
+    circle3.style.clipPath = `circle(${
+      value > 828 ? -824 + value : 4
+    }% at 50% 50%)`;
+    circle3.style.transformOrigin = "bottom";
 
     if (value < 120) {
       addMustard.style.opacity = `${-5 + value / 3}`;
@@ -121,13 +168,6 @@ const InlineInformationPage = ({}) => {
       sectionOrganizationHeadline.style.opacity = `${2.2 - value / 100}%`;
     }
 
-    const circle2 = document.getElementById("Circle2");
-
-    circle2.style.clipPath = `circle(${
-      value > 368 ? -364 + value : 4
-    }% at 50% 50%)`;
-    circle2.style.transformOrigin = "bottom";
-
     const keyword1 = document.getElementById("keyword1");
     const keyword2 = document.getElementById("keyword2");
     const keyword3 = document.getElementById("keyword3");
@@ -136,8 +176,8 @@ const InlineInformationPage = ({}) => {
     keyword3.style.transition = "0.1s";
 
     keyword1.style.transform = `translateX(${value * 8}px)`;
-    keyword2.style.transform = `translateX(${-value * 6}px)`;
-    keyword3.style.transform = `translateX(${value * 10}px)`;
+    keyword2.style.transform = `translateX(${-value * 10}px)`;
+    keyword3.style.transform = `translateX(${value * 12}px)`;
 
     const tag1 = document.getElementById("tag1");
     const tag2 = document.getElementById("tag2");
@@ -155,11 +195,11 @@ const InlineInformationPage = ({}) => {
     let secondValue = el?.scrollTop / 10 - 480;
 
     tag1.style.transform = `translateX(${secondValue * 8}px)`;
-    tag2.style.transform = `translateX(${-secondValue * 6}px)`;
-    tag3.style.transform = `translateX(${secondValue * 10}px)`;
+    tag2.style.transform = `translateX(${-secondValue * 10}px)`;
+    tag3.style.transform = `translateX(${secondValue * 12}px)`;
     tag4.style.transform = `translateX(${-secondValue * 8}px)`;
-    tag5.style.transform = `translateX(${secondValue * 6}px)`;
-    tag6.style.transform = `translateX(${-secondValue * 10}px)`;
+    tag5.style.transform = `translateX(${secondValue * 12}px)`;
+    tag6.style.transform = `translateX(${-secondValue * 14}px)`;
 
     console.log(value);
 
@@ -203,20 +243,28 @@ const InlineInformationPage = ({}) => {
   }, []);
 
   useEffect(() => {
-    if (open) {
+    if (openInfoPage) {
       const div = document.getElementById("InfoPage");
       div?.addEventListener("scroll", handleScroll);
     }
-  }, [handleScroll, open]);
+  }, [handleScroll, openInfoPage]);
 
   return (
     <Fragment>
-      <ExpandButton
-        handleButtonClick={() => setOpen(true)}
-        dataCy="InlineInfo-button"
-      />
+      {isMobileCustom ? (
+        <ExpandButton
+          handleButtonClick={handleOpen}
+          dataCy="InlineInfo-button"
+        />
+      ) : (
+        <SideBarTabs fontWeight={openInfoPage ? "900" : undefined}>
+          <ExpandButton handleButtonClick={handleOpen} />
+          <img src={Info} width="35" alt="EndImage" />
+          <span className="inlineInfoIconText"> {t("info")}</span>
+        </SideBarTabs>
+      )}
 
-      <InfoPageDialog isOpen={open}>
+      <InfoPageDialog isOpen={openInfoPage}>
         <Container id="InfoPage">
           <CustomIconButton
             name="Close"
@@ -224,7 +272,7 @@ const InlineInformationPage = ({}) => {
             left="0px"
             zIndex={999}
             margin={document.body.clientWidth > 768 ? "40px" : "10px"}
-            handleButtonClick={() => setOpen(false)}
+            handleButtonClick={handleClose}
           />
 
           <Headline
@@ -238,8 +286,7 @@ const InlineInformationPage = ({}) => {
           />
 
           {/* <StyledA >Direkt zur Plattform </StyledA> */}
-          <Circle id="Circle" scrollValue={scrollValue} />
-          <Bulb />
+          <Circle id="Circle" scrollValue={scrollValue} marginTop="150px" />
 
           <SecondHeadline
             id="addMustard"
@@ -283,7 +330,7 @@ const InlineInformationPage = ({}) => {
 
           <HorizontalScrollSection id="1" />
 
-          <Circle id="Circle2" scrollValue={scrollValue} top="540vh" />
+          <Circle id="Circle2" scrollValue={scrollValue} marginTop="-150px" />
           <SecondHeadline
             id="sectionOrganizationHeadline"
             marginTop="-410px"
@@ -322,6 +369,8 @@ const InlineInformationPage = ({}) => {
           </HowToCard2>
 
           <HorizontalScrollSection id="2" />
+          <Circle id="Circle3" scrollValue={scrollValue} marginTop="-250px" />
+
           {/* <CreditsSection />
 
           <Partners /> */}

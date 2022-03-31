@@ -42,6 +42,10 @@ const Container = styled.div`
   justify-content: flex-start;
   height: 50%;
   margin-left: 24px;
+
+  @media (min-width: 768px) {
+    margin-left: 100px;
+  }
 `;
 
 const Trail = ({ open, children }) => {

@@ -3,10 +3,11 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import organizationTypes from "../../../../data/organizationTypes";
 import { StyledH3 } from "../../../../styles/GlobalStyle";
+import { isMobileCustom } from "../../../../util/customDeviceDetect";
 const Wrapper = styled.div`
   height: 250px;
   width: 100vw;
-  padding-bottom: 900px;
+  padding-bottom: ${(props) => (props.isMobileCustom ? "800px" : "1400px")};
 
   z-index: 9999;
   position: sticky;
@@ -69,7 +70,7 @@ const Tags = () => {
   const organizationTypesSliced = organizationTypes.slice(0, -1);
 
   return (
-    <Wrapper>
+    <Wrapper isMobileCustom={isMobileCustom}>
       {organizationTypesSliced.map((organizationTypes, i) => (
         <Tag
           key={organizationTypes.name}

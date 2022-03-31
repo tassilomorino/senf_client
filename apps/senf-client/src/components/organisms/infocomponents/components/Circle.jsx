@@ -5,20 +5,25 @@ import styled from "styled-components";
 import { useEffect } from "react";
 import Bulb from "../../../../images/lamp.png";
 import SecondHeadline from "./SecondHeadline";
+import { isMobileCustom } from "../../../../util/customDeviceDetect";
+import BulbImg from "../../../../images/lamp.png";
+import ShowOthers from "../../../../images/showOthers.png";
+import Logo from "../../../../images/logo_white.png";
+
 const Container = styled.div`
-  position: absolute;
+  position: relative;
   width: 100%;
-  height: 100%;
+  height: 100px;
   will-change: transform, opacity;
   overflow: visible;
-  top: ${(props) => (props.top ? props.top : 0)};
+  margin-top: ${(props) => props.marginTop};
   z-index: 1;
 `;
 
 const HooksMain = styled.div`
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 0;
   /* overflow: hidden; */
   background: transparent;
   -webkit-touch-callout: none;
@@ -38,8 +43,8 @@ const HooksMain = styled.div`
   }
 
   div:nth-child(1) {
-    width: 1600px;
-    height: 1600px;
+    width: ${(props) => (props.isMobileCustom ? "1600px" : "2700px")};
+    height: ${(props) => (props.isMobileCustom ? "1600px" : "2700px")};
     border-radius: 100%;
   }
 `;
@@ -48,7 +53,7 @@ const fast = { tension: 1200, friction: 40 };
 const slow = { mass: 10, tension: 200, friction: 50 };
 const trans = (x, y) => `translate3d(${x}px,${y}px,0) translate3d(-50%,-50%,0)`;
 
-const Circle = ({ scrollValue, id, top }) => {
+const Circle = ({ scrollValue, id, marginTop }) => {
   const ref = useRef(null);
   const [trail, api] = useTrail(1, (i) => ({
     xy: [window.innerWidth / 2, window.innerHeight + 200],
@@ -61,36 +66,39 @@ const Circle = ({ scrollValue, id, top }) => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      api.start({ xy: [window.innerWidth / 2, window.innerHeight / 1.1] });
+    var element = document.getElementById("InfoPage");
+    var positionInfo = element.getBoundingClientRect();
+    var height = positionInfo.height;
+    var width = positionInfo.width;
 
-      var firstInterval = setInterval(function () {
-        api.start({
-          xy: [window.innerWidth / 2.1, window.innerHeight / 1.08],
-        });
-      }, 2500);
+    api.start({ xy: [width / 2, 0] });
 
-      var secondInterval = setInterval(function () {
-        api.start({
-          xy: [window.innerWidth / 1.7, window.innerHeight / 1.09],
-        });
-      }, 4000);
-      // setInterval(function () {
-      //   api.start({
-      //     xy: [window.innerWidth / 2.1, window.innerHeight / 1.25],
-      //   });
-      // }, 7000);
-      if (scrollValue > 30) {
-        clearInterval(firstInterval);
-        clearInterval(secondInterval);
-      }
-    }, 2000);
+    var firstInterval = setInterval(function () {
+      api.start({
+        xy: [width / 2.05, 0],
+      });
+    }, 2500);
+
+    var secondInterval = setInterval(function () {
+      api.start({
+        xy: [width / 1.95, 0],
+      });
+    }, 4000);
+    // setInterval(function () {
+    //   api.start({
+    //     xy: [width / 2.1, height / 1.25],
+    //   });
+    // }, 7000);
+    if (scrollValue > 30) {
+      clearInterval(firstInterval);
+      clearInterval(secondInterval);
+    }
   }, []);
   return (
-    <Container ref={ref} top={top}>
+    <Container ref={ref} marginTop={marginTop}>
       <HooksMain
-
-      //   onMouseMove={handleMouseMove}
+        isMobileCustom={isMobileCustom}
+        //   onMouseMove={handleMouseMove}
       >
         {trail.map((props, index) => (
           <animated.div
@@ -98,6 +106,41 @@ const Circle = ({ scrollValue, id, top }) => {
             key={index}
             style={{ transform: props.xy.to(trans) }}
           >
+            {id === "Circle" ? (
+              <img
+                src={BulbImg}
+                width="100px"
+                style={{
+                  marginLeft: "50%",
+                  marginTop: "50%",
+                  transform: "translateX(-50%)translateY(-50%)",
+                  position: "absolute",
+                }}
+              />
+            ) : id === "Circle2" ? (
+              <img
+                src={ShowOthers}
+                width="250px"
+                style={{
+                  marginLeft: "calc(50% - 50px)",
+                  marginTop: "calc(50% + 50px)",
+                  transform: "translateX(-50%)translateY(-50%)",
+                  position: "absolute",
+                }}
+              />
+            ) : (
+              <img
+                src={Logo}
+                width="150px"
+                style={{
+                  marginLeft: "50%",
+                  marginTop: "50%",
+                  transform: "translateX(-50%)translateY(-50%)",
+                  position: "absolute",
+                }}
+              />
+            )}
+
             {/* <SecondHeadline
               marginTop="570px"
               visible={true}

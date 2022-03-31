@@ -7,9 +7,11 @@ import { StyledH3 } from "../../../../styles/GlobalStyle";
 import NewButton from "../../../atoms/CustomButtons/NewButton";
 import FooterLinks from "../../../molecules/Footer/FooterLinks";
 const Wrapper = styled.div`
+  margin-top: 50px;
   height: 350px;
   width: 100%;
   position: relative;
+  z-index: 99999;
 `;
 const YellowBackground = styled.div`
   height: 100%;
@@ -48,7 +50,7 @@ const Footer = () => {
       />
       <YellowBackground />
       <ContentWrapper>
-        <img
+        {/* <img
           src={LogoWhite}
           width="150px"
           style={{
@@ -56,7 +58,7 @@ const Footer = () => {
             transform: "translateX(-50%)",
             position: "relative",
           }}
-        />
+        /> */}
         <ButtonsWrapper>
           <NewButton handleButtonClick={() => setContactOpen(true)}>
             {t("showIdeas")}

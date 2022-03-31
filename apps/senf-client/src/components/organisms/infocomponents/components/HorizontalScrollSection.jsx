@@ -35,20 +35,19 @@ const SpaceHolder = styled.div`
 
 const Sticky = styled.div`
   position: sticky;
-  top: 0;
+  top: -80px;
   height: 120vh;
   width: 100%;
   overflow-x: hidden;
 `;
 const Horizontal = styled.div`
-  margin-top: -100vh;
   position: absolute;
   height: 100%;
   will-change: transform;
 `;
 const CardsSection = styled.section`
   position: relative;
-  height: 100%;
+
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
@@ -82,23 +81,26 @@ const Article = styled.article`
 
 const Title = styled.h3`
   position: sticky;
-  height: 50px;
+  height: 70px;
   font-size: 30px;
   text-align: center;
-  width: 90vw;
-  margin-left: 5vw;
+  width: 90%;
+  margin-left: 5%;
   color: #353535;
   z-index: 1;
   font-weight: 700;
   margin-top: 100px;
-  top: 100px;
+  top: 130px;
 `;
 const Img = styled.img`
-  margin-top: -200px;
-  position: sticky;
+  position: absolute;
   top: 30px;
-  height: 95vh;
+  height: 95%;
   z-index: 0;
+
+  @media (min-width: 768px) {
+    height: 800px;
+  }
 `;
 
 const Flex = styled.div`
@@ -121,10 +123,13 @@ const HorizontalScrollSection = ({ id }) => {
     spaceHolder.style.height = `${calcDynamicHeight(horizontal)}px`;
 
     function calcDynamicHeight(ref) {
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
+      var element = document.getElementById("InfoPage");
+      var positionInfo = element.getBoundingClientRect();
+      var height = positionInfo.height;
+      var width = positionInfo.width;
+
       const objectWidth = ref.scrollWidth;
-      return objectWidth - vw + vh + 200; // 150 is the padding (in pixels) desired on the right side of the .cards container. This can be set to whatever your styles dictate
+      return objectWidth - width + height + width / 2; // 150 is the padding (in pixels) desired on the right side of the .cards container. This can be set to whatever your styles dictate
     }
 
     spaceHolder.style.height = `${calcDynamicHeight(horizontal)}px`;
