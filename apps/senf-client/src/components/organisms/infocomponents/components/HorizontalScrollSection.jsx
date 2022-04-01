@@ -57,13 +57,6 @@ const CardsSection = styled.section`
 `;
 
 const Article = styled.article`
-  /* position: relative;
-  height: 300px;
-  width: 500px;
-  background-color: #111f30;
-  margin-right: 75px;
-  flex-shrink: 0; */
-
   height: calc(100% - 100px);
 
   flex-shrink: 0;
@@ -91,7 +84,7 @@ const Title = styled.h3`
 `;
 const Img = styled.img`
   position: absolute;
-  top: 30px;
+  top: 0px;
   height: 115%;
   z-index: 0;
 

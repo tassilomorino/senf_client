@@ -53,7 +53,7 @@ const fast = { tension: 1200, friction: 40 };
 const slow = { mass: 10, tension: 130, friction: 50 };
 const trans = (x, y) => `translate3d(${x}px,${y}px,0) translate3d(-50%,-50%,0)`;
 
-const Circle = ({ scrollValue, id, marginTop }) => {
+const Circle = ({ id, marginTop }) => {
   const ref = useRef(null);
   const [trail, api] = useTrail(1, (i) => ({
     xy: [window.innerWidth / 2, window.innerHeight + 200],
@@ -89,10 +89,6 @@ const Circle = ({ scrollValue, id, marginTop }) => {
     //     xy: [width / 2.1, height / 1.25],
     //   });
     // }, 7000);
-    if (scrollValue > 30) {
-      clearInterval(firstInterval);
-      clearInterval(secondInterval);
-    }
   }, []);
   return (
     <Container ref={ref} marginTop={marginTop}>

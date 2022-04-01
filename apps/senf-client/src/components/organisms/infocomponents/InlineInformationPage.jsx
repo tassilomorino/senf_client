@@ -150,42 +150,36 @@ const InlineInformationPage = ({}) => {
 
   // The scroll listener
   const handleScroll = useCallback(() => {
-    //HORIZONTAL SECTION 1
-    const horizontal1 = document.querySelector("#horizontal1");
-    const sticky1 = document.querySelector("#sticky1");
-    horizontal1.style.transform = `translateX(-${sticky1.offsetTop}px)`;
-
-    //HORIZONTAL SECTION 2
-    const horizontal2 = document.querySelector("#horizontal2");
-    const sticky2 = document.querySelector("#sticky2");
-    horizontal2.style.transform = `translateX(-${sticky2.offsetTop}px)`;
-
     const el = document.getElementById("InfoPage");
-    const sectionOrganizationHeadline = document.getElementById(
-      "sectionOrganizationHeadline"
-    );
 
     let value = el?.scrollTop / 10;
-
     setScrollValue(value);
+
+    //SECTION 1
+
+    if (value > 10) {
+      setVisibleFirstHeadline(false);
+    } else {
+      setVisibleFirstHeadline(true);
+    }
+
     const circle = document.getElementById("Circle");
     circle.style.clipPath = `circle(${5 + value}% at 50% 50%)`;
     circle.style.transformOrigin = "bottom";
 
-    const circle2 = document.getElementById("Circle2");
-    circle2.style.clipPath = `circle(${
-      value > 608 ? -603 + value : 5
-    }% at 50% 50%)`;
-    circle2.style.transformOrigin = "bottom";
-
-    const circle3 = document.getElementById("Circle3");
-    circle3.style.clipPath = `circle(${
-      value > 1228 ? -1224 + value : 4
-    }% at 50% 50%)`;
-    circle3.style.transformOrigin = "bottom";
-
-    const infoPageBulb = document.getElementById("infoPageBulb");
-    infoPageBulb.style.filter = `blur(${value / 100}px`;
+    if (isMobileCustom) {
+      if (value > 15 && value < 120) {
+        setVisibleSecondaryHeadline1(true);
+      } else {
+        setVisibleSecondaryHeadline1(false);
+      }
+    } else {
+      if (value > 15 && value < 140) {
+        setVisibleSecondaryHeadline1(true);
+      } else {
+        setVisibleSecondaryHeadline1(false);
+      }
+    }
 
     let infoPageTopicTagScrollValue = el?.scrollTop / 10 - 30;
 
@@ -214,73 +208,6 @@ const InlineInformationPage = ({}) => {
       -infoPageTopicTagScrollValue * 12
     }px)`;
 
-    const infoPageOrganizationTypeTag1 = document.getElementById(
-      "infoPageOrganizationTypeTag1"
-    );
-    const infoPageOrganizationTypeTag2 = document.getElementById(
-      "infoPageOrganizationTypeTag2"
-    );
-    const infoPageOrganizationTypeTag3 = document.getElementById(
-      "infoPageOrganizationTypeTag3"
-    );
-    const infoPageOrganizationTypeTag4 = document.getElementById(
-      "infoPageOrganizationTypeTag4"
-    );
-    const infoPageOrganizationTypeTag5 = document.getElementById(
-      "infoPageOrganizationTypeTag5"
-    );
-    const infoPageOrganizationTypeTag6 = document.getElementById(
-      "infoPageOrganizationTypeTag6"
-    );
-
-    let secondValue = el?.scrollTop / 10 - 698;
-
-    const showOthersImage = document.getElementById("showOthersImage");
-    showOthersImage.style.transform = `scale(${
-      secondValue / 20 > 1 ? 0 : secondValue < 0 ? 1 : 1 - secondValue / 20
-    }) translateX(-50%) translateY(-50%)`;
-
-    infoPageOrganizationTypeTag1.style.transform = `translateX(${
-      secondValue * 8
-    }px)`;
-    infoPageOrganizationTypeTag2.style.transform = `translateX(${
-      -secondValue * 10
-    }px)`;
-    infoPageOrganizationTypeTag3.style.transform = `translateX(${
-      secondValue * 12
-    }px)`;
-    infoPageOrganizationTypeTag4.style.transform = `translateX(${
-      -secondValue * 10
-    }px)`;
-    infoPageOrganizationTypeTag5.style.transform = `translateX(${
-      secondValue * 12
-    }px)`;
-    infoPageOrganizationTypeTag6.style.transform = `translateX(${
-      -secondValue * 14
-    }px)`;
-
-    console.log(value);
-
-    if (value > 10) {
-      setVisibleFirstHeadline(false);
-    } else {
-      setVisibleFirstHeadline(true);
-    }
-
-    if (isMobileCustom) {
-      if (value > 15 && value < 120) {
-        setVisibleSecondaryHeadline1(true);
-      } else {
-        setVisibleSecondaryHeadline1(false);
-      }
-    } else {
-      if (value > 15 && value < 140) {
-        setVisibleSecondaryHeadline1(true);
-      } else {
-        setVisibleSecondaryHeadline1(false);
-      }
-    }
-
     if (value > 80) {
       setVisibleCards(true);
     } else {
@@ -292,20 +219,90 @@ const InlineInformationPage = ({}) => {
     } else {
       setVisibleCards2(false);
     }
-    if (value > 635 && value < 755) {
-      setVisibleSecondaryHeadline2(true);
+
+    //HORIZONTAL SECTION: PROCESS
+    const horizontal1 = document.querySelector("#horizontal1");
+    const sticky1 = document.querySelector("#sticky1");
+    horizontal1.style.transform = `translateX(-${sticky1.offsetTop}px)`;
+
+    //SECTION 2
+    const mobileDifference = isMobileCustom ? 200 : 0;
+
+    const circle2 = document.getElementById("Circle2");
+    circle2.style.clipPath = `circle(${
+      value > 608 - mobileDifference ? -603 + mobileDifference + value : 5
+    }% at 50% 50%)`;
+    circle2.style.transformOrigin = "bottom";
+
+    if (isMobileCustom) {
+      if (value > 435 && value < 525) {
+        setVisibleSecondaryHeadline2(true);
+      } else {
+        setVisibleSecondaryHeadline2(false);
+      }
     } else {
-      setVisibleSecondaryHeadline2(false);
+      if (value > 635 && value < 755) {
+        setVisibleSecondaryHeadline2(true);
+      } else {
+        setVisibleSecondaryHeadline2(false);
+      }
     }
 
-    // if (value > 350) {
-    //   setVisibleCircle2(true);
-    // } else {
-    //   setVisibleCircle2(false);
-    // }
+    const organizationTypeTag1 = document.getElementById(
+      "infoPageOrganizationTypeTag1"
+    );
+    const organizationTypeTag2 = document.getElementById(
+      "infoPageOrganizationTypeTag2"
+    );
+    const organizationTypeTag3 = document.getElementById(
+      "infoPageOrganizationTypeTag3"
+    );
+    const organizationTypeTag4 = document.getElementById(
+      "infoPageOrganizationTypeTag4"
+    );
+    const organizationTypeTag5 = document.getElementById(
+      "infoPageOrganizationTypeTag5"
+    );
+    const organizationTypeTag6 = document.getElementById(
+      "infoPageOrganizationTypeTag6"
+    );
 
-    // console.log(el?.scrollTop);
-    // setScrollValue(el?.scrollTop);
+    let organizationTagScrollValue =
+      el?.scrollTop / 10 - (698 - mobileDifference);
+
+    organizationTypeTag1.style.transform = `translateX(${
+      organizationTagScrollValue * 8
+    }px)`;
+    organizationTypeTag2.style.transform = `translateX(${
+      -organizationTagScrollValue * 10
+    }px)`;
+    organizationTypeTag3.style.transform = `translateX(${
+      organizationTagScrollValue * 12
+    }px)`;
+    organizationTypeTag4.style.transform = `translateX(${
+      -organizationTagScrollValue * 10
+    }px)`;
+    organizationTypeTag5.style.transform = `translateX(${
+      organizationTagScrollValue * 12
+    }px)`;
+    organizationTypeTag6.style.transform = `translateX(${
+      -organizationTagScrollValue * 14
+    }px)`;
+
+    //HORIZONTAL SECTION: CREDITS
+    const horizontal2 = document.querySelector("#horizontal2");
+    const sticky2 = document.querySelector("#sticky2");
+    horizontal2.style.transform = `translateX(-${sticky2.offsetTop}px)`;
+
+    // SECTION 3
+
+    const circle3 = document.getElementById("Circle3");
+    circle3.style.clipPath = `circle(${
+      value > 1228 ? -1224 + value : 4
+    }% at 50% 50%)`;
+    circle3.style.transformOrigin = "bottom";
+
+    console.log(value);
   }, []);
 
   useEffect(() => {
@@ -406,7 +403,11 @@ const InlineInformationPage = ({}) => {
 
           <HorizontalScrollSection id="1" />
 
-          <Circle id="Circle2" scrollValue={scrollValue} marginTop="2850px" />
+          <Circle
+            id="Circle2"
+            scrollValue={scrollValue}
+            marginTop={document.body.clientWidth > 768 ? "2850px" : "1300px"}
+          />
           <SecondHeadline
             id="sectionOrganizationHeadline"
             marginTop="-400px"
