@@ -112,7 +112,7 @@ const CreateOrganizationPage0 = ({
           <CheckBoxWrapper>
             <CheckBox
               selected={checkBox1}
-              name="CheckBox"
+              type="checkbox"
               handleInputChange={() => setCheckBox1(!checkBox1)}
             />
             <CheckBoxLabel>
@@ -126,7 +126,7 @@ const CreateOrganizationPage0 = ({
           <CheckBoxWrapper>
             <CheckBox
               selected={checkBox2}
-              name="CheckBox"
+              type="checkbox"
               handleInputChange={() => setCheckBox2(!checkBox2)}
             />
             <CheckBoxLabel>
@@ -140,7 +140,7 @@ const CreateOrganizationPage0 = ({
           <CheckBoxWrapper>
             <CheckBox
               selected={checkBox3}
-              name="CheckBox"
+              type="checkbox"
               handleInputChange={() => setCheckBox3(!checkBox3)}
             />
             <CheckBoxLabel>
