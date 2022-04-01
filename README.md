@@ -21,20 +21,17 @@ To avoid ending up with an unmanageable amount of branches, we decided to go thi
 ## 2: Install packages
 
 
-Open `senf_client` folder in the terminal and type `npm install`.
+Open `apps/senf_client` folder in the terminal and type `npm ci`.
 
 If you get error `npm command not found ` make sure you have [node.js](https://nodejs.org/en/)  installed on your machine.
 
 
-## 3: Change to .env file
 
-Open `senf_client` folder, find a file called .env-example and rename it to .env
-
-## 4: Run project
+## 3: Run project
 
 To run a project, type `npm start` in the terminal 
 
-## 5: Open it
+## 4: Open it
 
 Go to [http://localhost:3000](http://localhost:3000)
 
