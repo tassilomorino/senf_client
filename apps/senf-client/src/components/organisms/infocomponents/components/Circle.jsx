@@ -7,7 +7,7 @@ import Bulb from "../../../../images/lamp.png";
 import SecondHeadline from "./SecondHeadline";
 import { isMobileCustom } from "../../../../util/customDeviceDetect";
 import BulbImg from "../../../../images/lamp.png";
-import ShowOthers from "../../../../images/showOthers.png";
+import ShowOthers from "../../../../images/weAreHere_white.png";
 import Logo from "../../../../images/logo_white.png";
 
 const Container = styled.div`
@@ -122,10 +122,10 @@ const Circle = ({ scrollValue, id, marginTop }) => {
               <img
                 src={ShowOthers}
                 id="showOthersImage"
-                width="250px"
+                width="200px"
                 style={{
-                  marginLeft: "calc(50% - 50px)",
-                  marginTop: "calc(50% + 50px)",
+                  marginLeft: "calc(50% - 10px)",
+                  marginTop: "calc(50% + 30px)",
                   transform: "translateX(-50%)translateY(-50%)",
                   position: "absolute",
                 }}

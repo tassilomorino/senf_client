@@ -168,7 +168,7 @@ const InlineInformationPage = ({}) => {
 
     const circle2 = document.getElementById("Circle2");
     circle2.style.clipPath = `circle(${
-      value > 408 ? -404 + value : 4
+      value > 428 ? -424 + value : 4
     }% at 50% 50%)`;
     circle2.style.transformOrigin = "bottom";
 
@@ -191,7 +191,6 @@ const InlineInformationPage = ({}) => {
 
     if (value < 480) {
       sectionOrganizationHeadline.style.opacity = `${-128 + value / 3}`;
-      console.log("Heree", -140 + value / 3);
     } else {
       sectionOrganizationHeadline.style.opacity = `${2.2 - value / 100}%`;
     }
@@ -220,7 +219,7 @@ const InlineInformationPage = ({}) => {
     tag5.style.transition = "0.1s";
     tag6.style.transition = "0.1s";
 
-    let secondValue = el?.scrollTop / 10 - 408;
+    let secondValue = el?.scrollTop / 10 - 428;
 
     console.log(secondValue);
 
@@ -374,7 +373,7 @@ const InlineInformationPage = ({}) => {
           <Circle id="Circle2" scrollValue={scrollValue} marginTop="-150px" />
           <SecondHeadline
             id="sectionOrganizationHeadline"
-            marginTop="-410px"
+            marginTop="0px"
             visible={visibleSecondaryHeadline2}
             textlines={[
               { text: "infopage_organizationsHeadline_1" },
