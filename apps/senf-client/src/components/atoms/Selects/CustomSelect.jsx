@@ -246,7 +246,7 @@ const CustomSelect = ({
                       <>
                         <CheckBoxWrapper>
                           <CheckBox
-                            type={"radio"}
+                            type="radio"
                             selected={selectedOption.includes(sortOption.name)}
                             handleInputChange={onOptionClicked(
                               sortOption.name,
@@ -256,6 +256,11 @@ const CustomSelect = ({
                           />
 
                           <CheckBoxLabel
+                            onClick={onOptionClicked(
+                              sortOption.name,
+                              sortOption.label,
+                              dontCloseWindow
+                            )}
                             htmlFor={sortOption}
                             selected={selectedOption.includes(sortOption.name)}
                           >
@@ -267,37 +272,38 @@ const CustomSelect = ({
                   </>
                 )}
                 {/* temporary disabled functionality for dropdown status filter */}
-                {/*                   {statusOptions && (
-                    <>
-                      <StyledH3
-                        textAlign={"center"}
-                        padding={"10px"}
-                        margin={"25px 0px 0px"}
-                      >
-                        Filter By
-                      </StyledH3>
-                      <StyledDivider />
-                      {statusOptions?.map((filter, i) => (
-                        <>
-                          <CheckBoxWrapper>
-                            <CheckBox
-                              name={filter.label}
-                              selected={dropdownStatus.includes(filter.name)}
-                              handleInputChange={() =>
-                                handleDropdownStatus(filter.name)
-                              }
-                            />
-                            <CheckBoxLabel
-                              selected={dropdownStatus.includes(filter.name)}
-                            >
-                              {filter.label} (
-                              {dropdownStatusNumbers[filter.name]})
-                            </CheckBoxLabel>
-                          </CheckBoxWrapper>
-                        </>
-                      ))}
-                    </>
-                  )} */}
+                {/* {statusOptions && (
+                  <>
+                    <StyledH3
+                      textAlign={"center"}
+                      padding={"10px"}
+                      margin={"25px 0px 0px"}
+                    >
+                      Filter By
+                    </StyledH3>
+                    <StyledDivider />
+                    {statusOptions?.map((filter, i) => (
+                      <>
+                        <CheckBoxWrapper>
+                          <CheckBox
+                            type="checkbox"
+                            selected={dropdownStatus.includes(filter.name)}
+                            handleInputChange={() =>
+                              handleDropdownStatus(filter.name)
+                            }
+                          />
+                          <CheckBoxLabel
+                            onClick={() => handleDropdownStatus(filter.name)}
+                            selected={dropdownStatus.includes(filter.name)}
+                          >
+                            {filter.label} ({dropdownStatusNumbers[filter.name]}
+                            )
+                          </CheckBoxLabel>
+                        </CheckBoxWrapper>
+                      </>
+                    ))}
+                  </>
+                )} */}
               </DropDownList>
             </DropDownListContainer>
 

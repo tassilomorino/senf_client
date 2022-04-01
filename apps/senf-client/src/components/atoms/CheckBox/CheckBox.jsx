@@ -8,55 +8,58 @@ const CheckboxContainer = styled.div`
   vertical-align: middle;
   z-index: 99;
 `;
-const Icon = styled.svg`
+const CheckIcon = styled.svg`
   fill: none;
   stroke: white;
-  stroke-width: 2px;
+  stroke-width: 3px;
 `;
+const RadioIcon = styled.div`
+  align-self: center;
+  margin: 0 auto;
+  width: 10px;
+  position: relative;
+  height: 10px;
+  border-radius: 8px;
 
-const HiddenCheckbox = styled.input.attrs({ type: "checkbox" })`
-  border: 0;
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
+  flex-grow: 0;
+  background-color: white;
 `;
 
 const StyledCheckbox = styled.div`
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  background: ${(props) => (props.checked ? "#f2c71c" : "#e9eef5")};
-  border-radius: 3px;
+  display: inline-flex;
+  flex-direction: row;
+  width: 20px;
+  height: 20px;
+  background: ${(props) => (props.checked ? "#f2c71c" : "white")};
+  border-radius: 6px;
   transition: all 150ms;
-  border: 1px solid #353535;
-  ${Icon} {
+  border: 2px solid #f2c71c;
+  ${CheckIcon} {
+    visibility: ${(props) => (props.checked ? "visible" : "hidden")};
+  }
+  ${RadioIcon} {
     visibility: ${(props) => (props.checked ? "visible" : "hidden")};
   }
 `;
 
-const CheckBox = ({ name, selected, handleInputChange }) => {
+const CheckBox = ({ type, selected, handleInputChange }) => {
   return (
-    <span className="check-box">
-      <CheckboxContainer onClick={handleInputChange}>
-        <HiddenCheckbox
-          name={name}
-          type="checkbox"
-          checked={selected}
-          // onChange={() => alert("hi")}
-        />
+    <CheckboxContainer onClick={handleInputChange}>
+      {type === "checkbox" && (
         <StyledCheckbox checked={selected}>
-          <Icon viewBox="0 0 24 24">
+          <CheckIcon viewBox="0 0 24 24">
             <polyline points="20 6 9 17 4 12" />
-          </Icon>
+          </CheckIcon>
+
+          {/* <RadioIcon /> */}
         </StyledCheckbox>
-      </CheckboxContainer>
-    </span>
+      )}
+      {type === "radio" && (
+        <StyledCheckbox checked={selected}>
+          <RadioIcon />
+        </StyledCheckbox>
+      )}
+    </CheckboxContainer>
   );
 };
 
