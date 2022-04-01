@@ -4,6 +4,7 @@ import MinhaGalera from "../../../../images/infoPage/partnerLogos/minhaGalera.pn
 import Klug from "../../../../images/infoPage/partnerLogos/klug.png";
 import Ksta from "../../../../images/infoPage/partnerLogos/ksta.png";
 import Gaffel from "../../../../images/infoPage/partnerLogos/gaffel.png";
+import { isMobileCustom } from "../../../../util/customDeviceDetect";
 
 const Logos = [
   { img: Ksta, width: "250px" },
@@ -21,7 +22,7 @@ const Wrapper = styled.div`
   margin: 30px;
   height: 100px;
   width: 1600px;
-  top: 0;
+  top: ${(props) => (props.isMobileCustom ? "80vh" : "70vh")};
   left: 0;
   position: relative;
   display: flex;
@@ -48,7 +49,7 @@ const Logo = styled.div`
 `;
 const Partners = () => {
   return (
-    <Wrapper>
+    <Wrapper isMobileCustom={isMobileCustom}>
       {Logos.map(({ img, width }) => (
         <Logo img={img} width={width}></Logo>
       ))}

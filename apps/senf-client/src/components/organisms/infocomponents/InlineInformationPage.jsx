@@ -226,16 +226,19 @@ const InlineInformationPage = ({}) => {
     horizontal1.style.transform = `translateX(-${sticky1.offsetTop}px)`;
 
     //SECTION 2
-    const mobileDifference = isMobileCustom ? 230 : 0;
+    const mobileDifferenceCircle = isMobileCustom ? 200 : 0;
+    const mobileDifferenceKeywords = isMobileCustom ? 220 : 0;
 
     const circle2 = document.getElementById("Circle2");
     circle2.style.clipPath = `circle(${
-      value > 608 - mobileDifference ? -603 + mobileDifference + value : 5
+      value > 608 - mobileDifferenceCircle
+        ? -603 + mobileDifferenceCircle + value
+        : 5
     }% at 50% 50%)`;
     circle2.style.transformOrigin = "bottom";
 
     if (isMobileCustom) {
-      if (value > 435 && value < 525) {
+      if (value > 435 && value < 505) {
         setVisibleSecondaryHeadline2(true);
       } else {
         setVisibleSecondaryHeadline2(false);
@@ -268,7 +271,7 @@ const InlineInformationPage = ({}) => {
     );
 
     let organizationTagScrollValue =
-      el?.scrollTop / 10 - (698 - mobileDifference);
+      el?.scrollTop / 10 - (698 - mobileDifferenceKeywords);
 
     organizationTypeTag1.style.transform = `translateX(${
       organizationTagScrollValue * 8
@@ -469,7 +472,11 @@ const InlineInformationPage = ({}) => {
           </HowToCard2>
 
           <HorizontalScrollSection id="2" />
-          <Circle id="Circle3" scrollValue={scrollValue} marginTop="-250px" />
+          <Circle
+            id="Circle3"
+            scrollValue={scrollValue}
+            marginTop={document.body.clientWidth > 768 ? "2850px" : "1300px"}
+          />
 
           {/* <CreditsSection />
 

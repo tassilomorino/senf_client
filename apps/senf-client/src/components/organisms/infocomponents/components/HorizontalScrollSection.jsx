@@ -1,11 +1,12 @@
 import React from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
+import Partners from "./Partners";
+
 import SectionBackground from "../../../../images/infoPage/shapes/sectionSticky.png";
 import Ideas from "../../../../images/infoPage/howItWorks/ideas.png";
 import Submitted from "../../../../images/infoPage/howItWorks/submitted.png";
 import Statement from "../../../../images/infoPage/howItWorks/statement.png";
-
 import OpenBook from "../../../../images/openBook.png";
 
 import Klug from "../../../../images/infoPage/partnerLogos/klug.png";
@@ -58,7 +59,8 @@ const CardsSection = styled.section`
 
 const Article = styled.article`
   height: calc(100% - 100px);
-
+  display: flex;
+  flex-direction: column;
   flex-shrink: 0;
   position: relative;
   box-sizing: border-box;
@@ -85,12 +87,12 @@ const Title = styled.h3`
 const Img = styled.img`
   position: absolute;
   top: 0px;
-  height: 115%;
+  height: calc(100% - 50px);
   z-index: 0;
 
   @media (min-width: 768px) {
     top: 0px;
-    height: calc(100% - 150px);
+    height: calc(100% - 250px);
   }
 `;
 
@@ -106,6 +108,12 @@ const Flex = styled.div`
 const Logo = styled.img`
   padding: 5px 10px;
 `;
+const Goosefoot = styled.span`
+  color: #353535;
+  font-size: 150px;
+  width: 100%;
+  text-align: center;
+`;
 
 const HorizontalScrollSection = ({ id }) => {
   useEffect(() => {
@@ -120,7 +128,7 @@ const HorizontalScrollSection = ({ id }) => {
       var width = positionInfo.width;
 
       const objectWidth = ref.scrollWidth;
-      return objectWidth - width + height + width * 3; // 150 is the padding (in pixels) desired on the right side of the .cards container. This can be set to whatever your styles dictate
+      return objectWidth - width + height + width * 2; // 150 is the padding (in pixels) desired on the right side of the .cards container. This can be set to whatever your styles dictate
     }
 
     spaceHolder.style.height = `${calcDynamicHeight(horizontal)}px`;
@@ -220,19 +228,17 @@ const HorizontalScrollSection = ({ id }) => {
               <CardsSection role="feed" class="cards">
                 {credits.map(({ title, subTitle, img, width }) => (
                   <Article>
-                    <img
-                      src={img}
-                      width={width}
-                      style={{
-                        marginLeft: "50%",
-                        transform: "translateX(-50%)",
-                        marginTop: "20px",
-                      }}
-                    />
+                    <Goosefoot>„</Goosefoot>
                     <StyledText
                       textAlign="center"
-                      margin="10px 20px 20px 20px"
-                      marginLeft="20px"
+                      margin={
+                        document.body.clientWidth > 768
+                          ? "10px 100px 20px 100px"
+                          : "10px 20px 20px 20px"
+                      }
+                      marginLeft={
+                        document.body.clientWidth > 768 ? "100px" : "20px"
+                      }
                     >
                       {subTitle}
                     </StyledText>
@@ -241,24 +247,10 @@ const HorizontalScrollSection = ({ id }) => {
                     </StyledH3>
                   </Article>
                 ))}
-                <Article>
-                  <Flex>
-                    <Logo src={Ksta} width="150px" />
-                    <Logo src={Gaffel} width="70px" />
-                    <Logo src={Ww} width="100px" />
-                    <Logo src={Baudata} width="50px" />
-                    <Logo src={Kfa} width="50px" />
-                    <Logo src={MinhaGalera} width="100px" />
-                    <Logo src={Jh_uh} width="100px" />
-                    <Logo src={Eps} width="100px" />
-                    <Logo src={Av} width="100px" />
-                    <Logo src={Np} width="100px" />
-                    <Logo src={Sk} width="100px" />
-                  </Flex>
-                </Article>
               </CardsSection>
             )}
           </Horizontal>
+          {id === "2" && <Partners />}
         </Sticky>
       </SpaceHolder>
     </Container>
