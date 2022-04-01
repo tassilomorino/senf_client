@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import ReactDOM from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
-import _ from "lodash";
 
 import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
 import styled from "styled-components";

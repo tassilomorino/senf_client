@@ -5,12 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import styled from "styled-components";
 import { deleteScream } from "../../../redux/actions/screamActions";
-import EditModal from "./EditModal";
+
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import MainModal from "../../atoms/Layout/MainModal";
-import AdminEditModal from "./AdminEditModal";
+import EditIdeaModal from "./EditIdeaModal";
 import { StyledH3, StyledH4 } from "../../../styles/GlobalStyle";
-
+import { useTranslation } from "react-i18next";
 const ButtonWrapper = styled.div`
   width: 100%;
   height: ${(props) => (props.standalone ? "100px" : "50px")};
@@ -31,7 +31,6 @@ const MenuModal = ({ setMenuOpen, screamId, userHandle }) => {
 
   const { scream } = useSelector((state) => state.data);
   const [editOpen, setEditOpen] = useState(false);
-  const [adminEditOpen, setAdminEditOpen] = useState(false);
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -66,58 +65,40 @@ const MenuModal = ({ setMenuOpen, screamId, userHandle }) => {
       );
     window.location.href = link;
   };
-
+  const { t } = useTranslation();
   return (
     <React.Fragment>
       {editOpen && (
-        <EditModal
+        <EditIdeaModal
           scream={scream}
+          isAdmin={isAdmin}
+          isModerator={isModerator}
+          isUser={userHandle === handle}
           setEditOpen={setEditOpen}
           setMenuOpen={setMenuOpen}
           editOpen={editOpen}
         />
       )}
 
-      {adminEditOpen && (
-        <AdminEditModal
-          scream={scream}
-          isAdmin={isAdmin && true}
-          setAdminEditOpen={setAdminEditOpen}
-          setMenuOpen={setMenuOpen}
-          adminEditOpen={adminEditOpen}
-        />
-      )}
-
-      {!editOpen && !adminEditOpen && (
+      {!editOpen && (
         <MainModal handleButtonClick={() => setMenuOpen(false)}>
-          {authenticated && (isAdmin === true || isModerator === true) && (
-            <React.Fragment>
-              <ButtonWrapper>
-                <ExpandButton handleButtonClick={() => setAdminEditOpen(true)}>
-                  <StyledH3 fontWeight={400}> Idee bearbeiten (Admin)</StyledH3>
-                </ExpandButton>
-              </ButtonWrapper>
-              <ButtonWrapper>
-                <ExpandButton handleButtonClick={deleteTheScream}>
-                  <StyledH3 fontWeight={400}> Idee löschen (Admin)</StyledH3>
-                </ExpandButton>
-              </ButtonWrapper>
-            </React.Fragment>
-          )}
-          {authenticated && userHandle === handle && (
-            <React.Fragment>
-              <ButtonWrapper>
-                <ExpandButton handleButtonClick={() => setEditOpen(true)}>
-                  <StyledH3 fontWeight={400}> Idee bearbeiten </StyledH3>
-                </ExpandButton>
-              </ButtonWrapper>
-              <ButtonWrapper>
-                <ExpandButton handleButtonClick={deleteTheScream}>
-                  <StyledH3 fontWeight={400}> Idee löschen</StyledH3>
-                </ExpandButton>
-              </ButtonWrapper>
-            </React.Fragment>
-          )}
+          {authenticated &&
+            (isAdmin === true ||
+              isModerator === true ||
+              userHandle === handle) && (
+              <React.Fragment>
+                <ButtonWrapper>
+                  <ExpandButton handleButtonClick={() => setEditOpen(true)}>
+                    <StyledH3 fontWeight={400}> {t("edit_idea")}</StyledH3>
+                  </ExpandButton>
+                </ButtonWrapper>
+                <ButtonWrapper>
+                  <ExpandButton handleButtonClick={deleteTheScream}>
+                    <StyledH3 fontWeight={400}> {t("delete_idea")}</StyledH3>
+                  </ExpandButton>
+                </ButtonWrapper>
+              </React.Fragment>
+            )}
 
           <ButtonWrapper
             standalone={
@@ -127,13 +108,13 @@ const MenuModal = ({ setMenuOpen, screamId, userHandle }) => {
             }
           >
             <ExpandButton handleButtonClick={reportScream}>
-              <StyledH3 fontWeight={400}>Melden</StyledH3>
+              <StyledH3 fontWeight={400}>{t("report")}</StyledH3>
             </ExpandButton>
           </ButtonWrapper>
           <Line />
           <ButtonWrapper>
             <ExpandButton handleButtonClick={() => setMenuOpen(false)}>
-              <StyledH3 fontWeight={400}> Abbrechen</StyledH3>
+              <StyledH3 fontWeight={400}> {t("cancel")}</StyledH3>
             </ExpandButton>
           </ButtonWrapper>
         </MainModal>

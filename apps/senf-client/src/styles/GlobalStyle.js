@@ -32,7 +32,7 @@ export const StyledH2 = styled.h2`
 export const StyledH3 = styled.h3`
   font-weight: ${(props) => (props.fontWeight ? props.fontWeight : 700)};
   margin: ${(props) => (props.margin ? props.margin : "0")};
-  padding: 0;
+  padding: ${(props) => (props.padding ? props.padding : "0")};
   text-align: ${(props) => (props.textAlign ? props.textAlign : "left")};
   opacity: ${(props) => (props.opacity ? props.opacity : 1)};
   color: ${(props) => (props.color ? props.color : undefined)};
@@ -57,6 +57,8 @@ export const StyledText = styled.p`
   text-align: ${(props) => (props.textAlign ? props.textAlign : "left")};
   margin: ${(props) => (props.margin ? props.margin : "0")};
   margin-left: ${(props) => (props.marginLeft ? props.marginLeft : "0")};
+  padding: ${(props) => (props.padding ? props.padding : "0")};
+
   white-space: pre-line;
   user-select: none;
   pointer-events: none;

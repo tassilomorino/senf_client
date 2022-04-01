@@ -1,19 +1,17 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { Helmet } from "react-helmet";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import "./styles/mapbox-gl.css";
-import "./App.css";
-import "./AppDesktop.css";
-import "./AppIpad.css";
-import "./mapbox.css";
-import "./Animations.css";
+import firebaseApp from "./firebase";
 
-import firebaseConfig from "./firebase";
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
-import "firebase/compat/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import "./styles/mapbox-gl.css";
+import "./styles/App.css";
+import "./styles/AppDesktop.css";
+import "./styles/AppIpad.css";
+import "./styles/mapbox.css";
+import "./styles/Animations.css";
 
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { createTheme } from "@material-ui/core/styles/";
@@ -27,6 +25,10 @@ import { logoutUser, getUserData } from "./redux/actions/userActions";
 import { setCookies } from "./redux/actions/cookiesActions";
 import { setInfoPageOpen } from "./redux/actions/UiActions";
 
+import { getOrganizations } from "../src/redux/actions/organizationActions";
+import { getProjects } from "../src/redux/actions/projectActions";
+import { getScreams } from "../src/redux/actions/screamActions";
+
 //Pages
 import Main from "./components/templates/Main";
 import IntroductionInformation from "./components/organisms/infocomponents/IntroductionInformation";
@@ -38,7 +40,6 @@ import agb from "./components/organisms/infocomponents/legal/agb";
 import cookieConfigurator from "./components/organisms/infocomponents/legal/cookieConfigurator";
 
 import blank from "./pages/Blank";
-import axios from "axios";
 
 import { isTablet } from "react-device-detect";
 import Cookies from "universal-cookie";
@@ -54,9 +55,6 @@ import Cookiebanner from "./components/organisms/Cookiebanner/Cookiebanner";
 import { setViewport } from "./util/helpers-map-animations";
 import detectLocation from "./util/detectLocation";
 import GlobalStyles from "./styles/GlobalStyles";
-
-import firebaseApp from "./firebase";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import "./util/i18n"; // i18n configuration
 detectLocation(); // detect location and set i18n language
@@ -147,14 +145,16 @@ const App = () => {
       }
     });
   };
-
-  useEffect(() => {
+  useLayoutEffect(() => {
+    setViewport();
+    const initialMapViewport = store.getState().data.initialMapViewport;
+    store.dispatch(getScreams(initialMapViewport));
+    store.dispatch(getOrganizations(initialMapViewport));
+    store.dispatch(getProjects(initialMapViewport));
+  }, []);
+  useLayoutEffect(() => {
     userState();
   }, [isAuthed]);
-
-  useEffect(() => {
-    setViewport();
-  }, []);
 
   const tabletNote = isTablet ? (
     <div className="tabletLandscapeNote">{t("rotate_tablet")} </div>

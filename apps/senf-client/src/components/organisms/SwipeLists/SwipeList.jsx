@@ -177,7 +177,10 @@ const SwipeList = ({
   loading,
   order,
   handleDropdown,
+  handledropdownStatus,
   dropdown,
+  dropdownStatus,
+  dropdownStatusNumbers,
   dataFinal,
   dataFinalProjectRooms,
   setSearchTerm,
@@ -237,7 +240,7 @@ const SwipeList = ({
     window.location.href = link;
   };
 
-  const [props, set] = useSpring(() => ({
+  const [springProps, setSpring] = useSpring(() => ({
     x: 0,
     y: 0,
     scale: 1,
@@ -261,7 +264,7 @@ const SwipeList = ({
   }));
   const setSwipeUp = () => {
     dispatch(setSwipePositionUp());
-    set({
+    setSpring({
       transform: `translateY(${30}px)`,
       touchAction: "unset",
     });
@@ -276,7 +279,7 @@ const SwipeList = ({
 
   const setSwipeDown = () => {
     dispatch(setSwipePositionDown());
-    set({
+    setSpring({
       transform: `translateY(${window.innerHeight - 120}px)`,
       touchAction: "none",
     });
@@ -292,18 +295,18 @@ const SwipeList = ({
 
   useEffect(() => {
     if (openScream) {
-      set({
+      setSpring({
         transform: `translateY(${window.innerHeight + 20}px)`,
         touchAction: "none",
       });
     } else {
       if (swipePosition === "bottom") {
-        set({
+        setSpring({
           transform: `translateY(${window.innerHeight - 120}px)`,
           touchAction: "none",
         });
       } else {
-        set({
+        setSpring({
           transform: `translateY(${30}px)`,
           touchAction: "unset",
         });
@@ -334,18 +337,18 @@ const SwipeList = ({
   }, [searchOpen]);
 
   useEffect(() => {
-    set({
+    setSpring({
       transition: "0.5s",
     });
   }, [openOrganizationsPage, openInsightsPage]);
 
   const bind = useDrag(
     ({ last, down, movement: [, my], offset: [, y] }) => {
-      set({
+      setSpring({
         transition: "0s",
       });
       if (last && my > 50) {
-        set({
+        setSpring({
           transform: `translateY(${window.innerHeight - 120}px)`,
           touchAction: "none",
         });
@@ -361,7 +364,7 @@ const SwipeList = ({
       }
 
       if (last && my < -50) {
-        set({
+        setSpring({
           transform: `translateY(${30}px)`,
           touchAction: "unset",
         });
@@ -376,7 +379,7 @@ const SwipeList = ({
         });
       }
 
-      set({ y: down ? my : 0 });
+      setSpring({ y: down ? my : 0 });
       console.log(-my);
     },
     {
@@ -440,7 +443,7 @@ const SwipeList = ({
           document.getElementById("portal-root-modal")
         )}
 
-      {order === 1 && (dataFinal.length > 0 || searchTerm !== "") && (
+      {order === 1 && (
         <animated.div style={slideUpSectionProps}>
           <OrganizationsIntroWrapper>
             <OrganizationsIntro>
@@ -460,6 +463,9 @@ const SwipeList = ({
             swipeListType={swipeListType}
             loading={loading}
             handleDropdown={handleDropdown}
+            dropdownStatus={dropdownStatus}
+            dropdownStatusNumbers={dropdownStatusNumbers}
+            handledropdownStatus={handledropdownStatus}
             dropdown={dropdown}
             dataFinalLength={dataFinal.length}
             setSearchOpen={setSearchOpen}
@@ -514,7 +520,7 @@ const SwipeList = ({
               transition: "0.5s",
               overflow: "visible",
             }
-          : props
+          : springProps
       }
       openOrganizationsPage={openOrganizationsPage}
     >
@@ -532,7 +538,7 @@ const SwipeList = ({
             isMobileCustom={true}
             style={order === 3 ? { height: "60px" } : listHeaderProps}
           >
-            <animated.div {...bind()} style={props} style={listHeaderProps}>
+            <animated.div {...bind()} style={listHeaderProps}>
               <div style={{ height: "60px", pointerEvents: "all" }}>
                 <Tabs
                   loading={loading}

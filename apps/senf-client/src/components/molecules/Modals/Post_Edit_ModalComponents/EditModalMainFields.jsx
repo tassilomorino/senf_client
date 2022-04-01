@@ -10,7 +10,7 @@ import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 import CustomSelect from "../../../atoms/Selects/CustomSelect";
 import { useTranslation } from "react-i18next";
 const EditModalMainFields = ({
-  project,
+  projectRoomId,
   handleDropdownProject,
   onSelected,
   viewport,
@@ -27,7 +27,7 @@ const EditModalMainFields = ({
   contact,
   contactTitle,
   setContactOpen,
-  checkIfCalendar,
+  datePicker,
   selectedDays,
   setCalendarOpen,
 }) => {
@@ -41,7 +41,7 @@ const EditModalMainFields = ({
       {...props}
       placeholder={scream.locationHeader}
       id="geocoder"
-      autocomplete="off"
+      autoComplete="off"
     />
   );
   return (
@@ -57,7 +57,7 @@ const EditModalMainFields = ({
         <StyledH3>{t("to")}</StyledH3>
         <CustomSelect
           name={"project"}
-          value={project}
+          value={projectRoomId}
           initialValue={t("all_ideas")}
           options={OptionsProjects()}
           handleDropdown={handleDropdownProject}
@@ -158,7 +158,7 @@ const EditModalMainFields = ({
           }
           handleButtonClick={() => setContactOpen(true)}
         />
-        <div style={checkIfCalendar ? {} : { display: "none" }}>
+        <div style={datePicker ? {} : { display: "none" }}>
           <CustomIconButton
             name="DatePicker"
             position="absolute"

@@ -7,7 +7,7 @@ const WaveCanvas = ({ canvasRef, props }) => {
   // The scroll listener
   const handleScroll = useCallback(() => {
     const el = document.getElementById("ListWrapper");
-    console.log(el?.scrollTop);
+
     setScrollPercentage(el?.scrollTop * -1);
     setScrollOpacity(1 - el?.scrollTop / 1000);
   }, []);
@@ -16,6 +16,9 @@ const WaveCanvas = ({ canvasRef, props }) => {
   useEffect(() => {
     const div = document.getElementById("ListWrapper");
     div?.addEventListener("scroll", handleScroll);
+    return () => {
+      div.removeEventListener("scroll", handleScroll);
+    };
   }, [handleScroll]);
   return (
     <canvas
