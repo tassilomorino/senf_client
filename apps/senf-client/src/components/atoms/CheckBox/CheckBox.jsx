@@ -7,6 +7,7 @@ const CheckboxContainer = styled.div`
   display: inline-block;
   vertical-align: middle;
   z-index: 99;
+  cursor: pointer;
 `;
 const CheckIcon = styled.svg`
   fill: none;

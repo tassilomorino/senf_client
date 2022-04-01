@@ -59,13 +59,14 @@ const Background = styled.div`
   background-color: rgb(0, 0, 0, 0.6);
 `;
 
-const DropDownList = styled.ul`
+const DropDownList = styled.div`
   overflow-y: ${(props) => (props.overflow ? props.overflow : "scroll")};
   border-radius: 10px;
   width: 100%;
+  padding-bottom: 30px;
 `;
 
-const ListItem = styled("li")`
+const ListItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -77,6 +78,7 @@ const ListItem = styled("li")`
 
   &:hover {
     background-color: #f8f8f8;
+    cursor: pointer;
   }
 `;
 
@@ -100,23 +102,23 @@ const Img = styled.img`
 
 const StyledDivider = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  width: 90%;
+  width: 80%;
 
   display: flex;
-
-  margin-bottom: 20px;
+  margin: 0 auto 10px;
 `;
 
 const CheckBoxWrapper = styled.div`
   display: flex;
-
-  margin-top: 10px;
+  padding-top: 10px;
+  padding-left: 10%;
 `;
 const CheckBoxLabel = styled.label`
   font-size: 18px;
   color: #353535;
   font-weight: ${(props) => (props.selected ? "600" : "100")};
   margin-left: 20px;
+  cursor: pointer;
 `;
 
 const CustomSelect = ({

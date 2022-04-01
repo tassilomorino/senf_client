@@ -1,5 +1,5 @@
 /** @format */
-import { StyledH2 } from "../../../styles/GlobalStyle";
+import { StyledH2, StyledH3 } from "../../../styles/GlobalStyle";
 import React from "react";
 import styled, { keyframes } from "styled-components";
 import Line from "../../../images/line.png";
@@ -42,7 +42,7 @@ const Tab = styled.div`
   width: auto;
   padding-right: 15px;
   animation: ${enterAnimation} ${(props) => props.i * 0.3}s;
-
+  cursor: pointer;
   color: ${(props) =>
     props.active ? "rgba(0, 0, 0, 0.8)" : props.secondaryColor};
   pointer-events: all;
@@ -91,8 +91,8 @@ const Tabs = ({
               }}
               secondaryColor={secondaryColor}
             >
-              <StyledH2
-                fontWeight="900"
+              <StyledH3
+                fontWeight={order === i + 1 ? "900" : "300"}
                 fontSize={
                   type === "secondary"
                     ? "18px"
@@ -102,7 +102,7 @@ const Tabs = ({
                 }
               >
                 {tabLabel}
-              </StyledH2>
+              </StyledH3>
               {/* <ImgWrapper active={order === i + 1}>
                 <img
                   src={Line}

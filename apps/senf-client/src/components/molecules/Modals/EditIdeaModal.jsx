@@ -27,6 +27,7 @@ import {
   EditScreamTabDataAsAdmin,
 } from "../../../data/EditScreamTabData";
 import AdminEditModalMainFields from "./Post_Edit_ModalComponents/AdminEditModalMainFields";
+import { StyledH3, StyledText } from "../../../styles/GlobalStyle";
 const styles = {
   root: {
     zIndex: 7,
@@ -302,7 +303,9 @@ const AdminEditModal = ({
             backgroundColor: "#f8f8f8",
           }}
         >
-          <h3 className="modal_title">{t("edit_idea")}</h3>
+          <StyledH3 textAlign="center" padding="15px 0px">
+            {t("edit_idea")}
+          </StyledH3>
           {isAdmin || isModerator ? (
             // show "Details and monitoring sections"
             <Tabs

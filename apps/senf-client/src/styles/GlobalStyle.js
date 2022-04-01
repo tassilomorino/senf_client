@@ -57,6 +57,8 @@ export const StyledText = styled.p`
   text-align: ${(props) => (props.textAlign ? props.textAlign : "left")};
   margin: ${(props) => (props.margin ? props.margin : "0")};
   margin-left: ${(props) => (props.marginLeft ? props.marginLeft : "0")};
+  padding: ${(props) => (props.padding ? props.padding : "0")};
+
   white-space: pre-line;
   user-select: none;
   pointer-events: none;
