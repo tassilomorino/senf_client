@@ -16,18 +16,26 @@ import Keywords from "./components/Keywords";
 import Footer from "./components/Footer";
 import HorizontalScrollSection from "./components/HorizontalScrollSection";
 import UnderlinedText from "./components/UnderlinedText";
-import DecideLocationImg from "../../../images/infoPage/howItWorks/decideLocationImg.png";
-import FormulateIdeaImg from "../../../images/infoPage/howItWorks/formulateIdeaImg.png";
+
 import SecondHeadline from "./components/SecondHeadline";
 import Tags from "./components/Tags";
 import InfoPageDialog from "../../atoms/Layout/InfoPageDialog";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-import { SideBarTabs } from "../../../styles/GlobalStyle";
-import Info from "../../../images/icons/info.png";
+import { SideBarTabs, StyledA } from "../../../styles/GlobalStyle";
+
 import {
   setInfoPageClosed,
   setInfoPageOpen,
 } from "../../../redux/actions/UiActions";
+
+import ArrowRight from "../../../images/icons/arrow-right.png";
+import Info from "../../../images/icons/info.png";
+import DecideLocationImg from "../../../images/infoPage/howItWorks/decideLocationImg.png";
+import FormulateIdeaImg from "../../../images/infoPage/howItWorks/formulateIdeaImg.png";
+import WeAreHere from "../../../images/weAreHere.png";
+import City from "../../../images/city.png";
+import WorkTogetherBackground from "../../../images/workTogetherBackground.png";
+import OpenBookBackground from "../../../images/openBookBackground.png";
 
 const Container = styled.div`
   height: 100%;
@@ -46,6 +54,13 @@ const Container = styled.div`
   }
 `;
 
+const LinkHeadline = styled.div`
+  margin-top: 20px;
+  margin-left: 24px;
+  @media (min-width: 768px) {
+    margin-left: 100px;
+  }
+`;
 const InnerContainer = styled.div`
   height: 3000px;
   width: 100%;
@@ -73,6 +88,14 @@ const Img = styled.img`
       : "translateX(-40%) translateY(10px)"};
   opacity: ${(props) => (props.visible ? "1" : "0")};
   transition: 0.5s;
+`;
+
+const Link = styled.div`
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 `;
 
 const InlineInformationPage = ({}) => {
@@ -296,6 +319,12 @@ const InlineInformationPage = ({}) => {
               { text: "infopage_headline_4", color: "#E69081" },
             ]}
           />
+          <LinkHeadline>
+            <StyledA textAlign="left">
+              Direkt zur <br />
+              Plattform <img src={ArrowRight} width="10px"></img>
+            </StyledA>
+          </LinkHeadline>
 
           {/* <StyledA >Direkt zur Plattform </StyledA> */}
           <Circle id="Circle" scrollValue={scrollValue} marginTop="150px" />
@@ -365,7 +394,19 @@ const InlineInformationPage = ({}) => {
                 { text: "Organisationen", color: "#90D8B9" },
               ]}
             />
-            <Img src={DecideLocationImg} width="250px" visible={visibleCards} />
+
+            <Img
+              src={WorkTogetherBackground}
+              width="250px"
+              visible={visibleCards}
+              style={{ marginTop: "20px" }}
+            />
+            <Link>
+              <StyledA textAlign="center">
+                Organisationsprofile <br />
+                anzeigen <img src={ArrowRight} width="10px"></img>
+              </StyledA>
+            </Link>
           </HowToCard1>
 
           <HowToCard2>
@@ -377,7 +418,18 @@ const InlineInformationPage = ({}) => {
                 { text: "Projekträume", color: "#94DFF3" },
               ]}
             />
-            <Img src={FormulateIdeaImg} width="250px" visible={visibleCards2} />
+            <Img
+              src={OpenBookBackground}
+              width="250px"
+              visible={visibleCards2}
+              style={{ marginTop: "20px" }}
+            />
+            <Link>
+              <StyledA textAlign="center">
+                Projekträume <br />
+                anzeigen <img src={ArrowRight} width="10px"></img>
+              </StyledA>
+            </Link>
           </HowToCard2>
 
           <HorizontalScrollSection id="2" />
