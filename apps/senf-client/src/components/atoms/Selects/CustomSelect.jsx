@@ -266,45 +266,38 @@ const CustomSelect = ({
                     ))}
                   </>
                 )}
-                {statusOptions && (
-                  <>
-                    <StyledH3
-                      textAlign={"center"}
-                      padding={"10px"}
-                      margin={"25px 0px 0px"}
-                    >
-                      Filter By
-                    </StyledH3>
-                    <StyledDivider />
-                    {statusOptions?.map((filter, i) => (
-                      <>
-                        {/*    <input
-                          type="checkbox"
-                          id={filter}
-                          checked={dropdownStatus.includes(filter.name)}
-                          onChange={() => handleDropdownStatus(filter.name)}
-                        />
-                        <label htmlFor={filter}>{filter.label}</label>
-                         */}
-                        <CheckBoxWrapper>
-                          <CheckBox
-                            name={filter.label}
-                            selected={dropdownStatus.includes(filter.name)}
-                            handleInputChange={() =>
-                              handleDropdownStatus(filter.name)
-                            }
-                          />
-                          <CheckBoxLabel
-                            selected={dropdownStatus.includes(filter.name)}
-                          >
-                            {filter.label} ({dropdownStatusNumbers[filter.name]}
-                            )
-                          </CheckBoxLabel>
-                        </CheckBoxWrapper>
-                      </>
-                    ))}
-                  </>
-                )}
+                {/* temporary disabled functionality for dropdown status filter */}
+                {/*                   {statusOptions && (
+                    <>
+                      <StyledH3
+                        textAlign={"center"}
+                        padding={"10px"}
+                        margin={"25px 0px 0px"}
+                      >
+                        Filter By
+                      </StyledH3>
+                      <StyledDivider />
+                      {statusOptions?.map((filter, i) => (
+                        <>
+                          <CheckBoxWrapper>
+                            <CheckBox
+                              name={filter.label}
+                              selected={dropdownStatus.includes(filter.name)}
+                              handleInputChange={() =>
+                                handleDropdownStatus(filter.name)
+                              }
+                            />
+                            <CheckBoxLabel
+                              selected={dropdownStatus.includes(filter.name)}
+                            >
+                              {filter.label} (
+                              {dropdownStatusNumbers[filter.name]})
+                            </CheckBoxLabel>
+                          </CheckBoxWrapper>
+                        </>
+                      ))}
+                    </>
+                  )} */}
               </DropDownList>
             </DropDownListContainer>
 
