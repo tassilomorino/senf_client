@@ -10,7 +10,7 @@ const Wrapper = styled.div`
 
   z-index: 9999;
   position: sticky;
-  top: 200px;
+  top: 250px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -29,6 +29,7 @@ const Keyword = styled.div`
   h3 {
     font-size: 30px;
     color: white;
+    font-weight: 600;
   }
 `;
 const Keywords = () => {

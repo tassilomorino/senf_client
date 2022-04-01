@@ -43,10 +43,10 @@ const Tag = styled.div`
   padding: 14px 10px 14px 10px;
   box-shadow: 0px 4px 6px -2px rgba(186, 160, 79, 0.2),
     0px -2px 5px 2px rgba(255, 255, 255, 0.2);
-  background-color: #f3f1ec;
+  background-color: #feecab;
   overflow: visible;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid #e8ba02;
 
   left: ${(props) => props.left};
 

@@ -252,13 +252,6 @@ const HorizontalScrollSection = ({ id }) => {
                   </Article>
                 ))}
                 <Article>
-                  <StyledH2
-                    textAlign="center"
-                    margin="20px 20px 0px 20px"
-                    style={{ fontSize: "25px" }}
-                  >
-                    &#128588; &ensp; &#128588;&ensp; &#128588;
-                  </StyledH2>
                   <Flex>
                     <Logo src={Ksta} width="150px" />
                     <Logo src={Gaffel} width="70px" />

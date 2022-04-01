@@ -75,13 +75,13 @@ const Circle = ({ scrollValue, id, marginTop }) => {
 
     var firstInterval = setInterval(function () {
       api.start({
-        xy: [width / 2.05, 0],
+        xy: [width / 2.45, 0],
       });
     }, 2500);
 
     var secondInterval = setInterval(function () {
       api.start({
-        xy: [width / 1.95, 0],
+        xy: [width / 2.35, 0],
       });
     }, 4000);
     // setInterval(function () {

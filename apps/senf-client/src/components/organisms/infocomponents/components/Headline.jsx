@@ -37,10 +37,6 @@ const Line = styled.div`
 `;
 
 const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  height: 50%;
   margin-left: 24px;
 
   @media (min-width: 768px) {

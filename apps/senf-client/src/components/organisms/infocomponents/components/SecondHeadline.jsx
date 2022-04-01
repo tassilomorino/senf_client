@@ -3,10 +3,11 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 const Text = styled.div`
-  font-size: 40px;
+  font-size: 50px;
+
   color: white;
   text-align: center;
-  font-weight: 700;
+  font-weight: 1000;
   z-index: 99;
   position: sticky;
   top: 50px;

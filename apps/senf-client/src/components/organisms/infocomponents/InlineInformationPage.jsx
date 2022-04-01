@@ -55,7 +55,7 @@ const Container = styled.div`
 `;
 
 const LinkHeadline = styled.div`
-  margin-top: 20px;
+  margin-top: 80px;
   margin-left: 24px;
   @media (min-width: 768px) {
     margin-left: 100px;
@@ -179,9 +179,10 @@ const InlineInformationPage = ({}) => {
     circle3.style.transformOrigin = "bottom";
 
     const infoPageBulb = document.getElementById("infoPageBulb");
-    infoPageBulb.style.transform = `scale(${
-      value < 20 ? 1 - value / 20 : 0
-    }) translateX(-50%) translateY(-50%)`;
+    // infoPageBulb.style.transform = `scale(${
+    //   value < 20 ? 1 - value / 20 : 0
+    // }) translateX(-50%) translateY(-50%)`;
+    infoPageBulb.style.filter = `blur(${value / 100}px`;
 
     if (value < 120) {
       addMustard.style.opacity = `${-5 + value / 3}`;
@@ -320,8 +321,7 @@ const InlineInformationPage = ({}) => {
           />
           <LinkHeadline>
             <StyledA textAlign="left">
-              Direkt zur <br />
-              Plattform <img src={ArrowRight} width="10px"></img>
+              Direkt zur Plattform <img src={ArrowRight} width="10px"></img>
             </StyledA>
           </LinkHeadline>
 
