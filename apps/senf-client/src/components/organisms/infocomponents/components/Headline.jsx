@@ -37,6 +37,7 @@ const Line = styled.div`
 `;
 
 const Container = styled.div`
+  margin-top: 100px;
   margin-left: 24px;
 
   @media (min-width: 768px) {

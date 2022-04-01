@@ -43,14 +43,14 @@ const HooksMain = styled.div`
   }
 
   div:nth-child(1) {
-    width: ${(props) => (props.isMobileCustom ? "1600px" : "2700px")};
-    height: ${(props) => (props.isMobileCustom ? "1600px" : "2700px")};
+    width: ${(props) => (props.isMobileCustom ? "1900px" : "3000px")};
+    height: ${(props) => (props.isMobileCustom ? "1900px" : "3000px")};
     border-radius: 100%;
   }
 `;
 
 const fast = { tension: 1200, friction: 40 };
-const slow = { mass: 10, tension: 200, friction: 50 };
+const slow = { mass: 10, tension: 130, friction: 50 };
 const trans = (x, y) => `translate3d(${x}px,${y}px,0) translate3d(-50%,-50%,0)`;
 
 const Circle = ({ scrollValue, id, marginTop }) => {
@@ -71,17 +71,17 @@ const Circle = ({ scrollValue, id, marginTop }) => {
     var height = positionInfo.height;
     var width = positionInfo.width;
 
-    api.start({ xy: [width / 2, 0] });
+    api.start({ xy: [width / 1.4, 0] });
 
     var firstInterval = setInterval(function () {
       api.start({
-        xy: [width / 2.45, 0],
+        xy: [width / 1.45, 0],
       });
     }, 2500);
 
     var secondInterval = setInterval(function () {
       api.start({
-        xy: [width / 2.35, 0],
+        xy: [width / 1.4, 0],
       });
     }, 4000);
     // setInterval(function () {
@@ -114,7 +114,7 @@ const Circle = ({ scrollValue, id, marginTop }) => {
                 style={{
                   marginLeft: "50%",
                   marginTop: "50%",
-                  transform: "translateX(-50%)translateY(-50%)",
+                  transform: "translateX(-50%)translateY(-50%) rotate(20deg)",
                   position: "absolute",
                 }}
               />

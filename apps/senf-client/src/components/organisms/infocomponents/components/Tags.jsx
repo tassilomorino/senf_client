@@ -2,11 +2,13 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import organizationTypes from "../../../../data/organizationTypes";
+import topics from "../../../../data/topics";
+
 import { StyledH3 } from "../../../../styles/GlobalStyle";
 import { isMobileCustom } from "../../../../util/customDeviceDetect";
 const Wrapper = styled.div`
   height: 250px;
-  width: 100vw;
+  width: 100%;
   padding-bottom: ${(props) => (props.isMobileCustom ? "800px" : "1400px")};
 
   z-index: 9999;
@@ -64,27 +66,52 @@ const Icon = styled.div`
   margin-right: 10px;
   margin-left: 3px;
 `;
-const Tags = () => {
+const Checkbox = styled.div`
+  width: 13px;
+  position: relative;
+  height: 13px;
+  border-radius: 6px;
+  flex-grow: 0;
+
+  background-color: ${(props) => props.color && props.color};
+
+  margin-right: 10px;
+  margin-left: 3px;
+`;
+const Tags = ({ type }) => {
   const { t } = useTranslation();
 
   const organizationTypesSliced = organizationTypes.slice(0, -1);
-
+  const topicsSliced = topics.slice(0, -1);
   return (
     <Wrapper isMobileCustom={isMobileCustom}>
-      {organizationTypesSliced.map((organizationTypes, i) => (
-        <Tag
-          key={organizationTypes.name}
-          color={organizationTypes.color}
-          left={organizationTypes.infoPageLeft}
-          id={`tag${i + 1}`}
-        >
-          <Icon data-cy={organizationTypes.name}>
-            {organizationTypes.svgIcon}
-          </Icon>
+      {type === "topics"
+        ? topicsSliced.map((topic, i) => (
+            <Tag
+              key={topic.name}
+              color={topic.color}
+              left={topic.infoPageLeft}
+              id={`infoPageTopicTag${i + 1}`}
+            >
+              <Checkbox color={topic.color} data-cy={topic.name} />
 
-          {organizationTypes.label}
-        </Tag>
-      ))}
+              {topic.label}
+            </Tag>
+          ))
+        : organizationTypesSliced.map((organizationTypes, i) => (
+            <Tag
+              key={organizationTypes.name}
+              color={organizationTypes.color}
+              left={organizationTypes.infoPageLeft}
+              id={`infoPageOrganizationTypeTag${i + 1}`}
+            >
+              <Icon data-cy={organizationTypes.name}>
+                {organizationTypes.svgIcon}
+              </Icon>
+
+              {organizationTypes.label}
+            </Tag>
+          ))}
     </Wrapper>
   );
 };

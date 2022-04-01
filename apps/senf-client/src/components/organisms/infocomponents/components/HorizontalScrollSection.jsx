@@ -28,7 +28,7 @@ import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 const Container = styled.section`
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
 `;
 
 const SpaceHolder = styled.div`
@@ -50,7 +50,6 @@ const Horizontal = styled.div`
 `;
 const CardsSection = styled.section`
   position: relative;
-
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
@@ -65,26 +64,21 @@ const Article = styled.article`
   margin-right: 75px;
   flex-shrink: 0; */
 
-  height: 320px;
-  width: 400px;
-  max-width: 80vw;
+  height: calc(100% - 100px);
+
   flex-shrink: 0;
-
-  margin: 50px 0px 0px 24px;
-
   position: relative;
   box-sizing: border-box;
+  width: calc(100vw - 48px);
+  margin: 24px 50px 0px 24px;
 
-  box-shadow: 0px 12px 18px -8px rgba(186, 160, 79, 0.2),
-    0px -4px 10px 4px rgba(255, 255, 255, 0.2);
-  background-color: ${(props) => (props.active ? "#feecab" : "#fcfbf8")};
-  border-radius: 18px;
-  border: 2px solid ${(props) => (props.active ? "#e8ba02" : "#ffffff")};
+  @media (min-width: 768px) {
+    width: 700px;
+    margin: 50px 50px 0px 50px;
+  }
 `;
 
 const Title = styled.h3`
-  position: sticky;
-  height: 70px;
   font-size: 30px;
   text-align: center;
   width: 90%;
@@ -98,11 +92,12 @@ const Title = styled.h3`
 const Img = styled.img`
   position: absolute;
   top: 30px;
-  height: 95%;
+  height: 115%;
   z-index: 0;
 
   @media (min-width: 768px) {
-    height: 800px;
+    top: 0px;
+    height: calc(100% - 150px);
   }
 `;
 
@@ -132,7 +127,7 @@ const HorizontalScrollSection = ({ id }) => {
       var width = positionInfo.width;
 
       const objectWidth = ref.scrollWidth;
-      return objectWidth - width + height + width / 2; // 150 is the padding (in pixels) desired on the right side of the .cards container. This can be set to whatever your styles dictate
+      return objectWidth - width + height + width * 3; // 150 is the padding (in pixels) desired on the right side of the .cards container. This can be set to whatever your styles dictate
     }
 
     spaceHolder.style.height = `${calcDynamicHeight(horizontal)}px`;
@@ -145,23 +140,26 @@ const HorizontalScrollSection = ({ id }) => {
   const pages = [
     {
       title: "327 Ideen",
-      subTitle: "Jede konstruktive Idee für den Stadtraum ist wertvoll! ",
+      subTitle:
+        "sind auf unserer Plattform für den Stadtraum in Köln eingegangen",
       img: Ideas,
     },
     {
       title: "32 Anträge",
       subTitle:
-        "Als aufgewertete Anträge schaffen wir höhere Erfolgschancen für die jewiligen Ideen",
+        "wurden auf Basis der Ideen als offizielle Anträge an die Stadtverwaltung übergeben",
       img: Submitted,
     },
     {
       title: "12 Stellungnahmen",
-      subTitle: "Prozesse sind langwierig, aber dran bleiben ist die Devise",
+      subTitle:
+        "haben wir als Rückmeldung auf die Anträge von den verantwortlichen Ämtern erhalten",
       img: Statement,
     },
     {
       title: "3 Implementiert",
-      subTitle: "Wir setzen alles daran, dass eure Stimmen gehört werden!",
+      subTitle:
+        "konnten in bestehende oder neue Planungen und beschlüsse aufgenommen werden",
       img: Statement,
     },
   ];
@@ -193,7 +191,7 @@ const HorizontalScrollSection = ({ id }) => {
     <Container>
       <SpaceHolder id={`space-holder${id}`}>
         <Sticky id={`sticky${id}`}>
-          {id === "1" ? (
+          {/* {id === "1" ? (
             <Title>
               Wir setzen uns <br />
               für euch ein!
@@ -203,8 +201,7 @@ const HorizontalScrollSection = ({ id }) => {
               Gemeinsam für die <br />
               Stadt der Zukunft
             </Title>
-          )}
-
+          )} */}
           <Img src={SectionBackground} width="100%" />
 
           <Horizontal id={`horizontal${id}`}>
@@ -212,17 +209,17 @@ const HorizontalScrollSection = ({ id }) => {
               <CardsSection role="feed" class="cards">
                 {pages.map(({ title, subTitle, img }) => (
                   <Article>
-                    <StyledH3 textAlign="center" margin="20px 20px 0px 20px">
+                    <Title textAlign="center" margin="20px 20px 0px 20px">
                       {title}
-                    </StyledH3>
-                    <img src={img} width="90%" style={{ marginLeft: "5%" }} />
+                    </Title>
                     <StyledText
                       textAlign="center"
-                      margin="0px 20px 20px 20px"
+                      margin="20px 20px 40px 20px"
                       marginLeft="20px"
                     >
                       {subTitle}
                     </StyledText>
+                    <img src={img} width="100%" style={{ marginLeft: "0%" }} />
                   </Article>
                 ))}
               </CardsSection>

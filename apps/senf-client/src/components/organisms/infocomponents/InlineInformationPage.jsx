@@ -29,6 +29,8 @@ import {
 } from "../../../redux/actions/UiActions";
 
 import ArrowRight from "../../../images/icons/arrow-right.png";
+import ContactImg from "../../../images/contact.png";
+
 import Info from "../../../images/icons/info.png";
 import DecideLocationImg from "../../../images/infoPage/howItWorks/decideLocationImg.png";
 import FormulateIdeaImg from "../../../images/infoPage/howItWorks/formulateIdeaImg.png";
@@ -53,7 +55,12 @@ const Container = styled.div`
     border-radius: 18px;
   }
 `;
-
+const StyledContactImg = styled.img`
+  width: 50px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+`;
 const LinkHeadline = styled.div`
   margin-top: 80px;
   margin-left: 24px;
@@ -154,7 +161,6 @@ const InlineInformationPage = ({}) => {
     horizontal2.style.transform = `translateX(-${sticky2.offsetTop}px)`;
 
     const el = document.getElementById("InfoPage");
-    const addMustard = document.getElementById("addMustard");
     const sectionOrganizationHeadline = document.getElementById(
       "sectionOrganizationHeadline"
     );
@@ -163,78 +169,95 @@ const InlineInformationPage = ({}) => {
 
     setScrollValue(value);
     const circle = document.getElementById("Circle");
-    circle.style.clipPath = `circle(${4 + value}% at 50% 50%)`;
+    circle.style.clipPath = `circle(${5 + value}% at 50% 50%)`;
     circle.style.transformOrigin = "bottom";
 
     const circle2 = document.getElementById("Circle2");
     circle2.style.clipPath = `circle(${
-      value > 428 ? -424 + value : 4
+      value > 608 ? -603 + value : 5
     }% at 50% 50%)`;
     circle2.style.transformOrigin = "bottom";
 
     const circle3 = document.getElementById("Circle3");
     circle3.style.clipPath = `circle(${
-      value > 828 ? -824 + value : 4
+      value > 1228 ? -1224 + value : 4
     }% at 50% 50%)`;
     circle3.style.transformOrigin = "bottom";
 
     const infoPageBulb = document.getElementById("infoPageBulb");
-    // infoPageBulb.style.transform = `scale(${
-    //   value < 20 ? 1 - value / 20 : 0
-    // }) translateX(-50%) translateY(-50%)`;
     infoPageBulb.style.filter = `blur(${value / 100}px`;
 
-    if (value < 120) {
-      addMustard.style.opacity = `${-5 + value / 3}`;
-    } else {
-      addMustard.style.opacity = `${2.2 - value / 100}%`;
-    }
+    let infoPageTopicTagScrollValue = el?.scrollTop / 10 - 30;
 
-    if (value < 480) {
-      sectionOrganizationHeadline.style.opacity = `${-128 + value / 3}`;
-    } else {
-      sectionOrganizationHeadline.style.opacity = `${2.2 - value / 100}%`;
-    }
+    const infoPageTopicTag1 = document.getElementById("infoPageTopicTag1");
+    const infoPageTopicTag2 = document.getElementById("infoPageTopicTag2");
+    const infoPageTopicTag3 = document.getElementById("infoPageTopicTag3");
+    const infoPageTopicTag4 = document.getElementById("infoPageTopicTag4");
+    const infoPageTopicTag5 = document.getElementById("infoPageTopicTag5");
+    const infoPageTopicTag6 = document.getElementById("infoPageTopicTag6");
+    infoPageTopicTag1.style.transform = `translateX(${
+      infoPageTopicTagScrollValue * 12
+    }px)`;
+    infoPageTopicTag2.style.transform = `translateX(${
+      -infoPageTopicTagScrollValue * 12
+    }px)`;
+    infoPageTopicTag3.style.transform = `translateX(${
+      infoPageTopicTagScrollValue * 12
+    }px)`;
+    infoPageTopicTag4.style.transform = `translateX(${
+      -infoPageTopicTagScrollValue * 8
+    }px)`;
+    infoPageTopicTag5.style.transform = `translateX(${
+      infoPageTopicTagScrollValue * 10
+    }px)`;
+    infoPageTopicTag6.style.transform = `translateX(${
+      -infoPageTopicTagScrollValue * 12
+    }px)`;
 
-    const keyword1 = document.getElementById("keyword1");
-    const keyword2 = document.getElementById("keyword2");
-    const keyword3 = document.getElementById("keyword3");
-    keyword1.style.transition = "0.1s";
-    keyword2.style.transition = "0.1s";
-    keyword3.style.transition = "0.1s";
+    const infoPageOrganizationTypeTag1 = document.getElementById(
+      "infoPageOrganizationTypeTag1"
+    );
+    const infoPageOrganizationTypeTag2 = document.getElementById(
+      "infoPageOrganizationTypeTag2"
+    );
+    const infoPageOrganizationTypeTag3 = document.getElementById(
+      "infoPageOrganizationTypeTag3"
+    );
+    const infoPageOrganizationTypeTag4 = document.getElementById(
+      "infoPageOrganizationTypeTag4"
+    );
+    const infoPageOrganizationTypeTag5 = document.getElementById(
+      "infoPageOrganizationTypeTag5"
+    );
+    const infoPageOrganizationTypeTag6 = document.getElementById(
+      "infoPageOrganizationTypeTag6"
+    );
 
-    keyword1.style.transform = `translateX(${value * 8}px)`;
-    keyword2.style.transform = `translateX(${-value * 10}px)`;
-    keyword3.style.transform = `translateX(${value * 12}px)`;
-
-    const tag1 = document.getElementById("tag1");
-    const tag2 = document.getElementById("tag2");
-    const tag3 = document.getElementById("tag3");
-    const tag4 = document.getElementById("tag4");
-    const tag5 = document.getElementById("tag5");
-    const tag6 = document.getElementById("tag6");
-    tag1.style.transition = "0.1s";
-    tag2.style.transition = "0.1s";
-    tag3.style.transition = "0.1s";
-    tag4.style.transition = "0.1s";
-    tag5.style.transition = "0.1s";
-    tag6.style.transition = "0.1s";
-
-    let secondValue = el?.scrollTop / 10 - 428;
-
-    console.log(secondValue);
+    let secondValue = el?.scrollTop / 10 - 698;
 
     const showOthersImage = document.getElementById("showOthersImage");
     showOthersImage.style.transform = `scale(${
       secondValue / 20 > 1 ? 0 : secondValue < 0 ? 1 : 1 - secondValue / 20
     }) translateX(-50%) translateY(-50%)`;
 
-    tag1.style.transform = `translateX(${secondValue * 8}px)`;
-    tag2.style.transform = `translateX(${-secondValue * 10}px)`;
-    tag3.style.transform = `translateX(${secondValue * 12}px)`;
-    tag4.style.transform = `translateX(${-secondValue * 8}px)`;
-    tag5.style.transform = `translateX(${secondValue * 12}px)`;
-    tag6.style.transform = `translateX(${-secondValue * 14}px)`;
+    infoPageOrganizationTypeTag1.style.transform = `translateX(${
+      secondValue * 8
+    }px)`;
+    infoPageOrganizationTypeTag2.style.transform = `translateX(${
+      -secondValue * 10
+    }px)`;
+    infoPageOrganizationTypeTag3.style.transform = `translateX(${
+      secondValue * 12
+    }px)`;
+    infoPageOrganizationTypeTag4.style.transform = `translateX(${
+      -secondValue * 10
+    }px)`;
+    infoPageOrganizationTypeTag5.style.transform = `translateX(${
+      secondValue * 12
+    }px)`;
+    infoPageOrganizationTypeTag6.style.transform = `translateX(${
+      -secondValue * 14
+    }px)`;
 
     console.log(value);
 
@@ -244,10 +267,18 @@ const InlineInformationPage = ({}) => {
       setVisibleFirstHeadline(true);
     }
 
-    if (value > 5 && value < 135) {
-      setVisibleSecondaryHeadline1(true);
+    if (isMobileCustom) {
+      if (value > 15 && value < 120) {
+        setVisibleSecondaryHeadline1(true);
+      } else {
+        setVisibleSecondaryHeadline1(false);
+      }
     } else {
-      setVisibleSecondaryHeadline1(false);
+      if (value > 15 && value < 140) {
+        setVisibleSecondaryHeadline1(true);
+      } else {
+        setVisibleSecondaryHeadline1(false);
+      }
     }
 
     if (value > 80) {
@@ -261,7 +292,7 @@ const InlineInformationPage = ({}) => {
     } else {
       setVisibleCards2(false);
     }
-    if (value > 355 && value < 535) {
+    if (value > 635 && value < 755) {
       setVisibleSecondaryHeadline2(true);
     } else {
       setVisibleSecondaryHeadline2(false);
@@ -303,12 +334,14 @@ const InlineInformationPage = ({}) => {
         <Container id="InfoPage">
           <CustomIconButton
             name="Close"
-            position="relative"
+            position="absolute"
             left="0px"
             zIndex={999}
             margin={document.body.clientWidth > 768 ? "40px" : "10px"}
             handleButtonClick={handleClose}
           />
+
+          <StyledContactImg src={ContactImg} />
 
           <Headline
             visible={visibleFirstHeadline}
@@ -326,11 +359,15 @@ const InlineInformationPage = ({}) => {
           </LinkHeadline>
 
           {/* <StyledA >Direkt zur Plattform </StyledA> */}
-          <Circle id="Circle" scrollValue={scrollValue} marginTop="150px" />
+          <Circle
+            id="Circle"
+            scrollValue={scrollValue}
+            marginTop={document.body.clientWidth > 768 ? "180px" : "150px"}
+          />
 
           <SecondHeadline
             id="addMustard"
-            marginTop="-70px"
+            marginTop="-400px"
             visible={visibleSecondaryHeadline1}
             textlines={[
               { text: "infopage_addMustard_1" },
@@ -338,8 +375,7 @@ const InlineInformationPage = ({}) => {
             ]}
           />
 
-          <Keywords />
-
+          <Tags type="topics" />
           <HowToCard1>
             <UnderlinedText
               visibleHeadline={visibleCards}
@@ -370,10 +406,10 @@ const InlineInformationPage = ({}) => {
 
           <HorizontalScrollSection id="1" />
 
-          <Circle id="Circle2" scrollValue={scrollValue} marginTop="-150px" />
+          <Circle id="Circle2" scrollValue={scrollValue} marginTop="2850px" />
           <SecondHeadline
             id="sectionOrganizationHeadline"
-            marginTop="0px"
+            marginTop="-400px"
             visible={visibleSecondaryHeadline2}
             textlines={[
               { text: "infopage_organizationsHeadline_1" },
@@ -387,10 +423,9 @@ const InlineInformationPage = ({}) => {
             <UnderlinedText
               visibleHeadline={visibleCards}
               textlines={[
-                { text: "Profile", color: "" },
-                { text: "für", color: "" },
+                { text: "Sichtbarkeit", color: "#F8DA99" },
                 { breakBoolean: true },
-                { text: "Organisationen", color: "#90D8B9" },
+                { text: "erlangen", color: "" },
               ]}
             />
 
@@ -412,11 +447,12 @@ const InlineInformationPage = ({}) => {
             <UnderlinedText
               visibleHeadline={visibleCards2}
               textlines={[
-                { text: "Individuelle", color: "" },
+                { text: "Beteiligung", color: "#90D8B9" },
                 { breakBoolean: true },
-                { text: "Projekträume", color: "#94DFF3" },
+                { text: "ermöglichen", color: "" },
               ]}
             />
+
             <Img
               src={OpenBookBackground}
               width="250px"
