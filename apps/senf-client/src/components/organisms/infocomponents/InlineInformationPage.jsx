@@ -226,7 +226,7 @@ const InlineInformationPage = ({}) => {
     horizontal1.style.transform = `translateX(-${sticky1.offsetTop}px)`;
 
     //SECTION 2
-    const mobileDifference = isMobileCustom ? 200 : 0;
+    const mobileDifference = isMobileCustom ? 230 : 0;
 
     const circle2 = document.getElementById("Circle2");
     circle2.style.clipPath = `circle(${
