@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import "@fullcalendar/core/vdom"; // solves problem with Vite
+import "@fullcalendar/react/dist/vdom"; // solves problem with Vite
 import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import styled from "styled-components";
 import Cookies from "universal-cookie";
