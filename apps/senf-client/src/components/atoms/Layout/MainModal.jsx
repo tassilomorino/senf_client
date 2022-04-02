@@ -34,16 +34,25 @@ const InnerWrapper = styled.div`
   /* display: flex;
   flex-direction: column;
   align-items: space-around; */
-
+  padding: ${(props) => (props.padding ? props.padding : "0px")};
   z-index: 99992;
   overflow-y: scroll;
   max-height: 95%;
 `;
 
-const MainModal = ({ handleButtonClick, children, zIndex, autoWidth }) => {
+const MainModal = ({
+  handleButtonClick,
+  children,
+  zIndex,
+  autoWidth,
+  padding,
+}) => {
   return (
     <Wrapper zIndex={zIndex}>
-      <InnerWrapper autoWidth={autoWidth}> {children}</InnerWrapper>
+      <InnerWrapper padding={padding} autoWidth={autoWidth}>
+        {" "}
+        {children}
+      </InnerWrapper>
       <Background onClick={handleButtonClick} />
     </Wrapper>
   );
