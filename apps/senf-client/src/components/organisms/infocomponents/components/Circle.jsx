@@ -45,7 +45,7 @@ const HooksMain = styled.div`
   div:nth-child(1) {
     width: ${(props) => (props.isMobileCustom ? "1900px" : "3000px")};
     height: ${(props) => (props.isMobileCustom ? "1900px" : "3000px")};
-    border-radius: 100%;
+    border-radius: ${(props) => (props.idRef === "Circle3" ? "0%" : "100%")};
   }
 `;
 
@@ -95,6 +95,7 @@ const Circle = ({ id, marginTop }) => {
       <HooksMain
         isMobileCustom={isMobileCustom}
         //   onMouseMove={handleMouseMove}
+        idRef={id}
       >
         {trail.map((props, index) => (
           <animated.div
@@ -102,7 +103,7 @@ const Circle = ({ id, marginTop }) => {
             key={index}
             style={{ transform: props.xy.to(trans) }}
           >
-            {id === "Circle" ? (
+            {id === "Circle" || id === "Circle3" ? (
               <img
                 src={BulbImg}
                 id="infoPageBulb"
@@ -114,7 +115,7 @@ const Circle = ({ id, marginTop }) => {
                   position: "absolute",
                 }}
               />
-            ) : id === "Circle2" ? (
+            ) : (
               <img
                 src={ShowOthers}
                 id="showOthersImage"
@@ -122,17 +123,6 @@ const Circle = ({ id, marginTop }) => {
                 style={{
                   marginLeft: "calc(50% - 10px)",
                   marginTop: "calc(50% + 30px)",
-                  transform: "translateX(-50%)translateY(-50%)",
-                  position: "absolute",
-                }}
-              />
-            ) : (
-              <img
-                src={Logo}
-                width="150px"
-                style={{
-                  marginLeft: "50%",
-                  marginTop: "50%",
                   transform: "translateX(-50%)translateY(-50%)",
                   position: "absolute",
                 }}

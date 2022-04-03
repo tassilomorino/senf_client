@@ -12,7 +12,6 @@ import {
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 //Components
 import RegistrationAndLogin from "../../organisms/Auth/LoginRegistration";
-import InlineInformationPageDesktop from "../../organisms/infocomponents/InlineInformationPageDesktop";
 import SelectLanguageButton from "../../atoms/Selects/SelectLanguageButton";
 import TagsFilter from "../Filters/TagsFilter";
 import { MenuItem } from "./MenuItem";

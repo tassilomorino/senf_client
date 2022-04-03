@@ -83,6 +83,7 @@ const Title = styled.h3`
   font-weight: 700;
   margin-top: 100px;
   top: 130px;
+  margin-bottom: 10px;
 `;
 const Img = styled.img`
   position: absolute;
@@ -93,6 +94,7 @@ const Img = styled.img`
   @media (min-width: 768px) {
     top: 0px;
     height: calc(100% - 250px);
+    min-height: 800px;
   }
 `;
 
@@ -113,6 +115,21 @@ const Goosefoot = styled.span`
   font-size: 150px;
   width: 100%;
   text-align: center;
+`;
+
+const Text = styled.p`
+  text-align: center;
+  font-style: italic;
+  font-size: 18px;
+  line-height: 20px;
+  margin: 10px 20px 20px 20px;
+
+  @media (min-width: 768px) {
+    margin: 10px 100px 20px 100px;
+
+    font-size: 24px;
+    line-height: 34px;
+  }
 `;
 
 const HorizontalScrollSection = ({ id }) => {
@@ -215,8 +232,13 @@ const HorizontalScrollSection = ({ id }) => {
                     </Title>
                     <StyledText
                       textAlign="center"
-                      margin="20px 20px 40px 20px"
+                      margin="0px 20px 40px 20px"
                       marginLeft="20px"
+                      style={{
+                        fontSize: "24px",
+                        lineHeight: "34px",
+                        fontStyle: "italic",
+                      }}
                     >
                       {subTitle}
                     </StyledText>
@@ -229,19 +251,7 @@ const HorizontalScrollSection = ({ id }) => {
                 {credits.map(({ title, subTitle, img, width }) => (
                   <Article>
                     <Goosefoot>„</Goosefoot>
-                    <StyledText
-                      textAlign="center"
-                      margin={
-                        document.body.clientWidth > 768
-                          ? "10px 100px 20px 100px"
-                          : "10px 20px 20px 20px"
-                      }
-                      marginLeft={
-                        document.body.clientWidth > 768 ? "100px" : "20px"
-                      }
-                    >
-                      {subTitle}
-                    </StyledText>
+                    <Text>{subTitle}</Text>
                     <StyledH3 textAlign="center" margin="20px 20px 20px 20px">
                       {title}
                     </StyledH3>

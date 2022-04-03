@@ -14,7 +14,7 @@ const TrailsText = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 999999;
+  z-index: 9;
 `;
 
 const HeadlineText = styled.h1`

@@ -21,7 +21,12 @@ import SecondHeadline from "./components/SecondHeadline";
 import Tags from "./components/Tags";
 import InfoPageDialog from "../../atoms/Layout/InfoPageDialog";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-import { SideBarTabs, StyledA } from "../../../styles/GlobalStyle";
+import {
+  SideBarTabs,
+  StyledA,
+  StyledH3,
+  StyledText,
+} from "../../../styles/GlobalStyle";
 
 import {
   setInfoPageClosed,
@@ -36,8 +41,8 @@ import DecideLocationImg from "../../../images/infoPage/howItWorks/decideLocatio
 import FormulateIdeaImg from "../../../images/infoPage/howItWorks/formulateIdeaImg.png";
 import WeAreHere from "../../../images/weAreHere.png";
 import City from "../../../images/city.png";
-import WorkTogetherBackground from "../../../images/workTogetherBackground.png";
-import OpenBookBackground from "../../../images/openBookBackground.png";
+import WorkTogether from "../../../images/workTogether.png";
+import OpenBook from "../../../images/openBook.png";
 
 const Container = styled.div`
   height: 100%;
@@ -49,6 +54,7 @@ const Container = styled.div`
   @media (min-width: 768px) {
     width: 800px;
     height: calc(100% - 200px);
+    min-height: 700px;
     margin-left: 50vw;
     margin-top: 50vh;
     transform: translateX(-50%) translateY(-50%);
@@ -56,14 +62,16 @@ const Container = styled.div`
   }
 `;
 const StyledContactImg = styled.img`
-  width: 50px;
+  width: 70px;
   position: absolute;
   top: 10px;
   right: 10px;
 `;
 const LinkHeadline = styled.div`
+  z-index: 99999;
   margin-top: 80px;
   margin-left: 24px;
+  pointer-events: all;
   @media (min-width: 768px) {
     margin-left: 100px;
   }
@@ -75,6 +83,7 @@ const InnerContainer = styled.div`
 
 const HowToCard1 = styled.div`
   margin-bottom: 70px;
+
   @media (min-width: 768px) {
     margin-left: -300px;
   }
@@ -86,7 +95,21 @@ const HowToCard2 = styled.div`
     margin-top: -250px;
   }
 `;
+const Card = styled.div`
+  box-sizing: border-box;
+  width: 250px; /* 104px */
+  height: 320px;
 
+  padding: 14px 10px 14px 10px;
+  box-shadow: 0px 4px 6px -2px rgba(186, 160, 79, 0.2),
+    0px -2px 5px 2px rgba(255, 255, 255, 0.2);
+  background-color: #faf8f3;
+  overflow: visible;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  margin-left: 50%;
+  transform: translateX(-50%);
+`;
 const Img = styled.img`
   margin-left: 50%;
   transform: ${(props) =>
@@ -98,7 +121,7 @@ const Img = styled.img`
 `;
 
 const Link = styled.div`
-  margin-top: 10px;
+  margin-top: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -141,6 +164,8 @@ const InlineInformationPage = ({}) => {
   const [visibleSecondaryHeadline1, setVisibleSecondaryHeadline1] =
     useState(false);
   const [visibleSecondaryHeadline2, setVisibleSecondaryHeadline2] =
+    useState(false);
+  const [visibleSecondaryHeadline3, setVisibleSecondaryHeadline3] =
     useState(false);
 
   const [visibleCards, setVisibleCards] = useState(false);
@@ -301,9 +326,39 @@ const InlineInformationPage = ({}) => {
 
     const circle3 = document.getElementById("Circle3");
     circle3.style.clipPath = `circle(${
-      value > 1228 ? -1224 + value : 4
+      value > 1108 ? -1104 + value : 4
     }% at 50% 50%)`;
     circle3.style.transformOrigin = "bottom";
+
+    if (isMobileCustom) {
+      if (value > 1035 && value < 1205) {
+        setVisibleSecondaryHeadline3(true);
+      } else {
+        setVisibleSecondaryHeadline3(false);
+      }
+    } else {
+      if (value > 1135 && value < 1555) {
+        setVisibleSecondaryHeadline3(true);
+      } else {
+        setVisibleSecondaryHeadline3(false);
+      }
+    }
+
+    let infoPageBubblesScrollValue = el?.scrollTop / 10 - 1180;
+
+    const infoPageBubblee1 = document.getElementById("infoPageBubble1");
+    const infoPageBubblee2 = document.getElementById("infoPageBubble2");
+    const infoPageBubblee3 = document.getElementById("infoPageBubble3");
+
+    infoPageBubblee1.style.transform = `translateX(${
+      infoPageBubblesScrollValue * 8
+    }px)`;
+    infoPageBubblee2.style.transform = `translateX(${
+      -infoPageBubblesScrollValue * 12
+    }px)`;
+    infoPageBubblee3.style.transform = `translateX(${
+      infoPageBubblesScrollValue * 10
+    }px)`;
 
     console.log(value);
   }, []);
@@ -330,16 +385,18 @@ const InlineInformationPage = ({}) => {
         </SideBarTabs>
       )}
 
-      <InfoPageDialog isOpen={openInfoPage}>
+      <InfoPageDialog isOpen={openInfoPage} setIsOpen={handleClose}>
         <Container id="InfoPage">
-          <CustomIconButton
-            name="Close"
-            position="absolute"
-            left="0px"
-            zIndex={999}
-            margin={document.body.clientWidth > 768 ? "40px" : "10px"}
-            handleButtonClick={handleClose}
-          />
+          {isMobileCustom && (
+            <CustomIconButton
+              name="Close"
+              position="absolute"
+              left="0px"
+              zIndex={999}
+              margin={document.body.clientWidth > 768 ? "40px" : "10px"}
+              handleButtonClick={handleClose}
+            />
+          )}
 
           <StyledContactImg src={ContactImg} />
 
@@ -353,7 +410,7 @@ const InlineInformationPage = ({}) => {
             ]}
           />
           <LinkHeadline>
-            <StyledA textAlign="left">
+            <StyledA textAlign="left" onClick={handleClose}>
               Direkt zur Plattform <img src={ArrowRight} width="10px"></img>
             </StyledA>
           </LinkHeadline>
@@ -432,19 +489,25 @@ const InlineInformationPage = ({}) => {
                 { text: "erlangen", color: "" },
               ]}
             />
-
-            <Img
-              src={WorkTogetherBackground}
-              width="250px"
-              visible={visibleCards}
-              style={{ marginTop: "20px" }}
-            />
+            <Card>
+              <Img src={WorkTogether} height="170px" visible={visibleCards} />{" "}
+              <StyledH3 textAlign="center">Organisationsprofile</StyledH3>
+              <StyledText
+                textAlign="center"
+                margin="10px 10px 10px 10px"
+                marginLeft="10px"
+              >
+                Von der Initiative bis zum Planungsbüro: erstellt euch ein
+                eigenes Profil
+              </StyledText>
+            </Card>
+            {/* 
             <Link>
               <StyledA textAlign="center">
                 Organisationsprofile <br />
                 anzeigen <img src={ArrowRight} width="10px"></img>
               </StyledA>
-            </Link>
+            </Link> */}
           </HowToCard1>
 
           <HowToCard2>
@@ -456,28 +519,33 @@ const InlineInformationPage = ({}) => {
                 { text: "ermöglichen", color: "" },
               ]}
             />
-
-            <Img
-              src={OpenBookBackground}
-              width="250px"
-              visible={visibleCards2}
-              style={{ marginTop: "20px" }}
-            />
-            <Link>
-              <StyledA textAlign="center">
-                Projekträume <br />
-                anzeigen <img src={ArrowRight} width="10px"></img>
-              </StyledA>
-            </Link>
+            <Card>
+              <Img src={OpenBook} height="170px" visible={visibleCards2} />{" "}
+              <StyledH3 textAlign="center">Individuelle Projekträume</StyledH3>
+              <StyledText
+                textAlign="center"
+                margin="10px 10px 10px 10px"
+                marginLeft="10px"
+              >
+                Sammelt Ideen für spezifische Orte und Anlässe in interaktiven
+                Räumen
+              </StyledText>
+            </Card>
           </HowToCard2>
 
           <HorizontalScrollSection id="2" />
           <Circle
             id="Circle3"
             scrollValue={scrollValue}
-            marginTop={document.body.clientWidth > 768 ? "2850px" : "1300px"}
+            marginTop={document.body.clientWidth > 768 ? "1850px" : "1300px"}
           />
 
+          <SecondHeadline
+            id="sectionOrganizationHeadline"
+            marginTop="-400px"
+            visible={visibleSecondaryHeadline3}
+            textlines={[{ text: "Geimeinsam" }, { text: "wirkungsvoll!" }]}
+          />
           {/* <CreditsSection />
 
           <Partners /> */}

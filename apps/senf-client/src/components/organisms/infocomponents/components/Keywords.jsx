@@ -47,7 +47,7 @@ const Keywords = () => {
       <Keyword
         color="#BD9BF4"
         id="keyword2"
-        left={document.body.clientWidth > 768 ? "1100px" : "560px"}
+        left={document.body.clientWidth > 768 ? "1300px" : "560px"}
       >
         <h3>{t("transparent")}</h3>
       </Keyword>

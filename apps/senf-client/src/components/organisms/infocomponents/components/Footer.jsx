@@ -1,38 +1,40 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import FooterShape from "../../../../images/infoPage/shapes/footer.png";
+import City from "../../../../images/city.png";
 import LogoWhite from "../../../../images/logo_white.png";
+import ContactBubble from "../../../../images/contact.png";
+import FaqBubble from "../../../../images/faqBubble.png";
+import InstaBubble from "../../../../images/instaBubble.png";
+
 import { StyledH3 } from "../../../../styles/GlobalStyle";
 import NewButton from "../../../atoms/CustomButtons/NewButton";
 import FooterLinks from "../../../molecules/Footer/FooterLinks";
+import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 const Wrapper = styled.div`
-  margin-top: 50px;
-  height: 350px;
+  height: calc(100vh - 420px);
   width: 100%;
+
+  z-index: 9999;
+  position: sticky;
+  top: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+const InnerWrapper = styled.div`
+  height: 60%;
+  width: 100%;
+`;
+const Bubble = styled.div`
+  height: 100px;
+  width: 100px;
+  margin-top: 10px;
+  left: ${(props) => props.left};
   position: relative;
-  z-index: 99999;
-`;
-const YellowBackground = styled.div`
-  height: 100%;
-  width: 100%;
-  background-color: #fed957;
-  margin-top: 50px;
-  position: absolute;
 `;
 
-const ContentWrapper = styled.div`
-  margin: 24px;
-  margin-top: 50px;
-  position: absolute;
-  height: calc(100% - 48px);
-  width: calc(100% - 48px);
-`;
-
-const ButtonsWrapper = styled.div`
-  margin: 44px;
-`;
-const Footer = () => {
+const Footer = ({ handleClose }) => {
   const { t } = useTranslation();
 
   const [contactOpen, setContactOpen] = useState(false);
@@ -41,48 +43,30 @@ const Footer = () => {
 
   return (
     <Wrapper>
-      <img
-        src={FooterShape}
-        width="100%"
-        style={{
-          position: "absolute",
-        }}
+      <InnerWrapper>
+        <Bubble color="#BD9BF4" id="infoPageBubble1" left="10%">
+          <img src={FaqBubble} width="100%" />
+        </Bubble>
+        <Bubble color="#90D8B9" id="infoPageBubble2" left="95%">
+          <img src={ContactBubble} width="100%" />
+        </Bubble>
+
+        <Bubble color="#90D8B9" id="infoPageBubble3" left="-8%">
+          <img src={InstaBubble} width="100%" />
+        </Bubble>
+      </InnerWrapper>
+
+      <SubmitButton
+        text={t("showIdeas")}
+        zIndex="999"
+        backgroundColor="white"
+        textColor="#353535"
+        handleButtonClick={handleClose}
+        position="absolute"
+        bottom="50px"
       />
-      <YellowBackground />
-      <ContentWrapper>
-        {/* <img
-          src={LogoWhite}
-          width="150px"
-          style={{
-            marginLeft: "50%",
-            transform: "translateX(-50%)",
-            position: "relative",
-          }}
-        /> */}
-        <ButtonsWrapper>
-          <NewButton handleButtonClick={() => setContactOpen(true)}>
-            {t("showIdeas")}
-          </NewButton>
 
-          <NewButton
-            margin="20px 0px"
-            handleButtonClick={() => setContactOpen(true)}
-          >
-            {t("contact")}
-          </NewButton>
-
-          <NewButton
-            margin="20px 0px"
-            handleButtonClick={() => setFaqOpen(true)}
-          >
-            FAQ
-          </NewButton>
-        </ButtonsWrapper>
-
-        {/* <StyledH3>{t("contact")}</StyledH3> */}
-
-        <FooterLinks color="#353535" position="relative" />
-      </ContentWrapper>
+      <FooterLinks color="#353535" position="relative" />
     </Wrapper>
   );
 };
