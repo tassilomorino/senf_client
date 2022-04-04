@@ -117,13 +117,13 @@ const Circle = ({ id, marginTop }) => {
               />
             ) : (
               <img
-                src={ShowOthers}
-                id="showOthersImage"
-                width="200px"
+                src={BulbImg}
+                id="infoPageBulb"
+                width="100px"
                 style={{
-                  marginLeft: "calc(50% - 10px)",
-                  marginTop: "calc(50% + 30px)",
-                  transform: "translateX(-50%)translateY(-50%)",
+                  marginLeft: "50%",
+                  marginTop: "50%",
+                  transform: "translateX(-50%)translateY(-50%) rotate(20deg)",
                   position: "absolute",
                 }}
               />

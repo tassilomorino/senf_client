@@ -18,15 +18,14 @@ const TrailsText = styled.div`
 `;
 
 const HeadlineText = styled.h1`
-  line-height: 50px;
   color: white;
-  font-size: 50px;
+  line-height: ${(props) => (props.fontSize ? props.fontSize : "50px")};
+  font-size: ${(props) => (props.fontSize ? props.fontSize : "50px")};
   font-weight: 1000;
   letter-spacing: -0.05em;
   height: 30px;
   display: inline-block;
   text-align: center;
-    opacity: ${(props) => (props.visible ? 1 : 1)}; */
 `;
 
 const Line = styled.div`
@@ -70,14 +69,14 @@ const Trail = ({ open, children }) => {
   );
 };
 
-const SecondHeadline = ({ id, visible, textlines, marginTop }) => {
+const SecondHeadline = ({ id, visible, textlines, marginTop, fontSize }) => {
   const { t } = useTranslation();
 
   return (
     <Container marginTop={marginTop}>
       <Trail open={visible}>
         {textlines.map(({ text, color }) => (
-          <HeadlineText id={id}>
+          <HeadlineText id={id} fontSize={fontSize}>
             {t(text)} <Line color={color} />
           </HeadlineText>
         ))}

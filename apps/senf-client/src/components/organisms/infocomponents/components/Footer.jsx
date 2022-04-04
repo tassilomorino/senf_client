@@ -17,7 +17,7 @@ const Wrapper = styled.div`
 
   z-index: 9999;
   position: sticky;
-  top: 200px;
+  top: 150px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -47,14 +47,14 @@ const Footer = ({ handleClose }) => {
 
   return (
     <Wrapper>
-      <Bubble color="#BD9BF4" id="infoPageBubble1" left="10%">
+      <Bubble color="#BD9BF4" id="infoPageBubble1" left="0%">
         <img src={Faq} width="100%" />
       </Bubble>
       <Bubble color="#90D8B9" id="infoPageBubble2" left="95%">
         <img src={Contact} width="100%" />
       </Bubble>
 
-      <Bubble color="#90D8B9" id="infoPageBubble3" left="-0%">
+      <Bubble color="#90D8B9" id="infoPageBubble3" left="-10%">
         <img src={Insta} width="100%" />
       </Bubble>
 

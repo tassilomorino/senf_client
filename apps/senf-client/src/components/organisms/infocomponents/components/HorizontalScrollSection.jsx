@@ -88,7 +88,7 @@ const Title = styled.h3`
 const Img = styled.img`
   position: absolute;
   top: 0px;
-  height: calc(100% - 50px);
+  height: calc(100% - 10px);
   z-index: 0;
 
   @media (min-width: 768px) {
@@ -135,9 +135,9 @@ const Goosefoot = styled.span`
 const Text = styled.p`
   text-align: center;
   font-style: italic;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 20px;
-  margin: 10px 20px 20px 20px;
+  margin: 10px 5px 5px 5px;
 
   @media (min-width: 768px) {
     margin: 10px 100px 20px 100px;

@@ -341,8 +341,14 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
 
     // SECTION 3
 
-    const mobileDifferenceCircle3 = isMobileCustom ? 325 : 0;
-    const mobileDifferenceBubbles = isMobileCustom ? 345 : 0;
+    const mobileDifferenceCircle3 = isMobileCustom
+      ? 425 - window.innerHeight / 8
+      : 0;
+    const mobileDifferenceBubbles = isMobileCustom
+      ? 435 - window.innerHeight / 8
+      : 0;
+
+    console.log();
 
     const circle3 = document.getElementById("Circle3");
 
@@ -509,6 +515,7 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
               { text: "infopage_organizationsHeadline_1" },
               { text: "infopage_organizationsHeadline_2" },
             ]}
+            fontSize={isMobileCustom ? "11vw" : "50px"}
           />
 
           <Tags />
@@ -534,13 +541,6 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
                 eigenes Profil
               </StyledText>
             </Card>
-            {/* 
-            <Link>
-              <StyledA textAlign="center">
-                Organisationsprofile <br />
-                anzeigen <img src={ArrowRight} width="10px"></img>
-              </StyledA>
-            </Link> */}
           </HowToCard1>
 
           <HowToCard2 onClick={handleSetOpenProjectRoomsOverview}>
