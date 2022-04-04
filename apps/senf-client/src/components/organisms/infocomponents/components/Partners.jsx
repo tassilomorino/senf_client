@@ -22,7 +22,7 @@ const Wrapper = styled.div`
   margin: 30px;
   height: 100px;
   width: 1600px;
-  top: ${(props) => (props.isMobileCustom ? "80vh" : "70vh")};
+  top: ${(props) => (props.isMobileCustom ? "calc(100vh - 30px)" : "75vh")};
   left: 0;
   position: relative;
   display: flex;

@@ -16,6 +16,7 @@ const Wrapper = styled.div`
   left: 0;
   display: flex;
   justify-content: center;
+  z-index: 999;
 `;
 const FooterLinks = ({ color, position, top, bottom }) => {
   const { t } = useTranslation();

@@ -44,6 +44,7 @@ import City from "../../../images/city.png";
 import WorkTogether from "../../../images/workTogether.png";
 import OpenBook from "../../../images/openBook.png";
 import { openMail } from "../../../util/helpers";
+import FooterLinks from "../../molecules/Footer/FooterLinks";
 
 const Container = styled.div`
   height: 100%;
@@ -368,18 +369,23 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
     let infoPageBubblesScrollValue =
       el?.scrollTop / 10 - (1180 - mobileDifferenceBubbles);
 
-    const infoPageBubblee1 = document.getElementById("infoPageBubble1");
-    const infoPageBubblee2 = document.getElementById("infoPageBubble2");
-    const infoPageBubblee3 = document.getElementById("infoPageBubble3");
+    const infoPageBubble1 = document.getElementById("infoPageBubble1");
+    const infoPageBubble2 = document.getElementById("infoPageBubble2");
+    const infoPageBubble3 = document.getElementById("infoPageBubble3");
+    const infoPageBubble4 = document.getElementById("infoPageBubble4");
 
-    infoPageBubblee1.style.transform = `translateX(${
+    infoPageBubble1.style.transform = `translateX(${
       infoPageBubblesScrollValue * 8
     }px)`;
-    infoPageBubblee2.style.transform = `translateX(${
+    infoPageBubble2.style.transform = `translateX(${
       -infoPageBubblesScrollValue * 12
     }px)`;
-    infoPageBubblee3.style.transform = `translateX(${
+    infoPageBubble3.style.transform = `translateX(${
       infoPageBubblesScrollValue * 10
+    }px)`;
+
+    infoPageBubble4.style.transform = `translateX(${
+      -infoPageBubblesScrollValue * 8
     }px)`;
 
     console.log(value);
@@ -389,6 +395,8 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
     if (openInfoPage) {
       const div = document.getElementById("InfoPage");
       div?.addEventListener("scroll", handleScroll);
+
+      setVisibleFirstHeadline(true);
     }
   }, [handleScroll, openInfoPage]);
 
@@ -569,12 +577,16 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
             id="sectionOrganizationHeadline"
             marginTop="-400px"
             visible={visibleSecondaryHeadline3}
-            textlines={[{ text: "Geimeinsam" }, { text: "wirkungsvoll!" }]}
+            textlines={[{ text: t("infopage_lastSection_1") }]}
           />
-          {/* <CreditsSection />
 
-          <Partners /> */}
           <Footer />
+
+          <FooterLinks
+            color="#353535"
+            position="relative"
+            top={document.body.clientWidth > 768 ? "1140px" : "580px"}
+          />
         </Container>
       </InfoPageDialog>
     </Fragment>

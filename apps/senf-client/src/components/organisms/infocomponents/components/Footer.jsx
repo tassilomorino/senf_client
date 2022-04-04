@@ -3,9 +3,10 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import City from "../../../../images/city.png";
 import LogoWhite from "../../../../images/logo_white.png";
-import ContactBubble from "../../../../images/contact.png";
-import FaqBubble from "../../../../images/faqBubble.png";
-import InstaBubble from "../../../../images/instaBubble.png";
+import Contact from "../../../../images/infoPage/lastSection/contact.png";
+import Faq from "../../../../images/infoPage/lastSection/faq.png";
+import Insta from "../../../../images/infoPage/lastSection/insta.png";
+import Bulb from "../../../../images/infoPage/lastSection/bulb.png";
 
 import { StyledH3 } from "../../../../styles/GlobalStyle";
 import NewButton from "../../../atoms/CustomButtons/NewButton";
@@ -20,20 +21,19 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: calc(100vh - 220px);
 
-  @media (min-width: 768px) {
-    height: calc(100vh - 420px);
-  }
+  height: 400px;
 `;
 const InnerWrapper = styled.div`
-  height: 60%;
+  position: sticky;
+  top: 50px;
+
+  height: 70%;
   width: 100%;
 `;
 const Bubble = styled.div`
   height: 100px;
   width: 100px;
-  margin-top: 10px;
   left: ${(props) => props.left};
   position: relative;
 `;
@@ -47,30 +47,20 @@ const Footer = ({ handleClose }) => {
 
   return (
     <Wrapper>
-      <InnerWrapper>
-        <Bubble color="#BD9BF4" id="infoPageBubble1" left="10%">
-          <img src={FaqBubble} width="100%" />
-        </Bubble>
-        <Bubble color="#90D8B9" id="infoPageBubble2" left="95%">
-          <img src={ContactBubble} width="100%" />
-        </Bubble>
+      <Bubble color="#BD9BF4" id="infoPageBubble1" left="10%">
+        <img src={Faq} width="100%" />
+      </Bubble>
+      <Bubble color="#90D8B9" id="infoPageBubble2" left="95%">
+        <img src={Contact} width="100%" />
+      </Bubble>
 
-        <Bubble color="#90D8B9" id="infoPageBubble3" left="-8%">
-          <img src={InstaBubble} width="100%" />
-        </Bubble>
-      </InnerWrapper>
+      <Bubble color="#90D8B9" id="infoPageBubble3" left="-0%">
+        <img src={Insta} width="100%" />
+      </Bubble>
 
-      <SubmitButton
-        text={t("showIdeas")}
-        zIndex="999"
-        backgroundColor="white"
-        textColor="#353535"
-        handleButtonClick={handleClose}
-        position="absolute"
-        bottom="50px"
-      />
-
-      <FooterLinks color="#353535" position="relative" />
+      <Bubble color="#90D8B9" id="infoPageBubble4" left="78%">
+        <img src={Bulb} width="100%" />
+      </Bubble>
     </Wrapper>
   );
 };
