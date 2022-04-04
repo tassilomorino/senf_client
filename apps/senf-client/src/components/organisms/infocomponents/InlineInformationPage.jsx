@@ -43,6 +43,7 @@ import WeAreHere from "../../../images/weAreHere.png";
 import City from "../../../images/city.png";
 import WorkTogether from "../../../images/workTogether.png";
 import OpenBook from "../../../images/openBook.png";
+import { openMail } from "../../../util/helpers";
 
 const Container = styled.div`
   height: 100%;
@@ -66,9 +67,14 @@ const StyledContactImg = styled.img`
   position: absolute;
   top: 10px;
   right: 10px;
+  transition: 0.1s;
+  &:hover {
+    width: 80px;
+  }
 `;
 const LinkHeadline = styled.div`
-  z-index: 99999;
+  position: relative;
+  z-index: 0;
   margin-top: 80px;
   margin-left: 24px;
   pointer-events: all;
@@ -128,7 +134,7 @@ const Link = styled.div`
   text-align: center;
 `;
 
-const InlineInformationPage = ({}) => {
+const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -140,6 +146,16 @@ const InlineInformationPage = ({}) => {
   }, [dispatch]);
 
   const handleClose = useCallback(() => {
+    dispatch(setInfoPageClosed());
+  }, [dispatch]);
+
+  const handleSetOpenProjectRoomsOverview = useCallback(() => {
+    setOrder(2);
+    dispatch(setInfoPageClosed());
+  }, [dispatch]);
+
+  const handleSetOpenOrganizationsOverview = useCallback(() => {
+    setOpenOrganizationsPage(true);
     dispatch(setInfoPageClosed());
   }, [dispatch]);
 
@@ -324,14 +340,19 @@ const InlineInformationPage = ({}) => {
 
     // SECTION 3
 
+    const mobileDifferenceCircle3 = isMobileCustom ? 325 : 0;
+    const mobileDifferenceBubbles = isMobileCustom ? 345 : 0;
+
     const circle3 = document.getElementById("Circle3");
+
     circle3.style.clipPath = `circle(${
-      value > 1108 ? -1104 + value : 4
+      value > 1108 - mobileDifferenceCircle3
+        ? -1103 + mobileDifferenceCircle3 + value
+        : 5
     }% at 50% 50%)`;
-    circle3.style.transformOrigin = "bottom";
 
     if (isMobileCustom) {
-      if (value > 1035 && value < 1205) {
+      if (value > 805 && value < 1205) {
         setVisibleSecondaryHeadline3(true);
       } else {
         setVisibleSecondaryHeadline3(false);
@@ -344,7 +365,8 @@ const InlineInformationPage = ({}) => {
       }
     }
 
-    let infoPageBubblesScrollValue = el?.scrollTop / 10 - 1180;
+    let infoPageBubblesScrollValue =
+      el?.scrollTop / 10 - (1180 - mobileDifferenceBubbles);
 
     const infoPageBubblee1 = document.getElementById("infoPageBubble1");
     const infoPageBubblee2 = document.getElementById("infoPageBubble2");
@@ -398,7 +420,10 @@ const InlineInformationPage = ({}) => {
             />
           )}
 
-          <StyledContactImg src={ContactImg} />
+          <StyledContactImg
+            src={ContactImg}
+            onClick={() => openMail("dein@senf.koeln")}
+          />
 
           <Headline
             visible={visibleFirstHeadline}
@@ -480,7 +505,7 @@ const InlineInformationPage = ({}) => {
 
           <Tags />
 
-          <HowToCard1>
+          <HowToCard1 onClick={handleSetOpenOrganizationsOverview}>
             <UnderlinedText
               visibleHeadline={visibleCards}
               textlines={[
@@ -510,7 +535,7 @@ const InlineInformationPage = ({}) => {
             </Link> */}
           </HowToCard1>
 
-          <HowToCard2>
+          <HowToCard2 onClick={handleSetOpenProjectRoomsOverview}>
             <UnderlinedText
               visibleHeadline={visibleCards2}
               textlines={[
@@ -537,7 +562,7 @@ const InlineInformationPage = ({}) => {
           <Circle
             id="Circle3"
             scrollValue={scrollValue}
-            marginTop={document.body.clientWidth > 768 ? "1850px" : "1300px"}
+            marginTop={document.body.clientWidth > 768 ? "1850px" : "900px"}
           />
 
           <SecondHeadline

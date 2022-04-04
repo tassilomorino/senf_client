@@ -59,6 +59,8 @@ const DesktopSidebar = ({
   handleClick,
   setChangeLocationModalOpen,
   loading,
+  setOrder,
+  setOpenOrganizationsPage,
 }) => {
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openAccount = useSelector((state) => state.UI.openAccount);
@@ -202,8 +204,10 @@ const DesktopSidebar = ({
         }}
       />
       <br />
-      <InlineInformationPage />
-      {/* <InlineInformationPageDesktop /> */}
+      <InlineInformationPage
+        setOrder={setOrder}
+        setOpenOrganizationsPage={setOpenOrganizationsPage}
+      />
       <div
         style={{
           position: "relative",

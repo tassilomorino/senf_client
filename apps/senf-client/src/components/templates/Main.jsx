@@ -427,7 +427,13 @@ const Main = () => {
                 }
               />
             )}
-          <Topbar loading={loading} handleClick={handleClick} order={order} />
+          <Topbar
+            loading={loading}
+            handleClick={handleClick}
+            order={order}
+            setOrder={setOrder}
+            setOpenOrganizationsPage={setOpenOrganizationsPage}
+          />
         </React.Fragment>
       ) : (
         <DesktopSidebar
@@ -435,6 +441,8 @@ const Main = () => {
           order={order}
           setChangeLocationModalOpen={setChangeLocationModalOpen}
           loading={initialLoading}
+          setOrder={setOrder}
+          setOpenOrganizationsPage={setOpenOrganizationsPage}
         />
       )}
 

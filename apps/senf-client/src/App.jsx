@@ -118,9 +118,7 @@ if (cookies.get("Cookie_settings") === "all") {
 } else if (cookies.get("Cookie_settings") === "minimum") {
   store.dispatch(setCookies("minimum"));
 } else {
-  if (!isMobileCustom) {
-    store.dispatch(setInfoPageOpen());
-  }
+  store.dispatch(setInfoPageOpen());
 }
 let vh = window.innerHeight * 0.01;
 // Then we set the value in the --vh custom property to the root of the document

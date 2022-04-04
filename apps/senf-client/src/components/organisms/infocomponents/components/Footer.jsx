@@ -12,7 +12,6 @@ import NewButton from "../../../atoms/CustomButtons/NewButton";
 import FooterLinks from "../../../molecules/Footer/FooterLinks";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 const Wrapper = styled.div`
-  height: calc(100vh - 420px);
   width: 100%;
 
   z-index: 9999;
@@ -21,6 +20,11 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  height: calc(100vh - 220px);
+
+  @media (min-width: 768px) {
+    height: calc(100vh - 420px);
+  }
 `;
 const InnerWrapper = styled.div`
   height: 60%;

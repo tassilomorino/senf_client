@@ -41,9 +41,10 @@ const Line = styled.div`
 const Container = styled.div`
   position: sticky;
   top: 0px;
-  z-index: 9999;
+  z-index: 9;
   margin-top: ${(props) => (props.marginTop ? props.marginTop : 0)};
   padding-bottom: 150px;
+  pointer-events: none;
 `;
 
 const Trail = ({ open, children }) => {

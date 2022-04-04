@@ -98,6 +98,21 @@ const Img = styled.img`
   }
 `;
 
+const ArticleImg = styled.img`
+  position: absolute;
+  max-width: 100%;
+  margin-left: 50%;
+  transform: translate(-50%, -20%);
+
+  margin-top: 320px;
+
+  @media (min-width: 768px) {
+    margin-top: 50%;
+    max-width: 100%;
+    max-height: 450px;
+  }
+`;
+
 const Flex = styled.div`
   width: calc(100% - 20px);
   position: relative;
@@ -230,19 +245,8 @@ const HorizontalScrollSection = ({ id }) => {
                     <Title textAlign="center" margin="20px 20px 0px 20px">
                       {title}
                     </Title>
-                    <StyledText
-                      textAlign="center"
-                      margin="0px 20px 40px 20px"
-                      marginLeft="20px"
-                      style={{
-                        fontSize: "24px",
-                        lineHeight: "34px",
-                        fontStyle: "italic",
-                      }}
-                    >
-                      {subTitle}
-                    </StyledText>
-                    <img src={img} width="100%" style={{ marginLeft: "0%" }} />
+                    <Text>{subTitle}</Text>
+                    <ArticleImg src={img} />
                   </Article>
                 ))}
               </CardsSection>

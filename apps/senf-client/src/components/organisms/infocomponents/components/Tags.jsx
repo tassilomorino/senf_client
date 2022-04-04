@@ -17,6 +17,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  pointer-events: none;
 `;
 const Tag = styled.div`
   width: max-content;
