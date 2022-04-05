@@ -118,7 +118,7 @@ const Toolbar = ({
       dispatch(setSwipePositionUp());
     }
   };
-  console.log(dropdown, "dropdown");
+
   return (
     !loading && (
       <Wrapper marginTop={marginTop} searchOpen={searchOpen}>

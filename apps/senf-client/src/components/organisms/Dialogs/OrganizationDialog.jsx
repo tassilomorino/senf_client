@@ -327,38 +327,41 @@ const OrganizationDialog = ({
 
   const dataFinal = projectRoomsData;
 
-  useEffect(async () => {
-    if (
-      organization &&
-      user.organizationId.includes(organization?.organizationId)
-    ) {
-      const db = firebase.firestore();
-      const data = [];
+  useEffect(() => {
+    async function fetchData() {
+      if (
+        organization &&
+        user.organizationId.includes(organization?.organizationId)
+      ) {
+        const db = firebase.firestore();
+        const data = [];
 
-      const projectRoomsRef = await db
-        .collection("organizations")
-        .doc(organization.organizationId)
-        .collection("projectRooms")
-        .where("status", "!=", "active")
-        .orderBy("status", "desc")
-        .orderBy("createdAt", "desc")
-        .get();
-      if (!projectRoomsRef.exists) {
-        console.log("no prs in loadOrganizationProjectRooms");
-      }
+        const projectRoomsRef = await db
+          .collection("organizations")
+          .doc(organization.organizationId)
+          .collection("projectRooms")
+          .where("status", "!=", "active")
+          .orderBy("status", "desc")
+          .orderBy("createdAt", "desc")
+          .get();
+        if (!projectRoomsRef.exists) {
+          console.log("no prs in loadOrganizationProjectRooms");
+        }
 
-      projectRoomsRef.docs.forEach((doc) => {
-        data.push({
-          ...doc.data(),
-          projectRoomId: doc.id,
-          organizationType: doc.data().organizationType,
-          icon: setIconByOrganizationType(doc.data().organizationType),
+        projectRoomsRef.docs.forEach((doc) => {
+          data.push({
+            ...doc.data(),
+            projectRoomId: doc.id,
+            organizationType: doc.data().organizationType,
+            icon: setIconByOrganizationType(doc.data().organizationType),
+          });
+          setUncompletedOrDeactivatedProjectRooms(data);
+          console.log(uncompletedOrDeactivatedProjectRooms);
         });
-        setUncompletedOrDeactivatedProjectRooms(data);
-        console.log(uncompletedOrDeactivatedProjectRooms);
-      });
+      }
     }
-  }, [organization.organizationId]);
+    fetchData();
+  }, [organization.organizationId, organization, user.organizationId]);
 
   return !loadingOrganization ? (
     <Wrapper>
