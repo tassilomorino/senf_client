@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ReactDOM from "react-dom";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import City from "../../../../images/city.png";
@@ -8,10 +9,19 @@ import Faq from "../../../../images/infoPage/lastSection/faq.png";
 import Insta from "../../../../images/infoPage/lastSection/insta.png";
 import Bulb from "../../../../images/infoPage/lastSection/bulb.png";
 
-import { StyledH3 } from "../../../../styles/GlobalStyle";
+import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 import NewButton from "../../../atoms/CustomButtons/NewButton";
 import FooterLinks from "../../../molecules/Footer/FooterLinks";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
+import { isMobileCustom } from "../../../../util/customDeviceDetect";
+import { openMail } from "../../../../util/helpers";
+import MainModal from "../../../atoms/Layout/MainModal";
+import { Accordion } from "../../../molecules/Accordion/Accordion";
+
+const faqData = [
+  { question: "hey?", answer: "hoo" },
+  { question: "hey?", answer: "hoo" },
+];
 const Wrapper = styled.div`
   width: 100%;
 
@@ -22,43 +32,104 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  height: 400px;
-`;
-const InnerWrapper = styled.div`
-  position: sticky;
-  top: 50px;
+  height: 320px;
 
-  height: 70%;
-  width: 100%;
+  @media (min-width: 768px) {
+    top: 200px;
+    height: 400px;
+  }
 `;
+
 const Bubble = styled.div`
-  height: 100px;
-  width: 100px;
+  height: 80px;
+  width: 80px;
   left: ${(props) => props.left};
   position: relative;
+  transition: 0.2s;
+
+  &:hover {
+    width: 90px;
+  }
+
+  @media (min-width: 768px) {
+    height: 100px;
+    width: 100px;
+
+    &:hover {
+      width: 110px;
+    }
+  }
+`;
+
+const Divider = styled.div`
+  width: calc(100% - 48px);
+  height: 1px;
+  background-color: rgba(186, 160, 79, 0.2);
+  overflow: visible;
+  margin: 10px 24px 10px 24px;
 `;
 
 const Footer = ({ handleClose }) => {
   const { t } = useTranslation();
-
-  const [contactOpen, setContactOpen] = useState(false);
-  const [calendarOpen, setCalendarOpen] = useState(false);
   const [faqOpen, setFaqOpen] = useState(false);
 
   return (
     <Wrapper>
-      <Bubble color="#BD9BF4" id="infoPageBubble1" left="0%">
+      {ReactDOM.createPortal(
+        <React.Fragment>
+          {faqOpen && (
+            <MainModal handleButtonClick={() => setFaqOpen(false)}>
+              <StyledH2
+                fontWeight="900"
+                margin="15px 0px 0px 0px"
+                textAlign="center"
+              >
+                FAQ
+              </StyledH2>
+              <br />
+              <Divider />
+
+              <Accordion data={faqData} />
+            </MainModal>
+          )}
+        </React.Fragment>,
+        document.getElementById("portal-root-modal")
+      )}
+
+      <Bubble
+        color="#BD9BF4"
+        id="infoPageBubble1"
+        left={isMobileCustom ? window.innerWidth / 200 + "%" : "-3%"}
+        onClick={() => setFaqOpen(true)}
+      >
         <img src={Faq} width="100%" />
       </Bubble>
-      <Bubble color="#90D8B9" id="infoPageBubble2" left="95%">
+      <Bubble
+        color="#90D8B9"
+        id="infoPageBubble2"
+        left={isMobileCustom ? window.innerWidth / 3.6 + "%" : "105%"}
+        onClick={() => openMail("dein@senf.koeln")}
+      >
         <img src={Contact} width="100%" />
       </Bubble>
 
-      <Bubble color="#90D8B9" id="infoPageBubble3" left="-10%">
+      <Bubble
+        color="#90D8B9"
+        id="infoPageBubble3"
+        left={isMobileCustom ? -window.innerWidth / 200 + "%" : "-5%"}
+        onClick={() =>
+          window.open("https://www.instagram.com/senf.koeln/", "_blank")
+        }
+      >
         <img src={Insta} width="100%" />
       </Bubble>
 
-      <Bubble color="#90D8B9" id="infoPageBubble4" left="78%">
+      <Bubble
+        color="#90D8B9"
+        id="infoPageBubble4"
+        left={isMobileCustom ? window.innerWidth / 5.2 + "%" : "90%"}
+        onClick={handleClose}
+      >
         <img src={Bulb} width="100%" />
       </Bubble>
     </Wrapper>

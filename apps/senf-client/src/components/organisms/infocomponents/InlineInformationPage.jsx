@@ -580,12 +580,12 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
             textlines={[{ text: t("infopage_lastSection_1") }]}
           />
 
-          <Footer />
+          <Footer handleClose={handleClose} />
 
           <FooterLinks
             color="#353535"
             position="relative"
-            top={document.body.clientWidth > 768 ? "1140px" : "580px"}
+            top={document.body.clientWidth > 768 ? "1140px" : "660px"}
           />
         </Container>
       </InfoPageDialog>
