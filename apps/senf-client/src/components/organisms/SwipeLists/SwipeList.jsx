@@ -609,10 +609,7 @@ const SwipeList = ({
                 />
               )}
             {order === 3 && openProjectRoom && (
-              <CalendarComponent
-                projectScreams={project?.screams}
-                handleClick={handleClick}
-              />
+              <CalendarComponent handleClick={handleClick} />
             )}
             <Wave />
           </ListWrapper>

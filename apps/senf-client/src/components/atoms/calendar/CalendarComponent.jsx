@@ -17,6 +17,7 @@ import googleCalendarPlugin from "@fullcalendar/google-calendar";
 
 import "./Fullcalendar.css";
 import MainModal from "../Layout/MainModal";
+import { loadProjectRoomData } from "../../../redux/actions/projectActions";
 
 let str = formatDate(new Date(), {
   month: "long",
@@ -36,8 +37,14 @@ const CalendarWrapper = styled.div`
   padding-bottom: 50vh;
   pointer-events: all;
 `;
-const CalendarComponent = ({ projectScreams, googleCalendarId, ...props }) => {
+const CalendarComponent = ({ googleCalendarId, ...props }) => {
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
+
+  const projectRoomId = useSelector(
+    (state) => state.data.project?.projectRoomId
+  );
+  const projectScreams = useSelector((state) => state.data.project?.screams);
+  const projectCalendar = useSelector((state) => state.data.project?.calendar);
 
   const dispatch = useDispatch();
   const cookies = new Cookies();
@@ -46,11 +53,12 @@ const CalendarComponent = ({ projectScreams, googleCalendarId, ...props }) => {
 
     calendarEvents: [
       // initial event data
-      {
+      /*  {
         title: "Aktion X",
         date: new Date(1623397202 * 1000),
         id: "cIOhFG1vJoI9lDQ0QOPk",
       },
+      */
     ],
   });
 
@@ -64,13 +72,16 @@ const CalendarComponent = ({ projectScreams, googleCalendarId, ...props }) => {
       });
     }
   }, [googleCalendarId]);
+  useEffect(() => {
+    dispatch(loadProjectRoomData(projectRoomId));
+  }, [dispatch, projectRoomId]);
 
   useEffect(() => {
     const data = [];
     let i;
     let u;
-
-    if (projectScreams) {
+    console.log(projectScreams, "projectScreams");
+    if (projectScreams && projectCalendar) {
       for (i = 0; i < projectScreams.length; i++) {
         if (
           projectScreams[i].selectedUnix === undefined ||
@@ -90,7 +101,7 @@ const CalendarComponent = ({ projectScreams, googleCalendarId, ...props }) => {
 
       setInitState({ ...initState, calendarEvents: data });
     }
-  }, []);
+  }, [projectScreams, projectCalendar]);
 
   const handleEventClick = ({ event, el }) => {
     if (projectScreams) {
