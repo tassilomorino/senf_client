@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 const TrailsText = styled.div`
   position: relative;
   width: 100%;
-  height: 60px;
+
   will-change: transform, opacity;
   overflow: visible;
   display: flex;
@@ -15,6 +15,12 @@ const TrailsText = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 9;
+
+  height: 40px;
+
+  @media (min-width: 768px) {
+    height: 60px;
+  }
 `;
 
 const HeadlineText = styled.h1`
@@ -26,6 +32,13 @@ const HeadlineText = styled.h1`
   height: 30px;
   display: inline-block;
   text-align: center;
+
+  font-size: 11vw;
+
+  @media (min-width: 768px) {
+    line-height: 50px;
+    font-size: 50px;
+  }
 `;
 
 const Line = styled.div`

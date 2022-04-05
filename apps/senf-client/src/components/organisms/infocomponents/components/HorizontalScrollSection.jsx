@@ -9,23 +9,8 @@ import Submitted from "../../../../images/infoPage/howItWorks/submitted.png";
 import Statement from "../../../../images/infoPage/howItWorks/statement.png";
 import OpenBook from "../../../../images/openBook.png";
 
-import Klug from "../../../../images/infoPage/partnerLogos/klug.png";
-import GrnKln from "../../../../images/infoPage/partnerLogos/grn_kln.png";
-import Agora from "../../../../images/infoPage/partnerLogos/agora.png";
-
-import Ksta from "../../../../images/infoPage/partnerLogos/ksta.png";
-import Gaffel from "../../../../images/infoPage/partnerLogos/gaffel.png";
-import Ww from "../../../../images/infoPage/partnerLogos/ww.png";
-import Baudata from "../../../../images/infoPage/partnerLogos/baudata.png";
-import Kfa from "../../../../images/infoPage/partnerLogos/kfa.png";
-import MinhaGalera from "../../../../images/infoPage/partnerLogos/minhaGalera.png";
-import Jh_uh from "../../../../images/infoPage/partnerLogos/jh_uh.png";
-import Eps from "../../../../images/infoPage/partnerLogos/eps.png";
-import Av from "../../../../images/infoPage/partnerLogos/av.png";
-import Np from "../../../../images/infoPage/partnerLogos/np.png";
-import Sk from "../../../../images/infoPage/partnerLogos/sk.png";
-
 import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
+import { useTranslation } from "react-i18next";
 const Container = styled.section`
   position: relative;
   width: 100%;
@@ -147,7 +132,8 @@ const Text = styled.p`
   }
 `;
 
-const HorizontalScrollSection = ({ id }) => {
+const HorizontalScrollSection = ({ id, visiblePartners }) => {
+  const { t } = useTranslation();
   useEffect(() => {
     const spaceHolder = document.querySelector("#space-holder" + id);
     const horizontal = document.querySelector("#horizontal" + id);
@@ -172,50 +158,40 @@ const HorizontalScrollSection = ({ id }) => {
 
   const pages = [
     {
-      title: "327 Ideen",
-      subTitle:
-        "sind auf unserer Plattform für den Stadtraum in Köln eingegangen",
+      title: t("infopage_succesStories_title1"),
+      subTitle: t("infopage_succesStories_subtitle1"),
       img: Ideas,
     },
     {
-      title: "32 Anträge",
-      subTitle:
-        "wurden auf Basis der Ideen als offizielle Anträge an die Stadtverwaltung übergeben",
+      title: t("infopage_succesStories_title2"),
+      subTitle: t("infopage_succesStories_subtitle2"),
       img: Submitted,
     },
     {
-      title: "12 Stellungnahmen",
-      subTitle:
-        "haben wir als Rückmeldung auf die Anträge von den verantwortlichen Ämtern erhalten",
+      title: t("infopage_succesStories_title3"),
+      subTitle: t("infopage_succesStories_subtitle3"),
       img: Statement,
     },
     {
-      title: "3 Implementiert",
-      subTitle:
-        "konnten in bestehende oder neue Planungen und beschlüsse aufgenommen werden",
+      title: t("infopage_succesStories_title4"),
+      subTitle: t("infopage_succesStories_subtitle4"),
       img: Statement,
     },
   ];
   const credits = [
     {
-      img: Klug,
-      title: "Jan Pehoviak, KLuG e.V.",
-      subTitle:
-        "„Mit Senf gibt es eine digitale Beteiligungsplattform, die auch von Bürgern, Vereinen und Initiativen für eine Bottom-up Gestaltung vom Quartier genutzt werden kann. Beteiligung ist eines der Kernelemente unserer Arbeit und dank Senf jetzt auch einfach möglich.",
+      title: t("infopage_creditAuthor1"),
+      subTitle: t("infopage_creditText1"),
       width: "70px",
     },
     {
-      img: GrnKln,
-      title: "Mildred Utku, Die Grünen Köln",
-      subTitle:
-        "Senf.koeln stärkt mit ihrer Plattform die Bürger*innenbeteiligung und kann somit eine Grundlage schaffen um fundierte Entscheidungen zu treffen, die in Planungen und Beschlüsse mit einfließen können um mehr Akzeptanz in der Nachbarschaft herzustellen.",
+      title: t("infopage_creditAuthor2"),
+      subTitle: t("infopage_creditText2"),
       width: "50px",
     },
     {
-      img: Agora,
-      title: "Martin Herrndorf, AGORA Köln",
-      subTitle:
-        "Mithilfe von Senf.koeln haben wir bereits während unserer Veranstaltungen, wie dem „BarCamp – Nachbarschaft macht Zukunft“, die Möglichkeit, Ergebnisse festzuhalten und Ideen der Teilnehmer:innen zu sammeln.",
+      title: t("infopage_creditAuthor3"),
+      subTitle: t("infopage_creditText3"),
       width: "150px",
     },
   ];
@@ -264,7 +240,7 @@ const HorizontalScrollSection = ({ id }) => {
               </CardsSection>
             )}
           </Horizontal>
-          {id === "2" && <Partners />}
+          {id === "2" && visiblePartners && <Partners />}
         </Sticky>
       </SpaceHolder>
     </Container>

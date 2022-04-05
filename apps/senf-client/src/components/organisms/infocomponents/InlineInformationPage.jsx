@@ -45,6 +45,7 @@ import WorkTogether from "../../../images/workTogether.png";
 import OpenBook from "../../../images/openBook.png";
 import { openMail } from "../../../util/helpers";
 import FooterLinks from "../../molecules/Footer/FooterLinks";
+import SelectLanguageButton from "../../atoms/Selects/SelectLanguageButton";
 
 const Container = styled.div`
   height: 100%;
@@ -63,6 +64,22 @@ const Container = styled.div`
     border-radius: 18px;
   }
 `;
+
+const SelectLanguageWrapper = styled.div`
+  position: absolute;
+  z-index: 99999;
+  left: 24px;
+  bottom: 24px;
+  z-index: 1;
+
+  @media (min-width: 768px) {
+    right: 29px;
+    top: 152px;
+    bottom: auto;
+    left: auto;
+  }
+`;
+
 const StyledContactImg = styled.img`
   width: 70px;
   position: absolute;
@@ -188,7 +205,7 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
   const [visibleCards, setVisibleCards] = useState(false);
   const [visibleCards2, setVisibleCards2] = useState(false);
 
-  const [visibleCircle2, setVisibleCircle2] = useState(false);
+  const [visiblePartners, setVisiblePartners] = useState(false);
 
   // The scroll listener
   const handleScroll = useCallback(() => {
@@ -199,7 +216,7 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
 
     //SECTION 1
 
-    if (value > 10) {
+    if (value > 3) {
       setVisibleFirstHeadline(false);
     } else {
       setVisibleFirstHeadline(true);
@@ -266,6 +283,20 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
     const horizontal1 = document.querySelector("#horizontal1");
     const sticky1 = document.querySelector("#sticky1");
     horizontal1.style.transform = `translateX(-${sticky1.offsetTop}px)`;
+
+    if (isMobileCustom) {
+      if (value > 15 && value < 120) {
+        setVisibleSecondaryHeadline1(true);
+      } else {
+        setVisibleSecondaryHeadline1(false);
+      }
+    } else {
+      if (value > 15 && value < 140) {
+        setVisibleSecondaryHeadline1(true);
+      } else {
+        setVisibleSecondaryHeadline1(false);
+      }
+    }
 
     //SECTION 2
     const mobileDifferenceCircle = isMobileCustom ? 200 : 0;
@@ -338,6 +369,20 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
     const horizontal2 = document.querySelector("#horizontal2");
     const sticky2 = document.querySelector("#sticky2");
     horizontal2.style.transform = `translateX(-${sticky2.offsetTop}px)`;
+
+    if (isMobileCustom) {
+      if (value > 605 && value < 825) {
+        setVisiblePartners(true);
+      } else {
+        setVisiblePartners(false);
+      }
+    } else {
+      if (value > 835 && value < 1200) {
+        setVisiblePartners(true);
+      } else {
+        setVisiblePartners(false);
+      }
+    }
 
     // SECTION 3
 
@@ -434,6 +479,10 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
             />
           )}
 
+          <SelectLanguageWrapper>
+            <SelectLanguageButton />
+          </SelectLanguageWrapper>
+
           <StyledContactImg
             src={ContactImg}
             onClick={() => openMail("dein@senf.koeln")}
@@ -450,7 +499,7 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
           />
           <LinkHeadline>
             <StyledA textAlign="left" onClick={handleClose}>
-              Direkt zur Plattform <img src={ArrowRight} width="10px"></img>
+              {t("infopage_skip")} <img src={ArrowRight} width="10px"></img>
             </StyledA>
           </LinkHeadline>
 
@@ -476,11 +525,11 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
             <UnderlinedText
               visibleHeadline={visibleCards}
               textlines={[
-                { text: "Einfach", color: "#94DFF3" },
-                { text: "den", color: "" },
+                { text: t("infopage_howToCard1_1"), color: "#94DFF3" },
+                { text: "infopage_howToCard1_2", color: "" },
                 { breakBoolean: true },
-                { text: "Ort", color: "" },
-                { text: "auswählen", color: "" },
+                { text: "infopage_howToCard1_3", color: "" },
+                { text: "infopage_howToCard1_4", color: "" },
               ]}
             />
             <Img src={DecideLocationImg} width="250px" visible={visibleCards} />
@@ -490,11 +539,11 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
             <UnderlinedText
               visibleHeadline={visibleCards2}
               textlines={[
-                { text: "Idee", color: "#F5C098" },
-                { text: "formulieren", color: "" },
+                { text: "infopage_howToCard2_1", color: "#F5C098" },
+                { text: "infopage_howToCard2_2", color: "" },
                 { breakBoolean: true },
-                { text: "und", color: "" },
-                { text: "teilen", color: "#90D8B9" },
+                { text: "infopage_howToCard2_3", color: "" },
+                { text: "infopage_howToCard2_4", color: "#90D8B9" },
               ]}
             />
             <Img src={FormulateIdeaImg} width="250px" visible={visibleCards2} />
@@ -524,21 +573,22 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
             <UnderlinedText
               visibleHeadline={visibleCards}
               textlines={[
-                { text: "Sichtbarkeit", color: "#F8DA99" },
+                { text: t("infopage_howToCard3_1"), color: "#F8DA99" },
                 { breakBoolean: true },
-                { text: "erlangen", color: "" },
+                { text: t("infopage_howToCard3_2"), color: "" },
               ]}
             />
             <Card>
               <Img src={WorkTogether} height="170px" visible={visibleCards} />{" "}
-              <StyledH3 textAlign="center">Organisationsprofile</StyledH3>
+              <StyledH3 textAlign="center">
+                {t("infopage_howToCard3_cardTitle")}
+              </StyledH3>
               <StyledText
                 textAlign="center"
                 margin="10px 10px 10px 10px"
                 marginLeft="10px"
               >
-                Von der Initiative bis zum Planungsbüro: erstellt euch ein
-                eigenes Profil
+                {t("infopage_howToCard3_cardText")}
               </StyledText>
             </Card>
           </HowToCard1>
@@ -547,26 +597,27 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
             <UnderlinedText
               visibleHeadline={visibleCards2}
               textlines={[
-                { text: "Beteiligung", color: "#90D8B9" },
+                { text: t("infopage_howToCard4_1"), color: "#90D8B9" },
                 { breakBoolean: true },
-                { text: "ermöglichen", color: "" },
+                { text: t("infopage_howToCard4_2"), color: "" },
               ]}
             />
             <Card>
               <Img src={OpenBook} height="170px" visible={visibleCards2} />{" "}
-              <StyledH3 textAlign="center">Individuelle Projekträume</StyledH3>
+              <StyledH3 textAlign="center">
+                {t("infopage_howToCard4_cardTitle")}
+              </StyledH3>
               <StyledText
                 textAlign="center"
                 margin="10px 10px 10px 10px"
                 marginLeft="10px"
               >
-                Sammelt Ideen für spezifische Orte und Anlässe in interaktiven
-                Räumen
+                {t("infopage_howToCard4_cardText")}
               </StyledText>
             </Card>
           </HowToCard2>
 
-          <HorizontalScrollSection id="2" />
+          <HorizontalScrollSection id="2" visiblePartners={visiblePartners} />
           <Circle
             id="Circle3"
             scrollValue={scrollValue}

@@ -7,17 +7,23 @@ import topics from "../../../../data/topics";
 import { StyledH3 } from "../../../../styles/GlobalStyle";
 import { isMobileCustom } from "../../../../util/customDeviceDetect";
 const Wrapper = styled.div`
-  height: 250px;
+  height: 350px;
   width: 100%;
-  padding-bottom: ${(props) => (props.isMobileCustom ? "800px" : "1400px")};
+  padding-bottom: ${(props) => (props.isMobileCustom ? "700px" : "1300px")};
 
   z-index: 9999;
   position: sticky;
-  top: 200px;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   pointer-events: none;
+
+  top: 27vh;
+
+  @media (min-width: 768px) {
+    top: 200px;
+  }
 `;
 const Tag = styled.div`
   width: max-content;

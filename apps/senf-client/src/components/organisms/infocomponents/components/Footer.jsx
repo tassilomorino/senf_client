@@ -99,7 +99,7 @@ const Footer = ({ handleClose }) => {
       <Bubble
         color="#BD9BF4"
         id="infoPageBubble1"
-        left={isMobileCustom ? window.innerWidth / 200 + "%" : "-3%"}
+        left={isMobileCustom ? "50px" : "-3%"}
         onClick={() => setFaqOpen(true)}
       >
         <img src={Faq} width="100%" />
@@ -107,7 +107,7 @@ const Footer = ({ handleClose }) => {
       <Bubble
         color="#90D8B9"
         id="infoPageBubble2"
-        left={isMobileCustom ? window.innerWidth / 3.6 + "%" : "105%"}
+        left={isMobileCustom ? "270px" : "105%"}
         onClick={() => openMail("dein@senf.koeln")}
       >
         <img src={Contact} width="100%" />
@@ -116,7 +116,7 @@ const Footer = ({ handleClose }) => {
       <Bubble
         color="#90D8B9"
         id="infoPageBubble3"
-        left={isMobileCustom ? -window.innerWidth / 200 + "%" : "-5%"}
+        left={isMobileCustom ? "30px" : "-5%"}
         onClick={() =>
           window.open("https://www.instagram.com/senf.koeln/", "_blank")
         }
@@ -127,7 +127,7 @@ const Footer = ({ handleClose }) => {
       <Bubble
         color="#90D8B9"
         id="infoPageBubble4"
-        left={isMobileCustom ? window.innerWidth / 5.2 + "%" : "90%"}
+        left={isMobileCustom ? "220px" : "90%"}
         onClick={handleClose}
       >
         <img src={Bulb} width="100%" />
