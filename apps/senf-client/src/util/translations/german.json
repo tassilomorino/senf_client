@@ -77,6 +77,8 @@
   "votes": "Votes",
   "info": "Infos",
   "calendar": "Kalender",
+  "add_date": "Datum hinzufügen",
+  "first_date_then_time": "Zuerst Datum, dann Zeit auswählen.:",
   "what_is_it_about": "Worum geht's",
   "more_info": "Mehr Infos",
   "period": "Zeitraum",
