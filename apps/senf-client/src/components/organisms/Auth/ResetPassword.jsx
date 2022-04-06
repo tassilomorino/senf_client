@@ -285,7 +285,6 @@ class ResetPassword extends Component {
                   type="email"
                   label="E-Mail"
                   margin="normal"
-                  color="transparent"
                   variant="outlined"
                   className={classes.textField}
                   // helperText={errors.email}

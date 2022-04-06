@@ -57,7 +57,6 @@ const AdminEditModalMainFields = ({ status, setStatus, notes, setNotes }) => {
         label="Notizen"
         placeholder="Füge Notizen hinzu..."
         margin="normal"
-        color="transparent"
         variant="outlined"
         className="textField"
         multiline
