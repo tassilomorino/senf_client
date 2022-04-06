@@ -242,7 +242,7 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
   };
 
   const content = (
-    <ListWrapper order={open}>
+    <ListWrapper>
       {!isMobileCustom && (
         <React.Fragment>
           <CustomIconButton
@@ -262,7 +262,8 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
                 textAlign="center"
                 margin="20px 0px"
               >
-                {MenuData.map((item) => item.text).slice(3, 4)}
+                {MenuData[3].text}
+                {/* "Insights" */}
               </StyledH2>
             </HeaderWrapper>
             <svg
@@ -373,7 +374,7 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
       </DragWrapper>
     </React.Fragment>
   ) : (
-    <Wrapper order={open}>{content}</Wrapper>
+    <Wrapper $order={open}>{content}</Wrapper>
   );
 };
 
