@@ -288,7 +288,7 @@ const OrganizationsPage = ({
     </React.Fragment>
   ) : (
     !loading && (
-      <Wrapper order={open}>
+      <Wrapper $order={open}>
         {AuthenticateModal}
 
         <CustomIconButton
