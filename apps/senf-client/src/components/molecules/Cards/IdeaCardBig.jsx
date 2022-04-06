@@ -205,7 +205,7 @@ const IdeaCardBig = ({ classes, setClicked }) => {
     if (selectedUnixArray.length > 0) {
       selectedUnixArray.forEach((element) => {
         selectedDates.push(
-          <div>
+          <div key={element * 1000}>
             {new Date(element * 1000).toLocaleTimeString("de-DE", options)}{" "}
             <br />{" "}
           </div>
@@ -290,7 +290,7 @@ const IdeaCardBig = ({ classes, setClicked }) => {
                 src={CalendarIcon}
                 width="20px"
                 style={{ paddingRight: "5px", alignSelf: "center" }}
-                al="CalendarIcon"
+                alt="Calendar Icon"
               />
 
               <div className={classes.locationHeader}> {selectedDates} </div>
