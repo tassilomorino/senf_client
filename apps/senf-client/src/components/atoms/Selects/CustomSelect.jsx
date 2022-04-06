@@ -218,7 +218,7 @@ const CustomSelect = ({
                     {options?.map((option) => (
                       <ListItem
                         onClick={onOptionClicked(option.name, option.label)}
-                        key={Math.random()}
+                        key={option.name}
                       >
                         <React.Fragment>
                           {option.color && <ColorDot color={option.color} />}
@@ -244,32 +244,30 @@ const CustomSelect = ({
                       Sort By
                     </StyledH3>
                     <StyledDivider />
-                    {sortOptions?.map((sortOption) => (
-                      <>
-                        <CheckBoxWrapper>
-                          <CheckBox
-                            type="radio"
-                            selected={selectedOption.includes(sortOption.name)}
-                            handleInputChange={onOptionClicked(
-                              sortOption.name,
-                              sortOption.label,
-                              dontCloseWindow
-                            )}
-                          />
+                    {sortOptions?.map((sortOption, index) => (
+                      <CheckBoxWrapper key={sortOption.name}>
+                        <CheckBox
+                          type="radio"
+                          selected={selectedOption.includes(sortOption.name)}
+                          handleInputChange={onOptionClicked(
+                            sortOption.name,
+                            sortOption.label,
+                            dontCloseWindow
+                          )}
+                        />
 
-                          <CheckBoxLabel
-                            onClick={onOptionClicked(
-                              sortOption.name,
-                              sortOption.label,
-                              dontCloseWindow
-                            )}
-                            htmlFor={sortOption}
-                            selected={selectedOption.includes(sortOption.name)}
-                          >
-                            {sortOption.label}
-                          </CheckBoxLabel>
-                        </CheckBoxWrapper>
-                      </>
+                        <CheckBoxLabel
+                          onClick={onOptionClicked(
+                            sortOption.name,
+                            sortOption.label,
+                            dontCloseWindow
+                          )}
+                          htmlFor={sortOption}
+                          selected={selectedOption.includes(sortOption.name)}
+                        >
+                          {sortOption.label}
+                        </CheckBoxLabel>
+                      </CheckBoxWrapper>
                     ))}
                   </>
                 )}
@@ -285,8 +283,8 @@ const CustomSelect = ({
                     </StyledH3>
                     <StyledDivider />
                     {statusOptions?.map((filter, i) => (
-                      <>
-                        <CheckBoxWrapper>
+                     
+                        <CheckBoxWrapper key={filter.name}>
                           <CheckBox
                             type="checkbox"
                             selected={dropdownStatus.includes(filter.name)}
@@ -302,7 +300,7 @@ const CustomSelect = ({
                             )
                           </CheckBoxLabel>
                         </CheckBoxWrapper>
-                      </>
+                      
                     ))}
                   </>
                 )} */}
