@@ -83,7 +83,6 @@ const EditModalMainFields = ({
         type="text"
         label="Titel"
         margin="normal"
-        color="transparent"
         variant="outlined"
         className="textField"
         multiline
@@ -100,7 +99,6 @@ const EditModalMainFields = ({
         type="text"
         label="Beschreibung"
         margin="normal"
-        color="transparent"
         variant="outlined"
         className="textField"
         multiline
