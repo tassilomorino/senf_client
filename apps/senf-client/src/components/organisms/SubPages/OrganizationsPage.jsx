@@ -217,7 +217,7 @@ const OrganizationsPage = ({
               textAlign="center"
               margin="10px 0px"
             >
-              {MenuData.map((item) => item.text).slice(2, 3)}
+              {MenuData[2].text}
             </StyledH2>
           </TabsWrapper>
 
@@ -307,7 +307,7 @@ const OrganizationsPage = ({
               textAlign="center"
               margin="20px 0px 40px 0px"
             >
-              {MenuData.map((item) => item.text).slice(2, 3)}
+              {MenuData[2].text}
             </StyledH2>
 
             <Toolbar
