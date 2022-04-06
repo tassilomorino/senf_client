@@ -67,7 +67,7 @@ const EditModalMainFields = ({
       <Geocoder
         mapboxApiAccessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
         onSelected={onSelected}
-        {...viewport}
+        viewport={viewport}
         hideOnSelect={true}
         limit={3}
         queryParams={queryParams}
