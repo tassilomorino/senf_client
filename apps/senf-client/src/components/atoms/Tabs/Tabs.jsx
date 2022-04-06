@@ -81,7 +81,7 @@ const Tabs = ({
   const tab = tabLabels?.map((tabLabel, i) => {
     return (
       !loading && (
-        <React.Fragment>
+        <React.Fragment key={tabLabel + i}>
           {tabLabel && (
             <Tab
               i={i + 1}
