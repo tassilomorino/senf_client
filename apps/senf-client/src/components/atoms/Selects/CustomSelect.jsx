@@ -11,6 +11,7 @@ import Arrow from "../../../images/icons/arrow.png";
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import { StyledH3, StyledLi } from "../../../styles/GlobalStyle";
 import CheckBox from "../CheckBox/CheckBox";
+import { useTranslation } from "react-i18next";
 
 const DropDownButton = styled.button`
   color: #353535;
@@ -138,7 +139,7 @@ const CustomSelect = ({
   const [selectedOption, setSelectedOption] = useState(initialValue ?? value);
   const [selectedLabel, setSelectedLabel] = useState(initialValue ?? value);
   const [dropDownButtonAmount, setDropDownButtonAmount] = useState(28);
-
+  const { t } = useTranslation();
   useEffect(() => {
     if (document.body.clientWidth < 350) {
       setDropDownButtonAmount(19);
@@ -241,7 +242,7 @@ const CustomSelect = ({
                 {sortOptions && (
                   <>
                     <StyledH3 textAlign={"center"} padding={"10px"}>
-                      Sort By
+                      {t("sortBy")}
                     </StyledH3>
                     <StyledDivider />
                     {sortOptions?.map((sortOption, index) => (
