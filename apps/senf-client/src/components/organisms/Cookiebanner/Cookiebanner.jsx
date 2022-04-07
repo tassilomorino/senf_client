@@ -21,13 +21,13 @@ import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 const Wrapper = styled.div`
   z-index: 9995;
   position: fixed;
-  width: calc(100vw - 40px);
+  width: calc(95% - 24px);
   padding: 10px;
   color: white;
   text-align: center;
   background-color: white;
   bottom: 10px;
-  left: 10px;
+  left: 2.5%;
   border-radius: 18px;
   border: 2px solid #ffffff;
   box-shadow: 0px 2px 18px -7px rgba(186, 160, 79, 1);
