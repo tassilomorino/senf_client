@@ -476,8 +476,7 @@ const Main = () => {
           handleClick={handleClick}
           order={order}
           setChangeLocationModalOpen={setChangeLocationModalOpen}
-
-          loading={initialLoading}
+          loading={loading}
           setOrder={setOrder}
           setOpenOrganizationsPage={setOpenOrganizationsPage}
         />
