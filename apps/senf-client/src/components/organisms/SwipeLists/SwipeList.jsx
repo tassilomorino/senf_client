@@ -609,10 +609,7 @@ const SwipeList = ({
                 />
               )}
             {order === 3 && openProjectRoom && (
-              <CalendarComponent
-                projectScreams={project?.screams}
-                handleClick={handleClick}
-              />
+              <CalendarComponent handleClick={handleClick} />
             )}
             <Wave />
           </ListWrapper>
@@ -622,18 +619,17 @@ const SwipeList = ({
   ) : (
     <DragWrapper>
       <Content>
-        {openProjectRoom ||
-          (openAccount && (
-            <DesktopTabWrapper>
-              <Tabs
-                loading={loading}
-                handleClick={handleClick}
-                order={order}
-                tabLabels={tabLabels}
-                secondaryColor="#d6ab00"
-              />
-            </DesktopTabWrapper>
-          ))}
+        {(openProjectRoom || openAccount) && (
+          <DesktopTabWrapper>
+            <Tabs
+              loading={loading}
+              handleClick={handleClick}
+              order={order}
+              tabLabels={tabLabels}
+              secondaryColor="#d6ab00"
+            />
+          </DesktopTabWrapper>
+        )}
 
         <ListWrapper
           openProjectRoom={openProjectRoom}
