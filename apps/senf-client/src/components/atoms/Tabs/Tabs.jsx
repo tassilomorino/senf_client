@@ -92,7 +92,6 @@ const Tabs = ({
               secondaryColor={secondaryColor}
             >
               <StyledH3
-                fontWeight={order === i + 1 ? "900" : "300"}
                 fontSize={
                   type === "secondary"
                     ? "18px"
