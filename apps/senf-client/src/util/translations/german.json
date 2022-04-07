@@ -178,8 +178,8 @@
   "projectrooms_loader": "Projekträume werden geladen...",
   "projectrooms_loading_error": "Beim laden ist ein Fehler aufgetreten. Bitte refreshe die Seite...",
 
-  "cookiebanner_title": "Ohne Cookies geht's nicht.",
-  "cookiebanner_text": "Für die Bereitstellung einiger Funktionen und die Verbesserung dieses Services brauchen wir Cookies. Falls du wirklich nur die technisch notwendigsten Cookies akzeptieren willst, klicke <2> hier</2> oder konfiguriere deine <5>Cookie-Einstellungen</5> .",
+  "cookiebanner_title": "",
+  "cookiebanner_text": "Wir verwenden notwendige <5>Cookies</5>, um das Nutzerlebnis zu verbessern",
 
   "infopage_headline_1": "Digitale",
   "infopage_headline_2": "Plattform für",
