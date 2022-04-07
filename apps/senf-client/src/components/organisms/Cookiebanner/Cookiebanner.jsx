@@ -9,37 +9,48 @@ import { setCookies } from "../../../redux/actions/cookiesActions";
 import { setInfoPageClosed } from "../../../redux/actions/UiActions";
 import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
-import Footer from "../../molecules/Footer/Footer";
+import {
+  CustomButton,
+  CustomIconButton,
+} from "../../atoms/CustomButtons/CustomButton";
+import FooterLinks from "../../molecules/Footer/FooterLinks";
+
+import Cookie from "../../../images/cookies.png";
+import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 
 const Wrapper = styled.div`
   z-index: 9995;
   position: fixed;
-  width: 95vw;
-  height: 20em;
-  padding: 2.5vw;
+  width: calc(95% - 24px);
+  padding: 10px;
   color: white;
   text-align: center;
-  background-color: #414345;
-
-  margin-left: 0vw;
-  bottom: 0em;
-  left: 0;
+  background-color: white;
+  bottom: 10px;
+  left: 2.5%;
+  border-radius: 18px;
+  border: 2px solid #ffffff;
+  box-shadow: 0px 2px 18px -7px rgba(186, 160, 79, 1);
+  background-color: #fcfbf8;
 
   @media (min-width: 768px) {
     z-index: 9999;
-    position: relative;
-    width: auto;
-    height: auto;
-    padding: 0;
+    position: fixed;
+    width: 300px;
+    height: 100px;
     color: #353535;
     text-align: center;
-    background-color: transparent;
+
     font-size: 13pt;
 
-    top: 0;
-    left: 0;
-    border-radius: 20px;
+    bottom: 10px;
+    right: 10px;
+    left: auto;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
   }
 `;
 
@@ -63,16 +74,29 @@ const Cookiebanner = () => {
     }
   };
 
-  return cookie_settings !== "all" &&
-    cookie_settings !== "minimum" &&
-    isMobileCustom ? (
-    <React.Fragment>
+  return (
+    cookie_settings !== "all" &&
+    cookie_settings !== "minimum" && (
       <Wrapper>
-        <StyledH2 fontWeight="900" textAlign="center">
+        <CustomIconButton
+          name="Close"
+          position="absolute"
+          margin="0px"
+          left="0"
+          top="0"
+          backgroundColor="transparent"
+          shadow={false}
+          handleButtonClick={() => handleCookies("all")}
+        />
+
+        {/* <StyledH2 fontWeight="900" textAlign="center">
           {t("cookiebanner_title")}
-        </StyledH2>
-        <br />
-        <StyledText color="white" textAlign="center">
+        </StyledH2> */}
+        <img
+          src={Cookie}
+          width={document.body.clientWidth > 768 ? "40px" : "30px"}
+        />
+        <StyledText textAlign="center">
           <Trans i18nKey="cookiebanner_text">
             Für die Bereitstellung einiger Funktionen und die Verbesserung
             dieses Services brauchen wir Cookies. Falls du wirklich nur die
@@ -87,75 +111,18 @@ const Cookiebanner = () => {
             .
           </Trans>
         </StyledText>
+        {/*  {!isMobileCustom && (
+          <SubmitButton
+            text={t("close")}
+            backgroundColor="#353535"
+            textColor="white"
+            position="relative"
+            zIndex="9999"
+            handleButtonClick={() => handleCookies("all")}
+          />
+        )} */}
       </Wrapper>
-      <CustomButton
-        text={t("accept")}
-        backgroundColor="white"
-        textColor="#353535"
-        position="fixed"
-        bottom="50px"
-        zIndex="9999"
-        handleButtonClick={() => handleCookies("all")}
-      />
-      <Footer color="#c9c9c9" bottom="0px" />
-    </React.Fragment>
-  ) : (
-    cookie_settings !== "all" &&
-      cookie_settings !== "minimum" &&
-      !isMobileCustom && (
-        <Dialog
-          scroll={"paper"}
-          open={openInfoPage}
-          className="dialogOverlayContent"
-          aria-labelledby="scroll-dialog-title"
-          aria-describedby="scroll-dialog-description"
-          maxWidth={"sm"}
-          PaperProps={{
-            style: { borderRadius: "20px" },
-          }}
-        >
-          <DialogContent style={{ height: "250px" }}>
-            <Wrapper>
-              {" "}
-              <StyledH2 fontWeight="900" textAlign="center">
-                {t("cookiebanner_title")}
-              </StyledH2>
-              <br />
-              <Trans i18nKey="cookiebanner_text">
-                Für die Bereitstellung einiger Funktionen und die Verbesserung
-                dieses Services brauchen wir Cookies. Falls du wirklich nur die
-                technisch notwendigsten Cookies akzeptieren willst, klicke{" "}
-                <span
-                  className="Terms"
-                  onClick={() => handleCookies("minimum")}
-                >
-                  hier
-                </span>
-                &nbsp;oder konfiguriere deine{" "}
-                <span
-                  className="Terms"
-                  onClick={() => {
-                    window.open("/cookieConfigurator", "_blank");
-                  }}
-                >
-                  Cookie-Einstellungen
-                </span>
-                .
-              </Trans>
-            </Wrapper>
-
-            <CustomButton
-              text={t("accept")}
-              backgroundColor="#353535"
-              textColor="white"
-              position="relative"
-              top="30px"
-              zIndex="9999"
-              handleButtonClick={() => handleCookies("all")}
-            />
-          </DialogContent>
-        </Dialog>
-      )
+    )
   );
 };
 

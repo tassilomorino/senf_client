@@ -13,7 +13,7 @@ import "firebase/compat/firestore";
 import { PageWrapper } from "./styles/sharedStyles";
 import TopNavigation from "./Components/TopNavigation";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
-import MainDialog from "../../atoms/Layout/MainDialog";
+import FullscreenDialog from "../../atoms/Layout/FullscreenDialog";
 import CreateProjectPage0a from "./CreateProjectRoom_components/CreateProjectPage0a";
 import CreateProjectPage1 from "./CreateProjectRoom_components/CreateProjectPage1";
 import CreateProjectPage2 from "./CreateProjectRoom_components/CreateProjectPage2";
@@ -467,7 +467,7 @@ const CreateProjectDialog = ({ type }) => {
   const currentStep = (100 / (pages.length - 1)) * index;
 
   return (
-    <MainDialog isOpen={true}>
+    <FullscreenDialog isOpen={true}>
       <TopNavigation
         currentStep={currentStep}
         index={index}
@@ -481,7 +481,7 @@ const CreateProjectDialog = ({ type }) => {
         const Page = pages[i];
         return <Page style={style} />;
       })}
-    </MainDialog>
+    </FullscreenDialog>
   );
 };
 

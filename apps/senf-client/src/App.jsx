@@ -31,8 +31,6 @@ import { getScreams } from "../src/redux/actions/screamActions";
 
 //Pages
 import Main from "./components/templates/Main";
-import IntroductionInformation from "./components/organisms/infocomponents/IntroductionInformation";
-import Welcome from "./components/organisms/infocomponents/Welcome";
 import Verification from "./pages/Verification";
 import impressum from "./components/organisms/infocomponents/legal/impressum";
 import datenschutz from "./components/organisms/infocomponents/legal/datenschutz";
@@ -118,9 +116,7 @@ if (cookies.get("Cookie_settings") === "all") {
 } else if (cookies.get("Cookie_settings") === "minimum") {
   store.dispatch(setCookies("minimum"));
 } else {
-  if (!isMobileCustom) {
-    store.dispatch(setInfoPageOpen());
-  }
+  store.dispatch(setInfoPageOpen());
 }
 let vh = window.innerHeight * 0.01;
 // Then we set the value in the --vh custom property to the root of the document
@@ -197,12 +193,7 @@ const App = () => {
                 <Route exact path="/" component={Main} />
                 <Route exact path="/projectRooms" component={Main} />
                 <Route exact path="/organizations" component={Main} />
-                <Route
-                  exact
-                  path="/start"
-                  component={IntroductionInformation}
-                />
-                <Route exact path="/intro" component={Welcome} />
+
                 <Route exact path="/datenschutz" component={datenschutz} />
                 <Route exact path="/agb" component={agb} />
 
