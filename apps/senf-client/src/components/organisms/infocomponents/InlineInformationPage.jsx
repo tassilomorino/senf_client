@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import Circle from "./components/Circle";
 import Keywords from "./components/Keywords";
-import Footer from "./components/Footer";
+import LearnMoreBubbles from "./components/LearnMoreBubbles";
 import HorizontalScrollSection from "./components/HorizontalScrollSection";
 import UnderlinedText from "./components/UnderlinedText";
 
@@ -631,7 +631,7 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
             textlines={[{ text: t("infopage_lastSection_1") }]}
           />
 
-          <Footer handleClose={handleClose} />
+          <LearnMoreBubbles handleClose={handleClose} />
 
           <FooterLinks
             color="#353535"
