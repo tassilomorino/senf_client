@@ -187,10 +187,64 @@
   "projectrooms_loader": "Projekträume werden geladen...",
   "projectrooms_loading_error": "Beim laden ist ein Fehler aufgetreten. Bitte refreshe die Seite...",
 
-  "cookiebanner_title": "Ohne Cookies geht's nicht.",
-  "cookiebanner_text": "Für die Bereitstellung einiger Funktionen und die Verbesserung dieses Services brauchen wir Cookies. Falls du wirklich nur die technisch notwendigsten Cookies akzeptieren willst, klicke <2> hier</2> oder konfiguriere deine <5>Cookie-Einstellungen</5> .",
+  "cookiebanner_title": "",
+  "cookiebanner_text": "Wir verwenden notwendige <5>Cookies</5>, um das Nutzerlebnis zu verbessern",
 
-  "infopage_headline": "Digitale\n Plattform für\n Bürger:innen-\nbeteiligung",
+  "infopage_headline_1": "Digitale",
+  "infopage_headline_2": "Plattform für",
+  "infopage_headline_3": "Bürger:innen-",
+  "infopage_headline_4": "beteiligung",
+
+  "infopage_skip": "Direkt zur Plattform",
+
+  "infopage_addMustard_1": "Gib deinen",
+  "infopage_addMustard_2": "Senf dazu",
+
+  "infopage_howToCard1_1": "Einfach",
+  "infopage_howToCard1_2": "den",
+  "infopage_howToCard1_3": "Ort",
+  "infopage_howToCard1_4": "auswählen",
+
+  "infopage_howToCard2_1": "Idee",
+  "infopage_howToCard2_2": "formulieren",
+  "infopage_howToCard2_3": "und",
+  "infopage_howToCard2_4": "teilen",
+
+  "infopage_organizationsHeadline_1": "Für alle",
+  "infopage_organizationsHeadline_2": "Stadtmacher:innen",
+
+  "infopage_succesStories_title1": "327 Ideen",
+  "infopage_succesStories_subtitle1": "sind auf unserer Plattform für den Stadtraum in Köln eingegangen",
+  "infopage_succesStories_title2": "32 Anträge",
+  "infopage_succesStories_subtitle2": "wurden auf Basis der Ideen als offizielle Anträge an die Stadtverwaltung übergeben",
+  "infopage_succesStories_title3": "12 Stellungnahmen",
+  "infopage_succesStories_subtitle3": "haben wir als Rückmeldung auf die Anträge von den verantwortlichen Ämtern erhalten",
+  "infopage_succesStories_title4": "3 Implementiert",
+  "infopage_succesStories_subtitle4": "konnten in bestehende oder neue Planungen und Beschlüsse aufgenommen werden",
+
+  "infopage_howToCard3_1": "Sichtbarkeit",
+  "infopage_howToCard3_2": "erlangen",
+  "infopage_howToCard3_cardTitle": "Organisationsprofile",
+  "infopage_howToCard3_cardText": "Von der Initiative bis zum Planungsbüro: erstellt euch ein eigenes Profil",
+
+  "infopage_howToCard4_1": "Beteiligung",
+  "infopage_howToCard4_2": "ermöglichen",
+  "infopage_howToCard4_cardTitle": "Individuelle Projekträume",
+  "infopage_howToCard4_cardText": "Sammelt Ideen für spezifische Orte und Anlässe in interaktiven Räumen",
+
+  "infopage_creditText1": "Mit Senf gibt es eine digitale Beteiligungsplattform, die auch von Bürgern, Vereinen und Initiativen für eine Bottom-up Gestaltung vom Quartier genutzt werden kann. Beteiligung ist eines der Kernelemente unserer Arbeit und dank Senf jetzt auch einfach möglich.",
+  "infopage_creditAuthor1": "Jan Pehoviak, KLuG e.V.",
+
+  "infopage_creditText2": "Senf.koeln stärkt mit ihrer Plattform die Bürger*innenbeteiligung und kann somit eine Grundlage schaffen um fundierte Entscheidungen zu treffen, die in Planungen und Beschlüsse mit einfließen können, um mehr Akzeptanz in der Nachbarschaft herzustellen.",
+  "infopage_creditAuthor2": "Mildred Utku, Die Grünen Köln",
+
+  "infopage_creditText3": "Mithilfe von Senf.koeln haben wir bereits während unserer Veranstaltungen, wie dem „BarCamp – Nachbarschaft macht Zukunft“, die Möglichkeit, Ergebnisse festzuhalten und Ideen der Teilnehmer:innen zu sammeln.",
+  "infopage_creditAuthor3": "Martin Herrndorf, AGORA Köln",
+
+  "infopage_lastSection_1": "Erfahre mehr",
+  "infopage_lastSection_2": "mehr",
+
+  "infoPage_credits_1": "Mit Senf gibt es eine digitale Beteiligungsplattform, die auch von Bürgern, Vereinen und Initiativen für eine Bottom-up Gestaltung vom Quartier genutzt werden kann. Beteiligung ist eines der Kernelemente unserer Arbeit und dank Senf jetzt auch einfach möglich.",
   "infopage_block1_title": "Du hast Ideen für\ndein Kölner Veedel?",
   "infopage_block1_subtitle": "Hier kannst du deine Ideen teilen und die der anderen sehen; in den Dialog treten und für Ideen, die dir gefallen stimmen!",
   "infopage_block2_title": "Eure Stimmen können\nlaut werden!",

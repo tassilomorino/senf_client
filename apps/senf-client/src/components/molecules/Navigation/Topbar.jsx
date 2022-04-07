@@ -109,7 +109,7 @@ const CenteredImg = styled.img`
   position: absolute;
 `;
 
-const Topbar = ({ order, handleClick }) => {
+const Topbar = ({ order, handleClick, setOrder, setOpenOrganizationsPage }) => {
   const loading = useSelector((state) => state.data.loading);
   const user = useSelector((state) => state.user);
   const openScream = useSelector((state) => state.UI.openScream);
@@ -145,7 +145,10 @@ const Topbar = ({ order, handleClick }) => {
         }
       >
         <InlineInfoButtonContainer>
-          <InlineInformationPage />
+          <InlineInformationPage
+            setOrder={setOrder}
+            setOpenOrganizationsPage={setOpenOrganizationsPage}
+          />
           <img src={Info} width="30" alt="EndImage" />
         </InlineInfoButtonContainer>
 

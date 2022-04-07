@@ -12,7 +12,6 @@ import {
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 //Components
 import RegistrationAndLogin from "../../organisms/Auth/LoginRegistration";
-import InlineInformationPageDesktop from "../../organisms/infocomponents/InlineInformationPageDesktop";
 import SelectLanguageButton from "../../atoms/Selects/SelectLanguageButton";
 import TagsFilter from "../Filters/TagsFilter";
 import { MenuItem } from "./MenuItem";
@@ -37,6 +36,7 @@ import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
 import styled from "styled-components";
 import { SideBarTabs, StyledH2 } from "../../../styles/GlobalStyle";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
+import InlineInformationPage from "../../organisms/infocomponents/InlineInformationPage";
 
 const FilterWrapper = styled.div`
   overflow: hidden;
@@ -59,6 +59,8 @@ const DesktopSidebar = ({
   handleClick,
   setChangeLocationModalOpen,
   loading,
+  setOrder,
+  setOpenOrganizationsPage,
 }) => {
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openAccount = useSelector((state) => state.UI.openAccount);
@@ -202,7 +204,10 @@ const DesktopSidebar = ({
         }}
       />
       <br />
-      <InlineInformationPageDesktop />
+      <InlineInformationPage
+        setOrder={setOrder}
+        setOpenOrganizationsPage={setOpenOrganizationsPage}
+      />
       <div
         style={{
           position: "relative",

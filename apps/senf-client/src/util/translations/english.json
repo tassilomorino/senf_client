@@ -183,7 +183,63 @@
   "projectrooms_loading_error": "An error occured when loading the page. Please refresh...",
 
   "cookiebanner_title": "Cookies are inevitable",
-  "cookiebanner_text": "For the provision of some functions and the improvement of this service we need to have cookies. If you really only want to accept technically necessary cookies, click <2> here</2> or configure your <5>cookie settings</5> .",
+  "cookiebanner_text": "We use essential <5>cookies</5> to make your webapp experience better",
+
+  "infopage_headline_1": "Digital",
+  "infopage_headline_2": "Platform ",
+  "infopage_headline_3": "for Citizen",
+  "infopage_headline_4": "Participation",
+
+  "infopage_skip": "Enter the platform",
+
+  "infopage_addMustard_1": "Contribute with",
+  "infopage_addMustard_2": "your ideas",
+
+  "infopage_howToCard1_1": "Simply",
+  "infopage_howToCard1_2": "select",
+  "infopage_howToCard1_3": "the",
+  "infopage_howToCard1_4": "location",
+
+  "infopage_howToCard2_1": "Formulate",
+  "infopage_howToCard2_2": "and",
+  "infopage_howToCard2_3": "share your",
+  "infopage_howToCard2_4": "idea",
+
+  "infopage_organizationsHeadline_1": "To all who boost",
+  "infopage_organizationsHeadline_2": "citydevelopment",
+
+  "infopage_succesStories_title1": "327 ideas",
+  "infopage_succesStories_subtitle1": "have been received on our platform for urban space in Cologne",
+  "infopage_succesStories_title2": "32 applications",
+  "infopage_succesStories_subtitle2": "were submitted to the city administration as official applications based on the ideas",
+  "infopage_succesStories_title3": "12 submissions",
+  "infopage_succesStories_subtitle3": "have been received as feedback on the applications from the responsible offices",
+  "infopage_succesStories_title4": "3 Implemented",
+  "infopage_succesStories_subtitle4": "could be included in existing or new planning and decisions",
+
+  "infopage_howToCard3_1": "Gain",
+  "infopage_howToCard3_2": "visibility",
+  "infopage_howToCard3_cardTitle": "Organizationprofiles",
+  "infopage_howToCard3_cardText": "From initiatives to planning offices: create your own profile",
+
+  "infopage_howToCard4_1": "Enable",
+  "infopage_howToCard4_2": "participation",
+  "infopage_howToCard4_cardTitle": "Individual Projectrooms",
+  "infopage_howToCard4_cardText": "Collect ideas for specific places and occasions in interactive projectrooms",
+
+  "infopage_creditText1": "With Senf, there is a digital participation platform that can also be used by citizens, associations and initiatives for a bottom-up design of the neighborhood. Participation is one of the core elements of our work and thanks to Senf it is now also easily possible.",
+  "infopage_creditAuthor1": "Jan Pehoviak, KLuG e.V.",
+
+  "infopage_creditText2": "Senf.koeln strengthens citizen participation with its platform and can thus create a basis for making informed decisions that can be incorporated into planning and resolutions in order to create more acceptance in the neighborhood.",
+  "infopage_creditAuthor2": "Mildred Utku, The Greens Cologne",
+
+  "infopage_creditText3": "With the help of Senf.koeln, we already have the possibility during our events, such as the 'BarCamp - Nachbarschaft macht Zukunft', to record results and collect ideas from the participants.",
+  "infopage_creditAuthor3": "Martin Herrndorf, AGORA Cologne",
+
+  "infopage_lastSection_1": "Learn more",
+  "infopage_lastSection_2": "more",
+
+  "infoPage_credits_1": "Mit Senf gibt es eine digitale Beteiligungsplattform, die auch von Bürgern, Vereinen und Initiativen für eine Bottom-up Gestaltung vom Quartier genutzt werden kann. Beteiligung ist eines der Kernelemente unserer Arbeit und dank Senf jetzt auch einfach möglich.",
 
   "infopage_block1_title": "You got ideas for your\nneighborhood in cologne?",
   "infopage_block1_subtitle": "Here you can share your ideas and see those of others; engage in dialogue and vote for ideas you like!",

@@ -11,6 +11,7 @@ const topics = [
       </Translation>
     ),
     color: "#bd98f6",
+    infoPageLeft: "-70%",
   },
   {
     name: "Verkehr", //  Traffic
@@ -20,6 +21,7 @@ const topics = [
       </Translation>
     ), //  Traffic
     color: "#91dff4",
+    infoPageLeft: "170%",
   },
   {
     name: "Umwelt und Grün", //  Environment and Green
@@ -29,6 +31,7 @@ const topics = [
       </Translation>
     ),
     color: "#8dd9b8",
+    infoPageLeft: "-70%",
   },
   {
     name: "Rad", //  Bicycle
@@ -38,6 +41,7 @@ const topics = [
       </Translation>
     ),
     color: "#929df6",
+    infoPageLeft: "120%",
   },
   {
     name: "Inklusion / Soziales", //  Inclusion / Social
@@ -47,6 +51,7 @@ const topics = [
       </Translation>
     ),
     color: "#e8907e",
+    infoPageLeft: "-70%",
   },
   {
     name: "Sport / Freizeit", //  Sports / Leisure
@@ -56,6 +61,7 @@ const topics = [
       </Translation>
     ),
     color: "#f6c095",
+    infoPageLeft: "150%",
   },
   {
     name: "Sonstige", //  Others
