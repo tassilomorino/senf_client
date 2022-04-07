@@ -1,7 +1,7 @@
 /* helper functions for the application */
 import { useRef, useState, useEffect } from "react";
 import moment from "moment";
-import _ from "lodash";
+import orderBy from "lodash/orderBy";
 import { ResizeObserver } from "resize-observer";
 import * as linkify from "linkifyjs";
 
@@ -67,27 +67,54 @@ export function search(dbData, userInput, dbDataKeys) {
 }
 
 export function sort(items, dropdown) {
-  return dropdown === "newest"
-    ? _.orderBy(items, "createdAt", "desc")
-    : dropdown === "hottest"
-    ? _.orderBy(items, "likeCount", "desc")
-    : dropdown === "aToZ"
-    ? _.orderBy(items, [(pr) => pr.title.toLowerCase()], ["asc"])
-    : _.orderBy(items, [(pr) => pr.title.toLowerCase()], ["desc"]);
+  switch (dropdown) {
+    case "newest":
+      return orderBy(items, "createdAt", "desc");
+    case "hottest":
+      return orderBy(items, "likeCount", "desc");
+    case "aToZ":
+      return orderBy(items, [(pr) => pr.title.toLowerCase()], ["asc"]);
+    case "zToA":
+      return orderBy(items, [(pr) => pr.title.toLowerCase()], ["desc"]);
+    default:
+      return items;
+  }
 }
 
-export function filterByTagFilter(items, selectedTags, tagsType) {
+export function filterByTagFilter(items, selectedTopics, tagsType) {
   if (tagsType === "Thema") {
-    return items.filter(({ Thema }) => selectedTags.includes(Thema));
+    return items.filter(({ Thema }) => selectedTopics.includes(Thema));
   } else {
     return items.filter(({ organizationType }) =>
-      selectedTags.includes(organizationType)
+      selectedTopics.includes(organizationType)
     );
   }
 }
 
-export function filterByStatus(items) {
-  return items.filter(({ status }) => status === "None");
+export function filterByStatus(items, statuses) {
+  if (statuses.length === 0) {
+    return items;
+  }
+  return items.filter(({ status }) => statuses.includes(status));
+}
+
+export function countStatusOfScreams(screams) {
+  let statuses = {
+    Unprocessed: 0,
+    Accepted: 0,
+    Planning: 0,
+    Implemented: 0,
+    Rejected: 0,
+  };
+
+  for (const iterator of Object.keys(statuses)) {
+    const numOfIdeas = screams.filter(
+      ({ status }) => status === iterator
+    ).length;
+    statuses[iterator] = numOfIdeas;
+  }
+
+  return statuses;
 }
 
 export function filterByGeodata(items, mapBounds) {

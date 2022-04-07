@@ -1,3 +1,5 @@
+/* eslint-disable import/no-anonymous-default-export */
+
 /**
  * /* eslint-disable import/no-anonymous-default-export
  *
@@ -64,6 +66,19 @@ const defaultOrganizationTypes = [
   "Presse",
   "Sonstige",
 ];
+const TopViewport = {
+  latitude:
+    typeof Storage !== "undefined" && localStorage.getItem("latitude")
+      ? Number(localStorage.getItem("latitude"))
+      : 50.93864020643174,
+  longitude:
+    typeof Storage !== "undefined" && localStorage.getItem("longitude")
+      ? Number(localStorage.getItem("longitude"))
+      : 6.958725744885521,
+
+  zoom: isMobileCustom ? 8 : 9.2,
+  duration: 0,
+};
 const initialState = {
   projects: [],
   organizations: [],
@@ -85,7 +100,7 @@ const initialState = {
   cookie_settings: "",
   mapLoaded: false,
   mapViewport: null,
-  initialMapViewport: null,
+  initialMapViewport: TopViewport,
   initialMapBounds: null,
   mapBounds: null,
   topics: defaultTopics,
@@ -199,10 +214,19 @@ export default function (state = initialState, action) {
       };
 
     case EDIT_SCREAM:
-      return {
-        ...state,
-        screams: [action.payload, ...state.screams],
-      };
+      let screamIndex = state.screams.findIndex(
+        (scream) => scream.screamId === action.payload.screamId
+      );
+      if (screamIndex) {
+        let screamsCopy = [...state.screams];
+        screamsCopy[screamIndex] = {
+          ...screamsCopy[screamIndex],
+          ...action.payload,
+        };
+        return { ...state, screams: screamsCopy };
+      } else {
+        return { ...state };
+      }
 
     case SUBMIT_COMMENT:
       return {

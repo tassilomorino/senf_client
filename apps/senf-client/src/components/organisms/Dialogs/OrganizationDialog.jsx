@@ -20,7 +20,7 @@ import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
 import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 
-import _ from "lodash";
+import orderBy from "lodash/orderBy";
 import {
   openOrganizationFunc,
   stateCreateOrganizationsFunc,
@@ -365,7 +365,10 @@ const OrganizationDialog = ({
       {ReactDOM.createPortal(
         <React.Fragment>
           {contactOpen && (
-            <MainModal handleButtonClick={() => setContactOpen(false)}>
+            <MainModal
+              padding="0px 0px 20px"
+              handleButtonClick={() => setContactOpen(false)}
+            >
               <StyledH2
                 fontWeight="900"
                 margin="15px 0px 0px 0px"

@@ -58,7 +58,7 @@ const ListItemsEdit = ({ listItems, set }) => {
           {/* <CheckboxWrapper>
             <CheckBox
               selected={true}
-              name="CheckBox"
+              type="checkbox"
               handleInputChange={() => console.log()}
             />
           </CheckboxWrapper> */}

@@ -13,8 +13,6 @@ import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
-import _ from "lodash";
-
 import {
   getScreams,
   closeScream,
@@ -65,9 +63,11 @@ import { MenuData } from "../../data/MenuData";
 import {
   filterByGeodata,
   filterByTagFilter,
+  filterByStatus,
   pick,
   search,
   sort,
+  countStatusOfScreams,
 } from "../../util/helpers";
 
 const MainColumnWrapper = styled.div`
@@ -125,7 +125,6 @@ const Main = () => {
   const screams = useSelector((state) => state.data.screams);
   const myScreams = useSelector((state) => state.data.myScreams);
 
-  const [initialLoading, setInitialLoading] = useState(true);
   const loading = useSelector((state) => state.data.loading);
   const loadingUI = useSelector((state) => state.UI.loading);
   const loadingProjects = useSelector((state) => state.data.loadingProjects);
@@ -154,6 +153,7 @@ const Main = () => {
   const [order, setOrder] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [dropdown, setDropdown] = useState("newest");
+  const [dropdownStatus, setdropdownStatus] = useState([]);
 
   const swipePosition = useSelector((state) => state.UI.swipePosition);
   const setSwipeDown = () => {
@@ -162,7 +162,7 @@ const Main = () => {
 
   const [changeLocationModalOpen, setChangeLocationModalOpen] = useState(false);
   const mapRef = useRef(null);
-  const mapViewport = useSelector((state) => state.data.mapViewport);
+
   const mapBounds = useSelector((state) => state.data.mapBounds);
   const mapLoaded = useSelector((state) => state.data.mapLoaded);
   const { lat, long } = useSelector((state) => state.data.scream);
@@ -172,7 +172,7 @@ const Main = () => {
 
   //Initial-ZOOM
   useEffect(() => {
-    if (mapViewport?.latitude !== 0 && mapRef?.current && mapLoaded) {
+    if (mapRef?.current && mapLoaded) {
       const map = mapRef.current.getMap();
       var canvas = map.getCanvas(),
         w = canvas.width,
@@ -199,7 +199,6 @@ const Main = () => {
       project &&
       project.centerLong !== undefined &&
       !openScream &&
-      mapViewport.latitude !== 0 &&
       mapRef.current &&
       mapLoaded
     ) {
@@ -220,13 +219,7 @@ const Main = () => {
   //IDEA-ZOOM
   const prevLat = usePrevious({ lat });
   useEffect(() => {
-    if (
-      openScream &&
-      !loadingIdea &&
-      mapViewport.latitude !== 0 &&
-      mapRef.current &&
-      mapLoaded
-    ) {
+    if (openScream && !loadingIdea && mapRef.current && mapLoaded) {
       if (lat && prevLat && prevLat.lat !== lat) {
         setTimeout(() => {
           dispatch(
@@ -242,54 +235,41 @@ const Main = () => {
       }
     }
   }, [lat, long, loadingIdea, openScream]);
-
   useEffect(() => {
     if (
       cookie_settings !== "all" &&
       cookie_settings !== "minimum" &&
-      isMobileCustom &&
-      !screamId
+      isMobileCustom
     ) {
       history.push("/intro");
-    } else {
-      if (mapViewport && mapViewport.latitude !== 0) {
-        const allPromise = Promise.all([
-          dispatch(getOrganizations(mapViewport)),
-          dispatch(getProjects(mapViewport)),
-          dispatch(getScreams(mapViewport)),
-          projectRoomId && dispatch(openProjectRoomFunc(projectRoomId, true)),
-          screamId && dispatch(openScreamFunc(screamId)),
-          organizationId &&
-            dispatch(openOrganizationFunc(true, organizationId)),
-        ]);
-        allPromise
-          .then((values) => {
-            setInitialLoading(false); // [valueOfPromise1, valueOfPromise2, ...]
-          })
-          .catch((error) => {
-            setInitialLoading(false); // rejectReason of any first rejected promise
-          });
-
-        if (window.location.pathname === "/projectRooms") {
-          setOrder(2);
-        } else if (window.location.pathname === "/organizations") {
-          setOrder(2);
-          dispatch(setSwipePositionUp());
-          setOpenOrganizationsPage(true);
-        } else if (window.location.pathname === "/insights") {
-          // setOrder(4);
-        } else if (projectRoomId) {
-          setOrder(2);
-        } else if (screamId) {
-          setOrder(1);
-        } else if (organizationId) {
-          setOrder(2);
-          dispatch(setSwipePositionUp());
-          setOpenOrganizationsPage(true);
-        }
-      }
     }
-  }, [initialMapViewport]);
+  }, [cookie_settings, history]);
+
+  useEffect(() => {
+    projectRoomId && dispatch(openProjectRoomFunc(projectRoomId, true));
+    screamId && dispatch(openScreamFunc(screamId));
+    organizationId && dispatch(openOrganizationFunc(true, organizationId));
+  }, [dispatch, projectRoomId, screamId, organizationId]);
+
+  useEffect(() => {
+    if (window.location.pathname === "/projectRooms") {
+      setOrder(2);
+    } else if (window.location.pathname === "/organizations") {
+      setOrder(2);
+      dispatch(setSwipePositionUp());
+      setOpenOrganizationsPage(true);
+    } else if (window.location.pathname === "/insights") {
+      // setOrder(4);
+    } else if (projectRoomId) {
+      setOrder(2);
+    } else if (screamId) {
+      setOrder(1);
+    } else if (organizationId) {
+      setOrder(2);
+      dispatch(setSwipePositionUp());
+      setOpenOrganizationsPage(true);
+    }
+  }, [dispatch, organizationId, screamId, projectRoomId]);
 
   const handleClick = useCallback(
     (order) => {
@@ -328,50 +308,85 @@ const Main = () => {
   const handleDropdown = useCallback((value) => {
     setDropdown(value);
   }, []);
+  const handledropdownStatus = useCallback(
+    (id) => {
+      if (dropdownStatus.includes(id)) {
+        setdropdownStatus(dropdownStatus.filter((filter) => filter !== id));
+      } else {
+        setdropdownStatus([...dropdownStatus, id]);
+      }
+    },
+    [dropdownStatus]
+  );
 
   //IDEAS
-  var ideasData;
-  ideasData = search(screams, searchTerm, [
-    "title",
-    "body",
-    "Stadtteil",
-    "Stadtbezirk",
-    "locationHeader",
-  ]);
-  ideasData = filterByTagFilter(ideasData, selectedTopics, "Thema");
 
-  ideasData = sort(ideasData, dropdown);
-  const dataFinalIdeas = filterByGeodata(ideasData, mapBounds);
+  const dataFinalIdeas = useMemo(() => {
+    let ideasData;
+    ideasData = search(screams, searchTerm, [
+      "title",
+      "body",
+      "Stadtteil",
+      "Stadtbezirk",
+      "locationHeader",
+    ]);
+    ideasData = filterByTagFilter(ideasData, selectedTopics, "Thema");
+
+    ideasData = sort(ideasData, dropdown);
+    ideasData = filterByStatus(ideasData, dropdownStatus);
+    ideasData = filterByGeodata(ideasData, mapBounds);
+    return ideasData;
+  }, [
+    dropdown,
+    dropdownStatus,
+    searchTerm,
+    selectedTopics,
+    screams,
+    mapBounds,
+    userLikes,
+  ]);
+
+  const dropdownStatusNumbers = useMemo(
+    () => countStatusOfScreams(screams),
+    [screams]
+  );
 
   //PROJECTROOMS
-  var projectRoomsData;
-  projectRoomsData = search(projects, searchTerm, [
-    "title",
-    "brief",
-    "description_about",
-    "description_motivation",
-    "description_procedure",
-    "description_learnmore",
-  ]);
-  projectRoomsData = sort(projectRoomsData, dropdown);
-  const dataFinalProjectRooms = filterByTagFilter(
-    projectRoomsData,
-    selectedOrganizationTypes,
-    "organizationType"
-  );
+
+  const dataFinalProjectRooms = useMemo(() => {
+    let projectRoomsData;
+    projectRoomsData = search(projects, searchTerm, [
+      "title",
+      "brief",
+      "description_about",
+      "description_motivation",
+      "description_procedure",
+      "description_learnmore",
+    ]);
+    projectRoomsData = sort(projectRoomsData, dropdown);
+    projectRoomsData = filterByTagFilter(
+      projectRoomsData,
+      selectedOrganizationTypes,
+      "organizationType"
+    );
+    return projectRoomsData;
+  }, [dropdown, projects, searchTerm, selectedOrganizationTypes]);
 
   //ORGANIZATIONS
-  var organizationsData;
-  organizationsData = search(organizations, searchTerm, ["title"]);
-  organizationsData = sort(organizationsData, dropdown);
-  const dataFinalOrganizations = filterByTagFilter(
-    organizationsData,
-    selectedOrganizationTypes,
-    "organizationType"
-  );
+
+  const dataFinalOrganizations = useMemo(() => {
+    let organizationsData;
+    organizationsData = search(organizations, searchTerm, ["title"]);
+    organizationsData = sort(organizationsData, dropdown);
+    organizationsData = filterByTagFilter(
+      organizationsData,
+      selectedOrganizationTypes,
+      "organizationType"
+    );
+    return organizationsData;
+  }, [dropdown, organizations, searchTerm, selectedOrganizationTypes]);
 
   //MAP
-
   const dataMap = useMemo(
     () =>
       openProjectRoom
@@ -380,31 +395,52 @@ const Main = () => {
           )
         : myScreams !== null
         ? myScreams.filter(({ Thema }) => selectedTopics.includes(Thema))
-        : ideasData,
-    [myScreams, openProjectRoom, project?.screams, ideasData, selectedTopics]
+        : dataFinalIdeas,
+    [
+      myScreams,
+      openProjectRoom,
+      project?.screams,
+      dataFinalIdeas,
+      selectedTopics,
+    ]
+  );
+  const dataFinalMap = useMemo(
+    () =>
+      dataMap?.map((object) =>
+        pick(["title", "lat", "long", "screamId", "color", "likeCount"], object)
+      ),
+    [dataMap]
   );
 
-  const dataFinalMap = dataMap?.map((object) =>
-    pick(["title", "lat", "long", "screamId", "color", "likeCount"], object)
-  );
+  const dataFinalMapProjects = useMemo(() => {
+    let mapProjectsData;
+    mapProjectsData = projects?.map((object) =>
+      pick(
+        [
+          "title",
+          "centerLat",
+          "centerLong",
+          "projectRoomId",
+          "organizationType",
+        ],
+        object
+      )
+    );
 
-  const dataRawMapProjects = projects?.map((object) =>
-    pick(
-      ["title", "centerLat", "centerLong", "projectRoomId", "organizationType"],
-      object
-    )
-  );
-
-  const dataFinalMapProjects = dataRawMapProjects?.filter(
-    ({ organizationType }) =>
+    mapProjectsData.filter(({ organizationType }) =>
       selectedOrganizationTypes.includes(organizationType)
-  );
+    );
+    return mapProjectsData;
+  }, [projects, selectedOrganizationTypes]);
 
+  const swipeListTablabels = useMemo(() => {
+    MenuData.map((item) => item.text).slice(0, 2);
+  }, []);
   return (
     <React.Fragment>
       {isMobileCustom ? (
         <React.Fragment>
-          {(initialLoading || loadingIdea || loadingProjectRoom) && (
+          {(loading || loadingIdea || loadingProjectRoom) && (
             <Loader withoutBg={true} />
           )}
           {isMobileCustom && !openScream && (
@@ -440,6 +476,7 @@ const Main = () => {
           handleClick={handleClick}
           order={order}
           setChangeLocationModalOpen={setChangeLocationModalOpen}
+
           loading={initialLoading}
           setOrder={setOrder}
           setOpenOrganizationsPage={setOpenOrganizationsPage}
@@ -459,23 +496,26 @@ const Main = () => {
 
       {!openInfoPage && (
         <MainColumnWrapper>
-          {(initialLoading || loadingIdea || loadingProjectRoom) &&
+          {(loading || loadingIdea || loadingProjectRoom) &&
             !isMobileCustom && <Loader left="200px" width="400px" />}
 
           {!openProjectRoom &&
             !openAccount &&
-            !initialLoading &&
+            !loading &&
             (order === 1 || (order === 2 && !loadingProjects)) && (
               <SwipeList
                 swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}
-                tabLabels={MenuData.map((item) => item.text).slice(0, 2)}
-                loading={initialLoading}
+                tabLabels={swipeListTablabels}
+                loading={loading}
                 order={order}
                 dataFinal={order === 1 ? dataFinalIdeas : dataFinalProjectRooms}
                 dataFinalMap={dataFinalMap}
                 handleDropdown={handleDropdown}
+                handledropdownStatus={handledropdownStatus}
                 dataFinalProjectRooms={dataFinalProjectRooms}
                 dropdown={dropdown}
+                dropdownStatus={dropdownStatus}
+                dropdownStatusNumbers={dropdownStatusNumbers}
                 setSearchTerm={setSearchTerm}
                 searchTerm={searchTerm}
                 handleClick={handleClick}
@@ -483,7 +523,6 @@ const Main = () => {
                 setOpenOrganizationsPage={setOpenOrganizationsPage}
                 openOrganizationsPage={openOrganizationsPage}
                 openInsightsPage={openInsightsPage}
-                setOpenInsightsPage={setOpenInsightsPage}
               />
             )}
 

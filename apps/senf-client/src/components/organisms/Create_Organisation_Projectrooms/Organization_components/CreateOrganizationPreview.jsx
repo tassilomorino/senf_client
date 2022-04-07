@@ -24,7 +24,7 @@ import EditIcon from "../../../../images/icons/pen.png";
 import CheckIcon from "../../../../images/icons/check.png";
 import MissingIcon from "../../../../images/icons/close.png";
 import ExpandButton from "../../../atoms/CustomButtons/ExpandButton";
-import { set } from "lodash-es";
+
 import {
   getProjects /* reloadProjects */,
 } from "../../../../redux/actions/projectActions";

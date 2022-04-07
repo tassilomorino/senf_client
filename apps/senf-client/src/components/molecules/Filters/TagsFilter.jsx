@@ -162,7 +162,7 @@ const Tag = styled.button`
   }
 `;
 
-const Checkbox = styled.div`
+const StyledCheckbox = styled.div`
   width: 13px;
   position: relative;
   height: 13px;
@@ -275,7 +275,7 @@ export function TagsFilter({ loading, placing, type, inline, column }) {
                         swipePosition === "top"))
                   }
                 >
-                  <Checkbox color={topic.color} data-cy={topic.name} />
+                  <StyledCheckbox color={topic.color} data-cy={topic.name} />
 
                   <Span>{topic.label}</Span>
                 </Tag>

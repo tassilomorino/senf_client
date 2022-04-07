@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect, memo, useCallback } from "react";
+import React, { useState, useEffect, memo, useCallback, useMemo } from "react";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
 //Redux
@@ -145,11 +145,9 @@ const Map = ({
   const [hoverLong, setHoverLong] = useState("");
   const [hoverTitle, setHoverTitle] = useState("");
 
-  const handlleMapLoaded = () => {
-    setTimeout(() => {
-      setShowPatternBackground(false);
-    }, 1000);
+  const handlleMapLoaded = useCallback(() => {
     dispatch(setMapLoaded());
+    setShowPatternBackground(false);
 
     if (
       !screamId &&
@@ -161,26 +159,31 @@ const Map = ({
         dispatch(setMapViewport(initialMapViewport));
       }, 1000);
     }
-  };
+  }, []);
+
   useEffect(() => {
     if (!initialMapViewport) return;
     setTimeout(() => {
       dispatch(setMapViewport(initialMapViewport));
     }, 1000);
-  }, [initialMapViewport]);
+  }, [dispatch, initialMapViewport]);
 
   const _onViewportChange = useCallback(
     (viewport) => {
+      //how can I dispatch viewport every 2 seconds
+      //instead of every mouse scroll
+      // thats the last thing wich causes rerenders
       dispatch(setMapViewport(viewport));
     },
     [dispatch]
   );
 
-  const data =
-    !loadingProjects &&
-    geoData !== undefined &&
-    geoData !== "" &&
-    JSON.parse(geoData);
+  const data = useMemo(() => {
+    if (!loadingProjects && geoData !== undefined && geoData !== "") {
+      const jsonData = JSON.parse(geoData);
+      return jsonData;
+    }
+  }, [geoData, loadingProjects]);
 
   let geojsonIdeas = { type: "FeatureCollection", features: [] };
   let geojsonProjectRooms = { type: "FeatureCollection", features: [] };
@@ -219,7 +222,6 @@ const Map = ({
           );
         }
         const hash = generateHash(point.screamId);
-
         point.long = point.long + hash / 100000000000000;
         point.lat = point.lat + reversedNum(hash) / 100000000000000;
 
@@ -249,58 +251,61 @@ const Map = ({
     };
     geojsonProjectRooms.features.push(feature);
   }
-  const onHoverIdea = (event) => {
+
+  const onHoverIdea = useCallback((event) => {
     if (event.features.length > 0) {
       setHoverId(event.features[0].properties.screamId);
       setHoverLat(event.features[0].properties.lat);
       setHoverLong(event.features[0].properties.long);
       setHoverTitle(event.features[0].properties.title);
     }
-  };
-
-  const onLeave = (event) => {
+  }, []);
+  const onLeave = useCallback((event) => {
     if (event.features.length < 1) {
       setHoverId("");
       setHoverLat("");
       setHoverLong("");
       setHoverTitle("");
     }
-  };
-
-  const onClickIdea = (event) => {
-    if (event.features.length > 0) {
-      dispatch(openScreamFunc(event.features[0].properties.screamId));
-      setTimeout(() => {
-        setHoverId("");
-        setHoverLat("");
-        setHoverLong("");
-        setHoverTitle("");
-      }, 1000);
-    }
-  };
-
-  const onHoverProjectRoom = (event) => {
+  }, []);
+  const onClickIdea = useCallback(
+    (event) => {
+      if (event.features.length > 0) {
+        dispatch(openScreamFunc(event.features[0].properties.screamId));
+        setTimeout(() => {
+          setHoverId("");
+          setHoverLat("");
+          setHoverLong("");
+          setHoverTitle("");
+        }, 1000);
+      }
+    },
+    [dispatch]
+  );
+  const onHoverProjectRoom = useCallback((event) => {
     if (event.features.length > 0) {
       setHoverId(event.features[0].properties.projectRoomId);
       setHoverLat(event.features[0].properties.centerLat);
       setHoverLong(event.features[0].properties.centerLong);
       setHoverTitle(event.features[0].properties.title);
     }
-  };
-
-  const onClickProjectRoom = (event) => {
-    if (event.features.length > 0) {
-      dispatch(
-        openProjectRoomFunc(event.features[0].properties.projectRoomId, true)
-      );
-      setTimeout(() => {
-        setHoverId("");
-        setHoverLat("");
-        setHoverLong("");
-        setHoverTitle("");
-      }, 4000);
-    }
-  };
+  }, []);
+  const onClickProjectRoom = useCallback(
+    (event) => {
+      if (event.features.length > 0) {
+        dispatch(
+          openProjectRoomFunc(event.features[0].properties.projectRoomId, true)
+        );
+        setTimeout(() => {
+          setHoverId("");
+          setHoverLat("");
+          setHoverLong("");
+          setHoverTitle("");
+        }, 4000);
+      }
+    },
+    [dispatch]
+  );
 
   return (
     mapViewport && (

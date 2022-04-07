@@ -10,6 +10,7 @@ import Arrow from "../../../images/icons/arrow.png";
 //Components
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import { StyledH3, StyledLi } from "../../../styles/GlobalStyle";
+import CheckBox from "../CheckBox/CheckBox";
 
 const DropDownButton = styled.button`
   color: #353535;
@@ -35,8 +36,6 @@ const DropDownListContainer = styled.div`
   position: fixed;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  left: 0;
   top: 50%;
   left: 50%;
   transform: translateY(-50%) translateX(-50%);
@@ -44,7 +43,7 @@ const DropDownListContainer = styled.div`
   max-width: 400px;
   height: auto;
   max-height: 80vh;
-  overflow: scroll;
+  overflow-y: ${(props) => (props.overflow ? props.overflow : "scroll")};
   box-sizing: border-box;
   z-index: 99999;
   border-radius: 20px;
@@ -60,15 +59,14 @@ const Background = styled.div`
   background-color: rgb(0, 0, 0, 0.6);
 `;
 
-const DropDownList = styled.ul`
-  margin: 0;
-  padding: 0;
-  overflow: scroll;
+const DropDownList = styled.div`
+  overflow-y: ${(props) => (props.overflow ? props.overflow : "scroll")};
   border-radius: 10px;
   width: 100%;
+  padding-bottom: 30px;
 `;
 
-const ListItem = styled("li")`
+const ListItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -80,6 +78,7 @@ const ListItem = styled("li")`
 
   &:hover {
     background-color: #f8f8f8;
+    cursor: pointer;
   }
 `;
 
@@ -101,19 +100,43 @@ const Img = styled.img`
   margin-right: 10px;
 `;
 
-const Span = styled.span`
+const StyledDivider = styled.div`
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  width: 80%;
+
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  margin: 0 auto 10px;
 `;
 
-const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
+const CheckBoxWrapper = styled.div`
+  display: flex;
+  padding-top: 10px;
+  padding-left: 10%;
+`;
+const CheckBoxLabel = styled.label`
+  font-size: 18px;
+  color: #353535;
+  font-weight: ${(props) => (props.selected ? "600" : "100")};
+  margin-left: 20px;
+  cursor: pointer;
+`;
+
+const CustomSelect = ({
+  overflow,
+  value,
+  initialValue,
+  options,
+  sortOptions,
+  statusOptions,
+  dropdownStatus,
+  dropdownStatusNumbers,
+  handleDropdown,
+  handleDropdownStatus,
+}) => {
   const [open, setOpen] = useState(false);
   const DOMElement = document.getElementById("portal-root-modal");
-  const [selectedOption, setSelectedOption] = useState(
-    value === "" ? initialValue : value
-  );
-  const [selectedLabel, setSelectedLabel] = useState(initialValue);
+  const [selectedOption, setSelectedOption] = useState(initialValue ?? value);
+  const [selectedLabel, setSelectedLabel] = useState(initialValue ?? value);
   const [dropDownButtonAmount, setDropDownButtonAmount] = useState(28);
 
   useEffect(() => {
@@ -125,12 +148,22 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
   }, []);
 
   useEffect(() => {
-    for (const option of options) {
-      if (option.name === value) {
-        setSelectedLabel(option.label);
+    if (options) {
+      for (const option of options) {
+        if (option.name === value) {
+          setSelectedLabel(option.label);
+        }
       }
     }
-  }, [value]);
+
+    if (sortOptions) {
+      for (const option of sortOptions) {
+        if (option.name === value) {
+          setSelectedLabel(option.label);
+        }
+      }
+    }
+  }, [value, options, sortOptions]);
 
   const outerRef = useRef();
   useOnClickOutside(outerRef, () => setOpen(false));
@@ -140,12 +173,12 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
 
     setOpen(!open);
   };
-
-  const onOptionClicked = (value, label) => () => {
+  let dontCloseWindow = true;
+  const onOptionClicked = (value, label, dontCloseWindow) => () => {
     setSelectedOption(value);
     setSelectedLabel(label);
     handleDropdown(value);
-    setOpen(false);
+    dontCloseWindow ? setOpen(true) : setOpen(false);
   };
 
   function truncateString(str, num) {
@@ -154,6 +187,7 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
     }
     return str.slice(0, num) + "...";
   }
+
   return (
     <React.Fragment>
       <DropDownButton onClick={handleToggle} style={{ zIndex: 999 }}>
@@ -169,6 +203,7 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
             transition: "0.5s",
             transform: open && "scaleY(-1)",
           }}
+          alt="filter selection"
         />
       </DropDownButton>
 
@@ -177,31 +212,100 @@ const CustomSelect = ({ value, initialValue, options, handleDropdown }) => {
         ReactDOM.createPortal(
           <React.Fragment>
             <DropDownListContainer id="container">
-              <DropDownList>
-                {options.map((option) => (
-                  <ListItem
-                    onClick={onOptionClicked(option.name, option.label)}
-                    key={Math.random()}
-                  >
-                    {option.name === selectedOption ||
-                    option.label === selectedOption ? (
-                      <React.Fragment>
-                        {option.color && <ColorDot color={option.color} />}
-                        {option.img && <Img src={option.img} />}
-                        <span style={{ fontWeight: "900" }}>
-                          {option.label}
-                        </span>
-                      </React.Fragment>
-                    ) : (
-                      <React.Fragment>
-                        {" "}
-                        {option.color && <ColorDot color={option.color} />}
-                        {option.img && <Img src={option.img} />}
-                        {option.label}
-                      </React.Fragment>
-                    )}
-                  </ListItem>
-                ))}
+              <DropDownList overflow={overflow}>
+                {options && (
+                  <>
+                    {options?.map((option) => (
+                      <ListItem
+                        onClick={onOptionClicked(option.name, option.label)}
+                        key={Math.random()}
+                      >
+                        <React.Fragment>
+                          {option.color && <ColorDot color={option.color} />}
+                          {option.img && <Img src={option.img} />}
+                          <span
+                            style={
+                              option.name === selectedOption ||
+                              option.label === selectedLabel
+                                ? { fontWeight: "900" }
+                                : {}
+                            }
+                          >
+                            {option.label}
+                          </span>
+                        </React.Fragment>
+                      </ListItem>
+                    ))}
+                  </>
+                )}
+                {sortOptions && (
+                  <>
+                    <StyledH3 textAlign={"center"} padding={"10px"}>
+                      Sort By
+                    </StyledH3>
+                    <StyledDivider />
+                    {sortOptions?.map((sortOption) => (
+                      <>
+                        <CheckBoxWrapper>
+                          <CheckBox
+                            type="radio"
+                            selected={selectedOption.includes(sortOption.name)}
+                            handleInputChange={onOptionClicked(
+                              sortOption.name,
+                              sortOption.label,
+                              dontCloseWindow
+                            )}
+                          />
+
+                          <CheckBoxLabel
+                            onClick={onOptionClicked(
+                              sortOption.name,
+                              sortOption.label,
+                              dontCloseWindow
+                            )}
+                            htmlFor={sortOption}
+                            selected={selectedOption.includes(sortOption.name)}
+                          >
+                            {sortOption.label}
+                          </CheckBoxLabel>
+                        </CheckBoxWrapper>
+                      </>
+                    ))}
+                  </>
+                )}
+                {/* temporary disabled functionality for dropdown status filter */}
+                {/* {statusOptions && (
+                  <>
+                    <StyledH3
+                      textAlign={"center"}
+                      padding={"10px"}
+                      margin={"25px 0px 0px"}
+                    >
+                      Filter By
+                    </StyledH3>
+                    <StyledDivider />
+                    {statusOptions?.map((filter, i) => (
+                      <>
+                        <CheckBoxWrapper>
+                          <CheckBox
+                            type="checkbox"
+                            selected={dropdownStatus.includes(filter.name)}
+                            handleInputChange={() =>
+                              handleDropdownStatus(filter.name)
+                            }
+                          />
+                          <CheckBoxLabel
+                            onClick={() => handleDropdownStatus(filter.name)}
+                            selected={dropdownStatus.includes(filter.name)}
+                          >
+                            {filter.label} ({dropdownStatusNumbers[filter.name]}
+                            )
+                          </CheckBoxLabel>
+                        </CheckBoxWrapper>
+                      </>
+                    ))}
+                  </>
+                )} */}
               </DropDownList>
             </DropDownListContainer>
 
