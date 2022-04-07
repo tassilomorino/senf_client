@@ -421,24 +421,9 @@ const Main = () => {
   );
 
   const dataFinalMapProjects = useMemo(() => {
-    let mapProjectsData;
-    mapProjectsData = projects?.map((object) =>
-      pick(
-        [
-          "title",
-          "centerLat",
-          "centerLong",
-          "projectRoomId",
-          "organizationType",
-        ],
-        object
-      )
-    );
-
-    mapProjectsData.filter(({ organizationType }) =>
+    return projects.filter(({ organizationType }) =>
       selectedOrganizationTypes.includes(organizationType)
     );
-    return mapProjectsData;
   }, [projects, selectedOrganizationTypes]);
 
   const swipeListTablabels = useMemo(() => {
