@@ -18,6 +18,7 @@ const Container = styled.div`
   overflow: visible;
   margin-top: ${(props) => props.marginTop};
   z-index: 1;
+  -webkit-backspace-visibility: hidden;
 `;
 
 const HooksMain = styled.div`
@@ -33,6 +34,7 @@ const HooksMain = styled.div`
   -ms-user-select: none;
   user-select: none;
   cursor: default;
+  -webkit-backspace-visibility: hidden;
 
   div {
     position: absolute;
