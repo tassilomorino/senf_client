@@ -6,13 +6,11 @@ import styled from "styled-components";
 import Cookies from "universal-cookie";
 
 //Images
-import Arrow from "../../../images/icons/arrow.png";
+import LanguageSeleectShape from "../../../images/languageSeleectShape.png";
 import Circle from "../../../images/icons/circle_yellow.png";
 
 //Components
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
-import { isMobileCustom } from "../../../util/customDeviceDetect";
-import { setSwipePositionUp } from "../../../redux/actions/UiActions";
 import { StyledH2 } from "../../../styles/GlobalStyle";
 import { useTranslation } from "react-i18next";
 
@@ -25,7 +23,7 @@ const DropDownButton = styled.button`
   justify-content: center;
   background-color: transparent;
   pointer-events: auto;
-  color: #353535;
+  color: #988234;
   background-color: transparent;
   padding: 6px;
   border-radius: 15px;
@@ -44,11 +42,17 @@ const DropDownListContainer = styled.div`
   min-width: 50px;
   width: 50px;
   height: auto;
-  transform: translateY(-100%) translateX(-15%);
+  transform: ${(props) =>
+    props.direction === "down"
+      ? "translateY(45px) translateX(-15%)"
+      : "translateY(-100%) translateX(-15%)"};
   margin-top: -40px;
   box-sizing: border-box;
   z-index: 99;
   pointer-events: auto;
+
+  @media (min-width: 768px) {
+  }
 `;
 
 const DropDownList = styled.ul`
@@ -73,7 +77,7 @@ const ListItem = styled("li")`
   }
 `;
 
-function SelectLanguageButtons() {
+const SelectLanguageButtons = ({ direction }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [selectedLabel, setSelectedLabel] = useState(t("De"));
@@ -127,20 +131,21 @@ function SelectLanguageButtons() {
   return (
     <div ref={outerRef}>
       <DropDownContainer>
-        <DropDownButton onClick={handleToggle} style={{ zIndex: 999 }}>
+        <DropDownButton onClick={handleToggle} style={{ zIndex: 99999 }}>
           {selectedLabel || ""}
           <img
-            src={Circle}
+            src={LanguageSeleectShape}
             width="40px"
             style={{
               position: "absolute",
               transition: "0.5s",
+              zIndex: -1,
             }}
           />
           {/* <img src={Arrow} width="20px" style={{ paddingLeft: "5px" }}></img> */}
         </DropDownButton>
         {open && (
-          <DropDownListContainer>
+          <DropDownListContainer direction={direction}>
             <DropDownList>
               {basicSortingOptions.map((option) => (
                 <ListItem
@@ -160,6 +165,6 @@ function SelectLanguageButtons() {
       </DropDownContainer>
     </div>
   );
-}
+};
 
 export default memo(SelectLanguageButtons);

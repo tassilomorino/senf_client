@@ -68,13 +68,13 @@ const Container = styled.div`
 const SelectLanguageWrapper = styled.div`
   position: absolute;
   z-index: 99999;
-  left: 24px;
-  bottom: 24px;
+  right: 20px;
+  top: 84px;
   z-index: 1;
 
   @media (min-width: 768px) {
-    right: 29px;
-    top: 152px;
+    right: 24px;
+    top: 82px;
     bottom: auto;
     left: auto;
   }
@@ -84,7 +84,7 @@ const StyledContactImg = styled.img`
   width: 70px;
   position: absolute;
   top: 10px;
-  right: 10px;
+  right: 40px;
   transition: 0.1s;
   &:hover {
     width: 80px;
@@ -480,7 +480,7 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
           )}
 
           <SelectLanguageWrapper>
-            <SelectLanguageButton />
+            <SelectLanguageButton direction="down" />
           </SelectLanguageWrapper>
 
           <StyledContactImg
