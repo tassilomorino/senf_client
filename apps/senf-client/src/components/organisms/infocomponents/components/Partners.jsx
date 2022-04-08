@@ -75,8 +75,8 @@ const Logo = styled.div`
 const Partners = () => {
   return (
     <Wrapper isMobileCustom={isMobileCustom}>
-      {Logos.map(({ img, width }) => (
-        <Logo img={img} width={width} key={img}></Logo>
+      {Logos.map(({ img, width }, index) => (
+        <Logo img={img} width={width} key={img + index}></Logo>
       ))}
     </Wrapper>
   );
