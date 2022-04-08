@@ -76,7 +76,7 @@ const Partners = () => {
   return (
     <Wrapper isMobileCustom={isMobileCustom}>
       {Logos.map(({ img, width }) => (
-        <Logo img={img} width={width}></Logo>
+        <Logo img={img} width={width} key={img}></Logo>
       ))}
     </Wrapper>
   );

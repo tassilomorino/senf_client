@@ -67,6 +67,7 @@ const Trail = ({ open, children, textlines }) => {
     >
       {trail.map(({ height, ...style }, index) => (
         <TrailsText
+          key={index}
           style={
             textlines[index].breakBoolean ? { width: "100%", height: 0 } : {}
           }
@@ -87,7 +88,7 @@ const UnderlinedText = ({ visibleHeadline, textlines }) => {
     <Container>
       <Trail open={visibleHeadline} textlines={textlines}>
         {textlines.map(({ text, color }) => (
-          <HeadlineText>
+          <HeadlineText key={text + color}>
             {t(text)} <Line color={color} />
           </HeadlineText>
         ))}

@@ -58,7 +58,7 @@ const Trail = ({ open, children }) => {
   return (
     <div>
       {trail.map(({ height, ...style }, index) => (
-        <TrailsText>
+        <TrailsText key={index}>
           <a.div key={index} style={style}>
             <a.div style={{ height }}>{items[index]}</a.div>
           </a.div>
@@ -75,7 +75,7 @@ const Headline = ({ visible, textlines }) => {
     <Container>
       <Trail open={visible}>
         {textlines.map(({ text, color }) => (
-          <HeadlineText>
+          <HeadlineText key={text}>
             {t(text)} <Line color={color} />
           </HeadlineText>
         ))}
