@@ -217,7 +217,7 @@ const OrganizationsPage = ({
               textAlign="center"
               margin="10px 0px"
             >
-              {MenuData.map((item) => item.text).slice(2, 3)}
+              {MenuData[2].text}
             </StyledH2>
           </TabsWrapper>
 
@@ -229,7 +229,7 @@ const OrganizationsPage = ({
             <svg
               width="100%"
               height="100%"
-              viewBox="0 0 100% 100%"
+              viewBox="0 0 100 100"
               preserveAspectRatio="none"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -288,7 +288,7 @@ const OrganizationsPage = ({
     </React.Fragment>
   ) : (
     !loading && (
-      <Wrapper order={open}>
+      <Wrapper $order={open}>
         {AuthenticateModal}
 
         <CustomIconButton
@@ -307,7 +307,7 @@ const OrganizationsPage = ({
               textAlign="center"
               margin="20px 0px 40px 0px"
             >
-              {MenuData.map((item) => item.text).slice(2, 3)}
+              {MenuData[2].text}
             </StyledH2>
 
             <Toolbar

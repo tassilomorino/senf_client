@@ -83,8 +83,7 @@ const InlineDatePicker = ({ handleChangeCalendar, selectedDays }) => {
           <TimePicker
             position="right"
             hideSeconds
-            timeFormat="HH:mm"
-            showTimeInput
+            format="MMM/DD"
             style={{ minWidth: "100px" }}
           />,
         ]}

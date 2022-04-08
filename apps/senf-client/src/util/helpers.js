@@ -58,10 +58,13 @@ export function search(dbData, userInput, dbDataKeys) {
   }
   return dbData.filter((object) => {
     return dbDataKeys.some((dbDataKey) => {
-      return object[dbDataKey]
-        ?.toString()
-        .toLowerCase()
-        .includes(sanitizedUserInput);
+      //check if the user input is in the object[dbDataKey]
+      if (
+        object[dbDataKey] &&
+        object[dbDataKey].toString().toLowerCase().includes(sanitizedUserInput)
+      ) {
+        return true;
+      }
     });
   });
 }
@@ -84,10 +87,12 @@ export function sort(items, dropdown) {
 export function filterByTagFilter(items, selectedTopics, tagsType) {
   if (tagsType === "Thema") {
     return items.filter(({ Thema }) => selectedTopics.includes(Thema));
-  } else {
+  } else if (tagsType === "organizationType") {
     return items.filter(({ organizationType }) =>
       selectedTopics.includes(organizationType)
     );
+  } else {
+    return items;
   }
 }
 

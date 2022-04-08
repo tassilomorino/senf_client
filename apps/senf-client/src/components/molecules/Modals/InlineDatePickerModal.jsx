@@ -1,6 +1,7 @@
 /** @format */
 import React from "react";
 
+import { useTranslation } from "react-i18next";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 // MUI Stuff
@@ -50,12 +51,14 @@ const InlineDatePickerModal = ({
   handleSaveCalendar,
   selectedDays,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <MainModal handleButtonClick={() => setCalendarOpen(false)} zIndex={999}>
-      <h3 className="modal_title">Datum hinzufügen:</h3>
+      <h3 className="modal_title">{t("add_date")}</h3>
 
       <p style={{ widthh: "100%", textAlign: "center" }}>
-        Zuerst Datum, dann Zeit auswählen.
+        {t("first_date_then_time")}
       </p>
 
       <InlineDatePicker
@@ -64,16 +67,18 @@ const InlineDatePickerModal = ({
       />
       <div className="buttons">
         <Button className={classes.button} onClick={handleCloseCalendar}>
-          {selectedDays !== [] ? "Löschen" : "Abbrechen"}
+          {t("cancel")}
         </Button>
         <Button
           className={classes.button}
           onClick={handleSaveCalendar}
           style={
-            selectedDays !== [] ? {} : { pointerEvents: "none", opacity: 0.6 }
+            selectedDays.length === 0
+              ? { pointerEvents: "none", opacity: 0.6 }
+              : {}
           }
         >
-          Speichern
+          {t("save")}
         </Button>
       </div>
     </MainModal>

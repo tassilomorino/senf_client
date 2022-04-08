@@ -81,7 +81,7 @@ const Tabs = ({
   const tab = tabLabels?.map((tabLabel, i) => {
     return (
       !loading && (
-        <React.Fragment>
+        <React.Fragment key={tabLabel + i}>
           {tabLabel && (
             <Tab
               i={i + 1}
@@ -92,7 +92,6 @@ const Tabs = ({
               secondaryColor={secondaryColor}
             >
               <StyledH3
-                fontWeight={order === i + 1 ? "900" : "300"}
                 fontSize={
                   type === "secondary"
                     ? "18px"

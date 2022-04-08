@@ -67,7 +67,7 @@ const EditModalMainFields = ({
       <Geocoder
         mapboxApiAccessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
         onSelected={onSelected}
-        {...viewport}
+        viewport={viewport}
         hideOnSelect={true}
         limit={3}
         queryParams={queryParams}
@@ -83,7 +83,6 @@ const EditModalMainFields = ({
         type="text"
         label="Titel"
         margin="normal"
-        color="transparent"
         variant="outlined"
         className="textField"
         multiline
@@ -100,7 +99,6 @@ const EditModalMainFields = ({
         type="text"
         label="Beschreibung"
         margin="normal"
-        color="transparent"
         variant="outlined"
         className="textField"
         multiline

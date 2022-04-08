@@ -60,8 +60,6 @@ const styles = {
 const AgegroupDialog = ({ classes, data, screams, likes }) => {
   const [open, setOpen] = useState(false);
 
-  console.log(likes);
-
   const dialogComponent = isMobileOnly ? (
     <Dialog
       scroll={"body"}
