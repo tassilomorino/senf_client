@@ -129,6 +129,8 @@
   "organizations_description": "Organizations description",
   "organizations_description_too_short": "Organizations description is too short",
   "organizations_description_too_long": "Organizations description is too long",
+  "organizations_create_login_register": " To create an organization profile, you must first log in/register",
+  "organizations_create": " Create organization profile",
 
   "searchBar": "Search titles and descriptions...",
   "searchBarOrganizations": "Search titles...",
@@ -191,6 +193,8 @@
   "projectrooms_request_subTitle": "You want to gather ideas on a specific topic/place?",
   "projectrooms_loader": "Projectrooms are being loaded...",
   "projectrooms_loading_error": "An error occured when loading the page. Please refresh...",
+  "Projectrooms_link_to_organization": "To create a project room, your profile must be linked to an organization profile. To create an organization profile, you must first log in/register.",
+  "Projectrooms_link_to_organization2": "To create a project room, your profile must be linked to an organization profile.",
 
   "cookiebanner_title": "Cookies are inevitable",
   "cookiebanner_text": "We use essential <5>cookies</5> to make your webapp experience better",

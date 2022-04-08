@@ -134,6 +134,8 @@
   "organizations_description": "Organisationsbeschreibung",
   "organizations_description_too_short": "Organisationsbeschreibung ist zu kurz",
   "organizations_description_too_long": "Organisationsbeschreibung ist zu lang",
+  "organizations_create_login_register": " Um ein Organisationsprofil anzulegen, musst du dich zuerst Anmelden/Registieren",
+  "organizations_create": " Organisationsprofil anlegen",
 
   "searchBar": "Durchsuche Titel und Beschreibungen...",
   "searchBarOrganizations": "Durchsuche Titel...",
@@ -196,7 +198,8 @@
   "projectrooms_request_subTitle": "Ihr möchtet zu einem spezifischen Thema/ Ort Ideen sammeln?",
   "projectrooms_loader": "Projekträume werden geladen...",
   "projectrooms_loading_error": "Beim laden ist ein Fehler aufgetreten. Bitte refreshe die Seite...",
-
+  "Projectrooms_link_to_organization": "Um einen Projektraum anzulegen, muss dein Profil mit einem Organisationsprofil verknüpft sein. Um ein Organisationsprofil anzulegen, musst du dich zuerst Anmelden/Registieren",
+  "Projectrooms_link_to_organization2": "Um einen Projektraum anzulegen, muss dein Profil mit einem Organisationsprofil verknüpft sein.",
   "cookiebanner_title": "",
   "cookiebanner_text": "Wir verwenden notwendige <5>Cookies</5>, um das Nutzerlebnis zu verbessern",
 
