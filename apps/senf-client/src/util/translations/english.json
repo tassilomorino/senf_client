@@ -17,6 +17,7 @@
   "send": "Send",
   "next": "Next",
   "save": "Save",
+  "publish": "Publish",
   "to": "To:",
   "details": "Details",
   "monitoring": "Monitoring",
@@ -121,6 +122,13 @@
   "diverse": "Diverse",
   "enter_email": "Enter your email",
   "enter_valid_email": "Enter a valid email",
+  "enter_organizations_name": "Enter organizations name",
+  "orgaznizations_name_too_short": "Organizations name is too short",
+  "organizations_name_too_long": "Organizations name is too long",
+  "enter_organizations_description": "Enter organizations description",
+  "organizations_description": "Organizations description",
+  "organizations_description_too_short": "Organizations description is too short",
+  "organizations_description_too_long": "Organizations description is too long",
 
   "searchBar": "Search titles and descriptions...",
   "searchBarOrganizations": "Search titles...",
@@ -277,7 +285,7 @@
 
   "createOrganizationPage1Title": "Info",
   "createOrganizationPage1SubTitle": "Edit your organization info.",
-  "createOrganizationPage1_FieldName_Title": "Organization-name",
+  "createOrganizationPage1_FieldName_Title": "Organizations name",
 
   "createOrganizationPage2Title": "Contact",
   "createOrganizationPage2SubTitle": "Be contactable to all who are interested in your organization and your intentions.",
