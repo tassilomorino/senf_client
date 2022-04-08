@@ -111,9 +111,9 @@ console.log(import.meta.env.MODE);
 
 window.store = store;
 
-if (cookies.get("Cookie_settings") === "all") {
+if (cookies.get("cookie_settings") === "all") {
   store.dispatch(setCookies("all"));
-} else if (cookies.get("Cookie_settings") === "minimum") {
+} else if (cookies.get("cookie_settings") === "minimum") {
   store.dispatch(setCookies("minimum"));
 } else {
   store.dispatch(setInfoPageOpen());

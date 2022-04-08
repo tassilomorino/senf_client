@@ -86,7 +86,7 @@ const Cookiebanner = () => {
           top="0"
           backgroundColor="transparent"
           shadow={false}
-          handleButtonClick={() => handleCookies("all")}
+          handleButtonClick={() => handleCookies("minimum")}
         />
 
         {/* <StyledH2 fontWeight="900" textAlign="center">
