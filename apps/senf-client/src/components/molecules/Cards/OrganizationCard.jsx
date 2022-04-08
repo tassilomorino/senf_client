@@ -210,21 +210,24 @@ export const OrganizationCard = (props) => {
   const [organizationImage, setOrganizationImage] = useState(null);
   const [placeHodlerImage, setPlaceHolderImage] = useState(false);
 
-  useEffect(async () => {
-    const db = firebase.firestore();
-    const storageRef = firebase.storage().ref();
-    storageRef
-      .child(`/organizationsData/${thisOrganizationId}/logo/logo`)
-      .getDownloadURL()
-      .then(onResolve, onReject);
+  useEffect(() => {
+    function fetchData() {
+      const db = firebase.firestore();
+      const storageRef = firebase.storage().ref();
+      storageRef
+        .child(`/organizationsData/${thisOrganizationId}/logo/logo`)
+        .getDownloadURL()
+        .then(onResolve, onReject);
 
-    function onResolve(image) {
-      setOrganizationImage(image);
+      function onResolve(image) {
+        setOrganizationImage(image);
+      }
+      function onReject() {
+        setPlaceHolderImage(true);
+      }
     }
-    function onReject() {
-      setPlaceHolderImage(true);
-    }
-  }, []);
+    fetchData();
+  }, [thisOrganizationId]);
 
   const handleOpenOrganization = () => {
     dispatch(openOrganizationFunc(true, thisOrganizationId));

@@ -135,7 +135,7 @@ const List = ({
           // loader={<SkeletonCard dataFinalLength={dataFinalLength === 0} />}
           useWindow={false}
         >
-          {showItems(dataFinal)}
+          <div>{showItems(dataFinal)}</div>
         </InfiniteScroll>
 
         {swipeListType === "ideas" &&

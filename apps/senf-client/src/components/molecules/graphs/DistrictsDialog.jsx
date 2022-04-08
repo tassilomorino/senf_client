@@ -60,7 +60,7 @@ const styles = {
 };
 
 const DistrictsDialog = ({ classes, screams }) => {
-  const [open, setOpen] = useState("");
+  const [open, setOpen] = useState(false);
 
   const dialogComponent = isMobileCustom ? (
     <Dialog

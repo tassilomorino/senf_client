@@ -80,19 +80,22 @@ const ProjectDialog = ({
     }
   }, [dispatch, initialMapViewport]);
 
-  useEffect(async () => {
-    if (project && project.organizationId) {
-      const db = firebase.firestore();
-      const storageRef = firebase.storage().ref();
-      storageRef
-        .child(`/organizationsData/${project.organizationId}/logo/logo`)
-        .getDownloadURL()
-        .then(onResolve);
+  useEffect(() => {
+    async function fetchData() {
+      if (project && project.organizationId) {
+        const db = firebase.firestore();
+        const storageRef = firebase.storage().ref();
+        storageRef
+          .child(`/organizationsData/${project.organizationId}/logo/logo`)
+          .getDownloadURL()
+          .then(onResolve);
 
-      function onResolve(image) {
-        setOrganizationImage(image);
+        function onResolve(image) {
+          setOrganizationImage(image);
+        }
       }
     }
+    fetchData();
   }, [project]);
 
   const handleClick = useCallback(

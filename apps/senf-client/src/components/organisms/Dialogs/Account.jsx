@@ -113,30 +113,33 @@ const Account = ({ dataFinalMap }) => {
       )
     : [];
 
-  useEffect(async () => {
-    const db = firebase.firestore();
-    const ref = await db
-      .collection("organizations")
-      // .where("centerLat", "<", Number(mapViewport.latitude) + 1)
-      // .where("centerLat", ">", Number(mapViewport.latitude) - 1)
-      .orderBy("createdAt", "desc")
-      .where("userIds", "array-contains", user.userId)
-      .get();
+  useEffect(() => {
+    async function fetchData() {
+      const db = firebase.firestore();
+      const ref = await db
+        .collection("organizations")
+        // .where("centerLat", "<", Number(mapViewport.latitude) + 1)
+        // .where("centerLat", ">", Number(mapViewport.latitude) - 1)
+        .orderBy("createdAt", "desc")
+        .where("userIds", "array-contains", user.userId)
+        .get();
 
-    const organizations = [];
+      const organizations = [];
 
-    ref.docs.forEach((doc) => {
-      const docData = {
-        ...doc.data(),
-        organizationId: doc.id,
-      };
-      organizations.push(docData);
+      ref.docs.forEach((doc) => {
+        const docData = {
+          ...doc.data(),
+          organizationId: doc.id,
+        };
+        organizations.push(docData);
 
-      if (organizations.length === ref.size) {
-        setMyOrganizations(organizations);
-      }
-    });
-  }, []);
+        if (organizations.length === ref.size) {
+          setMyOrganizations(organizations);
+        }
+      });
+    }
+    fetchData();
+  }, [user.userId]);
 
   const dataFinalOrganizations = myOrganizations;
 

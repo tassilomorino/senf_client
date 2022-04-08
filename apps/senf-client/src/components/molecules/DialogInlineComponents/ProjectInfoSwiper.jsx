@@ -38,7 +38,7 @@ const HorizontalSwipeCard = styled(animated.div)`
 
   position: relative;
   overflow: hidden;
-  opacity: ${(props) => (props.active ? 1 : 0.5)};
+  opacity: ${(props) => (props.$active ? 1 : 0.5)};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -84,7 +84,7 @@ const Dot = styled.div`
   height: 12px;
   border-radius: 100%;
   background-color: #fed957;
-  opacity: ${(props) => (props.active ? 1 : 0.5)};
+  opacity: ${(props) => (props.$active ? 1 : 0.5)};
   margin: 10px 10px 10px 10px;
 `;
 
@@ -138,7 +138,12 @@ const ProjectInfoSwiper = ({ pages }) => {
     <Wrapper isMobileCustom={isMobileCustom}>
       <FlexWrapper>
         {pages.map(({ title, text, id }) => (
-          <HorizontalSwipeCard {...bind()} active={id === active} style={props}>
+          <HorizontalSwipeCard
+            {...bind()}
+            $active={id === active}
+            style={props}
+            key={id}
+          >
             {/*  <StyledH2
               fontWeight="900"
               textAlign="center"

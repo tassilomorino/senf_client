@@ -41,7 +41,7 @@ const HorizontalSwipeCard = styled(animated.div)`
 
   position: relative;
   overflow: hidden;
-  opacity: ${(props) => (props.active ? 1 : props.isMobileCustom ? 0.5 : 0)};
+  opacity: ${(props) => (props.$active ? 1 : props.$isMobileCustom ? 0.5 : 0)};
 
   display: flex;
   justify-content: center;
@@ -165,11 +165,12 @@ const InfoSwiper = () => {
         {pages.map(({ title, text, id, img }) => (
           <HorizontalSwipeCard
             {...bind()}
-            active={id === active}
-            isMobileCustom={isMobileCustom}
+            $active={id === active}
+            $isMobileCustom={isMobileCustom}
             style={props}
+            key={id}
           >
-            <img src={img} height="200px" />
+            <img src={img} height="200px" alt="" />
 
             <StyledH3 textAlign="center">{title}</StyledH3>
             <StyledText

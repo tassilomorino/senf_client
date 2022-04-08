@@ -58,8 +58,8 @@ const StyledButton = styled.button`
   transform: ${(props) =>
     props.swipePosition === "top" ? "scale(0.8)" : "none"};
 
-  pointer-events: ${(props) => (props.loading ? "none" : "all")};
-  /* opacity: ${(props) => (props.loading ? "0.5" : "1")}; */
+  pointer-events: ${(props) => (props.$loading ? "none" : "all")};
+  /* opacity: ${(props) => (props.$loading ? "0.5" : "1")}; */
   &:hover {
     transition: 0.2s;
     width: 74px;
@@ -95,7 +95,7 @@ const OpenButtonDesktop = styled.button`
 
   box-shadow: rgb(0, 0, 0, 0) 0px 20px 20px -15px;
   transition: 0.5s;
-  pointer-events: ${(props) => (props.loading ? "none" : "all")};
+  pointer-events: ${(props) => (props.$loading ? "none" : "all")};
   opacity: ${(props) => (props.loading ? "0.5" : "1")};
 `;
 
@@ -463,7 +463,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
   return (
     <Fragment>
       {!isMobileCustom ? (
-        <OpenButtonDesktop onClick={handleOpen} loading={loading}>
+        <OpenButtonDesktop onClick={handleOpen} $loading={loading}>
           <img
             src={AddIcon}
             width="25"
@@ -477,7 +477,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
           onClick={handleOpen}
           openScream={openScream}
           swipePosition={swipePosition}
-          loading={loading}
+          $loading={loading}
           isInstagram={
             window.innerHeight === window.screen.height &&
             navigator.userAgent.match(/instagram/i)
