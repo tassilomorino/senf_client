@@ -53,7 +53,7 @@ const ListItemsEdit = ({ listItems, set }) => {
   return (
     <ListItemWrapper>
       {listItems.map(({ title }, index) => (
-        <ListItem>
+        <ListItem key={title}>
           <ExpandButton handleButtonClick={() => set(index + 1)} />
           {/* <CheckboxWrapper>
             <CheckBox

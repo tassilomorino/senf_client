@@ -169,7 +169,7 @@ const CreateOrganizationPreview = ({
       </ComponentWrapper>
 
       <Navigation
-        nextLabel={t("Veröffentlichen")}
+        nextLabel={t("publish")}
         prevLabel={t("back")}
         handleNext={handlePublish}
         handlePrev={onClickPrev}
