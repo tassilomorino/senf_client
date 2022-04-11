@@ -425,9 +425,8 @@ const Main = () => {
       selectedOrganizationTypes.includes(organizationType)
     );
   }, [projects, selectedOrganizationTypes]);
-
   const swipeListTablabels = useMemo(() => {
-    MenuData.map((item) => item.text).slice(0, 2);
+    return MenuData?.map((item) => item.text).slice(0, 2);
   }, []);
   return (
     <React.Fragment>
