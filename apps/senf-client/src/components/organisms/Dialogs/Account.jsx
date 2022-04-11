@@ -62,11 +62,11 @@ const Account = ({ dataFinalMap }) => {
   const mapBounds = useSelector((state) => state.data.mapBounds);
   const selectedTopics = useSelector((state) => state.data.topics);
   const myScreams = useSelector((state) => state.data.myScreams);
+  const myOrganizations = useSelector((state) => state.data.myOrganizations);
   const user = useSelector((state) => state.user);
   const organizations = useSelector((state) => state.data.organizations);
 
   const [foundOrganizations, setFoundOrganizations] = useState(false);
-  const [myOrganizations, setMyOrganizations] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [dropdown, setDropdown] = useState("newest");
   const [order, setOrder] = useState(1);
@@ -105,34 +105,6 @@ const Account = ({ dataFinalMap }) => {
   const organizationsSearched = search(myOrganizations, searchTerm, ["title"]);
   const sortedOrganizations = sort(organizationsSearched, dropdown);
   const MyDataFinalOrganizations = sortedOrganizations;
-
-  useEffect(() => {
-    async function fetchData() {
-      const db = firebase.firestore();
-      const ref = await db
-        .collection("organizations")
-        // .where("centerLat", "<", Number(mapViewport.latitude) + 1)
-        // .where("centerLat", ">", Number(mapViewport.latitude) - 1)
-        .orderBy("createdAt", "desc")
-        .where("userIds", "array-contains", user.userId)
-        .get();
-
-      const organizations = [];
-
-      ref.docs.forEach((doc) => {
-        const docData = {
-          ...doc.data(),
-          organizationId: doc.id,
-        };
-        organizations.push(docData);
-
-        if (organizations.length === ref.size) {
-          setMyOrganizations(organizations);
-        }
-      });
-    }
-    fetchData();
-  }, [user.userId]);
 
   return (
     <React.Fragment>

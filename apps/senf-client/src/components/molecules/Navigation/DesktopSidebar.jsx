@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   openAccountFunc,
   getMyScreams,
+  getMyOrganizations,
 } from "../../../redux/actions/accountActions";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 //Components
@@ -87,9 +88,10 @@ const DesktopSidebar = ({
     if (userId && openAccount) {
       if (userId) {
         dispatch(getMyScreams(userId));
+        dispatch(getMyOrganizations(userId));
       }
     }
-  }, [openAccount, userId]);
+  }, [dispatch, openAccount, userId]);
 
   return (
     <div className={openInfoPage ? "sideBar_hide" : "sideBar"}>
