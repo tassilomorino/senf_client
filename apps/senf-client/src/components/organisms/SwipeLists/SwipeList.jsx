@@ -193,7 +193,7 @@ const SwipeList = ({
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const loadingProjects = useSelector((state) => state.data.loadingProjects);
+
   const openScream = useSelector((state) => state.UI.openScream);
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
   const openAccount = useSelector((state) => state.UI.openAccount);
@@ -202,6 +202,8 @@ const SwipeList = ({
   const mapBounds = useSelector((state) => state.data.mapBounds);
   const swipePosition = useSelector((state) => state.UI.swipePosition);
   const user = useSelector((state) => state.user);
+  const projects = useSelector((state) => state.data.projects);
+  const loadingProjects = useSelector((state) => state.data.loadingProjects);
 
   const [
     openModalAuthenticateForProjectRoom,
@@ -380,7 +382,6 @@ const SwipeList = ({
       }
 
       setSpring({ y: down ? my : 0 });
-      console.log(-my);
     },
     {
       pointer: { touch: true },
@@ -500,7 +501,7 @@ const SwipeList = ({
             setSearchTerm={setSearchTerm}
             searchTerm={searchTerm}
             marginTop={"0px"}
-          />{" "}
+          />
         </animated.div>
       )}
     </React.Fragment>
@@ -525,7 +526,7 @@ const SwipeList = ({
       {isMobileCustom && (
         <PostScream
           loadingProjects={loadingProjects}
-          projectsData={dataFinalProjectRooms}
+          projectsData={projects}
           project={project}
         />
       )}
@@ -589,22 +590,42 @@ const SwipeList = ({
                         : openRequestProjectRoom
                     }
                   >
-                    Projektraum anlegen
+                    {t("projectroom_create")}
                   </NewButton>
                 </ButtonWrapper>
               )}
 
             {!loading &&
               (order === 1 || order === 2 || (order === 3 && openAccount)) && (
-                <List
-                  swipeListType={swipeListType}
-                  type={type}
-                  loading={loading}
-                  dropdown={dropdown}
-                  dataFinal={dataFinal}
-                  projectsData={dataFinalProjectRooms}
-                />
+                <React.Fragment>
+                  {openAccount && (
+                    <Toolbar
+                      swipeListType={swipeListType}
+                      loading={loading}
+                      handleDropdown={handleDropdown}
+                      dropdownStatus={dropdownStatus}
+                      dropdownStatusNumbers={dropdownStatusNumbers}
+                      handledropdownStatus={handledropdownStatus}
+                      dropdown={dropdown}
+                      dataFinalLength={dataFinal.length}
+                      setSearchOpen={setSearchOpen}
+                      searchOpen={searchOpen}
+                      setSearchTerm={setSearchTerm}
+                      searchTerm={searchTerm}
+                      marginTop={"0px"}
+                    />
+                  )}
+                  <List
+                    swipeListType={swipeListType}
+                    type={type}
+                    loading={loading}
+                    dropdown={dropdown}
+                    dataFinal={dataFinal}
+                    projectsData={dataFinalProjectRooms}
+                  />
+                </React.Fragment>
               )}
+
             {order === 3 && openProjectRoom && (
               <CalendarComponent handleClick={handleClick} />
             )}
@@ -677,7 +698,7 @@ const SwipeList = ({
                     : openRequestProjectRoom
                 }
               >
-                Projektraum anlegen
+                {t("projectroom_create")}
               </NewButton>
             </ButtonWrapper>
           )}
