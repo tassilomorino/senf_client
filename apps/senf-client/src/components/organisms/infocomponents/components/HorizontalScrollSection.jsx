@@ -5,12 +5,17 @@ import Partners from "./Partners";
 
 import SectionBackground from "../../../../images/infoPage/shapes/sectionSticky.png";
 import Ideas from "../../../../images/infoPage/howItWorks/ideas.png";
+import IdeasMobile from "../../../../images/infoPage/howItWorks/ideas_mobile.png";
 import Submitted from "../../../../images/infoPage/howItWorks/submitted.png";
 import Statement from "../../../../images/infoPage/howItWorks/statement.png";
+import Implemented from "../../../../images/infoPage/howItWorks/implemented.png";
+import ImplementedMobile from "../../../../images/infoPage/howItWorks/implemented_mobile.png";
+
 import OpenBook from "../../../../images/openBook.png";
 
 import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 import { useTranslation } from "react-i18next";
+import { isMobileCustom } from "../../../../util/customDeviceDetect";
 const Container = styled.section`
   position: relative;
   width: 100%;
@@ -160,7 +165,7 @@ const HorizontalScrollSection = ({ id, visiblePartners }) => {
     {
       title: t("infopage_succesStories_title1"),
       subTitle: t("infopage_succesStories_subtitle1"),
-      img: Ideas,
+      img: isMobileCustom ? IdeasMobile : Ideas,
     },
     {
       title: t("infopage_succesStories_title2"),
@@ -175,7 +180,7 @@ const HorizontalScrollSection = ({ id, visiblePartners }) => {
     {
       title: t("infopage_succesStories_title4"),
       subTitle: t("infopage_succesStories_subtitle4"),
-      img: Statement,
+      img: isMobileCustom ? ImplementedMobile : Implemented,
     },
   ];
   const credits = [
