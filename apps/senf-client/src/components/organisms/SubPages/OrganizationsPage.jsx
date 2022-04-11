@@ -177,8 +177,7 @@ const OrganizationsPage = ({
     ReactDOM.createPortal(
       <MainModal handleButtonClick={() => setOpenModalAuthenticate(false)}>
         <StyledH3 textAlign="center" margin="20px">
-          Um ein Organisationsprofil anzulegen, musst du dich zuerst
-          Anmelden/Registieren
+          {t("authenticateForCreateOrganization")}
         </StyledH3>
 
         <SubmitButton
@@ -269,7 +268,7 @@ const OrganizationsPage = ({
                   : () => setOpenModalAuthenticate(true)
               }
             >
-              Organisationsprofil anlegen
+              {t("createOrganization")}
             </NewButton>
           </ButtonWrapper>
 
