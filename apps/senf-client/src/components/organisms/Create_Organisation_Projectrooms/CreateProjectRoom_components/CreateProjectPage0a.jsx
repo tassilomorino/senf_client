@@ -57,10 +57,12 @@ const CreateProjectPage1 = ({ onClickNext, pagesData, index }) => {
   const [selectedOrganizationType, setSelectedOrganizationType] =
     useState(null);
 
-  const myOrganizations = organizations.filter(({ organizationId }) =>
-    organizationId.includes(user.organizationId)
-  );
+    const userOrganizationIds = useSelector((state) => state.user.organizationId);
+    const myOrganizations = organizations.filter(({ organizationId }) =>
+      userOrganizationIds.includes(organizationId)
+    );
 
+  
   const handleDropdown = (value) => {
     setSelectedOrganizationId(value);
     const selectedOrganizationName = myOrganizations.filter(
@@ -140,7 +142,7 @@ const CreateProjectPage1 = ({ onClickNext, pagesData, index }) => {
             {pagesData[index].subTitle}
           </StyledH3>
           <CoverWrapper>
-            {myOrganizations.map(
+            {myOrganizations?.map(
               ({ organizationId, title, organizationType }) => (
                 <InlineOrganizationCard
                   organizationId={organizationId}
