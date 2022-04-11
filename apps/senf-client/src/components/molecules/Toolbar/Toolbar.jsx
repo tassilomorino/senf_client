@@ -147,8 +147,29 @@ const Toolbar = ({
         //   handleDropdown={handleDropdown}
         //   dropdown={dropdown}
         // />
-
-        swipeListType === "projectRoomOverview" ? (
+        swipeListType === "myIdeas" ? (
+          <CustomSelect
+            overflow={"none"}
+            value={dropdown}
+            dropdownStatus={dropdownStatus}
+            dropdownStatusNumbers={dropdownStatusNumbers}
+            sortOptions={[
+              { name: "newest", label: t("newest_ideas") },
+              { name: "hottest", label: t("hottest_ideas") },
+              { name: "aToZ", label: t("aToZ_organizations") },
+              { name: "zToA", label: t("zToA_organizations") },
+            ]}
+            statusOptions={[
+              { name: "Unprocessed", label: t("unprocessed") },
+              { name: "Accepted", label: t("accepted") },
+              { name: "Planning", label: t("planning") },
+              { name: "Implemented", label: t("implemented") },
+              { name: "Rejected", label: t("rejected") },
+            ]}
+            handleDropdown={handleDropdown}
+            handleDropdownStatus={handledropdownStatus}
+          />
+        ) : swipeListType === "projectRoomOverview" ? (
           <CustomSelect
             overflow={"none"}
             name={t("newest_projectrooms")}

@@ -616,7 +616,7 @@ const SwipeList = ({
   ) : (
     <DragWrapper>
       <Content>
-        {(openProjectRoom || openAccount) && (
+        {openProjectRoom && (
           <DesktopTabWrapper>
             <Tabs
               loading={loading}
@@ -626,6 +626,34 @@ const SwipeList = ({
               secondaryColor="#d6ab00"
             />
           </DesktopTabWrapper>
+        )}
+        {openAccount && (
+          <>
+            <DesktopTabWrapper>
+              <Tabs
+                loading={loading}
+                handleClick={handleClick}
+                order={order}
+                tabLabels={tabLabels}
+                secondaryColor="#d6ab00"
+              />
+            </DesktopTabWrapper>
+            <Toolbar
+              swipeListType={swipeListType}
+              loading={loading}
+              handleDropdown={handleDropdown}
+              dropdownStatus={dropdownStatus}
+              dropdownStatusNumbers={dropdownStatusNumbers}
+              handledropdownStatus={handledropdownStatus}
+              dropdown={dropdown}
+              dataFinalLength={dataFinal.length}
+              setSearchOpen={setSearchOpen}
+              searchOpen={searchOpen}
+              setSearchTerm={setSearchTerm}
+              searchTerm={searchTerm}
+              marginTop={"0px"}
+            />
+          </>
         )}
 
         <ListWrapper

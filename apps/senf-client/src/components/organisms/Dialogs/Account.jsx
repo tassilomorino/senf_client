@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
@@ -14,7 +14,12 @@ import InfoModal from "../../molecules/DialogInlineComponents/InfoModal";
 import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 
-import orderBy from "lodash/orderBy";
+import {
+  search,
+  sort,
+  filterByGeodata,
+  filterByTagFilter,
+} from "../../../util/helpers";
 import { AccountTabData } from "../../../data/AccountTabData";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import { useTranslation } from "react-i18next";
@@ -62,56 +67,44 @@ const Account = ({ dataFinalMap }) => {
 
   const [foundOrganizations, setFoundOrganizations] = useState(false);
   const [myOrganizations, setMyOrganizations] = useState([]);
-
+  const [searchTerm, setSearchTerm] = useState("");
   const [dropdown, setDropdown] = useState("newest");
   const [order, setOrder] = useState(1);
   const dispatch = useDispatch();
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     window.history.pushState(null, null, `/`);
     dispatch(closeAccountFunc());
     dispatch(handleTopicSelectorRedux("all"));
-  };
+  }, [dispatch]);
 
-  const handleClick = (order) => {
+  const handleClick = useCallback((order) => {
     setOrder(order);
-  };
-
-  const handleDropdown = (value) => {
+  }, []);
+  const handleDropdown = useCallback((value) => {
     setDropdown(value);
-  };
+  }, []);
+  // My Ideas
+  const screamsSearched = search(myScreams, searchTerm, [
+    "title",
+    "body",
+    "Stadtteil",
+    "Stadtbezirk",
+    "locationHeader",
+  ]);
+  const myIdeasfilteredByTagFilter = filterByTagFilter(
+    screamsSearched,
+    selectedTopics,
+    "Thema"
+  );
+  const sortedScreams = sort(myIdeasfilteredByTagFilter, dropdown);
+  //ideasData = filterByStatus(ideasData, dropdownStatus);
+  const MyIdeasDataFinal = filterByGeodata(sortedScreams, mapBounds);
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const screamsSearched = myScreams?.filter((val) => {
-    if (searchTerm === "") {
-      return val;
-    } else if (
-      val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.Stadtteil?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.Stadtbezirk?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.locationHeader?.toLowerCase().includes(searchTerm.toLowerCase())
-    ) {
-      return val;
-    }
-  });
-
-  const sortedScreams =
-    dropdown === "newest"
-      ? orderBy(screamsSearched, "createdAt", "desc")
-      : orderBy(screamsSearched, "likeCount", "desc");
-
-  const dataFinal = sortedScreams
-    ? sortedScreams.filter(
-        ({ Thema, status, lat, long }) =>
-          selectedTopics.includes(Thema) &&
-          lat <= mapBounds?.latitude1 &&
-          lat >= mapBounds?.latitude2 &&
-          long >= mapBounds?.longitude2 &&
-          long <= mapBounds?.longitude3 &&
-          status === "None"
-      )
-    : [];
+  //My Organizations
+  const organizationsSearched = search(myOrganizations, searchTerm, ["title"]);
+  const sortedOrganizations = sort(organizationsSearched, dropdown);
+  const MyDataFinalOrganizations = sortedOrganizations;
 
   useEffect(() => {
     async function fetchData() {
@@ -141,8 +134,6 @@ const Account = ({ dataFinalMap }) => {
     fetchData();
   }, [user.userId]);
 
-  const dataFinalOrganizations = myOrganizations;
-
   return (
     <React.Fragment>
       <Header
@@ -158,7 +149,7 @@ const Account = ({ dataFinalMap }) => {
 
       <Wrapper>
         <SwipeList
-          swipeListType={order === 1 ? "ideas" : "organizationsOverview"}
+          swipeListType={order === 1 ? "myIdeas" : "organizationsOverview"}
           type="myIdeas"
           tabLabels={AccountTabData.map((item) => item.text).slice(
             0,
@@ -167,8 +158,8 @@ const Account = ({ dataFinalMap }) => {
           loading={loadingMyScreams}
           order={order}
           handleClick={handleClick}
-          dataFinal={order === 1 ? dataFinal : dataFinalOrganizations}
-          dataFinalLength={dataFinal.length}
+          dataFinal={order === 1 ? MyIdeasDataFinal : MyDataFinalOrganizations}
+          dataFinalLength={MyIdeasDataFinal.length}
           viewport={mapViewport}
           handleDropdown={handleDropdown}
           dropdown={dropdown}
