@@ -6,7 +6,7 @@ const Wave = (props) => {
   const { devicePixelRatio: ratio = 1 } = window;
   const waveTotal = isMobileCustom ? 10 : 30;
   const waveHeight = 50;
-  const waveSpeed = 0.15;
+  const waveSpeed = 0.03;
 
   const contextRef = useRef(null);
   const canvasRef = useRef(null);
