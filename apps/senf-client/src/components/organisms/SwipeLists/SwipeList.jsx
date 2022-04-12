@@ -51,7 +51,7 @@ const DragWrapper = styled(animated.div)`
   z-index: 995;
   animation: dragEnterAnimation 0.5s;
   transform: ${(props) =>
-    props.openOrganizationsPage && "scale(1.9) translateY(-20px)"};
+    props.$openOrganizationsPage && "scale(1.9) translateY(-20px)"};
 
   @media (min-width: 768px) {
     width: 400px;
@@ -90,7 +90,7 @@ const ListHeaderWrapper = styled(animated.div)`
   position: sticky;
 
   border-radius: 20px 20px 0 0;
-  overflow: ${(props) => (props.isMobileCustom ? "hidden" : "visble")};
+  overflow: ${(props) => (props.$isMobileCustom ? "hidden" : "visble")};
 `;
 
 const ListWrapper = styled.div`
@@ -541,7 +541,7 @@ const SwipeList = ({
             }
           : springProps
       }
-      openOrganizationsPage={openOrganizationsPage}
+      $openOrganizationsPage={openOrganizationsPage}
     >
       <HandleBar />
       {isMobileCustom && (
@@ -554,7 +554,7 @@ const SwipeList = ({
       {mapBounds?.latitude1 !== 0 && (
         <React.Fragment>
           <ListHeaderWrapper
-            isMobileCustom={true}
+            $isMobileCustom={true}
             style={order === 3 ? { height: "60px" } : listHeaderProps}
           >
             <animated.div {...bind()} style={listHeaderProps}>
