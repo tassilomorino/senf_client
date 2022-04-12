@@ -178,18 +178,22 @@ export const InlineOrganizationCard = ({
   const [organizationImage, setOrganizationImage] = useState(null);
   const projects = useSelector((state) => state.data.projects);
 
-  useEffect(async () => {
-    const db = firebase.firestore();
-    const storageRef = firebase.storage().ref();
-    storageRef
-      .child(`/organizationsData/${organizationId}/logo/logo`)
-      .getDownloadURL()
-      .then(onResolve);
+  useEffect(() => {
+    async function fetch() {
+      function onResolve(image) {
+        setOrganizationImage(image);
+      }
 
-    function onResolve(image) {
-      setOrganizationImage(image);
+      const db = firebase.firestore();
+      const storageRef = firebase.storage().ref();
+      storageRef
+        .child(`/organizationsData/${organizationId}/logo/logo`)
+        .getDownloadURL()
+        .then(onResolve)
+        .catch(console.log("error, no image in InlineOrganizationCard"));
     }
-  }, []);
+    fetch();
+  }, [organizationId]);
 
   const projectRoomsSize = projects?.filter(
     ({ organizationId }) => organizationId === thisOrganizationId
