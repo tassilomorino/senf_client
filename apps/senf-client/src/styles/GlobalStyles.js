@@ -60,11 +60,11 @@ div::-webkit-scrollbar {
   /* for Chrome, Safari, and Opera */
 }
 
-a {
+/* a {
   text-decoration: none;
   color: #414345;
   font-size:16px;
-}
+} */
 
     h2{
         font-weight: 400;
