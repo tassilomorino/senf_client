@@ -14,7 +14,6 @@ import Slide from "@material-ui/core/Slide";
 
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
-import MyButtonStyle from "../../atoms/CustomButtons/MyButtonStyle";
 import MyButton from "../../../util/MyButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {

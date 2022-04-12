@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import {
   handleTopicSelectorRedux,
   handleOrganizationTypesSelectorRedux,
@@ -14,7 +13,6 @@ import { useTranslation } from "react-i18next";
 
 import styled from "styled-components";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-import ProjectInfoSwiper from "../DialogInlineComponents/ProjectInfoSwiper";
 
 const FilterWrapperMobile = styled.div`
   z-index: 1;

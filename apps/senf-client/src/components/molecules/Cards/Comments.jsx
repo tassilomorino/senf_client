@@ -101,61 +101,55 @@ const Comments = ({
   const comments = useSelector((state) => state.data.scream.comments);
 
   return (
-    <Grid container>
+    <React.Fragment>
       {comments.map((comment, index) => {
         const { body, createdAt, userHandle, commentId } = comment;
 
         return (
-          <Fragment key={createdAt}>
+          <React.Fragment key={createdAt}>
             <div className={classes.vertline} />
 
-            <Grid item sm={12}>
-              <Grid container>
-                <Grid item sm={12} className={classes.gridWrapper}>
-                  <div className={classes.commentData}>
-                    <Card className={classes.card}>
-                      <div className={classes.content}>
-                        <div className={classes.header}>
-                          <Typography
-                            component={Link}
-                            to={`/users/${userHandle}`}
-                            className={classes.user}
-                          >
-                            {userHandle}&nbsp;–&nbsp;
-                          </Typography>
+            <div className={classes.commentData}>
+              <Card className={classes.card}>
+                <div className={classes.content}>
+                  <div className={classes.header}>
+                    <Typography
+                      component={Link}
+                      to={`/users/${userHandle}`}
+                      className={classes.user}
+                    >
+                      {userHandle}&nbsp;–&nbsp;
+                    </Typography>
 
-                          <Typography className={classes.date}>
-                            {dayjs(createdAt).format("DD.MM.YYYY")}
-                          </Typography>
-                        </div>
-
-                        <div
-                          className={classes.editButton}
-                          onClick={() => {
-                            setCommentMenuOpen(true);
-                            setUserHandleSelected(userHandle);
-                            setCommentIdSelected(commentId);
-                          }}
-                        >
-                          <img
-                            className={classes.editButtonCircle}
-                            src={MenuIcon}
-                            width="25"
-                            alt="editIcon"
-                          />
-                        </div>
-
-                        <StyledText>{body}</StyledText>
-                      </div>
-                    </Card>
+                    <Typography className={classes.date}>
+                      {dayjs(createdAt).format("DD.MM.YYYY")}
+                    </Typography>
                   </div>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Fragment>
+
+                  <div
+                    className={classes.editButton}
+                    onClick={() => {
+                      setCommentMenuOpen(true);
+                      setUserHandleSelected(userHandle);
+                      setCommentIdSelected(commentId);
+                    }}
+                  >
+                    <img
+                      className={classes.editButtonCircle}
+                      src={MenuIcon}
+                      width="25"
+                      alt="editIcon"
+                    />
+                  </div>
+
+                  <StyledText>{body}</StyledText>
+                </div>
+              </Card>
+            </div>
+          </React.Fragment>
         );
       })}
-    </Grid>
+    </React.Fragment>
   );
 };
 
