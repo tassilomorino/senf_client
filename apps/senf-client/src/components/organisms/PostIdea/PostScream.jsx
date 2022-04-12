@@ -217,7 +217,7 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
 
     // setAllMainStates({ ...allMainStates, loading: false });
 
-    projectsData.forEach(
+    projectsData?.forEach(
       ({ projectRoomId, zoom, centerLat, centerLong, geoData, calendar }) => {
         if (projectSelected === projectRoomId) {
           const viewport = {

@@ -51,7 +51,7 @@ const DragWrapper = styled(animated.div)`
   z-index: 995;
   animation: dragEnterAnimation 0.5s;
   transform: ${(props) =>
-    props.openOrganizationsPage && "scale(1.9) translateY(-20px)"};
+    props.$openOrganizationsPage && "scale(1.9) translateY(-20px)"};
 
   @media (min-width: 768px) {
     width: 400px;
@@ -90,7 +90,7 @@ const ListHeaderWrapper = styled(animated.div)`
   position: sticky;
 
   border-radius: 20px 20px 0 0;
-  overflow: ${(props) => (props.isMobileCustom ? "hidden" : "visble")};
+  overflow: ${(props) => (props.$isMobileCustom ? "hidden" : "visble")};
 `;
 
 const ListWrapper = styled.div`
@@ -193,7 +193,7 @@ const SwipeList = ({
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const loadingProjects = useSelector((state) => state.data.loadingProjects);
+
   const openScream = useSelector((state) => state.UI.openScream);
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
   const openAccount = useSelector((state) => state.UI.openAccount);
@@ -202,6 +202,8 @@ const SwipeList = ({
   const mapBounds = useSelector((state) => state.data.mapBounds);
   const swipePosition = useSelector((state) => state.UI.swipePosition);
   const user = useSelector((state) => state.user);
+  const projects = useSelector((state) => state.data.projects);
+  const loadingProjects = useSelector((state) => state.data.loadingProjects);
 
   const [
     openModalAuthenticateForProjectRoom,
@@ -382,7 +384,6 @@ const SwipeList = ({
       }
 
       setSpring({ y: down ? my : 0 });
-      console.log(-my);
     },
     {
       pointer: { touch: true },
@@ -521,7 +522,7 @@ const SwipeList = ({
             setSearchTerm={setSearchTerm}
             searchTerm={searchTerm}
             marginTop={"0px"}
-          />{" "}
+          />
         </animated.div>
       )}
     </React.Fragment>
@@ -540,20 +541,20 @@ const SwipeList = ({
             }
           : springProps
       }
-      openOrganizationsPage={openOrganizationsPage}
+      $openOrganizationsPage={openOrganizationsPage}
     >
       <HandleBar />
       {isMobileCustom && (
         <PostScream
           loadingProjects={loadingProjects}
-          projectsData={dataFinalProjectRooms}
+          projectsData={projects}
           project={project}
         />
       )}
       {mapBounds?.latitude1 !== 0 && (
         <React.Fragment>
           <ListHeaderWrapper
-            isMobileCustom={true}
+            $isMobileCustom={true}
             style={order === 3 ? { height: "60px" } : listHeaderProps}
           >
             <animated.div {...bind()} style={listHeaderProps}>
@@ -617,15 +618,35 @@ const SwipeList = ({
 
             {!loading &&
               (order === 1 || order === 2 || (order === 3 && openAccount)) && (
-                <List
-                  swipeListType={swipeListType}
-                  type={type}
-                  loading={loading}
-                  dropdown={dropdown}
-                  dataFinal={dataFinal}
-                  projectsData={dataFinalProjectRooms}
-                />
+                <React.Fragment>
+                  {openAccount && (
+                    <Toolbar
+                      swipeListType={swipeListType}
+                      loading={loading}
+                      handleDropdown={handleDropdown}
+                      dropdownStatus={dropdownStatus}
+                      dropdownStatusNumbers={dropdownStatusNumbers}
+                      handledropdownStatus={handledropdownStatus}
+                      dropdown={dropdown}
+                      dataFinalLength={dataFinal.length}
+                      setSearchOpen={setSearchOpen}
+                      searchOpen={searchOpen}
+                      setSearchTerm={setSearchTerm}
+                      searchTerm={searchTerm}
+                      marginTop={"0px"}
+                    />
+                  )}
+                  <List
+                    swipeListType={swipeListType}
+                    type={type}
+                    loading={loading}
+                    dropdown={dropdown}
+                    dataFinal={dataFinal}
+                    projectsData={dataFinalProjectRooms}
+                  />
+                </React.Fragment>
               )}
+
             {order === 3 && openProjectRoom && (
               <CalendarComponent handleClick={handleClick} />
             )}
@@ -637,7 +658,7 @@ const SwipeList = ({
   ) : (
     <DragWrapper>
       <Content>
-        {(openProjectRoom || openAccount) && (
+        {openProjectRoom && (
           <DesktopTabWrapper>
             <Tabs
               loading={loading}
@@ -647,6 +668,34 @@ const SwipeList = ({
               secondaryColor="#d6ab00"
             />
           </DesktopTabWrapper>
+        )}
+        {openAccount && (
+          <>
+            <DesktopTabWrapper>
+              <Tabs
+                loading={loading}
+                handleClick={handleClick}
+                order={order}
+                tabLabels={tabLabels}
+                secondaryColor="#d6ab00"
+              />
+            </DesktopTabWrapper>
+            <Toolbar
+              swipeListType={swipeListType}
+              loading={loading}
+              handleDropdown={handleDropdown}
+              dropdownStatus={dropdownStatus}
+              dropdownStatusNumbers={dropdownStatusNumbers}
+              handledropdownStatus={handledropdownStatus}
+              dropdown={dropdown}
+              dataFinalLength={dataFinal.length}
+              setSearchOpen={setSearchOpen}
+              searchOpen={searchOpen}
+              setSearchTerm={setSearchTerm}
+              searchTerm={searchTerm}
+              marginTop={"0px"}
+            />
+          </>
         )}
 
         <ListWrapper

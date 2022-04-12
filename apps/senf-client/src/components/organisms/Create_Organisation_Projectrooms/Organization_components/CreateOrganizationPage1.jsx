@@ -50,15 +50,15 @@ const CreateOrganizationPage1 = ({
   const createProjectValidationSchema = yup.object({
     title: yup
       .string()
-      .required(t("enter_email"))
-      .min(3, t("username_too_short"))
-      .max(40, t("username_too_long")),
+      .required(t("enter_organizations_name"))
+      .min(3, t("orgaznizations_name_too_short"))
+      .max(40, t("organizations_name_too_long")),
 
     description: yup
       .string()
-      .required(t("enter_email"))
-      .min(10, t("username_too_short"))
-      .max(1000, t("username_too_long")),
+      .required(t("enter_organizations_description"))
+      .min(10, t("organizations_description_too_short"))
+      .max(1000, t("organizations_description_too_long")),
   });
 
   const formik = useFormik({
@@ -163,7 +163,7 @@ const CreateOrganizationPage1 = ({
             id="outlined-name"
             name="description"
             type="description"
-            label={t("projectRoom_description")}
+            label={t("organizations_description")}
             margin="normal"
             multiline
             minRows="10"

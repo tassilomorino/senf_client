@@ -220,9 +220,9 @@ const HorizontalScrollSection = ({ id, visiblePartners }) => {
 
           <Horizontal id={`horizontal${id}`}>
             {id === "1" ? (
-              <CardsSection role="feed" class="cards">
+              <CardsSection role="feed" className="cards">
                 {pages.map(({ title, subTitle, img }) => (
-                  <Article>
+                  <Article key={title}>
                     <Title textAlign="center" margin="20px 20px 0px 20px">
                       {title}
                     </Title>
@@ -232,9 +232,9 @@ const HorizontalScrollSection = ({ id, visiblePartners }) => {
                 ))}
               </CardsSection>
             ) : (
-              <CardsSection role="feed" class="cards">
+              <CardsSection role="feed" className="cards">
                 {credits.map(({ title, subTitle, img, width }) => (
-                  <Article>
+                  <Article key={title}>
                     <Goosefoot>„</Goosefoot>
                     <Text>{subTitle}</Text>
                     <StyledH3 textAlign="center" margin="20px 20px 20px 20px">

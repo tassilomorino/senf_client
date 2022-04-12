@@ -393,8 +393,6 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
       ? 435 - window.innerHeight / 8
       : 0;
 
-    console.log();
-
     const circle3 = document.getElementById("Circle3");
 
     circle3.style.clipPath = `circle(${
@@ -438,8 +436,7 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
     infoPageBubble4.style.transform = `translateX(${
       -infoPageBubblesScrollValue * 8
     }px)`;
-
-    console.log(value);
+    //console.log(value)
   }, []);
 
   useEffect(() => {

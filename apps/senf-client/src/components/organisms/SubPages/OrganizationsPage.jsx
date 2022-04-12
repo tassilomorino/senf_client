@@ -336,7 +336,7 @@ const OrganizationsPage = ({
                     : () => setOpenModalAuthenticate(true)
                 }
               >
-                Organisationsprofil anlegen
+                {t("organizations_create")}
               </NewButton>
             </ButtonWrapper>
           </HeaderWrapper>

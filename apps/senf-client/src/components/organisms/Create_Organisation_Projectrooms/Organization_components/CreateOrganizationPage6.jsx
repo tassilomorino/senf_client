@@ -290,7 +290,10 @@ const CreateOrganizationPage6 = ({
           >
             {authorizedUserNames &&
               authorizedUserNames.map(({ handle, userId }) => (
-                <RemovableUser onClick={() => handleRemove(userId)}>
+                <RemovableUser
+                  onClick={() => handleRemove(userId)}
+                  key={userId}
+                >
                   <StyledH4>{handle}</StyledH4>
                   {userId !== user.userId && <EditIcon> -</EditIcon>}
                 </RemovableUser>
@@ -313,7 +316,7 @@ const CreateOrganizationPage6 = ({
           <div style={{ display: "flex", justifyContent: "center" }}>
             {userList &&
               userList.map(({ handle, userId }) => (
-                <React.Fragment>
+                <React.Fragment key={userId}>
                   {!authorizedUserIds.includes(userId) && (
                     <AddableUser onClick={() => handleAdd(userId)}>
                       <StyledH4>{handle}</StyledH4>

@@ -186,6 +186,7 @@ const CreateOrganizationPage1 = ({
                 animation="coverAnimation 0.5s ease-in-out"
                 onClick={() => setOrganizationType(name)}
                 selectedOrganization={organizationType === name}
+                key={name}
               >
                 <CoverTitle>{label}</CoverTitle>
                 <Icon>{svgIcon}</Icon>

@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   openAccountFunc,
   getMyScreams,
+  getMyOrganizations,
 } from "../../../redux/actions/accountActions";
 
 //COMPONENTS
@@ -35,7 +36,7 @@ const Wrapper = styled.div`
   transition: 0.4s;
   z-index: 1;
   transform: ${(props) => (props.hide ? "scale(0.8)" : "scale(1)")};
-  opacity:${(props) => (props.hide ? "0" : "1")};
+  opacity: ${(props) => (props.hide ? "0" : "1")};
 
   /* animation: TopbarEnterAnimation 2s;
 
@@ -48,8 +49,8 @@ const Wrapper = styled.div`
     }
     100% {
       transform: translateY(0%);
-    } */
-  }
+    } 
+  }*/
 `;
 
 const LogoContainer = styled.div`
@@ -129,9 +130,10 @@ const Topbar = ({ order, handleClick, setOrder, setOpenOrganizationsPage }) => {
     if (userId && openAccount) {
       if (userId) {
         dispatch(getMyScreams(userId));
+        dispatch(getMyOrganizations(userId));
       }
     }
-  }, [openAccount, userId]);
+  }, [dispatch, openAccount, userId]);
   return (
     !loading &&
     isMobileCustom && (

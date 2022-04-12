@@ -32,6 +32,7 @@ import {
   SET_PROJECTS,
   SET_PROJECT,
   SET_ORGANIZATIONS,
+  SET_MY_ORGANIZATIONS,
   SET_ORGANIZATION,
   LOADING_ORGANIZATION_DATA,
   SET_SCREAM_USER,
@@ -45,6 +46,7 @@ import {
   SET_TOPICS,
   SET_ORGANIZATION_TYPES,
   LOADING_PROJECTROOM_DATA,
+  LOADING_MYORGANIZATIONS_DATA,
 } from "../types";
 
 const defaultTopics = [
@@ -82,6 +84,7 @@ const TopViewport = {
 const initialState = {
   projects: [],
   organizations: [],
+  myOrganizations: [],
   screams: [],
   myScreams: null,
   scream: {},
@@ -93,6 +96,7 @@ const initialState = {
   loadingProjects: true,
   loadingOrganizations: true,
   loadingOrganization: false,
+  loadingMyOrganizations: false,
   loadingMyScreams: false,
   loadingProjectRoom: false,
   scream_user: {},
@@ -264,7 +268,17 @@ export default function (state = initialState, action) {
         // projectScreams: action.payload,
         // loadingProjectScreams: false,
       };
-
+    case LOADING_MYORGANIZATIONS_DATA:
+      return {
+        ...state,
+        loadingMyOrganizations: true,
+      };
+    case SET_MY_ORGANIZATIONS:
+      return {
+        ...state,
+        myOrganizations: action.payload,
+        loadingMyOrganizations: false,
+      };
     case SET_ORGANIZATIONS:
       return {
         ...state,

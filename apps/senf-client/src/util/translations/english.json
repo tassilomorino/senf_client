@@ -17,6 +17,7 @@
   "send": "Send",
   "next": "Next",
   "save": "Save",
+  "publish": "Publish",
   "to": "To:",
   "details": "Details",
   "monitoring": "Monitoring",
@@ -121,6 +122,15 @@
   "diverse": "Diverse",
   "enter_email": "Enter your email",
   "enter_valid_email": "Enter a valid email",
+  "enter_organizations_name": "Enter organizations name",
+  "orgaznizations_name_too_short": "Organizations name is too short",
+  "organizations_name_too_long": "Organizations name is too long",
+  "enter_organizations_description": "Enter organizations description",
+  "organizations_description": "Organizations description",
+  "organizations_description_too_short": "Organizations description is too short",
+  "organizations_description_too_long": "Organizations description is too long",
+  "organizations_create_login_register": " To create an organization profile, you must first log in/register",
+  "organizations_create": " Create organization profile",
 
   "searchBar": "Search titles and descriptions...",
   "searchBarOrganizations": "Search titles...",
@@ -177,12 +187,15 @@
   "rules_section2text": "Please make sure you express your posts in a positive manner. Inappropriate content will be deleted. Be aware of this!",
   "rules_understood": "Everything clear",
 
+  "projectroom_create": "Create project room",
   "projectrooms_description": "Together with organizations and initiatives we are looking for your ideas on specific topics / places. In the respective project rooms you can view the ideas, comment on them and enter new ones!",
   "projectrooms_request_overTitle": "For organisations/initiatives",
   "projectrooms_request_title": "request a projectroom!",
   "projectrooms_request_subTitle": "You want to gather ideas on a specific topic/place?",
   "projectrooms_loader": "Projectrooms are being loaded...",
   "projectrooms_loading_error": "An error occured when loading the page. Please refresh...",
+  "Projectrooms_link_to_organization": "To create a project room, your profile must be linked to an organization profile. To create an organization profile, you must first log in/register.",
+  "Projectrooms_link_to_organization2": "To create a project room, your profile must be linked to an organization profile.",
 
   "cookiebanner_title": "Cookies are inevitable",
   "cookiebanner_text": "We use essential <5>cookies</5> to make your webapp experience better",
@@ -285,7 +298,7 @@
 
   "createOrganizationPage1Title": "Info",
   "createOrganizationPage1SubTitle": "Edit your organization info.",
-  "createOrganizationPage1_FieldName_Title": "Organization-name",
+  "createOrganizationPage1_FieldName_Title": "Organizations name",
 
   "createOrganizationPage2Title": "Contact",
   "createOrganizationPage2SubTitle": "Be contactable to all who are interested in your organization and your intentions.",

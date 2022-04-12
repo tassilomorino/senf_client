@@ -86,9 +86,9 @@ export function sort(items, dropdown) {
 
 export function filterByTagFilter(items, selectedTopics, tagsType) {
   if (tagsType === "Thema") {
-    return items.filter(({ Thema }) => selectedTopics.includes(Thema));
+    return items?.filter(({ Thema }) => selectedTopics.includes(Thema));
   } else if (tagsType === "organizationType") {
-    return items.filter(({ organizationType }) =>
+    return items?.filter(({ organizationType }) =>
       selectedTopics.includes(organizationType)
     );
   } else {
