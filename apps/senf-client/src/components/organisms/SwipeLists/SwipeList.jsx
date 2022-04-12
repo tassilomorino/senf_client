@@ -213,6 +213,8 @@ const SwipeList = ({
   const [openCreateOrganizationFirst, setOpenCreateOrganizationFirst] =
     useState(false);
 
+  const [openRequestProjectRoom, setOpenRequestProjectRoom] = useState(false);
+
   const openCreateOrganization = () => {
     dispatch(stateCreateOrganizationsFunc(true));
     setOpenCreateOrganizationFirst(false);
@@ -222,7 +224,7 @@ const SwipeList = ({
     dispatch(openCreateProjectRoomFunc(true));
   };
 
-  const openRequestProjectRoom = () => {
+  const openMailRequestProjectRoom = () => {
     var link =
       "mailto:dein@senf.koeln" + "?subject=" + escape("Projektraum-Anfrage");
     // +
@@ -404,7 +406,7 @@ const SwipeList = ({
             }
           >
             <StyledH3 textAlign="center" margin="20px">
-              {t("Projectrooms_link_to_organization")}
+              {t("authenticatedForCreateProjectRoom")}
             </StyledH3>
 
             <SubmitButton
@@ -426,16 +428,35 @@ const SwipeList = ({
             handleButtonClick={() => setOpenCreateOrganizationFirst(false)}
           >
             <StyledH3 textAlign="center" margin="20px">
-              {t("Projectrooms_link_to_organization2")}
+              {t("createOrganizationForCreateProjectRoom")}
             </StyledH3>
 
             <SubmitButton
-              text={t("Organisation anlegen")}
+              text={t("createOrganization")}
               zIndex="999"
               backgroundColor="#fed957"
               textColor="#353535"
               margin="20px"
               handleButtonClick={openCreateOrganization}
+            />
+          </MainModal>,
+          document.getElementById("portal-root-modal")
+        )}
+
+      {openRequestProjectRoom &&
+        ReactDOM.createPortal(
+          <MainModal handleButtonClick={() => setOpenRequestProjectRoom(false)}>
+            <StyledH3 textAlign="center" margin="20px">
+              {t("requestCreateProjectRoom")}
+            </StyledH3>
+
+            <SubmitButton
+              text={t("getInTouch")}
+              zIndex="999"
+              backgroundColor="#fed957"
+              textColor="#353535"
+              margin="20px"
+              handleButtonClick={openMailRequestProjectRoom}
             />
           </MainModal>,
           document.getElementById("portal-root-modal")
@@ -587,10 +608,10 @@ const SwipeList = ({
                         ? () => setOpenCreateOrganizationFirst(true)
                         : user.handle === "Senf.koeln"
                         ? openCreateProjectRoom
-                        : openRequestProjectRoom
+                        : () => setOpenRequestProjectRoom(true)
                     }
                   >
-                    {t("projectroom_create")}
+                    {t("createProjectRoom")}
                   </NewButton>
                 </ButtonWrapper>
               )}
@@ -695,10 +716,10 @@ const SwipeList = ({
                     ? () => setOpenCreateOrganizationFirst(true)
                     : user.handle === "Senf.koeln"
                     ? openCreateProjectRoom
-                    : openRequestProjectRoom
+                    : () => setOpenRequestProjectRoom(true)
                 }
               >
-                {t("projectroom_create")}
+                {t("createProjectRoom")}
               </NewButton>
             </ButtonWrapper>
           )}

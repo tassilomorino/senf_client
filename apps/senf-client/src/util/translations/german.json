@@ -289,6 +289,14 @@
   "organization_is_deactivated": "Diese Organisation ist deaktiviert worden und ist momentatn nicht öffentlich.",
   "organization_is_uncompleted": "Diese Organisation ist noch nicht fertiggestellt und noch nicht öffentlich.",
 
+  "authenticatedForCreateProjectRoom": "Um einen Projektraum anzulegen, muss dein Profil mit einem Organisationsprofil verknüpft sein. Um ein Organisationsprofil anzulegen, musst du dich zuerst Anmelden/Registieren",
+  "createOrganizationForCreateProjectRoom": "Um einen Projektraum anzulegen, muss dein Profil mit einem Organisationsprofil verknüpft sein.",
+  "requestCreateProjectRoom": "Bevor du Projekträume anlegen kannst, sollten wir uns noch einmal austauschen.",
+  "authenticateForCreateOrganization": "Um ein Organisationsprofil anzulegen, musst du dich zuerst Anmelden/Registieren",
+  "getInTouch": "Kontakt aufnehmen",
+  "createOrganization": "Organisation anlegen",
+  "createProjectRoom": "Projektraum anlegen",
+
   "createOrganizationPage0aTitle": "Organisationsprofil erstellen",
   "createOrganizationPage0aMobileTitle": "+ Organisation",
   "createOrganizationPage0aSubTitle": "Von dem Nachbarschaftsverein über Planungsbüros bis zu politischen Parteien – Hier könnt ihr ein Profil für eure Organisation erstellen.",

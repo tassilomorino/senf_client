@@ -122,7 +122,18 @@ const CalendarComponent = ({ googleCalendarId, ...props }) => {
         events={openProjectRoom ? initState.calendarEvents : initState.events}
         locale={lang === "de" ? deLocale : enLocale}
         // eventContent={openProjectRoom ? null : renderEventContent}
-        eventClick={openProjectRoom ? handleEventClick : null}
+
+        eventClick={
+          openProjectRoom
+            ? handleEventClick
+            : (arg) => {
+                // opens events in a popup window
+                window.open(arg.event.url, "_blank", "width=700,height=600");
+
+                // prevents current tab from navigating
+                arg.jsEvent.preventDefault();
+              }
+        }
       />
     </CalendarWrapper>
   );

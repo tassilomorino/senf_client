@@ -281,6 +281,14 @@
   "organization_is_deactivated": "This organization has been deactivated and is currently not public.",
   "organization_is_uncompleted": "This organization is not yet completed and not yet public.",
 
+  "authenticatedForCreateProjectRoom": "To create a projectroom, your profile must be linked to an organization profile. To create an organization profile, you must first login/register",
+  "createOrganizationForCreateProjectRoom": "To create a projectroom, your profile must be linked to an organization profile.",
+  "requestCreateProjectRoom": "Before you can create projectrooms, let's have a quick chat.",
+  "authenticateForCreateOrganization": "To create an organization profile, you must first login/register",
+  "getInTouch": "Get in touch",
+  "createOrganization": "Create Organizationprofile",
+  "createProjectRoom": "Create Projectroom",
+
   "createOrganizationPage0aTitle": "Create organization profile",
   "createOrganizationPage0aMobileTitle": "+ Organization",
   "createOrganizationPage0aSubTitle": "From neighborhood associations to planning agencies to political parties, you can create a profile for your organization here.",

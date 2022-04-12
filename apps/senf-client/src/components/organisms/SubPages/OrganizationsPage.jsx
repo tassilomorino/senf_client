@@ -177,7 +177,7 @@ const OrganizationsPage = ({
     ReactDOM.createPortal(
       <MainModal handleButtonClick={() => setOpenModalAuthenticate(false)}>
         <StyledH3 textAlign="center" margin="20px">
-          {t("organizations_create_login_register")}
+          {t("authenticateForCreateOrganization")}
         </StyledH3>
 
         <SubmitButton
@@ -268,7 +268,7 @@ const OrganizationsPage = ({
                   : () => setOpenModalAuthenticate(true)
               }
             >
-              {t("organizations_create")}
+              {t("createOrganization")}
             </NewButton>
           </ButtonWrapper>
 
