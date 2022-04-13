@@ -94,7 +94,6 @@
     "rollup-plugin-visualizer": "^5.6.0",
     "start-server-and-test": "^1.13.1",
     "vite": "^2.9.1",
-    "vite-plugin-compression": "^0.5.1",
     "vite-plugin-pwa": "^0.11.13"
   },
   "buildDate": 1642801145975
