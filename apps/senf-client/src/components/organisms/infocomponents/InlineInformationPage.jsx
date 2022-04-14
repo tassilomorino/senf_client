@@ -178,13 +178,10 @@ const ScrollIndicator = styled.div`
   justify-content: center;
   align-items: center;
   box-shadow: 0px 12px 18px -8px rgba(195, 186, 162, 0.2);
-
   background-color: rgba(195, 186, 162, 0.11);
-
   overflow: visible;
   border-radius: 18px;
   border: 2px solid rgba(192, 188, 175, 0.08);
-
   left: 24px;
   margin-top: 30px;
 
