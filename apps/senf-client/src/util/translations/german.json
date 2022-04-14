@@ -361,5 +361,23 @@
   "createProjectRoomPage7SubTitle": "Willst du an den Angaben etwas verändern?",
   "createProjectRoomPage7ToggleTitle": "Status des Projektraums",
 
-  "calendar_projectroom_explanaition": ""
+  "calendar_projectroom_explanaition": "",
+
+  "faq_question1": "Warum sollte ich mich beteiligen?",
+  "faq_answer1": "",
+  "faq_question2": "Was passiert mit den Ideen?",
+  "faq_answer2": "",
+  "faq_question3": "Wer steht hinter Senf.koeln?",
+  "faq_answer3": "",
+  "faq_question4": "Was ist eure Vision?",
+  "faq_answer4": "",
+  "faq_question5": "Wie finanziert ihr euch?",
+  "faq_answer5": "",
+  "faq_question6": "Arbeitet ihr mit der Stadtverwaltung zusammen?",
+  "faq_answer6": "",
+
+  "faq_question7": "Wollt ihr auch auf andere Städte expandieren?",
+  "faq_answer7": "",
+  "faq_question8": "Sucht ihr nach Verstärkung im Team? Wie arbeitet ihr zusammen?",
+  "faq_answer8": ""
 }
