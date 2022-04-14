@@ -1,17 +1,16 @@
 /** @format */
 
-import React from "react";
+import React, { useState } from "react";
 
 // import MapGL from "../../../../util/urbica/react-map-gl.esm";
 // import Draw from "../../../../util/urbica/react-map-gl-draw.esm";
 // import "mapbox-gl/dist/mapbox-gl.css";
 // import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import Map, { Marker } from "react-map-gl";
-import MapboxDraw, { DrawPolygonMode } from "@mapbox/mapbox-gl-draw";
 import { useControl } from "react-map-gl";
 
 import styled from "styled-components";
-import { Editor } from "react-map-gl-draw";
+import { Editor, DrawPolygonMode } from "react-map-gl-draw";
 
 const MapWrapper = styled.div`
   width: 150px;
@@ -23,6 +22,8 @@ const MapWrapper = styled.div`
 `;
 
 const MapPreview = ({ viewport, data }) => {
+  const [mode, setMode] = useState(new DrawPolygonMode());
+
   return (
     <MapWrapper id="drawMapPreview">
       {viewport && (
@@ -45,8 +46,17 @@ const MapPreview = ({ viewport, data }) => {
           attributionControl={false}
         >
           <Editor
-          // ref={_ => (this._editorRef = _)}
-          />{" "}
+            clickRadius={12}
+            onUpdate={({ data, editType }) => {
+              console.log(editType);
+              // setFeatures({ features: data });
+            }}
+            onSelect={(selected) => {
+              console.log(selected);
+            }}
+            features={data}
+            mode={mode}
+          />
         </Map>
       )}
     </MapWrapper>
