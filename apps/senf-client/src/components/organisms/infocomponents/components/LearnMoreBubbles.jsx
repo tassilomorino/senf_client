@@ -70,12 +70,12 @@ const LearnMoreBubbles = ({ handleClose }) => {
   const [faqOpen, setFaqOpen] = useState(false);
 
   const faqData = [
-    { question: t("faq_question1"), answer: t("faq_answer1") },
+    // { question: t("faq_question1"), answer: t("faq_answer1") },
     { question: t("faq_question2"), answer: t("faq_answer2") },
     { question: t("faq_question3"), answer: t("faq_answer3") },
     { question: t("faq_question4"), answer: t("faq_answer4") },
-    { question: t("faq_question5"), answer: t("faq_answer5") },
-    { question: t("faq_question6"), answer: t("faq_answer6") },
+    // { question: t("faq_question5"), answer: t("faq_answer5") },
+    // { question: t("faq_question6"), answer: t("faq_answer6") },
     { question: t("faq_question7"), answer: t("faq_answer7") },
     { question: t("faq_question8"), answer: t("faq_answer8") },
   ];
