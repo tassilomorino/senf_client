@@ -5,6 +5,12 @@ import { useDispatch } from "react-redux";
 import { SET_AUTHENTICATED } from "../../../redux/types";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
+import { auth } from "../../../firebase";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 import { useHistory } from "react-router";
 import { useFormik } from "formik";
@@ -306,19 +312,17 @@ const LoginRegistration = ({ classes }) => {
     event.preventDefault();
 
     setLoading(true);
-    const userInfo = await firebase
-      .auth()
-      .signInWithEmailAndPassword(
-        formikLoginStore.values.email,
-        formikLoginStore.values.password
-      )
-
-      .then((user) => {
-        if (user.user.emailVerified) {
-          console.log(user.user.uid);
+    signInWithEmailAndPassword(
+      auth,
+      formikLoginStore.values.email,
+      formikLoginStore.values.password
+    )
+      .then((userCredential) => {
+        if (userCredential.user.emailVerified) {
+          console.log(userCredential.user.uid);
           setLoading(false);
           dispatch({ type: SET_AUTHENTICATED });
-          dispatch(getUserData(user.user.uid));
+          dispatch(getUserData(userCredential.user.uid));
           console.log(window.location);
           if (window.location.pathname === "/verify") {
             history.push("/");
