@@ -3,9 +3,9 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { Helmet } from "react-helmet";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import firebaseApp from "./firebase";
+import { auth } from "./firebase";
 
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import "./styles/mapbox-gl.css";
 import "./styles/App.css";
 import "./styles/AppDesktop.css";
@@ -58,8 +58,6 @@ import "./util/i18n"; // i18n configuration
 detectLocation(); // detect location and set i18n language
 const cookies = new Cookies();
 //require("intersection-observer");
-
-const auth = getAuth(firebaseApp);
 
 const theme = createTheme(themeFile);
 
