@@ -12,7 +12,6 @@ import {
 } from "../../../redux/actions/mapActions";
 
 //Components
-import CalendarComponent from "../../atoms/calendar/CalendarComponent";
 
 import SwipeList from "../SwipeLists/SwipeList";
 import Header from "../../molecules/Headers/Header";
