@@ -23,7 +23,7 @@ import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import TagsFilter from "../../molecules/Filters/TagsFilter";
 import Tabs from "../../atoms/Tabs/Tabs";
 import Wave from "../../atoms/Backgrounds/Wave";
-import CalendarComponent from "../../atoms/calendar/CalendarComponent";
+
 import { openCreateProjectRoomFunc } from "../../../redux/actions/projectActions";
 import { stateCreateOrganizationsFunc } from "../../../redux/actions/organizationActions";
 
@@ -32,6 +32,11 @@ import PostScream from "../PostIdea/PostScream";
 import MainModal from "../../atoms/Layout/MainModal";
 import LoginRegistration from "../Auth/LoginRegistration";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
+import { CircularProgress } from "@material-ui/core";
+
+const CalendarComponent = React.lazy(() =>
+  import("../../atoms/calendar/CalendarComponent")
+);
 
 const DragWrapper = styled(animated.div)`
   overscroll-behavior: contain;
@@ -648,7 +653,11 @@ const SwipeList = ({
               )}
 
             {order === 3 && openProjectRoom && (
-              <CalendarComponent handleClick={handleClick} />
+              <React.Suspense
+                fallback={<CircularProgress size={50} thickness={2} />}
+              >
+                <CalendarComponent handleClick={handleClick} />
+              </React.Suspense>
             )}
             <Wave />
           </ListWrapper>
@@ -736,10 +745,14 @@ const SwipeList = ({
               />
             )}
           {order === 3 && openProjectRoom && (
-            <CalendarComponent
-              projectScreams={project?.screams}
-              handleClick={handleClick}
-            />
+            <React.Suspense
+              fallback={<CircularProgress size={50} thickness={2} />}
+            >
+              <CalendarComponent
+                projectScreams={project?.screams}
+                handleClick={handleClick}
+              />
+            </React.Suspense>
           )}
         </ListWrapper>
         <Wave />

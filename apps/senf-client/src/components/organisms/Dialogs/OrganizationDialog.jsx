@@ -29,7 +29,7 @@ import SwipeList from "../SwipeLists/SwipeList";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import { useTranslation } from "react-i18next";
 import { MenuData } from "../../../data/MenuData";
-import CalendarComponent from "../../atoms/calendar/CalendarComponent";
+
 import {
   StyledA,
   StyledH2,
@@ -48,7 +48,10 @@ import { OrganizationTabData } from "../../../data/OrganizationTabData";
 import { Accordion } from "../../molecules/Accordion/Accordion";
 import Arrow from "../../../images/icons/arrow-right.png";
 import { openLink, openMail, search, sort } from "../../../util/helpers";
-
+import { CircularProgress } from "@material-ui/core";
+const CalendarComponent = React.lazy(() =>
+  import("../../atoms/calendar/CalendarComponent")
+);
 export const Wrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -586,9 +589,13 @@ const OrganizationDialog = ({
             />
           </React.Fragment>
         ) : (
-          <CalendarComponent
-            googleCalendarId={organization?.googleCalendarId}
-          />
+          <React.Suspense
+            fallback={<CircularProgress size={50} thickness={2} />}
+          >
+            <CalendarComponent
+              googleCalendarId={organization?.googleCalendarId}
+            />
+          </React.Suspense>
         )}
       </ListWrapper>
       {/* {ReactDOM.createPortal(
