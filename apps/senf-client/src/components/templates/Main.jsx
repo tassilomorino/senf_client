@@ -473,32 +473,17 @@ const Main = () => {
           setOpenOrganizationsPage={setOpenOrganizationsPage}
         />
       )}
-      {/*  //show map only when infopage is closed on mobile */}
-      {openInfoPage === false && isMobileCustom && (
-        <Map
-          order={order}
-          dataFinal={dataFinalMap}
-          loading={loading}
-          loadingProjects={loadingProjects}
-          openProjectRoom={openProjectRoom}
-          geoData={project && openProjectRoom && project.geoData}
-          mapRef={mapRef}
-          projects={dataFinalMapProjects}
-        />
-      )}
-      {/* //show map and infopage for desktop */}
-      {!isMobileCustom && (
-        <Map
-          order={order}
-          dataFinal={dataFinalMap}
-          loading={loading}
-          loadingProjects={loadingProjects}
-          openProjectRoom={openProjectRoom}
-          geoData={project && openProjectRoom && project.geoData}
-          mapRef={mapRef}
-          projects={dataFinalMapProjects}
-        />
-      )}
+
+      <Map
+        order={order}
+        dataFinal={dataFinalMap}
+        loading={loading}
+        loadingProjects={loadingProjects}
+        openProjectRoom={openProjectRoom}
+        geoData={project && openProjectRoom && project.geoData}
+        mapRef={mapRef}
+        projects={dataFinalMapProjects}
+      />
 
       {!openInfoPage && (
         <MainColumnWrapper>
