@@ -237,4 +237,4 @@ const App = () => {
 };
 console.log(getBuildDate(packageJson.buildDate));
 
-export default withClearCache(App);
+export default App;

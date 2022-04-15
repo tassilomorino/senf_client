@@ -18,3 +18,15 @@ ReactDOM.render(
   },
 });
  */
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.ready.then((registration) => {
+    registration.unregister();
+
+    if (caches) {
+      console.log("deleting old caches");
+      caches.keys().then(async (names) => {
+        await Promise.all(names.map((name) => caches.delete(name)));
+      });
+    }
+  });
+}
