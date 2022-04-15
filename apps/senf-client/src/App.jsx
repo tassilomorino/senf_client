@@ -164,10 +164,9 @@ const App = () => {
           <meta name="robots" content="noindex" />
         </Helmet>
       )}
+      {/* 
       {import.meta.env.VITE_STATS && (
-        /* Add statistics for senf.koeln
-        https://umami-xi-nine.vercel.app/
-        */
+        
         <Helmet>
           <script
             async
@@ -177,6 +176,7 @@ const App = () => {
           ></script>
         </Helmet>
       )}
+    */}
       <MuiThemeProvider theme={theme}>
         <Provider store={store}>
           <GlobalStyles />
