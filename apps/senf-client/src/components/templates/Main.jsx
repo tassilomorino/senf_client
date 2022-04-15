@@ -473,17 +473,18 @@ const Main = () => {
           setOpenOrganizationsPage={setOpenOrganizationsPage}
         />
       )}
-
-      <Map
-        order={order}
-        dataFinal={dataFinalMap}
-        loading={loading}
-        loadingProjects={loadingProjects}
-        openProjectRoom={openProjectRoom}
-        geoData={project && openProjectRoom && project.geoData}
-        mapRef={mapRef}
-        projects={dataFinalMapProjects}
-      />
+      {!openInfoPage && (
+        <Map
+          order={order}
+          dataFinal={dataFinalMap}
+          loading={loading}
+          loadingProjects={loadingProjects}
+          openProjectRoom={openProjectRoom}
+          geoData={project && openProjectRoom && project.geoData}
+          mapRef={mapRef}
+          projects={dataFinalMapProjects}
+        />
+      )}
 
       {!openInfoPage && (
         <MainColumnWrapper>
