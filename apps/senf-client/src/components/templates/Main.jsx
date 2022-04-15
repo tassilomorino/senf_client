@@ -474,7 +474,7 @@ const Main = () => {
         />
       )}
       {/*  //show map only when infopage is closed on mobile */}
-      {openInfoPage === false && (
+      {openInfoPage === false && isMobileCustom && (
         <Map
           order={order}
           dataFinal={dataFinalMap}
@@ -487,7 +487,7 @@ const Main = () => {
         />
       )}
       {/* //show map and infopage for desktop */}
-      {openInfoPage === true && !isMobileCustom && (
+      {!isMobileCustom && (
         <Map
           order={order}
           dataFinal={dataFinalMap}
