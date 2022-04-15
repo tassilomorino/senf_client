@@ -55,7 +55,7 @@ import {
   getOrganizations,
   openOrganizationFunc,
 } from "../../redux/actions/organizationActions";
-import CreateMainComponent from "../organisms/Create_Organisation_Projectrooms/CreateMainComponent";
+
 import OrganizationDialog from "../organisms/Dialogs/OrganizationDialog";
 import OrganizationsPage from "../organisms/SubPages/OrganizationsPage";
 import styled from "styled-components";
@@ -70,6 +70,9 @@ import {
   countStatusOfScreams,
 } from "../../util/helpers";
 
+const CreateMainComponent = React.lazy(() =>
+  import("../organisms/Create_Organisation_Projectrooms/CreateMainComponent")
+);
 const MainColumnWrapper = styled.div`
   width: 100vw;
   height: 100%;
@@ -583,13 +586,15 @@ const Main = () => {
       )}
 
       {(openCreateProjectRoom || openCreateOrganization) && (
-        <CreateMainComponent
-          type={
-            openCreateProjectRoom
-              ? "projectRoom"
-              : openCreateOrganization && "organization"
-          }
-        />
+        <React.Suspense fallback={<Loader />}>
+          <CreateMainComponent
+            type={
+              openCreateProjectRoom
+                ? "projectRoom"
+                : openCreateOrganization && "organization"
+            }
+          />
+        </React.Suspense>
       )}
     </React.Fragment>
   );
