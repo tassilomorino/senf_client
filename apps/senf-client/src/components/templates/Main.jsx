@@ -473,7 +473,21 @@ const Main = () => {
           setOpenOrganizationsPage={setOpenOrganizationsPage}
         />
       )}
-      {!openInfoPage && (
+      {/*  //show map only when infopage is closed on mobile */}
+      {openInfoPage === false && (
+        <Map
+          order={order}
+          dataFinal={dataFinalMap}
+          loading={loading}
+          loadingProjects={loadingProjects}
+          openProjectRoom={openProjectRoom}
+          geoData={project && openProjectRoom && project.geoData}
+          mapRef={mapRef}
+          projects={dataFinalMapProjects}
+        />
+      )}
+      {/* //show map and infopage for desktop */}
+      {openInfoPage === true && !isMobileCustom && (
         <Map
           order={order}
           dataFinal={dataFinalMap}
