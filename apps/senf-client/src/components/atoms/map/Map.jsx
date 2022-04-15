@@ -173,7 +173,7 @@ const Map = ({
       //how can I dispatch viewport every 2 seconds
       //instead of every mouse scroll
       // thats the last thing wich causes rerenders
-      //dispatch(setMapViewport(viewport));
+      dispatch(setMapViewport(viewport));
     },
     [dispatch]
   );
