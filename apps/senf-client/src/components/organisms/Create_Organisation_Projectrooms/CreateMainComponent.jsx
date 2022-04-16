@@ -38,6 +38,7 @@ import {
   stateCreateOrganizationsFunc,
 } from "../../../redux/actions/organizationActions";
 import {
+  getProjects,
   openCreateProjectRoomFunc,
   openProjectRoomFunc,
 } from "../../../redux/actions/projectActions";
@@ -174,30 +175,31 @@ const CreateProjectDialog = ({ type }) => {
 
   const setClose = () => {
     dispatch(getOrganizations());
+    dispatch(getProjects());
 
     dispatch(openCreateProjectRoomFunc(false));
     dispatch(stateCreateOrganizationsFunc(false));
 
-    if (openOrganization && localStorage.getItem("createOrganizationId")) {
+    if (localStorage.getItem("createOrganizationId")) {
       dispatch(
         openOrganizationFunc(true, localStorage.getItem("createOrganizationId"))
       );
     }
-    if (openProjectRoom && localStorage.getItem("createProjectRoomId")) {
+    if (localStorage.getItem("createProjectRoomId")) {
       dispatch(
         openProjectRoomFunc(localStorage.getItem("createProjectRoomId"), true)
       );
     }
 
     if (localStorage.getItem("createOrganizationPostEdit") === "true") {
-      localStorage.removeItem("createOrganizationId");
       localStorage.removeItem("createOrganizationPostEdit");
     }
+    localStorage.removeItem("createOrganizationId");
 
     if (localStorage.getItem("createProjectRoomPostEdit") === "true") {
-      localStorage.removeItem("createProjectRoomId");
       localStorage.removeItem("createProjectRoomPostEdit");
     }
+    localStorage.removeItem("createProjectRoomId");
   };
   const pagesData =
     type === "projectRoom"

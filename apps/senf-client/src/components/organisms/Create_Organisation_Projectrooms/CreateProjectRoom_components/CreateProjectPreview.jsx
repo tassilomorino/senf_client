@@ -98,6 +98,8 @@ const CreateProjectPagePreview = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [openPreview, setOpenPreview] = useState(false);
+  const [nextClicked, setNextClicked] = useState(false);
+
   const [status, setStatus] = useState(true);
 
   const [infosProvided, setInfosProvided] = useState(false);
@@ -158,12 +160,15 @@ const CreateProjectPagePreview = ({
   };
 
   const handlePublish = async () => {
+    if (localStorage.getItem("createProjectRoomPostEdit") !== "true") {
+      setNextClicked(true);
+    }
     const db = firebase.firestore();
     setStatus(true);
 
     if (
       typeof Storage !== "undefined" &&
-      localStorage.getItem("createOrganizationId")
+      localStorage.getItem("createProjectRoomId")
     ) {
       const ref = await db
         .collection("organizations")
@@ -212,7 +217,11 @@ const CreateProjectPagePreview = ({
         prevLabel={t("back")}
         handleNext={handlePublish}
         handlePrev={onClickPrev}
-        disabled={localStorage.getItem("createProjectRoomPostEdit") === "true"}
+        disabled={
+          localStorage.getItem("createProjectRoomPostEdit") === "true" ||
+          nextClicked
+        }
+        loading={nextClicked}
         pagesData={pagesData}
         index={index}
         setClose={setClose}
