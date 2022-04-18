@@ -19,9 +19,7 @@ import MyButton from "../../../util/MyButton";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-const DistrictsGraph = React.lazy(() =>
-  import(/* webpackChunkName: "DistrictsGraph" */ "./DistrictsGraph")
-);
+const DistrictsGraph = React.lazy(() => import("./DistrictsGraph"));
 const styles = {
   root: {
     //backgroundColor: "rgb(0,0,0,0.5)",

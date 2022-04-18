@@ -22,9 +22,7 @@ import MyButton from "../../../util/MyButton";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-const Thema = React.lazy(() =>
-  import(/* webpackChunkName: "ThemenGraph" */ "./thema")
-);
+const Thema = React.lazy(() => import("./thema"));
 const styles = {
   root: {
     //backgroundColor: "rgb(0,0,0,0.5)",

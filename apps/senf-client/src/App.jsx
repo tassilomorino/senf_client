@@ -48,7 +48,7 @@ import { isMobileCustom } from "./util/customDeviceDetect";
 
 import packageJson from "../package.json";
 import { getBuildDate } from "./util/helpers";
-//import withClearCache from "./ClearCache";
+import withClearCache from "./ClearCache";
 import Cookiebanner from "./components/organisms/Cookiebanner/Cookiebanner";
 import { setViewport } from "./util/helpers-map-animations";
 import detectLocation from "./util/detectLocation";
@@ -162,10 +162,9 @@ const App = () => {
           <meta name="robots" content="noindex" />
         </Helmet>
       )}
+      {/* 
       {import.meta.env.VITE_STATS && (
-        /* Add statistics for senf.koeln
-        https://umami-xi-nine.vercel.app/
-        */
+        
         <Helmet>
           <script
             async
@@ -175,6 +174,7 @@ const App = () => {
           ></script>
         </Helmet>
       )}
+    */}
       <MuiThemeProvider theme={theme}>
         <Provider store={store}>
           <GlobalStyles />

@@ -1,16 +1,15 @@
 /** @format */
 
 import React from "react";
-import { createRoot } from "react-dom/client";
+import ReactDOM from "react-dom";
 import App from "./App";
 //import { registerSW } from "virtual:pwa-register";
 
-const container = document.getElementById("root");
-const root = createRoot(container);
-root.render(
+ReactDOM.render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>
+  </React.StrictMode>,
+  document.getElementById("root")
 );
 
 /* registerSW({
@@ -19,3 +18,15 @@ root.render(
   },
 });
  */
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.ready.then((registration) => {
+    registration.unregister();
+
+    if (caches) {
+      console.log("deleting old caches");
+      caches.keys().then(async (names) => {
+        await Promise.all(names.map((name) => caches.delete(name)));
+      });
+    }
+  });
+}

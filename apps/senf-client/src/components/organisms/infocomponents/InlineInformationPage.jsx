@@ -91,6 +91,7 @@ const StyledContactImg = styled.img`
   }
 `;
 const LinkHeadline = styled.div`
+  font-size: 16px;
   position: relative;
   z-index: 0;
   margin-top: 80px;
@@ -125,14 +126,14 @@ const Card = styled.div`
   height: 320px;
 
   padding: 14px 10px 14px 10px;
-  box-shadow: 0px 12px 18px -8px rgba(195, 186, 162, 0.2);
 
-  background-color: rgba(195, 186, 162, 0.11);
-  overflow: visible;
-  border-radius: 10px;
-  border: 2px solid rgba(255, 255, 255, 0.8);
   margin-left: 50%;
   transform: translateX(-50%);
+
+  box-shadow: 0px 12px 18px -8px rgba(195, 186, 162, 0.2);
+  background-color: rgba(195, 186, 162, 0.11);
+  border-radius: 18px;
+  border: 2px solid rgba(192, 188, 175, 0.08);
 `;
 const Img = styled.img`
   margin-left: 50%;
@@ -144,12 +145,132 @@ const Img = styled.img`
   transition: 0.5s;
 `;
 
+const ImgCard = styled.img`
+  margin-left: 50%;
+  transform: ${(props) =>
+    props.visible
+      ? "translateX(-50%) translateY(0px)"
+      : "translateX(-40%) translateY(10px)"};
+  opacity: ${(props) => (props.visible ? "1" : "0")};
+  transition: 0.5s;
+
+  box-shadow: 0px 12px 18px -8px rgba(195, 186, 162, 0.2);
+  background-color: rgba(195, 186, 162, 0.11);
+  border-radius: 18px;
+  border: 2px solid rgba(192, 188, 175, 0.08);
+`;
+
 const Link = styled.div`
   margin-top: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+`;
+
+const ScrollIndicator = styled.div`
+  width: 30px;
+  height: 50px;
+  border-radius: 15px;
+
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 12px 18px -8px rgba(195, 186, 162, 0.2);
+  background-color: rgba(195, 186, 162, 0.11);
+  overflow: visible;
+  border-radius: 18px;
+  border: 2px solid rgba(192, 188, 175, 0.08);
+  left: 24px;
+  margin-top: 30px;
+
+  @media (min-width: 768px) {
+    left: 100px;
+    margin-top: 130px;
+  }
+`;
+
+const ScrollIndicatorDot = styled.div`
+  margin-top: 50px;
+  background-color: rgba(192, 188, 175, 0.8);
+  width: 5px;
+  height: 5px;
+  border-radius: 100%;
+  animation: trackBallSlide 10s linear infinite;
+
+  @keyframes trackBallSlide {
+    0% {
+      opacity: 1;
+      transform: scale(1) translateY(-40px);
+    }
+    6% {
+      opacity: 1;
+      transform: scale(0.9) translateY(40px/4);
+    }
+    14% {
+      opacity: 0;
+      transform: scale(0.4) translateY(40px * 2);
+    }
+    15%,
+    19% {
+      opacity: 0;
+      transform: scale(0.4) translateY(-40px);
+    }
+    19% {
+      opacity: 0;
+      transform: scale(0.4) translateY(-40px);
+    }
+    28%,
+    29.99% {
+      opacity: 1;
+      transform: scale(1) translateY(-40px);
+    }
+    30% {
+      opacity: 1;
+      transform: scale(1) translateY(-40px);
+    }
+    36% {
+      opacity: 1;
+      transform: scale(0.9) translateY(40px/4);
+    }
+    44% {
+      opacity: 0;
+      transform: scale(0.4) translateY(40px * 2);
+    }
+    45%,
+    49% {
+      opacity: 0;
+      transform: scale(0.4) translateY(-40px);
+    }
+    58%,
+    59.99% {
+      opacity: 1;
+      transform: scale(1) translateY(-40px);
+    }
+    60% {
+      opacity: 1;
+      transform: scale(1) translateY(-40px);
+    }
+    66% {
+      opacity: 1;
+      transform: scale(0.9) translateY(40px/4);
+    }
+    74% {
+      opacity: 0;
+      transform: scale(0.4) translateY(40px * 2);
+    }
+    75%,
+    79% {
+      opacity: 0;
+      transform: scale(0.4) translateY(-40px);
+    }
+    88%,
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(-40px);
+    }
+  }
 `;
 
 const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
@@ -500,6 +621,10 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
             </StyledA>
           </LinkHeadline>
 
+          <ScrollIndicator>
+            <ScrollIndicatorDot />
+          </ScrollIndicator>
+
           {/* <StyledA >Direkt zur Plattform </StyledA> */}
           <Circle
             id="Circle"
@@ -529,7 +654,11 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
                 { text: "infopage_howToCard1_4", color: "" },
               ]}
             />
-            <Img src={DecideLocationImg} width="250px" visible={visibleCards} />
+            <ImgCard
+              src={DecideLocationImg}
+              width="250px"
+              visible={visibleCards}
+            />
           </HowToCard1>
 
           <HowToCard2>
@@ -543,7 +672,11 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
                 { text: "infopage_howToCard2_4", color: "#90D8B9" },
               ]}
             />
-            <Img src={FormulateIdeaImg} width="250px" visible={visibleCards2} />
+            <ImgCard
+              src={FormulateIdeaImg}
+              width="250px"
+              visible={visibleCards2}
+            />
           </HowToCard2>
 
           <HorizontalScrollSection id="1" />

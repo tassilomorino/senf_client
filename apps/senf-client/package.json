@@ -29,13 +29,13 @@
     "linkifyjs": "^3.0.5",
     "lodash": "^4.17.21",
     "mapbox": "^1.0.0-beta10",
-    "mapbox-gl": "^2.8.0",
+    "mapbox-gl": "^1.13.2",
     "moment": "^2.29.2",
     "plotly.js-cartesian-dist": "^2.11.1",
     "public-ip": "^4.0.4",
-    "react": "^18.0.0",
+    "react": "^17.0.2",
     "react-device-detect": "^2.1.2",
-    "react-dom": "^18.0.0",
+    "react-dom": "^17.0.2",
     "react-easy-swipe": "^0.0.22",
     "react-helmet": "^6.1.0",
     "react-i18next": "^11.16.2",
@@ -60,7 +60,7 @@
     "start:reset": "vite --force",
     "serve": "npm start",
     "preview": "vite preview",
-    "build": "vite build",
+    "build": "node ./update-build.js && vite build",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "cypress:ci": "start-server-and-test start:silent http://localhost:3000 cy:run",
@@ -70,18 +70,6 @@
   },
   "eslintConfig": {
     "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "devDependencies": {
     "@types/react-router-dom": "^4.3.5",
@@ -93,8 +81,9 @@
     "prettier": "^2.6.2",
     "rollup-plugin-visualizer": "^5.6.0",
     "start-server-and-test": "^1.13.1",
-    "vite": "^2.9.1",
+    "vite": "^2.9.5",
+    "vite-plugin-compression": "^0.5.1",
     "vite-plugin-pwa": "^0.11.13"
   },
-  "buildDate": 1642801145975
+  "buildDate": 1650033934093
 }
