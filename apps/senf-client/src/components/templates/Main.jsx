@@ -340,6 +340,8 @@ const Main = () => {
       ideasData = filterByStatus(ideasData, dropdownStatus);
       ideasData = filterByGeodata(ideasData, mapBounds);
       return ideasData;
+    } else {
+      return screams;
     }
   }, [
     window.location.pathname,
@@ -377,6 +379,8 @@ const Main = () => {
         "organizationType"
       );
       return projectRoomsData;
+    } else {
+      return projects;
     }
   }, [
     dropdown,
