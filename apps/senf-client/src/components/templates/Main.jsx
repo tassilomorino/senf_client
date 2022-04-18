@@ -325,24 +325,21 @@ const Main = () => {
   //IDEAS
 
   const dataFinalIdeas = useMemo(() => {
-    let ideasData;
-    if (window.location.pathname === "/") {
-      ideasData = search(screams, searchTerm, [
-        "title",
-        "body",
-        "Stadtteil",
-        "Stadtbezirk",
-        "locationHeader",
-      ]);
-      ideasData = filterByTagFilter(ideasData, selectedTopics, "Thema");
+    let ideasData = [];
 
-      ideasData = sort(ideasData, dropdown);
-      ideasData = filterByStatus(ideasData, dropdownStatus);
-      ideasData = filterByGeodata(ideasData, mapBounds);
-      return ideasData;
-    } else {
-      return screams;
-    }
+    ideasData = search(screams, searchTerm, [
+      "title",
+      "body",
+      "Stadtteil",
+      "Stadtbezirk",
+      "locationHeader",
+    ]);
+    ideasData = filterByTagFilter(ideasData, selectedTopics, "Thema");
+
+    ideasData = sort(ideasData, dropdown);
+    ideasData = filterByStatus(ideasData, dropdownStatus);
+    ideasData = filterByGeodata(ideasData, mapBounds);
+    return ideasData;
   }, [
     dropdown,
     dropdownStatus,
@@ -352,7 +349,7 @@ const Main = () => {
     mapBounds,
     userLikes,
   ]);
-
+  console.log(dataFinalIdeas?.length, "dataFinalIdeas length");
   const dropdownStatusNumbers = useMemo(
     () => countStatusOfScreams(screams),
     [screams]
@@ -361,26 +358,23 @@ const Main = () => {
   //PROJECTROOMS
 
   const dataFinalProjectRooms = useMemo(() => {
-    let projectRoomsData;
-    if (window.location.pathname === "/projectRooms") {
-      projectRoomsData = search(projects, searchTerm, [
-        "title",
-        "brief",
-        "description_about",
-        "description_motivation",
-        "description_procedure",
-        "description_learnmore",
-      ]);
-      projectRoomsData = sort(projectRoomsData, dropdown);
-      projectRoomsData = filterByTagFilter(
-        projectRoomsData,
-        selectedOrganizationTypes,
-        "organizationType"
-      );
-      return projectRoomsData;
-    } else {
-      return projects;
-    }
+    let projectRoomsData = [];
+
+    projectRoomsData = search(projects, searchTerm, [
+      "title",
+      "brief",
+      "description_about",
+      "description_motivation",
+      "description_procedure",
+      "description_learnmore",
+    ]);
+    projectRoomsData = sort(projectRoomsData, dropdown);
+    projectRoomsData = filterByTagFilter(
+      projectRoomsData,
+      selectedOrganizationTypes,
+      "organizationType"
+    );
+    return projectRoomsData;
   }, [dropdown, projects, searchTerm, selectedOrganizationTypes]);
 
   //ORGANIZATIONS
