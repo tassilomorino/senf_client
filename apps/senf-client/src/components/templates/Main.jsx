@@ -325,26 +325,22 @@ const Main = () => {
   //IDEAS
 
   const dataFinalIdeas = useMemo(() => {
-    let ideasData;
-    if (window.location.pathname === "/") {
-      ideasData = search(screams, searchTerm, [
-        "title",
-        "body",
-        "Stadtteil",
-        "Stadtbezirk",
-        "locationHeader",
-      ]);
-      ideasData = filterByTagFilter(ideasData, selectedTopics, "Thema");
+    let ideasData = [];
 
-      ideasData = sort(ideasData, dropdown);
-      ideasData = filterByStatus(ideasData, dropdownStatus);
-      ideasData = filterByGeodata(ideasData, mapBounds);
-      return ideasData;
-    } else {
-      return screams;
-    }
+    ideasData = search(screams, searchTerm, [
+      "title",
+      "body",
+      "Stadtteil",
+      "Stadtbezirk",
+      "locationHeader",
+    ]);
+    ideasData = filterByTagFilter(ideasData, selectedTopics, "Thema");
+
+    ideasData = sort(ideasData, dropdown);
+    ideasData = filterByStatus(ideasData, dropdownStatus);
+    ideasData = filterByGeodata(ideasData, mapBounds);
+    return ideasData;
   }, [
-    window.location.pathname,
     dropdown,
     dropdownStatus,
     searchTerm,
@@ -362,33 +358,24 @@ const Main = () => {
   //PROJECTROOMS
 
   const dataFinalProjectRooms = useMemo(() => {
-    let projectRoomsData;
-    if (window.location.pathname === "/projectRooms") {
-      projectRoomsData = search(projects, searchTerm, [
-        "title",
-        "brief",
-        "description_about",
-        "description_motivation",
-        "description_procedure",
-        "description_learnmore",
-      ]);
-      projectRoomsData = sort(projectRoomsData, dropdown);
-      projectRoomsData = filterByTagFilter(
-        projectRoomsData,
-        selectedOrganizationTypes,
-        "organizationType"
-      );
-      return projectRoomsData;
-    } else {
-      return projects;
-    }
-  }, [
-    dropdown,
-    projects,
-    searchTerm,
-    selectedOrganizationTypes,
-    window.location.pathname,
-  ]);
+    let projectRoomsData = [];
+
+    projectRoomsData = search(projects, searchTerm, [
+      "title",
+      "brief",
+      "description_about",
+      "description_motivation",
+      "description_procedure",
+      "description_learnmore",
+    ]);
+    projectRoomsData = sort(projectRoomsData, dropdown);
+    projectRoomsData = filterByTagFilter(
+      projectRoomsData,
+      selectedOrganizationTypes,
+      "organizationType"
+    );
+    return projectRoomsData;
+  }, [dropdown, projects, searchTerm, selectedOrganizationTypes]);
 
   //ORGANIZATIONS
 
