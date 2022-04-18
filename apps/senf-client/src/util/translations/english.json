@@ -325,9 +325,13 @@
   "projectRoom_is_deactivated": "This organization has been deactivated and is momentatn not public.",
   "projectRoom_is_uncompleted": "This organization has not been completed and is not yet public.",
 
-  "createProjectRoomPage0aTitle": "Select Organization Profile",
-  "createProjectRoomPage0aMobileTitle": "Select Organization",
-  "createProjectRoomPage0aSubTitle": "Select the organization for which you want to create the project room",
+  "createProjectRoomPage0aTitle": "Create Projectroom",
+  "createProjectRoomPage0aMobileTitle": "+ Projectroom",
+  "createProjectRoomPage0aSubTitle": "With Projectrooms you can collect ideas based on location and occasion. In addition, functions can be integrated that are tailored to your individual requirements.",
+
+  "createProjectRoomPage0bTitle": "Select Organization Profile",
+  "createProjectRoomPage0bMobileTitle": "Select Organization",
+  "createProjectRoomPage0bSubTitle": "Select the organization for which you want to create the project room",
 
   "createProjectRoomPage1Title": "Info",
   "createProjectRoomPage1SubTitle": "Choose an appropriate project name as well as a project room description that both informs and invites ideas to contribute and get involved.",

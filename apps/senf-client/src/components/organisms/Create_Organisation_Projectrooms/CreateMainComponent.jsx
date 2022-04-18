@@ -14,7 +14,7 @@ import { PageWrapper } from "./styles/sharedStyles";
 import TopNavigation from "./Components/TopNavigation";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import FullscreenDialog from "../../atoms/Layout/FullscreenDialog";
-import CreateProjectPage0a from "./CreateProjectRoom_components/CreateProjectPage0a";
+import CreateProjectPage0b from "./CreateProjectRoom_components/CreateProjectPage0b";
 import CreateProjectPage1 from "./CreateProjectRoom_components/CreateProjectPage1";
 import CreateProjectPage2 from "./CreateProjectRoom_components/CreateProjectPage2";
 import CreateProjectPage3 from "./CreateProjectRoom_components/CreateProjectPage3";
@@ -43,6 +43,7 @@ import {
   openProjectRoomFunc,
 } from "../../../redux/actions/projectActions";
 import CreateProjectPage5 from "./CreateProjectRoom_components/CreateProjectPage5";
+import CreateProjectPage0a from "./CreateProjectRoom_components/CreateProjectPage0a";
 
 const CreateProjectDialog = ({ type }) => {
   const openOrganization = useSelector((state) => state.UI.openOrganization);
@@ -211,6 +212,12 @@ const CreateProjectDialog = ({ type }) => {
           },
 
           {
+            title: t("createProjectRoomPage0bTitle"),
+            mobileTitle: t("createProjectRoomPage0bMobileTitle"),
+            subTitle: t("createProjectRoomPage0bSubTitle"),
+          },
+
+          {
             title: t("createProjectRoomPage1Title"),
             subTitle: t("createProjectRoomPage1SubTitle"),
           },
@@ -283,6 +290,15 @@ const CreateProjectDialog = ({ type }) => {
           ({ style }) => (
             <PageWrapper>
               <CreateProjectPage0a
+                onClickNext={onClickNext}
+                pagesData={pagesData}
+                index={index}
+              />
+            </PageWrapper>
+          ),
+          ({ style }) => (
+            <PageWrapper>
+              <CreateProjectPage0b
                 onClickNext={onClickNext}
                 pagesData={pagesData}
                 index={index}
