@@ -68,6 +68,8 @@ const CreateOrganizationPreview = ({
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [nextClicked, setNextClicked] = useState(false);
+
   const [openPreview, setOpenPreview] = useState(false);
   const [status, setStatus] = useState(true);
 
@@ -128,6 +130,10 @@ const CreateOrganizationPreview = ({
     const db = firebase.firestore();
     setStatus(true);
 
+    if (localStorage.getItem("createOrganizationPostEdit") !== "true") {
+      setNextClicked(true);
+    }
+
     if (
       typeof Storage !== "undefined" &&
       localStorage.getItem("createOrganizationId")
@@ -173,7 +179,11 @@ const CreateOrganizationPreview = ({
         prevLabel={t("back")}
         handleNext={handlePublish}
         handlePrev={onClickPrev}
-        disabled={localStorage.getItem("createOrganizationPostEdit") === "true"}
+        disabled={
+          localStorage.getItem("createOrganizationPostEdit") === "true" ||
+          nextClicked
+        }
+        loading={nextClicked}
         pagesData={pagesData}
         index={index}
         setClose={setClose}

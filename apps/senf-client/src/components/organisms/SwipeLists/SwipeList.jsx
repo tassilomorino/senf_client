@@ -611,7 +611,7 @@ const SwipeList = ({
                         ? () => setOpenModalAuthenticateForProjectRoom(true)
                         : !user?.organizationId?.length
                         ? () => setOpenCreateOrganizationFirst(true)
-                        : user.handle === "Senf.koeln"
+                        : user?.isOrgModerator === true
                         ? openCreateProjectRoom
                         : () => setOpenRequestProjectRoom(true)
                     }
@@ -723,7 +723,7 @@ const SwipeList = ({
                     ? () => setOpenModalAuthenticateForProjectRoom(true)
                     : !user?.organizationId?.length
                     ? () => setOpenCreateOrganizationFirst(true)
-                    : user.handle === "Senf.koeln"
+                    : user?.isOrgModerator === true
                     ? openCreateProjectRoom
                     : () => setOpenRequestProjectRoom(true)
                 }
