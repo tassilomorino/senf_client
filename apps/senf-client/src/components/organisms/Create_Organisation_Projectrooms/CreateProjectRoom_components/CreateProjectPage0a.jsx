@@ -16,6 +16,7 @@ import "firebase/compat/storage";
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 import InfoSwiper from "../Components/InfoSwiper";
+import ProjectroomPricingsSwiper from "../Components/ProjectroomPricingsSwiper";
 
 const Header = styled.h3`
   font-size: 18px;
@@ -109,7 +110,9 @@ const CreateProjectPage0a = ({
 
           {/* <InfoSwiper /> */}
 
-          <CheckBoxWrapper>
+          <ProjectroomPricingsSwiper />
+
+          {/* <CheckBoxWrapper>
             <CheckBox
               selected={checkBox3}
               type="checkbox"
@@ -121,14 +124,17 @@ const CreateProjectPage0a = ({
                 und die Veröffentlichung an Kosten verknüpft ist.
               </StyledText>
             </CheckBoxLabel>
-          </CheckBoxWrapper>
+          </CheckBoxWrapper> */}
         </ComponentInnerWrapper>
       </ComponentWrapper>
 
       <Navigation
         nextLabel={t("lets_go")}
         handleNext={handleNext}
-        disabled={!checkBox1 || !checkBox2 || !checkBox3 || nextClicked}
+        disabled={
+          // !checkBox1 || !checkBox2 || !checkBox3 ||
+          nextClicked
+        }
         loading={nextClicked}
         pagesData={pagesData}
       />

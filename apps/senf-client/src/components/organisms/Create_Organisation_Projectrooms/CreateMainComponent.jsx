@@ -205,11 +205,11 @@ const CreateProjectDialog = ({ type }) => {
   const pagesData =
     type === "projectRoom"
       ? [
-          {
-            title: t("createProjectRoomPage0aTitle"),
-            mobileTitle: t("createProjectRoomPage0aMobileTitle"),
-            subTitle: t("createProjectRoomPage0aSubTitle"),
-          },
+          // {
+          //   title: t("createProjectRoomPage0aTitle"),
+          //   mobileTitle: t("createProjectRoomPage0aMobileTitle"),
+          //   subTitle: t("createProjectRoomPage0aSubTitle"),
+          // },
 
           {
             title: t("createProjectRoomPage0bTitle"),
@@ -287,15 +287,15 @@ const CreateProjectDialog = ({ type }) => {
   const pages =
     type === "projectRoom"
       ? [
-          ({ style }) => (
-            <PageWrapper>
-              <CreateProjectPage0a
-                onClickNext={onClickNext}
-                pagesData={pagesData}
-                index={index}
-              />
-            </PageWrapper>
-          ),
+          // ({ style }) => (
+          //   <PageWrapper>
+          //     <CreateProjectPage0a
+          //       onClickNext={onClickNext}
+          //       pagesData={pagesData}
+          //       index={index}
+          //     />
+          //   </PageWrapper>
+          // ),
           ({ style }) => (
             <PageWrapper>
               <CreateProjectPage0b

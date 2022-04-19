@@ -17,11 +17,11 @@ export const ComponentWrapper = styled.div`
   top: 70px;
   padding-bottom: 300px;
   overflow: hidden;
-
   @media (min-width: 768px) {
     max-width: 600px;
     margin-left: 50%;
     transform: translateX(-50%);
+    overflow: visible;
   }
 `;
 
