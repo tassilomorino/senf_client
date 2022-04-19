@@ -14,7 +14,7 @@ import { PageWrapper } from "./styles/sharedStyles";
 import TopNavigation from "./Components/TopNavigation";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import FullscreenDialog from "../../atoms/Layout/FullscreenDialog";
-import CreateProjectPage0a from "./CreateProjectRoom_components/CreateProjectPage0a";
+import CreateProjectPage0b from "./CreateProjectRoom_components/CreateProjectPage0b";
 import CreateProjectPage1 from "./CreateProjectRoom_components/CreateProjectPage1";
 import CreateProjectPage2 from "./CreateProjectRoom_components/CreateProjectPage2";
 import CreateProjectPage3 from "./CreateProjectRoom_components/CreateProjectPage3";
@@ -38,10 +38,12 @@ import {
   stateCreateOrganizationsFunc,
 } from "../../../redux/actions/organizationActions";
 import {
+  getProjects,
   openCreateProjectRoomFunc,
   openProjectRoomFunc,
 } from "../../../redux/actions/projectActions";
 import CreateProjectPage5 from "./CreateProjectRoom_components/CreateProjectPage5";
+import CreateProjectPage0a from "./CreateProjectRoom_components/CreateProjectPage0a";
 
 const CreateProjectDialog = ({ type }) => {
   const openOrganization = useSelector((state) => state.UI.openOrganization);
@@ -174,38 +176,45 @@ const CreateProjectDialog = ({ type }) => {
 
   const setClose = () => {
     dispatch(getOrganizations());
+    dispatch(getProjects());
 
     dispatch(openCreateProjectRoomFunc(false));
     dispatch(stateCreateOrganizationsFunc(false));
 
-    if (openOrganization && localStorage.getItem("createOrganizationId")) {
+    if (localStorage.getItem("createOrganizationId")) {
       dispatch(
         openOrganizationFunc(true, localStorage.getItem("createOrganizationId"))
       );
     }
-    if (openProjectRoom && localStorage.getItem("createProjectRoomId")) {
+    if (localStorage.getItem("createProjectRoomId")) {
       dispatch(
         openProjectRoomFunc(localStorage.getItem("createProjectRoomId"), true)
       );
     }
 
     if (localStorage.getItem("createOrganizationPostEdit") === "true") {
-      localStorage.removeItem("createOrganizationId");
       localStorage.removeItem("createOrganizationPostEdit");
     }
+    localStorage.removeItem("createOrganizationId");
 
     if (localStorage.getItem("createProjectRoomPostEdit") === "true") {
-      localStorage.removeItem("createProjectRoomId");
       localStorage.removeItem("createProjectRoomPostEdit");
     }
+    localStorage.removeItem("createProjectRoomId");
   };
   const pagesData =
     type === "projectRoom"
       ? [
+          // {
+          //   title: t("createProjectRoomPage0aTitle"),
+          //   mobileTitle: t("createProjectRoomPage0aMobileTitle"),
+          //   subTitle: t("createProjectRoomPage0aSubTitle"),
+          // },
+
           {
-            title: t("createProjectRoomPage0aTitle"),
-            mobileTitle: t("createProjectRoomPage0aMobileTitle"),
-            subTitle: t("createProjectRoomPage0aSubTitle"),
+            title: t("createProjectRoomPage0bTitle"),
+            mobileTitle: t("createProjectRoomPage0bMobileTitle"),
+            subTitle: t("createProjectRoomPage0bSubTitle"),
           },
 
           {
@@ -278,9 +287,18 @@ const CreateProjectDialog = ({ type }) => {
   const pages =
     type === "projectRoom"
       ? [
+          // ({ style }) => (
+          //   <PageWrapper>
+          //     <CreateProjectPage0a
+          //       onClickNext={onClickNext}
+          //       pagesData={pagesData}
+          //       index={index}
+          //     />
+          //   </PageWrapper>
+          // ),
           ({ style }) => (
             <PageWrapper>
-              <CreateProjectPage0a
+              <CreateProjectPage0b
                 onClickNext={onClickNext}
                 pagesData={pagesData}
                 index={index}

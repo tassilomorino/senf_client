@@ -333,9 +333,13 @@
   "projectRoom_is_deactivated": "Diese Organisation ist deaktiviert worden und ist momentatn nicht öffentlich.",
   "projectRoom_is_uncompleted": "Diese Organisation ist noch nicht fertiggestellt und noch nicht öffentlich.",
 
-  "createProjectRoomPage0aTitle": "Organisationsprofil auswählen",
-  "createProjectRoomPage0aMobileTitle": "Organisation wählen",
-  "createProjectRoomPage0aSubTitle": "Wähle die Organisation aus, für die du den Projektraum erstellen möchtest",
+  "createProjectRoomPage0aTitle": "Projektraum erstellen",
+  "createProjectRoomPage0aMobileTitle": "+ Projektraum",
+  "createProjectRoomPage0aSubTitle": "Mit Projekträumen könnt ihr orts- und anlassbezogen Ideen sammeln. Darüber hinaus können wir für euch Funktionen integrieren, die auf eure individuellen Anforderungen maßgeschneidert sind.",
+
+  "createProjectRoomPagebTitle": "Organisationsprofil auswählen",
+  "createProjectRoomPage0bMobileTitle": "Organisation wählen",
+  "createProjectRoomPage0bSubTitle": "Wähle die Organisation aus, für die du den Projektraum erstellen möchtest",
 
   "createProjectRoomPage1Title": "Infos",
   "createProjectRoomPage1SubTitle": "Wähle einen passenden Projektnamen sowie eine Projektraumbeschreibung, die zum einen informiert und zum anderen auffordert Ideen beizutragen und sich einzubringen.",
