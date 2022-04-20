@@ -164,9 +164,8 @@ const App = () => {
           <meta name="robots" content="noindex" />
         </Helmet>
       )}
-      {/* 
+
       {import.meta.env.VITE_STATS && (
-        
         <Helmet>
           <script
             async
@@ -176,7 +175,7 @@ const App = () => {
           ></script>
         </Helmet>
       )}
-    */}
+
       <MuiThemeProvider theme={theme}>
         <Provider store={store}>
           <GlobalStyles />
