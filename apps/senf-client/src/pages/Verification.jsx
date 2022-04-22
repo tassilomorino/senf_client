@@ -1,10 +1,14 @@
 /** @format */
 
-import React from "react";
+import React, { useEffect } from "react";
+
 import { isMobileCustom } from "../util/customDeviceDetect";
 
+//FIREBASE
+import { onAuthStateChanged, onIdTokenChanged, reload } from "firebase/auth";
+import { auth } from "../firebase";
 //REDUX STUFF
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 //Icons
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -23,6 +27,8 @@ import { useHistory } from "react-router-dom";
 import { StyledH3 } from "../styles/GlobalStyle";
 import styled from "styled-components";
 import { SubmitButton } from "../components/atoms/CustomButtons/SubmitButton";
+import { getUserData } from "../redux/actions/userActions";
+import { SET_AUTHENTICATED } from "../redux/types";
 
 const TextWrapper = styled.div`
   position: relative;
@@ -52,6 +58,7 @@ const styles = {
 const Verification = ({ classes }) => {
   const loading = useSelector((state) => state.UI.loading);
   const history = useHistory();
+  const dispatch = useDispatch();
   const handleClick = () => {
     alert(
       "Abhängig davon, welchen E-Mail Dienstleister du nutzt, kann die Verifizierungs-E-Mail verzögert eintreffen. Falls wirklich keine E-Mail eintreffen sollte, bitte melde dich bei uns: dein@senf.koeln"
@@ -61,6 +68,29 @@ const Verification = ({ classes }) => {
   const handleClose = () => {
     history.push("/");
   };
+
+  useEffect(() => {
+    onIdTokenChanged(auth, (user) => {
+      if (user && user.uid && user.emailVerified) {
+        dispatch({ type: SET_AUTHENTICATED });
+        dispatch(getUserData(user.uid));
+        // show banner in the main page that
+        // the user has been automatically logged in
+        //after verification
+        // setautoLoggedin(true)
+        history.push("/");
+      }
+    });
+    let interval = setInterval(async () => {
+      try {
+        await reload(auth.currentUser);
+      } catch (error) {
+        console.log(error, "error in verification.jsx");
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div>

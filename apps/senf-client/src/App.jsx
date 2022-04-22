@@ -131,11 +131,12 @@ const App = () => {
         store.dispatch({ type: SET_AUTHENTICATED });
         store.dispatch(getUserData(user.uid));
         setIsAuthed(true);
-        console.log(user.uid);
       } else if (user) {
-        //a new user is registrating
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
       } else {
-        store.dispatch(logoutUser());
+        // User is signed out
+        // ...
       }
     });
   };
