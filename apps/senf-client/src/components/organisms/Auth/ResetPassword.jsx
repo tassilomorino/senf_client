@@ -243,13 +243,14 @@ class ResetPassword extends Component {
     const {
       classes,
       UI: { loading },
+      t,
     } = this.props;
     const { errors } = this.state;
 
     return (
       <Fragment>
         <div className={classes.forgot} onClick={() => this.handleOpen()}>
-          <span className="Terms">{this.props.t("forgotPassword")}</span>
+          <span className="Terms">{t("forgotPassword")}</span>
         </div>
         <Dialog
           open={this.state.open}
@@ -273,10 +274,7 @@ class ResetPassword extends Component {
               className={classes.headline}
               alt="wirke_mit_headline"
             />
-            <div className={classes.smallText}>
-              Bitte gib deine E-Mail-Adresse ein. Du bekommst eine E-Mail, mit
-              der du dein Passwort zurücksetzen kannst.
-            </div>
+            <div className={classes.smallText}>{t("reset_password")}</div>
             <form noValidate>
               <div className={classes.textfields}>
                 <TextField
@@ -294,7 +292,7 @@ class ResetPassword extends Component {
                 />
               </div>
               <SubmitButton
-                text="Zurücksetzen"
+                text={t("reset")}
                 zIndex="9"
                 backgroundColor="white"
                 textColor="#353535"
