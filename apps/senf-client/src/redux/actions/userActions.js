@@ -1,10 +1,11 @@
 /** @format */
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
+import { signOut, getAuth } from "firebase/auth";
 
 import { SET_USER, SET_UNAUTHENTICATED } from "../types";
 import { closeAccountFunc } from "./accountActions";
-
+const auth = getAuth();
 export const resetPassword = (email, history) => (dispatch) => {
   console.log(email);
   firebase
@@ -23,7 +24,14 @@ export const resetPassword = (email, history) => (dispatch) => {
 };
 
 export const logoutUser = () => (dispatch) => {
-  firebase.auth().signOut();
+  signOut(auth)
+    .then(() => {
+      // Sign-out successful.
+    })
+    .catch((error) => {
+      // An error happened.
+      console.log(error, "could not sign out");
+    });
   dispatch({ type: SET_UNAUTHENTICATED });
   dispatch(closeAccountFunc());
 };
