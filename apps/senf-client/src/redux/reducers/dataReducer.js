@@ -10,6 +10,10 @@
 
 import { isMobileCustom } from "../../util/customDeviceDetect";
 import {
+  SET_DATA_ERROR,
+  CLEAR_DATA_ERROR,
+  SET_DATA_SUCCESS,
+  CLEAR_DATA_SUCCESS,
   SET_SCREAMS,
   SET_MY_SCREAMS,
   LIKE_SCREAM,
@@ -82,6 +86,8 @@ const TopViewport = {
   duration: 0,
 };
 const initialState = {
+  dataError: "",
+  dataSuccess: "",
   projects: [],
   organizations: [],
   myOrganizations: [],
@@ -113,6 +119,14 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case SET_DATA_ERROR:
+      return { ...state, dataError: action.payload };
+    case CLEAR_DATA_ERROR:
+      return { ...state, dataError: "" };
+    case SET_DATA_SUCCESS:
+      return { ...state, dataSuccess: action.payload };
+    case CLEAR_DATA_SUCCESS:
+      return { ...state, dataSuccess: "" };
     case STOP_LOADING_DATA:
       return {
         ...state,

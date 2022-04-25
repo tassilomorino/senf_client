@@ -1,25 +1,50 @@
 /** @format */
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
-import { signOut, getAuth } from "firebase/auth";
+import { signOut, getAuth, sendPasswordResetEmail } from "firebase/auth";
 
-import { SET_USER, SET_UNAUTHENTICATED } from "../types";
+import {
+  SET_USER,
+  SET_UNAUTHENTICATED,
+  SET_DATA_ERROR,
+  SET_DATA_SUCCESS,
+  LOADING_DATA,
+  STOP_LOADING_DATA,
+} from "../types";
 import { closeAccountFunc } from "./accountActions";
+import i18n from "i18next";
 const auth = getAuth();
-export const resetPassword = (email, history) => (dispatch) => {
+
+export const resetPassword = (email) => (dispatch) => {
   console.log(email);
-  firebase
-    .auth()
-    .sendPasswordResetEmail(email)
+  dispatch({ type: LOADING_DATA });
+  sendPasswordResetEmail(auth, email)
     .then(() => {
       console.log("Password reset email sent!", email);
       // Password reset email sent!
       // ..
+      dispatch({
+        type: SET_DATA_SUCCESS,
+        payload: i18n.t("reset_password_success"),
+      });
+      dispatch({ type: STOP_LOADING_DATA });
     })
     .catch((error) => {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // ..
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      dispatch({ type: STOP_LOADING_DATA });
+      if (errorCode === "auth/invalid-email") {
+        dispatch({
+          type: SET_DATA_ERROR,
+          payload: i18n.t("email_not_valid"),
+        });
+      }
+      if (errorCode === "auth/user-not-found") {
+        dispatch({
+          type: SET_DATA_ERROR,
+          payload: i18n.t("email_not_found"),
+        });
+      }
     });
 };
 
@@ -29,8 +54,9 @@ export const logoutUser = () => (dispatch) => {
       // Sign-out successful.
     })
     .catch((error) => {
-      // An error happened.
-      console.log(error, "could not sign out");
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode, errorMessage, "error during logoutUser");
     });
   dispatch({ type: SET_UNAUTHENTICATED });
   dispatch(closeAccountFunc());
