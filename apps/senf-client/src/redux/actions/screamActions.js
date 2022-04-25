@@ -6,7 +6,8 @@ import moment from "moment";
 import { clearErrors } from "./errorsActions";
 import { loadProjectRoomData } from "./projectActions";
 import store from "../store";
-
+import { collection, where, query, getDocs, orderBy } from "firebase/firestore";
+import { db } from "../../firebase";
 import {
   SET_SCREAMS,
   LOADING_DATA,
@@ -26,84 +27,74 @@ import setColorByTopic from "../../data/setColorByTopic";
 
 // Get all ideas
 export const getScreams = (mapViewport) => async (dispatch) => {
-  dispatch({ type: LOADING_DATA });
+  try {
+    dispatch({ type: LOADING_DATA });
+    const screamsRef = collection(db, "screams");
+    const q = query(
+      screamsRef,
 
-  const db = firebase.firestore();
-  const ref = await db
-    .collection("screams")
-    .where("lat", "<", Number(mapViewport.latitude) + 1)
-    .where("lat", ">", Number(mapViewport.latitude) - 1)
-    // .orderBy("createdAt", "desc")
-    .get()
-    .then((ref) => {
-      const screams = [];
-      ref.docs.forEach((doc) => {
-        const docData = {
-          screamId: doc.id,
-          lat: doc.data().lat,
-          long: doc.data().long,
-          title: doc.data().title,
-          body: doc.data().body.substr(0, 150),
-          createdAt: doc.data().createdAt,
-          commentCount: doc.data().commentCount,
-          likeCount: doc.data().likeCount,
-          status: doc.data().status,
-          Thema: doc.data().Thema,
-          Stadtteil: doc.data().Stadtteil,
-          projectRoomId: doc.data().projectRoomId,
-          color: setColorByTopic(doc.data().Thema),
-          locationHeader: doc.data().locationHeader,
-        };
+      where("lat", "<", Number(mapViewport.latitude) + 1),
+      where("lat", ">", Number(mapViewport.latitude) - 1)
+    );
 
-        screams.push(docData);
+    const querySnapshot = await getDocs(q);
+    const screams = [];
+    querySnapshot.forEach((doc) => {
+      screams.push({
+        ...doc.data(),
+        screamId: doc.id,
+        body: doc.data().body.substr(0, 150),
+        color: setColorByTopic(doc.data().Thema),
       });
-
       dispatch({
         type: SET_SCREAMS,
         payload: screams,
       });
-    })
-    .catch((error) => {
-      dispatch({
-        type: SET_ERRORS,
-        payload: { title: "Error occured when loading" },
-      });
-      dispatch({
-        type: STOP_LOADING_DATA,
-      });
-      console.log("Error getting document:", error);
     });
+  } catch (error) {
+    dispatch({
+      type: SET_ERRORS,
+      payload: { title: "Error occured when loading" },
+    });
+    dispatch({
+      type: STOP_LOADING_DATA,
+    });
+    console.log("Error getting document:", error);
+  }
 };
 
 export const reloadScreams = () => async (dispatch) => {
-  const db = firebase.firestore();
-  const ref = await db.collection("screams").orderBy("createdAt", "desc").get();
+  try {
+    dispatch({ type: LOADING_DATA });
 
-  const screams = [];
-  ref.docs.forEach((doc) => {
-    const docData = {
-      screamId: doc.id,
-      lat: doc.data().lat,
-      long: doc.data().long,
-      title: doc.data().title,
-      body: doc.data().body.substr(0, 120),
-      createdAt: doc.data().createdAt,
-      commentCount: doc.data().commentCount,
-      likeCount: doc.data().likeCount,
-      status: doc.data().status,
-      Thema: doc.data().Thema,
-      Stadtteil: doc.data().Stadtteil,
-      projectRoomId: doc.data().projectRoomId,
-      color: setColorByTopic(doc.data().Thema),
-    };
+    const screamsRef = collection(db, "screams");
+    const q = query(screamsRef, orderBy("createdAt", "desc"));
+    const querySnapshot = await getDocs(q);
+    const screams = [];
+    querySnapshot.forEach((doc) => {
+      screams.push({
+        ...doc.data(),
+        screamId: doc.id,
+        body: doc.data().body.substr(0, 150),
+        color: setColorByTopic(doc.data().Thema),
+      });
+    });
 
-    screams.push(docData);
-  });
-
-  dispatch({
-    type: SET_SCREAMS,
-    payload: screams,
-  });
+    dispatch({
+      type: SET_SCREAMS,
+      payload: screams,
+    });
+    console.log(screams);
+  } catch (error) {
+    dispatch({
+      type: SET_ERRORS,
+      payload: { title: "Error occured when loading" },
+    });
+    dispatch({
+      type: STOP_LOADING_DATA,
+    });
+    console.log("Error getting document:", error);
+  }
 };
 
 // Open an idea
