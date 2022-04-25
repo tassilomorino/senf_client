@@ -349,7 +349,7 @@ const Main = () => {
     mapBounds,
     userLikes,
   ]);
-  console.log(dataFinalIdeas?.length, "dataFinalIdeas length");
+
   const dropdownStatusNumbers = useMemo(
     () => countStatusOfScreams(screams),
     [screams]

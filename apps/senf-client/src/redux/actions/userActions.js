@@ -1,7 +1,8 @@
 /** @format */
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-import { signOut, getAuth, sendPasswordResetEmail } from "firebase/auth";
+
+import { signOut, sendPasswordResetEmail } from "firebase/auth";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db, auth } from "../../firebase";
 
 import {
   SET_USER,
@@ -13,7 +14,6 @@ import {
 } from "../types";
 import { closeAccountFunc } from "./accountActions";
 import i18n from "i18next";
-const auth = getAuth();
 
 export const resetPassword = (email) => (dispatch) => {
   console.log(email);
@@ -63,31 +63,37 @@ export const logoutUser = () => (dispatch) => {
 };
 
 export const getUserData = (uid) => async (dispatch) => {
-  const db = firebase.firestore();
-  const userDocument = await db
-    .collection("users")
-    .where("userId", "==", uid)
-    .get();
+  try {
+    if (uid) {
+      const usersRef = collection(db, "users");
+      const q = query(usersRef, where("userId", "==", uid));
+      const querySnapshot = await getDocs(q);
 
-  userDocument.docs.forEach((doc) => {
-    const userData = doc.data();
-    userData.likes = [];
-    dispatch(getUserLikes(userData));
-  });
+      querySnapshot.forEach((doc) => {
+        const userData = doc.data();
+        userData.likes = [];
+
+        dispatch(getUserLikes(userData));
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const getUserLikes = (userData) => async (dispatch) => {
-  const db = firebase.firestore();
-
-  const userLikes = await db
-    .collection("likes")
-    .where("userId", "==", userData.userId)
-    .get();
-
-  userLikes.docs.forEach((doc) => userData.likes.push({ ...doc.data() }));
-
-  dispatch({
-    type: SET_USER,
-    payload: userData,
-  });
+  try {
+    if (userData) {
+      const likesRef = collection(db, "likes");
+      const q = query(likesRef, where("userId", "==", userData.userId));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => userData.likes.push({ ...doc.data() }));
+      dispatch({
+        type: SET_USER,
+        payload: userData,
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
