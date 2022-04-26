@@ -4,7 +4,7 @@ import "firebase/compat/firestore";
 
 import { clearErrors } from "./errorsActions";
 
-import { reloadScreamFunc } from "./screamActions";
+import { openScreamFunc } from "./screamActions";
 
 import {
   SET_COMMENT,
@@ -15,6 +15,7 @@ import {
 } from "../types";
 import moment from "moment";
 
+const refreshScream = true;
 //get the data for one comment
 export const getComment = (commentId) => async (dispatch) => {
   const db = firebase.firestore();
@@ -67,9 +68,7 @@ export const submitComment =
         payload: newComment,
       });
 
-      setTimeout(() => {
-        dispatch(reloadScreamFunc(screamId));
-      }, 100);
+      dispatch(openScreamFunc(screamId, refreshScream));
     }
   };
 
@@ -110,9 +109,7 @@ export const deleteComment =
         payload: commentId,
       });
 
-      setTimeout(() => {
-        dispatch(reloadScreamFunc(screamId));
-      }, 100);
+      dispatch(openScreamFunc(screamId, refreshScream));
     } else {
       console.log(doc.data().userHandle, user.handle, "not your comment");
       // return res.status(403).json({ error: "Unauthorized" });

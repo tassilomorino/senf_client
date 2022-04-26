@@ -107,7 +107,7 @@ export const reloadScreams = () => async (dispatch) => {
 };
 
 // Open an idea
-export const openScreamFunc = (screamId) => async (dispatch) => {
+export const openScreamFunc = (screamId, refreshScream) => async (dispatch) => {
   // When the modal is shown, we want a fixed body
   // document.body.style.position = "fixed";
   // document.body.style.top = `-${window.scrollY}px`;
@@ -146,9 +146,15 @@ export const openScreamFunc = (screamId) => async (dispatch) => {
       const projectroomPath = store.getState().UI.openProjectRoom
         ? "/projectRooms/" + store.getState().data.project.projectRoomId
         : "";
+      if (!refreshScream) {
+        // if  refreshScream parameter is false or does not exist
+        // we want to open the scream in the new url path
+        const newPath = `${projectroomPath}/${screamId}`;
+        window.history.pushState(null, null, newPath);
+      }
+      // if refreshScream parameter is true
+      // we want to open the scream in the current url path
 
-      const newPath = `${projectroomPath}/${screamId}`;
-      window.history.pushState(null, null, newPath);
       dispatch({ type: SET_SCREAM, payload: scream });
     } else {
       console.log("No such document!");
@@ -161,30 +167,6 @@ export const openScreamFunc = (screamId) => async (dispatch) => {
     console.error(error, "error in openScreamFunc");
 
     window.history.pushState(null, null, "/");
-  }
-};
-
-export const reloadScreamFunc = (screamId) => async (dispatch) => {
-  const db = firebase.firestore();
-  const ref = await db.collection("screams").doc(screamId).get();
-  const commentsRef = await db
-    .collection("comments")
-    .where("screamId", "==", screamId)
-    .orderBy("createdAt", "desc")
-    .get();
-
-  if (!ref.exists) {
-    console.log("No such document!");
-  } else {
-    const scream = ref.data();
-    scream.screamId = ref.id;
-    scream.color = setColorByTopic(ref.data().Thema);
-    scream.comments = [];
-
-    commentsRef.forEach((doc) =>
-      scream.comments.push({ ...doc.data(), commentId: doc.id })
-    );
-    dispatch({ type: SET_SCREAM, payload: scream });
   }
 };
 
