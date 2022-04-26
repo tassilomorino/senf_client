@@ -15,7 +15,7 @@ import {
 } from "../types";
 import moment from "moment";
 
-const refreshScream = true;
+const reloadScream = true;
 //get the data for one comment
 export const getComment = (commentId) => async (dispatch) => {
   const db = firebase.firestore();
@@ -68,7 +68,7 @@ export const submitComment =
         payload: newComment,
       });
 
-      dispatch(openScreamFunc(screamId, refreshScream));
+      dispatch(openScreamFunc(screamId, reloadScream));
     }
   };
 
@@ -109,7 +109,7 @@ export const deleteComment =
         payload: commentId,
       });
 
-      dispatch(openScreamFunc(screamId, refreshScream));
+      dispatch(openScreamFunc(screamId, reloadScream));
     } else {
       console.log(doc.data().userHandle, user.handle, "not your comment");
       // return res.status(403).json({ error: "Unauthorized" });

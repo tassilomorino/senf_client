@@ -72,42 +72,8 @@ export const getScreams = (mapViewport) => async (dispatch) => {
   }
 };
 
-export const reloadScreams = () => async (dispatch) => {
-  try {
-    dispatch({ type: LOADING_DATA });
-
-    const screamsRef = collection(db, "screams");
-    const q = query(screamsRef, orderBy("createdAt", "desc"));
-    const querySnapshot = await getDocs(q);
-    const screams = [];
-    querySnapshot.forEach((doc) => {
-      screams.push({
-        ...doc.data(),
-        screamId: doc.id,
-        body: doc.data().body.substr(0, 150),
-        color: setColorByTopic(doc.data().Thema),
-      });
-    });
-
-    dispatch({
-      type: SET_SCREAMS,
-      payload: screams,
-    });
-    console.log(screams);
-  } catch (error) {
-    dispatch({
-      type: SET_ERRORS,
-      payload: { title: "Error occured when loading" },
-    });
-    dispatch({
-      type: STOP_LOADING_DATA,
-    });
-    console.log("Error getting document:", error);
-  }
-};
-
 // Open an idea
-export const openScreamFunc = (screamId, refreshScream) => async (dispatch) => {
+export const openScreamFunc = (screamId, reloadScream) => async (dispatch) => {
   // When the modal is shown, we want a fixed body
   // document.body.style.position = "fixed";
   // document.body.style.top = `-${window.scrollY}px`;
@@ -146,13 +112,13 @@ export const openScreamFunc = (screamId, refreshScream) => async (dispatch) => {
       const projectroomPath = store.getState().UI.openProjectRoom
         ? "/projectRooms/" + store.getState().data.project.projectRoomId
         : "";
-      if (!refreshScream) {
-        // if  refreshScream parameter is false or does not exist
+      if (!reloadScream) {
+        // if  reloadScream parameter is false or does not exist
         // we want to open the scream in the new url path
         const newPath = `${projectroomPath}/${screamId}`;
         window.history.pushState(null, null, newPath);
       }
-      // if refreshScream parameter is true
+      // if reloadScream parameter is true
       // we want to open the scream in the current url path
 
       dispatch({ type: SET_SCREAM, payload: scream });
@@ -180,7 +146,7 @@ export const closeScream = () => (dispatch) => {
 
   // IF IT BECOMES NECESSARY (IF IN PROJECTROOM, GET PROJECTSCREAMS)
   // setTimeout(() => {
-  //   dispatch(reloadScreams());
+  //   dispatch(getScreams(store.getState().data.mapViewport));
   // }, 100);
 
   window.history.pushState(null, null, projectroomPath);
@@ -252,7 +218,7 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
           payload: resScream,
         });
         setTimeout(() => {
-          dispatch(reloadScreams());
+          dispatch(getScreams(store.getState().data.mapViewport));
           if (newScream.projectRoomId) {
             dispatch(loadProjectRoomData(newScream.projectRoomId));
           }
