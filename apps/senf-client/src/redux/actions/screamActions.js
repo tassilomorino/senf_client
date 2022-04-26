@@ -6,7 +6,16 @@ import moment from "moment";
 import { clearErrors } from "./errorsActions";
 import { loadProjectRoomData } from "./projectActions";
 import store from "../store";
-import { collection, where, query, getDocs, orderBy } from "firebase/firestore";
+
+import {
+  collection,
+  where,
+  query,
+  getDocs,
+  orderBy,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 import {
   SET_SCREAMS,
@@ -46,10 +55,10 @@ export const getScreams = (mapViewport) => async (dispatch) => {
         body: doc.data().body.substr(0, 150),
         color: setColorByTopic(doc.data().Thema),
       });
-      dispatch({
-        type: SET_SCREAMS,
-        payload: screams,
-      });
+    });
+    dispatch({
+      type: SET_SCREAMS,
+      payload: screams,
     });
   } catch (error) {
     dispatch({
@@ -102,41 +111,56 @@ export const openScreamFunc = (screamId) => async (dispatch) => {
   // When the modal is shown, we want a fixed body
   // document.body.style.position = "fixed";
   // document.body.style.top = `-${window.scrollY}px`;
-  dispatch({ type: LOADING_IDEA_DATA });
-  dispatch({ type: OPEN_SCREAM });
+  try {
+    dispatch({ type: LOADING_IDEA_DATA });
+    dispatch({ type: OPEN_SCREAM });
+    const docRef = doc(db, `screams/${screamId}`);
+    const screamDocSnapshot = await getDoc(docRef);
 
-  const db = firebase.firestore();
-  const ref = await db.collection("screams").doc(screamId).get();
-  const commentsRef = await db
-    .collection("comments")
-    .where("screamId", "==", screamId)
-    .orderBy("createdAt", "asc")
-    .get();
+    if (screamDocSnapshot.exists()) {
+      // add comments to the scream
+      const commentRef = collection(db, "comments");
+      const commentquery = query(
+        commentRef,
+        where("screamId", "==", screamId),
+        orderBy("createdAt", "desc")
+      );
+      const commentquerySnapshot = await getDocs(commentquery);
+      const commentsArray = [];
+      commentquerySnapshot.forEach((doc) => {
+        commentsArray.push({
+          ...doc.data(),
+          commentId: doc.id,
+          body: doc.data().body.substr(0, 150),
+        });
+      });
 
-  if (!ref.exists) {
-    console.log("No such document!");
-    dispatch({ type: CLOSE_SCREAM });
-    dispatch({ type: SET_SCREAM, payload: {} });
+      const scream = {
+        ...screamDocSnapshot.data(),
+        comments: commentsArray,
+        screamId: screamDocSnapshot.id,
+        color: setColorByTopic(screamDocSnapshot.data().Thema),
+      };
+
+      // window.location = "#" + scream.lat + "#" + scream.long;
+      const projectroomPath = store.getState().UI.openProjectRoom
+        ? "/projectRooms/" + store.getState().data.project.projectRoomId
+        : "";
+
+      const newPath = `${projectroomPath}/${screamId}`;
+      window.history.pushState(null, null, newPath);
+      dispatch({ type: SET_SCREAM, payload: scream });
+    } else {
+      console.log("No such document!");
+      dispatch({ type: CLOSE_SCREAM });
+      dispatch({ type: SET_SCREAM, payload: {} });
+      window.history.pushState(null, null, "/");
+      throw new Error("Idea not found");
+    }
+  } catch (error) {
+    console.error(error, "error in openScreamFunc");
+
     window.history.pushState(null, null, "/");
-    throw new Error("Idea not found");
-  } else {
-    const scream = ref.data();
-    scream.screamId = ref.id;
-    scream.color = setColorByTopic(ref.data().Thema);
-    scream.comments = [];
-
-    commentsRef.forEach((doc) =>
-      scream.comments.push({ ...doc.data(), commentId: doc.id })
-    );
-
-    // window.location = "#" + scream.lat + "#" + scream.long;
-    const projectroomPath = store.getState().UI.openProjectRoom
-      ? "/projectRooms/" + store.getState().data.project.projectRoomId
-      : "";
-
-    const newPath = `${projectroomPath}/${screamId}`;
-    window.history.pushState(null, null, newPath);
-    dispatch({ type: SET_SCREAM, payload: scream });
   }
 };
 
