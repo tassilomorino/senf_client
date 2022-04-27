@@ -1,7 +1,5 @@
 /** @format */
 
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
 import moment from "moment";
 import { clearErrors } from "./errorsActions";
 import { loadProjectRoomData } from "./projectActions";
@@ -291,17 +289,18 @@ export const deleteScream = (screamId, user) => async (dispatch) => {
 };
 
 export const getUserEmail = (userId) => async (dispatch) => {
-  const db = firebase.firestore();
-  await db
-    .collection("users")
-    .doc(userId)
-    .collection("Private")
-    .doc(userId)
-    .get()
-    .then((doc) => {
+  try {
+    const docRef = doc(db, "users", userId, "Private", userId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists) {
       dispatch({
         type: SET_SCREAM_USER,
-        payload: doc.data(),
+        payload: docSnap.data(),
       });
-    });
+    } else {
+      throw new Error("User email not found");
+    }
+  } catch (error) {
+    console.error(error, "error in getUserEmailFunc");
+  }
 };
