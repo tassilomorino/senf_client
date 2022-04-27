@@ -15,6 +15,7 @@ import {
   orderBy,
   doc,
   getDoc,
+  addDoc,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import {
@@ -31,6 +32,7 @@ import {
   OPEN_SCREAM,
   CLOSE_SCREAM,
   SET_SCREAM_USER,
+  OPEN_PROJECTROOM,
 } from "../types";
 import setColorByTopic from "../../data/setColorByTopic";
 
@@ -155,7 +157,6 @@ export const closeScream = () => (dispatch) => {
 // Post an idea
 export const postScream = (newScream, user, history) => async (dispatch) => {
   console.log(history, user);
-  const db = firebase.firestore();
 
   dispatch({ type: LOADING_DATA });
 
@@ -170,63 +171,70 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
       payload: { body: "Beschreibung fehlt" },
     });
   } else {
-    const ageCapture =
-      user.age !== "" ? moment().diff(moment(user.age, "YYYY"), "years") : "";
+    try {
+      const ageCapture =
+        user.age !== "" ? moment().diff(moment(user.age, "YYYY"), "years") : "";
 
-    const newScreamData = {
-      locationHeader: newScream.locationHeader,
-      district: newScream.fulladdress,
-      Stadtteil: newScream.neighborhood,
-      title: newScream.title,
-      lat: newScream.lat,
-      long: newScream.long,
-      body: newScream.body,
-      userHandle: user.handle,
-      userId: user.userId,
-      sex: user.sex,
-      age: ageCapture,
-      createdAt: new Date().toISOString(),
-      likeCount: 0,
-      commentCount: 0,
-      status: "None",
-      projectRoomId: newScream.projectRoomId,
-    };
+      const newScreamData = {
+        locationHeader: newScream.locationHeader,
+        district: newScream.fulladdress,
+        Stadtteil: newScream.neighborhood,
+        title: newScream.title,
+        lat: newScream.lat,
+        long: newScream.long,
+        body: newScream.body,
+        userHandle: user.handle,
+        userId: user.userId,
+        sex: user.sex,
+        age: ageCapture,
+        createdAt: new Date().toISOString(),
+        likeCount: 0,
+        commentCount: 0,
+        status: "None",
+        projectRoomId: newScream.projectRoomId,
+      };
 
-    if (newScream.Thema === "" || newScream.Thema === undefined) {
-      newScreamData.Thema = "Sonstige";
-    } else {
-      newScreamData.Thema = newScream.Thema;
-    }
-    if (newScream.weblinkTitle)
-      newScreamData.weblinkTitle = newScream.weblinkTitle;
-    if (newScream.weblink) newScreamData.weblink = newScream.weblink;
-    if (newScream.contactTitle)
-      newScreamData.contactTitle = newScream.contactTitle;
-    if (newScream.contact) newScreamData.contact = newScream.contact;
-    if (newScream.selectedUnix)
-      newScreamData.selectedUnix = newScream.selectedUnix;
+      if (newScream.Thema === "" || newScream.Thema === undefined) {
+        newScreamData.Thema = "Sonstige";
+      } else {
+        newScreamData.Thema = newScream.Thema;
+      }
+      if (newScream.weblinkTitle)
+        newScreamData.weblinkTitle = newScream.weblinkTitle;
+      if (newScream.weblink) newScreamData.weblink = newScream.weblink;
+      if (newScream.contactTitle)
+        newScreamData.contactTitle = newScream.contactTitle;
+      if (newScream.contact) newScreamData.contact = newScream.contact;
+      if (newScream.selectedUnix)
+        newScreamData.selectedUnix = newScream.selectedUnix;
 
-    await db
-      .collection("screams")
-      .add(newScreamData)
-      .then((doc) => {
-        const resScream = newScream;
-        resScream.screamId = doc.id;
+      const docRef = await addDoc(collection(db, "screams"), newScreamData);
 
-        dispatch({
-          type: POST_SCREAM,
-          payload: resScream,
-        });
-        setTimeout(() => {
-          dispatch(getScreams(store.getState().data.mapViewport));
-          if (newScream.projectRoomId) {
-            dispatch(loadProjectRoomData(newScream.projectRoomId));
-          }
+      const resScream = {
+        ...newScreamData,
+        screamId: docRef.id,
+        color: setColorByTopic(newScreamData.Thema),
+      };
 
-          const screamId = resScream.screamId;
-          dispatch(openScreamFunc(screamId));
-        }, 100);
+      dispatch({
+        type: POST_SCREAM,
+        payload: resScream,
       });
+
+      if (resScream.projectRoomId) {
+        // open scream in projectroom context
+        // '/projectRooms/:projectRoomId/:screamId'
+        dispatch({ type: OPEN_PROJECTROOM });
+        dispatch(loadProjectRoomData(resScream.projectRoomId));
+        dispatch(openScreamFunc(resScream.screamId));
+      } else {
+        // open scream in the main context
+        // '/:screamId'
+        dispatch(openScreamFunc(resScream.screamId));
+      }
+    } catch (error) {
+      console.error(error, "error in postScreamFunc");
+    }
   }
 };
 
