@@ -17,6 +17,7 @@ import {
   getDoc,
   addDoc,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import {
@@ -111,7 +112,6 @@ export const openScreamFunc = (screamId, reloadScream) => async (dispatch) => {
         color: setColorByTopic(screamDocSnapshot.data().Thema),
       };
 
-      // window.location = "#" + scream.lat + "#" + scream.long;
       const projectroomPath = store.getState().UI.openProjectRoom
         ? "/projectRooms/" + store.getState().data.project.projectRoomId
         : "";
@@ -259,35 +259,34 @@ export const editScreamFunc = (editScream) => async (dispatch) => {
 
 // Delete your idea
 export const deleteScream = (screamId, user) => async (dispatch) => {
-  const projectroomPath = store.getState().UI.openProjectRoom
-    ? "/projectRooms/" + store.getState().data.project.projectRoomId
-    : "/";
-  const db = firebase.firestore();
-  const ref = db.collection("screams").doc(screamId);
-  const doc = await ref.get();
+  try {
+    const returnToPath = store.getState().UI.openProjectRoom
+      ? "/projectRooms/"
+      : "/";
+    const docRef = doc(db, `screams/${screamId}`);
+    const scream = await getDoc(docRef);
 
-  console.log(doc.data());
+    if (!scream.exists) {
+      console.log("Scream not found");
+    }
+    // else if (doc.data().userHandle !== user.handle) {
+    //   console.log("Unauthorized", doc.data().handle, user.handle);
+    //   // return res.status(403).json({ error: "Unauthorized" });
+    // }
+    else {
+      await deleteDoc(docRef);
 
-  if (!doc.exists) {
-    console.log("Scream not found");
-  }
-  // else if (doc.data().userHandle !== user.handle) {
-  //   console.log("Unauthorized", doc.data().handle, user.handle);
-  //   // return res.status(403).json({ error: "Unauthorized" });
-  // }
-  else {
-    window.history.pushState(null, null, projectroomPath);
+      dispatch({
+        type: DELETE_SCREAM,
+        payload: screamId,
+      });
+      dispatch({ type: CLOSE_SCREAM });
+      dispatch({ type: SET_SCREAM, payload: {} });
 
-    dispatch({
-      type: DELETE_SCREAM,
-      payload: screamId,
-    });
-    ref.delete().then(() => {
-      setTimeout(() => {
-        window.location.reload(false);
-        dispatch(clearErrors());
-      }, 100);
-    });
+      window.history.pushState(null, null, returnToPath);
+    }
+  } catch (error) {
+    console.error(error, "error in deleteScreamFunc");
   }
 };
 

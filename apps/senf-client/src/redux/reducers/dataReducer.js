@@ -195,12 +195,17 @@ export default function (state = initialState, action) {
         ...state,
       };
     case DELETE_SCREAM:
-      let index_delete = state.screams.findIndex(
-        (scream) => scream.screamId === action.payload
-      );
-      state.screams.splice(index_delete, 1);
       return {
         ...state,
+        screams: state.screams.filter(
+          (scream) => scream.screamId !== action.payload
+        ),
+        project: {
+          ...state.project,
+          screams: state.project?.screams?.filter(
+            (scream) => scream.screamId !== action.payload
+          ),
+        },
       };
 
     case SET_COMMENTS:
