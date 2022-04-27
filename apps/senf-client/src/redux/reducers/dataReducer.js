@@ -206,8 +206,11 @@ export default function (state = initialState, action) {
     case SET_COMMENTS:
       return {
         ...state,
-        comments: action.payload,
         loading: false,
+        scream: {
+          ...state.scream,
+          comments: action.payload,
+        },
       };
     case SET_COMMENT:
       return {
@@ -219,9 +222,13 @@ export default function (state = initialState, action) {
       const listComments = state.scream.comments.filter(
         (comment) => comment.commentId !== action.payload
       );
-      state.scream.comments = listComments;
+
       return {
         ...state,
+        scream: {
+          ...state.scream,
+          comments: listComments,
+        },
       };
 
     case POST_SCREAM:

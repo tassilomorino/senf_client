@@ -68,7 +68,7 @@ export const submitComment =
         payload: newComment,
       });
 
-      dispatch(openScreamFunc(screamId, reloadScream));
+      dispatch(openScreamFunc(screamId));
     }
   };
 
@@ -109,7 +109,7 @@ export const deleteComment =
         payload: commentId,
       });
 
-      dispatch(openScreamFunc(screamId, reloadScream));
+      dispatch(openScreamFunc(screamId));
     } else {
       console.log(doc.data().userHandle, user.handle, "not your comment");
       // return res.status(403).json({ error: "Unauthorized" });

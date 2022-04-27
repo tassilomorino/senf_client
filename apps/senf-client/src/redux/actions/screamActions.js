@@ -16,6 +16,7 @@ import {
   doc,
   getDoc,
   addDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import {
@@ -114,14 +115,9 @@ export const openScreamFunc = (screamId, reloadScream) => async (dispatch) => {
       const projectroomPath = store.getState().UI.openProjectRoom
         ? "/projectRooms/" + store.getState().data.project.projectRoomId
         : "";
-      if (!reloadScream) {
-        // if  reloadScream parameter is false or does not exist
-        // we want to open the scream in the new url path
-        const newPath = `${projectroomPath}/${screamId}`;
-        window.history.pushState(null, null, newPath);
-      }
-      // if reloadScream parameter is true
-      // we want to open the scream in the current url path
+
+      const newPath = `${projectroomPath}/${screamId}`;
+      window.history.pushState(null, null, newPath);
 
       dispatch({ type: SET_SCREAM, payload: scream });
     } else {
@@ -240,28 +236,25 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
 
 // Edit your idea
 export const editScreamFunc = (editScream) => async (dispatch) => {
-  const db = firebase.firestore();
-  dispatch({ type: LOADING_UI });
-  const screamId = editScream.screamId;
+  try {
+    dispatch({ type: LOADING_UI });
+    const screamId = editScream.screamId;
 
-  if (editScream.notes) {
-    editScream.notes = editScream.notes;
-  } else {
-    delete editScream.notes;
-  }
-
-  await db
-    .collection("screams")
-    .doc(screamId)
-    .update(editScream)
-    .then((doc) => {
-      dispatch({
-        type: EDIT_SCREAM,
-        payload: editScream,
-      });
+    if (!editScream.notes) {
+      delete editScream.notes;
+    }
+    const docRef = doc(db, `screams/${screamId}`);
+    await updateDoc(docRef, editScream);
+    dispatch({
+      type: EDIT_SCREAM,
+      payload: editScream,
     });
-  dispatch(openScreamFunc(screamId));
-  dispatch(clearErrors());
+
+    dispatch(openScreamFunc(screamId));
+    dispatch(clearErrors());
+  } catch (error) {
+    console.error(error, "error in editScreamFunc");
+  }
 };
 
 // Delete your idea
