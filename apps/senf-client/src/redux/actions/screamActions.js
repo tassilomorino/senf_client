@@ -256,37 +256,44 @@ export const editScreamFunc = (editScream) => async (dispatch) => {
 };
 
 // Delete your idea
-export const deleteScream = (screamId, user) => async (dispatch) => {
-  try {
-    const returnToPath = store.getState().UI.openProjectRoom
-      ? "/projectRooms/"
-      : "/";
-    const docRef = doc(db, `screams/${screamId}`);
-    const scream = await getDoc(docRef);
+export const deleteScream =
+  (screamId, userId, isAdmin, isModerator) => async (dispatch) => {
+    try {
+      const returnToPath = store.getState().UI.openProjectRoom
+        ? "/projectRooms/"
+        : "/";
+      const docRef = doc(db, `screams/${screamId}`);
+      const scream = await getDoc(docRef);
 
-    if (!scream.exists) {
-      console.log("Scream not found");
+      if (!scream.exists) {
+        console.log("Scream not found");
+      }
+      // else if (doc.data().userHandle !== user.handle) {
+      //   console.log("Unauthorized", doc.data().handle, user.handle);
+      //   // return res.status(403).json({ error: "Unauthorized" });
+      // }
+      else {
+        if (doc.data().userId === userId || isAdmin || isModerator) {
+          await deleteDoc(docRef);
+
+          dispatch({
+            type: DELETE_SCREAM,
+            payload: screamId,
+          });
+          dispatch({ type: CLOSE_SCREAM });
+          dispatch({ type: SET_SCREAM, payload: {} });
+
+          window.history.pushState(null, null, returnToPath);
+        } else {
+          console.error(
+            `cant delete this users${doc.data().userHandle} scream`
+          );
+        }
+      }
+    } catch (error) {
+      console.error(error, "error in deleteScreamFunc");
     }
-    // else if (doc.data().userHandle !== user.handle) {
-    //   console.log("Unauthorized", doc.data().handle, user.handle);
-    //   // return res.status(403).json({ error: "Unauthorized" });
-    // }
-    else {
-      await deleteDoc(docRef);
-
-      dispatch({
-        type: DELETE_SCREAM,
-        payload: screamId,
-      });
-      dispatch({ type: CLOSE_SCREAM });
-      dispatch({ type: SET_SCREAM, payload: {} });
-
-      window.history.pushState(null, null, returnToPath);
-    }
-  } catch (error) {
-    console.error(error, "error in deleteScreamFunc");
-  }
-};
+  };
 
 export const getUserEmail = (userId) => async (dispatch) => {
   try {
