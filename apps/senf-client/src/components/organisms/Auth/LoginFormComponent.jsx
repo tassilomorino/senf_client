@@ -24,9 +24,9 @@ const LoginFormComponent = ({
 }) => {
   const { t } = useTranslation();
 
-  const handleFacebook = () => {
+  const handleFacebook = async () => {
     const provider = new FacebookAuthProvider();
-    signInWithPopup(auth, provider)
+    await signInWithPopup(auth, provider)
       .then((result) => {
         console.log(result);
       })
@@ -34,9 +34,9 @@ const LoginFormComponent = ({
         console.log(error.message, "error in facebook provider");
       });
   };
-  const handleGoogle = () => {
+  const handleGoogle = async () => {
     const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider)
+    await signInWithPopup(auth, provider)
       .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -54,6 +54,7 @@ const LoginFormComponent = ({
         const email = error.email;
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
+        console.log(errorCode, errorMessage, email, credential);
         // ...
       });
   };
