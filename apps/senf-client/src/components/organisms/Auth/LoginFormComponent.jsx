@@ -6,7 +6,12 @@ import { isAndroid } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import ResetPassword from "../../organisms/Auth/ResetPassword";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
-
+import {
+  signInWithPopup,
+  FacebookAuthProvider,
+  GoogleAuthProvider,
+} from "firebase/auth";
+import { auth } from "../../../firebase";
 const LoginFormComponent = ({
   loading,
   classes,
@@ -19,12 +24,51 @@ const LoginFormComponent = ({
 }) => {
   const { t } = useTranslation();
 
+  const handleFacebook = async () => {
+    const provider = new FacebookAuthProvider();
+    provider.addScope("email");
+    await signInWithPopup(auth, provider)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log(error.message, "error in facebook provider");
+      });
+  };
+  const handleGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    provider.addScope("email");
+    await signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        console.log(user, "user from google provider");
+        // ...
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        console.log(errorCode, errorMessage, email, credential);
+        // ...
+      });
+  };
+
   return (
     <React.Fragment>
       <div className={classes.textfields}>
         <div className={classes.smallText} onClick={() => handleToggle()}>
           {t("notYetMember")} <span className="Terms">{t("register")}</span>
         </div>
+        <button onClick={handleFacebook}>Facebook signIn</button>
+        <button onClick={handleGoogle}>Google signIn</button>
         <TextField
           id="outlined-name"
           name="email"

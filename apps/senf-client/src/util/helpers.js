@@ -76,9 +76,9 @@ export function sort(items, dropdown) {
     case "hottest":
       return orderBy(items, "likeCount", "desc");
     case "aToZ":
-      return orderBy(items, [(pr) => pr.title.toLowerCase()], ["asc"]);
+      return orderBy(items, [(pr) => pr?.title?.toLowerCase()], ["asc"]);
     case "zToA":
-      return orderBy(items, [(pr) => pr.title.toLowerCase()], ["desc"]);
+      return orderBy(items, [(pr) => pr?.title?.toLowerCase()], ["desc"]);
     default:
       return items;
   }

@@ -1,14 +1,15 @@
 /** @format */
 
-import React, { Component, Fragment } from "react";
+import React, { Fragment, useEffect, useState, memo } from "react";
 import Swipe from "react-easy-swipe";
 import { isAndroid } from "react-device-detect";
-import { withTranslation } from "react-i18next";
 
+import { useTranslation } from "react-i18next";
+import styled from "styled-components";
 //Redux
 import { compose } from "redux";
 import { resetPassword } from "../../../redux/actions/userActions";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 //Images
@@ -23,11 +24,11 @@ import Slide from "@material-ui/core/Slide";
 import TextField from "@material-ui/core/TextField";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
+import { CLEAR_DATA_ERROR, CLEAR_DATA_SUCCESS } from "../../../redux/types";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
 const styles = {
   openButton: {
     zIndex: 999,
@@ -192,146 +193,135 @@ const styles = {
     fontSize: "12pt",
   },
 };
+const StyledErrorMessage = styled.div`
+  color: red;
+  font-size: 12pt;
+  margin-top: 1em;
+  text-align: center;
+  width: 100%;
+`;
+const StyledSuccessMessage = styled.div`
+  color: green;
+  font-size: 12pt;
+  margin-top: 1em;
+  text-align: center;
+  width: 100%;
+`;
 
-class ResetPassword extends Component {
-  constructor() {
-    super();
-    this.state = {
-      email: "",
-      password: "",
-      errors: {},
-      accept: false,
-      loading: false,
-      open: false,
-    };
-  }
-
-  handleOpen = () => {
-    this.setState({
-      open: true,
-    });
+const ResetPassword = ({ classes }) => {
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const { dataError, dataSuccess, loading } = useSelector(
+    (state) => state.data
+  );
+  const [state, setState] = useState({
+    email: "",
+    password: "",
+    errors: {},
+    accept: false,
+    open: false,
+  });
+  const handleOpen = () => {
+    setState({ ...state, open: true });
   };
-  handleClose = () => {
-    this.setState({ open: false });
+  const handleClose = () => {
+    setState({ ...state, open: false });
   };
 
-  handleSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
-    this.props.resetPassword(this.state.email, this.props.history);
+    dispatch(resetPassword(state.email));
 
-    setTimeout(() => {
-      this.handleClose();
-    }, 2000);
-  };
-  handleChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
+    //setErrorMessage(error.message);
   };
 
-  onSwipeMove(position) {
+  const handleChange = (event) => {
+    setState({ ...state, [event.target.name]: event.target.value });
+  };
+
+  const onSwipeMove = (position) => {
     if (`${position.x}` > 150) {
-      this.handleClose();
+      handleClose();
     }
     if (`${position.y}` > 200) {
-      this.handleClose();
+      handleClose();
     }
-  }
+  };
 
-  render() {
-    const {
-      classes,
-      UI: { loading },
-    } = this.props;
-    const { errors } = this.state;
+  return (
+    <Fragment>
+      <div className={classes.forgot} onClick={() => handleOpen()}>
+        <span className="Terms">{t("forgotPassword")}</span>
+      </div>
+      <Dialog
+        open={state.open}
+        onClose={handleClose}
+        width="md"
+        BackdropProps={{ classes: { root: classes.root } }}
+        PaperProps={{ classes: { root: classes.paper } }}
+        TransitionComponent={Transition}
+      >
+        <CustomIconButton
+          name="Close"
+          position="fixed"
+          left="0px"
+          margin={document.body.clientWidth > 768 ? "40px" : "10px"}
+          handleButtonClick={handleClose}
+        />
 
-    return (
-      <Fragment>
-        <div className={classes.forgot} onClick={() => this.handleOpen()}>
-          <span className="Terms">{this.props.t("forgotPassword")}</span>
-        </div>
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          width="md"
-          BackdropProps={{ classes: { root: classes.root } }}
-          PaperProps={{ classes: { root: classes.paper } }}
-          TransitionComponent={Transition}
-        >
-          <CustomIconButton
-            name="Close"
-            position="fixed"
-            left="0px"
-            margin={document.body.clientWidth > 768 ? "40px" : "10px"}
-            handleButtonClick={this.handleClose}
+        <Swipe onSwipeMove={onSwipeMove.bind(this)}>
+          <img
+            src={pw_reset}
+            className={classes.headline}
+            alt="wirke_mit_headline"
           />
-
-          <Swipe onSwipeMove={this.onSwipeMove.bind(this)}>
-            <img
-              src={pw_reset}
-              className={classes.headline}
-              alt="wirke_mit_headline"
-            />
-            <div className={classes.smallText}>
-              Bitte gib deine E-Mail-Adresse ein. Du bekommst eine E-Mail, mit
-              der du dein Passwort zurücksetzen kannst.
-            </div>
-            <form noValidate>
-              <div className={classes.textfields}>
-                <TextField
-                  id="outlined-name"
-                  name="email"
-                  type="email"
-                  label="E-Mail"
-                  margin="normal"
-                  variant="outlined"
-                  className={classes.textField}
-                  // helperText={errors.email}
-                  error={errors.email ? true : false}
-                  value={this.state.email}
-                  onChange={this.handleChange}
-                />
-              </div>
-              <SubmitButton
-                text="Zurücksetzen"
-                zIndex="9"
-                backgroundColor="white"
-                textColor="#353535"
-                position="relative"
-                top={document.body.clientWidth > 768 ? "100px" : "70px"}
-                left="0"
-                loading={loading}
-                handleButtonClick={this.handleSubmit}
+          <div className={classes.smallText}>{t("reset_password")}</div>
+          <form noValidate>
+            <div className={classes.textfields}>
+              <TextField
+                id="outlined-name"
+                name="email"
+                type="email"
+                label="E-Mail"
+                margin="normal"
+                variant="outlined"
+                className={classes.textField}
+                // helperText={errors.email}
+                error={state.errors.email ? true : false}
+                value={state.email}
+                onChange={handleChange}
+                onClick={() => {
+                  dispatch({
+                    type: CLEAR_DATA_SUCCESS,
+                  });
+                  dispatch({
+                    type: CLEAR_DATA_ERROR,
+                  });
+                }}
               />
+            </div>
+            <SubmitButton
+              text={t("reset")}
+              zIndex="9"
+              backgroundColor="white"
+              textColor="#353535"
+              position="relative"
+              top={document.body.clientWidth > 768 ? "100px" : "70px"}
+              left="0"
+              loading={loading}
+              handleButtonClick={handleSubmit}
+            />
 
-              {loading && (
-                <CircularProgress
-                  color="black"
-                  size={30}
-                  className={classes.progress}
-                />
-              )}
-            </form>
-          </Swipe>
-        </Dialog>
-      </Fragment>
-    );
-  }
-}
-
-const mapStateToProps = (state) => ({
-  user: state.user,
-  UI: state.UI,
-});
-const mapActionsToProps = {
-  resetPassword,
+            {dataError && <StyledErrorMessage>{dataError}</StyledErrorMessage>}
+            {dataSuccess && (
+              <StyledSuccessMessage>{dataSuccess}</StyledSuccessMessage>
+            )}
+          </form>
+        </Swipe>
+      </Dialog>
+    </Fragment>
+  );
 };
 
-export default withRouter(
-  compose(
-    withStyles(styles),
-    withTranslation(),
-    connect(mapStateToProps, mapActionsToProps)
-  )(ResetPassword)
-);
+export default withRouter(compose(withStyles(styles))(ResetPassword));

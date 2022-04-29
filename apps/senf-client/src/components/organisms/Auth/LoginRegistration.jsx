@@ -3,8 +3,29 @@
 import React, { useState, Fragment, useEffect, useRef, memo } from "react";
 import { useDispatch } from "react-redux";
 import { SET_AUTHENTICATED } from "../../../redux/types";
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
+
+import { auth, db } from "../../../firebase";
+
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
+
+import {
+  doc,
+  getDocs,
+  getDoc,
+  collection,
+  onSnapshot,
+  where,
+  addDoc,
+  query,
+  orderBy,
+  deleteDoc,
+  setDoc,
+} from "firebase/firestore";
 
 import { useHistory } from "react-router";
 import { useFormik } from "formik";
@@ -262,7 +283,7 @@ const LoginRegistration = ({ classes }) => {
     password: yup
       .string()
       .required(t("enter_password"))
-      .min(8, t("password_8characters"))
+      .min(6, t("password_6characters"))
       .matches(/\d+/, t("password_with_number")),
 
     confirmPassword: yup
@@ -306,19 +327,17 @@ const LoginRegistration = ({ classes }) => {
     event.preventDefault();
 
     setLoading(true);
-    const userInfo = await firebase
-      .auth()
-      .signInWithEmailAndPassword(
-        formikLoginStore.values.email,
-        formikLoginStore.values.password
-      )
-
-      .then((user) => {
-        if (user.user.emailVerified) {
-          console.log(user.user.uid);
+    signInWithEmailAndPassword(
+      auth,
+      formikLoginStore.values.email,
+      formikLoginStore.values.password
+    )
+      .then((userCredential) => {
+        if (userCredential.user.emailVerified) {
+          console.log(userCredential.user.uid);
           setLoading(false);
           dispatch({ type: SET_AUTHENTICATED });
-          dispatch(getUserData(user.user.uid));
+          dispatch(getUserData(userCredential.user.uid));
           console.log(window.location);
           if (window.location.pathname === "/verify") {
             history.push("/");
@@ -327,9 +346,7 @@ const LoginRegistration = ({ classes }) => {
           setOpen(false);
         } else {
           setLoading(false);
-          setErrorMessage(
-            "Du hast deine Email-Adresse noch nicht verifiziert!"
-          );
+          setErrorMessage(t("email_not_verified"));
         }
       })
       .catch((err) => {
@@ -339,66 +356,88 @@ const LoginRegistration = ({ classes }) => {
 
     // dispatch(loginUser(userData, props.history))
   };
-
+  async function createUserInDatabase(userCredential) {
+    if (userCredential && userCredential.user) {
+      await setDoc(doc(db, "users", userCredential.user.uid), {
+        handle: formikRegisterStore.values.username,
+        age: formikRegisterStore.values.age,
+        sex: formikRegisterStore.values.sex,
+        createdAt: new Date().toISOString(),
+        userId: userCredential.user.uid,
+      });
+      await setDoc(
+        doc(
+          db,
+          "users",
+          userCredential.user.uid,
+          "Private",
+          userCredential.user.uid
+        ),
+        {
+          email: formikRegisterStore.values.email,
+        }
+      );
+    }
+  }
   const handleSubmitRegister = async (event) => {
     event.preventDefault();
 
     setLoading(true);
+    setErrorMessage("");
+    const usersRef = collection(db, "users");
+    const q = query(
+      usersRef,
+      where("handle", "==", formikRegisterStore.values.username)
+    );
+    const usernameQuerySnapshot = await getDocs(q);
 
-    const db = firebase.firestore();
-    const usersRef = db.collection("users");
-    usersRef
-      .where("handle", "==", formikRegisterStore.values.username)
-      .get()
-      .then((snapshot) => {
-        if (snapshot.empty) {
-          return firebase
-            .auth()
-            .createUserWithEmailAndPassword(
-              formikRegisterStore.values.email,
-              formikRegisterStore.values.password
-            );
-        } else {
-          throw new Error(t("username_taken"));
-        }
-      })
+    if (!usernameQuerySnapshot.empty) {
+      // username already exists
+      setLoading(false);
+      setErrorMessage(t("username_taken"));
+      return;
+    } else {
+      // username is available, try to create user and put info to database
+      try {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          formikRegisterStore.values.email,
+          formikRegisterStore.values.password
+        );
 
-      .then(async (userCredential) => {
-        if (userCredential) {
-          await db.collection("users").doc(userCredential.user.uid).set({
-            handle: formikRegisterStore.values.username,
-            age: formikRegisterStore.values.age,
-            sex: formikRegisterStore.values.sex,
-            createdAt: new Date().toISOString(),
-            userId: userCredential.user.uid,
-          });
-          await db
-            .collection("users")
-            .doc(userCredential.user.uid)
-            .collection("Private")
-            .doc(userCredential.user.uid)
-            .set({
-              email: formikRegisterStore.values.email,
-            });
-        }
-      })
-      .then(async () => {
-        const user = firebase.auth().currentUser;
-        await user.sendEmailVerification();
-        setLoading(false);
-      })
-      .then(async () => {
+        await createUserInDatabase(userCredential);
+
+        await sendEmailVerification(auth.currentUser);
+
         setLoading(false);
 
         const emailWrapper = {
           email: formikRegisterStore.values.email,
         };
         history.push("/verify", emailWrapper);
-      })
-      .catch((err) => {
-        setErrorMessage(err.message);
+      } catch (error) {
+        const errorCode = error.code;
+        const errorMessage = error.message;
         setLoading(false);
-      });
+        setErrorMessage(errorMessage);
+        if (errorCode === "auth/email-already-in-use") {
+          setLoading(false);
+          setErrorMessage(t("email_taken"));
+        }
+        if (errorCode === "auth/invalid-email") {
+          setLoading(false);
+          setErrorMessage(t("enter_valid_email"));
+        }
+        if (errorCode === "auth/weak-password") {
+          setLoading(false);
+          setErrorMessage(t("password_6characters"));
+        }
+        if (errorCode === "auth/too-many-requests") {
+          setLoading(false);
+          setErrorMessage(t("too_many_requests"));
+        }
+      }
+    }
   };
 
   const handleToggle = () => {

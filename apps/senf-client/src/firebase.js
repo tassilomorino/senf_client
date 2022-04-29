@@ -1,10 +1,9 @@
 /** @format */
 import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
-import "firebase/compat/firestore";
-
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getPerformance } from "firebase/performance";
+
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -18,5 +17,7 @@ const firebaseConfig = {
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
+const performance = getPerformance(firebaseApp);
+
 export default firebaseApp;
 export { auth, db };

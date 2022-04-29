@@ -25,7 +25,7 @@ const Line = styled.div`
   position: relative;
 `;
 const MenuModal = ({ setMenuOpen, screamId, userHandle }) => {
-  const { authenticated, handle, isAdmin, isModerator } = useSelector(
+  const { authenticated, handle, isAdmin, isModerator, userId } = useSelector(
     (state) => state.user
   );
 
@@ -40,7 +40,7 @@ const MenuModal = ({ setMenuOpen, screamId, userHandle }) => {
       "Bist du sicher, dass du die Idee löschen möchtest?"
     );
     if (answer) {
-      dispatch(deleteScream(screamId, history));
+      dispatch(deleteScream(screamId, userId, isAdmin, isModerator));
 
       //some code
     } else {

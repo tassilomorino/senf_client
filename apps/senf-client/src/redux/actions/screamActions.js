@@ -1,12 +1,23 @@
 /** @format */
 
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
 import moment from "moment";
 import { clearErrors } from "./errorsActions";
 import { loadProjectRoomData } from "./projectActions";
 import store from "../store";
 
+import {
+  collection,
+  where,
+  query,
+  getDocs,
+  orderBy,
+  doc,
+  getDoc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
+import { db } from "../../firebase";
 import {
   SET_SCREAMS,
   LOADING_DATA,
@@ -21,155 +32,103 @@ import {
   OPEN_SCREAM,
   CLOSE_SCREAM,
   SET_SCREAM_USER,
+  OPEN_PROJECTROOM,
 } from "../types";
 import setColorByTopic from "../../data/setColorByTopic";
 
 // Get all ideas
 export const getScreams = (mapViewport) => async (dispatch) => {
-  dispatch({ type: LOADING_DATA });
+  try {
+    dispatch({ type: LOADING_DATA });
+    const screamsRef = collection(db, "screams");
+    const q = query(
+      screamsRef,
 
-  const db = firebase.firestore();
-  const ref = await db
-    .collection("screams")
-    .where("lat", "<", Number(mapViewport.latitude) + 1)
-    .where("lat", ">", Number(mapViewport.latitude) - 1)
-    // .orderBy("createdAt", "desc")
-    .get()
-    .then((ref) => {
-      const screams = [];
-      ref.docs.forEach((doc) => {
-        const docData = {
-          screamId: doc.id,
-          lat: doc.data().lat,
-          long: doc.data().long,
-          title: doc.data().title,
-          body: doc.data().body.substr(0, 150),
-          createdAt: doc.data().createdAt,
-          commentCount: doc.data().commentCount,
-          likeCount: doc.data().likeCount,
-          status: doc.data().status,
-          Thema: doc.data().Thema,
-          Stadtteil: doc.data().Stadtteil,
-          projectRoomId: doc.data().projectRoomId,
-          color: setColorByTopic(doc.data().Thema),
-          locationHeader: doc.data().locationHeader,
-        };
-
-        screams.push(docData);
-      });
-
-      dispatch({
-        type: SET_SCREAMS,
-        payload: screams,
-      });
-    })
-    .catch((error) => {
-      dispatch({
-        type: SET_ERRORS,
-        payload: { title: "Error occured when loading" },
-      });
-      dispatch({
-        type: STOP_LOADING_DATA,
-      });
-      console.log("Error getting document:", error);
-    });
-};
-
-export const reloadScreams = () => async (dispatch) => {
-  const db = firebase.firestore();
-  const ref = await db.collection("screams").orderBy("createdAt", "desc").get();
-
-  const screams = [];
-  ref.docs.forEach((doc) => {
-    const docData = {
-      screamId: doc.id,
-      lat: doc.data().lat,
-      long: doc.data().long,
-      title: doc.data().title,
-      body: doc.data().body.substr(0, 120),
-      createdAt: doc.data().createdAt,
-      commentCount: doc.data().commentCount,
-      likeCount: doc.data().likeCount,
-      status: doc.data().status,
-      Thema: doc.data().Thema,
-      Stadtteil: doc.data().Stadtteil,
-      projectRoomId: doc.data().projectRoomId,
-      color: setColorByTopic(doc.data().Thema),
-    };
-
-    screams.push(docData);
-  });
-
-  dispatch({
-    type: SET_SCREAMS,
-    payload: screams,
-  });
-};
-
-// Open an idea
-export const openScreamFunc = (screamId) => async (dispatch) => {
-  // When the modal is shown, we want a fixed body
-  // document.body.style.position = "fixed";
-  // document.body.style.top = `-${window.scrollY}px`;
-  dispatch({ type: LOADING_IDEA_DATA });
-  dispatch({ type: OPEN_SCREAM });
-
-  const db = firebase.firestore();
-  const ref = await db.collection("screams").doc(screamId).get();
-  const commentsRef = await db
-    .collection("comments")
-    .where("screamId", "==", screamId)
-    .orderBy("createdAt", "asc")
-    .get();
-
-  if (!ref.exists) {
-    console.log("No such document!");
-    dispatch({ type: CLOSE_SCREAM });
-    dispatch({ type: SET_SCREAM, payload: {} });
-    window.history.pushState(null, null, "/");
-    throw new Error("Idea not found");
-  } else {
-    const scream = ref.data();
-    scream.screamId = ref.id;
-    scream.color = setColorByTopic(ref.data().Thema);
-    scream.comments = [];
-
-    commentsRef.forEach((doc) =>
-      scream.comments.push({ ...doc.data(), commentId: doc.id })
+      where("lat", "<", Number(mapViewport.latitude) + 1),
+      where("lat", ">", Number(mapViewport.latitude) - 1)
     );
 
-    // window.location = "#" + scream.lat + "#" + scream.long;
-    const projectroomPath = store.getState().UI.openProjectRoom
-      ? "/projectRooms/" + store.getState().data.project.projectRoomId
-      : "";
-
-    const newPath = `${projectroomPath}/${screamId}`;
-    window.history.pushState(null, null, newPath);
-    dispatch({ type: SET_SCREAM, payload: scream });
+    const querySnapshot = await getDocs(q);
+    const screams = [];
+    querySnapshot.forEach((doc) => {
+      screams.push({
+        ...doc.data(),
+        screamId: doc.id,
+        body: doc.data().body.substr(0, 150),
+        color: setColorByTopic(doc.data().Thema),
+      });
+    });
+    dispatch({
+      type: SET_SCREAMS,
+      payload: screams,
+    });
+  } catch (error) {
+    dispatch({
+      type: SET_ERRORS,
+      payload: { title: "Error occured when loading" },
+    });
+    dispatch({
+      type: STOP_LOADING_DATA,
+    });
+    console.log("Error getting document:", error);
   }
 };
 
-export const reloadScreamFunc = (screamId) => async (dispatch) => {
-  const db = firebase.firestore();
-  const ref = await db.collection("screams").doc(screamId).get();
-  const commentsRef = await db
-    .collection("comments")
-    .where("screamId", "==", screamId)
-    .orderBy("createdAt", "desc")
-    .get();
+// Open an idea
+export const openScreamFunc = (screamId, reloadScream) => async (dispatch) => {
+  // When the modal is shown, we want a fixed body
+  // document.body.style.position = "fixed";
+  // document.body.style.top = `-${window.scrollY}px`;
+  try {
+    dispatch({ type: LOADING_IDEA_DATA });
+    dispatch({ type: OPEN_SCREAM });
+    const docRef = doc(db, `screams/${screamId}`);
+    const screamDocSnapshot = await getDoc(docRef);
 
-  if (!ref.exists) {
-    console.log("No such document!");
-  } else {
-    const scream = ref.data();
-    scream.screamId = ref.id;
-    scream.color = setColorByTopic(ref.data().Thema);
-    scream.comments = [];
+    if (screamDocSnapshot.exists()) {
+      // add comments to the scream
+      const commentRef = collection(db, "comments");
+      const commentquery = query(
+        commentRef,
+        where("screamId", "==", screamId),
+        orderBy("createdAt", "desc")
+      );
+      const commentquerySnapshot = await getDocs(commentquery);
+      const commentsArray = [];
+      commentquerySnapshot.forEach((doc) => {
+        commentsArray.push({
+          ...doc.data(),
+          commentId: doc.id,
+          body: doc.data().body.substr(0, 150),
+        });
+      });
 
-    commentsRef.forEach((doc) =>
-      scream.comments.push({ ...doc.data(), commentId: doc.id })
-    );
-    dispatch({ type: SET_SCREAM, payload: scream });
+      const scream = {
+        ...screamDocSnapshot.data(),
+        comments: commentsArray,
+        screamId: screamDocSnapshot.id,
+        color: setColorByTopic(screamDocSnapshot.data().Thema),
+      };
+
+      const projectroomPath = store.getState().UI.openProjectRoom
+        ? "/projectRooms/" + store.getState().data.project.projectRoomId
+        : "";
+
+      const newPath = `${projectroomPath}/${screamId}`;
+      window.history.pushState(null, null, newPath);
+
+      dispatch({ type: SET_SCREAM, payload: scream });
+    } else {
+      console.log("No such document!");
+      dispatch({ type: CLOSE_SCREAM });
+      dispatch({ type: SET_SCREAM, payload: {} });
+      window.history.pushState(null, null, "/");
+      throw new Error("Idea not found");
+    }
+  } catch (error) {
+    console.error(error, "error in openScreamFunc");
+
+    window.history.pushState(null, null, "/");
   }
 };
 
@@ -183,7 +142,7 @@ export const closeScream = () => (dispatch) => {
 
   // IF IT BECOMES NECESSARY (IF IN PROJECTROOM, GET PROJECTSCREAMS)
   // setTimeout(() => {
-  //   dispatch(reloadScreams());
+  //   dispatch(getScreams(store.getState().data.mapViewport));
   // }, 100);
 
   window.history.pushState(null, null, projectroomPath);
@@ -192,7 +151,6 @@ export const closeScream = () => (dispatch) => {
 // Post an idea
 export const postScream = (newScream, user, history) => async (dispatch) => {
   console.log(history, user);
-  const db = firebase.firestore();
 
   dispatch({ type: LOADING_DATA });
 
@@ -207,138 +165,149 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
       payload: { body: "Beschreibung fehlt" },
     });
   } else {
-    const ageCapture =
-      user.age !== "" ? moment().diff(moment(user.age, "YYYY"), "years") : "";
+    try {
+      const ageCapture =
+        user.age !== "" ? moment().diff(moment(user.age, "YYYY"), "years") : "";
 
-    const newScreamData = {
-      locationHeader: newScream.locationHeader,
-      district: newScream.fulladdress,
-      Stadtteil: newScream.neighborhood,
-      title: newScream.title,
-      lat: newScream.lat,
-      long: newScream.long,
-      body: newScream.body,
-      userHandle: user.handle,
-      userId: user.userId,
-      sex: user.sex,
-      age: ageCapture,
-      createdAt: new Date().toISOString(),
-      likeCount: 0,
-      commentCount: 0,
-      status: "None",
-      projectRoomId: newScream.projectRoomId,
-    };
+      const newScreamData = {
+        locationHeader: newScream.locationHeader,
+        district: newScream.fulladdress,
+        Stadtteil: newScream.neighborhood,
+        title: newScream.title,
+        lat: newScream.lat,
+        long: newScream.long,
+        body: newScream.body,
+        userHandle: user.handle,
+        userId: user.userId,
+        sex: user.sex,
+        age: ageCapture,
+        createdAt: new Date().toISOString(),
+        likeCount: 0,
+        commentCount: 0,
+        status: "None",
+        projectRoomId: newScream.projectRoomId,
+      };
 
-    if (newScream.Thema === "" || newScream.Thema === undefined) {
-      newScreamData.Thema = "Sonstige";
-    } else {
-      newScreamData.Thema = newScream.Thema;
-    }
-    if (newScream.weblinkTitle)
-      newScreamData.weblinkTitle = newScream.weblinkTitle;
-    if (newScream.weblink) newScreamData.weblink = newScream.weblink;
-    if (newScream.contactTitle)
-      newScreamData.contactTitle = newScream.contactTitle;
-    if (newScream.contact) newScreamData.contact = newScream.contact;
-    if (newScream.selectedUnix)
-      newScreamData.selectedUnix = newScream.selectedUnix;
+      if (newScream.Thema === "" || newScream.Thema === undefined) {
+        newScreamData.Thema = "Sonstige";
+      } else {
+        newScreamData.Thema = newScream.Thema;
+      }
+      if (newScream.weblinkTitle)
+        newScreamData.weblinkTitle = newScream.weblinkTitle;
+      if (newScream.weblink) newScreamData.weblink = newScream.weblink;
+      if (newScream.contactTitle)
+        newScreamData.contactTitle = newScream.contactTitle;
+      if (newScream.contact) newScreamData.contact = newScream.contact;
+      if (newScream.selectedUnix)
+        newScreamData.selectedUnix = newScream.selectedUnix;
 
-    await db
-      .collection("screams")
-      .add(newScreamData)
-      .then((doc) => {
-        const resScream = newScream;
-        resScream.screamId = doc.id;
+      const docRef = await addDoc(collection(db, "screams"), newScreamData);
 
-        dispatch({
-          type: POST_SCREAM,
-          payload: resScream,
-        });
-        setTimeout(() => {
-          dispatch(reloadScreams());
-          if (newScream.projectRoomId) {
-            dispatch(loadProjectRoomData(newScream.projectRoomId));
-          }
+      const resScream = {
+        ...newScreamData,
+        screamId: docRef.id,
+        color: setColorByTopic(newScreamData.Thema),
+      };
 
-          const screamId = resScream.screamId;
-          dispatch(openScreamFunc(screamId));
-        }, 100);
+      dispatch({
+        type: POST_SCREAM,
+        payload: resScream,
       });
+
+      if (resScream.projectRoomId) {
+        // open scream in projectroom context
+        // '/projectRooms/:projectRoomId/:screamId'
+        dispatch({ type: OPEN_PROJECTROOM });
+        dispatch(loadProjectRoomData(resScream.projectRoomId));
+        dispatch(openScreamFunc(resScream.screamId));
+      } else {
+        // open scream in the main context
+        // '/:screamId'
+        dispatch(openScreamFunc(resScream.screamId));
+      }
+    } catch (error) {
+      console.error(error, "error in postScreamFunc");
+    }
   }
 };
 
 // Edit your idea
 export const editScreamFunc = (editScream) => async (dispatch) => {
-  const db = firebase.firestore();
-  dispatch({ type: LOADING_UI });
-  const screamId = editScream.screamId;
+  try {
+    dispatch({ type: LOADING_UI });
+    const screamId = editScream.screamId;
 
-  if (editScream.notes) {
-    editScream.notes = editScream.notes;
-  } else {
-    delete editScream.notes;
-  }
-
-  await db
-    .collection("screams")
-    .doc(screamId)
-    .update(editScream)
-    .then((doc) => {
-      dispatch({
-        type: EDIT_SCREAM,
-        payload: editScream,
-      });
+    if (!editScream.notes) {
+      delete editScream.notes;
+    }
+    const docRef = doc(db, `screams/${screamId}`);
+    await updateDoc(docRef, editScream);
+    dispatch({
+      type: EDIT_SCREAM,
+      payload: editScream,
     });
-  dispatch(openScreamFunc(screamId));
-  dispatch(clearErrors());
+
+    dispatch(openScreamFunc(screamId));
+    dispatch(clearErrors());
+  } catch (error) {
+    console.error(error, "error in editScreamFunc");
+  }
 };
 
 // Delete your idea
-export const deleteScream = (screamId, user) => async (dispatch) => {
-  const projectroomPath = store.getState().UI.openProjectRoom
-    ? "/projectRooms/" + store.getState().data.project.projectRoomId
-    : "/";
-  const db = firebase.firestore();
-  const ref = db.collection("screams").doc(screamId);
-  const doc = await ref.get();
+export const deleteScream =
+  (screamId, userId, isAdmin, isModerator) => async (dispatch) => {
+    try {
+      const returnToPath = store.getState().UI.openProjectRoom
+        ? "/projectRooms/"
+        : "/";
+      const docRef = doc(db, `screams/${screamId}`);
+      const scream = await getDoc(docRef);
 
-  console.log(doc.data());
+      if (!scream.exists) {
+        console.log("Scream not found");
+      }
+      // else if (doc.data().userHandle !== user.handle) {
+      //   console.log("Unauthorized", doc.data().handle, user.handle);
+      //   // return res.status(403).json({ error: "Unauthorized" });
+      // }
+      else {
+        if (doc.data().userId === userId || isAdmin || isModerator) {
+          await deleteDoc(docRef);
 
-  if (!doc.exists) {
-    console.log("Scream not found");
-  }
-  // else if (doc.data().userHandle !== user.handle) {
-  //   console.log("Unauthorized", doc.data().handle, user.handle);
-  //   // return res.status(403).json({ error: "Unauthorized" });
-  // }
-  else {
-    window.history.pushState(null, null, projectroomPath);
+          dispatch({
+            type: DELETE_SCREAM,
+            payload: screamId,
+          });
+          dispatch({ type: CLOSE_SCREAM });
+          dispatch({ type: SET_SCREAM, payload: {} });
 
-    dispatch({
-      type: DELETE_SCREAM,
-      payload: screamId,
-    });
-    ref.delete().then(() => {
-      setTimeout(() => {
-        window.location.reload(false);
-        dispatch(clearErrors());
-      }, 100);
-    });
-  }
-};
+          window.history.pushState(null, null, returnToPath);
+        } else {
+          console.error(
+            `cant delete this users${doc.data().userHandle} scream`
+          );
+        }
+      }
+    } catch (error) {
+      console.error(error, "error in deleteScreamFunc");
+    }
+  };
 
 export const getUserEmail = (userId) => async (dispatch) => {
-  const db = firebase.firestore();
-  await db
-    .collection("users")
-    .doc(userId)
-    .collection("Private")
-    .doc(userId)
-    .get()
-    .then((doc) => {
+  try {
+    const docRef = doc(db, "users", userId, "Private", userId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists) {
       dispatch({
         type: SET_SCREAM_USER,
-        payload: doc.data(),
+        payload: docSnap.data(),
       });
-    });
+    } else {
+      throw new Error("User email not found");
+    }
+  } catch (error) {
+    console.error(error, "error in getUserEmailFunc");
+  }
 };

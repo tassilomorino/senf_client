@@ -14,7 +14,11 @@ export const LOADING_DATA = "LOADING_DATA";
 export const STOP_LOADING_DATA = "STOP_LOADING_DATA";
 export const STOP_LOADING_UI = "STOP_LOADING_UI";
 export const LOADING_IDEA_DATA = "LOADING_IDEA_DATA";
-// Data reducer types
+// Data reducer typese
+export const SET_DATA_ERROR = "SET_DATA_ERROR";
+export const CLEAR_DATA_ERROR = "CLEAR_DATA_ERROR";
+export const SET_DATA_SUCCESS = "SET_DATA_SUCCESS";
+export const CLEAR_DATA_SUCCESS = "CLEAR_DATA_SUCCESS";
 export const SET_TOPICS = "SET_TOPICS";
 export const SET_ORGANIZATION_TYPES = "SET_ORGANIZATION_TYPES";
 

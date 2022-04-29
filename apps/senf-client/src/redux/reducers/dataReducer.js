@@ -10,6 +10,10 @@
 
 import { isMobileCustom } from "../../util/customDeviceDetect";
 import {
+  SET_DATA_ERROR,
+  CLEAR_DATA_ERROR,
+  SET_DATA_SUCCESS,
+  CLEAR_DATA_SUCCESS,
   SET_SCREAMS,
   SET_MY_SCREAMS,
   LIKE_SCREAM,
@@ -82,6 +86,8 @@ const TopViewport = {
   duration: 0,
 };
 const initialState = {
+  dataError: "",
+  dataSuccess: "",
   projects: [],
   organizations: [],
   myOrganizations: [],
@@ -113,6 +119,14 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case SET_DATA_ERROR:
+      return { ...state, dataError: action.payload };
+    case CLEAR_DATA_ERROR:
+      return { ...state, dataError: "" };
+    case SET_DATA_SUCCESS:
+      return { ...state, dataSuccess: action.payload };
+    case CLEAR_DATA_SUCCESS:
+      return { ...state, dataSuccess: "" };
     case STOP_LOADING_DATA:
       return {
         ...state,
@@ -181,19 +195,27 @@ export default function (state = initialState, action) {
         ...state,
       };
     case DELETE_SCREAM:
-      let index_delete = state.screams.findIndex(
-        (scream) => scream.screamId === action.payload
-      );
-      state.screams.splice(index_delete, 1);
       return {
         ...state,
+        screams: state.screams.filter(
+          (scream) => scream.screamId !== action.payload
+        ),
+        project: {
+          ...state.project,
+          screams: state.project?.screams?.filter(
+            (scream) => scream.screamId !== action.payload
+          ),
+        },
       };
 
     case SET_COMMENTS:
       return {
         ...state,
-        comments: action.payload,
         loading: false,
+        scream: {
+          ...state.scream,
+          comments: action.payload,
+        },
       };
     case SET_COMMENT:
       return {
@@ -205,9 +227,13 @@ export default function (state = initialState, action) {
       const listComments = state.scream.comments.filter(
         (comment) => comment.commentId !== action.payload
       );
-      state.scream.comments = listComments;
+
       return {
         ...state,
+        scream: {
+          ...state.scream,
+          comments: listComments,
+        },
       };
 
     case POST_SCREAM:
