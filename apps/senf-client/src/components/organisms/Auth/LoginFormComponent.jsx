@@ -26,6 +26,7 @@ const LoginFormComponent = ({
 
   const handleFacebook = async () => {
     const provider = new FacebookAuthProvider();
+    provider.addScope("email");
     await signInWithPopup(auth, provider)
       .then((result) => {
         console.log(result);
@@ -36,6 +37,7 @@ const LoginFormComponent = ({
   };
   const handleGoogle = async () => {
     const provider = new GoogleAuthProvider();
+    provider.addScope("email");
     await signInWithPopup(auth, provider)
       .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
