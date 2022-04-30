@@ -5,8 +5,22 @@ import { signOut } from "@firebase/auth";
 import { updateDoc, doc } from "firebase/firestore";
 import { AuthContext } from "../context/auth";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { Typography } from "senf-atomic-design-system";
 
-const Navbar = () => {
+const Nav = styled.nav`
+  position: sticky;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+  width: 100%;
+  padding: 0px 10px;
+  top: 0;
+  background-color: ${({ theme }) => theme.colors.beige.beige20};
+  border-bottom: 2px solid ${({ theme }) => theme.colors.primary.prrimary100};
+`;
+const Navbar = ({ currentWorkspace }) => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
 
@@ -18,26 +32,9 @@ const Navbar = () => {
     navigate("/login");
   };
   return (
-    <nav>
-      <h3>
-        <Link to="/">Messenger</Link>
-      </h3>
-      <div>
-        {user ? (
-          <>
-            <Link to="/profile">Profile</Link>
-            <button className="btn" onClick={handleSignOut}>
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <Link to="/register">Register</Link>
-            <Link to="/login">Login</Link>
-          </>
-        )}
-      </div>
-    </nav>
+    <Nav>
+      <Typography variant="h3">{currentWorkspace}</Typography>
+    </Nav>
   );
 };
 
