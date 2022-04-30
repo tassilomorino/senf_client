@@ -13,7 +13,9 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import translationEN from "./util/translations/english.json";
 import translationDE from "./util/translations/german.json";
-
+import AuthPage from "./pages/AuthPage";
+import { theme, GlobalStyle } from "senf-atomic-design-system";
+import { ThemeProvider } from "styled-components";
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
@@ -45,19 +47,30 @@ function App() {
           <meta name="robots" content="noindex" />
         </Helmet>
       )}
-      <AuthProvider>
-        <Router>
-          <Navbar />
-          <Routes>
-            <Route exact path="/register" element={<Register />} />
-            <Route exact path="/login" element={<Login />} />
-            <Route exact path="/" element={<PrivateRoute />}>
-              <Route exact path="/profile" element={<Profile />} />
-              <Route exact path="/" element={<Home />} />
-            </Route>
-          </Routes>
-        </Router>
-      </AuthProvider>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <AuthProvider>
+          <Router>
+            <Navbar />
+            <Routes>
+              <Route
+                exact
+                path="/register"
+                element={<AuthPage variant="register" />}
+              />
+              <Route
+                exact
+                path="/login"
+                element={<AuthPage variant="login" />}
+              />
+              <Route exact path="/" element={<PrivateRoute />}>
+                <Route exact path="/profile" element={<Profile />} />
+                <Route exact path="/" element={<Home />} />
+              </Route>
+            </Routes>
+          </Router>
+        </AuthProvider>
+      </ThemeProvider>
     </>
   );
 }

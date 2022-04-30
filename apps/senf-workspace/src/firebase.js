@@ -16,19 +16,14 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID, */
 
-  apiKey: "AIzaSyBNbqD70Fs1RLOt_7LDch9_IB8bKiuh63k",
-
-  authDomain: "smiling-foundry-254822.firebaseapp.com",
-
-  projectId: "smiling-foundry-254822",
-
-  storageBucket: "smiling-foundry-254822.appspot.com",
-
-  messagingSenderId: "788864565485",
-
-  appId: "1:788864565485:web:91b32eff27c6c80cb40ce4",
-
-  measurementId: "G-Z535E81YJD",
+  apiKey: "AIzaSyB4SvrQ5QZ61K9jGEv0KbCDtKo8bCRtb2c",
+  authDomain: "senf-chat.firebaseapp.com",
+  databaseURL:
+    "https://senf-chat-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "senf-chat",
+  storageBucket: "senf-chat.appspot.com",
+  messagingSenderId: "625175372028",
+  appId: "1:625175372028:web:a9cb8092f08d2dd9543779",
 };
 
 // Initialize Firebase
