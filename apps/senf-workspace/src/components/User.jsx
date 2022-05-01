@@ -1,43 +1,86 @@
-import React, { useEffect, useState } from 'react'
-import Img from '../images/icons/icon-192.png'
-import { onSnapshot, doc } from '@firebase/firestore'
-import { db } from "../firebase"
+import React, { useEffect, useState } from "react";
+import Img from "../images/icons/icon-192.png";
+import { onSnapshot, doc } from "@firebase/firestore";
+import { db } from "../firebase";
+import styled from "styled-components";
+import { Typography, Icon } from "senf-atomic-design-system";
 
+const UserCard = styled.div`
+  margin-top: 2px;
+  margin-bottom: 10px;
+  padding: 10px;
+  cursor: pointer;
+
+  background-color: ${({ selected, theme }) =>
+    selected ? theme.colors.beige.beige10 : undefined};
+`;
+
+const Avatar = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+`;
 const User = ({ user1, user, selectUser, chat }) => {
-    const user2 = user?.uid
-    const [data, setData] = useState("")
+  const user2 = user?.userId;
+  const [data, setData] = useState("");
 
-    useEffect(() => {
-        const id = user1 > user2 ? `${user1 + user2}` : `${user2 + user1}`
-        let unsub = onSnapshot(doc(db, "lastMsg", id), doc => {
-            setData(doc.data())
-        })
-        return () => unsub()
-    }, [user1, user2])
+  useEffect(() => {
+    const id = user1 > user2 ? `${user1 + user2}` : `${user2 + user1}`;
+    let unsub = onSnapshot(doc(db, "lastMsg", id), (doc) => {
+      setData(doc.data());
+    });
+    return () => unsub();
+  }, [user1, user2]);
 
-    return (
-        <>
-            <div className={`user_wrapper ${chat.name === user.name && "selected_user"}`} onClick={() => selectUser(user)}>
-                <div className="user_info">
-                    <div className="user_detail">
-                        <img src={user.avatar || Img} alt="avatar" className="avatar" />
-                        <h4>{user.name}</h4>
-                        {data?.from !== user1 && data?.unread && <small className="unread">New</small>}
-                    </div>
-                    <div className={`user_status ${user.isOnline ? 'online' : 'offline'}`}></div>
-                </div>
-                {data && (
-                    <p className="truncate">
-                        <strong>{data.from === user1 ? "Me:" : null}</strong>
-                        {data.text}
-                    </p>
-                )}
-            </div>
-            <div onClick={() => selectUser(user)} className={`sm_container ${chat.name === user.name && "selected_user"}`}>
-                <img src={user.avatar || Img} alt="avatar" className="avatar sm_screen" />
-            </div>
-        </>
-    )
-}
+  return (
+    <>
+      <UserCard
+        selected={chat.handle === user.handle}
+        onClick={() => selectUser(user)}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Avatar src={user.avatar || Img} alt="avatar" />
 
-export default User
+          <div>
+            <Typography variant="h3">{user.handle}</Typography>
+
+            {data && (
+              <Typography variant="bodySm" className="truncate">
+                {data.from === user1 ? <Icon icon="bulb" /> : null}
+
+                {data.text}
+              </Typography>
+            )}
+          </div>
+
+          <div style={{ marginLeft: "auto" }}>
+            {data?.from !== user1 && data?.unread && <Icon icon="Sonstige" />}
+
+            {/* {user.isOnline ? <Icon icon="bulb" /> : <Icon icon="bulb" />} */}
+          </div>
+        </div>
+      </UserCard>
+      <div
+        onClick={() => selectUser(user)}
+        className={`sm_container ${
+          chat.handle === user.handle && "selected_user"
+        }`}
+      >
+        <img
+          src={user.avatar || Img}
+          alt="avatar"
+          className="avatar sm_screen"
+        />
+      </div>
+    </>
+  );
+};
+
+export default User;
