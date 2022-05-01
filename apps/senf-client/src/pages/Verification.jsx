@@ -83,7 +83,9 @@ const Verification = ({ classes }) => {
     });
     let interval = setInterval(async () => {
       try {
-        await reload(auth.currentUser);
+        if (auth.currentUser) {
+          await reload(auth.currentUser);
+        }
       } catch (error) {
         console.log(error, "error in verification.jsx");
       }
