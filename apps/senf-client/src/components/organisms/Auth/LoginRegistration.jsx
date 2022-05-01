@@ -407,9 +407,7 @@ const LoginRegistration = ({ classes }) => {
 
         const actionCodeSettings = {
           //change to senf.koeln on production
-          url:
-            "https://senf-client-test.netlify.app?email=" +
-            auth.currentUser.email,
+          url: "http://localhost:3000/verify",
         };
 
         await sendEmailVerification(auth.currentUser, actionCodeSettings);
