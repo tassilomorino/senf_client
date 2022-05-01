@@ -125,7 +125,7 @@ const Account = ({ dataFinalMap }) => {
           type="myIdeas"
           tabLabels={AccountTabData.map((item) => item.text).slice(
             0,
-            myOrganizations.length > 0 ? 3 : 1
+            myOrganizations?.length > 0 ? 3 : 1
           )}
           loading={loadingMyScreams}
           order={order}

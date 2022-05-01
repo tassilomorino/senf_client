@@ -51,15 +51,14 @@ export const resetPassword = (email) => (dispatch) => {
 export const logoutUser = () => (dispatch) => {
   signOut(auth)
     .then(() => {
-      // Sign-out successful.
+      dispatch({ type: SET_UNAUTHENTICATED });
+      dispatch(closeAccountFunc());
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.log(errorCode, errorMessage, "error during logoutUser");
     });
-  dispatch({ type: SET_UNAUTHENTICATED });
-  dispatch(closeAccountFunc());
 };
 
 export const getUserData = (uid) => async (dispatch) => {

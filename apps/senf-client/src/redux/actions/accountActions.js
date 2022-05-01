@@ -91,6 +91,10 @@ export const closeAccountFunc = () => async (dispatch) => {
     payload: null,
   });
   dispatch({
+    type: SET_MY_ORGANIZATIONS,
+    payload: null,
+  });
+  dispatch({
     type: CLOSE_ACCOUNT,
   });
 };
