@@ -21,7 +21,7 @@ export const likeScream = (screamId, user) => async (dispatch) => {
 
   const likeDocument = await db
     .collection("likes")
-    .where("userHandle", "==", user.handle)
+    .where("userId", "==", user.userId)
     .where("screamId", "==", screamId)
     .limit(1)
     .get();
@@ -87,7 +87,7 @@ export const unlikeScream = (screamId, user) => async (dispatch) => {
 
   const likeDocument = await db
     .collection("likes")
-    .where("userHandle", "==", user.handle)
+    .where("userId", "==", user.userId)
     .where("screamId", "==", screamId)
     .limit(1)
     .get();

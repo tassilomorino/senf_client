@@ -90,11 +90,7 @@ export const deleteComment =
 
     if (!doc.exists) {
       console.log("No such document!");
-    } else if (
-      doc.data().userHandle === user.handle ||
-      isAdmin ||
-      isModerator
-    ) {
+    } else if (doc.data().userId === user.userId || isAdmin || isModerator) {
       const scream = screamDoc.data();
       scream.commentCount--;
       screamDocument.update({ commentCount: scream.commentCount });
@@ -111,7 +107,7 @@ export const deleteComment =
 
       dispatch(openScreamFunc(screamId));
     } else {
-      console.log(doc.data().userHandle, user.handle, "not your comment");
+      console.log(doc.data()?.userHandle, user?.handle, "not your comment");
       // return res.status(403).json({ error: "Unauthorized" });
     }
     dispatch(clearErrors());

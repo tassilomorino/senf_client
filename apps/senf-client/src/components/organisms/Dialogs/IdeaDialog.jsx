@@ -94,7 +94,7 @@ const VerticalLine = styled.div`
 `;
 
 const IdeaDialog = () => {
-  const { screamId, title, lat, long, userHandle, comments } = useSelector(
+  const { screamId, title, lat, long, comments, userId } = useSelector(
     (state) => state.data.scream
   );
 
@@ -110,7 +110,8 @@ const IdeaDialog = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const [commentMenuOpen, setCommentMenuOpen] = useState(false);
-  const [userHandleSelected, setUserHandleSelected] = useState("");
+
+  const [commentUserIdSelected, setCommentUserIdSelected] = useState("");
   const [commentIdSelected, setCommentIdSelected] = useState("");
   const [swipePosition, setSwipePosition] = useState("bottom");
 
@@ -216,7 +217,7 @@ const IdeaDialog = () => {
           <Comments
             comments={comments}
             setCommentMenuOpen={setCommentMenuOpen}
-            setUserHandleSelected={setUserHandleSelected}
+            setCommentUserIdSelected={setCommentUserIdSelected}
             setCommentIdSelected={setCommentIdSelected}
           />
           {isMobileCustom ? (
@@ -241,7 +242,7 @@ const IdeaDialog = () => {
       {menuOpen && (
         <MenuModal
           screamId={screamId}
-          userHandle={userHandle}
+          screamUserId={userId}
           setMenuOpen={setMenuOpen}
         />
       )}
@@ -251,7 +252,7 @@ const IdeaDialog = () => {
           commentId={commentIdSelected}
           setCommentMenuOpen={setCommentMenuOpen}
           screamId={screamId}
-          userHandle={userHandleSelected}
+          commentUserId={commentUserIdSelected}
         />
       )}
 

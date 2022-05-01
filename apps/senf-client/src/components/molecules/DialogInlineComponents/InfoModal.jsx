@@ -172,7 +172,7 @@ const InfoModal = ({
   const dispatch = useDispatch();
 
   const loading = useSelector((state) => state.data.loading);
-  const handle = useSelector((state) => state.user.handle);
+  const userId = useSelector((state) => state.user.userId);
   const organizations = useSelector((state) => state.data.organizations);
 
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
@@ -197,7 +197,7 @@ const InfoModal = ({
           "Mein Nutzername lautet:" +
           "\n" +
           "\n" +
-          handle
+          userId
       );
     window.location.href = link;
   };

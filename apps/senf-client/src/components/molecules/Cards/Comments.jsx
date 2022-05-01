@@ -95,7 +95,8 @@ const styles = {
 const Comments = ({
   classes,
   setCommentMenuOpen,
-  setUserHandleSelected,
+
+  setCommentUserIdSelected,
   setCommentIdSelected,
 }) => {
   const comments = useSelector((state) => state.data.scream.comments);
@@ -103,7 +104,7 @@ const Comments = ({
   return (
     <React.Fragment>
       {comments.map((comment, index) => {
-        const { body, createdAt, userHandle, commentId } = comment;
+        const { body, createdAt, userHandle, commentId, userId } = comment;
 
         return (
           <React.Fragment key={createdAt}>
@@ -115,7 +116,7 @@ const Comments = ({
                   <div className={classes.header}>
                     <Typography
                       component={Link}
-                      to={`/users/${userHandle}`}
+                      to={`/users/${userId}`}
                       className={classes.user}
                     >
                       {userHandle}&nbsp;–&nbsp;
@@ -130,7 +131,8 @@ const Comments = ({
                     className={classes.editButton}
                     onClick={() => {
                       setCommentMenuOpen(true);
-                      setUserHandleSelected(userHandle);
+
+                      setCommentUserIdSelected(userId);
                       setCommentIdSelected(commentId);
                     }}
                   >

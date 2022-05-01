@@ -44,6 +44,7 @@ export default function (state = initialState, action) {
           ...state.likes,
           {
             userHandle: state.handle,
+            userId: state.userId,
             screamId: action.payload.screamId,
           },
         ],

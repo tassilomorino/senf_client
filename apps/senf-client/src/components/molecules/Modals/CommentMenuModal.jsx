@@ -37,9 +37,9 @@ const CommentMenuModal = ({
   setCommentMenuOpen,
   commentId,
   screamId,
-  userHandle,
+  commentUserId,
 }) => {
-  const { authenticated, handle, isAdmin, isModerator } = useSelector(
+  const { authenticated, isAdmin, isModerator, userId } = useSelector(
     (state) => state.user
   );
 
@@ -64,7 +64,7 @@ const CommentMenuModal = ({
   };
 
   const reportComment = () => {
-    const thisPath = `/users/${userHandle}/scream/${screamId}`;
+    const thisPath = `/users/${commentUserId}/scream/${screamId}`;
     const siteLink = "senf.koeln" + thisPath;
 
     var link =
@@ -91,7 +91,7 @@ const CommentMenuModal = ({
     <React.Fragment>
       {!confirmMenu ? (
         <MainModal handleButtonClick={() => setCommentMenuOpen(false)}>
-          {authenticated && userHandle === handle && (
+          {authenticated && commentUserId === userId && (
             <ButtonWrapper>
               <ExpandButton handleButtonClick={openConfirmMenu}>
                 <StyledH3 fontWeight={400}>{t("delete_comment")}</StyledH3>
@@ -112,7 +112,9 @@ const CommentMenuModal = ({
 
           <ButtonWrapper
             standalone={
-              (authenticated && userHandle === handle) || isAdmin || isModerator
+              (authenticated && commentUserId === userId) ||
+              isAdmin ||
+              isModerator
                 ? false
                 : true
             }

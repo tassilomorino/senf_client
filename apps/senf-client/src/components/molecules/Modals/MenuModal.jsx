@@ -24,8 +24,8 @@ const Line = styled.div`
   background-color: grey;
   position: relative;
 `;
-const MenuModal = ({ setMenuOpen, screamId, userHandle }) => {
-  const { authenticated, handle, isAdmin, isModerator, userId } = useSelector(
+const MenuModal = ({ setMenuOpen, screamId, screamUserId }) => {
+  const { authenticated, isAdmin, isModerator, userId } = useSelector(
     (state) => state.user
   );
 
@@ -49,7 +49,7 @@ const MenuModal = ({ setMenuOpen, screamId, userHandle }) => {
   };
 
   const reportScream = () => {
-    const thisPath = `/users/${userHandle}/scream/${screamId}`;
+    const thisPath = `/users/${screamUserId}/scream/${screamId}`;
     const siteLink = "senf.koeln" + thisPath;
 
     var link =
@@ -73,7 +73,7 @@ const MenuModal = ({ setMenuOpen, screamId, userHandle }) => {
           scream={scream}
           isAdmin={isAdmin}
           isModerator={isModerator}
-          isUser={userHandle === handle}
+          isUser={screamUserId === userId}
           setEditOpen={setEditOpen}
           setMenuOpen={setMenuOpen}
           editOpen={editOpen}
@@ -85,7 +85,7 @@ const MenuModal = ({ setMenuOpen, screamId, userHandle }) => {
           {authenticated &&
             (isAdmin === true ||
               isModerator === true ||
-              userHandle === handle) && (
+              screamUserId === userId) && (
               <React.Fragment>
                 <ButtonWrapper>
                   <ExpandButton handleButtonClick={() => setEditOpen(true)}>
@@ -102,7 +102,9 @@ const MenuModal = ({ setMenuOpen, screamId, userHandle }) => {
 
           <ButtonWrapper
             standalone={
-              (authenticated && userHandle === handle) || isAdmin || isModerator
+              (authenticated && screamUserId === userId) ||
+              isAdmin ||
+              isModerator
                 ? false
                 : true
             }

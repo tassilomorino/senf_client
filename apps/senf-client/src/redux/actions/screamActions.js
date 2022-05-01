@@ -268,12 +268,12 @@ export const deleteScream =
       if (!scream.exists) {
         console.log("Scream not found");
       }
-      // else if (doc.data().userHandle !== user.handle) {
+      // else if (doc.data().userId !== user.userId) {
       //   console.log("Unauthorized", doc.data().handle, user.handle);
       //   // return res.status(403).json({ error: "Unauthorized" });
       // }
       else {
-        if (doc.data().userId === userId || isAdmin || isModerator) {
+        if (scream.data().userId === userId || isAdmin || isModerator) {
           await deleteDoc(docRef);
 
           dispatch({
