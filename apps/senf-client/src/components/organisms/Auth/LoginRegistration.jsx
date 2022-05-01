@@ -405,9 +405,15 @@ const LoginRegistration = ({ classes }) => {
           formikRegisterStore.values.password
         );
 
-        await createUserInDatabase(userCredential);
+        const actionCodeSettings = {
+          //change to senf.koeln on production
+          url:
+            "https://senf-client-test.netlify.app?email=" +
+            auth.currentUser.email,
+        };
 
-        await sendEmailVerification(auth.currentUser);
+        await sendEmailVerification(auth.currentUser, actionCodeSettings);
+        await createUserInDatabase(userCredential);
 
         setLoading(false);
 
