@@ -68,10 +68,12 @@ const LoginFormComponent = ({
       const token = credential.accessToken;
       // The signed-in user info.
       const user = result.user;
-      const docRef = doc(db, `users/${user.uid}`);
+      const docRef = doc(db, "users", user.uid);
       const docSnapshot = await getDoc(docRef);
       if (!docSnapshot.exists) {
-        await createUserInDatabase(user);
+        createUserInDatabase(user);
+      } else {
+        // do I need to set user here ?
       }
     } catch (error) {
       // Handle Errors here.
