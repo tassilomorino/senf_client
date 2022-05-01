@@ -73,7 +73,7 @@ const LoginFormComponent = ({
       if (!docSnapshot.exists) {
         createUserInDatabase(user);
       } else {
-        // do I need to set user here ?
+        console.log("user already exists");
       }
     } catch (error) {
       // Handle Errors here.
