@@ -44,6 +44,16 @@ const InboxContainer = ({
   return (
     <Wrapper>
       <Navbar currentWorkspace={currentWorkspace} />
+
+      <Typography variant="buttonBg">Organisation</Typography>
+
+      <Group>
+        <Typography variant="buttonBg"> # Verantwortlichkeiten</Typography>
+      </Group>
+      <Group>
+        <Typography variant="buttonBg"># To-Do List</Typography>
+      </Group>
+
       <Typography variant="buttonBg">Gruppen</Typography>
 
       <Group>
@@ -54,22 +64,24 @@ const InboxContainer = ({
       </Group>
       <Typography variant="buttonBg">Direktnachrichten</Typography>
 
-      {searchOpen && (
-        <Input
-          type="text"
-          value={searchTerm}
-          placeholder={t("search_for_people")}
-          onChange={(event) => {
-            setSearchTerm(event.target.value);
-          }}
-        />
-      )}
+      <Input
+        type="text"
+        value={searchTerm}
+        placeholder={t("search_for_people")}
+        onChange={(event) => {
+          setSearchTerm(event.target.value);
+        }}
+      />
+
       {searchTerm ? (
         <div className="users_search">
           {users
             .filter((val) => {
+              console.log(val);
               if (
-                val.name.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+                val.handle
+                  .toLowerCase()
+                  .includes(searchTerm.toLocaleLowerCase())
               ) {
                 return val;
               } else {
@@ -83,12 +95,14 @@ const InboxContainer = ({
                   key={key}
                   onClick={() => selectFoundUser(val)}
                 >
-                  <p>{val.name}</p>
+                  <p>{val.handle}</p>
                 </div>
               );
             })}
         </div>
       ) : null}
+
+      <br />
       {newChat ? (
         <User
           key={newChat.userId}

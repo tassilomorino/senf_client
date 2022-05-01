@@ -9,15 +9,15 @@ import {
 } from "firebase/storage";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import { Icon, Button, Input } from "senf-atomic-design-system";
-
+import { Icon, Button, Input, Typography } from "senf-atomic-design-system";
+import dayjs from "dayjs";
 const Profile = () => {
   const [img, setImg] = useState("");
   const [user, setUser] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    getDoc(doc(db, "users", auth.currentUser.userId)).then((docSnap) => {
+    getDoc(doc(db, "users", auth.currentUser.uid)).then((docSnap) => {
       if (docSnap.exists) {
         setUser(docSnap.data());
       }
@@ -35,7 +35,7 @@ const Profile = () => {
           const snap = await uploadBytes(imgRef, img);
           const url = await getDownloadURL(ref(storage, snap.ref.fullPath));
 
-          await updateDoc(doc(db, "users", auth.currentUser.userId), {
+          await updateDoc(doc(db, "users", auth.currentUser.uid), {
             avatar: url,
             avatarPath: snap.ref.fullPath,
           });
@@ -54,7 +54,7 @@ const Profile = () => {
       if (confirm) {
         await deleteObject(ref(storage, user.avatarPath));
 
-        await updateDoc(doc(db, "users", auth.currentUser.userId), {
+        await updateDoc(doc(db, "users", auth.currentUser.uid), {
           avatar: "",
           avatarPath: "",
         });
@@ -90,7 +90,10 @@ const Profile = () => {
           <h3>{user.handle}</h3>
           <p>{user.email}</p>
           <hr />
-          <small>Joined on: {user.createdAt.toDate().toDateString()}</small>
+          <Typography variant="bodyBg">
+            Joined on:
+            {dayjs(user.createdAt).format("DD.MM.YYYY")}
+          </Typography>
         </div>
       </div>
     </section>

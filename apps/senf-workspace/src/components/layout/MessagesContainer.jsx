@@ -22,7 +22,7 @@ const CurrentMessageContainer = styled.div`
   top: 70px;
   width: 100%;
   height: calc(100% - 130px);
-  background-color: ${({ theme }) => theme.colors.brown.brown7};
+  background-color: ${({ theme }) => theme.colors.beige.beige10};
   overflow: scroll;
 `;
 

@@ -105,20 +105,21 @@ const AuthPage = ({ variant }) => {
 
   async function createUserInDatabase(userCredential, formikRegisterStore) {
     if (userCredential && userCredential.user) {
-      await setDoc(doc(db, "users", userCredential.user.userId), {
-        handle: formikRegisterStore.values.username,
+      console.log(userCredential.user);
+      await setDoc(doc(db, "users", userCredential.user.uid), {
+        handle: formikRegisterStore.values.handle,
         age: formikRegisterStore.values.age,
         sex: formikRegisterStore.values.sex,
         createdAt: new Date().toISOString(),
-        userId: userCredential.user.userId,
+        userId: userCredential.user.uid,
       });
       await setDoc(
         doc(
           db,
           "users",
-          userCredential.user.userId,
+          userCredential.user.uid,
           "Private",
-          userCredential.user.userId
+          userCredential.user.uid
         ),
         {
           email: formikRegisterStore.values.email,
@@ -131,7 +132,7 @@ const AuthPage = ({ variant }) => {
     const usersRef = collection(db, "users");
     const q = query(
       usersRef,
-      where("handle", "==", formikRegisterStore.values.username)
+      where("handle", "==", formikRegisterStore.values.handle)
     );
     const usernameQuerySnapshot = await getDocs(q);
 
@@ -147,6 +148,7 @@ const AuthPage = ({ variant }) => {
           formikRegisterStore.values.email,
           formikRegisterStore.values.password
         );
+        console.log(userCredential);
 
         await createUserInDatabase(userCredential, formikRegisterStore);
 
@@ -161,6 +163,7 @@ const AuthPage = ({ variant }) => {
       } catch (error) {
         const errorCode = error.code;
         const errorMessage = error.message;
+        console.log(errorCode);
         setLoading(false);
         if (errorCode === "auth/email-already-in-use") {
           setLoading(false);
@@ -174,6 +177,7 @@ const AuthPage = ({ variant }) => {
         if (errorCode === "auth/too-many-requests") {
           setLoading(false);
         }
+        setLoading(false);
       }
     }
   };

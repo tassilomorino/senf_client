@@ -3,7 +3,7 @@ import Img from "../images/icons/icon-192.png";
 import { onSnapshot, doc } from "@firebase/firestore";
 import { db } from "../firebase";
 import styled from "styled-components";
-import { Typography } from "senf-atomic-design-system";
+import { Typography, Icon } from "senf-atomic-design-system";
 
 const UserCard = styled.div`
   margin-top: 2px;
@@ -12,7 +12,14 @@ const UserCard = styled.div`
   cursor: pointer;
 
   background-color: ${({ selected, theme }) =>
-    selected ? theme.colors.brown.brown7 : undefined};
+    selected ? theme.colors.beige.beige10 : undefined};
+`;
+
+const Avatar = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
 `;
 const User = ({ user1, user, selectUser, chat }) => {
   const user2 = user?.userId;
@@ -32,24 +39,33 @@ const User = ({ user1, user, selectUser, chat }) => {
         selected={chat.handle === user.handle}
         onClick={() => selectUser(user)}
       >
-        <div className="user_info">
-          <div className="user_detail">
-            <img src={user.avatar || Img} alt="avatar" className="avatar" />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Avatar src={user.avatar || Img} alt="avatar" />
+
+          <div>
             <Typography variant="h3">{user.handle}</Typography>
-            {data?.from !== user1 && data?.unread && (
-              <small className="unread">New</small>
+
+            {data && (
+              <Typography variant="bodySm" className="truncate">
+                {data.from === user1 ? <Icon icon="bulb" /> : null}
+
+                {data.text}
+              </Typography>
             )}
           </div>
-          <div
-            className={`user_status ${user.isOnline ? "online" : "offline"}`}
-          ></div>
+
+          <div style={{ marginLeft: "auto" }}>
+            {data?.from !== user1 && data?.unread && <Icon icon="Sonstige" />}
+
+            {/* {user.isOnline ? <Icon icon="bulb" /> : <Icon icon="bulb" />} */}
+          </div>
         </div>
-        {data && (
-          <Typography variant="bodySm" className="truncate">
-            <strong>{data.from === user1 ? "Me:" : null}</strong>
-            {data.text}
-          </Typography>
-        )}
       </UserCard>
       <div
         onClick={() => selectUser(user)}

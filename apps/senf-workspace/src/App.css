@@ -145,28 +145,6 @@ section .form {
   width: 100vw;
 }
 
-.user_info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.user_detail {
-  display: flex;
-  align-items: center;
-}
-
-.user_detail h4 {
-  margin-left: 10px;
-}
-
-.avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: 1px solid var(--color-4);
-}
-
 .user_status {
   width: 10px;
   height: 10px;
@@ -229,19 +207,7 @@ section .form {
   margin-top: 15px;
   opacity: 0.8;
 }
-.message_wrapper.own {
-  text-align: right;
-}
-.me {
-  background: var(--color-3);
-  color: white;
-}
-.friend {
-  background: var(--color-6);
-}
-.selected_user {
-  background: var(--color-6);
-}
+
 .truncate {
   font-size: 14px;
   white-space: nowrap;
@@ -252,13 +218,7 @@ section .form {
 .truncate strong {
   margin-right: 10px;
 }
-.unread {
-  margin-left: 10px;
-  background: var(--color-3);
-  color: white;
-  padding: 2px 4px;
-  border-radius: 10px;
-}
+
 .sm_screen {
   display: none;
 }

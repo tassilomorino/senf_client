@@ -18,7 +18,7 @@ const Nav = styled.nav`
   padding: 0px 10px;
   top: 0;
   background-color: ${({ theme }) => theme.colors.beige.beige20};
-  border-bottom: 2px solid ${({ theme }) => theme.colors.primary.prrimary100};
+  border-bottom: 2px solid ${({ theme }) => theme.colors.white.white100};
 `;
 const Navbar = ({ currentWorkspace }) => {
   const navigate = useNavigate();

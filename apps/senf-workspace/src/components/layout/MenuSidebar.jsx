@@ -50,7 +50,7 @@ const MenuSidebar = ({ currentWorkspace, setCurrentWorkspace }) => {
   const { user } = useContext(AuthContext);
 
   const handleSignOut = async () => {
-    await updateDoc(doc(db, "users", user.userId), {
+    await updateDoc(doc(db, "users", user.uid), {
       isOnline: false,
     });
     await signOut(auth);
@@ -74,6 +74,15 @@ const MenuSidebar = ({ currentWorkspace, setCurrentWorkspace }) => {
             </Button>
           </ButtonWrapper>
         ))}
+
+        <ButtonWrapper>
+          <Button
+            variant="secondary"
+            onClick={() => console.log("create new workspace")}
+          >
+            <Icon icon="plus" size="big" style={{ color: "grey" }} />
+          </Button>
+        </ButtonWrapper>
       </TopWrapper>
 
       <BottomWrapper>
