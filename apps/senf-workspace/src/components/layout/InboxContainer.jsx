@@ -17,6 +17,15 @@ const Wrapper = styled.div`
   left: 70px;
 `;
 
+const Group = styled.div`
+  margin: 10px;
+  padding: 10px;
+  cursor: pointer;
+  background-color: ${({ selected, theme }) =>
+    selected ? theme.colors.brown.brown7 : undefined};
+  border-bottom: 2px solid white;
+`;
+
 const InboxContainer = ({
   currentWorkspace,
   searchTerm,
@@ -37,6 +46,12 @@ const InboxContainer = ({
       <Navbar currentWorkspace={currentWorkspace} />
       <Typography variant="buttonBg">Gruppen</Typography>
 
+      <Group>
+        <Typography variant="buttonBg"> # Allgemein</Typography>
+      </Group>
+      <Group>
+        <Typography variant="buttonBg"># Planung</Typography>
+      </Group>
       <Typography variant="buttonBg">Direktnachrichten</Typography>
 
       {searchOpen && (
@@ -76,7 +91,7 @@ const InboxContainer = ({
       ) : null}
       {newChat ? (
         <User
-          key={newChat.uid}
+          key={newChat.userId}
           user={newChat}
           selectUser={selectUser}
           user1={user1}
@@ -87,7 +102,7 @@ const InboxContainer = ({
         .filter((val) => {
           if (
             user.interactedUsers &&
-            user.interactedUsers.indexOf(val.uid) > -1
+            user.interactedUsers.indexOf(val.userId) > -1
           ) {
             return val;
           } else {
@@ -96,7 +111,7 @@ const InboxContainer = ({
         })
         .map((user) => (
           <User
-            key={user.uid}
+            key={user.userId}
             user={user}
             selectUser={selectUser}
             user1={user1}

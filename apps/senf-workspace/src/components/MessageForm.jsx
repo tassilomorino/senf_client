@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import Attachment from "./svg/Attachment";
 import { Icon, Button, Input } from "senf-atomic-design-system";
 const Form = styled.form`
   position: sticky;
@@ -11,15 +10,15 @@ const Form = styled.form`
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  padding: 5px;
+  padding: 5px 14px;
   flex-grow: 1;
 `;
 const MessageForm = ({ handleSubmit, text, setText, setImg }) => {
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form>
       <Button variant="secondary">
         <label htmlFor="img">
-          <Attachment />
+          <Icon icon="bulb" />
         </label>
       </Button>
       <input
@@ -39,7 +38,9 @@ const MessageForm = ({ handleSubmit, text, setText, setImg }) => {
         />
       </div>
 
-      <Button variant="primary">Send</Button>
+      <Button variant="primary" onClick={handleSubmit}>
+        Send
+      </Button>
     </Form>
   );
 };

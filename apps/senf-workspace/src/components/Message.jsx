@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
-//import Moment from 'react-moment'
+// import Moment from "react-moment";
 import { Typography } from "senf-atomic-design-system";
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.primary.primary100};
@@ -19,18 +19,19 @@ const Message = ({ msg, user1 }) => {
   const scrollRef = useRef();
 
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+    scrollRef.current?.scrollIntoView({});
   }, [msg]);
 
+  console.log(msg);
   return (
     <Wrapper own={msg.from === user1} ref={scrollRef}>
       <Typography variant="bodyBg">
         {msg.media ? <img src={msg.media} alt={msg.text} /> : null}
         {msg.text}
         <br />
-        <small>
-          {/*    <Moment fromNow>{msg.createdAt.toDate()}</Moment> */}
-        </small>
+        {/* <small>
+          <Moment>{msg.createdAt.toDate()}</Moment>
+        </small> */}
       </Typography>
     </Wrapper>
   );

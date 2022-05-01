@@ -1,9 +1,6 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import Navbar from "./components/Navbar";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
 import { AuthProvider } from "./context/auth";
 import PrivateRoute from "./components/PrivateRoute";
 import Home from "./pages/Home";

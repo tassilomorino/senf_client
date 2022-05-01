@@ -25,7 +25,7 @@ const Navbar = ({ currentWorkspace }) => {
   const { user } = useContext(AuthContext);
 
   const handleSignOut = async () => {
-    await updateDoc(doc(db, "users", user.uid), {
+    await updateDoc(doc(db, "users", user.userId), {
       isOnline: false,
     });
     await signOut(auth);

@@ -25,36 +25,24 @@ import Navbar from "../components/Navbar";
 import MenuSidebar from "../components/layout/MenuSidebar";
 import InboxContainer from "../components/layout/InboxContainer";
 
+import ChatBubbles from "../images/illustrations/chatBubbles.png";
+import MessagesContainer from "../components/layout/MessagesContainer";
 const RightContainer = styled.div`
-  position: relative;
-  left: 400px;
-  width: calc(100% - 400px);
-  height: 100%;
+  position: fixed;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background-color: ${({ theme }) => theme.colors.beige.beige10};
-`;
 
-const MessagesUserHeader = styled.div`
-  padding: 10px;
-  height: 70px;
-  text-align: center;
-  border-bottom: 2px solid ${({ theme }) => theme.colors.white.white100};
-  position: sticky;
-  top: 0;
-  background-color: ${({ theme }) => theme.colors.beige.beige20};
-`;
-const CurrentMessageContainer = styled.div`
-  position: sticky;
-  top: 70px;
-  width: 100%;
-  height: calc(100% - 130px);
-  background-color: ${({ theme }) => theme.colors.brown.brown7};
-  overflow: scroll;
-`;
+  left: ${({ active }) => (active ? "0" : "100vw")};
+  transition: 0.3s;
 
-const Messages = styled.div`
-  padding: 70px 5px 70px 50px;
-  display: flex;
-  flex-direction: column;
+  @media (min-width: 768px) {
+    position: relative;
+    left: 400px;
+    width: calc(100% - 400px);
+    height: 100%;
+  }
 `;
 
 const Home = () => {
@@ -81,7 +69,7 @@ const Home = () => {
     });
     const usersRef = collection(db, "users");
     // querying the entire users collection except the currentUser
-    const q = query(usersRef, where("uid", "not-in", [user1]));
+    const q = query(usersRef, where("userId", "not-in", [user1]));
     const unsub = onSnapshot(q, (querySnapshot) => {
       let users = [];
       querySnapshot.forEach((doc) => {
@@ -93,36 +81,41 @@ const Home = () => {
   }, [user1]);
 
   const selectUser = async (user) => {
-    setChat(user);
+    if (user) {
+      setChat(user);
 
-    const user2 = user.uid;
-    const id = user1 > user2 ? `${user1 + user2}` : `${user2 + user1}`;
+      const user2 = user.userId;
+      const id = user1 > user2 ? `${user1 + user2}` : `${user2 + user1}`;
 
-    const msgsRef = collection(db, "messages", id, "chat");
-    const q = query(msgsRef, orderBy("createdAt", "asc"));
+      const msgsRef = collection(db, "messages", id, "chat");
+      const q = query(msgsRef, orderBy("createdAt", "asc"));
 
-    onSnapshot(q, (querySnapshot) => {
-      let msgs = [];
-      querySnapshot.forEach((doc) => {
-        msgs.push(doc.data());
+      onSnapshot(q, (querySnapshot) => {
+        let msgs = [];
+        querySnapshot.forEach((doc) => {
+          msgs.push(doc.data());
+        });
+        setMsgs(msgs);
       });
-      setMsgs(msgs);
-    });
 
-    // get last msg between logged in user and selected user
-    const docSnap = await getDoc(doc(db, "lastMsg", id));
-    // if last message exists and msg is from selected user
-    if (docSnap.data() && docSnap.data().from !== user1) {
-      // update last message doc, set unread to false
-      await updateDoc(doc(db, "lastMsg", id), {
-        unread: false,
-      });
+      // get last msg between logged in user and selected user
+      const docSnap = await getDoc(doc(db, "lastMsg", id));
+      // if last message exists and msg is from selected user
+      if (docSnap.data() && docSnap.data().from !== user1) {
+        // update last message doc, set unread to false
+        await updateDoc(doc(db, "lastMsg", id), {
+          unread: false,
+        });
+      }
+    } else {
+      setChat("");
     }
   };
 
   const handleSubmit = async (e) => {
+    console.log(e);
     e.preventDefault();
-    const user2 = chat.uid;
+    const user2 = chat.userId;
     // create id for Document, make sure that it's the same no matter whether user1 or user2 writes
     const id = user1 > user2 ? `${user1 + user2}` : `${user2 + user1}`;
 
@@ -195,30 +188,31 @@ const Home = () => {
         chat={chat}
       />
 
-      <RightContainer>
+      <RightContainer active={chat}>
         {chat ? (
-          <>
-            <MessagesUserHeader>
-              <h3>{chat.name}</h3>
-            </MessagesUserHeader>
-            <CurrentMessageContainer>
-              <Messages>
-                {msgs.length
-                  ? msgs.map((msg, i) => (
-                      <Message key={i} msg={msg} user1={user1} />
-                    ))
-                  : null}
-              </Messages>
-            </CurrentMessageContainer>
-            <MessageForm
-              handleSubmit={handleSubmit}
-              text={text}
-              setText={setText}
-              setImg={setImg}
-            />
-          </>
+          <MessagesContainer
+            chat={chat}
+            selectUser={selectUser}
+            msgs={msgs}
+            user1={user1}
+            handleSubmit={handleSubmit}
+            text={text}
+            setText={setText}
+            setImg={setImg}
+          />
         ) : (
-          <h3 className="no_conv">Select a user to start conversation</h3>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100%",
+            }}
+          >
+            <img src={ChatBubbles} width="300px" />
+            <h3 className="no_conv">Select a user to start conversation</h3>
+          </div>
         )}
       </RightContainer>
     </div>

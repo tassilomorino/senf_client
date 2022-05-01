@@ -88,7 +88,7 @@ const AuthPage = ({ variant }) => {
     )
       .then((userCredential) => {
         if (userCredential.user.emailVerified) {
-          console.log(userCredential.user.uid);
+          console.log(userCredential.user.userId);
           setLoading(false);
           console.log(window.location);
         } else {
@@ -105,20 +105,20 @@ const AuthPage = ({ variant }) => {
 
   async function createUserInDatabase(userCredential, formikRegisterStore) {
     if (userCredential && userCredential.user) {
-      await setDoc(doc(db, "users", userCredential.user.uid), {
+      await setDoc(doc(db, "users", userCredential.user.userId), {
         handle: formikRegisterStore.values.username,
         age: formikRegisterStore.values.age,
         sex: formikRegisterStore.values.sex,
         createdAt: new Date().toISOString(),
-        userId: userCredential.user.uid,
+        userId: userCredential.user.userId,
       });
       await setDoc(
         doc(
           db,
           "users",
-          userCredential.user.uid,
+          userCredential.user.userId,
           "Private",
-          userCredential.user.uid
+          userCredential.user.userId
         ),
         {
           email: formikRegisterStore.values.email,

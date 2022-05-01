@@ -15,7 +15,7 @@ const UserCard = styled.div`
     selected ? theme.colors.brown.brown7 : undefined};
 `;
 const User = ({ user1, user, selectUser, chat }) => {
-  const user2 = user?.uid;
+  const user2 = user?.userId;
   const [data, setData] = useState("");
 
   useEffect(() => {
@@ -29,13 +29,13 @@ const User = ({ user1, user, selectUser, chat }) => {
   return (
     <>
       <UserCard
-        selected={chat.name === user.name}
+        selected={chat.handle === user.handle}
         onClick={() => selectUser(user)}
       >
         <div className="user_info">
           <div className="user_detail">
             <img src={user.avatar || Img} alt="avatar" className="avatar" />
-            <Typography variant="h3">{user.name}</Typography>
+            <Typography variant="h3">{user.handle}</Typography>
             {data?.from !== user1 && data?.unread && (
               <small className="unread">New</small>
             )}
@@ -53,7 +53,9 @@ const User = ({ user1, user, selectUser, chat }) => {
       </UserCard>
       <div
         onClick={() => selectUser(user)}
-        className={`sm_container ${chat.name === user.name && "selected_user"}`}
+        className={`sm_container ${
+          chat.handle === user.handle && "selected_user"
+        }`}
       >
         <img
           src={user.avatar || Img}

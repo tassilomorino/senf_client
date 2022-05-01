@@ -9,7 +9,7 @@ import styled from "styled-components";
 
 import {
   Button,
-  LayerWhitSecondDefault,
+  LayerWhiteSecondDefault,
   Icon,
   Typography,
 } from "senf-atomic-design-system";
@@ -50,7 +50,7 @@ const MenuSidebar = ({ currentWorkspace, setCurrentWorkspace }) => {
   const { user } = useContext(AuthContext);
 
   const handleSignOut = async () => {
-    await updateDoc(doc(db, "users", user.uid), {
+    await updateDoc(doc(db, "users", user.userId), {
       isOnline: false,
     });
     await signOut(auth);
