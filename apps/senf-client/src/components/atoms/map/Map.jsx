@@ -184,73 +184,80 @@ const Map = ({
       return jsonData;
     }
   }, [geoData, loadingProjects]);
+  const geoJsonIdeasData = useMemo(() => {
+    const geojsonIdeas = { type: "FeatureCollection", features: [] };
 
-  let geojsonIdeas = { type: "FeatureCollection", features: [] };
-  let geojsonProjectRooms = { type: "FeatureCollection", features: [] };
+    if (dataFinal) {
+      for (let point of dataFinal) {
+        let properties = point;
+        properties.circleRadius = 5 + point.likeCount / 7;
 
-  if (dataFinal) {
-    for (let point of dataFinal) {
-      let properties = point;
-      properties.circleRadius = 5 + point.likeCount / 7;
+        const unique =
+          dataFinal.filter((item) => item.long === point.long).length === 1;
 
-      const unique =
-        dataFinal.filter((item) => item.long === point.long).length === 1;
-
-      if (unique) {
-        let feature = {
-          type: "Feature",
-          geometry: { type: "Point", coordinates: [point.long, point.lat] },
-          properties: properties,
-        };
-        geojsonIdeas.features.push(feature);
-      } else {
-        function generateHash(string) {
-          var hash = 0;
-          if (string.length == 0) return hash;
-          for (let i = 0; i < string.length; i++) {
-            var charCode = string.charCodeAt(i);
-            hash = (hash << 7) - hash + charCode;
-            hash = hash & hash;
+        if (unique) {
+          let feature = {
+            type: "Feature",
+            geometry: { type: "Point", coordinates: [point.long, point.lat] },
+            properties: properties,
+          };
+          geojsonIdeas.features.push(feature);
+        } else {
+          function generateHash(string) {
+            var hash = 0;
+            if (string.length == 0) return hash;
+            for (let i = 0; i < string.length; i++) {
+              var charCode = string.charCodeAt(i);
+              hash = (hash << 7) - hash + charCode;
+              hash = hash & hash;
+            }
+            return hash;
           }
-          return hash;
-        }
 
-        function reversedNum(num) {
-          return (
-            parseFloat(num.toString().split("").reverse().join("")) *
-            Math.sign(num)
-          );
+          function reversedNum(num) {
+            return (
+              parseFloat(num.toString().split("").reverse().join("")) *
+              Math.sign(num)
+            );
+          }
+          const hash = generateHash(point.screamId);
+          point.long = point.long + hash / 100000000000000;
+          point.lat = point.lat + reversedNum(hash) / 100000000000000;
+
+          let feature = {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [point.long, point.lat],
+            },
+            properties: properties,
+          };
+          geojsonIdeas.features.push(feature);
         }
-        const hash = generateHash(point.screamId);
-        point.long = point.long + hash / 100000000000000;
-        point.lat = point.lat + reversedNum(hash) / 100000000000000;
+      }
+    }
+    return geojsonIdeas;
+  }, [dataFinal]);
+
+  const geojsonProjectRoomsData = useMemo(() => {
+    const geojsonProjectRooms = { type: "FeatureCollection", features: [] };
+    if (projects) {
+      for (let point of projects) {
+        let properties = point;
 
         let feature = {
           type: "Feature",
           geometry: {
             type: "Point",
-            coordinates: [point.long, point.lat],
+            coordinates: [point.centerLong, point.centerLat],
           },
           properties: properties,
         };
-        geojsonIdeas.features.push(feature);
+        geojsonProjectRooms.features.push(feature);
       }
     }
-  }
-
-  for (let point of projects) {
-    let properties = point;
-
-    let feature = {
-      type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: [point.centerLong, point.centerLat],
-      },
-      properties: properties,
-    };
-    geojsonProjectRooms.features.push(feature);
-  }
+    return geojsonProjectRooms;
+  }, [projects]);
 
   const onHoverIdea = useCallback((event) => {
     if (event.features.length > 0) {
@@ -399,7 +406,11 @@ const Map = ({
                 <MapFilter viewport={mapViewport} mapRef={mapRef} />
               )}
 
-              <Source id="geojsonIdeas" type="geojson" data={geojsonIdeas} />
+              <Source
+                id="geojsonIdeas"
+                type="geojson"
+                data={geoJsonIdeasData}
+              />
               {/* <Layer
                 id="geojsonIdeasblur"
                 source="geojsonIdeas"
@@ -524,7 +535,7 @@ const Map = ({
               <Source
                 id="geojsonProjectRooms"
                 type="geojson"
-                data={geojsonProjectRooms}
+                data={geojsonProjectRoomsData}
               />
               <Layer
                 id="geojsonProjectRooms"
