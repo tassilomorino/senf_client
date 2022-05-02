@@ -212,7 +212,7 @@ const Home = () => {
             width="100%"
           >
             <img src={ChatBubbles} width="300px" />
-            <h3 className="no_conv">Select a user to start conversation</h3>
+            <h3 className="no_conv">Select a user to start a conversation</h3>
           </FlexWrapper>
         )}
       </RightContainer>
