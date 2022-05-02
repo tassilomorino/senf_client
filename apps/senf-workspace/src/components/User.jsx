@@ -3,7 +3,7 @@ import Img from "../images/icons/icon-192.png";
 import { onSnapshot, doc } from "@firebase/firestore";
 import { db } from "../firebase";
 import styled from "styled-components";
-import { Typography, Icon } from "senf-atomic-design-system";
+import { Typography, Icon, FlexWrapper } from "senf-atomic-design-system";
 
 const UserCard = styled.div`
   margin-top: 2px;
@@ -34,52 +34,32 @@ const User = ({ user1, user, selectUser, chat }) => {
   }, [user1, user2]);
 
   return (
-    <>
-      <UserCard
-        selected={chat.handle === user.handle}
-        onClick={() => selectUser(user)}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Avatar src={user.avatar || Img} alt="avatar" />
+    <UserCard
+      selected={chat.handle === user.handle}
+      onClick={() => selectUser(user)}
+    >
+      <FlexWrapper justifyContent="space-between" alignItems="center">
+        <Avatar src={user.avatar || Img} alt="avatar" />
 
-          <div>
-            <Typography variant="h3">{user.handle}</Typography>
+        <div>
+          <Typography variant="h3">{user.handle}</Typography>
 
-            {data && (
-              <Typography variant="bodySm" className="truncate">
-                {data.from === user1 ? <Icon icon="bulb" /> : null}
+          {data && (
+            <Typography variant="bodySm" className="truncate">
+              {data.from === user1 ? <Icon icon="bulb" /> : null}
 
-                {data.text}
-              </Typography>
-            )}
-          </div>
-
-          <div style={{ marginLeft: "auto" }}>
-            {data?.from !== user1 && data?.unread && <Icon icon="Sonstige" />}
-
-            {/* {user.isOnline ? <Icon icon="bulb" /> : <Icon icon="bulb" />} */}
-          </div>
+              {data.text}
+            </Typography>
+          )}
         </div>
-      </UserCard>
-      <div
-        onClick={() => selectUser(user)}
-        className={`sm_container ${
-          chat.handle === user.handle && "selected_user"
-        }`}
-      >
-        <img
-          src={user.avatar || Img}
-          alt="avatar"
-          className="avatar sm_screen"
-        />
-      </div>
-    </>
+
+        <div style={{ marginLeft: "auto" }}>
+          {data?.from !== user1 && data?.unread && <Icon icon="Sonstige" />}
+
+          {/* {user.isOnline ? <Icon icon="bulb" /> : <Icon icon="bulb" />} */}
+        </div>
+      </FlexWrapper>
+    </UserCard>
   );
 };
 
