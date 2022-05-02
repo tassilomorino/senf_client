@@ -1,3 +1,10 @@
+body {
+  /* prevent overscroll bounce*/
+  overscroll-behavior-y: contain;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
 * {
   box-sizing: border-box;
 }

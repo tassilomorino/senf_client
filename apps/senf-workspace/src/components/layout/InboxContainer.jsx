@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Navbar from "../Navbar";
-import { Input, Typography } from "senf-atomic-design-system";
+import {
+  Icon,
+  Input,
+  Typography,
+  FlexWrapper,
+} from "senf-atomic-design-system";
 import User from "../User";
 import { useTranslation } from "react-i18next";
 
@@ -24,6 +29,8 @@ const Group = styled.div`
   background-color: ${({ selected, theme }) =>
     selected ? theme.colors.brown.brown7 : undefined};
   border-bottom: 2px solid white;
+  display: flex;
+  gap: 10px;
 `;
 
 const InboxContainer = ({
@@ -45,33 +52,68 @@ const InboxContainer = ({
     <Wrapper>
       <Navbar currentWorkspace={currentWorkspace} />
 
-      <Typography variant="buttonBg">Organisation</Typography>
+      <FlexWrapper
+        justifyContent="center"
+        alignItems="flex-start"
+        flexDirection="column"
+        width="100%"
+        margin="10px 10px 0px 10px"
+      >
+        <Typography variant="buttonBg">Organisation</Typography>
+      </FlexWrapper>
 
       <Group>
-        <Typography variant="buttonBg"> # Verantwortlichkeiten</Typography>
+        <Icon icon="bulb" />
+        <Typography variant="buttonBg"> Verantwortlichkeiten</Typography>
       </Group>
       <Group>
-        <Typography variant="buttonBg"># To-Do List</Typography>
+        <Icon icon="bulb" />
+        <Typography variant="buttonBg"> To-Do List</Typography>
       </Group>
 
-      <Typography variant="buttonBg">Gruppen</Typography>
+      <FlexWrapper
+        justifyContent="center"
+        alignItems="flex-start"
+        flexDirection="column"
+        width="100%"
+        margin="10px 10px 0px 10px"
+      >
+        <Typography variant="buttonBg">Gruppen</Typography>
+      </FlexWrapper>
 
       <Group>
-        <Typography variant="buttonBg"> # Allgemein</Typography>
+        <Icon icon="bulb" />
+        <Typography variant="buttonBg"> Allgemein</Typography>
       </Group>
       <Group>
-        <Typography variant="buttonBg"># Planung</Typography>
+        <Icon icon="bulb" />
+        <Typography variant="buttonBg"> Planung</Typography>
       </Group>
-      <Typography variant="buttonBg">Direktnachrichten</Typography>
 
-      <Input
-        type="text"
-        value={searchTerm}
-        placeholder={t("search_for_people")}
-        onChange={(event) => {
-          setSearchTerm(event.target.value);
-        }}
-      />
+      <FlexWrapper
+        justifyContent="center"
+        alignItems="flex-start"
+        flexDirection="column"
+        width="100%"
+        margin="10px 10px 0px 10px"
+      >
+        <Typography variant="buttonBg">Direktnachrichten</Typography>
+      </FlexWrapper>
+
+      <FlexWrapper
+        flexDirection="column"
+        width="calc(100% - 20px)"
+        margin="10px 10px 0px 10px"
+      >
+        <Input
+          type="text"
+          value={searchTerm}
+          placeholder={t("search_for_people")}
+          onChange={(event) => {
+            setSearchTerm(event.target.value);
+          }}
+        />
+      </FlexWrapper>
 
       {searchTerm ? (
         <div className="users_search">
