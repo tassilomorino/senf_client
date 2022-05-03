@@ -25,7 +25,7 @@ const Wrapper = styled.div`
   pointer-events: none;
 
   @media (min-width: 768px) {
-    position: relative;
+    position: absolute;
     margin-top: 40px;
     left: 0px;
     top: 0;
