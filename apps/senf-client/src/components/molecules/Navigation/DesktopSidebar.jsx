@@ -62,6 +62,7 @@ const DesktopSidebar = ({
   loading,
   setOrder,
   setOpenOrganizationsPage,
+  mapViewportRef,
 }) => {
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openAccount = useSelector((state) => state.UI.openAccount);
@@ -145,7 +146,11 @@ const DesktopSidebar = ({
       <FilterWrapper active={openAccount}>
         <TagsFilter column loading={loading} type="topics" />
       </FilterWrapper>
-      <PostScream loadingProjects={loadingProjects} projectsData={projects} />
+      <PostScream
+        loadingProjects={loadingProjects}
+        projectsData={projects}
+        mapViewportRef={mapViewportRef}
+      />
       <br />
       <MenuItem
         key={1}

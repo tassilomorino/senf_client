@@ -270,8 +270,6 @@ const OrganizationDialog = ({
     dispatch(stateCreateOrganizationsFunc(true));
   };
 
-  const mapViewport = useSelector((state) => state.data.mapViewport);
-
   useEffect(() => {
     setLogo(null);
     // console.log( window.location.pathname.slice(15, 35));

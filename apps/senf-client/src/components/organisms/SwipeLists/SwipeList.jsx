@@ -195,6 +195,7 @@ const SwipeList = ({
   openOrganizationsPage,
   openInsightsPage,
   setOpenInsightsPage,
+  mapViewportRef,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -554,6 +555,7 @@ const SwipeList = ({
           loadingProjects={loadingProjects}
           projectsData={projects}
           project={project}
+          mapViewportRef={mapViewportRef}
         />
       )}
       {mapBounds?.latitude1 !== 0 && (

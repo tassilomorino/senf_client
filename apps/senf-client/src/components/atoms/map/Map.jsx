@@ -125,6 +125,7 @@ const Map = ({
   mapRef,
   projects,
   order,
+  mapViewportRef,
 }) => {
   const dispatch = useDispatch();
   const { screamId } = useParams();
@@ -168,15 +169,11 @@ const Map = ({
     }, 1000);
   }, [dispatch, initialMapViewport]);
 
-  const _onViewportChange = useCallback(
-    (viewport) => {
-      //how can I dispatch viewport every 2 seconds
-      //instead of every mouse scroll
-      // thats the last thing wich causes rerenders
-      dispatch(setMapViewport(viewport));
-    },
-    [dispatch]
-  );
+  const _onViewportChange = useCallback((viewport) => {
+    //dispatching causes a lot of rerenders
+    //dispatch(setMapViewport(viewport));
+    mapViewportRef.current = viewport;
+  }, []);
 
   const data = useMemo(() => {
     if (!loadingProjects && geoData !== undefined && geoData !== "") {
