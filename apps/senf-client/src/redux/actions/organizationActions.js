@@ -16,41 +16,44 @@ import {
   LOADING_DATA,
   STOP_LOADING_DATA,
 } from "../types";
+import {
+  collection,
+  collectionGroup,
+  getDocs,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
+import { db } from "../../firebase";
+
 import setIconByOrganizationType from "../../data/setIconByOrganizationType";
 
 // Get all projects
 export const getOrganizations = (mapViewport) => async (dispatch) => {
-  const db = firebase.firestore();
-  const ref = await db
-    .collection("organizations")
-    // .where("centerLat", "<", Number(mapViewport.latitude) + 1)
-    // .where("centerLat", ">", Number(mapViewport.latitude) - 1)
-    // .orderBy("createdAt", "desc")
-    .where("status", "==", "active")
-    .get();
+  const organizations = [];
+  const organizationsRef = collection(db, "organizations");
+  const q = query(
+    where("status", "==", "active"),
+    orderBy("createdAt", "desc")
+  );
+  // .where("centerLat", "<", Number(mapViewport.latitude) + 1)
+  // .where("centerLat", ">", Number(mapViewport.latitude) - 1)
 
-  if (ref.size < 1) {
-    dispatch({
-      type: SET_ORGANIZATIONS,
-      payload: [],
+  const querySnapshot = await getDocs(q);
+  if (querySnapshot.empty) {
+    dispatch({ type: SET_ORGANIZATIONS, payload: [] });
+  } else {
+    querySnapshot.forEach((doc) => {
+      const organization = {
+        ...doc.data(),
+        organizationId: doc.id,
+      };
+      organizations.push(organization);
+      if (organizations.length === querySnapshot.size) {
+        dispatch({ type: SET_ORGANIZATIONS, payload: organizations });
+      }
     });
   }
-  // : await db.collection("projects").orderBy("createdAt", "desc").get();
-
-  const organizations = [];
-  ref.docs.forEach((doc) => {
-    const docData = {
-      ...doc.data(),
-      organizationId: doc.id,
-    };
-    organizations.push(docData);
-    if (organizations.length === ref.size) {
-      dispatch({
-        type: SET_ORGANIZATIONS,
-        payload: organizations,
-      });
-    }
-  });
 };
 
 export const stateCreateOrganizationsFunc = (state) => async (dispatch) => {
