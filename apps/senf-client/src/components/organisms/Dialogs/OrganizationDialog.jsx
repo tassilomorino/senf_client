@@ -334,6 +334,7 @@ const OrganizationDialog = ({
     async function fetchData() {
       if (
         organization &&
+        user.organizationId &&
         user.organizationId.includes(organization?.organizationId)
       ) {
         const db = firebase.firestore();

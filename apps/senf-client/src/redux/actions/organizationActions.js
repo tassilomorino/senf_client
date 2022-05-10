@@ -1,8 +1,5 @@
 /** @format */
 
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
 import { closeScream } from "./screamActions";
@@ -18,9 +15,9 @@ import {
 } from "../types";
 import {
   collection,
-  collectionGroup,
   getDocs,
-  orderBy,
+  doc,
+  getDoc,
   query,
   where,
 } from "firebase/firestore";
@@ -28,14 +25,10 @@ import { db } from "../../firebase";
 
 import setIconByOrganizationType from "../../data/setIconByOrganizationType";
 
-// Get all projects
 export const getOrganizations = (mapViewport) => async (dispatch) => {
   const organizations = [];
   const organizationsRef = collection(db, "organizations");
-  const q = query(
-    where("status", "==", "active"),
-    orderBy("createdAt", "desc")
-  );
+  const q = query(organizationsRef, where("status", "==", "active"));
   // .where("centerLat", "<", Number(mapViewport.latitude) + 1)
   // .where("centerLat", ">", Number(mapViewport.latitude) - 1)
 
@@ -49,10 +42,8 @@ export const getOrganizations = (mapViewport) => async (dispatch) => {
         organizationId: doc.id,
       };
       organizations.push(organization);
-      if (organizations.length === querySnapshot.size) {
-        dispatch({ type: SET_ORGANIZATIONS, payload: organizations });
-      }
     });
+    dispatch({ type: SET_ORGANIZATIONS, payload: organizations });
   }
 };
 
@@ -95,43 +86,37 @@ export const openOrganizationFunc =
   };
 
 export const loadOrganizationData = (organizationId) => async (dispatch) => {
-  const db = firebase.firestore();
-  const ref = await db.collection("organizations").doc(organizationId).get();
-
-  if (!ref.exists) {
+  const docRef = doc(db, `organizations/${organizationId}`);
+  const organizationsDocSnapshot = await getDoc(docRef);
+  if (!organizationsDocSnapshot.exists) {
     window.history.pushState(null, null, "/");
   } else {
-    const organization = ref.data();
-    organization.organizationId = ref.id;
+    let organization = organizationsDocSnapshot.data();
+    organization.organizationId = organizationsDocSnapshot.id;
     organization.projectRooms = [];
-
     dispatch(loadOrganizationProjectRooms(organizationId, organization));
   }
 };
 
 export const loadOrganizationProjectRooms =
   (organizationId, organization) => async (dispatch) => {
-    const db = firebase.firestore();
-
-    const projectRoomsRef = await db
-      .collection("organizations")
-      .doc(organizationId)
-      .collection("projectRooms")
-      .where("status", "==", "active")
-      .orderBy("createdAt", "desc")
-      .get();
-    if (!projectRoomsRef.exists) {
-      console.log("no prs in loadOrganizationProjectRooms");
+    const docRef = collection(
+      db,
+      `organizations/${organizationId}/projectRooms`
+    );
+    const q = query(docRef, where("status", "==", "active"));
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.empty) {
       dispatch({ type: SET_ORGANIZATION, payload: organization });
-    }
-
-    projectRoomsRef.docs.forEach((doc) => {
-      organization.projectRooms.push({
-        ...doc.data(),
-        projectRoomId: doc.id,
-        organizationType: doc.data().organizationType,
-        icon: setIconByOrganizationType(doc.data().organizationType),
+    } else {
+      querySnapshot.forEach((doc) => {
+        organization.projectRooms.push({
+          ...doc.data(),
+          projectRoomId: doc.id,
+          organizationType: doc.data().organizationType,
+          icon: setIconByOrganizationType(doc.data().organizationType),
+        });
       });
       dispatch({ type: SET_ORGANIZATION, payload: organization });
-    });
+    }
   };
