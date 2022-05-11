@@ -45,7 +45,6 @@
     "react-moment": "^1.1.2",
     "regenerator-runtime": "0.13.7",
     "resize-observer-polyfill": "^1.5.1",
-    "senf-atomic-design-system": "^1.0.42",
     "styled-components": "5.3.3",
     "tslib": "^2.0.0"
   },

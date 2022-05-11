@@ -11,6 +11,7 @@ import {
   Button,
   LayerWhiteSecondDefault,
   Icon,
+  Divider,
   Typography,
 } from "senf-atomic-design-system";
 
@@ -21,13 +22,14 @@ const myWorkspaces = [
 ];
 const Wrapper = styled.div`
   margin-top: 0px;
-  border-right: 3px solid ${({ theme }) => theme.colors.beige.beige10};
-  background-color: ${({ theme }) => theme.colors.beige.beige20};
+  border-right: 2px solid ${({ theme }) => theme.colors.beige.beige10};
+  background-color: ${({ theme }) => theme.colors.primary.primary75};
   position: absolute;
   overflow-y: auto;
   width: 70px;
   height: 100%;
   top: 0;
+  overflow: hidden;
 `;
 
 const ButtonWrapper = styled.div`
@@ -64,10 +66,25 @@ const MenuSidebar = ({ currentWorkspace, setCurrentWorkspace }) => {
   return (
     <Wrapper>
       <TopWrapper>
+        <ButtonWrapper>
+          <Button
+            variant={
+              "Meine Nachrichten" === currentWorkspace ? "white" : "primary"
+            }
+            onClick={() => setCurrentWorkspace("Meine Nachrichten")}
+            icon="stats"
+            transform="roate(90deg)"
+          />
+        </ButtonWrapper>
+        <Divider
+          color="white"
+          margin="10px 5px 10px 5px"
+          width="calc(100%  - 10px)"
+        />
         {myWorkspaces.map((items) => (
           <ButtonWrapper>
             <Button
-              variant={items.title === currentWorkspace ? "primary" : "white"}
+              variant={items.title === currentWorkspace ? "white" : "primary"}
               onClick={() => setCurrentWorkspace(items.title)}
             >
               <Typography variant="h3">{items.title.slice(0, 1)}</Typography>
@@ -79,18 +96,17 @@ const MenuSidebar = ({ currentWorkspace, setCurrentWorkspace }) => {
           <Button
             variant="secondary"
             onClick={() => console.log("create new workspace")}
-          >
-            <Icon icon="plus" size="big" style={{ color: "grey" }} />
-          </Button>
+            icon="plus"
+          />
         </ButtonWrapper>
       </TopWrapper>
 
       <BottomWrapper>
         <ButtonWrapper onClick={handleLinkProfile}>
-          <Button variant="white" icon="bulb"></Button>
+          <Button variant="white" icon="user"></Button>
         </ButtonWrapper>
 
-        <Button icon="bulb" onClick={handleSignOut}></Button>
+        <Button icon="arrow" onClick={handleSignOut}></Button>
       </BottomWrapper>
     </Wrapper>
   );

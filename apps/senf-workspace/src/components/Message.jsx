@@ -3,7 +3,8 @@ import styled from "styled-components";
 // import Moment from "react-moment";
 import { Typography } from "senf-atomic-design-system";
 const Wrapper = styled.div`
-  background-color: ${({ theme }) => theme.colors.primary.primary100};
+  background-color: ${({ theme, own }) =>
+    own ? theme.colors.primary.primary100 : theme.colors.brown.brown50};
   width: max-content;
   margin-top: 5px;
   padding: 10px;

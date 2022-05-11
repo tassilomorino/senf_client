@@ -3,11 +3,14 @@ import Img from "../images/icons/icon-192.png";
 import { onSnapshot, doc } from "@firebase/firestore";
 import { db } from "../firebase";
 import styled from "styled-components";
-import { Typography, Icon, FlexWrapper } from "senf-atomic-design-system";
+import {
+  Typography,
+  Icon,
+  FlexWrapper,
+  Button,
+} from "senf-atomic-design-system";
 
 const UserCard = styled.div`
-  margin-top: 2px;
-  margin-bottom: 10px;
   padding: 10px;
   cursor: pointer;
 
@@ -27,9 +30,12 @@ const User = ({ user1, user, selectUser, chat }) => {
 
   useEffect(() => {
     const id = user1 > user2 ? `${user1 + user2}` : `${user2 + user1}`;
-    let unsub = onSnapshot(doc(db, "lastMsg", id), (doc) => {
-      setData(doc.data());
-    });
+    let unsub = onSnapshot(
+      doc(db, "workspace", "generalMessages", "lastMsg", id),
+      (doc) => {
+        setData(doc.data());
+      }
+    );
     return () => unsub();
   }, [user1, user2]);
 
@@ -39,20 +45,22 @@ const User = ({ user1, user, selectUser, chat }) => {
       onClick={() => selectUser(user)}
     >
       <FlexWrapper justifyContent="space-between" alignItems="center">
-        <Avatar src={user.avatar || Img} alt="avatar" />
-
-        <div>
+        {/* <Avatar src={user.avatar || Img} alt="avatar" /> */}
+        <Button variant="secondary" icon="user" />
+        <FlexWrapper margin="10px" flexDirection="column">
           <Typography variant="h3">{user.handle}</Typography>
 
           {data && (
-            <Typography variant="bodySm" className="truncate">
-              {data.from === user1 ? <Icon icon="bulb" /> : null}
-
-              {data.text}
-            </Typography>
+            <FlexWrapper gap="3px">
+              {data.from === user1 ? (
+                <Icon icon="check" transform="scale(0.7)" />
+              ) : null}
+              <Typography variant="bodySm" className="truncate">
+                {data.text}
+              </Typography>
+            </FlexWrapper>
           )}
-        </div>
-
+        </FlexWrapper>
         <div style={{ marginLeft: "auto" }}>
           {data?.from !== user1 && data?.unread && <Icon icon="Sonstige" />}
 

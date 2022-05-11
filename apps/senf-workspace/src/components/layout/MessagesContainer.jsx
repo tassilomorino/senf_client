@@ -4,6 +4,7 @@ import Message from "../Message";
 
 import { Typography, TertiaryButton } from "senf-atomic-design-system";
 import MessageForm from "../MessageForm";
+import { isMobileCustom } from "../../util/customDeviceDetect";
 
 const MessagesUserHeader = styled.div`
   padding: 10px;
@@ -12,7 +13,7 @@ const MessagesUserHeader = styled.div`
   border-bottom: 2px solid ${({ theme }) => theme.colors.white.white100};
   position: sticky;
   top: 0;
-  background-color: ${({ theme }) => theme.colors.beige.beige20};
+  background-color: ${({ theme }) => theme.colors.primary.primary75};
   display: flex;
   align-items: center;
   gap: 10px;
@@ -45,7 +46,13 @@ const MessagesContainer = ({
   return (
     <React.Fragment>
       <MessagesUserHeader>
-        <TertiaryButton iconLeft="bulb" onClick={() => selectUser(null)} />
+        {isMobileCustom && (
+          <TertiaryButton
+            iconLeft="arrow"
+            iconLeftTransform="rotate(90deg)"
+            onClick={() => selectUser(null)}
+          />
+        )}
         <Typography variant="h3">{chat.handle}</Typography>
       </MessagesUserHeader>
       <CurrentMessageContainer>

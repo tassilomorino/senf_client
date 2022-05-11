@@ -21,7 +21,7 @@ import styled, { ThemeProvider } from "styled-components";
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
-  background-color: ${({ theme }) => theme.colors.primary.primary100};
+  background-color: black;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,17 +31,17 @@ const InnerWrapper = styled.div`
   ${(props) => LayerWhiteFirstDefault}
   width: 100%;
   height: 100%;
-  max-width: 1550px;
+  /* max-width: 1550px; */
   max-height: 100vh;
   background-color: ${({ theme }) => theme.colors.beige.beige20};
   overflow: hidden;
   border-radius: 10px;
   position: relative;
-  border: 3px solid ${({ theme }) => theme.colors.beige.beige10};
+  /* border: 3px solid ${({ theme }) => theme.colors.beige.beige10}; */
 
-  @media (min-width: 1550px) {
+  /* @media (min-width: 1550px) {
     max-height: calc(100vh - 40px);
-  }
+  } */
 `;
 function App() {
   return (

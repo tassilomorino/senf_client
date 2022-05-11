@@ -1,26 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Navbar from "../Navbar";
 import {
   Icon,
   Input,
   Typography,
   FlexWrapper,
+  Divider,
 } from "senf-atomic-design-system";
-import User from "../User";
+import User from "./User";
 import { useTranslation } from "react-i18next";
-
-const Wrapper = styled.div`
-  margin-top: 0px;
-  border-right: 3px solid ${({ theme }) => theme.colors.beige.beige10};
-  background-color: ${({ theme }) => theme.colors.beige.beige20};
-  position: absolute;
-  overflow-y: auto;
-  width: 330px;
-  height: 100%;
-  top: 0;
-  left: 70px;
-`;
 
 const Group = styled.div`
   margin: 10px;
@@ -49,57 +37,7 @@ const InboxContainer = ({
 
   const [searchOpen, setSearchOpen] = useState(false);
   return (
-    <Wrapper>
-      <Navbar currentWorkspace={currentWorkspace} />
-
-      <FlexWrapper
-        justifyContent="center"
-        alignItems="flex-start"
-        flexDirection="column"
-        width="100%"
-        margin="10px 10px 0px 10px"
-      >
-        <Typography variant="buttonBg">Organisation</Typography>
-      </FlexWrapper>
-
-      <Group>
-        <Icon icon="bulb" />
-        <Typography variant="buttonBg"> Verantwortlichkeiten</Typography>
-      </Group>
-      <Group>
-        <Icon icon="bulb" />
-        <Typography variant="buttonBg"> To-Do List</Typography>
-      </Group>
-
-      <FlexWrapper
-        justifyContent="center"
-        alignItems="flex-start"
-        flexDirection="column"
-        width="100%"
-        margin="10px 10px 0px 10px"
-      >
-        <Typography variant="buttonBg">Gruppen</Typography>
-      </FlexWrapper>
-
-      <Group>
-        <Icon icon="bulb" />
-        <Typography variant="buttonBg"> Allgemein</Typography>
-      </Group>
-      <Group>
-        <Icon icon="bulb" />
-        <Typography variant="buttonBg"> Planung</Typography>
-      </Group>
-
-      <FlexWrapper
-        justifyContent="center"
-        alignItems="flex-start"
-        flexDirection="column"
-        width="100%"
-        margin="10px 10px 0px 10px"
-      >
-        <Typography variant="buttonBg">Direktnachrichten</Typography>
-      </FlexWrapper>
-
+    <React.Fragment>
       <FlexWrapper
         flexDirection="column"
         width="calc(100% - 20px)"
@@ -146,13 +84,17 @@ const InboxContainer = ({
 
       <br />
       {newChat ? (
-        <User
-          key={newChat.userId}
-          user={newChat}
-          selectUser={selectUser}
-          user1={user1}
-          chat={chat}
-        />
+        <React.Fragment>
+          <User
+            key={newChat.userId}
+            user={newChat}
+            selectUser={selectUser}
+            user1={user1}
+            chat={chat}
+          />
+
+          <Divider zIndex={2} />
+        </React.Fragment>
       ) : null}
       {users
         .filter((val) => {
@@ -166,15 +108,18 @@ const InboxContainer = ({
           }
         })
         .map((user) => (
-          <User
-            key={user.userId}
-            user={user}
-            selectUser={selectUser}
-            user1={user1}
-            chat={chat}
-          />
+          <React.Fragment>
+            <User
+              key={user.userId}
+              user={user}
+              selectUser={selectUser}
+              user1={user1}
+              chat={chat}
+            />
+            <Divider zIndex={2} />
+          </React.Fragment>
         ))}
-    </Wrapper>
+    </React.Fragment>
   );
 };
 
