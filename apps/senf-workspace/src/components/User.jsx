@@ -3,11 +3,14 @@ import Img from "../images/icons/icon-192.png";
 import { onSnapshot, doc } from "@firebase/firestore";
 import { db } from "../firebase";
 import styled from "styled-components";
-import { Typography, Icon } from "senf-atomic-design-system";
+import {
+  Typography,
+  Icon,
+  FlexWrapper,
+  Button,
+} from "senf-atomic-design-system";
 
 const UserCard = styled.div`
-  margin-top: 2px;
-  margin-bottom: 10px;
   padding: 10px;
   cursor: pointer;
 
@@ -27,59 +30,44 @@ const User = ({ user1, user, selectUser, chat }) => {
 
   useEffect(() => {
     const id = user1 > user2 ? `${user1 + user2}` : `${user2 + user1}`;
-    let unsub = onSnapshot(doc(db, "lastMsg", id), (doc) => {
-      setData(doc.data());
-    });
+    let unsub = onSnapshot(
+      doc(db, "workspace", "generalMessages", "lastMsg", id),
+      (doc) => {
+        setData(doc.data());
+      }
+    );
     return () => unsub();
   }, [user1, user2]);
 
   return (
-    <>
-      <UserCard
-        selected={chat.handle === user.handle}
-        onClick={() => selectUser(user)}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Avatar src={user.avatar || Img} alt="avatar" />
+    <UserCard
+      selected={chat.handle === user.handle}
+      onClick={() => selectUser(user)}
+    >
+      <FlexWrapper justifyContent="space-between" alignItems="center">
+        {/* <Avatar src={user.avatar || Img} alt="avatar" /> */}
+        <Button variant="secondary" icon="user" />
+        <FlexWrapper margin="10px" flexDirection="column">
+          <Typography variant="h3">{user.handle}</Typography>
 
-          <div>
-            <Typography variant="h3">{user.handle}</Typography>
-
-            {data && (
+          {data && (
+            <FlexWrapper gap="3px">
+              {data.from === user1 ? (
+                <Icon icon="check" transform="scale(0.7)" />
+              ) : null}
               <Typography variant="bodySm" className="truncate">
-                {data.from === user1 ? <Icon icon="bulb" /> : null}
-
                 {data.text}
               </Typography>
-            )}
-          </div>
+            </FlexWrapper>
+          )}
+        </FlexWrapper>
+        <div style={{ marginLeft: "auto" }}>
+          {data?.from !== user1 && data?.unread && <Icon icon="Sonstige" />}
 
-          <div style={{ marginLeft: "auto" }}>
-            {data?.from !== user1 && data?.unread && <Icon icon="Sonstige" />}
-
-            {/* {user.isOnline ? <Icon icon="bulb" /> : <Icon icon="bulb" />} */}
-          </div>
+          {/* {user.isOnline ? <Icon icon="bulb" /> : <Icon icon="bulb" />} */}
         </div>
-      </UserCard>
-      <div
-        onClick={() => selectUser(user)}
-        className={`sm_container ${
-          chat.handle === user.handle && "selected_user"
-        }`}
-      >
-        <img
-          src={user.avatar || Img}
-          alt="avatar"
-          className="avatar sm_screen"
-        />
-      </div>
-    </>
+      </FlexWrapper>
+    </UserCard>
   );
 };
 

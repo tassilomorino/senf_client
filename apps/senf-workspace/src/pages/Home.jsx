@@ -23,10 +23,15 @@ import styled from "styled-components";
 import Navbar from "../components/Navbar";
 
 import MenuSidebar from "../components/layout/MenuSidebar";
-import InboxContainer from "../components/layout/InboxContainer";
+import InboxContainer from "../components/InboxContainer";
 
 import ChatBubbles from "../images/illustrations/chatBubbles.png";
 import MessagesContainer from "../components/layout/MessagesContainer";
+
+import { FlexWrapper } from "senf-atomic-design-system";
+import WorkspaceContainer from "../components/WorkspaceContainer";
+import Panel from "../components/layout/Panel";
+
 const RightContainer = styled.div`
   position: fixed;
   left: 0;
@@ -87,7 +92,14 @@ const Home = () => {
       const user2 = user.userId;
       const id = user1 > user2 ? `${user1 + user2}` : `${user2 + user1}`;
 
-      const msgsRef = collection(db, "messages", id, "chat");
+      const msgsRef = collection(
+        db,
+        "workspace",
+        "generalMessages",
+        "messages",
+        id,
+        "chat"
+      );
       const q = query(msgsRef, orderBy("createdAt", "asc"));
 
       onSnapshot(q, (querySnapshot) => {
@@ -99,13 +111,18 @@ const Home = () => {
       });
 
       // get last msg between logged in user and selected user
-      const docSnap = await getDoc(doc(db, "lastMsg", id));
+      const docSnap = await getDoc(
+        doc(db, "workspace", "generalMessages", "lastMsg", id)
+      );
       // if last message exists and msg is from selected user
       if (docSnap.data() && docSnap.data().from !== user1) {
         // update last message doc, set unread to false
-        await updateDoc(doc(db, "lastMsg", id), {
-          unread: false,
-        });
+        await updateDoc(
+          doc(db, "workspace", "generalMessages", "lastMsg", id),
+          {
+            unread: false,
+          }
+        );
       }
     } else {
       setChat("");
@@ -130,13 +147,16 @@ const Home = () => {
       url = dlUrl;
     }
 
-    await addDoc(collection(db, "messages", id, "chat"), {
-      text,
-      from: user1,
-      to: user2,
-      createdAt: Timestamp.fromDate(new Date()),
-      media: url || "",
-    });
+    await addDoc(
+      collection(db, "workspace", "generalMessages", "messages", id, "chat"),
+      {
+        text,
+        from: user1,
+        to: user2,
+        createdAt: Timestamp.fromDate(new Date()),
+        media: url || "",
+      }
+    );
 
     await updateDoc(doc(db, "users", user1), {
       interactedUsers: arrayUnion(user2),
@@ -146,7 +166,7 @@ const Home = () => {
       interactedUsers: arrayUnion(user1),
     });
 
-    await setDoc(doc(db, "lastMsg", id), {
+    await setDoc(doc(db, "workspace", "generalMessages", "lastMsg", id), {
       text,
       from: user1,
       to: user2,
@@ -169,13 +189,13 @@ const Home = () => {
   };
 
   return (
-    <div style={{ display: "flex", height: "100%", overflow: "hidden" }}>
+    <FlexWrapper height="100%" style={{ overflow: "hidden" }}>
       <MenuSidebar
         currentWorkspace={currentWorkspace}
         setCurrentWorkspace={setCurrentWorkspace}
       />
 
-      <InboxContainer
+      <Panel
         currentWorkspace={currentWorkspace}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
@@ -187,6 +207,33 @@ const Home = () => {
         user1={user1}
         chat={chat}
       />
+      {/* {currentWorkspace === "Meine Nachrichten" ? (
+        <InboxContainer
+          currentWorkspace={currentWorkspace}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          users={users}
+          selectFoundUser={selectFoundUser}
+          newChat={newChat}
+          selectUser={selectUser}
+          user={user}
+          user1={user1}
+          chat={chat}
+        />
+      ) : (
+        <WorkspaceContainer
+          currentWorkspace={currentWorkspace}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          users={users}
+          selectFoundUser={selectFoundUser}
+          newChat={newChat}
+          selectUser={selectUser}
+          user={user}
+          user1={user1}
+          chat={chat}
+        />
+      )} */}
 
       <RightContainer active={chat}>
         {chat ? (
@@ -201,21 +248,19 @@ const Home = () => {
             setImg={setImg}
           />
         ) : (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              height: "100%",
-            }}
+          <FlexWrapper
+            justifyContent="center"
+            alignItems="center"
+            flexDirection="column"
+            height="100%"
+            width="100%"
           >
             <img src={ChatBubbles} width="300px" />
-            <h3 className="no_conv">Select a user to start conversation</h3>
-          </div>
+            <h3 className="no_conv">Select a user to start a conversation</h3>
+          </FlexWrapper>
         )}
       </RightContainer>
-    </div>
+    </FlexWrapper>
   );
 };
 

@@ -1,21 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Navbar from "../Navbar";
-import { Input, Typography } from "senf-atomic-design-system";
-import User from "../User";
+import {
+  Icon,
+  Input,
+  Typography,
+  FlexWrapper,
+  Divider,
+} from "senf-atomic-design-system";
+import User from "./User";
 import { useTranslation } from "react-i18next";
-
-const Wrapper = styled.div`
-  margin-top: 0px;
-  border-right: 3px solid ${({ theme }) => theme.colors.beige.beige10};
-  background-color: ${({ theme }) => theme.colors.beige.beige20};
-  position: absolute;
-  overflow-y: auto;
-  width: 330px;
-  height: 100%;
-  top: 0;
-  left: 70px;
-`;
 
 const Group = styled.div`
   margin: 10px;
@@ -24,6 +17,8 @@ const Group = styled.div`
   background-color: ${({ selected, theme }) =>
     selected ? theme.colors.brown.brown7 : undefined};
   border-bottom: 2px solid white;
+  display: flex;
+  gap: 10px;
 `;
 
 const InboxContainer = ({
@@ -42,36 +37,21 @@ const InboxContainer = ({
 
   const [searchOpen, setSearchOpen] = useState(false);
   return (
-    <Wrapper>
-      <Navbar currentWorkspace={currentWorkspace} />
-
-      <Typography variant="buttonBg">Organisation</Typography>
-
-      <Group>
-        <Typography variant="buttonBg"> # Verantwortlichkeiten</Typography>
-      </Group>
-      <Group>
-        <Typography variant="buttonBg"># To-Do List</Typography>
-      </Group>
-
-      <Typography variant="buttonBg">Gruppen</Typography>
-
-      <Group>
-        <Typography variant="buttonBg"> # Allgemein</Typography>
-      </Group>
-      <Group>
-        <Typography variant="buttonBg"># Planung</Typography>
-      </Group>
-      <Typography variant="buttonBg">Direktnachrichten</Typography>
-
-      <Input
-        type="text"
-        value={searchTerm}
-        placeholder={t("search_for_people")}
-        onChange={(event) => {
-          setSearchTerm(event.target.value);
-        }}
-      />
+    <React.Fragment>
+      <FlexWrapper
+        flexDirection="column"
+        width="calc(100% - 20px)"
+        margin="10px 10px 0px 10px"
+      >
+        <Input
+          type="text"
+          value={searchTerm}
+          placeholder={t("search_for_people")}
+          onChange={(event) => {
+            setSearchTerm(event.target.value);
+          }}
+        />
+      </FlexWrapper>
 
       {searchTerm ? (
         <div className="users_search">
@@ -104,13 +84,17 @@ const InboxContainer = ({
 
       <br />
       {newChat ? (
-        <User
-          key={newChat.userId}
-          user={newChat}
-          selectUser={selectUser}
-          user1={user1}
-          chat={chat}
-        />
+        <React.Fragment>
+          <User
+            key={newChat.userId}
+            user={newChat}
+            selectUser={selectUser}
+            user1={user1}
+            chat={chat}
+          />
+
+          <Divider zIndex={2} />
+        </React.Fragment>
       ) : null}
       {users
         .filter((val) => {
@@ -124,15 +108,18 @@ const InboxContainer = ({
           }
         })
         .map((user) => (
-          <User
-            key={user.userId}
-            user={user}
-            selectUser={selectUser}
-            user1={user1}
-            chat={chat}
-          />
+          <React.Fragment>
+            <User
+              key={user.userId}
+              user={user}
+              selectUser={selectUser}
+              user1={user1}
+              chat={chat}
+            />
+            <Divider zIndex={2} />
+          </React.Fragment>
         ))}
-    </Wrapper>
+    </React.Fragment>
   );
 };
 

@@ -10,17 +10,10 @@ import {
 import {
   doc,
   getDocs,
-  getDoc,
   collection,
-  onSnapshot,
   where,
-  addDoc,
   query,
-  orderBy,
-  deleteDoc,
   setDoc,
-  updateDoc,
-  Timestamp,
 } from "firebase/firestore";
 
 import { auth, db } from "../firebase";
@@ -62,22 +55,9 @@ const Background = styled.div`
 `;
 
 const AuthPage = ({ variant }) => {
-  const [data, setData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    error: null,
-  });
-
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-
-  const { name, email, password, error } = data;
-
-  const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
-  };
 
   const handleSubmitLogin = async (formikLoginStore) => {
     setLoading(true);
