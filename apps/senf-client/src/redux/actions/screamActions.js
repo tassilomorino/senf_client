@@ -48,16 +48,35 @@ export const getScreams = (mapViewport) => async (dispatch) => {
       where("lat", ">", Number(mapViewport.latitude) - 1)
     );
 
-    const querySnapshot = await getDocs(q);
+    const screamsQuerySnapshot = await getDocs(q);
     const screams = [];
-    querySnapshot.forEach((doc) => {
+
+    screamsQuerySnapshot.forEach((doc) => {
       screams.push({
         ...doc.data(),
         screamId: doc.id,
         body: doc.data().body.substr(0, 150),
         color: setColorByTopic(doc.data().Thema),
+        comments: [],
       });
     });
+    const commentsRef = collection(db, "comments");
+
+    const commentsQuerySnapshot = await getDocs(commentsRef);
+    commentsQuerySnapshot.forEach((doc) => {
+      //add comment for each scream
+      const screamIndex = screams.findIndex(
+        (scream) => scream.screamId === doc.data().screamId
+      );
+      if (screamIndex >= 0) {
+        screams[screamIndex].comments.push({
+          ...doc.data(),
+          commentId: doc.id,
+          body: doc.data().body.substr(0, 150),
+        });
+      }
+    });
+
     dispatch({
       type: SET_SCREAMS,
       payload: screams,
