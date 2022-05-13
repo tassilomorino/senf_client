@@ -241,13 +241,26 @@ export default function (state = initialState, action) {
       const listComments = state.scream.comments.filter(
         (comment) => comment.commentId !== action.payload
       );
+      const screamComments = state.scream.comments.filter(
+        (comment) => comment.commentId !== action.payload
+      );
 
       return {
         ...state,
         scream: {
           ...state.scream,
           comments: listComments,
+          commentCount: state.scream.commentCount - 1,
         },
+        screams: state.screams.map((scream) =>
+          scream.screamId === state.scream.screamId
+            ? {
+                ...scream,
+                comments: screamComments,
+                commentCount: scream.commentCount - 1,
+              }
+            : scream
+        ),
       };
 
     case POST_SCREAM:
