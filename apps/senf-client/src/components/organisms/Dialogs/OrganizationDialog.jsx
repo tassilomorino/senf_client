@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
+
 import { db } from "../../../firebase";
 import { useParams } from "react-router";
 
