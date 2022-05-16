@@ -6,9 +6,8 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 //firebase
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-import "firebase/compat/storage";
+import { db } from "../../../../firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 //Components
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
@@ -34,6 +33,7 @@ import Navigation from "../Components/Navigation";
 import { getOrganizations } from "../../../../redux/actions/organizationActions";
 import ListItemsEdit from "../Components/ListItemsEdit";
 import ToggleStatusComponent from "../Components/ToggleStatusComponent";
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -77,17 +77,17 @@ const CreateOrganizationPreview = ({
 
   useEffect(() => {
     async function fetchData() {
-      const db = firebase.firestore();
+      const ref = doc(
+        db,
+        "organizations",
+        localStorage.getItem("createOrganizationId")
+      );
+      const DocumentSnapshot = await getDoc(ref);
 
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createOrganizationId"))
-        .get();
-
-      if (!ref.exists) {
+      if (!DocumentSnapshot.exists()) {
         console.log("No such document!");
       } else {
-        const data = ref.data();
+        const data = DocumentSnapshot.data();
         if (
           !data.status ||
           data.status === "deactivated" ||
@@ -110,24 +110,23 @@ const CreateOrganizationPreview = ({
   }, []);
 
   const handleArchive = async () => {
-    const db = firebase.firestore();
     setStatus(false);
 
     if (
       typeof Storage !== "undefined" &&
       localStorage.getItem("createOrganizationId")
     ) {
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createOrganizationId"));
-
-      return ref.update({ status: "deactivated" }).then(() => {});
+      const ref = doc(
+        db,
+        "organizations",
+        localStorage.getItem("createOrganizationId")
+      );
+      await updateDoc(ref, { status: "deactivated" });
     } else {
     }
   };
 
   const handlePublish = async () => {
-    const db = firebase.firestore();
     setStatus(true);
 
     if (localStorage.getItem("createOrganizationPostEdit") !== "true") {
@@ -138,11 +137,13 @@ const CreateOrganizationPreview = ({
       typeof Storage !== "undefined" &&
       localStorage.getItem("createOrganizationId")
     ) {
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createOrganizationId"));
+      const ref = doc(
+        db,
+        "organizations",
+        localStorage.getItem("createOrganizationId")
+      );
 
-      return ref.update({ status: "active" }).then(() => {
+      await updateDoc(ref, { status: "active" }).then(() => {
         if (localStorage.getItem("createOrganizationPostEdit") !== "true") {
           setTimeout(() => {
             setClose();

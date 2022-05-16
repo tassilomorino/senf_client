@@ -11,9 +11,7 @@ import * as yup from "yup";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
 //firebase
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-import "firebase/compat/storage";
+import { db } from "../../../../firebase";
 
 import { useOnClickOutside } from "../../../../hooks/useOnClickOutside";
 import {
@@ -25,6 +23,7 @@ import {
 } from "../styles/sharedStyles";
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const CreateOrganizationPage1 = ({
   onClickNext,
@@ -75,17 +74,18 @@ const CreateOrganizationPage1 = ({
     formik.setFieldTouched("title", true);
 
     async function fetchData() {
-      const db = firebase.firestore();
+      const ref = doc(
+        db,
+        "organizations",
+        localStorage.getItem("createProjectRoomOrganizationId")
+      );
 
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createOrganizationId"))
-        .get();
+      const docSnapshot = await getDoc(ref);
 
-      if (!ref.exists) {
+      if (!docSnapshot.exists()) {
         console.log("No such document!");
       } else {
-        const data = ref.data();
+        const data = docSnapshot.data();
         setTitle(data.title);
 
         formik.setFieldValue("title", data.title);
@@ -104,8 +104,6 @@ const CreateOrganizationPage1 = ({
   const handleNext = async () => {
     setNextClicked(true);
 
-    const db = firebase.firestore();
-
     if (
       typeof Storage !== "undefined" &&
       localStorage.getItem("createOrganizationId")
@@ -115,20 +113,18 @@ const CreateOrganizationPage1 = ({
         title: formik.values.title,
         description: formik.values.description,
       };
-
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createOrganizationId"));
-
-      return ref.update(updateProject).then(() => {
-        setTimeout(() => {
-          setTitle(updateProject.title);
-          if (localStorage.getItem("createOrganizationPostEdit") === "true") {
-            set(pagesData.length - 1);
-          } else {
-            onClickNext();
-          }
-        }, 200);
+      const ref = doc(
+        db,
+        "organizations",
+        localStorage.getItem("createProjectRoomOrganizationId")
+      );
+      await updateDoc(ref, updateProject).then(() => {
+        setTitle(updateProject.title);
+        if (localStorage.getItem("createOrganizationPostEdit") === "true") {
+          set(pagesData.length - 1);
+        } else {
+          onClickNext();
+        }
       });
     }
   };
