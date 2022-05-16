@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-import "firebase/compat/storage";
+import { getDownloadURL, getStorage, ref } from "firebase/storage";
+
 import { StyledH2, StyledImg } from "../../../../styles/GlobalStyle";
 import ExpandButton from "../../../atoms/CustomButtons/ExpandButton";
 import setIconByOrganizationType from "../../../../data/setIconByOrganizationType";
@@ -184,13 +183,16 @@ export const InlineOrganizationCard = ({
         setOrganizationImage(image);
       }
 
-      const db = firebase.firestore();
-      const storageRef = firebase.storage().ref();
-      storageRef
-        .child(`/organizationsData/${organizationId}/logo/logo`)
-        .getDownloadURL()
+      const storage = getStorage();
+      const storageRef = ref(
+        storage,
+        `/organizationsData/${organizationId}/logo/logo`
+      );
+      getDownloadURL(storageRef)
         .then(onResolve)
-        .catch(console.log("error, no image in InlineOrganizationCard"));
+        .catch(() => {
+          console.log("error, no image in InlineOrganizationCard");
+        });
     }
     fetch();
   }, [organizationId]);
