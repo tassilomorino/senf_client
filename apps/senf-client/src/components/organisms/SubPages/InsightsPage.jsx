@@ -14,8 +14,6 @@ import DistrictsCover from "../../../images/insightsCovers/districts-cover.jpg";
 import KeywordsCover from "../../../images/insightsCovers/keywords-cover.jpg";
 import AgegroupsCover from "../../../images/insightsCovers/agegroups-cover.jpg";
 
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
 import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
@@ -39,6 +37,10 @@ import { MenuData } from "../../../data/MenuData";
 
 import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
+//firebase
+
+import { db } from "../../../firebase";
+import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 
 const CoverImg = styled.img`
   width: 100%;
@@ -63,7 +65,7 @@ const ListWrapper = styled.div`
 
 const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
   const { t } = useTranslation();
-  const db = firebase.firestore();
+
   const [open, setOpen] = useState(false);
 
   const [screams, setScreams] = useState("");
@@ -127,20 +129,17 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
 
   //const mapViewport = useSelector((state) => state.data.mapViewport);
   const fetchDataScreams = async () => {
-    const ref = projectRoomId
-      ? await db
-          .collection("screams")
-          .where("projectRoomId", "==", projectRoomId)
-          .get()
-      : await db
-          .collection("screams")
-          /*   .where("lat", "<", Number(mapViewport.latitude) + 1)
-      .where("lat", ">", Number(mapViewport.latitude) - 1) */
-
-          .get();
+    let querySnapshot;
+    let screamsRef = collection(db, "screams");
+    if (projectRoomId) {
+      const q = query(screamsRef, where("projectRoomId", "==", projectRoomId));
+      querySnapshot = await getDocs(q);
+    } else {
+      querySnapshot = await getDocs(screamsRef);
+    }
 
     const screams = [];
-    ref.docs.forEach((doc) => {
+    querySnapshot.forEach((doc) => {
       const docData = {
         likeCount: doc.data().likeCount,
         Thema: doc.data().Thema,
@@ -154,12 +153,16 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
   };
 
   const fetchDataLikes = async () => {
-    const ref = await db.collection("likes").orderBy("createdAt", "desc").get();
-    const likesLength = ref.size;
-    setLikesLength(likesLength);
+    /*  const ref = await db.collection("likes").orderBy("createdAt", "desc").get();
+    const likesLength = ref.size; */
+
+    let likesRef = collection(db, "likes");
+    const q = query(likesRef, orderBy("createdAt", "desc"));
+    const querySnapshot = await getDocs(q);
+    setLikesLength(querySnapshot.size);
 
     const likes = [];
-    ref.docs.forEach((doc) => {
+    querySnapshot.forEach((doc) => {
       const docData = {
         age: doc.data().age,
         Thema: doc.data().Thema,
@@ -170,47 +173,58 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
   };
 
   const fetchDataComments = async () => {
-    const ref = await db
-      .collection("comments")
-      .orderBy("createdAt", "desc")
-      .get();
-    const commentsLength = ref.size;
-    setCommentsLength(commentsLength);
+    const commentsRef = collection(db, "comments");
+    const q = query(commentsRef, orderBy("createdAt", "desc"));
+    const querySnapshot = await getDocs(q);
+    setCommentsLength(querySnapshot.size);
   };
 
   const fetchDataProjectRoom = async () => {
     const screamIds = [];
     const comments = [];
     const likes = [];
-    const screamsRef = await db
+    /*  const screamsRef = await db
       .collection("screams")
       .where("projectRoomId", "==", projectRoomId)
       .get();
+ */
+    const screamsRef = collection(db, "screams");
+    const q = query(screamsRef, where("projectRoomId", "==", projectRoomId));
+    const querySnapshot = await getDocs(q);
 
-    const screamsRefSize = screamsRef.size;
-    screamsRef.docs.forEach(async (doc) => {
+    const screamsRefSize = querySnapshot.size;
+    querySnapshot.forEach(async (doc) => {
       screamIds.push(doc.id);
 
-      const commentsRef = await db
-        .collection("comments")
-        .where("screamId", "==", doc.id)
-        .orderBy("createdAt", "desc")
-        .get();
+      const commentsRef = collection(db, "comments");
+      const q = query(
+        commentsRef,
+        where("screamId", "==", doc.id),
+        orderBy("createdAt", "desc")
+      );
+      const querySnapshot = await getDocs(q);
 
-      commentsRef.forEach((doc) => {
+      querySnapshot.forEach((doc) => {
         const docData = {
           Thema: doc.data().Thema,
         };
         comments.push(docData);
       });
 
-      const ref = await db
+      /* const ref = await db
         .collection("likes")
         .where("screamId", "==", doc.id)
         .orderBy("createdAt", "desc")
-        .get();
+        .get(); */
+      const likesRef = collection(db, "likes");
+      const likesQuery = query(
+        likesRef,
+        where("screamId", "==", doc.id),
+        orderBy("createdAt", "desc")
+      );
+      const likesSnapshot = await getDocs(likesQuery);
 
-      ref.forEach((doc) => {
+      likesSnapshot.forEach((doc) => {
         const docData = {
           age: doc.data().age,
           Thema: doc.data().Thema,
