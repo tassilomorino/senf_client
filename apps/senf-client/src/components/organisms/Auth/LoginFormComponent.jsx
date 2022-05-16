@@ -70,7 +70,7 @@ const LoginFormComponent = ({
       const user = result.user;
       const docRef = doc(db, "users", user.uid);
       const docSnapshot = await getDoc(docRef);
-      if (!docSnapshot.exists) {
+      if (!docSnapshot.exists()) {
         createUserInDatabase(user);
       } else {
         console.log("user already exists");
@@ -83,7 +83,8 @@ const LoginFormComponent = ({
       const email = error.email;
       // The AuthCredential type that was used.
       const credential = GoogleAuthProvider.credentialFromError(error);
-      console.log(errorCode, errorMessage, email, credential);
+      throw new Error(errorCode, errorMessage, email, credential);
+
       // ...
     }
   };
