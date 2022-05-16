@@ -88,7 +88,7 @@ export const openOrganizationFunc =
 export const loadOrganizationData = (organizationId) => async (dispatch) => {
   const docRef = doc(db, `organizations/${organizationId}`);
   const organizationsDocSnapshot = await getDoc(docRef);
-  if (!organizationsDocSnapshot.exists) {
+  if (!organizationsDocSnapshot.exists()) {
     window.history.pushState(null, null, "/");
   } else {
     let organization = organizationsDocSnapshot.data();

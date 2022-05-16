@@ -27,7 +27,7 @@ import {
 export const getComment = (commentId) => async (dispatch) => {
   const commentRef = doc(db, `comments/${commentId}`);
   const commentDocSnapshot = await getDoc(commentRef);
-  if (!commentDocSnapshot.exists) {
+  if (!commentDocSnapshot.exists()) {
     console.log("Comment not found");
   } else {
     const commentData = commentDocSnapshot.data();
@@ -44,7 +44,7 @@ export const submitComment =
   (screamId, commentData, user) => async (dispatch) => {
     const screamDocRef = doc(db, `screams/${screamId}`);
     const screamDocSnapshot = await getDoc(screamDocRef);
-    if (!screamDocSnapshot.exists) {
+    if (!screamDocSnapshot.exists()) {
       console.log("scream not found");
     } else {
       const ageCapture =
@@ -75,12 +75,12 @@ export const deleteComment =
   (commentId, user, screamId, isAdmin, isModerator) => async (dispatch) => {
     const commentRef = doc(db, `comments/${commentId}`);
     const commentDocSnapshot = await getDoc(commentRef);
-    if (!commentDocSnapshot.exists) {
+    if (!commentDocSnapshot.exists()) {
       console.log("Comment not found");
     } else {
       const screamDocRef = doc(db, `screams/${screamId}`);
       const screamDocSnapshot = await getDoc(screamDocRef);
-      if (!screamDocSnapshot.exists) {
+      if (!screamDocSnapshot.exists()) {
         console.log("Scream not found");
       } else {
         if (

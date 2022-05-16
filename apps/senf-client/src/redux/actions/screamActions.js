@@ -284,7 +284,7 @@ export const deleteScream =
       const docRef = doc(db, `screams/${screamId}`);
       const scream = await getDoc(docRef);
 
-      if (!scream.exists) {
+      if (!scream.exists()) {
         console.log("Scream not found");
       }
       // else if (doc.data().userHandle !== user.handle) {
@@ -318,7 +318,7 @@ export const getUserEmail = (userId) => async (dispatch) => {
   try {
     const docRef = doc(db, "users", userId, "Private", userId);
     const docSnap = await getDoc(docRef);
-    if (docSnap.exists) {
+    if (docSnap.exists()) {
       dispatch({
         type: SET_SCREAM_USER,
         payload: docSnap.data(),
