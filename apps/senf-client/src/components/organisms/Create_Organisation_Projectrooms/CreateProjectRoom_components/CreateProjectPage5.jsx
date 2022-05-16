@@ -14,10 +14,9 @@ import {
 } from "../styles/sharedStyles";
 
 //firebase
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-import "firebase/compat/storage";
-import "firebase/storage";
+import { db } from "../../../../firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 import CalendarIcon from "../../../../images/icons/calendar.png";
@@ -76,22 +75,23 @@ const CreateProjectPage5 = ({
 
   useEffect(() => {
     async function fetchData() {
-      const db = firebase.firestore();
       if (
         typeof Storage !== "undefined" &&
         localStorage.getItem("createProjectRoomId")
       ) {
-        const ref = await db
-          .collection("organizations")
-          .doc(localStorage.getItem("createProjectRoomOrganizationId"))
-          .collection("projectRooms")
-          .doc(localStorage.getItem("createProjectRoomId"))
-          .get();
+        const ref = doc(
+          db,
+          "organizations",
+          localStorage.getItem("createProjectRoomOrganizationId"),
+          "projectRooms",
+          localStorage.getItem("createProjectRoomId")
+        );
+        const docSnapshot = await getDoc(ref);
 
-        if (!ref.exists) {
+        if (!docSnapshot.exists()) {
           console.log("No such document!");
         } else {
-          const data = ref.data();
+          const data = docSnapshot.data();
           if (data.calendar) {
             setCalendar(data.calendar);
           }
@@ -104,7 +104,6 @@ const CreateProjectPage5 = ({
   const handleNext = async () => {
     setNextClicked(true);
 
-    const db = firebase.firestore();
     if (
       typeof Storage !== "undefined" &&
       localStorage.getItem("createProjectRoomId")
@@ -113,12 +112,14 @@ const CreateProjectPage5 = ({
       const updateProject = {
         calendar: calendar,
       };
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createProjectRoomOrganizationId"))
-        .collection("projectRooms")
-        .doc(localStorage.getItem("createProjectRoomId"));
-      return ref.update(updateProject).then(() => {
+      const ref = doc(
+        db,
+        `organizations/${localStorage.getItem(
+          "createProjectRoomOrganizationId"
+        )}/projectRooms/${localStorage.getItem("createProjectRoomId")}`
+      );
+
+      await updateDoc(ref, updateProject).then(() => {
         setTimeout(() => {
           if (localStorage.getItem("createProjectRoomPostEdit") === "true") {
             set(pagesData.length - 1);
