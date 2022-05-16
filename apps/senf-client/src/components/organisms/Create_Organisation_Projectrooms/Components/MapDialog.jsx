@@ -26,17 +26,13 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { db } from "../../../../firebase";
 import ReactDOM from "react-dom";
 import MapGL from "../../../../util/urbica/react-map-gl.esm";
 import Draw from "../../../../util/urbica/react-map-gl-draw.esm";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import bbox from "@turf/bbox";
-
-//firebase
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-import "firebase/compat/storage";
 
 import styled from "styled-components";
 import {
@@ -48,6 +44,7 @@ import { useTranslation } from "react-i18next";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 import { StyledH2 } from "../../../../styles/GlobalStyle";
 import { isMobileCustom } from "../../../../util/customDeviceDetect";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const MapWrapper = styled.div`
   width: 100%;
@@ -187,7 +184,6 @@ const MapDialog = ({
   };
 
   const handleSave1 = async () => {
-    const db = firebase.firestore();
     if (
       typeof Storage !== "undefined" &&
       localStorage.getItem("createProjectRoomId") &&
@@ -243,12 +239,13 @@ const MapDialog = ({
         centerLong: newLongitude,
         zoom: newZoom,
       };
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createProjectRoomOrganizationId"))
-        .collection("projectRooms")
-        .doc(localStorage.getItem("createProjectRoomId"));
-      return ref.update(updateProject).then(() => {
+      const ref = doc(
+        db,
+        `organizations/${localStorage.getItem(
+          "createProjectRoomOrganizationId"
+        )}/projectRooms/${localStorage.getItem("createProjectRoomId")}`
+      );
+      await updateDoc(ref, updateProject).then(() => {
         setViewport({
           ...viewport,
           pitch: 0,
@@ -256,6 +253,7 @@ const MapDialog = ({
           longitude: newLongitude,
           zoom: newZoom,
         });
+
         // setStep2(true);
 
         setMapOpen(false);
