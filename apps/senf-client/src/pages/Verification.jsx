@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
 //FIREBASE
-import { onAuthStateChanged, onIdTokenChanged, reload } from "firebase/auth";
+import { onIdTokenChanged, reload } from "firebase/auth";
 import { auth } from "../firebase";
 //REDUX STUFF
 import { useSelector, useDispatch } from "react-redux";

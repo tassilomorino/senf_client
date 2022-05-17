@@ -407,7 +407,7 @@ const LoginRegistration = ({ classes }) => {
 
         const actionCodeSettings = {
           //change to senf.koeln on production
-          url: "http://localhost:3000/verify",
+          url: "https://senf.koeln/verify",
         };
 
         await sendEmailVerification(auth.currentUser, actionCodeSettings);
