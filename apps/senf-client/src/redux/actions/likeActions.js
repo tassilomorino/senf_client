@@ -1,121 +1,142 @@
-/** @format */
-
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
 import moment from "moment";
 import setColorByTopic from "../../data/setColorByTopic";
 
-import { LIKE_SCREAM, UNLIKE_SCREAM, VOTED_TRUE, VOTED_FALSE } from "../types";
+import {
+  LIKE_SCREAM,
+  UNLIKE_SCREAM,
+  VOTED_TRUE,
+  VOTED_FALSE,
+  SET_ERRORS,
+} from "../types";
+import { db } from "../../firebase";
+import {
+  collection,
+  where,
+  query,
+  getDocs,
+  doc,
+  getDoc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  limit,
+} from "firebase/firestore";
 
 // Like a scream
 export const likeScream = (screamId, user) => async (dispatch) => {
-  const db = firebase.firestore();
-  const screamDocument = db.collection("screams").doc(screamId);
-  const doc = await screamDocument.get();
+  const screamDocRef = doc(db, `screams/${screamId}`);
+  const screamDocSnapshot = await getDoc(screamDocRef);
 
-  const commentsRef = await db
-    .collection("comments")
-    .where("screamId", "==", screamId)
-    .orderBy("createdAt", "desc")
-    .get();
+  const likeRef = collection(db, "likes");
+  const likeQuery = query(
+    likeRef,
+    where("screamId", "==", screamId),
+    where("userId", "==", user.userId),
+    limit(1)
+  );
+  const likeQuerySnapshot = await getDocs(likeQuery);
 
-  const likeDocument = await db
-    .collection("likes")
-    .where("userHandle", "==", user.handle)
-    .where("screamId", "==", screamId)
-    .limit(1)
-    .get();
+  if (!screamDocSnapshot.exists()) {
+    dispatch({
+      type: SET_ERRORS,
+      payload: {
+        message: "Scream not found",
+      },
+    });
+  }
 
-  if (!doc.exists) {
-    console.log("No such document!");
+  const scream = {
+    ...screamDocSnapshot.data(),
+
+    screamId: screamDocSnapshot.id,
+  };
+
+  const ageCapture =
+    user.age !== "" ? moment().diff(moment(user.age, "YYYY"), "years") : "";
+  if (!likeQuerySnapshot.empty) {
+    console.log("already liked");
   } else {
-    const scream = doc.data();
-    scream.screamId = doc.id;
-    scream.color = setColorByTopic(doc.data().Thema);
-    scream.comments = [];
+    scream.likeCount++;
 
-    commentsRef.forEach((doc) =>
-      scream.comments.push({ ...doc.data(), commentId: doc.id })
-    );
-
-    const ageCapture =
-      user.age !== "" ? moment().diff(moment(user.age, "YYYY"), "years") : "";
-
-    if (likeDocument.exists) {
-      console.log("already liked");
-    } else {
-      db.collection("likes").add({
-        screamId: screamId,
-        userHandle: user.handle,
-        userId: user.userId,
-        createdAt: new Date().toISOString(),
-        sex: user.sex,
-        age: ageCapture,
-        Thema: doc.data().Thema,
-      });
-
-      scream.likeCount++;
-      screamDocument.update({ likeCount: scream.likeCount });
-
+    dispatch({
+      type: LIKE_SCREAM,
+      payload: scream,
+    });
+    dispatch({
+      type: VOTED_TRUE,
+    });
+    setTimeout(() => {
       dispatch({
-        type: LIKE_SCREAM,
-        payload: scream,
+        type: VOTED_FALSE,
       });
-      dispatch({
-        type: VOTED_TRUE,
-      });
-      setTimeout(() => {
-        dispatch({
-          type: VOTED_FALSE,
-        });
-      }, 2000);
-    }
+    }, 2000);
+    await addDoc(collection(db, "likes"), {
+      screamId: screamId,
+      userHandle: user.handle,
+      userId: user.userId,
+      createdAt: new Date().toISOString(),
+      sex: user.sex,
+      age: ageCapture,
+      Thema: screamDocSnapshot.data().Thema,
+    });
+
+    await updateDoc(screamDocRef, {
+      likeCount: scream.likeCount,
+    });
   }
 };
+
 // Unlike an idea
 export const unlikeScream = (screamId, user) => async (dispatch) => {
-  console.log(screamId, user);
-  const db = firebase.firestore();
-  const screamDocument = db.collection("screams").doc(screamId);
-  const doc = await screamDocument.get();
+  const screamDocRef = doc(db, `screams/${screamId}`);
+  const screamDocSnapshot = await getDoc(screamDocRef);
 
-  const commentsRef = await db
-    .collection("comments")
-    .where("screamId", "==", screamId)
-    .orderBy("createdAt", "desc")
-    .get();
+  const likeRef = collection(db, "likes");
+  const likeQuery = query(
+    likeRef,
+    where("screamId", "==", screamId),
+    where("userId", "==", user.userId),
+    limit(1)
+  );
+  const likeQuerySnapshot = await getDocs(likeQuery);
 
-  const likeDocument = await db
-    .collection("likes")
-    .where("userHandle", "==", user.handle)
-    .where("screamId", "==", screamId)
-    .limit(1)
-    .get();
+  if (!screamDocSnapshot.exists()) {
+    dispatch({
+      type: SET_ERRORS,
+      payload: {
+        message: "Scream not found",
+      },
+    });
+  }
 
-  if (!doc.exists) {
-    console.log("No such document!");
+  const scream = {
+    ...screamDocSnapshot.data(),
+
+    screamId: screamDocSnapshot.id,
+  };
+
+  if (likeQuerySnapshot.empty) {
+    console.log("not liked");
   } else {
-    const scream = doc.data();
-    scream.screamId = doc.id;
-    scream.color = setColorByTopic(doc.data().Thema);
-    scream.comments = [];
+    scream.likeCount--;
 
-    commentsRef.forEach((doc) =>
-      scream.comments.push({ ...doc.data(), commentId: doc.id })
-    );
-
-    if (likeDocument.docs[0].id === undefined) {
-      console.log("scream not liked");
-    } else {
-      db.collection("likes").doc(likeDocument.docs[0].id).delete();
-
-      scream.likeCount--;
-      screamDocument.update({ likeCount: scream.likeCount });
-
+    dispatch({
+      type: UNLIKE_SCREAM,
+      payload: scream,
+    });
+    dispatch({
+      type: VOTED_TRUE,
+    });
+    setTimeout(() => {
       dispatch({
-        type: UNLIKE_SCREAM,
-        payload: scream,
+        type: VOTED_FALSE,
       });
-    }
+    }, 2000);
+
+    await deleteDoc(doc(db, "likes", likeQuerySnapshot.docs[0].id));
+
+    await updateDoc(screamDocRef, {
+      likeCount: scream.likeCount,
+    });
   }
 };

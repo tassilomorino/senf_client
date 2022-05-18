@@ -1,6 +1,6 @@
 /** @format */
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
+
+import { db } from "../../firebase";
 
 import { clearErrors } from "./errorsActions";
 
@@ -14,43 +14,41 @@ import {
   SUBMIT_COMMENT,
 } from "../types";
 import moment from "moment";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  updateDoc,
+} from "firebase/firestore";
 
-const reloadScream = true;
 //get the data for one comment
 export const getComment = (commentId) => async (dispatch) => {
-  const db = firebase.firestore();
-  dispatch({ type: LOADING_UI });
-
-  const ref = await db.collection("comments").doc(commentId).get();
-
-  if (!ref.exists) {
+  const commentRef = doc(db, `comments/${commentId}`);
+  const commentDocSnapshot = await getDoc(commentRef);
+  if (!commentDocSnapshot.exists()) {
     console.log("Comment not found");
   } else {
-    const commentData = ref.data();
-    commentData.id = ref.id;
-
+    const commentData = commentDocSnapshot.data();
+    commentData.id = commentDocSnapshot.id;
     dispatch({
       type: SET_COMMENT,
       payload: commentData,
     });
+    dispatch({ type: STOP_LOADING_UI });
   }
-  dispatch({ type: STOP_LOADING_UI });
 };
 // Submit a comment to an idea
 export const submitComment =
   (screamId, commentData, user) => async (dispatch) => {
-    const db = firebase.firestore();
-    const ref = db.collection("screams").doc(screamId);
-    const doc = await ref.get();
-
-    if (!doc.exists) {
-      console.log("No such document!");
+    const screamDocRef = doc(db, `screams/${screamId}`);
+    const screamDocSnapshot = await getDoc(screamDocRef);
+    if (!screamDocSnapshot.exists()) {
+      console.log("scream not found");
     } else {
-      ref.update({ commentCount: doc.data().commentCount + 1 });
-
       const ageCapture =
         user.age !== "" ? moment().diff(moment(user.age, "YYYY"), "years") : "";
-
       const newComment = {
         body: commentData.body,
         createdAt: new Date().toISOString(),
@@ -59,60 +57,47 @@ export const submitComment =
         userId: user.userId,
         sex: user.sex,
         age: ageCapture,
-        Thema: doc.data().Thema,
+        Thema: screamDocSnapshot.data().Thema,
       };
-      await db.collection("comments").add(newComment);
-
       dispatch({
         type: SUBMIT_COMMENT,
         payload: newComment,
       });
-
-      dispatch(openScreamFunc(screamId));
+      await addDoc(collection(db, "comments"), newComment);
+      await updateDoc(screamDocRef, {
+        commentCount: screamDocSnapshot.data().commentCount + 1,
+      });
     }
   };
 
 //delete your comment
 export const deleteComment =
   (commentId, user, screamId, isAdmin, isModerator) => async (dispatch) => {
-    const db = firebase.firestore();
-    const ref = db.collection("comments").doc(commentId);
-    const doc = await ref.get();
-
-    const screamDocument = db.collection("screams").doc(screamId);
-    const screamDoc = await screamDocument.get();
-
-    const commentsRef = await db
-      .collection("comments")
-      .where("screamId", "==", screamId)
-      .orderBy("createdAt", "desc")
-      .get();
-
-    if (!doc.exists) {
-      console.log("No such document!");
-    } else if (
-      doc.data().userHandle === user.handle ||
-      isAdmin ||
-      isModerator
-    ) {
-      const scream = screamDoc.data();
-      scream.commentCount--;
-      screamDocument.update({ commentCount: scream.commentCount });
-      scream.comments = [];
-      commentsRef.forEach((doc) =>
-        scream.comments.push({ ...doc.data(), commentId: doc.id })
-      );
-
-      ref.delete();
-      dispatch({
-        type: DELETE_COMMENT,
-        payload: commentId,
-      });
-
-      dispatch(openScreamFunc(screamId));
+    const commentRef = doc(db, `comments/${commentId}`);
+    const commentDocSnapshot = await getDoc(commentRef);
+    if (!commentDocSnapshot.exists()) {
+      console.log("Comment not found");
     } else {
-      console.log(doc.data().userHandle, user.handle, "not your comment");
-      // return res.status(403).json({ error: "Unauthorized" });
+      const screamDocRef = doc(db, `screams/${screamId}`);
+      const screamDocSnapshot = await getDoc(screamDocRef);
+      if (!screamDocSnapshot.exists()) {
+        console.log("Scream not found");
+      } else {
+        if (
+          user.userId === commentDocSnapshot.data().userId ||
+          isAdmin ||
+          isModerator
+        ) {
+          dispatch({
+            type: DELETE_COMMENT,
+            payload: commentId,
+          });
+
+          await deleteDoc(commentRef);
+          await updateDoc(screamDocRef, {
+            commentCount: screamDocSnapshot.data().commentCount - 1,
+          });
+        }
+      }
     }
-    dispatch(clearErrors());
   };

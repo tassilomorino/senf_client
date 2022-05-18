@@ -6,9 +6,8 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 //firebase
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-import "firebase/compat/storage";
+
+import { db } from "../../../../firebase";
 
 //Components
 import Weblink from "../../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
@@ -25,6 +24,7 @@ import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 import { TextField } from "@material-ui/core";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const ButttonsWrapper = styled.div`
   display: flex;
@@ -69,22 +69,22 @@ const CreateProjectPage2 = ({
 
   useEffect(() => {
     async function fetchData() {
-      const db = firebase.firestore();
       if (
         typeof Storage !== "undefined" &&
         localStorage.getItem("createProjectRoomId")
       ) {
-        const ref = await db
-          .collection("organizations")
-          .doc(localStorage.getItem("createProjectRoomOrganizationId"))
-          .collection("projectRooms")
-          .doc(localStorage.getItem("createProjectRoomId"))
-          .get();
-
-        if (!ref.exists) {
+        const ref = doc(
+          db,
+          "organizations",
+          localStorage.getItem("createProjectRoomOrganizationId"),
+          "projectRooms",
+          localStorage.getItem("createProjectRoomId")
+        );
+        const docSnapshot = await getDoc(ref);
+        if (!docSnapshot.exists()) {
           console.log("No such document!");
         } else {
-          const data = ref.data();
+          const data = docSnapshot.data();
 
           if (data.contact) {
             formik.setFieldValue("contact", data.contact);
@@ -107,7 +107,6 @@ const CreateProjectPage2 = ({
   const handleNext = async () => {
     setNextClicked(true);
 
-    const db = firebase.firestore();
     if (
       typeof Storage !== "undefined" &&
       localStorage.getItem("createProjectRoomId")
@@ -119,12 +118,15 @@ const CreateProjectPage2 = ({
         contactTitle: formik.values.contactTitle,
         contact: formik.values.contact,
       };
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createProjectRoomOrganizationId"))
-        .collection("projectRooms")
-        .doc(localStorage.getItem("createProjectRoomId"));
-      return ref.update(updateProject).then(() => {
+
+      const ref = doc(
+        db,
+        `organizations/${localStorage.getItem(
+          "createProjectRoomOrganizationId"
+        )}/projectRooms/${localStorage.getItem("createProjectRoomId")}`
+      );
+
+      await updateDoc(ref, updateProject).then(() => {
         setTimeout(() => {
           if (localStorage.getItem("createProjectRoomPostEdit") === "true") {
             set(pagesData.length - 1);

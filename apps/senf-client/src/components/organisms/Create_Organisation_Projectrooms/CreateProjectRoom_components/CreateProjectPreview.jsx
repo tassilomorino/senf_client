@@ -6,9 +6,7 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 //firebase
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-import "firebase/compat/storage";
+import { db } from "../../../../firebase";
 
 //Components
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
@@ -32,6 +30,7 @@ import { StyledH2 } from "../../../../styles/GlobalStyle";
 import Navigation from "../Components/Navigation";
 import ListItemsEdit from "../Components/ListItemsEdit";
 import ToggleStatusComponent from "../Components/ToggleStatusComponent";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const Wrapper = styled.div`
   display: flex;
@@ -106,19 +105,19 @@ const CreateProjectPagePreview = ({
 
   useEffect(() => {
     async function fetchData() {
-      const db = firebase.firestore();
+      const ref = doc(
+        db,
+        "organizations",
+        localStorage.getItem("createProjectRoomOrganizationId"),
+        "projectRooms",
+        localStorage.getItem("createProjectRoomId")
+      );
+      const docSnapshot = await getDoc(ref);
 
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createProjectRoomOrganizationId"))
-        .collection("projectRooms")
-        .doc(localStorage.getItem("createProjectRoomId"))
-        .get();
-
-      if (!ref.exists) {
+      if (!docSnapshot.exists()) {
         console.log("No such document!");
       } else {
-        const data = ref.data();
+        const data = docSnapshot.data();
         if (
           !data.status ||
           data.status === "deactivated" ||
@@ -141,20 +140,20 @@ const CreateProjectPagePreview = ({
   }, []);
 
   const handleArchive = async () => {
-    const db = firebase.firestore();
     setStatus(false);
 
     if (
       typeof Storage !== "undefined" &&
       localStorage.getItem("createOrganizationId")
     ) {
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createProjectRoomOrganizationId"))
-        .collection("projectRooms")
-        .doc(localStorage.getItem("createProjectRoomId"));
+      const ref = doc(
+        db,
+        `organizations/${localStorage.getItem(
+          "createProjectRoomOrganizationId"
+        )}/projectRooms/${localStorage.getItem("createProjectRoomId")}`
+      );
 
-      return ref.update({ status: "deactivated" }).then(() => {});
+      await updateDoc(ref, { status: "deactivated" }).then(() => {});
     } else {
     }
   };
@@ -163,20 +162,21 @@ const CreateProjectPagePreview = ({
     if (localStorage.getItem("createProjectRoomPostEdit") !== "true") {
       setNextClicked(true);
     }
-    const db = firebase.firestore();
+
     setStatus(true);
 
     if (
       typeof Storage !== "undefined" &&
       localStorage.getItem("createProjectRoomId")
     ) {
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createProjectRoomOrganizationId"))
-        .collection("projectRooms")
-        .doc(localStorage.getItem("createProjectRoomId"));
+      const ref = doc(
+        db,
+        `organizations/${localStorage.getItem(
+          "createProjectRoomOrganizationId"
+        )}/projectRooms/${localStorage.getItem("createProjectRoomId")}`
+      );
 
-      return ref.update({ status: "active" }).then(() => {
+      await updateDoc(ref, { status: "active" }).then(() => {
         if (localStorage.getItem("createProjectRoomPostEdit") !== "true") {
           setTimeout(() => {
             setClose();

@@ -14,10 +14,8 @@ import {
 } from "../styles/sharedStyles";
 
 //firebase
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-import "firebase/compat/storage";
-import "firebase/storage";
+import { db } from "../../../../firebase";
+import { doc, getDoc } from "firebase/firestore";
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 
@@ -62,22 +60,23 @@ const CreateProjectPage4 = ({
 
   useEffect(() => {
     async function fetchData() {
-      const db = firebase.firestore();
       if (
         typeof Storage !== "undefined" &&
         localStorage.getItem("createProjectRoomId")
       ) {
-        const ref = await db
-          .collection("organizations")
-          .doc(localStorage.getItem("createProjectRoomOrganizationId"))
-          .collection("projectRooms")
-          .doc(localStorage.getItem("createProjectRoomId"))
-          .get();
+        const ref = doc(
+          db,
+          "organizations",
+          localStorage.getItem("createProjectRoomOrganizationId"),
+          "projectRooms",
+          localStorage.getItem("createProjectRoomId")
+        );
+        const docSnapshot = await getDoc(ref);
 
-        if (!ref.exists) {
+        if (!docSnapshot.exists()) {
           console.log("No such document!");
         } else {
-          const data = ref.data();
+          const data = docSnapshot.data();
           if (data.geoData) {
             setData(JSON.parse(data.geoData));
           }

@@ -7,10 +7,23 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 //firebase
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-import "firebase/compat/storage";
-import { getDocs, getDoc } from "firebase/firestore";
+
+import { db } from "../../../../firebase";
+import {
+  getDocs,
+  getDoc,
+  collectionGroup,
+  query,
+  orderBy,
+  startAt,
+  endAt,
+  collection,
+  doc,
+  where,
+  arrayRemove,
+  arrayUnion,
+  updateDoc,
+} from "firebase/firestore";
 
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 import {
@@ -108,84 +121,79 @@ const CreateOrganizationPage6 = ({
   const [userList, setUsersList] = useState(null);
 
   const search = async (e) => {
-    const db = firebase.firestore();
     if (e.key === "Enter") {
       const users = [];
       // define queries
 
       if (searchTerm.includes("@")) {
-        const postRef = db.collectionGroup("Private");
+        const postRef = collectionGroup(db, "Private");
+        const q = query(
+          postRef,
+          orderBy("email", "asc"),
+          startAt(searchTerm),
+          endAt(searchTerm + "~")
+        );
+        const emailQuerySnapshot = await getDocs(q);
 
-        const usersRef = await postRef
-          .orderBy("email")
-          .startAt(searchTerm)
-          .endAt(searchTerm + "~")
-          .get();
-
-        // get queries
-        // usersRef.docs.forEach((doc) => {
-        //   users.push(doc.data());
-
-        //   if (usersRef.size === users.length) {
-        //     setUsersList(users);
-        //   }
-        // });
-
-        for (const doc of usersRef.docs) {
+        for (const doc of emailQuerySnapshot.docs) {
           const parentDoc = await getDoc(doc.ref.parent.parent);
-
+          console.log(parentDoc, "parentDoc");
           users.push(parentDoc.data());
 
-          if (usersRef.size === users.length) {
+          if (emailQuerySnapshot.size === users.length) {
             setUsersList(users);
           }
         }
       } else {
-        const postRef = db.collection("users");
-
-        const usersRef = await postRef
-          .orderBy("handle")
-          .startAt(searchTerm)
-          .endAt(searchTerm + "~")
-          .get();
-
-        // get queries
-        usersRef.docs.forEach((doc) => {
+        const postRef = collection(db, "users");
+        const q = query(
+          postRef,
+          orderBy("handle", "asc"),
+          startAt(searchTerm),
+          endAt(searchTerm + "~")
+        );
+        const usersQuerySnapshot = await getDocs(q);
+        usersQuerySnapshot.forEach((doc) => {
           users.push(doc.data());
-
-          if (usersRef.size === users.length) {
-            setUsersList(users);
-          }
         });
+        setUsersList(users);
       }
     }
   };
 
   async function fetchData() {
-    const db = firebase.firestore();
     if (
       typeof Storage !== "undefined" &&
       localStorage.getItem("createOrganizationId")
     ) {
-      const ref = await db
+      /* const ref = await db
         .collection("organizations")
         .doc(localStorage.getItem("createOrganizationId"))
-        .get();
+        .get(); */
+      const ref = doc(
+        db,
+        "organizations",
+        localStorage.getItem("createOrganizationId")
+      );
+      const DocumentSnapshot = await getDoc(ref);
 
-      if (!ref.exists) {
+      if (!DocumentSnapshot.exists()) {
         console.log("No such document!");
       } else {
-        const data = ref.data();
+        const data = DocumentSnapshot.data();
 
         if (data.userIds) {
-          const refUsers = await db
+          /* const refUsers = await db
             .collection("users")
             .where("userId", "in", data.userIds)
             .get();
-
+ */
+          const refUsers = collection(db, "users");
+          const q = query(refUsers, where("userId", "in", data.userIds));
+          const usersQuerySnapshot = await getDocs(q);
           const authorizedUserNamesRaw = [];
 
-          refUsers.docs.forEach((doc) =>
+          usersQuerySnapshot.forEach((doc) =>
             authorizedUserNamesRaw.push({ ...doc.data() })
           );
           setAuthorizedUserNames(authorizedUserNamesRaw);
@@ -204,38 +212,43 @@ const CreateOrganizationPage6 = ({
       alert("You can not remove yourself from the list of moderators");
       return;
     }
-    const db = firebase.firestore();
 
     if (
       typeof Storage !== "undefined" &&
       localStorage.getItem("createOrganizationId")
     ) {
       const update = {
-        userIds: firebase.firestore.FieldValue.arrayRemove(userId),
+        userIds: arrayRemove(userId),
       };
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createOrganizationId"));
-      return ref.update(update).then(() => {
+
+      const ref = doc(
+        db,
+        "organizations",
+        localStorage.getItem("createOrganizationId")
+      );
+
+      await updateDoc(ref, update).then(() => {
         fetchData();
       });
     }
   };
 
   const handleAdd = async (userId) => {
-    const db = firebase.firestore();
-
     if (
       typeof Storage !== "undefined" &&
       localStorage.getItem("createOrganizationId")
     ) {
       const update = {
-        userIds: firebase.firestore.FieldValue.arrayUnion(userId),
+        userIds: arrayUnion(userId),
       };
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createOrganizationId"));
-      return ref.update(update).then(() => {
+
+      const ref = doc(
+        db,
+        "organizations",
+        localStorage.getItem("createOrganizationId")
+      );
+
+      await updateDoc(ref, update).then(() => {
         fetchData();
       });
     }
@@ -243,8 +256,6 @@ const CreateOrganizationPage6 = ({
 
   const handleNext = async () => {
     setNextClicked(true);
-
-    const db = firebase.firestore();
 
     //Remove organizationid from UserArray
     // userRef.update({

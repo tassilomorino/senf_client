@@ -33,11 +33,9 @@ import {
 } from "../../../styles/GlobalStyle";
 import organizationTypes from "../../../data/organizationTypes";
 
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-import "firebase/compat/storage";
 import { truncateString } from "../../../util/helpers";
 import { openOrganizationFunc } from "../../../redux/actions/organizationActions";
+import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
 const ImgWrapper = styled.div`
   /* position: relative;
@@ -149,16 +147,27 @@ const ProjectCard = (props) => {
     function onResolve(logo) {
       setLogo(logo);
     }
-    const storageRef = firebase.storage().ref();
-    storageRef
-      .child(`/organizationsData/${organizationId}/logo/logo`)
-      .getDownloadURL()
-      .then(onResolve);
 
-    storageRef
-      .child(`/organizationsData/${organizationId}/${projectRoomId}/thumbnail`)
-      .getDownloadURL()
-      .then(onResolve1);
+    const storage = getStorage();
+    const storageRef = ref(
+      storage,
+      `/organizationsData/${organizationId}/logo/logo`
+    );
+    getDownloadURL(storageRef)
+      .then(onResolve)
+      .catch(() => {
+        console.log("error, no image in Projectcard.jsx");
+      });
+
+    const storageRef1 = ref(
+      storage,
+      `/organizationsData/${organizationId}/${projectRoomId}/thumbnail`
+    );
+    getDownloadURL(storageRef1)
+      .then(onResolve1)
+      .catch(() => {
+        console.log("error, no image in Projectcard.jsx");
+      });
   }, [organizationId, projectRoomId]);
 
   const pushScreamId = () => {

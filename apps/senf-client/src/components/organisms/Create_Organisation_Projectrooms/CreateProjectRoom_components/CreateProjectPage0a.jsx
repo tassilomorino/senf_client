@@ -10,9 +10,7 @@ import styled from "styled-components";
 import CheckBox from "../../../atoms/CheckBox/CheckBox";
 
 //firebase
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-import "firebase/compat/storage";
+
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 import InfoSwiper from "../Components/InfoSwiper";

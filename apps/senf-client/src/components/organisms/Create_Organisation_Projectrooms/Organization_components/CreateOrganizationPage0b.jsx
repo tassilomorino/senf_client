@@ -6,10 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 //firebase
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-import "firebase/compat/storage";
-
+import { db } from "../../../../firebase";
 import {
   ComponentInnerWrapper,
   ComponentWrapper,
@@ -17,6 +14,7 @@ import {
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 import organizationTypes from "../../../../data/organizationTypes";
+import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
 
 const CoverWrapper = styled.div`
   margin-left: 0%;
@@ -93,17 +91,22 @@ const CreateOrganizationPage1 = ({
 
   useEffect(() => {
     async function fetchData() {
-      const db = firebase.firestore();
-
-      const ref = await db
+      /* const ref = await db
         .collection("organizations")
         .doc(localStorage.getItem("createOrganizationId"))
-        .get();
+        .get(); */
 
-      if (!ref.exists) {
+      const ref = doc(
+        db,
+        "organizations",
+        localStorage.getItem("createProjectRoomOrganizationId")
+      );
+      const docSnapshot = await getDoc(ref);
+
+      if (!docSnapshot.exists()) {
         console.log("No such document!");
       } else {
-        const data = ref.data();
+        const data = docSnapshot.data();
         setOrganizationType(data.organizationType);
       }
     }
@@ -118,7 +121,6 @@ const CreateOrganizationPage1 = ({
 
   const handleNext = async () => {
     setNextClicked(true);
-    const db = firebase.firestore();
 
     if (
       typeof Storage !== "undefined" &&
@@ -129,11 +131,12 @@ const CreateOrganizationPage1 = ({
         organizationType: organizationType,
       };
 
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createOrganizationId"));
-
-      return ref.update(updateProject).then(() => {
+      const ref = doc(
+        db,
+        "organizations",
+        localStorage.getItem("createProjectRoomOrganizationId")
+      );
+      await updateDoc(ref, updateProject).then(() => {
         setTimeout(() => {
           if (localStorage.getItem("createOrganizationPostEdit") === "true") {
             set(pagesData.length - 1);
@@ -151,19 +154,17 @@ const CreateOrganizationPage1 = ({
         status: "uncompleted",
       };
 
-      const userRef = await db.collection("users").doc(userId);
-      const organizatinRef = await db.collection("organizations");
+      const userRef = doc(db, "users", userId);
+      const organizatinRef = collection(db, "organizations");
 
-      organizatinRef
-        .add(newOrganization)
+      addDoc(organizatinRef, newOrganization)
         .then((doc) => {
           localStorage.setItem("createOrganizationId", doc.id);
 
-          userRef.update({
-            organizationId: firebase.firestore.FieldValue.arrayUnion(doc.id),
+          updateDoc(userRef, {
+            organizationId: doc.id,
           });
         })
-
         .then(() => {
           setTimeout(() => {
             onClickNext();

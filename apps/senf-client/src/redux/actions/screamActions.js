@@ -48,16 +48,35 @@ export const getScreams = (mapViewport) => async (dispatch) => {
       where("lat", ">", Number(mapViewport.latitude) - 1)
     );
 
-    const querySnapshot = await getDocs(q);
+    const screamsQuerySnapshot = await getDocs(q);
     const screams = [];
-    querySnapshot.forEach((doc) => {
+
+    screamsQuerySnapshot.forEach((doc) => {
       screams.push({
         ...doc.data(),
         screamId: doc.id,
         body: doc.data().body.substr(0, 150),
         color: setColorByTopic(doc.data().Thema),
+        comments: [],
       });
     });
+    const commentsRef = collection(db, "comments");
+
+    const commentsQuerySnapshot = await getDocs(commentsRef);
+    commentsQuerySnapshot.forEach((doc) => {
+      //add comment for each scream
+      const screamIndex = screams.findIndex(
+        (scream) => scream.screamId === doc.data().screamId
+      );
+      if (screamIndex >= 0) {
+        screams[screamIndex].comments.push({
+          ...doc.data(),
+          commentId: doc.id,
+          body: doc.data().body.substr(0, 150),
+        });
+      }
+    });
+
     dispatch({
       type: SET_SCREAMS,
       payload: screams,
@@ -265,7 +284,7 @@ export const deleteScream =
       const docRef = doc(db, `screams/${screamId}`);
       const scream = await getDoc(docRef);
 
-      if (!scream.exists) {
+      if (!scream.exists()) {
         console.log("Scream not found");
       }
       // else if (doc.data().userHandle !== user.handle) {
@@ -299,7 +318,7 @@ export const getUserEmail = (userId) => async (dispatch) => {
   try {
     const docRef = doc(db, "users", userId, "Private", userId);
     const docSnap = await getDoc(docRef);
-    if (docSnap.exists) {
+    if (docSnap.exists()) {
       dispatch({
         type: SET_SCREAM_USER,
         payload: docSnap.data(),

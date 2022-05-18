@@ -7,10 +7,7 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 //firebase
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-import "firebase/compat/storage";
-
+import { db } from "../../../../firebase";
 import {
   ComponentInnerWrapper,
   ComponentWrapper,
@@ -18,6 +15,7 @@ import {
 import { StyledH2, StyledH3, StyledImg } from "../../../../styles/GlobalStyle";
 import Navigation from "../Components/Navigation";
 import { InlineOrganizationCard } from "../Components/InlineOrganizationCard";
+import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
 
 const CoverWrapper = styled.div`
   left: 0;
@@ -57,12 +55,11 @@ const CreateProjectPage1 = ({ onClickNext, pagesData, index }) => {
   const [selectedOrganizationType, setSelectedOrganizationType] =
     useState(null);
 
-    const userOrganizationIds = useSelector((state) => state.user.organizationId);
-    const myOrganizations = organizations.filter(({ organizationId }) =>
-      userOrganizationIds.includes(organizationId)
-    );
+  const userOrganizationIds = useSelector((state) => state.user.organizationId);
+  const myOrganizations = organizations.filter(({ organizationId }) =>
+    userOrganizationIds.includes(organizationId)
+  );
 
-  
   const handleDropdown = (value) => {
     setSelectedOrganizationId(value);
     const selectedOrganizationName = myOrganizations.filter(
@@ -74,19 +71,18 @@ const CreateProjectPage1 = ({ onClickNext, pagesData, index }) => {
 
   useEffect(() => {
     async function fetchData() {
-      const db = firebase.firestore();
+      const ref = doc(
+        db,
+        `organizations/${localStorage.getItem(
+          "createProjectRoomOrganizationId"
+        )}/projectRooms/${localStorage.getItem("createProjectRoomId")}`
+      );
 
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createProjectRoomOrganizationId"))
-        .collection("projectRooms")
-        .doc(localStorage.getItem("createProjectRoomId"))
-        .get();
-
-      if (!ref.exists) {
+      const docSnapshot = await getDoc(ref);
+      if (!docSnapshot.exists) {
         console.log("No such document!");
       } else {
-        const data = ref.data();
+        const data = docSnapshot.data();
         setSelectedOrganizationId(data.owner);
       }
     }
@@ -102,8 +98,6 @@ const CreateProjectPage1 = ({ onClickNext, pagesData, index }) => {
   const handleNext = async () => {
     setNextClicked(true);
 
-    const db = firebase.firestore();
-
     //CREATING A NEW PROJECTROOM
     const newProject = {
       createdAt: new Date().toISOString(),
@@ -113,20 +107,19 @@ const CreateProjectPage1 = ({ onClickNext, pagesData, index }) => {
       status: "uncompleted",
     };
 
-    await db
-      .collection("organizations")
-      .doc(selectedOrganizationId)
-      .collection("projectRooms")
-      .add(newProject)
+    const ref = collection(
+      db,
+      `organizations/${selectedOrganizationId}/projectRooms`
+    );
+    await addDoc(ref, newProject)
       .then((doc) => {
-        doc.update({ projectRoomId: doc.id });
+        updateDoc(doc, { projectRoomId: doc.id });
         localStorage.setItem(
           "createProjectRoomOrganizationId",
           selectedOrganizationId
         );
         localStorage.setItem("createProjectRoomId", doc.id);
       })
-
       .then(() => {
         setTimeout(() => {
           onClickNext();
