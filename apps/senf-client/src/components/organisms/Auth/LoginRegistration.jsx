@@ -370,6 +370,7 @@ const LoginRegistration = ({ classes }) => {
         ),
         {
           email: formikRegisterStore.values.email,
+          userId: userCredential.user.uid,
         }
       );
     }
@@ -400,9 +401,13 @@ const LoginRegistration = ({ classes }) => {
           formikRegisterStore.values.password
         );
 
-        await createUserInDatabase(userCredential);
+        const actionCodeSettings = {
+          //change to senf.koeln on production
+          url: "https://senf.koeln/verify",
+        };
 
-        await sendEmailVerification(auth.currentUser);
+        await sendEmailVerification(auth.currentUser, actionCodeSettings);
+        await createUserInDatabase(userCredential);
 
         setLoading(false);
 

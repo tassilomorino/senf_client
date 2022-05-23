@@ -123,14 +123,18 @@ document.documentElement.style.setProperty("--vh", `${vh}px`);
 const App = () => {
   const { t } = useTranslation();
 
-  const [isAuthed, setIsAuthed] = useState(false);
-
   const userState = () => {
     onAuthStateChanged(auth, (user) => {
       if (user && user.uid && user.emailVerified) {
         store.dispatch({ type: SET_AUTHENTICATED });
         store.dispatch(getUserData(user.uid));
-        setIsAuthed(true);
+      } else if (
+        user &&
+        user.uid &&
+        user.providerData[0]?.providerId === "google.com"
+      ) {
+        store.dispatch({ type: SET_AUTHENTICATED });
+        store.dispatch(getUserData(user.uid));
       } else if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
@@ -140,16 +144,16 @@ const App = () => {
       }
     });
   };
-  useLayoutEffect(() => {
+  useEffect(() => {
     setViewport();
     const initialMapViewport = store.getState().data.initialMapViewport;
     store.dispatch(getScreams(initialMapViewport));
     store.dispatch(getOrganizations(initialMapViewport));
     store.dispatch(getProjects(initialMapViewport));
   }, []);
-  useLayoutEffect(() => {
+  useEffect(() => {
     userState();
-  }, [isAuthed]);
+  }, []);
 
   const tabletNote = isTablet ? (
     <div className="tabletLandscapeNote">{t("rotate_tablet")} </div>

@@ -45,6 +45,7 @@ export default function (state = initialState, action) {
           {
             userId: state.userId,
             userHandle: state.handle,
+            userId: state.userId,
             screamId: action.payload.screamId,
           },
         ],

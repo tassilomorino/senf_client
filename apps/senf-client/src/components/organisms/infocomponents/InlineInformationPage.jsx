@@ -277,8 +277,7 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const { cookie_settings } = useSelector((state) => state.data);
-  const { loading, openInfoPage } = useSelector((state) => state.UI);
+  const { openInfoPage } = useSelector((state) => state.UI);
 
   const handleOpen = useCallback(() => {
     dispatch(setInfoPageOpen());

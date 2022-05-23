@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
 //FIREBASE
-import { onAuthStateChanged, onIdTokenChanged, reload } from "firebase/auth";
+import { onIdTokenChanged, reload } from "firebase/auth";
 import { auth } from "../firebase";
 //REDUX STUFF
 import { useSelector, useDispatch } from "react-redux";
@@ -83,7 +83,9 @@ const Verification = ({ classes }) => {
     });
     let interval = setInterval(async () => {
       try {
-        await reload(auth.currentUser);
+        if (auth.currentUser) {
+          await reload(auth.currentUser);
+        }
       } catch (error) {
         console.log(error, "error in verification.jsx");
       }

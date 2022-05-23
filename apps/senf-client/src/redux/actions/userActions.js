@@ -1,7 +1,14 @@
 /** @format */
 
-import { signOut, sendPasswordResetEmail } from "firebase/auth";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { signOut, sendPasswordResetEmail, deleteUser } from "firebase/auth";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 import { db, auth } from "../../firebase";
 
 import {
@@ -51,15 +58,34 @@ export const resetPassword = (email) => (dispatch) => {
 export const logoutUser = () => (dispatch) => {
   signOut(auth)
     .then(() => {
-      // Sign-out successful.
+      dispatch({ type: SET_UNAUTHENTICATED });
+      dispatch(closeAccountFunc());
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.log(errorCode, errorMessage, "error during logoutUser");
     });
-  dispatch({ type: SET_UNAUTHENTICATED });
-  dispatch(closeAccountFunc());
+};
+export const deleteUserFromDb = (userId) => async (dispatch) => {
+  if (userId) {
+    try {
+      const currentuser = auth.currentUser;
+      if (currentuser.uid === userId) {
+        const userRef = doc(db, "users", userId);
+        const emailRef = doc(db, "users", userId, "Private", userId);
+
+        await deleteDoc(emailRef);
+        await deleteDoc(userRef);
+
+        await deleteUser(currentuser);
+        dispatch({ type: SET_UNAUTHENTICATED });
+        dispatch(closeAccountFunc());
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 };
 
 export const getUserData = (uid) => async (dispatch) => {

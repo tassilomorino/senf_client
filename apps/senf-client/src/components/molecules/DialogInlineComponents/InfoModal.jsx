@@ -4,7 +4,10 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
-import { logoutUser } from "../../../redux/actions/userActions";
+import {
+  logoutUser,
+  deleteUserFromDb,
+} from "../../../redux/actions/userActions";
 
 // Images
 import {
@@ -172,7 +175,7 @@ const InfoModal = ({
   const dispatch = useDispatch();
 
   const loading = useSelector((state) => state.data.loading);
-  const handle = useSelector((state) => state.user.handle);
+  const userId = useSelector((state) => state.user.userId);
   const organizations = useSelector((state) => state.data.organizations);
 
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
@@ -185,21 +188,7 @@ const InfoModal = ({
   };
 
   const deleteAccount = () => {
-    var link =
-      "mailto:dein@senf.koeln" +
-      "?subject=" +
-      escape("Bitte um Account-loeschung") +
-      "&body=" +
-      escape(
-        "Bitte loeschen Sie meinen Account." +
-          "\n" +
-          "\n" +
-          "Mein Nutzername lautet:" +
-          "\n" +
-          "\n" +
-          handle
-      );
-    window.location.href = link;
+    dispatch(deleteUserFromDb(userId));
   };
 
   const pages = [

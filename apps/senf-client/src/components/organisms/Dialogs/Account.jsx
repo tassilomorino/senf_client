@@ -54,7 +54,7 @@ const Account = ({ dataFinalMap }) => {
   const { t } = useTranslation();
   const loadingMyScreams = useSelector((state) => state.data.loadingMyScreams);
   const [infoOpen, setInfoOpen] = useState(false);
-  const mapViewport = useSelector((state) => state.data.mapViewport);
+
   const mapBounds = useSelector((state) => state.data.mapBounds);
   const selectedTopics = useSelector((state) => state.data.topics);
   const myScreams = useSelector((state) => state.data.myScreams);
@@ -121,14 +121,13 @@ const Account = ({ dataFinalMap }) => {
           type="myIdeas"
           tabLabels={AccountTabData.map((item) => item.text).slice(
             0,
-            myOrganizations.length > 0 ? 3 : 1
+            myOrganizations?.length > 0 ? 3 : 1
           )}
           loading={loadingMyScreams}
           order={order}
           handleClick={handleClick}
           dataFinal={order === 1 ? MyIdeasDataFinal : MyDataFinalOrganizations}
           dataFinalLength={MyIdeasDataFinal.length}
-          viewport={mapViewport}
           handleDropdown={handleDropdown}
           dropdown={dropdown}
           dataFinalMap={dataFinalMap}

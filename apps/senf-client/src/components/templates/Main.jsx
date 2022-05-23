@@ -172,6 +172,7 @@ const Main = () => {
   const initialMapViewport = useSelector(
     (state) => state.data.initialMapViewport
   );
+  const mapViewportRef = useRef(initialMapViewport);
 
   //Initial-ZOOM
   useEffect(() => {
@@ -468,6 +469,7 @@ const Main = () => {
           loading={loading}
           setOrder={setOrder}
           setOpenOrganizationsPage={setOpenOrganizationsPage}
+          mapViewportRef={mapViewportRef}
         />
       )}
 
@@ -479,6 +481,7 @@ const Main = () => {
         openProjectRoom={openProjectRoom}
         geoData={project && openProjectRoom && project.geoData}
         mapRef={mapRef}
+        mapViewportRef={mapViewportRef}
         projects={dataFinalMapProjects}
       />
 
@@ -511,6 +514,7 @@ const Main = () => {
                 setOpenOrganizationsPage={setOpenOrganizationsPage}
                 openOrganizationsPage={openOrganizationsPage}
                 openInsightsPage={openInsightsPage}
+                mapViewportRef={mapViewportRef}
               />
             )}
 

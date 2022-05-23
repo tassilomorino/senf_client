@@ -11,7 +11,12 @@ import {
   FacebookAuthProvider,
   GoogleAuthProvider,
 } from "firebase/auth";
-import { auth } from "../../../firebase";
+import { auth, db } from "../../../firebase";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import GoogleSignInButton from "../../atoms/CustomButtons/GoogleSignInButton";
+import { useDispatch } from "react-redux";
+import { getUserData } from "../../../redux/actions/userActions";
+import { SET_AUTHENTICATED } from "../../../redux/types";
 const LoginFormComponent = ({
   loading,
   classes,
@@ -23,8 +28,29 @@ const LoginFormComponent = ({
   keySubmitRef,
 }) => {
   const { t } = useTranslation();
-
-  const handleFacebook = async () => {
+  const dispatch = useDispatch();
+  async function createUserInDatabase(user) {
+    try {
+      if (user) {
+        await setDoc(doc(db, "users", user.uid), {
+          handle: user.displayName,
+          age: "",
+          sex: "",
+          createdAt: new Date().toISOString(),
+          userId: user.uid,
+          photoUrl: user.photoURL ?? "",
+          providerId: user.providerData[0].providerId ?? "",
+        });
+        await setDoc(doc(db, "users", user.uid, "Private", user.uid), {
+          email: user.providerData[0].email ?? "",
+          userId: user.uid,
+        });
+      }
+    } catch (error) {
+      console.log(error, "error in createUserInDatabase");
+    }
+  }
+  const handleFacebookSignIn = async () => {
     const provider = new FacebookAuthProvider();
     provider.addScope("email");
     await signInWithPopup(auth, provider)
@@ -35,30 +61,42 @@ const LoginFormComponent = ({
         console.log(error.message, "error in facebook provider");
       });
   };
-  const handleGoogle = async () => {
-    const provider = new GoogleAuthProvider();
-    provider.addScope("email");
-    await signInWithPopup(auth, provider)
-      .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        // The signed-in user info.
-        const user = result.user;
-        console.log(user, "user from google provider");
-        // ...
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        console.log(errorCode, errorMessage, email, credential);
-        // ...
-      });
+  const handleGoogleSignIn = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      provider.addScope("email");
+
+      const result = await signInWithPopup(auth, provider);
+
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      // The signed-in user info.
+      const user = result.user;
+
+      const docRef = doc(db, "users", user.uid);
+      const docSnapshot = await getDoc(docRef);
+      if (!docSnapshot.exists() && user) {
+        await createUserInDatabase(user);
+        dispatch({ type: SET_AUTHENTICATED });
+        dispatch(getUserData(user.uid));
+      } else if (user) {
+        console.log("user already exists");
+        dispatch({ type: SET_AUTHENTICATED });
+        dispatch(getUserData(user.uid));
+      }
+    } catch (error) {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.email;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      throw new Error(errorCode, errorMessage, email, credential);
+
+      // ...
+    }
   };
 
   return (
@@ -67,8 +105,8 @@ const LoginFormComponent = ({
         <div className={classes.smallText} onClick={() => handleToggle()}>
           {t("notYetMember")} <span className="Terms">{t("register")}</span>
         </div>
-        <button onClick={handleFacebook}>Facebook signIn</button>
-        <button onClick={handleGoogle}>Google signIn</button>
+
+        <GoogleSignInButton handleClick={handleGoogleSignIn} />
         <TextField
           id="outlined-name"
           name="email"

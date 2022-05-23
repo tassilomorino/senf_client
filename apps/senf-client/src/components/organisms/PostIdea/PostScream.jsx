@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, Fragment, memo } from "react";
+import React, { useState, Fragment, memo, useRef } from "react";
 import { useHistory } from "react-router";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { useTranslation } from "react-i18next";
@@ -152,7 +152,12 @@ const styles = {
   },
 };
 
-const PostScream = ({ classes, loadingProjects, projectsData }) => {
+const PostScream = ({
+  classes,
+  loadingProjects,
+  projectsData,
+  mapViewportRef,
+}) => {
   const dispatch = useDispatch();
   const openScream = useSelector((state) => state.UI.openScream);
   const loading = useSelector((state) => state.data.loading);
@@ -165,7 +170,6 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
-  const mapViewport = useSelector((state) => state.data.mapViewport);
   const initialMapViewport = useSelector(
     (state) => state.data.initialMapViewport
   );
@@ -207,6 +211,8 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
   const [selectedDays, setSelectedDays] = useState([]);
   const [selectedUnix, setSelectedUnix] = useState([]);
 
+  const postScreamMapViewportRef = useRef(null);
+
   const handleOpen = (event) => {
     event.preventDefault();
     const projectSelected = project?.projectRoomId
@@ -232,9 +238,9 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
         }
         if (projectSelected === "") {
           const viewport = {
-            zoom: mapViewport.zoom,
-            latitude: mapViewport.latitude,
-            longitude: mapViewport.longitude,
+            zoom: mapViewportRef.current.zoom,
+            latitude: mapViewportRef.current.latitude,
+            longitude: mapViewportRef.current.longitude,
             transitionDuration: 1000,
           };
           setViewport(viewport);
@@ -333,8 +339,8 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
       locationHeader: address,
       fulladdress,
       neighborhood,
-      lat: viewport.latitude,
-      long: viewport.longitude,
+      lat: postScreamMapViewportRef.current.latitude,
+      long: postScreamMapViewportRef.current.longitude,
       projectRoomId: projectSelected,
       Thema: topic,
       weblinkTitle,
@@ -352,8 +358,13 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
   };
 
   const _onMarkerDragEnd = (newViewport) => {
-    setViewport(newViewport);
-    geocode(newViewport);
+    //setViewport(newViewport);
+    //using ref is not causing constant rerendering on drag
+    postScreamMapViewportRef.current = newViewport;
+
+    setTimeout(() => {
+      geocode(newViewport);
+    }, 250);
 
     setAddressBarClickedState(false);
   };
@@ -566,20 +577,21 @@ const PostScream = ({ classes, loadingProjects, projectsData }) => {
             selectedDays={selectedDays}
           />
         )}
-
-        <PostScreamMap
-          MapHeight={MapHeight}
-          geocode={geocode}
-          _onMarkerDragEnd={_onMarkerDragEnd}
-          geoData={geoData}
-          viewport={viewport}
-          clicked={addressBarClickedState}
-          addressBarClicked={addressBarClicked}
-          locationDecided={locationDecided}
-          onSelected={onSelected}
-          address={address}
-          loadingProjects={loadingProjects}
-        />
+        {viewport && (
+          <PostScreamMap
+            MapHeight={MapHeight}
+            geocode={geocode}
+            _onMarkerDragEnd={_onMarkerDragEnd}
+            geoData={geoData}
+            viewport={viewport}
+            clicked={addressBarClickedState}
+            addressBarClicked={addressBarClicked}
+            locationDecided={locationDecided}
+            onSelected={onSelected}
+            address={address}
+            loadingProjects={loadingProjects}
+          />
+        )}
 
         <PostScreamSelectContainter
           classes={classes}
