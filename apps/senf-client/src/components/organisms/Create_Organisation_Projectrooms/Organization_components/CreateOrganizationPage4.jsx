@@ -100,7 +100,7 @@ const CreateOrganizationPage4 = ({
       const ref = doc(
         db,
         "organizations",
-        localStorage.getItem("createProjectRoomOrganizationId")
+        localStorage.getItem("createOrganizationId")
       );
       const docSnapshot = await getDoc(ref);
 
@@ -138,7 +138,7 @@ const CreateOrganizationPage4 = ({
       const ref = doc(
         db,
         "organizations",
-        localStorage.getItem("createProjectRoomOrganizationId")
+        localStorage.getItem("createOrganizationId")
       );
       await updateDoc(ref, updateProject).then(() => {
         if (localStorage.getItem("createOrganizationPostEdit") === "true") {

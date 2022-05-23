@@ -90,8 +90,8 @@ const CreateOrganizationPage3 = ({
       const storageRef = ref(
         storage,
         `organizationsData/${localStorage.getItem(
-          "createProjectRoomOrganizationId"
-        )}/${localStorage.getItem("createProjectRoomId")}/thumbnail`
+          "createOrganizationId"
+        )}/logo/logo`
       );
       await uploadBytes(storageRef, compressedFile).then((snapshot) => {
         console.log("Uploaded a file!");
@@ -112,8 +112,8 @@ const CreateOrganizationPage3 = ({
     const storageRef = ref(
       storage,
       `organizationsData/${localStorage.getItem(
-        "createProjectRoomOrganizationId"
-      )}/${localStorage.getItem("createProjectRoomId")}/thumbnail`
+        "createOrganizationId"
+      )}/logo/logo`
     );
 
     getDownloadURL(storageRef).then(onResolve, onReject);

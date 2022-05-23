@@ -91,17 +91,9 @@ const CreateOrganizationPage1 = ({
 
   useEffect(() => {
     async function fetchData() {
-      /* const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createOrganizationId"))
-        .get(); */
-
-      const ref = doc(
-        db,
-        "organizations",
-        localStorage.getItem("createProjectRoomOrganizationId")
+      const docSnapshot = await getDoc(
+        doc(db, "organizations", localStorage.getItem("createOrganizationId"))
       );
-      const docSnapshot = await getDoc(ref);
 
       if (!docSnapshot.exists()) {
         console.log("No such document!");
@@ -120,56 +112,60 @@ const CreateOrganizationPage1 = ({
   }, []);
 
   const handleNext = async () => {
-    setNextClicked(true);
+    try {
+      setNextClicked(true);
 
-    if (
-      typeof Storage !== "undefined" &&
-      localStorage.getItem("createOrganizationId")
-    ) {
-      //UPDATING AN EXISTING PROJECTROOM
-      const updateProject = {
-        organizationType: organizationType,
-      };
+      if (
+        typeof Storage !== "undefined" &&
+        localStorage.getItem("createOrganizationId")
+      ) {
+        //UPDATING AN EXISTING PROJECTROOM
+        const updateProject = {
+          organizationType: organizationType,
+        };
 
-      const ref = doc(
-        db,
-        "organizations",
-        localStorage.getItem("createProjectRoomOrganizationId")
-      );
-      await updateDoc(ref, updateProject).then(() => {
-        setTimeout(() => {
-          if (localStorage.getItem("createOrganizationPostEdit") === "true") {
-            set(pagesData.length - 1);
-          } else {
-            onClickNext();
-          }
-        }, 200);
-      });
-    } else {
-      //CREATING A NEW ORGANIZATION
-      const newOrganization = {
-        organizationType: organizationType,
-        userIds: [userId],
-        createdAt: new Date().toISOString(),
-        status: "uncompleted",
-      };
-
-      const userRef = doc(db, "users", userId);
-      const organizatinRef = collection(db, "organizations");
-
-      addDoc(organizatinRef, newOrganization)
-        .then((doc) => {
-          localStorage.setItem("createOrganizationId", doc.id);
-
-          updateDoc(userRef, {
-            organizationId: doc.id,
-          });
-        })
-        .then(() => {
+        const ref = doc(
+          db,
+          "organizations",
+          localStorage.getItem("createOrganizationId")
+        );
+        await updateDoc(ref, updateProject).then(() => {
           setTimeout(() => {
-            onClickNext();
+            if (localStorage.getItem("createOrganizationPostEdit") === "true") {
+              set(pagesData.length - 1);
+            } else {
+              onClickNext();
+            }
           }, 200);
         });
+      } else {
+        //CREATING A NEW ORGANIZATION
+        const newOrganization = {
+          organizationType: organizationType,
+          userIds: [userId],
+          createdAt: new Date().toISOString(),
+          status: "uncompleted",
+        };
+
+        const userRef = doc(db, "users", userId);
+        const organizatinRef = collection(db, "organizations");
+
+        addDoc(organizatinRef, newOrganization)
+          .then((doc) => {
+            localStorage.setItem("createOrganizationId", doc.id);
+
+            updateDoc(userRef, {
+              organizationId: doc.id,
+            });
+          })
+          .then(() => {
+            setTimeout(() => {
+              onClickNext();
+            }, 200);
+          });
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
