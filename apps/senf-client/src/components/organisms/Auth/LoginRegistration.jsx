@@ -375,6 +375,7 @@ const LoginRegistration = ({ classes }) => {
         ),
         {
           email: formikRegisterStore.values.email,
+          userId: userCredential.user.uid,
         }
       );
     }

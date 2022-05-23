@@ -14,6 +14,9 @@ import {
 import { auth, db } from "../../../firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import GoogleSignInButton from "../../atoms/CustomButtons/GoogleSignInButton";
+import { useDispatch } from "react-redux";
+import { getUserData } from "../../../redux/actions/userActions";
+import { SET_AUTHENTICATED } from "../../../redux/types";
 const LoginFormComponent = ({
   loading,
   classes,
@@ -25,6 +28,7 @@ const LoginFormComponent = ({
   keySubmitRef,
 }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   async function createUserInDatabase(user) {
     try {
       if (user) {
@@ -39,6 +43,7 @@ const LoginFormComponent = ({
         });
         await setDoc(doc(db, "users", user.uid, "Private", user.uid), {
           email: user.providerData[0].email ?? "",
+          userId: user.uid,
         });
       }
     } catch (error) {
@@ -68,12 +73,17 @@ const LoginFormComponent = ({
       const token = credential.accessToken;
       // The signed-in user info.
       const user = result.user;
+
       const docRef = doc(db, "users", user.uid);
       const docSnapshot = await getDoc(docRef);
-      if (!docSnapshot.exists()) {
-        createUserInDatabase(user);
-      } else {
+      if (!docSnapshot.exists() && user) {
+        await createUserInDatabase(user);
+        dispatch({ type: SET_AUTHENTICATED });
+        dispatch(getUserData(user.uid));
+      } else if (user) {
         console.log("user already exists");
+        dispatch({ type: SET_AUTHENTICATED });
+        dispatch(getUserData(user.uid));
       }
     } catch (error) {
       // Handle Errors here.
