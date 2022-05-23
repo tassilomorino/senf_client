@@ -6,7 +6,7 @@ import { updateDoc, doc } from "firebase/firestore";
 import { AuthContext } from "../context/auth";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Typography } from "senf-atomic-design-system";
+import { Typography, TertiaryButton, Icon } from "senf-atomic-design-system";
 
 const Nav = styled.nav`
   position: sticky;
@@ -14,26 +14,21 @@ const Nav = styled.nav`
   align-items: center;
   justify-content: space-between;
   height: 70px;
-  width: 100%;
+  width: calc(100% - 0px);
   padding: 0px 10px;
   top: 0;
-  background-color: ${({ theme }) => theme.colors.beige.beige20};
+  background-color: ${({ theme }) => theme.colors.primary.primary75};
   border-bottom: 2px solid ${({ theme }) => theme.colors.white.white100};
+  overflow-x: hidden;
 `;
 const Navbar = ({ currentWorkspace }) => {
-  const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
-
-  const handleSignOut = async () => {
-    await updateDoc(doc(db, "users", user.userId), {
-      isOnline: false,
-    });
-    await signOut(auth);
-    navigate("/login");
-  };
   return (
     <Nav>
       <Typography variant="h3">{currentWorkspace}</Typography>
+      <TertiaryButton
+        iconLeft="Verwaltung"
+        onClick={() => console.log("settings")}
+      />
     </Nav>
   );
 };

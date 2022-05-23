@@ -183,16 +183,30 @@ export default function (state = initialState, action) {
       };
 
     case LIKE_SCREAM:
-    case UNLIKE_SCREAM:
-      let index = state.screams.findIndex(
-        (scream) => scream.screamId === action.payload.screamId
-      );
-      state.screams[index] = action.payload;
-      if (state.scream.screamId === action.payload.screamId) {
-        state.scream = action.payload;
-      }
       return {
         ...state,
+        screams: state.screams.map((scream) =>
+          scream.screamId === action.payload.screamId
+            ? { ...scream, likeCount: scream.likeCount + 1 }
+            : scream
+        ),
+        scream:
+          state.scream?.screamId === action.payload.screamId
+            ? { ...state.scream, likeCount: state.scream.likeCount + 1 }
+            : state.scream,
+      };
+    case UNLIKE_SCREAM:
+      return {
+        ...state,
+        screams: state.screams.map((scream) =>
+          scream.screamId === action.payload.screamId
+            ? { ...scream, likeCount: scream.likeCount - 1 }
+            : scream
+        ),
+        scream:
+          state.scream?.screamId === action.payload.screamId
+            ? { ...state.scream, likeCount: state.scream.likeCount - 1 }
+            : state.scream,
       };
     case DELETE_SCREAM:
       return {
@@ -227,13 +241,26 @@ export default function (state = initialState, action) {
       const listComments = state.scream.comments.filter(
         (comment) => comment.commentId !== action.payload
       );
+      const screamComments = state.scream.comments.filter(
+        (comment) => comment.commentId !== action.payload
+      );
 
       return {
         ...state,
         scream: {
           ...state.scream,
           comments: listComments,
+          commentCount: state.scream.commentCount - 1,
         },
+        screams: state.screams.map((scream) =>
+          scream.screamId === state.scream.screamId
+            ? {
+                ...scream,
+                comments: screamComments,
+                commentCount: scream.commentCount - 1,
+              }
+            : scream
+        ),
       };
 
     case POST_SCREAM:
@@ -261,8 +288,19 @@ export default function (state = initialState, action) {
     case SUBMIT_COMMENT:
       return {
         ...state,
+        screams: state.screams.map((scream) =>
+          scream.screamId === action.payload.screamId
+            ? {
+                ...scream,
+                comments: [action.payload, ...scream.comments],
+                commentCount: scream.commentCount + 1,
+              }
+            : scream
+        ),
         scream: {
           ...state.scream,
+
+          commentCount: state.scream.commentCount + 1,
           comments: [action.payload, ...state.scream.comments],
         },
       };

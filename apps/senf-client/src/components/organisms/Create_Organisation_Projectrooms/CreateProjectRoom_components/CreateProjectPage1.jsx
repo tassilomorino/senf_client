@@ -8,10 +8,7 @@ import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-//firebase
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-import "firebase/compat/storage";
+import { db } from "../../../../firebase";
 
 import { useOnClickOutside } from "../../../../hooks/useOnClickOutside";
 import {
@@ -20,6 +17,7 @@ import {
 } from "../styles/sharedStyles";
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const CreateProjectPage1 = ({
   onClickNext,
@@ -84,19 +82,19 @@ const CreateProjectPage1 = ({
     formik.setFieldTouched("title", true);
 
     async function fetchData() {
-      const db = firebase.firestore();
-
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createProjectRoomOrganizationId"))
-        .collection("projectRooms")
-        .doc(localStorage.getItem("createProjectRoomId"))
-        .get();
-
-      if (!ref.exists) {
+      const ref = doc(
+        db,
+        "organizations",
+        localStorage.getItem("createProjectRoomOrganizationId"),
+        "projectRooms",
+        localStorage.getItem("createProjectRoomId")
+      );
+      const docSnapshot = await getDoc(ref);
+      if (!docSnapshot.exists()) {
         console.log("No such document!");
       } else {
-        const data = ref.data();
+        const data = docSnapshot.data();
+
         setTitle(data.title);
         formik.setFieldValue("title", data.title);
         formik.setFieldValue("brief", data.brief);
@@ -127,8 +125,6 @@ const CreateProjectPage1 = ({
   const handleNext = async () => {
     setNextClicked(true);
 
-    const db = firebase.firestore();
-
     if (
       typeof Storage !== "undefined" &&
       localStorage.getItem("createProjectRoomId")
@@ -147,13 +143,14 @@ const CreateProjectPage1 = ({
           : null,
       };
 
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createProjectRoomOrganizationId"))
-        .collection("projectRooms")
-        .doc(localStorage.getItem("createProjectRoomId"));
+      const ref = doc(
+        db,
+        `organizations/${localStorage.getItem(
+          "createProjectRoomOrganizationId"
+        )}/projectRooms/${localStorage.getItem("createProjectRoomId")}`
+      );
 
-      return ref.update(updateProject).then(() => {
+      await updateDoc(ref, updateProject).then(() => {
         setTimeout(() => {
           if (localStorage.getItem("createProjectRoomPostEdit") === "true") {
             set(pagesData.length - 1);

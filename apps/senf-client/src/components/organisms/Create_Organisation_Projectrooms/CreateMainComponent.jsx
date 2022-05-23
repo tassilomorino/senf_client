@@ -7,8 +7,8 @@ import { useTranslation } from "react-i18next";
 import { useTransition, animated } from "@react-spring/web";
 
 //firebase
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
+import { db } from "../../../firebase";
+
 //Components
 import { PageWrapper } from "./styles/sharedStyles";
 import TopNavigation from "./Components/TopNavigation";
@@ -44,6 +44,7 @@ import {
 } from "../../../redux/actions/projectActions";
 import CreateProjectPage5 from "./CreateProjectRoom_components/CreateProjectPage5";
 import CreateProjectPage0a from "./CreateProjectRoom_components/CreateProjectPage0a";
+import { collection, doc, getDoc } from "firebase/firestore";
 
 const CreateProjectDialog = ({ type }) => {
   const openOrganization = useSelector((state) => state.UI.openOrganization);
@@ -72,7 +73,6 @@ const CreateProjectDialog = ({ type }) => {
 
   useEffect(() => {
     async function fetchData() {
-      const db = firebase.firestore();
       if (openCreateProjectRoom) {
         //IF EDITING A PROJECTROOM
         if (localStorage.getItem("createProjectRoomPostEdit")) {
@@ -86,17 +86,18 @@ const CreateProjectDialog = ({ type }) => {
         ) {
           set(pages.length - 1);
 
-          const ref = await db
-            .collection("organizations")
-            .doc(localStorage.getItem("createProjectRoomOrganizationId"))
-            .collection("projectRooms")
-            .doc(localStorage.getItem("createProjectRoomId"))
-            .get();
-
-          if (!ref.exists) {
+          const ref = doc(
+            db,
+            `organizations/${localStorage.getItem(
+              "createProjectRoomOrganizationId"
+            )}/projectRooms/${localStorage.getItem("createProjectRoomId")}`
+          );
+          const organizationDocSnapshot = await getDoc(ref);
+          console.log(organizationDocSnapshot);
+          if (!organizationDocSnapshot.exists()) {
             console.log("No such document!");
           } else {
-            const data = ref.data();
+            const data = organizationDocSnapshot.data();
             if (data.title) {
               setProjectRoomTitle(data.title);
             }
@@ -126,16 +127,18 @@ const CreateProjectDialog = ({ type }) => {
           typeof Storage !== "undefined" &&
           localStorage.getItem("createOrganizationId")
         ) {
-          const ref = await db
-            .collection("organizations")
-            .doc(localStorage.getItem("createOrganizationId"))
-            .get();
+          const orgDocRef = doc(
+            db,
+            `organizations/${localStorage.getItem("createOrganizationId")}`
+          );
+          const orgDocSnapshot = await getDoc(orgDocRef);
 
-          if (!ref.exists) {
+          if (!orgDocSnapshot.exists()) {
             console.log("No such document!");
           } else {
-            const data = ref.data();
+            const data = orgDocSnapshot.data();
             setOrganizationTitle(data.title);
+            console.log("setting org title");
             set(pages.length - 1);
           }
         }

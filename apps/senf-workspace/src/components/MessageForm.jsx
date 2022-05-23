@@ -16,10 +16,8 @@ const Form = styled.form`
 const MessageForm = ({ handleSubmit, text, setText, setImg }) => {
   return (
     <Form>
-      <Button variant="secondary">
-        <label htmlFor="img">
-          <Icon icon="bulb" />
-        </label>
+      <Button variant="secondary" icon="arrow" transform="rotate(180deg)">
+        <label htmlFor="img"></label>
       </Button>
       <input
         onChange={(e) => setImg(e.target.files[0])}
@@ -39,7 +37,7 @@ const MessageForm = ({ handleSubmit, text, setText, setImg }) => {
       </div>
 
       <Button variant="primary" onClick={handleSubmit}>
-        Send
+        Senden
       </Button>
     </Form>
   );

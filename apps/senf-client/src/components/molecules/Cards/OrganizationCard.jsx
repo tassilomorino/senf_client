@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { useEffect, useState } from "react";
+import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -22,9 +23,6 @@ import {
 } from "../../../styles/GlobalStyle";
 import setIconByOrganizationType from "../../../data/setIconByOrganizationType";
 import NoImage from "../../../images/noImage.png";
-
-import firebase from "firebase/compat/app";
-import "firebase/compat/storage";
 
 const Wrapper = styled.div`
   float: left;
@@ -211,22 +209,22 @@ export const OrganizationCard = (props) => {
   const [placeHodlerImage, setPlaceHolderImage] = useState(false);
 
   useEffect(() => {
-    function fetchData() {
-      const db = firebase.firestore();
-      const storageRef = firebase.storage().ref();
-      storageRef
-        .child(`/organizationsData/${thisOrganizationId}/logo/logo`)
-        .getDownloadURL()
-        .then(onResolve, onReject);
+    const storage = getStorage();
 
-      function onResolve(image) {
-        setOrganizationImage(image);
-      }
-      function onReject() {
-        setPlaceHolderImage(true);
-      }
+    const storageRef = ref(
+      storage,
+      `/organizationsData/${thisOrganizationId}/logo/logo`
+    );
+
+    getDownloadURL(storageRef).then(onResolve, onReject);
+    function onResolve(image) {
+      setOrganizationImage(image);
     }
-    fetchData();
+    function onReject() {
+      setPlaceHolderImage(true);
+
+      console.log("error, no image in OrganizationCard.jsx");
+    }
   }, [thisOrganizationId]);
 
   const handleOpenOrganization = () => {

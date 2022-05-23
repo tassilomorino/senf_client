@@ -6,9 +6,8 @@ import styled from "styled-components";
 import imageCompression from "browser-image-compression";
 
 //firebase
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-import "firebase/compat/storage";
+
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 //Components
 import {
@@ -81,16 +80,20 @@ const CreateProjectPage3 = ({
     try {
       setLoading(true);
       const compressedFile = await imageCompression(imageFile, options);
-      const storageRef = firebase.storage().ref();
 
-      const fileRef = storageRef.child(
+      const storage = getStorage();
+      const storageRef = ref(
+        storage,
         `organizationsData/${localStorage.getItem(
           "createProjectRoomOrganizationId"
         )}/${localStorage.getItem("createProjectRoomId")}/thumbnail`
       );
-      await fileRef.put(compressedFile);
+
+      await uploadBytes(storageRef, compressedFile).then((snapshot) => {
+        console.log("Uploaded a file!");
+      });
       setUploadedImage(
-        await fileRef.getDownloadURL().then(() => {
+        await getDownloadURL(storageRef).then(() => {
           setLoading(false);
         })
       );
@@ -100,16 +103,15 @@ const CreateProjectPage3 = ({
   }
 
   useEffect(() => {
-    const storageRef = firebase.storage().ref();
-    storageRef
-      .child(
-        `organizationsData/${localStorage.getItem(
-          "createProjectRoomOrganizationId"
-        )}/${localStorage.getItem("createProjectRoomId")}/thumbnail`
-      )
-      .getDownloadURL()
-      .then(onResolve, onReject);
+    const storage = getStorage();
+    const storageRef = ref(
+      storage,
+      `organizationsData/${localStorage.getItem(
+        "createProjectRoomOrganizationId"
+      )}/${localStorage.getItem("createProjectRoomId")}/thumbnail`
+    );
 
+    getDownloadURL(storageRef).then(onResolve, onReject);
     function onResolve(foundURL) {
       setUploadedImage(foundURL);
     }

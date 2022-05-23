@@ -7,9 +7,8 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 //firebase
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-import "firebase/compat/storage";
+import { db } from "../../../../firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 //Components
 import Weblink from "../../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
 import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
@@ -98,17 +97,17 @@ const CreateOrganizationPage4 = ({
     formik.setFieldTouched("googleCalendarId", true);
 
     async function fetchData() {
-      const db = firebase.firestore();
+      const ref = doc(
+        db,
+        "organizations",
+        localStorage.getItem("createProjectRoomOrganizationId")
+      );
+      const docSnapshot = await getDoc(ref);
 
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createOrganizationId"))
-        .get();
-
-      if (!ref.exists) {
+      if (!docSnapshot.exists()) {
         console.log("No such document!");
       } else {
-        const data = ref.data();
+        const data = docSnapshot.data();
         // setGoogleCalendarId(data.title);
         if (data.googleCalendarId) {
           formik.setFieldValue("googleCalendarId", data.googleCalendarId);
@@ -127,7 +126,6 @@ const CreateOrganizationPage4 = ({
   const handleNext = async () => {
     setNextClicked(true);
 
-    const db = firebase.firestore();
     if (
       formik.values.googleCalendarId &&
       typeof Storage !== "undefined" &&
@@ -137,17 +135,17 @@ const CreateOrganizationPage4 = ({
       const updateProject = {
         googleCalendarId: formik.values.googleCalendarId,
       };
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createOrganizationId"));
-      return ref.update(updateProject).then(() => {
-        setTimeout(() => {
-          if (localStorage.getItem("createOrganizationPostEdit") === "true") {
-            set(pagesData.length - 1);
-          } else {
-            onClickNext();
-          }
-        }, 200);
+      const ref = doc(
+        db,
+        "organizations",
+        localStorage.getItem("createProjectRoomOrganizationId")
+      );
+      await updateDoc(ref, updateProject).then(() => {
+        if (localStorage.getItem("createOrganizationPostEdit") === "true") {
+          set(pagesData.length - 1);
+        } else {
+          onClickNext();
+        }
       });
     } else {
       if (localStorage.getItem("createOrganizationPostEdit") === "true") {
@@ -175,9 +173,9 @@ const CreateOrganizationPage4 = ({
                   height="100%"
                   src="https://www.youtube.com/embed/odjaLVz6ft8"
                   title="YouTube video player"
-                  frameborder="0"
+                  frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen
+                  allowFullScreen
                 ></iframe>
               </div>
             </MainModal>

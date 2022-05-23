@@ -6,8 +6,8 @@ import styled from "styled-components";
 import MainModal from "../../../atoms/Layout/MainModal";
 import SettingsIcon from "../../../../images/icons/settings.png";
 import ExpandButton from "../../../atoms/CustomButtons/ExpandButton";
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
+
+import { db } from "../../../../firebase";
 import { doc, deleteDoc } from "firebase/firestore";
 import { isMobileCustom } from "../../../../util/customDeviceDetect";
 import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
@@ -139,8 +139,6 @@ const TopNavigation = ({
   const { t } = useTranslation();
 
   const handleDelete = async () => {
-    const db = firebase.firestore();
-
     var answer = window.confirm(
       "Bist du sicher, dass du die Organisation löschen möchtest?"
     );

@@ -1,7 +1,6 @@
 /** @format */
 
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
+import { db } from "../../firebase";
 
 import { closeScream } from "./screamActions";
 import {
@@ -22,58 +21,50 @@ import { setSwipePositionDown } from "./UiActions";
 import setIconByOrganizationType from "../../data/setIconByOrganizationType";
 import store from "../store";
 import { setMapBounds } from "./mapActions";
+import {
+  collection,
+  collectionGroup,
+  getDocs,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
 
 // Get all projects
 export const getProjects = (mapViewport) => async (dispatch) => {
   dispatch({ type: LOADING_PROJECTS_DATA });
 
-  const db = firebase.firestore();
-
-  const ref = await db
-    .collectionGroup("projectRooms")
+  const projectRoomsRef = collectionGroup(db, "projectRooms");
+  const q = query(
+    projectRoomsRef,
     // .where("centerLat", "<", Number(mapViewport?.latitude) + 1)
     // .where("centerLat", ">", Number(mapViewport?.latitude) - 1)
-    .where("status", "==", "active")
-    .orderBy("createdAt", "desc")
-    .get();
-  // : await db.collection("projects").orderBy("createdAt", "desc").get();
+    where("status", "==", "active"),
+    orderBy("createdAt", "desc")
+  );
 
-  if (ref.size < 1 || !ref) {
-    dispatch({ type: SET_PROJECTS, payload: [] });
-  }
-  const projects = [];
-  ref.docs.forEach(async (doc) => {
-    const docData = {
-      projectRoomId: doc.data().projectRoomId,
-
-      title: doc.data().title,
-      brief: doc.data().brief,
-      // owner: doc.data().owner,
-      createdAt: doc.data().createdAt,
-      // startDate: doc.data().startDate,
-      // endDate: doc.data().endDate,
-      status: doc.data().status,
-      geoData: doc.data().geoData,
-      centerLat: doc.data().centerLat,
-      centerLong: doc.data().centerLong,
-      zoom: doc.data().zoom,
-
-      calendar: doc.data().calendar,
-      organizationId: doc.data().organizationId,
-      // weblink: doc.data().weblink,
-      Thema: doc.data().Thema,
-      organizationType: doc.data().organizationType,
-      icon: setIconByOrganizationType(doc.data().organizationType),
-      // ideasSize: newOne.length,
-    };
-    projects.push(docData);
-    if (projects.length === ref.size) {
+  const querySnapshot = await getDocs(q);
+  const projectRooms = [];
+  if (querySnapshot.empty) {
+    dispatch({
+      type: SET_PROJECTS,
+      payload: [],
+    });
+  } else {
+    querySnapshot.forEach((doc) => {
+      const project = {
+        ...doc.data(),
+        icon: setIconByOrganizationType(doc.data().organizationType),
+      };
+      projectRooms.push(project);
+    });
+    if (querySnapshot.size === projectRooms.length) {
       dispatch({
         type: SET_PROJECTS,
-        payload: projects,
+        payload: projectRooms,
       });
     }
-  });
+  }
 };
 
 // Open a project
@@ -98,36 +89,40 @@ export const openProjectRoomFunc =
     }
   };
 export const loadProjectRoomData = (projectRoomId) => async (dispatch) => {
-  const db = firebase.firestore();
-  const ref = await db
-    .collectionGroup("projectRooms")
-    .where("projectRoomId", "==", projectRoomId)
-    .get();
+  const projectRoomsRef = collectionGroup(db, "projectRooms");
+  const q = query(projectRoomsRef, where("projectRoomId", "==", projectRoomId));
+  const projectRoomsQuerySnapshot = await getDocs(q);
 
-  const screamsRef = await db
-    .collection("screams")
-    .where("projectRoomId", "==", projectRoomId)
-    .orderBy("createdAt", "desc")
-    .get();
+  const screamRef = collection(db, "screams");
+  const q2 = query(
+    screamRef,
+    where("projectRoomId", "==", projectRoomId),
+    orderBy("createdAt", "desc")
+  );
 
-  ref.docs.forEach((doc) => {
-    const projectRoom = doc.data();
-    projectRoom.screams = [];
-
-    screamsRef.docs.forEach((doc) =>
-      projectRoom.screams.push({
-        ...doc.data(),
-        screamId: doc.id,
-        color: setColorByTopic(doc.data().Thema),
-        body: doc.data().body.substr(0, 120),
-      })
-    );
-
-    dispatch({
-      type: SET_PROJECT,
-      payload: projectRoom,
-    });
-  });
+  let projectRoom = { screams: [] };
+  if (projectRoomsQuerySnapshot.empty) {
+    dispatch({ type: SET_PROJECT, payload: {} });
+  } else {
+    projectRoom = {
+      ...projectRoom,
+      ...projectRoomsQuerySnapshot.docs[0].data(),
+    };
+    const screamQuerySnapshot = await getDocs(q2);
+    if (screamQuerySnapshot.empty) {
+      dispatch({ type: SET_PROJECT, payload: projectRoom });
+    } else {
+      screamQuerySnapshot.forEach((doc) => {
+        projectRoom.screams.push({
+          ...doc.data(),
+          screamId: doc.id,
+          color: setColorByTopic(doc.data().Thema),
+          body: doc.data().body.substr(0, 120),
+        });
+      });
+      dispatch({ type: SET_PROJECT, payload: projectRoom });
+    }
+  }
 };
 
 export const openCreateProjectRoomFunc = (state) => async (dispatch) => {

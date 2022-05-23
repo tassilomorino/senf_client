@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, memo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 // Redux stuff
 import { openProjectRoomFunc } from "../../../redux/actions/projectActions";
@@ -27,8 +28,6 @@ import PostScream from "../PostIdea/PostScream";
 import { ProjectRoomTabData } from "../../../data/ProjectRoomTabData";
 import { openOrganizationFunc } from "../../../../src/redux/actions/organizationActions";
 
-import firebase from "firebase/compat/app";
-import "firebase/compat/storage";
 const Wrapper = styled.div`
   z-index: 999;
 `;
@@ -82,12 +81,13 @@ const ProjectDialog = ({
   useEffect(() => {
     async function fetchData() {
       if (project && project.organizationId) {
-        const db = firebase.firestore();
-        const storageRef = firebase.storage().ref();
-        storageRef
-          .child(`/organizationsData/${project.organizationId}/logo/logo`)
-          .getDownloadURL()
-          .then(onResolve);
+        const storage = getStorage();
+        const storageRef = ref(
+          storage,
+          `/organizationsData/${project.organizationId}/logo/logo`
+        );
+
+        getDownloadURL(storageRef).then(onResolve);
 
         function onResolve(image) {
           setOrganizationImage(image);

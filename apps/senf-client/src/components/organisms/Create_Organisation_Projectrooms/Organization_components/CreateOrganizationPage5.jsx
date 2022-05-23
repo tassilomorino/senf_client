@@ -5,10 +5,8 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 //firebase
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-import "firebase/compat/storage";
-
+import { db } from "../../../../firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 //Components
 import Weblink from "../../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
 import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
@@ -93,17 +91,17 @@ const CreateOrganizationPage5 = ({
 
   useEffect(() => {
     async function fetchData() {
-      const db = firebase.firestore();
+      const ref = doc(
+        db,
+        "organizations",
+        localStorage.getItem("createProjectRoomOrganizationId")
+      );
+      const docSnapshot = await getDoc(ref);
 
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createOrganizationId"))
-        .get();
-
-      if (!ref.exists) {
+      if (!docSnapshot.exists()) {
         console.log("No such document!");
       } else {
-        const data = ref.data();
+        const data = docSnapshot.data();
         if (data.faqs) {
           setFormFields(data.faqs);
         }
@@ -120,7 +118,7 @@ const CreateOrganizationPage5 = ({
 
   const handleNext = async () => {
     setNextClicked(true);
-    const db = firebase.firestore();
+
     if (
       typeof Storage !== "undefined" &&
       localStorage.getItem("createOrganizationId")
@@ -129,17 +127,17 @@ const CreateOrganizationPage5 = ({
       const updateProject = {
         faqs: formFields[0].question !== "" ? formFields : null,
       };
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createOrganizationId"));
-      return ref.update(updateProject).then(() => {
-        setTimeout(() => {
-          if (localStorage.getItem("createOrganizationPostEdit") === "true") {
-            set(pagesData.length - 1);
-          } else {
-            onClickNext();
-          }
-        }, 200);
+      const ref = doc(
+        db,
+        "organizations",
+        localStorage.getItem("createProjectRoomOrganizationId")
+      );
+      await updateDoc(ref, updateProject).then(() => {
+        if (localStorage.getItem("createOrganizationPostEdit") === "true") {
+          set(pagesData.length - 1);
+        } else {
+          onClickNext();
+        }
       });
     }
   };

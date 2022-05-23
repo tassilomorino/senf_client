@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
+
+import { db } from "../../../firebase";
 import { useParams } from "react-router";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -20,7 +20,6 @@ import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
 import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 
-import orderBy from "lodash/orderBy";
 import {
   openOrganizationFunc,
   stateCreateOrganizationsFunc,
@@ -49,6 +48,7 @@ import { Accordion } from "../../molecules/Accordion/Accordion";
 import Arrow from "../../../images/icons/arrow-right.png";
 import { openLink, openMail, search, sort } from "../../../util/helpers";
 import { CircularProgress } from "@material-ui/core";
+import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 const CalendarComponent = React.lazy(() =>
   import("../../atoms/calendar/CalendarComponent")
 );
@@ -332,33 +332,35 @@ const OrganizationDialog = ({
     async function fetchData() {
       if (
         organization &&
-        user?.organizationId?.includes(organization?.organizationId)
+        user.organizationId &&
+        user.organizationId.includes(organization?.organizationId)
       ) {
-        const db = firebase.firestore();
         const data = [];
 
-        const projectRoomsRef = await db
-          .collection("organizations")
-          .doc(organization.organizationId)
-          .collection("projectRooms")
-          .where("status", "!=", "active")
-          .orderBy("status", "desc")
-          .orderBy("createdAt", "desc")
-          .get();
-        if (!projectRoomsRef.exists) {
-          console.log("no prs in loadOrganizationProjectRooms");
-        }
-
-        projectRoomsRef.docs.forEach((doc) => {
-          data.push({
-            ...doc.data(),
-            projectRoomId: doc.id,
-            organizationType: doc.data().organizationType,
-            icon: setIconByOrganizationType(doc.data().organizationType),
+        const docRef = collection(
+          db,
+          `organizations/${organization.organizationId}/projectRooms`
+        );
+        const q = query(
+          docRef,
+          where("status", "!=", "active"),
+          orderBy("status", "desc"),
+          orderBy("createdAt", "desc")
+        );
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.empty) {
+          setUncompletedOrDeactivatedProjectRooms([]);
+        } else {
+          querySnapshot.forEach((doc) => {
+            data.push({
+              ...doc.data(),
+              projectRoomId: doc.id,
+              organizationType: doc.data().organizationType,
+              icon: setIconByOrganizationType(doc.data().organizationType),
+            });
+            setUncompletedOrDeactivatedProjectRooms(data);
           });
-          setUncompletedOrDeactivatedProjectRooms(data);
-          console.log(uncompletedOrDeactivatedProjectRooms);
-        });
+        }
       }
     }
     fetchData();

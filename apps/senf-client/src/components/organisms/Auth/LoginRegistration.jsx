@@ -16,14 +16,9 @@ import {
 import {
   doc,
   getDocs,
-  getDoc,
   collection,
-  onSnapshot,
   where,
-  addDoc,
   query,
-  orderBy,
-  deleteDoc,
   setDoc,
 } from "firebase/firestore";
 

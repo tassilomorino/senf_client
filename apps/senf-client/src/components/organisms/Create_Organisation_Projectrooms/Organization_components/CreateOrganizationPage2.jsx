@@ -10,9 +10,7 @@ import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
 import * as yup from "yup";
 
 //firebase
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-import "firebase/compat/storage";
+import { db } from "../../../../firebase";
 //Components
 import Weblink from "../../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
 import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
@@ -32,6 +30,7 @@ import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 import { TextField } from "@material-ui/core";
 import { useFormik } from "formik";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const Wrapper = styled.div`
   display: flex;
@@ -93,20 +92,21 @@ const CreateOrganizationPage2 = ({
     async function fetchData() {
       formik.setFieldTouched("contact", true);
 
-      const db = firebase.firestore();
       if (
         typeof Storage !== "undefined" &&
         localStorage.getItem("createOrganizationId")
       ) {
-        const ref = await db
-          .collection("organizations")
-          .doc(localStorage.getItem("createOrganizationId"))
-          .get();
+        const ref = doc(
+          db,
+          "organizations",
+          localStorage.getItem("createProjectRoomOrganizationId")
+        );
+        const docSnapshot = await getDoc(ref);
 
-        if (!ref.exists) {
+        if (!docSnapshot.exists()) {
           console.log("No such document!");
         } else {
-          const data = ref.data();
+          const data = docSnapshot.data();
 
           if (data.contact) {
             formik.setFieldValue("contact", data.contact);
@@ -129,7 +129,7 @@ const CreateOrganizationPage2 = ({
       {...props}
       placeholder={address ? address : "Addresse der Organisation"}
       id="geocoder"
-      autocomplete="off"
+      autoComplete="off"
     />
   );
 
@@ -154,7 +154,6 @@ const CreateOrganizationPage2 = ({
   const handleNext = async () => {
     setNextClicked(true);
 
-    const db = firebase.firestore();
     if (
       typeof Storage !== "undefined" &&
       localStorage.getItem("createOrganizationId")
@@ -167,10 +166,13 @@ const CreateOrganizationPage2 = ({
         longitude: longitude,
         latitude: latitude,
       };
-      const ref = await db
-        .collection("organizations")
-        .doc(localStorage.getItem("createOrganizationId"));
-      return ref.update(updateProject).then(() => {
+
+      const ref = doc(
+        db,
+        "organizations",
+        localStorage.getItem("createProjectRoomOrganizationId")
+      );
+      await updateDoc(ref, updateProject).then(() => {
         setTimeout(() => {
           if (localStorage.getItem("createOrganizationPostEdit") === "true") {
             set(pagesData.length - 1);

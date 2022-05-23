@@ -24,10 +24,6 @@ import { AccountTabData } from "../../../data/AccountTabData";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import { useTranslation } from "react-i18next";
 
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-import "firebase/compat/storage";
-
 const Wrapper = styled.div`
   /* @media (min-width: 768px) {
     padding-top: 70px;
