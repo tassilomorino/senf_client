@@ -6,13 +6,15 @@ import styled from "styled-components";
 import MainModal from "../../../atoms/Layout/MainModal";
 import SettingsIcon from "../../../../images/icons/settings.png";
 import ExpandButton from "../../../atoms/CustomButtons/ExpandButton";
-
 import { db } from "../../../../firebase";
 import { doc, deleteDoc } from "firebase/firestore";
 import { isMobileCustom } from "../../../../util/customDeviceDetect";
 import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
-import { stateCreateOrganizationsFunc } from "../../../../redux/actions/organizationActions";
+import {
+  openOrganizationFunc,
+  stateCreateOrganizationsFunc,
+} from "../../../../redux/actions/organizationActions";
 import {
   openCreateProjectRoomFunc,
   openProjectRoomFunc,
@@ -164,6 +166,7 @@ const TopNavigation = ({
         ).then(() => {
           localStorage.removeItem("createOrganizationId");
           setClose();
+          dispatch(openOrganizationFunc(false));
         });
       }
 
