@@ -1,6 +1,6 @@
 /** @format */
 
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
@@ -23,6 +23,7 @@ import ProjectInfoSwiper from "./ProjectInfoSwiper";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import { ModalBackground } from "../../atoms/Backgrounds/ModalBackground";
 import { openLink, openMail } from "../../../util/helpers";
+import DeleteMenuModal from "../Modals/DeleteMenuModal";
 
 const Card = styled.div`
   position: fixed;
@@ -100,6 +101,11 @@ const ButtonsWrapper = styled.div`
   z-index: 9;
   margin-left: 50%;
   transform: translateX(-50%);
+`;
+const DeleteLogoutWrapper = styled.div`
+  display: grid;
+  grid-gap: 25px;
+  padding-top: 5px;
 `;
 
 const Gradient = styled.div`
@@ -182,6 +188,7 @@ const InfoModal = ({
   const openScream = useSelector((state) => state.UI.openScream);
 
   const openAccount = useSelector((state) => state.UI.openAccount);
+  const [deleteMenuOpen, setDeleteMenuOpen] = useState(false);
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -237,6 +244,7 @@ const InfoModal = ({
         {infoOpen && !openScream && (
           <ModalBackground onClick={() => setInfoOpen(false)} />
         )}
+
         <Card
           isMobileCustom={isMobileCustom}
           infoOpen={infoOpen}
@@ -301,6 +309,42 @@ const InfoModal = ({
                   />
                 )}
               </ButtonsWrapper>
+              {openAccount && (
+                <>
+                  <DeleteLogoutWrapper>
+                    <SubmitButton
+                      text={t("logout")}
+                      zIndex="999"
+                      backgroundColor="white"
+                      textColor="#353535"
+                      handleButtonClick={handleLogout}
+                      shadow={false}
+                      smallSubmitButton={true}
+                      iconLeft={true}
+                      name="Logout"
+                      iconWidth="22px"
+                      margin="5px 0px 0px 0px"
+                    />
+
+                    <SubmitButton
+                      text={t("deteleAccount")}
+                      zIndex="999"
+                      backgroundColor="white"
+                      textColor="#353535"
+                      handleButtonClick={() => setDeleteMenuOpen(true)}
+                      shadow={false}
+                      smallSubmitButton={true}
+                      iconLeft={true}
+                      name="Delete"
+                      iconWidth="22px"
+                      margin="5px 0px 0px 0px"
+                    />
+                  </DeleteLogoutWrapper>
+                  {deleteMenuOpen && (
+                    <DeleteMenuModal setDeleteMenuOpen={setDeleteMenuOpen} />
+                  )}
+                </>
+              )}
 
               <svg
                 width="100%"
@@ -332,27 +376,6 @@ const InfoModal = ({
                     </StyledH3>
                   </div>
                 </OwnerWrapper>
-              )}
-              {openAccount && (
-                <ButtonsWrapper openAccount={openAccount}>
-                  <SubmitButton
-                    text={t("logout")}
-                    zIndex="999"
-                    backgroundColor="white"
-                    textColor="#353535"
-                    handleButtonClick={handleLogout}
-                    shadow={false}
-                    smallSubmitButton={true}
-                    iconLeft={true}
-                    name="Logout"
-                    iconWidth="22px"
-                    margin="5px 0px 0px 0px"
-                  />
-
-                  <DeleteButton onClick={deleteAccount}>
-                    {t("deteleAccount")}
-                  </DeleteButton>
-                </ButtonsWrapper>
               )}
             </LowerWrapper>
             {/* <Gradient /> */}
