@@ -15,11 +15,6 @@ export default defineConfig(({ command, mode }) => {
         pwaOptions
       ) */
     ],
-    server: {
-      hmr: {
-        clientPort: 443,
-      },
-    },
   };
 });
 
