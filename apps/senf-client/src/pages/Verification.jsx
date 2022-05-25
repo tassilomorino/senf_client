@@ -29,6 +29,7 @@ import styled from "styled-components";
 import { SubmitButton } from "../components/atoms/CustomButtons/SubmitButton";
 import { getUserData } from "../redux/actions/userActions";
 import { SET_AUTHENTICATED } from "../redux/types";
+import { t } from "i18next";
 
 const TextWrapper = styled.div`
   position: relative;
@@ -114,17 +115,15 @@ const Verification = ({ classes }) => {
           />
           <TextWrapper>
             <StyledH3 textAlign="center">
-              Du bekommst in den nächsten Minuten von uns eine E-Mail. <br />{" "}
-              &#40;
-              {history.location.state && history.location.state.email}
-              , evtl. im Junk-Ordner&#41; <br />
-              <br /> Bitte öffne sie und klicke auf den Link um deinen Account
-              zu verifizieren. Danach kannst du dich anmelden!
+              {t("email_receive")} <br /> &#40;
+              {history.location.state && history.location.state.email}{" "}
+              {t("email_spam_folder")}&#41; <br />
+              <br /> {t("email_verification_link")}
             </StyledH3>
           </TextWrapper>
 
           <SubmitButton
-            text="Zur Anmeldung"
+            text={t("login2")}
             backgroundColor="#353535"
             textColor="white"
             position="relative"

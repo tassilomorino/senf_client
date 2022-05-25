@@ -74,22 +74,22 @@ const CreateOrganizationPage1 = ({
     formik.setFieldTouched("title", true);
 
     async function fetchData() {
-      const ref = doc(
-        db,
-        "organizations",
-        localStorage.getItem("createProjectRoomOrganizationId")
-      );
+      try {
+        const docSnapshot = await getDoc(
+          doc(db, "organizations", localStorage.getItem("createOrganizationId"))
+        );
 
-      const docSnapshot = await getDoc(ref);
+        if (!docSnapshot.exists()) {
+          console.log("No such document!");
+        } else {
+          const data = docSnapshot.data();
+          setTitle(data.title);
 
-      if (!docSnapshot.exists()) {
-        console.log("No such document!");
-      } else {
-        const data = docSnapshot.data();
-        setTitle(data.title);
-
-        formik.setFieldValue("title", data.title);
-        formik.setFieldValue("description", data.description);
+          formik.setFieldValue("title", data.title);
+          formik.setFieldValue("description", data.description);
+        }
+      } catch (error) {
+        console.log(error);
       }
     }
 
@@ -108,24 +108,28 @@ const CreateOrganizationPage1 = ({
       typeof Storage !== "undefined" &&
       localStorage.getItem("createOrganizationId")
     ) {
-      //UPDATING AN EXISTING PROJECTROOM
-      const updateProject = {
-        title: formik.values.title,
-        description: formik.values.description,
-      };
-      const ref = doc(
-        db,
-        "organizations",
-        localStorage.getItem("createProjectRoomOrganizationId")
-      );
-      await updateDoc(ref, updateProject).then(() => {
-        setTitle(updateProject.title);
-        if (localStorage.getItem("createOrganizationPostEdit") === "true") {
-          set(pagesData.length - 1);
-        } else {
-          onClickNext();
-        }
-      });
+      try {
+        //UPDATING AN EXISTING PROJECTROOM
+        const updateProject = {
+          title: formik.values.title,
+          description: formik.values.description,
+        };
+        const ref = doc(
+          db,
+          "organizations",
+          localStorage.getItem("createOrganizationId")
+        );
+        await updateDoc(ref, updateProject).then(() => {
+          setTitle(updateProject.title);
+          if (localStorage.getItem("createOrganizationPostEdit") === "true") {
+            set(pagesData.length - 1);
+          } else {
+            onClickNext();
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 

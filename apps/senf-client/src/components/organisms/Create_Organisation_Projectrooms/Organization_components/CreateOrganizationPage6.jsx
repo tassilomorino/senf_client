@@ -126,24 +126,20 @@ const CreateOrganizationPage6 = ({
       // define queries
 
       if (searchTerm.includes("@")) {
-        const postRef = collectionGroup(db, "Private");
+        const emailsRef = collectionGroup(db, "Private");
         const q = query(
-          postRef,
+          emailsRef,
           orderBy("email", "asc"),
           startAt(searchTerm),
           endAt(searchTerm + "~")
         );
         const emailQuerySnapshot = await getDocs(q);
-
         for (const doc of emailQuerySnapshot.docs) {
           const parentDoc = await getDoc(doc.ref.parent.parent);
-          console.log(parentDoc, "parentDoc");
           users.push(parentDoc.data());
-
-          if (emailQuerySnapshot.size === users.length) {
-            setUsersList(users);
-          }
         }
+
+        setUsersList(users);
       } else {
         const postRef = collection(db, "users");
         const q = query(
@@ -326,16 +322,19 @@ const CreateOrganizationPage6 = ({
           </SearchbarWrapper>
           <div style={{ display: "flex", justifyContent: "center" }}>
             {userList &&
-              userList.map(({ handle, userId }) => (
-                <React.Fragment key={userId}>
-                  {!authorizedUserIds.includes(userId) && (
-                    <AddableUser onClick={() => handleAdd(userId)}>
-                      <StyledH4>{handle}</StyledH4>
-                      <EditIcon> +</EditIcon>
-                    </AddableUser>
-                  )}
-                </React.Fragment>
-              ))}
+              userList.map(
+                (user) =>
+                  user && (
+                    <React.Fragment key={user.userId}>
+                      {!authorizedUserIds.includes(user.userId) && (
+                        <AddableUser onClick={() => handleAdd(user.userId)}>
+                          <StyledH4>{user.handle ?? user.email}</StyledH4>
+                          <EditIcon> +</EditIcon>
+                        </AddableUser>
+                      )}
+                    </React.Fragment>
+                  )
+              )}
           </div>
           <br /> <br />
           {/* <StyledH2 textAlign="center" fontWeight="900">

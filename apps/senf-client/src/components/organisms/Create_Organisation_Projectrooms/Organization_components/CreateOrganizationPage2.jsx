@@ -99,7 +99,7 @@ const CreateOrganizationPage2 = ({
         const ref = doc(
           db,
           "organizations",
-          localStorage.getItem("createProjectRoomOrganizationId")
+          localStorage.getItem("createOrganizationId")
         );
         const docSnapshot = await getDoc(ref);
 
@@ -170,7 +170,7 @@ const CreateOrganizationPage2 = ({
       const ref = doc(
         db,
         "organizations",
-        localStorage.getItem("createProjectRoomOrganizationId")
+        localStorage.getItem("createOrganizationId")
       );
       await updateDoc(ref, updateProject).then(() => {
         setTimeout(() => {

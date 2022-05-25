@@ -5,6 +5,7 @@ import { CircularProgress } from "@material-ui/core";
 import ContactIcon from "../../../images/icons/mail.png";
 import WeblinkIcon from "../../../images/icons/weblink.png";
 import LogoutIcon from "../../../images/icons/logout.png";
+import DeleteIcon from "../../../images/icons/trash.png";
 
 const enterAnimation = keyframes`
        0% {
@@ -101,6 +102,7 @@ const Icons = {
   Contact: ContactIcon,
   Weblink: WeblinkIcon,
   Logout: LogoutIcon,
+  Delete: DeleteIcon,
 };
 export const SubmitButton = ({
   text,

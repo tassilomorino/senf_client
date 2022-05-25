@@ -71,7 +71,11 @@ export const deleteUserFromDb = (userId) => async (dispatch) => {
   if (userId) {
     try {
       const currentuser = auth.currentUser;
-      if (currentuser.uid === userId) {
+      const cantDeleteSuperAdmins = ["dein@senf.koeln"];
+      if (cantDeleteSuperAdmins.includes(currentuser.email)) {
+        alert("cant delete SuperAdmin");
+        return;
+      } else if (currentuser.uid === userId) {
         const userRef = doc(db, "users", userId);
         const emailRef = doc(db, "users", userId, "Private", userId);
 

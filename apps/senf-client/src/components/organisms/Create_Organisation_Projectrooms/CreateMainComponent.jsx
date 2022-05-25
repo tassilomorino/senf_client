@@ -45,6 +45,7 @@ import {
 import CreateProjectPage5 from "./CreateProjectRoom_components/CreateProjectPage5";
 import CreateProjectPage0a from "./CreateProjectRoom_components/CreateProjectPage0a";
 import { collection, doc, getDoc } from "firebase/firestore";
+import { getMyOrganizations } from "../../../redux/actions/accountActions";
 
 const CreateProjectDialog = ({ type }) => {
   const openOrganization = useSelector((state) => state.UI.openOrganization);
@@ -55,6 +56,7 @@ const CreateProjectDialog = ({ type }) => {
   const openCreateOrganization = useSelector(
     (state) => state.UI.openCreateOrganization
   );
+  const userId = useSelector((state) => state.user.userId);
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -70,6 +72,11 @@ const CreateProjectDialog = ({ type }) => {
   const [organizationTitle, setOrganizationTitle] = useState(null);
 
   const [index, set] = useState(0);
+  useEffect(() => {
+    if (userId && openCreateProjectRoom) {
+      dispatch(getMyOrganizations(userId));
+    }
+  }, [dispatch, openCreateProjectRoom, userId]);
 
   useEffect(() => {
     async function fetchData() {

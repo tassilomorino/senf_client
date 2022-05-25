@@ -28,12 +28,8 @@ const Background = styled.div`
 const InnerWrapper = styled.div`
   width: ${(props) => (props.autoWidth ? "auto" : "400px")};
   max-width: 95%;
-  min-height: 150px;
   background-color: white;
   border-radius: 20px;
-  /* display: flex;
-  flex-direction: column;
-  align-items: space-around; */
   padding: ${(props) => (props.padding ? props.padding : "0px")};
   z-index: 99992;
   overflow-y: scroll;
