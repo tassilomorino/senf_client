@@ -26,6 +26,7 @@ import Wave from "../../atoms/Backgrounds/Wave";
 
 import { openCreateProjectRoomFunc } from "../../../redux/actions/projectActions";
 import { stateCreateOrganizationsFunc } from "../../../redux/actions/organizationActions";
+import { getMyOrganizations } from "../../../redux/actions/accountActions";
 
 import NewButton from "../../atoms/CustomButtons/NewButton";
 import PostScream from "../PostIdea/PostScream";
@@ -228,6 +229,7 @@ const SwipeList = ({
 
   const openCreateProjectRoom = () => {
     dispatch(openCreateProjectRoomFunc(true));
+    dispatch(getMyOrganizations(user.userId));
   };
 
   const openMailRequestProjectRoom = () => {

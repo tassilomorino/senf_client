@@ -56,7 +56,7 @@ const CreateProjectPage1 = ({ onClickNext, pagesData, index }) => {
     useState(null);
 
   const myOrganizations = useSelector((state) => state.data.myOrganizations);
-  const myActiveOrganizations = myOrganizations.filter(
+  const myActiveOrganizations = myOrganizations?.filter(
     (organization) => organization.status === "active"
   );
 
