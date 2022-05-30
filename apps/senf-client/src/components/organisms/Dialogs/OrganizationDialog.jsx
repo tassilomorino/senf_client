@@ -276,9 +276,13 @@ const OrganizationDialog = ({
     if (!loadingOrganization && organization && organization.organizationId) {
       const path = `organizationsData/${organization.organizationId}/logo/logo`;
       const storage = getStorage();
-      getDownloadURL(ref(storage, path)).then((logo) => {
-        setLogo(logo);
-      });
+      const onReject = (error) => {
+        setLogo(null);
+      };
+      const onResolve = (url) => {
+        setLogo(url);
+      };
+      getDownloadURL(ref(storage, path)).then(onResolve, onReject);
     }
   }, [loadingOrganization]);
 
