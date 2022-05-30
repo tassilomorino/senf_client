@@ -7,7 +7,7 @@ import styled from "styled-components";
 import imageCompression from "browser-image-compression";
 
 //firebase
-
+import { db } from "../../../../firebase";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 //redux
@@ -25,6 +25,7 @@ import {
 } from "../styles/sharedStyles";
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
+import { doc, updateDoc } from "firebase/firestore";
 
 const StyledLabel = styled.label`
   width: 150px;
@@ -96,12 +97,16 @@ const CreateOrganizationPage3 = ({
       await uploadBytes(storageRef, compressedFile).then((snapshot) => {
         console.log("Uploaded a file!");
       });
-
-      setUploadedImage(
-        await getDownloadURL(storageRef).then(() => {
-          setLoading(false);
-        })
+      const logoURL = await getDownloadURL(storageRef);
+      const orgRef = doc(
+        db,
+        "organizations",
+        localStorage.getItem("createOrganizationId")
       );
+      await updateDoc(orgRef, { logoURL: logoURL });
+
+      setLoading(false);
+      setUploadedImage(logoURL);
     } catch (error) {
       console.log(error);
     }
