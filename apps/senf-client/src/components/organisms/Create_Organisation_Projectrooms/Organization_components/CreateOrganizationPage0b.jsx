@@ -14,7 +14,14 @@ import {
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 import organizationTypes from "../../../../data/organizationTypes";
-import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  updateDoc,
+} from "firebase/firestore";
 
 const CoverWrapper = styled.div`
   margin-left: 0%;
@@ -148,21 +155,30 @@ const CreateOrganizationPage1 = ({
         };
 
         const userRef = doc(db, "users", userId);
-        const organizatinRef = collection(db, "organizations");
+        const organizationRef = collection(db, "organizations");
 
-        addDoc(organizatinRef, newOrganization)
-          .then((doc) => {
-            localStorage.setItem("createOrganizationId", doc.id);
+        const newOrganizationinDB = await addDoc(
+          organizationRef,
+          newOrganization
+        );
+        const newOrganizationinDBRef = doc(
+          db,
+          "organizations",
+          newOrganizationinDB.id
+        );
+        localStorage.setItem("createOrganizationId", newOrganizationinDB.id);
+        await updateDoc(newOrganizationinDBRef, {
+          organizationId: newOrganizationinDB.id,
+        });
+        /* we could add organizationIds to userRef 
+       ,but I think it duplicates ID's in two places
+        
+       
+         await updateDoc(userRef, {
+          organizationId: arrayUnion(newOrganizationinDB.id),
+        }); */
 
-            updateDoc(userRef, {
-              organizationId: doc.id,
-            });
-          })
-          .then(() => {
-            setTimeout(() => {
-              onClickNext();
-            }, 200);
-          });
+        onClickNext();
       }
     } catch (error) {
       console.log(error);
