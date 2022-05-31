@@ -11,8 +11,6 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 // Redux stuff
 import { clearErrors } from "../../../redux/actions/errorsActions";
 
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
-
 import Header from "../../molecules/Headers/Header";
 import InfoModal from "../../molecules/DialogInlineComponents/InfoModal";
 import styled from "styled-components";
@@ -271,22 +269,6 @@ const OrganizationDialog = ({
   };
 
   useEffect(() => {
-    setLogo(null);
-    // console.log( window.location.pathname.slice(15, 35));
-    if (!loadingOrganization && organization && organization.organizationId) {
-      const path = `organizationsData/${organization.organizationId}/logo/logo`;
-      const storage = getStorage();
-      const onReject = (error) => {
-        setLogo(null);
-      };
-      const onResolve = (url) => {
-        setLogo(url);
-      };
-      getDownloadURL(ref(storage, path)).then(onResolve, onReject);
-    }
-  }, [loadingOrganization]);
-
-  useEffect(() => {
     dispatch(handleTopicSelectorRedux("all"));
     setPath(window.location.pathname);
     console.log(organization);
@@ -486,7 +468,11 @@ const OrganizationDialog = ({
         </svg>
       </SVGWrapper>
       <LogoWrapper>
-        <Logo imgUrl={logo} />
+        {organization.logoURL ? (
+          <Logo imgUrl={organization.logoURL} />
+        ) : (
+          <Logo imgUrl={null} />
+        )}
       </LogoWrapper>
 
       {organization?.status === "deactivated" ? (

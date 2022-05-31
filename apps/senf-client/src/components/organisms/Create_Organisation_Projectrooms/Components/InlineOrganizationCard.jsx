@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
 import { StyledH2, StyledImg } from "../../../../styles/GlobalStyle";
 import ExpandButton from "../../../atoms/CustomButtons/ExpandButton";
@@ -172,30 +171,11 @@ export const InlineOrganizationCard = ({
   organizationType,
   handleDropdown,
   selectedOrganizationId,
+  logoURL,
 }) => {
   const thisOrganizationId = organizationId;
   const [organizationImage, setOrganizationImage] = useState(null);
   const projects = useSelector((state) => state.data.projects);
-
-  useEffect(() => {
-    async function fetch() {
-      function onResolve(image) {
-        setOrganizationImage(image);
-      }
-
-      const storage = getStorage();
-      const storageRef = ref(
-        storage,
-        `/organizationsData/${organizationId}/logo/logo`
-      );
-      getDownloadURL(storageRef)
-        .then(onResolve)
-        .catch(() => {
-          console.log("error, no image in InlineOrganizationCard");
-        });
-    }
-    fetch();
-  }, [organizationId]);
 
   const projectRoomsSize = projects?.filter(
     ({ organizationId }) => organizationId === thisOrganizationId
@@ -206,7 +186,7 @@ export const InlineOrganizationCard = ({
       <ExpandButton handleButtonClick={() => handleDropdown(organizationId)} />
 
       <LogoWrapper>
-        <Thumbnail img={organizationImage}></Thumbnail>
+        <Thumbnail img={logoURL}></Thumbnail>
       </LogoWrapper>
 
       <LogoPlacer>

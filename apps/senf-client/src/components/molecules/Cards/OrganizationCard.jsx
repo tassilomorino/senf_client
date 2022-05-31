@@ -1,7 +1,6 @@
 /** @format */
 
 import React, { useEffect, useState } from "react";
-import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";

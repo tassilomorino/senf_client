@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, memo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 // Redux stuff
 import { openProjectRoomFunc } from "../../../redux/actions/projectActions";
@@ -50,6 +49,7 @@ const ProjectDialog = ({
   const project = useSelector((state) => state.data.project);
   const projects = useSelector((state) => state.data.projects);
   const organization = useSelector((state) => state.data.organization);
+  const organizations = useSelector((state) => state.data.organizations);
   const [organizationImage, setOrganizationImage] = useState(null);
 
   const dispatch = useDispatch();
@@ -79,23 +79,16 @@ const ProjectDialog = ({
   }, [dispatch, initialMapViewport]);
 
   useEffect(() => {
-    async function fetchData() {
-      if (project && project.organizationId) {
-        const storage = getStorage();
-        const storageRef = ref(
-          storage,
-          `/organizationsData/${project.organizationId}/logo/logo`
-        );
-
-        getDownloadURL(storageRef).then(onResolve);
-
-        function onResolve(image) {
-          setOrganizationImage(image);
-        }
+    if (project && project.organizationId) {
+      const organization = organizations.find(
+        (org) => org.organizationId === project.organizationId
+      );
+      if (organization) {
+        const organizationImage = organization.logoURL;
+        setOrganizationImage(organizationImage);
       }
     }
-    fetchData();
-  }, [project]);
+  }, [organizations, project]);
 
   const handleClick = useCallback(
     (order) => {
