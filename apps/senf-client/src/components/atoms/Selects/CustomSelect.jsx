@@ -64,6 +64,7 @@ const DropDownList = styled.div`
   overflow-y: ${(props) => (props.overflow ? props.overflow : "scroll")};
   border-radius: 10px;
   width: 100%;
+  margin-bottom: 20px;
 `;
 
 const ListItem = styled.div`

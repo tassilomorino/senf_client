@@ -6,8 +6,9 @@ import styled from "styled-components";
 import imageCompression from "browser-image-compression";
 
 //firebase
-
+import { db } from "../../../../firebase";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { doc, updateDoc } from "firebase/firestore";
 
 //Components
 import {
@@ -88,15 +89,20 @@ const CreateProjectPage3 = ({
           "createProjectRoomOrganizationId"
         )}/${localStorage.getItem("createProjectRoomId")}/thumbnail`
       );
+      const projectRoomRef = doc(
+        db,
+        `organizations/${localStorage.getItem(
+          "createProjectRoomOrganizationId"
+        )}/projectRooms/${localStorage.getItem("createProjectRoomId")}`
+      );
 
       await uploadBytes(storageRef, compressedFile).then((snapshot) => {
         console.log("Uploaded a file!");
       });
-      setUploadedImage(
-        await getDownloadURL(storageRef).then(() => {
-          setLoading(false);
-        })
-      );
+      const logoURL = await getDownloadURL(storageRef);
+      setUploadedImage(logoURL);
+      await updateDoc(projectRoomRef, { logoURL: logoURL });
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }

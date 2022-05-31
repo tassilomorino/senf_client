@@ -136,13 +136,14 @@ const CreateProjectPage1 = ({ onClickNext, pagesData, index }) => {
           </StyledH3>
           <CoverWrapper>
             {myActiveOrganizations?.map(
-              ({ organizationId, title, organizationType }) => (
+              ({ organizationId, title, organizationType, logoURL }) => (
                 <InlineOrganizationCard
                   organizationId={organizationId}
                   title={title}
                   organizationType={organizationType}
                   handleDropdown={handleDropdown}
                   selectedOrganizationId={selectedOrganizationId}
+                  logoURL={logoURL}
                 />
               )
             )}

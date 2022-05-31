@@ -35,7 +35,6 @@ import organizationTypes from "../../../data/organizationTypes";
 
 import { truncateString } from "../../../util/helpers";
 import { openOrganizationFunc } from "../../../redux/actions/organizationActions";
-import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
 const ImgWrapper = styled.div`
   /* position: relative;
@@ -125,7 +124,15 @@ const BottomBar = styled.div`
 
 const ProjectCard = (props) => {
   const {
-    project: { projectRoomId, title, brief, status, organizationId, icon },
+    project: {
+      projectRoomId,
+      title,
+      brief,
+      status,
+      organizationId,
+      icon,
+      logoURL,
+    },
   } = props;
 
   const thisProjectRoomId = projectRoomId;
@@ -137,38 +144,6 @@ const ProjectCard = (props) => {
   const organizations = useSelector((state) => state.data.organizations);
   const openOrganization = useSelector((state) => state.UI.openOrganization);
   const dispatch = useDispatch();
-
-  const [projectRoomImage, setProjectRoomImage] = useState(null);
-
-  useEffect(() => {
-    function onResolve1(image) {
-      setProjectRoomImage(image);
-    }
-    function onResolve(logo) {
-      setLogo(logo);
-    }
-
-    const storage = getStorage();
-    const storageRef = ref(
-      storage,
-      `/organizationsData/${organizationId}/logo/logo`
-    );
-    getDownloadURL(storageRef)
-      .then(onResolve)
-      .catch(() => {
-        console.log("error, no image in Projectcard.jsx");
-      });
-
-    const storageRef1 = ref(
-      storage,
-      `/organizationsData/${organizationId}/${projectRoomId}/thumbnail`
-    );
-    getDownloadURL(storageRef1)
-      .then(onResolve1)
-      .catch(() => {
-        console.log("error, no image in Projectcard.jsx");
-      });
-  }, [organizationId, projectRoomId]);
 
   const pushScreamId = () => {
     dispatch(openProjectRoomFunc(thisProjectRoomId, true));
@@ -182,9 +157,10 @@ const ProjectCard = (props) => {
 
   useEffect(() => {
     if (organizations) {
-      organizations.map(({ organizationId, title }) => {
+      organizations.map(({ organizationId, title, logoURL }) => {
         if (cardOrganizationId === organizationId) {
           setOrganizationCardData([...organizationCardData, title]);
+          setLogo(logoURL);
         }
       });
     }
@@ -216,7 +192,7 @@ const ProjectCard = (props) => {
               )}
           </StyledH2>
         </CardTitle>
-        <ImgWrapper img={projectRoomImage} />
+        <ImgWrapper img={logoURL} />
         <RightWrapper>
           <StyledText smallText={document.body.clientWidth < 350}>
             {brief &&

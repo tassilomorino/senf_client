@@ -1,7 +1,6 @@
 /** @format */
 
 import React, { useEffect, useState } from "react";
-import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -200,32 +199,13 @@ export const OrganizationCard = (props) => {
       organizationId: thisOrganizationId,
       organizationType,
       status,
+      logoURL,
     },
   } = props;
+
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.data.organization);
   const projects = useSelector((state) => state.data.projects);
-  const [organizationImage, setOrganizationImage] = useState(null);
-  const [placeHodlerImage, setPlaceHolderImage] = useState(false);
-
-  useEffect(() => {
-    const storage = getStorage();
-
-    const storageRef = ref(
-      storage,
-      `/organizationsData/${thisOrganizationId}/logo/logo`
-    );
-
-    getDownloadURL(storageRef).then(onResolve, onReject);
-    function onResolve(image) {
-      setOrganizationImage(image);
-    }
-    function onReject() {
-      setPlaceHolderImage(true);
-
-      console.log("error, no image in OrganizationCard.jsx");
-    }
-  }, [thisOrganizationId]);
 
   const handleOpenOrganization = () => {
     dispatch(openOrganizationFunc(true, thisOrganizationId));
@@ -248,11 +228,7 @@ export const OrganizationCard = (props) => {
       <ExpandButton handleButtonClick={handleOpenOrganization} />
 
       <LogoWrapper>
-        <Thumbnail
-          img={
-            organizationImage ? organizationImage : placeHodlerImage && NoImage
-          }
-        ></Thumbnail>
+        <Thumbnail img={logoURL ? logoURL : NoImage}></Thumbnail>
       </LogoWrapper>
 
       <LogoPlacer>
