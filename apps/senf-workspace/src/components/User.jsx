@@ -3,12 +3,7 @@ import Img from "../images/icons/icon-192.png";
 import { onSnapshot, doc } from "@firebase/firestore";
 import { db } from "../firebase";
 import styled from "styled-components";
-import {
-  Typography,
-  Icon,
-  FlexWrapper,
-  Button,
-} from "senf-atomic-design-system";
+import { Typography, Icon, Box, Button } from "senf-atomic-design-system";
 
 const UserCard = styled.div`
   padding: 10px;
@@ -44,29 +39,29 @@ const User = ({ user1, user, selectUser, chat }) => {
       selected={chat.handle === user.handle}
       onClick={() => selectUser(user)}
     >
-      <FlexWrapper justifyContent="space-between" alignItems="center">
+      <Box justifyContent="space-between" alignItems="center">
         {/* <Avatar src={user.avatar || Img} alt="avatar" /> */}
         <Button variant="secondary" icon="user" />
-        <FlexWrapper margin="10px" flexDirection="column">
+        <Box margin="10px" flexDirection="column">
           <Typography variant="h3">{user.handle}</Typography>
 
           {data && (
-            <FlexWrapper gap="3px">
+            <Box gap="3px">
               {data.from === user1 ? (
                 <Icon icon="check" transform="scale(0.7)" />
               ) : null}
               <Typography variant="bodySm" className="truncate">
                 {data.text}
               </Typography>
-            </FlexWrapper>
+            </Box>
           )}
-        </FlexWrapper>
+        </Box>
         <div style={{ marginLeft: "auto" }}>
           {data?.from !== user1 && data?.unread && <Icon icon="Sonstige" />}
 
           {/* {user.isOnline ? <Icon icon="bulb" /> : <Icon icon="bulb" />} */}
         </div>
-      </FlexWrapper>
+      </Box>
     </UserCard>
   );
 };

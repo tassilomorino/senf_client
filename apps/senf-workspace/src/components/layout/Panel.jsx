@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Navbar from "../Navbar";
-import {
-  Icon,
-  Input,
-  Typography,
-  FlexWrapper,
-} from "senf-atomic-design-system";
+import { Icon, Input, Typography } from "senf-atomic-design-system";
 import { useTranslation } from "react-i18next";
 import InboxContainer from "../InboxContainer";
 import WorkspaceContainer from "../WorkspaceContainer";

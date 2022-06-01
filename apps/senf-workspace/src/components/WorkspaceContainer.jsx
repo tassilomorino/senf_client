@@ -5,7 +5,7 @@ import {
   Icon,
   Input,
   Typography,
-  FlexWrapper,
+  Box,
   Divider,
 } from "senf-atomic-design-system";
 import User from "./User";
@@ -51,15 +51,14 @@ const WorkspaceContainer = ({
   const [searchOpen, setSearchOpen] = useState(false);
   return (
     <React.Fragment>
-      <FlexWrapper
+      <Box
         justifyContent="center"
         alignItems="flex-start"
         flexDirection="column"
-        width="calc(100% - 20px)"
         margin="10px 10px 0px 10px"
       >
         <Typography variant="buttonBg">Organisation</Typography>
-      </FlexWrapper>
+      </Box>
 
       <Group>
         <Icon icon="Politik" />
@@ -72,15 +71,14 @@ const WorkspaceContainer = ({
 
       <Divider />
 
-      <FlexWrapper
+      <Box
         justifyContent="center"
         alignItems="flex-start"
         flexDirection="column"
-        width="calc(100% - 20px)"
         margin="10px 10px 0px 10px"
       >
         <Typography variant="buttonBg">Gruppen</Typography>
-      </FlexWrapper>
+      </Box>
 
       <Group>
         <Icon icon="Initiativen" transform="scale(1)" />
@@ -93,15 +91,14 @@ const WorkspaceContainer = ({
 
       <Divider />
 
-      <FlexWrapper
+      <Box
         justifyContent="center"
         alignItems="flex-start"
         flexDirection="column"
-        width="calc(100% - 20px)"
         margin="10px 10px 0px 10px"
       >
         <Typography variant="buttonBg">Direktnachrichten</Typography>
-      </FlexWrapper>
+      </Box>
     </React.Fragment>
   );
 };

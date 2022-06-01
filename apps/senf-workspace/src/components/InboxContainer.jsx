@@ -4,7 +4,7 @@ import {
   Icon,
   Input,
   Typography,
-  FlexWrapper,
+  Box,
   Divider,
 } from "senf-atomic-design-system";
 import User from "./User";
@@ -38,11 +38,7 @@ const InboxContainer = ({
   const [searchOpen, setSearchOpen] = useState(false);
   return (
     <React.Fragment>
-      <FlexWrapper
-        flexDirection="column"
-        width="calc(100% - 20px)"
-        margin="10px 10px 0px 10px"
-      >
+      <Box flexDirection="column" margin="10px 10px 0px 10px">
         <Input
           type="text"
           value={searchTerm}
@@ -51,7 +47,7 @@ const InboxContainer = ({
             setSearchTerm(event.target.value);
           }}
         />
-      </FlexWrapper>
+      </Box>
 
       {searchTerm ? (
         <div className="users_search">
