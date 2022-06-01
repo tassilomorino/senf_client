@@ -187,7 +187,7 @@ const OrganizationsPage = ({
           textColor="#353535"
           margin="20px"
         >
-          <LoginRegistration />
+          {/* <LoginRegistration /> */}
         </SubmitButton>
       </MainModal>,
       document.getElementById("portal-root-modal")

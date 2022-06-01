@@ -69,6 +69,10 @@ import {
   sort,
   countStatusOfScreams,
 } from "../util/helpers";
+import LoginRegistration from "../components/organisms/Auth/LoginRegistration";
+
+import { MainSwipeList } from "senf-atomic-design-system";
+import { likeScream, unlikeScream } from "../redux/actions/likeActions";
 
 const CreateMainComponent = React.lazy(() =>
   import(
@@ -110,6 +114,7 @@ const Main = () => {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
+  const [authOpen, setAuthOpen] = useState(false);
   const { screamId, projectRoomId, organizationId } = useParams();
   const { cookie_settings } = useSelector((state) => state.data);
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
@@ -428,8 +433,31 @@ const Main = () => {
   const swipeListTablabels = useMemo(() => {
     return MenuData?.map((item) => item.text).slice(0, 2);
   }, []);
+
+  const handleButtonOpenCard = (screamId) => {
+    dispatch(openScreamFunc(screamId));
+  };
+
+  const handleButtonLike = (screamId) => {
+    if (!user.authenticated) {
+      setAuthOpen(true);
+      return;
+    }
+
+    if (userLikes.includes(screamId)) {
+      dispatch(unlikeScream(screamId));
+    } else {
+      dispatch(likeScream(screamId));
+    }
+  };
+
+  const handleButtonComment = () => {};
+
+  const user = useSelector((state) => state.user);
+
   return (
     <React.Fragment>
+      <LoginRegistration setAuthOpen={setAuthOpen} authOpen={authOpen} />
       {isMobileCustom ? (
         <React.Fragment>
           {(loading || loadingIdea || loadingProjectRoom) && (
@@ -461,6 +489,7 @@ const Main = () => {
             order={order}
             setOrder={setOrder}
             setOpenOrganizationsPage={setOpenOrganizationsPage}
+            setAuthOpen={setAuthOpen}
           />
         </React.Fragment>
       ) : (
@@ -472,6 +501,7 @@ const Main = () => {
           setOrder={setOrder}
           setOpenOrganizationsPage={setOpenOrganizationsPage}
           mapViewportRef={mapViewportRef}
+          setAuthOpen={setAuthOpen}
         />
       )}
 
@@ -496,27 +526,40 @@ const Main = () => {
             !openAccount &&
             !loading &&
             (order === 1 || (order === 2 && !loadingProjects)) && (
-              <SwipeList
-                swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}
-                tabLabels={swipeListTablabels}
-                loading={loading}
-                order={order}
-                dataFinal={order === 1 ? dataFinalIdeas : dataFinalProjectRooms}
-                dataFinalMap={dataFinalMap}
-                handleDropdown={handleDropdown}
-                handledropdownStatus={handledropdownStatus}
-                dataFinalProjectRooms={dataFinalProjectRooms}
-                dropdown={dropdown}
-                dropdownStatus={dropdownStatus}
-                dropdownStatusNumbers={dropdownStatusNumbers}
-                setSearchTerm={setSearchTerm}
-                searchTerm={searchTerm}
-                handleClick={handleClick}
-                setOpenInsightsPage={setOpenInsightsPage}
-                setOpenOrganizationsPage={setOpenOrganizationsPage}
-                openOrganizationsPage={openOrganizationsPage}
-                openInsightsPage={openInsightsPage}
-                mapViewportRef={mapViewportRef}
+              // <SwipeList
+              //   swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}
+              //   tabLabels={swipeListTablabels}
+              //   loading={loading}
+              //   order={order}
+              //   dataFinal={order === 1 ? dataFinalIdeas : dataFinalProjectRooms}
+              //   dataFinalMap={dataFinalMap}
+              //   handleDropdown={handleDropdown}
+              //   handledropdownStatus={handledropdownStatus}
+              //   dataFinalProjectRooms={dataFinalProjectRooms}
+              //   dropdown={dropdown}
+              //   dropdownStatus={dropdownStatus}
+              //   dropdownStatusNumbers={dropdownStatusNumbers}
+              //   setSearchTerm={setSearchTerm}
+              //   searchTerm={searchTerm}
+              //   handleClick={handleClick}
+              //   setOpenInsightsPage={setOpenInsightsPage}
+              //   setOpenOrganizationsPage={setOpenOrganizationsPage}
+              //   openOrganizationsPage={openOrganizationsPage}
+              //   openInsightsPage={openInsightsPage}
+              //   mapViewportRef={mapViewportRef}
+              // />
+
+              <MainSwipeList
+                type="ideas"
+                // setOpenOrganizationsOverview={setOpenOrganizationsOverview}
+                ideasData={dataFinalIdeas}
+                projectroomsData={dataFinalProjectRooms}
+                selectedTopics={["Versorgung"]}
+                selectedOrganiztaionTypes={["Vereine"]}
+                handleButtonOpenCard={handleButtonOpenCard}
+                handleButtonLike={handleButtonLike}
+                handleButtonComment={handleButtonComment}
+                user={user}
               />
             )}
 

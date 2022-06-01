@@ -25,7 +25,7 @@ const CommentButton = ({ handleButtonClick }) => {
       backgroundColor={"transparent"}
       handleButtonClick={() => console.log("not logged in")}
     >
-      <LoginRegistration />
+      {/* <LoginRegistration /> */}
     </CustomIconButton>
   ) : (
     <CustomIconButton

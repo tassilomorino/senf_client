@@ -12,7 +12,7 @@ describe("The Login Page", () => {
   // data-cy tags were added to the html as necessary
   it("logs User in successfully", () => {
     cy.get(".sideBar")
-      .find("[data-cy=open-RegistrationAndLogin]")
+      .find("[data-cy=open-LoginRegistration]")
       .click({ force: true });
 
     // ADD SCENARIOS ABOVE HAPPY PATH

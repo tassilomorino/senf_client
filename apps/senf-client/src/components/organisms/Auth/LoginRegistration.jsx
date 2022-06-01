@@ -33,8 +33,7 @@ import { getUserData } from "../../../redux/actions/userActions";
 
 import { Modal, Auth } from "senf-atomic-design-system";
 
-const LoginRegistration = ({ classes }) => {
-  const [open, setOpen] = useState(false);
+const LoginRegistration = ({ setAuthOpen, authOpen }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -61,11 +60,8 @@ const LoginRegistration = ({ classes }) => {
           dispatch({ type: SET_AUTHENTICATED });
           dispatch(getUserData(userCredential.user.uid));
           console.log(window.location);
-          if (window.location.pathname === "/verify") {
-            history.push("/");
-          }
 
-          setOpen(false);
+          setAuthOpen(false);
         } else {
           setLoading(false);
           setErrorMessage(t("email_not_verified"));
@@ -173,6 +169,7 @@ const LoginRegistration = ({ classes }) => {
     await signInWithPopup(auth, provider)
       .then((result) => {
         console.log(result);
+        setAuthOpen(false);
       })
       .catch((error) => {
         console.log(error.message, "error in facebook provider");
@@ -197,10 +194,12 @@ const LoginRegistration = ({ classes }) => {
         await createUserInDatabase(user);
         dispatch({ type: SET_AUTHENTICATED });
         dispatch(getUserData(user.uid));
+        setAuthOpen(false);
       } else if (user) {
         console.log("user already exists");
         dispatch({ type: SET_AUTHENTICATED });
         dispatch(getUserData(user.uid));
+        setAuthOpen(false);
       }
     } catch (error) {
       // Handle Errors here.
@@ -233,27 +232,20 @@ const LoginRegistration = ({ classes }) => {
   // }, []);
 
   return (
-    !authenticated && (
-      <Fragment>
-        <ExpandButton
-          handleButtonClick={() => setOpen(true)}
-          data-cy="open-RegistrationAndLogin"
-        ></ExpandButton>
-
-        <Modal openModal={open}>
-          <Auth
-            loginLoading={loading}
-            handleSubmitLogin={(loginData) => handleSubmitLogin(loginData)}
-            handleSubmitRegister={(registerData) =>
-              handleSubmitRegister(registerData)
-            }
-            handleGoogleSignIn={handleGoogleSignIn}
-            handleFacebookSignIn={handleFacebookSignIn}
-            handleClose={() => setOpen(false)}
-          />
-        </Modal>
-      </Fragment>
-    )
+    <Fragment>
+      <Modal openModal={authOpen} setOpenModal={() => setAuthOpen(false)}>
+        <Auth
+          loginLoading={loading}
+          handleSubmitLogin={(loginData) => handleSubmitLogin(loginData)}
+          handleSubmitRegister={(registerData) =>
+            handleSubmitRegister(registerData)
+          }
+          handleGoogleSignIn={handleGoogleSignIn}
+          handleFacebookSignIn={handleFacebookSignIn}
+          handleClose={() => setAuthOpen(false)}
+        />
+      </Modal>
+    </Fragment>
   );
 };
 

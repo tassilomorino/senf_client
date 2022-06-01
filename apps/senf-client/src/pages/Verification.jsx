@@ -132,7 +132,7 @@ const Verification = ({ classes }) => {
             zIndex="0"
           />
 
-          <LoginRegistration />
+          {/* <LoginRegistration /> */}
 
           <img src={Celebrate} className="CelebrateVerify" alt="EndImage" />
 

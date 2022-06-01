@@ -11,7 +11,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Slide from "@material-ui/core/Slide";
 
 //HANDLER
-import RegistrationAndLogin from "../../organisms/Auth/LoginRegistration";
+import LoginRegistration from "../../organisms/Auth/LoginRegistration";
 
 //ICONS
 import Plus from "../../../images/svgIcons/plus.svg";
@@ -525,7 +525,7 @@ const PostScream = ({
                 : null
             }
           >
-            <RegistrationAndLogin />
+            {/* <LoginRegistration /> */}
           </div>
         )}
 
