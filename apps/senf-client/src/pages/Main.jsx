@@ -434,20 +434,21 @@ const Main = () => {
     return MenuData?.map((item) => item.text).slice(0, 2);
   }, []);
 
-  const handleButtonOpenCard = (screamId) => {
+  const handleButtonOpenCard = (event, screamId) => {
     dispatch(openScreamFunc(screamId));
   };
 
-  const handleButtonLike = (screamId) => {
+  const handleButtonLike = (event, screamId) => {
+    event.stopPropagation();
     if (!user.authenticated) {
       setAuthOpen(true);
       return;
     }
 
-    if (userLikes.includes(screamId)) {
-      dispatch(unlikeScream(screamId));
+    if (user.likes && user.likes.find((like) => like.screamId === screamId)) {
+      dispatch(unlikeScream(screamId, user));
     } else {
-      dispatch(likeScream(screamId));
+      dispatch(likeScream(screamId, user));
     }
   };
 
