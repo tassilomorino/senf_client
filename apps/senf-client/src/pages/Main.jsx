@@ -11,55 +11,55 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
-import { isMobileCustom } from "../../util/customDeviceDetect";
+import { isMobileCustom } from "../util/customDeviceDetect";
 
 import {
   getScreams,
   closeScream,
   openScreamFunc,
-} from "../../redux/actions/screamActions";
+} from "../redux/actions/screamActions";
 import {
   getProjects,
   openProjectRoomFunc,
-} from "../../redux/actions/projectActions";
+} from "../redux/actions/projectActions";
 
 import {
   setMapBounds,
   setInitialMapBounds,
   setMapViewport,
-} from "../../redux/actions/mapActions";
+} from "../redux/actions/mapActions";
 import {
   handleTopicSelectorRedux,
   setSwipePositionDown,
   setSwipePositionUp,
-} from "../../redux/actions/UiActions";
+} from "../redux/actions/UiActions";
 
 // Components
-import InsightsPage from "../organisms/SubPages/InsightsPage";
-import DesktopSidebar from "../molecules/Navigation/DesktopSidebar";
-import Topbar from "../molecules/Navigation/Topbar";
-import Map from "../atoms/map/Map";
-import SwipeList from "../organisms/SwipeLists/SwipeList";
-import IdeaDialog from "../organisms/Dialogs/IdeaDialog";
-import ProjectDialog from "../organisms/Dialogs/ProjectDialog";
-import ThanksForTheVote from "../atoms/Backgrounds/ThanksForTheVote";
-import Account from "../organisms/Dialogs/Account";
-import Loader from "../atoms/Backgrounds/Loader";
-import { closeAccountFunc } from "../../redux/actions/accountActions";
-import ErrorBackground from "../atoms/Backgrounds/ErrorBackground";
-import TagsFilter from "../molecules/Filters/TagsFilter";
-import PostScream from "../organisms/PostIdea/PostScream";
-import ChangeLocationModal from "../molecules/Modals/ChangeLocationModal";
-import { usePrevious } from "../../hooks/usePrevious";
+import InsightsPage from "../components/organisms/SubPages/InsightsPage";
+import DesktopSidebar from "../components/molecules/Navigation/DesktopSidebar";
+import Topbar from "../components/molecules/Navigation/Topbar";
+import Map from "../components/atoms/map/Map";
+import SwipeList from "../components/organisms/SwipeLists/SwipeList";
+import IdeaDialog from "../components/organisms/Dialogs/IdeaDialog";
+import ProjectDialog from "../components/organisms/Dialogs/ProjectDialog";
+import ThanksForTheVote from "../components/atoms/Backgrounds/ThanksForTheVote";
+import Account from "../components/organisms/Dialogs/Account";
+import Loader from "../components/atoms/Backgrounds/Loader";
+import { closeAccountFunc } from "../redux/actions/accountActions";
+import ErrorBackground from "../components/atoms/Backgrounds/ErrorBackground";
+import TagsFilter from "../components/molecules/Filters/TagsFilter";
+import PostScream from "../components/organisms/PostIdea/PostScream";
+import ChangeLocationModal from "../components/molecules/Modals/ChangeLocationModal";
+import { usePrevious } from "../hooks/usePrevious";
 import {
   getOrganizations,
   openOrganizationFunc,
-} from "../../redux/actions/organizationActions";
+} from "../redux/actions/organizationActions";
 
-import OrganizationDialog from "../organisms/Dialogs/OrganizationDialog";
-import OrganizationsPage from "../organisms/SubPages/OrganizationsPage";
+import OrganizationDialog from "../components/organisms/Dialogs/OrganizationDialog";
+import OrganizationsPage from "../components/organisms/SubPages/OrganizationsPage";
 import styled from "styled-components";
-import { MenuData } from "../../data/MenuData";
+import { MenuData } from "../data/MenuData";
 import {
   filterByGeodata,
   filterByTagFilter,
@@ -68,10 +68,12 @@ import {
   search,
   sort,
   countStatusOfScreams,
-} from "../../util/helpers";
+} from "../util/helpers";
 
 const CreateMainComponent = React.lazy(() =>
-  import("../organisms/Create_Organisation_Projectrooms/CreateMainComponent")
+  import(
+    "../components/organisms/Create_Organisation_Projectrooms/CreateMainComponent"
+  )
 );
 const MainColumnWrapper = styled.div`
   width: 100vw;

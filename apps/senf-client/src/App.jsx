@@ -30,7 +30,7 @@ import { getProjects } from "../src/redux/actions/projectActions";
 import { getScreams } from "../src/redux/actions/screamActions";
 
 //Pages
-import Main from "./components/templates/Main";
+import Main from "./pages/Main";
 import Verification from "./pages/Verification";
 import impressum from "./components/organisms/infocomponents/legal/impressum";
 import datenschutz from "./components/organisms/infocomponents/legal/datenschutz";
@@ -54,12 +54,20 @@ import { setViewport } from "./util/helpers-map-animations";
 import detectLocation from "./util/detectLocation";
 import GlobalStyles from "./styles/GlobalStyles";
 
-import "./util/i18n"; // i18n configuration
+import {
+  theme,
+  GlobalStyle,
+  LayerWhiteFirstDefault,
+  i18n,
+} from "senf-atomic-design-system";
+import { ThemeProvider } from "styled-components";
+
+// import "./util/i18n"; // i18n configuration
 detectLocation(); // detect location and set i18n language
 const cookies = new Cookies();
 //require("intersection-observer");
 
-const theme = createTheme(themeFile);
+const muiTheme = createTheme(themeFile);
 
 function get_local_storage_status() {
   let test = "test";
@@ -160,7 +168,9 @@ const App = () => {
   ) : null;
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+
       {import.meta.env.VITE_NO_CRAWL && (
         /* disable google crawling for senf-client-test.netlify.app */
         <Helmet>
@@ -179,7 +189,7 @@ const App = () => {
         </Helmet>
       )}
 
-      <MuiThemeProvider theme={theme}>
+      <MuiThemeProvider theme={muiTheme}>
         <Provider store={store}>
           <GlobalStyles />
           <Router>
@@ -234,7 +244,7 @@ const App = () => {
           </Router>
         </Provider>
       </MuiThemeProvider>
-    </>
+    </ThemeProvider>
   );
 };
 console.log(getBuildDate(packageJson.buildDate));
