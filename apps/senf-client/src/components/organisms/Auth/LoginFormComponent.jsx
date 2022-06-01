@@ -51,15 +51,33 @@ const LoginFormComponent = ({
     }
   }
   const handleFacebookSignIn = async () => {
-    const provider = new FacebookAuthProvider();
-    provider.addScope("email");
-    await signInWithPopup(auth, provider)
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((error) => {
-        console.log(error.message, "error in facebook provider");
-      });
+    try {
+      const provider = new FacebookAuthProvider();
+      provider.addScope("email");
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const docRef = doc(db, "users", user.uid);
+      const docSnapshot = await getDoc(docRef);
+      if (!docSnapshot.exists() && user) {
+        await createUserInDatabase(user);
+        dispatch({ type: SET_AUTHENTICATED });
+        dispatch(getUserData(user.uid));
+      } else if (user) {
+        console.log("user already exists");
+        dispatch({ type: SET_AUTHENTICATED });
+        dispatch(getUserData(user.uid));
+      }
+    } catch (error) {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData.email;
+      // The AuthCredential type that was used.
+      const credential = FacebookAuthProvider.credentialFromError(error);
+
+      throw new Error(errorCode, errorMessage, email, credential);
+    }
   };
   const handleGoogleSignIn = async () => {
     try {
@@ -107,6 +125,7 @@ const LoginFormComponent = ({
         </div>
 
         <GoogleSignInButton handleClick={handleGoogleSignIn} />
+        <button onClick={handleFacebookSignIn}>sign in with facebook </button>
         <TextField
           id="outlined-name"
           name="email"
