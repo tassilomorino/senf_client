@@ -25,6 +25,7 @@ import {
   Input,
   OrganizationCard,
   Auth,
+  Modal,
 } from "senf-atomic-design-system";
 import styled from "styled-components";
 
@@ -35,23 +36,6 @@ const Section = styled.section`
   top: 0;
   left: 0;
   background-color: ${({ theme }) => theme.colors.beige.beige20};
-`;
-const AuthWrapper = styled.div`
-  width: 400px;
-  margin-left: calc(50% - 200px);
-  height: calc(90% - 40px);
-  margin-top: calc(5% - 20px);
-  position: fixed;
-  overflow: scroll;
-  border-radius: 18px;
-`;
-
-const Background = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: rgb(0, 0, 0, 0.5);
-  position: fixed;
-  background-color: ${({ theme }) => theme.colors.black.black40tra};
 `;
 
 const AuthPage = ({ variant }) => {
@@ -164,16 +148,15 @@ const AuthPage = ({ variant }) => {
 
   return (
     <Section>
-      <Background />
-      <AuthWrapper>
+      <Modal openModal={true}>
         <Auth
-          loading={loading}
+          loginLoading={loading}
           handleSubmitLogin={(loginData) => handleSubmitLogin(loginData)}
           handleSubmitRegister={(registerData) =>
             handleSubmitRegister(registerData)
           }
         />
-      </AuthWrapper>
+      </Modal>
     </Section>
   );
 };

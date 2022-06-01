@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "@firebase/auth";
 import { auth } from "../firebase";
-import { Loader, FlexWrapper } from "senf-atomic-design-system";
+import { Loader, Box } from "senf-atomic-design-system";
 
 const AuthContext = createContext();
 
@@ -18,7 +18,7 @@ const AuthProvider = ({ children }) => {
 
   if (loading) {
     return (
-      <FlexWrapper
+      <Box
         justifyContent="center"
         alignItems="center"
         flexDirection="column"
@@ -28,7 +28,7 @@ const AuthProvider = ({ children }) => {
         <div style={{ width: "200px" }}>
           <Loader />
         </div>
-      </FlexWrapper>
+      </Box>
     );
   }
 

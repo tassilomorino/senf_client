@@ -28,7 +28,7 @@ import InboxContainer from "../components/InboxContainer";
 import ChatBubbles from "../images/illustrations/chatBubbles.png";
 import MessagesContainer from "../components/layout/MessagesContainer";
 
-import { FlexWrapper } from "senf-atomic-design-system";
+import { Box } from "senf-atomic-design-system";
 import WorkspaceContainer from "../components/WorkspaceContainer";
 import Panel from "../components/layout/Panel";
 
@@ -189,7 +189,7 @@ const Home = () => {
   };
 
   return (
-    <FlexWrapper height="100%" style={{ overflow: "hidden" }}>
+    <Box height="100%" style={{ overflow: "hidden" }}>
       <MenuSidebar
         currentWorkspace={currentWorkspace}
         setCurrentWorkspace={setCurrentWorkspace}
@@ -248,7 +248,7 @@ const Home = () => {
             setImg={setImg}
           />
         ) : (
-          <FlexWrapper
+          <Box
             justifyContent="center"
             alignItems="center"
             flexDirection="column"
@@ -257,10 +257,10 @@ const Home = () => {
           >
             <img src={ChatBubbles} width="300px" />
             <h3 className="no_conv">Select a user to start a conversation</h3>
-          </FlexWrapper>
+          </Box>
         )}
       </RightContainer>
-    </FlexWrapper>
+    </Box>
   );
 };
 
