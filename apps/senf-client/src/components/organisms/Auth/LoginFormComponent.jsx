@@ -50,44 +50,26 @@ const LoginFormComponent = ({
       console.log(error, "error in createUserInDatabase");
     }
   }
-  const handleFacebookSignIn = async () => {
+
+  const handleProviderSignin = async (providerName) => {
     try {
-      const provider = new FacebookAuthProvider();
-      provider.addScope("email");
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      const docRef = doc(db, "users", user.uid);
-      const docSnapshot = await getDoc(docRef);
-      if (!docSnapshot.exists() && user) {
-        await createUserInDatabase(user);
-        dispatch({ type: SET_AUTHENTICATED });
-        dispatch(getUserData(user.uid));
-      } else if (user) {
-        console.log("user already exists");
-        dispatch({ type: SET_AUTHENTICATED });
-        dispatch(getUserData(user.uid));
+      let provider;
+      let result;
+      let credential;
+
+      if (providerName === "google") {
+        provider = new GoogleAuthProvider();
+        provider.addScope("email");
+        result = await signInWithPopup(auth, provider);
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        credential = GoogleAuthProvider.credentialFromResult(result);
       }
-    } catch (error) {
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      const email = error.customData.email;
-      // The AuthCredential type that was used.
-      const credential = FacebookAuthProvider.credentialFromError(error);
-
-      throw new Error(errorCode, errorMessage, email, credential);
-    }
-  };
-  const handleGoogleSignIn = async () => {
-    try {
-      const provider = new GoogleAuthProvider();
-      provider.addScope("email");
-
-      const result = await signInWithPopup(auth, provider);
-
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      const credential = GoogleAuthProvider.credentialFromResult(result);
+      if (providerName === "facebook") {
+        provider = new FacebookAuthProvider();
+        provider.addScope("email");
+        result = await signInWithPopup(auth, provider);
+        credential = FacebookAuthProvider.credentialFromResult(result);
+      }
       const token = credential.accessToken;
       // The signed-in user info.
       const user = result.user;
@@ -110,10 +92,15 @@ const LoginFormComponent = ({
       // The email of the user's account used.
       const email = error.email;
       // The AuthCredential type that was used.
-      const credential = GoogleAuthProvider.credentialFromError(error);
-      throw new Error(errorCode, errorMessage, email, credential);
+      let credential;
+      if (providerName === "google") {
+        credential = GoogleAuthProvider.credentialFromError(error);
+      }
+      if (providerName === "facebook") {
+        credential = FacebookAuthProvider.credentialFromError(error);
+      }
 
-      // ...
+      throw new Error(errorCode, errorMessage, email, credential);
     }
   };
 
@@ -124,8 +111,12 @@ const LoginFormComponent = ({
           {t("notYetMember")} <span className="Terms">{t("register")}</span>
         </div>
 
-        <GoogleSignInButton handleClick={handleGoogleSignIn} />
-        <button onClick={handleFacebookSignIn}>sign in with facebook </button>
+        <GoogleSignInButton
+          handleClick={() => handleProviderSignin("google")}
+        />
+        <button onClick={() => handleProviderSignin("facebook")}>
+          sign in with facebook
+        </button>
         <TextField
           id="outlined-name"
           name="email"
