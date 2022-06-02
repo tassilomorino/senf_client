@@ -339,8 +339,8 @@ const Map = ({
                 }
               : {
                   position: "fixed",
-                  width: "calc(100% - 600px)",
-                  left: "600px",
+                  width: "100vw",
+                  left: "0px",
                   top: "0",
                   height: "100%",
                   transform: "scale(1)",

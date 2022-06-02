@@ -30,6 +30,7 @@ import {
 } from "../redux/actions/mapActions";
 import {
   handleTopicSelectorRedux,
+  handleOrganizationTypesSelectorRedux,
   setSwipePositionDown,
   setSwipePositionUp,
 } from "../redux/actions/UiActions";
@@ -71,7 +72,14 @@ import {
 } from "../util/helpers";
 import LoginRegistration from "../components/organisms/Auth/LoginRegistration";
 
-import { MainSwipeList } from "senf-atomic-design-system";
+import {
+  MainSwipeList,
+  OrganizationsOverview,
+  OrganizationPage,
+  MenuSidebar,
+  TagSlide,
+  Box,
+} from "senf-atomic-design-system";
 import { likeScream, unlikeScream } from "../redux/actions/likeActions";
 
 const CreateMainComponent = React.lazy(() =>
@@ -89,7 +97,7 @@ const MainColumnWrapper = styled.div`
   pointer-events: none;
 
   @media (min-width: 768px) {
-    margin-left: 200px;
+    margin-left: 70px;
     /* width: 400px; */
     height: 100vh;
     overflow-y: scroll;
@@ -115,6 +123,8 @@ const Main = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [authOpen, setAuthOpen] = useState(false);
+  const [swipedUp, setSwipedUp] = useState(false);
+
   const { screamId, projectRoomId, organizationId } = useParams();
   const { cookie_settings } = useSelector((state) => state.data);
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
@@ -128,8 +138,9 @@ const Main = () => {
   const openCreateProjectRoom = useSelector(
     (state) => state.UI.openCreateProjectRoom
   );
-  const [openInsightsPage, setOpenInsightsPage] = useState(false);
-  const [openOrganizationsPage, setOpenOrganizationsPage] = useState(false);
+  const [openStatistics, setOpenStatistics] = useState(false);
+  const [openOrganizationsOverview, setOpenOrganizationsOverview] =
+    useState(false);
   const userLikes = useSelector((state) => state.user.likes);
   const voted = useSelector((state) => state.UI.voted);
   const screams = useSelector((state) => state.data.screams);
@@ -162,6 +173,8 @@ const Main = () => {
 
   const [order, setOrder] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchOpen, setSearchOpen] = useState(false);
+
   const [dropdown, setDropdown] = useState("newest");
   const [dropdownStatus, setdropdownStatus] = useState([]);
 
@@ -268,7 +281,7 @@ const Main = () => {
     } else if (window.location.pathname === "/organizations") {
       setOrder(2);
       dispatch(setSwipePositionUp());
-      setOpenOrganizationsPage(true);
+      setOpenOrganizationsOverview(true);
     } else if (window.location.pathname === "/insights") {
       // setOrder(4);
     } else if (projectRoomId) {
@@ -278,7 +291,7 @@ const Main = () => {
     } else if (organizationId) {
       setOrder(2);
       dispatch(setSwipePositionUp());
-      setOpenOrganizationsPage(true);
+      setOpenOrganizationsOverview(true);
     }
   }, [dispatch, organizationId, screamId, projectRoomId]);
 
@@ -287,8 +300,8 @@ const Main = () => {
       setOrder(order);
       setSearchTerm("");
       setDropdown("newest");
-      setOpenInsightsPage(false);
-      setOpenOrganizationsPage(false);
+      setOpenStatistics(false);
+      setOpenOrganizationsOverview(false);
       dispatch(closeScream());
       dispatch(openProjectRoomFunc(null, false));
       dispatch(openOrganizationFunc(null, false));
@@ -456,6 +469,16 @@ const Main = () => {
 
   const user = useSelector((state) => state.user);
 
+  const handleSelectTopics = (topics) => {
+    dispatch(handleTopicSelectorRedux(topics));
+  };
+
+  const handleSelectOrganizationTypes = (organizationTypes) => {
+    console.log(organizationTypes);
+    dispatch(handleOrganizationTypesSelectorRedux(organizationTypes));
+  };
+
+  console.log(openOrganizationsOverview);
   return (
     <React.Fragment>
       <LoginRegistration setAuthOpen={setAuthOpen} authOpen={authOpen} />
@@ -484,26 +507,40 @@ const Main = () => {
                 }
               />
             )}
+
           <Topbar
             loading={loading}
             handleClick={handleClick}
             order={order}
             setOrder={setOrder}
-            setOpenOrganizationsPage={setOpenOrganizationsPage}
+            setOpenOrganizationsPage={setOpenOrganizationsOverview}
             setAuthOpen={setAuthOpen}
           />
         </React.Fragment>
       ) : (
-        <DesktopSidebar
-          handleClick={handleClick}
-          order={order}
-          setChangeLocationModalOpen={setChangeLocationModalOpen}
-          loading={loading}
-          setOrder={setOrder}
-          setOpenOrganizationsPage={setOpenOrganizationsPage}
-          mapViewportRef={mapViewportRef}
-          setAuthOpen={setAuthOpen}
-        />
+        // <DesktopSidebar
+        //   handleClick={handleClick}
+        //   order={order}
+        //   setChangeLocationModalOpen={setChangeLocationModalOpen}
+        //   loading={loading}
+        //   setOrder={setOrder}
+        //   setOpenOrganizationsPage={setOpenOrganizationsOverview}
+        //   mapViewportRef={mapViewportRef}
+        //   setAuthOpen={setAuthOpen}
+        // />
+        <React.Fragment>
+          <Box margin="10px 10px 10px 500px" position="fixed" zIndex={9}>
+            <TagSlide
+              type={order === 1 ? "topics" : "organizationTypes"}
+              selectedTopics={selectedTopics}
+              selectedOrganizationTypes={selectedOrganizationTypes}
+              handleSelectTopics={handleSelectTopics}
+              handleSelectOrganizationTypes={handleSelectOrganizationTypes}
+            />
+          </Box>
+
+          <MenuSidebar />
+        </React.Fragment>
       )}
 
       <Map
@@ -551,16 +588,31 @@ const Main = () => {
               // />
 
               <MainSwipeList
-                type="ideas"
+                order={order === 1 ? "ideas" : "projectroooms"}
+                setOrder={handleClick}
                 // setOpenOrganizationsOverview={setOpenOrganizationsOverview}
                 ideasData={dataFinalIdeas}
-                projectroomsData={dataFinalProjectRooms}
-                selectedTopics={["Versorgung"]}
-                selectedOrganiztaionTypes={["Vereine"]}
+                projectRoomsData={dataFinalProjectRooms}
+                organizations={organizations}
+                selectedTopics={selectedTopics}
+                selectedOrganizationTypes={selectedOrganizationTypes}
+                handleSelectTopics={handleSelectTopics}
+                handleSelectOrganizationTypes={handleSelectOrganizationTypes}
+                swipedUp={swipedUp}
+                setSwipedUp={setSwipedUp}
+                openScream={openScream}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                searchOpen={searchOpen}
+                setSearchOpen={setSearchOpen}
                 handleButtonOpenCard={handleButtonOpenCard}
                 handleButtonLike={handleButtonLike}
                 handleButtonComment={handleButtonComment}
                 user={user}
+                setOpenStatistics={setOpenStatistics}
+                openStatistics={openStatistics}
+                setOpenOrganizationsOverview={setOpenOrganizationsOverview}
+                openOrganizationsOverview={openOrganizationsOverview}
               />
             )}
 
@@ -570,7 +622,7 @@ const Main = () => {
               handleClick={handleClick}
               loadingProjects={loadingProjects}
               dataFinalProjectRooms={dataFinalProjectRooms}
-              setOpenInsightsPage={setOpenInsightsPage}
+              setOpenInsightsPage={setOpenStatistics}
             />
           )}
 
@@ -588,37 +640,42 @@ const Main = () => {
           loadingProjects={false}
           loading={loadingOrganizations}
           projectsData={dataFinalProjectRooms}
-          setOpenOrganizationsPage={setOpenOrganizationsPage}
+          setOpenOrganizationsPage={setOpenOrganizationsOverview}
         />
       )}
 
       {!openInfoPage &&
         !openProjectRoom &&
         !openAccount &&
-        openOrganizationsPage &&
+        openOrganizationsOverview &&
         !loadingOrganizations && (
-          <OrganizationsPage
-            order={order}
-            setOpenOrganizationsPage={setOpenOrganizationsPage}
-            dataFinal={dataFinalOrganizations}
-            dropdown={dropdown}
-            handleDropdown={handleDropdown}
-            setDropdown={setDropdown}
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            dataFinalProjectRooms={dataFinalProjectRooms}
+          // <OrganizationsPage
+          //   order={order}
+          //   setOpenOrganizationsPage={setOpenOrganizationsOverview}
+          //   dataFinal={dataFinalOrganizations}
+          //   dropdown={dropdown}
+          //   handleDropdown={handleDropdown}
+          //   setDropdown={setDropdown}
+          //   searchTerm={searchTerm}
+          //   setSearchTerm={setSearchTerm}
+          //   dataFinalProjectRooms={dataFinalProjectRooms}
+          // />
+          <OrganizationsOverview
+            data={dataFinalOrganizations}
+            selectedOrganizationTypes={selectedOrganizationTypes}
+            user={user}
+
+            // openCreateOrganization,
+            // setOpenModalAuthenticate,
           />
         )}
 
-      {!openInfoPage &&
-        !openAccount &&
-        !openOrganization &&
-        openInsightsPage && (
-          <InsightsPage
-            setOpenInsightsPage={setOpenInsightsPage}
-            projectRoomId={project?.projectRoomId}
-          />
-        )}
+      {!openInfoPage && !openAccount && !openOrganization && openStatistics && (
+        <InsightsPage
+          setOpenInsightsPage={setOpenStatistics}
+          projectRoomId={project?.projectRoomId}
+        />
+      )}
 
       <ErrorBackground loading={loading} />
 
