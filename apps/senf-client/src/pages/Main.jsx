@@ -33,6 +33,8 @@ import {
   handleOrganizationTypesSelectorRedux,
   setSwipePositionDown,
   setSwipePositionUp,
+  setInfoPageClosed,
+  setInfoPageOpen,
 } from "../redux/actions/UiActions";
 
 // Components
@@ -46,7 +48,12 @@ import ProjectDialog from "../components/organisms/Dialogs/ProjectDialog";
 import ThanksForTheVote from "../components/atoms/Backgrounds/ThanksForTheVote";
 import Account from "../components/organisms/Dialogs/Account";
 import Loader from "../components/atoms/Backgrounds/Loader";
-import { closeAccountFunc } from "../redux/actions/accountActions";
+import {
+  closeAccountFunc,
+  getMyOrganizations,
+  getMyScreams,
+  openAccountFunc,
+} from "../redux/actions/accountActions";
 import ErrorBackground from "../components/atoms/Backgrounds/ErrorBackground";
 import TagsFilter from "../components/molecules/Filters/TagsFilter";
 import PostScream from "../components/organisms/PostIdea/PostScream";
@@ -81,6 +88,8 @@ import {
   Box,
 } from "senf-atomic-design-system";
 import { likeScream, unlikeScream } from "../redux/actions/likeActions";
+import InlineInformationPage from "../components/organisms/infocomponents/InlineInformationPage";
+import { unstable_renderSubtreeIntoContainer } from "react-dom";
 
 const CreateMainComponent = React.lazy(() =>
   import(
@@ -97,7 +106,7 @@ const MainColumnWrapper = styled.div`
   pointer-events: none;
 
   @media (min-width: 768px) {
-    margin-left: 70px;
+    left: 0px;
     /* width: 400px; */
     height: 100vh;
     overflow-y: scroll;
@@ -123,6 +132,8 @@ const Main = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [authOpen, setAuthOpen] = useState(false);
+  const [postIdeaOpen, setPostIdeaOpen] = useState(false);
+
   const [swipedUp, setSwipedUp] = useState(false);
 
   const { screamId, projectRoomId, organizationId } = useParams();
@@ -141,7 +152,11 @@ const Main = () => {
   const [openStatistics, setOpenStatistics] = useState(false);
   const [openOrganizationsOverview, setOpenOrganizationsOverview] =
     useState(false);
-  const userLikes = useSelector((state) => state.user.likes);
+
+  const user = useSelector((state) => state.user);
+  const userId = user.userId;
+  const userLikes = user.likes;
+
   const voted = useSelector((state) => state.UI.voted);
   const screams = useSelector((state) => state.data.screams);
   const myScreams = useSelector((state) => state.data.myScreams);
@@ -447,8 +462,14 @@ const Main = () => {
     return MenuData?.map((item) => item.text).slice(0, 2);
   }, []);
 
-  const handleButtonOpenCard = (event, screamId) => {
-    dispatch(openScreamFunc(screamId));
+  const handleButtonOpenCard = (event, cardType, cardId) => {
+    if (cardType === "ideaCard") {
+      dispatch(openScreamFunc(cardId));
+    } else if (cardType === "projectroomCard") {
+      dispatch(openProjectRoomFunc(cardId, true));
+    } else if (cardType === "organizationCard") {
+      dispatch(openOrganizationFunc(cardId));
+    }
   };
 
   const handleButtonLike = (event, screamId) => {
@@ -467,8 +488,6 @@ const Main = () => {
 
   const handleButtonComment = () => {};
 
-  const user = useSelector((state) => state.user);
-
   const handleSelectTopics = (topics) => {
     dispatch(handleTopicSelectorRedux(topics));
   };
@@ -479,14 +498,55 @@ const Main = () => {
   };
 
   console.log(openOrganizationsOverview);
+
+  const handleOpenMyAccount = () => {
+    dispatch(openProjectRoomFunc(null, false));
+    dispatch(closeScream());
+    dispatch(openAccountFunc(userId));
+    window.history.pushState(null, null, "/");
+
+    dispatch(handleTopicSelectorRedux("all"));
+  };
+  useEffect(() => {
+    if (userId && openAccount) {
+      if (userId) {
+        dispatch(getMyScreams(userId));
+        dispatch(getMyOrganizations(userId));
+      }
+    }
+  }, [dispatch, openAccount, userId]);
+
+  const handleOpenInfoPage = useCallback(() => {
+    dispatch(setInfoPageOpen());
+  }, [dispatch]);
+
   return (
     <React.Fragment>
+      {(loading || loadingIdea || loadingProjectRoom) && (
+        <Loader withoutBg={true} />
+      )}
+
+      {openInfoPage && (
+        <InlineInformationPage
+          setOrder={setOrder}
+          setOpenOrganizationsOverview={setOpenOrganizationsOverview}
+        />
+      )}
       <LoginRegistration setAuthOpen={setAuthOpen} authOpen={authOpen} />
+
+      {postIdeaOpen && (
+        <PostScream
+          loadingProjects={loadingProjects}
+          projectsData={projects}
+          project={project}
+          mapViewportRef={mapViewportRef}
+          setPostIdeaOpen={setPostIdeaOpen}
+          postIdeaOpen={postIdeaOpen}
+          setAuthOpen={setAuthOpen}
+        />
+      )}
       {isMobileCustom ? (
         <React.Fragment>
-          {(loading || loadingIdea || loadingProjectRoom) && (
-            <Loader withoutBg={true} />
-          )}
           {isMobileCustom && !openScream && (
             <MobileMapClickBackground
               show={swipePosition === "top"}
@@ -528,19 +588,15 @@ const Main = () => {
         //   mapViewportRef={mapViewportRef}
         //   setAuthOpen={setAuthOpen}
         // />
-        <React.Fragment>
-          <Box margin="10px 10px 10px 500px" position="fixed" zIndex={9}>
-            <TagSlide
-              type={order === 1 ? "topics" : "organizationTypes"}
-              selectedTopics={selectedTopics}
-              selectedOrganizationTypes={selectedOrganizationTypes}
-              handleSelectTopics={handleSelectTopics}
-              handleSelectOrganizationTypes={handleSelectOrganizationTypes}
-            />
-          </Box>
-
-          <MenuSidebar />
-        </React.Fragment>
+        <Box margin="10px 10px 10px 500px" position="fixed" zIndex={9}>
+          <TagSlide
+            type={order === 1 ? "topics" : "organizationTypes"}
+            selectedTopics={selectedTopics}
+            selectedOrganizationTypes={selectedOrganizationTypes}
+            handleSelectTopics={handleSelectTopics}
+            handleSelectOrganizationTypes={handleSelectOrganizationTypes}
+          />
+        </Box>
       )}
 
       <Map
@@ -557,8 +613,8 @@ const Main = () => {
 
       {!openInfoPage && (
         <MainColumnWrapper>
-          {(loading || loadingIdea || loadingProjectRoom) &&
-            !isMobileCustom && <Loader left="200px" width="400px" />}
+          {/* {(loading || loadingIdea || loadingProjectRoom) &&
+            !isMobileCustom && <Loader left="200px" width="400px" />} */}
 
           {!openProjectRoom &&
             !openAccount &&
@@ -588,7 +644,7 @@ const Main = () => {
               // />
 
               <MainSwipeList
-                order={order === 1 ? "ideas" : "projectroooms"}
+                order={order === 1 ? "ideas" : "projectrooms"}
                 setOrder={handleClick}
                 // setOpenOrganizationsOverview={setOpenOrganizationsOverview}
                 ideasData={dataFinalIdeas}
@@ -613,6 +669,9 @@ const Main = () => {
                 openStatistics={openStatistics}
                 setOpenOrganizationsOverview={setOpenOrganizationsOverview}
                 openOrganizationsOverview={openOrganizationsOverview}
+                setPostIdeaOpen={setPostIdeaOpen}
+                handleOpenMyAccount={handleOpenMyAccount}
+                setInfoPageOpen={handleOpenInfoPage}
               />
             )}
 
@@ -664,6 +723,7 @@ const Main = () => {
             data={dataFinalOrganizations}
             selectedOrganizationTypes={selectedOrganizationTypes}
             user={user}
+            setOpenOrganizationsOverview={setOpenOrganizationsOverview}
 
             // openCreateOrganization,
             // setOpenModalAuthenticate,
