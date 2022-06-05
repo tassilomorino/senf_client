@@ -58,12 +58,12 @@ import {
   theme,
   GlobalStyle,
   LayerWhiteFirstDefault,
-  i18n,
+  // i18n,
 } from "senf-atomic-design-system";
 import { ThemeProvider } from "styled-components";
 
 // import "./util/i18n"; // i18n configuration
-detectLocation(); // detect location and set i18n language
+// detectLocation(); // detect location and set i18n language
 const cookies = new Cookies();
 //require("intersection-observer");
 
