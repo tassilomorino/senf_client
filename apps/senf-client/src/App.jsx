@@ -42,7 +42,7 @@ import blank from "./pages/Blank";
 import { isTablet } from "react-device-detect";
 import Cookies from "universal-cookie";
 
-import { useTranslation } from "react-i18next";
+import { I18nextProvider, useTranslation } from "react-i18next";
 
 import { isMobileCustom } from "./util/customDeviceDetect";
 
@@ -62,7 +62,7 @@ import {
 } from "senf-atomic-design-system";
 import { ThemeProvider } from "styled-components";
 
-// import "./util/i18n"; // i18n configuration
+import "./util/i18n"; // i18n configuration
 // detectLocation(); // detect location and set i18n language
 const cookies = new Cookies();
 //require("intersection-observer");
@@ -168,83 +168,85 @@ const App = () => {
   ) : null;
 
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
+    <React.Suspense fallback="Loading">
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
 
-      {import.meta.env.VITE_NO_CRAWL && (
-        /* disable google crawling for senf-client-test.netlify.app */
-        <Helmet>
-          <meta name="robots" content="noindex" />
-        </Helmet>
-      )}
+        {import.meta.env.VITE_NO_CRAWL && (
+          /* disable google crawling for senf-client-test.netlify.app */
+          <Helmet>
+            <meta name="robots" content="noindex" />
+          </Helmet>
+        )}
 
-      {import.meta.env.VITE_STATS && (
-        <Helmet>
-          <script
-            async
-            defer
-            data-website-id="17c8a5a3-76cb-43c6-971a-04dbd6a7a325"
-            src="https://umami-xi-nine.vercel.app/senf-stat.js"
-          ></script>
-        </Helmet>
-      )}
+        {import.meta.env.VITE_STATS && (
+          <Helmet>
+            <script
+              async
+              defer
+              data-website-id="17c8a5a3-76cb-43c6-971a-04dbd6a7a325"
+              src="https://umami-xi-nine.vercel.app/senf-stat.js"
+            ></script>
+          </Helmet>
+        )}
 
-      <MuiThemeProvider theme={muiTheme}>
-        <Provider store={store}>
-          <GlobalStyles />
-          <Router>
-            <Cookiebanner />
-            {tabletNote}
+        <MuiThemeProvider theme={muiTheme}>
+          <Provider store={store}>
+            <GlobalStyles />
+            <Router>
+              <Cookiebanner />
+              {tabletNote}
 
-            {isMobileCustom && (
-              <div className="landscapeNote">{t("rotate_phone")}</div>
-            )}
+              {isMobileCustom && (
+                <div className="landscapeNote">{t("rotate_phone")}</div>
+              )}
 
-            <div className="container">
-              <Switch>
-                <Route exact path="/" component={Main} />
-                <Route exact path="/projectRooms" component={Main} />
-                <Route exact path="/organizations" component={Main} />
+              <div className="container">
+                <Switch>
+                  <Route exact path="/" component={Main} />
+                  <Route exact path="/projectRooms" component={Main} />
+                  <Route exact path="/organizations" component={Main} />
 
-                <Route exact path="/datenschutz" component={datenschutz} />
-                <Route exact path="/agb" component={agb} />
+                  <Route exact path="/datenschutz" component={datenschutz} />
+                  <Route exact path="/agb" component={agb} />
 
-                <Route exact path="/verify" component={Verification} />
+                  <Route exact path="/verify" component={Verification} />
 
-                <Route
-                  exact
-                  path="/cookieConfigurator"
-                  component={cookieConfigurator}
-                />
+                  <Route
+                    exact
+                    path="/cookieConfigurator"
+                    component={cookieConfigurator}
+                  />
 
-                <Route exact path="/impressum" component={impressum} />
+                  <Route exact path="/impressum" component={impressum} />
 
-                <Route exact path="/blank" component={blank} />
+                  <Route exact path="/blank" component={blank} />
 
-                <Route exact path="/:screamId" component={Main} />
-                <Route
-                  exact
-                  path="/projectRooms/:projectRoomId/:screamId"
-                  component={Main}
-                />
-                <Route
-                  exact
-                  path="/projectRooms/:projectRoomId"
-                  component={Main}
-                />
-                <Route
-                  exact
-                  path="/organizations/:organizationId"
-                  component={Main}
-                />
+                  <Route exact path="/:screamId" component={Main} />
+                  <Route
+                    exact
+                    path="/projectRooms/:projectRoomId/:screamId"
+                    component={Main}
+                  />
+                  <Route
+                    exact
+                    path="/projectRooms/:projectRoomId"
+                    component={Main}
+                  />
+                  <Route
+                    exact
+                    path="/organizations/:organizationId"
+                    component={Main}
+                  />
 
-                <Route path="*" component={Main} />
-              </Switch>
-            </div>
-          </Router>
-        </Provider>
-      </MuiThemeProvider>
-    </ThemeProvider>
+                  <Route path="*" component={Main} />
+                </Switch>
+              </div>
+            </Router>
+          </Provider>
+        </MuiThemeProvider>
+      </ThemeProvider>
+    </React.Suspense>
   );
 };
 console.log(getBuildDate(packageJson.buildDate));
