@@ -118,7 +118,7 @@ export const openScreamFunc = (screamId, reloadScream) => async (dispatch) => {
         commentsArray.push({
           ...doc.data(),
           commentId: doc.id,
-          body: doc.data().body.substr(0, 150),
+          title: doc.data().body,
         });
       });
 

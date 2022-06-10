@@ -62,6 +62,7 @@ import { usePrevious } from "../hooks/usePrevious";
 import {
   getOrganizations,
   openOrganizationFunc,
+  stateCreateOrganizationsFunc,
 } from "../redux/actions/organizationActions";
 
 import OrganizationDialog from "../components/organisms/Dialogs/OrganizationDialog";
@@ -135,6 +136,9 @@ const Main = () => {
   const [postIdeaOpen, setPostIdeaOpen] = useState(false);
 
   const [swipedUp, setSwipedUp] = useState(false);
+  const organization = useSelector((state) => state.data.organization);
+
+  const [openModalAuthenticate, setOpenModalAuthenticate] = useState(false);
 
   const { screamId, projectRoomId, organizationId } = useParams();
   const { cookie_settings } = useSelector((state) => state.data);
@@ -149,7 +153,7 @@ const Main = () => {
   const openCreateProjectRoom = useSelector(
     (state) => state.UI.openCreateProjectRoom
   );
-  const [openStatistics, setOpenStatistics] = useState(false);
+  const [openStatisticsOverview, setOpenStatisticsOverview] = useState(false);
   const [openOrganizationsOverview, setOpenOrganizationsOverview] =
     useState(false);
 
@@ -287,7 +291,7 @@ const Main = () => {
   useEffect(() => {
     projectRoomId && dispatch(openProjectRoomFunc(projectRoomId, true));
     screamId && dispatch(openScreamFunc(screamId));
-    organizationId && dispatch(openOrganizationFunc(true, organizationId));
+    organizationId && dispatch(openOrganizationFunc(organizationId, true));
   }, [dispatch, projectRoomId, screamId, organizationId]);
 
   useEffect(() => {
@@ -315,7 +319,7 @@ const Main = () => {
       setOrder(order);
       setSearchTerm("");
       setDropdown("newest");
-      setOpenStatistics(false);
+      setOpenStatisticsOverview(false);
       setOpenOrganizationsOverview(false);
       dispatch(closeScream());
       dispatch(openProjectRoomFunc(null, false));
@@ -468,7 +472,7 @@ const Main = () => {
     } else if (cardType === "projectroomCard") {
       dispatch(openProjectRoomFunc(cardId, true));
     } else if (cardType === "organizationCard") {
-      dispatch(openOrganizationFunc(cardId));
+      dispatch(openOrganizationFunc(cardId, true));
     }
   };
 
@@ -519,6 +523,15 @@ const Main = () => {
   const handleOpenInfoPage = useCallback(() => {
     dispatch(setInfoPageOpen());
   }, [dispatch]);
+
+  const handleOpenCreateOrganization = () => {
+    if (!user.authenticated) {
+      setOpenModalAuthenticate(true);
+      return;
+    } else {
+      dispatch(stateCreateOrganizationsFunc(true));
+    }
+  };
 
   return (
     <React.Fragment>
@@ -578,25 +591,27 @@ const Main = () => {
           />
         </React.Fragment>
       ) : (
-        // <DesktopSidebar
-        //   handleClick={handleClick}
-        //   order={order}
-        //   setChangeLocationModalOpen={setChangeLocationModalOpen}
-        //   loading={loading}
-        //   setOrder={setOrder}
-        //   setOpenOrganizationsPage={setOpenOrganizationsOverview}
-        //   mapViewportRef={mapViewportRef}
-        //   setAuthOpen={setAuthOpen}
-        // />
-        <Box margin="10px 10px 10px 500px" position="fixed" zIndex={9}>
-          <TagSlide
-            type={order === 1 ? "topics" : "organizationTypes"}
-            selectedTopics={selectedTopics}
-            selectedOrganizationTypes={selectedOrganizationTypes}
-            handleSelectTopics={handleSelectTopics}
-            handleSelectOrganizationTypes={handleSelectOrganizationTypes}
-          />
-        </Box>
+        !loading && (
+          // <DesktopSidebar
+          //   handleClick={handleClick}
+          //   order={order}
+          //   setChangeLocationModalOpen={setChangeLocationModalOpen}
+          //   loading={loading}
+          //   setOrder={setOrder}
+          //   setOpenOrganizationsPage={setOpenOrganizationsOverview}
+          //   mapViewportRef={mapViewportRef}
+          //   setAuthOpen={setAuthOpen}
+          // />
+          <Box margin="10px 10px 10px 500px" position="fixed" zIndex={9}>
+            <TagSlide
+              type={order === 1 ? "topics" : "organizationTypes"}
+              selectedTopics={selectedTopics}
+              selectedOrganizationTypes={selectedOrganizationTypes}
+              handleSelectTopics={handleSelectTopics}
+              handleSelectOrganizationTypes={handleSelectOrganizationTypes}
+            />
+          </Box>
+        )
       )}
 
       <Map
@@ -648,7 +663,7 @@ const Main = () => {
                 setOrder={handleClick}
                 // setOpenOrganizationsOverview={setOpenOrganizationsOverview}
                 ideasData={dataFinalIdeas}
-                projectRoomsData={dataFinalProjectRooms}
+                projectroomsData={dataFinalProjectRooms}
                 organizations={organizations}
                 selectedTopics={selectedTopics}
                 selectedOrganizationTypes={selectedOrganizationTypes}
@@ -665,8 +680,8 @@ const Main = () => {
                 handleButtonLike={handleButtonLike}
                 handleButtonComment={handleButtonComment}
                 user={user}
-                setOpenStatistics={setOpenStatistics}
-                openStatistics={openStatistics}
+                setOpenStatisticsOverview={setOpenStatisticsOverview}
+                openStatisticsOverview={openStatisticsOverview}
                 setOpenOrganizationsOverview={setOpenOrganizationsOverview}
                 openOrganizationsOverview={openOrganizationsOverview}
                 setPostIdeaOpen={setPostIdeaOpen}
@@ -681,13 +696,20 @@ const Main = () => {
               handleClick={handleClick}
               loadingProjects={loadingProjects}
               dataFinalProjectRooms={dataFinalProjectRooms}
-              setOpenInsightsPage={setOpenStatistics}
+              setOpenInsightsPage={setOpenStatisticsOverview}
             />
           )}
 
           {openAccount && <Account dataFinalMap={dataFinalMap} />}
 
-          {!openInfoPage && openScream && <IdeaDialog />}
+          {!openInfoPage && openScream && (
+            <IdeaDialog
+              handleButtonLike={handleButtonLike}
+              handleButtonComment={handleButtonComment}
+              projectroomsData={dataFinalProjectRooms}
+              user={user}
+            />
+          )}
         </MainColumnWrapper>
       )}
 
@@ -700,13 +722,13 @@ const Main = () => {
           loading={loadingOrganizations}
           projectsData={dataFinalProjectRooms}
           setOpenOrganizationsPage={setOpenOrganizationsOverview}
+          handleOpenCreateOrganization={handleOpenCreateOrganization}
         />
       )}
 
       {!openInfoPage &&
         !openProjectRoom &&
         !openAccount &&
-        openOrganizationsOverview &&
         !loadingOrganizations && (
           // <OrganizationsPage
           //   order={order}
@@ -723,19 +745,30 @@ const Main = () => {
             data={dataFinalOrganizations}
             selectedOrganizationTypes={selectedOrganizationTypes}
             user={user}
+            organizations={organizations}
+            organization={organization}
+            openOrganizationsOverview={openOrganizationsOverview}
             setOpenOrganizationsOverview={setOpenOrganizationsOverview}
-
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            handleButtonOpenCard={handleButtonOpenCard}
+            projectroomsData={dataFinalProjectRooms}
+            handleOpenCreateOrganization={handleOpenCreateOrganization}
             // openCreateOrganization,
             // setOpenModalAuthenticate,
           />
         )}
 
-      {!openInfoPage && !openAccount && !openOrganization && openStatistics && (
-        <InsightsPage
-          setOpenInsightsPage={setOpenStatistics}
-          projectRoomId={project?.projectRoomId}
-        />
-      )}
+      {!openInfoPage &&
+        !openAccount &&
+        !openOrganization &&
+        openStatisticsOverview && (
+          <InsightsPage
+            openStatisticsOverview={openStatisticsOverview}
+            setOpenStatisticsOverview={setOpenStatisticsOverview}
+            projectRoomId={project?.projectRoomId}
+          />
+        )}
 
       <ErrorBackground loading={loading} />
 

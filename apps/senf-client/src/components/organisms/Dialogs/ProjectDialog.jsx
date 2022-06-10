@@ -74,7 +74,7 @@ const ProjectDialog = ({
     dispatch(clearErrors());
     dispatch(setMapViewport(initialMapViewport));
     if (organization) {
-      dispatch(openOrganizationFunc(true, organization.organizationId));
+      dispatch(openOrganizationFunc(organization.organizationId, true));
     }
   }, [dispatch, initialMapViewport]);
 

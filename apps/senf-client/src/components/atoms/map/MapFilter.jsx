@@ -26,10 +26,10 @@ const Wrapper = styled.div`
 
   @media (min-width: 768px) {
     position: absolute;
-    margin-top: 40px;
-    left: 0px;
-    top: 0;
-    bottom: none;
+    left: 470px;
+    top: 100vh;
+    margin-top: -100px;
+    width: calc(100% - 470px);
   }
 `;
 export const MapFilter = memo(({ viewport, mapRef }) => {

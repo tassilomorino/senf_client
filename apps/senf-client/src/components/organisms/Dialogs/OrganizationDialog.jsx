@@ -275,7 +275,7 @@ const OrganizationDialog = ({
   }, [openOrganization]);
 
   const handleClose = () => {
-    dispatch(openOrganizationFunc(false));
+    dispatch(openOrganizationFunc(null, false));
     setOpenOrganizationsPage(true);
     dispatch(clearErrors());
   };

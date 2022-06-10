@@ -18,17 +18,7 @@ import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
-import {
-  Covers,
-  CoverWrapper,
-  Wrapper,
-  SVGWrapper,
-  HeaderWrapper,
-  DragWrapper,
-  ClickBackground,
-  HandleBar,
-  SVGWrapperMobile,
-} from "./styles/sharedStyles";
+import { Covers, CoverWrapper } from "./styles/sharedStyles";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { StyledH2 } from "../../../styles/GlobalStyle";
@@ -42,6 +32,7 @@ import { useDrag } from "@use-gesture/react";
 import { db } from "../../../firebase";
 import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 
+import { StatisticsOverview } from "senf-atomic-design-system";
 const CoverImg = styled.img`
   width: 100%;
   height: 100%;
@@ -52,7 +43,7 @@ const CoverTitle = styled.div`
   top: 30px;
 `;
 
-const ListWrapper = styled.div`
+const Wrapper = styled.div`
   height: 100vh;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -63,7 +54,11 @@ const ListWrapper = styled.div`
   z-index: 999999;
 `;
 
-const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
+const InsightsPage = ({
+  openStatisticsOverview,
+  setOpenStatisticsOverview,
+  projectRoomId,
+}) => {
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
@@ -97,7 +92,7 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
 
         setTimeout(() => {
           window.history.pushState(null, null, "/projectRooms");
-          setOpenInsightsPage(false);
+          setOpenStatisticsOverview(false);
         }, 150);
         setTimeout(() => {
           set({
@@ -123,7 +118,7 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
       touchAction: "none",
     });
     setTimeout(() => {
-      setOpenInsightsPage(false);
+      setOpenStatisticsOverview(false);
     }, 150);
   };
 
@@ -256,46 +251,7 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
   };
 
   const content = (
-    <ListWrapper>
-      {!isMobileCustom && (
-        <React.Fragment>
-          <CustomIconButton
-            name="ArrowLeft"
-            position="fixed"
-            margin="10px"
-            backgroundColor="#FFF0BC"
-            handleButtonClick={() => setOpenInsightsPage(false)}
-            zIndex={99}
-          />
-
-          <SVGWrapper>
-            <HeaderWrapper>
-              <StyledH2
-                fontWeight="900"
-                fontSize={document.body.clientWidth > 368 ? "22px" : "19px"}
-                textAlign="center"
-                margin="20px 0px"
-              >
-                {MenuData[3].text}
-                {/* "Insights" */}
-              </StyledH2>
-            </HeaderWrapper>
-            <svg
-              width="100%"
-              height="126"
-              viewBox="0 0 1100 126"
-              preserveAspectRatio="none"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M0 125.5V0.5H1130.5V99C1025 143 974.588 95.9476 942.5 83C828.5 37 819 43.5 704 62.5C558 86.6217 307.5 44.5 196 99C128.785 131.854 37.1667 124.667 0 125.5Z"
-                fill="#FED957"
-              />
-            </svg>
-          </SVGWrapper>
-        </React.Fragment>
-      )}
+    <Wrapper>
       <Keyindicators
         screams={screams}
         likesLength={likesLength}
@@ -342,53 +298,15 @@ const InsightsPage = ({ setOpenInsightsPage, projectRoomId }) => {
           {/* <WordcloudDialog /> */}
         </Covers>
       </CoverWrapper>
-    </ListWrapper>
+    </Wrapper>
   );
-  return isMobileCustom ? (
-    <React.Fragment>
-      <ClickBackground onClick={setClose} />
-
-      <DragWrapper style={props}>
-        <HeaderWrapper {...bind()}>
-          <HandleBar />
-          <CustomIconButton
-            name="ArrowDown"
-            position="fixed"
-            margin="0px 0px"
-            backgroundColor="transparent"
-            shadow={false}
-            handleButtonClick={setClose}
-            zIndex={99}
-          />
-          <StyledH2
-            fontWeight="900"
-            fontSize={document.body.clientWidth > 368 ? "22px" : "19px"}
-            textAlign="center"
-            margin="20px 0px"
-          >
-            {MenuData.map((item) => item.text).slice(3, 4)}
-          </StyledH2>
-          <SVGWrapperMobile>
-            <svg
-              width="100%"
-              height="100%"
-              viewBox="0 0 100 100"
-              preserveAspectRatio="none"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M139 84.5C65 68.9 22 91 0 107.5V0H390.5V54C363.5 45.5 334 47 313.5 63.5C288.5 83.6219 231.5 104 139 84.5Z"
-                fill="#FED957"
-              />
-            </svg>
-          </SVGWrapperMobile>
-        </HeaderWrapper>
-        {content}
-      </DragWrapper>
-    </React.Fragment>
-  ) : (
-    <Wrapper $order={open}>{content}</Wrapper>
+  return (
+    <StatisticsOverview
+      openStatisticsOverview={true}
+      setOpenStatisticsOverview={setOpenStatisticsOverview}
+    >
+      {content}
+    </StatisticsOverview>
   );
 };
 

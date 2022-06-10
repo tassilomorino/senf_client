@@ -1,11 +1,12 @@
 /** @format */
 
-import i18n from "i18next";
+import i18next from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-locize-backend";
 import LastUsed from "locize-lastused";
 import { locizePlugin } from "locize";
+import { i18n as i18nSenf } from "senf-atomic-design-system";
 
 const locizeOptions = {
   // projectId: process.env.REACT_APP_LOCIZE_PROJECT_ID,
@@ -15,6 +16,8 @@ const locizeOptions = {
   apiKey: "69182f75-3763-40d5-bb03-f0229aa0f7a1",
   referenceLng: "de",
 };
+
+const i18n = i18next.createInstance();
 
 i18n
   // locize-lastused
@@ -33,7 +36,7 @@ i18n
   // learn more: https://github.com/i18next/i18next-browser-languageDetector
   // .use(LanguageDetector)
   // pass the i18n instance to react-i18next.
-  // .use(initReactI18next)
+  .use(initReactI18next)
   // init i18next
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
@@ -54,6 +57,11 @@ i18n
     locizeLastUsed: locizeOptions,
     saveMissing: true,
   });
+
+i18next.on("languageChanged", (lng) => {
+  console.log("languageChanged", lng);
+  i18n.changeLanguage(lng);
+});
 
 export default i18n;
 

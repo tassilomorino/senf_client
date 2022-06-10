@@ -187,7 +187,7 @@ const CreateProjectDialog = ({ type }) => {
 
     if (localStorage.getItem("createOrganizationId")) {
       dispatch(
-        openOrganizationFunc(true, localStorage.getItem("createOrganizationId"))
+        openOrganizationFunc(localStorage.getItem("createOrganizationId"), true)
       );
     }
     if (localStorage.getItem("createProjectRoomId")) {
