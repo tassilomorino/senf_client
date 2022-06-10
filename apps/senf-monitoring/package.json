@@ -32,8 +32,7 @@
   },
   "scripts": {
     "analyze": "source-map-explorer '../../dist/apps/senf-monitoring/static/js/*.js'",
-    "serve": "npm start",
-    "start": "vite",
+    "dev": "vite",
     "preview": "vite preview",
     "build": "node ./update-build.js && vite build",
     "cy:open": "cypress open",
@@ -66,8 +65,8 @@
     "cypress-firebase": "^2.0.0",
     "cypress-wait-until": "^1.7.1",
     "start-server-and-test": "^1.13.1",
-    "vite": "^2.8.6",
+    "vite": "^2.9.11",
     "vite-plugin-pwa": "^0.11.13"
   },
-  "buildDate": 1645612245854
+  "buildDate": 1654859088490
 }

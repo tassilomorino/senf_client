@@ -1,6 +1,0 @@
-{
-  "root": "apps/senf-client",
-  "sourceRoot": "apps/senf-client/src",
-  "projectType": "application",
-  "tags": []
-}
