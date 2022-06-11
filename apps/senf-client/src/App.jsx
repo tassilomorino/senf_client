@@ -218,6 +218,7 @@ const App = () => {
                   path="/projectRooms/:projectRoomId/:screamId"
                   component={Main}
                 />
+
                 <Route
                   exact
                   path="/projectRooms/:projectRoomId"
