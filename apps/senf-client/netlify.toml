@@ -3,4 +3,4 @@
   NPM_FLAGS = "--version"
 
 [[plugins]]
-  package = "./netlify/netlify-plugin-yarn"
+  package = "../../netlify/netlify-plugin-yarn"
