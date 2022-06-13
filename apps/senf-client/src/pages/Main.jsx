@@ -83,14 +83,15 @@ import LoginRegistration from "../components/organisms/Auth/LoginRegistration";
 import {
   MainSwipeList,
   OrganizationsOverview,
-  OrganizationPage,
   MenuSidebar,
   TagSlide,
   Box,
 } from "senf-atomic-design-system";
+import OrganizationPage from "./OrganizationPage";
 import { likeScream, unlikeScream } from "../redux/actions/likeActions";
 import InlineInformationPage from "../components/organisms/infocomponents/InlineInformationPage";
-import { unstable_renderSubtreeIntoContainer } from "react-dom";
+import ProjectroomPage from "./ProjectroomPage";
+import ProfilePage from "./ProfilePage";
 
 const CreateMainComponent = React.lazy(() =>
   import(
@@ -691,16 +692,25 @@ const Main = () => {
             )}
 
           {openProjectRoom && (
-            <ProjectDialog
-              loading={loading}
-              handleClick={handleClick}
-              loadingProjects={loadingProjects}
-              dataFinalProjectRooms={dataFinalProjectRooms}
-              setOpenInsightsPage={setOpenStatisticsOverview}
+            // <ProjectDialog
+            //   loading={loading}
+            //   handleClick={handleClick}
+            //   loadingProjects={loadingProjects}
+            //   dataFinalProjectRooms={dataFinalProjectRooms}
+            //   setOpenInsightsPage={setOpenStatisticsOverview}
+            // />
+            <ProjectroomPage
+              setPostIdeaOpen={setPostIdeaOpen}
+              handleButtonOpenCard={handleButtonOpenCard}
             />
           )}
 
-          {openAccount && <Account dataFinalMap={dataFinalMap} />}
+          {openAccount && (
+            <ProfilePage
+              dataFinalMap={dataFinalMap}
+              handleButtonOpenCard={handleButtonOpenCard}
+            />
+          )}
 
           {!openInfoPage && openScream && (
             <IdeaDialog
@@ -714,15 +724,21 @@ const Main = () => {
       )}
 
       {openOrganization && !loadingOrganization && (
-        <OrganizationDialog
-          openOrganization={openOrganization}
-          dataFinalMap={dataFinalMap}
-          handleClick={handleClick}
-          loadingProjects={false}
-          loading={loadingOrganizations}
-          projectsData={dataFinalProjectRooms}
-          setOpenOrganizationsPage={setOpenOrganizationsOverview}
+        <OrganizationPage
+          organization={organization}
+          organizations={organizations}
+          handleCloseOrganizationPage={setOpenOrganizationsPage}
           handleOpenCreateOrganization={handleOpenCreateOrganization}
+          handleButtonOpenCard={handleButtonOpenCard}
+
+          // openOrganization={openOrganization}
+          // dataFinalMap={dataFinalMap}
+          // handleClick={handleClick}
+          // loadingProjects={false}
+          // loading={loadingOrganizations}
+          // projectsData={dataFinalProjectRooms}
+          // setOpenOrganizationsPage={setOpenOrganizationsOverview}
+          // handleOpenCreateOrganization={handleOpenCreateOrganization}
         />
       )}
 
