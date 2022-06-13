@@ -18,14 +18,13 @@ import {
 
 import {
   doc,
-  getDoc
+  getDoc,
   getDocs,
   collection,
   where,
   query,
   setDoc,
 } from "firebase/firestore";
-
 
 import { useHistory } from "react-router";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
