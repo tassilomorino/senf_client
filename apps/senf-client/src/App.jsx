@@ -92,9 +92,10 @@ const App = () => {
         store.dispatch({ type: SET_AUTHENTICATED });
         store.dispatch(getUserData(user.uid));
       } else if (
-        user &&
-        user.uid &&
-        user.providerData[0]?.providerId === "google.com"
+        (user &&
+          user.uid &&
+          user.providerData[0].providerId === "google.com") ||
+        (user && user.uid && user.providerData[0].providerId === "facebook.com")
       ) {
         store.dispatch({ type: SET_AUTHENTICATED });
         store.dispatch(getUserData(user.uid));
