@@ -18,12 +18,14 @@ import {
 
 import {
   doc,
+  getDoc
   getDocs,
   collection,
   where,
   query,
   setDoc,
 } from "firebase/firestore";
+
 
 import { useHistory } from "react-router";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
@@ -163,27 +165,25 @@ const LoginRegistration = ({ setAuthOpen, authOpen }) => {
     }
   };
 
-  const handleFacebookSignIn = async () => {
-    const provider = new FacebookAuthProvider();
-    provider.addScope("email");
-    await signInWithPopup(auth, provider)
-      .then((result) => {
-        console.log(result);
-        setAuthOpen(false);
-      })
-      .catch((error) => {
-        console.log(error.message, "error in facebook provider");
-      });
-  };
-  const handleGoogleSignIn = async () => {
+  const handleProviderSignin = async (providerName) => {
     try {
-      const provider = new GoogleAuthProvider();
-      provider.addScope("email");
+      let provider;
+      let result;
+      let credential;
 
-      const result = await signInWithPopup(auth, provider);
-
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      const credential = GoogleAuthProvider.credentialFromResult(result);
+      if (providerName === "google") {
+        provider = new GoogleAuthProvider();
+        provider.addScope("email");
+        result = await signInWithPopup(auth, provider);
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        credential = GoogleAuthProvider.credentialFromResult(result);
+      }
+      if (providerName === "facebook") {
+        provider = new FacebookAuthProvider();
+        provider.addScope("email");
+        result = await signInWithPopup(auth, provider);
+        credential = FacebookAuthProvider.credentialFromResult(result);
+      }
       const token = credential.accessToken;
       // The signed-in user info.
       const user = result.user;
@@ -194,12 +194,10 @@ const LoginRegistration = ({ setAuthOpen, authOpen }) => {
         await createUserInDatabase(user);
         dispatch({ type: SET_AUTHENTICATED });
         dispatch(getUserData(user.uid));
-        setAuthOpen(false);
       } else if (user) {
         console.log("user already exists");
         dispatch({ type: SET_AUTHENTICATED });
         dispatch(getUserData(user.uid));
-        setAuthOpen(false);
       }
     } catch (error) {
       // Handle Errors here.
@@ -208,10 +206,15 @@ const LoginRegistration = ({ setAuthOpen, authOpen }) => {
       // The email of the user's account used.
       const email = error.email;
       // The AuthCredential type that was used.
-      const credential = GoogleAuthProvider.credentialFromError(error);
-      throw new Error(errorCode, errorMessage, email, credential);
+      let credential;
+      if (providerName === "google") {
+        credential = GoogleAuthProvider.credentialFromError(error);
+      }
+      if (providerName === "facebook") {
+        credential = FacebookAuthProvider.credentialFromError(error);
+      }
 
-      // ...
+      throw new Error(errorCode, errorMessage, email, credential);
     }
   };
 
@@ -240,8 +243,8 @@ const LoginRegistration = ({ setAuthOpen, authOpen }) => {
           handleSubmitRegister={(registerData) =>
             handleSubmitRegister(registerData)
           }
-          handleGoogleSignIn={handleGoogleSignIn}
-          handleFacebookSignIn={handleFacebookSignIn}
+          handleGoogleSignIn={() => handleProviderSignin("google")}
+          handleFacebookSignIn={() => handleProviderSignin("facebook")}
           handleClose={() => setAuthOpen(false)}
         />
       </Modal>
