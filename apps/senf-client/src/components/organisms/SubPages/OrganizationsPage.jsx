@@ -9,7 +9,6 @@ import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import { OrganizationCard } from "../../molecules/Cards/OrganizationCard";
-import { openOrganizationFunc } from "../../../redux/actions/organizationActions";
 import InfiniteScroll from "react-infinite-scroller";
 import Toolbar from "../../molecules/Toolbar/Toolbar";
 import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
@@ -187,7 +186,7 @@ const OrganizationsPage = ({
           textColor="#353535"
           margin="20px"
         >
-          <LoginRegistration />
+          {/* <LoginRegistration /> */}
         </SubmitButton>
       </MainModal>,
       document.getElementById("portal-root-modal")

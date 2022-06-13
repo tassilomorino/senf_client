@@ -52,7 +52,7 @@ const ShareYourOpinionCard = ({ screamId, clicked }) => {
             top="10px"
             zIndex="0"
           >
-            <LoginRegistration />
+            {/* <LoginRegistration /> */}
           </CustomButton>
         ) : (
           <CommentForm screamId={screamId} clicked={clicked} />

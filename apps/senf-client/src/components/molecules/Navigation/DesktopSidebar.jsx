@@ -12,7 +12,7 @@ import {
 } from "../../../redux/actions/accountActions";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 //Components
-import RegistrationAndLogin from "../../organisms/Auth/LoginRegistration";
+import LoginRegistration from "../../organisms/Auth/LoginRegistration";
 import SelectLanguageButton from "../../atoms/Selects/SelectLanguageButton";
 import TagsFilter from "../Filters/TagsFilter";
 import { MenuItem } from "./MenuItem";
@@ -63,6 +63,7 @@ const DesktopSidebar = ({
   setOrder,
   setOpenOrganizationsPage,
   mapViewportRef,
+  setAuthOpen,
 }) => {
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openAccount = useSelector((state) => state.UI.openAccount);
@@ -104,8 +105,8 @@ const DesktopSidebar = ({
       </SelectLanguageWrapper>
       <br />{" "}
       {!user.authenticated ? (
-        <SideBarTabs>
-          <RegistrationAndLogin />
+        <SideBarTabs onClick={() => setAuthOpen(true)}>
+          {/* <LoginRegistration /> */}
           <img
             src={Noprofile}
             width="35"

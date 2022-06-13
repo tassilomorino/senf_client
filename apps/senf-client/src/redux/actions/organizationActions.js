@@ -56,8 +56,10 @@ export const stateCreateOrganizationsFunc = (state) => async (dispatch) => {
 };
 
 export const openOrganizationFunc =
-  (state, organizationId) => async (dispatch) => {
+  (organizationId, state) => async (dispatch) => {
     if (state === true) {
+      console.log("open organization");
+
       dispatch({ type: LOADING_ORGANIZATION_DATA });
 
       dispatch({

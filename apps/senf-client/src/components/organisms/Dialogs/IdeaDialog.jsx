@@ -24,6 +24,8 @@ import IdeaCardBig from "../../molecules/Cards/IdeaCardBig";
 import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
 import CommentMenuModal from "../../molecules/Modals/CommentMenuModal";
 
+import { Box, IdeaDetailPage } from "senf-atomic-design-system";
+import { openProjectRoomFunc } from "../../../redux/actions/projectActions";
 const portalRoot = document.getElementById("portal-root");
 
 const Wrapper = styled.div`
@@ -93,7 +95,14 @@ const VerticalLine = styled.div`
   z-index: 0;
 `;
 
-const IdeaDialog = () => {
+const IdeaDialog = ({
+  handleButtonLike,
+  handleButtonComment,
+  projectroomsData,
+  user,
+}) => {
+  const data = useSelector((state) => state.data.scream);
+  console.log(data);
   const { screamId, title, lat, long, comments, userId } = useSelector(
     (state) => state.data.scream
   );
@@ -151,52 +160,10 @@ const IdeaDialog = () => {
     }
   };
 
-  const [props, set] = useSpring(() => ({
-    y: 0,
-    transform: `translateY(${window.innerHeight / 2}px)`,
-    overflow: "scroll",
-    touchAction: "none",
-  }));
+  const handleOpenProjectroom = (projectRoomId) => {
+    dispatch(openProjectRoomFunc(projectRoomId, true));
+  };
 
-  const bind = useDrag(
-    ({ last, down, movement: [mx, my] }) => {
-      const el = document.querySelector(".screamDialogDrag");
-
-      if (last && my < -50 && swipePosition === "bottom") {
-        set({
-          transform: !down ? `translateY(${-30}px)` : `translateY(${0}px)`,
-          touchAction: "unset",
-          overflow: "scroll",
-        });
-        setSwipePosition("top");
-      }
-      if (last && el.scrollTop < 30 && my > 150) {
-        set({
-          transform: down
-            ? `translateY(${0}px)`
-            : `translateY(${window.innerHeight / 2}px)`,
-          touchAction: "none",
-          overflow: "scroll",
-        });
-        setSwipePosition("bottom");
-      }
-      if (swipePosition !== "top") {
-        set({ y: down ? my : 0 });
-      }
-
-      if (last && mx > 100) {
-        handleClose();
-      }
-    },
-    {
-      pointer: { touch: true },
-      bounds: {
-        enabled: true,
-        top: -window.innerHeight / 2,
-        bottom: window.innerHeight - 120,
-      },
-    }
-  );
   const content = (
     <Wrapper>
       {!loadingIdea && (
@@ -229,56 +196,69 @@ const IdeaDialog = () => {
       )}
     </Wrapper>
   );
-  return ReactDOM.createPortal(
-    <React.Fragment>
-      {shareOpen && (
-        <ShareModal
-          screamId={screamId}
-          title={title}
-          path={path}
-          setShareOpen={setShareOpen}
-        />
-      )}
-      {menuOpen && (
-        <MenuModal
-          screamId={screamId}
-          screamUserId={userId}
-          setMenuOpen={setMenuOpen}
-        />
-      )}
+  return (
+    data &&
+    ReactDOM.createPortal(
+      <IdeaDetailPage
+        loadingIdea={loadingIdea}
+        data={data}
+        projectroomsData={projectroomsData}
+        handleButtonCloseCard={handleClose}
+        handleButtonLike={handleButtonLike}
+        handleButtonComment={handleButtonComment}
+        handleOpenProjectroom={handleOpenProjectroom}
+        user={user}
+      />,
+      // <React.Fragment>
+      //   {shareOpen && (
+      //     <ShareModal
+      //       screamId={screamId}
+      //       title={title}
+      //       path={path}
+      //       setShareOpen={setShareOpen}
+      //     />
+      //   )}
+      //   {menuOpen && (
+      //     <MenuModal
+      //       screamId={screamId}
+      //       screamUserId={userId}
+      //       setMenuOpen={setMenuOpen}
+      //     />
+      //   )}
 
-      {commentMenuOpen && (
-        <CommentMenuModal
-          commentId={commentIdSelected}
-          setCommentMenuOpen={setCommentMenuOpen}
-          screamId={screamId}
-          commentUserId={commentUserIdSelected}
-        />
-      )}
+      //   {commentMenuOpen && (
+      //     <CommentMenuModal
+      //       commentId={commentIdSelected}
+      //       setCommentMenuOpen={setCommentMenuOpen}
+      //       screamId={screamId}
+      //       commentUserId={commentUserIdSelected}
+      //     />
+      //   )}
 
-      <CustomIconButton
-        name="ArrowLeft"
-        position="fixed"
-        margin="10px"
-        marginLeft={document.body.clientWidth > 768 && "210px"}
-        top="0px"
-        zIndex="98"
-        handleButtonClick={handleClose}
-      />
+      //   <CustomIconButton
+      //     name="ArrowLeft"
+      //     position="fixed"
+      //     margin="10px"
+      //     marginLeft={document.body.clientWidth > 768 && "210px"}
+      //     top="0px"
+      //     zIndex="98"
+      //     handleButtonClick={handleClose}
+      //   />
 
-      {isMobileCustom ? (
-        <animated.div
-          className={!loadingIdea ? "screamDialogDrag" : ""}
-          {...bind()}
-          style={props}
-        >
-          {content}
-        </animated.div>
-      ) : (
-        <React.Fragment>{content}</React.Fragment>
-      )}
-    </React.Fragment>,
-    portalRoot
+      //   {isMobileCustom ? (
+      //     <animated.div
+      //       className={!loadingIdea ? "screamDialogDrag" : ""}
+      //       {...bind()}
+      //       style={props}
+      //     >
+      //       {content}
+      //     </animated.div>
+      //   ) : (
+      //     <React.Fragment>{content}</React.Fragment>
+      //   )}
+      // </React.Fragment>,
+      portalRoot
+    )
   );
 };
 

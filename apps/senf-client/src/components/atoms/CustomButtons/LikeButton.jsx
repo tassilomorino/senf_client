@@ -34,7 +34,7 @@ const LikeButton = ({ screamId }) => {
       backgroundColor={"transparent"}
       handleButtonClick={() => console.log("not logged in")}
     >
-      <LoginRegistration />
+      {/* <LoginRegistration /> */}
     </CustomIconButton>
   ) : likedScream() ? (
     <CustomIconButton

@@ -421,7 +421,7 @@ const LoginRegistration = ({ classes }) => {
     <Fragment>
       <ExpandButton
         handleButtonClick={() => setOpen(true)}
-        data-cy="open-RegistrationAndLogin"
+        data-cy="open-LoginRegistration"
       ></ExpandButton>
 
       <Dialog

@@ -208,7 +208,7 @@ export const OrganizationCard = (props) => {
   const projects = useSelector((state) => state.data.projects);
 
   const handleOpenOrganization = () => {
-    dispatch(openOrganizationFunc(true, thisOrganizationId));
+    dispatch(openOrganizationFunc(thisOrganizationId, true));
   };
 
   const projectRoomsSize = projects?.filter(
