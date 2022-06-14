@@ -3,52 +3,31 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 
-import { db } from "../../../firebase";
-import { useParams } from "react-router";
+import { db } from "../firebase";
 
 import { useDispatch, useSelector } from "react-redux";
-import { isMobileCustom } from "../../../util/customDeviceDetect";
 // Redux stuff
-import { clearErrors } from "../../../redux/actions/errorsActions";
-
-import Header from "../../molecules/Headers/Header";
-import InfoModal from "../../molecules/DialogInlineComponents/InfoModal";
+import { clearErrors } from "../redux/actions/errorsActions";
 import styled from "styled-components";
-import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
-import { Background } from "../../atoms/Backgrounds/GradientBackgrounds";
-import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
+import { handleTopicSelectorRedux } from "../redux/actions/UiActions";
 
 import {
   openOrganizationFunc,
   stateCreateOrganizationsFunc,
-} from "../../../redux/actions/organizationActions";
-import SwipeList from "../SwipeLists/SwipeList";
-import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
+} from "../redux/actions/organizationActions";
 import { useTranslation } from "react-i18next";
-import { MenuData } from "../../../data/MenuData";
 
-import {
-  StyledA,
-  StyledH2,
-  StyledH3,
-  StyledText,
-} from "../../../../src/styles/GlobalStyle";
-import setIconByOrganizationType from "../../../data/setIconByOrganizationType";
-import NewButton from "../../atoms/CustomButtons/NewButton";
-import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
-import Loader from "../../atoms/Backgrounds/Loader";
-import List from "../../molecules/List/List";
-import { SVGWrapper } from "../../molecules/Headers/styles/sharedStyles";
-import MainModal from "../../atoms/Layout/MainModal";
-import Tabs from "../../atoms/Tabs/Tabs";
-import { OrganizationTabData } from "../../../data/OrganizationTabData";
-import { Accordion } from "../../molecules/Accordion/Accordion";
-import Arrow from "../../../images/icons/arrow-right.png";
-import { openLink, openMail, search, sort } from "../../../util/helpers";
-import { CircularProgress } from "@material-ui/core";
+import setIconByOrganizationType from "../data/setIconByOrganizationType";
+import Loader from "../components/atoms/Backgrounds/Loader";
+import MainModal from "../components/atoms/Layout/MainModal";
+import { Accordion } from "../components/molecules/Accordion/Accordion";
+import { openLink, openMail, search, sort } from "../util/helpers";
 import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
+
+import { OrganizationPage as OrganizationPageComponent } from "senf-atomic-design-system";
+
 const CalendarComponent = React.lazy(() =>
-  import("../../atoms/calendar/CalendarComponent")
+  import("../components/atoms/calendar/CalendarComponent")
 );
 export const Wrapper = styled.div`
   width: 100%;
@@ -229,12 +208,13 @@ const ListWrapper = styled.div`
 //   overflow: visible;
 // `;
 
-const OrganizationDialog = ({
-  viewport,
-  projectsData,
-  loadingProjects,
-  dataFinalMap,
+const OrganizationPage = ({
   setOpenOrganizationsPage,
+
+  organization,
+  organizations,
+  handleOpenCreateOrganization,
+  handleButtonOpenCard,
 }) => {
   const { t } = useTranslation();
   const [infoOpen, setInfoOpen] = useState(false);
@@ -244,7 +224,6 @@ const OrganizationDialog = ({
 
   const [path, setPath] = useState("");
   const [order, setOrder] = useState(1);
-  const [dropdown, setDropdown] = useState("newest");
   const [logo, setLogo] = useState(null);
 
   const user = useSelector((state) => state.user);
@@ -254,7 +233,6 @@ const OrganizationDialog = ({
   ] = useState([]);
 
   const openOrganization = useSelector((state) => state.UI.openOrganization);
-  const organization = useSelector((state) => state.data.organization);
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.UI.loading);
   const loadingOrganization = useSelector(
@@ -268,51 +246,17 @@ const OrganizationDialog = ({
     dispatch(stateCreateOrganizationsFunc(true));
   };
 
-  useEffect(() => {
-    dispatch(handleTopicSelectorRedux("all"));
-    setPath(window.location.pathname);
-    console.log(organization);
-  }, [openOrganization]);
+  // useEffect(() => {
+  //   dispatch(handleTopicSelectorRedux("all"));
+  //   setPath(window.location.pathname);
+  //   console.log(organization);
+  // }, [openOrganization]);
 
   const handleClose = () => {
     dispatch(openOrganizationFunc(null, false));
     setOpenOrganizationsPage(true);
     dispatch(clearErrors());
   };
-
-  const handleClick = (order) => {
-    setOrder(order);
-
-    if (order === 2) {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      });
-    }
-
-    dispatch(clearErrors());
-  };
-
-  const handleDropdown = (value) => {
-    setDropdown(value);
-  };
-
-  const [searchTerm, setSearchTerm] = useState("");
-
-  var projectRoomsData;
-  projectRoomsData = search(organization?.projectRooms, searchTerm, [
-    "title",
-    "brief",
-    "description_about",
-    "description_motivation",
-    "description_procedure",
-    "description_learnmore",
-  ]);
-
-  projectRoomsData = sort(projectRoomsData, dropdown);
-
-  const dataFinal = projectRoomsData;
 
   useEffect(() => {
     async function fetchData() {
@@ -353,7 +297,7 @@ const OrganizationDialog = ({
   }, [organization.organizationId, organization, user.organizationId]);
 
   return !loadingOrganization ? (
-    <Wrapper>
+    <React.Fragment>
       {ReactDOM.createPortal(
         <React.Fragment>
           {contactOpen && (
@@ -428,182 +372,17 @@ const OrganizationDialog = ({
         document.getElementById("portal-root-modal")
       )}
 
-      <CustomIconButton
-        name="Close"
-        position="fixed"
-        margin="10px"
-        backgroundColor="#FFF0BC"
-        handleButtonClick={() => handleClose()}
-        zIndex={99}
+      <OrganizationPageComponent
+        organization={organization}
+        organizations={organizations}
+        handleCloseOrganizationPage={handleClose}
+        handleOpenCreateOrganization={handleEdit}
+        handleButtonOpenCard={handleButtonOpenCard}
       />
-
-      {organization?.userIds.includes(user.userId) && (
-        <CustomIconButton
-          name="Menu"
-          iconWidth="25px"
-          handleButtonClick={() => handleEdit()}
-          position="absolute"
-          left="calc(100% - 60px)"
-          top="10px"
-          backgroundColor="#FFF0BC"
-          zIndex="99"
-        />
-      )}
-      <SVGWrapper>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="100%"
-          height="466"
-          style={{
-            position: "absolute",
-            zIndex: -1,
-            marginTop: "40px",
-            transform: "scale(1.2)",
-          }}
-        >
-          <path
-            d="M0.5 106.5V0.5L375.5 0V38.5C361 35.5 333 41 316 61C290.075 91.5 237.5 111.5 143 91.5C67.4 75.5 16 94.6667 0.5 106.5Z"
-            fill="#FED957"
-          />
-        </svg>
-      </SVGWrapper>
-      <LogoWrapper>
-        {organization.logoURL ? (
-          <Logo imgUrl={organization.logoURL} />
-        ) : (
-          <Logo imgUrl={null} />
-        )}
-      </LogoWrapper>
-
-      {organization?.status === "deactivated" ? (
-        <StyledH3 margin="24px" color="#ca3336">
-          {t("organization_is_deactivated")}
-        </StyledH3>
-      ) : (
-        organization?.status === "uncompleted" && (
-          <StyledH3 margin="24px" color="#ca3336">
-            {t("organization_is_uncompleted")}
-          </StyledH3>
-        )
-      )}
-      <FlexBox>
-        <LogoPlacer>
-          <Icon>
-            {setIconByOrganizationType(organization.organizationType)}
-          </Icon>
-        </LogoPlacer>
-        <Title> {organization.title}</Title>
-      </FlexBox>
-
-      <FlexBox>
-        {(organization.contact ||
-          organization.weblink ||
-          organization.address) && (
-          <NewButton handleButtonClick={() => setContactOpen(true)}>
-            {t("contact")}
-          </NewButton>
-        )}
-        {/* <NewButton
-          margin="0px 10px 0px 10px"
-          handleButtonClick={() => setCalendarOpen(true)}
-        >
-          Kalender
-        </NewButton> */}
-        {organization.faqs && (
-          <NewButton
-            margin="0px 0px 0px 10px"
-            handleButtonClick={() => setFaqOpen(true)}
-          >
-            FAQ
-          </NewButton>
-        )}
-      </FlexBox>
-
-      <InfoWidget onClick={() => setInfoOpen(!infoOpen)} infoOpen={infoOpen}>
-        <StyledH2 fontWeight="700">
-          Informationen{" "}
-          <img
-            src={Arrow}
-            width="13px"
-            style={{
-              position: "absolute",
-              marginTop: "7px",
-              marginLeft: "4px",
-              pointerEvents: "none",
-              transform: infoOpen ? "rotate(-90deg)" : "rotate(0deg)",
-              transition: "0.3s",
-            }}
-          ></img>
-        </StyledH2>
-        <StyledText>{organization?.description}</StyledText>
-      </InfoWidget>
-
-      <Divider />
-
-      <ListWrapper>
-        <Tabs
-          loading={false}
-          order={order}
-          tabLabels={
-            organization.googleCalendarId
-              ? OrganizationTabData.map((item) => item.text)
-              : OrganizationTabData.map((item) => item.text).slice(0, 1)
-          }
-          marginTop={"20px"}
-          marginBottom={"20px"}
-          handleClick={setOrder}
-          type="secondary"
-          secondaryColor="rgba(186, 160, 79, 0.8)"
-        />
-
-        {order === 1 ? (
-          <React.Fragment>
-            {uncompletedOrDeactivatedProjectRooms.length ? (
-              <React.Fragment>
-                <StyledH3 margin="24px"> Nur für dich sichtbar:</StyledH3>
-                <List
-                  swipeListType="uncompletedOrDeactivatedProjectRoomOverview"
-                  loading={loading}
-                  dropdown={dropdown}
-                  dataFinal={uncompletedOrDeactivatedProjectRooms}
-                  projectsData={projectsData}
-                />
-              </React.Fragment>
-            ) : null}
-            <List
-              swipeListType="projectRoomOverview"
-              loading={loading}
-              dropdown={dropdown}
-              dataFinal={dataFinal}
-              projectsData={projectsData}
-            />
-          </React.Fragment>
-        ) : (
-          <React.Suspense
-            fallback={<CircularProgress size={50} thickness={2} />}
-          >
-            <CalendarComponent
-              googleCalendarId={organization?.googleCalendarId}
-            />
-          </React.Suspense>
-        )}
-      </ListWrapper>
-      {/* {ReactDOM.createPortal(
-        <React.Fragment>
-          {!isMobileCustom && calendarOpen && (
-            <CalendarWrapper>
-              <CalendarComponent
-                googleCalendarId={organization?.googleCalendarId}
-              />
-            </CalendarWrapper>
-          )}
-        </React.Fragment>,
-        document.getElementById("portal-root-modal")
-      )} */}
-    </Wrapper>
+    </React.Fragment>
   ) : (
     <Loader left="calc(100vw - 400px)" width="400px" />
   );
 };
 
-export default OrganizationDialog;
+export default OrganizationPage;

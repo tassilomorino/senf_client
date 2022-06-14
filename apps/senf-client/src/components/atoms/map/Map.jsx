@@ -313,40 +313,19 @@ const Map = ({
 
   return (
     mapViewport && (
-      <React.Fragment>
+      <div style={{ width: "100vw", height: "100vh", position: "fixed" }}>
         {showPatternBackground && <PatternBackground />}
 
         <MapGL
           ref={mapRef}
-          style={
-            openInfoPage
-              ? {
-                  position: "fixed",
-                  width: "100%",
-                  height: "100%",
-                  transform: "scale(1)",
-                  left: 0,
-                }
-              : isMobileCustom
-              ? {
-                  position: "fixed",
-                  width: "100vw",
-                  left: "0",
-                  height: "100vh",
-                  top: "0",
-                  transform: "scale(1)",
-                  zIndex: "-1",
-                }
-              : {
-                  position: "fixed",
-                  width: "calc(100% - 600px)",
-                  left: "600px",
-                  top: "0",
-                  height: "100%",
-                  transform: "scale(1)",
-                  zIndex: "-1",
-                }
-          }
+          id="map"
+          style={{
+            position: "absolute",
+            top: 0,
+            bottom: 0,
+            width: "100%",
+            height: "100%",
+          }}
           mapStyle="mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6?optimize=true"
           accessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
           minZoom={7}
@@ -363,7 +342,7 @@ const Map = ({
           onLoad={handlleMapLoaded}
         >
           {!isMobileCustom && (
-            <NavigationControl showCompass showZoom position="top-right" />
+            <NavigationControl showCompass showZoom position="bottom-right" />
           )}
           {openProjectRoom &&
             !loadingProjects &&
@@ -583,7 +562,7 @@ const Map = ({
             </React.Fragment>
           )}
         </MapGL>
-      </React.Fragment>
+      </div>
     )
   );
 };

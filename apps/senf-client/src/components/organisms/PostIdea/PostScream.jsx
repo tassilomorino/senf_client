@@ -11,7 +11,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Slide from "@material-ui/core/Slide";
 
 //HANDLER
-import RegistrationAndLogin from "../../organisms/Auth/LoginRegistration";
+import LoginRegistration from "../../organisms/Auth/LoginRegistration";
 
 //ICONS
 import Plus from "../../../images/svgIcons/plus.svg";
@@ -34,6 +34,7 @@ import styled, { keyframes } from "styled-components";
 import Weblink from "../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
 import Contact from "../../molecules/Modals/Post_Edit_ModalComponents/Contact";
 import InlineDatePickerModal from "../../molecules/Modals/InlineDatePickerModal";
+import { useEffect } from "react";
 
 const StyledButton = styled.button`
   box-sizing: border-box;
@@ -157,6 +158,9 @@ const PostScream = ({
   loadingProjects,
   projectsData,
   mapViewportRef,
+  setPostIdeaOpen,
+  postIdeaOpen,
+  setAuthOpen,
 }) => {
   const dispatch = useDispatch();
   const openScream = useSelector((state) => state.UI.openScream);
@@ -168,7 +172,6 @@ const PostScream = ({
   const user = useSelector((state) => state.user);
   const history = useHistory();
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
 
   const initialMapViewport = useSelector(
     (state) => state.data.initialMapViewport
@@ -213,50 +216,46 @@ const PostScream = ({
 
   const postScreamMapViewportRef = useRef(null);
 
-  const handleOpen = (event) => {
-    event.preventDefault();
-    const projectSelected = project?.projectRoomId
-      ? project?.projectRoomId
-      : "";
+  useEffect(() => {
+    if (postIdeaOpen) {
+      const projectSelected = project?.projectRoomId
+        ? project?.projectRoomId
+        : "";
 
-    setProjectSeleted(projectSelected);
+      setProjectSeleted(projectSelected);
 
-    // setAllMainStates({ ...allMainStates, loading: false });
+      // setAllMainStates({ ...allMainStates, loading: false });
 
-    projectsData?.forEach(
-      ({ projectRoomId, zoom, centerLat, centerLong, geoData, calendar }) => {
-        if (projectSelected === projectRoomId) {
-          const viewport = {
-            zoom: zoom,
-            latitude: centerLat,
-            longitude: centerLong,
-            transitionDuration: 1000,
-          };
-          setViewport(viewport);
-          setGeoData(geoData);
-          setCheckIfCalendar(calendar);
+      projectsData?.forEach(
+        ({ projectRoomId, zoom, centerLat, centerLong, geoData, calendar }) => {
+          if (projectSelected === projectRoomId) {
+            const viewport = {
+              zoom: zoom,
+              latitude: centerLat,
+              longitude: centerLong,
+              transitionDuration: 1000,
+            };
+            setViewport(viewport);
+            setGeoData(geoData);
+            setCheckIfCalendar(calendar);
+          }
+          if (projectSelected === "") {
+            const viewport = {
+              zoom: mapViewportRef.current.zoom,
+              latitude: mapViewportRef.current.latitude,
+              longitude: mapViewportRef.current.longitude,
+              transitionDuration: 1000,
+            };
+            setViewport(viewport);
+            setGeoData("");
+          }
         }
-        if (projectSelected === "") {
-          const viewport = {
-            zoom: mapViewportRef.current.zoom,
-            latitude: mapViewportRef.current.latitude,
-            longitude: mapViewportRef.current.longitude,
-            transitionDuration: 1000,
-          };
-          setViewport(viewport);
-          setGeoData("");
-        }
-      }
-    );
-
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    dispatch(clearErrors());
-    setOpen(false);
-    setAllMainStates({ ...allMainStates, errors: {} });
-  };
+      );
+    } else {
+      dispatch(clearErrors());
+      setAllMainStates({ ...allMainStates, errors: {} });
+    }
+  }, [postIdeaOpen]);
 
   const handleDropdown = (value) => {
     setTopic(value);
@@ -353,7 +352,7 @@ const PostScream = ({
       newScream.selectedUnix = selectedUnix;
     }
     dispatch(postScream(newScream, user, history)).then(() => {
-      setOpen(false);
+      setPostIdeaOpen(false);
     });
   };
 
@@ -473,7 +472,7 @@ const PostScream = ({
 
   return (
     <Fragment>
-      {!isMobileCustom ? (
+      {/* {!isMobileCustom ? (
         <OpenButtonDesktop onClick={handleOpen} $loading={loading}>
           <img
             src={AddIcon}
@@ -496,11 +495,11 @@ const PostScream = ({
         >
           <img src={Plus} width="25" alt="AddIcon" />
         </StyledButton>
-      )}
+      )} */}
 
       <Dialog
-        open={open}
-        onClose={handleClose}
+        open={true}
+        onClose={() => setPostIdeaOpen(false)}
         fullScreen
         BackdropProps={{ classes: { root: classes.root } }}
         PaperProps={{ classes: { root: classes.paper } }}
@@ -509,7 +508,7 @@ const PostScream = ({
           name="Close"
           position="fixed"
           margin={document.body.clientWidth > 768 ? "40px" : "10px"}
-          handleButtonClick={handleClose}
+          handleButtonClick={() => setPostIdeaOpen(false)}
           zIndex="1"
         />
         {!user.authenticated && (
@@ -524,9 +523,8 @@ const PostScream = ({
                 ? { top: "100vh", transition: "0.5s" }
                 : null
             }
-          >
-            <RegistrationAndLogin />
-          </div>
+            onClick={setAuthOpen}
+          />
         )}
 
         {isMobileCustom && (

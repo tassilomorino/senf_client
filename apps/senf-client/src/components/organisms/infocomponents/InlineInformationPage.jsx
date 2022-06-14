@@ -273,7 +273,7 @@ const ScrollIndicatorDot = styled.div`
   }
 `;
 
-const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
+const InlineInformationPage = ({ setOrder, setOpenOrganizationsOverview }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -293,7 +293,7 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
   }, [dispatch]);
 
   const handleSetOpenOrganizationsOverview = useCallback(() => {
-    setOpenOrganizationsPage(true);
+    setOpenOrganizationsOverview(true);
     dispatch(setInfoPageClosed());
   }, [dispatch]);
 
@@ -570,7 +570,7 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
 
   return (
     <Fragment>
-      {isMobileCustom ? (
+      {/* {isMobileCustom ? (
         <ExpandButton
           handleButtonClick={handleOpen}
           dataCy="InlineInfo-button"
@@ -581,7 +581,7 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsPage }) => {
           <img src={Info} width="35" alt="EndImage" />
           <span className="inlineInfoIconText"> {t("info")}</span>
         </SideBarTabs>
-      )}
+      )} */}
 
       <InfoPageDialog isOpen={openInfoPage} setIsOpen={handleClose}>
         <Container id="InfoPage">

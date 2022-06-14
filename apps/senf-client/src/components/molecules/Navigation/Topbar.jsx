@@ -110,7 +110,13 @@ const CenteredImg = styled.img`
   position: absolute;
 `;
 
-const Topbar = ({ order, handleClick, setOrder, setOpenOrganizationsPage }) => {
+const Topbar = ({
+  order,
+  handleClick,
+  setOrder,
+  setOpenOrganizationsPage,
+  setAuthOpen,
+}) => {
   const loading = useSelector((state) => state.data.loading);
   const user = useSelector((state) => state.user);
   const openScream = useSelector((state) => state.UI.openScream);
@@ -168,9 +174,7 @@ const Topbar = ({ order, handleClick, setOrder, setOpenOrganizationsPage }) => {
         </InsightsButtonContainer> */}
 
         {!user.authenticated ? (
-          <ProfileButtonContainer>
-            <LoginRegistration />
-
+          <ProfileButtonContainer onClick={() => setAuthOpen(true)}>
             <CenteredImg
               src={Noprofile}
               width="30"

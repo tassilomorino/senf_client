@@ -149,7 +149,7 @@ const ProjectCard = (props) => {
     dispatch(openProjectRoomFunc(thisProjectRoomId, true));
 
     if (openOrganization) {
-      dispatch(openOrganizationFunc("hide", null));
+      dispatch(openOrganizationFunc(null, "hide"));
     }
   };
 

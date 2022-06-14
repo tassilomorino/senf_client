@@ -2,40 +2,31 @@
 
 import React, { useState, useEffect, memo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { isMobileCustom } from "../../../util/customDeviceDetect";
 // Redux stuff
-import { openProjectRoomFunc } from "../../../redux/actions/projectActions";
-import { clearErrors } from "../../../redux/actions/errorsActions";
-import {
-  setMapBounds,
-  setMapViewport,
-} from "../../../redux/actions/mapActions";
-
-//Components
-
-import SwipeList from "../SwipeLists/SwipeList";
-import Header from "../../molecules/Headers/Header";
-import InfoModal from "../../molecules/DialogInlineComponents/InfoModal";
+import { openProjectRoomFunc } from "../redux/actions/projectActions";
+import { clearErrors } from "../redux/actions/errorsActions";
+import { setMapBounds, setMapViewport } from "../redux/actions/mapActions";
 import styled from "styled-components";
-import { ModalBackground } from "../../atoms/Backgrounds/ModalBackground";
-import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
+import { handleTopicSelectorRedux } from "../redux/actions/UiActions";
 
 import orderBy from "lodash/orderBy";
-import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import { useTranslation } from "react-i18next";
-import PostScream from "../PostIdea/PostScream";
-import { ProjectRoomTabData } from "../../../data/ProjectRoomTabData";
-import { openOrganizationFunc } from "../../../../src/redux/actions/organizationActions";
+import { openOrganizationFunc } from "../redux/actions/organizationActions";
+
+import { ProjectroomPage as ProjectroomPageComponent } from "senf-atomic-design-system";
 
 const Wrapper = styled.div`
   z-index: 999;
 `;
-const ProjectDialog = ({
+const ProjectroomPage = ({
   viewport,
   dataFinalProjectRooms,
   loadingProjects,
   dataFinalMap,
   setOpenInsightsPage,
+
+  handleButtonOpenCard,
+  setPostIdeaOpen,
 }) => {
   const { t } = useTranslation();
   const [path, setPath] = useState("");
@@ -145,67 +136,25 @@ const ProjectDialog = ({
   const TabSlicer = project?.calendar ? 3 : 1;
 
   return (
-    <Wrapper>
-      {project && !loadingProjectRoom && (
-        <Header
-          infoOpen={infoOpen}
-          setInfoOpen={setInfoOpen}
-          title={project?.title}
-          calendar={project?.calendar}
-          organizationId={project?.organizationId}
-          projectRoomId={project?.projectRoomId}
-          order={order}
-          path={path}
-          handleClose={handleClose}
-          handleClick={handleClick}
-        />
-      )}
-      {project && !loadingProjectRoom && (
-        <InfoModal
-          description_about={project?.description_about}
-          description_motivation={project?.description_motivation}
-          description_procedure={project?.description_procedure}
-          description_learnmore={project?.description_learnmore}
-          weblink={project?.weblink}
-          contact={project?.contact}
-          startDate={project?.startDate}
-          endDate={project?.endDate}
-          organizationId={project?.organizationId}
-          ownerImg={organizationImage}
-          infoOpen={infoOpen}
-          setInfoOpen={setInfoOpen}
-        />
-      )}
+    project && (
+      <ProjectroomPageComponent
+        data={project}
+        organizations={organizations}
+        handleButtonOpenCard={handleButtonOpenCard}
+        handleButtonClose={handleClose}
+        selectedTopics={selectedTopics}
+        handleSelectTopics={(topic) =>
+          dispatch(handleTopicSelectorRedux(topic))
+        }
+        setPostIdeaOpen={() => setPostIdeaOpen(true)}
 
-      {/* {!isMobileCustom ||
-          (isMobileCustom && order === 0 && <ModalBackground />)} */}
-
-      {(!infoOpen || (!isMobileCustom && !loadingProjectRoom)) && (
-        <SwipeList
-          type="projectIdeas"
-          swipeListType="ideas"
-          tabLabels={ProjectRoomTabData.map((item) => item.text).slice(
-            0,
-            TabSlicer
-          )}
-          loading={loadingProjectRoom}
-          order={order}
-          dataFinal={dataFinal}
-          geoData={project?.geoData}
-          viewport={viewport}
-          handleDropdown={handleDropdown}
-          dropdown={dropdown}
-          dataFinalProjectRooms={dataFinalProjectRooms}
-          loadingProjects={loadingProjects}
-          dataFinalMap={dataFinalMap}
-          setSearchTerm={setSearchTerm}
-          searchTerm={searchTerm}
-          handleClick={handleClick}
-          setOpenInsightsPage={setOpenInsightsPage}
-        />
-      )}
-    </Wrapper>
+        //  setSearchOpen
+        //  searchOpen,
+        //  searchTerm,
+        //  setSearchTerm,
+      />
+    )
   );
 };
 
-export default memo(ProjectDialog);
+export default memo(ProjectroomPage);

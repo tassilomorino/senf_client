@@ -166,7 +166,7 @@ const TopNavigation = ({
         ).then(() => {
           localStorage.removeItem("createOrganizationId");
           setClose();
-          dispatch(openOrganizationFunc(false));
+          dispatch(openOrganizationFunc(null, false));
         });
       }
 

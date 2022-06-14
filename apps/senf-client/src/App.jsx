@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect, Suspense } from "react";
 import { Helmet } from "react-helmet";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { auth } from "./firebase";
@@ -30,7 +30,7 @@ import { getProjects } from "../src/redux/actions/projectActions";
 import { getScreams } from "../src/redux/actions/screamActions";
 
 //Pages
-import Main from "./components/templates/Main";
+import Main from "./pages/Main";
 import Verification from "./pages/Verification";
 import impressum from "./components/organisms/infocomponents/legal/impressum";
 import datenschutz from "./components/organisms/infocomponents/legal/datenschutz";
@@ -42,7 +42,7 @@ import blank from "./pages/Blank";
 import { isTablet } from "react-device-detect";
 import Cookies from "universal-cookie";
 
-import { useTranslation } from "react-i18next";
+import { I18nextProvider, useTranslation } from "react-i18next";
 
 import { isMobileCustom } from "./util/customDeviceDetect";
 
@@ -54,58 +54,21 @@ import { setViewport } from "./util/helpers-map-animations";
 import detectLocation from "./util/detectLocation";
 import GlobalStyles from "./styles/GlobalStyles";
 
+import {
+  theme,
+  GlobalStyle,
+  LayerWhiteFirstDefault,
+  // i18n,
+} from "senf-atomic-design-system";
+import { ThemeProvider } from "styled-components";
+
 import "./util/i18n"; // i18n configuration
-detectLocation(); // detect location and set i18n language
+
+// detectLocation(); // detect location and set i18n language
 const cookies = new Cookies();
 //require("intersection-observer");
 
-const theme = createTheme(themeFile);
-
-function get_local_storage_status() {
-  let test = "test";
-  try {
-    // try setting an item
-    localStorage.setItem("test", test);
-    localStorage.removeItem("test");
-  } catch (e) {
-    //  browser specific checks if local storage was exceeded
-    if (
-      e.name === "QUATA_EXCEEDED_ERR" || // Chrome
-      e.name === "NS_ERROR_DOM_QUATA_REACHED" //Firefox/Safari
-    ) {
-      // local storage is full
-      return "full";
-    } else {
-      try {
-        if (localStorage.remainingSpace === 0) {
-          // IE
-          // local storage is full
-          return "full";
-        }
-      } catch (e) {
-        // localStorage.remainingSpace doesn't exist
-      }
-
-      // local storage might not be available
-      return "unavailable";
-    }
-  }
-  return "available";
-}
-if (get_local_storage_status() === "unavailable") {
-  alert(
-    "Um Senf zu öffnen, musst du Cookies in deinen Smartphone-Settings erlauben."
-  );
-}
-
-console.log(import.meta.env.MODE);
-
-// if (import.meta.env.MODE === "development") {
-//   const whyDidYouRender = require("@welldone-software/why-did-you-render");
-//   whyDidYouRender(React, {
-//     trackAllPureComponents: true,
-//   });
-// }
+const muiTheme = createTheme(themeFile);
 
 window.store = store;
 
@@ -161,7 +124,9 @@ const App = () => {
   ) : null;
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+
       {import.meta.env.VITE_NO_CRAWL && (
         /* disable google crawling for senf-client-test.netlify.app */
         <Helmet>
@@ -180,7 +145,7 @@ const App = () => {
         </Helmet>
       )}
 
-      <MuiThemeProvider theme={theme}>
+      <MuiThemeProvider theme={muiTheme}>
         <Provider store={store}>
           <GlobalStyles />
           <Router>
@@ -238,7 +203,7 @@ const App = () => {
           </Router>
         </Provider>
       </MuiThemeProvider>
-    </>
+    </ThemeProvider>
   );
 };
 console.log(getBuildDate(packageJson.buildDate));
