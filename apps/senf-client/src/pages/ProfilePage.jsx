@@ -82,10 +82,12 @@ const ProfilePage = ({
       user={user}
       organization={organization}
       organizations={organizations}
+      myOrganizations={MyDataFinalOrganizations}
       handleButtonOpenCard={handleButtonOpenCard}
       handleButtonClose={handleClose}
       handleLogout={handleLogout}
       handleDeleteAccount={() => setDeleteMenuOpen(true)}
+
       // setEditProfileOpen,
     />
   );

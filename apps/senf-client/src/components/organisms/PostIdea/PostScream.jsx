@@ -11,8 +11,6 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Slide from "@material-ui/core/Slide";
 
 //HANDLER
-import LoginRegistration from "../../organisms/Auth/LoginRegistration";
-
 //ICONS
 import Plus from "../../../images/svgIcons/plus.svg";
 
@@ -35,70 +33,6 @@ import Weblink from "../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
 import Contact from "../../molecules/Modals/Post_Edit_ModalComponents/Contact";
 import InlineDatePickerModal from "../../molecules/Modals/InlineDatePickerModal";
 import { useEffect } from "react";
-
-const StyledButton = styled.button`
-  box-sizing: border-box;
-  width: 68px;
-  height: 68px;
-  box-shadow: 0px 12px 18px -8px rgba(186, 160, 79, 0.2),
-    0px -4px 10px 4px rgba(255, 255, 255, 0.2);
-  background-color: #fcfbf8;
-  overflow: visible;
-  aspect-ratio: 1 / 1;
-  border-radius: 28px;
-  border: 2px solid #ffffff;
-  position: fixed;
-  margin-top: ${(props) => (props.swipePosition === "top" ? "-5px" : "-34px")};
-  z-index: ${(props) => (props.openScream ? 0 : 999)};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  right: ${(props) => (props.swipePosition === "top" ? "5px" : "20px")};
-  transition: 0.2s;
-  transform: ${(props) =>
-    props.swipePosition === "top" ? "scale(0.8)" : "none"};
-
-  pointer-events: ${(props) => (props.$loading ? "none" : "all")};
-  /* opacity: ${(props) => (props.$loading ? "0.5" : "1")}; */
-  &:hover {
-    transition: 0.2s;
-    width: 74px;
-    height: 74px;
-  }
-`;
-
-const OpenButtonDesktop = styled.button`
-  z-index: 9999;
-  width: 160px;
-  height: 40px;
-  padding: 0;
-  padding-left: 10px;
-  padding-right: 10px;
-  position: relative;
-  left: 20px;
-  transform: none;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  text-align: center;
-  background-color: #353535;
-
-  border: 0px white solid;
-  border-radius: 40px;
-  top: 85px;
-
-  margin-bottom: 0px;
-  color: white;
-  animation: none;
-
-  box-shadow: rgb(0, 0, 0, 0) 0px 20px 20px -15px;
-  transition: 0.5s;
-  pointer-events: ${(props) => (props.$loading ? "none" : "all")};
-  opacity: ${(props) => (props.loading ? "0.5" : "1")};
-`;
 
 const styles = {
   root: {
@@ -471,167 +405,140 @@ const PostScream = ({
   };
 
   return (
-    <Fragment>
-      {/* {!isMobileCustom ? (
-        <OpenButtonDesktop onClick={handleOpen} $loading={loading}>
-          <img
-            src={AddIcon}
-            width="25"
-            alt="AddIcon"
-            style={{ paddingRight: "10px" }}
-          />
-          {t("postScream_newIdea")}
-        </OpenButtonDesktop>
-      ) : (
-        <StyledButton
-          onClick={handleOpen}
-          openScream={openScream}
-          swipePosition={swipePosition}
-          $loading={loading}
-          isInstagram={
-            window.innerHeight === window.screen.height &&
-            navigator.userAgent.match(/instagram/i)
+    <Dialog
+      open={true}
+      onClose={() => setPostIdeaOpen(false)}
+      fullScreen
+      BackdropProps={{ classes: { root: classes.root } }}
+      PaperProps={{ classes: { root: classes.paper } }}
+    >
+      <CustomIconButton
+        name="Close"
+        position="fixed"
+        margin={document.body.clientWidth > 768 ? "40px" : "10px"}
+        handleButtonClick={() => setPostIdeaOpen(false)}
+        zIndex="1"
+      />
+      {!user.authenticated && (
+        <div
+          className={
+            isMobileCustom ? classes.Authlink : classes.AuthlinkDesktop
+          }
+          style={
+            isMobileCustom && locationDecided
+              ? { top: "27vh", transition: "0.5s" }
+              : isMobileCustom && !locationDecided
+              ? { top: "100vh", transition: "0.5s" }
+              : null
+          }
+          onClick={setAuthOpen}
+        />
+      )}
+
+      {isMobileCustom && (
+        <div
+          style={
+            locationDecided
+              ? { marginTop: 0, transition: "0.5s" }
+              : { marginTop: "100vh", transition: "0.5s" }
           }
         >
-          <img src={Plus} width="25" alt="AddIcon" />
-        </StyledButton>
-      )} */}
-
-      <Dialog
-        open={true}
-        onClose={() => setPostIdeaOpen(false)}
-        fullScreen
-        BackdropProps={{ classes: { root: classes.root } }}
-        PaperProps={{ classes: { root: classes.paper } }}
-      >
-        <CustomIconButton
-          name="Close"
-          position="fixed"
-          margin={document.body.clientWidth > 768 ? "40px" : "10px"}
-          handleButtonClick={() => setPostIdeaOpen(false)}
-          zIndex="1"
-        />
-        {!user.authenticated && (
           <div
-            className={
-              isMobileCustom ? classes.Authlink : classes.AuthlinkDesktop
-            }
-            style={
-              isMobileCustom && locationDecided
-                ? { top: "27vh", transition: "0.5s" }
-                : isMobileCustom && !locationDecided
-                ? { top: "100vh", transition: "0.5s" }
-                : null
-            }
-            onClick={setAuthOpen}
-          />
-        )}
+            className="backContainer"
+            onClick={() => handleLocationDecided()}
+          ></div>
 
-        {isMobileCustom && (
-          <div
-            style={
-              locationDecided
-                ? { marginTop: 0, transition: "0.5s" }
-                : { marginTop: "100vh", transition: "0.5s" }
-            }
-          >
-            <div
-              className="backContainer"
-              onClick={() => handleLocationDecided()}
-            ></div>
+          <div className="PostBackground"></div>
+        </div>
+      )}
 
-            <div className="PostBackground"></div>
-          </div>
-        )}
-
-        {weblinkOpen && (
-          <Weblink
-            handleCloseWeblink={handleCloseWeblink}
-            handleSaveWeblink={handleSaveWeblink}
-            weblinkTitle={weblinkTitle}
-            weblink={weblink}
-            setWeblinkTitle={setWeblinkTitle}
-            setWeblink={setWeblink}
-            setWeblinkOpen={setWeblinkOpen}
-          />
-        )}
-        {contactOpen && (
-          <Contact
-            handleCloseContact={handleCloseContact}
-            handleSaveContact={handleSaveContact}
-            contactTitle={contactTitle}
-            contact={contact}
-            setContactTitle={setContactTitle}
-            setContact={setContact}
-            setContactOpen={setContactOpen}
-          />
-        )}
-        {calendarOpen && (
-          <InlineDatePickerModal
-            setCalendarOpen={setCalendarOpen}
-            handleCloseCalendar={handleCloseCalendar}
-            handleSaveCalendar={handleSaveCalendar}
-            handleChangeCalendar={handleChangeCalendar}
-            selectedDays={selectedDays}
-          />
-        )}
-        {viewport && (
-          <PostScreamMap
-            MapHeight={MapHeight}
-            geocode={geocode}
-            _onMarkerDragEnd={_onMarkerDragEnd}
-            geoData={geoData}
-            viewport={viewport}
-            clicked={addressBarClickedState}
-            addressBarClicked={addressBarClicked}
-            locationDecided={locationDecided}
-            onSelected={onSelected}
-            address={address}
-            loadingProjects={loadingProjects}
-          />
-        )}
-
-        <PostScreamSelectContainter
-          classes={classes}
-          locationDecided={locationDecided}
-          handleLocationDecided={handleLocationDecided}
-          handleLocationDecidedNoLocation={handleLocationDecidedNoLocation}
-          projectSelected={projectSelected}
-          address={address}
-          handleDropdownProject={handleDropdownProject}
-          open={open}
-          loadingProjects={loadingProjects}
-          projectsData={projectsData}
-        />
-
-        <PostScreamFormContent
-          classes={classes}
-          errors={errors}
-          address={address}
-          handleLocationDecided={handleLocationDecided}
-          handleDropdown={handleDropdown}
-          weblink={weblink}
+      {weblinkOpen && (
+        <Weblink
+          handleCloseWeblink={handleCloseWeblink}
+          handleSaveWeblink={handleSaveWeblink}
           weblinkTitle={weblinkTitle}
+          weblink={weblink}
+          setWeblinkTitle={setWeblinkTitle}
+          setWeblink={setWeblink}
+          setWeblinkOpen={setWeblinkOpen}
+        />
+      )}
+      {contactOpen && (
+        <Contact
+          handleCloseContact={handleCloseContact}
+          handleSaveContact={handleSaveContact}
           contactTitle={contactTitle}
           contact={contact}
-          project={projectSelected}
-          selectedDays={selectedDays}
-          topic={topic}
-          loading={loading}
-          Out={out}
-          locationDecided={locationDecided}
-          handleSubmit={handleSubmit}
-          body={body}
-          title={title}
-          setTitle={setTitle}
-          setBody={setBody}
-          setWeblinkOpen={setWeblinkOpen}
+          setContactTitle={setContactTitle}
+          setContact={setContact}
           setContactOpen={setContactOpen}
-          setCalendarOpen={setCalendarOpen}
-          checkIfCalendar={checkIfCalendar}
         />
-      </Dialog>
-    </Fragment>
+      )}
+      {calendarOpen && (
+        <InlineDatePickerModal
+          setCalendarOpen={setCalendarOpen}
+          handleCloseCalendar={handleCloseCalendar}
+          handleSaveCalendar={handleSaveCalendar}
+          handleChangeCalendar={handleChangeCalendar}
+          selectedDays={selectedDays}
+        />
+      )}
+      {viewport && (
+        <PostScreamMap
+          MapHeight={MapHeight}
+          geocode={geocode}
+          _onMarkerDragEnd={_onMarkerDragEnd}
+          geoData={geoData}
+          viewport={viewport}
+          clicked={addressBarClickedState}
+          addressBarClicked={addressBarClicked}
+          locationDecided={locationDecided}
+          onSelected={onSelected}
+          address={address}
+          loadingProjects={loadingProjects}
+        />
+      )}
+
+      <PostScreamSelectContainter
+        classes={classes}
+        locationDecided={locationDecided}
+        handleLocationDecided={handleLocationDecided}
+        handleLocationDecidedNoLocation={handleLocationDecidedNoLocation}
+        projectSelected={projectSelected}
+        address={address}
+        handleDropdownProject={handleDropdownProject}
+        open={open}
+        loadingProjects={loadingProjects}
+        projectsData={projectsData}
+      />
+
+      <PostScreamFormContent
+        classes={classes}
+        errors={errors}
+        address={address}
+        handleLocationDecided={handleLocationDecided}
+        handleDropdown={handleDropdown}
+        weblink={weblink}
+        weblinkTitle={weblinkTitle}
+        contactTitle={contactTitle}
+        contact={contact}
+        project={projectSelected}
+        selectedDays={selectedDays}
+        topic={topic}
+        loading={loading}
+        Out={out}
+        locationDecided={locationDecided}
+        handleSubmit={handleSubmit}
+        body={body}
+        title={title}
+        setTitle={setTitle}
+        setBody={setBody}
+        setWeblinkOpen={setWeblinkOpen}
+        setContactOpen={setContactOpen}
+        setCalendarOpen={setCalendarOpen}
+        checkIfCalendar={checkIfCalendar}
+      />
+    </Dialog>
   );
 };
 

@@ -31,7 +31,6 @@ import { getMyOrganizations } from "../../../redux/actions/accountActions";
 import NewButton from "../../atoms/CustomButtons/NewButton";
 import PostScream from "../PostIdea/PostScream";
 import MainModal from "../../atoms/Layout/MainModal";
-import LoginRegistration from "../Auth/LoginRegistration";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import { CircularProgress } from "@material-ui/core";
 

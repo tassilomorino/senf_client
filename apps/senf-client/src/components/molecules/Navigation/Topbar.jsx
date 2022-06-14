@@ -12,7 +12,6 @@ import {
 } from "../../../redux/actions/accountActions";
 
 //COMPONENTS
-import LoginRegistration from "../../organisms/Auth/LoginRegistration";
 import InlineInformationPage from "../../organisms/infocomponents/InlineInformationPage";
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 

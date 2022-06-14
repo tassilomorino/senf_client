@@ -4,7 +4,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import LoginRegistration from "../../organisms/Auth/LoginRegistration";
 import { CustomButton } from "../../atoms/CustomButtons/CustomButton";
 import CommentForm from "../../atoms/Forms/CommentForm";
 import { StyledH2 } from "../../../styles/GlobalStyle";

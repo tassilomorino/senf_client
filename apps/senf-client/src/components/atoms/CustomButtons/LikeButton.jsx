@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { likeScream, unlikeScream } from "../../../redux/actions/likeActions";
 
 //Components
-import LoginRegistration from "../../organisms/Auth/LoginRegistration";
 
 import { CustomIconButton } from "./CustomButton";
 

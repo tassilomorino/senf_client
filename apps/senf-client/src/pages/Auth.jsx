@@ -2,9 +2,9 @@
 
 import React, { useState, Fragment, useRef, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { SET_AUTHENTICATED } from "../../../redux/types";
+import { SET_AUTHENTICATED } from "../redux/types";
 
-import { auth, db } from "../../../firebase";
+import { auth, db } from "../firebase";
 
 import {
   getAuth,
@@ -27,14 +27,13 @@ import {
 } from "firebase/firestore";
 
 import { useHistory } from "react-router";
-import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
 import { useTranslation } from "react-i18next";
-import { getUserData } from "../../../redux/actions/userActions";
+import { getUserData } from "../redux/actions/userActions";
 
-import { Modal, Auth } from "senf-atomic-design-system";
+import { Modal, Auth as AuthComponent } from "senf-atomic-design-system";
 
-const LoginRegistration = ({ setAuthOpen, authOpen }) => {
+const Auth = ({ setAuthOpen, authOpen }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -236,7 +235,7 @@ const LoginRegistration = ({ setAuthOpen, authOpen }) => {
   return (
     <Fragment>
       <Modal openModal={authOpen} setOpenModal={() => setAuthOpen(false)}>
-        <Auth
+        <AuthComponent
           loginLoading={loading}
           handleSubmitLogin={(loginData) => handleSubmitLogin(loginData)}
           handleSubmitRegister={(registerData) =>
@@ -251,4 +250,4 @@ const LoginRegistration = ({ setAuthOpen, authOpen }) => {
   );
 };
 
-export default memo(LoginRegistration);
+export default memo(Auth);
