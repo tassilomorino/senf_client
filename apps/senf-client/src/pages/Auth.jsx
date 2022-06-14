@@ -36,6 +36,8 @@ import { Modal, Auth as AuthComponent } from "senf-atomic-design-system";
 const Auth = ({ setAuthOpen, authOpen }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [emailRegistrationSubmitted, setEmailRegistrationSubmitted] =
+    useState(false);
 
   const user = useSelector((state) => state.user);
   const authenticated = user.authenticated;
@@ -137,7 +139,9 @@ const Auth = ({ setAuthOpen, authOpen }) => {
         const emailWrapper = {
           email: formikRegisterStore.values.email,
         };
-        history.push("/verify", emailWrapper);
+
+        setEmailRegistrationSubmitted(true);
+        // history.push("/verify", emailWrapper);
       } catch (error) {
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -241,6 +245,7 @@ const Auth = ({ setAuthOpen, authOpen }) => {
           handleSubmitRegister={(registerData) =>
             handleSubmitRegister(registerData)
           }
+          emailRegistrationSubmitted={emailRegistrationSubmitted}
           handleGoogleSignIn={() => handleProviderSignin("google")}
           handleFacebookSignIn={() => handleProviderSignin("facebook")}
           handleClose={() => setAuthOpen(false)}
