@@ -63,6 +63,7 @@ function App() {
                   path="/register"
                   element={<AuthPage variant="register" />}
                 />
+
                 <Route
                   exact
                   path="/login"

@@ -178,16 +178,19 @@ const App = () => {
                 <Route exact path="/blank" component={blank} />
 
                 <Route exact path="/:screamId" component={Main} />
+
                 <Route
                   exact
                   path="/projectRooms/:projectRoomId/:screamId"
                   component={Main}
                 />
+
                 <Route
                   exact
                   path="/projectRooms/:projectRoomId"
                   component={Main}
                 />
+
                 <Route
                   exact
                   path="/organizations/:organizationId"
