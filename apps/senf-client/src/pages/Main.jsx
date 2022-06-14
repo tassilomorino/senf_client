@@ -78,12 +78,12 @@ import {
   sort,
   countStatusOfScreams,
 } from "../util/helpers";
-import LoginRegistration from "../components/organisms/Auth/LoginRegistration";
+import Auth from "./Auth";
 
 import {
   MainSwipeList,
   OrganizationsOverview,
-  MenuSidebar,
+  Modal,
   TagSlide,
   Box,
 } from "senf-atomic-design-system";
@@ -135,6 +135,8 @@ const Main = () => {
   const dispatch = useDispatch();
   const [authOpen, setAuthOpen] = useState(false);
   const [postIdeaOpen, setPostIdeaOpen] = useState(false);
+
+  const [modalData, setModalData] = useState(null);
 
   const [swipedUp, setSwipedUp] = useState(false);
   const organization = useSelector((state) => state.data.organization);
@@ -505,12 +507,15 @@ const Main = () => {
   console.log(openOrganizationsOverview);
 
   const handleOpenMyAccount = () => {
-    dispatch(openProjectRoomFunc(null, false));
-    dispatch(closeScream());
-    dispatch(openAccountFunc(userId));
-    window.history.pushState(null, null, "/");
-
-    dispatch(handleTopicSelectorRedux("all"));
+    if (user?.authenticated) {
+      dispatch(openProjectRoomFunc(null, false));
+      dispatch(closeScream());
+      dispatch(openAccountFunc(userId));
+      window.history.pushState(null, null, "/");
+      dispatch(handleTopicSelectorRedux("all"));
+    } else {
+      setAuthOpen(true);
+    }
   };
   useEffect(() => {
     if (userId && openAccount) {
@@ -525,6 +530,10 @@ const Main = () => {
     dispatch(setInfoPageOpen());
   }, [dispatch]);
 
+  const handleCloseOrganizationPage = () => {
+    dispatch(openOrganizationFunc(null, false));
+  };
+
   const handleOpenCreateOrganization = () => {
     if (!user.authenticated) {
       setOpenModalAuthenticate(true);
@@ -533,6 +542,8 @@ const Main = () => {
       dispatch(stateCreateOrganizationsFunc(true));
     }
   };
+
+  console.log(modalData);
 
   return (
     <React.Fragment>
@@ -546,7 +557,7 @@ const Main = () => {
           setOpenOrganizationsOverview={setOpenOrganizationsOverview}
         />
       )}
-      <LoginRegistration setAuthOpen={setAuthOpen} authOpen={authOpen} />
+      <Auth setAuthOpen={setAuthOpen} authOpen={authOpen} />
 
       {postIdeaOpen && (
         <PostScream
@@ -605,7 +616,9 @@ const Main = () => {
           // />
           <Box margin="10px 10px 10px 500px" position="fixed" zIndex={9}>
             <TagSlide
-              type={order === 1 ? "topics" : "organizationTypes"}
+              type={
+                order === 1 || openProjectRoom ? "topics" : "organizationTypes"
+              }
               selectedTopics={selectedTopics}
               selectedOrganizationTypes={selectedOrganizationTypes}
               handleSelectTopics={handleSelectTopics}
@@ -727,9 +740,13 @@ const Main = () => {
         <OrganizationPage
           organization={organization}
           organizations={organizations}
-          handleCloseOrganizationPage={setOpenOrganizationsPage}
-          handleOpenCreateOrganization={handleOpenCreateOrganization}
+          handleCloseOrganizationPage={handleCloseOrganizationPage}
+          handleEdit={handleOpenCreateOrganization}
           handleButtonOpenCard={handleButtonOpenCard}
+          user={user}
+          setModalData={setModalData}
+          // setContactOpen,
+          // setFaqOpen,
 
           // openOrganization={openOrganization}
           // dataFinalMap={dataFinalMap}
@@ -745,6 +762,7 @@ const Main = () => {
       {!openInfoPage &&
         !openProjectRoom &&
         !openAccount &&
+        openOrganizationsOverview &&
         !loadingOrganizations && (
           // <OrganizationsPage
           //   order={order}
@@ -789,6 +807,19 @@ const Main = () => {
       <ErrorBackground loading={loading} />
 
       {voted && userLikes.length <= 1 && <ThanksForTheVote />}
+
+      {modalData && (
+        <Modal
+          openModal={modalData}
+          setOpenModal={setModalData}
+          zIndex="999999999"
+          backgroundColor="beige"
+          size={"xl"}
+        >
+          {modalData}
+        </Modal>
+      )}
+
       {changeLocationModalOpen && (
         <ChangeLocationModal
           setChangeLocationModalOpen={setChangeLocationModalOpen}

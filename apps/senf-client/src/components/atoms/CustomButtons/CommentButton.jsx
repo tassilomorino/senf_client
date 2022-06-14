@@ -5,9 +5,6 @@ import React from "react";
 //Redux
 import { useSelector } from "react-redux";
 
-//Components
-import LoginRegistration from "../../organisms/Auth/LoginRegistration";
-
 //Images
 import { CustomIconButton } from "./CustomButton";
 

@@ -21,8 +21,8 @@ const Wrapper = styled.div`
 
   @media (min-width: 768px) {
     position: fixed;
-    width: 380px;
-    margin-left: 210px;
+    width: 370px;
+    margin-left: 80px;
     top: 40px;
     z-index: 5;
     animation: enteranimation 0.5s;
@@ -118,7 +118,7 @@ const PostScreamSelectContainter = ({
         textColor="#353535"
         handleButtonClick={handleLocationDecided}
         shadow={false}
-        margin="20px 0px 0px 0px"
+        margin="20px 0px 10px 0px"
         // marginLeft="auto"
         // transformX="none"
         disabled={!address}

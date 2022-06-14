@@ -123,8 +123,8 @@ const PostScreamMap = ({
               }
             : {
                 position: "fixed",
-                width: "calc(100% - 600px)",
-                left: "600px",
+                width: "calc(100% - 470px)",
+                left: "470px",
                 height: "100%",
               }
         }

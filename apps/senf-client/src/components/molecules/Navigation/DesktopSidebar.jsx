@@ -12,7 +12,6 @@ import {
 } from "../../../redux/actions/accountActions";
 import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 //Components
-import LoginRegistration from "../../organisms/Auth/LoginRegistration";
 import SelectLanguageButton from "../../atoms/Selects/SelectLanguageButton";
 import TagsFilter from "../Filters/TagsFilter";
 import { MenuItem } from "./MenuItem";

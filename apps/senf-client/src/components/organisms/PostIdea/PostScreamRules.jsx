@@ -31,7 +31,7 @@ const Card = styled.div`
     margin-top: 0;
     top: 40px;
     width: 340px;
-    margin-left: 210px;
+    margin-left: 80px;
     height: 420px;
     padding: 20px;
   }

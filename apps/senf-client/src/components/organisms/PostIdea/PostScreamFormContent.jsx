@@ -44,10 +44,10 @@ const Card = styled.div`
     position: fixed;
     top: 135px;
     left: 0;
-    margin-left: 210px;
+    margin-left: 80px;
     margin-right: auto;
     height: 50vh;
-    width: 380px;
+    width: 370px;
     border-radius: 20px;
     box-shadow: 0 0px 40px -12px rgba(0, 0, 0, 0);
     background-color: white;
