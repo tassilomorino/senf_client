@@ -225,6 +225,7 @@ const App = () => {
                   path="/projectRooms/:projectRoomId"
                   component={Main}
                 />
+
                 <Route
                   exact
                   path="/organizations/:organizationId"
