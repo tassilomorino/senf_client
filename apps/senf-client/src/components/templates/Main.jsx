@@ -69,7 +69,7 @@ import {
   sort,
   countStatusOfScreams,
 } from "../../util/helpers";
-import { CounterButton } from "ui";
+
 const CreateMainComponent = React.lazy(() =>
   import("../organisms/Create_Organisation_Projectrooms/CreateMainComponent")
 );
@@ -472,7 +472,7 @@ const Main = () => {
           mapViewportRef={mapViewportRef}
         />
       )}
-      <CounterButton />
+
       <Map
         order={order}
         dataFinal={dataFinalMap}
