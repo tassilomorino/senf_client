@@ -1308,7 +1308,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.0, @babel/runtime@npm:^7.12.1, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.14.5, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.17.2, @babel/runtime@npm:^7.2.0, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.4.4, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.3, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.8.7, @babel/runtime@npm:^7.9.2":
+"@babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.0, @babel/runtime@npm:^7.12.1, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.14.5, @babel/runtime@npm:^7.14.6, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.17.2, @babel/runtime@npm:^7.2.0, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.4.4, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.3, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.8.7, @babel/runtime@npm:^7.9.2":
   version: 7.18.3
   resolution: "@babel/runtime@npm:7.18.3"
   dependencies:
@@ -7873,6 +7873,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"i18next-browser-languagedetector@npm:^6.1.4":
+  version: 6.1.4
+  resolution: "i18next-browser-languagedetector@npm:6.1.4"
+  dependencies:
+    "@babel/runtime": ^7.14.6
+  checksum: 379dba3527c359c3adeb26c1e16e6b7e007989763c4361d43662e4d9412c538ca35e28a6a12df0654edc0adb78b44ff5afdf4c5d842bbf0e83db59d5e9e02f55
+  languageName: node
+  linkType: hard
+
 "i18next-locize-backend@npm:^5.1.2":
   version: 5.1.2
   resolution: "i18next-locize-backend@npm:5.1.2"
@@ -12252,6 +12261,37 @@ __metadata:
   languageName: node
   linkType: hard
 
+"senf-atomic-design-system@npm:^1.9.2":
+  version: 1.9.5
+  resolution: "senf-atomic-design-system@npm:1.9.5"
+  dependencies:
+    formik: ^2.2.9
+    i18next: ^21.6.16
+    linkify-react: ^3.0.4
+    linkifyjs: ^3.0.5
+    lottie-web: ^5.9.2
+    react-calendly: ^4.0.1
+    react-i18next: ^11.16.7
+    react-infinite-scroller: ^1.2.6
+    yup: ^0.32.11
+  peerDependencies:
+    formik: ^2.2.9
+    i18next: ^21.6.16
+    i18next-browser-languagedetector: ^6.1.4
+    i18next-locize-backend: ^5.1.2
+    locize: ^2.3.0
+    locize-lastused: ^3.1.0
+    lottie-web: ^5.9.2
+    react: ^16.x || ^17.x || ^18.x
+    react-dom: ^16.x || ^17.x || ^18.x
+    react-i18next: ^11.16.7
+    styled-components: ^5.3.3
+    styled-system: ^5.1.5
+    yup: ^0.32.11
+  checksum: aad05eec91e50b5f02bc6f8cdd98b5230e123d8a63105c1de143d858f9f49e0d635b1203843e173b5fe778d9f9382c7acaca4386bf822e1270d0b14bd63c5b61
+  languageName: node
+  linkType: hard
+
 "senf-client@workspace:apps/senf-client":
   version: 0.0.0-use.local
   resolution: "senf-client@workspace:apps/senf-client"
@@ -12283,10 +12323,14 @@ __metadata:
     firebase: ^9.8.3
     formik: ^2.2.9
     i18next: ^21.6.14
+    i18next-browser-languagedetector: ^6.1.4
+    i18next-locize-backend: ^5.1.2
     intersection-observer: ^0.12.0
     iplocation: ^7.2.0
     linkify-react: ^3.0.4
     linkifyjs: ^3.0.5
+    locize: ^2.3.0
+    locize-lastused: ^3.1.0
     lodash: ^4.17.21
     mapbox: ^1.0.0-beta10
     mapbox-gl: ^1.13.2
@@ -12312,6 +12356,7 @@ __metadata:
     redux-thunk: ^2.4.1
     resize-observer: ^1.0.4
     rollup-plugin-visualizer: ^5.6.0
+    senf-atomic-design-system: ^1.9.2
     start-server-and-test: ^1.13.1
     styled-components: ^5.3.5
     ui: "*"
