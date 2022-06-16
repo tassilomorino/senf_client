@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, Fragment, useRef, memo } from "react";
+import React, { useState, Fragment, useRef, useEffect, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_AUTHENTICATED } from "../redux/types";
 
@@ -26,25 +26,34 @@ import {
   setDoc,
 } from "firebase/firestore";
 
-import { useHistory } from "react-router";
-
 import { useTranslation } from "react-i18next";
 import { getUserData } from "../redux/actions/userActions";
 
 import { Modal, Auth as AuthComponent } from "senf-atomic-design-system";
 
-const Auth = ({ setAuthOpen, authOpen }) => {
+const Auth = ({ setAuthOpen, authOpen, authEditOpen }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
+
   const [emailRegistrationSubmitted, setEmailRegistrationSubmitted] =
     useState(false);
 
+  const [verifiedUser, setVerifiedUser] = useState(false);
+
   const user = useSelector((state) => state.user);
-  const authenticated = user.authenticated;
 
   const dispatch = useDispatch();
-  const history = useHistory();
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (authEditOpen) {
+      setVerifiedUser(true);
+    } else {
+      setEmailRegistrationSubmitted(false);
+      setVerifiedUser(false);
+    }
+  }, [authOpen, authEditOpen]);
 
   const handleSubmitLogin = async (formikLoginStore) => {
     // event.preventDefault();
@@ -196,10 +205,22 @@ const Auth = ({ setAuthOpen, authOpen }) => {
         await createUserInDatabase(user);
         dispatch({ type: SET_AUTHENTICATED });
         dispatch(getUserData(user.uid));
+        setVerifiedUser(true);
       } else if (user) {
         console.log("user already exists");
         dispatch({ type: SET_AUTHENTICATED });
         dispatch(getUserData(user.uid));
+        if (
+          user.description &&
+          user.zipcode &&
+          user.photoUrl &&
+          user.age &&
+          user.sex
+        ) {
+          setAuthOpen(false);
+        } else {
+          setVerifiedUser(true);
+        }
       }
     } catch (error) {
       // Handle Errors here.
@@ -219,6 +240,47 @@ const Auth = ({ setAuthOpen, authOpen }) => {
       throw new Error(errorCode, errorMessage, email, credential);
     }
   };
+
+  const handleSubmitEditDetails = async (data) => {
+    await updateDoc(doc(db, "users", user.userId), {
+      handle: formikRegisterStore.values.username,
+      description: formikRegisterStore.values.description,
+      zipcode: formikRegisterStore.values.zipcode,
+      age: formikRegisterStore.values.age,
+      sex: formikRegisterStore.values.sex,
+    });
+  };
+
+  async function handleImageUpload(event) {
+    if (!user?.userId) return;
+    const imageFile = event.target.files[0];
+    console.log("originalFile instanceof Blob", imageFile instanceof Blob); // true
+    console.log(`originalFile size ${imageFile.size / 1024 / 1024} MB`);
+
+    const options = {
+      maxSizeMB: 0.03,
+      maxWidthOrHeight: 700,
+      useWebWorker: true,
+    };
+    try {
+      setUploadingImage(true);
+      const compressedFile = await imageCompression(imageFile, options);
+
+      const storage = getStorage();
+      const storageRef = ref(storage, `profileimages/thumbnail`);
+      const userRef = doc(db, `users/${user.userId}`);
+
+      await uploadBytes(storageRef, compressedFile).then((snapshot) => {
+        console.log("Uploaded a file!");
+      });
+      const photoUrl = await getDownloadURL(storageRef);
+      // setUploadedImage(photoUrl);
+      await updateDoc(userRef, { photoUrl: photoUrl });
+      setUploadingImage(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   // const keySubmitRef = useRef(null);
 
@@ -240,14 +302,19 @@ const Auth = ({ setAuthOpen, authOpen }) => {
     <Fragment>
       <Modal openModal={authOpen} setOpenModal={() => setAuthOpen(false)}>
         <AuthComponent
+          user={user}
           loginLoading={loading}
           handleSubmitLogin={(loginData) => handleSubmitLogin(loginData)}
           handleSubmitRegister={(registerData) =>
             handleSubmitRegister(registerData)
           }
-          emailRegistrationSubmitted={emailRegistrationSubmitted}
           handleGoogleSignIn={() => handleProviderSignin("google")}
           handleFacebookSignIn={() => handleProviderSignin("facebook")}
+          handleImageUpload={handleImageUpload}
+          uploadingImage={uploadingImage}
+          handleSubmitEditDetails={handleSubmitEditDetails}
+          emailRegistrationSubmitted={emailRegistrationSubmitted}
+          verifiedUser={verifiedUser}
           handleClose={() => setAuthOpen(false)}
         />
       </Modal>

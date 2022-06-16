@@ -4107,6 +4107,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"add@npm:^2.0.6":
+  version: 2.0.6
+  resolution: "add@npm:2.0.6"
+  checksum: e2d23d40494565dfed4acd65e478570c444db5ac6c053551ed429c39ea0f2c99d83df63e7befec936df601827d2254d06a2fb6f7dcfd2022e810b25eab818b8c
+  languageName: node
+  linkType: hard
+
 "agent-base@npm:6, agent-base@npm:^6.0.2":
   version: 6.0.2
   resolution: "agent-base@npm:6.0.2"
@@ -12070,6 +12077,7 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     prettier: ^2.5.1
+    senf-atomic-design-system: 1.9.5
     turbo: latest
   languageName: unknown
   linkType: soft
@@ -12230,9 +12238,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"senf-atomic-design-system@npm:1.9.8":
-  version: 1.9.8
-  resolution: "senf-atomic-design-system@npm:1.9.8"
+"senf-atomic-design-system@npm:1.9.5":
+  version: 1.9.5
+  resolution: "senf-atomic-design-system@npm:1.9.5"
   dependencies:
     formik: ^2.2.9
     i18next: ^21.6.16
@@ -12257,7 +12265,38 @@ __metadata:
     styled-components: ^5.3.3
     styled-system: ^5.1.5
     yup: ^0.32.11
-  checksum: bea139aa5994d1cdffe0e20530495eb4307a774c177bcf3686f165edd378896564f5a9abe8670364a42a12f73889821bdae54d1ef9679f7552a5c61b8e00a445
+  checksum: aad05eec91e50b5f02bc6f8cdd98b5230e123d8a63105c1de143d858f9f49e0d635b1203843e173b5fe778d9f9382c7acaca4386bf822e1270d0b14bd63c5b61
+  languageName: node
+  linkType: hard
+
+"senf-atomic-design-system@npm:2.0.5":
+  version: 2.0.5
+  resolution: "senf-atomic-design-system@npm:2.0.5"
+  dependencies:
+    formik: ^2.2.9
+    i18next: ^21.6.16
+    linkify-react: ^3.0.4
+    linkifyjs: ^3.0.5
+    lottie-web: ^5.9.2
+    react-calendly: ^4.0.1
+    react-i18next: ^11.16.7
+    react-infinite-scroller: ^1.2.6
+    yup: ^0.32.11
+  peerDependencies:
+    formik: ^2.2.9
+    i18next: ^21.6.16
+    i18next-browser-languagedetector: ^6.1.4
+    i18next-locize-backend: ^5.1.2
+    locize: ^2.3.0
+    locize-lastused: ^3.1.0
+    lottie-web: ^5.9.2
+    react: ^16.x || ^17.x || ^18.x
+    react-dom: ^16.x || ^17.x || ^18.x
+    react-i18next: ^11.16.7
+    styled-components: ^5.3.3
+    styled-system: ^5.1.5
+    yup: ^0.32.11
+  checksum: 4f51c0922f89c86706db9315ee0cb806d9b2d976a856aa447c7dc72d76a2b5573f4feb780e5c1438162d7fbee13231520fc3c8b4a0af1fee42c52c594431d4df
   languageName: node
   linkType: hard
 
@@ -12314,6 +12353,7 @@ __metadata:
     "@use-gesture/react": ^10.1.3
     "@vitejs/plugin-react": ^1.3.0
     "@welldone-software/why-did-you-render": ^6.2.3
+    add: ^2.0.6
     axios: ^0.24.0
     browser-image-compression: ^1.0.17
     cypress: ^8.1.0
@@ -12356,13 +12396,14 @@ __metadata:
     redux-thunk: ^2.4.1
     resize-observer: ^1.0.4
     rollup-plugin-visualizer: ^5.6.0
-    senf-atomic-design-system: 1.9.8
+    senf-atomic-design-system: 2.0.5
     start-server-and-test: ^1.13.1
     styled-components: ^5.3.5
     ui: "*"
     universal-cookie: ^4.0.4
     viewport-mercator-project: ^7.0.4
     vite: ^2.9.11
+    yarn: ^1.22.19
     yup: ^0.32.11
   languageName: unknown
   linkType: soft
@@ -14732,6 +14773,16 @@ turbo@latest:
     y18n: ^5.0.5
     yargs-parser: ^21.0.0
   checksum: 00d58a2c052937fa044834313f07910fd0a115dec5ee35919e857eeee3736b21a4eafa8264535800ba8bac312991ce785ecb8a51f4d2cc8c4676d865af1cfbde
+  languageName: node
+  linkType: hard
+
+"yarn@npm:^1.22.19":
+  version: 1.22.19
+  resolution: "yarn@npm:1.22.19"
+  bin:
+    yarn: bin/yarn.js
+    yarnpkg: bin/yarn.js
+  checksum: b43d2cc5fee7e933beb12a8aee7dfceca9e9ef2dd17c5d04d15a12ab7bec5f5744ea34a07b86e013da7f291a18c4e1ad8f70e150f5ed2f4666e6723c7f0a8452
   languageName: node
   linkType: hard
 

@@ -21,6 +21,7 @@ const ProfilePage = ({
   dataFinalMap,
   setDeleteMenuOpen,
   handleButtonOpenCard,
+  setAuthEditOpen,
 }) => {
   const { t } = useTranslation();
   const loadingMyScreams = useSelector((state) => state.data.loadingMyScreams);
@@ -85,6 +86,7 @@ const ProfilePage = ({
       myOrganizations={MyDataFinalOrganizations}
       handleButtonOpenCard={handleButtonOpenCard}
       handleButtonClose={handleClose}
+      handleEdit={setAuthEditOpen}
       handleLogout={handleLogout}
       handleDeleteAccount={() => setDeleteMenuOpen(true)}
 

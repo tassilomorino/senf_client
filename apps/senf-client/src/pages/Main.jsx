@@ -134,6 +134,8 @@ const Main = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [authOpen, setAuthOpen] = useState(false);
+  const [authEditOpen, setAuthEditOpen] = useState(false);
+
   const [postIdeaOpen, setPostIdeaOpen] = useState(false);
 
   const [modalData, setModalData] = useState(null);
@@ -557,7 +559,11 @@ const Main = () => {
           setOpenOrganizationsOverview={setOpenOrganizationsOverview}
         />
       )}
-      <Auth setAuthOpen={setAuthOpen} authOpen={authOpen} />
+      <Auth
+        setAuthOpen={setAuthOpen}
+        authOpen={authOpen}
+        authEditOpen={authEditOpen}
+      />
 
       {postIdeaOpen && (
         <PostScream
@@ -681,6 +687,8 @@ const Main = () => {
                 organizations={organizations}
                 selectedTopics={selectedTopics}
                 selectedOrganizationTypes={selectedOrganizationTypes}
+                checkedSortOption={dropdown}
+                setCheckedSortOption={setDropdown}
                 handleSelectTopics={handleSelectTopics}
                 handleSelectOrganizationTypes={handleSelectOrganizationTypes}
                 swipedUp={swipedUp}
@@ -722,6 +730,7 @@ const Main = () => {
             <ProfilePage
               dataFinalMap={dataFinalMap}
               handleButtonOpenCard={handleButtonOpenCard}
+              setAuthEditOpen={setAuthEditOpen}
             />
           )}
 

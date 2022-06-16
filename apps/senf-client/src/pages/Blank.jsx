@@ -1,7 +1,7 @@
 /** @format */
 
 import React from "react";
-import { Accordion } from "../components/molecules/Accordion/Accordion";
+// import { Example } from "senf-atomic-design-system";
 const Blank = () => {
   return (
     <div
