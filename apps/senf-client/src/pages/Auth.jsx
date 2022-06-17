@@ -20,6 +20,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  updateDoc,
   collection,
   where,
   query,
@@ -31,7 +32,7 @@ import { getUserData } from "../redux/actions/userActions";
 
 import { Modal, Auth as AuthComponent } from "senf-atomic-design-system";
 
-const Auth = ({ setAuthOpen, authOpen, authEditOpen }) => {
+const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
@@ -209,18 +210,19 @@ const Auth = ({ setAuthOpen, authOpen, authEditOpen }) => {
       } else if (user) {
         console.log("user already exists");
         dispatch({ type: SET_AUTHENTICATED });
-        dispatch(getUserData(user.uid));
-        if (
-          user.description &&
-          user.zipcode &&
-          user.photoUrl &&
-          user.age &&
-          user.sex
-        ) {
-          setAuthOpen(false);
-        } else {
-          setVerifiedUser(true);
-        }
+        dispatch(getUserData(user.uid)).then(() => {
+          if (
+            user.description &&
+            user.zipcode &&
+            user.photoUrl &&
+            user.age &&
+            user.sex
+          ) {
+            setAuthOpen(false);
+          } else {
+            setVerifiedUser(true);
+          }
+        });
       }
     } catch (error) {
       // Handle Errors here.
@@ -243,11 +245,15 @@ const Auth = ({ setAuthOpen, authOpen, authEditOpen }) => {
 
   const handleSubmitEditDetails = async (data) => {
     await updateDoc(doc(db, "users", user.userId), {
-      handle: formikRegisterStore.values.username,
-      description: formikRegisterStore.values.description,
-      zipcode: formikRegisterStore.values.zipcode,
-      age: formikRegisterStore.values.age,
-      sex: formikRegisterStore.values.sex,
+      handle: data.handle ? data.handle : user.handle,
+      description: data.description ? data.description : null,
+      zipcode: data.zipcode ? data.zipcode : null,
+      age: data.birthyear ? data.birthyear : null,
+      sex: data.gender ? data.gender : null,
+    }).then(() => {
+      dispatch(getUserData(user.userId)).then(() => {
+        setAuthOpen(false);
+      });
     });
   };
 
@@ -300,7 +306,10 @@ const Auth = ({ setAuthOpen, authOpen, authEditOpen }) => {
 
   return (
     <Fragment>
-      <Modal openModal={authOpen} setOpenModal={() => setAuthOpen(false)}>
+      <Modal
+        openModal={authOpen || authEditOpen}
+        setOpenModal={() => setAuthOpen(false)}
+      >
         <AuthComponent
           user={user}
           loginLoading={loading}
@@ -315,7 +324,10 @@ const Auth = ({ setAuthOpen, authOpen, authEditOpen }) => {
           handleSubmitEditDetails={handleSubmitEditDetails}
           emailRegistrationSubmitted={emailRegistrationSubmitted}
           verifiedUser={verifiedUser}
-          handleClose={() => setAuthOpen(false)}
+          handleClose={() => {
+            setAuthOpen(false);
+            setAuthEditOpen(false);
+          }}
         />
       </Modal>
     </Fragment>

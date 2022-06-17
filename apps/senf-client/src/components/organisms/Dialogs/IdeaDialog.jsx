@@ -262,4 +262,4 @@ const IdeaDialog = ({
   );
 };
 
-export default memo(IdeaDialog);
+export default IdeaDialog;

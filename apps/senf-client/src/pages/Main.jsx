@@ -481,6 +481,10 @@ const Main = () => {
     }
   };
 
+  const handleOpenProjectroom = (projectroomId) => {
+    dispatch(openOrganizationFunc(projectroomId));
+  };
+
   const handleButtonLike = (event, screamId) => {
     event.stopPropagation();
     if (!user.authenticated) {
@@ -561,6 +565,7 @@ const Main = () => {
       )}
       <Auth
         setAuthOpen={setAuthOpen}
+        setAuthEditOpen={setAuthEditOpen}
         authOpen={authOpen}
         authEditOpen={authEditOpen}
       />
@@ -699,6 +704,7 @@ const Main = () => {
                 searchOpen={searchOpen}
                 setSearchOpen={setSearchOpen}
                 handleButtonOpenCard={handleButtonOpenCard}
+                handleOpenProjectroom={handleOpenProjectroom}
                 handleButtonLike={handleButtonLike}
                 handleButtonComment={handleButtonComment}
                 user={user}
@@ -730,6 +736,7 @@ const Main = () => {
             <ProfilePage
               dataFinalMap={dataFinalMap}
               handleButtonOpenCard={handleButtonOpenCard}
+              handleOpenProjectroom={handleOpenProjectroom}
               setAuthEditOpen={setAuthEditOpen}
             />
           )}

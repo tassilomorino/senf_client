@@ -21,6 +21,7 @@ const ProfilePage = ({
   dataFinalMap,
   setDeleteMenuOpen,
   handleButtonOpenCard,
+  handleOpenProjectroom,
   setAuthEditOpen,
 }) => {
   const { t } = useTranslation();
@@ -85,8 +86,9 @@ const ProfilePage = ({
       organizations={organizations}
       myOrganizations={MyDataFinalOrganizations}
       handleButtonOpenCard={handleButtonOpenCard}
+      handleOpenProjectroom={handleOpenProjectroom}
       handleButtonClose={handleClose}
-      handleEdit={setAuthEditOpen}
+      setAuthEditOpen={setAuthEditOpen}
       handleLogout={handleLogout}
       handleDeleteAccount={() => setDeleteMenuOpen(true)}
 
