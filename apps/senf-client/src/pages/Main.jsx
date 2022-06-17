@@ -481,7 +481,8 @@ const Main = () => {
     }
   };
 
-  const handleOpenProjectroom = (projectroomId) => {
+  const handleOpenProjectroom = (event, projectroomId) => {
+    event.stopPropagation();
     dispatch(openOrganizationFunc(projectroomId));
   };
 

@@ -208,6 +208,7 @@ const IdeaDialog = ({
         handleButtonComment={handleButtonComment}
         handleOpenProjectroom={handleOpenProjectroom}
         user={user}
+        path={path}
       />,
       // <React.Fragment>
       //   {shareOpen && (
