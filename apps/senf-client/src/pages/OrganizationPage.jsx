@@ -20,15 +20,12 @@ import { useTranslation } from "react-i18next";
 import setIconByOrganizationType from "../data/setIconByOrganizationType";
 import Loader from "../components/atoms/Backgrounds/Loader";
 import MainModal from "../components/atoms/Layout/MainModal";
-import { Accordion } from "../components/molecules/Accordion/Accordion";
+import { Accordion } from "senf-atomic-design-system";
 import { openLink, openMail, search, sort } from "../util/helpers";
 import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 
 import { OrganizationPage as OrganizationPageComponent } from "senf-atomic-design-system";
 
-const CalendarComponent = React.lazy(() =>
-  import("../components/atoms/calendar/CalendarComponent")
-);
 export const Wrapper = styled.div`
   width: 100%;
   height: 100%;

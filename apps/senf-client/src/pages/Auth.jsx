@@ -26,11 +26,13 @@ import {
   query,
   setDoc,
 } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import imageCompression from "browser-image-compression";
 
 import { useTranslation } from "react-i18next";
 import { getUserData } from "../redux/actions/userActions";
 
-import { Modal, Auth as AuthComponent } from "senf-atomic-design-system";
+import { SwipeModal, Auth as AuthComponent } from "senf-atomic-design-system";
 
 const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -253,6 +255,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
     }).then(() => {
       dispatch(getUserData(user.userId)).then(() => {
         setAuthOpen(false);
+        setAuthEditOpen(false);
       });
     });
   };
@@ -281,8 +284,10 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
       });
       const photoUrl = await getDownloadURL(storageRef);
       // setUploadedImage(photoUrl);
-      await updateDoc(userRef, { photoUrl: photoUrl });
-      setUploadingImage(false);
+      await updateDoc(userRef, { photoUrl: photoUrl }).then(() => {
+        dispatch(getUserData(user.userId));
+        setUploadingImage(false);
+      });
     } catch (error) {
       console.log(error);
     }
@@ -306,9 +311,10 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
 
   return (
     <Fragment>
-      <Modal
+      <SwipeModal
         openModal={authOpen || authEditOpen}
-        setOpenModal={() => setAuthOpen(false)}
+        setOpenModal={setAuthOpen}
+        zIndex={9999999999}
       >
         <AuthComponent
           user={user}
@@ -329,7 +335,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
             setAuthEditOpen(false);
           }}
         />
-      </Modal>
+      </SwipeModal>
     </Fragment>
   );
 };

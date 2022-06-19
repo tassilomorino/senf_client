@@ -18,9 +18,7 @@ const Blank = () => {
         justifyContent: "content",
         textAlign: "center",
       }}
-    >
-      {/* <Accordion></Accordion> */}
-    </div>
+    ></div>
   );
 };
 

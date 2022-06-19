@@ -20,7 +20,7 @@ import { OptionsTopics } from "../../../data/OptionsTopics";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import styled from "styled-components";
 import { StyledH3, StyledH4, StyledText } from "../../../styles/GlobalStyle";
-
+import { Box, Button, Input } from "senf-atomic-design-system";
 const Card = styled.div`
   position: absolute;
   top: 0;
@@ -42,7 +42,7 @@ const Card = styled.div`
 
   @media (min-width: 768px) {
     position: fixed;
-    top: 135px;
+    top: 115px;
     left: 0;
     margin-left: 80px;
     margin-right: auto;
@@ -160,6 +160,13 @@ const PostScreamFormContent = ({
           <StyledH4> ~ {address} </StyledH4>
           <PostScreamRules />
         </FlexWrapper>
+        <Input
+          type="text"
+          placeholder={t("postScream_ideaTitle")}
+          rows={2}
+          multiline
+          onChange={(event) => setTitle(event.target.value)}
+        />
         <TextField
           name="title"
           type="text"
@@ -239,18 +246,23 @@ const PostScreamFormContent = ({
         </SelectContainer>
       </Content>
       {locationDecided && (
-        <SubmitButton
-          text={t("postScream_shareIdea")}
-          zIndex="9"
-          backgroundColor="white"
-          textColor="#353535"
+        <Box
+          margin="10px 0px 10px 0px"
+          justifyContent="center"
           position="absolute"
-          bottom="-60px"
-          loading={loading}
-          disabled={body === "" || title === "" || Out === true || loading}
-          animation={true}
-          handleButtonClick={handleSubmit}
-        />
+          top="100%"
+          width="100%"
+        >
+          <Button
+            onClick={handleSubmit}
+            variant="white"
+            text={t("postScream_shareIdea")}
+            loading={loading}
+            disabled={
+              body === "" || title === "" || Out === true || loading || !address
+            }
+          />
+        </Box>
       )}
     </Card>
   );

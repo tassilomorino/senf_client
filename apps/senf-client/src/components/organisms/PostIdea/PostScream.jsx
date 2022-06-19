@@ -12,7 +12,6 @@ import Slide from "@material-ui/core/Slide";
 
 //HANDLER
 //ICONS
-import Plus from "../../../images/svgIcons/plus.svg";
 
 import AddIcon from "../../../images/icons/plus_white.png";
 
@@ -33,6 +32,7 @@ import Weblink from "../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
 import Contact from "../../molecules/Modals/Post_Edit_ModalComponents/Contact";
 import InlineDatePickerModal from "../../molecules/Modals/InlineDatePickerModal";
 import { useEffect } from "react";
+import { Plus, Box, RoundedButton } from "senf-atomic-design-system";
 
 const styles = {
   root: {
@@ -412,13 +412,25 @@ const PostScream = ({
       BackdropProps={{ classes: { root: classes.root } }}
       PaperProps={{ classes: { root: classes.paper } }}
     >
-      <CustomIconButton
+      {/* <CustomIconButton
         name="Close"
         position="fixed"
         margin={document.body.clientWidth > 768 ? "40px" : "10px"}
         handleButtonClick={() => setPostIdeaOpen(false)}
         zIndex="1"
-      />
+      /> */}
+
+      <Box
+        position="fixed"
+        margin={document.body.clientWidth > 768 ? "20px" : "10px"}
+        zIndex={2}
+      >
+        <RoundedButton
+          icon={<Plus transform="rotate(45deg)" />}
+          onClick={() => setPostIdeaOpen(false)}
+        />
+      </Box>
+
       {!user.authenticated && (
         <div
           className={

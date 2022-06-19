@@ -31,7 +31,6 @@ import { getScreams } from "../src/redux/actions/screamActions";
 
 //Pages
 import Main from "./pages/Main";
-import Verification from "./pages/Verification";
 import impressum from "./components/organisms/infocomponents/legal/impressum";
 import datenschutz from "./components/organisms/infocomponents/legal/datenschutz";
 import agb from "./components/organisms/infocomponents/legal/agb";
@@ -164,8 +163,6 @@ const App = () => {
 
                 <Route exact path="/datenschutz" component={datenschutz} />
                 <Route exact path="/agb" component={agb} />
-
-                <Route exact path="/verify" component={Verification} />
 
                 <Route
                   exact

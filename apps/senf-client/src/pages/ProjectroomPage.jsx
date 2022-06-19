@@ -133,7 +133,16 @@ const ProjectroomPage = ({
       long <= mapBounds?.longitude3
   );
 
-  const TabSlicer = project?.calendar ? 3 : 1;
+  const handleEditProjectroom = () => {
+    localStorage.setItem(
+      "createProjectRoomOrganizationId",
+      project.organizationId
+    );
+    localStorage.setItem("createProjectRoomId", project.projectRoomId);
+    localStorage.setItem("createProjectRoomPostEdit", true);
+
+    dispatch(openCreateProjectRoomFunc(true));
+  };
 
   return (
     project && (
@@ -147,6 +156,7 @@ const ProjectroomPage = ({
           dispatch(handleTopicSelectorRedux(topic))
         }
         setPostIdeaOpen={() => setPostIdeaOpen(true)}
+        handleEditProjectroom={handleEditProjectroom}
 
         //  setSearchOpen
         //  searchOpen,

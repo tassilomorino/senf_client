@@ -16,10 +16,10 @@ import { useTranslation } from "react-i18next";
 
 import { ProfilePage as ProfilePageComponent } from "senf-atomic-design-system";
 import { logoutUser } from "../redux/actions/userActions";
+import DeleteMenuModal from "../components/molecules/Modals/DeleteMenuModal";
 
 const ProfilePage = ({
   dataFinalMap,
-  setDeleteMenuOpen,
   handleButtonOpenCard,
   handleOpenProjectroom,
   setAuthEditOpen,
@@ -34,6 +34,8 @@ const ProfilePage = ({
   const user = useSelector((state) => state.user);
   const organizations = useSelector((state) => state.data.organizations);
   const organization = useSelector((state) => state.data.organization);
+
+  const [deleteMenuOpen, setDeleteMenuOpen] = useState(false);
 
   const [foundOrganizations, setFoundOrganizations] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -80,20 +82,25 @@ const ProfilePage = ({
   };
 
   return (
-    <ProfilePageComponent
-      user={user}
-      organization={organization}
-      organizations={organizations}
-      myOrganizations={MyDataFinalOrganizations}
-      handleButtonOpenCard={handleButtonOpenCard}
-      handleOpenProjectroom={handleOpenProjectroom}
-      handleButtonClose={handleClose}
-      setAuthEditOpen={setAuthEditOpen}
-      handleLogout={handleLogout}
-      handleDeleteAccount={() => setDeleteMenuOpen(true)}
+    <React.Fragment>
+      {deleteMenuOpen && (
+        <DeleteMenuModal setDeleteMenuOpen={setDeleteMenuOpen} />
+      )}
+      <ProfilePageComponent
+        user={user}
+        organization={organization}
+        organizations={organizations}
+        myOrganizations={MyDataFinalOrganizations}
+        handleButtonOpenCard={handleButtonOpenCard}
+        handleOpenProjectroom={handleOpenProjectroom}
+        handleButtonClose={handleClose}
+        setAuthEditOpen={setAuthEditOpen}
+        handleLogout={handleLogout}
+        handleDeleteAccount={() => setDeleteMenuOpen(true)}
 
-      // setEditProfileOpen,
-    />
+        // setEditProfileOpen,
+      />
+    </React.Fragment>
   );
 };
 

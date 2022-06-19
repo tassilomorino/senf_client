@@ -16,7 +16,7 @@ import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 import { isMobileCustom } from "../../../../util/customDeviceDetect";
 import { openMail } from "../../../../util/helpers";
 import MainModal from "../../../atoms/Layout/MainModal";
-import { Accordion } from "../../../molecules/Accordion/Accordion";
+import { Accordion } from "senf-atomic-design-system";
 
 const faqData = [
   { question: "hey?", answer: "hoo" },

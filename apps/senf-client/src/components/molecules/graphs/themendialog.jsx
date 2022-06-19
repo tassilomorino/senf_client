@@ -38,6 +38,7 @@ const styles = {
     padding: "0",
     top: "8em",
     borderRadius: "10px",
+    zIndex: 999999999,
   },
 
   paperWeb: {
@@ -83,6 +84,7 @@ const ThemenDialog = ({ classes, screams }) => {
       TransitionComponent={Transition}
       fullScreen
       maxWidth={"lg"}
+      style={{ zIndex: 9999999 }}
     >
       <MyButton
         onClick={() => setOpen(false)}

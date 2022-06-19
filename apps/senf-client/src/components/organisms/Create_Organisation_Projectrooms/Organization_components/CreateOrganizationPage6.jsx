@@ -33,7 +33,6 @@ import {
   ComponentInnerWrapper,
   ComponentWrapper,
 } from "../styles/sharedStyles";
-import Searchbar from "../../../atoms/Searchbar/Searchbar";
 import {
   StyledH2,
   StyledH3,
@@ -41,16 +40,13 @@ import {
   StyledText,
 } from "../../../../styles/GlobalStyle";
 import Navigation from "../Components/Navigation";
+import { Box, Input, Button } from "senf-atomic-design-system";
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`;
-
-const SearchbarWrapper = styled.div`
-  width: 100%;
 `;
 
 const User = styled.div`
@@ -121,39 +117,37 @@ const CreateOrganizationPage6 = ({
   const [userList, setUsersList] = useState(null);
 
   const search = async (e) => {
-    if (e.key === "Enter") {
-      const users = [];
-      // define queries
+    const users = [];
+    // define queries
 
-      if (searchTerm.includes("@")) {
-        const emailsRef = collectionGroup(db, "Private");
-        const q = query(
-          emailsRef,
-          orderBy("email", "asc"),
-          startAt(searchTerm),
-          endAt(searchTerm + "~")
-        );
-        const emailQuerySnapshot = await getDocs(q);
-        for (const doc of emailQuerySnapshot.docs) {
-          const parentDoc = await getDoc(doc.ref.parent.parent);
-          users.push(parentDoc.data());
-        }
-
-        setUsersList(users);
-      } else {
-        const postRef = collection(db, "users");
-        const q = query(
-          postRef,
-          orderBy("handle", "asc"),
-          startAt(searchTerm),
-          endAt(searchTerm + "~")
-        );
-        const usersQuerySnapshot = await getDocs(q);
-        usersQuerySnapshot.forEach((doc) => {
-          users.push(doc.data());
-        });
-        setUsersList(users);
+    if (searchTerm.includes("@")) {
+      const emailsRef = collectionGroup(db, "Private");
+      const q = query(
+        emailsRef,
+        orderBy("email", "asc"),
+        startAt(searchTerm),
+        endAt(searchTerm + "~")
+      );
+      const emailQuerySnapshot = await getDocs(q);
+      for (const doc of emailQuerySnapshot.docs) {
+        const parentDoc = await getDoc(doc.ref.parent.parent);
+        users.push(parentDoc.data());
       }
+
+      setUsersList(users);
+    } else {
+      const postRef = collection(db, "users");
+      const q = query(
+        postRef,
+        orderBy("handle", "asc"),
+        startAt(searchTerm),
+        endAt(searchTerm + "~")
+      );
+      const usersQuerySnapshot = await getDocs(q);
+      usersQuerySnapshot.forEach((doc) => {
+        users.push(doc.data());
+      });
+      setUsersList(users);
     }
   };
 
@@ -311,15 +305,17 @@ const CreateOrganizationPage6 = ({
           <StyledH3 textAlign="center" margin="20px">
             {pagesData[index].subTitle2}
           </StyledH3>
-          <SearchbarWrapper>
-            <Searchbar
+          <Box gap="10px" justifyContent="center">
+            <Input
+              type="search"
               placeholder="Durchsuche Nutzernamen oder Email-Adressen..."
+              onChange={setSearchTerm}
+              value={searchTerm}
               setSearchTerm={setSearchTerm}
-              searchTerm={searchTerm}
-              handleSearch={search}
-              backgroundColor="#f8f8f8"
             />
-          </SearchbarWrapper>
+
+            <Button onClick={search}>Suchen</Button>
+          </Box>
           <div style={{ display: "flex", justifyContent: "center" }}>
             {userList &&
               userList.map(

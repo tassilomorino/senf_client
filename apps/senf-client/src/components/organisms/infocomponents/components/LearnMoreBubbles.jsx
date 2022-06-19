@@ -15,8 +15,7 @@ import FooterLinks from "../../../molecules/Footer/FooterLinks";
 import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 import { isMobileCustom } from "../../../../util/customDeviceDetect";
 import { openMail } from "../../../../util/helpers";
-import MainModal from "../../../atoms/Layout/MainModal";
-import { Accordion } from "../../../molecules/Accordion/Accordion";
+import { Box, Accordion, Modal } from "senf-atomic-design-system";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -71,13 +70,13 @@ const LearnMoreBubbles = ({ handleClose }) => {
 
   const faqData = [
     // { question: t("faq_question1"), answer: t("faq_answer1") },
-    { question: t("faq_question2"), answer: t("faq_answer2") },
-    { question: t("faq_question3"), answer: t("faq_answer3") },
-    { question: t("faq_question4"), answer: t("faq_answer4") },
+    { header: t("faq_question2"), body: t("faq_answer2") },
+    { header: t("faq_question3"), body: t("faq_answer3") },
+    { header: t("faq_question4"), body: t("faq_answer4") },
     // { question: t("faq_question5"), answer: t("faq_answer5") },
     // { question: t("faq_question6"), answer: t("faq_answer6") },
-    { question: t("faq_question7"), answer: t("faq_answer7") },
-    { question: t("faq_question8"), answer: t("faq_answer8") },
+    { header: t("faq_question7"), body: t("faq_answer7") },
+    { header: t("faq_question8"), body: t("faq_answer8") },
   ];
 
   return (
@@ -85,19 +84,19 @@ const LearnMoreBubbles = ({ handleClose }) => {
       {ReactDOM.createPortal(
         <React.Fragment>
           {faqOpen && (
-            <MainModal handleButtonClick={() => setFaqOpen(false)}>
-              <StyledH2
-                fontWeight="900"
-                margin="15px 0px 0px 0px"
-                textAlign="center"
-              >
-                FAQ
-              </StyledH2>
-              <br />
-              <Divider />
+            <Modal openModal={faqOpen} setOpenModal={() => setFaqOpen(false)}>
+              <Box margin="24px" flexDirection="column">
+                <StyledH2
+                  fontWeight="900"
+                  margin="15px 0px 15px 0px"
+                  textAlign="center"
+                >
+                  FAQ
+                </StyledH2>
 
-              <Accordion data={faqData} />
-            </MainModal>
+                <Accordion data={faqData} />
+              </Box>
+            </Modal>
           )}
         </React.Fragment>,
         document.getElementById("portal-root-modal")

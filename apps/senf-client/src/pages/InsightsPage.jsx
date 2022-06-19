@@ -3,36 +3,73 @@
 import React, { useState, useEffect, memo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 //Components
-import Keyindicators from "../../molecules/graphs/Keyindicators";
-import ThemenDialog from "../../molecules/graphs/themendialog";
-import DistrictsDialog from "../../molecules/graphs/DistrictsDialog";
-import AgegroupDialog from "../../molecules/graphs/AgegroupDialog";
+import Keyindicators from "../components/molecules/graphs/Keyindicators";
+import ThemenDialog from "../components/molecules/graphs/themendialog";
+import DistrictsDialog from "../components/molecules/graphs/DistrictsDialog";
+import AgegroupDialog from "../components/molecules/graphs/AgegroupDialog";
 
 //Images
-import Themencover from "../../../images/insightsCovers/topic-cover.jpg";
-import DistrictsCover from "../../../images/insightsCovers/districts-cover.jpg";
-import KeywordsCover from "../../../images/insightsCovers/keywords-cover.jpg";
-import AgegroupsCover from "../../../images/insightsCovers/agegroups-cover.jpg";
+import Themencover from "../images/insightsCovers/topic-cover.jpg";
+import DistrictsCover from "../images/insightsCovers/districts-cover.jpg";
+import KeywordsCover from "../images/insightsCovers/keywords-cover.jpg";
+import AgegroupsCover from "../images/insightsCovers/agegroups-cover.jpg";
 
-import MainAnimations from "../../atoms/Backgrounds/MainAnimations";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
-import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
-import { Covers, CoverWrapper } from "./styles/sharedStyles";
-import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
-import { isMobileCustom } from "../../../util/customDeviceDetect";
-import { StyledH2 } from "../../../styles/GlobalStyle";
-import Tabs from "../../atoms/Tabs/Tabs";
-import { MenuData } from "../../../data/MenuData";
+import ExpandButton from "../components/atoms/CustomButtons/ExpandButton";
+import { StyledH2 } from "../styles/GlobalStyle";
 
 import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 //firebase
 
-import { db } from "../../../firebase";
+import { db } from "../firebase";
 import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 
 import { StatisticsOverview } from "senf-atomic-design-system";
+
+const CoverWrapper = styled.div`
+  margin-left: 50%;
+  padding-bottom: 300px;
+  transform: translateX(-50%);
+  width: calc(100% - 20px);
+  max-width: 800px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px 10px;
+  grid-template-areas:
+    ". ."
+    ". .";
+  @media (min-width: 768px) {
+    margin-top: 50px;
+  }
+
+  @media (min-width: 1100px) {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+  }
+
+  @media (min-width: 1468px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+  }
+`;
+
+const Covers = styled.div`
+  width: 100%;
+  height: 100%;
+  z-index: 9;
+  float: left;
+  position: relative;
+  animation: ${(props) => props.animation};
+  overflow: hidden;
+  border-radius: 25px;
+  background-color: white;
+  margin: 0;
+  padding: 0;
+`;
+
 const CoverImg = styled.img`
   width: 100%;
   height: 100%;

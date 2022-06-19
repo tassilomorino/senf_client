@@ -1,7 +1,7 @@
 import React from "react";
 import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
 import styled from "styled-components";
-import { TagsFilter } from "../Filters/TagsFilter";
+import { TagSlide } from "senf-atomic-design-system";
 const Wrapper = styled.div`
   margin-top: 2.5vw;
   top: 0em;
@@ -48,7 +48,9 @@ const GraphsWrapper = ({ graphType, title, subTitle, plot }) => {
           <StyledText textAlign="center">{subTitle}</StyledText>
         </TextWrapper>
         {graphType !== "topicsSum" && (
-          <TagsFilter placing="insights" type="topics" />
+          <TagSlide type="topics" />
+
+          // <TagsFilter placing="insights" type="topics" />
         )}
       </InnerWrapper>
       <ClickBlocker />
