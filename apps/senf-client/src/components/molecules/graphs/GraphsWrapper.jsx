@@ -47,11 +47,7 @@ const GraphsWrapper = ({ graphType, title, subTitle, plot }) => {
 
           <StyledText textAlign="center">{subTitle}</StyledText>
         </TextWrapper>
-        {graphType !== "topicsSum" && (
-          <TagSlide type="topics" />
-
-          // <TagsFilter placing="insights" type="topics" />
-        )}
+        {graphType !== "topicsSum" && <TagSlide type="topics" />}
       </InnerWrapper>
       <ClickBlocker />
       {plot}
