@@ -641,31 +641,36 @@ const Main = () => {
         authEditOpen={authEditOpen}
       />
 
-      {!loading &&
-        !loadingUI &&
-        !loadingProjects &&
-        !openScream &&
-        (order === 1 || order === 2 || openProjectRoom || openAccount) && (
-          <Box
-            margin={
-              isMobileCustom ? "60px 10px 10px 10px" : "10px 10px 10px 500px"
+      {!loading && !loadingUI && !loadingProjects && (
+        // !openScream &&
+        // (order === 1 || order === 2 || openProjectRoom || openAccount) &&
+        <Box
+          margin={
+            isMobileCustom ? "60px 10px 10px 10px" : "10px 10px 10px 500px"
+          }
+          position="absolute"
+          zIndex={9}
+        >
+          <TagSlide
+            type={
+              order === 1 || openProjectRoom || openAccount
+                ? "topics"
+                : "organizationTypes"
             }
-            position="absolute"
-            zIndex={9}
-          >
-            <TagSlide
-              type={
-                order === 1 || openProjectRoom || openAccount
-                  ? "topics"
-                  : "organizationTypes"
-              }
-              selectedTopics={selectedTopics}
-              selectedOrganizationTypes={selectedOrganizationTypes}
-              handleSelectTopics={handleSelectTopics}
-              handleSelectOrganizationTypes={handleSelectOrganizationTypes}
-            />
-          </Box>
-        )}
+            hide={
+              swipedUp ||
+              (isMobileCustom && openScream) ||
+              (openProjectRoom && !project?.screams) ||
+              openAccount ||
+              openOrganization
+            }
+            selectedTopics={selectedTopics}
+            selectedOrganizationTypes={selectedOrganizationTypes}
+            handleSelectTopics={handleSelectTopics}
+            handleSelectOrganizationTypes={handleSelectOrganizationTypes}
+          />
+        </Box>
+      )}
 
       {postIdeaOpen && (
         <PostScream
@@ -678,7 +683,7 @@ const Main = () => {
           setAuthOpen={setAuthOpen}
         />
       )}
-      {isMobileCustom && !postIdeaOpen && (
+      {isMobileCustom && !postIdeaOpen && !openProjectRoom && (
         <React.Fragment>
           {isMobileCustom && !openScream && (
             <MobileMapClickBackground

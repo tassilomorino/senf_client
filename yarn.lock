@@ -12077,7 +12077,7 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     prettier: ^2.5.1
-    senf-atomic-design-system: 2.1.3
+    senf-atomic-design-system: 2.1.5
     turbo: latest
   languageName: unknown
   linkType: soft
@@ -12238,9 +12238,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"senf-atomic-design-system@npm:2.1.3":
-  version: 2.1.3
-  resolution: "senf-atomic-design-system@npm:2.1.3"
+"senf-atomic-design-system@npm:2.1.5":
+  version: 2.1.5
+  resolution: "senf-atomic-design-system@npm:2.1.5"
   dependencies:
     formik: ^2.2.9
     i18next: ^21.6.16
@@ -12265,13 +12265,13 @@ __metadata:
     styled-components: ^5.3.3
     styled-system: ^5.1.5
     yup: ^0.32.11
-  checksum: 7c3b124a300eec7cdfd6e0051fc194ee3135df399a8a54fcae71c55083d8dbe4202b3ada1a7574cdf5f9eeadc214d3a5b3c7042bfa44d09dc2f347f881e05453
+  checksum: d9231675324730371b0f3db2b81a6e0e17f7bed6aaa568c583dbf6799dcb2d201c9b242ea6c0b85bf3307f429e11072a24ef23b0eb1f946f8ac787f68a16d9f1
   languageName: node
   linkType: hard
 
-"senf-atomic-design-system@npm:2.1.4":
-  version: 2.1.4
-  resolution: "senf-atomic-design-system@npm:2.1.4"
+"senf-atomic-design-system@npm:2.1.7":
+  version: 2.1.7
+  resolution: "senf-atomic-design-system@npm:2.1.7"
   dependencies:
     formik: ^2.2.9
     i18next: ^21.6.16
@@ -12296,7 +12296,7 @@ __metadata:
     styled-components: ^5.3.3
     styled-system: ^5.1.5
     yup: ^0.32.11
-  checksum: e96e96a28fcff472cb6df93a5ed9aa899e8a99ec549f451c02d465e8986ea15d93dbf49531e70313d51208124174f964b8a914c1fdae6d38fa06ca52a6cb90c2
+  checksum: c9a207be639c40d60ef58856aaa73ff05dfe7ed081dd02128f0597f7a2f49d68997b0cf78a02c6e94857a37680c91fbd00d662810f0d7277f124a071982cfe48
   languageName: node
   linkType: hard
 
@@ -12396,7 +12396,7 @@ __metadata:
     redux-thunk: ^2.4.1
     resize-observer: ^1.0.4
     rollup-plugin-visualizer: ^5.6.0
-    senf-atomic-design-system: 2.1.4
+    senf-atomic-design-system: 2.1.7
     start-server-and-test: ^1.13.1
     styled-components: ^5.3.5
     ui: "*"

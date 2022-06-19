@@ -10,12 +10,7 @@ import { isMobileCustom } from "../util/customDeviceDetect";
 import { closeScream, deleteScream } from "../redux/actions/screamActions";
 import { clearErrors } from "../redux/actions/errorsActions";
 
-//COMPONENTS
-import Comments from "../components/molecules/Cards/Comments";
-import { CustomIconButton } from "../components/atoms/CustomButtons/CustomButton";
-
-import IdeaCardBig from "../components/molecules/Cards/IdeaCardBig";
-import { Background } from "../components/atoms/Backgrounds/GradientBackgrounds";
+import CommentMenuModal from "../components/molecules/Modals/CommentMenuModal";
 import {
   Box,
   IdeaDetailPage as IdeaDetailPageComponent,
