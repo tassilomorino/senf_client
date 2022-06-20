@@ -12269,9 +12269,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"senf-atomic-design-system@npm:2.2.3":
-  version: 2.2.3
-  resolution: "senf-atomic-design-system@npm:2.2.3"
+"senf-atomic-design-system@npm:2.2.4":
+  version: 2.2.4
+  resolution: "senf-atomic-design-system@npm:2.2.4"
   dependencies:
     formik: ^2.2.9
     i18next: ^21.6.16
@@ -12296,7 +12296,7 @@ __metadata:
     styled-components: ^5.3.3
     styled-system: ^5.1.5
     yup: ^0.32.11
-  checksum: c57092f5a655192880573471df9ef6832f931a375231adc27c51305a6a4518e977592b10a538513e682c7d8f50be8269581fa8c0dad9ddc05834bff7d731db3d
+  checksum: ee3b3f02f4b8f6a2793162015b3e82307d046d5a1b321d7ea5eac0bb45aaac0f3ec1581f785c4b413e7c831b96c0edf2549dc10a894d7885786d1295c3192eed
   languageName: node
   linkType: hard
 
@@ -12396,7 +12396,7 @@ __metadata:
     redux-thunk: ^2.4.1
     resize-observer: ^1.0.4
     rollup-plugin-visualizer: ^5.6.0
-    senf-atomic-design-system: 2.2.3
+    senf-atomic-design-system: 2.2.4
     start-server-and-test: ^1.13.1
     styled-components: ^5.3.5
     ui: "*"
