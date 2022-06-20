@@ -9,7 +9,6 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import createPlotlyComponent from "react-plotlyjs";
 //See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
 import Plotly from "plotly.js-cartesian-dist";
-import TagsFilter from "../Filters/TagsFilter";
 import styled from "styled-components";
 import GraphsWrapper from "./GraphsWrapper";
 

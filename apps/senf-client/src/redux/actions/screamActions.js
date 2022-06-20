@@ -72,7 +72,7 @@ export const getScreams = (mapViewport) => async (dispatch) => {
         screams[screamIndex].comments.push({
           ...doc.data(),
           commentId: doc.id,
-          body: doc.data().body.substr(0, 150),
+          body: doc.data().body.substr(0, 250),
         });
       }
     });

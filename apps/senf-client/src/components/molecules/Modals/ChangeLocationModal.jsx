@@ -6,7 +6,6 @@ import MainModal from "../../atoms/Layout/MainModal";
 import Geolocate from "../../../images/icons/geolocate.png";
 import styled from "styled-components";
 import axios from "axios";
-import Searchbar from "../../atoms/Searchbar/Searchbar";
 
 const URL = "https://api.openweathermap.org/data/2.5/weather";
 const API_KEY = "f33a484cf794d08d0148764789aaba32";
@@ -138,13 +137,13 @@ const ChangeLocationModal = ({ setChangeLocationModalOpen }) => {
         </LocationButton>
       </InnerTopWrapper>
       <SearchWrapper>
-        <Searchbar
+        {/* <Searchbar
           placeholder="Suche weltweit..."
           setSearchTerm={setSearchTerm}
           searchTerm={searchTerm}
           handleSearch={search}
           backgroundColor="#f8f8f8"
-        />
+        /> */}
       </SearchWrapper>
       <br />
       <InnerBottomWrapper>

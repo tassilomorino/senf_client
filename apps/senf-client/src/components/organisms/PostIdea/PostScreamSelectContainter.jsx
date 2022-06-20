@@ -10,6 +10,7 @@ import { StyledH3, StyledH4 } from "../../../styles/GlobalStyle";
 import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import LocationIcon from "../../../images/icons/location.png";
 import { truncateString } from "../../../util/helpers";
+import { Box, Button } from "senf-atomic-design-system";
 
 const Wrapper = styled.div`
   height: 130px;
@@ -23,7 +24,7 @@ const Wrapper = styled.div`
     position: fixed;
     width: 370px;
     margin-left: 80px;
-    top: 40px;
+    top: 20px;
     z-index: 5;
     animation: enteranimation 0.5s;
   }
@@ -111,19 +112,13 @@ const PostScreamSelectContainter = ({
       {/* <StyledH4 style={{ width: "130px" }}>
           {address ? truncateString(address, 30) : t("Ort festlegen")}
         </StyledH4> */}
-      <SubmitButton
-        text={t("confirmLocation")}
-        zIndex="999"
-        backgroundColor="#fed957"
-        textColor="#353535"
-        handleButtonClick={handleLocationDecided}
-        shadow={false}
-        margin="20px 0px 10px 0px"
-        // marginLeft="auto"
-        // transformX="none"
-        disabled={!address}
-      />
-      {/* </FlexWrapper> */}
+      <Box margin="10px 0px 10px 0px" justifyContent="center">
+        <Button
+          onClick={handleLocationDecided}
+          text={t("confirmLocation")}
+          disabled={!address}
+        />
+      </Box>
     </Wrapper>
   );
 };

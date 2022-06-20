@@ -24,6 +24,7 @@ const styles = {
     //backgroundColor: "rgb(0,0,0,0.5)",
     padding: "0",
     overflow: "hidden",
+    zIndex: 999999,
   },
 
   paper: {
@@ -69,6 +70,7 @@ const AgegroupDialog = ({ classes, data, screams, likes }) => {
       fullScreen
       className="dialogOverlayContent"
       maxWidth={"lg"}
+      style={{ zIndex: 9999999 }}
     >
       <MyButton
         onClick={() => setOpen(false)}

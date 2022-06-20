@@ -7,6 +7,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
+import ReactDOM from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router";
@@ -38,15 +39,11 @@ import {
 } from "../redux/actions/UiActions";
 
 // Components
-import InsightsPage from "../components/organisms/SubPages/InsightsPage";
-import DesktopSidebar from "../components/molecules/Navigation/DesktopSidebar";
+import InsightsPage from "./InsightsPage";
 import Topbar from "../components/molecules/Navigation/Topbar";
 import Map from "../components/atoms/map/Map";
-import SwipeList from "../components/organisms/SwipeLists/SwipeList";
-import IdeaDialog from "../components/organisms/Dialogs/IdeaDialog";
-import ProjectDialog from "../components/organisms/Dialogs/ProjectDialog";
+import IdeaDialog from "./IdeaDetailPage";
 import ThanksForTheVote from "../components/atoms/Backgrounds/ThanksForTheVote";
-import Account from "../components/organisms/Dialogs/Account";
 import Loader from "../components/atoms/Backgrounds/Loader";
 import {
   closeAccountFunc,
@@ -55,7 +52,6 @@ import {
   openAccountFunc,
 } from "../redux/actions/accountActions";
 import ErrorBackground from "../components/atoms/Backgrounds/ErrorBackground";
-import TagsFilter from "../components/molecules/Filters/TagsFilter";
 import PostScream from "../components/organisms/PostIdea/PostScream";
 import ChangeLocationModal from "../components/molecules/Modals/ChangeLocationModal";
 import { usePrevious } from "../hooks/usePrevious";
@@ -65,8 +61,6 @@ import {
   stateCreateOrganizationsFunc,
 } from "../redux/actions/organizationActions";
 
-import OrganizationDialog from "../components/organisms/Dialogs/OrganizationDialog";
-import OrganizationsPage from "../components/organisms/SubPages/OrganizationsPage";
 import styled from "styled-components";
 import { MenuData } from "../data/MenuData";
 import {
@@ -84,14 +78,17 @@ import {
   MainSwipeList,
   OrganizationsOverview,
   Modal,
+  Button,
   TagSlide,
   Box,
+  MobileTopBar,
 } from "senf-atomic-design-system";
 import OrganizationPage from "./OrganizationPage";
 import { likeScream, unlikeScream } from "../redux/actions/likeActions";
 import InlineInformationPage from "../components/organisms/infocomponents/InlineInformationPage";
 import ProjectroomPage from "./ProjectroomPage";
 import ProfilePage from "./ProfilePage";
+import { StyledH3 } from "../styles/GlobalStyle";
 
 const CreateMainComponent = React.lazy(() =>
   import(
@@ -134,12 +131,24 @@ const Main = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [authOpen, setAuthOpen] = useState(false);
+  const [authEditOpen, setAuthEditOpen] = useState(false);
+
   const [postIdeaOpen, setPostIdeaOpen] = useState(false);
 
   const [modalData, setModalData] = useState(null);
 
   const [swipedUp, setSwipedUp] = useState(false);
   const organization = useSelector((state) => state.data.organization);
+
+  const [
+    openModalAuthenticateForProjectRoom,
+    setOpenModalAuthenticateForProjectRoom,
+  ] = useState(false);
+
+  const [openCreateOrganizationFirst, setOpenCreateOrganizationFirst] =
+    useState(false);
+
+  const [openRequestProjectRoom, setOpenRequestProjectRoom] = useState(false);
 
   const [openModalAuthenticate, setOpenModalAuthenticate] = useState(false);
 
@@ -199,11 +208,6 @@ const Main = () => {
 
   const [dropdown, setDropdown] = useState("newest");
   const [dropdownStatus, setdropdownStatus] = useState([]);
-
-  const swipePosition = useSelector((state) => state.UI.swipePosition);
-  const setSwipeDown = () => {
-    dispatch(setSwipePositionDown());
-  };
 
   const [changeLocationModalOpen, setChangeLocationModalOpen] = useState(false);
   const mapRef = useRef(null);
@@ -465,9 +469,6 @@ const Main = () => {
       selectedOrganizationTypes.includes(organizationType)
     );
   }, [projects, selectedOrganizationTypes]);
-  const swipeListTablabels = useMemo(() => {
-    return MenuData?.map((item) => item.text).slice(0, 2);
-  }, []);
 
   const handleButtonOpenCard = (event, cardType, cardId) => {
     if (cardType === "ideaCard") {
@@ -477,6 +478,11 @@ const Main = () => {
     } else if (cardType === "organizationCard") {
       dispatch(openOrganizationFunc(cardId, true));
     }
+  };
+
+  const handleOpenProjectroom = (event, projectroomId) => {
+    event.stopPropagation();
+    dispatch(openProjectRoomFunc(projectroomId, true));
   };
 
   const handleButtonLike = (event, screamId) => {
@@ -543,10 +549,84 @@ const Main = () => {
     }
   };
 
-  console.log(modalData);
+  const handleCreateProjectroom = () => {
+    if (!user.authenticated) {
+      setOpenModalAuthenticateForProjectRoom(true);
+    } else if (!user?.organizationId?.length) {
+      setOpenCreateOrganizationFirst(true);
+    } else if (user?.isOrgModerator === true) {
+      dispatch(getMyOrganizations(user.userId));
+      dispatch(openCreateProjectRoomFunc(true));
+    } else {
+      setOpenRequestProjectRoom(true);
+    }
+  };
 
   return (
     <React.Fragment>
+      {openModalAuthenticateForProjectRoom &&
+        !user.authenticated &&
+        ReactDOM.createPortal(
+          <Modal
+            zIndex={9999999999}
+            openModal={openModalAuthenticateForProjectRoom}
+            setOpenModal={() => setOpenModalAuthenticateForProjectRoom(false)}
+          >
+            <StyledH3 textAlign="center" margin="20px">
+              {t("authenticatedForCreateProjectRoom")}
+            </StyledH3>
+            <Box justifyContent="center" margin="0px 0px 10px 0px">
+              <Button text={t("login")} onClick={() => setAuthOpen(true)} />
+            </Box>
+          </Modal>,
+          document.getElementById("portal-root-modal")
+        )}
+
+      {openCreateOrganizationFirst &&
+        ReactDOM.createPortal(
+          <Modal
+            zIndex={9999999999}
+            openModal={openCreateOrganizationFirst}
+            setOpenModal={() => setOpenCreateOrganizationFirst(false)}
+          >
+            <StyledH3 textAlign="center" margin="20px">
+              {t("createOrganizationForCreateProjectRoom")}
+            </StyledH3>
+            <Box justifyContent="center" margin="0px 0px 10px 0px">
+              <Button
+                text={t("createOrganization")}
+                margin="20px"
+                onClick={openCreateOrganization}
+              />
+            </Box>
+          </Modal>,
+          document.getElementById("portal-root-modal")
+        )}
+
+      {openRequestProjectRoom &&
+        ReactDOM.createPortal(
+          <Modal
+            zIndex={9999999999}
+            openModal={openRequestProjectRoom}
+            setOpenModal={() => setOpenRequestProjectRoom(false)}
+          >
+            <StyledH3 textAlign="center" margin="20px">
+              {t("requestCreateProjectRoom")}
+            </StyledH3>
+            <Box justifyContent="center" margin="0px 0px 10px 0px">
+              <Button
+                text={t("getInTouch")}
+                zIndex="999"
+                backgroundColor="#fed957"
+                textColor="#353535"
+                margin="20px"
+                onClick={openMailRequestProjectRoom}
+              />
+            </Box>
+          </Modal>,
+          document.getElementById("portal-root-modal")
+        )}
+
       {(loading || loadingIdea || loadingProjectRoom) && (
         <Loader withoutBg={true} />
       )}
@@ -557,7 +637,70 @@ const Main = () => {
           setOpenOrganizationsOverview={setOpenOrganizationsOverview}
         />
       )}
-      <Auth setAuthOpen={setAuthOpen} authOpen={authOpen} />
+      <Auth
+        setAuthOpen={setAuthOpen}
+        setAuthEditOpen={setAuthEditOpen}
+        authOpen={authOpen}
+        authEditOpen={authEditOpen}
+      />
+
+      {isMobileCustom && !postIdeaOpen && (
+        <React.Fragment>
+          {isMobileCustom &&
+            !openScream &&
+            !openAccount &&
+            !openProjectRoom && (
+              <MobileMapClickBackground
+                show={swipedUp}
+                onClick={() => swipedUp(false)}
+              />
+            )}
+
+          <MobileTopBar
+            setOrder={setOrder}
+            handleOpenMyAccount={handleOpenMyAccount}
+            setInfoPageOpen={handleOpenInfoPage}
+            swipedUp={
+              swipedUp ||
+              openProjectRoom ||
+              openAccount ||
+              openScream ||
+              loading
+            }
+          />
+        </React.Fragment>
+      )}
+
+      {!loading && !loadingUI && !loadingProjects && (
+        // !openScream &&
+        // (order === 1 || order === 2 || openProjectRoom || openAccount) &&
+        <Box
+          margin={
+            isMobileCustom ? "60px 10px 10px 10px" : "10px 10px 10px 500px"
+          }
+          position="absolute"
+          zIndex={9}
+        >
+          <TagSlide
+            type={
+              order === 1 || openProjectRoom || openAccount
+                ? "topics"
+                : "organizationTypes"
+            }
+            hide={
+              swipedUp ||
+              (isMobileCustom && openScream) ||
+              (openProjectRoom && !project?.screams) ||
+              openAccount ||
+              openOrganization
+            }
+            selectedTopics={selectedTopics}
+            selectedOrganizationTypes={selectedOrganizationTypes}
+            handleSelectTopics={handleSelectTopics}
+            handleSelectOrganizationTypes={handleSelectOrganizationTypes}
+          />
+        </Box>
+      )}
 
       {postIdeaOpen && (
         <PostScream
@@ -569,63 +712,6 @@ const Main = () => {
           postIdeaOpen={postIdeaOpen}
           setAuthOpen={setAuthOpen}
         />
-      )}
-      {isMobileCustom ? (
-        <React.Fragment>
-          {isMobileCustom && !openScream && (
-            <MobileMapClickBackground
-              show={swipePosition === "top"}
-              onClick={setSwipeDown}
-            />
-          )}
-          {!loading &&
-            !loadingUI &&
-            !loadingProjects &&
-            !openScream &&
-            (order === 1 || order === 2 || openProjectRoom || openAccount) && (
-              <TagsFilter
-                loading={loading}
-                type={
-                  order === 1 || openProjectRoom || openAccount
-                    ? "topics"
-                    : "organizationType"
-                }
-              />
-            )}
-
-          <Topbar
-            loading={loading}
-            handleClick={handleClick}
-            order={order}
-            setOrder={setOrder}
-            setOpenOrganizationsPage={setOpenOrganizationsOverview}
-            setAuthOpen={setAuthOpen}
-          />
-        </React.Fragment>
-      ) : (
-        !loading && (
-          // <DesktopSidebar
-          //   handleClick={handleClick}
-          //   order={order}
-          //   setChangeLocationModalOpen={setChangeLocationModalOpen}
-          //   loading={loading}
-          //   setOrder={setOrder}
-          //   setOpenOrganizationsPage={setOpenOrganizationsOverview}
-          //   mapViewportRef={mapViewportRef}
-          //   setAuthOpen={setAuthOpen}
-          // />
-          <Box margin="10px 10px 10px 500px" position="fixed" zIndex={9}>
-            <TagSlide
-              type={
-                order === 1 || openProjectRoom ? "topics" : "organizationTypes"
-              }
-              selectedTopics={selectedTopics}
-              selectedOrganizationTypes={selectedOrganizationTypes}
-              handleSelectTopics={handleSelectTopics}
-              handleSelectOrganizationTypes={handleSelectOrganizationTypes}
-            />
-          </Box>
-        )
       )}
 
       <Map
@@ -681,6 +767,8 @@ const Main = () => {
                 organizations={organizations}
                 selectedTopics={selectedTopics}
                 selectedOrganizationTypes={selectedOrganizationTypes}
+                checkedSortOption={dropdown}
+                setCheckedSortOption={setDropdown}
                 handleSelectTopics={handleSelectTopics}
                 handleSelectOrganizationTypes={handleSelectOrganizationTypes}
                 swipedUp={swipedUp}
@@ -691,6 +779,7 @@ const Main = () => {
                 searchOpen={searchOpen}
                 setSearchOpen={setSearchOpen}
                 handleButtonOpenCard={handleButtonOpenCard}
+                handleOpenProjectroom={handleOpenProjectroom}
                 handleButtonLike={handleButtonLike}
                 handleButtonComment={handleButtonComment}
                 user={user}
@@ -701,6 +790,7 @@ const Main = () => {
                 setPostIdeaOpen={setPostIdeaOpen}
                 handleOpenMyAccount={handleOpenMyAccount}
                 setInfoPageOpen={handleOpenInfoPage}
+                handleCreateProjectroom={handleCreateProjectroom}
               />
             )}
 
@@ -722,6 +812,8 @@ const Main = () => {
             <ProfilePage
               dataFinalMap={dataFinalMap}
               handleButtonOpenCard={handleButtonOpenCard}
+              handleOpenProjectroom={handleOpenProjectroom}
+              setAuthEditOpen={setAuthEditOpen}
             />
           )}
 

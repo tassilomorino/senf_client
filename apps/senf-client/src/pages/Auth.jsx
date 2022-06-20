@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, Fragment, useRef, memo } from "react";
+import React, { useState, Fragment, useRef, useEffect, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_AUTHENTICATED } from "../redux/types";
 
@@ -20,29 +20,43 @@ import {
   doc,
   getDoc,
   getDocs,
+  updateDoc,
   collection,
   where,
   query,
   setDoc,
 } from "firebase/firestore";
-
-import { useHistory } from "react-router";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import imageCompression from "browser-image-compression";
 
 import { useTranslation } from "react-i18next";
 import { getUserData } from "../redux/actions/userActions";
 
-import { Modal, Auth as AuthComponent } from "senf-atomic-design-system";
+import { SwipeModal, Auth as AuthComponent } from "senf-atomic-design-system";
 
-const Auth = ({ setAuthOpen, authOpen }) => {
+const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
+
+  const [emailRegistrationSubmitted, setEmailRegistrationSubmitted] =
+    useState(false);
+
+  const [verifiedUser, setVerifiedUser] = useState(false);
 
   const user = useSelector((state) => state.user);
-  const authenticated = user.authenticated;
 
   const dispatch = useDispatch();
-  const history = useHistory();
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (authEditOpen) {
+      setVerifiedUser(true);
+    } else {
+      setEmailRegistrationSubmitted(false);
+      setVerifiedUser(false);
+    }
+  }, [authOpen, authEditOpen]);
 
   const handleSubmitLogin = async (formikLoginStore) => {
     // event.preventDefault();
@@ -98,6 +112,27 @@ const Auth = ({ setAuthOpen, authOpen }) => {
       );
     }
   }
+
+  async function createUserFromProviderInDatabase(user) {
+    try {
+      if (user) {
+        await setDoc(doc(db, "users", user.uid), {
+          handle: user.displayName,
+          createdAt: new Date().toISOString(),
+          userId: user.uid,
+          photoURL: user.photoURL ?? "",
+          providerId: user.providerData[0].providerId ?? "",
+        });
+        await setDoc(doc(db, "users", user.uid, "Private", user.uid), {
+          email: user.providerData[0].email ?? "",
+          userId: user.uid,
+        });
+      }
+    } catch (error) {
+      console.log(error, "error in createUserInDatabase");
+    }
+  }
+
   const handleSubmitRegister = async (formikRegisterStore) => {
     // event.preventDefault();
 
@@ -137,7 +172,9 @@ const Auth = ({ setAuthOpen, authOpen }) => {
         const emailWrapper = {
           email: formikRegisterStore.values.email,
         };
-        history.push("/verify", emailWrapper);
+
+        setEmailRegistrationSubmitted(true);
+        // history.push("/verify", emailWrapper);
       } catch (error) {
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -189,13 +226,27 @@ const Auth = ({ setAuthOpen, authOpen }) => {
       const docRef = doc(db, "users", user.uid);
       const docSnapshot = await getDoc(docRef);
       if (!docSnapshot.exists() && user) {
-        await createUserInDatabase(user);
+        console.log("user not existing yet", user.uid, user);
+        await createUserFromProviderInDatabase(user);
         dispatch({ type: SET_AUTHENTICATED });
         dispatch(getUserData(user.uid));
+        setVerifiedUser(true);
       } else if (user) {
-        console.log("user already exists");
+        console.log("user already exists", user.uid, user);
         dispatch({ type: SET_AUTHENTICATED });
         dispatch(getUserData(user.uid));
+
+        if (
+          user.description &&
+          user.zipcode &&
+          user.photoURL &&
+          user.age &&
+          user.sex
+        ) {
+          setAuthOpen(false);
+        } else {
+          setVerifiedUser(true);
+        }
       }
     } catch (error) {
       // Handle Errors here.
@@ -216,6 +267,54 @@ const Auth = ({ setAuthOpen, authOpen }) => {
     }
   };
 
+  const handleSubmitEditDetails = async (data) => {
+    await updateDoc(doc(db, "users", user.userId), {
+      handle: data.handle ? data.handle : user.handle,
+      description: data.description ? data.description : null,
+      zipcode: data.zipcode ? data.zipcode : null,
+      age: data.birthyear ? data.birthyear : null,
+      sex: data.gender ? data.gender : null,
+    }).then(() => {
+      dispatch(getUserData(user.userId)).then(() => {
+        setAuthOpen(false);
+        setAuthEditOpen(false);
+      });
+    });
+  };
+
+  async function handleImageUpload(event) {
+    if (!user?.userId) return;
+    const imageFile = event.target.files[0];
+    console.log("originalFile instanceof Blob", imageFile instanceof Blob); // true
+    console.log(`originalFile size ${imageFile.size / 1024 / 1024} MB`);
+
+    const options = {
+      maxSizeMB: 0.03,
+      maxWidthOrHeight: 700,
+      useWebWorker: true,
+    };
+    try {
+      setUploadingImage(true);
+      const compressedFile = await imageCompression(imageFile, options);
+
+      const storage = getStorage();
+      const storageRef = ref(storage, `profileimages/thumbnail`);
+      const userRef = doc(db, `users/${user.userId}`);
+
+      await uploadBytes(storageRef, compressedFile).then((snapshot) => {
+        console.log("Uploaded a file!");
+      });
+      const photoURL = await getDownloadURL(storageRef);
+      // setUploadedImage(photoUrl);
+      await updateDoc(userRef, { photoURL: photoURL }).then(() => {
+        dispatch(getUserData(user.userId));
+        setUploadingImage(false);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   // const keySubmitRef = useRef(null);
 
   // useEffect(() => {
@@ -234,8 +333,13 @@ const Auth = ({ setAuthOpen, authOpen }) => {
 
   return (
     <Fragment>
-      <Modal openModal={authOpen} setOpenModal={() => setAuthOpen(false)}>
+      <SwipeModal
+        openModal={authOpen || authEditOpen}
+        setOpenModal={setAuthOpen}
+        zIndex={9999999999}
+      >
         <AuthComponent
+          user={user}
           loginLoading={loading}
           handleSubmitLogin={(loginData) => handleSubmitLogin(loginData)}
           handleSubmitRegister={(registerData) =>
@@ -243,9 +347,17 @@ const Auth = ({ setAuthOpen, authOpen }) => {
           }
           handleGoogleSignIn={() => handleProviderSignin("google")}
           handleFacebookSignIn={() => handleProviderSignin("facebook")}
-          handleClose={() => setAuthOpen(false)}
+          handleImageUpload={handleImageUpload}
+          uploadingImage={uploadingImage}
+          handleSubmitEditDetails={handleSubmitEditDetails}
+          emailRegistrationSubmitted={emailRegistrationSubmitted}
+          verifiedUser={verifiedUser}
+          handleClose={() => {
+            setAuthOpen(false);
+            setAuthEditOpen(false);
+          }}
         />
-      </Modal>
+      </SwipeModal>
     </Fragment>
   );
 };

@@ -70,6 +70,7 @@ const DistrictsDialog = ({ classes, screams }) => {
       maxWidth={"lg"}
       TransitionComponent={Transition}
       fullScreen
+      style={{ zIndex: 9999999 }}
     >
       <MyButton
         onClick={() => setOpen(false)}

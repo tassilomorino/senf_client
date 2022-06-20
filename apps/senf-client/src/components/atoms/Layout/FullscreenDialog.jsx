@@ -14,7 +14,7 @@ const portalRoot = document.getElementById("portal-root-dialog");
 
 const Wrapper = styled.div`
   position: fixed;
-  z-index: 997;
+  z-index: 99999997;
   inset: 0px;
 
   top: 0;

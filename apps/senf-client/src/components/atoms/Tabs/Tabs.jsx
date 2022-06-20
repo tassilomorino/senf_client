@@ -41,6 +41,7 @@ const Tab = styled.div`
   height: 100%;
   width: auto;
   padding-right: 15px;
+
   animation: ${enterAnimation} ${(props) => props.i * 0.3}s;
   cursor: pointer;
   color: ${(props) =>

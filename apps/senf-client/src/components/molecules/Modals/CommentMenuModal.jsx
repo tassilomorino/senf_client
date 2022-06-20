@@ -90,7 +90,10 @@ const CommentMenuModal = ({
   return (
     <React.Fragment>
       {!confirmMenu ? (
-        <MainModal handleButtonClick={() => setCommentMenuOpen(false)}>
+        <MainModal
+          handleButtonClick={() => setCommentMenuOpen(false)}
+          zIndex={99999}
+        >
           {authenticated && commentUserId === userId && (
             <ButtonWrapper>
               <ExpandButton handleButtonClick={openConfirmMenu}>
