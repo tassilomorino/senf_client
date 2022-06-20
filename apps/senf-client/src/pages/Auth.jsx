@@ -205,12 +205,13 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
       const docRef = doc(db, "users", user.uid);
       const docSnapshot = await getDoc(docRef);
       if (!docSnapshot.exists() && user) {
+        console.log("user not existing yet", user.uid, user);
         await createUserInDatabase(user);
         dispatch({ type: SET_AUTHENTICATED });
         dispatch(getUserData(user.uid));
         setVerifiedUser(true);
       } else if (user) {
-        console.log("user already exists");
+        console.log("user already exists", user.uid, user);
         dispatch({ type: SET_AUTHENTICATED });
         dispatch(getUserData(user.uid));
 
