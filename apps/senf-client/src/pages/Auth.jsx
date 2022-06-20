@@ -112,6 +112,27 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
       );
     }
   }
+
+  async function createUserFromProviderInDatabase(user) {
+    try {
+      if (user) {
+        await setDoc(doc(db, "users", user.uid), {
+          handle: user.displayName,
+          createdAt: new Date().toISOString(),
+          userId: user.uid,
+          photoURL: user.photoURL ?? "",
+          providerId: user.providerData[0].providerId ?? "",
+        });
+        await setDoc(doc(db, "users", user.uid, "Private", user.uid), {
+          email: user.providerData[0].email ?? "",
+          userId: user.uid,
+        });
+      }
+    } catch (error) {
+      console.log(error, "error in createUserInDatabase");
+    }
+  }
+
   const handleSubmitRegister = async (formikRegisterStore) => {
     // event.preventDefault();
 
@@ -206,7 +227,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
       const docSnapshot = await getDoc(docRef);
       if (!docSnapshot.exists() && user) {
         console.log("user not existing yet", user.uid, user);
-        await createUserInDatabase(user);
+        await createUserFromProviderInDatabase(user);
         dispatch({ type: SET_AUTHENTICATED });
         dispatch(getUserData(user.uid));
         setVerifiedUser(true);
@@ -218,7 +239,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
         if (
           user.description &&
           user.zipcode &&
-          user.photoUrl &&
+          user.photoURL &&
           user.age &&
           user.sex
         ) {
@@ -283,9 +304,9 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
       await uploadBytes(storageRef, compressedFile).then((snapshot) => {
         console.log("Uploaded a file!");
       });
-      const photoUrl = await getDownloadURL(storageRef);
+      const photoURL = await getDownloadURL(storageRef);
       // setUploadedImage(photoUrl);
-      await updateDoc(userRef, { photoUrl: photoUrl }).then(() => {
+      await updateDoc(userRef, { photoURL: photoURL }).then(() => {
         dispatch(getUserData(user.userId));
         setUploadingImage(false);
       });

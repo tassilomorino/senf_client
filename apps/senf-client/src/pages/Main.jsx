@@ -660,7 +660,13 @@ const Main = () => {
             setOrder={setOrder}
             handleOpenMyAccount={handleOpenMyAccount}
             setInfoPageOpen={handleOpenInfoPage}
-            swipedUp={swipedUp || openProjectRoom || openAccount || openScream}
+            swipedUp={
+              swipedUp ||
+              openProjectRoom ||
+              openAccount ||
+              openScream ||
+              loading
+            }
           />
         </React.Fragment>
       )}
