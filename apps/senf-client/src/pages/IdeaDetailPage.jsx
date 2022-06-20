@@ -129,23 +129,41 @@ const IdeaDetailPage = ({
     dispatch(clearErrors());
   };
 
-  const [projectroomCardData, setProjectroomCardData] = useState([]);
+  // const [projectroomCardData, setProjectroomCardData] = useState([]);
+
+  // useEffect(() => {
+  //   if (projectroomsData && data?.projectRoomId) {
+  //     console.log(projectroomsData, data?.projectRoomId);
+  //     projectroomsData.map(({ projectRoomId, title, organizationType }) => {
+  //       if (data?.projectRoomId === projectRoomId) {
+  //         console.log(data?.projectRoomId, projectRoomId);
+  //         setProjectroomCardData([
+  //           ...projectroomCardData,
+  //           title,
+  //           organizationType,
+
+  //         ]);
+  //       }
+  //     });
+  //   }
+  // }, [projectroomsData, data?.projectRoomId, loadingIdea]);
+
+  const projectroomCardData = [];
 
   useEffect(() => {
-    if (projectroomsData && data?.projectRoomId) {
-      console.log(projectroomsData, data?.projectRoomId);
-      projectroomsData.map(({ projectRoomId, title, organizationType }) => {
-        if (data?.projectRoomId === projectRoomId) {
-          console.log(data?.projectRoomId, projectRoomId);
-          setProjectroomCardData([
-            ...projectroomCardData,
-            title,
-            organizationType,
-          ]);
-        }
-      });
+    if (projectroomsData && data && data.projectRoomId) {
+      console.log(projectroomsData, data.projectRoomId);
+      if (projectroomsData) {
+        projectroomsData.forEach(
+          ({ projectRoomId, title, organizationType }) => {
+            if (data.projectRoomId === projectRoomId) {
+              projectroomCardData.push(title, organizationType);
+            }
+          }
+        );
+      }
     }
-  }, [projectroomsData, data?.projectRoomId, loadingIdea]);
+  }, [projectroomsData, data, loadingIdea]);
 
   // const handleShareIdea = () => {
   //   if (navigator.share) {
