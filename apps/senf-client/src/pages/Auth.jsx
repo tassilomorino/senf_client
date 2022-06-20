@@ -212,19 +212,19 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
       } else if (user) {
         console.log("user already exists");
         dispatch({ type: SET_AUTHENTICATED });
-        dispatch(getUserData(user.uid)).then(() => {
-          if (
-            user.description &&
-            user.zipcode &&
-            user.photoUrl &&
-            user.age &&
-            user.sex
-          ) {
-            setAuthOpen(false);
-          } else {
-            setVerifiedUser(true);
-          }
-        });
+        dispatch(getUserData(user.uid));
+
+        if (
+          user.description &&
+          user.zipcode &&
+          user.photoUrl &&
+          user.age &&
+          user.sex
+        ) {
+          setAuthOpen(false);
+        } else {
+          setVerifiedUser(true);
+        }
       }
     } catch (error) {
       // Handle Errors here.
