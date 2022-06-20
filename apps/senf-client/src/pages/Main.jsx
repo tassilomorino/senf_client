@@ -564,68 +564,61 @@ const Main = () => {
 
   return (
     <React.Fragment>
-      {openModalAuthenticateForProjectRoom &&
-        !user.authenticated &&
-        ReactDOM.createPortal(
-          <Modal
-            zIndex={9999999999}
-            openModal={openModalAuthenticateForProjectRoom}
-            setOpenModal={() => setOpenModalAuthenticateForProjectRoom(false)}
-          >
-            <StyledH3 textAlign="center" margin="20px">
-              {t("authenticatedForCreateProjectRoom")}
-            </StyledH3>
-            <Box justifyContent="center" margin="0px 0px 10px 0px">
-              <Button text={t("login")} onClick={() => setAuthOpen(true)} />
-            </Box>
-          </Modal>,
-          document.getElementById("portal-root-modal")
-        )}
+      {openModalAuthenticateForProjectRoom && !user.authenticated && (
+        <Modal
+          zIndex={9999999999}
+          openModal={openModalAuthenticateForProjectRoom}
+          setOpenModal={() => setOpenModalAuthenticateForProjectRoom(false)}
+        >
+          <StyledH3 textAlign="center" margin="20px">
+            {t("authenticatedForCreateProjectRoom")}
+          </StyledH3>
+          <Box justifyContent="center" margin="0px 0px 10px 0px">
+            <Button text={t("login")} onClick={() => setAuthOpen(true)} />
+          </Box>
+        </Modal>
+      )}
 
-      {openCreateOrganizationFirst &&
-        ReactDOM.createPortal(
-          <Modal
-            zIndex={9999999999}
-            openModal={openCreateOrganizationFirst}
-            setOpenModal={() => setOpenCreateOrganizationFirst(false)}
-          >
-            <StyledH3 textAlign="center" margin="20px">
-              {t("createOrganizationForCreateProjectRoom")}
-            </StyledH3>
-            <Box justifyContent="center" margin="0px 0px 10px 0px">
-              <Button
-                text={t("createOrganization")}
-                margin="20px"
-                onClick={openCreateOrganization}
-              />
-            </Box>
-          </Modal>,
-          document.getElementById("portal-root-modal")
-        )}
+      {openCreateOrganizationFirst && (
+        <Modal
+          zIndex={9999999999}
+          openModal={openCreateOrganizationFirst}
+          setOpenModal={() => setOpenCreateOrganizationFirst(false)}
+        >
+          <StyledH3 textAlign="center" margin="20px">
+            {t("createOrganizationForCreateProjectRoom")}
+          </StyledH3>
+          <Box justifyContent="center" margin="0px 0px 10px 0px">
+            <Button
+              text={t("createOrganization")}
+              margin="20px"
+              onClick={openCreateOrganization}
+            />
+          </Box>
+        </Modal>
+      )}
 
-      {openRequestProjectRoom &&
-        ReactDOM.createPortal(
-          <Modal
-            zIndex={9999999999}
-            openModal={openRequestProjectRoom}
-            setOpenModal={() => setOpenRequestProjectRoom(false)}
-          >
-            <StyledH3 textAlign="center" margin="20px">
-              {t("requestCreateProjectRoom")}
-            </StyledH3>
-            <Box justifyContent="center" margin="0px 0px 10px 0px">
-              <Button
-                text={t("getInTouch")}
-                zIndex="999"
-                backgroundColor="#fed957"
-                textColor="#353535"
-                margin="20px"
-                onClick={openMailRequestProjectRoom}
-              />
-            </Box>
-          </Modal>,
-          document.getElementById("portal-root-modal")
-        )}
+      {openRequestProjectRoom && (
+        <Modal
+          zIndex={9999999999}
+          openModal={openRequestProjectRoom}
+          setOpenModal={() => setOpenRequestProjectRoom(false)}
+        >
+          <StyledH3 textAlign="center" margin="20px">
+            {t("requestCreateProjectRoom")}
+          </StyledH3>
+          <Box justifyContent="center" margin="0px 0px 10px 0px">
+            <Button
+              text={t("getInTouch")}
+              zIndex="999"
+              backgroundColor="#fed957"
+              textColor="#353535"
+              margin="20px"
+              onClick={openMailRequestProjectRoom}
+            />
+          </Box>
+        </Modal>
+      )}
 
       {(loading || loadingIdea || loadingProjectRoom) && (
         <Loader withoutBg={true} />
