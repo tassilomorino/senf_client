@@ -568,7 +568,8 @@ const Main = () => {
         !user.authenticated &&
         ReactDOM.createPortal(
           <Modal
-            openModal={true}
+            zIndex={9999999999}
+            openModal={openModalAuthenticateForProjectRoom}
             setOpenModal={() => setOpenModalAuthenticateForProjectRoom(false)}
           >
             <StyledH3 textAlign="center" margin="20px">
@@ -584,7 +585,8 @@ const Main = () => {
       {openCreateOrganizationFirst &&
         ReactDOM.createPortal(
           <Modal
-            openModal={true}
+            zIndex={9999999999}
+            openModal={openCreateOrganizationFirst}
             setOpenModal={() => setOpenCreateOrganizationFirst(false)}
           >
             <StyledH3 textAlign="center" margin="20px">
@@ -604,7 +606,8 @@ const Main = () => {
       {openRequestProjectRoom &&
         ReactDOM.createPortal(
           <Modal
-            openModal={true}
+            zIndex={9999999999}
+            openModal={openRequestProjectRoom}
             setOpenModal={() => setOpenRequestProjectRoom(false)}
           >
             <StyledH3 textAlign="center" margin="20px">
@@ -640,6 +643,27 @@ const Main = () => {
         authOpen={authOpen}
         authEditOpen={authEditOpen}
       />
+
+      {isMobileCustom && !postIdeaOpen && (
+        <React.Fragment>
+          {isMobileCustom &&
+            !openScream &&
+            !openAccount &&
+            !openProjectRoom && (
+              <MobileMapClickBackground
+                show={swipedUp}
+                onClick={() => swipedUp(false)}
+              />
+            )}
+
+          <MobileTopBar
+            setOrder={setOrder}
+            handleOpenMyAccount={handleOpenMyAccount}
+            setInfoPageOpen={handleOpenInfoPage}
+            swipedUp={swipedUp || openProjectRoom || openAccount || openScream}
+          />
+        </React.Fragment>
+      )}
 
       {!loading && !loadingUI && !loadingProjects && (
         // !openScream &&
@@ -682,23 +706,6 @@ const Main = () => {
           postIdeaOpen={postIdeaOpen}
           setAuthOpen={setAuthOpen}
         />
-      )}
-      {isMobileCustom && !postIdeaOpen && !openProjectRoom && (
-        <React.Fragment>
-          {isMobileCustom && !openScream && (
-            <MobileMapClickBackground
-              show={swipedUp}
-              onClick={() => swipedUp(false)}
-            />
-          )}
-
-          <MobileTopBar
-            setOrder={setOrder}
-            handleOpenMyAccount={handleOpenMyAccount}
-            setInfoPageOpen={handleOpenInfoPage}
-            swipedUp={swipedUp}
-          />
-        </React.Fragment>
       )}
 
       <Map
