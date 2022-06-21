@@ -379,7 +379,7 @@ const Map = ({
           {order === 1 || openScream || openProjectRoom || openAccount ? (
             <React.Fragment>
               {!openInfoPage && !openScream && !openProjectRoom && (
-                <MapFilter viewport={mapViewport} mapRef={mapRef} />
+                <MapFilter viewport={mapRef.current} mapRef={mapRef} />
               )}
 
               <Source

@@ -10,21 +10,25 @@ import {
   setMapViewport,
 } from "../../../redux/actions/mapActions";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-import { SubmitButton } from "../CustomButtons/SubmitButton";
+import { Button } from "senf-atomic-design-system";
 import { setSwipePositionUp } from "../../../redux/actions/UiActions";
 import styled from "styled-components";
+import CircularArrowIcon from "../../../images/icons/circular-arrow.png";
 
 const Wrapper = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  gap: 8px;
   width: 100%;
   position: fixed;
-  top: calc((var(--vh, 1vh) * 100) - 170px);
-  left: -20px;
+  top: calc((var(--vh, 1vh) * 100) - 210px);
+  left: 10px;
 
   pointer-events: none;
 
   @media (min-width: 768px) {
+    justify-content: center;
+
     position: absolute;
     left: 470px;
     top: 100vh;
@@ -88,28 +92,18 @@ export const MapFilter = memo(({ viewport, mapRef }) => {
     viewport !== initialMapViewport &&
     !waitTime && (
       <Wrapper>
-        <SubmitButton
-          text={t("Ideen im Bereich anzeigen")}
-          backgroundColor="rgb(255, 255, 255, 0.6)"
-          textColor="#353535"
-          position="relative"
-          animation="plop"
-          marginLeft="0px"
-          transformX={"none"}
-          handleButtonClick={() => handleMapBoundsSet(viewport)}
-          smallSubmitButton={isMobileCustom && true}
-          backdropFilter={true}
+        <Button
+          text={t("Im Bereich suchen")}
+          onClick={() => handleMapBoundsSet(viewport)}
+          variant="white"
+          size={isMobileCustom && "small"}
         />
-        <CustomIconButton
-          name="CircularArrow"
-          margin="0px"
-          position="relative"
-          backgroundColor="rgb(255,255,255,0.6)"
-          handleButtonClick={handleMapBoundsReset}
-          animation={true}
-          small={isMobileCustom && true}
-          backdropFilter={true}
-          marginLeft="5px"
+
+        <Button
+          icon={<img src={CircularArrowIcon} width="16px" />}
+          onClick={handleMapBoundsReset}
+          variant="white"
+          size={isMobileCustom && "small"}
         />
       </Wrapper>
     )

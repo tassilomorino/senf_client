@@ -22,6 +22,7 @@ import {
 import {
   getProjects,
   openProjectRoomFunc,
+  openCreateProjectRoomFunc,
 } from "../redux/actions/projectActions";
 
 import {
@@ -546,6 +547,7 @@ const Main = () => {
       return;
     } else {
       dispatch(stateCreateOrganizationsFunc(true));
+      setOpenCreateOrganizationFirst(false);
     }
   };
 
@@ -592,7 +594,7 @@ const Main = () => {
             <Button
               text={t("createOrganization")}
               margin="20px"
-              onClick={openCreateOrganization}
+              onClick={handleOpenCreateOrganization}
             />
           </Box>
         </Modal>
@@ -675,6 +677,7 @@ const Main = () => {
           zIndex={9}
         >
           <TagSlide
+            flexDirection={!isMobileCustom && "column"}
             type={
               order === 1 || openProjectRoom || openAccount
                 ? "topics"
@@ -870,6 +873,8 @@ const Main = () => {
             setOpenOrganizationsOverview={setOpenOrganizationsOverview}
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
+            checkedSortOption={dropdown}
+            setCheckedSortOption={setDropdown}
             handleButtonOpenCard={handleButtonOpenCard}
             projectroomsData={dataFinalProjectRooms}
             handleOpenCreateOrganization={handleOpenCreateOrganization}

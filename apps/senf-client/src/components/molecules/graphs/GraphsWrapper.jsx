@@ -2,6 +2,8 @@ import React from "react";
 import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
 import styled from "styled-components";
 import { TagSlide } from "senf-atomic-design-system";
+import { useDispatch, useSelector } from "react-redux";
+import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
 const Wrapper = styled.div`
   margin-top: 2.5vw;
   top: 0em;
@@ -37,6 +39,13 @@ const ClickBlocker = styled.div`
 `;
 
 const GraphsWrapper = ({ graphType, title, subTitle, plot }) => {
+  const dispatch = useDispatch();
+  const selectedTopics = useSelector((state) => state.data.topics);
+
+  const handleSelectTopics = (topics) => {
+    dispatch(handleTopicSelectorRedux(topics));
+  };
+
   return (
     <Wrapper>
       <InnerWrapper>
@@ -47,7 +56,13 @@ const GraphsWrapper = ({ graphType, title, subTitle, plot }) => {
 
           <StyledText textAlign="center">{subTitle}</StyledText>
         </TextWrapper>
-        {graphType !== "topicsSum" && <TagSlide type="topics" />}
+        {graphType !== "topicsSum" && (
+          <TagSlide
+            type="topics"
+            selectedTopics={selectedTopics}
+            handleSelectTopics={handleSelectTopics}
+          />
+        )}
       </InnerWrapper>
       <ClickBlocker />
       {plot}
