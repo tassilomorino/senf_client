@@ -31,8 +31,8 @@ const ProjectroomPage = ({
   const { t } = useTranslation();
   const [path, setPath] = useState("");
   const [order, setOrder] = useState(1);
-  const [infoOpen, setInfoOpen] = useState(true);
-
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchOpen, setSearchOpen] = useState(false);
   const [dropdown, setDropdown] = useState("newest");
 
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
@@ -104,7 +104,6 @@ const ProjectroomPage = ({
 
   const dataRar = project?.screams;
 
-  const [searchTerm, setSearchTerm] = useState("");
   const screamsSearched = dataRar?.filter((val) => {
     if (searchTerm === "") {
       return val;
@@ -157,11 +156,10 @@ const ProjectroomPage = ({
         }
         setPostIdeaOpen={() => setPostIdeaOpen(true)}
         handleEditProjectroom={handleEditProjectroom}
-
-        //  setSearchOpen
-        //  searchOpen,
-        //  searchTerm,
-        //  setSearchTerm,
+        setSearchOpen={setSearchOpen}
+        searchOpen={searchOpen}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
       />
     )
   );

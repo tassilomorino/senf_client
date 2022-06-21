@@ -23,16 +23,13 @@ const Wrapper = styled.div`
   position: fixed;
   top: calc((var(--vh, 1vh) * 100) - 210px);
   left: 10px;
-
   pointer-events: none;
 
   @media (min-width: 768px) {
     justify-content: center;
-
     position: absolute;
     left: 470px;
-    top: 100vh;
-    margin-top: -100px;
+    top: 18px;
     width: calc(100% - 470px);
   }
 `;
@@ -93,7 +90,7 @@ export const MapFilter = memo(({ viewport, mapRef }) => {
     !waitTime && (
       <Wrapper>
         <Button
-          text={t("Im Bereich suchen")}
+          text={t("Ideen im Bereich anzeigen")}
           onClick={() => handleMapBoundsSet(viewport)}
           variant="white"
           size={isMobileCustom && "small"}

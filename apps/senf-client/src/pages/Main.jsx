@@ -570,7 +570,7 @@ const Main = () => {
         <Modal
           zIndex={9999999999}
           openModal={openModalAuthenticateForProjectRoom}
-          setOpenModal={() => setOpenModalAuthenticateForProjectRoom(false)}
+          setOpenModal={setOpenModalAuthenticateForProjectRoom}
         >
           <StyledH3 textAlign="center" margin="20px">
             {t("authenticatedForCreateProjectRoom")}
@@ -585,7 +585,7 @@ const Main = () => {
         <Modal
           zIndex={9999999999}
           openModal={openCreateOrganizationFirst}
-          setOpenModal={() => setOpenCreateOrganizationFirst(false)}
+          setOpenModal={setOpenCreateOrganizationFirst}
         >
           <StyledH3 textAlign="center" margin="20px">
             {t("createOrganizationForCreateProjectRoom")}
@@ -604,7 +604,7 @@ const Main = () => {
         <Modal
           zIndex={9999999999}
           openModal={openRequestProjectRoom}
-          setOpenModal={() => setOpenRequestProjectRoom(false)}
+          setOpenModal={setOpenRequestProjectRoom}
         >
           <StyledH3 textAlign="center" margin="20px">
             {t("requestCreateProjectRoom")}
@@ -684,6 +684,7 @@ const Main = () => {
                 : "organizationTypes"
             }
             hide={
+              openInfoPage ||
               swipedUp ||
               (isMobileCustom && openScream) ||
               (openProjectRoom && !project?.screams) ||

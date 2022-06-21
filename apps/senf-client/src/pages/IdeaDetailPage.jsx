@@ -112,6 +112,9 @@ const IdeaDetailPage = ({
   const [commentIdSelected, setCommentIdSelected] = useState("");
   const [swipePosition, setSwipePosition] = useState("bottom");
 
+  const [commentFormInput, setCommentFormInput] = useState("");
+  const [commentFormLoading, setCommentFormLoading] = useState(false);
+
   useEffect(() => {
     if (openScream && lat !== undefined) {
       window.scrollTo({
@@ -181,6 +184,17 @@ const IdeaDetailPage = ({
   //   }
   // };
 
+  const handleSubmitComment = (event) => {
+    event.preventDefault();
+    setCommentFormLoading(true);
+
+    dispatch(submitComment(screamId, { body: commentFormInput }, user)).then(
+      () => {
+        setCommentFormLoading(false);
+        setCommentFormInput("");
+      }
+    );
+  };
   const handleShareIdeaVia = () => {};
 
   const handleOpenProjectroom = (projectRoomId) => {
@@ -265,6 +279,10 @@ const IdeaDetailPage = ({
           handleReportIdea={handleReportIdea}
           handleShareIdeaVia={handleShareIdeaVia}
           handleOpenMenuComment={handleOpenMenuComment}
+          commentFormInput={commentFormInput}
+          setCommentFormInput={setCommentFormInput}
+          handleSubmitComment={handleSubmitComment}
+          commentFormLoading={commentFormLoading}
         />
       </React.Fragment>,
       portalRoot
