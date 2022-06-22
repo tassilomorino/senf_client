@@ -18,6 +18,8 @@ import {
 import { openProjectRoomFunc } from "../redux/actions/projectActions";
 import EditIdeaModal from "../components/molecules/Modals/EditIdeaModal";
 import { submitComment } from "../redux/actions/commentActions";
+import { openLink } from "../util/helpers";
+
 const portalRoot = document.getElementById("portal-root");
 
 const Wrapper = styled.div`
@@ -194,7 +196,18 @@ const IdeaDetailPage = ({
       }
     );
   };
-  const handleShareIdeaVia = () => {};
+  const handleShareIdeaVia = (medium, path) => {
+    if (medium === "Whatsapp") {
+      openLink("whatsapp://send?text=" + path);
+    } else if (medium === "Facebook") {
+      openLink("https://www.facebook.com/sharer/sharer.php?u=" + path);
+    } else if (medium === "Email") {
+      openLink(
+        "mailto:?subject=Das könnte dich interessieren!&amp;body=Check out this site " +
+          path
+      );
+    }
+  };
 
   const handleOpenProjectroom = (projectRoomId) => {
     dispatch(openProjectRoomFunc(projectRoomId, true));
