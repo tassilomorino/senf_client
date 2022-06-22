@@ -147,6 +147,7 @@ const ProjectroomPage = ({
     project && (
       <ProjectroomPageComponent
         data={project}
+        ideasData={dataFinal}
         organizations={organizations}
         handleButtonOpenCard={handleButtonOpenCard}
         handleButtonClose={handleClose}

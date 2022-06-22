@@ -184,10 +184,8 @@ const IdeaDetailPage = ({
   //   }
   // };
 
-  const handleSubmitComment = (event) => {
-    event.preventDefault();
+  const handleSubmitComment = () => {
     setCommentFormLoading(true);
-
     dispatch(submitComment(screamId, { body: commentFormInput }, user)).then(
       () => {
         setCommentFormLoading(false);
