@@ -41,7 +41,6 @@ import {
 
 // Components
 import InsightsPage from "./InsightsPage";
-import Topbar from "../components/molecules/Navigation/Topbar";
 import Map from "../components/atoms/map/Map";
 import IdeaDialog from "./IdeaDetailPage";
 import ThanksForTheVote from "../components/atoms/Backgrounds/ThanksForTheVote";
@@ -63,7 +62,6 @@ import {
 } from "../redux/actions/organizationActions";
 
 import styled from "styled-components";
-import { MenuData } from "../data/MenuData";
 import {
   filterByGeodata,
   filterByTagFilter,
