@@ -236,7 +236,7 @@ const OrganizationPage = ({
     (state) => state.data.loadingOrganization
   );
 
-  const handleEdit = () => {
+  const handleEditOrganization = () => {
     localStorage.setItem("createOrganizationId", organization?.organizationId);
     localStorage.setItem("createOrganizationPostEdit", true);
 
@@ -370,7 +370,7 @@ const OrganizationPage = ({
         organization={organization}
         organizations={organizations}
         handleCloseOrganizationPage={handleClose}
-        handleOpenCreateOrganization={handleEdit}
+        handleEditOrganization={handleEditOrganization}
         handleButtonOpenCard={handleButtonOpenCard}
       />
     </React.Fragment>

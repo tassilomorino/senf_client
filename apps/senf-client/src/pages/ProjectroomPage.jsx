@@ -3,7 +3,10 @@
 import React, { useState, useEffect, memo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // Redux stuff
-import { openProjectRoomFunc } from "../redux/actions/projectActions";
+import {
+  openCreateProjectRoomFunc,
+  openProjectRoomFunc,
+} from "../redux/actions/projectActions";
 import { clearErrors } from "../redux/actions/errorsActions";
 import { setMapBounds, setMapViewport } from "../redux/actions/mapActions";
 import styled from "styled-components";

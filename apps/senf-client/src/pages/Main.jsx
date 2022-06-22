@@ -669,7 +669,7 @@ const Main = () => {
         // (order === 1 || order === 2 || openProjectRoom || openAccount) &&
         <Box
           margin={
-            isMobileCustom ? "10px 10px 10px 10px" : "10px 10px 10px 500px"
+            isMobileCustom ? "60px 10px 10px 10px" : "10px 10px 10px 500px"
           }
           position="absolute"
           zIndex={9}
