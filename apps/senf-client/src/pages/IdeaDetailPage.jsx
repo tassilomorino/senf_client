@@ -17,6 +17,7 @@ import {
 } from "senf-atomic-design-system";
 import { openProjectRoomFunc } from "../redux/actions/projectActions";
 import EditIdeaModal from "../components/molecules/Modals/EditIdeaModal";
+import { submitComment } from "../redux/actions/commentActions";
 const portalRoot = document.getElementById("portal-root");
 
 const Wrapper = styled.div`
