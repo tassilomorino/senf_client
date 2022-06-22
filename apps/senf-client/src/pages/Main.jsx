@@ -798,6 +798,7 @@ const Main = () => {
             //   setOpenInsightsPage={setOpenStatisticsOverview}
             // />
             <ProjectroomPage
+              user={user}
               setPostIdeaOpen={setPostIdeaOpen}
               handleButtonOpenCard={handleButtonOpenCard}
             />

@@ -24,7 +24,7 @@ const ProjectroomPage = ({
   loadingProjects,
   dataFinalMap,
   setOpenInsightsPage,
-
+  user,
   handleButtonOpenCard,
   setPostIdeaOpen,
 }) => {
@@ -146,6 +146,7 @@ const ProjectroomPage = ({
   return (
     project && (
       <ProjectroomPageComponent
+        user={user}
         data={project}
         ideasData={dataFinal}
         organizations={organizations}
