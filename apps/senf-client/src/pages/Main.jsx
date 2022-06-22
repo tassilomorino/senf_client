@@ -789,7 +789,7 @@ const Main = () => {
               />
             )}
 
-          {openProjectRoom && (
+          {openProjectRoom && !openScream && (
             // <ProjectDialog
             //   loading={loading}
             //   handleClick={handleClick}

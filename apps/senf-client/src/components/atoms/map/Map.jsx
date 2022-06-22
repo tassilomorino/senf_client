@@ -22,9 +22,7 @@ import MapGL, {
   NavigationControl,
   Image,
 } from "../../../util/urbica/react-map-gl.esm";
-import bbox from "@turf/bbox";
 
-import NoLocationPopUp from "./NoLocationPopUp";
 import { MapFilter } from "./MapFilter";
 import { PatternBackground } from "./styles/sharedStyles";
 import { useParams } from "react-router";
