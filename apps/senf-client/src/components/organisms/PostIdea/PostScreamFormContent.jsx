@@ -25,7 +25,7 @@ import {
   RoundedButton,
   Button,
   Input,
-  Link,
+  Hyperlink,
   Mail,
   CalendarIcon,
 } from "senf-atomic-design-system";
@@ -212,7 +212,7 @@ const PostScreamFormContent = ({
             variant={
               weblink !== null && weblinkTitle !== null ? "primary" : "white"
             }
-            icon={<Link />}
+            icon={<Hyperlink />}
             onClick={() => setWeblinkOpen(true)}
           />
           <RoundedButton
