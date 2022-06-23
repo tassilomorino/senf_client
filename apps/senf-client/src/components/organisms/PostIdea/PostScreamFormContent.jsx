@@ -207,7 +207,7 @@ const PostScreamFormContent = ({
           inputProps={{ maxLength: 800 }}
         />
 
-        <Box position="fixed" bottom="50px" zIndex={2} gap="8px">
+        <Box position="absolute" bottom="60px" zIndex={2} gap="8px">
           <RoundedButton
             variant={
               weblink !== null && weblinkTitle !== null ? "primary" : "white"
