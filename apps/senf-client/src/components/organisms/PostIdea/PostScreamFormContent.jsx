@@ -20,7 +20,15 @@ import { OptionsTopics } from "../../../data/OptionsTopics";
 import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import styled from "styled-components";
 import { StyledH3, StyledH4, StyledText } from "../../../styles/GlobalStyle";
-import { Box, Button, Input } from "senf-atomic-design-system";
+import {
+  Box,
+  RoundedButton,
+  Button,
+  Input,
+  Link,
+  Mail,
+  CalendarIcon,
+} from "senf-atomic-design-system";
 const Card = styled.div`
   position: absolute;
   top: 0;
@@ -198,41 +206,31 @@ const PostScreamFormContent = ({
           fullWidth
           inputProps={{ maxLength: 800 }}
         />
-        <CustomIconButton
-          name="Weblink"
-          position="absolute"
-          bottom="70px"
-          iconWidth="25px"
-          zIndex={0}
-          backgroundColor={
-            weblink !== null && weblinkTitle !== null ? "#fed957" : "white"
-          }
-          handleButtonClick={() => setWeblinkOpen(true)}
-        />
-        <CustomIconButton
-          name="Contact"
-          position="absolute"
-          bottom="70px"
-          marginLeft="60px"
-          iconWidth="25px"
-          zIndex={0}
-          backgroundColor={
-            contact !== null && contactTitle !== null ? "#fed957" : "white"
-          }
-          handleButtonClick={() => setContactOpen(true)}
-        />
-        <div style={checkIfCalendar ? {} : { display: "none" }}>
-          <CustomIconButton
-            name="DatePicker"
-            position="absolute"
-            bottom="70px"
-            marginLeft="120px"
-            iconWidth="23px"
-            zIndex={0}
-            backgroundColor={selectedDays.length === 0 ? "white" : "#fed957"}
-            handleButtonClick={() => setCalendarOpen(true)}
+
+        <Box position="fixed" bottom="50px" zIndex={2} gap="8px">
+          <RoundedButton
+            variant={
+              weblink !== null && weblinkTitle !== null ? "primary" : "white"
+            }
+            icon={<Link />}
+            onClick={() => setWeblinkOpen(true)}
           />
-        </div>{" "}
+          <RoundedButton
+            variant={
+              contact !== null && contactTitle !== null ? "primary" : "white"
+            }
+            icon={<Mail />}
+            onClick={() => setContactOpen(true)}
+          />
+
+          {checkIfCalendar && (
+            <RoundedButton
+              variant={selectedDays.length > 0 ? "primary" : "white"}
+              icon={<CalendarIcon />}
+              onClick={() => setCalendarOpen(true)}
+            />
+          )}
+        </Box>
         <SelectContainer>
           <StyledH3 fontWeight={400}>{t("topic")}: </StyledH3>
 
