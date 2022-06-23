@@ -46,6 +46,7 @@ import OpenBook from "../../../images/openBook.png";
 import { openMail } from "../../../util/helpers";
 import FooterLinks from "../../molecules/Footer/FooterLinks";
 import SelectLanguageButton from "../../atoms/Selects/SelectLanguageButton";
+import { Plus, Box, RoundedButton } from "senf-atomic-design-system";
 
 const Container = styled.div`
   height: 100%;
@@ -586,14 +587,16 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsOverview }) => {
       <InfoPageDialog isOpen={openInfoPage} setIsOpen={handleClose}>
         <Container id="InfoPage">
           {isMobileCustom && (
-            <CustomIconButton
-              name="Close"
+            <Box
               position="absolute"
-              left="0px"
-              zIndex={999}
               margin={document.body.clientWidth > 768 ? "40px" : "10px"}
-              handleButtonClick={handleClose}
-            />
+              zIndex={999}
+            >
+              <RoundedButton
+                icon={<Plus transform="rotate(45deg)" />}
+                onClick={handleClose}
+              />
+            </Box>
           )}
 
           <SelectLanguageWrapper>
