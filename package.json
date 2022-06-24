@@ -20,8 +20,5 @@
     "node": "16.x",
     "yarn": "3.2.1"
   },
-  "packageManager": "yarn@3.2.1",
-  "dependencies": {
-    "senf-atomic-design-system": "2.1.5"
-  }
+  "packageManager": "yarn@3.2.1"
 }
