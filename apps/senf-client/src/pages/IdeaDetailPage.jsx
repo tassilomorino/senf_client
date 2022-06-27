@@ -191,8 +191,8 @@ const IdeaDetailPage = ({
     setCommentFormLoading(true);
     dispatch(submitComment(screamId, { body: commentFormInput }, user)).then(
       () => {
-        setCommentFormLoading(false);
         setCommentFormInput("");
+        setCommentFormLoading(false);
       }
     );
   };

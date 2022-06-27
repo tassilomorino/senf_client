@@ -32,6 +32,8 @@ export const getComment = (commentId) => async (dispatch) => {
   } else {
     const commentData = commentDocSnapshot.data();
     commentData.id = commentDocSnapshot.id;
+    commentData.title = commentDocSnapshot.body;
+
     dispatch({
       type: SET_COMMENT,
       payload: commentData,
@@ -59,9 +61,14 @@ export const submitComment =
         age: ageCapture,
         Thema: screamDocSnapshot.data().Thema,
       };
+
+      //The List compoonent needs a title, not a body – rewrite db and convert body to title
+      const newCommentConverted = newComment;
+      newCommentConverted.title = newComment.body;
+
       dispatch({
         type: SUBMIT_COMMENT,
-        payload: newComment,
+        payload: newCommentConverted,
       });
       await addDoc(collection(db, "comments"), newComment);
       await updateDoc(screamDocRef, {

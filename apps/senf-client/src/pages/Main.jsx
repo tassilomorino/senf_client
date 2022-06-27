@@ -630,12 +630,14 @@ const Main = () => {
           setOpenOrganizationsOverview={setOpenOrganizationsOverview}
         />
       )}
-      <Auth
-        setAuthOpen={setAuthOpen}
-        setAuthEditOpen={setAuthEditOpen}
-        authOpen={authOpen}
-        authEditOpen={authEditOpen}
-      />
+      {(authOpen || authEditOpen) && (
+        <Auth
+          setAuthOpen={setAuthOpen}
+          setAuthEditOpen={setAuthEditOpen}
+          authOpen={authOpen}
+          authEditOpen={authEditOpen}
+        />
+      )}
 
       {isMobileCustom && !postIdeaOpen && (
         <React.Fragment>
