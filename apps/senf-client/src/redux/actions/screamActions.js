@@ -55,7 +55,7 @@ export const getScreams = (mapViewport) => async (dispatch) => {
       screams.push({
         ...doc.data(),
         screamId: doc.id,
-        body: doc.data().body.substr(0, 150),
+        body: doc.data().body.substr(0, 180),
         color: setColorByTopic(doc.data().Thema),
         comments: [],
       });
