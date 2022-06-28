@@ -158,7 +158,7 @@ const Map = ({
         dispatch(setMapViewport(initialMapViewport));
       }, 1000);
     }
-  }, []);
+  }, [initialMapViewport]);
 
   useEffect(() => {
     if (!initialMapViewport) return;
