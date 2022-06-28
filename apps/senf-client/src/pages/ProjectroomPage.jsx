@@ -165,6 +165,7 @@ const ProjectroomPage = ({
         searchOpen={searchOpen}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
+        path={path}
       />
     )
   );
