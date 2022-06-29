@@ -22,6 +22,7 @@ import {
 import {
   getProjects,
   openProjectRoomFunc,
+  openCreateProjectRoomFunc,
 } from "../redux/actions/projectActions";
 
 import {
@@ -40,7 +41,6 @@ import {
 
 // Components
 import InsightsPage from "./InsightsPage";
-import Topbar from "../components/molecules/Navigation/Topbar";
 import Map from "../components/atoms/map/Map";
 import IdeaDialog from "./IdeaDetailPage";
 import ThanksForTheVote from "../components/atoms/Backgrounds/ThanksForTheVote";
@@ -62,7 +62,6 @@ import {
 } from "../redux/actions/organizationActions";
 
 import styled from "styled-components";
-import { MenuData } from "../data/MenuData";
 import {
   filterByGeodata,
   filterByTagFilter,
@@ -546,6 +545,7 @@ const Main = () => {
       return;
     } else {
       dispatch(stateCreateOrganizationsFunc(true));
+      setOpenCreateOrganizationFirst(false);
     }
   };
 
@@ -564,68 +564,61 @@ const Main = () => {
 
   return (
     <React.Fragment>
-      {openModalAuthenticateForProjectRoom &&
-        !user.authenticated &&
-        ReactDOM.createPortal(
-          <Modal
-            zIndex={9999999999}
-            openModal={openModalAuthenticateForProjectRoom}
-            setOpenModal={() => setOpenModalAuthenticateForProjectRoom(false)}
-          >
-            <StyledH3 textAlign="center" margin="20px">
-              {t("authenticatedForCreateProjectRoom")}
-            </StyledH3>
-            <Box justifyContent="center" margin="0px 0px 10px 0px">
-              <Button text={t("login")} onClick={() => setAuthOpen(true)} />
-            </Box>
-          </Modal>,
-          document.getElementById("portal-root-modal")
-        )}
+      {openModalAuthenticateForProjectRoom && !user.authenticated && (
+        <Modal
+          zIndex={9999999999}
+          openModal={openModalAuthenticateForProjectRoom}
+          setOpenModal={setOpenModalAuthenticateForProjectRoom}
+        >
+          <StyledH3 textAlign="center" margin="20px">
+            {t("authenticatedForCreateProjectRoom")}
+          </StyledH3>
+          <Box justifyContent="center" margin="0px 0px 10px 0px">
+            <Button text={t("login")} onClick={() => setAuthOpen(true)} />
+          </Box>
+        </Modal>
+      )}
 
-      {openCreateOrganizationFirst &&
-        ReactDOM.createPortal(
-          <Modal
-            zIndex={9999999999}
-            openModal={openCreateOrganizationFirst}
-            setOpenModal={() => setOpenCreateOrganizationFirst(false)}
-          >
-            <StyledH3 textAlign="center" margin="20px">
-              {t("createOrganizationForCreateProjectRoom")}
-            </StyledH3>
-            <Box justifyContent="center" margin="0px 0px 10px 0px">
-              <Button
-                text={t("createOrganization")}
-                margin="20px"
-                onClick={openCreateOrganization}
-              />
-            </Box>
-          </Modal>,
-          document.getElementById("portal-root-modal")
-        )}
+      {openCreateOrganizationFirst && (
+        <Modal
+          zIndex={9999999999}
+          openModal={openCreateOrganizationFirst}
+          setOpenModal={setOpenCreateOrganizationFirst}
+        >
+          <StyledH3 textAlign="center" margin="20px">
+            {t("createOrganizationForCreateProjectRoom")}
+          </StyledH3>
+          <Box justifyContent="center" margin="0px 0px 10px 0px">
+            <Button
+              text={t("createOrganization")}
+              margin="20px"
+              onClick={handleOpenCreateOrganization}
+            />
+          </Box>
+        </Modal>
+      )}
 
-      {openRequestProjectRoom &&
-        ReactDOM.createPortal(
-          <Modal
-            zIndex={9999999999}
-            openModal={openRequestProjectRoom}
-            setOpenModal={() => setOpenRequestProjectRoom(false)}
-          >
-            <StyledH3 textAlign="center" margin="20px">
-              {t("requestCreateProjectRoom")}
-            </StyledH3>
-            <Box justifyContent="center" margin="0px 0px 10px 0px">
-              <Button
-                text={t("getInTouch")}
-                zIndex="999"
-                backgroundColor="#fed957"
-                textColor="#353535"
-                margin="20px"
-                onClick={openMailRequestProjectRoom}
-              />
-            </Box>
-          </Modal>,
-          document.getElementById("portal-root-modal")
-        )}
+      {openRequestProjectRoom && (
+        <Modal
+          zIndex={9999999999}
+          openModal={openRequestProjectRoom}
+          setOpenModal={setOpenRequestProjectRoom}
+        >
+          <StyledH3 textAlign="center" margin="20px">
+            {t("requestCreateProjectRoom")}
+          </StyledH3>
+          <Box justifyContent="center" margin="0px 0px 10px 0px">
+            <Button
+              text={t("getInTouch")}
+              zIndex="999"
+              backgroundColor="#fed957"
+              textColor="#353535"
+              margin="20px"
+              onClick={openMailRequestProjectRoom}
+            />
+          </Box>
+        </Modal>
+      )}
 
       {(loading || loadingIdea || loadingProjectRoom) && (
         <Loader withoutBg={true} />
@@ -637,12 +630,14 @@ const Main = () => {
           setOpenOrganizationsOverview={setOpenOrganizationsOverview}
         />
       )}
-      <Auth
-        setAuthOpen={setAuthOpen}
-        setAuthEditOpen={setAuthEditOpen}
-        authOpen={authOpen}
-        authEditOpen={authEditOpen}
-      />
+      {(authOpen || authEditOpen) && (
+        <Auth
+          setAuthOpen={setAuthOpen}
+          setAuthEditOpen={setAuthEditOpen}
+          authOpen={authOpen}
+          authEditOpen={authEditOpen}
+        />
+      )}
 
       {isMobileCustom && !postIdeaOpen && (
         <React.Fragment>
@@ -682,12 +677,14 @@ const Main = () => {
           zIndex={9}
         >
           <TagSlide
+            flexDirection={!isMobileCustom && "column"}
             type={
               order === 1 || openProjectRoom || openAccount
                 ? "topics"
                 : "organizationTypes"
             }
             hide={
+              openInfoPage ||
               swipedUp ||
               (isMobileCustom && openScream) ||
               (openProjectRoom && !project?.screams) ||
@@ -794,7 +791,7 @@ const Main = () => {
               />
             )}
 
-          {openProjectRoom && (
+          {openProjectRoom && !openScream && (
             // <ProjectDialog
             //   loading={loading}
             //   handleClick={handleClick}
@@ -803,6 +800,7 @@ const Main = () => {
             //   setOpenInsightsPage={setOpenStatisticsOverview}
             // />
             <ProjectroomPage
+              user={user}
               setPostIdeaOpen={setPostIdeaOpen}
               handleButtonOpenCard={handleButtonOpenCard}
             />
@@ -877,6 +875,8 @@ const Main = () => {
             setOpenOrganizationsOverview={setOpenOrganizationsOverview}
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
+            checkedSortOption={dropdown}
+            setCheckedSortOption={setDropdown}
             handleButtonOpenCard={handleButtonOpenCard}
             projectroomsData={dataFinalProjectRooms}
             handleOpenCreateOrganization={handleOpenCreateOrganization}

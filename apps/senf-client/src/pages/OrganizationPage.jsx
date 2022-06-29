@@ -212,6 +212,7 @@ const OrganizationPage = ({
   organizations,
   handleOpenCreateOrganization,
   handleButtonOpenCard,
+  user,
 }) => {
   const { t } = useTranslation();
   const [infoOpen, setInfoOpen] = useState(false);
@@ -223,7 +224,6 @@ const OrganizationPage = ({
   const [order, setOrder] = useState(1);
   const [logo, setLogo] = useState(null);
 
-  const user = useSelector((state) => state.user);
   const [
     uncompletedOrDeactivatedProjectRooms,
     setUncompletedOrDeactivatedProjectRooms,
@@ -236,7 +236,7 @@ const OrganizationPage = ({
     (state) => state.data.loadingOrganization
   );
 
-  const handleEdit = () => {
+  const handleEditOrganization = () => {
     localStorage.setItem("createOrganizationId", organization?.organizationId);
     localStorage.setItem("createOrganizationPostEdit", true);
 
@@ -257,11 +257,7 @@ const OrganizationPage = ({
 
   useEffect(() => {
     async function fetchData() {
-      if (
-        organization &&
-        user.organizationId &&
-        user.organizationId.includes(organization?.organizationId)
-      ) {
+      if (organization && user && organization?.userIds.includes(user.userId)) {
         const data = [];
 
         const docRef = collection(
@@ -291,7 +287,7 @@ const OrganizationPage = ({
       }
     }
     fetchData();
-  }, [organization.organizationId, organization, user.organizationId]);
+  }, [organization.organizationId, organization, user]);
 
   return !loadingOrganization ? (
     <React.Fragment>
@@ -370,10 +366,11 @@ const OrganizationPage = ({
       )}
 
       <OrganizationPageComponent
+        user={user}
         organization={organization}
         organizations={organizations}
         handleCloseOrganizationPage={handleClose}
-        handleOpenCreateOrganization={handleEdit}
+        handleEditOrganization={handleEditOrganization}
         handleButtonOpenCard={handleButtonOpenCard}
       />
     </React.Fragment>

@@ -2298,79 +2298,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fullcalendar/common@npm:~5.11.0":
-  version: 5.11.0
-  resolution: "@fullcalendar/common@npm:5.11.0"
-  dependencies:
-    tslib: ^2.1.0
-  checksum: 1bda749a433ec7d90f5f3438b205045652aec1ef7face62d490a3f76dfb5070c2e0831e14f3512bcce85ee1bdb758d8ef98d376f1368a49242621e46d293a5bd
-  languageName: node
-  linkType: hard
-
-"@fullcalendar/core@npm:^5.10.1":
-  version: 5.11.0
-  resolution: "@fullcalendar/core@npm:5.11.0"
-  dependencies:
-    "@fullcalendar/common": ~5.11.0
-    preact: ^10.0.5
-    tslib: ^2.1.0
-  checksum: 20e60c65af127b3bde8340c7269f31cd776c16b0431821e91b685d4b193c6902fba8cad768b0567770046fe607898b45e8a089d05c51ad1233167ccb64aece4e
-  languageName: node
-  linkType: hard
-
-"@fullcalendar/daygrid@npm:^5.10.1":
-  version: 5.11.0
-  resolution: "@fullcalendar/daygrid@npm:5.11.0"
-  dependencies:
-    "@fullcalendar/common": ~5.11.0
-    tslib: ^2.1.0
-  checksum: d30105222f76946a615a7560727c6fe3be7f51c37799f4f741e0ebccd9c4ee0256dbf9f2118e744df784be20cbff6629bb53b979b518f625f70bc234e32ab251
-  languageName: node
-  linkType: hard
-
-"@fullcalendar/google-calendar@npm:^5.10.1":
-  version: 5.11.0
-  resolution: "@fullcalendar/google-calendar@npm:5.11.0"
-  dependencies:
-    "@fullcalendar/common": ~5.11.0
-    tslib: ^2.1.0
-  checksum: 8d4e672e1317338321f676ecee351b7c69b53e0786cd95acd38da0d1c845c631ba0b6e1cb5724fe18189ec02b5cad0d0f1cd9a92fc26245f64c1c3ef3c389289
-  languageName: node
-  linkType: hard
-
-"@fullcalendar/interaction@npm:^5.10.1":
-  version: 5.11.0
-  resolution: "@fullcalendar/interaction@npm:5.11.0"
-  dependencies:
-    "@fullcalendar/common": ~5.11.0
-    tslib: ^2.1.0
-  checksum: 625eb7ea331e56bb4539d4c2105c189342a9dca3d236f75a5a9ae2884595d480fb225444ff9feb1386cda07cbc92695c606921495922179b9f85b37877665db5
-  languageName: node
-  linkType: hard
-
-"@fullcalendar/list@npm:^5.10.1":
-  version: 5.11.0
-  resolution: "@fullcalendar/list@npm:5.11.0"
-  dependencies:
-    "@fullcalendar/common": ~5.11.0
-    tslib: ^2.1.0
-  checksum: 08be90dbdfccfa9d3ffe60b9fc796a3ae98f47219629514ea484c50f34a4a0f18109df910c593d3e988b3e6b0ef2aaa87227e9b8cdbae826f9435421c8b1d2e9
-  languageName: node
-  linkType: hard
-
-"@fullcalendar/react@npm:^5.10.1":
-  version: 5.11.1
-  resolution: "@fullcalendar/react@npm:5.11.1"
-  dependencies:
-    "@fullcalendar/common": ~5.11.0
-    tslib: ^2.1.0
-  peerDependencies:
-    react: ^16.7.0 || ^17 || ^18
-    react-dom: ^16.7.0 || ^17 || ^18
-  checksum: bf39e110c15206521c3c5917be86c3129cdcd4efa035faae2cf86c125e29fa4728631ec334a7990d9e1241748c20bd76590bcbc17ae7713174f648fe785ebed8
-  languageName: node
-  linkType: hard
-
 "@gar/promisify@npm:^1.1.3":
   version: 1.1.3
   resolution: "@gar/promisify@npm:1.1.3"
@@ -5089,13 +5016,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classnames@npm:^2.2.5":
-  version: 2.3.1
-  resolution: "classnames@npm:2.3.1"
-  checksum: 14db8889d56c267a591f08b0834989fe542d47fac659af5a539e110cc4266694e8de86e4e3bbd271157dbd831361310a8293e0167141e80b0f03a0f175c80960
-  languageName: node
-  linkType: hard
-
 "clean-stack@npm:^2.0.0":
   version: 2.2.0
   resolution: "clean-stack@npm:2.2.0"
@@ -5644,7 +5564,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:^2.1.3, debug@npm:^2.2.0, debug@npm:^2.3.3, debug@npm:^2.6.9":
+"debug@npm:^2.2.0, debug@npm:^2.3.3, debug@npm:^2.6.9":
   version: 2.6.9
   resolution: "debug@npm:2.6.9"
   dependencies:
@@ -9294,15 +9214,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonp@npm:^0.2.1":
-  version: 0.2.1
-  resolution: "jsonp@npm:0.2.1"
-  dependencies:
-    debug: ^2.1.3
-  checksum: 90aabd9deb3a9ba83aedf8d40e1aaff1fc29f3f3fe42985a661782498dde526a7cd9b7bec4b8721f7d0beafab9e5ccfdafd46640f7dd6c58d529a6bb5238e2b8
-  languageName: node
-  linkType: hard
-
 "jsonpointer@npm:^5.0.0":
   version: 5.0.0
   resolution: "jsonpointer@npm:5.0.0"
@@ -10987,13 +10898,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"preact@npm:^10.0.5":
-  version: 10.7.3
-  resolution: "preact@npm:10.7.3"
-  checksum: a0471da77528b9f9478c02bf60ae41754509655a19b65d9fea274a3c94c9583a7b1700e1329ee726ef6dd5307b73cf391d3f7f1b6a9ace43d71a70cd1be92737
-  languageName: node
-  linkType: hard
-
 "prelude-ls@npm:^1.2.1":
   version: 1.2.1
   resolution: "prelude-ls@npm:1.2.1"
@@ -11546,18 +11450,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-share@npm:^4.4.0":
-  version: 4.4.0
-  resolution: "react-share@npm:4.4.0"
-  dependencies:
-    classnames: ^2.2.5
-    jsonp: ^0.2.1
-  peerDependencies:
-    react: ^16.3.0 || ^17
-  checksum: 69306d4593cbbc8043383d03a6aea254affb9d74f79da79903bfb6fb044451516761b955786a4b1bf54b84ff9ddeaa4512f3722388e80b073defcd3949f1abc4
-  languageName: node
-  linkType: hard
-
 "react-side-effect@npm:^2.1.0":
   version: 2.1.1
   resolution: "react-side-effect@npm:2.1.1"
@@ -12077,7 +11969,7 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     prettier: ^2.5.1
-    senf-atomic-design-system: 2.1.5
+    senf-atomic-design-system: 2.4.5
     turbo: latest
   languageName: unknown
   linkType: soft
@@ -12238,9 +12130,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"senf-atomic-design-system@npm:2.1.5":
-  version: 2.1.5
-  resolution: "senf-atomic-design-system@npm:2.1.5"
+"senf-atomic-design-system@npm:2.4.5":
+  version: 2.4.5
+  resolution: "senf-atomic-design-system@npm:2.4.5"
   dependencies:
     formik: ^2.2.9
     i18next: ^21.6.16
@@ -12265,13 +12157,13 @@ __metadata:
     styled-components: ^5.3.3
     styled-system: ^5.1.5
     yup: ^0.32.11
-  checksum: d9231675324730371b0f3db2b81a6e0e17f7bed6aaa568c583dbf6799dcb2d201c9b242ea6c0b85bf3307f429e11072a24ef23b0eb1f946f8ac787f68a16d9f1
+  checksum: c9e6dd10874925258fae8f58b5bd7d81e0c0fdd16a659037acfade41bdf881a61f9e03a49ca94652b185409c35aeb27dbb3ba30a63788f9df7966db70cce535d
   languageName: node
   linkType: hard
 
-"senf-atomic-design-system@npm:2.2.4":
-  version: 2.2.4
-  resolution: "senf-atomic-design-system@npm:2.2.4"
+"senf-atomic-design-system@npm:2.5.4":
+  version: 2.5.4
+  resolution: "senf-atomic-design-system@npm:2.5.4"
   dependencies:
     formik: ^2.2.9
     i18next: ^21.6.16
@@ -12296,7 +12188,7 @@ __metadata:
     styled-components: ^5.3.3
     styled-system: ^5.1.5
     yup: ^0.32.11
-  checksum: ee3b3f02f4b8f6a2793162015b3e82307d046d5a1b321d7ea5eac0bb45aaac0f3ec1581f785c4b413e7c831b96c0edf2549dc10a894d7885786d1295c3192eed
+  checksum: 493f78e38ee10396696675b1949ac47cea82d47a89fd32b614907392b1bdbfd8ab7fdc32074079013a6025824af0ab5c58a8f251feb629c4dc5e2862f944433b
   languageName: node
   linkType: hard
 
@@ -12335,16 +12227,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "senf-client@workspace:apps/senf-client"
   dependencies:
-    "@fullcalendar/core": ^5.10.1
-    "@fullcalendar/daygrid": ^5.10.1
-    "@fullcalendar/google-calendar": ^5.10.1
-    "@fullcalendar/interaction": ^5.10.1
-    "@fullcalendar/list": ^5.10.1
-    "@fullcalendar/react": ^5.10.1
     "@mapbox/mapbox-gl-draw": ^1.3.0
     "@mapbox/mapbox-sdk": ^0.13.3
     "@material-ui/core": ^4.12.3
-    "@material-ui/icons": ^4.11.2
     "@react-spring/web": ^9.4.4
     "@turf/bbox": ^6.5.0
     "@types/react-router-dom": ^4.3.5
@@ -12381,7 +12266,6 @@ __metadata:
     react: ^17.0.2
     react-device-detect: ^2.1.2
     react-dom: ^17.0.2
-    react-easy-swipe: ^0.0.22
     react-helmet: ^6.1.0
     react-i18next: ^11.16.2
     react-infinite-scroller: ^1.2.5
@@ -12390,13 +12274,12 @@ __metadata:
     react-plotlyjs: ^0.4.4
     react-redux: ^7.2.8
     react-router-dom: ^5.2.0
-    react-share: ^4.4.0
     react-use-measure: ^2.1.1
     redux: ^4.1.2
     redux-thunk: ^2.4.1
     resize-observer: ^1.0.4
     rollup-plugin-visualizer: ^5.6.0
-    senf-atomic-design-system: 2.2.4
+    senf-atomic-design-system: 2.5.4
     start-server-and-test: ^1.13.1
     styled-components: ^5.3.5
     ui: "*"

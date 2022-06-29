@@ -127,16 +127,7 @@ const InsightsPage = ({
           touchAction: "none",
         });
 
-        setTimeout(() => {
-          window.history.pushState(null, null, "/projectRooms");
-          setOpenStatisticsOverview(false);
-        }, 150);
-        setTimeout(() => {
-          set({
-            transform: `translateY(${30}px)`,
-            touchAction: "none",
-          });
-        }, 300);
+        setClose();
       }
 
       set({ y: down ? my : 0 });
@@ -339,7 +330,7 @@ const InsightsPage = ({
   );
   return (
     <StatisticsOverview
-      openStatisticsOverview={true}
+      openStatisticsOverview={openStatisticsOverview}
       setOpenStatisticsOverview={setOpenStatisticsOverview}
     >
       {content}
