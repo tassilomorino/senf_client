@@ -1,0 +1,13 @@
+diff --git a/node_modules/@storybook/core-common/dist/cjs/utils/validate-configuration-files.js b/node_modules/@storybook/core-common/dist/cjs/utils/validate-configuration-files.js
+index 47e9523..d5dfb6d 100644
+--- a/node_modules/@storybook/core-common/dist/cjs/utils/validate-configuration-files.js
++++ b/node_modules/@storybook/core-common/dist/cjs/utils/validate-configuration-files.js
+@@ -40,7 +40,7 @@ function validateConfigurationFiles(configDir) {
+   var extensionsPattern = `{${Array.from(_interpretFiles.boost).join(',')}}`;
+ 
+   var exists = function (file) {
+-    return !!_glob.default.sync(_path.default.resolve(configDir, `${file}${extensionsPattern}`)).length;
++    return !!_glob.default.sync(_path.default.resolve(configDir, `${file}${extensionsPattern}`).split(_path.default.sep).join("/")).length;
+   };
+ 
+   var main = exists('main');
