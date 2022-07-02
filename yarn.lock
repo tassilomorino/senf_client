@@ -2722,7 +2722,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fullcalendar/core@npm:^5.10.1, @fullcalendar/core@npm:^5.11.0":
+"@fullcalendar/core@npm:^5.11.0":
   version: 5.11.0
   resolution: "@fullcalendar/core@npm:5.11.0"
   dependencies:
@@ -2733,17 +2733,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fullcalendar/daygrid@npm:^5.10.1":
-  version: 5.11.0
-  resolution: "@fullcalendar/daygrid@npm:5.11.0"
-  dependencies:
-    "@fullcalendar/common": ~5.11.0
-    tslib: ^2.1.0
-  checksum: d30105222f76946a615a7560727c6fe3be7f51c37799f4f741e0ebccd9c4ee0256dbf9f2118e744df784be20cbff6629bb53b979b518f625f70bc234e32ab251
-  languageName: node
-  linkType: hard
-
-"@fullcalendar/google-calendar@npm:^5.10.1, @fullcalendar/google-calendar@npm:^5.11.0":
+"@fullcalendar/google-calendar@npm:^5.11.0":
   version: 5.11.0
   resolution: "@fullcalendar/google-calendar@npm:5.11.0"
   dependencies:
@@ -2753,7 +2743,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fullcalendar/interaction@npm:^5.10.1, @fullcalendar/interaction@npm:^5.11.0":
+"@fullcalendar/interaction@npm:^5.11.0":
   version: 5.11.0
   resolution: "@fullcalendar/interaction@npm:5.11.0"
   dependencies:
@@ -2763,7 +2753,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fullcalendar/list@npm:^5.10.1, @fullcalendar/list@npm:^5.11.0":
+"@fullcalendar/list@npm:^5.11.0":
   version: 5.11.0
   resolution: "@fullcalendar/list@npm:5.11.0"
   dependencies:
@@ -2773,7 +2763,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fullcalendar/react@npm:^5.10.1, @fullcalendar/react@npm:^5.11.1":
+"@fullcalendar/react@npm:^5.11.1":
   version: 5.11.1
   resolution: "@fullcalendar/react@npm:5.11.1"
   dependencies:
@@ -19276,6 +19266,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"preact@npm:^10.0.5":
+  version: 10.8.2
+  resolution: "preact@npm:10.8.2"
+  checksum: 183358ba03b4c104c89b383ea926099b49acd0435f24e95dee9ff0e81350d1bfbd77908f6a2ed16b3654d75e84832fd5b4479216c85fe8af6ad8c2ebe795c4f9
+  languageName: node
+  linkType: hard
+
 "prelude-ls@npm:^1.2.1":
   version: 1.2.1
   resolution: "prelude-ls@npm:1.2.1"
@@ -20234,6 +20231,18 @@ __metadata:
   peerDependencies:
     react: ">=16.8"
   checksum: 7be673f5e72104be01e6ab274516bdb932efd93305243170690f6560e3bd1035dd1df3d3c9ce1e0f452638a2529f43a1e77dcf0934fc8031c4783da657be13ca
+  languageName: node
+  linkType: hard
+
+"react-share@npm:^4.4.0":
+  version: 4.4.0
+  resolution: "react-share@npm:4.4.0"
+  dependencies:
+    classnames: ^2.2.5
+    jsonp: ^0.2.1
+  peerDependencies:
+    react: ^16.3.0 || ^17
+  checksum: 69306d4593cbbc8043383d03a6aea254affb9d74f79da79903bfb6fb044451516761b955786a4b1bf54b84ff9ddeaa4512f3722388e80b073defcd3949f1abc4
   languageName: node
   linkType: hard
 
