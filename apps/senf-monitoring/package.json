@@ -1,5 +1,5 @@
 {
-  "name": "senf-dev",
+  "name": "senf-monitoring",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

@@ -21583,9 +21583,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"senf-dev@workspace:apps/senf-monitoring":
+"senf-monitoring@workspace:apps/senf-monitoring":
   version: 0.0.0-use.local
-  resolution: "senf-dev@workspace:apps/senf-monitoring"
+  resolution: "senf-monitoring@workspace:apps/senf-monitoring"
   dependencies:
     "@mapbox/mapbox-sdk": ^0.13.2
     "@material-ui/core": ^4.12.3
