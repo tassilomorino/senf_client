@@ -17,6 +17,9 @@ import {
 } from "senf-atomic-design-system";
 import { openProjectRoomFunc } from "../redux/actions/projectActions";
 import EditIdeaModal from "../components/molecules/Modals/EditIdeaModal";
+import { submitComment } from "../redux/actions/commentActions";
+import { openLink } from "../util/helpers";
+
 const portalRoot = document.getElementById("portal-root");
 
 const Wrapper = styled.div`
@@ -112,6 +115,9 @@ const IdeaDetailPage = ({
   const [commentIdSelected, setCommentIdSelected] = useState("");
   const [swipePosition, setSwipePosition] = useState("bottom");
 
+  const [commentFormInput, setCommentFormInput] = useState("");
+  const [commentFormLoading, setCommentFormLoading] = useState(false);
+
   useEffect(() => {
     if (openScream && lat !== undefined) {
       window.scrollTo({
@@ -181,7 +187,27 @@ const IdeaDetailPage = ({
   //   }
   // };
 
-  const handleShareIdeaVia = () => {};
+  const handleSubmitComment = () => {
+    setCommentFormLoading(true);
+    dispatch(submitComment(screamId, { body: commentFormInput }, user)).then(
+      () => {
+        setCommentFormInput("");
+        setCommentFormLoading(false);
+      }
+    );
+  };
+  const handleShareIdeaVia = (medium, path) => {
+    if (medium === "Whatsapp") {
+      openLink("whatsapp://send?text=" + path);
+    } else if (medium === "Facebook") {
+      openLink("https://www.facebook.com/sharer/sharer.php?u=" + path);
+    } else if (medium === "Email") {
+      openLink(
+        "mailto:?subject=Das könnte dich interessieren!&amp;body=Check out this site " +
+          path
+      );
+    }
+  };
 
   const handleOpenProjectroom = (projectRoomId) => {
     dispatch(openProjectRoomFunc(projectRoomId, true));
@@ -265,6 +291,10 @@ const IdeaDetailPage = ({
           handleReportIdea={handleReportIdea}
           handleShareIdeaVia={handleShareIdeaVia}
           handleOpenMenuComment={handleOpenMenuComment}
+          commentFormInput={commentFormInput}
+          setCommentFormInput={setCommentFormInput}
+          handleSubmitComment={handleSubmitComment}
+          commentFormLoading={commentFormLoading}
         />
       </React.Fragment>,
       portalRoot

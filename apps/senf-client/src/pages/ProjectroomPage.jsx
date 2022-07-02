@@ -3,7 +3,10 @@
 import React, { useState, useEffect, memo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // Redux stuff
-import { openProjectRoomFunc } from "../redux/actions/projectActions";
+import {
+  openCreateProjectRoomFunc,
+  openProjectRoomFunc,
+} from "../redux/actions/projectActions";
 import { clearErrors } from "../redux/actions/errorsActions";
 import { setMapBounds, setMapViewport } from "../redux/actions/mapActions";
 import styled from "styled-components";
@@ -24,15 +27,15 @@ const ProjectroomPage = ({
   loadingProjects,
   dataFinalMap,
   setOpenInsightsPage,
-
+  user,
   handleButtonOpenCard,
   setPostIdeaOpen,
 }) => {
   const { t } = useTranslation();
   const [path, setPath] = useState("");
   const [order, setOrder] = useState(1);
-  const [infoOpen, setInfoOpen] = useState(true);
-
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchOpen, setSearchOpen] = useState(false);
   const [dropdown, setDropdown] = useState("newest");
 
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
@@ -104,7 +107,6 @@ const ProjectroomPage = ({
 
   const dataRar = project?.screams;
 
-  const [searchTerm, setSearchTerm] = useState("");
   const screamsSearched = dataRar?.filter((val) => {
     if (searchTerm === "") {
       return val;
@@ -147,7 +149,9 @@ const ProjectroomPage = ({
   return (
     project && (
       <ProjectroomPageComponent
+        user={user}
         data={project}
+        ideasData={dataFinal}
         organizations={organizations}
         handleButtonOpenCard={handleButtonOpenCard}
         handleButtonClose={handleClose}
@@ -157,11 +161,11 @@ const ProjectroomPage = ({
         }
         setPostIdeaOpen={() => setPostIdeaOpen(true)}
         handleEditProjectroom={handleEditProjectroom}
-
-        //  setSearchOpen
-        //  searchOpen,
-        //  searchTerm,
-        //  setSearchTerm,
+        setSearchOpen={setSearchOpen}
+        searchOpen={searchOpen}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        path={path}
       />
     )
   );

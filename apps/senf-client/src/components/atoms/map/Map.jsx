@@ -22,9 +22,7 @@ import MapGL, {
   NavigationControl,
   Image,
 } from "../../../util/urbica/react-map-gl.esm";
-import bbox from "@turf/bbox";
 
-import NoLocationPopUp from "./NoLocationPopUp";
 import { MapFilter } from "./MapFilter";
 import { PatternBackground } from "./styles/sharedStyles";
 import { useParams } from "react-router";
@@ -160,7 +158,7 @@ const Map = ({
         dispatch(setMapViewport(initialMapViewport));
       }, 1000);
     }
-  }, []);
+  }, [initialMapViewport]);
 
   useEffect(() => {
     if (!initialMapViewport) return;
@@ -379,7 +377,7 @@ const Map = ({
           {order === 1 || openScream || openProjectRoom || openAccount ? (
             <React.Fragment>
               {!openInfoPage && !openScream && !openProjectRoom && (
-                <MapFilter viewport={mapViewport} mapRef={mapRef} />
+                <MapFilter viewport={mapRef.current} mapRef={mapRef} />
               )}
 
               <Source

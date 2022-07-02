@@ -19,6 +19,11 @@ const locizeOptions = {
 
 const i18n = i18next.createInstance();
 
+const DETECTION_OPTIONS = {
+  order: ["localStorage", "navigator"],
+  caches: ["localStorage"],
+};
+
 i18n
   // locize-lastused
   // sets a timestamp of last access on every translation segment on locize
@@ -28,6 +33,8 @@ i18n
   // locize-editor
   // InContext Editor of locize
   .use(locizePlugin)
+  .use(LanguageDetector)
+
   // i18next-locize-backend
   // loads translations from your project, saves new keys to it (saveMissing: true)
   // https://github.com/locize/i18next-locize-backend
@@ -56,6 +63,7 @@ i18n
     backend: locizeOptions,
     locizeLastUsed: locizeOptions,
     saveMissing: true,
+    detection: DETECTION_OPTIONS,
   });
 
 i18next.on("languageChanged", (lng) => {
