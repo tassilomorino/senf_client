@@ -32,6 +32,8 @@ module.exports = {
     "react/prop-types": "off",
     "import/no-unresolved": "off",
     "import/extensions": "off",
+    "react/react-in-jsx-scope": "off",
+    "import/prefer-default-export": "off",
   },
   settings: {
     react: {

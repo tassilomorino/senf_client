@@ -42,9 +42,6 @@
     "lint": "eslint .",
     "format": "prettier --write \"./**/*.{js,jsx,json}\" --config ./.prettierrc"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "browserslist": {
     "production": [
       ">0.2%",
