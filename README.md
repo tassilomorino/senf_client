@@ -13,26 +13,20 @@ Since the beginning of 2021, we have been running this platform for the area of 
 
 This project was started by an amateur programmer, so please don't be too harsh about the current quality - let's level it up!
 
-## 1: Fork this repository and clone your own Fork
-
-To avoid ending up with an unmanageable amount of branches, we decided to go this way: fork the repository first and then clone your fork to your computer using terminal command `git clone` https://github.com/your-github-name/senf_client.git. When contributing, create a pull request as described in [this documentation](/docs/CREATE_A_PULL_REQUEST.md)
+## 1: Fork this repository
+To avoid ending up with an unmanageable amount of branches, we decided to go this way: fork the repository first and then clone your fork to your computer using terminal command `git clone` https://github.com/your-github-name/senf-monorepo.git. When contributing, create a pull request as described in [this documentation](/docs/CREATE_A_PULL_REQUEST.md)
 
 
 ## 2: Install packages
 
-
-Open `apps/senf_client` folder in the terminal and type `npm ci`.
-
-If you get error `npm command not found ` make sure you have [node.js](https://nodejs.org/en/)  installed on your machine.
-
+1. Install [nodejs LTS version](nodejs.org/en/)
+2. install yarn by typing `npm i -g yarn` in the terminal
+3. Open `senf-monorepo` folder in the terminal and type `yarn`.
 
 
-## 3: Run project
+## 3: Run projects
 
-To run a project, type `npm start` in the terminal 
-
-## 4: Open it
-
-Go to [http://localhost:3000](http://localhost:3000)
+To run all projects, open `senf-monorepo` folder in the terminal and  type `yarn dev`.
+It will spin up localhost development servers which you will be able to open in the browser  
 
 
