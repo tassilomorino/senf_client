@@ -38,7 +38,7 @@ const StyledButton = styled.button<ButtonProps>`
   border: 2px solid #ffffff;
 
   //ADD THEME-SPACE?
-  height: ${(props) => (props.size === "big" ? "68px" : "50px")};
+  height: ${(props) => (props.size === "big" ? "680px" : "50px")};
   width: ${(props) => (props.size === "big" ? "68px" : "50px")};
 
   color: ${(props) => (props.loading === true ? "transparent" : "auto")};
@@ -72,20 +72,18 @@ const RoundedButton: FC<ButtonProps> = ({
   color,
   onClick,
   ...rest
-}) => {
-  return (
-    <StyledButton
-      type="button"
-      variant={variant}
-      size={size}
-      onClick={onClick}
-      {...rest}
-    >
-      <IconWrapper>
-        <Icon icon={icon} width={size === "big" ? "24px" : "16px"} />
-      </IconWrapper>
-    </StyledButton>
-  );
-};
+}) => (
+  <StyledButton
+    type="button"
+    variant={variant}
+    size={size}
+    onClick={onClick}
+    {...rest}
+  >
+    <IconWrapper>
+      <Icon icon={icon} width={size === "big" ? "24px" : "16px"} />
+    </IconWrapper>
+  </StyledButton>
+);
 
 export default RoundedButton;
