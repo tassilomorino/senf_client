@@ -1,5 +1,5 @@
 {
-  "name": "senf-dev",
+  "name": "senf-monitoring",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -41,9 +41,6 @@
     "cypress": "start-server-and-test start:silent http://localhost:3000 cy:open",
     "lint": "eslint .",
     "format": "prettier --write \"./**/*.{js,jsx,json}\" --config ./.prettierrc"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": {
     "production": [

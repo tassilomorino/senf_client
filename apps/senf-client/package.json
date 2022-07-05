@@ -47,8 +47,9 @@
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.1",
     "resize-observer": "^1.0.4",
-    "senf-atomic-design-system": "2.5.4",
+    "senf-atomic-design-system": "*",
     "styled-components": "^5.3.5",
+    "tsconfig": "*",
     "ui": "*",
     "universal-cookie": "^4.0.4",
     "viewport-mercator-project": "^7.0.4",
@@ -66,9 +67,6 @@
     "cypress": "start-server-and-test start:silent http://localhost:3000 cy:open",
     "lint": "eslint .",
     "format": "prettier --write \"./**/*.{js,jsx,json}\" --config ./.prettierrc"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "devDependencies": {
     "@types/react-router-dom": "^4.3.5",

@@ -1,0 +1,98 @@
+// {
+//   "compilerOptions": {
+//     "esModuleInterop": true,
+//     "strict": true,
+//     "skipLibCheck": true,
+//     "jsx": "react",
+//     "module": "ESNext",
+//     "declaration": true,
+//     "declarationDir": "types",
+//     "sourceMap": true,
+//     "outDir": "dist",
+//     "moduleResolution": "node",
+//     "emitDeclarationOnly": true,
+//     "allowSyntheticDefaultImports": true,
+//     "forceConsistentCasingInFileNames": true,
+//     "noImplicitAny": false,
+//     "resolveJsonModule": true,
+//     "allowJs": true
+
+//     // "lib": ["dom", "ESNext"],
+//     // "noImplicitReturns": true,
+//     // "noImplicitThis": true,
+//     // "noImplicitAny": true,
+//     // "strictNullChecks": true,
+//     // "suppressImplicitAnyIndexErrors": true,
+//     // "noUnusedLocals": true,
+//     // "noUnusedParameters": true
+//   },
+//   "include": ["src", "src/index.d.ts"],
+
+//   "exclude": [
+//     "dist",
+//     "node_modules",
+//     "src/**/*.test.tsx",
+//     "src/**/*.stories.tsx"
+//   ]
+// }
+
+// {
+//   "compilerOptions": {
+//     /* Visit https://aka.ms/tsconfig.json to read more about this file */
+
+//     "target": "es6",
+//     "module": "esnext",
+//     "jsx": "react",
+//     "declaration": true,
+//     "declarationMap": true,
+//     "declarationDir": "types",
+//     "outDir": "dist",
+//     "sourceMap": true,
+//     "strict": true,
+//     "moduleResolution": "node",
+//     "allowSyntheticDefaultImports": true,
+//     "esModuleInterop": true,
+//     "skipLibCheck": true,
+//     "forceConsistentCasingInFileNames": true,
+//     "noImplicitAny": false,
+//     "resolveJsonModule": true,
+//     "allowJs": true
+
+//     // "lib": ["dom", "ESNext"],
+//     // "noImplicitReturns": true,
+//     // "noImplicitThis": true,
+//     // "noImplicitAny": true,
+//     // "strictNullChecks": true,
+//     // "suppressImplicitAnyIndexErrors": true,
+//     // "noUnusedLocals": true,
+//     // "noUnusedParameters": true
+//   },
+//   "include": ["src", "src/index.d.ts"],
+
+//   "exclude": ["dist", "node_modules", "src/**/*.test.tsx"],
+//   "emitDeclarationOnly": true
+//}
+
+{
+  "compilerOptions": {
+      "target": "ESNext",
+      "useDefineForClassFields": true,
+      "lib": ["DOM", "DOM.Iterable", "ESNext"],
+      "allowJs": false,
+      "skipLibCheck": true,
+      "esModuleInterop": false,
+      "allowSyntheticDefaultImports": true,
+      "strict": true,
+      "forceConsistentCasingInFileNames": true,
+      "module": "ESNext",
+      "moduleResolution": "Node",
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "noEmit": true,
+      "jsx": "react-jsx",
+      "noImplicitAny": false,
+  },
+  "include": ["./src"],
+   "exclude": ["dist", "node_modules", "src/**/*.test.tsx"],
+
+}
