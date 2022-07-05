@@ -9,7 +9,7 @@ interface SVGRProps {
 }
 
 const Svg = styled.svg`
-  transform: ${({ transform }) => (transform ? transform : undefined)};
+  transform: ${({ transform }) => transform || undefined};
 `;
 
 const DotAllTopics = ({ transform }: SVGProps<SVGSVGElement> & SVGRProps) => (
@@ -23,13 +23,7 @@ const DotAllTopics = ({ transform }: SVGProps<SVGSVGElement> & SVGRProps) => (
     transform={transform}
   >
     <title>Dot-all-topics</title>
-    <g
-      id="Icons"
-      stroke="none"
-      stroke-width="1"
-      fill="none"
-      fill-rule="evenodd"
-    >
+    <g id="Icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
       <g id="Icons/Dot.all-colors">
         <image
           id="idea-type-all-"
