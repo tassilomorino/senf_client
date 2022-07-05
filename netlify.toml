@@ -5,3 +5,4 @@
   YARN_ENABLE_GLOBAL_CACHE = "true"
   YARN_GLOBAL_FOLDER = "/opt/buildhome/.yarn_cache"
   YARN_VERSION = "3.2.1"
+
