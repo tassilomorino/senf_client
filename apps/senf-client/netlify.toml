@@ -6,5 +6,3 @@
   YARN_GLOBAL_FOLDER = "/opt/buildhome/.yarn_cache"
   YARN_VERSION = "3.2.1"
 
-[[plugins]]
-  package = "/.netlify/netlify-plugin-yarn"
