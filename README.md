@@ -1,6 +1,6 @@
 <!-- @format -->
 
-This is the React code base for the App "Senf" (https://senf.koeln/) <br/>
+This is the React code base for the App "Senf" (https://senf.app/) <br/>
 Since we don't want to touch live data, we have set up this as a test environment.
 
 ## About
