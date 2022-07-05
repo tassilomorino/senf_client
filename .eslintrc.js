@@ -34,6 +34,7 @@ module.exports = {
     "import/extensions": "off",
     "react/react-in-jsx-scope": "off",
     "import/prefer-default-export": "off",
+    "no-nested-ternary": "off",
   },
   settings: {
     react: {
