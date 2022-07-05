@@ -21443,8 +21443,8 @@ __metadata:
     styled-components: ^5.3.3
     styled-system: ^5.1.5
     typescript: ^4.5.5
-    vite: ^2.9.12
-    vite-plugin-dts: ^1.2.0
+    vite: ^2.9.13
+    vite-plugin-dts: ^1.2.1
     webpack: ^5.73.0
     yup: ^0.32.11
   peerDependencies:
@@ -24246,9 +24246,9 @@ turbo@latest:
   languageName: node
   linkType: hard
 
-"vite-plugin-dts@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "vite-plugin-dts@npm:1.2.0"
+"vite-plugin-dts@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "vite-plugin-dts@npm:1.2.1"
   dependencies:
     "@microsoft/api-extractor": ^7.20.0
     "@rushstack/node-core-library": ^3.45.1
@@ -24259,7 +24259,7 @@ turbo@latest:
     ts-morph: ^14.0.0
   peerDependencies:
     vite: ">=2.4.4"
-  checksum: 15e5b1976e39247c47c3c1512d3a1769a49af378bc9fd30c1b9afe42756341e7007300850167e5c850c1b3b4fbe59bb79f21136bf8d6ff7b8d96c5e74ef5d050
+  checksum: 8c41a1383b3b10a930d5c2d11c1f98d1c97818c80db97efb19b4d047e998bedbec15bd88077745178eb3a1b5e6ed10122926f80145bab23d7df622f2c4b4173b
   languageName: node
   linkType: hard
 
@@ -24310,9 +24310,9 @@ turbo@latest:
   languageName: node
   linkType: hard
 
-"vite@npm:^2.9.12":
-  version: 2.9.12
-  resolution: "vite@npm:2.9.12"
+"vite@npm:^2.9.13":
+  version: 2.9.13
+  resolution: "vite@npm:2.9.13"
   dependencies:
     esbuild: ^0.14.27
     fsevents: ~2.3.2
@@ -24335,7 +24335,7 @@ turbo@latest:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 33cf8b6bfbbcae4b7f856d739ae519bed6b1ce23fc652ca98db1d4878bf35424885951c13e0d2536248423a0836d91ef7cae744ff40cbcbd6e7ffe495bd15ea5
+  checksum: a5e501b920a448c352e9b3836019dea56c523535f8e8540160708c2e164d84da6655ae39abbba1e2888092f5c6cd03dd06279852422359b51be601914645f49f
   languageName: node
   linkType: hard
 

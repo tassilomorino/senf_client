@@ -6,6 +6,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-locize-backend";
 import LastUsed from "locize-lastused";
 import { locizePlugin } from "locize";
+
 import { i18n as i18nSenf } from "senf-atomic-design-system";
 
 const locizeOptions = {
