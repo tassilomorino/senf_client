@@ -2,9 +2,6 @@
 
 import React, { useState, Fragment, useRef, useEffect, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { SET_AUTHENTICATED } from "../redux/types";
-
-import { auth, db } from "../firebase";
 
 import {
   getAuth,
@@ -30,9 +27,11 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import imageCompression from "browser-image-compression";
 
 import { useTranslation } from "react-i18next";
+import { SwipeModal, Auth as AuthComponent } from "senf-atomic-design-system";
 import { getUserData } from "../redux/actions/userActions";
 
-import { SwipeModal, Auth as AuthComponent } from "senf-atomic-design-system";
+import { auth, db } from "../firebase";
+import { SET_AUTHENTICATED } from "../redux/types";
 
 const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -149,7 +148,6 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
       // username already exists
       setLoading(false);
       setErrorMessage(t("username_taken"));
-      return;
     } else {
       // username is available, try to create user and put info to database
       try {
@@ -160,7 +158,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
         );
 
         const actionCodeSettings = {
-          //change to senf.koeln on production
+          // change to senf.koeln on production
           url: "https://senf.koeln/verify",
         };
 
@@ -221,7 +219,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
       }
       const token = credential.accessToken;
       // The signed-in user info.
-      const user = result.user;
+      const { user } = result;
 
       const docRef = doc(db, "users", user.uid);
       const docSnapshot = await getDoc(docRef);
@@ -253,7 +251,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
       const errorCode = error.code;
       const errorMessage = error.message;
       // The email of the user's account used.
-      const email = error.email;
+      const { email } = error;
       // The AuthCredential type that was used.
       let credential;
       if (providerName === "google") {
@@ -306,7 +304,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
       });
       const photoURL = await getDownloadURL(storageRef);
       // setUploadedImage(photoUrl);
-      await updateDoc(userRef, { photoURL: photoURL }).then(() => {
+      await updateDoc(userRef, { photoURL }).then(() => {
         dispatch(getUserData(user.userId));
         setUploadingImage(false);
       });
@@ -355,6 +353,8 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
           handleClose={() => {
             setAuthOpen(false);
             setAuthEditOpen(false);
+            const root = document.getElementById("root");
+            root?.removeAttribute("inert");
           }}
         />
       </SwipeModal>
