@@ -4,7 +4,7 @@
   "description": "An atomic-design-system-library for all Senf-apps ",
   "module": "./src/index.ts",
   "moduleComment": {
-    "note": "change 'module' to './dist/es.js' when publishing to npm "
+    "note": "change 'module' from './src/index.ts' to './dist/es.js' when publishing to npm "
   },
   "files": [
     "dist"
@@ -12,7 +12,7 @@
   "postinstall": "patch-package",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "storybook": "start-storybook -p 6006",
+    "dev": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "build": "vite build",
     "watch": "vite build --watch",

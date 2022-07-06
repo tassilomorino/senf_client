@@ -1,12 +1,14 @@
-/** @format */
-
 module.exports = {
   stories: [
     "../src/**/**/*.stories.mdx",
     "../src/**/**/*.stories.@(js|jsx|ts|tsx)",
   ],
+
   core: {
-    builder: 'webpack5',
+    builder: "webpack5",
+  },
+  features: {
+    storyStoreV7: true,
   },
   addons: [
     "@storybook/addon-links",
@@ -21,4 +23,10 @@ module.exports = {
       },
     },
   ],
+  webpackFinal: async (config) => {
+    config.plugins = config.plugins.filter(
+      ({ constructor }) => constructor.name !== "ProgressPlugin"
+    );
+    return config;
+  },
 };
