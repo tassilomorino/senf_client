@@ -21,8 +21,7 @@ const StyledButton = styled.button<ButtonProps>`
   width: auto; /* 150px */
   display: flex;
   flex-direction: row;
-  justify-content: ${({ justifyContent }) =>
-    justifyContent ? justifyContent : "center"};
+  justify-content: ${({ justifyContent }) => justifyContent || "center"};
   align-items: center;
 
   //ADD THEME-OPACITY
@@ -115,35 +114,33 @@ const Button: FC<ButtonProps> = ({
   loading,
   onClick,
   ...rest
-}) => {
-  return (
-    <StyledButton
-      type="button"
-      text={text}
-      variant={variant}
-      icon={icon}
-      borderStyle={borderStyle}
-      justifyContent={justifyContent}
-      fillWidth={fillWidth}
-      loading={loading}
-      onClick={onClick}
-      size={size}
-      {...rest}
-    >
-      {children && children}
-      {icon && (
-        <IconWrapper text={text}>
-          <Icon icon={icon} transform={transform} />
-        </IconWrapper>
-      )}
-      {text}
-      {loading && (
-        <LoaderWrapper>
-          <Loader />
-        </LoaderWrapper>
-      )}
-    </StyledButton>
-  );
-};
+}) => (
+  <StyledButton
+    type="button"
+    text={text}
+    variant={variant}
+    icon={icon}
+    borderStyle={borderStyle}
+    justifyContent={justifyContent}
+    fillWidth={fillWidth}
+    loading={loading}
+    onClick={onClick}
+    size={size}
+    {...rest}
+  >
+    {children && children}
+    {icon && (
+      <IconWrapper text={text}>
+        <Icon icon={icon} transform={transform} />
+      </IconWrapper>
+    )}
+    {text}
+    {loading && (
+      <LoaderWrapper>
+        <Loader />
+      </LoaderWrapper>
+    )}
+  </StyledButton>
+);
 
 export default Button;
