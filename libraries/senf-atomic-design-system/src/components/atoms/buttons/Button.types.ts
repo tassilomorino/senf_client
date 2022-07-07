@@ -1,6 +1,7 @@
 /** @format */
 
 import { MouseEventHandler } from "react";
+
 export interface ButtonProps {
   text?: string;
   variant?: "primary" | "white" | "secondary" | "plus";
@@ -12,5 +13,11 @@ export interface ButtonProps {
   disabled?: boolean;
   size?: "small" | "big";
   color?: string;
+  justifyContent?:
+    | "center"
+    | "flex-start"
+    | "flex-end"
+    | "space-between"
+    | "space-around";
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }
