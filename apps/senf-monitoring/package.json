@@ -32,7 +32,7 @@
   },
   "scripts": {
     "analyze": "source-map-explorer '../../dist/apps/senf-monitoring/static/js/*.js'",
-    "dev": "vite",
+    "dev": "vite --host",
     "preview": "vite preview",
     "build": "node ./update-build.js && vite build",
     "cy:open": "cypress open",
