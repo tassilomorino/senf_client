@@ -1,8 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
-
+import { Button } from "senf-atomic-design-system";
 const ButtonsWrapper = styled.div`
   position: fixed;
   bottom: 0px;
@@ -13,6 +12,7 @@ const ButtonsWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 10px;
   background-color: rgb(249, 241, 215);
   box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2);
 `;
@@ -36,7 +36,8 @@ const Navigation = ({
   return (
     <ButtonsWrapper>
       {prevLabel && (
-        <SubmitButton
+        <Button
+          variant="white"
           text={
             (localStorage.getItem("createOrganizationPostEdit") === "true" ||
               localStorage.getItem("createProjectRoomPostEdit") === "true") &&
@@ -47,14 +48,8 @@ const Navigation = ({
               ? "Zurück zur Übersicht"
               : prevLabel
           }
-          zIndex="9"
-          backgroundColor="transparent"
-          shadow={false}
-          textColor="#353535"
-          left="0"
-          transformX="none"
-          marginLeft="0"
-          handleButtonClick={
+          // loading={}
+          onClick={
             (localStorage.getItem("createOrganizationPostEdit") === "true" ||
               localStorage.getItem("createProjectRoomPostEdit") === "true") &&
             pagesData.length - 1 === index
@@ -64,11 +59,12 @@ const Navigation = ({
               ? () => set(pagesData.length - 1)
               : handlePrev
           }
-          //   keySubmitRef={keySubmitRef}
+          // disabled={}
         />
       )}
       {nextLabel && (
-        <SubmitButton
+        <Button
+          variant="primary"
           text={
             (localStorage.getItem("createOrganizationPostEdit") === "true" ||
               localStorage.getItem("createProjectRoomPostEdit") === "true") &&
@@ -79,16 +75,9 @@ const Navigation = ({
               ? "Speichern"
               : nextLabel
           }
-          zIndex="9"
-          backgroundColor="white"
-          textColor="#353535"
-          left="0"
-          transformX="none"
-          handleButtonClick={handleNext}
-          disabled={disabled}
           loading={loading}
-          marginLeft="0"
-          //   keySubmitRef={keySubmitRef}
+          onClick={handleNext}
+          disabled={disabled}
         />
       )}
     </ButtonsWrapper>

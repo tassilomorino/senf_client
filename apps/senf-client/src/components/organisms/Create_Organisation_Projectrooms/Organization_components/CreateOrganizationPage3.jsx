@@ -13,9 +13,6 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 //redux
 //import { createProjectSaveData } from "../../../../redux/actions/formDataActions";
 
-//Components
-import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
-
 //images
 import UploadImageIcon from "../../../../images/icons/uploadImage.png";
 import { CircularProgress } from "@material-ui/core";

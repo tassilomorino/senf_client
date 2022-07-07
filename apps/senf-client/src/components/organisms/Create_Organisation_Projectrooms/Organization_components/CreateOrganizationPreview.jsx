@@ -9,9 +9,6 @@ import styled from "styled-components";
 import { db } from "../../../../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 
-//Components
-import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
-
 //images
 import {
   ButtonsWrapper,

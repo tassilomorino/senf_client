@@ -13,10 +13,8 @@ import {
   CustomButton,
   CustomIconButton,
 } from "../../atoms/CustomButtons/CustomButton";
-import FooterLinks from "../../molecules/Footer/FooterLinks";
 
 import Cookie from "../../../images/cookies.png";
-import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 
 const Wrapper = styled.div`
   z-index: 9995;
@@ -111,16 +109,6 @@ const Cookiebanner = () => {
             .
           </Trans>
         </StyledText>
-        {/*  {!isMobileCustom && (
-          <SubmitButton
-            text={t("close")}
-            backgroundColor="#353535"
-            textColor="white"
-            position="relative"
-            zIndex="9999"
-            handleButtonClick={() => handleCookies("all")}
-          />
-        )} */}
       </Wrapper>
     )
   );
