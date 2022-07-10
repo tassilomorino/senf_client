@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { ProfilePage as ProfilePageComponent } from "senf-atomic-design-system";
 import { closeAccountFunc } from "../redux/actions/accountActions";
 
 import { handleTopicSelectorRedux } from "../redux/actions/UiActions";
@@ -12,9 +14,7 @@ import {
   filterByGeodata,
   filterByTagFilter,
 } from "../util/helpers";
-import { useTranslation } from "react-i18next";
 
-import { ProfilePage as ProfilePageComponent } from "senf-atomic-design-system";
 import { logoutUser } from "../redux/actions/userActions";
 import DeleteMenuModal from "../components/molecules/Modals/DeleteMenuModal";
 
@@ -69,10 +69,10 @@ const ProfilePage = ({
     "Thema"
   );
   const sortedScreams = sort(myIdeasfilteredByTagFilter, dropdown);
-  //ideasData = filterByStatus(ideasData, dropdownStatus);
+  // ideasData = filterByStatus(ideasData, dropdownStatus);
   const MyIdeasDataFinal = filterByGeodata(sortedScreams, mapBounds);
 
-  //My Organizations
+  // My Organizations
   const organizationsSearched = search(myOrganizations, searchTerm, ["title"]);
   const sortedOrganizations = sort(organizationsSearched, dropdown);
   const MyDataFinalOrganizations = sortedOrganizations;
@@ -91,6 +91,7 @@ const ProfilePage = ({
         organization={organization}
         organizations={organizations}
         myOrganizations={MyDataFinalOrganizations}
+        myScreams={MyIdeasDataFinal}
         handleButtonOpenCard={handleButtonOpenCard}
         handleOpenProjectroom={handleOpenProjectroom}
         handleButtonClose={handleClose}

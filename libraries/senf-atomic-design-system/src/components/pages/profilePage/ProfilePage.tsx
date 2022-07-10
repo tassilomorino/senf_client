@@ -2,6 +2,9 @@
 
 import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
+import { useTranslation } from "react-i18next";
+import { animated, useSpring } from "@react-spring/web";
+import { useDrag } from "@use-gesture/react";
 import Icon from "../../atoms/icons/Icon";
 import {
   LayerWhiteFirstDefault,
@@ -10,7 +13,6 @@ import {
 import Box from "../../atoms/box/Box";
 import Typography from "../../atoms/typography/Typography";
 import { ProfilePageProps } from "./ProfilePage.types";
-import { useTranslation } from "react-i18next";
 import Input from "../../atoms/inputs/Input";
 import List from "../../molecules/list/List";
 import CommentCard from "../../molecules/cards/commentCard";
@@ -18,8 +20,6 @@ import Wave from "../../atoms/shapes/Wave";
 import theme from "../../../styles/theme";
 import Divider from "../../atoms/divider/Divider";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
-import { animated, useSpring } from "@react-spring/web";
-import { useDrag } from "@use-gesture/react";
 import DetailSidebar from "../../organisms/detailSidebar/DetailSidebar";
 import ImagePlaceholder from "../../atoms/imagePlaceholder/ImagePlaceholder";
 import TertiaryButton from "../../atoms/buttons/TertiaryButton";
@@ -112,6 +112,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
   organization,
   organizations,
   myOrganizations,
+  myScreams,
   handleButtonOpenCard,
   handleOpenProjectroom,
   handleButtonClose,
@@ -125,7 +126,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [swipePosition, setSwipePosition] = useState("top");
 
-  const { handle, description, photoURL, screams, likes } = user;
+  const { handle, description, photoURL, likes } = user;
 
   const handleToggle = () => {
     setDropdownOpen(!dropdownOpen);
@@ -247,7 +248,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
             <Box justifyContent="center" margin="20px">
               <ImageWrapper>
                 <ImagePlaceholder
-                  img={photoURL ? photoURL : null}
+                  img={photoURL || null}
                   borderRadius="18px"
                   height="calc(100% - 40px)"
                   width="calc(100% - 40px)"
@@ -300,15 +301,15 @@ const ProfilePage: FC<ProfilePageProps> = ({
 
             <List
               CardType={order === 1 ? IdeaCard : OrganizationCard}
-              data={order === 1 ? screams : myOrganizations}
+              data={order === 1 ? myScreams : myOrganizations}
               listType={order === 2 && "grid"}
               handleButtonOpenCard={handleButtonOpenCard}
               handleOpenProjectroom={handleOpenProjectroom}
               organizations={organizations}
               listEndText={
-                order === 1 && screams > 0
+                order === 1 && myScreams > 0
                   ? t("noMoreIdeas")
-                  : order === 1 && screams < 1 && t("noSharedIdeas")
+                  : order === 1 && myScreams < 1 && t("noSharedIdeas")
 
                 // :t("noIdeasWithFilter")
               }
