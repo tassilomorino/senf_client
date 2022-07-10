@@ -1,12 +1,12 @@
 /** @format */
 import React, { FC, useEffect, useRef, useState, memo } from "react";
 
-import { useSpring, animated } from "@react-spring/web";
-import { useDrag } from "@use-gesture/react";
-import styled from "styled-components";
-import { useTranslation } from "react-i18next";
 import { MainSwipeListProps } from "./MainSwipeList.types";
 
+import { useSpring } from "@react-spring/web";
+import { useDrag } from "@use-gesture/react";
+import styled from "styled-components";
+import { animated } from "@react-spring/web";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 import RoundedButton from "../../atoms/buttons/RoundedButton";
 import theme from "../../../styles/theme";
@@ -16,6 +16,7 @@ import Toolbar from "../../molecules/toolbar/Toolbar";
 import List from "../../molecules/list/List";
 import Button from "../../atoms/buttons/Button";
 import IdeaCard from "../../molecules/cards/IdeaCard";
+import { useTranslation } from "react-i18next";
 import Plus from "../../../assets/icons/Plus";
 import ProjectroomCard from "../../molecules/cards/ProjectroomCard";
 import Stats from "../../../assets/icons/Stats";
@@ -24,13 +25,13 @@ import MenuSidebar from "../../organisms/menuSidebar/MenuSidebar";
 import Box from "../../atoms/box/Box";
 
 const DragWrapper = styled(animated.div)`
-  z-index: ${({ zIndex }) => zIndex || 995};
+  z-index: ${({ zIndex }) => (zIndex ? zIndex : 995)};
   overscroll-behavior: contain;
   overflow-x: hidden;
   width: 100%;
   height: 100%;
   left: 0px;
-  overflow: ${({ overflow }) => overflow || "scroll"};
+  overflow: ${({ overflow }) => (overflow ? overflow : "scroll")};
   background-color: ${({ theme }) => theme.colors.primary.primary100};
   border-radius: ${({ theme }) => theme.radii[4]}px
     ${({ theme }) => theme.radii[4]}px 0px 0px;
@@ -194,16 +195,18 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
         transform: `translateY(${window.innerHeight + 20}px)`,
         touchAction: "none",
       });
-    } else if (!swipedUp) {
-      setSpring({
-        transform: `translateY(${window.innerHeight - 160}px)`,
-        touchAction: "none",
-      });
     } else {
-      setSpring({
-        transform: `translateY(${30}px)`,
-        touchAction: "unset",
-      });
+      if (!swipedUp) {
+        setSpring({
+          transform: `translateY(${window.innerHeight - 160}px)`,
+          touchAction: "none",
+        });
+      } else {
+        setSpring({
+          transform: `translateY(${30}px)`,
+          touchAction: "unset",
+        });
+      }
     }
   }, [openScream]);
 
@@ -368,12 +371,10 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
             : null
         }
       >
-        {!isMobile && (
-          <Wave
-            color={theme.colors.beige.beige20}
-            top={swipedUp || !isMobile ? "0px" : "200px"}
-          />
-        )}
+        <Wave
+          color={theme.colors.beige.beige20}
+          top={swipedUp || !isMobile ? "0px" : "200px"}
+        />
         {!isMobile && (
           <MenuSidebar
             handleOpenMyAccount={handleOpenMyAccount}
@@ -381,6 +382,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
             setOrder={setOrder}
           />
         )}
+
         <InnerWrapper>
           <Header {...bind()} swipedUp={swipedUp} style={listHeaderProps}>
             {isMobile && <HandleBar />}
