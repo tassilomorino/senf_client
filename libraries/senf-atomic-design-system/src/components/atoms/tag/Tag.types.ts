@@ -1,6 +1,7 @@
 /** @format */
 
 import { MouseEventHandler } from "react";
+
 export interface TagProps {
   text?: string;
   variant?: "primary" | "white" | "secondary" | "plus";
@@ -9,4 +10,5 @@ export interface TagProps {
   fillWidth?: "max" | undefined;
   active?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
+  hide?: boolean;
 }
