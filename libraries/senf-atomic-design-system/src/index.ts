@@ -32,6 +32,7 @@ export { default as Tag } from "./components/atoms/tag/Tag";
 export { default as Icon } from "./components/atoms/icons/Icon";
 export { default as Input } from "./components/atoms/inputs/Input";
 export { default as ToggleInput } from "./components/atoms/toggleInput/ToggleInput";
+export { default as Switch } from "./components/atoms/switch/Switch";
 export { default as Box } from "./components/atoms/box/Box";
 export { default as Divider } from "./components/atoms/divider/Divider";
 export { default as Shape } from "./components/atoms/shapes/Shape";

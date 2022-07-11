@@ -325,15 +325,13 @@ const StatisticsOverviewPage = ({
             <CoverImg src={AgegroupsCover} alt="insights-agegroups-cover" />
             <AgegroupDialog screams={screams} likes={likes} />
           </Covers>
-          <Covers animation="enteranimation 1s ease-in-out">
+          <Covers animation="enteranimation 1s ease-in-out" onClick={() => handleLink()} >
             <CoverTitle>
               <StyledH2 fontWeight="900" textAlign="center">
                 {t("toolbox")}
               </StyledH2>
             </CoverTitle>
             <CoverImg src={KeywordsCover} alt="insights-keywords-cover" />
-            <ExpandButton handleButtonClick={() => handleLink()} />
-            {/* <WordcloudDialog /> */}
           </Covers>
         </CoverWrapper>
       </StatisticsOverview>

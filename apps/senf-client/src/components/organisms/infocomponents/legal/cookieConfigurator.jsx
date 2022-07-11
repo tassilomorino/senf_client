@@ -7,7 +7,7 @@ import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 import styled from "styled-components";
 import LogoWhite from "../../../../images/logo_white.png";
 
-import Switch from "../../../atoms/CustomButtons/Switch";
+import {Switch} from "senf-atomic-design-system";
 
 // "shared styles" component in legal folder
 // TO DO: take care of the function handleLocation
@@ -126,8 +126,9 @@ const CookieConfigurator = ({ classes }) => {
           <Header>Notwendige Cookies</Header>
           <Switch
             id="test-switch"
-            toggled={necessary}
-            onChange={(e) => setNecessary(e.target.checked)}
+            checked={necessary}
+            receiveValue={(e) => setNecessary(e.target.checked)}
+            disabled
           />
         </HeaderSwitchWrapper>
         <p>
@@ -156,8 +157,8 @@ const CookieConfigurator = ({ classes }) => {
           <Header>Statistik-Cookies</Header>
           <Switch
             id="test-switch2"
-            toggled={location}
-            onChange={handleLocation}
+            checked={location}
+            receiveValue={handleLocation}
           />
         </HeaderSwitchWrapper>
         <p>

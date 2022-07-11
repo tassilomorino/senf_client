@@ -571,18 +571,7 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsOverview }) => {
 
   return (
     <Fragment>
-      {/* {isMobileCustom ? (
-        <ExpandButton
-          handleButtonClick={handleOpen}
-          dataCy="InlineInfo-button"
-        />
-      ) : (
-        <SideBarTabs fontWeight={openInfoPage ? "900" : undefined}>
-          <ExpandButton handleButtonClick={handleOpen} />
-          <img src={Info} width="35" alt="EndImage" />
-          <span className="inlineInfoIconText"> {t("info")}</span>
-        </SideBarTabs>
-      )} */}
+     
 
       <InfoPageDialog isOpen={openInfoPage} setIsOpen={handleClose}>
         <Container id="InfoPage">
