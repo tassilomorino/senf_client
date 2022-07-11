@@ -7,11 +7,11 @@ import {
   ComponentWrapper,
 } from "../styles/sharedStyles";
 import styled from "styled-components";
-import CheckBox from "../../../atoms/CheckBox/CheckBox";
 
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 import InfoSwiper from "../Components/InfoSwiper";
+import {ToggleInput} from "senf-atomic-design-system"
 
 const Header = styled.h3`
   font-size: 18px;
@@ -106,10 +106,11 @@ const CreateOrganizationPage0 = ({
           <InfoSwiper />
 
           <CheckBoxWrapper>
-            <CheckBox
-              selected={checkBox1}
+            <ToggleInput
+            
+            checked={checkBox1}
               type="checkbox"
-              handleInputChange={() => setCheckBox1(!checkBox1)}
+              receiveValue={() => setCheckBox1(!checkBox1)}
             />
             <CheckBoxLabel>
               <StyledText>
@@ -120,10 +121,10 @@ const CreateOrganizationPage0 = ({
           </CheckBoxWrapper>
 
           <CheckBoxWrapper>
-            <CheckBox
-              selected={checkBox2}
+            <ToggleInput
+              checked={checkBox2}
               type="checkbox"
-              handleInputChange={() => setCheckBox2(!checkBox2)}
+              receiveValue={() => setCheckBox2(!checkBox2)}
             />
             <CheckBoxLabel>
               <StyledText>
@@ -134,10 +135,10 @@ const CreateOrganizationPage0 = ({
           </CheckBoxWrapper>
 
           <CheckBoxWrapper>
-            <CheckBox
-              selected={checkBox3}
+            <ToggleInput
+              checked={checkBox3}
               type="checkbox"
-              handleInputChange={() => setCheckBox3(!checkBox3)}
+              receiveValue={() => setCheckBox3(!checkBox3)}
             />
             <CheckBoxLabel>
               <StyledText>

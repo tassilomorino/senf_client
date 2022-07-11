@@ -40,10 +40,9 @@ import {
 } from "../redux/actions/UiActions";
 
 // Components
-import InsightsPage from "./InsightsPage";
+import StatisticsOverviewPage from "./StatisticsOverviewPage";
 import Map from "../components/atoms/map/Map";
 import IdeaDialog from "./IdeaDetailPage";
-import ThanksForTheVote from "../components/atoms/Backgrounds/ThanksForTheVote";
 import Loader from "../components/atoms/Backgrounds/Loader";
 import {
   closeAccountFunc,
@@ -889,7 +888,7 @@ const Main = () => {
         !openAccount &&
         !openOrganization &&
         openStatisticsOverview && (
-          <InsightsPage
+          <StatisticsOverviewPage
             openStatisticsOverview={openStatisticsOverview}
             setOpenStatisticsOverview={setOpenStatisticsOverview}
             projectRoomId={project?.projectRoomId}
@@ -898,7 +897,7 @@ const Main = () => {
 
       <ErrorBackground loading={loading} />
 
-      {voted && userLikes.length <= 1 && <ThanksForTheVote />}
+      {/* {voted && userLikes.length <= 1 && <ThanksForTheVote />} */}
 
       {modalData && (
         <Modal

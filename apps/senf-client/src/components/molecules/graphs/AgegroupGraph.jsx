@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 //Icons
-import CircularProgress from "@material-ui/core/CircularProgress";
+import { Loader } from "senf-atomic-design-system";
 
 //Graphs
 import createPlotlyComponent from "react-plotlyjs";
@@ -311,7 +311,9 @@ const AgegroupGraph = ({ screams, likes }) => {
       <PlotlyComponent data={data} layout={layout} config={config} />
     ) : (
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <CircularProgress size={50} thickness={2} />
+        <div style={{ width: "100px" }}>
+          <Loader />
+        </div>
       </div>
     );
 

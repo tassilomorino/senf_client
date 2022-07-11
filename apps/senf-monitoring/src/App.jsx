@@ -23,7 +23,6 @@ import { logoutUser, getUserData } from "./redux/actions/userActions";
 
 //Pages
 
-import Verification from "./pages/Verification";
 import datenschutz from "./components/organisms/infocomponents/legal/datenschutz";
 import agb from "./components/organisms/infocomponents/legal/agb";
 import MonitoringBoard from "./pages/MonitoringBoard";
@@ -123,7 +122,6 @@ const App = () => {
                 <Route exact path="/" component={MonitoringBoard} />
                 <Route exact path="/datenschutz" component={datenschutz} />
                 <Route exact path="/agb" component={agb} />
-                <Route exact path="/verify" component={Verification} />
               </Switch>
             </div>
           </Router>

@@ -21,7 +21,6 @@ import MonitoringEditScream from "../components/organisms/SideBars/MonitoringEdi
 import MonitoringToolbar from "../components/molecules/Toolbar/MonitoringToolbar";
 import MonitoringList from "../components/molecules/List/MonitoringList";
 import { CustomButton } from "../components/atoms/CustomButtons/CustomButton";
-import LoginRegistration from "../components/organisms/Auth/LoginRegistration";
 import styled from "styled-components";
 import { StyledText } from "../styles/GlobalStyle";
 import ErrorBackground from "../components/atoms/Backgrounds/ErrorBackground";
@@ -217,7 +216,7 @@ const MonitoringBoard = () => {
           left="0"
           zIndex="0"
         >
-          <LoginRegistration />
+          {/* <LoginRegistration /> */}
         </CustomButton>
       )}
     </NoAuthorizationWrapper>

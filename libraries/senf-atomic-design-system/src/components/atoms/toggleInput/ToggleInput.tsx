@@ -60,6 +60,7 @@ const ToggleInput: FC<ToggleInputProps> = ({
   receiveValue,
   pointerEvents,
 }) => {
+   const [toggle, setToggle] = useState(false);
   return (
     <ToggleInputContainer
       onClick={(e: React.FormEvent<HTMLInputElement>) => {

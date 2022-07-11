@@ -26,7 +26,9 @@ import { useDrag } from "@use-gesture/react";
 import { db } from "../firebase";
 import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 
-import { StatisticsOverview } from "senf-atomic-design-system";
+import { StatisticsOverview, Dialog, Loader } from "senf-atomic-design-system";
+
+const Thema = React.lazy(() => import("../components/molecules/graphs/thema"));
 
 const CoverWrapper = styled.div`
   margin-left: 50%;
@@ -80,18 +82,18 @@ const CoverTitle = styled.div`
   top: 30px;
 `;
 
-const Wrapper = styled.div`
-  height: 100vh;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  position: relative;
-  width: 100%;
-  top: 0;
-  pointer-events: all;
-  z-index: 999999;
-`;
+// const Wrapper = styled.div`
+//   height: 100vh;
+//   overflow-y: scroll;
+//   overflow-x: hidden;
+//   position: relative;
+//   width: 100%;
+//   top: 0;
+//   pointer-events: all;
+//   z-index: 999999;
+// `;
 
-const InsightsPage = ({
+const StatisticsOverviewPage = ({
   openStatisticsOverview,
   setOpenStatisticsOverview,
   projectRoomId,
@@ -104,6 +106,8 @@ const InsightsPage = ({
   const [likes, setLikes] = useState(null);
   const [likesLength, setLikesLength] = useState(null);
   const [commentsLength, setCommentsLength] = useState(null);
+
+  const [topicsOpen, setTopicsOpen] = useState(false);
 
   useEffect(() => {
     setOpen(true);
@@ -278,64 +282,86 @@ const InsightsPage = ({
     window.open("https://wiki.agorakoeln.de/", "_blank");
   };
 
-  const content = (
-    <Wrapper>
-      <Keyindicators
-        screams={screams}
-        likesLength={likesLength}
-        commentslength={commentsLength}
-      />
-      <CoverWrapper>
-        <Covers animation="enteranimation 0.5s ease-in-out">
-          <CoverTitle>
-            <StyledH2 fontWeight="900" textAlign="center">
-              {t("topics")}
-            </StyledH2>
-          </CoverTitle>
-          <CoverImg src={Themencover} alt="insights-topic-cover" />
-          <ThemenDialog screams={screams} />
-        </Covers>
-
-        <Covers animation="enteranimation 0.75s ease-in-out">
-          <CoverTitle>
-            <StyledH2 fontWeight="900" textAlign="center">
-              {t("districts")}
-            </StyledH2>
-          </CoverTitle>
-          <CoverImg src={DistrictsCover} alt="insights-districts-cover" />
-          <DistrictsDialog screams={screams} />
-        </Covers>
-
-        <Covers animation="enteranimation 1.25s ease-in-out">
-          <CoverTitle>
-            <StyledH2 fontWeight="900" textAlign="center">
-              {t("agegroups")}
-            </StyledH2>
-          </CoverTitle>
-          <CoverImg src={AgegroupsCover} alt="insights-agegroups-cover" />
-          <AgegroupDialog screams={screams} likes={likes} />
-        </Covers>
-        <Covers animation="enteranimation 1s ease-in-out">
-          <CoverTitle>
-            <StyledH2 fontWeight="900" textAlign="center">
-              {t("toolbox")}
-            </StyledH2>
-          </CoverTitle>
-          <CoverImg src={KeywordsCover} alt="insights-keywords-cover" />
-          <ExpandButton handleButtonClick={() => handleLink()} />
-          {/* <WordcloudDialog /> */}
-        </Covers>
-      </CoverWrapper>
-    </Wrapper>
-  );
   return (
-    <StatisticsOverview
-      openStatisticsOverview={openStatisticsOverview}
-      setOpenStatisticsOverview={setOpenStatisticsOverview}
-    >
-      {content}
-    </StatisticsOverview>
+    <React.Fragment>
+      <StatisticsOverview
+        openStatisticsOverview={openStatisticsOverview}
+        setOpenStatisticsOverview={setOpenStatisticsOverview}
+      >
+        <Keyindicators
+          screams={screams}
+          likesLength={likesLength}
+          commentslength={commentsLength}
+        />
+        <CoverWrapper>
+          <Covers
+            animation="enteranimation 0.5s ease-in-out"
+            onClick={() => setTopicsOpen(true)}
+          >
+            <CoverTitle>
+              <StyledH2 fontWeight="900" textAlign="center">
+                {t("topics")}
+              </StyledH2>
+            </CoverTitle>
+            <CoverImg src={Themencover} alt="insights-topic-cover" />
+          </Covers>
+
+          <Covers animation="enteranimation 0.75s ease-in-out">
+            <CoverTitle>
+              <StyledH2 fontWeight="900" textAlign="center">
+                {t("districts")}
+              </StyledH2>
+            </CoverTitle>
+            <CoverImg src={DistrictsCover} alt="insights-districts-cover" />
+            <DistrictsDialog screams={screams} />
+          </Covers>
+
+          <Covers animation="enteranimation 1.25s ease-in-out">
+            <CoverTitle>
+              <StyledH2 fontWeight="900" textAlign="center">
+                {t("agegroups")}
+              </StyledH2>
+            </CoverTitle>
+            <CoverImg src={AgegroupsCover} alt="insights-agegroups-cover" />
+            <AgegroupDialog screams={screams} likes={likes} />
+          </Covers>
+          <Covers animation="enteranimation 1s ease-in-out">
+            <CoverTitle>
+              <StyledH2 fontWeight="900" textAlign="center">
+                {t("toolbox")}
+              </StyledH2>
+            </CoverTitle>
+            <CoverImg src={KeywordsCover} alt="insights-keywords-cover" />
+            <ExpandButton handleButtonClick={() => handleLink()} />
+            {/* <WordcloudDialog /> */}
+          </Covers>
+        </CoverWrapper>
+      </StatisticsOverview>
+
+      {topicsOpen && (
+        <Dialog
+          openDialog={true}
+          right="0px"
+          // backgroundColor={theme.colors.beige.beige20}
+          overflow="hidden scroll"
+          zIndex="999"
+          boxShadow={
+            document.body.clientWidth < 1350 &&
+            document.body.clientWidth > 768 &&
+            "-40px 8px 30px -12px rgba(0, 0, 0, 0.2)"
+          }
+        >
+           <React.Suspense fallback={<Loader/>}>
+
+            {topicsOpen &&  <Thema screams={screams} /> }
+         
+        </React.Suspense>
+
+          {/* <ThemenDialog screams={screams} /> */}
+        </Dialog>
+      )}
+    </React.Fragment>
   );
 };
 
-export default memo(InsightsPage);
+export default memo(StatisticsOverviewPage);

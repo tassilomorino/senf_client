@@ -3,7 +3,6 @@
 import React from "react";
 
 //Icons
-import CircularProgress from "@material-ui/core/CircularProgress";
 import lamploader from "../../../images/lamp.png";
 import ChatBorder from "../../../images/icons/chat.png";
 import HandFull from "../../../images/icons/handsFull.png";
@@ -11,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { StyledH2, StyledH3 } from "../../../styles/GlobalStyle";
 
+import { Icon, Loader } from "senf-atomic-design-system";
 const Wrapper = styled.div`
   width: 95%;
   display: flex;
@@ -49,7 +49,7 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
           alt="lamploader"
         />
         {screams.length === 0 ? (
-          <CircularProgress size={12} thickness={2} />
+          <Loader />
         ) : (
           <StyledH3 textAlign="center">
             {screams.length} {screams.length === 1 ? t("idea") : t("ideas")}
@@ -65,7 +65,7 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
           style={{ paddingBottom: "10px" }}
         />
         {likesLength === null ? (
-          <CircularProgress size={12} thickness={2} />
+          <Loader />
         ) : (
           <StyledH3 textAlign="center"> {likesLength} Votes</StyledH3>
         )}
@@ -79,7 +79,7 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
           style={{ paddingBottom: "10px" }}
         />{" "}
         {commentslength === null ? (
-          <CircularProgress size={12} thickness={2} />
+          <Loader />
         ) : (
           <StyledH3 textAlign="center">
             {commentslength}{" "}

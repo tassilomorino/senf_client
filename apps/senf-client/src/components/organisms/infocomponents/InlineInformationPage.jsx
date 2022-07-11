@@ -44,7 +44,7 @@ import City from "../../../images/city.png";
 import WorkTogether from "../../../images/workTogether.png";
 import OpenBook from "../../../images/openBook.png";
 import { openMail } from "../../../util/helpers";
-import FooterLinks from "../../molecules/Footer/FooterLinks";
+import FooterLinks from "./components/FooterLinks";
 import SelectLanguageButton from "../../atoms/Selects/SelectLanguageButton";
 import { Plus, Box, RoundedButton } from "senf-atomic-design-system";
 

@@ -10,7 +10,7 @@ import Arrow from "../../../images/icons/arrow.png";
 //Components
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import { StyledH3, StyledLi } from "../../../styles/GlobalStyle";
-import CheckBox from "../CheckBox/CheckBox";
+import {ToggleInput} from "senf-atomic-design-system";
 import { useTranslation } from "react-i18next";
 
 const DropDownButton = styled.button`
@@ -247,10 +247,10 @@ const CustomSelect = ({
                     <StyledDivider />
                     {sortOptions?.map((sortOption, index) => (
                       <CheckBoxWrapper key={sortOption.name}>
-                        <CheckBox
+                        <ToggleInput
                           type="radio"
-                          selected={selectedOption.includes(sortOption.name)}
-                          handleInputChange={onOptionClicked(
+                          checked={selectedOption.includes(sortOption.name)}
+                          receiveValue={onOptionClicked(
                             sortOption.name,
                             sortOption.label,
                             dontCloseWindow

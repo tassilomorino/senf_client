@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { StyledA } from "../../../styles/GlobalStyle";
+import { StyledA } from "../../../../styles/GlobalStyle";
 
 const Wrapper = styled.div`
   position: ${(props) => (props.position ? props.position : "fixed")};
