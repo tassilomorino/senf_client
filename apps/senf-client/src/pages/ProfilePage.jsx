@@ -29,8 +29,8 @@ const ProfilePage = ({
 
   const mapBounds = useSelector((state) => state.data.mapBounds);
   const selectedTopics = useSelector((state) => state.data.topics);
-  const myScreams = useSelector((state) => state.data.myScreams);
-  const myOrganizations = useSelector((state) => state.data.myOrganizations);
+  const myScreams = useSelector((state) => state.user.myScreams);
+  const myOrganizations = useSelector((state) => state.user.myOrganizations);
   const user = useSelector((state) => state.user);
   const organizations = useSelector((state) => state.data.organizations);
   const organization = useSelector((state) => state.data.organization);
