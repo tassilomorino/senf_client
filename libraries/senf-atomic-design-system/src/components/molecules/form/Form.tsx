@@ -20,29 +20,27 @@ const Form: FC<FormProps> = ({
   margin,
   maxWidth,
   ...props
-}) => {
-  return (
-    <form>
-      <Wrapper margin={margin} maxWidth={maxWidth}>
-        {inputItems?.map(({ name, type, placeholder, label }) => {
-          return (
-            <Input
-              id={name}
-              name={name}
-              type={type}
-              placeholder={placeholder}
-              label={label}
-              onChange={formik?.handleChange}
-              onBlur={formik?.handleBlur}
-              value={formik?.values[name]}
-              error={formik?.touched[name] && Boolean(formik?.errors[name])}
-              note={formik?.touched[name] && formik?.errors[name]}
-            />
-          );
-        })}
-      </Wrapper>
-    </form>
-  );
-};
+}) => (
+  <form>
+    <Wrapper margin={margin} maxWidth={maxWidth}>
+      {inputItems?.map(({ name, type, placeholder, label, autoComplete }) => (
+        <Input
+          key={name}
+          id={name}
+          name={name}
+          type={type}
+          placeholder={placeholder}
+          autoComplete={autoComplete}
+          label={label}
+          onChange={formik?.handleChange}
+          onBlur={formik?.handleBlur}
+          value={formik?.values[name]}
+          error={formik?.touched[name] && Boolean(formik?.errors[name])}
+          note={formik?.touched[name] && formik?.errors[name]}
+        />
+      ))}
+    </Wrapper>
+  </form>
+);
 
 export default Form;
