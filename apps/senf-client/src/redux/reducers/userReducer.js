@@ -14,6 +14,7 @@ const initialState = {
   authenticated: false,
   loading: false,
   likes: [],
+  comments: [],
   notifications: [],
 };
 
