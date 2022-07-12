@@ -15,7 +15,6 @@ import {
   SET_DATA_SUCCESS,
   CLEAR_DATA_SUCCESS,
   SET_SCREAMS,
-  SET_MY_SCREAMS,
   LIKE_SCREAM,
   UNLIKE_SCREAM,
   LOADING_DATA,
@@ -31,12 +30,9 @@ import {
   LOADING_IDEA_DATA,
   LOADING_PROJECT_DATA,
   LOADING_PROJECTS_DATA,
-  LOADING_ORGANIZATIONS_DATA,
-  LOADING_MYSCREAMS_DATA,
   SET_PROJECTS,
   SET_PROJECT,
   SET_ORGANIZATIONS,
-  SET_MY_ORGANIZATIONS,
   SET_ORGANIZATION,
   LOADING_ORGANIZATION_DATA,
   SET_SCREAM_USER,
@@ -50,7 +46,6 @@ import {
   SET_TOPICS,
   SET_ORGANIZATION_TYPES,
   LOADING_PROJECTROOM_DATA,
-  LOADING_MYORGANIZATIONS_DATA,
 } from "../types";
 
 const defaultTopics = [
@@ -90,9 +85,7 @@ const initialState = {
   dataSuccess: "",
   projects: [],
   organizations: [],
-  myOrganizations: [],
   screams: [],
-  myScreams: null,
   scream: {},
   project: {},
   comment: {},
@@ -102,8 +95,6 @@ const initialState = {
   loadingProjects: true,
   loadingOrganizations: true,
   loadingOrganization: false,
-  loadingMyOrganizations: false,
-  loadingMyScreams: false,
   loadingProjectRoom: false,
   scream_user: {},
   full_screams: [],
@@ -150,12 +141,6 @@ export default function (state = initialState, action) {
         loadingOrganization: true,
       };
 
-    case LOADING_MYSCREAMS_DATA:
-      return {
-        ...state,
-        loadingMyScreams: true,
-      };
-
     case SET_SCREAMS:
       return {
         ...state,
@@ -163,12 +148,6 @@ export default function (state = initialState, action) {
         loading: false,
       };
 
-    case SET_MY_SCREAMS:
-      return {
-        ...state,
-        myScreams: action.payload,
-        loadingMyScreams: false,
-      };
     case SET_SCREAM:
       return {
         ...state,
@@ -271,19 +250,18 @@ export default function (state = initialState, action) {
       };
 
     case EDIT_SCREAM:
-      let screamIndex = state.screams.findIndex(
+      const screamIndex = state.screams.findIndex(
         (scream) => scream.screamId === action.payload.screamId
       );
       if (screamIndex) {
-        let screamsCopy = [...state.screams];
+        const screamsCopy = [...state.screams];
         screamsCopy[screamIndex] = {
           ...screamsCopy[screamIndex],
           ...action.payload,
         };
         return { ...state, screams: screamsCopy };
-      } else {
-        return { ...state };
       }
+      return { ...state };
 
     case SUBMIT_COMMENT:
       return {
@@ -332,17 +310,7 @@ export default function (state = initialState, action) {
         // projectScreams: action.payload,
         // loadingProjectScreams: false,
       };
-    case LOADING_MYORGANIZATIONS_DATA:
-      return {
-        ...state,
-        loadingMyOrganizations: true,
-      };
-    case SET_MY_ORGANIZATIONS:
-      return {
-        ...state,
-        myOrganizations: action.payload,
-        loadingMyOrganizations: false,
-      };
+
     case SET_ORGANIZATIONS:
       return {
         ...state,
@@ -407,29 +375,29 @@ export default function (state = initialState, action) {
           ...state,
           topics: defaultTopics,
         };
-      } else if (state.topics.length === 7) {
+      }
+      if (state.topics.length === 7) {
         //
         return { ...state, topics: [action.payload] };
-      } else if (indexOfTopic === -1) {
+      }
+      if (indexOfTopic === -1) {
         // topic does not exist, add it
 
         return { ...state, topics: [...state.topics, action.payload] };
-      } else {
-        // topic exists, remove it
-        const removedTopicArray = state.topics.filter(
-          (item) => item !== action.payload
-        );
-        if (removedTopicArray.length === 0) {
-          //show default if all topics removed
-          return {
-            ...state,
-            topics: defaultTopics,
-          };
-        } else {
-          // show remaining after removal
-          return { ...state, topics: [...removedTopicArray] };
-        }
       }
+      // topic exists, remove it
+      const removedTopicArray = state.topics.filter(
+        (item) => item !== action.payload
+      );
+      if (removedTopicArray.length === 0) {
+        // show default if all topics removed
+        return {
+          ...state,
+          topics: defaultTopics,
+        };
+      }
+      // show remaining after removal
+      return { ...state, topics: [...removedTopicArray] };
 
     case SET_ORGANIZATION_TYPES:
       const indexOfOrganizationTypes = state.organizationTypes.indexOf(
@@ -441,35 +409,35 @@ export default function (state = initialState, action) {
           ...state,
           organizationTypes: defaultOrganizationTypes,
         };
-      } else if (state.organizationTypes.length === 7) {
+      }
+      if (state.organizationTypes.length === 7) {
         //
         return { ...state, organizationTypes: [action.payload] };
-      } else if (indexOfOrganizationTypes === -1) {
+      }
+      if (indexOfOrganizationTypes === -1) {
         // organizationTypes does not exist, add it
 
         return {
           ...state,
           organizationTypes: [...state.organizationTypes, action.payload],
         };
-      } else {
-        // OrganizationTypes exists, remove it
-        const removedOrganizationTypesArray = state.organizationTypes.filter(
-          (item) => item !== action.payload
-        );
-        if (removedOrganizationTypesArray.length === 0) {
-          //show default if all organizationTypes removed
-          return {
-            ...state,
-            organizationTypes: defaultOrganizationTypes,
-          };
-        } else {
-          // show remaining after removal
-          return {
-            ...state,
-            organizationTypes: [...removedOrganizationTypesArray],
-          };
-        }
       }
+      // OrganizationTypes exists, remove it
+      const removedOrganizationTypesArray = state.organizationTypes.filter(
+        (item) => item !== action.payload
+      );
+      if (removedOrganizationTypesArray.length === 0) {
+        // show default if all organizationTypes removed
+        return {
+          ...state,
+          organizationTypes: defaultOrganizationTypes,
+        };
+      }
+      // show remaining after removal
+      return {
+        ...state,
+        organizationTypes: [...removedOrganizationTypesArray],
+      };
 
     default:
       return state;

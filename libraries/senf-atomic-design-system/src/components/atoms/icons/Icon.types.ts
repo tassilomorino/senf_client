@@ -3,5 +3,7 @@
 export interface IconProps {
   width?: string;
   height?: string;
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
+  transform?: string;
+  color?: string;
 }

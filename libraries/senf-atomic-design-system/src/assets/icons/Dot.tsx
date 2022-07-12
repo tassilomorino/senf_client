@@ -10,7 +10,7 @@ interface SVGRProps {
 }
 
 const Svg = styled.svg`
-  transform: ${({ transform }) => (transform ? transform : undefined)};
+  transform: ${({ transform }) => transform || undefined};
 `;
 
 const Dot = ({
@@ -27,13 +27,7 @@ const Dot = ({
     transform={transform}
   >
     <title>Dot</title>
-    <g
-      id="Icons"
-      stroke="none"
-      stroke-width="1"
-      fill="none"
-      fill-rule="evenodd"
-    >
+    <g id="Icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
       <g id="Icons/Dot" fill={color}>
         <circle id="🎨-Icon-Color" cx="8" cy="8" r="6.5"></circle>
       </g>

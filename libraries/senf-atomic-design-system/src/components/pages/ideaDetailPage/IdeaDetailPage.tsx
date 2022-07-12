@@ -2,6 +2,11 @@
 
 import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
+import dayjs from "dayjs";
+import { animated, useSpring } from "@react-spring/web";
+import { useDrag } from "@use-gesture/react";
 import Icon from "../../atoms/icons/Icon";
 import {
   LayerWhiteFirstDefault,
@@ -10,7 +15,6 @@ import {
 import Box from "../../atoms/box/Box";
 import Typography from "../../atoms/typography/Typography";
 import { IdeaDetailPageProps } from "./IdeaDetailPage.types";
-import { t } from "i18next";
 import TertiaryButton from "../../atoms/buttons/TertiaryButton";
 import setColorByTopic from "../../../data/setColorByTopic";
 import Dot from "../../../assets/icons/Dot";
@@ -21,7 +25,6 @@ import CommentActive from "../../../assets/icons/CommentActive";
 import setOrganizationTypeIcon from "../../../data/setOrganizationTypeIcon";
 import RoundedButton from "../../atoms/buttons/RoundedButton";
 import Arrow from "../../../assets/icons/Arrow";
-import { useTranslation } from "react-i18next";
 import Input from "../../atoms/inputs/Input";
 import List from "../../molecules/list/List";
 import CommentCard from "../../molecules/cards/commentCard";
@@ -33,12 +36,9 @@ import Stats from "../../../assets/icons/Stats";
 import Info from "../../../assets/icons/Info";
 import Bulb from "../../../assets/icons/Bulb";
 import User from "../../../assets/icons/User";
-import dayjs from "dayjs";
 import Mail from "../../../assets/icons/Mail";
 import Divider from "../../atoms/divider/Divider";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
-import { animated, useSpring } from "@react-spring/web";
-import { useDrag } from "@use-gesture/react";
 import DetailSidebar from "../../organisms/detailSidebar/DetailSidebar";
 import Share from "../../../assets/icons/Share";
 import Button from "../../atoms/buttons/Button";
@@ -191,7 +191,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
   const liked = () => {
     if (user?.likes && user?.likes.find((like) => like.screamId === screamId))
       return true;
-    else return false;
+    return false;
   };
 
   const commented = () => {
@@ -200,7 +200,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
       user?.comments.find((comment) => comment.screamId === screamId)
     )
       return true;
-    else return false;
+    return false;
   };
 
   const [projectroomCardData, setProjectroomCardData] = useState([]);
@@ -209,7 +209,6 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
     if (projectroomsData && cardProjectroomId && !loadingIdea) {
       projectroomsData.map(({ projectRoomId, title, organizationType }) => {
         if (cardProjectroomId === projectRoomId) {
-
           setProjectroomCardData([
             ...projectroomCardData,
             title,
@@ -478,14 +477,14 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                   <Button
                     variant="secondary"
                     icon={<Mail />}
-                    text={contactTitle ? contactTitle : t("contact")}
+                    text={contactTitle || t("contact")}
                     size="small"
                     onClick={() => openMail(contact)}
                   />
                   <Button
                     variant="secondary"
                     icon={<Hyperlink />}
-                    text={weblinkTitle ? weblinkTitle : t("website")}
+                    text={weblinkTitle || t("website")}
                     size="small"
                     onClick={() => openLink(weblink)}
                   />

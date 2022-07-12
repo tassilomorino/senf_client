@@ -57,7 +57,7 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "start:reset": "vite --force",
     "preview": "vite preview",
     "build": "vite build",

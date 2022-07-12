@@ -12,7 +12,7 @@
   "postinstall": "patch-package",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "start-storybook -p 6006",
+    "dev": "start-storybook -p 6006 --no-open --quiet",
     "build-storybook": "build-storybook",
     "build": "vite build",
     "watch": "vite build --watch",

@@ -11,7 +11,6 @@ import styled from "styled-components";
 import ReactDOM from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
 import {
   MainSwipeList,
@@ -126,7 +125,6 @@ const MobileMapClickBackground = styled.div`
 `;
 const Main = () => {
   const { t } = useTranslation();
-  const history = useHistory();
   const dispatch = useDispatch();
   const errors = useSelector((state) => state.UI.errors);
   const [authOpen, setAuthOpen] = useState(false);
@@ -174,7 +172,7 @@ const Main = () => {
 
   const voted = useSelector((state) => state.UI.voted);
   const screams = useSelector((state) => state.data.screams);
-  const myScreams = useSelector((state) => state.data.myScreams);
+  const myScreams = useSelector((state) => state.user.myScreams);
 
   const loading = useSelector((state) => state.data.loading);
   const loadingUI = useSelector((state) => state.UI.loading);
@@ -290,9 +288,9 @@ const Main = () => {
       cookie_settings !== "minimum" &&
       isMobileCustom
     ) {
-      history.push("/intro");
+      window.history.push("/intro");
     }
-  }, [cookie_settings, history]);
+  }, [cookie_settings]);
 
   useEffect(() => {
     projectRoomId && dispatch(openProjectRoomFunc(projectRoomId, true));
@@ -444,7 +442,7 @@ const Main = () => {
         ? project?.screams?.filter(({ Thema }) =>
             selectedTopics.includes(Thema)
           )
-        : myScreams !== null
+        : myScreams !== null && myScreams !== undefined
         ? myScreams.filter(({ Thema }) => selectedTopics.includes(Thema))
         : dataFinalIdeas,
     [

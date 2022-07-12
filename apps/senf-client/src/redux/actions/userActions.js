@@ -9,6 +9,7 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
+import i18n from "i18next";
 import { db, auth } from "../../firebase";
 
 import {
@@ -20,7 +21,6 @@ import {
   STOP_LOADING_DATA,
 } from "../types";
 import { closeAccountFunc } from "./accountActions";
-import i18n from "i18next";
 
 export const resetPassword = (email) => (dispatch) => {
   console.log(email);
@@ -75,7 +75,8 @@ export const deleteUserFromDb = (userId) => async (dispatch) => {
       if (cantDeleteSuperAdmins.includes(currentuser.email)) {
         alert("cant delete SuperAdmin");
         return;
-      } else if (currentuser.uid === userId) {
+      }
+      if (currentuser.uid === userId) {
         const userRef = doc(db, "users", userId);
         const emailRef = doc(db, "users", userId, "Private", userId);
 
@@ -92,6 +93,31 @@ export const deleteUserFromDb = (userId) => async (dispatch) => {
   }
 };
 
+export const getUserLikesAndComments = (userData) => async (dispatch) => {
+  try {
+    if (userData) {
+      const likesRef = collection(db, "likes");
+      const commentsRef = collection(db, "comments");
+      const q1 = query(likesRef, where("userId", "==", userData.userId));
+      const q2 = query(commentsRef, where("userId", "==", userData.userId));
+      const likesQuerySnapshot = await getDocs(q1);
+      const commentsQuerySnapshot = await getDocs(q2);
+
+      likesQuerySnapshot.forEach((doc) =>
+        userData.likes.push({ ...doc.data() })
+      );
+      commentsQuerySnapshot.forEach((doc) =>
+        userData.comments.push({ ...doc.data() })
+      );
+      dispatch({
+        type: SET_USER,
+        payload: userData,
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
 export const getUserData = (uid) => async (dispatch) => {
   try {
     if (uid) {
@@ -102,25 +128,9 @@ export const getUserData = (uid) => async (dispatch) => {
       querySnapshot.forEach((doc) => {
         const userData = doc.data();
         userData.likes = [];
+        userData.comments = [];
 
-        dispatch(getUserLikes(userData));
-      });
-    }
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-export const getUserLikes = (userData) => async (dispatch) => {
-  try {
-    if (userData) {
-      const likesRef = collection(db, "likes");
-      const q = query(likesRef, where("userId", "==", userData.userId));
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => userData.likes.push({ ...doc.data() }));
-      dispatch({
-        type: SET_USER,
-        payload: userData,
+        dispatch(getUserLikesAndComments(userData));
       });
     }
   } catch (error) {
