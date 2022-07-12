@@ -15,7 +15,7 @@ const lngs = {
 
 const Wrapper = styled.div<LanguageSelectProps>``;
 
-const LanguageSelect: FC<LanguageSelectProps> = ({ text }) => {
+const LanguageSelect: FC<LanguageSelectProps> = ({ text, direction }) => {
   const { i18n } = useTranslation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -29,6 +29,7 @@ const LanguageSelect: FC<LanguageSelectProps> = ({ text }) => {
       open={dropdownOpen}
       setOpen={setDropdownOpen}
       openButtonWidth="36px"
+      direction={direction}
       OpenButton={
         <Button
           variant="white"
@@ -43,6 +44,7 @@ const LanguageSelect: FC<LanguageSelectProps> = ({ text }) => {
         <Box gap="5px" flexDirection="column">
           {Object.keys(lngs).map((lng) => (
             <Button
+              key={lng}
               variant={i18n.resolvedLanguage === lng ? "primary" : "secondary"}
               size="small"
               text={lngs[lng].nativeName}

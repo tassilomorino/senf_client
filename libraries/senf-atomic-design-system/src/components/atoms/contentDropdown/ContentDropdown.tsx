@@ -3,7 +3,7 @@
 import React, { FC, useEffect, memo, useState, useRef } from "react";
 import styled from "styled-components";
 
-//Components
+// Components
 import { ContentDropdownProps } from "./ContentDropdown.types";
 import TertiaryButton from "../buttons/TertiaryButton";
 import useOnClickOutside from "../../../hooks/useOnClickOutside";
@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   position: relative;
 `;
 
-const DropDownListContainer = styled.div`
+const DropDownListContainer = styled.div<ContentDropdownProps>`
   pointer-events: auto;
   display: block;
   box-sizing: border-box;
@@ -40,7 +40,7 @@ const DropDownListContainer = styled.div`
 `;
 
 const ContentDropdown: FC<ContentDropdownProps> = ({
-  direction = "downRight",
+  direction,
   OpenButton,
   Content,
   openButtonWidth,

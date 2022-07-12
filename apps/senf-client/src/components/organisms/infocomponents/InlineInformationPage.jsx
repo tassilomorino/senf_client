@@ -575,7 +575,7 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsOverview }) => {
           )}
 
           <SelectLanguageWrapper>
-            <LanguageSelect />
+            <LanguageSelect direction="downLeft" />
           </SelectLanguageWrapper>
 
           <StyledContactImg
