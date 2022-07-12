@@ -7,11 +7,22 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
+import styled from "styled-components";
 import ReactDOM from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
+import {
+  MainSwipeList,
+  OrganizationsOverview,
+  Modal,
+  Button,
+  TagSlide,
+  Box,
+  MobileTopBar,
+  ErrorLoading,
+} from "senf-atomic-design-system";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
 import {
@@ -50,7 +61,6 @@ import {
   getMyScreams,
   openAccountFunc,
 } from "../redux/actions/accountActions";
-import ErrorBackground from "../components/atoms/Backgrounds/ErrorBackground";
 import PostScream from "../components/organisms/PostIdea/PostScream";
 import ChangeLocationModal from "../components/molecules/Modals/ChangeLocationModal";
 import { usePrevious } from "../hooks/usePrevious";
@@ -60,7 +70,6 @@ import {
   stateCreateOrganizationsFunc,
 } from "../redux/actions/organizationActions";
 
-import styled from "styled-components";
 import {
   filterByGeodata,
   filterByTagFilter,
@@ -72,15 +81,6 @@ import {
 } from "../util/helpers";
 import Auth from "./Auth";
 
-import {
-  MainSwipeList,
-  OrganizationsOverview,
-  Modal,
-  Button,
-  TagSlide,
-  Box,
-  MobileTopBar,
-} from "senf-atomic-design-system";
 import OrganizationPage from "./OrganizationPage";
 import { likeScream, unlikeScream } from "../redux/actions/likeActions";
 import InlineInformationPage from "../components/organisms/infocomponents/InlineInformationPage";
@@ -128,6 +128,7 @@ const Main = () => {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
+  const errors = useSelector((state) => state.UI.errors);
   const [authOpen, setAuthOpen] = useState(false);
   const [authEditOpen, setAuthEditOpen] = useState(false);
 
@@ -168,7 +169,7 @@ const Main = () => {
     useState(false);
 
   const user = useSelector((state) => state.user);
-  const userId = user.userId;
+  const { userId } = user;
   const userLikes = user.likes;
 
   const voted = useSelector((state) => state.UI.voted);
@@ -218,16 +219,16 @@ const Main = () => {
   );
   const mapViewportRef = useRef(initialMapViewport);
 
-  //Initial-ZOOM
+  // Initial-ZOOM
   useEffect(() => {
     if (mapRef?.current && mapLoaded) {
       const map = mapRef.current.getMap();
-      var canvas = map.getCanvas(),
-        w = canvas.width,
-        h = canvas.height,
-        NW = map.unproject([0, 0]).toArray(),
-        SE = map.unproject([w, h]).toArray();
-      var boundsRar = [NW, SE];
+      const canvas = map.getCanvas();
+      const w = canvas.width;
+      const h = canvas.height;
+      const NW = map.unproject([0, 0]).toArray();
+      const SE = map.unproject([w, h]).toArray();
+      const boundsRar = [NW, SE];
 
       const bounds = {
         latitude1: boundsRar[0][1],
@@ -240,7 +241,7 @@ const Main = () => {
     }
   }, [mapLoaded, initialMapViewport]);
 
-  //PROJECTROOM-ZOOM
+  // PROJECTROOM-ZOOM
   useEffect(() => {
     if (
       openProjectRoom &&
@@ -264,7 +265,7 @@ const Main = () => {
     }
   }, [project]);
 
-  //IDEA-ZOOM
+  // IDEA-ZOOM
   const prevLat = usePrevious({ lat });
   useEffect(() => {
     if (openScream && !loadingIdea && mapRef.current && mapLoaded) {
@@ -367,7 +368,7 @@ const Main = () => {
     [dropdownStatus]
   );
 
-  //IDEAS
+  // IDEAS
 
   const dataFinalIdeas = useMemo(() => {
     let ideasData = [];
@@ -400,7 +401,7 @@ const Main = () => {
     [screams]
   );
 
-  //PROJECTROOMS
+  // PROJECTROOMS
 
   const dataFinalProjectRooms = useMemo(() => {
     let projectRoomsData = [];
@@ -422,7 +423,7 @@ const Main = () => {
     return projectRoomsData;
   }, [dropdown, projects, searchTerm, selectedOrganizationTypes]);
 
-  //ORGANIZATIONS
+  // ORGANIZATIONS
 
   const dataFinalOrganizations = useMemo(() => {
     let organizationsData;
@@ -436,7 +437,7 @@ const Main = () => {
     return organizationsData;
   }, [dropdown, organizations, searchTerm, selectedOrganizationTypes]);
 
-  //MAP
+  // MAP
   const dataMap = useMemo(
     () =>
       openProjectRoom
@@ -462,11 +463,13 @@ const Main = () => {
     [dataMap]
   );
 
-  const dataFinalMapProjects = useMemo(() => {
-    return projects.filter(({ organizationType }) =>
-      selectedOrganizationTypes.includes(organizationType)
-    );
-  }, [projects, selectedOrganizationTypes]);
+  const dataFinalMapProjects = useMemo(
+    () =>
+      projects.filter(({ organizationType }) =>
+        selectedOrganizationTypes.includes(organizationType)
+      ),
+    [projects, selectedOrganizationTypes]
+  );
 
   const handleButtonOpenCard = (event, cardType, cardId) => {
     if (cardType === "ideaCard") {
@@ -541,7 +544,6 @@ const Main = () => {
   const handleOpenCreateOrganization = () => {
     if (!user.authenticated) {
       setOpenModalAuthenticate(true);
-      return;
     } else {
       dispatch(stateCreateOrganizationsFunc(true));
       setOpenCreateOrganizationFirst(false);
@@ -895,7 +897,7 @@ const Main = () => {
           />
         )}
 
-      <ErrorBackground loading={loading} />
+      {errors && !loading && <ErrorLoading />}
 
       {/* {voted && userLikes.length <= 1 && <ThanksForTheVote />} */}
 

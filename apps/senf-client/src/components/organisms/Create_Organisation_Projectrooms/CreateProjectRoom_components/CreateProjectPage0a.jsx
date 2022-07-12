@@ -2,14 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
 import {
   ComponentInnerWrapper,
   ComponentWrapper,
 } from "../styles/sharedStyles";
-import styled from "styled-components";
 import CheckBox from "../../../atoms/CheckBox/CheckBox";
 
-//firebase
+// firebase
 
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";

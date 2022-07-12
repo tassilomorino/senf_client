@@ -64,6 +64,7 @@ export { default as OrganizationsOverview } from "./components/pages/organizatio
 export { default as StatisticsOverview } from "./components/pages/statisticsOverview/StatisticsOverview";
 export { default as ProfilePage } from "./components/pages/profilePage/ProfilePage";
 export { default as ProjectroomPage } from "./components/pages/projectroomPage/ProjectroomPage";
+export { default as ErrorLoading } from "./components/pages/warningPages/ErrorLoading";
 
 export { default as Example } from "./components/templates/example/Example";
 
