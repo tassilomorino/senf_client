@@ -555,7 +555,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
               {t("IdeaDetailPage.commentHeadline")}
             </Typography>
             {!user?.authenticated ? (
-              <Button onClick={setAuthOpen}>Login</Button>
+              <Button onClick={setAuthOpen}>{t("login")}</Button>
             ) : (
               <Box gap="8px" width="100%">
                 <Input

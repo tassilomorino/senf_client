@@ -19,8 +19,8 @@ const initialState = {
   loading: false,
   loadingMyOrganizations: false,
   loadingMyScreams: false,
-  myScreams: [],
-  myOrganizations: [],
+  myScreams: null,
+  myOrganizations: null,
   likes: [],
   comments: [],
   notifications: [],
@@ -37,6 +37,7 @@ export default function (state = initialState, action) {
       return initialState;
     case SET_USER:
       return {
+        ...state,
         authenticated: true,
         loading: false,
         ...action.payload,
