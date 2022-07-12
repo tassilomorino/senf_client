@@ -1,9 +1,6 @@
 /** @format */
 
 import React from "react";
-
-//Icons
-import CircularProgress from "@material-ui/core/CircularProgress";
 //Translation
 import { useTranslation } from "react-i18next";
 //Graphs
@@ -11,6 +8,7 @@ import createPlotlyComponent from "react-plotlyjs";
 //See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
 import Plotly from "plotly.js-cartesian-dist";
 import GraphsWrapper from "./GraphsWrapper";
+import { Loader } from "senf-atomic-design-system";
 const PlotlyComponent = createPlotlyComponent(Plotly);
 
 // let PlotlyComponent
@@ -300,7 +298,9 @@ const Thema = ({ screams }) => {
       />
     ) : (
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <CircularProgress size={50} thickness={2} />
+        <div style={{ width: "100px" }}>
+          <Loader />
+        </div>
       </div>
     );
   return (

@@ -7,11 +7,11 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
+import styled from "styled-components";
 import ReactDOM from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import styled from "styled-components";
 import {
   MainSwipeList,
   OrganizationsOverview,
@@ -20,6 +20,7 @@ import {
   TagSlide,
   Box,
   MobileTopBar,
+  ErrorLoading,
 } from "senf-atomic-design-system";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
@@ -49,10 +50,9 @@ import {
 } from "../redux/actions/UiActions";
 
 // Components
-import InsightsPage from "./InsightsPage";
+import StatisticsOverviewPage from "./StatisticsOverviewPage";
 import Map from "../components/atoms/map/Map";
 import IdeaDialog from "./IdeaDetailPage";
-import ThanksForTheVote from "../components/atoms/Backgrounds/ThanksForTheVote";
 import Loader from "../components/atoms/Backgrounds/Loader";
 import {
   closeAccountFunc,
@@ -60,7 +60,6 @@ import {
   getMyScreams,
   openAccountFunc,
 } from "../redux/actions/accountActions";
-import ErrorBackground from "../components/atoms/Backgrounds/ErrorBackground";
 import PostScream from "../components/organisms/PostIdea/PostScream";
 import ChangeLocationModal from "../components/molecules/Modals/ChangeLocationModal";
 import { usePrevious } from "../hooks/usePrevious";
@@ -127,6 +126,7 @@ const MobileMapClickBackground = styled.div`
 const Main = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const errors = useSelector((state) => state.UI.errors);
   const [authOpen, setAuthOpen] = useState(false);
   const [authEditOpen, setAuthEditOpen] = useState(false);
 
@@ -888,16 +888,16 @@ const Main = () => {
         !openAccount &&
         !openOrganization &&
         openStatisticsOverview && (
-          <InsightsPage
+          <StatisticsOverviewPage
             openStatisticsOverview={openStatisticsOverview}
             setOpenStatisticsOverview={setOpenStatisticsOverview}
             projectRoomId={project?.projectRoomId}
           />
         )}
 
-      <ErrorBackground loading={loading} />
+      {errors && !loading && <ErrorLoading />}
 
-      {voted && userLikes.length <= 1 && <ThanksForTheVote />}
+      {/* {voted && userLikes.length <= 1 && <ThanksForTheVote />} */}
 
       {modalData && (
         <Modal

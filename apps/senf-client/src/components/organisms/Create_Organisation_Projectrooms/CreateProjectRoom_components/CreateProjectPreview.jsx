@@ -8,9 +8,6 @@ import styled from "styled-components";
 //firebase
 import { db } from "../../../../firebase";
 
-//Components
-import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
-
 //images
 import {
   ButtonsWrapper,

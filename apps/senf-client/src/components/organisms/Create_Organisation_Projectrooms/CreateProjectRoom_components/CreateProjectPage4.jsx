@@ -133,7 +133,7 @@ const CreateProjectPage4 = ({
             {pagesData[index].subTitle}
           </StyledH3>
 
-          <DrawMapButton onClick={setMapOpen}>
+          <DrawMapButton onClick={() => setMapOpen(true)}>
             {data ? (
               <MapPreview
                 mapOpen={mapOpen}

@@ -26,6 +26,7 @@ const Wrapper = styled.div<BoxProps>`
   gap: ${({ gap }) => (gap ? gap : null)};
   flex-wrap: ${({ flexWrap }) => (flexWrap ? flexWrap : null)};
   z-index: ${({ zIndex }) => (zIndex ? zIndex : undefined)};
+  transform: ${({ transform }) => (transform ? transform : undefined)};
 `;
 
 const Box: FC<BoxProps> = ({
@@ -41,6 +42,7 @@ const Box: FC<BoxProps> = ({
   bottom,
   left,
   right,
+  transform,
   zIndex,
   alignItems,
   justifyContent,
@@ -61,6 +63,7 @@ const Box: FC<BoxProps> = ({
       bottom={bottom}
       left={left}
       right={right}
+      transform={transform}
       zIndex={zIndex}
       alignItems={alignItems}
       justifyContent={justifyContent}

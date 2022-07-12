@@ -28,6 +28,7 @@ const Wrapper = styled.div<StatisticsOverviewProps>`
   height: calc(100vh - 20px);
   border-radius: 18px;
   overflow-y: scroll;
+  overflow-x: hidden;
   z-index: 90;
   top: 0;
   position: fixed;
@@ -37,7 +38,7 @@ const Wrapper = styled.div<StatisticsOverviewProps>`
 
   @media (min-width: 768px) {
     display: ${({ open }) => (open ? "block" : "none")};
-    width: ${({ open }) => (open ? "calc(100vw - 420px)" : "0px")};
+    width: ${({ open }) => (open ? "calc(100vw - 430px)" : "0px")};
   }
 
   @media (max-width: 1350px) {

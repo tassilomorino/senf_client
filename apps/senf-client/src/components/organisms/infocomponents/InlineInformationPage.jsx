@@ -1,18 +1,26 @@
 /** @format */
 
-import React, { Fragment, useState, useCallback, useRef } from "react";
+import React, {
+  Fragment,
+  useState,
+  useCallback,
+  useRef,
+  useEffect,
+} from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useTranslation } from "react-i18next";
 
-import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
-import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
+import styled from "styled-components";
+import {
+  Plus,
+  Box,
+  RoundedButton,
+  LanguageSelect,
+} from "senf-atomic-design-system";
 import Headline from "./components/Headline";
 
-import { useEffect } from "react";
-import styled from "styled-components";
 import Circle from "./components/Circle";
-import Keywords from "./components/Keywords";
 import LearnMoreBubbles from "./components/LearnMoreBubbles";
 import HorizontalScrollSection from "./components/HorizontalScrollSection";
 import UnderlinedText from "./components/UnderlinedText";
@@ -21,12 +29,7 @@ import SecondHeadline from "./components/SecondHeadline";
 import Tags from "./components/Tags";
 import InfoPageDialog from "../../atoms/Layout/InfoPageDialog";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-import {
-  SideBarTabs,
-  StyledA,
-  StyledH3,
-  StyledText,
-} from "../../../styles/GlobalStyle";
+import { StyledA, StyledH3, StyledText } from "../../../styles/GlobalStyle";
 
 import {
   setInfoPageClosed,
@@ -36,17 +39,12 @@ import {
 import ArrowRight from "../../../images/icons/arrow-right.png";
 import ContactImg from "../../../images/contact.png";
 
-import Info from "../../../images/icons/info.png";
 import DecideLocationImg from "../../../images/infoPage/howItWorks/decideLocationImg.png";
 import FormulateIdeaImg from "../../../images/infoPage/howItWorks/formulateIdeaImg.png";
-import WeAreHere from "../../../images/weAreHere.png";
-import City from "../../../images/city.png";
 import WorkTogether from "../../../images/workTogether.png";
 import OpenBook from "../../../images/openBook.png";
 import { openMail } from "../../../util/helpers";
-import FooterLinks from "../../molecules/Footer/FooterLinks";
-import SelectLanguageButton from "../../atoms/Selects/SelectLanguageButton";
-import { Plus, Box, RoundedButton } from "senf-atomic-design-system";
+import FooterLinks from "./components/FooterLinks";
 
 const Container = styled.div`
   height: 100%;
@@ -332,10 +330,10 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsOverview }) => {
   const handleScroll = useCallback(() => {
     const el = document.getElementById("InfoPage");
 
-    let value = el?.scrollTop / 10;
+    const value = el?.scrollTop / 10;
     setScrollValue(value);
 
-    //SECTION 1
+    // SECTION 1
 
     if (value > 3) {
       setVisibleFirstHeadline(false);
@@ -353,15 +351,13 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsOverview }) => {
       } else {
         setVisibleSecondaryHeadline1(false);
       }
+    } else if (value > 15 && value < 140) {
+      setVisibleSecondaryHeadline1(true);
     } else {
-      if (value > 15 && value < 140) {
-        setVisibleSecondaryHeadline1(true);
-      } else {
-        setVisibleSecondaryHeadline1(false);
-      }
+      setVisibleSecondaryHeadline1(false);
     }
 
-    let infoPageTopicTagScrollValue = el?.scrollTop / 10 - 30;
+    const infoPageTopicTagScrollValue = el?.scrollTop / 10 - 30;
 
     const infoPageTopicTag1 = document.getElementById("infoPageTopicTag1");
     const infoPageTopicTag2 = document.getElementById("infoPageTopicTag2");
@@ -400,7 +396,7 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsOverview }) => {
       setVisibleCards2(false);
     }
 
-    //HORIZONTAL SECTION: PROCESS
+    // HORIZONTAL SECTION: PROCESS
     const horizontal1 = document.querySelector("#horizontal1");
     const sticky1 = document.querySelector("#sticky1");
     horizontal1.style.transform = `translateX(-${sticky1.offsetTop}px)`;
@@ -411,15 +407,13 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsOverview }) => {
       } else {
         setVisibleSecondaryHeadline1(false);
       }
+    } else if (value > 15 && value < 140) {
+      setVisibleSecondaryHeadline1(true);
     } else {
-      if (value > 15 && value < 140) {
-        setVisibleSecondaryHeadline1(true);
-      } else {
-        setVisibleSecondaryHeadline1(false);
-      }
+      setVisibleSecondaryHeadline1(false);
     }
 
-    //SECTION 2
+    // SECTION 2
     const mobileDifferenceCircle = isMobileCustom ? 200 : 0;
     const mobileDifferenceKeywords = isMobileCustom ? 220 : 0;
 
@@ -437,12 +431,10 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsOverview }) => {
       } else {
         setVisibleSecondaryHeadline2(false);
       }
+    } else if (value > 635 && value < 755) {
+      setVisibleSecondaryHeadline2(true);
     } else {
-      if (value > 635 && value < 755) {
-        setVisibleSecondaryHeadline2(true);
-      } else {
-        setVisibleSecondaryHeadline2(false);
-      }
+      setVisibleSecondaryHeadline2(false);
     }
 
     const organizationTypeTag1 = document.getElementById(
@@ -464,7 +456,7 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsOverview }) => {
       "infoPageOrganizationTypeTag6"
     );
 
-    let organizationTagScrollValue =
+    const organizationTagScrollValue =
       el?.scrollTop / 10 - (698 - mobileDifferenceKeywords);
 
     organizationTypeTag1.style.transform = `translateX(${
@@ -486,7 +478,7 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsOverview }) => {
       -organizationTagScrollValue * 14
     }px)`;
 
-    //HORIZONTAL SECTION: CREDITS
+    // HORIZONTAL SECTION: CREDITS
     const horizontal2 = document.querySelector("#horizontal2");
     const sticky2 = document.querySelector("#sticky2");
     horizontal2.style.transform = `translateX(-${sticky2.offsetTop}px)`;
@@ -497,12 +489,10 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsOverview }) => {
       } else {
         setVisiblePartners(false);
       }
+    } else if (value > 835 && value < 1200) {
+      setVisiblePartners(true);
     } else {
-      if (value > 835 && value < 1200) {
-        setVisiblePartners(true);
-      } else {
-        setVisiblePartners(false);
-      }
+      setVisiblePartners(false);
     }
 
     // SECTION 3
@@ -528,15 +518,13 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsOverview }) => {
       } else {
         setVisibleSecondaryHeadline3(false);
       }
+    } else if (value > 1135 && value < 1555) {
+      setVisibleSecondaryHeadline3(true);
     } else {
-      if (value > 1135 && value < 1555) {
-        setVisibleSecondaryHeadline3(true);
-      } else {
-        setVisibleSecondaryHeadline3(false);
-      }
+      setVisibleSecondaryHeadline3(false);
     }
 
-    let infoPageBubblesScrollValue =
+    const infoPageBubblesScrollValue =
       el?.scrollTop / 10 - (1180 - mobileDifferenceBubbles);
 
     const infoPageBubble1 = document.getElementById("infoPageBubble1");
@@ -557,7 +545,7 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsOverview }) => {
     infoPageBubble4.style.transform = `translateX(${
       -infoPageBubblesScrollValue * 8
     }px)`;
-    //console.log(value)
+    // console.log(value)
   }, []);
 
   useEffect(() => {
@@ -571,19 +559,6 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsOverview }) => {
 
   return (
     <Fragment>
-      {/* {isMobileCustom ? (
-        <ExpandButton
-          handleButtonClick={handleOpen}
-          dataCy="InlineInfo-button"
-        />
-      ) : (
-        <SideBarTabs fontWeight={openInfoPage ? "900" : undefined}>
-          <ExpandButton handleButtonClick={handleOpen} />
-          <img src={Info} width="35" alt="EndImage" />
-          <span className="inlineInfoIconText"> {t("info")}</span>
-        </SideBarTabs>
-      )} */}
-
       <InfoPageDialog isOpen={openInfoPage} setIsOpen={handleClose}>
         <Container id="InfoPage">
           {isMobileCustom && (
@@ -600,7 +575,7 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsOverview }) => {
           )}
 
           <SelectLanguageWrapper>
-            <SelectLanguageButton direction="down" />
+            <LanguageSelect />
           </SelectLanguageWrapper>
 
           <StyledContactImg

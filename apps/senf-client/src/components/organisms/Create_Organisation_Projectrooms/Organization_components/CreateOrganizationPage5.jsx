@@ -7,12 +7,6 @@ import styled from "styled-components";
 //firebase
 import { db } from "../../../../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-//Components
-import Weblink from "../../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
-import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
-import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
-
-import { useOnClickOutside } from "../../../../hooks/useOnClickOutside";
 
 //images
 import {

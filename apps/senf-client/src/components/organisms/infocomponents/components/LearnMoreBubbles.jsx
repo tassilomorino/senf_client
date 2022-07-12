@@ -10,9 +10,6 @@ import Insta from "../../../../images/infoPage/lastSection/insta.png";
 import Bulb from "../../../../images/infoPage/lastSection/bulb.png";
 
 import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
-import NewButton from "../../../atoms/CustomButtons/NewButton";
-import FooterLinks from "../../../molecules/Footer/FooterLinks";
-import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 import { isMobileCustom } from "../../../../util/customDeviceDetect";
 import { openMail } from "../../../../util/helpers";
 import { Box, Accordion, Modal } from "senf-atomic-design-system";

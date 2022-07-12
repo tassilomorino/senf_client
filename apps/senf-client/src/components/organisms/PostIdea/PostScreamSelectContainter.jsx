@@ -7,9 +7,6 @@ import CustomSelect from "../../atoms/Selects/CustomSelect";
 import { OptionsProjects } from "../../../data/OptionsProjects";
 import styled from "styled-components";
 import { StyledH3, StyledH4 } from "../../../styles/GlobalStyle";
-import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
-import LocationIcon from "../../../images/icons/location.png";
-import { truncateString } from "../../../util/helpers";
 import { Box, Button } from "senf-atomic-design-system";
 
 const Wrapper = styled.div`

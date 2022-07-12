@@ -8,8 +8,6 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
-
 //firebase
 import { db } from "../../../../firebase";
 

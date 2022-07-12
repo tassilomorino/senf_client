@@ -4,10 +4,16 @@ import React, { FC, useState } from "react";
 import styled from "styled-components";
 import { SwitchProps } from "./Switch.types";
 
+const Wrapper = styled.div`
+  opacity: ${({ disabled }) => disabled && 0.5};
+
+`
 const SwitchInput = styled.input`
   height: 0;
   width: 0;
   visibility: hidden;
+
+
 `;
 
 const SwitchLabel = styled.label`
@@ -15,14 +21,14 @@ const SwitchLabel = styled.label`
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  width: 38px;
-  height: 24px;
+  width: 34px;
+  height: 20px;
   border-radius: 50px;
   border: 2px solid
     ${({ theme, toggled }) =>
-      toggled ? "#00857b" : theme.colors.brown.brown4tra};
+      toggled ?  theme.colors.signal.greenDark : theme.colors.brown.brown4tra};
   background-color: ${({ theme, toggled }) =>
-    toggled ? "#00857b" : theme.colors.brown.brown10tra};
+    toggled ? theme.colors.signal.green: theme.colors.brown.brown10tra};
   position: relative;
   transition: background-color 0.2s;
 `;
@@ -40,33 +46,35 @@ const SwitchButton = styled.span`
   background: ${({ theme }) => theme.colors.white.white100};
   box-shadow: 0px 4px 10px rgba(186, 160, 79, 0.5);
   ${SwitchInput}:checked + ${SwitchLabel} & {
-    left: calc(100% - 1px);
+    left: 100%;
     transform: translateX(-100%);
   }
   ${SwitchLabel}:active & {
-    width: 22.5px;
+    width: 20px;
   }
 `;
 
-const Switch: FC<SwitchProps> = ({ id = "switch", receiveValue, onChange }) => {
+const Switch: FC<SwitchProps> = ({ id = "switch", checked, receiveValue, onChange , disabled}) => {
   const [toggle, setToggle] = useState(false);
 
   return (
-    <>
+    <Wrapper         
+    disabled={disabled}
+    >
       <SwitchInput
         className="switch-checkbox"
         id={id}
         type="checkbox"
-        checked={toggle}
+        checked={checked}
         onChange={(e: React.FormEvent<HTMLInputElement>) => {
           setToggle(!toggle);
           receiveValue(e.currentTarget.value);
         }}
       />
-      <SwitchLabel toggled={toggle} className="switch-label" htmlFor={id}>
-        <SwitchButton toggled={toggle} className="switch-button" />
+      <SwitchLabel toggled={checked} className="switch-label" htmlFor={id}>
+        <SwitchButton toggled={checked} className="switch-button" />
       </SwitchLabel>
-    </>
+    </Wrapper>
   );
 };
 

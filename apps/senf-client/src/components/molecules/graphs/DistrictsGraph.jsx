@@ -3,15 +3,13 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-//Icons
-import CircularProgress from "@material-ui/core/CircularProgress";
 //Graphs
 import createPlotlyComponent from "react-plotlyjs";
 //See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
 import Plotly from "plotly.js-cartesian-dist";
 import styled from "styled-components";
 import GraphsWrapper from "./GraphsWrapper";
-
+import { Loader } from "senf-atomic-design-system";
 const PlotlyComponent = createPlotlyComponent(Plotly);
 
 //  let PlotlyComponent
@@ -344,7 +342,9 @@ const DistrictsGraph = ({ classes, screams }) => {
       <PlotlyComponent data={data} layout={layout} config={config} />
     ) : (
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <CircularProgress size={50} thickness={2} />
+        <div style={{ width: "100px" }}>
+          <Loader />
+        </div>
       </div>
     );
   return (

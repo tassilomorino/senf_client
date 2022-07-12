@@ -1,6 +1,5 @@
 /** @format */
 
-import { Dialog, DialogContent } from "@material-ui/core";
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,14 +8,9 @@ import { setCookies } from "../../../redux/actions/cookiesActions";
 import { setInfoPageClosed } from "../../../redux/actions/UiActions";
 import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-import {
-  CustomButton,
-  CustomIconButton,
-} from "../../atoms/CustomButtons/CustomButton";
-import FooterLinks from "../../molecules/Footer/FooterLinks";
+import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 
 import Cookie from "../../../images/cookies.png";
-import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 
 const Wrapper = styled.div`
   z-index: 9995;
@@ -111,16 +105,6 @@ const Cookiebanner = () => {
             .
           </Trans>
         </StyledText>
-        {/*  {!isMobileCustom && (
-          <SubmitButton
-            text={t("close")}
-            backgroundColor="#353535"
-            textColor="white"
-            position="relative"
-            zIndex="9999"
-            handleButtonClick={() => handleCookies("all")}
-          />
-        )} */}
       </Wrapper>
     )
   );

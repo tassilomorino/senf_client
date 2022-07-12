@@ -12,9 +12,6 @@ import * as yup from "yup";
 //firebase
 import { db } from "../../../../firebase";
 //Components
-import Weblink from "../../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
-import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
-import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 
 //images
 import {

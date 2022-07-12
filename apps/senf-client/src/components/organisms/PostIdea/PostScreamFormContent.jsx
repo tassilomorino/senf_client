@@ -15,9 +15,7 @@ import PostScreamRules from "./PostScreamRules";
 //Icons
 import LocationIcon from "../../../images/icons/location.png";
 import CustomSelect from "../../atoms/Selects/CustomSelect";
-import { SubmitButton } from "../../atoms/CustomButtons/SubmitButton";
 import { OptionsTopics } from "../../../data/OptionsTopics";
-import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import styled from "styled-components";
 import { StyledH3, StyledH4, StyledText } from "../../../styles/GlobalStyle";
 import {

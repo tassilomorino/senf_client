@@ -41,18 +41,17 @@ import {
 } from "../../../atoms/CustomButtons/CustomButton";
 import { useTranslation } from "react-i18next";
 //import { createProjectSaveData } from "../../../../redux/actions/formDataActions";
-import { SubmitButton } from "../../../atoms/CustomButtons/SubmitButton";
 import { StyledH2 } from "../../../../styles/GlobalStyle";
 import { isMobileCustom } from "../../../../util/customDeviceDetect";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-
+import { Box, Button } from "senf-atomic-design-system";
 const MapWrapper = styled.div`
   width: 100%;
   height: 100%;
   top: 0;
   background-color: grey;
   position: fixed;
-  z-index: 9999;
+  z-index: 9999999999;
   visibility: ${(props) => (props.mapOpen ? "visible" : "hidden")};
 `;
 
@@ -352,47 +351,21 @@ const MapDialog = ({
             </ButtonsContainer>
           )}
 
-          <SubmitButton
-            text={t("save")}
-            backgroundColor="#353535"
-            textColor="white"
+          <Box
             position="fixed"
             bottom="10px"
-            zIndex="0"
-            handleButtonClick={handleSave1}
-            disabled={!(data && isSetPolygon)}
-          />
-
-          {/*  {!step2 ? (
-            <SubmitButton
-              text={t("next")}
-              backgroundColor="#353535"
-              textColor="white"
-              position="fixed"
-              bottom="10px"
-              zIndex="0"
-              handleButtonClick={handleSave1}
+            zIndex={999999999}
+            left="50%"
+            transform="translateX(-50%)"
+          >
+            <Button
+              variant="white"
+              text={t("save")}
+              // loading={}
+              onClick={handleSave1}
               disabled={!(data && isSetPolygon)}
             />
-          ) : (
-            <NavigationButtonsContainer>
-              <CustomIconButton
-                name="ArrowLeft"
-                backgroundColor="white"
-                handleButtonClick={() => handleBack()}
-              />
-              <SubmitButton
-                text={t("save")}
-                backgroundColor="#353535"
-                textColor="white"
-                left="0"
-                marginLeft="10px"
-                transformX="none"
-                handleButtonClick={handleSave2}
-                disabled={!(data && isSetPolygon)}
-              />
-            </NavigationButtonsContainer>
-          )} */}
+          </Box>
         </MapGL>
       )}
     </MapWrapper>,
