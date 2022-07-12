@@ -1,26 +1,25 @@
 /** @format */
 
-import { useSpring } from "@react-spring/web";
+import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 import React, { FC, useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 import { trapFocus } from "../../../hooks/trapFocus";
 import { SwipeModalProps } from "./SwipeModal.types";
-import { animated } from "@react-spring/web";
+
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 
 const DragWrapper = styled(animated.div)`
-  z-index: ${({ zIndex }) => (zIndex ? zIndex : 9999)};
+  z-index: ${({ zIndex }) => zIndex || 9999};
   overscroll-behavior: contain;
   overflow-x: hidden;
   width: 100%;
   height: 100%;
   left: 0;
 
-  overflow: ${({ overflow }) => (overflow ? overflow : "scroll")};
-  background-color: ${({ backgroundColor }) =>
-    backgroundColor ? backgroundColor : "white"};
+  overflow: ${({ overflow }) => overflow || "scroll"};
+  background-color: ${({ backgroundColor }) => backgroundColor || "white"};
   border-radius: ${({ theme }) => theme.radii[4]}px
     ${({ theme }) => theme.radii[4]}px 0px 0px;
   box-shadow: ${({ theme }) => theme.shadows[0]}
@@ -42,7 +41,7 @@ const DragWrapper = styled(animated.div)`
 `;
 
 const Background = styled.div<SwipeModalProps>`
-  z-index: ${({ zIndex }) => (zIndex ? zIndex : 9998)};
+  z-index: ${({ zIndex }) => zIndex || 9998};
 
   position: fixed;
   left: 0;
@@ -58,12 +57,9 @@ export const Header = styled(animated.div)`
   width: 100%;
   /* background-color: #fed957; */
   z-index: 25;
-  height: ${({ headerComponentHeight }) =>
-    headerComponentHeight ? headerComponentHeight : "100px"};
+  height: ${({ headerComponentHeight }) => headerComponentHeight || "100px"};
   background-color: ${({ headerComponentBackgroundColor }) =>
-    headerComponentBackgroundColor
-      ? headerComponentBackgroundColor
-      : undefined};
+    headerComponentBackgroundColor || undefined};
 
   z-index: 99;
 `;
@@ -107,8 +103,6 @@ const SwipeModal: FC<SwipeModalProps> = ({
         touchAction: "unset",
         userSelect: "none",
       });
-      const root = document.getElementById("root");
-      root?.setAttribute("inert", "");
     }, 50);
   };
 
@@ -120,8 +114,7 @@ const SwipeModal: FC<SwipeModalProps> = ({
     setTimeout(() => {
       setOpenModal(false);
     }, 100);
-    const root = document.getElementById("root");
-    root?.removeAttribute("inert");
+
     // focus modal trigger again
     buttonRef?.current?.focus();
   };

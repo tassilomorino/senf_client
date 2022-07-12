@@ -3,12 +3,12 @@
 import React, { FC, useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { Trans, useTranslation } from "react-i18next";
+import { useFormik } from "formik";
+import * as yup from "yup";
 import Button from "../../atoms/buttons/Button";
 import Box from "../../atoms/box/Box";
 import Form from "../../molecules/form/Form";
 import { AuthEmailProps } from "./AuthEmail.types";
-import { useFormik } from "formik";
-import * as yup from "yup";
 
 import Typography from "../../atoms/typography/Typography";
 import { openLink } from "../../../util/helpers";
@@ -35,11 +35,17 @@ const AuthEmail: FC<AuthEmailProps> = ({
   }, [variant]);
 
   const inputItemsLogin = [
-    { name: "email", type: "email", placeholder: "E-Mail" },
+    {
+      name: "email",
+      type: "email",
+      placeholder: "E-Mail",
+      autoComplete: "email",
+    },
     {
       name: "password",
       type: "password",
       placeholder: "Password",
+      autoComplete: "current-password",
     },
   ];
 

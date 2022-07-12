@@ -1,8 +1,11 @@
+/* eslint-disable react/display-name */
 /** @format */
 
 import React, { memo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { Button } from "senf-atomic-design-system";
+import styled from "styled-components";
 import { CustomButton, CustomIconButton } from "../CustomButtons/CustomButton";
 import { closeScream } from "../../../redux/actions/screamActions";
 import {
@@ -10,9 +13,7 @@ import {
   setMapViewport,
 } from "../../../redux/actions/mapActions";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-import { Button } from "senf-atomic-design-system";
 import { setSwipePositionUp } from "../../../redux/actions/UiActions";
-import styled from "styled-components";
 import CircularArrowIcon from "../../../images/icons/circular-arrow.png";
 
 const Wrapper = styled.div`
@@ -33,7 +34,7 @@ const Wrapper = styled.div`
     width: calc(100% - 470px);
   }
 `;
-export const MapFilter = memo(({ viewport, mapRef }) => {
+const MapFilter = memo(({ viewport, mapRef }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.data.loading);
@@ -46,12 +47,12 @@ export const MapFilter = memo(({ viewport, mapRef }) => {
 
   const handleMapBoundsSet = (viewport) => {
     const map = mapRef.current.getMap();
-    var canvas = map.getCanvas(),
-      w = canvas.width,
-      h = canvas.height,
-      NW = map.unproject([0, 0]).toArray(),
-      SE = map.unproject([w, h]).toArray();
-    var boundsRar = [NW, SE];
+    const canvas = map.getCanvas();
+    const w = canvas.width;
+    const h = canvas.height;
+    const NW = map.unproject([0, 0]).toArray();
+    const SE = map.unproject([w, h]).toArray();
+    const boundsRar = [NW, SE];
 
     const bounds = {
       latitude1: boundsRar[0][1],
@@ -93,16 +94,17 @@ export const MapFilter = memo(({ viewport, mapRef }) => {
           text={t("Ideen im Bereich anzeigen")}
           onClick={() => handleMapBoundsSet(viewport)}
           variant="white"
-          size={isMobileCustom && "small"}
+          size={isMobileCustom ? "small" : "big"}
         />
 
         <Button
           icon={<img src={CircularArrowIcon} width="16px" />}
           onClick={handleMapBoundsReset}
           variant="white"
-          size={isMobileCustom && "small"}
+          size={isMobileCustom ? "small" : "big"}
         />
       </Wrapper>
     )
   );
 });
+export { MapFilter };

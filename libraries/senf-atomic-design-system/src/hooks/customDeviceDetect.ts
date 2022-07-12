@@ -8,7 +8,6 @@ export const isMobileCustom = () => {
   const handleWindowSizeChange = () => {
     setWidth(window.innerWidth);
   };
-  console.log(window.innerWidth);
 
   useEffect(() => {
     window.addEventListener("resize", handleWindowSizeChange);

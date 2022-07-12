@@ -6,7 +6,8 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
-//firebase
+// firebase
+import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../../../firebase";
 import {
   ComponentInnerWrapper,
@@ -15,7 +16,6 @@ import {
 import { StyledH2, StyledH3, StyledImg } from "../../../../styles/GlobalStyle";
 import Navigation from "../Components/Navigation";
 import { InlineOrganizationCard } from "../Components/InlineOrganizationCard";
-import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
 
 const CoverWrapper = styled.div`
   left: 0;
@@ -55,7 +55,7 @@ const CreateProjectPage1 = ({ onClickNext, pagesData, index }) => {
   const [selectedOrganizationType, setSelectedOrganizationType] =
     useState(null);
 
-  const myOrganizations = useSelector((state) => state.data.myOrganizations);
+  const myOrganizations = useSelector((state) => state.user.myOrganizations);
   const myActiveOrganizations = myOrganizations?.filter(
     (organization) => organization.status === "active"
   );
@@ -98,7 +98,7 @@ const CreateProjectPage1 = ({ onClickNext, pagesData, index }) => {
   const handleNext = async () => {
     setNextClicked(true);
 
-    //CREATING A NEW PROJECTROOM
+    // CREATING A NEW PROJECTROOM
     const newProject = {
       createdAt: new Date().toISOString(),
       owner: selectedOrganizationName,
@@ -138,6 +138,7 @@ const CreateProjectPage1 = ({ onClickNext, pagesData, index }) => {
             {myActiveOrganizations?.map(
               ({ organizationId, title, organizationType, logoURL }) => (
                 <InlineOrganizationCard
+                  key={organizationId}
                   organizationId={organizationId}
                   title={title}
                   organizationType={organizationType}
