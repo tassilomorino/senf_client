@@ -94,7 +94,7 @@ const MenuSidebar: FC<MenuSidebarProps> = ({
       </Box>
 
       <Box gap="14px" flexDirection="column" width="36px">
-        <LanguageSelect />
+        <LanguageSelect direction="downRight" />
         <Divider />
 
         <Button

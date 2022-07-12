@@ -820,6 +820,7 @@ const Main = () => {
               handleButtonComment={handleButtonComment}
               projectroomsData={dataFinalProjectRooms}
               user={user}
+              setAuthOpen={setAuthOpen}
             />
           )}
         </MainColumnWrapper>
