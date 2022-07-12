@@ -50,6 +50,7 @@ export { default as Dialog } from "./components/molecules/dialog/Dialog";
 export { default as SubNavbar } from "./components/molecules/navs/SubNavbar";
 export { default as Accordion } from "./components/molecules/accordion/Accordion";
 export { default as TagSlide } from "./components/molecules/tagSlide/TagSlide";
+export { default as LanguageSelect } from "./components/molecules/languageSelect/LanguageSelect";
 
 export { default as MenuSidebar } from "./components/organisms/menuSidebar/MenuSidebar";
 export { default as MobileTopBar } from "./components/organisms/mobileTopBar/MobileTopBar";
