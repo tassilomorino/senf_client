@@ -4,6 +4,10 @@ import React, { useState, useEffect, memo } from "react";
 import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
+import {
+  Box,
+  IdeaDetailPage as IdeaDetailPageComponent,
+} from "senf-atomic-design-system";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
 // Redux stuff
@@ -11,10 +15,6 @@ import { closeScream, deleteScream } from "../redux/actions/screamActions";
 import { clearErrors } from "../redux/actions/errorsActions";
 
 import CommentMenuModal from "../components/molecules/Modals/CommentMenuModal";
-import {
-  Box,
-  IdeaDetailPage as IdeaDetailPageComponent,
-} from "senf-atomic-design-system";
 import { openProjectRoomFunc } from "../redux/actions/projectActions";
 import EditIdeaModal from "../components/molecules/Modals/EditIdeaModal";
 import { submitComment } from "../redux/actions/commentActions";
@@ -94,6 +94,7 @@ const IdeaDetailPage = ({
   handleButtonComment,
   projectroomsData,
   user,
+  setAuthOpen
 }) => {
   const data = useSelector((state) => state.data.scream);
   console.log(data);
@@ -198,13 +199,13 @@ const IdeaDetailPage = ({
   };
   const handleShareIdeaVia = (medium, path) => {
     if (medium === "Whatsapp") {
-      openLink("whatsapp://send?text=" + path);
+      openLink(`whatsapp://send?text=${  path}`);
     } else if (medium === "Facebook") {
-      openLink("https://www.facebook.com/sharer/sharer.php?u=" + path);
+      openLink(`https://www.facebook.com/sharer/sharer.php?u=${  path}`);
     } else if (medium === "Email") {
       openLink(
-        "mailto:?subject=Das könnte dich interessieren!&amp;body=Check out this site " +
-          path
+        `mailto:?subject=Das könnte dich interessieren!&amp;body=Check out this site ${ 
+          path}`
       );
     }
   };
@@ -214,7 +215,7 @@ const IdeaDetailPage = ({
   };
 
   const handleDeleteIdea = () => {
-    var answer = window.confirm(
+    const answer = window.confirm(
       "Bist du sicher, dass du die Idee löschen möchtest?"
     );
     if (answer) {
@@ -222,27 +223,27 @@ const IdeaDetailPage = ({
         deleteScream(screamId, user?.userId, user?.isAdmin, user?.isModerator)
       );
 
-      //some code
+      // some code
     } else {
-      //some code
+      // some code
     }
   };
 
   const handleReportIdea = () => {
     const thisPath = `/${screamId}`;
-    const siteLink = "senf.koeln" + thisPath;
+    const siteLink = `senf.koeln${  thisPath}`;
 
-    var link =
-      "mailto:dein@senf.koeln" +
-      "?subject=" +
-      escape("Meldung: Beitrag beinhaltet unangebrachten Inhalt ") +
-      "&body=" +
+    const link =
+      `mailto:dein@senf.koeln` +
+      `?subject=${ 
+      escape("Meldung: Beitrag beinhaltet unangebrachten Inhalt ") 
+      }&body=${ 
       escape(
-        "Dieser Beitrag beinhaltet unangebrachten Inhalt:" +
-          "\n" +
-          "\n" +
-          siteLink
-      );
+        `Dieser Beitrag beinhaltet unangebrachten Inhalt:` +
+          `\n` +
+          `\n${ 
+          siteLink}`
+      )}`;
     window.location.href = link;
   };
 
@@ -295,6 +296,7 @@ const IdeaDetailPage = ({
           setCommentFormInput={setCommentFormInput}
           handleSubmitComment={handleSubmitComment}
           commentFormLoading={commentFormLoading}
+          setAuthOpen={setAuthOpen}
         />
       </React.Fragment>,
       portalRoot

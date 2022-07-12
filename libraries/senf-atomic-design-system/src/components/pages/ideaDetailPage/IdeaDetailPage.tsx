@@ -156,6 +156,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
   handleSubmitComment,
   commentFormLoading,
   handleShareIdeaVia,
+  setAuthOpen,
 }) => {
   const {
     screamId,
@@ -553,21 +554,26 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
             <Typography variant="h3">
               {t("IdeaDetailPage.commentHeadline")}
             </Typography>
-            <Box gap="8px" width="100%">
-              <Input
-                placeholder={t("IdeaDetailPage.commentPlaceholder")}
-                value={commentFormInput}
-                onChange={(event) => setCommentFormInput(event.target.value)}
-              />
+            {!user?.authenticated ? (
+              <Button onClick={setAuthOpen}>Login</Button>
+            ) : (
+              <Box gap="8px" width="100%">
+                <Input
+                  placeholder={t("IdeaDetailPage.commentPlaceholder")}
+                  value={commentFormInput}
+                  onChange={(event) => setCommentFormInput(event.target.value)}
+                />
 
-              <Button
-                text={t("send")}
-                disabled={commentFormInput === "" || commentFormLoading}
-                loading={commentFormLoading}
-                onClick={handleSubmitComment}
-              />
-            </Box>
+                <Button
+                  text={t("send")}
+                  disabled={commentFormInput === "" || commentFormLoading}
+                  loading={commentFormLoading}
+                  onClick={handleSubmitComment}
+                />
+              </Box>
+            )}
           </Box>
+
           {comments && (
             <List
               data={comments}
