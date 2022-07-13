@@ -9,13 +9,13 @@ import SubNavbar from "../navs/SubNavbar";
 import { DialogProps } from "./Dialog.types";
 
 const DialogWrapper = styled.div<DialogProps>`
-  left: ${({ left }) => (left ? left : undefined)};
-  right: ${({ right }) => (right ? right : undefined)};
+  left: ${({ left }) => left || undefined};
+  right: ${({ right }) => right || undefined};
 
-  z-index: ${({ zIndex }) => (zIndex ? zIndex : 9999)};
+  z-index: ${({ zIndex }) => zIndex || 9999};
   position: fixed;
   top: 0;
-  height: calc(100vh - 20px);
+  height: 100vh;
   width: 100%;
 
   max-width: ${({ size }) =>
@@ -28,19 +28,19 @@ const DialogWrapper = styled.div<DialogProps>`
       : size === "m"
       ? "600px"
       : "400px"};
-  overflow: ${({ overflow }) => (overflow ? overflow : "scroll")};
+  overflow: ${({ overflow }) => overflow || "scroll"};
 
-  background-color: ${({ backgroundColor }) =>
-    backgroundColor ? backgroundColor : "white"};
+  background-color: ${({ backgroundColor }) => backgroundColor || "white"};
 
   box-shadow: ${({ boxShadow, theme }) =>
-    boxShadow ? boxShadow : theme.shadows[0] + theme.colors.brown.brown20tra};
+    boxShadow || theme.shadows[0] + theme.colors.brown.brown20tra};
 
   animation: opacityTranslateYFrom100Animation 0.2s;
 
   @media (min-width: 768px) {
     margin: 10px;
     border-radius: 18px;
+    height: calc(100vh - 20px);
   }
 `;
 

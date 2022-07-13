@@ -3225,7 +3225,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mapbox/geojson-rewind@npm:^0.5.0":
+"@mapbox/geojson-rewind@npm:^0.5.0, @mapbox/geojson-rewind@npm:^0.5.1":
   version: 0.5.2
   resolution: "@mapbox/geojson-rewind@npm:0.5.2"
   dependencies:
@@ -3266,6 +3266,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mapbox/mapbox-gl-geocoder@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "@mapbox/mapbox-gl-geocoder@npm:5.0.1"
+  dependencies:
+    "@mapbox/mapbox-sdk": ^0.13.3
+    events: ^3.3.0
+    lodash.debounce: ^4.0.6
+    nanoid: ^3.1.31
+    subtag: ^0.5.0
+    suggestions: ^1.6.0
+    xtend: ^4.0.1
+  peerDependencies:
+    mapbox-gl: ">= 0.47.0 < 3.0.0"
+  checksum: 60e226a84b3b8a3faa60ce1d4d4d8e4630fd302ca38fb1e96f081bd9d493db002d024e38b42ca185e3557c7ed36b6141bdb91b9ee08eaf18b58e544d92457b42
+  languageName: node
+  linkType: hard
+
 "@mapbox/mapbox-gl-language@npm:^0.10.0":
   version: 0.10.1
   resolution: "@mapbox/mapbox-gl-language@npm:0.10.1"
@@ -3281,6 +3298,13 @@ __metadata:
   peerDependencies:
     mapbox-gl: ">=0.32.1 <2.0.0"
   checksum: 0861f89e2a1e116a8731242fe049e6ad398ff3ac1481b87df9b042daa8ad76f5f6e1f60acc37d2bd483546817280259bde57e1aa51e46d1bef9efcecd4884efe
+  languageName: node
+  linkType: hard
+
+"@mapbox/mapbox-gl-supported@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@mapbox/mapbox-gl-supported@npm:2.0.1"
+  checksum: 1dffc96baacc56e34b09f2ae6ac4b2b8f10ad51a9d7c4946dc2057f456deeacd5d0729e340120857b3204a14d9961266f3218d26e101d46e81717954f1c129af
   languageName: node
   linkType: hard
 
@@ -3340,6 +3364,13 @@ __metadata:
   version: 1.2.5
   resolution: "@mapbox/tiny-sdf@npm:1.2.5"
   checksum: d4cfd700c8ccd8b9183da78a943e314cada4184966a52758857cc7141391829a2da31b733046ee0a57e169396314533ffbde8445ce3476a193c6aefcc7bc883a
+  languageName: node
+  linkType: hard
+
+"@mapbox/tiny-sdf@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "@mapbox/tiny-sdf@npm:2.0.5"
+  checksum: 23fd158ea795592cf1f825fcac20d48230c54a6985a931f609af8b4e69cd99f1c798dc893baec63f4fd6f42ffc3e7292b39f4126966412edd4606eb3dbf86b54
   languageName: node
   linkType: hard
 
@@ -10784,6 +10815,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"earcut@npm:^2.2.3":
+  version: 2.2.4
+  resolution: "earcut@npm:2.2.4"
+  checksum: aea0466cb2f24e0c3c57148d8d28ac9846f53c4f43ee66780826474303ac851b305ef988152d0bdeb31e8f7ca939dc0df737e7505cfb1c1bdf2ff9d7f9ea2faa
+  languageName: node
+  linkType: hard
+
 "ecc-jsbn@npm:~0.1.1":
   version: 0.1.2
   resolution: "ecc-jsbn@npm:0.1.2"
@@ -12141,7 +12179,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"events@npm:^3.0.0, events@npm:^3.2.0":
+"events@npm:^3.0.0, events@npm:^3.2.0, events@npm:^3.3.0":
   version: 3.3.0
   resolution: "events@npm:3.3.0"
   checksum: f6f487ad2198aa41d878fa31452f1a3c00958f46e9019286ff4787c84aac329332ab45c9cdc8c445928fc6d7ded294b9e005a7fce9426488518017831b272780
@@ -13142,6 +13180,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fuzzy@npm:^0.1.1":
+  version: 0.1.3
+  resolution: "fuzzy@npm:0.1.3"
+  checksum: acc09c6173e12d5dc8ae51857551ddbe834befa9ebc6be6d5581d09117265d704809d80407d220fd0652f347a9975a4d106854cacc8bd031487a0ede86982f84
+  languageName: node
+  linkType: hard
+
 "gauge@npm:^3.0.0":
   version: 3.0.2
   resolution: "gauge@npm:3.0.2"
@@ -13314,7 +13359,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gl-matrix@npm:^3.2.1, gl-matrix@npm:^3.4.0":
+"gl-matrix@npm:^3.2.1, gl-matrix@npm:^3.4.0, gl-matrix@npm:^3.4.3":
   version: 3.4.3
   resolution: "gl-matrix@npm:3.4.3"
   checksum: c47830ba727f3d0fab635c48135af96aef66274079a3e0afd6f68b68c98eae9fc1bcfdc7312fe2301e4fd22dd24c5e0f1b5d025960a208e50d07101ed8d940f9
@@ -16685,7 +16730,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.debounce@npm:^4.0.8":
+"lodash.debounce@npm:^4.0.6, lodash.debounce@npm:^4.0.8":
   version: 4.0.8
   resolution: "lodash.debounce@npm:4.0.8"
   checksum: a3f527d22c548f43ae31c861ada88b2637eb48ac6aa3eb56e82d44917971b8aa96fbb37aa60efea674dc4ee8c42074f90f7b1f772e9db375435f6c83a19b3bc6
@@ -17052,6 +17097,36 @@ __metadata:
     tinyqueue: ^2.0.3
     vt-pbf: ^3.1.1
   checksum: ea87bbab1b5d2a4597a3170769295dd80b73c06782051d82f9fd9f2839cfc60f56b9043dd707bdac0f9b4a60c087440cc9d215d693cb545b2e446d7c08175458
+  languageName: node
+  linkType: hard
+
+"mapbox-gl@npm:^2.9.1":
+  version: 2.9.1
+  resolution: "mapbox-gl@npm:2.9.1"
+  dependencies:
+    "@mapbox/geojson-rewind": ^0.5.1
+    "@mapbox/geojson-types": ^1.0.2
+    "@mapbox/jsonlint-lines-primitives": ^2.0.2
+    "@mapbox/mapbox-gl-supported": ^2.0.1
+    "@mapbox/point-geometry": ^0.1.0
+    "@mapbox/tiny-sdf": ^2.0.5
+    "@mapbox/unitbezier": ^0.0.0
+    "@mapbox/vector-tile": ^1.3.1
+    "@mapbox/whoots-js": ^3.1.0
+    csscolorparser: ~1.0.3
+    earcut: ^2.2.3
+    geojson-vt: ^3.2.1
+    gl-matrix: ^3.4.3
+    grid-index: ^1.1.0
+    murmurhash-js: ^1.0.0
+    pbf: ^3.2.1
+    potpack: ^1.0.2
+    quickselect: ^2.0.0
+    rw: ^1.3.3
+    supercluster: ^7.1.4
+    tinyqueue: ^2.0.3
+    vt-pbf: ^3.1.3
+  checksum: afd9459cc3a93d969713e75234c2ddf63de206e552239dff309c6e69f7f574fb028f5ffe9aabebe5956e890fffc31a696f4caa517e805673a5d32b69abd70218
   languageName: node
   linkType: hard
 
@@ -17687,7 +17762,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^3.1.32, nanoid@npm:^3.3.1, nanoid@npm:^3.3.4":
+"nanoid@npm:^3.1.31, nanoid@npm:^3.1.32, nanoid@npm:^3.3.1, nanoid@npm:^3.3.4":
   version: 3.3.4
   resolution: "nanoid@npm:3.3.4"
   bin:
@@ -19259,7 +19334,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"potpack@npm:^1.0.1":
+"potpack@npm:^1.0.1, potpack@npm:^1.0.2":
   version: 1.0.2
   resolution: "potpack@npm:1.0.2"
   checksum: 9dfdbbce012ce80842249abcdd89e20222eb8ae96beba8d578b7e41e78feefc7e33b5c72d46fb8dd3a1e382cb4da9c34574764d88aa8849ab36f542fd2088b42
@@ -21400,6 +21475,7 @@ __metadata:
     "@fullcalendar/interaction": ^5.11.0
     "@fullcalendar/list": ^5.11.0
     "@fullcalendar/react": ^5.11.1
+    "@mapbox/mapbox-gl-geocoder": ^5.0.1
     "@mdx-js/preact": ^2.1.2
     "@react-spring/web": ^9.4.5
     "@react-theming/storybook-addon": ^1.1.5
@@ -21430,6 +21506,7 @@ __metadata:
     linkify-react: ^3.0.4
     linkifyjs: ^3.0.5
     lottie-web: ^5.9.2
+    mapbox-gl: ^2.9.1
     npm: ^8.12.1
     patch-package: ^6.4.7
     react-calendly: ^4.0.1
@@ -22577,6 +22654,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"subtag@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "subtag@npm:0.5.0"
+  checksum: c0b2c3cdc9ceefb83f92332c9b09b4197b0b053ee08b255c494b6aa0884aee94c968285eb38893d342c96ea3eaabd2525bbc8bdfa274e77afcecd6056dabbb7a
+  languageName: node
+  linkType: hard
+
 "sucrase@npm:^3.20.3":
   version: 3.21.0
   resolution: "sucrase@npm:3.21.0"
@@ -22594,7 +22678,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"supercluster@npm:^7.1.0":
+"suggestions@npm:^1.6.0":
+  version: 1.7.1
+  resolution: "suggestions@npm:1.7.1"
+  dependencies:
+    fuzzy: ^0.1.1
+    xtend: ^4.0.0
+  checksum: dea8b77052ef9874a9c9d01478c557296cfec41ddc6277c51f2537bb881026dad793c831cbe74928cb959a596021371f823a8bccebe3c851ca234f78a9449dea
+  languageName: node
+  linkType: hard
+
+"supercluster@npm:^7.1.0, supercluster@npm:^7.1.4":
   version: 7.1.5
   resolution: "supercluster@npm:7.1.5"
   dependencies:
@@ -24322,7 +24416,7 @@ turbo@latest:
   languageName: node
   linkType: hard
 
-"vt-pbf@npm:^3.1.1":
+"vt-pbf@npm:^3.1.1, vt-pbf@npm:^3.1.3":
   version: 3.1.3
   resolution: "vt-pbf@npm:3.1.3"
   dependencies:

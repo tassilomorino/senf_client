@@ -2,44 +2,53 @@
 
 import React, { useState, useEffect, memo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-//Components
-import Keyindicators from "../components/molecules/graphs/Keyindicators";
-import ThemenDialog from "../components/molecules/graphs/themendialog";
-import DistrictsDialog from "../components/molecules/graphs/DistrictsDialog";
-import AgegroupDialog from "../components/molecules/graphs/AgegroupDialog";
+// Components
+import styled from "styled-components";
+import { useTranslation } from "react-i18next";
+import { useSpring, animated } from "@react-spring/web";
+import { useDrag } from "@use-gesture/react";
+import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
+import {
+  StatisticsOverview,
+  Tabs,
+  Loader,
+  LayerWhiteFirstDefault,
+  Box,
+} from "senf-atomic-design-system";
+import Keyindicators from "../components/graphs/Keyindicators";
 
-//Images
+// Images
 import Themencover from "../images/insightsCovers/topic-cover.jpg";
 import DistrictsCover from "../images/insightsCovers/districts-cover.jpg";
 import KeywordsCover from "../images/insightsCovers/keywords-cover.jpg";
 import AgegroupsCover from "../images/insightsCovers/agegroups-cover.jpg";
 
-import styled from "styled-components";
-import { useTranslation } from "react-i18next";
 import ExpandButton from "../components/atoms/CustomButtons/ExpandButton";
 import { StyledH2 } from "../styles/GlobalStyle";
 
-import { useSpring, animated } from "@react-spring/web";
-import { useDrag } from "@use-gesture/react";
-//firebase
+// firebase
 
 import { db } from "../firebase";
-import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 
-import { StatisticsOverview, Dialog, Loader } from "senf-atomic-design-system";
+const AgegroupGraph = React.lazy(() =>
+  import("../components/graphs/AgegroupGraph")
+);
+const DistrictsGraph = React.lazy(() =>
+  import("../components/graphs/DistrictsGraph")
+);
 
-const Thema = React.lazy(() => import("../components/molecules/graphs/thema"));
+const TopicsGraph = React.lazy(() =>
+  import("../components/graphs/TopicsGraph")
+);
 
 const CoverWrapper = styled.div`
   margin-left: 50%;
-  padding-bottom: 300px;
   transform: translateX(-50%);
   width: calc(100% - 20px);
   max-width: 800px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 10px 10px;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
   grid-template-areas:
     ". ."
     ". .";
@@ -49,11 +58,6 @@ const CoverWrapper = styled.div`
 
   @media (min-width: 1100px) {
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr;
-  }
-
-  @media (min-width: 1468px) {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr;
   }
 `;
@@ -92,6 +96,15 @@ const CoverTitle = styled.div`
 //   pointer-events: all;
 //   z-index: 999999;
 // `;
+const GraphsWrapper = styled.div`
+  height: auto;
+  width: auto;
+  margin: 10px;
+  position: relative;
+  border-radius: 18px;
+
+  ${(props) => LayerWhiteFirstDefault};
+`;
 
 const StatisticsOverviewPage = ({
   openStatisticsOverview,
@@ -107,7 +120,7 @@ const StatisticsOverviewPage = ({
   const [likesLength, setLikesLength] = useState(null);
   const [commentsLength, setCommentsLength] = useState(null);
 
-  const [topicsOpen, setTopicsOpen] = useState(false);
+  const [order, setOrder] = useState(1);
 
   useEffect(() => {
     setOpen(true);
@@ -154,10 +167,10 @@ const StatisticsOverviewPage = ({
     }, 150);
   };
 
-  //const mapViewport = useSelector((state) => state.data.mapViewport);
+  // const mapViewport = useSelector((state) => state.data.mapViewport);
   const fetchDataScreams = async () => {
     let querySnapshot;
-    let screamsRef = collection(db, "screams");
+    const screamsRef = collection(db, "screams");
     if (projectRoomId) {
       const q = query(screamsRef, where("projectRoomId", "==", projectRoomId));
       querySnapshot = await getDocs(q);
@@ -183,7 +196,7 @@ const StatisticsOverviewPage = ({
     /*  const ref = await db.collection("likes").orderBy("createdAt", "desc").get();
     const likesLength = ref.size; */
 
-    let likesRef = collection(db, "likes");
+    const likesRef = collection(db, "likes");
     const q = query(likesRef, orderBy("createdAt", "desc"));
     const querySnapshot = await getDocs(q);
     setLikesLength(querySnapshot.size);
@@ -293,71 +306,44 @@ const StatisticsOverviewPage = ({
           likesLength={likesLength}
           commentslength={commentsLength}
         />
-        <CoverWrapper>
-          <Covers
-            animation="enteranimation 0.5s ease-in-out"
-            onClick={() => setTopicsOpen(true)}
+
+        <GraphsWrapper>
+          <Box margin="20px 0px">
+            <Tabs
+              fontSize="buttonSm"
+              order={order}
+              setOrder={setOrder}
+              tabs={[
+                {
+                  // icon: <Room />,
+                  text: t("topics"),
+                },
+                { text: t("districts") },
+                { text: t("agegroups") },
+
+                // { icon: <Info />, text: "Interaktionen" },
+              ]}
+            />
+          </Box>
+          <React.Suspense
+            fallback={
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <div style={{ width: "50px" }}>
+                  <Loader />
+                </div>
+              </div>
+            }
           >
-            <CoverTitle>
-              <StyledH2 fontWeight="900" textAlign="center">
-                {t("topics")}
-              </StyledH2>
-            </CoverTitle>
-            <CoverImg src={Themencover} alt="insights-topic-cover" />
-          </Covers>
-
-          <Covers animation="enteranimation 0.75s ease-in-out">
-            <CoverTitle>
-              <StyledH2 fontWeight="900" textAlign="center">
-                {t("districts")}
-              </StyledH2>
-            </CoverTitle>
-            <CoverImg src={DistrictsCover} alt="insights-districts-cover" />
-            <DistrictsDialog screams={screams} />
-          </Covers>
-
-          <Covers animation="enteranimation 1.25s ease-in-out">
-            <CoverTitle>
-              <StyledH2 fontWeight="900" textAlign="center">
-                {t("agegroups")}
-              </StyledH2>
-            </CoverTitle>
-            <CoverImg src={AgegroupsCover} alt="insights-agegroups-cover" />
-            <AgegroupDialog screams={screams} likes={likes} />
-          </Covers>
-          <Covers animation="enteranimation 1s ease-in-out" onClick={() => handleLink()} >
-            <CoverTitle>
-              <StyledH2 fontWeight="900" textAlign="center">
-                {t("toolbox")}
-              </StyledH2>
-            </CoverTitle>
-            <CoverImg src={KeywordsCover} alt="insights-keywords-cover" />
-          </Covers>
-        </CoverWrapper>
+            {order === 1 ? (
+              <TopicsGraph screams={screams} />
+            ) : order === 2 ? (
+              <DistrictsGraph screams={screams} />
+            ) : (
+              <AgegroupGraph screams={screams} likes={likes} />
+            )}
+          </React.Suspense>
+        </GraphsWrapper>
       </StatisticsOverview>
-
-      {topicsOpen && (
-        <Dialog
-          openDialog={true}
-          right="0px"
-          // backgroundColor={theme.colors.beige.beige20}
-          overflow="hidden scroll"
-          zIndex="999"
-          boxShadow={
-            document.body.clientWidth < 1350 &&
-            document.body.clientWidth > 768 &&
-            "-40px 8px 30px -12px rgba(0, 0, 0, 0.2)"
-          }
-        >
-           <React.Suspense fallback={<Loader/>}>
-
-            {topicsOpen &&  <Thema screams={screams} /> }
-         
-        </React.Suspense>
-
-          {/* <ThemenDialog screams={screams} /> */}
-        </Dialog>
-      )}
     </React.Fragment>
   );
 };
