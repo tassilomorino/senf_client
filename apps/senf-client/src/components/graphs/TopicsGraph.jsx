@@ -1,14 +1,15 @@
 /** @format */
 
 import React from "react";
-//Translation
+// Translation
 import { useTranslation } from "react-i18next";
-//Graphs
+// Graphs
 import createPlotlyComponent from "react-plotlyjs";
-//See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
+// See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
 import Plotly from "plotly.js-cartesian-dist";
-import GraphsWrapper from "./GraphsWrapper";
 import { Loader } from "senf-atomic-design-system";
+import GraphsWrapper from "./GraphsWrapper";
+
 const PlotlyComponent = createPlotlyComponent(Plotly);
 
 // let PlotlyComponent
@@ -17,14 +18,14 @@ const PlotlyComponent = createPlotlyComponent(Plotly);
 
 // })
 
-const Thema = ({ screams }) => {
+const TopicsGraph = ({ screams }) => {
   const { t } = useTranslation();
 
   function sum(input) {
     if (toString.call(input) !== "[object Array]") return false;
 
-    var total = 0;
-    for (var i = 0; i < input.length; i++) {
+    let total = 0;
+    for (let i = 0; i < input.length; i++) {
       if (isNaN(input[i])) {
         continue;
       }
@@ -33,19 +34,19 @@ const Thema = ({ screams }) => {
     return total;
   }
 
-  let Rad = [];
+  const Rad = [];
 
-  let Inklusion_Soziales = [];
+  const Inklusion_Soziales = [];
 
-  let Verkehr = [];
+  const Verkehr = [];
 
-  let Umwelt = [];
+  const Umwelt = [];
 
-  let Versorgung = [];
+  const Versorgung = [];
 
-  let Sport_Freizeit = [];
+  const Sport_Freizeit = [];
 
-  let Sonstige = [];
+  const Sonstige = [];
   let SonstigeLength = [];
   let Sonstige_text = [];
 
@@ -87,7 +88,7 @@ const Thema = ({ screams }) => {
     Sonstigetrue = 1;
   }
 
-  let data = [
+  const data = [
     {
       // hovertemplate:
       //   "<b>%{hovertext}</b><br><br>thema=%{y}<br>Wunsch=%{x}<extra></extra>",
@@ -98,7 +99,7 @@ const Thema = ({ screams }) => {
       //   "Bäume statt Kies"
       // ],
       // alignmentgroup: true,
-      //legendgroup: "Rad",
+      // legendgroup: "Rad",
       // name: "ÖPNV",
       // offsetgroup: "ÖPNV",
 
@@ -208,7 +209,7 @@ const Thema = ({ screams }) => {
     },
   ];
 
-  let layout = {
+  const layout = {
     barmode: "relative",
     //   autosize: true,
     height: 300,
@@ -271,7 +272,7 @@ const Thema = ({ screams }) => {
         y: 6 + Sonstigetrue,
         xref: "x",
         yref: "y",
-        text: t("ideas") + " | Votes",
+        text: `${t("ideas")} | Votes`,
         ay: 0,
         ax: -1,
         arrowcolor: "rgba(255, 0, 255, 0.53)",
@@ -283,7 +284,7 @@ const Thema = ({ screams }) => {
     domain: [0.0, 1.0],
   };
 
-  let config = {
+  const config = {
     showLink: false,
     displayModeBar: false,
   };
@@ -313,4 +314,4 @@ const Thema = ({ screams }) => {
   );
 };
 
-export default Thema;
+export default TopicsGraph;

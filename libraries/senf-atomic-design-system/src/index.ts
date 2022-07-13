@@ -1,11 +1,13 @@
 /** @format */
-
+export { default as Bulb } from "./assets/icons/Bulb";
 export { default as Plus } from "./assets/icons/Plus";
 export { default as Arrow } from "./assets/icons/Arrow";
 export { default as Hyperlink } from "./assets/icons/Hyperlink";
 export { default as Mail } from "./assets/icons/Mail";
 export { default as CalendarIcon } from "./assets/icons/CalendarIcon";
 export { default as CommentActive } from "./assets/icons/CommentActive";
+export { default as FlameInactive } from "./assets/icons/FlameInactive";
+export { default as FlameActive } from "./assets/icons/FlameActive";
 
 export {
   LayerWhiteGradientBordersDefault,

@@ -2,15 +2,21 @@
 
 import React from "react";
 
-//Icons
-import lamploader from "../../../images/lamp.png";
-import ChatBorder from "../../../images/icons/chat.png";
-import HandFull from "../../../images/icons/handsFull.png";
+// Icons
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { StyledH2, StyledH3 } from "../../../styles/GlobalStyle";
+import {
+  Icon,
+  Loader,
+  Bulb,
+  CommentActive,
+  FlameActive,
+} from "senf-atomic-design-system";
+import lamploader from "../../images/lamp.png";
+import ChatBorder from "../../images/icons/chat.png";
+import HandFull from "../../images/icons/handsFull.png";
+import { StyledH2, StyledH3 } from "../../styles/GlobalStyle";
 
-import { Icon, Loader } from "senf-atomic-design-system";
 const Wrapper = styled.div`
   width: 95%;
   display: flex;
@@ -26,7 +32,7 @@ const Indicator = styled.div`
   position: relative;
   text-align: center;
   align-items: center;
-
+  gap: 10px;
   padding-left: 10px;
   padding-right: 10px;
   flex-direction: column;
@@ -39,15 +45,8 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
   return (
     <Wrapper>
       <Indicator>
-        <img
-          src={lamploader}
-          width="35px"
-          style={{
-            transform: "rotate(35deg) translateY(-1px)",
-            paddingBottom: "10px",
-          }}
-          alt="lamploader"
-        />
+        <Icon icon={<Bulb />} />
+
         {screams.length === 0 ? (
           <Loader />
         ) : (
@@ -58,12 +57,8 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
       </Indicator>
 
       <Indicator>
-        <img
-          src={HandFull}
-          width="25px"
-          alt="lamploader"
-          style={{ paddingBottom: "10px" }}
-        />
+        <Icon icon={<FlameActive />} />
+
         {likesLength === null ? (
           <Loader />
         ) : (
@@ -72,12 +67,8 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
       </Indicator>
 
       <Indicator>
-        <img
-          src={ChatBorder}
-          width="25px"
-          alt="lamploader"
-          style={{ paddingBottom: "10px" }}
-        />{" "}
+        <Icon icon={<CommentActive />} />
+
         {commentslength === null ? (
           <Loader />
         ) : (

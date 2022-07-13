@@ -3,13 +3,14 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-//Graphs
+// Graphs
 import createPlotlyComponent from "react-plotlyjs";
-//See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
+// See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
 import Plotly from "plotly.js-cartesian-dist";
 import styled from "styled-components";
-import GraphsWrapper from "./GraphsWrapper";
 import { Loader } from "senf-atomic-design-system";
+import GraphsWrapper from "./GraphsWrapper";
+
 const PlotlyComponent = createPlotlyComponent(Plotly);
 
 //  let PlotlyComponent
@@ -22,33 +23,33 @@ const DistrictsGraph = ({ classes, screams }) => {
   const selectedTopics = useSelector((state) => state.data.topics);
   const { t } = useTranslation();
 
-  let Rad = [];
-  let Rad_one = [];
-  let Rad_likes = [];
+  const Rad = [];
+  const Rad_one = [];
+  const Rad_likes = [];
 
-  let Inklusion_Soziales = [];
-  let Inklusion_Soziales_one = [];
-  let Inklusion_Soziales_likes = [];
+  const Inklusion_Soziales = [];
+  const Inklusion_Soziales_one = [];
+  const Inklusion_Soziales_likes = [];
 
-  let Verkehr = [];
-  let Verkehr_one = [];
-  let Verkehr_likes = [];
+  const Verkehr = [];
+  const Verkehr_one = [];
+  const Verkehr_likes = [];
 
-  let Umwelt = [];
-  let Umwelt_one = [];
-  let Umwelt_likes = [];
+  const Umwelt = [];
+  const Umwelt_one = [];
+  const Umwelt_likes = [];
 
-  let Versorgung = [];
-  let Versorgung_one = [];
-  let Versorgung_likes = [];
+  const Versorgung = [];
+  const Versorgung_one = [];
+  const Versorgung_likes = [];
 
-  let Sport_Freizeit = [];
-  let Sport_Freizeit_one = [];
-  let Sport_Freizeit_likes = [];
+  const Sport_Freizeit = [];
+  const Sport_Freizeit_one = [];
+  const Sport_Freizeit_likes = [];
 
-  let Sonstige = [];
-  let Sonstige_one = [];
-  let Sonstige_likes = [];
+  const Sonstige = [];
+  const Sonstige_one = [];
+  const Sonstige_likes = [];
 
   if (screams !== undefined && screams.length > 0) {
     screams.forEach((element) => {
@@ -109,29 +110,29 @@ const DistrictsGraph = ({ classes, screams }) => {
     });
   }
 
-  let Rad_one_negative = Rad_one.map(
+  const Rad_one_negative = Rad_one.map(
     (v) => -(Math.floor(Math.abs(v) * 100) / 100)
   );
-  let Inklusion_Soziales_one_negative = Inklusion_Soziales_one.map(
+  const Inklusion_Soziales_one_negative = Inklusion_Soziales_one.map(
     (v) => -(Math.floor(Math.abs(v) * 100) / 100)
   );
-  let Verkehr_one_negative = Verkehr_one.map(
+  const Verkehr_one_negative = Verkehr_one.map(
     (v) => -(Math.floor(Math.abs(v) * 100) / 100)
   );
-  let Umwelt_one_negative = Umwelt_one.map(
+  const Umwelt_one_negative = Umwelt_one.map(
     (v) => -(Math.floor(Math.abs(v) * 100) / 100)
   );
-  let Versorgung_one_negative = Versorgung_one.map(
+  const Versorgung_one_negative = Versorgung_one.map(
     (v) => -(Math.floor(Math.abs(v) * 100) / 100)
   );
-  let Sport_Freizeit_one_negative = Sport_Freizeit_one.map(
+  const Sport_Freizeit_one_negative = Sport_Freizeit_one.map(
     (v) => -(Math.floor(Math.abs(v) * 100) / 100)
   );
-  let Sonstige_one_negative = Sonstige_one.map(
+  const Sonstige_one_negative = Sonstige_one.map(
     (v) => -(Math.floor(Math.abs(v) * 100) / 100)
   );
 
-  let stadtteile_merge = [
+  const stadtteile_merge = [
     ...Rad,
     ...Inklusion_Soziales,
     ...Verkehr,
@@ -140,12 +141,12 @@ const DistrictsGraph = ({ classes, screams }) => {
     ...Sport_Freizeit,
     ...Sonstige,
   ];
-  let stadtteile_unique = [...new Set(stadtteile_merge)];
-  let linelength = stadtteile_unique.length - 0.5;
+  const stadtteile_unique = [...new Set(stadtteile_merge)];
+  const linelength = stadtteile_unique.length - 0.5;
 
-  let plotheight = 100 + linelength * 30;
+  const plotheight = 100 + linelength * 30;
 
-  let data = [
+  const data = [
     {
       alignmentgroup: true,
 
@@ -262,14 +263,14 @@ const DistrictsGraph = ({ classes, screams }) => {
       yaxis: "y",
     },
   ];
-  let layout = {
+  const layout = {
     annotations: [
       {
         x: 0,
         y: linelength + 1,
         xref: "x",
         yref: "y",
-        text: t("ideas") + " | Votes",
+        text: `${t("ideas")} | Votes`,
         ay: 0,
         ax: -1,
         arrowcolor: "rgba(255, 0, 255, 0.53)",
@@ -333,7 +334,7 @@ const DistrictsGraph = ({ classes, screams }) => {
     //   }
   };
 
-  let config = {
+  const config = {
     showLink: false,
     displayModeBar: false,
   };

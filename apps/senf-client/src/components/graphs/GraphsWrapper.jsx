@@ -1,21 +1,11 @@
 import React from "react";
-import { StyledH2, StyledText } from "../../../styles/GlobalStyle";
 import styled from "styled-components";
 import { TagSlide } from "senf-atomic-design-system";
 import { useDispatch, useSelector } from "react-redux";
-import { handleTopicSelectorRedux } from "../../../redux/actions/UiActions";
-const Wrapper = styled.div`
-  margin-top: 2.5vw;
-  top: 0em;
-  position: relative;
-  width: 100%;
-  padding-top: 1em;
-  background-color: #f8f8f8;
-  height: auto;
-  padding-bottom: 1em;
-  border-radius: 10px;
-  overflow: hidden;
-`;
+import { StyledH2, StyledText } from "../../styles/GlobalStyle";
+import { handleTopicSelectorRedux } from "../../redux/actions/UiActions";
+
+const Wrapper = styled.div``;
 
 const InnerWrapper = styled.div`
   width: 100%;
