@@ -75,7 +75,9 @@ const TopViewport = {
   longitude:
     typeof Storage !== "undefined" && localStorage.getItem("longitude")
       ? Number(localStorage.getItem("longitude"))
-      : 6.958725744885521,
+      : isMobileCustom
+      ? 6.958725744885521
+      : 6.859737957551033,
 
   zoom: isMobileCustom ? 8 : 9.2,
   duration: 0,
