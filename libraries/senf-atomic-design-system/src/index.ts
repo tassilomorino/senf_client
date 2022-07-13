@@ -1,11 +1,13 @@
 /** @format */
-
+export { default as Bulb } from "./assets/icons/Bulb";
 export { default as Plus } from "./assets/icons/Plus";
 export { default as Arrow } from "./assets/icons/Arrow";
 export { default as Hyperlink } from "./assets/icons/Hyperlink";
 export { default as Mail } from "./assets/icons/Mail";
 export { default as CalendarIcon } from "./assets/icons/CalendarIcon";
 export { default as CommentActive } from "./assets/icons/CommentActive";
+export { default as FlameInactive } from "./assets/icons/FlameInactive";
+export { default as FlameActive } from "./assets/icons/FlameActive";
 
 export {
   LayerWhiteGradientBordersDefault,
@@ -48,6 +50,8 @@ export { default as Modal } from "./components/molecules/modals/Modal";
 export { default as SwipeModal } from "./components/molecules/modals/SwipeModal";
 export { default as Dialog } from "./components/molecules/dialog/Dialog";
 export { default as SubNavbar } from "./components/molecules/navs/SubNavbar";
+export { default as Tabs } from "./components/molecules/tabs/Tabs";
+
 export { default as Accordion } from "./components/molecules/accordion/Accordion";
 export { default as TagSlide } from "./components/molecules/tagSlide/TagSlide";
 export { default as LanguageSelect } from "./components/molecules/languageSelect/LanguageSelect";

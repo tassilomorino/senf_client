@@ -31,7 +31,7 @@ const SingleDropdown: FunctionComponent<DropdownProps<false>> = ({
             {t(id)}
           </option>
         )}
-        {Object.values(listItems)[0].map((item) => (
+        {Object.values(listItems).map((item) => (
           <option value={item.value}>{item.label}</option>
         ))}
       </InputField>

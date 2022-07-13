@@ -3,12 +3,12 @@
 import React, { FC, useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { Trans, useTranslation } from "react-i18next";
+import { useFormik } from "formik";
+import * as yup from "yup";
 import Button from "../../atoms/buttons/Button";
 import Box from "../../atoms/box/Box";
 import Form from "../../molecules/form/Form";
 import { AuthAddDetailsProps } from "./AuthAddDetails.types";
-import { useFormik } from "formik";
-import * as yup from "yup";
 
 import Typography from "../../atoms/typography/Typography";
 import { openLink } from "../../../util/helpers";
@@ -59,17 +59,17 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
   }, [user]);
 
   function generateArrayOfYears() {
-    var max = new Date().getFullYear() - 14;
-    var min = max - 100;
-    var years = [];
+    const max = new Date().getFullYear() - 14;
+    const min = max - 100;
+    const years = [];
 
-    for (var i = max; i >= min; i--) {
+    for (let i = max; i >= min; i--) {
       years.push({ value: i, label: i });
     }
     return years;
   }
 
-  var years = generateArrayOfYears();
+  const years = generateArrayOfYears();
 
   return (
     <Box
@@ -137,22 +137,20 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
         <Box gap="8px">
           <Dropdown
             id="sex"
-            listItems={{
-              sex: [
-                {
-                  label: t("diverse"),
-                  value: "diverse",
-                },
-                {
-                  label: t("female"),
-                  value: "female",
-                },
-                {
-                  label: t("male"),
-                  value: "male",
-                },
-              ],
-            }}
+            listItems={[
+              {
+                label: t("diverse"),
+                value: "diverse",
+              },
+              {
+                label: t("female"),
+                value: "female",
+              },
+              {
+                label: t("male"),
+                value: "male",
+              },
+            ]}
             recieveValue={(selectedItems) =>
               setData({
                 ...data,
@@ -163,9 +161,7 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
           />
           <Dropdown
             id="age"
-            listItems={{
-              age: years,
-            }}
+            listItems={years}
             recieveValue={(selectedItems) =>
               setData({
                 ...data,

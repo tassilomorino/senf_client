@@ -1,7 +1,6 @@
-import { StyledH3 } from "../../../../styles/GlobalStyle";
 import React from "react";
 import styled from "styled-components";
-import CheckBox from "../../../atoms/CheckBox/CheckBox";
+import { StyledH3 } from "../../../../styles/GlobalStyle";
 import ExpandButton from "../../../atoms/CustomButtons/ExpandButton";
 
 const ListItemWrapper = styled.div`
@@ -49,24 +48,22 @@ const ListItem = styled.div`
 //   left: 50%;
 //   transform: translateX(-50%);
 // `;
-const ListItemsEdit = ({ listItems, set }) => {
-  return (
-    <ListItemWrapper>
-      {listItems.map(({ title }, index) => (
-        <ListItem key={title}>
-          <ExpandButton handleButtonClick={() => set(index + 1)} />
-          {/* <CheckboxWrapper>
+const ListItemsEdit = ({ listItems, set }) => (
+  <ListItemWrapper>
+    {listItems.map(({ title }, index) => (
+      <ListItem key={title}>
+        <ExpandButton handleButtonClick={() => set(index + 1)} />
+        {/* <CheckboxWrapper>
             <CheckBox
               selected={true}
               type="checkbox"
               handleInputChange={() => console.log()}
             />
           </CheckboxWrapper> */}
-          <StyledH3 textAlign="center">{title}</StyledH3>
-        </ListItem>
-      ))}
-    </ListItemWrapper>
-  );
-};
+        <StyledH3 textAlign="center">{title}</StyledH3>
+      </ListItem>
+    ))}
+  </ListItemWrapper>
+);
 
 export default ListItemsEdit;

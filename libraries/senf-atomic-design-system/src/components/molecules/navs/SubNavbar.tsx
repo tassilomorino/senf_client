@@ -6,7 +6,7 @@ import TertiaryButton from "../../atoms/buttons/TertiaryButton";
 import Typography from "../../atoms/typography/Typography";
 import { SubNavbarProps } from "./SubNavbar.types";
 
-const Wrapper = styled.div<SubNavbarProps>`
+const Wrapper = styled.div`
   width: 100%;
   height: 50px;
   position: relative;
@@ -59,35 +59,33 @@ const SubNavbar: FC<SubNavbarProps> = ({
   iconRight,
   iconRightTransform,
   handlebar,
-}) => {
-  return (
-    <Wrapper>
-      {handlebar && <HandleBar />}
-      <LeftWrapper onClick={leftButtonClick}>
+}) => (
+  <Wrapper>
+    {handlebar && <HandleBar />}
+    <LeftWrapper onClick={leftButtonClick}>
+      <TertiaryButton
+        iconLeft={iconLeft}
+        iconLeftTransform={iconLeftTransform}
+        text={textLeft}
+      />
+    </LeftWrapper>
+
+    <CenterWrapper>
+      <Typography variant="h3">{header}</Typography>
+    </CenterWrapper>
+
+    <RightWrapper>
+      {textRight || iconRight ? (
         <TertiaryButton
-          iconLeft={iconLeft}
-          iconLeftTransform={iconLeftTransform}
-          text={textLeft}
+          iconRight={iconRight}
+          iconRightTransform={iconRightTransform}
+          text={textRight}
         />
-      </LeftWrapper>
-
-      <CenterWrapper>
-        <Typography variant="h3">{header}</Typography>
-      </CenterWrapper>
-
-      <RightWrapper>
-        {textRight || iconRight ? (
-          <TertiaryButton
-            iconRight={iconRight}
-            iconRightTransform={iconRightTransform}
-            text={textRight}
-          />
-        ) : (
-          <div />
-        )}
-      </RightWrapper>
-    </Wrapper>
-  );
-};
+      ) : (
+        <div />
+      )}
+    </RightWrapper>
+  </Wrapper>
+);
 
 export default SubNavbar;

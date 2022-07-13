@@ -38,10 +38,6 @@ const Wrapper = styled.div<StatisticsOverviewProps>`
 
   @media (min-width: 768px) {
     display: ${({ open }) => (open ? "block" : "none")};
-    width: ${({ open }) => (open ? "calc(100vw - 430px)" : "0px")};
-  }
-
-  @media (max-width: 1350px) {
     width: ${({ open }) => (open ? "calc(100vw - 20px)" : "0px")};
   }
 `;
