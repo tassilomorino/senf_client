@@ -299,7 +299,7 @@ const TopicsGraph = ({ screams }) => {
       />
     ) : (
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <div style={{ width: "100px" }}>
+        <div style={{ width: "50px" }}>
           <Loader />
         </div>
       </div>

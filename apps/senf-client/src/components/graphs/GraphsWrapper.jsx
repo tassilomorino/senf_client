@@ -20,6 +20,7 @@ const InnerWrapper = styled.div`
 const TextWrapper = styled.div`
   width: 90%;
   margin-left: 5%;
+  margin-bottom: 20px;
 `;
 const ClickBlocker = styled.div`
   width: 100%;

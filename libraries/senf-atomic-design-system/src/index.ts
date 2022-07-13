@@ -50,6 +50,8 @@ export { default as Modal } from "./components/molecules/modals/Modal";
 export { default as SwipeModal } from "./components/molecules/modals/SwipeModal";
 export { default as Dialog } from "./components/molecules/dialog/Dialog";
 export { default as SubNavbar } from "./components/molecules/navs/SubNavbar";
+export { default as Tabs } from "./components/molecules/tabs/Tabs";
+
 export { default as Accordion } from "./components/molecules/accordion/Accordion";
 export { default as TagSlide } from "./components/molecules/tagSlide/TagSlide";
 export { default as LanguageSelect } from "./components/molecules/languageSelect/LanguageSelect";

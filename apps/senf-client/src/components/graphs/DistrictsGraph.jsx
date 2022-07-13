@@ -343,7 +343,7 @@ const DistrictsGraph = ({ classes, screams }) => {
       <PlotlyComponent data={data} layout={layout} config={config} />
     ) : (
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <div style={{ width: "100px" }}>
+        <div style={{ width: "50px" }}>
           <Loader />
         </div>
       </div>

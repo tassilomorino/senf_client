@@ -3,16 +3,17 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-//Icons
+// Icons
 import { Loader } from "senf-atomic-design-system";
 
-//Graphs
+// Graphs
 import createPlotlyComponent from "react-plotlyjs";
-//See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
+// See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
 import Plotly from "plotly.js-cartesian-dist";
-import { Agegroupdata } from "./Agegroup/Agegroupdata";
 import styled from "styled-components";
+import { Agegroupdata } from "./Agegroup/Agegroupdata";
 import GraphsWrapper from "./GraphsWrapper";
+
 const PlotlyComponent = createPlotlyComponent(Plotly);
 
 const FilterWrapper = styled.div`
@@ -61,7 +62,7 @@ const AgegroupGraph = ({ screams, likes }) => {
     "65+",
     "65+",
   ];
-  let data = [
+  const data = [
     {
       alignmentgroup: true,
 
@@ -170,14 +171,14 @@ const AgegroupGraph = ({ screams, likes }) => {
       yaxis: "y",
     },
   ];
-  let layout = {
+  const layout = {
     annotations: [
       {
         x: 0,
         y: 7,
         xref: "x",
         yref: "y",
-        text: t("ideas") + " | Votes",
+        text: `${t("ideas")} | Votes`,
         ay: 0,
         ax: -1,
         arrowcolor: "rgba(255, 0, 255, 0.53)",
@@ -286,7 +287,7 @@ const AgegroupGraph = ({ screams, likes }) => {
     //   }
   };
 
-  let config = {
+  const config = {
     showLink: false,
     displayModeBar: false,
   };
@@ -311,7 +312,7 @@ const AgegroupGraph = ({ screams, likes }) => {
       <PlotlyComponent data={data} layout={layout} config={config} />
     ) : (
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <div style={{ width: "100px" }}>
+        <div style={{ width: "50px" }}>
           <Loader />
         </div>
       </div>

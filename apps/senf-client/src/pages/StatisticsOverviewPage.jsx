@@ -10,9 +10,10 @@ import { useDrag } from "@use-gesture/react";
 import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 import {
   StatisticsOverview,
-  Dialog,
+  Tabs,
   Loader,
   LayerWhiteFirstDefault,
+  Box,
 } from "senf-atomic-design-system";
 import Keyindicators from "../components/graphs/Keyindicators";
 
@@ -119,7 +120,7 @@ const StatisticsOverviewPage = ({
   const [likesLength, setLikesLength] = useState(null);
   const [commentsLength, setCommentsLength] = useState(null);
 
-  const [order, setOrder] = useState(0);
+  const [order, setOrder] = useState(1);
 
   useEffect(() => {
     setOpen(true);
@@ -305,60 +306,37 @@ const StatisticsOverviewPage = ({
           likesLength={likesLength}
           commentslength={commentsLength}
         />
-        <CoverWrapper>
-          <Covers
-            animation="enteranimation 0.5s ease-in-out"
-            onClick={() => setOrder(0)}
-          >
-            <CoverTitle>
-              <StyledH2 fontWeight="900" textAlign="center">
-                {t("topics")}
-              </StyledH2>
-            </CoverTitle>
-            <CoverImg src={Themencover} alt="insights-topic-cover" />
-          </Covers>
-
-          <Covers
-            animation="enteranimation 0.75s ease-in-out"
-            onClick={() => setOrder(1)}
-          >
-            <CoverTitle>
-              <StyledH2 fontWeight="900" textAlign="center">
-                {t("districts")}
-              </StyledH2>
-            </CoverTitle>
-            <CoverImg src={DistrictsCover} alt="insights-districts-cover" />
-          </Covers>
-
-          <Covers
-            animation="enteranimation 1.25s ease-in-out"
-            onClick={() => setOrder(2)}
-          >
-            <CoverTitle>
-              <StyledH2 fontWeight="900" textAlign="center">
-                {t("agegroups")}
-              </StyledH2>
-            </CoverTitle>
-            <CoverImg src={AgegroupsCover} alt="insights-agegroups-cover" />
-          </Covers>
-          {/* <Covers
-            animation="enteranimation 1s ease-in-out"
-            onClick={() => handleLink()}
-          >
-            <CoverTitle>
-              <StyledH2 fontWeight="900" textAlign="center">
-                {t("toolbox")}
-              </StyledH2>
-            </CoverTitle>
-            <CoverImg src={KeywordsCover} alt="insights-keywords-cover" />
-          </Covers> */}
-        </CoverWrapper>
 
         <GraphsWrapper>
-          <React.Suspense fallback={<Loader />}>
-            {order === 0 ? (
+          <Box margin="20px 0px">
+            <Tabs
+              fontSize="buttonSm"
+              order={order}
+              setOrder={setOrder}
+              tabs={[
+                {
+                  // icon: <Room />,
+                  text: t("topics"),
+                },
+                { text: t("districts") },
+                { text: t("agegroups") },
+
+                // { icon: <Info />, text: "Interaktionen" },
+              ]}
+            />
+          </Box>
+          <React.Suspense
+            fallback={
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <div style={{ width: "50px" }}>
+                  <Loader />
+                </div>
+              </div>
+            }
+          >
+            {order === 1 ? (
               <TopicsGraph screams={screams} />
-            ) : order === 1 ? (
+            ) : order === 2 ? (
               <DistrictsGraph screams={screams} />
             ) : (
               <AgegroupGraph screams={screams} likes={likes} />
