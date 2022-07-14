@@ -36,6 +36,8 @@ module.exports = {
     "import/prefer-default-export": "off",
     "no-nested-ternary": "off",
     "no-shadow": "warn",
+    "no-underscore-dangle": "off",
+    "no-plusplus": "off",
   },
   settings: {
     react: {
