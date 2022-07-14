@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useRef } from "react";
 import styled from "styled-components";
 import lottie from "lottie-web";
-import wave from "../../../assets/lottieFiles/senf-wave.json";
+import wave from "../../../assets/lottieFiles/senf-wave-01.json";
 
 const Wrapper = styled.div`
   width: 100%;

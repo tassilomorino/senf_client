@@ -20,7 +20,9 @@ import Geocoder from "../../atoms/geocoder/Geocoder";
 import MapTileSmall from "../../../assets/other/mapTileSmall.png";
 
 const Wrapper = styled.div<EditIdeaProps>`
-  height: auto;
+  max-height: 800px;
+  overflow: scroll;
+
   margin: 20px 10px 10px 10px;
   position: relative;
   background-color: transparent;

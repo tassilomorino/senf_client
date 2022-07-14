@@ -41,33 +41,29 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
       setOpenModal={setEditOpen}
       zIndex={9999999999}
     >
-      <Wrapper>
-        <Wave color={theme.colors.beige.beige20} top="0px" />
+      <Wave color={theme.colors.beige.beige20} top="0px" />
 
-        <Box position="absolute" top="0px" margin="10px">
-          <RoundedButton
-            icon={<Plus transform="rotate(45deg)" />}
-            // onClick={ handleClose}
-          />
-        </Box>
-        <InnerWrapper>
-          <EditIdea />
-        </InnerWrapper>
+      <Box position="absolute" top="0px" margin="10px" zIndex={99}>
+        <RoundedButton
+          icon={<Plus transform="rotate(45deg)" />}
+          // onClick={ handleClose}
+        />
+      </Box>
+      <EditIdea />
 
-        <Box position="absolute" bottom="0px" gap="8px" margin="10px">
-          <Button
-            variant="white"
-            onClick={() => setEditOpen(false)}
-            text={t("cancel")}
-          />
-          <Button
-            variant="primary"
-            onClick={handleSubmit}
-            disabled={data?.title === "" || data?.body === ""}
-            text={t("save")}
-          />
-        </Box>
-      </Wrapper>
+      <Box position="absolute" bottom="0px" gap="8px" margin="10px">
+        <Button
+          variant="white"
+          onClick={() => setEditOpen(false)}
+          text={t("cancel")}
+        />
+        <Button
+          variant="primary"
+          onClick={handleSubmit}
+          disabled={data?.title === "" || data?.body === ""}
+          text={t("save")}
+        />
+      </Box>
     </SwipeModal>
   );
 };
