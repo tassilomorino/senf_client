@@ -35,6 +35,7 @@ const Wave = ({ position, top, color }) => {
       loop: true,
       autoplay: true,
       animationData: wave,
+      color: "green",
     });
   }, []);
 

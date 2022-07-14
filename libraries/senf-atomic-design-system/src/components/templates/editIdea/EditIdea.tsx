@@ -22,7 +22,6 @@ import MapTileSmall from "../../../assets/other/mapTileSmall.png";
 const Wrapper = styled.div<EditIdeaProps>`
   height: auto;
   margin: 20px 10px 10px 10px;
-  min-height: -webkit-fill-available;
   position: relative;
   background-color: transparent;
 `;
@@ -66,7 +65,12 @@ const EditIdea: FC<EditIdeaProps> = ({
 
      
       */}
-      <Box flexDirection="column" gap="20px" top="50px">
+      <Box
+        flexDirection="column"
+        gap="20px"
+        top="50px"
+        margin="0px 0px 200px 0px"
+      >
         <Input
           key="title"
           id="title"
@@ -163,21 +167,6 @@ const EditIdea: FC<EditIdeaProps> = ({
             })
           }
           value={data?.topic}
-        />
-      </Box>
-      <Box position="sticky" bottom="0px" width="inherit" gap="8px">
-        <Button
-          variant="white"
-          fillWidth="max"
-          onClick={() => setEditOpen(false)}
-          text={t("cancel")}
-        />
-        <Button
-          variant="primary"
-          fillWidth="max"
-          onClick={handleSubmit}
-          disabled={data?.title === "" || data?.body === ""}
-          text={t("save")}
         />
       </Box>
     </Wrapper>

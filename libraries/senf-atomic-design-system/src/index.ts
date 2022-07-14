@@ -64,6 +64,7 @@ export { default as MainSwipeList } from "./components/pages/mainSwipeList/MainS
 
 export { default as Auth } from "./components/pages/auth/Auth";
 export { default as IdeaDetailPage } from "./components/pages/ideaDetailPage/IdeaDetailPage";
+export { default as EditIdeaPage } from "./components/pages/editIdeaPage/EditIdeaPage";
 export { default as OrganizationPage } from "./components/pages/organizationPage/OrganizationPage";
 export { default as OrganizationsOverview } from "./components/pages/organizationsOverview/OrganizationsOverview";
 export { default as StatisticsOverview } from "./components/pages/statisticsOverview/StatisticsOverview";
