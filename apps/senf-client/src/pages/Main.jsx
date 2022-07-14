@@ -509,8 +509,6 @@ const Main = () => {
     dispatch(handleOrganizationTypesSelectorRedux(organizationTypes));
   };
 
-  console.log(openOrganizationsOverview);
-
   const handleOpenMyAccount = () => {
     if (user?.authenticated) {
       dispatch(openProjectRoomFunc(null, false));

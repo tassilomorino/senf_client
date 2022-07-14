@@ -29,6 +29,7 @@ const ImageWrapper = styled.label`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 `;
 
 const AuthAddDetails: FC<AuthAddDetailsProps> = ({

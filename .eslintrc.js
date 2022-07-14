@@ -38,6 +38,7 @@ module.exports = {
     "no-shadow": "warn",
     "no-underscore-dangle": "off",
     "no-plusplus": "off",
+    "arrow-body-style": "off",
   },
   settings: {
     react: {
