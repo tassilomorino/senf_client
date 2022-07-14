@@ -1,27 +1,22 @@
 /** @format */
 
 import React, { useState, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
-import { TextField } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
-import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
-//firebase
+// firebase
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { Input } from "senf-atomic-design-system";
 import { db } from "../../../../firebase";
 
 import { useOnClickOutside } from "../../../../hooks/useOnClickOutside";
 import {
-  ButtonsWrapper,
   ComponentInnerWrapper,
   ComponentWrapper,
-  SubTitle,
-  Title,
 } from "../styles/sharedStyles";
 import Navigation from "../Components/Navigation";
-import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { StyledH3 } from "../../../../styles/GlobalStyle";
 
 const CreateOrganizationPage1 = ({
   onClickNext,
@@ -107,7 +102,7 @@ const CreateOrganizationPage1 = ({
       localStorage.getItem("createOrganizationId")
     ) {
       try {
-        //UPDATING AN EXISTING PROJECTROOM
+        // UPDATING AN EXISTING PROJECTROOM
         const updateProject = {
           title: formik.values.title,
           description: formik.values.description,
@@ -139,43 +134,39 @@ const CreateOrganizationPage1 = ({
             {pagesData[index].subTitle}
           </StyledH3>
 
-          <TextField
-            id="outlined-name"
+          <Input
+            key="title"
+            id="title"
             name="title"
-            type="title"
+            type="textarea"
+            placeholder={t("add_title")}
             label={t("createOrganizationPage1_FieldName_Title")}
-            margin="normal"
-            variant="outlined"
-            multiline
-            style={{
-              backgroundColor: "white",
-              borderRadius: "5px",
-              width: "100%",
-            }}
-            value={formik.values.title}
-            onChange={formik.handleChange}
-            error={outsideClick && Boolean(formik.errors.title)}
-            helperText={outsideClick && formik.errors.title}
+            rows={1}
+            onChange={formik?.handleChange}
+            onBlur={formik?.handleBlur}
+            value={formik?.values.title}
+            error={formik?.touched.title && Boolean(formik?.errors.title)}
+            note={formik?.touched.title && formik?.errors.title}
           />
-          <TextField
-            id="outlined-name"
+
+          <Input
+            key="description"
+            id="description"
             name="description"
-            type="description"
+            type="textarea"
+            placeholder={t("add_description")}
             label={t("organizations_description")}
-            margin="normal"
-            multiline
-            minRows="10"
-            maxRows="12"
-            variant="outlined"
-            style={{
-              backgroundColor: "white",
-              borderRadius: "5px",
-              width: "100%",
-            }}
-            value={formik.values.description}
-            onChange={formik.handleChange}
-            error={outsideClick && Boolean(formik.errors.description)}
-            helperText={outsideClick && formik.errors.description}
+            rows={1}
+            onChange={formik?.handleChange}
+            onBlur={formik?.handleBlur}
+            value={formik?.values.description}
+            error={
+              formik?.touched.description && Boolean(formik?.errors.description)
+            }
+            note={formik?.touched.description && formik?.errors.description}
+
+            // minRows="10"
+            // maxRows="12"
           />
         </ComponentInnerWrapper>
       </ComponentWrapper>

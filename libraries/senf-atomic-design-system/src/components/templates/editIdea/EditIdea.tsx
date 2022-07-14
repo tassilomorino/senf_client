@@ -3,6 +3,7 @@
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+
 import CalendarIcon from "../../../assets/icons/CalendarIcon";
 import Hyperlink from "../../../assets/icons/Hyperlink";
 import Mail from "../../../assets/icons/Mail";
@@ -15,12 +16,15 @@ import Dropdown from "../../atoms/dropdown/Dropdown";
 import Input from "../../atoms/inputs/Input";
 import Typography from "../../atoms/typography/Typography";
 import { EditIdeaProps } from "./EditIdea.types";
+import Geocoder from "../../atoms/geocoder/Geocoder";
+import MapTileSmall from "../../../assets/other/mapTileSmall.png";
 
 const Wrapper = styled.div<EditIdeaProps>`
   height: auto;
-  margin: 10px;
+  margin: 20px 10px 10px 10px;
   min-height: -webkit-fill-available;
   position: relative;
+  background-color: transparent;
 `;
 
 const EditIdea: FC<EditIdeaProps> = ({
@@ -62,25 +66,7 @@ const EditIdea: FC<EditIdeaProps> = ({
 
      
       */}
-      <Box flexDirection="column" gap="8px">
-        <Dropdown
-          id="projectrooms"
-          label={t("projectrooms")}
-          initialValue={t("all_ideas")}
-          listItems={
-            projectrooms
-              ? OptionsProjectrooms({ projectrooms })
-              : [{ value: "all_ideas", label: t("all_ideas") }]
-          }
-          recieveValue={(selectedItems) =>
-            setData({
-              ...data,
-              projectrooms: selectedItems.projectrooms,
-            })
-          }
-          value={data?.topic}
-        />
-
+      <Box flexDirection="column" gap="20px" top="50px">
         <Input
           key="title"
           id="title"
@@ -107,20 +93,6 @@ const EditIdea: FC<EditIdeaProps> = ({
           value={formik?.values.body}
           error={formik?.touched.body && Boolean(formik?.errors.body)}
           note={formik?.touched.body && formik?.errors.body}
-        />
-
-        <Dropdown
-          id="topic"
-          label={t("topic")}
-          initialValue={t("select_topic")}
-          listItems={OptionsTopics()}
-          recieveValue={(selectedItems) =>
-            setData({
-              ...data,
-              topic: selectedItems.topic,
-            })
-          }
-          value={data?.topic}
         />
 
         <Box gap="8px">
@@ -151,9 +123,49 @@ const EditIdea: FC<EditIdeaProps> = ({
             />
           )}
         </Box>
-      </Box>
+        <Box width="100%">
+          <Geocoder />
+          <div style={{ width: "60px", height: "50px" }}>
+            <img
+              src={MapTileSmall}
+              width="98px"
+              style={{ transform: "translate(-15px,-26px)" }}
+            />
+          </div>
+        </Box>
 
-      <Box position="absolute" bottom="0" width="100%" gap="8px">
+        <Dropdown
+          id="topic"
+          label={t("topic")}
+          initialValue={t("select_topic")}
+          listItems={OptionsTopics()}
+          recieveValue={(selectedItems) =>
+            setData({
+              ...data,
+              topic: selectedItems.topic,
+            })
+          }
+          value={data?.topic}
+        />
+        <Dropdown
+          id="projectrooms"
+          label={t("projectrooms")}
+          initialValue={t("all_ideas")}
+          listItems={
+            projectrooms
+              ? OptionsProjectrooms({ projectrooms })
+              : [{ value: "all_ideas", label: t("all_ideas") }]
+          }
+          recieveValue={(selectedItems) =>
+            setData({
+              ...data,
+              projectrooms: selectedItems.projectrooms,
+            })
+          }
+          value={data?.topic}
+        />
+      </Box>
+      <Box position="sticky" bottom="0px" width="inherit" gap="8px">
         <Button
           variant="white"
           fillWidth="max"

@@ -1,7 +1,7 @@
-import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 import React from "react";
 import styled from "styled-components";
-import Switch from "../../../atoms/CustomButtons/Switch";
+import { Switch } from "senf-atomic-design-system";
+import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 
 const Divider = styled.div`
   width: 90%;
@@ -55,9 +55,11 @@ const ToggleStatusComponent = ({
       <SwitchWrapper>
         <Switch
           id="deactivate-switch"
-          toggled={status}
-          onChange={handleSwitch}
+          checked={status}
+          receiveValue={handleSwitch}
+          disabled
         />
+
         <FlexWrapper>
           <StyledH3
             status={status}

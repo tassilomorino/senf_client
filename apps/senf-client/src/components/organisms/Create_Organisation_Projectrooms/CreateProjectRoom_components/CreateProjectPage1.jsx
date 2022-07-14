@@ -8,6 +8,8 @@ import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { Input } from "senf-atomic-design-system";
 import { db } from "../../../../firebase";
 
 import { useOnClickOutside } from "../../../../hooks/useOnClickOutside";
@@ -17,7 +19,6 @@ import {
 } from "../styles/sharedStyles";
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const CreateProjectPage1 = ({
   onClickNext,
@@ -73,7 +74,7 @@ const CreateProjectPage1 = ({
       description_motivation: "",
       description_learnmore: "",
     },
-    validationSchema: validationSchema,
+    validationSchema,
     validateOnChange: true,
     validateOnBlur: true,
   });
@@ -129,7 +130,7 @@ const CreateProjectPage1 = ({
       typeof Storage !== "undefined" &&
       localStorage.getItem("createProjectRoomId")
     ) {
-      //UPDATING AN EXISTING PROJECTROOM
+      // UPDATING AN EXISTING PROJECTROOM
       const updateProject = {
         title: formik.values.title,
         brief: formik.values.brief,
@@ -171,23 +172,19 @@ const CreateProjectPage1 = ({
             {pagesData[index].subTitle}
           </StyledH3>
 
-          <TextField
-            id="outlined-name"
+          <Input
+            key="title"
+            id="title"
             name="title"
-            type="title"
+            type="textarea"
+            placeholder={t("add_description")}
             label={t("projectRoom_title")}
-            margin="normal"
-            variant="outlined"
-            multiline
-            style={{
-              backgroundColor: "white",
-              borderRadius: "5px",
-              width: "100%",
-            }}
-            value={formik.values.title}
-            onChange={formik.handleChange}
-            error={outsideClick && Boolean(formik.errors.title)}
-            helperText={outsideClick && formik.errors.title}
+            rows={1}
+            onChange={formik?.handleChange}
+            onBlur={formik?.handleBlur}
+            value={formik?.values.title}
+            error={formik?.touched.title && Boolean(formik?.errors.title)}
+            note={formik?.touched.title && formik?.errors.title}
           />
 
           <TextField

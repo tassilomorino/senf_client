@@ -92,33 +92,30 @@ const Dialog: FC<DialogProps> = ({
   // }, []);
 
   return (
-    <React.Fragment>
-      {isOpen && (
-        // ReactDOM.createPortal(
-        <DialogWrapper
-          left={left}
-          right={right}
-          zIndex={zIndex}
-          boxShadow={boxShadow}
-          backgroundColor={backgroundColor}
-          overflow={overflow}
-          role="dialog"
-          size={size}
-          // aria-labelledby="dialog-header"
-          // onKeyDown={
-          //   (e) =>
-          //     submitRef?.current &&
-          //     closeRef?.current &&
-          //     trapFocus(e, submitRef.current, closeRef.current) // ideally we would use inert but it doesn't seem to be working
-          // }
-        >
-          {children}
-        </DialogWrapper>
-        // ,
-        // document.body
-        //  document.getElementById(portalId) as HTMLElement
-      )}
-    </React.Fragment>
+    isOpen &&
+    ReactDOM.createPortal(
+      <DialogWrapper
+        left={left}
+        right={right}
+        zIndex={zIndex}
+        boxShadow={boxShadow}
+        backgroundColor={backgroundColor}
+        overflow={overflow}
+        role="dialog"
+        size={size}
+        // aria-labelledby="dialog-header"
+        // onKeyDown={
+        //   (e) =>
+        //     submitRef?.current &&
+        //     closeRef?.current &&
+        //     trapFocus(e, submitRef.current, closeRef.current) // ideally we would use inert but it doesn't seem to be working
+        // }
+      >
+        {children}
+      </DialogWrapper>,
+      document.body
+      //  document.getElementById(portalId) as HTMLElement
+    )
   );
 };
 

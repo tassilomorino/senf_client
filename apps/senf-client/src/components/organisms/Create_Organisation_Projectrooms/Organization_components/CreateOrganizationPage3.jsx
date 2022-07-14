@@ -1,28 +1,27 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import imageCompression from "browser-image-compression";
 
-//firebase
-import { db } from "../../../../firebase";
+// firebase
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { doc, updateDoc } from "firebase/firestore";
+import { Loader } from "senf-atomic-design-system";
+import { db } from "../../../../firebase";
 
-//redux
-//import { createProjectSaveData } from "../../../../redux/actions/formDataActions";
+// redux
+// import { createProjectSaveData } from "../../../../redux/actions/formDataActions";
 
-//images
+// images
 import UploadImageIcon from "../../../../images/icons/uploadImage.png";
-import { CircularProgress } from "@material-ui/core";
 import {
   ComponentInnerWrapper,
   ComponentWrapper,
 } from "../styles/sharedStyles";
 import Navigation from "../Components/Navigation";
-import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
-import { doc, updateDoc } from "firebase/firestore";
+import { StyledH3 } from "../../../../styles/GlobalStyle";
 
 const StyledLabel = styled.label`
   width: 150px;
@@ -100,7 +99,7 @@ const CreateOrganizationPage3 = ({
         "organizations",
         localStorage.getItem("createOrganizationId")
       );
-      await updateDoc(orgRef, { logoURL: logoURL });
+      await updateDoc(orgRef, { logoURL });
 
       setLoading(false);
       setUploadedImage(logoURL);
@@ -157,7 +156,9 @@ const CreateOrganizationPage3 = ({
             {(!uploadedImage || uploadImageHover) && (
               <StyledIconWrapper>
                 {loading ? (
-                  <CircularProgress size={50} thickness={2} />
+                  <div style={{ width: "50px" }}>
+                    <Loader />
+                  </div>
                 ) : (
                   <img
                     src={UploadImageIcon}
