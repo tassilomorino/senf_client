@@ -54,9 +54,9 @@ const Container = styled.div`
   background-color: white;
   position: fixed;
   @media (min-width: 768px) {
-    width: 800px;
-    height: calc(100% - 200px);
-    min-height: 700px;
+    max-width: 55vw;
+    height: 80vh;
+
     margin-left: 50vw;
     margin-top: 50vh;
     transform: translateX(-50%) translateY(-50%);
@@ -584,7 +584,7 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsOverview }) => {
           position="fixed"
           zIndex={999}
           margin={
-            document.body.clientWidth > 768 ? "30px 0px 0px 300px" : "10px"
+            document.body.clientWidth > 768 ? "10vh 0px 0px 18vw" : "10px"
           }
         >
           <RoundedButton
