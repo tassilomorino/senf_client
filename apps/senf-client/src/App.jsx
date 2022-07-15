@@ -61,7 +61,7 @@ import "./util/i18n";
 
 const Main = React.lazy(() =>
   Promise.all([
-    import("./pages/main"),
+    import("./pages/Main"),
     new Promise((resolve) => setTimeout(resolve, 3300)),
   ]).then(([moduleExports]) => moduleExports)
 ); // i18n configuration
