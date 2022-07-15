@@ -620,7 +620,7 @@ const Main = () => {
         </Modal>
       )}
 
-      {loading && <Loader withoutBg={true} />}
+      {/* {loading && <MainLoader />} */}
 
       {(loadingIdea || loadingProjectRoom) && <Loader withoutBg={true} />}
 

@@ -15,16 +15,15 @@ const GlobalStyles = createGlobalStyle`
     font-size: 14px;
       /* overflow: scroll; */
 
+      background-color: #e9e9e9;
+  background-image: linear-gradient(white 2.6px, transparent 2.6px),
+    linear-gradient(90deg, white 2.6px, transparent 2.6px),
+    linear-gradient(white 1.3px, transparent 1.3px),
+    linear-gradient(90deg, white 1.3px, #f8f8f8 1.3px);
+  background-size: 65px 65px, 65px 65px, 13px 13px, 13px 13px;
+  background-position: -2.6px -2.6px, -2.6px -2.6px, -1.3px -1.3px,
+    -1.3px -1.3px;
 
-  background-attachment: fixed;
-  background-image: linear-gradient(
-    180deg,
-    rgba(254, 217, 87, 1) 0%,
-    rgba(254, 217, 87, 1) 6%,
-    rgba(255, 218, 83, 1) 41%,
-    rgba(255, 255, 255, 1) 100%
-  );
-  background-repeat: no-repeat;
 
   top: 0;
   width: 100%;

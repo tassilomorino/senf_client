@@ -17,6 +17,7 @@ import {
   GlobalStyle,
   LayerWhiteFirstDefault,
   // i18n,
+  MainLoader,
 } from "senf-atomic-design-system";
 import { auth } from "./firebase";
 
@@ -40,7 +41,6 @@ import { getProjects } from "./redux/actions/projectActions";
 import { getScreams } from "./redux/actions/screamActions";
 
 // Pages
-import Main from "./pages/Main";
 import impressum from "./components/organisms/infocomponents/legal/impressum";
 import datenschutz from "./components/organisms/infocomponents/legal/datenschutz";
 import agb from "./components/organisms/infocomponents/legal/agb";
@@ -60,7 +60,16 @@ import GlobalStyles from "./styles/GlobalStyles";
 
 import { ThemeProvider } from "styled-components";
 
-import "./util/i18n"; // i18n configuration
+import "./util/i18n";
+
+// import Main from "./pages/Main";
+
+const Main = React.lazy(() =>
+  Promise.all([
+    import("./pages/main"),
+    new Promise((resolve) => setTimeout(resolve, 2000)),
+  ]).then(([moduleExports]) => moduleExports)
+); // i18n configuration
 
 // detectLocation(); // detect location and set i18n language
 const cookies = new Cookies();
@@ -155,46 +164,48 @@ const App = () => {
             )}
 
             <div className="container">
-              <Switch>
-                <Route exact path="/" component={Main} />
-                <Route exact path="/projectRooms" component={Main} />
-                <Route exact path="/organizations" component={Main} />
+              <React.Suspense fallback={<MainLoader />}>
+                <Switch>
+                  <Route exact path="/" component={Main} />
+                  <Route exact path="/projectRooms" component={Main} />
+                  <Route exact path="/organizations" component={Main} />
 
-                <Route exact path="/datenschutz" component={datenschutz} />
-                <Route exact path="/agb" component={agb} />
+                  <Route exact path="/datenschutz" component={datenschutz} />
+                  <Route exact path="/agb" component={agb} />
 
-                <Route
-                  exact
-                  path="/cookieConfigurator"
-                  component={cookieConfigurator}
-                />
+                  <Route
+                    exact
+                    path="/cookieConfigurator"
+                    component={cookieConfigurator}
+                  />
 
-                <Route exact path="/impressum" component={impressum} />
+                  <Route exact path="/impressum" component={impressum} />
 
-                <Route exact path="/blank" component={blank} />
+                  <Route exact path="/blank" component={blank} />
 
-                <Route exact path="/:screamId" component={Main} />
+                  <Route exact path="/:screamId" component={Main} />
 
-                <Route
-                  exact
-                  path="/projectRooms/:projectRoomId/:screamId"
-                  component={Main}
-                />
+                  <Route
+                    exact
+                    path="/projectRooms/:projectRoomId/:screamId"
+                    component={Main}
+                  />
 
-                <Route
-                  exact
-                  path="/projectRooms/:projectRoomId"
-                  component={Main}
-                />
+                  <Route
+                    exact
+                    path="/projectRooms/:projectRoomId"
+                    component={Main}
+                  />
 
-                <Route
-                  exact
-                  path="/organizations/:organizationId"
-                  component={Main}
-                />
+                  <Route
+                    exact
+                    path="/organizations/:organizationId"
+                    component={Main}
+                  />
 
-                <Route path="*" component={Main} />
-              </Switch>
+                  <Route path="*" component={Main} />
+                </Switch>
+              </React.Suspense>
             </div>
           </Router>
         </Provider>

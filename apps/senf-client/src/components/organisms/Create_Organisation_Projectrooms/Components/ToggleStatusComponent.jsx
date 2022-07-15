@@ -57,7 +57,6 @@ const ToggleStatusComponent = ({
           id="deactivate-switch"
           checked={status}
           receiveValue={handleSwitch}
-          disabled
         />
 
         <FlexWrapper>

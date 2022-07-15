@@ -1,5 +1,7 @@
 /** @format */
 export { default as Bulb } from "./assets/icons/Bulb";
+export { default as More } from "./assets/icons/More";
+export { default as Delete } from "./assets/icons/Delete";
 export { default as Plus } from "./assets/icons/Plus";
 export { default as Arrow } from "./assets/icons/Arrow";
 export { default as Hyperlink } from "./assets/icons/Hyperlink";
@@ -34,6 +36,7 @@ export { default as TertiaryButton } from "./components/atoms/buttons/TertiaryBu
 export { default as Tag } from "./components/atoms/tag/Tag";
 export { default as Icon } from "./components/atoms/icons/Icon";
 export { default as Input } from "./components/atoms/inputs/Input";
+export { default as ContentDropdown } from "./components/atoms/contentDropdown/ContentDropdown";
 export { default as ToggleInput } from "./components/atoms/toggleInput/ToggleInput";
 export { default as Switch } from "./components/atoms/switch/Switch";
 export { default as Box } from "./components/atoms/box/Box";

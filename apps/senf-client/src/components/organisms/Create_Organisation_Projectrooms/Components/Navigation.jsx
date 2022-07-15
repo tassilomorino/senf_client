@@ -1,8 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { Button } from "senf-atomic-design-system";
-const ButtonsWrapper = styled.div`
+import { Button, Box } from "senf-atomic-design-system";
+
+const NavigationContainer = styled.div`
   position: fixed;
   bottom: 0px;
   left: 0;
@@ -34,53 +35,60 @@ const Navigation = ({
   console.log(localStorage.getItem("createOrganizationPostEdit"));
   const { t } = useTranslation();
   return (
-    <ButtonsWrapper>
-      {prevLabel && (
-        <Button
-          variant="white"
-          text={
-            (localStorage.getItem("createOrganizationPostEdit") === "true" ||
-              localStorage.getItem("createProjectRoomPostEdit") === "true") &&
-            pagesData.length - 1 === index
-              ? t("close")
-              : localStorage.getItem("createOrganizationPostEdit") === "true" ||
-                localStorage.getItem("createProjectRoomPostEdit") === "true"
-              ? "Zurück zur Übersicht"
-              : prevLabel
-          }
-          // loading={}
-          onClick={
-            (localStorage.getItem("createOrganizationPostEdit") === "true" ||
-              localStorage.getItem("createProjectRoomPostEdit") === "true") &&
-            pagesData.length - 1 === index
-              ? setClose
-              : localStorage.getItem("createOrganizationPostEdit") === "true" ||
-                localStorage.getItem("createProjectRoomPostEdit") === "true"
-              ? () => set(pagesData.length - 1)
-              : handlePrev
-          }
-          // disabled={}
-        />
-      )}
-      {nextLabel && (
-        <Button
-          variant="primary"
-          text={
-            (localStorage.getItem("createOrganizationPostEdit") === "true" ||
-              localStorage.getItem("createProjectRoomPostEdit") === "true") &&
-            pagesData.length - 1 === index
-              ? "Gespeichert"
-              : localStorage.getItem("createOrganizationPostEdit") === "true" ||
-                localStorage.getItem("createProjectRoomPostEdit") === "true"
-              ? "Speichern"
-              : nextLabel
-          }
-          loading={loading}
-          onClick={handleNext}
-          disabled={disabled}
-        />
-      )}
-    </ButtonsWrapper>
+    <NavigationContainer>
+      <Box maxWidth="500px" gap="8px" width="100%" margin="10px">
+        {prevLabel && (
+          <Button
+            variant="white"
+            fillWidth="max"
+            text={
+              (localStorage.getItem("createOrganizationPostEdit") === "true" ||
+                localStorage.getItem("createProjectRoomPostEdit") === "true") &&
+              pagesData.length - 1 === index
+                ? t("close")
+                : localStorage.getItem("createOrganizationPostEdit") ===
+                    "true" ||
+                  localStorage.getItem("createProjectRoomPostEdit") === "true"
+                ? "Zurück zur Übersicht"
+                : prevLabel
+            }
+            // loading={}
+            onClick={
+              (localStorage.getItem("createOrganizationPostEdit") === "true" ||
+                localStorage.getItem("createProjectRoomPostEdit") === "true") &&
+              pagesData.length - 1 === index
+                ? setClose
+                : localStorage.getItem("createOrganizationPostEdit") ===
+                    "true" ||
+                  localStorage.getItem("createProjectRoomPostEdit") === "true"
+                ? () => set(pagesData.length - 1)
+                : handlePrev
+            }
+            // disabled={}
+          />
+        )}
+        {nextLabel && (
+          <Button
+            variant="primary"
+            fillWidth="max"
+            text={
+              (localStorage.getItem("createOrganizationPostEdit") === "true" ||
+                localStorage.getItem("createProjectRoomPostEdit") === "true") &&
+              pagesData.length - 1 === index
+                ? "Abspeichern"
+                : localStorage.getItem("createOrganizationPostEdit") ===
+                    "true" ||
+                  localStorage.getItem("createProjectRoomPostEdit") === "true"
+                ? "Speichern"
+                : nextLabel
+            }
+            loading={loading}
+            onClick={handleNext}
+            disabled={disabled}
+          />
+        )}
+      </Box>
+    </NavigationContainer>
   );
 };
 

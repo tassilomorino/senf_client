@@ -20,9 +20,6 @@ import Geocoder from "../../atoms/geocoder/Geocoder";
 import MapTileSmall from "../../../assets/other/mapTileSmall.png";
 
 const Wrapper = styled.div<EditIdeaProps>`
-  max-height: 800px;
-  overflow: scroll;
-
   margin: 20px 10px 10px 10px;
   position: relative;
   background-color: transparent;
@@ -71,7 +68,7 @@ const EditIdea: FC<EditIdeaProps> = ({
         flexDirection="column"
         gap="20px"
         top="50px"
-        margin="0px 0px 200px 0px"
+        margin="0px 0px 0px 0px"
       >
         <Input
           key="title"
@@ -170,6 +167,8 @@ const EditIdea: FC<EditIdeaProps> = ({
           }
           value={data?.topic}
         />
+
+        <div style={{ height: "100px" }} />
       </Box>
     </Wrapper>
   );

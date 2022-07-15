@@ -11,7 +11,7 @@ import * as yup from "yup";
 import { TextField } from "@material-ui/core";
 import { useFormik } from "formik";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { Input } from "senf-atomic-design-system";
+import { Box, Input } from "senf-atomic-design-system";
 import { db } from "../../../../firebase";
 // Components
 
@@ -184,33 +184,35 @@ const CreateOrganizationPage2 = ({
             {pagesData[index].subTitle}
           </StyledH3>
 
-          <Input
-            key="contact"
-            id="contact"
-            name="contact"
-            type="text"
-            placeholder={t("contact-address")}
-            label={t("contact-address")}
-            onChange={formik?.handleChange}
-            onBlur={formik?.handleBlur}
-            value={formik?.values.contact}
-            error={formik?.touched.contact && Boolean(formik?.errors.contact)}
-            note={formik?.touched.contact && formik?.errors.contact}
-          />
+          <Box flexDirection="column" gap="20px">
+            <Input
+              key="contact"
+              id="contact"
+              name="contact"
+              type="text"
+              placeholder={t("contact-address")}
+              label={t("contact-address")}
+              onChange={formik?.handleChange}
+              onBlur={formik?.handleBlur}
+              value={formik?.values.contact}
+              error={formik?.touched.contact && Boolean(formik?.errors.contact)}
+              note={formik?.touched.contact && formik?.errors.contact}
+            />
 
-          <Input
-            key="weblink"
-            id="weblink"
-            name="weblink"
-            type="text"
-            placeholder={t("external-link")}
-            label={t("external-link")}
-            onChange={formik?.handleChange}
-            onBlur={formik?.handleBlur}
-            value={formik?.values.weblink}
-            error={formik?.touched.weblink && Boolean(formik?.errors.weblink)}
-            note={formik?.touched.weblink && formik?.errors.weblink}
-          />
+            <Input
+              key="weblink"
+              id="weblink"
+              name="weblink"
+              type="text"
+              placeholder={t("external-link")}
+              label={t("external-link")}
+              onChange={formik?.handleChange}
+              onBlur={formik?.handleBlur}
+              value={formik?.values.weblink}
+              error={formik?.touched.weblink && Boolean(formik?.errors.weblink)}
+              note={formik?.touched.weblink && formik?.errors.weblink}
+            />
+          </Box>
         </ComponentInnerWrapper>
       </ComponentWrapper>
 

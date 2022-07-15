@@ -65,8 +65,12 @@ const CreateOrganizationPage5 = ({
 
   const handleFormChange = (event, index) => {
     const data = [...formFields];
-    data[index][event.target.name] = event.target.value;
+    // data[index][event.target.name] = event.target.value;
+    data[index][event.target.attributes.id.nodeValue] = event.target.value;
+
     setFormFields(data);
+
+    console.log(formFields);
   };
 
   const addFields = () => {

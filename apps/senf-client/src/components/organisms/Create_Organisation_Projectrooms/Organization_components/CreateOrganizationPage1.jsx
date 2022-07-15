@@ -7,7 +7,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 // firebase
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { Input } from "senf-atomic-design-system";
+import { Box, Input } from "senf-atomic-design-system";
 import { db } from "../../../../firebase";
 
 import { useOnClickOutside } from "../../../../hooks/useOnClickOutside";
@@ -64,8 +64,6 @@ const CreateOrganizationPage1 = ({
   });
 
   useEffect(() => {
-    formik.setFieldTouched("title", true);
-
     async function fetchData() {
       try {
         const docSnapshot = await getDoc(
@@ -133,41 +131,43 @@ const CreateOrganizationPage1 = ({
           <StyledH3 textAlign="center" margin="20px">
             {pagesData[index].subTitle}
           </StyledH3>
+          <Box flexDirection="column" gap="20px">
+            <Input
+              key="title"
+              id="title"
+              name="title"
+              type="textarea"
+              placeholder={t("add_title")}
+              label={t("createOrganizationPage1_FieldName_Title")}
+              rows={1}
+              onChange={formik?.handleChange}
+              onBlur={formik?.handleBlur}
+              value={formik?.values.title}
+              error={formik?.touched.title && Boolean(formik?.errors.title)}
+              note={formik?.touched.title && formik?.errors.title}
+            />
 
-          <Input
-            key="title"
-            id="title"
-            name="title"
-            type="textarea"
-            placeholder={t("add_title")}
-            label={t("createOrganizationPage1_FieldName_Title")}
-            rows={1}
-            onChange={formik?.handleChange}
-            onBlur={formik?.handleBlur}
-            value={formik?.values.title}
-            error={formik?.touched.title && Boolean(formik?.errors.title)}
-            note={formik?.touched.title && formik?.errors.title}
-          />
+            <Input
+              key="description"
+              id="description"
+              name="description"
+              type="textarea"
+              placeholder={t("add_description")}
+              label={t("organizations_description")}
+              rows={1}
+              onChange={formik?.handleChange}
+              onBlur={formik?.handleBlur}
+              value={formik?.values.description}
+              error={
+                formik?.touched.description &&
+                Boolean(formik?.errors.description)
+              }
+              note={formik?.touched.description && formik?.errors.description}
 
-          <Input
-            key="description"
-            id="description"
-            name="description"
-            type="textarea"
-            placeholder={t("add_description")}
-            label={t("organizations_description")}
-            rows={1}
-            onChange={formik?.handleChange}
-            onBlur={formik?.handleBlur}
-            value={formik?.values.description}
-            error={
-              formik?.touched.description && Boolean(formik?.errors.description)
-            }
-            note={formik?.touched.description && formik?.errors.description}
-
-            // minRows="10"
-            // maxRows="12"
-          />
+              // minRows="10"
+              // maxRows="12"
+            />
+          </Box>
         </ComponentInnerWrapper>
       </ComponentWrapper>
 

@@ -266,88 +266,30 @@ const EditIdeaPage = ({
         />
       )}
 
-      <EditIdeaPageComponent editOpen={editOpen} setEditOpen={setEditOpen} />
-      {/* <MainModal handleButtonClick={() => setEditOpen(false)}>
-        <div
-          style={{
-            width: "100%",
-            height: "110px",
-            backgroundColor: "#f8f8f8",
-          }}
-        >
-          <StyledH3 textAlign="center" padding="15px 0px">
-            {t("edit_idea")}
-          </StyledH3>
-          {isAdmin || isModerator ? (
-            // show "Details and monitoring sections"
-            <Tabs
-              handleClick={setOrder}
-              order={order}
-              tabLabels={EditScreamTabDataAsAdmin.map((item) => item.text)}
-              marginTop={"0"}
-              marginBottom={"20px"}
-              lineColor={"white"}
-            ></Tabs>
-          ) : (
-            // show "Details section only"
-            <Tabs
-              handleClick={setOrder}
-              order={order}
-              tabLabels={EditScreamTabData.map((item) => item.text)}
-              marginTop={"0"}
-              marginBottom={"20px"}
-              lineColor={"white"}
-            ></Tabs>
-          )}
-        </div>
-        {order === 1 ? (
-          <EditModalMainFields
-            projectRoomId={projectRoomId}
-            handleDropdownProject={handleDropdownProject}
-            onSelected={onSelected}
-            viewport={viewport}
-            scream={scream}
-            title={title}
-            body={body}
-            topic={topic}
-            setTitle={setTitle}
-            setBody={setBody}
-            handleDropdown={handleDropdown}
-            weblink={weblink}
-            weblinkTitle={weblinkTitle}
-            setWeblinkOpen={setWeblinkOpen}
-            contact={contact}
-            contactTitle={contactTitle}
-            setContactOpen={setContactOpen}
-            datePicker={datePicker}
-            selectedDays={selectedDays}
-            setCalendarOpen={setCalendarOpen}
-          />
-        ) : isAdmin || isModerator ? (
-          <AdminEditModalMainFields
-            status={status}
-            setStatus={setStatus}
-            notes={notes}
-            setNotes={setNotes}
-          />
-        ) : null}
-        <div className="buttons">
-          <Button className={classes.button} onClick={() => setEditOpen(false)}>
-            {t("cancel")}
-          </Button>
-          <Button
-            className={classes.button}
-            onClick={handleSubmit}
-            style={
-              title === "" || body === ""
-                ? { pointerEvents: "none", opacity: 0.4 }
-                : {}
-            }
-          >
-            {t("save")}
-          </Button>
-        </div>
-      </MainModal> */}
+      <EditIdeaPageComponent
+        editOpen={editOpen}
+        setEditOpen={setEditOpen}
+        projectRoomId={projectRoomId}
+        handleDropdownProject={handleDropdownProject}
+        onSelected={onSelected}
+        viewport={viewport}
+        scream={scream}
+        title={title}
+        body={body}
+        topic={topic}
+        setTitle={setTitle}
+        setBody={setBody}
+        handleDropdown={handleDropdown}
+        weblink={weblink}
+        weblinkTitle={weblinkTitle}
+        setWeblinkOpen={setWeblinkOpen}
+        contact={contact}
+        contactTitle={contactTitle}
+        setContactOpen={setContactOpen}
+        datePicker={datePicker}
+        selectedDays={selectedDays}
+        setCalendarOpen={setCalendarOpen}
+      />
     </React.Fragment>
   );
 };
