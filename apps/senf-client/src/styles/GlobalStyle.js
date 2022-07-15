@@ -17,6 +17,7 @@ export const StyledA = styled.a`
 
   &:hover {
     text-decoration: underline;
+    cursor: pointer;
   }
 `;
 
