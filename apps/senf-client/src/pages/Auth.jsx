@@ -44,6 +44,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
   const [verifiedUser, setVerifiedUser] = useState(false);
 
   const user = useSelector((state) => state.user);
+  const userIdInFirebase = getAuth().currentUser?.uid;
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -89,26 +90,28 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
   };
   async function createUserInDatabase(userCredential, formikRegisterStore) {
     if (userCredential && userCredential.user) {
-      await setDoc(doc(db, "users", userCredential.user.uid), {
-        handle: formikRegisterStore.values.username,
-        age: formikRegisterStore.values.age,
-        sex: formikRegisterStore.values.sex,
-        createdAt: new Date().toISOString(),
-        userId: userCredential.user.uid,
-      });
-      await setDoc(
-        doc(
-          db,
-          "users",
-          userCredential.user.uid,
-          "Private",
-          userCredential.user.uid
-        ),
-        {
-          email: formikRegisterStore.values.email,
+      try {
+        await setDoc(doc(db, "users", userCredential.user.uid), {
+          handle: formikRegisterStore.values.handle,
+          createdAt: new Date().toISOString(),
           userId: userCredential.user.uid,
-        }
-      );
+        });
+        await setDoc(
+          doc(
+            db,
+            "users",
+            userCredential.user.uid,
+            "Private",
+            userCredential.user.uid
+          ),
+          {
+            email: formikRegisterStore.values.email,
+            userId: userCredential.user.uid,
+          }
+        );
+      } catch (error) {
+        throw new Error(error, "Error in createUserInDatabase");
+      }
     }
   }
 
@@ -128,29 +131,31 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
         });
       }
     } catch (error) {
-      console.log(error, "error in createUserInDatabase");
+      throw new Error(error, "error in createUserFromProviderInDatabase");
     }
   }
 
   const handleSubmitRegister = async (formikRegisterStore) => {
     // event.preventDefault();
 
-    setLoading(true);
-    setErrorMessage("");
-    const usersRef = collection(db, "users");
-    const q = query(
-      usersRef,
-      where("handle", "==", formikRegisterStore.values.username)
-    );
-    const usernameQuerySnapshot = await getDocs(q);
+    try {
+      setLoading(true);
+      setErrorMessage("");
+      const usersRef = collection(db, "users");
+      const q = query(
+        usersRef,
+        where("handle", "==", formikRegisterStore.values.handle)
+      );
+      const usernameQuerySnapshot = await getDocs(q);
 
-    if (!usernameQuerySnapshot.empty) {
-      // username already exists
-      setLoading(false);
-      setErrorMessage(t("username_taken"));
-    } else {
-      // username is available, try to create user and put info to database
-      try {
+      if (!usernameQuerySnapshot.empty) {
+        // username already exists
+
+        setLoading(false);
+        setErrorMessage(t("username_taken"));
+      } else {
+        // username is available, try to create user and put info to database
+
         const userCredential = await createUserWithEmailAndPassword(
           auth,
           formikRegisterStore.values.email,
@@ -173,27 +178,27 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
 
         setEmailRegistrationSubmitted(true);
         // history.push("/verify", emailWrapper);
-      } catch (error) {
-        const errorCode = error.code;
-        const errorMessage = error.message;
+      }
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      setLoading(false);
+      setErrorMessage(errorMessage);
+      if (errorCode === "auth/email-already-in-use") {
         setLoading(false);
-        setErrorMessage(errorMessage);
-        if (errorCode === "auth/email-already-in-use") {
-          setLoading(false);
-          setErrorMessage(t("email_taken"));
-        }
-        if (errorCode === "auth/invalid-email") {
-          setLoading(false);
-          setErrorMessage(t("enter_valid_email"));
-        }
-        if (errorCode === "auth/weak-password") {
-          setLoading(false);
-          setErrorMessage(t("password_6characters"));
-        }
-        if (errorCode === "auth/too-many-requests") {
-          setLoading(false);
-          setErrorMessage(t("too_many_requests"));
-        }
+        setErrorMessage(t("email_taken"));
+      }
+      if (errorCode === "auth/invalid-email") {
+        setLoading(false);
+        setErrorMessage(t("enter_valid_email"));
+      }
+      if (errorCode === "auth/weak-password") {
+        setLoading(false);
+        setErrorMessage(t("password_6characters"));
+      }
+      if (errorCode === "auth/too-many-requests") {
+        setLoading(false);
+        setErrorMessage(t("too_many_requests"));
       }
     }
   };
@@ -266,22 +271,42 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
   };
 
   const handleSubmitEditDetails = async (data) => {
+    if (
+      userIdInFirebase !== user.userId ||
+      user.isAdmin === false ||
+      user.isSuperAdmin === false ||
+      user.isModerator === false
+    ) {
+      throw new Error("user not authorized to handleSubmitEditDetails");
+    }
+
     await updateDoc(doc(db, "users", user.userId), {
       handle: data.handle ? data.handle : user.handle,
       description: data.description ? data.description : null,
       zipcode: data.zipcode ? data.zipcode : null,
       age: data.birthyear ? data.birthyear : null,
       sex: data.gender ? data.gender : null,
-    }).then(() => {
-      dispatch(getUserData(user.userId)).then(() => {
-        setAuthOpen(false);
-        setAuthEditOpen(false);
+    })
+      .then(() => {
+        dispatch(getUserData(user.userId)).then(() => {
+          setAuthOpen(false);
+          setAuthEditOpen(false);
+        });
+      })
+      .catch((error) => {
+        throw new Error(error, "error in handleSubmitEditDetails");
       });
-    });
   };
 
   async function handleImageUpload(event) {
-    if (!user?.userId) return;
+    if (
+      userIdInFirebase !== user.userId ||
+      user.isAdmin === false ||
+      user.isSuperAdmin === false ||
+      user.isModerator === false
+    ) {
+      throw new Error("user not authorized to handleImageUpload");
+    }
     const imageFile = event.target.files[0];
     console.log("originalFile instanceof Blob", imageFile instanceof Blob); // true
     console.log(`originalFile size ${imageFile.size / 1024 / 1024} MB`);
@@ -337,6 +362,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
         zIndex={9999999999}
       >
         <AuthComponent
+          errorMessage={errorMessage}
           user={user}
           loginLoading={loading}
           handleSubmitLogin={(loginData) => handleSubmitLogin(loginData)}

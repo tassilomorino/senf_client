@@ -54,9 +54,9 @@ const Container = styled.div`
   background-color: white;
   position: fixed;
   @media (min-width: 768px) {
-    width: 800px;
-    height: calc(100% - 200px);
-    min-height: 700px;
+    max-width: 55vw;
+    height: 80vh;
+
     margin-left: 50vw;
     margin-top: 50vh;
     transform: translateX(-50%) translateY(-50%);
@@ -325,10 +325,23 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsOverview }) => {
   const [visibleCards2, setVisibleCards2] = useState(false);
 
   const [visiblePartners, setVisiblePartners] = useState(false);
-
+  const scrollingDown = useRef(false);
+  const previousScrollValue = useRef(0);
   // The scroll listener
   const handleScroll = useCallback(() => {
     const el = document.getElementById("InfoPage");
+
+    const currentScrollValue = el?.scrollTop;
+
+    if (currentScrollValue > previousScrollValue.current) {
+      // Scrolling down
+
+      scrollingDown.current = true;
+    } else {
+      // Scrolling up
+      scrollingDown.current = false;
+    }
+    previousScrollValue.current = currentScrollValue;
 
     const value = el?.scrollTop / 10;
     setScrollValue(value);
@@ -560,20 +573,26 @@ const InlineInformationPage = ({ setOrder, setOpenOrganizationsOverview }) => {
   return (
     <Fragment>
       <InfoPageDialog isOpen={openInfoPage} setIsOpen={handleClose}>
+        <Box
+          display={
+            !isMobileCustom
+              ? "flex"
+              : !scrollingDown.current
+              ? "absolute"
+              : "none"
+          }
+          position="fixed"
+          zIndex={999}
+          margin={
+            document.body.clientWidth > 768 ? "10vh 0px 0px 18vw" : "10px"
+          }
+        >
+          <RoundedButton
+            icon={<Plus transform="rotate(45deg)" />}
+            onClick={handleClose}
+          />
+        </Box>
         <Container id="InfoPage">
-          {isMobileCustom && (
-            <Box
-              position="absolute"
-              margin={document.body.clientWidth > 768 ? "40px" : "10px"}
-              zIndex={999}
-            >
-              <RoundedButton
-                icon={<Plus transform="rotate(45deg)" />}
-                onClick={handleClose}
-              />
-            </Box>
-          )}
-
           <SelectLanguageWrapper>
             <LanguageSelect direction="downLeft" />
           </SelectLanguageWrapper>

@@ -1,6 +1,7 @@
 /** @format */
 
 import { MouseEventHandler } from "react";
+
 export interface AuthEmailProps {
   text?: string;
   variant?: "register" | "login";
@@ -10,4 +11,6 @@ export interface AuthEmailProps {
   formikLoginStore?: Function;
   handleSubmitRegister?: Function;
   handleSubmitLogin?: Function;
+  errorMessage?: string;
+  setPage?: React.Dispatch<React.SetStateAction<string>>;
 }

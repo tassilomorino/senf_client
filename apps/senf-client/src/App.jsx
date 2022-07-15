@@ -4,7 +4,6 @@ import React, { useState, useEffect, useLayoutEffect, Suspense } from "react";
 import { Helmet } from "react-helmet";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
-
 import { Provider } from "react-redux";
 import { isTablet } from "react-device-detect";
 import Cookies from "universal-cookie";
@@ -131,6 +130,14 @@ const App = () => {
         /* disable google crawling for senf-client-test.netlify.app */
         <Helmet>
           <meta name="robots" content="noindex" />
+        </Helmet>
+      )}
+      {import.meta.env.VITE_GOOGLE_SEARCH_CONSOLE && (
+        <Helmet>
+          <meta
+            name="google-site-verification"
+            content="u0WUtD1BF5Kr__nOsq-jAnnCgXixSJO-0mpsW2W3uGg"
+          />
         </Helmet>
       )}
 

@@ -1,10 +1,6 @@
 /** @format */
 
 import moment from "moment";
-import { clearErrors } from "./errorsActions";
-import { loadProjectRoomData } from "./projectActions";
-import store from "../store";
-
 import {
   collection,
   where,
@@ -17,6 +13,10 @@ import {
   updateDoc,
   deleteDoc,
 } from "firebase/firestore";
+import { clearErrors } from "./errorsActions";
+import { loadProjectRoomData } from "./projectActions";
+import store from "../store";
+
 import { db } from "../../firebase";
 import {
   SET_SCREAMS,
@@ -64,7 +64,7 @@ export const getScreams = (mapViewport) => async (dispatch) => {
 
     const commentsQuerySnapshot = await getDocs(commentsRef);
     commentsQuerySnapshot.forEach((doc) => {
-      //add comment for each scream
+      // add comment for each scream
       const screamIndex = screams.findIndex(
         (scream) => scream.screamId === doc.data().screamId
       );
@@ -130,7 +130,7 @@ export const openScreamFunc = (screamId, reloadScream) => async (dispatch) => {
       };
 
       const projectroomPath = store.getState().UI.openProjectRoom
-        ? "/projectRooms/" + store.getState().data.project.projectRoomId
+        ? `/projectRooms/${store.getState().data.project.projectRoomId}`
         : "";
 
       const newPath = `${projectroomPath}/${screamId}`;
@@ -145,16 +145,15 @@ export const openScreamFunc = (screamId, reloadScream) => async (dispatch) => {
       throw new Error("Idea not found");
     }
   } catch (error) {
-    console.error(error, "error in openScreamFunc");
-
     window.history.pushState(null, null, "/");
+    throw new Error(error, "error in openScreamFunc");
   }
 };
 
 export const closeScream = () => (dispatch) => {
   const projectroomPath =
     store.getState().UI.openProjectRoom && store.getState().data.project
-      ? "/projectRooms/" + store.getState().data.project.projectRoomId
+      ? `/projectRooms/${store.getState().data.project.projectRoomId}`
       : "/";
 
   dispatch({ type: CLOSE_SCREAM });
@@ -246,7 +245,7 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
         dispatch(openScreamFunc(resScream.screamId));
       }
     } catch (error) {
-      console.error(error, "error in postScreamFunc");
+      throw new Error(error, "error in postScreamFunc");
     }
   }
 };
@@ -255,7 +254,7 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
 export const editScreamFunc = (editScream) => async (dispatch) => {
   try {
     dispatch({ type: LOADING_UI });
-    const screamId = editScream.screamId;
+    const { screamId } = editScream;
 
     if (!editScream.notes) {
       delete editScream.notes;
@@ -291,26 +290,24 @@ export const deleteScream =
       //   console.log("Unauthorized", doc.data().handle, user.handle);
       //   // return res.status(403).json({ error: "Unauthorized" });
       // }
-      else {
-        if (scream.data().userId === userId || isAdmin || isModerator) {
-          await deleteDoc(docRef);
+      else if (scream.data().userId === userId || isAdmin || isModerator) {
+        await deleteDoc(docRef);
 
-          dispatch({
-            type: DELETE_SCREAM,
-            payload: screamId,
-          });
-          dispatch({ type: CLOSE_SCREAM });
-          dispatch({ type: SET_SCREAM, payload: {} });
+        dispatch({
+          type: DELETE_SCREAM,
+          payload: screamId,
+        });
+        dispatch({ type: CLOSE_SCREAM });
+        dispatch({ type: SET_SCREAM, payload: {} });
 
-          window.history.pushState(null, null, returnToPath);
-        } else {
-          console.error(
-            `cant delete this users${doc.data().userHandle} scream`
-          );
-        }
+        window.history.pushState(null, null, returnToPath);
+      } else {
+        throw new Error(
+          `cant delete this users${doc.data().userHandle} scream`
+        );
       }
     } catch (error) {
-      console.error(error, "error in deleteScreamFunc");
+      throw new Error(error, "error in deleteScreamFunc");
     }
   };
 
@@ -327,6 +324,6 @@ export const getUserEmail = (userId) => async (dispatch) => {
       throw new Error("User email not found");
     }
   } catch (error) {
-    console.error(error, "error in getUserEmailFunc");
+    throw new Error(error, "error in getUserEmailFunc");
   }
 };

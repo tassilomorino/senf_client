@@ -1,5 +1,5 @@
 /** @format */
-
+import React from "react";
 import Typography from "./Typography";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export

@@ -65,17 +65,18 @@ const List: FC<ListProps> = ({
     }
   }, [loading, dropdown, dataLength]);
 
-  let itemsPerPage = 1;
+  const itemsPerPage = 1;
   const [hasMoreItems, sethasMoreItems] = useState(true);
   const [listItems, setListItems] = useState(itemsPerPage);
 
   const showItems = (dataArray, CardType) => {
-    var items = [];
+    const items = [];
     if (dataArray?.length !== 0) {
-      for (var i = 0; i < listItems; i++) {
+      for (let i = 0; i < listItems; i++) {
         items.push(
           dataArray[i]?.title && (
             <Box
+              key={dataArray[i]?.title}
               margin="16px 16px 0px 16px"
               display={listType === "grid" ? "contents" : "flex"}
               flexDirection={listType === "grid" ? "row" : "column"}

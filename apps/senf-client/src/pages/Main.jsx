@@ -273,7 +273,7 @@ const Main = () => {
           dispatch(
             setMapViewport({
               latitude: isMobileCustom && openScream ? lat - 0.0008 : lat,
-              longitude: long,
+              longitude: isMobileCustom ? long : long - 0.001,
               zoom: 16.5,
               duration: 2700,
               pitch: 30,
@@ -509,8 +509,6 @@ const Main = () => {
     console.log(organizationTypes);
     dispatch(handleOrganizationTypesSelectorRedux(organizationTypes));
   };
-
-  console.log(openOrganizationsOverview);
 
   const handleOpenMyAccount = () => {
     if (user?.authenticated) {

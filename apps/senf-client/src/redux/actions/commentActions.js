@@ -1,5 +1,14 @@
 /** @format */
 
+import moment from "moment";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 
 import { clearErrors } from "./errorsActions";
@@ -13,17 +22,8 @@ import {
   STOP_LOADING_UI,
   SUBMIT_COMMENT,
 } from "../types";
-import moment from "moment";
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  updateDoc,
-} from "firebase/firestore";
 
-//get the data for one comment
+// get the data for one comment
 export const getComment = (commentId) => async (dispatch) => {
   const commentRef = doc(db, `comments/${commentId}`);
   const commentDocSnapshot = await getDoc(commentRef);
@@ -47,64 +47,67 @@ export const submitComment =
     const screamDocRef = doc(db, `screams/${screamId}`);
     const screamDocSnapshot = await getDoc(screamDocRef);
     if (!screamDocSnapshot.exists()) {
-      console.log("scream not found");
-    } else {
-      const ageCapture =
-        user.age !== "" ? moment().diff(moment(user.age, "YYYY"), "years") : "";
-      const newComment = {
-        body: commentData.body,
-        createdAt: new Date().toISOString(),
-        screamId: screamId,
-        userHandle: user.handle,
-        userId: user.userId,
-        sex: user.sex,
-        age: ageCapture,
-        Thema: screamDocSnapshot.data().Thema,
-      };
-
-      //The List compoonent needs a title, not a body – rewrite db and convert body to title
-      const newCommentConverted = newComment;
-      newCommentConverted.title = newComment.body;
-
-      dispatch({
-        type: SUBMIT_COMMENT,
-        payload: newCommentConverted,
-      });
-      await addDoc(collection(db, "comments"), newComment);
-      await updateDoc(screamDocRef, {
-        commentCount: screamDocSnapshot.data().commentCount + 1,
-      });
+      throw new Error("scream not found in submitComment");
     }
+    if (!user.userId) {
+      throw new Error("User not authenticated in submitComment");
+    }
+
+    const ageCapture =
+      user.age !== "" ? moment().diff(moment(user.age, "YYYY"), "years") : "";
+    const newComment = {
+      body: commentData.body,
+      createdAt: new Date().toISOString(),
+      screamId,
+      userHandle: user.handle,
+      userId: user.userId,
+      sex: user.sex,
+      age: ageCapture,
+      Thema: screamDocSnapshot.data().Thema,
+    };
+
+    // The List compoonent needs a title, not a body – rewrite db and convert body to title
+    const newCommentConverted = newComment;
+    newCommentConverted.title = newComment.body;
+
+    dispatch({
+      type: SUBMIT_COMMENT,
+      payload: newCommentConverted,
+    });
+    await addDoc(collection(db, "comments"), newComment);
+    await updateDoc(screamDocRef, {
+      commentCount: screamDocSnapshot.data().commentCount + 1,
+    });
   };
 
-//delete your comment
+// delete your comment
 export const deleteComment =
   (commentId, user, screamId, isAdmin, isModerator) => async (dispatch) => {
     const commentRef = doc(db, `comments/${commentId}`);
     const commentDocSnapshot = await getDoc(commentRef);
     if (!commentDocSnapshot.exists()) {
-      console.log("Comment not found");
+      throw new Error("Comment not found in deleteComment");
     } else {
       const screamDocRef = doc(db, `screams/${screamId}`);
       const screamDocSnapshot = await getDoc(screamDocRef);
       if (!screamDocSnapshot.exists()) {
-        console.log("Scream not found");
-      } else {
-        if (
-          user.userId === commentDocSnapshot.data().userId ||
-          isAdmin ||
-          isModerator
-        ) {
-          dispatch({
-            type: DELETE_COMMENT,
-            payload: commentId,
-          });
+        throw new Error("Scream not found in deleteComment");
+      } else if (
+        user.userId === commentDocSnapshot.data().userId ||
+        isAdmin ||
+        isModerator
+      ) {
+        dispatch({
+          type: DELETE_COMMENT,
+          payload: commentId,
+        });
 
-          await deleteDoc(commentRef);
-          await updateDoc(screamDocRef, {
-            commentCount: screamDocSnapshot.data().commentCount - 1,
-          });
-        }
+        await deleteDoc(commentRef);
+        await updateDoc(screamDocRef, {
+          commentCount: screamDocSnapshot.data().commentCount - 1,
+        });
+      } else {
+        throw new Error("User not authorized to delete comment");
       }
     }
   };
