@@ -1,38 +1,32 @@
 /** @format */
 
-import React, { useState, Fragment, memo, useRef } from "react";
+import React, { useState, Fragment, memo, useRef, useEffect } from "react";
 import { useHistory } from "react-router";
-import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { useTranslation } from "react-i18next";
 import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
-// MUI Stuff
 import Dialog from "@material-ui/core/Dialog";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Slide from "@material-ui/core/Slide";
+import { useDispatch, useSelector } from "react-redux";
+import { withRouter } from "react-router-dom";
+import styled, { keyframes } from "styled-components";
+import { Plus, Box, RoundedButton } from "senf-atomic-design-system";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
+// MUI Stuff
 
-//HANDLER
-//ICONS
-
-import AddIcon from "../../../images/icons/plus_white.png";
+// HANDLER
+// ICONS
 
 // REDUX STUFF
-import { useDispatch, useSelector } from "react-redux";
 import { postScream } from "../../../redux/actions/screamActions";
 import { clearErrors } from "../../../redux/actions/errorsActions";
 
-import { withRouter } from "react-router-dom";
-
-//Components
+// Components
 import PostScreamFormContent from "./PostScreamFormContent";
 import PostScreamMap from "./PostScreamMap";
 import PostScreamSelectContainter from "./PostScreamSelectContainter";
-import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
-import styled, { keyframes } from "styled-components";
 import Weblink from "../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
 import Contact from "../../molecules/Modals/Post_Edit_ModalComponents/Contact";
 import InlineDatePickerModal from "../../molecules/Modals/InlineDatePickerModal";
-import { useEffect } from "react";
-import { Plus, Box, RoundedButton } from "senf-atomic-design-system";
 
 const styles = {
   root: {
@@ -164,7 +158,7 @@ const PostScream = ({
         ({ projectRoomId, zoom, centerLat, centerLong, geoData, calendar }) => {
           if (projectSelected === projectRoomId) {
             const viewport = {
-              zoom: zoom,
+              zoom,
               latitude: centerLat,
               longitude: centerLong,
               transitionDuration: 1000,
@@ -245,9 +239,9 @@ const PostScream = ({
 
   const handleChangeCalendar = (selectedDays) => {
     const selectedUnix = [];
-    var i;
+    let i;
     for (i = 0; i < selectedDays.length; i++) {
-      selectedUnix[i] = selectedDays[i]["unix"];
+      selectedUnix[i] = selectedDays[i].unix;
     }
 
     setSelectedDays(selectedDays);
@@ -291,8 +285,8 @@ const PostScream = ({
   };
 
   const _onMarkerDragEnd = (newViewport) => {
-    //setViewport(newViewport);
-    //using ref is not causing constant rerendering on drag
+    // setViewport(newViewport);
+    // using ref is not causing constant rerendering on drag
     postScreamMapViewportRef.current = newViewport;
 
     setTimeout(() => {
@@ -328,7 +322,7 @@ const PostScream = ({
             : "";
 
         setNeighborhood(match.features[0].context[1].text);
-        setAddress(match.features[0].text + " " + houseNumber);
+        setAddress(`${match.features[0].text} ${houseNumber}`);
         setFulladdress(match.features[0].place_name);
       });
 
@@ -483,6 +477,7 @@ const PostScream = ({
           contact={contact}
           setContactTitle={setContactTitle}
           setContact={setContact}
+          contactOpen={contactOpen}
           setContactOpen={setContactOpen}
         />
       )}

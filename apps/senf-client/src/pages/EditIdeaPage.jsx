@@ -4,10 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router";
-import withStyles from "@material-ui/core/styles/withStyles";
 import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
-// MUI Stuff
-import Button from "@material-ui/core/Button";
 
 import {
   EditIdeaPage as EditIdeaPageComponent,
@@ -18,17 +15,6 @@ import { editScreamFunc, getUserEmail } from "../redux/actions/screamActions";
 import Weblink from "../components/molecules/Modals/Post_Edit_ModalComponents/Weblink";
 import Contact from "../components/molecules/Modals/Post_Edit_ModalComponents/Contact";
 import InlineDatePickerModal from "../components/molecules/Modals/InlineDatePickerModal";
-
-import MainModal from "../components/atoms/Layout/MainModal";
-
-import EditModalMainFields from "../components/molecules/Modals/Post_Edit_ModalComponents/EditModalMainFields";
-import Tabs from "../components/atoms/Tabs/Tabs";
-import {
-  EditScreamTabData,
-  EditScreamTabDataAsAdmin,
-} from "../data/EditScreamTabData";
-import AdminEditModalMainFields from "../components/molecules/Modals/Post_Edit_ModalComponents/AdminEditModalMainFields";
-import { StyledH3, StyledText } from "../styles/GlobalStyle";
 
 const EditIdeaPage = ({
   isAdmin,
@@ -253,6 +239,7 @@ const EditIdeaPage = ({
           contact={contact}
           setContactTitle={setContactTitle}
           setContact={setContact}
+          contactOpen={contactOpen}
           setContactOpen={setContactOpen}
         />
       )}

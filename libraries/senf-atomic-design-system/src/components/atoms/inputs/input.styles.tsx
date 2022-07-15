@@ -49,10 +49,25 @@ export const InputField = styled.div<{ focus: boolean }>`
   padding: 0 0.6rem 0 0.9rem;
   min-height: 50px;
   color: rgb(51, 51, 51) !important;
-  background-color: ${({ theme }) => theme.colors.white.white50tra};
   border-radius: ${({ theme }) => theme.radii[1]}px;
   -webkit-border-radius: ${({ theme }) => theme.radii[1]}px;
   -moz-border-radius: ${({ theme }) => theme.radii[1]}px;
+
+  /* background-color: ${({ theme }) => theme.colors.white.white50tra};
+
+  background-color: ${({ theme }) => theme.colors.greyscale.greyscale5tra};
+  border: 2px solid ${({ theme }) => theme.colors.greyscale.greyscale5tra}; */
+
+  background: linear-gradient(
+      0deg,
+      rgba(134, 124, 99, 0.01),
+      rgba(134, 124, 99, 0.01)
+    ),
+    #ffffff;
+  border: 2px solid #ffffff;
+  /* Big/White on Light BG */
+  box-shadow: 0px -5px 10px rgba(255, 255, 255, 0.2),
+    0px 10px 20px -6px rgba(134, 124, 99, 0.06);
 
   ${({ focus }) =>
     focus &&

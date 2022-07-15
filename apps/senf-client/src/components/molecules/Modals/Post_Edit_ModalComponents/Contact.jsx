@@ -1,96 +1,92 @@
 /** @format */
 
 import React from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
-
-// MUI Stuff
-import Button from "@material-ui/core/Button";
 
 // REDUX Stuff
-
-import { TextField } from "@material-ui/core";
-import MainModal from "../../../atoms/Layout/MainModal";
 import { useTranslation } from "react-i18next";
-
-const styles = {
-  paper: {
-    borderRadius: "20px",
-
-    // width: "95%",
-    margin: "2.5%",
-    maxWidth: "400px",
-  },
-
-  button: {
-    fontSize: 20,
-    textAlign: "center",
-    textTransform: "none",
-    width: "100%",
-    height: "70px",
-  },
-};
+import {
+  Typography,
+  Box,
+  Input,
+  Button,
+  Modal,
+} from "senf-atomic-design-system";
 
 const Contact = ({
-  classes,
   contact,
   contactTitle,
   setContact,
   setContactTitle,
+  contactOpen,
   setContactOpen,
   handleCloseContact,
   handleSaveContact,
 }) => {
   const { t } = useTranslation();
   return (
-    <MainModal handleButtonClick={() => setContactOpen(false)} zIndex={999999}>
-      <h3 className="modal_title">Kontaktdaten öffentlich zeigen</h3>
-      <div className="textFields">
-        <TextField
-          id="contactTitle"
-          name="contactTitle"
-          type="text"
-          label="Kontakt-Titel"
-          placeholder="Mach mit, Kontakt o.ä."
-          margin="normal"
-          variant="outlined"
-          className="textField"
-          value={contactTitle}
-          onChange={(event) => setContactTitle(event.target.value)}
-          style={{ marginTop: "5px", marginBottom: "5px" }}
-        ></TextField>
-        <TextField
-          id="contact"
-          name="contact"
-          type="text"
-          label={t("contact-address")}
-          placeholder="max@mail.de"
-          margin="normal"
-          variant="outlined"
-          className="textField"
-          value={contact}
-          onChange={(event) => setContact(event.target.value)}
-          style={{ marginTop: "5px", marginBottom: "5px" }}
-        ></TextField>
-      </div>
+    <Modal
+      zIndex={9999999999}
+      openModal={contactOpen}
+      setOpenModal={setContactOpen}
+      backgroundColor="#f9f1d7"
+    >
+      <Box margin="10px" flexDirection="column">
+        <Typography variant="h2" textAlign="center">
+          Kontaktdaten öffentlich zeigen
+        </Typography>
 
-      <div className="buttons">
-        <Button className={classes.button} onClick={handleCloseContact}>
-          {contact !== null && contactTitle !== null ? "Löschen" : "Abbrechen"}
-        </Button>
-        <Button
-          className={classes.button}
-          onClick={handleSaveContact}
-          style={
-            contact !== null && contactTitle !== null
-              ? {}
-              : { pointerEvents: "none", opacity: 0.6 }
-          }
+        <Box flexDirection="column" gap="20px" margin="20px 0px 100px 0px">
+          <Input
+            key="contactTitle"
+            id="contactTitle"
+            name="contactTitle"
+            type="textarea"
+            placeholder={t("add_contactTitle")}
+            label={t("contactTitle")}
+            rows={1}
+            onChange={(event) => setContactTitle(event.target.value)}
+            value={contactTitle}
+          />
+          <Input
+            key="contact"
+            id="contact"
+            name="contact"
+            type="textarea"
+            placeholder={t("add_contact")}
+            label={t("contact-address")}
+            rows={1}
+            onChange={(event) => setContact(event.target.value)}
+            value={contact}
+          />
+        </Box>
+        <Box
+          position="absolute"
+          bottom="0px"
+          width="calc(100% - 20px)"
+          gap="8px"
+          margin="10px"
         >
-          Speichern
-        </Button>
-      </div>
-    </MainModal>
+          <Button
+            variant="white"
+            fillWidth="max"
+            onClick={handleCloseContact}
+            text={
+              contact !== null && contactTitle !== null
+                ? t("delete")
+                : t("cancel")
+            }
+          />
+          <Button
+            variant="primary"
+            fillWidth="max"
+            onClick={handleSaveContact}
+            disabled={contact === null || contactTitle === null}
+            text={t("save")}
+          />
+        </Box>
+      </Box>
+    </Modal>
   );
 };
 
-export default withStyles(styles)(Contact);
+export default Contact;
