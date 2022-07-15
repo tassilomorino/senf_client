@@ -16,7 +16,7 @@ import { ButtonProps } from "./Button.types";
 
 const StyledButton = styled.button<ButtonProps>`
   position: relative;
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled === true ? "not-allowed" : "pointer")};
   box-sizing: border-box;
   width: auto; /* 150px */
   display: flex;
