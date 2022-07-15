@@ -9,7 +9,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { Input } from "senf-atomic-design-system";
+import { Box, Input } from "senf-atomic-design-system";
 import { db } from "../../../../firebase";
 
 import { useOnClickOutside } from "../../../../hooks/useOnClickOutside";
@@ -80,8 +80,6 @@ const CreateProjectPage1 = ({
   });
 
   useEffect(() => {
-    formik.setFieldTouched("title", true);
-
     async function fetchData() {
       const ref = doc(
         db,
@@ -172,123 +170,131 @@ const CreateProjectPage1 = ({
             {pagesData[index].subTitle}
           </StyledH3>
 
-          <Input
-            key="title"
-            id="title"
-            name="title"
-            type="textarea"
-            placeholder={t("add_description")}
-            label={t("projectRoom_title")}
-            rows={1}
-            onChange={formik?.handleChange}
-            onBlur={formik?.handleBlur}
-            value={formik?.values.title}
-            error={formik?.touched.title && Boolean(formik?.errors.title)}
-            note={formik?.touched.title && formik?.errors.title}
-          />
+          <Box flexDirection="column" gap="20px">
+            <Input
+              key="title"
+              id="title"
+              name="title"
+              type="textarea"
+              placeholder={t("add_description")}
+              label={t("projectRoom_title")}
+              rows={1}
+              onChange={formik?.handleChange}
+              onBlur={formik?.handleBlur}
+              value={formik?.values.title}
+              error={formik?.touched.title && Boolean(formik?.errors.title)}
+              note={formik?.touched.title && formik?.errors.title}
+            />
 
-          <TextField
-            id="outlined-name"
-            name="brief"
-            type="brief"
-            label={t("Kurzbeschreibung")}
-            margin="normal"
-            multiline
-            minRows="4"
-            maxRows="6"
-            variant="outlined"
-            style={{
-              backgroundColor: "white",
-              borderRadius: "5px",
-              width: "100%",
-            }}
-            value={formik.values.brief}
-            onChange={formik.handleChange}
-            error={outsideClick && Boolean(formik.errors.brief)}
-            helperText={outsideClick && formik.errors.brief}
-          />
-          <TextField
-            id="outlined-name"
-            name="description_about"
-            type="description_about"
-            label={t("Es geht um...")}
-            margin="normal"
-            multiline
-            minRows="4"
-            maxRows="6"
-            variant="outlined"
-            style={{
-              backgroundColor: "white",
-              borderRadius: "5px",
-              width: "100%",
-            }}
-            value={formik.values.description_about}
-            onChange={formik.handleChange}
-            error={outsideClick && Boolean(formik.errors.description_about)}
-            helperText={outsideClick && formik.errors.description_about}
-          />
-          <TextField
-            id="outlined-name"
-            name="description_procedure"
-            type="description_procedure"
-            label={t("Mit den Ideen werden wir...")}
-            margin="normal"
-            multiline
-            minRows="4"
-            maxRows="6"
-            variant="outlined"
-            style={{
-              backgroundColor: "white",
-              borderRadius: "5px",
-              width: "100%",
-            }}
-            value={formik.values.description_procedure}
-            onChange={formik.handleChange}
-            error={outsideClick && Boolean(formik.errors.description_procedure)}
-            helperText={outsideClick && formik.errors.description_procedure}
-          />
+            <Input
+              key="brief"
+              id="brief"
+              name="brief"
+              type="textarea"
+              placeholder={t("add_brief")}
+              label={t("brief")}
+              rows={1}
+              onChange={formik?.handleChange}
+              onBlur={formik?.handleBlur}
+              value={formik?.values.brief}
+              error={formik?.touched.brief && Boolean(formik?.errors.brief)}
+              note={formik?.touched.brief && formik?.errors.brief}
+              // minRows="4"
+              // maxRows="6"
+            />
 
-          <TextField
-            id="outlined-name"
-            name="description_motivation"
-            type="description_motivation"
-            label={t("Unsere Motivation ist...")}
-            margin="normal"
-            multiline
-            minRows="4"
-            maxRows="6"
-            variant="outlined"
-            style={{
-              backgroundColor: "white",
-              borderRadius: "5px",
-              width: "100%",
-            }}
-            value={formik.values.description_motivation}
-            onChange={formik.handleChange}
-            error={
-              outsideClick && Boolean(formik.errors.description_motivation)
-            }
-            helperText={outsideClick && formik.errors.description_motivation}
-          />
+            <Input
+              key="description_about"
+              id="description_about"
+              name="description_about"
+              type="textarea"
+              placeholder={t("add_description_about")}
+              label={t("description_about")}
+              rows={1}
+              onChange={formik?.handleChange}
+              onBlur={formik?.handleBlur}
+              value={formik?.values.description_about}
+              error={
+                formik?.touched.description_about &&
+                Boolean(formik?.errors.description_about)
+              }
+              note={
+                formik?.touched.description_about &&
+                formik?.errors.description_about
+              }
+              // minRows="4"
+              // maxRows="6"
+            />
 
-          <TextField
-            id="outlined-name"
-            name="description_learnmore"
-            type="description_learnmore"
-            label={t("Wenn du mehr erfahren willst...")}
-            margin="normal"
-            multiline
-            minRows="4"
-            maxRows="6"
-            variant="outlined"
-            style={{
-              backgroundColor: "white",
-              borderRadius: "5px",
-              width: "100%",
-            }}
-            value={formik.values.description_learnmore}
-            onChange={formik.handleChange}
-          />
+            <Input
+              key="description_procedure"
+              id="description_procedure"
+              name="description_procedure"
+              type="textarea"
+              placeholder={t("add_description_procedure")}
+              label={t("description_procedure")}
+              rows={1}
+              onChange={formik?.handleChange}
+              onBlur={formik?.handleBlur}
+              value={formik?.values.description_procedure}
+              error={
+                formik?.touched.description_procedure &&
+                Boolean(formik?.errors.description_procedure)
+              }
+              note={
+                formik?.touched.description_procedure &&
+                formik?.errors.description_procedure
+              }
+              // minRows="4"
+              // maxRows="6"
+            />
+
+            <Input
+              key="description_motivation"
+              id="description_motivation"
+              name="description_motivation"
+              type="textarea"
+              placeholder={t("add_description_motivation")}
+              label={t("description_motivation")}
+              rows={1}
+              onChange={formik?.handleChange}
+              onBlur={formik?.handleBlur}
+              value={formik?.values.description_motivation}
+              error={
+                formik?.touched.description_motivation &&
+                Boolean(formik?.errors.description_motivation)
+              }
+              note={
+                formik?.touched.description_motivation &&
+                formik?.errors.description_motivation
+              }
+              // minRows="4"
+              // maxRows="6"
+            />
+
+            <Input
+              key="description_learnmore"
+              id="description_learnmore"
+              name="description_learnmore"
+              type="textarea"
+              placeholder={t("add_description_learnmore")}
+              label={t("description_learnmore")}
+              rows={1}
+              onChange={formik?.handleChange}
+              onBlur={formik?.handleBlur}
+              value={formik?.values.description_learnmore}
+              error={
+                formik?.touched.description_learnmore &&
+                Boolean(formik?.errors.description_learnmore)
+              }
+              note={
+                formik?.touched.description_learnmore &&
+                formik?.errors.description_learnmore
+              }
+              // minRows="4"
+              // maxRows="6"
+            />
+          </Box>
         </ComponentInnerWrapper>
       </ComponentWrapper>
 

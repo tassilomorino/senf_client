@@ -1,7 +1,8 @@
 import React, { memo, useEffect, useRef } from "react";
 import styled from "styled-components";
 import lottie from "lottie-web";
-import wave from "../../../assets/lottieFiles/senf-wave-01.json";
+import waveBeige from "../../../assets/lottieFiles/senf-wave-beige.json";
+import waveSenf from "../../../assets/lottieFiles/senf-wave-senf.json";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -21,6 +22,7 @@ const Block = styled.div`
   position: relative;
   width: 150%;
   height: 1570px;
+  margin-top: -10px;
   opacity: 1;
   background-color: ${({ color, theme }) =>
     color || theme.colors.beige.beige20};
@@ -34,23 +36,14 @@ const Wave = ({ position, top, color }) => {
       renderer: "svg",
       loop: true,
       autoplay: true,
-      animationData: wave,
+      animationData: color === "#fed957" ? waveSenf : waveBeige,
       color: "green",
     });
   }, []);
 
   return (
     <Wrapper position={position} top={top}>
-      <div
-        style={{
-          width: "500px",
-          height: "200px",
-          position: "absolute",
-          top: "-60px",
-          zIndex: 99999,
-        }}
-        ref={container}
-      ></div>
+      <div ref={container}></div>
       <Block id="wave" color={color} />
     </Wrapper>
   );

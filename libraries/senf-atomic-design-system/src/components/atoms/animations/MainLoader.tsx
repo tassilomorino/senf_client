@@ -1,10 +1,12 @@
 /** @format */
 
-import React, { FC, useRef, useEffect } from "react";
+import React, { FC, useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import lottie from "lottie-web";
 import { MainLoaderProps } from "./MainLoader.types";
-import mainLoader from "../../../assets/lottieFiles/senf-Loader-v01.json";
+import mainLoader from "../../../assets/lottieFiles/senf-Loader-v012.json";
+import Typography from "../typography/Typography";
+import Box from "../box/Box";
 
 const StyledLoader = styled.div`
   width: 100%;
@@ -15,22 +17,65 @@ const StyledLoader = styled.div`
 `;
 const MainLoader: FC<MainLoaderProps> = () => {
   const container = useRef(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    lottie.loadAnimation({
-      container: container.current,
-      renderer: "svg",
-      loop: false,
-      autoplay: true,
-      animationData: mainLoader,
+    setTimeout(() => {
+      setLoading(false);
+      lottie.loadAnimation({
+        container: container.current,
+        renderer: "svg",
+        loop: false,
+        autoplay: true,
+        animationData: mainLoader,
 
-      rendererSettings: {
-        preserveAspectRatio: "xMidYMid slice",
-      },
-    });
+        rendererSettings: {
+          preserveAspectRatio: "xMidYMid slice",
+        },
+      });
+    }, 2000);
   }, []);
 
-  return <StyledLoader ref={container} />;
+  return (
+    <React.Fragment>
+      <div
+        style={{
+          position: "fixed",
+          height: "100%",
+          width: "100%",
+          backgroundColor: loading ? "#fed957" : "transparent",
+          justifyContent: "center",
+          alignItems: "center",
+          display: "flex",
+        }}
+      >
+        {loading && (
+          <Box gap="10px" flexDirection="column" top="-100px">
+            <Typography
+              variant="h1"
+              color="white"
+              fontWeight="900"
+              fontSize="70px"
+              textAlign="center"
+            >
+              Senf
+            </Typography>
+            <Typography
+              variant="h2"
+              color="white"
+              fontWeight="900"
+              fontSize="30px"
+              textAlign="center"
+            >
+              599 Ideen für Köln
+            </Typography>
+          </Box>
+        )}
+      </div>
+
+      <StyledLoader ref={container} />
+    </React.Fragment>
+  );
 };
 
 export default MainLoader;

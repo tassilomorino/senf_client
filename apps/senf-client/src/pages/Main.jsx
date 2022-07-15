@@ -620,8 +620,6 @@ const Main = () => {
         </Modal>
       )}
 
-      {/* {loading && <MainLoader />} */}
-
       {(loadingIdea || loadingProjectRoom) && <Loader withoutBg={true} />}
 
       {openInfoPage && (
