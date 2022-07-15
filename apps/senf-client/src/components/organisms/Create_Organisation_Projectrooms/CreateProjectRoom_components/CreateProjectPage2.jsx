@@ -1,30 +1,21 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-
-//firebase
-
-import { db } from "../../../../firebase";
-
-//Components
-import Weblink from "../../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
-import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
-
-//images
-import {
-  ComponentInnerWrapper,
-  ComponentWrapper,
-} from "../styles/sharedStyles";
-import Contact from "../../../molecules/Modals/Post_Edit_ModalComponents/Contact";
-import Navigation from "../Components/Navigation";
-import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 import { TextField } from "@material-ui/core";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { db } from "../../../../firebase";
+
+// images
+import {
+  ComponentInnerWrapper,
+  ComponentWrapper,
+} from "../styles/sharedStyles";
+import Navigation from "../Components/Navigation";
+import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 
 const ButttonsWrapper = styled.div`
   display: flex;
@@ -111,7 +102,7 @@ const CreateProjectPage2 = ({
       typeof Storage !== "undefined" &&
       localStorage.getItem("createProjectRoomId")
     ) {
-      //UPDATING AN EXISTING PROJECTROOM
+      // UPDATING AN EXISTING PROJECTROOM
       const updateProject = {
         weblinkTitle: formik.values.weblinkTitle,
         weblink: formik.values.weblink,
