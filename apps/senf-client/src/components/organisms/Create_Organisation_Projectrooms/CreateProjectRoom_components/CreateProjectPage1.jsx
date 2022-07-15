@@ -17,7 +17,7 @@ import {
   ComponentInnerWrapper,
 } from "../styles/sharedStyles";
 import Navigation from "../Components/Navigation";
-import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
+import { StyledH3 } from "../../../../styles/GlobalStyle";
 
 const CreateProjectPage1 = ({
   onClickNext,
@@ -192,7 +192,7 @@ const CreateProjectPage1 = ({
               type="textarea"
               placeholder={t("add_brief")}
               label={t("brief")}
-              rows={1}
+              rows={5}
               onChange={formik?.handleChange}
               onBlur={formik?.handleBlur}
               value={formik?.values.brief}
@@ -209,7 +209,7 @@ const CreateProjectPage1 = ({
               type="textarea"
               placeholder={t("add_description_about")}
               label={t("description_about")}
-              rows={1}
+              rows={5}
               onChange={formik?.handleChange}
               onBlur={formik?.handleBlur}
               value={formik?.values.description_about}
@@ -232,7 +232,7 @@ const CreateProjectPage1 = ({
               type="textarea"
               placeholder={t("add_description_procedure")}
               label={t("description_procedure")}
-              rows={1}
+              rows={5}
               onChange={formik?.handleChange}
               onBlur={formik?.handleBlur}
               value={formik?.values.description_procedure}
@@ -255,7 +255,7 @@ const CreateProjectPage1 = ({
               type="textarea"
               placeholder={t("add_description_motivation")}
               label={t("description_motivation")}
-              rows={1}
+              rows={5}
               onChange={formik?.handleChange}
               onBlur={formik?.handleBlur}
               value={formik?.values.description_motivation}
@@ -278,7 +278,7 @@ const CreateProjectPage1 = ({
               type="textarea"
               placeholder={t("add_description_learnmore")}
               label={t("description_learnmore")}
-              rows={1}
+              rows={5}
               onChange={formik?.handleChange}
               onBlur={formik?.handleBlur}
               value={formik?.values.description_learnmore}

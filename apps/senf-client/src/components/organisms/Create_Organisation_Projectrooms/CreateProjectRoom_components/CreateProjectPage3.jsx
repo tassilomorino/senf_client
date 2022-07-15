@@ -5,12 +5,13 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import imageCompression from "browser-image-compression";
 
-//firebase
-import { db } from "../../../../firebase";
+// firebase
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { doc, updateDoc } from "firebase/firestore";
+import { Loader } from "senf-atomic-design-system";
+import { db } from "../../../../firebase";
 
-//Components
+// Components
 import {
   ComponentInnerWrapper,
   ComponentWrapper,
@@ -18,9 +19,8 @@ import {
 import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
 import Navigation from "../Components/Navigation";
 
-//images
+// images
 import UploadImageIcon from "../../../../images/icons/uploadImage.png";
-import { CircularProgress } from "@material-ui/core";
 
 const StyledLabel = styled.label`
   width: 150px;
@@ -101,7 +101,7 @@ const CreateProjectPage3 = ({
       });
       const logoURL = await getDownloadURL(storageRef);
       setUploadedImage(logoURL);
-      await updateDoc(projectRoomRef, { logoURL: logoURL });
+      await updateDoc(projectRoomRef, { logoURL });
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -154,7 +154,9 @@ const CreateProjectPage3 = ({
             {(!uploadedImage || uploadImageHover) && (
               <StyledIconWrapper>
                 {loading ? (
-                  <CircularProgress size={50} thickness={2} />
+                  <div style={{ width: "50px" }}>
+                    <Loader />
+                  </div>
                 ) : (
                   <img
                     src={UploadImageIcon}
