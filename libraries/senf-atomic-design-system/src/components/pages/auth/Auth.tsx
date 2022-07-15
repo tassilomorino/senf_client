@@ -3,11 +3,8 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
 import Wave from "../../atoms/shapes/Wave";
-import Modal from "../../molecules/modals/Modal";
 import { AuthProps } from "./Auth.types";
 
-import SenfManCelebrating from "../../../assets/illustrations/SenfManCelebrating.png";
-import Typography from "../../atoms/typography/Typography";
 import Box from "../../atoms/box/Box";
 import Accordion from "../../molecules/accordion/Accordion";
 import Success from "../../templates/success/Success";
@@ -16,7 +13,6 @@ import RoundedButton from "../../atoms/buttons/RoundedButton";
 import Plus from "../../../assets/icons/Plus";
 import Arrow from "../../../assets/icons/Arrow";
 
-import Button from "../../atoms/buttons/Button";
 import AuthOptions from "../../templates/auth/AuthOptions";
 
 import SenfManSquating from "../../../assets/illustrations/senfManSquatting.png";
@@ -117,13 +113,13 @@ const Auth: FC<AuthProps> = ({
                 >
                   <stop
                     offset="0"
-                    stop-color="rgba(186, 163, 79, 0)"
-                    stop-opacity="0"
+                    stopColor="rgba(186, 163, 79, 0)"
+                    stopOpacity="0"
                   ></stop>
                   <stop
                     offset="1"
-                    stop-color="rgba(119, 108, 70, 0.46)"
-                    stop-opacity="0.46"
+                    stopColor="rgba(119, 108, 70, 0.46)"
+                    stopOpacity="0.46"
                   ></stop>
                 </linearGradient>
               </defs>

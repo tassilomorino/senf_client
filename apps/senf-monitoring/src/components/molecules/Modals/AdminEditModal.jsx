@@ -23,6 +23,7 @@ import EditModalMainFields from "./Post_Edit_ModalComponents/EditModalMainFields
 import Tabs from "../../atoms/Tabs/Tabs";
 import { EditScreamTabData } from "../../../data/EditScreamTabData";
 import AdminEditModalMainFields from "./Post_Edit_ModalComponents/AdminEditModalMainFields";
+
 const styles = {
   root: {
     zIndex: 7,
@@ -131,8 +132,8 @@ const AdminEditModal = ({
 
     if (scream.selectedUnix) {
       const selectedDays = [];
-      const selectedUnix = scream.selectedUnix;
-      var i;
+      const { selectedUnix } = scream;
+      let i;
       for (i = 0; i < selectedUnix.length; i++) {
         selectedDays[i] = new Date(selectedUnix[i] * 1000);
       }
@@ -179,9 +180,9 @@ const AdminEditModal = ({
 
   const handleChangeCalendar = (selectedDays) => {
     const selectedUnix = [];
-    var i;
+    let i;
     for (i = 0; i < selectedDays.length; i++) {
-      selectedUnix[i] = selectedDays[i]["unix"];
+      selectedUnix[i] = selectedDays[i].unix;
     }
 
     setSelectedDays(selectedDays);
@@ -232,7 +233,7 @@ const AdminEditModal = ({
             : "";
 
         setNeighborhood(match.features[0].context[1].text);
-        setAddress(match.features[0].text + " " + houseNumber);
+        setAddress(`${match.features[0].text} ${houseNumber}`);
         setFulladdress(match.features[0].place_name);
       });
   };
@@ -292,6 +293,7 @@ const AdminEditModal = ({
           contact={contact}
           setContactTitle={setContactTitle}
           setContact={setContact}
+          contactOpen={contactOpen}
           setContactOpen={setContactOpen}
         />
       )}

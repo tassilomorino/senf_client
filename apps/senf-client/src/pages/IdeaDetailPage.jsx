@@ -16,7 +16,7 @@ import { clearErrors } from "../redux/actions/errorsActions";
 
 import CommentMenuModal from "../components/molecules/Modals/CommentMenuModal";
 import { openProjectRoomFunc } from "../redux/actions/projectActions";
-import EditIdeaModal from "../components/molecules/Modals/EditIdeaModal";
+import EditIdeaPage from "./EditIdeaPage";
 import { submitComment } from "../redux/actions/commentActions";
 import { openLink } from "../util/helpers";
 
@@ -94,7 +94,7 @@ const IdeaDetailPage = ({
   handleButtonComment,
   projectroomsData,
   user,
-  setAuthOpen
+  setAuthOpen,
 }) => {
   const data = useSelector((state) => state.data.scream);
   console.log(data);
@@ -199,13 +199,12 @@ const IdeaDetailPage = ({
   };
   const handleShareIdeaVia = (medium, path) => {
     if (medium === "Whatsapp") {
-      openLink(`whatsapp://send?text=${  path}`);
+      openLink(`whatsapp://send?text=${path}`);
     } else if (medium === "Facebook") {
-      openLink(`https://www.facebook.com/sharer/sharer.php?u=${  path}`);
+      openLink(`https://www.facebook.com/sharer/sharer.php?u=${path}`);
     } else if (medium === "Email") {
       openLink(
-        `mailto:?subject=Das könnte dich interessieren!&amp;body=Check out this site ${ 
-          path}`
+        `mailto:?subject=Das könnte dich interessieren!&amp;body=Check out this site ${path}`
       );
     }
   };
@@ -231,18 +230,16 @@ const IdeaDetailPage = ({
 
   const handleReportIdea = () => {
     const thisPath = `/${screamId}`;
-    const siteLink = `senf.koeln${  thisPath}`;
+    const siteLink = `senf.koeln${thisPath}`;
 
     const link =
       `mailto:dein@senf.koeln` +
-      `?subject=${ 
-      escape("Meldung: Beitrag beinhaltet unangebrachten Inhalt ") 
-      }&body=${ 
-      escape(
+      `?subject=${escape(
+        "Meldung: Beitrag beinhaltet unangebrachten Inhalt "
+      )}&body=${escape(
         `Dieser Beitrag beinhaltet unangebrachten Inhalt:` +
           `\n` +
-          `\n${ 
-          siteLink}`
+          `\n${siteLink}`
       )}`;
     window.location.href = link;
   };
@@ -258,7 +255,7 @@ const IdeaDetailPage = ({
     ReactDOM.createPortal(
       <React.Fragment>
         {editIdeaOpen && (
-          <EditIdeaModal
+          <EditIdeaPage
             scream={data}
             isAdmin={user?.isAdmin}
             isModerator={user?.isModerator}

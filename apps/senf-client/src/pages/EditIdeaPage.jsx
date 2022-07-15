@@ -4,62 +4,19 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router";
-import withStyles from "@material-ui/core/styles/withStyles";
 import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
-// MUI Stuff
-import Button from "@material-ui/core/Button";
 
 import {
-  editScreamFunc,
-  getUserEmail,
-} from "../../../redux/actions/screamActions";
+  EditIdeaPage as EditIdeaPageComponent,
+  SwipeModal,
+} from "senf-atomic-design-system";
+import { editScreamFunc, getUserEmail } from "../redux/actions/screamActions";
 
-import Weblink from "./Post_Edit_ModalComponents/Weblink";
-import Contact from "./Post_Edit_ModalComponents/Contact";
-import InlineDatePickerModal from "./InlineDatePickerModal";
+import Weblink from "../components/molecules/Modals/Post_Edit_ModalComponents/Weblink";
+import Contact from "../components/molecules/Modals/Post_Edit_ModalComponents/Contact";
+import InlineDatePickerModal from "../components/molecules/Modals/InlineDatePickerModal";
 
-import MainModal from "../../atoms/Layout/MainModal";
-
-import EditModalMainFields from "./Post_Edit_ModalComponents/EditModalMainFields";
-import Tabs from "../../atoms/Tabs/Tabs";
-import {
-  EditScreamTabData,
-  EditScreamTabDataAsAdmin,
-} from "../../../data/EditScreamTabData";
-import AdminEditModalMainFields from "./Post_Edit_ModalComponents/AdminEditModalMainFields";
-import { StyledH3, StyledText } from "../../../styles/GlobalStyle";
-const styles = {
-  root: {
-    zIndex: 7,
-  },
-  paper: {
-    borderRadius: "20px",
-    zIndex: 7,
-    // width: "95%",
-    margin: "2.5%",
-    maxWidth: "400px",
-  },
-
-  button: {
-    fontSize: 20,
-    textAlign: "center",
-    textTransform: "none",
-    width: "100%",
-    height: "70px",
-  },
-
-  confirmButton: {
-    fontSize: 20,
-    textAlign: "center",
-    textTransform: "none",
-    width: "100%",
-    height: "70%",
-    clear: "both",
-    color: "#353535",
-  },
-};
-
-const AdminEditModal = ({
+const EditIdeaPage = ({
   isAdmin,
   isModerator,
   isUser,
@@ -125,8 +82,8 @@ const AdminEditModal = ({
 
     if (scream.selectedUnix) {
       const selectedDays = [];
-      const selectedUnix = scream.selectedUnix;
-      var i;
+      const { selectedUnix } = scream;
+      let i;
       for (i = 0; i < selectedUnix.length; i++) {
         selectedDays[i] = new Date(selectedUnix[i] * 1000);
       }
@@ -170,9 +127,9 @@ const AdminEditModal = ({
 
   const handleChangeCalendar = (selectedDays) => {
     const selectedUnix = [];
-    var i;
+    let i;
     for (i = 0; i < selectedDays.length; i++) {
-      selectedUnix[i] = selectedDays[i]["unix"];
+      selectedUnix[i] = selectedDays[i].unix;
     }
 
     setSelectedDays(selectedDays);
@@ -222,7 +179,7 @@ const AdminEditModal = ({
             : "";
 
         setNeighborhood(match.features[0].context[1].text);
-        setAddress(match.features[0].text + " " + houseNumber);
+        setAddress(`${match.features[0].text} ${houseNumber}`);
         setFulladdress(match.features[0].place_name);
       });
   };
@@ -282,6 +239,7 @@ const AdminEditModal = ({
           contact={contact}
           setContactTitle={setContactTitle}
           setContact={setContact}
+          contactOpen={contactOpen}
           setContactOpen={setContactOpen}
         />
       )}
@@ -295,89 +253,32 @@ const AdminEditModal = ({
         />
       )}
 
-      <MainModal handleButtonClick={() => setEditOpen(false)}>
-        <div
-          style={{
-            width: "100%",
-            height: "110px",
-            backgroundColor: "#f8f8f8",
-          }}
-        >
-          <StyledH3 textAlign="center" padding="15px 0px">
-            {t("edit_idea")}
-          </StyledH3>
-          {isAdmin || isModerator ? (
-            // show "Details and monitoring sections"
-            <Tabs
-              handleClick={setOrder}
-              order={order}
-              tabLabels={EditScreamTabDataAsAdmin.map((item) => item.text)}
-              marginTop={"0"}
-              marginBottom={"20px"}
-              lineColor={"white"}
-            ></Tabs>
-          ) : (
-            // show "Details section only"
-            <Tabs
-              handleClick={setOrder}
-              order={order}
-              tabLabels={EditScreamTabData.map((item) => item.text)}
-              marginTop={"0"}
-              marginBottom={"20px"}
-              lineColor={"white"}
-            ></Tabs>
-          )}
-        </div>
-        {order === 1 ? (
-          <EditModalMainFields
-            projectRoomId={projectRoomId}
-            handleDropdownProject={handleDropdownProject}
-            onSelected={onSelected}
-            viewport={viewport}
-            scream={scream}
-            title={title}
-            body={body}
-            topic={topic}
-            setTitle={setTitle}
-            setBody={setBody}
-            handleDropdown={handleDropdown}
-            weblink={weblink}
-            weblinkTitle={weblinkTitle}
-            setWeblinkOpen={setWeblinkOpen}
-            contact={contact}
-            contactTitle={contactTitle}
-            setContactOpen={setContactOpen}
-            datePicker={datePicker}
-            selectedDays={selectedDays}
-            setCalendarOpen={setCalendarOpen}
-          />
-        ) : isAdmin || isModerator ? (
-          <AdminEditModalMainFields
-            status={status}
-            setStatus={setStatus}
-            notes={notes}
-            setNotes={setNotes}
-          />
-        ) : null}
-        <div className="buttons">
-          <Button className={classes.button} onClick={() => setEditOpen(false)}>
-            {t("cancel")}
-          </Button>
-          <Button
-            className={classes.button}
-            onClick={handleSubmit}
-            style={
-              title === "" || body === ""
-                ? { pointerEvents: "none", opacity: 0.4 }
-                : {}
-            }
-          >
-            {t("save")}
-          </Button>
-        </div>
-      </MainModal>
+      <EditIdeaPageComponent
+        editOpen={editOpen}
+        setEditOpen={setEditOpen}
+        projectRoomId={projectRoomId}
+        handleDropdownProject={handleDropdownProject}
+        onSelected={onSelected}
+        viewport={viewport}
+        scream={scream}
+        title={title}
+        body={body}
+        topic={topic}
+        setTitle={setTitle}
+        setBody={setBody}
+        handleDropdown={handleDropdown}
+        weblink={weblink}
+        weblinkTitle={weblinkTitle}
+        setWeblinkOpen={setWeblinkOpen}
+        contact={contact}
+        contactTitle={contactTitle}
+        setContactOpen={setContactOpen}
+        datePicker={datePicker}
+        selectedDays={selectedDays}
+        setCalendarOpen={setCalendarOpen}
+      />
     </React.Fragment>
   );
 };
 
-export default withStyles(styles)(AdminEditModal);
+export default EditIdeaPage;

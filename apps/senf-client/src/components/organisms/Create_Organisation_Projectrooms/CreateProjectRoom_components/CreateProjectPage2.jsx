@@ -1,30 +1,20 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-
-//firebase
-
+import { useFormik } from "formik";
+import * as yup from "yup";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { Input, Box } from "senf-atomic-design-system";
 import { db } from "../../../../firebase";
-
-//Components
-import Weblink from "../../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
-import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
-
-//images
+// images
 import {
   ComponentInnerWrapper,
   ComponentWrapper,
 } from "../styles/sharedStyles";
-import Contact from "../../../molecules/Modals/Post_Edit_ModalComponents/Contact";
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
-import { TextField } from "@material-ui/core";
-import { useFormik } from "formik";
-import * as yup from "yup";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const ButttonsWrapper = styled.div`
   display: flex;
@@ -111,7 +101,7 @@ const CreateProjectPage2 = ({
       typeof Storage !== "undefined" &&
       localStorage.getItem("createProjectRoomId")
     ) {
-      //UPDATING AN EXISTING PROJECTROOM
+      // UPDATING AN EXISTING PROJECTROOM
       const updateProject = {
         weblinkTitle: formik.values.weblinkTitle,
         weblink: formik.values.weblink,
@@ -146,72 +136,58 @@ const CreateProjectPage2 = ({
             {pagesData[index].subTitle}
           </StyledH3>
 
-          <TextField
-            id="outlined-name"
-            name="contactTitle"
-            type="contactTitle"
-            label={t("Kontakt-Titel")}
-            margin="normal"
-            variant="outlined"
-            style={{
-              backgroundColor: "white",
-              borderRadius: "5px",
-              width: "100%",
-            }}
-            value={formik.values.contactTitle}
-            onChange={formik.handleChange}
-          />
+          <Box flexDirection="column" gap="20px">
+            <Input
+              key="contactTitle"
+              id="contactTitle"
+              name="contactTitle"
+              type="textarea"
+              placeholder={t("add_contactTitle")}
+              label={t("contactTitle")}
+              rows={1}
+              onChange={formik?.handleChange}
+              onBlur={formik?.handleBlur}
+              value={formik?.values.contactTitle}
+            />
+            <Input
+              key="contact"
+              id="contact"
+              name="contact"
+              type="textarea"
+              placeholder={t("add_contact-address")}
+              label={t("contact-address")}
+              rows={1}
+              onChange={formik?.handleChange}
+              onBlur={formik?.handleBlur}
+              value={formik?.values.contact}
+            />
 
-          <TextField
-            id="outlined-name"
-            name="contact"
-            type="contact"
-            label={t("contact-address")}
-            margin="normal"
-            variant="outlined"
-            style={{
-              backgroundColor: "white",
-              borderRadius: "5px",
-              width: "100%",
-              marginTop: "5px",
-            }}
-            value={formik.values.contact}
-            onChange={formik.handleChange}
-          />
+            <Input
+              key="weblinkTitle"
+              id="weblinkTitle"
+              name="weblinkTitle"
+              type="textarea"
+              placeholder={t("add_weblinkTitle")}
+              label={t("weblinkTitle")}
+              rows={1}
+              onChange={formik?.handleChange}
+              onBlur={formik?.handleBlur}
+              value={formik?.values.weblinkTitle}
+            />
 
-          <TextField
-            id="outlined-name"
-            name="weblinkTitle"
-            type="weblinkTitle"
-            label={t("Link-Titel")}
-            margin="normal"
-            variant="outlined"
-            style={{
-              backgroundColor: "white",
-              borderRadius: "5px",
-              width: "100%",
-              marginTop: "30px",
-            }}
-            value={formik.values.weblinkTitle}
-            onChange={formik.handleChange}
-          />
-
-          <TextField
-            id="outlined-name"
-            name="weblink"
-            type="weblink"
-            label={t("external-link")}
-            margin="normal"
-            variant="outlined"
-            style={{
-              backgroundColor: "white",
-              borderRadius: "5px",
-              width: "100%",
-              marginTop: "5px",
-            }}
-            value={formik.values.weblink}
-            onChange={formik.handleChange}
-          />
+            <Input
+              key="weblink"
+              id="weblink"
+              name="weblink"
+              type="textarea"
+              placeholder={t("add_weblink")}
+              label={t("weblink")}
+              rows={1}
+              onChange={formik?.handleChange}
+              onBlur={formik?.handleBlur}
+              value={formik?.values.weblink}
+            />
+          </Box>
         </ComponentInnerWrapper>
       </ComponentWrapper>
 

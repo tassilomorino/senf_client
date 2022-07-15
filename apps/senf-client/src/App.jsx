@@ -4,10 +4,6 @@ import React, { useState, useEffect, useLayoutEffect, Suspense } from "react";
 import { Helmet } from "react-helmet";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
-import {
-  ThemeProvider as MuiThemeProvider,
-  createTheme,
-} from "@material-ui/core/styles";
 import { Provider } from "react-redux";
 import { isTablet } from "react-device-detect";
 import Cookies from "universal-cookie";
@@ -17,7 +13,9 @@ import {
   GlobalStyle,
   LayerWhiteFirstDefault,
   // i18n,
+  MainLoader,
 } from "senf-atomic-design-system";
+import { ThemeProvider } from "styled-components";
 import { auth } from "./firebase";
 
 import "./styles/mapbox-gl.css";
@@ -27,7 +25,6 @@ import "./styles/AppIpad.css";
 import "./styles/mapbox.css";
 import "./styles/Animations.css";
 
-import themeFile from "./util/theme";
 // Redux
 import store from "./redux/store";
 import { SET_AUTHENTICATED } from "./redux/types";
@@ -39,8 +36,7 @@ import { getOrganizations } from "./redux/actions/organizationActions";
 import { getProjects } from "./redux/actions/projectActions";
 import { getScreams } from "./redux/actions/screamActions";
 
-//Pages
-import Main from "./pages/Main";
+// Pages
 import impressum from "./components/organisms/infocomponents/legal/impressum";
 import datenschutz from "./components/organisms/infocomponents/legal/datenschutz";
 import agb from "./components/organisms/infocomponents/legal/agb";
@@ -58,15 +54,20 @@ import { setViewport } from "./util/helpers-map-animations";
 import detectLocation from "./util/detectLocation";
 import GlobalStyles from "./styles/GlobalStyles";
 
-import { ThemeProvider } from "styled-components";
+import "./util/i18n";
 
-import "./util/i18n"; // i18n configuration
+// import Main from "./pages/Main";
+
+const Main = React.lazy(() =>
+  Promise.all([
+    import("./pages/Main"),
+    new Promise((resolve) => setTimeout(resolve, 3300)),
+  ]).then(([moduleExports]) => moduleExports)
+); // i18n configuration
 
 // detectLocation(); // detect location and set i18n language
 const cookies = new Cookies();
-//require("intersection-observer");
-
-const muiTheme = createTheme(themeFile);
+// require("intersection-observer");
 
 window.store = store;
 
@@ -151,18 +152,18 @@ const App = () => {
         </Helmet>
       )}
 
-      <MuiThemeProvider theme={muiTheme}>
-        <Provider store={store}>
-          <GlobalStyles />
-          <Router>
-            <Cookiebanner />
-            {tabletNote}
+      <Provider store={store}>
+        <GlobalStyles />
+        <Router>
+          <Cookiebanner />
+          {tabletNote}
 
-            {isMobileCustom && (
-              <div className="landscapeNote">{t("rotate_phone")}</div>
-            )}
+          {isMobileCustom && (
+            <div className="landscapeNote">{t("rotate_phone")}</div>
+          )}
 
-            <div className="container">
+          <div className="container">
+            <React.Suspense fallback={<MainLoader />}>
               <Switch>
                 <Route exact path="/" component={Main} />
                 <Route exact path="/projectRooms" component={Main} />
@@ -203,10 +204,10 @@ const App = () => {
 
                 <Route path="*" component={Main} />
               </Switch>
-            </div>
-          </Router>
-        </Provider>
-      </MuiThemeProvider>
+            </React.Suspense>
+          </div>
+        </Router>
+      </Provider>
     </ThemeProvider>
   );
 };

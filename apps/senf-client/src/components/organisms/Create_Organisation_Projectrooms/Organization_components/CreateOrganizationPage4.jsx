@@ -2,24 +2,21 @@
 
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
-//firebase
-import { db } from "../../../../firebase";
+// firebase
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { useFormik } from "formik";
+import { Input } from "senf-atomic-design-system";
+import { db } from "../../../../firebase";
 
-//images
+// images
 import {
-  ButtonsWrapper,
   ComponentInnerWrapper,
   ComponentWrapper,
-  SubTitle,
-  Title,
 } from "../styles/sharedStyles";
-import Contact from "../../../molecules/Modals/Post_Edit_ModalComponents/Contact";
-//import Geocoder from "react-mapbox-gl-geocoder";
+// import Geocoder from "react-mapbox-gl-geocoder";
 import Navigation from "../Components/Navigation";
 import {
   StyledA,
@@ -27,9 +24,6 @@ import {
   StyledH3,
   StyledText,
 } from "../../../../styles/GlobalStyle";
-import InlineDatePicker from "../../../atoms/InlineDatePicker/InlineDatePicker";
-import { TextField } from "@material-ui/core";
-import { useFormik } from "formik";
 import MainModal from "../../../atoms/Layout/MainModal";
 
 const Wrapper = styled.div`
@@ -125,7 +119,7 @@ const CreateOrganizationPage4 = ({
       typeof Storage !== "undefined" &&
       localStorage.getItem("createOrganizationId")
     ) {
-      //UPDATING AN EXISTING PROJECTROOM
+      // UPDATING AN EXISTING PROJECTROOM
       const updateProject = {
         googleCalendarId: formik.values.googleCalendarId,
       };
@@ -141,12 +135,10 @@ const CreateOrganizationPage4 = ({
           onClickNext();
         }
       });
+    } else if (localStorage.getItem("createOrganizationPostEdit") === "true") {
+      set(pagesData.length - 1);
     } else {
-      if (localStorage.getItem("createOrganizationPostEdit") === "true") {
-        set(pagesData.length - 1);
-      } else {
-        onClickNext();
-      }
+      onClickNext();
     }
   };
 
@@ -184,22 +176,27 @@ const CreateOrganizationPage4 = ({
             {pagesData[index].subTitle}
           </StyledH3>
 
-          <TextField
-            id="outlined-name"
+          <Input
+            key="googleCalendarId"
+            id="googleCalendarId"
             name="googleCalendarId"
-            type="googleCalendarId"
+            type="textarea"
+            placeholder={t("googleCalendarId")}
             label={t("googleCalendarId")}
-            margin="normal"
-            variant="outlined"
-            multiline
-            style={{
-              backgroundColor: "white",
-              borderRadius: "5px",
-              width: "100%",
-            }}
-            value={formik.values.googleCalendarId}
-            onChange={formik.handleChange}
+            rows={1}
+            onChange={formik?.handleChange}
+            onBlur={formik?.handleBlur}
+            value={formik?.values.googleCalendarId}
+            error={
+              formik?.touched.googleCalendarId &&
+              Boolean(formik?.errors.googleCalendarId)
+            }
+            note={
+              formik?.touched.googleCalendarId &&
+              formik?.errors.googleCalendarId
+            }
           />
+
           <div
             style={{
               width: "100%",

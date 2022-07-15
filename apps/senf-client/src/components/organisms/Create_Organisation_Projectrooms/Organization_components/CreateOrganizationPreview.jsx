@@ -5,11 +5,11 @@ import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
-//firebase
-import { db } from "../../../../firebase";
+// firebase
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { db } from "../../../../firebase";
 
-//images
+// images
 import {
   ButtonsWrapper,
   ComponentInnerWrapper,
@@ -150,6 +150,18 @@ const CreateOrganizationPreview = ({
     }
   };
 
+  const handleClose = () => {
+    setNextClicked(true);
+
+    if (localStorage.getItem("createOrganizationPostEdit") !== "true") {
+      handlePublish();
+    } else {
+      setTimeout(() => {
+        setClose();
+      }, 1000);
+    }
+  };
+
   return (
     <React.Fragment>
       <ComponentWrapper>
@@ -175,10 +187,10 @@ const CreateOrganizationPreview = ({
       <Navigation
         nextLabel={t("publish")}
         prevLabel={t("back")}
-        handleNext={handlePublish}
+        handleNext={handleClose}
         handlePrev={onClickPrev}
         disabled={
-          localStorage.getItem("createOrganizationPostEdit") === "true" ||
+          // localStorage.getItem("createOrganizationPostEdit") === "true" ||
           nextClicked
         }
         loading={nextClicked}

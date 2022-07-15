@@ -4,13 +4,14 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import styled from "styled-components";
+import { useTranslation } from "react-i18next";
 import { deleteScream } from "../../../redux/actions/screamActions";
 
 import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import MainModal from "../../atoms/Layout/MainModal";
-import EditIdeaModal from "./EditIdeaModal";
+import EditIdeaModal from "../../../pages/EditIdeaPage";
 import { StyledH3, StyledH4 } from "../../../styles/GlobalStyle";
-import { useTranslation } from "react-i18next";
+
 const ButtonWrapper = styled.div`
   width: 100%;
   height: ${(props) => (props.standalone ? "100px" : "50px")};
@@ -36,33 +37,31 @@ const MenuModal = ({ setMenuOpen, screamId, screamUserId }) => {
   const history = useHistory();
 
   const deleteTheScream = () => {
-    var answer = window.confirm(
+    const answer = window.confirm(
       "Bist du sicher, dass du die Idee löschen möchtest?"
     );
     if (answer) {
       dispatch(deleteScream(screamId, userId, isAdmin, isModerator));
 
-      //some code
+      // some code
     } else {
-      //some code
+      // some code
     }
   };
 
   const reportScream = () => {
     const thisPath = `/users/${screamUserId}/scream/${screamId}`;
-    const siteLink = "senf.koeln" + thisPath;
+    const siteLink = `senf.koeln${thisPath}`;
 
-    var link =
-      "mailto:dein@senf.koeln" +
-      "?subject=" +
-      escape("Meldung: Beitrag beinhaltet unangebrachten Inhalt ") +
-      "&body=" +
-      escape(
-        "Dieser Beitrag beinhaltet unangebrachten Inhalt:" +
-          "\n" +
-          "\n" +
-          siteLink
-      );
+    const link =
+      `mailto:dein@senf.koeln` +
+      `?subject=${escape(
+        "Meldung: Beitrag beinhaltet unangebrachten Inhalt "
+      )}&body=${escape(
+        `Dieser Beitrag beinhaltet unangebrachten Inhalt:` +
+          `\n` +
+          `\n${siteLink}`
+      )}`;
     window.location.href = link;
   };
   const { t } = useTranslation();
@@ -102,11 +101,11 @@ const MenuModal = ({ setMenuOpen, screamId, screamUserId }) => {
 
           <ButtonWrapper
             standalone={
-              (authenticated && screamUserId === userId) ||
-              isAdmin ||
-              isModerator
-                ? false
-                : true
+              !(
+                (authenticated && screamUserId === userId) ||
+                isAdmin ||
+                isModerator
+              )
             }
           >
             <ExpandButton handleButtonClick={reportScream}>

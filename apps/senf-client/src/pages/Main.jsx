@@ -21,6 +21,7 @@ import {
   Box,
   MobileTopBar,
   ErrorLoading,
+  MainLoader,
 } from "senf-atomic-design-system";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
@@ -617,9 +618,7 @@ const Main = () => {
         </Modal>
       )}
 
-      {(loading || loadingIdea || loadingProjectRoom) && (
-        <Loader withoutBg={true} />
-      )}
+      {(loadingIdea || loadingProjectRoom) && <Loader withoutBg={true} />}
 
       {openInfoPage && (
         <InlineInformationPage

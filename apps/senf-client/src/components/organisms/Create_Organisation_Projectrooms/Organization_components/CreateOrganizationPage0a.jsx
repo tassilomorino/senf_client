@@ -2,46 +2,17 @@
 
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import { ToggleInput } from "senf-atomic-design-system";
 import {
   ComponentInnerWrapper,
   ComponentWrapper,
 } from "../styles/sharedStyles";
-import styled from "styled-components";
 
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 import InfoSwiper from "../Components/InfoSwiper";
-import {ToggleInput} from "senf-atomic-design-system"
 
-const Header = styled.h3`
-  font-size: 18px;
-  color: #353535;
-  font-weight: 100;
-
-  @media (min-width: 768px) {
-    font-size: 22px;
-  }
-`;
-
-const StyledUL = styled.ol`
-  width: 100%;
-  margin-left: -20px;
-  @media (min-width: 768px) {
-    width: calc(90% - 40px);
-    margin-left: 5%;
-  }
-`;
-const StyledLi = styled.li`
-  text-align: left;
-  font-size: 18px;
-  color: #353535;
-  font-weight: 100;
-  margin-top: 10px;
-
-  @media (min-width: 768px) {
-    font-size: 20px;
-  }
-`;
 const CheckBoxWrapper = styled.div`
   margin-top: 50px;
   width: 100%;
@@ -61,12 +32,7 @@ const CheckBoxLabel = styled.label`
   font-weight: 100;
   margin-left: 20px;
 `;
-const CreateOrganizationPage0 = ({
-  onClickNext,
-  onClickPrev,
-  pagesData,
-  index,
-}) => {
+const CreateOrganizationPage0 = ({ onClickNext, pagesData, index }) => {
   const { t } = useTranslation();
   const [checkBox1, setCheckBox1] = useState(false);
   const [checkBox2, setCheckBox2] = useState(false);
@@ -107,8 +73,7 @@ const CreateOrganizationPage0 = ({
 
           <CheckBoxWrapper>
             <ToggleInput
-            
-            checked={checkBox1}
+              checked={checkBox1}
               type="checkbox"
               receiveValue={() => setCheckBox1(!checkBox1)}
             />
