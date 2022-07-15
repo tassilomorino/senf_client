@@ -3,11 +3,21 @@ import { useDispatch } from "react-redux";
 import ReactDOM from "react-dom";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import { doc, deleteDoc } from "firebase/firestore";
+import {
+  More,
+  Delete,
+  Plus,
+  Box,
+  Button,
+  Modal,
+  ContentDropdown,
+  RoundedButton,
+} from "senf-atomic-design-system";
 import MainModal from "../../../atoms/Layout/MainModal";
 import SettingsIcon from "../../../../images/icons/settings.png";
 import ExpandButton from "../../../atoms/CustomButtons/ExpandButton";
 import { db } from "../../../../firebase";
-import { doc, deleteDoc } from "firebase/firestore";
 import { isMobileCustom } from "../../../../util/customDeviceDetect";
 import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 import { StyledH2, StyledH3 } from "../../../../styles/GlobalStyle";
@@ -19,6 +29,7 @@ import {
   openCreateProjectRoomFunc,
   openProjectRoomFunc,
 } from "../../../../redux/actions/projectActions";
+
 const Wrapper = styled.div`
   position: fixed;
   top: 0px;
@@ -26,10 +37,7 @@ const Wrapper = styled.div`
   z-index: 1;
   height: 70px;
   width: 100vw;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+
   /* box-shadow: 0 8px 40px -12px rgba(0, 0, 0, 0.2); */
 `;
 
@@ -141,7 +149,7 @@ const TopNavigation = ({
   const { t } = useTranslation();
 
   const handleDelete = async () => {
-    var answer = window.confirm(
+    const answer = window.confirm(
       "Bist du sicher, dass du die Organisation löschen möchtest?"
     );
     if (answer) {
@@ -170,14 +178,14 @@ const TopNavigation = ({
         });
       }
 
-      //some code
+      // some code
     } else {
-      //some code
+      // some code
     }
   };
 
   const handleRestart = async () => {
-    var answer = window.confirm(
+    const answer = window.confirm(
       "Wenn du den Prozess neustartest, wird die Organisation, die du gerade erstellst gelöscht"
     );
     if (answer) {
@@ -198,140 +206,171 @@ const TopNavigation = ({
     }
   };
   return (
-    <Wrapper>
-      {ReactDOM.createPortal(
-        <React.Fragment>
-          {settingsOpen && (
-            <MainModal handleButtonClick={() => setSettingsOpen(false)}>
-              <ButtonWrapper>
-                <ExpandButton handleButtonClick={handleRestart}>
-                  <StyledH3 fontWeight={400}> Neustarten</StyledH3>
-                </ExpandButton>
-              </ButtonWrapper>
+    <React.Fragment>
+      {/* {settingsOpen && (
+        <Modal handleButtonClick={() => setSettingsOpen(false)}>
+          <ButtonWrapper>
+            <ExpandButton handleButtonClick={handleRestart}>
+              <StyledH3 fontWeight={400}> Neustarten</StyledH3>
+            </ExpandButton>
+          </ButtonWrapper>
 
-              <ButtonWrapper>
-                <ExpandButton handleButtonClick={handleDelete}>
-                  <StyledH3 fontWeight={400}>
-                    {type === "projectRoom"
-                      ? "Projektraum löschen"
-                      : "Organisation löschen"}
-                  </StyledH3>
-                </ExpandButton>
-              </ButtonWrapper>
-              <Line />
-              <ButtonWrapper>
-                <ExpandButton handleButtonClick={() => setSettingsOpen(false)}>
-                  <StyledH3 fontWeight={400}> Abbrechen</StyledH3>
-                </ExpandButton>
-              </ButtonWrapper>
-            </MainModal>
-          )}
-        </React.Fragment>,
-        document.getElementById("portal-root-modal")
-      )}
+          <ButtonWrapper>
+            <ExpandButton handleButtonClick={handleDelete}>
+              <StyledH3 fontWeight={400}>
+                {type === "projectRoom"
+                  ? "Projektraum löschen"
+                  : "Organisation löschen"}
+              </StyledH3>
+            </ExpandButton>
+          </ButtonWrapper>
+          <Line />
+          <ButtonWrapper>
+            <ExpandButton handleButtonClick={() => setSettingsOpen(false)}>
+              <StyledH3 fontWeight={400}> Abbrechen</StyledH3>
+            </ExpandButton>
+          </ButtonWrapper>
+        </Modal>
+      )} */}
 
-      <CustomIconButton
-        name="Close"
-        position="fixed"
-        margin={document.body.clientWidth > 768 ? "10px" : "15px 5px"}
-        left="0"
-        top="0"
-        zIndex={2}
-        backgroundColor="transparent"
-        shadow={false}
-        handleButtonClick={setClose}
-      />
+      <Wrapper>
+        <Box
+          margin={document.body.clientWidth > 768 ? "10px" : "15px 5px"}
+          justifyContent="space-between"
+        >
+          <RoundedButton
+            icon={<Plus transform="rotate(45deg)" />}
+            onClick={setClose}
+          />
 
-      {/* <ProgressLine>
+          {/* <ProgressLine>
         <CurrentStep index={index} />
       </ProgressLine> */}
-      <TitlesWrapper>
-        {title && <Title>{title}</Title>}
-        <StyledH2
-          fontWeight="900"
-          textAlign="center"
-          fontSize="24px"
-          margin="0px 50px"
-        >
-          {isMobileCustom && pagesData[index].mobileTitle
-            ? pagesData[index].mobileTitle
-            : pagesData[index].title}
-        </StyledH2>
-      </TitlesWrapper>
+          <TitlesWrapper>
+            {title && <Title>{title}</Title>}
+            <StyledH2
+              fontWeight="900"
+              textAlign="center"
+              fontSize="24px"
+              margin="0px 50px"
+            >
+              {isMobileCustom && pagesData[index].mobileTitle
+                ? pagesData[index].mobileTitle
+                : pagesData[index].title}
+            </StyledH2>
+          </TitlesWrapper>
 
-      {index !== 0 && index !== 1 && (
-        <StyledIcon
-          onClick={() => setSettingsOpen(true)}
-          src={SettingsIcon}
-          width="100%"
-          alt="project-thumbnail"
-        />
-      )}
+          {index !== 0 && index !== 1 && (
+            // <StyledIcon
+            //   onClick={() => setSettingsOpen(true)}
+            //   src={SettingsIcon}
+            //   width="100%"
+            //   alt="project-thumbnail"
+            // />
+            <ContentDropdown
+              open={settingsOpen}
+              setOpen={setSettingsOpen}
+              direction={"downLeft"}
+              OpenButton={
+                <RoundedButton
+                  variant="white"
+                  size="small"
+                  onClick={() => setSettingsOpen(!settingsOpen)}
+                  icon={<More />}
+                />
+              }
+              Content={
+                <Box gap="5px" flexDirection="column">
+                  <Button
+                    variant={"secondary"}
+                    size="small"
+                    text={t("restart")}
+                    justifyContent="flex-start"
+                    onClick={handleRestart}
+                    // icon={<Edit />}
+                  />
+                  <Button
+                    variant={"secondary"}
+                    size="small"
+                    text={
+                      type === "projectRoom"
+                        ? "Projektraum löschen"
+                        : "Organisation löschen"
+                    }
+                    justifyContent="flex-start"
+                    onClick={handleDelete}
+                    icon={<Delete />}
+                  />
+                </Box>
+              }
+            />
+          )}
+        </Box>
+        <SVGWrapper>
+          {isMobileCustom ? (
+            <svg
+              width="100%"
+              height="106"
+              viewBox="0 0 400 127"
+              preserveAspectRatio="none"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0 109.5V0H421V102.5C370 118.5 359 106 343 103.5C322.158 100.243 296 93.3391 263.303 107.934C209.319 132.03 151.529 95.6048 85 118.5C46.0731 131.896 13.7423 108.668 0 109.5Z"
+                fill="#FED957"
+              />
+            </svg>
+          ) : (
+            <svg
+              width="100%"
+              height="156"
+              viewBox="0 0 1100 126"
+              preserveAspectRatio="none"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0 125.5V0.5H1130.5V99C1025 143 974.588 95.9476 942.5 83C828.5 37 819 43.5 704 62.5C558 86.6217 307.5 44.5 196 99C128.785 131.854 37.1667 124.667 0 125.5Z"
+                fill="#FED957"
+              />
+            </svg>
+          )}
+        </SVGWrapper>
 
-      <SVGWrapper>
-        {isMobileCustom ? (
-          <svg
-            width="100%"
-            height="106"
-            viewBox="0 0 400 127"
-            preserveAspectRatio="none"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0 109.5V0H421V102.5C370 118.5 359 106 343 103.5C322.158 100.243 296 93.3391 263.303 107.934C209.319 132.03 151.529 95.6048 85 118.5C46.0731 131.896 13.7423 108.668 0 109.5Z"
-              fill="#FED957"
-            />
-          </svg>
-        ) : (
-          <svg
-            width="100%"
-            height="156"
-            viewBox="0 0 1100 126"
-            preserveAspectRatio="none"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0 125.5V0.5H1130.5V99C1025 143 974.588 95.9476 942.5 83C828.5 37 819 43.5 704 62.5C558 86.6217 307.5 44.5 196 99C128.785 131.854 37.1667 124.667 0 125.5Z"
-              fill="#FED957"
-            />
-          </svg>
-        )}
-      </SVGWrapper>
-
-      <SVGWrapper2 currentStep={currentStep}>
-        {isMobileCustom ? (
-          <svg
-            width="100%"
-            height="106"
-            viewBox="0 0 400 127"
-            preserveAspectRatio="none"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0 109.5V0H421V102.5C370 118.5 359 106 343 103.5C322.158 100.243 296 93.3391 263.303 107.934C209.319 132.03 151.529 95.6048 85 118.5C46.0731 131.896 13.7423 108.668 0 109.5Z"
-              fill="white"
-            />
-          </svg>
-        ) : (
-          <svg
-            width="100%"
-            height="156"
-            viewBox="0 0 1100 126"
-            preserveAspectRatio="none"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0 125.5V0.5H1130.5V99C1025 143 974.588 95.9476 942.5 83C828.5 37 819 43.5 704 62.5C558 86.6217 307.5 44.5 196 99C128.785 131.854 37.1667 124.667 0 125.5Z"
-              fill="white"
-            />
-          </svg>
-        )}
-      </SVGWrapper2>
-    </Wrapper>
+        <SVGWrapper2 currentStep={currentStep}>
+          {isMobileCustom ? (
+            <svg
+              width="100%"
+              height="106"
+              viewBox="0 0 400 127"
+              preserveAspectRatio="none"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0 109.5V0H421V102.5C370 118.5 359 106 343 103.5C322.158 100.243 296 93.3391 263.303 107.934C209.319 132.03 151.529 95.6048 85 118.5C46.0731 131.896 13.7423 108.668 0 109.5Z"
+                fill="white"
+              />
+            </svg>
+          ) : (
+            <svg
+              width="100%"
+              height="156"
+              viewBox="0 0 1100 126"
+              preserveAspectRatio="none"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0 125.5V0.5H1130.5V99C1025 143 974.588 95.9476 942.5 83C828.5 37 819 43.5 704 62.5C558 86.6217 307.5 44.5 196 99C128.785 131.854 37.1667 124.667 0 125.5Z"
+                fill="white"
+              />
+            </svg>
+          )}
+        </SVGWrapper2>
+      </Wrapper>
+    </React.Fragment>
   );
 };
 

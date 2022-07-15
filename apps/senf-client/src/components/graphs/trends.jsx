@@ -1,8 +1,6 @@
 /** @format */
 
 import React, { Component } from "react";
-//Icons
-import CircularProgress from "@material-ui/core/CircularProgress";
 //Redux
 import { connect } from "react-redux";
 
@@ -11,13 +9,6 @@ import createPlotlyComponent from "react-plotlyjs";
 //See the list of possible plotly bundles at https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles or roll your own
 import Plotly from "plotly.js-cartesian-dist";
 
-//MUI Stuff
-import withStyles from "@material-ui/core/styles/withStyles";
-import Slide from "@material-ui/core/Slide";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 const PlotlyComponent = createPlotlyComponent(Plotly);
 // let PlotlyComponent
@@ -313,7 +304,7 @@ export class Trends extends Component {
         />
       ) : (
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <CircularProgress size={50} thickness={2} />
+         
         </div>
       );
     return (
@@ -331,4 +322,4 @@ const mapStateToProps = (state) => ({
   data: state.data,
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(Trends));
+export default connect(mapStateToProps)Trends;

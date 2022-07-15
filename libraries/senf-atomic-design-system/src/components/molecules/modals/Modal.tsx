@@ -9,7 +9,7 @@ import SubNavbar from "../navs/SubNavbar";
 import { ModalProps } from "./Modal.types";
 
 const Wrapper = styled.div<ModalProps>`
-  z-index: ${({ zIndex }) => (zIndex ? zIndex : 9999)};
+  z-index: ${({ zIndex }) => zIndex || 999999999};
   position: fixed;
   top: 50%;
   left: 50%;
@@ -24,7 +24,7 @@ const Wrapper = styled.div<ModalProps>`
       ? "600px"
       : "400px"};
   max-height: calc(100vh - 40px);
-  overflow: ${({ overflow }) => (overflow ? overflow : "scroll")};
+  overflow: ${({ overflow }) => overflow || "scroll"};
   background-color: ${({ backgroundColor, theme }) =>
     backgroundColor === "primary"
       ? theme.colors.primary.primary100
@@ -39,7 +39,7 @@ const Wrapper = styled.div<ModalProps>`
 `;
 
 const Background = styled.div<ModalProps>`
-  z-index: ${({ zIndex }) => (zIndex ? zIndex : 9998)};
+  z-index: ${({ zIndex }) => zIndex || 9998};
 
   position: fixed;
   left: 0;

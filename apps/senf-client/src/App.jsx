@@ -3,9 +3,22 @@
 import React, { useState, useEffect, useLayoutEffect, Suspense } from "react";
 import { Helmet } from "react-helmet";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
+
+import { Provider } from "react-redux";
+import { isTablet } from "react-device-detect";
+import Cookies from "universal-cookie";
+import { I18nextProvider, useTranslation } from "react-i18next";
+import {
+  theme,
+  GlobalStyle,
+  LayerWhiteFirstDefault,
+  // i18n,
+  MainLoader,
+} from "senf-atomic-design-system";
+import { ThemeProvider } from "styled-components";
 import { auth } from "./firebase";
 
-import { onAuthStateChanged } from "firebase/auth";
 import "./styles/mapbox-gl.css";
 import "./styles/App.css";
 import "./styles/AppDesktop.css";
@@ -13,35 +26,24 @@ import "./styles/AppIpad.css";
 import "./styles/mapbox.css";
 import "./styles/Animations.css";
 
-import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
-import { createTheme } from "@material-ui/core/styles/";
-
-import themeFile from "./util/theme";
 // Redux
-import { Provider } from "react-redux";
 import store from "./redux/store";
 import { SET_AUTHENTICATED } from "./redux/types";
 import { logoutUser, getUserData } from "./redux/actions/userActions";
 import { setCookies } from "./redux/actions/cookiesActions";
 import { setInfoPageOpen } from "./redux/actions/UiActions";
 
-import { getOrganizations } from "../src/redux/actions/organizationActions";
-import { getProjects } from "../src/redux/actions/projectActions";
-import { getScreams } from "../src/redux/actions/screamActions";
+import { getOrganizations } from "./redux/actions/organizationActions";
+import { getProjects } from "./redux/actions/projectActions";
+import { getScreams } from "./redux/actions/screamActions";
 
-//Pages
-import Main from "./pages/Main";
+// Pages
 import impressum from "./components/organisms/infocomponents/legal/impressum";
 import datenschutz from "./components/organisms/infocomponents/legal/datenschutz";
 import agb from "./components/organisms/infocomponents/legal/agb";
 import cookieConfigurator from "./components/organisms/infocomponents/legal/cookieConfigurator";
 
 import blank from "./pages/Blank";
-
-import { isTablet } from "react-device-detect";
-import Cookies from "universal-cookie";
-
-import { I18nextProvider, useTranslation } from "react-i18next";
 
 import { isMobileCustom } from "./util/customDeviceDetect";
 
@@ -53,21 +55,20 @@ import { setViewport } from "./util/helpers-map-animations";
 import detectLocation from "./util/detectLocation";
 import GlobalStyles from "./styles/GlobalStyles";
 
-import {
-  theme,
-  GlobalStyle,
-  LayerWhiteFirstDefault,
-  // i18n,
-} from "senf-atomic-design-system";
-import { ThemeProvider } from "styled-components";
+import "./util/i18n";
 
-import "./util/i18n"; // i18n configuration
+// import Main from "./pages/Main";
+
+const Main = React.lazy(() =>
+  Promise.all([
+    import("./pages/main"),
+    new Promise((resolve) => setTimeout(resolve, 3300)),
+  ]).then(([moduleExports]) => moduleExports)
+); // i18n configuration
 
 // detectLocation(); // detect location and set i18n language
 const cookies = new Cookies();
-//require("intersection-observer");
-
-const muiTheme = createTheme(themeFile);
+// require("intersection-observer");
 
 window.store = store;
 
@@ -78,7 +79,7 @@ if (cookies.get("cookie_settings") === "all") {
 } else {
   store.dispatch(setInfoPageOpen());
 }
-let vh = window.innerHeight * 0.01;
+const vh = window.innerHeight * 0.01;
 // Then we set the value in the --vh custom property to the root of the document
 document.documentElement.style.setProperty("--vh", `${vh}px`);
 
@@ -109,7 +110,7 @@ const App = () => {
   };
   useEffect(() => {
     setViewport();
-    const initialMapViewport = store.getState().data.initialMapViewport;
+    const { initialMapViewport } = store.getState().data;
     store.dispatch(getScreams(initialMapViewport));
     store.dispatch(getOrganizations(initialMapViewport));
     store.dispatch(getProjects(initialMapViewport));
@@ -144,18 +145,18 @@ const App = () => {
         </Helmet>
       )}
 
-      <MuiThemeProvider theme={muiTheme}>
-        <Provider store={store}>
-          <GlobalStyles />
-          <Router>
-            <Cookiebanner />
-            {tabletNote}
+      <Provider store={store}>
+        <GlobalStyles />
+        <Router>
+          <Cookiebanner />
+          {tabletNote}
 
-            {isMobileCustom && (
-              <div className="landscapeNote">{t("rotate_phone")}</div>
-            )}
+          {isMobileCustom && (
+            <div className="landscapeNote">{t("rotate_phone")}</div>
+          )}
 
-            <div className="container">
+          <div className="container">
+            <React.Suspense fallback={<MainLoader />}>
               <Switch>
                 <Route exact path="/" component={Main} />
                 <Route exact path="/projectRooms" component={Main} />
@@ -196,10 +197,10 @@ const App = () => {
 
                 <Route path="*" component={Main} />
               </Switch>
-            </div>
-          </Router>
-        </Provider>
-      </MuiThemeProvider>
+            </React.Suspense>
+          </div>
+        </Router>
+      </Provider>
     </ThemeProvider>
   );
 };

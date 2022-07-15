@@ -5,15 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-//firebase
-import { db } from "../../../../firebase";
-import {
-  ComponentInnerWrapper,
-  ComponentWrapper,
-} from "../styles/sharedStyles";
-import Navigation from "../Components/Navigation";
-import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
-import organizationTypes from "../../../../data/organizationTypes";
+// firebase
 import {
   addDoc,
   arrayUnion,
@@ -22,6 +14,14 @@ import {
   getDoc,
   updateDoc,
 } from "firebase/firestore";
+import { db } from "../../../../firebase";
+import {
+  ComponentInnerWrapper,
+  ComponentWrapper,
+} from "../styles/sharedStyles";
+import Navigation from "../Components/Navigation";
+import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
+import organizationTypes from "../../../../data/organizationTypes";
 
 const CoverWrapper = styled.div`
   margin-left: 0%;
@@ -69,8 +69,8 @@ const Icon = styled.div`
   margin: 45% 35% 25% 35%;
 `;
 const CoverTitle = styled.span`
-  font-size: 15px;
-  font-weight: 900;
+  font-size: 14px;
+  font-weight: 700;
   /* font-family: PlayfairDisplay-Bold; */
   color: #353535;
   text-align: center;
@@ -126,9 +126,9 @@ const CreateOrganizationPage1 = ({
         typeof Storage !== "undefined" &&
         localStorage.getItem("createOrganizationId")
       ) {
-        //UPDATING AN EXISTING PROJECTROOM
+        // UPDATING AN EXISTING PROJECTROOM
         const updateProject = {
-          organizationType: organizationType,
+          organizationType,
         };
 
         const ref = doc(
@@ -146,9 +146,9 @@ const CreateOrganizationPage1 = ({
           }, 200);
         });
       } else {
-        //CREATING A NEW ORGANIZATION
+        // CREATING A NEW ORGANIZATION
         const newOrganization = {
-          organizationType: organizationType,
+          organizationType,
           userIds: [userId],
           createdAt: new Date().toISOString(),
           status: "uncompleted",

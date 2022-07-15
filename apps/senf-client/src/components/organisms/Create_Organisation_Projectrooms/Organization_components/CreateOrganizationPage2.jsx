@@ -1,33 +1,28 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
 import * as yup from "yup";
 
-//firebase
-import { db } from "../../../../firebase";
-//Components
-
-//images
-import {
-  ButtonsWrapper,
-  ComponentInnerWrapper,
-  ComponentWrapper,
-  SubTitle,
-  Title,
-} from "../styles/sharedStyles";
-import Contact from "../../../molecules/Modals/Post_Edit_ModalComponents/Contact";
-//import Geocoder from "react-mapbox-gl-geocoder";
-import Navigation from "../Components/Navigation";
-import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
+// firebase
 import { TextField } from "@material-ui/core";
 import { useFormik } from "formik";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { Box, Input } from "senf-atomic-design-system";
+import { db } from "../../../../firebase";
+// Components
+
+// images
+import {
+  ComponentInnerWrapper,
+  ComponentWrapper,
+} from "../styles/sharedStyles";
+// import Geocoder from "react-mapbox-gl-geocoder";
+import Navigation from "../Components/Navigation";
+import { StyledH3 } from "../../../../styles/GlobalStyle";
 
 const Wrapper = styled.div`
   display: flex;
@@ -124,7 +119,7 @@ const CreateOrganizationPage2 = ({
   const MyInput = (props) => (
     <input
       {...props}
-      placeholder={address ? address : "Addresse der Organisation"}
+      placeholder={address || "Addresse der Organisation"}
       id="geocoder"
       autoComplete="off"
     />
@@ -155,13 +150,13 @@ const CreateOrganizationPage2 = ({
       typeof Storage !== "undefined" &&
       localStorage.getItem("createOrganizationId")
     ) {
-      //UPDATING AN EXISTING PROJECTROOM
+      // UPDATING AN EXISTING PROJECTROOM
       const updateProject = {
         weblink: formik.values.weblink,
         contact: formik.values.contact,
-        address: address,
-        longitude: longitude,
-        latitude: latitude,
+        address,
+        longitude,
+        latitude,
       };
 
       const ref = doc(
@@ -189,51 +184,35 @@ const CreateOrganizationPage2 = ({
             {pagesData[index].subTitle}
           </StyledH3>
 
-          <TextField
-            id="outlined-name"
-            name="contact"
-            type="contact"
-            label={t("contact-address")}
-            margin="normal"
-            variant="outlined"
-            style={{
-              backgroundColor: "white",
-              borderRadius: "5px",
-              width: "100%",
-            }}
-            value={formik.values.contact}
-            onChange={formik.handleChange}
-          />
-          <TextField
-            id="outlined-name"
-            name="weblink"
-            type="weblink"
-            label={t("external-link")}
-            margin="normal"
-            variant="outlined"
-            style={{
-              backgroundColor: "white",
-              borderRadius: "5px",
-              width: "100%",
-            }}
-            value={formik.values.weblink}
-            onChange={formik.handleChange}
-          />
+          <Box flexDirection="column" gap="20px">
+            <Input
+              key="contact"
+              id="contact"
+              name="contact"
+              type="text"
+              placeholder={t("contact-address")}
+              label={t("contact-address")}
+              onChange={formik?.handleChange}
+              onBlur={formik?.handleBlur}
+              value={formik?.values.contact}
+              error={formik?.touched.contact && Boolean(formik?.errors.contact)}
+              note={formik?.touched.contact && formik?.errors.contact}
+            />
 
-          <GeocoderWrapper>
-            {/* <Geocoder
-              mapboxApiAccessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
-              onSelected={geocode}
-              // {...viewport}
-              hideOnSelect={true}
-              limit={3}
-              // queryParams={queryParams}
-              id="geocoder-edit"
-              className="geocoder-edit"
-              inputComponent={MyInput}
-              updateInputOnSelect
-            /> */}
-          </GeocoderWrapper>
+            <Input
+              key="weblink"
+              id="weblink"
+              name="weblink"
+              type="text"
+              placeholder={t("external-link")}
+              label={t("external-link")}
+              onChange={formik?.handleChange}
+              onBlur={formik?.handleBlur}
+              value={formik?.values.weblink}
+              error={formik?.touched.weblink && Boolean(formik?.errors.weblink)}
+              note={formik?.touched.weblink && formik?.errors.weblink}
+            />
+          </Box>
         </ComponentInnerWrapper>
       </ComponentWrapper>
 

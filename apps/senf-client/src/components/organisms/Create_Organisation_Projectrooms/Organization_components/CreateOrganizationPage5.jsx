@@ -4,11 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
-//firebase
-import { db } from "../../../../firebase";
+// firebase
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { TextField } from "@material-ui/core";
+import { useFormik } from "formik";
+import { Input } from "senf-atomic-design-system";
+import { db } from "../../../../firebase";
 
-//images
+// images
 import {
   ButtonsWrapper,
   ComponentInnerWrapper,
@@ -17,12 +20,10 @@ import {
   Title,
 } from "../styles/sharedStyles";
 import Contact from "../../../molecules/Modals/Post_Edit_ModalComponents/Contact";
-//import Geocoder from "react-mapbox-gl-geocoder";
+// import Geocoder from "react-mapbox-gl-geocoder";
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3, StyledText } from "../../../../styles/GlobalStyle";
 import InlineDatePicker from "../../../atoms/InlineDatePicker/InlineDatePicker";
-import { TextField } from "@material-ui/core";
-import { useFormik } from "formik";
 
 const RemoveButton = styled.button`
   margin-top: 15px;
@@ -63,13 +64,17 @@ const CreateOrganizationPage5 = ({
   const [formFields, setFormFields] = useState([{ question: "", answer: "" }]);
 
   const handleFormChange = (event, index) => {
-    let data = [...formFields];
-    data[index][event.target.name] = event.target.value;
+    const data = [...formFields];
+    // data[index][event.target.name] = event.target.value;
+    data[index][event.target.attributes.id.nodeValue] = event.target.value;
+
     setFormFields(data);
+
+    console.log(formFields);
   };
 
   const addFields = () => {
-    let object = {
+    const object = {
       question: "",
       answer: "",
     };
@@ -78,7 +83,7 @@ const CreateOrganizationPage5 = ({
   };
 
   const removeFields = (index) => {
-    let data = [...formFields];
+    const data = [...formFields];
     data.splice(index, 1);
     setFormFields(data);
   };
@@ -117,7 +122,7 @@ const CreateOrganizationPage5 = ({
       typeof Storage !== "undefined" &&
       localStorage.getItem("createOrganizationId")
     ) {
-      //UPDATING AN EXISTING PROJECTROOM
+      // UPDATING AN EXISTING PROJECTROOM
       const updateProject = {
         faqs: formFields[0].question !== "" ? formFields : null,
       };
@@ -145,58 +150,48 @@ const CreateOrganizationPage5 = ({
           </StyledH3>
 
           <form>
-            {formFields.map((form, index) => {
-              return (
-                <div key={index} style={{ flex: "none", marginBottom: "20px" }}>
-                  <div style={{ display: "flex" }}>
-                    <TextField
-                      id="outlined-name"
-                      name="question"
-                      type="question"
-                      label={t("question")}
-                      margin="normal"
-                      variant="outlined"
-                      multiline
-                      style={{
-                        backgroundColor: "white",
-                        borderRadius: "8px",
-                        width: "calc(100% - 60px)",
-                      }}
-                      value={form.question}
-                      onChange={(event) => handleFormChange(event, index)}
-                    />
-                    <RemoveButton onClick={() => removeFields(index)}>
-                      <StyledH2
-                        fontSize="22px"
-                        fontWeight="900"
-                        textAlign="center"
-                      >
-                        {" "}
-                        –
-                      </StyledH2>
-                    </RemoveButton>
-                  </div>
-                  <TextField
-                    id="outlined-name"
-                    name="answer"
-                    type="answer"
-                    label={t("answer")}
-                    margin="normal"
-                    variant="outlined"
-                    multiline
-                    min-rows={3}
-                    style={{
-                      backgroundColor: "white",
-                      borderRadius: "8px",
-                      width: "100%",
-                      marginTop: 0,
-                    }}
-                    value={form.answer}
+            {formFields.map((form, index) => (
+              <div key={index} style={{ flex: "none", marginBottom: "20px" }}>
+                <div style={{ display: "flex" }}>
+                  <Input
+                    key="question"
+                    id="question"
+                    name="question"
+                    type="textarea"
+                    placeholder={t("question")}
+                    label={t("question")}
+                    rows={1}
+                    value={form.question}
                     onChange={(event) => handleFormChange(event, index)}
                   />
+
+                  <RemoveButton onClick={() => removeFields(index)}>
+                    <StyledH2
+                      fontSize="22px"
+                      fontWeight="900"
+                      textAlign="center"
+                    >
+                      {" "}
+                      –
+                    </StyledH2>
+                  </RemoveButton>
                 </div>
-              );
-            })}
+
+                <Input
+                  key="answer"
+                  id="answer"
+                  name="answer"
+                  type="textarea"
+                  placeholder={t("answer")}
+                  label={t("answer")}
+                  rows={1}
+                  value={form.answer}
+                  onChange={(event) => handleFormChange(event, index)}
+
+                  // minRows="3"
+                />
+              </div>
+            ))}
           </form>
           <div style={{ display: "flex", justifyContent: "center" }}>
             <AddButton onClick={addFields}>
