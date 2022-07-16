@@ -8,7 +8,6 @@ import React, {
   useMemo,
 } from "react";
 import styled from "styled-components";
-import ReactDOM from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -21,7 +20,7 @@ import {
   Box,
   MobileTopBar,
   ErrorLoading,
-  MainLoader,
+  Loader,
 } from "senf-atomic-design-system";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
@@ -54,15 +53,14 @@ import {
 import StatisticsOverviewPage from "./StatisticsOverviewPage";
 import Map from "../components/atoms/map/Map";
 import IdeaDialog from "./IdeaDetailPage";
-import Loader from "../components/atoms/Backgrounds/Loader";
 import {
   closeAccountFunc,
   getMyOrganizations,
   getMyScreams,
   openAccountFunc,
 } from "../redux/actions/accountActions";
-import PostScream from "../components/organisms/PostIdea/PostScream";
-import ChangeLocationModal from "../components/molecules/Modals/ChangeLocationModal";
+import PostScream from "../components/PostIdea/PostScream";
+import ChangeLocationModal from "../components/Modals/ChangeLocationModal";
 import { usePrevious } from "../hooks/usePrevious";
 import {
   getOrganizations,
@@ -83,15 +81,13 @@ import Auth from "./Auth";
 
 import OrganizationPage from "./OrganizationPage";
 import { likeScream, unlikeScream } from "../redux/actions/likeActions";
-import InlineInformationPage from "../components/organisms/infocomponents/InlineInformationPage";
+import InlineInformationPage from "../components/infocomponents/InlineInformationPage";
 import ProjectroomPage from "./ProjectroomPage";
 import ProfilePage from "./ProfilePage";
 import { StyledH3 } from "../styles/GlobalStyle";
 
 const CreateMainComponent = React.lazy(() =>
-  import(
-    "../components/organisms/Create_Organisation_Projectrooms/CreateMainComponent"
-  )
+  import("../components/Create_Organisation_Projectrooms/CreateMainComponent")
 );
 const MainColumnWrapper = styled.div`
   width: 100vw;
@@ -651,8 +647,6 @@ const Main = () => {
         </Modal>
       )}
 
-      {(loadingIdea || loadingProjectRoom) && <Loader withoutBg={true} />}
-
       {openInfoPage && (
         <InlineInformationPage
           setOrder={setOrder}
@@ -755,9 +749,6 @@ const Main = () => {
 
       {!openInfoPage && (
         <MainColumnWrapper>
-          {/* {(loading || loadingIdea || loadingProjectRoom) &&
-            !isMobileCustom && <Loader left="200px" width="400px" />} */}
-
           {!openProjectRoom &&
             !openAccount &&
             !loading &&

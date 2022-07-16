@@ -37,11 +37,10 @@ import { getProjects } from "./redux/actions/projectActions";
 import { getScreams } from "./redux/actions/screamActions";
 
 // Pages
-import impressum from "./components/organisms/infocomponents/legal/impressum";
-import datenschutz from "./components/organisms/infocomponents/legal/datenschutz";
-import agb from "./components/organisms/infocomponents/legal/agb";
-import cookieConfigurator from "./components/organisms/infocomponents/legal/cookieConfigurator";
-
+import impressum from "./components/infocomponents/legal/impressum";
+import datenschutz from "./components/infocomponents/legal/datenschutz";
+import agb from "./components/infocomponents/legal/agb";
+import cookieConfigurator from "./components/infocomponents/legal/cookieConfigurator";
 import blank from "./pages/Blank";
 
 import { isMobileCustom } from "./util/customDeviceDetect";
@@ -49,7 +48,7 @@ import { isMobileCustom } from "./util/customDeviceDetect";
 import packageJson from "../package.json";
 import { getBuildDate } from "./util/helpers";
 import withClearCache from "./ClearCache";
-import Cookiebanner from "./components/organisms/Cookiebanner/Cookiebanner";
+import Cookiebanner from "./components/Cookiebanner/Cookiebanner";
 import { setViewport } from "./util/helpers-map-animations";
 import detectLocation from "./util/detectLocation";
 import GlobalStyles from "./styles/GlobalStyles";

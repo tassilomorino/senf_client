@@ -14,7 +14,7 @@ import { isMobileCustom } from "../util/customDeviceDetect";
 import { closeScream, deleteScream } from "../redux/actions/screamActions";
 import { clearErrors } from "../redux/actions/errorsActions";
 
-import CommentMenuModal from "../components/molecules/Modals/CommentMenuModal";
+import CommentMenuModal from "../components/Modals/CommentMenuModal";
 import { openProjectRoomFunc } from "../redux/actions/projectActions";
 import EditIdeaPage from "./EditIdeaPage";
 import { submitComment } from "../redux/actions/commentActions";
@@ -267,6 +267,7 @@ const IdeaDetailPage = ({
         {commentMenuOpen && (
           <CommentMenuModal
             commentId={commentIdSelected}
+            commentMenuOpen={commentMenuOpen}
             setCommentMenuOpen={setCommentMenuOpen}
             screamId={screamId}
             commentUserId={commentUserIdSelected}

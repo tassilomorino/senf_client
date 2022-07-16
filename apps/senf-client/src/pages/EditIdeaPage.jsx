@@ -12,9 +12,9 @@ import {
 } from "senf-atomic-design-system";
 import { editScreamFunc, getUserEmail } from "../redux/actions/screamActions";
 
-import Weblink from "../components/molecules/Modals/Post_Edit_ModalComponents/Weblink";
-import Contact from "../components/molecules/Modals/Post_Edit_ModalComponents/Contact";
-import InlineDatePickerModal from "../components/molecules/Modals/InlineDatePickerModal";
+import Weblink from "../components/Modals/Post_Edit_ModalComponents/Weblink";
+import Contact from "../components/Modals/Post_Edit_ModalComponents/Contact";
+import InlineDatePickerModal from "../components/Modals/Post_Edit_ModalComponents/InlineDatePickerModal";
 
 const EditIdeaPage = ({
   isAdmin,
