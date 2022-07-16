@@ -22,8 +22,9 @@ const Wrapper = styled.div`
   gap: 8px;
   width: 100%;
   position: fixed;
-  top: calc((var(--vh, 1vh) * 100) - 210px);
-  left: 10px;
+  top: calc((var(--vh, 1vh) * 100) - 150px);
+  display: flex;
+  justify-content: center;
   pointer-events: none;
 
   @media (min-width: 768px) {

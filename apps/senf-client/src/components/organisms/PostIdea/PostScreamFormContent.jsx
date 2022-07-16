@@ -2,22 +2,9 @@
 
 import React from "react";
 import { isAndroid } from "react-device-detect";
-import { isMobileCustom } from "../../../util/customDeviceDetect";
-
 import { useTranslation } from "react-i18next";
-
-//MUI Stuff
 import { TextField } from "@material-ui/core";
-
-//Components
-import PostScreamRules from "./PostScreamRules";
-
-//Icons
-import LocationIcon from "../../../images/icons/location.png";
-import CustomSelect from "../../atoms/Selects/CustomSelect";
-import { OptionsTopics } from "../../../data/OptionsTopics";
 import styled from "styled-components";
-import { StyledH3, StyledH4, StyledText } from "../../../styles/GlobalStyle";
 import {
   Box,
   RoundedButton,
@@ -27,6 +14,19 @@ import {
   Mail,
   CalendarIcon,
 } from "senf-atomic-design-system";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
+
+// MUI Stuff
+
+// Components
+import PostScreamRules from "./PostScreamRules";
+
+// Icons
+import LocationIcon from "../../../images/icons/location.png";
+import CustomSelect from "../../atoms/Selects/CustomSelect";
+import { OptionsTopics } from "../../../data/OptionsTopics";
+import { StyledH3, StyledH4, StyledText } from "../../../styles/GlobalStyle";
+
 const Card = styled.div`
   position: absolute;
   top: 0;
@@ -132,6 +132,7 @@ const PostScreamFormContent = ({
   setWeblinkOpen,
   setContactOpen,
   setCalendarOpen,
+  setOpenRules,
 }) => {
   const { t } = useTranslation();
 
@@ -149,10 +150,7 @@ const PostScreamFormContent = ({
       }
     >
       {!isMobileCustom && (
-        <HideDiv
-          onClick={handleLocationDecided}
-          show={locationDecided ? false : true}
-        />
+        <HideDiv onClick={handleLocationDecided} show={!locationDecided} />
       )}
 
       <Content>
@@ -164,6 +162,13 @@ const PostScreamFormContent = ({
             style={{ paddingRight: "5px" }}
           />
           <StyledH4> ~ {address} </StyledH4>
+
+          <Button
+            variant="secondary"
+            onClick={() => setOpenRules(true)}
+            text={t("rules")}
+          />
+
           <PostScreamRules />
         </FlexWrapper>
         <Input
@@ -180,7 +185,7 @@ const PostScreamFormContent = ({
           multiline
           maxRows="2"
           placeholder=""
-          error={errors.title ? true : false}
+          error={!!errors.title}
           helperText={errors.title}
           className={classes.textField}
           onChange={(event) => setTitle(event.target.value)}
@@ -196,7 +201,7 @@ const PostScreamFormContent = ({
           maxRows="12"
           InputProps={{ disableUnderline: true }}
           placeholder=""
-          error={errors.body ? true : false}
+          error={!!errors.body}
           helperText={errors.body}
           className={classes.textField}
           onChange={(event) => setBody(event.target.value)}

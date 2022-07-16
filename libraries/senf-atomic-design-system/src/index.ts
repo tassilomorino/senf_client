@@ -11,6 +11,8 @@ export { default as CommentActive } from "./assets/icons/CommentActive";
 export { default as FlameInactive } from "./assets/icons/FlameInactive";
 export { default as FlameActive } from "./assets/icons/FlameActive";
 
+export { default as LogoText } from "./assets/logo/LogoText";
+
 export {
   LayerWhiteGradientBordersDefault,
   LayerWhiteFirstDefault,

@@ -1,7 +1,15 @@
 import React from "react";
-import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 import styled from "styled-components";
-import LogoWhite from "../../../../images/logo_white.png";
+import { Box, Plus, RoundedButton, LogoText } from "senf-atomic-design-system";
+
+const OuterWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  top: 0;
+  position: fixed;
+  overflow: scroll;
+  background-color: #f9f1d7;
+`;
 
 const Wrapper = styled.div`
   position: relative;
@@ -19,7 +27,7 @@ const Wrapper = styled.div`
 const Logo = styled.h1`
   position: relative;
   top: 0em;
-  left: 0vw;
+  left: 35px;
 `;
 
 export const LegalStyles = ({ children }) => {
@@ -28,23 +36,25 @@ export const LegalStyles = ({ children }) => {
   };
 
   return (
-    <div>
-      <CustomIconButton
-        name="Close"
+    <OuterWrapper>
+      <Box
         position="fixed"
         margin={document.body.clientWidth > 768 ? "40px" : "10px"}
-        left="0"
-        handleButtonClick={() => linkToHome()}
-        top="0"
-      />
+        zIndex={2}
+      >
+        <RoundedButton
+          icon={<Plus transform="rotate(45deg)" />}
+          onClick={() => linkToHome()}
+        />
+      </Box>
 
       <Wrapper>
         <Logo onClick={() => linkToHome()}>
-          <img src={LogoWhite} width="100px" alt="logo" />
+          <LogoText transform="scale(2.5)" />
         </Logo>
         {children}
       </Wrapper>
-    </div>
+    </OuterWrapper>
   );
 };
 
@@ -54,10 +64,8 @@ const TermsWrapper = styled.a`
   cursor: pointer;
 `;
 
-export const Terms = ({ children, href, target, rel }) => {
-  return (
-    <TermsWrapper prefetch href={href} passHref target={target} rel={rel}>
-      {children}
-    </TermsWrapper>
-  );
-};
+export const Terms = ({ children, href, target, rel }) => (
+  <TermsWrapper prefetch href={href} passHref target={target} rel={rel}>
+    {children}
+  </TermsWrapper>
+);
