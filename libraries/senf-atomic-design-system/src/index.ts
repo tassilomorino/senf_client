@@ -62,8 +62,10 @@ export { default as Accordion } from "./components/molecules/accordion/Accordion
 export { default as TagSlide } from "./components/molecules/tagSlide/TagSlide";
 export { default as LanguageSelect } from "./components/molecules/languageSelect/LanguageSelect";
 
+export { default as ActionModal } from "./components/organisms/actionModals/ActionModal";
 export { default as MenuSidebar } from "./components/organisms/menuSidebar/MenuSidebar";
 export { default as MobileTopBar } from "./components/organisms/mobileTopBar/MobileTopBar";
+export { default as DatePicker } from "./components/organisms/datePicker/DatePicker";
 
 export { default as MainSwipeList } from "./components/pages/mainSwipeList/MainSwipeList";
 

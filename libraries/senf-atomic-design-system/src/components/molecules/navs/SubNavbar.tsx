@@ -2,6 +2,7 @@
 
 import React, { FC } from "react";
 import styled from "styled-components";
+import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 import TertiaryButton from "../../atoms/buttons/TertiaryButton";
 import Typography from "../../atoms/typography/Typography";
 import { SubNavbarProps } from "./SubNavbar.types";
@@ -59,33 +60,36 @@ const SubNavbar: FC<SubNavbarProps> = ({
   iconRight,
   iconRightTransform,
   handlebar,
-}) => (
-  <Wrapper>
-    {handlebar && <HandleBar />}
-    <LeftWrapper onClick={leftButtonClick}>
-      <TertiaryButton
-        iconLeft={iconLeft}
-        iconLeftTransform={iconLeftTransform}
-        text={textLeft}
-      />
-    </LeftWrapper>
-
-    <CenterWrapper>
-      <Typography variant="h3">{header}</Typography>
-    </CenterWrapper>
-
-    <RightWrapper>
-      {textRight || iconRight ? (
+}) => {
+  const isMobile = isMobileCustom();
+  return (
+    <Wrapper>
+      {handlebar && isMobile && <HandleBar />}
+      <LeftWrapper onClick={leftButtonClick}>
         <TertiaryButton
-          iconRight={iconRight}
-          iconRightTransform={iconRightTransform}
-          text={textRight}
+          iconLeft={iconLeft}
+          iconLeftTransform={iconLeftTransform}
+          text={textLeft}
         />
-      ) : (
-        <div />
-      )}
-    </RightWrapper>
-  </Wrapper>
-);
+      </LeftWrapper>
+
+      <CenterWrapper>
+        <Typography variant="h3">{header}</Typography>
+      </CenterWrapper>
+
+      <RightWrapper>
+        {textRight || iconRight ? (
+          <TertiaryButton
+            iconRight={iconRight}
+            iconRightTransform={iconRightTransform}
+            text={textRight}
+          />
+        ) : (
+          <div />
+        )}
+      </RightWrapper>
+    </Wrapper>
+  );
+};
 
 export default SubNavbar;

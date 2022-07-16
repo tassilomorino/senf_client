@@ -21513,6 +21513,7 @@ __metadata:
     react-device-detect: ^2.2.2
     react-i18next: ^11.16.7
     react-infinite-scroller: ^1.2.6
+    react-multi-date-picker: ^3.3.0
     react-share: ^4.4.0
     rollup-plugin-visualizer: ^5.6.0
     storybook-addon-turbo-build: ^1.1.0

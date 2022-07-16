@@ -16,7 +16,7 @@ import {
 } from "../util/helpers";
 
 import { logoutUser } from "../redux/actions/userActions";
-import DeleteMenuModal from "../components/molecules/Modals/DeleteMenuModal";
+import DeleteMenuModal from "../components/Modals/DeleteMenuModal";
 
 const ProfilePage = ({
   dataFinalMap,
