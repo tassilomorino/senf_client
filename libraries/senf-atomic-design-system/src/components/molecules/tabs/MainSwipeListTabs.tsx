@@ -14,7 +14,7 @@ const Wrapper = styled.div<MainSwipeListTabsProps>`
 
 const Tab = styled.div<MainSwipeListTabsProps>`
   cursor: pointer;
-  margin: ${({ isMobile }) => (isMobile ? "10px" : "0px 10px 5px 10px")};
+  margin: ${({ isMobile }) => (isMobile ? "2px 10px" : "0px 10px 5px 10px")};
   color: ${({ active, theme }) =>
     active ? "black" : theme.colors.primary.primary160};
 
@@ -25,19 +25,32 @@ const Tab = styled.div<MainSwipeListTabsProps>`
 
 const MainSwipeListTabs: FC<MainSwipeListTabsProps> = ({
   swipedUp,
+  handleSwipeUp,
   order,
   setOrder,
+  ideasDataLength,
+  projectroomsDataLength,
 }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom();
+
+  const handleClickTab = (clickedOrder) => {
+    if (
+      isMobile &&
+      ((order === "ideas" && clickedOrder === 1) ||
+        (order === "projectrooms" && clickedOrder === 2))
+    ) {
+      handleSwipeUp();
+    } else {
+      setOrder(clickedOrder);
+    }
+  };
+
   return (
     <Wrapper isMobile={isMobile}>
-      <Box
-        margin={swipedUp ? "22px 14px 10px 14px" : "16px 14px 10px 14px"}
-        flexDirection={isMobile ? "row" : "column"}
-      >
+      <Box margin={"22px 14px 10px 14px"} flexDirection={"column"}>
         <Tab
-          onClick={() => setOrder(1)}
+          onClick={() => handleClickTab(1)}
           isMobile={isMobile}
           active={order === "ideas"}
         >
@@ -48,11 +61,11 @@ const MainSwipeListTabs: FC<MainSwipeListTabsProps> = ({
             fontWeight={900}
             fontSize={isMobile ? "5.6vw" : "22px"}
           >
-            {t("menuData_allIdeas")}
+            {ideasDataLength} {t("ideas")}
           </Typography>
         </Tab>
         <Tab
-          onClick={() => setOrder(2)}
+          onClick={() => handleClickTab(2)}
           isMobile={isMobile}
           active={order === "projectrooms"}
         >
@@ -63,7 +76,7 @@ const MainSwipeListTabs: FC<MainSwipeListTabsProps> = ({
             fontWeight={900}
             fontSize={isMobile ? "5.6vw" : "22px"}
           >
-            {t("menuData_projectrooms")}
+            {projectroomsDataLength} {t("menuData_projectrooms")}
           </Typography>
         </Tab>
       </Box>

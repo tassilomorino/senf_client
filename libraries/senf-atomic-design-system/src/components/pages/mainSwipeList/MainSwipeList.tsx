@@ -81,11 +81,10 @@ const ContentWrapper = styled.div<OrganizationsOverviewProps>`
 
 const RoundedButtonWrapper = styled.div`
   position: absolute;
-  top: ${({ swipedUp }) => (swipedUp ? "10px" : "-34px")};
-  right: ${({ swipedUp }) => (swipedUp ? "10px" : "20px")};
+  top: 16px;
+  right: 16px;
   z-index: 299;
   transition: 0.5s;
-  transform: ${({ swipedUp }) => (swipedUp ? "scale(0.8)" : "scale(1)")};
 
   @media (min-width: 768px) {
     top: 24px;
@@ -178,15 +177,15 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
     x: 0,
     y: 0,
     scale: 1,
-    transform: `translateY(${window.innerHeight - 160}px)`,
+    transform: `translateY(${window.innerHeight - 100}px)`,
     overflow: "visible",
     touchAction: "none",
     userSelect: "none",
   }));
 
-  const [listHeaderProps, setListHeaderProps] = useSpring(() => ({
-    height: isMobile ? "60px" : "160px",
-  }));
+  // const [listHeaderProps, setListHeaderProps] = useSpring(() => ({
+  //   height: isMobile ? "60px" : "160px",
+  // }));
 
   useEffect(() => {
     if (openScream) {
@@ -196,32 +195,40 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
       });
     } else if (!swipedUp) {
       setSpring({
-        transform: `translateY(${window.innerHeight - 160}px)`,
+        transform: `translateY(${window.innerHeight - 100}px)`,
         touchAction: "none",
       });
     } else {
       setSpring({
-        transform: `translateY(${30}px)`,
+        transform: `translateY(${16}px)`,
         touchAction: "unset",
       });
     }
   }, [openScream]);
 
-  useEffect(() => {
-    if (searchOpen) {
-      setListHeaderProps({
-        height: isMobile ? "130px" : "220px",
-      });
-    } else if (swipedUp && isMobile) {
-      setListHeaderProps({
-        height: "130px",
-      });
-    } else {
-      setListHeaderProps({
-        height: isMobile ? "60px" : "160px",
-      });
-    }
-  }, [searchOpen]);
+  const handleSwipeUp = () => {
+    setSwipedUp(true);
+    setSpring({
+      transform: `translateY(${16}px)`,
+      touchAction: "unset",
+    });
+  };
+
+  // useEffect(() => {
+  //   if (searchOpen) {
+  //     setListHeaderProps({
+  //       height: isMobile ? "130px" : "220px",
+  //     });
+  //   } else if (swipedUp && isMobile) {
+  //     setListHeaderProps({
+  //       height: "130px",
+  //     });
+  //   } else {
+  //     setListHeaderProps({
+  //       height: isMobile ? "60px" : "160px",
+  //     });
+  //   }
+  // }, [searchOpen]);
 
   // useEffect(() => {
   //   if (isMobile) {
@@ -257,7 +264,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
       });
       if (last && my > 50) {
         setSpring({
-          transform: `translateY(${window.innerHeight - 160}px)`,
+          transform: `translateY(${window.innerHeight - 100}px)`,
           touchAction: "none",
         });
         setSwipedUp(false);
@@ -266,7 +273,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
 
       if (last && my < -50) {
         setSpring({
-          transform: `translateY(${30}px)`,
+          transform: `translateY(${16}px)`,
           touchAction: "unset",
         });
 
@@ -275,24 +282,24 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
 
       setSwipePercentage(Math.abs(my) / (window.innerHeight - 190));
 
-      if (!swipedUp && my < -2) {
-        setListHeaderProps({
-          height: down
-            ? `${70 + 80 * swipePercentage}px`
-            : last && my < -50
-            ? "130px"
-            : "60px",
-        });
-      }
-      if (swipedUp && my > 2) {
-        setListHeaderProps({
-          height: down
-            ? `${120 - 80 * swipePercentage}px`
-            : last && my > 50
-            ? "60px"
-            : "130px",
-        });
-      }
+      // if (!swipedUp && my < -2) {
+      //   setListHeaderProps({
+      //     height: down
+      //       ? `${70 + 80 * swipePercentage}px`
+      //       : last && my < -50
+      //       ? "130px"
+      //       : "60px",
+      //   });
+      // }
+      // if (swipedUp && my > 2) {
+      //   setListHeaderProps({
+      //     height: down
+      //       ? `${120 - 80 * swipePercentage}px`
+      //       : last && my > 50
+      //       ? "60px"
+      //       : "130px",
+      //   });
+      // }
 
       setSpring({ y: down ? my : 0 });
     },
@@ -368,10 +375,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
             : null
         }
       >
-        <Wave
-          color={theme.colors.beige.beige20}
-          top={swipedUp || !isMobile ? "0px" : "200px"}
-        />
+        <Wave color={theme.colors.beige.beige20} top="0px" />
         {!isMobile && (
           <MenuSidebar
             handleOpenMyAccount={handleOpenMyAccount}
@@ -381,15 +385,22 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
         )}
 
         <InnerWrapper>
-          <Header {...bind()} swipedUp={swipedUp} style={listHeaderProps}>
+          <Header
+            {...bind()}
+            swipedUp={swipedUp}
+            // style={listHeaderProps}
+          >
             {isMobile && <HandleBar />}
 
             <MainSwipeListTabs
               swipedUp={swipedUp}
+              handleSwipeUp={handleSwipeUp}
               order={order}
               setOrder={setOrder}
+              ideasDataLength={ideasData.length}
+              projectroomsDataLength={projectroomsData.length}
             />
-            <RoundedButtonWrapper swipedUp={swipedUp}>
+            <RoundedButtonWrapper>
               <RoundedButton
                 size="big"
                 icon={
@@ -402,7 +413,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
               />
             </RoundedButtonWrapper>
 
-            {isMobile && swipedUp && (
+            {isMobile && (
               <Box margin="-10px 0px">
                 <TagSlide
                   type={order === "ideas" ? "topics" : "organizationTypes"}

@@ -7,6 +7,7 @@ import { MainLoaderProps } from "./MainLoader.types";
 import mainLoader from "../../../assets/lottieFiles/senf-Loader-v012.json";
 import Typography from "../typography/Typography";
 import Box from "../box/Box";
+import LogoText from "../../../assets/logo/LogoText";
 
 const StyledLoader = styled.div`
   width: 100%;
@@ -50,24 +51,17 @@ const MainLoader: FC<MainLoaderProps> = () => {
         }}
       >
         {loading && (
-          <Box gap="10px" flexDirection="column" top="-100px">
-            <Typography
-              variant="h1"
-              color="white"
-              fontWeight="900"
-              fontSize="70px"
-              textAlign="center"
-            >
-              Senf
-            </Typography>
+          <Box gap="30px" flexDirection="column" top="-100px">
+            <Box justifyContent="center">
+              <LogoText transform="scale(3)" color="white" />
+            </Box>
             <Typography
               variant="h2"
               color="white"
-              fontWeight="900"
               fontSize="30px"
               textAlign="center"
             >
-              599 Ideen für Köln
+              Ideen für Städte
             </Typography>
           </Box>
         )}

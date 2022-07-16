@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import { Plus, Box, RoundedButton } from "senf-atomic-design-system";
+import { useFormik } from "formik";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 // MUI Stuff
 
@@ -27,6 +28,7 @@ import PostScreamSelectContainter from "./PostScreamSelectContainter";
 import Weblink from "../../molecules/Modals/Post_Edit_ModalComponents/Weblink";
 import Contact from "../../molecules/Modals/Post_Edit_ModalComponents/Contact";
 import InlineDatePickerModal from "../../molecules/Modals/InlineDatePickerModal";
+import PostScreamRules from "./PostScreamRules";
 
 const styles = {
   root: {
@@ -91,6 +93,7 @@ const PostScream = ({
   setAuthOpen,
 }) => {
   const dispatch = useDispatch();
+
   const openScream = useSelector((state) => state.UI.openScream);
   const loading = useSelector((state) => state.data.loading);
   const swipePosition = useSelector((state) => state.UI.swipePosition);
@@ -109,6 +112,7 @@ const PostScream = ({
 
   const [addressBarClickedState, setAddressBarClickedState] = useState(false);
 
+  const [openRules, setOpenRules] = useState(false);
   const [out, setOut] = useState(false);
   const [projectSelected, setProjectSeleted] = useState("");
   const [geoData, setGeoData] = useState("");
@@ -125,6 +129,15 @@ const PostScream = ({
   });
 
   const { errors, MapHeight, locationDecided } = allMainStates;
+
+  const formik = useFormik({
+    initialValues: {
+      contact: "",
+      contactTitle: "",
+    },
+    validateOnChange: true,
+    validateOnBlur: true,
+  });
 
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
@@ -399,14 +412,18 @@ const PostScream = ({
   };
 
   return (
-    <Dialog
-      open={true}
-      onClose={() => setPostIdeaOpen(false)}
-      fullScreen
-      BackdropProps={{ classes: { root: classes.root } }}
-      PaperProps={{ classes: { root: classes.paper } }}
-    >
-      {/* <CustomIconButton
+    <React.Fragment>
+      {openRules && (
+        <PostScreamRules openRules={openRules} setOpenRules={setOpenRules} />
+      )}
+      <Dialog
+        open={true}
+        onClose={() => setPostIdeaOpen(false)}
+        fullScreen
+        BackdropProps={{ classes: { root: classes.root } }}
+        PaperProps={{ classes: { root: classes.paper } }}
+      >
+        {/* <CustomIconButton
         name="Close"
         position="fixed"
         margin={document.body.clientWidth > 768 ? "40px" : "10px"}
@@ -414,138 +431,143 @@ const PostScream = ({
         zIndex="1"
       /> */}
 
-      <Box
-        position="fixed"
-        margin={document.body.clientWidth > 768 ? "20px" : "10px"}
-        zIndex={2}
-      >
-        <RoundedButton
-          icon={<Plus transform="rotate(45deg)" />}
-          onClick={() => setPostIdeaOpen(false)}
-        />
-      </Box>
-
-      {!user.authenticated && (
-        <div
-          className={
-            isMobileCustom ? classes.Authlink : classes.AuthlinkDesktop
-          }
-          style={
-            isMobileCustom && locationDecided
-              ? { top: "27vh", transition: "0.5s" }
-              : isMobileCustom && !locationDecided
-              ? { top: "100vh", transition: "0.5s" }
-              : null
-          }
-          onClick={setAuthOpen}
-        />
-      )}
-
-      {isMobileCustom && (
-        <div
-          style={
-            locationDecided
-              ? { marginTop: 0, transition: "0.5s" }
-              : { marginTop: "100vh", transition: "0.5s" }
-          }
+        <Box
+          position="fixed"
+          margin={document.body.clientWidth > 768 ? "20px" : "10px"}
+          zIndex={2}
         >
+          <RoundedButton
+            icon={<Plus transform="rotate(45deg)" />}
+            onClick={() => setPostIdeaOpen(false)}
+          />
+        </Box>
+
+        {!user.authenticated && (
           <div
-            className="backContainer"
-            onClick={() => handleLocationDecided()}
-          ></div>
+            className={
+              isMobileCustom ? classes.Authlink : classes.AuthlinkDesktop
+            }
+            style={
+              isMobileCustom && locationDecided
+                ? { top: "27vh", transition: "0.5s" }
+                : isMobileCustom && !locationDecided
+                ? { top: "100vh", transition: "0.5s" }
+                : null
+            }
+            onClick={setAuthOpen}
+          />
+        )}
 
-          <div className="PostBackground"></div>
-        </div>
-      )}
+        {isMobileCustom && (
+          <div
+            style={
+              locationDecided
+                ? { marginTop: 0, transition: "0.5s" }
+                : { marginTop: "100vh", transition: "0.5s" }
+            }
+          >
+            <div
+              className="backContainer"
+              onClick={() => handleLocationDecided()}
+            ></div>
 
-      {weblinkOpen && (
-        <Weblink
-          handleCloseWeblink={handleCloseWeblink}
-          handleSaveWeblink={handleSaveWeblink}
-          weblinkTitle={weblinkTitle}
-          weblink={weblink}
-          setWeblinkTitle={setWeblinkTitle}
-          setWeblink={setWeblink}
-          setWeblinkOpen={setWeblinkOpen}
+            <div className="PostBackground"></div>
+          </div>
+        )}
+
+        {weblinkOpen && (
+          <Weblink
+            handleCloseWeblink={handleCloseWeblink}
+            handleSaveWeblink={handleSaveWeblink}
+            weblinkTitle={weblinkTitle}
+            weblink={weblink}
+            setWeblinkTitle={setWeblinkTitle}
+            setWeblink={setWeblink}
+            setWeblinkOpen={setWeblinkOpen}
+          />
+        )}
+        {contactOpen && (
+          <Contact
+            handleCloseContact={handleCloseContact}
+            handleSaveContact={handleSaveContact}
+            formik={formik}
+            onChange={formik?.handleChange}
+            onBlur={formik?.handleBlur}
+            contactTitle={formik?.values.contactTitle}
+            contact={contact}
+            setContactTitle={setContactTitle}
+            setContact={setContact}
+            contactOpen={contactOpen}
+            setContactOpen={setContactOpen}
+          />
+        )}
+        {calendarOpen && (
+          <InlineDatePickerModal
+            setCalendarOpen={setCalendarOpen}
+            handleCloseCalendar={handleCloseCalendar}
+            handleSaveCalendar={handleSaveCalendar}
+            handleChangeCalendar={handleChangeCalendar}
+            selectedDays={selectedDays}
+          />
+        )}
+        {viewport && (
+          <PostScreamMap
+            MapHeight={MapHeight}
+            geocode={geocode}
+            _onMarkerDragEnd={_onMarkerDragEnd}
+            geoData={geoData}
+            viewport={viewport}
+            clicked={addressBarClickedState}
+            addressBarClicked={addressBarClicked}
+            locationDecided={locationDecided}
+            onSelected={onSelected}
+            address={address}
+            loadingProjects={loadingProjects}
+          />
+        )}
+
+        <PostScreamSelectContainter
+          classes={classes}
+          locationDecided={locationDecided}
+          handleLocationDecided={handleLocationDecided}
+          handleLocationDecidedNoLocation={handleLocationDecidedNoLocation}
+          projectSelected={projectSelected}
+          address={address}
+          handleDropdownProject={handleDropdownProject}
+          open={open}
+          loadingProjects={loadingProjects}
+          projectsData={projectsData}
         />
-      )}
-      {contactOpen && (
-        <Contact
-          handleCloseContact={handleCloseContact}
-          handleSaveContact={handleSaveContact}
+
+        <PostScreamFormContent
+          classes={classes}
+          errors={errors}
+          address={address}
+          handleLocationDecided={handleLocationDecided}
+          handleDropdown={handleDropdown}
+          weblink={weblink}
+          weblinkTitle={weblinkTitle}
           contactTitle={contactTitle}
           contact={contact}
-          setContactTitle={setContactTitle}
-          setContact={setContact}
-          contactOpen={contactOpen}
-          setContactOpen={setContactOpen}
-        />
-      )}
-      {calendarOpen && (
-        <InlineDatePickerModal
-          setCalendarOpen={setCalendarOpen}
-          handleCloseCalendar={handleCloseCalendar}
-          handleSaveCalendar={handleSaveCalendar}
-          handleChangeCalendar={handleChangeCalendar}
+          project={projectSelected}
           selectedDays={selectedDays}
-        />
-      )}
-      {viewport && (
-        <PostScreamMap
-          MapHeight={MapHeight}
-          geocode={geocode}
-          _onMarkerDragEnd={_onMarkerDragEnd}
-          geoData={geoData}
-          viewport={viewport}
-          clicked={addressBarClickedState}
-          addressBarClicked={addressBarClicked}
+          topic={topic}
+          loading={loading}
+          Out={out}
           locationDecided={locationDecided}
-          onSelected={onSelected}
-          address={address}
-          loadingProjects={loadingProjects}
+          handleSubmit={handleSubmit}
+          body={body}
+          title={title}
+          setTitle={setTitle}
+          setBody={setBody}
+          setWeblinkOpen={setWeblinkOpen}
+          setContactOpen={setContactOpen}
+          setCalendarOpen={setCalendarOpen}
+          checkIfCalendar={checkIfCalendar}
+          setOpenRules={setOpenRules}
         />
-      )}
-
-      <PostScreamSelectContainter
-        classes={classes}
-        locationDecided={locationDecided}
-        handleLocationDecided={handleLocationDecided}
-        handleLocationDecidedNoLocation={handleLocationDecidedNoLocation}
-        projectSelected={projectSelected}
-        address={address}
-        handleDropdownProject={handleDropdownProject}
-        open={open}
-        loadingProjects={loadingProjects}
-        projectsData={projectsData}
-      />
-
-      <PostScreamFormContent
-        classes={classes}
-        errors={errors}
-        address={address}
-        handleLocationDecided={handleLocationDecided}
-        handleDropdown={handleDropdown}
-        weblink={weblink}
-        weblinkTitle={weblinkTitle}
-        contactTitle={contactTitle}
-        contact={contact}
-        project={projectSelected}
-        selectedDays={selectedDays}
-        topic={topic}
-        loading={loading}
-        Out={out}
-        locationDecided={locationDecided}
-        handleSubmit={handleSubmit}
-        body={body}
-        title={title}
-        setTitle={setTitle}
-        setBody={setBody}
-        setWeblinkOpen={setWeblinkOpen}
-        setContactOpen={setContactOpen}
-        setCalendarOpen={setCalendarOpen}
-        checkIfCalendar={checkIfCalendar}
-      />
-    </Dialog>
+      </Dialog>
+    </React.Fragment>
   );
 };
 

@@ -3,11 +3,12 @@
 import React, { useState, useEffect } from "react";
 
 import Cookies from "universal-cookie";
-import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 import styled from "styled-components";
+import { Switch } from "senf-atomic-design-system";
+import { CustomIconButton } from "../../../atoms/CustomButtons/CustomButton";
 import LogoWhite from "../../../../images/logo_white.png";
 
-import {Switch} from "senf-atomic-design-system";
+import { LegalStyles } from "./LegalStyles";
 
 // "shared styles" component in legal folder
 // TO DO: take care of the function handleLocation
@@ -37,15 +38,7 @@ const Header = styled.h2`
   font-size: 20px;
 `;
 
-const Wrapper = styled.div`
-  position: relative;
-  z-index: 0;
-  width: 90vw;
-  height: 100%;
-  margin: auto;
-  max-width: 600px;
-  margin-top: 30vh;
-`;
+const Wrapper = styled.div``;
 
 const Logo = styled.h1`
   position: relative;
@@ -97,81 +90,66 @@ const CookieConfigurator = ({ classes }) => {
   };
 
   return (
-    <div>
-      {/* <div className="MainBackground"></div> */}
-
-      <CustomIconButton
-        name="Close"
-        position="fixed"
-        margin={document.body.clientWidth > 768 ? "40px" : "10px"}
-        left="0"
-        handleButtonClick={() => linkToHome()}
-        top="0"
-      />
-
-      <Wrapper>
-        <Logo onClick={() => linkToHome()}>
-          <img src={LogoWhite} width="100px" alt="logo" />
-        </Logo>
-        <br />
-        <br /> <br />
-        <h1>Cookie Richtlinie</h1>
-        <h2>Cookie-Konfigurator</h2>
-        <p>
-          Dieses Tool ermöglicht es dir, verschiedene Cookie-Kategorien zu
-          aktivieren. Du kannst die Einstellungen jederzeit ändern.
-        </p>
-        <br /> <br />
-        <HeaderSwitchWrapper style={{ pointerEvents: "none" }}>
-          <Header>Notwendige Cookies</Header>
-          <Switch
-            id="test-switch"
-            checked={necessary}
-            receiveValue={(e) => setNecessary(e.target.checked)}
-            disabled
-          />
-        </HeaderSwitchWrapper>
-        <p>
-          Notwendige Cookies helfen dabei, eine Website nutzbar zu machen, indem
-          sie Grundfunktionen wie Seitennavigation und Zugriff auf sichere
-          Bereiche der Website ermöglichen. Die Website kann ohne diese Cookies
-          nicht richtig funktionieren. Sie können nicht blockiert werden.
-        </p>
-        <Line />
-        <ListTitle>Anbieter</ListTitle> <ListItem>Senf</ListItem>
-        <ListTitle>Name</ListTitle> <ListItem>Cookie_settings</ListItem>
-        <ListTitle>Zweck</ListTitle>{" "}
-        <ListItem>Speichert sämtliche Cookie Präferenzen des Nutzers</ListItem>
-        <ListTitle>Speicherdauer</ListTitle> <ListItem>3 Monate</ListItem>
-        <Line />
-        <ListTitle>Anbieter</ListTitle> <ListItem>Senf</ListItem>
-        <ListTitle>Name</ListTitle> <ListItem>language</ListItem>
-        <ListTitle>Zweck</ListTitle>{" "}
-        <ListItem>
-          Speichert die Spracheinstellung des Nutzers und leitet ihn beim
-          erneuten Seitenaufruf direkt auf die von ihm gewählte Version weiter{" "}
-        </ListItem>
-        <ListTitle>Speicherdauer</ListTitle> <ListItem>3 Monate</ListItem>
-        <br /> <br />
-        <HeaderSwitchWrapper>
-          <Header>Statistik-Cookies</Header>
-          <Switch
-            id="test-switch2"
-            checked={location}
-            receiveValue={handleLocation}
-          />
-        </HeaderSwitchWrapper>
-        <p>
-          Statistik-Cookies helfen Websitebetreibern zu verstehen, wie Nutzer
-          mit Websites interagieren, indem Informationen anonym gesammelt und
-          gemeldet werden. Sofern Sie Cookies aus dieser Kategorie zulassen und
-          zu einem späteren Zeitpunkt wieder blockieren, können bereits gesetzte
-          Cookies aus technischen Gründen auf Ihrem Gerät verbleiben. Sie können
-          diese dann jederzeit manuell löschen.
-        </p>
-        <Line />
-        <p>Im Moment verwenden wir keine Cookies dieser Art. </p>
-        {/* <ListTitle>Anbieter</ListTitle> <ListItem>Google</ListItem>
+    <LegalStyles>
+      <br />
+      <br /> <br />
+      <h1>Cookie Richtlinie</h1>
+      <h2>Cookie-Konfigurator</h2>
+      <p>
+        Dieses Tool ermöglicht es dir, verschiedene Cookie-Kategorien zu
+        aktivieren. Du kannst die Einstellungen jederzeit ändern.
+      </p>
+      <br /> <br />
+      <HeaderSwitchWrapper style={{ pointerEvents: "none" }}>
+        <Header>Notwendige Cookies</Header>
+        <Switch
+          id="test-switch"
+          checked={necessary}
+          receiveValue={(e) => setNecessary(e.target.checked)}
+          disabled
+        />
+      </HeaderSwitchWrapper>
+      <p>
+        Notwendige Cookies helfen dabei, eine Website nutzbar zu machen, indem
+        sie Grundfunktionen wie Seitennavigation und Zugriff auf sichere
+        Bereiche der Website ermöglichen. Die Website kann ohne diese Cookies
+        nicht richtig funktionieren. Sie können nicht blockiert werden.
+      </p>
+      <Line />
+      <ListTitle>Anbieter</ListTitle> <ListItem>Senf</ListItem>
+      <ListTitle>Name</ListTitle> <ListItem>Cookie_settings</ListItem>
+      <ListTitle>Zweck</ListTitle>{" "}
+      <ListItem>Speichert sämtliche Cookie Präferenzen des Nutzers</ListItem>
+      <ListTitle>Speicherdauer</ListTitle> <ListItem>3 Monate</ListItem>
+      <Line />
+      <ListTitle>Anbieter</ListTitle> <ListItem>Senf</ListItem>
+      <ListTitle>Name</ListTitle> <ListItem>language</ListItem>
+      <ListTitle>Zweck</ListTitle>{" "}
+      <ListItem>
+        Speichert die Spracheinstellung des Nutzers und leitet ihn beim erneuten
+        Seitenaufruf direkt auf die von ihm gewählte Version weiter{" "}
+      </ListItem>
+      <ListTitle>Speicherdauer</ListTitle> <ListItem>3 Monate</ListItem>
+      <br /> <br />
+      <HeaderSwitchWrapper>
+        <Header>Statistik-Cookies</Header>
+        <Switch
+          id="test-switch2"
+          checked={location}
+          receiveValue={handleLocation}
+        />
+      </HeaderSwitchWrapper>
+      <p>
+        Statistik-Cookies helfen Websitebetreibern zu verstehen, wie Nutzer mit
+        Websites interagieren, indem Informationen anonym gesammelt und gemeldet
+        werden. Sofern Sie Cookies aus dieser Kategorie zulassen und zu einem
+        späteren Zeitpunkt wieder blockieren, können bereits gesetzte Cookies
+        aus technischen Gründen auf Ihrem Gerät verbleiben. Sie können diese
+        dann jederzeit manuell löschen.
+      </p>
+      <Line />
+      <p>Im Moment verwenden wir keine Cookies dieser Art. </p>
+      {/* <ListTitle>Anbieter</ListTitle> <ListItem>Google</ListItem>
         <ListTitle>Name</ListTitle> <ListItem>_ga</ListItem>
         <ListTitle>Zweck</ListTitle>{" "}
         <ListItem>Google Analytics-Cookie zur Benutzeridentifizierung</ListItem>
@@ -188,9 +166,8 @@ const CookieConfigurator = ({ classes }) => {
         <ListTitle>Zweck</ListTitle>
         <ListItem>Drosselung der Anforderungsrate</ListItem>
         <ListTitle>Speicherdauer</ListTitle> <ListItem>1 Minute</ListItem> */}
-        <br /> <br />
-      </Wrapper>
-    </div>
+      <br /> <br />
+    </LegalStyles>
   );
 };
 

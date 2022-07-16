@@ -1,6 +1,6 @@
 /** @format */
 
-import React from "react";
+import React, { useState } from "react";
 
 // REDUX Stuff
 import { useTranslation } from "react-i18next";
@@ -9,10 +9,13 @@ import {
   Box,
   Input,
   Button,
-  Modal,
+  SwipeModal,
 } from "senf-atomic-design-system";
 
 const Contact = ({
+  formik,
+  onChange,
+  onBlur,
   contact,
   contactTitle,
   setContact,
@@ -22,32 +25,29 @@ const Contact = ({
   handleCloseContact,
   handleSaveContact,
 }) => {
+  const [name, setName] = useState("hiii");
   const { t } = useTranslation();
   return (
-    <Modal
+    <SwipeModal
       zIndex={9999999999}
       openModal={contactOpen}
       setOpenModal={setContactOpen}
       backgroundColor="#f9f1d7"
     >
-      <Box margin="10px" flexDirection="column">
+      <Box margin="20px" flexDirection="column">
         <Typography variant="h2" textAlign="center">
           Kontaktdaten öffentlich zeigen
         </Typography>
 
         <Box flexDirection="column" gap="20px" margin="20px 0px 100px 0px">
           <Input
-            key="contactTitle"
-            id="contactTitle"
-            name="contactTitle"
-            type="textarea"
             placeholder={t("add_contactTitle")}
             label={t("contactTitle")}
-            rows={1}
-            onChange={(event) => setContactTitle(event.target.value)}
-            value={contactTitle}
+            onChange={(event) => console.log(event.target.value)}
+            onBlur={onBlur}
+            value={name}
           />
-          <Input
+          {/* <Input
             key="contact"
             id="contact"
             name="contact"
@@ -55,9 +55,10 @@ const Contact = ({
             placeholder={t("add_contact")}
             label={t("contact-address")}
             rows={1}
-            onChange={(event) => setContact(event.target.value)}
-            value={contact}
-          />
+            onChange={formik?.handleChange}
+            onBlur={formik?.handleBlur}
+            value={formik?.values.contact}
+          /> */}
         </Box>
         <Box
           position="absolute"
@@ -85,7 +86,7 @@ const Contact = ({
           />
         </Box>
       </Box>
-    </Modal>
+    </SwipeModal>
   );
 };
 
