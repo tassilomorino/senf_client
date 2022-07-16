@@ -8,7 +8,6 @@ import React, {
   useMemo,
 } from "react";
 import styled from "styled-components";
-import ReactDOM from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -54,7 +53,6 @@ import {
 import StatisticsOverviewPage from "./StatisticsOverviewPage";
 import Map from "../components/atoms/map/Map";
 import IdeaDialog from "./IdeaDetailPage";
-import Loader from "../components/atoms/Backgrounds/Loader";
 import {
   closeAccountFunc,
   getMyOrganizations,
@@ -651,8 +649,6 @@ const Main = () => {
         </Modal>
       )}
 
-      {(loadingIdea || loadingProjectRoom) && <Loader withoutBg={true} />}
-
       {openInfoPage && (
         <InlineInformationPage
           setOrder={setOrder}
@@ -755,9 +751,6 @@ const Main = () => {
 
       {!openInfoPage && (
         <MainColumnWrapper>
-          {/* {(loading || loadingIdea || loadingProjectRoom) &&
-            !isMobileCustom && <Loader left="200px" width="400px" />} */}
-
           {!openProjectRoom &&
             !openAccount &&
             !loading &&

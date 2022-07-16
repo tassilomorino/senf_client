@@ -4,12 +4,11 @@ import React, { useState, Fragment, memo, useRef, useEffect } from "react";
 import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
 import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
-import Dialog from "@material-ui/core/Dialog";
+import { Plus, Box, RoundedButton, Dialog } from "senf-atomic-design-system";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
-import { Plus, Box, RoundedButton } from "senf-atomic-design-system";
 import { useFormik } from "formik";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 // MUI Stuff
@@ -417,11 +416,17 @@ const PostScream = ({
         <PostScreamRules openRules={openRules} setOpenRules={setOpenRules} />
       )}
       <Dialog
-        open={true}
-        onClose={() => setPostIdeaOpen(false)}
-        fullScreen
-        BackdropProps={{ classes: { root: classes.root } }}
-        PaperProps={{ classes: { root: classes.paper } }}
+        openDialog={true}
+        left="0px"
+        backgroundColor={"transparent"}
+        overflow="hidden scroll"
+        zIndex="999"
+        size="xxl"
+        boxShadow={
+          document.body.clientWidth < 1350 &&
+          document.body.clientWidth > 768 &&
+          "-40px 8px 30px -12px rgba(0, 0, 0, 0.2)"
+        }
       >
         {/* <CustomIconButton
         name="Close"

@@ -1,11 +1,11 @@
 /** @format */
 
 import React, { useState } from "react";
+import styled from "styled-components";
+import axios from "axios";
 import { setViewport } from "../../../util/helpers-map-animations";
 import MainModal from "../../atoms/Layout/MainModal";
 import Geolocate from "../../../images/icons/geolocate.png";
-import styled from "styled-components";
-import axios from "axios";
 
 const URL = "https://api.openweathermap.org/data/2.5/weather";
 const API_KEY = "f33a484cf794d08d0148764789aaba32";
@@ -70,7 +70,7 @@ const ChangeLocationModal = ({ setChangeLocationModalOpen }) => {
   const handleLocationCurrent = () => {
     fetch("https://ctp-zip-api.herokuapp.com/city/" + "hamburg").then(
       (response) => {
-        let result = response.data;
+        const result = response.data;
         console.log(result);
       }
     );

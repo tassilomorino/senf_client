@@ -14,12 +14,6 @@ import {
 
 const Contact = ({
   formik,
-  onChange,
-  onBlur,
-  contact,
-  contactTitle,
-  setContact,
-  setContactTitle,
   contactOpen,
   setContactOpen,
   handleCloseContact,
@@ -41,13 +35,18 @@ const Contact = ({
 
         <Box flexDirection="column" gap="20px" margin="20px 0px 100px 0px">
           <Input
+            key="contactTitle"
+            id="contactTitle"
+            name="contactTitle"
+            type="textarea"
             placeholder={t("add_contactTitle")}
             label={t("contactTitle")}
-            onChange={(event) => console.log(event.target.value)}
-            onBlur={onBlur}
-            value={name}
+            rows={1}
+            onChange={formik?.handleChange}
+            onBlur={formik?.handleBlur}
+            value={formik?.values.contactTitle}
           />
-          {/* <Input
+          <Input
             key="contact"
             id="contact"
             name="contact"
@@ -58,7 +57,7 @@ const Contact = ({
             onChange={formik?.handleChange}
             onBlur={formik?.handleBlur}
             value={formik?.values.contact}
-          /> */}
+          />
         </Box>
         <Box
           position="absolute"
@@ -72,7 +71,8 @@ const Contact = ({
             fillWidth="max"
             onClick={handleCloseContact}
             text={
-              contact !== null && contactTitle !== null
+              formik?.values.contact !== null &&
+              formik?.values.contactTitle !== null
                 ? t("delete")
                 : t("cancel")
             }
@@ -81,7 +81,10 @@ const Contact = ({
             variant="primary"
             fillWidth="max"
             onClick={handleSaveContact}
-            disabled={contact === null || contactTitle === null}
+            disabled={
+              formik?.values.contact === null ||
+              formik?.values.contactTitle === null
+            }
             text={t("save")}
           />
         </Box>

@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Button } from "senf-atomic-design-system";
 import styled from "styled-components";
-import { CustomButton, CustomIconButton } from "../CustomButtons/CustomButton";
 import { closeScream } from "../../../redux/actions/screamActions";
 import {
   setMapBounds,
@@ -14,7 +13,6 @@ import {
 } from "../../../redux/actions/mapActions";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { setSwipePositionUp } from "../../../redux/actions/UiActions";
-import CircularArrowIcon from "../../../images/icons/circular-arrow.png";
 
 const Wrapper = styled.div`
   display: flex;

@@ -3,28 +3,28 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 
+import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
+import { useTranslation } from "react-i18next";
+import {
+  Accordion,
+  OrganizationPage as OrganizationPageComponent,
+} from "senf-atomic-design-system";
+import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 import { db } from "../firebase";
 
-import { useDispatch, useSelector } from "react-redux";
 // Redux stuff
 import { clearErrors } from "../redux/actions/errorsActions";
-import styled from "styled-components";
 import { handleTopicSelectorRedux } from "../redux/actions/UiActions";
 
 import {
   openOrganizationFunc,
   stateCreateOrganizationsFunc,
 } from "../redux/actions/organizationActions";
-import { useTranslation } from "react-i18next";
 
 import setIconByOrganizationType from "../data/setIconByOrganizationType";
-import Loader from "../components/atoms/Backgrounds/Loader";
 import MainModal from "../components/atoms/Layout/MainModal";
-import { Accordion } from "senf-atomic-design-system";
 import { openLink, openMail, search, sort } from "../util/helpers";
-import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
-
-import { OrganizationPage as OrganizationPageComponent } from "senf-atomic-design-system";
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -289,7 +289,8 @@ const OrganizationPage = ({
     fetchData();
   }, [organization.organizationId, organization, user]);
 
-  return !loadingOrganization ? (
+  // loadingOrganization add skeletonlader
+  return (
     <React.Fragment>
       {ReactDOM.createPortal(
         <React.Fragment>
@@ -374,8 +375,6 @@ const OrganizationPage = ({
         handleButtonOpenCard={handleButtonOpenCard}
       />
     </React.Fragment>
-  ) : (
-    <Loader left="calc(100vw - 400px)" width="400px" />
   );
 };
 

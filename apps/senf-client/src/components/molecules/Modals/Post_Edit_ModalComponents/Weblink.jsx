@@ -1,96 +1,95 @@
 /** @format */
 
-import React from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
+import React, { useState } from "react";
 
-// MUI Stuff
-import Button from "@material-ui/core/Button";
-
-import { TextField } from "@material-ui/core";
-import MainModal from "../../../atoms/Layout/MainModal";
-
-const styles = {
-  root: {
-    zIndex: 99999,
-  },
-  paper: {
-    borderRadius: "20px",
-
-    // width: "95%",
-    margin: "2.5%",
-    maxWidth: "400px",
-    zIndex: 99999,
-  },
-
-  button: {
-    fontSize: 20,
-    textAlign: "center",
-    textTransform: "none",
-    width: "100%",
-    height: "70px",
-  },
-};
+// REDUX Stuff
+import { useTranslation } from "react-i18next";
+import {
+  Typography,
+  Box,
+  Input,
+  Button,
+  SwipeModal,
+} from "senf-atomic-design-system";
 
 const Weblink = ({
-  classes,
-  weblink,
-  weblinkTitle,
-  setWeblink,
-  setWeblinkTitle,
+  formik,
+  weblinkOpen,
   setWeblinkOpen,
   handleCloseWeblink,
   handleSaveWeblink,
 }) => {
+  const { t } = useTranslation();
   return (
-    <MainModal handleButtonClick={() => setWeblinkOpen(false)} zIndex={99999}>
-      <h3 className="modal_title">Link hinzufügen</h3>
-      <div className="textFields">
-        <TextField
-          id="weblinkTitle"
-          name="weblinkTitle"
-          type="text"
-          label="Link-Titel"
-          placeholder="Mehr Infos, Programm o.ä."
-          margin="normal"
-          variant="outlined"
-          className="textField"
-          value={weblinkTitle}
-          onChange={(event) => setWeblinkTitle(event.target.value)}
-          style={{ marginTop: "5px", marginBottom: "5px" }}
-        ></TextField>
-        <TextField
-          id="weblink"
-          name="weblink"
-          type="text"
-          label="Link "
-          placeholder="https://www..."
-          margin="normal"
-          variant="outlined"
-          className="textField"
-          value={weblink}
-          onChange={(event) => setWeblink(event.target.value)}
-          style={{ marginTop: "5px", marginBottom: "5px" }}
-        ></TextField>
-      </div>
+    <SwipeModal
+      zIndex={9999999999}
+      openModal={weblinkOpen}
+      setOpenModal={setWeblinkOpen}
+      backgroundColor="#f9f1d7"
+    >
+      <Box margin="20px" flexDirection="column">
+        <Typography variant="h2" textAlign="center">
+          Kontaktdaten öffentlich zeigen
+        </Typography>
 
-      <div className="buttons">
-        <Button className={classes.button} onClick={handleCloseWeblink}>
-          {weblink !== null && weblinkTitle !== null ? "Löschen" : "Abbrechen"}
-        </Button>
-        <Button
-          className={classes.button}
-          onClick={handleSaveWeblink}
-          style={
-            weblink !== null && weblinkTitle !== null
-              ? {}
-              : { pointerEvents: "none", opacity: 0.6 }
-          }
+        <Box flexDirection="column" gap="20px" margin="20px 0px 100px 0px">
+          <Input
+            key="weblinkTitle"
+            id="weblinkTitle"
+            name="weblinkTitle"
+            type="textarea"
+            placeholder={t("add_weblinkTitle")} // https://www...
+            label={t("weblinkTitle")}
+            rows={1}
+            onChange={formik?.handleChange}
+            onBlur={formik?.handleBlur}
+            value={formik?.values.weblinkTitle}
+          />
+          <Input
+            key="weblink"
+            id="weblink"
+            name="weblink"
+            type="textarea"
+            placeholder={t("add_weblink")}
+            label={t("weblink")}
+            rows={1}
+            onChange={formik?.handleChange}
+            onBlur={formik?.handleBlur}
+            value={formik?.values.weblink}
+          />
+        </Box>
+        <Box
+          position="absolute"
+          bottom="0px"
+          width="calc(100% - 20px)"
+          gap="8px"
+          margin="10px"
         >
-          Speichern
-        </Button>
-      </div>
-    </MainModal>
+          <Button
+            variant="white"
+            fillWidth="max"
+            onClick={handleCloseWeblink}
+            text={
+              formik?.values.weblink !== null &&
+              formik?.values.weblinkTitle !== null
+                ? t("delete")
+                : t("cancel")
+            }
+          />
+          <Button
+            variant="primary"
+            fillWidth="max"
+            onClick={handleSaveWeblink}
+            disabled={
+              formik?.values.weblink === null ||
+              formik?.values.weblinkTitle === null
+            }
+            text={t("save")}
+          />
+        </Box>
+      </Box>
+    </SwipeModal>
   );
 };
 
-export default withStyles(styles)(Weblink);
+export default Weblink;
