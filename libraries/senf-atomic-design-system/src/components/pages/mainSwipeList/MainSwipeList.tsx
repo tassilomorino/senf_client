@@ -168,6 +168,12 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   setCheckedSortOption,
 
   handleCreateProjectroom,
+
+  ideasDataOriginal,
+  handleMapBoundsReset,
+
+  swipedUpState,
+  setSwipedUpState,
 }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom();
@@ -186,11 +192,21 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   // const [listHeaderProps, setListHeaderProps] = useSpring(() => ({
   //   height: isMobile ? "60px" : "160px",
   // }));
+  useEffect(() => {
+    if (swipedUpState) {
+      setSwipedUp(true);
+      setSwipedUpState(false);
+      setSpring({
+        transform: `translateY(${16}px)`,
+        touchAction: "unset",
+      });
+    }
+  }, [swipedUpState]);
 
   useEffect(() => {
     if (openScream) {
       setSpring({
-        transform: `translateY(${window.innerHeight + 20}px)`,
+        transform: `translateY(${window.innerHeight + 16}px)`,
         touchAction: "none",
       });
     } else if (!swipedUp) {
@@ -468,6 +484,23 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
             />
           </ContentWrapper>
         </InnerWrapper>
+
+        {ideasDataOriginal.length !== ideasData.length && (
+          <Box
+            position="absolute"
+            bottom={isMobile ? "50px" : "30px"}
+            zIndex={99}
+            justifyContent="center"
+            width="100%"
+            left={isMobile ? "0px" : "30px"}
+          >
+            <Button
+              size="small"
+              onClick={handleMapBoundsReset}
+              text={"Alle Ideen in Köln anzeigen"}
+            />
+          </Box>
+        )}
       </DragWrapper>
     </React.Fragment>
   );

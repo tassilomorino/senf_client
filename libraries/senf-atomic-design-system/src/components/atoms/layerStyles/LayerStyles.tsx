@@ -76,16 +76,7 @@ export const LayerYellowDefault = css`
   background-color: ${({ theme }) => theme.colors.primary.primary100};
   overflow: visible;
 
-  border: solid 2px transparent;
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 0)
-    ),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(186, 160, 79, 0.04));
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-  box-shadow: 2px 1000px 1px ${({ theme }) => theme.colors.primary.primary100}
-    inset;
+  border: solid 2px ${({ theme }) => theme.colors.primary.primary120};
 `;
 
 export const LayerYellowHover = css`
@@ -96,16 +87,7 @@ export const LayerYellowHover = css`
   overflow: visible;
   /* border: 2px solid rgba(186, 160, 79, 0.1); */
 
-  border: solid 2px transparent;
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 0)
-    ),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(186, 160, 79, 0.04));
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-  box-shadow: 2px 1000px 1px ${({ theme }) => theme.colors.primary.primary120}
-    inset;
+  border: solid 2px ${({ theme }) => theme.colors.primary.primary120};
 `;
 
 export const LayerBrownDefault = css`
