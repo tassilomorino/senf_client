@@ -1,20 +1,21 @@
 /** @format */
 
 import React, { useState, useEffect, memo, useCallback, useMemo } from "react";
-import { isMobileCustom } from "../../../util/customDeviceDetect";
 import styled from "styled-components";
-//Redux
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
+import { isMobileCustom } from "../../../util/customDeviceDetect";
+// Redux
 import { openScreamFunc } from "../../../redux/actions/screamActions";
 import {
   setMapLoaded,
   setMapViewport,
 } from "../../../redux/actions/mapActions";
 
-//Icons
+// Icons
 import Pin from "../../../images/pin3.png";
 
-//Map Stuff
+// Map Stuff
 import MapGL, {
   Source,
   Layer,
@@ -25,7 +26,6 @@ import MapGL, {
 
 import { MapFilter } from "./MapFilter";
 import { PatternBackground } from "./styles/sharedStyles";
-import { useParams } from "react-router";
 
 import Marker1 from "../../../images/markers/marker1.png";
 import Marker2 from "../../../images/markers/marker2.png";
@@ -124,6 +124,7 @@ const Map = ({
   projects,
   order,
   mapViewportRef,
+  setSwipedUpState,
 }) => {
   const dispatch = useDispatch();
   const { screamId } = useParams();
@@ -133,6 +134,8 @@ const Map = ({
   );
   const mapLoaded = useSelector((state) => state.data.mapLoaded);
   const [showPatternBackground, setShowPatternBackground] = useState(true);
+
+  const [openMapFilter, setOpenMapFilter] = useState(false);
 
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openScream = useSelector((state) => state.UI.openScream);
@@ -168,9 +171,17 @@ const Map = ({
   }, [dispatch, initialMapViewport]);
 
   const _onViewportChange = useCallback((viewport) => {
-    //dispatching causes a lot of rerenders
-    //dispatch(setMapViewport(viewport));
+    // dispatching causes a lot of rerenders
+    // dispatch(setMapViewport(viewport));
     mapViewportRef.current = viewport;
+
+    console.log(viewport);
+
+    if (viewport.latitude !== initialMapViewport.latitude) {
+      setOpenMapFilter(true);
+    } else {
+      setOpenMapFilter(false);
+    }
   }, []);
 
   const data = useMemo(() => {
@@ -183,28 +194,28 @@ const Map = ({
     const geojsonIdeas = { type: "FeatureCollection", features: [] };
 
     if (dataFinal) {
-      for (let point of dataFinal) {
-        let properties = point;
+      for (const point of dataFinal) {
+        const properties = point;
         properties.circleRadius = 5 + point.likeCount / 7;
 
         const unique =
           dataFinal.filter((item) => item.long === point.long).length === 1;
 
         if (unique) {
-          let feature = {
+          const feature = {
             type: "Feature",
             geometry: { type: "Point", coordinates: [point.long, point.lat] },
-            properties: properties,
+            properties,
           };
           geojsonIdeas.features.push(feature);
         } else {
           function generateHash(string) {
-            var hash = 0;
+            let hash = 0;
             if (string.length == 0) return hash;
             for (let i = 0; i < string.length; i++) {
-              var charCode = string.charCodeAt(i);
+              const charCode = string.charCodeAt(i);
               hash = (hash << 7) - hash + charCode;
-              hash = hash & hash;
+              hash &= hash;
             }
             return hash;
           }
@@ -216,16 +227,16 @@ const Map = ({
             );
           }
           const hash = generateHash(point.screamId);
-          point.long = point.long + hash / 100000000000000;
-          point.lat = point.lat + reversedNum(hash) / 100000000000000;
+          point.long += hash / 100000000000000;
+          point.lat += reversedNum(hash) / 100000000000000;
 
-          let feature = {
+          const feature = {
             type: "Feature",
             geometry: {
               type: "Point",
               coordinates: [point.long, point.lat],
             },
-            properties: properties,
+            properties,
           };
           geojsonIdeas.features.push(feature);
         }
@@ -237,16 +248,16 @@ const Map = ({
   const geojsonProjectRoomsData = useMemo(() => {
     const geojsonProjectRooms = { type: "FeatureCollection", features: [] };
     if (projects) {
-      for (let point of projects) {
-        let properties = point;
+      for (const point of projects) {
+        const properties = point;
 
-        let feature = {
+        const feature = {
           type: "Feature",
           geometry: {
             type: "Point",
             coordinates: [point.centerLong, point.centerLat],
           },
-          properties: properties,
+          properties,
         };
         geojsonProjectRooms.features.push(feature);
       }
@@ -377,7 +388,12 @@ const Map = ({
           {order === 1 || openScream || openProjectRoom || openAccount ? (
             <React.Fragment>
               {!openInfoPage && !openScream && !openProjectRoom && (
-                <MapFilter viewport={mapRef.current} mapRef={mapRef} />
+                <MapFilter
+                  viewport={mapRef.current}
+                  mapRef={mapRef}
+                  openMapFilter={openMapFilter}
+                  setSwipedUpState={setSwipedUpState}
+                />
               )}
 
               <Source

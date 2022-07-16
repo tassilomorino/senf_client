@@ -136,6 +136,8 @@ const Main = () => {
   const [modalData, setModalData] = useState(null);
 
   const [swipedUp, setSwipedUp] = useState(false);
+  const [swipedUpState, setSwipedUpState] = useState(false);
+
   const organization = useSelector((state) => state.data.organization);
 
   const [
@@ -216,6 +218,7 @@ const Main = () => {
   const initialMapViewport = useSelector(
     (state) => state.data.initialMapViewport
   );
+  const initialMapBounds = useSelector((state) => state.data.initialMapBounds);
   const mapViewportRef = useRef(initialMapViewport);
 
   // Initial-ZOOM
@@ -395,6 +398,31 @@ const Main = () => {
     userLikes,
   ]);
 
+  const dataFinalIdeasMap = useMemo(() => {
+    let ideasData = [];
+
+    ideasData = search(screams, searchTerm, [
+      "title",
+      "body",
+      "Stadtteil",
+      "Stadtbezirk",
+      "locationHeader",
+    ]);
+    ideasData = filterByTagFilter(ideasData, selectedTopics, "Thema");
+
+    ideasData = sort(ideasData, dropdown);
+    ideasData = filterByStatus(ideasData, dropdownStatus);
+    return ideasData;
+  }, [
+    dropdown,
+    dropdownStatus,
+    searchTerm,
+    selectedTopics,
+    screams,
+    mapBounds,
+    userLikes,
+  ]);
+
   const dropdownStatusNumbers = useMemo(
     () => countStatusOfScreams(screams),
     [screams]
@@ -445,12 +473,12 @@ const Main = () => {
           )
         : myScreams !== null && myScreams !== undefined
         ? myScreams.filter(({ Thema }) => selectedTopics.includes(Thema))
-        : dataFinalIdeas,
+        : dataFinalIdeasMap,
     [
       myScreams,
       openProjectRoom,
       project?.screams,
-      dataFinalIdeas,
+      dataFinalIdeasMap,
       selectedTopics,
     ]
   );
@@ -558,6 +586,11 @@ const Main = () => {
     } else {
       setOpenRequestProjectRoom(true);
     }
+  };
+
+  const handleMapBoundsReset = () => {
+    dispatch(setMapViewport(initialMapViewport));
+    dispatch(setMapBounds(initialMapBounds));
   };
 
   return (
@@ -717,6 +750,7 @@ const Main = () => {
         mapRef={mapRef}
         mapViewportRef={mapViewportRef}
         projects={dataFinalMapProjects}
+        setSwipedUpState={setSwipedUpState}
       />
 
       {!openInfoPage && (
@@ -755,6 +789,7 @@ const Main = () => {
                 order={order === 1 ? "ideas" : "projectrooms"}
                 setOrder={handleClick}
                 // setOpenOrganizationsOverview={setOpenOrganizationsOverview}
+                ideasDataOriginal={screams}
                 ideasData={dataFinalIdeas}
                 projectroomsData={dataFinalProjectRooms}
                 organizations={organizations}
@@ -766,6 +801,8 @@ const Main = () => {
                 handleSelectOrganizationTypes={handleSelectOrganizationTypes}
                 swipedUp={swipedUp}
                 setSwipedUp={setSwipedUp}
+                swipedUpState={swipedUpState}
+                setSwipedUpState={setSwipedUpState}
                 openScream={openScream}
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}
@@ -784,6 +821,7 @@ const Main = () => {
                 handleOpenMyAccount={handleOpenMyAccount}
                 setInfoPageOpen={handleOpenInfoPage}
                 handleCreateProjectroom={handleCreateProjectroom}
+                handleMapBoundsReset={handleMapBoundsReset}
               />
             )}
 
