@@ -1,6 +1,6 @@
 <!-- @format -->
 
-This is the React code base for the App "Senf" (https://senf.app/) and many mroe applications that we are building up around this platform <br/>
+This is the React code base for the App "Senf" (https://senf.app/) and many more applications that we are building up around this platform <br/>
 
 <img width="1600" alt="thumbnail_senf" src="https://user-images.githubusercontent.com/49417005/179397330-e9a41259-ed16-42dd-b6b9-efa7c3b3f017.png">
 
