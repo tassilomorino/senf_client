@@ -24,6 +24,7 @@ import MenuSidebar from "../../organisms/menuSidebar/MenuSidebar";
 import Box from "../../atoms/box/Box";
 import Stadtverwaltung from "../../../assets/icons/Stadtverwaltung";
 import Vereine from "../../../assets/icons/Vereine";
+import More from "../../../assets/icons/More";
 
 const DragWrapper = styled(animated.div)`
   z-index: ${({ zIndex }) => zIndex || 995};
@@ -335,19 +336,20 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
       searchOpen={searchOpen}
       searchTerm={searchTerm}
       setSearchTerm={setSearchTerm}
-      secondButton={
-        <Button
-          variant="secondary"
-          size="small"
-          text={order === "ideas" ? t("statistics") : t("organizations")}
-          icon={order === "ideas" ? <Stats /> : null}
-          onClick={
-            order === "ideas"
-              ? () => setOpenStatisticsOverview(true)
-              : () => setOpenOrganizationsOverview(true)
-          }
-        />
-      }
+      secondButton={<Button variant="secondary" size="small" icon={<More />} />}
+      // secondButton={
+      //   <Button
+      //     variant="secondary"
+      //     size="small"
+      //     text={order === "ideas" ? t("statistics") : t("organizations")}
+      //     icon={order === "ideas" ? <Stats /> : null}
+      //     onClick={
+      //       order === "ideas"
+      //         ? () => setOpenStatisticsOverview(true)
+      //         : () => setOpenOrganizationsOverview(true)
+      //     }
+      //   />
+      // }
       searchPlaceholder={t("searchBar")}
       checkedSortOption={checkedSortOption}
       setCheckedSortOption={setCheckedSortOption}
@@ -422,14 +424,24 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
             <div
               style={{
                 position: "absolute",
-                right: "90px",
-                top: "32px",
+                right: isMobile ? "90px" : "98px",
+                top: isMobile ? "32px" : "40px",
                 display: "flex",
                 gap: "5px",
               }}
             >
-              <Button icon={<Stats />} size="small" transform="scale(0.7)" />
-              <Button icon={<Vereine />} size="small" transform="scale(0.7)" />
+              <Button
+                icon={<Stats />}
+                size="small"
+                transform="scale(0.7)"
+                onClick={() => setOpenStatisticsOverview(true)}
+              />
+              <Button
+                icon={<Vereine />}
+                size="small"
+                transform="scale(0.7)"
+                onClick={() => setOpenOrganizationsOverview(true)}
+              />
             </div>
             <RoundedButtonWrapper>
               <RoundedButton
