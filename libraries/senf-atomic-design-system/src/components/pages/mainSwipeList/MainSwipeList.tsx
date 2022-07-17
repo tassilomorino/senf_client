@@ -22,6 +22,8 @@ import Stats from "../../../assets/icons/Stats";
 import MainSwipeListTabs from "../../molecules/tabs/MainSwipeListTabs";
 import MenuSidebar from "../../organisms/menuSidebar/MenuSidebar";
 import Box from "../../atoms/box/Box";
+import Stadtverwaltung from "../../../assets/icons/Stadtverwaltung";
+import Vereine from "../../../assets/icons/Vereine";
 
 const DragWrapper = styled(animated.div)`
   z-index: ${({ zIndex }) => zIndex || 995};
@@ -416,6 +418,19 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
               ideasDataLength={ideasData.length}
               projectroomsDataLength={projectroomsData.length}
             />
+
+            <div
+              style={{
+                position: "absolute",
+                right: "90px",
+                top: "32px",
+                display: "flex",
+                gap: "5px",
+              }}
+            >
+              <Button icon={<Stats />} size="small" transform="scale(0.7)" />
+              <Button icon={<Vereine />} size="small" transform="scale(0.7)" />
+            </div>
             <RoundedButtonWrapper>
               <RoundedButton
                 size="big"

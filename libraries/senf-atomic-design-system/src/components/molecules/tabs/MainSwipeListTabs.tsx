@@ -59,7 +59,7 @@ const MainSwipeListTabs: FC<MainSwipeListTabsProps> = ({
             // color={order === "ideas" ? "black" : "#d6ab00"}
             color="inherit"
             fontWeight={900}
-            fontSize={isMobile ? "5.6vw" : "22px"}
+            fontSize={isMobile ? "5.3vw" : "22px"}
           >
             {ideasDataLength} {t("ideas")}
           </Typography>
@@ -74,7 +74,7 @@ const MainSwipeListTabs: FC<MainSwipeListTabsProps> = ({
             color="inherit"
             // color={order !== "ideas" ? "black" : "#d6ab00"}
             fontWeight={900}
-            fontSize={isMobile ? "5.6vw" : "22px"}
+            fontSize={isMobile ? "5.3vw" : "22px"}
           >
             {projectroomsDataLength} {t("menuData_projectrooms")}
           </Typography>
