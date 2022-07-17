@@ -2,6 +2,9 @@
 
 import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { useTranslation } from "react-i18next";
+import { animated, useSpring } from "@react-spring/web";
+import { useDrag } from "@use-gesture/react";
 import Icon from "../../atoms/icons/Icon";
 import {
   LayerWhiteFirstDefault,
@@ -10,7 +13,6 @@ import {
 import Box from "../../atoms/box/Box";
 import Typography from "../../atoms/typography/Typography";
 import { ProjectroomPageProps } from "./ProjectroomPage.types";
-import { useTranslation } from "react-i18next";
 import Input from "../../atoms/inputs/Input";
 import List from "../../molecules/list/List";
 import CommentCard from "../../molecules/cards/commentCard";
@@ -18,8 +20,6 @@ import Wave from "../../atoms/shapes/Wave";
 import theme from "../../../styles/theme";
 import Divider from "../../atoms/divider/Divider";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
-import { animated, useSpring } from "@react-spring/web";
-import { useDrag } from "@use-gesture/react";
 import DetailSidebar from "../../organisms/detailSidebar/DetailSidebar";
 import ImagePlaceholder from "../../atoms/imagePlaceholder/ImagePlaceholder";
 import TertiaryButton from "../../atoms/buttons/TertiaryButton";
@@ -44,6 +44,7 @@ import SocialmediaShare from "../../organisms/socialmediaShare/SocialmediaShare"
 
 import Calendar from "../../organisms/calendar/Calendar";
 import Edit from "../../../assets/icons/Edit";
+import Skeleton from "../../atoms/skeleton/Skeleton";
 
 // const Calendar = React.lazy(() => import("../../organisms/calendar/Calendar"));
 
@@ -224,17 +225,7 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
 }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom();
-
-  const {
-    title,
-    description_about,
-    description_procedure,
-    description_motivation,
-    description_learnmore,
-    screams,
-    organizationId: cardOrganizationId,
-    calendar,
-  } = data;
+  const cardOrganizationId = data?.organizationId;
 
   const [order, setOrder] = useState(1);
   const [infoOpen, setInfoOpen] = useState(false);
@@ -334,7 +325,7 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
         }
       );
     }
-  }, [organizations]);
+  }, [organizations, data]);
 
   return (
     <React.Fragment>
@@ -414,7 +405,14 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
                 fontWeight={900}
                 fontSize={isMobile ? "5.6vw" : "22px"}
               >
-                {title}
+                {data?.title || (
+                  <Skeleton
+                    height="22"
+                    width="200"
+                    baseColor="#E6D7BF"
+                    highlightColor="#F0E7D9"
+                  />
+                )}
               </Typography>
             </Box>
 
@@ -431,10 +429,19 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
                     icon={setOrganizationTypeIcon(organizationCardData[1])}
                   />
                 </LogoPlacer>
-                <Typography variant="buttonBg">
-                  {" "}
-                  {organizationCardData[0]}
-                </Typography>
+                {organizationCardData[0] ? (
+                  <Typography variant="buttonBg">
+                    {" "}
+                    {organizationCardData[0]}
+                  </Typography>
+                ) : (
+                  <Skeleton
+                    height="22"
+                    width="200"
+                    baseColor="#E6D7BF"
+                    highlightColor="#F0E7D9"
+                  />
+                )}
               </Box>
             )}
 
@@ -475,24 +482,34 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
                 onClick={() => setInfoOpen(!infoOpen)}
                 infoOpen={infoOpen}
               >
-                <Typography variant="bodyBg">
-                  Es geht um {description_about} <br />
-                  <br />
-                  Mit den Ideen werden wir
-                  {description_procedure} <br />
-                  <br />
-                  Unsere Motivation ist
-                  {description_motivation} <br />
-                  <br />
-                  Wenn du mehr erfahren willst
-                  {description_learnmore} <br />
-                </Typography>
+                {data?.description_about ? (
+                  <Typography variant="bodyBg">
+                    Es geht um {data?.description_about} <br />
+                    <br />
+                    Mit den Ideen werden wir
+                    {data?.description_procedure} <br />
+                    <br />
+                    Unsere Motivation ist
+                    {data?.description_motivation} <br />
+                    <br />
+                    Wenn du mehr erfahren willst
+                    {data?.description_learnmore} <br />
+                  </Typography>
+                ) : (
+                  <Skeleton
+                    count="4"
+                    height="16"
+                    width="300"
+                    baseColor="#E6D7BF"
+                    highlightColor="#F0E7D9"
+                  />
+                )}
               </InfoWidget>
             </Box>
 
             <Divider margin="14px 24px 16px 24px" width="auto" />
 
-            {calendar && (
+            {data?.calendar && (
               <Box margin="0px 24px 0px 24px" gap="10px">
                 <Tabs
                   fontSize="buttonSm"
@@ -553,7 +570,7 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
               order === 2 && (
                 <div style={{ margin: "10px 24px 20px 24px" }}>
                   <Calendar
-                    inlineCalendarEntries={screams}
+                    inlineCalendarEntries={data?.screams}
                     calendarType="inline"
                     handleButtonOpenCard={handleButtonOpenCard}
                   />

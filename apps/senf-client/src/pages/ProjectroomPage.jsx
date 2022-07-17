@@ -3,20 +3,19 @@
 import React, { useState, useEffect, memo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // Redux stuff
+import styled from "styled-components";
+import orderBy from "lodash/orderBy";
+import { useTranslation } from "react-i18next";
+import { ProjectroomPage as ProjectroomPageComponent } from "senf-atomic-design-system";
 import {
   openCreateProjectRoomFunc,
   openProjectRoomFunc,
 } from "../redux/actions/projectActions";
 import { clearErrors } from "../redux/actions/errorsActions";
 import { setMapBounds, setMapViewport } from "../redux/actions/mapActions";
-import styled from "styled-components";
 import { handleTopicSelectorRedux } from "../redux/actions/UiActions";
 
-import orderBy from "lodash/orderBy";
-import { useTranslation } from "react-i18next";
 import { openOrganizationFunc } from "../redux/actions/organizationActions";
-
-import { ProjectroomPage as ProjectroomPageComponent } from "senf-atomic-design-system";
 
 const Wrapper = styled.div`
   z-index: 999;
@@ -110,7 +109,8 @@ const ProjectroomPage = ({
   const screamsSearched = dataRar?.filter((val) => {
     if (searchTerm === "") {
       return val;
-    } else if (
+    }
+    if (
       val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       val.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
       val.Stadtteil?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -147,27 +147,23 @@ const ProjectroomPage = ({
   };
 
   return (
-    project && (
-      <ProjectroomPageComponent
-        user={user}
-        data={project}
-        ideasData={dataFinal}
-        organizations={organizations}
-        handleButtonOpenCard={handleButtonOpenCard}
-        handleButtonClose={handleClose}
-        selectedTopics={selectedTopics}
-        handleSelectTopics={(topic) =>
-          dispatch(handleTopicSelectorRedux(topic))
-        }
-        setPostIdeaOpen={() => setPostIdeaOpen(true)}
-        handleEditProjectroom={handleEditProjectroom}
-        setSearchOpen={setSearchOpen}
-        searchOpen={searchOpen}
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        path={path}
-      />
-    )
+    <ProjectroomPageComponent
+      user={user}
+      data={project}
+      ideasData={dataFinal}
+      organizations={organizations}
+      handleButtonOpenCard={handleButtonOpenCard}
+      handleButtonClose={handleClose}
+      selectedTopics={selectedTopics}
+      handleSelectTopics={(topic) => dispatch(handleTopicSelectorRedux(topic))}
+      setPostIdeaOpen={() => setPostIdeaOpen(true)}
+      handleEditProjectroom={handleEditProjectroom}
+      setSearchOpen={setSearchOpen}
+      searchOpen={searchOpen}
+      searchTerm={searchTerm}
+      setSearchTerm={setSearchTerm}
+      path={path}
+    />
   );
 };
 

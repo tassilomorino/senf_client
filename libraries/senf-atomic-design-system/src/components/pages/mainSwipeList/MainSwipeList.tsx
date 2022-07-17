@@ -89,8 +89,8 @@ const RoundedButtonWrapper = styled.div`
   transition: 0.5s;
 
   @media (min-width: 768px) {
-    top: 24px;
-    right: 24px;
+    top: 20px;
+    right: 17px;
   }
 `;
 export const Header = styled(animated.div)`
@@ -123,9 +123,9 @@ const HandleBar = styled.div`
   transform: translateX(-50%);
   z-index: 99;
   width: 50px;
-  height: 2px;
+  height: 3px;
   background-color: ${({ theme }) => theme.colors.primary.primary120};
-  border-radius: 1px;
+  border-radius: 2px;
 `;
 
 const MainSwipeList: FC<MainSwipeListProps> = ({
@@ -423,8 +423,8 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
             <div
               style={{
                 position: "absolute",
-                right: isMobile ? "90px" : "98px",
-                top: isMobile ? "32px" : "40px",
+                right: isMobile ? "90px" : "92px",
+                top: isMobile ? "32px" : "36px",
                 display: "flex",
                 gap: "5px",
               }}

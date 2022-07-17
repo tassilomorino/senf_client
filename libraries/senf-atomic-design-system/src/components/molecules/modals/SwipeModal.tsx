@@ -147,6 +147,8 @@ const SwipeModal: FC<SwipeModalProps> = ({
       pointer: { touch: true },
       bounds: {
         enabled: true,
+        top: -window.innerHeight / 2,
+        bottom: window.innerHeight - 120,
       },
     }
   );
