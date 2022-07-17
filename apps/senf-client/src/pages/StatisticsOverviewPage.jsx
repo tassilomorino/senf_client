@@ -17,15 +17,6 @@ import {
 } from "senf-atomic-design-system";
 import Keyindicators from "../components/graphs/Keyindicators";
 
-// Images
-import Themencover from "../images/insightsCovers/topic-cover.jpg";
-import DistrictsCover from "../images/insightsCovers/districts-cover.jpg";
-import KeywordsCover from "../images/insightsCovers/keywords-cover.jpg";
-import AgegroupsCover from "../images/insightsCovers/agegroups-cover.jpg";
-
-import ExpandButton from "../components/atoms/CustomButtons/ExpandButton";
-import { StyledH2 } from "../styles/GlobalStyle";
-
 // firebase
 
 import { db } from "../firebase";

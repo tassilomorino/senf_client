@@ -14,12 +14,8 @@ import {
   ContentDropdown,
   RoundedButton,
 } from "senf-atomic-design-system";
-import MainModal from "../../atoms/Layout/MainModal";
-import SettingsIcon from "../../../images/icons/settings.png";
-import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import { db } from "../../../firebase";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
 import { StyledH2, StyledH3 } from "../../../styles/GlobalStyle";
 import {
   openOrganizationFunc,

@@ -1,14 +1,13 @@
 /** @format */
 
 import React, { useState, useCallback, useRef, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
+import { Box, Button, Arrow } from "senf-atomic-design-system";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 
-import { StyledH2, StyledH3, StyledText } from "../../../styles/GlobalStyle";
-import { CustomIconButton } from "../../atoms/CustomButtons/CustomButton";
+import { StyledH3, StyledText } from "../../../styles/GlobalStyle";
 import WeAreHere from "../../../images/weAreHere.png";
 import WorkTogether from "../../../images/workTogether.png";
 import OpenBook from "../../../images/openBook.png";
@@ -47,49 +46,6 @@ const HorizontalSwipeCard = styled(animated.div)`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-`;
-
-const ArrowWrapper = styled.div`
-  top: 10px;
-  width: 100%;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  z-index: 9;
-`;
-
-const ArrowLeft = styled.div`
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 99999;
-  pointer-events: all;
-  opacity: 1;
-  transition: 0.5s;
-  background-color: #fed957;
-`;
-
-const ArrowRight = styled(ArrowLeft)`
-  transform: rotate(180deg);
-`;
-
-const DotWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  position: relative;
-  width: 100%;
-  top: 10px;
-`;
-const Dot = styled.div`
-  width: 12px;
-  height: 12px;
-  border-radius: 100%;
-  background-color: #fed957;
-  opacity: ${(props) => (props.active ? 1 : 0.5)};
-  margin: 10px 10px 10px 10px;
 `;
 
 const InfoSwiper = () => {
@@ -184,37 +140,18 @@ const InfoSwiper = () => {
         ))}
       </FlexWrapper>
 
-      <ArrowWrapper>
-        <div
-          style={active !== 0 ? {} : { pointerEvents: "none", opacity: 0.5 }}
-        >
-          <CustomIconButton
-            name="ArrowLeft"
-            backgroundColor={active !== 0 ? "#fed957" : "#F4EACA"}
-            shadow={false}
-            handleButtonClick={handlePrev}
-            small={true}
-          />
-        </div>
-
-        <div
-          style={
-            active !== pages.length - 1
-              ? {}
-              : { pointerEvents: "none", opacity: 0.5 }
-          }
-        >
-          <CustomIconButton
-            name="ArrowRight"
-            backgroundColor={
-              active !== pages.length - 1 ? "#fed957" : "#F4EACA"
-            }
-            marginLeft="10px"
-            handleButtonClick={handleNext}
-            small={true}
-          />
-        </div>
-      </ArrowWrapper>
+      <Box gap="8px" margin="10px 0px 0px 0px" justifyContent="center">
+        <Button
+          icon={<Arrow transform="rotate(180deg)" />}
+          onClick={handlePrev}
+          disabled={active === 0}
+        />
+        <Button
+          icon={<Arrow />}
+          onClick={handleNext}
+          disabled={active === pages.length - 1}
+        />
+      </Box>
       {/* <DotWrapper>
         {pages.map(({ id }) => (
           <Dot active={id === active} />

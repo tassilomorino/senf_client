@@ -5,10 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { Typography, Button, ActionModal } from "senf-atomic-design-system";
-import ExpandButton from "../atoms/CustomButtons/ExpandButton";
-import MainModal from "../atoms/Layout/MainModal";
 import { deleteComment } from "../../redux/actions/commentActions";
-import { StyledH3 } from "../../styles/GlobalStyle";
 
 const ButtonWrapper = styled.div`
   width: 100%;
