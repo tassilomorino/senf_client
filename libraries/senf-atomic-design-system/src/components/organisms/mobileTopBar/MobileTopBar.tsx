@@ -6,10 +6,7 @@ import Info from "../../../assets/icons/Info";
 import User from "../../../assets/icons/User";
 import LogoText from "../../../assets/logo/LogoText";
 import Box from "../../atoms/box/Box";
-import Button from "../../atoms/buttons/Button";
-import RoundedButton from "../../atoms/buttons/RoundedButton";
 import TertiaryButton from "../../atoms/buttons/TertiaryButton";
-import Icon from "../../atoms/icons/Icon";
 import { MobileTopBarProps } from "./MobileTopBar.types";
 
 const Wrapper = styled.div<MobileTopBarProps>`

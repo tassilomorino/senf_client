@@ -22,7 +22,6 @@ import Stats from "../../../assets/icons/Stats";
 import MainSwipeListTabs from "../../molecules/tabs/MainSwipeListTabs";
 import MenuSidebar from "../../organisms/menuSidebar/MenuSidebar";
 import Box from "../../atoms/box/Box";
-import Stadtverwaltung from "../../../assets/icons/Stadtverwaltung";
 import Vereine from "../../../assets/icons/Vereine";
 import More from "../../../assets/icons/More";
 
