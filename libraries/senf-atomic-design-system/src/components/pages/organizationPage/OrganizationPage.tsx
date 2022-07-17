@@ -2,6 +2,7 @@
 
 import React, { FC, useState } from "react";
 import styled from "styled-components";
+import { useTranslation } from "react-i18next";
 import Dialog from "../../molecules/dialog/Dialog";
 import RoundedButton from "../../atoms/buttons/RoundedButton";
 import { OrganizationPageProps } from "./OrganizationPage.types";
@@ -12,7 +13,6 @@ import {
   LayerWhiteSecondDefault,
 } from "../../atoms/layerStyles/LayerStyles";
 import Typography from "../../atoms/typography/Typography";
-import { useTranslation } from "react-i18next";
 import Icon from "../../atoms/icons/Icon";
 import theme from "../../../styles/theme";
 import Button from "../../atoms/buttons/Button";
@@ -20,7 +20,6 @@ import TertiaryButton from "../../atoms/buttons/TertiaryButton";
 import Divider from "../../atoms/divider/Divider";
 import List from "../../molecules/list/List";
 import ProjectroomCard from "../../molecules/cards/ProjectroomCard";
-import Modal from "../../molecules/modals/Modal";
 import Accordion from "../../molecules/accordion/Accordion";
 import SubNavbar from "../../molecules/navs/SubNavbar";
 import setOrganizationTypeIcon from "../../../data/setOrganizationTypeIcon";
@@ -28,8 +27,6 @@ import Arrow from "../../../assets/icons/Arrow";
 import Plus from "../../../assets/icons/Plus";
 import More from "../../../assets/icons/More";
 import Tabs from "../../molecules/tabs/Tabs";
-import Bulb from "../../../assets/icons/Bulb";
-import Info from "../../../assets/icons/Info";
 import CalendarIcon from "../../../assets/icons/CalendarIcon";
 import Room from "../../../assets/icons/Room";
 
@@ -99,7 +96,6 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
   const [infoOpen, setInfoOpen] = useState(false);
   const [order, setOrder] = useState(1);
 
-
   return (
     <Dialog
       openDialog={true}
@@ -157,7 +153,7 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
 
       {organization?.status === "deactivated" ? (
         <Box margin="24px">
-          {/* //ADD COLOR TO TYPOGRAPHY COMPONENT and THEME COLOR*/}
+          {/* //ADD COLOR TO TYPOGRAPHY COMPONENT and THEME COLOR */}
           <Typography variant="h3" color="#ca3336">
             {t("organization_is_deactivated")}
           </Typography>
@@ -181,9 +177,9 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
       </Box>
 
       <Box margin="24px" alignItems="center" gap="10px">
-        {(organization.contact ||
-          organization.weblink ||
-          organization.address) && (
+        {(organization?.contact ||
+          organization?.weblink ||
+          organization?.address) && (
           <Button
             variant="secondary"
             text={t("contact")}
@@ -201,19 +197,19 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
                   <Box margin="18px">
                     {organization?.contact && (
                       <Typography variant="bodyBg">
-                        {organization.contact}
+                        {organization?.contact}
                       </Typography>
                     )}
                     {organization?.contact && <Divider />}
                     {organization?.weblink && (
                       <Typography variant="bodyBg">
-                        {organization.contact}{" "}
+                        {organization?.contact}{" "}
                       </Typography>
                     )}
                     {organization?.weblink && <Divider />}
                     {organization?.address && (
                       <Typography variant="bodyBg">
-                        {organization.contact}{" "}
+                        {organization?.contact}{" "}
                       </Typography>
                     )}
                   </Box>
@@ -222,7 +218,7 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
             }
           />
         )}
-        {organization.faqs && (
+        {organization?.faqs && (
           <Button
             variant="secondary"
             text={t("faq")}
@@ -238,7 +234,7 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
                     handlebar={true}
                   />
                   <Box margin="18px">
-                    <Accordion data={organization.faqs} />
+                    <Accordion data={organization?.faqs} />
                   </Box>
                 </Box>
               )

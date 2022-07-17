@@ -2,49 +2,10 @@
 import React from "react";
 
 import { useTranslation } from "react-i18next";
-import withStyles from "@material-ui/core/styles/withStyles";
-
-// MUI Stuff
-import Button from "@material-ui/core/Button";
-import { DatePicker } from "senf-atomic-design-system";
-import MainModal from "../../atoms/Layout/MainModal";
-
-const styles = {
-  paper: {
-    borderRadius: "20px",
-
-    // width: "95%",
-    margin: "2.5%",
-    maxWidth: "400px",
-    width: "95%",
-  },
-  confirmButton: {
-    fontSize: 20,
-    textAlign: "center",
-    textTransform: "none",
-    width: "100%",
-    height: "70%",
-    clear: "both",
-    color: "red",
-  },
-  line: {
-    height: 1,
-    width: "100%",
-
-    backgroundColor: "grey",
-  },
-  button: {
-    fontSize: 20,
-
-    textAlign: "center",
-    textTransform: "none",
-    width: "100%",
-    height: "70px",
-  },
-};
+import { DatePicker, ActionModal } from "senf-atomic-design-system";
 
 const InlineDatePickerModal = ({
-  classes,
+  calendarOpen,
   setCalendarOpen,
   handleChangeCalendar,
   handleCloseCalendar,
@@ -54,9 +15,16 @@ const InlineDatePickerModal = ({
   const { t } = useTranslation();
 
   return (
-    <MainModal handleButtonClick={() => setCalendarOpen(false)} zIndex={999}>
-      <h3 className="modal_title">{t("add_date")}</h3>
-
+    <ActionModal
+      title={t("add_date")}
+      openModal={calendarOpen}
+      setOpenModal={setCalendarOpen}
+      handleClose={handleCloseCalendar}
+      handleSave={handleSaveCalendar}
+      disabledSaveButton={selectedDays.length === 0}
+      cancelButtonText={t("cancel")}
+      saveButtonText={t("save")}
+    >
       <p style={{ widthh: "100%", textAlign: "center" }}>
         {t("first_date_then_time")}
       </p>
@@ -65,24 +33,8 @@ const InlineDatePickerModal = ({
         handleChangeCalendar={handleChangeCalendar}
         selectedDays={selectedDays}
       />
-      <div className="buttons">
-        <Button className={classes.button} onClick={handleCloseCalendar}>
-          {t("cancel")}
-        </Button>
-        <Button
-          className={classes.button}
-          onClick={handleSaveCalendar}
-          style={
-            selectedDays.length === 0
-              ? { pointerEvents: "none", opacity: 0.6 }
-              : {}
-          }
-        >
-          {t("save")}
-        </Button>
-      </div>
-    </MainModal>
+    </ActionModal>
   );
 };
 
-export default withStyles(styles)(InlineDatePickerModal);
+export default InlineDatePickerModal;

@@ -245,6 +245,7 @@ const EditIdeaPage = ({
       )}
       {calendarOpen && (
         <InlineDatePickerModal
+          calendarOpen={calendarOpen}
           setCalendarOpen={setCalendarOpen}
           handleCloseCalendar={handleCloseCalendar}
           handleSaveCalendar={handleSaveCalendar}
