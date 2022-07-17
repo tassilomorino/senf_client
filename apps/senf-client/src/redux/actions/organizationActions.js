@@ -1,5 +1,13 @@
 /** @format */
 
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  query,
+  where,
+} from "firebase/firestore";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
 import { closeScream } from "./screamActions";
@@ -13,14 +21,6 @@ import {
   LOADING_DATA,
   STOP_LOADING_DATA,
 } from "../types";
-import {
-  collection,
-  getDocs,
-  doc,
-  getDoc,
-  query,
-  where,
-} from "firebase/firestore";
 import { db } from "../../firebase";
 
 import setIconByOrganizationType from "../../data/setIconByOrganizationType";
@@ -59,13 +59,14 @@ export const openOrganizationFunc =
   (organizationId, state) => async (dispatch) => {
     if (state === true) {
       console.log("open organization");
-
-      dispatch({ type: LOADING_ORGANIZATION_DATA });
-
+      dispatch({ type: SET_ORGANIZATION, payload: null });
       dispatch({
         type: OPEN_ORGANIZATION,
         payload: true,
       });
+
+      dispatch({ type: LOADING_ORGANIZATION_DATA });
+
       dispatch(loadOrganizationData(organizationId));
       dispatch(closeScream());
       const newPath = `/organizations/${organizationId}`;
@@ -93,7 +94,7 @@ export const loadOrganizationData = (organizationId) => async (dispatch) => {
   if (!organizationsDocSnapshot.exists()) {
     window.history.pushState(null, null, "/");
   } else {
-    let organization = organizationsDocSnapshot.data();
+    const organization = organizationsDocSnapshot.data();
     organization.organizationId = organizationsDocSnapshot.id;
     organization.projectRooms = [];
     dispatch(loadOrganizationProjectRooms(organizationId, organization));

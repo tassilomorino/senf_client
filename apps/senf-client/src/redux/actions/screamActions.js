@@ -95,6 +95,8 @@ export const getScreams = (mapViewport) => async (dispatch) => {
 
 // Open an idea
 export const openScreamFunc = (screamId, reloadScream) => async (dispatch) => {
+  dispatch({ type: SET_SCREAM, payload: {} });
+
   // When the modal is shown, we want a fixed body
   // document.body.style.position = "fixed";
   // document.body.style.top = `-${window.scrollY}px`;

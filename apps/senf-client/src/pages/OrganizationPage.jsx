@@ -208,13 +208,14 @@ const ListWrapper = styled.div`
 const OrganizationPage = ({
   setOpenOrganizationsPage,
 
-  organization,
   organizations,
   handleOpenCreateOrganization,
   handleButtonOpenCard,
   user,
 }) => {
   const { t } = useTranslation();
+  const organization = useSelector((state) => state.data.organization);
+
   const [infoOpen, setInfoOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
@@ -229,9 +230,7 @@ const OrganizationPage = ({
     setUncompletedOrDeactivatedProjectRooms,
   ] = useState([]);
 
-  const openOrganization = useSelector((state) => state.UI.openOrganization);
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.UI.loading);
   const loadingOrganization = useSelector(
     (state) => state.data.loadingOrganization
   );
@@ -255,39 +254,39 @@ const OrganizationPage = ({
     dispatch(clearErrors());
   };
 
-  useEffect(() => {
-    async function fetchData() {
-      if (organization && user && organization?.userIds.includes(user.userId)) {
-        const data = [];
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     if (organization && user && organization?.userIds.includes(user.userId)) {
+  //       const data = [];
 
-        const docRef = collection(
-          db,
-          `organizations/${organization.organizationId}/projectRooms`
-        );
-        const q = query(
-          docRef,
-          where("status", "!=", "active"),
-          orderBy("status", "desc"),
-          orderBy("createdAt", "desc")
-        );
-        const querySnapshot = await getDocs(q);
-        if (querySnapshot.empty) {
-          setUncompletedOrDeactivatedProjectRooms([]);
-        } else {
-          querySnapshot.forEach((doc) => {
-            data.push({
-              ...doc.data(),
-              projectRoomId: doc.id,
-              organizationType: doc.data().organizationType,
-              icon: setIconByOrganizationType(doc.data().organizationType),
-            });
-            setUncompletedOrDeactivatedProjectRooms(data);
-          });
-        }
-      }
-    }
-    fetchData();
-  }, [organization.organizationId, organization, user]);
+  //       const docRef = collection(
+  //         db,
+  //         `organizations/${organization.organizationId}/projectRooms`
+  //       );
+  //       const q = query(
+  //         docRef,
+  //         where("status", "!=", "active"),
+  //         orderBy("status", "desc"),
+  //         orderBy("createdAt", "desc")
+  //       );
+  //       const querySnapshot = await getDocs(q);
+  //       if (querySnapshot.empty) {
+  //         setUncompletedOrDeactivatedProjectRooms([]);
+  //       } else {
+  //         querySnapshot.forEach((doc) => {
+  //           data.push({
+  //             ...doc.data(),
+  //             projectRoomId: doc.id,
+  //             organizationType: doc.data().organizationType,
+  //             icon: setIconByOrganizationType(doc.data().organizationType),
+  //           });
+  //           setUncompletedOrDeactivatedProjectRooms(data);
+  //         });
+  //       }
+  //     }
+  //   }
+  //   fetchData();
+  // }, [organization.organizationId, organization, user]);
 
   // loadingOrganization add skeletonlader
   return (

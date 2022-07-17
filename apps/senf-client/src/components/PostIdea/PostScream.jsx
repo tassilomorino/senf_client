@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import { useFormik } from "formik";
+import * as yup from "yup";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 import { postScream } from "../../redux/actions/screamActions";
 import { clearErrors } from "../../redux/actions/errorsActions";
@@ -91,11 +92,33 @@ const PostScream = ({
 
   const { errors, MapHeight, locationDecided } = allMainStates;
 
+  const postIdeaValidationSchema = yup.object({
+    title: yup
+      .string()
+      .required(t("enter_ideaTitle"))
+      .min(10, t("ideaTitle_too_short"))
+      .max(70, t("ideaTitle_too_long")),
+
+    body: yup
+      .string()
+      .required(t("enter_ideaDescription"))
+      .min(100, t("ideaDescription_too_short"))
+      .max(800, t("ideaDescription_too_long")),
+  });
+
   const formik = useFormik({
     initialValues: {
+      title: "",
+      body: "",
+      topic: "",
+
       contact: null,
       contactTitle: null,
+      weblink: null,
+      weblinkTitle: null,
+      selectedUnix: [],
     },
+    validationSchema: postIdeaValidationSchema,
     validateOnChange: true,
     validateOnBlur: true,
   });
@@ -225,9 +248,6 @@ const PostScream = ({
 
   const handleCloseCalendar = () => {
     setCalendarOpen(false);
-
-    setSelectedDays([]);
-    setSelectedUnix([]);
   };
   const handleSaveCalendar = () => {
     setCalendarOpen(false);
@@ -381,7 +401,7 @@ const PostScream = ({
       <Dialog
         openDialog={true}
         left="0px"
-        backgroundColor={"transparent"}
+        backgroundColor={"rgb(0,0,0,0.8)"}
         overflow="hidden scroll"
         zIndex="999"
         size="xxl"
@@ -452,6 +472,7 @@ const PostScream = ({
         )}
         {calendarOpen && (
           <InlineDatePickerModal
+            calendarOpen={calendarOpen}
             setCalendarOpen={setCalendarOpen}
             handleCloseCalendar={handleCloseCalendar}
             handleSaveCalendar={handleSaveCalendar}
@@ -489,6 +510,7 @@ const PostScream = ({
         />
 
         <PostScreamFormContent
+          formik={formik}
           classes={classes}
           errors={errors}
           address={address}

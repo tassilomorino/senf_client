@@ -35,7 +35,7 @@ const DialogWrapper = styled.div<DialogProps>`
   box-shadow: ${({ boxShadow, theme }) =>
     boxShadow || theme.shadows[0] + theme.colors.brown.brown20tra};
 
-  animation: opacityTranslateYFrom100Animation 0.2s;
+  /* animation: opacityTranslateYFrom100Animation 0.2s; */
 
   @media (min-width: 768px) {
     margin: 10px;

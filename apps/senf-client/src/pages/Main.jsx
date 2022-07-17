@@ -852,9 +852,8 @@ const Main = () => {
         </MainColumnWrapper>
       )}
 
-      {openOrganization && !loadingOrganization && (
+      {openOrganization && (
         <OrganizationPage
-          organization={organization}
           organizations={organizations}
           handleCloseOrganizationPage={handleCloseOrganizationPage}
           handleEdit={handleOpenCreateOrganization}

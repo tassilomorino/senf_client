@@ -9,17 +9,12 @@ import { db } from "../../../firebase";
 
 // images
 import {
-  ButtonsWrapper,
   ComponentInnerWrapper,
   ComponentWrapper,
-  SubTitle,
-  Title,
 } from "../styles/sharedStyles";
-import Contact from "../../Modals/Post_Edit_ModalComponents/Contact";
 // import Geocoder from "react-mapbox-gl-geocoder";
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3, StyledText } from "../../../styles/GlobalStyle";
-import InlineDatePicker from "../../atoms/InlineDatePicker/InlineDatePicker";
 
 const RemoveButton = styled.button`
   margin-top: 15px;

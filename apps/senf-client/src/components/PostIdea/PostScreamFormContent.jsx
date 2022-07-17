@@ -3,7 +3,6 @@
 import React from "react";
 import { isAndroid } from "react-device-detect";
 import { useTranslation } from "react-i18next";
-import { TextField } from "@material-ui/core";
 import styled from "styled-components";
 import {
   Box,
@@ -33,7 +32,7 @@ const Card = styled.div`
   left: 0;
   z-index: 12;
   display: flex;
-  margin-left: 2.5vw;
+  margin-left: 2.5%;
   margin-right: auto;
 
   /* height: calc(75vh - 70px); */
@@ -50,7 +49,7 @@ const Card = styled.div`
     position: fixed;
     top: 115px;
     left: 0;
-    margin-left: 80px;
+    margin-left: 90px;
     margin-right: auto;
     height: 50vh;
     width: 370px;
@@ -109,6 +108,7 @@ const SelectContainer = styled.div`
 `;
 
 const PostScreamFormContent = ({
+  formik,
   errors,
   address,
   handleLocationDecided,
@@ -170,14 +170,42 @@ const PostScreamFormContent = ({
 
           <PostScreamRules />
         </FlexWrapper>
-        <Input
-          type="text"
-          placeholder={t("postScream_ideaTitle")}
-          rows={2}
-          multiline
-          onChange={(event) => setTitle(event.target.value)}
-        />
-        <TextField
+        <Box flexDirection="column" gap="20px">
+          <Input
+            key="title"
+            id="title"
+            name="title"
+            type="textarea"
+            placeholder={t("add_title")}
+            label={t("postScream_ideaTitle")}
+            rows={1}
+            onChange={formik?.handleChange}
+            onBlur={formik?.handleBlur}
+            value={formik?.values.title}
+            error={formik?.touched.title && Boolean(formik?.errors.title)}
+            note={formik?.touched.title && formik?.errors.title}
+
+            // maxLength: 70
+          />
+
+          <Input
+            key="body"
+            id="body"
+            name="body"
+            type="textarea"
+            placeholder={t("add_body")}
+            label={t("postScream_ideaBody")}
+            rows={10}
+            onChange={formik?.handleChange}
+            onBlur={formik?.handleBlur}
+            value={formik?.values.body}
+            error={formik?.touched.body && Boolean(formik?.errors.body)}
+            note={formik?.touched.body && formik?.errors.body}
+
+            // maxLength: 800
+          />
+        </Box>
+        {/* <TextField
           name="title"
           type="text"
           label={t("postScream_ideaTitle")}
@@ -205,7 +233,7 @@ const PostScreamFormContent = ({
           margin="normal"
           fullWidth
           inputProps={{ maxLength: 800 }}
-        />
+        /> */}
 
         <Box position="absolute" bottom="60px" zIndex={2} gap="8px">
           <RoundedButton

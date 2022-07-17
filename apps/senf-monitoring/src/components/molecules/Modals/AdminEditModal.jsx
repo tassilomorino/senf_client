@@ -299,6 +299,7 @@ const AdminEditModal = ({
       )}
       {calendarOpen && (
         <InlineDatePicker
+          calendarOpen={calendarOpen}
           setCalendarOpen={setCalendarOpen}
           handleCloseCalendar={handleCloseCalendar}
           handleSaveCalendar={handleSaveCalendar}
