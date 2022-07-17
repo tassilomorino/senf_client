@@ -52,6 +52,7 @@ import SocialmediaShare from "../../organisms/socialmediaShare/SocialmediaShare"
 import Edit from "../../../assets/icons/Edit";
 import Delete from "../../../assets/icons/Delete";
 import Report from "../../../assets/icons/Report";
+import Skeleton from "../../atoms/skeleton/Skeleton";
 
 const DragWrapper = styled(animated.div)<IdeaDetailPageProps>`
   display: flex;
@@ -415,7 +416,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
         <InnerWrapper>
           <CardWrapper
             status={status}
-            projectroomCardData={projectroomCardData}
+            projectroomCardData={projectroomCardData[0]}
           >
             <InnerCardWrapper>
               <Box
@@ -424,14 +425,19 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                 gap="5px"
                 margin="8px 0px 4px 0px"
               >
-                <Icon icon={<Dot color={setColorByTopic(Thema)} />} />
+                {Thema ? (
+                  <Icon icon={<Dot color={setColorByTopic(Thema)} />} />
+                ) : (
+                  <Skeleton borderRadius="100" width="16" height="16" />
+                )}
                 <Typography
                   variant="bodySm"
                   fontWeight={600}
                   color={setColorByTopic(Thema)}
                 >
-                  {Stadtteil}
+                  {Stadtteil || <Skeleton height="16" />}
                 </Typography>
+
                 <Box
                   alignItems="center"
                   justifyContent="flex-end"
@@ -455,7 +461,10 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                 </Box>
               </Box>
 
-              <Typography variant="h3"> {title}</Typography>
+              <Typography variant="h3">
+                {" "}
+                {title || <Skeleton height="25" />}
+              </Typography>
 
               {/* <Box margin="10px 0px 20px 0px">
                 <Tabs
@@ -470,7 +479,10 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
               </Box> */}
 
               <Box alignItems="flex-start" flexDirection="row" margin="8px 0px">
-                <Typography variant="bodyBg"> {body}</Typography>
+                <Typography variant="bodyBg">
+                  {" "}
+                  {body || <Skeleton count="4" width="300" />}
+                </Typography>
               </Box>
 
               {weblink || contact ? (
@@ -508,24 +520,28 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
 
                 <Box gap="5px">
                   <Icon icon={<User />} />{" "}
-                  <Typography variant="buttonSm">{userHandle}</Typography>
-                  <Typography
-                    variant="buttonSm"
-                    color={theme.colors.black.black40tra}
-                  >
-                    {t("at")}
-                  </Typography>
-                  <Typography
-                    variant="buttonSm"
-                    color={theme.colors.black.black40tra}
-                  >
-                    {dayjs(createdAt).format("DD.MM.YYYY")}
-                  </Typography>
+                  {createdAt && userHandle && (
+                    <React.Fragment>
+                      <Typography variant="buttonSm">{userHandle}</Typography>
+                      <Typography
+                        variant="buttonSm"
+                        color={theme.colors.black.black40tra}
+                      >
+                        {t("at")}
+                      </Typography>
+                      <Typography
+                        variant="buttonSm"
+                        color={theme.colors.black.black40tra}
+                      >
+                        {dayjs(createdAt).format("DD.MM.YYYY")}
+                      </Typography>
+                    </React.Fragment>
+                  )}
                 </Box>
               </Box>
             </InnerCardWrapper>
 
-            {projectroomCardData && (
+            {projectroomCardData[0] && (
               <ProjectroomOpenButton
                 onClick={() => handleOpenProjectroom(cardProjectroomId)}
               >
