@@ -282,15 +282,6 @@ const Main = () => {
       }
     }
   }, [lat, long, loadingIdea, openScream]);
-  useEffect(() => {
-    if (
-      cookie_settings !== "all" &&
-      cookie_settings !== "minimum" &&
-      isMobileCustom
-    ) {
-      window.history.push("/intro");
-    }
-  }, [cookie_settings]);
 
   useEffect(() => {
     projectRoomId && dispatch(openProjectRoomFunc(projectRoomId, true));
@@ -678,7 +669,7 @@ const Main = () => {
             setOrder={setOrder}
             handleOpenMyAccount={handleOpenMyAccount}
             setInfoPageOpen={handleOpenInfoPage}
-            swipedUp={
+            hide={
               swipedUp ||
               openProjectRoom ||
               openAccount ||

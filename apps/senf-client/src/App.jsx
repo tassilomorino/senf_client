@@ -41,6 +41,7 @@ import impressum from "./components/infocomponents/legal/impressum";
 import datenschutz from "./components/infocomponents/legal/datenschutz";
 import agb from "./components/infocomponents/legal/agb";
 import cookieConfigurator from "./components/infocomponents/legal/cookieConfigurator";
+
 import blank from "./pages/Blank";
 
 import { isMobileCustom } from "./util/customDeviceDetect";
