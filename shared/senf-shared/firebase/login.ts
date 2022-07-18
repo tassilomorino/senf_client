@@ -6,11 +6,12 @@ import {
 } from "firebase/auth";
 import { useState, useMemo } from "react";
 import { EmailAndPasswordActionHook } from "./types";
+import { generateErrorMessage } from "./generateErrorMessage";
 
 export const useSignInWithEmailAndPassword = (
   auth: Auth
 ): EmailAndPasswordActionHook => {
-  const [error, setError] = useState<AuthError>();
+  const [error, setError] = useState({ code: "", message: "" });
   const [loggedInUser, setLoggedInUser] = useState<UserCredential>();
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -19,7 +20,7 @@ export const useSignInWithEmailAndPassword = (
     password: string
   ) => {
     setLoading(true);
-    setError(undefined);
+    setError({ code: "", message: "" });
     try {
       const user = await firebaseSignInWithEmailAndPassword(
         auth,
@@ -29,10 +30,16 @@ export const useSignInWithEmailAndPassword = (
       if (user.user.emailVerified) {
         setLoggedInUser(user);
       } else {
-        setError("User not verified");
+        setError({
+          code: "auth/user-not-verified",
+          message: "User is not verified",
+        });
       }
     } catch (err) {
-      setError(err as AuthError);
+      setError({
+        code: err.code,
+        message: generateErrorMessage(err.code),
+      });
     } finally {
       setLoading(false);
     }

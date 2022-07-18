@@ -177,7 +177,7 @@ const AuthEmail: FC<AuthEmailProps> = ({
 
         {errorMessage && (
           <Typography variant="bodySm" color={theme.colors.signal.redDark}>
-            {errorMessage}
+            {errorMessage.message}
           </Typography>
         )}
       </Box>

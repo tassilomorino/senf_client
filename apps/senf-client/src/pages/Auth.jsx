@@ -27,14 +27,17 @@ import imageCompression from "browser-image-compression";
 
 import { useTranslation } from "react-i18next";
 import { SwipeModal, Auth as AuthComponent } from "senf-atomic-design-system";
-import { useSignInWithEmailAndPassword } from "senf-shared";
+import {
+  useSignInWithEmailAndPassword,
+  generateErrorMessage,
+} from "senf-shared";
 import { getUserData } from "../redux/actions/userActions";
 
 import { auth, db } from "../firebase";
 import { SET_AUTHENTICATED } from "../redux/types";
 
 const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState({ code: "", message: "" });
   const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
 
@@ -70,14 +73,17 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
     }
     if (firebaseUserLogin) {
       setLoading(false);
-      setErrorMessage("");
+      setErrorMessage({ code: "", message: "" });
       dispatch({ type: SET_AUTHENTICATED });
       dispatch(getUserData(firebaseUserLogin.user.uid));
       setAuthOpen(false);
     }
     if (firebaseUserLoginError) {
       setLoading(false);
-      setErrorMessage(firebaseUserLoginError);
+      setErrorMessage({
+        code: firebaseUserLoginError.code,
+        message: firebaseUserLoginError.message,
+      });
     }
   }, [firebaseUserLoginLoading, firebaseUserLogin, firebaseUserLoginError]);
 
@@ -133,7 +139,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
 
     try {
       setLoading(true);
-      setErrorMessage("");
+      setErrorMessage({ code: "", message: "" });
       const usersRef = collection(db, "users");
       const q = query(
         usersRef,
@@ -145,7 +151,10 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
         // username already exists
 
         setLoading(false);
-        setErrorMessage(t("username_taken"));
+        setErrorMessage({
+          code: "username-already-exists",
+          message: t("username_taken"),
+        });
       } else {
         // username is available, try to create user and put info to database
 
@@ -176,23 +185,12 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
       const errorCode = error.code;
       const errorMessage = error.message;
       setLoading(false);
-      setErrorMessage(errorMessage);
-      if (errorCode === "auth/email-already-in-use") {
-        setLoading(false);
-        setErrorMessage(t("email_taken"));
-      }
-      if (errorCode === "auth/invalid-email") {
-        setLoading(false);
-        setErrorMessage(t("enter_valid_email"));
-      }
-      if (errorCode === "auth/weak-password") {
-        setLoading(false);
-        setErrorMessage(t("password_6characters"));
-      }
-      if (errorCode === "auth/too-many-requests") {
-        setLoading(false);
-        setErrorMessage(t("too_many_requests"));
-      }
+
+      setLoading(false);
+      setErrorMessage({
+        code: errorCode,
+        message: generateErrorMessage(errorCode),
+      });
     }
   };
 
