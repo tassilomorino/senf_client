@@ -2,13 +2,16 @@
 
 import React from "react";
 import { Helmet } from "react-helmet";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import { theme, GlobalStyle } from "senf-atomic-design-system";
 import { ThemeProvider } from "styled-components";
 import store from "./redux/store";
 import Dashboard from "./pages/Dashboard";
 import "./util/i18n";
+import PrivateRoute from "./context/PrivateRoute";
+import { AuthProvider } from "./context/auth";
+import AuthPage from "./pages/AuthPage";
 
 const App = () => {
   return (
@@ -23,13 +26,29 @@ const App = () => {
       )}
 
       <Provider store={store}>
-        <Router>
-          <React.Suspense fallback={<div>Loading...</div>}>
-            <Switch>
-              <Route exact path="/" component={Dashboard} />
-            </Switch>
-          </React.Suspense>
-        </Router>
+        <AuthProvider>
+          <Router>
+            <React.Suspense fallback={<div>Loading...</div>}>
+              <Routes>
+                <Route
+                  exact
+                  path="/register"
+                  element={<AuthPage variant="register" />}
+                />
+
+                <Route
+                  exact
+                  path="/login"
+                  element={<AuthPage variant="login" />}
+                />
+                {/* <Route exact path="/" element={<PrivateRoute />}>
+                  <Route exact path="/" component={Dashboard} />
+                </Route> */}
+                <Route exact path="/" element={<Dashboard />} />
+              </Routes>
+            </React.Suspense>
+          </Router>
+        </AuthProvider>
       </Provider>
     </ThemeProvider>
   );

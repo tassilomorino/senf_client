@@ -33,8 +33,7 @@ const GlobalStyle = createGlobalStyle`
   overscroll-behavior-y: contain;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
-  font-weight: 300;
-    font-size: 14px;
+ 
 }
 
 

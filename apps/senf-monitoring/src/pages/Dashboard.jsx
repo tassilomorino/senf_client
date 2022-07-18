@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Box, Button, Typography } from "senf-atomic-design-system";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  Box,
+  Button,
+  Typography,
+  IdeaCard,
+  List,
+} from "senf-atomic-design-system";
 import styled from "styled-components";
+import { getIdeas } from "../redux/actions/ideaDataActions";
 
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.beige.beige20};
@@ -10,10 +18,14 @@ const Wrapper = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
+  overflow: scroll;
 `;
 const Dashboard = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
   const [greeting, setGreeting] = useState("");
+  const ideas = useSelector((state) => state.data.ideas);
 
   useEffect(() => {
     const myDate = new Date();
@@ -36,8 +48,40 @@ const Dashboard = () => {
 
         <Box gap="8px">
           <Button variant="secondary" text={t("cancel")} disabled={true} />
-          <Button variant="white" text="Ja mann" />
-          <Button variant="primary" text="Jaaaaaa mannnn" />
+          <Button
+            variant="primary"
+            text="Jaaaaaa mannnn zeig mir mal die 10 besten Ideen aus Köln"
+            onClick={() => dispatch(getIdeas(10))}
+          />
+          {ideas && (
+            <Button
+              variant="white"
+              text="zeig mir doch nur 3"
+              onClick={() => dispatch(getIdeas(3))}
+            />
+          )}
+        </Box>
+        <Box>
+          <Box width="400px" flexDirection="column" gap="16px">
+            {ideas?.map((idea) => (
+              <IdeaCard data={idea} />
+            ))}
+          </Box>
+          {ideas && (
+            <Box height="60vh" alignItems="center" margin="20px">
+              <Typography variant="bodyBg">oder besser:</Typography>
+            </Box>
+          )}
+
+          <Box width="400px" flexDirection="column">
+            <List
+              CardType={IdeaCard}
+              data={ideas}
+              // handleButtonOpenCard={handleButtonOpenCard}
+              // handleOpenProjectroom={handleOpenProjectroom}
+              listEndText={t("noMoreIdeas")}
+            />
+          </Box>
         </Box>
       </Box>
     </Wrapper>
