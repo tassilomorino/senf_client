@@ -2,6 +2,7 @@
 
 import { createGlobalStyle } from "styled-components";
 import { normalize } from "./normalize";
+
 const GlobalStyle = createGlobalStyle`
   ${normalize}
 
@@ -84,13 +85,13 @@ p {
   }
 }
 
-@keyframes translateYFrom100to30pxAnimation {
+@keyframes translateYFrom100to16pxAnimation {
   0% {
     transform: translateY(100%);
   }
 
   100% {
-    transform: translateY(30px);
+    transform: translateY(16px);
   }
 }
 
