@@ -27,7 +27,7 @@ const DragWrapper = styled(animated.div)`
 
   position: fixed;
 
-  animation: translateYFrom100to30pxAnimation 0.5s;
+  animation: translateYFrom100to16pxAnimation 0.5s;
 
   @media (min-width: 768px) {
     top: 50%;
@@ -77,7 +77,7 @@ const SwipeModal: FC<SwipeModalProps> = ({
   overflow,
 }) => {
   const isMobile = isMobileCustom();
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  // const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (openModal) {
@@ -113,20 +113,20 @@ const SwipeModal: FC<SwipeModalProps> = ({
     });
     setTimeout(() => {
       setOpenModal(false);
-    }, 300);
+    }, 600);
 
     // focus modal trigger again
-    buttonRef?.current?.focus();
+    // buttonRef?.current?.focus();
   };
 
-  const submitRef = useRef<HTMLButtonElement>(null);
-  const closeRef = useRef<HTMLButtonElement>(null);
+  // const submitRef = useRef<HTMLButtonElement>(null);
+  // const closeRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
-    if (submitRef?.current) {
-      submitRef?.current.focus();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (submitRef?.current) {
+  //     submitRef?.current.focus();
+  //   }
+  // }, []);
 
   const bind = useDrag(
     ({ last, down, movement: [, my], offset: [, y] }) => {
@@ -166,12 +166,12 @@ const SwipeModal: FC<SwipeModalProps> = ({
           size={size}
           aria-labelledby="modal-header"
           id="swipeModal"
-          onKeyDown={
-            (e) =>
-              submitRef?.current &&
-              closeRef?.current &&
-              trapFocus(e, submitRef.current, closeRef.current) // ideally we would use inert but it doesn't seem to be working
-          }
+          // onKeyDown={
+          //   (e) =>
+          //     submitRef?.current &&
+          //     closeRef?.current &&
+          //     trapFocus(e, submitRef.current, closeRef.current) // ideally we would use inert but it doesn't seem to be working
+          // }
         >
           {HeaderComponent ? (
             <React.Fragment>

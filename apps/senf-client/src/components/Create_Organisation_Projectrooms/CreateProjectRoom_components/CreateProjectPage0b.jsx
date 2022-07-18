@@ -8,6 +8,7 @@ import styled from "styled-components";
 
 // firebase
 import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
+import { OrganizationCard } from "senf-atomic-design-system";
 import { db } from "../../../firebase";
 import {
   ComponentInnerWrapper,
@@ -60,7 +61,7 @@ const CreateProjectPage1 = ({ onClickNext, pagesData, index }) => {
     (organization) => organization.status === "active"
   );
 
-  const handleDropdown = (value) => {
+  const handleSelect = (x, y, value) => {
     setSelectedOrganizationId(value);
     const selectedOrganizationName = myActiveOrganizations.filter(
       ({ organizationId }) => value.includes(organizationId)
@@ -137,14 +138,10 @@ const CreateProjectPage1 = ({ onClickNext, pagesData, index }) => {
           <CoverWrapper>
             {myActiveOrganizations?.map(
               ({ organizationId, title, organizationType, logoURL }) => (
-                <InlineOrganizationCard
-                  key={organizationId}
-                  organizationId={organizationId}
-                  title={title}
-                  organizationType={organizationType}
-                  handleDropdown={handleDropdown}
-                  selectedOrganizationId={selectedOrganizationId}
-                  logoURL={logoURL}
+                <OrganizationCard
+                  data={{ organizationId, title, organizationType, logoURL }}
+                  organization={{ organizationId: selectedOrganizationId }}
+                  handleButtonOpenCard={handleSelect}
                 />
               )
             )}
