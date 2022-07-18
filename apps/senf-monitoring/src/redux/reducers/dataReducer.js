@@ -1,13 +1,42 @@
-import { SET_DATA_ERROR } from "../types";
+import {
+  LOADING_DATA,
+  STOP_LOADING_DATA,
+  SET_IDEAS,
+  SET_ERRORS,
+} from "../types";
 
 const initialState = {
   dataError: "",
+  screams: [],
+  loading: false,
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case SET_DATA_ERROR:
-      return { ...state, dataError: action.payload };
+    case LOADING_DATA:
+      return {
+        ...state,
+        loading: true,
+      };
+    case STOP_LOADING_DATA:
+      return {
+        ...state,
+        loading: false,
+      };
+
+    case SET_IDEAS:
+      return {
+        ...state,
+        ideas: action.payload,
+        loading: false,
+      };
+
+    case SET_ERRORS:
+      return {
+        ...state,
+        loading: false,
+        errors: action.payload,
+      };
 
     default:
       return state;
