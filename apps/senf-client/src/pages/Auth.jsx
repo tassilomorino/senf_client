@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getAuth,
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
   sendEmailVerification,
   signInWithPopup,
   FacebookAuthProvider,
@@ -28,6 +27,7 @@ import imageCompression from "browser-image-compression";
 
 import { useTranslation } from "react-i18next";
 import { SwipeModal, Auth as AuthComponent } from "senf-atomic-design-system";
+import { useSignInWithEmailAndPassword } from "senf-shared";
 import { getUserData } from "../redux/actions/userActions";
 
 import { auth, db } from "../firebase";
@@ -48,6 +48,12 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const [
+    signInWithEmailAndPassword,
+    firebaseUserLogin,
+    firebaseUserLoginLoading,
+    firebaseUserLoginError,
+  ] = useSignInWithEmailAndPassword(auth);
 
   useEffect(() => {
     if (authEditOpen) {
@@ -58,36 +64,23 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
     }
   }, [authOpen, authEditOpen]);
 
-  const handleSubmitLogin = async (formikLoginStore) => {
-    // event.preventDefault();
+  useEffect(() => {
+    if (firebaseUserLoginLoading) {
+      setLoading(true);
+    }
+    if (firebaseUserLogin) {
+      setLoading(false);
+      setErrorMessage("");
+      dispatch({ type: SET_AUTHENTICATED });
+      dispatch(getUserData(firebaseUserLogin.user.uid));
+      setAuthOpen(false);
+    }
+    if (firebaseUserLoginError) {
+      setLoading(false);
+      setErrorMessage(firebaseUserLoginError);
+    }
+  }, [firebaseUserLoginLoading, firebaseUserLogin, firebaseUserLoginError]);
 
-    setLoading(true);
-    signInWithEmailAndPassword(
-      auth,
-      formikLoginStore.values.email,
-      formikLoginStore.values.password
-    )
-      .then((userCredential) => {
-        if (userCredential.user.emailVerified) {
-          console.log(userCredential.user.uid);
-          setLoading(false);
-          dispatch({ type: SET_AUTHENTICATED });
-          dispatch(getUserData(userCredential.user.uid));
-          console.log(window.location);
-
-          setAuthOpen(false);
-        } else {
-          setLoading(false);
-          setErrorMessage(t("email_not_verified"));
-        }
-      })
-      .catch((err) => {
-        setLoading(false);
-        setErrorMessage(err.message);
-      });
-
-    // dispatch(loginUser(userData, props.history))
-  };
   async function createUserInDatabase(userCredential, formikRegisterStore) {
     if (userCredential && userCredential.user) {
       try {
@@ -366,7 +359,12 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
           errorMessage={errorMessage}
           user={user}
           loginLoading={loading}
-          handleSubmitLogin={(loginData) => handleSubmitLogin(loginData)}
+          handleSubmitLogin={(formikLoginStore) =>
+            signInWithEmailAndPassword(
+              formikLoginStore.values.email,
+              formikLoginStore.values.password
+            )
+          }
           handleSubmitRegister={(registerData) =>
             handleSubmitRegister(registerData)
           }
