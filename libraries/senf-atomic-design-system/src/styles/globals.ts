@@ -6,14 +6,57 @@ import { normalize } from "./normalize";
 const GlobalStyle = createGlobalStyle`
   ${normalize}
 
+  html {
+  overflow: hidden;
+  width: 100%;
+}
+
+
   body {
   margin: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  position: fixed;
   font-family: "Nunito", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* box-sizing: content-box; */
 
+
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+
+  /* prevent overscroll bounce*/
+  overscroll-behavior-y: contain;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  font-weight: 300;
+    font-size: 14px;
 }
+
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* hide scrollbar but allow scrolling */
+div {
+  -ms-overflow-style: none;
+  /* for Internet Explorer, Edge */
+  scrollbar-width: none;
+  /* for Firefox */
+}
+
+div::-webkit-scrollbar {
+  display: none;
+  /* for Chrome, Safari, and Opera */
+}
+
+
 input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,

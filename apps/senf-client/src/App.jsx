@@ -49,7 +49,6 @@ import { isMobileCustom } from "./util/customDeviceDetect";
 import packageJson from "../package.json";
 import { getBuildDate } from "./util/helpers";
 import { setViewport } from "./util/helpers-map-animations";
-import GlobalStyles from "./styles/GlobalStyles";
 
 import "./util/i18n";
 
