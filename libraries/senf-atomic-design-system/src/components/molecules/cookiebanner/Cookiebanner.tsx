@@ -14,11 +14,11 @@ import { LayerWhiteFirstDefault } from "../../atoms/layerStyles/LayerStyles";
 const Wrapper = styled.div<CookiebannerProps>`
   z-index: 9995;
   position: fixed;
-  width: calc(95% - 24px);
-  padding: 10px 10px 20px 10px;
+  width: auto;
+  padding: 10px;
   text-align: center;
-  bottom: 10px;
-  left: 2.5%;
+  bottom: 0;
+  margin: 10px;
   border-radius: 18px;
 
   ${(props) => LayerWhiteFirstDefault}
@@ -27,11 +27,12 @@ const Wrapper = styled.div<CookiebannerProps>`
     z-index: 9999;
     position: fixed;
     width: 300px;
+    padding: 10px 10px 20px 10px;
 
     font-size: 13pt;
 
-    bottom: 10px;
-    right: 10px;
+    bottom: 0px;
+    right: 0px;
     left: auto;
     border-radius: 18px;
   }
