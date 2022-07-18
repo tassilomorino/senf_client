@@ -37,6 +37,7 @@ import OrganizationCard from "../../molecules/cards/OrganizationCard";
 import Logout from "../../../assets/icons/Logout";
 import Edit from "../../../assets/icons/Edit";
 import Plus from "../../../assets/icons/Plus";
+import Skeleton from "../../atoms/skeleton/Skeleton";
 
 const DragWrapper = styled(animated.div)<ProfilePageProps>`
   display: flex;
@@ -125,8 +126,6 @@ const ProfilePage: FC<ProfilePageProps> = ({
   const [order, setOrder] = useState(1);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [swipePosition, setSwipePosition] = useState("top");
-
-  const { handle, description, photoURL, likes } = user;
 
   const handleToggle = () => {
     setDropdownOpen(!dropdownOpen);
@@ -247,16 +246,29 @@ const ProfilePage: FC<ProfilePageProps> = ({
           <ContentWrapper>
             <Box justifyContent="center" margin="20px">
               <ImageWrapper>
-                <ImagePlaceholder
-                  img={photoURL || null}
-                  borderRadius="18px"
-                  height="calc(100% - 40px)"
-                  width="calc(100% - 40px)"
-                />
+                {user?.photoURL ? (
+                  <ImagePlaceholder
+                    img={user?.photoURL || null}
+                    borderRadius="18px"
+                    height="calc(100% - 40px)"
+                    width="calc(100% - 40px)"
+                  />
+                ) : (
+                  <Skeleton height="100" width="100" borderRadius="18" />
+                )}
               </ImageWrapper>
             </Box>
             <Box justifyContent="center" margin="20px">
-              <Typography variant="h3">{handle}</Typography>
+              {user?.handle ? (
+                <Typography variant="h3">{user?.handle}</Typography>
+              ) : (
+                <Skeleton
+                  height="22"
+                  width="200"
+                  baseColor="#E6D7BF"
+                  highlightColor="#F0E7D9"
+                />
+              )}
             </Box>
 
             <Box margin="0px 24px" flexDirection="column">
@@ -265,8 +277,8 @@ const ProfilePage: FC<ProfilePageProps> = ({
               </Typography>
 
               <Box margin="5px 0px">
-                {description ? (
-                  <Typography variant="bodyBg">{description}</Typography>
+                {user?.description ? (
+                  <Typography variant="bodyBg">{user?.description}</Typography>
                 ) : (
                   <Button
                     variant="secondary"

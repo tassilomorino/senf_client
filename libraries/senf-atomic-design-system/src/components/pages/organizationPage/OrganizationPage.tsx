@@ -151,7 +151,7 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
               width="calc(100% - 40px)"
             />
           ) : (
-            <Skeleton height="100" width="100" borderRadius="18" />
+            <Skeleton height="100" width="100" borderRadius="10" />
           )}
         </ImageWrapper>
       </Box>
