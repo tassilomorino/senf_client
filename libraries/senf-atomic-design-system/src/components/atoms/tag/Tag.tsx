@@ -41,8 +41,8 @@ const StyledButton = styled.button<TagProps>`
 
   transform: ${({ hide }) => (hide ? "scale(0.8)" : "scale(1)")};
   opacity: ${({ hide }) => (hide ? "0" : "1")};
-  display: ${({ hide }) => (hide ? "none" : "flex")};
-
+  /* display: ${({ hide }) => (hide ? "none" : "flex")}; */
+  display: flex;
   transition: 0.4s;
 
   animation: tagsAnimation 0.4s;

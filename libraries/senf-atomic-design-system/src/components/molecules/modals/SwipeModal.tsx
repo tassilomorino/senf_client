@@ -87,7 +87,7 @@ const SwipeModal: FC<SwipeModalProps> = ({
 
   const [props, set] = useSpring(() => ({
     y: 0,
-    transform: isMobile ? `translateY(${30}px)` : "translate(-50%, -50%)",
+    transform: isMobile ? `translateY(${16}px)` : "translate(-50%, -50%)",
     overflow: "scroll",
     touchAction: "unset",
     userSelect: "none",
@@ -98,7 +98,7 @@ const SwipeModal: FC<SwipeModalProps> = ({
 
     setTimeout(() => {
       set({
-        transform: isMobile ? `translateY(${30}px)` : "translate(-50%, -50%)",
+        transform: isMobile ? `translateY(${16}px)` : "translate(-50%, -50%)",
         overflow: "scroll",
         touchAction: "unset",
         userSelect: "none",
@@ -113,7 +113,7 @@ const SwipeModal: FC<SwipeModalProps> = ({
     });
     setTimeout(() => {
       setOpenModal(false);
-    }, 100);
+    }, 300);
 
     // focus modal trigger again
     buttonRef?.current?.focus();
@@ -136,17 +136,18 @@ const SwipeModal: FC<SwipeModalProps> = ({
         handleClose();
       } else {
         set({
-          transform: `translateY(${30}px)`,
+          transform: `translateY(${16}px)`,
           touchAction: "unset",
         });
       }
-
-      set({ y: down ? my : 0 });
+      // set({ y: down ? my : 0 });
     },
     {
       pointer: { touch: true },
       bounds: {
         enabled: true,
+        top: -window.innerHeight / 2,
+        bottom: window.innerHeight - 120,
       },
     }
   );

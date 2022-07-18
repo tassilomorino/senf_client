@@ -360,6 +360,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
         openModal={authOpen || authEditOpen}
         setOpenModal={setAuthOpen}
         zIndex={9999999999}
+        backgroundColor="#f9f1d7"
       >
         <AuthComponent
           errorMessage={errorMessage}

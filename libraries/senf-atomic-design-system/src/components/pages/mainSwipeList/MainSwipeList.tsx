@@ -22,6 +22,8 @@ import Stats from "../../../assets/icons/Stats";
 import MainSwipeListTabs from "../../molecules/tabs/MainSwipeListTabs";
 import MenuSidebar from "../../organisms/menuSidebar/MenuSidebar";
 import Box from "../../atoms/box/Box";
+import Vereine from "../../../assets/icons/Vereine";
+import More from "../../../assets/icons/More";
 
 const DragWrapper = styled(animated.div)`
   z-index: ${({ zIndex }) => zIndex || 995};
@@ -87,8 +89,8 @@ const RoundedButtonWrapper = styled.div`
   transition: 0.5s;
 
   @media (min-width: 768px) {
-    top: 24px;
-    right: 24px;
+    top: 20px;
+    right: 17px;
   }
 `;
 export const Header = styled(animated.div)`
@@ -121,9 +123,9 @@ const HandleBar = styled.div`
   transform: translateX(-50%);
   z-index: 99;
   width: 50px;
-  height: 2px;
+  height: 3px;
   background-color: ${({ theme }) => theme.colors.primary.primary120};
-  border-radius: 1px;
+  border-radius: 2px;
 `;
 
 const MainSwipeList: FC<MainSwipeListProps> = ({
@@ -333,19 +335,20 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
       searchOpen={searchOpen}
       searchTerm={searchTerm}
       setSearchTerm={setSearchTerm}
-      secondButton={
-        <Button
-          variant="secondary"
-          size="small"
-          text={order === "ideas" ? t("statistics") : t("organizations")}
-          icon={order === "ideas" ? <Stats /> : null}
-          onClick={
-            order === "ideas"
-              ? () => setOpenStatisticsOverview(true)
-              : () => setOpenOrganizationsOverview(true)
-          }
-        />
-      }
+      secondButton={<Button variant="secondary" size="small" icon={<More />} />}
+      // secondButton={
+      //   <Button
+      //     variant="secondary"
+      //     size="small"
+      //     text={order === "ideas" ? t("statistics") : t("organizations")}
+      //     icon={order === "ideas" ? <Stats /> : null}
+      //     onClick={
+      //       order === "ideas"
+      //         ? () => setOpenStatisticsOverview(true)
+      //         : () => setOpenOrganizationsOverview(true)
+      //     }
+      //   />
+      // }
       searchPlaceholder={t("searchBar")}
       checkedSortOption={checkedSortOption}
       setCheckedSortOption={setCheckedSortOption}
@@ -416,6 +419,29 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
               ideasDataLength={ideasData.length}
               projectroomsDataLength={projectroomsData.length}
             />
+
+            <div
+              style={{
+                position: "absolute",
+                right: isMobile ? "90px" : "92px",
+                top: isMobile ? "32px" : "36px",
+                display: "flex",
+                gap: "5px",
+              }}
+            >
+              <Button
+                icon={<Stats />}
+                size="small"
+                transform="scale(0.7)"
+                onClick={() => setOpenStatisticsOverview(true)}
+              />
+              <Button
+                icon={<Vereine />}
+                size="small"
+                transform="scale(0.7)"
+                onClick={() => setOpenOrganizationsOverview(true)}
+              />
+            </div>
             <RoundedButtonWrapper>
               <RoundedButton
                 size="big"

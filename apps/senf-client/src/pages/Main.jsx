@@ -24,13 +24,8 @@ import {
 } from "senf-atomic-design-system";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
+import { closeScream, openScreamFunc } from "../redux/actions/screamActions";
 import {
-  getScreams,
-  closeScream,
-  openScreamFunc,
-} from "../redux/actions/screamActions";
-import {
-  getProjects,
   openProjectRoomFunc,
   openCreateProjectRoomFunc,
 } from "../redux/actions/projectActions";
@@ -43,9 +38,7 @@ import {
 import {
   handleTopicSelectorRedux,
   handleOrganizationTypesSelectorRedux,
-  setSwipePositionDown,
   setSwipePositionUp,
-  setInfoPageClosed,
   setInfoPageOpen,
 } from "../redux/actions/UiActions";
 
@@ -63,7 +56,6 @@ import PostScream from "../components/PostIdea/PostScream";
 import ChangeLocationModal from "../components/Modals/ChangeLocationModal";
 import { usePrevious } from "../hooks/usePrevious";
 import {
-  getOrganizations,
   openOrganizationFunc,
   stateCreateOrganizationsFunc,
 } from "../redux/actions/organizationActions";
@@ -149,7 +141,6 @@ const Main = () => {
   const [openModalAuthenticate, setOpenModalAuthenticate] = useState(false);
 
   const { screamId, projectRoomId, organizationId } = useParams();
-  const { cookie_settings } = useSelector((state) => state.data);
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openScream = useSelector((state) => state.UI.openScream);
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
@@ -181,13 +172,6 @@ const Main = () => {
   );
 
   const loadingIdea = useSelector((state) => state.data.loadingIdea);
-  const loadingProjectRoom = useSelector(
-    (state) => state.data.loadingProjectRoom
-  );
-  const loadingOrganization = useSelector(
-    (state) => state.data.loadingOrganization
-  );
-
   const projects = useSelector((state) => state.data.projects);
   const project = useSelector((state) => state.data.project);
 
@@ -282,15 +266,6 @@ const Main = () => {
       }
     }
   }, [lat, long, loadingIdea, openScream]);
-  useEffect(() => {
-    if (
-      cookie_settings !== "all" &&
-      cookie_settings !== "minimum" &&
-      isMobileCustom
-    ) {
-      window.history.push("/intro");
-    }
-  }, [cookie_settings]);
 
   useEffect(() => {
     projectRoomId && dispatch(openProjectRoomFunc(projectRoomId, true));
@@ -678,7 +653,7 @@ const Main = () => {
             setOrder={setOrder}
             handleOpenMyAccount={handleOpenMyAccount}
             setInfoPageOpen={handleOpenInfoPage}
-            swipedUp={
+            hide={
               swipedUp ||
               openProjectRoom ||
               openAccount ||
@@ -690,8 +665,6 @@ const Main = () => {
       )}
 
       {!loading && !loadingUI && !loadingProjects && (
-        // !openScream &&
-        // (order === 1 || order === 2 || openProjectRoom || openAccount) &&
         <Box
           margin={
             isMobileCustom ? "60px 10px 10px 0px" : "10px 10px 10px 500px"
@@ -753,33 +726,9 @@ const Main = () => {
             !openAccount &&
             !loading &&
             (order === 1 || (order === 2 && !loadingProjects)) && (
-              // <SwipeList
-              //   swipeListType={order === 1 ? "ideas" : "projectRoomOverview"}
-              //   tabLabels={swipeListTablabels}
-              //   loading={loading}
-              //   order={order}
-              //   dataFinal={order === 1 ? dataFinalIdeas : dataFinalProjectRooms}
-              //   dataFinalMap={dataFinalMap}
-              //   handleDropdown={handleDropdown}
-              //   handledropdownStatus={handledropdownStatus}
-              //   dataFinalProjectRooms={dataFinalProjectRooms}
-              //   dropdown={dropdown}
-              //   dropdownStatus={dropdownStatus}
-              //   dropdownStatusNumbers={dropdownStatusNumbers}
-              //   setSearchTerm={setSearchTerm}
-              //   searchTerm={searchTerm}
-              //   handleClick={handleClick}
-              //   setOpenInsightsPage={setOpenInsightsPage}
-              //   setOpenOrganizationsPage={setOpenOrganizationsPage}
-              //   openOrganizationsPage={openOrganizationsPage}
-              //   openInsightsPage={openInsightsPage}
-              //   mapViewportRef={mapViewportRef}
-              // />
-
               <MainSwipeList
                 order={order === 1 ? "ideas" : "projectrooms"}
                 setOrder={handleClick}
-                // setOpenOrganizationsOverview={setOpenOrganizationsOverview}
                 ideasDataOriginal={screams}
                 ideasData={dataFinalIdeas}
                 projectroomsData={dataFinalProjectRooms}
@@ -817,13 +766,6 @@ const Main = () => {
             )}
 
           {openProjectRoom && !openScream && (
-            // <ProjectDialog
-            //   loading={loading}
-            //   handleClick={handleClick}
-            //   loadingProjects={loadingProjects}
-            //   dataFinalProjectRooms={dataFinalProjectRooms}
-            //   setOpenInsightsPage={setOpenStatisticsOverview}
-            // />
             <ProjectroomPage
               user={user}
               setPostIdeaOpen={setPostIdeaOpen}
@@ -862,15 +804,6 @@ const Main = () => {
           setModalData={setModalData}
           // setContactOpen,
           // setFaqOpen,
-
-          // openOrganization={openOrganization}
-          // dataFinalMap={dataFinalMap}
-          // handleClick={handleClick}
-          // loadingProjects={false}
-          // loading={loadingOrganizations}
-          // projectsData={dataFinalProjectRooms}
-          // setOpenOrganizationsPage={setOpenOrganizationsOverview}
-          // handleOpenCreateOrganization={handleOpenCreateOrganization}
         />
       )}
 
@@ -879,17 +812,6 @@ const Main = () => {
         !openAccount &&
         openOrganizationsOverview &&
         !loadingOrganizations && (
-          // <OrganizationsPage
-          //   order={order}
-          //   setOpenOrganizationsPage={setOpenOrganizationsOverview}
-          //   dataFinal={dataFinalOrganizations}
-          //   dropdown={dropdown}
-          //   handleDropdown={handleDropdown}
-          //   setDropdown={setDropdown}
-          //   searchTerm={searchTerm}
-          //   setSearchTerm={setSearchTerm}
-          //   dataFinalProjectRooms={dataFinalProjectRooms}
-          // />
           <OrganizationsOverview
             data={dataFinalOrganizations}
             selectedOrganizationTypes={selectedOrganizationTypes}

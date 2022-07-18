@@ -13,7 +13,6 @@ import { db } from "../../firebase";
 // Components
 import { PageWrapper } from "./styles/sharedStyles";
 import TopNavigation from "./Components/TopNavigation";
-import { CustomIconButton } from "../atoms/CustomButtons/CustomButton";
 import FullscreenDialog from "../atoms/Layout/FullscreenDialog";
 import CreateProjectPage0b from "./CreateProjectRoom_components/CreateProjectPage0b";
 import CreateProjectPage1 from "./CreateProjectRoom_components/CreateProjectPage1";

@@ -31,6 +31,7 @@ import CalendarIcon from "../../../assets/icons/CalendarIcon";
 import Room from "../../../assets/icons/Room";
 
 import Calendar from "../../organisms/calendar/Calendar";
+import Skeleton from "../../atoms/skeleton/Skeleton";
 
 // const Calendar = React.lazy(() => import("../../organisms/calendar/Calendar"));
 
@@ -142,12 +143,16 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
 
       <Box justifyContent="center" margin="20px">
         <ImageWrapper>
-          <ImagePlaceholder
-            img={organization?.logoURL ? organization.logoURL : null}
-            borderRadius="18px"
-            height="calc(100% - 40px)"
-            width="calc(100% - 40px)"
-          />
+          {organization?.logoURL ? (
+            <ImagePlaceholder
+              img={organization?.logoURL ? organization.logoURL : null}
+              borderRadius="18px"
+              height="calc(100% - 40px)"
+              width="calc(100% - 40px)"
+            />
+          ) : (
+            <Skeleton height="100" width="100" borderRadius="10" />
+          )}
         </ImageWrapper>
       </Box>
 
@@ -173,7 +178,16 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
             icon={setOrganizationTypeIcon(organization?.organizationType)}
           />
         </LogoPlacer>
-        <Typography variant="h3"> {organization?.title}</Typography>
+        {organization?.title ? (
+          <Typography variant="h3"> {organization?.title}</Typography>
+        ) : (
+          <Skeleton
+            height="24"
+            width="300"
+            baseColor="#E6D7BF"
+            highlightColor="#F0E7D9"
+          />
+        )}
       </Box>
 
       <Box margin="24px" alignItems="center" gap="10px">
@@ -253,7 +267,19 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
       </Box>
       <Box margin="2px 0px 0px 24px">
         <InfoWidget onClick={() => setInfoOpen(!infoOpen)} infoOpen={infoOpen}>
-          <Typography variant="bodyBg">{organization?.description}</Typography>
+          {organization?.description ? (
+            <Typography variant="bodyBg">
+              {organization?.description}
+            </Typography>
+          ) : (
+            <Skeleton
+              count="4"
+              height="16"
+              width="300"
+              baseColor="#E6D7BF"
+              highlightColor="#F0E7D9"
+            />
+          )}
         </InfoWidget>
       </Box>
 

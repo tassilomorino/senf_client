@@ -1,17 +1,16 @@
 /** @format */
 
-import React, { useState, useEffect, useLayoutEffect, Suspense } from "react";
+import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { Provider } from "react-redux";
 import { isTablet } from "react-device-detect";
 import Cookies from "universal-cookie";
-import { I18nextProvider, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import {
   theme,
   GlobalStyle,
-  LayerWhiteFirstDefault,
   // i18n,
   MainLoader,
 } from "senf-atomic-design-system";
@@ -28,7 +27,7 @@ import "./styles/Animations.css";
 // Redux
 import store from "./redux/store";
 import { SET_AUTHENTICATED } from "./redux/types";
-import { logoutUser, getUserData } from "./redux/actions/userActions";
+import { getUserData } from "./redux/actions/userActions";
 import { setCookies } from "./redux/actions/cookiesActions";
 import { setInfoPageOpen } from "./redux/actions/UiActions";
 
@@ -41,16 +40,15 @@ import impressum from "./components/infocomponents/legal/impressum";
 import datenschutz from "./components/infocomponents/legal/datenschutz";
 import agb from "./components/infocomponents/legal/agb";
 import cookieConfigurator from "./components/infocomponents/legal/cookieConfigurator";
+
 import blank from "./pages/Blank";
 
 import { isMobileCustom } from "./util/customDeviceDetect";
 
 import packageJson from "../package.json";
 import { getBuildDate } from "./util/helpers";
-import withClearCache from "./ClearCache";
 import Cookiebanner from "./components/Cookiebanner/Cookiebanner";
 import { setViewport } from "./util/helpers-map-animations";
-import detectLocation from "./util/detectLocation";
 import GlobalStyles from "./styles/GlobalStyles";
 
 import "./util/i18n";

@@ -589,7 +589,6 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
               </Box>
             )}
           </Box>
-
           {comments && (
             <List
               data={comments}
@@ -598,6 +597,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
               handleOpenMenuComment={handleOpenMenuComment}
             />
           )}
+          <div style={isMobile ? { height: "600px" } : { height: "200px" }} />
         </InnerWrapper>
       </DragWrapper>
     </React.Fragment>

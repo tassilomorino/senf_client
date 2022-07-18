@@ -6,10 +6,7 @@ import Info from "../../../assets/icons/Info";
 import User from "../../../assets/icons/User";
 import LogoText from "../../../assets/logo/LogoText";
 import Box from "../../atoms/box/Box";
-import Button from "../../atoms/buttons/Button";
-import RoundedButton from "../../atoms/buttons/RoundedButton";
 import TertiaryButton from "../../atoms/buttons/TertiaryButton";
-import Icon from "../../atoms/icons/Icon";
 import { MobileTopBarProps } from "./MobileTopBar.types";
 
 const Wrapper = styled.div<MobileTopBarProps>`
@@ -32,6 +29,11 @@ const Wrapper = styled.div<MobileTopBarProps>`
     0px 10px 20px -6px rgba(134, 124, 99, 0.1);
   border-radius: 14px;
   z-index: 9;
+
+  transform: ${({ hide }) => (hide ? "scale(0.5)" : "scale(1)")};
+  opacity: ${({ hide }) => (hide ? "0" : "1")};
+  pointer-events: ${({ hide }) => (hide ? "none" : "all")};
+  transition: 0.5s;
 `;
 const ScaleContainer = styled.div<MobileTopBarProps>`
   transform: ${({ swipedUp }) => (swipedUp ? "scale(0.5)" : "scale(1)")};
@@ -44,9 +46,9 @@ const MobileTopBar: FC<MobileTopBarProps> = ({
   setOrder,
   setInfoPageOpen,
   handleOpenMyAccount,
-  swipedUp,
+  hide,
 }) => (
-  <Wrapper>
+  <Wrapper hide={hide}>
     <Box
       flexDirection="row"
       justifyContent="space-between"
