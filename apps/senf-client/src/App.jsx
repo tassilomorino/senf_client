@@ -168,7 +168,6 @@ const App = () => {
       )}
 
       <Provider store={store}>
-        <GlobalStyles />
         <Router>
           {openCookiebanner && (
             <Cookiebanner

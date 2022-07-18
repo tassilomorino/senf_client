@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { useSelector } from "react-redux";
-import { StyledH2, StyledImg } from "../../../styles/GlobalStyle";
-import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 import setIconByOrganizationType from "../../../data/setIconByOrganizationType";
 
 const Wrapper = styled.div`
@@ -174,7 +172,6 @@ export const InlineOrganizationCard = ({
   logoURL,
 }) => {
   const thisOrganizationId = organizationId;
-  const [organizationImage, setOrganizationImage] = useState(null);
   const projects = useSelector((state) => state.data.projects);
 
   const projectRoomsSize = projects?.filter(
@@ -182,9 +179,10 @@ export const InlineOrganizationCard = ({
   ).length;
 
   return (
-    <Wrapper active={organizationId === selectedOrganizationId}>
-      <ExpandButton handleButtonClick={() => handleDropdown(organizationId)} />
-
+    <Wrapper
+      active={organizationId === selectedOrganizationId}
+      onClick={() => handleDropdown(organizationId)}
+    >
       <LogoWrapper>
         <Thumbnail img={logoURL}></Thumbnail>
       </LogoWrapper>
