@@ -1,10 +1,10 @@
 /** @format */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
-import { Provider } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import { isTablet } from "react-device-detect";
 import Cookies from "universal-cookie";
 import { useTranslation } from "react-i18next";
@@ -13,6 +13,7 @@ import {
   GlobalStyle,
   // i18n,
   MainLoader,
+  Cookiebanner,
 } from "senf-atomic-design-system";
 import { ThemeProvider } from "styled-components";
 import { auth } from "./firebase";
@@ -47,7 +48,6 @@ import { isMobileCustom } from "./util/customDeviceDetect";
 
 import packageJson from "../package.json";
 import { getBuildDate } from "./util/helpers";
-import Cookiebanner from "./components/Cookiebanner/Cookiebanner";
 import { setViewport } from "./util/helpers-map-animations";
 import GlobalStyles from "./styles/GlobalStyles";
 
@@ -81,6 +81,24 @@ document.documentElement.style.setProperty("--vh", `${vh}px`);
 
 const App = () => {
   const { t } = useTranslation();
+
+  const { cookie_settings } = store.getState().data;
+  const [openCookiebanner, setOpenCookiebanner] = useState(true);
+
+  useEffect(() => {
+    if (cookie_settings === "all" || cookie_settings === "minimum") {
+      setOpenCookiebanner(false);
+    }
+  }, [cookie_settings]);
+
+  const handleOpenCookiePreferences = () => {
+    window.open("/cookieConfigurator", "_blank");
+  };
+
+  const handleCookies = (cookie_settings) => {
+    store.dispatch(setCookies(cookie_settings));
+    setOpenCookiebanner(false);
+  };
 
   const userState = () => {
     onAuthStateChanged(auth, (user) => {
@@ -152,7 +170,12 @@ const App = () => {
       <Provider store={store}>
         <GlobalStyles />
         <Router>
-          <Cookiebanner />
+          {openCookiebanner && (
+            <Cookiebanner
+              handleCookies={handleCookies}
+              handleOpenCookiePreferences={handleOpenCookiePreferences}
+            />
+          )}
           {tabletNote}
 
           {isMobileCustom && (

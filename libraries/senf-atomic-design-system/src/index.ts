@@ -46,6 +46,7 @@ export { default as Divider } from "./components/atoms/divider/Divider";
 export { default as Shape } from "./components/atoms/shapes/Shape";
 export { default as Typography } from "./components/atoms/typography/Typography";
 
+export { default as Cookiebanner } from "./components/molecules/cookiebanner/Cookiebanner";
 export { default as IdeaCard } from "./components/molecules/cards/IdeaCard";
 export { default as ProjectroomCard } from "./components/molecules/cards/ProjectroomCard";
 export { default as OrganizationCard } from "./components/molecules/cards/OrganizationCard";
