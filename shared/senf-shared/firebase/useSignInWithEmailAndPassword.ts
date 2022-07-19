@@ -36,6 +36,11 @@ export const useSignInWithEmailAndPassword = (
         });
       }
     } catch (err) {
+      console.log(
+        err.code,
+        err.message,
+        "error code and message in useSignInWithEmailAndPassword"
+      );
       setError({
         code: err.code,
         message: generateErrorMessage(err.code),
