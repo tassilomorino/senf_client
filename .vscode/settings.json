@@ -6,6 +6,11 @@
     "source.fixAll.eslint": true // it does not fix warnings
   },
   "conventionalCommits.scopes": [
+    "atomic-design",
+    "client",
+    "monitoring",
     "workspace"
-  ]
+  ],
+  "typescript.validate.enable": false,
+
 }
