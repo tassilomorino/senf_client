@@ -4,8 +4,8 @@ import type { Theme } from "styled-system";
 const theme: Theme = {
   fontFamily: "Nunito",
 
-  //SPACE are not complete/verified
-  space: [0, 2, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44],
+  // SPACE are not complete/verified
+  space: [0, 2, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44].map(numInPX => `${numInPX / 16}rem`),
 
   // font sizes converted from px to default browsers rem (16 px base)
   fontSizes: [12, 14, 16, 20, 24, 32].map((numInPX) => numInPX / 16),
@@ -14,18 +14,18 @@ const theme: Theme = {
   lineHeight: [1.2, 1.3, 1.4, 1.5],
   letterSpacings: [0],
 
-  //what exactly is SIZES? Do we need that?
+  // what exactly is SIZES? Do we need that?
   sizes: [],
 
-  //should we split up BORDERS?? Is borderstyles really necessary? Bestpractices?
+  // should we split up BORDERS?? Is borderstyles really necessary? Bestpractices?
   borders: [],
   borderWidths: [0, 1, 2, 3],
   borderStyles: ["dashed", "solid"],
 
-  //RADII are not complete/verified
+  // RADII are not complete/verified
   radii: [8, 10, 18, 20, 24, 28, 30],
 
-  //OPACITIES are not complete/verified
+  // OPACITIES are not complete/verified
   opacities: [0.4, 0.6, 0.75],
 
   shadows: [
@@ -37,10 +37,10 @@ const theme: Theme = {
     "0px 6px 8px -1px",
   ],
 
-  //Does Louis define the TRANSITIONS??
+  // Does Louis define the TRANSITIONS??
   transitions: [],
 
-  //bestpractice for ZINDICES??
+  // bestpractice for ZINDICES??
   zIndices: [0, 1],
 
   colors: {
