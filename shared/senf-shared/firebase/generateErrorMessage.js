@@ -37,9 +37,12 @@ export function generateErrorMessage(errorCode) {
     case "auth/invalid-user-token":
       errorMessage = "error_user_token_invalid";
       break;
+    case "auth/network-request-failed":
+      errorMessage = "error_network_request_failed";
+      break;
 
     default:
-      errorMessage = `Unknown error.${errorCode}`;
+      errorMessage = `Unknown error. ${errorCode}`;
   }
   return errorMessage;
 }
