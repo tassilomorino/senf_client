@@ -1,8 +1,7 @@
 /** @format */
-
-import React, { FC } from "react";
+import React, { FC, useState, useEffect } from "react";
 import styled from "styled-components";
-import { icons } from "../../../assets/icons/icons";
+import * as Icons from "../../../assets/icons";
 import { IconProps } from "./Icon.types";
 
 const Wrapper = styled.div<IconProps>`
@@ -13,7 +12,7 @@ const Wrapper = styled.div<IconProps>`
 
 const Icon: FC<IconProps> = ({ width, height, icon }) => (
   <Wrapper width={width} height={height}>
-    {icon}
+    {typeof icon === "string" ? Icons[icon]({ color: "inherit" }) : icon}
   </Wrapper>
 );
 

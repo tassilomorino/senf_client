@@ -36,7 +36,7 @@ const SenfLogoSmall = ({
     <g
       id="Senf-S"
       stroke="none"
-      stroke-width="1"
+      strokeWidth="1"
       fill="none"
       fill-rule="evenodd"
     >

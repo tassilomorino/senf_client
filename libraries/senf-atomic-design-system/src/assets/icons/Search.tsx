@@ -10,7 +10,7 @@ interface SVGRProps {
 }
 
 const Svg = styled.svg`
-  transform: ${({ transform }) => (transform ? transform : undefined)};
+  transform: ${({ transform }) => (transform || undefined)};
 `;
 
 const Search = ({
@@ -30,9 +30,9 @@ const Search = ({
     <g
       id="Icons"
       stroke="none"
-      stroke-width="1"
+      strokeWidth="1"
       fill="none"
-      fill-rule="evenodd"
+      fillRule="evenodd"
     >
       <g id="Search" fill="#000000">
         <path
