@@ -34,7 +34,6 @@ const ProfilePage = ({
   const user = useSelector((state) => state.user);
   const organizations = useSelector((state) => state.data.organizations);
   const organization = useSelector((state) => state.data.organization);
-
   const [deleteMenuOpen, setDeleteMenuOpen] = useState(false);
 
   const [foundOrganizations, setFoundOrganizations] = useState(false);
