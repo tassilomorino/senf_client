@@ -1,10 +1,11 @@
 /** @format */
 
-import React from "react";
+import React, { useState } from "react";
 import { isAndroid } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import {
+  Arrow,
   Box,
   RoundedButton,
   Button,
@@ -12,6 +13,9 @@ import {
   Hyperlink,
   Mail,
   CalendarIcon,
+  ContentDropdown,
+  ContentDropdownItem,
+  TertiaryButton,
 } from "senf-atomic-design-system";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
@@ -22,7 +26,6 @@ import PostScreamRules from "./PostScreamRules";
 
 // Icons
 import LocationIcon from "../../images/icons/location.png";
-import CustomSelect from "../atoms/Selects/CustomSelect";
 import { OptionsTopics } from "../../data/OptionsTopics";
 import { StyledH3, StyledH4, StyledText } from "../../styles/GlobalStyle";
 
@@ -134,6 +137,8 @@ const PostScreamFormContent = ({
   setOpenRules,
 }) => {
   const { t } = useTranslation();
+
+  const [topicDropdownOpen, setTopicDropdownOpen] = useState(false);
 
   return (
     <Card
@@ -262,12 +267,31 @@ const PostScreamFormContent = ({
         <SelectContainer>
           <StyledH3 fontWeight={400}>{t("topic")}: </StyledH3>
 
-          <CustomSelect
-            name={"topic"}
-            value={topic}
-            initialValue={t("select_topic")}
-            options={OptionsTopics()}
-            handleDropdown={handleDropdown}
+          <ContentDropdown
+            open={topicDropdownOpen}
+            setOpen={setTopicDropdownOpen}
+            OpenButton={
+              <TertiaryButton
+                onClick={() => setTopicDropdownOpen(!topicDropdownOpen)}
+                text={topic || t("select_topic")}
+                iconRight={<Arrow transform="rotate(90deg)" />}
+                variant="semibold"
+              />
+            }
+            Content={
+              <Box gap="5px" flexDirection="column">
+                {Object.values(OptionsTopics()).map(({ name, label }) => (
+                  <Box gap="5px">
+                    <ContentDropdownItem
+                      type="check"
+                      text={label}
+                      checked={topic === name}
+                      setChecked={() => handleDropdown(name)}
+                    />
+                  </Box>
+                ))}
+              </Box>
+            }
           />
         </SelectContainer>
       </Content>

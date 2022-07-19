@@ -12,7 +12,6 @@ import {
   TertiaryButton,
 } from "senf-atomic-design-system";
 import { isMobileCustom } from "../../util/customDeviceDetect";
-import CustomSelect from "../atoms/Selects/CustomSelect";
 import { OptionsProjects } from "../../data/OptionsProjects";
 import { StyledH3, StyledH4 } from "../../styles/GlobalStyle";
 
@@ -101,13 +100,6 @@ const PostScreamSelectContainter = ({
       <ProjectSelectWrapper>
         <StyledH3> {t("to")} </StyledH3>
 
-        {/* <CustomSelect
-          name={"project"}
-          value={projectSelected}
-          initialValue={t("all_ideas")}
-          options={OptionsProjects()}
-          handleDropdown={handleDropdownProject}
-        /> */}
         <ContentDropdown
           open={projectroomDropdownOpen}
           setOpen={setProjectroomDropdownOpen}
