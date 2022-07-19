@@ -55,10 +55,10 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
   const { t } = useTranslation();
   const [
     signInWithEmailAndPassword,
-    firebaseUserLoginInfo,
+    firebaseLoggedInUser,
     firebaseUserLoginLoading,
     firebaseUserLoginError,
-  ] = useSignInWithEmailAndPassword(auth);
+  ] = useSignInWithEmailAndPassword();
 
   const sendVerification = {
     sendEmailVerification: true,
@@ -86,11 +86,11 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
     if (firebaseUserLoginLoading) {
       setLoading(true);
     }
-    if (firebaseUserLoginInfo) {
+    if (firebaseLoggedInUser) {
       setLoading(false);
       setErrorMessage({ code: "", message: "" });
       dispatch({ type: SET_AUTHENTICATED });
-      dispatch(getUserData(firebaseUserLoginInfo.user.uid));
+      dispatch(getUserData(firebaseLoggedInUser.user.uid));
       setAuthOpen(false);
     }
     if (firebaseUserLoginError) {
@@ -100,7 +100,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
         message: firebaseUserLoginError.message,
       });
     }
-  }, [firebaseUserLoginLoading, firebaseUserLoginInfo, firebaseUserLoginError]);
+  }, [firebaseUserLoginLoading, firebaseLoggedInUser, firebaseUserLoginError]);
 
   useEffect(() => {
     if (firebaseUserRegistrationLoading) {
