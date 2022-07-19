@@ -57,7 +57,6 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
     firebaseUserLoginLoading,
     firebaseUserLoginError,
   ] = useSignInWithEmailAndPassword(auth);
-
   useEffect(() => {
     if (authEditOpen) {
       setVerifiedUser(true);
@@ -189,7 +188,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
       setLoading(false);
       setErrorMessage({
         code: errorCode,
-        message: generateErrorMessage(errorCode),
+        message: t(generateErrorMessage(errorCode)),
       });
     }
   };

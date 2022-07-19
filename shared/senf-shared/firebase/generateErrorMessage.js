@@ -2,41 +2,40 @@ export function generateErrorMessage(errorCode) {
   let errorMessage = "";
   switch (errorCode) {
     case "auth/invalid-email":
-      errorMessage = "Invalid email address.";
+      errorMessage = "error_invalid_email_address";
       break;
     case "auth/user-disabled":
-      errorMessage = "User has been disabled.";
+      errorMessage = "error_user_disabled";
       break;
     case "auth/user-not-found":
-      errorMessage = "User not found.";
+      errorMessage = "error_user_not_found";
       break;
     case "auth/wrong-password":
-      errorMessage = "Wrong password.";
+      errorMessage = "error_wrong_password";
       break;
     case "auth/email-already-in-use":
-      errorMessage = "Email already in use.";
+      errorMessage = "error_email_already_in_use";
       break;
     case "auth/weak-password":
-      errorMessage = "Password is too weak.";
+      errorMessage = "error_weak_password";
       break;
     case "auth/invalid-credential":
-      errorMessage = "Invalid credential.";
+      errorMessage = "error_invalid_crediantials";
       break;
     case "auth/operation-not-allowed":
-      errorMessage = "Operation not allowed.";
+      errorMessage = "error_operation_not_allowed";
       break;
     case "auth/requires-recent-login":
-      errorMessage =
-        "This operation is sensitive and requires recent authentication. Log in again before retrying this request.";
+      errorMessage = "error_requires_recent_login";
       break;
     case "auth/too-many-requests":
-      errorMessage = "Too many requests have been sent.";
+      errorMessage = "error_too_many_requests";
       break;
     case "auth/user-token-expired":
-      errorMessage = "User token expired.";
+      errorMessage = "error_user_token_expired";
       break;
     case "auth/invalid-user-token":
-      errorMessage = "Invalid user token.";
+      errorMessage = "error_user_token_invalid";
       break;
 
     default:

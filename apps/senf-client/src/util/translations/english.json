@@ -389,5 +389,18 @@
   "faq_question7": "Do you want to expand to other cities?",
   "faq_answer7": "You should be able to contribute with your ideas in every city. We are convinced of that! We are using all our capacities for the implementation and are currently focusing on Cologne in order to gain important experience on this basis. In the process, we are also developing strategies for expansion in order to implement the platform beyond the borders of Cologne. With this goal in mind, we are currently working on technical scalability. At the same time, we are optimizing the design and functionality in a continuous process to make it as attractive and intuitive to use as possible. Through constant exchange and initial joint projects with various stakeholders, we are iteratively improving the platform in order to adapt it to the needs of citizen participation of the future and to develop new opportunities for participation. In the process, we are designing and testing additional features, such as surveys and 3D tools. Our goal is to create a platform for everyone - for municipal employees, who can handle their processes on the platform - for planning offices, who can design their projects more demand-oriented through the digital component - for associations and initiatives, who long for tools for bottom-up participation - and of course for citizens, who can jointly develop their ideas for the urban space through the toolset of the platform.",
   "faq_question8": "Are you looking for reinforcement in the team? How do you work together?",
-  "faq_answer8": "We are always looking for motivated reinforcements for our team and are open for a conversation! Feel free to get in touch with us - no matter what area you come from! In our team, everyone contributes according to their capacities. We exchange a lot among ourselves and support each other. Since we work on many different areas, we usually act very independently and avoid large agreements in a gathered group. We communicate via Slack, because we work remotely for the most part. Of course, we also like to see each other face-to-face, so we've rented workspaces in the co-working space in Cologne's Südstadt district, where some of us work."
+  "faq_answer8": "We are always looking for motivated reinforcements for our team and are open for a conversation! Feel free to get in touch with us - no matter what area you come from! In our team, everyone contributes according to their capacities. We exchange a lot among ourselves and support each other. Since we work on many different areas, we usually act very independently and avoid large agreements in a gathered group. We communicate via Slack, because we work remotely for the most part. Of course, we also like to see each other face-to-face, so we've rented workspaces in the co-working space in Cologne's Südstadt district, where some of us work.",
+
+  "error_invalid_email_address": "Invalid email address.",
+  "error_user_disabled": "User has been disabled.",
+  "error_user_not_found": "User not found.",
+  "error_wrong_password": "Wrong password.",
+  "error_email_already_in_use": "Email already in use.",
+  "error_weak_password": "Password is too weak.",
+  "error_invalid_crediantials": "Invalid credentials.",
+  "error_operation_not_allowed": "Operation not allowed.",
+  "error_requires_recent_login": "This operation is sensitive and requires recent authentication. Log in again before retrying this request.",
+  "error_too_many_requests": "Too many requests.",
+  "error_user_token_expired": "User token expired.",
+  "error_user_token_invalid": "Invalid User token "
 }
