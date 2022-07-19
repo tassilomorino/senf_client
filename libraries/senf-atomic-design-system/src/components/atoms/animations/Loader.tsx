@@ -1,9 +1,9 @@
 /** @format */
 
 import React, { FC, useRef, useEffect } from "react";
-import { LoaderProps } from "./Loader.types";
 import styled from "styled-components";
 import lottie from "lottie-web";
+import { LoaderProps } from "./Loader.types";
 import DotLoader from "../../../assets/lottieFiles/dotLoader.json";
 
 const StyledLoader = styled.div`
