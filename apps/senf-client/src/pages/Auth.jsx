@@ -29,7 +29,9 @@ import { useTranslation } from "react-i18next";
 import { SwipeModal, Auth as AuthComponent } from "senf-atomic-design-system";
 import {
   useSignInWithEmailAndPassword,
+  useCreateUserWithEmailAndPassword,
   generateErrorMessage,
+  createUserInDatabase,
 } from "senf-shared";
 import { getUserData } from "../redux/actions/userActions";
 
@@ -53,10 +55,23 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
   const { t } = useTranslation();
   const [
     signInWithEmailAndPassword,
-    firebaseUserLogin,
+    firebaseUserLoginInfo,
     firebaseUserLoginLoading,
     firebaseUserLoginError,
   ] = useSignInWithEmailAndPassword(auth);
+
+  const sendVerification = {
+    sendEmailVerification: true,
+    emailVerificationOptions: {
+      url: "https://senf.koeln/verify",
+    },
+  };
+  const [
+    createUserWithEmailAndPassword,
+    firebaseUserRegistrationInfo,
+    firebaseUserRegistrationLoading,
+    firebaseUserRegistrationError,
+  ] = useCreateUserWithEmailAndPassword(auth, db, sendVerification);
   useEffect(() => {
     if (authEditOpen) {
       setVerifiedUser(true);
@@ -70,11 +85,11 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
     if (firebaseUserLoginLoading) {
       setLoading(true);
     }
-    if (firebaseUserLogin) {
+    if (firebaseUserLoginInfo) {
       setLoading(false);
       setErrorMessage({ code: "", message: "" });
       dispatch({ type: SET_AUTHENTICATED });
-      dispatch(getUserData(firebaseUserLogin.user.uid));
+      dispatch(getUserData(firebaseUserLoginInfo.user.uid));
       setAuthOpen(false);
     }
     if (firebaseUserLoginError) {
@@ -84,34 +99,29 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
         message: firebaseUserLoginError.message,
       });
     }
-  }, [firebaseUserLoginLoading, firebaseUserLogin, firebaseUserLoginError]);
+  }, [firebaseUserLoginLoading, firebaseUserLoginInfo, firebaseUserLoginError]);
 
-  async function createUserInDatabase(userCredential, formikRegisterStore) {
-    if (userCredential && userCredential.user) {
-      try {
-        await setDoc(doc(db, "users", userCredential.user.uid), {
-          handle: formikRegisterStore.values.handle,
-          createdAt: new Date().toISOString(),
-          userId: userCredential.user.uid,
-        });
-        await setDoc(
-          doc(
-            db,
-            "users",
-            userCredential.user.uid,
-            "Private",
-            userCredential.user.uid
-          ),
-          {
-            email: formikRegisterStore.values.email,
-            userId: userCredential.user.uid,
-          }
-        );
-      } catch (error) {
-        throw new Error(error, "Error in createUserInDatabase");
-      }
+  useEffect(() => {
+    if (firebaseUserRegistrationLoading) {
+      setLoading(true);
     }
-  }
+    if (firebaseUserRegistrationInfo) {
+      setLoading(false);
+      setErrorMessage({ code: "", message: "" });
+      setEmailRegistrationSubmitted(true);
+    }
+    if (firebaseUserRegistrationError) {
+      setLoading(false);
+      setErrorMessage({
+        code: firebaseUserRegistrationError.code,
+        message: firebaseUserRegistrationError.message,
+      });
+    }
+  }, [
+    firebaseUserRegistrationError,
+    firebaseUserRegistrationInfo,
+    firebaseUserRegistrationLoading,
+  ]);
 
   async function createUserFromProviderInDatabase(user) {
     try {
@@ -132,66 +142,6 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
       throw new Error(error, "error in createUserFromProviderInDatabase");
     }
   }
-
-  const handleSubmitRegister = async (formikRegisterStore) => {
-    // event.preventDefault();
-
-    try {
-      setLoading(true);
-      setErrorMessage({ code: "", message: "" });
-      const usersRef = collection(db, "users");
-      const q = query(
-        usersRef,
-        where("handle", "==", formikRegisterStore.values.handle)
-      );
-      const usernameQuerySnapshot = await getDocs(q);
-
-      if (!usernameQuerySnapshot.empty) {
-        // username already exists
-
-        setLoading(false);
-        setErrorMessage({
-          code: "username-already-exists",
-          message: t("username_taken"),
-        });
-      } else {
-        // username is available, try to create user and put info to database
-
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          formikRegisterStore.values.email,
-          formikRegisterStore.values.password
-        );
-
-        const actionCodeSettings = {
-          // change to senf.koeln on production
-          url: "https://senf.koeln/verify",
-        };
-
-        await sendEmailVerification(auth.currentUser, actionCodeSettings);
-        await createUserInDatabase(userCredential, formikRegisterStore);
-
-        setLoading(false);
-
-        const emailWrapper = {
-          email: formikRegisterStore.values.email,
-        };
-
-        setEmailRegistrationSubmitted(true);
-        // history.push("/verify", emailWrapper);
-      }
-    } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      setLoading(false);
-
-      setLoading(false);
-      setErrorMessage({
-        code: errorCode,
-        message: t(generateErrorMessage(errorCode)),
-      });
-    }
-  };
 
   const handleProviderSignin = async (providerName) => {
     try {
@@ -362,8 +312,8 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
               formikLoginStore.values.password
             )
           }
-          handleSubmitRegister={(registerData) =>
-            handleSubmitRegister(registerData)
+          handleSubmitRegister={(formikRegisterStore) =>
+            createUserWithEmailAndPassword(formikRegisterStore)
           }
           handleGoogleSignIn={() => handleProviderSignin("google")}
           handleFacebookSignIn={() => handleProviderSignin("facebook")}
