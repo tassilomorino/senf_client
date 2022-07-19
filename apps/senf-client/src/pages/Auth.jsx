@@ -72,6 +72,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
     firebaseUserRegistrationLoading,
     firebaseUserRegistrationError,
   ] = useCreateUserWithEmailAndPassword(auth, db, sendVerification);
+
   useEffect(() => {
     if (authEditOpen) {
       setVerifiedUser(true);
