@@ -42,11 +42,10 @@ export const Note = styled.p<{ error?: boolean }>`
   flex-basis: 7rem;
 `;
 
-export const InputField = styled.div<{ focus: boolean }>`
+export const InputField = styled.div<{ focus: boolean, icon: boolean }>`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0 0.6rem 0 0.9rem;
   min-height: 50px;
   color: rgb(51, 51, 51) !important;
   border-radius: ${({ theme }) => theme.radii[1]}px;
@@ -79,10 +78,21 @@ export const InputField = styled.div<{ focus: boolean }>`
   input {
     max-height: 50px !important;
   }
+  input, textarea {
+    padding: ${({ theme }) => `${theme.space[5]} ${theme.space[6]}`};
+    ${({ icon }) =>
+      icon &&
+      css`padding-left:${({ theme }) => `${theme.space[1]}`};`
+    }
+  }
+
+  ${({ icon }) =>
+      icon &&
+      css`padding-left:${({ theme }) => `${theme.space[5]}`};`
+    }
 
   /* Styles for textarea */
   textarea {
-    padding: 0.7rem 0rem 0.7rem 0rem;
     resize: none;
   }
 

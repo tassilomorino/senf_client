@@ -17,6 +17,15 @@ import Plus from "../../../assets/icons/Plus";
 import TertiaryButton from "../buttons/TertiaryButton";
 import theme from "../../../styles/theme";
 
+const adjustTextarea = (event: Event, maxRows?: number) => {
+  event.target.setAttribute('rows', null)
+  const padding = parseFloat(window.getComputedStyle(event.target).paddingBlock, 10) * 2
+  const lineHeight = parseFloat(window.getComputedStyle(event.target).lineHeight, 10)
+  const scrollHeight = event.target.scrollHeight - padding
+  const rows = Math.round(scrollHeight / lineHeight)
+  event.target.setAttribute('rows', Math.min(rows, maxRows))
+}
+
 const Input: FunctionComponent<InputProps> = ({
   id,
   name,
@@ -30,6 +39,7 @@ const Input: FunctionComponent<InputProps> = ({
   success,
   disabled,
   rows,
+  maxRows,
   onChange,
   value,
   onBlur,
@@ -44,6 +54,7 @@ const Input: FunctionComponent<InputProps> = ({
   // const [value, setValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
+
   return (
     <Wrapper disabled={disabled}>
       {(label || note) && (
@@ -54,10 +65,11 @@ const Input: FunctionComponent<InputProps> = ({
           {note && <Note error={error}>{note}</Note>}
         </Box>
       )}
-
+      {/* the InputField wrapper is necessary for including icons and buttons */}
       <InputField
         id={id}
         focus={isFocused}
+        icon={isSearch}
         onFocusCapture={() => setIsFocused((prevState) => !prevState)}
         onBlurCapture={() => setIsFocused((prevState) => !prevState)}
         onBlur={(event) => {
@@ -77,7 +89,13 @@ const Input: FunctionComponent<InputProps> = ({
           //   receiveValue(e.currentTarget.value);
           // }}
           onChange={
-            isSearch ? (event) => setSearchTerm(event.target.value) : onChange
+            (event) => {
+              if (type === "textarea") adjustTextarea(event, maxRows)
+              if (isSearch && event.target && typeof setSearchTerm === "function") {
+                return setSearchTerm(event.target.value)
+              } 
+              return onChange
+            }
           }
           ref={inputRef}
           as={type === "textarea" ? "textarea" : "input"}
