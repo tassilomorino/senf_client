@@ -16,7 +16,7 @@ import {
 } from "../util/helpers";
 
 import { logoutUser } from "../redux/actions/userActions";
-import DeleteMenuModal from "../components/Modals/DeleteMenuModal";
+import DeleteProfileModal from "../components/Modals/DeleteProfileModal";
 
 const ProfilePage = ({
   dataFinalMap,
@@ -83,7 +83,10 @@ const ProfilePage = ({
   return (
     <React.Fragment>
       {deleteMenuOpen && (
-        <DeleteMenuModal setDeleteMenuOpen={setDeleteMenuOpen} />
+        <DeleteProfileModal
+          deleteMenuOpen={deleteMenuOpen}
+          setDeleteMenuOpen={setDeleteMenuOpen}
+        />
       )}
       <ProfilePageComponent
         user={user}

@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { StyledH3 } from "../../../styles/GlobalStyle";
-import ExpandButton from "../../atoms/CustomButtons/ExpandButton";
 
 const ListItemWrapper = styled.div`
   display: grid;
@@ -51,15 +50,7 @@ const ListItem = styled.div`
 const ListItemsEdit = ({ listItems, set }) => (
   <ListItemWrapper>
     {listItems.map(({ title }, index) => (
-      <ListItem key={title}>
-        <ExpandButton handleButtonClick={() => set(index + 1)} />
-        {/* <CheckboxWrapper>
-            <CheckBox
-              selected={true}
-              type="checkbox"
-              handleInputChange={() => console.log()}
-            />
-          </CheckboxWrapper> */}
+      <ListItem key={title} onClick={() => set(index + 1)}>
         <StyledH3 textAlign="center">{title}</StyledH3>
       </ListItem>
     ))}
