@@ -31,17 +31,19 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import bbox from "@turf/bbox";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { Box, Button } from "senf-atomic-design-system";
+import {
+  Plus,
+  Check,
+  Box,
+  Button,
+  RoundedButton,
+} from "senf-atomic-design-system";
 import { db } from "../../../firebase";
 import MapGL from "../../../util/urbica/react-map-gl.esm";
 import Draw from "../../../util/urbica/react-map-gl-draw.esm";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 
-import {
-  CustomButton,
-  CustomIconButton,
-} from "../../atoms/CustomButtons/CustomButton";
 // import { createProjectSaveData } from "../../../../redux/actions/formDataActions";
 import { StyledH2 } from "../../../styles/GlobalStyle";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
@@ -288,14 +290,16 @@ const MapDialog = ({
 
   return ReactDOM.createPortal(
     <MapWrapper mapOpen={mapOpen} id="drawMapWindow">
-      <CustomIconButton
-        name="Close"
+      <Box
         position="fixed"
         margin={document.body.clientWidth > 768 ? "40px" : "10px"}
-        left="0"
         zIndex={999}
-        handleButtonClick={handleClose}
-      />
+      >
+        <RoundedButton
+          icon={<Plus transform="rotate(45deg)" />}
+          onClick={handleClose}
+        />
+      </Box>
 
       {viewport && (
         <MapGL
@@ -333,21 +337,12 @@ const MapDialog = ({
           {!step2 && (
             <ButtonsContainer>
               {data ? (
-                <CustomIconButton
-                  name="Trash"
-                  iconWidth="25px"
-                  position="relative"
-                  backgroundColor="white"
-                  handleButtonClick={() => handleDelete(data)}
+                <Button
+                  icon={<Plus transform="rotate(45dedg)" />}
+                  onClick={() => handleDelete(data)}
                 />
               ) : (
-                <CustomIconButton
-                  name="Check"
-                  iconWidth="25px"
-                  position="relative"
-                  backgroundColor="white"
-                  handleButtonClick={handleSet}
-                />
+                <Button icon={<Check />} onClick={handleSet} />
               )}
             </ButtonsContainer>
           )}

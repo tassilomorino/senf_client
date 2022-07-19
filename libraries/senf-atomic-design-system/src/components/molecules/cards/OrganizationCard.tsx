@@ -167,8 +167,6 @@ const OrganizationCard: FC<OrganizationCardProps> = ({
     ({ organizationId }) => organizationId === cardOrganizationId
   ).length;
 
-
-
   return (
     <Wrapper
       status={status}
@@ -182,7 +180,7 @@ const OrganizationCard: FC<OrganizationCardProps> = ({
            <img src={NotPublishedIcon} width="100%" /> 
         </DeactivatedWrapper>
       )}
-      <ExpandButton handleButtonClick={handleButtonClick} /> */}
+     */}
 
       <LogoWrapper>
         <Thumbnail

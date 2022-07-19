@@ -39,6 +39,8 @@ export { default as Tag } from "./components/atoms/tag/Tag";
 export { default as Icon } from "./components/atoms/icons/Icon";
 export { default as Input } from "./components/atoms/inputs/Input";
 export { default as ContentDropdown } from "./components/atoms/contentDropdown/ContentDropdown";
+export { default as ContentDropdownItem } from "./components/atoms/contentDropdownItem/ContentDropdownItem";
+
 export { default as ToggleInput } from "./components/atoms/toggleInput/ToggleInput";
 export { default as Switch } from "./components/atoms/switch/Switch";
 export { default as Box } from "./components/atoms/box/Box";

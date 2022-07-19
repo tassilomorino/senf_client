@@ -1,11 +1,17 @@
 /** @format */
 
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { Box, Button } from "senf-atomic-design-system";
+import {
+  Arrow,
+  Box,
+  Button,
+  ContentDropdown,
+  ContentDropdownItem,
+  TertiaryButton,
+} from "senf-atomic-design-system";
 import { isMobileCustom } from "../../util/customDeviceDetect";
-import CustomSelect from "../atoms/Selects/CustomSelect";
 import { OptionsProjects } from "../../data/OptionsProjects";
 import { StyledH3, StyledH4 } from "../../styles/GlobalStyle";
 
@@ -64,6 +70,7 @@ const PostScreamSelectContainter = ({
   handleDropdownProject,
 }) => {
   const { t } = useTranslation();
+  const [projectroomDropdownOpen, setProjectroomDropdownOpen] = useState(false);
 
   return (
     <Wrapper
@@ -93,12 +100,37 @@ const PostScreamSelectContainter = ({
       <ProjectSelectWrapper>
         <StyledH3> {t("to")} </StyledH3>
 
-        <CustomSelect
-          name={"project"}
-          value={projectSelected}
-          initialValue={t("all_ideas")}
-          options={OptionsProjects()}
-          handleDropdown={handleDropdownProject}
+        <ContentDropdown
+          open={projectroomDropdownOpen}
+          setOpen={setProjectroomDropdownOpen}
+          OpenButton={
+            <TertiaryButton
+              onClick={() =>
+                setProjectroomDropdownOpen(!projectroomDropdownOpen)
+              }
+              text={
+                OptionsProjects().find(
+                  (optionsProjects) => projectSelected === optionsProjects.value
+                ).label || t("all_ideas")
+              }
+              iconRight={<Arrow transform="rotate(90deg)" />}
+              variant="semibold"
+            />
+          }
+          Content={
+            <Box gap="5px" flexDirection="column">
+              {Object.values(OptionsProjects()).map(({ value, label }) => (
+                <Box gap="5px">
+                  <ContentDropdownItem
+                    type="check"
+                    text={label}
+                    checked={projectSelected === value}
+                    setChecked={() => handleDropdownProject(value)}
+                  />
+                </Box>
+              ))}
+            </Box>
+          }
         />
       </ProjectSelectWrapper>
       {/* <FlexWrapper> */}
