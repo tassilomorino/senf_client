@@ -7,8 +7,8 @@ import {
   Box,
   Divider,
 } from "senf-atomic-design-system";
-import User from "./User";
 import { useTranslation } from "react-i18next";
+import User from "./User";
 
 const Group = styled.div`
   margin: 10px;
@@ -60,9 +60,9 @@ const InboxContainer = ({
                   .includes(searchTerm.toLocaleLowerCase())
               ) {
                 return val;
-              } else {
+              } 
                 return "";
-              }
+              
             })
             .map((val, key) => {
               return (
@@ -95,13 +95,12 @@ const InboxContainer = ({
       {users
         .filter((val) => {
           if (
-            user.interactedUsers &&
+            user?.interactedUsers &&
             user.interactedUsers.indexOf(val.userId) > -1
           ) {
             return val;
-          } else {
-            return "";
-          }
+          } 
+          return "";
         })
         .map((user) => (
           <React.Fragment>
