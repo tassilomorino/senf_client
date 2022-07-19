@@ -7,21 +7,21 @@ export function OptionsProjects() {
   const projects = useSelector((state) => state.data.projects);
   const { t } = useTranslation();
 
-  const optionsProjectsInitial = [{ name: "", label: t("all_ideas") }];
+  const optionsProjectsInitial = [{ value: "", label: t("all_ideas") }];
   const optionsProjectsArray = projects
-    ?.sort(function (a, b) {
+    ?.sort((a, b) => {
       if (a.createdAt > b.createdAt) {
         return -1;
       }
       return 0;
     })
     .map((project) => ({
-      name: project.projectRoomId,
+      value: project.projectRoomId,
       label: project.title,
       img: project.imgUrl,
     }));
 
-  var optionsProjects = [...optionsProjectsInitial, ...optionsProjectsArray];
+  const optionsProjects = [...optionsProjectsInitial, ...optionsProjectsArray];
 
   return optionsProjects;
 }
