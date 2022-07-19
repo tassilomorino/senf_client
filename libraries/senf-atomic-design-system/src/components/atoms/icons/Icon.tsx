@@ -1,5 +1,5 @@
 /** @format */
-import React, { FC, useState, useEffect } from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
 import * as Icons from "../../../assets/icons";
 import { IconProps } from "./Icon.types";
