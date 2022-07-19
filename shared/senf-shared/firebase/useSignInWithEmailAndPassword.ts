@@ -27,14 +27,14 @@ export const useSignInWithEmailAndPassword = (
         email,
         password
       );
-      /*     if (user.user.emailVerified) {
+      if (user.user.emailVerified) {
         setLoggedInUser(user);
       } else {
         setError({
           code: "auth/user-not-verified",
           message: "User is not verified",
         });
-      } */
+      }
     } catch (err) {
       console.log(
         err.code,
