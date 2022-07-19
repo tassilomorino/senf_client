@@ -58,8 +58,8 @@ const Switch: FC<SwitchProps> = ({ id = "switch", checked, receiveValue, onChang
   const [toggle, setToggle] = useState(false);
 
   return (
-    <Wrapper         
-    disabled={disabled}
+    <Wrapper
+      disabled={disabled}
     >
       <SwitchInput
         className="switch-checkbox"
