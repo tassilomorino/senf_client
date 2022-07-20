@@ -58,7 +58,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
     firebaseLoggedInUser,
     firebaseUserLoginLoading,
     firebaseUserLoginError,
-  ] = useSignInWithEmailAndPassword();
+  ] = useSignInWithEmailAndPassword(auth);
 
   const sendVerification = {
     sendEmailVerification: true,

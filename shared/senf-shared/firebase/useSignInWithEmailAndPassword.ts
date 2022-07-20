@@ -3,14 +3,14 @@ import {
   UserCredential,
   signInWithEmailAndPassword as firebaseSignInWithEmailAndPassword,
   AuthError,
-  getAuth,
 } from "firebase/auth";
 import { useState, useMemo } from "react";
 import { EmailAndPasswordActionHook } from "./types";
 import { generateErrorMessage } from "./generateErrorMessage";
 
-const auth = getAuth();
-export const useSignInWithEmailAndPassword = (): EmailAndPasswordActionHook => {
+export const useSignInWithEmailAndPassword = (
+  auth: Auth
+): EmailAndPasswordActionHook => {
   const [error, setError] = useState({ code: "", message: "" });
   const [loggedInUser, setLoggedInUser] = useState<UserCredential>();
   const [loading, setLoading] = useState<boolean>(false);
