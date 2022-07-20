@@ -29,7 +29,7 @@ const CommentActive: FC<SVGRProps> = ({ color = "black", transform }) => (
       stroke="none"
       strokeWidth="1"
       fill="none"
-      fill-rule="evenodd"
+      fillRule="evenodd"
     >
       <g id="Icons/Comment.fill" fill="#000000">
         <path

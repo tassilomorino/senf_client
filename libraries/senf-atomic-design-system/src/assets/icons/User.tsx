@@ -32,7 +32,7 @@ const User = ({
       stroke="none"
       strokeWidth="1"
       fill="none"
-      fill-rule="evenodd"
+      fillRule="evenodd"
     >
       <g id="User" fill="#000000">
         <path

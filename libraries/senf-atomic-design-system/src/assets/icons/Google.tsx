@@ -32,7 +32,7 @@ const Google = ({
       stroke="none"
       strokeWidth="1"
       fill="none"
-      fill-rule="evenodd"
+      fillRule="evenodd"
     >
       <g id="Group" transform="translate(0.181800, -0.000300)">
         <path

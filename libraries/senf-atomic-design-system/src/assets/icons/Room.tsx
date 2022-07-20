@@ -32,7 +32,7 @@ const Room = ({
       stroke="none"
       strokeWidth="1"
       fill="none"
-      fill-rule="evenodd"
+      fillRule="evenodd"
     >
       <g id="Room" fill="#000000">
         <path

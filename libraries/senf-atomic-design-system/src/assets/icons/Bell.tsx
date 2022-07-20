@@ -32,7 +32,7 @@ const Bell = ({
       stroke="none"
       strokeWidth="1"
       fill="none"
-      fill-rule="evenodd"
+      fillRule="evenodd"
     >
       <g id="Bell" fill="#000000">
         <path

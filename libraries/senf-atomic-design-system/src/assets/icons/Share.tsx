@@ -32,7 +32,7 @@ const Share = ({
       stroke="none"
       strokeWidth="1"
       fill="none"
-      fill-rule="evenodd"
+      fillRule="evenodd"
     >
       <g id="Share" fill="#000000">
         <path

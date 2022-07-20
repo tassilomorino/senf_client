@@ -32,7 +32,7 @@ const Facebook = ({
       stroke="none"
       strokeWidth="1"
       fill="none"
-      fill-rule="evenodd"
+      fillRule="evenodd"
     >
       <g id="Facebook" fill="#2175E2">
         <path
