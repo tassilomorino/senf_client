@@ -110,7 +110,11 @@ export const useSignInWithEmailAndPassword = (
         email,
         password
       );
-      setLoggedInUser(user);
+      if (user.user.emailVerified) {
+        setLoggedInUser(user);
+      } else {
+        throw new Error("User is not verified");
+      }
     } catch (err) {
       setError(err as AuthError);
     } finally {
