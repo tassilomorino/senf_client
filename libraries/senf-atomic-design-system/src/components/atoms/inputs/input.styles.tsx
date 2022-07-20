@@ -86,7 +86,7 @@ export const InputField = styled.div<{ focus: boolean, icon: boolean }>`
     box-sizing: border-box;
   }
   input, textarea {
-    padding: ${({ theme }) => `${theme.space[4]} ${theme.space[6]}`};
+    padding: ${({ theme }) => `${theme.space[4]} ${theme.space[5]}`};
     ${({ icon }) =>
       icon &&
       css`padding-left:${({ theme }) => `${theme.space[1]}`};`
