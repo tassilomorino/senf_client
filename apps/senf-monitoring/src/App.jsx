@@ -12,6 +12,7 @@ import "./util/i18n";
 import PrivateRoute from "./context/PrivateRoute";
 import { AuthProvider } from "./context/auth";
 import AuthPage from "./pages/AuthPage";
+import InviteMember from "./pages/InviteMember";
 
 const App = () => {
   return (
@@ -45,6 +46,7 @@ const App = () => {
                   <Route exact path="/" component={Dashboard} />
                 </Route> */}
                 <Route exact path="/" element={<Dashboard />} />
+                <Route exact path="/invite" element={<InviteMember />} />
               </Routes>
             </React.Suspense>
           </Router>
