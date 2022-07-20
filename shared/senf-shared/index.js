@@ -2,3 +2,4 @@ export { useSignInWithEmailAndPassword } from "./firebase/useSignInWithEmailAndP
 export { useCreateUserWithEmailAndPassword } from "./firebase/useCreateUserWithEmailAndPassword";
 export { generateErrorMessage } from "./firebase/generateErrorMessage";
 export { createUserInDatabase } from "./firebase/createUserInDatabase";
+export { createUserFromProviderInDatabase } from "./firebase/createUserFromProviderInDatabase";

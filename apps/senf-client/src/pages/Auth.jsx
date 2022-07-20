@@ -32,6 +32,7 @@ import {
   useCreateUserWithEmailAndPassword,
   generateErrorMessage,
   createUserInDatabase,
+  createUserFromProviderInDatabase,
 } from "senf-shared";
 
 import { getUserData } from "../redux/actions/userActions";
@@ -131,26 +132,6 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
     firebaseUserRegistrationLoading,
   ]);
 
-  async function createUserFromProviderInDatabase(user) {
-    try {
-      if (user) {
-        await setDoc(doc(db, "users", user.uid), {
-          handle: user.displayName,
-          createdAt: new Date().toISOString(),
-          userId: user.uid,
-          photoURL: user.photoURL ?? "",
-          providerId: user.providerData[0].providerId ?? "",
-        });
-        await setDoc(doc(db, "users", user.uid, "Private", user.uid), {
-          email: user.providerData[0].email ?? "",
-          userId: user.uid,
-        });
-      }
-    } catch (error) {
-      throw new Error(error, "error in createUserFromProviderInDatabase");
-    }
-  }
-
   const handleProviderSignin = async (providerName) => {
     try {
       let provider;
@@ -178,7 +159,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
       const docSnapshot = await getDoc(docRef);
       if (!docSnapshot.exists() && user) {
         console.log("user not existing yet", user.uid, user);
-        await createUserFromProviderInDatabase(user);
+        await createUserFromProviderInDatabase(db, user);
         dispatch({ type: SET_AUTHENTICATED });
         dispatch(getUserData(user.uid));
         setVerifiedUser(true);
