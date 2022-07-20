@@ -40,6 +40,9 @@ export function generateErrorMessage(errorCode) {
     case "auth/network-request-failed":
       errorMessage = "error_network_request_failed";
       break;
+    case "auth/user-not-verified":
+      errorMessage = "error_user_not_verified";
+      break;
 
     default:
       errorMessage = `Unknown error. ${errorCode}`;

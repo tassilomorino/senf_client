@@ -94,12 +94,12 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
       setAuthOpen(false);
     }
     if (firebaseUserLoginError) {
-      console.log(firebaseUserLoginError, "firebaseUserLoginError in auth.jsx");
       setLoading(false);
+
       setErrorMessage({
         ...errorMessage,
         code: firebaseUserLoginError.code,
-        message: firebaseUserLoginError.message,
+        message: generateErrorMessage(firebaseUserLoginError.code),
       });
     }
   }, [
