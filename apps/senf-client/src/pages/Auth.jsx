@@ -58,7 +58,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
     firebaseLoggedInUser,
     firebaseUserLoginLoading,
     firebaseUserLoginError,
-  ] = useSignInWithEmailAndPassword();
+  ] = useSignInWithEmailAndPassword(auth);
 
   const sendVerification = {
     sendEmailVerification: true,
@@ -316,7 +316,6 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
           loginLoading={loading}
           handleSubmitLogin={(formikLoginStore) =>
             signInWithEmailAndPassword(
-              auth,
               formikLoginStore.values.email,
               formikLoginStore.values.password
             )

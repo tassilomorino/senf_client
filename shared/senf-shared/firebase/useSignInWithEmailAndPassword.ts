@@ -8,13 +8,14 @@ import { useState, useMemo } from "react";
 import { EmailAndPasswordActionHook } from "./types";
 import { generateErrorMessage } from "./generateErrorMessage";
 
-export const useSignInWithEmailAndPassword = (): EmailAndPasswordActionHook => {
+export const useSignInWithEmailAndPassword = (
+  auth: Auth
+): EmailAndPasswordActionHook => {
   const [error, setError] = useState({ code: "", message: "" });
   const [loggedInUser, setLoggedInUser] = useState<UserCredential>();
   const [loading, setLoading] = useState<boolean>(false);
 
   const signInWithEmailAndPassword = async (
-    auth: Auth,
     email: string,
     password: string
   ) => {
