@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Typography, Box, Button } from "senf-atomic-design-system";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import AddMemberToList from "./AddMemberToList";
 import { db } from "../firebase";
 
@@ -41,6 +49,16 @@ const MemberBoard = () => {
       throw new Error(error, "Error in Memberlist");
     }
   };
+  const handleDeleteMember = async (userId) => {
+    try {
+      const docRef = doc(db, `exampleUsers/${userId}`);
+      await deleteDoc(docRef).then(() => {
+        getMembers();
+      });
+    } catch (error) {
+      throw new Error(error, "error in deleteScreamFunc");
+    }
+  };
   useEffect(() => {
     getMembers();
   }, [openModal]);
@@ -58,11 +76,16 @@ const MemberBoard = () => {
 
           {members && (
             <Box gap="8px" flexDirection="column">
-              {members.map((member) => (
-                <Box key={member.userId} gap="10px">
-                  <Typography variant="h3">{member.name}</Typography>
-                  <Typography variant="h4">{member.email}</Typography>
-                  <Typography variant="h4">{member.createdAt}</Typography>
+              {members.map(({ userId, handle, email, createdAt }) => (
+                <Box key={userId} gap="10px" alignItems="center">
+                  <Typography variant="h3">{handle}</Typography>
+                  <Typography variant="h4">{email}</Typography>
+                  <Typography variant="h4">{createdAt}</Typography>
+                  <Button
+                    variant="white"
+                    text="Delete"
+                    onClick={() => handleDeleteMember(userId)}
+                  />
                 </Box>
               ))}
             </Box>
