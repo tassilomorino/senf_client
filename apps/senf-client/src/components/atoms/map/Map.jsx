@@ -175,8 +175,6 @@ const Map = ({
     // dispatch(setMapViewport(viewport));
     mapViewportRef.current = viewport;
 
-    console.log(viewport);
-
     if (viewport.latitude !== initialMapViewport.latitude) {
       setOpenMapFilter(true);
     } else {
