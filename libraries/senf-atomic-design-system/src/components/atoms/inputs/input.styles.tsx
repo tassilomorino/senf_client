@@ -64,16 +64,21 @@ export const InputField = styled.div<{ focus: boolean, icon: boolean }>`
       rgba(134, 124, 99, 0.01)
     ),
     #ffffff;
-  border: 2px solid #ffffff;
+  
+  border: 2px solid var(--border-color, #ffffff);
   /* Big/White on Light BG */
+
   box-shadow: 0px -5px 10px rgba(255, 255, 255, 0.2),
-    0px 10px 20px -6px rgba(134, 124, 99, 0.06);
+    0px 10px 20px -6px rgba(134, 124, 99, 0.06), var(--outline-shadow);
 
   ${({ focus }) =>
     focus &&
     css`
-      outline: 3px solid ${({ theme }) => theme.colors.primary.primary120};
-      outline-offset: -3px;
+    --border-color: ${({ theme }) => theme.colors.primary.primary120};
+    --outline-shadow: inset 0px 0px 0px 1px var(--border-color);
+
+      /* outline: 3px solid ${({ theme }) => theme.colors.primary.primary120};
+      outline-offset: -3px; */
     `}
 
   input {
