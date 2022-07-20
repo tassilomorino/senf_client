@@ -54,6 +54,12 @@ const Input: FunctionComponent<InputProps> = ({
   // const [value, setValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (type === "textarea") adjustTextarea(event, rows, maxRows)
+    if (isSearch && event.target && typeof setSearchTerm === "function") return setSearchTerm(event.target.value)
+    if (typeof onChange === "function") return onChange(event)
+    return null
+  }
 
   return (
     <Wrapper disabled={disabled}>
@@ -72,7 +78,7 @@ const Input: FunctionComponent<InputProps> = ({
         icon={isSearch}
         onFocusCapture={() => setIsFocused((prevState) => !prevState)}
         onBlurCapture={() => setIsFocused((prevState) => !prevState)}
-        onBlur={(event) => onBlur ? onBlur(event) : null}
+        onBlur={(event) => onBlur && typeof onBlur === "function" ? onBlur(event) : null}
       >
         {isSearch && <Icon icon={<Search />} />}
         <TextField
@@ -86,15 +92,7 @@ const Input: FunctionComponent<InputProps> = ({
           //   setValue(e.currentTarget.value);
           //   receiveValue(e.currentTarget.value);
           // }}
-          onChange={
-            (event) => {
-              if (type === "textarea") adjustTextarea(event, rows, maxRows)
-              if (isSearch && event.target && typeof setSearchTerm === "function") {
-                return setSearchTerm(event.target.value)
-              }
-              return onChange
-            }
-          }
+          onChange={handleChange}
           ref={inputRef}
           as={type === "textarea" ? "textarea" : "input"}
         />

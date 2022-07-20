@@ -29,7 +29,7 @@ const Mail: FC<SVGRProps> = ({ color = "black", transform }) => (
       stroke="none"
       strokeWidth="1"
       fill="none"
-      fill-rule="evenodd"
+      fillRule="evenodd"
     >
       <g id="Group-6" transform="translate(0.000000, 1.654800)">
         <path

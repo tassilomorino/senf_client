@@ -32,7 +32,7 @@ const Planungsbüros = ({
       stroke="none"
       strokeWidth="1"
       fill="none"
-      fill-rule="evenodd"
+      fillRule="evenodd"
     >
       <g id="Planungsbüros" fill="#000000">
         <path
