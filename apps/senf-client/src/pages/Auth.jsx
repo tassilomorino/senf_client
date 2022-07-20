@@ -33,6 +33,7 @@ import {
   generateErrorMessage,
   createUserInDatabase,
 } from "senf-shared";
+
 import { getUserData } from "../redux/actions/userActions";
 
 import { auth, db } from "../firebase";
