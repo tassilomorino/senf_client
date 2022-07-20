@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Typography, Box, Button } from "senf-atomic-design-system";
+import { useTranslation } from "react-i18next";
+
+import { Typography, ImagePlaceholder, Box, Table, Button, Input } from "senf-atomic-design-system";
 import {
   collection,
   deleteDoc,
@@ -12,6 +14,7 @@ import {
 } from "firebase/firestore";
 import AddMemberToList from "./AddMemberToList";
 import { db } from "../firebase";
+
 
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.beige.beige20};
@@ -26,6 +29,10 @@ const Wrapper = styled.div`
 const MemberBoard = () => {
   const [openModal, setOpenModal] = useState(false);
   const [members, setMembers] = useState([]);
+  const [filteredMembers, setFilteredMembers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState([]);
+
+  const { t } = useTranslation();
 
   const getMembers = async () => {
     try {
@@ -62,6 +69,10 @@ const MemberBoard = () => {
   useEffect(() => {
     getMembers();
   }, [openModal]);
+
+  useEffect(() => {
+    setFilteredMembers(members.filter(e => Object.values(e).join(' ').toLowerCase().indexOf(searchTerm.toLowerCase()) > -1));
+  }, [searchTerm, members]);
   return (
     <React.Fragment>
       {openModal && (
@@ -70,25 +81,46 @@ const MemberBoard = () => {
       <Wrapper>
         <Box gap="20px" flexDirection="column" margin="30px">
           <Typography variant="h2">MemberBoard</Typography>
-          <Box justifyContent="flex-end">
-            <Button onClick={() => setOpenModal(true)} text="Add Member" />
+          <Box justifyContent="between" gap="16px">
+            <Box>
+              <Input type="search" setSearchTerm={setSearchTerm} />
+            </Box>
+            <Box margin="0 0 0 auto">
+              <Button onClick={() => setOpenModal(true)} text="Add Member" />
+            </Box>
           </Box>
 
-          {members && (
-            <Box gap="8px" flexDirection="column">
-              {members.map(({ userId, handle, email, createdAt }) => (
-                <Box key={userId} gap="10px" alignItems="center">
-                  <Typography variant="h3">{handle}</Typography>
-                  <Typography variant="h4">{email}</Typography>
-                  <Typography variant="h4">{createdAt}</Typography>
-                  <Button
-                    variant="white"
-                    text="Delete"
-                    onClick={() => handleDeleteMember(userId)}
-                  />
-                </Box>
-              ))}
-            </Box>
+          {filteredMembers && (
+            <Table data={filteredMembers} checkbox={true} columns={[
+                t('username'),
+                t('division'),
+                t('roles'),
+              ]}>
+              {
+                (row) => (
+                  <>
+                    <Box gap="16px">
+                      <ImagePlaceholder
+                        width="64px"
+                        height="64px"
+                        img="#"
+                      />
+                      <Box flexDirection="column" justifyContent="center" alignItems="flex-start">
+                        <Typography variant="h3">{row.handle}</Typography>
+                        { row?.email && <Typography variant="bodySm">{row.email}</Typography> }
+                      </Box>
+                    </Box>
+                    <Typography variant="bodySm">{row.division}</Typography>
+                    <Typography variant="bodySm">{row.role}</Typography>
+                    <Button
+                      variant="white"
+                      text="Delete"
+                      onClick={() => handleDeleteMember(row.userId)}
+                    />
+                  </>
+                )
+              }
+            </Table>
           )}
         </Box>
       </Wrapper>

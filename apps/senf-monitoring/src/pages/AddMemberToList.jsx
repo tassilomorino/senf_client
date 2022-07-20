@@ -27,12 +27,20 @@ const AddMemberToList = ({ openModal, setOpenModal }) => {
       .max(20, t("username_too_long"))
       .matches(/^\S*$/, t("spaces_username"))
       .matches(/^[a-zA-Z0-9\-\_\.]*$/, t("username_latin_only")),
+
+    division: yup
+      .string(),
+
+    role: yup
+      .string(),
   });
 
   const formik = useFormik({
     initialValues: {
       email: "",
       handle: "",
+      division: "",
+      role: "",
     },
     validationSchema: addMemberValidationSchema,
     validateOnMount: true,
@@ -46,6 +54,8 @@ const AddMemberToList = ({ openModal, setOpenModal }) => {
       await addDoc(collection(db, "exampleUsers"), {
         handle: formik.values.handle,
         email: formik.values.email,
+        division: formik.values.division,
+        role: formik.values.role,
         createdAt: new Date().toISOString(),
       }).then(() => {
         setOpenModal(false);
@@ -89,6 +99,32 @@ const AddMemberToList = ({ openModal, setOpenModal }) => {
           value={formik?.values.email}
           error={formik?.touched.email && Boolean(formik?.errors.email)}
           note={formik?.touched.email && formik?.errors.email}
+        />
+        <Input
+          key="division"
+          id="division"
+          name="division"
+          placeholder="Stadtrat"
+          label="division"
+          rows={1}
+          onChange={formik?.handleChange}
+          onBlur={formik?.handleBlur}
+          value={formik?.values.division}
+          error={formik?.touched.division && Boolean(formik?.errors.division)}
+          note={formik?.touched.division && formik?.errors.division}
+        />
+        <Input
+          key="role"
+          id="role"
+          name="role"
+          placeholder="Moderator"
+          label="role"
+          rows={1}
+          onChange={formik?.handleChange}
+          onBlur={formik?.handleBlur}
+          value={formik?.values.role}
+          error={formik?.touched.role && Boolean(formik?.errors.role)}
+          note={formik?.touched.role && formik?.errors.role}
         />
         <Button
           text="add a member without invitation"
