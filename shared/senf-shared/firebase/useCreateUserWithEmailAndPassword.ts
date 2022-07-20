@@ -30,7 +30,7 @@ export const useCreateUserWithEmailAndPassword = (
 
   const createUserWithEmailAndPassword = async (formikRegisterStore) => {
     setLoading(true);
-    setError({ code: "", message: "" });
+    setError(undefined);
     try {
       const usersRef = collection(db, "users");
       const q = query(
@@ -42,10 +42,7 @@ export const useCreateUserWithEmailAndPassword = (
         // username already exists
 
         setLoading(false);
-        setError({
-          code: "username-already-exists",
-          message: "username_taken",
-        });
+        setError({ ...error, code: "auth/username-exists" });
         return;
       }
 

@@ -43,6 +43,9 @@ export function generateErrorMessage(errorCode) {
     case "auth/user-not-verified":
       errorMessage = "error_user_not_verified";
       break;
+    case "auth/username-exists":
+      errorMessage = "error_username_already_exists";
+      break;
 
     default:
       errorMessage = `Unknown error. ${errorCode}`;

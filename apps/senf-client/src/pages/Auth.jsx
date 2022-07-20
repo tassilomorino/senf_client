@@ -122,7 +122,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
       setLoading(false);
       setErrorMessage({
         code: firebaseUserRegistrationError.code,
-        message: firebaseUserRegistrationError.message,
+        message: generateErrorMessage(firebaseUserRegistrationError.code),
       });
     }
   }, [
