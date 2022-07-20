@@ -42,6 +42,7 @@ export const useSignInWithEmailAndPassword = (): EmailAndPasswordActionHook => {
         "error code and message in useSignInWithEmailAndPassword"
       );
       setError({
+        ...err,
         code: err.code,
         message: generateErrorMessage(err.code),
       });
