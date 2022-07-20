@@ -41,6 +41,8 @@ export { default as Input } from "./components/atoms/inputs/Input";
 export { default as ContentDropdown } from "./components/atoms/contentDropdown/ContentDropdown";
 export { default as ContentDropdownItem } from "./components/atoms/contentDropdownItem/ContentDropdownItem";
 
+export { default as ImagePlaceholder } from "./components/atoms/imagePlaceholder/ImagePlaceholder";
+
 export { default as ToggleInput } from "./components/atoms/toggleInput/ToggleInput";
 export { default as Switch } from "./components/atoms/switch/Switch";
 export { default as Box } from "./components/atoms/box/Box";
@@ -65,6 +67,7 @@ export { default as Accordion } from "./components/molecules/accordion/Accordion
 export { default as TagSlide } from "./components/molecules/tagSlide/TagSlide";
 export { default as LanguageSelect } from "./components/molecules/languageSelect/LanguageSelect";
 
+export { default as Table } from "./components/organisms/table/Table";
 export { default as ActionModal } from "./components/organisms/actionModals/ActionModal";
 export { default as MenuSidebar } from "./components/organisms/menuSidebar/MenuSidebar";
 export { default as MobileTopBar } from "./components/organisms/mobileTopBar/MobileTopBar";
