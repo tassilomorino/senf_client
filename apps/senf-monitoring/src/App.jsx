@@ -14,6 +14,7 @@ import PrivateRoute from "./context/PrivateRoute";
 import { AuthProvider } from "./context/auth";
 import AuthPage from "./pages/AuthPage";
 import InviteMember from "./pages/InviteMember";
+import MemberBoard from "./pages/MemberBoard";
 
 const App = () => {
   return (
@@ -42,20 +43,22 @@ const App = () => {
                 element={<AuthPage variant="register" />}
               />
 
-              <Route
-                exact
-                path="/login"
-                element={<AuthPage variant="login" />}
-              />
-              {/* <Route exact path="/" element={<PrivateRoute />}>
-                <Route exact path="/" component={Dashboard} />
-              </Route> */}
-              <Route exact path="/" element={<Dashboard />} />
-              <Route exact path="/invite" element={<InviteMember />} />
-            </Routes>
-          </React.Suspense>
-        </Router>
-      </AuthProvider>
+                <Route
+                  exact
+                  path="/login"
+                  element={<AuthPage variant="login" />}
+                />
+                {/* <Route exact path="/" element={<PrivateRoute />}>
+                  <Route exact path="/" component={Dashboard} />
+                </Route> */}
+                <Route exact path="/" element={<Dashboard />} />
+                <Route exact path="/members" element={<MemberBoard />} />
+
+                <Route exact path="/invite" element={<InviteMember />} />
+              </Routes>
+            </React.Suspense>
+          </Router>
+        </AuthProvider>
     </ThemeProvider>
   );
 };
