@@ -30,6 +30,7 @@ import { SwipeModal, Auth as AuthComponent } from "senf-atomic-design-system";
 import {
   useSignInWithEmailAndPassword,
   useSignInWithGoogle,
+  useSignInWithFacebook,
   useCreateUserWithEmailAndPassword,
   generateErrorMessage,
   createUserInDatabase,
@@ -68,6 +69,12 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
     firebaseGoogleUserLoading,
     firebaseGoogleUserError,
   ] = useSignInWithGoogle(auth, db);
+  const [
+    signInWithFacebook,
+    firebaseFacebookUser,
+    firebaseFacebookUserLoading,
+    firebaseFacebookUserError,
+  ] = useSignInWithFacebook(auth, db);
   const sendVerification = {
     sendEmailVerification: true,
     emailVerificationOptions: {
@@ -162,6 +169,33 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
       });
     }
   }, [firebaseGoogleUser, firebaseGoogleUserError, firebaseGoogleUserLoading]);
+
+  useEffect(() => {
+    // sign in with facebook
+    if (firebaseFacebookUserLoading) {
+      setLoading(true);
+    }
+    if (firebaseFacebookUser) {
+      setLoading(false);
+      setErrorMessage({ code: "", message: "" });
+      dispatch({ type: SET_AUTHENTICATED });
+      dispatch(getUserData(firebaseFacebookUser.user.uid));
+      setVerifiedUser(true);
+      setAuthOpen(false);
+    }
+    if (firebaseFacebookUserError) {
+      setLoading(false);
+      setErrorMessage({
+        ...errorMessage,
+        code: firebaseFacebookUserError.code,
+        message: generateErrorMessage(firebaseFacebookUserError.code),
+      });
+    }
+  }, [
+    firebaseFacebookUser,
+    firebaseFacebookUserError,
+    firebaseFacebookUserLoading,
+  ]);
 
   const handleProviderSignin = async (providerName) => {
     try {
@@ -336,7 +370,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
             createUserWithEmailAndPassword(formikRegisterStore)
           }
           handleGoogleSignIn={() => signInWithGoogle(["email"])} // asks google for email
-          handleFacebookSignIn={() => handleProviderSignin("facebook")}
+          handleFacebookSignIn={() => signInWithFacebook(["email"])} // asks facebook for email
           handleImageUpload={handleImageUpload}
           uploadingImage={uploadingImage}
           handleSubmitEditDetails={handleSubmitEditDetails}
