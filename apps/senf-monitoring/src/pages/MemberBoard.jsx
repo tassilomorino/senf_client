@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 
-import { Typography, ImagePlaceholder, Box, Table, Button, Input } from "senf-atomic-design-system";
+import {
+  Typography,
+  ImagePlaceholder,
+  Box,
+  Table,
+  Button,
+  Input,
+} from "senf-atomic-design-system";
 import {
   collection,
   deleteDoc,
@@ -14,7 +21,6 @@ import {
 } from "firebase/firestore";
 import AddMemberToList from "./AddMemberToList";
 import { db } from "../firebase";
-
 
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.beige.beige20};
@@ -30,7 +36,7 @@ const MemberBoard = () => {
   const [openModal, setOpenModal] = useState(false);
   const [members, setMembers] = useState([]);
   const [filteredMembers, setFilteredMembers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const { t } = useTranslation();
 
@@ -71,7 +77,15 @@ const MemberBoard = () => {
   }, [openModal]);
 
   useEffect(() => {
-    setFilteredMembers(members.filter(e => Object.values(e).join(' ').toLowerCase().indexOf(searchTerm.toLowerCase()) > -1));
+    setFilteredMembers(
+      members.filter(
+        (e) =>
+          Object.values(e)
+            .join(" ")
+            .toLowerCase()
+            .indexOf(searchTerm.toLowerCase()) > -1
+      )
+    );
   }, [searchTerm, members]);
   return (
     <React.Fragment>
@@ -91,35 +105,35 @@ const MemberBoard = () => {
           </Box>
 
           {filteredMembers && (
-            <Table data={filteredMembers} checkbox={true} columns={[
-                t('username'),
-                t('division'),
-                t('roles'),
-              ]}>
-              {
-                (row) => (
-                  <>
-                    <Box gap="16px">
-                      <ImagePlaceholder
-                        width="64px"
-                        height="64px"
-                        img="#"
-                      />
-                      <Box flexDirection="column" justifyContent="center" alignItems="flex-start">
-                        <Typography variant="h3">{row.handle}</Typography>
-                        { row?.email && <Typography variant="bodySm">{row.email}</Typography> }
-                      </Box>
+            <Table
+              data={filteredMembers}
+              checkbox={true}
+              columns={[t("username"), t("division"), t("roles")]}
+            >
+              {(row) => (
+                <>
+                  <Box gap="16px">
+                    <ImagePlaceholder width="64px" height="64px" img="#" />
+                    <Box
+                      flexDirection="column"
+                      justifyContent="center"
+                      alignItems="flex-start"
+                    >
+                      <Typography variant="h3">{row.handle}</Typography>
+                      {row?.email && (
+                        <Typography variant="bodySm">{row.email}</Typography>
+                      )}
                     </Box>
-                    <Typography variant="bodySm">{row.division}</Typography>
-                    <Typography variant="bodySm">{row.role}</Typography>
-                    <Button
-                      variant="white"
-                      text="Delete"
-                      onClick={() => handleDeleteMember(row.userId)}
-                    />
-                  </>
-                )
-              }
+                  </Box>
+                  <Typography variant="bodySm">{row.division}</Typography>
+                  <Typography variant="bodySm">{row.role}</Typography>
+                  <Button
+                    variant="white"
+                    text="Delete"
+                    onClick={() => handleDeleteMember(row.userId)}
+                  />
+                </>
+              )}
             </Table>
           )}
         </Box>

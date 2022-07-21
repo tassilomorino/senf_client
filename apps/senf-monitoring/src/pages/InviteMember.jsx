@@ -1,7 +1,16 @@
 import React from "react";
 import { addDoc, collection } from "firebase/firestore";
 import { Button, Box, Typography } from "senf-atomic-design-system";
+import { getAuth, sendSignInLinkToEmail } from "firebase/auth";
 import { db } from "../firebase";
+
+const actionCodeSettings = {
+  // URL you want to redirect back to. The domain (www.example.com) for this
+  // URL must be in the authorized domains list in the Firebase Console.
+  url: "https://senf-client-test.netlify.app",
+  // This must be true.
+  handleCodeInApp: true,
+};
 
 const InviteMember = () => {
   const heading = "This boss:";
@@ -41,10 +50,44 @@ const InviteMember = () => {
     );
   };
 
+  const handleSendLink = async (email) => {
+    const useremail = "tassilomorino@gmail.com";
+    const displayName = "User Name";
+
+    try {
+      await getAuth()
+        .generateEmailVerificationLink(useremail, actionCodeSettings)
+        .then((link) => {
+          console.log(link);
+        });
+    } catch (error) {
+      // handle errors
+      console.log(error);
+    }
+
+    // await sendSignInLinkToEmail(auth, email, actionCodeSettings)
+    //   .then(() => {
+    //     console.log("Email sent.");
+    //     // The link was successfully sent. Inform the user.
+    //     // Save the email locally so you don't need to ask the user for it again
+    //     // if they open the link on the same device.
+    //     window.localStorage.setItem("emailForSignIn", email);
+    //     // ...
+    //   })
+    //   .catch((error) => {
+    //     const errorCode = error.code;
+    //     const errorMessage = error.message;
+    //     // ...
+    //   });
+  };
+
   return (
     <div>
       InviteMember
-      <Button text="send invite" onClick={handleSendInvite} />
+      <Button
+        text="send invite"
+        onClick={() => handleSendLink("tassilomorino@gmail.com")}
+      />
     </div>
   );
 };
