@@ -90,3 +90,5 @@ export { default as Example } from "./components/templates/example/Example";
 export { default as theme } from "./styles/theme";
 export { default as GlobalStyle } from "./styles/globals";
 export { default as i18n } from "./util/i18n";
+
+export { isMobileCustom } from "./hooks/customDeviceDetect";
