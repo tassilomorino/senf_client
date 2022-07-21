@@ -33,8 +33,6 @@ import {
   useSignInWithFacebook,
   useCreateUserWithEmailAndPassword,
   generateErrorMessage,
-  createUserInDatabase,
-  createUserFromProviderInDatabase,
 } from "senf-shared";
 
 import { getUserData } from "../redux/actions/userActions";
@@ -196,73 +194,6 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
     firebaseFacebookUserError,
     firebaseFacebookUserLoading,
   ]);
-
-  const handleProviderSignin = async (providerName) => {
-    try {
-      let provider;
-      let result;
-      let credential;
-
-      if (providerName === "google") {
-        provider = new GoogleAuthProvider();
-        provider.addScope("email");
-        result = await signInWithPopup(auth, provider);
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        credential = GoogleAuthProvider.credentialFromResult(result);
-      }
-      if (providerName === "facebook") {
-        provider = new FacebookAuthProvider();
-        provider.addScope("email");
-        result = await signInWithPopup(auth, provider);
-        credential = FacebookAuthProvider.credentialFromResult(result);
-      }
-      const token = credential.accessToken;
-      // The signed-in user info.
-      const { user } = result;
-
-      const docRef = doc(db, "users", user.uid);
-      const docSnapshot = await getDoc(docRef);
-      if (!docSnapshot.exists() && user) {
-        console.log("user not existing yet", user.uid, user);
-        await createUserFromProviderInDatabase(db, user);
-        dispatch({ type: SET_AUTHENTICATED });
-        dispatch(getUserData(user.uid));
-        setVerifiedUser(true);
-      } else if (user) {
-        console.log("user already exists", user.uid, user);
-        dispatch({ type: SET_AUTHENTICATED });
-        dispatch(getUserData(user.uid));
-
-        if (
-          user.description &&
-          user.zipcode &&
-          user.photoURL &&
-          user.age &&
-          user.sex
-        ) {
-          setAuthOpen(false);
-        } else {
-          setVerifiedUser(true);
-        }
-      }
-    } catch (error) {
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      const { email } = error;
-      // The AuthCredential type that was used.
-      let credential;
-      if (providerName === "google") {
-        credential = GoogleAuthProvider.credentialFromError(error);
-      }
-      if (providerName === "facebook") {
-        credential = FacebookAuthProvider.credentialFromError(error);
-      }
-
-      throw new Error(errorCode, errorMessage, email, credential);
-    }
-  };
 
   const handleSubmitEditDetails = async (data) => {
     if (
