@@ -29,6 +29,7 @@ import { useTranslation } from "react-i18next";
 import { SwipeModal, Auth as AuthComponent } from "senf-atomic-design-system";
 import {
   useSignInWithEmailAndPassword,
+  useSignInWithGoogle,
   useCreateUserWithEmailAndPassword,
   generateErrorMessage,
   createUserInDatabase,
@@ -57,11 +58,16 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
   const { t } = useTranslation();
   const [
     signInWithEmailAndPassword,
-    firebaseLoggedInUser,
-    firebaseUserLoginLoading,
-    firebaseUserLoginError,
+    firebaseEmailPasswordSignInUser,
+    firebaseEmailPasswordSignInLoading,
+    firebaseEmailPasswordSignInError,
   ] = useSignInWithEmailAndPassword(auth);
-
+  const [
+    signInWithGoogle,
+    firebaseGoogleUser,
+    firebaseGoogleUserLoading,
+    firebaseGoogleUserError,
+  ] = useSignInWithGoogle(auth, db);
   const sendVerification = {
     sendEmailVerification: true,
     emailVerificationOptions: {
@@ -70,9 +76,9 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
   };
   const [
     createUserWithEmailAndPassword,
-    firebaseUserRegistrationInfo,
-    firebaseUserRegistrationLoading,
-    firebaseUserRegistrationError,
+    firebaseUserEmailRegistrationInfo,
+    firebaseUserEmailRegistrationLoading,
+    firebaseUserEmailRegistrationError,
   ] = useCreateUserWithEmailAndPassword(auth, db, sendVerification);
   useEffect(() => {
     if (authEditOpen) {
@@ -84,53 +90,78 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
   }, [authOpen, authEditOpen]);
 
   useEffect(() => {
-    if (firebaseUserLoginLoading) {
+    // login with email and password
+    if (firebaseEmailPasswordSignInLoading) {
       setLoading(true);
     }
-    if (firebaseLoggedInUser) {
+    if (firebaseEmailPasswordSignInUser) {
       setLoading(false);
       setErrorMessage({ code: "", message: "" });
       dispatch({ type: SET_AUTHENTICATED });
-      dispatch(getUserData(firebaseLoggedInUser.user.uid));
+      dispatch(getUserData(firebaseEmailPasswordSignInUser.user.uid));
       setAuthOpen(false);
     }
-    if (firebaseUserLoginError) {
+    if (firebaseEmailPasswordSignInError) {
       setLoading(false);
 
       setErrorMessage({
         ...errorMessage,
-        code: firebaseUserLoginError.code,
-        message: generateErrorMessage(firebaseUserLoginError.code),
+        code: firebaseEmailPasswordSignInError.code,
+        message: generateErrorMessage(firebaseEmailPasswordSignInError.code),
       });
     }
   }, [
     dispatch,
-    firebaseUserLoginLoading,
-    firebaseLoggedInUser,
-    firebaseUserLoginError,
+    firebaseEmailPasswordSignInLoading,
+    firebaseEmailPasswordSignInUser,
+    firebaseEmailPasswordSignInError,
   ]);
 
   useEffect(() => {
-    if (firebaseUserRegistrationLoading) {
+    // registration with email and password
+    if (firebaseUserEmailRegistrationLoading) {
       setLoading(true);
     }
-    if (firebaseUserRegistrationInfo) {
+    if (firebaseUserEmailRegistrationInfo) {
       setLoading(false);
       setErrorMessage({ code: "", message: "" });
       setEmailRegistrationSubmitted(true);
     }
-    if (firebaseUserRegistrationError) {
+    if (firebaseUserEmailRegistrationError) {
       setLoading(false);
       setErrorMessage({
-        code: firebaseUserRegistrationError.code,
-        message: generateErrorMessage(firebaseUserRegistrationError.code),
+        code: firebaseUserEmailRegistrationError.code,
+        message: generateErrorMessage(firebaseUserEmailRegistrationError.code),
       });
     }
   }, [
-    firebaseUserRegistrationError,
-    firebaseUserRegistrationInfo,
-    firebaseUserRegistrationLoading,
+    firebaseUserEmailRegistrationError,
+    firebaseUserEmailRegistrationInfo,
+    firebaseUserEmailRegistrationLoading,
   ]);
+  useEffect(() => {
+    // sign in with google
+    if (firebaseGoogleUserLoading) {
+      setLoading(true);
+    }
+    if (firebaseGoogleUser) {
+      console.log(firebaseGoogleUser, "firebaseGoogleUser in auth.jsx");
+      setLoading(false);
+      setErrorMessage({ code: "", message: "" });
+      dispatch({ type: SET_AUTHENTICATED });
+      dispatch(getUserData(firebaseGoogleUser.user.uid));
+      setVerifiedUser(true);
+      setAuthOpen(false);
+    }
+    if (firebaseGoogleUserError) {
+      setLoading(false);
+      setErrorMessage({
+        ...errorMessage,
+        code: firebaseGoogleUserError.code,
+        message: generateErrorMessage(firebaseGoogleUserError.code),
+      });
+    }
+  }, [firebaseGoogleUser, firebaseGoogleUserError, firebaseGoogleUserLoading]);
 
   const handleProviderSignin = async (providerName) => {
     try {
@@ -304,7 +335,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
           handleSubmitRegister={(formikRegisterStore) =>
             createUserWithEmailAndPassword(formikRegisterStore)
           }
-          handleGoogleSignIn={() => handleProviderSignin("google")}
+          handleGoogleSignIn={() => signInWithGoogle(["email"])} // asks google for email
           handleFacebookSignIn={() => handleProviderSignin("facebook")}
           handleImageUpload={handleImageUpload}
           uploadingImage={uploadingImage}

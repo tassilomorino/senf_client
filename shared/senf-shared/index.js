@@ -3,3 +3,7 @@ export { useCreateUserWithEmailAndPassword } from "./firebase/useCreateUserWithE
 export { generateErrorMessage } from "./firebase/generateErrorMessage";
 export { createUserInDatabase } from "./firebase/createUserInDatabase";
 export { createUserFromProviderInDatabase } from "./firebase/createUserFromProviderInDatabase";
+export {
+  useSignInWithGoogle,
+  useSignInWithFacebook,
+} from "./firebase/useSignInWithPopup";
