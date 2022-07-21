@@ -30,7 +30,7 @@ const MemberBoard = () => {
   const [openModal, setOpenModal] = useState(false);
   const [members, setMembers] = useState([]);
   const [filteredMembers, setFilteredMembers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const { t } = useTranslation();
 
