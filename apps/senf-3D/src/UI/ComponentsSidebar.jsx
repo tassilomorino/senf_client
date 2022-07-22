@@ -18,16 +18,25 @@ import SurfacesIcon from "../assets/interface-icons/Menu-Icon_3.png";
 const Wrapper = styled.div`
   position: fixed;
   height: 100vh;
-  width: 440px;
+  width: 400px;
   background-color: #fed957;
   z-index: 9;
-  left: 0px;
+  left: ${({
+    componentsSidebarOpen,
+    openInfoModal,
+    openDrawContext,
+    openSaveModal,
+  }) =>
+    // !openInfoModal &&
+    // !openDrawContext &&
+    // !openSaveModal &&
+    componentsSidebarOpen ? "200px" : "-600px"};
   transition: 0.5s;
 `;
 const InnerWrapper = styled.div`
   overflow: scroll;
   height: calc(100vh - 150px);
-  margin: 20px 20px;
+  margin: 0px 5px;
 `;
 
 const Circle = styled.div`
@@ -43,7 +52,6 @@ const Circle = styled.div`
     props.active ? LayerWhiteFirstDefault : LayerWhiteFirstDefault};
 `;
 const ComponentsSidebar = ({
-  unityContext,
   componentsSidebarOpen,
   setComponentsSidebarOpen,
   startDrawingStreet,
@@ -52,15 +60,6 @@ const ComponentsSidebar = ({
   openSaveModal,
 }) => {
   const [order, setOrder] = useState(1);
-
-  const spawnObject = (value) => {
-    console.log(value);
-    unityContext.send("BuildingManager", "SpawnObject", value);
-
-    setTimeout(() => {
-      setComponentsSidebarOpen(false);
-    }, 200);
-  };
 
   return (
     <Wrapper
@@ -90,21 +89,19 @@ const ComponentsSidebar = ({
         </Box>
       </Box>
       <Divider
-        margin="20px 20px 2px 20px"
-        width="calc(100% - 40px)"
+        margin="20px 15px 0px 10px"
+        width="calc(100% - 25px)"
         color="#f8f8f8"
       />
 
       <InnerWrapper>
         {order === 1 ? (
-          <ModelsList spawnObject={spawnObject} />
+          <ModelsList />
         ) : order === 2 ? (
-          <FormsList spawnObject={spawnObject} />
+          <FormsList />
         ) : (
           <MarkersList
             setComponentsSidebarOpen={setComponentsSidebarOpen}
-            unityContext={unityContext}
-            spawnObject={spawnObject}
             startDrawingStreet={startDrawingStreet}
           />
         )}

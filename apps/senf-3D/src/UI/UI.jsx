@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import ComponentsSidebar from "./ComponentsSidebar";
+import InfoModal from "./InfoModal";
+import MenuSidebar from "./MenuSidebar";
 import "./style.css";
 
 export const createModel = (id, obj, objFormat, scale, rotation) => {
@@ -33,7 +35,19 @@ export const createModel = (id, obj, objFormat, scale, rotation) => {
   });
 };
 
-function UI() {
+function UI({ handleSwitchView, pitch }) {
+  const [componentsSidebarOpen, setComponentsSidebarOpen] = useState(false);
+  const [objSelected, setIsObjSelected] = useState(false);
+  const [openContextSidebar, setOpenContextSidebar] = useState(false);
+  const [openDrawContext, setOpenDrawContext] = useState(false);
+
+  const [openInfoModal, setOpenInfoModal] = useState(true);
+  const [openSaveModal, setOpenSaveModal] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  const [description, setDescription] = useState("");
+  const [email, setEmail] = useState("");
+
   // const [selectedObj, setSelectedObj] = useState();
 
   // function onSelectedChange(e) {
@@ -95,12 +109,27 @@ function UI() {
           Scale Up
         </button>
       </div> */}
+
+      <InfoModal
+        openInfoModal={openInfoModal}
+        setOpenInfoModal={setOpenInfoModal}
+      />
+
+      <MenuSidebar
+        handleSwitchView={handleSwitchView}
+        pitch={pitch}
+        componentsSidebarOpen={componentsSidebarOpen}
+        setComponentsSidebarOpen={setComponentsSidebarOpen}
+        setOpenInfoModal={setOpenInfoModal}
+        // restart={restart}
+        setOpenSaveModal={setOpenSaveModal}
+      />
       <ComponentsSidebar
-        componentsSidebarOpen={false}
-        openInfoModal={false}
-        openDrawContext={false}
-        openSaveModal={false}
-        startDrawingStreet
+        componentsSidebarOpen={componentsSidebarOpen}
+        openInfoModal={openInfoModal}
+        openDrawContext={openDrawContext}
+        openSaveModal={openSaveModal}
+        // startDrawingStreet={startDrawingStreet}
       />
     </div>
   );

@@ -1,24 +1,17 @@
 /** @format */
 
 import React from "react";
-import {
-  ObjectCard,
-} from "senf-atomic-design-system";
+import { ObjectCard } from "senf-atomic-design-system";
 
 import Weg from "../assets/surfaces/weg.png";
 import Img57 from "../assets/surfaces/57.png";
 
-const MarkersList = ({
-  setComponentsSidebarOpen,
-  unityContext,
-  spawnObject,
-  startDrawingStreet,
-}) => {
+const MarkersList = ({ setComponentsSidebarOpen, startDrawingStreet }) => {
   return (
     <React.Fragment>
       <ObjectCard
         loading={false}
-        handleButtonClick={() => spawnObject(57)}
+        // handleButtonClick={() => spawnObject(57)}
         data={{
           objectId: 57,
           title: "Gras",

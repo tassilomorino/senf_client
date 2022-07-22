@@ -104,6 +104,7 @@ const ModelsList = ({}) => {
           />
         ))}
       </Box>
+
       {models.length > 0 && (
         <List
           listType="grid"

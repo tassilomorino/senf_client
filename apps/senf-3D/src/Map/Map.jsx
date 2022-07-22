@@ -6,12 +6,8 @@ import "./Map.css";
 mapboxgl.accessToken =
   "pk.eyJ1IjoidG1vcmlubyIsImEiOiJjazBzZHZjeWQwMWoyM2NtejlzcnMxd3FtIn0.I_Xcc1aJiN7hToGGjNy7ow";
 
-const Map = () => {
+const Map = ({ lng, lat, zoom, pitch, setLng, setLat, setZoom, setPitch }) => {
   const mapContainerRef = useRef(null);
-
-  const [lng, setLng] = useState(6.9606);
-  const [lat, setLat] = useState(50.9429);
-  const [zoom, setZoom] = useState(18.5);
 
   // Initialize map when component mounts
   useEffect(() => {
@@ -20,7 +16,7 @@ const Map = () => {
       style: "mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6",
       center: [lng, lat],
       zoom,
-      pitch: 65,
+      pitch,
       bearing: -13,
       scale: 1,
     }));
@@ -48,11 +44,11 @@ const Map = () => {
 
   return (
     <div>
-      <div className="sidebarStyle">
+      {/* <div className="sidebarStyle">
         <div>
           Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
         </div>
-      </div>
+      </div> */}
       <div className="map-container" ref={mapContainerRef} />
     </div>
   );
