@@ -48,10 +48,10 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^4.3.5",
-    "@vitejs/plugin-react": "^2.0.0",
+    "@vitejs/plugin-react": "^1.2.0",
     "@welldone-software/why-did-you-render": "^6.2.1",
     "start-server-and-test": "^1.13.1",
-    "vite": "^3.0.2"
+    "vite": "^2.9.11"
   },
   "buildDate": 1654859088490
 }

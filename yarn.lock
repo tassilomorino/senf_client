@@ -8999,7 +8999,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-react@npm:^1.3.2":
+"@vitejs/plugin-react@npm:^1.2.0, @vitejs/plugin-react@npm:^1.3.0, @vitejs/plugin-react@npm:^1.3.2":
   version: 1.3.2
   resolution: "@vitejs/plugin-react@npm:1.3.2"
   dependencies:
@@ -26581,7 +26581,7 @@ __metadata:
     "@urbica/react-map-gl": ^1.14.4
     "@urbica/react-map-gl-draw": ^0.3.5
     "@use-gesture/react": ^10.1.3
-    "@vitejs/plugin-react": ^2.0.0
+    "@vitejs/plugin-react": ^1.3.0
     "@welldone-software/why-did-you-render": ^6.2.3
     add: ^2.0.6
     axios: ^0.24.0
@@ -26632,7 +26632,7 @@ __metadata:
     ui: "*"
     universal-cookie: ^4.0.4
     viewport-mercator-project: ^7.0.4
-    vite: ^3.0.2
+    vite: ^2.9.11
     yarn: ^1.22.19
     yup: ^0.32.11
   languageName: unknown
@@ -26643,7 +26643,7 @@ __metadata:
   resolution: "senf-monitoring@workspace:apps/senf-monitoring"
   dependencies:
     "@types/react-router-dom": ^4.3.5
-    "@vitejs/plugin-react": ^2.0.0
+    "@vitejs/plugin-react": ^1.2.0
     "@welldone-software/why-did-you-render": ^6.2.1
     axios: ^0.24.0
     firebase: ^9.8.3
@@ -26667,7 +26667,7 @@ __metadata:
     start-server-and-test: ^1.13.1
     styled-components: ^5.3.3
     universal-cookie: ^4.0.4
-    vite: ^3.0.2
+    vite: ^2.9.11
     yup: ^0.32.11
   languageName: unknown
   linkType: soft
@@ -26691,7 +26691,7 @@ __metadata:
     "@testing-library/jest-dom": ^5.15.1
     "@testing-library/react": ^11.2.7
     "@testing-library/user-event": ^12.8.3
-    "@vitejs/plugin-react": ^2.0.0
+    "@vitejs/plugin-react": ^1.2.0
     dayjs: ^1.11.1
     firebase: ^9.8.3
     i18next: ^21.5.5
@@ -26708,7 +26708,7 @@ __metadata:
     react-router-dom: ^6.0.2
     senf-atomic-design-system: "*"
     styled-components: ^5.3.3
-    vite: ^3.0.2
+    vite: ^2.9.11
     web-vitals: ^1.1.2
   languageName: unknown
   linkType: soft
@@ -29666,6 +29666,35 @@ turbo@latest:
   peerDependencies:
     vite: ">=2.4.4"
   checksum: 8c41a1383b3b10a930d5c2d11c1f98d1c97818c80db97efb19b4d047e998bedbec15bd88077745178eb3a1b5e6ed10122926f80145bab23d7df622f2c4b4173b
+  languageName: node
+  linkType: hard
+
+"vite@npm:^2.9.11":
+  version: 2.9.11
+  resolution: "vite@npm:2.9.11"
+  dependencies:
+    esbuild: ^0.14.27
+    fsevents: ~2.3.2
+    postcss: ^8.4.13
+    resolve: ^1.22.0
+    rollup: ^2.59.0
+  peerDependencies:
+    less: "*"
+    sass: "*"
+    stylus: "*"
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    less:
+      optional: true
+    sass:
+      optional: true
+    stylus:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: 9ab34275420ac2daf9d5e6309cc1b3a66ba57defac981d3ee433384bd997c54a519b1e700459650b4869855963b3ccbac4521ac26541fcd8b789a998ec89c5a6
   languageName: node
   linkType: hard
 
