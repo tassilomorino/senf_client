@@ -41,7 +41,7 @@ function UI({ handleSwitchView, pitch }) {
   const [openContextSidebar, setOpenContextSidebar] = useState(false);
   const [openDrawContext, setOpenDrawContext] = useState(false);
 
-  const [openInfoModal, setOpenInfoModal] = useState(true);
+  const [openInfoModal, setOpenInfoModal] = useState(false);
   const [openSaveModal, setOpenSaveModal] = useState(false);
   const [saved, setSaved] = useState(false);
 
