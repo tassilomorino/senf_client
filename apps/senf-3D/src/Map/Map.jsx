@@ -9,9 +9,9 @@ mapboxgl.accessToken =
 const Map = () => {
   const mapContainerRef = useRef(null);
 
-  const [lng, setLng] = useState(148.9819);
-  const [lat, setLat] = useState(-35.3981);
-  const [zoom, setZoom] = useState(18);
+  const [lng, setLng] = useState(6.9606);
+  const [lat, setLat] = useState(50.9429);
+  const [zoom, setZoom] = useState(18.5);
 
   // Initialize map when component mounts
   useEffect(() => {
@@ -19,10 +19,10 @@ const Map = () => {
       container: mapContainerRef.current,
       style: "mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6",
       center: [lng, lat],
-      zoom: zoom,
-      pitch: 60,
+      zoom,
+      pitch: 65,
       bearing: -13,
-      scale: 1
+      scale: 1,
     }));
     window.tb = new Threebox(map, map.getCanvas().getContext("webgl"), {
       defaultLights: true,

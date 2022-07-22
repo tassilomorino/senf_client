@@ -15,7 +15,7 @@ const tags = [
   { objectType: "Sport" },
 ];
 
-const ModelsList = ({ spawnObject }) => {
+const ModelsList = ({}) => {
   const [models, setModels] = useState([]);
   const [objectTypeSelected, setObjectTypeSelected] = useState([
     "Infrastruktur",
@@ -28,14 +28,11 @@ const ModelsList = ({ spawnObject }) => {
 
   useEffect(() => {
     if (ModelsData) {
-      // console.log(objectTypeSelected);
       const NewModels = ModelsData.filter(({ objectType }) =>
         objectTypeSelected.includes(objectType)
       );
 
       NewModels.sort((a, b) => parseFloat(a.index) - parseFloat(b.index));
-
-      // console.log(NewModels);
 
       if (NewModels) {
         setModels(NewModels);
@@ -47,8 +44,6 @@ const ModelsList = ({ spawnObject }) => {
       //   )
       // );
     }
-
-    // console.log(models);
   }, [objectTypeSelected]);
 
   const handleobjectTypeelector = (objectType) => {
@@ -119,7 +114,7 @@ const ModelsList = ({ spawnObject }) => {
               `model ${Math.random() * 1000}`,
               modelData.modelPath,
               modelData.format,
-              0.5
+              0.1
             );
           }}
           loading={false}
