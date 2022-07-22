@@ -1,7 +1,6 @@
 /** @format */
 
-import * as React from "react";
-import { SVGProps } from "react";
+import React, { FC, SVGProps } from "react";
 import styled from "styled-components";
 
 interface SVGRProps {
@@ -10,15 +9,12 @@ interface SVGRProps {
 }
 
 const Svg = styled.svg`
-  transform: ${({ transform }) => (transform ? transform : undefined)};
+  transform: ${({ transform }) => transform || undefined};
 
   transform: scale(1.3);
 `;
 
-const Insta = ({
-  color = "black",
-  transform,
-}: SVGProps<SVGSVGElement> & SVGRProps) => (
+const Insta: FC<SVGRProps> = ({ color = "black", transform }) => (
   <Svg
     width="16px"
     height="16px"
