@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Box, List, ObjectCard, Tag } from "senf-atomic-design-system";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { ModelsData } from "../data/Models";
 import { createModel } from "./UI";
 
@@ -15,7 +16,39 @@ const tags = [
   { objectType: "Sport" },
 ];
 
-const ModelsList = ({ spawnObject }) => {
+const ModelsList = ({}) => {
+  // useEffect(() => {
+  //   // Create a reference to the file we want to download
+  //   const storage = getStorage();
+  //   const starsRef = ref(storage, "16660_0_Senf_Logo.jpg");
+
+  //   // Get the download URL
+  //   getDownloadURL(starsRef)
+  //     .then((url) => {
+  //       // Insert url into an <img> tag to "download"
+
+  //       console.log(url);
+  //     })
+  //     .catch((error) => {
+  //       // A full list of error codes is available at
+  //       // https://firebase.google.com/docs/storage/web/handle-errors
+  //       switch (error.code) {
+  //         case "storage/object-not-found":
+  //           // File doesn't exist
+  //           break;
+  //         case "storage/unauthorized":
+  //           // User doesn't have permission to access the object
+  //           break;
+  //         case "storage/canceled":
+  //           // User canceled the upload
+  //           break;
+
+  //         case "storage/unknown":
+  //           // Unknown error occurred, inspect the server response
+  //           break;
+  //       }
+  //     });
+  // }, []);
   const [models, setModels] = useState([]);
   const [objectTypeSelected, setObjectTypeSelected] = useState([
     "Infrastruktur",
@@ -28,14 +61,11 @@ const ModelsList = ({ spawnObject }) => {
 
   useEffect(() => {
     if (ModelsData) {
-      // console.log(objectTypeSelected);
       const NewModels = ModelsData.filter(({ objectType }) =>
         objectTypeSelected.includes(objectType)
       );
 
       NewModels.sort((a, b) => parseFloat(a.index) - parseFloat(b.index));
-
-      // console.log(NewModels);
 
       if (NewModels) {
         setModels(NewModels);
@@ -47,8 +77,6 @@ const ModelsList = ({ spawnObject }) => {
       //   )
       // );
     }
-
-    // console.log(models);
   }, [objectTypeSelected]);
 
   const handleobjectTypeelector = (objectType) => {
@@ -109,30 +137,21 @@ const ModelsList = ({ spawnObject }) => {
           />
         ))}
       </Box>
-      {models && (
+
+      {models.length > 0 && (
         <List
           listType="grid"
-          CardType={() => (
-            <>
-              {models.map((data, i) => (
-                <ObjectCard
-                  key={i}
-                  data={data}
-                  handleButtonOpenCard={() =>
-                    createModel(
-                      `model ${Math.random() * 1000}`,
-                      data.modelPath,
-                      data.format,
-                      0.5
-                    )
-                  }
-                />
-              ))}
-            </>
-          )}
-          loading={false}
-          handleButtonClick={spawnObject}
+          CardType={ObjectCard}
           data={models}
+          handleButtonOpenCard={(event, cardType, modelData) => {
+            createModel(
+              `model ${Math.random() * 1000}`,
+              modelData.modelPath,
+              modelData.format,
+              0.1
+            );
+          }}
+          loading={false}
         />
       )}
     </React.Fragment>

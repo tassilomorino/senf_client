@@ -1,19 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import ComponentsSidebar from "./ComponentsSidebar";
+import InfoModal from "./InfoModal";
+import MenuSidebar from "./MenuSidebar";
 import "./style.css";
-
 
 export const createModel = (id, obj, objFormat, scale, rotation) => {
   window.map.addLayer({
     id: id || "custom_layer",
     type: "custom",
     renderingMode: "3d",
-    onAdd: function (map, gl) {
-      let options = {
+    onAdd(map, gl) {
+      const options = {
         type: objFormat || "fbx",
         obj: obj || "3d-models/cyclestand.fbx",
-        scale: scale || 1,
-        rotation: rotation || { x: 90, y: 0, z: 0 }, //default rotation,
+        scale: scale || 0.3,
+        rotation: rotation || { x: 90, y: 0, z: 0 }, // default rotation,
         anchor: "center",
         bbox: false,
         fixedZoom: 15,
@@ -28,15 +29,27 @@ export const createModel = (id, obj, objFormat, scale, rotation) => {
         // setSelectedObj(model);
       });
     },
-    render: function (gl, matrix) {
-      window.tb.update(); //update Threebox scene
+    render(gl, matrix) {
+      window.tb.update(); // update Threebox scene
     },
   });
 };
 
-function UI() {
+function UI({ handleSwitchView, pitch }) {
+  const [componentsSidebarOpen, setComponentsSidebarOpen] = useState(false);
+  const [objSelected, setIsObjSelected] = useState(false);
+  const [openContextSidebar, setOpenContextSidebar] = useState(false);
+  const [openDrawContext, setOpenDrawContext] = useState(false);
+
+  const [openInfoModal, setOpenInfoModal] = useState(false);
+  const [openSaveModal, setOpenSaveModal] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  const [description, setDescription] = useState("");
+  const [email, setEmail] = useState("");
+
   // const [selectedObj, setSelectedObj] = useState();
-  
+
   // function onSelectedChange(e) {
   //   setSelectedObj(e.detail);
   // }
@@ -96,7 +109,28 @@ function UI() {
           Scale Up
         </button>
       </div> */}
-      <ComponentsSidebar componentsSidebarOpen={false} openInfoModal={false} openDrawContext={false} openSaveModal={false} startDrawingStreet/>
+
+      <InfoModal
+        openInfoModal={openInfoModal}
+        setOpenInfoModal={setOpenInfoModal}
+      />
+
+      <MenuSidebar
+        handleSwitchView={handleSwitchView}
+        pitch={pitch}
+        componentsSidebarOpen={componentsSidebarOpen}
+        setComponentsSidebarOpen={setComponentsSidebarOpen}
+        setOpenInfoModal={setOpenInfoModal}
+        // restart={restart}
+        setOpenSaveModal={setOpenSaveModal}
+      />
+      <ComponentsSidebar
+        componentsSidebarOpen={componentsSidebarOpen}
+        openInfoModal={openInfoModal}
+        openDrawContext={openDrawContext}
+        openSaveModal={openSaveModal}
+        // startDrawingStreet={startDrawingStreet}
+      />
     </div>
   );
 }
