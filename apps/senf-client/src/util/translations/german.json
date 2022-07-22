@@ -394,5 +394,18 @@
   "faq_question7": "Wollt ihr auch auf andere Städte expandieren?",
   "faq_answer7": "Seinen Senf dazu geben können, sollte man in jeder Stadt. Davon sind wir überzeugt! Wir setzen unsere gesamten Kapazitäten für die Umsetzung ein und legen unseren Fokus dabei momentan auf Köln, um auf dieser Grundlage wichtige Erfahrungen zu sammeln. Dabei entwickeln wir auch Strategien zur Expandierung, um die Plattform über die Grenzen von Köln hinaus zu implementieren. Mit diesem Ziel arbeiten wir derzeit an der technischen Skalierbarkeit. Gleichzeitig optimieren wir das Design und die Funktionsweise in einem kontinuierlichen Prozess, um die Nutzung so attraktiv und intuitiv wie möglich zu gestalten. \n\n Durch den stetigen Austausch und erste gemeinsame Projekte mit diversen Stakeholdern verbessern wir die Plattform iterativ, um diese auf die Bedürfnisse an die Bürger:innenbeteiligung der Zukunft anzupassen und neue Möglichkeiten der Beteiligung zu entwickeln. Dabei konzipieren und testen wir weitere Features, wie z.B. Umfragen und 3D-Tools. Unser Ziel ist es, eine Plattform für alle zu schaffen – für kommunale Mitarbeiter:innen, die ihre Prozesse auf der Plattform abwickeln können – für Planungsbüros, die durch die digitale Komponente ihre Projekte bedarfsgerechter gestalten können – für Vereine und Initiativen, die sich nach Tools zur Bottom-Up-Beteiligung sehnen - und natürlich für Bürger:innen, die ihre Ideen für den Stadtraum durch das Toolset der Plattform gemeinsam weiterentwickeln können.",
   "faq_question8": "Sucht ihr nach Verstärkung im Team? Wie arbeitet ihr zusammen?",
-  "faq_answer8": "Wir suchen immer nach motivierter Verstärkung für unser Team und sind offen für ein Gespräch! Melde dich gerne bei uns – egal aus welchem Bereich du kommst! \n\n In unserem Team bringen sich alle nach ihren Kapazitäten ein. Wir tauschen uns viel untereinander aus und unterstützen uns gegenseitig. Da wir an vielen verschiedenen Bereichen arbeiten, agieren wir meist sehr eigenständig und vermeiden große Absprachen in versammelter Gruppe. Wir kommunizieren über Slack, denn wir arbeiten größtenteils remote. Da wir uns natürlich auch gerne Face-to-Face sehen, haben wir in der Kölner Südstadt Arbeitsplätze im Co-Working-Space angemietet, wo einige von uns arbeiten."
+  "faq_answer8": "Wir suchen immer nach motivierter Verstärkung für unser Team und sind offen für ein Gespräch! Melde dich gerne bei uns – egal aus welchem Bereich du kommst! \n\n In unserem Team bringen sich alle nach ihren Kapazitäten ein. Wir tauschen uns viel untereinander aus und unterstützen uns gegenseitig. Da wir an vielen verschiedenen Bereichen arbeiten, agieren wir meist sehr eigenständig und vermeiden große Absprachen in versammelter Gruppe. Wir kommunizieren über Slack, denn wir arbeiten größtenteils remote. Da wir uns natürlich auch gerne Face-to-Face sehen, haben wir in der Kölner Südstadt Arbeitsplätze im Co-Working-Space angemietet, wo einige von uns arbeiten.",
+
+  "error_invalid_email_address": "Ungültige E-Mail Adresse",
+  "error_user_disabled": "Der Benutzer wurde deaktiviert.",
+  "error_user_not_found": "Benutzer nicht gefunden.",
+  "error_wrong_password": "Falsches Passwort.",
+  "error_email_already_in_use": "E-Mail bereits in Gebrauch.",
+  "error_weak_password": "Das Passwort ist zu schwach.",
+  "error_invalid_crediantials": "Ungültige Anmeldedaten.",
+  "error_operation_not_allowed": "Vorgang nicht erlaubt.",
+  "error_requires_recent_login": "Dieser Vorgang ist sensibel und erfordert eine aktuelle Authentifizierung. Melden Sie sich erneut an, bevor Sie diese Anfrage erneut versuchen.",
+  "error_too_many_requests": "Zu viele Anfragen.",
+  "error_user_token_expired": "Benutzer-Token abgelaufen.",
+  "error_user_token_invalid": "Ungültiges Benutzer-Token"
 }

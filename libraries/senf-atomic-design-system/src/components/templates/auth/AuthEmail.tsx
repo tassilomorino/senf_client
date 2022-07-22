@@ -177,7 +177,7 @@ const AuthEmail: FC<AuthEmailProps> = ({
 
         {errorMessage && (
           <Typography variant="bodySm" color={theme.colors.signal.redDark}>
-            {errorMessage}
+            {errorMessage.message}
           </Typography>
         )}
       </Box>
@@ -228,7 +228,10 @@ const AuthEmail: FC<AuthEmailProps> = ({
         onClick={
           variantState === "register"
             ? () => handleSubmitRegister(formikRegisterStore)
-            : () => handleSubmitLogin(formikLoginStore)
+            : (e) => {
+                e.preventDefault();
+                handleSubmitLogin(formikLoginStore);
+              }
         }
         disabled={
           variantState === "register"
