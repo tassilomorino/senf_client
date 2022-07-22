@@ -26,6 +26,7 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
       setOpenModal={setEditOpen}
       zIndex={9999999999}
       overflow="hidden"
+      backgroundColor={theme.colors.primary.primary100}
     >
       <Wave color={theme.colors.beige.beige20} top="0px" />
 

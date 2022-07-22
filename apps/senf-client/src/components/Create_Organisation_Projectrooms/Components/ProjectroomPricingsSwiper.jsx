@@ -209,43 +209,6 @@ const ProjectroomPricingsSwiper = () => {
           </HorizontalSwipeCard>
         ))}
       </FlexWrapper>
-
-      {/* <ArrowWrapper>
-        <div
-          style={active !== 0 ? {} : { pointerEvents: "none", opacity: 0.5 }}
-        >
-          <CustomIconButton
-            name="ArrowLeft"
-            backgroundColor={active !== 0 ? "#fed957" : "#F4EACA"}
-            shadow={false}
-            handleButtonClick={handlePrev}
-            small={true}
-          />
-        </div>
-
-        <div
-          style={
-            active !== pages.length - 1
-              ? {}
-              : { pointerEvents: "none", opacity: 0.5 }
-          }
-        >
-          <CustomIconButton
-            name="ArrowRight"
-            backgroundColor={
-              active !== pages.length - 1 ? "#fed957" : "#F4EACA"
-            }
-            marginLeft="10px"
-            handleButtonClick={handleNext}
-            small={true}
-          />
-        </div>
-      </ArrowWrapper> */}
-      {/* <DotWrapper>
-        {pages.map(({ id }) => (
-          <Dot active={id === active} />
-        ))}
-      </DotWrapper> */}
     </Wrapper>
   );
 };

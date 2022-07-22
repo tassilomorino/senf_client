@@ -42,12 +42,12 @@ export const Note = styled.p<{ error?: boolean }>`
   flex-basis: 7rem;
 `;
 
-export const InputField = styled.div<{ focus: boolean }>`
+export const InputField = styled.div<{ focus: boolean, icon: boolean }>`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0 0.6rem 0 0.9rem;
   min-height: 50px;
+  box-sizing: border-box;
   color: rgb(51, 51, 51) !important;
   border-radius: ${({ theme }) => theme.radii[1]}px;
   -webkit-border-radius: ${({ theme }) => theme.radii[1]}px;
@@ -64,25 +64,42 @@ export const InputField = styled.div<{ focus: boolean }>`
       rgba(134, 124, 99, 0.01)
     ),
     #ffffff;
-  border: 2px solid #ffffff;
+  
+  border: 2px solid var(--border-color, #ffffff);
   /* Big/White on Light BG */
+
   box-shadow: 0px -5px 10px rgba(255, 255, 255, 0.2),
-    0px 10px 20px -6px rgba(134, 124, 99, 0.06);
+    0px 10px 20px -6px rgba(134, 124, 99, 0.06), var(--outline-shadow);
 
   ${({ focus }) =>
     focus &&
     css`
-      outline: 3px solid ${({ theme }) => theme.colors.primary.primary120};
-      outline-offset: -3px;
+    --border-color: ${({ theme }) => theme.colors.primary.primary120};
+    --outline-shadow: inset 0px 0px 0px 1px var(--border-color);
+
+      /* outline: 3px solid ${({ theme }) => theme.colors.primary.primary120};
+      outline-offset: -3px; */
     `}
 
   input {
     max-height: 50px !important;
+    box-sizing: border-box;
   }
+  input, textarea {
+    padding: ${({ theme }) => `${theme.space[4]} ${theme.space[6]}`};
+    ${({ icon }) =>
+      icon &&
+      css`padding-left:${({ theme }) => `${theme.space[1]}`};`
+    }
+  }
+
+  ${({ icon }) =>
+      icon &&
+      css`padding-left:${({ theme }) => `${theme.space[5]}`};`
+    }
 
   /* Styles for textarea */
   textarea {
-    padding: 0.7rem 0rem 0.7rem 0rem;
     resize: none;
   }
 

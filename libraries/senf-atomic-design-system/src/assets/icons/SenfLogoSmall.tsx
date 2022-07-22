@@ -1,7 +1,6 @@
 /** @format */
 
-import * as React from "react";
-import { SVGProps } from "react";
+import React, { FC, SVGProps } from "react";
 import styled from "styled-components";
 
 interface SVGRProps {
@@ -10,13 +9,10 @@ interface SVGRProps {
 }
 
 const Svg = styled.svg`
-  transform: ${({ transform }) => (transform ? transform : undefined)};
+  transform: ${({ transform }) => transform || undefined};
 `;
 
-const SenfLogoSmall = ({
-  color = "black",
-  transform,
-}: SVGProps<SVGSVGElement> & SVGRProps) => (
+const SenfLogoSmall: FC<SVGRProps> = ({ color = "black", transform }) => (
   <Svg
     width="16px"
     height="16px"
@@ -33,13 +29,7 @@ const SenfLogoSmall = ({
         points="1.505 0.0002 14.495 0.0002 14.495 16 1.505 16"
       ></polygon>
     </defs>
-    <g
-      id="Senf-S"
-      stroke="none"
-      stroke-width="1"
-      fill="none"
-      fill-rule="evenodd"
-    >
+    <g id="Senf-S" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
       <mask id="mask-2" fill="white">
         <use xlinkHref="#path-1"></use>
       </mask>

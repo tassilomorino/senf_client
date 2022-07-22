@@ -2,12 +2,12 @@
 
 import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
+import { t } from "i18next";
 import Icon from "../../atoms/icons/Icon";
 import { LayerWhiteFirstDefault } from "../../atoms/layerStyles/LayerStyles";
 import Box from "../../atoms/box/Box";
 import Typography from "../../atoms/typography/Typography";
 import { ProjectroomCardProps } from "./ProjectroomCard.types";
-import { t } from "i18next";
 import ImagePlaceholder from "../../atoms/imagePlaceholder/ImagePlaceholder";
 import Bulb from "../../../assets/icons/Bulb";
 import setOrganizationTypeIcon from "../../../data/setOrganizationTypeIcon";
@@ -126,7 +126,7 @@ const ProjectroomCard: FC<ProjectroomCardProps> = ({
            <img src={NotPublishedIcon} width="100%" /> 
         </DeactivatedWrapper>
       )}
-      <ExpandButton handleButtonClick={handleButtonClick} /> */}
+    */}
 
         <Typography variant="h3"> {title}</Typography>
 

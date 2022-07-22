@@ -30,9 +30,9 @@ const Dot = ({
     <g
       id="Icons"
       stroke="none"
-      stroke-width="1"
+      strokeWidth="1"
       fill="none"
-      fill-rule="evenodd"
+      fillRule="evenodd"
     >
       <g id="Icons/Dot" fill={color}>
         <circle id="🎨-Icon-Color" cx="8" cy="8" r="6.5"></circle>

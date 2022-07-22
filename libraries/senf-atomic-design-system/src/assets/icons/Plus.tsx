@@ -27,9 +27,9 @@ const Plus: FC<SVGRProps> = ({ color = "black", transform }) => (
     <g
       id="Icons"
       stroke="none"
-      stroke-width="1"
+      strokeWidth="1"
       fill="none"
-      fill-rule="evenodd"
+      fillRule="evenodd"
     >
       <g id="Plus" fill={color}>
         <path

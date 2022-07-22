@@ -1,7 +1,6 @@
 /** @format */
 
-import React, { FC } from "react";
-import { SVGProps } from "react";
+import React, { FC , SVGProps } from "react";
 import styled from "styled-components";
 
 interface SVGRProps {
@@ -10,7 +9,7 @@ interface SVGRProps {
 }
 
 const Svg = styled.svg`
-  transform: ${({ transform }) => (transform ? transform : undefined)};
+  transform: ${({ transform }) => (transform || undefined)};
 `;
 
 const Arrow: FC<SVGRProps> = ({ color = "black", transform }) => (
@@ -27,9 +26,9 @@ const Arrow: FC<SVGRProps> = ({ color = "black", transform }) => (
     <g
       id="Icons"
       stroke="none"
-      stroke-width="1"
+      strokeWidth="1"
       fill="none"
-      fill-rule="evenodd"
+      fillRule="evenodd"
     >
       <g id="Arrow" fill={color}>
         <path

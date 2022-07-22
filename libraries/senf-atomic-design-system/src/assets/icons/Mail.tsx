@@ -27,9 +27,9 @@ const Mail: FC<SVGRProps> = ({ color = "black", transform }) => (
     <g
       id="Icons"
       stroke="none"
-      stroke-width="1"
+      strokeWidth="1"
       fill="none"
-      fill-rule="evenodd"
+      fillRule="evenodd"
     >
       <g id="Group-6" transform="translate(0.000000, 1.654800)">
         <path
@@ -41,7 +41,7 @@ const Mail: FC<SVGRProps> = ({ color = "black", transform }) => (
           d="M12.3849,3.4756 L8.7199,6.8816 C8.2959,7.2746 7.6409,7.2746 7.2179,6.8816 L3.5529,3.4756"
           id="Stroke-4"
           stroke="#FFFFFF"
-          stroke-width="1.5"
+          strokeWidth="1.5"
           stroke-linecap="round"
           stroke-linejoin="round"
         ></path>

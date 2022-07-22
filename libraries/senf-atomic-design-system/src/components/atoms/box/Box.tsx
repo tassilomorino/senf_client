@@ -5,28 +5,28 @@ import styled from "styled-components";
 import { BoxProps } from "./Box.types";
 
 const Wrapper = styled.div<BoxProps>`
-  display: ${({ display }) => (display ? display : "flex")};
+  display: ${({ display }) => (display || "flex")};
 
-  position: ${({ position }) => (position ? position : "relative")};
-  top: ${({ top }) => (top ? top : undefined)};
-  bottom: ${({ bottom }) => (bottom ? bottom : undefined)};
+  position: ${({ position }) => (position || "relative")};
+  top: ${({ top }) => (top || undefined)};
+  bottom: ${({ bottom }) => (bottom || undefined)};
 
-  left: ${({ left }) => (left ? left : undefined)};
-  right: ${({ right }) => (right ? right : undefined)};
-  height: ${({ height }) => (height ? height : "auto")};
-  width: ${({ width }) => (width ? width : "auto")};
-  max-width: ${({ maxWidth }) => (maxWidth ? maxWidth : "auto")};
+  left: ${({ left }) => (left || undefined)};
+  right: ${({ right }) => (right || undefined)};
+  height: ${({ height }) => (height || "auto")};
+  width: ${({ width }) => (width || "auto")};
+  max-width: ${({ maxWidth }) => (maxWidth || "auto")};
 
-  margin: ${({ margin }) => (margin ? margin : "0")};
+  margin: ${({ margin }) => (margin || "0")};
   flex-direction: ${({ flexDirection }) =>
     flexDirection === "column" ? "column" : "row"};
-  align-items: ${({ alignItems }) => (alignItems ? alignItems : null)};
+  align-items: ${({ alignItems }) => (alignItems || null)};
   justify-content: ${({ justifyContent }) =>
-    justifyContent ? justifyContent : null};
-  gap: ${({ gap }) => (gap ? gap : null)};
-  flex-wrap: ${({ flexWrap }) => (flexWrap ? flexWrap : null)};
-  z-index: ${({ zIndex }) => (zIndex ? zIndex : undefined)};
-  transform: ${({ transform }) => (transform ? transform : undefined)};
+    justifyContent || null};
+  gap: ${({ gap }) => (gap || null)};
+  flex-wrap: ${({ flexWrap }) => (flexWrap || null)};
+  z-index: ${({ zIndex }) => (zIndex || undefined)};
+  transform: ${({ transform }) => (transform || undefined)};
 `;
 
 const Box: FC<BoxProps> = ({

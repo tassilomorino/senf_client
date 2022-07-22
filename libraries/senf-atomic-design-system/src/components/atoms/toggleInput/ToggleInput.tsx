@@ -18,7 +18,7 @@ const ToggleInputContainer = styled.div<ToggleInputProps>`
   height: 20px;
   width: 20px;
   pointer-events: ${({ pointerEvents }) =>
-    pointerEvents ? pointerEvents : "all"};
+    pointerEvents || "all"};
 `;
 
 const RadioIcon = styled.div<ToggleInputProps>`
@@ -39,12 +39,12 @@ const StyledToggleInput = styled.div<ToggleInputProps>`
   width: 20px;
   height: 20px;
   background: ${({ checked, theme }) =>
-    checked ? theme.colors.primary.primary100 : theme.colors.white.white50tra};
-  border-radius: ${({ borderRadius }) => (borderRadius ? borderRadius : "7px")};
+    checked && checked !== 'indeterminate' ? theme.colors.primary.primary100 : theme.colors.white.white50tra};
+  border-radius: ${({ borderRadius }) => (borderRadius || "7px")};
   transition: all 150ms;
   border: 2px solid
     ${({ checked, theme }) =>
-      checked
+      checked && checked !== 'indeterminate'
         ? theme.colors.primary.primary120
         : theme.colors.greyscale.greyscale50};
 
@@ -81,7 +81,8 @@ const ToggleInput: FC<ToggleInputProps> = ({
       )}
       {type === "checkbox" && (
         <StyledToggleInput checked={checked} borderRadius="7px">
-          {checked && <Icon icon={<CheckDropShadow color="white" />} />}
+          {checked && checked !== 'indeterminate' && <Icon icon={<CheckDropShadow color="white" />} />}
+          {checked && checked === 'indeterminate' && <Icon icon="More" />}
         </StyledToggleInput>
       )}
       {type === "radio" && (

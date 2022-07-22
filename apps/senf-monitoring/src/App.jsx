@@ -1,136 +1,62 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import React from "react";
 import { Helmet } from "react-helmet";
-import "./App.css";
-import "./AppDesktop.css";
-import "./AppIpad.css";
-
-import firebaseConfig from "./util/firebase";
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
-import { useTranslation } from "react-i18next";
-import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
-import { createTheme } from "@material-ui/core/styles/";
-import themeFile from "./util/theme";
-//Redux
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
+import { theme, GlobalStyle } from "senf-atomic-design-system";
+import { ThemeProvider } from "styled-components";
 import store from "./redux/store";
-import { SET_AUTHENTICATED } from "./redux/types";
-import { logoutUser, getUserData } from "./redux/actions/userActions";
-
-//Pages
-
-import datenschutz from "./components/organisms/infocomponents/legal/datenschutz";
-import agb from "./components/organisms/infocomponents/legal/agb";
-import MonitoringBoard from "./pages/MonitoringBoard";
-
-import axios from "axios";
-
-import { isTablet } from "react-device-detect";
-
-import packageJson from "../package.json";
-import { getBuildDate } from "./util/utils";
-//import withClearCache from "./util/ClearCache";
-
-import detectLocation from "./util/detectLocation";
-
+import Dashboard from "./pages/Dashboard";
 import "./util/i18n";
-detectLocation(); // detect location and set i18n language
-
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-  firebase
-    .firestore()
-    .enablePersistence()
-    .then(() => firebase.firestore())
-    .catch((err) => {
-      console.log(err);
-      return firebase.firestore();
-    });
-} else {
-  firebase.app(); // if already initialized, use that one
-}
-
-axios.defaults.baseURL = import.meta.env.VITE_DB_BASE_URL;
-
-const theme = createTheme(themeFile);
-
-console.log(import.meta.env.MODE);
-
-// if (import.meta.env.MODE === "development") {
-//   const whyDidYouRender = require("@welldone-software/why-did-you-render");
-//   whyDidYouRender(React, {
-//     trackAllPureComponents: true,
-//   });
-// }
-
-window.store = store;
+import PrivateRoute from "./context/PrivateRoute";
+import { AuthProvider } from "./context/auth";
+import AuthPage from "./pages/AuthPage";
+import InviteMember from "./pages/InviteMember";
+import MemberBoard from "./pages/MemberBoard";
 
 const App = () => {
-  const { t } = useTranslation();
-
-  const [isAuthed, setIsAuthed] = useState(false);
-  const userState = () => {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user && user.emailVerified) {
-        store.dispatch({ type: SET_AUTHENTICATED });
-        store.dispatch(getUserData(user.uid));
-        setIsAuthed(true);
-      } else if (user) {
-        //a new user is registrating
-      } else {
-        store.dispatch(logoutUser());
-      }
-    });
-  };
-
-  useEffect(() => {
-    userState();
-  }, [isAuthed]);
-
-  const tabletNote = isTablet ? (
-    <div className="tabletLandscapeNote">{t("rotate_tablet")} </div>
-  ) : null;
-
-  console.log();
-
   return (
-    <>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+
       {import.meta.env.VITE_NO_CRAWL && (
-        /* only for senf-monitoring-test.netlify.app */
+        /* disable google crawling for senf-client-test.netlify.app */
         <Helmet>
           <meta name="robots" content="noindex" />
         </Helmet>
       )}
-      <MuiThemeProvider theme={theme}>
-        <Provider store={store}>
-          <Router>
-            {tabletNote}
-            {/* {isTablet && (
-            <div className="switchDevice">
-              Bitte öffne Senf.koeln auf deinem Smartphone oder
-              Desktop-Computer. Die Tablet-Version kommt bald wieder :)
-            </div>
-          )} */}
 
-            <div className="landscapeNote">{t("rotate_phone")}</div>
-            <div className="container">
-              <Switch>
-                <Route exact path="/" component={MonitoringBoard} />
-                <Route exact path="/datenschutz" component={datenschutz} />
-                <Route exact path="/agb" component={agb} />
-              </Switch>
-            </div>
+      <Provider store={store}>
+        <AuthProvider>
+          <Router>
+            <React.Suspense fallback={<div>Loading...</div>}>
+              <Routes>
+                <Route
+                  exact
+                  path="/register"
+                  element={<AuthPage variant="register" />}
+                />
+
+                <Route
+                  exact
+                  path="/login"
+                  element={<AuthPage variant="login" />}
+                />
+                {/* <Route exact path="/" element={<PrivateRoute />}>
+                  <Route exact path="/" component={Dashboard} />
+                </Route> */}
+                <Route exact path="/" element={<Dashboard />} />
+                <Route exact path="/members" element={<MemberBoard />} />
+
+                <Route exact path="/invite" element={<InviteMember />} />
+              </Routes>
+            </React.Suspense>
           </Router>
-        </Provider>
-      </MuiThemeProvider>
-    </>
+        </AuthProvider>
+      </Provider>
+    </ThemeProvider>
   );
 };
-console.log(getBuildDate(packageJson.buildDate));
 
 export default App;
-/* export default withClearCache(MainApp); */

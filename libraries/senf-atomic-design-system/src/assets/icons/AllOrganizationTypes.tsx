@@ -1,7 +1,6 @@
 /** @format */
 
-import * as React from "react";
-import { SVGProps } from "react";
+import React, { FC, SVGProps } from "react";
 import styled from "styled-components";
 
 interface SVGRProps {
@@ -13,10 +12,10 @@ const Svg = styled.svg`
   transform: ${({ transform }) => transform || undefined};
 `;
 
-const AllOrganizationTypes = ({
+const AllOrganizationTypes: FC<SVGRProps> = ({
   color = "black",
   transform,
-}: SVGProps<SVGSVGElement> & SVGRProps) => (
+}) => (
   <Svg
     width="16px"
     height="16px"

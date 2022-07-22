@@ -6,7 +6,7 @@ import thunk from "redux-thunk";
 // import throttle from "lodash/throttle";
 
 import userReducer from "./reducers/userReducer";
-//import formDataReducer from "./reducers/formDataReducer";
+// import formDataReducer from "./reducers/formDataReducer";
 import dataReducer from "./reducers/dataReducer";
 import uiReducer from "./reducers/uiReducer";
 // import {
