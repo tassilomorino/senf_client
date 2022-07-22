@@ -1,4 +1,5 @@
 /** @format */
+export { default as Check } from "./assets/icons/Check";
 export { default as Bulb } from "./assets/icons/Bulb";
 export { default as More } from "./assets/icons/More";
 export { default as Delete } from "./assets/icons/Delete";
