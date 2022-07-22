@@ -109,30 +109,20 @@ const ModelsList = ({ spawnObject }) => {
           />
         ))}
       </Box>
-      {models && (
+      {models.length > 0 && (
         <List
           listType="grid"
-          CardType={() => (
-            <>
-              {models.map((data, i) => (
-                <ObjectCard
-                  key={i}
-                  data={data}
-                  handleButtonOpenCard={() =>
-                    createModel(
-                      `model ${Math.random() * 1000}`,
-                      data.modelPath,
-                      data.format,
-                      0.5
-                    )
-                  }
-                />
-              ))}
-            </>
-          )}
-          loading={false}
-          handleButtonClick={spawnObject}
+          CardType={ObjectCard}
           data={models}
+          handleButtonOpenCard={(event, cardType, modelData) => {
+            createModel(
+              `model ${Math.random() * 1000}`,
+              modelData.modelPath,
+              modelData.format,
+              0.5
+            );
+          }}
+          loading={false}
         />
       )}
     </React.Fragment>

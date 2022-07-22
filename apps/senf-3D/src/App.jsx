@@ -1,9 +1,8 @@
 /** @format */
-import React from 'react'
+import React from "react";
 import { ThemeProvider } from "styled-components";
+import { theme, GlobalStyle } from "senf-atomic-design-system";
 import Map from "./Map/Map";
-import { GlobalStyles } from "./styles/global";
-import { theme } from "senf-atomic-design-system";
 
 import UI from "./UI/UI";
 
@@ -11,7 +10,7 @@ function App() {
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
-        <GlobalStyles />
+        <GlobalStyle />
         <UI />
         <Map />
       </ThemeProvider>

@@ -14,7 +14,7 @@
     "react-dom": "^18.2.0",
     "react-mapbox-gl": "^5.1.1",
     "react-scripts": "5.0.1",
-    "senf-atomic-design-system": "2.5.4",
+    "senf-atomic-design-system": "*",
     "styled-components": "^5.3.5",
     "three": "^0.142.0",
     "threebox-plugin": "^2.2.7",

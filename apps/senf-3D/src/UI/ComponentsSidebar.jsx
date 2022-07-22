@@ -94,20 +94,22 @@ const ComponentsSidebar = ({
         width="calc(100% - 40px)"
         color="#f8f8f8"
       />
-      <InnerWrapper>
-        {order === 1 ? (
-          <ModelsList spawnObject={spawnObject} />
-        ) : order === 2 ? (
-          <FormsList spawnObject={spawnObject} />
-        ) : (
-          <MarkersList
-            setComponentsSidebarOpen={setComponentsSidebarOpen}
-            unityContext={unityContext}
-            spawnObject={spawnObject}
-            startDrawingStreet={startDrawingStreet}
-          />
-        )}
-      </InnerWrapper>
+      {
+        <InnerWrapper>
+          {order === 1 ? (
+            <ModelsList spawnObject={spawnObject} />
+          ) : order === 2 ? (
+            <FormsList spawnObject={spawnObject} />
+          ) : (
+            <MarkersList
+              setComponentsSidebarOpen={setComponentsSidebarOpen}
+              unityContext={unityContext}
+              spawnObject={spawnObject}
+              startDrawingStreet={startDrawingStreet}
+            />
+          )}
+        </InnerWrapper>
+      }
     </Wrapper>
   );
 };
