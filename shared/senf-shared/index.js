@@ -7,3 +7,4 @@ export {
   useSignInWithGoogle,
   useSignInWithFacebook,
 } from "./firebase/useSignInWithPopup";
+export { useHandleSubmitEditDetails } from "./firebase/useHandleSubmitEditDetails";

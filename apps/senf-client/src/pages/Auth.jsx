@@ -32,6 +32,7 @@ import {
   useSignInWithGoogle,
   useSignInWithFacebook,
   useCreateUserWithEmailAndPassword,
+  useHandleSubmitEditDetails,
   generateErrorMessage,
 } from "senf-shared";
 
@@ -85,6 +86,13 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
     firebaseUserEmailRegistrationLoading,
     firebaseUserEmailRegistrationError,
   ] = useCreateUserWithEmailAndPassword(auth, db, sendVerification);
+
+  const [
+    handleSubmitEditDetails,
+    editedUser,
+    editedUserisLoading,
+    editedUserError,
+  ] = useHandleSubmitEditDetails(userIdInFirebase, user, db);
   useEffect(() => {
     if (authEditOpen) {
       setVerifiedUser(true);
@@ -195,33 +203,29 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
     firebaseFacebookUserLoading,
   ]);
 
-  const handleSubmitEditDetails = async (data) => {
-    if (
-      userIdInFirebase !== user.userId ||
-      user.isAdmin === false ||
-      user.isSuperAdmin === false ||
-      user.isModerator === false
-    ) {
-      throw new Error("user not authorized to handleSubmitEditDetails");
+  useEffect(() => {
+    // edit user details
+    if (editedUserisLoading) {
+      setLoading(true);
     }
-
-    await updateDoc(doc(db, "users", user.userId), {
-      handle: data.handle ? data.handle : user.handle,
-      description: data.description ? data.description : null,
-      zipcode: data.zipcode ? data.zipcode : null,
-      age: data.age ? data.age : null,
-      sex: data.sex ? data.sex : null,
-    })
-      .then(() => {
-        dispatch(getUserData(user.userId)).then(() => {
-          setAuthOpen(false);
-          setAuthEditOpen(false);
-        });
-      })
-      .catch((error) => {
-        throw new Error(error, "error in handleSubmitEditDetails");
+    if (editedUser) {
+      setLoading(false);
+      setErrorMessage({ code: "", message: "" });
+      dispatch(getUserData(user.userId)).then(() => {
+        setAuthOpen(false);
+        setAuthEditOpen(false);
+        setErrorMessage({ code: "", message: "" });
       });
-  };
+    }
+    if (editedUserError) {
+      setLoading(false);
+      setErrorMessage({
+        ...errorMessage,
+        code: editedUserError.code,
+        message: editedUserError,
+      });
+    }
+  }, [editedUser, editedUserError, editedUserisLoading]);
 
   async function handleImageUpload(event) {
     if (
@@ -304,7 +308,9 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
           handleFacebookSignIn={() => signInWithFacebook(["email"])} // asks facebook for email
           handleImageUpload={handleImageUpload}
           uploadingImage={uploadingImage}
-          handleSubmitEditDetails={handleSubmitEditDetails}
+          handleSubmitEditDetails={(userDetails) =>
+            handleSubmitEditDetails(userDetails)
+          }
           emailRegistrationSubmitted={emailRegistrationSubmitted}
           verifiedUser={verifiedUser}
           handleClose={() => {
