@@ -209,8 +209,8 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
       handle: data.handle ? data.handle : user.handle,
       description: data.description ? data.description : null,
       zipcode: data.zipcode ? data.zipcode : null,
-      age: data.birthyear ? data.birthyear : null,
-      sex: data.gender ? data.gender : null,
+      age: data.age ? data.age : null,
+      sex: data.sex ? data.sex : null,
     })
       .then(() => {
         dispatch(getUserData(user.userId)).then(() => {
