@@ -183,7 +183,6 @@ const App = () => {
             )}
             <div className="container">
               <Switch>
-                <Route exact path="/" component={Main} />
                 <Route exact path="/projectRooms" component={Main} />
                 <Route exact path="/organizations" component={Main} />
 
@@ -200,7 +199,7 @@ const App = () => {
 
                 <Route exact path="/blank" component={blank} />
 
-                <Route exact path="/:screamId" component={Main} />
+                <Route exact path="/idea/:screamId" component={Main} />
 
                 <Route
                   exact
@@ -219,7 +218,8 @@ const App = () => {
                   path="/organizations/:organizationId"
                   component={Main}
                 />
-
+                <Route exact path="/:unknownPathId" component={Main} />
+                <Route exact path="/" component={Main} />
                 <Route path="*" component={Main} />
               </Switch>
             </div>
