@@ -133,17 +133,18 @@ export const openScreamFunc = (screamId, reloadScream) => async (dispatch) => {
 
       const projectroomPath = store.getState().UI.openProjectRoom
         ? `/projectRooms/${store.getState().data.project.projectRoomId}`
-        : "";
+        : `/idea`;
 
       const newPath = `${projectroomPath}/${screamId}`;
       window.history.pushState(null, null, newPath);
 
       dispatch({ type: SET_SCREAM, payload: scream });
     } else {
+      window.history.pushState(null, null, "/");
       console.log("No such document!");
       dispatch({ type: CLOSE_SCREAM });
       dispatch({ type: SET_SCREAM, payload: {} });
-      window.history.pushState(null, null, "/");
+
       throw new Error("Idea not found");
     }
   } catch (error) {

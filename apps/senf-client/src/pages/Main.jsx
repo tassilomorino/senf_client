@@ -6,6 +6,7 @@ import React, {
   useRef,
   useCallback,
   useMemo,
+  useLayoutEffect,
 } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -140,7 +141,9 @@ const Main = () => {
 
   const [openModalAuthenticate, setOpenModalAuthenticate] = useState(false);
 
-  const { screamId, projectRoomId, organizationId } = useParams();
+  const { screamId, projectRoomId, organizationId, unknownPathId } =
+    useParams();
+
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openScream = useSelector((state) => state.UI.openScream);
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
@@ -266,12 +269,12 @@ const Main = () => {
       }
     }
   }, [lat, long, loadingIdea, openScream]);
-
   useEffect(() => {
+    unknownPathId && window.history.pushState(null, null, "/");
     projectRoomId && dispatch(openProjectRoomFunc(projectRoomId, true));
     screamId && dispatch(openScreamFunc(screamId));
     organizationId && dispatch(openOrganizationFunc(organizationId, true));
-  }, [dispatch, projectRoomId, screamId, organizationId]);
+  }, [dispatch, projectRoomId, screamId, organizationId, unknownPathId]);
 
   useEffect(() => {
     if (window.location.pathname === "/projectRooms") {
@@ -580,6 +583,20 @@ const Main = () => {
           </Box>
         </Modal>
       )}
+      {openModalAuthenticate && !user.authenticated && (
+        <Modal
+          zIndex={9999999999}
+          openModal={openModalAuthenticate}
+          setOpenModal={setOpenModalAuthenticate}
+        >
+          <StyledH3 textAlign="center" margin="20px">
+            {t("organizations_create_login_register")}
+          </StyledH3>
+          <Box justifyContent="center" margin="0px 0px 10px 0px">
+            <Button text={t("login")} onClick={() => setAuthOpen(true)} />
+          </Box>
+        </Modal>
+      )}
 
       {openCreateOrganizationFirst && (
         <Modal
@@ -815,6 +832,7 @@ const Main = () => {
           <OrganizationsOverview
             data={dataFinalOrganizations}
             selectedOrganizationTypes={selectedOrganizationTypes}
+            handleSelectOrganizationTypes={handleSelectOrganizationTypes}
             user={user}
             organizations={organizations}
             organization={organization}
@@ -827,6 +845,7 @@ const Main = () => {
             handleButtonOpenCard={handleButtonOpenCard}
             projectroomsData={dataFinalProjectRooms}
             handleOpenCreateOrganization={handleOpenCreateOrganization}
+
             // openCreateOrganization,
             // setOpenModalAuthenticate,
           />

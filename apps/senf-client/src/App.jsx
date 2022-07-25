@@ -168,22 +168,21 @@ const App = () => {
 
       <Provider store={store}>
         <Router>
-          {openCookiebanner && (
-            <Cookiebanner
-              handleCookies={handleCookies}
-              handleOpenCookiePreferences={handleOpenCookiePreferences}
-            />
-          )}
-          {tabletNote}
+          <React.Suspense fallback={<MainLoader />}>
+            {tabletNote}
 
-          {isMobileCustom && (
-            <div className="landscapeNote">{t("rotate_phone")}</div>
-          )}
+            {isMobileCustom && (
+              <div className="landscapeNote">{t("rotate_phone")}</div>
+            )}
 
-          <div className="container">
-            <React.Suspense fallback={<MainLoader />}>
+            {openCookiebanner && (
+              <Cookiebanner
+                handleCookies={handleCookies}
+                handleOpenCookiePreferences={handleOpenCookiePreferences}
+              />
+            )}
+            <div className="container">
               <Switch>
-                <Route exact path="/" component={Main} />
                 <Route exact path="/projectRooms" component={Main} />
                 <Route exact path="/organizations" component={Main} />
 
@@ -200,7 +199,7 @@ const App = () => {
 
                 <Route exact path="/blank" component={blank} />
 
-                <Route exact path="/:screamId" component={Main} />
+                <Route exact path="/idea/:screamId" component={Main} />
 
                 <Route
                   exact
@@ -219,11 +218,12 @@ const App = () => {
                   path="/organizations/:organizationId"
                   component={Main}
                 />
-
+                <Route exact path="/:unknownPathId" component={Main} />
+                <Route exact path="/" component={Main} />
                 <Route path="*" component={Main} />
               </Switch>
-            </React.Suspense>
-          </div>
+            </div>
+          </React.Suspense>
         </Router>
       </Provider>
     </ThemeProvider>

@@ -39,7 +39,7 @@ module.exports = {
     "no-underscore-dangle": "off",
     "no-plusplus": "off",
     "arrow-body-style": "off",
-    "no-shadow": "off",
+    camelcase: "warn",
   },
   settings: {
     react: {

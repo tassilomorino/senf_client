@@ -142,7 +142,7 @@
   "organizations_description": "Organizations description",
   "organizations_description_too_short": "Organizations description is too short",
   "organizations_description_too_long": "Organizations description is too long",
-  "organizations_create_login_register": " To create an organization profile, you must first log in/register",
+  "organizations_create_login_register": " To create an organization profile, you must first log in / register",
   "organizations_create": " Create organization profile",
 
   "searchBar": "Search titles and descriptions...",

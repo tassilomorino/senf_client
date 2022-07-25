@@ -237,8 +237,8 @@ const TopicsGraph = ({ screams }) => {
       dtick: 5,
       autorange: true,
       tickmode: "array", // If "array", the placement of the ticks is set via `tickvals` and the tick text is `ticktext`.
-      // tickvals: [-500, -250, -100, -50, 0, 50, 100, 250, 500],
-      // ticktext: ["500", "250", "100", "50", "|", "50", "100", "250", "500"],
+      tickvals: [-500, -250, -100, -50, 0, 50, 100, 250, 500],
+      ticktext: ["500", "250", "100", "50", "|", "50", "100", "250", "500"],
       tick0: 0,
       title: {
         text: "",
