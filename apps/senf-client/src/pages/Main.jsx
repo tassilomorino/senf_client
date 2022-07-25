@@ -580,6 +580,20 @@ const Main = () => {
           </Box>
         </Modal>
       )}
+      {openModalAuthenticate && !user.authenticated && (
+        <Modal
+          zIndex={9999999999}
+          openModal={openModalAuthenticate}
+          setOpenModal={setOpenModalAuthenticate}
+        >
+          <StyledH3 textAlign="center" margin="20px">
+            {t("organizations_create_login_register")}
+          </StyledH3>
+          <Box justifyContent="center" margin="0px 0px 10px 0px">
+            <Button text={t("login")} onClick={() => setAuthOpen(true)} />
+          </Box>
+        </Modal>
+      )}
 
       {openCreateOrganizationFirst && (
         <Modal
