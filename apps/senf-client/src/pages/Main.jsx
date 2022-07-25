@@ -832,6 +832,7 @@ const Main = () => {
           <OrganizationsOverview
             data={dataFinalOrganizations}
             selectedOrganizationTypes={selectedOrganizationTypes}
+            handleSelectOrganizationTypes={handleSelectOrganizationTypes}
             user={user}
             organizations={organizations}
             organization={organization}
@@ -844,6 +845,7 @@ const Main = () => {
             handleButtonOpenCard={handleButtonOpenCard}
             projectroomsData={dataFinalProjectRooms}
             handleOpenCreateOrganization={handleOpenCreateOrganization}
+
             // openCreateOrganization,
             // setOpenModalAuthenticate,
           />
