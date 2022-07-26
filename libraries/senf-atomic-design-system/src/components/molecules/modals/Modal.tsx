@@ -72,14 +72,11 @@ const Modal: FC<ModalProps> = ({
 
   const handleOpen = () => {
     setIsOpen(true);
-    const root = document.getElementById("root");
-    root?.setAttribute("inert", "");
   };
 
   const handleClose = () => {
     setIsOpen(false);
-    const root = document.getElementById("root");
-    root?.removeAttribute("inert");
+
     // focus modal trigger again
     buttonRef?.current?.focus();
   };

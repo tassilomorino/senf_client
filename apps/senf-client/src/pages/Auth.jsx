@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getAuth,
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
   sendEmailVerification,
   signInWithPopup,
   FacebookAuthProvider,
@@ -28,13 +27,22 @@ import imageCompression from "browser-image-compression";
 
 import { useTranslation } from "react-i18next";
 import { SwipeModal, Auth as AuthComponent } from "senf-atomic-design-system";
+import {
+  useSignInWithEmailAndPassword,
+  useSignInWithGoogle,
+  useSignInWithFacebook,
+  useCreateUserWithEmailAndPassword,
+  useHandleSubmitEditDetails,
+  generateErrorMessage,
+} from "senf-shared";
+
 import { getUserData } from "../redux/actions/userActions";
 
 import { auth, db } from "../firebase";
 import { SET_AUTHENTICATED } from "../redux/types";
 
 const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState({ code: "", message: "" });
   const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
 
@@ -48,7 +56,43 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const [
+    signInWithEmailAndPassword,
+    firebaseEmailPasswordSignInUser,
+    firebaseEmailPasswordSignInLoading,
+    firebaseEmailPasswordSignInError,
+  ] = useSignInWithEmailAndPassword(auth);
+  const [
+    signInWithGoogle,
+    firebaseGoogleUser,
+    firebaseGoogleUserLoading,
+    firebaseGoogleUserError,
+  ] = useSignInWithGoogle(auth, db);
+  const [
+    signInWithFacebook,
+    firebaseFacebookUser,
+    firebaseFacebookUserLoading,
+    firebaseFacebookUserError,
+  ] = useSignInWithFacebook(auth, db);
+  const sendVerification = {
+    sendEmailVerification: true,
+    emailVerificationOptions: {
+      url: "https://senf.koeln/verify",
+    },
+  };
+  const [
+    createUserWithEmailAndPassword,
+    firebaseUserEmailRegistrationInfo,
+    firebaseUserEmailRegistrationLoading,
+    firebaseUserEmailRegistrationError,
+  ] = useCreateUserWithEmailAndPassword(auth, db, sendVerification);
 
+  const [
+    handleSubmitEditDetails,
+    editedUser,
+    editedUserisLoading,
+    editedUserError,
+  ] = useHandleSubmitEditDetails(userIdInFirebase, user, db);
   useEffect(() => {
     if (authEditOpen) {
       setVerifiedUser(true);
@@ -58,245 +102,130 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
     }
   }, [authOpen, authEditOpen]);
 
-  const handleSubmitLogin = async (formikLoginStore) => {
-    // event.preventDefault();
-
-    setLoading(true);
-    signInWithEmailAndPassword(
-      auth,
-      formikLoginStore.values.email,
-      formikLoginStore.values.password
-    )
-      .then((userCredential) => {
-        if (userCredential.user.emailVerified) {
-          console.log(userCredential.user.uid);
-          setLoading(false);
-          dispatch({ type: SET_AUTHENTICATED });
-          dispatch(getUserData(userCredential.user.uid));
-          console.log(window.location);
-
-          setAuthOpen(false);
-        } else {
-          setLoading(false);
-          setErrorMessage(t("email_not_verified"));
-        }
-      })
-      .catch((err) => {
-        setLoading(false);
-        setErrorMessage(err.message);
-      });
-
-    // dispatch(loginUser(userData, props.history))
-  };
-  async function createUserInDatabase(userCredential, formikRegisterStore) {
-    if (userCredential && userCredential.user) {
-      try {
-        await setDoc(doc(db, "users", userCredential.user.uid), {
-          handle: formikRegisterStore.values.handle,
-          createdAt: new Date().toISOString(),
-          userId: userCredential.user.uid,
-        });
-        await setDoc(
-          doc(
-            db,
-            "users",
-            userCredential.user.uid,
-            "Private",
-            userCredential.user.uid
-          ),
-          {
-            email: formikRegisterStore.values.email,
-            userId: userCredential.user.uid,
-          }
-        );
-      } catch (error) {
-        throw new Error(error, "Error in createUserInDatabase");
-      }
-    }
-  }
-
-  async function createUserFromProviderInDatabase(user) {
-    try {
-      if (user) {
-        await setDoc(doc(db, "users", user.uid), {
-          handle: user.displayName,
-          createdAt: new Date().toISOString(),
-          userId: user.uid,
-          photoURL: user.photoURL ?? "",
-          providerId: user.providerData[0].providerId ?? "",
-        });
-        await setDoc(doc(db, "users", user.uid, "Private", user.uid), {
-          email: user.providerData[0].email ?? "",
-          userId: user.uid,
-        });
-      }
-    } catch (error) {
-      throw new Error(error, "error in createUserFromProviderInDatabase");
-    }
-  }
-
-  const handleSubmitRegister = async (formikRegisterStore) => {
-    // event.preventDefault();
-
-    try {
+  useEffect(() => {
+    // login with email and password
+    if (firebaseEmailPasswordSignInLoading) {
       setLoading(true);
-      setErrorMessage("");
-      const usersRef = collection(db, "users");
-      const q = query(
-        usersRef,
-        where("handle", "==", formikRegisterStore.values.handle)
-      );
-      const usernameQuerySnapshot = await getDocs(q);
-
-      if (!usernameQuerySnapshot.empty) {
-        // username already exists
-
-        setLoading(false);
-        setErrorMessage(t("username_taken"));
-      } else {
-        // username is available, try to create user and put info to database
-
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          formikRegisterStore.values.email,
-          formikRegisterStore.values.password
-        );
-
-        const actionCodeSettings = {
-          // change to senf.koeln on production
-          url: "https://senf.koeln/verify",
-        };
-
-        await sendEmailVerification(auth.currentUser, actionCodeSettings);
-        await createUserInDatabase(userCredential, formikRegisterStore);
-
-        setLoading(false);
-
-        const emailWrapper = {
-          email: formikRegisterStore.values.email,
-        };
-
-        setEmailRegistrationSubmitted(true);
-        // history.push("/verify", emailWrapper);
-      }
-    } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
+    }
+    if (firebaseEmailPasswordSignInUser) {
       setLoading(false);
-      setErrorMessage(errorMessage);
-      if (errorCode === "auth/email-already-in-use") {
-        setLoading(false);
-        setErrorMessage(t("email_taken"));
-      }
-      if (errorCode === "auth/invalid-email") {
-        setLoading(false);
-        setErrorMessage(t("enter_valid_email"));
-      }
-      if (errorCode === "auth/weak-password") {
-        setLoading(false);
-        setErrorMessage(t("password_6characters"));
-      }
-      if (errorCode === "auth/too-many-requests") {
-        setLoading(false);
-        setErrorMessage(t("too_many_requests"));
-      }
+      setErrorMessage({ code: "", message: "" });
+      dispatch({ type: SET_AUTHENTICATED });
+      dispatch(getUserData(firebaseEmailPasswordSignInUser.user.uid));
+      setAuthOpen(false);
     }
-  };
+    if (firebaseEmailPasswordSignInError) {
+      setLoading(false);
 
-  const handleProviderSignin = async (providerName) => {
-    try {
-      let provider;
-      let result;
-      let credential;
-
-      if (providerName === "google") {
-        provider = new GoogleAuthProvider();
-        provider.addScope("email");
-        result = await signInWithPopup(auth, provider);
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        credential = GoogleAuthProvider.credentialFromResult(result);
-      }
-      if (providerName === "facebook") {
-        provider = new FacebookAuthProvider();
-        provider.addScope("email");
-        result = await signInWithPopup(auth, provider);
-        credential = FacebookAuthProvider.credentialFromResult(result);
-      }
-      const token = credential.accessToken;
-      // The signed-in user info.
-      const { user } = result;
-
-      const docRef = doc(db, "users", user.uid);
-      const docSnapshot = await getDoc(docRef);
-      if (!docSnapshot.exists() && user) {
-        console.log("user not existing yet", user.uid, user);
-        await createUserFromProviderInDatabase(user);
-        dispatch({ type: SET_AUTHENTICATED });
-        dispatch(getUserData(user.uid));
-        setVerifiedUser(true);
-      } else if (user) {
-        console.log("user already exists", user.uid, user);
-        dispatch({ type: SET_AUTHENTICATED });
-        dispatch(getUserData(user.uid));
-
-        if (
-          user.description &&
-          user.zipcode &&
-          user.photoURL &&
-          user.age &&
-          user.sex
-        ) {
-          setAuthOpen(false);
-        } else {
-          setVerifiedUser(true);
-        }
-      }
-    } catch (error) {
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      const { email } = error;
-      // The AuthCredential type that was used.
-      let credential;
-      if (providerName === "google") {
-        credential = GoogleAuthProvider.credentialFromError(error);
-      }
-      if (providerName === "facebook") {
-        credential = FacebookAuthProvider.credentialFromError(error);
-      }
-
-      throw new Error(errorCode, errorMessage, email, credential);
-    }
-  };
-
-  const handleSubmitEditDetails = async (data) => {
-    if (
-      userIdInFirebase !== user.userId ||
-      user.isAdmin === false ||
-      user.isSuperAdmin === false ||
-      user.isModerator === false
-    ) {
-      throw new Error("user not authorized to handleSubmitEditDetails");
-    }
-
-    await updateDoc(doc(db, "users", user.userId), {
-      handle: data.handle ? data.handle : user.handle,
-      description: data.description ? data.description : null,
-      zipcode: data.zipcode ? data.zipcode : null,
-      age: data.birthyear ? data.birthyear : null,
-      sex: data.gender ? data.gender : null,
-    })
-      .then(() => {
-        dispatch(getUserData(user.userId)).then(() => {
-          setAuthOpen(false);
-          setAuthEditOpen(false);
-        });
-      })
-      .catch((error) => {
-        throw new Error(error, "error in handleSubmitEditDetails");
+      setErrorMessage({
+        ...errorMessage,
+        code: firebaseEmailPasswordSignInError.code,
+        message: generateErrorMessage(firebaseEmailPasswordSignInError.code),
       });
-  };
+    }
+  }, [
+    dispatch,
+    firebaseEmailPasswordSignInLoading,
+    firebaseEmailPasswordSignInUser,
+    firebaseEmailPasswordSignInError,
+  ]);
+
+  useEffect(() => {
+    // registration with email and password
+    if (firebaseUserEmailRegistrationLoading) {
+      setLoading(true);
+    }
+    if (firebaseUserEmailRegistrationInfo) {
+      setLoading(false);
+      setErrorMessage({ code: "", message: "" });
+      setEmailRegistrationSubmitted(true);
+    }
+    if (firebaseUserEmailRegistrationError) {
+      setLoading(false);
+      setErrorMessage({
+        code: firebaseUserEmailRegistrationError.code,
+        message: generateErrorMessage(firebaseUserEmailRegistrationError.code),
+      });
+    }
+  }, [
+    firebaseUserEmailRegistrationError,
+    firebaseUserEmailRegistrationInfo,
+    firebaseUserEmailRegistrationLoading,
+  ]);
+  useEffect(() => {
+    // sign in with google
+    if (firebaseGoogleUserLoading) {
+      setLoading(true);
+    }
+    if (firebaseGoogleUser) {
+      console.log(firebaseGoogleUser, "firebaseGoogleUser in auth.jsx");
+      setLoading(false);
+      setErrorMessage({ code: "", message: "" });
+      dispatch({ type: SET_AUTHENTICATED });
+      dispatch(getUserData(firebaseGoogleUser.user.uid));
+      setVerifiedUser(true);
+      setAuthOpen(false);
+    }
+    if (firebaseGoogleUserError) {
+      setLoading(false);
+      setErrorMessage({
+        ...errorMessage,
+        code: firebaseGoogleUserError.code,
+        message: generateErrorMessage(firebaseGoogleUserError.code),
+      });
+    }
+  }, [firebaseGoogleUser, firebaseGoogleUserError, firebaseGoogleUserLoading]);
+
+  useEffect(() => {
+    // sign in with facebook
+    if (firebaseFacebookUserLoading) {
+      setLoading(true);
+    }
+    if (firebaseFacebookUser) {
+      setLoading(false);
+      setErrorMessage({ code: "", message: "" });
+      dispatch({ type: SET_AUTHENTICATED });
+      dispatch(getUserData(firebaseFacebookUser.user.uid));
+      setVerifiedUser(true);
+      setAuthOpen(false);
+    }
+    if (firebaseFacebookUserError) {
+      setLoading(false);
+      setErrorMessage({
+        ...errorMessage,
+        code: firebaseFacebookUserError.code,
+        message: generateErrorMessage(firebaseFacebookUserError.code),
+      });
+    }
+  }, [
+    firebaseFacebookUser,
+    firebaseFacebookUserError,
+    firebaseFacebookUserLoading,
+  ]);
+
+  useEffect(() => {
+    // edit user details
+    if (editedUserisLoading) {
+      setLoading(true);
+    }
+    if (editedUser) {
+      setLoading(false);
+      setErrorMessage({ code: "", message: "" });
+      dispatch(getUserData(user.userId)).then(() => {
+        setAuthOpen(false);
+        setAuthEditOpen(false);
+        setErrorMessage({ code: "", message: "" });
+      });
+    }
+    if (editedUserError) {
+      setLoading(false);
+      setErrorMessage({
+        ...errorMessage,
+        code: editedUserError.code,
+        message: editedUserError,
+      });
+    }
+  }, [editedUser, editedUserError, editedUserisLoading]);
 
   async function handleImageUpload(event) {
     if (
@@ -366,15 +295,22 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
           errorMessage={errorMessage}
           user={user}
           loginLoading={loading}
-          handleSubmitLogin={(loginData) => handleSubmitLogin(loginData)}
-          handleSubmitRegister={(registerData) =>
-            handleSubmitRegister(registerData)
+          handleSubmitLogin={(formikLoginStore) =>
+            signInWithEmailAndPassword(
+              formikLoginStore.values.email,
+              formikLoginStore.values.password
+            )
           }
-          handleGoogleSignIn={() => handleProviderSignin("google")}
-          handleFacebookSignIn={() => handleProviderSignin("facebook")}
+          handleSubmitRegister={(formikRegisterStore) =>
+            createUserWithEmailAndPassword(formikRegisterStore)
+          }
+          handleGoogleSignIn={() => signInWithGoogle(["email"])} // asks google for email
+          handleFacebookSignIn={() => signInWithFacebook(["email"])} // asks facebook for email
           handleImageUpload={handleImageUpload}
           uploadingImage={uploadingImage}
-          handleSubmitEditDetails={handleSubmitEditDetails}
+          handleSubmitEditDetails={(userDetails) =>
+            handleSubmitEditDetails(userDetails)
+          }
           emailRegistrationSubmitted={emailRegistrationSubmitted}
           verifiedUser={verifiedUser}
           handleClose={() => {
