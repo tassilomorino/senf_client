@@ -1,7 +1,7 @@
 /** @format */
 
-import React, { FC } from "react";
-import { SVGProps } from "react";
+import React, { FC, SVGProps } from "react";
+
 import styled from "styled-components";
 
 interface SVGRProps {
@@ -10,7 +10,7 @@ interface SVGRProps {
 }
 
 const Svg = styled.svg`
-  transform: ${({ transform }) => (transform ? transform : undefined)};
+  transform: ${({ transform }) => transform || undefined};
 `;
 
 const Mail: FC<SVGRProps> = ({ color = "black", transform }) => (
@@ -24,13 +24,7 @@ const Mail: FC<SVGRProps> = ({ color = "black", transform }) => (
     transform={transform}
   >
     <title>Mail-fill</title>
-    <g
-      id="Icons"
-      stroke="none"
-      strokeWidth="1"
-      fill="none"
-      fillRule="evenodd"
-    >
+    <g id="Icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
       <g id="Group-6" transform="translate(0.000000, 1.654800)">
         <path
           d="M14,12.69 L2,12.69 C0.895,12.69 0,11.795 0,10.69 L0,2 C0,0.896 0.895,-1.77635684e-15 2,-1.77635684e-15 L14,-1.77635684e-15 C15.105,-1.77635684e-15 16,0.896 16,2 L16,10.69 C16,11.795 15.105,12.69 14,12.69"
@@ -42,8 +36,8 @@ const Mail: FC<SVGRProps> = ({ color = "black", transform }) => (
           id="Stroke-4"
           stroke="#FFFFFF"
           strokeWidth="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         ></path>
       </g>
     </g>

@@ -406,13 +406,12 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
         <InnerWrapper>
           <Header
             {...bind()}
-            swipedUp={swipedUp}
+
             // style={listHeaderProps}
           >
             {isMobile && <HandleBar />}
 
             <MainSwipeListTabs
-              swipedUp={swipedUp}
               handleSwipeUp={handleSwipeUp}
               order={order}
               setOrder={setOrder}
