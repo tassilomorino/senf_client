@@ -400,8 +400,8 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
         id="dragWrapper"
         style={props}
         {...bind()}
-        loadingIdea={loadingIdea}
-        isMobile={isMobile}
+        $loadingIdea={loadingIdea}
+        $isMobile={isMobile}
       >
         <div
           style={{

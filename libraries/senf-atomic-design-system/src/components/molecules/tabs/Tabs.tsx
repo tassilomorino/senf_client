@@ -32,7 +32,7 @@ const TabUnderline = styled.div<TabsProps>`
   height: 2px;
   width: calc(${({ tabs }) => (tabs.length ? `100% / ${tabs.length}` : 1)});
   transform: translateX(
-    ${({ order }) => (order ? (order - 1) * 100 + "%" : "0%")}
+    ${({ order }) => (order ? `${(order - 1) * 100}%` : "0%")}
   );
 
   background-color: black;
@@ -49,6 +49,7 @@ const Tabs: FC<TabsProps> = ({ tabs, fontSize, order, setOrder }) => {
       <Box gap="10px" justifyContent="space-around">
         {tabs.map((tab, index) => (
           <Tab
+            key={tab.text}
             onClick={() => setOrder(index + 1)}
             isMobile={isMobile}
             active={order === index + 1}
@@ -56,10 +57,7 @@ const Tabs: FC<TabsProps> = ({ tabs, fontSize, order, setOrder }) => {
           >
             {tab.icon && <Icon icon={tab.icon} />}
 
-            <Typography
-              variant={fontSize ? fontSize : "buttonBg"}
-              color="inherit"
-            >
+            <Typography variant={fontSize || "buttonBg"} color="inherit">
               {tab.text}
             </Typography>
           </Tab>

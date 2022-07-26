@@ -97,7 +97,7 @@ const IdeaDetailPage = ({
   setAuthOpen,
 }) => {
   const data = useSelector((state) => state.data.scream);
-  console.log(data);
+
   const { screamId, title, lat, long, comments, userId } = useSelector(
     (state) => state.data.scream
   );
