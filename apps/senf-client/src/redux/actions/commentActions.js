@@ -21,6 +21,8 @@ import {
   LOADING_UI,
   STOP_LOADING_UI,
   SUBMIT_COMMENT,
+  SUBMIT_MY_COMMENT,
+  DELETE_MY_COMMENT,
 } from "../types";
 
 // get the data for one comment
@@ -70,14 +72,20 @@ export const submitComment =
     const newCommentConverted = newComment;
     newCommentConverted.title = newComment.body;
 
+    const addedCommentToDb = await addDoc(
+      collection(db, "comments"),
+      newComment
+    );
+    await updateDoc(screamDocRef, {
+      commentCount: screamDocSnapshot.data().commentCount + 1,
+    });
+    newCommentConverted.commentId = addedCommentToDb.id;
+
     dispatch({
       type: SUBMIT_COMMENT,
       payload: newCommentConverted,
     });
-    await addDoc(collection(db, "comments"), newComment);
-    await updateDoc(screamDocRef, {
-      commentCount: screamDocSnapshot.data().commentCount + 1,
-    });
+    dispatch({ type: SUBMIT_MY_COMMENT, payload: newCommentConverted });
   };
 
 // delete your comment
@@ -99,6 +107,10 @@ export const deleteComment =
       ) {
         dispatch({
           type: DELETE_COMMENT,
+          payload: commentId,
+        });
+        dispatch({
+          type: DELETE_MY_COMMENT,
           payload: commentId,
         });
 

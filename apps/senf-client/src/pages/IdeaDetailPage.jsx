@@ -159,7 +159,6 @@ const IdeaDetailPage = ({
 
   useEffect(() => {
     if (projectroomsData && data && data.projectRoomId) {
-      console.log(projectroomsData, data.projectRoomId);
       if (projectroomsData) {
         projectroomsData.forEach(
           ({ projectRoomId, title, organizationType }) => {
