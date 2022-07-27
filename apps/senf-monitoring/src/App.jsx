@@ -45,18 +45,19 @@ const App = () => {
                   path="/login"
                   element={<AuthPage variant="login" />}
                 />
-                {/* <Route exact path="/" element={<PrivateRoute />}>
-                  <Route exact path="/" component={Dashboard} />
-                </Route> */}
-                <Route exact path="/" element={<Dashboard />} />
+                <Route exact path="/" element={<PrivateRoute />}>
+                  <Route exact path="/" component={<Dashboard />} />
+                </Route>
+                {/* <Route exact path="/" element={<Dashboard />} /> */}
                 <Route exact path="/members" element={<MemberBoard />} />
 
                 <Route exact path="/invite" element={<InviteMember />} />
-                <Route
+                {/* <Route
                   exact
                   path="invitation/:invitationDocId"
                   element={<AcceptInvitation />}
-                />
+                /> */}
+                <Route exact path="invitation" element={<AcceptInvitation />} />
                 <Route path="*" element={<PageNotFound />} />
               </Routes>
             </React.Suspense>
