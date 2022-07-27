@@ -76,7 +76,12 @@ const List: FC<ListProps> = ({
         items.push(
           dataArray[i]?.title && (
             <Box
-              key={dataArray[i]?.title}
+              key={
+                dataArray[i].commentId ||
+                dataArray[i].screamId ||
+                dataArray[i].projectRoomId ||
+                dataArray[i].organizationId
+              }
               margin="16px 16px 0px 16px"
               display={listType === "grid" ? "contents" : "flex"}
               flexDirection={listType === "grid" ? "row" : "column"}

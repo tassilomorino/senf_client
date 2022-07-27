@@ -316,6 +316,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
           handleClose={() => {
             setAuthOpen(false);
             setAuthEditOpen(false);
+            setErrorMessage({ code: "", message: "" });
           }}
         />
       </SwipeModal>

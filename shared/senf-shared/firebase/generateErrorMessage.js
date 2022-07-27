@@ -46,7 +46,9 @@ export function generateErrorMessage(errorCode) {
     case "auth/username-exists":
       errorMessage = "error_username_already_exists";
       break;
-
+    case "":
+      errorMessage = "";
+      break;
     default:
       errorMessage = `Unknown error. ${errorCode}`;
   }

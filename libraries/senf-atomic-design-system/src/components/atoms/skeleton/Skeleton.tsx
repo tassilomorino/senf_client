@@ -53,7 +53,7 @@ const Skeleton: FC<SkeletonProps> = ({
   for (let i = 0; i < count; i++) {
     elements.push(
       <SkeletonItem
-        key={count}
+        key={i}
         baseColor={baseColor}
         duration={duration}
         height={height}

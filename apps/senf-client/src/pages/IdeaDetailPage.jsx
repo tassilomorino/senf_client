@@ -97,7 +97,7 @@ const IdeaDetailPage = ({
   setAuthOpen,
 }) => {
   const data = useSelector((state) => state.data.scream);
-  console.log(data);
+
   const { screamId, title, lat, long, comments, userId } = useSelector(
     (state) => state.data.scream
   );
@@ -159,7 +159,6 @@ const IdeaDetailPage = ({
 
   useEffect(() => {
     if (projectroomsData && data && data.projectRoomId) {
-      console.log(projectroomsData, data.projectRoomId);
       if (projectroomsData) {
         projectroomsData.forEach(
           ({ projectRoomId, title, organizationType }) => {
