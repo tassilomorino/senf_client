@@ -1,31 +1,53 @@
 /** @format */
 
-import React, { FC, useEffect, useRef, useState } from "react";
-import ReactDOM from "react-dom";
+import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
-import { trapFocus } from "../../../hooks/trapFocus";
-import { LayerWhiteFirstDefault } from "../../atoms/layerStyles/LayerStyles";
-import SubNavbar from "../navs/SubNavbar";
+import { useSpring, animated } from "@react-spring/web";
 import { ModalProps } from "./Modal.types";
-import Button from "../../atoms/buttons/Button";
-import Box from "../../atoms/box/Box";
+import SwipeWrapper from "./SwipeWrapper";
 
 
-const Wrapper = styled.div<ModalProps>`
-  z-index: ${({ zIndex }) => zIndex || 999999999};
+const Wrapper = styled.div<{ zIndex: number}>`
+  z-index: ${({ zIndex }) => zIndex || 9999};
   position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  animation: opacityAndPointerEventsAnimation 0.5s;
+  transition: 1000ms;
+`;
+const Background = styled.div<{ opacity: number}>`
+  position: absolute;
+  background-color: rgba(0, 0, 0, ${({ opacity }) => opacity / 2 || 0.5});
+  width: 100%;
+  height: 100%;
+  top: 0;
+  z-index: -1;
+  transition: 300ms;
+  `;
+const Content = styled.div<{ opacity: number}>`
+  z-index: 10;
+  position: absolute;
+  margin: 50px;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  max-width: ${({ size }) =>
-    size === "xl"
-      ? "1200px"
-      : size === "l"
-      ? "800px"
-      : size === "m"
-      ? "600px"
-      : "400px"};
+  transform: translate(-50%, -50%) scale(${({ opacity }) => opacity / 10 + 0.9 || 0});
+  width: 100vw;
+  opacity: ${({ opacity }) => opacity || 1};
+  transition: 300ms;
+`;
+const Sheet = styled.div<ModalProps>`
+  left: 50%;
+  width: ${({ size }) => {
+    switch (size) {
+      case "xl": return "1200px";
+      case "l": case "lg": return "800px";
+      case "m": case "md": return "600px";
+      default: return "400px";
+    }
+  }};
+  min-height: 320px;
   max-height: calc(100vh - 40px);
   overflow: ${({ overflow }) => overflow || "scroll"};
   background-color: ${({ backgroundColor, theme }) =>
@@ -40,37 +62,38 @@ const Wrapper = styled.div<ModalProps>`
     ${({ theme }) => theme.colors.brown.brown20tra};
   transition: 0.2s;
 `;
-const ModalContainer = styled.div`
-  z-index: ${({ zIndex }) => zIndex || 9998};
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-`;
-const Background = styled.div<ModalProps>`
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.5);
-  width: 100%;
-  height: 100%;
-  `;
-const Content = styled.div<ModalProps>`
-  z-index: 10;
-  position: absolute;
-  margin: 50px;
-`;
 
 const GlobalModal: FC<ModalProps> = ({
   modal,
-  onClose,
-  swipeable
+  onClose
 }) => {
+  const [ opacity, setOpacity ] = useState(1);
+  const [ triggerClose, setClose ] = useState(false);
+  const close = () => {
+    setOpacity(0.001)
+    setClose(true)
+    setTimeout(() => {
+      onClose();
+      setOpacity(1)
+      setClose(false)
+    }, 300);
+  }
+  const { children, swipe, size, height } = modal[0]
   return (<>
-    {modal &&
-      <ModalContainer>
-        <Content>{modal}</Content>
-        <Background onClick={onClose} />
-      </ModalContainer>
+    {children &&
+      <Wrapper>
+        { swipe &&
+          <SwipeWrapper height={height} triggerClose={triggerClose} onDrag={setOpacity} onClose={onClose}>
+            <Sheet size={size}>{children}</Sheet>
+          </SwipeWrapper>
+        }
+        { !swipe &&
+          <Content opacity={opacity} show={!!children}>
+            <Sheet size={size}>{children}</Sheet>
+          </Content>
+        }
+        <Background onClick={close} opacity={opacity} />
+      </Wrapper>
     }
   </>);
 };

@@ -93,6 +93,8 @@ export { default as SubNavbar } from "./components/molecules/navs/SubNavbar";
 export { default as Tabs } from "./components/molecules/tabs/Tabs";
 
 export { default as GlobalModal } from "./components/molecules/modals/GlobalModal";
+export { ModalProvider, ModalContext } from "./components/molecules/modalStack/ModalProvider";
+export { default as ModalButton } from "./components/molecules/modalStack/ModalButton";
 
 export { default as Accordion } from "./components/molecules/accordion/Accordion";
 export { default as TagSlide } from "./components/molecules/tagSlide/TagSlide";

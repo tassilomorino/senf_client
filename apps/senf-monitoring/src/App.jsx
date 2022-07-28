@@ -3,11 +3,8 @@
 import React from "react";
 import { Helmet } from "react-helmet";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Provider, useSelector } from "react-redux";
-import { theme, GlobalStyle, GlobalModal } from "senf-atomic-design-system";
+import { theme, GlobalStyle, ModalProvider } from "senf-atomic-design-system";
 import { ThemeProvider } from "styled-components";
-import store from "./redux/store";
-import { setModal } from "./redux/actions/modalActions";
 import Dashboard from "./pages/Dashboard";
 import "./util/i18n";
 import PrivateRoute from "./context/PrivateRoute";
@@ -19,11 +16,7 @@ import MemberBoard from "./pages/MemberBoard";
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
-
-      <GlobalModal
-        modal={useSelector(({data}) => data.modal)}
-        onClose={() => store.dispatch(setModal())}
-      />
+    <ModalProvider>
       <GlobalStyle />
 
       {import.meta.env.VITE_NO_CRAWL && (
@@ -59,6 +52,7 @@ const App = () => {
             </React.Suspense>
           </Router>
         </AuthProvider>
+      </ModalProvider>
     </ThemeProvider>
   );
 };

@@ -3,14 +3,12 @@ import {
   STOP_LOADING_DATA,
   SET_IDEAS,
   SET_ERRORS,
-  SET_MODAL,
 } from "../types";
 
 const initialState = {
   dataError: "",
   screams: [],
   loading: false,
-  modal: null
 };
 
 export default (state = initialState, action) => {
@@ -38,12 +36,6 @@ export default (state = initialState, action) => {
         ...state,
         loading: false,
         errors: action.payload,
-      };
-
-    case SET_MODAL:
-      return {
-        ...state,
-        modal: action.payload,
       };
 
     default:

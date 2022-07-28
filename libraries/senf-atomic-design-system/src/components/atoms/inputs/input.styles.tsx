@@ -65,7 +65,7 @@ export const InputField = styled.div<{ focus: boolean, icon: boolean }>`
     ),
     #ffffff;
   
-  border: 2px solid var(--border-color, #ffffff);
+  border: 2px solid var(--border-color, ${({ theme }) => theme.colors.greyscale.greyscale20});
   /* Big/White on Light BG */
 
   box-shadow: 0px -5px 10px rgba(255, 255, 255, 0.2),

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 
-import { Typography, ImagePlaceholder, Box, Table, Button, Input } from "senf-atomic-design-system";
+
+import { Typography, ImagePlaceholder, Box, Table, Button, ModalButton, Input } from "senf-atomic-design-system";
 import {
   collection,
   deleteDoc,
@@ -27,10 +28,10 @@ const Wrapper = styled.div`
 `;
 
 const MemberBoard = () => {
-  const [openModal, setOpenModal] = useState(false);
+
   const [members, setMembers] = useState([]);
   const [filteredMembers, setFilteredMembers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const { t } = useTranslation();
 
@@ -66,18 +67,16 @@ const MemberBoard = () => {
       throw new Error(error, "error in deleteScreamFunc");
     }
   };
+
   useEffect(() => {
     getMembers();
-  }, [openModal]);
+  }, []);
 
   useEffect(() => {
     setFilteredMembers(members.filter(e => Object.values(e).join(' ').toLowerCase().indexOf(searchTerm.toLowerCase()) > -1));
   }, [searchTerm, members]);
   return (
     <React.Fragment>
-      {openModal && (
-        <AddMemberToList openModal={openModal} setOpenModal={setOpenModal} />
-      )}
       <Wrapper>
         <Box gap="20px" flexDirection="column" margin="30px">
           <Typography variant="h2">MemberBoard</Typography>
@@ -86,7 +85,11 @@ const MemberBoard = () => {
               <Input type="search" setSearchTerm={setSearchTerm} />
             </Box>
             <Box margin="0 0 0 auto">
-              <Button onClick={() => setOpenModal(true)} text="Add Member" />
+              <ModalButton text="1">
+                <ModalButton text="2">
+                  <span>asd</span>
+                </ModalButton>
+              </ModalButton>
             </Box>
           </Box>
 
