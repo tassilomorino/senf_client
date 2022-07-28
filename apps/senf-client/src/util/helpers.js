@@ -47,7 +47,7 @@ export function truncateString(str, num) {
   if (str.length <= num) {
     return str;
   }
-  return str.slice(0, num) + "...";
+  return `${str.slice(0, num)}...`;
 }
 
 export function search(dbData, userInput, dbDataKeys) {
@@ -58,7 +58,7 @@ export function search(dbData, userInput, dbDataKeys) {
   }
   return dbData.filter((object) => {
     return dbDataKeys.some((dbDataKey) => {
-      //check if the user input is in the object[dbDataKey]
+      // check if the user input is in the object[dbDataKey]
       if (
         object[dbDataKey] &&
         object[dbDataKey].toString().toLowerCase().includes(sanitizedUserInput)
@@ -87,13 +87,13 @@ export function sort(items, dropdown) {
 export function filterByTagFilter(items, selectedTopics, tagsType) {
   if (tagsType === "Thema") {
     return items?.filter(({ Thema }) => selectedTopics.includes(Thema));
-  } else if (tagsType === "organizationType") {
+  }
+  if (tagsType === "organizationType") {
     return items?.filter(({ organizationType }) =>
       selectedTopics.includes(organizationType)
     );
-  } else {
-    return items;
   }
+  return items;
 }
 
 export function filterByStatus(items, statuses) {
@@ -104,7 +104,7 @@ export function filterByStatus(items, statuses) {
 }
 
 export function countStatusOfScreams(screams) {
-  let statuses = {
+  const statuses = {
     Unprocessed: 0,
     Accepted: 0,
     Planning: 0,
@@ -153,5 +153,5 @@ export const openLink = (weblink) => {
   window.open(convertedLink, "_blank");
 };
 export const openMail = (contact) => {
-  window.location.href = "mailto:" + contact;
+  window.location.href = `mailto:${contact}`;
 };
