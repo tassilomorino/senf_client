@@ -17,10 +17,32 @@ const Template: Story<MapProps> = (args) => <Map {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  initialViewport: { lat: 50.93864020643174, lng: 6.935142517089844, zoom: 10 },
+  initialMapViewport: {
+    latitude: 50.93864020643174,
+    longitude: 6.935142517089844,
+    zoom: 10,
+  },
   polygon:
     '{"type":"FeatureCollection","features":[{"id":"458f679b3066cc9e75c2973ef81f38d9","type":"Feature","properties":{},"geometry":{"coordinates":[[[6.933078066975327,50.93706925894358],[6.902495072399319,50.8853410139935],[7.001525721501622,50.88687226076479],[7.00006938842651,50.9382928996971],[6.933078066975327,50.93706925894358]]],"type":"Polygon"}}]}',
 
+  ideaData: [
+    {
+      screamId: "ONRO4DTBAQWMd8jQwxkc",
+      lat: 50.85139419195065,
+      long: 7.109100275113178,
+      title: "Radweg endet ",
+      body: "Der Raddverkehr wird hier auf die Straße geleitet. Er sollte durchgängOmg fortgeführt werden.",
+      createdAt: "2022-07-19T16:05:50.706Z",
+      commentCount: 0,
+      likeCount: 0,
+      status: "None",
+      Thema: "Rad",
+      Stadtteil: "Lind",
+      projectRoomId: "",
+      color: "#929df6",
+      locationHeader: "Linder Mauspfad 115",
+    },
+  ],
   ideasData: [
     {
       screamId: "ONRO4DTBAQWMd8jQwxkc",

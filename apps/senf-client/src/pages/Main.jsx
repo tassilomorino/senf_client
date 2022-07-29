@@ -22,6 +22,7 @@ import {
   MobileTopBar,
   ErrorLoading,
   Loader,
+  Map,
 } from "senf-atomic-design-system";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
@@ -45,7 +46,6 @@ import {
 
 // Components
 import StatisticsOverviewPage from "./StatisticsOverviewPage";
-import Map from "../components/atoms/map/Map";
 import IdeaDialog from "./IdeaDetailPage";
 import {
   closeAccountFunc,
@@ -166,6 +166,7 @@ const Main = () => {
   const voted = useSelector((state) => state.UI.voted);
   const screams = useSelector((state) => state.data.screams);
   const myScreams = useSelector((state) => state.user.myScreams);
+  const scream = useSelector((state) => state.data.scream);
 
   const loading = useSelector((state) => state.data.loading);
   const loadingUI = useSelector((state) => state.UI.loading);
@@ -197,6 +198,7 @@ const Main = () => {
 
   const mapBounds = useSelector((state) => state.data.mapBounds);
   const mapLoaded = useSelector((state) => state.data.mapLoaded);
+
   const { lat, long } = useSelector((state) => state.data.scream);
   const initialMapViewport = useSelector(
     (state) => state.data.initialMapViewport
@@ -567,6 +569,20 @@ const Main = () => {
     dispatch(setMapBounds(initialMapBounds));
   };
 
+  const handleClickIdeaMarker = useCallback(
+    (id) => {
+      dispatch(openScreamFunc(id));
+    },
+    [dispatch]
+  );
+
+  const handleClickProjectroomMarker = useCallback(
+    (id) => {
+      dispatch(openProjectRoomFunc(id, true));
+    },
+    [dispatch]
+  );
+
   return (
     <React.Fragment>
       {openModalAuthenticateForProjectRoom && !user.authenticated && (
@@ -725,17 +741,31 @@ const Main = () => {
       )}
 
       <Map
-        order={order}
-        dataFinal={dataFinalMap}
-        loading={loading}
-        loadingProjects={loadingProjects}
-        openProjectRoom={openProjectRoom}
-        geoData={project && openProjectRoom && project.geoData}
-        mapRef={mapRef}
-        mapViewportRef={mapViewportRef}
-        projects={dataFinalMapProjects}
+        initialMapViewport={initialMapViewport}
+        ideasData={(order === 1 || openProjectRoom) && dataFinalMap}
+        ideaData={openScream && scream}
+        projectroomsData={
+          order === 2 && !openProjectRoom && dataFinalMapProjects
+        }
+        polygon={project && openProjectRoom && project.geoData}
         setSwipedUpState={setSwipedUpState}
+        handleClickIdeaMarker={handleClickIdeaMarker}
+        handleClickProjectroomMarker={handleClickProjectroomMarker}
       />
+
+      {/* <Map
+          initialMapViewport={initialMapViewport}
+          order={order}
+          dataFinal={dataFinalMap}
+          loading={loading}
+          loadingProjects={loadingProjects}
+          openProjectRoom={openProjectRoom}
+          geoData={project && openProjectRoom && project.geoData}
+          mapRef={mapRef}
+          mapViewportRef={mapViewportRef}
+          projects={dataFinalMapProjects}
+          setSwipedUpState={setSwipedUpState}
+        /> */}
 
       {!openInfoPage && (
         <MainColumnWrapper>

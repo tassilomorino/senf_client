@@ -6,19 +6,25 @@ import mapboxgl from "mapbox-gl";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import VereineMarker from "../../../assets/markers/VereineMarker.png";
-import InitiativenMarker from "../../../assets/markers/InitiativenMarker.png";
-import PlanungsbürosMarker from "../../../assets/markers/PlanungsbürosMarker.png";
-import PolitikMarker from "../../../assets/markers/PolitikMarker.png";
-import PresseMarker from "../../../assets/markers/PresseMarker.png";
-import StadtverwaltungMarker from "../../../assets/markers/StadtverwaltungMarker.png";
-
 import { MapProps } from "./Map.types";
 import {
   convertIdeasToGeoJson,
   convertProjectroomsToGeoJson,
-} from "./mapHelpers";
+} from "./utils/mapHelpers";
 import { LayerWhiteFirstDefault } from "../layerStyles/LayerStyles";
+import { addProjectroomMarkers } from "./utils/addProjectroomMarkers";
+
+import useNavigationControl from "./hooks/useNavigationControl";
+import useGeolocateControl from "./hooks/useGeolocateControl";
+import useHover from "./hooks/useHover";
+
+import useGeocoder from "./hooks/useGeocoder";
+import useCoordinates from "./hooks/useCoordinates";
+import useProjectroomsMarkers from "./hooks/useProjectroomsMarkers";
+import useClickMarkers from "./hooks/useClickMarkers";
+import usePolygon from "./hooks/usePolygon";
+import useIdeasMarkers from "./hooks/useIdeasMarkers";
+import usePin from "./hooks/usePin";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoidG1vcmlubyIsImEiOiJjazBzZHZjeWQwMWoyM2NtejlzcnMxd3FtIn0.I_Xcc1aJiN7hToGGjNy7ow";
@@ -86,11 +92,17 @@ const MapContainer = styled.div<MapProps>`
     width: 16px !important;
   }
 
+  .mapboxgl-popup {
+    pointer-events: none !important;
+    user-select: none !important;
+  }
   .mapboxgl-popup-content {
     font-family: nunito;
     font-size: 14px;
+    font-weight: 700;
     padding: 8px;
-    pointer-events: auto;
+    pointer-events: none !important;
+    user-select: none !important;
 
     ${(props) => LayerWhiteFirstDefault}
     border-radius:8px;
@@ -109,300 +121,106 @@ const MapContainer = styled.div<MapProps>`
   } */
 `;
 
+const PinComponent = styled.img`
+  position: absolute;
+  width: 100px;
+  transform: translateY(-95%) translateX(-50%) rotate(0deg);
+  transform-origin: bottom center;
+
+  z-index: -1;
+`;
+
 const Map: FC<MapProps> = ({
   children,
-  initialViewport,
+  initialMapViewport,
   polygon,
   ideasData,
   projectroomsData,
+  ideaData,
   handleClickIdeaMarker,
   handleClickProjectroomMarker,
 }) => {
-  const mapContainerRef = useRef(null);
+  const mapContainerRef = useRef();
 
-  const [lng, setLng] = useState(initialViewport.lng);
-  const [lat, setLat] = useState(initialViewport.lat);
-  const [zoom, setZoom] = useState(initialViewport.zoom);
+  const navigationControl = useNavigationControl();
+  const geolocateControl = useGeolocateControl();
 
-  const polygonGeoJson = useMemo(() => {
-    if (polygon) {
-      const jsonData = JSON.parse(polygon);
-      return jsonData;
-    }
-  }, [polygon]);
+  const hover = useHover();
+  const clickMarkers = useClickMarkers();
 
-  const IdeasGeoJson = useMemo(() => {
-    return convertIdeasToGeoJson(ideasData);
-  }, [ideasData]);
+  const geocoder = useGeocoder();
+  const [setProjectroomsMarkersLayer, setProjectroomsMarkersData] =
+    useProjectroomsMarkers();
 
-  const ProjectroomsGeoJson = useMemo(() => {
-    return convertProjectroomsToGeoJson(projectroomsData);
-  }, [projectroomsData]);
+  const [setIdeasMarkersLayer, setIdeasMarkersData] = useIdeasMarkers();
+  const [setPolygonLayer, setPolygonData] = usePolygon();
+  const [setPinLayer, setPinData] = usePin();
+
+  const { lng, lat, zoom, subscribeMap } = useCoordinates(
+    initialMapViewport.longitude,
+    initialMapViewport.latitude,
+    initialMapViewport.zoom
+  );
 
   // Initialize map when component mounts
   useEffect(() => {
-    const map = (window.map = new mapboxgl.Map({
+    const map = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: "mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6",
       center: [lng, lat],
       zoom,
       pitch: 30,
-    }));
-
-    // Add navigation control (the +/- zoom buttons)
-    map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
-
-    map.addControl(
-      new MapboxGeocoder({
-        accessToken: mapboxgl.accessToken,
-        mapboxgl,
-
-        placeholder: "Search for a location",
-      })
-    );
-
-    map.addControl(
-      new mapboxgl.GeolocateControl({
-        positionOptions: {
-          enableHighAccuracy: true,
-        },
-        // When active the map will receive updates to the device's location as it changes.
-        trackUserLocation: true,
-        // Draw an arrow next to the location dot to indicate which direction the device is heading.
-        showUserHeading: true,
-      })
-    );
-
-    if (polygonGeoJson) {
-      map.on("load", () => {
-        map.addLayer({
-          id: "polygon",
-          type: "fill",
-          source: {
-            type: "geojson",
-            data: polygonGeoJson,
-          },
-
-          paint: {
-            "fill-color": "#fed957",
-            "fill-opacity": 0.3,
-          },
-        });
-      });
-    }
-
-    if (IdeasGeoJson) {
-      map.on("load", () => {
-        map.addLayer({
-          id: "ideas",
-          type: "circle",
-          source: {
-            type: "geojson",
-            data: IdeasGeoJson,
-          },
-          paint: {
-            // "circle-radius": {
-            //   base: ["get", "likeCount"],
-            //   stops: [
-            //     [12, 3],
-            //     [22, 180],
-            //   ],
-            // },
-            "circle-radius": [
-              "interpolate",
-              ["linear"],
-              ["zoom"],
-              // when zoom is 0, set each feature's circle radius to the value of its "rating" property
-              0,
-              ["*", 0.1, ["get", "circleRadius"]],
-              10,
-              ["*", 0.4, ["get", "circleRadius"]],
-              // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
-              14,
-              ["*", 1.5, ["get", "circleRadius"]],
-              20,
-              ["*", 1.2, ["get", "circleRadius"]],
-            ],
-            "circle-color": ["get", "color"],
-            // "circle-color": [
-            //   "match",
-            //   ["get", "Thema"],
-            //   "Rad",
-            //   "blue",
-            //   "Umwelt und Grün",
-            //   "#223b53",
-            //   "Verkehr",
-            //   "#e55e5e",
-            //   "Asian",
-            //   "#3bb2d0",
-            //   /* other */ "#ccc",
-            // ],
-            "circle-stroke-color": "#fff",
-            "circle-stroke-width": [
-              "interpolate",
-              ["linear"],
-              ["zoom"],
-              // when zoom is 0, set each feature's circle radius to the value of its "rating" property
-              0,
-              0.1,
-              10,
-              0.4,
-              // when zoom is 20, set each feature's circle radius to four times the value of its "rating" property
-              20,
-              3,
-            ],
-          },
-        });
-      });
-    }
-
-    if (ProjectroomsGeoJson) {
-      const VereineMarkerImg = new Image(207, 247);
-      VereineMarkerImg.src = VereineMarker;
-
-      const InitiativenMarkerImg = new Image(207, 247);
-      InitiativenMarkerImg.src = InitiativenMarker;
-
-      const PlanungsbürosMarkerImg = new Image(207, 247);
-      PlanungsbürosMarkerImg.src = PlanungsbürosMarker;
-
-      const PolitikMarkerImg = new Image(207, 247);
-      PolitikMarkerImg.src = PolitikMarker;
-
-      const StadtverwaltungMarkerImg = new Image(207, 247);
-      StadtverwaltungMarkerImg.src = StadtverwaltungMarker;
-
-      const PresseMarkerImg = new Image(207, 247);
-      PresseMarkerImg.src = PresseMarker;
-
-      map.on("load", () => {
-        map.addImage("VereineMarker", VereineMarkerImg);
-        map.addImage("InitiativenMarker", InitiativenMarkerImg);
-        map.addImage("PlanungsbürosMarker", PlanungsbürosMarkerImg);
-        map.addImage("PolitikMarker", PolitikMarkerImg);
-        map.addImage("PresseMarker", PresseMarkerImg);
-        map.addImage("StadtverwaltungMarker", StadtverwaltungMarkerImg);
-
-        map.addSource("point", {
-          type: "geojson",
-          data: ProjectroomsGeoJson,
-        });
-
-        console.log(ProjectroomsGeoJson);
-
-        // Add a layer to use the image to represent the data.
-        map.addLayer({
-          id: "projectrooms",
-          type: "symbol",
-          source: "point", // reference the data source
-          layout: {
-            "icon-allow-overlap": true,
-            "icon-image": [
-              "match",
-              ["get", "organizationType"],
-              "Vereine",
-              "VereineMarker",
-              "Initiativen",
-              "InitiativenMarker",
-              "Planungsbüros",
-              "PlanungsbürosMarker",
-              "Politik",
-              "PolitikMarker",
-              "Stadtverwaltung",
-              "StadtverwaltungMarker",
-              "Presse",
-              "PresseMarker",
-              "VereineMarker",
-            ],
-            "icon-size": [
-              "interpolate",
-              ["linear"],
-              ["zoom"],
-              // when zoom is 0, set each feature's circle radius to the value of its "rating" property
-              0,
-              0.01,
-
-              10,
-              0.2,
-
-              13,
-              0.3,
-              // when zoom is 10, set each feature's circle radius to four times the value of its "rating" property
-              20,
-              0.3,
-            ],
-          },
-        });
-      });
-    }
-
-    const popupOffsets = {
-      bottom: [0, 16],
-    };
-
-    const projectroomsPopup = new mapboxgl.Popup({
-      offset: popupOffsets,
-      closeButton: false,
     });
 
-    const ideasPopup = new mapboxgl.Popup({
-      closeButton: false,
-    });
+    subscribeMap(map);
+    navigationControl(map);
+    geolocateControl(map);
+    hover(map);
+    clickMarkers(map, handleClickIdeaMarker, handleClickProjectroomMarker);
+    geocoder(map);
 
-    map.on("mousemove", (event) => {
-      const features = map.queryRenderedFeatures(event.point, {
-        layers: ["ideas", "projectrooms"],
-      });
+    setIdeasMarkersLayer(map);
 
-      if (!features.length) {
-        ideasPopup.remove();
-        projectroomsPopup.remove();
-
-        return;
-      }
-
-      const feature = features[0];
-
-      if (feature.properties.screamId) {
-        ideasPopup
-          .setLngLat(feature.geometry.coordinates)
-          .setHTML(feature.properties.title)
-          .addTo(map);
-      } else {
-        projectroomsPopup
-          .setLngLat(feature.geometry.coordinates)
-          .setHTML(feature.properties.title)
-          .addTo(map);
-      }
-
-      map.getCanvas().style.cursor = features.length ? "pointer" : "";
-    });
-
-    map.on("click", (event) => {
-      const features = map.queryRenderedFeatures(event.point, {
-        layers: ["ideas", "projectrooms"],
-      });
-
-      const feature = features[0];
-
-      if (feature.properties.screamId) {
-        handleClickIdeaMarker(feature.properties.screamId);
-      } else {
-        handleClickProjectroomMarker(feature.properties.projectRoomId);
-      }
-
-      alert(feature.properties.title);
-    });
-
-    map.on("move", () => {
-      setLng(map.getCenter().lng.toFixed(4));
-      setLat(map.getCenter().lat.toFixed(4));
-      setZoom(map.getZoom().toFixed(2));
-    });
+    setProjectroomsMarkersLayer(map);
+    setPolygonLayer(map);
+    setPinLayer(map);
 
     // Clean up on unmount
     return () => map.remove();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (projectroomsData) {
+      setProjectroomsMarkersData(projectroomsData);
+    } else {
+      setProjectroomsMarkersData([]);
+    }
+  }, [projectroomsData]);
+
+  useEffect(() => {
+    if (polygon) {
+      setPolygonData(JSON.parse(polygon));
+    } else {
+      setPolygonData(null);
+    }
+  }, [polygon]);
+
+  useEffect(() => {
+    if (ideasData) {
+      setIdeasMarkersData(ideasData);
+    } else {
+      setIdeasMarkersData([]);
+    }
+  }, [ideasData]);
+
+  useEffect(() => {
+    if (ideaData) {
+      console.log("map.tsx", ideaData);
+      setPinData([{ ideaData }]);
+    } else {
+      setPinData(null);
+    }
+  }, [ideaData]);
 
   return <MapContainer ref={mapContainerRef}>{children}</MapContainer>;
 };
