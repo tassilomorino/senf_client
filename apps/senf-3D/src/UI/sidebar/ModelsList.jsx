@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { Box, List, ObjectCard, Tag } from "senf-atomic-design-system";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-import { ModelsData } from "../data/Models";
-import { createModel } from "./UI";
+import { ModelsData } from "../../data/Models";
+import { createModel } from "../../util/createModal";
 
 const tags = [
   { objectType: "Alle" },

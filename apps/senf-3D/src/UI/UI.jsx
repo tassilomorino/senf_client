@@ -1,39 +1,10 @@
 import React, { useState } from "react";
-import ComponentsSidebar from "./ComponentsSidebar";
-import InfoModal from "./InfoModal";
-import MenuSidebar from "./MenuSidebar";
+import { createModel } from "../util/createModal";
+import ComponentsSidebar from "./sidebar/ComponentsSidebar";
+import InfoModal from "./sidebar/InfoModal";
+import MenuSidebar from "./sidebar/MenuSidebar";
 import "./style.css";
 
-export const createModel = (id, obj, objFormat, scale, rotation) => {
-  window.map.addLayer({
-    id: id || "custom_layer",
-    type: "custom",
-    renderingMode: "3d",
-    onAdd(map, gl) {
-      const options = {
-        type: objFormat || "fbx",
-        obj: obj || "3d-models/cyclestand.fbx",
-        scale: scale || 0.3,
-        rotation: rotation || { x: 90, y: 0, z: 0 }, // default rotation,
-        anchor: "center",
-        bbox: false,
-        fixedZoom: 15,
-      };
-      window.tb.loadObj(options, (model) => {
-        model = model.setCoords([
-          map.transform.center.lng,
-          map.transform.center.lat,
-        ]);
-        // model.addEventListener("SelectedChange", onSelectedChange, false);
-        window.tb.add(model);
-        // setSelectedObj(model);
-      });
-    },
-    render(gl, matrix) {
-      window.tb.update(); // update Threebox scene
-    },
-  });
-};
 
 function UI({ handleSwitchView, pitch }) {
   const [componentsSidebarOpen, setComponentsSidebarOpen] = useState(false);

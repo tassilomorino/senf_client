@@ -10,9 +10,9 @@ import {
   LayerGreyDefault,
 } from "senf-atomic-design-system";
 import styled from "styled-components";
-import Img1 from "../assets/interface-icons/Start-Icon_1.png";
-import Img2 from "../assets/interface-icons/Start-Icon_2.png";
-import Img3 from "../assets/interface-icons/Start-Icon_3.png";
+import Img1 from "../../assets/interface-icons/Start-Icon_1.png";
+import Img2 from "../../assets/interface-icons/Start-Icon_2.png";
+import Img3 from "../../assets/interface-icons/Start-Icon_3.png";
 
 const Card = styled.div`
   ${(props) => LayerGreyDefault};

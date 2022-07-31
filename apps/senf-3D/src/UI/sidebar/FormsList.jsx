@@ -2,7 +2,7 @@
 
 import React from "react";
 import { List, ObjectCard } from "senf-atomic-design-system";
-import { FormsData } from "../data/Models";
+import { FormsData } from "../../data/Models";
 
 const FormsList = ({}) => {
   return (

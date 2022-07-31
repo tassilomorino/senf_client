@@ -25,7 +25,6 @@ const Map = ({ lng, lat, zoom, pitch, setLng, setLat, setZoom, setPitch }) => {
       enableSelectingObjects: true,
       enableDraggingObjects: true,
       enableRotatingObjects: true,
-      enableTooltips: true,
       enableHelpTooltips: true,
     });
     window.tb.altitudeStep = 1;
