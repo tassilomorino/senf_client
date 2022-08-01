@@ -194,83 +194,48 @@ const Main = () => {
   const [dropdownStatus, setdropdownStatus] = useState([]);
 
   const [changeLocationModalOpen, setChangeLocationModalOpen] = useState(false);
-  const mapRef = useRef(null);
-
   const mapBounds = useSelector((state) => state.data.mapBounds);
-  const mapLoaded = useSelector((state) => state.data.mapLoaded);
 
-  const { lat, long } = useSelector((state) => state.data.scream);
   const initialMapViewport = useSelector(
     (state) => state.data.initialMapViewport
   );
-  const initialMapBounds = useSelector((state) => state.data.initialMapBounds);
-  const mapViewportRef = useRef(initialMapViewport);
+  const [mapFilterActive, setMapFilterActive] = useState(false);
+  const [initialMapBounds, setInitialMapBounds] = useState(null);
 
-  // Initial-ZOOM
+  const handleSetMapBounds = (bounds) => {
+    const boundsNew = {
+      latitude1: bounds[1][1],
+      latitude2: bounds[0][1],
+      longitude2: bounds[0][0],
+      longitude3: bounds[1][0],
+    };
+    dispatch(setMapBounds(boundsNew));
+    setSwipedUpState(true);
+    dispatch(closeScream());
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+    setMapFilterActive(true);
+  };
+
+  const handleSetInitialMapBoundsAndViewport = () => {
+    const boundsNew = {
+      latitude1: initialMapBounds[1][1],
+      latitude2: initialMapBounds[0][1],
+      longitude2: initialMapBounds[0][0],
+      longitude3: initialMapBounds[1][0],
+    };
+    dispatch(setMapBounds(boundsNew));
+    setMapFilterActive(false);
+  };
   useEffect(() => {
-    if (mapRef?.current && mapLoaded) {
-      const map = mapRef.current.getMap();
-      const canvas = map.getCanvas();
-      const w = canvas.width;
-      const h = canvas.height;
-      const NW = map.unproject([0, 0]).toArray();
-      const SE = map.unproject([w, h]).toArray();
-      const boundsRar = [NW, SE];
-
-      const bounds = {
-        latitude1: boundsRar[0][1],
-        latitude2: boundsRar[1][1],
-        longitude2: boundsRar[0][0],
-        longitude3: boundsRar[1][0],
-      };
-      dispatch(setInitialMapBounds(bounds));
-      dispatch(setMapBounds(bounds));
+    if (initialMapBounds && initialMapViewport) {
+      handleSetInitialMapBoundsAndViewport();
     }
-  }, [mapLoaded, initialMapViewport]);
+  }, [initialMapBounds, initialMapViewport]);
 
-  // PROJECTROOM-ZOOM
-  useEffect(() => {
-    if (
-      openProjectRoom &&
-      project &&
-      project.centerLong !== undefined &&
-      !openScream &&
-      mapRef.current &&
-      mapLoaded
-    ) {
-      setTimeout(() => {
-        const projectViewport = {
-          latitude: project.centerLat,
-          longitude: project.centerLong,
-          zoom: isMobileCustom ? project.zoom - 2 : project.zoom,
-          duration: 2700,
-          pitch: 30,
-        };
-
-        dispatch(setMapViewport(projectViewport));
-      }, 500);
-    }
-  }, [project]);
-
-  // IDEA-ZOOM
-  const prevLat = usePrevious({ lat });
-  useEffect(() => {
-    if (openScream && !loadingIdea && mapRef.current && mapLoaded) {
-      if (lat && prevLat && prevLat.lat !== lat) {
-        setTimeout(() => {
-          dispatch(
-            setMapViewport({
-              latitude: isMobileCustom && openScream ? lat - 0.0008 : lat,
-              longitude: isMobileCustom ? long : long - 0.001,
-              zoom: 16.5,
-              duration: 2700,
-              pitch: 30,
-            })
-          );
-        }, 500);
-      }
-    }
-  }, [lat, long, loadingIdea, openScream]);
   useEffect(() => {
     unknownPathId && window.history.pushState(null, null, "/");
     projectRoomId && dispatch(openProjectRoomFunc(projectRoomId, true));
@@ -564,11 +529,6 @@ const Main = () => {
     }
   };
 
-  const handleMapBoundsReset = () => {
-    dispatch(setMapViewport(initialMapViewport));
-    dispatch(setMapBounds(initialMapBounds));
-  };
-
   const handleClickIdeaMarker = useCallback(
     (id) => {
       dispatch(openScreamFunc(id));
@@ -733,7 +693,6 @@ const Main = () => {
           loadingProjects={loadingProjects}
           projectsData={projects}
           project={project}
-          mapViewportRef={mapViewportRef}
           setPostIdeaOpen={setPostIdeaOpen}
           postIdeaOpen={postIdeaOpen}
           setAuthOpen={setAuthOpen}
@@ -741,35 +700,29 @@ const Main = () => {
       )}
 
       <Map
+        openIdea={openScream}
         initialMapViewport={initialMapViewport}
+        mapFilterActive={mapFilterActive}
         ideasData={(order === 1 || openProjectRoom) && dataFinalMap}
         ideaData={openScream && scream}
         projectroomsData={
           order === 2 && !openProjectRoom && dataFinalMapProjects
         }
-        polygon={project && openProjectRoom && project.geoData}
+        projectroomData={project}
         setSwipedUpState={setSwipedUpState}
         handleClickIdeaMarker={handleClickIdeaMarker}
         handleClickProjectroomMarker={handleClickProjectroomMarker}
+        handleSetMapBounds={handleSetMapBounds}
+        setInitialMapBounds={setInitialMapBounds}
+        handleSetInitialMapBoundsAndViewport={
+          handleSetInitialMapBoundsAndViewport
+        }
       />
-
-      {/* <Map
-          initialMapViewport={initialMapViewport}
-          order={order}
-          dataFinal={dataFinalMap}
-          loading={loading}
-          loadingProjects={loadingProjects}
-          openProjectRoom={openProjectRoom}
-          geoData={project && openProjectRoom && project.geoData}
-          mapRef={mapRef}
-          mapViewportRef={mapViewportRef}
-          projects={dataFinalMapProjects}
-          setSwipedUpState={setSwipedUpState}
-        /> */}
 
       {!openInfoPage && (
         <MainColumnWrapper>
           {!openProjectRoom &&
+            !postIdeaOpen &&
             !openAccount &&
             !loading &&
             (order === 1 || (order === 2 && !loadingProjects)) && (
@@ -808,7 +761,8 @@ const Main = () => {
                 handleOpenMyAccount={handleOpenMyAccount}
                 setInfoPageOpen={handleOpenInfoPage}
                 handleCreateProjectroom={handleCreateProjectroom}
-                handleMapBoundsReset={handleMapBoundsReset}
+                handleMapBoundsReset={handleSetInitialMapBoundsAndViewport}
+                mapFilterActive={mapFilterActive}
               />
             )}
 
@@ -913,6 +867,10 @@ const Main = () => {
           setChangeLocationModalOpen={setChangeLocationModalOpen}
         />
       )}
+
+      {/* <Box position="fixed" right="100px" bottom="10px">
+        <Button text="Stadt auswählen" onClick={setChangeLocationModalOpen} />
+      </Box> */}
 
       {(openCreateProjectRoom || openCreateOrganization) && (
         <React.Suspense fallback={<Loader />}>

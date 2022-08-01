@@ -8,7 +8,7 @@ mapboxgl.accessToken =
 const useGeocoder = () => {
   const geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
-    placeholder: "Buscar",
+    placeholder: "Suchen",
     language: "de",
     mapboxgl,
     // countries: "de",

@@ -6,14 +6,13 @@ import mapboxgl from "mapbox-gl";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "mapbox-gl/dist/mapbox-gl.css";
 
+import bbox from "@turf/bbox";
 import { MapProps } from "./Map.types";
-import {
-  convertIdeasToGeoJson,
-  convertProjectroomsToGeoJson,
-} from "./utils/mapHelpers";
+import { convertIdeasToGeoJson } from "./utils/convertIdeasToGeoJson";
 import { LayerWhiteFirstDefault } from "../layerStyles/LayerStyles";
 import { addProjectroomMarkers } from "./utils/addProjectroomMarkers";
 
+import useInitialFly from "./hooks/useInitialFly";
 import useNavigationControl from "./hooks/useNavigationControl";
 import useGeolocateControl from "./hooks/useGeolocateControl";
 import useHover from "./hooks/useHover";
@@ -25,20 +24,32 @@ import useClickMarkers from "./hooks/useClickMarkers";
 import usePolygon from "./hooks/usePolygon";
 import useIdeasMarkers from "./hooks/useIdeasMarkers";
 import usePin from "./hooks/usePin";
+import useFly from "./hooks/useFly";
+import { Bulb } from "../../../assets/icons";
+import Button from "../buttons/Button";
+import Box from "../box/Box";
+import MapFilter from "./MapFilter";
+import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoidG1vcmlubyIsImEiOiJjazBzZHZjeWQwMWoyM2NtejlzcnMxd3FtIn0.I_Xcc1aJiN7hToGGjNy7ow";
 
 const MapContainer = styled.div<MapProps>`
   position: absolute;
-  top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-
-  .mapboxgl-marker-anchor-center {
-    display: none;
+  top: -100px;
+  height: calc(100% + 100px);
+  @media (min-width: 768px) {
+    width: calc(100% + 460px);
+    height: 100%;
+    top: 0;
   }
+
+  /* .mapboxgl-marker-anchor-center {
+    display: none;
+  } */
   .mapboxgl-ctrl-geocoder--input {
     position: relative;
     display: flex;
@@ -119,6 +130,13 @@ const MapContainer = styled.div<MapProps>`
     border-bottom: none;
     border-top-color: #fff;
   } */
+
+  .mapboxgl-ctrl-geolocate {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px !important;
+    ${(props) => LayerWhiteFirstDefault}
+  }
 `;
 
 const PinComponent = styled.img`
@@ -132,16 +150,25 @@ const PinComponent = styled.img`
 
 const Map: FC<MapProps> = ({
   children,
+  openIdea,
   initialMapViewport,
-  polygon,
+  mapFilterActive,
   ideasData,
   projectroomsData,
   ideaData,
   handleClickIdeaMarker,
   handleClickProjectroomMarker,
+  projectroomData,
+  handleSetMapBounds,
+  setInitialMapBounds,
+  handleSetInitialMapBoundsAndViewport,
 }) => {
   const mapContainerRef = useRef();
+  const isMobile = isMobileCustom();
 
+  const [mapMoved, setMapMoved] = useState(false);
+
+  const initialFly = useInitialFly();
   const navigationControl = useNavigationControl();
   const geolocateControl = useGeolocateControl();
 
@@ -149,6 +176,7 @@ const Map: FC<MapProps> = ({
   const clickMarkers = useClickMarkers();
 
   const geocoder = useGeocoder();
+  const [statefulMap, setMap] = useState(null);
   const [setProjectroomsMarkersLayer, setProjectroomsMarkersData] =
     useProjectroomsMarkers();
 
@@ -162,6 +190,10 @@ const Map: FC<MapProps> = ({
     initialMapViewport.zoom
   );
 
+  const IdeasGeoJson = useMemo(() => {
+    return convertIdeasToGeoJson(ideasData);
+  }, [ideasData]);
+
   // Initialize map when component mounts
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -169,23 +201,29 @@ const Map: FC<MapProps> = ({
       style: "mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6",
       center: [lng, lat],
       zoom,
-      pitch: 30,
+      pitch: initialMapViewport.pitch,
     });
 
+    setMap(map);
     subscribeMap(map);
     navigationControl(map);
-    geolocateControl(map);
     hover(map);
     clickMarkers(map, handleClickIdeaMarker, handleClickProjectroomMarker);
-    geocoder(map);
-
+    // geocoder(map);
+    // geolocateControl(map);
     setIdeasMarkersLayer(map);
-
     setProjectroomsMarkersLayer(map);
     setPolygonLayer(map);
     setPinLayer(map);
+    setInitialMapBounds(map.getBounds().toArray());
 
-    // Clean up on unmount
+    map.on("dragend", () => {
+      setMapMoved(true);
+    });
+    map.on("zoomend", () => {
+      setMapMoved(true);
+    });
+
     return () => map.remove();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -198,31 +236,133 @@ const Map: FC<MapProps> = ({
   }, [projectroomsData]);
 
   useEffect(() => {
-    if (polygon) {
-      setPolygonData(JSON.parse(polygon));
+    if (!mapFilterActive && statefulMap) {
+      initialFly(statefulMap);
+    }
+  }, [mapFilterActive]);
+
+  useEffect(() => {
+    if (statefulMap && !openIdea) {
+      initialFly(statefulMap);
+    }
+  }, [statefulMap]);
+
+  useEffect(() => {
+    if (projectroomData?.geoData) {
+      setPolygonData(JSON.parse(projectroomData.geoData));
+
+      const [minLng, minLat, maxLng, maxLat] = bbox(
+        JSON.parse(projectroomData.geoData)
+      );
+
+      setTimeout(() => {
+        statefulMap.fitBounds([
+          [minLng, minLat], // southwestern corner of the bounds
+          [maxLng, maxLat], // northeastern corner of the bounds
+        ]);
+      }, 300);
     } else {
       setPolygonData(null);
     }
-  }, [polygon]);
+  }, [projectroomData]);
 
   useEffect(() => {
-    if (ideasData) {
-      setIdeasMarkersData(ideasData);
+    if (IdeasGeoJson) {
+      setIdeasMarkersData(IdeasGeoJson);
     } else {
       setIdeasMarkersData([]);
     }
-  }, [ideasData]);
+  }, [IdeasGeoJson]);
 
   useEffect(() => {
     if (ideaData) {
-      console.log("map.tsx", ideaData);
       setPinData([{ ideaData }]);
+      setTimeout(() => {
+        statefulMap.flyTo({
+          center: [ideaData.long, ideaData.lat],
+          zoom: 16.5,
+          duration: 2700,
+          pitch: 30,
+        });
+
+        // statefulMap.fitBounds([
+        //   [ideaData.long - 0.001, ideaData.lat - 0.0015], // southwestern corner of the bounds
+        //   [ideaData.long + 0.0003, ideaData.lat + 0.0015], // northeastern corner of the bounds
+        // ]);
+      }, 300);
     } else {
       setPinData(null);
     }
   }, [ideaData]);
 
-  return <MapContainer ref={mapContainerRef}>{children}</MapContainer>;
+  // useEffect(() => {
+  //   // FLY TO IDEA
+  //   if (statefulMap && ideaData && openScream) {
+  //     setTimeout(() => {
+  //       statefulMap.fitBounds([
+  //         [ideaData.long - 0.001, ideaData.lat - 0.0015], // southwestern corner of the bounds
+  //         [ideaData.long + 0.0003, ideaData.lat + 0.0015], // northeastern corner of the bounds
+  //       ]);
+  //     }, 300);
+  //   }
+  // }, [statefulMap, ideaData, openScream]);
+
+  // const handleClickGeolocate = () => {
+  //   // geolocateControl(statefulMap);
+
+  //   navigator.geolocation.getCurrentPosition((position) => {
+  //     const userCoordinates = [
+  //       position.coords.longitude,
+  //       position.coords.latitude,
+  //     ];
+
+  //     statefulMap.addSource("user-coordinates", {
+  //       type: "geojson",
+  //       data: {
+  //         type: "Feature",
+  //         geometry: {
+  //           type: "Point",
+  //           coordinates: userCoordinates,
+  //         },
+  //       },
+  //     });
+  //     statefulMap.addLayer({
+  //       id: "user-coordinates",
+  //       source: "user-coordinates",
+  //       type: "circle",
+  //       paint: {
+  //         "circle-radius": 7,
+  //         "circle-color": "#4f86ec",
+  //         "circle-stroke-color": "#fff",
+  //         "circle-stroke-width": 2,
+  //       },
+  //     });
+  //     statefulMap.flyTo({
+  //       center: userCoordinates,
+  //       zoom: 16,
+  //     });
+  //   });
+  // };
+
+  return (
+    <React.Fragment>
+      <MapFilter
+        statefulMap={statefulMap}
+        openMapFilter={mapMoved}
+        handleSetMapBounds={(bounds) => {
+          setMapMoved(false);
+          handleSetMapBounds(bounds);
+        }}
+      />
+      <MapContainer ref={mapContainerRef}>
+        {/* <Box position="fixed" top="400px" right="10px" zIndex={999}>
+        <Button icon={<Bulb />} onClick={handleClickGeolocate} />
+      </Box> */}
+
+        {children}
+      </MapContainer>
+    </React.Fragment>
+  );
 };
 
 export default Map;

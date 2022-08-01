@@ -8,17 +8,20 @@ const useIdeasMarkers = () => {
 
   useEffect(() => {
     if (source && points) {
-      source.setData({
-        type: "FeatureCollection",
-        features: points.map((point) => ({
-          type: "Feature",
-          geometry: {
-            type: "Point",
-            coordinates: [point.long, point.lat],
-          },
-          properties: point,
-        })),
-      });
+      source.setData(
+        points
+        //   {
+        //   type: "FeatureCollection",
+        //   features: points.map((point) => ({
+        //     type: "Feature",
+        //     geometry: {
+        //       type: "Point",
+        //       coordinates: [point.long, point.lat],
+        //     },
+        //     properties: point,
+        //   })),
+        // }
+      );
     }
   }, [source, points]);
 

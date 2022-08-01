@@ -9,7 +9,6 @@ const useClickMarkers = () => {
       });
 
       const feature = features[0];
-      console.log(feature);
 
       if (feature.properties.screamId) {
         handleClickIdeaMarker(feature.properties.screamId);

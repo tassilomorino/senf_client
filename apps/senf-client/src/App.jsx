@@ -48,7 +48,7 @@ import { isMobileCustom } from "./util/customDeviceDetect";
 
 import packageJson from "../package.json";
 import { getBuildDate } from "./util/helpers";
-import { setViewport } from "./util/helpers-map-animations";
+// import { setViewport } from "./util/helpers-map-animations";
 
 import "./util/i18n";
 
@@ -122,7 +122,7 @@ const App = () => {
     });
   };
   useEffect(() => {
-    setViewport();
+    // setViewport();
     const { initialMapViewport } = store.getState().data;
     store.dispatch(getScreams(initialMapViewport));
     store.dispatch(getOrganizations(initialMapViewport));
