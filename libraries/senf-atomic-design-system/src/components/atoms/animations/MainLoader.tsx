@@ -34,7 +34,7 @@ const MainLoader: FC<MainLoaderProps> = () => {
           preserveAspectRatio: "xMidYMid slice",
         },
       });
-    }, 2000);
+    }, 1500);
   }, []);
 
   return (
@@ -48,6 +48,7 @@ const MainLoader: FC<MainLoaderProps> = () => {
           justifyContent: "center",
           alignItems: "center",
           display: "flex",
+          zIndex: 999999999,
         }}
       >
         {loading && (

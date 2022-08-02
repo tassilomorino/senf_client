@@ -30,6 +30,8 @@ import Button from "../buttons/Button";
 import Box from "../box/Box";
 import MapFilter from "./MapFilter";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
+import Icon from "../icons/Icon";
+import Pin from "../../../assets/icons/Pin";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoidG1vcmlubyIsImEiOiJjazBzZHZjeWQwMWoyM2NtejlzcnMxd3FtIn0.I_Xcc1aJiN7hToGGjNy7ow";
@@ -40,10 +42,11 @@ const MapContainer = styled.div<MapProps>`
   left: 0;
   right: 0;
   top: -100px;
-  height: calc(100% + 100px);
+  width: 100vw;
+  height: calc(100vh + 100px);
   @media (min-width: 768px) {
-    width: calc(100% + 460px);
-    height: 100%;
+    width: calc(100vw + 460px);
+    height: 100vh;
     top: 0;
   }
 
@@ -151,6 +154,7 @@ const PinComponent = styled.img`
 const Map: FC<MapProps> = ({
   children,
   openIdea,
+  openProjectRoom,
   initialMapViewport,
   mapFilterActive,
   ideasData,
@@ -162,6 +166,9 @@ const Map: FC<MapProps> = ({
   handleSetMapBounds,
   setInitialMapBounds,
   handleSetInitialMapBoundsAndViewport,
+  postIdeaOpen,
+  statefulMap,
+  setStatefulMap,
 }) => {
   const mapContainerRef = useRef();
   const isMobile = isMobileCustom();
@@ -176,7 +183,7 @@ const Map: FC<MapProps> = ({
   const clickMarkers = useClickMarkers();
 
   const geocoder = useGeocoder();
-  const [statefulMap, setMap] = useState(null);
+  // const [statefulMap, setMap] = useState(null);
   const [setProjectroomsMarkersLayer, setProjectroomsMarkersData] =
     useProjectroomsMarkers();
 
@@ -204,7 +211,7 @@ const Map: FC<MapProps> = ({
       pitch: initialMapViewport.pitch,
     });
 
-    setMap(map);
+    setStatefulMap(map);
     subscribeMap(map);
     navigationControl(map);
     hover(map);
@@ -242,10 +249,10 @@ const Map: FC<MapProps> = ({
   }, [mapFilterActive]);
 
   useEffect(() => {
-    if (statefulMap && !openIdea) {
+    if (statefulMap && !openIdea && !openProjectRoom) {
       initialFly(statefulMap);
     }
-  }, [statefulMap]);
+  }, [statefulMap, openProjectRoom]);
 
   useEffect(() => {
     if (projectroomData?.geoData) {
@@ -346,17 +353,40 @@ const Map: FC<MapProps> = ({
 
   return (
     <React.Fragment>
-      <MapFilter
-        statefulMap={statefulMap}
-        openMapFilter={mapMoved}
-        handleSetMapBounds={(bounds) => {
-          setMapMoved(false);
-          handleSetMapBounds(bounds);
+      {!postIdeaOpen && ideasData && (
+        <MapFilter
+          statefulMap={statefulMap}
+          openMapFilter={mapMoved}
+          handleSetMapBounds={(bounds) => {
+            setMapMoved(false);
+            handleSetMapBounds(bounds);
+          }}
+        />
+      )}
+      {postIdeaOpen && (
+        <Box
+          width={isMobile ? "100%" : "calc(100vw + 460px)"}
+          height="100vh"
+          justifyContent="center"
+          alignItems="center"
+          zIndex={1}
+          pointerEvents="none"
+        >
+          <Icon icon={<Pin transform="scale(3)" />} />{" "}
+        </Box>
+      )}
+      <MapContainer
+        ref={mapContainerRef}
+        style={{
+          position: "absolute",
+          top: 0,
+          bottom: 0,
+          width: "100%",
+          height: "100%",
         }}
-      />
-      <MapContainer ref={mapContainerRef}>
+      >
         {/* <Box position="fixed" top="400px" right="10px" zIndex={999}>
-        <Button icon={<Bulb />} onClick={handleClickGeolocate} />
+        <Button icon={<Bulb />} onClsick={handleClickGeolocate} />
       </Box> */}
 
         {children}

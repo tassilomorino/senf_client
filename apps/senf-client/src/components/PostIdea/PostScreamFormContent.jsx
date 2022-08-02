@@ -52,10 +52,10 @@ const Card = styled.div`
     position: fixed;
     top: 115px;
     left: 0;
-    margin-left: 90px;
+    margin-left: 80px;
     margin-right: auto;
     height: 50vh;
-    width: 370px;
+    width: 400px;
     border-radius: 20px;
     box-shadow: 0 0px 40px -12px rgba(0, 0, 0, 0);
     background-color: white;
@@ -309,7 +309,11 @@ const PostScreamFormContent = ({
             text={t("postScream_shareIdea")}
             loading={loading}
             disabled={
-              body === "" || title === "" || Out === true || loading || !address
+              formik.values.body === "" ||
+              formik.values.title === "" ||
+              Out === true ||
+              loading ||
+              !address
             }
           />
         </Box>

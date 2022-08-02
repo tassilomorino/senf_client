@@ -23,6 +23,7 @@ import {
   ErrorLoading,
   Loader,
   Map,
+  MainLoader,
 } from "senf-atomic-design-system";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
@@ -113,14 +114,21 @@ const MobileMapClickBackground = styled.div`
   transition: 0.5s;
   pointer-events: ${(props) => (props.show ? "all" : "none")};
 `;
-const Main = () => {
+const Main = ({
+  statefulMap,
+  setStatefulMap,
+  mapFilterActive,
+  order,
+  setOrder,
+  postIdeaOpen,
+  setPostIdeaOpen,
+  handleSetInitialMapBoundsAndViewport,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const errors = useSelector((state) => state.UI.errors);
   const [authOpen, setAuthOpen] = useState(false);
   const [authEditOpen, setAuthEditOpen] = useState(false);
-
-  const [postIdeaOpen, setPostIdeaOpen] = useState(false);
 
   const [modalData, setModalData] = useState(null);
 
@@ -186,7 +194,6 @@ const Main = () => {
     (state) => state.data.organizationTypes
   );
 
-  const [order, setOrder] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
 
@@ -195,46 +202,6 @@ const Main = () => {
 
   const [changeLocationModalOpen, setChangeLocationModalOpen] = useState(false);
   const mapBounds = useSelector((state) => state.data.mapBounds);
-
-  const initialMapViewport = useSelector(
-    (state) => state.data.initialMapViewport
-  );
-  const [mapFilterActive, setMapFilterActive] = useState(false);
-  const [initialMapBounds, setInitialMapBounds] = useState(null);
-
-  const handleSetMapBounds = (bounds) => {
-    const boundsNew = {
-      latitude1: bounds[1][1],
-      latitude2: bounds[0][1],
-      longitude2: bounds[0][0],
-      longitude3: bounds[1][0],
-    };
-    dispatch(setMapBounds(boundsNew));
-    setSwipedUpState(true);
-    dispatch(closeScream());
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth",
-    });
-    setMapFilterActive(true);
-  };
-
-  const handleSetInitialMapBoundsAndViewport = () => {
-    const boundsNew = {
-      latitude1: initialMapBounds[1][1],
-      latitude2: initialMapBounds[0][1],
-      longitude2: initialMapBounds[0][0],
-      longitude3: initialMapBounds[1][0],
-    };
-    dispatch(setMapBounds(boundsNew));
-    setMapFilterActive(false);
-  };
-  useEffect(() => {
-    if (initialMapBounds && initialMapViewport) {
-      handleSetInitialMapBoundsAndViewport();
-    }
-  }, [initialMapBounds, initialMapViewport]);
 
   useEffect(() => {
     unknownPathId && window.history.pushState(null, null, "/");
@@ -339,31 +306,6 @@ const Main = () => {
     userLikes,
   ]);
 
-  const dataFinalIdeasMap = useMemo(() => {
-    let ideasData = [];
-
-    ideasData = search(screams, searchTerm, [
-      "title",
-      "body",
-      "Stadtteil",
-      "Stadtbezirk",
-      "locationHeader",
-    ]);
-    ideasData = filterByTagFilter(ideasData, selectedTopics, "Thema");
-
-    ideasData = sort(ideasData, dropdown);
-    ideasData = filterByStatus(ideasData, dropdownStatus);
-    return ideasData;
-  }, [
-    dropdown,
-    dropdownStatus,
-    searchTerm,
-    selectedTopics,
-    screams,
-    mapBounds,
-    userLikes,
-  ]);
-
   const dropdownStatusNumbers = useMemo(
     () => countStatusOfScreams(screams),
     [screams]
@@ -405,40 +347,6 @@ const Main = () => {
     return organizationsData;
   }, [dropdown, organizations, searchTerm, selectedOrganizationTypes]);
 
-  // MAP
-  const dataMap = useMemo(
-    () =>
-      openProjectRoom
-        ? project?.screams?.filter(({ Thema }) =>
-            selectedTopics.includes(Thema)
-          )
-        : myScreams !== null && myScreams !== undefined
-        ? myScreams.filter(({ Thema }) => selectedTopics.includes(Thema))
-        : dataFinalIdeasMap,
-    [
-      myScreams,
-      openProjectRoom,
-      project?.screams,
-      dataFinalIdeasMap,
-      selectedTopics,
-    ]
-  );
-  const dataFinalMap = useMemo(
-    () =>
-      dataMap?.map((object) =>
-        pick(["title", "lat", "long", "screamId", "color", "likeCount"], object)
-      ),
-    [dataMap]
-  );
-
-  const dataFinalMapProjects = useMemo(
-    () =>
-      projects.filter(({ organizationType }) =>
-        selectedOrganizationTypes.includes(organizationType)
-      ),
-    [projects, selectedOrganizationTypes]
-  );
-
   const handleButtonOpenCard = (event, cardType, cardId) => {
     if (cardType === "ideaCard") {
       dispatch(openScreamFunc(cardId));
@@ -460,7 +368,6 @@ const Main = () => {
       setAuthOpen(true);
       return;
     }
-
     if (user.likes && user.likes.find((like) => like.screamId === screamId)) {
       dispatch(unlikeScream(screamId, user));
     } else {
@@ -475,7 +382,6 @@ const Main = () => {
   };
 
   const handleSelectOrganizationTypes = (organizationTypes) => {
-    console.log(organizationTypes);
     dispatch(handleOrganizationTypesSelectorRedux(organizationTypes));
   };
 
@@ -529,19 +435,16 @@ const Main = () => {
     }
   };
 
-  const handleClickIdeaMarker = useCallback(
-    (id) => {
-      dispatch(openScreamFunc(id));
-    },
-    [dispatch]
-  );
-
-  const handleClickProjectroomMarker = useCallback(
-    (id) => {
-      dispatch(openProjectRoomFunc(id, true));
-    },
-    [dispatch]
-  );
+  // const [showUI, setShowUI] = useState(false);
+  // useEffect(() => {
+  //   if (!loading) {
+  //     statefulMap.on("load", () => {
+  //       setTimeout(() => {
+  //         setShowUI(true);
+  //       }, 1000);
+  //     });
+  //   }
+  // }, [loading]);
 
   return (
     <React.Fragment>
@@ -615,6 +518,8 @@ const Main = () => {
         </Modal>
       )}
 
+      {/* {!showUI && <MainLoader />} */}
+
       {openInfoPage && (
         <InlineInformationPage
           setOrder={setOrder}
@@ -657,7 +562,7 @@ const Main = () => {
         </React.Fragment>
       )}
 
-      {!loading && !loadingUI && !loadingProjects && (
+      {!loading && !loadingUI && !loadingProjects && !postIdeaOpen && (
         <Box
           margin={
             isMobileCustom ? "60px 10px 10px 0px" : "10px 10px 10px 500px"
@@ -696,28 +601,9 @@ const Main = () => {
           setPostIdeaOpen={setPostIdeaOpen}
           postIdeaOpen={postIdeaOpen}
           setAuthOpen={setAuthOpen}
+          statefulMap={statefulMap}
         />
       )}
-
-      <Map
-        openIdea={openScream}
-        initialMapViewport={initialMapViewport}
-        mapFilterActive={mapFilterActive}
-        ideasData={(order === 1 || openProjectRoom) && dataFinalMap}
-        ideaData={openScream && scream}
-        projectroomsData={
-          order === 2 && !openProjectRoom && dataFinalMapProjects
-        }
-        projectroomData={project}
-        setSwipedUpState={setSwipedUpState}
-        handleClickIdeaMarker={handleClickIdeaMarker}
-        handleClickProjectroomMarker={handleClickProjectroomMarker}
-        handleSetMapBounds={handleSetMapBounds}
-        setInitialMapBounds={setInitialMapBounds}
-        handleSetInitialMapBoundsAndViewport={
-          handleSetInitialMapBoundsAndViewport
-        }
-      />
 
       {!openInfoPage && (
         <MainColumnWrapper>
@@ -771,12 +657,14 @@ const Main = () => {
               user={user}
               setPostIdeaOpen={setPostIdeaOpen}
               handleButtonOpenCard={handleButtonOpenCard}
+              handleSetInitialMapBoundsAndViewport={
+                handleSetInitialMapBoundsAndViewport
+              }
             />
           )}
 
           {openAccount && (
             <ProfilePage
-              dataFinalMap={dataFinalMap}
               handleButtonOpenCard={handleButtonOpenCard}
               handleOpenProjectroom={handleOpenProjectroom}
               setAuthEditOpen={setAuthEditOpen}

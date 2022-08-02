@@ -16,6 +16,7 @@ import { TagProps } from "./Tag.types";
 
 const StyledButton = styled.button<TagProps>`
   pointer-events: all;
+  user-select: none;
   position: relative;
   cursor: pointer;
   box-sizing: border-box;

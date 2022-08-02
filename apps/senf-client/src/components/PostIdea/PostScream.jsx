@@ -4,7 +4,13 @@ import React, { useState, Fragment, memo, useRef, useEffect } from "react";
 import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
 import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
-import { Plus, Box, RoundedButton, Dialog } from "senf-atomic-design-system";
+import {
+  Plus,
+  Box,
+  RoundedButton,
+  Dialog,
+  Input,
+} from "senf-atomic-design-system";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
@@ -53,6 +59,7 @@ const PostScream = ({
   setPostIdeaOpen,
   postIdeaOpen,
   setAuthOpen,
+  statefulMap,
 }) => {
   const dispatch = useDispatch();
 
@@ -138,8 +145,6 @@ const PostScream = ({
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [selectedDays, setSelectedDays] = useState([]);
   const [selectedUnix, setSelectedUnix] = useState([]);
-
-  const postScreamMapViewportRef = useRef(null);
 
   useEffect(() => {
     if (postIdeaOpen) {
@@ -256,19 +261,19 @@ const PostScream = ({
     event.preventDefault();
 
     const newScream = {
-      body,
-      title,
+      body: formik.values.body,
+      title: formik.values.title,
       locationHeader: address,
       fulladdress,
       neighborhood,
-      lat: postScreamMapViewportRef.current.latitude,
-      long: postScreamMapViewportRef.current.longitude,
+      lat: statefulMap.getCenter().lat,
+      long: statefulMap.getCenter().lng,
       projectRoomId: projectSelected,
       Thema: topic,
-      weblinkTitle,
-      weblink,
-      contactTitle,
-      contact,
+      weblinkTitle: formik.values.weblinkTitle,
+      weblink: formik.values.weblink,
+      contactTitle: formik.values.contactTitle,
+      contact: formik.values.contact,
     };
 
     if (selectedUnix.length > 0) {
@@ -279,17 +284,19 @@ const PostScream = ({
     });
   };
 
-  const _onMarkerDragEnd = (newViewport) => {
-    // setViewport(newViewport);
-    // using ref is not causing constant rerendering on drag
-    postScreamMapViewportRef.current = newViewport;
+  useEffect(() => {
+    statefulMap.on("moveend", () => {
+      const newViewport = {
+        latitude: statefulMap.getCenter().lat,
+        longitude: statefulMap.getCenter().lng,
+      };
+      setTimeout(() => {
+        geocode(newViewport);
+      }, 1000);
 
-    setTimeout(() => {
-      geocode(newViewport);
-    }, 250);
-
-    setAddressBarClickedState(false);
-  };
+      // setAddressBarClickedState(false);
+    });
+  }, []);
 
   const geocode = (viewport) => {
     const geocodingClient = mbxGeocoding({
@@ -364,40 +371,12 @@ const PostScream = ({
     }
   };
 
-  const handleLocationDecidedNoLocation = () => {
-    if (locationDecided === false) {
-      setNeighborhood("Ohne Ortsangabe");
-      setAddress("Ohne Ortsangabe");
-      setFulladdress("Ohne Ortsangabe");
-      const viewport = {
-        zoom: 12,
-        latitude: 50.93864020643174,
-        longitude: 6.958725744885521,
-        transitionDuration: 1000,
-      };
-      setViewport(viewport);
-
-      setAllMainStates({
-        ...allMainStates,
-        locationDecided: true,
-        MapHeight: "30vh",
-      });
-    }
-
-    if (locationDecided === true) {
-      setAllMainStates({
-        ...allMainStates,
-        locationDecided: false,
-        MapHeight: "100vh",
-      });
-    }
-  };
-
   return (
     <React.Fragment>
       {openRules && (
         <PostScreamRules openRules={openRules} setOpenRules={setOpenRules} />
       )}
+
       {/* <Dialog
         openDialog={true}
         left="0px"
@@ -480,7 +459,7 @@ const PostScream = ({
           selectedDays={selectedDays}
         />
       )}
-      {viewport && (
+      {/* {viewport && (
         <PostScreamMap
           MapHeight={MapHeight}
           geocode={geocode}
@@ -494,13 +473,16 @@ const PostScream = ({
           address={address}
           loadingProjects={loadingProjects}
         />
-      )}
+      )} */}
+
+      <Box position="fixed" top="20px" width="400px" zIndex={1} left="80px">
+        <Input type="search" value={address} />
+      </Box>
 
       <PostScreamSelectContainter
         classes={classes}
         locationDecided={locationDecided}
         handleLocationDecided={handleLocationDecided}
-        handleLocationDecidedNoLocation={handleLocationDecidedNoLocation}
         projectSelected={projectSelected}
         address={address}
         handleDropdownProject={handleDropdownProject}
