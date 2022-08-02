@@ -173,6 +173,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
 
   ideasDataOriginal,
   handleMapBoundsReset,
+  mapFilterActive,
 
   swipedUpState,
   setSwipedUpState,
@@ -522,7 +523,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
           </ContentWrapper>
         </InnerWrapper>
 
-        {ideasDataOriginal.length !== ideasData.length && (
+        {mapFilterActive && (
           <Box
             position="absolute"
             bottom={isMobile ? "50px" : "30px"}

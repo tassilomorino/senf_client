@@ -31,6 +31,7 @@ const ProjectroomPage = ({
   user,
   handleButtonOpenCard,
   setPostIdeaOpen,
+  handleSetInitialMapBoundsAndViewport,
 }) => {
   const { t } = useTranslation();
   const [path, setPath] = useState("");
@@ -66,12 +67,12 @@ const ProjectroomPage = ({
 
   const handleClose = useCallback(() => {
     dispatch(openProjectRoomFunc(null, false));
-    dispatch(clearErrors());
-    dispatch(setMapViewport(initialMapViewport));
+    handleSetInitialMapBoundsAndViewport();
+
     if (organization) {
       dispatch(openOrganizationFunc(organization.organizationId, true));
     }
-  }, [dispatch, initialMapViewport]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (project && project.organizationId) {

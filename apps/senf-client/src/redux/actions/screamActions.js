@@ -200,7 +200,7 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
         body: newScream.body,
         userHandle: user.handle,
         userId: user.userId,
-        sex: user.sex,
+        sex: user.sex ? user.sex : "",
         age: ageCapture,
         createdAt: new Date().toISOString(),
         likeCount: 0,
