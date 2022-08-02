@@ -1,5 +1,13 @@
 /** @format */
 
+import {
+  collection,
+  collectionGroup,
+  getDocs,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 
 import { closeScream } from "./screamActions";
@@ -21,14 +29,6 @@ import { setSwipePositionDown } from "./UiActions";
 import setIconByOrganizationType from "../../data/setIconByOrganizationType";
 import store from "../store";
 import { setMapBounds } from "./mapActions";
-import {
-  collection,
-  collectionGroup,
-  getDocs,
-  orderBy,
-  query,
-  where,
-} from "firebase/firestore";
 
 // Get all projects
 export const getProjects = (mapViewport) => async (dispatch) => {

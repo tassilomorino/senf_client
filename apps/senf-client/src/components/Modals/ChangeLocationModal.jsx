@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { setViewport } from "../../util/helpers-map-animations";
+// import { setViewport } from "../../util/helpers-map-animations";
+import { Input, Button } from "senf-atomic-design-system";
 import MainModal from "../atoms/Layout/MainModal";
 import Geolocate from "../../images/icons/geolocate.png";
 
@@ -23,7 +24,7 @@ const SearchWrapper = styled.div`
   width: 80%;
   margin-left: 5%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 `;
 const InnerBottomWrapper = styled.div`
   width: 93%;
@@ -62,7 +63,7 @@ const ChangeLocationModal = ({ setChangeLocationModalOpen }) => {
       localStorage.setItem("latitude", 50.93864020643174);
       localStorage.setItem("longitude", 6.958725744885521);
 
-      setViewport();
+      alert("Hi");
       setChangeLocationModalOpen(false);
     }
   };
@@ -92,7 +93,7 @@ const ChangeLocationModal = ({ setChangeLocationModalOpen }) => {
           localStorage.setItem("latitude", pos.coords.latitude);
           localStorage.setItem("longitude", pos.coords.longitude);
 
-          setViewport();
+          // setViewport();
         }
 
         function error(err) {
@@ -113,17 +114,13 @@ const ChangeLocationModal = ({ setChangeLocationModalOpen }) => {
 
     localStorage.setItem("latitude", data.coord.lat);
     localStorage.setItem("longitude", data.coord.lon);
-
-    setViewport();
   };
 
-  const search = async (e) => {
-    if (e.key === "Enter") {
-      const data = await fetchWeather(searchTerm);
-
+  const handleSearch = async () => {
+    await fetchWeather(searchTerm).then(() => {
       setSearchTerm("");
       setChangeLocationModalOpen(false);
-    }
+    });
   };
 
   return (
@@ -137,13 +134,12 @@ const ChangeLocationModal = ({ setChangeLocationModalOpen }) => {
         </LocationButton>
       </InnerTopWrapper>
       <SearchWrapper>
-        {/* <Searchbar
-          placeholder="Suche weltweit..."
+        <Input
+          type="search"
           setSearchTerm={setSearchTerm}
-          searchTerm={searchTerm}
-          handleSearch={search}
-          backgroundColor="#f8f8f8"
-        /> */}
+          placeholder="Suche weltweit..."
+        />
+        <Button onClick={handleSearch} text="Search" />
       </SearchWrapper>
       <br />
       <InnerBottomWrapper>
