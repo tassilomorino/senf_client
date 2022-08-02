@@ -1,11 +1,12 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router";
 import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
-
+import { useFormik } from "formik";
+import * as yup from "yup";
 import {
   EditIdeaPage as EditIdeaPageComponent,
   SwipeModal,
@@ -29,30 +30,12 @@ const EditIdeaPage = ({
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const projects = useSelector((state) => state.data.projects);
+  const projectRooms = useSelector((state) => state.data?.projects);
   const scream = useSelector((state) => state.data.scream);
 
   const [order, setOrder] = useState(1);
-  const [notes, setNotes] = useState(scream.notes ?? "");
+
   const [datePicker, setDatePicker] = useState(false);
-
-  const [status, setStatus] = useState(scream.status ?? "");
-  const [address, setAddress] = useState(
-    scream.locationHeader ?? "Ohne Ortsangabe"
-  );
-  const [neighborhood, setNeighborhood] = useState(
-    scream.Stadtteil ?? "Ohne Ortsangabe"
-  );
-  const [fulladdress, setFulladdress] = useState(
-    scream.district ?? "Ohne Ortsangabe"
-  );
-
-  const [title, setTitle] = useState(scream.title ?? "");
-  const [body, setBody] = useState(scream.body ?? "");
-  const [topic, setTopic] = useState(scream.Thema ?? "");
-  const [projectRoomId, setProjectRoomId] = useState(
-    scream.projectRoomId ?? ""
-  );
 
   const [weblinkOpen, setWeblinkOpen] = useState(false);
   const [weblink, setWeblink] = useState(scream.weblink ?? "");
@@ -64,7 +47,6 @@ const EditIdeaPage = ({
 
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [selectedDays, setSelectedDays] = useState([]);
-  const [selectedUnix, setSelectedUnix] = useState([]);
 
   const [viewport, setViewport] = useState({
     latitude: scream.lat ?? "",
@@ -72,13 +54,7 @@ const EditIdeaPage = ({
   });
 
   useEffect(() => {
-    dispatch(getUserEmail(scream.userId));
-
-    projects.forEach((project) => {
-      if (scream.projectRoomId === project.projectRoomId) {
-        setDatePicker(project.calendar ?? false);
-      }
-    });
+    // dispatch(getUserEmail(scream.userId));
 
     if (scream.selectedUnix) {
       const selectedDays = [];
@@ -87,25 +63,9 @@ const EditIdeaPage = ({
       for (i = 0; i < selectedUnix.length; i++) {
         selectedDays[i] = new Date(selectedUnix[i] * 1000);
       }
-
       setSelectedDays(selectedDays);
-      setSelectedUnix(scream.selectedUnix);
     }
-  }, [dispatch, projects, editOpen, scream]);
-
-  const handleDropdown = (value) => {
-    setTopic(value);
-  };
-
-  const handleDropdownProject = (Id) => {
-    setProjectRoomId(Id);
-
-    projects.forEach((project) => {
-      if (Id === project.projectRoomId) {
-        setDatePicker(project.calendar ?? false);
-      }
-    });
-  };
+  }, [dispatch, editOpen, scream]);
 
   const handleCloseWeblink = () => {
     setWeblinkOpen(false);
@@ -124,7 +84,6 @@ const EditIdeaPage = ({
   const handleSaveContact = () => {
     setContactOpen(false);
   };
-
   const handleChangeCalendar = (selectedDays) => {
     const selectedUnix = [];
     let i;
@@ -133,27 +92,27 @@ const EditIdeaPage = ({
     }
 
     setSelectedDays(selectedDays);
-    setSelectedUnix(selectedUnix);
+    formikEditIdea.setFieldValue("selectedUnix", selectedUnix);
   };
 
   const handleCloseCalendar = () => {
     setCalendarOpen(false);
 
-    setSelectedDays([]);
-    setSelectedUnix([]);
+    // setSelectedDays([]);
+    // setSelectedUnix([]);
   };
   const handleSaveCalendar = () => {
     setCalendarOpen(false);
   };
 
-  const onSelected = (newViewport) => {
+  /*  const onSelected = (newViewport) => {
     setTimeout(() => {
       geocode(newViewport);
       setViewport(newViewport);
     }, 1000);
-  };
+  }; */
 
-  const geocode = (viewport) => {
+  /*   const geocode = (viewport) => {
     const geocodingClient = mbxGeocoding({
       accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,
     });
@@ -182,39 +141,62 @@ const EditIdeaPage = ({
         setAddress(`${match.features[0].text} ${houseNumber}`);
         setFulladdress(match.features[0].place_name);
       });
-  };
+  }; */
+  const editIdeaValidationSchema = yup.object({
+    title: yup
+      .string()
+      .required(t("enter_ideaTitle"))
+      .min(10, t("ideaTitle_too_short"))
+      .max(70, t("ideaTitle_too_long")),
 
+    body: yup
+      .string()
+      .required(t("enter_ideaDescription"))
+      .min(100, t("ideaDescription_too_short"))
+      .max(800, t("ideaDescription_too_long")),
+  });
+
+  const formikEditIdea = useFormik({
+    initialValues: {
+      projectRoomId: scream.projectRoomId ?? "",
+      screamId: scream.screamId,
+
+      title: scream.title ?? "",
+      body: scream.body ?? "" ?? "",
+      Thema: scream.Thema ?? "",
+
+      locationHeader: scream.locationHeader ?? "",
+      district: scream.district ?? "Ohne Ortsangabe",
+      Stadtteil: scream.Stadtteil ?? "Ohne Ortsangabe",
+      lat: scream.lat ?? "",
+      long: scream.long ?? "",
+
+      contact: scream.contact ?? "",
+      contactTitle: scream.contactTitle ?? "",
+
+      weblink: scream.weblink ?? "",
+      weblinkTitle: scream.weblinkTitle ?? "",
+
+      selectedUnix: scream.selectedUnix ?? [],
+    },
+    validationSchema: editIdeaValidationSchema,
+    validateOnMount: true,
+    validateOnChange: true,
+    validateOnBlur: true,
+  });
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const editScream = {
-      screamId: scream.screamId,
-      body,
-      title,
-      locationHeader: address,
-      district: fulladdress,
-      Stadtteil: neighborhood,
-      lat: viewport.latitude,
-      long: viewport.longitude,
-      projectRoomId,
-      Thema: topic,
-      weblinkTitle,
-      weblink,
-      contactTitle,
-      contact,
-      status,
-      notes,
-    };
-
+    /*
     if (selectedUnix[0] === undefined) {
       editScream.selectedUnix = [];
     } else {
       editScream.selectedUnix = selectedUnix;
     }
-
-    dispatch(editScreamFunc(editScream)).then(() => {
+ */
+    dispatch(editScreamFunc(formikEditIdea.values)).then(() => {
       setEditOpen(false);
-      setMenuOpen(false);
+      // setMenuOpen(false);
     });
   };
 
@@ -222,23 +204,18 @@ const EditIdeaPage = ({
     <React.Fragment>
       {weblinkOpen && (
         <Weblink
+          formik={formikEditIdea}
           handleCloseWeblink={handleCloseWeblink}
           handleSaveWeblink={handleSaveWeblink}
-          weblinkTitle={weblinkTitle}
-          weblink={weblink}
-          setWeblinkTitle={setWeblinkTitle}
-          setWeblink={setWeblink}
+          weblinkOpen={weblinkOpen}
           setWeblinkOpen={setWeblinkOpen}
         />
       )}
       {contactOpen && (
         <Contact
+          formik={formikEditIdea}
           handleCloseContact={handleCloseContact}
           handleSaveContact={handleSaveContact}
-          contactTitle={contactTitle}
-          contact={contact}
-          setContactTitle={setContactTitle}
-          setContact={setContact}
           contactOpen={contactOpen}
           setContactOpen={setContactOpen}
         />
@@ -255,19 +232,13 @@ const EditIdeaPage = ({
       )}
 
       <EditIdeaPageComponent
+        formikEditIdea={formikEditIdea}
         editOpen={editOpen}
         setEditOpen={setEditOpen}
-        projectRoomId={projectRoomId}
-        handleDropdownProject={handleDropdownProject}
-        onSelected={onSelected}
+        projectRooms={projectRooms}
+        // onSelected={onSelected}
         viewport={viewport}
         scream={scream}
-        title={title}
-        body={body}
-        topic={topic}
-        setTitle={setTitle}
-        setBody={setBody}
-        handleDropdown={handleDropdown}
         weblink={weblink}
         weblinkTitle={weblinkTitle}
         setWeblinkOpen={setWeblinkOpen}
@@ -277,9 +248,10 @@ const EditIdeaPage = ({
         datePicker={datePicker}
         selectedDays={selectedDays}
         setCalendarOpen={setCalendarOpen}
+        handleSubmit={handleSubmit}
       />
     </React.Fragment>
   );
 };
 
-export default EditIdeaPage;
+export default memo(EditIdeaPage);

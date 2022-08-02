@@ -259,9 +259,6 @@ export const editScreamFunc = (editScream) => async (dispatch) => {
     dispatch({ type: LOADING_UI });
     const { screamId } = editScream;
 
-    if (!editScream.notes) {
-      delete editScream.notes;
-    }
     const docRef = doc(db, `screams/${screamId}`);
     await updateDoc(docRef, editScream);
     dispatch({

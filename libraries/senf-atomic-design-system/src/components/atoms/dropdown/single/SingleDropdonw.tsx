@@ -35,7 +35,7 @@ const SingleDropdown: FunctionComponent<DropdownProps<false>> = ({
           </option>
         )}
         {Object.values(listItems).map((item) => (
-          <option key={item.label} value={item.value}>
+          <option key={item.label + item.value} value={item.value}>
             {item.label}
           </option>
         ))}

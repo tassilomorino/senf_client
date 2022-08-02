@@ -487,27 +487,31 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
 
               {weblink || contact ? (
                 <Box gap="8px" flexWrap="wrap" margin="10px 0px 16px 0px">
-                  <Button
-                    variant="secondary"
-                    icon={<Mail />}
-                    text={contactTitle || t("contact")}
-                    size="small"
-                    onClick={() => openMail(contact)}
-                  />
-                  <Button
-                    variant="secondary"
-                    icon={<Hyperlink />}
-                    text={weblinkTitle || t("website")}
-                    size="small"
-                    onClick={() => openLink(weblink)}
-                  />
+                  {contact && (
+                    <Button
+                      variant="secondary"
+                      icon={<Mail />}
+                      text={contactTitle || t("contact")}
+                      size="small"
+                      onClick={() => openMail(contact)}
+                    />
+                  )}
+                  {weblink && (
+                    <Button
+                      variant="secondary"
+                      icon={<Hyperlink />}
+                      text={weblinkTitle || t("website")}
+                      size="small"
+                      onClick={() => openLink(weblink)}
+                    />
+                  )}
                 </Box>
               ) : (
                 <Divider margin="10px 0px 16px 0px" />
               )}
 
               <Box flexDirection="column" gap="5px">
-                {selectedUnixArray !== undefined && selectedUnixArray !== null && (
+                {selectedUnixArray && selectedUnixArray.length > 0 && (
                   <Box gap="5px">
                     <Icon icon={<CalendarIcon />} />
                     <Typography variant="buttonSm">{selectedDates}</Typography>
