@@ -48,18 +48,18 @@ import { isMobileCustom } from "./util/customDeviceDetect";
 
 import packageJson from "../package.json";
 import { getBuildDate } from "./util/helpers";
-import { setViewport } from "./util/helpers-map-animations";
+// import { setViewport } from "./util/helpers-map-animations";
 
 import "./util/i18n";
 
-// import Main from "./pages/Main";
+import Home from "./pages/Home";
 
-const Main = React.lazy(() =>
-  Promise.all([
-    import("./pages/Main"),
-    new Promise((resolve) => setTimeout(resolve, 3300)),
-  ]).then(([moduleExports]) => moduleExports)
-); // i18n configuration
+// const Main = React.lazy(() =>
+//   Promise.all([
+//     import("./pages/Main"),
+//     new Promise((resolve) => setTimeout(resolve, 3300)),
+//   ]).then(([moduleExports]) => moduleExports)
+// );
 
 // detectLocation(); // detect location and set i18n language
 const cookies = new Cookies();
@@ -122,7 +122,7 @@ const App = () => {
     });
   };
   useEffect(() => {
-    setViewport();
+    // setViewport();
     const { initialMapViewport } = store.getState().data;
     store.dispatch(getScreams(initialMapViewport));
     store.dispatch(getOrganizations(initialMapViewport));
@@ -168,61 +168,61 @@ const App = () => {
 
       <Provider store={store}>
         <Router>
-          {openCookiebanner && (
-            <Cookiebanner
-              handleCookies={handleCookies}
-              handleOpenCookiePreferences={handleOpenCookiePreferences}
-            />
-          )}
+          {/* <React.Suspense fallback={<MainLoader />}></React.Suspense> */}
+
           {tabletNote}
 
           {isMobileCustom && (
             <div className="landscapeNote">{t("rotate_phone")}</div>
           )}
 
+          {!store.getState().loading && openCookiebanner && (
+            <Cookiebanner
+              handleCookies={handleCookies}
+              handleOpenCookiePreferences={handleOpenCookiePreferences}
+            />
+          )}
           <div className="container">
-            <React.Suspense fallback={<MainLoader />}>
-              <Switch>
-                <Route exact path="/" component={Main} />
-                <Route exact path="/projectRooms" component={Main} />
-                <Route exact path="/organizations" component={Main} />
+            <Switch>
+              <Route exact path="/projectRooms" component={Home} />
+              <Route exact path="/organizations" component={Home} />
 
-                <Route exact path="/datenschutz" component={datenschutz} />
-                <Route exact path="/agb" component={agb} />
+              <Route exact path="/datenschutz" component={datenschutz} />
+              <Route exact path="/agb" component={agb} />
 
-                <Route
-                  exact
-                  path="/cookieConfigurator"
-                  component={cookieConfigurator}
-                />
+              <Route
+                exact
+                path="/cookieConfigurator"
+                component={cookieConfigurator}
+              />
 
-                <Route exact path="/impressum" component={impressum} />
+              <Route exact path="/impressum" component={impressum} />
 
-                <Route exact path="/blank" component={blank} />
+              <Route exact path="/blank" component={blank} />
 
-                <Route exact path="/:screamId" component={Main} />
+              <Route exact path="/idea/:screamId" component={Home} />
 
-                <Route
-                  exact
-                  path="/projectRooms/:projectRoomId/:screamId"
-                  component={Main}
-                />
+              <Route
+                exact
+                path="/projectRooms/:projectRoomId/:screamId"
+                component={Home}
+              />
 
-                <Route
-                  exact
-                  path="/projectRooms/:projectRoomId"
-                  component={Main}
-                />
+              <Route
+                exact
+                path="/projectRooms/:projectRoomId"
+                component={Home}
+              />
 
-                <Route
-                  exact
-                  path="/organizations/:organizationId"
-                  component={Main}
-                />
-
-                <Route path="*" component={Main} />
-              </Switch>
-            </React.Suspense>
+              <Route
+                exact
+                path="/organizations/:organizationId"
+                component={Home}
+              />
+              <Route exact path="/:unknownPathId" component={Home} />
+              <Route exact path="/" component={Home} />
+              <Route path="*" component={Home} />
+            </Switch>
           </div>
         </Router>
       </Provider>

@@ -25,9 +25,9 @@ const Wrapper = styled.div`
 
   @media (min-width: 768px) {
     position: fixed;
-    width: 370px;
+    width: 400px;
     margin-left: 80px;
-    top: 20px;
+    top: 80px;
     z-index: 5;
     animation: enteranimation 0.5s;
   }
@@ -64,7 +64,6 @@ const PostScreamSelectContainter = ({
   classes,
   locationDecided,
   handleLocationDecided,
-  handleLocationDecidedNoLocation,
   projectSelected,
   address,
   handleDropdownProject,
@@ -97,6 +96,16 @@ const PostScreamSelectContainter = ({
       {!isMobileCustom && (
         <HideDiv onClick={handleLocationDecided} show={!!locationDecided} />
       )}
+
+      <Box margin="0px 0px 10px 0px" justifyContent="center">
+        <Button
+          fillWidth="max"
+          onClick={handleLocationDecided}
+          text={t("confirmLocation")}
+          disabled={!address}
+        />
+      </Box>
+
       <ProjectSelectWrapper>
         <StyledH3> {t("to")} </StyledH3>
 
@@ -138,13 +147,6 @@ const PostScreamSelectContainter = ({
       {/* <StyledH4 style={{ width: "130px" }}>
           {address ? truncateString(address, 30) : t("Ort festlegen")}
         </StyledH4> */}
-      <Box margin="10px 0px 10px 0px" justifyContent="center">
-        <Button
-          onClick={handleLocationDecided}
-          text={t("confirmLocation")}
-          disabled={!address}
-        />
-      </Box>
     </Wrapper>
   );
 };

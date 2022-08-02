@@ -104,7 +104,7 @@ const Toolbar: FC<ToolbarProps> = ({
         Content={
           <Box gap="5px" flexDirection="column">
             {Object.values(sortOptions).map(({ value, label }) => (
-              <Box gap="5px">
+              <Box gap="5px" key={value + label}>
                 <ContentDropdownItem
                   type="check"
                   text={label}

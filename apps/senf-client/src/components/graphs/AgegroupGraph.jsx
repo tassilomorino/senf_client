@@ -205,53 +205,44 @@ const AgegroupGraph = ({ screams, likes }) => {
       },
     ],
     template: "...",
+
     xaxis: {
       anchor: "x",
       fixedrange: true,
       domain: [0.0, 1.0],
+      dtick: 5,
+      autorange: true,
+      tickmode: "array", // If "array", the placement of the ticks is set via `tickvals` and the tick text is `ticktext`.
+      tickvals: [-1000, -500, -250, -100, -50, 0, 50, 100, 250, 500, 1000],
+      ticktext: [
+        "1000",
+        "500",
+        "250",
+        "100",
+        "50",
+        "|",
+        "50",
+        "100",
+        "250",
+        "500",
+        "1000",
+      ],
+      tick0: 0,
+      title: {
+        text: "",
+        y: 1,
+        x: -0.5,
+      },
+
       showgrid: false,
       zeroline: false,
       showline: false,
       linewidth: 2,
-      tickmode: "array", // If "array", the placement of the ticks is set via `tickvals` and the tick text is `ticktext`.
-      // tickvals: [
-      //   -1000, -500, -200, -100, -50, -25, -10, 0, 10, 25, 50, 100, 200,
-      // ],
-      // ticktext: [
-      //   "1000",
-      //   "500",
-      //   "200",
-      //   "100",
-      //   "50",
-      //   "25",
-      //   "10",
-      //   "|",
-      //   "10",
-      //   "25",
-      //   "50",
-      //   "100",
-      //   "200",
-      //   "500",
-      //   "1000",
-      // ],
       linecolor: "white",
-    },
 
-    xaxis2: {
-      title: "trend2",
-      anchor: "x",
-      fixedrange: true,
-      domain: [1.0, 0],
-      showgrid: false,
-      zeroline: false,
-      showline: false,
-      linewidth: 2,
-
-      tickmode: "array", // If "array", the placement of the ticks is set via `tickvals` and the tick text is `ticktext`.
-      tickvals: [-500, -250, -100, -50, 0, 50, 100, 250, 500],
-      ticktext: ["500", "250", "100", "50", "|", "50", "100", "250", "500"],
-      linecolor: "white",
-      mirror: true,
+      // nticks: 0,
+      // zerolinecolor: "green",
+      // zerolinewidth: 4
     },
     yaxis: {
       anchor: "x",

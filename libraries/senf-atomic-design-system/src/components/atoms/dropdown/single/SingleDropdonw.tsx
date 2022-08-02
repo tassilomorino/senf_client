@@ -10,10 +10,11 @@ const SingleDropdown: FunctionComponent<DropdownProps<false>> = ({
   id,
   placeholder,
   listItems,
+  value,
   recieveValue,
 }) => {
   const { t } = useTranslation();
-  const listItemKey = Object.keys(listItems)[0];
+  // const listItemKey = Object.keys(listItems)[0];
 
   return (
     <>
@@ -23,8 +24,10 @@ const SingleDropdown: FunctionComponent<DropdownProps<false>> = ({
         name={id}
         id={id}
         onChange={(e) => {
-          recieveValue({ [listItemKey]: e.currentTarget.value });
+          recieveValue(e.currentTarget.value);
         }}
+        placeholder={placeholder}
+        value={value}
       >
         {id && (
           <option disabled selected hidden>
@@ -32,7 +35,9 @@ const SingleDropdown: FunctionComponent<DropdownProps<false>> = ({
           </option>
         )}
         {Object.values(listItems).map((item) => (
-          <option value={item.value}>{item.label}</option>
+          <option key={item.label} value={item.value}>
+            {item.label}
+          </option>
         ))}
       </InputField>
     </>
