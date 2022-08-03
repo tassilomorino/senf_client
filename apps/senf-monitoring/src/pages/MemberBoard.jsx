@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 
 
-import { Typography, ImagePlaceholder, Box, Table, Button, ModalButton, Input } from "senf-atomic-design-system";
+import { Typography, ImagePlaceholder, Box, Icon, Table, Button, ModalButton, Input, isMobileCustom } from "senf-atomic-design-system";
 import {
   collection,
   deleteDoc,
@@ -14,6 +14,7 @@ import {
 } from "firebase/firestore";
 import AddMemberToList from "./AddMemberToList";
 import { db } from "../firebase";
+
 
 
 const Wrapper = styled.div`
@@ -27,6 +28,7 @@ const Wrapper = styled.div`
 `;
 
 const MemberBoard = () => {
+  const isMobile = isMobileCustom()
 
   const [members, setMembers] = useState([]);
   const [filteredMembers, setFilteredMembers] = useState([]);
@@ -121,20 +123,59 @@ const MemberBoard = () => {
           </Box>
 
           {filteredMembers && (
-            <Table data={filteredMembers} checkbox={true} columns={[
-              t('username'),
-              t('division'),
-              t('roles'),
-            ]}>
+            <Table
+              data={filteredMembers}
+              checkbox="userId"
+              bulkEdit={<Icon icon="Search" />}
+              // this could be an alternative structure
+              // template={(member) => ([{
+              //     header: t("username"),
+              //     value: <Box gap="16px">
+              //       <ImagePlaceholder
+              //         width="64px"
+              //         height="64px"
+              //         img="#"
+              //       />
+              //       <Box flexDirection="column" justifyContent="center" alignItems="flex-start">
+              //         <Typography variant="h3">{member?.handle}</Typography>
+              //         { member?.email && <Typography variant="bodySm">{member.email}</Typography> }
+              //       </Box>
+              //     </Box>
+              //   },
+              //   {
+              //     header: t("division"),
+              //     value: <Typography variant="bodySm">{member?.division}</Typography>
+              //   },
+              //   {
+              //     header: t("role"),
+              //     value: <Typography variant="bodySm">{member?.roles}</Typography>
+              //   },
+              //   {
+              //     header: 'actions',
+              //     value: <Button
+              //       variant="white"
+              //       text="Delete"
+              //       onClick={() => handleDeleteMember(member?.userId)}
+              //     />
+              //   },
+              // ])}
+              columns={[
+                t('username'),
+                t('division'),
+                t('roles'),
+              ]}
+            >
               {
                 (row) => (
                   <>
                     <Box gap="16px">
-                      <ImagePlaceholder
-                        width="64px"
-                        height="64px"
-                        img="#"
-                      />
+                      {!isMobile &&
+                        <ImagePlaceholder
+                          width="64px"
+                          height="64px"
+                          img="#"
+                        />
+                      }
                       <Box flexDirection="column" justifyContent="center" alignItems="flex-start">
                         <Typography variant="h3">{row.handle}</Typography>
                         {row?.email && <Typography variant="bodySm">{row.email}</Typography>}

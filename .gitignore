@@ -9,13 +9,13 @@
 !.yarn/sdks
 !.yarn/versions
 # compiled output
-/dist
+dist
 /tmp
 /out-tsc
 .turbo
 
 # dependencies
-/node_modules
+node_modules
 
 # IDEs and editors
 /.idea

@@ -142,7 +142,7 @@ const ObjectCard: FC<ObjectCardProps> = ({ data, handleButtonOpenCard }) => {
   const { title, imgUrl, objectId } = data;
   return (
     <Wrapper
-      onClick={(event) => handleButtonOpenCard(event, "objectCard", objectId)}
+      onClick={(event) => handleButtonOpenCard(event, "objectCard", data)}
     >
       <LogoWrapper>
         <Thumbnail

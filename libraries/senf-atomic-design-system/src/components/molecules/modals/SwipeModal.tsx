@@ -167,11 +167,11 @@ const SwipeModal: FC<SwipeModalProps> = ({
     openModal &&
     ReactDOM.createPortal(
       <React.Fragment>
-        <Background zIndex={zIndex - 1} onClick={handleClose} />
+        <Background $zIndex={zIndex - 1} onClick={handleClose} />
         <DragWrapper
           style={props}
-          zIndex={zIndex}
-          backgroundColor={backgroundColor}
+          $zIndex={zIndex}
+          $backgroundColor={backgroundColor}
           overflow={overflow}
           role="dialog"
           size={size}

@@ -2,6 +2,8 @@
 
 import { MouseEventHandler } from "react";
 
+export type errorMessage = { code: string; message: string };
+
 export interface AuthEmailProps {
   text?: string;
   variant?: "register" | "login";
@@ -11,6 +13,6 @@ export interface AuthEmailProps {
   formikLoginStore?: Function;
   handleSubmitRegister?: Function;
   handleSubmitLogin?: Function;
-  errorMessage?: string;
+  errorMessage?: errorMessage;
   setPage?: React.Dispatch<React.SetStateAction<string>>;
 }

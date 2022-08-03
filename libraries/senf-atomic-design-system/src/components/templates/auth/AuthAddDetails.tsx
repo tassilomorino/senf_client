@@ -152,10 +152,10 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
                 value: "male",
               },
             ]}
-            recieveValue={(selectedItems) =>
+            recieveValue={(selectedItem) =>
               setData({
                 ...data,
-                sex: selectedItems.sex,
+                sex: selectedItem,
               })
             }
             value={data.sex}
@@ -163,10 +163,10 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
           <Dropdown
             id="age"
             listItems={years}
-            recieveValue={(selectedItems) =>
+            recieveValue={(selectedItem) =>
               setData({
                 ...data,
-                age: selectedItems.age,
+                age: selectedItem,
               })
             }
             value={data.age}

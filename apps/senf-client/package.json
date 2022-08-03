@@ -47,6 +47,7 @@
     "redux-thunk": "^2.4.1",
     "resize-observer": "^1.0.4",
     "senf-atomic-design-system": "*",
+    "senf-shared": "*",
     "styled-components": "^5.3.5",
     "tsconfig": "*",
     "ui": "*",

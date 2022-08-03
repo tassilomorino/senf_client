@@ -42,14 +42,16 @@ export const Note = styled.p<{ error?: boolean }>`
   flex-basis: 7rem;
 `;
 
-export const InputField = styled.div<{ focus: boolean, icon: boolean }>`
+export const InputField = styled.div<{ focus: boolean; icon: boolean }>`
   display: flex;
   align-items: center;
+  padding: ${({ theme }) => `${theme.space[4]} ${theme.space[6]}`};
   gap: 0.5rem;
   min-height: 50px;
   box-sizing: border-box;
   color: rgb(51, 51, 51) !important;
   border-radius: ${({ theme }) => theme.radii[1]}px;
+
   -webkit-border-radius: ${({ theme }) => theme.radii[1]}px;
   -moz-border-radius: ${({ theme }) => theme.radii[1]}px;
 
@@ -74,8 +76,8 @@ export const InputField = styled.div<{ focus: boolean, icon: boolean }>`
   ${({ focus }) =>
     focus &&
     css`
-    --border-color: ${({ theme }) => theme.colors.primary.primary120};
-    --outline-shadow: inset 0px 0px 0px 1px var(--border-color);
+      --border-color: ${({ theme }) => theme.colors.primary.primary120};
+      --outline-shadow: inset 0px 0px 0px 1px var(--border-color);
 
       /* outline: 3px solid ${({ theme }) => theme.colors.primary.primary120};
       outline-offset: -3px; */
@@ -85,18 +87,21 @@ export const InputField = styled.div<{ focus: boolean, icon: boolean }>`
     max-height: 50px !important;
     box-sizing: border-box;
   }
-  input, textarea {
-    padding: ${({ theme }) => `${theme.space[4]} ${theme.space[5]}`};
+
+  input,
+  textarea {
     ${({ icon }) =>
-      icon &&
-      css`padding-left:${({ theme }) => `${theme.space[1]}`};`
-    }
+    icon &&
+    css`
+        padding-left: ${({ theme }) => `${theme.space[1]}`};
+      `}
   }
 
   ${({ icon }) =>
-      icon &&
-      css`padding-left:${({ theme }) => `${theme.space[5]}`};`
-    }
+    icon &&
+    css`
+      padding-left: ${({ theme }) => `${theme.space[5]}`};
+    `}
 
   /* Styles for textarea */
   textarea {

@@ -35,10 +35,12 @@ module.exports = {
     "react/react-in-jsx-scope": "off",
     "import/prefer-default-export": "off",
     "no-nested-ternary": "off",
-    "no-shadow": "warn",
+    "no-shadow": "off",
     "no-underscore-dangle": "off",
     "no-plusplus": "off",
     "arrow-body-style": "off",
+    camelcase: "warn",
+    "import/no-extraneous-dependencies": "off",
   },
   settings: {
     react: {

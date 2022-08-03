@@ -19,7 +19,6 @@ import { logoutUser } from "../redux/actions/userActions";
 import DeleteProfileModal from "../components/Modals/DeleteProfileModal";
 
 const ProfilePage = ({
-  dataFinalMap,
   handleButtonOpenCard,
   handleOpenProjectroom,
   setAuthEditOpen,
