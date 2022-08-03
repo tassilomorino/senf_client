@@ -1,28 +1,64 @@
 import React from "react";
 import styled from "styled-components";
-import { SwitchTransition, CSSTransition } from "react-transition-group";
-import { ModalContext } from "./ModalProvider";
 import SwipeWrapper from "../modals/SwipeWrapper";
+import ModalHandle from "./ModalHandle";
+import { ModalContext } from "./ModalProvider";
 
-import RoundedButton from "../../atoms/buttons/RoundedButton";
-import { Plus } from "../../../assets/icons";
 
 interface SheetProps {
   index: number,
-  total: number
+  total: number,
+  swipe: boolean,
+  size: string
 }
 
+
 const Sheet = styled.div<SheetProps>`
-  animation: opacityAndPointerEventsAnimation 0.5s;
-  position: absolute;
-  opacity: ${({index}) => 1 / (index * 2)};
-  transform: scale(${({index}) => 1 - index / 10}) translate(calc(${({index}) => index * -5}% - 50%), calc(${({index}) => index * -60}px - 200px));
-  z-index: ${({index}) => index * -1};
-  transition: 3000ms;
-  /* top: 50%; */
-  padding: 20px;
+  animation: opacityAndPointerEventsAnimation 300ms;
+  opacity: ${({ index }) => Math.min(1, index)};
+  /* position: fixed; */
+  /* max-height: 52vh; */
+  pointer-events: ${({ index }) => index === 1 ? "auto" : "none"};
+  transform-origin: 0%;
+  transform:
+    scale(${({ index }) => index === 0 ? 1.1 : 1 - (index - 1) / 10})
+    translate(
+      -50%,
+      calc(${({ index, swipe }) => index === 0 && swipe ? "150%" : `${(index - 1) * -60}px - ${swipe ? 0 : 50}%`})
+    );
+  z-index: ${({ index }) => index === 1 ? 10 : index * -1};
   box-sizing: border-box;
-  /* left: 50%; */
+  overflow: ${({ overflow }) => overflow || "scroll"};
+  -webkit-overflow-scrolling: touch;
+  background-color: ${({ theme }) => theme.colors.greyscale.greyscale100};
+  border-radius: ${({ theme }) => theme.radii[4]}px;
+  box-shadow: ${({ theme }) => theme.shadows[0]}
+    ${({ theme }) => theme.colors.black.black30tra};
+  transition: 300ms;
+`;
+
+const Content = styled.div<{ index: number }>`
+  z-index: 10;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+`;
+const Background = styled.div<{ index: number }>`
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+`;
+const Toner = styled.div<{ size: string, index: number, swipe: boolean }>`
+  padding: 20px;
+  padding-bottom: ${({ swipe }) => swipe && "60px"};
+  padding-top: ${({ swipe }) => swipe && "40px"};
+  opacity: ${({ index }) => 1 / index};
+  height: ${({ height }) => height ? `${height}px` : '100%'};
+  max-width: 100vw;
+  min-height: 320px;
+  max-height: calc(100vh - 80px);
   width: ${({ size }) => {
     switch (size) {
       case "xl": return "1200px";
@@ -31,86 +67,65 @@ const Sheet = styled.div<SheetProps>`
       default: return "400px";
     }
   }};
-  min-height: 320px;
-  max-height: calc(100vh - 40px);
-  overflow: ${({ overflow }) => overflow || "scroll"};
   background-color: ${({ backgroundColor, theme }) =>
     backgroundColor === "primary"
       ? theme.colors.primary.primary100
       : backgroundColor === "beige"
-      ? theme.colors.beige.beige20
-      : "white"};
-  border-radius: ${({ theme }) => theme.radii[4]}px;
-
-  box-shadow: ${({ theme }) => theme.shadows[0]}
-    ${({ theme }) => theme.colors.brown.brown20tra};
-  transition: 0.2s;
-`;
-
-const Content = styled.div<{ opacity: number}>`
-  z-index: 10;
-  position: absolute;
-  margin: 50px;
-  /* top: 50%; */
-  left: 50%;
-  transform: scale(${({ opacity }) => opacity / -10 + 1.1 || 0});
-  transform-origin: 0% 50%;
-  width: 100vw;
-  opacity: ${({ opacity }) => opacity || 1};
+        ? theme.colors.beige.beige20
+        : "white"};
   transition: 300ms;
+  overflow-x: hidden;
 `;
 
 const ModalWrapper = ({
   size,
-  triggerClose: trigger,
-  onClose,
-  onTransitionEnd,
   swipe,
   index,
-  total,
   children,
   height,
   setOpacity,
 }) => {
-  const [ triggerClose, setClose ] = React.useState(trigger);
-  // React.useEffect(() => {
-  //   setBgOpacity(1);
-    
-  const open = () => {
-    setBgOpacity(0.001)
-    setTimeout(() => {
-      setBgOpacity(1)
-    }, 300);
-  }
-  const close = () => {
-    if (modalComponents.current.length === 1) {
-      setClose(true)
-      setBgOpacity(0.001)
-    }
-    setTimeout(() => {
-      onTransitionEnd()
-      setBgOpacity(1)
-      setClose(false)
-    }, 300);
-  }
+  const [triggerOpen, setOpen] = React.useState(0);
+  const { handleModal, modalStack } = React.useContext(ModalContext) || {};
 
-  return (<>
-    { swipe &&
-      <SwipeWrapper height={height} triggerClose={triggerClose} onDrag={setOpacity} onClose={onTransitionEnd}>
-        <Sheet size={size} index={index} total={total}>{children}</Sheet>
-      </SwipeWrapper>
-    }
-    { !swipe &&
-      <Content opacity={1} show={!!children}>
-        <Sheet size={size} index={index} total={total}>{children}
-        <RoundedButton
-          style={{position: "absolute", top: "5px", right: "5px", zIndex: 100}}
-          icon={<Plus transform="rotate(45deg)" />}
-          onClick={() => close}
-        /></Sheet>
-      </Content>
-    }
-  </>);
+  React.useEffect(() => {
+    setOpen(modalStack)
+  }, [modalStack])
+
+  const close = () => {
+    handleModal("pop")
+  }
+  const Wrapper = swipe ? SwipeWrapper : Content;
+  const [innerHeight, setInnerHeight] = React.useState(null);
+  const [overflowing, setOverflowing] = React.useState(null);
+  const content = React.useRef(null)
+  const sheet = React.useRef(null)
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setInnerHeight(content.current?.scrollHeight)
+      setOverflowing(sheet.current?.scrollHeight < innerHeight)
+    }, 0)
+  })
+
+  return (
+    <Wrapper
+      height={height || innerHeight || 320}
+      size={size}
+      triggerOpen={triggerOpen}
+      onDrag={(e) => (modalStack === 2) && setOpacity(e)}
+      onClose={close}
+      index={index}
+      overflowing={overflowing}
+    >
+      <Background onClick={close} />
+      <Sheet index={index} total={modalStack} swipe={swipe} ref={sheet}>
+        <Toner size={size} index={index} height={innerHeight} swipe={swipe} ref={content}>
+          <ModalHandle swipe={swipe} onClose={close} />
+          {children}
+        </Toner>
+      </Sheet>
+    </Wrapper>);
 };
 
 export default ModalWrapper;

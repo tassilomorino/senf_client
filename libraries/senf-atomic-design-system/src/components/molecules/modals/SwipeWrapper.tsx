@@ -1,24 +1,42 @@
 /** @format */
 
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
+import styled from "styled-components";
 import { useDrag } from "@use-gesture/react";
 import { a, useSpring, config } from "@react-spring/web";
-import styled from "styled-components";
-import { ModalProps } from "./Modal.types";
-
-
+import ModalHandle from "../modalStack/ModalHandle";
 
 const sheet = {
   zIndex: 100,
   position: "fixed",
   left: "50%",
-  top: '50%',
-  transform: "translateX(-50%)",
-  marginInline: "auto",
-  height: "calc(100vh + 100px)",
-  display: "flex",
+  bottom: "-40px",
   touchAction: "none",
 }
+
+
+const Handle = styled.div<{ position: string }>`
+  width: 100%;
+  height: 30px;
+  top: -50px;
+  padding-top: 50px;
+  left: 0;
+  transform: translateX(-50%);
+  position: absolute;
+  z-index: 99;
+  touch-action: none;
+  &::after {
+    content: '';
+    cursor: pointer;
+    width: 50px;
+    padding: 10px;
+    height: 5px;
+    display: block;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+  }
+`
 
 interface SwipeWrapperProps {
   height: number
@@ -28,10 +46,18 @@ interface SwipeWrapperProps {
   onDrag: (delta: number) => void
 }
 
-const SwipeWrapper: FC<SwipeWrapperProps> = ({height = 550, children, triggerClose, onClose, onDrag}) => {
+const SwipeWrapper: FC<SwipeWrapperProps> = ({
+  height = 320,
+  children,
+  triggerOpen,
+  onClose,
+  onDrag,
+  overflowing
+}) => {
   const [{ y }, api] = useSpring(() => ({ y: height }));
   const [dragged, setDragged] = useState(0);
 
+  const swipePadding = 200
   const open = ({ canceled }) => {
     api.start({
       y: 0,
@@ -43,7 +69,7 @@ const SwipeWrapper: FC<SwipeWrapperProps> = ({height = 550, children, triggerClo
   const close = (velocity = 0) => {
     onDrag(0.001)
     api.start({
-      y: height + 200,
+      y: height + swipePadding,
       immediate: false,
       config: { ...config.stiff, velocity },
       onRest: () => onClose()
@@ -60,6 +86,7 @@ const SwipeWrapper: FC<SwipeWrapperProps> = ({height = 550, children, triggerClo
       canceled
     }) => {
       setDragged(my)
+
       if (my < -70) cancel();
 
       if (!last) return api.start({ y: my, immediate: true });
@@ -76,11 +103,14 @@ const SwipeWrapper: FC<SwipeWrapperProps> = ({height = 550, children, triggerClo
     }
   );
 
+  const bindContainer = !overflowing && { ...bind() }
+  const bindHandle = overflowing && { ...bind() }
+
   const display = y.to((py) => (py < height ? "block" : "none"));
 
   useEffect(() => {
-    if (triggerClose) close()
-  }, [triggerClose]);
+    if (triggerOpen) open({ canceled: false });
+  }, [triggerOpen]);
 
   useEffect(() => {
     open({ canceled: false });
@@ -92,11 +122,15 @@ const SwipeWrapper: FC<SwipeWrapperProps> = ({height = 550, children, triggerClo
 
   return (
     <a.div
-      {...bind()}
-      style={{ 
-        display, bottom: `calc(-100vh + ${height - 100}px)`, y, ...sheet
+      {...bindContainer}
+      style={{
+        display,
+        bottom: `calc(${height - 50}px)`,
+        y,
+        ...sheet
       }}
     >
+      <Handle {...bindHandle} onClick={dragged < 70 && onClose} />
       {children}
     </a.div>
   );

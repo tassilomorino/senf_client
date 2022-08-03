@@ -6,11 +6,10 @@ import {
   Button,
   Typography,
   IdeaCard,
+  ModalButton,
   List,
 } from "senf-atomic-design-system";
 import styled from "styled-components";
-import { getIdeas } from "../redux/actions/ideaDataActions";
-import { setModal } from "../redux/actions/modalActions";
 
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.beige.beige20};
@@ -48,11 +47,9 @@ const Dashboard = () => {
         <Typography variant="h3"> Das wird mega geil! </Typography>
 
         <Box gap="8px">
-          <Button
-            variant="primary"
-            text="Ooen Modal"
-            onClick={() => dispatch(setModal(<Button text="hi" />))}
-          />
+        <ModalButton text="Open Modal" options={{swipe: true}}>
+          <Button text="hi" />
+        </ModalButton>
           {ideas && (
             <Button
               variant="white"
