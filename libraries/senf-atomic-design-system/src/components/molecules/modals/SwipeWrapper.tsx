@@ -10,7 +10,7 @@ const sheet = {
   zIndex: 100,
   position: "fixed",
   left: "50%",
-  bottom: "-40px",
+  bottom: "-100px",
   touchAction: "none",
 }
 

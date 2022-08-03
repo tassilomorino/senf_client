@@ -3,7 +3,11 @@ import styled from "styled-components";
 import SwipeWrapper from "../modals/SwipeWrapper";
 import ModalHandle from "./ModalHandle";
 import { ModalContext } from "./ModalProvider";
+import Typography from "../../atoms/typography/Typography";
+import Box from "../../atoms/box/Box";
+import Button from "../../atoms/buttons/Button";
 
+import theme from "../../../styles/theme";
 
 interface SheetProps {
   index: number,
@@ -52,7 +56,7 @@ const Background = styled.div<{ index: number }>`
 `;
 const Toner = styled.div<{ size: string, index: number, swipe: boolean }>`
   padding: 20px;
-  padding-bottom: ${({ swipe }) => swipe && "60px"};
+  padding-bottom: ${({ swipe }) => swipe && "120px"};
   padding-top: ${({ swipe }) => swipe && "40px"};
   opacity: ${({ index }) => 1 / index};
   height: ${({ height }) => height ? `${height}px` : '100%'};
@@ -79,11 +83,17 @@ const Toner = styled.div<{ size: string, index: number, swipe: boolean }>`
 
 const ModalWrapper = ({
   size,
+  title,
+  description,
   swipe,
   index,
   children,
   height,
   setOpacity,
+  onSubmit,
+  submitDisabled,
+  submitText,
+  cancelText
 }) => {
   const [triggerOpen, setOpen] = React.useState(0);
   const { handleModal, modalStack } = React.useContext(ModalContext) || {};
@@ -107,7 +117,7 @@ const ModalWrapper = ({
       setOverflowing(sheet.current?.scrollHeight < innerHeight)
     }, 0)
   })
-
+  console.log(children)
   return (
     <Wrapper
       height={height || innerHeight || 320}
@@ -122,8 +132,35 @@ const ModalWrapper = ({
       <Sheet index={index} total={modalStack} swipe={swipe} ref={sheet}>
         <Toner size={size} index={index} height={innerHeight} swipe={swipe} ref={content}>
           <ModalHandle swipe={swipe} onClose={close} />
+          {(title || description) && <Box flexDirection="column" gap="5px" marginBottom="20px">
+            {title && <Typography variant="h3">{title}</Typography>}
+            {description && <Typography variant="bodyBg" color={theme.colors.greyscale.greyscale100}>{description}</Typography>}
+          </Box>}
           {children}
-          {index}
+          {(cancelText || submitText) &&
+            <Box
+              width="100%"
+              gap="8px"
+              marginTop="20px"
+            >
+              {cancelText &&
+                <Button
+                  variant="white"
+                  fillWidth="max"
+                  onClick={close}
+                  text={cancelText}
+                />
+              }
+              {submitText &&
+                <Button
+                  variant="primary"
+                  fillWidth="max"
+                  onClick={onSubmit}
+                  disabled={!!submitDisabled}
+                  text={submitText}
+                />
+              }
+            </Box>}
         </Toner>
       </Sheet>
     </Wrapper>);
