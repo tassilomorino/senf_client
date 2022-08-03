@@ -5,8 +5,10 @@ import styled from "styled-components";
 import mapboxgl from "mapbox-gl";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "mapbox-gl/dist/mapbox-gl.css";
+import MapboxDraw from "@mapbox/mapbox-gl-draw";
 
 import bbox from "@turf/bbox";
+import { useTranslation } from "react-i18next";
 import { MapProps } from "./Map.types";
 import { convertIdeasToGeoJson } from "./utils/convertIdeasToGeoJson";
 import { LayerWhiteFirstDefault } from "../layerStyles/LayerStyles";
@@ -25,6 +27,8 @@ import usePolygon from "./hooks/usePolygon";
 import useIdeasMarkers from "./hooks/useIdeasMarkers";
 import usePin from "./hooks/usePin";
 import useFly from "./hooks/useFly";
+// import useDraw from "./hooks/useDraw";
+
 import { Bulb } from "../../../assets/icons";
 import Button from "../buttons/Button";
 import Box from "../box/Box";
@@ -153,6 +157,7 @@ const PinComponent = styled.img`
 
 const Map: FC<MapProps> = ({
   children,
+  mapType,
   openIdea,
   openProjectRoom,
   initialMapViewport,
@@ -169,7 +174,12 @@ const Map: FC<MapProps> = ({
   postIdeaOpen,
   statefulMap,
   setStatefulMap,
+  drawnPolygon,
+  setDrawnPolygon,
+  handleSaveDrawnPolygon,
 }) => {
+  const { t } = useTranslation();
+  const [statefulDrawMapbox, setStatefulDrawMapbox] = useState(null);
   const mapContainerRef = useRef();
   const isMobile = isMobileCustom();
 
@@ -214,6 +224,7 @@ const Map: FC<MapProps> = ({
     setStatefulMap(map);
     subscribeMap(map);
     navigationControl(map);
+
     hover(map);
     clickMarkers(map, handleClickIdeaMarker, handleClickProjectroomMarker);
     // geocoder(map);
@@ -224,6 +235,23 @@ const Map: FC<MapProps> = ({
     setPinLayer(map);
     setInitialMapBounds(map.getBounds().toArray());
 
+    if (mapType === "draw") {
+      const DrawMapBox = new MapboxDraw({
+        displayControlsDefault: false,
+        // Select which mapbox-gl-draw control buttons to add to the map.
+        controls: {
+          polygon: true,
+          trash: true,
+        },
+        // Set mapbox-gl-draw to draw by default.
+        // The user does not have to click the polygon control button first.
+        defaultMode: "draw_polygon",
+      });
+      map.addControl(DrawMapBox);
+
+      setStatefulDrawMapbox(DrawMapBox);
+    }
+
     map.on("dragend", () => {
       setMapMoved(true);
     });
@@ -233,6 +261,22 @@ const Map: FC<MapProps> = ({
 
     return () => map.remove();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (statefulMap && mapType === "draw" && drawnPolygon) {
+      statefulDrawMapbox.add(drawnPolygon);
+      statefulDrawMapbox.changeMode("simple_select");
+
+      const [minLng, minLat, maxLng, maxLat] = bbox(drawnPolygon);
+
+      setTimeout(() => {
+        statefulMap.fitBounds([
+          [minLng - 0.2, minLat - 0.2], // southwestern corner of the bounds
+          [maxLng + 0.2, maxLat + 0.2], // northeastern corner of the bounds
+        ]);
+      }, 300);
+    }
+  }, [drawnPolygon, statefulMap]);
 
   useEffect(() => {
     if (projectroomsData) {
@@ -373,6 +417,36 @@ const Map: FC<MapProps> = ({
           pointerEvents="none"
         >
           <Icon icon={<Pin transform="scale(3)" />} />{" "}
+        </Box>
+      )}
+
+      {mapType === "draw" && statefulDrawMapbox && (
+        <Box
+          position="fixed"
+          bottom="10px"
+          zIndex={999999999}
+          left="50%"
+          transform="translateX(-50%)"
+          zIndex={1}
+          gap="8px"
+        >
+          <Button
+            text="Delete"
+            onClick={() => {
+              statefulDrawMapbox.deleteAll();
+              statefulDrawMapbox.changeMode("draw_polygon");
+            }}
+          />
+          <Button
+            variant="white"
+            text={t("save")}
+            // loading={}
+            onClick={() => {
+              statefulDrawMapbox.changeMode("simple_select");
+              handleSaveDrawnPolygon(statefulDrawMapbox.getAll());
+            }}
+            disabled={!drawnPolygon}
+          />
         </Box>
       )}
       <MapContainer
