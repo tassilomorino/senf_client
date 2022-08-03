@@ -6,9 +6,6 @@ import { useTranslation } from "react-i18next";
 export function OptionsProjectrooms(projectrooms) {
   const { t } = useTranslation();
 
-  const optionsProjectsInitial = [
-    { value: "all_ideas", label: t("all_ideas") },
-  ];
   const optionsProjectsArray = projectrooms
 
     .map((project) => ({
@@ -23,7 +20,7 @@ export function OptionsProjectrooms(projectrooms) {
       return 0;
     });
   const optionsProjectrooms = [
-    ...optionsProjectsInitial,
+    { value: "", label: t("all_ideas") },
     ...optionsProjectsArray,
   ];
 
