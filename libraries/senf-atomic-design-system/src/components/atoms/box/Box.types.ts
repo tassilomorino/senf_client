@@ -16,6 +16,13 @@ export interface BoxProps {
   marginRight?: string;
   marginBlock?: string;
   marginInline?: string;
+  padding?: string;
+  paddingTop?: string;
+  paddingBottom?: string;
+  paddingLeft?: string;
+  paddingRight?: string;
+  paddingBlock?: string;
+  paddingInline?: string;
   left?: string | number;
   right?: string | number;
   zIndex?: string | number;
