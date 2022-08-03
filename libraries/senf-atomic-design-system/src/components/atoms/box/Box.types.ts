@@ -10,6 +10,12 @@ export interface BoxProps {
   width?: string;
   maxWidth?: string;
   margin?: string;
+  marginTop?: string;
+  marginBottom?: string;
+  marginLeft?: string;
+  marginRight?: string;
+  marginBlock?: string;
+  marginInline?: string;
   left?: string | number;
   right?: string | number;
   zIndex?: string | number;
