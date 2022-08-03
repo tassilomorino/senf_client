@@ -67,10 +67,10 @@ const Typography = styled.p<TypographyProps>`
         break;
     }
     return `
-    font-size: ${fontSize};
-    font-weight: ${fontWeight};
-    line-Height: ${lineHeight};
-    color: ${color};
+      font-size: ${fontSize};
+      font-weight: ${fontWeight};
+      line-Height: ${lineHeight};
+      color: ${color};
     `;
   }}
 
