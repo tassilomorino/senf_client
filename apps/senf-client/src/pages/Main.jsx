@@ -22,8 +22,6 @@ import {
   MobileTopBar,
   ErrorLoading,
   Loader,
-  Map,
-  MainLoader,
 } from "senf-atomic-design-system";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
@@ -33,11 +31,6 @@ import {
   openCreateProjectRoomFunc,
 } from "../redux/actions/projectActions";
 
-import {
-  setMapBounds,
-  setInitialMapBounds,
-  setMapViewport,
-} from "../redux/actions/mapActions";
 import {
   handleTopicSelectorRedux,
   handleOrganizationTypesSelectorRedux,
@@ -171,10 +164,7 @@ const Main = ({
   const { userId } = user;
   const userLikes = user.likes;
 
-  const voted = useSelector((state) => state.UI.voted);
   const screams = useSelector((state) => state.data.screams);
-  const myScreams = useSelector((state) => state.user.myScreams);
-  const scream = useSelector((state) => state.data.scream);
 
   const loading = useSelector((state) => state.data.loading);
   const loadingUI = useSelector((state) => state.UI.loading);
@@ -183,7 +173,6 @@ const Main = ({
     (state) => state.data.loadingOrganizations
   );
 
-  const loadingIdea = useSelector((state) => state.data.loadingIdea);
   const projects = useSelector((state) => state.data.projects);
   const project = useSelector((state) => state.data.project);
 

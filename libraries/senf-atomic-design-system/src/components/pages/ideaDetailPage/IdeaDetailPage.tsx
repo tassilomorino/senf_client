@@ -139,7 +139,6 @@ const ProjectroomOpenButton = styled.button`
   bottom: 0;
 `;
 const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
-  loadingIdea,
   data,
   projectroomsData,
   handleButtonCloseCard,
@@ -208,7 +207,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
   const [projectroomCardData, setProjectroomCardData] = useState([]);
 
   useEffect(() => {
-    if (projectroomsData && cardProjectroomId && !loadingIdea) {
+    if (projectroomsData && cardProjectroomId) {
       projectroomsData.map(({ projectRoomId, title, organizationType }) => {
         if (cardProjectroomId === projectRoomId) {
           setProjectroomCardData([
@@ -219,7 +218,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
         }
       });
     }
-  }, [projectroomsData, cardProjectroomId, loadingIdea]);
+  }, [projectroomsData, cardProjectroomId]);
 
   let selectedDates = [];
   const selectedUnixArray = selectedUnix;
@@ -400,7 +399,6 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
         id="dragWrapper"
         style={props}
         {...bind()}
-        $loadingIdea={loadingIdea}
         $isMobile={isMobile}
       >
         <div

@@ -128,12 +128,12 @@ const ProjectroomPage = ({
       : orderBy(screamsSearched, "likeCount", "desc");
 
   const dataFinal = sortedScreams.filter(
-    ({ Thema, lat, long }) =>
-      selectedTopics.includes(Thema) &&
-      lat <= mapBounds?.latitude1 &&
-      lat >= mapBounds?.latitude2 &&
-      long >= mapBounds?.longitude2 &&
-      long <= mapBounds?.longitude3
+    ({ Thema, lat, long }) => selectedTopics.includes(Thema)
+    // &&
+    // lat <= mapBounds?.latitude1 &&
+    // lat >= mapBounds?.latitude2 &&
+    // long >= mapBounds?.longitude2 &&
+    // long <= mapBounds?.longitude3
   );
 
   const handleEditProjectroom = () => {
@@ -147,6 +147,7 @@ const ProjectroomPage = ({
     dispatch(openCreateProjectRoomFunc(true));
   };
 
+  console.log(sortedScreams);
   return (
     <ProjectroomPageComponent
       user={user}
