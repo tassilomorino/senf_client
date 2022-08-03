@@ -14,20 +14,27 @@ const Weblink = ({
   handleSaveWeblink,
 }) => {
   const { t } = useTranslation();
+
   return (
     <ActionModal
-      title={t("weblinkModalTitle")}
+      title={t("weblink_Modal_Title")}
       openModal={weblinkOpen}
       setOpenModal={setWeblinkOpen}
       handleClose={handleCloseWeblink}
       handleSave={handleSaveWeblink}
-      disabledSaveButton={
-        formik?.values.weblink === null || formik?.values.weblinkTitle === null
-      }
+      /* disabledSaveButton={
+         formik?.values.weblink === null ||
+        formik?.values.weblink === "" ||
+        formik?.values.weblinkTitle === null ||
+        formik?.values.weblinkTitle === "" 
+      } */
       cancelButtonText={
-        formik?.values.weblink !== null && formik?.values.weblinkTitle !== null
+        /* formik?.values.weblink !== null ||
+        formik?.values.weblink !== "" ||
+        formik?.values.weblinkTitle !== null ||
+        formik?.values.weblinkTitle !== ""
           ? t("delete")
-          : t("cancel")
+          : */ t("cancel")
       }
       saveButtonText={t("save")}
     >

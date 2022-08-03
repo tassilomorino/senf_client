@@ -21,13 +21,13 @@ const Contact = ({
       setOpenModal={setContactOpen}
       handleClose={handleCloseContact}
       handleSave={handleSaveContact}
-      disabledSaveButton={
+      /*  disabledSaveButton={
         formik?.values.contact === null || formik?.values.contactTitle === null
-      }
+      } */
       cancelButtonText={
-        formik?.values.contact !== null && formik?.values.contactTitle !== null
+        /*  formik?.values.contact !== null && formik?.values.contactTitle !== null
           ? t("delete")
-          : t("cancel")
+          : */ t("cancel")
       }
       saveButtonText={t("save")}
     >

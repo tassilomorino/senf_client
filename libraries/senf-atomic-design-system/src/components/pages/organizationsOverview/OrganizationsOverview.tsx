@@ -104,6 +104,9 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
   const { t } = useTranslation();
   const isMobile = isMobileCustom();
   const [searchOpen, setSearchOpen] = useState(false);
+  const [activeSortOptionLabel, setActiveSortOptionLabel] = useState(
+    t("newest_organizations")
+  );
 
   const toolbarComponent = (
     <Toolbar
@@ -125,7 +128,8 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
       checkedSortOption={checkedSortOption}
       setCheckedSortOption={setCheckedSortOption}
       searchPlaceholder={t("searchBarOrganizations")}
-      activeSortOptionLabel={t("newest_organizations")}
+      activeSortOptionLabel={activeSortOptionLabel}
+      setActiveSortOptionLabel={setActiveSortOptionLabel}
       sortOptions={[
         { value: "newest", label: t("newest_organizations") },
         { value: "aToZ", label: t("aToZ_organizations") },

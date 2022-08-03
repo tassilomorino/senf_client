@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect, memo, useCallback } from "react";
+import React, { useState, useEffect, memo, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // Redux stuff
 import styled from "styled-components";
@@ -16,6 +16,8 @@ import { setMapBounds, setMapViewport } from "../redux/actions/mapActions";
 import { handleTopicSelectorRedux } from "../redux/actions/UiActions";
 
 import { openOrganizationFunc } from "../redux/actions/organizationActions";
+
+import { filterByTagFilter, search, sort } from "../util/helpers";
 
 const Wrapper = styled.div`
   z-index: 999;
@@ -105,36 +107,24 @@ const ProjectroomPage = ({
     setDropdown(value);
   };
 
-  const dataRar = project?.screams;
+  const projectRoomScreams = project?.screams;
 
-  const screamsSearched = dataRar?.filter((val) => {
-    if (searchTerm === "") {
-      return val;
-    }
-    if (
-      val.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.Stadtteil?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.Stadtbezirk?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      val.locationHeader?.toLowerCase().includes(searchTerm.toLowerCase())
-    ) {
-      return val;
-    }
-  });
+  const dataFinalProjectRoomIdeas = useMemo(() => {
+    let ideasData = [];
 
-  const sortedScreams =
-    dropdown === "newest"
-      ? orderBy(screamsSearched, "createdAt", "desc")
-      : orderBy(screamsSearched, "likeCount", "desc");
+    ideasData = search(projectRoomScreams, searchTerm, [
+      "title",
+      "body",
+      "Stadtteil",
+      "Stadtbezirk",
+      "locationHeader",
+    ]);
+    ideasData = filterByTagFilter(ideasData, selectedTopics, "Thema");
 
-  const dataFinal = sortedScreams.filter(
-    ({ Thema, lat, long }) => selectedTopics.includes(Thema)
-    // &&
-    // lat <= mapBounds?.latitude1 &&
-    // lat >= mapBounds?.latitude2 &&
-    // long >= mapBounds?.longitude2 &&
-    // long <= mapBounds?.longitude3
-  );
+    ideasData = sort(ideasData, dropdown);
+
+    return ideasData;
+  }, [dropdown, projectRoomScreams, searchTerm, selectedTopics]);
 
   const handleEditProjectroom = () => {
     localStorage.setItem(
@@ -147,12 +137,12 @@ const ProjectroomPage = ({
     dispatch(openCreateProjectRoomFunc(true));
   };
 
-  console.log(sortedScreams);
+
   return (
     <ProjectroomPageComponent
       user={user}
       data={project}
-      ideasData={dataFinal}
+      ideasData={dataFinalProjectRoomIdeas}
       organizations={organizations}
       handleButtonOpenCard={handleButtonOpenCard}
       handleButtonClose={handleClose}
@@ -165,6 +155,8 @@ const ProjectroomPage = ({
       searchTerm={searchTerm}
       setSearchTerm={setSearchTerm}
       path={path}
+      checkedSortOption={dropdown}
+      setCheckedSortOption={setDropdown}
     />
   );
 };
