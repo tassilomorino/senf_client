@@ -24,6 +24,15 @@ const Wrapper = styled.div<BoxProps>`
   margin-right: ${({ marginRight }) => marginRight || ""};
   margin-block: ${({ marginBlock }) => marginBlock || ""};
   margin-inline: ${({ marginInline }) => marginInline || ""};
+
+  padding: ${({ padding }) => padding || "0"};
+  padding-top: ${({ paddingTop }) => paddingTop || ""};
+  padding-bottom: ${({ paddingBottom }) => paddingBottom || ""};
+  padding-left: ${({ paddingLeft }) => paddingLeft || ""};
+  padding-right: ${({ paddingRight }) => paddingRight || ""};
+  padding-block: ${({ paddingBlock }) => paddingBlock || ""};
+  padding-inline: ${({ paddingInline }) => paddingInline || ""};
+
   flex-direction: ${({ flexDirection }) =>
     flexDirection === "column" ? "column" : "row"};
   align-items: ${({ alignItems }) => alignItems || null};
@@ -40,8 +49,7 @@ const Box: FC<BoxProps> = ({
   ...props
 }) => {
   return (
-    <Wrapper {...props}
-    >
+    <Wrapper {...props}>
       {children}
     </Wrapper>
   );
