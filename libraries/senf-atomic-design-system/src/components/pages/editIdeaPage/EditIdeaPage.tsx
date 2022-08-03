@@ -72,7 +72,10 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
       }
     });
   }, [formikEditIdea.values.projectRoomId]);
-
+  console.log(
+    formikEditIdea.values.projectRoomId,
+    "formikEditIdea.values.projectRoomId"
+  );
   return (
     <SwipeModal
       openModal={editOpen}
@@ -150,7 +153,9 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
             <RoundedButton
               variant={
                 formikEditIdea.values.weblink !== null &&
-                formikEditIdea.values.weblinkTitle !== null
+                formikEditIdea.values.weblink !== "" &&
+                formikEditIdea.values.weblinkTitle !== null &&
+                formikEditIdea.values.weblinkTitle !== ""
                   ? "primary"
                   : "white"
               }
@@ -161,7 +166,9 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
             <RoundedButton
               variant={
                 formikEditIdea.values.contact !== null &&
-                formikEditIdea.values.contactTitle !== null
+                formikEditIdea.values.contact !== "" &&
+                formikEditIdea.values.contactTitle !== null &&
+                formikEditIdea.values.contactTitle !== ""
                   ? "primary"
                   : "white"
               }

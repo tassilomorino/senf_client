@@ -38,12 +38,8 @@ const EditIdeaPage = ({
   const [datePicker, setDatePicker] = useState(false);
 
   const [weblinkOpen, setWeblinkOpen] = useState(false);
-  const [weblink, setWeblink] = useState(scream.weblink ?? "");
-  const [weblinkTitle, setWeblinkTitle] = useState(scream.weblinkTitle ?? "");
 
   const [contactOpen, setContactOpen] = useState(false);
-  const [contact, setContact] = useState(scream.contact ?? "");
-  const [contactTitle, setContactTitle] = useState(scream.contactTitle ?? "");
 
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [selectedDays, setSelectedDays] = useState([]);
@@ -51,6 +47,49 @@ const EditIdeaPage = ({
   const [viewport, setViewport] = useState({
     latitude: scream.lat ?? "",
     longitude: scream.long ?? "",
+  });
+
+  const editIdeaValidationSchema = yup.object({
+    title: yup
+      .string()
+      .required(t("enter_ideaTitle"))
+      .min(10, t("ideaTitle_too_short"))
+      .max(70, t("ideaTitle_too_long")),
+
+    body: yup
+      .string()
+      .required(t("enter_ideaDescription"))
+      .min(100, t("ideaDescription_too_short"))
+      .max(800, t("ideaDescription_too_long")),
+  });
+
+  const formikEditIdea = useFormik({
+    initialValues: {
+      projectRoomId: scream.projectRoomId ?? null,
+      screamId: scream.screamId,
+
+      title: scream.title ?? null,
+      body: scream.body ?? null,
+      Thema: scream.Thema ?? null,
+
+      locationHeader: scream.locationHeader ?? "",
+      district: scream.district ?? "Ohne Ortsangabe",
+      Stadtteil: scream.Stadtteil ?? "Ohne Ortsangabe",
+      lat: scream.lat ?? null,
+      long: scream.long ?? null,
+
+      contact: scream.contact ?? null,
+      contactTitle: scream.contactTitle ?? null,
+
+      weblink: scream.weblink ?? null,
+      weblinkTitle: scream.weblinkTitle ?? null,
+
+      selectedUnix: scream.selectedUnix ?? [],
+    },
+    validationSchema: editIdeaValidationSchema,
+    validateOnMount: true,
+    validateOnChange: true,
+    validateOnBlur: true,
   });
 
   useEffect(() => {
@@ -69,8 +108,8 @@ const EditIdeaPage = ({
 
   const handleCloseWeblink = () => {
     setWeblinkOpen(false);
-    setWeblink(null);
-    setWeblinkTitle(null);
+    formikEditIdea.setFieldValue("weblink", scream.weblink ?? null);
+    formikEditIdea.setFieldValue("weblinkTitle", scream.weblinkTitle ?? null);
   };
   const handleSaveWeblink = () => {
     setWeblinkOpen(false);
@@ -78,8 +117,8 @@ const EditIdeaPage = ({
 
   const handleCloseContact = () => {
     setContactOpen(false);
-    setContact(null);
-    setContactTitle(null);
+    formikEditIdea.setFieldValue("contact", scream.contact ?? null);
+    formikEditIdea.setFieldValue("contactTitle", scream.contactTitle ?? null);
   };
   const handleSaveContact = () => {
     setContactOpen(false);
@@ -105,7 +144,7 @@ const EditIdeaPage = ({
     setCalendarOpen(false);
   };
 
-  /*  const onSelected = (newViewport) => {
+  /*  const geocodeonSelected = (newViewport) => {
     setTimeout(() => {
       geocode(newViewport);
       setViewport(newViewport);
@@ -142,48 +181,7 @@ const EditIdeaPage = ({
         setFulladdress(match.features[0].place_name);
       });
   }; */
-  const editIdeaValidationSchema = yup.object({
-    title: yup
-      .string()
-      .required(t("enter_ideaTitle"))
-      .min(10, t("ideaTitle_too_short"))
-      .max(70, t("ideaTitle_too_long")),
 
-    body: yup
-      .string()
-      .required(t("enter_ideaDescription"))
-      .min(100, t("ideaDescription_too_short"))
-      .max(800, t("ideaDescription_too_long")),
-  });
-
-  const formikEditIdea = useFormik({
-    initialValues: {
-      projectRoomId: scream.projectRoomId ?? "",
-      screamId: scream.screamId,
-
-      title: scream.title ?? "",
-      body: scream.body ?? "" ?? "",
-      Thema: scream.Thema ?? "",
-
-      locationHeader: scream.locationHeader ?? "",
-      district: scream.district ?? "Ohne Ortsangabe",
-      Stadtteil: scream.Stadtteil ?? "Ohne Ortsangabe",
-      lat: scream.lat ?? "",
-      long: scream.long ?? "",
-
-      contact: scream.contact ?? "",
-      contactTitle: scream.contactTitle ?? "",
-
-      weblink: scream.weblink ?? "",
-      weblinkTitle: scream.weblinkTitle ?? "",
-
-      selectedUnix: scream.selectedUnix ?? [],
-    },
-    validationSchema: editIdeaValidationSchema,
-    validateOnMount: true,
-    validateOnChange: true,
-    validateOnBlur: true,
-  });
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -196,7 +194,6 @@ const EditIdeaPage = ({
  */
     dispatch(editScreamFunc(formikEditIdea.values)).then(() => {
       setEditOpen(false);
-      // setMenuOpen(false);
     });
   };
 
@@ -236,14 +233,10 @@ const EditIdeaPage = ({
         editOpen={editOpen}
         setEditOpen={setEditOpen}
         projectRooms={projectRooms}
-        // onSelected={onSelected}
+        // onSelected={geocodeonSelected}
         viewport={viewport}
         scream={scream}
-        weblink={weblink}
-        weblinkTitle={weblinkTitle}
         setWeblinkOpen={setWeblinkOpen}
-        contact={contact}
-        contactTitle={contactTitle}
         setContactOpen={setContactOpen}
         datePicker={datePicker}
         selectedDays={selectedDays}
