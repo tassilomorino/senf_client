@@ -72,8 +72,8 @@ const MapContainer = styled.div<MapProps>`
     -moz-border-radius: ${({ theme }) => theme.radii[1]}px;
     border: 0;
     ${({ focus }) =>
-      focus &&
-      css`
+    focus &&
+    css`
         outline: 3px solid ${({ theme }) => theme.colors.primary.primary120} !important;
         outline-offset: -3px;
       `}
@@ -741,7 +741,6 @@ const Map: FC<MapProps> = ({
           zIndex={999999999}
           left="50%"
           transform="translateX(-50%)"
-          zIndex={1}
           gap="8px"
         >
           <Button

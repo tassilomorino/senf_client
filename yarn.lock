@@ -12608,6 +12608,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"es6-promise@npm:^4.0.5":
+  version: 4.2.8
+  resolution: "es6-promise@npm:4.2.8"
+  checksum: 95614a88873611cb9165a85d36afa7268af5c03a378b35ca7bda9508e1d4f1f6f19a788d4bc755b3fd37c8ebba40782018e02034564ff24c9d6fa37e959ad57d
+  languageName: node
+  linkType: hard
+
 "es6-shim@npm:^0.35.5":
   version: 0.35.6
   resolution: "es6-shim@npm:0.35.6"
@@ -19076,6 +19083,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mapbox@npm:^1.0.0-beta10":
+  version: 1.0.0-beta9
+  resolution: "mapbox@npm:1.0.0-beta9"
+  dependencies:
+    es6-promise: ^4.0.5
+    rest: ^2.0.0
+  checksum: 8094f7772595f59f627e92e6c3816ddb9e95e79b1ec8235356f58e63040ffb149209491c57c3e7f88ef5a06cde401e92ed95d67ad5facf7bd298986bd5b2ba6c
+  languageName: node
+  linkType: hard
+
 "markdown-escapes@npm:^1.0.0":
   version: 1.0.4
   resolution: "markdown-escapes@npm:1.0.4"
@@ -24099,6 +24116,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rest@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "rest@npm:2.0.0"
+  checksum: 10b9c33fb4c3dafbcf43b62d882c345d75a94fedb7372a415c238eb6a899e5c29edb993d5d8a62e1b00a6a8a8fedc3dd6d45420b12fa10cd6b0377a9e65d88f1
+  languageName: node
+  linkType: hard
+
 "restore-cursor@npm:^3.1.0":
   version: 3.1.0
   resolution: "restore-cursor@npm:3.1.0"
@@ -24266,6 +24290,7 @@ __metadata:
     eslint-plugin-prettier: ^4.2.1
     eslint-plugin-react: ^7.30.1
     eslint-plugin-react-hooks: ^4.6.0
+    mapbox: ^1.0.0-beta10
     prettier: ^2.7.1
     react-transition-group: ^4.4.2
     turbo: latest
