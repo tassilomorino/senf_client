@@ -80,7 +80,7 @@ function UI({ handleSwitchView, pitch }) {
           Scale Up
         </button>
       </div> */}
-
+      <div style={{position: "absolute", left: "49vw", top: "48vh", fontSize: 50}}>X</div>
       <InfoModal
         openInfoModal={openInfoModal}
         setOpenInfoModal={setOpenInfoModal}
