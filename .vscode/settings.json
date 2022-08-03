@@ -12,5 +12,11 @@
     "workspace"
   ],
   "typescript.validate.enable": false,
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
 
 }

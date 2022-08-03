@@ -105,7 +105,6 @@ const IdeaDetailPage = ({
   const dispatch = useDispatch();
 
   const openScream = useSelector((state) => state.UI.openScream);
-  const loadingIdea = useSelector((state) => state.data.loadingIdea);
 
   const [path, setPath] = useState("");
   const [editIdeaOpen, setEditIdeaOpen] = useState(false);
@@ -129,31 +128,12 @@ const IdeaDetailPage = ({
 
       setPath(`https://senf.koeln/${screamId}`);
     }
-  }, [lat, loadingIdea, long, openScream, screamId]);
+  }, [lat, long, openScream, screamId]);
 
   const handleClose = () => {
     dispatch(closeScream());
     dispatch(clearErrors());
   };
-
-  // const [projectroomCardData, setProjectroomCardData] = useState([]);
-
-  // useEffect(() => {
-  //   if (projectroomsData && data?.projectRoomId) {
-  //     console.log(projectroomsData, data?.projectRoomId);
-  //     projectroomsData.map(({ projectRoomId, title, organizationType }) => {
-  //       if (data?.projectRoomId === projectRoomId) {
-  //         console.log(data?.projectRoomId, projectRoomId);
-  //         setProjectroomCardData([
-  //           ...projectroomCardData,
-  //           title,
-  //           organizationType,
-
-  //         ]);
-  //       }
-  //     });
-  //   }
-  // }, [projectroomsData, data?.projectRoomId, loadingIdea]);
 
   const projectroomCardData = [];
 
@@ -169,7 +149,7 @@ const IdeaDetailPage = ({
         );
       }
     }
-  }, [projectroomsData, data, loadingIdea]);
+  }, [projectroomsData, data]);
 
   // const handleShareIdea = () => {
   //   if (navigator.share) {
@@ -274,7 +254,6 @@ const IdeaDetailPage = ({
         )}
 
         <IdeaDetailPageComponent
-          loadingIdea={loadingIdea}
           data={data}
           projectroomCardData={projectroomCardData}
           projectroomsData={projectroomsData}

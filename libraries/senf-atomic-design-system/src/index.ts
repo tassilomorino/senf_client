@@ -1,16 +1,44 @@
 /** @format */
-export { default as Check } from "./assets/icons/Check";
-export { default as Bulb } from "./assets/icons/Bulb";
-export { default as More } from "./assets/icons/More";
-export { default as Delete } from "./assets/icons/Delete";
-export { default as Plus } from "./assets/icons/Plus";
-export { default as Arrow } from "./assets/icons/Arrow";
-export { default as Hyperlink } from "./assets/icons/Hyperlink";
-export { default as Mail } from "./assets/icons/Mail";
-export { default as CalendarIcon } from "./assets/icons/CalendarIcon";
-export { default as CommentActive } from "./assets/icons/CommentActive";
-export { default as FlameInactive } from "./assets/icons/FlameInactive";
-export { default as FlameActive } from "./assets/icons/FlameActive";
+export { default as AllOrganizationTypes } from './assets/icons/AllOrganizationTypes'
+export { default as Apple } from './assets/icons/Apple'
+export { default as Arrow } from './assets/icons/Arrow'
+export { default as Bell } from './assets/icons/Bell'
+export { default as Bulb } from './assets/icons/Bulb'
+export { default as CalendarIcon } from './assets/icons/CalendarIcon'
+export { default as Check } from './assets/icons/Check'
+export { default as CheckDropShadow } from './assets/icons/CheckDropShadow'
+export { default as CommentActive } from './assets/icons/CommentActive'
+export { default as CommentInactive } from './assets/icons/CommentInactive'
+export { default as Delete } from './assets/icons/Delete'
+export { default as Dot } from './assets/icons/Dot'
+export { default as DotAllTopics } from './assets/icons/DotAllTopics'
+export { default as Edit } from './assets/icons/Edit'
+export { default as Facebook } from './assets/icons/Facebook'
+export { default as FlameActive } from './assets/icons/FlameActive'
+export { default as FlameInactive } from './assets/icons/FlameInactive'
+export { default as Google } from './assets/icons/Google'
+export { default as Hyperlink } from './assets/icons/Hyperlink'
+export { default as Info } from './assets/icons/Info'
+export { default as Initiativen } from './assets/icons/Initiativen'
+export { default as Insta } from './assets/icons/Insta'
+export { default as Location } from './assets/icons/Location'
+export { default as Logout } from './assets/icons/Logout'
+export { default as Mail } from './assets/icons/Mail'
+export { default as More } from './assets/icons/More'
+export { default as Planungsbüros } from './assets/icons/Planungsbüros'
+export { default as Plus } from './assets/icons/Plus'
+export { default as Politik } from './assets/icons/Politik'
+export { default as Presse } from './assets/icons/Presse'
+export { default as Report } from './assets/icons/Report'
+export { default as Room } from './assets/icons/Room'
+export { default as Search } from './assets/icons/Search'
+export { default as SenfLogoSmall } from './assets/icons/SenfLogoSmall'
+export { default as Share } from './assets/icons/Share'
+export { default as Stadtverwaltung } from './assets/icons/Stadtverwaltung'
+export { default as Stats } from './assets/icons/Stats'
+export { default as User } from './assets/icons/User'
+export { default as Vereine } from './assets/icons/Vereine'
+export { default as WhatsApp } from './assets/icons/WhatsApp'
 
 export { default as LogoText } from "./assets/logo/LogoText";
 
@@ -64,6 +92,10 @@ export { default as SwipeModal } from "./components/molecules/modals/SwipeModal"
 export { default as Dialog } from "./components/molecules/dialog/Dialog";
 export { default as SubNavbar } from "./components/molecules/navs/SubNavbar";
 export { default as Tabs } from "./components/molecules/tabs/Tabs";
+
+export { default as GlobalModal } from "./components/molecules/modals/GlobalModal";
+export { ModalProvider, ModalContext } from "./components/molecules/modalStack/ModalProvider";
+export { default as ModalButton } from "./components/molecules/modalStack/ModalButton";
 
 export { default as Accordion } from "./components/molecules/accordion/Accordion";
 export { default as TagSlide } from "./components/molecules/tagSlide/TagSlide";

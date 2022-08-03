@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 
-import { Typography, ImagePlaceholder, Box, Icon, Table, Button, Input, isMobileCustom } from "senf-atomic-design-system";
 
+import { Typography, ImagePlaceholder, Box, Icon, Table, Button, ModalButton, Input, isMobileCustom } from "senf-atomic-design-system";
 import {
   collection,
   deleteDoc,
   doc,
-  getDoc,
   getDocs,
   orderBy,
   query,
@@ -31,7 +30,6 @@ const Wrapper = styled.div`
 const MemberBoard = () => {
   const isMobile = isMobileCustom()
 
-  const [openModal, setOpenModal] = useState(false);
   const [members, setMembers] = useState([]);
   const [filteredMembers, setFilteredMembers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -70,27 +68,57 @@ const MemberBoard = () => {
       throw new Error(error, "error in deleteScreamFunc");
     }
   };
+
   useEffect(() => {
     getMembers();
-  }, [openModal]);
+  }, []);
 
   useEffect(() => {
     setFilteredMembers(members.filter(e => Object.values(e).join(' ').toLowerCase().indexOf(searchTerm.toLowerCase()) > -1));
   }, [searchTerm, members]);
   return (
     <React.Fragment>
-      {openModal && (
-        <AddMemberToList openModal={openModal} setOpenModal={setOpenModal} />
-      )}
       <Wrapper>
         <Box gap="20px" flexDirection="column" margin="30px">
           <Typography variant="h2">MemberBoard</Typography>
           <Box justifyContent="between" gap="16px">
             <Box>
-              <Input type="search" setSearchTerm={setSearchTerm} />
+              <ModalButton text="add" options={{ swipe: true }}>
+                <ModalButton text="add" options={{ swipe: true, height: 550, size: "lg" }}>
+                  <AddMemberToList />
+                </ModalButton>
+              </ModalButton>
             </Box>
             <Box margin="0 0 0 auto">
-              <Button onClick={() => setOpenModal(true)} text="Add Member" />
+              <ModalButton text="1">
+                <ModalButton text="2" options={{ height: 800 }}>
+                  <ModalButton text="3.1" options={{ swipe: true }}>
+                    <p>vite hot updated: /@fs/Users /Leon/Sites/senf-monorepo/libraries/senf-atomic-design-system/src/components/mo lecules/modalStack/ModalWrap per.tsx</p>
+                    <p>vite hot updated: /@fs/Users/Leon/Site s/senf-monorep o/libraries/senf-atomic-design-system/src/components/ molecules/modalStack/ModalWrapper.tsx</p>
+                    <p>vite hot updated: /@fs/Users/Leon/Sites/senf-monorepo/libraries/senf-atom ic-design-system/src/components/m olecules/modalStack/ModalWrapper.tsx</p>
+                    <p>vite hot updated: /@fs/Users /Leon/Sites/senf-monorepo/libraries/senf-atomic-design-system/src/components/mo lecules/modalStack/ModalWrap per.tsx</p>
+                    <p>vite hot updated: /@fs/Users/Leon/Site s/senf-monorep o/libraries/senf-atomic-design-system/src/components/ molecules/modalStack/ModalWrapper.tsx</p>
+                    <p>vite hot updated: /@fs/Users/Leon/Sites/senf-monorepo/libraries/senf-atom ic-design-system/src/components/m olecules/modalStack/ModalWrapper.tsx</p>
+                    <p>vite hot updated: /@fs/Users/Leon/Sites/senf-monorepo/libraries/senf-atom ic-design-system/src/components/m olecules/modalStack/ModalWrapper.tsx</p>
+                    <p>vite hot updated: /@fs/Users /Leon/Sites/senf-monorepo/libraries/senf-atomic-design-system/src/components/mo lecules/modalStack/ModalWrap per.tsx</p>
+                    <p>vite hot updated: /@fs/Users/Leon/Site s/senf-monorep o/libraries/senf-atomic-design-system/src/components/ molecules/modalStack/ModalWrapper.tsx</p>
+                    <p>vite hot updated: /@fs/Users/Leon/Sites/senf-monorepo/libraries/senf-atom ic-design-system/src/components/m olecules/modalStack/ModalWrapper.tsx</p>
+                    <p>vite hot updated: /@fs/Users/Leon/Sites/senf-monorepo/libraries/senf-atom ic-design-system/src/components/m olecules/modalStack/ModalWrapper.tsx</p>
+                    <p>vite hot updated: /@fs/Users /Leon/Sites/senf-monorepo/libraries/senf-atomic-design-system/src/components/mo lecules/modalStack/ModalWrap per.tsx</p>
+                    <p>vite hot updated: /@fs/Users/Leon/Site s/senf-monorep o/libraries/senf-atomic-design-system/src/components/ molecules/modalStack/ModalWrapper.tsx</p>
+                    <p>vite hot updated: /@fs/Users/Leon/Sites/senf-monorepo/libraries/senf-atom ic-design-system/src/components/m olecules/modalStack/ModalWrapper.tsx</p>
+                    <p>last line</p>
+                  </ModalButton>
+                  <ModalButton text="3.2">
+                    <span>3.2 title</span>
+                  </ModalButton>
+                </ModalButton>
+              </ModalButton>
+            </Box>
+          </Box>
+          <Box justifyContent="between" gap="16px">
+            <Box>
+              <Input type="search" setSearchTerm={setSearchTerm} />
             </Box>
           </Box>
 
@@ -132,16 +160,16 @@ const MemberBoard = () => {
               //   },
               // ])}
               columns={[
-                  t('username'),
-                  t('division'),
-                  t('roles'),
-                ]}
-              >
+                t('username'),
+                t('division'),
+                t('roles'),
+              ]}
+            >
               {
                 (row) => (
                   <>
                     <Box gap="16px">
-                      { !isMobile &&
+                      {!isMobile &&
                         <ImagePlaceholder
                           width="64px"
                           height="64px"
@@ -150,7 +178,7 @@ const MemberBoard = () => {
                       }
                       <Box flexDirection="column" justifyContent="center" alignItems="flex-start">
                         <Typography variant="h3">{row.handle}</Typography>
-                        { row?.email && <Typography variant="bodySm">{row.email}</Typography> }
+                        {row?.email && <Typography variant="bodySm">{row.email}</Typography>}
                       </Box>
                     </Box>
                     <Typography variant="bodySm">{row.division}</Typography>

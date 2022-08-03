@@ -3,10 +3,8 @@
 import React from "react";
 import { Helmet } from "react-helmet";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Provider } from "react-redux";
-import { theme, GlobalStyle } from "senf-atomic-design-system";
+import { theme, GlobalStyle, ModalProvider } from "senf-atomic-design-system";
 import { ThemeProvider } from "styled-components";
-import store from "./redux/store";
 import Dashboard from "./pages/Dashboard";
 import "./util/i18n";
 import PrivateRoute from "./context/PrivateRoute";
@@ -18,6 +16,7 @@ import MemberBoard from "./pages/MemberBoard";
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
+    <ModalProvider>
       <GlobalStyle />
 
       {import.meta.env.VITE_NO_CRAWL && (
@@ -27,16 +26,15 @@ const App = () => {
         </Helmet>
       )}
 
-      <Provider store={store}>
-        <AuthProvider>
-          <Router>
-            <React.Suspense fallback={<div>Loading...</div>}>
-              <Routes>
-                <Route
-                  exact
-                  path="/register"
-                  element={<AuthPage variant="register" />}
-                />
+      <AuthProvider>
+        <Router>
+          <React.Suspense fallback={<div>Loading...</div>}>
+            <Routes>
+              <Route
+                exact
+                path="/register"
+                element={<AuthPage variant="register" />}
+              />
 
                 <Route
                   exact
@@ -54,7 +52,7 @@ const App = () => {
             </React.Suspense>
           </Router>
         </AuthProvider>
-      </Provider>
+      </ModalProvider>
     </ThemeProvider>
   );
 };
