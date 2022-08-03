@@ -5017,15 +5017,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mapbox/mapbox-gl-language@npm:^0.10.0":
-  version: 0.10.1
-  resolution: "@mapbox/mapbox-gl-language@npm:0.10.1"
-  peerDependencies:
-    mapbox-gl: ">=0.29.0 <2.0.0"
-  checksum: 806b5c973a829e0474b94d4a8a0e3e177c6e8e4d569b7cbe981b88145388fcbf7deacc0b34293dae8601ed6645e9131a930f6a55c208af023ead4bb7427b6bfb
-  languageName: node
-  linkType: hard
-
 "@mapbox/mapbox-gl-supported@npm:^1.5.0":
   version: 1.5.0
   resolution: "@mapbox/mapbox-gl-supported@npm:1.5.0"
@@ -5039,15 +5030,6 @@ __metadata:
   version: 2.0.1
   resolution: "@mapbox/mapbox-gl-supported@npm:2.0.1"
   checksum: 1dffc96baacc56e34b09f2ae6ac4b2b8f10ad51a9d7c4946dc2057f456deeacd5d0729e340120857b3204a14d9961266f3218d26e101d46e81717954f1c129af
-  languageName: node
-  linkType: hard
-
-"@mapbox/mapbox-gl-traffic@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "@mapbox/mapbox-gl-traffic@npm:1.0.2"
-  peerDependencies:
-    mapbox-gl: ^0.29.0
-  checksum: a43490ff0978979e043cff90e5a364c81cd3c8a0fa9df91fcada5606d722c9e5b0b1c8325e4a83edabb65024418796e17e1572c2170162299440c422a3b61328
   languageName: node
   linkType: hard
 
@@ -8915,35 +8897,6 @@ __metadata:
     "@typescript-eslint/types": 5.30.7
     eslint-visitor-keys: ^3.3.0
   checksum: f322972aeda3143d4c24826436357937131f7fbad102d48cfa6dfca70ac245f93b20cf7beb5f1809bda4fe8f454676a6cabf8f73e39af6724076f2b2c213ee80
-  languageName: node
-  linkType: hard
-
-"@urbica/react-map-gl-draw@npm:^0.3.5":
-  version: 0.3.5
-  resolution: "@urbica/react-map-gl-draw@npm:0.3.5"
-  peerDependencies:
-    "@mapbox/mapbox-gl-draw": ^1.1.1
-    "@urbica/react-map-gl": ^1.0.0
-  checksum: f038b93e9f853ea1e88c379b72e3b021711072ca12e4293683b9c0534f053d5cdce9c2ff639321b0de933c3ccd574d492670da49a932cb05b59a8ae13e9ea6ec
-  languageName: node
-  linkType: hard
-
-"@urbica/react-map-gl@npm:^1.14.4":
-  version: 1.15.0
-  resolution: "@urbica/react-map-gl@npm:1.15.0"
-  dependencies:
-    "@mapbox/mapbox-gl-language": ^0.10.0
-    "@mapbox/mapbox-gl-traffic": ^1.0.2
-  peerDependencies:
-    mapbox-gl: ">= 0.40.0"
-    react: ^16.x || ^17.x
-    react-dom: ^16.x || ^17.x
-  dependenciesMeta:
-    "@mapbox/mapbox-gl-language":
-      optional: true
-    "@mapbox/mapbox-gl-traffic":
-      optional: true
-  checksum: 4a1f7679d6bdc00312c513f87b42ddacac52cc053e4bf5b1bed16787dc5eb2d62f1b3116a2d9ece2f309dd0d6cfcb3675842271aee07963d99d5166b4c50e739
   languageName: node
   linkType: hard
 
@@ -13884,13 +13837,6 @@ __metadata:
   version: 4.6.7
   resolution: "es5-shim@npm:4.6.7"
   checksum: f2f60cf3d9c682106c51a70d27d41273d2edb3b90fa8795a2765be4a214574b71ddf9147a7972eb82998d94f96ca015d29f5915efd3af0a6c09673abd4299ee8
-  languageName: node
-  linkType: hard
-
-"es6-promise@npm:^4.0.5":
-  version: 4.2.8
-  resolution: "es6-promise@npm:4.2.8"
-  checksum: 95614a88873611cb9165a85d36afa7268af5c03a378b35ca7bda9508e1d4f1f6f19a788d4bc755b3fd37c8ebba40782018e02034564ff24c9d6fa37e959ad57d
   languageName: node
   linkType: hard
 
@@ -20902,16 +20848,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mapbox@npm:^1.0.0-beta10":
-  version: 1.0.0-beta10
-  resolution: "mapbox@npm:1.0.0-beta10"
-  dependencies:
-    es6-promise: ^4.0.5
-    rest: ^2.0.0
-  checksum: f633396ec42671651114dc98a7d6f94585ace666571298a4670472d6ae9414daa61777062edcb9cc444126b2ef8995866f9a5441ce6a251beb2f029bbff9ce37
-  languageName: node
-  linkType: hard
-
 "markdown-escapes@npm:^1.0.0":
   version: 1.0.4
   resolution: "markdown-escapes@npm:1.0.4"
@@ -25958,13 +25894,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rest@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "rest@npm:2.0.0"
-  checksum: 10b9c33fb4c3dafbcf43b62d882c345d75a94fedb7372a415c238eb6a899e5c29edb993d5d8a62e1b00a6a8a8fedc3dd6d45420b12fa10cd6b0377a9e65d88f1
-  languageName: node
-  linkType: hard
-
 "restore-cursor@npm:^3.1.0":
   version: 3.1.0
   resolution: "restore-cursor@npm:3.1.0"
@@ -26578,8 +26507,6 @@ __metadata:
     "@react-spring/web": ^9.4.4
     "@turf/bbox": ^6.5.0
     "@types/react-router-dom": ^4.3.5
-    "@urbica/react-map-gl": ^1.14.4
-    "@urbica/react-map-gl-draw": ^0.3.5
     "@use-gesture/react": ^10.1.3
     "@vitejs/plugin-react": ^1.3.0
     "@welldone-software/why-did-you-render": ^6.2.3
@@ -26602,7 +26529,6 @@ __metadata:
     locize: ^2.3.0
     locize-lastused: ^3.1.0
     lodash: ^4.17.21
-    mapbox: ^1.0.0-beta10
     mapbox-gl: ^1.13.2
     moment: ^2.29.3
     plotly.js-cartesian-dist: ^2.11.1
