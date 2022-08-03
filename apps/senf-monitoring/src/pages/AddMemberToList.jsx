@@ -7,7 +7,7 @@ import {
   Plus,
   Box,
   Typography,
-  Input,
+  Input
 } from "senf-atomic-design-system";
 import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
@@ -67,7 +67,7 @@ const AddMemberToList = ({ onSubmit }) => {
     }
   };
   return (
-    <Box margin="20px" flexDirection="column" gap="20px">
+    <Box flexDirection="column" gap="20px">
       {/* <Box alignItems="center" justifyContent="space-between"><Typography variant="h2">Add User to List</Typography>
         <RoundedButton
           variant="secondary"
