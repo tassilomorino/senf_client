@@ -14,14 +14,14 @@ interface SheetProps {
 
 
 const Sheet = styled.div<SheetProps>`
-  animation: opacityAndPointerEventsAnimation 300ms;
-  opacity: ${({ index }) => Math.min(1, index)};
+  /* animation: opacityAndPointerEventsAnimation 300ms; */
   /* position: fixed; */
   /* max-height: 52vh; */
+  opacity: ${({ index }) => Math.min(1, index)};
   pointer-events: ${({ index }) => index === 1 ? "auto" : "none"};
   transform-origin: 0%;
   transform:
-    scale(${({ index }) => index === 0 ? 1.1 : 1 - (index - 1) / 10})
+    scale(${({ index }) => 1 - (index - 1) / 10})
     translate(
       -50%,
       calc(${({ index, swipe }) => index === 0 && swipe ? "150%" : `${(index - 1) * -60}px - ${swipe ? 0 : 50}%`})
@@ -123,6 +123,7 @@ const ModalWrapper = ({
         <Toner size={size} index={index} height={innerHeight} swipe={swipe} ref={content}>
           <ModalHandle swipe={swipe} onClose={close} />
           {children}
+          {index}
         </Toner>
       </Sheet>
     </Wrapper>);

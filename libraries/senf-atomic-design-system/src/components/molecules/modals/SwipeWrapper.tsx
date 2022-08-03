@@ -130,7 +130,7 @@ const SwipeWrapper: FC<SwipeWrapperProps> = ({
         ...sheet
       }}
     >
-      <Handle {...bindHandle} onClick={dragged < 70 && onClose} />
+      <Handle {...bindHandle} onClick={dragged < 70 && onClose || null} />
       {children}
     </a.div>
   );
