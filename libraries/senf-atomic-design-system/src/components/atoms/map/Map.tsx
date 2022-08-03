@@ -282,7 +282,7 @@ const Map: FC<MapProps> = ({
   }, [IdeasGeoJson]);
 
   useEffect(() => {
-    if (ideaData) {
+    if (ideaData && ideaData.long && ideaData.lat) {
       setPinData([{ ideaData }]);
       setTimeout(() => {
         statefulMap.flyTo({
