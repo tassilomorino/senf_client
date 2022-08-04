@@ -18,6 +18,21 @@ const Wrapper = styled.div<BoxProps>`
   max-width: ${({ maxWidth }) => maxWidth || "auto"};
 
   margin: ${({ margin }) => margin || "0"};
+  margin-top: ${({ marginTop }) => marginTop || ""};
+  margin-bottom: ${({ marginBottom }) => marginBottom || ""};
+  margin-left: ${({ marginLeft }) => marginLeft || ""};
+  margin-right: ${({ marginRight }) => marginRight || ""};
+  margin-block: ${({ marginBlock }) => marginBlock || ""};
+  margin-inline: ${({ marginInline }) => marginInline || ""};
+
+  padding: ${({ padding }) => padding || "0"};
+  padding-top: ${({ paddingTop }) => paddingTop || ""};
+  padding-bottom: ${({ paddingBottom }) => paddingBottom || ""};
+  padding-left: ${({ paddingLeft }) => paddingLeft || ""};
+  padding-right: ${({ paddingRight }) => paddingRight || ""};
+  padding-block: ${({ paddingBlock }) => paddingBlock || ""};
+  padding-inline: ${({ paddingInline }) => paddingInline || ""};
+
   flex-direction: ${({ flexDirection }) =>
     flexDirection === "column" ? "column" : "row"};
   align-items: ${({ alignItems }) => alignItems || null};
@@ -31,46 +46,10 @@ const Wrapper = styled.div<BoxProps>`
 
 const Box: FC<BoxProps> = ({
   children,
-  display,
-  position,
-  flexDirection,
-  gap,
-  margin,
-  width,
-  maxWidth,
-  top,
-  bottom,
-  left,
-  right,
-  transform,
-  zIndex,
-  alignItems,
-  justifyContent,
-  height,
-  flexWrap,
-  pointerEvents,
+  ...props
 }) => {
   return (
-    <Wrapper
-      display={display}
-      position={position}
-      flexDirection={flexDirection}
-      gap={gap}
-      margin={margin}
-      height={height}
-      width={width}
-      maxWidth={maxWidth}
-      top={top}
-      bottom={bottom}
-      left={left}
-      right={right}
-      transform={transform}
-      zIndex={zIndex}
-      alignItems={alignItems}
-      justifyContent={justifyContent}
-      flexWrap={flexWrap}
-      pointerEvents={pointerEvents}
-    >
+    <Wrapper {...props}>
       {children}
     </Wrapper>
   );

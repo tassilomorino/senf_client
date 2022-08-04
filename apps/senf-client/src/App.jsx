@@ -15,6 +15,7 @@ import {
   Cookiebanner,
   ModalProvider,
   InfoPageMainApp
+
 } from "senf-atomic-design-system";
 import { ThemeProvider } from "styled-components";
 import { auth } from "./firebase";
@@ -74,10 +75,6 @@ document.documentElement.style.setProperty("--vh", `${vh}px`);
 const App = () => {
 
   const { t } = useTranslation();
-
-
-
-
 
   const userState = () => {
     onAuthStateChanged(auth, (user) => {
@@ -152,7 +149,6 @@ const App = () => {
 
       <Provider store={store}>
         <ModalProvider>
-
           <Router>
             {/* <React.Suspense fallback={<MainLoader />}></React.Suspense> */}
 
@@ -161,7 +157,6 @@ const App = () => {
             {isMobileCustom && (
               <div className="landscapeNote">{t("rotate_phone")}</div>
             )}
-
 
             <div className="container">
               <Switch>
@@ -205,10 +200,11 @@ const App = () => {
                 <Route path="*" component={Home} />
               </Switch>
             </div>
-          </Router>
-        </ModalProvider>
-      </Provider>
-    </ThemeProvider>
+          </Router >
+        </ModalProvider >
+      </Provider >
+
+    </ThemeProvider >
   );
 };
 console.log(getBuildDate(packageJson.buildDate));
