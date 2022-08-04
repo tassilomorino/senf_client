@@ -8,6 +8,8 @@ import React, {
   useMemo,
   useLayoutEffect,
 } from "react";
+import ReactDOM from "react-dom";
+
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -22,7 +24,11 @@ import {
   MobileTopBar,
   ErrorLoading,
   Loader,
+  InfoPageMainApp,
+  ModalContext,
+  Cookiebanner
 } from "senf-atomic-design-system";
+import Cookies from "universal-cookie";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
 import { closeScream, openScreamFunc } from "../redux/actions/screamActions";
@@ -72,6 +78,10 @@ import InlineInformationPage from "../components/infocomponents/InlineInformatio
 import ProjectroomPage from "./ProjectroomPage";
 import ProfilePage from "./ProfilePage";
 import { StyledH3 } from "../styles/GlobalStyle";
+
+import { setCookies } from "../redux/actions/cookiesActions";
+
+const cookies = new Cookies();
 
 const CreateMainComponent = React.lazy(() =>
   import("../components/Create_Organisation_Projectrooms/CreateMainComponent")
@@ -198,6 +208,36 @@ const Main = ({
     screamId && dispatch(openScreamFunc(screamId));
     organizationId && dispatch(openOrganizationFunc(organizationId, true));
   }, [dispatch, projectRoomId, screamId, organizationId, unknownPathId]);
+
+
+  const { handleModal } = React.useContext(ModalContext) || {};
+  const [openCookiebanner, setOpenCookiebanner] = useState(false);
+  useEffect(() => {
+
+    if (cookies.get("cookie_settings") === "all") {
+      dispatch(setCookies("all"));
+    } else if (cookies.get("cookie_settings") === "minimum") {
+      dispatch(setCookies("minimum"));
+    } else {
+
+      handleModal("push", <InfoPageMainApp />, { swipe: !!isMobileCustom, size: "lg", height: 1100 })
+      setOpenCookiebanner(true);
+
+    }
+
+  }, []);
+
+
+
+  const handleOpenCookiePreferences = () => {
+    window.open("/cookieConfigurator", "_blank");
+  };
+
+  const handleCookies = (cookie_settings) => {
+    dispatch(setCookies(cookie_settings));
+    setOpenCookiebanner(false);
+  };
+
 
   useEffect(() => {
     if (window.location.pathname === "/projectRooms") {
@@ -364,7 +404,7 @@ const Main = ({
     }
   };
 
-  const handleButtonComment = () => {};
+  const handleButtonComment = () => { };
 
   const handleSelectTopics = (topics) => {
     dispatch(handleTopicSelectorRedux(topics));
@@ -437,6 +477,12 @@ const Main = ({
 
   return (
     <React.Fragment>
+      {openCookiebanner && (
+        <>{ReactDOM.createPortal(<Cookiebanner
+          handleCookies={handleCookies}
+          handleOpenCookiePreferences={handleOpenCookiePreferences}
+        />, document.body)}</>
+      )}
       {openModalAuthenticateForProjectRoom && !user.authenticated && (
         <Modal
           zIndex={9999999999}
@@ -680,8 +726,8 @@ const Main = ({
           handleButtonOpenCard={handleButtonOpenCard}
           user={user}
           setModalData={setModalData}
-          // setContactOpen,
-          // setFaqOpen,
+        // setContactOpen,
+        // setFaqOpen,
         />
       )}
 
@@ -707,8 +753,8 @@ const Main = ({
             projectroomsData={dataFinalProjectRooms}
             handleOpenCreateOrganization={handleOpenCreateOrganization}
 
-            // openCreateOrganization,
-            // setOpenModalAuthenticate,
+          // openCreateOrganization,
+          // setOpenModalAuthenticate,
           />
         )}
 

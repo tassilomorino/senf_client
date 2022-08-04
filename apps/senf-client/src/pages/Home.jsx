@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, MainLoader, Map } from "senf-atomic-design-system";
+import { Box, MainLoader, Map, } from "senf-atomic-design-system";
 import { setMapBounds } from "../redux/actions/mapActions";
 import { openProjectRoomFunc } from "../redux/actions/projectActions";
 import { closeScream, openScreamFunc } from "../redux/actions/screamActions";
@@ -11,7 +11,10 @@ import {
   pick,
   search,
   sort,
+
 } from "../util/helpers";
+
+
 
 const Main = React.lazy(() =>
   Promise.all([
@@ -46,6 +49,12 @@ const Home = () => {
   const selectedOrganizationTypes = useSelector(
     (state) => state.data.organizationTypes
   );
+
+
+
+
+
+
 
   const handleSetMapBounds = (bounds) => {
     const boundsNew = {
@@ -116,11 +125,11 @@ const Home = () => {
     () =>
       openProjectRoom
         ? project?.screams?.filter(({ Thema }) =>
-            selectedTopics.includes(Thema)
-          )
+          selectedTopics.includes(Thema)
+        )
         : myScreams !== null && myScreams !== undefined
-        ? myScreams.filter(({ Thema }) => selectedTopics.includes(Thema))
-        : dataFinalIdeasMap,
+          ? myScreams.filter(({ Thema }) => selectedTopics.includes(Thema))
+          : dataFinalIdeasMap,
     [
       myScreams,
       openProjectRoom,

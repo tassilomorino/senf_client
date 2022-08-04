@@ -123,6 +123,7 @@ export { default as StatisticsOverview } from "./components/pages/statisticsOver
 export { default as ProfilePage } from "./components/pages/profilePage/ProfilePage";
 export { default as ProjectroomPage } from "./components/pages/projectroomPage/ProjectroomPage";
 export { default as ErrorLoading } from "./components/pages/warningPages/ErrorLoading";
+export { default as InfoPageMainApp } from "./components/pages/infoPages/InfoPageMainApp";
 
 export { default as Example } from "./components/templates/example/Example";
 

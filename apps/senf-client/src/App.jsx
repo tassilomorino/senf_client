@@ -6,7 +6,6 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { isTablet } from "react-device-detect";
-import Cookies from "universal-cookie";
 import { useTranslation } from "react-i18next";
 import {
   theme,
@@ -14,6 +13,8 @@ import {
   // i18n,
   MainLoader,
   Cookiebanner,
+  ModalProvider,
+  InfoPageMainApp
 } from "senf-atomic-design-system";
 import { ThemeProvider } from "styled-components";
 import { auth } from "./firebase";
@@ -62,42 +63,21 @@ import Home from "./pages/Home";
 // );
 
 // detectLocation(); // detect location and set i18n language
-const cookies = new Cookies();
 // require("intersection-observer");
 
 window.store = store;
 
-if (cookies.get("cookie_settings") === "all") {
-  store.dispatch(setCookies("all"));
-} else if (cookies.get("cookie_settings") === "minimum") {
-  store.dispatch(setCookies("minimum"));
-} else {
-  store.dispatch(setInfoPageOpen());
-}
 const vh = window.innerHeight * 0.01;
 // Then we set the value in the --vh custom property to the root of the document
 document.documentElement.style.setProperty("--vh", `${vh}px`);
 
 const App = () => {
+
   const { t } = useTranslation();
 
-  const { cookie_settings } = store.getState().data;
-  const [openCookiebanner, setOpenCookiebanner] = useState(true);
 
-  useEffect(() => {
-    if (cookie_settings === "all" || cookie_settings === "minimum") {
-      setOpenCookiebanner(false);
-    }
-  }, [cookie_settings]);
 
-  const handleOpenCookiePreferences = () => {
-    window.open("/cookieConfigurator", "_blank");
-  };
 
-  const handleCookies = (cookie_settings) => {
-    store.dispatch(setCookies(cookie_settings));
-    setOpenCookiebanner(false);
-  };
 
   const userState = () => {
     onAuthStateChanged(auth, (user) => {
@@ -138,6 +118,7 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
+
       <GlobalStyle />
 
       {import.meta.env.VITE_NO_CRAWL && (
@@ -166,65 +147,66 @@ const App = () => {
         </Helmet>
       )}
 
+
+
+
       <Provider store={store}>
-        <Router>
-          {/* <React.Suspense fallback={<MainLoader />}></React.Suspense> */}
+        <ModalProvider>
 
-          {tabletNote}
+          <Router>
+            {/* <React.Suspense fallback={<MainLoader />}></React.Suspense> */}
 
-          {isMobileCustom && (
-            <div className="landscapeNote">{t("rotate_phone")}</div>
-          )}
+            {tabletNote}
 
-          {!store.getState().loading && openCookiebanner && (
-            <Cookiebanner
-              handleCookies={handleCookies}
-              handleOpenCookiePreferences={handleOpenCookiePreferences}
-            />
-          )}
-          <div className="container">
-            <Switch>
-              <Route exact path="/projectRooms" component={Home} />
-              <Route exact path="/organizations" component={Home} />
+            {isMobileCustom && (
+              <div className="landscapeNote">{t("rotate_phone")}</div>
+            )}
 
-              <Route exact path="/datenschutz" component={datenschutz} />
-              <Route exact path="/agb" component={agb} />
 
-              <Route
-                exact
-                path="/cookieConfigurator"
-                component={cookieConfigurator}
-              />
+            <div className="container">
+              <Switch>
+                <Route exact path="/projectRooms" component={Home} />
+                <Route exact path="/organizations" component={Home} />
 
-              <Route exact path="/impressum" component={impressum} />
+                <Route exact path="/datenschutz" component={datenschutz} />
+                <Route exact path="/agb" component={agb} />
 
-              <Route exact path="/blank" component={blank} />
+                <Route
+                  exact
+                  path="/cookieConfigurator"
+                  component={cookieConfigurator}
+                />
 
-              <Route exact path="/idea/:screamId" component={Home} />
+                <Route exact path="/impressum" component={impressum} />
 
-              <Route
-                exact
-                path="/projectRooms/:projectRoomId/:screamId"
-                component={Home}
-              />
+                <Route exact path="/blank" component={blank} />
 
-              <Route
-                exact
-                path="/projectRooms/:projectRoomId"
-                component={Home}
-              />
+                <Route exact path="/idea/:screamId" component={Home} />
 
-              <Route
-                exact
-                path="/organizations/:organizationId"
-                component={Home}
-              />
-              <Route exact path="/:unknownPathId" component={Home} />
-              <Route exact path="/" component={Home} />
-              <Route path="*" component={Home} />
-            </Switch>
-          </div>
-        </Router>
+                <Route
+                  exact
+                  path="/projectRooms/:projectRoomId/:screamId"
+                  component={Home}
+                />
+
+                <Route
+                  exact
+                  path="/projectRooms/:projectRoomId"
+                  component={Home}
+                />
+
+                <Route
+                  exact
+                  path="/organizations/:organizationId"
+                  component={Home}
+                />
+                <Route exact path="/:unknownPathId" component={Home} />
+                <Route exact path="/" component={Home} />
+                <Route path="*" component={Home} />
+              </Switch>
+            </div>
+          </Router>
+        </ModalProvider>
       </Provider>
     </ThemeProvider>
   );

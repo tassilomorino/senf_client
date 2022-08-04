@@ -15,7 +15,9 @@ import Box from "../../atoms/box/Box";
 import Button from "../../atoms/buttons/Button";
 import Divider from "../../atoms/divider/Divider";
 import LanguageSelect from "../../molecules/languageSelect/LanguageSelect";
+import ModalButton from "../../molecules/modalStack/ModalButton";
 import { MenuSidebarProps } from "./MenuSidebar.types";
+import InfoPageMainApp from "../../pages/infoPages/InfoPageMainApp";
 
 const Wrapper = styled.div<MenuSidebarProps>`
   position: absolute;
@@ -83,6 +85,11 @@ const MenuSidebar: FC<MenuSidebarProps> = ({
           icon={<Info />}
           onClick={() => setInfoPageOpen(true)}
         />
+
+        <ModalButton options={{ swipe: false, size: "lg", height: 600 }}>
+          <InfoPageMainApp />
+        </ModalButton>
+
         <Button
           variant="white"
           size="small"
