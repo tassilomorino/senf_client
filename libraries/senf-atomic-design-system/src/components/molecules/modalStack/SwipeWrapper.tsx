@@ -4,7 +4,6 @@ import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDrag } from "@use-gesture/react";
 import { a, useSpring, config } from "@react-spring/web";
-import ModalHandle from "../modalStack/ModalHandle";
 
 const sheet = {
   zIndex: 100,
@@ -39,11 +38,12 @@ const Handle = styled.div<{ position: string }>`
 `
 
 interface SwipeWrapperProps {
-  height: number
+  height?: number
   children: React.ReactNode
   triggerClose: boolean
   onClose: () => void
   onDrag: (delta: number) => void
+  overflowing?: boolean
 }
 
 const SwipeWrapper: FC<SwipeWrapperProps> = ({

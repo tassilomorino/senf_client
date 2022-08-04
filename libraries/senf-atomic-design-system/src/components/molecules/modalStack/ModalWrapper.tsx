@@ -1,13 +1,16 @@
-import React from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
-import SwipeWrapper from "../modals/SwipeWrapper";
+import SwipeWrapper from "./SwipeWrapper";
 import ModalHandle from "./ModalHandle";
 import { ModalContext } from "./ModalProvider";
+import ModalWrapperProps from "./ModalWrapper.types";
 import Typography from "../../atoms/typography/Typography";
 import Box from "../../atoms/box/Box";
 import Button from "../../atoms/buttons/Button";
 
+
 import theme from "../../../styles/theme";
+
 
 interface SheetProps {
   index: number,
@@ -28,7 +31,7 @@ const Sheet = styled.div<SheetProps>`
     scale(${({ index }) => 1 - (index - 1) / 10})
     translate(
       -50%,
-      calc(${({ index, swipe }) => index === 0 && swipe ? "150%" : `${(index - 1) * -60}px - ${swipe ? 0 : 50}%`})
+      calc(${({ index, swipe }) => index === 0 && swipe ? "150%" : `${(index - 1) * -40}px - ${swipe ? 0 : 50}%`})
     );
   z-index: ${({ index }) => index === 1 ? 10 : index * -1};
   box-sizing: border-box;
@@ -55,20 +58,24 @@ const Background = styled.div<{ index: number }>`
   height: 100vh;
 `;
 const Toner = styled.div<{ size: string, index: number, swipe: boolean }>`
+  display: flex;
+  flex-direction: column;
+
   padding: 20px;
   padding-bottom: ${({ swipe }) => swipe && "120px"};
   padding-top: ${({ swipe }) => swipe && "40px"};
   opacity: ${({ index }) => 1 / index};
   height: ${({ height }) => height ? `${height}px` : '100%'};
   max-width: 100vw;
-  min-height: 320px;
+  min-height: 120px;
   max-height: calc(100vh - 80px);
   width: ${({ size }) => {
     switch (size) {
-      case "xl": return "1200px";
-      case "l": case "lg": return "800px";
-      case "m": case "md": return "600px";
-      default: return "400px";
+      case "full": return "max(calc(100vw - 40px), min(983px, 100vw))";
+      case "xl": return "983px";
+      case "l": case "lg": return "614px";
+      case "s": case "sm": return "240px";
+      case "m": case "md": default: return "384px";
     }
   }};
   background-color: ${({ backgroundColor, theme }) =>
@@ -81,7 +88,7 @@ const Toner = styled.div<{ size: string, index: number, swipe: boolean }>`
   overflow-x: hidden;
 `;
 
-const ModalWrapper = ({
+const ModalWrapper: FC<ModalWrapperProps> = ({
   size,
   title,
   description,
@@ -93,10 +100,21 @@ const ModalWrapper = ({
   onSubmit,
   submitDisabled,
   submitText,
-  cancelText
+  cancelText,
+  onBeforeOpen,
+  onAfterOpen,
+  onBeforeClose,
+  onAfterClose,
 }) => {
   const [triggerOpen, setOpen] = React.useState(0);
-  const { handleModal, modalStack } = React.useContext(ModalContext) || {};
+  const {
+    handleModal,
+    modalStack,
+    beforeOpen,
+    beforeClose,
+    afterOpen,
+    afterClose,
+  } = React.useContext(ModalContext) || {};
 
   React.useEffect(() => {
     setOpen(modalStack)
@@ -117,13 +135,29 @@ const ModalWrapper = ({
       setOverflowing(sheet.current?.scrollHeight < innerHeight)
     }, 0)
   })
-  console.log(children)
+
+
+  React.useEffect(() => {
+    if (beforeOpen && onBeforeOpen) onBeforeOpen()
+  }, [beforeOpen])
+  React.useEffect(() => {
+    if (beforeClose && onBeforeClose) onBeforeClose()
+  }, [beforeClose])
+  React.useEffect(() => {
+    if (afterOpen && onAfterOpen) onAfterOpen()
+  }, [afterOpen])
+  React.useEffect(() => {
+    if (afterClose && onAfterClose) onAfterClose()
+  }, [afterClose])
+
+
+
   return (
     <Wrapper
       height={height || innerHeight || 320}
       size={size}
       triggerOpen={triggerOpen}
-      onDrag={(e) => (modalStack === 2) && setOpacity(e)}
+      onDrag={(e) => (modalStack === 3) && setOpacity(e)}
       onClose={close}
       index={index}
       overflowing={overflowing}
@@ -136,7 +170,7 @@ const ModalWrapper = ({
             {title && <Typography variant="h3">{title}</Typography>}
             {description && <Typography variant="bodyBg" color={theme.colors.greyscale.greyscale100}>{description}</Typography>}
           </Box>}
-          {children}
+          <div style={{ marginBottom: "auto" }}>{children}</div>
           {(cancelText || submitText) &&
             <Box
               width="100%"
@@ -155,7 +189,7 @@ const ModalWrapper = ({
                 <Button
                   variant="primary"
                   fillWidth="max"
-                  onClick={onSubmit}
+                  onClick={() => { onSubmit().then(() => close()) }}
                   disabled={!!submitDisabled}
                   text={submitText}
                 />

@@ -18,14 +18,16 @@ const Background = styled.div<StackProps>`
   pointer-events: ${({ stack }) => stack < 2 ? "none" : "auto"};
 `;
 
-const Stack = styled.div<StackProps>``
+const Stack = styled.div<StackProps>`
+z-index: 999999;
+`
 
 const ModalStack = () => {
   const { modalComponents, modalStack, handleModal } = React.useContext(ModalContext) || {};
   const [opacity, setOpacity] = React.useState(0.0001);
 
   React.useEffect(() => {
-    if (modalStack === 1) {
+    if (modalStack < 3) {
       setOpacity(0.0001);
     } else {
       setOpacity(1);
@@ -35,7 +37,7 @@ const ModalStack = () => {
   return (<>
     <Stack>
       {modalComponents.map(({ modal, options }, index, { length }) => (
-        (modal?.$$typeof || modal?.length > 0) &&
+        (modal?.$$typeof || modal?.length > 0 || options?.title) &&
         <ModalWrapper
           key={index}
           index={length - index - 1}
