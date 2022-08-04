@@ -10,11 +10,7 @@ import { useTranslation } from "react-i18next";
 import {
   theme,
   GlobalStyle,
-  // i18n,
-  MainLoader,
-  Cookiebanner,
   ModalProvider,
-  InfoPageMainApp
 
 } from "senf-atomic-design-system";
 import { ThemeProvider } from "styled-components";
@@ -75,7 +71,6 @@ document.documentElement.style.setProperty("--vh", `${vh}px`);
 const App = () => {
 
   const { t } = useTranslation();
-
   const userState = () => {
     onAuthStateChanged(auth, (user) => {
       if (user && user.uid && user.emailVerified) {
