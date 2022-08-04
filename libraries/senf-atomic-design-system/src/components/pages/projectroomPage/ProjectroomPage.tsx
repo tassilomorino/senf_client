@@ -15,7 +15,7 @@ import Typography from "../../atoms/typography/Typography";
 import { ProjectroomPageProps } from "./ProjectroomPage.types";
 import Input from "../../atoms/inputs/Input";
 import List from "../../molecules/list/List";
-import CommentCard from "../../molecules/cards/commentCard";
+import CommentCard from "../../molecules/cards/CommentCard";
 import Wave from "../../atoms/shapes/Wave";
 import theme from "../../../styles/theme";
 import Divider from "../../atoms/divider/Divider";
@@ -48,7 +48,7 @@ import Skeleton from "../../atoms/skeleton/Skeleton";
 
 // const Calendar = React.lazy(() => import("../../organisms/calendar/Calendar"));
 
-const DragWrapper = styled(animated.div)<ProjectroomPageProps>`
+const DragWrapper = styled(animated.div) <ProjectroomPageProps>`
   display: flex;
   position: relative;
   flex-direction: column;
