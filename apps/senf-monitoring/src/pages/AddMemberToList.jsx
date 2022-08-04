@@ -67,7 +67,7 @@ const AddMemberToList = ({ onSubmit }) => {
     }
   };
   return (
-    <Box flexDirection="column" gap="20px">
+    <Box flexDirection="column" gap="20px" width="100%">
       {/* <Box alignItems="center" justifyContent="space-between"><Typography variant="h2">Add User to List</Typography>
         <RoundedButton
           variant="secondary"
