@@ -37,9 +37,9 @@ const List: FC<ListProps> = ({
   handleOpenProjectroom,
   handleButtonLike,
   handleButtonComment,
-  handleOpenMenuComment,
   user,
   listEndText,
+  ...props
 }) => {
   const dataLength = data?.length;
   const { t } = useTranslation();
@@ -96,8 +96,8 @@ const List: FC<ListProps> = ({
                 handleOpenProjectroom={handleOpenProjectroom}
                 handleButtonLike={handleButtonLike}
                 handleButtonComment={handleButtonComment}
-                handleOpenMenuComment={handleOpenMenuComment}
                 user={user}
+                {...props}
               />
             </Box>
           )

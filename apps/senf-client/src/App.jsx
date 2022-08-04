@@ -14,6 +14,7 @@ import {
   // i18n,
   MainLoader,
   Cookiebanner,
+  ModalProvider,
 } from "senf-atomic-design-system";
 import { ThemeProvider } from "styled-components";
 import { auth } from "./firebase";
@@ -167,65 +168,68 @@ const App = () => {
       )}
 
       <Provider store={store}>
-        <Router>
-          {/* <React.Suspense fallback={<MainLoader />}></React.Suspense> */}
+        <ModalProvider>
+          <Router>
+            {/* <React.Suspense fallback={<MainLoader />}></React.Suspense> */}
 
-          {tabletNote}
+            {tabletNote}
 
-          {isMobileCustom && (
-            <div className="landscapeNote">{t("rotate_phone")}</div>
-          )}
+            {isMobileCustom && (
+              <div className="landscapeNote">{t("rotate_phone")}</div>
+            )}
 
-          {!store.getState().loading && openCookiebanner && (
-            <Cookiebanner
-              handleCookies={handleCookies}
-              handleOpenCookiePreferences={handleOpenCookiePreferences}
-            />
-          )}
-          <div className="container">
-            <Switch>
-              <Route exact path="/projectRooms" component={Home} />
-              <Route exact path="/organizations" component={Home} />
-
-              <Route exact path="/datenschutz" component={datenschutz} />
-              <Route exact path="/agb" component={agb} />
-
-              <Route
-                exact
-                path="/cookieConfigurator"
-                component={cookieConfigurator}
+            {!store.getState().loading && openCookiebanner && (
+              <Cookiebanner
+                handleCookies={handleCookies}
+                handleOpenCookiePreferences={handleOpenCookiePreferences}
               />
+            )}
+            <div className="container">
+              <Switch>
+                <Route exact path="/projectRooms" component={Home} />
+                <Route exact path="/organizations" component={Home} />
 
-              <Route exact path="/impressum" component={impressum} />
+                <Route exact path="/datenschutz" component={datenschutz} />
+                <Route exact path="/agb" component={agb} />
 
-              <Route exact path="/blank" component={blank} />
+                <Route
+                  exact
+                  path="/cookieConfigurator"
+                  component={cookieConfigurator}
+                />
 
-              <Route exact path="/idea/:screamId" component={Home} />
+                <Route exact path="/impressum" component={impressum} />
 
-              <Route
-                exact
-                path="/projectRooms/:projectRoomId/:screamId"
-                component={Home}
-              />
+                <Route exact path="/blank" component={blank} />
 
-              <Route
-                exact
-                path="/projectRooms/:projectRoomId"
-                component={Home}
-              />
+                <Route exact path="/idea/:screamId" component={Home} />
 
-              <Route
-                exact
-                path="/organizations/:organizationId"
-                component={Home}
-              />
-              <Route exact path="/:unknownPathId" component={Home} />
-              <Route exact path="/" component={Home} />
-              <Route path="*" component={Home} />
-            </Switch>
-          </div>
-        </Router>
+                <Route
+                  exact
+                  path="/projectRooms/:projectRoomId/:screamId"
+                  component={Home}
+                />
+
+                <Route
+                  exact
+                  path="/projectRooms/:projectRoomId"
+                  component={Home}
+                />
+
+                <Route
+                  exact
+                  path="/organizations/:organizationId"
+                  component={Home}
+                />
+                <Route exact path="/:unknownPathId" component={Home} />
+                <Route exact path="/" component={Home} />
+                <Route path="*" component={Home} />
+              </Switch>
+            </div>
+          </Router>
+        </ModalProvider>
       </Provider>
+
     </ThemeProvider>
   );
 };
