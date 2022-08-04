@@ -16,6 +16,7 @@
     "react-mapbox-gl": "^5.1.1",
     "react-scripts": "5.0.1",
     "senf-atomic-design-system": "*",
+    "senf-shared": "workspace:^",
     "styled-components": "^5.3.5",
     "three": "^0.142.0",
     "threebox-plugin": "^2.2.7",

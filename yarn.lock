@@ -9643,6 +9643,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"browser-image-compression@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "browser-image-compression@npm:2.0.0"
+  dependencies:
+    uzip: 0.20201231.0
+  checksum: c95b3ad5d6d32999d5e8cd04c7de9e071a301644ed561f001a18d4fbd5202925daeba14d8bf98ff5965fefc21c63f7a3cbb1879bf754d68654f72f492916d13c
+  languageName: node
+  linkType: hard
+
 "browser-process-hrtime@npm:^1.0.0":
   version: 1.0.0
   resolution: "browser-process-hrtime@npm:1.0.0"
@@ -24628,6 +24637,7 @@ __metadata:
     react-mapbox-gl: ^5.1.1
     react-scripts: 5.0.1
     senf-atomic-design-system: "*"
+    senf-shared: "workspace:^"
     styled-components: ^5.3.5
     three: ^0.142.0
     threebox-plugin: ^2.2.7
@@ -24789,6 +24799,7 @@ __metadata:
     "@vitejs/plugin-react": ^1.2.0
     "@welldone-software/why-did-you-render": ^6.2.1
     axios: ^0.24.0
+    browser-image-compression: ^2.0.0
     firebase: ^9.8.3
     formik: ^2.2.9
     i18next: ^21.4.0
@@ -24806,16 +24817,18 @@ __metadata:
     redux: ^4.1.2
     redux-thunk: ^2.4.0
     senf-atomic-design-system: "*"
+    senf-shared: "*"
     source-map-explorer: ^2.5.2
     start-server-and-test: ^1.13.1
     styled-components: ^5.3.3
     universal-cookie: ^4.0.4
+    uuid: ^8.3.2
     vite: ^2.9.11
     yup: ^0.32.11
   languageName: unknown
   linkType: soft
 
-"senf-shared@*, senf-shared@workspace:shared/senf-shared":
+"senf-shared@*, senf-shared@workspace:^, senf-shared@workspace:shared/senf-shared":
   version: 0.0.0-use.local
   resolution: "senf-shared@workspace:shared/senf-shared"
   dependencies:
