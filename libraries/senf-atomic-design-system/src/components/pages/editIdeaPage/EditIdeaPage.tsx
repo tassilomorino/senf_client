@@ -153,9 +153,9 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
             <RoundedButton
               variant={
                 formikEditIdea.values.weblink !== null &&
-                formikEditIdea.values.weblink !== "" &&
-                formikEditIdea.values.weblinkTitle !== null &&
-                formikEditIdea.values.weblinkTitle !== ""
+                  formikEditIdea.values.weblink !== "" &&
+                  formikEditIdea.values.weblinkTitle !== null &&
+                  formikEditIdea.values.weblinkTitle !== ""
                   ? "primary"
                   : "white"
               }
@@ -166,9 +166,9 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
             <RoundedButton
               variant={
                 formikEditIdea.values.contact !== null &&
-                formikEditIdea.values.contact !== "" &&
-                formikEditIdea.values.contactTitle !== null &&
-                formikEditIdea.values.contactTitle !== ""
+                  formikEditIdea.values.contact !== "" &&
+                  formikEditIdea.values.contactTitle !== null &&
+                  formikEditIdea.values.contactTitle !== ""
                   ? "primary"
                   : "white"
               }
@@ -196,11 +196,13 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
           </Box>
 
           <Dropdown
+            key="topic"
             id="topic"
+            name="topic"
             label={t("topic")}
             initialValue={t("select_topic")}
             listItems={OptionsTopics()}
-            recieveValue={formikEditIdea.handleChange("Thema")}
+            onChange={formikEditIdea.handleChange("Thema")}
             value={formikEditIdea.values.Thema}
           />
           <Dropdown
@@ -208,13 +210,13 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
             label={t("projectrooms")}
             initialValue={t("all_ideas")}
             listItems={projectRooms && OptionsProjectrooms(projectRooms)}
-            recieveValue={formikEditIdea.handleChange("projectRoomId")}
+            onChange={formikEditIdea.handleChange("projectRoomId")}
             value={formikEditIdea.values.projectRoomId}
-            /* text={
-                OptionsProjects().find(
-                  (optionsProjects) => projectSelected === optionsProjects.value
-                ).label || t("all_ideas")
-              } */
+          /* text={
+              OptionsProjects().find(
+                (optionsProjects) => projectSelected === optionsProjects.value
+              ).label || t("all_ideas")
+            } */
           />
 
           <div style={{ height: "100px" }} />
