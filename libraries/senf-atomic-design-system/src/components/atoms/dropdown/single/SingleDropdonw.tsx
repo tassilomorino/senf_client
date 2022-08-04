@@ -11,21 +11,19 @@ const SingleDropdown: FunctionComponent<DropdownProps<false>> = ({
   placeholder,
   listItems,
   value,
-  recieveValue,
+  onChange,
 }) => {
   const { t } = useTranslation();
   // const listItemKey = Object.keys(listItems)[0];
 
   return (
     <>
-      <InputField
+      {/* <InputField
         multi
         as={Selector}
         name={id}
         id={id}
-        onChange={(e) => {
-          recieveValue(e.currentTarget.value);
-        }}
+        onChange={onChange}
         placeholder={placeholder}
         value={value}
       >
@@ -39,7 +37,7 @@ const SingleDropdown: FunctionComponent<DropdownProps<false>> = ({
             {item.label}
           </option>
         ))}
-      </InputField>
+      </InputField> */}
     </>
   );
 };

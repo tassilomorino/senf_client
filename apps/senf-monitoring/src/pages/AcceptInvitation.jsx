@@ -33,15 +33,18 @@ export const AcceptInvitation = () => {
   const user = useSelector((state) => state.user);
   const [state, setState] = useState([]);
 
-  const invitationDocId = window.location.hash.substring(1);
 
-  const getMembers = async () => {
+  const params = (new URL(document.location)).searchParams;
+  const invitationId = params.get("invitationId");
+
+  const handleSetInvitationData = async () => {
     try {
-      const docRef = doc(db, `exampleMail/${invitationDocId}`);
+      const docRef = doc(db, `mail/${invitationId}`);
       const docSnapshot = await getDoc(docRef);
 
       if (docSnapshot) {
         setState(docSnapshot.data());
+        console.log(docSnapshot.data())
       }
     } catch (error) {
       throw new Error(error, "Error in Memberlist");
@@ -49,14 +52,18 @@ export const AcceptInvitation = () => {
   };
 
   useEffect(() => {
-    console.log(invitationDocId);
-    getMembers();
+    handleSetInvitationData();
   }, []);
+
+
+
+
+
 
   const handleUpdateDoc = async (invitationDocData, uid) => {
     const updateDocData = {
-      role: invitationDocData.role,
-      organizationName: invitationDocData.organizationName,
+      // role: invitationDocData.role,
+      // organizationName: invitationDocData.organizationName,
     };
     const docRef = doc(db, `exampleUsers/${uid}`);
     await updateDoc(docRef, updateDocData);
@@ -66,7 +73,7 @@ export const AcceptInvitation = () => {
     const uid = "zWSfdDHkerK4X2gjdDSL";
 
     try {
-      const invitationDocRef = doc(db, `exampleMail/${invitationDocId}`);
+      const invitationDocRef = doc(db, `exampleMail/${invitationId}`);
       const invitationDocSnapshot = await getDoc(invitationDocRef);
       const invitationDocData = invitationDocSnapshot.data();
 

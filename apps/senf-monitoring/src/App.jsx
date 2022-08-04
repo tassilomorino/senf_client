@@ -18,25 +18,25 @@ import PageNotFound from "./pages/PageNotFound";
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
-    <ModalProvider>
-      <GlobalStyle />
+      <ModalProvider>
+        <GlobalStyle />
 
-      {import.meta.env.VITE_NO_CRAWL && (
-        /* disable google crawling for senf-client-test.netlify.app */
-        <Helmet>
-          <meta name="robots" content="noindex" />
-        </Helmet>
-      )}
+        {import.meta.env.VITE_NO_CRAWL && (
+          /* disable google crawling for senf-client-test.netlify.app */
+          <Helmet>
+            <meta name="robots" content="noindex" />
+          </Helmet>
+        )}
 
-      <AuthProvider>
-        <Router>
-          <React.Suspense fallback={<div>Loading...</div>}>
-            <Routes>
-              <Route
-                exact
-                path="/register"
-                element={<AuthPage variant="register" />}
-              />
+        <AuthProvider>
+          <Router>
+            <React.Suspense fallback={<div>Loading...</div>}>
+              <Routes>
+                <Route
+                  exact
+                  path="/register"
+                  element={<AuthPage variant="register" />}
+                />
 
                 <Route
                   exact
