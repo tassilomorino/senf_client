@@ -21,7 +21,7 @@ const InlineDatePickerModal = ({
       setOpenModal={setCalendarOpen}
       handleClose={handleCloseCalendar}
       handleSave={handleSaveCalendar}
-      disabledSaveButton={selectedDays.length === 0}
+      /*  disabledSaveButton={selectedDays.length === 0} */
       cancelButtonText={t("cancel")}
       saveButtonText={t("save")}
     >

@@ -40,23 +40,53 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const [data, setData] = useState({
-    handle: user?.handle,
-    description: user?.description ? user?.description : null,
-    zipcode: user?.zipcode ? user?.zipcode : null,
-    age: user?.age ? user?.age : null,
-    sex: user?.sex ? user?.sex : null,
+
+  const addDetailsValidationSchema = yup.object({
+    handle: yup
+      .string()
+      .required(t("enter_username"))
+      .min(3, t("username_too_short"))
+      .max(20, t("username_too_long"))
+      .matches(/^\S*$/, t("spaces_username"))
+      .matches(/^[a-zA-Z0-9\-\_\.]*$/, t("username_latin_only")),
+    description: yup
+      .string()
+      .min(10, t("description_too_short"))
+      .max(100, t("description_too_long"))
+
   });
+
+  const formik = useFormik({
+    initialValues: {
+      handle: "",
+      description: "",
+      zipcode: "",
+      age: "",
+      sex: "",
+    },
+    validationSchema: addDetailsValidationSchema,
+    validateOnMount: true,
+    validateOnChange: true,
+    validateOnBlur: true,
+  });
+
+
 
   useEffect(() => {
     // Set up canvas
-    setData({
-      handle: user?.handle,
-      description: user?.description ? user?.description : null,
-      zipcode: user?.zipcode ? user?.zipcode : null,
-      age: user?.age ? user?.age : null,
-      sex: user?.sex ? user?.sex : null,
-    });
+    formik.setFieldValue("handle", user?.handle)
+    formik.setFieldValue("description", user?.description)
+    formik.setFieldValue("zipcode", user?.zipcode)
+    formik.setFieldValue("age", user?.age)
+    formik.setFieldValue("sex", user?.sex)
+
+
+    // if (data.contact) {
+    //   formik.setFieldValue("contact", data.contact);
+    // }
+
+
+
   }, [user]);
 
   function generateArrayOfYears() {
@@ -116,28 +146,39 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
           />
         </Box>
         <Input
+          key="handle"
+          id="handle"
+          name="handle"
           type="text"
           placeholder={t("username")}
-          onChange={(e) => setData({ ...data, handle: e.target.value })}
-          value={data.handle}
+          onChange={formik?.handleChange}
+          value={formik?.values.handle}
         />
 
         <Input
+          key="description"
+          id="description"
+          name="description"
           type="textarea"
           rows={3}
           placeholder={t("auth_add_details_description")}
-          onChange={(e) => setData({ ...data, description: e.target.value })}
-          value={data.description}
+          onChange={formik?.handleChange}
+          value={formik?.values.description}
         />
         <Input
+          key="zipcode"
+          id="zipcode"
+          name="zipcode"
           type="text"
           placeholder={t("zipcode")}
-          onChange={(e) => setData({ ...data, zipcode: e.target.value })}
-          value={data.zipcode}
+          onChange={formik?.handleChange}
+          value={formik?.values.zipcode}
         />
         <Box gap="8px">
           <Dropdown
+            key="sex"
             id="sex"
+            name="sex"
             listItems={[
               {
                 label: t("diverse"),
@@ -152,28 +193,20 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
                 value: "male",
               },
             ]}
-            recieveValue={(selectedItem) =>
-              setData({
-                ...data,
-                sex: selectedItem,
-              })
-            }
-            value={data.sex}
+            onChange={formik?.handleChange}
+            value={formik?.values.sex}
           />
           <Dropdown
+            key="age"
             id="age"
+            name="age"
             listItems={years}
-            recieveValue={(selectedItem) =>
-              setData({
-                ...data,
-                age: selectedItem,
-              })
-            }
-            value={data.age}
+            onChange={formik?.handleChange}
+            value={formik?.values.age}
           />
         </Box>
         <br />
-        <Button variant="white" onClick={() => handleSubmitEditDetails(data)}>
+        <Button variant="white" onClick={() => handleSubmitEditDetails(formik)}>
           {t("save")}
         </Button>
       </Box>

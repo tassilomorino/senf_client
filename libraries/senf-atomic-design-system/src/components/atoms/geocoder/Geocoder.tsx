@@ -70,6 +70,10 @@ const Wrapper = styled.div<GeocoderProps>`
 `;
 
 const Geocoder: FC<GeocoderProps> = ({ placeholder }) => {
+  const queryParams = {
+    bbox: [6.7, 50.8, 7.2, 51],
+  };
+  const geocoderRef = React.useRef<MapboxGeocoder>(null);
   useEffect(() => {
     mapboxgl.accessToken =
       "pk.eyJ1IjoiZGF0dHdvb2QxOTg2IiwiYSI6ImNraTI5cnAwcDByZHUycnBleWphMHR1dDcifQ.u7pG_sZ7Su685A11r6-uuw";
@@ -78,10 +82,17 @@ const Geocoder: FC<GeocoderProps> = ({ placeholder }) => {
       accessToken: mapboxgl.accessToken,
       // types: "country,region,place,postcode,locality,neighborhood",
       placeholder: placeholder || "Suche nach Orten",
+      queryParams,
+      limit: 3,
+      hideOnSelect: true,
+      language: "de",
+      transitionDuration: 1000,
+      bbox: [6.7, 50.8, 7.2, 51],
     });
 
-    geocoder.addTo("#geocoder");
-
+    if (geocoderRef.current) {
+      geocoder.addTo(geocoderRef.current);
+    }
     // Get the geocoder results container.
     const results = document.getElementById("result");
 
@@ -94,11 +105,17 @@ const Geocoder: FC<GeocoderProps> = ({ placeholder }) => {
     geocoder.on("clear", () => {
       results.innerText = "";
     });
+
+    return () => {
+      // is this cleanup correct ?
+
+      geocoderRef.current = null;
+    };
   }, []);
 
   return (
     <Wrapper>
-      <div id="geocoder"></div>
+      <div ref={geocoderRef}></div>
       <pre id="result"></pre>
     </Wrapper>
   );

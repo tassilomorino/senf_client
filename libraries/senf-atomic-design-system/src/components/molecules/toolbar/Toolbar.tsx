@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import Button from "../../atoms/buttons/Button";
@@ -72,6 +72,7 @@ const Toolbar: FC<ToolbarProps> = ({
   sortOptions,
   statusOptions,
   activeSortOptionLabel,
+  setActiveSortOptionLabel,
 
   secondButton,
 
@@ -109,7 +110,10 @@ const Toolbar: FC<ToolbarProps> = ({
                   type="check"
                   text={label}
                   checked={checkedSortOption === value}
-                  setChecked={() => setCheckedSortOption(value)}
+                  setChecked={() => {
+                    setCheckedSortOption(value);
+                    setActiveSortOptionLabel(label);
+                  }}
                 />
               </Box>
             ))}

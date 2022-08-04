@@ -569,9 +569,14 @@ const Map: FC<MapProps> = ({
     map.on("dragend", () => {
       setMapMoved(true);
     });
-    map.on("zoomend", () => {
-      setMapMoved(true);
-    });
+
+    setTimeout(() => {
+      map.on("zoomend", () => {
+        setMapMoved(true);
+      });
+    }, 5000);
+
+
 
     return () => map.remove();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -640,7 +645,7 @@ const Map: FC<MapProps> = ({
   }, [IdeasGeoJson]);
 
   useEffect(() => {
-    if (ideaData) {
+    if (ideaData && ideaData.long && ideaData.lat) {
       setPinData([{ ideaData }]);
       setTimeout(() => {
         statefulMap.flyTo({

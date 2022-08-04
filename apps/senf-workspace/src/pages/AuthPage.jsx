@@ -16,7 +16,6 @@ import {
   setDoc,
 } from "firebase/firestore";
 
-import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -28,6 +27,7 @@ import {
   Modal,
 } from "senf-atomic-design-system";
 import styled from "styled-components";
+import { auth, db } from "../firebase";
 
 const Section = styled.section`
   position: fixed;
@@ -103,7 +103,6 @@ const AuthPage = ({ variant }) => {
     if (!usernameQuerySnapshot.empty) {
       // username already exists
       setLoading(false);
-      return;
     } else {
       // username is available, try to create user and put info to database
       try {

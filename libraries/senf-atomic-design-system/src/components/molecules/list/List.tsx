@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 
@@ -67,7 +67,7 @@ const List: FC<ListProps> = ({
 
   const itemsPerPage = 1;
   const [hasMoreItems, sethasMoreItems] = useState(true);
-  const [listItems, setListItems] = useState(itemsPerPage);
+  const [listItems, setListItems] = useState(0);
 
   const showItems = (dataArray, CardType) => {
     const items = [];
@@ -106,8 +106,7 @@ const List: FC<ListProps> = ({
       return items;
     }
   };
-
-  const loadMore = () => {
+  const loadMore = useCallback(() => {
     if (listItems === data?.length) {
       sethasMoreItems(false);
     } else {
@@ -115,7 +114,7 @@ const List: FC<ListProps> = ({
         setListItems(listItems + itemsPerPage);
       }, 100);
     }
-  };
+  }, [listItems, data?.length]);
 
   return (
     <React.Fragment>

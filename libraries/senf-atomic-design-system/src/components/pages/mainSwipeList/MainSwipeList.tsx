@@ -181,7 +181,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   const { t } = useTranslation();
   const isMobile = isMobileCustom();
   const [swipePercentage, setSwipePercentage] = useState(0);
-
+  const [activeSortOptionLabel, setActiveSortOptionLabel] = useState("");
   const [springProps, setSpring] = useSpring(() => ({
     x: 0,
     y: 0,
@@ -232,6 +232,19 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
       touchAction: "unset",
     });
   };
+  useEffect(() => {
+    if (order === "ideas") {
+      setActiveSortOptionLabel(t("newest_ideas"));
+      setCheckedSortOption("newest");
+    } else if (openOrganizationsOverview) {
+      setActiveSortOptionLabel(t("newest_organizations"));
+      setCheckedSortOption("newest");
+    } else if (order === "projectrooms") {
+      setActiveSortOptionLabel(t("newest_projectrooms"));
+      setCheckedSortOption("newest");
+    }
+    console.log(order);
+  }, [order, openOrganizationsOverview]);
 
   // useEffect(() => {
   //   if (searchOpen) {
@@ -353,9 +366,8 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
       searchPlaceholder={t("searchBar")}
       checkedSortOption={checkedSortOption}
       setCheckedSortOption={setCheckedSortOption}
-      activeSortOptionLabel={
-        order === "ideas" ? t("newest_ideas") : t("newest_projectrooms")
-      }
+      activeSortOptionLabel={activeSortOptionLabel}
+      setActiveSortOptionLabel={setActiveSortOptionLabel}
       sortOptions={
         order === "ideas"
           ? [
