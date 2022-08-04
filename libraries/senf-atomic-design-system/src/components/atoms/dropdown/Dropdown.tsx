@@ -5,8 +5,6 @@ import { useTranslation } from "react-i18next";
 import Box from "../box/Box";
 import { Wrapper, Label, Note, InputField } from "../inputs/input.styles";
 import { DropdownProps, MultiListItems } from "./Dropdown.types";
-import MultiDropdown from "./multi/MultiDropdown";
-import SingleDropdown from "./single/SingleDropdonw";
 import { Selector } from "./Dropdown.styles";
 
 const Dropdown: FunctionComponent<DropdownProps> = ({
@@ -14,7 +12,6 @@ const Dropdown: FunctionComponent<DropdownProps> = ({
   placeholder,
   label,
   note,
-  multi,
   listItems,
   onChange,
   value,
@@ -27,7 +24,6 @@ const Dropdown: FunctionComponent<DropdownProps> = ({
         <Note>{note}</Note>
       </Box>
       <InputField
-        multi
         as={Selector}
         name={id}
         id={id}
