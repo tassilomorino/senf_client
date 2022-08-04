@@ -123,7 +123,7 @@ const Button: FC<ButtonProps> = ({
     borderStyle={borderStyle}
     justifyContent={justifyContent}
     fillWidth={fillWidth}
-    loading={loading}
+    $loading={loading}
     onClick={onClick}
     size={size}
     {...rest}

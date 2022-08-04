@@ -8,6 +8,8 @@ import {
   LIKE_SCREAM,
   UNLIKE_SCREAM,
   SET_MY_SCREAMS,
+  SUBMIT_MY_COMMENT,
+  DELETE_MY_COMMENT,
   SET_MY_ORGANIZATIONS,
   LOADING_MYORGANIZATIONS_DATA,
   LOADING_MYSCREAMS_DATA,
@@ -88,6 +90,25 @@ export default function (state = initialState, action) {
         myOrganizations: action.payload,
         loadingMyOrganizations: false,
       };
+    case SUBMIT_MY_COMMENT:
+      return {
+        ...state,
+        comments: [
+          ...state.comments,
+          {
+            ...action.payload,
+          },
+        ],
+      };
+    case DELETE_MY_COMMENT:
+      const leftComments = state.comments.filter(
+        (comment) => comment.commentId !== action.payload
+      );
+      return {
+        ...state,
+        comments: leftComments,
+      };
+
     // case MARK_NOTIFICATIONS_READ:
     //   state.notifications.forEach((not) => (not.read = true));
     //   return {

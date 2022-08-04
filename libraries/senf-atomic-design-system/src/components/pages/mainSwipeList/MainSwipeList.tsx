@@ -173,6 +173,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
 
   ideasDataOriginal,
   handleMapBoundsReset,
+  mapFilterActive,
 
   swipedUpState,
   setSwipedUpState,
@@ -406,13 +407,12 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
         <InnerWrapper>
           <Header
             {...bind()}
-            swipedUp={swipedUp}
+
             // style={listHeaderProps}
           >
             {isMobile && <HandleBar />}
 
             <MainSwipeListTabs
-              swipedUp={swipedUp}
               handleSwipeUp={handleSwipeUp}
               order={order}
               setOrder={setOrder}
@@ -511,7 +511,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
           </ContentWrapper>
         </InnerWrapper>
 
-        {ideasDataOriginal.length !== ideasData.length && (
+        {mapFilterActive && (
           <Box
             position="absolute"
             bottom={isMobile ? "50px" : "30px"}

@@ -93,24 +93,35 @@ const SwipeModal: FC<SwipeModalProps> = ({
     userSelect: "none",
   }));
 
+  const setSpring = (transform: number, overflowType: string, touchAction: string, userSelect: string) => {
+    const spring = {}
+    if (transform) spring.transform = isMobile ? `translateY(${transform}px)` : "translate(-50%, -50%)"
+    if (overflowType) spring.overflow = overflow
+    if (touchAction) spring.touchAction = touchAction
+    if (userSelect) spring.userSelect = userSelect
+    set(spring);
+  }
+
   const handleOpen = () => {
     setOpenModal(true);
-
     setTimeout(() => {
-      set({
-        transform: isMobile ? `translateY(${16}px)` : "translate(-50%, -50%)",
-        overflow: "scroll",
-        touchAction: "unset",
-        userSelect: "none",
-      });
+      setSpring(16, "scroll", "unset", "none");
+      // set({
+      //   transform: isMobile ? `translateY(${16}px)` : "translate(-50%, -50%)",
+      //   overflow: "scroll",
+      //   touchAction: "unset",
+      //   userSelect: "none",
+      // });
     }, 50);
   };
 
   const handleClose = () => {
-    set({
-      transform: `translateY(${window.innerHeight}px)`,
-      touchAction: "none",
-    });
+    setSpring(window.innerHeight, null, "none", "none");
+
+    // set({
+    //   transform: `translateY(${window.innerHeight}px)`,
+    //   touchAction: "none",
+    // });
     setTimeout(() => {
       setOpenModal(false);
     }, 600);
@@ -140,7 +151,7 @@ const SwipeModal: FC<SwipeModalProps> = ({
           touchAction: "unset",
         });
       }
-      // set({ y: down ? my : 0 });
+      set({ y: down ? my : 0 });
     },
     {
       pointer: { touch: true },
@@ -156,11 +167,11 @@ const SwipeModal: FC<SwipeModalProps> = ({
     openModal &&
     ReactDOM.createPortal(
       <React.Fragment>
-        <Background zIndex={zIndex - 1} onClick={handleClose} />
+        <Background $zIndex={zIndex - 1} onClick={handleClose} />
         <DragWrapper
           style={props}
-          zIndex={zIndex}
-          backgroundColor={backgroundColor}
+          $zIndex={zIndex}
+          $backgroundColor={backgroundColor}
           overflow={overflow}
           role="dialog"
           size={size}

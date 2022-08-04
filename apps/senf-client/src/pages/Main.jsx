@@ -32,11 +32,6 @@ import {
 } from "../redux/actions/projectActions";
 
 import {
-  setMapBounds,
-  setInitialMapBounds,
-  setMapViewport,
-} from "../redux/actions/mapActions";
-import {
   handleTopicSelectorRedux,
   handleOrganizationTypesSelectorRedux,
   setSwipePositionUp,
@@ -45,7 +40,6 @@ import {
 
 // Components
 import StatisticsOverviewPage from "./StatisticsOverviewPage";
-import Map from "../components/atoms/map/Map";
 import IdeaDialog from "./IdeaDetailPage";
 import {
   closeAccountFunc,
@@ -113,14 +107,21 @@ const MobileMapClickBackground = styled.div`
   transition: 0.5s;
   pointer-events: ${(props) => (props.show ? "all" : "none")};
 `;
-const Main = () => {
+const Main = ({
+  statefulMap,
+  setStatefulMap,
+  mapFilterActive,
+  order,
+  setOrder,
+  postIdeaOpen,
+  setPostIdeaOpen,
+  handleSetInitialMapBoundsAndViewport,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const errors = useSelector((state) => state.UI.errors);
   const [authOpen, setAuthOpen] = useState(false);
   const [authEditOpen, setAuthEditOpen] = useState(false);
-
-  const [postIdeaOpen, setPostIdeaOpen] = useState(false);
 
   const [modalData, setModalData] = useState(null);
 
@@ -163,9 +164,7 @@ const Main = () => {
   const { userId } = user;
   const userLikes = user.likes;
 
-  const voted = useSelector((state) => state.UI.voted);
   const screams = useSelector((state) => state.data.screams);
-  const myScreams = useSelector((state) => state.user.myScreams);
 
   const loading = useSelector((state) => state.data.loading);
   const loadingUI = useSelector((state) => state.UI.loading);
@@ -174,7 +173,6 @@ const Main = () => {
     (state) => state.data.loadingOrganizations
   );
 
-  const loadingIdea = useSelector((state) => state.data.loadingIdea);
   const projects = useSelector((state) => state.data.projects);
   const project = useSelector((state) => state.data.project);
 
@@ -185,7 +183,6 @@ const Main = () => {
     (state) => state.data.organizationTypes
   );
 
-  const [order, setOrder] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
 
@@ -193,82 +190,8 @@ const Main = () => {
   const [dropdownStatus, setdropdownStatus] = useState([]);
 
   const [changeLocationModalOpen, setChangeLocationModalOpen] = useState(false);
-  const mapRef = useRef(null);
-
   const mapBounds = useSelector((state) => state.data.mapBounds);
-  const mapLoaded = useSelector((state) => state.data.mapLoaded);
-  const { lat, long } = useSelector((state) => state.data.scream);
-  const initialMapViewport = useSelector(
-    (state) => state.data.initialMapViewport
-  );
-  const initialMapBounds = useSelector((state) => state.data.initialMapBounds);
-  const mapViewportRef = useRef(initialMapViewport);
 
-  // Initial-ZOOM
-  useEffect(() => {
-    if (mapRef?.current && mapLoaded) {
-      const map = mapRef.current.getMap();
-      const canvas = map.getCanvas();
-      const w = canvas.width;
-      const h = canvas.height;
-      const NW = map.unproject([0, 0]).toArray();
-      const SE = map.unproject([w, h]).toArray();
-      const boundsRar = [NW, SE];
-
-      const bounds = {
-        latitude1: boundsRar[0][1],
-        latitude2: boundsRar[1][1],
-        longitude2: boundsRar[0][0],
-        longitude3: boundsRar[1][0],
-      };
-      dispatch(setInitialMapBounds(bounds));
-      dispatch(setMapBounds(bounds));
-    }
-  }, [mapLoaded, initialMapViewport]);
-
-  // PROJECTROOM-ZOOM
-  useEffect(() => {
-    if (
-      openProjectRoom &&
-      project &&
-      project.centerLong !== undefined &&
-      !openScream &&
-      mapRef.current &&
-      mapLoaded
-    ) {
-      setTimeout(() => {
-        const projectViewport = {
-          latitude: project.centerLat,
-          longitude: project.centerLong,
-          zoom: isMobileCustom ? project.zoom - 2 : project.zoom,
-          duration: 2700,
-          pitch: 30,
-        };
-
-        dispatch(setMapViewport(projectViewport));
-      }, 500);
-    }
-  }, [project]);
-
-  // IDEA-ZOOM
-  const prevLat = usePrevious({ lat });
-  useEffect(() => {
-    if (openScream && !loadingIdea && mapRef.current && mapLoaded) {
-      if (lat && prevLat && prevLat.lat !== lat) {
-        setTimeout(() => {
-          dispatch(
-            setMapViewport({
-              latitude: isMobileCustom && openScream ? lat - 0.0008 : lat,
-              longitude: isMobileCustom ? long : long - 0.001,
-              zoom: 16.5,
-              duration: 2700,
-              pitch: 30,
-            })
-          );
-        }, 500);
-      }
-    }
-  }, [lat, long, loadingIdea, openScream]);
   useEffect(() => {
     unknownPathId && window.history.pushState(null, null, "/");
     projectRoomId && dispatch(openProjectRoomFunc(projectRoomId, true));
@@ -372,31 +295,6 @@ const Main = () => {
     userLikes,
   ]);
 
-  const dataFinalIdeasMap = useMemo(() => {
-    let ideasData = [];
-
-    ideasData = search(screams, searchTerm, [
-      "title",
-      "body",
-      "Stadtteil",
-      "Stadtbezirk",
-      "locationHeader",
-    ]);
-    ideasData = filterByTagFilter(ideasData, selectedTopics, "Thema");
-
-    ideasData = sort(ideasData, dropdown);
-    ideasData = filterByStatus(ideasData, dropdownStatus);
-    return ideasData;
-  }, [
-    dropdown,
-    dropdownStatus,
-    searchTerm,
-    selectedTopics,
-    screams,
-    mapBounds,
-    userLikes,
-  ]);
-
   const dropdownStatusNumbers = useMemo(
     () => countStatusOfScreams(screams),
     [screams]
@@ -438,40 +336,6 @@ const Main = () => {
     return organizationsData;
   }, [dropdown, organizations, searchTerm, selectedOrganizationTypes]);
 
-  // MAP
-  const dataMap = useMemo(
-    () =>
-      openProjectRoom
-        ? project?.screams?.filter(({ Thema }) =>
-            selectedTopics.includes(Thema)
-          )
-        : myScreams !== null && myScreams !== undefined
-        ? myScreams.filter(({ Thema }) => selectedTopics.includes(Thema))
-        : dataFinalIdeasMap,
-    [
-      myScreams,
-      openProjectRoom,
-      project?.screams,
-      dataFinalIdeasMap,
-      selectedTopics,
-    ]
-  );
-  const dataFinalMap = useMemo(
-    () =>
-      dataMap?.map((object) =>
-        pick(["title", "lat", "long", "screamId", "color", "likeCount"], object)
-      ),
-    [dataMap]
-  );
-
-  const dataFinalMapProjects = useMemo(
-    () =>
-      projects.filter(({ organizationType }) =>
-        selectedOrganizationTypes.includes(organizationType)
-      ),
-    [projects, selectedOrganizationTypes]
-  );
-
   const handleButtonOpenCard = (event, cardType, cardId) => {
     if (cardType === "ideaCard") {
       dispatch(openScreamFunc(cardId));
@@ -493,7 +357,6 @@ const Main = () => {
       setAuthOpen(true);
       return;
     }
-
     if (user.likes && user.likes.find((like) => like.screamId === screamId)) {
       dispatch(unlikeScream(screamId, user));
     } else {
@@ -508,7 +371,6 @@ const Main = () => {
   };
 
   const handleSelectOrganizationTypes = (organizationTypes) => {
-    console.log(organizationTypes);
     dispatch(handleOrganizationTypesSelectorRedux(organizationTypes));
   };
 
@@ -562,10 +424,16 @@ const Main = () => {
     }
   };
 
-  const handleMapBoundsReset = () => {
-    dispatch(setMapViewport(initialMapViewport));
-    dispatch(setMapBounds(initialMapBounds));
-  };
+  // const [showUI, setShowUI] = useState(false);
+  // useEffect(() => {
+  //   if (!loading) {
+  //     statefulMap.on("load", () => {
+  //       setTimeout(() => {
+  //         setShowUI(true);
+  //       }, 1000);
+  //     });
+  //   }
+  // }, [loading]);
 
   return (
     <React.Fragment>
@@ -639,6 +507,8 @@ const Main = () => {
         </Modal>
       )}
 
+      {/* {!showUI && <MainLoader />} */}
+
       {openInfoPage && (
         <InlineInformationPage
           setOrder={setOrder}
@@ -681,7 +551,7 @@ const Main = () => {
         </React.Fragment>
       )}
 
-      {!loading && !loadingUI && !loadingProjects && (
+      {!loading && !loadingUI && !loadingProjects && !postIdeaOpen && (
         <Box
           margin={
             isMobileCustom ? "60px 10px 10px 0px" : "10px 10px 10px 500px"
@@ -717,29 +587,17 @@ const Main = () => {
           loadingProjects={loadingProjects}
           projectsData={projects}
           project={project}
-          mapViewportRef={mapViewportRef}
           setPostIdeaOpen={setPostIdeaOpen}
           postIdeaOpen={postIdeaOpen}
           setAuthOpen={setAuthOpen}
+          statefulMap={statefulMap}
         />
       )}
-
-      <Map
-        order={order}
-        dataFinal={dataFinalMap}
-        loading={loading}
-        loadingProjects={loadingProjects}
-        openProjectRoom={openProjectRoom}
-        geoData={project && openProjectRoom && project.geoData}
-        mapRef={mapRef}
-        mapViewportRef={mapViewportRef}
-        projects={dataFinalMapProjects}
-        setSwipedUpState={setSwipedUpState}
-      />
 
       {!openInfoPage && (
         <MainColumnWrapper>
           {!openProjectRoom &&
+            !postIdeaOpen &&
             !openAccount &&
             !loading &&
             (order === 1 || (order === 2 && !loadingProjects)) && (
@@ -778,7 +636,8 @@ const Main = () => {
                 handleOpenMyAccount={handleOpenMyAccount}
                 setInfoPageOpen={handleOpenInfoPage}
                 handleCreateProjectroom={handleCreateProjectroom}
-                handleMapBoundsReset={handleMapBoundsReset}
+                handleMapBoundsReset={handleSetInitialMapBoundsAndViewport}
+                mapFilterActive={mapFilterActive}
               />
             )}
 
@@ -787,12 +646,14 @@ const Main = () => {
               user={user}
               setPostIdeaOpen={setPostIdeaOpen}
               handleButtonOpenCard={handleButtonOpenCard}
+              handleSetInitialMapBoundsAndViewport={
+                handleSetInitialMapBoundsAndViewport
+              }
             />
           )}
 
           {openAccount && (
             <ProfilePage
-              dataFinalMap={dataFinalMap}
               handleButtonOpenCard={handleButtonOpenCard}
               handleOpenProjectroom={handleOpenProjectroom}
               setAuthEditOpen={setAuthEditOpen}
@@ -883,6 +744,10 @@ const Main = () => {
           setChangeLocationModalOpen={setChangeLocationModalOpen}
         />
       )}
+
+      {/* <Box position="fixed" right="100px" bottom="10px">
+        <Button text="Stadt auswählen" onClick={setChangeLocationModalOpen} />
+      </Box> */}
 
       {(openCreateProjectRoom || openCreateOrganization) && (
         <React.Suspense fallback={<Loader />}>

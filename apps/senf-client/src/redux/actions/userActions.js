@@ -104,10 +104,10 @@ export const getUserLikesAndComments = (userData) => async (dispatch) => {
       const commentsQuerySnapshot = await getDocs(q2);
 
       likesQuerySnapshot.forEach((doc) =>
-        userData.likes.push({ ...doc.data() })
+        userData.likes.push({ ...doc.data(), likeId: doc.id })
       );
       commentsQuerySnapshot.forEach((doc) =>
-        userData.comments.push({ ...doc.data() })
+        userData.comments.push({ ...doc.data(), commentId: doc.id })
       );
       dispatch({
         type: SET_USER,

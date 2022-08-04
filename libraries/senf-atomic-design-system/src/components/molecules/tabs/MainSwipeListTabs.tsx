@@ -24,7 +24,6 @@ const Tab = styled.div<MainSwipeListTabsProps>`
 `;
 
 const MainSwipeListTabs: FC<MainSwipeListTabsProps> = ({
-  swipedUp,
   handleSwipeUp,
   order,
   setOrder,

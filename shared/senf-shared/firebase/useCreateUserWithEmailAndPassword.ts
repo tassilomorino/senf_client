@@ -63,8 +63,7 @@ export const useCreateUserWithEmailAndPassword = (
       }
     } catch (error) {
       setError({
-        code: error.code,
-        message: generateErrorMessage(error.code),
+        error,
       });
     } finally {
       setLoading(false);

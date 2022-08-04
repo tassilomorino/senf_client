@@ -5,28 +5,28 @@ import styled from "styled-components";
 import { BoxProps } from "./Box.types";
 
 const Wrapper = styled.div<BoxProps>`
-  display: ${({ display }) => (display || "flex")};
+  display: ${({ display }) => display || "flex"};
 
-  position: ${({ position }) => (position || "relative")};
-  top: ${({ top }) => (top || undefined)};
-  bottom: ${({ bottom }) => (bottom || undefined)};
+  position: ${({ position }) => position || "relative"};
+  top: ${({ top }) => top || undefined};
+  bottom: ${({ bottom }) => bottom || undefined};
 
-  left: ${({ left }) => (left || undefined)};
-  right: ${({ right }) => (right || undefined)};
-  height: ${({ height }) => (height || "auto")};
-  width: ${({ width }) => (width || "auto")};
-  max-width: ${({ maxWidth }) => (maxWidth || "auto")};
+  left: ${({ left }) => left || undefined};
+  right: ${({ right }) => right || undefined};
+  height: ${({ height }) => height || "auto"};
+  width: ${({ width }) => width || "auto"};
+  max-width: ${({ maxWidth }) => maxWidth || "auto"};
 
-  margin: ${({ margin }) => (margin || "0")};
+  margin: ${({ margin }) => margin || "0"};
   flex-direction: ${({ flexDirection }) =>
     flexDirection === "column" ? "column" : "row"};
-  align-items: ${({ alignItems }) => (alignItems || null)};
-  justify-content: ${({ justifyContent }) =>
-    justifyContent || null};
-  gap: ${({ gap }) => (gap || null)};
-  flex-wrap: ${({ flexWrap }) => (flexWrap || null)};
-  z-index: ${({ zIndex }) => (zIndex || undefined)};
-  transform: ${({ transform }) => (transform || undefined)};
+  align-items: ${({ alignItems }) => alignItems || null};
+  justify-content: ${({ justifyContent }) => justifyContent || null};
+  gap: ${({ gap }) => gap || null};
+  flex-wrap: ${({ flexWrap }) => flexWrap || null};
+  z-index: ${({ zIndex }) => zIndex || undefined};
+  transform: ${({ transform }) => transform || undefined};
+  pointer-events: ${({ pointerEvents }) => pointerEvents || undefined};
 `;
 
 const Box: FC<BoxProps> = ({
@@ -48,6 +48,7 @@ const Box: FC<BoxProps> = ({
   justifyContent,
   height,
   flexWrap,
+  pointerEvents,
 }) => {
   return (
     <Wrapper
@@ -68,6 +69,7 @@ const Box: FC<BoxProps> = ({
       alignItems={alignItems}
       justifyContent={justifyContent}
       flexWrap={flexWrap}
+      pointerEvents={pointerEvents}
     >
       {children}
     </Wrapper>

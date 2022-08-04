@@ -71,16 +71,17 @@ const TopViewport = {
   latitude:
     typeof Storage !== "undefined" && localStorage.getItem("latitude")
       ? Number(localStorage.getItem("latitude"))
-      : 50.93864020643174,
+      : isMobileCustom
+      ? 50.96
+      : 50.93,
   longitude:
     typeof Storage !== "undefined" && localStorage.getItem("longitude")
       ? Number(localStorage.getItem("longitude"))
-      : isMobileCustom
-      ? 6.958725744885521
-      : 6.859737957551033,
+      : 6.95,
 
   zoom: isMobileCustom ? 8 : 9.2,
   duration: 0,
+  pitch: 0,
 };
 const initialState = {
   dataError: "",
@@ -93,7 +94,6 @@ const initialState = {
   comment: {},
   like: {},
   loading: true,
-  loadingIdea: false,
   loadingProjects: true,
   loadingOrganizations: true,
   loadingOrganization: false,
@@ -134,7 +134,6 @@ export default function (state = initialState, action) {
     case LOADING_IDEA_DATA:
       return {
         ...state,
-        loadingIdea: true,
       };
 
     case LOADING_ORGANIZATION_DATA:
@@ -154,7 +153,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         scream: action.payload,
-        loadingIdea: false,
       };
 
     case SET_SCREAM_USER:

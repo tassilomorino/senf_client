@@ -32,5 +32,8 @@
     "node": "16.x",
     "yarn": "3.2.1"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@3.2.1",
+  "dependencies": {
+    "react-transition-group": "^4.4.2"
+  }
 }
