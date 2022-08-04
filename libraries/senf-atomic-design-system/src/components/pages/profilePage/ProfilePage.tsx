@@ -15,7 +15,7 @@ import Typography from "../../atoms/typography/Typography";
 import { ProfilePageProps } from "./ProfilePage.types";
 import Input from "../../atoms/inputs/Input";
 import List from "../../molecules/list/List";
-import CommentCard from "../../molecules/cards/commentCard";
+import CommentCard from "../../molecules/cards/CommentCard";
 import Wave from "../../atoms/shapes/Wave";
 import theme from "../../../styles/theme";
 import Divider from "../../atoms/divider/Divider";
@@ -39,7 +39,7 @@ import Edit from "../../../assets/icons/Edit";
 import Plus from "../../../assets/icons/Plus";
 import Skeleton from "../../atoms/skeleton/Skeleton";
 
-const DragWrapper = styled(animated.div)<ProfilePageProps>`
+const DragWrapper = styled(animated.div) <ProfilePageProps>`
   display: flex;
   position: relative;
   flex-direction: column;
@@ -219,7 +219,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
                     justifyContent="flex-start"
                     onClick={handleLogout}
                     icon={<Logout />}
-                    // disabled={i18n.resolvedLanguage === lng}
+                  // disabled={i18n.resolvedLanguage === lng}
                   />
                   <Button
                     variant={"secondary"}
@@ -228,7 +228,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
                     justifyContent="flex-start"
                     onClick={handleDeleteAccount}
                     icon={<Plus transform="rotate(45deg)" />}
-                    // disabled={i18n.resolvedLanguage === lng}
+                  // disabled={i18n.resolvedLanguage === lng}
                   />
                 </Box>
               }
@@ -299,14 +299,14 @@ const ProfilePage: FC<ProfilePageProps> = ({
                 tabs={
                   myOrganizations
                     ? [
-                        { icon: <Bulb />, text: "Ideen" },
-                        { icon: <Info />, text: "Organisationen" },
-                        // { icon: <Info />, text: "Interaktionen" },
-                      ]
+                      { icon: <Bulb />, text: "Ideen" },
+                      { icon: <Info />, text: "Organisationen" },
+                      // { icon: <Info />, text: "Interaktionen" },
+                    ]
                     : [
-                        { icon: <Bulb />, text: "Ideen" },
-                        // { icon: <Info />, text: "Interaktionen" },
-                      ]
+                      { icon: <Bulb />, text: "Ideen" },
+                      // { icon: <Info />, text: "Interaktionen" },
+                    ]
                 }
               />
             </Box>

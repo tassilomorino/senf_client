@@ -364,7 +364,7 @@ const Main = ({
     }
   };
 
-  const handleButtonComment = () => {};
+  const handleButtonComment = () => { };
 
   const handleSelectTopics = (topics) => {
     dispatch(handleTopicSelectorRedux(topics));
@@ -680,8 +680,8 @@ const Main = ({
           handleButtonOpenCard={handleButtonOpenCard}
           user={user}
           setModalData={setModalData}
-          // setContactOpen,
-          // setFaqOpen,
+        // setContactOpen,
+        // setFaqOpen,
         />
       )}
 
@@ -707,8 +707,8 @@ const Main = ({
             projectroomsData={dataFinalProjectRooms}
             handleOpenCreateOrganization={handleOpenCreateOrganization}
 
-            // openCreateOrganization,
-            // setOpenModalAuthenticate,
+          // openCreateOrganization,
+          // setOpenModalAuthenticate,
           />
         )}
 
