@@ -13,6 +13,8 @@ const HandleContainer = styled.div<{ position: string }>`
 	transform: translateX(${({ position }) => position === "center" && "-50%"});
 	width: 50px;
 	padding: 10px;
+
+	/* padding: 20px; */
 	box-sizing: content-box;
 	cursor: pointer;
 	z-index: 99;

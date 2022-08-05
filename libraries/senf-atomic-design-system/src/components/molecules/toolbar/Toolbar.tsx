@@ -110,7 +110,7 @@ const Toolbar: FC<ToolbarProps> = ({
                   type="check"
                   text={label}
                   checked={checkedSortOption === value}
-                  setChecked={() => {
+                  onClick={() => {
                     setCheckedSortOption(value);
                     setActiveSortOptionLabel(label);
                   }}

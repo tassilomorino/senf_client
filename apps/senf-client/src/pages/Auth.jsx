@@ -26,7 +26,7 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import imageCompression from "browser-image-compression";
 
 import { useTranslation } from "react-i18next";
-import { SwipeModal, Auth as AuthComponent } from "senf-atomic-design-system";
+import { SwipeModal, Auth as AuthComponent, ModalButton, ModalContext } from "senf-atomic-design-system";
 import {
   useSignInWithEmailAndPassword,
   useSignInWithGoogle,
@@ -41,7 +41,11 @@ import { getUserData } from "../redux/actions/userActions";
 import { auth, db } from "../firebase";
 import { SET_AUTHENTICATED } from "../redux/types";
 
-const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
+const Auth = ({
+  authEditOpen
+}) => {
+  const { handleModal } = React.useContext(ModalContext) || {};
+
   const [errorMessage, setErrorMessage] = useState({ code: "", message: "" });
   const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
@@ -93,14 +97,14 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
     editedUserisLoading,
     editedUserError,
   ] = useHandleSubmitEditDetails(userIdInFirebase, user, db);
-  useEffect(() => {
-    if (authEditOpen) {
-      setVerifiedUser(true);
-    } else {
-      setEmailRegistrationSubmitted(false);
-      setVerifiedUser(false);
-    }
-  }, [authOpen, authEditOpen]);
+  // useEffect(() => {
+  //   if (authEditOpen) {
+  //     setVerifiedUser(true);
+  //   } else {
+  //     setEmailRegistrationSubmitted(false);
+  //     setVerifiedUser(false);
+  //   }
+  // }, [authEditOpen]);
 
   useEffect(() => {
     // login with email and password
@@ -112,7 +116,8 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
       setErrorMessage({ code: "", message: "" });
       dispatch({ type: SET_AUTHENTICATED });
       dispatch(getUserData(firebaseEmailPasswordSignInUser.user.uid));
-      setAuthOpen(false);
+      handleModal("pop")
+
     }
     if (firebaseEmailPasswordSignInError) {
       setLoading(false);
@@ -164,7 +169,8 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
       dispatch({ type: SET_AUTHENTICATED });
       dispatch(getUserData(firebaseGoogleUser.user.uid));
       setVerifiedUser(true);
-      setAuthOpen(false);
+      handleModal("pop")
+
     }
     if (firebaseGoogleUserError) {
       setLoading(false);
@@ -187,7 +193,8 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
       dispatch({ type: SET_AUTHENTICATED });
       dispatch(getUserData(firebaseFacebookUser.user.uid));
       setVerifiedUser(true);
-      setAuthOpen(false);
+      handleModal("pop")
+
     }
     if (firebaseFacebookUserError) {
       setLoading(false);
@@ -212,8 +219,8 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
       setLoading(false);
       setErrorMessage({ code: "", message: "" });
       dispatch(getUserData(user.userId)).then(() => {
-        setAuthOpen(false);
-        setAuthEditOpen(false);
+        handleModal("pop")
+
         setErrorMessage({ code: "", message: "" });
       });
     }
@@ -283,45 +290,36 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
   //   };
   // }, []);
 
-  return (
-    <Fragment>
-      <SwipeModal
-        openModal={authOpen || authEditOpen}
-        setOpenModal={setAuthOpen}
-        zIndex={9999999999}
-        backgroundColor="#f9f1d7"
-      >
-        <AuthComponent
-          errorMessage={errorMessage}
-          user={user}
-          loginLoading={loading}
-          handleSubmitLogin={(formikLoginStore) =>
-            signInWithEmailAndPassword(
-              formikLoginStore.values.email,
-              formikLoginStore.values.password
-            )
-          }
-          handleSubmitRegister={(formikRegisterStore) =>
-            createUserWithEmailAndPassword(formikRegisterStore)
-          }
-          handleGoogleSignIn={() => signInWithGoogle(["email"])} // asks google for email
-          handleFacebookSignIn={() => signInWithFacebook(["email"])} // asks facebook for email
-          handleImageUpload={handleImageUpload}
-          uploadingImage={uploadingImage}
-          handleSubmitEditDetails={(userDetails) =>
-            handleSubmitEditDetails(userDetails)
-          }
-          emailRegistrationSubmitted={emailRegistrationSubmitted}
-          verifiedUser={verifiedUser}
-          handleClose={() => {
-            setAuthOpen(false);
-            setAuthEditOpen(false);
-            setErrorMessage({ code: "", message: "" });
-          }}
-        />
-      </SwipeModal>
-    </Fragment>
+
+
+  return (<AuthComponent
+    errorMessage={errorMessage}
+    user={user}
+    loginLoading={loading}
+    handleSubmitLogin={(formikLoginStore) =>
+      signInWithEmailAndPassword(
+        formikLoginStore.values.email,
+        formikLoginStore.values.password
+      )
+    }
+    handleSubmitRegister={(formikRegisterStore) =>
+      createUserWithEmailAndPassword(formikRegisterStore)
+    }
+    handleGoogleSignIn={() => signInWithGoogle(["email"])} // asks google for email
+    handleFacebookSignIn={() => signInWithFacebook(["email"])} // asks facebook for email
+    handleImageUpload={handleImageUpload}
+    uploadingImage={uploadingImage}
+    handleSubmitEditDetails={(userDetails) =>
+      handleSubmitEditDetails(userDetails)
+    }
+    emailRegistrationSubmitted={emailRegistrationSubmitted}
+    verifiedUser={verifiedUser || authEditOpen}
+    handleClose={() => {
+      handleModal("pop")
+      setErrorMessage({ code: "", message: "" });
+    }}
+  />
   );
 };
 
-export default memo(Auth);
+export default (Auth);

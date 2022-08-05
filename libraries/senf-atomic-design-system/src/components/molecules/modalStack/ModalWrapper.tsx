@@ -61,14 +61,14 @@ const Toner = styled.div<{ size: string, index: number, swipe: boolean }>`
   display: flex;
   flex-direction: column;
 
-  padding: 20px;
+  padding: ${({ padding }) => `${padding}px` || "20px"};
   padding-bottom: ${({ swipe }) => swipe && "120px"};
   padding-top: ${({ swipe }) => swipe && "40px"};
   opacity: ${({ index }) => 1 / index};
   height: ${({ height }) => height ? `${height}px` : '100%'};
   max-width: 100vw;
   min-height: 120px;
-  max-height: calc(100vh - 80px);
+  max-height: ${({ maxHeight }) => maxHeight ? `${maxHeight}px` : 'calc(100vh - 80px)'}; 
   width: ${({ size }) => {
     switch (size) {
       case "full": return "max(calc(100vw - 40px), min(983px, 100vw))";
@@ -96,6 +96,7 @@ const ModalWrapper: FC<ModalWrapperProps> = ({
   index,
   children,
   height,
+  padding,
   setOpacity,
   onSubmit,
   submitDisabled,
@@ -164,7 +165,7 @@ const ModalWrapper: FC<ModalWrapperProps> = ({
     >
       <Background onClick={close} />
       <Sheet index={index} total={modalStack} swipe={swipe} ref={sheet}>
-        <Toner size={size} index={index} height={innerHeight} swipe={swipe} ref={content}>
+        <Toner size={size} index={index} height={height || innerHeight} maxHeight={height} padding={padding} swipe={swipe} ref={content}>
           <ModalHandle swipe={swipe} onClose={close} />
           {(title || description) && <Box flexDirection="column" gap="5px" marginBottom="20px">
             {title && <Typography variant="h3">{title}</Typography>}

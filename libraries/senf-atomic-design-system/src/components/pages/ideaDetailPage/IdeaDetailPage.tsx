@@ -152,7 +152,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
   commentFormInput,
   setCommentFormInput,
   commentFormLoading,
-  setAuthOpen,
+  handleSetAuthOpen,
 }) => {
   const {
     handle,
@@ -575,7 +575,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
               {t("IdeaDetailPage.commentHeadline")}
             </Typography>
             {!user?.authenticated ? (
-              <Button onClick={setAuthOpen}>{t("login")}</Button>
+              <Button onClick={handleSetAuthOpen}>{t("login")}</Button>
             ) : (
               <Box gap="8px" width="100%">
                 <Input

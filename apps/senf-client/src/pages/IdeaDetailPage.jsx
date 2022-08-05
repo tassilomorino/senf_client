@@ -9,6 +9,7 @@ import {
   IdeaDetailPage as IdeaDetailPageComponent,
   ModalContext
 } from "senf-atomic-design-system";
+import { t } from "i18next";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
 // Redux stuff
@@ -20,6 +21,7 @@ import { deleteComment, submitComment } from "../redux/actions/commentActions";
 
 import EditIdeaPage from "./EditIdeaPage";
 import { openLink } from "../util/helpers";
+import Auth from "./Auth";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -93,7 +95,6 @@ const IdeaDetailPage = ({
   handleButtonComment,
   projectroomsData,
   user,
-  setAuthOpen,
 }) => {
 
   const data = useSelector((state) => state.data.scream);
@@ -199,15 +200,20 @@ const IdeaDetailPage = ({
     },
 
     editIdea: (data) => {
-      setEditIdeaOpen(true)
-      // return handleModal("push", <EditIdeaPage
-      //   scream={data}
-      //   isAdmin={user?.isAdmin}
-      //   isModerator={user?.isModerator}
-      //   isUser={userId === user?.userId}
-      //   setEditOpen={handleModal("pop")}
-      //   editOpen={true}
-      // />)
+      // setEditIdeaOpen(true)
+      return handleModal("push", <EditIdeaPage
+        scream={data}
+        isAdmin={user?.isAdmin}
+        isModerator={user?.isModerator}
+        isUser={userId === user?.userId}
+      // setEditOpen={handleModal("pop")}
+      // editOpen={true}
+      />, {
+        title: t("editIdea"),
+        cancelText: t('cancel'),
+        submitText: t('save'),
+        onSubmit: () => console.log(screamId)
+      })
     },
     deleteIdea: async (screamId) => {
       return dispatch(
@@ -257,31 +263,17 @@ const IdeaDetailPage = ({
     },
   }
 
-  return (data &&
-    <React.Fragment>
-      {editIdeaOpen && (
-        <EditIdeaPage
-          scream={data}
-          isAdmin={user?.isAdmin}
-          isModerator={user?.isModerator}
-          isUser={userId === user?.userId}
-          setEditOpen={setEditIdeaOpen}
-          editOpen={editIdeaOpen}
-        />
-      )}
-
-      <IdeaDetailPageComponent
-        data={{ ...data, handle }}
-        projectroomCardData={projectroomCardData}
-        projectroomsData={projectroomsData}
-        user={user}
-        path={path}
-        commentFormInput={commentFormInput}
-        setCommentFormInput={setCommentFormInput}
-        commentFormLoading={commentFormLoading}
-        setAuthOpen={setAuthOpen}
-      />
-    </React.Fragment>
+  return (data && <IdeaDetailPageComponent
+    data={{ ...data, handle }}
+    projectroomCardData={projectroomCardData}
+    projectroomsData={projectroomsData}
+    user={user}
+    path={path}
+    commentFormInput={commentFormInput}
+    setCommentFormInput={setCommentFormInput}
+    commentFormLoading={commentFormLoading}
+    handleSetAuthOpen={() => handleModal("push", <Auth authEditOpen={false} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+    } />
   );
 };
 
