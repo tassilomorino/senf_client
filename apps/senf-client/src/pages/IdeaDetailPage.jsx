@@ -9,6 +9,7 @@ import {
   IdeaDetailPage as IdeaDetailPageComponent,
   ModalContext
 } from "senf-atomic-design-system";
+import { t } from "i18next";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
 // Redux stuff
@@ -207,7 +208,12 @@ const IdeaDetailPage = ({
         isUser={userId === user?.userId}
       // setEditOpen={handleModal("pop")}
       // editOpen={true}
-      />)
+      />, {
+        title: t("editIdea"),
+        cancelText: t('cancel'),
+        submitText: t('save'),
+        onSubmit: () => console.log(screamId)
+      })
     },
     deleteIdea: async (screamId) => {
       return dispatch(
