@@ -68,7 +68,7 @@ const InviteMember = ({ getPendingMembers }) => {
         pending: true,
       }).then(() => {
 
-        getMembers();
+        // getMembers();
 
         handleModal("pop")
       })

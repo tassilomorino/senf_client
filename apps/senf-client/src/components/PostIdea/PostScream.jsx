@@ -10,6 +10,7 @@ import {
   RoundedButton,
   Dialog,
   Input,
+  ModalContext
 } from "senf-atomic-design-system";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -28,6 +29,7 @@ import Weblink from "../Modals/Post_Edit_ModalComponents/Weblink";
 import Contact from "../Modals/Post_Edit_ModalComponents/Contact";
 import InlineDatePickerModal from "../Modals/Post_Edit_ModalComponents/InlineDatePickerModal";
 import PostScreamRules from "./PostScreamRules";
+import Auth from "../../pages/Auth";
 
 const AuthFirst = styled.div`
   position: fixed;
@@ -58,10 +60,10 @@ const PostScream = ({
   mapViewportRef,
   setPostIdeaOpen,
   postIdeaOpen,
-  setAuthOpen,
   statefulMap,
 }) => {
   const dispatch = useDispatch();
+  const { handleModal } = React.useContext(ModalContext) || {};
 
   const openScream = useSelector((state) => state.UI.openScream);
   const loading = useSelector((state) => state.data.loading);
@@ -407,10 +409,11 @@ const PostScream = ({
             isMobileCustom && locationDecided
               ? "27vh"
               : isMobileCustom && !locationDecided
-              ? "100vh"
-              : null
+                ? "100vh"
+                : null
           }
-          onClick={setAuthOpen}
+          onClick={() => handleModal("push", <Auth authEditOpen={false} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+          }
         />
       )}
 

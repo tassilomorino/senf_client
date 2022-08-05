@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { ProfilePage as ProfilePageComponent } from "senf-atomic-design-system";
+import { ProfilePage as ProfilePageComponent, ModalContext } from "senf-atomic-design-system";
 import { closeAccountFunc } from "../redux/actions/accountActions";
 
 import { handleTopicSelectorRedux } from "../redux/actions/UiActions";
@@ -17,13 +17,18 @@ import {
 
 import { logoutUser } from "../redux/actions/userActions";
 import DeleteProfileModal from "../components/Modals/DeleteProfileModal";
+import Auth from "./Auth";
+import { isMobileCustom } from "../util/customDeviceDetect";
 
 const ProfilePage = ({
   handleButtonOpenCard,
   handleOpenProjectroom,
   setAuthEditOpen,
 }) => {
+
   const { t } = useTranslation();
+  const { handleModal } = React.useContext(ModalContext) || {};
+
   const loadingMyScreams = useSelector((state) => state.data.loadingMyScreams);
 
   const mapBounds = useSelector((state) => state.data.mapBounds);
@@ -96,11 +101,12 @@ const ProfilePage = ({
         handleButtonOpenCard={handleButtonOpenCard}
         handleOpenProjectroom={handleOpenProjectroom}
         handleButtonClose={handleClose}
-        setAuthEditOpen={setAuthEditOpen}
+        handleSetAuthEditOpen={() => handleModal("push", <Auth authEditOpen={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+        }
         handleLogout={handleLogout}
         handleDeleteAccount={() => setDeleteMenuOpen(true)}
 
-        // setEditProfileOpen,
+      // setEditProfileOpen,
       />
     </React.Fragment>
   );

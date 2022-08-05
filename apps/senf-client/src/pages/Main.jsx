@@ -46,7 +46,7 @@ import {
 
 // Components
 import StatisticsOverviewPage from "./StatisticsOverviewPage";
-import IdeaDialog from "./IdeaDetailPage";
+import IdeaDetailPage from "./IdeaDetailPage";
 import {
   closeAccountFunc,
   getMyOrganizations,
@@ -130,8 +130,14 @@ const Main = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const errors = useSelector((state) => state.UI.errors);
-  const [authOpen, setAuthOpen] = useState(false);
-  const [authEditOpen, setAuthEditOpen] = useState(false);
+  const { handleModal } = React.useContext(ModalContext) || {};
+
+  /* useEffect(() => {
+    if (authOpen || authEditOpen) {
+      handleModal("push", <Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+
+    }
+  }, [authOpen]) */
 
   const [modalData, setModalData] = useState(null);
 
@@ -210,7 +216,6 @@ const Main = ({
   }, [dispatch, projectRoomId, screamId, organizationId, unknownPathId]);
 
 
-  const { handleModal } = React.useContext(ModalContext) || {};
   const [openCookiebanner, setOpenCookiebanner] = useState(false);
   useEffect(() => {
 
@@ -220,7 +225,7 @@ const Main = ({
       dispatch(setCookies("minimum"));
     } else {
 
-      handleModal("push", <InfoPageMainApp />, { swipe: !!isMobileCustom, size: "lg", height: 1100 })
+      handleModal("push", <InfoPageMainApp />, { swipe: !!isMobileCustom, size: "lg", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
       setOpenCookiebanner(true);
 
     }
@@ -394,7 +399,7 @@ const Main = ({
   const handleButtonLike = (event, screamId) => {
     event.stopPropagation();
     if (!user.authenticated) {
-      setAuthOpen(true);
+      handleModal("push", <Auth authEditOpen={false} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
       return;
     }
     if (user.likes && user.likes.find((like) => like.screamId === screamId)) {
@@ -422,7 +427,7 @@ const Main = ({
       window.history.pushState(null, null, "/");
       dispatch(handleTopicSelectorRedux("all"));
     } else {
-      setAuthOpen(true);
+      handleModal("push", <Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
     }
   };
   useEffect(() => {
@@ -493,7 +498,8 @@ const Main = ({
             {t("authenticatedForCreateProjectRoom")}
           </StyledH3>
           <Box justifyContent="center" margin="0px 0px 10px 0px">
-            <Button text={t("login")} onClick={() => setAuthOpen(true)} />
+            <Button text={t("login")} onClick={() => handleModal("push", <Auth authEditOpen={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+            } />
           </Box>
         </Modal>
       )}
@@ -507,7 +513,8 @@ const Main = ({
             {t("organizations_create_login_register")}
           </StyledH3>
           <Box justifyContent="center" margin="0px 0px 10px 0px">
-            <Button text={t("login")} onClick={() => setAuthOpen(true)} />
+            <Button text={t("login")} onClick={() => handleModal("push", <Auth authEditOpen={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+            } />
           </Box>
         </Modal>
       )}
@@ -559,14 +566,6 @@ const Main = ({
         <InlineInformationPage
           setOrder={setOrder}
           setOpenOrganizationsOverview={setOpenOrganizationsOverview}
-        />
-      )}
-      {(authOpen || authEditOpen) && (
-        <Auth
-          setAuthOpen={setAuthOpen}
-          setAuthEditOpen={setAuthEditOpen}
-          authOpen={authOpen}
-          authEditOpen={authEditOpen}
         />
       )}
 
@@ -635,7 +634,6 @@ const Main = ({
           project={project}
           setPostIdeaOpen={setPostIdeaOpen}
           postIdeaOpen={postIdeaOpen}
-          setAuthOpen={setAuthOpen}
           statefulMap={statefulMap}
         />
       )}
@@ -702,17 +700,15 @@ const Main = ({
             <ProfilePage
               handleButtonOpenCard={handleButtonOpenCard}
               handleOpenProjectroom={handleOpenProjectroom}
-              setAuthEditOpen={setAuthEditOpen}
             />
           )}
 
           {!openInfoPage && openScream && (
-            <IdeaDialog
+            <IdeaDetailPage
               handleButtonLike={handleButtonLike}
               handleButtonComment={handleButtonComment}
               projectroomsData={dataFinalProjectRooms}
               user={user}
-              setAuthOpen={setAuthOpen}
             />
           )}
         </MainColumnWrapper>

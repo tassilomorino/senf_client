@@ -79,16 +79,15 @@ const MenuSidebar: FC<MenuSidebarProps> = ({
 
         {/* <Button variant="white" size="small" icon={<Bell />} /> */}
 
-        <Button
-          variant="white"
+
+        <ModalButton variant="white"
           size="small"
           icon={<Info />}
-          onClick={() => setInfoPageOpen(true)}
-        />
-
-        <ModalButton options={{ swipe: false, size: "lg", height: 600 }}>
+          options={{ swipe: false, size: "xl", padding: 0 }}>
           <InfoPageMainApp />
         </ModalButton>
+
+
 
         <Button
           variant="white"

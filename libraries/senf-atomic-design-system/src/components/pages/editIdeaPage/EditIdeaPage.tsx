@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { FC, useEffect } from "react";
+import React, { FC, Fragment, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
@@ -77,13 +77,7 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
     "formikEditIdea.values.projectRoomId"
   );
   return (
-    <SwipeModal
-      openModal={editOpen}
-      setOpenModal={setEditOpen}
-      zIndex={9999999999}
-      overflow="hidden"
-      backgroundColor={theme.colors.primary.primary100}
-    >
+    <React.Fragment>
       <Wave color={theme.colors.beige.beige20} top="0px" />
 
       <Box position="absolute" top="0px" margin="10px" zIndex={99}>
@@ -249,7 +243,7 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
           text={t("save")}
         />
       </Box>
-    </SwipeModal>
+    </React.Fragment>
   );
 };
 
