@@ -15,7 +15,7 @@ import Typography from "../../atoms/typography/Typography";
 import { ProjectroomPageProps } from "./ProjectroomPage.types";
 import Input from "../../atoms/inputs/Input";
 import List from "../../molecules/list/List";
-import CommentCard from "../../molecules/cards/commentCard";
+import CommentCard from "../../molecules/cards/CommentCard";
 import Wave from "../../atoms/shapes/Wave";
 import theme from "../../../styles/theme";
 import Divider from "../../atoms/divider/Divider";
@@ -48,7 +48,7 @@ import Skeleton from "../../atoms/skeleton/Skeleton";
 
 // const Calendar = React.lazy(() => import("../../organisms/calendar/Calendar"));
 
-const DragWrapper = styled(animated.div)<ProjectroomPageProps>`
+const DragWrapper = styled(animated.div) <ProjectroomPageProps>`
   display: flex;
   position: relative;
   flex-direction: column;
@@ -239,23 +239,31 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
   const [tagSlideVisible, setTagSlideVisible] = useState(false);
   const catchRef = useRef();
   const ref = useRef();
-
+  const [activeSortOptionLabel, setActiveSortOptionLabel] = useState(
+    t("newest_ideas")
+  );
   const scrollHandler = () => {
-    const stickyElm = document.getElementById("tagSlideRef");
+    if (isMobile) {
+      const stickyElm = document.getElementById("tagSlideRef");
 
-    const observer = new IntersectionObserver(
-      ([e]) => e.target.classList.toggle("isSticky", e.intersectionRatio < 1),
-      { threshold: [1] }
-    );
-    observer.observe(stickyElm);
+      const observer = new IntersectionObserver(
+        ([e]) => e.target.classList.toggle("isSticky", e.intersectionRatio < 1),
+        { threshold: [1] }
+      );
+      observer.observe(stickyElm);
 
-    if (ref.current.classList.contains("isSticky")) {
-      setTagSlideVisible(true);
-    } else {
-      setTagSlideVisible(false);
+      if (ref.current.classList.contains("isSticky")) {
+        setTagSlideVisible(true);
+      } else {
+        setTagSlideVisible(false);
+      }
     }
   };
-
+  useEffect(() => {
+    setActiveSortOptionLabel(
+      order === "ideas" ? t("newest_ideas") : t("newest_projectrooms")
+    );
+  }, []);
   const [props, set] = useSpring(() => ({
     y: 0,
     transform: isMobile && `translateY(${70}px)`,
@@ -534,20 +542,41 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
                     searchOpen={searchOpen}
                     searchTerm={searchTerm}
                     setSearchTerm={setSearchTerm}
+                    secondButton={
+                      <Button
+                        variant="secondary"
+                        size="small"
+                        icon={<More />}
+                      />
+                    }
+                    // secondButton={
+                    //   <Button
+                    //     variant="secondary"
+                    //     size="small"
+                    //     text={order === "ideas" ? t("statistics") : t("organizations")}
+                    //     icon={order === "ideas" ? <Stats /> : null}
+                    //     onClick={
+                    //       order === "ideas"
+                    //         ? () => setOpenStatisticsOverview(true)
+                    //         : () => setOpenOrganizationsOverview(true)
+                    //     }
+                    //   />
+                    // }
                     searchPlaceholder={t("searchBar")}
-                    activeSortOptionLabel={t("newest_ideas")}
+                    activeSortOptionLabel={activeSortOptionLabel}
+                    setActiveSortOptionLabel={setActiveSortOptionLabel}
                     checkedSortOption={checkedSortOption}
                     setCheckedSortOption={setCheckedSortOption}
                     sortOptions={[
-                      { name: "newest", label: t("newest_ideas") },
-                      { name: "hottest", label: t("hottest_ideas") },
+                      { value: "newest", label: t("newest_ideas") },
+                      { value: "hottest", label: t("hottest_ideas") },
                     ]}
                     statusOptions={[
-                      { name: "Unprocessed", label: t("unprocessed") },
-                      { name: "Accepted", label: t("accepted") },
-                      { name: "Planning", label: t("planning") },
-                      { name: "Implemented", label: t("implemented") },
-                      { name: "Rejected", label: t("rejected") },
+                      { value: "Unprocessed", label: t("unprocessed") },
+                      { value: "Accepted", label: t("accepted") },
+                      { value: "Planning", label: t("planning") },
+                      { value: "Implemented", label: t("implemented") },
+                      { value: "Rejected", label: t("rejected") },
                     ]}
                   />
                 </Box>

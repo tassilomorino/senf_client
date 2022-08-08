@@ -1,46 +1,20 @@
 /** @format */
 
-// const [data, setData] = useState({
-//   type: "FeatureCollection",
-//   features: [
-//     {
-//       type: "Feature",
-//       properties: {},
-//       geometry: {
-//         coordinates: [
-//           [
-//             [6.917877780906963, 51.00002258185481],
-//             [6.8876765468714325, 50.93041942584361],
-//             [6.998165087951804, 50.947310396591604],
-//             [6.998145888768761, 50.985689147947454],
-//             [6.978078861803311, 50.98927250642429],
-//             [6.958011834837862, 50.99285586490113],
-//             [6.917877780906963, 51.00002258185481],
-//           ],
-//         ],
-//         type: "Polygon",
-//       },
-//     },
-//   ],
-// });
-
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import ReactDOM from "react-dom";
-import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import bbox from "@turf/bbox";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import {
   Plus,
   Check,
+  Icon,
   Box,
   Button,
   RoundedButton,
+  Map,
 } from "senf-atomic-design-system";
 import { db } from "../../../firebase";
-import MapGL from "../../../util/urbica/react-map-gl.esm";
-import Draw from "../../../util/urbica/react-map-gl-draw.esm";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 
@@ -49,32 +23,43 @@ import { StyledH2 } from "../../../styles/GlobalStyle";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 const MapWrapper = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   top: 0;
   background-color: grey;
   position: fixed;
-  z-index: 9999999999;
-  visibility: ${(props) => (props.mapOpen ? "visible" : "hidden")};
+  z-index: 99999999999;
+  /* visibility: ${(props) => (props.mapOpen ? "visible" : "hidden")}; */
+  /* -webkit-clip-path: inset(10px round 80px 20px 30px 10px); */
+  /* clip-path: inset(10px round 20px 20px 20px 20px); */
+  /* clip-path: polygon(500px 500px); */
+  /* clip: rect(10px, 290px, 190px, 10px); */
+  clip-path: ${(props) =>
+    props.mapOpen ? "inset(0px round 20px 20px 20px 20px)" : "url(#svgPath1)"};
+  overflow: hidden;
 `;
-
-const ButtonsContainer = styled.div`
-  position: fixed;
-  display: flex;
-  justify-content: space-around;
-  bottom: 70px;
-  width: 120px;
-  height: 50px;
-  margin-left: calc(50% - 60px);
-`;
-
-const NavigationButtonsContainer = styled.div`
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  bottom: 10px;
+const OpenButton = styled.div`
   width: 100%;
-  height: 50px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9;
+  display: ${(props) => (props.mapOpen ? "none" : "flex")};
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s;
+  background-color: rgba(255, 255, 255, 0.4);
+
+  @media (min-width: 768px) {
+    background-color: rgba(255, 255, 255, 0);
+    display: ${(props) => (props.mapOpen ? "none" : "block")};
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    display: ${(props) => (props.mapOpen ? "none" : "flex")};
+  }
 `;
 
 const Title = styled.div`
@@ -89,157 +74,51 @@ const Title = styled.div`
   border-radius: 8px;
   white-space: nowrap;
   padding: 14px;
+  z-index: 1;
 `;
 
-const Reactangle = styled.div`
-  position: fixed;
-  top: 110px;
-  margin-left: 50%;
-  transform: translateX(-50%);
-  width: calc(100% - 600px);
-  height: calc(100% - 200px);
-  border: 3px dashed black;
-`;
-const MapDialog = ({
-  mapOpen,
-  setMapOpen,
-  viewport,
-  mapRef,
-  _onViewportChange,
-  setViewport,
-  data,
-  setData,
-}) => {
-  const { t } = useTranslation();
-  const drawRef = useRef(null);
-  const [toolMode, setMode] = useState("draw_polygon");
-  const [isSetPolygon, setPolygon] = useState(false);
-  const [step2, setStep2] = useState(false);
+const MapDialog = ({ mapOpen, setMapOpen, drawnPolygon, setDrawnPolygon }) => {
+  const initialMapViewport = useSelector(
+    (state) => state.data.initialMapViewport
+  );
+  const [initialMapBounds, setInitialMapBounds] = useState(null);
 
-  useEffect(() => {
-    if (data) {
-      setMode("simple_select");
-      setPolygon(true);
-    } else {
-      setMode("draw_polygon");
-    }
-    if (isSetPolygon === true && !data) {
-      setPolygon(false);
-      setMode("draw_polygon");
-    }
-  }, [data, isSetPolygon]);
+  const [statefulMap, setStatefulMap] = useState(null);
 
-  const handleSet = () => {
-    setMode("simple_select");
+  // const escFunction = useCallback((event) => {
+  //   if (event.keyCode === 27 && !data) {
+  //     // Do whatever when esc is pressed
 
-    setTimeout(() => {
-      setMode("draw_polygon");
-      setMode("simple_select");
-      setPolygon(true);
-    }, 100);
-  };
-  // const handleBack = () => {
-  //   setViewport({
-  //     ...viewport,
-  //     pitch: 0,
-  //   });
-  //   setStep2(false);
-  // };
+  //     handleDelete();
+  //     setMode("simple_select");
+  //     setPolygon(false);
+  //     setTimeout(() => {
+  //       setMode("draw_polygon");
+  //     }, 1009);
+  //   }
+  // }, []);
 
-  const escFunction = useCallback((event) => {
-    if (event.keyCode === 27 && !data) {
-      // Do whatever when esc is pressed
+  // useEffect(() => {
+  //   document.addEventListener("keydown", escFunction, false);
 
-      handleDelete();
-      setMode("simple_select");
-      setPolygon(false);
-      setTimeout(() => {
-        setMode("draw_polygon");
-      }, 1009);
-    }
-  }, []);
-
-  const handleDelete = (data) => {
-    const answer = window.confirm(
-      "Bist du sicher, dass du das eingezeichnete Gebiet wieder löschen möchtest?"
-    );
-    if (answer) {
-      setData(null);
-      drawRef.current._draw.deleteAll();
-
-      // some code
-    } else {
-      // some code
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("keydown", escFunction, false);
-
-    return () => {
-      document.removeEventListener("keydown", escFunction, false);
-    };
-  }, []);
+  //   return () => {
+  //     document.removeEventListener("keydown", escFunction, false);
+  //   };
+  // }, []);
 
   const handleClose = () => {
     setMapOpen(false);
   };
 
-  const handleSave1 = async () => {
+  const handleSaveDrawnPolygon = async (polygon) => {
     if (
       typeof Storage !== "undefined" &&
       localStorage.getItem("createProjectRoomId") &&
-      data
+      polygon
     ) {
-      const [minLng, minLat, maxLng, maxLat] = bbox(data);
-
-      const size = maxLat - minLat + maxLng - minLng;
-
-      const newZoom =
-        size < 0.005
-          ? 17
-          : size < 0.01
-          ? 16.5
-          : size < 0.015
-          ? 16
-          : size < 0.02
-          ? 15.5
-          : size < 0.03
-          ? 15
-          : size < 0.04
-          ? 14.5
-          : size < 0.05
-          ? 14
-          : size < 0.075
-          ? 13.5
-          : size < 0.1
-          ? 13
-          : size < 0.2
-          ? 12.5
-          : size < 0.4
-          ? 12
-          : size < 0.6
-          ? 11.5
-          : size < 0.75
-          ? 11
-          : size < 0.9
-          ? 10.5
-          : size < 1.1
-          ? 10
-          : size < 1.6
-          ? 9.5
-          : size > 1.6
-          ? 9
-          : 10.5;
-      const newLatitude = (minLat + maxLat) / 2;
-      const newLongitude = (minLng + maxLng) / 2;
-
       // UPDATING AN EXISTING PROJECTROOM
       const updateProject = {
-        geoData: JSON.stringify(data),
-        centerLat: newLatitude,
-        centerLong: newLongitude,
-        zoom: newZoom,
+        geoData: JSON.stringify(polygon),
       };
       const ref = doc(
         db,
@@ -248,52 +127,62 @@ const MapDialog = ({
         )}/projectRooms/${localStorage.getItem("createProjectRoomId")}`
       );
       await updateDoc(ref, updateProject).then(() => {
-        setViewport({
-          ...viewport,
-          pitch: 0,
-          latitude: newLatitude,
-          longitude: newLongitude,
-          zoom: newZoom,
-        });
-
-        // setStep2(true);
-
         setMapOpen(false);
       });
     }
   };
 
-  // const handleSave2 = async () => {
-  //   const db = firebase.firestore();
-  //   if (
-  //     typeof Storage !== "undefined" &&
-  //     localStorage.getItem("createProjectRoomId")
-  //   ) {
-  //     console.log(viewport);
-  //     //UPDATING AN EXISTING PROJECTROOM
-  //     const updateProject = {
-  //       centerLong: viewport.longitude,
-  //       centerLat: viewport.latitude,
-  //       zoom: viewport.zoom,
-  //     };
-  //     const ref = await db
-  //       .collection("organizations")
-  //       .doc(localStorage.getItem("createProjectRoomOrganizationId"))
-  //       .collection("projectRooms")
-  //       .doc(localStorage.getItem("createProjectRoomId"));
-  //     return ref.update(updateProject).then(() => {
-  //       setStep2(true);
-  //       setMapOpen(false);
-  //     });
-  //   }
-  // };
+  useEffect(() => {
+    async function fetchData() {
+      if (
+        typeof Storage !== "undefined" &&
+        localStorage.getItem("createProjectRoomId")
+      ) {
+        const ref = doc(
+          db,
+          "organizations",
+          localStorage.getItem("createProjectRoomOrganizationId"),
+          "projectRooms",
+          localStorage.getItem("createProjectRoomId")
+        );
+        const docSnapshot = await getDoc(ref);
+
+        if (!docSnapshot.exists()) {
+          console.log("No such document!");
+        } else {
+          const data = docSnapshot.data();
+          if (data.geoData) {
+            setDrawnPolygon(JSON.parse(data.geoData));
+          }
+        }
+      }
+    }
+    fetchData();
+  }, []);
 
   return ReactDOM.createPortal(
     <MapWrapper mapOpen={mapOpen} id="drawMapWindow">
+      <OpenButton mapOpen={mapOpen} onClick={() => setMapOpen(true)}>
+        {" "}
+        <Icon icon={<Plus transform="scale(2)" />} />
+      </OpenButton>
+      <svg width="calc(100% - 400px)" height="60%" viewBox="0 0 100% 244">
+        <clipPath id="svgPath1">
+          <rect
+            width="400"
+            height="300"
+            x="50%"
+            y="50%"
+            rx="18"
+            fill="#D9D9D9"
+          />
+        </clipPath>
+      </svg>
       <Box
         position="fixed"
         margin={document.body.clientWidth > 768 ? "40px" : "10px"}
         zIndex={999}
+        top="0"
       >
         <RoundedButton
           icon={<Plus transform="rotate(45deg)" />}
@@ -301,69 +190,23 @@ const MapDialog = ({
         />
       </Box>
 
-      {viewport && (
-        <MapGL
-          id="map"
-          ref={mapRef}
-          mapStyle="mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6?optimize=true"
-          accessToken={import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}
-          minZoom={7}
-          latitude={viewport.latitude}
-          longitude={viewport.longitude}
-          pitch={viewport.pitch}
-          bearing={viewport.bearing}
-          zoom={viewport.zoom}
-          style={{ height: "100%", width: "100%" }}
-          onViewportChange={_onViewportChange}
-          viewportChangeMethod={"easeTo"}
-          viewportChangeOptions={{
-            duration: 2700,
-          }}
-        >
-          <Title isMobileCustom={isMobileCustom}>
-            <StyledH2 fontWeight="900" textAlign="center">
-              Zeichne das Gebiet ein
-            </StyledH2>
-          </Title>
+      <Title isMobileCustom={isMobileCustom}>
+        <StyledH2 fontWeight="900" textAlign="center">
+          Zeichne das Gebiet ein
+        </StyledH2>
+      </Title>
 
-          <Draw
-            ref={drawRef}
-            data={data}
-            onChange={(data) => {
-              setData(data);
-            }}
-            mode={toolMode}
-          />
-          {!step2 && (
-            <ButtonsContainer>
-              {data ? (
-                <Button
-                  icon={<Plus transform="rotate(45dedg)" />}
-                  onClick={() => handleDelete(data)}
-                />
-              ) : (
-                <Button icon={<Check />} onClick={handleSet} />
-              )}
-            </ButtonsContainer>
-          )}
-
-          <Box
-            position="fixed"
-            bottom="10px"
-            zIndex={999999999}
-            left="50%"
-            transform="translateX(-50%)"
-          >
-            <Button
-              variant="white"
-              text={t("save")}
-              // loading={}
-              onClick={handleSave1}
-              disabled={!(data && isSetPolygon)}
-            />
-          </Box>
-        </MapGL>
-      )}
+      <Map
+        mapType="draw"
+        initialMapViewport={initialMapViewport}
+        statefulMap={statefulMap}
+        setStatefulMap={setStatefulMap}
+        setInitialMapBounds={setInitialMapBounds}
+        drawnPolygon={drawnPolygon}
+        setDrawnPolygon={setDrawnPolygon}
+        drawMapOpen={mapOpen}
+        handleSaveDrawnPolygon={handleSaveDrawnPolygon}
+      ></Map>
     </MapWrapper>,
     document.getElementById("portal-root")
   );

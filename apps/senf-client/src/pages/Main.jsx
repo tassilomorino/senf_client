@@ -8,6 +8,8 @@ import React, {
   useMemo,
   useLayoutEffect,
 } from "react";
+import ReactDOM from "react-dom";
+
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -22,9 +24,11 @@ import {
   MobileTopBar,
   ErrorLoading,
   Loader,
-  Map,
-  MainLoader,
+  InfoPageMainApp,
+  ModalContext,
+  Cookiebanner
 } from "senf-atomic-design-system";
+import Cookies from "universal-cookie";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
 import { closeScream, openScreamFunc } from "../redux/actions/screamActions";
@@ -34,11 +38,6 @@ import {
 } from "../redux/actions/projectActions";
 
 import {
-  setMapBounds,
-  setInitialMapBounds,
-  setMapViewport,
-} from "../redux/actions/mapActions";
-import {
   handleTopicSelectorRedux,
   handleOrganizationTypesSelectorRedux,
   setSwipePositionUp,
@@ -47,7 +46,7 @@ import {
 
 // Components
 import StatisticsOverviewPage from "./StatisticsOverviewPage";
-import IdeaDialog from "./IdeaDetailPage";
+import IdeaDetailPage from "./IdeaDetailPage";
 import {
   closeAccountFunc,
   getMyOrganizations,
@@ -79,6 +78,10 @@ import InlineInformationPage from "../components/infocomponents/InlineInformatio
 import ProjectroomPage from "./ProjectroomPage";
 import ProfilePage from "./ProfilePage";
 import { StyledH3 } from "../styles/GlobalStyle";
+
+import { setCookies } from "../redux/actions/cookiesActions";
+
+const cookies = new Cookies();
 
 const CreateMainComponent = React.lazy(() =>
   import("../components/Create_Organisation_Projectrooms/CreateMainComponent")
@@ -127,8 +130,14 @@ const Main = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const errors = useSelector((state) => state.UI.errors);
-  const [authOpen, setAuthOpen] = useState(false);
-  const [authEditOpen, setAuthEditOpen] = useState(false);
+  const { handleModal } = React.useContext(ModalContext) || {};
+
+  /* useEffect(() => {
+    if (authOpen || authEditOpen) {
+      handleModal("push", <Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+
+    }
+  }, [authOpen]) */
 
   const [modalData, setModalData] = useState(null);
 
@@ -171,10 +180,7 @@ const Main = ({
   const { userId } = user;
   const userLikes = user.likes;
 
-  const voted = useSelector((state) => state.UI.voted);
   const screams = useSelector((state) => state.data.screams);
-  const myScreams = useSelector((state) => state.user.myScreams);
-  const scream = useSelector((state) => state.data.scream);
 
   const loading = useSelector((state) => state.data.loading);
   const loadingUI = useSelector((state) => state.UI.loading);
@@ -183,7 +189,6 @@ const Main = ({
     (state) => state.data.loadingOrganizations
   );
 
-  const loadingIdea = useSelector((state) => state.data.loadingIdea);
   const projects = useSelector((state) => state.data.projects);
   const project = useSelector((state) => state.data.project);
 
@@ -209,6 +214,35 @@ const Main = ({
     screamId && dispatch(openScreamFunc(screamId));
     organizationId && dispatch(openOrganizationFunc(organizationId, true));
   }, [dispatch, projectRoomId, screamId, organizationId, unknownPathId]);
+
+
+  const [openCookiebanner, setOpenCookiebanner] = useState(false);
+  useEffect(() => {
+
+    if (cookies.get("cookie_settings") === "all") {
+      dispatch(setCookies("all"));
+    } else if (cookies.get("cookie_settings") === "minimum") {
+      dispatch(setCookies("minimum"));
+    } else {
+
+      handleModal("push", <InfoPageMainApp />, { swipe: !!isMobileCustom, size: "lg", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      setOpenCookiebanner(true);
+
+    }
+
+  }, []);
+
+
+
+  const handleOpenCookiePreferences = () => {
+    window.open("/cookieConfigurator", "_blank");
+  };
+
+  const handleCookies = (cookie_settings) => {
+    dispatch(setCookies(cookie_settings));
+    setOpenCookiebanner(false);
+  };
+
 
   useEffect(() => {
     if (window.location.pathname === "/projectRooms") {
@@ -365,7 +399,7 @@ const Main = ({
   const handleButtonLike = (event, screamId) => {
     event.stopPropagation();
     if (!user.authenticated) {
-      setAuthOpen(true);
+      handleModal("push", <Auth authEditOpen={false} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
       return;
     }
     if (user.likes && user.likes.find((like) => like.screamId === screamId)) {
@@ -375,7 +409,7 @@ const Main = ({
     }
   };
 
-  const handleButtonComment = () => {};
+  const handleButtonComment = () => { };
 
   const handleSelectTopics = (topics) => {
     dispatch(handleTopicSelectorRedux(topics));
@@ -393,7 +427,7 @@ const Main = ({
       window.history.pushState(null, null, "/");
       dispatch(handleTopicSelectorRedux("all"));
     } else {
-      setAuthOpen(true);
+      handleModal("push", <Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
     }
   };
   useEffect(() => {
@@ -448,6 +482,12 @@ const Main = ({
 
   return (
     <React.Fragment>
+      {openCookiebanner && (
+        <>{ReactDOM.createPortal(<Cookiebanner
+          handleCookies={handleCookies}
+          handleOpenCookiePreferences={handleOpenCookiePreferences}
+        />, document.body)}</>
+      )}
       {openModalAuthenticateForProjectRoom && !user.authenticated && (
         <Modal
           zIndex={9999999999}
@@ -458,7 +498,8 @@ const Main = ({
             {t("authenticatedForCreateProjectRoom")}
           </StyledH3>
           <Box justifyContent="center" margin="0px 0px 10px 0px">
-            <Button text={t("login")} onClick={() => setAuthOpen(true)} />
+            <Button text={t("login")} onClick={() => handleModal("push", <Auth authEditOpen={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+            } />
           </Box>
         </Modal>
       )}
@@ -472,7 +513,8 @@ const Main = ({
             {t("organizations_create_login_register")}
           </StyledH3>
           <Box justifyContent="center" margin="0px 0px 10px 0px">
-            <Button text={t("login")} onClick={() => setAuthOpen(true)} />
+            <Button text={t("login")} onClick={() => handleModal("push", <Auth authEditOpen={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+            } />
           </Box>
         </Modal>
       )}
@@ -524,14 +566,6 @@ const Main = ({
         <InlineInformationPage
           setOrder={setOrder}
           setOpenOrganizationsOverview={setOpenOrganizationsOverview}
-        />
-      )}
-      {(authOpen || authEditOpen) && (
-        <Auth
-          setAuthOpen={setAuthOpen}
-          setAuthEditOpen={setAuthEditOpen}
-          authOpen={authOpen}
-          authEditOpen={authEditOpen}
         />
       )}
 
@@ -600,7 +634,6 @@ const Main = ({
           project={project}
           setPostIdeaOpen={setPostIdeaOpen}
           postIdeaOpen={postIdeaOpen}
-          setAuthOpen={setAuthOpen}
           statefulMap={statefulMap}
         />
       )}
@@ -667,17 +700,15 @@ const Main = ({
             <ProfilePage
               handleButtonOpenCard={handleButtonOpenCard}
               handleOpenProjectroom={handleOpenProjectroom}
-              setAuthEditOpen={setAuthEditOpen}
             />
           )}
 
           {!openInfoPage && openScream && (
-            <IdeaDialog
+            <IdeaDetailPage
               handleButtonLike={handleButtonLike}
               handleButtonComment={handleButtonComment}
               projectroomsData={dataFinalProjectRooms}
               user={user}
-              setAuthOpen={setAuthOpen}
             />
           )}
         </MainColumnWrapper>
@@ -691,8 +722,8 @@ const Main = ({
           handleButtonOpenCard={handleButtonOpenCard}
           user={user}
           setModalData={setModalData}
-          // setContactOpen,
-          // setFaqOpen,
+        // setContactOpen,
+        // setFaqOpen,
         />
       )}
 
@@ -718,8 +749,8 @@ const Main = ({
             projectroomsData={dataFinalProjectRooms}
             handleOpenCreateOrganization={handleOpenCreateOrganization}
 
-            // openCreateOrganization,
-            // setOpenModalAuthenticate,
+          // openCreateOrganization,
+          // setOpenModalAuthenticate,
           />
         )}
 

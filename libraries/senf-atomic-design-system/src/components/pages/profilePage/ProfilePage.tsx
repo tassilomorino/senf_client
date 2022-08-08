@@ -15,7 +15,7 @@ import Typography from "../../atoms/typography/Typography";
 import { ProfilePageProps } from "./ProfilePage.types";
 import Input from "../../atoms/inputs/Input";
 import List from "../../molecules/list/List";
-import CommentCard from "../../molecules/cards/commentCard";
+import CommentCard from "../../molecules/cards/CommentCard";
 import Wave from "../../atoms/shapes/Wave";
 import theme from "../../../styles/theme";
 import Divider from "../../atoms/divider/Divider";
@@ -38,8 +38,11 @@ import Logout from "../../../assets/icons/Logout";
 import Edit from "../../../assets/icons/Edit";
 import Plus from "../../../assets/icons/Plus";
 import Skeleton from "../../atoms/skeleton/Skeleton";
+import ContentDropdownItem from "../../atoms/contentDropdownItem/ContentDropdownItem";
+import ModalButton from "../../molecules/modalStack/ModalButton";
+import Auth from "../auth/Auth";
 
-const DragWrapper = styled(animated.div)<ProfilePageProps>`
+const DragWrapper = styled(animated.div) <ProfilePageProps>`
   display: flex;
   position: relative;
   flex-direction: column;
@@ -117,7 +120,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
   handleButtonOpenCard,
   handleOpenProjectroom,
   handleButtonClose,
-  setAuthEditOpen,
+  handleSetAuthEditOpen,
   handleLogout,
   handleDeleteAccount,
 }) => {
@@ -204,31 +207,20 @@ const ProfilePage: FC<ProfilePageProps> = ({
               }
               Content={
                 <Box gap="5px" flexDirection="column">
-                  <Button
-                    variant={"secondary"}
-                    size="small"
+                  <ContentDropdownItem
                     text={t("profile.edit")}
-                    justifyContent="flex-start"
-                    onClick={() => setAuthEditOpen(true)}
                     icon={<Edit />}
+                    onClick={handleSetAuthEditOpen}
                   />
-                  <Button
-                    variant={"secondary"}
-                    size="small"
+                  <ContentDropdownItem
                     text={t("logout")}
-                    justifyContent="flex-start"
-                    onClick={handleLogout}
                     icon={<Logout />}
-                    // disabled={i18n.resolvedLanguage === lng}
+                    onClick={handleLogout}
                   />
-                  <Button
-                    variant={"secondary"}
-                    size="small"
+                  <ContentDropdownItem
                     text={t("profile.delete")}
-                    justifyContent="flex-start"
+                    icon={<Plus />}
                     onClick={handleDeleteAccount}
-                    icon={<Plus transform="rotate(45deg)" />}
-                    // disabled={i18n.resolvedLanguage === lng}
                   />
                 </Box>
               }
@@ -299,14 +291,14 @@ const ProfilePage: FC<ProfilePageProps> = ({
                 tabs={
                   myOrganizations
                     ? [
-                        { icon: <Bulb />, text: "Ideen" },
-                        { icon: <Info />, text: "Organisationen" },
-                        // { icon: <Info />, text: "Interaktionen" },
-                      ]
+                      { icon: <Bulb />, text: "Ideen" },
+                      { icon: <Info />, text: "Organisationen" },
+                      // { icon: <Info />, text: "Interaktionen" },
+                    ]
                     : [
-                        { icon: <Bulb />, text: "Ideen" },
-                        // { icon: <Info />, text: "Interaktionen" },
-                      ]
+                      { icon: <Bulb />, text: "Ideen" },
+                      // { icon: <Info />, text: "Interaktionen" },
+                    ]
                 }
               />
             </Box>

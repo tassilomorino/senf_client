@@ -2,12 +2,12 @@
 
 import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
+import { t } from "i18next";
 import Icon from "../../atoms/icons/Icon";
 import { LayerWhiteFirstDefault } from "../../atoms/layerStyles/LayerStyles";
 import Box from "../../atoms/box/Box";
 import Typography from "../../atoms/typography/Typography";
 import { IdeaCardProps } from "./IdeaCard.types";
-import { t } from "i18next";
 import TertiaryButton from "../../atoms/buttons/TertiaryButton";
 import setColorByTopic from "../../../data/setColorByTopic";
 import Dot from "../../../assets/icons/Dot";
@@ -42,7 +42,7 @@ const Wrapper = styled.div<IdeaCardProps>`
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: ${({ projectroomCardData }) =>
-      projectroomCardData ? 3 : 4};
+    projectroomCardData ? 3 : 4};
     line-clamp: ${({ projectroomCardData }) => (projectroomCardData ? 3 : 4)};
     -webkit-box-orient: vertical;
     overflow: hidden;
@@ -95,7 +95,7 @@ const IdeaCard: FC<IdeaCardProps> = ({
   const liked = () => {
     if (user?.likes && user?.likes.find((like) => like.screamId === screamId))
       return true;
-    else return false;
+    return false;
   };
 
   const commented = () => {
@@ -104,7 +104,7 @@ const IdeaCard: FC<IdeaCardProps> = ({
       user?.comments.find((comment) => comment.screamId === screamId)
     )
       return true;
-    else return false;
+    return false;
   };
 
   const [projectroomCardData, setProjectroomCardData] = useState([]);
@@ -167,14 +167,14 @@ const IdeaCard: FC<IdeaCardProps> = ({
             </Box>
           </Box>
 
-          <Typography variant="h3"> {title}</Typography>
+          <Typography variant="h3">{title}</Typography>
 
           <Box
             alignItems="flex-start"
             flexDirection="row"
             margin="8px 0px 8px 0px"
           >
-            <Typography variant="bodyBg"> {body}</Typography>
+            <Typography variant="bodyBg">{body}</Typography>
           </Box>
         </InnerWrapper>
 

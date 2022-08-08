@@ -2,11 +2,13 @@
 
 import React, { FC } from "react";
 import styled from "styled-components";
+import { InfoPageMainApp } from "../../..";
 import Info from "../../../assets/icons/Info";
 import User from "../../../assets/icons/User";
 import LogoText from "../../../assets/logo/LogoText";
 import Box from "../../atoms/box/Box";
 import TertiaryButton from "../../atoms/buttons/TertiaryButton";
+import ModalButton from "../../molecules/modalStack/ModalButton";
 import { MobileTopBarProps } from "./MobileTopBar.types";
 
 const Wrapper = styled.div<MobileTopBarProps>`
@@ -63,10 +65,14 @@ const MobileTopBar: FC<MobileTopBarProps> = ({
           onClick={() => handleOpenMyAccount(true)}
           iconLeft={<User />}
         />
-        <TertiaryButton
-          onClick={() => setInfoPageOpen(true)}
+
+
+        <ModalButton
+          button={TertiaryButton}
           iconLeft={<Info />}
-        />
+          options={{ swipe: true, size: "lg", height: window.innerHeight + 83, padding: 0 }}>
+          <InfoPageMainApp />
+        </ModalButton>
       </Box>
     </Box>
   </Wrapper>

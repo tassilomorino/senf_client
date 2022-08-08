@@ -9,7 +9,8 @@ export const useHandleSubmitEditDetails = (userIdInFirebase, user, db) => {
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmitEditDetails = async (data) => {
+  const handleSubmitEditDetails = async (formik) => {
+    console.log(formik);
     setIsLoading(true);
     setError(undefined);
     setUpdatedUser(undefined);
@@ -26,13 +27,15 @@ export const useHandleSubmitEditDetails = (userIdInFirebase, user, db) => {
     }
     try {
       await updateDoc(doc(db, "users", user.userId), {
-        handle: data.handle ? data.handle : user.handle,
-        description: data.description ? data.description : null,
-        zipcode: data.zipcode ? data.zipcode : null,
-        age: data.age ? data.age : null,
-        sex: data.sex ? data.sex : null,
+        handle: formik.values.handle ? formik.values.handle : user.handle,
+        description: formik.values.description
+          ? formik.values.description
+          : null,
+        zipcode: formik.values.zipcode ? formik.values.zipcode : null,
+        age: formik.values.age ? formik.values.age : null,
+        sex: formik.values.sex ? formik.values.sex : null,
       });
-      setUpdatedUser(data);
+      setUpdatedUser(formik);
     } catch (error) {
       setError(error);
       console.log(error, "error in usehandlesubmitedit");

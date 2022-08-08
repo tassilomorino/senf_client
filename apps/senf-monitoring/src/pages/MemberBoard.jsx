@@ -2,19 +2,18 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 
-import { Typography, ImagePlaceholder, Box, Icon, Table, Button, Input, isMobileCustom } from "senf-atomic-design-system";
 
+import { Typography, ImagePlaceholder, Box, User, Tabs, Icon, Table, Button, ModalButton, Input, isMobileCustom } from "senf-atomic-design-system";
 import {
   collection,
   deleteDoc,
   doc,
-  getDoc,
   getDocs,
   orderBy,
   query,
 } from "firebase/firestore";
-import AddMemberToList from "./AddMemberToList";
 import { db } from "../firebase";
+import InviteMember from "./InviteMember";
 
 
 
@@ -31,9 +30,16 @@ const Wrapper = styled.div`
 const MemberBoard = () => {
   const isMobile = isMobileCustom()
 
-  const [openModal, setOpenModal] = useState(false);
+  const [order, setOrder] = useState(1)
+  const organizationId = 12345678
+
   const [members, setMembers] = useState([]);
+  const [pendingMembers, setPendingMembers] = useState([]);
+
   const [filteredMembers, setFilteredMembers] = useState([]);
+  const [filteredPendingMembers, setFilteredPendingMembers] = useState([]);
+
+
   const [searchTerm, setSearchTerm] = useState("");
 
   const { t } = useTranslation();
@@ -60,6 +66,35 @@ const MemberBoard = () => {
       throw new Error(error, "Error in Memberlist");
     }
   };
+
+  const getPendingMembers = async () => {
+    try {
+      const pendingMembersRef = collection(db, "mail");
+      const q = query(
+        pendingMembersRef,
+        // where("variable", ">", parameter),
+        orderBy("createdAt", "desc")
+      );
+      const pendingMembersQuerySnapshot = await getDocs(q);
+      const pendingMembersData = [];
+
+      pendingMembersQuerySnapshot.forEach((doc) => {
+        if (
+          // organizationId === doc.data().organizationId && 
+          doc.data().pending === true) {
+          pendingMembersData.push({
+            ...doc.data(),
+            docId: doc.id,
+          });
+        }
+
+      });
+      setPendingMembers(pendingMembersData);
+    } catch (error) {
+      throw new Error(error, "Error in Memberlist");
+    }
+  };
+
   const handleDeleteMember = async (userId) => {
     try {
       const docRef = doc(db, `exampleUsers/${userId}`);
@@ -70,101 +105,141 @@ const MemberBoard = () => {
       throw new Error(error, "error in deleteScreamFunc");
     }
   };
-  useEffect(() => {
-    getMembers();
-  }, [openModal]);
+
+  const handleDeletePendingMember = async (docId) => {
+    try {
+      const docRef = doc(db, `mail/${docId}`);
+      await deleteDoc(docRef).then(() => {
+        getPendingMembers();
+      });
+    } catch (error) {
+      throw new Error(error, "error in deleteScreamFunc");
+    }
+  };
 
   useEffect(() => {
-    setFilteredMembers(members.filter(e => Object.values(e).join(' ').toLowerCase().indexOf(searchTerm.toLowerCase()) > -1));
-  }, [searchTerm, members]);
+    getMembers();
+    getPendingMembers()
+  }, []);
+
+  useEffect(() => {
+    if (order === 1) {
+      setFilteredMembers(
+        members.filter(member => Object.values(member).join(' ').toLowerCase().indexOf(searchTerm.toLowerCase()) > -1));
+    }
+  }, [searchTerm, members, order]);
+
+
+  useEffect(() => {
+    if (order === 2) {
+      setFilteredPendingMembers(
+        pendingMembers.filter(pendingMember => Object.values(pendingMember).join(' ').toLowerCase().indexOf(searchTerm.toLowerCase()) > -1)
+      );
+    }
+  }, [searchTerm, pendingMembers, order]);
+
+
+
   return (
     <React.Fragment>
-      {openModal && (
-        <AddMemberToList openModal={openModal} setOpenModal={setOpenModal} />
-      )}
       <Wrapper>
         <Box gap="20px" flexDirection="column" margin="30px">
           <Typography variant="h2">MemberBoard</Typography>
-          <Box justifyContent="between" gap="16px">
-            <Box>
+
+          <Box justifyContent="space-between" gap="16px" alignItems="flex-end">
+            <Box margin="0px 24px 0px 0px" gap="10px" width="500px">
+              <Tabs
+                fontSize="buttonSm"
+                order={order}
+                setOrder={setOrder}
+                tabs={[
+                  { icon: <User />, text: `Members (${members.length})` },
+                  { icon: <User />, text: `Pending Members (${pendingMembers.length})` },
+                  // { icon: <Info />, text: "Interaktionen" },
+                ]}
+              />
+            </Box>
+            <Box width="400px">
               <Input type="search" setSearchTerm={setSearchTerm} />
             </Box>
-            <Box margin="0 0 0 auto">
-              <Button onClick={() => setOpenModal(true)} text="Add Member" />
-            </Box>
+            <ModalButton text="Add member" options={{ swipe: false }}>
+              <InviteMember getPendingMembers={getPendingMembers} />
+            </ModalButton>
           </Box>
 
-          {filteredMembers && (
-            <Table
-              data={filteredMembers}
-              checkbox="userId"
-              bulkEdit={<Icon icon="Search" />}
-              // this could be an alternative structure
-              // template={(member) => ([{
-              //     header: t("username"),
-              //     value: <Box gap="16px">
-              //       <ImagePlaceholder
-              //         width="64px"
-              //         height="64px"
-              //         img="#"
-              //       />
-              //       <Box flexDirection="column" justifyContent="center" alignItems="flex-start">
-              //         <Typography variant="h3">{member?.handle}</Typography>
-              //         { member?.email && <Typography variant="bodySm">{member.email}</Typography> }
-              //       </Box>
-              //     </Box>
-              //   },
-              //   {
-              //     header: t("division"),
-              //     value: <Typography variant="bodySm">{member?.division}</Typography>
-              //   },
-              //   {
-              //     header: t("role"),
-              //     value: <Typography variant="bodySm">{member?.roles}</Typography>
-              //   },
-              //   {
-              //     header: 'actions',
-              //     value: <Button
-              //       variant="white"
-              //       text="Delete"
-              //       onClick={() => handleDeleteMember(member?.userId)}
-              //     />
-              //   },
-              // ])}
-              columns={[
-                  t('username'),
-                  t('division'),
-                  t('roles'),
-                ]}
-              >
-              {
-                (row) => (
-                  <>
-                    <Box gap="16px">
-                      { !isMobile &&
-                        <ImagePlaceholder
-                          width="64px"
-                          height="64px"
-                          img="#"
-                        />
-                      }
-                      <Box flexDirection="column" justifyContent="center" alignItems="flex-start">
-                        <Typography variant="h3">{row.handle}</Typography>
-                        { row?.email && <Typography variant="bodySm">{row.email}</Typography> }
-                      </Box>
+
+
+
+          <Table
+            data={order === 1 ? filteredMembers : filteredPendingMembers}
+            checkbox="userId"
+            bulkEdit={<Icon icon="Search" />}
+            // this could be an alternative structure
+            // template={(member) => ([{
+            //     header: t("username"),
+            //     value: <Box gap="16px">
+            //       <ImagePlaceholder
+            //         width="64px"
+            //         height="64px"
+            //         img="#"
+            //       />
+            //       <Box flexDirection="column" justifyContent="center" alignItems="flex-start">
+            //         <Typography variant="h3">{member?.handle}</Typography>
+            //         { member?.email && <Typography variant="bodySm">{member.email}</Typography> }
+            //       </Box>
+            //     </Box>
+            //   },
+            //   {
+            //     header: t("division"),
+            //     value: <Typography variant="bodySm">{member?.division}</Typography>
+            //   },
+            //   {
+            //     header: t("role"),
+            //     value: <Typography variant="bodySm">{member?.roles}</Typography>
+            //   },
+            //   {
+            //     header: 'actions',
+            //     value: <Button
+            //       variant="white"
+            //       text="Delete"
+            //       onClick={() => handleDeleteMember(member?.userId)}
+            //     />
+            //   },
+            // ])}
+            columns={[
+              t('username'),
+              t('division'),
+              t('roles'),
+            ]}
+          >
+            {
+              (row) => (
+                <>
+                  <Box gap="16px">
+                    {!isMobile &&
+                      <ImagePlaceholder
+                        width="64px"
+                        height="64px"
+                        img="#"
+                      />
+                    }
+                    <Box flexDirection="column" justifyContent="center" alignItems="flex-start">
+                      <Typography variant="h3">{row.handle}</Typography>
+                      {row?.email && <Typography variant="bodySm">{row.email}</Typography>}
                     </Box>
-                    <Typography variant="bodySm">{row.division}</Typography>
-                    <Typography variant="bodySm">{row.role}</Typography>
-                    <Button
-                      variant="white"
-                      text="Delete"
-                      onClick={() => handleDeleteMember(row.userId)}
-                    />
-                  </>
-                )
-              }
-            </Table>
-          )}
+                  </Box>
+                  <Typography variant="bodySm">{row.division}</Typography>
+                  <Typography variant="bodySm">{row.role}</Typography>
+                  <Button
+                    variant="white"
+                    text="Delete"
+                    onClick={() => { order === 1 ? handleDeleteMember(row.userId) : handleDeletePendingMember(row.docId) }}
+                  />
+                </>
+              )
+            }
+          </Table>
+
         </Box>
       </Wrapper>
     </React.Fragment>

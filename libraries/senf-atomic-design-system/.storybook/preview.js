@@ -5,6 +5,7 @@ import { withThemes } from "@react-theming/storybook-addon";
 import GlobalStyle from "../src/styles/globals";
 import theme from "../src/styles/theme";
 import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
+import { ModalProvider } from "../src/components/molecules/modalStack/ModalProvider";
 
 import i18n from "../src/util/i18n";
 import React from "react";
@@ -15,10 +16,12 @@ export const decorators = [
     <React.Suspense fallback="Loading">
       <I18nextProvider i18n={i18n}>
         <ThemeProvider theme={theme}>
-          <GlobalStyle />
-          <Story />
-          <div id="portal-root-modal" />
-          <div id="portal-root-dialog" />
+          <ModalProvider>
+            <GlobalStyle />
+            <Story />
+            <div id="portal-root-modal" />
+            <div id="portal-root-dialog" />
+          </ModalProvider>
         </ThemeProvider>
       </I18nextProvider>
     </React.Suspense>

@@ -1,6 +1,7 @@
 /** @format */
 
 import { MouseEventHandler } from "react";
+
 export interface SwipeModalProps {
   x?: string;
   size?: "xl" | "l" | "m";

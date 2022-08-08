@@ -147,10 +147,10 @@ const PostScreamFormContent = ({
         locationDecided && isMobileCustom
           ? { top: "80px", transition: "0.5s" }
           : !locationDecided && isMobileCustom
-          ? { top: "100vh", transition: "0.5s" }
-          : locationDecided && !isMobileCustom
-          ? { zIndex: 5 }
-          : { zIndex: 1 }
+            ? { top: "100vh", transition: "0.5s" }
+            : locationDecided && !isMobileCustom
+              ? { zIndex: 5 }
+              : { zIndex: 1 }
       }
     >
       {!isMobileCustom && (
@@ -190,7 +190,7 @@ const PostScreamFormContent = ({
             error={formik?.touched.title && Boolean(formik?.errors.title)}
             note={formik?.touched.title && formik?.errors.title}
 
-            // maxLength: 70
+          // maxLength: 70
           />
 
           <Input
@@ -207,7 +207,7 @@ const PostScreamFormContent = ({
             error={formik?.touched.body && Boolean(formik?.errors.body)}
             note={formik?.touched.body && formik?.errors.body}
 
-            // maxLength: 800
+          // maxLength: 800
           />
         </Box>
         {/* <TextField
@@ -286,7 +286,7 @@ const PostScreamFormContent = ({
                       type="check"
                       text={label}
                       checked={topic === name}
-                      setChecked={() => handleDropdown(name)}
+                      onClick={() => handleDropdown(name)}
                     />
                   </Box>
                 ))}

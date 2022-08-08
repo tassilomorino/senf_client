@@ -27,7 +27,7 @@ import RoundedButton from "../../atoms/buttons/RoundedButton";
 import Arrow from "../../../assets/icons/Arrow";
 import Input from "../../atoms/inputs/Input";
 import List from "../../molecules/list/List";
-import CommentCard from "../../molecules/cards/commentCard";
+import CommentCard from "../../molecules/cards/CommentCard";
 import Wave from "../../atoms/shapes/Wave";
 import theme from "../../../styles/theme";
 import More from "../../../assets/icons/More";
@@ -42,6 +42,7 @@ import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 import DetailSidebar from "../../organisms/detailSidebar/DetailSidebar";
 import Share from "../../../assets/icons/Share";
 import Button from "../../atoms/buttons/Button";
+import ModalButton from "../../molecules/modalStack/ModalButton";
 import Hyperlink from "../../../assets/icons/Hyperlink";
 import { openMail, openLink } from "../../../util/helpers";
 import Calendar from "../../organisms/calendar/Calendar";
@@ -54,7 +55,7 @@ import Delete from "../../../assets/icons/Delete";
 import Report from "../../../assets/icons/Report";
 import Skeleton from "../../atoms/skeleton/Skeleton";
 
-const DragWrapper = styled(animated.div)<IdeaDetailPageProps>`
+const DragWrapper = styled(animated.div) <IdeaDetailPageProps>`
   display: flex;
   position: relative;
   flex-direction: column;
@@ -137,29 +138,24 @@ const ProjectroomOpenButton = styled.button`
   background-color: ${({ theme }) => theme.colors.greyscale.greyscale20};
   border: 0;
   bottom: 0;
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.greyscale.greyscale35};
+    cursor: pointer;
+  }
 `;
 const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
-  loadingIdea,
   data,
   projectroomsData,
   handleButtonCloseCard,
-  handleButtonLike,
-  handleButtonComment,
-  handleOpenProjectroom,
-  handleEditIdea,
-  handleDeleteIdea,
-  handleReportIdea,
   user,
-  handleOpenMenuComment,
   path,
   commentFormInput,
   setCommentFormInput,
-  handleSubmitComment,
   commentFormLoading,
-  handleShareIdeaVia,
-  setAuthOpen,
+  handleSetAuthOpen,
 }) => {
   const {
+    handle,
     screamId,
     title,
     body,
@@ -208,7 +204,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
   const [projectroomCardData, setProjectroomCardData] = useState([]);
 
   useEffect(() => {
-    if (projectroomsData && cardProjectroomId && !loadingIdea) {
+    if (projectroomsData && cardProjectroomId) {
       projectroomsData.map(({ projectRoomId, title, organizationType }) => {
         if (cardProjectroomId === projectRoomId) {
           setProjectroomCardData([
@@ -219,7 +215,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
         }
       });
     }
-  }, [projectroomsData, cardProjectroomId, loadingIdea]);
+  }, [projectroomsData, cardProjectroomId]);
 
   let selectedDates = [];
   const selectedUnixArray = selectedUnix;
@@ -319,11 +315,10 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
       setSocialmediaShareDropdownOpen(!socialmediaShareDropdownOpen);
     }
   };
-
   return (
     <React.Fragment>
       <DetailSidebar
-        handleButtonClose={() => handleButtonCloseCard(false)}
+        handleButtonClose={() => handle.closeCard(false)}
         SecondButton={
           <ContentDropdown
             open={socialmediaShareDropdownOpen}
@@ -341,7 +336,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
               <Box gap="5px" flexDirection="column">
                 <SocialmediaShare
                   path={path}
-                  handleShareIdeaVia={handleShareIdeaVia}
+                  handleShareIdeaVia={handle.shareIdeaVia}
                 />
               </Box>
             }
@@ -369,17 +364,23 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                       size="small"
                       text={t("idea.edit")}
                       justifyContent="flex-start"
-                      onClick={() => handleEditIdea(screamId)}
+                      onClick={() => handle.editIdea(data)}
                       icon={<Edit />}
                     />
-                    <Button
+                    <ModalButton
                       variant={"secondary"}
                       size="small"
                       text={t("idea.delete")}
                       justifyContent="flex-start"
-                      onClick={() => handleDeleteIdea(screamId)}
                       icon={<Delete />}
-                    />
+                      options={{
+                        title: "Bist du sicher, dass du die Idee löschen möchtest?",
+                        cancelText: t('cancel'),
+                        submitText: t('delete'),
+                        onSubmit: () => handle.deleteIdea(screamId)
+                      }}
+                    >
+                    </ModalButton>
                   </React.Fragment>
                 ) : (
                   <Button
@@ -387,7 +388,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                     size="small"
                     text={t("idea.report")}
                     justifyContent="flex-start"
-                    onClick={() => handleReportIdea(screamId)}
+                    onClick={() => handle.reportIdea(screamId)}
                     icon={<Report />}
                   />
                 )}
@@ -396,11 +397,10 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
           />
         }
       />
-      <DragWrapper
+      < DragWrapper
         id="dragWrapper"
         style={props}
         {...bind()}
-        $loadingIdea={loadingIdea}
         $isMobile={isMobile}
       >
         <div
@@ -448,7 +448,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                     variant="semibold"
                     iconLeft={liked() ? <FlameActive /> : <FlameInactive />}
                     text={likeCount}
-                    onClick={(event) => handleButtonLike(event, screamId)}
+                    onClick={(event) => handle.buttonLike(event, screamId)}
                   />
                   <TertiaryButton
                     variant="semibold"
@@ -456,7 +456,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                       commented() ? <CommentActive /> : <CommentInactive />
                     }
                     text={commentCount}
-                    onClick={(event) => handleButtonComment(event, screamId)}
+                    onClick={(event) => handle.buttonComment(event, screamId)}
                   />
                 </Box>
               </Box>
@@ -487,27 +487,31 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
 
               {weblink || contact ? (
                 <Box gap="8px" flexWrap="wrap" margin="10px 0px 16px 0px">
-                  <Button
-                    variant="secondary"
-                    icon={<Mail />}
-                    text={contactTitle || t("contact")}
-                    size="small"
-                    onClick={() => openMail(contact)}
-                  />
-                  <Button
-                    variant="secondary"
-                    icon={<Hyperlink />}
-                    text={weblinkTitle || t("website")}
-                    size="small"
-                    onClick={() => openLink(weblink)}
-                  />
+                  {contact && (
+                    <Button
+                      variant="secondary"
+                      icon={<Mail />}
+                      text={contactTitle || t("contact")}
+                      size="small"
+                      onClick={() => openMail(contact)}
+                    />
+                  )}
+                  {weblink && (
+                    <Button
+                      variant="secondary"
+                      icon={<Hyperlink />}
+                      text={weblinkTitle || t("website")}
+                      size="small"
+                      onClick={() => openLink(weblink)}
+                    />
+                  )}
                 </Box>
               ) : (
                 <Divider margin="10px 0px 16px 0px" />
               )}
 
               <Box flexDirection="column" gap="5px">
-                {selectedUnixArray !== undefined && selectedUnixArray !== null && (
+                {selectedUnixArray && selectedUnixArray.length > 0 && (
                   <Box gap="5px">
                     <Icon icon={<CalendarIcon />} />
                     <Typography variant="buttonSm">{selectedDates}</Typography>
@@ -543,7 +547,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
 
             {projectroomCardData[0] && (
               <ProjectroomOpenButton
-                onClick={() => handleOpenProjectroom(cardProjectroomId)}
+                onClick={() => handle.openProjectroom(cardProjectroomId)}
               >
                 <Box
                   alignItems="center"
@@ -571,7 +575,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
               {t("IdeaDetailPage.commentHeadline")}
             </Typography>
             {!user?.authenticated ? (
-              <Button onClick={setAuthOpen}>{t("login")}</Button>
+              <Button onClick={handleSetAuthOpen}>{t("login")}</Button>
             ) : (
               <Box gap="8px" width="100%">
                 <Input
@@ -584,7 +588,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                   text={t("send")}
                   disabled={commentFormInput === "" || commentFormLoading}
                   loading={commentFormLoading}
-                  onClick={handleSubmitComment}
+                  onClick={handle.submitComment}
                 />
               </Box>
             )}
@@ -594,13 +598,14 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
               data={comments}
               CardType={CommentCard}
               listEndText={" "}
-              handleOpenMenuComment={handleOpenMenuComment}
+              handle={handle}
+              user={user}
             />
           )}
           <div style={isMobile ? { height: "600px" } : { height: "200px" }} />
         </InnerWrapper>
-      </DragWrapper>
-    </React.Fragment>
+      </DragWrapper >
+    </React.Fragment >
   );
 };
 

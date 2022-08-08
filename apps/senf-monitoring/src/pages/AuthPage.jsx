@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import { Auth, Modal } from "senf-atomic-design-system";
 import styled from "styled-components";
+import Auth from "../components/Auth";
 
 const Section = styled.section`
   position: fixed;
@@ -13,14 +13,10 @@ const Section = styled.section`
 `;
 
 const AuthPage = ({ variant }) => {
+  const [authOpen, setAuthOpen] = useState(true);
   return (
     <Section>
-      <Modal openModal={true}>
-        <Auth
-          handleSubmitLogin={(loginData) => console.log(loginData)}
-          handleSubmitRegister={(registerData) => console.log(registerData)}
-        />
-      </Modal>
+      <Auth authOpen={authOpen} setAuthOpen={setAuthOpen} />
     </Section>
   );
 };

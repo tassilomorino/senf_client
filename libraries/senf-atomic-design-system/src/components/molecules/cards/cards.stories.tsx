@@ -15,7 +15,7 @@ import { ProjectroomCardProps } from "./ProjectroomCard.types";
 import ObjectCard from "./ObjectCard";
 import { ObjectCardProps } from "./ObjectCard.types";
 import { CommentCardProps } from "./CommentCard.types";
-import CommentCard from "./commentCard";
+import CommentCard from "./CommentCard";
 
 export default {
   title: "Molecules/Cards",

@@ -43,11 +43,13 @@ const DatePicker: FC<DatePickerProps> = ({
         shadow={false}
         plugins={[
           <DatePanel
+            key="date_panel"
             header="Ausgewählte Daten"
             position="bottom"
             markFocused
           />,
           <TimePicker
+            key="time_picker"
             position="right"
             hideSeconds
             format="MMM/DD"

@@ -130,3 +130,69 @@ const theme: Theme = {
 };
 
 export default theme;
+
+
+
+
+// This code does not produce accurate luminance values, yet.
+
+const colors = {
+  primary: { h: 46, s: 100, l: 71, a: 1 },
+  shade: { h: 37, s: 100, l: 30, a: 1 },
+  grey: { h: 44, s: 15, l: 46, a: 1 },
+  white: { h: 0, s: 0, l: 100, a: 1 },
+  text: { h: 36, s: 27, l: 11, a: 1 },
+}
+const luminance = [100, 75, 50, 25, 15, 10, 5]
+
+
+
+
+
+const hsla = (h, s, l, a) => `hsla(${h}, ${s}%, ${l}%, ${a})`
+// utils
+const hsl2rgb = (hue, sat, lum, alpha) => {
+  const h = hue
+  const s = sat / 100
+  const l = lum / 100
+  const a = s * Math.min(l, 1 - l);
+  const f = (n, k = (n + h / 30) % 12) => parseInt((l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1)) * 255, 10);
+  return [f(0), f(8), f(4), alpha];
+}
+const rgb2hsl = (red, green, blue) => {
+  const r = red / 255
+  const g = green / 255
+  const b = blue / 255
+  const v = Math.max(r, g, b)
+  const c = v - Math.min(r, g, b)
+  const f = (1 - Math.abs(v + v - c - 1));
+  const h = c && ((v === r) ? (g - b) / c : ((v === g) ? 2 + (b - r) / c : 4 + (r - g) / c));
+  return [
+    parseInt(60 * (h < 0 ? h + 6 : h), 10),
+    parseInt((f ? c / f : 0) * 100, 10),
+    parseInt(((v + v - c) / 2) * 100, 10)
+  ];
+}
+const blend = (hslA, hslB) => {
+  const A = hsl2rgb(...hslA)
+  const B = hsl2rgb(...hslB)
+  return rgb2hsl(
+    Math.min(((hslA[3]) * A[0]) + (hslB[3] * B[0]), 255),
+    Math.min(((hslA[3]) * A[1]) + (hslB[3] * B[1]), 255),
+    Math.min(((hslA[3]) * A[2]) + (hslB[3] * B[2]), 255),
+  )
+}
+
+
+// Object.entries(colors).forEach(([name, color]) => {
+//   luminance.forEach((lum) => {
+//     const { h, s, l, a } = color
+//     const lumColor = hsla(h, s, (100 - ((l * (lum)))) / 100, 1)
+//     // const lumColor = hsla(...blend([h, s, l, a], [0, 0, 100, (100 - lum) / 100]), 1)
+//     const traColor = hsla(h, s, l, (a * (lum)).toFixed(0) / 100)
+//     console.log(`%c${name} ${lumColor}`, `background: ${lumColor}; color: white`)
+//     console.log(`%c${name} ${traColor}`, `background: ${traColor}; color: black`)
+//   })
+// })
+
+

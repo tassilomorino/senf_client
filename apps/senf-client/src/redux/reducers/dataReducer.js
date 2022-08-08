@@ -94,7 +94,6 @@ const initialState = {
   comment: {},
   like: {},
   loading: true,
-  loadingIdea: false,
   loadingProjects: true,
   loadingOrganizations: true,
   loadingOrganization: false,
@@ -135,7 +134,6 @@ export default function (state = initialState, action) {
     case LOADING_IDEA_DATA:
       return {
         ...state,
-        loadingIdea: true,
       };
 
     case LOADING_ORGANIZATION_DATA:
@@ -155,7 +153,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         scream: action.payload,
-        loadingIdea: false,
       };
 
     case SET_SCREAM_USER:

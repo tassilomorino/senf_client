@@ -26,7 +26,7 @@ import Vereine from "../../../assets/icons/Vereine";
 import More from "../../../assets/icons/More";
 
 const DragWrapper = styled(animated.div)`
-  z-index: ${({ zIndex }) => zIndex || 995};
+  z-index: ${({ zIndex }) => zIndex || 1};
   overscroll-behavior: contain;
   overflow-x: hidden;
   width: 100%;
@@ -181,7 +181,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   const { t } = useTranslation();
   const isMobile = isMobileCustom();
   const [swipePercentage, setSwipePercentage] = useState(0);
-
+  const [activeSortOptionLabel, setActiveSortOptionLabel] = useState("");
   const [springProps, setSpring] = useSpring(() => ({
     x: 0,
     y: 0,
@@ -232,6 +232,19 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
       touchAction: "unset",
     });
   };
+  useEffect(() => {
+    if (order === "ideas") {
+      setActiveSortOptionLabel(t("newest_ideas"));
+      setCheckedSortOption("newest");
+    } else if (openOrganizationsOverview) {
+      setActiveSortOptionLabel(t("newest_organizations"));
+      setCheckedSortOption("newest");
+    } else if (order === "projectrooms") {
+      setActiveSortOptionLabel(t("newest_projectrooms"));
+      setCheckedSortOption("newest");
+    }
+    console.log(order);
+  }, [order, openOrganizationsOverview]);
 
   // useEffect(() => {
   //   if (searchOpen) {
@@ -353,20 +366,19 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
       searchPlaceholder={t("searchBar")}
       checkedSortOption={checkedSortOption}
       setCheckedSortOption={setCheckedSortOption}
-      activeSortOptionLabel={
-        order === "ideas" ? t("newest_ideas") : t("newest_projectrooms")
-      }
+      activeSortOptionLabel={activeSortOptionLabel}
+      setActiveSortOptionLabel={setActiveSortOptionLabel}
       sortOptions={
         order === "ideas"
           ? [
-              { value: "newest", label: t("newest_ideas") },
-              { value: "hottest", label: t("hottest_ideas") },
-            ]
+            { value: "newest", label: t("newest_ideas") },
+            { value: "hottest", label: t("hottest_ideas") },
+          ]
           : [
-              { value: "newest", label: t("newest_projectrooms") },
-              { value: "aToZ", label: t("aToZ_projectrooms") },
-              { value: "zToA", label: t("zToA_projectrooms") },
-            ]
+            { value: "newest", label: t("newest_projectrooms") },
+            { value: "aToZ", label: t("aToZ_projectrooms") },
+            { value: "zToA", label: t("zToA_projectrooms") },
+          ]
       }
       statusOptions={[
         { value: "Unprocessed", label: t("unprocessed") },
@@ -384,15 +396,15 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
         style={
           (openOrganizationsOverview || openStatisticsOverview) && isMobile
             ? {
-                scale: 0.9,
-                transform: `translateY(${-20}px)`,
-                filter: "brightness(80%)",
-                transition: "0.5s",
-                overflow: "visible",
-              }
+              scale: 0.9,
+              transform: `translateY(${-20}px)`,
+              filter: "brightness(80%)",
+              transition: "0.5s",
+              overflow: "visible",
+            }
             : isMobile
-            ? springProps
-            : null
+              ? springProps
+              : null
         }
       >
         <Wave color={theme.colors.beige.beige20} top="0px" />
@@ -408,7 +420,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
           <Header
             {...bind()}
 
-            // style={listHeaderProps}
+          // style={listHeaderProps}
           >
             {isMobile && <HandleBar />}
 
@@ -504,8 +516,8 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
                 order === "ideas" && ideasData.length > 0
                   ? t("noMoreIdeas")
                   : order === "ideas" && ideasData.length < 1
-                  ? t("noContentIdeas")
-                  : t("noMoreProjectrooms")
+                    ? t("noContentIdeas")
+                    : t("noMoreProjectrooms")
               }
             />
           </ContentWrapper>

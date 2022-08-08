@@ -172,18 +172,41 @@ p {
 
 @keyframes opacityAndPointerEventsAnimation {
   0% {
-    pointer-events:none;
+    pointer-events: none;
     opacity: 0;
   }
  
   100% {
     opacity: 1;
-    pointer-events:all;
+    pointer-events: all;
   }
 }
 
 
+.item-enter {
+  opacity: 0;
+  transform: scale(1.01);
+}
+.item-exit,
+.item-enter-active {
+  opacity: 1;
+  transform: scale(1);
+}
+.item-enter-active {
+  transition: 200ms ease-in;
+}
+
+.item-exit-active {
+  opacity: 0;
+  transform: scale(1.01);
+  transition: 200ms ease-in;
+}
 
 `;
+
+
+
+
+
 
 export default GlobalStyle;

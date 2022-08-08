@@ -21,6 +21,7 @@ import AuthEmail from "../../templates/auth/AuthEmail";
 import AuthResetEmail from "../../templates/auth/AuthResetEmail";
 import AuthVerifyEmail from "../../templates/auth/AuthVerifyEmail";
 import AuthAddDetails from "../../templates/auth/AuthAddDetails";
+import TertiaryButton from "../../atoms/buttons/TertiaryButton";
 
 const Wrapper = styled.div<AuthProps>`
   position: relative;
@@ -74,29 +75,14 @@ const Auth: FC<AuthProps> = ({
   return (
     <Wrapper>
       <Box margin="24px" position="absolute" zIndex={999}>
-        {handleClose !== undefined ? (
-          <RoundedButton
-            icon={
-              page === "authOptions" ? (
-                <Plus transform="rotate(45deg)" />
-              ) : (
-                <Arrow transform="rotate(180deg)" />
-              )
-            }
-            onClick={
-              page === "authOptions"
-                ? handleClose
-                : () => setPage("authOptions")
-            }
-          />
-        ) : (
+        {
           page !== "authOptions" && (
-            <RoundedButton
-              icon={<Arrow transform="rotate(180deg)" />}
+            <TertiaryButton
+              iconLeft={<Arrow transform="rotate(180deg)" />}
               onClick={() => setPage("authOptions")}
             />
           )
-        )}
+        }
       </Box>
 
       <Wave color="#fed957" top="170px" />

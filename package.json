@@ -32,5 +32,9 @@
     "node": "16.x",
     "yarn": "3.2.1"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@3.2.1",
+  "dependencies": {
+    "mapbox": "^1.0.0-beta10",
+    "react-transition-group": "^4.4.2"
+  }
 }

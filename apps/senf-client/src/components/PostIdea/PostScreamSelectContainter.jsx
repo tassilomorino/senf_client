@@ -77,20 +77,20 @@ const PostScreamSelectContainter = ({
         !isMobileCustom && locationDecided
           ? { zIndex: 1 }
           : !isMobileCustom && !locationDecided
-          ? { zIndex: 5 }
-          : isMobileCustom && locationDecided
-          ? {
-              position: "fixed",
-              bottom: "calc(90vh - 50px)",
-              display: "none",
-              zIndex: 999,
-            }
-          : {
-              position: "fixed",
-              bottom: "20px",
-              display: "block",
-              zIndex: 999,
-            }
+            ? { zIndex: 5 }
+            : isMobileCustom && locationDecided
+              ? {
+                position: "fixed",
+                bottom: "calc(90vh - 50px)",
+                display: "none",
+                zIndex: 999,
+              }
+              : {
+                position: "fixed",
+                bottom: "20px",
+                display: "block",
+                zIndex: 999,
+              }
       }
     >
       {!isMobileCustom && (
@@ -134,7 +134,7 @@ const PostScreamSelectContainter = ({
                     type="check"
                     text={label}
                     checked={projectSelected === value}
-                    setChecked={() => handleDropdownProject(value)}
+                    onClick={() => handleDropdownProject(value)}
                   />
                 </Box>
               ))}
