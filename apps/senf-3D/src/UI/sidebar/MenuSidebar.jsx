@@ -10,7 +10,7 @@ import {
   Divider,
   Plus,
 } from "senf-atomic-design-system";
-import logo from "../assets/logo_yellow.png";
+import logo from "../../assets/logo_yellow.png";
 
 const Wrapper = styled.div`
   position: fixed;

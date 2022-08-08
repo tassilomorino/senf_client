@@ -11,9 +11,9 @@ import {
 import ModelsList from "./ModelsList";
 import FormsList from "./FormsList";
 import MarkersList from "./MarkersList";
-import ModelsIcon from "../assets/interface-icons/Menu-Icon_1.png";
-import FormsIcon from "../assets/interface-icons/Menu-Icon_2.png";
-import SurfacesIcon from "../assets/interface-icons/Menu-Icon_3.png";
+import ModelsIcon from "../../assets/interface-icons/Menu-Icon_1.png";
+import FormsIcon from "../../assets/interface-icons/Menu-Icon_2.png";
+import SurfacesIcon from "../../assets/interface-icons/Menu-Icon_3.png";
 
 const Wrapper = styled.div`
   position: fixed;

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import mapboxgl from "mapbox-gl";
 import { Threebox } from "threebox-plugin";
 import "./Map.css";
@@ -11,7 +11,7 @@ const Map = ({ lng, lat, zoom, pitch, setLng, setLat, setZoom, setPitch }) => {
 
   // Initialize map when component mounts
   useEffect(() => {
-    const map = (window.map = new mapboxgl.Map({
+    const map =  new mapboxgl.Map({
       container: mapContainerRef.current,
       style: "mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6",
       center: [lng, lat],
@@ -19,13 +19,13 @@ const Map = ({ lng, lat, zoom, pitch, setLng, setLat, setZoom, setPitch }) => {
       pitch,
       bearing: -13,
       scale: 1,
-    }));
+    });
+    window.map = map;
     window.tb = new Threebox(map, map.getCanvas().getContext("webgl"), {
       defaultLights: true,
       enableSelectingObjects: true,
       enableDraggingObjects: true,
       enableRotatingObjects: true,
-      enableTooltips: true,
       enableHelpTooltips: true,
     });
     window.tb.altitudeStep = 1;

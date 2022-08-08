@@ -3,8 +3,8 @@
 import React from "react";
 import { ObjectCard } from "senf-atomic-design-system";
 
-import Weg from "../assets/surfaces/weg.png";
-import Img57 from "../assets/surfaces/57.png";
+import Weg from "../../assets/surfaces/weg.png";
+import Img57 from "../../assets/surfaces/57.png";
 
 const MarkersList = ({ setComponentsSidebarOpen, startDrawingStreet }) => {
   return (

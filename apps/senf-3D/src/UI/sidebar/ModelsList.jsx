@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { Box, List, ObjectCard, Tag } from "senf-atomic-design-system";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-import { ModelsData } from "../data/Models";
-import { createModel } from "./UI";
+import { ModelsData } from "../../data/Models";
+import { createModel } from "../../util/createModal";
 
 const tags = [
   { objectType: "Alle" },
@@ -16,7 +16,7 @@ const tags = [
   { objectType: "Sport" },
 ];
 
-const ModelsList = ({}) => {
+const ModelsList = () => {
   // useEffect(() => {
   //   // Create a reference to the file we want to download
   //   const storage = getStorage();
@@ -145,10 +145,10 @@ const ModelsList = ({}) => {
           data={models}
           handleButtonOpenCard={(event, cardType, modelData) => {
             createModel(
-              `model ${Math.random() * 1000}`,
+              `${Math.floor(Math.random() * 1000)}`,
               modelData.modelPath,
               modelData.format,
-              0.1
+              1
             );
           }}
           loading={false}
