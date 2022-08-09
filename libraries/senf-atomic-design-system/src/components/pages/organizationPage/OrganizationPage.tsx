@@ -32,6 +32,7 @@ import Room from "../../../assets/icons/Room";
 
 import Calendar from "../../organisms/calendar/Calendar";
 import Skeleton from "../../atoms/skeleton/Skeleton";
+import ModalButton from "../../molecules/modalStack/ModalButton";
 
 // const Calendar = React.lazy(() => import("../../organisms/calendar/Calendar"));
 
@@ -191,69 +192,63 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
       </Box>
 
       <Box margin="24px" alignItems="center" gap="10px">
+
         {(organization?.contact ||
           organization?.weblink ||
           organization?.address) && (
-          <Button
-            variant="secondary"
-            text={t("contact")}
-            fillWidth="max"
-            size="small"
-            onClick={() =>
-              setModalData(
-                <Box>
-                  <SubNavbar
-                    iconLeft={<Arrow transform="rotate(90deg)" />}
-                    leftButtonClick={() => setModalData(null)}
-                    header={t("contact")}
-                    handlebar={true}
-                  />
-                  <Box margin="18px">
-                    {organization?.contact && (
-                      <Typography variant="bodyBg">
-                        {organization?.contact}
-                      </Typography>
-                    )}
-                    {organization?.contact && <Divider />}
-                    {organization?.weblink && (
-                      <Typography variant="bodyBg">
-                        {organization?.contact}{" "}
-                      </Typography>
-                    )}
-                    {organization?.weblink && <Divider />}
-                    {organization?.address && (
-                      <Typography variant="bodyBg">
-                        {organization?.contact}{" "}
-                      </Typography>
-                    )}
-                  </Box>
-                </Box>
-              )
-            }
-          />
-        )}
+            <ModalButton
+              variant="secondary"
+              text={t("contact")}
+              size="small"
+              fillWidth="max"
+              options={{
+                padding: 20,
+                title: t("contact"),
+
+              }}
+            >
+              <Box margin="18px" flexDirection="column" gap="10px">
+                {organization?.contact && (
+                  <Typography variant="bodyBg">
+                    {organization?.contact}
+                  </Typography>
+                )}
+                {organization?.contact && <Divider />}
+                {organization?.weblink && (
+                  <Typography variant="bodyBg">
+                    {organization?.weblink}{" "}
+                  </Typography>
+                )}
+                {organization?.weblink && <Divider />}
+                {organization?.address && (
+                  <Typography variant="bodyBg">
+                    {organization?.address}{" "}
+                  </Typography>
+                )}
+              </Box>
+
+            </ModalButton>
+
+          )}
         {organization?.faqs && (
-          <Button
+          <ModalButton
             variant="secondary"
             text={t("faq")}
-            fillWidth="max"
             size="small"
-            onClick={() =>
-              setModalData(
-                <Box>
-                  <SubNavbar
-                    iconLeft={<Arrow transform="rotate(90deg)" />}
-                    leftButtonClick={setModalData(null)}
-                    header={t("FAQ")}
-                    handlebar={true}
-                  />
-                  <Box margin="18px">
-                    <Accordion data={organization?.faqs} />
-                  </Box>
-                </Box>
-              )
-            }
-          />
+            fillWidth="max"
+            options={{
+              padding: 20,
+              title: t("faq"),
+
+            }}
+          >
+            <Box margin="18px">
+              {organization.faqs}
+              <Accordion data={organization.faqs} />
+            </Box>
+
+          </ModalButton>
+
         )}
       </Box>
       <Box margin="21px 0px 0px 18px">

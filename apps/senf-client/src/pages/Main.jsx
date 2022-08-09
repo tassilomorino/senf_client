@@ -132,8 +132,6 @@ const Main = ({
   const errors = useSelector((state) => state.UI.errors);
   const { handleModal } = React.useContext(ModalContext) || {};
 
-  const [modalData, setModalData] = useState(null);
-
   const [swipedUp, setSwipedUp] = useState(false);
   const [swipedUpState, setSwipedUpState] = useState(false);
 
@@ -664,9 +662,7 @@ const Main = ({
           handleEdit={handleOpenCreateOrganization}
           handleButtonOpenCard={handleButtonOpenCard}
           user={user}
-          setModalData={setModalData}
-        // setContactOpen,
-        // setFaqOpen,
+
         />
       )}
 
@@ -711,18 +707,6 @@ const Main = ({
       {errors && !loading && <ErrorLoading />}
 
       {/* {voted && userLikes.length <= 1 && <ThanksForTheVote />} */}
-
-      {modalData && (
-        <Modal
-          openModal={modalData}
-          setOpenModal={setModalData}
-          zIndex="999999999"
-          backgroundColor="beige"
-          size={"xl"}
-        >
-          {modalData}
-        </Modal>
-      )}
 
       {changeLocationModalOpen && (
         <ChangeLocationModal
