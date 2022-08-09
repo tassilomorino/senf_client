@@ -44,8 +44,8 @@ const DragWrapper = styled(animated.div)`
 
   /* transform: scale(0.9) translateY(-20px); */
   @media (min-width: 768px) {
-    width: 470px;
-    max-width: 470px;
+    width: 466px;
+    max-width: 466px;
     border-radius: 18px;
     margin: 10px;
     height: calc(100vh - 20px);
@@ -55,7 +55,7 @@ const DragWrapper = styled(animated.div)`
 
 const InnerWrapper = styled.div<OrganizationsOverviewProps>`
   @media (min-width: 768px) {
-    padding-left: 59px;
+    padding-left: 66px;
     height: 100%;
 
     position: absolute;
@@ -75,7 +75,7 @@ const ContentWrapper = styled.div<OrganizationsOverviewProps>`
 
   @media (min-width: 768px) {
     height: calc(100% - 50px);
-    width: 410px;
+    width: 400px;
     position: relative;
     top: 0;
   }
@@ -428,8 +428,8 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
               handleSwipeUp={handleSwipeUp}
               order={order}
               setOrder={setOrder}
-              ideasDataLength={ideasData.length}
-              projectroomsDataLength={projectroomsData.length}
+              ideasDataLength={ideasData?.length}
+              projectroomsDataLength={projectroomsData?.length}
             />
 
             <div
@@ -513,9 +513,9 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
               handleButtonComment={handleButtonComment}
               user={user}
               listEndText={
-                order === "ideas" && ideasData.length > 0
+                order === "ideas" && ideasData?.length > 0
                   ? t("noMoreIdeas")
-                  : order === "ideas" && ideasData.length < 1
+                  : order === "ideas" && ideasData?.length < 1
                     ? t("noContentIdeas")
                     : t("noMoreProjectrooms")
               }

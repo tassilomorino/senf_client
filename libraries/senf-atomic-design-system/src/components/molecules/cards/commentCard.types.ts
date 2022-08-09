@@ -1,6 +1,7 @@
 /** @format */
 
 import { MouseEventHandler } from "react";
+
 export interface CommentCardProps {
   title?: string;
   body?: string;

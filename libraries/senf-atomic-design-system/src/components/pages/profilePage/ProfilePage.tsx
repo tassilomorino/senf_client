@@ -31,7 +31,6 @@ import More from "../../../assets/icons/More";
 
 import IdeaCard from "../../molecules/cards/IdeaCard";
 import ContentDropdown from "../../atoms/contentDropdown/ContentDropdown";
-import RoundedButton from "../../atoms/buttons/RoundedButton";
 import Button from "../../atoms/buttons/Button";
 import OrganizationCard from "../../molecules/cards/OrganizationCard";
 import Logout from "../../../assets/icons/Logout";
@@ -198,9 +197,9 @@ const ProfilePage: FC<ProfilePageProps> = ({
               setOpen={setDropdownOpen}
               direction={isMobile ? "downLeft" : "downRight"}
               OpenButton={
-                <RoundedButton
+                <Button
                   variant="white"
-                  size="small"
+                  size="medium"
                   onClick={handleToggle}
                   icon={<More />}
                 />

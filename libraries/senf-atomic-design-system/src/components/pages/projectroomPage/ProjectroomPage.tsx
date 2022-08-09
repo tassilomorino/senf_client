@@ -31,7 +31,6 @@ import More from "../../../assets/icons/More";
 
 import IdeaCard from "../../molecules/cards/IdeaCard";
 import ContentDropdown from "../../atoms/contentDropdown/ContentDropdown";
-import RoundedButton from "../../atoms/buttons/RoundedButton";
 import Button from "../../atoms/buttons/Button";
 import TagSlide from "../../molecules/tagSlide/TagSlide";
 import Plus from "../../../assets/icons/Plus";
@@ -45,6 +44,7 @@ import SocialmediaShare from "../../organisms/socialmediaShare/SocialmediaShare"
 import Calendar from "../../organisms/calendar/Calendar";
 import Edit from "../../../assets/icons/Edit";
 import Skeleton from "../../atoms/skeleton/Skeleton";
+import RoundedButton from "../../atoms/buttons/RoundedButton";
 
 // const Calendar = React.lazy(() => import("../../organisms/calendar/Calendar"));
 
@@ -346,9 +346,9 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
             setOpen={setSocialmediaShareDropdownOpen}
             direction={isMobile ? "downLeft" : "downRight"}
             OpenButton={
-              <RoundedButton
+              <Button
                 variant="white"
-                size="small"
+                size="medium"
                 onClick={() =>
                   setSocialmediaShareDropdownOpen(!socialmediaShareDropdownOpen)
                 }
@@ -372,9 +372,9 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
               setOpen={setEditDropdownOpen}
               direction={isMobile ? "downLeft" : "downRight"}
               OpenButton={
-                <RoundedButton
+                <Button
                   variant="white"
-                  size="small"
+                  size="medium"
                   onClick={() => setEditDropdownOpen(!editDropdownOpen)}
                   icon={<More />}
                 />

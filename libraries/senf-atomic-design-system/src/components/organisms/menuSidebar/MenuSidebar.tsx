@@ -21,7 +21,7 @@ import InfoPageMainApp from "../../pages/infoPages/InfoPageMainApp";
 
 const Wrapper = styled.div<MenuSidebarProps>`
   position: absolute;
-  width: 50px;
+  width: 68px;
   height: calc(100vh - 60px);
   padding: 20px 0px 20px 12px;
   left: 0;
@@ -67,12 +67,12 @@ const MenuSidebar: FC<MenuSidebarProps> = ({
       justifyContent="space-between"
       alignItems="center"
       height="100%"
-      width="36px"
+      width="44px"
     >
-      <Box gap="14px" flexDirection="column" width="36px">
+      <Box gap="14px" flexDirection="column" width="44px">
         <Button
           variant="white"
-          size="small"
+          size="medium"
           text={<SenfLogoSmall />}
           onClick={() => setOrder(1)}
         />
@@ -81,7 +81,7 @@ const MenuSidebar: FC<MenuSidebarProps> = ({
 
 
         <ModalButton variant="white"
-          size="small"
+          size="medium"
           icon={<Info />}
           options={{ swipe: false, size: "xl", padding: 0 }}>
           <InfoPageMainApp />
@@ -91,7 +91,7 @@ const MenuSidebar: FC<MenuSidebarProps> = ({
 
         <Button
           variant="white"
-          size="small"
+          size="medium"
           icon={<User />}
           onClick={() => {
             handleOpenMyAccount(true);
@@ -99,19 +99,19 @@ const MenuSidebar: FC<MenuSidebarProps> = ({
         />
       </Box>
 
-      <Box gap="14px" flexDirection="column" width="36px">
+      <Box gap="14px" flexDirection="column" width="44px">
         <LanguageSelect direction="downRight" />
         <Divider />
 
         <Button
           variant="white"
-          size="small"
+          size="medium"
           icon={<Mail />}
           onClick={() => openMail("dein@senf.koeln")}
         />
         <Button
           variant="white"
-          size="small"
+          size="medium"
           icon={<Insta />}
           onClick={() => openLink("https://www.instagram.com/senf.koeln/")}
         />

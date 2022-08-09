@@ -2,6 +2,7 @@
 
 import React, { FC } from "react";
 import styled from "styled-components";
+import { Button } from "../../..";
 import Arrow from "../../../assets/icons/Arrow";
 import More from "../../../assets/icons/More";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
@@ -23,16 +24,18 @@ const DetailSidebar: FC<DetailSidebarProps> = ({
     <Wrapper>
       <Box
         position="fixed"
-        margin={isMobile ? "10px" : "30px 20px"}
+        margin={isMobile ? "10px" : "30px 22px"}
         width={isMobile ? "calc(100% - 20px)" : "36px"}
         zIndex={9999}
         flexDirection={isMobile ? "row" : "column"}
         justifyContent={isMobile ? "space-between" : "flex-start"}
         gap="8px"
       >
-        <RoundedButton
+        <Button
           icon={<Arrow transform="rotate(180deg)" />}
           onClick={handleButtonClose}
+          size="medium"
+          variant="white"
         />
 
         {!isMobile && <Divider margin="0px 8px" />}

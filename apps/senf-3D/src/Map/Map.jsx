@@ -11,7 +11,7 @@ const Map = ({ lng, lat, zoom, pitch, setLng, setLat, setZoom, setPitch }) => {
 
   // Initialize map when component mounts
   useEffect(() => {
-    const map =  new mapboxgl.Map({
+    const map = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: "mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6",
       center: [lng, lat],

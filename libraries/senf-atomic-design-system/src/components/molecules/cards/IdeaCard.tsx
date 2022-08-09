@@ -16,6 +16,7 @@ import CommentInactive from "../../../assets/icons/CommentInactive";
 import FlameActive from "../../../assets/icons/FlameActive";
 import CommentActive from "../../../assets/icons/CommentActive";
 import setOrganizationTypeIcon from "../../../data/setOrganizationTypeIcon";
+import Button from "../../atoms/buttons/Button";
 
 const Wrapper = styled.div<IdeaCardProps>`
   cursor: pointer;
@@ -152,15 +153,17 @@ const IdeaCard: FC<IdeaCardProps> = ({
               flexDirection="row"
               margin="0px 0px 0px auto"
             >
-              <TertiaryButton
-                variant="semibold"
-                iconLeft={liked() ? <FlameActive /> : <FlameInactive />}
+              <Button
+                variant="tertiary"
+                size="small"
+                icon={liked() ? <FlameActive /> : <FlameInactive />}
                 text={likeCount}
                 onClick={(event) => handleButtonLike(event, screamId)}
               />
-              <TertiaryButton
-                variant="semibold"
-                iconLeft={commented() ? <CommentActive /> : <CommentInactive />}
+              <Button
+                variant="tertiary"
+                size="small"
+                icon={commented() ? <CommentActive /> : <CommentInactive />}
                 text={commentCount}
                 onClick={(event) => handleButtonComment(event, screamId)}
               />

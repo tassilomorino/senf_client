@@ -255,6 +255,7 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
 
 // Edit your idea
 export const editScreamFunc = (editScream) => async (dispatch) => {
+  console.log(editScream);
   try {
     dispatch({ type: LOADING_UI });
     const { screamId } = editScream;

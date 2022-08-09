@@ -132,31 +132,12 @@ const Main = ({
   const errors = useSelector((state) => state.UI.errors);
   const { handleModal } = React.useContext(ModalContext) || {};
 
-  /* useEffect(() => {
-    if (authOpen || authEditOpen) {
-      handleModal("push", <Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
-
-    }
-  }, [authOpen]) */
-
   const [modalData, setModalData] = useState(null);
 
   const [swipedUp, setSwipedUp] = useState(false);
   const [swipedUpState, setSwipedUpState] = useState(false);
 
   const organization = useSelector((state) => state.data.organization);
-
-  const [
-    openModalAuthenticateForProjectRoom,
-    setOpenModalAuthenticateForProjectRoom,
-  ] = useState(false);
-
-  const [openCreateOrganizationFirst, setOpenCreateOrganizationFirst] =
-    useState(false);
-
-  const [openRequestProjectRoom, setOpenRequestProjectRoom] = useState(false);
-
-  const [openModalAuthenticate, setOpenModalAuthenticate] = useState(false);
 
   const { screamId, projectRoomId, organizationId, unknownPathId } =
     useParams();
@@ -449,36 +430,68 @@ const Main = ({
 
   const handleOpenCreateOrganization = () => {
     if (!user.authenticated) {
-      setOpenModalAuthenticate(true);
+      // Add text into auth like "first you gt to create an account"
+      handleModal("push", <Auth authEditOpen={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
     } else {
       dispatch(stateCreateOrganizationsFunc(true));
-      setOpenCreateOrganizationFirst(false);
     }
   };
 
+
+  const openMailRequestProjectroom = () => {
+    const link =
+      `mailto:dein@senf.koeln` +
+      `?subject=${escape(
+        "Projektraum erstellen – Anfrage: Termin zur Erstbesprechung"
+      )}
+    )}`;
+    window.location.href = link;
+
+  }
   const handleCreateProjectroom = () => {
     if (!user.authenticated) {
-      setOpenModalAuthenticateForProjectRoom(true);
+      // Add text into auth like "first you gt to create an account"
+      handleModal("push", <Auth authEditOpen={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
     } else if (!user?.organizationId?.length) {
-      setOpenCreateOrganizationFirst(true);
+      handleModal("push", <>
+        <StyledH3 textAlign="center" margin="20px">
+          {t("createOrganizationForCreateProjectRoom")}
+        </StyledH3>
+        <Box justifyContent="center" margin="0px 0px 10px 0px">
+          <Button
+            text={t("createOrganization")}
+            margin="20px"
+            onClick={handleOpenCreateOrganization}
+          />
+        </Box>
+      </>, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && 350, padding: 0 })
+
     } else if (user?.isOrgModerator === true) {
       dispatch(getMyOrganizations(user.userId));
       dispatch(openCreateProjectRoomFunc(true));
     } else {
-      setOpenRequestProjectRoom(true);
+
+      handleModal("push", <>
+
+        <StyledH3 textAlign="center" margin="20px">
+          {t("requestCreateProjectRoom")}
+        </StyledH3>
+        <Box justifyContent="center" margin="0px 0px 10px 0px">
+          <Button
+            text={t("getInTouch")}
+            zIndex="999"
+            backgroundColor="#fed957"
+            textColor="#353535"
+            margin="20px"
+            onClick={openMailRequestProjectroom}
+          />
+        </Box>
+      </>, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && 500, padding: 0 })
+
     }
   };
 
-  // const [showUI, setShowUI] = useState(false);
-  // useEffect(() => {
-  //   if (!loading) {
-  //     statefulMap.on("load", () => {
-  //       setTimeout(() => {
-  //         setShowUI(true);
-  //       }, 1000);
-  //     });
-  //   }
-  // }, [loading]);
+
 
   return (
     <React.Fragment>
@@ -488,79 +501,9 @@ const Main = ({
           handleOpenCookiePreferences={handleOpenCookiePreferences}
         />, document.body)}</>
       )}
-      {openModalAuthenticateForProjectRoom && !user.authenticated && (
-        <Modal
-          zIndex={9999999999}
-          openModal={openModalAuthenticateForProjectRoom}
-          setOpenModal={setOpenModalAuthenticateForProjectRoom}
-        >
-          <StyledH3 textAlign="center" margin="20px">
-            {t("authenticatedForCreateProjectRoom")}
-          </StyledH3>
-          <Box justifyContent="center" margin="0px 0px 10px 0px">
-            <Button text={t("login")} onClick={() => handleModal("push", <Auth authEditOpen={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
-            } />
-          </Box>
-        </Modal>
-      )}
-      {openModalAuthenticate && !user.authenticated && (
-        <Modal
-          zIndex={9999999999}
-          openModal={openModalAuthenticate}
-          setOpenModal={setOpenModalAuthenticate}
-        >
-          <StyledH3 textAlign="center" margin="20px">
-            {t("organizations_create_login_register")}
-          </StyledH3>
-          <Box justifyContent="center" margin="0px 0px 10px 0px">
-            <Button text={t("login")} onClick={() => handleModal("push", <Auth authEditOpen={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
-            } />
-          </Box>
-        </Modal>
-      )}
 
-      {openCreateOrganizationFirst && (
-        <Modal
-          zIndex={9999999999}
-          openModal={openCreateOrganizationFirst}
-          setOpenModal={setOpenCreateOrganizationFirst}
-        >
-          <StyledH3 textAlign="center" margin="20px">
-            {t("createOrganizationForCreateProjectRoom")}
-          </StyledH3>
-          <Box justifyContent="center" margin="0px 0px 10px 0px">
-            <Button
-              text={t("createOrganization")}
-              margin="20px"
-              onClick={handleOpenCreateOrganization}
-            />
-          </Box>
-        </Modal>
-      )}
 
-      {openRequestProjectRoom && (
-        <Modal
-          zIndex={9999999999}
-          openModal={openRequestProjectRoom}
-          setOpenModal={setOpenRequestProjectRoom}
-        >
-          <StyledH3 textAlign="center" margin="20px">
-            {t("requestCreateProjectRoom")}
-          </StyledH3>
-          <Box justifyContent="center" margin="0px 0px 10px 0px">
-            <Button
-              text={t("getInTouch")}
-              zIndex="999"
-              backgroundColor="#fed957"
-              textColor="#353535"
-              margin="20px"
-              onClick={openMailRequestProjectRoom}
-            />
-          </Box>
-        </Modal>
-      )}
 
-      {/* {!showUI && <MainLoader />} */}
 
       {openInfoPage && (
         <InlineInformationPage
