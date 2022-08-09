@@ -45,7 +45,7 @@ const ModalStack = () => {
           {...options}
         >
           {modal}
-          {console.log(options)}
+          { }
         </ModalWrapper>
       ))}
     </Stack>

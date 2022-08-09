@@ -162,10 +162,6 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
       }
     });
   }, [formikEditIdea.values.projectRoomId]);
-  console.log(
-    formikEditIdea.values.projectRoomId,
-    "formikEditIdea.values.projectRoomId"
-  );
 
 
   /*  const geocodeonSelected = (newViewport) => {
