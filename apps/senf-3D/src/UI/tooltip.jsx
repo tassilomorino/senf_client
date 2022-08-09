@@ -36,7 +36,7 @@ function makeTooltipInteractive(model) {
       e.stopPropagation();
       window.tb.remove(model);
     };
-    
+
     model.label.element.children[0].querySelector("#move").onclick = (
       e
     ) => {

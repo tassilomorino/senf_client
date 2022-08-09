@@ -7,7 +7,7 @@ import Info from "../../../assets/icons/Info";
 import User from "../../../assets/icons/User";
 import LogoText from "../../../assets/logo/LogoText";
 import Box from "../../atoms/box/Box";
-import TertiaryButton from "../../atoms/buttons/TertiaryButton";
+import Button from "../../atoms/buttons/Button";
 import ModalButton from "../../molecules/modalStack/ModalButton";
 import { MobileTopBarProps } from "./MobileTopBar.types";
 
@@ -61,15 +61,19 @@ const MobileTopBar: FC<MobileTopBarProps> = ({
     >
       <LogoText transform="scale(1.2)" />
       <Box gap="0px" flexDirection="row">
-        <TertiaryButton
+        <Button
+          variant="tertiary"
+          size="small"
+
           onClick={() => handleOpenMyAccount(true)}
-          iconLeft={<User />}
+          icon={<User />}
         />
 
 
         <ModalButton
-          button={TertiaryButton}
-          iconLeft={<Info />}
+          variant="tertiary"
+          size="small"
+          icon={<Info />}
           options={{ swipe: true, size: "lg", height: window.innerHeight + 83, padding: 0 }}>
           <InfoPageMainApp />
         </ModalButton>

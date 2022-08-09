@@ -57,13 +57,14 @@ const Background = styled.div<{ index: number }>`
   width: 100vw;
   height: 100vh;
 `;
-const Toner = styled.div<{ size: string, index: number, swipe: boolean }>`
+const Toner = styled.div<{ padding: number, size: string, index: number, swipe: boolean }>`
   display: flex;
   flex-direction: column;
+  padding: ${({ padding }) => padding && `${padding}px`};
 
-  padding: ${({ padding }) => `${padding}px` || "20px"};
   padding-bottom: ${({ swipe }) => swipe && "120px"};
   padding-top: ${({ swipe }) => swipe && "40px"};
+
   opacity: ${({ index }) => 1 / index};
   height: ${({ height }) => height ? `${height}px` : '100%'};
   max-width: 100vw;
@@ -151,7 +152,7 @@ const ModalWrapper: FC<ModalWrapperProps> = ({
     if (afterClose && onAfterClose) onAfterClose()
   }, [afterClose])
 
-
+  console.log(submitText)
 
   return (
     <Wrapper
@@ -180,7 +181,7 @@ const ModalWrapper: FC<ModalWrapperProps> = ({
             >
               {cancelText &&
                 <Button
-                  variant="white"
+                  variant="secondary"
                   fillWidth="max"
                   onClick={close}
                   text={cancelText}

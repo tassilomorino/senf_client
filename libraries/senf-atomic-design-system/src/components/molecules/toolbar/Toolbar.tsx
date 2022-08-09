@@ -95,11 +95,12 @@ const Toolbar: FC<ToolbarProps> = ({
         open={dropdownOpen}
         setOpen={setDropdownOpen}
         OpenButton={
-          <TertiaryButton
+          <Button
+            variant="tertiary"
+            size="small"
             onClick={() => setDropdownOpen(!dropdownOpen)}
             text={activeSortOptionLabel}
             iconRight={<Arrow transform="rotate(90deg)" />}
-            variant="semibold"
           />
         }
         Content={

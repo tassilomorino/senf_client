@@ -16,7 +16,6 @@ export const createModel = (id, obj, objFormat, scale, rotation) => {
       window.tb.loadObj(options, (model) => {
         model.addLabel(tooltipDOM);
         makeTooltipInteractive(model);
-        
         model = model.setCoords([
           map.transform.center.lng,
           map.transform.center.lat,

@@ -10,6 +10,7 @@ import Bulb from "../../../../assets/infoPages/lastSection/bulb.png";
 
 import { isMobileCustom } from "../../../../hooks/customDeviceDetect";
 import { openMail } from "../../../../util/helpers";
+import Typography from "../../../atoms/typography/Typography"
 
 const Wrapper = styled.div`
   width: 100%;
@@ -80,13 +81,14 @@ const LearnMoreBubbles = ({ handleClose }) => {
           {faqOpen && (
             <Modal openModal={faqOpen} setOpenModal={() => setFaqOpen(false)}>
               <Box margin="24px" flexDirection="column">
-                <StyledH2
+                <Typography
+                  variant="h2"
                   fontWeight="900"
                   margin="15px 0px 15px 0px"
                   textAlign="center"
                 >
                   FAQ
-                </StyledH2>
+                </Typography>
 
                 <Accordion data={faqData} />
               </Box>

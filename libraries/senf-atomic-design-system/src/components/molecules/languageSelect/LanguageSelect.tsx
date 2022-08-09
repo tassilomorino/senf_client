@@ -33,7 +33,7 @@ const LanguageSelect: FC<LanguageSelectProps> = ({ text, direction }) => {
       OpenButton={
         <Button
           variant="white"
-          size="small"
+          size="medium"
           onClick={() => setDropdownOpen(!dropdownOpen)}
           text={Object.keys(lngs).map(
             (lng) => i18n.resolvedLanguage === lng && lngs[lng].shortName
@@ -49,7 +49,7 @@ const LanguageSelect: FC<LanguageSelectProps> = ({ text, direction }) => {
               size="small"
               text={lngs[lng].nativeName}
               onClick={() => handleChangeLanguage(lng)}
-              // disabled={i18n.resolvedLanguage === lng}
+            // disabled={i18n.resolvedLanguage === lng}
             />
           ))}
         </Box>

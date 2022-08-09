@@ -15,7 +15,6 @@ import {
 import Box from "../../atoms/box/Box";
 import Typography from "../../atoms/typography/Typography";
 import { IdeaDetailPageProps } from "./IdeaDetailPage.types";
-import TertiaryButton from "../../atoms/buttons/TertiaryButton";
 import setColorByTopic from "../../../data/setColorByTopic";
 import Dot from "../../../assets/icons/Dot";
 import FlameInactive from "../../../assets/icons/FlameInactive";
@@ -23,7 +22,6 @@ import CommentInactive from "../../../assets/icons/CommentInactive";
 import FlameActive from "../../../assets/icons/FlameActive";
 import CommentActive from "../../../assets/icons/CommentActive";
 import setOrganizationTypeIcon from "../../../data/setOrganizationTypeIcon";
-import RoundedButton from "../../atoms/buttons/RoundedButton";
 import Arrow from "../../../assets/icons/Arrow";
 import Input from "../../atoms/inputs/Input";
 import List from "../../molecules/list/List";
@@ -54,6 +52,7 @@ import Edit from "../../../assets/icons/Edit";
 import Delete from "../../../assets/icons/Delete";
 import Report from "../../../assets/icons/Report";
 import Skeleton from "../../atoms/skeleton/Skeleton";
+import EditIdeaPage from "../editIdeaPage/EditIdeaPage";
 
 const DragWrapper = styled(animated.div) <IdeaDetailPageProps>`
   display: flex;
@@ -82,8 +81,8 @@ const DragWrapper = styled(animated.div) <IdeaDetailPageProps>`
   animation: translateYFrom100toMinus200pxAnimation 1s;
 
   @media (min-width: 768px) {
-    width: 470px;
-    max-width: 470px;
+    width: 466px;
+    max-width: 466px;
     border-radius: 18px;
     margin: 10px;
     height: calc(100vh - 20px);
@@ -153,6 +152,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
   setCommentFormInput,
   commentFormLoading,
   handleSetAuthOpen,
+  handleSubmitEditidea
 }) => {
   const {
     handle,
@@ -325,9 +325,9 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
             setOpen={setSocialmediaShareDropdownOpen}
             direction={isMobile ? "downLeft" : "downRight"}
             OpenButton={
-              <RoundedButton
+              <Button
+                size="medium"
                 variant="white"
-                size="small"
                 onClick={handleShareIdea}
                 icon={<Share />}
               />
@@ -348,9 +348,9 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
             setOpen={setEditIdeaDropdownOpen}
             direction={isMobile ? "downLeft" : "downRight"}
             OpenButton={
-              <RoundedButton
+              <Button
+                size="medium"
                 variant="white"
-                size="small"
                 onClick={() => setEditIdeaDropdownOpen(!editIdeaDropdownOpen)}
                 icon={<More />}
               />
@@ -359,21 +359,32 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
               <Box gap="5px" flexDirection="column">
                 {user?.userId === userId || user?.isSuperAdmin === true ? (
                   <React.Fragment>
-                    <Button
-                      variant={"secondary"}
+                    <ModalButton
+                      variant={"tertiary"}
                       size="small"
                       text={t("idea.edit")}
                       justifyContent="flex-start"
-                      onClick={() => handle.editIdea(data)}
                       icon={<Edit />}
-                    />
+                      options={{
+                        padding: 0,
+                      }}
+                    >
+                      <EditIdeaPage
+                        projectroomsData={projectroomsData}
+                        // viewport={viewport}
+                        data={data}
+                        handle={handle}
+                      />
+                    </ModalButton>
+
                     <ModalButton
-                      variant={"secondary"}
+                      variant={"tertiary"}
                       size="small"
                       text={t("idea.delete")}
                       justifyContent="flex-start"
                       icon={<Delete />}
                       options={{
+                        padding: 20,
                         title: "Bist du sicher, dass du die Idee löschen möchtest?",
                         cancelText: t('cancel'),
                         submitText: t('delete'),
@@ -444,15 +455,17 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                   flexDirection="row"
                   margin="0px 0px 0px auto"
                 >
-                  <TertiaryButton
-                    variant="semibold"
-                    iconLeft={liked() ? <FlameActive /> : <FlameInactive />}
+                  <Button
+                    variant="tertiary"
+                    size="small"
+                    icon={liked() ? <FlameActive /> : <FlameInactive />}
                     text={likeCount}
                     onClick={(event) => handle.buttonLike(event, screamId)}
                   />
-                  <TertiaryButton
-                    variant="semibold"
-                    iconLeft={
+                  <Button
+                    variant="tertiary"
+                    size="small"
+                    icon={
                       commented() ? <CommentActive /> : <CommentInactive />
                     }
                     text={commentCount}

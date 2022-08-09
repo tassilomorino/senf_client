@@ -1,8 +1,11 @@
 /** @format */
 
-import React, { FC } from "react";
+import React, {
+  FC
+} from "react";
 import styled from "styled-components";
 import Loader from "../animations/Loader";
+import Box from "../box/Box";
 import Icon from "../icons/Icon";
 import {
   LayerGreyButtonsDefault,
@@ -12,9 +15,11 @@ import {
   LayerYellowDefault,
   LayerYellowHover,
 } from "../layerStyles/LayerStyles";
-import { ButtonProps } from "./Button.types";
+import {
+  ButtonProps
+} from "./Button.types";
 
-const StyledButton = styled.button<ButtonProps>`
+const StyledButton = styled.button < ButtonProps> `
   position: relative;
   cursor: ${(props) => (props.disabled === true ? "not-allowed" : "pointer")};
   box-sizing: border-box;
@@ -25,68 +30,83 @@ const StyledButton = styled.button<ButtonProps>`
   align-items: center;
 
   //ADD THEME-OPACITY
-  opacity: ${(props) => (props.disabled === true ? 0.6 : 1)};
+  opacity: ${({ disabled }) => (disabled === true ? 0.6 : 1)};
   //ADD THEME-RADII
-  border-radius: 10px;
+
 
   //ADD THEME-SPACE?
-  height: ${(props) => (props.size === "small" ? "36px" : "50px")};
+  height: ${({ size }) => (size === "small" ? "36px" : size === "medium" ? "44px" : "50px")};
 
-  //FOR SMALLICONBUTTON  – is this really  correct?
-  width: ${(props) => (props.fillWidth === "max" ? "100%" : "auto")};
+  //FOR SMALLICONBUTTON – is this really correct?
+  width: ${({ fillWidth }) => (fillWidth === "max" ? "100%" : "auto")};
 
-  min-width: ${(props) => (props.size === "small" ? "36px" : "50px")};
+  min-width: ${({ size }) => (size === "small" ? "36px" : size === "medium" ? "44px" : "50px")};
 
-  color: ${(props) => (props.loading === true ? "transparent" : "auto")};
-  pointer-events: ${(props) => (props.loading === true ? "none" : "all")};
+  color: ${({ loading }) => (loading === true ? "transparent" : "auto")};
+  pointer-events: ${({ loading }) => (loading === true ? "none" : "all")};
 
   //ADD THEME-SPACE?
-  padding: ${(props) =>
-    props.size === "small" ? "14px 10px 14px 10px" : "14px"};
+  padding: ${({ size }) => (size === "small" ? "8px 10px" : size === "medium" ? "10px 14px" : "13px 16px")};
+  border-radius: ${({ size }) => (size === "small" ? "12px" : size === "medium" ? "14px" : "16px")};
+  font-size: ${({ size }) => (size === "small" ? "14px" : size === "medium" ? "16px" : "16px")};
+  font-weight: ${({ variant }) => ((variant === "primary" || variant === undefined) && 700)};
 
-  ${(props) =>
-    props.variant === "primary" || props.variant === undefined
+  ${({ variant }) =>
+    variant === "primary" || variant === undefined
       ? LayerYellowDefault
-      : props.variant === "white"
-      ? LayerWhiteFirstDefault
-      : props.variant === "secondary" && LayerGreyButtonsDefault}
+      : variant === "white"
+        ? LayerWhiteFirstDefault
+        : variant === "secondary" && LayerGreyButtonsDefault};
+
+  background-color: ${({ variant }) => (variant === "tertiary" && "transparent")};
+
 
   //ADD THEME-BORDER
-  border: ${(props) =>
-    props.borderStyle === "dashed"
-      ? `2px dashed ${props.theme.colors.greyscale.greyscale50tra} `
-      : "auto"};
+  border: ${({ borderStyle, variant, theme }) =>
+    variant === "tertiary" ? 0 :
+      borderStyle === "dashed"
+        ? `2px dashed ${theme.colors.greyscale.greyscale50tra}`
+        : "auto"};
 
   &:hover:enabled {
-    ${(props) =>
-      props.variant === "primary" || props.variant === undefined
-        ? LayerYellowHover
-        : props.variant === "white"
+  ${(props) =>
+    props.variant === "primary" || props.variant === undefined
+      ? LayerYellowHover
+      : props.variant === "white"
         ? LayerWhiteFirstHover
         : props.variant === "secondary" && LayerGreyButtonsHover}
 
-    //ADD THEME-BORDER
-   border: ${(props) =>
-      props.borderStyle === "dashed"
-        ? `2px dashed ${props.theme.colors.greyscale.greyscale50tra} `
+  background-color: ${({ theme, variant }) => variant === "tertiary" && theme.colors.greyscale.greyscale20tra};
+
+
+  //ADD THEME-BORDER
+  border: ${({ borderStyle, variant, theme }) =>
+    variant === "tertiary" ? 0 :
+      borderStyle === "dashed"
+        ? `2px dashed ${theme.colors.greyscale.greyscale50tra}`
         : "auto"};
   }
 
   &:active:enabled {
-    ${(props) =>
-      props.variant === "primary" || props.variant === undefined
-        ? LayerYellowHover
-        : props.variant === "white"
+  ${(props) =>
+    props.variant === "primary" || props.variant === undefined
+      ? LayerYellowHover
+      : props.variant === "white"
         ? LayerWhiteFirstHover
-        : props.variant === "secondary" && LayerGreyButtonsHover}
+        : props.variant === "secondary" && LayerGreyButtonsHover};
 
-    //ADD THEME-BORDER
-  border: ${(props) =>
-      props.borderStyle === "dashed"
-        ? `2px dashed ${props.theme.colors.greyscale.greyscale50tra} `
+  background-color: ${({ theme, variant }) => variant === "tertiary" && theme.colors.greyscale.greyscale20tra};
+
+
+  //ADD THEME-BORDER
+  border: ${({ borderStyle, variant, theme }) =>
+    variant === "tertiary" ? 0 :
+      borderStyle === "dashed"
+        ? `2px dashed ${theme.colors.greyscale.greyscale50tra}`
         : "auto"};
+
   }
-`;
+  `;
 
 const LoaderWrapper = styled.span`
   position: absolute;
@@ -95,16 +115,17 @@ const LoaderWrapper = styled.span`
   justify-content: center;
   width: 100%;
   height: 100%;
-`;
+  `;
 
-const IconWrapper = styled.div<ButtonProps>`
-  padding-right: ${(props) => (props.text === undefined ? "0px" : "10px")};
-`;
+const IconWrapper = styled.div < ButtonProps> `
+    padding-right: ${(props) => (props.text === undefined ? "0px" : "10px")};
+    `;
 
 const Button: FC<ButtonProps> = ({
   text,
   children,
   icon,
+  iconRight,
   transform,
   size,
   variant,
@@ -115,32 +136,33 @@ const Button: FC<ButtonProps> = ({
   onClick,
   ...rest
 }) => (
-  <StyledButton
-    type="button"
-    text={text}
-    variant={variant}
-    icon={icon}
-    borderStyle={borderStyle}
-    justifyContent={justifyContent}
-    fillWidth={fillWidth}
-    $loading={loading}
-    onClick={onClick}
-    size={size}
-    {...rest}
-  >
-    {children && children}
-    {icon && (
-      <IconWrapper text={text}>
-        <Icon icon={icon} transform={transform} />
-      </IconWrapper>
+  <StyledButton type="button" text={text} variant={variant} icon={icon} borderStyle={borderStyle}
+    justifyContent={justifyContent} fillWidth={fillWidth} $loading={loading} onClick={onClick} size={size}
+    {...rest}>
+    {
+      children && children
+    } {
+      icon && (< IconWrapper text={text}>
+        < Icon icon={icon} transform={transform} />
+      </IconWrapper>)} {text}
+
+    {iconRight && (
+      <Box marginLeft="11px">
+        <Icon
+          icon={iconRight}
+
+        />
+      </Box>
     )}
-    {text}
-    {loading && (
-      <LoaderWrapper>
-        <Loader />
-      </LoaderWrapper>
-    )}
-  </StyledButton>
-);
+
+
+
+
+    {loading && (< LoaderWrapper>
+      < Loader />
+    </LoaderWrapper>)}
+
+
+  </StyledButton>);
 
 export default Button;
