@@ -4,16 +4,16 @@ import styled from "styled-components";
 import { animated } from "@react-spring/web";
 
 export const PageWrapper = styled(animated.div)`
-  top: 70px;
-  width: 100vw;
-  height: 100vh;
+  padding-top: 70px;
+  width: 100%;
+  height: 100%;
   position: fixed;
   overflow: scroll;
   background-color: rgb(249, 241, 215);
 `;
 export const ComponentWrapper = styled.div`
   height: auto;
-  width: 100vw;
+  width: 100%;
   top: 70px;
   padding-bottom: 300px;
   overflow: hidden;

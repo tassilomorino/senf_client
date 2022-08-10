@@ -74,7 +74,6 @@ import Auth from "./Auth";
 
 import OrganizationPage from "./OrganizationPage";
 import { likeScream, unlikeScream } from "../redux/actions/likeActions";
-import InlineInformationPage from "../components/infocomponents/InlineInformationPage";
 import ProjectroomPage from "./ProjectroomPage";
 import ProfilePage from "./ProfilePage";
 import { StyledH3 } from "../styles/GlobalStyle";
@@ -431,7 +430,9 @@ const Main = ({
       // Add text into auth like "first you gt to create an account"
       handleModal("push", <Auth authEditOpen={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
     } else {
-      dispatch(stateCreateOrganizationsFunc(true));
+      handleModal("push", <React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
+        <CreateMainComponent type="organization" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+
     }
   };
 
@@ -466,7 +467,11 @@ const Main = ({
 
     } else if (user?.isOrgModerator === true) {
       dispatch(getMyOrganizations(user.userId));
-      dispatch(openCreateProjectRoomFunc(true));
+      // dispatch(openCreateProjectRoomFunc(true));
+
+
+      handleModal("push", <React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
+        <CreateMainComponent type="projectRoom" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
     } else {
 
       handleModal("push", <>
@@ -503,12 +508,6 @@ const Main = ({
 
 
 
-      {openInfoPage && (
-        <InlineInformationPage
-          setOrder={setOrder}
-          setOpenOrganizationsOverview={setOpenOrganizationsOverview}
-        />
-      )}
 
       {isMobileCustom && !postIdeaOpen && (
         <React.Fragment>
@@ -592,7 +591,7 @@ const Main = ({
                 ideasDataOriginal={screams}
                 ideasData={dataFinalIdeas}
                 projectroomsData={dataFinalProjectRooms}
-                organizations={organizations}
+                organizations={dataFinalOrganizations}
                 selectedTopics={selectedTopics}
                 selectedOrganizationTypes={selectedOrganizationTypes}
                 checkedSortOption={dropdown}
@@ -665,7 +664,7 @@ const Main = ({
 
         />
       )}
-
+      {/* 
       {!openInfoPage &&
         !openProjectRoom &&
         !openAccount &&
@@ -691,7 +690,7 @@ const Main = ({
           // openCreateOrganization,
           // setOpenModalAuthenticate,
           />
-        )}
+        )} */}
 
       {!openInfoPage &&
         !openAccount &&
@@ -718,7 +717,7 @@ const Main = ({
         <Button text="Stadt auswählen" onClick={setChangeLocationModalOpen} />
       </Box> */}
 
-      {(openCreateProjectRoom || openCreateOrganization) && (
+      {/* {(openCreateProjectRoom || openCreateOrganization) && (
         <React.Suspense fallback={<Loader />}>
           <CreateMainComponent
             type={
@@ -728,7 +727,7 @@ const Main = ({
             }
           />
         </React.Suspense>
-      )}
+      )} */}
     </React.Fragment>
   );
 };

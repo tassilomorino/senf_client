@@ -1,30 +1,28 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import {
-  Accordion,
   OrganizationPage as OrganizationPageComponent,
+  ModalContext,
+  Loader
 } from "senf-atomic-design-system";
-import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
-import { db } from "../firebase";
 
 // Redux stuff
 import { clearErrors } from "../redux/actions/errorsActions";
-import { handleTopicSelectorRedux } from "../redux/actions/UiActions";
 
 import {
   openOrganizationFunc,
   stateCreateOrganizationsFunc,
 } from "../redux/actions/organizationActions";
+import { isMobileCustom } from "../util/customDeviceDetect";
 
-import setIconByOrganizationType from "../data/setIconByOrganizationType";
-import MainModal from "../components/atoms/Layout/MainModal";
-import { openLink, openMail, search, sort } from "../util/helpers";
+const CreateMainComponent = React.lazy(() =>
+  import("../components/Create_Organisation_Projectrooms/CreateMainComponent")
+);
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -67,13 +65,6 @@ export const Wrapper = styled.div`
 `;
 
 
-const Divider = styled.div`
-  width: calc(100% - 48px);
-  height: 1px;
-  background-color: rgba(186, 160, 79, 0.2);
-  overflow: visible;
-  margin: 10px 24px 10px 24px;
-`;
 
 const OrganizationPage = ({
   setOpenOrganizationsPage,
@@ -86,6 +77,7 @@ const OrganizationPage = ({
   const { t } = useTranslation();
   const organization = useSelector((state) => state.data.organization);
 
+  const { handleModal } = React.useContext(ModalContext) || {};
 
 
 
@@ -103,7 +95,11 @@ const OrganizationPage = ({
     localStorage.setItem("createOrganizationId", organization?.organizationId);
     localStorage.setItem("createOrganizationPostEdit", true);
 
-    dispatch(stateCreateOrganizationsFunc(true));
+    // dispatch(stateCreateOrganizationsFunc(true));
+
+    handleModal("push", <React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
+      <CreateMainComponent type="projectRoom" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+
   };
 
   // useEffect(() => {
@@ -153,16 +149,33 @@ const OrganizationPage = ({
   // }, [organization.organizationId, organization, user]);
 
   // loadingOrganization add skeletonlader
-  return (
-    <OrganizationPageComponent
-      user={user}
-      organization={organization}
-      organizations={organizations}
-      handleCloseOrganizationPage={handleClose}
-      handleEditOrganization={handleEditOrganization}
-      handleButtonOpenCard={handleButtonOpenCard}
-    />
-  );
+  useEffect(() => {
+
+    if (organization) {
+      handleModal("push",
+        <OrganizationPageComponent
+          user={user}
+          organization={organization}
+          organizations={organizations}
+          handleCloseOrganizationPage={handleClose}
+          handleEditOrganization={handleEditOrganization}
+          handleButtonOpenCard={handleButtonOpenCard}
+        />, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+
+    }
+
+
+  }, [organization])
+
+  return <OrganizationPageComponent
+    user={user}
+    organization={organization}
+    organizations={organizations}
+    handleCloseOrganizationPage={handleClose}
+    handleEditOrganization={handleEditOrganization}
+    handleButtonOpenCard={handleButtonOpenCard}
+  />
+
 };
 
 export default OrganizationPage;

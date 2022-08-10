@@ -171,18 +171,18 @@ const SwipeModal: FC<SwipeModalProps> = ({
         <DragWrapper
           style={props}
           $zIndex={zIndex}
-          $backgroundColor={backgroundColor}
+          backgroundColor={backgroundColor}
           overflow={overflow}
           role="dialog"
           size={size}
           aria-labelledby="modal-header"
           id="swipeModal"
-          // onKeyDown={
-          //   (e) =>
-          //     submitRef?.current &&
-          //     closeRef?.current &&
-          //     trapFocus(e, submitRef.current, closeRef.current) // ideally we would use inert but it doesn't seem to be working
-          // }
+        // onKeyDown={
+        //   (e) =>
+        //     submitRef?.current &&
+        //     closeRef?.current &&
+        //     trapFocus(e, submitRef.current, closeRef.current) // ideally we would use inert but it doesn't seem to be working
+        // }
         >
           {HeaderComponent ? (
             <React.Fragment>

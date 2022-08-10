@@ -24,6 +24,8 @@ import MenuSidebar from "../../organisms/menuSidebar/MenuSidebar";
 import Box from "../../atoms/box/Box";
 import Vereine from "../../../assets/icons/Vereine";
 import More from "../../../assets/icons/More";
+import { ModalContext } from "../../molecules/modalStack/ModalProvider";
+import OrganizationsOverview from "../organizationsOverview/OrganizationsOverview";
 
 const DragWrapper = styled(animated.div)`
   z-index: ${({ zIndex }) => zIndex || 1};
@@ -180,6 +182,8 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
 }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom();
+  const { handleModal } = React.useContext(ModalContext) || {};
+
   const [swipePercentage, setSwipePercentage] = useState(0);
   const [activeSortOptionLabel, setActiveSortOptionLabel] = useState("");
   const [springProps, setSpring] = useSpring(() => ({
@@ -350,19 +354,20 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
       searchTerm={searchTerm}
       setSearchTerm={setSearchTerm}
       secondButton={<Button variant="secondary" size="small" icon={<More />} />}
-      // secondButton={
-      //   <Button
-      //     variant="secondary"
-      //     size="small"
-      //     text={order === "ideas" ? t("statistics") : t("organizations")}
-      //     icon={order === "ideas" ? <Stats /> : null}
-      //     onClick={
-      //       order === "ideas"
-      //         ? () => setOpenStatisticsOverview(true)
-      //         : () => setOpenOrganizationsOverview(true)
-      //     }
-      //   />
-      // }
+      secondButton={
+        <Button
+          variant="secondary"
+          size="small"
+          text={order === "ideas" ? t("statistics") : t("organizations")}
+          icon={order === "ideas" ? <Stats /> : null}
+          onClick={
+            order === "ideas"
+              ? () => setOpenStatisticsOverview(true)
+              : () => handleModal("push", <OrganizationsOverview data={organizations} handleButtonOpenCard={handleButtonOpenCard} />, { swipe: !!isMobile, size: "lg", height: isMobile && window.innerHeight + 83, padding: 0 })
+            // () => setOpenOrganizationsOverview(true)
+          }
+        />
+      }
       searchPlaceholder={t("searchBar")}
       checkedSortOption={checkedSortOption}
       setCheckedSortOption={setCheckedSortOption}
@@ -432,7 +437,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
               projectroomsDataLength={projectroomsData?.length}
             />
 
-            <div
+            {/* <div
               style={{
                 position: "absolute",
                 right: isMobile ? "90px" : "92px",
@@ -453,7 +458,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
                 transform="scale(0.7)"
                 onClick={() => setOpenOrganizationsOverview(true)}
               />
-            </div>
+            </div> */}
             <RoundedButtonWrapper>
               <RoundedButton
                 size="big"

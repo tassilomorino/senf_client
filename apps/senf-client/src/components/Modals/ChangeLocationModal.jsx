@@ -124,29 +124,30 @@ const ChangeLocationModal = ({ setChangeLocationModalOpen }) => {
   };
 
   return (
-    <MainModal handleButtonClick={() => setChangeLocationModalOpen(false)}>
-      <InnerTopWrapper>
-        <InnerTopLeftWrapper>
-          <h1>Wähle deine Stadt </h1>
-        </InnerTopLeftWrapper>
-        <LocationButton onClick={handleLocationCurrent}>
-          <img src={Geolocate} width="50" alt="Geolocate" />
-        </LocationButton>
-      </InnerTopWrapper>
-      <SearchWrapper>
-        <Input
-          type="search"
-          setSearchTerm={setSearchTerm}
-          placeholder="Suche weltweit..."
-        />
-        <Button onClick={handleSearch} text="Search" />
-      </SearchWrapper>
-      <br />
-      <InnerBottomWrapper>
-        <h3 style={{ color: "#353535" }}> Kreativste Städte: </h3>
-        <p onClick={handleLocationC}>Köln (300)</p>
-      </InnerBottomWrapper>
-    </MainModal>
+    <></>
+    // <MainModal handleButtonClick={() => setChangeLocationModalOpen(false)}>
+    //   <InnerTopWrapper>
+    //     <InnerTopLeftWrapper>
+    //       <h1>Wähle deine Stadt </h1>
+    //     </InnerTopLeftWrapper>
+    //     <LocationButton onClick={handleLocationCurrent}>
+    //       <img src={Geolocate} width="50" alt="Geolocate" />
+    //     </LocationButton>
+    //   </InnerTopWrapper>
+    //   <SearchWrapper>
+    //     <Input
+    //       type="search"
+    //       setSearchTerm={setSearchTerm}
+    //       placeholder="Suche weltweit..."
+    //     />
+    //     <Button onClick={handleSearch} text="Search" />
+    //   </SearchWrapper>
+    //   <br />
+    //   <InnerBottomWrapper>
+    //     <h3 style={{ color: "#353535" }}> Kreativste Städte: </h3>
+    //     <p onClick={handleLocationC}>Köln (300)</p>
+    //   </InnerBottomWrapper>
+    // </MainModal>
   );
 };
 

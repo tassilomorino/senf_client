@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import orderBy from "lodash/orderBy";
 import { useTranslation } from "react-i18next";
-import { ProjectroomPage as ProjectroomPageComponent } from "senf-atomic-design-system";
+import { ProjectroomPage as ProjectroomPageComponent, ModalContext, Loader } from "senf-atomic-design-system";
 import {
   openCreateProjectRoomFunc,
   openProjectRoomFunc,
@@ -18,10 +18,12 @@ import { handleTopicSelectorRedux } from "../redux/actions/UiActions";
 import { openOrganizationFunc } from "../redux/actions/organizationActions";
 
 import { filterByTagFilter, search, sort } from "../util/helpers";
+import { isMobileCustom } from "../util/customDeviceDetect";
 
-const Wrapper = styled.div`
-  z-index: 999;
-`;
+const CreateMainComponent = React.lazy(() =>
+  import("../components/Create_Organisation_Projectrooms/CreateMainComponent")
+);
+
 const ProjectroomPage = ({
   viewport,
   dataFinalProjectRooms,
@@ -34,6 +36,8 @@ const ProjectroomPage = ({
   handleSetInitialMapBoundsAndViewport,
 }) => {
   const { t } = useTranslation();
+  const { handleModal } = React.useContext(ModalContext) || {};
+
   const [path, setPath] = useState("");
   const [order, setOrder] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
@@ -135,6 +139,10 @@ const ProjectroomPage = ({
     localStorage.setItem("createProjectRoomPostEdit", true);
 
     dispatch(openCreateProjectRoomFunc(true));
+
+    handleModal("push", <React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
+      <CreateMainComponent type="projectRoom" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+
   };
 
 

@@ -216,17 +216,38 @@ const ProfilePage: FC<ProfilePageProps> = ({
                     icon={<Logout />}
                     onClick={handleLogout}
                   />
-                  <ContentDropdownItem
+
+
+                  <ModalButton
+                    button={ContentDropdownItem}
                     text={t("profile.delete")}
                     icon={<Plus />}
-                    onClick={handleDeleteAccount}
-                  />
-                </Box>
+                    options={{
+                      padding: 20,
+                      title: t("contactModalTitle"),
+                      cancelText: t("cancel")
+                    }}
+                  >
+
+                    <ModalButton
+                      text={t("profile.delete")}
+                      fillWidth="max"
+                      options={{
+                        padding: 20,
+                        title: t('delete_account_confirm'),
+                        cancelText: t('cancel'),
+                        submitText: t('delete'),
+                        onSubmit: handleDeleteAccount,
+                      }}
+                    />
+
+                  </ModalButton>
+                </Box >
               }
             />
           }
         />
-        <DragWrapper
+        < DragWrapper
           id="dragWrapper"
           style={props}
           {...bind()}
@@ -318,8 +339,8 @@ const ProfilePage: FC<ProfilePageProps> = ({
               }
             />
           </ContentWrapper>
-        </DragWrapper>
-      </React.Fragment>
+        </ DragWrapper>
+      </React.Fragment >
     )
   );
 };

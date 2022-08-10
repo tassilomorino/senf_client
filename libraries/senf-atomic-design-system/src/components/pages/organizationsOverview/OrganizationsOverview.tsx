@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
@@ -20,6 +20,15 @@ import { OrganizationsOverviewProps } from "./OrganizationsOverview.types";
 import Arrow from "../../../assets/icons/Arrow";
 import Plus from "../../../assets/icons/Plus";
 import Wave from "../../atoms/shapes/Wave";
+
+const Background = styled.div`
+ width:100%;
+ height:100%;
+  background-color: #fed957;
+  position:absolute;
+  z-index:0;
+  top:0;
+`;
 
 const Wrapper = styled.div<OrganizationsOverviewProps>`
   background-color: ${({ theme }) => theme.colors.beige.beige20};
@@ -107,6 +116,13 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
   const [activeSortOptionLabel, setActiveSortOptionLabel] = useState(
     t("newest_organizations")
   );
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    setTimeout(() => {
+      setOpen(true)
+    }, 100);
+  }, [])
+
 
   const toolbarComponent = (
     <Toolbar
@@ -138,32 +154,33 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
     />
   );
   return isMobile ? (
-    <SwipeModal
-      backgroundColor={theme.colors.primary.primary100}
-      openModal={openOrganizationsOverview}
-      setOpenModal={setOpenOrganizationsOverview}
-      headerComponentHeight="102px"
-      zIndex="998"
-      HeaderComponent={
-        <React.Fragment>
-          <SubNavbar
-            iconLeft={<Arrow transform="rotate(90deg)" />}
-            leftButtonClick={() => setOpenOrganizationsOverview(false)}
-            header={t("organizations")}
-            handlebar={true}
-            // iconRight="plus"
-            // iconRightTransform="rotate(45deg)"
-          />
-          <TagSlide
-            type="organizationTypes"
-            selectedOrganizationTypes={selectedOrganizationTypes}
-            handleSelectOrganizationTypes={handleSelectOrganizationTypes}
-          />
-        </React.Fragment>
-      }
-    >
+    // <SwipeModal
+    //   backgroundColor={"#fed957"}
+    //   openModal={openOrganizationsOverview}
+    //   setOpenModal={setOpenOrganizationsOverview}
+    //   headerComponentHeight="102px"
+    //   zIndex="998"
+    //   HeaderComponent={
+    //     <React.Fragment>
+    //       <SubNavbar
+    //         iconLeft={<Arrow transform="rotate(90deg)" />}
+    //         leftButtonClick={() => setOpenOrganizationsOverview(false)}
+    //         header={t("organizations")}
+    //         handlebar={true}
+    //       // iconRight="plus"
+    //       // iconRightTransform="rotate(45deg)"
+    //       />
+    //       <TagSlide
+    //         type="organizationTypes"
+    //         selectedOrganizationTypes={selectedOrganizationTypes}
+    //         handleSelectOrganizationTypes={handleSelectOrganizationTypes}
+    //       />
+    //     </React.Fragment>
+    //   }
+    // >
+    <React.Fragment>
+      <Background />
       <Wave color={theme.colors.beige.beige20} top="0px" />
-
       <InnerWrapper isMobile={isMobile}>
         <Box margin="16px 12px 16px 12px">{toolbarComponent}</Box>
         <Box margin="0px 12px 6px 12px">
@@ -175,11 +192,11 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
             fillWidth="max"
             onClick={handleOpenCreateOrganization}
 
-            // onClick={
-            //   user.authenticated
-            //     ? openCreateOrganization
-            //     : () => setOpenModalAuthenticate(true)
-            // }
+          // onClick={
+          //   user.authenticated
+          //     ? openCreateOrganization
+          //     : () => setOpenModalAuthenticate(true)
+          // }
           />
         </Box>
         <List
@@ -191,7 +208,9 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
           handleButtonOpenCard={handleButtonOpenCard}
         />
       </InnerWrapper>
-    </SwipeModal>
+    </React.Fragment>
+
+    // </SwipeModal>
   ) : (
     <Wrapper open={openOrganizationsOverview}>
       <SVGWrapper searchOpen={searchOpen}>

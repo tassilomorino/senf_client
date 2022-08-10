@@ -12,7 +12,7 @@ const DialogWrapper = styled.div<DialogProps>`
   left: ${({ left }) => left || undefined};
   right: ${({ right }) => right || undefined};
 
-  z-index: ${({ zIndex }) => zIndex || 9999};
+  z-index: ${({ zIndex }) => zIndex || 8};
   position: fixed;
   top: 0;
   height: 100vh;
@@ -22,12 +22,12 @@ const DialogWrapper = styled.div<DialogProps>`
     size === "xxl"
       ? "100vw"
       : size === "xl"
-      ? "1200px"
-      : size === "l"
-      ? "800px"
-      : size === "m"
-      ? "600px"
-      : "400px"};
+        ? "1200px"
+        : size === "l"
+          ? "800px"
+          : size === "m"
+            ? "600px"
+            : "400px"};
   overflow: ${({ overflow }) => overflow || "scroll"};
 
   background-color: ${({ backgroundColor }) => backgroundColor || "white"};
@@ -93,29 +93,25 @@ const Dialog: FC<DialogProps> = ({
 
   return (
     isOpen &&
-    ReactDOM.createPortal(
-      <DialogWrapper
-        left={left}
-        right={right}
-        zIndex={zIndex}
-        boxShadow={boxShadow}
-        backgroundColor={backgroundColor}
-        overflow={overflow}
-        role="dialog"
-        size={size}
-        // aria-labelledby="dialog-header"
-        // onKeyDown={
-        //   (e) =>
-        //     submitRef?.current &&
-        //     closeRef?.current &&
-        //     trapFocus(e, submitRef.current, closeRef.current) // ideally we would use inert but it doesn't seem to be working
-        // }
-      >
-        {children}
-      </DialogWrapper>,
-      document.body
-      //  document.getElementById(portalId) as HTMLElement
-    )
+    <DialogWrapper
+      left={left}
+      right={right}
+      zIndex={zIndex}
+      boxShadow={boxShadow}
+      backgroundColor={backgroundColor}
+      overflow={overflow}
+      role="dialog"
+      size={size}
+    // aria-labelledby="dialog-header"
+    // onKeyDown={
+    //   (e) =>
+    //     submitRef?.current &&
+    //     closeRef?.current &&
+    //     trapFocus(e, submitRef.current, closeRef.current) // ideally we would use inert but it doesn't seem to be working
+    // }
+    >
+      {children}
+    </DialogWrapper>
   );
 };
 

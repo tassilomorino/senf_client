@@ -15,15 +15,13 @@ import {
   filterByTagFilter,
 } from "../util/helpers";
 
-import { logoutUser } from "../redux/actions/userActions";
-import DeleteProfileModal from "../components/Modals/DeleteProfileModal";
+import { deleteUserFromDb, logoutUser } from "../redux/actions/userActions";
 import Auth from "./Auth";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
 const ProfilePage = ({
   handleButtonOpenCard,
   handleOpenProjectroom,
-  setAuthEditOpen,
 }) => {
 
   const { t } = useTranslation();
@@ -36,6 +34,7 @@ const ProfilePage = ({
   const myScreams = useSelector((state) => state.user.myScreams);
   const myOrganizations = useSelector((state) => state.user.myOrganizations);
   const user = useSelector((state) => state.user);
+
   const organizations = useSelector((state) => state.data.organizations);
   const organization = useSelector((state) => state.data.organization);
   const [deleteMenuOpen, setDeleteMenuOpen] = useState(false);
@@ -84,6 +83,13 @@ const ProfilePage = ({
     dispatch(logoutUser());
   };
 
+  const handleDeleteAccount = () => {
+    dispatch(deleteUserFromDb(user.userId)).then(() => {
+      handleModal("pop")
+      handleModal("pop")
+    });
+  };
+
   return (
     <React.Fragment>
       {deleteMenuOpen && (
@@ -104,7 +110,7 @@ const ProfilePage = ({
         handleSetAuthEditOpen={() => handleModal("push", <Auth authEditOpen={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
         }
         handleLogout={handleLogout}
-        handleDeleteAccount={() => setDeleteMenuOpen(true)}
+        handleDeleteAccount={handleDeleteAccount}
 
       // setEditProfileOpen,
       />
