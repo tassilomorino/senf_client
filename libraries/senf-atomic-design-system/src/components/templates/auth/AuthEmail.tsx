@@ -18,7 +18,7 @@ import TertiaryButton from "../../atoms/buttons/TertiaryButton";
 
 const AuthEmail: FC<AuthEmailProps> = ({
   variant,
-  loading,
+  loginLoading,
   handleSubmitRegister,
   handleSubmitLogin,
   errorMessage,
@@ -224,14 +224,15 @@ const AuthEmail: FC<AuthEmailProps> = ({
         variant="white"
         fillWidth="max"
         text={variantState === "register" ? t("register") : t("login")}
-        loading={loading}
+        loading={loginLoading}
+
         onClick={
           variantState === "register"
             ? () => handleSubmitRegister(formikRegisterStore)
             : (e) => {
-                e.preventDefault();
-                handleSubmitLogin(formikLoginStore);
-              }
+              e.preventDefault();
+              handleSubmitLogin(formikLoginStore);
+            }
         }
         disabled={
           variantState === "register"
