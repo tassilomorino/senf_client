@@ -32,6 +32,8 @@ const ProjectroomPage = ({
   handleButtonOpenCard,
   setPostIdeaOpen,
   handleSetInitialMapBoundsAndViewport,
+  handleButtonLike,
+  handleButtonComment,
 }) => {
   const { t } = useTranslation();
   const [path, setPath] = useState("");
@@ -150,6 +152,8 @@ const ProjectroomPage = ({
       handleSelectTopics={(topic) => dispatch(handleTopicSelectorRedux(topic))}
       setPostIdeaOpen={() => setPostIdeaOpen(true)}
       handleEditProjectroom={handleEditProjectroom}
+      handleButtonLike={handleButtonLike}
+      handleButtonComment={handleButtonComment}
       setSearchOpen={setSearchOpen}
       searchOpen={searchOpen}
       searchTerm={searchTerm}

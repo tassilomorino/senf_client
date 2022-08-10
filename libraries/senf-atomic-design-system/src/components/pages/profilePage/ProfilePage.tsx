@@ -122,6 +122,8 @@ const ProfilePage: FC<ProfilePageProps> = ({
   handleSetAuthEditOpen,
   handleLogout,
   handleDeleteAccount,
+  handleButtonLike,
+  handleButtonComment,
 }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom();
@@ -303,11 +305,14 @@ const ProfilePage: FC<ProfilePageProps> = ({
             </Box>
 
             <List
+              user={user}
               CardType={order === 1 ? IdeaCard : OrganizationCard}
               data={order === 1 ? myScreams : myOrganizations}
               listType={order === 2 && "grid"}
               handleButtonOpenCard={handleButtonOpenCard}
               handleOpenProjectroom={handleOpenProjectroom}
+              handleButtonLike={handleButtonLike}
+              handleButtonComment={handleButtonComment}
               organizations={organizations}
               listEndText={
                 order === 1 && myScreams > 0
