@@ -108,22 +108,24 @@ const IdeaCard: FC<IdeaCardProps> = ({
     return false;
   };
 
+
+
   const [projectroomCardData, setProjectroomCardData] = useState([]);
 
   useEffect(() => {
-    if (projectroomsData) {
+    if (projectroomsData && data && data.projectRoomId) {
       projectroomsData.map(({ projectRoomId, title, organizationType }) => {
-        if (cardProjectRoomId === projectRoomId) {
+        if (data.projectRoomId === projectRoomId) {
           setProjectroomCardData([
-            ...projectroomCardData,
+
             title,
             organizationType,
-            projectRoomId,
           ]);
         }
       });
     }
-  }, [projectroomsData]);
+
+  }, [projectroomsData, data]);;
 
   return (
     data && (
