@@ -49,14 +49,6 @@ const CreateProjectDialog = ({ type }) => {
   const { handleModal } = React.useContext(ModalContext) || {};
 
 
-  const openOrganization = useSelector((state) => state.UI.openOrganization);
-  const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
-  const openCreateProjectRoom = useSelector(
-    (state) => state.UI.openCreateProjectRoom
-  );
-  const openCreateOrganization = useSelector(
-    (state) => state.UI.openCreateOrganization
-  );
   const userId = useSelector((state) => state.user.userId);
 
   const { t } = useTranslation();
@@ -76,7 +68,7 @@ const CreateProjectDialog = ({ type }) => {
 
   useEffect(() => {
     async function fetchData() {
-      if (openCreateProjectRoom) {
+      if (type === "projectRoom") {
         // IF EDITING A PROJECTROOM
         if (localStorage.getItem("createProjectRoomPostEdit")) {
           set(pages.length - 1);
@@ -118,9 +110,10 @@ const CreateProjectDialog = ({ type }) => {
             }
           }
         }
-      } else if (openCreateOrganization) {
+      } else if (type === "organization") {
         // IF EDITING A ORGANIZATION
         if (localStorage.getItem("createOrganizationPostEdit")) {
+
           set(pages.length - 1);
         }
 

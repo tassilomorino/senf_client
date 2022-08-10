@@ -91,7 +91,7 @@ const SwipeWrapper: FC<SwipeWrapperProps> = ({
 
       if (!last) return api.start({ y: my, immediate: true });
 
-      if (my > height * 0.5 || (vy > 0.5 && dy > 0)) return close(vy);
+      if (my > height * 0.2 || (vy > 0.5 && dy > 0)) return close(vy);
 
       return open({ canceled });
     },

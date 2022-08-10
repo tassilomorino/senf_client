@@ -55,7 +55,7 @@ const DragWrapper = styled(animated.div)`
   }
 `;
 
-const InnerWrapper = styled.div<OrganizationsOverviewProps>`
+const InnerWrapper = styled.div`
   @media (min-width: 768px) {
     padding-left: 66px;
     height: 100%;
@@ -64,7 +64,7 @@ const InnerWrapper = styled.div<OrganizationsOverviewProps>`
   }
 `;
 
-const ContentWrapper = styled.div<OrganizationsOverviewProps>`
+const ContentWrapper = styled.div`
   overflow-y: scroll;
   pointer-events: all;
   height: calc(100vh - 110px);
@@ -172,6 +172,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   setCheckedSortOption,
 
   handleCreateProjectroom,
+  handleOpenCreateOrganization,
 
   ideasDataOriginal,
   handleMapBoundsReset,
@@ -363,7 +364,13 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
           onClick={
             order === "ideas"
               ? () => setOpenStatisticsOverview(true)
-              : () => handleModal("push", <OrganizationsOverview data={organizations} handleButtonOpenCard={handleButtonOpenCard} />, { swipe: !!isMobile, size: "lg", height: isMobile && window.innerHeight + 83, padding: 0 })
+              : () => {
+                if (isMobile) {
+                  handleModal("push", <OrganizationsOverview data={organizations} handleButtonOpenCard={handleButtonOpenCard} handleOpenCreateOrganization={handleOpenCreateOrganization} />, { swipe: !!isMobile, size: "lg", height: isMobile && window.innerHeight + 83, padding: 0 })
+                } else {
+                  setOpenOrganizationsOverview(true)
+                }
+              }
             // () => setOpenOrganizationsOverview(true)
           }
         />

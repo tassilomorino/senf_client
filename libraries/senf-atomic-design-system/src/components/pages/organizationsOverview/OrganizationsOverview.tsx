@@ -30,6 +30,13 @@ const Background = styled.div`
   top:0;
 `;
 
+const StickyHeader = styled.div`
+position:sticky;
+z-index:99;
+top:0;
+
+`
+
 const Wrapper = styled.div<OrganizationsOverviewProps>`
   background-color: ${({ theme }) => theme.colors.beige.beige20};
   margin-left: 10px;
@@ -58,6 +65,7 @@ const Wrapper = styled.div<OrganizationsOverviewProps>`
 const InnerWrapper = styled.div<OrganizationsOverviewProps>`
   overflow-y: scroll;
   pointer-events: all;
+  margin-top:-20px;
   height: calc(100% - 120px);
   width: 100%;
   overflow: scroll;
@@ -69,9 +77,12 @@ const InnerWrapper = styled.div<OrganizationsOverviewProps>`
   max-width: 800px;
   display: flex;
   flex-direction: column;
+  position:absolute;
 
   @media (min-width: 768px) {
     height: calc(100% - 210px);
+    margin-top:0px;
+
   }
 `;
 
@@ -179,6 +190,16 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
     //   }
     // >
     <React.Fragment>
+      <StickyHeader>
+        <Typography variant="h2" textAlign="center">
+          {t("organizations")}
+        </Typography>
+        <TagSlide
+          type="organizationTypes"
+          selectedOrganizationTypes={selectedOrganizationTypes}
+          handleSelectOrganizationTypes={handleSelectOrganizationTypes}
+        />
+      </StickyHeader>
       <Background />
       <Wave color={theme.colors.beige.beige20} top="0px" />
       <InnerWrapper isMobile={isMobile}>

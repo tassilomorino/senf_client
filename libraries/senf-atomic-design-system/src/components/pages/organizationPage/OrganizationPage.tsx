@@ -40,7 +40,10 @@ import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 const Wrapper = styled.div`
 
 height: 100%;
+width: 100%;
 background-color: ${({ theme }) => theme.colors.beige.beige20};
+position: absolute;
+top:0;
 `
 
 const SVGWrapper = styled.div`
@@ -106,8 +109,6 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
   const [infoOpen, setInfoOpen] = useState(false);
   const [order, setOrder] = useState(1);
 
-  console.log(organization)
-
 
   const content = <Wrapper> <SVGWrapper>
     <svg
@@ -127,12 +128,12 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
       />
     </svg>
   </SVGWrapper>
-    {/* <Box position="fixed" margin="20px" zIndex={2}>
+    {!isMobile && <Box position="fixed" margin="20px" zIndex={2}>
       <RoundedButton
         icon={<Plus transform="rotate(45deg)" />}
         onClick={handleCloseOrganizationPage}
       />
-    </Box> */}
+    </Box>}
 
     {user && organization?.userIds.includes(user.userId) && (
       <Box position="absolute" margin="20px" right="0px" zIndex={2}>
@@ -202,6 +203,7 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
             options={{
               padding: 20,
               title: t("contact"),
+              swipe: isMobile && true
 
             }}
           >

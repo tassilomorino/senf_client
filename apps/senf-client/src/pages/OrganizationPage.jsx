@@ -67,10 +67,8 @@ export const Wrapper = styled.div`
 
 
 const OrganizationPage = ({
-  setOpenOrganizationsPage,
-
   organizations,
-  handleOpenCreateOrganization,
+  handleCloseOrganizationPage,
   handleButtonOpenCard,
   user,
 }) => {
@@ -98,7 +96,7 @@ const OrganizationPage = ({
     // dispatch(stateCreateOrganizationsFunc(true));
 
     handleModal("push", <React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
-      <CreateMainComponent type="projectRoom" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      <CreateMainComponent type="organization" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
 
   };
 
@@ -108,11 +106,6 @@ const OrganizationPage = ({
   //   console.log(organization);
   // }, [openOrganization]);
 
-  const handleClose = () => {
-    dispatch(openOrganizationFunc(null, false));
-    setOpenOrganizationsPage(true);
-    dispatch(clearErrors());
-  };
 
   // useEffect(() => {
   //   async function fetchData() {
@@ -149,29 +142,13 @@ const OrganizationPage = ({
   // }, [organization.organizationId, organization, user]);
 
   // loadingOrganization add skeletonlader
-  useEffect(() => {
 
-    if (organization) {
-      handleModal("push",
-        <OrganizationPageComponent
-          user={user}
-          organization={organization}
-          organizations={organizations}
-          handleCloseOrganizationPage={handleClose}
-          handleEditOrganization={handleEditOrganization}
-          handleButtonOpenCard={handleButtonOpenCard}
-        />, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
-
-    }
-
-
-  }, [organization])
 
   return <OrganizationPageComponent
     user={user}
     organization={organization}
     organizations={organizations}
-    handleCloseOrganizationPage={handleClose}
+    handleCloseOrganizationPage={handleCloseOrganizationPage}
     handleEditOrganization={handleEditOrganization}
     handleButtonOpenCard={handleButtonOpenCard}
   />

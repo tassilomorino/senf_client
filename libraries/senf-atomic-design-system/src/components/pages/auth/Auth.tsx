@@ -31,6 +31,7 @@ const Wrapper = styled.div<AuthProps>`
   min-height: 700px;
   background-color: ${(props) => props.theme.colors.beige.beige20};
   overflow: hidden;
+  top:0;
 `;
 const Img = styled.img`
   position: absolute;
