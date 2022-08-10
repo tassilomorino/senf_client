@@ -10,11 +10,12 @@ import React, {
 } from "react";
 import ReactDOM from "react-dom";
 
-import styled from "styled-components";
+import styled, { ThemeConsumer } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
+  theme,
   MainSwipeList,
   OrganizationsOverview,
   Modal,
@@ -203,7 +204,7 @@ const Main = ({
           handleCloseOrganizationPage={() => setOpenOrganizationPage(false)}
           handleButtonOpenCard={handleButtonOpenCard}
 
-        />, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0, stackable: false }) : organizationId && setOpenOrganizationPage(true);
+        />, { size: "full", swipe: !!isMobileCustom, handleColor: theme.colors.primary.primary120, height: isMobileCustom && window.innerHeight + 83, padding: 0, stackable: false }) : organizationId && setOpenOrganizationPage(true);
 
   }, [dispatch, projectRoomId, screamId, organizationId, unknownPathId]);
 
@@ -404,7 +405,7 @@ const Main = ({
             handleCloseOrganizationPage={() => setOpenOrganizationPage(false)}
             handleButtonOpenCard={handleButtonOpenCard}
 
-          />, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0, stackable: false })
+          />, { size: "full", swipe: !!isMobileCustom, handleColor: theme.colors.primary.primary120, height: isMobileCustom && window.innerHeight + 83, padding: 0, stackable: false })
 
       } else {
         setOpenOrganizationPage(true)
@@ -478,7 +479,7 @@ const Main = ({
     } else if (window.location.pathname === "/organizations") {
       setOrder(2);
       if (isMobileCustom) {
-        handleModal("push", <OrganizationsOverview data={organizations} handleButtonOpenCard={handleButtonOpenCard} handleOpenCreateOrganization={handleOpenCreateOrganization} />, { swipe: !!isMobileCustom, size: "lg", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+        handleModal("push", <OrganizationsOverview data={organizations} handleButtonOpenCard={handleButtonOpenCard} handleOpenCreateOrganization={handleOpenCreateOrganization} />, { swipe: !!isMobileCustom, size: "lg", handleColor: theme.colors.primary.primary120, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
       } else {
         setOpenOrganizationsOverview(true)
       }
@@ -625,7 +626,8 @@ const Main = ({
                 ideasDataOriginal={screams}
                 ideasData={dataFinalIdeas}
                 projectroomsData={dataFinalProjectRooms}
-                organizations={dataFinalOrganizations}
+                organizationsData={dataFinalOrganizations}
+                organization={organization}
                 selectedTopics={selectedTopics}
                 selectedOrganizationTypes={selectedOrganizationTypes}
                 checkedSortOption={dropdown}
@@ -711,7 +713,6 @@ const Main = ({
             selectedOrganizationTypes={selectedOrganizationTypes}
             handleSelectOrganizationTypes={handleSelectOrganizationTypes}
             user={user}
-            organizations={organizations}
             organization={organization}
             openOrganizationsOverview={openOrganizationsOverview}
             setOpenOrganizationsOverview={setOpenOrganizationsOverview}

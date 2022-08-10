@@ -97,6 +97,7 @@ const ModalWrapper: FC<ModalWrapperProps> = ({
   description,
   swipe,
   stackable,
+  handleColor,
   index,
   children,
   height,
@@ -168,7 +169,7 @@ const ModalWrapper: FC<ModalWrapperProps> = ({
       <Background onClick={close} />
       <Sheet index={index} total={modalStack} swipe={swipe} ref={sheet} stackable={stackable === false ? 1000 : 20}>
         <Toner size={size} index={index} height={height || innerHeight} maxHeight={height} padding={padding} swipe={swipe} ref={content}>
-          <ModalHandle swipe={swipe} onClose={close} />
+          <ModalHandle swipe={swipe} handleColor={handleColor} onClose={close} />
           {(title || description) && <Box flexDirection="column" gap="5px" marginBottom="20px">
             {title && <Typography variant="h3">{title}</Typography>}
             {description && <Typography variant="bodyBg" color={theme.colors.greyscale.greyscale100}>{description}</Typography>}

@@ -28,6 +28,7 @@ const Background = styled.div`
   position:absolute;
   z-index:0;
   top:0;
+  border-radius: 18px 18px 0 0;
 `;
 
 const StickyHeader = styled.div`
@@ -113,7 +114,6 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
   handleSelectOrganizationTypes,
   organization,
   projectroomsData,
-  user,
   searchTerm,
   setSearchTerm,
   handleButtonOpenCard,

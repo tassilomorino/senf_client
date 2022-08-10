@@ -44,6 +44,7 @@ width: 100%;
 background-color: ${({ theme }) => theme.colors.beige.beige20};
 position: absolute;
 top:0;
+overflow:hidden;
 `
 
 const SVGWrapper = styled.div`
@@ -54,6 +55,8 @@ const SVGWrapper = styled.div`
   z-index: 0;
   width: 100%;
   height: 300px;
+
+
 `;
 
 const ImageWrapper = styled.div`

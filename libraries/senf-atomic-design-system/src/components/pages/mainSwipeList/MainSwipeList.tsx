@@ -125,9 +125,9 @@ const HandleBar = styled.div`
   transform: translateX(-50%);
   z-index: 99;
   width: 50px;
-  height: 3px;
+  height: 5px;
   background-color: ${({ theme }) => theme.colors.primary.primary120};
-  border-radius: 2px;
+  border-radius: 5px;
 `;
 
 const MainSwipeList: FC<MainSwipeListProps> = ({
@@ -137,7 +137,9 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
 
   ideasData,
   projectroomsData,
-  organizations,
+  organizationsData,
+
+  organization,
 
   order,
   setOrder,
@@ -366,7 +368,23 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
               ? () => setOpenStatisticsOverview(true)
               : () => {
                 if (isMobile) {
-                  handleModal("push", <OrganizationsOverview data={organizations} handleButtonOpenCard={handleButtonOpenCard} handleOpenCreateOrganization={handleOpenCreateOrganization} />, { swipe: !!isMobile, size: "lg", height: isMobile && window.innerHeight + 83, padding: 0 })
+                  handleModal("push",
+                    <OrganizationsOverview
+                      data={organizationsData}
+                      selectedOrganizationTypes={selectedOrganizationTypes}
+                      handleSelectOrganizationTypes={handleSelectOrganizationTypes}
+                      user={user}
+                      organization={organization}
+                      openOrganizationsOverview={openOrganizationsOverview}
+                      setOpenOrganizationsOverview={setOpenOrganizationsOverview}
+                      searchTerm={searchTerm}
+                      setSearchTerm={setSearchTerm}
+                      checkedSortOption={checkedSortOption}
+                      setCheckedSortOption={setCheckedSortOption}
+                      handleButtonOpenCard={handleButtonOpenCard}
+                      projectroomsData={projectroomsData}
+                      handleOpenCreateOrganization={handleOpenCreateOrganization}
+                    />, { swipe: !!isMobile, size: "lg", handleColor: theme.colors.primary.primary120, height: isMobile && window.innerHeight + 83, padding: 0 })
                 } else {
                   setOpenOrganizationsOverview(true)
                 }
@@ -516,7 +534,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
             <List
               CardType={order === "ideas" ? IdeaCard : ProjectroomCard}
               data={order === "ideas" ? ideasData : projectroomsData}
-              organizations={organizations}
+              organizations={organizationsData}
               ideasData={ideasData}
               projectroomsData={projectroomsData}
               handleButtonOpenCard={handleButtonOpenCard}
