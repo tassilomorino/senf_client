@@ -267,7 +267,8 @@ export const editScreamFunc = (editScream) => async (dispatch) => {
       payload: editScream,
     });
 
-    dispatch(openScreamFunc(screamId));
+    // dispatch(openScreamFunc(screamId));
+    // no need to download scream data, redux state is already up to date
     dispatch(clearErrors());
   } catch (error) {
     console.error(error, "error in editScreamFunc");

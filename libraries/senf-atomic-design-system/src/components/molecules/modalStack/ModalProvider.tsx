@@ -12,7 +12,7 @@ const useModal = () => {
   const [afterClose, setAfterClose] = React.useState(false);
 
   const handleModal = (action, modal = null, options = null) => {
-    console.log(options)
+
 
     switch (action) {
       case "push":

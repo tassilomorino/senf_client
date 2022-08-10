@@ -60,6 +60,15 @@ export default function (state = initialState, action) {
             screamId: action.payload.screamId,
           },
         ],
+        myScreams: state?.myScreams
+          ? [
+              ...state.myScreams.map((scream) =>
+                scream.screamId === action.payload.screamId
+                  ? { ...scream, likeCount: scream.likeCount + 1 }
+                  : scream
+              ),
+            ]
+          : null,
       };
     case UNLIKE_SCREAM:
       return {
@@ -67,7 +76,17 @@ export default function (state = initialState, action) {
         likes: state.likes.filter(
           (like) => like.screamId !== action.payload.screamId
         ),
+        myScreams: state?.myScreams
+          ? [
+              ...state.myScreams.map((scream) =>
+                scream.screamId === action.payload.screamId
+                  ? { ...scream, likeCount: scream.likeCount - 1 }
+                  : scream
+              ),
+            ]
+          : null,
       };
+
     case LOADING_MYSCREAMS_DATA:
       return {
         ...state,

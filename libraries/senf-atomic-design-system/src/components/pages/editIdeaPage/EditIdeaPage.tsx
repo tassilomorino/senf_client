@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { FC, Fragment, useEffect, useState } from "react";
+import React, { FC, Fragment, useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
@@ -99,29 +99,29 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
       .required(t("enter_ideaDescription"))
 
   });
+  const initialValues = useRef({
+    screamId: data.screamId,
+    projectRoomId: data.projectRoomId ?? null,
+    title: data.title ?? null,
+    body: data.body ?? null,
+    Thema: data.Thema ?? null,
 
+    locationHeader: data.locationHeader ?? "",
+    district: data.district ?? "Ohne Ortsangabe",
+    Stadtteil: data.Stadtteil ?? "Ohne Ortsangabe",
+    lat: data.lat ?? null,
+    long: data.long ?? null,
+
+    contact: data.contact ?? null,
+    contactTitle: data.contactTitle ?? null,
+
+    weblink: data.weblink ?? null,
+    weblinkTitle: data.weblinkTitle ?? null,
+
+    selectedUnix: data.selectedUnix ?? [],
+  })
   const formikEditIdea = useFormik({
-    initialValues: {
-      screamId: data.screamId,
-      projectRoomId: data.projectRoomId ?? null,
-      title: data.title ?? null,
-      body: data.body ?? null,
-      Thema: data.Thema ?? null,
-
-      locationHeader: data.locationHeader ?? "",
-      district: data.district ?? "Ohne Ortsangabe",
-      Stadtteil: data.Stadtteil ?? "Ohne Ortsangabe",
-      lat: data.lat ?? null,
-      long: data.long ?? null,
-
-      contact: data.contact ?? null,
-      contactTitle: data.contactTitle ?? null,
-
-      weblink: data.weblink ?? null,
-      weblinkTitle: data.weblinkTitle ?? null,
-
-      selectedUnix: data.selectedUnix ?? [],
-    },
+    initialValues: initialValues.current,
     validationSchema: editIdeaValidationSchema,
     validateOnMount: true,
     validateOnChange: true,
@@ -162,10 +162,6 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
       }
     });
   }, [formikEditIdea.values.projectRoomId]);
-  console.log(
-    formikEditIdea.values.projectRoomId,
-    "formikEditIdea.values.projectRoomId"
-  );
 
 
   /*  const geocodeonSelected = (newViewport) => {

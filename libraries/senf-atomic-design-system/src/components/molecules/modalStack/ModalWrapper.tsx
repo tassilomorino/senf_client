@@ -152,7 +152,7 @@ const ModalWrapper: FC<ModalWrapperProps> = ({
     if (afterClose && onAfterClose) onAfterClose()
   }, [afterClose])
 
-  console.log(submitText)
+
 
   return (
     <Wrapper
