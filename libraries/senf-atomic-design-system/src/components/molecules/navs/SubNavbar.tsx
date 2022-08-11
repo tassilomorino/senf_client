@@ -20,9 +20,9 @@ const HandleBar = styled.div`
   transform: translateX(-50%);
   z-index: 99;
   width: 50px;
-  height: 2px;
+  height: 5px;
   background-color: ${({ theme }) => theme.colors.primary.primary120};
-  border-radius: 1px;
+  border-radius: 5px;
 `;
 
 const LeftWrapper = styled.div<SubNavbarProps>`

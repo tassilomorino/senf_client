@@ -23,13 +23,13 @@ const Handle = styled.div`
 	height: 5px;
 	width: 100%;
 	border-radius: 20px;
-	background-color: ${({ theme }) => theme.colors.greyscale.greyscale35};
-	box-shadow: 0 0 0 5px ${({ theme }) => theme.colors.white.white80tra};
+	background-color: ${({ theme, handleColor }) => handleColor || theme.colors.greyscale.greyscale35};
+	/* box-shadow: 0 0 0 5px ${({ theme }) => theme.colors.white.white80tra}; */
 `
 
-const ModalHandle = ({ swipe, onClose, ...props }) => {
+const ModalHandle = ({ swipe, handleColor, onClose, ...props }) => {
 	return <HandleContainer onClick={onClose} position={swipe ? "center" : "right"} {...props}>{
-		swipe ? <Handle /> : <RoundedButton icon={<Plus transform="rotate(45)" />} />
+		swipe ? <Handle handleColor={handleColor} /> : <RoundedButton icon={<Plus transform="rotate(45)" />} />
 	}</HandleContainer>;
 }
 export default ModalHandle;

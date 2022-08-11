@@ -65,13 +65,13 @@ const LearnMoreBubbles = ({ handleClose }) => {
 
   const faqData = [
     // { question: t("faq_question1"), answer: t("faq_answer1") },
-    { header: t("faq_question2"), body: t("faq_answer2") },
-    { header: t("faq_question3"), body: t("faq_answer3") },
-    { header: t("faq_question4"), body: t("faq_answer4") },
+    { question: t("faq_question2"), answer: t("faq_answer2") },
+    { question: t("faq_question3"), answer: t("faq_answer3") },
+    { question: t("faq_question4"), answer: t("faq_answer4") },
     // { question: t("faq_question5"), answer: t("faq_answer5") },
     // { question: t("faq_question6"), answer: t("faq_answer6") },
-    { header: t("faq_question7"), body: t("faq_answer7") },
-    { header: t("faq_question8"), body: t("faq_answer8") },
+    { question: t("faq_question7"), answer: t("faq_answer7") },
+    { question: t("faq_question8"), answer: t("faq_answer8") },
   ];
 
   return (

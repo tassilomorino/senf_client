@@ -1,14 +1,12 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
 import { useTranslation } from "react-i18next";
-import styled from "styled-components";
 
 // firebase
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useFormik } from "formik";
-import { Input } from "senf-atomic-design-system";
+import { Input, ModalButton } from "senf-atomic-design-system";
 import { db } from "../../../firebase";
 
 // images
@@ -19,30 +17,11 @@ import {
 // import Geocoder from "react-mapbox-gl-geocoder";
 import Navigation from "../Components/Navigation";
 import {
-  StyledA,
-  StyledH2,
   StyledH3,
-  StyledText,
 } from "../../../styles/GlobalStyle";
-import MainModal from "../../atoms/Layout/MainModal";
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
 
-const ButttonsWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-`;
 
-const GeocoderWrapper = styled.div`
-  margin-top: 30px;
-  width: 100%;
-`;
 
 const CreateOrganizationPage4 = ({
   onClickNext,
@@ -144,31 +123,7 @@ const CreateOrganizationPage4 = ({
 
   return (
     <React.Fragment>
-      {ReactDOM.createPortal(
-        <React.Fragment>
-          {infovideoOpen && (
-            <MainModal
-              handleButtonClick={() => setInfovideoOpen(false)}
-              autoWidth={true}
-            >
-              <div
-                style={{ width: "800px", height: "500px", maxWidth: "100%" }}
-              >
-                <iframe
-                  width="100%"
-                  height="100%"
-                  src="https://www.youtube.com/embed/odjaLVz6ft8"
-                  title="YouTube video player"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
-              </div>
-            </MainModal>
-          )}
-        </React.Fragment>,
-        document.getElementById("portal-root-modal")
-      )}
+
 
       <ComponentWrapper>
         <ComponentInnerWrapper>
@@ -205,9 +160,25 @@ const CreateOrganizationPage4 = ({
               justifyContent: "center",
             }}
           >
-            <StyledA textAlign="center" onClick={() => setInfovideoOpen(true)}>
-              {t("how_to_find_google_calendar_id")}
-            </StyledA>
+            <ModalButton variant="tertiary"
+              size="medium"
+              text={t("how_to_find_google_calendar_id")}
+              options={{ swipe: false, size: "xl", padding: 0 }}>
+
+              <div style={{ height: "1000px", maxHeight: "80vh" }}>
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src="https://www.youtube.com/embed/odjaLVz6ft8"
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </ModalButton>
+
+
           </div>
 
           {/* <InlineDatePicker

@@ -2,11 +2,11 @@
 
 import React, { memo, useState, FC } from "react";
 import styled from "styled-components";
-import { AccordionProps } from "./Accordion.types";
 import { useSpring, a, animated } from "@react-spring/web";
+import Linkify from "linkify-react";
+import { AccordionProps } from "./Accordion.types";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { useMeasure } from "../../../hooks/useMeasure";
-import Linkify from "linkify-react";
 import Typography from "../../atoms/typography/Typography";
 import Box from "../../atoms/box/Box";
 import Icon from "../../atoms/icons/Icon";
@@ -42,12 +42,12 @@ const AccordionWrapper = styled.ul<AccordionProps>`
   }
 `;
 
-export const AccordionItem = memo(({ header, body, defaultOpen = false }) => {
+export const AccordionItem = memo(({ question, answer, defaultOpen = false }) => {
   const [isOpen, setOpen] = useState(defaultOpen);
   const previous = usePrevious(isOpen);
   const [bind, { height: viewHeight }] = useMeasure();
   const { height, opacity } = useSpring({
-    from: { height: 0, opacity: 0 /*transform: 'rotate(180deg)'*/ },
+    from: { height: 0, opacity: 0 /* transform: 'rotate(180deg)' */ },
     to: {
       height: isOpen ? viewHeight : 0,
       opacity: isOpen ? 1 : 0,
@@ -64,7 +64,7 @@ export const AccordionItem = memo(({ header, body, defaultOpen = false }) => {
     >
       <div className="accordion-item-line">
         <Typography variant="h3" style={{ maxWidth: "90%" }}>
-          {header}
+          {question}
         </Typography>
 
         <Icon
@@ -86,16 +86,16 @@ export const AccordionItem = memo(({ header, body, defaultOpen = false }) => {
       >
         <div {...bind} className="accordion-item-content">
           <Box margin="0px 0px 20px 0px">
-            <Typography variant="bodyBg">
+            <Typography variant="answerBg">
               <Linkify
                 options={{
                   target: "_blank",
-                  //tagName: props => <a {...props} />,
+                  // tagName: props => <a {...props} />,
                   tagName: (...args) =>
                     console.log(args) || ((props) => <a {...props} />),
                 }}
               >
-                {body}
+                {answer}
               </Linkify>
             </Typography>
           </Box>
@@ -106,10 +106,11 @@ export const AccordionItem = memo(({ header, body, defaultOpen = false }) => {
 });
 
 const Accordion: FC<AccordionProps> = ({ data }) => {
-  return (
+  return data && (
     <AccordionWrapper>
-      {data.map(({ header, body }) => {
-        return <AccordionItem key={header} header={header} body={body} />;
+      {data?.map(({ question, answer }) => {
+        return <AccordionItem key={question} question={question} answer={answer} />;
+
       })}
     </AccordionWrapper>
   );

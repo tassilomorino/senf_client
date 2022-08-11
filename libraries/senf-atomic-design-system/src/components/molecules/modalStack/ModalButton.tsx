@@ -11,7 +11,6 @@ interface ModalButtonProps extends ButtonProps {
 }
 
 const ModalButton: FC<ModalButtonProps> = ({ children, options, button, ...props }) => {
-
   const { handleModal } = React.useContext(ModalContext) || {};
   const MButton = button || Button;
   return (<MButton onClick={() => handleModal("push", children, options)} {...props} />)

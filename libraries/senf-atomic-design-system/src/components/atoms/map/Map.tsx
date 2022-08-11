@@ -762,8 +762,10 @@ const Map: FC<MapProps> = ({
             onClick={() => {
               statefulDrawMapbox.changeMode("simple_select");
               handleSaveDrawnPolygon(statefulDrawMapbox.getAll());
+
+
             }}
-            disabled={!drawnPolygon}
+          // disabled={!drawnPolygon}
           />
         </Box>
       )}
