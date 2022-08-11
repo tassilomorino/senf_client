@@ -10,12 +10,11 @@ import React, {
 } from "react";
 import ReactDOM from "react-dom";
 
-import styled, { ThemeConsumer } from "styled-components";
+import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
-  theme,
   MainSwipeList,
   OrganizationsOverview,
   Modal,
@@ -144,9 +143,7 @@ const Main = ({
   const openScream = useSelector((state) => state.UI.openScream);
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
   const openAccount = useSelector((state) => state.UI.openAccount);
-  // const openOrganization = useSelector((state) => state.UI.openOrganization);
-
-  const [openOrganizationPage, setOpenOrganizationPage] = useState(false);
+  const openOrganization = useSelector((state) => state.UI.openOrganization);
   const openCreateOrganization = useSelector(
     (state) => state.UI.openCreateOrganization
   );
@@ -194,18 +191,6 @@ const Main = ({
     projectRoomId && dispatch(openProjectRoomFunc(projectRoomId, true));
     screamId && dispatch(openScreamFunc(screamId));
     organizationId && dispatch(openOrganizationFunc(organizationId, true));
-
-    organizationId && isMobileCustom ?
-      handleModal("push",
-        <OrganizationPage
-          user={user}
-          organization={organization}
-          organizations={organizations}
-          handleCloseOrganizationPage={() => setOpenOrganizationPage(false)}
-          handleButtonOpenCard={handleButtonOpenCard}
-
-        />, { size: "full", swipe: !!isMobileCustom, handleColor: theme.colors.primary.primary120, height: isMobileCustom && window.innerHeight + 83, padding: 0, stackable: false }) : organizationId && setOpenOrganizationPage(true);
-
   }, [dispatch, projectRoomId, screamId, organizationId, unknownPathId]);
 
 
@@ -237,6 +222,59 @@ const Main = ({
   };
 
 
+  useEffect(() => {
+    if (window.location.pathname === "/projectRooms") {
+      setOrder(2);
+    } else if (window.location.pathname === "/organizations") {
+      setOrder(2);
+      dispatch(setSwipePositionUp());
+      setOpenOrganizationsOverview(true);
+    } else if (window.location.pathname === "/insights") {
+      // setOrder(4);
+    } else if (projectRoomId) {
+      setOrder(2);
+    } else if (screamId) {
+      setOrder(1);
+    } else if (organizationId) {
+      setOrder(2);
+      dispatch(setSwipePositionUp());
+      setOpenOrganizationsOverview(true);
+    }
+  }, [dispatch, organizationId, screamId, projectRoomId]);
+
+  const handleClick = useCallback(
+    (order) => {
+      setOrder(order);
+      setSearchTerm("");
+      setDropdown("newest");
+      setOpenStatisticsOverview(false);
+      setOpenOrganizationsOverview(false);
+      dispatch(closeScream());
+      dispatch(openProjectRoomFunc(null, false));
+      dispatch(openOrganizationFunc(null, false));
+      dispatch(closeAccountFunc());
+      dispatch(handleTopicSelectorRedux("all"));
+      const ListWrapper = document.getElementById("ListWrapper");
+
+      ListWrapper?.scrollTo({
+        top: 0,
+        left: 0,
+      });
+      if (order === 1) {
+        window.history.pushState(null, null, "/");
+      }
+      if (order === 2) {
+        window.history.pushState(null, null, "/projectRooms");
+      }
+      if (order === 3) {
+        window.history.pushState(null, null, "/organizations");
+      }
+      if (order === 4) {
+        window.history.pushState(null, null, "/insights");
+      }
+    },
+    [dispatch]
+  );
 
   const handleDropdown = useCallback((value) => {
     setDropdown(value);
@@ -321,7 +359,23 @@ const Main = ({
     return organizationsData;
   }, [dropdown, organizations, searchTerm, selectedOrganizationTypes]);
 
+  const handleButtonOpenCard = (event, cardType, cardId) => {
+    if (cardType === "ideaCard") {
+      dispatch(openScreamFunc(cardId));
+    } else if (cardType === "projectroomCard") {
+      dispatch(openProjectRoomFunc(cardId, true));
 
+      if (organization && isMobileCustom) {
+        dispatch({
+          type: "OPEN_ORGANIZATION",
+          payload: false,
+        });
+      }
+
+    } else if (cardType === "organizationCard") {
+      dispatch(openOrganizationFunc(cardId, true));
+    }
+  };
 
   const handleOpenProjectroom = (event, projectroomId) => {
     event.stopPropagation();
@@ -359,7 +413,7 @@ const Main = ({
       window.history.pushState(null, null, "/");
       dispatch(handleTopicSelectorRedux("all"));
     } else {
-      handleModal("push", <Auth authEditOpen={false} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      handleModal("push", <Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
     }
   };
   useEffect(() => {
@@ -375,41 +429,17 @@ const Main = ({
     dispatch(setInfoPageOpen());
   }, [dispatch]);
 
-
+  const handleCloseOrganizationPage = () => {
+    dispatch(openOrganizationFunc(null, false));
+  };
 
   const handleOpenCreateOrganization = () => {
     if (!user.authenticated) {
       // Add text into auth like "first you gt to create an account"
-      handleModal("push", <Auth authEditOpen={false} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      handleModal("push", <Auth authEditOpen={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
     } else {
       handleModal("push", <React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
         <CreateMainComponent type="organization" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
-
-    }
-  };
-
-  const handleButtonOpenCard = (event, cardType, cardId) => {
-    if (cardType === "ideaCard") {
-      dispatch(openScreamFunc(cardId));
-    } else if (cardType === "projectroomCard") {
-      dispatch(openProjectRoomFunc(cardId, true));
-    } else if (cardType === "organizationCard") {
-      dispatch(openOrganizationFunc(cardId, true));
-
-      if (isMobileCustom) {
-        handleModal("push",
-          <OrganizationPage
-            user={user}
-            organization={organization}
-            organizations={organizations}
-            handleCloseOrganizationPage={() => setOpenOrganizationPage(false)}
-            handleButtonOpenCard={handleButtonOpenCard}
-
-          />, { size: "full", swipe: !!isMobileCustom, handleColor: theme.colors.primary.primary120, height: isMobileCustom && window.innerHeight + 83, padding: 0, stackable: false })
-
-      } else {
-        setOpenOrganizationPage(true)
-      }
 
     }
   };
@@ -471,63 +501,6 @@ const Main = ({
 
     }
   };
-
-
-  useEffect(() => {
-    if (window.location.pathname === "/projectRooms") {
-      setOrder(2);
-    } else if (window.location.pathname === "/organizations") {
-      setOrder(2);
-      if (isMobileCustom) {
-        handleModal("push", <OrganizationsOverview data={organizations} handleButtonOpenCard={handleButtonOpenCard} handleOpenCreateOrganization={handleOpenCreateOrganization} />, { swipe: !!isMobileCustom, size: "lg", handleColor: theme.colors.primary.primary120, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
-      } else {
-        setOpenOrganizationsOverview(true)
-      }
-    } else if (window.location.pathname === "/insights") {
-      // setOrder(4);
-    } else if (projectRoomId) {
-      setOrder(2);
-    } else if (screamId) {
-      setOrder(1);
-    } else if (organizationId && !isMobileCustom) {
-      setOrder(2);
-      setOpenOrganizationsOverview(true);
-    }
-  }, [dispatch, organizationId, screamId, projectRoomId]);
-
-  const handleClick = useCallback(
-    (order) => {
-      setOrder(order);
-      setSearchTerm("");
-      setDropdown("newest");
-      setOpenStatisticsOverview(false);
-      setOpenOrganizationsOverview(false);
-      dispatch(closeScream());
-      dispatch(openProjectRoomFunc(null, false));
-      dispatch(openOrganizationFunc(null, false));
-      dispatch(closeAccountFunc());
-      dispatch(handleTopicSelectorRedux("all"));
-      const ListWrapper = document.getElementById("ListWrapper");
-
-      ListWrapper?.scrollTo({
-        top: 0,
-        left: 0,
-      });
-      if (order === 1) {
-        window.history.pushState(null, null, "/");
-      }
-      if (order === 2) {
-        window.history.pushState(null, null, "/projectRooms");
-      }
-      if (order === 3) {
-        window.history.pushState(null, null, "/organizations");
-      }
-      if (order === 4) {
-        window.history.pushState(null, null, "/insights");
-      }
-    },
-    [dispatch]
-  );
 
 
 
@@ -592,7 +565,7 @@ const Main = ({
               (isMobileCustom && openScream) ||
               (openProjectRoom && !project?.screams) ||
               openAccount ||
-              openOrganizationPage
+              openOrganization
             }
             selectedTopics={selectedTopics}
             selectedOrganizationTypes={selectedOrganizationTypes}
@@ -626,8 +599,7 @@ const Main = ({
                 ideasDataOriginal={screams}
                 ideasData={dataFinalIdeas}
                 projectroomsData={dataFinalProjectRooms}
-                organizationsData={dataFinalOrganizations}
-                organization={organization}
+                organizations={organizations}
                 selectedTopics={selectedTopics}
                 selectedOrganizationTypes={selectedOrganizationTypes}
                 checkedSortOption={dropdown}
@@ -656,7 +628,6 @@ const Main = ({
                 handleOpenMyAccount={handleOpenMyAccount}
                 setInfoPageOpen={handleOpenInfoPage}
                 handleCreateProjectroom={handleCreateProjectroom}
-                handleOpenCreateOrganization={handleOpenCreateOrganization}
                 handleMapBoundsReset={handleSetInitialMapBoundsAndViewport}
                 mapFilterActive={mapFilterActive}
               />
@@ -691,10 +662,10 @@ const Main = ({
         </MainColumnWrapper>
       )}
 
-      {openOrganizationPage && (
+      {openOrganization && (
         <OrganizationPage
           organizations={organizations}
-          handleCloseOrganizationPage={() => setOpenOrganizationPage(false)}
+          handleCloseOrganizationPage={handleCloseOrganizationPage}
           handleEdit={handleOpenCreateOrganization}
           handleButtonOpenCard={handleButtonOpenCard}
           user={user}
@@ -706,13 +677,13 @@ const Main = ({
         !openProjectRoom &&
         !openAccount &&
         openOrganizationsOverview &&
-        !isMobileCustom &&
         !loadingOrganizations && (
           <OrganizationsOverview
             data={dataFinalOrganizations}
             selectedOrganizationTypes={selectedOrganizationTypes}
             handleSelectOrganizationTypes={handleSelectOrganizationTypes}
             user={user}
+            organizations={organizations}
             organization={organization}
             openOrganizationsOverview={openOrganizationsOverview}
             setOpenOrganizationsOverview={setOpenOrganizationsOverview}
@@ -731,7 +702,7 @@ const Main = ({
 
       {!openInfoPage &&
         !openAccount &&
-        !openOrganizationPage &&
+        !openOrganization &&
         openStatisticsOverview && (
           <StatisticsOverviewPage
             openStatisticsOverview={openStatisticsOverview}

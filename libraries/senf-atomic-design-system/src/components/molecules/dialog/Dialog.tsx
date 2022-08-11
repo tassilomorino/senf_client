@@ -12,7 +12,7 @@ const DialogWrapper = styled.div<DialogProps>`
   left: ${({ left }) => left || undefined};
   right: ${({ right }) => right || undefined};
 
-  z-index: ${({ zIndex }) => zIndex || 8};
+  z-index: ${({ zIndex }) => zIndex || 9999};
   position: fixed;
   top: 0;
   height: 100vh;
@@ -93,6 +93,7 @@ const Dialog: FC<DialogProps> = ({
 
   return (
     isOpen &&
+
     <DialogWrapper
       left={left}
       right={right}
@@ -112,6 +113,8 @@ const Dialog: FC<DialogProps> = ({
     >
       {children}
     </DialogWrapper>
+    //  document.getElementById(portalId) as HTMLElement
+
   );
 };
 

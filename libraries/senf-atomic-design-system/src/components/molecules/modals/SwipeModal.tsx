@@ -1,6 +1,6 @@
 /** @format */
 
-import { useSpring, animated } from "@react-spring/web";
+import { useSpring, animated, a, config } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 import React, { FC, useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
@@ -10,12 +10,46 @@ import { SwipeModalProps } from "./SwipeModal.types";
 
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 
+const sheet = {
+  zIndex: 100,
+  width: "100%",
+  position: "fixed",
+  left: "0%",
+  bottom: "-100px",
+  touchAction: "none",
+
+}
+
+
+const Handle = styled.div<{ position: string }>`
+  width: 100%;
+  height: 30px;
+  top: -50px;
+  padding-top: 50px;
+  left: 0;
+  transform: translateX(-50%);
+  position: absolute;
+  z-index: 99;
+  touch-action: none;
+  &::after {
+    content: '';
+    cursor: pointer;
+    width: 50px;
+    padding: 10px;
+    height: 5px;
+    display: block;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+  }
+`
+
 const DragWrapper = styled(animated.div)`
-  z-index: ${({ zIndex }) => zIndex || 9999};
+  z-index: ${({ zIndex }) => zIndex || 9};
   overscroll-behavior: contain;
   overflow-x: hidden;
   width: 100%;
-  height: 100%;
+  height: calc(100vh  +  84px);
   left: 0;
 
   overflow: ${({ overflow }) => overflow || "scroll"};
@@ -27,7 +61,6 @@ const DragWrapper = styled(animated.div)`
 
   position: fixed;
 
-  animation: translateYFrom100to16pxAnimation 0.5s;
 
   @media (min-width: 768px) {
     top: 50%;
@@ -41,7 +74,7 @@ const DragWrapper = styled(animated.div)`
 `;
 
 const Background = styled.div<SwipeModalProps>`
-  z-index: ${({ zIndex }) => zIndex || 9998};
+  z-index: ${({ zIndex }) => zIndex || 8};
 
   position: fixed;
   left: 0;
@@ -62,153 +95,143 @@ export const Header = styled(animated.div)`
     headerComponentBackgroundColor || undefined};
 
   z-index: 99;
+  top:0;
 `;
 
 const SwipeModal: FC<SwipeModalProps> = ({
   HeaderComponent,
   headerComponentHeight,
   headerComponentBackgroundColor,
-  openModal,
-  setOpenModal,
-  children,
-  zIndex,
-  size,
+  // openModal,
+  // setOpenModal,
+  // children,
+  // zIndex,
+  // size,
   backgroundColor,
-  overflow,
+  // overflow,
+
+  height = window.innerHeight,
+  children,
+  triggerOpen,
+  onClose,
+  onDrag,
+  overflowing,
 }) => {
   const isMobile = isMobileCustom();
-  // const buttonRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
-    if (openModal) {
-      handleOpen();
-    }
-  }, []);
+  const [{ y }, api] = useSpring(() => ({ y: height }));
+  const [dragged, setDragged] = useState(0);
 
-  const [props, set] = useSpring(() => ({
-    y: 0,
-    transform: isMobile ? `translateY(${16}px)` : "translate(-50%, -50%)",
-    overflow: "scroll",
-    touchAction: "unset",
-    userSelect: "none",
-  }));
+  const swipePadding = 200
+  const open = ({ canceled }) => {
+    api.start({
+      y: 0,
+      immediate: false,
+      config: canceled ? config.wobbly : config.stiff
+    });
 
-  const setSpring = (transform: number, overflowType: string, touchAction: string, userSelect: string) => {
-    const spring = {}
-    if (transform) spring.transform = isMobile ? `translateY(${transform}px)` : "translate(-50%, -50%)"
-    if (overflowType) spring.overflow = overflow
-    if (touchAction) spring.touchAction = touchAction
-    if (userSelect) spring.userSelect = userSelect
-    set(spring);
-  }
-
-  const handleOpen = () => {
-    setOpenModal(true);
-    setTimeout(() => {
-      setSpring(16, "scroll", "unset", "none");
-      // set({
-      //   transform: isMobile ? `translateY(${16}px)` : "translate(-50%, -50%)",
-      //   overflow: "scroll",
-      //   touchAction: "unset",
-      //   userSelect: "none",
-      // });
-    }, 50);
   };
-
-  const handleClose = () => {
-    setSpring(window.innerHeight, null, "none", "none");
-
-    // set({
-    //   transform: `translateY(${window.innerHeight}px)`,
-    //   touchAction: "none",
-    // });
-    setTimeout(() => {
-      setOpenModal(false);
-    }, 600);
-
-    // focus modal trigger again
-    // buttonRef?.current?.focus();
+  const close = (velocity = 0) => {
+    onDrag(0.001)
+    api.start({
+      y: height + swipePadding,
+      immediate: false,
+      config: { ...config.stiff, velocity },
+      onRest: () => onClose()
+    });
   };
-
-  // const submitRef = useRef<HTMLButtonElement>(null);
-  // const closeRef = useRef<HTMLButtonElement>(null);
-
-  // useEffect(() => {
-  //   if (submitRef?.current) {
-  //     submitRef?.current.focus();
-  //   }
-  // }, []);
 
   const bind = useDrag(
-    ({ last, down, movement: [, my], offset: [, y] }) => {
-      const el = document.getElementById("swipeModal");
+    ({
+      last,
+      velocity: [, vy],
+      direction: [, dy],
+      movement: [, my],
+      cancel,
+      canceled
+    }) => {
+      setDragged(my)
 
-      if (last && el.scrollTop < 30 && my > 150) {
-        handleClose();
-      } else {
-        set({
-          transform: `translateY(${16}px)`,
-          touchAction: "unset",
-        });
-      }
-      set({ y: down ? my : 0 });
+      if (my < -70) cancel();
+
+      if (!last) return api.start({ y: my, immediate: true });
+
+      if (my > height * 0.2 || (vy > 0.5 && dy > 0)) return close(vy);
+
+      return open({ canceled });
     },
     {
-      pointer: { touch: true },
-      bounds: {
-        enabled: true,
-        top: -window.innerHeight / 2,
-        bottom: window.innerHeight - 120,
-      },
+      from: () => [0, y.get()],
+      filterTaps: true,
+      bounds: { top: 0 },
+      rubberband: true
     }
   );
 
-  return (
-    openModal &&
-    ReactDOM.createPortal(
-      <React.Fragment>
-        <Background $zIndex={zIndex - 1} onClick={handleClose} />
-        <DragWrapper
-          style={props}
-          $zIndex={zIndex}
-          backgroundColor={backgroundColor}
-          overflow={overflow}
-          role="dialog"
-          size={size}
-          aria-labelledby="modal-header"
-          id="swipeModal"
-        // onKeyDown={
-        //   (e) =>
-        //     submitRef?.current &&
-        //     closeRef?.current &&
-        //     trapFocus(e, submitRef.current, closeRef.current) // ideally we would use inert but it doesn't seem to be working
-        // }
+  const bindContainer = !overflowing && { ...bind() }
+  const bindHandle = overflowing && { ...bind() }
+
+  const display = y.to((py) => (py < height ? "block" : "none"));
+
+  useEffect(() => {
+    if (triggerOpen) open({ canceled: false });
+  }, [triggerOpen]);
+
+  useEffect(() => {
+    open({ canceled: false });
+  }, []);
+
+  useEffect(() => {
+    onDrag(1 - ((1 / height) * dragged));
+  }, [onDrag, dragged, height]);
+
+  const [rerender, setRerender] = useState(false);
+  useEffect(() => {
+    setTimeout(() => {
+      setRerender(true)
+    }, 50);
+  }, [triggerOpen])
+
+  return rerender && <React.Fragment>
+    <Background onClick={onClose} /><DragWrapper
+      backgroundColor={backgroundColor}
+      {...bindContainer}
+      style={{
+        display,
+        bottom: `calc(${height - 50}px)`,
+        y,
+        ...sheet
+      }}
+    >
+      <Handle {...bindHandle} onClick={dragged < 70 && onClose || null} />
+
+
+      {HeaderComponent ? (
+        <React.Fragment>
+          <Header
+            headerComponentHeight={headerComponentHeight}
+            headerComponentBackgroundColor={headerComponentBackgroundColor}
+            {...bind()}
+          >
+            {HeaderComponent}
+          </Header>
+          <div
+            style={{ marginTop: "-10px", top: "100px", height: "calc(100% - 100px)", width: "100%", overflow: "scroll" }}
+          >
+            {children}
+          </div>
+        </React.Fragment>
+      ) : (
+        <div
+          style={{ height: "100%", width: "100%", overflow: "scroll" }}
+          {...bind()}
         >
-          {HeaderComponent ? (
-            <React.Fragment>
-              <Header
-                headerComponentHeight={headerComponentHeight}
-                headerComponentBackgroundColor={headerComponentBackgroundColor}
-                {...bind()}
-              >
-                {HeaderComponent}
-              </Header>
-              {children}
-            </React.Fragment>
-          ) : (
-            <div
-              style={{ height: "100%", width: "100%", overflow: "scroll" }}
-              {...bind()}
-            >
-              {children}
-            </div>
-          )}
-        </DragWrapper>
-      </React.Fragment>,
-      document.body
-      // document.getElementById(portalId) as HTMLElement
-    )
-  );
+          {children}
+        </div>
+      )}
+    </DragWrapper>
+  </React.Fragment>
+
 };
 
 export default SwipeModal;

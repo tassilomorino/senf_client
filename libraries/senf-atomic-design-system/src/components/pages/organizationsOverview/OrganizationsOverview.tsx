@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
@@ -20,23 +20,7 @@ import { OrganizationsOverviewProps } from "./OrganizationsOverview.types";
 import Arrow from "../../../assets/icons/Arrow";
 import Plus from "../../../assets/icons/Plus";
 import Wave from "../../atoms/shapes/Wave";
-
-const Background = styled.div`
- width:100%;
- height:100%;
-  background-color: #fed957;
-  position:absolute;
-  z-index:0;
-  top:0;
-  border-radius: 18px 18px 0 0;
-`;
-
-const StickyHeader = styled.div`
-position:sticky;
-z-index:99;
-top:0;
-
-`
+import SwipeWrapper from "../../molecules/modalStack/SwipeWrapper";
 
 const Wrapper = styled.div<OrganizationsOverviewProps>`
   background-color: ${({ theme }) => theme.colors.beige.beige20};
@@ -66,7 +50,6 @@ const Wrapper = styled.div<OrganizationsOverviewProps>`
 const InnerWrapper = styled.div<OrganizationsOverviewProps>`
   overflow-y: scroll;
   pointer-events: all;
-  margin-top:-20px;
   height: calc(100% - 120px);
   width: 100%;
   overflow: scroll;
@@ -78,12 +61,9 @@ const InnerWrapper = styled.div<OrganizationsOverviewProps>`
   max-width: 800px;
   display: flex;
   flex-direction: column;
-  position:absolute;
 
   @media (min-width: 768px) {
     height: calc(100% - 210px);
-    margin-top:0px;
-
   }
 `;
 
@@ -114,6 +94,7 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
   handleSelectOrganizationTypes,
   organization,
   projectroomsData,
+  user,
   searchTerm,
   setSearchTerm,
   handleButtonOpenCard,
@@ -127,13 +108,6 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
   const [activeSortOptionLabel, setActiveSortOptionLabel] = useState(
     t("newest_organizations")
   );
-  const [open, setOpen] = useState(false);
-  useEffect(() => {
-    setTimeout(() => {
-      setOpen(true)
-    }, 100);
-  }, [])
-
 
   const toolbarComponent = (
     <Toolbar
@@ -170,7 +144,7 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
     //   openModal={openOrganizationsOverview}
     //   setOpenModal={setOpenOrganizationsOverview}
     //   headerComponentHeight="102px"
-    //   zIndex="998"
+    //   zIndex={8}
     //   HeaderComponent={
     //     <React.Fragment>
     //       <SubNavbar
@@ -189,19 +163,33 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
     //     </React.Fragment>
     //   }
     // >
-    <React.Fragment>
-      <StickyHeader>
-        <Typography variant="h2" textAlign="center">
-          {t("organizations")}
-        </Typography>
-        <TagSlide
-          type="organizationTypes"
-          selectedOrganizationTypes={selectedOrganizationTypes}
-          handleSelectOrganizationTypes={handleSelectOrganizationTypes}
-        />
-      </StickyHeader>
-      <Background />
+    <SwipeModal
+      triggerOpen={openOrganizationsOverview}
+      onClose={() => setOpenOrganizationsOverview(false)}
+      onDrag={(e) => console.log(e)}
+      overflowing={true}
+      backgroundColor={"#fed957"}
+      headerComponentHeight="102px"
+      HeaderComponent={
+        <React.Fragment>
+          <SubNavbar
+            iconLeft={<Arrow transform="rotate(90deg)" />}
+            leftButtonClick={() => setOpenOrganizationsOverview(false)}
+            header={t("organizations")}
+            handlebar={true}
+          // iconRight="plus"
+          // iconRightTransform="rotate(45deg)"
+          />
+          <TagSlide
+            type="organizationTypes"
+            selectedOrganizationTypes={selectedOrganizationTypes}
+            handleSelectOrganizationTypes={handleSelectOrganizationTypes}
+          />
+        </React.Fragment>
+      }
+    >
       <Wave color={theme.colors.beige.beige20} top="0px" />
+
       <InnerWrapper isMobile={isMobile}>
         <Box margin="16px 12px 16px 12px">{toolbarComponent}</Box>
         <Box margin="0px 12px 6px 12px">
@@ -229,9 +217,7 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
           handleButtonOpenCard={handleButtonOpenCard}
         />
       </InnerWrapper>
-    </React.Fragment>
-
-    // </SwipeModal>
+    </SwipeModal>
   ) : (
     <Wrapper open={openOrganizationsOverview}>
       <SVGWrapper searchOpen={searchOpen}>

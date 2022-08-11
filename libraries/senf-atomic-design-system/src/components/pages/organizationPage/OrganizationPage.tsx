@@ -37,26 +37,14 @@ import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 
 // const Calendar = React.lazy(() => import("../../organisms/calendar/Calendar"));
 
-const Wrapper = styled.div`
-
-height: 100%;
-width: 100%;
-background-color: ${({ theme }) => theme.colors.beige.beige20};
-position: absolute;
-top:0;
-overflow:hidden;
-`
-
 const SVGWrapper = styled.div`
   position: absolute;
   top: 0px;
   left: 0;
   pointer-events: none;
-  z-index: 0;
+  z-index: -1;
   width: 100%;
   height: 300px;
-
-
 `;
 
 const ImageWrapper = styled.div`
@@ -108,236 +96,233 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
 }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom()
-
   const [infoOpen, setInfoOpen] = useState(false);
   const [order, setOrder] = useState(1);
 
 
-  const content = <Wrapper> <SVGWrapper>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="100%"
-      height="466"
-      style={{
-        position: "absolute",
-        zIndex: 1,
-        marginTop: "40px",
-        transform: "scale(1.2)",
-      }}
-    >
-      <path
-        d="M0.5 106.5V0.5L375.5 0V38.5C361 35.5 333 41 316 61C290.075 91.5 237.5 111.5 143 91.5C67.4 75.5 16 94.6667 0.5 106.5Z"
-        fill="#FED957"
-      />
-    </svg>
-  </SVGWrapper>
-    {!isMobile && <Box position="fixed" margin="20px" zIndex={2}>
-      <RoundedButton
-        icon={<Plus transform="rotate(45deg)" />}
-        onClick={handleCloseOrganizationPage}
-      />
-    </Box>}
 
-    {user && organization?.userIds.includes(user.userId) && (
-      <Box position="absolute" margin="20px" right="0px" zIndex={2}>
-        <RoundedButton icon={<More />} onClick={handleEditOrganization} />
-      </Box>
-    )}
-
-    <Box justifyContent="center" margin="20px">
-      <ImageWrapper>
-        {organization?.logoURL ? (
-          <ImagePlaceholder
-            img={organization?.logoURL ? organization.logoURL : null}
-            borderRadius="18px"
-            height="calc(100% - 40px)"
-            width="calc(100% - 40px)"
-          />
-        ) : (
-          <Skeleton height="100" width="100" borderRadius="10" />
-        )}
-      </ImageWrapper>
-    </Box>
-
-    {organization?.status === "deactivated" ? (
-      <Box margin="24px">
-        {/* //ADD COLOR TO TYPOGRAPHY COMPONENT and THEME COLOR */}
-        <Typography variant="h3" color="#ca3336">
-          {t("organization_is_deactivated")}
-        </Typography>
-      </Box>
-    ) : (
-      organization?.status === "uncompleted" && (
-        <Box margin="24px">
-          <Typography variant="h3" color="#ca3336">
-            {t("organization_is_uncompleted")}
-          </Typography>
-        </Box>
-      )
-    )}
-    <Box margin="24px" alignItems="center" gap="12px">
-      <LogoPlacer>
-        <Icon
-          icon={setOrganizationTypeIcon(organization?.organizationType)}
-        />
-      </LogoPlacer>
-      {organization?.title ? (
-        <Typography variant="h3"> {organization?.title}</Typography>
-      ) : (
-        <Skeleton
-          height="24"
-          width="300"
-          baseColor="#E6D7BF"
-          highlightColor="#F0E7D9"
-        />
-      )}
-    </Box>
-
-    <Box margin="24px" alignItems="center" gap="10px">
-
-      {(organization?.contact ||
-        organization?.weblink ||
-        organization?.address) && (
-          <ModalButton
-            variant="secondary"
-            text={t("contact")}
-            size="small"
-            fillWidth="max"
-            options={{
-              padding: 20,
-              title: t("contact"),
-              swipe: isMobile && true
-
-            }}
-          >
-            <Box margin="18px" flexDirection="column" gap="10px">
-              {organization?.contact && (
-                <Typography variant="bodyBg">
-                  {organization?.contact}
-                </Typography>
-              )}
-              {organization?.contact && <Divider />}
-              {organization?.weblink && (
-                <Typography variant="bodyBg">
-                  {organization?.weblink}{" "}
-                </Typography>
-              )}
-              {organization?.weblink && <Divider />}
-              {organization?.address && (
-                <Typography variant="bodyBg">
-                  {organization?.address}{" "}
-                </Typography>
-              )}
-            </Box>
-
-          </ModalButton>
-
-        )}
-      {organization?.faqs && (
-        <ModalButton
-          variant="secondary"
-          text={t("faq")}
-          size="small"
-          fillWidth="max"
-          options={{
-            padding: 20,
-            title: t("faq"),
-
-          }}
-        >
-          <Box margin="18px">
-            {organization.faqs}
-            <Accordion data={organization.faqs} />
-          </Box>
-
-        </ModalButton>
-
-      )}
-    </Box>
-    <Box margin="21px 0px 0px 18px">
-      <TertiaryButton
-        text={t("information")}
-        iconRight={
-          <Arrow transform={infoOpen ? "rotate(-90deg) " : "rotate(0deg) "} />
-        }
-        onClick={() => setInfoOpen(!infoOpen)}
-      />
-    </Box>
-    <Box margin="2px 0px 0px 24px">
-      <InfoWidget onClick={() => setInfoOpen(!infoOpen)} infoOpen={infoOpen}>
-        {organization?.description ? (
-          <Typography variant="bodyBg">
-            {organization?.description}
-          </Typography>
-        ) : (
-          <Skeleton
-            count="4"
-            height="16"
-            width="300"
-            baseColor="#E6D7BF"
-            highlightColor="#F0E7D9"
-          />
-        )}
-      </InfoWidget>
-    </Box>
-
-    <Divider margin="14px 24px 16px 24px" width="calc(100% - 48px)" />
-
-    {organization?.googleCalendarId && (
-      <Box margin="0px 24px 0px 24px" gap="10px">
-        <Tabs
-          fontSize="buttonSm"
-          order={order}
-          setOrder={setOrder}
-          tabs={[
-            { icon: <Room />, text: "Projekträume" },
-            { icon: <CalendarIcon />, text: "Kalender" },
-            // { icon: <Info />, text: "Interaktionen" },
-          ]}
-        />
-      </Box>
-    )}
-
-    {order === 1 ? (
-      <List
-        CardType={ProjectroomCard}
-        data={organization?.projectRooms}
-        handleButtonOpenCard={handleButtonOpenCard}
-        organizations={organizations}
-        listEndText={
-          !organization?.projectRooms || organization?.projectRooms < 1
-            ? t("noOrganizationProjectRooms")
-            : t("noMoreProjectrooms")
-        }
-      />
-    ) : (
-      order === 2 &&
-      organization?.googleCalendarId && (
-        <Box margin="10px 10px 0px 0px" width="100%">
-          <Calendar
-            googleCalendarApiKey={googleCalendarApiKey}
-            googleCalendarId={organization?.googleCalendarId}
-            calendarType="google"
-          />
-        </Box>
-      )
-    )}
-  </Wrapper>
-
-  return isMobile ? content : (
+  return (
     <Dialog
       openDialog={true}
       right="0px"
       backgroundColor={theme.colors.beige.beige20}
       overflow="hidden scroll"
-      zIndex="999999"
+      zIndex={99999}
       boxShadow={
         document.body.clientWidth < 1350 &&
         document.body.clientWidth > 768 &&
         "-40px 8px 30px -12px rgba(0, 0, 0, 0.2)"
       }
     >
-      {content}
+      <SVGWrapper>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="100%"
+          height="466"
+          style={{
+            position: "absolute",
+            zIndex: -1,
+            marginTop: "40px",
+            transform: "scale(1.2)",
+          }}
+        >
+          <path
+            d="M0.5 106.5V0.5L375.5 0V38.5C361 35.5 333 41 316 61C290.075 91.5 237.5 111.5 143 91.5C67.4 75.5 16 94.6667 0.5 106.5Z"
+            fill="#FED957"
+          />
+        </svg>
+      </SVGWrapper>
+      <Box position="fixed" margin="20px" zIndex={2}>
+        <RoundedButton
+          icon={<Plus transform="rotate(45deg)" />}
+          onClick={handleCloseOrganizationPage}
+        />
+      </Box>
+
+      {user && organization?.userIds.includes(user.userId) && (
+        <Box position="absolute" margin="20px" right="0px" zIndex={2}>
+          <RoundedButton icon={<More />} onClick={handleEditOrganization} />
+        </Box>
+      )}
+
+      <Box justifyContent="center" margin="20px">
+        <ImageWrapper>
+          {organization?.logoURL ? (
+            <ImagePlaceholder
+              img={organization?.logoURL ? organization.logoURL : null}
+              borderRadius="18px"
+              height="calc(100% - 40px)"
+              width="calc(100% - 40px)"
+            />
+          ) : (
+            <Skeleton height="100" width="100" borderRadius="10" />
+          )}
+        </ImageWrapper>
+      </Box>
+
+      {organization?.status === "deactivated" ? (
+        <Box margin="24px">
+          {/* //ADD COLOR TO TYPOGRAPHY COMPONENT and THEME COLOR */}
+          <Typography variant="h3" color="#ca3336">
+            {t("organization_is_deactivated")}
+          </Typography>
+        </Box>
+      ) : (
+        organization?.status === "uncompleted" && (
+          <Box margin="24px">
+            <Typography variant="h3" color="#ca3336">
+              {t("organization_is_uncompleted")}
+            </Typography>
+          </Box>
+        )
+      )}
+      <Box margin="24px" alignItems="center" gap="12px">
+        <LogoPlacer>
+          <Icon
+            icon={setOrganizationTypeIcon(organization?.organizationType)}
+          />
+        </LogoPlacer>
+        {organization?.title ? (
+          <Typography variant="h3"> {organization?.title}</Typography>
+        ) : (
+          <Skeleton
+            height="24"
+            width="300"
+            baseColor="#E6D7BF"
+            highlightColor="#F0E7D9"
+          />
+        )}
+      </Box>
+
+      <Box margin="24px" alignItems="center" gap="10px">
+
+        {(organization?.contact ||
+          organization?.weblink ||
+          organization?.address) && (
+            <ModalButton
+              variant="secondary"
+              text={t("contact")}
+              size="small"
+              fillWidth="max"
+              options={{
+                padding: 20,
+                title: t("contact"),
+                swipe: isMobile && true
+
+              }}
+            >
+              <Box margin="18px" flexDirection="column" gap="10px">
+                {organization?.contact && (
+                  <Typography variant="bodyBg">
+                    {organization?.contact}
+                  </Typography>
+                )}
+                {organization?.contact && <Divider />}
+                {organization?.weblink && (
+                  <Typography variant="bodyBg">
+                    {organization?.weblink}{" "}
+                  </Typography>
+                )}
+                {organization?.weblink && <Divider />}
+                {organization?.address && (
+                  <Typography variant="bodyBg">
+                    {organization?.address}{" "}
+                  </Typography>
+                )}
+              </Box>
+
+            </ModalButton>
+
+          )}
+        {organization?.faqs && (
+          <ModalButton
+            variant="secondary"
+            text={t("faq")}
+            size="small"
+            fillWidth="max"
+            options={{
+              padding: 20,
+              title: t("faq"),
+
+            }}
+          >
+            <Box margin="18px">
+              {organization.faqs}
+              <Accordion data={organization.faqs} />
+            </Box>
+
+          </ModalButton>
+
+        )}
+      </Box>
+      <Box margin="21px 0px 0px 18px">
+        <TertiaryButton
+          text={t("information")}
+          iconRight={
+            <Arrow transform={infoOpen ? "rotate(-90deg) " : "rotate(0deg) "} />
+          }
+          onClick={() => setInfoOpen(!infoOpen)}
+        />
+      </Box>
+      <Box margin="2px 0px 0px 24px">
+        <InfoWidget onClick={() => setInfoOpen(!infoOpen)} infoOpen={infoOpen}>
+          {organization?.description ? (
+            <Typography variant="bodyBg">
+              {organization?.description}
+            </Typography>
+          ) : (
+            <Skeleton
+              count="4"
+              height="16"
+              width="300"
+              baseColor="#E6D7BF"
+              highlightColor="#F0E7D9"
+            />
+          )}
+        </InfoWidget>
+      </Box>
+
+      <Divider margin="14px 24px 16px 24px" width="calc(100% - 48px)" />
+
+      {organization?.googleCalendarId && (
+        <Box margin="0px 24px 0px 24px" gap="10px">
+          <Tabs
+            fontSize="buttonSm"
+            order={order}
+            setOrder={setOrder}
+            tabs={[
+              { icon: <Room />, text: "Projekträume" },
+              { icon: <CalendarIcon />, text: "Kalender" },
+              // { icon: <Info />, text: "Interaktionen" },
+            ]}
+          />
+        </Box>
+      )}
+
+      {order === 1 ? (
+        <List
+          CardType={ProjectroomCard}
+          data={organization?.projectRooms}
+          handleButtonOpenCard={handleButtonOpenCard}
+          organizations={organizations}
+          listEndText={
+            !organization?.projectRooms || organization?.projectRooms < 1
+              ? t("noOrganizationProjectRooms")
+              : t("noMoreProjectrooms")
+          }
+        />
+      ) : (
+        order === 2 &&
+        organization?.googleCalendarId && (
+          <Box margin="10px 10px 0px 0px" width="100%">
+            <Calendar
+              googleCalendarApiKey={googleCalendarApiKey}
+              googleCalendarId={organization?.googleCalendarId}
+              calendarType="google"
+            />
+          </Box>
+        )
+      )}
     </Dialog>
   );
 };

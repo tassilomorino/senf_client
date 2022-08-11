@@ -90,8 +90,10 @@ const StatisticsOverview: FC<StatisticsOverviewProps> = ({
   return isMobile ? (
     <SwipeModal
       backgroundColor={theme.colors.primary.primary100}
-      openModal={openStatisticsOverview}
-      setOpenModal={setOpenStatisticsOverview}
+      triggerOpen={openStatisticsOverview}
+      onClose={() => setOpenStatisticsOverview(false)}
+      onDrag={(e) => console.log(e)}
+      overflowing={true}
       headerComponentHeight="102px"
       HeaderComponent={
         <React.Fragment>
@@ -100,8 +102,8 @@ const StatisticsOverview: FC<StatisticsOverviewProps> = ({
             leftButtonClick={() => setOpenStatisticsOverview(false)}
             header={t("statistics")}
             handlebar={true}
-            // iconRight="plus"
-            // iconRightTransform="rotate(45deg)"
+          // iconRight="plus"
+          // iconRightTransform="rotate(45deg)"
           />
         </React.Fragment>
       }

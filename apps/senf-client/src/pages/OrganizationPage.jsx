@@ -95,9 +95,11 @@ const OrganizationPage = ({
 
     // dispatch(stateCreateOrganizationsFunc(true));
 
+
     handleModal("push", <React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
       <CreateMainComponent type="organization" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
 
+    // handleCloseOrganizationPage()
   };
 
   // useEffect(() => {

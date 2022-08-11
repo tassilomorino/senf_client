@@ -73,8 +73,11 @@ const ProjectroomPage = ({
     dispatch(openProjectRoomFunc(null, false));
     handleSetInitialMapBoundsAndViewport();
 
-    if (organization) {
-      dispatch(openOrganizationFunc(organization.organizationId, true));
+    if (organization && isMobileCustom) {
+      dispatch({
+        type: "OPEN_ORGANIZATION",
+        payload: true,
+      });
     }
   }, [dispatch]);
 

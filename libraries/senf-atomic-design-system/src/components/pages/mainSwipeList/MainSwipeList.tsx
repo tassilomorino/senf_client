@@ -24,8 +24,6 @@ import MenuSidebar from "../../organisms/menuSidebar/MenuSidebar";
 import Box from "../../atoms/box/Box";
 import Vereine from "../../../assets/icons/Vereine";
 import More from "../../../assets/icons/More";
-import { ModalContext } from "../../molecules/modalStack/ModalProvider";
-import OrganizationsOverview from "../organizationsOverview/OrganizationsOverview";
 
 const DragWrapper = styled(animated.div)`
   z-index: ${({ zIndex }) => zIndex || 1};
@@ -55,7 +53,7 @@ const DragWrapper = styled(animated.div)`
   }
 `;
 
-const InnerWrapper = styled.div`
+const InnerWrapper = styled.div<OrganizationsOverviewProps>`
   @media (min-width: 768px) {
     padding-left: 66px;
     height: 100%;
@@ -64,7 +62,7 @@ const InnerWrapper = styled.div`
   }
 `;
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled.div<OrganizationsOverviewProps>`
   overflow-y: scroll;
   pointer-events: all;
   height: calc(100vh - 110px);
@@ -137,9 +135,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
 
   ideasData,
   projectroomsData,
-  organizationsData,
-
-  organization,
+  organizations,
 
   order,
   setOrder,
@@ -174,7 +170,6 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   setCheckedSortOption,
 
   handleCreateProjectroom,
-  handleOpenCreateOrganization,
 
   ideasDataOriginal,
   handleMapBoundsReset,
@@ -185,8 +180,6 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
 }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom();
-  const { handleModal } = React.useContext(ModalContext) || {};
-
   const [swipePercentage, setSwipePercentage] = useState(0);
   const [activeSortOptionLabel, setActiveSortOptionLabel] = useState("");
   const [springProps, setSpring] = useSpring(() => ({
@@ -366,30 +359,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
           onClick={
             order === "ideas"
               ? () => setOpenStatisticsOverview(true)
-              : () => {
-                if (isMobile) {
-                  handleModal("push",
-                    <OrganizationsOverview
-                      data={organizationsData}
-                      selectedOrganizationTypes={selectedOrganizationTypes}
-                      handleSelectOrganizationTypes={handleSelectOrganizationTypes}
-                      user={user}
-                      organization={organization}
-                      openOrganizationsOverview={openOrganizationsOverview}
-                      setOpenOrganizationsOverview={setOpenOrganizationsOverview}
-                      searchTerm={searchTerm}
-                      setSearchTerm={setSearchTerm}
-                      checkedSortOption={checkedSortOption}
-                      setCheckedSortOption={setCheckedSortOption}
-                      handleButtonOpenCard={handleButtonOpenCard}
-                      projectroomsData={projectroomsData}
-                      handleOpenCreateOrganization={handleOpenCreateOrganization}
-                    />, { swipe: !!isMobile, size: "lg", handleColor: theme.colors.primary.primary120, height: isMobile && window.innerHeight + 83, padding: 0 })
-                } else {
-                  setOpenOrganizationsOverview(true)
-                }
-              }
-            // () => setOpenOrganizationsOverview(true)
+              : () => setOpenOrganizationsOverview(true)
           }
         />
       }
@@ -429,7 +399,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
               scale: 0.9,
               transform: `translateY(${-20}px)`,
               filter: "brightness(80%)",
-              transition: "0.5s",
+              transition: "0.2s",
               overflow: "visible",
             }
             : isMobile
@@ -534,7 +504,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
             <List
               CardType={order === "ideas" ? IdeaCard : ProjectroomCard}
               data={order === "ideas" ? ideasData : projectroomsData}
-              organizations={organizationsData}
+              organizations={organizations}
               ideasData={ideasData}
               projectroomsData={projectroomsData}
               handleButtonOpenCard={handleButtonOpenCard}
