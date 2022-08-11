@@ -393,18 +393,22 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   return (
     <React.Fragment>
       <DragWrapper
-        style={
-          (openOrganizationsOverview || openStatisticsOverview) && isMobile
-            ? {
-              scale: 0.9,
-              transform: `translateY(${-20}px)`,
-              filter: "brightness(80%)",
-              transition: "0.2s",
-              overflow: "visible",
-            }
-            : isMobile
-              ? springProps
-              : null
+        // style={
+        //   (openOrganizationsOverview || openStatisticsOverview) && isMobile
+        //     ? {
+        //       scale: 0.9,
+        //       transform: `translateY(${-20}px)`,
+        //       filter: "brightness(80%)",
+        //       transition: "0.2s",
+        //       overflow: "visible",
+        //     }
+        //     : isMobile
+        //       ? springProps
+        //       : null
+        // }
+        style={isMobile
+          ? springProps
+          : null
         }
       >
         <Wave color={theme.colors.beige.beige20} top="0px" />
