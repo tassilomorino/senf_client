@@ -37,7 +37,7 @@ const InnerWrapper = styled.div<TagSlideProps>`
     height: auto;
     display: flex;
     flex-direction: ${({ flexDirection }) =>
-      flexDirection ? flexDirection : "row"};
+    flexDirection || "row"};
     align-items: flex-start;
     text-align: left;
     flex-wrap: wrap;
@@ -103,58 +103,47 @@ const TagSlide: FC<TagSlideProps> = ({
 
           {type === "topics"
             ? topics.map((topic, i) => (
-                <Tag
-                  key={topic.name}
-                  placing={placing}
-                  onClick={() => handleSelectTopics(topic.name)}
-                  hide={hide}
-                  active={
-                    selectedTopics?.includes(topic.name) &&
-                    selectedTopics?.length !== 7
-                  }
-                  text={topic.label}
-                  icon={<Dot color={setColorByTopic(topic.name)} />}
-                  // hide={
-                  //   (placing === "list" && swipePosition === "bottom") ||
-                  //   (placing !== "list" &&
-                  //     placing !== "insights" &&
-                  //     isMobileCustom &&
-                  //     (openScream ||
-                  //       (openProjectRoom && !project?.screams) ||
-                  //       openAccount ||
-                  //       openOrganization ||
-                  //       swipePosition === "top"))
-                  // }
-                />
-              ))
+              <Tag
+                key={topic.name}
+                placing={placing}
+                onClick={() => handleSelectTopics(topic.name)}
+                hide={hide}
+                active={
+                  selectedTopics?.includes(topic.name) &&
+                  selectedTopics?.length !== 7
+                }
+                text={topic.label}
+                icon={<Dot color={setColorByTopic(topic.name)} />}
+              />
+            ))
             : organizationTypes.map((organizationTypes, i) => (
-                <Tag
-                  key={organizationTypes.name}
-                  placing={placing}
-                  onClick={() =>
-                    handleSelectOrganizationTypes(organizationTypes.name)
-                  }
-                  hide={hide}
-                  active={
-                    selectedOrganizationTypes?.includes(
-                      organizationTypes.name
-                    ) && selectedOrganizationTypes?.length !== 7
-                  }
-                  text={organizationTypes.label}
-                  icon={setOrganizationTypeIcon(organizationTypes.name)}
-                  // hide={
-                  //   (placing === "list" && swipePosition === "bottom") ||
-                  //   (placing !== "list" &&
-                  //     placing !== "insights" &&
-                  //     isMobileCustom &&
-                  //     (openScream ||
-                  //       (openProjectRoom && !project?.screams) ||
-                  //       openAccount ||
-                  //       openOrganization ||
-                  //       swipePosition === "top"))
-                  // }
-                />
-              ))}
+              <Tag
+                key={organizationTypes.name}
+                placing={placing}
+                onClick={() =>
+                  handleSelectOrganizationTypes(organizationTypes.name)
+                }
+                hide={hide}
+                active={
+                  selectedOrganizationTypes?.includes(
+                    organizationTypes.name
+                  ) && selectedOrganizationTypes?.length !== 7
+                }
+                text={organizationTypes.label}
+                icon={setOrganizationTypeIcon(organizationTypes.name)}
+              // hide={
+              //   (placing === "list" && swipePosition === "bottom") ||
+              //   (placing !== "list" &&
+              //     placing !== "insights" &&
+              //     isMobileCustom &&
+              //     (openScream ||
+              //       (openProjectRoom && !project?.screams) ||
+              //       openAccount ||
+              //       openOrganization ||
+              //       swipePosition === "top"))
+              // }
+              />
+            ))}
         </InnerWrapper>
       </Wrapper>
     )

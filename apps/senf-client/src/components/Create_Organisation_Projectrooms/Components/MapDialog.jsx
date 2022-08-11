@@ -116,6 +116,7 @@ const MapDialog = ({ mapOpen, setMapOpen, drawnPolygon, setDrawnPolygon }) => {
       localStorage.getItem("createProjectRoomId") &&
       polygon
     ) {
+      setDrawnPolygon(polygon)
       // UPDATING AN EXISTING PROJECTROOM
       const updateProject = {
         geoData: JSON.stringify(polygon),

@@ -28,11 +28,13 @@ const Sheet = styled.div<SheetProps>`
   pointer-events: ${({ index }) => index === 1 ? "auto" : "none"};
   transform-origin: 0%;
   transform:
-    scale(${({ index }) => 1 - (index - 1) / 10})
+    scale(${({ index, stackable }) => 1 - (index - 1) / stackable})
     translate(
       -50%,
-      calc(${({ index, swipe }) => index === 0 && swipe ? "150%" : `${(index - 1) * -40}px - ${swipe ? 0 : 50}%`})
+      calc(${({ index, swipe, stackable }) => index === 0 && swipe ? "150%" : `${(index - 1) * -(400 / stackable / 2)}px - ${swipe ? 0 : 50}%`})
     );
+        /* transform: ${({ stackable }) => !stackable && "translate(-50%,0)"}; */
+
   z-index: ${({ index }) => index === 1 ? 10 : index * -1};
   box-sizing: border-box;
   overflow: ${({ overflow }) => overflow || "scroll"};
@@ -69,10 +71,10 @@ const Toner = styled.div<{ padding: number, size: string, index: number, swipe: 
   height: ${({ height }) => height ? `${height}px` : '100%'};
   max-width: 100vw;
   min-height: 120px;
-  max-height: ${({ maxHeight }) => maxHeight ? `${maxHeight}px` : 'calc(100vh - 80px)'}; 
+  max-height: ${({ maxHeight, size }) => maxHeight ? `${maxHeight}px` : size === "full" ? 'calc(100vh - 20px)' : 'calc(100vh - 80px)'}; 
   width: ${({ size }) => {
     switch (size) {
-      case "full": return "max(calc(100vw - 40px), min(983px, 100vw))";
+      case "full": return "max(calc(100vw - 20px), min(983px, 100vw))";
       case "xl": return "983px";
       case "l": case "lg": return "614px";
       case "s": case "sm": return "240px";
@@ -94,6 +96,8 @@ const ModalWrapper: FC<ModalWrapperProps> = ({
   title,
   description,
   swipe,
+  stackable,
+  handleColor,
   index,
   children,
   height,
@@ -152,8 +156,6 @@ const ModalWrapper: FC<ModalWrapperProps> = ({
     if (afterClose && onAfterClose) onAfterClose()
   }, [afterClose])
 
-
-
   return (
     <Wrapper
       height={height || innerHeight || 320}
@@ -165,9 +167,9 @@ const ModalWrapper: FC<ModalWrapperProps> = ({
       overflowing={overflowing}
     >
       <Background onClick={close} />
-      <Sheet index={index} total={modalStack} swipe={swipe} ref={sheet}>
+      <Sheet index={index} total={modalStack} swipe={swipe} ref={sheet} stackable={stackable === false ? 1000 : 20}>
         <Toner size={size} index={index} height={height || innerHeight} maxHeight={height} padding={padding} swipe={swipe} ref={content}>
-          <ModalHandle swipe={swipe} onClose={close} />
+          <ModalHandle swipe={swipe} handleColor={handleColor} onClose={close} />
           {(title || description) && <Box flexDirection="column" gap="5px" marginBottom="20px">
             {title && <Typography variant="h3">{title}</Typography>}
             {description && <Typography variant="bodyBg" color={theme.colors.greyscale.greyscale100}>{description}</Typography>}

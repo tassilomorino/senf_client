@@ -20,6 +20,7 @@ import { OrganizationsOverviewProps } from "./OrganizationsOverview.types";
 import Arrow from "../../../assets/icons/Arrow";
 import Plus from "../../../assets/icons/Plus";
 import Wave from "../../atoms/shapes/Wave";
+import SwipeWrapper from "../../molecules/modalStack/SwipeWrapper";
 
 const Wrapper = styled.div<OrganizationsOverviewProps>`
   background-color: ${({ theme }) => theme.colors.beige.beige20};
@@ -138,12 +139,37 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
     />
   );
   return isMobile ? (
+    // <SwipeModal
+    //   backgroundColor={"#fed957"}
+    //   openModal={openOrganizationsOverview}
+    //   setOpenModal={setOpenOrganizationsOverview}
+    //   headerComponentHeight="102px"
+    //   zIndex={8}
+    //   HeaderComponent={
+    //     <React.Fragment>
+    //       <SubNavbar
+    //         iconLeft={<Arrow transform="rotate(90deg)" />}
+    //         leftButtonClick={() => setOpenOrganizationsOverview(false)}
+    //         header={t("organizations")}
+    //         handlebar={true}
+    //       // iconRight="plus"
+    //       // iconRightTransform="rotate(45deg)"
+    //       />
+    //       <TagSlide
+    //         type="organizationTypes"
+    //         selectedOrganizationTypes={selectedOrganizationTypes}
+    //         handleSelectOrganizationTypes={handleSelectOrganizationTypes}
+    //       />
+    //     </React.Fragment>
+    //   }
+    // >
     <SwipeModal
-      backgroundColor={theme.colors.primary.primary100}
-      openModal={openOrganizationsOverview}
-      setOpenModal={setOpenOrganizationsOverview}
+      triggerOpen={openOrganizationsOverview}
+      onClose={() => setOpenOrganizationsOverview(false)}
+      onDrag={(e) => console.log(e)}
+      overflowing={true}
+      backgroundColor={"#fed957"}
       headerComponentHeight="102px"
-      zIndex="998"
       HeaderComponent={
         <React.Fragment>
           <SubNavbar
@@ -151,8 +177,8 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
             leftButtonClick={() => setOpenOrganizationsOverview(false)}
             header={t("organizations")}
             handlebar={true}
-            // iconRight="plus"
-            // iconRightTransform="rotate(45deg)"
+          // iconRight="plus"
+          // iconRightTransform="rotate(45deg)"
           />
           <TagSlide
             type="organizationTypes"
@@ -175,11 +201,11 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
             fillWidth="max"
             onClick={handleOpenCreateOrganization}
 
-            // onClick={
-            //   user.authenticated
-            //     ? openCreateOrganization
-            //     : () => setOpenModalAuthenticate(true)
-            // }
+          // onClick={
+          //   user.authenticated
+          //     ? openCreateOrganization
+          //     : () => setOpenModalAuthenticate(true)
+          // }
           />
         </Box>
         <List

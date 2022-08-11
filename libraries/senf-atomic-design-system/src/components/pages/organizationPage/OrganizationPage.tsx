@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import Dialog from "../../molecules/dialog/Dialog";
@@ -33,6 +33,7 @@ import Room from "../../../assets/icons/Room";
 import Calendar from "../../organisms/calendar/Calendar";
 import Skeleton from "../../atoms/skeleton/Skeleton";
 import ModalButton from "../../molecules/modalStack/ModalButton";
+import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 
 // const Calendar = React.lazy(() => import("../../organisms/calendar/Calendar"));
 
@@ -94,9 +95,11 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
   googleCalendarApiKey,
 }) => {
   const { t } = useTranslation();
-
+  const isMobile = isMobileCustom()
   const [infoOpen, setInfoOpen] = useState(false);
   const [order, setOrder] = useState(1);
+
+
 
   return (
     <Dialog
@@ -104,7 +107,7 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
       right="0px"
       backgroundColor={theme.colors.beige.beige20}
       overflow="hidden scroll"
-      zIndex="999"
+      zIndex={99999}
       boxShadow={
         document.body.clientWidth < 1350 &&
         document.body.clientWidth > 768 &&
@@ -204,6 +207,7 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
               options={{
                 padding: 20,
                 title: t("contact"),
+                swipe: isMobile && true
 
               }}
             >
@@ -239,11 +243,12 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
             options={{
               padding: 20,
               title: t("faq"),
+              swipe: isMobile && true,
+              size: "lg"
 
             }}
           >
             <Box margin="18px">
-              {organization.faqs}
               <Accordion data={organization.faqs} />
             </Box>
 

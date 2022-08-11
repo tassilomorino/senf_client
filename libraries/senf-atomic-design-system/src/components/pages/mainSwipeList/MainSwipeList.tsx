@@ -123,9 +123,9 @@ const HandleBar = styled.div`
   transform: translateX(-50%);
   z-index: 99;
   width: 50px;
-  height: 3px;
+  height: 5px;
   background-color: ${({ theme }) => theme.colors.primary.primary120};
-  border-radius: 2px;
+  border-radius: 5px;
 `;
 
 const MainSwipeList: FC<MainSwipeListProps> = ({
@@ -350,19 +350,19 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
       searchTerm={searchTerm}
       setSearchTerm={setSearchTerm}
       secondButton={<Button variant="secondary" size="small" icon={<More />} />}
-      // secondButton={
-      //   <Button
-      //     variant="secondary"
-      //     size="small"
-      //     text={order === "ideas" ? t("statistics") : t("organizations")}
-      //     icon={order === "ideas" ? <Stats /> : null}
-      //     onClick={
-      //       order === "ideas"
-      //         ? () => setOpenStatisticsOverview(true)
-      //         : () => setOpenOrganizationsOverview(true)
-      //     }
-      //   />
-      // }
+      secondButton={
+        <Button
+          variant="secondary"
+          size="small"
+          text={order === "ideas" ? t("statistics") : t("organizations")}
+          icon={order === "ideas" ? <Stats /> : null}
+          onClick={
+            order === "ideas"
+              ? () => setOpenStatisticsOverview(true)
+              : () => setOpenOrganizationsOverview(true)
+          }
+        />
+      }
       searchPlaceholder={t("searchBar")}
       checkedSortOption={checkedSortOption}
       setCheckedSortOption={setCheckedSortOption}
@@ -393,18 +393,22 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   return (
     <React.Fragment>
       <DragWrapper
-        style={
-          (openOrganizationsOverview || openStatisticsOverview) && isMobile
-            ? {
-              scale: 0.9,
-              transform: `translateY(${-20}px)`,
-              filter: "brightness(80%)",
-              transition: "0.5s",
-              overflow: "visible",
-            }
-            : isMobile
-              ? springProps
-              : null
+        // style={
+        //   (openOrganizationsOverview || openStatisticsOverview) && isMobile
+        //     ? {
+        //       scale: 0.9,
+        //       transform: `translateY(${-20}px)`,
+        //       filter: "brightness(80%)",
+        //       transition: "0.2s",
+        //       overflow: "visible",
+        //     }
+        //     : isMobile
+        //       ? springProps
+        //       : null
+        // }
+        style={isMobile
+          ? springProps
+          : null
         }
       >
         <Wave color={theme.colors.beige.beige20} top="0px" />
@@ -432,7 +436,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
               projectroomsDataLength={projectroomsData?.length}
             />
 
-            <div
+            {/* <div
               style={{
                 position: "absolute",
                 right: isMobile ? "90px" : "92px",
@@ -453,7 +457,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
                 transform="scale(0.7)"
                 onClick={() => setOpenOrganizationsOverview(true)}
               />
-            </div>
+            </div> */}
             <RoundedButtonWrapper>
               <RoundedButton
                 size="big"
