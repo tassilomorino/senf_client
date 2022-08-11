@@ -243,11 +243,12 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
             options={{
               padding: 20,
               title: t("faq"),
+              swipe: isMobile && true,
+              size: "lg"
 
             }}
           >
             <Box margin="18px">
-              {organization.faqs}
               <Accordion data={organization.faqs} />
             </Box>
 

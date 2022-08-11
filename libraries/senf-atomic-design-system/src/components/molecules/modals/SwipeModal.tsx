@@ -49,7 +49,7 @@ const DragWrapper = styled(animated.div)`
   overscroll-behavior: contain;
   overflow-x: hidden;
   width: 100%;
-  height: calc(100vh  +  84px);
+  height: calc(100%  +  84px);
   left: 0;
 
   overflow: ${({ overflow }) => overflow || "scroll"};
