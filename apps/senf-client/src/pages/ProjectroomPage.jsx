@@ -12,11 +12,7 @@ import {
   openProjectRoomFunc,
 } from "../redux/actions/projectActions";
 import { clearErrors } from "../redux/actions/errorsActions";
-import { setMapBounds, setMapViewport } from "../redux/actions/mapActions";
 import { handleTopicSelectorRedux } from "../redux/actions/UiActions";
-
-import { openOrganizationFunc } from "../redux/actions/organizationActions";
-
 import { filterByTagFilter, search, sort } from "../util/helpers";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
