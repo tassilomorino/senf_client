@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 /* eslint-disable import/no-anonymous-default-export */
 
 /**
@@ -173,6 +174,18 @@ export default function (state = initialState, action) {
           state.scream?.screamId === action.payload.screamId
             ? { ...state.scream, likeCount: state.scream.likeCount + 1 }
             : state.scream,
+        project: state.project?.screams
+          ? {
+              ...state.project,
+              screams: [
+                ...state.project.screams.map((scream) =>
+                  scream.screamId === action.payload.screamId
+                    ? { ...scream, likeCount: scream.likeCount + 1 }
+                    : scream
+                ),
+              ],
+            }
+          : state.project,
       };
     case UNLIKE_SCREAM:
       return {
@@ -186,6 +199,18 @@ export default function (state = initialState, action) {
           state.scream?.screamId === action.payload.screamId
             ? { ...state.scream, likeCount: state.scream.likeCount - 1 }
             : state.scream,
+        project: state.project?.screams
+          ? {
+              ...state.project,
+              screams: [
+                ...state.project.screams.map((scream) =>
+                  scream.screamId === action.payload.screamId
+                    ? { ...scream, likeCount: scream.likeCount - 1 }
+                    : scream
+                ),
+              ],
+            }
+          : state.project,
       };
     case DELETE_SCREAM:
       return {
@@ -250,16 +275,50 @@ export default function (state = initialState, action) {
       };
 
     case EDIT_SCREAM:
-      const screamIndex = state.screams.findIndex(
+      const indexInDataScream =
+        state.scream.screamId === action.payload.screamId;
+
+      const indexInDataScreams = state.screams?.findIndex(
         (scream) => scream.screamId === action.payload.screamId
       );
-      if (screamIndex) {
+
+      const indexInDataProjectScreams = state.project?.screams?.findIndex(
+        (scream) => scream.screamId === action.payload.screamId
+      );
+      if (
+        state.scream &&
+        state.screams &&
+        indexInDataScream !== -1 &&
+        indexInDataScreams !== -1
+      ) {
         const screamsCopy = [...state.screams];
-        screamsCopy[screamIndex] = {
-          ...screamsCopy[screamIndex],
+        screamsCopy[indexInDataScreams] = {
+          ...screamsCopy[indexInDataScreams],
           ...action.payload,
         };
-        return { ...state, screams: screamsCopy };
+        if (state.project?.screams && indexInDataProjectScreams !== -1) {
+          // if the scream is in the projectroom, update it
+          const projectScreamsCopy = [...state.project.screams];
+          projectScreamsCopy[indexInDataProjectScreams] = {
+            ...projectScreamsCopy[indexInDataProjectScreams],
+            ...action.payload,
+          };
+          return {
+            ...state,
+            screams: screamsCopy,
+            scream: { ...state.scream, ...action.payload },
+            project: {
+              ...state.project,
+              screams: projectScreamsCopy,
+            },
+          };
+        }
+        // if the scream is not in the projectroom, update it
+        return {
+          ...state,
+          screams: screamsCopy,
+          scream: { ...state.scream, ...action.payload },
+        };
       }
       return { ...state };
 

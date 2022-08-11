@@ -145,6 +145,7 @@ const ProjectroomOpenButton = styled.button`
 const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
   data,
   projectroomsData,
+  projectroomCardData,
   handleButtonCloseCard,
   user,
   path,
@@ -201,21 +202,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
     return false;
   };
 
-  const [projectroomCardData, setProjectroomCardData] = useState([]);
 
-  useEffect(() => {
-    if (projectroomsData && cardProjectroomId) {
-      projectroomsData.map(({ projectRoomId, title, organizationType }) => {
-        if (cardProjectroomId === projectRoomId) {
-          setProjectroomCardData([
-            ...projectroomCardData,
-            title,
-            organizationType,
-          ]);
-        }
-      });
-    }
-  }, [projectroomsData, cardProjectroomId]);
 
   let selectedDates = [];
   const selectedUnixArray = selectedUnix;

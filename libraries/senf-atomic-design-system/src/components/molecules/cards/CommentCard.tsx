@@ -40,7 +40,7 @@ const InnerWrapper = styled.div`
 `;
 
 const CommentCard: FC<CommentCardProps> = ({ data, ...props }) => {
-  console.log(data, props)
+
   const { t } = useTranslation();
   const { title, createdAt, userHandle, userId, commentId } = data;
 

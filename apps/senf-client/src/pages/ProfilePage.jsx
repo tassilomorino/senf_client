@@ -22,6 +22,9 @@ import { isMobileCustom } from "../util/customDeviceDetect";
 const ProfilePage = ({
   handleButtonOpenCard,
   handleOpenProjectroom,
+  setAuthEditOpen,
+  handleButtonLike,
+  handleButtonComment,
 }) => {
 
   const { t } = useTranslation();
@@ -106,6 +109,8 @@ const ProfilePage = ({
         myScreams={MyIdeasDataFinal}
         handleButtonOpenCard={handleButtonOpenCard}
         handleOpenProjectroom={handleOpenProjectroom}
+        handleButtonLike={handleButtonLike}
+        handleButtonComment={handleButtonComment}
         handleButtonClose={handleClose}
         handleSetAuthEditOpen={() => handleModal("push", <Auth authEditOpen={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
         }

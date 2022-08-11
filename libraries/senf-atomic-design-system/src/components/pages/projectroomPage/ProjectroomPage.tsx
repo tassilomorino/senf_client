@@ -212,7 +212,8 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
   selectedTopics,
   handleSelectTopics,
   setPostIdeaOpen,
-
+  handleButtonLike,
+  handleButtonComment,
   setSearchOpen,
   searchOpen,
   searchTerm,
@@ -582,6 +583,10 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
                 </Box>
 
                 <List
+                  handleButtonLike={handleButtonLike}
+                  handleButtonComment={handleButtonComment}
+
+                  user={user}
                   CardType={IdeaCard}
                   data={ideasData}
                   handleButtonOpenCard={handleButtonOpenCard}

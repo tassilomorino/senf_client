@@ -55,20 +55,23 @@ const IdeaDetailPage = ({
     }
   }, [lat, long, openScream, screamId]);
 
-  const projectroomCardData = [];
+
+
+  const [projectroomCardData, setProjectroomCardData] = useState([]);
 
   useEffect(() => {
     if (projectroomsData && data && data.projectRoomId) {
-      if (projectroomsData) {
-        projectroomsData.forEach(
-          ({ projectRoomId, title, organizationType }) => {
-            if (data.projectRoomId === projectRoomId) {
-              projectroomCardData.push(title, organizationType);
-            }
-          }
-        );
-      }
+      projectroomsData.map(({ projectRoomId, title, organizationType }) => {
+        if (data.projectRoomId === projectRoomId) {
+          setProjectroomCardData([
+
+            title,
+            organizationType,
+          ]);
+        }
+      });
     }
+
   }, [projectroomsData, data]);
 
 

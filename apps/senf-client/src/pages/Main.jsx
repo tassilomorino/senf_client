@@ -395,7 +395,7 @@ const Main = ({
     }
   };
 
-  const handleButtonComment = () => { };
+  const handleButtonComment = () => { console.log('handleButtonComment') };
 
   const handleSelectTopics = (topics) => {
     dispatch(handleTopicSelectorRedux(topics));
@@ -641,6 +641,8 @@ const Main = ({
               handleSetInitialMapBoundsAndViewport={
                 handleSetInitialMapBoundsAndViewport
               }
+              handleButtonLike={handleButtonLike}
+              handleButtonComment={handleButtonComment}
             />
           )}
 
@@ -648,6 +650,8 @@ const Main = ({
             <ProfilePage
               handleButtonOpenCard={handleButtonOpenCard}
               handleOpenProjectroom={handleOpenProjectroom}
+              handleButtonLike={handleButtonLike}
+              handleButtonComment={handleButtonComment}
             />
           )}
 
