@@ -61,7 +61,7 @@ const DragWrapper = styled(animated.div) <ProfilePageProps>`
   width: 100%;
   height: 120%;
   position: fixed;
-  z-index: 96;
+  z-index: 95;
   top: 0;
   overflow: scroll;
   overscroll-behavior: contain;

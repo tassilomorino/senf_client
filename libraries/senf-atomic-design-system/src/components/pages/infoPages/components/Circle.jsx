@@ -39,8 +39,8 @@ const HooksMain = styled.div`
   }
 
   div:nth-child(1) {
-    width: ${(props) => (props.isMobileCustom ? "1900px" : "3000px")};
-    height: ${(props) => (props.isMobileCustom ? "1900px" : "3000px")};
+    width: ${({ isMobile }) => (isMobile ? "1900px" : "3000px")};
+    height: ${({ isMobile }) => (isMobile ? "1900px" : "3000px")};
     border-radius: ${(props) => (props.idRef === "Circle3" ? "0%" : "100%")};
   }
 `;
@@ -50,6 +50,7 @@ const slow = { mass: 10, tension: 130, friction: 50 };
 const trans = (x, y) => `translate3d(${x}px,${y}px,0) translate3d(-50%,-50%,0)`;
 
 const Circle = ({ id, marginTop }) => {
+  const isMobile = isMobileCustom();
   const ref = useRef(null);
   const [trail, api] = useTrail(1, (i) => ({
     xy: [window.innerWidth / 2, window.innerHeight + 200],
@@ -89,7 +90,7 @@ const Circle = ({ id, marginTop }) => {
   return (
     <Container ref={ref} marginTop={marginTop}>
       <HooksMain
-        isMobileCustom={isMobileCustom}
+        isMobile={isMobile}
         //   onMouseMove={handleMouseMove}
         idRef={id}
       >

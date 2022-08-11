@@ -43,21 +43,13 @@ const ProjectroomPage = ({
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
 
   const project = useSelector((state) => state.data.project);
-  const projects = useSelector((state) => state.data.projects);
   const organization = useSelector((state) => state.data.organization);
   const organizations = useSelector((state) => state.data.organizations);
   const [organizationImage, setOrganizationImage] = useState(null);
 
   const dispatch = useDispatch();
-  const loadingProjectRoom = useSelector(
-    (state) => state.data.loadingProjectRoom
-  );
 
-  const mapBounds = useSelector((state) => state.data.mapBounds);
 
-  const initialMapViewport = useSelector(
-    (state) => state.data.initialMapViewport
-  );
   const selectedTopics = useSelector((state) => state.data.topics);
 
   useEffect(() => {

@@ -69,8 +69,6 @@ const SelectLanguageWrapper = styled.div`
   @media (min-width: 768px) {
     right: 24px;
     top: 82px;
-    bottom: auto;
-    left: auto;
   }
 `;
 
@@ -424,8 +422,8 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
     const mobileDifferenceKeywords = isMobile ? 220 : 0;
 
     const circle2 = document.getElementById("Circle2");
-    circle2.style.clipPath = `circle(${value > 608 - mobileDifferenceCircle
-      ? -603 + mobileDifferenceCircle + value
+    circle2.style.clipPath = `circle(${value > 558 - mobileDifferenceCircle
+      ? -553 + mobileDifferenceCircle + value
       : 5
       }% at 50% 50%)`;
     circle2.style.transformOrigin = "bottom";
@@ -581,7 +579,9 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
           // src={ContactImg}
           onClick={() => openMail("dein@senf.koeln")}
         />
-        <Button icon={<Mail />} onClick={() => openMail("dein@senf.koeln")} />
+        <Box margin="10px">
+          <Button icon={<Mail />} onClick={() => openMail("dein@senf.koeln")} />
+        </Box>
 
         <Headline
           visible={visibleFirstHeadline}
