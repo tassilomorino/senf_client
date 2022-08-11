@@ -3,8 +3,6 @@
 import React, { useState, useEffect, memo, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // Redux stuff
-import styled from "styled-components";
-import orderBy from "lodash/orderBy";
 import { useTranslation } from "react-i18next";
 import { ProjectroomPage as ProjectroomPageComponent, ModalContext, Loader } from "senf-atomic-design-system";
 import {
