@@ -45,6 +45,7 @@ import Calendar from "../../organisms/calendar/Calendar";
 import Edit from "../../../assets/icons/Edit";
 import Skeleton from "../../atoms/skeleton/Skeleton";
 import RoundedButton from "../../atoms/buttons/RoundedButton";
+import { Stats } from "../../../assets/icons";
 
 // const Calendar = React.lazy(() => import("../../organisms/calendar/Calendar"));
 
@@ -223,6 +224,7 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
   handleShareIdeaVia,
   checkedSortOption,
   setCheckedSortOption,
+  setOpenStatisticsOverview,
 }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom();
@@ -543,26 +545,17 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
                     searchOpen={searchOpen}
                     searchTerm={searchTerm}
                     setSearchTerm={setSearchTerm}
+
                     secondButton={
                       <Button
                         variant="secondary"
                         size="small"
-                        icon={<More />}
+                        text={t("statistics")}
+                        icon={<Stats />}
+                        onClick={() => setOpenStatisticsOverview(true)
+                        }
                       />
                     }
-                    // secondButton={
-                    //   <Button
-                    //     variant="secondary"
-                    //     size="small"
-                    //     text={order === "ideas" ? t("statistics") : t("organizations")}
-                    //     icon={order === "ideas" ? <Stats /> : null}
-                    //     onClick={
-                    //       order === "ideas"
-                    //         ? () => setOpenStatisticsOverview(true)
-                    //         : () => setOpenOrganizationsOverview(true)
-                    //     }
-                    //   />
-                    // }
                     searchPlaceholder={t("searchBar")}
                     activeSortOptionLabel={activeSortOptionLabel}
                     setActiveSortOptionLabel={setActiveSortOptionLabel}

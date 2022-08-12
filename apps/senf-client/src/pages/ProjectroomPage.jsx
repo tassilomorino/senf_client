@@ -30,6 +30,7 @@ const ProjectroomPage = ({
   handleSetInitialMapBoundsAndViewport,
   handleButtonLike,
   handleButtonComment,
+  setOpenStatisticsOverview,
 }) => {
   const { t } = useTranslation();
   const { handleModal } = React.useContext(ModalContext) || {};
@@ -158,6 +159,7 @@ const ProjectroomPage = ({
       path={path}
       checkedSortOption={dropdown}
       setCheckedSortOption={setDropdown}
+      setOpenStatisticsOverview={setOpenStatisticsOverview}
     />
   );
 };

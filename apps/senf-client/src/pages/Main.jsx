@@ -636,6 +636,7 @@ const Main = ({
               }
               handleButtonLike={handleButtonLike}
               handleButtonComment={handleButtonComment}
+              setOpenStatisticsOverview={setOpenStatisticsOverview}
             />
           )}
 
