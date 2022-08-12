@@ -40,7 +40,7 @@ const Sheet = styled.div<SheetProps>`
   overflow: ${({ overflow }) => overflow || "scroll"};
   -webkit-overflow-scrolling: touch;
   background-color: ${({ theme }) => theme.colors.greyscale.greyscale100};
-  border-radius: ${({ theme }) => theme.radii[4]}px;
+  border-radius: ${({ theme }) => theme.radii[5]}px;
   box-shadow: ${({ theme }) => theme.shadows[0]}
     ${({ theme }) => theme.colors.black.black30tra};
   transition: 300ms;
@@ -65,7 +65,7 @@ const Toner = styled.div<{ padding: number, size: string, index: number, swipe: 
   padding: ${({ padding }) => padding && `${padding}px`};
 
   padding-bottom: ${({ swipe }) => swipe && "120px"};
-  padding-top: ${({ swipe }) => swipe && "40px"};
+  /* padding-top: ${({ swipe }) => swipe && "40px"}; */
 
   opacity: ${({ index }) => 1 / index};
   height: ${({ height }) => height ? `${height}px` : '100%'};

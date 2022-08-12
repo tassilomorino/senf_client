@@ -16,6 +16,7 @@ import Search from "../../../assets/icons/Search";
 import Plus from "../../../assets/icons/Plus";
 import TertiaryButton from "../buttons/TertiaryButton";
 import theme from "../../../styles/theme";
+import Button from "../buttons/Button";
 
 const adjustTextarea = (event: Event, rows: number, maxRows?: number) => {
   event.target.setAttribute('rows', null)
@@ -33,6 +34,7 @@ const Input: FunctionComponent<InputProps> = ({
   label,
   note,
   icon,
+  iconClick,
   placeholder,
   required,
   error,
@@ -75,12 +77,13 @@ const Input: FunctionComponent<InputProps> = ({
       <InputField
         id={id}
         focus={isFocused}
-        icon={isSearch}
+        icon={isSearch && !icon}
         onFocusCapture={() => setIsFocused((prevState) => !prevState)}
         onBlurCapture={() => setIsFocused((prevState) => !prevState)}
         onBlur={(event) => onBlur && typeof onBlur === "function" ? onBlur(event) : null}
       >
-        {isSearch && <Icon icon={<Search />} />}
+        {isSearch && !icon && <Icon icon={<Search />} />}
+        {icon && <Box position="relative" marginLeft="8px" width="28px"><Button variant="tertiary" size="small" icon={icon} onClick={iconClick} /></Box>}
         <TextField
           id={name}
           type={isPassword ? "password" : isSearch ? "search" : "text"}

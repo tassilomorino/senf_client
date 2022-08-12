@@ -61,6 +61,8 @@ export {
 export { default as Loader } from "./components/atoms/animations/Loader";
 export { default as MainLoader } from "./components/atoms/animations/MainLoader";
 export { default as Map } from "./components/atoms/map/Map";
+export { default as Geocoder } from "./components/atoms/geocoder/Geocoder";
+
 export { default as RangeSlider } from "./components/atoms/rangeSlider/RangeSlider";
 export { default as Button } from "./components/atoms/buttons/Button";
 export { default as RoundedButton } from "./components/atoms/buttons/RoundedButton";
@@ -95,7 +97,10 @@ export { default as Dialog } from "./components/molecules/dialog/Dialog";
 export { default as SubNavbar } from "./components/molecules/navs/SubNavbar";
 export { default as Tabs } from "./components/molecules/tabs/Tabs";
 
-export { ModalProvider, ModalContext } from "./components/molecules/modalStack/ModalProvider";
+export {
+  ModalProvider,
+  ModalContext,
+} from "./components/molecules/modalStack/ModalProvider";
 export { default as ModalButton } from "./components/molecules/modalStack/ModalButton";
 
 export { default as Accordion } from "./components/molecules/accordion/Accordion";
@@ -103,7 +108,6 @@ export { default as TagSlide } from "./components/molecules/tagSlide/TagSlide";
 export { default as LanguageSelect } from "./components/molecules/languageSelect/LanguageSelect";
 
 export { default as Table } from "./components/organisms/table/Table";
-export { default as ActionModal } from "./components/organisms/actionModals/ActionModal";
 export { default as MenuSidebar } from "./components/organisms/menuSidebar/MenuSidebar";
 export { default as MobileTopBar } from "./components/organisms/mobileTopBar/MobileTopBar";
 export { default as DatePicker } from "./components/organisms/datePicker/DatePicker";

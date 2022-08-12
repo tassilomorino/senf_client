@@ -82,7 +82,7 @@ const Img = styled.img`
 
   @media (min-width: 768px) {
     top: 0px;
-    height: calc(100% - 250px);
+    height: calc(100% - 150px);
     min-height: 800px;
   }
 `;
@@ -140,26 +140,30 @@ const HorizontalScrollSection = ({ id, visiblePartners }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom()
   useEffect(() => {
+    setTimeout(() => {
+      function calcDynamicHeight(ref) {
+        const element = document.getElementById("InfoPage");
+        const positionInfo = element.getBoundingClientRect();
+        const { height } = positionInfo;
+        const { width } = positionInfo;
 
-    const spaceHolder = document.querySelector(`#space-holder${id}`);
-    const horizontal = document.querySelector(`#horizontal${id}`);
-    spaceHolder.style.height = `${calcDynamicHeight(horizontal)}px`;
+        const objectWidth = ref.scrollWidth;
+        return objectWidth - width + height + width * 2; // 150 is the padding (in pixels) desired on the right side of the .cards container. This can be set to whatever your styles dictate
+      }
 
-    function calcDynamicHeight(ref) {
-      const element = document.getElementById("InfoPage");
-      const positionInfo = element.getBoundingClientRect();
-      const { height } = positionInfo;
-      const { width } = positionInfo;
+      const spaceHolder = document.querySelector(`#space-holder${id}`);
+      const horizontal = document.querySelector(`#horizontal${id}`);
+      spaceHolder.style.height = `${calcDynamicHeight(horizontal)}px`;
 
-      const objectWidth = ref.scrollWidth;
-      return objectWidth - width + height + width * 2; // 150 is the padding (in pixels) desired on the right side of the .cards container. This can be set to whatever your styles dictate
-    }
 
-    spaceHolder.style.height = `${calcDynamicHeight(horizontal)}px`;
 
-    // window.addEventListener("resize", () => {
-    //   spaceHolder.style.height = `${calcDynamicHeight(horizontal)}px`;
-    // });
+      spaceHolder.style.height = `${calcDynamicHeight(horizontal)}px`;
+
+      // window.addEventListener("resize", () => {
+      //   spaceHolder.style.height = `${calcDynamicHeight(horizontal)}px`;
+      // });
+    }, 1000);
+
   }, []);
 
   const pages = [

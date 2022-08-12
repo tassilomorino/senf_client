@@ -16,12 +16,11 @@ import {
 import { ThemeProvider } from "styled-components";
 import { auth } from "./firebase";
 
-import "./styles/mapbox-gl.css";
+// import "./styles/mapbox-gl.css";
 import "./styles/App.css";
 import "./styles/AppDesktop.css";
 import "./styles/AppIpad.css";
 import "./styles/mapbox.css";
-import "./styles/Animations.css";
 
 // Redux
 import store from "./redux/store";
@@ -35,10 +34,10 @@ import { getProjects } from "./redux/actions/projectActions";
 import { getScreams } from "./redux/actions/screamActions";
 
 // Pages
-import impressum from "./components/infocomponents/legal/impressum";
-import datenschutz from "./components/infocomponents/legal/datenschutz";
-import agb from "./components/infocomponents/legal/agb";
-import cookieConfigurator from "./components/infocomponents/legal/cookieConfigurator";
+import impressum from "./components/legal/impressum";
+import datenschutz from "./components/legal/datenschutz";
+import agb from "./components/legal/agb";
+import cookieConfigurator from "./components/legal/cookieConfigurator";
 
 import blank from "./pages/Blank";
 

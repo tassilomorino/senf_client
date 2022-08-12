@@ -7,10 +7,10 @@ import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
 import {
   Plus,
   Box,
-  RoundedButton,
-  Dialog,
+  Button,
   Input,
-  ModalContext
+  ModalContext,
+  Geocoder
 } from "senf-atomic-design-system";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -23,17 +23,13 @@ import { clearErrors } from "../../redux/actions/errorsActions";
 
 // Components
 import PostScreamFormContent from "./PostScreamFormContent";
-import PostScreamMap from "./PostScreamMap";
 import PostScreamSelectContainter from "./PostScreamSelectContainter";
-import Weblink from "../Modals/Post_Edit_ModalComponents/Weblink";
-import Contact from "../Modals/Post_Edit_ModalComponents/Contact";
-import InlineDatePickerModal from "../Modals/Post_Edit_ModalComponents/InlineDatePickerModal";
 import PostScreamRules from "./PostScreamRules";
 import Auth from "../../pages/Auth";
 
 const AuthFirst = styled.div`
   position: fixed;
-  top: ${({ top }) => top};
+  top: ${({ isMobile, locationDecided }) => (isMobile && locationDecided ? "27vh" : isMobile && !locationDecided && "100vh")};
   height: 80vh;
   z-index: 99999;
   width: 100%;
@@ -57,17 +53,13 @@ const PostScream = ({
   classes,
   loadingProjects,
   projectsData,
-  mapViewportRef,
   setPostIdeaOpen,
   postIdeaOpen,
   statefulMap,
 }) => {
   const dispatch = useDispatch();
   const { handleModal } = React.useContext(ModalContext) || {};
-
-  const openScream = useSelector((state) => state.UI.openScream);
   const loading = useSelector((state) => state.data.loading);
-  const swipePosition = useSelector((state) => state.UI.swipePosition);
 
   const project = useSelector((state) => state.data.project);
 
@@ -132,19 +124,8 @@ const PostScream = ({
     validateOnBlur: true,
   });
 
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
-  const [topic, setTopic] = useState("");
 
-  const [weblinkOpen, setWeblinkOpen] = useState(false);
-  const [weblink, setWeblink] = useState(null);
-  const [weblinkTitle, setWeblinkTitle] = useState(null);
 
-  const [contactOpen, setContactOpen] = useState(false);
-  const [contact, setContact] = useState(null);
-  const [contactTitle, setContactTitle] = useState(null);
-
-  const [calendarOpen, setCalendarOpen] = useState(false);
   const [selectedDays, setSelectedDays] = useState([]);
   const [selectedUnix, setSelectedUnix] = useState([]);
 
@@ -156,7 +137,6 @@ const PostScream = ({
 
       setProjectSeleted(projectSelected);
 
-      // setAllMainStates({ ...allMainStates, loading: false });
 
       projectsData?.forEach(
         ({ projectRoomId, zoom, centerLat, centerLong, geoData, calendar }) => {
@@ -223,42 +203,8 @@ const PostScream = ({
     });
   };
 
-  const handleCloseWeblink = () => {
-    setWeblinkOpen(false);
 
-    formik.setFieldValue("weblink", null);
-    formik.setFieldValue("weblinkTitle", null);
-  };
-  const handleSaveWeblink = () => {
-    setWeblinkOpen(false);
-  };
 
-  const handleCloseContact = () => {
-    setContactOpen(false);
-    formik.setFieldValue("contact", null);
-    formik.setFieldValue("contactTitle", null);
-  };
-  const handleSaveContact = () => {
-    setContactOpen(false);
-  };
-
-  const handleChangeCalendar = (selectedDays) => {
-    const selectedUnix = [];
-    let i;
-    for (i = 0; i < selectedDays.length; i++) {
-      selectedUnix[i] = selectedDays[i].unix;
-    }
-
-    setSelectedDays(selectedDays);
-    setSelectedUnix(selectedUnix);
-  };
-
-  const handleCloseCalendar = () => {
-    setCalendarOpen(false);
-  };
-  const handleSaveCalendar = () => {
-    setCalendarOpen(false);
-  };
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -271,7 +217,7 @@ const PostScream = ({
       lat: statefulMap.getCenter().lat,
       long: statefulMap.getCenter().lng,
       projectRoomId: projectSelected,
-      Thema: topic,
+      Thema: formik.values.topic,
       weblinkTitle: formik.values.weblinkTitle,
       weblink: formik.values.weblink,
       contactTitle: formik.values.contactTitle,
@@ -375,43 +321,24 @@ const PostScream = ({
 
   return (
     <React.Fragment>
-      {openRules && (
-        <PostScreamRules openRules={openRules} setOpenRules={setOpenRules} />
-      )}
 
-      {/* <Dialog
-        openDialog={true}
-        left="0px"
-        backgroundColor={"rgb(0,0,0,0)"}
-        overflow="hidden scroll"
-        zIndex="999"
-        size="xxl"
-        boxShadow={
-          document.body.clientWidth < 1350 &&
-          document.body.clientWidth > 768 &&
-          "-40px 8px 30px -12px rgba(0, 0, 0, 0.2)"
-        }
-      > */}
-      <Box
+      {/* <Box
         position="fixed"
         margin={document.body.clientWidth > 768 ? "20px" : "10px"}
         zIndex={2}
       >
-        <RoundedButton
+        <Button
+          size="medium"
+          variant="white"
           icon={<Plus transform="rotate(45deg)" />}
           onClick={() => setPostIdeaOpen(false)}
         />
-      </Box>
+      </Box> */}
 
       {!user.authenticated && (
         <AuthFirst
-          top={
-            isMobileCustom && locationDecided
-              ? "27vh"
-              : isMobileCustom && !locationDecided
-                ? "100vh"
-                : null
-          }
+          isMobile={isMobileCustom}
+          locationDecided={locationDecided}
           onClick={() => handleModal("push", <Auth authEditOpen={false} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
           }
         />
@@ -433,53 +360,8 @@ const PostScream = ({
           <div className="PostBackground"></div>
         </div>
       )}
-
-      {weblinkOpen && (
-        <Weblink
-          formik={formik}
-          handleCloseWeblink={handleCloseWeblink}
-          handleSaveWeblink={handleSaveWeblink}
-          weblinkOpen={weblinkOpen}
-          setWeblinkOpen={setWeblinkOpen}
-        />
-      )}
-      {contactOpen && (
-        <Contact
-          formik={formik}
-          handleCloseContact={handleCloseContact}
-          handleSaveContact={handleSaveContact}
-          contactOpen={contactOpen}
-          setContactOpen={setContactOpen}
-        />
-      )}
-      {calendarOpen && (
-        <InlineDatePickerModal
-          calendarOpen={calendarOpen}
-          setCalendarOpen={setCalendarOpen}
-          handleCloseCalendar={handleCloseCalendar}
-          handleSaveCalendar={handleSaveCalendar}
-          handleChangeCalendar={handleChangeCalendar}
-          selectedDays={selectedDays}
-        />
-      )}
-      {/* {viewport && (
-        <PostScreamMap
-          MapHeight={MapHeight}
-          geocode={geocode}
-          _onMarkerDragEnd={_onMarkerDragEnd}
-          geoData={geoData}
-          viewport={viewport}
-          clicked={addressBarClickedState}
-          addressBarClicked={addressBarClicked}
-          locationDecided={locationDecided}
-          onSelected={onSelected}
-          address={address}
-          loadingProjects={loadingProjects}
-        />
-      )} */}
-
-      <Box position="fixed" top="20px" width="400px" zIndex={1} left="80px">
-        <Input type="search" value={address} />
+      <Box position="fixed" top="0px" width={isMobileCustom ? "100vw" : "400px"} zIndex={99999999} left="0px">
+        <Geocoder finalAddress={address} statefulMap={statefulMap} handleSetClose={() => setPostIdeaOpen(false)} />
       </Box>
 
       <PostScreamSelectContainter
@@ -501,28 +383,15 @@ const PostScream = ({
         address={address}
         handleLocationDecided={handleLocationDecided}
         handleDropdown={handleDropdown}
-        weblink={weblink}
-        weblinkTitle={weblinkTitle}
-        contactTitle={contactTitle}
-        contact={contact}
         project={projectSelected}
         selectedDays={selectedDays}
-        topic={topic}
         loading={loading}
         Out={out}
         locationDecided={locationDecided}
         handleSubmit={handleSubmit}
-        body={body}
-        title={title}
-        setTitle={setTitle}
-        setBody={setBody}
-        setWeblinkOpen={setWeblinkOpen}
-        setContactOpen={setContactOpen}
-        setCalendarOpen={setCalendarOpen}
         checkIfCalendar={checkIfCalendar}
         setOpenRules={setOpenRules}
       />
-      {/* </Dialog> */}
     </React.Fragment>
   );
 };

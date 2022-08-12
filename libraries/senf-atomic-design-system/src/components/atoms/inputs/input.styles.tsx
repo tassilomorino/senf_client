@@ -45,15 +45,16 @@ export const Note = styled.p<{ error?: boolean }>`
 export const InputField = styled.div<{ focus: boolean; icon: boolean }>`
   display: flex;
   align-items: center;
-  padding: ${({ theme }) => `${theme.space[4]} ${theme.space[6]}`};
+  /* padding: ${({ theme }) => `${theme.space[4]} ${theme.space[6]}`}; */
+  padding-right: ${({ theme }) => theme.space[4]};
   gap: 0.5rem;
   min-height: 50px;
   box-sizing: border-box;
   color: rgb(51, 51, 51) !important;
-  border-radius: ${({ theme }) => theme.radii[1]}px;
+  border-radius: ${({ theme }) => theme.radii[2]}px;
 
-  -webkit-border-radius: ${({ theme }) => theme.radii[1]}px;
-  -moz-border-radius: ${({ theme }) => theme.radii[1]}px;
+  -webkit-border-radius: ${({ theme }) => theme.radii[2]}px;
+  -moz-border-radius: ${({ theme }) => theme.radii[2]}px;
 
   /* background-color: ${({ theme }) => theme.colors.white.white50tra};
 

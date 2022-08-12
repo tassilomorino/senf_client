@@ -33,6 +33,7 @@ const GlobalStyle = createGlobalStyle`
   overscroll-behavior-y: contain;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
+  color:black;
  
 }
 
@@ -87,6 +88,10 @@ h6,
 p {
   margin: 0;
   padding: 0;
+}
+
+a{
+  color:black;
 }
 
 
@@ -203,10 +208,5 @@ p {
 }
 
 `;
-
-
-
-
-
 
 export default GlobalStyle;

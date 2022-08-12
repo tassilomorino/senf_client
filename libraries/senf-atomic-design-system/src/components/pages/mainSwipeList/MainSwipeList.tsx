@@ -34,8 +34,8 @@ const DragWrapper = styled(animated.div)`
   left: 0px;
   overflow: ${({ overflow }) => overflow || "scroll"};
   background-color: ${({ theme }) => theme.colors.primary.primary100};
-  border-radius: ${({ theme }) => theme.radii[4]}px
-    ${({ theme }) => theme.radii[4]}px 0px 0px;
+  border-radius: ${({ theme }) => theme.radii[5]}px
+    ${({ theme }) => theme.radii[5]}px 0px 0px;
   box-shadow: ${({ theme }) => theme.shadows[0]}
     ${({ theme }) => theme.colors.brown.brown20tra};
 
@@ -102,8 +102,8 @@ export const Header = styled(animated.div)`
   background-color: transparent;
   z-index: 25;
   z-index: 99;
-  border-radius: ${({ theme }) => theme.radii[4]}px
-    ${({ theme }) => theme.radii[4]}px 0px 0px;
+  border-radius: ${({ theme }) => theme.radii[5]}px
+    ${({ theme }) => theme.radii[5]}px 0px 0px;
   overflow: visible;
 `;
 
@@ -174,9 +174,6 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   ideasDataOriginal,
   handleMapBoundsReset,
   mapFilterActive,
-
-  swipedUpState,
-  setSwipedUpState,
 }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom();
@@ -196,15 +193,13 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   //   height: isMobile ? "60px" : "160px",
   // }));
   useEffect(() => {
-    if (swipedUpState) {
-      setSwipedUp(true);
-      setSwipedUpState(false);
+    if (swipedUp) {
       setSpring({
         transform: `translateY(${16}px)`,
         touchAction: "unset",
       });
     }
-  }, [swipedUpState]);
+  }, [swipedUp]);
 
   useEffect(() => {
     if (openScream) {

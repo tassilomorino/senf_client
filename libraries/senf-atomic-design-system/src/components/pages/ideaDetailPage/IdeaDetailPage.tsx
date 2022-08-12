@@ -354,6 +354,8 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                       icon={<Edit />}
                       options={{
                         padding: 0,
+                        swipe: isMobile && true,
+                        height: isMobile && window.innerHeight + 83
                       }}
                     >
                       <EditIdeaPage
@@ -602,7 +604,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
               user={user}
             />
           )}
-          <div style={isMobile ? { height: "600px" } : { height: "200px" }} />
+          <div style={isMobile ? { minHeight: "400px" } : { minHeight: "200px" }} />
         </InnerWrapper>
       </DragWrapper >
     </React.Fragment >

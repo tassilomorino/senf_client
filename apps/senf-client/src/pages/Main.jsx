@@ -54,7 +54,7 @@ import {
   openAccountFunc,
 } from "../redux/actions/accountActions";
 import PostScream from "../components/PostIdea/PostScream";
-import ChangeLocationModal from "../components/Modals/ChangeLocationModal";
+import ChangeLocationModal from "../components/ChangeLocationModal";
 import { usePrevious } from "../hooks/usePrevious";
 import {
   openOrganizationFunc,
@@ -120,6 +120,8 @@ const Main = ({
   statefulMap,
   setStatefulMap,
   mapFilterActive,
+  swipedUp,
+  setSwipedUp,
   order,
   setOrder,
   postIdeaOpen,
@@ -131,8 +133,6 @@ const Main = ({
   const errors = useSelector((state) => state.UI.errors);
   const { handleModal } = React.useContext(ModalContext) || {};
 
-  const [swipedUp, setSwipedUp] = useState(false);
-  const [swipedUpState, setSwipedUpState] = useState(false);
 
   const organization = useSelector((state) => state.data.organization);
 
@@ -144,12 +144,7 @@ const Main = ({
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
   const openAccount = useSelector((state) => state.UI.openAccount);
   const openOrganization = useSelector((state) => state.UI.openOrganization);
-  const openCreateOrganization = useSelector(
-    (state) => state.UI.openCreateOrganization
-  );
-  const openCreateProjectRoom = useSelector(
-    (state) => state.UI.openCreateProjectRoom
-  );
+
   const [openStatisticsOverview, setOpenStatisticsOverview] = useState(false);
   const [openOrganizationsOverview, setOpenOrganizationsOverview] =
     useState(false);
@@ -276,9 +271,9 @@ const Main = ({
     [dispatch]
   );
 
-  const handleDropdown = useCallback((value) => {
-    setDropdown(value);
-  }, []);
+  // const handleDropdown = useCallback((value) => {
+  //   setDropdown(value);
+  // }, []);
   const handledropdownStatus = useCallback(
     (id) => {
       if (dropdownStatus.includes(id)) {
@@ -608,8 +603,6 @@ const Main = ({
                 handleSelectOrganizationTypes={handleSelectOrganizationTypes}
                 swipedUp={swipedUp}
                 setSwipedUp={setSwipedUp}
-                swipedUpState={swipedUpState}
-                setSwipedUpState={setSwipedUpState}
                 openScream={openScream}
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}
@@ -643,6 +636,7 @@ const Main = ({
               }
               handleButtonLike={handleButtonLike}
               handleButtonComment={handleButtonComment}
+              setOpenStatisticsOverview={setOpenStatisticsOverview}
             />
           )}
 
@@ -719,11 +713,11 @@ const Main = ({
 
       {/* {voted && userLikes.length <= 1 && <ThanksForTheVote />} */}
 
-      {changeLocationModalOpen && (
+      {/* {changeLocationModalOpen && (
         <ChangeLocationModal
           setChangeLocationModalOpen={setChangeLocationModalOpen}
         />
-      )}
+      )} */}
 
       {/* <Box position="fixed" right="100px" bottom="10px">
         <Button text="Stadt auswählen" onClick={setChangeLocationModalOpen} />

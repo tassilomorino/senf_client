@@ -25,7 +25,7 @@ import useProjectroomsMarkers from "./hooks/useProjectroomsMarkers";
 import useClickMarkers from "./hooks/useClickMarkers";
 import usePolygon from "./hooks/usePolygon";
 import useIdeasMarkers from "./hooks/useIdeasMarkers";
-import usePin from "./hooks/usePin";
+// import usePin from "./hooks/usePin";
 import useFly from "./hooks/useFly";
 // import useDraw from "./hooks/useDraw";
 
@@ -36,9 +36,20 @@ import MapFilter from "./MapFilter";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 import Icon from "../icons/Icon";
 import Pin from "../../../assets/icons/Pin";
+import Loader from "../animations/Loader";
+import AddIdeaPin from "./hooks/AddIdeaPin"
+import IdeaPin from "../../../assets/icons/IdeaPin";
+import theme from "../../../styles/theme";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoidG1vcmlubyIsImEiOiJjazBzZHZjeWQwMWoyM2NtejlzcnMxd3FtIn0.I_Xcc1aJiN7hToGGjNy7ow";
+
+const MarkerPin = styled.div`
+  transform: translateY(-100%);
+  display: ${({ visible }) => (visible ? "block" : "none")};
+  pointer-events: none;
+
+`;
 
 const MapContainer = styled.div<MapProps>`
   position: absolute;
@@ -144,6 +155,15 @@ const MapContainer = styled.div<MapProps>`
     border-radius: 8px !important;
     ${(props) => LayerWhiteFirstDefault}
   }
+/* 
+  .marker {
+  background-image: url("https://media.giphy.com/media/Bfa45K0r6cCIw/giphy.gif");
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+} */
 `;
 
 const PinComponent = styled.img`
@@ -184,6 +204,7 @@ const Map: FC<MapProps> = ({
   const isMobile = isMobileCustom();
 
   const [mapMoved, setMapMoved] = useState(false);
+  const [container, setContainer] = useState(null);
 
   const initialFly = useInitialFly();
   const navigationControl = useNavigationControl();
@@ -199,7 +220,9 @@ const Map: FC<MapProps> = ({
 
   const [setIdeasMarkersLayer, setIdeasMarkersData] = useIdeasMarkers();
   const [setPolygonLayer, setPolygonData] = usePolygon();
-  const [setPinLayer, setPinData] = usePin();
+  // const [setPinLayer, setPinData] = usePin();
+
+  const [ideaMarkerColor, setIdeaMarkerColor] = useState(null);
 
   const { lng, lat, zoom, subscribeMap } = useCoordinates(
     initialMapViewport.longitude,
@@ -221,18 +244,21 @@ const Map: FC<MapProps> = ({
       pitch: initialMapViewport.pitch,
     });
 
+
     setStatefulMap(map);
     subscribeMap(map);
     navigationControl(map);
 
-    hover(map);
+    if (!isMobile) {
+      hover(map);
+    }
     clickMarkers(map, handleClickIdeaMarker, handleClickProjectroomMarker);
     // geocoder(map);
     // geolocateControl(map);
     setIdeasMarkersLayer(map);
     setProjectroomsMarkersLayer(map);
     setPolygonLayer(map);
-    setPinLayer(map);
+    // setPinLayer(map);
     setInitialMapBounds(map.getBounds().toArray());
 
     if (mapType === "draw") {
@@ -646,7 +672,17 @@ const Map: FC<MapProps> = ({
 
   useEffect(() => {
     if (ideaData && ideaData.long && ideaData.lat) {
-      setPinData([{ ideaData }]);
+      const mapboxMarker = new mapboxgl.Marker({ element: container })
+      mapboxMarker
+        .setLngLat([ideaData.long, ideaData.lat])
+        .addTo(statefulMap);
+
+      setIdeaMarkerColor(ideaData.color);
+
+      if (statefulMap.getLayer("ideas")) {
+        statefulMap.setFilter('ideas', ['!=', 'screamId', ideaData.screamId]);
+      }
+      // setPinData([{ ideaData }]);
       setTimeout(() => {
         statefulMap.flyTo({
           center: [ideaData.long, ideaData.lat],
@@ -661,7 +697,11 @@ const Map: FC<MapProps> = ({
         // ]);
       }, 300);
     } else {
-      setPinData(null);
+      // if (marker) {
+      //   marker.remove();
+
+      // }
+      // setPinData(null);
     }
   }, [ideaData]);
 
@@ -728,14 +768,16 @@ const Map: FC<MapProps> = ({
       )}
       {postIdeaOpen && (
         <Box
-          width={isMobile ? "100%" : "calc(100vw + 460px)"}
+          width={isMobile ? "100vw" : "calc(100vw + 460px)"}
+          position="fixed"
           height="100vh"
+          top="0"
           justifyContent="center"
           alignItems="center"
-          zIndex={1}
+          zIndex={99}
           pointerEvents="none"
         >
-          <Icon icon={<Pin transform="scale(3)" />} />{" "}
+          <IdeaPin color={theme.colors.primary.primary100} transform="scale(1.5)" />
         </Box>
       )}
 
@@ -784,7 +826,12 @@ const Map: FC<MapProps> = ({
       </Box> */}
 
         {children}
+
+
       </MapContainer>
+      <MarkerPin visible={ideaData} ref={setContainer}><IdeaPin transform="translateY(-12px)" color={ideaMarkerColor} /></MarkerPin>
+
+
     </React.Fragment>
   );
 };
