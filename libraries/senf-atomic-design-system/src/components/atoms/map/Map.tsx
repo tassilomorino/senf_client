@@ -25,7 +25,7 @@ import useProjectroomsMarkers from "./hooks/useProjectroomsMarkers";
 import useClickMarkers from "./hooks/useClickMarkers";
 import usePolygon from "./hooks/usePolygon";
 import useIdeasMarkers from "./hooks/useIdeasMarkers";
-import usePin from "./hooks/usePin";
+// import usePin from "./hooks/usePin";
 import useFly from "./hooks/useFly";
 // import useDraw from "./hooks/useDraw";
 
@@ -219,7 +219,7 @@ const Map: FC<MapProps> = ({
 
   const [setIdeasMarkersLayer, setIdeasMarkersData] = useIdeasMarkers();
   const [setPolygonLayer, setPolygonData] = usePolygon();
-  const [setPinLayer, setPinData] = usePin();
+  // const [setPinLayer, setPinData] = usePin();
 
   const [ideaMarkerColor, setIdeaMarkerColor] = useState(null);
 
@@ -248,14 +248,16 @@ const Map: FC<MapProps> = ({
     subscribeMap(map);
     navigationControl(map);
 
-    hover(map);
+    if (!isMobile) {
+      hover(map);
+    }
     clickMarkers(map, handleClickIdeaMarker, handleClickProjectroomMarker);
     // geocoder(map);
     // geolocateControl(map);
     setIdeasMarkersLayer(map);
     setProjectroomsMarkersLayer(map);
     setPolygonLayer(map);
-    setPinLayer(map);
+    // setPinLayer(map);
     setInitialMapBounds(map.getBounds().toArray());
 
     if (mapType === "draw") {
@@ -676,17 +678,10 @@ const Map: FC<MapProps> = ({
 
       setIdeaMarkerColor(ideaData.color);
 
-      statefulMap.setFilter('ideas', ['!=', 'screamId', ideaData.screamId]);
+      if (IdeasGeoJson) {
+        statefulMap.setFilter('ideas', ['!=', 'screamId', ideaData.screamId]);
 
-
-
-
-      // const el = document.createElement('div');
-      // el.className = 'marker';
-      // el.append(<Loader />)
-      // el.innerHTML += `<div class="marker-inner"><Loader/></div>`;
-
-      // new mapboxgl.Marker(el).setLngLat([ideaData.long, ideaData.lat]).addTo(statefulMap);
+      }
       // setPinData([{ ideaData }]);
       setTimeout(() => {
         statefulMap.flyTo({
@@ -706,7 +701,7 @@ const Map: FC<MapProps> = ({
       //   marker.remove();
 
       // }
-      setPinData(null);
+      // setPinData(null);
     }
   }, [ideaData]);
 
