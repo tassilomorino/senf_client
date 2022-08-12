@@ -39,6 +39,7 @@ import Pin from "../../../assets/icons/Pin";
 import Loader from "../animations/Loader";
 import AddIdeaPin from "./hooks/AddIdeaPin"
 import IdeaPin from "../../../assets/icons/IdeaPin";
+import theme from "../../../styles/theme";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoidG1vcmlubyIsImEiOiJjazBzZHZjeWQwMWoyM2NtejlzcnMxd3FtIn0.I_Xcc1aJiN7hToGGjNy7ow";
@@ -767,14 +768,16 @@ const Map: FC<MapProps> = ({
       )}
       {postIdeaOpen && (
         <Box
-          width={isMobile ? "100%" : "calc(100vw + 460px)"}
+          width={isMobile ? "100vw" : "calc(100vw + 460px)"}
+          position="fixed"
           height="100vh"
+          top="0"
           justifyContent="center"
           alignItems="center"
-          zIndex={1}
+          zIndex={99}
           pointerEvents="none"
         >
-          <Icon icon={<Pin transform="scale(3)" />} />{" "}
+          <IdeaPin color={theme.colors.primary.primary100} transform="scale(1.5)" />
         </Box>
       )}
 

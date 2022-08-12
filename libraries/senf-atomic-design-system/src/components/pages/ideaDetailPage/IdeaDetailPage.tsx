@@ -355,6 +355,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                       options={{
                         padding: 0,
                         swipe: isMobile && true,
+                        height: isMobile && window.innerHeight + 83
                       }}
                     >
                       <EditIdeaPage

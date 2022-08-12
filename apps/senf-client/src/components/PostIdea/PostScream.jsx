@@ -10,7 +10,7 @@ import {
   Button,
   Input,
   ModalContext,
-  // Geocoder
+  Geocoder
 } from "senf-atomic-design-system";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -26,7 +26,6 @@ import PostScreamFormContent from "./PostScreamFormContent";
 import PostScreamSelectContainter from "./PostScreamSelectContainter";
 import PostScreamRules from "./PostScreamRules";
 import Auth from "../../pages/Auth";
-import Geocoder from "../../components/atoms/map/Geocoder";
 
 const AuthFirst = styled.div`
   position: fixed;
@@ -323,7 +322,7 @@ const PostScream = ({
   return (
     <React.Fragment>
 
-      <Box
+      {/* <Box
         position="fixed"
         margin={document.body.clientWidth > 768 ? "20px" : "10px"}
         zIndex={2}
@@ -334,7 +333,7 @@ const PostScream = ({
           icon={<Plus transform="rotate(45deg)" />}
           onClick={() => setPostIdeaOpen(false)}
         />
-      </Box>
+      </Box> */}
 
       {!user.authenticated && (
         <AuthFirst
@@ -361,8 +360,8 @@ const PostScream = ({
           <div className="PostBackground"></div>
         </div>
       )}
-      <Box position="fixed" top="20px" width="400px" zIndex={1} left="80px">
-        <Geocoder address={address} />
+      <Box position="fixed" top="0px" width={isMobileCustom ? "100vw" : "400px"} zIndex={99999999} left="0px">
+        <Geocoder finalAddress={address} statefulMap={statefulMap} handleSetClose={() => setPostIdeaOpen(false)} />
       </Box>
 
       <PostScreamSelectContainter

@@ -30,6 +30,7 @@ import Geocoder from "../../atoms/geocoder/Geocoder";
 import MapTileSmall from "../../../assets/other/mapTileSmall.png";
 import ModalButton from "../../molecules/modalStack/ModalButton";
 import { ModalContext } from "../../molecules/modalStack/ModalProvider";
+import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 
 const Background = styled.div<EditIdeaProps>`
  width:100%;
@@ -74,6 +75,7 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
   handle,
 }) => {
   const { t } = useTranslation();
+  const isMobile = isMobileCustom()
   const { handleModal } = React.useContext(ModalContext) || {};
 
   const [enableCalendar, setEnableCalendar] = React.useState(false);
@@ -450,7 +452,7 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
 
       <Box
         position="absolute"
-        bottom="0px"
+        bottom={isMobile ? "100px" : "0px"}
         width="calc(100% - 20px)"
         gap="8px"
         margin="10px"

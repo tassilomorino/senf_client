@@ -20,8 +20,8 @@ const DragWrapper = styled(animated.div)`
 
   overflow: ${({ overflow }) => overflow || "scroll"};
   background-color: ${({ backgroundColor }) => backgroundColor || "white"};
-  border-radius: ${({ theme }) => theme.radii[4]}px
-    ${({ theme }) => theme.radii[4]}px 0px 0px;
+  border-radius: ${({ theme }) => theme.radii[5]}px
+    ${({ theme }) => theme.radii[5]}px 0px 0px;
   box-shadow: ${({ theme }) => theme.shadows[0]}
     ${({ theme }) => theme.colors.brown.brown20tra};
 
@@ -35,7 +35,7 @@ const DragWrapper = styled(animated.div)`
     max-width: 400px;
     max-height: calc(100vh - 40px);
     height: auto;
-    border-radius: ${({ theme }) => theme.radii[4]}px;
+    border-radius: ${({ theme }) => theme.radii[5]}px;
     animation: none;
   }
 `;

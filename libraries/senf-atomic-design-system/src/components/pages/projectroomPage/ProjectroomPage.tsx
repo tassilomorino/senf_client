@@ -130,8 +130,8 @@ export const Header = styled(animated.div)`
   background-color: transparent;
   z-index: 25;
   z-index: 99;
-  border-radius: ${({ theme }) => theme.radii[4]}px
-    ${({ theme }) => theme.radii[4]}px 0px 0px;
+  border-radius: ${({ theme }) => theme.radii[5]}px
+    ${({ theme }) => theme.radii[5]}px 0px 0px;
   overflow: visible;
 `;
 
