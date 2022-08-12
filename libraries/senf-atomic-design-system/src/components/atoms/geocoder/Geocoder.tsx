@@ -1,20 +1,22 @@
 /** @format */
 
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import mapboxgl from "mapbox-gl";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import { GeocoderProps } from "./Geocoder.types";
 import "mapbox-gl/dist/mapbox-gl.css";
+import Input from "../inputs/Input";
 
 const Wrapper = styled.div<GeocoderProps>`
+margin-left: 1000px;
   width: 100%;
 
   .mapboxgl-ctrl-geocoder--input {
     position: relative;
     display: flex;
     align-items: center;
-    width: calc(100% - 2.5rem);
+    width: 100%;
     gap: 0.5rem;
     padding: 0 0.6rem 0 1.9rem;
     font-size: ${({ theme }) => theme.fontSizes[2]}rem;
@@ -26,8 +28,8 @@ const Wrapper = styled.div<GeocoderProps>`
     -moz-border-radius: ${({ theme }) => theme.radii[1]}px;
     border: 0;
     ${({ focus }) =>
-      focus &&
-      css`
+    focus &&
+    css`
         outline: 3px solid ${({ theme }) => theme.colors.primary.primary120} !important;
         outline-offset: -3px;
       `}
@@ -69,7 +71,10 @@ const Wrapper = styled.div<GeocoderProps>`
   }
 `;
 
-const Geocoder: FC<GeocoderProps> = ({ placeholder }) => {
+const Geocoder: FC<GeocoderProps> = ({ placeholder, address }) => {
+  const [statefulGeocoder, setStatefulGeocoder] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+
   const queryParams = {
     bbox: [6.7, 50.8, 7.2, 51],
   };
@@ -81,7 +86,7 @@ const Geocoder: FC<GeocoderProps> = ({ placeholder }) => {
     const geocoder = new MapboxGeocoder({
       accessToken: mapboxgl.accessToken,
       // types: "country,region,place,postcode,locality,neighborhood",
-      placeholder: placeholder || "Suche nach Orten",
+      placeholder: address || "Suche nach Orten",
       queryParams,
       limit: 3,
       hideOnSelect: true,
@@ -89,33 +94,61 @@ const Geocoder: FC<GeocoderProps> = ({ placeholder }) => {
       transitionDuration: 1000,
       bbox: [6.7, 50.8, 7.2, 51],
     });
-
-    if (geocoderRef.current) {
-      geocoder.addTo(geocoderRef.current);
-    }
-    // Get the geocoder results container.
-    const results = document.getElementById("result");
-
-    // Add geocoder result to container.
-    geocoder.on("result", (e) => {
-      results.innerText = JSON.stringify(e.result, null, 2);
-    });
-
-    // Clear results container when search is cleared.
-    geocoder.on("clear", () => {
-      results.innerText = "";
-    });
-
-    return () => {
-      // is this cleanup correct ?
-
-      geocoderRef.current = null;
-    };
+    setStatefulGeocoder(geocoder)
   }, []);
+
+  useEffect(() => {
+    if (statefulGeocoder) {
+      if (geocoderRef.current) {
+        statefulGeocoder.addTo(geocoderRef.current);
+      }
+      // Get the geocoder results container.
+      const results = document.getElementById("result");
+
+      // Add geocoder result to container.
+      statefulGeocoder.on("result", (e) => {
+        // console.log(e.result.center)
+        results.innerText = JSON.stringify(e.result.place_name, null, 2);
+        const long = e.result.center[0]
+        const lat = e.result.center[1]
+
+      });
+
+
+
+      // Clear results container when search is cleared.
+      // geocoder.on("clear", () => {
+      //   results.innerText = "";
+      // });
+
+      return () => {
+        geocoderRef.current = null;
+      };
+    }
+  }, [statefulGeocoder])
+
+
+  useEffect(() => {
+
+    if (address && statefulGeocoder) {
+      setSearchTerm(address)
+
+      console.log(statefulGeocoder)
+
+      statefulGeocoder.clear();
+      setTimeout(() => {
+        statefulGeocoder.placeholder = "hi"
+
+      }, 1000);
+    }
+  }, [address, statefulGeocoder])
+
+
 
   return (
     <Wrapper>
-      <div ref={geocoderRef}></div>
+      <Input type="search" value={searchTerm} setSearchTerm={setSearchTerm} />
+      <div value="hii" ref={geocoderRef}></div>
       <pre id="result"></pre>
     </Wrapper>
   );

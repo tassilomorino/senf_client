@@ -35,10 +35,10 @@ import { getProjects } from "./redux/actions/projectActions";
 import { getScreams } from "./redux/actions/screamActions";
 
 // Pages
-import impressum from "./components/infocomponents/legal/impressum";
-import datenschutz from "./components/infocomponents/legal/datenschutz";
-import agb from "./components/infocomponents/legal/agb";
-import cookieConfigurator from "./components/infocomponents/legal/cookieConfigurator";
+import impressum from "./components/legal/impressum";
+import datenschutz from "./components/legal/datenschutz";
+import agb from "./components/legal/agb";
+import cookieConfigurator from "./components/legal/cookieConfigurator";
 
 import blank from "./pages/Blank";
 

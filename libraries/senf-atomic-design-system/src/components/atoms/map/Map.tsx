@@ -36,9 +36,19 @@ import MapFilter from "./MapFilter";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 import Icon from "../icons/Icon";
 import Pin from "../../../assets/icons/Pin";
+import Loader from "../animations/Loader";
+import AddIdeaPin from "./hooks/AddIdeaPin"
+import IdeaPin from "../../../assets/icons/IdeaPin";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoidG1vcmlubyIsImEiOiJjazBzZHZjeWQwMWoyM2NtejlzcnMxd3FtIn0.I_Xcc1aJiN7hToGGjNy7ow";
+
+const MarkerPin = styled.div`
+  transform: translateY(-100%);
+  display: ${({ visible }) => (visible ? "block" : "none")};
+  pointer-events: none;
+
+`;
 
 const MapContainer = styled.div<MapProps>`
   position: absolute;
@@ -144,6 +154,15 @@ const MapContainer = styled.div<MapProps>`
     border-radius: 8px !important;
     ${(props) => LayerWhiteFirstDefault}
   }
+/* 
+  .marker {
+  background-image: url("https://media.giphy.com/media/Bfa45K0r6cCIw/giphy.gif");
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+} */
 `;
 
 const PinComponent = styled.img`
@@ -184,6 +203,7 @@ const Map: FC<MapProps> = ({
   const isMobile = isMobileCustom();
 
   const [mapMoved, setMapMoved] = useState(false);
+  const [container, setContainer] = useState(null);
 
   const initialFly = useInitialFly();
   const navigationControl = useNavigationControl();
@@ -200,6 +220,8 @@ const Map: FC<MapProps> = ({
   const [setIdeasMarkersLayer, setIdeasMarkersData] = useIdeasMarkers();
   const [setPolygonLayer, setPolygonData] = usePolygon();
   const [setPinLayer, setPinData] = usePin();
+
+  const [ideaMarkerColor, setIdeaMarkerColor] = useState(null);
 
   const { lng, lat, zoom, subscribeMap } = useCoordinates(
     initialMapViewport.longitude,
@@ -220,6 +242,7 @@ const Map: FC<MapProps> = ({
       zoom,
       pitch: initialMapViewport.pitch,
     });
+
 
     setStatefulMap(map);
     subscribeMap(map);
@@ -646,7 +669,25 @@ const Map: FC<MapProps> = ({
 
   useEffect(() => {
     if (ideaData && ideaData.long && ideaData.lat) {
-      setPinData([{ ideaData }]);
+      const mapboxMarker = new mapboxgl.Marker({ element: container })
+      mapboxMarker
+        .setLngLat([ideaData.long, ideaData.lat])
+        .addTo(statefulMap);
+
+      setIdeaMarkerColor(ideaData.color);
+
+      statefulMap.setFilter('ideas', ['!=', 'screamId', ideaData.screamId]);
+
+
+
+
+      // const el = document.createElement('div');
+      // el.className = 'marker';
+      // el.append(<Loader />)
+      // el.innerHTML += `<div class="marker-inner"><Loader/></div>`;
+
+      // new mapboxgl.Marker(el).setLngLat([ideaData.long, ideaData.lat]).addTo(statefulMap);
+      // setPinData([{ ideaData }]);
       setTimeout(() => {
         statefulMap.flyTo({
           center: [ideaData.long, ideaData.lat],
@@ -661,6 +702,10 @@ const Map: FC<MapProps> = ({
         // ]);
       }, 300);
     } else {
+      // if (marker) {
+      //   marker.remove();
+
+      // }
       setPinData(null);
     }
   }, [ideaData]);
@@ -784,7 +829,12 @@ const Map: FC<MapProps> = ({
       </Box> */}
 
         {children}
+
+
       </MapContainer>
+      <MarkerPin visible={ideaData} ref={setContainer}><IdeaPin transform="translateY(-12px)" color={ideaMarkerColor} /></MarkerPin>
+
+
     </React.Fragment>
   );
 };

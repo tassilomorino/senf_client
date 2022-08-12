@@ -5,8 +5,8 @@ import styled from "styled-components";
 import axios from "axios";
 // import { setViewport } from "../../util/helpers-map-animations";
 import { Input, Button } from "senf-atomic-design-system";
-import MainModal from "../atoms/Layout/MainModal";
-import Geolocate from "../../images/icons/geolocate.png";
+import MainModal from "./atoms/Layout/MainModal";
+import Geolocate from "../images/icons/geolocate.png";
 
 const URL = "https://api.openweathermap.org/data/2.5/weather";
 const API_KEY = "f33a484cf794d08d0148764789aaba32";

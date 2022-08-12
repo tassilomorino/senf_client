@@ -174,9 +174,6 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   ideasDataOriginal,
   handleMapBoundsReset,
   mapFilterActive,
-
-  swipedUpState,
-  setSwipedUpState,
 }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom();
@@ -196,15 +193,13 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   //   height: isMobile ? "60px" : "160px",
   // }));
   useEffect(() => {
-    if (swipedUpState) {
-      setSwipedUp(true);
-      setSwipedUpState(false);
+    if (swipedUp) {
       setSpring({
         transform: `translateY(${16}px)`,
         touchAction: "unset",
       });
     }
-  }, [swipedUpState]);
+  }, [swipedUp]);
 
   useEffect(() => {
     if (openScream) {

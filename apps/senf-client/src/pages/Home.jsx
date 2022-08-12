@@ -31,7 +31,7 @@ const Home = () => {
   );
   const [mapFilterActive, setMapFilterActive] = useState(false);
 
-  const [swipedUpState, setSwipedUpState] = useState(false);
+  const [swipedUp, setSwipedUp] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [order, setOrder] = useState(1);
   const openScream = useSelector((state) => state.UI.openScream);
@@ -64,13 +64,13 @@ const Home = () => {
       longitude3: bounds[1][0],
     };
     dispatch(setMapBounds(boundsNew));
-    setSwipedUpState(true);
     dispatch(closeScream());
     window.scrollTo({
       top: 0,
       left: 0,
       behavior: "smooth",
     });
+    setSwipedUp(true);
     setMapFilterActive(true);
   };
 
@@ -178,6 +178,8 @@ const Home = () => {
           handleSetInitialMapBoundsAndViewport={
             handleSetInitialMapBoundsAndViewport
           }
+          swipedUp={swipedUp}
+          setSwipedUp={setSwipedUp}
         />
       </React.Suspense>
 
