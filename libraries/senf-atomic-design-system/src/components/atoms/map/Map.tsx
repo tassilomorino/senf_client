@@ -678,9 +678,8 @@ const Map: FC<MapProps> = ({
 
       setIdeaMarkerColor(ideaData.color);
 
-      if (IdeasGeoJson) {
+      if (statefulMap.getLayer("ideas")) {
         statefulMap.setFilter('ideas', ['!=', 'screamId', ideaData.screamId]);
-
       }
       // setPinData([{ ideaData }]);
       setTimeout(() => {

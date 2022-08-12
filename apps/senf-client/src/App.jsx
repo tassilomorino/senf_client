@@ -16,12 +16,11 @@ import {
 import { ThemeProvider } from "styled-components";
 import { auth } from "./firebase";
 
-import "./styles/mapbox-gl.css";
+// import "./styles/mapbox-gl.css";
 import "./styles/App.css";
 import "./styles/AppDesktop.css";
 import "./styles/AppIpad.css";
 import "./styles/mapbox.css";
-import "./styles/Animations.css";
 
 // Redux
 import store from "./redux/store";
