@@ -20,7 +20,7 @@ import { auth } from "./firebase";
 import "./styles/App.css";
 import "./styles/AppDesktop.css";
 import "./styles/AppIpad.css";
-import "./styles/mapbox.css";
+// import "./styles/mapbox.css";
 
 // Redux
 import store from "./redux/store";
