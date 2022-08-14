@@ -3,7 +3,7 @@
 import React, { FC, useEffect, useRef, useState, useMemo } from "react";
 import styled from "styled-components";
 import mapboxgl from "mapbox-gl";
-import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
+// import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 
@@ -16,10 +16,9 @@ import { addProjectroomMarkers } from "./utils/addProjectroomMarkers";
 
 import useInitialFly from "./hooks/useInitialFly";
 import useNavigationControl from "./hooks/useNavigationControl";
-import useGeolocateControl from "./hooks/useGeolocateControl";
 import useHover from "./hooks/useHover";
 
-import useGeocoder from "./hooks/useGeocoder";
+// import useGeocoder from "./hooks/useGeocoder";
 import useCoordinates from "./hooks/useCoordinates";
 import useProjectroomsMarkers from "./hooks/useProjectroomsMarkers";
 import useClickMarkers from "./hooks/useClickMarkers";
@@ -164,6 +163,60 @@ const MapContainer = styled.div<MapProps>`
   border-radius: 50%;
   cursor: pointer;
 } */
+.mapboxgl-ctrl-geolocate{
+  display:none;
+
+}
+
+.mapboxgl-ctrl-group{
+  display:none;
+   @media (min-width: 768px) {
+    position:fixed;
+    display: block;
+    right: 10px;
+    bottom:10px;
+    z-index:1;
+    width:36px;
+    border-radius: ${({ theme }) => theme.radii[1]}px;
+    ${(props) => LayerWhiteFirstDefault}
+   }
+}
+
+
+.mapboxgl-ctrl-zoom-in:before {
+  content : "";
+  position: absolute;
+  left    : 6px;
+  top  : 28px;
+  height  : 2px;
+  width: 20px;  /* or 100px */
+  border-bottom:2px solid ${({ theme }) => theme.colors.greyscale.greyscale20tra};
+}
+
+
+
+.mapboxgl-ctrl-zoom-out:before {
+  content : "";
+  position: absolute;
+  left    : 6px;
+  top  : 55px;
+  height  : 2px;
+  width: 20px;  /* or 100px */
+  border-bottom:2px solid ${({ theme }) => theme.colors.greyscale.greyscale20tra};
+}
+
+.mapboxgl-ctrl-zoom-in,
+.mapboxgl-ctrl-zoom-out,
+.mapboxgl-ctrl-compass{
+  background-color:transparent;
+  border:0 ;
+  width:32px;
+  border-radius: ${({ theme }) => theme.radii[1]}px;
+}
+.mapboxgl-ctrl-zoom-out{
+  border-radius:0px;
+}
+
 `;
 
 const PinComponent = styled.img`
@@ -208,12 +261,13 @@ const Map: FC<MapProps> = ({
 
   const initialFly = useInitialFly();
   const navigationControl = useNavigationControl();
-  const geolocateControl = useGeolocateControl();
+
+  const [geolocateTrigger, setGeolocateTrigger] = useState(false);
 
   const hover = useHover();
   const clickMarkers = useClickMarkers();
 
-  const geocoder = useGeocoder();
+  // const geocoder = useGeocoder();
   // const [statefulMap, setMap] = useState(null);
   const [setProjectroomsMarkersLayer, setProjectroomsMarkersData] =
     useProjectroomsMarkers();
@@ -599,6 +653,7 @@ const Map: FC<MapProps> = ({
     setTimeout(() => {
       map.on("zoomend", () => {
         setMapMoved(true);
+
       });
     }, 5000);
 
@@ -640,6 +695,7 @@ const Map: FC<MapProps> = ({
   useEffect(() => {
     if (statefulMap && !openIdea && !openProjectRoom) {
       initialFly(statefulMap);
+      setGeolocateTrigger(true)
     }
   }, [statefulMap, openProjectRoom]);
 
@@ -753,6 +809,7 @@ const Map: FC<MapProps> = ({
   //     });
   //   });
   // };
+
 
   return (
     <React.Fragment>

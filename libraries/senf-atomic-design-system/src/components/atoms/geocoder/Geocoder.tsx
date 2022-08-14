@@ -1,7 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import MapboxClient from "mapbox";
-import { WebMercatorViewport } from "viewport-mercator-project";
 import styled from "styled-components";
 import Input from "../inputs/Input";
 import { GeocoderProps } from "./Geocoder.types";
@@ -10,6 +8,9 @@ import Box from "../box/Box";
 import Icon from "../icons/Icon";
 import { Arrow, Location } from "../../../assets/icons";
 import Typography from "../typography/Typography";
+import IdeaPin from "../../../assets/icons/IdeaPin";
+import Locate from "../../../assets/icons/Locate";
+import { geolocateControl } from "../map/hooks/useGeolocateControl";
 
 const ResultsContainer = styled.div`
 height:100vh;
@@ -19,6 +20,11 @@ top:0;
 left:0;
 background-color:${({ theme }) => theme.colors.greyscale.greyscale10};
 z-index:998;
+
+@media (min-width: 768px) {
+  width:400px;
+}
+
 
 `
 const Result = styled.div`
@@ -50,7 +56,16 @@ const Geocoder: FC<GeocoderProps> = ({ statefulMap, placeholder, finalAddress, h
     setSearchTerm(queryString)
 
     if (queryString.length >= 3) {
-      geocoder.geocodeForward(queryString, { limit: 3 }).then((res) => {
+      geocoder.geocodeForward(queryString, {
+        limit: 5,
+        autocomplete: true,
+        fuzzyMatch: true,
+        language: "de",
+        bbox: [6.7, 50.8, 7.2, 51],
+        types: "country,region,postcode,district,place,locality,neighborhood,address,poi"
+        // proximity: Bias the response to favor results that are closer to this location. Provided as two comma-separated coordinates in longitude,latitude order, or the string ip to bias based on reverse IP lookup.
+        // https://docs.mapbox.com/api/search/geocoding/
+      }).then((res) => {
         setShowResults(true)
         setResults(res.entity.features)
 
@@ -80,6 +95,18 @@ const Geocoder: FC<GeocoderProps> = ({ statefulMap, placeholder, finalAddress, h
 
   };
 
+  const handleGeolocate = () => {
+    geolocateControl(statefulMap)
+
+    setTimeout(() => {
+      setShowResults(false)
+    }, 200);
+
+
+  }
+
+
+
   return (
     <React.Fragment>
       <Box zIndex={999} margin="16px" width="100%">
@@ -98,19 +125,18 @@ const Geocoder: FC<GeocoderProps> = ({ statefulMap, placeholder, finalAddress, h
           // onChange={(event) => onChange(event?.target?.value)}
           setSearchTerm={onChange}
           // onBlur={() => setShowResults(false)}
-          onFocus={() => setShowResults(true)}
+          onClick={() => setShowResults(true)}
           searchTerm={searchTerm}
           value={searchTerm}
         />
       </Box>
 
 
-      {showResults && !!results?.length && (
+      {showResults && (
         <ResultsContainer>
           <div style={{ height: "80px" }} />
-          {results.map((item, index) => (
+          {results?.map((item, index) => (
             <React.Fragment>
-
               <Result
                 key={index}
                 onClick={() => onSelected(item)}
@@ -132,6 +158,33 @@ const Geocoder: FC<GeocoderProps> = ({ statefulMap, placeholder, finalAddress, h
             </React.Fragment>
 
           ))}
+
+          <Result
+            onClick={handleGeolocate}
+          >
+            <Box>
+              <Box width="46px" justifyContent="center" alignItems="center"> <Icon icon={<Locate />} /></Box>
+              <Box flexDirection="column" width="calc(100%  - 70px)" >
+                <Box flexDirection="column" marginBlock="20px">
+                  <Typography variant="bodyBg" fontWeight={600}> Aktuellen Standort verwenden</Typography>
+                </Box>
+                <Divider />
+              </Box>
+            </Box>
+          </Result>
+
+          <Result
+            onClick={() => setShowResults(false)}
+          >
+            <Box>
+              <Box width="46px" justifyContent="center" alignItems="center"> <IdeaPin transform="scale(0.7)" /></Box>
+              <Box flexDirection="column" width="calc(100%  - 70px)" >
+                <Box flexDirection="column" marginBlock="20px">
+                  <Typography variant="bodyBg" fontWeight={600}> Standort auf  der Karte festlegen</Typography>
+                </Box>
+              </Box>
+            </Box>
+          </Result>
         </ResultsContainer>
       )
       }

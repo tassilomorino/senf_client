@@ -95,6 +95,7 @@ const Input: FunctionComponent<InputProps> = ({
           //   setValue(e.currentTarget.value);
           //   receiveValue(e.currentTarget.value);
           // }}
+          onClick={onClick}
           onChange={handleChange}
           ref={inputRef}
           as={type === "textarea" ? "textarea" : "input"}
