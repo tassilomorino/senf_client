@@ -83,7 +83,7 @@ const Input: FunctionComponent<InputProps> = ({
         onBlur={(event) => onBlur && typeof onBlur === "function" ? onBlur(event) : null}
       >
         {isSearch && !icon && <Icon icon={<Search />} />}
-        {icon && <Box position="relative" marginLeft="8px" width="28px"><Button variant="tertiary" size="small" icon={icon} onClick={iconClick} /></Box>}
+        {icon && <Box position="relative" marginLeft="-7px" width="28px"><Button variant="tertiary" size="small" icon={icon} onClick={iconClick} /></Box>}
         <TextField
           id={name}
           type={isPassword ? "password" : isSearch ? "search" : "text"}

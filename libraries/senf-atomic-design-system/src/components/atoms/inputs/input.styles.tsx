@@ -46,7 +46,9 @@ export const InputField = styled.div<{ focus: boolean; icon: boolean }>`
   display: flex;
   align-items: center;
   /* padding: ${({ theme }) => `${theme.space[4]} ${theme.space[6]}`}; */
-  padding-right: ${({ theme }) => theme.space[4]};
+  padding-right: ${({ theme }) => theme.space[3]};
+  padding-left: ${({ theme }) => theme.space[4]} !important;
+
   gap: 0.5rem;
   min-height: 50px;
   box-sizing: border-box;
