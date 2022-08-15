@@ -110,7 +110,7 @@ const Input: FunctionComponent<InputProps> = ({
           // }}
           />
         )}
-        {type === "password" && value && (
+        {type === "password" && (
           <TertiaryButton
             onClick={() => setIsPassword((prevState) => !prevState)}
             text={isPassword ? "Zeigen" : "Verstecken"}

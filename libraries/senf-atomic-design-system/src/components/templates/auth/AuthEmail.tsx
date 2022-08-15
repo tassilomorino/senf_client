@@ -18,7 +18,7 @@ import TertiaryButton from "../../atoms/buttons/TertiaryButton";
 
 const AuthEmail: FC<AuthEmailProps> = ({
   variant,
-  loading,
+  loginLoading,
   handleSubmitRegister,
   handleSubmitLogin,
   errorMessage,
@@ -72,19 +72,22 @@ const AuthEmail: FC<AuthEmailProps> = ({
     email: yup
       .string()
       .required(t("enter_email"))
+      .matches(/^\S*$/, t("spaces_not_allowed"))
       .email(t("enter_valid_email")),
 
-    password: yup.string().required(t("enter_password")),
+    password: yup.string().required(t("enter_password")).matches(/^\S*$/, t("spaces_not_allowed")),
   });
   const registerValidationSchema = yup.object({
     email: yup
       .string()
       .required(t("enter_email"))
+      .matches(/^\S*$/, t("spaces_not_allowed"))
       .email(t("enter_valid_email")),
 
     password: yup
       .string()
       .required(t("enter_password"))
+      .matches(/^\S*$/, t("spaces_not_allowed"))
       .min(8, t("password_8characters"))
       .matches(/\d+/, t("password_with_number")),
 
@@ -97,7 +100,7 @@ const AuthEmail: FC<AuthEmailProps> = ({
       .required(t("enter_username"))
       .min(3, t("username_too_short"))
       .max(20, t("username_too_long"))
-      .matches(/^\S*$/, t("spaces_username"))
+      .matches(/^\S*$/, t("spaces_not_allowed"))
       .matches(/^[a-zA-Z0-9\-\_\.]*$/, t("username_latin_only")),
   });
 
@@ -224,14 +227,15 @@ const AuthEmail: FC<AuthEmailProps> = ({
         variant="white"
         fillWidth="max"
         text={variantState === "register" ? t("register") : t("login")}
-        loading={loading}
+        loading={loginLoading}
+
         onClick={
           variantState === "register"
             ? () => handleSubmitRegister(formikRegisterStore)
             : (e) => {
-                e.preventDefault();
-                handleSubmitLogin(formikLoginStore);
-              }
+              e.preventDefault();
+              handleSubmitLogin(formikLoginStore);
+            }
         }
         disabled={
           variantState === "register"
