@@ -16,6 +16,7 @@ import {
   ContentDropdown,
   ContentDropdownItem,
   TertiaryButton,
+  ModalButton
 } from "senf-atomic-design-system";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
@@ -27,7 +28,7 @@ import PostScreamRules from "./PostScreamRules";
 // Icons
 import LocationIcon from "../../images/icons/location.png";
 import { OptionsTopics } from "../../data/OptionsTopics";
-import { StyledH3, StyledH4, StyledText } from "../../styles/GlobalStyle";
+import { StyledH3, StyledH4 } from "../../styles/GlobalStyle";
 
 const Card = styled.div`
   position: absolute;
@@ -167,13 +168,20 @@ const PostScreamFormContent = ({
           />
           <StyledH4> ~ {address} </StyledH4>
 
-          <Button
-            variant="secondary"
-            onClick={() => setOpenRules(true)}
-            text={t("rules")}
-          />
 
-          <PostScreamRules />
+          <ModalButton variant="tertiary"
+            size="medium"
+            text={t("rules")}
+
+            options={{ swipe: false, size: "lg", padding: 20 }}>
+
+            <PostScreamRules />
+          </ModalButton>
+
+
+
+
+
         </FlexWrapper>
         <Box flexDirection="column" gap="20px">
           <Input

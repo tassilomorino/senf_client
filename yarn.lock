@@ -24583,6 +24583,7 @@ __metadata:
     linkify-react: ^3.0.4
     linkifyjs: ^3.0.5
     lottie-web: ^5.9.2
+    mapbox: ^1.0.0-beta10
     mapbox-gl: ^2.9.1
     npm: ^8.12.1
     patch-package: ^6.4.7

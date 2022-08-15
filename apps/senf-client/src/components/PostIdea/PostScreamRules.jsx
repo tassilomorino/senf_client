@@ -11,59 +11,57 @@ const Wrapper = styled.div`
   height: 400px;
 `;
 
-const PostScreamRules = ({ openRules, setOpenRules }) => {
+const PostScreamRules = () => {
   const { t } = useTranslation();
+  const handleSetUnderstoodRules = () => {
+    // handlemodal("pop")
+    // setIntoAccout? setInto Localstorage? setCookies? (accepted_rules:true)
+  }
   return (
-    <Modal
-      zIndex={9999999999}
-      openModal={openRules}
-      // setOpenModal={setOpenRules}
-    >
-      <Wrapper>
-        <Box margin="10px" justifyContent="center">
-          <Typography variant="h1" fontWeight="900" textAlign="center">
-            {t("rules_title")}
-          </Typography>
-        </Box>
-        <Box margin="30px 10px 10px 10px" flexDirection="column" gap="10px">
-          <Typography variant="h3" textAlign="center">
-            {t("rules_section1header")}
-          </Typography>
 
-          <Typography variant="bodyBg" textAlign="center">
-            <Trans i18nKey="rules_section1text">
-              Ideen, Wünsche und Anregungen sind hier erwünscht. Für
-              Beschwerden, informier dich bitte
-              <a
-                className="Terms"
-                href="https://www.stadt-koeln.de/service/onlinedienste/anregungen-beschwerden/index.html"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                hier
-              </a>{" "}
-              .
-            </Trans>
-          </Typography>
-        </Box>
+    <React.Fragment>
+      <Box margin="10px" justifyContent="center">
+        <Typography variant="h1" fontWeight="900" textAlign="center">
+          {t("rules_title")}
+        </Typography>
+      </Box>
+      <Box margin="30px 10px 10px 10px" flexDirection="column" gap="10px">
+        <Typography variant="h3" textAlign="center">
+          {t("rules_section1header")}
+        </Typography>
 
-        <Box margin="10px" flexDirection="column" gap="10px">
-          <Typography variant="h3" textAlign="center">
-            {t("rules_section2header")}
-          </Typography>
+        <Typography variant="bodyBg" textAlign="center">
+          <Trans i18nKey="rules_section1text">
+            Ideen, Wünsche und Anregungen sind hier erwünscht. Für
+            Beschwerden, informier dich bitte
+            <a
+              href="https://www.stadt-koeln.de/service/onlinedienste/anregungen-beschwerden/index.html"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              hier
+            </a>
+            .
+          </Trans>
+        </Typography>
+      </Box>
 
-          <Typography variant="bodyBg" textAlign="center">
-            {t("rules_section2text")}
-          </Typography>
-        </Box>
-        <Box justifyContent="center" margin="40px 0px 0px 0px">
-          <Button
-            text={t("rules_understood")}
-            onClick={() => setOpenRules(false)}
-          />
-        </Box>
-      </Wrapper>
-    </Modal>
+      <Box margin="10px" flexDirection="column" gap="10px">
+        <Typography variant="h3" textAlign="center">
+          {t("rules_section2header")}
+        </Typography>
+
+        <Typography variant="bodyBg" textAlign="center">
+          {t("rules_section2text")}
+        </Typography>
+      </Box>
+      <Box justifyContent="center" margin="40px 0px 0px 0px">
+        <Button
+          text={t("rules_understood")}
+          onClick={handleSetUnderstoodRules}
+        />
+      </Box>
+    </React.Fragment>
   );
 };
 

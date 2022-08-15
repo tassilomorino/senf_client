@@ -289,7 +289,6 @@ const AgegroupGraph = ({ screams, likes }) => {
   //   agegroups_new_wishes.length > 0 &&
   //   agegroups_new_likes.length > 0 ? (
   //     <PlotlyComponent
-  //       className={classes.plot}
   //       data={data}
   //       layout={layout}
   //       config={config}

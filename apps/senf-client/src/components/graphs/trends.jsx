@@ -297,20 +297,18 @@ export class Trends extends Component {
     const plot =
       PlotlyComponent !== undefined ? (
         <PlotlyComponent
-          className={classes.plot}
           data={data}
           layout={layout}
           config={config}
         />
       ) : (
         <div style={{ display: "flex", justifyContent: "center" }}>
-         
+
         </div>
       );
     return (
-      <div className={classes.card}>
-        {/* <div className={classes.clickblocker}></div> */}
-        <div className={classes.title}>Themen-Trends</div>
+      <div >
+        <div >Themen-Trends</div>
 
         {plot}
       </div>

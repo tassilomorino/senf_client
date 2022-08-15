@@ -292,7 +292,6 @@ const TopicsGraph = ({ screams }) => {
   const plot =
     screams && PlotlyComponent !== undefined ? (
       <PlotlyComponent
-        className="insights-plot"
         data={data}
         layout={layout}
         config={config}

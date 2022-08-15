@@ -5,7 +5,9 @@ const theme: Theme = {
   fontFamily: "Nunito",
 
   // SPACE are not complete/verified
-  space: [0, 2, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44].map(numInPX => `${numInPX / 16}rem`),
+  space: [0, 2, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44].map(
+    (numInPX) => `${numInPX / 16}rem`
+  ),
 
   // font sizes converted from px to default browsers rem (16 px base)
   fontSizes: [12, 14, 16, 20, 24, 32].map((numInPX) => numInPX / 16),
@@ -23,7 +25,7 @@ const theme: Theme = {
   borderStyles: ["dashed", "solid"],
 
   // RADII are not complete/verified
-  radii: [8, 10, 18, 20, 24, 28, 30],
+  radii: [8, 10, 14, 18, 20, 24, 28, 30],
 
   // OPACITIES are not complete/verified
   opacities: [0.4, 0.6, 0.75],
@@ -131,9 +133,6 @@ const theme: Theme = {
 
 export default theme;
 
-
-
-
 // This code does not produce accurate luminance values, yet.
 
 const colors = {
@@ -142,47 +141,44 @@ const colors = {
   grey: { h: 44, s: 15, l: 46, a: 1 },
   white: { h: 0, s: 0, l: 100, a: 1 },
   text: { h: 36, s: 27, l: 11, a: 1 },
-}
-const luminance = [100, 75, 50, 25, 15, 10, 5]
+};
+const luminance = [100, 75, 50, 25, 15, 10, 5];
 
-
-
-
-
-const hsla = (h, s, l, a) => `hsla(${h}, ${s}%, ${l}%, ${a})`
+const hsla = (h, s, l, a) => `hsla(${h}, ${s}%, ${l}%, ${a})`;
 // utils
 const hsl2rgb = (hue, sat, lum, alpha) => {
-  const h = hue
-  const s = sat / 100
-  const l = lum / 100
+  const h = hue;
+  const s = sat / 100;
+  const l = lum / 100;
   const a = s * Math.min(l, 1 - l);
-  const f = (n, k = (n + h / 30) % 12) => parseInt((l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1)) * 255, 10);
+  const f = (n, k = (n + h / 30) % 12) =>
+    parseInt((l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1)) * 255, 10);
   return [f(0), f(8), f(4), alpha];
-}
+};
 const rgb2hsl = (red, green, blue) => {
-  const r = red / 255
-  const g = green / 255
-  const b = blue / 255
-  const v = Math.max(r, g, b)
-  const c = v - Math.min(r, g, b)
-  const f = (1 - Math.abs(v + v - c - 1));
-  const h = c && ((v === r) ? (g - b) / c : ((v === g) ? 2 + (b - r) / c : 4 + (r - g) / c));
+  const r = red / 255;
+  const g = green / 255;
+  const b = blue / 255;
+  const v = Math.max(r, g, b);
+  const c = v - Math.min(r, g, b);
+  const f = 1 - Math.abs(v + v - c - 1);
+  const h =
+    c && (v === r ? (g - b) / c : v === g ? 2 + (b - r) / c : 4 + (r - g) / c);
   return [
     parseInt(60 * (h < 0 ? h + 6 : h), 10),
     parseInt((f ? c / f : 0) * 100, 10),
-    parseInt(((v + v - c) / 2) * 100, 10)
+    parseInt(((v + v - c) / 2) * 100, 10),
   ];
-}
+};
 const blend = (hslA, hslB) => {
-  const A = hsl2rgb(...hslA)
-  const B = hsl2rgb(...hslB)
+  const A = hsl2rgb(...hslA);
+  const B = hsl2rgb(...hslB);
   return rgb2hsl(
-    Math.min(((hslA[3]) * A[0]) + (hslB[3] * B[0]), 255),
-    Math.min(((hslA[3]) * A[1]) + (hslB[3] * B[1]), 255),
-    Math.min(((hslA[3]) * A[2]) + (hslB[3] * B[2]), 255),
-  )
-}
-
+    Math.min(hslA[3] * A[0] + hslB[3] * B[0], 255),
+    Math.min(hslA[3] * A[1] + hslB[3] * B[1], 255),
+    Math.min(hslA[3] * A[2] + hslB[3] * B[2], 255)
+  );
+};
 
 // Object.entries(colors).forEach(([name, color]) => {
 //   luminance.forEach((lum) => {
@@ -194,5 +190,3 @@ const blend = (hslA, hslB) => {
 //     console.log(`%c${name} ${traColor}`, `background: ${traColor}; color: black`)
 //   })
 // })
-
-

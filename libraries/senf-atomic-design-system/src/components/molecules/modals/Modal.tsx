@@ -19,19 +19,19 @@ const Wrapper = styled.div<ModalProps>`
     size === "xl"
       ? "1200px"
       : size === "l"
-      ? "800px"
-      : size === "m"
-      ? "600px"
-      : "400px"};
+        ? "800px"
+        : size === "m"
+          ? "600px"
+          : "400px"};
   max-height: calc(100vh - 40px);
   overflow: ${({ overflow }) => overflow || "scroll"};
   background-color: ${({ backgroundColor, theme }) =>
     backgroundColor === "primary"
       ? theme.colors.primary.primary100
       : backgroundColor === "beige"
-      ? theme.colors.beige.beige20
-      : "white"};
-  border-radius: ${({ theme }) => theme.radii[4]}px;
+        ? theme.colors.beige.beige20
+        : "white"};
+  border-radius: ${({ theme }) => theme.radii[5]}px;
 
   box-shadow: ${({ theme }) => theme.shadows[0]}
     ${({ theme }) => theme.colors.brown.brown20tra};

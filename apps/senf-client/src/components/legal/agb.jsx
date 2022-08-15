@@ -5,9 +5,7 @@ import styled from "styled-components";
 import { LegalStyles, Terms } from "./LegalStyles";
 
 const Agb = () => (
-  <LegalStyles>
-    {/* <div className="MainBackground"></div> */}
-    <br />
+  <LegalStyles>    <br />
     <br /> <br />
     <h1>Allgemeine Geschäftsbedingungen</h1>
     <p>

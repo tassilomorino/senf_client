@@ -5,7 +5,6 @@ import { LegalStyles, Terms } from "./LegalStyles";
 
 const Datenschutz = () => (
   <LegalStyles>
-    {/* <div className="MainBackground"></div> */}
     <br />
     <br /> <br />
     <h1>Datenschutz</h1>

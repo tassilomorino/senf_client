@@ -90,6 +90,7 @@
     "linkify-react": "^3.0.4",
     "linkifyjs": "^3.0.5",
     "lottie-web": "^5.9.2",
+    "mapbox": "^1.0.0-beta10",
     "patch-package": "^6.4.7",
     "react-calendly": "^4.0.1",
     "react-i18next": "^11.16.7",

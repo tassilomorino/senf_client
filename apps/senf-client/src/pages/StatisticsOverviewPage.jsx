@@ -311,8 +311,6 @@ const StatisticsOverviewPage = ({
                 },
                 { text: t("districts") },
                 { text: t("agegroups") },
-
-                // { icon: <Info />, text: "Interaktionen" },
               ]}
             />
           </Box>
