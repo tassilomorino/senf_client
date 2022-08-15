@@ -1,6 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import ReactDOM from "react-dom";
+
 import { useDispatch, useSelector } from "react-redux";
-import { Box, MainLoader, Map, } from "senf-atomic-design-system";
+import { Box, MainLoader, Map, InfoPageMainApp, Cookiebanner, ModalContext } from "senf-atomic-design-system";
+import Cookies from "universal-cookie";
 import { setMapBounds } from "../redux/actions/mapActions";
 import { openProjectRoomFunc } from "../redux/actions/projectActions";
 import { closeScream, openScreamFunc } from "../redux/actions/screamActions";
@@ -14,6 +17,10 @@ import {
 
 } from "../util/helpers";
 
+import { setCookies } from "../redux/actions/cookiesActions";
+
+const cookies = new Cookies();
+
 const Main = React.lazy(() =>
   Promise.all([
     import("./Main"),
@@ -22,6 +29,9 @@ const Main = React.lazy(() =>
 );
 const Home = () => {
   const dispatch = useDispatch();
+
+  const { handleModal } = React.useContext(ModalContext) || {};
+  const [showUI, setShowUI] = useState(false)
   const [statefulMap, setStatefulMap] = useState(null);
   const [initialMapBounds, setInitialMapBounds] = useState(null);
   const initialMapViewport = useSelector(
@@ -152,6 +162,34 @@ const Home = () => {
     [projects, selectedOrganizationTypes]
   );
 
+
+
+  const [openCookiebanner, setOpenCookiebanner] = useState(false);
+  useEffect(() => {
+    if (cookies.get("cookie_settings") === "all") {
+      dispatch(setCookies("all"));
+      setShowUI(true)
+    } else if (cookies.get("cookie_settings") === "minimum") {
+      dispatch(setCookies("minimum"));
+      setShowUI(true)
+
+
+    } else {
+
+      setTimeout(() => {
+        handleModal("push", <InfoPageMainApp />, { swipe: !!isMobileCustom, size: "xl", height: isMobileCustom && window.innerHeight + 83, padding: 0, onBeforeOpen: () => setShowUI(false), onBeforeClose: () => setShowUI(true) })
+        setOpenCookiebanner(true);
+      }, 2800);
+
+    }
+
+  }, []);
+
+  const handleOpenCookiePreferences = () => {
+    window.open("/cookieConfigurator", "_blank");
+  };
+
+
   return (
     <div
       style={{
@@ -164,7 +202,18 @@ const Home = () => {
         bottom: 0,
       }}
     >
-      <React.Suspense fallback={<MainLoader />}>
+
+      {openCookiebanner && (
+        <>{ReactDOM.createPortal(<Cookiebanner
+          handleCookies={(cookie_settings) => {
+            dispatch(setCookies(cookie_settings));
+            setOpenCookiebanner(false);
+          }}
+          handleOpenCookiePreferences={handleOpenCookiePreferences}
+        />, document.body)}</>
+      )}
+
+      <React.Suspense fallback={ReactDOM.createPortal(<MainLoader />, document.body)}>
         <Main
           statefulMap={statefulMap}
           setStatefulMap={setStatefulMap}
@@ -178,6 +227,8 @@ const Home = () => {
           }
           swipedUp={swipedUp}
           setSwipedUp={setSwipedUp}
+          showUI={showUI}
+          setShowUI={setShowUI}
         />
       </React.Suspense>
 

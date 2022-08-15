@@ -39,8 +39,7 @@ const Wrapper = styled.div<MobileTopBarProps>`
 `;
 
 const MobileTopBar: FC<MobileTopBarProps> = ({
-  setOrder,
-  setInfoPageOpen,
+  setShowUI,
   handleOpenMyAccount,
   hide,
 }) => (
@@ -68,7 +67,7 @@ const MobileTopBar: FC<MobileTopBarProps> = ({
           variant="tertiary"
           size="small"
           icon={<Info />}
-          options={{ swipe: true, size: "lg", height: window.innerHeight + 83, padding: 0 }}>
+          options={{ swipe: true, size: "lg", height: window.innerHeight + 83, padding: 0, onBeforeOpen: () => setShowUI(false), onBeforeClose: () => setShowUI(true) }}>
           <InfoPageMainApp />
         </ModalButton>
       </Box>

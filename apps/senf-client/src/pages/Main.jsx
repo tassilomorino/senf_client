@@ -6,7 +6,6 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import ReactDOM from "react-dom";
 
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,11 +21,9 @@ import {
   MobileTopBar,
   ErrorLoading,
   Loader,
-  InfoPageMainApp,
   ModalContext,
-  Cookiebanner
+
 } from "senf-atomic-design-system";
-import Cookies from "universal-cookie";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
 import { closeScream, openScreamFunc } from "../redux/actions/screamActions";
@@ -39,7 +36,6 @@ import {
   handleTopicSelectorRedux,
   handleOrganizationTypesSelectorRedux,
   setSwipePositionUp,
-  setInfoPageOpen,
 } from "../redux/actions/UiActions";
 
 // Components
@@ -74,9 +70,7 @@ import ProjectroomPage from "./ProjectroomPage";
 import ProfilePage from "./ProfilePage";
 import { StyledH3 } from "../styles/GlobalStyle";
 
-import { setCookies } from "../redux/actions/cookiesActions";
 
-const cookies = new Cookies();
 
 const CreateMainComponent = React.lazy(() =>
   import("../components/Create_Organisation_Projectrooms/CreateMainComponent")
@@ -112,6 +106,34 @@ const MobileMapClickBackground = styled.div`
   transition: 0.5s;
   pointer-events: ${(props) => (props.show ? "all" : "none")};
 `;
+
+const ScaleContainer = styled.div`
+
+  width: 100vw;
+  height: 100%;
+  margin-top: 0vh;
+  z-index: 90;
+  top: 0;
+  position: fixed;
+  pointer-events: none;
+  transform: ${({ show }) => (show ? "scale(1)" : "scale(0.9)")};
+  opacity: ${({ show }) => (show ? "1" : "0")};
+  transition: 0.5s; 
+
+  @media (min-width: 768px) {
+    left: 0px;
+     /* width: 500px;   */
+    height: 100vh;
+    overflow: visible;
+    z-index: 90;
+    top: 0;
+    position: fixed;
+    overflow-x: visible;
+    
+  }
+
+
+`;
 const Main = ({
   statefulMap,
   setStatefulMap,
@@ -123,13 +145,14 @@ const Main = ({
   postIdeaOpen,
   setPostIdeaOpen,
   handleSetInitialMapBoundsAndViewport,
+  setShowUI,
+  showUI
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const errors = useSelector((state) => state.UI.errors);
   const { handleModal } = React.useContext(ModalContext) || {};
-
-
+  const { cookie_settings } = useSelector((state) => state.data)
   const organization = useSelector((state) => state.data.organization);
 
   const { screamId, projectRoomId, organizationId, unknownPathId } =
@@ -185,32 +208,11 @@ const Main = ({
   }, [dispatch, projectRoomId, screamId, organizationId, unknownPathId]);
 
 
-  const [openCookiebanner, setOpenCookiebanner] = useState(false);
-  useEffect(() => {
-
-    if (cookies.get("cookie_settings") === "all") {
-      dispatch(setCookies("all"));
-    } else if (cookies.get("cookie_settings") === "minimum") {
-      dispatch(setCookies("minimum"));
-    } else {
-
-      handleModal("push", <InfoPageMainApp />, { swipe: !!isMobileCustom, size: "lg", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
-      setOpenCookiebanner(true);
-
-    }
-
-  }, []);
 
 
 
-  const handleOpenCookiePreferences = () => {
-    window.open("/cookieConfigurator", "_blank");
-  };
 
-  const handleCookies = (cookie_settings) => {
-    dispatch(setCookies(cookie_settings));
-    setOpenCookiebanner(false);
-  };
+
 
 
   useEffect(() => {
@@ -416,9 +418,6 @@ const Main = ({
     }
   }, [dispatch, openAccount, userId]);
 
-  const handleOpenInfoPage = useCallback(() => {
-    dispatch(setInfoPageOpen());
-  }, [dispatch]);
 
   const handleCloseOrganizationPage = () => {
     dispatch(openOrganizationFunc(null, false));
@@ -501,13 +500,6 @@ const Main = ({
 
   return (
     <React.Fragment>
-      {openCookiebanner && (
-        <>{ReactDOM.createPortal(<Cookiebanner
-          handleCookies={handleCookies}
-          handleOpenCookiePreferences={handleOpenCookiePreferences}
-        />, document.body)}</>
-      )}
-
       {isMobileCustom && !postIdeaOpen && (
         <React.Fragment>
           {isMobileCustom &&
@@ -523,7 +515,7 @@ const Main = ({
           <MobileTopBar
             setOrder={setOrder}
             handleOpenMyAccount={handleOpenMyAccount}
-            setInfoPageOpen={handleOpenInfoPage}
+            setShowUI={setShowUI}
             hide={
               swipedUp ||
               openProjectRoom ||
@@ -535,7 +527,7 @@ const Main = ({
         </React.Fragment>
       )}
 
-      {!loading && !loadingUI && !loadingProjects && !postIdeaOpen && (
+      {showUI && !loading && !loadingUI && !loadingProjects && !postIdeaOpen && (
         <Box
           margin={
             isMobileCustom ? "60px 10px 10px 0px" : "10px 10px 10px 500px"
@@ -551,8 +543,9 @@ const Main = ({
                 : "organizationTypes"
             }
             hide={
+              !showUI ||
               openInfoPage ||
-              swipedUp ||
+              (isMobileCustom && swipedUp) ||
               (isMobileCustom && openScream) ||
               (openProjectRoom && !project?.screams) ||
               openAccount ||
@@ -577,133 +570,140 @@ const Main = ({
         />
       )}
 
-      {!openInfoPage && (
-        <>
-          {!openProjectRoom &&
-            !postIdeaOpen &&
-            !openAccount &&
-            !loading &&
-            (order === 1 || (order === 2 && !loadingProjects)) && (
-              <MainSwipeList
-                order={order === 1 ? "ideas" : "projectrooms"}
-                setOrder={handleClick}
-                ideasDataOriginal={screams}
-                ideasData={dataFinalIdeas}
-                projectroomsData={dataFinalProjectRooms}
-                organizations={organizations}
-                selectedTopics={selectedTopics}
-                selectedOrganizationTypes={selectedOrganizationTypes}
-                checkedSortOption={dropdown}
-                setCheckedSortOption={setDropdown}
-                handleSelectTopics={handleSelectTopics}
-                handleSelectOrganizationTypes={handleSelectOrganizationTypes}
-                swipedUp={swipedUp}
-                setSwipedUp={setSwipedUp}
-                openScream={openScream}
-                searchTerm={searchTerm}
-                setSearchTerm={setSearchTerm}
-                searchOpen={searchOpen}
-                setSearchOpen={setSearchOpen}
+      <ScaleContainer show={showUI}>
+        {!openInfoPage && (
+          <>
+            {!openProjectRoom &&
+              !postIdeaOpen &&
+              !openAccount &&
+              !loading &&
+              (order === 1 || (order === 2 && !loadingProjects)) && (
+                <MainSwipeList
+                  order={order === 1 ? "ideas" : "projectrooms"}
+                  setOrder={handleClick}
+                  ideasDataOriginal={screams}
+                  ideasData={dataFinalIdeas}
+                  projectroomsData={dataFinalProjectRooms}
+                  organizations={organizations}
+                  selectedTopics={selectedTopics}
+                  selectedOrganizationTypes={selectedOrganizationTypes}
+                  checkedSortOption={dropdown}
+                  setCheckedSortOption={setDropdown}
+                  handleSelectTopics={handleSelectTopics}
+                  handleSelectOrganizationTypes={handleSelectOrganizationTypes}
+                  swipedUp={swipedUp}
+                  setSwipedUp={setSwipedUp}
+                  openScream={openScream}
+                  searchTerm={searchTerm}
+                  setSearchTerm={setSearchTerm}
+                  searchOpen={searchOpen}
+                  setSearchOpen={setSearchOpen}
+                  handleButtonOpenCard={handleButtonOpenCard}
+                  handleOpenProjectroom={handleOpenProjectroom}
+                  handleButtonLike={handleButtonLike}
+                  handleButtonComment={handleButtonComment}
+                  user={user}
+                  setOpenStatisticsOverview={setOpenStatisticsOverview}
+                  openStatisticsOverview={openStatisticsOverview}
+                  setOpenOrganizationsOverview={setOpenOrganizationsOverview}
+                  openOrganizationsOverview={openOrganizationsOverview}
+                  setPostIdeaOpen={setPostIdeaOpen}
+                  handleOpenMyAccount={handleOpenMyAccount}
+                  setShowUI={setShowUI}
+                  handleCreateProjectroom={handleCreateProjectroom}
+                  handleMapBoundsReset={handleSetInitialMapBoundsAndViewport}
+                  mapFilterActive={mapFilterActive}
+                />
+              )}
+
+            {openProjectRoom && !openScream && (
+              <ProjectroomPage
+                user={user}
+                setPostIdeaOpen={setPostIdeaOpen}
+                handleButtonOpenCard={handleButtonOpenCard}
+                handleSetInitialMapBoundsAndViewport={
+                  handleSetInitialMapBoundsAndViewport
+                }
+                handleButtonLike={handleButtonLike}
+                handleButtonComment={handleButtonComment}
+                setOpenStatisticsOverview={setOpenStatisticsOverview}
+              />
+            )}
+
+            {openAccount && (
+              <ProfilePage
                 handleButtonOpenCard={handleButtonOpenCard}
                 handleOpenProjectroom={handleOpenProjectroom}
                 handleButtonLike={handleButtonLike}
                 handleButtonComment={handleButtonComment}
-                user={user}
-                setOpenStatisticsOverview={setOpenStatisticsOverview}
-                openStatisticsOverview={openStatisticsOverview}
-                setOpenOrganizationsOverview={setOpenOrganizationsOverview}
-                openOrganizationsOverview={openOrganizationsOverview}
-                setPostIdeaOpen={setPostIdeaOpen}
-                handleOpenMyAccount={handleOpenMyAccount}
-                setInfoPageOpen={handleOpenInfoPage}
-                handleCreateProjectroom={handleCreateProjectroom}
-                handleMapBoundsReset={handleSetInitialMapBoundsAndViewport}
-                mapFilterActive={mapFilterActive}
               />
             )}
 
-          {openProjectRoom && !openScream && (
-            <ProjectroomPage
-              user={user}
-              setPostIdeaOpen={setPostIdeaOpen}
-              handleButtonOpenCard={handleButtonOpenCard}
-              handleSetInitialMapBoundsAndViewport={
-                handleSetInitialMapBoundsAndViewport
-              }
-              handleButtonLike={handleButtonLike}
-              handleButtonComment={handleButtonComment}
-              setOpenStatisticsOverview={setOpenStatisticsOverview}
-            />
-          )}
+            {!openInfoPage && openScream && (
+              <IdeaDetailPage
+                handleButtonLike={handleButtonLike}
+                handleButtonComment={handleButtonComment}
+                projectroomsData={dataFinalProjectRooms}
+                user={user}
+              />
+            )}
+          </>
+        )}
 
-          {openAccount && (
-            <ProfilePage
-              handleButtonOpenCard={handleButtonOpenCard}
-              handleOpenProjectroom={handleOpenProjectroom}
-              handleButtonLike={handleButtonLike}
-              handleButtonComment={handleButtonComment}
-            />
-          )}
-
-          {!openInfoPage && openScream && (
-            <IdeaDetailPage
-              handleButtonLike={handleButtonLike}
-              handleButtonComment={handleButtonComment}
-              projectroomsData={dataFinalProjectRooms}
-              user={user}
-            />
-          )}
-        </>
-      )}
-
-      {openOrganization && (
-        <OrganizationPage
-          organizations={organizations}
-          handleCloseOrganizationPage={handleCloseOrganizationPage}
-          handleEdit={handleOpenCreateOrganization}
-          handleButtonOpenCard={handleButtonOpenCard}
-          user={user}
-
-        />
-      )}
-
-      {!openInfoPage &&
-        !openProjectRoom &&
-        !openAccount &&
-        openOrganizationsOverview &&
-        !loadingOrganizations && (
-          <OrganizationsOverview
-            data={dataFinalOrganizations}
-            selectedOrganizationTypes={selectedOrganizationTypes}
-            handleSelectOrganizationTypes={handleSelectOrganizationTypes}
-            user={user}
+        {openOrganization && (
+          <OrganizationPage
             organizations={organizations}
-            organization={organization}
-            openOrganizationsOverview={openOrganizationsOverview}
-            setOpenOrganizationsOverview={setOpenOrganizationsOverview}
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            checkedSortOption={dropdown}
-            setCheckedSortOption={setDropdown}
+            handleCloseOrganizationPage={handleCloseOrganizationPage}
+            handleEdit={handleOpenCreateOrganization}
             handleButtonOpenCard={handleButtonOpenCard}
-            projectroomsData={dataFinalProjectRooms}
-            handleOpenCreateOrganization={handleOpenCreateOrganization}
+            user={user}
 
-          // openCreateOrganization,
-          // setOpenModalAuthenticate,
           />
         )}
 
-      {!openInfoPage &&
-        !openAccount &&
-        !openOrganization &&
-        openStatisticsOverview && (
-          <StatisticsOverviewPage
-            openStatisticsOverview={openStatisticsOverview}
-            setOpenStatisticsOverview={setOpenStatisticsOverview}
-            projectRoomId={project?.projectRoomId}
-          />
-        )}
+        {!openInfoPage &&
+          !openProjectRoom &&
+          !openAccount &&
+          openOrganizationsOverview &&
+          !loadingOrganizations && (
+            <OrganizationsOverview
+              data={dataFinalOrganizations}
+              selectedOrganizationTypes={selectedOrganizationTypes}
+              handleSelectOrganizationTypes={handleSelectOrganizationTypes}
+              user={user}
+              organizations={organizations}
+              organization={organization}
+              openOrganizationsOverview={openOrganizationsOverview}
+              setOpenOrganizationsOverview={setOpenOrganizationsOverview}
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              checkedSortOption={dropdown}
+              setCheckedSortOption={setDropdown}
+              handleButtonOpenCard={handleButtonOpenCard}
+              projectroomsData={dataFinalProjectRooms}
+              handleOpenCreateOrganization={handleOpenCreateOrganization}
+
+            // openCreateOrganization,
+            // setOpenModalAuthenticate,
+            />
+          )}
+
+        {!openInfoPage &&
+          !openAccount &&
+          !openOrganization &&
+          openStatisticsOverview && (
+            <StatisticsOverviewPage
+              openStatisticsOverview={openStatisticsOverview}
+              setOpenStatisticsOverview={setOpenStatisticsOverview}
+              projectRoomId={project?.projectRoomId}
+            />
+          )}
+
+      </ScaleContainer>}
+
+
+
+
 
       {errors && !loading && <ErrorLoading />}
 

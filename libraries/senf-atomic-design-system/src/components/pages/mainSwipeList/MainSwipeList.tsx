@@ -165,7 +165,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   setPostIdeaOpen,
 
   handleOpenMyAccount,
-  setInfoPageOpen,
+  setShowUI,
 
   checkedSortOption,
   setCheckedSortOption,
@@ -417,7 +417,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
         {!isMobile && (
           <MenuSidebar
             handleOpenMyAccount={handleOpenMyAccount}
-            setInfoPageOpen={setInfoPageOpen}
+            setShowUI={setShowUI}
             setOrder={setOrder}
           />
         )}
