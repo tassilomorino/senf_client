@@ -193,7 +193,7 @@ const ModalWrapper: FC<ModalWrapperProps> = ({
                 <Button
                   variant="primary"
                   fillWidth="max"
-                  onClick={() => { onSubmit().then(() => close()) }}
+                  onClick={() => { onSubmit(); close() }}
                   disabled={!!submitDisabled}
                   text={submitText}
                 />
