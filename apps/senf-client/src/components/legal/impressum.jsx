@@ -5,7 +5,6 @@ import { LegalStyles } from "./LegalStyles";
 
 const Impressum = () => (
   <LegalStyles>
-    {/* <div className="MainBackground"></div> */}
     <br />
     <br /> <br />
     <h1>Impressum</h1>

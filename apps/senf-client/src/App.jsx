@@ -17,16 +17,14 @@ import { auth } from "./firebase";
 
 // import "./styles/mapbox-gl.css";
 // import "./styles/App.css";
-import "./styles/AppDesktop.css";
-import "./styles/AppIpad.css";
+// import "./styles/AppDesktop.css";
+// import "./styles/AppIpad.css";
 // import "./styles/mapbox.css";
 
 // Redux
 import store from "./redux/store";
 import { SET_AUTHENTICATED } from "./redux/types";
 import { getUserData } from "./redux/actions/userActions";
-import { setCookies } from "./redux/actions/cookiesActions";
-import { setInfoPageOpen } from "./redux/actions/UiActions";
 
 import { getOrganizations } from "./redux/actions/organizationActions";
 import { getProjects } from "./redux/actions/projectActions";
