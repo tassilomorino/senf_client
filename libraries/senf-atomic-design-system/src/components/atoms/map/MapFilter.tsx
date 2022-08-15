@@ -24,9 +24,9 @@ const Wrapper = styled.div<MapProps>`
   transform: ${({ openMapFilter }) =>
     openMapFilter ? "scale(1)" : "scale(0.5)"};
   opacity: ${({ openMapFilter }) => (openMapFilter ? "1" : "0")};
-  pointer-events: ${({ openMapFilter }) => (openMapFilter ? "all" : "none")};
   transition: 0.2s;
   user-select: none;
+
   @media (min-width: 768px) {
     justify-content: center;
     position: absolute;

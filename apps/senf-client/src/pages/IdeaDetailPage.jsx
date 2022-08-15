@@ -11,10 +11,8 @@ import { isMobileCustom } from "../util/customDeviceDetect";
 // Redux stuff
 import { closeScream, deleteScream, editScreamFunc } from "../redux/actions/screamActions";
 import { clearErrors } from "../redux/actions/errorsActions";
-
 import { openProjectRoomFunc } from "../redux/actions/projectActions";
 import { deleteComment, submitComment } from "../redux/actions/commentActions";
-
 import { openLink } from "../util/helpers";
 import Auth from "./Auth";
 
@@ -177,8 +175,6 @@ const IdeaDetailPage = ({
     commentFormInput={commentFormInput}
     setCommentFormInput={setCommentFormInput}
     commentFormLoading={commentFormLoading}
-    handleSetAuthOpen={() => handleModal("push", <Auth authEditOpen={false} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
-    }
   />
   );
 };

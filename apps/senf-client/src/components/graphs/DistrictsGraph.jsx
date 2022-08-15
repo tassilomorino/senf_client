@@ -19,7 +19,7 @@ const PlotlyComponent = createPlotlyComponent(Plotly);
 
 // })
 
-const DistrictsGraph = ({ classes, screams }) => {
+const DistrictsGraph = ({ screams }) => {
   const selectedTopics = useSelector((state) => state.data.topics);
   const { t } = useTranslation();
 

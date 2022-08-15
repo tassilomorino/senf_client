@@ -35,13 +35,12 @@ const PostScreamRules = () => {
             Ideen, Wünsche und Anregungen sind hier erwünscht. Für
             Beschwerden, informier dich bitte
             <a
-              className="Terms"
               href="https://www.stadt-koeln.de/service/onlinedienste/anregungen-beschwerden/index.html"
               rel="noopener noreferrer"
               target="_blank"
             >
               hier
-            </a>{" "}
+            </a>
             .
           </Trans>
         </Typography>

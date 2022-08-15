@@ -217,16 +217,22 @@ const MapContainer = styled.div<MapProps>`
   border-radius:0px;
 }
 
+
+.mapboxgl-ctrl{
+  display:none;
+
+  @media (min-width: 768px) {
+    display:block;
+
+   }
+}
+.mapboxgl-ctrl-logo{
+  display:none;
+}
 `;
 
-const PinComponent = styled.img`
-  position: absolute;
-  width: 100px;
-  transform: translateY(-95%) translateX(-50%) rotate(0deg);
-  transform-origin: bottom center;
 
-  z-index: -1;
-`;
+
 
 const Map: FC<MapProps> = ({
   children,

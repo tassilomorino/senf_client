@@ -26,7 +26,7 @@ import Vereine from "../../../assets/icons/Vereine";
 import More from "../../../assets/icons/More";
 
 const DragWrapper = styled(animated.div)`
-  z-index: ${({ zIndex }) => zIndex || 1};
+  z-index: ${({ zIndex }) => zIndex || 2};
   overscroll-behavior: contain;
   overflow-x: hidden;
   width: 100%;
@@ -41,6 +41,7 @@ const DragWrapper = styled(animated.div)`
 
   position: absolute;
   pointer-events: all;
+  
 
   /* transform: scale(0.9) translateY(-20px); */
   @media (min-width: 768px) {
@@ -164,7 +165,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   setPostIdeaOpen,
 
   handleOpenMyAccount,
-  setInfoPageOpen,
+  setShowUI,
 
   checkedSortOption,
   setCheckedSortOption,
@@ -198,6 +199,12 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
         transform: `translateY(${16}px)`,
         touchAction: "unset",
       });
+    } else {
+      setSpring({
+        transform: `translateY(${window.innerHeight - 100}px)`,
+        touchAction: "unset",
+      });
+
     }
   }, [swipedUp]);
 
@@ -410,7 +417,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
         {!isMobile && (
           <MenuSidebar
             handleOpenMyAccount={handleOpenMyAccount}
-            setInfoPageOpen={setInfoPageOpen}
+            setShowUI={setShowUI}
             setOrder={setOrder}
           />
         )}

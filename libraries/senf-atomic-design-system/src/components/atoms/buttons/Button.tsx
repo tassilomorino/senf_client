@@ -42,7 +42,7 @@ const StyledButton = styled.button < ButtonProps> `
 
   min-width: ${({ size }) => (size === "small" ? "36px" : size === "medium" ? "44px" : "50px")};
 
-  color: ${({ loading }) => (loading === true ? "transparent" : "auto")};
+  color: ${({ loading, color }) => (loading === true ? "transparent" : color || "auto")};
   pointer-events: ${({ loading }) => (loading === true ? "none" : "all")};
 
   //ADD THEME-SPACE?
@@ -129,6 +129,7 @@ const Button: FC<ButtonProps> = ({
   transform,
   size,
   variant,
+  color,
   borderStyle,
   justifyContent,
   fillWidth,
@@ -136,7 +137,7 @@ const Button: FC<ButtonProps> = ({
   onClick,
   ...rest
 }) => (
-  <StyledButton type="button" text={text} variant={variant} icon={icon} borderStyle={borderStyle}
+  <StyledButton type="button" text={text} variant={variant} color={color} icon={icon} borderStyle={borderStyle}
     justifyContent={justifyContent} fillWidth={fillWidth} $loading={loading} onClick={onClick} size={size}
     {...rest}>
     {

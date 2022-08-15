@@ -344,7 +344,7 @@ const PostScream = ({
         />
       )}
 
-      {isMobileCustom && (
+      {/* {isMobileCustom && (
         <div
           style={
             locationDecided
@@ -353,13 +353,12 @@ const PostScream = ({
           }
         >
           <div
-            className="backContainer"
             onClick={() => handleLocationDecided()}
           ></div>
 
-          <div className="PostBackground"></div>
+          <div ></div>
         </div>
-      )}
+      )} */}
       <Box position="fixed" top="0px" width={isMobileCustom ? "100vw" : "400px"} zIndex={99999999} left="0px">
         <Geocoder finalAddress={address} statefulMap={statefulMap} handleSetClose={() => setPostIdeaOpen(false)} />
       </Box>

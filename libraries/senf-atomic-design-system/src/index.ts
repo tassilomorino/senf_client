@@ -123,9 +123,8 @@ export { default as StatisticsOverview } from "./components/pages/statisticsOver
 export { default as ProfilePage } from "./components/pages/profilePage/ProfilePage";
 export { default as ProjectroomPage } from "./components/pages/projectroomPage/ProjectroomPage";
 export { default as ErrorLoading } from "./components/pages/warningPages/ErrorLoading";
+export { default as RotateDevice } from "./components/pages/warningPages/RotateDevice";
 export { default as InfoPageMainApp } from "./components/pages/infoPages/InfoPageMainApp";
-
-export { default as Example } from "./components/templates/example/Example";
 
 export { default as theme } from "./styles/theme";
 export { default as GlobalStyle } from "./styles/globals";

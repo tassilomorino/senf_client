@@ -30,23 +30,16 @@ const Wrapper = styled.div<MobileTopBarProps>`
     0px -5px 10px rgba(255, 255, 255, 0.3),
     0px 10px 20px -6px rgba(134, 124, 99, 0.1);
   border-radius: 14px;
-  z-index: 9;
+  z-index: 1;
 
   transform: ${({ hide }) => (hide ? "scale(0.5)" : "scale(1)")};
   opacity: ${({ hide }) => (hide ? "0" : "1")};
   pointer-events: ${({ hide }) => (hide ? "none" : "all")};
   transition: 0.5s;
 `;
-const ScaleContainer = styled.div<MobileTopBarProps>`
-  transform: ${({ swipedUp }) => (swipedUp ? "scale(0.5)" : "scale(1)")};
-  opacity: ${({ swipedUp }) => (swipedUp ? "0" : "1")};
-  pointer-events: ${({ swipedUp }) => (swipedUp ? "none" : "all")};
-  transition: 0.5s;
-`;
 
 const MobileTopBar: FC<MobileTopBarProps> = ({
-  setOrder,
-  setInfoPageOpen,
+  setShowUI,
   handleOpenMyAccount,
   hide,
 }) => (
@@ -74,7 +67,7 @@ const MobileTopBar: FC<MobileTopBarProps> = ({
           variant="tertiary"
           size="small"
           icon={<Info />}
-          options={{ swipe: true, size: "lg", height: window.innerHeight + 83, padding: 0 }}>
+          options={{ swipe: true, size: "lg", height: window.innerHeight + 83, padding: 0, onBeforeOpen: () => setShowUI(false), onBeforeClose: () => setShowUI(true) }}>
           <InfoPageMainApp />
         </ModalButton>
       </Box>

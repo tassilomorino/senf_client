@@ -58,7 +58,7 @@ const Wrapper = styled.div<MenuSidebarProps>`
 
 const MenuSidebar: FC<MenuSidebarProps> = ({
   handleOpenMyAccount,
-  setInfoPageOpen,
+  setShowUI,
   setOrder,
 }) => (
   <Wrapper>
@@ -79,14 +79,12 @@ const MenuSidebar: FC<MenuSidebarProps> = ({
 
         {/* <Button variant="white" size="small" icon={<Bell />} /> */}
 
-
         <ModalButton variant="white"
           size="medium"
           icon={<Info />}
-          options={{ swipe: false, size: "xl", padding: 0 }}>
+          options={{ swipe: false, size: "xl", padding: 0, onBeforeOpen: () => setShowUI(false), onBeforeClose: () => setShowUI(true) }}>
           <InfoPageMainApp />
         </ModalButton>
-
 
 
         <Button
