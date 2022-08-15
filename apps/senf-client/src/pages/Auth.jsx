@@ -10,6 +10,8 @@ import {
   signInWithPopup,
   FacebookAuthProvider,
   GoogleAuthProvider,
+  onIdTokenChanged,
+  reload,
 } from "firebase/auth";
 
 import {
@@ -50,11 +52,10 @@ const Auth = ({
   const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
 
-  const [emailRegistrationSubmitted, setEmailRegistrationSubmitted] =
-    useState(false);
 
   const [verifiedUser, setVerifiedUser] = useState(false);
-
+  const [addedDetails, setAddedDetails] = useState(false);
+  const [emailRegistrationSubmitted, setEmailRegistrationSubmitted] = useState(false);
   const user = useSelector((state) => state.user);
   const userIdInFirebase = getAuth().currentUser?.uid;
 
@@ -116,6 +117,7 @@ const Auth = ({
       setErrorMessage({ code: "", message: "" });
       dispatch({ type: SET_AUTHENTICATED });
       dispatch(getUserData(firebaseEmailPasswordSignInUser.user.uid));
+      setVerifiedUser(true);
       handleModal("pop")
 
     }
@@ -125,8 +127,9 @@ const Auth = ({
       setErrorMessage({
         ...errorMessage,
         code: firebaseEmailPasswordSignInError.code,
-        message: generateErrorMessage(firebaseEmailPasswordSignInError.code),
+        message: generateErrorMessage(firebaseEmailPasswordSignInError?.code),
       });
+
     }
   }, [
     dispatch,
@@ -140,23 +143,86 @@ const Auth = ({
     if (firebaseUserEmailRegistrationLoading) {
       setLoading(true);
     }
+
     if (firebaseUserEmailRegistrationInfo) {
       setLoading(false);
       setErrorMessage({ code: "", message: "" });
       setEmailRegistrationSubmitted(true);
+
+
+      window.history.pushState(null, null, "/verify");
     }
+
+
+
     if (firebaseUserEmailRegistrationError) {
       setLoading(false);
       setErrorMessage({
         code: firebaseUserEmailRegistrationError.code,
-        message: generateErrorMessage(firebaseUserEmailRegistrationError.code),
+        message: generateErrorMessage(firebaseUserEmailRegistrationError?.code),
       });
+
     }
   }, [
     firebaseUserEmailRegistrationError,
     firebaseUserEmailRegistrationInfo,
     firebaseUserEmailRegistrationLoading,
+
   ]);
+
+
+  const UrlPath = window.location.pathname;
+  useEffect(() => {
+    // auto login if email has been verified
+
+
+    if (UrlPath === "/verify") {
+
+      const unsubscribe = onIdTokenChanged(auth, (user) => {
+        if (user && user.uid && user.emailVerified) {
+          dispatch({ type: SET_AUTHENTICATED });
+          dispatch(getUserData(user.uid));
+          setVerifiedUser(true);
+          setAddedDetails(false)
+          setEmailRegistrationSubmitted(false);
+          console.log('user is verified, redirecting to home')
+          window.history.pushState(null, null, "/");
+
+
+          // open modal <AuthAddDetails/>
+
+        }
+        if (user && user.uid && !user.emailVerified) {
+          console.log('user is not verified')
+          setVerifiedUser(false);
+          // open modal <AuthVerifyEmail/>
+        }
+        if (!user) {
+          console.log('user is not logged in')
+          window.history.pushState(null, null, "/");
+          // open modal <AuthOptions/> ?
+        }
+      });
+
+      const interval = setInterval(async () => {
+        try {
+          if (auth.currentUser) {
+            await reload(auth.currentUser);
+          }
+        } catch (error) {
+          throw new Error(error, "error in main.jsx email verification");
+        }
+      }, 3000);
+      return () => {
+        clearInterval(interval)
+        unsubscribe()
+      }
+    }
+  }, [UrlPath])
+
+
+
+
   useEffect(() => {
     // sign in with google
     if (firebaseGoogleUserLoading) {
@@ -292,6 +358,7 @@ const Auth = ({
 
 
 
+
   return (<AuthComponent
     errorMessage={errorMessage}
     user={user}
@@ -312,8 +379,9 @@ const Auth = ({
     handleSubmitEditDetails={(userDetails) =>
       handleSubmitEditDetails(userDetails)
     }
-    emailRegistrationSubmitted={emailRegistrationSubmitted}
     verifiedUser={verifiedUser || authEditOpen}
+    addedDetails={addedDetails}
+    emailRegistrationSubmitted={emailRegistrationSubmitted}
     handleClose={() => {
       handleModal("pop")
       setErrorMessage({ code: "", message: "" });

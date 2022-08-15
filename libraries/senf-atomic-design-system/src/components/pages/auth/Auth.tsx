@@ -74,6 +74,9 @@ const Auth: FC<AuthProps> = ({
   dataSuccess,
 }) => {
   const [page, setPage] = useState("authOptions");
+  console.log(verifiedUser, 'verifiedUser')
+  console.log(addedDetails, 'addedDetails')
+  console.log(emailRegistrationSubmitted, 'emailRegistrationSubmitted')
   return (
     <Wrapper>
       <Box margin="10px" position="absolute" zIndex={999}>
@@ -124,7 +127,7 @@ const Auth: FC<AuthProps> = ({
 
       {emailRegistrationSubmitted ? (
         <AuthVerifyEmail />
-      ) : page === "authEmail" && !emailRegistrationSubmitted ? (
+      ) : page === "authEmail" && !emailRegistrationSubmitted && !verifiedUser ? (
         <AuthEmail
           setPage={setPage}
           handleSubmitRegister={handleSubmitRegister}
@@ -133,7 +136,7 @@ const Auth: FC<AuthProps> = ({
           loginLoading={loginLoading}
           errorMessage={errorMessage}
         />
-      ) : verifiedUser && !addedDetails ? (
+      ) : verifiedUser && !addedDetails && !emailRegistrationSubmitted ? (
         <AuthAddDetails
           user={user}
           handleSubmitEditDetails={handleSubmitEditDetails}
