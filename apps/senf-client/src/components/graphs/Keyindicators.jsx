@@ -11,11 +11,8 @@ import {
   Bulb,
   CommentActive,
   FlameActive,
+  Typography
 } from "senf-atomic-design-system";
-import lamploader from "../../images/lamp.png";
-import ChatBorder from "../../images/icons/chat.png";
-import HandFull from "../../images/icons/handsFull.png";
-import { StyledH2, StyledH3 } from "../../styles/GlobalStyle";
 
 const Wrapper = styled.div`
   width: 95%;
@@ -45,37 +42,37 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
   return (
     <Wrapper>
       <Indicator>
-        <Icon icon={<Bulb />} />
+        <Icon icon={<Bulb transform="scale(1.2)" />} />
 
         {screams.length === 0 ? (
           <Loader />
         ) : (
-          <StyledH3 textAlign="center">
+          <Typography variant="buttonBg" textAlign="center">
             {screams.length} {screams.length === 1 ? t("idea") : t("ideas")}
-          </StyledH3>
+          </Typography>
         )}
       </Indicator>
 
       <Indicator>
-        <Icon icon={<FlameActive />} />
+        <Icon icon={<FlameActive transform="scale(1.2)" />} />
 
         {likesLength === null ? (
           <Loader />
         ) : (
-          <StyledH3 textAlign="center"> {likesLength} Votes</StyledH3>
+          <Typography variant="buttonBg" textAlign="center"> {likesLength} Votes</Typography>
         )}
       </Indicator>
 
       <Indicator>
-        <Icon icon={<CommentActive />} />
+        <Icon icon={<CommentActive transform="scale(1.2)" />} />
 
         {commentslength === null ? (
           <Loader />
         ) : (
-          <StyledH3 textAlign="center">
+          <Typography variant="buttonBg" textAlign="center">
             {commentslength}{" "}
             {commentslength === 1 ? t("comment") : t("comments")}
-          </StyledH3>
+          </Typography>
         )}
       </Indicator>
     </Wrapper>

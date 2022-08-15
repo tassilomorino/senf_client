@@ -26,7 +26,6 @@ import { isMobileCustom } from "../../util/customDeviceDetect";
 import PostScreamRules from "./PostScreamRules";
 
 // Icons
-import LocationIcon from "../../images/icons/location.png";
 import { OptionsTopics } from "../../data/OptionsTopics";
 import { StyledH3, StyledH4 } from "../../styles/GlobalStyle";
 
@@ -160,12 +159,12 @@ const PostScreamFormContent = ({
 
       <Content>
         <FlexWrapper onClick={handleLocationDecided}>
-          <img
+          {/* <img
             src={LocationIcon}
             width="20px"
             height="20px"
             style={{ paddingRight: "5px" }}
-          />
+          /> */}
           <StyledH4> ~ {address} </StyledH4>
 
 
