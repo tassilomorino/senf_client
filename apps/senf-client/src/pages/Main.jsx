@@ -3,10 +3,8 @@
 import React, {
   useState,
   useEffect,
-  useRef,
   useCallback,
   useMemo,
-  useLayoutEffect,
 } from "react";
 import ReactDOM from "react-dom";
 
@@ -15,9 +13,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
+  Typography,
   MainSwipeList,
   OrganizationsOverview,
-  Modal,
   Button,
   TagSlide,
   Box,
@@ -54,8 +52,6 @@ import {
   openAccountFunc,
 } from "../redux/actions/accountActions";
 import PostScream from "../components/PostIdea/PostScream";
-import ChangeLocationModal from "../components/ChangeLocationModal";
-import { usePrevious } from "../hooks/usePrevious";
 import {
   openOrganizationFunc,
   stateCreateOrganizationsFunc,
@@ -85,31 +81,31 @@ const cookies = new Cookies();
 const CreateMainComponent = React.lazy(() =>
   import("../components/Create_Organisation_Projectrooms/CreateMainComponent")
 );
-const MainColumnWrapper = styled.div`
-  width: 100vw;
-  height: 100%;
-  margin-top: 0vh;
-  z-index: 90;
-  top: 0;
-  position: fixed;
-  pointer-events: none;
+// const MainColumnWrapper = styled.div`
+//   width: 100vw;
+//   height: 100%;
+//   margin-top: 0vh;
+//   z-index: 90;
+//   top: 0;
+//   position: fixed;
+//   pointer-events: none;
 
-  @media (min-width: 768px) {
-    left: 0px;
-    /* width: 400px; */
-    height: 100vh;
-    overflow-y: scroll;
-    z-index: 90;
-    top: 0;
-    position: fixed;
-    overflow-x: visible;
-  }
-`;
+//   @media (min-width: 768px) {
+//     left: 0px;
+//     /* width: 400px; */
+//     height: 100vh;
+//     overflow-y: scroll;
+//     z-index: 90;
+//     top: 0;
+//     position: fixed;
+//     overflow-x: visible;
+//   }
+// `;
 const MobileMapClickBackground = styled.div`
   height: 100vh;
   width: 100vw;
   background-color: rgb(0, 0, 0, 0);
-  z-index: 10;
+  z-index: 1;
   position: fixed;
   top: 0;
   opacity: ${(props) => (props.show ? 1 : 0)};
@@ -453,12 +449,14 @@ const Main = ({
   const handleCreateProjectroom = () => {
     if (!user.authenticated) {
       // Add text into auth like "first you gt to create an account"
-      handleModal("push", <Auth authEditOpen={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      handleModal("push", <Auth authEditOpen={false} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
     } else if (!user?.organizationId?.length) {
       handleModal("push", <>
-        <StyledH3 textAlign="center" margin="20px">
-          {t("createOrganizationForCreateProjectRoom")}
-        </StyledH3>
+        <Box margin="30px 40px">
+          <Typography variant="h3" textAlign="center">
+            {t("createOrganizationForCreateProjectRoom")}
+          </Typography>
+        </Box>
         <Box justifyContent="center" margin="0px 0px 10px 0px">
           <Button
             text={t("createOrganization")}
@@ -479,9 +477,11 @@ const Main = ({
 
       handleModal("push", <>
 
-        <StyledH3 textAlign="center" margin="20px">
-          {t("requestCreateProjectRoom")}
-        </StyledH3>
+        <Box margin="30px 40px">
+          <Typography variant="h3" textAlign="center">
+            {t("requestCreateProjectRoom")}
+          </Typography>
+        </Box>
         <Box justifyContent="center" margin="0px 0px 10px 0px">
           <Button
             text={t("getInTouch")}
@@ -508,10 +508,6 @@ const Main = ({
         />, document.body)}</>
       )}
 
-
-
-
-
       {isMobileCustom && !postIdeaOpen && (
         <React.Fragment>
           {isMobileCustom &&
@@ -520,7 +516,7 @@ const Main = ({
             !openProjectRoom && (
               <MobileMapClickBackground
                 show={swipedUp}
-                onClick={() => swipedUp(false)}
+                onClick={() => setSwipedUp(false)}
               />
             )}
 
@@ -545,7 +541,7 @@ const Main = ({
             isMobileCustom ? "60px 10px 10px 0px" : "10px 10px 10px 500px"
           }
           position="absolute"
-          zIndex={9}
+          zIndex={1}
         >
           <TagSlide
             flexDirection={!isMobileCustom && "column"}
@@ -582,7 +578,7 @@ const Main = ({
       )}
 
       {!openInfoPage && (
-        <MainColumnWrapper>
+        <>
           {!openProjectRoom &&
             !postIdeaOpen &&
             !openAccount &&
@@ -657,7 +653,7 @@ const Main = ({
               user={user}
             />
           )}
-        </MainColumnWrapper>
+        </>
       )}
 
       {openOrganization && (
@@ -711,7 +707,6 @@ const Main = ({
 
       {errors && !loading && <ErrorLoading />}
 
-      {/* {voted && userLikes.length <= 1 && <ThanksForTheVote />} */}
 
       {/* {changeLocationModalOpen && (
         <ChangeLocationModal
@@ -722,18 +717,6 @@ const Main = ({
       {/* <Box position="fixed" right="100px" bottom="10px">
         <Button text="Stadt auswählen" onClick={setChangeLocationModalOpen} />
       </Box> */}
-
-      {/* {(openCreateProjectRoom || openCreateOrganization) && (
-        <React.Suspense fallback={<Loader />}>
-          <CreateMainComponent
-            type={
-              openCreateProjectRoom
-                ? "projectRoom"
-                : openCreateOrganization && "organization"
-            }
-          />
-        </React.Suspense>
-      )} */}
     </React.Fragment>
   );
 };

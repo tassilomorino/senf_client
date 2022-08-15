@@ -1,28 +1,5 @@
 /** @format */
 
-/* playfair-display-regular - latin */
-@font-face {
-  font-family: "Playfair Display";
-  font-style: normal;
-  font-weight: 100;
-  font-display: swap;
-  src: url("fonts/playfair-display-v19-latin-regular.eot");
-  /* IE9 Compat Modes */
-  src: local(""),
-    url("fonts/playfair-display-v19-latin-regular.eot?#iefix")
-      format("embedded-opentype"),
-    /* IE6-IE8 */ url("fonts/playfair-display-v19-latin-regular.woff2")
-      format("woff2"),
-    /* Super Modern Browsers */
-      url("fonts/playfair-display-v19-latin-regular.woff") format("woff"),
-    /* Modern Browsers */ url("fonts/playfair-display-v19-latin-regular.ttf")
-      format("truetype"),
-    /* Safari, Android, iOS */
-      url("fonts/playfair-display-v19-latin-regular.svg#PlayfairDisplay")
-      format("svg");
-  /* Legacy iOS */
-}
-
 .Terms {
   text-decoration: underline;
   cursor: pointer;
@@ -686,60 +663,6 @@ input:focus {
   color: #353535;
   text-align: center;
   font-family: "Playfair Display", serif;
-}
-
-.landscapeNote {
-  display: none;
-}
-
-@media screen and (min-aspect-ratio: 15/9) and (orientation: landscape) {
-  .landscapeNote {
-    display: block;
-    z-index: 99999;
-    position: fixed;
-    background-attachment: fixed;
-    background-image: linear-gradient(to bottom, #ffd19b, #ffda53, #ffffff);
-    background-repeat: no-repeat;
-
-    top: 0;
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-size: 40pt;
-    color: white;
-    text-align: center;
-    font-family: "Playfair Display", serif;
-  }
-}
-
-.tabletLandscapeNote {
-  display: none;
-}
-
-@media screen and (min-aspect-ratio: 9/15) and (min-width: 768px) and (max-width: 1000px) and (orientation: portrait) {
-  .tabletLandscapeNote {
-    display: block;
-    z-index: 99999;
-    position: fixed;
-    background-attachment: fixed;
-    background-image: linear-gradient(to bottom, #ffd19b, #ffda53, #ffffff);
-    background-repeat: no-repeat;
-
-    top: 0;
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-size: 40pt;
-    color: white;
-    text-align: center;
-    font-family: "Playfair Display", serif;
-  }
 }
 
 .drag_hide {

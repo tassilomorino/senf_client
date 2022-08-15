@@ -1,23 +1,22 @@
 /** @format */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
-import { Provider, useDispatch, useSelector } from "react-redux";
-import { isTablet } from "react-device-detect";
-import { useTranslation } from "react-i18next";
+import { Provider } from "react-redux";
 import {
   theme,
   GlobalStyle,
   ModalProvider,
+  RotateDevice
 
 } from "senf-atomic-design-system";
 import { ThemeProvider } from "styled-components";
 import { auth } from "./firebase";
 
 // import "./styles/mapbox-gl.css";
-import "./styles/App.css";
+// import "./styles/App.css";
 import "./styles/AppDesktop.css";
 import "./styles/AppIpad.css";
 // import "./styles/mapbox.css";
@@ -41,10 +40,6 @@ import cookieConfigurator from "./components/legal/cookieConfigurator";
 
 import blank from "./pages/Blank";
 
-import { isMobileCustom } from "./util/customDeviceDetect";
-
-import packageJson from "../package.json";
-import { getBuildDate } from "./util/helpers";
 // import { setViewport } from "./util/helpers-map-animations";
 
 import "./util/i18n";
@@ -68,8 +63,6 @@ const vh = window.innerHeight * 0.01;
 document.documentElement.style.setProperty("--vh", `${vh}px`);
 
 const App = () => {
-
-  const { t } = useTranslation();
   const userState = () => {
     onAuthStateChanged(auth, (user) => {
       if (user && user.uid && user.emailVerified) {
@@ -103,9 +96,7 @@ const App = () => {
     userState();
   }, []);
 
-  const tabletNote = isTablet ? (
-    <div className="tabletLandscapeNote">{t("rotate_tablet")} </div>
-  ) : null;
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -144,56 +135,40 @@ const App = () => {
       <Provider store={store}>
         <ModalProvider>
           <Router>
-            {/* <React.Suspense fallback={<MainLoader />}></React.Suspense> */}
+            <RotateDevice />
+            <Switch>
+              <Route exact path="/projectRooms" component={Home} />
+              <Route exact path="/organizations" component={Home} />
+              <Route exact path="/idea/:screamId" component={Home} />
+              <Route
+                exact
+                path="/projectRooms/:projectRoomId/:screamId"
+                component={Home}
+              />
+              <Route
+                exact
+                path="/projectRooms/:projectRoomId"
+                component={Home}
+              />
+              <Route
+                exact
+                path="/organizations/:organizationId"
+                component={Home}
+              />
+              <Route exact path="/:unknownPathId" component={Home} />
+              <Route exact path="/" component={Home} />
+              <Route path="*" component={Home} />
 
-            {tabletNote}
-
-            {isMobileCustom && (
-              <div className="landscapeNote">{t("rotate_phone")}</div>
-            )}
-
-            <div className="container">
-              <Switch>
-                <Route exact path="/projectRooms" component={Home} />
-                <Route exact path="/organizations" component={Home} />
-
-                <Route exact path="/datenschutz" component={datenschutz} />
-                <Route exact path="/agb" component={agb} />
-
-                <Route
-                  exact
-                  path="/cookieConfigurator"
-                  component={cookieConfigurator}
-                />
-
-                <Route exact path="/impressum" component={impressum} />
-
-                <Route exact path="/blank" component={blank} />
-
-                <Route exact path="/idea/:screamId" component={Home} />
-
-                <Route
-                  exact
-                  path="/projectRooms/:projectRoomId/:screamId"
-                  component={Home}
-                />
-
-                <Route
-                  exact
-                  path="/projectRooms/:projectRoomId"
-                  component={Home}
-                />
-
-                <Route
-                  exact
-                  path="/organizations/:organizationId"
-                  component={Home}
-                />
-                <Route exact path="/:unknownPathId" component={Home} />
-                <Route exact path="/" component={Home} />
-                <Route path="*" component={Home} />
-              </Switch>
-            </div>
+              <Route exact path="/datenschutz" component={datenschutz} />
+              <Route exact path="/agb" component={agb} />
+              <Route
+                exact
+                path="/cookieConfigurator"
+                component={cookieConfigurator}
+              />
+              <Route exact path="/impressum" component={impressum} />
+              <Route exact path="/blank" component={blank} />
+            </Switch>
           </Router >
         </ModalProvider >
       </Provider >
@@ -201,6 +176,5 @@ const App = () => {
     </ThemeProvider >
   );
 };
-console.log(getBuildDate(packageJson.buildDate));
 
 export default App;
