@@ -153,6 +153,8 @@ const App = () => {
                 path="/organizations/:organizationId"
                 component={Home}
               />
+
+
               <Route exact path="/verify" component={Home} />
               <Route exact path="/:unknownPathId" component={Home} />
               <Route exact path="/" component={Home} />
