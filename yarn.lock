@@ -24281,6 +24281,29 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"senf-todo@workspace:apps/senf-todo":
+  version: 0.0.0-use.local
+  resolution: "senf-todo@workspace:apps/senf-todo"
+  dependencies:
+    "@testing-library/jest-dom": ^5.16.4
+    "@testing-library/react": ^13.3.0
+    "@testing-library/user-event": ^14.3.0
+    "@vitejs/plugin-react": ^1.3.0
+    babel-plugin-styled-components: ^2.0.7
+    firebase: ^9.9.0
+    i18next-locize-backend: ^5.1.2
+    locize: ^2.4.3
+    locize-lastused: ^3.1.0
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    senf-atomic-design-system: "*"
+    senf-shared: "workspace:^"
+    styled-components: ^5.3.5
+    vite: ^2.9.11
+    web-vitals: ^2.1.4
+  languageName: unknown
+  linkType: soft
+
 "senf-workspace@workspace:apps/senf-workspace":
   version: 0.0.0-use.local
   resolution: "senf-workspace@workspace:apps/senf-workspace"
