@@ -44,10 +44,12 @@ export const Note = styled.p<{ error?: boolean }>`
 
 export const InputField = styled.div<{ focus: boolean; icon: boolean }>`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   /* padding: ${({ theme }) => `${theme.space[4]} ${theme.space[6]}`}; */
   padding-right: ${({ theme }) => theme.space[3]};
   padding-left: ${({ theme }) => theme.space[4]} !important;
+  padding-top:${({ theme }) => theme.space[4]} !important;
+  padding-bottom:${({ theme }) => theme.space[4]} !important;
 
   gap: 0.5rem;
   min-height: 50px;

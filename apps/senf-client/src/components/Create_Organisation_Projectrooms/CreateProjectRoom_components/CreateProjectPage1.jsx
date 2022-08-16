@@ -10,8 +10,6 @@ import * as yup from "yup";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { Box, Input } from "senf-atomic-design-system";
 import { db } from "../../../firebase";
-
-import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import {
   ComponentWrapper,
   ComponentInnerWrapper,
@@ -28,16 +26,9 @@ const CreateProjectPage1 = ({
   setTitle,
 }) => {
   const { t } = useTranslation();
-  const [outsideClick, setOutsideClick] = useState(false);
   const [nextClicked, setNextClicked] = useState(false);
 
-  const outerRef = useRef();
-  useOnClickOutside(outerRef, () => {
-    setOutsideClick(true);
-    setTimeout(() => {
-      setOutsideClick(false);
-    }, 10000);
-  });
+
 
   const validationSchema = yup.object({
     title: yup
@@ -198,8 +189,8 @@ const CreateProjectPage1 = ({
               value={formik?.values.brief}
               error={formik?.touched.brief && Boolean(formik?.errors.brief)}
               note={formik?.touched.brief && formik?.errors.brief}
-              // minRows="4"
-              // maxRows="6"
+            // minRows="4"
+            // maxRows="6"
             />
 
             <Input
@@ -221,8 +212,8 @@ const CreateProjectPage1 = ({
                 formik?.touched.description_about &&
                 formik?.errors.description_about
               }
-              // minRows="4"
-              // maxRows="6"
+            // minRows="4"
+            // maxRows="6"
             />
 
             <Input
@@ -244,8 +235,8 @@ const CreateProjectPage1 = ({
                 formik?.touched.description_procedure &&
                 formik?.errors.description_procedure
               }
-              // minRows="4"
-              // maxRows="6"
+            // minRows="4"
+            // maxRows="6"
             />
 
             <Input
@@ -267,8 +258,8 @@ const CreateProjectPage1 = ({
                 formik?.touched.description_motivation &&
                 formik?.errors.description_motivation
               }
-              // minRows="4"
-              // maxRows="6"
+            // minRows="4"
+            // maxRows="6"
             />
 
             <Input
@@ -290,8 +281,8 @@ const CreateProjectPage1 = ({
                 formik?.touched.description_learnmore &&
                 formik?.errors.description_learnmore
               }
-              // minRows="4"
-              // maxRows="6"
+            // minRows="4"
+            // maxRows="6"
             />
           </Box>
         </ComponentInnerWrapper>

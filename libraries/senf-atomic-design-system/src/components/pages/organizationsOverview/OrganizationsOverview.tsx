@@ -36,6 +36,8 @@ const Wrapper = styled.div<OrganizationsOverviewProps>`
   transition: 0.3s;
   box-shadow: 40px 8px 30px -12px rgba(0, 0, 0, 0.2);
   transition: 0.5s;
+  pointer-events: all;
+
 
   @media (min-width: 768px) {
     /* display: ${({ open }) => (open ? "block" : "none")}; */

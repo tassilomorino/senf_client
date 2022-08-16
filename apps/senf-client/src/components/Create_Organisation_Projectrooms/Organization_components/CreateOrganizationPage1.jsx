@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
@@ -10,7 +10,6 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { Box, Input } from "senf-atomic-design-system";
 import { db } from "../../../firebase";
 
-import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 import {
   ComponentInnerWrapper,
   ComponentWrapper,
@@ -28,16 +27,6 @@ const CreateOrganizationPage1 = ({
 }) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
-
-  const [outsideClick, setOutsideClick] = useState(false);
-
-  const outerRef = useRef();
-  useOnClickOutside(outerRef, () => {
-    setOutsideClick(true);
-    setTimeout(() => {
-      setOutsideClick(false);
-    }, 10000);
-  });
 
   const createProjectValidationSchema = yup.object({
     title: yup
@@ -126,7 +115,7 @@ const CreateOrganizationPage1 = ({
 
   return (
     <React.Fragment>
-      <ComponentWrapper ref={outerRef}>
+      <ComponentWrapper >
         <ComponentInnerWrapper>
           <StyledH3 textAlign="center" margin="20px">
             {pagesData[index].subTitle}
@@ -164,8 +153,8 @@ const CreateOrganizationPage1 = ({
               }
               note={formik?.touched.description && formik?.errors.description}
 
-              // minRows="10"
-              // maxRows="12"
+            // minRows="10"
+            // maxRows="12"
             />
           </Box>
         </ComponentInnerWrapper>

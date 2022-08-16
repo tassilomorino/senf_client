@@ -76,6 +76,7 @@ export { default as ContentDropdown } from "./components/atoms/contentDropdown/C
 export { default as ContentDropdownItem } from "./components/atoms/contentDropdownItem/ContentDropdownItem";
 
 export { default as ImagePlaceholder } from "./components/atoms/imagePlaceholder/ImagePlaceholder";
+export { default as ImageUploadTile } from "./components/atoms/imageUploadTile/ImageUploadTile";
 
 export { default as ToggleInput } from "./components/atoms/toggleInput/ToggleInput";
 export { default as Switch } from "./components/atoms/switch/Switch";
@@ -112,8 +113,11 @@ export { default as MenuSidebar } from "./components/organisms/menuSidebar/MenuS
 export { default as MobileTopBar } from "./components/organisms/mobileTopBar/MobileTopBar";
 export { default as DatePicker } from "./components/organisms/datePicker/DatePicker";
 
-export { default as MainSwipeList } from "./components/pages/mainSwipeList/MainSwipeList";
+// TEMPLATES
+export { default as InfoSwiper } from "./components/templates/createOrganization/components/InfoSwiper";
 
+// PAGES
+export { default as MainSwipeList } from "./components/pages/mainSwipeList/MainSwipeList";
 export { default as Auth } from "./components/pages/auth/Auth";
 export { default as IdeaDetailPage } from "./components/pages/ideaDetailPage/IdeaDetailPage";
 export { default as EditIdeaPage } from "./components/pages/editIdeaPage/EditIdeaPage";

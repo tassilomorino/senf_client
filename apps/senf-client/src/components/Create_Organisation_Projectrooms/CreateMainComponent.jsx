@@ -14,7 +14,6 @@ import { db } from "../../firebase";
 // Components
 import { PageWrapper } from "./styles/sharedStyles";
 import TopNavigation from "./Components/TopNavigation";
-// import FullscreenDialog from "../atoms/Layout/FullscreenDialog";
 import CreateProjectPage0b from "./CreateProjectRoom_components/CreateProjectPage0b";
 import CreateProjectPage1 from "./CreateProjectRoom_components/CreateProjectPage1";
 import CreateProjectPage2 from "./CreateProjectRoom_components/CreateProjectPage2";
@@ -35,11 +34,9 @@ import CreateOrganizationPagePreview from "./Organization_components/CreateOrgan
 import {
   getOrganizations,
   openOrganizationFunc,
-  stateCreateOrganizationsFunc,
 } from "../../redux/actions/organizationActions";
 import {
   getProjects,
-  openCreateProjectRoomFunc,
   openProjectRoomFunc,
 } from "../../redux/actions/projectActions";
 import CreateProjectPage5 from "./CreateProjectRoom_components/CreateProjectPage5";
@@ -486,7 +483,7 @@ const CreateProjectDialog = ({ type }) => {
   const currentStep = (100 / (pages.length - 1)) * index;
 
   return (
-    <div style={{ height: "2000px", maxHeight: "100%" }} isOpen={true}>
+    <div style={{ height: "2000px", maxHeight: "100%" }} >
       <TopNavigation
         currentStep={currentStep}
         index={index}

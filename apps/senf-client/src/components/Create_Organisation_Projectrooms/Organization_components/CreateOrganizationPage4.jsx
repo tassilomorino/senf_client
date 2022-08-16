@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 // firebase
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useFormik } from "formik";
-import { Input, ModalButton } from "senf-atomic-design-system";
+import { Input, ModalButton, Box, Typography } from "senf-atomic-design-system";
 import { db } from "../../../firebase";
 
 // images
@@ -16,9 +16,7 @@ import {
 } from "../styles/sharedStyles";
 // import Geocoder from "react-mapbox-gl-geocoder";
 import Navigation from "../Components/Navigation";
-import {
-  StyledH3,
-} from "../../../styles/GlobalStyle";
+
 
 
 
@@ -33,24 +31,6 @@ const CreateOrganizationPage4 = ({
   const { t } = useTranslation();
 
   const [nextClicked, setNextClicked] = useState(false);
-  const [outsideClick, setOutsideClick] = useState(false);
-  const [infovideoOpen, setInfovideoOpen] = useState(false);
-
-  //  const [googleCalendarId, setGoogleCalendarId] = useState("");
-
-  // const [selectedDays, setSelectedDays] = useState([]);
-  // const [selectedUnix, setSelectedUnix] = useState([]);
-
-  // const handleChangeCalendar = (selectedDays) => {
-  //   const selectedUnix = [];
-  //   var i;
-  //   for (i = 0; i < selectedDays.length; i++) {
-  //     selectedUnix[i] = selectedDays[i]["unix"];
-  //   }
-
-  //   setSelectedDays(selectedDays);
-  //   setSelectedUnix(selectedUnix);
-  // };
 
   const formik = useFormik({
     initialValues: {
@@ -123,22 +103,19 @@ const CreateOrganizationPage4 = ({
 
   return (
     <React.Fragment>
-
-
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH3 textAlign="center" margin="20px">
+          <Typography variant="h3" textAlign="center" margin="20px">
             {pagesData[index].subTitle}
-          </StyledH3>
+          </Typography>
 
           <Input
             key="googleCalendarId"
             id="googleCalendarId"
             name="googleCalendarId"
-            type="textarea"
+            type="text"
             placeholder={t("googleCalendarId")}
             label={t("googleCalendarId")}
-            rows={1}
             onChange={formik?.handleChange}
             onBlur={formik?.handleBlur}
             value={formik?.values.googleCalendarId}
@@ -152,13 +129,11 @@ const CreateOrganizationPage4 = ({
             }
           />
 
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              marginTop: "20px",
-              justifyContent: "center",
-            }}
+          <Box
+            width="100%"
+            marginTop="20px"
+            justifyContent="center"
+
           >
             <ModalButton variant="tertiary"
               size="medium"
@@ -177,14 +152,7 @@ const CreateOrganizationPage4 = ({
                 ></iframe>
               </div>
             </ModalButton>
-
-
-          </div>
-
-          {/* <InlineDatePicker
-            handleChangeCalendar={handleChangeCalendar}
-            selectedDays={selectedDays}
-          /> */}
+          </Box>
         </ComponentInnerWrapper>
       </ComponentWrapper>
 
