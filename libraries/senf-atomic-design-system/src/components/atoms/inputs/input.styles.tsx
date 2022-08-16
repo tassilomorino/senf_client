@@ -91,6 +91,7 @@ export const InputField = styled.div<{ focus: boolean; icon: boolean }>`
   input {
     max-height: 50px !important;
     box-sizing: border-box;
+    width: 100%;
   }
 
   input,

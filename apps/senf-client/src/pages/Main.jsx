@@ -207,6 +207,14 @@ const Main = ({
     organizationId && dispatch(openOrganizationFunc(organizationId, true));
   }, [dispatch, projectRoomId, screamId, organizationId, unknownPathId]);
 
+  const urlPath = window.location.pathname;
+  useEffect(() => {
+    if (urlPath === '/verify') {
+      handleModal("push", <Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+    }
+
+
+  }, [urlPath]);
 
 
 
@@ -378,7 +386,7 @@ const Main = ({
   const handleButtonLike = (event, screamId) => {
     event.stopPropagation();
     if (!user.authenticated) {
-      handleModal("push", <Auth authEditOpen={false} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      handleModal("push", <Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
       return;
     }
     if (user.likes && user.likes.find((like) => like.screamId === screamId)) {
@@ -426,7 +434,7 @@ const Main = ({
   const handleOpenCreateOrganization = () => {
     if (!user.authenticated) {
       // Add text into auth like "first you gt to create an account"
-      handleModal("push", <Auth authEditOpen={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      handleModal("push", <Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
     } else {
       handleModal("push", <React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
         <CreateMainComponent type="organization" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
@@ -448,7 +456,7 @@ const Main = ({
   const handleCreateProjectroom = () => {
     if (!user.authenticated) {
       // Add text into auth like "first you gt to create an account"
-      handleModal("push", <Auth authEditOpen={false} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      handleModal("push", <Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
     } else if (!user?.organizationId?.length) {
       handleModal("push", <>
         <Box margin="30px 40px">

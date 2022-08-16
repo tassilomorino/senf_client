@@ -62,9 +62,7 @@ export const useCreateUserWithEmailAndPassword = (
         );
       }
     } catch (error) {
-      setError({
-        error,
-      });
+      setError(error as AuthError);
     } finally {
       setLoading(false);
     }
