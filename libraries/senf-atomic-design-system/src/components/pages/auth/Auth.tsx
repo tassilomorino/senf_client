@@ -63,20 +63,19 @@ const Auth: FC<AuthProps> = ({
   facebookLoading,
   resetLoading,
   handleSubmitResetEmail,
-  emailRegistrationSubmitted,
-  verifiedUser,
-  addedDetails,
   user,
   handleSubmitEditDetails,
   handleImageUpload,
   uploadingImage,
   errorMessage,
   dataSuccess,
+  page,
+  setPage
 }) => {
-  const [page, setPage] = useState("authOptions");
-  console.log(verifiedUser, 'verifiedUser')
-  console.log(addedDetails, 'addedDetails')
-  console.log(emailRegistrationSubmitted, 'emailRegistrationSubmitted')
+
+
+
+
   return (
     <Wrapper>
       <Box margin="10px" position="absolute" zIndex={999}>
@@ -93,71 +92,78 @@ const Auth: FC<AuthProps> = ({
 
       <Wave color="#fed957" top="170px" />
 
-      {!verifiedUser && (
-        <React.Fragment>
-          <Img src={SenfManSquating} alt="Illustration" />
-          <StyledSvg xmlns="http://www.w3.org/2000/svg" width="175" height="69">
-            <g>
-              <defs>
-                <linearGradient
-                  id="idX0hbBYeIVg-1861781537"
-                  gradientTransform="rotate(154, 0.5, 0.5)"
-                >
-                  <stop
-                    offset="0"
-                    stopColor="rgba(186, 163, 79, 0)"
-                    stopOpacity="0"
-                  ></stop>
-                  <stop
-                    offset="1"
-                    stopColor="rgba(119, 108, 70, 0.46)"
-                    stopOpacity="0.46"
-                  ></stop>
-                </linearGradient>
-              </defs>
-              <path
-                d="M 0.5 68.5 L 174.5 0.5 L 174.5 33.5 L 56.5 67 L 62 55.5 L 26 67 Z"
-                fill="url(#idX0hbBYeIVg-1861781537)"
-                stroke="hsla(0, 0%, 100%, 0)"
-              ></path>
-            </g>
-          </StyledSvg>
-        </React.Fragment>
-      )}
 
-      {emailRegistrationSubmitted ? (
-        <AuthVerifyEmail />
-      ) : page === "authEmail" && !emailRegistrationSubmitted && !verifiedUser ? (
-        <AuthEmail
-          setPage={setPage}
-          handleSubmitRegister={handleSubmitRegister}
-          handleSubmitLogin={handleSubmitLogin}
-          registerLoading={registerLoading}
-          loginLoading={loginLoading}
-          errorMessage={errorMessage}
-        />
-      ) : verifiedUser && !addedDetails && !emailRegistrationSubmitted ? (
-        <AuthAddDetails
-          user={user}
-          handleSubmitEditDetails={handleSubmitEditDetails}
-          handleImageUpload={handleImageUpload}
-          uploadingImage={uploadingImage}
-        />
-      ) : page === "authResetEmail" ? (
-        <AuthResetEmail
-          resetLoading={resetLoading}
-          handleSubmitResetEmail={handleSubmitResetEmail}
-          dataSuccess={dataSuccess}
-        />
-      ) : (
-        <AuthOptions
+      <React.Fragment>
+        <Img src={SenfManSquating} alt="Illustration" />
+        <StyledSvg xmlns="http://www.w3.org/2000/svg" width="175" height="69">
+          <g>
+            <defs>
+              <linearGradient
+                id="idX0hbBYeIVg-1861781537"
+                gradientTransform="rotate(154, 0.5, 0.5)"
+              >
+                <stop
+                  offset="0"
+                  stopColor="rgba(186, 163, 79, 0)"
+                  stopOpacity="0"
+                ></stop>
+                <stop
+                  offset="1"
+                  stopColor="rgba(119, 108, 70, 0.46)"
+                  stopOpacity="0.46"
+                ></stop>
+              </linearGradient>
+            </defs>
+            <path
+              d="M 0.5 68.5 L 174.5 0.5 L 174.5 33.5 L 56.5 67 L 62 55.5 L 26 67 Z"
+              fill="url(#idX0hbBYeIVg-1861781537)"
+              stroke="hsla(0, 0%, 100%, 0)"
+            ></path>
+          </g>
+        </StyledSvg>
+      </React.Fragment>
+
+
+
+      {(() => {
+        if (page === "authEmail") {
+          return <AuthEmail
+            setPage={setPage}
+            handleSubmitRegister={handleSubmitRegister}
+            handleSubmitLogin={handleSubmitLogin}
+            registerLoading={registerLoading}
+            loginLoading={loginLoading}
+            errorMessage={errorMessage}
+          />
+        }
+        if (page === "authResetEmail") {
+          return <AuthResetEmail
+            resetLoading={resetLoading}
+            handleSubmitResetEmail={handleSubmitResetEmail}
+            dataSuccess={dataSuccess}
+          />
+        }
+        if (page === "authVerifyEmail") {
+          return <AuthVerifyEmail />
+        }
+        if (page === "authAddDetails") {
+          return <AuthAddDetails
+            user={user}
+            handleSubmitEditDetails={handleSubmitEditDetails}
+            handleImageUpload={handleImageUpload}
+            uploadingImage={uploadingImage}
+          />
+        }
+        return <AuthOptions
           handleGoogleSignIn={handleGoogleSignIn}
           googleLoading={googleLoading}
           handleFacebookSignIn={handleFacebookSignIn}
           facebookLoading={facebookLoading}
           setPage={setPage}
         />
-      )}
+
+
+      })()}
     </Wrapper>
   );
 };

@@ -36,6 +36,7 @@ import {
   useCreateUserWithEmailAndPassword,
   useHandleSubmitEditDetails,
   generateErrorMessage,
+  ifAllUserDetailsAreFilled,
 } from "senf-shared";
 
 import { getUserData } from "../redux/actions/userActions";
@@ -44,19 +45,18 @@ import { auth, db } from "../firebase";
 import { SET_AUTHENTICATED } from "../redux/types";
 
 const Auth = ({
-  authEditOpen
+  authAddDetails
 }) => {
   const { handleModal } = React.useContext(ModalContext) || {};
 
   const [errorMessage, setErrorMessage] = useState({ code: "", message: "" });
   const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [page, setPage] = useState('');
 
 
-  const [verifiedUser, setVerifiedUser] = useState(false);
-  const [addedDetails, setAddedDetails] = useState(false);
-  const [emailRegistrationSubmitted, setEmailRegistrationSubmitted] = useState(false);
   const user = useSelector((state) => state.user);
+  const reduxUser = useSelector((state) => state.user);
   const userIdInFirebase = getAuth().currentUser?.uid;
 
   const dispatch = useDispatch();
@@ -117,7 +117,6 @@ const Auth = ({
       setErrorMessage({ code: "", message: "" });
       dispatch({ type: SET_AUTHENTICATED });
       dispatch(getUserData(firebaseEmailPasswordSignInUser.user.uid));
-      setVerifiedUser(true);
       handleModal("pop")
 
     }
@@ -147,9 +146,7 @@ const Auth = ({
     if (firebaseUserEmailRegistrationInfo) {
       setLoading(false);
       setErrorMessage({ code: "", message: "" });
-      setEmailRegistrationSubmitted(true);
-
-
+      setPage('authVerifyEmail')
       window.history.pushState(null, null, "/verify");
     }
 
@@ -170,7 +167,6 @@ const Auth = ({
 
   ]);
 
-
   const UrlPath = window.location.pathname;
   useEffect(() => {
     // auto login if email has been verified
@@ -178,29 +174,40 @@ const Auth = ({
 
     if (UrlPath === "/verify") {
 
+
+
       const unsubscribe = onIdTokenChanged(auth, (user) => {
-        if (user && user.uid && user.emailVerified) {
+        if (user && user.uid && user.emailVerified && ifAllUserDetailsAreFilled(reduxUser)) {
+          // close modal and redirect to home
           dispatch({ type: SET_AUTHENTICATED });
           dispatch(getUserData(user.uid));
-          setVerifiedUser(true);
-          setAddedDetails(false)
-          setEmailRegistrationSubmitted(false);
-          console.log('user is verified, redirecting to home')
+          handleModal("pop")
+          // setPage('AuthSuccess') ??
+          console.log('user is verified,all userdetails are set, redirecting  to homepage')
           window.history.pushState(null, null, "/");
 
-
+        }
+        if (user && user.uid && user.emailVerified && !ifAllUserDetailsAreFilled(reduxUser)) {
           // open modal <AuthAddDetails/>
+          dispatch({ type: SET_AUTHENTICATED });
+          dispatch(getUserData(user.uid));
+          setPage('authAddDetails')
+          console.log('user is verified ,but redirecting  to add details because user details are not fully set')
+          window.history.pushState(null, null, "/");
 
         }
         if (user && user.uid && !user.emailVerified) {
-          console.log('user is not verified')
-          setVerifiedUser(false);
           // open modal <AuthVerifyEmail/>
+          console.log('user is not yet verified')
+          setPage('authVerifyEmail')
+
         }
         if (!user) {
+          // open modal <AuthOptions/> 
           console.log('user is not logged in')
           window.history.pushState(null, null, "/");
-          // open modal <AuthOptions/> ?
+          setPage('authOptions')
+
         }
       });
 
@@ -218,7 +225,8 @@ const Auth = ({
         unsubscribe()
       }
     }
-  }, [UrlPath])
+  }, [UrlPath, reduxUser])
+
 
 
 
@@ -234,7 +242,7 @@ const Auth = ({
       setErrorMessage({ code: "", message: "" });
       dispatch({ type: SET_AUTHENTICATED });
       dispatch(getUserData(firebaseGoogleUser.user.uid));
-      setVerifiedUser(true);
+
       handleModal("pop")
 
     }
@@ -258,7 +266,7 @@ const Auth = ({
       setErrorMessage({ code: "", message: "" });
       dispatch({ type: SET_AUTHENTICATED });
       dispatch(getUserData(firebaseFacebookUser.user.uid));
-      setVerifiedUser(true);
+
       handleModal("pop")
 
     }
@@ -356,6 +364,13 @@ const Auth = ({
   //   };
   // }, []);
 
+  useEffect(() => {
+    if (authAddDetails) {
+      setPage('authAddDetails')
+    }
+
+
+  }, [authAddDetails])
 
 
 
@@ -379,9 +394,8 @@ const Auth = ({
     handleSubmitEditDetails={(userDetails) =>
       handleSubmitEditDetails(userDetails)
     }
-    verifiedUser={verifiedUser || authEditOpen}
-    addedDetails={addedDetails}
-    emailRegistrationSubmitted={emailRegistrationSubmitted}
+    setPage={setPage}
+    page={page}
     handleClose={() => {
       handleModal("pop")
       setErrorMessage({ code: "", message: "" });

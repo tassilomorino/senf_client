@@ -298,7 +298,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
                     variant="secondary"
                     size="small"
                     text={t("profilePage.addDescription")}
-                    onClick={() => setAuthEditOpen(true)}
+                    onClick={handleSetAuthEditOpen}
                   />
                 )}
               </Box>
