@@ -17,11 +17,11 @@ import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3, StyledText } from "../../../styles/GlobalStyle";
 
 const RemoveButton = styled.button`
-  margin-top: 15px;
+  margin-top: 20px;
   margin-left: 5px;
   box-sizing: border-box;
-  width: 57px;
-  height: 57px;
+  width: 50px;
+  max-height: 50px;
   background-color: rgba(186, 160, 79, 0.1);
   border-radius: 10px;
   border: 2px solid rgba(186, 160, 79, 0.1);
@@ -148,10 +148,9 @@ const CreateOrganizationPage5 = ({
                     key="question"
                     id="question"
                     name="question"
-                    type="textarea"
+                    type="text"
                     placeholder={t("question")}
                     label={t("question")}
-                    rows={1}
                     value={form.question}
                     onChange={(event) => handleFormChange(event, index)}
                   />
@@ -175,11 +174,11 @@ const CreateOrganizationPage5 = ({
                   type="textarea"
                   placeholder={t("answer")}
                   label={t("answer")}
-                  rows={1}
+                  rows={3}
                   value={form.answer}
                   onChange={(event) => handleFormChange(event, index)}
 
-                  // minRows="3"
+                // minRows="3"
                 />
               </div>
             ))}

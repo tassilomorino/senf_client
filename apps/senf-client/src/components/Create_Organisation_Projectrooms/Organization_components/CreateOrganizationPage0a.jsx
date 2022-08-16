@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { ToggleInput } from "senf-atomic-design-system";
+import { ToggleInput, InfoSwiper } from "senf-atomic-design-system";
 import {
   ComponentInnerWrapper,
   ComponentWrapper,
@@ -11,7 +11,6 @@ import {
 
 import Navigation from "../Components/Navigation";
 import { StyledH2, StyledH3, StyledText } from "../../../styles/GlobalStyle";
-import InfoSwiper from "../Components/InfoSwiper";
 
 const CheckBoxWrapper = styled.div`
   margin-top: 50px;

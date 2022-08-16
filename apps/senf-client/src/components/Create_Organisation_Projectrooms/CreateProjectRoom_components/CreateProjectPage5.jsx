@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { Icon, CalendarIcon, Typography } from "senf-atomic-design-system"
 import {
   ComponentWrapper,
   ComponentInnerWrapper,
@@ -13,8 +14,6 @@ import {
 import { db } from "../../../firebase";
 
 import Navigation from "../Components/Navigation";
-import { StyledH3, StyledText } from "../../../styles/GlobalStyle";
-import CalendarIcon from "../../../images/icons/calendar.png";
 import ToggleStatusComponent from "../Components/ToggleStatusComponent";
 
 const Card = styled.div`
@@ -131,20 +130,16 @@ const CreateProjectPage5 = ({
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH3 textAlign="center" margin="20px">
+          <Typography variant="h3" textAlign="center" margin="20px">
             {pagesData[index].subTitle}
-          </StyledH3>
+          </Typography>
 
           <Card active={calendar} onClick={() => setCalendar(!calendar)}>
-            <img
-              src={CalendarIcon}
-              width="80px"
-              style={{ marginTop: "20px" }}
-            />
-            <StyledH3 textAlign="center">{t("calendar")}</StyledH3>
-            <StyledText textAlign="center">
+            <CalendarIcon size="100%" />
+            <Typography variant="h3" textAlign="center">{t("calendar")}</Typography>
+            <Typography variant="bodyBg" textAlign="center">
               {t("calendar_projectroom_explanaition")}
-            </StyledText>
+            </Typography>
           </Card>
 
           <ToggleStatusComponent

@@ -14,9 +14,8 @@ import {
   ComponentInnerWrapper,
   ComponentWrapper,
 } from "../styles/sharedStyles";
-import { StyledH2, StyledH3, StyledImg } from "../../../styles/GlobalStyle";
+import { StyledH3, } from "../../../styles/GlobalStyle";
 import Navigation from "../Components/Navigation";
-import { InlineOrganizationCard } from "../Components/InlineOrganizationCard";
 
 const CoverWrapper = styled.div`
   left: 0;

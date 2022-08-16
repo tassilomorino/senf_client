@@ -483,7 +483,7 @@ const CreateProjectDialog = ({ type }) => {
   const currentStep = (100 / (pages.length - 1)) * index;
 
   return (
-    <div style={{ height: "2000px", maxHeight: "100%" }} isOpen={true}>
+    <div style={{ height: "2000px", maxHeight: "100%" }} >
       <TopNavigation
         currentStep={currentStep}
         index={index}

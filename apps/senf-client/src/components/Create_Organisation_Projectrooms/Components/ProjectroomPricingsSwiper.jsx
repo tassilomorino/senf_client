@@ -4,12 +4,8 @@ import React, { useState, useCallback, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
+import { Typography, Box } from "senf-atomic-design-system"
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-
-import { StyledText } from "../../../styles/GlobalStyle";
-import BubbleOrange from "../../../images/bubbles/bubble-orange.png";
-import BubbleGreen from "../../../images/bubbles/bubble-green.png";
-import BubbleBlue from "../../../images/bubbles/bubble-blue.png";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -62,14 +58,7 @@ const HorizontalSwipeCard = styled(animated.div)`
   }
 `;
 
-const ArrowWrapper = styled.div`
-  top: 10px;
-  width: 100%;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  z-index: 9;
-`;
+
 
 const Img = styled.img`
   position: absolute;
@@ -162,21 +151,21 @@ const ProjectroomPricingsSwiper = () => {
       title: "Base",
       price: "15€",
       text: "Zeigt der Community, dass ihr euch aktiv mit Bürgerbeteiligung beschäftigt",
-      img: BubbleOrange,
+      // img: BubbleOrange,
       id: 0,
     },
     {
       title: "Pro",
       price: "45€",
       text: "Als eingetragene Organisation könnt ihr Projekträume für eure Vorhaben erstellen",
-      img: BubbleBlue,
+      // img: BubbleBlue,
       id: 1,
     },
     {
       title: "Individual",
       price: "Anfrage",
       text: "Fügt Beschreibungen, Kontakdaten und FAQs hinzu, um Interessierte zu informieren",
-      img: BubbleGreen,
+      // img: BubbleGreen,
       id: 2,
     },
   ];
@@ -192,20 +181,26 @@ const ProjectroomPricingsSwiper = () => {
             style={props}
             key={id}
           >
-            <Img src={img} alt="" />
+            {/* <Img src={img} alt="" /> */}
             <Price>
               <PriceValue>{price}</PriceValue>
               <PriceSubtitle>pro Monat</PriceSubtitle>
             </Price>
 
             <Title textAlign="center">{title}</Title>
-            <StyledText
-              textAlign="left"
-              margin="10px 20px 20px 20px"
-              marginLeft="20px"
-            >
-              {text}
-            </StyledText>
+            <Box margin="10px 20px 20px 20px">
+
+
+
+
+              <Typography variant="bodyBg" >
+
+
+
+                {text}
+
+              </Typography>
+            </Box>
           </HorizontalSwipeCard>
         ))}
       </FlexWrapper>

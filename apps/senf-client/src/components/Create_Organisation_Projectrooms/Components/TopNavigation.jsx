@@ -16,7 +16,7 @@ import {
 } from "senf-atomic-design-system";
 import { db } from "../../../firebase";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
-import { StyledH2, StyledH3 } from "../../../styles/GlobalStyle";
+import { StyledH2 } from "../../../styles/GlobalStyle";
 import {
   openOrganizationFunc,
   stateCreateOrganizationsFunc,

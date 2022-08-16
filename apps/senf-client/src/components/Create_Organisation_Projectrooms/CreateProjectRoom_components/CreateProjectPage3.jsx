@@ -8,7 +8,7 @@ import imageCompression from "browser-image-compression";
 // firebase
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { doc, updateDoc } from "firebase/firestore";
-import { Loader } from "senf-atomic-design-system";
+import { Loader, Hyperlink } from "senf-atomic-design-system";
 import { db } from "../../../firebase";
 
 // Components
@@ -20,7 +20,6 @@ import { StyledH3 } from "../../../styles/GlobalStyle";
 import Navigation from "../Components/Navigation";
 
 // images
-import UploadImageIcon from "../../../images/icons/uploadImage.png";
 
 const StyledLabel = styled.label`
   width: 150px;
@@ -158,11 +157,7 @@ const CreateProjectPage3 = ({
                     <Loader />
                   </div>
                 ) : (
-                  <img
-                    src={UploadImageIcon}
-                    alt="UploadImageIcon"
-                    width="50%"
-                  />
+                  <Hyperlink alt="UploadImageIcon" />
                 )}
               </StyledIconWrapper>
             )}

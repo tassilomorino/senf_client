@@ -71,7 +71,6 @@ const Icon = styled.div`
 const CoverTitle = styled.span`
   font-size: 14px;
   font-weight: 700;
-  /* font-family: PlayfairDisplay-Bold; */
   color: #353535;
   text-align: center;
   width: 100%;

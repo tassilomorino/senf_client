@@ -8,52 +8,18 @@ import imageCompression from "browser-image-compression";
 // firebase
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { doc, updateDoc } from "firebase/firestore";
-import { Loader } from "senf-atomic-design-system";
+import { ImageUploadTile, Box, Typography } from "senf-atomic-design-system";
 import { db } from "../../../firebase";
-
 // redux
 // import { createProjectSaveData } from "../../../../redux/actions/formDataActions";
 
 // images
-import UploadImageIcon from "../../../images/icons/uploadImage.png";
 import {
   ComponentInnerWrapper,
   ComponentWrapper,
 } from "../styles/sharedStyles";
 import Navigation from "../Components/Navigation";
-import { StyledH3 } from "../../../styles/GlobalStyle";
 
-const StyledLabel = styled.label`
-  width: 150px;
-  height: 150px;
-  border-radius: 20px;
-  background-color: white;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  margin-left: calc(50% - 75px);
-`;
-
-const StyledIconWrapper = styled.div`
-  flex-shrink: 0;
-  width: 150px;
-  height: 150px;
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(255, 255, 255, 0.8);
-  border-radius: 20px;
-`;
-
-const StyledImg = styled.img`
-  flex-shrink: 0;
-  min-width: 100%;
-  min-height: 100%;
-  object-fit: cover;
-`;
 
 const CreateOrganizationPage3 = ({
   onClickNext,
@@ -117,8 +83,6 @@ const CreateOrganizationPage3 = ({
       )}/logo/logo`
     );
 
-    getDownloadURL(storageRef).then(onResolve, onReject);
-
     function onResolve(foundURL) {
       setUploadedImage(foundURL);
     }
@@ -126,6 +90,10 @@ const CreateOrganizationPage3 = ({
     function onReject(error) {
       console.log(error.code);
     }
+
+    getDownloadURL(storageRef).then(onResolve, onReject);
+
+
   }, [uploadedImage]);
 
   const handleNext = () => {
@@ -144,39 +112,19 @@ const CreateOrganizationPage3 = ({
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH3 textAlign="center" margin="20px">
+          <Typography variant="h3" textAlign="center" margin="20px">
             {pagesData[index].subTitle}
-          </StyledH3>
+          </Typography>
+          <Box justifyContent="center" marginTop="20px">
+            <ImageUploadTile
+              photoURL={uploadedImage}
+              uploadingImage={loading}
+              hover={uploadImageHover}
+              onHover={setUploadImageHover}
+              handleImageUpload={handleImageUpload}
+            />
+          </Box>
 
-          <StyledLabel
-            onMouseEnter={() => setUploadImageHover(true)}
-            onMouseLeave={() => setUploadImageHover(false)}
-            htmlFor="imageUploader"
-          >
-            {(!uploadedImage || uploadImageHover) && (
-              <StyledIconWrapper>
-                {loading ? (
-                  <div style={{ width: "50px" }}>
-                    <Loader />
-                  </div>
-                ) : (
-                  <img
-                    src={UploadImageIcon}
-                    alt="UploadImageIcon"
-                    width="50%"
-                  />
-                )}
-              </StyledIconWrapper>
-            )}
-
-            {uploadedImage && <StyledImg src={uploadedImage} width="100%" />}
-          </StyledLabel>
-          <input
-            type="file"
-            onChange={(event) => handleImageUpload(event)}
-            style={{ display: "none" }}
-            id="imageUploader"
-          />
         </ComponentInnerWrapper>
       </ComponentWrapper>
 

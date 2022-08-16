@@ -3,8 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-
-import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
 import * as yup from "yup";
 
 // firebase
@@ -19,27 +17,10 @@ import {
   ComponentInnerWrapper,
   ComponentWrapper,
 } from "../styles/sharedStyles";
-// import Geocoder from "react-mapbox-gl-geocoder";
 import Navigation from "../Components/Navigation";
 import { StyledH3 } from "../../../styles/GlobalStyle";
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
 
-const ButttonsWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-`;
-
-const GeocoderWrapper = styled.div`
-  margin-top: 20px;
-  width: 100%;
-`;
 
 const CreateOrganizationPage2 = ({
   onClickNext,
@@ -51,9 +32,6 @@ const CreateOrganizationPage2 = ({
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
 
-  const [address, setAddress] = useState(null);
-  const [longitude, setLongitude] = useState(null);
-  const [latitude, setLatitude] = useState(null);
 
   const createProjectValidationSchema = yup.object({
     title: yup
@@ -106,41 +84,17 @@ const CreateOrganizationPage2 = ({
             formik.setFieldValue("weblink", data.weblink);
           }
 
-          if (data.address) {
-            setAddress(data.address);
-          }
+          // if (data.address) {
+          //   setAddress(data.address);
+          // }
         }
       }
     }
     fetchData();
   }, []);
 
-  const MyInput = (props) => (
-    <input
-      {...props}
-      placeholder={address || "Addresse der Organisation"}
-      id="geocoder"
-      autoComplete="off"
-    />
-  );
 
-  const geocode = (viewport) => {
-    const geocodingClient = mbxGeocoding({
-      accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,
-    });
-    geocodingClient
-      .reverseGeocode({
-        query: [viewport.longitude, viewport.latitude],
-        limit: 1,
-      })
-      .send()
-      .then((response) => {
-        const match = response.body;
-        setAddress(match.features[0].place_name);
-        setLongitude(match.features[0].center[0]);
-        setLatitude(match.features[0].center[1]);
-      });
-  };
+
 
   const handleNext = async () => {
     setNextClicked(true);
@@ -153,9 +107,9 @@ const CreateOrganizationPage2 = ({
       const updateProject = {
         weblink: formik.values.weblink,
         contact: formik.values.contact,
-        address,
-        longitude,
-        latitude,
+        // address,
+        // longitude,
+        // latitude,
       };
 
       const ref = doc(
