@@ -10,6 +10,8 @@ import {
   signInWithPopup,
   FacebookAuthProvider,
   GoogleAuthProvider,
+  onIdTokenChanged,
+  reload,
 } from "firebase/auth";
 
 import {
@@ -34,6 +36,7 @@ import {
   useCreateUserWithEmailAndPassword,
   useHandleSubmitEditDetails,
   generateErrorMessage,
+  ifAllUserDetailsAreFilled,
 } from "senf-shared";
 
 import { getUserData } from "../redux/actions/userActions";
@@ -42,20 +45,18 @@ import { auth, db } from "../firebase";
 import { SET_AUTHENTICATED } from "../redux/types";
 
 const Auth = ({
-  authEditOpen
+  authAddDetails
 }) => {
   const { handleModal } = React.useContext(ModalContext) || {};
 
   const [errorMessage, setErrorMessage] = useState({ code: "", message: "" });
   const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [page, setPage] = useState('');
 
-  const [emailRegistrationSubmitted, setEmailRegistrationSubmitted] =
-    useState(false);
-
-  const [verifiedUser, setVerifiedUser] = useState(false);
 
   const user = useSelector((state) => state.user);
+  const reduxUser = useSelector((state) => state.user);
   const userIdInFirebase = getAuth().currentUser?.uid;
 
   const dispatch = useDispatch();
@@ -125,8 +126,9 @@ const Auth = ({
       setErrorMessage({
         ...errorMessage,
         code: firebaseEmailPasswordSignInError.code,
-        message: generateErrorMessage(firebaseEmailPasswordSignInError.code),
+        message: generateErrorMessage(firebaseEmailPasswordSignInError?.code),
       });
+
     }
   }, [
     dispatch,
@@ -140,23 +142,95 @@ const Auth = ({
     if (firebaseUserEmailRegistrationLoading) {
       setLoading(true);
     }
+
     if (firebaseUserEmailRegistrationInfo) {
       setLoading(false);
       setErrorMessage({ code: "", message: "" });
-      setEmailRegistrationSubmitted(true);
+      setPage('authVerifyEmail')
+      window.history.pushState(null, null, "/verify");
     }
+
+
+
     if (firebaseUserEmailRegistrationError) {
       setLoading(false);
       setErrorMessage({
         code: firebaseUserEmailRegistrationError.code,
-        message: generateErrorMessage(firebaseUserEmailRegistrationError.code),
+        message: generateErrorMessage(firebaseUserEmailRegistrationError?.code),
       });
+
     }
   }, [
     firebaseUserEmailRegistrationError,
     firebaseUserEmailRegistrationInfo,
     firebaseUserEmailRegistrationLoading,
+
   ]);
+
+  const UrlPath = window.location.pathname;
+  useEffect(() => {
+    // auto login if email has been verified
+
+
+    if (UrlPath === "/verify") {
+
+
+
+      const unsubscribe = onIdTokenChanged(auth, (user) => {
+        if (user && user.uid && user.emailVerified && ifAllUserDetailsAreFilled(reduxUser)) {
+          // close modal and redirect to home
+          dispatch({ type: SET_AUTHENTICATED });
+          dispatch(getUserData(user.uid));
+          handleModal("pop")
+          // setPage('AuthSuccess') ??
+          console.log('user is verified,all userdetails are set, redirecting  to homepage')
+          window.history.pushState(null, null, "/");
+
+        }
+        if (user && user.uid && user.emailVerified && !ifAllUserDetailsAreFilled(reduxUser)) {
+          // open modal <AuthAddDetails/>
+          dispatch({ type: SET_AUTHENTICATED });
+          dispatch(getUserData(user.uid));
+          setPage('authAddDetails')
+          console.log('user is verified ,but redirecting  to add details because user details are not fully set')
+          window.history.pushState(null, null, "/");
+
+        }
+        if (user && user.uid && !user.emailVerified) {
+          // open modal <AuthVerifyEmail/>
+          console.log('user is not yet verified')
+          setPage('authVerifyEmail')
+
+        }
+        if (!user) {
+          // open modal <AuthOptions/> 
+          console.log('user is not logged in')
+          window.history.pushState(null, null, "/");
+          setPage('authOptions')
+
+        }
+      });
+
+      const interval = setInterval(async () => {
+        try {
+          if (auth.currentUser) {
+            await reload(auth.currentUser);
+          }
+        } catch (error) {
+          throw new Error(error, "error in main.jsx email verification");
+        }
+      }, 3000);
+      return () => {
+        clearInterval(interval)
+        unsubscribe()
+      }
+    }
+  }, [UrlPath, reduxUser])
+
+
+
+
+
   useEffect(() => {
     // sign in with google
     if (firebaseGoogleUserLoading) {
@@ -168,7 +242,7 @@ const Auth = ({
       setErrorMessage({ code: "", message: "" });
       dispatch({ type: SET_AUTHENTICATED });
       dispatch(getUserData(firebaseGoogleUser.user.uid));
-      setVerifiedUser(true);
+
       handleModal("pop")
 
     }
@@ -192,7 +266,7 @@ const Auth = ({
       setErrorMessage({ code: "", message: "" });
       dispatch({ type: SET_AUTHENTICATED });
       dispatch(getUserData(firebaseFacebookUser.user.uid));
-      setVerifiedUser(true);
+
       handleModal("pop")
 
     }
@@ -290,6 +364,14 @@ const Auth = ({
   //   };
   // }, []);
 
+  useEffect(() => {
+    if (authAddDetails) {
+      setPage('authAddDetails')
+    }
+
+
+  }, [authAddDetails])
+
 
 
   return (<AuthComponent
@@ -312,8 +394,8 @@ const Auth = ({
     handleSubmitEditDetails={(userDetails) =>
       handleSubmitEditDetails(userDetails)
     }
-    emailRegistrationSubmitted={emailRegistrationSubmitted}
-    verifiedUser={verifiedUser || authEditOpen}
+    setPage={setPage}
+    page={page}
     handleClose={() => {
       handleModal("pop")
       setErrorMessage({ code: "", message: "" });

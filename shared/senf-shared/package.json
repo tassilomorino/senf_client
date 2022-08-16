@@ -8,12 +8,5 @@
   "scripts": {
     "lint": "TIMING=1 eslint src/**/*.ts* --fix",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
-  },
-  "dependencies": {
-    "firebase": "9.8.3",
-    "formik": "^2.2.9",
-    "react-redux": "^8.0.2",
-    "redux": "^4.2.0",
-    "yup": "^0.32.11"
   }
 }

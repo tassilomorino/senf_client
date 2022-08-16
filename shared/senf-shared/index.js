@@ -8,3 +8,4 @@ export {
   useSignInWithFacebook,
 } from "./firebase/useSignInWithPopup";
 export { useHandleSubmitEditDetails } from "./firebase/useHandleSubmitEditDetails";
+export { ifAllUserDetailsAreFilled } from "./utils/ifAllUserDetailsAreFilled";

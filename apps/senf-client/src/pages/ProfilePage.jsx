@@ -40,7 +40,7 @@ const ProfilePage = ({
 
   const organizations = useSelector((state) => state.data.organizations);
   const organization = useSelector((state) => state.data.organization);
-  const [deleteMenuOpen, setDeleteMenuOpen] = useState(false);
+
 
   const [foundOrganizations, setFoundOrganizations] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -90,17 +90,14 @@ const ProfilePage = ({
     dispatch(deleteUserFromDb(user.userId)).then(() => {
       handleModal("pop")
       handleModal("pop")
-    });
+    }).catch(err => {
+      throw new Error(err, ' error in deleteUserFromDb in ProfilePage.jsx')
+    })
   };
 
   return (
     <React.Fragment>
-      {deleteMenuOpen && (
-        <DeleteProfileModal
-          deleteMenuOpen={deleteMenuOpen}
-          setDeleteMenuOpen={setDeleteMenuOpen}
-        />
-      )}
+
       <ProfilePageComponent
         user={user}
         organization={organization}
@@ -112,7 +109,8 @@ const ProfilePage = ({
         handleButtonLike={handleButtonLike}
         handleButtonComment={handleButtonComment}
         handleButtonClose={handleClose}
-        handleSetAuthEditOpen={() => handleModal("push", <Auth authEditOpen={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+        handleSetAuthEditOpen={() => handleModal("push", <Auth authAddDetails={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+
         }
         handleLogout={handleLogout}
         handleDeleteAccount={handleDeleteAccount}

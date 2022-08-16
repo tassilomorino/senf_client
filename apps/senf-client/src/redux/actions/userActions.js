@@ -68,9 +68,9 @@ export const logoutUser = () => (dispatch) => {
     });
 };
 export const deleteUserFromDb = (userId) => async (dispatch) => {
+  const currentuser = auth.currentUser;
   if (userId) {
     try {
-      const currentuser = auth.currentUser;
       const cantDeleteSuperAdmins = ["dein@senf.koeln"];
       if (cantDeleteSuperAdmins.includes(currentuser.email)) {
         alert("cant delete SuperAdmin");
@@ -88,7 +88,15 @@ export const deleteUserFromDb = (userId) => async (dispatch) => {
         dispatch(closeAccountFunc());
       }
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error, "error during deleteUserFromDb with userId");
+    }
+  }
+  // if no userId is provided, delete the current user from the only firebase auth
+  if (!userId) {
+    try {
+      deleteUser(currentuser);
+    } catch (error) {
+      throw new Error(error, " error during deleteUserFromDb without userId");
     }
   }
 };
