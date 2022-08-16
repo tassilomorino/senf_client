@@ -82,7 +82,7 @@ const Auth = ({
   const sendVerification = {
     sendEmailVerification: true,
     emailVerificationOptions: {
-      url: "https://deploy-preview-544--senf-client-test.netlify.app/verify",
+      url: "https://senf.koeln/verify",
     },
   };
   const [
