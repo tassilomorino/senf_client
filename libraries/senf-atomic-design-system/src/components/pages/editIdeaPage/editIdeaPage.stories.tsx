@@ -17,5 +17,18 @@ const Template: Story<EditIdeaPageProps> = (args) => <EditIdeaPage {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  text: "x",
+  data: [],
+  projectroomsData: [],
+  address: '',
+  handle: {
+    closeCard: () => { },
+    submitComment: () => { },
+    shareIdeaVia: () => { },
+    openProjectroom: () => { },
+    editIdea: () => { },
+    deleteIdea: () => { },
+    deleteComment: () => { },
+    reportIdea: () => { },
+    reportComment: () => { },
+  },
 };
