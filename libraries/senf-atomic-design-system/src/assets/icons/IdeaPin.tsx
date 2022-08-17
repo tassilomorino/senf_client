@@ -38,7 +38,7 @@ const IdeaPin: FC<SVGRProps> = ({ color = "black", transform }) => (
     <path fillRule="evenodd" clipRule="evenodd" d="M21.499 41.9998C20.4123 41.9998 19.5303 41.1178 19.5303 40.031V23.6248C19.5303 22.538 20.4123 21.656 21.499 21.656C22.5858 21.656 23.4678 22.538 23.4678 23.6248V40.031C23.4678 41.1178 22.5858 41.9998 21.499 41.9998Z" stroke="#867C63" strokeWidth="1.5" />
     <path fillRule="evenodd" clipRule="evenodd" d="M21.499 41.9998C20.4123 41.9998 19.5303 41.1178 19.5303 40.031V23.6248C19.5303 22.538 20.4123 21.656 21.499 21.656C22.5858 21.656 23.4678 22.538 23.4678 23.6248V40.031C23.4678 41.1178 22.5858 41.9998 21.499 41.9998Z" stroke="white" strokeOpacity="0.25" strokeWidth="1.5" />
     <defs>
-      <filter id="filter0_ddd_1129_15128" x="10.5283" y="29.0566" width="21.9434" height="21.9434" filterUnits="userSpaceOnUse" colorInterpolation-filters="sRGB">
+      <filter id="filter0_ddd_1129_15128" x="10.5283" y="29.0566" width="21.9434" height="21.9434" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
         <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
         <feOffset />

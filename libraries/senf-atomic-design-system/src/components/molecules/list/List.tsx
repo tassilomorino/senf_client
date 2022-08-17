@@ -118,7 +118,7 @@ const List: FC<ListProps> = ({
 
   return (
     <React.Fragment>
-      {data && (
+      {data && data.length > 0 && (
         <InfiniteScroll
           id="List"
           loadMore={() => loadMore()}
