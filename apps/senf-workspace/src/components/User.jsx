@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Img from "../images/icons/icon-192.png";
 import { onSnapshot, doc } from "@firebase/firestore";
-import { db } from "../firebase";
 import styled from "styled-components";
-import { Typography, Icon, Box, Button } from "senf-atomic-design-system";
+import { Check, User as UserIcon, Typography, Icon, Box, Button } from "senf-atomic-design-system";
+import { db } from "../firebase";
+import Img from "../images/icons/icon-192.png";
 
 const UserCard = styled.div`
   padding: 10px;
@@ -25,7 +25,7 @@ const User = ({ user1, user, selectUser, chat }) => {
 
   useEffect(() => {
     const id = user1 > user2 ? `${user1 + user2}` : `${user2 + user1}`;
-    let unsub = onSnapshot(
+    const unsub = onSnapshot(
       doc(db, "workspace", "generalMessages", "lastMsg", id),
       (doc) => {
         setData(doc.data());
@@ -41,14 +41,14 @@ const User = ({ user1, user, selectUser, chat }) => {
     >
       <Box justifyContent="space-between" alignItems="center">
         {/* <Avatar src={user.avatar || Img} alt="avatar" /> */}
-        <Button variant="secondary" icon="user" />
+        <Button variant="secondary" icon={<UserIcon />} />
         <Box margin="10px" flexDirection="column">
           <Typography variant="h3">{user.handle}</Typography>
 
           {data && (
             <Box gap="3px">
               {data.from === user1 ? (
-                <Icon icon="check" transform="scale(0.7)" />
+                <Icon icon={<Check />} transform="scale(0.7)" />
               ) : null}
               <Typography variant="bodySm" className="truncate">
                 {data.text}
