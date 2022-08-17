@@ -45,7 +45,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
   const [errorMessage, setErrorMessage] = useState({ code: "", message: "" });
   const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
-
+  const [page, setPage] = useState('');
   const [emailRegistrationSubmitted, setEmailRegistrationSubmitted] =
     useState(false);
 
@@ -290,6 +290,7 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
         setOpenModal={setAuthOpen}
         zIndex={9999999999}
         backgroundColor="#f9f1d7"
+        onDrag={(e) => console.log(e)}
       >
         <AuthComponent
           errorMessage={errorMessage}
@@ -313,6 +314,8 @@ const Auth = ({ setAuthOpen, setAuthEditOpen, authOpen, authEditOpen }) => {
           }
           emailRegistrationSubmitted={emailRegistrationSubmitted}
           verifiedUser={verifiedUser}
+          setPage={setPage}
+          page={page}
           handleClose={() => {
             setAuthOpen(false);
             setAuthEditOpen(false);
