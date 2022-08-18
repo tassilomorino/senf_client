@@ -13,6 +13,8 @@ import {
   SET_MY_ORGANIZATIONS,
   LOADING_MYORGANIZATIONS_DATA,
   LOADING_MYSCREAMS_DATA,
+  EDIT_SCREAM,
+  DELETE_SCREAM,
   // MARK_NOTIFICATIONS_READ
 } from "../types";
 
@@ -84,6 +86,28 @@ export default function (state = initialState, action) {
                   : scream
               ),
             ]
+          : null,
+      };
+    case EDIT_SCREAM:
+      return {
+        ...state,
+        myScreams: state?.myScreams
+          ? [
+              ...state.myScreams.map((scream) =>
+                scream.screamId === action.payload.screamId
+                  ? { ...scream, ...action.payload }
+                  : scream
+              ),
+            ]
+          : null,
+      };
+    case DELETE_SCREAM:
+      return {
+        ...state,
+        myScreams: state?.myScreams
+          ? state.myScreams.filter(
+              (scream) => scream.screamId !== action.payload
+            )
           : null,
       };
 
