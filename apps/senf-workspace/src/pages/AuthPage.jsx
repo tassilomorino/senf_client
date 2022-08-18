@@ -40,7 +40,7 @@ const Section = styled.section`
 
 const AuthPage = ({ variant }) => {
   const [loading, setLoading] = useState(false);
-
+  const [page, setPage] = useState('');
   const navigate = useNavigate();
 
   const handleSubmitLogin = async (formikLoginStore) => {
@@ -154,6 +154,8 @@ const AuthPage = ({ variant }) => {
           handleSubmitRegister={(registerData) =>
             handleSubmitRegister(registerData)
           }
+          page={page}
+          setPage={setPage}
         />
       </Modal>
     </Section>

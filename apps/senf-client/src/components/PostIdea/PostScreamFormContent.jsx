@@ -281,7 +281,7 @@ const PostScreamFormContent = ({
               <TertiaryButton
                 onClick={() => setTopicDropdownOpen(!topicDropdownOpen)}
                 text={topic || t("select_topic")}
-                iconRight={<Arrow transform="rotate(90deg)" />}
+                iconRight={<Arrow transform="rotate(90)" />}
                 variant="semibold"
               />
             }
