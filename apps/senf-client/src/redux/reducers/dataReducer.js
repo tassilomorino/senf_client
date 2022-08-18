@@ -218,12 +218,14 @@ export default function (state = initialState, action) {
         screams: state.screams.filter(
           (scream) => scream.screamId !== action.payload
         ),
-        project: {
-          ...state.project,
-          screams: state.project?.screams?.filter(
-            (scream) => scream.screamId !== action.payload
-          ),
-        },
+        project: state.project?.screams
+          ? {
+              ...state?.project,
+              screams: state?.project?.screams?.filter(
+                (scream) => scream.screamId !== action.payload
+              ),
+            }
+          : state.project,
       };
 
     case SET_COMMENTS:
