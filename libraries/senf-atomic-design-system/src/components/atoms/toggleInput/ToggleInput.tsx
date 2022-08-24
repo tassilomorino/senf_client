@@ -12,11 +12,8 @@ const Wrapper = styled.div<ToggleInputProps>``;
 
 const ToggleInputContainer = styled.div<ToggleInputProps>`
   display: flex;
-  align-items: center;
   z-index: 99;
   cursor: pointer;
-  height: 20px;
-  width: 20px;
   pointer-events: ${({ pointerEvents }) =>
     pointerEvents || "all"};
 `;
@@ -44,9 +41,9 @@ const StyledToggleInput = styled.div<ToggleInputProps>`
   transition: all 150ms;
   border: 2px solid
     ${({ checked, theme }) =>
-      checked && checked !== 'indeterminate'
-        ? theme.colors.primary.primary120
-        : theme.colors.greyscale.greyscale50};
+    checked && checked !== 'indeterminate'
+      ? theme.colors.primary.primary120
+      : theme.colors.greyscale.greyscale50};
 
   ${RadioIcon} {
     visibility: ${({ checked }) => (checked ? "visible" : "hidden")};
@@ -54,13 +51,21 @@ const StyledToggleInput = styled.div<ToggleInputProps>`
   flex: none;
 `;
 
+const CheckBoxLabel = styled.label`
+  color: #353535;
+  margin-left: 20px;
+  cursor: pointer;
+`;
+
 const ToggleInput: FC<ToggleInputProps> = ({
   type,
   checked,
   receiveValue,
   pointerEvents,
+  label
 }) => {
-   const [toggle, setToggle] = useState(false);
+  const [toggle, setToggle] = useState(false);
+  const id = Math.random().toString(36).substr(2, 5)
   return (
     <ToggleInputContainer
       onClick={(e: React.FormEvent<HTMLInputElement>) => {
@@ -80,16 +85,17 @@ const ToggleInput: FC<ToggleInputProps> = ({
         </Box>
       )}
       {type === "checkbox" && (
-        <StyledToggleInput checked={checked} borderRadius="7px">
+        <StyledToggleInput checked={checked} borderRadius="7px" id={id}>
           {checked && checked !== 'indeterminate' && <Icon icon={<CheckDropShadow color="white" />} />}
           {checked && checked === 'indeterminate' && <Icon icon="More" />}
         </StyledToggleInput>
       )}
       {type === "radio" && (
-        <StyledToggleInput checked={checked} borderRadius={"50%"}>
+        <StyledToggleInput checked={checked} borderRadius={"50%"} id={id}>
           <RadioIcon />
         </StyledToggleInput>
       )}
+      {label && <CheckBoxLabel for={id}>{label}</CheckBoxLabel>}
     </ToggleInputContainer>
   );
 };

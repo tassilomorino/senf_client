@@ -52,7 +52,7 @@ const Background = styled.div`
 
 const SearchbarWrapper = styled.div`
   margin-top: 10px;
-  display: relative;
+  /* display: relative; */
   width: 100%;
 `;
 
@@ -141,9 +141,8 @@ const Toolbar: FC<ToolbarProps> = ({
           <Input
             type="search"
             placeholder={searchPlaceholder}
-            onChange={setSearchTerm}
+            onChange={(e) => setSearchTerm(e?.target?.value)}
             value={searchTerm}
-            setSearchTerm={setSearchTerm}
           />
         </SearchbarWrapper>
       )}

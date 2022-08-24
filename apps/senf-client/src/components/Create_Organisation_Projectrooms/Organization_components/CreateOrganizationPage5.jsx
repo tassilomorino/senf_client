@@ -142,34 +142,21 @@ const CreateOrganizationPage5 = ({
 
           <form>
             {formFields.map((form, index) => (
-              <div key={index} style={{ flex: "none", marginBottom: "20px" }}>
+              <div key={index} style={{ display: "flex", flexDirection: "column", gap: "10px", flex: "none", marginBottom: "20px" }}>
                 <div style={{ display: "flex" }}>
                   <Input
-                    key="question"
-                    id="question"
                     name="question"
                     type="text"
                     placeholder={t("question")}
                     label={t("question")}
                     value={form.question}
                     onChange={(event) => handleFormChange(event, index)}
+                    trailingIcon="Close"
+                    trailingIconClick={() => removeFields(index)}
                   />
-
-                  <RemoveButton onClick={() => removeFields(index)}>
-                    <StyledH2
-                      fontSize="22px"
-                      fontWeight="900"
-                      textAlign="center"
-                    >
-                      {" "}
-                      –
-                    </StyledH2>
-                  </RemoveButton>
                 </div>
 
                 <Input
-                  key="answer"
-                  id="answer"
                   name="answer"
                   type="textarea"
                   placeholder={t("answer")}

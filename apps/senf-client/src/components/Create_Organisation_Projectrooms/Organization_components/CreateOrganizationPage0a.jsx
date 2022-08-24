@@ -75,13 +75,8 @@ const CreateOrganizationPage0 = ({ onClickNext, pagesData, index }) => {
               checked={checkBox1}
               type="checkbox"
               receiveValue={() => setCheckBox1(!checkBox1)}
+              label="Ich möchte eine Organisation eintragen, die sich mit der Stadtentwicklung in Köln beschäftigt."
             />
-            <CheckBoxLabel>
-              <StyledText>
-                Ich möchte eine Organisation eintragen, die sich mit der
-                Stadtentwicklung in Köln beschäftigt.
-              </StyledText>
-            </CheckBoxLabel>
           </CheckBoxWrapper>
 
           <CheckBoxWrapper>
@@ -89,13 +84,8 @@ const CreateOrganizationPage0 = ({ onClickNext, pagesData, index }) => {
               checked={checkBox2}
               type="checkbox"
               receiveValue={() => setCheckBox2(!checkBox2)}
+              label="Ich bestätige, dass ich Teil dieser Organisation und berechtigt bin, eine Profilseite für diese Organisation zu erstellen."
             />
-            <CheckBoxLabel>
-              <StyledText>
-                Ich bestätige, dass ich Teil dieser Organisation und berechtigt
-                bin, eine Profilseite für diese Organisation zu erstellen.
-              </StyledText>
-            </CheckBoxLabel>
           </CheckBoxWrapper>
 
           <CheckBoxWrapper>
@@ -103,14 +93,10 @@ const CreateOrganizationPage0 = ({ onClickNext, pagesData, index }) => {
               checked={checkBox3}
               type="checkbox"
               receiveValue={() => setCheckBox3(!checkBox3)}
+              label="Ich verstehe, dass dies eine Beteiligungsplattform ist und
+              verpflichte mich, diese Plattform nicht für reine Werbezwecke zu
+              verwenden."
             />
-            <CheckBoxLabel>
-              <StyledText>
-                Ich verstehe, dass dies eine Beteiligungsplattform ist und
-                verpflichte mich, diese Plattform nicht für reine Werbezwecke zu
-                verwenden.
-              </StyledText>
-            </CheckBoxLabel>
           </CheckBoxWrapper>
         </ComponentInnerWrapper>
       </ComponentWrapper>

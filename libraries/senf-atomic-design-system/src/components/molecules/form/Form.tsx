@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, FC, useRef } from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
 import useOnClickOutside from "../../../hooks/useOnClickOutside";
 import Input from "../../atoms/inputs/Input";
@@ -22,21 +22,18 @@ const Form: FC<FormProps> = ({
   ...props
 }) => (
   <form>
-    <Wrapper margin={margin} maxWidth={maxWidth}>
-      {inputItems?.map(({ name, type, placeholder, label, autoComplete }) => (
+    <Wrapper margin={margin} maxWidth={maxWidth} {...props}>
+      {inputItems?.map((itemProps) => (
         <Input
-          key={name}
-          id={name}
-          name={name}
-          type={type}
-          placeholder={placeholder}
-          autoComplete={autoComplete}
-          label={label}
+          key={itemProps.name}
+          id={itemProps.name}
+          name={itemProps.name}
+          {...itemProps}
           onChange={formik?.handleChange}
           onBlur={formik?.handleBlur}
-          value={formik?.values[name]}
-          error={formik?.touched[name] && Boolean(formik?.errors[name])}
-          note={formik?.touched[name] && formik?.errors[name]}
+          value={formik?.values[itemProps.name]}
+          error={formik?.touched[itemProps.name] && Boolean(formik?.errors[itemProps.name])}
+          note={formik?.touched[itemProps.name] && formik?.errors[itemProps.name]}
         />
       ))}
     </Wrapper>

@@ -146,8 +146,6 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
           />
         </Box>
         <Input
-          key="handle"
-          id="handle"
           name="handle"
           type="text"
           placeholder={t("username")}
@@ -156,8 +154,6 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
         />
 
         <Input
-          key="description"
-          id="description"
           name="description"
           type="textarea"
           rows={3}
@@ -166,8 +162,6 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
           value={formik?.values.description}
         />
         <Input
-          key="zipcode"
-          id="zipcode"
           name="zipcode"
           type="text"
           placeholder={t("zipcode")}
@@ -176,8 +170,6 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
         />
         <Box gap="8px">
           <Dropdown
-            key="sex"
-            id="sex"
             name="sex"
             listItems={[
               {
@@ -197,8 +189,6 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
             value={formik?.values.sex}
           />
           <Dropdown
-            key="age"
-            id="age"
             name="age"
             listItems={years}
             onChange={formik?.handleChange}
