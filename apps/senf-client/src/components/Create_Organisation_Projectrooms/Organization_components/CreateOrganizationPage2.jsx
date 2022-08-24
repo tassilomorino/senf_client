@@ -139,8 +139,6 @@ const CreateOrganizationPage2 = ({
 
           <Box flexDirection="column" gap="20px">
             <Input
-              key="contact"
-              id="contact"
               name="contact"
               type="text"
               placeholder={t("contact-address")}
@@ -153,8 +151,6 @@ const CreateOrganizationPage2 = ({
             />
 
             <Input
-              key="weblink"
-              id="weblink"
               name="weblink"
               type="text"
               placeholder={t("external-link")}

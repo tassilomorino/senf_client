@@ -170,8 +170,6 @@ const InviteMember = ({ getPendingMembers }) => {
     <Box margin="20px" flexDirection="column" gap="20px">
 
       <Input
-        key="email"
-        id="email"
         name="email"
         placeholder="example@mail.com"
         label="email"

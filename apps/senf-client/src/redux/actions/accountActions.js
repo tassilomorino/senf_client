@@ -38,7 +38,7 @@ export const getMyScreams = (userId) => async (dispatch) => {
       screams.push({
         ...doc.data(),
         screamId: doc.id,
-        body: doc.data().body.substring(0, 170) + "...",
+        body: `${doc.data().body.substring(0, 170)}...`,
         color: setColorByTopic(doc.data().topic),
       });
     });
