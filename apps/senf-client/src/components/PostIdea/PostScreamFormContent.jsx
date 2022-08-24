@@ -184,8 +184,6 @@ const PostScreamFormContent = ({
         </FlexWrapper>
         <Box flexDirection="column" gap="20px">
           <Input
-            key="title"
-            id="title"
             name="title"
             type="textarea"
             placeholder={t("add_title")}
@@ -201,8 +199,6 @@ const PostScreamFormContent = ({
           />
 
           <Input
-            key="body"
-            id="body"
             name="body"
             type="textarea"
             placeholder={t("add_body")}

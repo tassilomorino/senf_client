@@ -109,7 +109,7 @@ const Geocoder: FC<GeocoderProps> = ({ statefulMap, placeholder, finalAddress, h
 
   return (
     <React.Fragment>
-      <Box zIndex={999} margin="16px" width="calc(100% - 32px)"
+      <Box zIndex={999} width="calc(100% - 32px)"
       // position={showResults && "fixed"} top={showResults && 0}
       >
         {/* <OverlayIcon onClick={() => setShowResults(!showResults)}>
@@ -117,19 +117,14 @@ const Geocoder: FC<GeocoderProps> = ({ statefulMap, placeholder, finalAddress, h
         </OverlayIcon> */}
 
         <Input
-          key="searchAddress"
-          id="searchAddress"
           name="searchAddress"
           type="search"
-          icon={<Arrow transform="rotate(180deg)" />}
-          iconClick={() => showResults ? setShowResults(false) : handleSetClose()}
+          leadingIcon={<Arrow transform="rotate(180deg)" />}
+          leadingIconClick={() => showResults ? setShowResults(false) : handleSetClose()}
           placeholder={"searchAddress"}
           // placeholder={t("searchAddress")}
-          // onChange={(event) => onChange(event?.target?.value)}
-          setSearchTerm={onChange}
-          // onBlur={() => setShowResults(false)}
+          onChange={(event) => onChange(event?.target?.value)}
           onClick={() => setShowResults(true)}
-          searchTerm={searchTerm}
           value={searchTerm}
         />
       </Box>

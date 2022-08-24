@@ -35,12 +35,12 @@ const StyledButton = styled.button < ButtonProps> `
 
 
   //ADD THEME-SPACE?
-  height: ${({ size }) => (size === "small" ? "36px" : size === "medium" ? "44px" : "50px")};
+  min-height: ${({ size, theme }) => theme.inputHeight(size)};
 
   //FOR SMALLICONBUTTON – is this really correct?
   width: ${({ fillWidth }) => (fillWidth === "max" ? "100%" : "auto")};
 
-  min-width: ${({ size }) => (size === "small" ? "36px" : size === "medium" ? "44px" : "50px")};
+  min-width: ${({ size, theme }) => theme.inputHeight(size)};
 
   color: ${({ loading, color }) => (loading === true ? "transparent" : color || "auto")};
   pointer-events: ${({ loading }) => (loading === true ? "none" : "all")};

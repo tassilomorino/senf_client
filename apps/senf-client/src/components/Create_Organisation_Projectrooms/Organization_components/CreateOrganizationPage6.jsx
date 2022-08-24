@@ -308,9 +308,8 @@ const CreateOrganizationPage6 = ({
             <Input
               type="search"
               placeholder="Durchsuche Nutzernamen oder Email-Adressen..."
-              onChange={setSearchTerm}
+              onChange={(e) => setSearchTerm(e?.target?.value)}
               value={searchTerm}
-              setSearchTerm={setSearchTerm}
             />
 
             <Button onClick={search}>Suchen</Button>
@@ -349,8 +348,8 @@ const CreateOrganizationPage6 = ({
         set={set}
         index={index}
         pagesData={pagesData}
-        // disabled={!data || nextClicked}
-        // loading={nextClicked}
+      // disabled={!data || nextClicked}
+      // loading={nextClicked}
       />
     </React.Fragment>
   );

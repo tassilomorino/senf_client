@@ -122,8 +122,6 @@ const CreateOrganizationPage1 = ({
           </StyledH3>
           <Box flexDirection="column" gap="20px">
             <Input
-              key="title"
-              id="title"
               name="title"
               type="textarea"
               placeholder={t("add_title")}
@@ -137,8 +135,6 @@ const CreateOrganizationPage1 = ({
             />
 
             <Input
-              key="description"
-              id="description"
               name="description"
               type="textarea"
               placeholder={t("add_description")}

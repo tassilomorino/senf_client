@@ -110,8 +110,6 @@ const CreateOrganizationPage4 = ({
           </Typography>
 
           <Input
-            key="googleCalendarId"
-            id="googleCalendarId"
             name="googleCalendarId"
             type="text"
             placeholder={t("googleCalendarId")}

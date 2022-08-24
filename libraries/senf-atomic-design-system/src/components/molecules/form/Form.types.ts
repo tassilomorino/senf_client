@@ -1,7 +1,9 @@
 /** @format */
 
+import { InputProps } from "../../atoms/inputs/Input.types";
+
 export interface FormProps {
-  inputItems?: Array<string>;
+  inputItems?: Array<InputProps>;
   margin?: string;
   maxWidth?: string;
   formik?: string;

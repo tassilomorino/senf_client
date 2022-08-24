@@ -138,8 +138,6 @@ const CreateProjectPage2 = ({
 
           <Box flexDirection="column" gap="20px">
             <Input
-              key="contactTitle"
-              id="contactTitle"
               name="contactTitle"
               type="textarea"
               placeholder={t("add_contactTitle")}
@@ -150,8 +148,6 @@ const CreateProjectPage2 = ({
               value={formik?.values.contactTitle}
             />
             <Input
-              key="contact"
-              id="contact"
               name="contact"
               type="textarea"
               placeholder={t("add_contact-address")}
@@ -163,8 +159,6 @@ const CreateProjectPage2 = ({
             />
 
             <Input
-              key="weblinkTitle"
-              id="weblinkTitle"
               name="weblinkTitle"
               type="textarea"
               placeholder={t("add_weblinkTitle")}
@@ -176,8 +170,6 @@ const CreateProjectPage2 = ({
             />
 
             <Input
-              key="weblink"
-              id="weblink"
               name="weblink"
               type="textarea"
               placeholder={t("add_weblink")}
