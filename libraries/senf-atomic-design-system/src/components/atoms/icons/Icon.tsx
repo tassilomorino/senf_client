@@ -10,10 +10,10 @@ const Wrapper = styled.div<IconProps>`
   color: ${({ color }) => color || "inherit"};
 `;
 
-const Icon: FC<IconProps> = ({ width, height, icon }) => (
-  <Wrapper width={width} height={height}>
+const Icon: FC<IconProps> = ({ width, height, icon, color }) => (
+  <Wrapper width={width} height={height} color={color}>
     {/* {icon} */}
-    {typeof icon === "string" && typeof Icons[icon] === "function" ? Icons[icon]({ color: "inherit" }) : icon}
+    {typeof icon === "string" && typeof Icons[icon] === "function" ? Icons[icon]({ color }) : icon}
   </Wrapper>
 );
 
