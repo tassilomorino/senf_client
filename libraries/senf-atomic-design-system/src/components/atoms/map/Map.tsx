@@ -733,7 +733,7 @@ const Map: FC<MapProps> = ({
   }, [IdeasGeoJson]);
 
   useEffect(() => {
-    if (ideaData && ideaData.long && ideaData.lat) {
+    if (ideaData && ideaData.long && ideaData.lat && statefulMap) {
       const mapboxMarker = new mapboxgl.Marker({ element: container })
       mapboxMarker
         .setLngLat([ideaData.long, ideaData.lat])
@@ -741,8 +741,8 @@ const Map: FC<MapProps> = ({
 
       setIdeaMarkerColor(ideaData.color);
 
-      if (statefulMap.getLayer("ideas")) {
-        statefulMap.setFilter('ideas', ['!=', 'screamId', ideaData.screamId]);
+      if (statefulMap?.getLayer("ideas")) {
+        statefulMap?.setFilter('ideas', ['!=', 'screamId', ideaData.screamId]);
       }
       // setPinData([{ ideaData }]);
       setTimeout(() => {

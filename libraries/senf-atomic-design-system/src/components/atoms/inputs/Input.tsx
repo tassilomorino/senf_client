@@ -90,7 +90,7 @@ const Input: FunctionComponent<InputProps> = ({
           placeholder={placeholder || `${isSearch ? "Search" : ""}`}
           disabled={disabled}
           rows={Math.max(rows, 2)}
-          value={value}
+          value={value || ""}
           // onChange={(e: React.FormEvent<HTMLInputElement>) => {
           //   setValue(e.currentTarget.value);
           //   receiveValue(e.currentTarget.value);

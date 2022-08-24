@@ -422,6 +422,7 @@ const AuthPage = ({ authAddDetails }) => {
           setErrorMessage({ code: "", message: "" });
         }}
       />
+
     </Section>
   );
 };

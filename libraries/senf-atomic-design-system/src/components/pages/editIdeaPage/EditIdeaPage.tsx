@@ -50,28 +50,9 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
 
   data,
   projectroomsData,
-  handleDropdownProject,
-  onSelected,
-  viewport,
-  scream,
-  projectRoomId,
-  setProjectRoomId,
+
   address,
-  title,
-  body,
-  topic,
-  setTopic,
-  setTitle,
-  setBody,
-  handleDropdown,
-  weblink,
-  weblinkTitle,
-  setWeblinkOpen,
-  contact,
-  contactTitle,
-  setContactOpen,
-  datePicker,
-  setCalendarOpen,
+
   handle,
 }) => {
   const { t } = useTranslation();

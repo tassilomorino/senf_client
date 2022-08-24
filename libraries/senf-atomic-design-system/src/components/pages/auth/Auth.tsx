@@ -83,7 +83,7 @@ const Auth: FC<AuthProps> = ({
           page !== "authOptions" && (
             <Button
               variant="tertiary"
-              icon={<Arrow transform="rotate(180deg)" />}
+              icon={<Arrow transform="rotate(180)" />}
               onClick={() => setPage("authOptions")}
             />
           )

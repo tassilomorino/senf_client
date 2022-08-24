@@ -32,7 +32,7 @@ const DetailSidebar: FC<DetailSidebarProps> = ({
         gap="8px"
       >
         <Button
-          icon={<Arrow transform="rotate(180deg)" />}
+          icon={<Arrow transform="rotate(180)" />}
           onClick={handleButtonClose}
           size="medium"
           variant="white"
