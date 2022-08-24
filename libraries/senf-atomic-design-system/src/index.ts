@@ -1,5 +1,6 @@
 /** @format */
 export { default as AllOrganizationTypes } from "./assets/icons/AllOrganizationTypes";
+export { default as Alert } from "./assets/icons/Alert";
 export { default as Apple } from "./assets/icons/Apple";
 export { default as Arrow } from "./assets/icons/Arrow";
 export { default as Bell } from "./assets/icons/Bell";
@@ -7,6 +8,7 @@ export { default as Bulb } from "./assets/icons/Bulb";
 export { default as CalendarIcon } from "./assets/icons/CalendarIcon";
 export { default as Check } from "./assets/icons/Check";
 export { default as CheckDropShadow } from "./assets/icons/CheckDropShadow";
+export { default as Close } from "./assets/icons/Close";
 export { default as CommentActive } from "./assets/icons/CommentActive";
 export { default as CommentInactive } from "./assets/icons/CommentInactive";
 export { default as Delete } from "./assets/icons/Delete";
