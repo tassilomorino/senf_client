@@ -112,6 +112,7 @@ const LogoPlacer = styled.div`
 
 const ProfilePage: FC<ProfilePageProps> = ({
   user,
+  accountOwner,
   organization,
   organizations,
   myOrganizations,
@@ -194,7 +195,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
           handleButtonClose={() => handleButtonClose(false)}
           sideDivider={true}
           SecondButton={
-            <ContentDropdown
+            accountOwner && (<ContentDropdown
               open={dropdownOpen}
               setOpen={setDropdownOpen}
               direction={isMobile ? "downLeft" : "downRight"}
@@ -245,9 +246,12 @@ const ProfilePage: FC<ProfilePageProps> = ({
 
                   </ModalButton>
                 </Box >
+
               }
-            />
+
+            />)
           }
+
         />
         < DragWrapper
           id="dragWrapper"
@@ -293,7 +297,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
               <Box margin="5px 0px">
                 {user?.description ? (
                   <Typography variant="bodyBg">{user?.description}</Typography>
-                ) : (
+                ) : accountOwner && (
                   <Button
                     variant="secondary"
                     size="small"

@@ -36,8 +36,6 @@ import {
   SET_ORGANIZATIONS,
   SET_ORGANIZATION,
   LOADING_ORGANIZATION_DATA,
-  SET_SCREAM_USER,
-  SET_FULL_SCREAMS,
   SET_COOKIES,
   SET_MAP_LOADED,
   SET_MAP_VIEWPORT,
@@ -47,6 +45,8 @@ import {
   SET_TOPICS,
   SET_ORGANIZATION_TYPES,
   LOADING_PROJECTROOM_DATA,
+  SET_GUEST_DATA,
+  RESET_GUEST_DATA,
 } from "../types";
 
 const defaultTopics = [
@@ -99,8 +99,9 @@ const initialState = {
   loadingOrganizations: true,
   loadingOrganization: false,
   loadingProjectRoom: false,
-  scream_user: {},
-  full_screams: [],
+  guestProfile: {
+    guestData: {},
+  },
   cookie_settings: "",
   mapLoaded: false,
   mapViewport: null,
@@ -156,11 +157,57 @@ export default function (state = initialState, action) {
         scream: action.payload,
       };
 
-    case SET_SCREAM_USER:
+    case SET_GUEST_DATA:
       return {
         ...state,
-        scream_user: action.payload,
+        guestProfile: {
+          ...state.guestProfile,
+          guestData: {
+            ...state.guestProfile.guestData,
+            ...action.payload,
+          },
+        },
       };
+    case RESET_GUEST_DATA:
+      return {
+        ...state,
+        guestProfile: {
+          ...action.payload,
+        },
+      };
+
+    /*  guestData: {
+          ...state.guestProfile.guestData,
+          ...action.payload.userData,
+        }, */
+
+    /*  guestScreams: action.payload.screams
+          ? [...state.guestProfile.guestScreams, ...action.payload.screams]
+          : [],
+
+        guestOrganizations: action.payload.organizations
+          ? [
+              ...state.guestProfile.guestOrganizations,
+              ...action.payload.organizations,
+            ]
+          : state.guestProfile.guestOrganizations, */
+
+    /*   case SET_GUEST_SCREAMS:
+      return {
+        ...state,
+        guestProfile: {
+          ...state.guestProfile,
+          screams: [...action.payload],
+        },
+      };
+    case SET_GUEST_ORGANIZATIONS:
+      return {
+        ...state,
+        guestProfile: {
+          ...state.guestProfile,
+          organizations: [...action.payload],
+        },
+      }; */
 
     case LIKE_SCREAM:
       return {
@@ -384,12 +431,6 @@ export default function (state = initialState, action) {
         ...state,
         organization: action.payload,
         loadingOrganization: false,
-      };
-    case SET_FULL_SCREAMS:
-      return {
-        ...state,
-        full_screams: action.payload,
-        loading: false,
       };
 
     case SET_COOKIES:

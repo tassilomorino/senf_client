@@ -10,6 +10,8 @@ import {
   CLOSE_ACCOUNT,
   LOADING_MYSCREAMS_DATA,
   LOADING_MYORGANIZATIONS_DATA,
+  SET_GUEST_DATA,
+  RESET_GUEST_DATA,
 } from "../types";
 
 export const openAccountFunc = () => async (dispatch) => {
@@ -18,8 +20,8 @@ export const openAccountFunc = () => async (dispatch) => {
   });
 };
 
-export const getMyScreams = (userId) => async (dispatch) => {
-  dispatch({ type: LOADING_MYSCREAMS_DATA });
+export const getMyScreams = (userId, profilePage) => async (dispatch) => {
+  // dispatch({ type: LOADING_MYSCREAMS_DATA });
   const screams = [];
   const screamsRef = collection(db, "screams");
   const q = query(
@@ -29,36 +31,58 @@ export const getMyScreams = (userId) => async (dispatch) => {
   );
   const screamsSnapshot = await getDocs(q);
   if (screamsSnapshot.empty) {
-    dispatch({
-      type: SET_MY_SCREAMS,
-      payload: screams,
-    });
+    if (profilePage) {
+      dispatch({
+        type: SET_GUEST_DATA,
+        payload: { screams },
+      });
+    } else {
+      dispatch({
+        type: SET_MY_SCREAMS,
+        payload: screams,
+      });
+    }
   } else {
     screamsSnapshot.forEach((doc) => {
       screams.push({
         ...doc.data(),
         screamId: doc.id,
-        body: doc.data().body.substring(0, 170) + "...",
+        body: `${doc.data().body.substring(0, 170)}...`,
         color: setColorByTopic(doc.data().topic),
       });
     });
-    dispatch({
-      type: SET_MY_SCREAMS,
-      payload: screams,
-    });
+
+    if (profilePage) {
+      dispatch({
+        type: SET_GUEST_DATA,
+        payload: { screams },
+      });
+    } else {
+      dispatch({
+        type: SET_MY_SCREAMS,
+        payload: screams,
+      });
+    }
   }
 };
-export const getMyOrganizations = (userId) => async (dispatch) => {
-  dispatch({ type: LOADING_MYORGANIZATIONS_DATA });
+export const getMyOrganizations = (userId, profilePage) => async (dispatch) => {
+  // dispatch({ type: LOADING_MYORGANIZATIONS_DATA });
   const organizations = [];
   const organizationsRef = collection(db, "organizations");
   const q = query(organizationsRef, where("userIds", "array-contains", userId));
   const organizationsSnapshot = await getDocs(q);
   if (organizationsSnapshot.empty) {
-    dispatch({
-      type: SET_MY_ORGANIZATIONS,
-      payload: organizations,
-    });
+    if (profilePage) {
+      dispatch({
+        type: SET_GUEST_DATA,
+        payload: { organizations },
+      });
+    } else {
+      dispatch({
+        type: SET_MY_ORGANIZATIONS,
+        payload: organizations,
+      });
+    }
   } else {
     organizationsSnapshot.forEach((doc) => {
       organizations.push({
@@ -66,10 +90,17 @@ export const getMyOrganizations = (userId) => async (dispatch) => {
         organizationId: doc.id,
       });
     });
-    dispatch({
-      type: SET_MY_ORGANIZATIONS,
-      payload: organizations,
-    });
+    if (profilePage) {
+      dispatch({
+        type: SET_GUEST_DATA,
+        payload: { organizations },
+      });
+    } else {
+      dispatch({
+        type: SET_MY_ORGANIZATIONS,
+        payload: organizations,
+      });
+    }
   }
 };
 
@@ -82,6 +113,12 @@ export const closeAccountFunc = () => async (dispatch) => {
     type: SET_MY_ORGANIZATIONS,
     payload: null,
   });
+
+  dispatch({
+    type: RESET_GUEST_DATA,
+    payload: { guestData: {} },
+  });
+
   dispatch({
     type: CLOSE_ACCOUNT,
   });

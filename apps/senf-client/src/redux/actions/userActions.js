@@ -1,6 +1,11 @@
 /** @format */
 
-import { signOut, sendPasswordResetEmail, deleteUser } from "firebase/auth";
+import {
+  signOut,
+  sendPasswordResetEmail,
+  deleteUser,
+  getAuth,
+} from "firebase/auth";
 import {
   collection,
   query,
@@ -19,6 +24,7 @@ import {
   SET_DATA_SUCCESS,
   LOADING_DATA,
   STOP_LOADING_DATA,
+  SET_GUEST_DATA,
 } from "../types";
 import { closeAccountFunc } from "./accountActions";
 
@@ -91,7 +97,7 @@ export const deleteUserFromDb = (userId) => async (dispatch) => {
       throw new Error(error, "error during deleteUserFromDb with userId");
     }
   }
-  // if no userId is provided, delete the current user from the only firebase auth
+  // if no userId is provided, delete the current user only from  firebase auth
   if (!userId) {
     try {
       deleteUser(currentuser);
@@ -101,32 +107,41 @@ export const deleteUserFromDb = (userId) => async (dispatch) => {
   }
 };
 
-export const getUserLikesAndComments = (userData) => async (dispatch) => {
-  try {
-    if (userData) {
-      const likesRef = collection(db, "likes");
-      const commentsRef = collection(db, "comments");
-      const q1 = query(likesRef, where("userId", "==", userData.userId));
-      const q2 = query(commentsRef, where("userId", "==", userData.userId));
-      const likesQuerySnapshot = await getDocs(q1);
-      const commentsQuerySnapshot = await getDocs(q2);
+export const getUserLikesAndComments =
+  (userData, profilePage) => async (dispatch) => {
+    try {
+      if (userData) {
+        const likesRef = collection(db, "likes");
+        const commentsRef = collection(db, "comments");
+        const q1 = query(likesRef, where("userId", "==", userData.userId));
+        const q2 = query(commentsRef, where("userId", "==", userData.userId));
+        const likesQuerySnapshot = await getDocs(q1);
+        const commentsQuerySnapshot = await getDocs(q2);
 
-      likesQuerySnapshot.forEach((doc) =>
-        userData.likes.push({ ...doc.data(), likeId: doc.id })
-      );
-      commentsQuerySnapshot.forEach((doc) =>
-        userData.comments.push({ ...doc.data(), commentId: doc.id })
-      );
-      dispatch({
-        type: SET_USER,
-        payload: userData,
-      });
+        likesQuerySnapshot.forEach((doc) =>
+          userData.likes.push({ ...doc.data(), likeId: doc.id })
+        );
+        commentsQuerySnapshot.forEach((doc) =>
+          userData.comments.push({ ...doc.data(), commentId: doc.id })
+        );
+        if (profilePage) {
+          dispatch({
+            type: SET_GUEST_DATA,
+            payload: { userData },
+          });
+        } else {
+          dispatch({
+            type: SET_USER,
+            payload: userData,
+          });
+        }
+      }
+    } catch (error) {
+      throw new Error(error, "error during getUserLikesAndComments");
     }
-  } catch (error) {
-    console.error(error);
-  }
-};
-export const getUserData = (uid) => async (dispatch) => {
+  };
+
+export const getUserData = (uid, profilePage) => async (dispatch) => {
   try {
     if (uid) {
       const usersRef = collection(db, "users");
@@ -137,11 +152,15 @@ export const getUserData = (uid) => async (dispatch) => {
         const userData = doc.data();
         userData.likes = [];
         userData.comments = [];
-
-        dispatch(getUserLikesAndComments(userData));
+        if (profilePage) {
+          delete userData.isAdmin;
+          delete userData.isSuperAdmin;
+          delete userData.isOrgModerator;
+        }
+        dispatch(getUserLikesAndComments(userData, profilePage));
       });
     }
   } catch (error) {
-    console.error(error);
+    throw new Error(error, "error during getUserData");
   }
 };

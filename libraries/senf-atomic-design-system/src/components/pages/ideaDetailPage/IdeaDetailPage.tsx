@@ -524,10 +524,10 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                   <Typography variant="buttonSm">{locationHeader}</Typography>
                 </Box>
 
-                <Box gap="5px">
+                <Box gap="5px" onClick={() => handle.openProfilePage(userId)}>
                   <Icon icon={<User />} />{" "}
                   {createdAt && userHandle && (
-                    <React.Fragment>
+                    <React.Fragment >
                       <Typography variant="buttonSm">{userHandle}</Typography>
                       <Typography
                         variant="buttonSm"

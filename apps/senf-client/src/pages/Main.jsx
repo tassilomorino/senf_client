@@ -9,7 +9,7 @@ import React, {
 
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   Typography,
@@ -69,6 +69,7 @@ import { likeScream, unlikeScream } from "../redux/actions/likeActions";
 import ProjectroomPage from "./ProjectroomPage";
 import ProfilePage from "./ProfilePage";
 import { StyledH3 } from "../styles/GlobalStyle";
+import { getUserData } from "../redux/actions/userActions";
 
 
 
@@ -155,8 +156,9 @@ const Main = ({
   const { cookie_settings } = useSelector((state) => state.data)
   const organization = useSelector((state) => state.data.organization);
 
-  const { screamId, projectRoomId, organizationId, unknownPathId } =
+  const { screamId, projectRoomId, organizationId, unknownPathId, } =
     useParams();
+  const history = useHistory()
 
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openScream = useSelector((state) => state.UI.openScream);
@@ -201,10 +203,13 @@ const Main = ({
   const mapBounds = useSelector((state) => state.data.mapBounds);
 
   useEffect(() => {
-    unknownPathId && window.history.pushState(null, null, "/");
+
+    unknownPathId && history.push('/')
     projectRoomId && dispatch(openProjectRoomFunc(projectRoomId, true));
     screamId && dispatch(openScreamFunc(screamId));
     organizationId && dispatch(openOrganizationFunc(organizationId, true));
+
+
   }, [dispatch, projectRoomId, screamId, organizationId, unknownPathId]);
 
   const urlPath = window.location.pathname;
@@ -408,23 +413,15 @@ const Main = ({
 
   const handleOpenMyAccount = () => {
     if (user?.authenticated) {
-      dispatch(openProjectRoomFunc(null, false));
-      dispatch(closeScream());
-      dispatch(openAccountFunc(userId));
-      window.history.pushState(null, null, "/");
-      dispatch(handleTopicSelectorRedux("all"));
+
+      dispatch(openAccountFunc());
+      history.push(`/profile/${userId}`)
+
     } else {
       handleModal("push", <Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
     }
   };
-  useEffect(() => {
-    if (userId && openAccount) {
-      if (userId) {
-        dispatch(getMyScreams(userId));
-        dispatch(getMyOrganizations(userId));
-      }
-    }
-  }, [dispatch, openAccount, userId]);
+
 
 
   const handleCloseOrganizationPage = () => {
@@ -707,7 +704,7 @@ const Main = ({
             />
           )}
 
-      </ScaleContainer>}
+      </ScaleContainer>
 
 
 
