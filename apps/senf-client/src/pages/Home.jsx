@@ -47,7 +47,7 @@ const Home = () => {
 
   const [postIdeaOpen, setPostIdeaOpen] = useState(false);
 
-  const profilePageScreams = useSelector((state) => state.data.guestProfile?.guestData?.screams);
+  const profilePageScreams = useSelector((state) => state.data.profilePage?.profilePageData?.screams);
   const screams = useSelector((state) => state.data.screams);
   const scream = useSelector((state) => state.data.scream);
   const projects = useSelector((state) => state.data.projects);

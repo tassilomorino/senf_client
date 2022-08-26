@@ -99,8 +99,8 @@ const initialState = {
   loadingOrganizations: true,
   loadingOrganization: false,
   loadingProjectRoom: false,
-  guestProfile: {
-    guestData: {},
+  profilePage: {
+    profilePageData: {},
   },
   cookie_settings: "",
   mapLoaded: false,
@@ -160,10 +160,10 @@ export default function (state = initialState, action) {
     case SET_PROFILE_PAGE:
       return {
         ...state,
-        guestProfile: {
-          ...state.guestProfile,
-          guestData: {
-            ...state.guestProfile.guestData,
+        profilePage: {
+          ...state.profilePage,
+          profilePageData: {
+            ...state.profilePage.profilePageData,
             ...action.payload,
           },
         },
@@ -171,7 +171,7 @@ export default function (state = initialState, action) {
     case RESET_PROFILE_PAGE:
       return {
         ...state,
-        guestProfile: {
+        profilePage: {
           ...action.payload,
         },
       };

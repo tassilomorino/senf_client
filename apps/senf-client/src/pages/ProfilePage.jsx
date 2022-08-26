@@ -40,9 +40,9 @@ const ProfilePage = ({
   const myOrganizations = useSelector((state) => state.user.myOrganizations);
   const myProfileData = useSelector((state) => state.user);
 
-  const profilePageData = useSelector((state) => state.data.guestProfile?.guestData?.userData);
-  const profilePageScreams = useSelector((state) => state.data.guestProfile?.guestData?.screams);
-  const profilePageOrganizations = useSelector((state) => state.data.guestProfile?.guestData?.organizations);
+  const profilePageData = useSelector((state) => state.data.profilePage?.profilePageData?.userData);
+  const profilePageScreams = useSelector((state) => state.data.profilePage?.profilePageData?.screams);
+  const profilePageOrganizations = useSelector((state) => state.data.profilePage?.profilePageData?.organizations);
   const openAccount = useSelector((state) => state.UI.openAccount);
   const organizations = useSelector((state) => state.data.organizations);
   const organization = useSelector((state) => state.data.organization);
