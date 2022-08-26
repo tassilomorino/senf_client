@@ -41,9 +41,9 @@ const ProfilePage = ({
   const myOrganizations = useSelector((state) => state.user.myOrganizations);
   const myProfileData = useSelector((state) => state.user);
 
-  const profileData = useSelector((state) => state.data.guestProfile?.guestData?.userData);
-  const profileDataScreams = useSelector((state) => state.data.guestProfile?.guestData?.screams);
-  const profileDataOrganizations = useSelector((state) => state.data.guestProfile?.guestData?.organizations);
+  const profilePageData = useSelector((state) => state.data.guestProfile?.guestData?.userData);
+  const profilePageScreams = useSelector((state) => state.data.guestProfile?.guestData?.screams);
+  const profilePageOrganizations = useSelector((state) => state.data.guestProfile?.guestData?.organizations);
   const openAccount = useSelector((state) => state.UI.openAccount);
   const organizations = useSelector((state) => state.data.organizations);
   const organization = useSelector((state) => state.data.organization);
@@ -156,14 +156,14 @@ const ProfilePage = ({
   return (
 
     <React.Fragment >
-      {profileData ?
+      {profilePageData ?
         <ProfilePageComponent
-          user={profileData}
+          user={profilePageData}
           accountOwner={accountOwner}
           organization={organization}
           organizations={organizations}
-          myOrganizations={profileDataOrganizations}
-          myScreams={profileDataScreams}
+          myOrganizations={profilePageOrganizations}
+          myScreams={profilePageScreams}
           handleButtonOpenCard={handleButtonOpenCard}
           handleOpenProjectroom={handleOpenProjectroom}
           handleButtonLike={handleButtonLike}
