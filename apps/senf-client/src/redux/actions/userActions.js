@@ -24,7 +24,7 @@ import {
   SET_DATA_SUCCESS,
   LOADING_DATA,
   STOP_LOADING_DATA,
-  SET_GUEST_DATA,
+  SET_PROFILE_PAGE,
 } from "../types";
 import { closeAccountFunc } from "./accountActions";
 
@@ -126,7 +126,7 @@ export const getUserLikesAndComments =
         );
         if (profilePage) {
           dispatch({
-            type: SET_GUEST_DATA,
+            type: SET_PROFILE_PAGE,
             payload: { userData },
           });
         } else {

@@ -10,8 +10,8 @@ import {
   CLOSE_ACCOUNT,
   LOADING_MYSCREAMS_DATA,
   LOADING_MYORGANIZATIONS_DATA,
-  SET_GUEST_DATA,
-  RESET_GUEST_DATA,
+  SET_PROFILE_PAGE,
+  RESET_PROFILE_PAGE,
 } from "../types";
 
 export const openAccountFunc = () => async (dispatch) => {
@@ -33,7 +33,7 @@ export const getMyScreams = (userId, profilePage) => async (dispatch) => {
   if (screamsSnapshot.empty) {
     if (profilePage) {
       dispatch({
-        type: SET_GUEST_DATA,
+        type: SET_PROFILE_PAGE,
         payload: { screams },
       });
     } else {
@@ -54,7 +54,7 @@ export const getMyScreams = (userId, profilePage) => async (dispatch) => {
 
     if (profilePage) {
       dispatch({
-        type: SET_GUEST_DATA,
+        type: SET_PROFILE_PAGE,
         payload: { screams },
       });
     } else {
@@ -74,7 +74,7 @@ export const getMyOrganizations = (userId, profilePage) => async (dispatch) => {
   if (organizationsSnapshot.empty) {
     if (profilePage) {
       dispatch({
-        type: SET_GUEST_DATA,
+        type: SET_PROFILE_PAGE,
         payload: { organizations },
       });
     } else {
@@ -92,7 +92,7 @@ export const getMyOrganizations = (userId, profilePage) => async (dispatch) => {
     });
     if (profilePage) {
       dispatch({
-        type: SET_GUEST_DATA,
+        type: SET_PROFILE_PAGE,
         payload: { organizations },
       });
     } else {
@@ -115,7 +115,7 @@ export const closeAccountFunc = () => async (dispatch) => {
   });
 
   dispatch({
-    type: RESET_GUEST_DATA,
+    type: RESET_PROFILE_PAGE,
     payload: { guestData: {} },
   });
 

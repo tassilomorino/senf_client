@@ -45,8 +45,8 @@ import {
   SET_TOPICS,
   SET_ORGANIZATION_TYPES,
   LOADING_PROJECTROOM_DATA,
-  SET_GUEST_DATA,
-  RESET_GUEST_DATA,
+  SET_PROFILE_PAGE,
+  RESET_PROFILE_PAGE,
 } from "../types";
 
 const defaultTopics = [
@@ -157,7 +157,7 @@ export default function (state = initialState, action) {
         scream: action.payload,
       };
 
-    case SET_GUEST_DATA:
+    case SET_PROFILE_PAGE:
       return {
         ...state,
         guestProfile: {
@@ -168,46 +168,13 @@ export default function (state = initialState, action) {
           },
         },
       };
-    case RESET_GUEST_DATA:
+    case RESET_PROFILE_PAGE:
       return {
         ...state,
         guestProfile: {
           ...action.payload,
         },
       };
-
-    /*  guestData: {
-          ...state.guestProfile.guestData,
-          ...action.payload.userData,
-        }, */
-
-    /*  guestScreams: action.payload.screams
-          ? [...state.guestProfile.guestScreams, ...action.payload.screams]
-          : [],
-
-        guestOrganizations: action.payload.organizations
-          ? [
-              ...state.guestProfile.guestOrganizations,
-              ...action.payload.organizations,
-            ]
-          : state.guestProfile.guestOrganizations, */
-
-    /*   case SET_GUEST_SCREAMS:
-      return {
-        ...state,
-        guestProfile: {
-          ...state.guestProfile,
-          screams: [...action.payload],
-        },
-      };
-    case SET_GUEST_ORGANIZATIONS:
-      return {
-        ...state,
-        guestProfile: {
-          ...state.guestProfile,
-          organizations: [...action.payload],
-        },
-      }; */
 
     case LIKE_SCREAM:
       return {

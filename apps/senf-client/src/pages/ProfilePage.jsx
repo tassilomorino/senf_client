@@ -37,7 +37,6 @@ const ProfilePage = ({
 
   const mapBounds = useSelector((state) => state.data.mapBounds);
   const selectedTopics = useSelector((state) => state.data.topics);
-  const myScreams = useSelector((state) => state.user.myScreams);
   const myOrganizations = useSelector((state) => state.user.myOrganizations);
   const myProfileData = useSelector((state) => state.user);
 
@@ -76,7 +75,7 @@ const ProfilePage = ({
     setDropdown(value);
   }, []);
   // My Ideas
-  const screamsSearched = search(myScreams, searchTerm, [
+  const screamsSearched = search(profilePageScreams, searchTerm, [
     "title",
     "body",
     "Stadtteil",
@@ -162,8 +161,8 @@ const ProfilePage = ({
           accountOwner={accountOwner}
           organization={organization}
           organizations={organizations}
-          myOrganizations={profilePageOrganizations}
-          myScreams={profilePageScreams}
+          profilePageOrganizations={profilePageOrganizations}
+          profilePageScreams={profilePageScreams}
           handleButtonOpenCard={handleButtonOpenCard}
           handleOpenProjectroom={handleOpenProjectroom}
           handleButtonLike={handleButtonLike}

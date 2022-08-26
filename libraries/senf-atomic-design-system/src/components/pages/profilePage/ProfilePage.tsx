@@ -115,8 +115,8 @@ const ProfilePage: FC<ProfilePageProps> = ({
   accountOwner,
   organization,
   organizations,
-  myOrganizations,
-  myScreams,
+  profilePageOrganizations,
+  profilePageScreams,
   handleButtonOpenCard,
   handleOpenProjectroom,
   handleButtonClose,
@@ -315,7 +315,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
                 order={order}
                 setOrder={setOrder}
                 tabs={
-                  myOrganizations
+                  profilePageOrganizations
                     ? [
                       { icon: <Bulb />, text: "Ideen" },
                       { icon: <Info />, text: "Organisationen" },
@@ -332,7 +332,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
             <List
               user={user}
               CardType={order === 1 ? IdeaCard : OrganizationCard}
-              data={order === 1 ? myScreams : myOrganizations}
+              data={order === 1 ? profilePageScreams : profilePageOrganizations}
               listType={order === 2 && "grid"}
               handleButtonOpenCard={handleButtonOpenCard}
               handleOpenProjectroom={handleOpenProjectroom}
@@ -340,9 +340,9 @@ const ProfilePage: FC<ProfilePageProps> = ({
               handleButtonComment={handleButtonComment}
               organizations={organizations}
               listEndText={
-                order === 1 && myScreams > 0
+                order === 1 && profilePageScreams > 0
                   ? t("noMoreIdeas")
-                  : order === 1 && myScreams < 1 && t("noSharedIdeas")
+                  : order === 1 && profilePageScreams < 1 && t("noSharedIdeas")
 
                 // :t("noIdeasWithFilter")
               }
