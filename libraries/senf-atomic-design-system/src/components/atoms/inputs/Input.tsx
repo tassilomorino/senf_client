@@ -88,7 +88,7 @@ const Input: FunctionComponent<InputProps> = ({
   }
 
   if (type === "password") {
-    trailingIconSet = isPassword ? "Eye" : "EyeOff";
+    trailingIconSet = isPassword ? "Bulb" : "Dot";
     trailingIconClickSet = () => setIsPassword(!isPassword);
   }
 
@@ -114,6 +114,14 @@ const Input: FunctionComponent<InputProps> = ({
     onClick
   } : {
     for: name,
+  }
+
+  const fieldType = () => {
+    if (
+      type === "textarea" ||
+      type === "password" && !isPassword
+    ) return "text"
+    return type
   }
 
   return (
@@ -142,7 +150,7 @@ const Input: FunctionComponent<InputProps> = ({
         }
         <InputField
           id={name}
-          type={isPassword ? "password" : type === "textarea" ? "text" : type}
+          type={fieldType()}
           placeholder={placeholderSet}
           disabled={disabled}
           rows={type === "textarea" && Math.max(rows, 2)}
