@@ -293,32 +293,6 @@ export default function (state = initialState, action) {
         comment: action.payload,
       };
 
-    case DELETE_COMMENT:
-      const listComments = state.scream.comments.filter(
-        (comment) => comment.commentId !== action.payload
-      );
-      const screamComments = state.scream.comments.filter(
-        (comment) => comment.commentId !== action.payload
-      );
-
-      return {
-        ...state,
-        scream: {
-          ...state.scream,
-          comments: listComments,
-          commentCount: state.scream.commentCount - 1,
-        },
-        screams: state.screams.map((scream) =>
-          scream.screamId === state.scream.screamId
-            ? {
-                ...scream,
-                comments: screamComments,
-                commentCount: scream.commentCount - 1,
-              }
-            : scream
-        ),
-      };
-
     case POST_SCREAM:
       return {
         ...state,
@@ -392,8 +366,77 @@ export default function (state = initialState, action) {
           commentCount: state.scream.commentCount + 1,
           comments: [action.payload, ...state.scream.comments],
         },
-      };
+        profilePage: state.profilePage?.profilePageData?.screams
+          ? {
+              ...state.profilePage,
+              profilePageData: {
+                ...state.profilePage.profilePageData,
+                screams: [
+                  ...state.profilePage.profilePageData.screams.map((scream) =>
+                    scream.screamId === action.payload.screamId
+                      ? {
+                          ...scream,
+                          /*   comments: [action.payload, ...state.scream.comments],
 
+                        right now profilePageData.screams does not have array of comments,
+                        maybe it has to be added ? */
+
+                          commentCount: scream.commentCount + 1,
+                        }
+                      : scream
+                  ),
+                ],
+              },
+            }
+          : state.profilePage,
+      };
+    case DELETE_COMMENT:
+      const listComments = state.scream.comments.filter(
+        (comment) => comment.commentId !== action.payload
+      );
+      const filteredScreamComments = state.scream.comments.filter(
+        (comment) => comment.commentId !== action.payload
+      );
+
+      return {
+        ...state,
+        scream: {
+          ...state.scream,
+          comments: listComments,
+          commentCount: state.scream.commentCount - 1,
+        },
+        screams: state.screams.map((scream) =>
+          scream.screamId === state.scream.screamId
+            ? {
+                ...scream,
+                comments: filteredScreamComments,
+                commentCount: scream.commentCount - 1,
+              }
+            : scream
+        ),
+        profilePage: state.profilePage.profilePageData.screams
+          ? {
+              ...state.profilePage,
+              profilePageData: {
+                ...state.profilePage.profilePageData,
+                screams: [
+                  ...state.profilePage.profilePageData.screams.map((scream) =>
+                    scream.screamId === state.scream.screamId
+                      ? {
+                          ...scream,
+                          /*      comments: filteredScreamComments,
+
+                        right now profilePageData.screams does not have array of comments,
+                        maybe it has to be added ? */
+                          commentCount: scream.commentCount - 1,
+                        }
+                      : scream
+                  ),
+                ],
+              },
+            }
+          : state.profilePage,
+      };
     case LOADING_PROJECTS_DATA:
       return {
         ...state,
