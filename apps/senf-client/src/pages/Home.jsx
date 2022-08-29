@@ -47,7 +47,7 @@ const Home = () => {
 
   const [postIdeaOpen, setPostIdeaOpen] = useState(false);
 
-  const myScreams = useSelector((state) => state.user.myScreams);
+  const profilePageScreams = useSelector((state) => state.data.profilePage?.profilePageData?.screams);
   const screams = useSelector((state) => state.data.screams);
   const scream = useSelector((state) => state.data.scream);
   const projects = useSelector((state) => state.data.projects);
@@ -135,11 +135,11 @@ const Home = () => {
         ? project?.screams?.filter(({ Thema }) =>
           selectedTopics.includes(Thema)
         )
-        : myScreams !== null && myScreams !== undefined
-          ? myScreams.filter(({ Thema }) => selectedTopics.includes(Thema))
+        : profilePageScreams !== null && profilePageScreams !== undefined
+          ? profilePageScreams.filter(({ Thema }) => selectedTopics.includes(Thema))
           : dataFinalIdeasMap,
     [
-      myScreams,
+      profilePageScreams,
       openProjectRoom,
       project?.screams,
       dataFinalIdeasMap,

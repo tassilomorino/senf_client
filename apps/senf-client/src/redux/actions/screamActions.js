@@ -318,10 +318,7 @@ export const getUserEmail = (userId) => async (dispatch) => {
     const docRef = doc(db, "users", userId, "Private", userId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      dispatch({
-        type: SET_SCREAM_USER,
-        payload: docSnap.data(),
-      });
+      console.log(docSnap.data(), "userEmail");
     } else {
       throw new Error("User email not found");
     }

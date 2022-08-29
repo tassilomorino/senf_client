@@ -19,6 +19,38 @@ const ProfilePageTemplate: Story<ProfilePageProps> = (args) => (
 
 export const Profile = ProfilePageTemplate.bind({});
 Profile.args = {
+  profilePageScreams: [
+    {
+      screamId: "omweqsDYlFMkmTFAX1Ba",
+      lat: 50.96734458192481,
+      long: 7.00181320821256,
+      title: "Straßenfest an der Wallstraße",
+      body: "Vom Abschnitt Ecke Wallstr. bis Springbrunnen wird geplant ein Straßenfest zu veranstalten. Wohnst du in der Straße und willst deine Nachbar:innen ken",
+      createdAt: "2021-07-12T11:10:22.413Z",
+      commentCount: 0,
+      likeCount: 1,
+      status: "None",
+      Thema: "Sport / Freizeit",
+      Stadtteil: "Mülheim",
+      color: "#f6c095",
+      locationHeader: "Mülheimer Freiheit 142",
+    },
+    {
+      screamId: "omweqsDYlFMkmTFAX1Ba",
+      lat: 50.96734458192481,
+      long: 7.00181320821256,
+      title: "Straßenfest an der Wallstraße",
+      body: "Vom Abschnitt Ecke Wallstr. bis Springbrunnen wird geplant ein Straßenfest zu veranstalten. Wohnst du in der Straße und willst deine Nachbar:innen ken",
+      createdAt: "2021-07-12T11:10:22.413Z",
+      commentCount: 0,
+      likeCount: 1,
+      status: "None",
+      Thema: "Sport / Freizeit",
+      Stadtteil: "Mülheim",
+      color: "#f6c095",
+      locationHeader: "Mülheimer Freiheit 142",
+    },
+  ],
   user: {
     isAdmin: true,
     createdAt: "2021-06-20T11:11:06.950Z",
@@ -32,38 +64,7 @@ Profile.args = {
     photoUrl:
       "https://lh3.googleusercontent.com/a-/AOh14Gg6A5t4OFiEGKReXCl3mcJ5-DN2gm0nMpscWRdA2g=s96-c",
     age: "",
-    screams: [
-      {
-        screamId: "omweqsDYlFMkmTFAX1Ba",
-        lat: 50.96734458192481,
-        long: 7.00181320821256,
-        title: "Straßenfest an der Wallstraße",
-        body: "Vom Abschnitt Ecke Wallstr. bis Springbrunnen wird geplant ein Straßenfest zu veranstalten. Wohnst du in der Straße und willst deine Nachbar:innen ken",
-        createdAt: "2021-07-12T11:10:22.413Z",
-        commentCount: 0,
-        likeCount: 1,
-        status: "None",
-        Thema: "Sport / Freizeit",
-        Stadtteil: "Mülheim",
-        color: "#f6c095",
-        locationHeader: "Mülheimer Freiheit 142",
-      },
-      {
-        screamId: "omweqsDYlFMkmTFAX1Ba",
-        lat: 50.96734458192481,
-        long: 7.00181320821256,
-        title: "Straßenfest an der Wallstraße",
-        body: "Vom Abschnitt Ecke Wallstr. bis Springbrunnen wird geplant ein Straßenfest zu veranstalten. Wohnst du in der Straße und willst deine Nachbar:innen ken",
-        createdAt: "2021-07-12T11:10:22.413Z",
-        commentCount: 0,
-        likeCount: 1,
-        status: "None",
-        Thema: "Sport / Freizeit",
-        Stadtteil: "Mülheim",
-        color: "#f6c095",
-        locationHeader: "Mülheimer Freiheit 142",
-      },
-    ],
+
     likes: [
       {
         age: "",

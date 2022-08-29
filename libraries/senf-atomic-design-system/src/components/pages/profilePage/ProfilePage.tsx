@@ -112,10 +112,12 @@ const LogoPlacer = styled.div`
 
 const ProfilePage: FC<ProfilePageProps> = ({
   user,
+  myProfileData,
+  accountOwner,
   organization,
   organizations,
-  myOrganizations,
-  myScreams,
+  profilePageOrganizations,
+  profilePageScreams,
   handleButtonOpenCard,
   handleOpenProjectroom,
   handleButtonClose,
@@ -194,7 +196,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
           handleButtonClose={() => handleButtonClose(false)}
           sideDivider={true}
           SecondButton={
-            <ContentDropdown
+            accountOwner && (<ContentDropdown
               open={dropdownOpen}
               setOpen={setDropdownOpen}
               direction={isMobile ? "downLeft" : "downRight"}
@@ -245,9 +247,12 @@ const ProfilePage: FC<ProfilePageProps> = ({
 
                   </ModalButton>
                 </Box >
+
               }
-            />
+
+            />)
           }
+
         />
         < DragWrapper
           id="dragWrapper"
@@ -293,7 +298,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
               <Box margin="5px 0px">
                 {user?.description ? (
                   <Typography variant="bodyBg">{user?.description}</Typography>
-                ) : (
+                ) : accountOwner && (
                   <Button
                     variant="secondary"
                     size="small"
@@ -311,7 +316,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
                 order={order}
                 setOrder={setOrder}
                 tabs={
-                  myOrganizations
+                  profilePageOrganizations
                     ? [
                       { icon: <Bulb />, text: "Ideen" },
                       { icon: <Info />, text: "Organisationen" },
@@ -327,8 +332,9 @@ const ProfilePage: FC<ProfilePageProps> = ({
 
             <List
               user={user}
+              myProfileData={myProfileData}
               CardType={order === 1 ? IdeaCard : OrganizationCard}
-              data={order === 1 ? myScreams : myOrganizations}
+              data={order === 1 ? profilePageScreams : profilePageOrganizations}
               listType={order === 2 && "grid"}
               handleButtonOpenCard={handleButtonOpenCard}
               handleOpenProjectroom={handleOpenProjectroom}
@@ -336,9 +342,9 @@ const ProfilePage: FC<ProfilePageProps> = ({
               handleButtonComment={handleButtonComment}
               organizations={organizations}
               listEndText={
-                order === 1 && myScreams > 0
+                order === 1 && profilePageScreams > 0
                   ? t("noMoreIdeas")
-                  : order === 1 && myScreams < 1 && t("noSharedIdeas")
+                  : order === 1 && profilePageScreams < 1 && t("noSharedIdeas")
 
                 // :t("noIdeasWithFilter")
               }

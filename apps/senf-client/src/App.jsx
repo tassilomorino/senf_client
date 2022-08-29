@@ -61,8 +61,18 @@ const vh = window.innerHeight * 0.01;
 document.documentElement.style.setProperty("--vh", `${vh}px`);
 
 const App = () => {
-  const userState = () => {
-    onAuthStateChanged(auth, (user) => {
+
+  useEffect(() => {
+    // setViewport();
+    const { initialMapViewport } = store.getState().data;
+    store.dispatch(getScreams(initialMapViewport));
+    store.dispatch(getOrganizations(initialMapViewport));
+    store.dispatch(getProjects(initialMapViewport));
+  }, []);
+
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user && user.uid && user.emailVerified) {
         store.dispatch({ type: SET_AUTHENTICATED });
         store.dispatch(getUserData(user.uid));
@@ -82,16 +92,7 @@ const App = () => {
         // ...
       }
     });
-  };
-  useEffect(() => {
-    // setViewport();
-    const { initialMapViewport } = store.getState().data;
-    store.dispatch(getScreams(initialMapViewport));
-    store.dispatch(getOrganizations(initialMapViewport));
-    store.dispatch(getProjects(initialMapViewport));
-  }, []);
-  useEffect(() => {
-    userState();
+    return () => unsubscribe();
   }, []);
 
 
@@ -138,6 +139,7 @@ const App = () => {
               <Route exact path="/projectRooms" component={Home} />
               <Route exact path="/organizations" component={Home} />
               <Route exact path="/idea/:screamId" component={Home} />
+              <Route exact path="/profile/:profileId" component={Home} />
               <Route
                 exact
                 path="/projectRooms/:projectRoomId/:screamId"

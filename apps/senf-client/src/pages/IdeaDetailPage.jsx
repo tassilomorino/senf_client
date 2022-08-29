@@ -6,8 +6,8 @@ import {
   IdeaDetailPage as IdeaDetailPageComponent,
   ModalContext
 } from "senf-atomic-design-system";
+import { useHistory } from "react-router-dom";
 import { isMobileCustom } from "../util/customDeviceDetect";
-
 // Redux stuff
 import { closeScream, deleteScream, editScreamFunc } from "../redux/actions/screamActions";
 import { clearErrors } from "../redux/actions/errorsActions";
@@ -15,6 +15,8 @@ import { openProjectRoomFunc } from "../redux/actions/projectActions";
 import { deleteComment, submitComment } from "../redux/actions/commentActions";
 import { openLink } from "../util/helpers";
 import Auth from "./Auth";
+import { openAccountFunc } from "../redux/actions/accountActions";
+import { handleTopicSelectorRedux } from "../redux/actions/UiActions";
 
 
 
@@ -34,6 +36,7 @@ const IdeaDetailPage = ({
   );
 
   const dispatch = useDispatch();
+  const history = useHistory()
 
   const openScream = useSelector((state) => state.UI.openScream);
 
@@ -125,9 +128,18 @@ const IdeaDetailPage = ({
     },
 
     deleteComment: ({ commentId, screamId }) => {
-      return dispatch(
+
+
+      dispatch(
         deleteComment(commentId, user?.userId, screamId, user?.isAdmin, user?.isModerator)
-      )
+      ).then(() => {
+        handleModal("pop")
+        handleModal("pop")
+      }).catch((err) => {
+        handleModal("pop")
+        handleModal("pop")
+        throw new Error('Error while deleting comment', err)
+      })
     },
 
     reportIdea: () => {
@@ -164,6 +176,23 @@ const IdeaDetailPage = ({
         )}`;
       window.location.href = link;
     },
+    openProfilePage: (profileId) => {
+
+      /* dispatch(openProjectRoomFunc(null, false));
+      
+      
+      dispatch(handleTopicSelectorRedux("all")); */
+      dispatch(closeScream());
+      dispatch(openProjectRoomFunc(null, false));
+      dispatch(openAccountFunc());
+      history.push(`/profile/${profileId}`)
+
+
+      // window.history.pushState(null, null, `/profile/${profileId}`);
+
+
+
+    }
   }
 
   return (data && <IdeaDetailPageComponent

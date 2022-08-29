@@ -2,6 +2,7 @@
 
 import React, { FC, useState } from "react";
 import styled from "styled-components";
+import { InlineWidget } from "react-calendly";
 import Wave from "../../atoms/shapes/Wave";
 import Modal from "../../molecules/modals/Modal";
 import { SuccessSubmitIdeaProps } from "./SuccessSubmitIdea.types";
@@ -14,7 +15,6 @@ import Success from "../../templates/success/Success";
 
 import RoundedButton from "../../atoms/buttons/RoundedButton";
 import Plus from "../../../assets/icons/Plus";
-import { InlineWidget } from "react-calendly";
 import Button from "../../atoms/buttons/Button";
 import SwipeModal from "../../molecules/modals/SwipeModal";
 import theme from "../../../styles/theme";
@@ -34,15 +34,16 @@ const Img = styled.img`
   user-select: none;
 `;
 
-const SuccessSubmitIdea: FC<SuccessSubmitIdeaProps> = ({}) => {
+const SuccessSubmitIdea: FC<SuccessSubmitIdeaProps> = ({ }) => {
   const [order, setOrder] = useState(1);
-  const setOpenModal = () => {};
+  const setOpenModal = () => { };
   return (
     <SwipeModal
       openModal={true}
       setOpenModal={setOpenModal}
       zIndex="999999999"
       backgroundColor={theme.colors.beige.beige20}
+      onDrag={(e) => { console.log(e) }}
     >
       <Box margin="24px" position="fixed" zIndex={999} top="0">
         <RoundedButton
