@@ -9,15 +9,19 @@ import {
   RoundedButton,
   Divider,
   Plus,
+  ModalButton
 } from "senf-atomic-design-system";
 import logo from "../../assets/logo_yellow.png";
+import InfoPage from "./InfoPage";
 
 const Wrapper = styled.div`
-  position: fixed;
+  position: absolute;
   height: 100vh;
   width: 200px;
   background-color: #f8f8f8;
-  z-index: 10;
+  left: ${({ openInfoModal }) => (openInfoModal ? "-300px" : "0px")};
+  transition: left 0.3s ease-in-out;
+  z-index: 2;
 `;
 
 const RoundedButtonWrapper = styled.div`
@@ -43,11 +47,12 @@ const MenuSidebar = ({
   componentsSidebarOpen,
   setComponentsSidebarOpen,
   setOpenInfoModal,
+  openInfoModal,
   restart,
   setOpenSaveModal,
 }) => {
   return (
-    <Wrapper>
+    <Wrapper openInfoModal={openInfoModal}>
       <Box
         flexDirection="column"
         width="calc(100% - 40px)"
@@ -63,11 +68,11 @@ const MenuSidebar = ({
         />
 
         <Box flexDirection="column" gap="10px">
-          <Button
-            variant="secondary"
-            text="Info"
-            onClick={() => setOpenInfoModal(true)}
-          />
+          <ModalButton variant="secondary" text="Info" options={{ swipe: false, size: "lg", onBeforeOpen: () => setOpenInfoModal(true), onBeforeClose: () => setOpenInfoModal(false) }}>
+            <InfoPage />
+          </ModalButton>
+
+
           <Button variant="secondary" text="Neustart" onClick={restart} />
         </Box>
 

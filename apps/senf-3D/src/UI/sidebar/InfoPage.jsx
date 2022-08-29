@@ -2,17 +2,18 @@
 
 import React, { useEffect, useState } from "react";
 import {
-  Modal,
-  SubNavbar,
   Typography,
   Box,
   Button,
   LayerGreyDefault,
+  ModalContext
 } from "senf-atomic-design-system";
 import styled from "styled-components";
 import Img1 from "../../assets/interface-icons/Start-Icon_1.png";
 import Img2 from "../../assets/interface-icons/Start-Icon_2.png";
 import Img3 from "../../assets/interface-icons/Start-Icon_3.png";
+
+const Wrapper = styled.div``
 
 const Card = styled.div`
   ${(props) => LayerGreyDefault};
@@ -26,25 +27,11 @@ const Card = styled.div`
   align-items: center;
   padding: 15px;
 `;
-const InfoModal = ({ unityContext, openInfoModal, setOpenInfoModal }) => {
-  const [isLoaded, setIsLoaded] = useState(false);
+const InfoPage = () => {
+  const { handleModal } = React.useContext(ModalContext) || {};
 
-  useEffect(() => {
-    setIsLoaded(true);
-  }, []);
-
-  function startgame() {
-    setOpenInfoModal(false);
-  }
   return (
-    <Modal
-      openModal={openInfoModal}
-      setOpenModal={isLoaded ? startgame : null}
-      zIndex={9999999}
-      size="m"
-      overflow="hidden"
-    >
-      {/* <SubNavbar iconRight="plus" iconRightTransform="rotate(45deg)" /> */}
+    <Wrapper>
       <Box
         justifyContent="center"
         margin="40px 40px 0px 40px"
@@ -95,12 +82,12 @@ const InfoModal = ({ unityContext, openInfoModal, setOpenInfoModal }) => {
         <Button
           variant="primary"
           text="Los geht's"
-          onClick={startgame}
-          loading={!isLoaded}
+          onClick={() => handleModal("pop")}
+        // loading={!isLoaded}
         />
       </Box>
-    </Modal>
+    </Wrapper>
   );
 };
 
-export default InfoModal;
+export default InfoPage;

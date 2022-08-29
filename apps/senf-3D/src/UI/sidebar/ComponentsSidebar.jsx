@@ -20,17 +20,18 @@ const Wrapper = styled.div`
   height: 100vh;
   width: 400px;
   background-color: #fed957;
-  z-index: 9;
+  z-index: 1;
   left: ${({
-    componentsSidebarOpen,
-    openInfoModal,
-    openDrawContext,
-    openSaveModal,
-  }) =>
+  componentsSidebarOpen,
+  openInfoModal,
+  openDrawContext,
+  openSaveModal,
+}) =>
     // !openInfoModal &&
     // !openDrawContext &&
     // !openSaveModal &&
-    componentsSidebarOpen ? "200px" : "-600px"};
+    !openInfoModal &&
+      componentsSidebarOpen ? "200px" : "-600px"};
   transition: 0.5s;
 `;
 const InnerWrapper = styled.div`

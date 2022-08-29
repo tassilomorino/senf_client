@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { createModel } from "../util/createModal";
 import ComponentsSidebar from "./sidebar/ComponentsSidebar";
-import InfoModal from "./sidebar/InfoModal";
+import InfoPage from "./sidebar/InfoPage";
 import MenuSidebar from "./sidebar/MenuSidebar";
 import "./style.css";
 
@@ -80,11 +80,7 @@ function UI({ handleSwitchView, pitch }) {
           Scale Up
         </button>
       </div> */}
-      <div style={{position: "absolute", left: "49vw", top: "48vh", fontSize: 50}}>X</div>
-      <InfoModal
-        openInfoModal={openInfoModal}
-        setOpenInfoModal={setOpenInfoModal}
-      />
+      <div style={{ position: "absolute", left: "49vw", top: "48vh", fontSize: 50 }}>X</div>
 
       <MenuSidebar
         handleSwitchView={handleSwitchView}
@@ -92,6 +88,7 @@ function UI({ handleSwitchView, pitch }) {
         componentsSidebarOpen={componentsSidebarOpen}
         setComponentsSidebarOpen={setComponentsSidebarOpen}
         setOpenInfoModal={setOpenInfoModal}
+        openInfoModal={openInfoModal}
         // restart={restart}
         setOpenSaveModal={setOpenSaveModal}
       />
@@ -100,7 +97,7 @@ function UI({ handleSwitchView, pitch }) {
         openInfoModal={openInfoModal}
         openDrawContext={openDrawContext}
         openSaveModal={openSaveModal}
-        // startDrawingStreet={startDrawingStreet}
+      // startDrawingStreet={startDrawingStreet}
       />
     </div>
   );
