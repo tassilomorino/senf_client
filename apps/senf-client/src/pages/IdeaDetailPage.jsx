@@ -128,9 +128,18 @@ const IdeaDetailPage = ({
     },
 
     deleteComment: ({ commentId, screamId }) => {
-      return dispatch(
+
+
+      dispatch(
         deleteComment(commentId, user?.userId, screamId, user?.isAdmin, user?.isModerator)
-      )
+      ).then(() => {
+        handleModal("pop")
+        handleModal("pop")
+      }).catch((err) => {
+        handleModal("pop")
+        handleModal("pop")
+        throw new Error('Error while deleting comment', err)
+      })
     },
 
     reportIdea: () => {
