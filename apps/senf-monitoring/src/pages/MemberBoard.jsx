@@ -160,7 +160,7 @@ const MemberBoard = () => {
               />
             </Box>
             <Box width="400px">
-              <Input type="search" setSearchTerm={setSearchTerm} />
+              <Input type="search" onChange={(e) => setSearchTerm(e?.target?.value)} />
             </Box>
             <ModalButton text="Add member" options={{ swipe: false }}>
               <InviteMember getPendingMembers={getPendingMembers} />

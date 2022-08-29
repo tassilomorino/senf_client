@@ -47,12 +47,9 @@ const Wrapper = styled.div<EditIdeaProps>`
 `;
 
 const EditIdeaPage: FC<EditIdeaPageProps> = ({
-
   data,
   projectroomsData,
-
   address,
-
   handle,
 }) => {
   const { t } = useTranslation();
@@ -217,8 +214,6 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
           margin="0px 0px 0px 0px"
         >
           <Input
-            key="title"
-            id="title"
             name="title"
             type="text"
             placeholder={t("add_title")}
@@ -233,8 +228,6 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
             note={formikEditIdea.touched.title && formikEditIdea.errors.title}
           />
           <Input
-            key="body"
-            id="body"
             name="body"
             type="textarea"
             placeholder={t("add_description")}
@@ -270,8 +263,6 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
               </Typography>
               <Box gap="16px" flexDirection="column" marginTop="20px">
                 <Input
-                  key="weblinkTitle"
-                  id="weblinkTitle"
                   name="weblinkTitle"
                   placeholder={t("weblinkTitle")}
                   onChange={formikEditIdea?.handleChange}
@@ -287,8 +278,6 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
                   }
                 />
                 <Input
-                  key="weblink"
-                  id="weblink"
                   name="weblink"
                   type="text"
                   placeholder={t("weblink")}
@@ -326,8 +315,6 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
               <Typography variant="bodyBg">Deine Kontaktdaten werden öffentlich gezeigt.</Typography>
               <Box gap="16px" flexDirection="column" marginTop="20px">
                 <Input
-                  key="contactTitle"
-                  id="contactTitle"
                   name="contactTitle"
                   placeholder={t("contactTitle")}
                   onChange={formikEditIdea.handleChange("contactTitle")}
@@ -343,8 +330,6 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
                   }
                 />
                 <Input
-                  key="contact"
-                  id="contact"
                   name="contact"
                   type="text"
                   placeholder={t("contact")}
@@ -404,8 +389,6 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
           </Box>
 
           <Dropdown
-            key="topic"
-            id="topic"
             name="topic"
             label={t("topic")}
             initialValue={t("select_topic")}
@@ -414,7 +397,7 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
             value={formikEditIdea.values.Thema}
           />
           <Dropdown
-            id="projectrooms"
+            name="projectrooms"
             label={t("projectrooms")}
             initialValue={t("all_ideas")}
             listItems={projectroomsData && OptionsProjectrooms(projectroomsData)}

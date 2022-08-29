@@ -24,6 +24,7 @@ const CreateProjectPage1 = ({
   pagesData,
   index,
   setTitle,
+  outerRef
 }) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
@@ -162,8 +163,6 @@ const CreateProjectPage1 = ({
 
           <Box flexDirection="column" gap="20px">
             <Input
-              key="title"
-              id="title"
               name="title"
               type="textarea"
               placeholder={t("add_description")}
@@ -177,8 +176,6 @@ const CreateProjectPage1 = ({
             />
 
             <Input
-              key="brief"
-              id="brief"
               name="brief"
               type="textarea"
               placeholder={t("add_brief")}
@@ -194,8 +191,6 @@ const CreateProjectPage1 = ({
             />
 
             <Input
-              key="description_about"
-              id="description_about"
               name="description_about"
               type="textarea"
               placeholder={t("add_description_about")}
@@ -217,8 +212,6 @@ const CreateProjectPage1 = ({
             />
 
             <Input
-              key="description_procedure"
-              id="description_procedure"
               name="description_procedure"
               type="textarea"
               placeholder={t("add_description_procedure")}
@@ -240,8 +233,6 @@ const CreateProjectPage1 = ({
             />
 
             <Input
-              key="description_motivation"
-              id="description_motivation"
               name="description_motivation"
               type="textarea"
               placeholder={t("add_description_motivation")}
@@ -263,8 +254,6 @@ const CreateProjectPage1 = ({
             />
 
             <Input
-              key="description_learnmore"
-              id="description_learnmore"
               name="description_learnmore"
               type="textarea"
               placeholder={t("add_description_learnmore")}
