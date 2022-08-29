@@ -80,6 +80,8 @@ const IdeaCard: FC<IdeaCardProps> = ({
   handleButtonLike,
   handleButtonComment,
   user,
+  myProfileData,
+
 }) => {
   const {
     title,
@@ -93,16 +95,22 @@ const IdeaCard: FC<IdeaCardProps> = ({
     screamId,
   } = data;
 
+
+
   const liked = () => {
-    if (user?.likes && user?.likes.find((like) => like.screamId === screamId))
+    if (myProfileData?.likes && myProfileData?.likes.find((like) => like.screamId === screamId)
+    ) {
       return true;
+    }
     return false;
+
+
   };
 
   const commented = () => {
     if (
-      user?.comments &&
-      user?.comments.find((comment) => comment.screamId === screamId)
+      myProfileData?.comments &&
+      myProfileData?.comments.find((comment) => comment.screamId === screamId)
     )
       return true;
     return false;

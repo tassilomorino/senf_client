@@ -112,6 +112,7 @@ const LogoPlacer = styled.div`
 
 const ProfilePage: FC<ProfilePageProps> = ({
   user,
+  myProfileData,
   accountOwner,
   organization,
   organizations,
@@ -331,6 +332,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
 
             <List
               user={user}
+              myProfileData={myProfileData}
               CardType={order === 1 ? IdeaCard : OrganizationCard}
               data={order === 1 ? profilePageScreams : profilePageOrganizations}
               listType={order === 2 && "grid"}

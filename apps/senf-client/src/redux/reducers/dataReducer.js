@@ -200,6 +200,24 @@ export default function (state = initialState, action) {
               ],
             }
           : state.project,
+        profilePage: state.profilePage?.profilePageData?.screams
+          ? {
+              ...state.profilePage,
+              profilePageData: {
+                ...state.profilePage.profilePageData,
+                screams: [
+                  ...state.profilePage.profilePageData.screams.map((scream) =>
+                    scream.screamId === action.payload.screamId
+                      ? {
+                          ...scream,
+                          likeCount: scream.likeCount + 1,
+                        }
+                      : scream
+                  ),
+                ],
+              },
+            }
+          : state.profilePage,
       };
     case UNLIKE_SCREAM:
       return {
@@ -225,6 +243,24 @@ export default function (state = initialState, action) {
               ],
             }
           : state.project,
+        profilePage: state.profilePage?.profilePageData?.screams
+          ? {
+              ...state.profilePage,
+              profilePageData: {
+                ...state.profilePage.profilePageData,
+                screams: [
+                  ...state.profilePage.profilePageData.screams.map((scream) =>
+                    scream.screamId === action.payload.screamId
+                      ? {
+                          ...scream,
+                          likeCount: scream.likeCount - 1,
+                        }
+                      : scream
+                  ),
+                ],
+              },
+            }
+          : state.profilePage,
       };
     case DELETE_SCREAM:
       return {

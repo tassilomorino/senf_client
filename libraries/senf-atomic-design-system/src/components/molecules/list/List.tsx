@@ -38,6 +38,8 @@ const List: FC<ListProps> = ({
   handleButtonLike,
   handleButtonComment,
   user,
+  firebaseUser,
+  myProfileData,
   listEndText,
   ...props
 }) => {
@@ -97,6 +99,7 @@ const List: FC<ListProps> = ({
                 handleButtonLike={handleButtonLike}
                 handleButtonComment={handleButtonComment}
                 user={user}
+                myProfileData={myProfileData}
                 {...props}
               />
             </Box>

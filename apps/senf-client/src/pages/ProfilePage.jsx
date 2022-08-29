@@ -40,7 +40,7 @@ const ProfilePage = ({
   const myOrganizations = useSelector((state) => state.user.myOrganizations);
   const myProfileData = useSelector((state) => state.user);
 
-  const profilePageData = useSelector((state) => state.data.profilePage?.profilePageData?.userData);
+  const profilePageUser = useSelector((state) => state.data.profilePage?.profilePageData?.userData);
   const profilePageScreams = useSelector((state) => state.data.profilePage?.profilePageData?.screams);
   const profilePageOrganizations = useSelector((state) => state.data.profilePage?.profilePageData?.organizations);
   const openAccount = useSelector((state) => state.UI.openAccount);
@@ -155,9 +155,10 @@ const ProfilePage = ({
   return (
 
     <React.Fragment >
-      {profilePageData ?
+      {profilePageUser ?
         <ProfilePageComponent
-          user={profilePageData}
+          user={profilePageUser}
+          myProfileData={myProfileData}
           accountOwner={accountOwner}
           organization={organization}
           organizations={organizations}

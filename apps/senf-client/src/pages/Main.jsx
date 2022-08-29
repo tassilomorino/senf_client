@@ -171,6 +171,7 @@ const Main = ({
     useState(false);
 
   const user = useSelector((state) => state.user);
+  const myProfileData = useSelector((state) => state.user);
   const { userId } = user;
   const userLikes = user.likes;
 
@@ -608,6 +609,7 @@ const Main = ({
                   handleButtonLike={handleButtonLike}
                   handleButtonComment={handleButtonComment}
                   user={user}
+                  myProfileData={myProfileData}
                   setOpenStatisticsOverview={setOpenStatisticsOverview}
                   openStatisticsOverview={openStatisticsOverview}
                   setOpenOrganizationsOverview={setOpenOrganizationsOverview}
