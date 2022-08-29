@@ -20,7 +20,7 @@ import More from "../../../assets/icons/More";
 import ModalButton from "../modalStack/ModalButton";
 
 const Wrapper = styled.div<CommentCardProps>`
-  cursor: pointer;
+  
   float: left;
   overflow: hidden;
   position: relative;
@@ -48,8 +48,8 @@ const CommentCard: FC<CommentCardProps> = ({ data, ...props }) => {
     <Wrapper>
       <InnerWrapper>
         <Box justifyContent="space-between">
-          <Box alignItems="flex-end" gap="3px">
-            <Typography variant="buttonBg">{userHandle} </Typography>
+          <Box alignItems="flex-end" gap="3px" style={{ cursor: 'pointer' }}>
+            <Typography variant="buttonBg" onClick={() => props.handle.openProfilePage(userId)}>{userHandle} </Typography>
 
             <Typography
               variant="buttonBg"
