@@ -94,7 +94,6 @@ export { default as OrganizationCard } from "./components/molecules/cards/Organi
 export { default as ObjectCard } from "./components/molecules/cards/ObjectCard";
 export { default as Form } from "./components/molecules/form/Form";
 export { default as List } from "./components/molecules/list/List";
-export { default as Modal } from "./components/molecules/modals/Modal";
 export { default as SwipeModal } from "./components/molecules/modals/SwipeModal";
 export { default as Dialog } from "./components/molecules/dialog/Dialog";
 export { default as SubNavbar } from "./components/molecules/navs/SubNavbar";

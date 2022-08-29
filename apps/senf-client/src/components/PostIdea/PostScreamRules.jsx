@@ -4,7 +4,7 @@ import React, { useState, Fragment } from "react";
 import { Trans, useTranslation } from "react-i18next";
 
 import styled from "styled-components";
-import { Button, Box, Typography, Modal } from "senf-atomic-design-system";
+import { Button, Box, Typography, ModalContext } from "senf-atomic-design-system";
 
 const Wrapper = styled.div`
   padding: 20px;
@@ -13,8 +13,10 @@ const Wrapper = styled.div`
 
 const PostScreamRules = () => {
   const { t } = useTranslation();
+  const { handleModal } = React.useContext(ModalContext) || {};
+
   const handleSetUnderstoodRules = () => {
-    // handlemodal("pop")
+    handleModal("pop")
     // setIntoAccout? setInto Localstorage? setCookies? (accepted_rules:true)
   }
   return (

@@ -24,7 +24,6 @@ import { clearErrors } from "../../redux/actions/errorsActions";
 // Components
 import PostScreamFormContent from "./PostScreamFormContent";
 import PostScreamSelectContainter from "./PostScreamSelectContainter";
-import PostScreamRules from "./PostScreamRules";
 import Auth from "../../pages/Auth";
 
 const AuthFirst = styled.div`
