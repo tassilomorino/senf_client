@@ -11,9 +11,8 @@ import { t } from "i18next";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Typography, Box, Button } from "senf-atomic-design-system";
+import { Typography, Box, Button, ModalContext, isMobileCustom, Auth } from "senf-atomic-design-system";
 import styled from "styled-components";
-import Auth from "../components/Auth";
 import { auth, db } from "../firebase";
 
 const Wrapper = styled.div`
@@ -21,14 +20,15 @@ const Wrapper = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   overflow: scroll;
 `;
 
 export const AcceptInvitation = () => {
   const { t } = useTranslation();
-  const [authOpen, setAuthOpen] = useState(true);
+  const isMobile = isMobileCustom()
+  const { handleModal } = React.useContext(ModalContext) || {};
 
   const user = useSelector((state) => state.user);
   const [state, setState] = useState([]);
@@ -44,7 +44,7 @@ export const AcceptInvitation = () => {
 
       if (docSnapshot) {
         setState(docSnapshot.data());
-        console.log(docSnapshot.data())
+        console.log("inviteData", docSnapshot.data())
       }
     } catch (error) {
       throw new Error(error, "Error in Memberlist");
@@ -53,11 +53,17 @@ export const AcceptInvitation = () => {
 
   useEffect(() => {
     handleSetInvitationData();
-  }, []);
+
+    console.log("User", user)
+    !user?.authenticated && handleModal("push", <Auth />, { swipe: !!isMobile, size: "md", height: isMobile && window.innerHeight + 83, padding: 0 })
+
+  }, [user]);
 
 
 
-
+  // How users accept invitations
+  // user clicks on link with mail-doc-id, -> user registers. on click register checck-mail-doc and check if email matches, add current userId to organizationId-doc + cloud Function  
+  // Security: only admin can create mail-doc, mail-doc-id is unique and you can only read it specifically with providing its id, and user-email is equal check,  expirationdate
 
 
   const handleUpdateDoc = async (invitationDocData, uid) => {
@@ -97,9 +103,6 @@ export const AcceptInvitation = () => {
         flexDirection="column"
         gap="50px"
       >
-        {/* {!user.authenticated && (
-          <Auth setAuthOpen={setAuthOpen} authOpen={authOpen} />
-        )} */}
         <Box maxWidth="400px">
           <Typography variant="h1" textAlign="center">
             You were invitited to join the team of "{state?.organizationName}"
