@@ -13,7 +13,7 @@ const Wrapper = styled.div<ImagePlaceholderProps>`
   border-radius: 10px;
   border: 1px solid ${({ theme }) => theme.colors.greyscale.greyscale20tra};
   border-radius: ${({ borderRadius }) =>
-    borderRadius ? borderRadius : "10px"};
+    borderRadius || "10px"};
   overflow: hidden;
 
   display: flex;
@@ -21,7 +21,7 @@ const Wrapper = styled.div<ImagePlaceholderProps>`
   flex-shrink: 0;
   justify-content: center;
 
-  ${({ layerStyle }) => (layerStyle ? layerStyle : null)}
+  ${({ layerStyle }) => (layerStyle || null)}
 `;
 
 const Thumbnail = styled.div<ImagePlaceholderProps>`
@@ -35,6 +35,7 @@ const Thumbnail = styled.div<ImagePlaceholderProps>`
 `;
 
 const ImagePlaceholder: FC<ImagePlaceholderProps> = ({
+  children,
   img,
   width,
   height,
@@ -48,6 +49,7 @@ const ImagePlaceholder: FC<ImagePlaceholderProps> = ({
       borderRadius={borderRadius}
       layerStyle={layerStyle}
     >
+      {children}
       <Thumbnail img={img} />
     </Wrapper>
   );

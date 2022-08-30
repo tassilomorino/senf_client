@@ -54,6 +54,7 @@ import Report from "../../../assets/icons/Report";
 import Skeleton from "../../atoms/skeleton/Skeleton";
 import EditIdeaPage from "../editIdeaPage/EditIdeaPage";
 import Auth from "../auth/Auth";
+import Avatar from "../../atoms/avatar/Avatar";
 
 const DragWrapper = styled(animated.div) <IdeaDetailPageProps>`
   display: flex;
@@ -530,10 +531,10 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                 )}
 
 
-                <Box gap="5px" style={{ cursor: 'pointer' }} onClick={() => handle.openProfilePage(userId)}>
-                  <Icon icon={<User />} />{" "}
+                <Box gap="10px" alignItems="center" style={{ cursor: 'pointer' }} onClick={() => handle.openProfilePage(userId)}>
+                  <Avatar placeholder={userHandle?.slice(0, 1)} />
                   {createdAt && userHandle && (
-                    <React.Fragment >
+                    <Box gap="5px">
                       <Typography variant="buttonSm">{userHandle}</Typography>
                       <Typography
                         variant="buttonSm"
@@ -547,7 +548,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                       >
                         {dayjs(createdAt).format("DD.MM.YYYY")}
                       </Typography>
-                    </React.Fragment>
+                    </Box>
                   )}
                 </Box>
               </Box>
