@@ -54,6 +54,7 @@ import Report from "../../../assets/icons/Report";
 import Skeleton from "../../atoms/skeleton/Skeleton";
 import EditIdeaPage from "../editIdeaPage/EditIdeaPage";
 import Auth from "../auth/Auth";
+import Avatar from "../../atoms/avatar/Avatar";
 
 const DragWrapper = styled(animated.div) <IdeaDetailPageProps>`
   display: flex;
@@ -422,21 +423,30 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
               <Box
                 alignItems="center"
                 flexDirection="row"
-                gap="5px"
-                margin="8px 0px 4px 0px"
+                gap="10px"
+                margin="8px 0px 14px 0px"
               >
                 {Thema ? (
-                  <Icon icon={<Dot color={setColorByTopic(Thema)} />} />
+                  <Icon icon={<Location color={setColorByTopic(Thema)} />} />
                 ) : (
                   <Skeleton borderRadius="100" width="16" height="16" />
                 )}
-                <Typography
-                  variant="bodySm"
-                  fontWeight={600}
-                  color={setColorByTopic(Thema)}
-                >
-                  {Stadtteil || <Skeleton height="16" />}
-                </Typography>
+                <Box flexDirection="column">
+                  {Stadtteil ? <Typography
+                    variant="bodySm"
+                    fontWeight={700}
+                  >
+                    {Stadtteil}
+                  </Typography> : <Skeleton height="16" />}
+                  {locationHeader ? <Typography
+                    variant="bodySm"
+                    fontWeight={600}
+                    color={theme.colors.black.black40tra}
+                  >
+                    {locationHeader}
+                  </Typography> : <Skeleton height="16" />}
+
+                </Box>
 
                 <Box
                   alignItems="center"
@@ -519,15 +529,12 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                     <Typography variant="buttonSm">{selectedDates}</Typography>
                   </Box>
                 )}
-                <Box gap="5px">
-                  <Icon icon={<Location />} />{" "}
-                  <Typography variant="buttonSm">{locationHeader}</Typography>
-                </Box>
 
-                <Box gap="5px" style={{ cursor: 'pointer' }} onClick={() => handle.openProfilePage(userId)}>
-                  <Icon icon={<User />} />{" "}
+
+                <Box gap="10px" alignItems="center" style={{ cursor: 'pointer' }} onClick={() => handle.openProfilePage(userId)}>
+                  <Avatar placeholder={userHandle?.slice(0, 1)} />
                   {createdAt && userHandle && (
-                    <React.Fragment >
+                    <Box gap="5px">
                       <Typography variant="buttonSm">{userHandle}</Typography>
                       <Typography
                         variant="buttonSm"
@@ -541,7 +548,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                       >
                         {dayjs(createdAt).format("DD.MM.YYYY")}
                       </Typography>
-                    </React.Fragment>
+                    </Box>
                   )}
                 </Box>
               </Box>

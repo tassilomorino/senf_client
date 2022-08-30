@@ -109,7 +109,7 @@ const Geocoder: FC<GeocoderProps> = ({ statefulMap, placeholder, finalAddress, h
 
   return (
     <React.Fragment>
-      <Box zIndex={999} width="calc(100% - 32px)"
+      <Box zIndex={999} width="100%"
       // position={showResults && "fixed"} top={showResults && 0}
       >
         {/* <OverlayIcon onClick={() => setShowResults(!showResults)}>

@@ -358,7 +358,8 @@ const PostScream = ({
           <div ></div>
         </div>
       )} */}
-      <Box position="fixed" top="0px" width={isMobileCustom ? "100vw" : "400px"} zIndex={99999999} left="0px">
+      <Box position="fixed" top="0px" width={isMobileCustom ? "calc(100vw - 20px)" : "400px"} zIndex={99999999} left="0px" margin="10px">
+
         <Geocoder finalAddress={address} statefulMap={statefulMap} handleSetClose={() => setPostIdeaOpen(false)} />
       </Box>
 

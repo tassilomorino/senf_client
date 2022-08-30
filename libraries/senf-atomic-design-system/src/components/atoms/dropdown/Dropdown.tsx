@@ -8,7 +8,7 @@ import { DropdownProps, MultiListItems } from "./Dropdown.types";
 import { Selector } from "./Dropdown.styles";
 
 const Dropdown: FunctionComponent<DropdownProps> = ({
-  id,
+  name,
   placeholder,
   label,
   note,
@@ -21,21 +21,20 @@ const Dropdown: FunctionComponent<DropdownProps> = ({
     <Wrapper>
       {label || note &&
         <Box>
-          {label && <Label htmlFor={id}>{label}</Label>}
+          {label && <Label htmlFor={name}>{label}</Label>}
           {note && <Note>{note}</Note>}
         </Box>
       }
       <InputContainer
         as={Selector}
-        name={id}
-        id={id}
+        name={name}
         onChange={onChange}
         placeholder={placeholder}
         value={value}
       >
-        {id && (
+        {name && (
           <option disabled selected hidden>
-            {t(id)}
+            {t(name)}
           </option>
         )}
         {Object.values(listItems).map((item) => (

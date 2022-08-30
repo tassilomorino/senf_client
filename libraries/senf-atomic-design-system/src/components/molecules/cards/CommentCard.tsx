@@ -18,6 +18,7 @@ import TertiaryButton from "../../atoms/buttons/TertiaryButton";
 import Button from "../../atoms/buttons/Button";
 import More from "../../../assets/icons/More";
 import ModalButton from "../modalStack/ModalButton";
+import Avatar from "../../atoms/avatar/Avatar";
 
 const Wrapper = styled.div<CommentCardProps>`
   
@@ -48,21 +49,23 @@ const CommentCard: FC<CommentCardProps> = ({ data, ...props }) => {
     <Wrapper>
       <InnerWrapper>
         <Box justifyContent="space-between">
-          <Box alignItems="flex-end" gap="3px" style={{ cursor: 'pointer' }}>
-            <Typography variant="buttonBg" onClick={() => props.handle.openProfilePage(userId)}>{userHandle} </Typography>
+          <Box alignItems="center" height="40px" gap="5px" style={{ cursor: 'pointer' }}>
+            <Avatar placeholder={userHandle?.slice(0, 1)} />
+            <Box flexDirection="column">
 
-            <Typography
-              variant="buttonBg"
-              color={theme.colors.black.black40tra}
-            >
-              {t("at")}
-            </Typography>
-            <Typography
-              variant="buttonBg"
-              color={theme.colors.black.black40tra}
-            >
-              {dayjs(createdAt).format("DD.MM.YYYY")}
-            </Typography>
+              <Typography
+                variant="bodySm"
+                color={theme.colors.black.black40tra}
+              >
+                {dayjs(createdAt).format("DD.MM.YYYY")}
+              </Typography>
+              <Typography variant="buttonBg" onClick={() => props.handle.openProfilePage(userId)}>{userHandle} </Typography>
+
+            </Box>
+
+
+
+
           </Box>
           {props.user?.authenticated &&
             <ModalButton

@@ -7,6 +7,7 @@ import { animated, useSpring } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 import Icon from "../../atoms/icons/Icon";
 import {
+  LayerGreyButtonsDefault,
   LayerWhiteFirstDefault,
   LayerWhiteSecondDefault,
 } from "../../atoms/layerStyles/LayerStyles";
@@ -40,6 +41,7 @@ import Skeleton from "../../atoms/skeleton/Skeleton";
 import ContentDropdownItem from "../../atoms/contentDropdownItem/ContentDropdownItem";
 import ModalButton from "../../molecules/modalStack/ModalButton";
 import Auth from "../auth/Auth";
+import Avatar from "../../atoms/avatar/Avatar";
 
 const DragWrapper = styled(animated.div) <ProfilePageProps>`
   display: flex;
@@ -264,18 +266,8 @@ const ProfilePage: FC<ProfilePageProps> = ({
 
           <ContentWrapper>
             <Box justifyContent="center" margin="20px">
-              <ImageWrapper>
-                {user?.photoURL ? (
-                  <ImagePlaceholder
-                    img={user?.photoURL || null}
-                    borderRadius="18px"
-                    height="calc(100% - 40px)"
-                    width="calc(100% - 40px)"
-                  />
-                ) : (
-                  <Skeleton height="100" width="100" borderRadius="18" />
-                )}
-              </ImageWrapper>
+              <Avatar layerStyle={user?.handle && !user?.photoURL ? LayerWhiteFirstDefault : LayerGreyButtonsDefault} borderRadius="24px" height="150px" width="150px" fontSize="28px" img={user?.photoURL} placeholder={user?.handle?.slice(0, 1)} loading={!user?.handle} />
+
             </Box>
             <Box justifyContent="center" margin="20px">
               {user?.handle ? (

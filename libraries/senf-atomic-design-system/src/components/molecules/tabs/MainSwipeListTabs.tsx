@@ -47,7 +47,7 @@ const MainSwipeListTabs: FC<MainSwipeListTabsProps> = ({
 
   return (
     <Wrapper isMobile={isMobile}>
-      <Box margin={"22px 14px 10px 14px"} flexDirection={"column"}>
+      <Box margin={"22px 14px 6px 14px"} flexDirection={"column"}>
         <Tab
           onClick={() => handleClickTab(1)}
           isMobile={isMobile}
@@ -58,7 +58,8 @@ const MainSwipeListTabs: FC<MainSwipeListTabsProps> = ({
             // color={order === "ideas" ? "black" : "#d6ab00"}
             color="inherit"
             fontWeight={900}
-            fontSize={isMobile ? "5.3vw" : "22px"}
+            fontSize="22px"
+
           >
             {ideasDataLength} {t("ideas")}
           </Typography>
@@ -73,7 +74,7 @@ const MainSwipeListTabs: FC<MainSwipeListTabsProps> = ({
             color="inherit"
             // color={order !== "ideas" ? "black" : "#d6ab00"}
             fontWeight={900}
-            fontSize={isMobile ? "5.3vw" : "22px"}
+            fontSize="22px"
           >
             {projectroomsDataLength} {t("menuData_projectrooms")}
           </Typography>
