@@ -30,5 +30,5 @@ const SimpleBarChart: FC<ChartsProps> = ({ data, direction = "horizontal", stack
     );
 }
 
-export default SimpleBarChart;
+export default memo(SimpleBarChart);
 
