@@ -10,7 +10,6 @@ import {
   Plus,
   Box,
   Button,
-  Modal,
   ContentDropdown,
   RoundedButton,
 } from "senf-atomic-design-system";
