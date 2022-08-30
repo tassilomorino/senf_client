@@ -29,7 +29,7 @@ const Handle = styled.div`
 
 const ModalHandle = ({ swipe, handleColor, onClose, ...props }) => {
 	return <HandleContainer onClick={onClose} position={swipe ? "center" : "right"} {...props}>{
-		swipe ? <Handle handleColor={handleColor} /> : <RoundedButton icon={<Plus transform="rotate(45)" />} />
+		swipe ? <Handle handleColor={handleColor} /> : <RoundedButton icon={<Plus transform="rotate(45deg)" />} />
 	}</HandleContainer>;
 }
 export default ModalHandle;

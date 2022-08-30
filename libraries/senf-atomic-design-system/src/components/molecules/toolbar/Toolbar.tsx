@@ -100,7 +100,7 @@ const Toolbar: FC<ToolbarProps> = ({
             size="small"
             onClick={() => setDropdownOpen(!dropdownOpen)}
             text={activeSortOptionLabel}
-            iconRight={<Arrow transform="rotate(90)" />}
+            iconRight={<Arrow transform="rotate(90deg)" />}
           />
         }
         Content={
