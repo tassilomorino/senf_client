@@ -7,6 +7,7 @@ import { animated, useSpring } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 import Icon from "../../atoms/icons/Icon";
 import {
+  LayerGreyButtonsDefault,
   LayerWhiteFirstDefault,
   LayerWhiteSecondDefault,
 } from "../../atoms/layerStyles/LayerStyles";
@@ -265,7 +266,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
 
           <ContentWrapper>
             <Box justifyContent="center" margin="20px">
-              <Avatar layerStyle={LayerWhiteFirstDefault} borderRadius="16px" height="150px" width="150px" fontSize="28px" img={user?.photoURL} placeholder={user?.handle?.slice(0, 1)} loading={!user?.handle} />
+              <Avatar layerStyle={user?.handle && !user?.photoURL ? LayerWhiteFirstDefault : LayerGreyButtonsDefault} borderRadius="24px" height="150px" width="150px" fontSize="28px" img={user?.photoURL} placeholder={user?.handle?.slice(0, 1)} loading={!user?.handle} />
 
             </Box>
             <Box justifyContent="center" margin="20px">
