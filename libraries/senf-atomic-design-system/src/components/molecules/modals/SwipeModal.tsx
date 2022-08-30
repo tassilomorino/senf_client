@@ -60,7 +60,7 @@ const DragWrapper = styled(animated.div)`
     ${({ theme }) => theme.colors.brown.brown20tra};
 
   position: fixed;
-
+pointer-events:all;
 
   @media (min-width: 768px) {
     top: 50%;
@@ -212,6 +212,7 @@ const SwipeModal: FC<SwipeModalProps> = ({
             headerComponentHeight={headerComponentHeight}
             headerComponentBackgroundColor={headerComponentBackgroundColor}
             {...bind()}
+            {...bindHandle}
           >
             {HeaderComponent}
           </Header>
