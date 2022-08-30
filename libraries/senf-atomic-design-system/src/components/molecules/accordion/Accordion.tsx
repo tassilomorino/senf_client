@@ -68,11 +68,11 @@ export const AccordionItem = memo(({ question, answer, defaultOpen = false }) =>
         </Typography>
 
         <Icon
-          icon={<Arrow transform="rotate(90)" />}
+          icon={<Arrow transform="rotate(90deg)" />}
           transform="scale(0.7)"
           style={{
             ...(isOpen && {
-              transform: "rotate(180) scale(0.7)",
+              transform: "rotate(180deg) scale(0.7)",
             }),
           }}
         />

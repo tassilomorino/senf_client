@@ -63,7 +63,7 @@ const DragWrapper = styled(animated.div) <IdeaDetailPageProps>`
   border-radius: 18px;
   height: calc(100vh - 20px);
   width: 100%;
-  max-width: 470px;
+  /* max-width: 470px; */
 
   background-color: ${({ theme }) => theme.colors.beige.beige20};
   overflow: hidden;
@@ -111,7 +111,7 @@ const CardWrapper = styled.div<IdeaDetailPageProps>`
   border-radius: 18px;
 
   width: 100%;
-  max-width: 400px;
+  /* max-width: 400px; */
 
   height: auto;
   flex: none;

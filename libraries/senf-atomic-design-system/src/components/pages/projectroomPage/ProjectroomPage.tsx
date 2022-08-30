@@ -482,7 +482,7 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
                 text={t("information")}
                 iconRight={
                   <Arrow
-                    transform={infoOpen ? "rotate(-90) " : "rotate(0) "}
+                    transform={infoOpen ? "rotate(-90deg) " : "rotate(0deg) "}
                   />
                 }
                 onClick={() => setInfoOpen(!infoOpen)}
