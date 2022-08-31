@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, Fragment, memo, useRef, useEffect } from "react";
+import React, { useState, memo, useEffect } from "react";
 import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
 import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
@@ -8,13 +8,13 @@ import {
   Plus,
   Box,
   Button,
-  Input,
   ModalContext,
-  Geocoder
+  Geocoder,
+  PostIdea as PostIdeaComponent
 } from "senf-atomic-design-system";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { isMobileCustom } from "../../util/customDeviceDetect";
@@ -22,7 +22,6 @@ import { postScream } from "../../redux/actions/screamActions";
 import { clearErrors } from "../../redux/actions/errorsActions";
 
 // Components
-import PostScreamFormContent from "./PostScreamFormContent";
 import PostScreamSelectContainter from "./PostScreamSelectContainter";
 import Auth from "../../pages/Auth";
 
@@ -71,9 +70,6 @@ const PostScream = ({
   );
 
   const [viewport, setViewport] = useState(null);
-
-  const [addressBarClickedState, setAddressBarClickedState] = useState(false);
-
   const [openRules, setOpenRules] = useState(false);
   const [out, setOut] = useState(false);
   const [projectSelected, setProjectSeleted] = useState("");
@@ -168,9 +164,6 @@ const PostScream = ({
     }
   }, [postIdeaOpen]);
 
-  const handleDropdown = (value) => {
-    setTopic(value);
-  };
 
   const handleDropdownProject = (value) => {
     // event.preventDefault();
@@ -287,19 +280,7 @@ const PostScream = ({
     } else {
       setOut(false);
     }
-  };
-
-  const onSelected = (newViewport) => {
-    setViewport(newViewport);
-
-    setTimeout(() => {
-      geocode(newViewport);
-    }, 1000);
-  };
-
-  const addressBarClicked = () => {
-    setAddressBarClickedState(true);
-  };
+  }
 
   const handleLocationDecided = () => {
     if (address) {
@@ -359,7 +340,6 @@ const PostScream = ({
         </div>
       )} */}
       <Box position="fixed" top="0px" width={isMobileCustom ? "calc(100vw - 20px)" : "400px"} zIndex={99999999} left="0px" margin="10px">
-
         <Geocoder finalAddress={address} statefulMap={statefulMap} handleSetClose={() => setPostIdeaOpen(false)} />
       </Box>
 
@@ -374,7 +354,8 @@ const PostScream = ({
         loadingProjects={loadingProjects}
         projectsData={projectsData}
       />
-
+      <PostIdeaComponent formik={formik} />
+      {/* 
       <PostScreamFormContent
         formik={formik}
         classes={classes}
@@ -390,7 +371,7 @@ const PostScream = ({
         handleSubmit={handleSubmit}
         checkIfCalendar={checkIfCalendar}
         setOpenRules={setOpenRules}
-      />
+      /> */}
     </React.Fragment>
   );
 };

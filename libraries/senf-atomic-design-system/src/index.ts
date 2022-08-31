@@ -132,6 +132,8 @@ export { default as ErrorLoading } from "./components/pages/warningPages/ErrorLo
 export { default as RotateDevice } from "./components/pages/warningPages/RotateDevice";
 export { default as InfoPageMainApp } from "./components/pages/infoPages/InfoPageMainApp";
 
+export { default as PostIdea } from "./components/pages/postIdea/PostIdea";
+
 export { default as theme } from "./styles/theme";
 export { default as GlobalStyle } from "./styles/globals";
 export { default as i18n } from "./util/i18n";
