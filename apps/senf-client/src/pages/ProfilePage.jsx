@@ -53,6 +53,7 @@ const ProfilePage = ({
   const [dropdown, setDropdown] = useState("newest");
   const [order, setOrder] = useState(1);
   const [accountOwner, setAccountOwner] = useState(false);
+  const [elevatedUser, setElevatedUser] = useState(false);
   const dispatch = useDispatch();
   const auth = getAuth();
   const firebaseUser = auth.currentUser;
@@ -138,18 +139,28 @@ const ProfilePage = ({
   };
 
   useEffect(() => {
-    if (myProfileData && myProfileData.authenticated) {
-      if ((myProfileData.isAdmin === true || myProfileData.isSuperAdmin === true ||
-        myProfileData.isModerator === true) || myProfileData.userId === profileId) {
-        setAccountOwner(true)
-      } else {
 
-        setAccountOwner(false)
-      }
+    if (myProfileData.isAdmin === true || myProfileData.isSuperAdmin === true ||
+      myProfileData.isModerator === true) {
+      setElevatedUser(true)
+    } else {
+
+      setElevatedUser(false)
     }
 
 
+
   }, [myProfileData, profileId])
+
+  useEffect(() => {
+    if (myProfileData && myProfileData.authenticated && myProfileData.userId === profileId) {
+      setAccountOwner(true)
+    } else {
+      setAccountOwner(false)
+    }
+
+  }, [myProfileData, profileId])
+
 
 
 
@@ -163,6 +174,7 @@ const ProfilePage = ({
         user={profilePageUser}
         myProfileData={myProfileData}
         accountOwner={accountOwner}
+        elevatedUser={elevatedUser}
         organization={organization}
         organizations={organizations}
         profilePageOrganizations={profilePageOrganizations}

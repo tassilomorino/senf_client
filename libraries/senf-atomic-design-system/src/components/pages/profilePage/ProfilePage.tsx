@@ -116,6 +116,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
   user,
   myProfileData,
   accountOwner,
+  elevatedUser,
   organization,
   organizations,
   profilePageOrganizations,
@@ -198,7 +199,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
         handleButtonClose={() => handleButtonClose(false)}
         sideDivider={true}
         SecondButton={
-          accountOwner && (<ContentDropdown
+          (accountOwner || elevatedUser) && (<ContentDropdown
             open={dropdownOpen}
             setOpen={setDropdownOpen}
             direction={isMobile ? "downLeft" : "downRight"}
@@ -223,31 +224,34 @@ const ProfilePage: FC<ProfilePageProps> = ({
                   onClick={handleLogout}
                 />
 
-
-                <ModalButton
-                  button={ContentDropdownItem}
-                  text={t("profile.delete")}
-                  icon={<Plus />}
-                  options={{
-                    padding: 20,
-                    title: t("contactModalTitle"),
-                    cancelText: t("cancel")
-                  }}
-                >
-
+                {accountOwner && (
+                  // @todo: Elevated users cant delete other accounts
+                  // because we need to use firebaseAdmin SDK
                   <ModalButton
+                    button={ContentDropdownItem}
                     text={t("profile.delete")}
-                    fillWidth="max"
+                    icon={<Plus />}
                     options={{
                       padding: 20,
-                      title: t('delete_account_confirm'),
-                      cancelText: t('cancel'),
-                      submitText: t('delete'),
-                      onSubmit: handleDeleteAccount,
+                      title: t("contactModalTitle"),
+                      cancelText: t("cancel")
                     }}
-                  />
+                  >
 
-                </ModalButton>
+                    <ModalButton
+                      text={t("profile.delete")}
+                      fillWidth="max"
+                      options={{
+                        padding: 20,
+                        title: t('delete_account_confirm'),
+                        cancelText: t('cancel'),
+                        submitText: t('delete'),
+                        onSubmit: handleDeleteAccount,
+                      }}
+                    />
+
+                  </ModalButton>
+                )}
               </Box >
 
             }
