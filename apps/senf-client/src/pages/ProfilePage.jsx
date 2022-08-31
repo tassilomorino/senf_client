@@ -53,6 +53,7 @@ const ProfilePage = ({
   const [dropdown, setDropdown] = useState("newest");
   const [order, setOrder] = useState(1);
   const [accountOwner, setAccountOwner] = useState(false);
+  const [elevatedUser, setElevatedUser] = useState(false);
   const dispatch = useDispatch();
   const auth = getAuth();
   const firebaseUser = auth.currentUser;
@@ -98,30 +99,7 @@ const ProfilePage = ({
 
   const { profileId } = useParams() // /profile/V4JkU7aQ...
 
-  useEffect(() => {
 
-
-    if (profileId) {
-      const profilePage = true;
-      if (profileId !== myProfileData.userId && openAccount) {
-        // visiting profile of other user
-
-
-
-
-        dispatch(getUserData(profileId, profilePage))
-        dispatch(getMyScreams(profileId, profilePage));
-        dispatch(getMyOrganizations(profileId, profilePage))
-      } else if (profileId === myProfileData.userId && openAccount) {
-        // visiting my own profile
-
-        dispatch(getUserData(myProfileData.userId, profilePage))
-        dispatch(getMyScreams(myProfileData.userId, profilePage));
-        dispatch(getMyOrganizations(myProfileData.userId, profilePage))
-
-      }
-    }
-  }, [dispatch, openAccount, myProfileData.userId, profileId]);
   const handleLogout = () => {
     dispatch(logoutUser());
     history.push('/');
@@ -138,15 +116,28 @@ const ProfilePage = ({
   };
 
   useEffect(() => {
-    if (myProfileData && myProfileData.authenticated && myProfileData.userId === profileId) {
-      setAccountOwner(true)
+
+    if (myProfileData.isAdmin === true || myProfileData.isSuperAdmin === true ||
+      myProfileData.isModerator === true) {
+      setElevatedUser(true)
     } else {
 
-      setAccountOwner(false)
+      setElevatedUser(false)
     }
 
 
+
   }, [myProfileData, profileId])
+
+  useEffect(() => {
+    if (myProfileData && myProfileData.authenticated && myProfileData.userId === profileId) {
+      setAccountOwner(true)
+    } else {
+      setAccountOwner(false)
+    }
+
+  }, [myProfileData, profileId])
+
 
 
 
@@ -155,30 +146,30 @@ const ProfilePage = ({
   return (
 
     <React.Fragment >
-      {profilePageUser ?
-        <ProfilePageComponent
-          user={profilePageUser}
-          myProfileData={myProfileData}
-          accountOwner={accountOwner}
-          organization={organization}
-          organizations={organizations}
-          profilePageOrganizations={profilePageOrganizations}
-          profilePageScreams={profilePageScreams}
-          handleButtonOpenCard={handleButtonOpenCard}
-          handleOpenProjectroom={handleOpenProjectroom}
-          handleButtonLike={handleButtonLike}
-          handleButtonComment={handleButtonComment}
-          handleButtonClose={handleClose}
-          handleSetAuthEditOpen={() => handleModal("push", <Auth authAddDetails={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
 
-          }
-          handleLogout={handleLogout}
-          handleDeleteAccount={handleDeleteAccount}
+      <ProfilePageComponent
+        user={profilePageUser}
+        myProfileData={myProfileData}
+        accountOwner={accountOwner}
+        elevatedUser={elevatedUser}
+        organization={organization}
+        organizations={organizations}
+        profilePageOrganizations={profilePageOrganizations}
+        profilePageScreams={profilePageScreams}
+        handleButtonOpenCard={handleButtonOpenCard}
+        handleOpenProjectroom={handleOpenProjectroom}
+        handleButtonLike={handleButtonLike}
+        handleButtonComment={handleButtonComment}
+        handleButtonClose={handleClose}
+        handleSetAuthEditOpen={() => handleModal("push", <Auth authAddDetails={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
 
-        // setEditProfileOpen,
-        /> :
-        <React.Fragment />
-      }
+        }
+        handleLogout={handleLogout}
+        handleDeleteAccount={handleDeleteAccount}
+
+      // setEditProfileOpen,
+      />
+
 
     </React.Fragment >
 

@@ -39,13 +39,15 @@ import {
   ifAllUserDetailsAreFilled,
 } from "senf-shared";
 
+import { useParams } from "react-router-dom";
 import { getUserData } from "../redux/actions/userActions";
 
 import { auth, db } from "../firebase";
 import { SET_AUTHENTICATED } from "../redux/types";
 
 const Auth = ({
-  authAddDetails
+  authAddDetails,
+
 }) => {
   const { handleModal } = React.useContext(ModalContext) || {};
 
@@ -54,13 +56,18 @@ const Auth = ({
   const [uploadingImage, setUploadingImage] = useState(false);
   const [page, setPage] = useState('');
 
-
+  const profilePageUser = useSelector((state) => state.data.profilePage?.profilePageData?.userData);
   const user = useSelector((state) => state.user);
   const reduxUser = useSelector((state) => state.user);
   const userIdInFirebase = getAuth().currentUser?.uid;
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const profileId = window.location.pathname.split('/')[2];
+  // @todo why useParams is not working here?
+  // const { profileId } = useParams();
+
+
   const [
     signInWithEmailAndPassword,
     firebaseEmailPasswordSignInUser,
@@ -97,7 +104,8 @@ const Auth = ({
     editedUser,
     editedUserisLoading,
     editedUserError,
-  ] = useHandleSubmitEditDetails(userIdInFirebase, user, db);
+  ] = useHandleSubmitEditDetails(profilePageUser ?? user, db);
+
   // useEffect(() => {
   //   if (authEditOpen) {
   //     setVerifiedUser(true);
@@ -292,7 +300,13 @@ const Auth = ({
     if (editedUser) {
       setLoading(false);
       setErrorMessage({ code: "", message: "" });
-      dispatch(getUserData(user.userId)).then(() => {
+
+
+
+      // edited someone else's or your own profile
+      const profilePage = true
+
+      dispatch(getUserData(profileId, profilePage)).then(() => {
         handleModal("pop")
 
         setErrorMessage({ code: "", message: "" });
@@ -306,7 +320,7 @@ const Auth = ({
         message: editedUserError,
       });
     }
-  }, [editedUser, editedUserError, editedUserisLoading]);
+  }, [editedUser, editedUserError, editedUserisLoading, profileId]);
 
   async function handleImageUpload(event) {
     if (
@@ -376,7 +390,7 @@ const Auth = ({
 
   return (<AuthComponent
     errorMessage={errorMessage}
-    user={user}
+    user={profilePageUser}
     loginLoading={loading}
     handleSubmitLogin={(formikLoginStore) =>
       signInWithEmailAndPassword(
