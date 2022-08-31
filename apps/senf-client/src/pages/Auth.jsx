@@ -104,7 +104,7 @@ const Auth = ({
     editedUser,
     editedUserisLoading,
     editedUserError,
-  ] = useHandleSubmitEditDetails(profilePageUser, db);
+  ] = useHandleSubmitEditDetails(profilePageUser ?? user, db);
 
   // useEffect(() => {
   //   if (authEditOpen) {
