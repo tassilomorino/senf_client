@@ -138,11 +138,14 @@ const ProfilePage = ({
   };
 
   useEffect(() => {
-    if (myProfileData && myProfileData.authenticated && myProfileData.userId === profileId) {
-      setAccountOwner(true)
-    } else {
+    if (myProfileData && myProfileData.authenticated) {
+      if ((myProfileData.isAdmin === true || myProfileData.isSuperAdmin === true ||
+        myProfileData.isModerator === true) || myProfileData.userId === profileId) {
+        setAccountOwner(true)
+      } else {
 
-      setAccountOwner(false)
+        setAccountOwner(false)
+      }
     }
 
 
@@ -155,30 +158,29 @@ const ProfilePage = ({
   return (
 
     <React.Fragment >
-      {profilePageUser ?
-        <ProfilePageComponent
-          user={profilePageUser}
-          myProfileData={myProfileData}
-          accountOwner={accountOwner}
-          organization={organization}
-          organizations={organizations}
-          profilePageOrganizations={profilePageOrganizations}
-          profilePageScreams={profilePageScreams}
-          handleButtonOpenCard={handleButtonOpenCard}
-          handleOpenProjectroom={handleOpenProjectroom}
-          handleButtonLike={handleButtonLike}
-          handleButtonComment={handleButtonComment}
-          handleButtonClose={handleClose}
-          handleSetAuthEditOpen={() => handleModal("push", <Auth authAddDetails={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
 
-          }
-          handleLogout={handleLogout}
-          handleDeleteAccount={handleDeleteAccount}
+      <ProfilePageComponent
+        user={profilePageUser}
+        myProfileData={myProfileData}
+        accountOwner={accountOwner}
+        organization={organization}
+        organizations={organizations}
+        profilePageOrganizations={profilePageOrganizations}
+        profilePageScreams={profilePageScreams}
+        handleButtonOpenCard={handleButtonOpenCard}
+        handleOpenProjectroom={handleOpenProjectroom}
+        handleButtonLike={handleButtonLike}
+        handleButtonComment={handleButtonComment}
+        handleButtonClose={handleClose}
+        handleSetAuthEditOpen={() => handleModal("push", <Auth authAddDetails={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
 
-        // setEditProfileOpen,
-        /> :
-        <React.Fragment />
-      }
+        }
+        handleLogout={handleLogout}
+        handleDeleteAccount={handleDeleteAccount}
+
+      // setEditProfileOpen,
+      />
+
 
     </React.Fragment >
 
