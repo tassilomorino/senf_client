@@ -156,7 +156,7 @@ const Main = ({
   const { cookie_settings } = useSelector((state) => state.data)
   const organization = useSelector((state) => state.data.organization);
 
-  const { screamId, projectRoomId, organizationId, unknownPathId, } =
+  const { screamId, projectRoomId, organizationId, unknownPathId, profileId } =
     useParams();
   const history = useHistory()
 
@@ -212,6 +212,32 @@ const Main = ({
 
 
   }, [dispatch, projectRoomId, screamId, organizationId, unknownPathId]);
+  useEffect(() => {
+
+
+    if (profileId) {
+      dispatch(openAccountFunc())
+      const profilePage = true;
+      if (profileId !== myProfileData.userId && openAccount) {
+        // visiting profile of other user
+
+
+
+
+        dispatch(getUserData(profileId, profilePage))
+        dispatch(getMyScreams(profileId, profilePage));
+        dispatch(getMyOrganizations(profileId, profilePage))
+      } else if (profileId === myProfileData.userId && openAccount) {
+        // visiting my own profile
+
+        dispatch(getUserData(myProfileData.userId, profilePage))
+        dispatch(getMyScreams(myProfileData.userId, profilePage));
+        dispatch(getMyOrganizations(myProfileData.userId, profilePage))
+
+      }
+    }
+  }, [dispatch, openAccount, myProfileData.userId, profileId]);
+
 
   const urlPath = window.location.pathname;
   useEffect(() => {

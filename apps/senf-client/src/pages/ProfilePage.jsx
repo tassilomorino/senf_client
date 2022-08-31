@@ -99,30 +99,7 @@ const ProfilePage = ({
 
   const { profileId } = useParams() // /profile/V4JkU7aQ...
 
-  useEffect(() => {
 
-
-    if (profileId) {
-      const profilePage = true;
-      if (profileId !== myProfileData.userId && openAccount) {
-        // visiting profile of other user
-
-
-
-
-        dispatch(getUserData(profileId, profilePage))
-        dispatch(getMyScreams(profileId, profilePage));
-        dispatch(getMyOrganizations(profileId, profilePage))
-      } else if (profileId === myProfileData.userId && openAccount) {
-        // visiting my own profile
-
-        dispatch(getUserData(myProfileData.userId, profilePage))
-        dispatch(getMyScreams(myProfileData.userId, profilePage));
-        dispatch(getMyOrganizations(myProfileData.userId, profilePage))
-
-      }
-    }
-  }, [dispatch, openAccount, myProfileData.userId, profileId]);
   const handleLogout = () => {
     dispatch(logoutUser());
     history.push('/');
