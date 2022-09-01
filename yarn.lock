@@ -7414,6 +7414,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@use-gesture/core@npm:10.2.18":
+  version: 10.2.18
+  resolution: "@use-gesture/core@npm:10.2.18"
+  checksum: 1bc315233b85266ecc3adbd316045f75f803dde82c2b631b60c42c349feef05fd69b5927bdb787910ba56e333ffa179664d9c33a293e76441a9170e04d2b8526
+  languageName: node
+  linkType: hard
+
 "@use-gesture/react@npm:^10.1.3, @use-gesture/react@npm:^10.2.14":
   version: 10.2.17
   resolution: "@use-gesture/react@npm:10.2.17"
@@ -7422,6 +7429,17 @@ __metadata:
   peerDependencies:
     react: ">= 16.8.0"
   checksum: 55e0eac2338435ec8cf280b6630c0de03ec57603cc8390e3d09f1b52107cbe79082291630d0f05ea67f797ea788e5064a5a708c91b169b88213dda29a6a1bea8
+  languageName: node
+  linkType: hard
+
+"@use-gesture/react@npm:^10.2.18":
+  version: 10.2.18
+  resolution: "@use-gesture/react@npm:10.2.18"
+  dependencies:
+    "@use-gesture/core": 10.2.18
+  peerDependencies:
+    react: ">= 16.8.0"
+  checksum: 41c6141d2db212b4ff62dbb2c235b4211abaa1b3eb83aa02fe27910afc7e162c26a351f55f394756de7e69563ea741798e936392222d38c5212b643fff29c9a8
   languageName: node
   linkType: hard
 
@@ -18222,10 +18240,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash-move@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "lodash-move@npm:1.1.1"
+  dependencies:
+    lodash: ^4.6.1
+  checksum: f78860c10d3b1f45ac6423111f1d0f929bcc90e6dc6af2790557c489517fa67ee36ea06ad882c5db8ce92d590eaaec81a4e36153a0280cbe317780ff9432d07c
+  languageName: node
+  linkType: hard
+
 "lodash.camelcase@npm:^4.3.0":
   version: 4.3.0
   resolution: "lodash.camelcase@npm:4.3.0"
   checksum: cb9227612f71b83e42de93eccf1232feeb25e705bdb19ba26c04f91e885bfd3dd5c517c4a97137658190581d3493ea3973072ca010aab7e301046d90740393d1
+  languageName: node
+  linkType: hard
+
+"lodash.clamp@npm:^4.0.3":
+  version: 4.0.3
+  resolution: "lodash.clamp@npm:4.0.3"
+  checksum: 02baa03ebb96f2ce8d9cec28b21fa3ed808c32f3b8fe54e2f990f1177779b13dcda69232db72d7285763e14a0ee64666a82a2047558eaba7198580173756c888
   languageName: node
   linkType: hard
 
@@ -18313,7 +18347,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4, lodash@npm:^4.0.1, lodash@npm:^4.17.11, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.7.0, lodash@npm:~4.17.15":
+"lodash@npm:^4, lodash@npm:^4.0.1, lodash@npm:^4.17.11, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.6.1, lodash@npm:^4.7.0, lodash@npm:~4.17.15":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -24288,17 +24322,21 @@ __metadata:
     "@testing-library/jest-dom": ^5.16.4
     "@testing-library/react": ^13.3.0
     "@testing-library/user-event": ^14.3.0
+    "@use-gesture/react": ^10.2.18
     "@vitejs/plugin-react": ^1.3.0
     babel-plugin-styled-components: ^2.0.7
     firebase: ^9.9.0
     i18next-locize-backend: ^5.1.2
     locize: ^2.4.3
     locize-lastused: ^3.1.0
+    lodash-move: ^1.1.1
+    lodash.clamp: ^4.0.3
     react: ^18.2.0
     react-dom: ^18.2.0
     senf-atomic-design-system: "*"
     senf-shared: "workspace:^"
     styled-components: ^5.3.5
+    uuid: ^8.3.2
     vite: ^2.9.11
     web-vitals: ^2.1.4
   languageName: unknown
