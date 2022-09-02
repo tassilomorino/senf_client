@@ -42,6 +42,8 @@ const Wrapper = styled.div<BoxProps>`
   z-index: ${({ zIndex }) => zIndex || undefined};
   transform: ${({ transform }) => transform || undefined};
   pointer-events: ${({ pointerEvents }) => pointerEvents || undefined};
+  transition: ${({ transition }) => transition || undefined};
+  
 `;
 
 const Box: FC<BoxProps> = ({

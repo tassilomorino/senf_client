@@ -29,7 +29,7 @@ const Map = ({ lng, lat, zoom, pitch, setLng, setLat, setZoom, setPitch }) => {
     });
     window.tb.altitudeStep = 1;
     // Add navigation control (the +/- zoom buttons)
-    map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
+    // map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
 
     map.on("move", () => {
 

@@ -25,16 +25,11 @@ const LoaderWrapper = styled.div`
 `
 
 function App() {
-  const [lng, setLng] = useState(6.9606);
-  const [lat, setLat] = useState(50.9429);
-  const [zoom, setZoom] = useState(18.5);
-  const [pitch, setPitch] = useState(65);
+
 
   const [loadingModel, setLoadingModel] = useState(false);
 
-  const handleSwitchView = (view) => {
-    setPitch(view);
-  };
+
 
   return (
     <div className="App">
@@ -46,17 +41,8 @@ function App() {
               <Loader width="100px" height="100px" /><Typography variant="h3" textAlign="center">
                 Loading Model...</Typography>
             </LoaderWrapper>}
-          <UI setLoadingModel={setLoadingModel} handleSwitchView={handleSwitchView} pitch={pitch} />
-          <Map
-            lng={lng}
-            lat={lat}
-            zoom={zoom}
-            pitch={pitch}
-            setLng={setLng}
-            setLat={setLat}
-            setZoom={setZoom}
-            setPitch={setPitch}
-          />
+          <UI setLoadingModel={setLoadingModel} />
+
         </ModalProvider>
       </ThemeProvider>
     </div>

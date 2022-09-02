@@ -36,14 +36,8 @@ const RoundedButtonWrapper = styled.div`
     componentsSidebarOpen ? "600px" : "180px"};
   transition: 0.5s ease-out;
 `;
-const tags = [
-  { name: "Normalview", color: "green", tagPitch: 60 },
-  { name: "Topview", color: "green", tagPitch: 0 },
-  { name: "Streetview", color: "green", tagPitch: 90 },
-];
+
 const MenuSidebar = ({
-  pitch,
-  handleSwitchView,
   componentsSidebarOpen,
   setComponentsSidebarOpen,
   setOpenInfoModal,
@@ -85,14 +79,7 @@ const MenuSidebar = ({
           alignItems="center"
           flexWrap="wrap"
         >
-          {tags.map(({ name, color, tagPitch }) => (
-            <Tag
-              color={color}
-              text={name}
-              onClick={() => handleSwitchView(tagPitch)}
-              active={tagPitch === pitch}
-            />
-          ))}
+
           <RoundedButtonWrapper componentsSidebarOpen={componentsSidebarOpen}>
             <RoundedButton
               color={!componentsSidebarOpen ? "white" : "rgb(226,183,54)"}

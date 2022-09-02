@@ -1,4 +1,10 @@
-export const createModel = (id, obj, objFormat, setOpenContextPanel) => {
+export const createModel = (
+  id,
+  obj,
+  objFormat,
+  setOpenContextPanel,
+  setSwipedUp
+) => {
   function makeTooltipInteractive(model) {
     function onSelectedChange(e) {
       const { selected } = e.detail; // we get if the object is selected after the event
@@ -13,6 +19,7 @@ export const createModel = (id, obj, objFormat, setOpenContextPanel) => {
           pitch: 70,
         });
         setOpenContextPanel(true);
+        setSwipedUp(false);
       } else {
         model.setCoords([
           window.map.transform.center.lng,

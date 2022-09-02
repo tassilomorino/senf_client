@@ -309,27 +309,27 @@ const Map: FC<MapProps> = ({
     subscribeMap(map);
     navigationControl(map);
 
-    if (!isMobile) {
-      hover(map);
+
+    if (ideasData || projectroomsData || projectroomData) {
+      clickMarkers(map, handleClickIdeaMarker, handleClickProjectroomMarker);
+      setIdeasMarkersLayer(map);
+      setProjectroomsMarkersLayer(map);
+      setPolygonLayer(map);
+
+      if (!isMobile) {
+        hover(map);
+      }
     }
-    clickMarkers(map, handleClickIdeaMarker, handleClickProjectroomMarker);
-    // geocoder(map);
-    // geolocateControl(map);
-    setIdeasMarkersLayer(map);
-    setProjectroomsMarkersLayer(map);
-    setPolygonLayer(map);
-    // setPinLayer(map);
-    setInitialMapBounds(map.getBounds().toArray());
+
+    if (setInitialMapBounds) { setInitialMapBounds(map.getBounds().toArray()) };
 
     if (mapType === "draw") {
       const DrawMapBox = new MapboxDraw({
         displayControlsDefault: false,
-        // Select which mapbox-gl-draw control buttons to add to the map.
         controls: {
           polygon: true,
           trash: true,
         },
-
         styles: [
           // default themes provided by MB Draw
 
@@ -694,13 +694,13 @@ const Map: FC<MapProps> = ({
 
   useEffect(() => {
     if (!mapFilterActive && statefulMap) {
-      initialFly(statefulMap);
+      initialFly(statefulMap, initialMapViewport);
     }
   }, [mapFilterActive]);
 
   useEffect(() => {
     if (statefulMap && !openIdea && !openProjectRoom) {
-      initialFly(statefulMap);
+      initialFly(statefulMap, initialMapViewport);
       setGeolocateTrigger(true)
     }
   }, [statefulMap, openProjectRoom]);

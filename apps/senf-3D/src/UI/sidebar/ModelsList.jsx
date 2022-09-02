@@ -1,8 +1,9 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import { Box, List, ObjectCard, Tag } from "senf-atomic-design-system";
+import { ThreeDToolSwipeList, isMobileCustom } from "senf-atomic-design-system";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import styled from "styled-components";
 import { ModelsData } from "../../data/Models";
 import { createModel } from "../../util/createModal";
 
@@ -16,42 +17,25 @@ const tags = [
   { objectType: "Sport" },
 ];
 
+const Wrapper = styled.div`
+width: 100vw;
+height:100vh;
+position: fixed;
+top:0;
+left:0;
+z-index: 1;
+pointer-events:none;
+`
+
 const ModelsList = ({ setLoadingModel, setComponentsSidebarOpen, setOpenContextPanel }) => {
-
-
-  // useEffect(() => {
-  //   // Create a reference to the file we want to download
-  //   const storage = getStorage();
-  //   const starsRef = ref(storage, "16660_0_Senf_Logo.jpg");
-
-  //   // Get the download URL
-  //   getDownloadURL(starsRef)
-  //     .then((url) => {
-  //       // Insert url into an <img> tag to "download"
-
-  //       console.log(url);
-  //     })
-  //     .catch((error) => {
-  //       // A full list of error codes is available at
-  //       // https://firebase.google.com/docs/storage/web/handle-errors
-  //       switch (error.code) {
-  //         case "storage/object-not-found":
-  //           // File doesn't exist
-  //           break;
-  //         case "storage/unauthorized":
-  //           // User doesn't have permission to access the object
-  //           break;
-  //         case "storage/canceled":
-  //           // User canceled the upload
-  //           break;
-
-  //         case "storage/unknown":
-  //           // Unknown error occurred, inspect the server response
-  //           break;
-  //       }
-  //     });
-  // }, []);
+  const isMobile = isMobileCustom()
   const [models, setModels] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [swipedUp, setSwipedUp] = useState(false);
+
+
+
+
   const [objectTypeSelected, setObjectTypeSelected] = useState([
     "Infrastruktur",
     "Mobiliar",
@@ -72,12 +56,6 @@ const ModelsList = ({ setLoadingModel, setComponentsSidebarOpen, setOpenContextP
       if (NewModels) {
         setModels(NewModels);
       }
-
-      // setModels(
-      //   ModelsData.filter(({ objectType }) =>
-      //     objectTypeSelected.includes(objectType)
-      //   )
-      // );
     }
   }, [objectTypeSelected]);
 
@@ -116,66 +94,57 @@ const ModelsList = ({ setLoadingModel, setComponentsSidebarOpen, setOpenContextP
     }
   };
 
+  const handleSearch = (queryString, dbDataKeys = [
+    "title",
+    "objectType",
+  ]) => {
+    setSearchTerm(queryString)
+    const sanitizedUserInput = queryString.toString().toLowerCase();
+
+    const newModels = models.filter((object) => {
+      return dbDataKeys.some((dbDataKey) => {
+        if (
+          object[dbDataKey] &&
+          object[dbDataKey].toString().toLowerCase().includes(sanitizedUserInput)
+        ) {
+          return true;
+        }
+      });
+    });
+
+    console.log(queryString, newModels)
+    setModels(newModels)
+  };
+
+
+  const handlePlaceModel = (event, cardType, modelData) => {
+    setLoadingModel(true);
+    setSwipedUp(false);
+    if (isMobile) {
+      setSwipedUp(false)
+    }
+    const storage = getStorage();
+    const storageRef = ref(
+      storage,
+      `3dModels/${modelData.modelPath}`
+    );
+    function onResolve(foundURL) {
+      setLoadingModel(false);
+      createModel(
+        `${Math.floor(Math.random() * 1000)}`,
+        foundURL,
+        modelData.format,
+        setOpenContextPanel,
+        setSwipedUp
+
+      );
+    }
+    getDownloadURL(storageRef).then(onResolve, (error) => { setLoadingModel(false); console.log(error) });
+
+  }
+
   return (
-    <React.Fragment>
-      <Box
-        gap="10px"
-        width="calc(100% - 20px)"
-        margin="10px"
-        justifyContent="center"
-        alignItems="center"
-        flexWrap="wrap"
-      >
-        {tags.map(({ objectType }, i) => (
-          <Tag
-            key={i}
-            text={objectType}
-            onClick={() => handleobjectTypeelector(objectType)}
-            active={
-              (objectTypeSelected.includes(objectType) &&
-                objectTypeSelected.length !== 6) ||
-              (objectTypeSelected.length === 6 && objectType === "Alle")
-            }
-          />
-        ))}
-      </Box>
-
-      {models.length > 0 && (
-        <List
-          listType="grid"
-          CardType={ObjectCard}
-          data={models}
-          handleButtonOpenCard={(event, cardType, modelData) => {
-            setLoadingModel(true);
-            setComponentsSidebarOpen(false);
-
-
-            const storage = getStorage();
-            const storageRef = ref(
-              storage,
-              `3dModels/${modelData.modelPath}`
-            );
-            console.log()
-
-            function onResolve(foundURL) {
-              console.log(foundURL)
-              setLoadingModel(false);
-
-              createModel(
-                `${Math.floor(Math.random() * 1000)}`,
-                foundURL,
-                modelData.format,
-                setOpenContextPanel
-
-              );
-            }
-            getDownloadURL(storageRef).then(onResolve, (error) => { setLoadingModel(false); console.log(error) });
-
-          }}
-          loading={false}
-        />
-      )}
-    </React.Fragment>
+    <Wrapper><ThreeDToolSwipeList data={models} handlePlaceModel={handlePlaceModel} handleSearch={handleSearch} searchTerm={searchTerm} swipedUp={swipedUp} setSwipedUp={setSwipedUp} /></Wrapper>
   );
 };
 export default ModelsList;

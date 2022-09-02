@@ -3,16 +3,29 @@ import styled from 'styled-components'
 import { Button, Box, RangeSlider, Typography, LayerWhiteFirstDefault } from 'senf-atomic-design-system'
 
 const Wrapper = styled.div`
-width: 230px;
+
 height: auto;
 padding: 10px;
-border-radius:18px;
-right:10px;
-top:10px;
-position:fixed;
-
+border-radius:18px 18px 0px 0px;
+width:100vw;
+bottom:0px;
+position: fixed;
+z-index: 3;
 
   ${(props) => LayerWhiteFirstDefault};
+
+  @media (min-width: 768px) {
+    width: 230px;
+    height: auto;
+    right:10px;
+top:10px;
+border-radius:18px;
+bottom:initial;
+
+
+}
+
+  
 `
 
 const ContextPanel = ({ openContextPanel, setOpenContextPanel }) => {
