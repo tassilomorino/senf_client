@@ -76,7 +76,6 @@ const PostScream = ({
   const [geoData, setGeoData] = useState("");
   const [checkIfCalendar, setCheckIfCalendar] = useState(false);
 
-  const [address, setAddress] = useState(null);
   const [neighborhood, setNeighborhood] = useState("Ohne Ortsangabe");
   const [fulladdress, setFulladdress] = useState("Ohne Ortsangabe");
 
@@ -107,6 +106,7 @@ const PostScream = ({
       title: "",
       body: "",
       topic: "",
+      address: "",
 
       contact: null,
       contactTitle: null,
@@ -123,6 +123,19 @@ const PostScream = ({
 
   const [selectedDays, setSelectedDays] = useState([]);
   const [selectedUnix, setSelectedUnix] = useState([]);
+
+
+  const handleChangeCalendar = (selectedDays) => {
+    const selectedUnix = [];
+    let i;
+    for (i = 0; i < selectedDays.length; i++) {
+      selectedUnix[i] = selectedDays[i].unix;
+    }
+
+    setSelectedDays(selectedDays);
+    setSelectedUnix(selectedUnix);
+  };
+
 
   useEffect(() => {
     if (postIdeaOpen) {
@@ -203,18 +216,24 @@ const PostScream = ({
     const newScream = {
       body: formik.values.body,
       title: formik.values.title,
-      locationHeader: address,
+      locationHeader: formik.values.address,
       fulladdress,
       neighborhood,
       lat: statefulMap.getCenter().lat,
       long: statefulMap.getCenter().lng,
       projectRoomId: projectSelected,
       Thema: formik.values.topic,
-      weblinkTitle: formik.values.weblinkTitle,
-      weblink: formik.values.weblink,
-      contactTitle: formik.values.contactTitle,
-      contact: formik.values.contact,
     };
+
+    if (formik.values.contact) {
+      newScream.contact = formik.values.contact;
+      newScream.contactTitle = formik.values.contactTitle || "Kontakt";
+    }
+    if (formik.values.weblink) {
+      newScream.weblink = formik.values.weblink;
+      newScream.weblinkTitle = formik.values.weblinkTitle || "Website";
+    }
+
 
     if (selectedUnix.length > 0) {
       newScream.selectedUnix = selectedUnix;
@@ -233,8 +252,6 @@ const PostScream = ({
       setTimeout(() => {
         geocode(newViewport);
       }, 1000);
-
-      // setAddressBarClickedState(false);
     });
   }, []);
 
@@ -264,7 +281,9 @@ const PostScream = ({
             : "";
 
         setNeighborhood(match.features[0].context[1].text);
-        setAddress(`${match.features[0].text} ${houseNumber}`);
+
+
+        formik.setFieldValue("address", `${match.features[0].text} ${houseNumber}`);
         setFulladdress(match.features[0].place_name);
       });
 
@@ -340,38 +359,22 @@ const PostScream = ({
         </div>
       )} */}
       <Box position="fixed" top="0px" width={isMobileCustom ? "calc(100vw - 20px)" : "400px"} zIndex={99999999} left="0px" margin="10px">
-        <Geocoder finalAddress={address} statefulMap={statefulMap} handleSetClose={() => setPostIdeaOpen(false)} />
+        <Geocoder finalAddress={formik?.values.address} statefulMap={statefulMap} handleSetClose={() => setPostIdeaOpen(false)} />
       </Box>
 
       <PostScreamSelectContainter
         classes={classes}
+        address={formik.values.address}
         locationDecided={locationDecided}
         handleLocationDecided={handleLocationDecided}
         projectSelected={projectSelected}
-        address={address}
         handleDropdownProject={handleDropdownProject}
         open={open}
         loadingProjects={loadingProjects}
         projectsData={projectsData}
       />
-      <PostIdeaComponent formik={formik} />
-      {/* 
-      <PostScreamFormContent
-        formik={formik}
-        classes={classes}
-        errors={errors}
-        address={address}
-        handleLocationDecided={handleLocationDecided}
-        handleDropdown={handleDropdown}
-        project={projectSelected}
-        selectedDays={selectedDays}
-        loading={loading}
-        Out={out}
-        locationDecided={locationDecided}
-        handleSubmit={handleSubmit}
-        checkIfCalendar={checkIfCalendar}
-        setOpenRules={setOpenRules}
-      /> */}
+      <PostIdeaComponent formik={formik} checkIfCalendar={checkIfCalendar} selectedDays={selectedDays} handleChangeCalendar={handleChangeCalendar} handleSubmit={handleSubmit} />
+
     </React.Fragment>
   );
 };

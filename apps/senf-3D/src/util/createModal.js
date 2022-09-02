@@ -1,6 +1,32 @@
-import { makeTooltipInteractive, tooltipDOM } from "../UI/tooltip";
+export const createModel = (id, obj, objFormat, setOpenContextPanel) => {
+  function makeTooltipInteractive(model) {
+    function onSelectedChange(e) {
+      const { selected } = e.detail; // we get if the object is selected after the event
 
-export const createModel = (id, obj, objFormat, scale, rotation) => {
+      // if selected
+      if (selected) {
+        const selectedObject = e.detail; //
+
+        window.map.flyTo({
+          center: selectedObject.coordinates,
+          zoom: 20,
+          pitch: 70,
+        });
+        setOpenContextPanel(true);
+      } else {
+        model.setCoords([
+          window.map.transform.center.lng,
+          window.map.transform.center.lat,
+          0,
+        ]);
+        setOpenContextPanel(false);
+      }
+      window.tb.update();
+      window.map.repaint = true;
+    }
+    model.addEventListener("SelectedChange", onSelectedChange, false);
+  }
+
   window.map.addLayer({
     id: id || "custom_layer",
     type: "custom",
@@ -8,20 +34,34 @@ export const createModel = (id, obj, objFormat, scale, rotation) => {
     onAdd(map, _gl) {
       const options = {
         type: objFormat || "fbx",
-        obj: obj || "3d-models/cyclestand.fbx",
-        scale: scale || 1,
-        rotation: rotation || { x: 90, y: 0, z: 0 }, // default rotation,
+        obj,
+        scale: 1,
+        units: "meters",
+
+        rotation: { x: 90, y: 0, z: 0 }, // default rotation,
         anchor: "center",
       };
+
       window.tb.loadObj(options, (model) => {
-        model.addLabel(tooltipDOM);
+        model.castShadow = true;
+        // model.addLabel(tooltipDOM);
         makeTooltipInteractive(model);
         model = model.setCoords([
           map.transform.center.lng,
           map.transform.center.lat,
+          0,
         ]);
         // model.addEventListener("SelectedChange", onSelectedChange, false);
         window.tb.add(model);
+
+        window.tb.map.selectedObject = model;
+        window.tb.map.selectedObject.selected = true;
+        window.map.flyTo({
+          center: model.coordinates,
+          zoom: 20,
+          pitch: 70,
+        });
+
         // setSelectedObj(model);
       });
     },

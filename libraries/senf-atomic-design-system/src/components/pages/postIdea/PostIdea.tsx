@@ -10,18 +10,19 @@ import PostIdeaForm from "./PostIdeaForm";
 
 const Wrapper = styled.div<PostIdeaProps>``;
 
-const PostIdea: FC<PostIdeaProps> = ({ formik, handleSubmit, loading, Out }) => {
+const PostIdea: FC<PostIdeaProps> = ({ formik, checkIfCalendar, selectedDays, handleChangeCalendar, handleSubmit, loading, Out }) => {
   const { t } = useTranslation()
 
   return <Wrapper>
-    <PostIdeaForm formik={formik} />
+    <PostIdeaForm formik={formik} checkIfCalendar={checkIfCalendar} selectedDays={selectedDays} handleChangeCalendar={handleChangeCalendar} />
 
     <Box
       margin="10px 0px 10px 0px"
       justifyContent="center"
       position="absolute"
-      top="100%"
-      width="100%"
+      bottom="10px"
+      width="450px"
+      zIndex={3}
     >
       <Button
         onClick={handleSubmit}
