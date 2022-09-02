@@ -53,12 +53,15 @@ const Circle = styled.div`
     props.active ? LayerWhiteFirstDefault : LayerWhiteFirstDefault};
 `;
 const ComponentsSidebar = ({
+  setLoadingModel,
   componentsSidebarOpen,
   setComponentsSidebarOpen,
+  setOpenContextPanel,
   startDrawingStreet,
   openInfoModal,
   openDrawContext,
   openSaveModal,
+
 }) => {
   const [order, setOrder] = useState(1);
 
@@ -97,7 +100,7 @@ const ComponentsSidebar = ({
 
       <InnerWrapper>
         {order === 1 ? (
-          <ModelsList />
+          <ModelsList setLoadingModel={setLoadingModel} setComponentsSidebarOpen={setComponentsSidebarOpen} setOpenContextPanel={setOpenContextPanel} />
         ) : order === 2 ? (
           <FormsList />
         ) : (

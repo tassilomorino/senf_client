@@ -11,6 +11,7 @@ const StyledLoader = styled.div`
   height: ${(props) => (props.height ? props.height : "100%")};
   position: relative;
   transform: scale(1.5);
+  overflow: hidden;
 `;
 const Loader: FC<LoaderProps> = ({ width, height }) => {
   const container = useRef(null);

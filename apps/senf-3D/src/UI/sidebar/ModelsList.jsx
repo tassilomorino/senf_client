@@ -16,7 +16,9 @@ const tags = [
   { objectType: "Sport" },
 ];
 
-const ModelsList = () => {
+const ModelsList = ({ setLoadingModel, setComponentsSidebarOpen, setOpenContextPanel }) => {
+
+
   // useEffect(() => {
   //   // Create a reference to the file we want to download
   //   const storage = getStorage();
@@ -144,12 +146,31 @@ const ModelsList = () => {
           CardType={ObjectCard}
           data={models}
           handleButtonOpenCard={(event, cardType, modelData) => {
-            createModel(
-              `${Math.floor(Math.random() * 1000)}`,
-              modelData.modelPath,
-              modelData.format,
-              1
+            setLoadingModel(true);
+            setComponentsSidebarOpen(false);
+
+
+            const storage = getStorage();
+            const storageRef = ref(
+              storage,
+              `3dModels/${modelData.modelPath}`
             );
+            console.log()
+
+            function onResolve(foundURL) {
+              console.log(foundURL)
+              setLoadingModel(false);
+
+              createModel(
+                `${Math.floor(Math.random() * 1000)}`,
+                foundURL,
+                modelData.format,
+                setOpenContextPanel
+
+              );
+            }
+            getDownloadURL(storageRef).then(onResolve, (error) => { setLoadingModel(false); console.log(error) });
+
           }}
           loading={false}
         />

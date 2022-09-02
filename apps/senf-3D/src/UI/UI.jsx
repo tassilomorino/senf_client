@@ -1,15 +1,17 @@
 import React, { useState } from "react";
+import styled from "styled-components";
 import { createModel } from "../util/createModal";
 import ComponentsSidebar from "./sidebar/ComponentsSidebar";
+import ContextPanel from "./sidebar/ContextPanel";
 import InfoPage from "./sidebar/InfoPage";
 import MenuSidebar from "./sidebar/MenuSidebar";
 import "./style.css";
 
 
-function UI({ handleSwitchView, pitch }) {
+
+function UI({ setLoadingModel, handleSwitchView, pitch }) {
   const [componentsSidebarOpen, setComponentsSidebarOpen] = useState(false);
   const [objSelected, setIsObjSelected] = useState(false);
-  const [openContextSidebar, setOpenContextSidebar] = useState(false);
   const [openDrawContext, setOpenDrawContext] = useState(false);
 
   const [openInfoModal, setOpenInfoModal] = useState(false);
@@ -18,6 +20,8 @@ function UI({ handleSwitchView, pitch }) {
 
   const [description, setDescription] = useState("");
   const [email, setEmail] = useState("");
+
+  const [openContextPanel, setOpenContextPanel] = useState(false);
 
   // const [selectedObj, setSelectedObj] = useState();
 
@@ -80,7 +84,6 @@ function UI({ handleSwitchView, pitch }) {
           Scale Up
         </button>
       </div> */}
-      <div style={{ position: "absolute", left: "49vw", top: "48vh", fontSize: 50 }}>X</div>
 
       <MenuSidebar
         handleSwitchView={handleSwitchView}
@@ -93,12 +96,18 @@ function UI({ handleSwitchView, pitch }) {
         setOpenSaveModal={setOpenSaveModal}
       />
       <ComponentsSidebar
+
+        setLoadingModel={setLoadingModel}
         componentsSidebarOpen={componentsSidebarOpen}
         openInfoModal={openInfoModal}
         openDrawContext={openDrawContext}
         openSaveModal={openSaveModal}
+        setComponentsSidebarOpen={setComponentsSidebarOpen}
+        setOpenContextPanel={setOpenContextPanel}
       // startDrawingStreet={startDrawingStreet}
       />
+
+      <ContextPanel openContextPanel={openContextPanel} setOpenContextPanel={setOpenContextPanel} />
     </div>
   );
 }

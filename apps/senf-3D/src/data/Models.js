@@ -102,7 +102,7 @@ export const ModelsData = [
     imgUrl: Img5,
     index: 32,
     format: "fbx",
-    modelPath: "3d-models/Bar/3DMODELO(QR).fbx",
+    modelPath: "bar.fbx",
   },
   {
     objectId: 6,

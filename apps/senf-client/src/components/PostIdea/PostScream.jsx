@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, Fragment, memo, useRef, useEffect } from "react";
+import React, { useState, memo, useEffect } from "react";
 import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
 import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
@@ -8,13 +8,13 @@ import {
   Plus,
   Box,
   Button,
-  Input,
   ModalContext,
-  Geocoder
+  Geocoder,
+  PostIdea as PostIdeaComponent
 } from "senf-atomic-design-system";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { isMobileCustom } from "../../util/customDeviceDetect";
@@ -22,7 +22,6 @@ import { postScream } from "../../redux/actions/screamActions";
 import { clearErrors } from "../../redux/actions/errorsActions";
 
 // Components
-import PostScreamFormContent from "./PostScreamFormContent";
 import PostScreamSelectContainter from "./PostScreamSelectContainter";
 import Auth from "../../pages/Auth";
 
@@ -71,16 +70,12 @@ const PostScream = ({
   );
 
   const [viewport, setViewport] = useState(null);
-
-  const [addressBarClickedState, setAddressBarClickedState] = useState(false);
-
   const [openRules, setOpenRules] = useState(false);
   const [out, setOut] = useState(false);
   const [projectSelected, setProjectSeleted] = useState("");
   const [geoData, setGeoData] = useState("");
   const [checkIfCalendar, setCheckIfCalendar] = useState(false);
 
-  const [address, setAddress] = useState(null);
   const [neighborhood, setNeighborhood] = useState("Ohne Ortsangabe");
   const [fulladdress, setFulladdress] = useState("Ohne Ortsangabe");
 
@@ -111,6 +106,7 @@ const PostScream = ({
       title: "",
       body: "",
       topic: "",
+      address: "",
 
       contact: null,
       contactTitle: null,
@@ -127,6 +123,19 @@ const PostScream = ({
 
   const [selectedDays, setSelectedDays] = useState([]);
   const [selectedUnix, setSelectedUnix] = useState([]);
+
+
+  const handleChangeCalendar = (selectedDays) => {
+    const selectedUnix = [];
+    let i;
+    for (i = 0; i < selectedDays.length; i++) {
+      selectedUnix[i] = selectedDays[i].unix;
+    }
+
+    setSelectedDays(selectedDays);
+    setSelectedUnix(selectedUnix);
+  };
+
 
   useEffect(() => {
     if (postIdeaOpen) {
@@ -168,9 +177,6 @@ const PostScream = ({
     }
   }, [postIdeaOpen]);
 
-  const handleDropdown = (value) => {
-    setTopic(value);
-  };
 
   const handleDropdownProject = (value) => {
     // event.preventDefault();
@@ -210,18 +216,24 @@ const PostScream = ({
     const newScream = {
       body: formik.values.body,
       title: formik.values.title,
-      locationHeader: address,
+      locationHeader: formik.values.address,
       fulladdress,
       neighborhood,
       lat: statefulMap.getCenter().lat,
       long: statefulMap.getCenter().lng,
       projectRoomId: projectSelected,
       Thema: formik.values.topic,
-      weblinkTitle: formik.values.weblinkTitle,
-      weblink: formik.values.weblink,
-      contactTitle: formik.values.contactTitle,
-      contact: formik.values.contact,
     };
+
+    if (formik.values.contact) {
+      newScream.contact = formik.values.contact;
+      newScream.contactTitle = formik.values.contactTitle || "Kontakt";
+    }
+    if (formik.values.weblink) {
+      newScream.weblink = formik.values.weblink;
+      newScream.weblinkTitle = formik.values.weblinkTitle || "Website";
+    }
+
 
     if (selectedUnix.length > 0) {
       newScream.selectedUnix = selectedUnix;
@@ -240,8 +252,6 @@ const PostScream = ({
       setTimeout(() => {
         geocode(newViewport);
       }, 1000);
-
-      // setAddressBarClickedState(false);
     });
   }, []);
 
@@ -271,7 +281,9 @@ const PostScream = ({
             : "";
 
         setNeighborhood(match.features[0].context[1].text);
-        setAddress(`${match.features[0].text} ${houseNumber}`);
+
+
+        formik.setFieldValue("address", `${match.features[0].text} ${houseNumber}`);
         setFulladdress(match.features[0].place_name);
       });
 
@@ -287,19 +299,7 @@ const PostScream = ({
     } else {
       setOut(false);
     }
-  };
-
-  const onSelected = (newViewport) => {
-    setViewport(newViewport);
-
-    setTimeout(() => {
-      geocode(newViewport);
-    }, 1000);
-  };
-
-  const addressBarClicked = () => {
-    setAddressBarClickedState(true);
-  };
+  }
 
   const handleLocationDecided = () => {
     if (address) {
@@ -359,38 +359,22 @@ const PostScream = ({
         </div>
       )} */}
       <Box position="fixed" top="0px" width={isMobileCustom ? "calc(100vw - 20px)" : "400px"} zIndex={99999999} left="0px" margin="10px">
-
-        <Geocoder finalAddress={address} statefulMap={statefulMap} handleSetClose={() => setPostIdeaOpen(false)} />
+        <Geocoder finalAddress={formik?.values.address} statefulMap={statefulMap} handleSetClose={() => setPostIdeaOpen(false)} />
       </Box>
 
       <PostScreamSelectContainter
         classes={classes}
+        address={formik.values.address}
         locationDecided={locationDecided}
         handleLocationDecided={handleLocationDecided}
         projectSelected={projectSelected}
-        address={address}
         handleDropdownProject={handleDropdownProject}
         open={open}
         loadingProjects={loadingProjects}
         projectsData={projectsData}
       />
+      <PostIdeaComponent formik={formik} checkIfCalendar={checkIfCalendar} selectedDays={selectedDays} handleChangeCalendar={handleChangeCalendar} handleSubmit={handleSubmit} />
 
-      <PostScreamFormContent
-        formik={formik}
-        classes={classes}
-        errors={errors}
-        address={address}
-        handleLocationDecided={handleLocationDecided}
-        handleDropdown={handleDropdown}
-        project={projectSelected}
-        selectedDays={selectedDays}
-        loading={loading}
-        Out={out}
-        locationDecided={locationDecided}
-        handleSubmit={handleSubmit}
-        checkIfCalendar={checkIfCalendar}
-        setOpenRules={setOpenRules}
-      />
     </React.Fragment>
   );
 };

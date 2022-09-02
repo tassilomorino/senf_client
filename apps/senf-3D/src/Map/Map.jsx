@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import { Threebox } from "threebox-plugin";
 import "./Map.css";
@@ -8,7 +8,6 @@ mapboxgl.accessToken =
 
 const Map = ({ lng, lat, zoom, pitch, setLng, setLat, setZoom, setPitch }) => {
   const mapContainerRef = useRef(null);
-
   // Initialize map when component mounts
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -30,13 +29,24 @@ const Map = ({ lng, lat, zoom, pitch, setLng, setLat, setZoom, setPitch }) => {
     });
     window.tb.altitudeStep = 1;
     // Add navigation control (the +/- zoom buttons)
-    map.addControl(new mapboxgl.NavigationControl(), "top-right");
+    map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
 
     map.on("move", () => {
+
       setLng(map.getCenter().lng.toFixed(4));
       setLat(map.getCenter().lat.toFixed(4));
       setZoom(map.getZoom().toFixed(2));
+
+
+      window?.tb?.map?.selectedObject?.setCoords([
+        map.getCenter().lng,
+        map.getCenter().lat,
+        3
+
+      ])
     });
+
+
 
     // Clean up on unmount
     return () => map.remove();
