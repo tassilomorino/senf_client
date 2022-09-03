@@ -14,9 +14,12 @@ import List from "../../molecules/list/List";
 import MenuSidebar from "../../organisms/menuSidebar/MenuSidebar";
 import ObjectCard from "../../molecules/cards/ObjectCard";
 import Input from "../../atoms/inputs/Input";
-import { Arrow, Search } from "../../../assets/icons";
+import { Arrow, Plus, Search } from "../../../assets/icons";
 import Box from "../../atoms/box/Box";
 import Button from "../../atoms/buttons/Button";
+import ModalButton from "../../molecules/modalStack/ModalButton";
+import ImageUploadTile from "../../atoms/imageUploadTile/ImageUploadTile";
+import Typography from "../../atoms/typography/Typography";
 
 const DragWrapper = styled(animated.div)`
   z-index: ${({ zIndex }) => zIndex || 2};
@@ -125,25 +128,35 @@ const HandleBar = styled.div`
   border-radius: 5px;
 `;
 
+
+
 const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
   data,
   handlePlaceModel,
   searchTerm,
-  handleSearch,
+  setSearchTerm,
   swipedUp,
   setSwipedUp,
   handleOpenMyAccount,
   setShowUI,
+  formik,
+  uploadedImage,
+  handleImageUpload,
+  uploadingImage,
+  handleSubmit,
+  grounds,
+  setMode,
 }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom();
+  const [showResults, setShowResults] = useState(false);
   const [swipePercentage, setSwipePercentage] = useState(0);
 
   const [springProps, setSpring] = useSpring(() => ({
     x: 0,
     y: 0,
     scale: 1,
-    transform: `translateY(${window.innerHeight - 100}px)`,
+    transform: `translateY(${window.innerHeight}px)`,
     overflow: "visible",
     touchAction: "none",
     userSelect: "none",
@@ -163,7 +176,7 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
       });
     } else {
       setSpring({
-        transform: `translateY(${window.innerHeight - 100}px)`,
+        transform: `translateY(${window.innerHeight}px)`,
         touchAction: "unset",
       });
 
@@ -177,7 +190,7 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
       });
       if (last && my > 50) {
         setSpring({
-          transform: `translateY(${window.innerHeight - 100}px)`,
+          transform: `translateY(${window.innerHeight}px)`,
           touchAction: "none",
         });
         setSwipedUp(false);
@@ -237,35 +250,27 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
           >
             {isMobile && <HandleBar />}
 
-            <Box margin="30px 10px" >
+            <Box margin="30px 10px" flexDirection="column" gap="10px">
+              <Typography variant="buttonBg" textAlign="center">Suche nach Objekten für deinen Entwurf</Typography>
+
               <Input
                 name="searchAddress"
                 type="search"
-                leadingIcon={<Search />}
+                leadingIcon={showResults ? <Arrow transform="rotate(180deg)" /> : <Search />}
+                leadingIconClick={() => { setSearchTerm(""); setShowResults(false) }}
                 placeholder={"searchObjects"}
-                onChange={(event) => handleSearch(event?.target?.value)}
+                onChange={(event) => setSearchTerm(event?.target?.value)}
                 value={searchTerm}
-                onClick={() => setSwipedUp(true)
+                onClick={() => setShowResults(true)
                 }
               />
             </Box>
-            {/* <RoundedButtonWrapper>
-              <RoundedButton
-                size="big"
-                icon={
-                  <Plus
-                    color={theme.colors.primary.primary120}
-                    transform="scale(2)"
-                  />
-                }
-                onClick={() => setPostIdeaOpen(true)}
-              />
-            </RoundedButtonWrapper> */}
 
           </Header>
+
           <ContentWrapper swipedUp={swipedUp}>
 
-            {data?.length > 0 && (
+            {showResults && data?.length > 0 ? (
               <List
                 listType="grid"
                 CardType={ObjectCard}
@@ -273,7 +278,71 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
                 handleButtonOpenCard={handlePlaceModel}
                 loading={false}
               />
-            )}
+            ) :
+              <React.Fragment>
+
+                <Box margin="40px 10px" gap="20px" flexDirection="column" overflow="hidden" height="260px">
+                  <Typography variant="buttonBg" textAlign="center">Füge Bodenbeläge ein</Typography>
+                  <Box position="absolute" width="auto" marginTop="30px">
+                    {grounds.map((item, index) => (
+                      <ObjectCard data={item} handleButtonOpenCard={() => setMode({ mode: "draw", drawType: item.drawType, drawStyle: item.drawStyle })} />
+                    ))}
+
+
+                  </Box>
+                </Box>
+
+
+                <Box margin="10px" gap="20px" flexDirection="column" position="absolute" bottom="20px" width="calc(100% - 20px)">
+                  <Typography variant="buttonBg" textAlign="center">Du hast eigene Modelle?</Typography>
+                  <ModalButton variant="primary" icon={<Plus />} text="3D Modell hochladen" fillWidth="max" options={{
+                    padding: 20,
+                    title: t("add_model"),
+                    swipe: isMobile && true,
+
+                  }}>
+                    <Box flexDirection="column" gap="20px">
+                      <Input
+                        name="title"
+                        type="text"
+                        placeholder={t("add_title")}
+                        label={t("title")}
+                        onChange={formik?.handleChange}
+                        onBlur={formik?.handleBlur}
+                        value={formik?.values.title}
+                      />
+                      <Box gap="20px">
+                        <ImageUploadTile
+                          photoURL={uploadedImage}
+                          uploadingImage={uploadingImage}
+                          handleImageUpload={handleImageUpload}
+                        />
+                        <ImageUploadTile
+                          photoURL={uploadedImage}
+                          uploadingImage={uploadingImage}
+                          handleImageUpload={handleImageUpload}
+                        />
+                      </Box>
+
+
+                      <Button
+                        text="add model"
+
+                        onClick={handleSubmit}
+                        disabled={!formik.isValid}
+                      />
+                    </Box>
+                  </ModalButton>
+                </Box>
+
+
+              </React.Fragment>
+
+
+
+            }
+
+
           </ContentWrapper>
         </InnerWrapper>
       </DragWrapper>

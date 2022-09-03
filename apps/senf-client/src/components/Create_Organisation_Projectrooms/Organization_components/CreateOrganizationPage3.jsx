@@ -34,7 +34,6 @@ const CreateOrganizationPage3 = ({
   const [loading, setLoading] = useState(false);
 
   const [uploadedImage, setUploadedImage] = useState(null);
-  const [uploadImageHover, setUploadImageHover] = useState(false);
 
   async function handleImageUpload(event) {
     const imageFile = event.target.files[0];
@@ -119,8 +118,6 @@ const CreateOrganizationPage3 = ({
             <ImageUploadTile
               photoURL={uploadedImage}
               uploadingImage={loading}
-              hover={uploadImageHover}
-              onHover={setUploadImageHover}
               handleImageUpload={handleImageUpload}
             />
           </Box>

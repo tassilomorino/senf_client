@@ -2,10 +2,16 @@
 
 import React, { useState, useEffect } from "react";
 import { ThreeDToolSwipeList, isMobileCustom } from "senf-atomic-design-system";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import styled from "styled-components";
+import { useFormik } from "formik";
+import { doc, updateDoc } from "firebase/firestore";
+import imageCompression from "browser-image-compression";
 import { ModelsData } from "../../data/Models";
 import { createModel } from "../../util/createModal";
+import { db } from "../../firebase";
+import { Grounds } from "../../data/Grounds";
+
 
 const tags = [
   { objectType: "Alle" },
@@ -23,16 +29,89 @@ height:100vh;
 position: fixed;
 top:0;
 left:0;
-z-index: 1;
+z-index: 2;
 pointer-events:none;
 `
 
-const ModelsList = ({ setLoadingModel, setComponentsSidebarOpen, setOpenContextPanel }) => {
-  const isMobile = isMobileCustom()
+const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPanel, setMode }) => {
+  const isMobile = isMobileCustom();
+  // const { t } = useTranslation()
   const [models, setModels] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [swipedUp, setSwipedUp] = useState(false);
 
+
+
+
+  // const validationSchema = yup.object({
+  //   title: yup
+  //     .string()
+  //     .required(t("enter_email"))
+  //     .min(3, t("username_too_short"))
+  //     .max(40, t("username_too_long")),
+  //   brief: yup
+  //     .string()
+  //     .required(t("enter_email"))
+  //     .min(3, t("username_too_short"))
+  //     .max(500, t("username_too_long")),
+
+  //   description_about: yup
+  //     .string()
+  //     .required(t("enter_email"))
+  //     .min(10, t("username_too_short"))
+  //     .max(5000, t("username_too_long")),
+
+  //   description_procedure: yup
+  //     .string()
+  //     .required(t("enter_email"))
+  //     .min(10, t("username_too_short"))
+  //     .max(3000, t("username_too_long")),
+  // });
+
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+    },
+    // validationSchema,
+    validateOnChange: true,
+    validateOnBlur: true,
+  });
+
+  const [uploadingImage, setUploadingImage] = useState(null);
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [uploadImageHover, setUploadImageHover] = useState(false);
+
+  async function handleImageUpload(event) {
+    const imageFile = event.target.files[0];
+    const options = {
+      maxSizeMB: 0.03,
+      maxWidthOrHeight: 700,
+      useWebWorker: true,
+    };
+    try {
+      setUploadingImage(true);
+      const compressedFile = await imageCompression(imageFile, options);
+
+      const storage = getStorage();
+      const storageRef = ref(
+        storage,
+        `ThreeDmodels/images/${compressedFile.name}`
+      );
+      const ThreeDmodelsRef = doc(
+        db,
+        `ThreeDmodels/${"id"}`
+      );
+
+      await uploadBytes(storageRef, compressedFile).then((snapshot) => {
+        console.log("Uploaded a file!");
+      });
+      const logoURL = await getDownloadURL(storageRef);
+      setUploadedImage(logoURL);
+      await updateDoc(ThreeDmodelsRef, { logoURL });
+      setUploadingImage(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
 
 
@@ -94,13 +173,16 @@ const ModelsList = ({ setLoadingModel, setComponentsSidebarOpen, setOpenContextP
     }
   };
 
-  const handleSearch = (queryString, dbDataKeys = [
+  const handleSearch = (dbDataKeys = [
     "title",
     "objectType",
   ]) => {
-    setSearchTerm(queryString)
-    const sanitizedUserInput = queryString.toString().toLowerCase();
 
+    const sanitizedUserInput = searchTerm.toString().toLowerCase();
+
+    if (searchTerm === "") {
+      return;
+    }
     const newModels = models.filter((object) => {
       return dbDataKeys.some((dbDataKey) => {
         if (
@@ -111,10 +193,12 @@ const ModelsList = ({ setLoadingModel, setComponentsSidebarOpen, setOpenContextP
         }
       });
     });
-
-    console.log(queryString, newModels)
     setModels(newModels)
   };
+
+  useEffect(() => {
+    handleSearch()
+  }, [searchTerm])
 
 
   const handlePlaceModel = (event, cardType, modelData) => {
@@ -144,7 +228,7 @@ const ModelsList = ({ setLoadingModel, setComponentsSidebarOpen, setOpenContextP
   }
 
   return (
-    <Wrapper><ThreeDToolSwipeList data={models} handlePlaceModel={handlePlaceModel} handleSearch={handleSearch} searchTerm={searchTerm} swipedUp={swipedUp} setSwipedUp={setSwipedUp} /></Wrapper>
+    <Wrapper><ThreeDToolSwipeList data={models} handlePlaceModel={handlePlaceModel} setSearchTerm={setSearchTerm} searchTerm={searchTerm} swipedUp={swipedUp} setSwipedUp={setSwipedUp} formik={formik} grounds={Grounds} setMode={setMode} /></Wrapper>
   );
 };
 export default ModelsList;

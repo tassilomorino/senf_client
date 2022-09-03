@@ -2,12 +2,20 @@
 import React, { useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import {
-  theme, GlobalStyle, ModalProvider, Typography, Loader, Box
+  theme, GlobalStyle, ModalProvider, Typography, Loader
 } from "senf-atomic-design-system";
-import Map from "./Map/Map";
 import { auth } from "./firebase";
 
 import UI from "./UI/UI";
+
+const BodyWrapper = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: scroll;
+`
 
 const LoaderWrapper = styled.div`
   position: absolute;
@@ -32,7 +40,7 @@ function App() {
 
 
   return (
-    <div className="App">
+    <BodyWrapper>
       <ThemeProvider theme={theme}>
         <ModalProvider>
           <GlobalStyle />
@@ -45,7 +53,8 @@ function App() {
 
         </ModalProvider>
       </ThemeProvider>
-    </div>
+    </BodyWrapper>
+
   );
 }
 

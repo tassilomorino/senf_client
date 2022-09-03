@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import styled from "styled-components";
 import Hyperlink from "../../../assets/icons/Hyperlink";
 import Loader from "../animations/Loader";
@@ -37,7 +37,9 @@ const StyledIconWrapper = styled.div`
 `;
 
 
-const ImageUploadTile: FC<ImageUploadTileProps> = ({ photoURL, uploadingImage, hover, onHover, handleImageUpload }) => {
+const ImageUploadTile: FC<ImageUploadTileProps> = ({ photoURL, uploadingImage, handleImageUpload }) => {
+  const [hover, onHover] = useState(false);
+
   return <React.Fragment>
     <ImageWrapper
       onMouseEnter={() => onHover(true)}

@@ -9,12 +9,21 @@ import InfoPage from "./sidebar/InfoPage";
 import MenuSidebar from "./sidebar/MenuSidebar";
 import ModelsList from "./sidebar/ModelsList";
 import "./style.css";
+import Navigation from "./Navigation";
 
 
-
+const Wrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+z-index: -1;
+`
 function UI({ setLoadingModel }) {
-  const isMobile = isMobileCustom()
+  const isMobile = isMobileCustom();
+  const [mode, setMode] = useState(null);
+  const [swipedUp, setSwipedUp] = useState(false);
 
+
+  const [drawnPolygon, setDrawnPolygon] = useState(null);
 
   const initialMapViewport = {
     latitude: isMobile
@@ -87,8 +96,42 @@ function UI({ setLoadingModel }) {
   // function onSelectedChange(e) {
   //   setSelectedObj(e.detail);
   // }
+
+
+  const handleSaveDrawnPolygon = async (polygon) => {
+    setMode(null);
+    setDrawnPolygon(polygon)
+    // if (
+    //   typeof Storage !== "undefined" &&
+    //   localStorage.getItem("createProjectRoomId") &&
+    //   polygon
+    // ) {
+    //   setDrawnPolygon(polygon)
+    //   // UPDATING AN EXISTING PROJECTROOM
+    //   const updateProject = {
+    //     geoData: JSON.stringify(polygon),
+    //   };
+    //   const ref = doc(
+    //     db,
+    //     `organizations/${localStorage.getItem(
+    //       "createProjectRoomOrganizationId"
+    //     )}/projectRooms/${localStorage.getItem("createProjectRoomId")}`
+    //   );
+    //   await updateDoc(ref, updateProject).then(() => {
+    //     setMapOpen(false);
+    //   });
+    // }
+  };
+
+  useEffect(() => {
+    if (mode?.mode === "draw") {
+      setSwipedUp(false)
+    }
+  }, [mode])
+
+  console.log(mode)
   return (
-    <React.Fragment>
+    <Wrapper>
       {/* <div className="objects">
         <button onClick={createModel}>Box</button>
       </div>
@@ -152,7 +195,9 @@ function UI({ setLoadingModel }) {
         // restart={restart}
         setOpenSaveModal={setOpenSaveModal}
       /> */}
-      <ModelsList setLoadingModel={setLoadingModel} setComponentsSidebarOpen={setComponentsSidebarOpen} setOpenContextPanel={setOpenContextPanel} />
+
+
+      <ModelsList setLoadingModel={setLoadingModel} setSwipedUp={setSwipedUp} swipedUp={swipedUp} setOpenContextPanel={setOpenContextPanel} setMode={setMode} />
 
       {/* <ComponentsSidebar
 
@@ -168,11 +213,16 @@ function UI({ setLoadingModel }) {
 
       <ContextPanel openContextPanel={openContextPanel} setOpenContextPanel={setOpenContextPanel} />
 
-
+      {mode?.mode !== "draw" && <Navigation setSwipedUp={setSwipedUp} />}
       <Map
         initialMapViewport={initialMapViewport}
         statefulMap={statefulMap}
         setStatefulMap={setStatefulMap}
+        mapType={mode}
+        drawnPolygon={drawnPolygon}
+        setDrawnPolygon={setDrawnPolygon}
+        drawMapOpen={mode === "draw" && true}
+        handleSaveDrawnPolygon={handleSaveDrawnPolygon}
       // setInitialMapBounds={setInitialMapBounds}
       // mapFilterActive={mapFilterActive}
       // openIdea={openScream}
@@ -196,7 +246,7 @@ function UI({ setLoadingModel }) {
       // }
       // postIdeaOpen={postIdeaOpen}
       />
-    </React.Fragment>
+    </Wrapper>
   );
 }
 
