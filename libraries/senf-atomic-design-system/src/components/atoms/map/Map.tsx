@@ -25,18 +25,11 @@ import useClickMarkers from "./hooks/useClickMarkers";
 import usePolygon from "./hooks/usePolygon";
 import useIdeasMarkers from "./hooks/useIdeasMarkers";
 // import usePin from "./hooks/usePin";
-import useFly from "./hooks/useFly";
 // import useDraw from "./hooks/useDraw";
-
-import { Bulb } from "../../../assets/icons";
 import Button from "../buttons/Button";
 import Box from "../box/Box";
 import MapFilter from "./MapFilter";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
-import Icon from "../icons/Icon";
-import Pin from "../../../assets/icons/Pin";
-import Loader from "../animations/Loader";
-import AddIdeaPin from "./hooks/AddIdeaPin"
 import IdeaPin from "../../../assets/icons/IdeaPin";
 import theme from "../../../styles/theme";
 import useDrawPolygon from "./hooks/useDrawPolygon";
