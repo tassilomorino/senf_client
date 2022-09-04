@@ -7,10 +7,10 @@ import styled from "styled-components";
 import { useFormik } from "formik";
 import { doc, updateDoc } from "firebase/firestore";
 import imageCompression from "browser-image-compression";
-import { ModelsData } from "../../data/Models";
-import { createModel } from "../../util/createModal";
-import { db } from "../../firebase";
-import { Grounds } from "../../data/Grounds";
+import { ModelsData } from "../data/Models";
+import { createModel } from "../util/setModels";
+import { db } from "../firebase";
+import { Grounds } from "../data/Grounds";
 
 
 const tags = [
@@ -201,7 +201,9 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
   }, [searchTerm])
 
 
-  const handlePlaceModel = (event, cardType, modelData) => {
+  const handlePlaceModel = (
+    // event, cardType,
+    modelData) => {
     setLoadingModel(true);
     setSwipedUp(false);
     if (isMobile) {

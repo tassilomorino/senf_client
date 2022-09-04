@@ -20,6 +20,7 @@ import Button from "../../atoms/buttons/Button";
 import ModalButton from "../../molecules/modalStack/ModalButton";
 import ImageUploadTile from "../../atoms/imageUploadTile/ImageUploadTile";
 import Typography from "../../atoms/typography/Typography";
+import HorizontalSwiper from "../../organisms/horizontalSwiper/HorizontalSwiper";
 
 const DragWrapper = styled(animated.div)`
   z-index: ${({ zIndex }) => zIndex || 2};
@@ -220,7 +221,6 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
 
 
 
-
   return (
     <React.Fragment>
       <DragWrapper
@@ -232,16 +232,12 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
       >
         <Wave color={theme.colors.beige.beige20} top="0px" />
         {!isMobile && (
-          <React.Fragment>
-            <MenuSidebar
-              handleOpenMyAccount={() => console.log("hi")}
-              setShowUI={true}
-              setOrder={() => console.log("hi")}
-            />
-            <Box position="fixed" left={swipedUp ? "466px" : "50px"} top="50vh" transform="translateY(-50%)" transition="0.3s" zIndex={5}>
-              <Button size="big" variant={swipedUp ? "white" : "primary"} icon={<Arrow transform={swipedUp ? "rotate(180)" : "rotate(0)"} />} onClick={() => setSwipedUp(!swipedUp)} />
-            </Box>
-          </React.Fragment>
+          <MenuSidebar
+            handleOpenMyAccount={() => console.log("hi")}
+            setShowUI={true}
+            setOrder={() => console.log("hi")}
+          />
+
         )}
 
         <InnerWrapper>
@@ -270,7 +266,7 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
 
           <ContentWrapper swipedUp={swipedUp}>
 
-            {showResults && data?.length > 0 ? (
+            {showResults && searchTerm ? (
               <List
                 listType="grid"
                 CardType={ObjectCard}
@@ -282,14 +278,14 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
               <React.Fragment>
 
                 <Box margin="40px 10px" gap="20px" flexDirection="column" overflow="hidden" height="260px">
-                  <Typography variant="buttonBg" textAlign="center">Füge Bodenbeläge ein</Typography>
-                  <Box position="absolute" width="auto" marginTop="30px">
-                    {grounds.map((item, index) => (
+
+
+                  <HorizontalSwiper data={grounds} handleButtonOpenCard={(item) => setMode({ mode: "draw", drawType: item.drawType, drawStyle: item.drawStyle })} />
+                  {/* <Box position="absolute" width="auto" marginTop="30px">
+                    {grounds?.map((item, index) => (
                       <ObjectCard data={item} handleButtonOpenCard={() => setMode({ mode: "draw", drawType: item.drawType, drawStyle: item.drawStyle })} />
                     ))}
-
-
-                  </Box>
+                  </Box> */}
                 </Box>
 
 
@@ -329,7 +325,7 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
                         text="add model"
 
                         onClick={handleSubmit}
-                        disabled={!formik.isValid}
+                        disabled={!formik?.isValid}
                       />
                     </Box>
                   </ModalButton>

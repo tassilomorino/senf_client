@@ -34,6 +34,7 @@ import IdeaPin from "../../../assets/icons/IdeaPin";
 import theme from "../../../styles/theme";
 import useDrawPolygon from "./hooks/useDrawPolygon";
 import useDrawLine from "./hooks/useDrawLine";
+import useDraw from "./hooks/useDraw";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoidG1vcmlubyIsImEiOiJjazBzZHZjeWQwMWoyM2NtejlzcnMxd3FtIn0.I_Xcc1aJiN7hToGGjNy7ow";
@@ -267,6 +268,8 @@ const Map: FC<MapProps> = ({
 
   const hover = useHover();
   const clickMarkers = useClickMarkers();
+  const draw = useDraw();
+
   const drawPolygon = useDrawPolygon();
   const drawLine = useDrawLine();
 
@@ -321,6 +324,15 @@ const Map: FC<MapProps> = ({
 
     if (setInitialMapBounds) { setInitialMapBounds(map.getBounds().toArray()) };
 
+    // const DrawMapBox = new MapboxDraw({
+    //   displayControlsDefault: false,
+    //   controls: {
+    //     polygon: true,
+    //     trash: true,
+    //   },
+    // })
+    // map.addControl(DrawMapBox);
+    // setStatefulDrawMapbox(DrawMapBox);
 
 
     map.on("dragend", () => {
@@ -335,6 +347,13 @@ const Map: FC<MapProps> = ({
     }, 5000);
 
 
+    map.on('draw.update', (e) => {
+      const drawFeatureID = ""
+      alert("hi")
+      statefulDrawMapbox?.setFeatureProperty(drawFeatureID, 'portColor', '#000');
+    })
+
+
 
     return () => map.remove();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -344,14 +363,22 @@ const Map: FC<MapProps> = ({
     if (statefulMap && mapType?.mode === "draw") {
 
       if (mapType.drawType === "polygon") {
-        drawPolygon(statefulMap, statefulDrawMapbox, setStatefulDrawMapbox);
-        console.log("drawin polygon");
+        draw(statefulMap, statefulDrawMapbox, setStatefulDrawMapbox,);
+
+        statefulDrawMapbox?.changeMode("draw_polygon");
+
+
       } else if (mapType.drawType === "draw_line_string") {
-        drawLine(statefulMap, statefulDrawMapbox, setStatefulDrawMapbox, mapType.drawStyle);
-        console.log("drawin line");
+        draw(statefulMap, statefulDrawMapbox, setStatefulDrawMapbox,);
+
+        statefulDrawMapbox?.changeMode("draw_line_string");
+        console.log(statefulDrawMapbox)
+        // const feat = statefulDrawMapbox.get(drawFeatureID);
+        // statefulDrawMapbox.add(feat)
+
       }
     }
-  }, [statefulMap, mapType]);
+  }, [statefulMap, statefulDrawMapbox, mapType]);
 
 
 
@@ -359,20 +386,20 @@ const Map: FC<MapProps> = ({
 
 
   useEffect(() => {
-    if (statefulMap && mapType?.mode === "draw" && drawnPolygon) {
+    if (statefulMap && statefulDrawMapbox && drawnPolygon) {
       statefulDrawMapbox.add(drawnPolygon);
-      statefulDrawMapbox.changeMode("simple_select");
+      // statefulDrawMapbox.changeMode("simple_select");
 
-      const [minLng, minLat, maxLng, maxLat] = bbox(drawnPolygon);
+      // const [minLng, minLat, maxLng, maxLat] = bbox(drawnPolygon);
 
-      setTimeout(() => {
-        statefulMap.fitBounds([
-          [minLng - 0.2, minLat - 0.2], // southwestern corner of the bounds
-          [maxLng + 0.2, maxLat + 0.2], // northeastern corner of the bounds
-        ]);
-      }, 300);
+      // setTimeout(() => {
+      //   statefulMap.fitBounds([
+      //     [minLng - 0.2, minLat - 0.2], // southwestern corner of the bounds
+      //     [maxLng + 0.2, maxLat + 0.2], // northeastern corner of the bounds
+      //   ]);
+      // }, 300);
     }
-  }, [drawnPolygon, statefulMap]);
+  }, [drawnPolygon, statefulDrawMapbox, statefulMap]);
 
   useEffect(() => {
     if (projectroomsData) {

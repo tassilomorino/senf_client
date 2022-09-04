@@ -6,7 +6,7 @@ import {
 } from "senf-atomic-design-system";
 import { auth } from "./firebase";
 
-import UI from "./UI/UI";
+import Home from "./pages/Home";
 
 const BodyWrapper = styled.div`
   position: fixed;
@@ -33,11 +33,7 @@ const LoaderWrapper = styled.div`
 `
 
 function App() {
-
-
   const [loadingModel, setLoadingModel] = useState(false);
-
-
 
   return (
     <BodyWrapper>
@@ -49,8 +45,7 @@ function App() {
               <Loader width="100px" height="100px" /><Typography variant="h3" textAlign="center">
                 Loading Model...</Typography>
             </LoaderWrapper>}
-          <UI setLoadingModel={setLoadingModel} />
-
+          <Home setLoadingModel={setLoadingModel} />
         </ModalProvider>
       </ThemeProvider>
     </BodyWrapper>
