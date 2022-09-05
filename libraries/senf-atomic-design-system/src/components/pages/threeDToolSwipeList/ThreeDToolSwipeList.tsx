@@ -75,7 +75,7 @@ const ContentWrapper = styled.div<OrganizationsOverviewProps>`
   top: ${({ swipedUp }) => swipedUp && "110px"};
 
   @media (min-width: 768px) {
-    height: calc(100% - 50px);
+    height: calc(100% - 140px);
     width: 400px;
     position: relative;
     top: 0;
@@ -289,7 +289,7 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
                 </Box>
 
 
-                <Box margin="10px" gap="20px" flexDirection="column" position="absolute" bottom="20px" width="calc(100% - 20px)">
+                <Box margin="10px" gap="20px" flexDirection="column" position="absolute" bottom="10px" width="calc(100% - 20px)">
                   <Typography variant="buttonBg" textAlign="center">Du hast eigene Modelle?</Typography>
                   <ModalButton variant="primary" icon={<Plus />} text="3D Modell hochladen" fillWidth="max" options={{
                     padding: 20,

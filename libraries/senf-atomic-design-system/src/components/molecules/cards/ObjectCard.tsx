@@ -36,9 +36,9 @@ const Wrapper = styled.div<ObjectCardProps>`
     }
   }
 
-  @media (max-width: 768px) {
+  /* @media (max-width: 768px) {
     width: calc(50% - 15px);
-  }
+  } */
 `;
 
 const LogoWrapper = styled.div<ObjectCardProps>`
