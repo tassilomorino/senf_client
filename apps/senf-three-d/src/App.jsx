@@ -1,12 +1,19 @@
 /** @format */
-import React, { useState } from "react";
-import styled, { ThemeProvider } from "styled-components";
-import {
-  theme, GlobalStyle, ModalProvider, Typography, Loader
-} from "senf-atomic-design-system";
-import { auth } from "./firebase";
 
-import Home from "./pages/Home";
+import React from "react";
+import { Helmet } from "react-helmet";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { theme, GlobalStyle, ModalProvider } from "senf-atomic-design-system";
+import styled, { ThemeProvider } from "styled-components";
+import Dashboard from "./pages/Dashboard";
+import "./util/i18n";
+import PrivateRoute from "./context/PrivateRoute";
+import { AuthProvider } from "./context/auth";
+import AuthPage from "./pages/AuthPage";
+import InviteMember from "./pages/InviteMember";
+import MemberBoard from "./pages/MemberBoard";
+import { AcceptInvitation } from "./pages/AcceptInvitation";
+import PageNotFound from "./pages/PageNotFound";
 
 const BodyWrapper = styled.div`
   position: fixed;
@@ -16,41 +23,57 @@ const BodyWrapper = styled.div`
   height: 100vh;
   overflow: scroll;
 `
-
-const LoaderWrapper = styled.div`
-  position: absolute;
-  width: 200px;
-  height: 100px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  
-`
-
-function App() {
-  const [loadingModel, setLoadingModel] = useState(false);
-
+const App = () => {
   return (
     <BodyWrapper>
       <ThemeProvider theme={theme}>
         <ModalProvider>
           <GlobalStyle />
-          {loadingModel &&
-            <LoaderWrapper>
-              <Loader width="100px" height="100px" /><Typography variant="h3" textAlign="center">
-                Loading Model...</Typography>
-            </LoaderWrapper>}
-          <Home setLoadingModel={setLoadingModel} />
+
+          {import.meta.env.VITE_NO_CRAWL && (
+            /* disable google crawling for senf-client-test.netlify.app */
+            <Helmet>
+              <meta name="robots" content="noindex" />
+            </Helmet>
+          )}
+
+          <AuthProvider>
+            <Router>
+              <React.Suspense fallback={<div>Loading...</div>}>
+                <Routes>
+                  <Route
+                    exact
+                    path="/register"
+                    element={<AuthPage variant="register" />}
+                  />
+
+                  <Route
+                    exact
+                    path="/login"
+                    element={<AuthPage variant="login" />}
+                  />
+                  <Route exact path="/" element={<PrivateRoute />}>
+                    <Route exact path="/" component={<Dashboard />} />
+                  </Route>
+                  {/* <Route exact path="/" element={<Dashboard />} /> */}
+                  <Route exact path="/members" element={<MemberBoard />} />
+
+                  <Route exact path="/invite" element={<InviteMember />} />
+                  {/* <Route
+                  exact
+                  path="invitation/:invitationDocId"
+                  element={<AcceptInvitation />}
+                /> */}
+                  <Route exact path="invitation" element={<AcceptInvitation />} />
+                  <Route path="*" element={<PageNotFound />} />
+                </Routes>
+              </React.Suspense>
+            </Router>
+          </AuthProvider>
         </ModalProvider>
       </ThemeProvider>
     </BodyWrapper>
-
   );
-}
+};
 
 export default App;
