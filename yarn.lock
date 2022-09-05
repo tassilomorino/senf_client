@@ -24270,9 +24270,42 @@ __metadata:
   languageName: node
   linkType: hard
 
-"senf-3d@workspace:apps/senf-3D":
+"senf-3D@workspace:apps/senf-3D":
   version: 0.0.0-use.local
-  resolution: "senf-3d@workspace:apps/senf-3D"
+  resolution: "senf-3D@workspace:apps/senf-3D"
+  dependencies:
+    "@testing-library/jest-dom": ^5.16.4
+    "@testing-library/react": ^13.3.0
+    "@testing-library/user-event": ^14.3.0
+    "@types/react-router-dom": ^4.3.5
+    "@vitejs/plugin-react": ^1.2.0
+    "@welldone-software/why-did-you-render": ^6.2.1
+    browser-image-compression: ^2.0.0
+    firebase: ^9.9.0
+    formik: ^2.2.9
+    i18next-locize-backend: ^5.1.2
+    locize: ^2.4.3
+    locize-lastused: ^3.1.0
+    mapbox-gl: ^2.9.2
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-mapbox-gl: ^5.1.1
+    react-scripts: 5.0.1
+    senf-atomic-design-system: "*"
+    senf-shared: "workspace:^"
+    start-server-and-test: ^1.13.1
+    styled-components: ^5.3.5
+    three: ^0.142.0
+    threebox-plugin: ^2.2.7
+    vite: ^2.9.11
+    web-vitals: ^2.1.4
+    yup: ^0.32.11
+  languageName: unknown
+  linkType: soft
+
+"senf-3d_old@workspace:apps/senf-3D_old":
+  version: 0.0.0-use.local
+  resolution: "senf-3d_old@workspace:apps/senf-3D_old"
   dependencies:
     "@testing-library/jest-dom": ^5.16.4
     "@testing-library/react": ^13.3.0

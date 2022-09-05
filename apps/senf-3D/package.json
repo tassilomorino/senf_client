@@ -1,5 +1,5 @@
 {
-  "name": "senf-3d",
+  "name": "senf-3D",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -27,12 +27,13 @@
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },
-  "devDependencies": {
-    "babel-plugin-styled-components": "^2.0.7"
-  },
   "scripts": {
+    "analyze": "source-map-explorer '../../dist/apps/senf-monitoring/static/js/*.js'",
     "dev": "vite --host",
-    "build": "vite build"
+    "preview": "vite preview",
+    "build": "vite build",
+    "lint": "eslint .",
+    "format": "prettier --write \"./**/*.{js,jsx,json}\" --config ./.prettierrc"
   },
   "browserslist": {
     "production": [
@@ -45,5 +46,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {
+    "@types/react-router-dom": "^4.3.5",
+    "@vitejs/plugin-react": "^1.2.0",
+    "@welldone-software/why-did-you-render": "^6.2.1",
+    "start-server-and-test": "^1.13.1",
+    "vite": "^2.9.11"
+  },
+  "buildDate": 1654859088490
 }
