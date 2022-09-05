@@ -38,7 +38,8 @@ const App = () => {
   return (
     <BodyWrapper>
       <ThemeProvider theme={theme}>
-        <ModalProvider>
+        hi
+        {/* <ModalProvider>
           <GlobalStyle />
           {loadingModel &&
             <LoaderWrapper>
@@ -46,7 +47,7 @@ const App = () => {
                 Loading Model...</Typography>
             </LoaderWrapper>}
           <Home setLoadingModel={setLoadingModel} />
-        </ModalProvider>
+        </ModalProvider> */}
       </ThemeProvider>
     </BodyWrapper>
 
