@@ -32,7 +32,7 @@ const LoaderWrapper = styled.div`
   
 `
 
-function App() {
+const App = () => {
   const [loadingModel, setLoadingModel] = useState(false);
 
   return (
