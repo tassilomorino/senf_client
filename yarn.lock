@@ -24295,6 +24295,7 @@ __metadata:
     senf-shared: "workspace:^"
     start-server-and-test: ^1.13.1
     styled-components: ^5.3.5
+    styled-system: ^5.1.5
     three: ^0.142.0
     threebox-plugin: ^2.2.7
     vite: ^2.9.11
