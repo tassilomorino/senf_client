@@ -34,7 +34,6 @@ const LoaderWrapper = styled.div`
 
 const App = () => {
   const [loadingModel, setLoadingModel] = useState(false);
-
   return (
     <BodyWrapper>
       <Typography variant="h2"> hi</Typography>
