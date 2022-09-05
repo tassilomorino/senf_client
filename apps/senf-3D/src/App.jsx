@@ -38,7 +38,7 @@ const App = () => {
   return (
     <BodyWrapper>
       <ThemeProvider theme={theme}>
-        hi
+        <Typography variant="h2"> hi</Typography>
         {/* <ModalProvider>
           <GlobalStyle />
           {loadingModel &&
