@@ -29,7 +29,6 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <ModalProvider>
           <GlobalStyle />
-
           {import.meta.env.VITE_NO_CRAWL && (
             /* disable google crawling for senf-client-test.netlify.app */
             <Helmet>
