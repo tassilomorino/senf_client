@@ -61,13 +61,13 @@ const ContextPanel = ({ openContextPanel, setOpenContextPanel }) => {
 
                 <Box width="200px" flexDirection="column" gap="10px">
                     <Typography variant="h3" textAlign="center">Rotation</Typography>
-                    <RangeSlider
+                    {/* <RangeSlider
                         rangeValue={rotation}
                         setRangeValue={handleSetRotation}
                         rangeMin={0}
                         rangeMax={360}
                         leftTick="0"
-                        rightTick="360" />
+                        rightTick="360" /> */}
                 </Box>
 
                 {/* <Box width="200px" flexDirection="column" gap="10px">
