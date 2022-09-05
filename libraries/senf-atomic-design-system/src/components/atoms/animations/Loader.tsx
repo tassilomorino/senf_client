@@ -11,19 +11,21 @@ const StyledLoader = styled.div`
   height: ${(props) => (props.height ? props.height : "100%")};
   position: relative;
   transform: scale(1.5);
-  overflow: hidden;
 `;
 const Loader: FC<LoaderProps> = ({ width, height }) => {
   const container = useRef(null);
 
   useEffect(() => {
-    lottie.loadAnimation({
+    const anim = lottie.loadAnimation({
       container: container.current,
       renderer: "svg",
       loop: true,
       autoplay: true,
       animationData: DotLoader,
     });
+    return () => {
+      anim.destroy();
+    }
   }, []);
 
   return <StyledLoader height={height} width={width} ref={container} />;

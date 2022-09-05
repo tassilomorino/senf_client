@@ -24279,7 +24279,9 @@ __metadata:
     "@testing-library/user-event": ^14.3.0
     "@vitejs/plugin-react": ^1.3.0
     babel-plugin-styled-components: ^2.0.7
+    browser-image-compression: ^2.0.0
     firebase: ^9.9.0
+    formik: ^2.2.9
     i18next-locize-backend: ^5.1.2
     locize: ^2.4.3
     locize-lastused: ^3.1.0
@@ -24295,6 +24297,7 @@ __metadata:
     threebox-plugin: ^2.2.7
     vite: ^2.9.11
     web-vitals: ^2.1.4
+    yup: ^0.32.11
   languageName: unknown
   linkType: soft
 

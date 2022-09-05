@@ -352,7 +352,6 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
       searchOpen={searchOpen}
       searchTerm={searchTerm}
       setSearchTerm={setSearchTerm}
-      secondButton={<Button variant="secondary" size="small" icon={<More />} />}
       secondButton={
         <Button
           variant="secondary"

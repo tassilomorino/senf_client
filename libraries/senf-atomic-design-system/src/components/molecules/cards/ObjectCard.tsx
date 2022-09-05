@@ -36,9 +36,9 @@ const Wrapper = styled.div<ObjectCardProps>`
     }
   }
 
-  @media (max-width: 768px) {
+  /* @media (max-width: 768px) {
     width: calc(50% - 15px);
-  }
+  } */
 `;
 
 const LogoWrapper = styled.div<ObjectCardProps>`
@@ -139,10 +139,12 @@ const Title = styled.div`
 // `;
 
 const ObjectCard: FC<ObjectCardProps> = ({ data, handleButtonOpenCard }) => {
+  console.log(data)
+
   const { title, imgUrl, objectId } = data;
   return (
     <Wrapper
-      onClick={(event) => handleButtonOpenCard(event, "objectCard", data)}
+      onClick={() => handleButtonOpenCard(data)}
     >
       <LogoWrapper>
         <Thumbnail

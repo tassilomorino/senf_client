@@ -2,12 +2,20 @@
 import React, { useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import {
-  theme, GlobalStyle, ModalProvider, Typography, Loader, Box
+  theme, GlobalStyle, ModalProvider, Typography, Loader
 } from "senf-atomic-design-system";
-import Map from "./Map/Map";
 import { auth } from "./firebase";
 
-import UI from "./UI/UI";
+import Home from "./pages/Home";
+
+const BodyWrapper = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: scroll;
+`
 
 const LoaderWrapper = styled.div`
   position: absolute;
@@ -25,19 +33,10 @@ const LoaderWrapper = styled.div`
 `
 
 function App() {
-  const [lng, setLng] = useState(6.9606);
-  const [lat, setLat] = useState(50.9429);
-  const [zoom, setZoom] = useState(18.5);
-  const [pitch, setPitch] = useState(65);
-
   const [loadingModel, setLoadingModel] = useState(false);
 
-  const handleSwitchView = (view) => {
-    setPitch(view);
-  };
-
   return (
-    <div className="App">
+    <BodyWrapper>
       <ThemeProvider theme={theme}>
         <ModalProvider>
           <GlobalStyle />
@@ -46,20 +45,11 @@ function App() {
               <Loader width="100px" height="100px" /><Typography variant="h3" textAlign="center">
                 Loading Model...</Typography>
             </LoaderWrapper>}
-          <UI setLoadingModel={setLoadingModel} handleSwitchView={handleSwitchView} pitch={pitch} />
-          <Map
-            lng={lng}
-            lat={lat}
-            zoom={zoom}
-            pitch={pitch}
-            setLng={setLng}
-            setLat={setLat}
-            setZoom={setZoom}
-            setPitch={setPitch}
-          />
+          <Home setLoadingModel={setLoadingModel} />
         </ModalProvider>
       </ThemeProvider>
-    </div>
+    </BodyWrapper>
+
   );
 }
 

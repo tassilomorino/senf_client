@@ -3,13 +3,13 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 import { Trans, useTranslation } from "react-i18next";
-import Plus from "../../../assets/icons/Plus";
-import TertiaryButton from "../../atoms/buttons/TertiaryButton";
 import { CookiebannerProps } from "./Cookiebanner.types";
 import Cookie from "../../../assets/other/cookies.png";
 import Typography from "../../atoms/typography/Typography";
 import Box from "../../atoms/box/Box";
 import { LayerWhiteFirstDefault } from "../../atoms/layerStyles/LayerStyles";
+import Button from "../../atoms/buttons/Button";
+import { Close } from "../../../assets/icons";
 
 const Wrapper = styled.div<CookiebannerProps>`
   z-index: 9995;
@@ -46,8 +46,10 @@ const Cookiebanner: FC<CookiebannerProps> = ({
   return (
     <Wrapper>
       <Box position="absolute">
-        <TertiaryButton
-          iconLeft={<Plus transform="rotate(45deg)" />}
+        <Button
+          variant="tertiary"
+          size="small"
+          icon={<Close />}
           onClick={() => handleCookies("minimum")}
         />
       </Box>

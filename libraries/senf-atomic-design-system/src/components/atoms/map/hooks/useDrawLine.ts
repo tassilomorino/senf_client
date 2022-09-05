@@ -6,7 +6,7 @@ import CrosswalkPattern from "../../../../assets/other/crosswalkPattern.png";
 const CrosswalkPatternImg = new Image(32, 128);
 CrosswalkPatternImg.src = CrosswalkPattern;
 
-const useDraw = () => {
+const useDrawLine = () => {
   return (
     map,
     statefulDrawMapbox,
@@ -18,11 +18,7 @@ const useDraw = () => {
       map.addImage("CrosswalkPattern", CrosswalkPatternImg);
     }
 
-    let drawFeatureID = "";
-    let newDrawFeature = false;
-
     const DrawMapBox = new MapboxDraw({
-      userProperties: true,
       displayControlsDefault: false,
       controls: {
         polygon: true,
@@ -111,16 +107,15 @@ const useDraw = () => {
             "line-join": "round",
           },
           paint: {
-            "line-color": ["get", "user_portColor"],
-            // [
-            //   "match",
-            //   ["get", "lineType"],
-            //   "crosswalk",
-            //   "green",
-            //   "other",
-            //   "green",
-            //   "blue",
-            // ],
+            "line-color": [
+              "match",
+              ["get", "lineType"],
+              "crosswalk",
+              "green",
+              "other",
+              "green",
+              "blue",
+            ],
             "line-dasharray": drawStyle?.lineDash || [0.2, 2],
             // "line-pattern": drawStyle?.linePattern || "",
             "line-width": drawStyle?.lineWidth || 3,
@@ -140,7 +135,15 @@ const useDraw = () => {
             "line-join": "round",
           },
           paint: {
-            "line-color": ["get", "user_portColor"],
+            "line-color": [
+              "match",
+              ["get", "lineType"],
+              "crosswalk",
+              "green",
+              "other",
+              "green",
+              "blue",
+            ],
             "line-dasharray": drawStyle?.lineDash || [0.2, 2],
             // "line-pattern": drawStyle?.linePattern || "",
             "line-width": drawStyle?.lineWidth || 3,
@@ -351,57 +354,7 @@ const useDraw = () => {
       map.addControl(DrawMapBox);
       setStatefulDrawMapbox(DrawMapBox);
     }
-
-    // change colors
-    function changeColor(color) {
-      if (drawFeatureID !== "" && typeof DrawMapBox === "object") {
-        // add whatever colors you want here...
-        if (color === "black") {
-          DrawMapBox.setFeatureProperty(drawFeatureID, "portColor", "#000");
-        } else if (color === "red") {
-          DrawMapBox.setFeatureProperty(drawFeatureID, "portColor", "#ff0000");
-        } else if (color === "green") {
-          DrawMapBox.setFeatureProperty(drawFeatureID, "portColor", "#fed957");
-        }
-
-        const feat = DrawMapBox.get(drawFeatureID);
-        DrawMapBox.add(feat);
-      }
-    }
-
-    setTimeout(() => {
-      changeColor("green");
-    }, 1000);
-
-    // callback for draw.update and draw.selectionchange
-    const setDrawFeature = function (e) {
-      if (e.features.length && e.features[0].type === "Feature") {
-        const feat = e.features[0];
-        drawFeatureID = feat.id;
-      }
-    };
-
-    /* Event Handlers for Draw Tools */
-
-    map.on("draw.create", () => {
-      newDrawFeature = true;
-    });
-
-    map.on("draw.update", setDrawFeature);
-
-    map.on("draw.selectionchange", setDrawFeature);
-
-    map.on("click", (e) => {
-      if (!newDrawFeature) {
-        const drawFeatureAtPoint = DrawMapBox.getFeatureIdsAt(e.point);
-
-        // if another drawFeature is not found - reset drawFeatureID
-        drawFeatureID = drawFeatureAtPoint.length ? drawFeatureAtPoint[0] : "";
-      }
-
-      newDrawFeature = false;
-    });
   };
 };
 
-export default useDraw;
+export default useDrawLine;
