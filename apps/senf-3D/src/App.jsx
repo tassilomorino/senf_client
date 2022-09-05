@@ -1,8 +1,8 @@
 /** @format */
 import React, { useState } from "react";
-import styled, { ThemeProvider } from "styled-components";
+import styled from "styled-components";
 import {
-  theme, GlobalStyle, ModalProvider, Typography, Loader
+  GlobalStyle, ModalProvider, Typography, Loader
 } from "senf-atomic-design-system";
 import { auth } from "./firebase";
 
@@ -37,9 +37,8 @@ const App = () => {
 
   return (
     <BodyWrapper>
-      <ThemeProvider theme={theme}>
-        <Typography variant="h2"> hi</Typography>
-        {/* <ModalProvider>
+      <Typography variant="h2"> hi</Typography>
+      {/* <ModalProvider>
           <GlobalStyle />
           {loadingModel &&
             <LoaderWrapper>
@@ -48,7 +47,6 @@ const App = () => {
             </LoaderWrapper>}
           <Home setLoadingModel={setLoadingModel} />
         </ModalProvider> */}
-      </ThemeProvider>
     </BodyWrapper>
 
   );

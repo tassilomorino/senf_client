@@ -1,12 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import * as THREE from "three"
+import { ThemeProvider } from 'styled-components';
+import {
+  theme
+} from "senf-atomic-design-system";
 import App from './App';
+// import * as THREE from "three"
 
-window.THREE = THREE;
+
+// window.THREE = THREE;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
   </React.StrictMode>
 );
