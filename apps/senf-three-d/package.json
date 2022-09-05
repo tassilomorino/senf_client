@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "axios": "^0.24.0",
     "browser-image-compression": "^2.0.0",
     "firebase": "^9.8.3",
     "formik": "^2.2.9",
@@ -28,7 +27,6 @@
     "three": "^0.144.0",
     "threebox-plugin": "^2.2.7",
     "universal-cookie": "^4.0.4",
-    "uuid": "^8.3.2",
     "yup": "^0.32.11"
   },
   "scripts": {
