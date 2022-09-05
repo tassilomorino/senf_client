@@ -1,18 +1,18 @@
 /** @format */
 
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
+import * as THREE from "three"
 import App from "./App";
-import store from "./redux/store";
 
+window.THREE = THREE;
 const rootElement = document.getElementById("root");
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <Suspense fallback="">
       <App />
-    </Provider>
+    </Suspense>
   </React.StrictMode>,
   rootElement
 );
