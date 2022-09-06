@@ -38,10 +38,10 @@ import { DrawMapbox } from "./utils/DrawMapbox";
 import CrosswalkPattern from "../../../assets/other/crosswalkPattern.png";
 import BikeLanePattern from "../../../assets/other/bikeLanePattern.png";
 
-const CrosswalkPatternImg = new Image(32, 128);
+const CrosswalkPatternImg = new Image(32, 64);
 CrosswalkPatternImg.src = CrosswalkPattern;
 
-const BikeLanePatternImg = new Image(32, 32);
+const BikeLanePatternImg = new Image(32, 256);
 BikeLanePatternImg.src = BikeLanePattern;
 
 mapboxgl.accessToken =
