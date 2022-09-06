@@ -21,6 +21,8 @@ import ModalButton from "../../molecules/modalStack/ModalButton";
 import ImageUploadTile from "../../atoms/imageUploadTile/ImageUploadTile";
 import Typography from "../../atoms/typography/Typography";
 import HorizontalSwiper from "../../organisms/horizontalSwiper/HorizontalSwiper";
+import Divider from "../../atoms/divider/Divider";
+import TextTransition from "../../atoms/animations/TextTransition";
 
 const DragWrapper = styled(animated.div)`
   z-index: ${({ zIndex }) => zIndex || 2};
@@ -66,34 +68,26 @@ const InnerWrapper = styled.div<OrganizationsOverviewProps>`
 const ContentWrapper = styled.div<OrganizationsOverviewProps>`
   overflow-y: scroll;
   pointer-events: all;
-  height: calc(100vh - 110px);
+  height: calc(100vh - 120px);
   width: 100%;
   z-index: 1;
   margin-left: 50%;
   transform: translateX(-50%);
   position: fixed;
+  margin-top:-10px;
+  padding-top:50px;
   top: ${({ swipedUp }) => swipedUp && "110px"};
 
   @media (min-width: 768px) {
-    height: calc(100% - 140px);
+    height: calc(100% - 150px);
+    padding-top:20px;
     width: 400px;
     position: relative;
     top: 0;
   }
 `;
 
-const RoundedButtonWrapper = styled.div`
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  z-index: 299;
-  transition: 0.5s;
 
-  @media (min-width: 768px) {
-    top: 20px;
-    right: 17px;
-  }
-`;
 export const Header = styled(animated.div)`
   position: sticky;
   display: flex;
@@ -246,15 +240,23 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
           >
             {isMobile && <HandleBar />}
 
-            <Box margin="30px 10px" flexDirection="column" gap="10px">
-              <Typography variant="buttonBg" textAlign="center">Suche nach Objekten für deinen Entwurf</Typography>
+            <Box margin="30px 10px 0px 10px" flexDirection="column" gap="10px">
+              <Box margin="0px 10px" flexDirection="column">
+
+                <Box>
+                  <Typography variant="h3" textAlign="left" fontWeight={900}>Finde den richtigen</Typography>
+                  <TextTransition variant="h3" fontWeight={900} />
+                </Box>
+                <Typography variant="h3" textAlign="left" fontWeight={900}> für deinen Entwurf </Typography>
+
+              </Box>
 
               <Input
                 name="searchAddress"
                 type="search"
                 leadingIcon={showResults ? <Arrow transform="rotate(180deg)" /> : <Search />}
                 leadingIconClick={() => { setSearchTerm(""); setShowResults(false) }}
-                placeholder={"searchObjects"}
+                placeholder={"Suche"}
                 onChange={(event) => setSearchTerm(event?.target?.value)}
                 value={searchTerm}
                 onClick={() => setShowResults(true)
@@ -277,10 +279,11 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
             ) :
               <React.Fragment>
 
-                <Box margin="40px 10px" gap="20px" flexDirection="column" overflow="hidden" height="260px">
+                <Divider margin="50px 80px" width="calc(100% - 160px)" height="2px" />
+                <Box margin="0px 10px" gap="20px" flexDirection="column" overflow="hidden" height="260px">
 
 
-                  <HorizontalSwiper data={grounds} handleButtonOpenCard={(item) => setMode({ mode: "draw", drawType: item.drawType, drawStyle: item.drawStyle })} />
+                  <HorizontalSwiper data={grounds} handleButtonOpenCard={(item) => setMode({ mode: "draw", drawType: item.drawType })} />
                   {/* <Box position="absolute" width="auto" marginTop="30px">
                     {grounds?.map((item, index) => (
                       <ObjectCard data={item} handleButtonOpenCard={() => setMode({ mode: "draw", drawType: item.drawType, drawStyle: item.drawStyle })} />
@@ -333,16 +336,13 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
 
 
               </React.Fragment>
-
-
-
             }
 
 
           </ContentWrapper>
         </InnerWrapper>
       </DragWrapper>
-    </React.Fragment>
+    </React.Fragment >
   );
 };
 

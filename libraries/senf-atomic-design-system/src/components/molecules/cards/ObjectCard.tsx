@@ -139,7 +139,6 @@ const Title = styled.div`
 // `;
 
 const ObjectCard: FC<ObjectCardProps> = ({ data, handleButtonOpenCard }) => {
-  console.log(data)
 
   const { title, imgUrl, objectId } = data;
   return (

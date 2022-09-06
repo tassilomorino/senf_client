@@ -1,16 +1,22 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
-import { ThreeDToolSwipeList, isMobileCustom } from "senf-atomic-design-system";
+import React, { useState, useEffect, useRef } from "react";
+import { ThreeDToolSwipeList, isMobileCustom, Input } from "senf-atomic-design-system";
 import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import { doc, updateDoc } from "firebase/firestore";
 import imageCompression from "browser-image-compression";
+import algoliasearch from 'algoliasearch/lite';
+import { InstantSearch, Hits, connectHits, connectHighlight } from 'react-instantsearch-dom';
 import { ModelsData } from "../data/Models";
 import { createModel } from "../util/setModels";
 import { db } from "../firebase";
 import { Grounds } from "../data/Grounds";
+import Search from "./Search";
+
+
+const searchClient = algoliasearch("AERQKCMI5M", 'ae11cb36d2946300bd8860b2a23bc1ab');
 
 
 const tags = [
@@ -22,6 +28,9 @@ const tags = [
   { objectType: "Spielen" },
   { objectType: "Sport" },
 ];
+const SearchWrapper = styled.div`
+pointer-events: all;
+`
 
 const Wrapper = styled.div`
 width: 100vw;
@@ -31,6 +40,9 @@ top:0;
 left:0;
 z-index: 2;
 pointer-events:none;
+`
+const InputNew = styled.input`
+color:green;
 `
 
 const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPanel, setMode }) => {
@@ -229,8 +241,74 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
 
   }
 
+  const CustomHighlight = connectHighlight(({ highlight, attribute, hit }) => {
+    const parsedHit = highlight({
+      highlightProperty: '_highlightResult',
+      attribute,
+      hit
+    });
+
+    return (
+      <div>
+        <h3>{hit.title}</h3>
+        {/* <img src={hit.avatar} alt={hit.username} />
+        {parsedHit.map(
+          part => part.isHighlighted ? <mark>{part.value}</mark> : part.value
+        )} */}
+      </div>
+    );
+  });
+
+  const Hit = ({ hit }) => (
+    <p>
+      <CustomHighlight attribute="bio" hit={hit} />
+    </p>
+  );
+
+  const CustomHits = connectHits(Hit);
+
+  const changeSearchText = (event, refine) => {
+    refine(event.currentTarget.value); // this line is ok
+    // if i need the text or i need to set an attribute to show or no the result everything is broken
+    // setSearchText(event.currentTarget.value); // With this line nothing is working any more
+  };
+
+  const inputRef = useRef('');
+
+  const SearchBox = ({ currentRefinement, refine }) => {
+    console.log('render', currentRefinement);
+    return (
+      <form noValidate action="" role="search">
+        <input
+          type="search"
+          id="livesearchInput"
+          value={currentRefinement} // if i put something else here like searchText variable nothing is working as expected
+          onChange={(event) => changeSearchText(event, refine)}
+          placeholder={'Search'}
+          ref={inputRef} // ref seems ok like this
+        />
+      </form>
+    );
+  };
+
   return (
-    <Wrapper><ThreeDToolSwipeList data={models} handlePlaceModel={handlePlaceModel} setSearchTerm={setSearchTerm} searchTerm={searchTerm} swipedUp={swipedUp} setSwipedUp={setSwipedUp} formik={formik} grounds={Grounds} setMode={setMode} /></Wrapper>
+    <Wrapper>
+      {/* <SearchWrapper>
+        <InstantSearch searchClient={searchClient} indexName="threeD_models">
+          <header className="header">
+            <Search />
+          </header>
+
+          <div className="container">
+            <div className="search-panel">
+              <div className="search-panel__filters"></div>
+
+              <div className="search-panel__results"></div>
+            </div>
+          </div>
+        </InstantSearch>
+      </SearchWrapper> */}
+      <ThreeDToolSwipeList data={models} handlePlaceModel={handlePlaceModel} setSearchTerm={setSearchTerm} searchTerm={searchTerm} swipedUp={swipedUp} setSwipedUp={setSwipedUp} formik={formik} grounds={Grounds} setMode={setMode} /></Wrapper>
   );
 };
 export default ModelsList;

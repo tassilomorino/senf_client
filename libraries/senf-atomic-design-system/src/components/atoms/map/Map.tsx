@@ -5,7 +5,6 @@ import styled from "styled-components";
 import mapboxgl from "mapbox-gl";
 // import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "mapbox-gl/dist/mapbox-gl.css";
-import MapboxDraw from "@mapbox/mapbox-gl-draw";
 
 import bbox from "@turf/bbox";
 import { useTranslation } from "react-i18next";
@@ -32,9 +31,10 @@ import MapFilter from "./MapFilter";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 import IdeaPin from "../../../assets/icons/IdeaPin";
 import theme from "../../../styles/theme";
-import useDrawPolygon from "./hooks/useDrawPolygon";
-import useDrawLine from "./hooks/useDrawLine";
 import useDraw from "./hooks/useDraw";
+import useDraw1 from "./hooks/useDraw1";
+
+import { DrawMapbox } from "./utils/DrawMapbox";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoidG1vcmlubyIsImEiOiJjazBzZHZjeWQwMWoyM2NtejlzcnMxd3FtIn0.I_Xcc1aJiN7hToGGjNy7ow";
@@ -247,11 +247,12 @@ const Map: FC<MapProps> = ({
   setInitialMapBounds,
   handleSetInitialMapBoundsAndViewport,
   postIdeaOpen,
+  setSwipedUp,
   statefulMap,
   setStatefulMap,
-  drawnPolygon,
-  setDrawnPolygon,
-  handleSaveDrawnPolygon,
+  drawn,
+  handleSaveDrawn,
+  setMode
 }) => {
   const { t } = useTranslation();
   const [statefulDrawMapbox, setStatefulDrawMapbox] = useState(null);
@@ -261,27 +262,30 @@ const Map: FC<MapProps> = ({
   const [mapMoved, setMapMoved] = useState(false);
   const [container, setContainer] = useState(null);
 
+  const [selectedFeature, setSelectedFeature] = useState(null);
+
+
   const initialFly = useInitialFly();
   const navigationControl = useNavigationControl();
 
   const [geolocateTrigger, setGeolocateTrigger] = useState(false);
 
+  const drawType = mapType?.drawType;
+
+
   const hover = useHover();
   const clickMarkers = useClickMarkers();
   const draw = useDraw();
+  const draw1 = useDraw1();
 
-  const drawPolygon = useDrawPolygon();
-  const drawLine = useDrawLine();
+  const [drawFeatureID, setDrawFeatureID] = useState(null)
 
-
-  // const geocoder = useGeocoder();
   // const [statefulMap, setMap] = useState(null);
   const [setProjectroomsMarkersLayer, setProjectroomsMarkersData] =
     useProjectroomsMarkers();
 
   const [setIdeasMarkersLayer, setIdeasMarkersData] = useIdeasMarkers();
   const [setPolygonLayer, setPolygonData] = usePolygon();
-  // const [setPinLayer, setPinData] = usePin();
 
   const [ideaMarkerColor, setIdeaMarkerColor] = useState(null);
 
@@ -324,15 +328,10 @@ const Map: FC<MapProps> = ({
 
     if (setInitialMapBounds) { setInitialMapBounds(map.getBounds().toArray()) };
 
-    // const DrawMapBox = new MapboxDraw({
-    //   displayControlsDefault: false,
-    //   controls: {
-    //     polygon: true,
-    //     trash: true,
-    //   },
-    // })
-    // map.addControl(DrawMapBox);
-    // setStatefulDrawMapbox(DrawMapBox);
+    const DrawMap = DrawMapbox
+    map.addControl(DrawMap);
+    setStatefulDrawMapbox(DrawMap);
+    DrawMap?.changeMode("simple_select");
 
 
     map.on("dragend", () => {
@@ -347,38 +346,104 @@ const Map: FC<MapProps> = ({
     }, 5000);
 
 
-    map.on('draw.update', (e) => {
-      const drawFeatureID = ""
-      alert("hi")
-      statefulDrawMapbox?.setFeatureProperty(drawFeatureID, 'portColor', '#000');
-    })
-
-
-
     return () => map.remove();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    if (statefulMap && statefulDrawMapbox) {
+      statefulMap.on("click", (e) => {
+        let drawFeatureID = "";
+        const drawFeatureAtPoint = statefulDrawMapbox.getFeatureIdsAt(e.point);
+        if (drawFeatureAtPoint) {
+          drawFeatureID = drawFeatureAtPoint.length ? drawFeatureAtPoint[0] : "";
+
+          console.log(drawFeatureID)
+
+          setSelectedFeature(drawFeatureID)
+          // statefulDrawMapbox.set(drawFeatureID, "drawType", drawType);
+          // const feat = statefulDrawMapbox.get(drawFeatureID);
+          // statefulDrawMapbox.add(feat);
+        }
+
+
+      });
+    }
+
+  }, [statefulMap, statefulDrawMapbox])
+
 
   useEffect(() => {
+
     if (statefulMap && mapType?.mode === "draw") {
-
-      if (mapType.drawType === "polygon") {
-        draw(statefulMap, statefulDrawMapbox, setStatefulDrawMapbox,);
-
+      if (drawType === "lawn") {
+        draw(statefulMap, statefulDrawMapbox, setStatefulDrawMapbox, setDrawFeatureID);
         statefulDrawMapbox?.changeMode("draw_polygon");
 
+      } else if (drawType === "bikeLane") {
+        console.log("JUHUUU")
 
-      } else if (mapType.drawType === "draw_line_string") {
-        draw(statefulMap, statefulDrawMapbox, setStatefulDrawMapbox,);
-
+        draw(statefulMap, statefulDrawMapbox, setStatefulDrawMapbox, setDrawFeatureID);
         statefulDrawMapbox?.changeMode("draw_line_string");
-        console.log(statefulDrawMapbox)
-        // const feat = statefulDrawMapbox.get(drawFeatureID);
-        // statefulDrawMapbox.add(feat)
+
+
 
       }
+      else if (drawType === "crosswalk") {
+        draw(statefulMap, statefulDrawMapbox, setStatefulDrawMapbox, setDrawFeatureID);
+        statefulDrawMapbox?.changeMode("draw_line_string");
+
+      }
+
     }
-  }, [statefulMap, statefulDrawMapbox, mapType]);
+  }, [statefulMap, statefulDrawMapbox, drawType]);
+
+  useEffect(() => {
+    if (statefulDrawMapbox && drawFeatureID && drawType) {
+
+
+      console.log(drawFeatureID)
+      statefulDrawMapbox.setFeatureProperty(
+        drawFeatureID,
+        "drawType",
+        drawType
+      );
+      // statefulDrawMapbox.set(drawFeatureID, "drawType", drawType);
+      // const feat = statefulDrawMapbox.get(drawFeatureID);
+      // statefulDrawMapbox.add(feat);
+    }
+  }, [statefulDrawMapbox, drawFeatureID, drawType])
+
+
+  // useEffect(() => {
+  //   if (statefulMap) {
+  //     statefulMap.on("click", (e) => {
+  //       let drawFeatureID = "";
+  //       let newDrawFeature = false;
+  //       const drawTypeNew = drawType;
+  //       if (!newDrawFeature) {
+  //         const drawFeatureAtPoint = statefulDrawMapbox.getFeatureIdsAt(e.point);
+
+  //         // if another drawFeature is not found - reset drawFeatureID
+  //         drawFeatureID = drawFeatureAtPoint.length ? drawFeatureAtPoint[0] : "";
+
+
+  //         if (drawFeatureID) {
+  //           console.log(drawTypeNew);
+  //           statefulDrawMapbox.setFeatureProperty(
+  //             drawFeatureID,
+  //             "drawType",
+  //             drawType
+  //           );
+  //           statefulDrawMapbox.set(drawFeatureID, "drawType", drawType);
+  //           const feat = statefulDrawMapbox.get(drawFeatureID);
+  //           statefulDrawMapbox.add(feat);
+  //         }
+  //       }
+
+  //       newDrawFeature = false;
+  //     });
+  //   }
+  // }, [statefulMap])
 
 
 
@@ -386,8 +451,8 @@ const Map: FC<MapProps> = ({
 
 
   useEffect(() => {
-    if (statefulMap && statefulDrawMapbox && drawnPolygon) {
-      statefulDrawMapbox.add(drawnPolygon);
+    if (statefulMap && statefulDrawMapbox && drawn) {
+      statefulDrawMapbox.add(drawn);
       // statefulDrawMapbox.changeMode("simple_select");
 
       // const [minLng, minLat, maxLng, maxLat] = bbox(drawnPolygon);
@@ -399,7 +464,7 @@ const Map: FC<MapProps> = ({
       //   ]);
       // }, 300);
     }
-  }, [drawnPolygon, statefulDrawMapbox, statefulMap]);
+  }, [drawn, statefulDrawMapbox, statefulMap]);
 
   useEffect(() => {
     if (projectroomsData) {
@@ -561,7 +626,7 @@ const Map: FC<MapProps> = ({
         </Box>
       )}
 
-      {mapType?.mode === "draw" && statefulDrawMapbox && (
+      {selectedFeature && (
         <Box
           position="fixed"
           bottom="10px"
@@ -573,8 +638,13 @@ const Map: FC<MapProps> = ({
           <Button
             text="Delete"
             onClick={() => {
-              statefulDrawMapbox.deleteAll();
-              statefulDrawMapbox.changeMode("draw_polygon");
+              statefulDrawMapbox.delete(selectedFeature);
+              statefulDrawMapbox.changeMode("simple_select");
+              handleSaveDrawn(statefulDrawMapbox.getAll());
+              setMode(null)
+              setSelectedFeature(null)
+              setSwipedUp(false)
+              setDrawFeatureID(null)
             }}
           />
           <Button
@@ -583,7 +653,13 @@ const Map: FC<MapProps> = ({
             // loading={}
             onClick={() => {
               statefulDrawMapbox.changeMode("simple_select");
-              handleSaveDrawnPolygon(statefulDrawMapbox.getAll());
+              handleSaveDrawn(statefulDrawMapbox.getAll());
+              setMode(null)
+              setSelectedFeature(null)
+              setSwipedUp(false)
+              setDrawFeatureID(null)
+
+
 
 
             }}

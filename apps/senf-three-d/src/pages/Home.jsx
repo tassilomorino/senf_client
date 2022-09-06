@@ -24,7 +24,7 @@ const Home = ({ setLoadingModel }) => {
   const [swipedUp, setSwipedUp] = useState(false);
   const [openContextPanel, setOpenContextPanel] = useState(false);
 
-  const [drawnPolygon, setDrawnPolygon] = useState(null);
+  const [drawn, setDrawn] = useState(null);
 
   const initialMapViewport = {
     latitude: isMobile
@@ -78,7 +78,7 @@ const Home = ({ setLoadingModel }) => {
   const data = useMemo(() => {
     fetchData().then((data) => {
       if (data.drawnData) {
-        setDrawnPolygon(JSON.parse(data.drawnData))
+        setDrawn(JSON.parse(data.drawnData))
       }
       if (data.modelsData) {
         data.modelsData.map(((model) => {
@@ -90,11 +90,6 @@ const Home = ({ setLoadingModel }) => {
 
   }, []);
 
-  // useEffect(() => {
-  //   if (drawnPolygon) {
-  //     setDrawnData(drawnPolygon)
-  //   }
-  // }, [drawnPolygon])
 
   useEffect(() => {
     console.log(window?.tb?.map)
@@ -127,10 +122,10 @@ const Home = ({ setLoadingModel }) => {
   }, [])
 
 
-  const handleSaveDrawnPolygon = async (polygon) => {
+  const handleSaveDrawn = async (polygon) => {
     setMode(null);
-    setDrawnPolygon(polygon)
-    setDrawnData(drawnPolygon)
+    setDrawn(polygon)
+    setDrawnData(polygon)
   };
 
   useEffect(() => {
@@ -160,10 +155,10 @@ const Home = ({ setLoadingModel }) => {
         statefulMap={statefulMap}
         setStatefulMap={setStatefulMap}
         mapType={mode}
-        drawnPolygon={drawnPolygon}
-        setDrawnPolygon={setDrawnPolygon}
-        drawMapOpen={mode === "draw" && true}
-        handleSaveDrawnPolygon={handleSaveDrawnPolygon}
+        drawn={drawn}
+        handleSaveDrawn={handleSaveDrawn}
+        setSwipedUp={setSwipedUp}
+        setMode={setMode}
       />
     </Wrapper>
   );
