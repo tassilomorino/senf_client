@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Button, Box, RangeSlider, Typography, LayerWhiteFirstDefault } from 'senf-atomic-design-system'
+import { setModelsData } from '../util/setData'
 
 const Wrapper = styled.div`
 
@@ -54,6 +55,21 @@ const ContextPanel = ({ openContextPanel, setOpenContextPanel }) => {
             setOpenContextPanel(false)
         }
     }, [window?.tb?.map?.selectedObject])
+
+
+
+    const handleSetModel = () => {
+        console.log(window.tb.map)
+
+        // setModelsData()
+
+        window.tb.map.selectedObject.selected = false;
+        window.tb.map.selectedObject = null;
+        setOpenContextPanel(false)
+
+
+
+    }
     return openContextPanel && (
         <Wrapper>
             <Box zIndex={99} justifyContent="center" gap="10px" flexDirection="column" alignItems="center">
@@ -83,11 +99,7 @@ const ContextPanel = ({ openContextPanel, setOpenContextPanel }) => {
 
                 <Box gap="5px">
                     <Button variant="secondary" onClick={() => { window.tb.remove(window.tb.map.selectedObject) }} text="Delete" />
-                    <Button variant="primary" onClick={() => {
-                        window.tb.map.selectedObject.selected = false;
-                        window.tb.map.selectedObject = null;
-                        setOpenContextPanel(false)
-                    }} text="Set Object" />
+                    <Button variant="primary" onClick={handleSetModel} text="Set Object" />
                 </Box>
             </Box>
         </Wrapper>

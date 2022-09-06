@@ -91,35 +91,7 @@ const Home = ({ setLoadingModel }) => {
   }, []);
 
 
-  useEffect(() => {
-    console.log(window?.tb?.map)
-    // setModelsData()
 
-    // setLoadingModel(true);
-    // setSwipedUp(false);
-    // if (isMobile) {
-    //   setSwipedUp(false)
-    // }
-    // const storage = getStorage();
-    // const storageRef = ref(
-    //   storage,
-    //   `3dModels/${modelData.modelPath}`
-    // );
-    // function onResolve(foundURL) {
-    //   setLoadingModel(false);
-    //   createModel(
-    //     `${Math.floor(Math.random() * 1000)}`,
-    //     foundURL,
-    //     modelData.format,
-    //     setOpenContextPanel,
-    //     setSwipedUp
-
-    //   );
-    // }
-    // getDownloadURL(storageRef).then(onResolve, (error) => { setLoadingModel(false); console.log(error) });
-
-
-  }, [])
 
 
   const handleSaveDrawn = async (polygon) => {

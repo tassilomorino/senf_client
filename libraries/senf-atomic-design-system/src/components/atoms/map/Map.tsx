@@ -33,7 +33,7 @@ import IdeaPin from "../../../assets/icons/IdeaPin";
 import theme from "../../../styles/theme";
 import useDraw from "./hooks/useDraw";
 
-import { DrawMapbox } from "./utils/DrawMapbox";
+import DrawMapbox from "./utils/DrawMapbox";
 
 import CrosswalkPattern from "../../../assets/other/crosswalkPattern.png";
 import BikeLanePattern from "../../../assets/other/bikeLanePattern.png";
@@ -321,7 +321,6 @@ const Map: FC<MapProps> = ({
     subscribeMap(map);
     navigationControl(map);
 
-    console.log(map?.style?.imageManager?.images);
     if (!map?.style?.imageManager?.images?.CrosswalkPattern) {
       map?.addImage("CrosswalkPattern", CrosswalkPatternImg);
     }
@@ -372,7 +371,6 @@ const Map: FC<MapProps> = ({
         if (drawFeatureAtPoint) {
           drawFeatureID = drawFeatureAtPoint.length ? drawFeatureAtPoint[0] : "";
 
-          console.log(drawFeatureID)
 
           setSelectedFeature(drawFeatureID)
           // statefulDrawMapbox.set(drawFeatureID, "drawType", drawType);
@@ -462,7 +460,6 @@ const Map: FC<MapProps> = ({
 
   useEffect(() => {
     if (statefulMap && statefulDrawMapbox && drawn) {
-      console.log(drawn)
       statefulDrawMapbox.add(drawn);
       // statefulDrawMapbox.changeMode("simple_select");
 

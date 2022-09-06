@@ -9,7 +9,6 @@ export async function fetchData() {
     return null;
   }
   const data = docSnapshot.data();
-  console.log("Document data:", data);
   return data;
   // formik.setFieldValue("title", data.title);
 }
