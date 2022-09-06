@@ -32,9 +32,17 @@ import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 import IdeaPin from "../../../assets/icons/IdeaPin";
 import theme from "../../../styles/theme";
 import useDraw from "./hooks/useDraw";
-import useDraw1 from "./hooks/useDraw1";
 
 import { DrawMapbox } from "./utils/DrawMapbox";
+
+import CrosswalkPattern from "../../../assets/other/crosswalkPattern.png";
+import BikeLanePattern from "../../../assets/other/bikeLanePattern.png";
+
+const CrosswalkPatternImg = new Image(32, 128);
+CrosswalkPatternImg.src = CrosswalkPattern;
+
+const BikeLanePatternImg = new Image(32, 32);
+BikeLanePatternImg.src = BikeLanePattern;
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoidG1vcmlubyIsImEiOiJjazBzZHZjeWQwMWoyM2NtejlzcnMxd3FtIn0.I_Xcc1aJiN7hToGGjNy7ow";
@@ -276,7 +284,6 @@ const Map: FC<MapProps> = ({
   const hover = useHover();
   const clickMarkers = useClickMarkers();
   const draw = useDraw();
-  const draw1 = useDraw1();
 
   const [drawFeatureID, setDrawFeatureID] = useState(null)
 
@@ -313,6 +320,14 @@ const Map: FC<MapProps> = ({
     setStatefulMap(map);
     subscribeMap(map);
     navigationControl(map);
+
+    console.log(map?.style?.imageManager?.images);
+    if (!map?.style?.imageManager?.images?.CrosswalkPattern) {
+      map?.addImage("CrosswalkPattern", CrosswalkPatternImg);
+    }
+    if (!map?.style?.imageManager?.images?.BikeLanePattern) {
+      map?.addImage("BikeLanePattern", BikeLanePatternImg);
+    }
 
 
     if (ideasData || projectroomsData || projectroomData) {
@@ -380,18 +395,13 @@ const Map: FC<MapProps> = ({
         statefulDrawMapbox?.changeMode("draw_polygon");
 
       } else if (drawType === "bikeLane") {
-        console.log("JUHUUU")
 
         draw(statefulMap, statefulDrawMapbox, setStatefulDrawMapbox, setDrawFeatureID);
         statefulDrawMapbox?.changeMode("draw_line_string");
-
-
-
       }
       else if (drawType === "crosswalk") {
         draw(statefulMap, statefulDrawMapbox, setStatefulDrawMapbox, setDrawFeatureID);
         statefulDrawMapbox?.changeMode("draw_line_string");
-
       }
 
     }
@@ -452,6 +462,7 @@ const Map: FC<MapProps> = ({
 
   useEffect(() => {
     if (statefulMap && statefulDrawMapbox && drawn) {
+      console.log(drawn)
       statefulDrawMapbox.add(drawn);
       // statefulDrawMapbox.changeMode("simple_select");
 

@@ -1,16 +1,9 @@
 import bbox from "@turf/bbox";
 import { useCallback, useEffect } from "react";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
-import CrosswalkPattern from "../../../../assets/other/crosswalkPattern.png";
-
-const CrosswalkPatternImg = new Image(32, 128);
-CrosswalkPatternImg.src = CrosswalkPattern;
 
 const useDraw = () => {
   return (map, statefulDrawMapbox, setStatefulDrawMapbox, setDrawFeatureID) => {
-    if (!map?.style?.imageManager?.images?.CrosswalkPattern) {
-      map?.addImage("CrosswalkPattern", CrosswalkPatternImg);
-    }
     let drawFeatureID = "";
     let newDrawFeature = false;
 
