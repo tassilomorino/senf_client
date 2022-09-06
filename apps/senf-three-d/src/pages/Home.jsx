@@ -90,10 +90,6 @@ const Home = ({ setLoadingModel }) => {
 
   }, []);
 
-
-
-
-
   const handleSaveDrawn = async (polygon) => {
     setMode(null);
     setDrawn(polygon)
