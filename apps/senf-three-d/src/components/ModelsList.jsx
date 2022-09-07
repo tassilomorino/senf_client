@@ -127,7 +127,7 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
 
   const handlePlaceModel = (
     // event, cardType,
-    modelData, labelText) => {
+    modelData) => {
     setLoadingModel(true);
     setSwipedUp(false);
     if (isMobile) {
@@ -142,7 +142,7 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
       modelData.format,
       setOpenContextPanel,
       setSwipedUp,
-      labelText
+      modelData.labelText
 
     );
 

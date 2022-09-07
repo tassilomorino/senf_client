@@ -51,11 +51,20 @@ const Search: FC = ({ handlePlaceModel }) => {
     //     }
     // };
 
-    const Hit = ({ hits }) => {
+    const Hit = ({ hits, searchQuery }) => {
+
+        const data = hits.length ? hits : [{
+            title: searchQuery,
+            category: "Buildings",
+            imgURL: "https://firebasestorage.googleapis.com/v0/b/senf-dev.appspot.com/o/threeD_models%2F7WQUZg6V6IJlzA3Jrs30%2Fthumbnail%2FIcon_Normal%20Effect%20Kopie%2013.png?alt=media&token=23340cfd-c9f0-4575-ae65-010ed1ff3ef9",
+            modelPath: "https://firebasestorage.googleapis.com/v0/b/senf-dev.appspot.com/o/threeD_models%2F7WQUZg6V6IJlzA3Jrs30%2Fmodel%2Fbar.fbx?alt=media&token=14e81885-9279-45ec-8a23-7388f0292140",
+            labelText: searchQuery
+        }];
+        console.log(data)
         return <List
             listType="grid"
             CardType={ObjectCard}
-            data={hits}
+            data={data}
             handleButtonOpenCard={handlePlaceModel}
             loading={false}
         />
@@ -64,10 +73,15 @@ const Search: FC = ({ handlePlaceModel }) => {
     const CustomHits = connectHits(Hit);
 
 
+
     const Results = connectStateResults(({ searchState }) =>
+
         searchState && searchState.query ? (
+            console.log('searchState', searchState),
+
             <CustomHits
                 hitComponent={Hit}
+                searchQuery={searchState.query}
             />
 
         ) : (
@@ -129,7 +143,7 @@ const Search: FC = ({ handlePlaceModel }) => {
 
             <CustomSearch />
 
-            <Results handlePlaceModel={handlePlaceModel} />
+            <Results />
 
 
 

@@ -45,7 +45,8 @@ export const createModel = (
   obj,
   objFormat,
   setOpenContextPanel,
-  setSwipedUp
+  setSwipedUp,
+  labelText
 ) => {
   window.map.addLayer({
     id: id || "custom_layer",
@@ -57,22 +58,20 @@ export const createModel = (
         obj,
         scale: 1,
         units: "meters",
-
         rotation: { x: 90, y: 0, z: 0 }, // default rotation,
         anchor: "center",
         zoom: 16,
         tooltip: true,
-        title: "Schoolbuilding",
+        labelText: labelText || "",
       };
 
       window.tb.loadObj(options, (newModel) => {
         newModel.castShadow = true;
         // newModel.addTooltip("Schoolbuilding", true);
+        if (labelText) {
+          newModel.addLabel(createLabel(id, labelText), true);
+        }
 
-        newModel.addLabel(
-          createLabel("Schoolbuilding", "Schoolbuilding"),
-          true
-        );
         makeTooltipInteractive(newModel, setOpenContextPanel, setSwipedUp);
         newModel = newModel.setCoords([
           map.transform.center.lng,
