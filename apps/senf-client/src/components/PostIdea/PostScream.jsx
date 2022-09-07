@@ -244,7 +244,7 @@ const PostScream = ({
   };
 
   useEffect(() => {
-    statefulMap.on("moveend", () => {
+    statefulMap.on("moved", () => {
       const newViewport = {
         latitude: statefulMap.getCenter().lat,
         longitude: statefulMap.getCenter().lng,
