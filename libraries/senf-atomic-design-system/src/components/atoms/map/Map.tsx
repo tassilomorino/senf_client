@@ -300,8 +300,8 @@ const Map: FC<MapProps> = ({
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: "mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6",
-      center: [lng, lat],
-      zoom,
+      center: [lng?.current, lat?.current],
+      zoom: zoom?.current,
       pitch: initialMapViewport.pitch,
     });
 
