@@ -244,7 +244,7 @@ const PostScream = ({
   };
 
   useEffect(() => {
-    statefulMap.on("moved", () => {
+    statefulMap.on("move", () => {
       const newViewport = {
         latitude: statefulMap.getCenter().lat,
         longitude: statefulMap.getCenter().lng,
@@ -302,7 +302,7 @@ const PostScream = ({
   }
 
   const handleLocationDecided = () => {
-    if (address) {
+    if (formik.values.address) {
       setAllMainStates({
         ...allMainStates,
         locationDecided: true,
