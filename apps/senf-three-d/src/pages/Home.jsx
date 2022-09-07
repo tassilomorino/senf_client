@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import { Map, isMobileCustom } from "senf-atomic-design-system"
+import { Box, Button, Map, isMobileCustom } from "senf-atomic-design-system"
 import { Threebox } from "threebox-plugin";
 import { useFormik } from "formik";
 import ContextPanel from "../components/ContextPanel";
@@ -23,7 +23,7 @@ const Home = ({ setLoadingModel }) => {
   const [mode, setMode] = useState(null);
   const [swipedUp, setSwipedUp] = useState(false);
   const [openContextPanel, setOpenContextPanel] = useState(false);
-
+  // const [showLabels, setShowLabels] = useState(false);
   const [drawn, setDrawn] = useState(null);
 
   const initialMapViewport = {
@@ -46,7 +46,8 @@ const Home = ({ setLoadingModel }) => {
         enableSelectingObjects: true,
         enableDraggingObjects: true,
         enableRotatingObjects: true,
-        enableHelpTooltips: true,
+        // enableHelpTooltips: true,
+        // enableTooltips: true,
       });
       window.tb.altitudeStep = 1;
       // map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
@@ -83,6 +84,7 @@ const Home = ({ setLoadingModel }) => {
       if (data.modelsData) {
         data.modelsData.map(((model) => {
           setImplementedModelsData(model)
+          console.log(model)
         }))
       }
     })
@@ -128,6 +130,10 @@ const Home = ({ setLoadingModel }) => {
         setSwipedUp={setSwipedUp}
         setMode={setMode}
       />
+
+      {/* <Box position="fixed" bottom="20px" right="100px">
+        <Button onClick={() => setShowLabels(true)} text={showLabels ? "Show labels" : "Hide Labels"} />
+      </Box> */}
     </Wrapper>
   );
 }

@@ -140,7 +140,6 @@ const Title = styled.div`
 
 const ObjectCard: FC<ObjectCardProps> = ({ data, handleButtonOpenCard }) => {
 
-  const { title, imgUrl, objectId } = data;
   return (
     <Wrapper
       onClick={() => handleButtonOpenCard(data)}
@@ -148,14 +147,14 @@ const ObjectCard: FC<ObjectCardProps> = ({ data, handleButtonOpenCard }) => {
       <LogoWrapper>
         <Thumbnail
           img={
-            imgUrl
+            data?.imgURL
             // ? img : placeHodlerImage && NoImage
           }
         />
       </LogoWrapper>
 
       <Title>
-        <Typography variant="bodyBg">{title}</Typography>
+        <Typography variant="bodyBg">{data?.title}</Typography>
       </Title>
     </Wrapper>
   );

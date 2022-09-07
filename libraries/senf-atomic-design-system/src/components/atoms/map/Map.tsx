@@ -37,6 +37,8 @@ import DrawMapbox from "./utils/DrawMapbox";
 
 import CrosswalkPattern from "../../../assets/other/crosswalkPattern.png";
 import BikeLanePattern from "../../../assets/other/bikeLanePattern.png";
+import useIdeaPin from "./hooks/useIdeaPin";
+import useModelsLabels from "./hooks/useModelsLabels";
 
 const CrosswalkPatternImg = new Image(32, 64);
 CrosswalkPatternImg.src = CrosswalkPattern;
@@ -269,6 +271,10 @@ const Map: FC<MapProps> = ({
 
   const [mapMoved, setMapMoved] = useState(false);
   const [container, setContainer] = useState(null);
+
+  const [modelsLabelsContainer, setModelsLabelsContainer] = useState(null);
+
+
 
   const [selectedFeature, setSelectedFeature] = useState(null);
 
@@ -524,38 +530,19 @@ const Map: FC<MapProps> = ({
 
   useEffect(() => {
     if (ideaData && ideaData.long && ideaData.lat && statefulMap) {
-      const mapboxMarker = new mapboxgl.Marker({ element: container })
-      mapboxMarker
-        .setLngLat([ideaData.long, ideaData.lat])
-        .addTo(statefulMap);
-
-      setIdeaMarkerColor(ideaData.color);
-
-      if (statefulMap?.getLayer("ideas")) {
-        statefulMap?.setFilter('ideas', ['!=', 'screamId', ideaData.screamId]);
-      }
-      // setPinData([{ ideaData }]);
-      setTimeout(() => {
-        statefulMap.flyTo({
-          center: [ideaData.long, ideaData.lat],
-          zoom: 16.5,
-          duration: 2700,
-          pitch: 30,
-        });
-
-        // statefulMap.fitBounds([
-        //   [ideaData.long - 0.001, ideaData.lat - 0.0015], // southwestern corner of the bounds
-        //   [ideaData.long + 0.0003, ideaData.lat + 0.0015], // northeastern corner of the bounds
-        // ]);
-      }, 300);
-    } else {
-      // if (marker) {
-      //   marker.remove();
-
-      // }
-      // setPinData(null);
+      useIdeaPin(statefulMap, container, ideaData, setIdeaMarkerColor);
     }
   }, [ideaData]);
+
+
+  useEffect(() => {
+    console.log(window?.map?.tb?.world?.children)
+
+    if (window?.map?.tb?.world?.children) {
+      console.log(window.map.tb.world.children)
+      useModelsLabels(statefulMap, modelsLabelsContainer, [50, 6.7]);
+    }
+  }, [window?.map?.tb?.world?.children]);
 
   // useEffect(() => {
   //   // FLY TO IDEA
@@ -694,6 +681,12 @@ const Map: FC<MapProps> = ({
 
       </MapContainer>
       <MarkerPin visible={ideaData} ref={setContainer}><IdeaPin transform="translateY(-12px)" color={ideaMarkerColor} /></MarkerPin>
+
+
+
+      <MarkerPin visible={true} ref={setModelsLabelsContainer}><IdeaPin transform="translateY(-12px)" color={ideaMarkerColor} /></MarkerPin>
+
+
 
 
     </React.Fragment>

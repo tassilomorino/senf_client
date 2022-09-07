@@ -21043,6 +21043,7 @@ __metadata:
     "@types/styled-components": ^5.1.23
     "@use-gesture/react": ^10.2.14
     "@vitejs/plugin-react": ^1.3.2
+    algoliasearch: ^4.14.2
     babel-loader: ^8.2.3
     babel-plugin-styled-components: ^2.0.3
     chromatic: ^6.5.4
@@ -21062,6 +21063,7 @@ __metadata:
     react-device-detect: ^2.2.2
     react-i18next: ^11.16.7
     react-infinite-scroller: ^1.2.6
+    react-instantsearch-dom: ^6.32.1
     react-multi-date-picker: ^3.3.0
     react-share: ^4.4.0
     recharts: ^2.1.13

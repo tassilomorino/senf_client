@@ -40,11 +40,11 @@ const ContextPanel = ({ openContextPanel, setOpenContextPanel }) => {
         window.tb.map.selectedObject.setRotation({ x: 0, y: 0, z: value });
     }
     const handleSetScale = (value) => {
-        // setScale(value);
-        // window.tb.map.selectedObject.fixedZoom = 10
-        // window.tb.map.selectedObject.setObjectScale(1000 - value * 1);
-        // window.tb.map.repaint = true;
-        // console.log(window.tb.map.selectedObject)
+        setScale(value);
+        window.tb.map.selectedObject.fixedZoom = 10
+        window.tb.map.selectedObject.setObjectScale(1000 - value * 1);
+        window.tb.map.repaint = true;
+        console.log(window.tb.map.selectedObject)
     }
 
     useEffect(() => {
@@ -59,9 +59,8 @@ const ContextPanel = ({ openContextPanel, setOpenContextPanel }) => {
 
 
     const handleSetModel = () => {
-        console.log(window.tb.map)
-
-        // setModelsData()
+        console.log(window.map.tb.world.children)
+        setModelsData(window.map.tb.world.children)
 
         window.tb.map.selectedObject.selected = false;
         window.tb.map.selectedObject = null;
@@ -86,7 +85,7 @@ const ContextPanel = ({ openContextPanel, setOpenContextPanel }) => {
                         rightTick="360" />
                 </Box>
 
-                {/* <Box width="200px" flexDirection="column" gap="10px">
+                <Box width="200px" flexDirection="column" gap="10px">
                     <Typography variant="h3" textAlign="center">Scale</Typography>
                     <RangeSlider
                         rangeValue={scale}
@@ -95,7 +94,7 @@ const ContextPanel = ({ openContextPanel, setOpenContextPanel }) => {
                         rangeMax={1000}
                         leftTick="0"
                         rightTick="100" />
-                </Box> */}
+                </Box>
 
                 <Box gap="5px">
                     <Button variant="secondary" onClick={() => { window.tb.remove(window.tb.map.selectedObject) }} text="Delete" />

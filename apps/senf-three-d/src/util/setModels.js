@@ -5,11 +5,14 @@ function makeTooltipInteractive(model, setOpenContextPanel, setSwipedUp) {
     // if selected
     if (selected) {
       const selectedObject = e.detail; //
-
+      console.log(selectedObject);
       window.map.flyTo({
         center: selectedObject.coordinates,
         zoom: 20,
         pitch: 70,
+        // center: selectedObject.coordinates,
+        // zoom: selectedObject.zoom,
+        // pitch: 70,
       });
       setOpenContextPanel(true);
       setSwipedUp(false);
@@ -26,6 +29,16 @@ function makeTooltipInteractive(model, setOpenContextPanel, setSwipedUp) {
   }
   model.addEventListener("SelectedChange", onSelectedChange, false);
 }
+
+const createLabel = (id, content) => {
+  const ele = document.createElement("div");
+  ele.setAttribute("id", id);
+  ele.innerText = content;
+  ele.style.padding = "0.5rem";
+  ele.style.backgroundColor = "white";
+  ele.style.borderRadius = "8px";
+  return ele;
+};
 
 export const createModel = (
   id,
@@ -47,11 +60,19 @@ export const createModel = (
 
         rotation: { x: 90, y: 0, z: 0 }, // default rotation,
         anchor: "center",
+        zoom: 16,
+        tooltip: true,
+        title: "Schoolbuilding",
       };
 
       window.tb.loadObj(options, (newModel) => {
         newModel.castShadow = true;
-        // newModel.addLabel(tooltipDOM);
+        // newModel.addTooltip("Schoolbuilding", true);
+
+        newModel.addLabel(
+          createLabel("Schoolbuilding", "Schoolbuilding"),
+          true
+        );
         makeTooltipInteractive(newModel, setOpenContextPanel, setSwipedUp);
         newModel = newModel.setCoords([
           map.transform.center.lng,

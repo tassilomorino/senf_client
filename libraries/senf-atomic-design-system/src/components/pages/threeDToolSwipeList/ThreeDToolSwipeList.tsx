@@ -5,6 +5,10 @@ import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
+import {
+  InstantSearch,
+} from 'react-instantsearch-dom';
+import algoliasearch from 'algoliasearch/lite';
 import { ThreeDToolSwipeListProps } from "./ThreeDToolSwipeListProps.types";
 
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
@@ -14,7 +18,8 @@ import List from "../../molecules/list/List";
 import MenuSidebar from "../../organisms/menuSidebar/MenuSidebar";
 import ObjectCard from "../../molecules/cards/ObjectCard";
 import Input from "../../atoms/inputs/Input";
-import { Arrow, Plus, Search } from "../../../assets/icons";
+import { Arrow, Plus } from "../../../assets/icons";
+import Search from "./Search";
 import Box from "../../atoms/box/Box";
 import Button from "../../atoms/buttons/Button";
 import ModalButton from "../../molecules/modalStack/ModalButton";
@@ -23,7 +28,10 @@ import Typography from "../../atoms/typography/Typography";
 import HorizontalSwiper from "../../organisms/horizontalSwiper/HorizontalSwiper";
 import Divider from "../../atoms/divider/Divider";
 import TextTransition from "../../atoms/animations/TextTransition";
+import AddModel from "./AddModel";
 
+
+const searchClient = algoliasearch("AERQKCMI5M", 'ae11cb36d2946300bd8860b2a23bc1ab');
 const DragWrapper = styled(animated.div)`
   z-index: ${({ zIndex }) => zIndex || 2};
   overscroll-behavior: contain;
@@ -141,6 +149,7 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
   handleSubmit,
   grounds,
   setMode,
+  handleUploadModel
 }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom();
@@ -251,7 +260,7 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
 
               </Box>
 
-              <Input
+              {/* <Input
                 name="searchAddress"
                 type="search"
                 leadingIcon={showResults ? <Arrow transform="rotate(180deg)" /> : <Search />}
@@ -261,7 +270,10 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
                 value={searchTerm}
                 onClick={() => setShowResults(true)
                 }
-              />
+              /> */}
+              <InstantSearch searchClient={searchClient} indexName="threeD_models">
+                <Search handlePlaceModel={handlePlaceModel} />
+              </InstantSearch>
             </Box>
 
           </Header>
@@ -294,44 +306,21 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
 
                 <Box margin="10px" gap="20px" flexDirection="column" position="absolute" bottom="10px" width="calc(100% - 20px)">
                   <Typography variant="buttonBg" textAlign="center">Du hast eigene Modelle?</Typography>
-                  <ModalButton variant="primary" icon={<Plus />} text="3D Modell hochladen" fillWidth="max" options={{
+                  {/* <ModalButton variant="primary" icon={<Plus />} text="3D Modell hochladen" fillWidth="max" options={{
                     padding: 20,
                     title: t("add_model"),
                     swipe: isMobile && true,
 
-                  }}>
-                    <Box flexDirection="column" gap="20px">
-                      <Input
-                        name="title"
-                        type="text"
-                        placeholder={t("add_title")}
-                        label={t("title")}
-                        onChange={formik?.handleChange}
-                        onBlur={formik?.handleBlur}
-                        value={formik?.values.title}
-                      />
-                      <Box gap="20px">
-                        <ImageUploadTile
-                          photoURL={uploadedImage}
-                          uploadingImage={uploadingImage}
-                          handleImageUpload={handleImageUpload}
-                        />
-                        <ImageUploadTile
-                          photoURL={uploadedImage}
-                          uploadingImage={uploadingImage}
-                          handleImageUpload={handleImageUpload}
-                        />
-                      </Box>
+                  }}> */}
+                  <AddModel formik={formik}
+                    uploadedImage={uploadedImage}
+                    handleImageUpload={handleImageUpload}
+                    uploadingImage={uploadingImage}
+                    handleSubmit={handleSubmit}
+                    handleUploadModel={handleUploadModel}
 
-
-                      <Button
-                        text="add model"
-
-                        onClick={handleSubmit}
-                        disabled={!formik?.isValid}
-                      />
-                    </Box>
-                  </ModalButton>
+                  />
+                  {/* </ModalButton> */}
                 </Box>
 
 
