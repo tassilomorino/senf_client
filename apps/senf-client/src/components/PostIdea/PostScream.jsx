@@ -181,7 +181,6 @@ const PostScream = ({
   const handleDropdownProject = (value) => {
     // event.preventDefault();
     setProjectSeleted(value);
-    console.log(value);
 
     projectsData.forEach((element) => {
       if (value === element.projectRoomId) {
@@ -267,13 +266,7 @@ const PostScream = ({
       .send()
       .then((response) => {
         const match = response.body;
-        console.log("Gesamt", match.features[0]);
-        console.log(
-          "Adresse",
-          match.features[0].text,
-          match.features[0].address
-        );
-        console.log("Stadtteil", match.features[0].context[1].text);
+
 
         const houseNumber =
           match.features[0].address !== undefined
