@@ -4510,6 +4510,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@reduxjs/toolkit@npm:^1.8.5":
+  version: 1.8.5
+  resolution: "@reduxjs/toolkit@npm:1.8.5"
+  dependencies:
+    immer: ^9.0.7
+    redux: ^4.1.2
+    redux-thunk: ^2.4.1
+    reselect: ^4.1.5
+  peerDependencies:
+    react: ^16.9.0 || ^17.0.0 || ^18
+    react-redux: ^7.2.1 || ^8.0.2
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-redux:
+      optional: true
+  checksum: 831b5c74779262351d20efa0f4c06f794702bd55b14bd8f69362e29f82f7ad43aee66f39518914345ad9e9c6c93611acdeb576a70deda260733c3f098875aaca
+  languageName: node
+  linkType: hard
+
 "@rollup/plugin-babel@npm:^5.2.0":
   version: 5.3.1
   resolution: "@rollup/plugin-babel@npm:5.3.1"
@@ -6668,7 +6688,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/hoist-non-react-statics@npm:*, @types/hoist-non-react-statics@npm:^3.3.0":
+"@types/hoist-non-react-statics@npm:*, @types/hoist-non-react-statics@npm:^3.3.0, @types/hoist-non-react-statics@npm:^3.3.1":
   version: 3.3.1
   resolution: "@types/hoist-non-react-statics@npm:3.3.1"
   dependencies:
@@ -7192,6 +7212,13 @@ __metadata:
   version: 2.0.6
   resolution: "@types/unist@npm:2.0.6"
   checksum: 25cb860ff10dde48b54622d58b23e66214211a61c84c0f15f88d38b61aa1b53d4d46e42b557924a93178c501c166aa37e28d7f6d994aba13d24685326272d5db
+  languageName: node
+  linkType: hard
+
+"@types/use-sync-external-store@npm:^0.0.3":
+  version: 0.0.3
+  resolution: "@types/use-sync-external-store@npm:0.0.3"
+  checksum: 161ddb8eec5dbe7279ac971531217e9af6b99f7783213566d2b502e2e2378ea19cf5e5ea4595039d730aa79d3d35c6567d48599f69773a02ffcff1776ec2a44e
   languageName: node
   linkType: hard
 
@@ -22761,7 +22788,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-redux@npm:^7.2.6, react-redux@npm:^7.2.8":
+"react-redux@npm:^7.2.6":
   version: 7.2.8
   resolution: "react-redux@npm:7.2.8"
   dependencies:
@@ -22779,6 +22806,38 @@ __metadata:
     react-native:
       optional: true
   checksum: ecf1933e91013f2d41bfc781515b536bf81eb1f70ff228607841094c8330fe77d522372b359687e51c0b52b9888dba73db9ac0486aace1896ab9eb9daec102d5
+  languageName: node
+  linkType: hard
+
+"react-redux@npm:^8.0.2":
+  version: 8.0.2
+  resolution: "react-redux@npm:8.0.2"
+  dependencies:
+    "@babel/runtime": ^7.12.1
+    "@types/hoist-non-react-statics": ^3.3.1
+    "@types/use-sync-external-store": ^0.0.3
+    hoist-non-react-statics: ^3.3.2
+    react-is: ^18.0.0
+    use-sync-external-store: ^1.0.0
+  peerDependencies:
+    "@types/react": ^16.8 || ^17.0 || ^18.0
+    "@types/react-dom": ^16.8 || ^17.0 || ^18.0
+    react: ^16.8 || ^17.0 || ^18.0
+    react-dom: ^16.8 || ^17.0 || ^18.0
+    react-native: ">=0.59"
+    redux: ^4
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+    redux:
+      optional: true
+  checksum: 44c1739c45dad04ecc65a290897c73828ff0bf43f2b7618ed5ef6d4ceecedae38e76cecd189a5ecedf579c28ead05427bc000fb45ad30b9fcd5c2be27cd3ac73
   languageName: node
   linkType: hard
 
@@ -23587,6 +23646,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"reselect@npm:^4.1.5":
+  version: 4.1.6
+  resolution: "reselect@npm:4.1.6"
+  checksum: 3ea1058422904063ec93c8f4693fe33dcb2178bbf417ace8db5b2c797a5875cf357d9308d11ed3942ee22507dd34ecfbf1f3a21340a4f31c206cab1d36ceef31
+  languageName: node
+  linkType: hard
+
 "resize-observer@npm:^1.0.4":
   version: 1.0.4
   resolution: "resize-observer@npm:1.0.4"
@@ -23919,6 +23985,25 @@ __metadata:
   bin:
     rollup-plugin-visualizer: dist/bin/cli.js
   checksum: 8bc4ff80a149f3ac775af1307f5b1936d3d6bd31ec6969e34e7e7489105b54fe12fda05d0c9a1b682fe7a1f535468e94dd11d98ba048ca78ac733a459bdd400b
+  languageName: node
+  linkType: hard
+
+"rollup-plugin-visualizer@npm:^5.8.1":
+  version: 5.8.1
+  resolution: "rollup-plugin-visualizer@npm:5.8.1"
+  dependencies:
+    nanoid: ^3.3.4
+    open: ^8.4.0
+    source-map: ^0.7.3
+    yargs: ^17.5.1
+  peerDependencies:
+    rollup: ^2.0.0
+  peerDependenciesMeta:
+    rollup:
+      optional: true
+  bin:
+    rollup-plugin-visualizer: dist/bin/cli.js
+  checksum: 8fe26ab4ebfa034147721606f4020534821a428f296c7dc8ab2c1d863f30d9330600593f09e79a4d92de57c4e7d67905a36df631b272d9d49aaf09633b59b40c
   languageName: node
   linkType: hard
 
@@ -24270,9 +24355,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"senf-3d@workspace:apps/senf-3D":
+"senf-3d@workspace:apps/senf-3d":
   version: 0.0.0-use.local
-  resolution: "senf-3d@workspace:apps/senf-3D"
+  resolution: "senf-3d@workspace:apps/senf-3d"
   dependencies:
     "@testing-library/jest-dom": ^5.16.4
     "@testing-library/react": ^13.3.0
@@ -24389,6 +24474,7 @@ __metadata:
     "@mapbox/mapbox-gl-draw": ^1.3.0
     "@mapbox/mapbox-sdk": ^0.13.3
     "@react-spring/web": ^9.4.4
+    "@reduxjs/toolkit": ^1.8.5
     "@turf/bbox": ^6.5.0
     "@types/react-router-dom": ^4.3.5
     "@use-gesture/react": ^10.1.3
@@ -24419,22 +24505,22 @@ __metadata:
     plotly.js-cartesian-dist: ^2.11.1
     prettier: ^2.6.2
     public-ip: ^4.0.4
-    react: ^17.0.2
+    react: ^18.2.0
     react-device-detect: ^2.1.2
-    react-dom: ^17.0.2
+    react-dom: ^18.2.0
     react-helmet: ^6.1.0
     react-i18next: ^11.16.2
     react-infinite-scroller: ^1.2.5
     react-lazy-images: ^1.1.0
     react-multi-date-picker: ^3.3.0
     react-plotlyjs: ^0.4.4
-    react-redux: ^7.2.8
+    react-redux: ^8.0.2
     react-router-dom: ^5.2.0
     react-use-measure: ^2.1.1
     redux: ^4.1.2
     redux-thunk: ^2.4.1
     resize-observer: ^1.0.4
-    rollup-plugin-visualizer: ^5.6.0
+    rollup-plugin-visualizer: ^5.8.1
     senf-atomic-design-system: "*"
     senf-shared: "*"
     start-server-and-test: ^1.13.1
@@ -27174,6 +27260,15 @@ __metadata:
     punycode: 1.3.2
     querystring: 0.2.0
   checksum: 50d100d3dd2d98b9fe3ada48cadb0b08aa6be6d3ac64112b867b56b19be4bfcba03c2a9a0d7922bfd7ac17d4834e88537749fe182430dfd9b68e520175900d90
+  languageName: node
+  linkType: hard
+
+"use-sync-external-store@npm:^1.0.0":
+  version: 1.2.0
+  resolution: "use-sync-external-store@npm:1.2.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 5c639e0f8da3521d605f59ce5be9e094ca772bd44a4ce7322b055a6f58eeed8dda3c94cabd90c7a41fb6fa852210092008afe48f7038792fd47501f33299116a
   languageName: node
   linkType: hard
 

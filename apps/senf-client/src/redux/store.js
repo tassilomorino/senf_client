@@ -1,8 +1,8 @@
 /** @format */
 
-import { createStore, combineReducers, applyMiddleware, compose } from "redux";
+import { combineReducers, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
-
+import { configureStore } from "@reduxjs/toolkit";
 // import throttle from "lodash/throttle";
 
 import userReducer from "./reducers/userReducer";
@@ -33,7 +33,7 @@ const enhancer = composeEnhancers(applyMiddleware(...middleware));
 // const persistedState = loadStateCreateProjectData();
 const initialState = {};
 
-const store = createStore(reducers, initialState, enhancer);
+const store = configureStore({ reducer: reducers });
 
 // store.subscribe(
 //   throttle(() => {
