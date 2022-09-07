@@ -137,7 +137,7 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
 
     setLoadingModel(false);
     createModel(
-      `${Math.floor(Math.random() * 1000)}`,
+      `${Math.floor(Math.random() * 100000000)}`,
       modelData.modelPath,
       modelData.format,
       setOpenContextPanel,

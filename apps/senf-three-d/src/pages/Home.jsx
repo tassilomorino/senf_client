@@ -84,7 +84,6 @@ const Home = ({ setLoadingModel }) => {
       if (data.modelsData) {
         data.modelsData.map(((model) => {
           setImplementedModelsData(model)
-          console.log(model)
         }))
       }
     })

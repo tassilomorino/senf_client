@@ -28,7 +28,6 @@ const Wrapper = styled.div<ObjectCardProps>`
 
   @media (min-width: 768px) {
     transition: 0.3s;
-    margin: 16px 8px 0px 8px;
 
     &:hover {
       transform: scale(103%);

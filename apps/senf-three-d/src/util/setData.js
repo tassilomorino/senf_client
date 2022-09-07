@@ -13,9 +13,23 @@ export async function setDrawnData(drawnData) {
 }
 
 export async function setModelsData(modelsData) {
+  const modelsRawData = [];
   const updateData = {
-    modelsData,
+    modelsData: modelsRawData,
   };
+  modelsData.forEach((model) => {
+    console.log(model);
+
+    modelsRawData.push({
+      obj: model.userData.obj,
+      coordinates: model.coordinates,
+      labelText: model.userData.labelText || null,
+      objFormat: model.userData.objFormat || null,
+      id: model.userData.id || null,
+      // rotation: model.rotation,
+    });
+  });
+
   const ref = doc(db, "threeD_ideas", "GS4MT3HDv3YcojewHeLx");
   await updateDoc(ref, updateData).then(() => {
     console.log("Document successfully updated!");

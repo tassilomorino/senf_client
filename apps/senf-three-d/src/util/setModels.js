@@ -49,7 +49,7 @@ export const createModel = (
   labelText
 ) => {
   window.map.addLayer({
-    id: id || "custom_layer",
+    id,
     type: "custom",
     renderingMode: "3d",
     onAdd(map, _gl) {
@@ -61,8 +61,8 @@ export const createModel = (
         rotation: { x: 90, y: 0, z: 0 }, // default rotation,
         anchor: "center",
         zoom: 16,
-        tooltip: true,
         labelText: labelText || "",
+        id,
       };
 
       window.tb.loadObj(options, (newModel) => {
@@ -103,8 +103,9 @@ export const setImplementedModelsData = (
   setOpenContextPanel,
   setSwipedUp
 ) => {
+  console.log(model);
   window.map.addLayer({
-    id: model.id || "custom_layer",
+    id: model.id,
     type: "custom",
     renderingMode: "3d",
     onAdd(map, _gl) {
@@ -115,12 +116,20 @@ export const setImplementedModelsData = (
         units: "meters",
         rotation: { x: 90, y: 0, z: 0 }, // default rotation,
         anchor: "center",
+        labelText: model.labelText || "",
       };
 
       window.tb.loadObj(options, (newModel) => {
         newModel.castShadow = true;
+        if (model.labelText) {
+          newModel.addLabel(createLabel(model.id, model.labelText), true);
+        }
         makeTooltipInteractive(newModel, setOpenContextPanel, setSwipedUp);
-        newModel = newModel.setCoords([model.center.lng, model.center.lat, 0]);
+        newModel = newModel.setCoords([
+          model.coordinates[0],
+          model.coordinates[1],
+          0,
+        ]);
         window.tb.add(newModel);
       });
     },

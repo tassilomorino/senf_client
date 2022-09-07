@@ -21238,6 +21238,7 @@ __metadata:
     three: ^0.144.0
     threebox-plugin: ^2.2.7
     universal-cookie: ^4.0.4
+    uuid: ^8.3.2
     vite: ^2.9.11
     yup: ^0.32.11
   languageName: unknown
