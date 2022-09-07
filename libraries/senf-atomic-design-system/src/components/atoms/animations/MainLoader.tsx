@@ -2,7 +2,7 @@
 
 import React, { FC, useRef, useEffect, useState } from "react";
 import styled from "styled-components";
-import lottie from "lottie-web";
+import lottie from 'lottie-web/build/player/lottie_svg.min.js'
 import { MainLoaderProps } from "./MainLoader.types";
 import mainLoader from "../../../assets/lottieFiles/senf-Loader-v012.json";
 import Typography from "../typography/Typography";
