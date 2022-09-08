@@ -5,8 +5,9 @@ import { ThreeDToolSwipeList, isMobileCustom, Input } from "senf-atomic-design-s
 import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import styled from "styled-components";
 import { useFormik } from "formik";
-import { doc, updateDoc } from "firebase/firestore";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import imageCompression from "browser-image-compression";
+import { async } from "@firebase/util";
 import { ModelsData } from "../data/Models";
 import { createModel } from "../util/setModels";
 import { db } from "../firebase";
@@ -76,47 +77,94 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
   const formik = useFormik({
     initialValues: {
       title: "",
+      imageURL: null,
+      modelURL: null
     },
     // validationSchema,
     validateOnChange: true,
     validateOnBlur: true,
   });
 
-  const [uploadingImage, setUploadingImage] = useState(null);
-  const [uploadedImage, setUploadedImage] = useState(null);
-  const [uploadImageHover, setUploadImageHover] = useState(false);
 
-  async function handleUploadModel(event) {
-    const imageFile = event.target.files[0];
+
+  const handleImageUpload = (event) => {
+    formik.setFieldValue("imageURL", event.target.files[0]);
+  }
+
+  const handleModelUpload = (event) => {
+    formik.setFieldValue("modelURL", event.target.files[0]);
+  }
+
+  const handleUploadImageToFirestore = async (docId) => {
     const options = {
       maxSizeMB: 0.03,
       maxWidthOrHeight: 700,
       useWebWorker: true,
     };
-    try {
-      setUploadingImage(true);
-      const compressedFile = await imageCompression(imageFile, options);
+    // const img = new Blob(formik.values.imageURL)
+    const img = new File([formik.values.imageURL], "img.png", {
+      type: "image/jpeg",
+      lastModified: Date.now()
+    });
 
-      const storage = getStorage();
-      const storageRef = ref(
-        storage,
-        `ThreeD_models/images/${compressedFile.name}`
-      );
-      const ThreeDmodelsRef = doc(
-        db,
-        `ThreeDmodels/${"id"}`
-      );
+    const compressedFile = await imageCompression(img, options);
+    const storage = getStorage();
+    const storageRef = ref(storage, `threeD_models/${docId}/image/img.png`);
+    await uploadBytes(storageRef, compressedFile).then((snapshot) => {
+      console.log("Uploaded a file!");
+    });
+  }
 
-      await uploadBytes(storageRef, compressedFile).then((snapshot) => {
-        console.log("Uploaded a file!");
-      });
-      const logoURL = await getDownloadURL(storageRef);
-      setUploadedImage(logoURL);
-      await updateDoc(ThreeDmodelsRef, { logoURL });
-      setUploadingImage(false);
-    } catch (error) {
-      console.log(error);
+  const handleSubmit = async (event) => {
+
+
+    // First create document -> add the title -> upload image and add the url to the document and then upload the model and add to the document
+
+    console.log(formik?.values.imageURL)
+    console.log(formik?.values.modelURL)
+
+    // create new firestore document with an id
+
+    const data = {
+      title: formik?.values.title
     }
+
+
+    await addDoc(collection(db, "threeD_models"), data).then((docId) => {
+
+      console.log("added title to", docId.id)
+      handleUploadImageToFirestore(docId.id)
+
+    })
+
+
+
+
+
+
+    // try {
+    //   const compressedFile = await imageCompression(imageFile, options);
+
+    //   const storage = getStorage();
+    //   const storageRef = ref(
+    //     storage,
+    //     `threeD_models/images/${compressedFile.name}`
+    //   );
+    //   const ThreeDmodelsRef = doc(
+    //     db,
+    //     `ThreeDmodels/${"id"}`
+    //   );
+
+    //   await uploadBytes(storageRef, compressedFile).then((snapshot) => {
+    //     console.log("Uploaded a file!");
+    //   });
+    //   const logoURL = await getDownloadURL(storageRef);
+    //   setUploadedImage(logoURL);
+    //   await updateDoc(ThreeDmodelsRef, { logoURL });
+    //   setUploadingImage(false);
+    // } catch (error) {
+    //   console.log(error);
+    // }
   }
 
 
@@ -154,7 +202,12 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
 
   return (
     <Wrapper>
-      <ThreeDToolSwipeList data={models} handlePlaceModel={handlePlaceModel} swipedUp={swipedUp} setSwipedUp={setSwipedUp} formik={formik} grounds={Grounds} setMode={setMode} handleUploadModel={handleUploadModel} />
+      <ThreeDToolSwipeList data={models} handlePlaceModel={handlePlaceModel} swipedUp={swipedUp} setSwipedUp={setSwipedUp} formik={formik} grounds={Grounds} setMode={setMode}
+        handleImageUpload={handleImageUpload}
+        uploadedImage={formik?.values.imageURL && URL.createObjectURL(formik?.values.imageURL)}
+        uploadedModel={formik?.values.modelURL && URL.createObjectURL(formik?.values.modelURL)}
+        handleModelUpload={handleModelUpload}
+        handleSubmit={handleSubmit} />
     </Wrapper>
   );
 };

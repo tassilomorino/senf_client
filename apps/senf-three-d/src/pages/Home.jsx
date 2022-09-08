@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, memo } from "react";
 import styled from "styled-components";
 import { Box, Button, Map, isMobileCustom } from "senf-atomic-design-system"
 import { Threebox } from "threebox-plugin";
@@ -76,14 +76,15 @@ const Home = ({ setLoadingModel }) => {
   const formik = useFormik({
 
   })
-  const data = useMemo(() => {
+  useEffect(() => {
     fetchData().then((data) => {
       if (data.drawnData) {
         setDrawn(JSON.parse(data.drawnData))
       }
-      if (data.modelsData) {
+      if (data.modelsData && !window?.tb?.map?.world?.children) {
         data.modelsData.map(((model) => {
-          setImplementedModelsData(model)
+          setImplementedModelsData(model, setOpenContextPanel, setSwipedUp)
+          console.log(openContextPanel)
         }))
       }
     })
@@ -102,6 +103,9 @@ const Home = ({ setLoadingModel }) => {
       setSwipedUp(false)
     }
   }, [mode])
+
+
+
 
   return (
     <Wrapper>
@@ -137,4 +141,4 @@ const Home = ({ setLoadingModel }) => {
   );
 }
 
-export default Home;
+export default memo(Home);

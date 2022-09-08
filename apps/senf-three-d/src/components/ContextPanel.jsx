@@ -31,6 +31,7 @@ bottom:initial;
 
 const ContextPanel = ({ openContextPanel, setOpenContextPanel }) => {
 
+
     const [rotation, setRotation] = useState(0);
     const [scale, setScale] = useState(1);
 
@@ -46,15 +47,6 @@ const ContextPanel = ({ openContextPanel, setOpenContextPanel }) => {
         window.tb.map.repaint = true;
         console.log(window.tb.map.selectedObject)
     }
-
-    useEffect(() => {
-
-        if (window?.tb?.map?.selectedObject) {
-            setOpenContextPanel(true)
-        } else {
-            setOpenContextPanel(false)
-        }
-    }, [window?.tb?.map?.selectedObject])
 
 
 

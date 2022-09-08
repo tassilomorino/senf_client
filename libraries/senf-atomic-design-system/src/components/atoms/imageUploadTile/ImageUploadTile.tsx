@@ -37,14 +37,15 @@ const StyledIconWrapper = styled.div`
 `;
 
 
-const ImageUploadTile: FC<ImageUploadTileProps> = ({ photoURL, uploadingImage, handleImageUpload }) => {
+const ImageUploadTile: FC<ImageUploadTileProps> = ({ id, photoURL, uploadingImage, handleImageUpload }) => {
+  console.log(photoURL)
   const [hover, onHover] = useState(false);
 
   return <React.Fragment>
     <ImageWrapper
       onMouseEnter={() => onHover(true)}
       onMouseLeave={() => onHover(false)}
-      htmlFor="imageUploader"
+      htmlFor={id || "imageUploader"}
     >
 
       {uploadingImage && (
@@ -73,7 +74,7 @@ const ImageUploadTile: FC<ImageUploadTileProps> = ({ photoURL, uploadingImage, h
       type="file"
       onChange={(event) => handleImageUpload(event)}
       style={{ display: "none" }}
-      id="imageUploader"
+      id={id || "imageUploader"}
     />
   </React.Fragment>;
 };

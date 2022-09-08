@@ -38,7 +38,6 @@ import DrawMapbox from "./utils/DrawMapbox";
 import CrosswalkPattern from "../../../assets/other/crosswalkPattern.png";
 import BikeLanePattern from "../../../assets/other/bikeLanePattern.png";
 import useIdeaPin from "./hooks/useIdeaPin";
-import useModelsLabels from "./hooks/useModelsLabels";
 
 const CrosswalkPatternImg = new Image(32, 64);
 CrosswalkPatternImg.src = CrosswalkPattern;
@@ -272,11 +271,10 @@ const Map: FC<MapProps> = ({
   const [mapMoved, setMapMoved] = useState(false);
   const [container, setContainer] = useState(null);
 
-  const [modelsLabelsContainer, setModelsLabelsContainer] = useState(null);
 
 
 
-  const [selectedFeature, setSelectedFeature] = useState(null);
+  // const [selectedFeature, setSelectedFeature] = useState(null);
 
 
   const initialFly = useInitialFly();
@@ -370,62 +368,68 @@ const Map: FC<MapProps> = ({
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (statefulMap && statefulDrawMapbox) {
+    if (statefulMap && statefulDrawMapbox && drawType) {
       statefulMap.on("click", (e) => {
-        let drawFeatureID = "";
         const drawFeatureAtPoint = statefulDrawMapbox.getFeatureIdsAt(e.point);
-        if (drawFeatureAtPoint) {
-          drawFeatureID = drawFeatureAtPoint.length ? drawFeatureAtPoint[0] : "";
-
-
-          setSelectedFeature(drawFeatureID)
+        const result = drawFeatureAtPoint.filter(element => {
+          return element !== undefined;
+        });
+        const drawFeatureID = result.length ? result[0] : "";
+        if (drawFeatureID) {
+          setDrawFeatureID(drawFeatureID)
+          statefulDrawMapbox.setFeatureProperty(
+            drawFeatureID,
+            "drawType",
+            drawType
+          );
           // statefulDrawMapbox.set(drawFeatureID, "drawType", drawType);
           // const feat = statefulDrawMapbox.get(drawFeatureID);
           // statefulDrawMapbox.add(feat);
         }
-
-
       });
     }
 
-  }, [statefulMap, statefulDrawMapbox])
+  }, [statefulMap, statefulDrawMapbox, drawType])
+
+  useEffect(() => {
+    if (statefulMap) {
+      statefulMap.on("draw.selectionchange", (e) => {
+        const localDrawFeatureId = e?.features[0]?.id
+        if (localDrawFeatureId) {
+          console.log(localDrawFeatureId)
+          setDrawFeatureID(localDrawFeatureId)
+        }
+      });
+    }
+  }, [statefulMap, statefulDrawMapbox,])
 
 
   useEffect(() => {
-
-    if (statefulMap && mapType?.mode === "draw") {
-      if (drawType === "lawn") {
-        draw(statefulMap, statefulDrawMapbox, setStatefulDrawMapbox, setDrawFeatureID);
-        statefulDrawMapbox?.changeMode("draw_polygon");
-
-      } else if (drawType === "bikeLane") {
-
-        draw(statefulMap, statefulDrawMapbox, setStatefulDrawMapbox, setDrawFeatureID);
-        statefulDrawMapbox?.changeMode("draw_line_string");
-      }
-      else if (drawType === "crosswalk") {
-        draw(statefulMap, statefulDrawMapbox, setStatefulDrawMapbox, setDrawFeatureID);
-        statefulDrawMapbox?.changeMode("draw_line_string");
-      }
-
+    if (drawType === "lawn") {
+      statefulDrawMapbox?.changeMode("draw_polygon");
+    } else if (drawType === "bikeLane") {
+      statefulDrawMapbox?.changeMode("draw_line_string");
     }
-  }, [statefulMap, statefulDrawMapbox, drawType]);
-
-  useEffect(() => {
-    if (statefulDrawMapbox && drawFeatureID && drawType) {
-
-
-      console.log(drawFeatureID)
-      statefulDrawMapbox.setFeatureProperty(
-        drawFeatureID,
-        "drawType",
-        drawType
-      );
-      // statefulDrawMapbox.set(drawFeatureID, "drawType", drawType);
-      // const feat = statefulDrawMapbox.get(drawFeatureID);
-      // statefulDrawMapbox.add(feat);
+    else if (drawType === "crosswalk") {
+      statefulDrawMapbox?.changeMode("draw_line_string");
     }
-  }, [statefulDrawMapbox, drawFeatureID, drawType])
+  }, [drawType]);
+
+  // useEffect(() => {
+  //   if (statefulDrawMapbox && drawFeatureID && drawType) {
+  //     statefulDrawMapbox.setFeatureProperty(
+  //       drawFeatureID,
+  //       "drawType",
+  //       drawType
+  //     );
+  //     handleSaveDrawn(statefulDrawMapbox.getAll());
+
+  //     console.log("setFeatureProperty", drawFeatureID)
+  //     // statefulDrawMapbox.set(drawFeatureID, "drawType", drawType);
+  //     // const feat = statefulDrawMapbox.get(drawFeatureID);
+  //     // statefulDrawMapbox.add(feat);
+  //   }
+  // }, [statefulDrawMapbox, drawFeatureID, drawType])
 
 
   // useEffect(() => {
@@ -535,14 +539,7 @@ const Map: FC<MapProps> = ({
   }, [ideaData]);
 
 
-  useEffect(() => {
-    console.log(window?.map?.tb?.world?.children)
 
-    if (window?.map?.tb?.world?.children) {
-      console.log(window.map.tb.world.children)
-      useModelsLabels(statefulMap, modelsLabelsContainer, [50, 6.7]);
-    }
-  }, [window?.map?.tb?.world?.children]);
 
   // useEffect(() => {
   //   // FLY TO IDEA
@@ -621,7 +618,7 @@ const Map: FC<MapProps> = ({
         </Box>
       )}
 
-      {selectedFeature && (
+      {drawFeatureID && (
         <Box
           position="fixed"
           bottom="10px"
@@ -633,11 +630,11 @@ const Map: FC<MapProps> = ({
           <Button
             text="Delete"
             onClick={() => {
-              statefulDrawMapbox.delete(selectedFeature);
+              statefulDrawMapbox.delete(drawFeatureID);
               statefulDrawMapbox.changeMode("simple_select");
               handleSaveDrawn(statefulDrawMapbox.getAll());
               setMode(null)
-              setSelectedFeature(null)
+              // setSelectedFeature(null)
               setSwipedUp(false)
               setDrawFeatureID(null)
             }}
@@ -648,9 +645,9 @@ const Map: FC<MapProps> = ({
             // loading={}
             onClick={() => {
               statefulDrawMapbox.changeMode("simple_select");
-              handleSaveDrawn(statefulDrawMapbox.getAll());
               setMode(null)
-              setSelectedFeature(null)
+              handleSaveDrawn(statefulDrawMapbox.getAll());
+              // setSelectedFeature(null)
               setSwipedUp(false)
               setDrawFeatureID(null)
 
@@ -684,7 +681,6 @@ const Map: FC<MapProps> = ({
 
 
 
-      <MarkerPin visible={true} ref={setModelsLabelsContainer}><IdeaPin transform="translateY(-12px)" color={ideaMarkerColor} /></MarkerPin>
 
 
 

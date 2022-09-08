@@ -4,8 +4,8 @@ import MapboxDraw from "@mapbox/mapbox-gl-draw";
 
 const useDraw = () => {
   return (map, statefulDrawMapbox, setStatefulDrawMapbox, setDrawFeatureID) => {
-    let drawFeatureID = "";
-    let newDrawFeature = false;
+    // let drawFeatureID = "";
+    // let newDrawFeature = false;
 
     // if (!statefulDrawMapbox) {
     //   map.addControl(DrawMapBox);
@@ -64,25 +64,15 @@ const useDraw = () => {
         // if another drawFeature is not found - reset drawFeatureID
         drawFeatureID = drawFeatureAtPoint.length ? drawFeatureAtPoint[0] : "";
 
-        if (drawFeatureID) {
-          setDrawFeatureID(drawFeatureID);
-        }
+        // if (drawFeatureID) {
+        //   setDrawFeatureID(drawFeatureID);
+        // } else {
+        //   setDrawFeatureID(null);
+        // }
       }
 
       newDrawFeature = false;
     });
-
-    // map.on("draw.create", (e) => {
-    //   newDrawFeature = true;
-    //   const drawFeatureID = e.features[0].id;
-
-    //   console.log(e);
-
-    //   // DrawMapBox.setFeatureProperty(drawFeatureID, "portColor", "red");
-    //   // DrawMapBox.set(drawFeatureID, "portColor", "red");
-    //   // const feat = DrawMapBox.get(drawFeatureID);
-    //   // DrawMapBox.add(feat);
-    // });
   };
 };
 

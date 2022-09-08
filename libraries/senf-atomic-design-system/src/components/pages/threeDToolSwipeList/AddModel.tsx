@@ -5,11 +5,17 @@ import Button from '../../atoms/buttons/Button'
 import ImageUploadTile from '../../atoms/imageUploadTile/ImageUploadTile'
 import Input from '../../atoms/inputs/Input'
 
-const AddModel = ({ formik, uploadedImage,
+const AddModel = ({
+    formik,
+    uploadedImage,
     handleImageUpload,
-    uploadingImage,
+    uploadedModel,
+    handleModelUpload,
     handleSubmit,
-    handleUploadModel }) => {
+
+}) => {
+    console.log(uploadedImage)
+    console.log(uploadedModel)
     const { t } = useTranslation()
     const [page, setPage] = React.useState(0)
     return (
@@ -26,21 +32,23 @@ const AddModel = ({ formik, uploadedImage,
             />
             <Box gap="20px">
                 <ImageUploadTile
+                    id="imageURL"
                     photoURL={uploadedImage}
-                    uploadingImage={uploadingImage}
                     handleImageUpload={handleImageUpload}
                 />
                 <ImageUploadTile
-                    photoURL={uploadedImage}
-                    uploadingImage={uploadingImage}
-                    handleImageUpload={handleImageUpload}
+                    id="modelURL"
+                    photoURL={uploadedModel}
+                    handleImageUpload={handleModelUpload}
                 />
+
+
             </Box>
 
 
             <Button
                 text="add model"
-                onClick={handleUploadModel}
+                onClick={handleSubmit}
                 disabled={!formik?.isValid}
 
             />

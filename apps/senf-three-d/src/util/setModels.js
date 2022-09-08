@@ -4,8 +4,9 @@ function makeTooltipInteractive(model, setOpenContextPanel, setSwipedUp) {
 
     // if selected
     if (selected) {
-      const selectedObject = e.detail; //
-      console.log(selectedObject);
+      const selectedObject = e.detail;
+      setOpenContextPanel(true);
+      setSwipedUp(false);
       window.map.flyTo({
         center: selectedObject.coordinates,
         zoom: 20,
@@ -14,14 +15,13 @@ function makeTooltipInteractive(model, setOpenContextPanel, setSwipedUp) {
         // zoom: selectedObject.zoom,
         // pitch: 70,
       });
-      setOpenContextPanel(true);
-      setSwipedUp(false);
     } else {
       model.setCoords([
         window.map.transform.center.lng,
         window.map.transform.center.lat,
         0,
       ]);
+
       setOpenContextPanel(false);
     }
     window.tb.update();
@@ -37,6 +37,7 @@ const createLabel = (id, content) => {
   ele.style.padding = "0.5rem";
   ele.style.backgroundColor = "white";
   ele.style.borderRadius = "8px";
+  ele.style.transform = "translateY(-100%)";
   return ele;
 };
 
@@ -83,6 +84,8 @@ export const createModel = (
 
         window.tb.map.selectedObject = newModel;
         window.tb.map.selectedObject.selected = true;
+        setOpenContextPanel(true);
+
         window.map.flyTo({
           center: newModel.coordinates,
           zoom: 20,
@@ -103,7 +106,6 @@ export const setImplementedModelsData = (
   setOpenContextPanel,
   setSwipedUp
 ) => {
-  console.log(model);
   window.map.addLayer({
     id: model.id,
     type: "custom",
@@ -124,6 +126,7 @@ export const setImplementedModelsData = (
         if (model.labelText) {
           newModel.addLabel(createLabel(model.id, model.labelText), true);
         }
+
         makeTooltipInteractive(newModel, setOpenContextPanel, setSwipedUp);
         newModel = newModel.setCoords([
           model.coordinates[0],

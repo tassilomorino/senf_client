@@ -66,7 +66,6 @@ const Search: FC = ({ handlePlaceModel }) => {
             imgURL: "https://firebasestorage.googleapis.com/v0/b/senf-dev.appspot.com/o/threeD_models%2F7WQUZg6V6IJlzA3Jrs30%2Fthumbnail%2FIcon_Normal%20Effect%20Kopie%2013.png?alt=media&token=23340cfd-c9f0-4575-ae65-010ed1ff3ef9",
             modelPath: "https://firebasestorage.googleapis.com/v0/b/senf-dev.appspot.com/o/threeD_models%2F7WQUZg6V6IJlzA3Jrs30%2Fmodel%2Fbar.fbx?alt=media&token=14e81885-9279-45ec-8a23-7388f0292140",
         }];
-        console.log(data)
         return <List
             listType="grid"
             CardType={ObjectCard}
@@ -83,8 +82,6 @@ const Search: FC = ({ handlePlaceModel }) => {
     const Results = connectStateResults(({ searchState }) =>
 
         searchState && searchState.query ? (
-            console.log('searchState', searchState),
-
             <CustomHits
                 hitComponent={Hit}
                 searchQuery={searchState.query}
@@ -127,16 +124,14 @@ const Search: FC = ({ handlePlaceModel }) => {
 
     const SearchBox = ({ currentRefinement, refine }) => {
         return (
-            <form noValidate action="" role="search">
-                <Input
-                    type="search"
-                    id="livesearchInput"
-                    value={currentRefinement} // if i put something else here like searchText variable nothing is working as expected
-                    onChange={(event) => changeSearchText(event, refine)}
-                    placeholder={'Search'}
-                    ref={inputRef} // ref seems ok like this
-                />
-            </form>
+            <Input
+                type="search"
+                name="livesearchInput"
+                value={currentRefinement} // if i put something else here like searchText variable nothing is working as expected
+                onChange={(event) => changeSearchText(event, refine)}
+                placeholder={'Search'}
+                refProp={inputRef}
+            />
         );
     };
 
