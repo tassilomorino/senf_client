@@ -4,12 +4,8 @@ import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import setColorByTopic from "../../data/setColorByTopic";
 import { db } from "../../firebase";
 import {
-  SET_MY_SCREAMS,
-  SET_MY_ORGANIZATIONS,
   OPEN_ACCOUNT,
   CLOSE_ACCOUNT,
-  LOADING_MYSCREAMS_DATA,
-  LOADING_MYORGANIZATIONS_DATA,
   SET_PROFILE_PAGE,
   RESET_PROFILE_PAGE,
 } from "../types";
@@ -21,7 +17,6 @@ export const openAccountFunc = () => async (dispatch) => {
 };
 
 export const getMyScreams = (userId, profilePage) => async (dispatch) => {
-  // dispatch({ type: LOADING_MYSCREAMS_DATA });
   const screams = [];
   const screamsRef = collection(db, "screams");
   const q = query(
@@ -35,11 +30,6 @@ export const getMyScreams = (userId, profilePage) => async (dispatch) => {
       dispatch({
         type: SET_PROFILE_PAGE,
         payload: { screams },
-      });
-    } else {
-      dispatch({
-        type: SET_MY_SCREAMS,
-        payload: screams,
       });
     }
   } else {
@@ -57,16 +47,10 @@ export const getMyScreams = (userId, profilePage) => async (dispatch) => {
         type: SET_PROFILE_PAGE,
         payload: { screams },
       });
-    } else {
-      dispatch({
-        type: SET_MY_SCREAMS,
-        payload: screams,
-      });
     }
   }
 };
 export const getMyOrganizations = (userId, profilePage) => async (dispatch) => {
-  // dispatch({ type: LOADING_MYORGANIZATIONS_DATA });
   const organizations = [];
   const organizationsRef = collection(db, "organizations");
   const q = query(organizationsRef, where("userIds", "array-contains", userId));
@@ -76,11 +60,6 @@ export const getMyOrganizations = (userId, profilePage) => async (dispatch) => {
       dispatch({
         type: SET_PROFILE_PAGE,
         payload: { organizations },
-      });
-    } else {
-      dispatch({
-        type: SET_MY_ORGANIZATIONS,
-        payload: organizations,
       });
     }
   } else {
@@ -95,25 +74,11 @@ export const getMyOrganizations = (userId, profilePage) => async (dispatch) => {
         type: SET_PROFILE_PAGE,
         payload: { organizations },
       });
-    } else {
-      dispatch({
-        type: SET_MY_ORGANIZATIONS,
-        payload: organizations,
-      });
     }
   }
 };
 
 export const closeAccountFunc = () => async (dispatch) => {
-  dispatch({
-    type: SET_MY_SCREAMS,
-    payload: null,
-  });
-  dispatch({
-    type: SET_MY_ORGANIZATIONS,
-    payload: null,
-  });
-
   dispatch({
     type: RESET_PROFILE_PAGE,
     payload: { profilePageData: {} },

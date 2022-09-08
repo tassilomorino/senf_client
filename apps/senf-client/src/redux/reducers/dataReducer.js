@@ -22,7 +22,6 @@ import {
   STOP_LOADING_DATA,
   DELETE_SCREAM,
   SET_COMMENTS,
-  SET_COMMENT,
   DELETE_COMMENT,
   POST_SCREAM,
   EDIT_SCREAM,
@@ -92,8 +91,6 @@ const initialState = {
   screams: [],
   scream: {},
   project: { screams: [] },
-  comment: {},
-  like: {},
   loading: true,
   loadingProjects: true,
   loadingOrganizations: true,
@@ -286,11 +283,6 @@ export default function (state = initialState, action) {
           ...state.scream,
           comments: action.payload,
         },
-      };
-    case SET_COMMENT:
-      return {
-        ...state,
-        comment: action.payload,
       };
 
     case POST_SCREAM:
