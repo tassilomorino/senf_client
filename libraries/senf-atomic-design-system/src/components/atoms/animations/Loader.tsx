@@ -2,7 +2,7 @@
 
 import React, { FC, useRef, useEffect } from "react";
 import styled from "styled-components";
-import lottie from 'lottie-web/build/player/lottie_svg.min.js'
+import lottie from 'lottie-web/build/player/lottie_light.min.js'
 import { LoaderProps } from "./Loader.types";
 import DotLoader from "../../../assets/lottieFiles/dotLoader.json";
 
