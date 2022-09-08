@@ -117,8 +117,6 @@ const Home = ({ setLoadingModel }) => {
         // restart={restart}
         setOpenSaveModal={setOpenSaveModal}
       /> */}
-
-
       <ModelsList setLoadingModel={setLoadingModel} setSwipedUp={setSwipedUp} swipedUp={swipedUp} setOpenContextPanel={setOpenContextPanel} setMode={setMode} />
       <ContextPanel openContextPanel={openContextPanel} setOpenContextPanel={setOpenContextPanel} />
 
