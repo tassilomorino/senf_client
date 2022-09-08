@@ -31,7 +31,6 @@ import MapFilter from "./MapFilter";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 import IdeaPin from "../../../assets/icons/IdeaPin";
 import theme from "../../../styles/theme";
-import useDraw from "./hooks/useDraw";
 
 import DrawMapbox from "./utils/DrawMapbox";
 
@@ -287,7 +286,6 @@ const Map: FC<MapProps> = ({
 
   const hover = useHover();
   const clickMarkers = useClickMarkers();
-  const draw = useDraw();
 
   const [drawFeatureID, setDrawFeatureID] = useState(null)
 
