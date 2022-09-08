@@ -345,7 +345,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
             }
             Content={
               <Box gap="5px" flexDirection="column">
-                {user?.userId === userId || user?.isSuperAdmin === true ? (
+                {user?.userId === userId || user?.isSuperAdmin === true || user?.isAdmin === true ? (
                   <React.Fragment>
                     <ModalButton
                       variant={"tertiary"}
