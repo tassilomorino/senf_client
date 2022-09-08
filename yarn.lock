@@ -24328,9 +24328,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"senf-3d@workspace:apps/senf-3d":
+"senf-3D@workspace:apps/senf-3D":
   version: 0.0.0-use.local
-  resolution: "senf-3d@workspace:apps/senf-3d"
+  resolution: "senf-3D@workspace:apps/senf-3D"
   dependencies:
     "@testing-library/jest-dom": ^5.16.4
     "@testing-library/react": ^13.3.0
