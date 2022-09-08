@@ -100,7 +100,7 @@ const initialState = {
   loadingOrganization: false,
   loadingProjectRoom: false,
   profilePage: {
-    profilePageData: { screams: [] },
+    profilePageData: {},
   },
   cookie_settings: "",
   mapLoaded: false,

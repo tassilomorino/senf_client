@@ -116,7 +116,7 @@ export const closeAccountFunc = () => async (dispatch) => {
 
   dispatch({
     type: RESET_PROFILE_PAGE,
-    payload: { profilePageData: { screams: [] } },
+    payload: { profilePageData: {} },
   });
 
   dispatch({
