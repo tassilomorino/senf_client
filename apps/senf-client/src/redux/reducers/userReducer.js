@@ -7,24 +7,14 @@ import {
   LOADING_USER,
   LIKE_SCREAM,
   UNLIKE_SCREAM,
-  SET_MY_SCREAMS,
   SUBMIT_MY_COMMENT,
   DELETE_MY_COMMENT,
-  SET_MY_ORGANIZATIONS,
-  LOADING_MYORGANIZATIONS_DATA,
-  LOADING_MYSCREAMS_DATA,
-  EDIT_SCREAM,
-  DELETE_SCREAM,
   // MARK_NOTIFICATIONS_READ
 } from "../types";
 
 const initialState = {
   authenticated: false,
   loading: false,
-  loadingMyOrganizations: false,
-  loadingMyScreams: false,
-  myScreams: null,
-  myOrganizations: null,
   likes: [],
   comments: [],
   notifications: [],
@@ -61,15 +51,6 @@ export default function (state = initialState, action) {
             screamId: action.payload.screamId,
           },
         ],
-        myScreams: state?.myScreams
-          ? [
-              ...state.myScreams.map((scream) =>
-                scream.screamId === action.payload.screamId
-                  ? { ...scream, likeCount: scream.likeCount + 1 }
-                  : scream
-              ),
-            ]
-          : null,
       };
     case UNLIKE_SCREAM:
       return {
@@ -77,61 +58,8 @@ export default function (state = initialState, action) {
         likes: state.likes.filter(
           (like) => like.screamId !== action.payload.screamId
         ),
-        myScreams: state?.myScreams
-          ? [
-              ...state.myScreams.map((scream) =>
-                scream.screamId === action.payload.screamId
-                  ? { ...scream, likeCount: scream.likeCount - 1 }
-                  : scream
-              ),
-            ]
-          : null,
-      };
-    case EDIT_SCREAM:
-      return {
-        ...state,
-        myScreams: state?.myScreams
-          ? [
-              ...state.myScreams.map((scream) =>
-                scream.screamId === action.payload.screamId
-                  ? { ...scream, ...action.payload }
-                  : scream
-              ),
-            ]
-          : null,
-      };
-    case DELETE_SCREAM:
-      return {
-        ...state,
-        myScreams: state?.myScreams
-          ? state.myScreams.filter(
-              (scream) => scream.screamId !== action.payload
-            )
-          : null,
       };
 
-    case LOADING_MYSCREAMS_DATA:
-      return {
-        ...state,
-        loadingMyScreams: true,
-      };
-    case LOADING_MYORGANIZATIONS_DATA:
-      return {
-        ...state,
-        loadingMyOrganizations: true,
-      };
-    case SET_MY_SCREAMS:
-      return {
-        ...state,
-        myScreams: action.payload,
-        loadingMyScreams: false,
-      };
-    case SET_MY_ORGANIZATIONS:
-      return {
-        ...state,
-        myOrganizations: action.payload,
-        loadingMyOrganizations: false,
-      };
     case SUBMIT_MY_COMMENT:
       return {
         ...state,

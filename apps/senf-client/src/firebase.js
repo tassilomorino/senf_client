@@ -16,7 +16,7 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
-const performance = getPerformance(firebaseApp);
+// const performance = getPerformance(firebaseApp);
 
 export default firebaseApp;
 export { auth, db };

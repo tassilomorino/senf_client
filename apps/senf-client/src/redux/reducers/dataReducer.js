@@ -22,7 +22,6 @@ import {
   STOP_LOADING_DATA,
   DELETE_SCREAM,
   SET_COMMENTS,
-  SET_COMMENT,
   DELETE_COMMENT,
   POST_SCREAM,
   EDIT_SCREAM,
@@ -91,9 +90,7 @@ const initialState = {
   organizations: [],
   screams: [],
   scream: {},
-  project: {},
-  comment: {},
-  like: {},
+  project: { screams: [] },
   loading: true,
   loadingProjects: true,
   loadingOrganizations: true,
@@ -287,11 +284,6 @@ export default function (state = initialState, action) {
           comments: action.payload,
         },
       };
-    case SET_COMMENT:
-      return {
-        ...state,
-        comment: action.payload,
-      };
 
     case POST_SCREAM:
       return {
@@ -307,46 +299,58 @@ export default function (state = initialState, action) {
       const indexInDataScreams = state.screams?.findIndex(
         (scream) => scream.screamId === action.payload.screamId
       );
-
       const indexInDataProjectScreams = state.project?.screams?.findIndex(
         (scream) => scream.screamId === action.payload.screamId
       );
-      if (
-        state.scream &&
-        state.screams &&
-        indexInDataScream !== -1 &&
-        indexInDataScreams !== -1
-      ) {
-        const screamsCopy = [...state.screams];
+      const indexInProfilePage =
+        state.profilePage.profilePageData?.screams?.findIndex(
+          (scream) => scream.screamId === action.payload.screamId
+        );
+
+      const screamsCopy = [...state.screams];
+      if (indexInDataScreams !== -1) {
         screamsCopy[indexInDataScreams] = {
           ...screamsCopy[indexInDataScreams],
           ...action.payload,
         };
-        if (state.project?.screams && indexInDataProjectScreams !== -1) {
-          // if the scream is in the projectroom, update it
-          const projectScreamsCopy = [...state.project.screams];
-          projectScreamsCopy[indexInDataProjectScreams] = {
-            ...projectScreamsCopy[indexInDataProjectScreams],
-            ...action.payload,
-          };
-          return {
-            ...state,
-            screams: screamsCopy,
-            scream: { ...state.scream, ...action.payload },
-            project: {
-              ...state.project,
-              screams: projectScreamsCopy,
-            },
-          };
-        }
-        // if the scream is not in the projectroom, update it
-        return {
-          ...state,
-          screams: screamsCopy,
-          scream: { ...state.scream, ...action.payload },
+      }
+
+      const projectScreamsCopy = state.project?.screams
+        ? [...state.project.screams]
+        : [];
+      if (indexInDataProjectScreams !== -1) {
+        projectScreamsCopy[indexInDataProjectScreams] = {
+          ...projectScreamsCopy[indexInDataProjectScreams],
+          ...action.payload,
         };
       }
-      return { ...state };
+
+      const profilePageScreamsCopy = state.profilePage.profilePageData?.screams
+        ? [...state.profilePage.profilePageData.screams]
+        : [];
+
+      if (indexInProfilePage !== -1) {
+        profilePageScreamsCopy[indexInProfilePage] = {
+          ...profilePageScreamsCopy[indexInProfilePage],
+          ...action.payload,
+        };
+      }
+      return {
+        ...state,
+        screams: screamsCopy,
+        scream: { ...state.scream, ...action.payload },
+        project: {
+          ...state.project,
+          screams: projectScreamsCopy,
+        },
+        profilePage: {
+          ...state.profilePage,
+          profilePageData: {
+            ...state.profilePage.profilePageData,
+            screams: profilePageScreamsCopy,
+          },
+        },
+      };
 
     case SUBMIT_COMMENT:
       return {

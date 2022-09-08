@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useRef } from "react";
 import styled from "styled-components";
-import lottie from "lottie-web";
+import lottie from 'lottie-web/build/player/lottie_light.min.js'
 import waveBeige from "../../../assets/lottieFiles/senf-wave-beige.json";
 import waveSenf from "../../../assets/lottieFiles/senf-wave-senf.json";
 

@@ -103,8 +103,8 @@ const CommentCard: FC<CommentCardProps> = ({ data, ...props }) => {
         </Box>
         <Box
           alignItems="flex-start"
-          flexDirection="row"
-          margin="8px 0px 8px 0px"
+          flexDirection="column"
+          margin="8px 0px 8px 45px"
         >
           <Typography variant="bodyBg"> {title}</Typography>
         </Box>
