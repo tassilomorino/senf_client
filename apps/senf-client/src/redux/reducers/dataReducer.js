@@ -304,14 +304,14 @@ export default function (state = initialState, action) {
       const indexInDataScream =
         state.scream.screamId === action.payload.screamId;
 
-      const indexInDataScreams = state.screams.findIndex(
+      const indexInDataScreams = state.screams?.findIndex(
         (scream) => scream.screamId === action.payload.screamId
       );
-      const indexInDataProjectScreams = state.project.screams.findIndex(
+      const indexInDataProjectScreams = state.project?.screams?.findIndex(
         (scream) => scream.screamId === action.payload.screamId
       );
       const indexInProfilePage =
-        state.profilePage.profilePageData.screams.findIndex(
+        state.profilePage.profilePageData?.screams?.findIndex(
           (scream) => scream.screamId === action.payload.screamId
         );
 
@@ -323,7 +323,9 @@ export default function (state = initialState, action) {
         };
       }
 
-      const projectScreamsCopy = [...state.project.screams];
+      const projectScreamsCopy = state.project?.screams
+        ? [...state.project.screams]
+        : [];
       if (indexInDataProjectScreams !== -1) {
         projectScreamsCopy[indexInDataProjectScreams] = {
           ...projectScreamsCopy[indexInDataProjectScreams],
@@ -331,16 +333,16 @@ export default function (state = initialState, action) {
         };
       }
 
-      const profilePageScreamsCopy = [
-        ...state.profilePage.profilePageData.screams,
-      ];
+      const profilePageScreamsCopy = state.profilePage.profilePageData?.screams
+        ? [...state.profilePage.profilePageData.screams]
+        : [];
+
       if (indexInProfilePage !== -1) {
         profilePageScreamsCopy[indexInProfilePage] = {
           ...profilePageScreamsCopy[indexInProfilePage],
           ...action.payload,
         };
       }
-
       return {
         ...state,
         screams: screamsCopy,
