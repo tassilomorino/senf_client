@@ -4,7 +4,7 @@ import React, { useState, useEffect, memo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   IdeaDetailPage as IdeaDetailPageComponent,
-  ModalContext
+  useModals
 } from "senf-atomic-design-system";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
@@ -27,7 +27,7 @@ const IdeaDetailPage = ({
 }) => {
 
   const data = useSelector((state) => state.data.scream);
-  const { handleModal } = React.useContext(ModalContext) || {};
+  const { closeModal } = useModals()
 
   const { screamId, lat, long, userId } = useSelector(
     (state) => state.data.scream
@@ -116,7 +116,7 @@ const IdeaDetailPage = ({
     editIdea: (values) => {
       dispatch(
         editScreamFunc(values)
-      ).then(() => { handleModal("pop") })
+      ).then(() => { closeModal() })
     },
     deleteIdea: async (screamId) => {
       return dispatch(

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ReactDOM from "react-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Box, MainLoader, Map, InfoPageMainApp, Cookiebanner, ModalContext } from "senf-atomic-design-system";
+import { Box, MainLoader, Map, InfoPageMainApp, Cookiebanner, useModals } from "senf-atomic-design-system";
 import Cookies from "universal-cookie";
 import { setMapBounds } from "../redux/actions/mapActions";
 import { openProjectRoomFunc } from "../redux/actions/projectActions";
@@ -30,7 +30,7 @@ const Main = React.lazy(() =>
 const Home = () => {
   const dispatch = useDispatch();
 
-  const { handleModal } = React.useContext(ModalContext) || {};
+  const { openModal, closeModal } = useModals()
   const [showUI, setShowUI] = useState(false)
   const [statefulMap, setStatefulMap] = useState(null);
   const [initialMapBounds, setInitialMapBounds] = useState(null);
@@ -177,7 +177,7 @@ const Home = () => {
     } else {
 
       setTimeout(() => {
-        handleModal("push", <InfoPageMainApp />, { swipe: !!isMobileCustom, size: "xl", height: isMobileCustom && window.innerHeight + 83, padding: 0, onBeforeOpen: () => setShowUI(false), onBeforeClose: () => setShowUI(true) })
+        openModal(<InfoPageMainApp />, { swipe: !!isMobileCustom, size: "xl", height: isMobileCustom && window.innerHeight + 83, padding: 0, beforeOpen: () => setShowUI(false), beforeClose: () => setShowUI(true) })
         setOpenCookiebanner(true);
       }, 2800);
 

@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { ProfilePage as ProfilePageComponent, ModalContext } from "senf-atomic-design-system";
+import { ProfilePage as ProfilePageComponent, useModals } from "senf-atomic-design-system";
 import { closeAccountFunc } from "../redux/actions/accountActions";
 
 import { handleTopicSelectorRedux } from "../redux/actions/UiActions";
@@ -28,7 +28,7 @@ const ProfilePage = ({
 }) => {
 
   const { t } = useTranslation();
-  const { handleModal } = React.useContext(ModalContext) || {};
+  const { openModal, closeModal } = useModals()
 
   const loadingMyScreams = useSelector((state) => state.data.loadingMyScreams);
 
@@ -88,8 +88,8 @@ const ProfilePage = ({
 
   const handleDeleteAccount = () => {
     dispatch(deleteUserFromDb(user.userId)).then(() => {
-      handleModal("pop")
-      handleModal("pop")
+      closeModal()
+      closeModal()
     }).catch(err => {
       throw new Error(err, ' error in deleteUserFromDb in ProfilePage.jsx')
     })
@@ -109,7 +109,7 @@ const ProfilePage = ({
         handleButtonLike={handleButtonLike}
         handleButtonComment={handleButtonComment}
         handleButtonClose={handleClose}
-        handleSetAuthEditOpen={() => handleModal("push", <Auth authAddDetails={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+        handleSetAuthEditOpen={() => openModal(<Auth authAddDetails={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
 
         }
         handleLogout={handleLogout}

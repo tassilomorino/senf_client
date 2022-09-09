@@ -14,7 +14,7 @@ const Wrapper = styled.div`
 const PostScreamRules = () => {
   const { t } = useTranslation();
   const handleSetUnderstoodRules = () => {
-    // handlemodal("pop")
+    // closeModal()
     // setIntoAccout? setInto Localstorage? setCookies? (accepted_rules:true)
   }
   return (

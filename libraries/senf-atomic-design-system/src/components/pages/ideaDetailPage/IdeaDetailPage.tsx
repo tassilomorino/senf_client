@@ -577,7 +577,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
               {t("IdeaDetailPage.commentHeadline")}
             </Typography>
             {!user?.authenticated ? (
-              <Button onClick={() => handleModal("push", <Auth authEditOpen={false} />, { swipe: !!isMobile, size: "md", height: isMobile && window.innerHeight + 83, padding: 0 })
+              <Button onClick={() => openModal(<Auth authEditOpen={false} />, { swipe: !!isMobile, size: "md", height: isMobile && window.innerHeight + 83, padding: 0 })
               }>{t("login")}</Button>
             ) : (
               <Box gap="8px" width="100%">

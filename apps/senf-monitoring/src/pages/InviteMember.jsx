@@ -8,7 +8,7 @@ import {
   Box,
   Dropdown,
   Input,
-  ModalContext
+  useModals
 } from "senf-atomic-design-system";
 import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
@@ -19,7 +19,7 @@ import { OptionsDivisions } from "../data/OptionsDivisions";
 
 const InviteMember = ({ getPendingMembers }) => {
 
-  const { handleModal, modalStack } = React.useContext(ModalContext) || {};
+  const { closeModal } = useModals()
 
 
   const { t } = useTranslation();
@@ -70,7 +70,7 @@ const InviteMember = ({ getPendingMembers }) => {
 
         // getMembers();
 
-        handleModal("pop")
+        closeModal()
       })
 
 
@@ -161,7 +161,7 @@ const InviteMember = ({ getPendingMembers }) => {
       console.log("Queued email for delivery!")
 
       getPendingMembers();
-      handleModal("pop")
+      closeModal()
     })
   };
 
