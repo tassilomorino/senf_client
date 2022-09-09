@@ -17,6 +17,7 @@ const Template: Story<ChartsProps> = (args) => <SimpleBarChart {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
+  direction: 'horizontal',
   data: [
     {
       name: 'Neustadt-Nord',

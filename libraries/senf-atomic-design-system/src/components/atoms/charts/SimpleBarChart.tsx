@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { FC, memo } from 'react';
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { ChartsProps } from './Charts.types';
 
@@ -22,8 +22,8 @@ const SimpleBarChart: FC<ChartsProps> = ({ data, direction = "horizontal", stack
                     <CartesianGrid strokeDasharray="3 3" />
                     <Tooltip />
                     {/* <Legend /> */}
-                    <Bar dataKey="rad" stackId={stacked && "a"} fill="#8884d8" />
-                    <Bar dataKey="verkehr" stackId={stacked && "a"} fill="#82ca9d" />
+                    <Bar dataKey="rad" stackId={stacked ? "a" : undefined} fill="#8884d8" />
+                    <Bar dataKey="verkehr" stackId={stacked ? "a" : undefined} fill="#82ca9d" />
                 </BarChart>
             </ResponsiveContainer>
         </div>
