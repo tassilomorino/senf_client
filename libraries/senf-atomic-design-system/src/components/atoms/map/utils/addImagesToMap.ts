@@ -1,3 +1,4 @@
+import DashPattern from "../../../../assets/other/dashPattern.png";
 import CrosswalkPattern from "../../../../assets/other/crosswalkPattern.png";
 import BikeLanePattern from "../../../../assets/other/bikeLanePattern.png";
 import BlackPattern from "../../../../assets/other/BlackPattern.png";
@@ -8,6 +9,9 @@ import PlanungsbürosMarker from "../../../../assets/markers/PlanungsbürosMarke
 import PolitikMarker from "../../../../assets/markers/PolitikMarker.png";
 import PresseMarker from "../../../../assets/markers/PresseMarker.png";
 import StadtverwaltungMarker from "../../../../assets/markers/StadtverwaltungMarker.png";
+
+const DashPatternImg = new Image(32, 64);
+DashPatternImg.src = DashPattern;
 
 const CrosswalkPatternImg = new Image(32, 64);
 CrosswalkPatternImg.src = CrosswalkPattern;
@@ -37,6 +41,7 @@ const PresseMarkerImg = new Image(207, 247);
 PresseMarkerImg.src = PresseMarker;
 
 export function addImagesToMap(map) {
+  map?.addImage("DashPattern", DashPatternImg);
   map?.addImage("CrosswalkPattern", CrosswalkPatternImg);
   map?.addImage("bikeLanePattern", BikeLanePatternImg);
   map?.addImage("BlackPattern", BlackPatternImg);

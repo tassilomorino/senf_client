@@ -316,7 +316,6 @@ const Map: FC<MapProps> = ({
     setStatefulMap(map);
     subscribeMap(map);
     navigationControl(map);
-
     addImagesToMap(map)
 
 
@@ -369,7 +368,13 @@ const Map: FC<MapProps> = ({
       }
 
       statefulMap.on("click", (e) => {
+        const feature = e.point;
+        // const featureIds = statefulDrawMapbox.add(feature);
+        console.log(feature);
+        console.log(statefulDrawMapbox, e)
+
         const drawFeatureAtPoint = statefulDrawMapbox.getFeatureIdsAt(e.point);
+
         const result = drawFeatureAtPoint.filter(element => {
           return element !== undefined;
         });
@@ -389,6 +394,11 @@ const Map: FC<MapProps> = ({
 
   useEffect(() => {
     if (statefulMap) {
+      if (drawType === "lawn") {
+        statefulDrawMapbox?.changeMode("draw_polygon");
+      } else if (drawType === "bikeLane" || drawType === "crosswalk") {
+        statefulDrawMapbox?.changeMode("draw_line_string");
+      }
       statefulMap.on("draw.selectionchange", (e) => {
         const drawFeatureId = e?.features[0]?.id
         if (drawFeatureId) {
@@ -455,59 +465,6 @@ const Map: FC<MapProps> = ({
     }
   }, [ideaData]);
 
-
-
-
-  // useEffect(() => {
-  //   // FLY TO IDEA
-  //   if (statefulMap && ideaData && openScream) {
-  //     setTimeout(() => {
-  //       statefulMap.fitBounds([
-  //         [ideaData.long - 0.001, ideaData.lat - 0.0015], // southwestern corner of the bounds
-  //         [ideaData.long + 0.0003, ideaData.lat + 0.0015], // northeastern corner of the bounds
-  //       ]);
-  //     }, 300);
-  //   }
-  // }, [statefulMap, ideaData, openScream]);
-
-  // const handleClickGeolocate = () => {
-  //   // geolocateControl(statefulMap);
-
-  //   navigator.geolocation.getCurrentPosition((position) => {
-  //     const userCoordinates = [
-  //       position.coords.longitude,
-  //       position.coords.latitude,
-  //     ];
-
-  //     statefulMap.addSource("user-coordinates", {
-  //       type: "geojson",
-  //       data: {
-  //         type: "Feature",
-  //         geometry: {
-  //           type: "Point",
-  //           coordinates: userCoordinates,
-  //         },
-  //       },
-  //     });
-  //     statefulMap.addLayer({
-  //       id: "user-coordinates",
-  //       source: "user-coordinates",
-  //       type: "circle",
-  //       paint: {
-  //         "circle-radius": 7,
-  //         "circle-color": "#4f86ec",
-  //         "circle-stroke-color": "#fff",
-  //         "circle-stroke-width": 2,
-  //       },
-  //     });
-  //     statefulMap.flyTo({
-  //       center: userCoordinates,
-  //       zoom: 16,
-  //     });
-  //   });
-  // };
-
-
   return (
     <React.Fragment>
       {!postIdeaOpen && ideasData && (
@@ -551,7 +508,6 @@ const Map: FC<MapProps> = ({
               statefulDrawMapbox.changeMode("simple_select");
               handleSaveDrawn(statefulDrawMapbox.getAll());
               setMode(null)
-              // setSelectedFeature(null)
               setSwipedUp(false)
               setDrawFeatureID(null)
             }}
@@ -559,12 +515,10 @@ const Map: FC<MapProps> = ({
           <Button
             variant="white"
             text={t("save")}
-            // loading={}
             onClick={() => {
               statefulDrawMapbox.changeMode("simple_select");
               setMode(null)
               handleSaveDrawn(statefulDrawMapbox.getAll());
-              // setSelectedFeature(null)
               setSwipedUp(false)
               setDrawFeatureID(null)
 
@@ -572,7 +526,6 @@ const Map: FC<MapProps> = ({
 
 
             }}
-          // disabled={!drawnPolygon}
           />
         </Box>
       )}
@@ -586,22 +539,9 @@ const Map: FC<MapProps> = ({
           height: "100%",
         }}
       >
-        {/* <Box position="fixed" top="400px" right="10px" zIndex={999}>
-        <Button icon={<Bulb />} onClsick={handleClickGeolocate} />
-      </Box> */}
-
         {children}
-
-
       </MapContainer>
       <MarkerPin visible={ideaData} ref={setContainer}><IdeaPin transform="translateY(-12px)" color={ideaMarkerColor} /></MarkerPin>
-
-
-
-
-
-
-
     </React.Fragment>
   );
 };
