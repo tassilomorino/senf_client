@@ -44,7 +44,7 @@ const createLabel = (id, content) => {
 export const createModel = (
   id,
   obj,
-  objFormat,
+  format,
   setOpenContextPanel,
   setSwipedUp,
   labelText
@@ -55,7 +55,7 @@ export const createModel = (
     renderingMode: "3d",
     onAdd(map, _gl) {
       const options = {
-        type: objFormat || "fbx",
+        type: format || "fbx",
         obj,
         scale: 1,
         units: "meters",
@@ -112,7 +112,7 @@ export const setImplementedModelsData = (
     renderingMode: "3d",
     onAdd(map, _gl) {
       const options = {
-        type: model.objFormat || "fbx",
+        type: model.format || "fbx",
         obj: model.obj,
         scale: 1,
         units: "meters",

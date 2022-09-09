@@ -38,7 +38,6 @@ const StyledIconWrapper = styled.div`
 
 
 const ImageUploadTile: FC<ImageUploadTileProps> = ({ id, photoURL, uploadingImage, handleImageUpload }) => {
-  console.log(photoURL)
   const [hover, onHover] = useState(false);
 
   return <React.Fragment>

@@ -14,8 +14,6 @@ const AddModel = ({
     handleSubmit,
 
 }) => {
-    console.log(uploadedImage)
-    console.log(uploadedModel)
     const { t } = useTranslation()
     const [page, setPage] = React.useState(0)
     return (
