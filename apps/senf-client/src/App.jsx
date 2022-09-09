@@ -150,6 +150,8 @@ const App = () => {
                 path="/projectRooms/:projectRoomId"
                 component={Home}
               />
+
+
               <Route
                 exact
                 path="/organizations/:organizationId"

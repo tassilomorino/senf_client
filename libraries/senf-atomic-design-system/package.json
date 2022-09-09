@@ -3,6 +3,7 @@
   "version": "0.0.31",
   "description": "An atomic-design-system-library for all Senf-apps ",
   "module": "./src/index.ts",
+  "sideEffects": false,
   "moduleComment": {
     "note": "change 'module' from './src/index.ts' to './dist/es.js' when publishing to npm "
   },
