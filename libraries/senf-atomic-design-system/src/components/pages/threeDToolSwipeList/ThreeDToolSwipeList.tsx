@@ -5,6 +5,10 @@ import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
+import {
+  InstantSearch,
+} from 'react-instantsearch-dom';
+import algoliasearch from 'algoliasearch/lite';
 import { ThreeDToolSwipeListProps } from "./ThreeDToolSwipeListProps.types";
 
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
@@ -14,14 +18,20 @@ import List from "../../molecules/list/List";
 import MenuSidebar from "../../organisms/menuSidebar/MenuSidebar";
 import ObjectCard from "../../molecules/cards/ObjectCard";
 import Input from "../../atoms/inputs/Input";
-import { Arrow, Plus, Search } from "../../../assets/icons";
+import { Arrow, Plus } from "../../../assets/icons";
+import Search from "./Search";
 import Box from "../../atoms/box/Box";
 import Button from "../../atoms/buttons/Button";
 import ModalButton from "../../molecules/modalStack/ModalButton";
 import ImageUploadTile from "../../atoms/imageUploadTile/ImageUploadTile";
 import Typography from "../../atoms/typography/Typography";
 import HorizontalSwiper from "../../organisms/horizontalSwiper/HorizontalSwiper";
+import Divider from "../../atoms/divider/Divider";
+import TextTransition from "../../atoms/animations/TextTransition";
+import AddModel from "./AddModel";
 
+
+const searchClient = algoliasearch("AERQKCMI5M", 'ae11cb36d2946300bd8860b2a23bc1ab');
 const DragWrapper = styled(animated.div)`
   z-index: ${({ zIndex }) => zIndex || 2};
   overscroll-behavior: contain;
@@ -66,34 +76,26 @@ const InnerWrapper = styled.div<OrganizationsOverviewProps>`
 const ContentWrapper = styled.div<OrganizationsOverviewProps>`
   overflow-y: scroll;
   pointer-events: all;
-  height: calc(100vh - 110px);
+  height: calc(100vh - 120px);
   width: 100%;
   z-index: 1;
   margin-left: 50%;
   transform: translateX(-50%);
   position: fixed;
+  margin-top:-10px;
+  padding-top:50px;
   top: ${({ swipedUp }) => swipedUp && "110px"};
 
   @media (min-width: 768px) {
-    height: calc(100% - 140px);
+    height: calc(100% - 150px);
+    padding-top:20px;
     width: 400px;
     position: relative;
     top: 0;
   }
 `;
 
-const RoundedButtonWrapper = styled.div`
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  z-index: 299;
-  transition: 0.5s;
 
-  @media (min-width: 768px) {
-    top: 20px;
-    right: 17px;
-  }
-`;
 export const Header = styled(animated.div)`
   position: sticky;
   display: flex;
@@ -143,10 +145,13 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
   formik,
   uploadedImage,
   handleImageUpload,
-  uploadingImage,
+  uploadedModel,
+  handleModelUpload,
+
   handleSubmit,
   grounds,
   setMode,
+
 }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom();
@@ -246,20 +251,31 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
           >
             {isMobile && <HandleBar />}
 
-            <Box margin="30px 10px" flexDirection="column" gap="10px">
-              <Typography variant="buttonBg" textAlign="center">Suche nach Objekten für deinen Entwurf</Typography>
+            <Box margin="30px 10px 0px 10px" flexDirection="column" gap="10px">
+              <Box margin="0px 10px" flexDirection="column">
 
-              <Input
+                <Box>
+                  <Typography variant="h3" textAlign="left" fontWeight={900}>Finde den richtigen</Typography>
+                  <TextTransition variant="h3" fontWeight={900} />
+                </Box>
+                <Typography variant="h3" textAlign="left" fontWeight={900}> für deinen Entwurf </Typography>
+
+              </Box>
+
+              {/* <Input
                 name="searchAddress"
                 type="search"
                 leadingIcon={showResults ? <Arrow transform="rotate(180deg)" /> : <Search />}
                 leadingIconClick={() => { setSearchTerm(""); setShowResults(false) }}
-                placeholder={"searchObjects"}
+                placeholder={"Suche"}
                 onChange={(event) => setSearchTerm(event?.target?.value)}
                 value={searchTerm}
                 onClick={() => setShowResults(true)
                 }
-              />
+              /> */}
+              <InstantSearch searchClient={searchClient} indexName="threeD_models">
+                <Search handlePlaceModel={handlePlaceModel} />
+              </InstantSearch>
             </Box>
 
           </Header>
@@ -277,10 +293,11 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
             ) :
               <React.Fragment>
 
-                <Box margin="40px 10px" gap="20px" flexDirection="column" overflow="hidden" height="260px">
+                <Divider margin="50px 80px" width="calc(100% - 160px)" height="2px" />
+                <Box margin="0px 10px" gap="20px" flexDirection="column" overflow="hidden" height="260px">
 
 
-                  <HorizontalSwiper data={grounds} handleButtonOpenCard={(item) => setMode({ mode: "draw", drawType: item.drawType, drawStyle: item.drawStyle })} />
+                  <HorizontalSwiper data={grounds} handleButtonOpenCard={(item) => setMode({ mode: "draw", drawType: item.drawType })} />
                   {/* <Box position="absolute" width="auto" marginTop="30px">
                     {grounds?.map((item, index) => (
                       <ObjectCard data={item} handleButtonOpenCard={() => setMode({ mode: "draw", drawType: item.drawType, drawStyle: item.drawStyle })} />
@@ -297,52 +314,26 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
                     swipe: isMobile && true,
 
                   }}>
-                    <Box flexDirection="column" gap="20px">
-                      <Input
-                        name="title"
-                        type="text"
-                        placeholder={t("add_title")}
-                        label={t("title")}
-                        onChange={formik?.handleChange}
-                        onBlur={formik?.handleBlur}
-                        value={formik?.values.title}
-                      />
-                      <Box gap="20px">
-                        <ImageUploadTile
-                          photoURL={uploadedImage}
-                          uploadingImage={uploadingImage}
-                          handleImageUpload={handleImageUpload}
-                        />
-                        <ImageUploadTile
-                          photoURL={uploadedImage}
-                          uploadingImage={uploadingImage}
-                          handleImageUpload={handleImageUpload}
-                        />
-                      </Box>
+                    <AddModel formik={formik}
+                      uploadedImage={uploadedImage}
+                      handleImageUpload={handleImageUpload}
+                      uploadedModel={uploadedModel}
+                      handleModelUpload={handleModelUpload}
+                      handleSubmit={handleSubmit}
 
-
-                      <Button
-                        text="add model"
-
-                        onClick={handleSubmit}
-                        disabled={!formik?.isValid}
-                      />
-                    </Box>
+                    />
                   </ModalButton>
                 </Box>
 
 
               </React.Fragment>
-
-
-
             }
 
 
           </ContentWrapper>
         </InnerWrapper>
       </DragWrapper>
-    </React.Fragment>
+    </React.Fragment >
   );
 };
 

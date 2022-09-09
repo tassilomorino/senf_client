@@ -97,7 +97,7 @@ const HorizontalSwiper: FC = ({ data, handleButtonOpenCard }) => {
 
     <Box alignItems="center" justifyContent="space-between" height="36px">
       <Box marginLeft="10px">
-        <Typography variant="buttonBg">Füge Bodenbeläge ein</Typography>
+        <Typography variant="h3">Wähle Bodenbeläge</Typography>
       </Box>
 
       <Box gap="8px" justifyContent="center">

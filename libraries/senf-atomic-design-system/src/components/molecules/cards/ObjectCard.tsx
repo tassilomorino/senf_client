@@ -28,7 +28,6 @@ const Wrapper = styled.div<ObjectCardProps>`
 
   @media (min-width: 768px) {
     transition: 0.3s;
-    margin: 16px 8px 0px 8px;
 
     &:hover {
       transform: scale(103%);
@@ -139,9 +138,7 @@ const Title = styled.div`
 // `;
 
 const ObjectCard: FC<ObjectCardProps> = ({ data, handleButtonOpenCard }) => {
-  console.log(data)
 
-  const { title, imgUrl, objectId } = data;
   return (
     <Wrapper
       onClick={() => handleButtonOpenCard(data)}
@@ -149,14 +146,14 @@ const ObjectCard: FC<ObjectCardProps> = ({ data, handleButtonOpenCard }) => {
       <LogoWrapper>
         <Thumbnail
           img={
-            imgUrl
+            data?.imgURL
             // ? img : placeHodlerImage && NoImage
           }
         />
       </LogoWrapper>
 
       <Title>
-        <Typography variant="bodyBg">{title}</Typography>
+        <Typography variant="bodyBg">{data?.title}</Typography>
       </Title>
     </Wrapper>
   );
