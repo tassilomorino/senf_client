@@ -50,7 +50,7 @@ const DetailSidebar: FC<DetailSidebarProps> = ({
           width="2px"
           margin="30px 16px 30px 80px"
           position="fixed"
-          zIndex={99}
+          zIndex={"99"}
         />
       )}
     </Wrapper>
