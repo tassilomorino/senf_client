@@ -34,7 +34,7 @@ const DashBoard = () => {
 
   const getSurveys = async () => {
     try {
-      const surveysRef = collection(db, "exampleUsers");
+      const surveysRef = collection(db, "surveys");
       const q = query(
         surveysRef,
         orderBy("createdAt", "desc")
@@ -45,7 +45,7 @@ const DashBoard = () => {
       surveysQuerySnapshot.forEach((doc) => {
         surveysData.push({
           ...doc.data(),
-          userId: doc.id,
+          surveyId: doc.id,
         });
       });
       setSurveys(surveysData);
@@ -54,9 +54,9 @@ const DashBoard = () => {
     }
   };
 
-  const handleDeleteSurvey = async (userId) => {
+  const handleDeleteSurvey = async (surveyId) => {
     try {
-      const docRef = doc(db, `exampleUsers/${userId}`);
+      const docRef = doc(db, `surveys/${surveyId}`);
       await deleteDoc(docRef).then(() => {
         getSurveys();
       });
@@ -71,7 +71,7 @@ const DashBoard = () => {
 
   useEffect(() => {
     setFilteredSurveys(
-      surveys.filter(member => Object.values(member).join(' ').toLowerCase().indexOf(searchTerm.toLowerCase()) > -1));
+      surveys.filter(survey => Object.values(survey).join(' ').toLowerCase().indexOf(searchTerm.toLowerCase()) > -1));
   }, [searchTerm, surveys]);
 
 
@@ -90,7 +90,7 @@ const DashBoard = () => {
             swipe: isMobile && true
 
           }}>
-            <CreateNewSurvey />
+            <CreateNewSurvey getSurveys={getSurveys} />
           </ModalButton>
         </Box>
         <Table
@@ -98,36 +98,49 @@ const DashBoard = () => {
           checkbox={"docId"}
           bulkEdit={<Icon icon="Search" />}
           columns={[
-            { key: "username", label: t('username') },
-            { key: "division", label: t('division') },
-            { key: "role", label: t('role') },
+            { key: "title", label: t('title') },
+            { key: "surveyType", label: t('surveyType') },
+            { key: "createdAt", label: t('createdAt') },
           ]}
         >
           {
             (row) => (
-              <div onClick={() => console.log("edit survey now")}>
+              <Box justifyContent="space-between" onClick={() => console.log("edit survey now")}>
                 <Box gap="16px">
-                  {!isMobile &&
+                  {/* {!isMobile &&
                     <ImagePlaceholder
                       width="64px"
                       height="64px"
                       img="#"
                     />
-                  }
+                  } */}
                   <Box flexDirection="column" justifyContent="center" alignItems="flex-start">
-                    <Typography variant="h3">{row.handle}</Typography>
-                    {row?.email && <Typography variant="bodySm">{row.email}</Typography>}
+                    <Typography variant="h3">{row.title}</Typography>
+                    {/* {row?.email && <Typography variant="bodySm">{row.email}</Typography>} */}
                   </Box>
                 </Box>
-                <Typography variant="bodySm">{row.division}</Typography>
-                <Typography variant="bodySm">{row.role}</Typography>
-                <Button
-                  variant="white"
-                  text="Delete"
-                  onClick={() => handleDeleteSurvey(row.userId)}
+                <Typography variant="bodySm">{row.surveyType}</Typography>
+                <Typography variant="bodySm">{row.createdAt}</Typography>
 
-                />
-              </div>
+                <Box gap="8px" marginLeft="0">
+                  <Button
+                    variant="white"
+                    text="open TakeSurvey-Link"
+                    onClick={() => alert("go to TakeSurvey-Link")}
+                  />
+                  <Button
+                    variant="white"
+                    text="edit"
+                    onClick={() => alert("go to edit survey")}
+                  />
+                  <Button
+                    variant="white"
+                    text="Delete"
+                    onClick={() => handleDeleteSurvey(row.surveyId)}
+
+                  />
+                </Box>
+              </Box>
             )
           }
         </Table>

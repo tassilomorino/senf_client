@@ -16,7 +16,7 @@ import { OptionsSurveys } from "../data/OptionsSurveys";
 
 
 
-const CreateNewSurvey = () => {
+const CreateNewSurvey = ({ getSurveys }) => {
   const { handleModal } = React.useContext(ModalContext) || {};
   const { t } = useTranslation();
   const validationSchema = yup.object({
@@ -28,7 +28,7 @@ const CreateNewSurvey = () => {
   const formik = useFormik({
     initialValues: {
       title: "",
-      surveyType: "",
+      surveyType: null,
     },
     validationSchema,
     validateOnMount: true,
@@ -43,8 +43,9 @@ const CreateNewSurvey = () => {
         surveyType: formik.values.surveyType,
         createdAt: new Date().toISOString(),
       }).then((doc) => {
+        getSurveys();
+
         const surveyId = doc.id;
-        // getMembers();
         handleModal("pop")
       })
 
@@ -74,7 +75,7 @@ const CreateNewSurvey = () => {
         label={t("surveyType")}
         initialValue={t("select_surveyType")}
         listItems={OptionsSurveys()}
-        onChange={formik?.handleChange}
+        onChange={(event) => formik?.setFieldValue("surveyType", event?.target.value)}
       />
 
       <Button
