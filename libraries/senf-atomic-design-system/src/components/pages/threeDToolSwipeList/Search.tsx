@@ -80,7 +80,6 @@ const Search: FC = ({ handlePlaceModel }) => {
 
 
     const Results = connectStateResults(({ searchState }) =>
-
         searchState && searchState.query ? (
             <CustomHits
                 hitComponent={Hit}
