@@ -1,30 +1,6 @@
 import { useEffect, useState } from "react";
-import VereineMarker from "../../../../assets/markers/VereineMarker.png";
-import InitiativenMarker from "../../../../assets/markers/InitiativenMarker.png";
-import PlanungsbürosMarker from "../../../../assets/markers/PlanungsbürosMarker.png";
-import PolitikMarker from "../../../../assets/markers/PolitikMarker.png";
-import PresseMarker from "../../../../assets/markers/PresseMarker.png";
-import StadtverwaltungMarker from "../../../../assets/markers/StadtverwaltungMarker.png";
 
 const sourceId = "multiple-points";
-
-const VereineMarkerImg = new Image(207, 247);
-VereineMarkerImg.src = VereineMarker;
-
-const InitiativenMarkerImg = new Image(207, 247);
-InitiativenMarkerImg.src = InitiativenMarker;
-
-const PlanungsbürosMarkerImg = new Image(207, 247);
-PlanungsbürosMarkerImg.src = PlanungsbürosMarker;
-
-const PolitikMarkerImg = new Image(207, 247);
-PolitikMarkerImg.src = PolitikMarker;
-
-const StadtverwaltungMarkerImg = new Image(207, 247);
-StadtverwaltungMarkerImg.src = StadtverwaltungMarker;
-
-const PresseMarkerImg = new Image(207, 247);
-PresseMarkerImg.src = PresseMarker;
 
 const useProjectroomsMarkers = () => {
   const [source, setSource] = useState(null);
@@ -50,13 +26,6 @@ const useProjectroomsMarkers = () => {
     // After the map style has loaded on the page,
     // add a source layer and default styling for a single point
     map.on("load", () => {
-      map.addImage("VereineMarker", VereineMarkerImg);
-      map.addImage("InitiativenMarker", InitiativenMarkerImg);
-      map.addImage("PlanungsbürosMarker", PlanungsbürosMarkerImg);
-      map.addImage("PolitikMarker", PolitikMarkerImg);
-      map.addImage("PresseMarker", PresseMarkerImg);
-      map.addImage("StadtverwaltungMarker", StadtverwaltungMarkerImg);
-
       let s = map.getSource(sourceId);
       if (!s) {
         map.addSource(sourceId, {

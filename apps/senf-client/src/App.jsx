@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { Provider } from "react-redux";
 import {
@@ -31,12 +31,12 @@ import { getProjects } from "./redux/actions/projectActions";
 import { getScreams } from "./redux/actions/screamActions";
 
 // Pages
-import impressum from "./components/legal/impressum";
-import datenschutz from "./components/legal/datenschutz";
-import agb from "./components/legal/agb";
-import cookieConfigurator from "./components/legal/cookieConfigurator";
+import Imprint from "./components/legal/Imprint";
+import DataPrivacy from "./components/legal/DataPrivacy";
+import TermsAndCondition from "./components/legal/TermsAndCondition";
+import CookiesConfigurator from "./components/legal/CookiesConfigurator";
 
-import blank from "./pages/Blank";
+import Blank from "./pages/Blank";
 
 // import { setViewport } from "./util/helpers-map-animations";
 
@@ -135,45 +135,45 @@ const App = () => {
         <ModalProvider>
           <Router>
             <RotateDevice />
-            <Switch>
-              <Route exact path="/projectRooms" component={Home} />
-              <Route exact path="/organizations" component={Home} />
-              <Route exact path="/idea/:screamId" component={Home} />
-              <Route exact path="/profile/:profileId" component={Home} />
+            <Routes>
+              <Route exact path="/projectRooms" element={<Home />} />
+              <Route exact path="/organizations" element={<Home />} />
+              <Route exact path="/idea/:screamId" element={<Home />} />
+              <Route exact path="/profile/:profileId" element={<Home />} />
               <Route
                 exact
                 path="/projectRooms/:projectRoomId/:screamId"
-                component={Home}
+                element={<Home />}
               />
               <Route
                 exact
                 path="/projectRooms/:projectRoomId"
-                component={Home}
+                element={<Home />}
               />
 
 
               <Route
                 exact
                 path="/organizations/:organizationId"
-                component={Home}
+                element={<Home />}
               />
 
 
-              <Route exact path="/verify" component={Home} />
-              <Route exact path="/:unknownPathId" component={Home} />
-              <Route exact path="/" component={Home} />
-              <Route path="*" component={Home} />
+              <Route exact path="/verify" element={<Home />} />
+              <Route exact path="/:unknownPathId" element={<Home />} />
+              <Route exact path="/" element={<Home />} />
+              <Route path="*" element={<Home />} />
 
-              <Route exact path="/datenschutz" component={datenschutz} />
-              <Route exact path="/agb" component={agb} />
+              <Route exact path="/datenschutz" element={<DataPrivacy />} />
+              <Route exact path="/agb" element={<TermsAndCondition />} />
               <Route
                 exact
                 path="/cookieConfigurator"
-                component={cookieConfigurator}
+                element={<CookiesConfigurator />}
               />
-              <Route exact path="/impressum" component={impressum} />
-              <Route exact path="/blank" component={blank} />
-            </Switch>
+              <Route exact path="/impressum" element={<Imprint />} />
+              <Route exact path="/blank" element={<Blank />} />
+            </Routes>
           </Router >
         </ModalProvider >
       </Provider >

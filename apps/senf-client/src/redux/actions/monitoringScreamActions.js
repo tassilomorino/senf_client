@@ -37,7 +37,7 @@ export const getAllFullScreams = () => async (dispatch) => {
   });
 };
 
-//Open an idea on the monitoring board
+// Open an idea on the monitoring board
 export const openMonitoringScream = (screamId) => async (dispatch) => {
   const db = firebase.firestore();
   const ref = await db.collection("screams").doc(screamId).get();
@@ -52,14 +52,8 @@ export const openMonitoringScream = (screamId) => async (dispatch) => {
     dispatch({ type: CLOSE_MONITORING_SCREAM });
 
     // const newPath = `/${screamId}`;
-    // window.history.pushState(null, null, newPath);
     dispatch({ type: SET_SCREAM, payload: scream });
     dispatch({ type: OPEN_MONITORING_SCREAM });
     dispatch({ type: STOP_LOADING_UI });
   }
-};
-
-export const closeMonitoringScream = () => (dispatch) => {
-  dispatch({ type: CLOSE_MONITORING_SCREAM });
-  window.history.pushState(null, null, "/monitoring");
 };

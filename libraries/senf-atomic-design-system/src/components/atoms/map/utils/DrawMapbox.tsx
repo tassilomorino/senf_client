@@ -129,7 +129,9 @@ const DrawMapbox = new MapboxDraw({
                     ["get", "user_drawType"], // get the property
                     "crosswalk",
                     "CrosswalkPattern",
-                    "BikeLanePattern",
+                    "bikeLane",
+                    "bikeLanePattern",
+                    "BlackPattern",
                 ],
                 "line-width": [
                     "match",
@@ -179,7 +181,9 @@ const DrawMapbox = new MapboxDraw({
                     ["get", "user_drawType"], // get the property
                     "crosswalk",
                     "CrosswalkPattern",
-                    "BikeLanePattern",
+                    "bikeLane",
+                    "bikeLanePattern",
+                    "BlackPattern",
                 ],
                 "line-width": [
                     "match",
@@ -388,7 +392,7 @@ const DrawMapbox = new MapboxDraw({
     ],
     // Set mapbox-gl-draw to draw by default.
     // The user does not have to click the polygon control button first.
-    defaultMode: "draw_line_string",
+    defaultMode: "simple_select",
 });
 
 export default DrawMapbox

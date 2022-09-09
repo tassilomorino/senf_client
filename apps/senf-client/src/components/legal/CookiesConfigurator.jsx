@@ -48,7 +48,7 @@ const HeaderSwitchWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const CookieConfigurator = ({ classes }) => {
+const CookiesConfigurator = ({ classes }) => {
   const [necessary, setNecessary] = useState(true);
   const [location, setLocation] = useState(false);
 
@@ -168,4 +168,4 @@ const CookieConfigurator = ({ classes }) => {
   );
 };
 
-export default CookieConfigurator;
+export default CookiesConfigurator;
