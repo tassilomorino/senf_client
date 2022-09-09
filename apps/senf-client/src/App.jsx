@@ -12,6 +12,11 @@ import {
   RotateDevice
 
 } from "senf-atomic-design-system";
+
+import {
+  AuthProvider,
+} from "senf-shared";
+
 import { ThemeProvider } from "styled-components";
 import { auth } from "./firebase";
 
@@ -131,47 +136,49 @@ const App = () => {
 
 
       <Provider store={store}>
-        <ModalProvider>
-          <Router>
-            <RotateDevice />
-            <Switch>
-              <Route exact path="/projectRooms" component={Home} />
-              <Route exact path="/organizations" component={Home} />
-              <Route exact path="/idea/:screamId" component={Home} />
-              <Route
-                exact
-                path="/projectRooms/:projectRoomId/:screamId"
-                component={Home}
-              />
-              <Route
-                exact
-                path="/projectRooms/:projectRoomId"
-                component={Home}
-              />
-              <Route
-                exact
-                path="/organizations/:organizationId"
-                component={Home}
-              />
+        <AuthProvider>
+          <ModalProvider>
+            <Router>
+              <RotateDevice />
+              <Switch>
+                <Route exact path="/projectRooms" component={Home} />
+                <Route exact path="/organizations" component={Home} />
+                <Route exact path="/idea/:screamId" component={Home} />
+                <Route
+                  exact
+                  path="/projectRooms/:projectRoomId/:screamId"
+                  component={Home}
+                />
+                <Route
+                  exact
+                  path="/projectRooms/:projectRoomId"
+                  component={Home}
+                />
+                <Route
+                  exact
+                  path="/organizations/:organizationId"
+                  component={Home}
+                />
 
 
-              <Route exact path="/verify" component={Home} />
-              <Route exact path="/:unknownPathId" component={Home} />
-              <Route exact path="/" component={Home} />
-              <Route path="*" component={Home} />
+                <Route exact path="/verify" component={Home} />
+                <Route exact path="/:unknownPathId" component={Home} />
+                <Route exact path="/" component={Home} />
+                <Route path="*" component={Home} />
 
-              <Route exact path="/datenschutz" component={datenschutz} />
-              <Route exact path="/agb" component={agb} />
-              <Route
-                exact
-                path="/cookieConfigurator"
-                component={cookieConfigurator}
-              />
-              <Route exact path="/impressum" component={impressum} />
-              <Route exact path="/blank" component={blank} />
-            </Switch>
-          </Router >
-        </ModalProvider >
+                <Route exact path="/datenschutz" component={datenschutz} />
+                <Route exact path="/agb" component={agb} />
+                <Route
+                  exact
+                  path="/cookieConfigurator"
+                  component={cookieConfigurator}
+                />
+                <Route exact path="/impressum" component={impressum} />
+                <Route exact path="/blank" component={blank} />
+              </Switch>
+            </Router >
+          </ModalProvider>
+        </AuthProvider>
       </Provider >
 
     </ThemeProvider >

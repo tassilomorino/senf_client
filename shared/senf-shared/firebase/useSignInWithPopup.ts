@@ -5,7 +5,9 @@ import {
   CustomParameters,
   FacebookAuthProvider,
   GoogleAuthProvider,
+  OAuthProvider,
   signInWithPopup,
+  signInWithEmailAndPassword as firebaseSignInWithEmailAndPassword,
   UserCredential,
 } from "firebase/auth";
 import { doc, Firestore, getDoc } from "firebase/firestore";
@@ -42,8 +44,10 @@ const useSignInWithPopup = (
         console.log("created user in database");
       }
       setLoggedInUser(result);
+      return user
     } catch (err) {
       setError(err as AuthError);
+      return 'error'
     } finally {
       setLoading(false);
     }
@@ -96,4 +100,77 @@ export const useSignInWithGoogle = (
     return provider;
   };
   return useSignInWithPopup(auth, db, createGoogleAuthProvider);
+};
+
+
+
+
+
+
+
+
+// 
+
+type Provider = "apple" | "facebook" | "google";
+
+const signInWithEmailAndPassword = async (
+  email: string,
+  password: string,
+  auth: Auth,
+) => {
+  try {
+    const user = await firebaseSignInWithEmailAndPassword(auth, email, password);
+    if (user.user.emailVerified) return user;
+    throw new Error("auth/user-not-verified" as AuthError["code"]);
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+const signIn = async (
+  providerName: Provider,
+  auth: Auth,
+  db: Firestore,
+  scopes?: string[],
+  customOAuthParameters?: CustomParameters,
+) => {
+  let provider: AuthProvider;
+  switch (providerName) {
+    case "apple": provider = new OAuthProvider('apple.com'); break;
+    case "facebook": provider = new FacebookAuthProvider(); break;
+    case "google": provider = new GoogleAuthProvider(); break;
+    default: throw Error("provider not found");
+  }
+  if (scopes) scopes.forEach((scope) => provider.addScope(scope));
+  if (customOAuthParameters) provider.setCustomParameters(customOAuthParameters);
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const { user } = result;
+    const docRef = doc(db, "users", user.uid);
+    const docSnapshot = await getDoc(docRef);
+    if (!docSnapshot.exists() && user) {
+      await createUserFromProviderInDatabase(db, user);
+      console.log("created user in database");
+    } else {
+      console.log("user existed");
+    }
+    return user
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
+
+export const useSignIn = (
+  auth: Auth,
+  db: Firestore,
+): SignInWithPopupHook => {
+  return {
+    provider: (
+      provider: Provider,
+      scopes?: string[],
+      customOAuthParameters?: CustomParameters,
+    ) => signIn(provider, auth, db, scopes, customOAuthParameters),
+    email: (email: string, password: string) => signInWithEmailAndPassword(email, password, auth)
+  }
 };

@@ -1,6 +1,5 @@
 import {
   Auth,
-  AuthError,
   createUserWithEmailAndPassword as firebaseCreateUserWithEmailAndPassword,
   sendEmailVerification,
   UserCredential,
@@ -24,13 +23,8 @@ export const useCreateUserWithEmailAndPassword = (
   db: Firestore,
   options?: CreateUserOptions
 ): EmailAndPasswordActionHook => {
-  const [error, setError] = useState({ code: "", message: "" });
-  const [registeredUser, setRegisteredUser] = useState<UserCredential>();
-  const [loading, setLoading] = useState<boolean>(false);
 
-  const createUserWithEmailAndPassword = async (formikRegisterStore) => {
-    setLoading(true);
-    setError(undefined);
+  return async (formikRegisterStore) => {
     try {
       const usersRef = collection(db, "users");
       const q = query(
@@ -38,41 +32,25 @@ export const useCreateUserWithEmailAndPassword = (
         where("handle", "==", formikRegisterStore.values.handle)
       );
       const usernameQuerySnapshot = await getDocs(q);
-      if (!usernameQuerySnapshot.empty) {
-        // username already exists
-
-        setLoading(false);
-        setError({ ...error, code: "auth/username-exists" });
-        return;
-      }
+      // username already exists
+      if (!usernameQuerySnapshot.empty) throw new Error({ code: "auth/username-exists" })
 
       const userCredential = await firebaseCreateUserWithEmailAndPassword(
         auth,
         formikRegisterStore.values.email,
         formikRegisterStore.values.password
       );
-      if (userCredential.user) {
-        await createUserInDatabase(db, userCredential, formikRegisterStore);
-        setRegisteredUser(userCredential);
+      if (!userCredential.user) throw new Error('no user')
+
+      await createUserInDatabase(db, userCredential, formikRegisterStore);
+
+      if (options?.sendEmailVerification) {
+        await sendEmailVerification(userCredential.user, options.emailVerificationOptions);
       }
-      if (options && options.sendEmailVerification && userCredential.user) {
-        await sendEmailVerification(
-          userCredential.user,
-          options.emailVerificationOptions
-        );
-      }
-    } catch (error) {
-      setError(error as AuthError);
-    } finally {
-      setLoading(false);
+      console.log(userCredential)
+      return userCredential
+    } catch (err) {
+      throw new Error(err)
     }
   };
-
-  const resArray: EmailAndPasswordActionHook = [
-    createUserWithEmailAndPassword,
-    registeredUser,
-    loading,
-    error,
-  ];
-  return useMemo<EmailAndPasswordActionHook>(() => resArray, resArray);
 };

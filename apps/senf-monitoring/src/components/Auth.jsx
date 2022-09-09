@@ -1,15 +1,21 @@
 /** @format */
 
-import React, { useState, Fragment, useRef, useEffect, memo } from "react";
+import React, {
+  useState,
+  Fragment,
+  // useRef,
+  useEffect,
+  memo
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
   getAuth,
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-  signInWithPopup,
-  FacebookAuthProvider,
-  GoogleAuthProvider,
+  // createUserWithEmailAndPassword,
+  // sendEmailVerification,
+  // signInWithPopup,
+  // FacebookAuthProvider,
+  // GoogleAuthProvider,
 } from "firebase/auth";
 
 import {

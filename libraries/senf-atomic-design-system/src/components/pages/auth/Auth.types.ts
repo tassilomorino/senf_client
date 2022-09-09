@@ -1,6 +1,8 @@
 /** @format */
 
 import { MouseEventHandler } from "react";
+
+type Provider = "apple" | "facebook" | "google";
 export interface AuthProps {
   handleClose?: (x: boolean) => void;
   handleSubmitRegister?: any;
@@ -16,4 +18,13 @@ export interface AuthProps {
   socialLoginVerified?: boolean;
   emailRegistrationSubmitted?: boolean;
   emailVerified?: boolean;
+  authHandler?: {
+    signIn: {
+      [Provider]?: () => Promise;
+    },
+    loading: {
+      [Provider]?: boolean;
+    },
+    signOut: () => Promise;
+  };
 }

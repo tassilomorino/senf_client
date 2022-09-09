@@ -1,22 +1,29 @@
 import "./App.css";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import { AuthProvider } from "./context/auth";
-import PrivateRoute from "./components/PrivateRoute";
-import Home from "./pages/Home";
-import Profile from "./pages/Profile";
+
+import {
+  AuthProvider,
+} from "senf-shared";
 
 import { initReactI18next } from "react-i18next";
-import translationEN from "./util/translations/english.json";
-import translationDE from "./util/translations/german.json";
-import AuthPage from "./pages/AuthPage";
 import {
   theme,
+  ModalProvider,
   GlobalStyle,
   LayerWhiteFirstDefault,
   i18n,
 } from "senf-atomic-design-system";
 import styled, { ThemeProvider } from "styled-components";
+import PrivateRoute from "./components/PrivateRoute";
+import Home from "./pages/Home";
+import Profile from "./pages/Profile";
+
+
+import translationEN from "./util/translations/english.json";
+import translationDE from "./util/translations/german.json";
+import AuthPage from "./pages/AuthPage";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -46,38 +53,40 @@ const InnerWrapper = styled.div`
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Wrapper>
-        <InnerWrapper>
-          {import.meta.env.VITE_NO_CRAWL && (
-            /* only for senf-workspace-test.netlify.app */
-            <Helmet>
-              <meta name="robots" content="noindex" />
-            </Helmet>
-          )}
-          <GlobalStyle />
-          <AuthProvider>
-            <Router>
-              <Routes>
-                <Route
-                  exact
-                  path="/register"
-                  element={<AuthPage variant="register" />}
-                />
+      <AuthProvider>
+        <ModalProvider>
+          <Wrapper>
+            <InnerWrapper>
+              {import.meta.env.VITE_NO_CRAWL && (
+                /* only for senf-workspace-test.netlify.app */
+                <Helmet>
+                  <meta name="robots" content="noindex" />
+                </Helmet>
+              )}
+              <GlobalStyle />
+              <Router>
+                <Routes>
+                  <Route
+                    exact
+                    path="/register"
+                    element={<AuthPage variant="register" />}
+                  />
 
-                <Route
-                  exact
-                  path="/login"
-                  element={<AuthPage variant="login" />}
-                />
-                <Route exact path="/" element={<PrivateRoute />}>
-                  <Route exact path="/profile" element={<Profile />} />
-                  <Route exact path="/" element={<Home />} />
-                </Route>
-              </Routes>
-            </Router>
-          </AuthProvider>
-        </InnerWrapper>
-      </Wrapper>
+                  <Route
+                    exact
+                    path="/login"
+                    element={<AuthPage variant="login" />}
+                  />
+                  <Route exact path="/" element={<PrivateRoute />}>
+                    <Route exact path="/profile" element={<Profile />} />
+                    <Route exact path="/" element={<Home />} />
+                  </Route>
+                </Routes>
+              </Router>
+            </InnerWrapper>
+          </Wrapper>
+        </ModalProvider>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

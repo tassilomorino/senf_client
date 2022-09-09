@@ -1,6 +1,5 @@
-import React, { useState, Fragment, useRef, useEffect, memo } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -10,7 +9,6 @@ import {
   GoogleAuthProvider,
   onIdTokenChanged,
   reload,
-
 } from "firebase/auth";
 
 import {
@@ -22,14 +20,13 @@ import {
   where,
   query,
   setDoc,
-
-
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import imageCompression from "browser-image-compression";
 
 import { useTranslation } from "react-i18next";
-import { SwipeModal, Auth as AuthComponent, ModalButton, useModals } from "senf-atomic-design-system";
+import { SwipeModal, Auth as AuthComponent, ModalButton, useModals, Button, Box, Input, Loader } from "senf-atomic-design-system";
+
 import {
   useSignInWithEmailAndPassword,
   useSignInWithGoogle,
@@ -38,7 +35,8 @@ import {
   useHandleSubmitEditDetails,
   generateErrorMessage,
   ifAllUserDetailsAreFilled,
-
+  useAuthContext,
+  AuthModal
 } from "senf-shared";
 
 import styled from "styled-components";
@@ -52,7 +50,6 @@ import { SET_AUTHENTICATED } from "../redux/types";
 
 
 
-
 const Section = styled.section`
   position: fixed;
   width: 100%;
@@ -62,9 +59,15 @@ const Section = styled.section`
   background-color: ${({ theme }) => theme.colors.beige.beige20};
 `;
 
-const AuthPage = ({ authAddDetails }) => {
+const Test = () => {
+  const [input, setInput] = useState("This is an example text, edit me!");
+  return <Box padding="20px" flexDirection="column" gap="10px"><Input value={input} onChange={(e) => setInput(e.target.value)} />
+    {input}
+  </Box>
+}
 
-  const { closeModal } = useModals();
+
+const AuthPage = ({ authAddDetails }) => {
 
   const [errorMessage, setErrorMessage] = useState({ code: "", message: "" });
   const [loading, setLoading] = useState(false);
@@ -72,42 +75,46 @@ const AuthPage = ({ authAddDetails }) => {
   const [page, setPage] = useState('');
 
 
+  const { user: currentUser, signOut } = useAuthContext();
+
+  const { openModal, setModal, closeModal } = useModals();
+
   const user = useSelector((state) => state.user);
   const reduxUser = useSelector((state) => state.user);
   const userIdInFirebase = getAuth().currentUser?.uid;
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const [
-    signInWithEmailAndPassword,
-    firebaseEmailPasswordSignInUser,
-    firebaseEmailPasswordSignInLoading,
-    firebaseEmailPasswordSignInError,
-  ] = useSignInWithEmailAndPassword(auth);
-  const [
-    signInWithGoogle,
-    firebaseGoogleUser,
-    firebaseGoogleUserLoading,
-    firebaseGoogleUserError,
-  ] = useSignInWithGoogle(auth, db);
-  const [
-    signInWithFacebook,
-    firebaseFacebookUser,
-    firebaseFacebookUserLoading,
-    firebaseFacebookUserError,
-  ] = useSignInWithFacebook(auth, db);
-  const sendVerification = {
-    sendEmailVerification: true,
-    emailVerificationOptions: {
-      url: "https://senf.koeln/verify",
-    },
-  };
-  const [
-    createUserWithEmailAndPassword,
-    firebaseUserEmailRegistrationInfo,
-    firebaseUserEmailRegistrationLoading,
-    firebaseUserEmailRegistrationError,
-  ] = useCreateUserWithEmailAndPassword(auth, db, sendVerification);
+  // const [
+  //   signInWithEmailAndPassword,
+  //   firebaseEmailPasswordSignInUser,
+  //   firebaseEmailPasswordSignInLoading,
+  //   firebaseEmailPasswordSignInError,
+  // ] = useSignInWithEmailAndPassword(auth);
+  // const [
+  //   signInWithGoogle,
+  //   firebaseGoogleUser,
+  //   firebaseGoogleUserLoading,
+  //   firebaseGoogleUserError,
+  // ] = useSignInWithGoogle(auth, db);
+  // const [
+  //   signInWithFacebook,
+  //   firebaseFacebookUser,
+  //   firebaseFacebookUserLoading,
+  //   firebaseFacebookUserError,
+  // // ] = useSignInWithFacebook(auth, db);
+  // const sendVerification = {
+  //   sendEmailVerification: true,
+  //   emailVerificationOptions: {
+  //     url: "https://senf.koeln/verify",
+  //   },
+  // };
+  // const [
+  //   createUserWithEmailAndPassword,
+  //   firebaseUserEmailRegistrationInfo,
+  //   firebaseUserEmailRegistrationLoading,
+  //   firebaseUserEmailRegistrationError,
+  // ] = useCreateUserWithEmailAndPassword(auth, db, sendVerification);
 
   const [
     handleSubmitEditDetails,
@@ -124,66 +131,67 @@ const AuthPage = ({ authAddDetails }) => {
   //   }
   // }, [authEditOpen]);
 
-  useEffect(() => {
-    // login with email and password
-    if (firebaseEmailPasswordSignInLoading) {
-      setLoading(true);
-    }
-    if (firebaseEmailPasswordSignInUser) {
-      setLoading(false);
-      setErrorMessage({ code: "", message: "" });
-      dispatch({ type: SET_AUTHENTICATED });
-      dispatch(getUserData(firebaseEmailPasswordSignInUser.user.uid));
-
-      closeModal()
-
-    }
-    if (firebaseEmailPasswordSignInError) {
-      setLoading(false);
-
-      setErrorMessage({
-        ...errorMessage,
-        code: firebaseEmailPasswordSignInError.code,
-        message: generateErrorMessage(firebaseEmailPasswordSignInError?.code),
-      });
-
-    }
-  }, [
-    dispatch,
-    firebaseEmailPasswordSignInLoading,
-    firebaseEmailPasswordSignInUser,
-    firebaseEmailPasswordSignInError,
-  ]);
-
-  useEffect(() => {
-    // registration with email and password
-    if (firebaseUserEmailRegistrationLoading) {
-      setLoading(true);
-    }
-
-    if (firebaseUserEmailRegistrationInfo) {
-      setLoading(false);
-      setErrorMessage({ code: "", message: "" });
-      setPage('authVerifyEmail')
-      window.history.pushState(null, null, "/verify");
-    }
+  // useEffect(() => {
+  //   // login with email and password
+  //   if (firebaseEmailPasswordSignInLoading) {
+  //     setLoading(true);
+  //   }
+  //   if (firebaseEmailPasswordSignInUser) {
+  //     setLoading(false);
+  //     setErrorMessage({ code: "", message: "" });
+  //     dispatch({ type: SET_AUTHENTICATED });
+  //     dispatch(getUserData(firebaseEmailPasswordSignInUser.user.uid));
 
 
+  //     closeModal()
 
-    if (firebaseUserEmailRegistrationError) {
-      setLoading(false);
-      setErrorMessage({
-        code: firebaseUserEmailRegistrationError.code,
-        message: generateErrorMessage(firebaseUserEmailRegistrationError?.code),
-      });
+  //   }
+  //   if (firebaseEmailPasswordSignInError) {
+  //     setLoading(false);
 
-    }
-  }, [
-    firebaseUserEmailRegistrationError,
-    firebaseUserEmailRegistrationInfo,
-    firebaseUserEmailRegistrationLoading,
+  //     setErrorMessage({
+  //       ...errorMessage,
+  //       code: firebaseEmailPasswordSignInError.code,
+  //       message: generateErrorMessage(firebaseEmailPasswordSignInError?.code),
+  //     });
 
-  ]);
+  //   }
+  // }, [
+  //   dispatch,
+  //   firebaseEmailPasswordSignInLoading,
+  //   firebaseEmailPasswordSignInUser,
+  //   firebaseEmailPasswordSignInError,
+  // ]);
+
+  // useEffect(() => {
+  //   // registration with email and password
+  //   if (firebaseUserEmailRegistrationLoading) {
+  //     setLoading(true);
+  //   }
+
+  //   if (firebaseUserEmailRegistrationInfo) {
+  //     setLoading(false);
+  //     setErrorMessage({ code: "", message: "" });
+  //     setPage('authVerifyEmail')
+  //     window.history.pushState(null, null, "/verify");
+  //   }
+
+
+
+  //   if (firebaseUserEmailRegistrationError) {
+  //     setLoading(false);
+  //     setErrorMessage({
+  //       code: firebaseUserEmailRegistrationError.code,
+  //       message: generateErrorMessage(firebaseUserEmailRegistrationError?.code),
+  //     });
+
+  //   }
+  // }, [
+  //   firebaseUserEmailRegistrationError,
+  //   firebaseUserEmailRegistrationInfo,
+  //   firebaseUserEmailRegistrationLoading,
+
+  // ]);
 
   const UrlPath = window.location.pathname;
   useEffect(() => {
@@ -247,60 +255,6 @@ const AuthPage = ({ authAddDetails }) => {
 
 
 
-
-
-  useEffect(() => {
-    // sign in with google
-    if (firebaseGoogleUserLoading) {
-      setLoading(true);
-    }
-    if (firebaseGoogleUser) {
-      console.log(firebaseGoogleUser, "firebaseGoogleUser in auth.jsx");
-      setLoading(false);
-      setErrorMessage({ code: "", message: "" });
-      dispatch({ type: SET_AUTHENTICATED });
-      dispatch(getUserData(firebaseGoogleUser.user.uid));
-
-      closeModal()
-
-    }
-    if (firebaseGoogleUserError) {
-      setLoading(false);
-      setErrorMessage({
-        ...errorMessage,
-        code: firebaseGoogleUserError.code,
-        message: generateErrorMessage(firebaseGoogleUserError.code),
-      });
-    }
-  }, [firebaseGoogleUser, firebaseGoogleUserError, firebaseGoogleUserLoading]);
-
-  useEffect(() => {
-    // sign in with facebook
-    if (firebaseFacebookUserLoading) {
-      setLoading(true);
-    }
-    if (firebaseFacebookUser) {
-      setLoading(false);
-      setErrorMessage({ code: "", message: "" });
-      dispatch({ type: SET_AUTHENTICATED });
-      dispatch(getUserData(firebaseFacebookUser.user.uid));
-
-      closeModal()
-
-    }
-    if (firebaseFacebookUserError) {
-      setLoading(false);
-      setErrorMessage({
-        ...errorMessage,
-        code: firebaseFacebookUserError.code,
-        message: generateErrorMessage(firebaseFacebookUserError.code),
-      });
-    }
-  }, [
-    firebaseFacebookUser,
-    firebaseFacebookUserError,
-    firebaseFacebookUserLoading,
-  ]);
 
   useEffect(() => {
     // edit user details
@@ -386,43 +340,82 @@ const AuthPage = ({ authAddDetails }) => {
     if (authAddDetails) {
       setPage('authAddDetails')
     }
-
-
   }, [authAddDetails])
 
 
 
+  const Modal = <AuthModal
+    success={() => closeModal()}
+    error={(err) => console.error(err)}
+    handleClose={() => closeModal()}
+  />
+
+  useEffect(() => {
+    const timeoutID = setTimeout(() => {
+      if (!currentUser) setModal(Modal, {
+        swipe: true,
+        beforeOpen: () => new Promise((resolve, reject) => { console.log('before, and wait a sec'); setTimeout(resolve, 1000) }),
+        afterOpen: () => console.log('after open'),
+        beforeClose: () => console.log('before close'),
+        afterClose: () => console.log('after close'),
+      })
+    }, 800);
+    return () => clearTimeout(timeoutID);
+  }, [currentUser])
+
   return (
     <Section>
-      <AuthComponent
-        errorMessage={errorMessage}
-        user={user}
-        loginLoading={loading}
-        handleSubmitLogin={(formikLoginStore) =>
-          signInWithEmailAndPassword(
-            formikLoginStore.values.email,
-            formikLoginStore.values.password
-          )
-        }
-        handleSubmitRegister={(formikRegisterStore) =>
-          createUserWithEmailAndPassword(formikRegisterStore)
-        }
-        handleGoogleSignIn={() => signInWithGoogle(["email"])} // asks google for email
-        handleFacebookSignIn={() => signInWithFacebook(["email"])} // asks facebook for email
-        handleImageUpload={handleImageUpload}
-        uploadingImage={uploadingImage}
-        handleSubmitEditDetails={(userDetails) =>
-          handleSubmitEditDetails(userDetails)
-        }
-        setPage={setPage}
-        page={page}
-        handleClose={() => {
-          closeModal()
-          setErrorMessage({ code: "", message: "" });
-        }}
-      />
+      <Box margin="20px">
+        {!currentUser && <Button onClick={() => setModal(Modal, { swipe: true })}>Login</Button>}
+        {currentUser && <Button onClick={signOut}>Logout</Button>}
+      </Box>
+      <Box padding="20px">
+        <ModalButton text="open 1" options={{
+          // swipe: true,
+          cancelText: "Cancel",
+          submitText: "Submit",
+          onSubmit: () => { console.log("submitted") },
+          title: "Modal Title",
+          description: "The description of the modal",
+          swipe: true,
+          beforeOpen: () => new Promise((resolve, reject) => { console.log('before, and wait a sec'); setTimeout(resolve, 1000) }),
+          afterOpen: () => console.log('after open'),
+          beforeClose: () => console.log('before close'),
+          afterClose: () => console.log('after close'),
 
-    </Section>
+        }}>
+          <>
+            <Box paddingInline="20px">
+              <div>
+                <p>Ich könnte jetzt nicht zeichnen, nicht einen Strich, und bin nie ein größerer Maler gewesen als in diesen Augenblicken. Wenn das liebe Tal um mich dampft, und die hohe Sonne an der Oberfläche der undurchdringlichen Finsternis meines Waldes ruht, und nur einzelne Strahlen sich in das innere Heiligtum stehlen, ich dann im hohen Grase am fallenden Bache liege, und näher an der Erde tausend mannigfaltige Gräschen mir merkwürdig werden; wenn ich das Wimmeln der kleinen Welt zwischen Halmen, die unzähligen, unergründlichen Gestalten der Würmchen, der Mückchen näher an meinem Herzen fühle, und fühle die Gegenwart des Allmächtigen, der uns nach seinem Bilde schuf, das Wehen des Alliebenden, der uns in ewiger Wonne schwebend trägt und erhält; mein Freund! Ich könnte jetzt nicht zeichnen, nicht einen Strich, und bin nie ein größerer Maler gewesen als in diesen Augenblicken. Wenn das liebe Tal um mich dampft, und die hohe Sonne an der Oberfläche der undurchdringlichen Finsternis meines Waldes ruht, und nur einzelne Strahlen sich in das innere Heiligtum stehlen, ich dann im hohen Grase am fallenden Bache liege, und näher an der Erde tausend mannigfaltige Gräschen mir merkwürdig werden; wenn ich das Wimmeln der kleinen Welt zwischen Halmen, die unzähligen, unergründlichen Gestalten der Würmchen, der Mückchen näher an meinem Herzen fühle, und fühle die Gegenwart des Allmächtigen, der uns nach seinem Bilde schuf, das Wehen des Alliebenden, der uns in ewiger Wonne schwebend trägt und erhält; mein Freund! Ich könnte jetzt nicht zeichnen, nicht einen Strich, und bin nie ein größerer Maler gewesen als in diesen Augenblicken. Wenn das liebe Tal um mich dampft, und die hohe Sonne an der Oberfläche der undurchdringlichen Finsternis meines Waldes ruht, und nur einzelne Strahlen sich in das innere Heiligtum stehlen, ich dann im hohen Grase am fallenden Bache liege, und näher an der Erde tausend mannigfaltige Gräschen mir merkwürdig werden; wenn ich das Wimmeln der kleinen Welt zwischen Halmen, die unzähligen, unergründlichen Gestalten der Würmchen, der Mückchen näher an meinem Herzen fühle, und fühle die Gegenwart des Allmächtigen, der uns nach seinem Bilde schuf, das Wehen des Alliebenden, der uns in ewiger Wonne schwebend trägt und erhält; mein Freund! </p>
+              </div>
+            </Box>
+            <Box padding="20px">
+              <ModalButton text="open 2" options={{
+                size: "sm",
+                title: "This is another title, and this time a little longer", cancelText: "cancel", submitText: "Open Modal", onSubmit: () => openModal(<Test />)
+              }}>
+                <Box padding="20px" flexDirection="column" gap="10px">
+
+                  <ModalButton text="open 4">
+                    <Box padding="20px">
+                      <Button onClick={() => openModal(Modal, { swipe: true })}>Login</Button>
+                    </Box>
+                  </ModalButton>
+                </Box>
+              </ModalButton>
+            </Box>
+          </>
+        </ModalButton>
+      </Box>
+
+      {
+        currentUser &&
+        <Box margin="20px">
+          User: {JSON.stringify(currentUser)}
+        </Box>
+      }
+    </Section >
   );
 };
 

@@ -33,10 +33,12 @@ import {
   useSignInWithEmailAndPassword,
   useSignInWithGoogle,
   useSignInWithFacebook,
-  useCreateUserWithEmailAndPassword,
+  // useCreateUserWithEmailAndPassword,
   useHandleSubmitEditDetails,
   generateErrorMessage,
   ifAllUserDetailsAreFilled,
+  useAuthContext,
+  AuthModal
 } from "senf-shared";
 
 import { getUserData } from "../redux/actions/userActions";
@@ -47,7 +49,8 @@ import { SET_AUTHENTICATED } from "../redux/types";
 const Auth = ({
   authAddDetails
 }) => {
-  const { closeModal } = useModals()
+  const { openModal, closeModal } = useModals()
+  const { createUser } = useAuthContext()
 
   const [errorMessage, setErrorMessage] = useState({ code: "", message: "" });
   const [loading, setLoading] = useState(false);
@@ -85,12 +88,12 @@ const Auth = ({
       url: "https://senf.koeln/verify",
     },
   };
-  const [
-    createUserWithEmailAndPassword,
-    firebaseUserEmailRegistrationInfo,
-    firebaseUserEmailRegistrationLoading,
-    firebaseUserEmailRegistrationError,
-  ] = useCreateUserWithEmailAndPassword(auth, db, sendVerification);
+  // const [
+  //   createUserWithEmailAndPassword,
+  //   firebaseUserEmailRegistrationInfo,
+  //   firebaseUserEmailRegistrationLoading,
+  //   firebaseUserEmailRegistrationError,
+  // ] = useCreateUserWithEmailAndPassword(auth, db, sendVerification);
 
   const [
     handleSubmitEditDetails,
@@ -137,35 +140,35 @@ const Auth = ({
     firebaseEmailPasswordSignInError,
   ]);
 
-  useEffect(() => {
-    // registration with email and password
-    if (firebaseUserEmailRegistrationLoading) {
-      setLoading(true);
-    }
+  // useEffect(() => {
+  //   // registration with email and password
+  //   if (firebaseUserEmailRegistrationLoading) {
+  //     setLoading(true);
+  //   }
 
-    if (firebaseUserEmailRegistrationInfo) {
-      setLoading(false);
-      setErrorMessage({ code: "", message: "" });
-      setPage('authVerifyEmail')
-      window.history.pushState(null, null, "/verify");
-    }
+  //   if (firebaseUserEmailRegistrationInfo) {
+  //     setLoading(false);
+  //     setErrorMessage({ code: "", message: "" });
+  //     setPage('authVerifyEmail')
+  //     window.history.pushState(null, null, "/verify");
+  //   }
 
 
 
-    if (firebaseUserEmailRegistrationError) {
-      setLoading(false);
-      setErrorMessage({
-        code: firebaseUserEmailRegistrationError.code,
-        message: generateErrorMessage(firebaseUserEmailRegistrationError?.code),
-      });
+  //   if (firebaseUserEmailRegistrationError) {
+  //     setLoading(false);
+  //     setErrorMessage({
+  //       code: firebaseUserEmailRegistrationError.code,
+  //       message: generateErrorMessage(firebaseUserEmailRegistrationError?.code),
+  //     });
 
-    }
-  }, [
-    firebaseUserEmailRegistrationError,
-    firebaseUserEmailRegistrationInfo,
-    firebaseUserEmailRegistrationLoading,
+  //   }
+  // }, [
+  //   firebaseUserEmailRegistrationError,
+  //   firebaseUserEmailRegistrationInfo,
+  //   firebaseUserEmailRegistrationLoading,
 
-  ]);
+  // ]);
 
   const UrlPath = window.location.pathname;
   useEffect(() => {
@@ -371,37 +374,42 @@ const Auth = ({
 
 
   }, [authAddDetails])
-
-
-
-  return (<AuthComponent
-    errorMessage={errorMessage}
-    user={user}
-    loginLoading={loading}
-    handleSubmitLogin={(formikLoginStore) =>
-      signInWithEmailAndPassword(
-        formikLoginStore.values.email,
-        formikLoginStore.values.password
-      )
-    }
-    handleSubmitRegister={(formikRegisterStore) =>
-      createUserWithEmailAndPassword(formikRegisterStore)
-    }
-    handleGoogleSignIn={() => signInWithGoogle(["email"])} // asks google for email
-    handleFacebookSignIn={() => signInWithFacebook(["email"])} // asks facebook for email
-    handleImageUpload={handleImageUpload}
-    uploadingImage={uploadingImage}
-    handleSubmitEditDetails={(userDetails) =>
-      handleSubmitEditDetails(userDetails)
-    }
-    setPage={setPage}
-    page={page}
-    handleClose={() => {
-      closeModal()
-      setErrorMessage({ code: "", message: "" });
-    }}
+  const Modal = <AuthModal
+    success={() => closeModal()}
+    error={(err) => console.error(err)}
+    handleClose={() => closeModal()}
   />
-  );
+  return Modal
+
+
+  // return (<AuthComponent
+  //   errorMessage={errorMessage}
+  //   user={user}
+  //   loginLoading={loading}
+  //   handleSubmitLogin={(formikLoginStore) =>
+  //     signInWithEmailAndPassword(
+  //       formikLoginStore.values.email,
+  //       formikLoginStore.values.password
+  //     )
+  //   }
+  //   handleSubmitRegister={(formikRegisterStore) =>
+  //     createUser(formikRegisterStore)
+  //   }
+  //   handleGoogleSignIn={() => signInWithGoogle(["email"])} // asks google for email
+  //   handleFacebookSignIn={() => signInWithFacebook(["email"])} // asks facebook for email
+  //   handleImageUpload={handleImageUpload}
+  //   uploadingImage={uploadingImage}
+  //   handleSubmitEditDetails={(userDetails) =>
+  //     handleSubmitEditDetails(userDetails)
+  //   }
+  //   setPage={setPage}
+  //   page={page}
+  //   handleClose={() => {
+  //     closeModal()
+  //     setErrorMessage({ code: "", message: "" });
+  //   }}
+  // />
+  // );
 };
 
 export default (Auth);

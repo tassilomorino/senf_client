@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import Wave from "../../atoms/shapes/Wave";
 import { AuthProps } from "./Auth.types";
@@ -24,9 +24,12 @@ import AuthAddDetails from "../../templates/auth/AuthAddDetails";
 import TertiaryButton from "../../atoms/buttons/TertiaryButton";
 import Button from "../../atoms/buttons/Button";
 
+import { useModals } from "../../molecules/modalStack/ModalProvider";
+
 const Wrapper = styled.div<AuthProps>`
   position: relative;
   width: 100%;
+  min-width: 400px;
   max-width: 400px;
   min-height: 700px;
   background-color: ${(props) => props.theme.colors.beige.beige20};
@@ -52,6 +55,7 @@ const StyledSvg = styled.svg`
 `;
 
 const Auth: FC<AuthProps> = ({
+  authHandler,
   handleClose,
   handleSubmitRegister,
   registerLoading,
@@ -72,9 +76,31 @@ const Auth: FC<AuthProps> = ({
   page,
   setPage
 }) => {
+  const { openModal, closeModal } = useModals();
 
 
-
+  useEffect(() => {
+    console.log(page)
+    if (page === "authEmail") openModal(<AuthEmail
+      setPage={setPage}
+      handleSubmitRegister={authHandler.createUser}
+      handleSubmitLogin={authHandler.signIn.email}
+      registerLoading={registerLoading}
+      loginLoading={authHandler.loading.email}
+      errorMessage={errorMessage}
+    />)
+  }, [page])
+  // useEffect(() => {
+  //   console.log(page)
+  //   if (page === "authEmail") openModal(<AuthEmail
+  //     setPage={setPage}
+  //     handleSubmitRegister={authHandler.createUser}
+  //     handleSubmitLogin={authHandler.signIn.email}
+  //     registerLoading={registerLoading}
+  //     loginLoading={authHandler.loading.email}
+  //     errorMessage={errorMessage}
+  //   />, { onClose: () => setPage(""), afterClose: () => { setPage(""); console.log("yooo") } })
+  // }, [page])
 
   return (
     <Wrapper>
@@ -126,16 +152,16 @@ const Auth: FC<AuthProps> = ({
 
 
       {(() => {
-        if (page === "authEmail") {
-          return <AuthEmail
-            setPage={setPage}
-            handleSubmitRegister={handleSubmitRegister}
-            handleSubmitLogin={handleSubmitLogin}
-            registerLoading={registerLoading}
-            loginLoading={loginLoading}
-            errorMessage={errorMessage}
-          />
-        }
+        // if (page === "authEmail") {
+        //   return <AuthEmail
+        //     setPage={setPage}
+        //     handleSubmitRegister={handleSubmitRegister}
+        //     handleSubmitLogin={authHandler.signIn.email}
+        //     registerLoading={registerLoading}
+        //     loginLoading={authHandler.loading.email}
+        //     errorMessage={errorMessage}
+        //   />
+        // }
         if (page === "authResetEmail") {
           return <AuthResetEmail
             resetLoading={resetLoading}
@@ -155,11 +181,12 @@ const Auth: FC<AuthProps> = ({
           />
         }
         return <AuthOptions
-          handleGoogleSignIn={handleGoogleSignIn}
-          googleLoading={googleLoading}
-          handleFacebookSignIn={handleFacebookSignIn}
-          facebookLoading={facebookLoading}
+          handleGoogleSignIn={authHandler.signIn.google}
+          googleLoading={authHandler.loading.google}
+          handleFacebookSignIn={authHandler.signIn.facebook}
+          facebookLoading={authHandler.loading.facebook}
           setPage={setPage}
+          errorMessage={errorMessage}
         />
 
 
