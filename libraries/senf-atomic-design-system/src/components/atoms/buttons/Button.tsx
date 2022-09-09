@@ -42,7 +42,8 @@ const StyledButton = styled.button < ButtonProps> `
 
   min-width: ${({ size, theme }) => theme.inputHeight(size)};
 
-  color: ${({ loading, color }) => (loading === true ? "transparent" : color || "auto")};
+  color: ${({ color }) => (color || "auto")};
+  /* color: ${({ loading, color }) => (loading === true ? "transparent" : color || "auto")}; */
   pointer-events: ${({ loading }) => (loading === true ? "none" : "all")};
 
   //ADD THEME-SPACE?
@@ -106,20 +107,22 @@ const StyledButton = styled.button < ButtonProps> `
         : "auto"};
 
   }
-  `;
+`;
 
 const LoaderWrapper = styled.span`
-  position: absolute;
+  /* position: absolute; */
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
+  height: 2.5em;
+  margin: -1em -0.75em;
+  /* width: 100%; */
+  /* height: 100%; */
   `;
 
 const IconWrapper = styled.div < ButtonProps> `
-    padding-right: ${(props) => (props.text === undefined ? "0px" : "10px")};
-    `;
+  padding-right: ${(props) => (props.text === undefined ? "0px" : "10px")};
+`;
 
 const Button: FC<ButtonProps> = ({
   text,
@@ -138,14 +141,17 @@ const Button: FC<ButtonProps> = ({
   ...rest
 }) => (
   <StyledButton type="button" text={text} variant={variant} color={color} icon={icon} borderStyle={borderStyle}
-    justifyContent={justifyContent} fillWidth={fillWidth} $loading={loading} onClick={onClick} size={size}
+    justifyContent={justifyContent} fillWidth={fillWidth} loading={loading} onClick={onClick} size={size}
     {...rest}>
     {
       children && children
-    } {
-      icon && (< IconWrapper text={text}>
-        < Icon icon={icon} transform={transform} />
-      </IconWrapper>)} {text}
+    }
+    {
+      icon && (<IconWrapper text={text}>
+        {loading ? <LoaderWrapper><Loader /></LoaderWrapper> : <Icon icon={icon} transform={transform} />}
+      </IconWrapper>)
+    }
+    {loading && !icon ? <LoaderWrapper><Loader /></LoaderWrapper> : text}
 
     {iconRight && (
       <Box marginLeft="11px">
@@ -155,13 +161,6 @@ const Button: FC<ButtonProps> = ({
         />
       </Box>
     )}
-
-
-
-
-    {loading && (< LoaderWrapper>
-      < Loader />
-    </LoaderWrapper>)}
 
 
   </StyledButton>);
