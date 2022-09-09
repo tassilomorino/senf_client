@@ -54,6 +54,7 @@ import Report from "../../../assets/icons/Report";
 import Skeleton from "../../atoms/skeleton/Skeleton";
 import EditIdeaPage from "../editIdeaPage/EditIdeaPage";
 import Auth from "../auth/Auth";
+import { useModals } from "../../molecules/modalStack/ModalProvider";
 
 const DragWrapper = styled(animated.div) <IdeaDetailPageProps>`
   display: flex;
@@ -186,7 +187,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
   const [editIdeaDropdownOpen, setEditIdeaDropdownOpen] = useState(false);
 
   const [swipePosition, setSwipePosition] = useState("bottom");
-
+  const { openModal } = useModals()
   const liked = () => {
     if (user?.likes && user?.likes.find((like) => like.screamId === screamId))
       return true;

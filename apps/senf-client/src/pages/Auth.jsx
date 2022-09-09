@@ -28,7 +28,7 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import imageCompression from "browser-image-compression";
 
 import { useTranslation } from "react-i18next";
-import { SwipeModal, Auth as AuthComponent, ModalButton, ModalContext } from "senf-atomic-design-system";
+import { SwipeModal, Auth as AuthComponent, ModalButton, useModals } from "senf-atomic-design-system";
 import {
   useSignInWithEmailAndPassword,
   useSignInWithGoogle,
@@ -47,7 +47,7 @@ import { SET_AUTHENTICATED } from "../redux/types";
 const Auth = ({
   authAddDetails
 }) => {
-  const { handleModal } = React.useContext(ModalContext) || {};
+  const { closeModal } = useModals()
 
   const [errorMessage, setErrorMessage] = useState({ code: "", message: "" });
   const [loading, setLoading] = useState(false);
@@ -117,7 +117,7 @@ const Auth = ({
       setErrorMessage({ code: "", message: "" });
       dispatch({ type: SET_AUTHENTICATED });
       dispatch(getUserData(firebaseEmailPasswordSignInUser.user.uid));
-      handleModal("pop")
+      closeModal()
 
     }
     if (firebaseEmailPasswordSignInError) {
@@ -181,7 +181,7 @@ const Auth = ({
           // close modal and redirect to home
           dispatch({ type: SET_AUTHENTICATED });
           dispatch(getUserData(user.uid));
-          handleModal("pop")
+          closeModal()
           // setPage('AuthSuccess') ??
           console.log('user is verified,all userdetails are set, redirecting  to homepage')
           window.history.pushState(null, null, "/");
@@ -243,7 +243,7 @@ const Auth = ({
       dispatch({ type: SET_AUTHENTICATED });
       dispatch(getUserData(firebaseGoogleUser.user.uid));
 
-      handleModal("pop")
+      closeModal()
 
     }
     if (firebaseGoogleUserError) {
@@ -267,7 +267,7 @@ const Auth = ({
       dispatch({ type: SET_AUTHENTICATED });
       dispatch(getUserData(firebaseFacebookUser.user.uid));
 
-      handleModal("pop")
+      closeModal()
 
     }
     if (firebaseFacebookUserError) {
@@ -293,7 +293,7 @@ const Auth = ({
       setLoading(false);
       setErrorMessage({ code: "", message: "" });
       dispatch(getUserData(user.userId)).then(() => {
-        handleModal("pop")
+        closeModal()
 
         setErrorMessage({ code: "", message: "" });
       });
@@ -397,7 +397,7 @@ const Auth = ({
     setPage={setPage}
     page={page}
     handleClose={() => {
-      handleModal("pop")
+      closeModal()
       setErrorMessage({ code: "", message: "" });
     }}
   />
