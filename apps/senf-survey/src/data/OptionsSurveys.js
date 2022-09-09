@@ -5,8 +5,8 @@ export function OptionsSurveys() {
   const { t } = useTranslation();
 
   return [
-    { name: "feedback", label: t("feedback") },
-    { name: "gatherInput", label: t("gatherInput") },
-    { name: "whatever", label: t("whatever") },
+    { value: "feedback", label: t("feedback") },
+    { value: "gatherInput", label: t("gatherInput") },
+    { value: "whatever", label: t("whatever") },
   ];
 }
