@@ -87,10 +87,7 @@ const ProfilePage = ({
   };
 
   const handleDeleteAccount = () => {
-    dispatch(deleteUserFromDb(user.userId)).then(() => {
-      closeModal()
-      closeModal()
-    }).catch(err => {
+    dispatch(deleteUserFromDb(user.userId)).then(closeModal).catch(err => {
       throw new Error(err, ' error in deleteUserFromDb in ProfilePage.jsx')
     })
   };

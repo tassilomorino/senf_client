@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ReactDOM from "react-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Box, MainLoader, Map, InfoPageMainApp, Cookiebanner, useModals } from "senf-atomic-design-system";
+import { MainLoader, Map, InfoPageMainApp, Cookiebanner, useModals } from "senf-atomic-design-system";
 import Cookies from "universal-cookie";
 import { setMapBounds } from "../redux/actions/mapActions";
 import { openProjectRoomFunc } from "../redux/actions/projectActions";
@@ -30,7 +30,7 @@ const Main = React.lazy(() =>
 const Home = () => {
   const dispatch = useDispatch();
 
-  const { openModal, closeModal } = useModals()
+  const { openModal } = useModals()
   const [showUI, setShowUI] = useState(false)
   const [statefulMap, setStatefulMap] = useState(null);
   const [initialMapBounds, setInitialMapBounds] = useState(null);
