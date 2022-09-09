@@ -138,7 +138,7 @@ const Button: FC<ButtonProps> = ({
   ...rest
 }) => (
   <StyledButton type="button" text={text} variant={variant} color={color} icon={icon} borderStyle={borderStyle}
-    justifyContent={justifyContent} fillWidth={fillWidth} $loading={loading} onClick={onClick} size={size}
+    justifyContent={justifyContent} fillWidth={fillWidth} loading={loading} onClick={onClick} size={size}
     {...rest}>
     {
       children && children
