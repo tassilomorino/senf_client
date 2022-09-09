@@ -6,7 +6,7 @@ import {
   IdeaDetailPage as IdeaDetailPageComponent,
   ModalContext
 } from "senf-atomic-design-system";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { isMobileCustom } from "../util/customDeviceDetect";
 // Redux stuff
 import { closeScream, deleteScream, editScreamFunc } from "../redux/actions/screamActions";
@@ -36,7 +36,8 @@ const IdeaDetailPage = ({
   );
 
   const dispatch = useDispatch();
-  const history = useHistory()
+  const navigate = useNavigate();
+
 
   const openScream = useSelector((state) => state.UI.openScream);
 
@@ -185,10 +186,8 @@ const IdeaDetailPage = ({
       dispatch(closeScream());
       dispatch(openProjectRoomFunc(null, false));
       dispatch(openAccountFunc());
-      history.push(`/profile/${profileId}`)
+      navigate(`/profile/${profileId}`)
 
-
-      // window.history.pushState(null, null, `/profile/${profileId}`);
 
 
 

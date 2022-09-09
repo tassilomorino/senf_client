@@ -1,7 +1,6 @@
 /** @format */
 
 import React, { useState, memo, useEffect } from "react";
-import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
 import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
 import {
@@ -13,7 +12,6 @@ import {
   PostIdea as PostIdeaComponent
 } from "senf-atomic-design-system";
 import { useDispatch, useSelector } from "react-redux";
-import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -62,7 +60,6 @@ const PostScream = ({
   const project = useSelector((state) => state.data.project);
 
   const user = useSelector((state) => state.user);
-  const history = useHistory();
   const { t } = useTranslation();
 
   const initialMapViewport = useSelector(
@@ -237,7 +234,7 @@ const PostScream = ({
     if (selectedUnix.length > 0) {
       newScream.selectedUnix = selectedUnix;
     }
-    dispatch(postScream(newScream, user, history)).then(() => {
+    dispatch(postScream(newScream, user)).then(() => {
       setPostIdeaOpen(false);
     });
   };
@@ -372,4 +369,4 @@ const PostScream = ({
   );
 };
 
-export default withRouter(memo(PostScream));
+export default memo(PostScream);

@@ -4,7 +4,7 @@ import React from "react";
 import styled from "styled-components";
 import { LegalStyles, Terms } from "./LegalStyles";
 
-const Agb = () => (
+const TermsAndCondition = () => (
   <LegalStyles>    <br />
     <br /> <br />
     <h1>Allgemeine Geschäftsbedingungen</h1>
@@ -272,4 +272,4 @@ const Agb = () => (
   </LegalStyles>
 );
 
-export default Agb;
+export default TermsAndCondition;

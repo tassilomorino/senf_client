@@ -9,7 +9,7 @@ import React, {
 
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   Typography,
@@ -158,7 +158,7 @@ const Main = ({
 
   const { screamId, projectRoomId, organizationId, unknownPathId, profileId } =
     useParams();
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openScream = useSelector((state) => state.UI.openScream);
@@ -205,7 +205,7 @@ const Main = ({
 
   useEffect(() => {
 
-    unknownPathId && history.push('/')
+    unknownPathId && navigate('/')
     projectRoomId && dispatch(openProjectRoomFunc(projectRoomId, true));
     screamId && dispatch(openScreamFunc(screamId));
     organizationId && dispatch(openOrganizationFunc(organizationId, true));
@@ -294,16 +294,16 @@ const Main = ({
         left: 0,
       });
       if (order === 1) {
-        window.history.pushState(null, null, "/");
+        navigate("/");
       }
       if (order === 2) {
-        window.history.pushState(null, null, "/projectRooms");
+        navigate("/projectRooms");
       }
       if (order === 3) {
-        window.history.pushState(null, null, "/organizations");
+        navigate("/organizations");
       }
       if (order === 4) {
-        window.history.pushState(null, null, "/insights");
+        navigate("/insights");
       }
     },
     [dispatch]
@@ -442,7 +442,7 @@ const Main = ({
     if (user?.authenticated) {
 
       dispatch(openAccountFunc());
-      history.push(`/profile/${userId}`)
+      navigate(`/profile/${userId}`)
 
     } else {
       handleModal("push", <Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })

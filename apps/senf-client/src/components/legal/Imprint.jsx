@@ -3,7 +3,7 @@
 import React from "react";
 import { LegalStyles } from "./LegalStyles";
 
-const Impressum = () => (
+const Imprint = () => (
   <LegalStyles>
     <br />
     <br /> <br />
@@ -79,4 +79,4 @@ const Impressum = () => (
   </LegalStyles>
 );
 
-export default Impressum;
+export default Imprint;

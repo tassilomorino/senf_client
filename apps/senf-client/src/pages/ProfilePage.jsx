@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { ProfilePage as ProfilePageComponent, ModalContext, Loader } from "senf-atomic-design-system";
 import { getAuth } from "firebase/auth";
-import { useParams, useHistory } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { closeAccountFunc, getMyOrganizations, getMyScreams } from "../redux/actions/accountActions";
 
@@ -57,17 +57,17 @@ const ProfilePage = ({
   const dispatch = useDispatch();
   const auth = getAuth();
   const firebaseUser = auth.currentUser;
-  const history = useHistory();
+  const navigate = useNavigate();
   const handleClose = useCallback(() => {
 
 
     dispatch(closeAccountFunc());
     dispatch(handleTopicSelectorRedux("all"));
 
-    history.push("/");
+    navigate("/");
     // history.goBack(); // @Todo: why it goes back to /projectroom ?? it should be /idea/1234
 
-  }, [dispatch, history]);
+  }, [dispatch]);
 
   const handleClick = useCallback((order) => {
     setOrder(order);
@@ -102,14 +102,14 @@ const ProfilePage = ({
 
   const handleLogout = () => {
     dispatch(logoutUser());
-    history.push('/');
+    navigate('/');
   };
 
   const handleDeleteAccount = () => {
     dispatch(deleteUserFromDb(firebaseUser.uid)).then(() => {
       handleModal("pop")
       handleModal("pop")
-      history.push('/');
+      navigate('/');
     }).catch(err => {
       throw new Error(err, ' error in deleteUserFromDb in ProfilePage.jsx')
     })

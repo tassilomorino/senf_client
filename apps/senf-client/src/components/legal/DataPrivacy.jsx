@@ -3,7 +3,7 @@
 import React from "react";
 import { LegalStyles, Terms } from "./LegalStyles";
 
-const Datenschutz = () => (
+const DataPrivacy = () => (
   <LegalStyles>
     <br />
     <br /> <br />
@@ -773,4 +773,4 @@ const Datenschutz = () => (
   </LegalStyles>
 );
 
-export default Datenschutz;
+export default DataPrivacy;

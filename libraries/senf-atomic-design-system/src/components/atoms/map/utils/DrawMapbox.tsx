@@ -28,7 +28,7 @@ const DrawMapbox = new MapboxDraw({
                     "#009A40",
                     "#fed957",
                 ],
-                "fill-outline-color": "#3bb2d0",
+                "fill-outline-color": "#8ED9B8",
                 "fill-opacity": 0.4,
             },
         },
@@ -73,7 +73,7 @@ const DrawMapbox = new MapboxDraw({
                 "line-join": "round",
             },
             paint: {
-                "line-color": "#3bb2d0",
+                "line-color": "#8ED9B8",
                 "line-width": 2,
             },
         },
@@ -123,21 +123,40 @@ const DrawMapbox = new MapboxDraw({
                 //   "green",
                 //   "blue",
                 // ],
-                "line-dasharray": [2, 0],
+                "line-dasharray": [1, 0],
                 "line-pattern": [
                     "match",
                     ["get", "user_drawType"], // get the property
                     "crosswalk",
                     "CrosswalkPattern",
-                    "BikeLanePattern",
+                    "bikeLane",
+                    "bikeLanePattern",
+                    "DashPattern",
                 ],
                 "line-width": [
-                    "match",
-                    ["get", "user_drawType"], // get the property
-                    "bikeLane",
-                    10,
+                    "interpolate", ["exponential", 1.5], ["zoom"],
+                    5,
+                    ["match", ["get", "user_drawType"],
+                        "bikeLane", 0.1,
+                        "crosswalk", 0.1,
+                        5
+                    ],
                     20,
-                ],
+                    ["match", ["get", "user_drawType"],
+                        "bikeLane", 15,
+                        "crosswalk", 26,
+                        5
+                    ],
+                ]
+                // [
+                //     "match",
+                //     ["get", "user_drawType"], // get the property
+                //     "bikeLane",
+                //     5,
+                //     "crosswalk",
+                //     20,
+                //     5,
+                // ],
             },
         },
 
@@ -173,21 +192,31 @@ const DrawMapbox = new MapboxDraw({
                 //   "green",
                 //   "blue",
                 // ],
-                "line-dasharray": [2, 0],
+                "line-dasharray": [1, 0],
                 "line-pattern": [
                     "match",
                     ["get", "user_drawType"], // get the property
                     "crosswalk",
                     "CrosswalkPattern",
-                    "BikeLanePattern",
+                    "bikeLane",
+                    "bikeLanePattern",
+                    "DashPattern",
                 ],
                 "line-width": [
-                    "match",
-                    ["get", "user_drawType"], // get the property
-                    "bikeLane",
-                    10,
+                    "interpolate", ["exponential", 1.5], ["zoom"],
+                    5,
+                    ["match", ["get", "user_drawType"],
+                        "bikeLane", 0.1,
+                        "crosswalk", 0.1,
+                        5
+                    ],
                     20,
-                ],
+                    ["match", ["get", "user_drawType"],
+                        "bikeLane", 15,
+                        "crosswalk", 26,
+                        5
+                    ],
+                ]
             },
         },
         {
@@ -200,7 +229,7 @@ const DrawMapbox = new MapboxDraw({
                 ["!=", "mode", "static"],
             ],
             paint: {
-                "circle-radius": 10,
+                "circle-radius": 8,
                 "circle-color": "black",
             },
         },
@@ -215,7 +244,7 @@ const DrawMapbox = new MapboxDraw({
             ],
             paint: {
                 "circle-radius": 5,
-                "circle-color": "purple",
+                "circle-color": "#fed957",
             },
         },
         {
@@ -388,7 +417,7 @@ const DrawMapbox = new MapboxDraw({
     ],
     // Set mapbox-gl-draw to draw by default.
     // The user does not have to click the polygon control button first.
-    defaultMode: "draw_line_string",
+    defaultMode: "simple_select",
 });
 
 export default DrawMapbox

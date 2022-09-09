@@ -39,7 +39,7 @@ import {
   ifAllUserDetailsAreFilled,
 } from "senf-shared";
 
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getUserData } from "../redux/actions/userActions";
 
 import { auth, db } from "../firebase";
@@ -63,6 +63,7 @@ const Auth = ({
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const profileId = window.location.pathname.split('/')[2];
   // @todo why useParams is not working here?
   // const { profileId } = useParams();
@@ -155,7 +156,7 @@ const Auth = ({
       setLoading(false);
       setErrorMessage({ code: "", message: "" });
       setPage('authVerifyEmail')
-      window.history.pushState(null, null, "/verify");
+      navigate("/verify");
     }
 
 
@@ -192,7 +193,7 @@ const Auth = ({
           handleModal("pop")
           // setPage('AuthSuccess') ??
           console.log('user is verified,all userdetails are set, redirecting  to homepage')
-          window.history.pushState(null, null, "/");
+          navigate("/");
 
         }
         if (user && user.uid && user.emailVerified && !ifAllUserDetailsAreFilled(reduxUser)) {
@@ -201,7 +202,7 @@ const Auth = ({
           dispatch(getUserData(user.uid));
           setPage('authAddDetails')
           console.log('user is verified ,but redirecting  to add details because user details are not fully set')
-          window.history.pushState(null, null, "/");
+          navigate("/");
 
         }
         if (user && user.uid && !user.emailVerified) {
@@ -213,7 +214,7 @@ const Auth = ({
         if (!user) {
           // open modal <AuthOptions/> 
           console.log('user is not logged in')
-          window.history.pushState(null, null, "/");
+          navigate("/");
           setPage('authOptions')
 
         }

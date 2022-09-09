@@ -33,16 +33,10 @@ import IdeaPin from "../../../assets/icons/IdeaPin";
 import theme from "../../../styles/theme";
 
 import DrawMapbox from "./utils/DrawMapbox";
-
-import CrosswalkPattern from "../../../assets/other/crosswalkPattern.png";
-import BikeLanePattern from "../../../assets/other/bikeLanePattern.png";
 import useIdeaPin from "./hooks/useIdeaPin";
+import { addImagesToMap } from "./utils/addImagesToMap";
 
-const CrosswalkPatternImg = new Image(32, 64);
-CrosswalkPatternImg.src = CrosswalkPattern;
 
-const BikeLanePatternImg = new Image(32, 256);
-BikeLanePatternImg.src = BikeLanePattern;
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoidG1vcmlubyIsImEiOiJjazBzZHZjeWQwMWoyM2NtejlzcnMxd3FtIn0.I_Xcc1aJiN7hToGGjNy7ow";
@@ -322,13 +316,9 @@ const Map: FC<MapProps> = ({
     setStatefulMap(map);
     subscribeMap(map);
     navigationControl(map);
+    addImagesToMap(map)
 
-    if (!map?.style?.imageManager?.images?.CrosswalkPattern) {
-      map?.addImage("CrosswalkPattern", CrosswalkPatternImg);
-    }
-    if (!map?.style?.imageManager?.images?.BikeLanePattern) {
-      map?.addImage("BikeLanePattern", BikeLanePatternImg);
-    }
+
 
 
     if (ideasData || projectroomsData || projectroomData) {
@@ -347,8 +337,6 @@ const Map: FC<MapProps> = ({
     const DrawMap = DrawMapbox
     map.addControl(DrawMap);
     setStatefulDrawMapbox(DrawMap);
-    DrawMap?.changeMode("simple_select");
-
 
     map.on("dragend", () => {
       setMapMoved(true);
@@ -366,9 +354,27 @@ const Map: FC<MapProps> = ({
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
+    if (statefulMap && statefulDrawMapbox && drawn) {
+      statefulDrawMapbox.add(drawn);
+    }
+  }, [drawn, statefulDrawMapbox, statefulMap]);
+
+  useEffect(() => {
     if (statefulMap && statefulDrawMapbox && drawType) {
+      if (drawType === "lawn") {
+        statefulDrawMapbox?.changeMode("draw_polygon");
+      } else if (drawType === "bikeLane" || drawType === "crosswalk") {
+        statefulDrawMapbox?.changeMode("draw_line_string");
+      }
+
       statefulMap.on("click", (e) => {
+        const feature = e.point;
+        // const featureIds = statefulDrawMapbox.add(feature);
+        console.log(feature);
+        console.log(statefulDrawMapbox, e)
+
         const drawFeatureAtPoint = statefulDrawMapbox.getFeatureIdsAt(e.point);
+
         const result = drawFeatureAtPoint.filter(element => {
           return element !== undefined;
         });
@@ -380,9 +386,6 @@ const Map: FC<MapProps> = ({
             "drawType",
             drawType
           );
-          // statefulDrawMapbox.set(drawFeatureID, "drawType", drawType);
-          // const feat = statefulDrawMapbox.get(drawFeatureID);
-          // statefulDrawMapbox.add(feat);
         }
       });
     }
@@ -391,96 +394,22 @@ const Map: FC<MapProps> = ({
 
   useEffect(() => {
     if (statefulMap) {
+      if (drawType === "lawn") {
+        statefulDrawMapbox?.changeMode("draw_polygon");
+      } else if (drawType === "bikeLane" || drawType === "crosswalk") {
+        statefulDrawMapbox?.changeMode("draw_line_string");
+      }
       statefulMap.on("draw.selectionchange", (e) => {
-        const localDrawFeatureId = e?.features[0]?.id
-        if (localDrawFeatureId) {
-          console.log(localDrawFeatureId)
-          setDrawFeatureID(localDrawFeatureId)
+        const drawFeatureId = e?.features[0]?.id
+        if (drawFeatureId) {
+          setDrawFeatureID(drawFeatureId)
         }
       });
     }
-  }, [statefulMap, statefulDrawMapbox,])
-
-
-  useEffect(() => {
-    if (drawType === "lawn") {
-      statefulDrawMapbox?.changeMode("draw_polygon");
-    } else if (drawType === "bikeLane") {
-      statefulDrawMapbox?.changeMode("draw_line_string");
-    }
-    else if (drawType === "crosswalk") {
-      statefulDrawMapbox?.changeMode("draw_line_string");
-    }
-  }, [drawType]);
-
-  // useEffect(() => {
-  //   if (statefulDrawMapbox && drawFeatureID && drawType) {
-  //     statefulDrawMapbox.setFeatureProperty(
-  //       drawFeatureID,
-  //       "drawType",
-  //       drawType
-  //     );
-  //     handleSaveDrawn(statefulDrawMapbox.getAll());
-
-  //     console.log("setFeatureProperty", drawFeatureID)
-  //     // statefulDrawMapbox.set(drawFeatureID, "drawType", drawType);
-  //     // const feat = statefulDrawMapbox.get(drawFeatureID);
-  //     // statefulDrawMapbox.add(feat);
-  //   }
-  // }, [statefulDrawMapbox, drawFeatureID, drawType])
-
-
-  // useEffect(() => {
-  //   if (statefulMap) {
-  //     statefulMap.on("click", (e) => {
-  //       let drawFeatureID = "";
-  //       let newDrawFeature = false;
-  //       const drawTypeNew = drawType;
-  //       if (!newDrawFeature) {
-  //         const drawFeatureAtPoint = statefulDrawMapbox.getFeatureIdsAt(e.point);
-
-  //         // if another drawFeature is not found - reset drawFeatureID
-  //         drawFeatureID = drawFeatureAtPoint.length ? drawFeatureAtPoint[0] : "";
-
-
-  //         if (drawFeatureID) {
-  //           console.log(drawTypeNew);
-  //           statefulDrawMapbox.setFeatureProperty(
-  //             drawFeatureID,
-  //             "drawType",
-  //             drawType
-  //           );
-  //           statefulDrawMapbox.set(drawFeatureID, "drawType", drawType);
-  //           const feat = statefulDrawMapbox.get(drawFeatureID);
-  //           statefulDrawMapbox.add(feat);
-  //         }
-  //       }
-
-  //       newDrawFeature = false;
-  //     });
-  //   }
-  // }, [statefulMap])
+  }, [statefulMap, statefulDrawMapbox])
 
 
 
-
-
-
-  useEffect(() => {
-    if (statefulMap && statefulDrawMapbox && drawn) {
-      statefulDrawMapbox.add(drawn);
-      // statefulDrawMapbox.changeMode("simple_select");
-
-      // const [minLng, minLat, maxLng, maxLat] = bbox(drawnPolygon);
-
-      // setTimeout(() => {
-      //   statefulMap.fitBounds([
-      //     [minLng - 0.2, minLat - 0.2], // southwestern corner of the bounds
-      //     [maxLng + 0.2, maxLat + 0.2], // northeastern corner of the bounds
-      //   ]);
-      // }, 300);
-    }
-  }, [drawn, statefulDrawMapbox, statefulMap]);
 
   useEffect(() => {
     if (projectroomsData) {
@@ -536,59 +465,6 @@ const Map: FC<MapProps> = ({
     }
   }, [ideaData]);
 
-
-
-
-  // useEffect(() => {
-  //   // FLY TO IDEA
-  //   if (statefulMap && ideaData && openScream) {
-  //     setTimeout(() => {
-  //       statefulMap.fitBounds([
-  //         [ideaData.long - 0.001, ideaData.lat - 0.0015], // southwestern corner of the bounds
-  //         [ideaData.long + 0.0003, ideaData.lat + 0.0015], // northeastern corner of the bounds
-  //       ]);
-  //     }, 300);
-  //   }
-  // }, [statefulMap, ideaData, openScream]);
-
-  // const handleClickGeolocate = () => {
-  //   // geolocateControl(statefulMap);
-
-  //   navigator.geolocation.getCurrentPosition((position) => {
-  //     const userCoordinates = [
-  //       position.coords.longitude,
-  //       position.coords.latitude,
-  //     ];
-
-  //     statefulMap.addSource("user-coordinates", {
-  //       type: "geojson",
-  //       data: {
-  //         type: "Feature",
-  //         geometry: {
-  //           type: "Point",
-  //           coordinates: userCoordinates,
-  //         },
-  //       },
-  //     });
-  //     statefulMap.addLayer({
-  //       id: "user-coordinates",
-  //       source: "user-coordinates",
-  //       type: "circle",
-  //       paint: {
-  //         "circle-radius": 7,
-  //         "circle-color": "#4f86ec",
-  //         "circle-stroke-color": "#fff",
-  //         "circle-stroke-width": 2,
-  //       },
-  //     });
-  //     statefulMap.flyTo({
-  //       center: userCoordinates,
-  //       zoom: 16,
-  //     });
-  //   });
-  // };
-
-
   return (
     <React.Fragment>
       {!postIdeaOpen && ideasData && (
@@ -632,7 +508,6 @@ const Map: FC<MapProps> = ({
               statefulDrawMapbox.changeMode("simple_select");
               handleSaveDrawn(statefulDrawMapbox.getAll());
               setMode(null)
-              // setSelectedFeature(null)
               setSwipedUp(false)
               setDrawFeatureID(null)
             }}
@@ -640,12 +515,10 @@ const Map: FC<MapProps> = ({
           <Button
             variant="white"
             text={t("save")}
-            // loading={}
             onClick={() => {
               statefulDrawMapbox.changeMode("simple_select");
               setMode(null)
               handleSaveDrawn(statefulDrawMapbox.getAll());
-              // setSelectedFeature(null)
               setSwipedUp(false)
               setDrawFeatureID(null)
 
@@ -653,7 +526,6 @@ const Map: FC<MapProps> = ({
 
 
             }}
-          // disabled={!drawnPolygon}
           />
         </Box>
       )}
@@ -667,22 +539,9 @@ const Map: FC<MapProps> = ({
           height: "100%",
         }}
       >
-        {/* <Box position="fixed" top="400px" right="10px" zIndex={999}>
-        <Button icon={<Bulb />} onClsick={handleClickGeolocate} />
-      </Box> */}
-
         {children}
-
-
       </MapContainer>
       <MarkerPin visible={ideaData} ref={setContainer}><IdeaPin transform="translateY(-12px)" color={ideaMarkerColor} /></MarkerPin>
-
-
-
-
-
-
-
     </React.Fragment>
   );
 };

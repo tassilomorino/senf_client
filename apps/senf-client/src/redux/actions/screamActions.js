@@ -170,9 +170,7 @@ export const closeScream = () => (dispatch) => {
 };
 
 // Post an idea
-export const postScream = (newScream, user, history) => async (dispatch) => {
-  console.log(history, user);
-
+export const postScream = (newScream, user) => async (dispatch) => {
   dispatch({ type: LOADING_DATA });
 
   if (newScream.title.trim() === "") {
