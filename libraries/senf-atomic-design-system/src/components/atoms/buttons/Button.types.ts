@@ -1,12 +1,12 @@
 /** @format */
 
-import { MouseEventHandler } from "react";
+import React, { MouseEventHandler } from "react";
 
 export interface ButtonProps {
   text?: string;
   variant?: "primary" | "secondary" | "tertiary" | "white" | "plus";
-  icon?: JSX.Element;
-  iconRight?: boolean;
+  icon?: React.ReactNode;
+  iconRight?: React.ReactNode;
   transform?: string;
   borderStyle?: "dashed" | "solid";
   fillWidth?: "max" | undefined;
