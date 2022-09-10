@@ -1,7 +1,7 @@
 import DashPattern from "../../../../assets/other/dashPattern.png";
 import CrosswalkPattern from "../../../../assets/other/crosswalkPattern.png";
 import BikeLanePattern from "../../../../assets/other/bikeLanePattern.png";
-import BlackPattern from "../../../../assets/other/BlackPattern.png";
+import BlackPattern from "../../../../assets/other/blackPattern.png";
 
 import VereineMarker from "../../../../assets/markers/VereineMarker.png";
 import InitiativenMarker from "../../../../assets/markers/InitiativenMarker.png";
