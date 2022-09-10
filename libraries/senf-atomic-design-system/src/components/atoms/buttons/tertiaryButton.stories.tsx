@@ -4,6 +4,7 @@ import React from "react";
 import { Story, Meta } from "@storybook/react";
 import TertiaryButton from "./TertiaryButton";
 import { TertiaryButtonProps } from "./TertiaryButton.types";
+import { Arrow } from "../../../assets/icons";
 
 export default {
   title: "Atom/TertiaryButton",
@@ -17,20 +18,20 @@ const Template: Story<TertiaryButtonProps> = (args) => (
 
 export const IconPure = Template.bind({});
 IconPure.args = {
-  iconLeft: "arrow",
+  iconLeft: <Arrow />,
   iconLeftTransform: "rotate(90deg) scale(0.7)",
 };
 
 export const IconLeft = Template.bind({});
 IconLeft.args = {
-  iconLeft: "arrow",
+  iconLeft: <Arrow />,
   iconLeftTransform: "scale(0.7)",
   text: "Teriary Button",
 };
 
 export const IconRight = Template.bind({});
 IconRight.args = {
-  iconRight: "arrow",
+  iconRight: <Arrow />,
   iconRightTransform: "scale(0.7)",
   text: "Teriary Button",
 };

@@ -17,5 +17,6 @@ const Template: Story<DividerProps> = (args) => <Divider {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  text: "x",
+  height: "10px",
+  width: "100%",
 };

@@ -23,6 +23,11 @@ export interface BoxProps {
   paddingRight?: string;
   paddingBlock?: string;
   paddingInline?: string;
+  top?: string;
+  bottom?: string;
+  transform?: string;
+  pointerEvents?: "auto" | "none";
+  transition?: string;
   left?: string | number;
   right?: string | number;
   zIndex?: string | number;
@@ -30,5 +35,5 @@ export interface BoxProps {
   justifyContent?: "flex-start" | "center" | "flex-end";
   flexWrap?: "nowrap" | "wrap" | "wrap-reverse";
   position?: "fixed" | "absolute" | "relative" | "sticky";
-  onClick?: MouseEventHandler<HTMLButtonElement>;
+  onclick?: MouseEventHandler;
 }

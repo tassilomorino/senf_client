@@ -6,7 +6,7 @@ import lottie from 'lottie-web/build/player/lottie_light.min.js'
 import { LoaderProps } from "./Loader.types";
 import DotLoader from "../../../assets/lottieFiles/dotLoader.json";
 
-const StyledLoader = styled.div`
+const StyledLoader = styled.div<LoaderProps>`
   width: ${(props) => (props.width ? props.width : "100%")};
   height: ${(props) => (props.height ? props.height : "100%")};
   position: relative;
