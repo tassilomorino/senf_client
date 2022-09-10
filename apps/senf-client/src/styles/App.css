@@ -311,16 +311,6 @@ input:focus {
   position: fixed;
 }
 
-.pin {
-  position: absolute;
-  width: 100px;
-  margin-top: -125px;
-  margin-left: -50px;
-  background-color: #353535;
-  transform: rotate(0);
-  transform-origin: bottom center;
-}
-
 .content {
   position: relative;
   margin-top: 0px;

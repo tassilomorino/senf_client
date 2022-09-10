@@ -78,7 +78,7 @@ const TertiaryButton: FC<TertiaryButtonProps> = ({
           <Icon
             icon={iconLeft}
             transform={
-              iconLeftTransform ? iconLeftTransform : "scale(0.7)"
+              iconLeftTransform || "scale(0.7)"
               // size === "small"
               //   ? ` ${iconLeftTransform ? iconLeftTransform : "scale(0.7)"}`
               //   : ` ${iconLeftTransform ? iconLeftTransform : "scale(0.7)"}`
@@ -104,7 +104,7 @@ const TertiaryButton: FC<TertiaryButtonProps> = ({
           <Icon
             icon={iconRight}
             transform={
-              iconLeftTransform ? iconLeftTransform : "scale(0.7)"
+              iconLeftTransform || "scale(0.7)"
               // size === "small"
               //   ? `${iconLeftTransform ? iconLeftTransform : "scale(0.7)"}`
               //   : `${iconLeftTransform ? iconLeftTransform : "scale(0.7)"}`

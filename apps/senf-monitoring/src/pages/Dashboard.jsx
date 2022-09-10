@@ -47,9 +47,9 @@ const Dashboard = () => {
         <Typography variant="h3"> Das wird mega geil! </Typography>
 
         <Box gap="8px">
-        <ModalButton text="Open Modal" options={{swipe: true}}>
-          <Button text="hi" />
-        </ModalButton>
+          <ModalButton text="Open Modal" options={{ swipe: true }}>
+            <Button text="hi" />
+          </ModalButton>
           {ideas && (
             <Button
               variant="white"

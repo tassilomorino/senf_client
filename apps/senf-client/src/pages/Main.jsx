@@ -9,7 +9,7 @@ import React, {
 
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   Typography,
@@ -68,6 +68,7 @@ import { likeScream, unlikeScream } from "../redux/actions/likeActions";
 import ProjectroomPage from "./ProjectroomPage";
 import ProfilePage from "./ProfilePage";
 import { StyledH3 } from "../styles/GlobalStyle";
+import { getUserData } from "../redux/actions/userActions";
 
 
 
@@ -154,8 +155,9 @@ const Main = ({
   const { cookie_settings } = useSelector((state) => state.data)
   const organization = useSelector((state) => state.data.organization);
 
-  const { screamId, projectRoomId, organizationId, unknownPathId } =
+  const { screamId, projectRoomId, organizationId, unknownPathId, profileId } =
     useParams();
+  const navigate = useNavigate()
 
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openScream = useSelector((state) => state.UI.openScream);
@@ -168,6 +170,7 @@ const Main = ({
     useState(false);
 
   const user = useSelector((state) => state.user);
+  const myProfileData = useSelector((state) => state.user);
   const { userId } = user;
   const userLikes = user.likes;
 
@@ -200,11 +203,40 @@ const Main = ({
   const mapBounds = useSelector((state) => state.data.mapBounds);
 
   useEffect(() => {
-    unknownPathId && window.history.pushState(null, null, "/");
+
+    unknownPathId && navigate('/')
     projectRoomId && dispatch(openProjectRoomFunc(projectRoomId, true));
     screamId && dispatch(openScreamFunc(screamId));
     organizationId && dispatch(openOrganizationFunc(organizationId, true));
+
+
   }, [dispatch, projectRoomId, screamId, organizationId, unknownPathId]);
+  useEffect(() => {
+
+
+    if (profileId) {
+      dispatch(openAccountFunc())
+      const profilePage = true;
+      if (profileId !== myProfileData.userId && openAccount) {
+        // visiting profile of other user
+
+
+
+
+        dispatch(getUserData(profileId, profilePage))
+        dispatch(getMyScreams(profileId, profilePage));
+        dispatch(getMyOrganizations(profileId, profilePage))
+      } else if (profileId === myProfileData.userId && openAccount) {
+        // visiting my own profile
+
+        dispatch(getUserData(myProfileData.userId, profilePage))
+        dispatch(getMyScreams(myProfileData.userId, profilePage));
+        dispatch(getMyOrganizations(myProfileData.userId, profilePage))
+
+      }
+    }
+  }, [dispatch, openAccount, myProfileData.userId, profileId]);
+
 
   const urlPath = window.location.pathname;
   useEffect(() => {
@@ -261,16 +293,16 @@ const Main = ({
         left: 0,
       });
       if (order === 1) {
-        window.history.pushState(null, null, "/");
+        navigate("/");
       }
       if (order === 2) {
-        window.history.pushState(null, null, "/projectRooms");
+        navigate("/projectRooms");
       }
       if (order === 3) {
-        window.history.pushState(null, null, "/organizations");
+        navigate("/organizations");
       }
       if (order === 4) {
-        window.history.pushState(null, null, "/insights");
+        navigate("/insights");
       }
     },
     [dispatch]
@@ -407,23 +439,15 @@ const Main = ({
 
   const handleOpenMyAccount = () => {
     if (user?.authenticated) {
-      dispatch(openProjectRoomFunc(null, false));
-      dispatch(closeScream());
-      dispatch(openAccountFunc(userId));
-      window.history.pushState(null, null, "/");
-      dispatch(handleTopicSelectorRedux("all"));
+
+      dispatch(openAccountFunc());
+      navigate(`/profile/${userId}`)
+
     } else {
       openModal(<Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
     }
   };
-  useEffect(() => {
-    if (userId && openAccount) {
-      if (userId) {
-        dispatch(getMyScreams(userId));
-        dispatch(getMyOrganizations(userId));
-      }
-    }
-  }, [dispatch, openAccount, userId]);
+
 
 
   const handleCloseOrganizationPage = () => {
@@ -610,6 +634,7 @@ const Main = ({
                   handleButtonLike={handleButtonLike}
                   handleButtonComment={handleButtonComment}
                   user={user}
+                  myProfileData={myProfileData}
                   setOpenStatisticsOverview={setOpenStatisticsOverview}
                   openStatisticsOverview={openStatisticsOverview}
                   setOpenOrganizationsOverview={setOpenOrganizationsOverview}
@@ -706,7 +731,7 @@ const Main = ({
             />
           )}
 
-      </ScaleContainer>}
+      </ScaleContainer>
 
 
 

@@ -101,7 +101,7 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
   const isMobile = isMobileCustom()
   const { closeModal } = useModals()
 
-  const [enableCalendar, setEnableCalendar] = React.useState(false);
+  const [checkIfCalendar, setCheckIfCalendar] = React.useState(false);
   const [selectedDays, setSelectedDays] = useState([]);
 
 
@@ -186,7 +186,7 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
   useEffect(() => {
     projectroomsData?.forEach((project) => {
       if (formikEditIdea.values.projectRoomId === project.projectRoomId) {
-        setEnableCalendar(project.calendar ?? false);
+        setCheckIfCalendar(project.calendar ?? false);
       }
     });
   }, [formikEditIdea.values.projectRoomId]);
@@ -364,7 +364,7 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
               <AddContactForm formikEditIdea={formikEditIdea} validationSchema={editIdeaValidationSchema} onChange={formikEditIdea.setValues} />
             </ModalButton>
 
-            {enableCalendar && (
+            {checkIfCalendar && (
 
               <ModalButton
                 variant={selectedDays.length > 0 ? "primary" : "secondary"}
@@ -372,7 +372,7 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
                 icon={<CalendarIcon />}
                 options={{
                   padding: 20,
-                  title: t('add_contact'),
+                  title: t('add_date'),
                   cancelText: t('cancel'),
                   submitText: t('save'),
                   onSubmit: () => closeModal()

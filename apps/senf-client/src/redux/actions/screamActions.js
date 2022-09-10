@@ -170,9 +170,7 @@ export const closeScream = () => (dispatch) => {
 };
 
 // Post an idea
-export const postScream = (newScream, user, history) => async (dispatch) => {
-  console.log(history, user);
-
+export const postScream = (newScream, user) => async (dispatch) => {
   dispatch({ type: LOADING_DATA });
 
   if (newScream.title.trim() === "") {
@@ -318,10 +316,7 @@ export const getUserEmail = (userId) => async (dispatch) => {
     const docRef = doc(db, "users", userId, "Private", userId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      dispatch({
-        type: SET_SCREAM_USER,
-        payload: docSnap.data(),
-      });
+      console.log(docSnap.data(), "userEmail");
     } else {
       throw new Error("User email not found");
     }

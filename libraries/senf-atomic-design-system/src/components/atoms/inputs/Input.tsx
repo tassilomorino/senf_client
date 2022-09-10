@@ -54,6 +54,7 @@ const Input: FunctionComponent<InputProps> = ({
   success,
   leadingIconClick,
   trailingIconClick,
+  refProp,
 
   // implicit props
   ...props
@@ -62,7 +63,7 @@ const Input: FunctionComponent<InputProps> = ({
   const [isPassword, setIsPassword] = useState(type === "password");
   const [isFocused, setIsFocused] = useState(false);
   // const [value, setValue] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = refProp || useRef<HTMLInputElement>(null);
 
 
 

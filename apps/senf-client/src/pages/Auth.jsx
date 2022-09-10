@@ -41,13 +41,15 @@ import {
   AuthModal
 } from "senf-shared";
 
+import { useNavigate, useParams } from "react-router-dom";
 import { getUserData } from "../redux/actions/userActions";
 
 import { auth, db } from "../firebase";
 import { SET_AUTHENTICATED } from "../redux/types";
 
 const Auth = ({
-  authAddDetails
+  authAddDetails,
+
 }) => {
   const { openModal, closeModal } = useModals()
   const { createUser } = useAuthContext()
@@ -57,13 +59,19 @@ const Auth = ({
   const [uploadingImage, setUploadingImage] = useState(false);
   const [page, setPage] = useState('');
 
-
+  const profilePageUser = useSelector((state) => state.data.profilePage?.profilePageData?.userData);
   const user = useSelector((state) => state.user);
   const reduxUser = useSelector((state) => state.user);
   const userIdInFirebase = getAuth().currentUser?.uid;
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const profileId = window.location.pathname.split('/')[2];
+  // @todo why useParams is not working here?
+  // const { profileId } = useParams();
+
+
   const [
     signInWithEmailAndPassword,
     firebaseEmailPasswordSignInUser,
@@ -100,7 +108,8 @@ const Auth = ({
     editedUser,
     editedUserisLoading,
     editedUserError,
-  ] = useHandleSubmitEditDetails(userIdInFirebase, user, db);
+  ] = useHandleSubmitEditDetails(profilePageUser ?? user, db);
+
   // useEffect(() => {
   //   if (authEditOpen) {
   //     setVerifiedUser(true);
@@ -146,12 +155,12 @@ const Auth = ({
   //     setLoading(true);
   //   }
 
-  //   if (firebaseUserEmailRegistrationInfo) {
-  //     setLoading(false);
-  //     setErrorMessage({ code: "", message: "" });
-  //     setPage('authVerifyEmail')
-  //     window.history.pushState(null, null, "/verify");
-  //   }
+  if (firebaseUserEmailRegistrationInfo) {
+    setLoading(false);
+    setErrorMessage({ code: "", message: "" });
+    setPage('authVerifyEmail')
+    navigate("/verify");
+  }
 
 
 
@@ -187,7 +196,7 @@ const Auth = ({
           closeModal()
           // setPage('AuthSuccess') ??
           console.log('user is verified,all userdetails are set, redirecting  to homepage')
-          window.history.pushState(null, null, "/");
+          navigate("/");
 
         }
         if (user && user.uid && user.emailVerified && !ifAllUserDetailsAreFilled(reduxUser)) {
@@ -196,7 +205,7 @@ const Auth = ({
           dispatch(getUserData(user.uid));
           setPage('authAddDetails')
           console.log('user is verified ,but redirecting  to add details because user details are not fully set')
-          window.history.pushState(null, null, "/");
+          navigate("/");
 
         }
         if (user && user.uid && !user.emailVerified) {
@@ -208,7 +217,7 @@ const Auth = ({
         if (!user) {
           // open modal <AuthOptions/> 
           console.log('user is not logged in')
-          window.history.pushState(null, null, "/");
+          navigate("/");
           setPage('authOptions')
 
         }
@@ -295,7 +304,13 @@ const Auth = ({
     if (editedUser) {
       setLoading(false);
       setErrorMessage({ code: "", message: "" });
-      dispatch(getUserData(user.userId)).then(() => {
+
+
+
+      // edited someone else's or your own profile
+      const profilePage = true
+
+      dispatch(getUserData(profileId, profilePage)).then(() => {
         closeModal()
 
         setErrorMessage({ code: "", message: "" });
@@ -309,7 +324,7 @@ const Auth = ({
         message: editedUserError,
       });
     }
-  }, [editedUser, editedUserError, editedUserisLoading]);
+  }, [editedUser, editedUserError, editedUserisLoading, profileId]);
 
   async function handleImageUpload(event) {
     if (

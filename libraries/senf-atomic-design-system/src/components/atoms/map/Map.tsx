@@ -5,7 +5,6 @@ import styled from "styled-components";
 import mapboxgl from "mapbox-gl";
 // import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "mapbox-gl/dist/mapbox-gl.css";
-import MapboxDraw from "@mapbox/mapbox-gl-draw";
 
 import bbox from "@turf/bbox";
 import { useTranslation } from "react-i18next";
@@ -25,20 +24,19 @@ import useClickMarkers from "./hooks/useClickMarkers";
 import usePolygon from "./hooks/usePolygon";
 import useIdeasMarkers from "./hooks/useIdeasMarkers";
 // import usePin from "./hooks/usePin";
-import useFly from "./hooks/useFly";
 // import useDraw from "./hooks/useDraw";
-
-import { Bulb } from "../../../assets/icons";
 import Button from "../buttons/Button";
 import Box from "../box/Box";
 import MapFilter from "./MapFilter";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
-import Icon from "../icons/Icon";
-import Pin from "../../../assets/icons/Pin";
-import Loader from "../animations/Loader";
-import AddIdeaPin from "./hooks/AddIdeaPin"
 import IdeaPin from "../../../assets/icons/IdeaPin";
 import theme from "../../../styles/theme";
+
+import DrawMapbox from "./utils/DrawMapbox";
+import useIdeaPin from "./hooks/useIdeaPin";
+import { addImagesToMap } from "./utils/addImagesToMap";
+
+
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoidG1vcmlubyIsImEiOiJjazBzZHZjeWQwMWoyM2NtejlzcnMxd3FtIn0.I_Xcc1aJiN7hToGGjNy7ow";
@@ -251,11 +249,12 @@ const Map: FC<MapProps> = ({
   setInitialMapBounds,
   handleSetInitialMapBoundsAndViewport,
   postIdeaOpen,
+  setSwipedUp,
   statefulMap,
   setStatefulMap,
-  drawnPolygon,
-  setDrawnPolygon,
-  handleSaveDrawnPolygon,
+  drawn,
+  handleSaveDrawn,
+  setMode
 }) => {
   const { t } = useTranslation();
   const [statefulDrawMapbox, setStatefulDrawMapbox] = useState(null);
@@ -265,22 +264,31 @@ const Map: FC<MapProps> = ({
   const [mapMoved, setMapMoved] = useState(false);
   const [container, setContainer] = useState(null);
 
+
+
+
+  // const [selectedFeature, setSelectedFeature] = useState(null);
+
+
   const initialFly = useInitialFly();
   const navigationControl = useNavigationControl();
 
   const [geolocateTrigger, setGeolocateTrigger] = useState(false);
 
+  const drawType = mapType?.drawType;
+
+
   const hover = useHover();
   const clickMarkers = useClickMarkers();
 
-  // const geocoder = useGeocoder();
+  const [drawFeatureID, setDrawFeatureID] = useState(null)
+
   // const [statefulMap, setMap] = useState(null);
   const [setProjectroomsMarkersLayer, setProjectroomsMarkersData] =
     useProjectroomsMarkers();
 
   const [setIdeasMarkersLayer, setIdeasMarkersData] = useIdeasMarkers();
   const [setPolygonLayer, setPolygonData] = usePolygon();
-  // const [setPinLayer, setPinData] = usePin();
 
   const [ideaMarkerColor, setIdeaMarkerColor] = useState(null);
 
@@ -299,8 +307,8 @@ const Map: FC<MapProps> = ({
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: "mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6",
-      center: [lng, lat],
-      zoom,
+      center: [lng?.current, lat?.current],
+      zoom: zoom?.current,
       pitch: initialMapViewport.pitch,
     });
 
@@ -308,349 +316,27 @@ const Map: FC<MapProps> = ({
     setStatefulMap(map);
     subscribeMap(map);
     navigationControl(map);
+    addImagesToMap(map)
 
-    if (!isMobile) {
-      hover(map);
+
+
+
+    if (ideasData || projectroomsData || projectroomData) {
+      clickMarkers(map, handleClickIdeaMarker, handleClickProjectroomMarker);
+      setIdeasMarkersLayer(map);
+      setProjectroomsMarkersLayer(map);
+      setPolygonLayer(map);
+
+      if (!isMobile) {
+        hover(map);
+      }
     }
-    clickMarkers(map, handleClickIdeaMarker, handleClickProjectroomMarker);
-    // geocoder(map);
-    // geolocateControl(map);
-    setIdeasMarkersLayer(map);
-    setProjectroomsMarkersLayer(map);
-    setPolygonLayer(map);
-    // setPinLayer(map);
-    setInitialMapBounds(map.getBounds().toArray());
 
-    if (mapType === "draw") {
-      const DrawMapBox = new MapboxDraw({
-        displayControlsDefault: false,
-        // Select which mapbox-gl-draw control buttons to add to the map.
-        controls: {
-          polygon: true,
-          trash: true,
-        },
+    if (setInitialMapBounds) { setInitialMapBounds(map.getBounds().toArray()) };
 
-        styles: [
-          // default themes provided by MB Draw
-
-          {
-            id: "gl-draw-polygon-fill-inactive",
-            type: "fill",
-            filter: [
-              "all",
-              ["==", "active", "false"],
-              ["==", "$type", "Polygon"],
-              ["!=", "mode", "static"],
-            ],
-            paint: {
-              "fill-color": "#3bb2d0",
-              "fill-outline-color": "#3bb2d0",
-              "fill-opacity": 0.4,
-            },
-          },
-          {
-            id: "gl-draw-polygon-fill-active",
-            type: "fill",
-            filter: [
-              "all",
-              ["==", "active", "true"],
-              ["==", "$type", "Polygon"],
-            ],
-            paint: {
-              "fill-color": "green",
-              "fill-outline-color": "grey",
-              "fill-opacity": 0.4,
-            },
-          },
-          {
-            id: "gl-draw-polygon-midpoint",
-            type: "circle",
-            filter: [
-              "all",
-              ["==", "$type", "Point"],
-              ["==", "meta", "midpoint"],
-            ],
-            paint: {
-              "circle-radius": 5,
-              "circle-color": "red",
-            },
-          },
-          {
-            id: "gl-draw-polygon-stroke-inactive",
-            type: "line",
-            filter: [
-              "all",
-              ["==", "active", "false"],
-              ["==", "$type", "Polygon"],
-              ["!=", "mode", "static"],
-            ],
-            layout: {
-              "line-cap": "round",
-              "line-join": "round",
-            },
-            paint: {
-              "line-color": "#3bb2d0",
-              "line-width": 2,
-            },
-          },
-          {
-            id: "gl-draw-polygon-stroke-active",
-            type: "line",
-            filter: [
-              "all",
-              ["==", "active", "true"],
-              ["==", "$type", "Polygon"],
-            ],
-            layout: {
-              "line-cap": "round",
-              "line-join": "round",
-            },
-            paint: {
-              "line-color": "purple",
-              "line-dasharray": [0.2, 2],
-              "line-width": 3,
-            },
-          },
-          {
-            id: "gl-draw-line-inactive",
-            type: "line",
-            filter: [
-              "all",
-              ["==", "active", "false"],
-              ["==", "$type", "LineString"],
-              ["!=", "mode", "static"],
-            ],
-            layout: {
-              "line-cap": "round",
-              "line-join": "round",
-            },
-            paint: {
-              "line-color": "#fed957",
-              "line-width": 5,
-            },
-          },
-          {
-            id: "gl-draw-line-active",
-            type: "line",
-            filter: [
-              "all",
-              ["==", "$type", "LineString"],
-              ["==", "active", "true"],
-            ],
-            layout: {
-              "line-cap": "round",
-              "line-join": "round",
-            },
-            paint: {
-              "line-color": "pink",
-              "line-dasharray": [0.2, 2],
-              "line-width": 3,
-            },
-          },
-          {
-            id: "gl-draw-polygon-and-line-vertex-stroke-inactive",
-            type: "circle",
-            filter: [
-              "all",
-              ["==", "meta", "vertex"],
-              ["==", "$type", "Point"],
-              ["!=", "mode", "static"],
-            ],
-            paint: {
-              "circle-radius": 10,
-              "circle-color": "black",
-            },
-          },
-          {
-            id: "gl-draw-polygon-and-line-vertex-inactive",
-            type: "circle",
-            filter: [
-              "all",
-              ["==", "meta", "vertex"],
-              ["==", "$type", "Point"],
-              ["!=", "mode", "static"],
-            ],
-            paint: {
-              "circle-radius": 5,
-              "circle-color": "purple",
-            },
-          },
-          {
-            id: "gl-draw-point-point-stroke-inactive",
-            type: "circle",
-            filter: [
-              "all",
-              ["==", "active", "false"],
-              ["==", "$type", "Point"],
-              ["==", "meta", "feature"],
-              ["!=", "mode", "static"],
-            ],
-            paint: {
-              "circle-radius": 5,
-              "circle-opacity": 1,
-              "circle-color": "#fff",
-            },
-          },
-          {
-            id: "gl-draw-point-inactive",
-            type: "circle",
-            filter: [
-              "all",
-              ["==", "active", "false"],
-              ["==", "$type", "Point"],
-              ["==", "meta", "feature"],
-              ["!=", "mode", "static"],
-            ],
-            paint: {
-              "circle-radius": 3,
-              "circle-color": "#3bb2d0",
-            },
-          },
-          {
-            id: "gl-draw-point-stroke-active",
-            type: "circle",
-            filter: [
-              "all",
-              ["==", "$type", "Point"],
-              ["==", "active", "true"],
-              ["!=", "meta", "midpoint"],
-            ],
-            paint: {
-              "circle-radius": 7,
-              "circle-color": "orange",
-            },
-          },
-          {
-            id: "gl-draw-point-active",
-            type: "circle",
-            filter: [
-              "all",
-              ["==", "$type", "Point"],
-              ["!=", "meta", "midpoint"],
-              ["==", "active", "true"],
-            ],
-            paint: {
-              "circle-radius": 12,
-              "circle-color": "#fbb03b",
-            },
-          },
-          // {
-          //   id: "gl-draw-polygon-fill-static",
-          //   type: "fill",
-          //   filter: [
-          //     "all",
-          //     ["==", "mode", "static"],
-          //     ["==", "$type", "Polygon"],
-          //   ],
-          //   paint: {
-          //     "fill-color": "#404040",
-          //     "fill-outline-color": "#404040",
-          //     "fill-opacity": 1,
-          //   },
-          // },
-          // {
-          //   id: "gl-draw-polygon-stroke-static",
-          //   type: "line",
-          //   filter: [
-          //     "all",
-          //     ["==", "mode", "static"],
-          //     ["==", "$type", "Polygon"],
-          //   ],
-          //   layout: {
-          //     "line-cap": "round",
-          //     "line-join": "round",
-          //   },
-          //   paint: {
-          //     "line-color": "#404040",
-          //     "line-width": 2,
-          //   },
-          // },
-          // {
-          //   id: "gl-draw-line-static",
-          //   type: "line",
-          //   filter: [
-          //     "all",
-          //     ["==", "mode", "static"],
-          //     ["==", "$type", "LineString"],
-          //   ],
-          //   layout: {
-          //     "line-cap": "round",
-          //     "line-join": "round",
-          //   },
-          //   paint: {
-          //     "line-color": "#404040",
-          //     "line-width": 2,
-          //   },
-          // },
-          // {
-          //   id: "gl-draw-point-static",
-          //   type: "circle",
-          //   filter: ["all", ["==", "mode", "static"], ["==", "$type", "Point"]],
-          //   paint: {
-          //     "circle-radius": 5,
-          //     "circle-color": "blue",
-          //   },
-          // },
-
-          // end default themes provided by MB Draw
-          // end default themes provided by MB Draw
-          // end default themes provided by MB Draw
-          // end default themes provided by MB Draw
-
-          // new styles for toggling colors
-          // new styles for toggling colors
-          // new styles for toggling colors
-          // new styles for toggling colors
-
-          // {
-          //   id: "gl-draw-polygon-color-picker",
-          //   type: "fill",
-          //   filter: [
-          //     "all",
-          //     ["==", "$type", "Polygon"],
-          //     ["has", "user_portColor"],
-          //   ],
-          //   paint: {
-          //     "fill-color": ["get", "user_portColor"],
-          //     "fill-outline-color": ["get", "user_portColor"],
-          //     "fill-opacity": 0.5,
-          //   },
-          // },
-          // {
-          //   id: "gl-draw-line-color-picker",
-          //   type: "line",
-          //   filter: [
-          //     "all",
-          //     ["==", "$type", "LineString"],
-          //     ["has", "user_portColor"],
-          //   ],
-          //   paint: {
-          //     "line-color": ["get", "user_portColor"],
-          //     "line-width": 2,
-          //   },
-          // },
-          // {
-          //   id: "gl-draw-point-color-picker",
-          //   type: "circle",
-          //   filter: [
-          //     "all",
-          //     ["==", "$type", "Point"],
-          //     ["has", "user_portColor"],
-          //   ],
-          //   paint: {
-          //     "circle-radius": 3,
-          //     "circle-color": ["get", "user_portColor"],
-          //   },
-          // },
-        ],
-        // Set mapbox-gl-draw to draw by default.
-        // The user does not have to click the polygon control button first.
-        defaultMode: "draw_polygon",
-      });
-      map.addControl(DrawMapBox);
-
-      setStatefulDrawMapbox(DrawMapBox);
-    }
+    const DrawMap = DrawMapbox
+    map.addControl(DrawMap);
+    setStatefulDrawMapbox(DrawMap);
 
     map.on("dragend", () => {
       setMapMoved(true);
@@ -664,25 +350,66 @@ const Map: FC<MapProps> = ({
     }, 5000);
 
 
-
     return () => map.remove();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (statefulMap && mapType === "draw" && drawnPolygon) {
-      statefulDrawMapbox.add(drawnPolygon);
-      statefulDrawMapbox.changeMode("simple_select");
-
-      const [minLng, minLat, maxLng, maxLat] = bbox(drawnPolygon);
-
-      setTimeout(() => {
-        statefulMap.fitBounds([
-          [minLng - 0.2, minLat - 0.2], // southwestern corner of the bounds
-          [maxLng + 0.2, maxLat + 0.2], // northeastern corner of the bounds
-        ]);
-      }, 300);
+    if (statefulMap && statefulDrawMapbox && drawn) {
+      statefulDrawMapbox.add(drawn);
     }
-  }, [drawnPolygon, statefulMap]);
+  }, [drawn, statefulDrawMapbox, statefulMap]);
+
+  useEffect(() => {
+    if (statefulMap && statefulDrawMapbox && drawType) {
+      if (drawType === "lawn") {
+        statefulDrawMapbox?.changeMode("draw_polygon");
+      } else if (drawType === "bikeLane" || drawType === "crosswalk") {
+        statefulDrawMapbox?.changeMode("draw_line_string");
+      }
+
+      statefulMap.on("click", (e) => {
+        const feature = e.point;
+        // const featureIds = statefulDrawMapbox.add(feature);
+        console.log(feature);
+        console.log(statefulDrawMapbox, e)
+
+        const drawFeatureAtPoint = statefulDrawMapbox.getFeatureIdsAt(e.point);
+
+        const result = drawFeatureAtPoint.filter(element => {
+          return element !== undefined;
+        });
+        const drawFeatureID = result.length ? result[0] : "";
+        if (drawFeatureID) {
+          setDrawFeatureID(drawFeatureID)
+          statefulDrawMapbox.setFeatureProperty(
+            drawFeatureID,
+            "drawType",
+            drawType
+          );
+        }
+      });
+    }
+
+  }, [statefulMap, statefulDrawMapbox, drawType])
+
+  useEffect(() => {
+    if (statefulMap) {
+      if (drawType === "lawn") {
+        statefulDrawMapbox?.changeMode("draw_polygon");
+      } else if (drawType === "bikeLane" || drawType === "crosswalk") {
+        statefulDrawMapbox?.changeMode("draw_line_string");
+      }
+      statefulMap.on("draw.selectionchange", (e) => {
+        const drawFeatureId = e?.features[0]?.id
+        if (drawFeatureId) {
+          setDrawFeatureID(drawFeatureId)
+        }
+      });
+    }
+  }, [statefulMap, statefulDrawMapbox])
+
+
+
 
   useEffect(() => {
     if (projectroomsData) {
@@ -694,13 +421,13 @@ const Map: FC<MapProps> = ({
 
   useEffect(() => {
     if (!mapFilterActive && statefulMap) {
-      initialFly(statefulMap);
+      initialFly(statefulMap, initialMapViewport);
     }
   }, [mapFilterActive]);
 
   useEffect(() => {
     if (statefulMap && !openIdea && !openProjectRoom) {
-      initialFly(statefulMap);
+      initialFly(statefulMap, initialMapViewport);
       setGeolocateTrigger(true)
     }
   }, [statefulMap, openProjectRoom]);
@@ -734,88 +461,9 @@ const Map: FC<MapProps> = ({
 
   useEffect(() => {
     if (ideaData && ideaData.long && ideaData.lat && statefulMap) {
-      const mapboxMarker = new mapboxgl.Marker({ element: container })
-      mapboxMarker
-        .setLngLat([ideaData.long, ideaData.lat])
-        .addTo(statefulMap);
-
-      setIdeaMarkerColor(ideaData.color);
-
-      if (statefulMap?.getLayer("ideas")) {
-        statefulMap?.setFilter('ideas', ['!=', 'screamId', ideaData.screamId]);
-      }
-      // setPinData([{ ideaData }]);
-      setTimeout(() => {
-        statefulMap.flyTo({
-          center: [ideaData.long, ideaData.lat],
-          zoom: 16.5,
-          duration: 2700,
-          pitch: 30,
-        });
-
-        // statefulMap.fitBounds([
-        //   [ideaData.long - 0.001, ideaData.lat - 0.0015], // southwestern corner of the bounds
-        //   [ideaData.long + 0.0003, ideaData.lat + 0.0015], // northeastern corner of the bounds
-        // ]);
-      }, 300);
-    } else {
-      // if (marker) {
-      //   marker.remove();
-
-      // }
-      // setPinData(null);
+      useIdeaPin(statefulMap, container, ideaData, setIdeaMarkerColor);
     }
   }, [ideaData]);
-
-  // useEffect(() => {
-  //   // FLY TO IDEA
-  //   if (statefulMap && ideaData && openScream) {
-  //     setTimeout(() => {
-  //       statefulMap.fitBounds([
-  //         [ideaData.long - 0.001, ideaData.lat - 0.0015], // southwestern corner of the bounds
-  //         [ideaData.long + 0.0003, ideaData.lat + 0.0015], // northeastern corner of the bounds
-  //       ]);
-  //     }, 300);
-  //   }
-  // }, [statefulMap, ideaData, openScream]);
-
-  // const handleClickGeolocate = () => {
-  //   // geolocateControl(statefulMap);
-
-  //   navigator.geolocation.getCurrentPosition((position) => {
-  //     const userCoordinates = [
-  //       position.coords.longitude,
-  //       position.coords.latitude,
-  //     ];
-
-  //     statefulMap.addSource("user-coordinates", {
-  //       type: "geojson",
-  //       data: {
-  //         type: "Feature",
-  //         geometry: {
-  //           type: "Point",
-  //           coordinates: userCoordinates,
-  //         },
-  //       },
-  //     });
-  //     statefulMap.addLayer({
-  //       id: "user-coordinates",
-  //       source: "user-coordinates",
-  //       type: "circle",
-  //       paint: {
-  //         "circle-radius": 7,
-  //         "circle-color": "#4f86ec",
-  //         "circle-stroke-color": "#fff",
-  //         "circle-stroke-width": 2,
-  //       },
-  //     });
-  //     statefulMap.flyTo({
-  //       center: userCoordinates,
-  //       zoom: 16,
-  //     });
-  //   });
-  // };
-
 
   return (
     <React.Fragment>
@@ -844,7 +492,7 @@ const Map: FC<MapProps> = ({
         </Box>
       )}
 
-      {mapType === "draw" && statefulDrawMapbox && (
+      {drawFeatureID && (
         <Box
           position="fixed"
           bottom="10px"
@@ -856,21 +504,28 @@ const Map: FC<MapProps> = ({
           <Button
             text="Delete"
             onClick={() => {
-              statefulDrawMapbox.deleteAll();
-              statefulDrawMapbox.changeMode("draw_polygon");
+              statefulDrawMapbox.delete(drawFeatureID);
+              statefulDrawMapbox.changeMode("simple_select");
+              handleSaveDrawn(statefulDrawMapbox.getAll());
+              setMode(null)
+              setSwipedUp(false)
+              setDrawFeatureID(null)
             }}
           />
           <Button
             variant="white"
             text={t("save")}
-            // loading={}
             onClick={() => {
               statefulDrawMapbox.changeMode("simple_select");
-              handleSaveDrawnPolygon(statefulDrawMapbox.getAll());
+              setMode(null)
+              handleSaveDrawn(statefulDrawMapbox.getAll());
+              setSwipedUp(false)
+              setDrawFeatureID(null)
+
+
 
 
             }}
-          // disabled={!drawnPolygon}
           />
         </Box>
       )}
@@ -884,17 +539,9 @@ const Map: FC<MapProps> = ({
           height: "100%",
         }}
       >
-        {/* <Box position="fixed" top="400px" right="10px" zIndex={999}>
-        <Button icon={<Bulb />} onClsick={handleClickGeolocate} />
-      </Box> */}
-
         {children}
-
-
       </MapContainer>
       <MarkerPin visible={ideaData} ref={setContainer}><IdeaPin transform="translateY(-12px)" color={ideaMarkerColor} /></MarkerPin>
-
-
     </React.Fragment>
   );
 };

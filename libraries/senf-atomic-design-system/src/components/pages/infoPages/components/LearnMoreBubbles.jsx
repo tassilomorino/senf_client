@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { Box, Accordion, Modal } from "senf-atomic-design-system";
+import { Box, Accordion } from "senf-atomic-design-system";
 import Contact from "../../../../assets/infoPages/lastSection/contact.png";
 import Faq from "../../../../assets/infoPages/lastSection/faq.png";
 import Insta from "../../../../assets/infoPages/lastSection/insta.png";
@@ -79,20 +79,20 @@ const LearnMoreBubbles = ({ handleClose }) => {
       {ReactDOM.createPortal(
         <React.Fragment>
           {faqOpen && (
-            <Modal openModal={faqOpen} setOpenModal={() => setFaqOpen(false)}>
-              <Box margin="24px" flexDirection="column">
-                <Typography
-                  variant="h2"
-                  fontWeight="900"
-                  margin="15px 0px 15px 0px"
-                  textAlign="center"
-                >
-                  FAQ
-                </Typography>
+            // <Modal openModal={faqOpen} setOpenModal={() => setFaqOpen(false)}>
+            <Box margin="24px" flexDirection="column">
+              <Typography
+                variant="h2"
+                fontWeight="900"
+                margin="15px 0px 15px 0px"
+                textAlign="center"
+              >
+                FAQ
+              </Typography>
 
-                <Accordion data={faqData} />
-              </Box>
-            </Modal>
+              <Accordion data={faqData} />
+            </Box>
+            // </Modal>
           )}
         </React.Fragment>,
         document.getElementById("portal-root-modal")

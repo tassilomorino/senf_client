@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useRef } from "react";
 import styled from "styled-components";
-import lottie from "lottie-web";
+import lottie from 'lottie-web/build/player/lottie_light.min.js'
 import waveBeige from "../../../assets/lottieFiles/senf-wave-beige.json";
 import waveSenf from "../../../assets/lottieFiles/senf-wave-senf.json";
 
@@ -31,7 +31,7 @@ const Wave = ({ position, top, color }) => {
   const container = useRef(null);
 
   useEffect(() => {
-    lottie.loadAnimation({
+    const anim = lottie.loadAnimation({
       container: container.current,
       renderer: "svg",
       loop: true,
@@ -39,6 +39,10 @@ const Wave = ({ position, top, color }) => {
       animationData: color === "#fed957" ? waveSenf : waveBeige,
       color: "green",
     });
+
+    return () => {
+      anim.destroy();
+    }
   }, []);
 
   return (

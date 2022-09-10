@@ -64,6 +64,7 @@ export { default as Loader } from "./components/atoms/animations/Loader";
 export { default as MainLoader } from "./components/atoms/animations/MainLoader";
 export { default as Map } from "./components/atoms/map/Map";
 export { default as Geocoder } from "./components/atoms/geocoder/Geocoder";
+export { default as SimpleBarChart } from "./components/atoms/charts/SimpleBarChart";
 
 export { default as RangeSlider } from "./components/atoms/rangeSlider/RangeSlider";
 export { default as Button } from "./components/atoms/buttons/Button";
@@ -94,7 +95,6 @@ export { default as OrganizationCard } from "./components/molecules/cards/Organi
 export { default as ObjectCard } from "./components/molecules/cards/ObjectCard";
 export { default as Form } from "./components/molecules/form/Form";
 export { default as List } from "./components/molecules/list/List";
-export { default as Modal } from "./components/molecules/modals/Modal";
 export { default as SwipeModal } from "./components/molecules/modals/SwipeModal";
 export { default as Dialog } from "./components/molecules/dialog/Dialog";
 export { default as SubNavbar } from "./components/molecules/navs/SubNavbar";
@@ -128,6 +128,10 @@ export { default as ProjectroomPage } from "./components/pages/projectroomPage/P
 export { default as ErrorLoading } from "./components/pages/warningPages/ErrorLoading";
 export { default as RotateDevice } from "./components/pages/warningPages/RotateDevice";
 export { default as InfoPageMainApp } from "./components/pages/infoPages/InfoPageMainApp";
+
+export { default as ThreeDToolSwipeList } from "./components/pages/threeDToolSwipeList/ThreeDToolSwipeList";
+
+export { default as PostIdea } from "./components/pages/postIdea/PostIdea";
 
 export { default as theme } from "./styles/theme";
 export { default as GlobalStyle } from "./styles/globals";

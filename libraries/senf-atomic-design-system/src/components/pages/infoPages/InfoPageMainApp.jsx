@@ -13,9 +13,7 @@ import { useTranslation } from "react-i18next";
 
 import styled from "styled-components";
 import {
-  Plus,
   Box,
-  RoundedButton,
   LanguageSelect,
   Button
 } from "senf-atomic-design-system";
@@ -38,7 +36,6 @@ import OpenBook from "../../../assets/illustrations/openBook.png";
 import { openMail } from "../../../util/helpers";
 import FooterLinks from "./components/FooterLinks";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
-import TertiaryButton from "../../atoms/buttons/TertiaryButton";
 import Typography from "../../atoms/typography/Typography";
 import { Mail } from "../../../assets/icons";
 
@@ -593,18 +590,17 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
           ]}
         />
         <LinkHeadline>
-          <TertiaryButton textAlign="left"
+          <Button variant="tertiary"
           // onClick={handleClose}
           >
             {t("infopage_skip")}
-          </TertiaryButton>
+          </Button>
         </LinkHeadline>
 
         <ScrollIndicator>
           <ScrollIndicatorDot />
         </ScrollIndicator>
 
-        {/* <TertiaryButton >Direkt zur Plattform </TertiaryButton> */}
         <Circle
           id="Circle"
           scrollValue={scrollValue}

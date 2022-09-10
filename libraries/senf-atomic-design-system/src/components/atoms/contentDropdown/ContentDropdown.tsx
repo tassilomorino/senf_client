@@ -47,9 +47,9 @@ const ContentDropdown: FC<ContentDropdownProps> = ({
   open,
   setOpen,
 }) => {
-  const outerRef = useRef();
+  const outerRef = useRef(null);
 
-  useOnClickOutside(outerRef, () => setOpen(false));
+  useOnClickOutside(outerRef, () => setOpen && setOpen(false));
 
   return (
     <Wrapper ref={outerRef}>

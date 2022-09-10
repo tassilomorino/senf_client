@@ -1,5 +1,6 @@
 {
   "name": "senf-workspace",
+  "author": "Tassilo Morino, Norbertas Papirtis, Mahammed Maqbol, Leon Vogler",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

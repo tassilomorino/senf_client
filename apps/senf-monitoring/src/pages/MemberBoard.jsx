@@ -68,6 +68,7 @@ const MemberBoard = () => {
   };
 
   const getPendingMembers = async () => {
+    // filter by organization and division
     try {
       const pendingMembersRef = collection(db, "mail");
       const q = query(
@@ -162,7 +163,13 @@ const MemberBoard = () => {
             <Box width="400px">
               <Input type="search" onChange={(e) => setSearchTerm(e?.target?.value)} />
             </Box>
-            <ModalButton text="Add member" options={{ swipe: false }}>
+
+            <ModalButton text="Add member" options={{
+              padding: 20,
+              title: t("add_member"),
+              swipe: isMobile && true
+
+            }}>
               <InviteMember getPendingMembers={getPendingMembers} />
             </ModalButton>
           </Box>
@@ -172,7 +179,7 @@ const MemberBoard = () => {
 
           <Table
             data={order === 1 ? filteredMembers : filteredPendingMembers}
-            checkbox="userId"
+            checkbox={order === 1 ? "userId" : "docId"}
             bulkEdit={<Icon icon="Search" />}
             // this could be an alternative structure
             // template={(member) => ([{
@@ -206,11 +213,16 @@ const MemberBoard = () => {
             //     />
             //   },
             // ])}
-            columns={[
-              t('username'),
-              t('division'),
-              t('roles'),
-            ]}
+            columns={
+              order === 1 ? [
+                { key: "username", label: t('username') },
+                { key: "division", label: t('division') },
+                { key: "role", label: t('role') },
+              ] : [
+                { key: "email", label: t('email') },
+                { key: "division", label: t('division') },
+                { key: "role", label: t('role') },
+              ]}
           >
             {
               (row) => (

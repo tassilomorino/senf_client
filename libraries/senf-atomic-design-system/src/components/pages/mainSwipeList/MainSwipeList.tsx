@@ -161,6 +161,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   handleButtonLike,
   handleButtonComment,
   user,
+  myProfileData,
 
   setPostIdeaOpen,
 
@@ -351,7 +352,6 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
       searchOpen={searchOpen}
       searchTerm={searchTerm}
       setSearchTerm={setSearchTerm}
-      secondButton={<Button variant="secondary" size="small" icon={<More />} />}
       secondButton={
         <Button
           variant="secondary"
@@ -518,6 +518,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
               handleButtonLike={handleButtonLike}
               handleButtonComment={handleButtonComment}
               user={user}
+              myProfileData={myProfileData}
               listEndText={
                 order === "ideas" && ideasData?.length > 0
                   ? t("noMoreIdeas")

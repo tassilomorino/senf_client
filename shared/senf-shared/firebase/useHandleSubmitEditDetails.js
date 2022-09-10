@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { updateDoc, doc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
-export const useHandleSubmitEditDetails = (userIdInFirebase, user, db) => {
-  // try bringingin userIdInFirebase here ?
-  // const userIdInFirebase = getAuth().currentUser?.uid;
-
+export const useHandleSubmitEditDetails = (user, db) => {
   const [updatedUser, setUpdatedUser] = useState();
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -15,16 +13,16 @@ export const useHandleSubmitEditDetails = (userIdInFirebase, user, db) => {
     setError(undefined);
     setUpdatedUser(undefined);
 
-    if (
-      userIdInFirebase !== user.userId ||
+    /*   if (
       user.isAdmin === false ||
       user.isSuperAdmin === false ||
-      user.isModerator === false
+      user.isModerator === false ||
+      user.userId !== currentUser.userId
     ) {
       setError("You are not authorized to edit this user");
       setIsLoading(false);
-      return;
-    }
+      throw new Error("You are not authorized to edit this user");
+    } */
     try {
       await updateDoc(doc(db, "users", user.userId), {
         handle: formik.values.handle ? formik.values.handle : user.handle,

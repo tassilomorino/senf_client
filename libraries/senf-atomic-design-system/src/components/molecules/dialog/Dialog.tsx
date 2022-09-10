@@ -1,11 +1,7 @@
 /** @format */
 
 import React, { FC, useEffect, useRef, useState } from "react";
-import ReactDOM from "react-dom";
 import styled from "styled-components";
-import { trapFocus } from "../../../hooks/trapFocus";
-import { LayerWhiteFirstDefault } from "../../atoms/layerStyles/LayerStyles";
-import SubNavbar from "../navs/SubNavbar";
 import { DialogProps } from "./Dialog.types";
 
 const DialogWrapper = styled.div<DialogProps>`
@@ -17,17 +13,9 @@ const DialogWrapper = styled.div<DialogProps>`
   top: 0;
   height: 100vh;
   width: 100%;
+  pointer-events: all;
 
-  max-width: ${({ size }) =>
-    size === "xxl"
-      ? "100vw"
-      : size === "xl"
-        ? "1200px"
-        : size === "l"
-          ? "800px"
-          : size === "m"
-            ? "600px"
-            : "400px"};
+
   overflow: ${({ overflow }) => overflow || "scroll"};
 
   background-color: ${({ backgroundColor }) => backgroundColor || "white"};
@@ -41,6 +29,16 @@ const DialogWrapper = styled.div<DialogProps>`
     margin: 10px;
     border-radius: 18px;
     height: calc(100vh - 20px);
+    max-width: ${({ size }) =>
+    size === "xxl"
+      ? "100vw"
+      : size === "xl"
+        ? "1200px"
+        : size === "l"
+          ? "800px"
+          : size === "m"
+            ? "600px"
+            : "400px"};
   }
 `;
 
