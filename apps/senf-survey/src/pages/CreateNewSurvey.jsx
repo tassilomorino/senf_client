@@ -6,7 +6,7 @@ import {
   Box,
   Dropdown,
   Input,
-  ModalContext
+  useModals
 } from "senf-atomic-design-system";
 import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
@@ -17,7 +17,7 @@ import { OptionsSurveys } from "../data/OptionsSurveys";
 
 
 const CreateNewSurvey = ({ getSurveys }) => {
-  const { handleModal } = React.useContext(ModalContext) || {};
+  const { closeModal } = useModals();
   const { t } = useTranslation();
   const validationSchema = yup.object({
     title: yup
@@ -46,7 +46,7 @@ const CreateNewSurvey = ({ getSurveys }) => {
         getSurveys();
 
         const surveyId = doc.id;
-        handleModal("pop")
+        closeModal()
       })
 
     } catch (error) {

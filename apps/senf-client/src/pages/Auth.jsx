@@ -155,12 +155,12 @@ const Auth = ({
   //     setLoading(true);
   //   }
 
-  if (firebaseUserEmailRegistrationInfo) {
-    setLoading(false);
-    setErrorMessage({ code: "", message: "" });
-    setPage('authVerifyEmail')
-    navigate("/verify");
-  }
+  // if (firebaseUserEmailRegistrationInfo) {
+  //   setLoading(false);
+  //   setErrorMessage({ code: "", message: "" });
+  //   setPage('authVerifyEmail')
+  //   navigate("/verify");
+  // }
 
 
 

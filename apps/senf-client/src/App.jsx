@@ -137,9 +137,9 @@ const App = () => {
 
 
       <Provider store={store}>
-        <AuthProvider>
-          <ModalProvider>
-            <Router>
+        <Router>
+          <AuthProvider>
+            <ModalProvider>
               <RotateDevice />
               <Routes>
                 <Route exact path="/projectRooms" element={<Home />} />
@@ -180,9 +180,9 @@ const App = () => {
                 <Route exact path="/impressum" element={<Imprint />} />
                 <Route exact path="/blank" element={<Blank />} />
               </Routes>
-            </Router >
-          </ModalProvider >
-        </AuthProvider>
+            </ModalProvider >
+          </AuthProvider>
+        </Router >
 
       </Provider >
 

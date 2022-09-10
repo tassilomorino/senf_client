@@ -6,7 +6,7 @@ import {
   Box,
   Button,
   LayerGreyDefault,
-  ModalContext
+  useModals
 } from "senf-atomic-design-system";
 import styled from "styled-components";
 import Img1 from "../../assets/interface-icons/Start-Icon_1.png";
@@ -28,7 +28,7 @@ const Card = styled.div`
   padding: 15px;
 `;
 const InfoPage = () => {
-  const { handleModal } = React.useContext(ModalContext) || {};
+  const { closeModal } = useModals();
 
   return (
     <Wrapper>
@@ -82,7 +82,7 @@ const InfoPage = () => {
         <Button
           variant="primary"
           text="Los geht's"
-          onClick={() => handleModal("pop")}
+          onClick={() => closeModal()}
         // loading={!isLoaded}
         />
       </Box>

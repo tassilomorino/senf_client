@@ -14,7 +14,7 @@ import Divider from "../../atoms/divider/Divider";
 import Input from "../../atoms/inputs/Input";
 import Typography from "../../atoms/typography/Typography";
 import ModalButton from "../../molecules/modalStack/ModalButton";
-import { ModalContext } from "../../molecules/modalStack/ModalProvider";
+import { useModals } from "../../molecules/modalStack/ModalProvider";
 import DatePicker from "../../organisms/datePicker/DatePicker";
 import { PostIdeaFormProps } from "./PostIdeaForm.types";
 
@@ -34,7 +34,7 @@ z-index:2 ;
 const PostIdeaForm: FC<PostIdeaFormProps> = ({ formik, checkIfCalendar, selectedDays, handleChangeCalendar }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom()
-  const { handleModal } = React.useContext(ModalContext) || {};
+  const { closeModal } = useModals();
 
   const [topicDropdownOpen, setTopicDropdownOpen] = useState(false);
 
@@ -83,11 +83,13 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({ formik, checkIfCalendar, selected
           text={formik?.values.weblinkTitle || t('add_weblink')}
           icon={<Hyperlink />}
           options={{
-            padding: 20,
+            style: {
+              padding: 20,
+            },
             title: t('add_weblink'),
             cancelText: t('cancel'),
             submitText: t('save'),
-            onSubmit: () => handleModal("pop")
+            onSubmit: closeModal
           }}
         >
 
@@ -141,7 +143,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({ formik, checkIfCalendar, selected
             title: t('add_contact'),
             cancelText: t('cancel'),
             submitText: t('save'),
-            onSubmit: () => handleModal("pop")
+            onSubmit: closeModal
           }}
         >
 
@@ -232,7 +234,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({ formik, checkIfCalendar, selected
             title: t('add_date'),
             cancelText: t('cancel'),
             submitText: t('save'),
-            onSubmit: () => handleModal("pop")
+            onSubmit: closeModal
           }}
         >
 

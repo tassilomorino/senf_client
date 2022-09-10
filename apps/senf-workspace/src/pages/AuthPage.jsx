@@ -363,6 +363,8 @@ const AuthPage = ({ authAddDetails }) => {
     return () => clearTimeout(timeoutID);
   }, [currentUser])
 
+  const [l, setL] = useState(false)
+
   return (
     <Section>
       <Box margin="20px">
@@ -370,7 +372,7 @@ const AuthPage = ({ authAddDetails }) => {
         {currentUser && <Button onClick={signOut}>Logout</Button>}
       </Box>
       <Box padding="20px">
-        <ModalButton text="open 1" options={{
+        <ModalButton text="open 1" loading={l} options={{
           // swipe: true,
           cancelText: "Cancel",
           submitText: "Submit",
@@ -378,7 +380,7 @@ const AuthPage = ({ authAddDetails }) => {
           title: "Modal Title",
           description: "The description of the modal",
           swipe: true,
-          beforeOpen: () => new Promise((resolve, reject) => { console.log('before, and wait a sec'); setTimeout(resolve, 1000) }),
+          beforeOpen: () => { setL(true); return new Promise((resolve, reject) => { console.log('before, and wait a sec'); setTimeout(() => { setL(false); resolve() }, 2500) }) },
           afterOpen: () => console.log('after open'),
           beforeClose: () => console.log('before close'),
           afterClose: () => console.log('after close'),
