@@ -72,7 +72,6 @@ const AuthPage = ({ authAddDetails }) => {
   const [errorMessage, setErrorMessage] = useState({ code: "", message: "" });
   const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
-  const [page, setPage] = useState('');
 
 
   const { user: currentUser, signOut } = useAuthContext();
@@ -336,14 +335,6 @@ const AuthPage = ({ authAddDetails }) => {
   //   };
   // }, []);
 
-  useEffect(() => {
-    if (authAddDetails) {
-      setPage('authAddDetails')
-    }
-  }, [authAddDetails])
-
-
-
   const Modal = <AuthModal
     success={() => closeModal()}
     error={(err) => console.error(err)}
@@ -380,7 +371,7 @@ const AuthPage = ({ authAddDetails }) => {
           title: "Modal Title",
           description: "The description of the modal",
           swipe: true,
-          beforeOpen: () => { setL(true); return new Promise((resolve, reject) => { console.log('before, and wait a sec'); setTimeout(() => { setL(false); resolve() }, 2500) }) },
+          beforeOpen: () => { setL(true); return new Promise((resolve, reject) => { console.log('before, and wait a sec'); setTimeout(() => { setL(false); resolve() }, 1000) }) },
           afterOpen: () => console.log('after open'),
           beforeClose: () => console.log('before close'),
           afterClose: () => console.log('after close'),

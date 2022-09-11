@@ -4,7 +4,7 @@ import {
   sendEmailVerification,
   UserCredential,
 } from "firebase/auth";
-
+import { FormikValues } from "formik";
 import {
   collection,
   where,
@@ -22,7 +22,7 @@ export const useCreateUserWithEmailAndPassword = (
   auth: Auth,
   db: Firestore,
   options?: CreateUserOptions
-): EmailAndPasswordActionHook => {
+): (formikRegisterStore: FormikValues) => Promise<UserCredential> => {
 
   return async (formikRegisterStore) => {
     try {
@@ -33,7 +33,7 @@ export const useCreateUserWithEmailAndPassword = (
       );
       const usernameQuerySnapshot = await getDocs(q);
       // username already exists
-      if (!usernameQuerySnapshot.empty) throw new Error({ code: "auth/username-exists" })
+      if (!usernameQuerySnapshot.empty) throw new Error("auth/username-exists")
 
       const userCredential = await firebaseCreateUserWithEmailAndPassword(
         auth,
@@ -47,7 +47,6 @@ export const useCreateUserWithEmailAndPassword = (
       if (options?.sendEmailVerification) {
         await sendEmailVerification(userCredential.user, options.emailVerificationOptions);
       }
-      console.log(userCredential)
       return userCredential
     } catch (err) {
       throw new Error(err)

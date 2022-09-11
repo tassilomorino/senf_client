@@ -3,8 +3,11 @@ import React from "react";
 import { onAuthStateChanged } from "@firebase/auth";
 import {
   signOut,
-  // sendPasswordResetEmail,
-  // deleteUser
+  sendPasswordResetEmail,
+  sendEmailVerification,
+  deleteUser,
+  User,
+  UserCredential
 } from "firebase/auth";
 
 import { collection, query, where, getDocs } from "firebase/firestore";
@@ -13,9 +16,9 @@ import { db, auth } from "./firebase";
 import { useSignIn } from '../firebase/useSignInWithPopup'
 import { useCreateUserWithEmailAndPassword } from '../firebase/useCreateUserWithEmailAndPassword'
 
-const AuthContext = React.createContext();
+const AuthContext = React.createContext({});
 
-const AuthProvider: FC = ({ children }) => {
+const AuthProvider = ({ children }) => {
 
   const [user, setUser] = React.useState(null);
   const blankError = { code: "", message: "" };
@@ -24,8 +27,9 @@ const AuthProvider: FC = ({ children }) => {
 
   // Methods
 
-  const getUserData = async (user) => {
-    if (!user?.uid) throw Error("User is not logged in");
+  const getUserData = async (user: UserCredential) => {
+    if (!user) throw Error("User is not logged in");
+    if (!user?.uid) return user
     const usersRef = collection(db, "users");
     const q = query(usersRef, where("userId", "==", user.uid));
     const snapshot = await getDocs(q)
@@ -47,7 +51,7 @@ const AuthProvider: FC = ({ children }) => {
 
   // Handler
   const handler = {
-    signIn(data: { provider?: string, email?: string, password?: string, id?: string }): Promise {
+    signIn(data: { provider?: string, email?: string, password?: string, id?: string }): Promise<User> {
       setErrorMessage(blankError)
       const { provider, email, password, id } = data;
       return new Promise((resolve, reject) => {
@@ -64,8 +68,7 @@ const AuthProvider: FC = ({ children }) => {
             break;
           case 'email':
           default:
-            signInWith.email(email, password)
-              .then(getUserData)
+            signInWith.email(email || "", password || "")
               .then(resolve)
               .catch(err => { setErrorMessage(err); reject(err) })
               .finally(() => setLoading(false));
@@ -73,10 +76,10 @@ const AuthProvider: FC = ({ children }) => {
         }
       })
     },
-    async signOut(): Promise {
+    async signOut() {
       return signOut(auth)
     },
-    async deleteUserFromDb(userId): Promise {
+    async deleteUserFromDb(userId): Promise<any> {
       const currentuser = auth.currentUser;
       if (userId) {
         try {
@@ -100,7 +103,7 @@ const AuthProvider: FC = ({ children }) => {
         try {
           deleteUser(currentuser);
         } catch (error) {
-          throw new Error(error, " error during deleteUserFromDb without userId");
+          throw new Error(error, "error during deleteUserFromDb without userId");
         }
       }
 
@@ -114,7 +117,11 @@ const AuthProvider: FC = ({ children }) => {
           .finally(() => setLoading(false));
       })
     },
-    // resetPassword
+
+    async sendPasswordResetEmail(email: string) {
+      sendPasswordResetEmail(auth, email)
+    },
+    sendEmailVerification,
 
   }
 

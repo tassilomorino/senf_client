@@ -1,6 +1,8 @@
 /** @format */
 
-import { MouseEventHandler } from "react";
+import {
+  User
+} from "firebase/auth";
 
 type Provider = "apple" | "facebook" | "google";
 export interface AuthProps {
@@ -20,11 +22,11 @@ export interface AuthProps {
   emailVerified?: boolean;
   authHandler?: {
     signIn: {
-      [Provider]?: () => Promise;
+      [K in Provider]?: () => Promise<User>;
     },
     loading: {
-      [Provider]?: boolean;
+      [K in Provider]?: boolean;
     },
-    signOut: () => Promise;
+    signOut: () => Promise<User>;
   };
 }

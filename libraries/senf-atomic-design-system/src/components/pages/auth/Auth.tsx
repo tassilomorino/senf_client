@@ -2,6 +2,9 @@
 
 import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
+import { useTranslation } from "react-i18next";
+import { useAuthContext } from "senf-shared";
+import { reset } from "linkifyjs";
 import Wave from "../../atoms/shapes/Wave";
 import { AuthProps } from "./Auth.types";
 
@@ -21,16 +24,14 @@ import AuthEmail from "../../templates/auth/AuthEmail";
 import AuthResetEmail from "../../templates/auth/AuthResetEmail";
 import AuthVerifyEmail from "../../templates/auth/AuthVerifyEmail";
 import AuthAddDetails from "../../templates/auth/AuthAddDetails";
-import TertiaryButton from "../../atoms/buttons/TertiaryButton";
 import Button from "../../atoms/buttons/Button";
 
 import { useModals } from "../../molecules/modalStack/ModalProvider";
 
+
 const Wrapper = styled.div<AuthProps>`
   position: relative;
   width: 100%;
-  min-width: 400px;
-  max-width: 400px;
   min-height: 700px;
   background-color: ${(props) => props.theme.colors.beige.beige20};
   overflow: hidden;
@@ -76,31 +77,19 @@ const Auth: FC<AuthProps> = ({
   page,
   setPage
 }) => {
-  const { openModal, closeModal } = useModals();
+  const { openModal } = useModals();
 
+  const { t } = useTranslation();
 
   useEffect(() => {
-    console.log(page)
-    if (page === "authEmail") openModal(<AuthEmail
-      setPage={setPage}
-      handleSubmitRegister={authHandler.createUser}
-      handleSubmitLogin={authHandler.signIn.email}
-      registerLoading={registerLoading}
-      loginLoading={authHandler.loading.email}
-      errorMessage={errorMessage}
-    />)
+    if (page === "authResetEmail") openModal((
+      <AuthResetEmail setPage={setPage} />
+    ), {
+      title: `${t("reset_header_1")} ${t("reset_header_2")}`,
+      description: t("reset_password"),
+      afterClose: () => setPage("authEmail"),
+    })
   }, [page])
-  // useEffect(() => {
-  //   console.log(page)
-  //   if (page === "authEmail") openModal(<AuthEmail
-  //     setPage={setPage}
-  //     handleSubmitRegister={authHandler.createUser}
-  //     handleSubmitLogin={authHandler.signIn.email}
-  //     registerLoading={registerLoading}
-  //     loginLoading={authHandler.loading.email}
-  //     errorMessage={errorMessage}
-  //   />, { onClose: () => setPage(""), afterClose: () => { setPage(""); console.log("yooo") } })
-  // }, [page])
 
   return (
     <Wrapper>
@@ -109,7 +98,7 @@ const Auth: FC<AuthProps> = ({
           page !== "authOptions" && (
             <Button
               variant="tertiary"
-              icon={<Arrow transform="rotate(180deg)" />}
+              icon={<Arrow transform="rotate(180)" />}
               onClick={() => {
                 setPage("authOptions")
                 window.history.pushState(null, null, "/")
@@ -156,23 +145,23 @@ const Auth: FC<AuthProps> = ({
 
 
       {(() => {
-        // if (page === "authEmail") {
-        //   return <AuthEmail
-        //     setPage={setPage}
-        //     handleSubmitRegister={handleSubmitRegister}
-        //     handleSubmitLogin={authHandler.signIn.email}
-        //     registerLoading={registerLoading}
-        //     loginLoading={authHandler.loading.email}
-        //     errorMessage={errorMessage}
-        //   />
-        // }
-        if (page === "authResetEmail") {
-          return <AuthResetEmail
-            resetLoading={resetLoading}
-            handleSubmitResetEmail={handleSubmitResetEmail}
-            dataSuccess={dataSuccess}
+        if (page === "authEmail" || page === "authResetEmail") {
+          return <AuthEmail
+            setPage={setPage}
+            handleSubmitRegister={authHandler.createUser}
+            handleSubmitLogin={authHandler.signIn.email}
+            registerLoading={authHandler.loading.email}
+            loginLoading={authHandler.loading.email}
+            errorMessage={errorMessage}
           />
         }
+        // if (page === "authResetEmail") {
+        //   return <AuthResetEmail
+        //     resetLoading={resetLoading}
+        //     handleSubmitResetEmail={handleSubmitResetEmail}
+        //     dataSuccess={dataSuccess}
+        //   />
+        // }
         if (page === "authVerifyEmail") {
           return <AuthVerifyEmail />
         }

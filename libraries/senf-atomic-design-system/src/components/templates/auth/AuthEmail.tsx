@@ -113,6 +113,7 @@ const AuthEmail: FC<AuthEmailProps> = ({
     validateOnMount: true,
     validateOnChange: true,
     validateOnBlur: true,
+    onSubmit: () => console.log("values"),
   });
 
   const formikRegisterStore = useFormik({

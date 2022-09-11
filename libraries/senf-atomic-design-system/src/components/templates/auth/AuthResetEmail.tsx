@@ -3,23 +3,25 @@
 import React, { FC, useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { Trans, useTranslation } from "react-i18next";
+import { useFormik } from "formik";
+import * as yup from "yup";
+import { useAuthContext } from "senf-shared";
 import Button from "../../atoms/buttons/Button";
 import Box from "../../atoms/box/Box";
 import { AuthResetEmailProps } from "./AuthResetEmail.types";
-import { useFormik } from "formik";
-import * as yup from "yup";
 import Typography from "../../atoms/typography/Typography";
 import Form from "../../molecules/form/Form";
 import theme from "../../../styles/theme";
+import ModalActionButtons from "../../molecules/modalStack/ModalActionButtons";
 
 const AuthResetEmail: FC<AuthResetEmailProps> = ({
-  resetLoading,
-  handleSubmitResetEmail,
-  dataSuccess,
+  setPage
 }) => {
   const { t } = useTranslation();
+  const { sendPasswordResetEmail } = useAuthContext() || {};
 
   const inputItems = [{ name: "email", type: "email", placeholder: "E-Mail" }];
+
 
   const validationSchema = yup.object({
     email: yup
@@ -30,23 +32,29 @@ const AuthResetEmail: FC<AuthResetEmailProps> = ({
 
   const formikStore = useFormik({
     initialValues: {
-      email: "",
+      email: ""
     },
-    validationSchema: validationSchema,
+    validationSchema,
     validateOnMount: true,
     validateOnChange: true,
     validateOnBlur: true,
     onSubmit: () => console.log("values"),
   });
 
+  const options = {
+    submitText: t("reset"),
+    submitDisabled: !formikStore.isValid,
+    onSubmit: () => sendPasswordResetEmail(formikStore.values.email).then(() => console.log("email sent")),
+  }
+
   return (
     <Box
       flexDirection="column"
-      margin="180px 10% 0px 10%"
+      // margin="180px 10% 0px 10%"
       position="relative"
       zIndex={9999}
     >
-      <Typography variant="h1" style={{ position: "relative" }}>
+      {/* <Typography variant="h1" style={{ position: "relative" }}>
         {t("reset_header_1")}
       </Typography>
       <Typography variant="h1" style={{ position: "relative" }}>
@@ -56,25 +64,27 @@ const AuthResetEmail: FC<AuthResetEmailProps> = ({
         <Typography variant="bodyBg" style={{ position: "relative" }}>
           {t("reset_password")}
         </Typography>
-      </Box>
-      <Box gap="16px" flexDirection="column" width="100%">
+      </Box> */}
+      <Box gap="16px" flexDirection="column" width="100%" padding="20px">
         <Form width="100%" inputItems={inputItems} formik={formikStore} />
 
-        {dataSuccess && (
+        {/* {dataSuccess && (
           <Typography variant="bodySm" color={theme.colors.signal.greenDark}>
             {dataSuccess}
           </Typography>
-        )}
+        )} */}
 
-        <Button
+        {/* <Button
           variant="white"
           fillWidth="max"
           text={t("reset")}
           loading={resetLoading}
           onClick={() => handleSubmitResetEmail(formikStore)}
           disabled={!formikStore?.isValid}
-        />
-      </Box>{" "}
+        /> */}
+      </Box>
+      <ModalActionButtons {...options} />
+
     </Box>
   );
 };

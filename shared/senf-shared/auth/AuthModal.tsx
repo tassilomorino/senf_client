@@ -12,7 +12,7 @@ const providerId = {
 const AuthModal: FC<{ success: () => void, error: () => void, handleClose: () => void }> = ({ success, error, handleClose }) => {
 	const [page, setPage] = useState('');
 
-	const { user, signIn, signOut, createUser, loading, errorMessage } = useAuthContext();
+	const { user, signIn, signOut, createUser, loading, errorMessage } = useAuthContext() || {};
 
 	const [facebookLoading, setFacebookLoading] = useState(false)
 	const [googleLoading, setGoogleLoading] = useState(false)

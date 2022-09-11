@@ -9,6 +9,7 @@ import {
   signInWithPopup,
   signInWithEmailAndPassword as firebaseSignInWithEmailAndPassword,
   UserCredential,
+  User
 } from "firebase/auth";
 import { doc, Firestore, getDoc } from "firebase/firestore";
 import { useMemo, useState } from "react";
@@ -133,7 +134,7 @@ const signIn = async (
   db: Firestore,
   scopes?: string[],
   customOAuthParameters?: CustomParameters,
-) => {
+): Promise<User> => {
   let provider: AuthProvider;
   switch (providerName) {
     case "apple": provider = new OAuthProvider('apple.com'); break;
@@ -164,13 +165,17 @@ const signIn = async (
 export const useSignIn = (
   auth: Auth,
   db: Firestore,
-): SignInWithPopupHook => {
+): {
+  provider: (provider: Provider,
+    scopes?: string[],
+    customOAuthParameters?: CustomParameters) => Promise<UserCredential>, email: (email: string, password: string) => Promise<UserCredential>
+} => {
   return {
     provider: (
-      provider: Provider,
-      scopes?: string[],
-      customOAuthParameters?: CustomParameters,
+      provider,
+      scopes,
+      customOAuthParameters,
     ) => signIn(provider, auth, db, scopes, customOAuthParameters),
-    email: (email: string, password: string) => signInWithEmailAndPassword(email, password, auth)
+    email: (email, password) => signInWithEmailAndPassword(email, password, auth)
   }
 };
