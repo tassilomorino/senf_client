@@ -7,12 +7,13 @@ import { LoaderProps } from "./Loader.types";
 import DotLoader from "../../../assets/lottieFiles/dotLoader.json";
 
 const StyledLoader = styled.div<LoaderProps>`
-  width: ${(props) => (props.width ? props.width : "100%")};
-  height: ${(props) => (props.height ? props.height : "100%")};
+  width: ${({ width }) => (width || "100%")};
+  height: ${({ height }) => (height || "100%")};
   position: relative;
-  transform: scale(1.5);
+  fill: ${({ color }) => color || "inherit"};
+  transform: scale(3);
 `;
-const Loader: FC<LoaderProps> = ({ width, height }) => {
+const Loader: FC<LoaderProps> = ({ width, height, color }) => {
   const container = useRef(null);
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const Loader: FC<LoaderProps> = ({ width, height }) => {
     }
   }, []);
 
-  return <StyledLoader height={height} width={width} ref={container} />;
+  return <StyledLoader height={height} width={width} color={color} ref={container} />;
 };
 
 export default Loader;

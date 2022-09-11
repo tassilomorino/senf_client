@@ -28,6 +28,7 @@ const StyledButton = styled.button < ButtonProps> `
   flex-direction: row;
   justify-content: ${({ justifyContent }) => justifyContent || "center"};
   align-items: center;
+  gap: ${({ theme }) => theme.space[4]};
 
   //ADD THEME-OPACITY
   opacity: ${({ disabled }) => (disabled === true ? 0.6 : 1)};
@@ -109,21 +110,6 @@ const StyledButton = styled.button < ButtonProps> `
   }
 `;
 
-const LoaderWrapper = styled.span`
-  /* position: absolute; */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 2.5em;
-  margin: -1em -0.75em;
-  /* width: 100%; */
-  /* height: 100%; */
-  `;
-
-const IconWrapper = styled.div < ButtonProps> `
-  padding-right: ${(props) => (props.text === undefined ? "0px" : "10px")};
-`;
-
 const Button: FC<ButtonProps> = ({
   text,
   children,
@@ -143,25 +129,24 @@ const Button: FC<ButtonProps> = ({
   <StyledButton type="button" text={text} variant={variant} color={color} icon={icon} borderStyle={borderStyle}
     justifyContent={justifyContent} fillWidth={fillWidth} loading={loading} onClick={onClick} size={size}
     {...rest}>
-    {
-      children && children
-    }
-    {
-      icon && (<IconWrapper text={text}>
-        {loading ? <LoaderWrapper><Loader /></LoaderWrapper> : <Icon icon={icon} transform={transform} />}
-      </IconWrapper>)
-    }
-    {loading && !icon ? <LoaderWrapper><Loader /></LoaderWrapper> : text}
 
-    {iconRight && (
-      <Box marginLeft="11px">
-        <Icon
-          icon={iconRight}
-
-        />
+    {(icon || loading) && (
+      <Box position={!icon && text && "absolute" || undefined}>
+        <Icon icon={loading ? "Loading" : icon} transform={transform} />
       </Box>
     )}
 
+    {children && children}
+
+    {text && (
+      <Box opacity={loading && !icon ? 0 : 1}>{text}</Box>
+    )}
+
+    {iconRight && (
+      <Box>
+        <Icon icon={iconRight} />
+      </Box>
+    )}
 
   </StyledButton>);
 

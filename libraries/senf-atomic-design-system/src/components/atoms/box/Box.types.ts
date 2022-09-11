@@ -36,4 +36,5 @@ export interface BoxProps {
   flexWrap?: "nowrap" | "wrap" | "wrap-reverse";
   position?: "fixed" | "absolute" | "relative" | "sticky";
   onclick?: MouseEventHandler;
+  opacity?: number;
 }
