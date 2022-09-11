@@ -24,14 +24,14 @@ const Handle = styled.div`
 	height: 5px;
 	width: 100%;
 	border-radius: 20px;
-	background-color: ${({ theme, handleColor }) => handleColor || theme.colors.greyscale.greyscale50tra};
+	background-color: ${({ theme, color }) => color || theme.colors.greyscale.greyscale50tra};
 	/* box-shadow: 0 0 0 5px ${({ theme }) => theme.colors.white.white80tra}; */
 `
 
-const ModalHandle = ({ swipe, handleColor, onClose, ...props }) => {
+const ModalHandle = ({ swipe, color, onClose, ...props }) => {
 	return (
 		<HandleContainer onClick={onClose} position={swipe ? "center" : "right"} {...props}>{
-			swipe ? <Handle handleColor={handleColor} /> : <RoundedButton icon={<Close />} />
+			swipe ? <Handle color={color} /> : <RoundedButton icon={<Close />} />
 		}</HandleContainer>
 	);
 }

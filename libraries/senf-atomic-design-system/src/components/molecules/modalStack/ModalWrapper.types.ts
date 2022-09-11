@@ -5,7 +5,7 @@ import React from "react";
 export interface ModalOptions {
   title?: string;
   description?: string;
-  onSubmit?: () => void;
+  onSubmit?: () => any | void;
   onClose?: () => void;
   setOpacity?: (opacity: number) => void;
   index?: number;
@@ -13,8 +13,8 @@ export interface ModalOptions {
   submitText?: string;
   submitLoading?: boolean;
   cancelText?: string;
-  size?: "full" | "xl" | "lg" | "md" | "sm";
-  children?: React.ReactNode | React.ReactNodeArray;
+  size?: "full" | "xl" | "lg" | "md" | "sm" | "l" | "m" | "s";
+  children?: React.ReactNode | React.ReactNode[];
   height?: number;
   swipe?: boolean;
   style?: React.CSSProperties;
@@ -23,26 +23,36 @@ export interface ModalOptions {
   afterOpen?: () => void;
   beforeClose?: () => void;
   afterClose?: () => void;
-}
-export interface ModalProps {
-  type: React.ComponentType;
-  props: React.HTMLProps;
-  options: ModalOptions;
+  isMobile?: boolean;
+  maxHeight?: number;
 }
 
+export interface ModalProps {
+  type: React.ComponentType;
+  props: React.HTMLProps<HTMLElement>;
+  options?: ModalOptions;
+}
+
+export interface ModalContainerProps {
+  item: ModalProps,
+  index: number,
+  style?: React.CSSProperties & { shading: number, y: number },
+  closeModal: () => void,
+
+}
 export interface ModalStackValue {
   /**
    * Opens a modal using the provided component, clearing all open modals
    */
   setModal: (
-    modal: React.Component,
+    modal: React.ComponentElement<ModalProps, React.Component<ModalProps>>,
     options?: ModalOptions
   ) => any
   /**
    * Opens a modal using the provided component, on top of the stack
    */
   openModal: (
-    modal: React.Component,
+    modal: React.ComponentElement<ModalProps, React.Component<ModalProps>>,
     options?: ModalOptions
   ) => any
 

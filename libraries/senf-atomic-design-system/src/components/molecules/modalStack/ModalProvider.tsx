@@ -50,7 +50,7 @@ const ModalProvider = ({
 
     const openModal = async ({ type, props }, options, reset) => {
       if (reset) dismissAll()
-      const modal = { type, props, options }
+      const modal = { type, props: { ...options, ...props }, options: { ...options, ...props } }
       const { beforeOpen, afterOpen } = options || {}
       try {
         await beforeOpen?.()

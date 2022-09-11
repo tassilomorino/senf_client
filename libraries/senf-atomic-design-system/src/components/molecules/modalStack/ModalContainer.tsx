@@ -3,13 +3,13 @@ import React, { useState } from 'react'
 
 import styled from "styled-components";
 import { useDrag } from "@use-gesture/react";
-import { a, useSpring, config, interpolate } from "@react-spring/web";
+import { a, useSpring, config, to } from "@react-spring/web";
 
 import theme from "../../../styles/theme";
 import ModalHandle from "./ModalHandle";
 import ModalActionButtons from "./ModalActionButtons";
 import ModalHeader from "./ModalHeader";
-import { ModalProps, ModalOptions } from "./ModalWrapper.types";
+import { ModalContainerProps, ModalOptions } from "./ModalWrapper.types";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 
 
@@ -39,6 +39,7 @@ const sheet = {
 	backgroundColor: "white",
 	minHeight: "120px",
 	borderRadius: `${theme.radii[5]}px`,
+	padding: 0
 }
 const toner = {
 	position: "absolute",
@@ -48,9 +49,9 @@ const toner = {
 	touchAction: "none"
 }
 
-const ModalContainer = ({ item, index, style, closeModal }: { item: ModalProps }) => {
+const ModalContainer = ({ item, index, style, closeModal }: ModalContainerProps) => {
 
-	const { type: Component, props } = item
+	const { type: ModalComponent, props } = item
 	const options = item.options || {}
 
 	const height = options?.height || 0.0001
@@ -60,16 +61,16 @@ const ModalContainer = ({ item, index, style, closeModal }: { item: ModalProps }
 	options.onClose = closeModal
 	options.isMobile = isMobileCustom()
 
-	const [innerHeight, setInnerHeight] = React.useState(null);
-	const [outerHeight, setOuterHeight] = React.useState(null);
+	const [innerHeight, setInnerHeight] = React.useState(0);
+	const [outerHeight, setOuterHeight] = React.useState(0);
 	const [overflowing, setOverflowing] = React.useState(options?.swipe);
-	const wrapperRef = React.useRef(null)
-	const sheetRef = React.useRef(null)
+	const wrapperRef = React.useRef<HTMLElement>(null)
+	const sheetRef = React.useRef<HTMLElement>(null)
 
 	React.useEffect(() => {
 		setTimeout(() => {
-			setInnerHeight(sheetRef.current?.offsetHeight)
-			setOuterHeight(wrapperRef.current?.offsetHeight)
+			setInnerHeight(sheetRef.current?.offsetHeight || 0)
+			setOuterHeight(wrapperRef.current?.offsetHeight || 0)
 			setOverflowing(outerHeight < innerHeight)
 		}, 0)
 	}, [innerHeight, outerHeight])
@@ -130,7 +131,7 @@ const ModalContainer = ({ item, index, style, closeModal }: { item: ModalProps }
 	const outerStyle = {
 		...style,
 		...toner,
-		y: interpolate([y, style.y], (dragged, offset) => dragged + offset),
+		y: to([y, style?.y || 0], (dragged, offset) => dragged + offset),
 		width: getWidth(options),
 		maxWidth: "100vw",
 		maxHeight: getMaxHeight(options, PADDING),
@@ -139,7 +140,7 @@ const ModalContainer = ({ item, index, style, closeModal }: { item: ModalProps }
 	}
 	const innerStyle = {
 		...sheet,
-		opacity: style.shading,
+		opacity: style?.shading,
 		paddingBottom: options?.isMobile ? PADDING : sheet.padding,
 	}
 	return (
@@ -155,7 +156,7 @@ const ModalContainer = ({ item, index, style, closeModal }: { item: ModalProps }
 				<div {...bindHandle} style={{ position: "sticky", top: 0, zIndex: 99 }}><ModalHandle {...options} /></div>
 				<ModalHeader {...options} />
 
-				{options?.style ? <div style={{ ...options?.style }}><Component {...props} /></div> : <Component {...props} />}
+				{options?.style ? <div style={{ ...options?.style }}><ModalComponent {...props} /></div> : <ModalComponent {...props} />}
 				<ModalActionButtons {...options} />
 				{index > 0 && <ClickEventBlocker onClick={closeModal} />}
 			</a.div>
