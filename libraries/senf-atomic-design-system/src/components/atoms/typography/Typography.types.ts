@@ -6,13 +6,14 @@ export interface TypographyProps {
   fontWeight?: string | number;
   color?: string;
   textAlign?: string;
+  lineHeight?: string;
   variant:
-    | "h1"
-    | "h2"
-    | "h3"
-    | "buttonBg"
-    | "buttonSm"
-    | "bodyBg"
-    | "bodySm"
-    | "footnote";
+  | "h1"
+  | "h2"
+  | "h3"
+  | "buttonBg"
+  | "buttonSm"
+  | "bodyBg"
+  | "bodySm"
+  | "footnote";
 }

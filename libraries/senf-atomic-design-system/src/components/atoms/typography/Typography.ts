@@ -69,7 +69,7 @@ const Typography = styled.p<TypographyProps>`
     return `
       font-size: ${fontSize};
       font-weight: ${fontWeight};
-      line-Height: ${lineHeight};
+      line-height: ${lineHeight};
       color: ${color};
     `;
   }}
@@ -77,6 +77,7 @@ const Typography = styled.p<TypographyProps>`
   color: ${({ color }) => color};
   font-size: ${({ fontSize }) => fontSize};
   font-weight: ${({ fontWeight }) => fontWeight};
+  line-height: ${({ lineHeight }) => lineHeight};
   text-align: ${({ textAlign }) => textAlign};
 `;
 
