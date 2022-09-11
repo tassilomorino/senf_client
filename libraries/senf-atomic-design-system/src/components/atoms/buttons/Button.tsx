@@ -139,7 +139,7 @@ const Button: FC<ButtonProps> = ({
     {children && children}
 
     {text && (
-      <Box opacity={loading && !icon ? 0 : 1}>{text}</Box>
+      <span style={{ opacity: (loading && !icon) ? 0 : 1 }}>{text}</span>
     )}
 
     {iconRight && (
