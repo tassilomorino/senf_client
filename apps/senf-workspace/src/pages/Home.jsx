@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { db, auth, storage } from "../firebase";
 import {
   collection,
   query,
@@ -14,12 +13,15 @@ import {
   updateDoc,
   arrayUnion,
 } from "firebase/firestore";
-import User from "../components/User";
-import MessageForm from "../components/MessageForm";
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
-import Message from "../components/Message";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import { Box, Button } from "senf-atomic-design-system";
+import { useAuthContext } from "senf-shared";
+import { db, auth, storage } from "../firebase";
+import User from "../components/User";
+import MessageForm from "../components/MessageForm";
+import Message from "../components/Message";
 import Navbar from "../components/Navbar";
 
 import MenuSidebar from "../components/layout/MenuSidebar";
@@ -28,9 +30,9 @@ import InboxContainer from "../components/InboxContainer";
 import ChatBubbles from "../images/illustrations/chatBubbles.png";
 import MessagesContainer from "../components/layout/MessagesContainer";
 
-import { Box } from "senf-atomic-design-system";
 import WorkspaceContainer from "../components/WorkspaceContainer";
 import Panel from "../components/layout/Panel";
+
 
 const RightContainer = styled.div`
   position: fixed;
@@ -64,10 +66,10 @@ const Home = () => {
   const [user, setUser] = useState("");
   const [newChat, setNewChat] = useState("");
 
-  const user1 = auth.currentUser.uid;
+  const user1 = auth.currentUser?.uid;
 
   useEffect(() => {
-    getDoc(doc(db, "users", auth.currentUser.uid)).then((docSnap) => {
+    getDoc(doc(db, "users", auth.currentUser?.uid)).then((docSnap) => {
       if (docSnap.exists) {
         setUser(docSnap.data());
       }
@@ -76,7 +78,7 @@ const Home = () => {
     // querying the entire users collection except the currentUser
     const q = query(usersRef, where("userId", "not-in", [user1]));
     const unsub = onSnapshot(q, (querySnapshot) => {
-      let users = [];
+      const users = [];
       querySnapshot.forEach((doc) => {
         users.push(doc.data());
       });
@@ -103,7 +105,7 @@ const Home = () => {
       const q = query(msgsRef, orderBy("createdAt", "asc"));
 
       onSnapshot(q, (querySnapshot) => {
-        let msgs = [];
+        const msgs = [];
         querySnapshot.forEach((doc) => {
           msgs.push(doc.data());
         });
@@ -188,7 +190,10 @@ const Home = () => {
     setSearchTerm("");
   };
 
+  const { user: userC, signIn, signOut } = useAuthContext();
+  console.log(userC)
   return (
+
     <Box height="100%" style={{ overflow: "hidden" }}>
       <MenuSidebar
         currentWorkspace={currentWorkspace}
@@ -236,6 +241,10 @@ const Home = () => {
       )} */}
 
       <RightContainer active={chat}>
+
+        <Button onClick={() => signIn('google')}>signin with google</Button>
+        <Button onClick={() => signOut()}>signout</Button>
+        {userC?.displayName}
         {chat ? (
           <MessagesContainer
             chat={chat}

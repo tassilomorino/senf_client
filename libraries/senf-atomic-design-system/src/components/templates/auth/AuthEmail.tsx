@@ -113,6 +113,7 @@ const AuthEmail: FC<AuthEmailProps> = ({
     validateOnMount: true,
     validateOnChange: true,
     validateOnBlur: true,
+    onSubmit: () => console.log("values"),
   });
 
   const formikRegisterStore = useFormik({
@@ -231,10 +232,11 @@ const AuthEmail: FC<AuthEmailProps> = ({
 
         onClick={
           variantState === "register"
-            ? () => handleSubmitRegister(formikRegisterStore)
+            ? () => handleSubmitRegister(formikRegisterStore).then((e) => console.log(e))
             : (e) => {
               e.preventDefault();
-              handleSubmitLogin(formikLoginStore);
+              // @todo: not sure if to destructure formikStore here or in the submit method itself... (or somewhere inbetween)
+              handleSubmitLogin(...Object.values(formikLoginStore.values));
             }
         }
         disabled={

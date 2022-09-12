@@ -82,7 +82,7 @@ const MenuSidebar: FC<MenuSidebarProps> = ({
         <ModalButton variant="white"
           size="medium"
           icon={<Info />}
-          options={{ swipe: false, size: "xl", padding: 0, onBeforeOpen: () => setShowUI(false), onBeforeClose: () => setShowUI(true) }}>
+          options={{ swipe: false, size: "xl", padding: 0, beforeOpen: () => setShowUI(false), beforeClose: () => setShowUI(true) }}>
           <InfoPageMainApp />
         </ModalButton>
 

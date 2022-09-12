@@ -11,7 +11,7 @@ import {
   Box,
   Dropdown,
   Input,
-  ModalContext
+  useModals
 } from "senf-atomic-design-system";
 import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
@@ -21,33 +21,31 @@ import { db } from "../firebase";
 import { OptionsRoles } from "../data/OptionsRoles";
 import { OptionsDivisions } from "../data/OptionsDivisions";
 
+
 const ResultsContainer = styled.div`
-height:100vh;
-width:100vw;
-position:fixed;
-top:0;
-left:0;
-background-color:${({ theme }) => theme.colors.greyscale.greyscale10};
-z-index:998;
+  height:100vh;
+  width:100vw;
+  position:fixed;
+  top:0;
+  left:0;
+  background-color:${({ theme }) => theme.colors.greyscale.greyscale10};
+  z-index:998;
 
-@media (min-width: 768px) {
-  width:400px;
-}
-
-
+  @media (min-width: 768px) {
+    width:400px;
+  }
 `
 const Result = styled.div`
-cursor: pointer;
-height:64px;
-width:100%;
+  cursor: pointer;
+  height:64px;
+  width:100%;
 
-&:hover{
-  background-color: ${({ theme }) => theme.colors.greyscale.greyscale20};
-}
+  &:hover{
+    background-color: ${({ theme }) => theme.colors.greyscale.greyscale20};
+  }
 `
-
 const InviteMember = ({ getPendingMembers }) => {
-  const { handleModal } = React.useContext(ModalContext) || {};
+  const { closeModal } = useModals()
   const [showResults, setShowResults] = useState(false);
   const [recipientEmail, setRecipientEmail] = useState(null)
   const [userList, setUsersList] = useState(null);
@@ -87,26 +85,32 @@ const InviteMember = ({ getPendingMembers }) => {
     validateOnBlur: true,
   });
 
-  // const handleAddExampleMember = async () => {
-  //   try {
-  //     await addDoc(collection(db, "exampleUsers"), {
-  //       handle: formik.values.handle,
-  //       email: formik.values.email,
-  //       division: formik.values.division,
-  //       role: formik.values.role,
-  //       createdAt: new Date().toISOString(),
-  //       pending: true,
-  //     }).then(() => {
+  const handleAddExampleMember = async () => {
+    try {
+      await addDoc(collection(db, "exampleUsers"), {
+        handle: formik.values.handle,
+        email: formik.values.email,
+        division: formik.values.division,
+        role: formik.values.role,
+        createdAt: new Date().toISOString(),
+        pending: true,
+      }).then(() => {
 
-  //       // getMembers();
+        // getMembers();
 
-  //       handleModal("pop")
-  //     })
+        closeModal()
+      })
 
-  //   } catch (error) {
-  //     throw new Error(error, "Error in add exampleUser");
-  //   }
-  // };
+
+
+
+
+
+
+    } catch (error) {
+      throw new Error(error, "Error in add exampleUser");
+    }
+  };
 
   // how members are being added to organization: 
   // 1. check if admin then show add member
@@ -230,7 +234,7 @@ const InviteMember = ({ getPendingMembers }) => {
       console.log("Queued email for delivery!")
 
       getPendingMembers();
-      handleModal("pop")
+      closeModal()
     })
   };
 

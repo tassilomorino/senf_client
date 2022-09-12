@@ -11,8 +11,7 @@ const Wrapper = styled.div<IconProps>`
 `;
 
 const Icon: FC<IconProps> = ({ width, height, icon, color }) => (
-  <Wrapper width={width} height={height} color={color}>
-    {/* {icon} */}
+  <Wrapper width={width} height={height} color={color || "inherit"}>
     {typeof icon === "string" && typeof Icons[icon] === "function" ? Icons[icon]({ color }) : icon}
   </Wrapper>
 );

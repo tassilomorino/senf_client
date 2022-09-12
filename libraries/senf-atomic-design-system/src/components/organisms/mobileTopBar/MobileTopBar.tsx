@@ -67,7 +67,7 @@ const MobileTopBar: FC<MobileTopBarProps> = ({
           variant="tertiary"
           size="small"
           icon={<Info />}
-          options={{ swipe: true, size: "lg", height: window.innerHeight + 83, padding: 0, onBeforeOpen: () => setShowUI(false), onBeforeClose: () => setShowUI(true) }}>
+          options={{ swipe: true, size: "lg", height: window.innerHeight + 83, padding: 0, beforeOpen: () => setShowUI(false), beforeClose: () => setShowUI(true) }}>
           <InfoPageMainApp />
         </ModalButton>
       </Box>

@@ -15,7 +15,7 @@ import {
   Divider,
   Typography,
 } from "senf-atomic-design-system";
-import { AuthContext } from "../../context/auth";
+import { useAuthContext } from "senf-shared";
 import { auth, db } from "../../firebase";
 
 const myWorkspaces = [
@@ -52,7 +52,7 @@ const BottomWrapper = styled.div`
 `;
 const MenuSidebar = ({ currentWorkspace, setCurrentWorkspace }) => {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { user } = useAuthContext();
 
   const handleSignOut = async () => {
     await updateDoc(doc(db, "users", user.uid), {

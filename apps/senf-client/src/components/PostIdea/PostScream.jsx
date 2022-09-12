@@ -7,7 +7,7 @@ import {
   Plus,
   Box,
   Button,
-  ModalContext,
+  useModals,
   Geocoder,
   PostIdea as PostIdeaComponent
 } from "senf-atomic-design-system";
@@ -54,7 +54,7 @@ const PostScream = ({
   statefulMap,
 }) => {
   const dispatch = useDispatch();
-  const { handleModal } = React.useContext(ModalContext) || {};
+  const { openModal } = useModals()
   const loading = useSelector((state) => state.data.loading);
 
   const project = useSelector((state) => state.data.project);
@@ -328,7 +328,7 @@ const PostScream = ({
         <AuthFirst
           isMobile={isMobileCustom}
           locationDecided={locationDecided}
-          onClick={() => handleModal("push", <Auth authEditOpen={false} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+          onClick={() => openModal(<Auth authEditOpen={false} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
           }
         />
       )}

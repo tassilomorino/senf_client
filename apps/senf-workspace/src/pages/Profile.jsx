@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Img from "../images/icons/icon-192.png";
-import { storage, db, auth } from "../firebase";
 import {
   ref,
   getDownloadURL,
@@ -11,6 +9,13 @@ import { getDoc, doc, updateDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { Icon, Button, Input, Typography } from "senf-atomic-design-system";
 import dayjs from "dayjs";
+
+import { storage, db, auth } from "../firebase";
+import Img from "../images/icons/icon-192.png";
+
+
+
+
 const Profile = () => {
   const [img, setImg] = useState("");
   const [user, setUser] = useState("");
@@ -18,7 +23,7 @@ const Profile = () => {
 
   useEffect(() => {
     getDoc(doc(db, "users", auth.currentUser.uid)).then((docSnap) => {
-      if (docSnap.exists) {
+      if (docSnap.exists()) {
         setUser(docSnap.data());
       }
     });
@@ -29,7 +34,7 @@ const Profile = () => {
           `avatar/${new Date().getTime()} - ${img.name}`
         );
         try {
-          if (user.avatarPath) {
+          if (user?.avatarPath) {
             await deleteObject(ref(storage, user.avatarPath));
           }
           const snap = await uploadBytes(imgRef, img);
@@ -46,13 +51,13 @@ const Profile = () => {
       };
       uploadImg();
     }
-  }, [img, user.avatarPath]);
+  }, [img, user?.avatarPath]);
 
   const deleteImage = async () => {
     try {
       const confirm = window.confirm("Delete avatar?");
       if (confirm) {
-        await deleteObject(ref(storage, user.avatarPath));
+        await deleteObject(ref(storage, user?.avatarPath));
 
         await updateDoc(doc(db, "users", auth.currentUser.uid), {
           avatar: "",
@@ -96,7 +101,7 @@ const Profile = () => {
           </Typography>
         </div>
       </div>
-    </section>
+    </section >
   ) : null;
 };
 

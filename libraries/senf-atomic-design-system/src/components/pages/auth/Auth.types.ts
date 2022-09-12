@@ -1,6 +1,10 @@
 /** @format */
 
-import { MouseEventHandler } from "react";
+import {
+  User
+} from "firebase/auth";
+
+type Provider = "apple" | "facebook" | "google";
 export interface AuthProps {
   handleClose?: (x: boolean) => void;
   handleSubmitRegister?: any;
@@ -16,4 +20,13 @@ export interface AuthProps {
   socialLoginVerified?: boolean;
   emailRegistrationSubmitted?: boolean;
   emailVerified?: boolean;
+  authHandler?: {
+    signIn: {
+      [K in Provider]?: () => Promise<User>;
+    },
+    loading: {
+      [K in Provider]?: boolean;
+    },
+    signOut: () => Promise<User>;
+  };
 }
