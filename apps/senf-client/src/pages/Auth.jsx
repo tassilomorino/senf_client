@@ -355,7 +355,7 @@ const Auth = ({
       const photoURL = await getDownloadURL(storageRef);
       // setUploadedImage(photoUrl);
       await updateDoc(userRef, { photoURL }).then(() => {
-        dispatch(getUserData(user.userId));
+        dispatch(getUserData(user.userId, true));
         setUploadingImage(false);
       });
     } catch (error) {
