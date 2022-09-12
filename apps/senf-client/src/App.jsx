@@ -132,8 +132,8 @@ const App = () => {
 
 
       <Provider store={store}>
-        <ModalProvider>
-          <Router>
+        <Router>
+          <ModalProvider>
             <RotateDevice />
             <Routes>
               <Route exact path="/projectRooms" element={<Home />} />
@@ -174,8 +174,8 @@ const App = () => {
               <Route exact path="/impressum" element={<Imprint />} />
               <Route exact path="/blank" element={<Blank />} />
             </Routes>
-          </Router >
-        </ModalProvider >
+          </ModalProvider >
+        </Router >
       </Provider >
 
     </ThemeProvider >
