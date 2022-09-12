@@ -9,3 +9,6 @@ export {
 } from "./firebase/useSignInWithPopup";
 export { useHandleSubmitEditDetails } from "./firebase/useHandleSubmitEditDetails";
 export { ifAllUserDetailsAreFilled } from "./utils/ifAllUserDetailsAreFilled";
+
+export { default as AuthProvider, useAuthContext } from "./auth/AuthProvider";
+export { AuthModal } from "./auth/AuthModal";

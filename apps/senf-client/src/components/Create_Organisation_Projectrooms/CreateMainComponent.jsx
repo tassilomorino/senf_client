@@ -8,7 +8,7 @@ import { useTransition, animated } from "@react-spring/web";
 
 // firebase
 import { collection, doc, getDoc } from "firebase/firestore";
-import { ModalContext } from "senf-atomic-design-system"
+import { useModals } from "senf-atomic-design-system"
 import { db } from "../../firebase";
 
 // Components
@@ -43,7 +43,8 @@ import CreateProjectPage5 from "./CreateProjectRoom_components/CreateProjectPage
 import CreateProjectPage0a from "./CreateProjectRoom_components/CreateProjectPage0a";
 
 const CreateProjectDialog = ({ type }) => {
-  const { handleModal } = React.useContext(ModalContext) || {};
+
+  const { closeModal } = useModals();
 
 
   const userId = useSelector((state) => state.user.userId);
@@ -174,7 +175,7 @@ const CreateProjectDialog = ({ type }) => {
     dispatch(getOrganizations());
     dispatch(getProjects());
 
-    handleModal("pop")
+    closeModal()
 
     // dispatch(openCreateProjectRoomFunc(false));
     // dispatch(stateCreateOrganizationsFunc(false));

@@ -21,8 +21,7 @@ import {
   MobileTopBar,
   ErrorLoading,
   Loader,
-  ModalContext,
-
+  useModals,
 } from "senf-atomic-design-system";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
@@ -152,7 +151,7 @@ const Main = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const errors = useSelector((state) => state.UI.errors);
-  const { handleModal } = React.useContext(ModalContext) || {};
+  const { openModal } = useModals()
   const { cookie_settings } = useSelector((state) => state.data)
   const organization = useSelector((state) => state.data.organization);
 
@@ -242,7 +241,7 @@ const Main = ({
   const urlPath = window.location.pathname;
   useEffect(() => {
     if (urlPath === '/verify') {
-      handleModal("push", <Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      openModal(<Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
     }
 
 
@@ -418,7 +417,7 @@ const Main = ({
   const handleButtonLike = (event, screamId) => {
     event.stopPropagation();
     if (!user.authenticated) {
-      handleModal("push", <Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      openModal(<Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
       return;
     }
     if (user.likes && user.likes.find((like) => like.screamId === screamId)) {
@@ -445,7 +444,7 @@ const Main = ({
       navigate(`/profile/${userId}`)
 
     } else {
-      handleModal("push", <Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      openModal(<Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
     }
   };
 
@@ -458,9 +457,9 @@ const Main = ({
   const handleOpenCreateOrganization = () => {
     if (!user.authenticated) {
       // Add text into auth like "first you gt to create an account"
-      handleModal("push", <Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      openModal(<Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
     } else {
-      handleModal("push", <React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
+      openModal(<React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
         <CreateMainComponent type="organization" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
 
     }
@@ -480,9 +479,9 @@ const Main = ({
   const handleCreateProjectroom = () => {
     if (!user.authenticated) {
       // Add text into auth like "first you gt to create an account"
-      handleModal("push", <Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      openModal(<Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
     } else if (!user?.organizationId?.length) {
-      handleModal("push", <>
+      openModal(<>
         <Box margin="30px 40px">
           <Typography variant="h3" textAlign="center">
             {t("createOrganizationForCreateProjectRoom")}
@@ -502,11 +501,11 @@ const Main = ({
       // dispatch(openCreateProjectRoomFunc(true));
 
 
-      handleModal("push", <React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
+      openModal(<React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
         <CreateMainComponent type="projectRoom" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
     } else {
 
-      handleModal("push", <>
+      openModal(<>
 
         <Box margin="30px 40px">
           <Typography variant="h3" textAlign="center">

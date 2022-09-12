@@ -12,6 +12,11 @@ import {
   RotateDevice
 
 } from "senf-atomic-design-system";
+
+import {
+  AuthProvider,
+} from "senf-shared";
+
 import { ThemeProvider } from "styled-components";
 import { auth } from "./firebase";
 
@@ -133,49 +138,52 @@ const App = () => {
 
       <Provider store={store}>
         <Router>
-          <ModalProvider>
-            <RotateDevice />
-            <Routes>
-              <Route exact path="/projectRooms" element={<Home />} />
-              <Route exact path="/organizations" element={<Home />} />
-              <Route exact path="/idea/:screamId" element={<Home />} />
-              <Route exact path="/profile/:profileId" element={<Home />} />
-              <Route
-                exact
-                path="/projectRooms/:projectRoomId/:screamId"
-                element={<Home />}
-              />
-              <Route
-                exact
-                path="/projectRooms/:projectRoomId"
-                element={<Home />}
-              />
+          <AuthProvider>
+            <ModalProvider>
+              <RotateDevice />
+              <Routes>
+                <Route exact path="/projectRooms" element={<Home />} />
+                <Route exact path="/organizations" element={<Home />} />
+                <Route exact path="/idea/:screamId" element={<Home />} />
+                <Route exact path="/profile/:profileId" element={<Home />} />
+                <Route
+                  exact
+                  path="/projectRooms/:projectRoomId/:screamId"
+                  element={<Home />}
+                />
+                <Route
+                  exact
+                  path="/projectRooms/:projectRoomId"
+                  element={<Home />}
+                />
 
 
-              <Route
-                exact
-                path="/organizations/:organizationId"
-                element={<Home />}
-              />
+                <Route
+                  exact
+                  path="/organizations/:organizationId"
+                  element={<Home />}
+                />
 
 
-              <Route exact path="/verify" element={<Home />} />
-              <Route exact path="/:unknownPathId" element={<Home />} />
-              <Route exact path="/" element={<Home />} />
-              <Route path="*" element={<Home />} />
+                <Route exact path="/verify" element={<Home />} />
+                <Route exact path="/:unknownPathId" element={<Home />} />
+                <Route exact path="/" element={<Home />} />
+                <Route path="*" element={<Home />} />
 
-              <Route exact path="/datenschutz" element={<DataPrivacy />} />
-              <Route exact path="/agb" element={<TermsAndCondition />} />
-              <Route
-                exact
-                path="/cookieConfigurator"
-                element={<CookiesConfigurator />}
-              />
-              <Route exact path="/impressum" element={<Imprint />} />
-              <Route exact path="/blank" element={<Blank />} />
-            </Routes>
-          </ModalProvider >
+                <Route exact path="/datenschutz" element={<DataPrivacy />} />
+                <Route exact path="/agb" element={<TermsAndCondition />} />
+                <Route
+                  exact
+                  path="/cookieConfigurator"
+                  element={<CookiesConfigurator />}
+                />
+                <Route exact path="/impressum" element={<Imprint />} />
+                <Route exact path="/blank" element={<Blank />} />
+              </Routes>
+            </ModalProvider >
+          </AuthProvider>
         </Router >
+
       </Provider >
 
     </ThemeProvider >

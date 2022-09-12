@@ -5,10 +5,10 @@ import { Helmet } from "react-helmet";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { theme, GlobalStyle, ModalProvider } from "senf-atomic-design-system";
 import styled, { ThemeProvider } from "styled-components";
+import { AuthProvider } from "senf-shared";
 import Dashboard from "./pages/Dashboard";
 import "./util/i18n";
 import PrivateRoute from "./context/PrivateRoute";
-import { AuthProvider } from "./context/auth";
 import AuthPage from "./pages/AuthPage";
 import InviteMember from "./pages/InviteMember";
 import MemberBoard from "./pages/MemberBoard";
@@ -27,17 +27,16 @@ const App = () => {
   return (
     <BodyWrapper>
       <ThemeProvider theme={theme}>
-        <ModalProvider>
-          <GlobalStyle />
+        <AuthProvider>
+          <ModalProvider>
+            <GlobalStyle />
 
-          {import.meta.env.VITE_NO_CRAWL && (
-            /* disable google crawling for senf-client-test.netlify.app */
-            <Helmet>
-              <meta name="robots" content="noindex" />
-            </Helmet>
-          )}
-
-          <AuthProvider>
+            {import.meta.env.VITE_NO_CRAWL && (
+              /* disable google crawling for senf-client-test.netlify.app */
+              <Helmet>
+                <meta name="robots" content="noindex" />
+              </Helmet>
+            )}
             <Router>
               <React.Suspense fallback={<div>Loading...</div>}>
                 <Routes>
@@ -69,8 +68,8 @@ const App = () => {
                 </Routes>
               </React.Suspense>
             </Router>
-          </AuthProvider>
-        </ModalProvider>
+          </ModalProvider>
+        </AuthProvider>
       </ThemeProvider>
     </BodyWrapper>
   );

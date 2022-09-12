@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Trans, useTranslation } from "react-i18next";
 import Button from "../../atoms/buttons/Button";
@@ -14,12 +14,15 @@ import Google from "../../../assets/icons/Google";
 import Apple from "../../../assets/icons/Apple";
 import Facebook from "../../../assets/icons/Facebook";
 
+import theme from "../../../styles/theme";
+
 const AuthOptions: FC<AuthOptionsProps> = ({
   handleGoogleSignIn,
   googleLoading,
   handleFacebookSignIn,
   facebookLoading,
   setPage,
+  errorMessage
 }) => {
   const { t } = useTranslation();
 
@@ -48,7 +51,7 @@ const AuthOptions: FC<AuthOptionsProps> = ({
           fillWidth="max"
           text="Mit Google anmelden"
           icon={<Google />}
-          loading={googleLoading}
+          loading={!!googleLoading}
           onClick={handleGoogleSignIn}
         />
 
@@ -56,7 +59,7 @@ const AuthOptions: FC<AuthOptionsProps> = ({
           variant="white"
           fillWidth="max"
           text="Mit Facebook anmelden"
-          loading={facebookLoading}
+          loading={!!facebookLoading}
           icon={<Facebook />}
           onClick={handleFacebookSignIn}
         />
@@ -68,7 +71,13 @@ const AuthOptions: FC<AuthOptionsProps> = ({
           onClick={() => setPage("authEmail")}
           icon={<Mail />}
         />
+        {errorMessage && (
+          <Typography variant="bodySm" color={theme.colors.signal.redDark}>
+            {errorMessage.message}
+          </Typography>
+        )}
       </Box>
+
 
       <Box margin="24px 0px">
         <Typography variant="bodySm">

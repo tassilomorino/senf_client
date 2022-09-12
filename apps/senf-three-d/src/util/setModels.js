@@ -106,7 +106,7 @@ export const setImplementedModelsData = (
   setOpenContextPanel,
   setSwipedUp
 ) => {
-  window.map.addLayer({
+  window?.map?.addLayer({
     id: model.id,
     type: "custom",
     renderingMode: "3d",
@@ -121,7 +121,7 @@ export const setImplementedModelsData = (
         labelText: model.labelText || "",
       };
 
-      window.tb.loadObj(options, (newModel) => {
+      window?.tb?.loadObj(options, (newModel) => {
         newModel.castShadow = true;
         if (model.labelText) {
           newModel.addLabel(createLabel(model.id, model.labelText), true);
@@ -133,11 +133,11 @@ export const setImplementedModelsData = (
           model.coordinates[1],
           0,
         ]);
-        window.tb.add(newModel);
+        window?.tb?.add(newModel);
       });
     },
     render(gl, matrix) {
-      window.tb.update(); // update Threebox scene
+      window?.tb?.update(); // update Threebox scene
     },
   });
 };

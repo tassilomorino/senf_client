@@ -34,6 +34,7 @@ const Input: FunctionComponent<InputProps> = ({
   note, // or helperText
   size, // sm, md, lg
   variant, // grey (default) or white
+  autocomplete,
 
   leadingIcon, // leadingIcon
   trailingIcon, // trailingIcon
@@ -89,7 +90,7 @@ const Input: FunctionComponent<InputProps> = ({
   }
 
   if (type === "password") {
-    trailingIconSet = isPassword ? "Eye" : "EyeOff";
+    trailingIconSet = isPassword ? "Bulb" : "Dot";
     trailingIconClickSet = () => setIsPassword(!isPassword);
   }
 
@@ -114,7 +115,15 @@ const Input: FunctionComponent<InputProps> = ({
     size: "small",
     onClick
   } : {
-    for: name,
+    htmlFor: name,
+  }
+
+  const fieldType = () => {
+    if (
+      type === "textarea" ||
+      type === "password" && !isPassword
+    ) return "text"
+    return type
   }
 
   return (
@@ -124,6 +133,7 @@ const Input: FunctionComponent<InputProps> = ({
       )}
       {/* the InputContainer wrapper is necessary for including icons and buttons */}
       <InputContainer
+        name={name}
         focus={isFocused}
         icon={leadingIconSet}
         onFocusCapture={() => setIsFocused((prevState) => !prevState)}
@@ -131,7 +141,7 @@ const Input: FunctionComponent<InputProps> = ({
         onBlur={(event) => onBlur && typeof onBlur === "function" ? onBlur(event) : null}
         size={size || 'lg'}
         type={type}
-        for={name}
+        htmlFor={name}
       >
         {/* {label && (
           <Label error={error} size={size} icon={!!leadingIconSet} active={isFocused || value !== ""}>{`${label}${required ? "*" : ""}`}</Label>
@@ -143,15 +153,16 @@ const Input: FunctionComponent<InputProps> = ({
         }
         <InputField
           id={name}
-          type={isPassword ? "password" : type === "textarea" ? "text" : type}
+          type={fieldType()}
           placeholder={placeholderSet}
           disabled={disabled}
-          rows={type === "textarea" && Math.max(rows, 2)}
+          rows={(type === "textarea" && Math.max(rows, 2)) || null}
           value={value || ""}
           onClick={onClick}
           onChange={handleChange}
           ref={inputRef}
           as={type === "textarea" ? "textarea" : "input"}
+          autocomplete={autocomplete}
         />
         {trailingIconSet &&
           <TrailingIconWrapper {...iconWrapperProps(trailingIconClickSet)}>

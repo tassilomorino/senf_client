@@ -4,7 +4,7 @@ import React, { useState, useEffect, memo, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // Redux stuff
 import { useTranslation } from "react-i18next";
-import { ProjectroomPage as ProjectroomPageComponent, ModalContext, Loader } from "senf-atomic-design-system";
+import { ProjectroomPage as ProjectroomPageComponent, useModals, Loader } from "senf-atomic-design-system";
 import {
   openCreateProjectRoomFunc,
   openProjectRoomFunc,
@@ -33,7 +33,7 @@ const ProjectroomPage = ({
   setOpenStatisticsOverview,
 }) => {
   const { t } = useTranslation();
-  const { handleModal } = React.useContext(ModalContext) || {};
+  const { openModal, closeModal } = useModals()
 
   const [path, setPath] = useState("");
   const [order, setOrder] = useState(1);
@@ -132,7 +132,7 @@ const ProjectroomPage = ({
 
     dispatch(openCreateProjectRoomFunc(true));
 
-    handleModal("push", <React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
+    openModal(<React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
       <CreateMainComponent type="projectRoom" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
 
   };
