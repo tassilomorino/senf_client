@@ -49,6 +49,7 @@ export const createModel = (
   setSwipedUp,
   labelText
 ) => {
+  console.log("Creating model in createModel", id);
   window.map.addLayer({
     id,
     type: "custom",
@@ -106,7 +107,7 @@ export const setImplementedModelsData = (
   setOpenContextPanel,
   setSwipedUp
 ) => {
-  window?.map?.addLayer({
+  window.map.addLayer({
     id: model.id,
     type: "custom",
     renderingMode: "3d",
@@ -119,9 +120,10 @@ export const setImplementedModelsData = (
         rotation: { x: 90, y: 0, z: 0 }, // default rotation,
         anchor: "center",
         labelText: model.labelText || "",
+        id: model.id,
       };
 
-      window?.tb?.loadObj(options, (newModel) => {
+      window.tb.loadObj(options, (newModel) => {
         newModel.castShadow = true;
         if (model.labelText) {
           newModel.addLabel(createLabel(model.id, model.labelText), true);
@@ -133,7 +135,7 @@ export const setImplementedModelsData = (
           model.coordinates[1],
           0,
         ]);
-        window?.tb?.add(newModel);
+        window.tb.add(newModel);
       });
     },
     render(gl, matrix) {

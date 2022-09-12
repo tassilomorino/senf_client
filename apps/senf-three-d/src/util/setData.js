@@ -1,16 +1,6 @@
-import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase";
-
-export async function setDrawnData(drawnData) {
-  localStorage.setItem("drawnData", JSON.stringify(drawnData));
-  console.log("Localstorage successfully updated!");
-}
-
 export async function setModelsData(modelsData) {
   const modelsRawData = [];
   modelsData.forEach((model) => {
-    console.log(model);
-
     modelsRawData.push({
       obj: model.userData.obj,
       coordinates: model.coordinates,
@@ -23,5 +13,5 @@ export async function setModelsData(modelsData) {
 
   localStorage.setItem("modelsData", JSON.stringify(modelsRawData));
 
-  console.log("Localstorage successfully updated!");
+  console.log("Localstorage successfully updated!", modelsRawData);
 }

@@ -1,21 +1,22 @@
-import React, { useEffect, useMemo, useState, memo } from "react";
+import React, { useEffect, useMemo, useState, memo, useRef } from "react";
 import styled from "styled-components";
-import { Check, Box, Button, Map, isMobileCustom } from "senf-atomic-design-system"
+import { Check, Box, Button, Map, isMobileCustom, useModals } from "senf-atomic-design-system"
 import { Threebox } from "threebox-plugin";
 import { useFormik } from "formik";
 import ContextPanel from "../components/ContextPanel";
 import ModelsList from "../components/ModelsList";
 import Navigation from "../components/Navigation";
-import { fetchData } from "../util/fetchData";
-import { setDrawnData, setModelsData } from "../util/setData";
 import { setImplementedModelsData } from "../util/setModels";
 import SavePanel from "../components/SavePanel";
+import useInterval from "../util/useInterval";
+import ThanksNote from "../components/ThanksNote";
 
 
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
 z-index: -1;
+position: fixed;
 `
 const Home = ({ setLoadingModel }) => {
   const isMobile = isMobileCustom();
@@ -40,35 +41,8 @@ const Home = ({ setLoadingModel }) => {
   };
 
 
-  function rotateCamera(timestamp) {
-    // clamp the rotation between 0 -360 degrees
-    // Divide timestamp by 100 to slow rotation to ~10 degrees / sec
-    statefulMap.rotateTo((timestamp / 200) % 360, { duration: 0, center: [initialMapViewport.longitude, initialMapViewport.latitude] });
-    // statefulMap.rotateTo(359.0, { duration: 1000 });
-
-    // Request the next frame of the animation.
-    requestAnimationFrame(rotateCamera);
-  }
 
 
-
-  useEffect(() => {
-    if (saveDesign) {
-      statefulMap.flyTo({
-        center: [initialMapViewport.longitude, initialMapViewport.latitude],
-        zoom: 18,
-        pitch: 70,
-        duration: 2000
-      })
-      setTimeout(() => {
-        rotateCamera(statefulMap.getBearing())
-
-      }, 2000);
-    } else {
-
-      cancelAnimationFrame(rotateCamera)
-    }
-  }, [saveDesign])
 
 
   useEffect(() => {
@@ -93,8 +67,6 @@ const Home = ({ setLoadingModel }) => {
         ])
       });
 
-
-
       // Clean up on unmount
       return () => statefulMap.remove();
     }
@@ -104,34 +76,34 @@ const Home = ({ setLoadingModel }) => {
 
   useEffect(() => {
     const drawnData = localStorage.getItem("drawnData") && localStorage.getItem("drawnData")
-
-    console.log(JSON.parse(drawnData))
     if (drawnData) {
       setDrawn(JSON.parse(drawnData))
     }
-    const modelsData = localStorage.getItem("modelsData")
-    const newModelsData = JSON.parse(modelsData)
+  }, []);
 
-    if (newModelsData && !window?.tb?.map?.world?.children) {
-      newModelsData.map(((model) => {
+  const [modelsData, setModelsData] = useState(null);
+  useEffect(() => {
+    const modelsDataRaw = localStorage.getItem("modelsData")
+    setModelsData(JSON.parse(modelsDataRaw))
+  }, []);
+
+  useEffect(() => {
+    if (modelsData && statefulMap) {
+      console.log(modelsData)
+      modelsData.map(((model) => {
         console.log(model)
-        const yeah = {
-          coordinates: [6.960400699058027, 50.94267956769937, 3],
-          format: "fbx",
-          id: "43700431",
-          labelText: null,
-          obj: "https://firebasestorage.googleapis.com/v0/b/senf-dev.appspot.com/o/threeD_models%2FZqVXPNBpPCM2vf69vHCx%2Fmodel%2Fbar.fbx?alt=media&token=c70d1c05-7473-41b8-a15d-cfee65f26e06"
-        }
-        setImplementedModelsData(yeah, setOpenContextPanel, setSwipedUp)
+        setTimeout(() => {
+          setImplementedModelsData(model, setOpenContextPanel, setSwipedUp)
+        }, 1500);
       }))
     }
+  }, [modelsData, statefulMap]);
 
-  }, []);
 
   const handleSaveDrawn = async (polygon) => {
     setMode(null);
     setDrawn(polygon)
-    setDrawnData(polygon)
+    localStorage.setItem("drawnData", JSON.stringify(polygon));
   };
 
   useEffect(() => {
@@ -140,6 +112,41 @@ const Home = ({ setLoadingModel }) => {
     }
   }, [mode])
 
+  const [isRotating, setIsRotating] = useState(false);
+  let counter = 0;
+
+  useInterval(
+    () => {
+      console.log(counter)
+      counter += 0.1;
+      statefulMap.flyTo({
+        center: [initialMapViewport.longitude, initialMapViewport.latitude],
+        zoom: 18,
+        pitch: 70,
+        duration: 5,
+        bearing: counter
+      })
+    },
+    isRotating ? 5 : null
+  );
+
+  const handleSaveModalOpen = () => {
+    statefulMap.flyTo({
+      center: [initialMapViewport.longitude, initialMapViewport.latitude],
+      zoom: 18,
+      pitch: 70,
+      duration: 2000,
+      bearing: 0
+    })
+    setTimeout(() => {
+      setIsRotating(true)
+    }, 1500);
+    setSaveDesign(true)
+  };
+  const handleSaveModalClose = () => {
+    setIsRotating(false)
+    setSaveDesign(false)
+  };
 
 
 
@@ -173,10 +180,9 @@ const Home = ({ setLoadingModel }) => {
       </Box> */}
 
       <Box position="fixed" bottom="20px" right="100px">
-        <Button onClick={() => setSaveDesign(!saveDesign)} icon={<Check />} text="Speichern" />
+        <Button onClick={() => handleSaveModalOpen(true)} icon={<Check />} text="Speichern" />
       </Box>
-
-      <SavePanel swipedUp={saveDesign} setSwipedUp={setSaveDesign} />
+      <SavePanel swipedUp={saveDesign} setSwipedUp={() => handleSaveModalClose()} />
     </Wrapper>
   );
 }
