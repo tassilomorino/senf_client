@@ -2,19 +2,19 @@
 
 import React, { FC, useState, useEffect } from "react";
 import styled from "styled-components";
-import { CalendarProps } from "./Calendar.types";
+
 
 import "@fullcalendar/react/dist/vdom"; // solves problem with Vite
-import FullCalendar from "@fullcalendar/react"; // must go before plugins
+import FullCalendar, { formatDate } from "@fullcalendar/react"; // must go before plugins
 import deLocale from "@fullcalendar/core/locales/de";
 import enLocale from "@fullcalendar/core/locales/en-gb";
-import { formatDate } from "@fullcalendar/react";
 
 import listMonth from "@fullcalendar/list";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
+import { CalendarProps } from "./Calendar.types";
 import i18n from "../../../util/i18n";
 
-let str = formatDate(new Date(), {
+const str = formatDate(new Date(), {
   month: "long",
   year: "numeric",
   day: "numeric",
@@ -212,7 +212,7 @@ const Calendar: FC<CalendarProps> = ({
       setInitState({
         ...initState,
         events: {
-          googleCalendarId: googleCalendarId,
+          googleCalendarId,
         },
       });
     }
@@ -270,12 +270,12 @@ const Calendar: FC<CalendarProps> = ({
           calendarType === "inline"
             ? handleEventClick
             : (arg) => {
-                // opens events in a popup window
-                window.open(arg.event.url, "_blank", "width=700,height=600");
+              // opens events in a popup window
+              window.open(arg.event.url, "_blank", "width=700,height=600");
 
-                // prevents current tab from navigating
-                arg.jsEvent.preventDefault();
-              }
+              // prevents current tab from navigating
+              arg.jsEvent.preventDefault();
+            }
         }
       />
     </Wrapper>

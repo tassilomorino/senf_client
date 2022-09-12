@@ -41,13 +41,13 @@ import CalendarIcon from "../../../assets/icons/CalendarIcon";
 import Share from "../../../assets/icons/Share";
 import SocialmediaShare from "../../organisms/socialmediaShare/SocialmediaShare";
 
-import Calendar from "../../organisms/calendar/Calendar";
 import Edit from "../../../assets/icons/Edit";
 import Skeleton from "../../atoms/skeleton/Skeleton";
 import RoundedButton from "../../atoms/buttons/RoundedButton";
 import { Stats } from "../../../assets/icons";
+import Loader from "../../atoms/animations/Loader";
 
-// const Calendar = React.lazy(() => import("../../organisms/calendar/Calendar"));
+const Calendar = React.lazy(() => import("../../organisms/calendar/Calendar"));
 
 const DragWrapper = styled(animated.div) <ProjectroomPageProps>`
   display: flex;
@@ -596,11 +596,13 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
             ) : (
               order === 2 && (
                 <div style={{ margin: "10px 24px 20px 24px" }}>
-                  <Calendar
-                    inlineCalendarEntries={data?.screams}
-                    calendarType="inline"
-                    handleButtonOpenCard={handleButtonOpenCard}
-                  />
+                  <React.Suspense fallback={<Loader width="20px" height="20px" />}>
+                    <Calendar
+                      inlineCalendarEntries={data?.screams}
+                      calendarType="inline"
+                      handleButtonOpenCard={handleButtonOpenCard}
+                    />
+                  </React.Suspense>
                 </div>
               )
             )}
