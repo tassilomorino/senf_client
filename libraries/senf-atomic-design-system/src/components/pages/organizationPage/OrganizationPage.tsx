@@ -30,12 +30,11 @@ import Tabs from "../../molecules/tabs/Tabs";
 import CalendarIcon from "../../../assets/icons/CalendarIcon";
 import Room from "../../../assets/icons/Room";
 
-import Calendar from "../../organisms/calendar/Calendar";
-import Skeleton from "../../atoms/skeleton/Skeleton";
 import ModalButton from "../../molecules/modalStack/ModalButton";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
+import Loader from "../../atoms/animations/Loader";
 
-// const Calendar = React.lazy(() => import("../../organisms/calendar/Calendar"));
+const Calendar = React.lazy(() => import("../../organisms/calendar/Calendar"))
 
 const SVGWrapper = styled.div`
   position: absolute;
@@ -316,11 +315,13 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
         order === 2 &&
         organization?.googleCalendarId && (
           <Box margin="10px 10px 0px 0px" width="100%">
-            <Calendar
-              googleCalendarApiKey={googleCalendarApiKey}
-              googleCalendarId={organization?.googleCalendarId}
-              calendarType="google"
-            />
+            <React.Suspense fallback={<Loader width="20px" height="20px" />}>
+              <Calendar
+                googleCalendarApiKey={googleCalendarApiKey}
+                googleCalendarId={organization?.googleCalendarId}
+                calendarType="google"
+              />
+            </React.Suspense>
           </Box>
         )
       )}
