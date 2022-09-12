@@ -30,11 +30,8 @@ bottom:initial;
 `
 
 const ContextPanel = ({ openContextPanel, setOpenContextPanel }) => {
-
-
     const [rotation, setRotation] = useState(0);
     const [scale, setScale] = useState(1);
-
 
     const handleSetRotation = (value) => {
         setRotation(value);
@@ -48,17 +45,16 @@ const ContextPanel = ({ openContextPanel, setOpenContextPanel }) => {
         console.log(window.tb.map.selectedObject)
     }
 
-
-
     const handleSetModel = () => {
         console.log(window.map.tb.world.children)
         setModelsData(window.map.tb.world.children)
-
         window.tb.map.selectedObject.selected = false;
         window.tb.map.selectedObject = null;
         setOpenContextPanel(false)
-
-
+    }
+    const handleDeleteModel = () => {
+        window.tb.remove(window.tb.map.selectedObject)
+        setModelsData(window.map.tb.world.children)
 
     }
     return openContextPanel && (
@@ -77,7 +73,7 @@ const ContextPanel = ({ openContextPanel, setOpenContextPanel }) => {
                         rightTick="360" />
                 </Box>
 
-                <Box width="200px" flexDirection="column" gap="10px">
+                {/* <Box width="200px" flexDirection="column" gap="10px">
                     <Typography variant="h3" textAlign="center">Scale</Typography>
                     <RangeSlider
                         rangeValue={scale}
@@ -86,10 +82,10 @@ const ContextPanel = ({ openContextPanel, setOpenContextPanel }) => {
                         rangeMax={1000}
                         leftTick="0"
                         rightTick="100" />
-                </Box>
+                </Box> */}
 
                 <Box gap="5px">
-                    <Button variant="secondary" onClick={() => { window.tb.remove(window.tb.map.selectedObject) }} text="Delete" />
+                    <Button variant="secondary" onClick={handleDeleteModel} text="Delete" />
                     <Button variant="primary" onClick={handleSetModel} text="Set Object" />
                 </Box>
             </Box>

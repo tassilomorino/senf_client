@@ -4,7 +4,6 @@ import styled, { ThemeProvider } from "styled-components";
 import {
   theme, GlobalStyle, ModalProvider, Typography, Loader
 } from "senf-atomic-design-system";
-import { auth } from "./firebase";
 
 import Home from "./pages/Home";
 

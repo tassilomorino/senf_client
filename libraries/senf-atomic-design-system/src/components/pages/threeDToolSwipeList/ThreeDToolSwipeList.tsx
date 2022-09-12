@@ -142,7 +142,6 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
   setSwipedUp,
   handleOpenMyAccount,
   setShowUI,
-  formik,
   uploadedImage,
   handleImageUpload,
   uploadedModel,
@@ -151,6 +150,11 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
   handleSubmit,
   grounds,
   setMode,
+  formik,
+  validationSchema,
+
+
+
 
 }) => {
   const { t } = useTranslation();
@@ -314,12 +318,15 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
                     swipe: isMobile && true,
 
                   }}>
-                    <AddModel formik={formik}
+                    <AddModel
                       uploadedImage={uploadedImage}
                       handleImageUpload={handleImageUpload}
                       uploadedModel={uploadedModel}
                       handleModelUpload={handleModelUpload}
                       handleSubmit={handleSubmit}
+                      formik={formik}
+                      validationSchema={validationSchema}
+                      onChange={formik.setValues}
 
                     />
                   </ModalButton>

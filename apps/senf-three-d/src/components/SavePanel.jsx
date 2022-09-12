@@ -5,11 +5,12 @@ import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
-import { Button, Box, isMobileCustom, Input, Typography } from "senf-atomic-design-system";
+import { Button, Box, isMobileCustom, Input, Typography, useModals } from "senf-atomic-design-system";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase";
+import ThanksNote from "./ThanksNote";
 
 const DragWrapper = styled(animated.div)`
   z-index: 5;
@@ -37,42 +38,12 @@ const DragWrapper = styled(animated.div)`
     max-width: 400px;
     border-radius: 18px;
     margin: 10px;
-    height: 400px;
+    height: auto;
     overflow: hidden;
     transition:0.3s;
   }
 `;
 
-const InnerWrapper = styled.div`
-  @media (min-width: 768px) {
-    padding-left: 66px;
-    height: 100%;
-
-    position: absolute;
-  }
-`;
-
-const ContentWrapper = styled.div`
-  overflow-y: scroll;
-  pointer-events: all;
-  height: calc(100vh - 120px);
-  width: 100%;
-  z-index: 1;
-  margin-left: 50%;
-  transform: translateX(-50%);
-  position: fixed;
-  margin-top:-10px;
-  padding-top:50px;
-  top: ${({ swipedUp }) => swipedUp && "110px"};
-
-  @media (min-width: 768px) {
-    height: calc(100% - 150px);
-    padding-top:20px;
-    width: 400px;
-    position: relative;
-    top: 0;
-  }
-`;
 
 
 
@@ -97,6 +68,7 @@ const SavePanel = ({
     setSwipedUp,
 }) => {
     const { t } = useTranslation();
+    const { openModal } = useModals()
     const isMobile = isMobileCustom();
     const [showResults, setShowResults] = useState(false);
     const [swipePercentage, setSwipePercentage] = useState(0);
@@ -112,6 +84,7 @@ const SavePanel = ({
     const formik = useFormik({
         initialValues: {
             title: "",
+            description: ""
         },
         validationSchema,
         validateOnMount: true,
@@ -187,14 +160,24 @@ const SavePanel = ({
         const drawnData = localStorage.getItem("drawnData");
         const modelsData = localStorage.getItem("modelsData");
         const updateData = {
+            title: formik.values.title,
+            description: formik.values.description,
             drawnData,
             modelsData,
         };
-        await addDoc(collection(db, "threeD_models"), updateData).then((docId) => {
+        await addDoc(collection(db, "threeD_ideas"), updateData).then((docId) => {
             console.log("Document successfully updated!");
             setSwipedUp(false)
+            openModal(<ThanksNote />, { swipe: isMobile, size: "md", padding: 0 })
+
         })
+
     }
+
+    const handleClose = async () => {
+        setSwipedUp(false)
+    }
+
 
 
 
@@ -214,7 +197,7 @@ const SavePanel = ({
                 <Typography variant="h3">{t("save_design")}</Typography>
                 <Button
                     variant="secondary"
-                    onClick={() => { console.log("hi") }}
+                    onClick={handleClose}
                     icon="Close" />
             </Box>
 
@@ -250,6 +233,7 @@ const SavePanel = ({
                     width="100%"
                     gap="8px"
                     marginTop="0px"
+                    marginBottom="20px"
                 >
                     <Button
                         variant="secondary"
