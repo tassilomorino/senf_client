@@ -9,23 +9,26 @@ import {
   Button,
   useModals,
   Geocoder,
-  PostIdea as PostIdeaComponent
+  PostIdea as PostIdeaComponent,
 } from "senf-atomic-design-system";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { isMobileCustom } from "../../util/customDeviceDetect";
-import { postScream } from "../../redux/actions/screamActions";
-import { clearErrors } from "../../redux/actions/errorsActions";
+import { isMobileCustom } from "../util/customDeviceDetect";
+import { postScream } from "../redux/actions/screamActions";
+import { clearErrors } from "../redux/actions/errorsActions";
 
 // Components
-import PostScreamSelectContainter from "./PostScreamSelectContainter";
-import Auth from "../../pages/Auth";
+import PostScreamSelectContainter from "../components/PostIdea/PostScreamSelectContainter";
+import Auth from "./Auth";
 
 const AuthFirst = styled.div`
   position: fixed;
-  top: ${({ isMobile, locationDecided }) => (isMobile && locationDecided ? "27vh" : isMobile && !locationDecided && "100vh")};
+  top: ${({ isMobile, locationDecided }) =>
+    isMobile && locationDecided
+      ? "27vh"
+      : isMobile && !locationDecided && "100vh"};
   height: 80vh;
   z-index: 99999;
   width: 100%;
@@ -45,7 +48,7 @@ const AuthFirst = styled.div`
   }
 `;
 
-const PostScream = ({
+const PostIdeaPage = ({
   classes,
   loadingProjects,
   projectsData,
@@ -54,7 +57,7 @@ const PostScream = ({
   statefulMap,
 }) => {
   const dispatch = useDispatch();
-  const { openModal } = useModals()
+  const { openModal } = useModals();
   const loading = useSelector((state) => state.data.loading);
 
   const project = useSelector((state) => state.data.project);
@@ -116,11 +119,8 @@ const PostScream = ({
     validateOnBlur: true,
   });
 
-
-
   const [selectedDays, setSelectedDays] = useState([]);
   const [selectedUnix, setSelectedUnix] = useState([]);
-
 
   const handleChangeCalendar = (selectedDays) => {
     const selectedUnix = [];
@@ -133,7 +133,6 @@ const PostScream = ({
     setSelectedUnix(selectedUnix);
   };
 
-
   useEffect(() => {
     if (postIdeaOpen) {
       const projectSelected = project?.projectRoomId
@@ -141,7 +140,6 @@ const PostScream = ({
         : "";
 
       setProjectSeleted(projectSelected);
-
 
       projectsData?.forEach(
         ({ projectRoomId, zoom, centerLat, centerLong, geoData, calendar }) => {
@@ -174,7 +172,6 @@ const PostScream = ({
     }
   }, [postIdeaOpen]);
 
-
   const handleDropdownProject = (value) => {
     // event.preventDefault();
     setProjectSeleted(value);
@@ -204,8 +201,6 @@ const PostScream = ({
     });
   };
 
-
-
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -229,7 +224,6 @@ const PostScream = ({
       newScream.weblink = formik.values.weblink;
       newScream.weblinkTitle = formik.values.weblinkTitle || "Website";
     }
-
 
     if (selectedUnix.length > 0) {
       newScream.selectedUnix = selectedUnix;
@@ -264,7 +258,6 @@ const PostScream = ({
       .then((response) => {
         const match = response.body;
 
-
         const houseNumber =
           match.features[0].address !== undefined
             ? match.features[0].address
@@ -272,8 +265,10 @@ const PostScream = ({
 
         setNeighborhood(match.features[0].context[1].text);
 
-
-        formik.setFieldValue("address", `${match.features[0].text} ${houseNumber}`);
+        formik.setFieldValue(
+          "address",
+          `${match.features[0].text} ${houseNumber}`
+        );
         setFulladdress(match.features[0].place_name);
       });
 
@@ -289,7 +284,7 @@ const PostScream = ({
     } else {
       setOut(false);
     }
-  }
+  };
 
   const handleLocationDecided = () => {
     if (formik.values.address) {
@@ -307,10 +302,8 @@ const PostScream = ({
       });
     }
   };
-
   return (
     <React.Fragment>
-
       {/* <Box
         position="fixed"
         margin={document.body.clientWidth > 768 ? "20px" : "10px"}
@@ -328,7 +321,13 @@ const PostScream = ({
         <AuthFirst
           isMobile={isMobileCustom}
           locationDecided={locationDecided}
-          onClick={() => openModal(<Auth authEditOpen={false} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+          onClick={() =>
+            openModal(<Auth authEditOpen={false} />, {
+              swipe: !!isMobileCustom,
+              size: "md",
+              height: isMobileCustom && window.innerHeight + 83,
+              padding: 0,
+            })
           }
         />
       )}
@@ -348,11 +347,11 @@ const PostScream = ({
           <div ></div>
         </div>
       )} */}
-      <Box position="fixed" top="0px" width={isMobileCustom ? "calc(100vw - 20px)" : "400px"} zIndex={99999999} left="0px" margin="10px">
+      {/*   <Box position="fixed" top="0px" width={isMobileCustom ? "calc(100vw - 20px)" : "400px"} zIndex={99999999} left="0px" margin="10px">
         <Geocoder finalAddress={formik?.values.address} statefulMap={statefulMap} handleSetClose={() => setPostIdeaOpen(false)} />
-      </Box>
+      </Box> */}
 
-      <PostScreamSelectContainter
+      {/*     <PostScreamSelectContainter
         classes={classes}
         address={formik.values.address}
         locationDecided={locationDecided}
@@ -362,11 +361,18 @@ const PostScream = ({
         open={open}
         loadingProjects={loadingProjects}
         projectsData={projectsData}
+      /> */}
+      <PostIdeaComponent
+        statefulMap={statefulMap}
+        formik={formik}
+        checkIfCalendar={checkIfCalendar}
+        selectedDays={selectedDays}
+        handleChangeCalendar={handleChangeCalendar}
+        handleSubmit={handleSubmit}
+        setPostIdeaOpen={setPostIdeaOpen}
       />
-      <PostIdeaComponent formik={formik} checkIfCalendar={checkIfCalendar} selectedDays={selectedDays} handleChangeCalendar={handleChangeCalendar} handleSubmit={handleSubmit} />
-
     </React.Fragment>
   );
 };
 
-export default memo(PostScream);
+export default memo(PostIdeaPage);

@@ -176,6 +176,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   ideasDataOriginal,
   handleMapBoundsReset,
   mapFilterActive,
+  postIdeaOpen,
 }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom();
@@ -421,8 +422,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
             setOrder={setOrder}
           />
         )}
-
-        <InnerWrapper>
+        {!postIdeaOpen && (<InnerWrapper>
           <Header
             {...bind()}
 
@@ -528,7 +528,8 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
               }
             />
           </ContentWrapper>
-        </InnerWrapper>
+        </InnerWrapper>)}
+
 
         {mapFilterActive && (
           <Box
