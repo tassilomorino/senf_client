@@ -11,7 +11,7 @@ import { PostIdeaProps } from "./PostIdea.types";
 import PostIdeaForm from "./PostIdeaForm";
 import { LayerWhiteFirstDefault } from "../../atoms/layerStyles/LayerStyles";
 import Geocoder from "../../atoms/geocoder/Geocoder";
-import { isisMobileCustom } from "../../../hooks/customDeviceDetect";
+import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 
 const Wrapper = styled.div`
   z-index: 999;
@@ -42,10 +42,15 @@ const PostIdea: FC<PostIdeaProps> = ({
   const { t } = useTranslation();
   const [postIdeaForm, setPostIdeaForm] = React.useState(false);
   const [addressSelected, setAddressSelected] = React.useState(false);
-  const isMobile = isisMobileCustom();
+  const isMobile = isMobileCustom();
 
   const postIdeaHeader = (
-    <>
+    <Box
+      flexDirection="row"
+      alignItems="center"
+      justifyContent="space-around"
+      width="100%"
+    >
       <Typography variant="h3">Idee erstellen</Typography>
       <Button
         variant="tertiary"
@@ -54,11 +59,13 @@ const PostIdea: FC<PostIdeaProps> = ({
         justifyContent="flex-start"
         onClick={() => setPostIdeaOpen(false)}
       />
-    </>
+    </Box>
   );
   return (
     <Wrapper isMobile={isMobile}>
-      {isMobile && { postIdeaHeader }}
+      {isMobile && postIdeaHeader}
+
+      {/*  whole section of !isMobile down below? */}
       <Box
         display="flex"
         flexDirection="column"
@@ -66,8 +73,7 @@ const PostIdea: FC<PostIdeaProps> = ({
         width="100%"
         marginBottom="20px"
       >
-        {!isMobile && <Box>{postIdeaHeader}</Box>}
-
+        {!isMobile && postIdeaHeader}
 
         {!addressSelected && !isMobile && (
           <Box
