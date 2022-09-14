@@ -20,14 +20,11 @@ import { PostIdeaFormProps } from "./PostIdeaForm.types";
 
 const Wrapper = styled.div<PostIdeaFormProps>`
 
-width: 425px;
-height: auto;
-position: absolute;
-top: 150px;
-left: 16px;
-padding:20px;
-background-color: white;
-z-index:2 ;
+width: 100%;
+  height: auto;
+  padding: 20px;
+  background-color: white;
+  z-index: 2;
 `;
 
 

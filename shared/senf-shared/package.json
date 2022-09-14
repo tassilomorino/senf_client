@@ -1,7 +1,8 @@
 {
   "name": "senf-shared",
   "version": "0.0.1",
-  "module": "./index.js",
+  "main": "./index.js",
+  "types": "./index.js",
   "sideEffects": false,
   "private": true,
   "license": "MIT",

@@ -2,11 +2,11 @@
   "name": "senf-atomic-design-system",
   "version": "0.0.31",
   "description": "An atomic-design-system-library for all Senf-apps ",
-  "main": "./src/index.ts",
+  "module": "./src/index.ts",
   "types": "./src/index.ts",
   "sideEffects": false,
   "moduleComment": {
-    "note 1": "change 'main' from './src/index.ts' to './dist/es.js' when publishing to npm ",
+    "note 1": "change 'module' from './src/index.ts' to './dist/es.js' when publishing to npm ",
     "note 2": "change 'types' from './src/index.ts' to './dist/index.d.ts' when publishing to npm "
   },
   "files": [
