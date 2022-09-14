@@ -13,11 +13,9 @@ import Locate from "../../../assets/icons/Locate";
 import { geolocateControl } from "../map/hooks/useGeolocateControl";
 
 const ResultsContainer = styled.div`
-height:100vh;
-width:100vw;
-position:fixed;
-top:0;
-left:0;
+height: auto;
+width: auto;
+position: relative;
 background-color:${({ theme }) => theme.colors.greyscale.greyscale10};
 z-index:998;
 
