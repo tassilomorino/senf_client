@@ -12,8 +12,10 @@ export interface InputProps {
   size?: "sm" | "md" | "lg";
   variant?: "grey" | "white";
 
-  leadingIcon?: string;
-  trailingIcon?: string;
+  leadingIcon?: JSX.Element | string;
+  trailingIcon?: JSX.Element | string;
+  leadingIconLbel?: string;
+  trailingIconLbel?: string;
 
   required?: boolean;
   error?: boolean;
@@ -31,5 +33,6 @@ export interface InputProps {
   onBlur?: ChangeEventHandler<HTMLInputElement>;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onClick?: ChangeEventHandler<HTMLInputElement>;
-  receiveValue: (value?: string) => void;
+  onSubmit?: ChangeEventHandler<HTMLInputElement>;
+  receiveValue?: (value?: string) => void;
 }
