@@ -1,20 +1,22 @@
-import React, { useEffect, useMemo, useState, memo } from "react";
+import React, { useEffect, useMemo, useState, memo, useRef } from "react";
 import styled from "styled-components";
-import { Box, Button, Map, isMobileCustom } from "senf-atomic-design-system"
+import { Check, Box, Button, Map, isMobileCustom, useModals } from "senf-atomic-design-system"
 import { Threebox } from "threebox-plugin";
 import { useFormik } from "formik";
 import ContextPanel from "../components/ContextPanel";
 import ModelsList from "../components/ModelsList";
 import Navigation from "../components/Navigation";
-import { fetchData } from "../util/fetchData";
-import { setDrawnData, setModelsData } from "../util/setData";
 import { setImplementedModelsData } from "../util/setModels";
+import SavePanel from "../components/SavePanel";
+import useInterval from "../util/useInterval";
+import ThanksNote from "../components/ThanksNote";
 
 
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
 z-index: -1;
+position: fixed;
 `
 const Home = ({ setLoadingModel }) => {
   const isMobile = isMobileCustom();
@@ -25,17 +27,22 @@ const Home = ({ setLoadingModel }) => {
   const [openContextPanel, setOpenContextPanel] = useState(false);
   // const [showLabels, setShowLabels] = useState(false);
   const [drawn, setDrawn] = useState(null);
+  const [saveDesign, setSaveDesign] = useState(false);
+
+  const [statefulMap, setStatefulMap] = useState(null);
 
   const initialMapViewport = {
-    latitude: isMobile
-      ? 50.9729
-      : 50.9429,
+    latitude: 50.9429,
     longitude: 6.9606,
     zoom: isMobile ? 17 : 17,
     duration: 0,
     pitch: 35,
+    bearing: 50
   };
-  const [statefulMap, setStatefulMap] = useState(null);
+
+
+
+
 
 
   useEffect(() => {
@@ -50,7 +57,6 @@ const Home = ({ setLoadingModel }) => {
         // enableTooltips: true,
       });
       window.tb.altitudeStep = 1;
-      // map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
 
       statefulMap.on("move", () => {
         window?.tb?.map?.selectedObject?.setCoords([
@@ -61,37 +67,43 @@ const Home = ({ setLoadingModel }) => {
         ])
       });
 
-
-
       // Clean up on unmount
       return () => statefulMap.remove();
     }
   }, [statefulMap]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
-  const formik = useFormik({
 
-  })
   useEffect(() => {
-    fetchData().then((data) => {
-      if (data.drawnData) {
-        setDrawn(JSON.parse(data.drawnData))
-      }
-      if (data.modelsData && !window?.tb?.map?.world?.children) {
-        data.modelsData.map(((model) => {
-          setImplementedModelsData(model, setOpenContextPanel, setSwipedUp)
-          console.log(openContextPanel)
-        }))
-      }
-    })
-
-
+    const drawnData = localStorage.getItem("drawnData") && localStorage.getItem("drawnData")
+    if (drawnData) {
+      setDrawn(JSON.parse(drawnData))
+    }
   }, []);
+
+  const [modelsData, setModelsData] = useState(null);
+  useEffect(() => {
+    const modelsDataRaw = localStorage.getItem("modelsData")
+    setModelsData(JSON.parse(modelsDataRaw))
+  }, []);
+
+  useEffect(() => {
+    if (modelsData && statefulMap) {
+      console.log(modelsData)
+      modelsData.map(((model) => {
+        console.log(model)
+        setTimeout(() => {
+          setImplementedModelsData(model, setOpenContextPanel, setSwipedUp)
+        }, 1500);
+      }))
+    }
+  }, [modelsData, statefulMap]);
+
 
   const handleSaveDrawn = async (polygon) => {
     setMode(null);
     setDrawn(polygon)
-    setDrawnData(polygon)
+    localStorage.setItem("drawnData", JSON.stringify(polygon));
   };
 
   useEffect(() => {
@@ -100,6 +112,41 @@ const Home = ({ setLoadingModel }) => {
     }
   }, [mode])
 
+  const [isRotating, setIsRotating] = useState(false);
+  let counter = 0;
+
+  useInterval(
+    () => {
+      console.log(counter)
+      counter += 0.1;
+      statefulMap.flyTo({
+        center: [initialMapViewport.longitude, initialMapViewport.latitude],
+        zoom: 18,
+        pitch: 70,
+        duration: 5,
+        bearing: counter
+      })
+    },
+    isRotating ? 5 : null
+  );
+
+  const handleSaveModalOpen = () => {
+    statefulMap.flyTo({
+      center: [initialMapViewport.longitude, initialMapViewport.latitude],
+      zoom: 18,
+      pitch: 70,
+      duration: 2000,
+      bearing: 0
+    })
+    setTimeout(() => {
+      setIsRotating(true)
+    }, 1500);
+    setSaveDesign(true)
+  };
+  const handleSaveModalClose = () => {
+    setIsRotating(false)
+    setSaveDesign(false)
+  };
 
 
 
@@ -113,10 +160,10 @@ const Home = ({ setLoadingModel }) => {
         // restart={restart}
         setOpenSaveModal={setOpenSaveModal}
       /> */}
-      <ModelsList setLoadingModel={setLoadingModel} setSwipedUp={setSwipedUp} swipedUp={swipedUp} setOpenContextPanel={setOpenContextPanel} setMode={setMode} />
+      {!saveDesign && <ModelsList setLoadingModel={setLoadingModel} setSwipedUp={setSwipedUp} swipedUp={swipedUp} setOpenContextPanel={setOpenContextPanel} setMode={setMode} />}
       <ContextPanel openContextPanel={openContextPanel} setOpenContextPanel={setOpenContextPanel} />
 
-      {mode?.mode !== "draw" && <Navigation setSwipedUp={setSwipedUp} swipedUp={swipedUp} />}
+      {mode?.mode !== "draw" && !saveDesign && <Navigation setSwipedUp={setSwipedUp} swipedUp={swipedUp} />}
       <Map
         initialMapViewport={initialMapViewport}
         statefulMap={statefulMap}
@@ -131,6 +178,11 @@ const Home = ({ setLoadingModel }) => {
       {/* <Box position="fixed" bottom="20px" right="100px">
         <Button onClick={() => setShowLabels(true)} text={showLabels ? "Show labels" : "Hide Labels"} />
       </Box> */}
+
+      <Box position="fixed" bottom="20px" right="100px">
+        <Button onClick={() => handleSaveModalOpen(true)} icon={<Check />} text="Speichern" />
+      </Box>
+      <SavePanel swipedUp={saveDesign} setSwipedUp={() => handleSaveModalClose()} />
     </Wrapper>
   );
 }

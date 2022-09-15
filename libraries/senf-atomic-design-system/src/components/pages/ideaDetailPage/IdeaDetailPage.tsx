@@ -43,7 +43,6 @@ import Button from "../../atoms/buttons/Button";
 import ModalButton from "../../molecules/modalStack/ModalButton";
 import Hyperlink from "../../../assets/icons/Hyperlink";
 import { openMail, openLink } from "../../../util/helpers";
-import Calendar from "../../organisms/calendar/Calendar";
 import CalendarIcon from "../../../assets/icons/CalendarIcon";
 import Location from "../../../assets/icons/Location";
 import ContentDropdown from "../../atoms/contentDropdown/ContentDropdown";

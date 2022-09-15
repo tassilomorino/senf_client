@@ -1,4 +1,5 @@
-import React from 'react'
+import { useFormik } from 'formik'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import Box from '../../atoms/box/Box'
 import Button from '../../atoms/buttons/Button'
@@ -6,16 +7,27 @@ import ImageUploadTile from '../../atoms/imageUploadTile/ImageUploadTile'
 import Input from '../../atoms/inputs/Input'
 
 const AddModel = ({
-    formik,
     uploadedImage,
     handleImageUpload,
     uploadedModel,
     handleModelUpload,
     handleSubmit,
+    formik: initial,
+    validationSchema,
+    onChange
 
 }) => {
     const { t } = useTranslation()
     const [page, setPage] = React.useState(0)
+
+    const formik = useFormik({
+        initialValues: initial.values,
+        validationSchema,
+    });
+
+    useEffect(() => {
+        formik.setValues(formik.values);
+    }, [formik.values]);
     return (
         <Box flexDirection="column" gap="20px">
 

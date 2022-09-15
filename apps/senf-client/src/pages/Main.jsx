@@ -47,7 +47,6 @@ import {
   getMyScreams,
   openAccountFunc,
 } from "../redux/actions/accountActions";
-import PostScream from "../components/PostIdea/PostScream";
 import {
   openOrganizationFunc,
   stateCreateOrganizationsFunc,
@@ -69,6 +68,7 @@ import ProjectroomPage from "./ProjectroomPage";
 import ProfilePage from "./ProfilePage";
 import { StyledH3 } from "../styles/GlobalStyle";
 import { getUserData } from "../redux/actions/userActions";
+import PostIdeaPage from "./PostIdeaPage";
 
 
 
@@ -591,7 +591,8 @@ const Main = ({
       )}
 
       {postIdeaOpen && (
-        <PostScream
+
+        <PostIdeaPage
           loadingProjects={loadingProjects}
           projectsData={projects}
           project={project}
@@ -605,7 +606,6 @@ const Main = ({
         {!openInfoPage && (
           <>
             {!openProjectRoom &&
-              !postIdeaOpen &&
               !openAccount &&
               !loading &&
               (order === 1 || (order === 2 && !loadingProjects)) && (
@@ -645,6 +645,7 @@ const Main = ({
                   handleCreateProjectroom={handleCreateProjectroom}
                   handleMapBoundsReset={handleSetInitialMapBoundsAndViewport}
                   mapFilterActive={mapFilterActive}
+                  postIdeaOpen={postIdeaOpen}
                 />
               )}
 

@@ -10,7 +10,6 @@ import imageCompression from "browser-image-compression";
 import { async } from "@firebase/util";
 import * as yup from "yup"
 import { useTranslation } from "react-i18next";
-import { ModelsData } from "../data/Models";
 import { createModel } from "../util/setModels";
 import { db } from "../firebase";
 import { Grounds } from "../data/Grounds";
@@ -157,14 +156,8 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
   const handlePlaceModel = (
     // event, cardType,
     modelData) => {
-    setLoadingModel(true);
-    setSwipedUp(false);
-    if (isMobile) {
-      setSwipedUp(false)
-    }
-    console.log(modelData)
+    console.log("Creating model in handlePlaceModel",);
 
-    setLoadingModel(false);
     createModel(
       `${Math.floor(Math.random() * 100000000)}`,
       modelData.modelURL,
@@ -174,6 +167,8 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
       modelData.labelText
 
     );
+
+
   }
 
 
@@ -181,12 +176,15 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
 
   return (
     <Wrapper>
-      <ThreeDToolSwipeList data={models} handlePlaceModel={handlePlaceModel} swipedUp={swipedUp} setSwipedUp={setSwipedUp} formik={formik} grounds={Grounds} setMode={setMode}
+      <ThreeDToolSwipeList data={models} handlePlaceModel={handlePlaceModel} swipedUp={swipedUp} setSwipedUp={setSwipedUp} grounds={Grounds} setMode={setMode}
         handleImageUpload={handleImageUpload}
         uploadedImage={formik?.values.imgURL && URL.createObjectURL(formik?.values.imgURL)}
         uploadedModel={formik?.values.modelURL && URL.createObjectURL(formik?.values.modelURL)}
         handleModelUpload={handleModelUpload}
-        handleSubmit={handleSubmit} />
+        handleSubmit={handleSubmit}
+        formik={formik}
+        validationSchema={validationSchema}
+      />
     </Wrapper>
   );
 };

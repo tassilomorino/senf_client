@@ -14,4 +14,4 @@ const Auth = ({ authAddDetails }) => {
   />
 };
 
-export default (Auth);
+export default Auth;
