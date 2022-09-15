@@ -15,7 +15,7 @@ export interface ModalOptions {
   cancelText?: string;
   size?: "full" | "xl" | "lg" | "md" | "sm" | "l" | "m" | "s";
   children?: React.ReactNode | React.ReactNode[];
-  height?: number;
+  // height?: number;
   swipe?: boolean;
   style?: React.CSSProperties;
   replace?: boolean,
