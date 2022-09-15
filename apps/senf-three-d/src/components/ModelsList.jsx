@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useState, useEffect, useRef } from "react";
-import { ThreeDToolSwipeList, isMobileCustom, Input } from "senf-atomic-design-system";
+import { ThreeDToolSwipeList, isMobileCustom, Input, useModals } from "senf-atomic-design-system";
 import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import styled from "styled-components";
 import { useFormik } from "formik";
@@ -10,11 +10,10 @@ import imageCompression from "browser-image-compression";
 import { async } from "@firebase/util";
 import * as yup from "yup"
 import { useTranslation } from "react-i18next";
+import { AuthModal } from "senf-shared"
 import { createModel } from "../util/setModels";
 import { db } from "../firebase";
 import { Grounds } from "../data/Grounds";
-
-
 
 
 const tags = [
@@ -46,6 +45,7 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
   // const { t } = useTranslation()
   const [models, setModels] = useState([]);
   const { t } = useTranslation()
+  const { openModal } = useModals();
 
 
 
@@ -166,12 +166,16 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
 
 
   }
+  const handleOpenMyAccount = () => {
+    openModal(<AuthModal authAddDetails={true} />)
+  }
 
 
 
   return (
     <Wrapper>
       <ThreeDToolSwipeList data={models} handlePlaceModel={handlePlaceModel} swipedUp={swipedUp} setSwipedUp={setSwipedUp} grounds={Grounds} setMode={setMode}
+        handleOpenMyAccount={handleOpenMyAccount}
         handleImageUpload={handleImageUpload}
         uploadedImage={formik?.values.imgURL}
         uploadedModel={formik?.values.modelURL}

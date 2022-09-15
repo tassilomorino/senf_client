@@ -243,7 +243,7 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
         <Wave color={theme.colors.beige.beige20} top="0px" />
         {!isMobile && (
           <MenuSidebar
-            handleOpenMyAccount={() => console.log("hi")}
+            handleOpenMyAccount={handleOpenMyAccount}
             setShowUI={true}
             setOrder={() => console.log("hi")}
           />

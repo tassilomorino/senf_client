@@ -1,17 +1,29 @@
 /** @format */
 
-import React from "react";
+import { useEffect, memo } from "react";
 import { useModals } from "senf-atomic-design-system";
-import { AuthModal } from "senf-shared";
+import {
+  AuthModal,
+  useAuthContext,
+} from "senf-shared";
 
-const Auth = ({ authAddDetails }) => {
-  const { closeModal } = useModals()
-  return <AuthModal
+const Auth = ({ ...props }) => {
+  const { closeModal, setModal } = useModals();
+  const { user } = useAuthContext();
+
+  const Modal = <AuthModal
     success={() => closeModal()}
     error={(err) => console.error(err)}
     handleClose={() => closeModal()}
-    authAddDetails={authAddDetails}
+    {...props}
   />
+
+  useEffect(() => {
+    const timeoutID = setTimeout(() => !user && setModal(Modal), 500);
+    return () => clearTimeout(timeoutID);
+  }, [user])
+
+  return null
 };
 
-export default Auth;
+export default memo(Auth);

@@ -4,6 +4,8 @@ import styled, { ThemeProvider } from "styled-components";
 import {
   theme, GlobalStyle, ModalProvider, Typography, Loader
 } from "senf-atomic-design-system";
+import { AuthProvider } from "senf-shared";
+import { BrowserRouter as Router } from "react-router-dom";
 
 import Home from "./pages/Home";
 
@@ -37,15 +39,19 @@ const App = () => {
   return (
     <BodyWrapper>
       <ThemeProvider theme={theme}>
-        <ModalProvider>
-          <GlobalStyle />
-          {loadingModel &&
-            <LoaderWrapper>
-              <Loader width="100px" height="100px" /><Typography variant="h3" textAlign="center">
-                Loading Model...</Typography>
-            </LoaderWrapper>}
-          <Home setLoadingModel={setLoadingModel} />
-        </ModalProvider>
+        <Router>
+          <AuthProvider>
+            <ModalProvider>
+              <GlobalStyle />
+              {loadingModel &&
+                <LoaderWrapper>
+                  <Loader width="100px" height="100px" /><Typography variant="h3" textAlign="center">
+                    Loading Model...</Typography>
+                </LoaderWrapper>}
+              <Home setLoadingModel={setLoadingModel} />
+            </ModalProvider>
+          </AuthProvider>
+        </Router>
       </ThemeProvider>
     </BodyWrapper>
 

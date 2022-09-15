@@ -322,7 +322,7 @@ const PostIdeaPage = ({
         <AuthFirst
           isMobile={isMobileCustom}
           locationDecided={locationDecided}
-          onClick={() => openModal(<AuthModal />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+          onClick={() => openModal(<AuthModal />, { swipe: !!isMobileCustom, size: "md" })
           }
         />
       )}

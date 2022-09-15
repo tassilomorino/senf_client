@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { Check, Box, Button, Map, isMobileCustom, useModals } from "senf-atomic-design-system"
 import { Threebox } from "threebox-plugin";
 import { useFormik } from "formik";
+import { useAuthContext, AuthModal } from "senf-shared";
+import { useNavigate } from "react-router-dom";
 import ContextPanel from "../components/ContextPanel";
 import ModelsList from "../components/ModelsList";
 import Navigation from "../components/Navigation";
@@ -10,7 +12,6 @@ import { setImplementedModelsData } from "../util/setModels";
 import SavePanel from "../components/SavePanel";
 import useInterval from "../util/useInterval";
 import ThanksNote from "../components/ThanksNote";
-
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -20,6 +21,9 @@ position: fixed;
 `
 const Home = ({ setLoadingModel }) => {
   const isMobile = isMobileCustom();
+  const { openModal } = useModals();
+  const { user } = useAuthContext();
+  const { navigate } = useNavigate()
 
 
   const [mode, setMode] = useState(null);
@@ -148,6 +152,9 @@ const Home = ({ setLoadingModel }) => {
     setSaveDesign(false)
   };
 
+  useEffect(() => {
+    if (!user) openModal(<AuthModal success={() => navigate('/home')} />)
+  }, [user])
 
 
   return (

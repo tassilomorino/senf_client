@@ -187,47 +187,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({ formik, checkIfCalendar, selected
             onSubmit: closeModal
           }}
         >
-
-          <AddContactForm
-            formikEditIdea={formik}
-          // onChange={formikEditIdea.setValues}
-          />
-          {/* <>
-            <Typography variant="bodyBg">Deine Kontaktdaten werden öffentlich gezeigt.</Typography>
-            <Box gap="16px" flexDirection="column" marginTop="20px">
-              <Input
-                name="contactTitle"
-                placeholder={t("contactTitle")}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.contactTitle}
-                error={
-                  formik.touched.contactTitle &&
-                  Boolean(formik.errors.contactTitle)
-                }
-                note={
-                  formik.touched.contactTitle &&
-                  formik.errors.contactTitle
-                }
-              />
-              <Input
-                name="contact"
-                type="text"
-                placeholder={t("contact")}
-                onChange={formik?.handleChange}
-                onBlur={formik?.handleBlur}
-                value={formik?.values.contact}
-                error={
-                  formik?.touched.contact &&
-                  Boolean(formik?.errors.contact)
-                }
-                note={
-                  formik?.touched.contact &&
-                  formik?.errors.contact
-                }
-              />
-            </Box>
-          </> */}
+          <AddContactForm formikEditIdea={formik} />
         </ModalButton>
 
 
@@ -277,7 +237,9 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({ formik, checkIfCalendar, selected
           fillWidth="max"
           icon={<CalendarIcon />}
           options={{
-            padding: 20,
+            style: {
+              padding: 20,
+            },
             title: t('add_date'),
             cancelText: t('cancel'),
             submitText: t('save'),

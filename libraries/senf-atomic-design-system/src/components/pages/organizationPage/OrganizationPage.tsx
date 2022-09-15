@@ -204,7 +204,9 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
               size="small"
               fillWidth="max"
               options={{
-                padding: 20,
+                style: {
+                  padding: 20,
+                },
                 title: t("contact"),
                 swipe: isMobile && true
 
@@ -240,7 +242,9 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
             size="small"
             fillWidth="max"
             options={{
-              padding: 20,
+              style: {
+                padding: 20,
+              },
               title: t("faq"),
               swipe: isMobile && true,
               size: "lg"
