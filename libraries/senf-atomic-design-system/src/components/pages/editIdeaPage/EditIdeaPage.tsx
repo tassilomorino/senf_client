@@ -29,7 +29,7 @@ import { EditIdeaProps } from "./EditIdea.types";
 import Geocoder from "../../atoms/geocoder/Geocoder";
 import MapTileSmall from "../../../assets/other/mapTileSmall.png";
 import ModalButton from "../../molecules/modalStack/ModalButton";
-import { ModalContext } from "../../molecules/modalStack/ModalProvider";
+import { useModals } from "../../molecules/modalStack/ModalProvider";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 
 const Background = styled.div<EditIdeaProps>`
@@ -46,6 +46,49 @@ const Wrapper = styled.div<EditIdeaProps>`
   background-color: transparent;
 `;
 
+const AddContactForm = ({ formikEditIdea: initial, validationSchema }) => {
+  const { t } = useTranslation();
+  const formikEditIdea = useFormik({
+    initialValues: initial.values,
+    validationSchema,
+  });
+  useEffect(() => initial.setValues(formikEditIdea.values), [initial, formikEditIdea]);
+  return (<><Typography variant="bodyBg">Deine Kontaktdaten werden öffentlich gezeigt.</Typography>
+    <Box gap="16px" flexDirection="column" marginTop="20px">
+      <Input
+        name="contactTitle"
+        placeholder={t("contactTitle")}
+        onChange={formikEditIdea.handleChange("contactTitle")}
+        onBlur={formikEditIdea.handleBlur}
+        value={formikEditIdea.values.contactTitle}
+        error={
+          formikEditIdea.touched.contactTitle &&
+          Boolean(formikEditIdea.errors.contactTitle)
+        }
+        note={
+          formikEditIdea.touched.contactTitle &&
+          formikEditIdea.errors.contactTitle
+        }
+      />
+      <Input
+        name="contact"
+        type="text"
+        placeholder={t("contact")}
+        onChange={formikEditIdea?.handleChange}
+        onBlur={formikEditIdea?.handleBlur}
+        value={formikEditIdea?.values.contact}
+        error={
+          formikEditIdea?.touched.contact &&
+          Boolean(formikEditIdea?.errors.contact)
+        }
+        note={
+          formikEditIdea?.touched.contact &&
+          formikEditIdea?.errors.contact
+        }
+      />
+    </Box></>)
+}
+
 const EditIdeaPage: FC<EditIdeaPageProps> = ({
   data,
   projectroomsData,
@@ -54,7 +97,7 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
 }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom()
-  const { handleModal } = React.useContext(ModalContext) || {};
+  const { closeModal } = useModals()
 
   const [checkIfCalendar, setCheckIfCalendar] = React.useState(false);
   const [selectedDays, setSelectedDays] = useState([]);
@@ -107,6 +150,9 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
     validateOnChange: true,
     validateOnBlur: true,
   });
+  useEffect(() => {
+    console.log(formikEditIdea)
+  }, [formikEditIdea])
 
   useEffect(() => {
     // dispatch(getUserEmail(data.userId));
@@ -255,7 +301,7 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
                 title: t('add_weblink'),
                 cancelText: t('cancel'),
                 submitText: t('save'),
-                onSubmit: () => handleModal("pop")
+                onSubmit: () => closeModal()
               }}
             >
 
@@ -304,48 +350,19 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
               text={formikEditIdea?.values.contactTitle || t('add_contact')}
               icon={<Mail />}
               options={{
-                padding: 20,
+                style: {
+                  padding: "20px",
+                },
                 title: t('add_contact'),
                 cancelText: t('cancel'),
                 submitText: t('save'),
-                onSubmit: () => handleModal("pop")
+                swipe: true,
               }}
             >
-
-              <Typography variant="bodyBg">Deine Kontaktdaten werden öffentlich gezeigt.</Typography>
-              <Box gap="16px" flexDirection="column" marginTop="20px">
-                <Input
-                  name="contactTitle"
-                  placeholder={t("contactTitle")}
-                  onChange={formikEditIdea.handleChange("contactTitle")}
-                  onBlur={formikEditIdea.handleBlur}
-                  value={formikEditIdea.values.contactTitle}
-                  error={
-                    formikEditIdea.touched.contactTitle &&
-                    Boolean(formikEditIdea.errors.contactTitle)
-                  }
-                  note={
-                    formikEditIdea.touched.contactTitle &&
-                    formikEditIdea.errors.contactTitle
-                  }
-                />
-                <Input
-                  name="contact"
-                  type="text"
-                  placeholder={t("contact")}
-                  onChange={formikEditIdea?.handleChange}
-                  onBlur={formikEditIdea?.handleBlur}
-                  value={formikEditIdea?.values.contact}
-                  error={
-                    formikEditIdea?.touched.contact &&
-                    Boolean(formikEditIdea?.errors.contact)
-                  }
-                  note={
-                    formikEditIdea?.touched.contact &&
-                    formikEditIdea?.errors.contact
-                  }
-                />
-              </Box>
+              <AddContactForm
+                formikEditIdea={formikEditIdea}
+                validationSchema={editIdeaValidationSchema}
+              />
             </ModalButton>
 
             {checkIfCalendar && (
@@ -359,7 +376,7 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
                   title: t('add_date'),
                   cancelText: t('cancel'),
                   submitText: t('save'),
-                  onSubmit: () => handleModal("pop")
+                  onSubmit: () => closeModal()
                 }}
               >
 

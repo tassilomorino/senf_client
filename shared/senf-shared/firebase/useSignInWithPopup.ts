@@ -5,11 +5,15 @@ import {
   CustomParameters,
   FacebookAuthProvider,
   GoogleAuthProvider,
+  OAuthProvider,
   signInWithPopup,
+  signInWithEmailAndPassword as firebaseSignInWithEmailAndPassword,
   UserCredential,
+  User
 } from "firebase/auth";
 import { doc, Firestore, getDoc } from "firebase/firestore";
 import { useMemo, useState } from "react";
+import { formikValues } from "formik"
 import { createUserFromProviderInDatabase } from "./createUserFromProviderInDatabase";
 import { SignInWithPopupHook } from "./types";
 
@@ -42,8 +46,10 @@ const useSignInWithPopup = (
         console.log("created user in database");
       }
       setLoggedInUser(result);
+      return user
     } catch (err) {
       setError(err as AuthError);
+      return 'error'
     } finally {
       setLoading(false);
     }
@@ -96,4 +102,83 @@ export const useSignInWithGoogle = (
     return provider;
   };
   return useSignInWithPopup(auth, db, createGoogleAuthProvider);
+};
+
+
+
+
+
+
+
+
+// 
+
+type Provider = "apple" | "facebook" | "google";
+
+const signInWithEmailAndPassword = async (
+  formikStore: formikValues,
+  auth: Auth,
+) => {
+  try {
+    console.log(formikStore)
+    const { email, password } = formikStore.values;
+    const { user } = await firebaseSignInWithEmailAndPassword(auth, email, password);
+    if (user.emailVerified) return user;
+    throw new Error("auth/user-not-verified" as AuthError["code"]);
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+const signIn = async (
+  providerName: Provider,
+  auth: Auth,
+  db: Firestore,
+  scopes?: string[],
+  customOAuthParameters?: CustomParameters,
+): Promise<User> => {
+  let provider: OAuthProvider | FacebookAuthProvider | GoogleAuthProvider;
+  switch (providerName) {
+    case "apple": provider = new OAuthProvider('apple.com'); break;
+    case "facebook": provider = new FacebookAuthProvider(); break;
+    case "google": provider = new GoogleAuthProvider(); break;
+    default: throw Error("provider not found");
+  }
+  if (scopes) scopes.forEach((scope) => provider.addScope(scope));
+  if (customOAuthParameters) provider.setCustomParameters(customOAuthParameters);
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const { user } = result;
+    const docRef = doc(db, "users", user.uid);
+    const docSnapshot = await getDoc(docRef);
+    if (!docSnapshot.exists() && user) {
+      await createUserFromProviderInDatabase(db, user);
+      console.log("created user in database");
+    } else {
+      console.log("user existed");
+    }
+    return user
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
+
+export const useSignIn = (
+  auth: Auth,
+  db: Firestore,
+): {
+  provider: (provider: Provider,
+    scopes?: string[],
+    customOAuthParameters?: CustomParameters) => Promise<User>,
+  email: (formikStore: formikValues) => Promise<User>
+} => {
+  return {
+    provider: (
+      provider,
+      scopes,
+      customOAuthParameters,
+    ) => signIn(provider, auth, db, scopes, customOAuthParameters),
+    email: (formikStore) => signInWithEmailAndPassword(formikStore, auth)
+  }
 };

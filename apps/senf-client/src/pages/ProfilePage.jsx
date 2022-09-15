@@ -3,7 +3,8 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { ProfilePage as ProfilePageComponent, ModalContext, Loader } from "senf-atomic-design-system";
+import { ProfilePage as ProfilePageComponent, useModals, Loader } from "senf-atomic-design-system";
+import { AuthModal } from "senf-shared"
 import { getAuth } from "firebase/auth";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -19,7 +20,6 @@ import {
 } from "../util/helpers";
 
 import { deleteUserFromDb, getUserData, logoutUser } from "../redux/actions/userActions";
-import Auth from "./Auth";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
 const ProfilePage = ({
@@ -31,7 +31,7 @@ const ProfilePage = ({
 }) => {
 
   const { t } = useTranslation();
-  const { handleModal } = React.useContext(ModalContext) || {};
+  const { openModal, closeModal } = useModals()
 
   const loadingMyScreams = useSelector((state) => state.data.loadingMyScreams);
 
@@ -106,11 +106,7 @@ const ProfilePage = ({
   };
 
   const handleDeleteAccount = () => {
-    dispatch(deleteUserFromDb(firebaseUser.uid)).then(() => {
-      handleModal("pop")
-      handleModal("pop")
-      navigate('/');
-    }).catch(err => {
+    dispatch(deleteUserFromDb(firebaseUser.uid)).then(() => { closeModal(); navigate('/') }).catch(err => {
       throw new Error(err, ' error in deleteUserFromDb in ProfilePage.jsx')
     })
   };
@@ -161,7 +157,7 @@ const ProfilePage = ({
         handleButtonLike={handleButtonLike}
         handleButtonComment={handleButtonComment}
         handleButtonClose={handleClose}
-        handleSetAuthEditOpen={() => handleModal("push", <Auth authAddDetails={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+        handleSetAuthEditOpen={() => openModal(<AuthModal authAddDetails={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
 
         }
         handleLogout={handleLogout}

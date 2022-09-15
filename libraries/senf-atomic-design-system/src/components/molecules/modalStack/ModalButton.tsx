@@ -1,19 +1,19 @@
 import React, { FC } from "react";
 import Button from "../../atoms/buttons/Button";
 import { ButtonProps } from "../../atoms/buttons/Button.types";
-import { ModalWrapperProps } from "./ModalWrapper.types";
-import { ModalContext } from "./ModalProvider";
+import { ModalOptions } from "./ModalStack.types";
+import { useModals } from "./ModalProvider";
 
 interface ModalButtonProps extends ButtonProps {
-  options: ModalWrapperProps,
+  options: ModalOptions,
   children: React.ReactNode | React.ReactNode[]
   button?: React.Node
 }
 
 const ModalButton: FC<ModalButtonProps> = ({ children, options, button, ...props }) => {
-  const { handleModal } = React.useContext(ModalContext) || {};
-  const MButton = button || Button;
-  return (<MButton onClick={() => handleModal("push", children, options)} {...props} />)
+  const { openModal } = useModals();
+  const CustomButton = button || Button;
+  return (<CustomButton onClick={() => openModal(children, options)} {...props} />)
 };
 
 export default ModalButton

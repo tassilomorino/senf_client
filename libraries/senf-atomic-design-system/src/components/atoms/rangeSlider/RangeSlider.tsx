@@ -38,11 +38,12 @@ const RangeSlider: FC<RangeSliderProps> = ({
         thumbColor={thumbColor}
         thumbBorderColor={thumbBorderColor}
       />
-      <Box margin="10px 13px" justifyContent="space-between">
-        <Typography variant="bodySm">{leftTick}</Typography>
-        <Typography variant="bodySm">{rightTick}</Typography>
-      </Box>
-    </Wrapper>
+      {(leftTick || rightTick) &&
+        <Box margin="10px 13px" justifyContent="space-between">
+          <Typography variant="bodySm">{leftTick}</Typography>
+          <Typography variant="bodySm">{rightTick}</Typography>
+        </Box>}
+    </Wrapper >
   );
 };
 

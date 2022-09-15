@@ -1,5 +1,6 @@
 function makeTooltipInteractive(model, setOpenContextPanel, setSwipedUp) {
   function onSelectedChange(e) {
+    console.log("onSelectedChange", e);
     const { selected } = e.detail; // we get if the object is selected after the event
 
     // if selected
@@ -49,6 +50,7 @@ export const createModel = (
   setSwipedUp,
   labelText
 ) => {
+  console.log("Creating model in createModel", id);
   window.map.addLayer({
     id,
     type: "custom",
@@ -119,6 +121,7 @@ export const setImplementedModelsData = (
         rotation: { x: 90, y: 0, z: 0 }, // default rotation,
         anchor: "center",
         labelText: model.labelText || "",
+        id: model.id,
       };
 
       window.tb.loadObj(options, (newModel) => {
@@ -137,7 +140,7 @@ export const setImplementedModelsData = (
       });
     },
     render(gl, matrix) {
-      window.tb.update(); // update Threebox scene
+      window?.tb?.update(); // update Threebox scene
     },
   });
 };

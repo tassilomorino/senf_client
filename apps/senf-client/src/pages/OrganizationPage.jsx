@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import {
   OrganizationPage as OrganizationPageComponent,
-  ModalContext,
+  useModals,
   Loader
 } from "senf-atomic-design-system";
 
@@ -75,7 +75,7 @@ const OrganizationPage = ({
   const { t } = useTranslation();
   const organization = useSelector((state) => state.data.organization);
 
-  const { handleModal } = React.useContext(ModalContext) || {};
+  const { openModal, closeModal } = useModals()
 
 
 
@@ -92,7 +92,7 @@ const OrganizationPage = ({
   const handleEditOrganization = () => {
     localStorage.setItem("createOrganizationId", organization?.organizationId);
     localStorage.setItem("createOrganizationPostEdit", true);
-    handleModal("push", <React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
+    openModal(<React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
       <CreateMainComponent type="organization" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
   };
 

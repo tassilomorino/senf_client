@@ -5,7 +5,7 @@ import { withThemes } from "@react-theming/storybook-addon";
 import GlobalStyle from "../src/styles/globals";
 import theme from "../src/styles/theme";
 import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
-import { ModalProvider } from "../src/components/molecules/modalStack/ModalProvider";
+import ModalProvider from "../src/components/molecules/modalStack/ModalProvider";
 
 import i18n from "../src/util/i18n";
 import React from "react";

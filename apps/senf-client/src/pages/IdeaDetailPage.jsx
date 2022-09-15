@@ -4,7 +4,7 @@ import React, { useState, useEffect, memo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   IdeaDetailPage as IdeaDetailPageComponent,
-  ModalContext
+  useModals
 } from "senf-atomic-design-system";
 import { useNavigate } from "react-router-dom";
 import { isMobileCustom } from "../util/customDeviceDetect";
@@ -14,7 +14,6 @@ import { clearErrors } from "../redux/actions/errorsActions";
 import { openProjectRoomFunc } from "../redux/actions/projectActions";
 import { deleteComment, submitComment } from "../redux/actions/commentActions";
 import { openLink } from "../util/helpers";
-import Auth from "./Auth";
 import { openAccountFunc } from "../redux/actions/accountActions";
 import { handleTopicSelectorRedux } from "../redux/actions/UiActions";
 
@@ -29,7 +28,7 @@ const IdeaDetailPage = ({
 }) => {
 
   const data = useSelector((state) => state.data.scream);
-  const { handleModal } = React.useContext(ModalContext) || {};
+  const { closeModal } = useModals()
 
   const { screamId, lat, long, userId } = useSelector(
     (state) => state.data.scream
@@ -120,7 +119,7 @@ const IdeaDetailPage = ({
     editIdea: (values) => {
       dispatch(
         editScreamFunc(values)
-      ).then(() => { handleModal("pop") })
+      ).then(() => { closeModal() })
     },
     deleteIdea: async (screamId) => {
       return dispatch(

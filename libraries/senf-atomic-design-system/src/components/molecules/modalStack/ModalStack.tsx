@@ -1,61 +1,40 @@
-import React from "react";
 import styled from "styled-components";
-import { ModalContext } from "./ModalProvider";
-import ModalWrapper from "./ModalWrapper";
+import { useTransition, config } from "@react-spring/web";
+import ModalContainer from './ModalContainer'
 
-interface StackProps {
-  stack: number
-}
 
-const Background = styled.div<StackProps>`
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  transition: 300ms;
-  pointer-events: ${({ stack }) => stack < 2 ? "none" : "auto"};
-`;
+import { ModalProps, ModalOptions, ModalContainerProps } from "./ModalStack.types";
+import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 
-const Stack = styled.div<StackProps>`
-z-index: 999999;
+const StackWrapper = styled.div<ModalOptions>`
+	z-index: 9999;
+	position: fixed;
+	bottom: ${({ isMobile }) => isMobile ? 0 : "50%"};
+	left: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 `
 
-const ModalStack = () => {
-  const { modalComponents, modalStack, handleModal } = React.useContext(ModalContext) || {};
-  const [opacity, setOpacity] = React.useState(0.0001);
+const Stack = ({ stack, closeModal }: { stack: ModalProps[], closeModal: () => void }) => {
+	const isMobile = isMobileCustom()
+	const modalIndex = (item: ModalProps) => (stack.length - stack.indexOf(item)) - 1
+	const away = (item: ModalProps) => ({ opacity: 0, shading: 1, y: item.options?.swipe ? 1000 : 30, scale: 1.1 })
+	const modalStackTransition = useTransition(stack, {
+		from: item => away(item),
+		leave: item => away(item),
+		enter: { opacity: 1, shading: 1, y: 0, scale: 1 },
+		update: item => [{
+			shading: Math.min(1 / (modalIndex(item) + 1), 1),
+			y: modalIndex(item) * -40,
+			scale: 1 - modalIndex(item) / 7,
+		}],
+		config: config.gentle
+	})
 
-  React.useEffect(() => {
-    if (modalStack < 3) {
-      setOpacity(0.0001);
-    } else {
-      setOpacity(1);
-    }
-  }, [modalStack]);
 
-  return (<>
-    <Stack>
-      {modalComponents.map(({ modal, options }, index, { length }) => (
-        (modal?.$$typeof || modal?.length > 0 || options?.title) &&
-        <ModalWrapper
-          key={index}
-          index={length - index - 1}
-          setOpacity={setOpacity}
-          {...options}
-        >
-          {modal}
-        </ModalWrapper>
-      ))}
-    </Stack>
-    <Background
-      onClick={handleModal.bind(null, 'pop')}
-      stack={modalStack}
-      style={{
-        backgroundColor: `rgba(0, 0, 0, ${opacity / 2})`,
-      }}
-    />
-  </>);
-};
-
-export default ModalStack;
+	return <StackWrapper isMobile={isMobile}>
+		{modalStackTransition((style, item) => <ModalContainer item={item} style={style as ModalContainerProps['style']} closeModal={closeModal} index={modalIndex(item)} />)}
+	</StackWrapper>
+}
+export default Stack

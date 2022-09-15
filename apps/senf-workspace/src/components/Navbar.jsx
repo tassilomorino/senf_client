@@ -4,7 +4,6 @@ import { signOut } from "@firebase/auth";
 import { updateDoc, doc } from "firebase/firestore";
 import styled from "styled-components";
 import { Stadtverwaltung, Typography, TertiaryButton, Icon } from "senf-atomic-design-system";
-import { AuthContext } from "../context/auth";
 import { auth, db } from "../firebase";
 
 const Nav = styled.nav`

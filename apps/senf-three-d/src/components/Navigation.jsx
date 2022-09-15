@@ -10,7 +10,7 @@ left: 0;
 width: calc(100% - 40px);
 pointer-events: none;
 display: flex;
-justify-content: space-between;
+justify-content: center;
 align-items: flex-end;
 box-sizing:border-box;
 margin: 20px;
@@ -29,7 +29,6 @@ const Navigation = ({ setSwipedUp, swipedUp }) => {
     const isMobile = isMobileCustom()
     return (
         <Wrapper swipedUp={swipedUp}>
-            {isMobile && <Button variant="white" icon={<AllOrganizationTypes />} onClick={() => console.log("")} />}
             <RoundedButton
                 style={swipedUp && !isMobile ? { backgroundColor: theme.colors.beige.beige20, borderColor: theme.colors.beige.beige20 } : {}}
                 size={
@@ -48,8 +47,7 @@ const Navigation = ({ setSwipedUp, swipedUp }) => {
                 }
                 onClick={() => setSwipedUp(!swipedUp)}
             />
-            {isMobile && <Button variant="white" icon={<Check />} onClick={() => console.log("")} />}
-        </Wrapper>
+        </Wrapper >
     )
 }
 

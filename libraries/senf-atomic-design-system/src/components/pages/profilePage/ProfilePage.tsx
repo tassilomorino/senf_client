@@ -42,6 +42,7 @@ import ContentDropdownItem from "../../atoms/contentDropdownItem/ContentDropdown
 import ModalButton from "../../molecules/modalStack/ModalButton";
 import Auth from "../auth/Auth";
 import Avatar from "../../atoms/avatar/Avatar";
+import { useModals } from "../../molecules/modalStack/ModalProvider";
 
 const DragWrapper = styled(animated.div) <ProfilePageProps>`
   display: flex;
@@ -131,6 +132,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
   handleButtonComment,
 }) => {
   const { t } = useTranslation();
+  const { openModal } = useModals();
   const isMobile = isMobileCustom();
   const [order, setOrder] = useState(1);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -232,25 +234,23 @@ const ProfilePage: FC<ProfilePageProps> = ({
                     text={t("profile.delete")}
                     icon={<Plus />}
                     options={{
-                      padding: 20,
+                      style: {
+                        padding: 20
+                      },
                       title: t("contactModalTitle"),
-                      cancelText: t("cancel")
-                    }}
-                  >
-
-                    <ModalButton
-                      text={t("profile.delete")}
-                      fillWidth="max"
-                      options={{
-                        padding: 20,
+                      cancelText: t("cancel"),
+                      submitText: t('profile.delete'),
+                      onSubmit: () => openModal(null, {
+                        style: {
+                          padding: 20,
+                        },
                         title: t('delete_account_confirm'),
                         cancelText: t('cancel'),
                         submitText: t('delete'),
                         onSubmit: handleDeleteAccount,
-                      }}
-                    />
-
-                  </ModalButton>
+                      }),
+                    }}
+                  />
                 )}
               </Box >
 

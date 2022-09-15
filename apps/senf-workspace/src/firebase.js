@@ -16,14 +16,25 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID, */
 
-  apiKey: "AIzaSyB4SvrQ5QZ61K9jGEv0KbCDtKo8bCRtb2c",
-  authDomain: "senf-chat.firebaseapp.com",
+  // apiKey: "AIzaSyB4SvrQ5QZ61K9jGEv0KbCDtKo8bCRtb2c",
+  // authDomain: "senf-chat.firebaseapp.com",
+  // databaseURL:
+  //   "https://senf-chat-default-rtdb.europe-west1.firebasedatabase.app",
+  // projectId: "senf-chat",
+  // storageBucket: "senf-chat.appspot.com",
+  // messagingSenderId: "625175372028",
+  // appId: "1:625175372028:web:a9cb8092f08d2dd9543779",
+
+
+
+  apiKey: "AIzaSyBbVacMvYfdUG96Ez8UVWbXZPO3f4HnjGY",
+  authDomain: "senf-dev.firebaseapp.com",
   databaseURL:
-    "https://senf-chat-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "senf-chat",
-  storageBucket: "senf-chat.appspot.com",
-  messagingSenderId: "625175372028",
-  appId: "1:625175372028:web:a9cb8092f08d2dd9543779",
+    "https://senf-dev-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "senf-dev",
+  storageBucket: "senf-dev.appspot.com",
+  messagingSenderId: "665148664729",
+  appId: "1:665148664729:web:0cde2c0ef4fe389235c108",
 };
 
 // Initialize Firebase

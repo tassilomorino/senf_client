@@ -43,7 +43,6 @@ import Button from "../../atoms/buttons/Button";
 import ModalButton from "../../molecules/modalStack/ModalButton";
 import Hyperlink from "../../../assets/icons/Hyperlink";
 import { openMail, openLink } from "../../../util/helpers";
-import Calendar from "../../organisms/calendar/Calendar";
 import CalendarIcon from "../../../assets/icons/CalendarIcon";
 import Location from "../../../assets/icons/Location";
 import ContentDropdown from "../../atoms/contentDropdown/ContentDropdown";
@@ -54,6 +53,7 @@ import Report from "../../../assets/icons/Report";
 import Skeleton from "../../atoms/skeleton/Skeleton";
 import EditIdeaPage from "../editIdeaPage/EditIdeaPage";
 import Auth from "../auth/Auth";
+import { useModals } from "../../molecules/modalStack/ModalProvider";
 import Avatar from "../../atoms/avatar/Avatar";
 
 const DragWrapper = styled(animated.div) <IdeaDetailPageProps>`
@@ -187,7 +187,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
   const [editIdeaDropdownOpen, setEditIdeaDropdownOpen] = useState(false);
 
   const [swipePosition, setSwipePosition] = useState("bottom");
-
+  const { openModal } = useModals()
   const liked = () => {
     if (user?.likes && user?.likes.find((like) => like.screamId === screamId))
       return true;
@@ -584,7 +584,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
               {t("IdeaDetailPage.commentHeadline")}
             </Typography>
             {!user?.authenticated ? (
-              <Button onClick={() => handleModal("push", <Auth authEditOpen={false} />, { swipe: !!isMobile, size: "md", height: isMobile && window.innerHeight + 83, padding: 0 })
+              <Button onClick={() => openModal(<Auth authEditOpen={false} />, { swipe: !!isMobile, size: "md", height: isMobile && window.innerHeight + 83, padding: 0 })
               }>{t("login")}</Button>
             ) : (
               <Box gap="8px" width="100%">

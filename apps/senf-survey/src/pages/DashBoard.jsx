@@ -96,8 +96,8 @@ const DashBoard = () => {
         </Box>
         <Table
           data={filteredSurveys}
-          checkbox={"docId"}
-          bulkEdit={<Icon icon="Search" />}
+          // checkbox={"docId"}
+          // bulkEdit={<Icon icon="Search" />}
           columns={[
             { key: "title", label: t('title') },
             { key: "surveyType", label: t('surveyType') },

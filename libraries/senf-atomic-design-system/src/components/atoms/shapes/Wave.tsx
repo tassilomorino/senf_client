@@ -1,10 +1,15 @@
-import React, { memo, useEffect, useRef } from "react";
+import React, { FC, memo, useEffect, useRef } from "react";
 import styled from "styled-components";
 import lottie from 'lottie-web/build/player/lottie_light.min.js'
 import waveBeige from "../../../assets/lottieFiles/senf-wave-beige.json";
 import waveSenf from "../../../assets/lottieFiles/senf-wave-senf.json";
 
-const Wrapper = styled.div`
+interface WaveWrapperProps {
+  top?: string;
+  position?: string;
+}
+
+const Wrapper = styled.div<WaveWrapperProps>`
   width: 100%;
   height: 100%;
   position: absolute;
@@ -27,7 +32,7 @@ const Block = styled.div`
   background-color: ${({ color, theme }) =>
     color || theme.colors.beige.beige20};
 `;
-const Wave = ({ position, top, color }) => {
+const Wave: FC<{ position?: string, top?: string, color?: string }> = ({ position, top, color }) => {
   const container = useRef(null);
 
   useEffect(() => {

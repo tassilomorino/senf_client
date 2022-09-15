@@ -1,19 +1,22 @@
 /** @format */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { theme, GlobalStyle, ModalProvider } from "senf-atomic-design-system";
 import styled, { ThemeProvider } from "styled-components";
+import { AuthProvider } from "senf-shared";
+import { useDispatch, useSelector } from "react-redux";
 import Dashboard from "./pages/Dashboard";
 import "./util/i18n";
 import PrivateRoute from "./context/PrivateRoute";
-import { AuthProvider } from "./context/auth";
 import AuthPage from "./pages/AuthPage";
 import InviteMember from "./pages/InviteMember";
 import MemberBoard from "./pages/MemberBoard";
 import { AcceptInvitation } from "./pages/AcceptInvitation";
 import PageNotFound from "./pages/PageNotFound";
+import { getMyMonitoringBoards } from "./redux/actions/accountActions";
+import Nav from "./components/Nav";
 
 const BodyWrapper = styled.div`
   position: fixed;
@@ -24,22 +27,30 @@ const BodyWrapper = styled.div`
   overflow: scroll;
 `
 const App = () => {
+  const dispatch = useDispatch();
+  const userId = "EkLheyhRjYSCMyUd4qvMIng0as43"
+
+  useEffect(() => {
+    dispatch(getMyMonitoringBoards(userId))
+
+  }, [])
   return (
     <BodyWrapper>
       <ThemeProvider theme={theme}>
-        <ModalProvider>
-          <GlobalStyle />
+        <AuthProvider>
+          <ModalProvider>
+            <GlobalStyle />
+            {import.meta.env.VITE_NO_CRAWL && (
+              /* disable google crawling for senf-client-test.netlify.app */
+              <Helmet>
+                <meta name="robots" content="noindex" />
+              </Helmet>
+            )}
 
-          {import.meta.env.VITE_NO_CRAWL && (
-            /* disable google crawling for senf-client-test.netlify.app */
-            <Helmet>
-              <meta name="robots" content="noindex" />
-            </Helmet>
-          )}
 
-          <AuthProvider>
             <Router>
               <React.Suspense fallback={<div>Loading...</div>}>
+                <Nav />
                 <Routes>
                   <Route
                     exact
@@ -52,10 +63,10 @@ const App = () => {
                     path="/login"
                     element={<AuthPage variant="login" />}
                   />
-                  <Route exact path="/" element={<PrivateRoute />}>
-                    <Route exact path="/" component={<Dashboard />} />
-                  </Route>
-                  {/* <Route exact path="/" element={<Dashboard />} /> */}
+                  {/* <Route exact path="/" element={<PrivateRoute />}>
+                  <Route exact path="/" component={<Dashboard />} />
+                  </Route> */}
+                  <Route exact path="/" element={<Dashboard />} />
                   <Route exact path="/members" element={<MemberBoard />} />
 
                   <Route exact path="/invite" element={<InviteMember />} />
@@ -68,9 +79,9 @@ const App = () => {
                   <Route path="*" element={<PageNotFound />} />
                 </Routes>
               </React.Suspense>
-            </Router>
+            </ModalProvider>
           </AuthProvider>
-        </ModalProvider>
+        </Router>
       </ThemeProvider>
     </BodyWrapper>
   );

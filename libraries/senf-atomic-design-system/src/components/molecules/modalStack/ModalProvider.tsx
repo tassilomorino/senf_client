@@ -1,102 +1,118 @@
-import React from "react";
+/**
+ * Inspired by React Modal Stack
+ * Author: Matt Jennings
+ * npm: @mattjennings/react-modal-stack
+ * github: https://github.com/mattjennings/react-modal-stack
+ * License: MIT
+ */
+
+import React, { useMemo, useState, useContext } from 'react'
 import ModalStack from "./ModalStack";
+import Background from "./Background";
 
-const useModal = () => {
-  const modalComponents = React.useRef([{}]);
-  const [modalStack, setModalStack] = React.useState(modalComponents.current.length);
-
-  // @todo: Hooks still don't work
-  const [beforeOpen, setBeforeOpen] = React.useState(false);
-  const [beforeClose, setBeforeClose] = React.useState(false);
-  const [afterOpen, setAfterOpen] = React.useState(false);
-  const [afterClose, setAfterClose] = React.useState(false);
-
-  const handleModal = (action, modal = null, options = null) => {
+import { ModalProps, ModalStackValue, ModalOptions } from "./ModalStack.types";
 
 
-    switch (action) {
-      case "push":
-        setBeforeOpen(true)
-        modalComponents.current = [...modalComponents.current, { modal, options }];
-        setModalStack(modalComponents.current.length);
-        setTimeout(() => {
-          modalComponents.current = [...modalComponents.current, {}];
-          setModalStack(modalComponents.current.length);
-          setAfterOpen(true)
-        }, 0)
-        break;
-      case "pop":
-        setBeforeClose(true)
-        modalComponents.current = modalComponents.current.slice(0, -1);
-        setTimeout(() => {
-          modalComponents.current = modalComponents.current.slice(0, -1);
-          setModalStack(modalComponents.current.length + 1);
-          setModalStack(modalComponents.current.length);
-          setAfterClose(true)
-        }, 150)
-
-        break;
-      case "set":
-        modalComponents.current = {
-          modal,
-          options
-        };
-        break;
-      case "clear":
-        modalComponents.current = [{}];
-        break;
-      default:
-        break;
-    }
-    setTimeout(() => {
-      setModalStack(modalComponents.current.length);
-      setBeforeOpen(false)
-      setAfterOpen(false)
-      setBeforeClose(false)
-      setAfterClose(false)
-    }, 0)
-
-  };
-  return {
-    modalStack,
-    modalComponents: modalComponents.current,
-    handleModal,
-    beforeOpen,
-    beforeClose,
-    afterOpen,
-    afterClose,
-  };
-};
+export interface ModalStackProps {
+  renderModals?: React.ComponentType<ModalStackValue>
+  children?: React.ReactNode
+}
 
 
+const ModalStackContext = React.createContext({} as ModalStackValue)
 
-const ModalContext = React.createContext();
-const { Provider } = ModalContext
 
-const ModalProvider = ({ children }) => {
-  const {
-    modalStack,
-    modalComponents,
-    handleModal,
-    beforeOpen,
-    beforeClose,
-    afterOpen,
-    afterClose,
-  } = useModal();
+const Modals = ({ stack, closeModal }: ModalStackValue) => {
+
   return (
-    <Provider value={{
-      modalStack,
-      modalComponents,
-      handleModal,
-      beforeOpen,
-      beforeClose,
-      afterOpen,
-      afterClose,
-    }}>
-      <ModalStack />
-      {children}
-    </Provider>
-  );
-};
+    <>
+      <ModalStack stack={stack} closeModal={closeModal} />
+      <Background stack={stack} closeModal={closeModal} />
+    </>
+  )
+}
 
-export { ModalContext, ModalProvider };
+
+const ModalProvider = ({
+  children,
+}: ModalStackProps) => {
+  const [stack, setStack] = useState<ModalProps[]>([])
+
+  const value = useMemo(() => {
+    const pop = (amount = 1) => {
+      setStack((prev) => [...prev].slice(0, prev.length - amount))
+    }
+
+    const dismissAll = () => {
+      setStack([])
+      return stack
+    }
+
+    const dismiss = (amount?: number) => {
+      if (stack.length === 1) {
+        dismissAll()
+      } else {
+        pop(amount)
+      }
+      return stack
+    }
+
+    const DefaultComponent = () => <div />
+
+    const openModal = async (data: JSX.Element, options?: ModalOptions, reset?: boolean) => {
+      const { type, props } = data || <DefaultComponent />
+      if (reset) dismissAll()
+      const modal = { type, props: { ...options, ...props }, options: { ...options, ...props } }
+      const { beforeOpen, afterOpen } = options || {}
+      if (typeof type === undefined) {
+        throw new Error('Modal type is undefined')
+      }
+      try {
+        await beforeOpen?.()
+        setStack((prev) => {
+          let newStack = [...prev]
+          if (options?.replace) newStack = stack.slice(0, stack.length - 1)
+          return [...newStack, modal as ModalProps]
+        })
+        afterOpen?.()
+        return stack
+      } catch (error) {
+        throw new Error(error)
+      }
+    }
+
+
+    const closeModal = async () => {
+      const { beforeClose, afterClose } = stack[stack.length - 1]?.options || {}
+      try {
+        await beforeClose?.()
+        dismiss(1)
+        afterClose?.()
+        return stack
+      } catch (error) {
+        throw new Error("error")
+      }
+    }
+
+    return {
+      stack,
+      setModal: (data, options?: ModalOptions) => openModal(data, options, true),
+      openModal,
+      closeModal,
+      closeModals: dismiss,
+      closeAllModals: dismissAll,
+    }
+
+  }, [stack])
+
+  return (
+    <ModalStackContext.Provider value={value}>
+      {children}
+      <Modals {...value} />
+    </ModalStackContext.Provider>
+  )
+}
+
+
+export const useModals = () => useContext(ModalStackContext)
+export default ModalProvider
