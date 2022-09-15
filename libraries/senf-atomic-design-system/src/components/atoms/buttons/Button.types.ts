@@ -15,10 +15,11 @@ export interface ButtonProps {
   size?: "small" | "medium" | "big";
   color?: string;
   justifyContent?:
-    | "center"
-    | "flex-start"
-    | "flex-end"
-    | "space-between"
-    | "space-around";
+  | "center"
+  | "flex-start"
+  | "flex-end"
+  | "space-between"
+  | "space-around";
   onClick?: MouseEventHandler<HTMLButtonElement>;
+  type?: "button" | "submit" | "reset";
 }
