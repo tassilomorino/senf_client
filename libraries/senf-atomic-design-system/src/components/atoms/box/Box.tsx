@@ -48,10 +48,11 @@ const Wrapper = styled.div<BoxProps>`
 
 const Box: FC<BoxProps> = ({
   children,
+  onClick,
   ...props
 }) => {
   return (
-    <Wrapper {...props}>
+    <Wrapper {...props} onClick={onClick}>
       {children}
     </Wrapper>
   );

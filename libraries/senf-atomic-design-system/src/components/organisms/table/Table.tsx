@@ -72,7 +72,7 @@ const TableWrapper = styled.table<TableProps>`
     --padding: ${({ theme }) => theme.space[4]};
   }
 `;
-const Table: FC<TableProps> = ({ data, template, columns, children, checkbox, bulkEdit }) => {
+const Table: FC<TableProps> = ({ data, template, columns, children, checkbox, bulkEdit, onRowClick }) => {
   const [checked, setChecked] = useState([]);
   const [sortedData, setSortedData] = useState(null)
   const [sortKey, setSortKey] = useState(null)
@@ -116,7 +116,7 @@ const Table: FC<TableProps> = ({ data, template, columns, children, checkbox, bu
         {sortedData?.length > 0 && typeof children === 'function' &&
           <tbody>
             {sortedData.map((item, key) => (
-              <TableRow key={key} checked={checked.includes(item[checkbox])} checkbox={item[checkbox]} handleChange={handleCheck}>{children(item).props.children}</TableRow>
+              <TableRow key={key} checked={checked.includes(item[checkbox])} checkbox={item[checkbox]} handleChange={handleCheck} onClick={() => onRowClick(item)}>{children(item).props.children}</TableRow>
             ))}
           </tbody>
         }

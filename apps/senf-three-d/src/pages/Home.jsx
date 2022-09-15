@@ -1,15 +1,13 @@
-import React, { useEffect, useMemo, useState, memo, useRef } from "react";
+import React, { useEffect, useState, memo } from "react";
 import styled from "styled-components";
-import { Check, Box, Button, Map, isMobileCustom, useModals } from "senf-atomic-design-system"
+import { Check, Box, Button, Map, isMobileCustom, AllOrganizationTypes } from "senf-atomic-design-system"
 import { Threebox } from "threebox-plugin";
-import { useFormik } from "formik";
 import ContextPanel from "../components/ContextPanel";
 import ModelsList from "../components/ModelsList";
 import Navigation from "../components/Navigation";
 import { setImplementedModelsData } from "../util/setModels";
 import SavePanel from "../components/SavePanel";
 import useInterval from "../util/useInterval";
-import ThanksNote from "../components/ThanksNote";
 
 
 const Wrapper = styled.div`
@@ -41,10 +39,6 @@ const Home = ({ setLoadingModel }) => {
   };
 
 
-
-
-
-
   useEffect(() => {
     if (statefulMap) {
       window.map = statefulMap;
@@ -54,7 +48,7 @@ const Home = ({ setLoadingModel }) => {
         enableDraggingObjects: true,
         enableRotatingObjects: true,
         // enableHelpTooltips: true,
-        // enableTooltips: true,
+        // enableTooltips: false,
       });
       window.tb.altitudeStep = 1;
 
@@ -66,6 +60,17 @@ const Home = ({ setLoadingModel }) => {
 
         ])
       });
+      statefulMap.on("touchstart", () => {
+
+        console.log(statefulMap.tb.map)
+        // window?.tb?.map?.selectedObject?.setCoords([
+        //   statefulMap.getCenter().lng,
+        //   statefulMap.getCenter().lat,
+        //   3
+
+        // ])
+      });
+
 
       // Clean up on unmount
       return () => statefulMap.remove();
@@ -91,7 +96,6 @@ const Home = ({ setLoadingModel }) => {
     if (modelsData && statefulMap) {
       console.log(modelsData)
       modelsData.map(((model) => {
-        console.log(model)
         setTimeout(() => {
           setImplementedModelsData(model, setOpenContextPanel, setSwipedUp)
         }, 1500);
@@ -117,8 +121,7 @@ const Home = ({ setLoadingModel }) => {
 
   useInterval(
     () => {
-      console.log(counter)
-      counter += 0.1;
+      counter += isMobile ? 0.01 : 0.1;
       statefulMap.flyTo({
         center: [initialMapViewport.longitude, initialMapViewport.latitude],
         zoom: 18,
@@ -179,9 +182,11 @@ const Home = ({ setLoadingModel }) => {
         <Button onClick={() => setShowLabels(true)} text={showLabels ? "Show labels" : "Hide Labels"} />
       </Box> */}
 
-      <Box position="fixed" bottom="20px" right="100px">
-        <Button onClick={() => handleSaveModalOpen(true)} icon={<Check />} text="Speichern" />
+      <Box position="fixed" bottom="20px" right={isMobile ? "20px" : "100px"}>
+        <Button onClick={() => handleSaveModalOpen(true)} icon={<Check />} text={!isMobile ? "Speichern" : ""} />
       </Box>
+      {isMobile && <Box position="fixed" bottom="20px" left={"20px"}><Button icon={<AllOrganizationTypes />} onClick={() => console.log("")} /></Box>}
+
       <SavePanel swipedUp={saveDesign} setSwipedUp={() => handleSaveModalClose()} />
     </Wrapper>
   );
