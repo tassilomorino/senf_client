@@ -1,14 +1,16 @@
 /** @format */
 
-import React from "react";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { theme, GlobalStyle, ModalProvider } from "senf-atomic-design-system";
 import styled, { ThemeProvider } from "styled-components";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/DashBoard";
 import "./util/i18n";
 import TakeSurvey from "./pages/TakeSurvey";
 import PageNotFound from "./pages/PageNotFound";
+import EditSurvey from "./pages/EditSurvey/EditSurvey";
+import Survey from "./pages/Survey";
 
 const BodyWrapper = styled.div`
   position: fixed;
@@ -19,6 +21,8 @@ const BodyWrapper = styled.div`
   overflow: scroll;
 `
 const App = () => {
+  const [squestion, setSquestion] = useState([]);
+
   return (
     <BodyWrapper>
       <ThemeProvider theme={theme}>
@@ -35,8 +39,12 @@ const App = () => {
           <Router>
             <React.Suspense fallback={<div>Loading...</div>}>
               <Routes>
-
                 <Route exact path="/" element={<Dashboard />} />
+                <Route path="edit/:surveyId" element={<EditSurvey
+                  squestions={squestion}
+                  setSquestion={setSquestion}
+                />} />
+                <Route path="survey/:surveyId" element={<Survey />} />
                 {/* <Route
                   exact
                   path="invitation/:invitationDocId"

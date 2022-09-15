@@ -16,7 +16,7 @@ import { OptionsSurveys } from "../data/OptionsSurveys";
 
 
 
-const CreateNewSurvey = ({ getSurveys }) => {
+const CreateNewSurvey = ({ getSurveys, navigate }) => {
   const { handleModal } = React.useContext(ModalContext) || {};
   const { t } = useTranslation();
   const validationSchema = yup.object({
@@ -46,7 +46,8 @@ const CreateNewSurvey = ({ getSurveys }) => {
         getSurveys();
 
         const surveyId = doc.id;
-        handleModal("pop")
+        handleModal("pop");
+        navigate(`edit/${surveyId}`)
       })
 
     } catch (error) {
