@@ -5,5 +5,5 @@ export interface IconProps {
   height?: string;
   icon?: React.ReactNode;
   transform?: string;
-  color?: string;
+  color?: string | boolean;
 }
