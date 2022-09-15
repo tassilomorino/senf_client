@@ -1,15 +1,12 @@
-import React from 'react'
-
-
 import styled from "styled-components";
 import { useTransition, config } from "@react-spring/web";
 import ModalContainer from './ModalContainer'
 
 
-import { ModalProps } from "./ModalWrapper.types";
+import { ModalProps, ModalOptions, ModalContainerProps } from "./ModalStack.types";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 
-const StackWrapper = styled.div<StackProps>`
+const StackWrapper = styled.div<ModalOptions>`
 	z-index: 9999;
 	position: fixed;
 	bottom: ${({ isMobile }) => isMobile ? 0 : "50%"};
@@ -19,10 +16,10 @@ const StackWrapper = styled.div<StackProps>`
 	justify-content: center;
 `
 
-const Stack = ({ stack, closeModal }: { stack: ModalProps[] }) => {
+const Stack = ({ stack, closeModal }: { stack: ModalProps[], closeModal: () => void }) => {
 	const isMobile = isMobileCustom()
-	const modalIndex = (item) => (stack.length - stack.indexOf(item)) - 1
-	const away = (item) => ({ opacity: 0, shading: 1, y: item.options?.swipe ? 1000 : 30, scale: 1.1 })
+	const modalIndex = (item: ModalProps) => (stack.length - stack.indexOf(item)) - 1
+	const away = (item: ModalProps) => ({ opacity: 0, shading: 1, y: item.options?.swipe ? 1000 : 30, scale: 1.1 })
 	const modalStackTransition = useTransition(stack, {
 		from: item => away(item),
 		leave: item => away(item),
@@ -37,7 +34,7 @@ const Stack = ({ stack, closeModal }: { stack: ModalProps[] }) => {
 
 
 	return <StackWrapper isMobile={isMobile}>
-		{modalStackTransition((style, item) => <ModalContainer item={item} style={style} closeModal={closeModal} index={modalIndex(item)} />)}
+		{modalStackTransition((style, item) => <ModalContainer item={item} style={style as ModalContainerProps['style']} closeModal={closeModal} index={modalIndex(item)} />)}
 	</StackWrapper>
 }
 export default Stack

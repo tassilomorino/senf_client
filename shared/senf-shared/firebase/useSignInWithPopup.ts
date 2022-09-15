@@ -13,6 +13,7 @@ import {
 } from "firebase/auth";
 import { doc, Firestore, getDoc } from "firebase/firestore";
 import { useMemo, useState } from "react";
+import { formikValues } from "formik"
 import { createUserFromProviderInDatabase } from "./createUserFromProviderInDatabase";
 import { SignInWithPopupHook } from "./types";
 
@@ -115,13 +116,14 @@ export const useSignInWithGoogle = (
 type Provider = "apple" | "facebook" | "google";
 
 const signInWithEmailAndPassword = async (
-  email: string,
-  password: string,
+  formikStore: formikValues,
   auth: Auth,
 ) => {
   try {
-    const user = await firebaseSignInWithEmailAndPassword(auth, email, password);
-    if (user.user.emailVerified) return user;
+    console.log(formikStore)
+    const { email, password } = formikStore.values;
+    const { user } = await firebaseSignInWithEmailAndPassword(auth, email, password);
+    if (user.emailVerified) return user;
     throw new Error("auth/user-not-verified" as AuthError["code"]);
   } catch (err) {
     throw new Error(err);
@@ -135,7 +137,7 @@ const signIn = async (
   scopes?: string[],
   customOAuthParameters?: CustomParameters,
 ): Promise<User> => {
-  let provider: AuthProvider;
+  let provider: OAuthProvider | FacebookAuthProvider | GoogleAuthProvider;
   switch (providerName) {
     case "apple": provider = new OAuthProvider('apple.com'); break;
     case "facebook": provider = new FacebookAuthProvider(); break;
@@ -168,7 +170,8 @@ export const useSignIn = (
 ): {
   provider: (provider: Provider,
     scopes?: string[],
-    customOAuthParameters?: CustomParameters) => Promise<UserCredential>, email: (email: string, password: string) => Promise<UserCredential>
+    customOAuthParameters?: CustomParameters) => Promise<User>,
+  email: (formikStore: formikValues) => Promise<User>
 } => {
   return {
     provider: (
@@ -176,6 +179,6 @@ export const useSignIn = (
       scopes,
       customOAuthParameters,
     ) => signIn(provider, auth, db, scopes, customOAuthParameters),
-    email: (email, password) => signInWithEmailAndPassword(email, password, auth)
+    email: (formikStore) => signInWithEmailAndPassword(formikStore, auth)
   }
 };

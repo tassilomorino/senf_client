@@ -34,9 +34,7 @@ const ImageWrapper = styled.label`
 
 const AuthAddDetails: FC<AuthAddDetailsProps> = ({
   user,
-  handleSubmitEditDetails,
-  handleImageUpload,
-  uploadingImage,
+  authHandler,
 }) => {
   const { t } = useTranslation();
 
@@ -102,6 +100,8 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
 
   const years = generateArrayOfYears();
 
+  const [image, setImage] = useState(user?.photoURL);
+
   return (
     <Box
       flexDirection="column"
@@ -125,14 +125,14 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
             // onMouseLeave={() => setUploadImageHover(false)}
             htmlFor="imageUploader"
           >
-            {user?.photoURL ? (
+            {image ? (
               <ImagePlaceholder
-                img={user?.photoURL}
+                img={image}
                 borderRadius="18px"
                 height="calc(100% - 40px)"
                 width="calc(100% - 40px)"
               />
-            ) : uploadingImage ? (
+            ) : authHandler.authLoading ? (
               <Loader />
             ) : (
               <Icon icon={<Bulb />} />
@@ -140,7 +140,7 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
           </ImageWrapper>
           <input
             type="file"
-            onChange={(event) => handleImageUpload(event)}
+            onChange={(e) => authHandler.handleImageUpload(e).then(setImage)}
             style={{ display: "none" }}
             id="imageUploader"
           />
@@ -196,7 +196,7 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
           />
         </Box>
         <br />
-        <Button variant="white" onClick={() => handleSubmitEditDetails(formik)}>
+        <Button variant="white" onClick={() => authHandler.submitEditDetails(formik)} loading={authHandler.loadingAuth === "edit"}>
           {t("save")}
         </Button>
       </Box>

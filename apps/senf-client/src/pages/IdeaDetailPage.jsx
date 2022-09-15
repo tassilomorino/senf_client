@@ -14,7 +14,6 @@ import { clearErrors } from "../redux/actions/errorsActions";
 import { openProjectRoomFunc } from "../redux/actions/projectActions";
 import { deleteComment, submitComment } from "../redux/actions/commentActions";
 import { openLink } from "../util/helpers";
-import Auth from "./Auth";
 import { openAccountFunc } from "../redux/actions/accountActions";
 import { handleTopicSelectorRedux } from "../redux/actions/UiActions";
 

@@ -46,15 +46,13 @@ const Wrapper = styled.div<EditIdeaProps>`
   background-color: transparent;
 `;
 
-const AddContactForm = ({ formikEditIdea: initial, validationSchema, onChange }) => {
+const AddContactForm = ({ formikEditIdea: initial, validationSchema }) => {
   const { t } = useTranslation();
   const formikEditIdea = useFormik({
     initialValues: initial.values,
     validationSchema,
   });
-  useEffect(() => {
-    onChange(formikEditIdea.values);
-  }, [formikEditIdea.values]);
+  useEffect(() => initial.setValues(formikEditIdea.values), [initial, formikEditIdea]);
   return (<><Typography variant="bodyBg">Deine Kontaktdaten werden öffentlich gezeigt.</Typography>
     <Box gap="16px" flexDirection="column" marginTop="20px">
       <Input
@@ -361,7 +359,10 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
                 swipe: true,
               }}
             >
-              <AddContactForm formikEditIdea={formikEditIdea} validationSchema={editIdeaValidationSchema} onChange={formikEditIdea.setValues} />
+              <AddContactForm
+                formikEditIdea={formikEditIdea}
+                validationSchema={editIdeaValidationSchema}
+              />
             </ModalButton>
 
             {checkIfCalendar && (

@@ -11,6 +11,7 @@ import {
   Geocoder,
   PostIdea as PostIdeaComponent,
 } from "senf-atomic-design-system";
+import { AuthModal } from "senf-shared";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useFormik } from "formik";
@@ -321,13 +322,7 @@ const PostIdeaPage = ({
         <AuthFirst
           isMobile={isMobileCustom}
           locationDecided={locationDecided}
-          onClick={() =>
-            openModal(<Auth authEditOpen={false} />, {
-              swipe: !!isMobileCustom,
-              size: "md",
-              height: isMobileCustom && window.innerHeight + 83,
-              padding: 0,
-            })
+          onClick={() => openModal(<AuthModal />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
           }
         />
       )}

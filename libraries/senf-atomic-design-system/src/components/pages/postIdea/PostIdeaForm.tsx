@@ -1,8 +1,9 @@
 /** @format */
 
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import { useFormik } from "formik";
 import { Arrow, CalendarIcon, Hyperlink, Mail } from "../../../assets/icons";
 import { OptionsTopics } from "../../../data/OptionsTopics";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
@@ -18,6 +19,49 @@ import { useModals } from "../../molecules/modalStack/ModalProvider";
 import DatePicker from "../../organisms/datePicker/DatePicker";
 import { PostIdeaFormProps } from "./PostIdeaForm.types";
 
+const AddContactForm = ({ formikEditIdea: initial }) => {
+  const { t } = useTranslation();
+
+  const formikEditIdea = useFormik({ initialValues: initial.values });
+  useEffect(() => initial.setValues(formikEditIdea.values), [formikEditIdea]);
+
+  return (<><Typography variant="bodyBg">Deine Kontaktdaten werden öffentlich gezeigt.</Typography>
+    <Box gap="16px" flexDirection="column" marginTop="20px">
+      <Input
+        name="contactTitle"
+        placeholder={t("contactTitle")}
+        onChange={formikEditIdea.handleChange("contactTitle")}
+        onBlur={formikEditIdea.handleBlur}
+        value={formikEditIdea.values.contactTitle}
+        error={
+          formikEditIdea.touched.contactTitle &&
+          Boolean(formikEditIdea.errors.contactTitle)
+        }
+        note={
+          formikEditIdea.touched.contactTitle &&
+          formikEditIdea.errors.contactTitle
+        }
+      />
+      <Input
+        name="contact"
+        type="text"
+        placeholder={t("contact")}
+        onChange={formikEditIdea?.handleChange}
+        onBlur={formikEditIdea?.handleBlur}
+        value={formikEditIdea?.values.contact}
+        error={
+          formikEditIdea?.touched.contact &&
+          Boolean(formikEditIdea?.errors.contact)
+        }
+        note={
+          formikEditIdea?.touched.contact &&
+          formikEditIdea?.errors.contact
+        }
+      />
+    </Box></>)
+}
+
+
 const Wrapper = styled.div<PostIdeaFormProps>`
 
 width: 100%;
@@ -27,7 +71,6 @@ width: 100%;
   z-index: 2;
 `;
 
-
 const PostIdeaForm: FC<PostIdeaFormProps> = ({ formik, checkIfCalendar, selectedDays, handleChangeCalendar }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom()
@@ -36,7 +79,6 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({ formik, checkIfCalendar, selected
   const [topicDropdownOpen, setTopicDropdownOpen] = useState(false);
 
 
-  console.log(selectedDays)
   return <Wrapper>
     <Box gap="20px" flexDirection="column">
       <Input
@@ -136,7 +178,9 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({ formik, checkIfCalendar, selected
           text={formik?.values.contactTitle || t('add_contact')}
           icon={<Mail />}
           options={{
-            padding: 20,
+            style: {
+              padding: 20,
+            },
             title: t('add_contact'),
             cancelText: t('cancel'),
             submitText: t('save'),
@@ -144,40 +188,46 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({ formik, checkIfCalendar, selected
           }}
         >
 
-          <Typography variant="bodyBg">Deine Kontaktdaten werden öffentlich gezeigt.</Typography>
-          <Box gap="16px" flexDirection="column" marginTop="20px">
-            <Input
-              name="contactTitle"
-              placeholder={t("contactTitle")}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.contactTitle}
-              error={
-                formik.touched.contactTitle &&
-                Boolean(formik.errors.contactTitle)
-              }
-              note={
-                formik.touched.contactTitle &&
-                formik.errors.contactTitle
-              }
-            />
-            <Input
-              name="contact"
-              type="text"
-              placeholder={t("contact")}
-              onChange={formik?.handleChange}
-              onBlur={formik?.handleBlur}
-              value={formik?.values.contact}
-              error={
-                formik?.touched.contact &&
-                Boolean(formik?.errors.contact)
-              }
-              note={
-                formik?.touched.contact &&
-                formik?.errors.contact
-              }
-            />
-          </Box>
+          <AddContactForm
+            formikEditIdea={formik}
+          // onChange={formikEditIdea.setValues}
+          />
+          {/* <>
+            <Typography variant="bodyBg">Deine Kontaktdaten werden öffentlich gezeigt.</Typography>
+            <Box gap="16px" flexDirection="column" marginTop="20px">
+              <Input
+                name="contactTitle"
+                placeholder={t("contactTitle")}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.contactTitle}
+                error={
+                  formik.touched.contactTitle &&
+                  Boolean(formik.errors.contactTitle)
+                }
+                note={
+                  formik.touched.contactTitle &&
+                  formik.errors.contactTitle
+                }
+              />
+              <Input
+                name="contact"
+                type="text"
+                placeholder={t("contact")}
+                onChange={formik?.handleChange}
+                onBlur={formik?.handleBlur}
+                value={formik?.values.contact}
+                error={
+                  formik?.touched.contact &&
+                  Boolean(formik?.errors.contact)
+                }
+                note={
+                  formik?.touched.contact &&
+                  formik?.errors.contact
+                }
+              />
+            </Box>
+          </> */}
         </ModalButton>
 
 
