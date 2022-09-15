@@ -77,14 +77,12 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
   });
 
 
-
-  const handleImageUpload = (event) => {
+  const handleImageUpload = (event, formik) => {
     formik.setFieldValue("imgURL", event.target.files[0]);
   }
 
-  const handleModelUpload = (event) => {
+  const handleModelUpload = (event, formik) => {
     formik.setFieldValue("modelURL", event.target.files[0]);
-    console.log(event.target.files[0])
   }
 
   const handleUploadImageToFirestore = async (docId) => {
@@ -134,16 +132,14 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
 
 
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event, formik) => {
     const data = {
       title: formik?.values.title,
       format: formik?.values.modelURL.name.split('.')[1]
-
     }
     await addDoc(collection(db, "threeD_models"), data).then((docId) => {
       handleUploadImageToFirestore(docId.id)
       handleModelUploadToFirestiore(docId.id)
-
     })
   }
 
@@ -173,13 +169,12 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
 
 
 
-
   return (
     <Wrapper>
       <ThreeDToolSwipeList data={models} handlePlaceModel={handlePlaceModel} swipedUp={swipedUp} setSwipedUp={setSwipedUp} grounds={Grounds} setMode={setMode}
         handleImageUpload={handleImageUpload}
-        uploadedImage={formik?.values.imgURL && URL.createObjectURL(formik?.values.imgURL)}
-        uploadedModel={formik?.values.modelURL && URL.createObjectURL(formik?.values.modelURL)}
+        uploadedImage={formik?.values.imgURL}
+        uploadedModel={formik?.values.modelURL}
         handleModelUpload={handleModelUpload}
         handleSubmit={handleSubmit}
         formik={formik}

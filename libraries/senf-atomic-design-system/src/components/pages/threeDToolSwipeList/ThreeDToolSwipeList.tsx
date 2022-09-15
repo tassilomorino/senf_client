@@ -9,6 +9,7 @@ import {
   InstantSearch,
 } from 'react-instantsearch-dom';
 import algoliasearch from 'algoliasearch/lite';
+import { useFormik } from "formik";
 import { ThreeDToolSwipeListProps } from "./ThreeDToolSwipeListProps.types";
 
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
@@ -150,7 +151,7 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
   handleSubmit,
   grounds,
   setMode,
-  formik,
+  formik: initial,
   validationSchema,
 
 
@@ -173,8 +174,8 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
   }));
 
 
-
-
+  const formik = useFormik({ initialValues: initial, validationSchema })
+  useEffect(() => initial.setValues(formik.values), [formik.values])
 
 
 
@@ -313,7 +314,9 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
                 <Box margin="10px" gap="20px" flexDirection="column" position="absolute" bottom="10px" width="calc(100% - 20px)">
                   <Typography variant="buttonBg" textAlign="center">Du hast eigene Modelle?</Typography>
                   <ModalButton variant="primary" icon={<Plus />} text="3D Modell hochladen" fillWidth="max" options={{
-                    padding: 20,
+                    style: {
+                      padding: 20,
+                    },
                     title: t("add_model"),
                     swipe: isMobile && true,
 
@@ -326,7 +329,6 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
                       handleSubmit={handleSubmit}
                       formik={formik}
                       validationSchema={validationSchema}
-                      onChange={formik.setValues}
 
                     />
                   </ModalButton>
