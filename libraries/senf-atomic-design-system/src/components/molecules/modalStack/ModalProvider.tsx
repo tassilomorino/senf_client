@@ -1,8 +1,16 @@
-import React, { useMemo, useEffect, useState, useContext } from 'react'
+/**
+ * Inspired by React Modal Stack
+ * Author: Matt Jennings
+ * npm: @mattjennings/react-modal-stack
+ * github: https://github.com/mattjennings/react-modal-stack
+ * License: MIT
+ */
+
+import React, { useMemo, useState, useContext } from 'react'
 import ModalStack from "./ModalStack";
 import Background from "./Background";
 
-import { ModalProps, ModalStackValue } from "./ModalWrapper.types";
+import { ModalProps, ModalStackValue, ModalOptions } from "./ModalStack.types";
 
 
 export interface ModalStackProps {
@@ -11,7 +19,7 @@ export interface ModalStackProps {
 }
 
 
-const ModalStackContext = React.createContext<ModalStackValue>({} as any)
+const ModalStackContext = React.createContext({} as ModalStackValue)
 
 
 const Modals = ({ stack, closeModal }: ModalStackValue) => {
@@ -27,17 +35,17 @@ const Modals = ({ stack, closeModal }: ModalStackValue) => {
 
 const ModalProvider = ({
   children,
-  renderModals: ModalsComponent = Modals,
 }: ModalStackProps) => {
   const [stack, setStack] = useState<ModalProps[]>([])
 
-  const value = useMemo<ModalStackValue>(() => {
+  const value = useMemo(() => {
     const pop = (amount = 1) => {
       setStack((prev) => [...prev].slice(0, prev.length - amount))
     }
 
     const dismissAll = () => {
       setStack([])
+      return stack
     }
 
     const dismiss = (amount?: number) => {
@@ -46,12 +54,19 @@ const ModalProvider = ({
       } else {
         pop(amount)
       }
+      return stack
     }
 
-    const openModal = async ({ type, props }, options, reset) => {
+    const DefaultComponent = () => <div />
+
+    const openModal = async (data: JSX.Element, options?: ModalOptions, reset?: boolean) => {
+      const { type, props } = data || <DefaultComponent />
       if (reset) dismissAll()
       const modal = { type, props: { ...options, ...props }, options: { ...options, ...props } }
       const { beforeOpen, afterOpen } = options || {}
+      if (typeof type === undefined) {
+        throw new Error('Modal type is undefined')
+      }
       try {
         await beforeOpen?.()
         setStack((prev) => {
@@ -60,26 +75,30 @@ const ModalProvider = ({
           return [...newStack, modal as ModalProps]
         })
         afterOpen?.()
+        return stack
       } catch (error) {
-        console.error(error)
+        throw new Error(error)
       }
     }
 
 
+    const closeModal = async () => {
+      const { beforeClose, afterClose } = stack[stack.length - 1]?.options || {}
+      try {
+        await beforeClose?.()
+        dismiss(1)
+        afterClose?.()
+        return stack
+      } catch (error) {
+        throw new Error("error")
+      }
+    }
+
     return {
       stack,
-      setModal: ({ type, props }, options) => openModal({ type, props }, options, true),
+      setModal: (data, options?: ModalOptions) => openModal(data, options, true),
       openModal,
-      closeModal: async () => {
-        const { beforeClose, afterClose } = stack[stack.length - 1]?.options || {}
-        try {
-          await beforeClose?.()
-          dismiss(1)
-          afterClose?.()
-        } catch (error) {
-          console.error(error)
-        }
-      },
+      closeModal,
       closeModals: dismiss,
       closeAllModals: dismissAll,
     }
@@ -89,7 +108,7 @@ const ModalProvider = ({
   return (
     <ModalStackContext.Provider value={value}>
       {children}
-      <ModalsComponent {...value} />
+      <Modals {...value} />
     </ModalStackContext.Provider>
   )
 }

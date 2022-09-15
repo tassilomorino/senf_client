@@ -79,9 +79,9 @@ const App = () => {
                   <Route path="*" element={<PageNotFound />} />
                 </Routes>
               </React.Suspense>
-            </Router>
-          </ModalProvider>
-        </AuthProvider>
+            </ModalProvider>
+          </AuthProvider>
+        </Router>
       </ThemeProvider>
     </BodyWrapper>
   );

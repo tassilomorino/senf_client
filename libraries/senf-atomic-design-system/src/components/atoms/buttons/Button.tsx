@@ -124,9 +124,10 @@ const Button: FC<ButtonProps> = ({
   fillWidth,
   loading,
   onClick,
+  type = 'button',
   ...rest
 }) => (
-  <StyledButton type="button" text={text} variant={variant} color={color} icon={icon} borderStyle={borderStyle}
+  <StyledButton type={type} text={text} variant={variant} color={color} icon={icon} borderStyle={borderStyle}
     justifyContent={justifyContent} fillWidth={fillWidth} loading={loading} onClick={onClick} size={size}
     {...rest}>
 

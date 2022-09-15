@@ -23,6 +23,7 @@ import {
   Loader,
   useModals,
 } from "senf-atomic-design-system";
+import { AuthModal } from "senf-shared";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
 import { closeScream, openScreamFunc } from "../redux/actions/screamActions";
@@ -46,7 +47,6 @@ import {
   getMyScreams,
   openAccountFunc,
 } from "../redux/actions/accountActions";
-import PostScream from "../components/PostIdea/PostScream";
 import {
   openOrganizationFunc,
   stateCreateOrganizationsFunc,
@@ -61,7 +61,6 @@ import {
   sort,
   countStatusOfScreams,
 } from "../util/helpers";
-import Auth from "./Auth";
 
 import OrganizationPage from "./OrganizationPage";
 import { likeScream, unlikeScream } from "../redux/actions/likeActions";
@@ -69,6 +68,7 @@ import ProjectroomPage from "./ProjectroomPage";
 import ProfilePage from "./ProfilePage";
 import { StyledH3 } from "../styles/GlobalStyle";
 import { getUserData } from "../redux/actions/userActions";
+import PostIdeaPage from "./PostIdeaPage";
 
 
 
@@ -241,7 +241,7 @@ const Main = ({
   const urlPath = window.location.pathname;
   useEffect(() => {
     if (urlPath === '/verify') {
-      openModal(<Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      openModal(<AuthModal />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
     }
 
 
@@ -417,7 +417,7 @@ const Main = ({
   const handleButtonLike = (event, screamId) => {
     event.stopPropagation();
     if (!user.authenticated) {
-      openModal(<Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      openModal(<AuthModal />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
       return;
     }
     if (user.likes && user.likes.find((like) => like.screamId === screamId)) {
@@ -444,7 +444,7 @@ const Main = ({
       navigate(`/profile/${userId}`)
 
     } else {
-      openModal(<Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      openModal(<AuthModal />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
     }
   };
 
@@ -457,7 +457,7 @@ const Main = ({
   const handleOpenCreateOrganization = () => {
     if (!user.authenticated) {
       // Add text into auth like "first you gt to create an account"
-      openModal(<Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      openModal(<AuthModal />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
     } else {
       openModal(<React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
         <CreateMainComponent type="organization" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
@@ -479,7 +479,7 @@ const Main = ({
   const handleCreateProjectroom = () => {
     if (!user.authenticated) {
       // Add text into auth like "first you gt to create an account"
-      openModal(<Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      openModal(<AuthModal />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
     } else if (!user?.organizationId?.length) {
       openModal(<>
         <Box margin="30px 40px">
@@ -591,7 +591,8 @@ const Main = ({
       )}
 
       {postIdeaOpen && (
-        <PostScream
+
+        <PostIdeaPage
           loadingProjects={loadingProjects}
           projectsData={projects}
           project={project}
@@ -605,7 +606,6 @@ const Main = ({
         {!openInfoPage && (
           <>
             {!openProjectRoom &&
-              !postIdeaOpen &&
               !openAccount &&
               !loading &&
               (order === 1 || (order === 2 && !loadingProjects)) && (
@@ -645,6 +645,7 @@ const Main = ({
                   handleCreateProjectroom={handleCreateProjectroom}
                   handleMapBoundsReset={handleSetInitialMapBoundsAndViewport}
                   mapFilterActive={mapFilterActive}
+                  postIdeaOpen={postIdeaOpen}
                 />
               )}
 
