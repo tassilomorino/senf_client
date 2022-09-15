@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 
 
-import { Typography, ImagePlaceholder, Box, Icon, Table, Button, ModalButton, Input, isMobileCustom } from "senf-atomic-design-system";
+import { Typography, ImagePlaceholder, Box, Icon, Table, Button, ModalButton, Input, isMobileCustom, useModals } from "senf-atomic-design-system";
 import {
   collection,
   deleteDoc,
@@ -12,6 +12,7 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
+import { useAuthContext, AuthModal } from "senf-shared";
 import { db } from "../firebase";
 import CreateNewSurvey from "./CreateNewSurvey";
 
@@ -31,6 +32,9 @@ const DashBoard = () => {
   const [surveys, setSurveys] = useState([]);
   const [filteredSurveys, setFilteredSurveys] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const { user } = useAuthContext()
+  const { openModal } = useModals()
+
 
   const getSurveys = async () => {
     try {
@@ -68,6 +72,9 @@ const DashBoard = () => {
   useEffect(() => {
     getSurveys();
   }, []);
+  useEffect(() => {
+    if (!user) openModal(<AuthModal />);
+  }, [user]);
 
   useEffect(() => {
     setFilteredSurveys(
@@ -85,7 +92,9 @@ const DashBoard = () => {
           </Box>
 
           <ModalButton text="+ Create new survey" options={{
-            padding: 20,
+            style: {
+              padding: 20,
+            },
             title: t("+ Create new survey"),
             swipe: isMobile && true
 
