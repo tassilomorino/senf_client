@@ -19,10 +19,10 @@ export interface ModalOptions {
   swipe?: boolean;
   style?: React.CSSProperties;
   replace?: boolean,
-  beforeOpen?: () => void;
-  afterOpen?: () => void;
-  beforeClose?: () => void;
-  afterClose?: () => void;
+  beforeOpen?: () => Promise<void>;
+  afterOpen?: () => Promise<void>;
+  beforeClose?: () => Promise<void>;
+  afterClose?: () => Promise<void>;
   isMobile?: boolean;
   maxHeight?: number;
 }
@@ -41,36 +41,35 @@ export interface ModalContainerProps {
 
 }
 export interface ModalStackValue {
+  stack: ModalProps[]
   /**
    * Opens a modal using the provided component, clearing all open modals
    */
   setModal: (
     modal: React.ComponentElement<ModalProps, React.Component<ModalProps>>,
     options?: ModalOptions
-  ) => any
+  ) => Promise<ModalProps[]>
   /**
    * Opens a modal using the provided component, on top of the stack
    */
   openModal: (
     modal: React.ComponentElement<ModalProps, React.Component<ModalProps>>,
     options?: ModalOptions
-  ) => any
+  ) => Promise<ModalProps[]>
 
   /**
    * Closes the active modal
    */
-  closeModal: () => void
+  closeModal: () => Promise<ModalProps[]>
 
   /**
    * Closes the number of modals
    */
-  closeModals: (amount?: number) => void
+  closeModals: (amount?: number) => ModalProps[]
 
   /**
    * Closes all modals
    */
-  closeAllModals: () => void
-
-  stack: ModalProps[]
+  closeAllModals: () => ModalProps[]
 }
 

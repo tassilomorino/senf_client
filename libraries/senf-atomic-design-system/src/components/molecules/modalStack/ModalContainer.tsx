@@ -9,7 +9,7 @@ import theme from "../../../styles/theme";
 import ModalHandle from "./ModalHandle";
 import ModalActionButtons from "./ModalActionButtons";
 import ModalHeader from "./ModalHeader";
-import { ModalContainerProps, ModalOptions } from "./ModalWrapper.types";
+import { ModalContainerProps, ModalOptions } from "./ModalStack.types";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 
 
@@ -143,6 +143,8 @@ const ModalContainer = ({ item, index, style, closeModal }: ModalContainerProps)
 		opacity: style?.shading,
 		paddingBottom: options?.isMobile ? PADDING : sheet.padding,
 	}
+	// console.log(ModalComponent, typeof ModalComponent)
+	// if (typeof ModalComponent !== "string") return null
 	return (
 		<a.div
 			{...bindContainer}

@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import Button from "../../atoms/buttons/Button";
 import { ButtonProps } from "../../atoms/buttons/Button.types";
-import { ModalOptions } from "./ModalWrapper.types";
+import { ModalOptions } from "./ModalStack.types";
 import { useModals } from "./ModalProvider";
 
 interface ModalButtonProps extends ButtonProps {
