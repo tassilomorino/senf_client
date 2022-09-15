@@ -68,7 +68,6 @@ const Geocoder: FC<GeocoderProps> = ({ statefulMap, placeholder, finalAddress, h
       }).then((res) => {
         setShowResults(true)
         setResults(res.entity.features)
-
       }).catch((err) => {
         console.log(err)
       }).finally(() => {

@@ -1,4 +1,4 @@
-export async function setModelsData(modelsData) {
+export async function setModelsToLocalStorage(modelsData) {
   const modelsRawData = [];
   modelsData.forEach((model) => {
     modelsRawData.push({

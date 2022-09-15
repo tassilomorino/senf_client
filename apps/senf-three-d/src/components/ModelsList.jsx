@@ -5,7 +5,7 @@ import { ThreeDToolSwipeList, isMobileCustom, Input } from "senf-atomic-design-s
 import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import styled from "styled-components";
 import { useFormik } from "formik";
-import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import imageCompression from "browser-image-compression";
 import { async } from "@firebase/util";
 import * as yup from "yup"
@@ -17,18 +17,6 @@ import { Grounds } from "../data/Grounds";
 
 
 
-const tags = [
-  { objectType: "Alle" },
-  { objectType: "Infrastruktur" },
-  { objectType: "Mobiliar" },
-  { objectType: "Natur" },
-  { objectType: "Gebäude" },
-  { objectType: "Spielen" },
-  { objectType: "Sport" },
-];
-const SearchWrapper = styled.div`
-pointer-events: all;
-`
 
 const Wrapper = styled.div`
 width: 100vw;
@@ -42,13 +30,8 @@ pointer-events:none;
 
 
 const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPanel, setMode }) => {
-  const isMobile = isMobileCustom();
-  // const { t } = useTranslation()
   const [models, setModels] = useState([]);
   const { t } = useTranslation()
-
-
-
 
   const validationSchema = yup.object({
     title: yup
@@ -60,8 +43,6 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
     modelURL: yup
       .string()
       .required(t("add_model")),
-
-
   });
 
   const formik = useFormik({
@@ -75,8 +56,6 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
     validateOnChange: true,
     validateOnBlur: true,
   });
-
-
 
   const handleImageUpload = (event) => {
     formik.setFieldValue("imgURL", event.target.files[0]);
@@ -143,15 +122,8 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
     await addDoc(collection(db, "threeD_models"), data).then((docId) => {
       handleUploadImageToFirestore(docId.id)
       handleModelUploadToFirestiore(docId.id)
-
     })
   }
-
-
-
-
-
-
 
   const handlePlaceModel = (
     // event, cardType,
@@ -165,14 +137,29 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
       setOpenContextPanel,
       setSwipedUp,
       modelData.labelText
-
     );
-
-
   }
 
 
+  // const handleSearchQuery = async () => {
+  //   const searchtext = "Ba"
+  //   const modelsRef = collection(db, "threeD_models");
+  //   // const q = query(
+  //   //   modelsRef,
+  //   const q = query(modelsRef, where('title', ">=", searchtext))
+  //   // where('title', "<", searchtext.substring(0, searchtext.length - 1))
+  //   // + String.fromCharCode(query.codeUnitAt(searchtext.length - 1) + 1))
+  //   const modelsSnapshot = await getDocs(q);
+  //   const models = [];
 
+  //   modelsSnapshot.forEach((doc) => {
+  //     models.push({
+  //       ...doc.data(),
+  //       userId: doc.id,
+  //     });
+  //   });
+
+  // }
 
   return (
     <Wrapper>

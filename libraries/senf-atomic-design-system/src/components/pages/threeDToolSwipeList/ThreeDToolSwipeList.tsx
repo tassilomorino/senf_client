@@ -301,7 +301,9 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
                 <Box margin="0px 10px" gap="20px" flexDirection="column" overflow="hidden" height="260px">
 
 
-                  <HorizontalSwiper data={grounds} handleButtonOpenCard={(item) => setMode({ mode: "draw", drawType: item.drawType })} />
+                  <HorizontalSwiper data={grounds} handleButtonOpenCard={(item) =>
+                    setMode({ mode: "draw", drawType: item.drawType })
+                  } />
                   {/* <Box position="absolute" width="auto" marginTop="30px">
                     {grounds?.map((item, index) => (
                       <ObjectCard data={item} handleButtonOpenCard={() => setMode({ mode: "draw", drawType: item.drawType, drawStyle: item.drawStyle })} />

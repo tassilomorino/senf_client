@@ -1,5 +1,6 @@
 function makeTooltipInteractive(model, setOpenContextPanel, setSwipedUp) {
   function onSelectedChange(e) {
+    console.log("onSelectedChange", e);
     const { selected } = e.detail; // we get if the object is selected after the event
 
     // if selected

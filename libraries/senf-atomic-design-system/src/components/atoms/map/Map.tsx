@@ -338,6 +338,8 @@ const Map: FC<MapProps> = ({
     map.addControl(DrawMap);
     setStatefulDrawMapbox(DrawMap);
 
+    console.log(DrawMap)
+
     map.on("dragend", () => {
       setMapMoved(true);
     });
@@ -368,11 +370,6 @@ const Map: FC<MapProps> = ({
       }
 
       statefulMap.on("click", (e) => {
-        const feature = e.point;
-        // const featureIds = statefulDrawMapbox.add(feature);
-        console.log(feature);
-        console.log(statefulDrawMapbox, e)
-
         const drawFeatureAtPoint = statefulDrawMapbox.getFeatureIdsAt(e.point);
 
         const result = drawFeatureAtPoint.filter(element => {
@@ -521,9 +518,6 @@ const Map: FC<MapProps> = ({
               handleSaveDrawn(statefulDrawMapbox.getAll());
               setSwipedUp(false)
               setDrawFeatureID(null)
-
-
-
 
             }}
           />
