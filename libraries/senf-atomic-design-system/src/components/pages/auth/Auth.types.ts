@@ -29,4 +29,5 @@ export interface AuthProps {
     },
     signOut: () => Promise<User>;
   };
+  errorMessage?: string;
 }

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuthContext } from "./auth";
+import { useAuthContext } from "senf-shared";
 
 const PrivateRoute = () => {
   const { user } = useAuthContext();

@@ -53,18 +53,18 @@ const InnerWrapper = styled.div`
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <AuthProvider>
-        <ModalProvider>
-          <Wrapper>
-            <InnerWrapper>
-              {import.meta.env.VITE_NO_CRAWL && (
-                /* only for senf-workspace-test.netlify.app */
-                <Helmet>
-                  <meta name="robots" content="noindex" />
-                </Helmet>
-              )}
-              <GlobalStyle />
-              <Router>
+      <Router>
+        <AuthProvider>
+          <ModalProvider>
+            <Wrapper>
+              <InnerWrapper>
+                {import.meta.env.VITE_NO_CRAWL && (
+                  /* only for senf-workspace-test.netlify.app */
+                  <Helmet>
+                    <meta name="robots" content="noindex" />
+                  </Helmet>
+                )}
+                <GlobalStyle />
                 <Routes>
                   <Route
                     exact
@@ -82,11 +82,11 @@ function App() {
                     <Route exact path="/" element={<Home />} />
                   </Route>
                 </Routes>
-              </Router>
-            </InnerWrapper>
-          </Wrapper>
-        </ModalProvider>
-      </AuthProvider>
+              </InnerWrapper>
+            </Wrapper>
+          </ModalProvider>
+        </AuthProvider>
+      </Router>
     </ThemeProvider>
   );
 }

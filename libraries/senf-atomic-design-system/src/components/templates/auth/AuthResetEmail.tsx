@@ -13,12 +13,20 @@ import Typography from "../../atoms/typography/Typography";
 import Form from "../../molecules/form/Form";
 import theme from "../../../styles/theme";
 import ModalActionButtons from "../../molecules/modalStack/ModalActionButtons";
+import { useModals } from "../../molecules/modalStack/ModalProvider";
 
 const AuthResetEmail: FC<AuthResetEmailProps> = ({
-  setPage
+  setPage,
+  authHandler,
+  formikStore: formikStoreInitial
 }) => {
   const { t } = useTranslation();
-  const { sendPasswordResetEmail } = useAuthContext() || {};
+  const { sendPasswordResetEmail, loadingAuth } = authHandler
+  const { loading } = useAuthContext()
+  const { closeModal } = useModals()
+  useEffect(() => {
+    console.log(authHandler)
+  }, [authHandler])
 
   const inputItems = [{ name: "email", type: "email", placeholder: "E-Mail" }];
 
@@ -31,9 +39,7 @@ const AuthResetEmail: FC<AuthResetEmailProps> = ({
   });
 
   const formikStore = useFormik({
-    initialValues: {
-      email: ""
-    },
+    initialValues: formikStoreInitial.values,
     validationSchema,
     validateOnMount: true,
     validateOnChange: true,
@@ -44,7 +50,8 @@ const AuthResetEmail: FC<AuthResetEmailProps> = ({
   const options = {
     submitText: t("reset"),
     submitDisabled: !formikStore.isValid,
-    onSubmit: () => sendPasswordResetEmail(formikStore.values.email).then(() => console.log("email sent")),
+    submitLoading: loading === "reset",
+    onSubmit: () => sendPasswordResetEmail(formikStore.values.email).then(closeModal),
   }
 
   return (

@@ -71,7 +71,7 @@ const ImageUploadTile: FC<ImageUploadTileProps> = ({ id, photoURL, uploadingImag
     </ImageWrapper>
     <input
       type="file"
-      onChange={(event) => handleImageUpload(event)}
+      onChange={handleImageUpload}
       style={{ display: "none" }}
       id={id || "imageUploader"}
     />
