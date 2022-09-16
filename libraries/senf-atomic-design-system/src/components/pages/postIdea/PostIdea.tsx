@@ -116,33 +116,16 @@ const PostIdea: FC<PostIdeaProps> = ({
               selectedDays={selectedDays}
               handleChangeCalendar={handleChangeCalendar}
               setPostIdeaOpen={setPostIdeaOpen}
+              handleSubmit={handleSubmit}
+              loading={loading}
+              Out={Out}
             />
           </>
         )}
       </Box>
 
-      {/* 
-      <Box
-        margin="10px 0px 10px 0px"
-        justifyContent="center"
-        position="absolute"
-        bottom="10px"
-        width="450px"
-        zIndex={3}
-      >
-        <Button
-          onClick={handleSubmit}
-          variant="white"
-          text={t("postScream_shareIdea")}
-          loading={loading}
-          disabled={
-            formik.values.body === "" ||
-            formik.values.title === "" ||
-            !formik.values.address ||
-            Out === true
-          }
-        />
-      </Box> */}
+
+
     </Wrapper>
   );
 };

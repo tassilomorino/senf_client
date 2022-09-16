@@ -72,17 +72,16 @@ width: 100%;
   z-index: 2;
 `;
 
-const PostIdeaForm: FC<PostIdeaFormProps> = ({ formik, statefulMap, checkIfCalendar, selectedDays, handleChangeCalendar }) => {
+const PostIdeaForm: FC<PostIdeaFormProps> = ({ formik, statefulMap, checkIfCalendar, selectedDays, handleChangeCalendar, handleSubmit, loading, Out }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom()
   const { closeModal } = useModals();
 
   const [topicDropdownOpen, setTopicDropdownOpen] = useState(false);
 
-
   return <Wrapper>
-    <Box marginBottom="20px" flexDirection="column">
-      <Typography variant="bodySm" marginBottom={"20px"}>Adresse deiner Idee</Typography>
+    <Box marginBottom="20px" flexDirection="column" >
+      <Typography variant="bodySm" paddingInline="0.875rem">Adresse deiner Idee</Typography>
       <Geocoder
         finalAddress={formik?.values?.address}
         statefulMap={statefulMap}
@@ -306,6 +305,20 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({ formik, statefulMap, checkIfCalen
 
 
       )}
+
+      <Button
+        onClick={handleSubmit}
+        variant={formik.errors.title || formik.errors.body ? "white" : "primary"}
+        text={t("postScream_shareIdea")}
+        loading={loading}
+        disabled={
+          formik.errors.body ||
+          formik.errors.title ||
+          !formik.values.address ||
+          Out === true
+        }
+      />
+
     </Box>
   </Wrapper>;
 };
