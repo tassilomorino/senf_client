@@ -20,6 +20,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin: ${(props) => (props.isMobile ? "0px" : "22px 0px 0px 95px")};
+
   width: 366px;
   height: auto;
   overflow-y: scroll;
@@ -43,13 +44,13 @@ const PostIdea: FC<PostIdeaProps> = ({
   const [postIdeaForm, setPostIdeaForm] = React.useState(false);
   const [addressSelected, setAddressSelected] = React.useState(false);
   const isMobile = isMobileCustom();
-
-  const postIdeaHeader = (
+  const createIdeaHeader = (
     <Box
       flexDirection="row"
       alignItems="center"
-      justifyContent="space-around"
       width="100%"
+      padding={"0px 16px 0px 16px"}
+      justifyContent="space-between"
     >
       <Typography variant="h3">Idee erstellen</Typography>
       <Button
@@ -61,11 +62,39 @@ const PostIdea: FC<PostIdeaProps> = ({
       />
     </Box>
   );
+
+  const InstructionsHeader = (
+    <Box
+      gap="16px"
+      flexDirection="column"
+      width="100%"
+      padding={"0px 16px 0px 16px"}
+    >
+      <Typography variant="bodyBg">
+        {" "}
+        Navigiere auf der Karte an den gewünschten Ort oder nutze die
+        Adresseingabe.
+      </Typography>
+      <Geocoder
+        finalAddress={formik?.values?.address}
+        statefulMap={statefulMap}
+      />
+
+      {formik?.values.address && formik?.values.address !== "" && (
+        <Button
+          variant="primary"
+          size="big"
+          text={t("Weiter")}
+          fillWidth={"max"}
+          onClick={() => setAddressSelected(true)}
+        ></Button>
+      )}
+    </Box>
+  );
   return (
     <Wrapper isMobile={isMobile}>
-      {isMobile && postIdeaHeader}
+      {isMobile && createIdeaHeader}
 
-      {/*  whole section of !isMobile down below? */}
       <Box
         display="flex"
         flexDirection="column"
@@ -73,45 +102,22 @@ const PostIdea: FC<PostIdeaProps> = ({
         width="100%"
         marginBottom="20px"
       >
-        {!isMobile && postIdeaHeader}
+        {!isMobile && createIdeaHeader}
 
-        {!addressSelected && !isMobile && (
-          <Box
-            padding="0px 16px 0px 16px"
-            gap="16px"
-            flexDirection="column"
-          >
-            <Typography variant="bodyBg">
-              {" "}
-              Navigiere auf der Karte an den gewünschten Ort oder nutze die
-              Adresseingabe.
-            </Typography>
-
-            <Geocoder
-              finalAddress={formik?.values.address}
-              statefulMap={statefulMap}
-            />
-
-            {formik?.values.address && formik?.values.address !== "" && (
-              <Button
-                variant="primary"
-                size="big"
-                text={t("Weiter")}
-                fillWidth={"max"}
-                onClick={() => setAddressSelected(true)}
-              ></Button>
-            )}
-          </Box>
-        )}
+        {!addressSelected && !isMobile && InstructionsHeader}
 
         {addressSelected && (
-          <PostIdeaForm
-            formik={formik}
-            checkIfCalendar={checkIfCalendar}
-            selectedDays={selectedDays}
-            handleChangeCalendar={handleChangeCalendar}
-            setPostIdeaOpen={setPostIdeaOpen}
-          />
+          <>
+
+            <PostIdeaForm
+              formik={formik}
+              statefulMap={statefulMap}
+              checkIfCalendar={checkIfCalendar}
+              selectedDays={selectedDays}
+              handleChangeCalendar={handleChangeCalendar}
+              setPostIdeaOpen={setPostIdeaOpen}
+            />
+          </>
         )}
       </Box>
 
