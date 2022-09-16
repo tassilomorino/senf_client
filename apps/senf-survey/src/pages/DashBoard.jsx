@@ -32,7 +32,7 @@ const DashBoard = () => {
   const [surveys, setSurveys] = useState([]);
   const [filteredSurveys, setFilteredSurveys] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const navigate  = useNavigate()
+  const navigate = useNavigate()
   const getSurveys = async () => {
     try {
       const surveysRef = collection(db, "surveys");
