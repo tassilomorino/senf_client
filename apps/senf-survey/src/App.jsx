@@ -45,11 +45,6 @@ const App = () => {
                   setSquestion={setSquestion}
                 />} />
                 <Route path="survey/:surveyId" element={<Survey />} />
-                {/* <Route
-                  exact
-                  path="invitation/:invitationDocId"
-                  element={<AcceptInvitation />}
-                /> */}
                 <Route exact path="invitation" element={<TakeSurvey />} />
                 <Route path="*" element={<PageNotFound />} />
               </Routes>

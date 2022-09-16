@@ -37,18 +37,20 @@ const App = () => {
   return (
     <BodyWrapper>
       <ThemeProvider theme={theme}>
-        <AuthProvider>
-          <ModalProvider>
-            <GlobalStyle />
-            {import.meta.env.VITE_NO_CRAWL && (
-              /* disable google crawling for senf-client-test.netlify.app */
-              <Helmet>
-                <meta name="robots" content="noindex" />
-              </Helmet>
-            )}
+
+        <GlobalStyle />
+        {import.meta.env.VITE_NO_CRAWL && (
+          /* disable google crawling for senf-client-test.netlify.app */
+          <Helmet>
+            <meta name="robots" content="noindex" />
+          </Helmet>
+        )}
 
 
-            <Router>
+        <Router>
+          <AuthProvider>
+            <ModalProvider>
+
               <React.Suspense fallback={<div>Loading...</div>}>
                 <Nav />
                 <Routes>
