@@ -5,7 +5,7 @@ import { ChangeEventHandler } from "react";
 export interface InputProps {
   value?: string | number; //! why are we passing value to input component?
   name?: string;
-  type?: React.HTMLInputTypeAttribute | "textarea";
+  type?: React.HTMLInputTypeAttribute | "textarea" | "password" | "text";
   label?: string;
   placeholder?: string;
   note?: string;
