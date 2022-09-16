@@ -38,7 +38,8 @@ export interface BoxProps {
     | "center"
     | "flex-end"
     | "space-between"
-    | "space-around";
+    | "space-around"
+    | "space-evenly";
   flexWrap?: "nowrap" | "wrap" | "wrap-reverse";
   position?: "fixed" | "absolute" | "relative" | "sticky";
   onclick?: MouseEventHandler;
