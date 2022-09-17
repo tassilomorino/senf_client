@@ -127,12 +127,14 @@ const DashBoard = () => {
                   <Button
                     variant="white"
                     text="open TakeSurvey-Link"
-                    onClick={() => alert("go to TakeSurvey-Link")}
+                    onClick={() => navigate(`survey/${row.surveyId}`)}
                   />
                   <Button
                     variant="white"
                     text="edit"
-                    onClick={() => alert("go to edit survey")}
+                    onClick={() => {
+                      navigate(`edit/${row.surveyId}`)
+                    }}
                   />
                   <Button
                     variant="white"

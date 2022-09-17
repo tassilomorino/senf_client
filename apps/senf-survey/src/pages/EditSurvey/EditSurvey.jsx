@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Question from "../../components/Question";
 import Option from "../../components/Option/Option";
 import { Wrapper } from "./Styled.EditSurvey";
-import { doc, updateDoc } from "firebase/firestore";
+import { arrayUnion, collection, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 
 
@@ -70,7 +70,7 @@ const CreateSurvey = ({ squestions, setSquestion }) => {
     setQtext("");
     console.log(newSurveyQuestion);
     await updateDoc(schemaRef, {
-      scehma: newSurveyQuestion
+      scehma: arrayUnion(newSurveyQuestion[newSurveyQuestion.length - 1])
     });
     setQtype(0);
     setOptions([
