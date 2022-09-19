@@ -45,7 +45,7 @@ const Result = styled.div`
     background-color: ${({ theme }) => theme.colors.greyscale.greyscale20};
   }
 `
-const InviteMember = ({ getPendingMembers }) => {
+const InviteMember = ({ getPendingDivisionUsers, division }) => {
   const { t } = useTranslation();
   const { closeModal } = useModals()
   const [showResults, setShowResults] = useState(false);
@@ -87,33 +87,6 @@ const InviteMember = ({ getPendingMembers }) => {
     validateOnChange: true,
     validateOnBlur: true,
   });
-
-  const handleAddExampleMember = async () => {
-    try {
-      await addDoc(collection(db, "exampleUsers"), {
-        handle: formik.values.handle,
-        email: formik.values.email,
-        division: formik.values.division,
-        role: formik.values.role,
-        createdAt: new Date().toISOString(),
-        pending: true,
-      }).then(() => {
-
-        // getMembers();
-
-        closeModal()
-      })
-
-
-
-
-
-
-
-    } catch (error) {
-      throw new Error(error, "Error in add exampleUser");
-    }
-  };
 
   // how members are being added to organization: 
   // 1. check if admin then show add member
@@ -224,7 +197,7 @@ const InviteMember = ({ getPendingMembers }) => {
       },
       createdAt: new Date().toISOString(),
       email: recipientEmail,
-      division: formik.values.division,
+      division: division.divisionId,
       role: formik.values.role,
       pending: true,
       monitoringBoardId: currentMonitoringBoard.monitoringBoardId,
@@ -235,7 +208,7 @@ const InviteMember = ({ getPendingMembers }) => {
     await setDoc(doc(db, "mail", invitationId), data).then(() => {
       console.log("Queued email for delivery!")
 
-      getPendingMembers();
+      getPendingDivisionUsers();
       closeModal()
     })
   };
@@ -301,28 +274,17 @@ const InviteMember = ({ getPendingMembers }) => {
           }
         </ResultsContainer>)}
 
-      <Dropdown
-        id="division"
-        label={t("division")}
-        initialValue={t("select_division")}
-        listItems={OptionsDivisions()}
-        onChange={formik?.handleChange}
-      />
 
       <Dropdown
-        id="role"
+        name="role"
         label={t("role")}
         initialValue={t("select_role")}
         listItems={OptionsRoles()}
         onChange={formik?.handleChange}
+        value={formik?.values.role}
       />
-      {/* <Button
-        text="add a example-member without invitation"
-        onClick={handleAddExampleMember}
-        disabled={!formik.isValid}
-      /> */}
       <Button
-        text="add a member"
+        text="Add User"
         onClick={handleSendInvite}
         disabled={!formik.isValid}
       />

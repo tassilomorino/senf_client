@@ -15,11 +15,11 @@ import {
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  background-color: ${({ theme }) => theme.colors.beige.beige20};
+  background-color: ${({ theme }) => theme.colors.greyscale.greyscale05};
   position: fixed;
   top: 0;
-  left: 200px;
-  width: calc(100% - 200px);
+  left: 100px;
+  width: calc(100% - 100px);
   height: 100%;
   overflow: scroll;
 `;

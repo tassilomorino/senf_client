@@ -35,6 +35,7 @@ import theme from "../../../styles/theme";
 import DrawMapbox from "./utils/DrawMapbox";
 import useIdeaPin from "./hooks/useIdeaPin";
 import { addImagesToMap } from "./utils/addImagesToMap";
+import { hoverMunicipalities, selectMunicipalities } from "./utils/selectMunicipalities";
 
 
 
@@ -292,6 +293,8 @@ const Map: FC<MapProps> = ({
 
   const [ideaMarkerColor, setIdeaMarkerColor] = useState(null);
 
+  const [selectedMunicipality, setSelectedMunicipality] = useState(null);
+
   const { lng, lat, zoom, subscribeMap } = useCoordinates(
     initialMapViewport.longitude,
     initialMapViewport.latitude,
@@ -306,11 +309,14 @@ const Map: FC<MapProps> = ({
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
-      style: "mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6",
+      // style: "mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6",
+      style: "mapbox://styles/tmorino/ckz5jc88b000l14o3i4c931rn",
       center: [lng?.current, lat?.current],
       zoom: zoom?.current,
       pitch: initialMapViewport.pitch,
     });
+
+
 
 
     setStatefulMap(map);
@@ -338,7 +344,6 @@ const Map: FC<MapProps> = ({
     map.addControl(DrawMap);
     setStatefulDrawMapbox(DrawMap);
 
-    console.log(DrawMap)
 
     map.on("dragend", () => {
       setMapMoved(true);
@@ -350,6 +355,40 @@ const Map: FC<MapProps> = ({
 
       });
     }, 5000);
+
+
+    // map.on("load", () => {
+    //   map.setPaintProperty("municipalities-germany-crude", "fill-color", [
+    //     "match",
+    //     ["get", "GEN"],
+    //     "Köln",
+    //     "rgba(255, 221, 106, 0.5)",
+    //     "rgba(0, 0, 0, 0)",
+    //   ]);
+    //   map.setPaintProperty("municipalities-germany-crude-line", "line-color", [
+    //     "match",
+    //     ["get", "GEN"],
+    //     "Köln",
+    //     "#FFD96B",
+    //     "rgba(18, 12, 12, 0)",
+    //   ]);
+    //   map.setPaintProperty("municipalities-germany-crude-line", "line-width", [
+    //     "match",
+    //     ["get", "GEN"],
+    //     "Köln",
+    //     3,
+    //     0,
+    //   ]);
+    // })
+
+    if (mapType === "selectMunicipality") {
+      map.on("mousemove", (event) => {
+        hoverMunicipalities(map, event);
+      })
+      map.on("click", (event) => {
+        selectMunicipalities(map, event, selectedMunicipality, setSelectedMunicipality);
+      })
+    }
 
 
     return () => map.remove();
@@ -461,6 +500,20 @@ const Map: FC<MapProps> = ({
       useIdeaPin(statefulMap, container, ideaData, setIdeaMarkerColor);
     }
   }, [ideaData]);
+
+  // useEffect(() => {
+  //   if (statefulMap) {
+  //     statefulMap?.addLayer({
+  //       id: "polygonhhkj",
+  //       source: "admin-2-boundary",
+  //       type: "fill",
+  //       paint: {
+  //         "fill-color": "#fed957",
+  //         "fill-opacity": 0.3,
+  //       },
+  //     });
+  //   }
+  // }, [statefulMap])
 
   return (
     <React.Fragment>

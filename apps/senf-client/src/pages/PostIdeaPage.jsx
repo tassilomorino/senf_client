@@ -258,6 +258,7 @@ const PostIdeaPage = ({
       .send()
       .then((response) => {
         const match = response.body;
+        console.log(match)
 
         const houseNumber =
           match.features[0].address !== undefined
@@ -279,7 +280,7 @@ const PostIdeaPage = ({
       viewport.longitude < 6.712 ||
       viewport.longitude > 7.17
     ) {
-      alert("Außerhalb von Köln kannst du leider noch keine Ideen teilen.");
+      // alert("Außerhalb von Köln kannst du leider noch keine Ideen teilen.");
 
       setOut(true);
     } else {

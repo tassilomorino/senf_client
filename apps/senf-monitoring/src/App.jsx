@@ -17,6 +17,8 @@ import { AcceptInvitation } from "./pages/AcceptInvitation";
 import PageNotFound from "./pages/PageNotFound";
 import { getMyMonitoringBoards } from "./redux/actions/accountActions";
 import Nav from "./components/Nav";
+import DivisionsBoard from "./pages/DivisionsBoard";
+import DivisionPage from "./pages/DivisionPage";
 
 const BodyWrapper = styled.div`
   position: fixed;
@@ -69,7 +71,11 @@ const App = () => {
                   <Route exact path="/" component={<Dashboard />} />
                   </Route> */}
                   <Route exact path="/" element={<Dashboard />} />
-                  <Route exact path="/members" element={<MemberBoard />} />
+                  {/* <Route exact path="division/:divisionId/members" element={<MemberBoard />} /> */}
+                  <Route exact path="/divisions" element={<DivisionsBoard />} />
+                  <Route exact path="/divisions/:divisionId" element={<DivisionPage />} />
+
+
 
                   <Route exact path="/invite" element={<InviteMember />} />
                   {/* <Route

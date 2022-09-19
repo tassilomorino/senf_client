@@ -19,101 +19,101 @@ import InviteMember from "./InviteMember";
 
 
 
-const Wrapper = styled.div`
-  background-color: ${({ theme }) => theme.colors.beige.beige20};
-  position: fixed;
-  top: 0;
-  left: 200px;
-  width: calc(100% - 200px);
-  height: 100%;
-  overflow: scroll;
-`;
 
-const MemberBoard = () => {
+
+const UserBoard = ({ division }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom()
 
   const [order, setOrder] = useState(1)
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const [members, setMembers] = useState([]);
-  const [pendingMembers, setPendingMembers] = useState([]);
+  const [divisionUsers, setDivisionUsers] = useState([]);
+  const [pendingDivisionUsers, setPendingDivisionUsers] = useState([]);
 
-  const [filteredMembers, setFilteredMembers] = useState([]);
-  const [filteredPendingMembers, setFilteredPendingMembers] = useState([]);
+  const [filteredDivisionUsers, setFilteredDivisionUsers] = useState([]);
+  const [filteredPendingDivisionUsers, setFilteredPendingDivisionUsers] = useState([]);
 
   const currentMonitoringBoard = useSelector(state => state.data.currentMonitoringBoard)
 
 
-  const [searchTerm, setSearchTerm] = useState("");
-
-
-  const getMembers = async () => {
+  const getDivisionUsers = async () => {
     try {
-      const membersRef = collection(db, "users");
+      const divisionUsersRef = collection(db, `monitoringBoards/${currentMonitoringBoard.monitoringBoardId}/divisions/${division.divisionId}/divisionUsers`);
       const q = query(
-        membersRef,
-        where("userId", "in", currentMonitoringBoard.userIds),
+        divisionUsersRef,
+        // where("userId", "in", currentMonitoringBoard.userIds),
       );
-      const membersQuerySnapshot = await getDocs(q);
-      const membersData = [];
-
-      membersQuerySnapshot.forEach((doc) => {
-        membersData.push({
+      const divisionUsersQuerySnapshot = await getDocs(q);
+      const divisionUsersData = [];
+      divisionUsersQuerySnapshot.forEach((doc) => {
+        divisionUsersData.push({
           ...doc.data(),
           userId: doc.id,
         });
       });
-      setMembers(membersData);
+
+      // const usersRef = collection(db, "users");
+      // const q = query(usersRef, where("userId", "==", doc.data().userId));
+      // const querySnapshot = await getDocs(q);
+      // querySnapshot.forEach((doc) => {
+      //   divisionUsersData.push({ ...doc.data() });
+
+      // });
+
+
+      setDivisionUsers(divisionUsersData);
     } catch (error) {
-      throw new Error(error, "Error in Memberlist");
+      throw new Error(error, "Error in Userlist");
     }
   };
 
-  const getPendingMembers = async () => {
+  const getPendingDivisionUsers = async () => {
     // filter by organization and division
     try {
-      const pendingMembersRef = collection(db, "mail");
+      const pendingDivisionUsersRef = collection(db, "mail");
       const q = query(
-        pendingMembersRef,
+        pendingDivisionUsersRef,
         where("monitoringBoardId", "==", currentMonitoringBoard.monitoringBoardId),
+        where("division", "==", division.divisionId),
         orderBy("createdAt", "desc")
       );
-      const pendingMembersQuerySnapshot = await getDocs(q);
-      const pendingMembersData = [];
+      const pendingDivisionUsersQuerySnapshot = await getDocs(q);
+      const divisionUsersData = [];
 
-      pendingMembersQuerySnapshot.forEach((doc) => {
+      pendingDivisionUsersQuerySnapshot.forEach((doc) => {
         if (
           // organizationId === doc.data().organizationId && 
           doc.data().pending === true) {
-          pendingMembersData.push({
+          divisionUsersData.push({
             ...doc.data(),
             docId: doc.id,
           });
         }
 
       });
-      setPendingMembers(pendingMembersData);
+      setPendingDivisionUsers(divisionUsersData);
     } catch (error) {
-      throw new Error(error, "Error in Memberlist");
+      throw new Error(error, "Error in Userlist");
     }
   };
 
-  const handleDeleteMember = async (userId) => {
+  const handleDeleteUser = async (userId) => {
     try {
       const docRef = doc(db, `exampleUsers/${userId}`);
       await deleteDoc(docRef).then(() => {
-        getMembers();
+        getDivisionUsers();
       });
     } catch (error) {
       throw new Error(error, "error in deleteScreamFunc");
     }
   };
 
-  const handleDeletePendingMember = async (docId) => {
+  const handleDeletePendingUser = async (docId) => {
     try {
       const docRef = doc(db, `mail/${docId}`);
       await deleteDoc(docRef).then(() => {
-        getPendingMembers();
+        getPendingDivisionUsers();
       });
     } catch (error) {
       throw new Error(error, "error in deleteScreamFunc");
@@ -121,145 +121,104 @@ const MemberBoard = () => {
   };
 
   useEffect(() => {
-    if (currentMonitoringBoard) {
-      getMembers();
-      getPendingMembers()
+    if (currentMonitoringBoard && division) {
+      getDivisionUsers();
+      getPendingDivisionUsers()
     }
-  }, [currentMonitoringBoard]);
+  }, [currentMonitoringBoard, division]);
 
   useEffect(() => {
     if (order === 1) {
-      setFilteredMembers(
-        members.filter(member => Object.values(member).join(' ').toLowerCase().indexOf(searchTerm.toLowerCase()) > -1));
+      setFilteredDivisionUsers(
+        divisionUsers.filter(user => Object.values(user).join(' ').toLowerCase().indexOf(searchTerm.toLowerCase()) > -1));
     }
-  }, [searchTerm, members, order]);
+  }, [searchTerm, divisionUsers, order]);
 
 
   useEffect(() => {
     if (order === 2) {
-      setFilteredPendingMembers(
-        pendingMembers.filter(pendingMember => Object.values(pendingMember).join(' ').toLowerCase().indexOf(searchTerm.toLowerCase()) > -1)
+      setFilteredPendingDivisionUsers(
+        pendingDivisionUsers.filter(pendingUser => Object.values(pendingUser).join(' ').toLowerCase().indexOf(searchTerm.toLowerCase()) > -1)
       );
     }
-  }, [searchTerm, pendingMembers, order]);
-
-
+  }, [searchTerm, pendingDivisionUsers, order]);
 
   return (
     <React.Fragment>
-      <Wrapper>
-        <Box gap="20px" flexDirection="column" margin="30px">
-          <Typography variant="h2">MemberBoard</Typography>
-          {currentMonitoringBoard?.monitoringBoardId}
-          <Box justifyContent="space-between" gap="16px" alignItems="flex-end">
-            <Box margin="0px 24px 0px 0px" gap="10px" width="500px">
-              <Tabs
-                fontSize="buttonSm"
-                order={order}
-                setOrder={setOrder}
-                tabs={[
-                  { icon: <User />, text: `Members (${members.length})` },
-                  { icon: <User />, text: `Pending Members (${pendingMembers.length})` },
-                  // { icon: <Info />, text: "Interaktionen" },
-                ]}
-              />
-            </Box>
-            <Box width="400px">
-              <Input type="search" onChange={(e) => setSearchTerm(e?.target?.value)} />
-            </Box>
-
-            <ModalButton text="Add member" options={{
-              padding: 20,
-              title: t("add_member"),
-              swipe: isMobile && true
-
-            }}>
-              <InviteMember getPendingMembers={getPendingMembers} />
-            </ModalButton>
+      <Box gap="20px" flexDirection="column" margin="0px">
+        <Box justifyContent="space-between" gap="16px" alignItems="flex-end">
+          <Box margin="0px 24px 0px 0px" gap="10px" width="500px">
+            <Tabs
+              fontSize="buttonSm"
+              order={order}
+              setOrder={setOrder}
+              tabs={[
+                { icon: <User />, text: `Users (${divisionUsers.length})` },
+                { icon: <User />, text: `Pending Users (${pendingDivisionUsers.length})` },
+                // { icon: <Info />, text: "Interaktionen" },
+              ]}
+            />
+          </Box>
+          <Box width="400px">
+            <Input type="search" onChange={(e) => setSearchTerm(e?.target?.value)} />
           </Box>
 
+          <ModalButton text="Add user" options={{
+            padding: 20,
+            title: t("add_user"),
+            swipe: isMobile && true
 
-
-
-          <Table
-            data={order === 1 ? filteredMembers : filteredPendingMembers}
-            checkbox={order === 1 ? "userId" : "docId"}
-            bulkEdit={<Icon icon="Search" />}
-            // this could be an alternative structure
-            // template={(member) => ([{
-            //     header: t("username"),
-            //     value: <Box gap="16px">
-            //       <ImagePlaceholder
-            //         width="64px"
-            //         height="64px"
-            //         img="#"
-            //       />
-            //       <Box flexDirection="column" justifyContent="center" alignItems="flex-start">
-            //         <Typography variant="h3">{member?.handle}</Typography>
-            //         { member?.email && <Typography variant="bodySm">{member.email}</Typography> }
-            //       </Box>
-            //     </Box>
-            //   },
-            //   {
-            //     header: t("division"),
-            //     value: <Typography variant="bodySm">{member?.division}</Typography>
-            //   },
-            //   {
-            //     header: t("role"),
-            //     value: <Typography variant="bodySm">{member?.roles}</Typography>
-            //   },
-            //   {
-            //     header: 'actions',
-            //     value: <Button
-            //       variant="white"
-            //       text="Delete"
-            //       onClick={() => handleDeleteMember(member?.userId)}
-            //     />
-            //   },
-            // ])}
-            columns={
-              order === 1 ? [
-                { key: "username", label: t('username') },
-                { key: "division", label: t('division') },
-                { key: "role", label: t('role') },
-              ] : [
-                { key: "email", label: t('email') },
-                { key: "division", label: t('division') },
-                { key: "role", label: t('role') },
-              ]}
-          >
-            {
-              (row) => (
-                <>
-                  <Box gap="16px">
-                    {!isMobile &&
-                      <ImagePlaceholder
-                        width="64px"
-                        height="64px"
-                        img="#"
-                      />
-                    }
-                    <Box flexDirection="column" justifyContent="center" alignItems="flex-start">
-                      <Typography variant="h3">{row.handle}</Typography>
-                      {row?.email && <Typography variant="bodySm">{row.email}</Typography>}
-                    </Box>
-                  </Box>
-                  <Typography variant="bodySm">{row.division}</Typography>
-                  <Typography variant="bodySm">{row.role}</Typography>
-                  <Button
-                    variant="white"
-                    text="Delete"
-                    onClick={() => { order === 1 ? handleDeleteMember(row.userId) : handleDeletePendingMember(row.docId) }}
-                  />
-                </>
-              )
-            }
-          </Table>
-
+          }}>
+            <InviteMember getPendingDivisionUsers={getPendingDivisionUsers} division={division} />
+          </ModalButton>
         </Box>
-      </Wrapper>
+
+
+
+
+        <Table
+          data={order === 1 ? filteredDivisionUsers : filteredPendingDivisionUsers}
+          checkbox={order === 1 ? "userId" : "docId"}
+          bulkEdit={<Icon icon="Search" />}
+          columns={
+            order === 1 ? [
+              { key: "username", label: t('username') },
+              { key: "role", label: t('role') },
+            ] : [
+              { key: "email", label: t('email') },
+              { key: "role", label: t('role') },
+            ]}
+        >
+          {
+            (row) => (
+              <>
+                <Box gap="16px">
+                  {!isMobile &&
+                    <ImagePlaceholder
+                      width="64px"
+                      height="64px"
+                      img="#"
+                    />
+                  }
+                  <Box flexDirection="column" justifyContent="center" alignItems="flex-start">
+                    <Typography variant="h3">{row.handle}</Typography>
+                    {row?.email && <Typography variant="bodySm">{row.email}</Typography>}
+                  </Box>
+                </Box>
+                <Typography variant="bodySm">{row.role}</Typography>
+                <Button
+                  variant="white"
+                  text="Delete"
+                  onClick={() => { order === 1 ? handleDeleteUser(row.userId) : handleDeletePendingUser(row.docId) }}
+                />
+              </>
+            )
+          }
+        </Table>
+
+      </Box>
     </React.Fragment>
   );
 };
 
-export default MemberBoard;
+export default UserBoard;
