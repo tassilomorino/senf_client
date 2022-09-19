@@ -602,6 +602,8 @@ const Main = ({
         />
       )}
 
+
+
       <ScaleContainer show={showUI}>
         {!openInfoPage && (
           <>
