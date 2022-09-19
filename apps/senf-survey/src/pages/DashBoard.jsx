@@ -12,6 +12,7 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import CreateNewSurvey from "./CreateNewSurvey";
 
@@ -31,7 +32,7 @@ const DashBoard = () => {
   const [surveys, setSurveys] = useState([]);
   const [filteredSurveys, setFilteredSurveys] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-
+  const navigate = useNavigate()
   const getSurveys = async () => {
     try {
       const surveysRef = collection(db, "surveys");
@@ -81,7 +82,7 @@ const DashBoard = () => {
         <Typography variant="h2">My Surveys</Typography>
         <Box justifyContent="space-between" gap="16px" alignItems="flex-end">
           <Box width="400px">
-            <Input type="search" onChange={(e) => setSearchTerm(e?.target?.value)} />
+            <Input type="search" value={searchTerm} onChange={(e) => setSearchTerm(e?.target?.value)} />
           </Box>
 
           <ModalButton text="+ Create new survey" options={{
@@ -90,7 +91,7 @@ const DashBoard = () => {
             swipe: isMobile && true
 
           }}>
-            <CreateNewSurvey getSurveys={getSurveys} />
+            <CreateNewSurvey getSurveys={getSurveys} navigate={navigate} />
           </ModalButton>
         </Box>
         <Table
