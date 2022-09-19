@@ -392,7 +392,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
 
   return (
     <React.Fragment>
-      <DragWrapper
+      {isMobile && postIdeaOpen ? null : (<DragWrapper
         // style={
         //   (openOrganizationsOverview || openStatisticsOverview) && isMobile
         //     ? {
@@ -407,11 +407,10 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
         //       : null
         // }
         style={
-          isMobile && postIdeaOpen
-            ? { display: "none" }
-            : isMobile
-              ? springProps
-              : null
+
+          isMobile
+            ? springProps
+            : null
         }
       >
         <Wave
@@ -553,7 +552,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
             />
           </Box>
         )}
-      </DragWrapper>
+      </DragWrapper>)}
     </React.Fragment>
   );
 };
