@@ -8,7 +8,7 @@ import Box from "../../atoms/box/Box";
 import Button from "../../atoms/buttons/Button";
 import ContentDropdown from "../../atoms/contentDropdown/ContentDropdown";
 
-const lngs = {
+const locales = {
   de: { nativeName: "🇩🇪 Deutsch", shortName: "DE" },
   en: { nativeName: "🇬🇧 English", shortName: "EN" },
 };
@@ -35,24 +35,18 @@ const LanguageSelect: FC<LanguageSelectProps> = ({ text, direction }) => {
           variant="white"
           size="medium"
           onClick={() => setDropdownOpen(!dropdownOpen)}
-          text={Object.keys(lngs).map(
-            (lng) => i18n.resolvedLanguage === lng && lngs[lng].shortName
+          text={Object.keys(locales).map(
+            (lng) => i18n.resolvedLanguage === lng && locales[lng].shortName
           )}
         />
       }
-      Content={
-        <Box gap="5px" flexDirection="column">
-          {Object.keys(lngs).map((lng) => (
-            <Button
-              key={lng}
-              variant={i18n.resolvedLanguage === lng ? "primary" : "secondary"}
-              size="small"
-              text={lngs[lng].nativeName}
-              onClick={() => handleChangeLanguage(lng)}
-            // disabled={i18n.resolvedLanguage === lng}
-            />
-          ))}
-        </Box>
+      size="md"
+      data={
+        Object.keys(locales).map((locale) => ({
+          checked: i18n.resolvedLanguage === locale,
+          text: locales[locale].nativeName,
+          onClick: () => handleChangeLanguage(locale)
+        }))
       }
     />
   );

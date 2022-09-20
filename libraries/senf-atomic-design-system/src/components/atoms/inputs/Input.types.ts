@@ -14,8 +14,8 @@ export interface InputProps {
 
   leadingIcon?: JSX.Element | string;
   trailingIcon?: JSX.Element | string;
-  leadingIconLbel?: string;
-  trailingIconLbel?: string;
+  leadingIconLabel?: string;
+  trailingIconLabel?: string;
 
   required?: boolean;
   error?: boolean;
