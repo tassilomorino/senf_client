@@ -110,11 +110,6 @@ const PostIdea: FC<PostIdeaProps> = ({
         <>
           <Box
             position="fixed"
-            zIndex="99999"
-            top="16px"
-            left="16px"></Box>
-          <Box
-            position="fixed"
             top="16px"
             left="16px"
             right="16px"
