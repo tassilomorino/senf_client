@@ -16,12 +16,6 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[javascriptreact]": {
-<<<<<<< HEAD
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
-=======
-    "editor.defaultFormatter": "vscode.typescript-language-features"
-  },
-  "editor.tabSize": 2
->>>>>>> c358dcce1d680e2dd485bf4ebd9de82bbcf29ce4
 }
