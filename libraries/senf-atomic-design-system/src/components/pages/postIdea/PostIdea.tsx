@@ -65,15 +65,14 @@ const PostIdea: FC<PostIdeaProps> = ({
       padding={"0px 16px 0px 16px"}
       justifyContent="space-between">
       <Typography variant="h3">Idee erstellen</Typography>
-      {!isMobile && (
-        <Button
-          variant="tertiary"
-          size="big"
-          text={t("Abbrechen")}
-          justifyContent="flex-start"
-          onClick={() => setPostIdeaOpen(false)}
-        />
-      )}
+
+      <Button
+        variant="tertiary"
+        size="big"
+        text={t("Abbrechen")}
+        justifyContent="flex-start"
+        onClick={() => setPostIdeaOpen(false)}
+      />
     </Box>
   );
 
@@ -107,20 +106,8 @@ const PostIdea: FC<PostIdeaProps> = ({
   );
   return (
     <>
-      {isMobile && !addressSelected && (
+      {isMobile && (
         <>
-          <Box
-            position="fixed"
-            zIndex="99999"
-            top="16px"
-            left="16px">
-            <Button
-              icon={<Arrow transform="rotate(180)" />}
-              onClick={() => setPostIdeaOpen(false)}
-              size="medium"
-              variant="white"
-            />
-          </Box>
           <Box
             position="fixed"
             top="16px"
@@ -141,7 +128,7 @@ const PostIdea: FC<PostIdeaProps> = ({
             </StyledMobileHeaders>
           )}
 
-          {formik?.values?.address && (
+          {formik?.values?.address && !addressSelected && (
             <Box
               position="fixed"
               bottom="16px"
@@ -157,25 +144,26 @@ const PostIdea: FC<PostIdeaProps> = ({
                 onClick={() => setAddressSelected(true)}></Button>
             </Box>
           )}
+          {isMobile && addressSelected && (
+            <Box
+              position="fixed"
+              bottom="0px"
+              zIndex="999"
+              width="100%">
+              <PostIdeaForm
+                formik={formik}
+                statefulMap={statefulMap}
+                checkIfCalendar={checkIfCalendar}
+                selectedDays={selectedDays}
+                handleChangeCalendar={handleChangeCalendar}
+                setPostIdeaOpen={setPostIdeaOpen}
+                handleSubmit={handleSubmit}
+                loading={loading}
+                Out={Out}
+              />
+            </Box>
+          )}
         </>
-      )}
-      {isMobile && addressSelected && (
-        <Box
-          position="fixed"
-          zIndex="99999"
-          width="100%">
-          <PostIdeaForm
-            formik={formik}
-            statefulMap={statefulMap}
-            checkIfCalendar={checkIfCalendar}
-            selectedDays={selectedDays}
-            handleChangeCalendar={handleChangeCalendar}
-            setPostIdeaOpen={setPostIdeaOpen}
-            handleSubmit={handleSubmit}
-            loading={loading}
-            Out={Out}
-          />
-        </Box>
       )}
 
       {!isMobile && (
