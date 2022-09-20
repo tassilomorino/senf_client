@@ -76,7 +76,7 @@ const MenuSidebar = ({ currentWorkspace, setCurrentWorkspace }) => {
             }
             onClick={() => setCurrentWorkspace("Meine Nachrichten")}
             icon={<CommentActive />}
-            transform="rotate(90deg)"
+            transform="rotate(90)"
           />
         </ButtonWrapper>
         <Divider

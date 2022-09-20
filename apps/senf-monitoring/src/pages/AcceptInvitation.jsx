@@ -11,9 +11,10 @@ import { t } from "i18next";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Typography, Box, Button, useModals, isMobileCustom, Auth } from "senf-atomic-design-system";
+import { Typography, Box, Button, useModals, isMobileCustom } from "senf-atomic-design-system";
 import styled from "styled-components";
-import { auth, db } from "../firebase";
+import { AuthModal } from "senf-shared";
+import { db } from "../firebase";
 
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.beige.beige20};
@@ -53,10 +54,7 @@ export const AcceptInvitation = () => {
 
   useEffect(() => {
     handleSetInvitationData();
-
-    console.log("User", user)
-    !user?.authenticated && openModal(<Auth />, { swipe: !!isMobile, size: "md", height: isMobile && window.innerHeight + 83, padding: 0 })
-
+    if (!user) openModal(<AuthModal />, { swipe: !!isMobile })
   }, [user]);
 
 

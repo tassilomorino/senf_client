@@ -241,10 +241,8 @@ const Main = ({
   const urlPath = window.location.pathname;
   useEffect(() => {
     if (urlPath === '/verify') {
-      openModal(<AuthModal />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      openModal(<AuthModal />, { swipe: !!isMobileCustom })
     }
-
-
   }, [urlPath]);
 
 
@@ -417,7 +415,7 @@ const Main = ({
   const handleButtonLike = (event, screamId) => {
     event.stopPropagation();
     if (!user.authenticated) {
-      openModal(<AuthModal />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      openModal(<AuthModal />, { swipe: !!isMobileCustom })
       return;
     }
     if (user.likes && user.likes.find((like) => like.screamId === screamId)) {
@@ -444,7 +442,7 @@ const Main = ({
       navigate(`/profile/${userId}`)
 
     } else {
-      openModal(<AuthModal />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      openModal(<AuthModal />, { swipe: !!isMobileCustom })
     }
   };
 
@@ -457,10 +455,10 @@ const Main = ({
   const handleOpenCreateOrganization = () => {
     if (!user.authenticated) {
       // Add text into auth like "first you gt to create an account"
-      openModal(<AuthModal />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      openModal(<AuthModal />, { swipe: !!isMobileCustom })
     } else {
       openModal(<React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
-        <CreateMainComponent type="organization" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+        <CreateMainComponent type="organization" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom })
 
     }
   };
@@ -479,7 +477,7 @@ const Main = ({
   const handleCreateProjectroom = () => {
     if (!user.authenticated) {
       // Add text into auth like "first you gt to create an account"
-      openModal(<AuthModal />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      openModal(<AuthModal />, { swipe: !!isMobileCustom })
     } else if (!user?.organizationId?.length) {
       openModal(<>
         <Box margin="30px 40px">
@@ -494,7 +492,7 @@ const Main = ({
             onClick={handleOpenCreateOrganization}
           />
         </Box>
-      </>, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && 350, padding: 0 })
+      </>, { swipe: !!isMobileCustom })
 
     } else if (user?.isOrgModerator === true) {
       dispatch(getMyOrganizations(user.userId));
@@ -502,7 +500,7 @@ const Main = ({
 
 
       openModal(<React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
-        <CreateMainComponent type="projectRoom" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+        <CreateMainComponent type="projectRoom" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom })
     } else {
 
       openModal(<>
@@ -522,7 +520,7 @@ const Main = ({
             onClick={openMailRequestProjectroom}
           />
         </Box>
-      </>, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && 500, padding: 0 })
+      </>, { swipe: !!isMobileCustom })
 
     }
   };

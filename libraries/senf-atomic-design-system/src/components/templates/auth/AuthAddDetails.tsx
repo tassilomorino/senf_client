@@ -58,7 +58,7 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
     initialValues: {
       handle: "",
       description: "",
-      zipcode: "",
+      postcode: "",
       age: "",
       sex: "",
     },
@@ -74,7 +74,7 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
     // Set up canvas
     formik.setFieldValue("handle", user?.handle)
     formik.setFieldValue("description", user?.description)
-    formik.setFieldValue("zipcode", user?.zipcode)
+    formik.setFieldValue("postcode", user?.postcode)
     formik.setFieldValue("age", user?.age)
     formik.setFieldValue("sex", user?.sex)
 
@@ -162,11 +162,11 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
           value={formik?.values.description}
         />
         <Input
-          name="zipcode"
+          name="postcode"
           type="text"
-          placeholder={t("zipcode")}
+          placeholder={t("postcode")}
           onChange={formik?.handleChange}
-          value={formik?.values.zipcode}
+          value={formik?.values.postcode}
         />
         <Box gap="8px">
           <Dropdown

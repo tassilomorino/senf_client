@@ -169,7 +169,9 @@ const MemberBoard = () => {
             </Box>
 
             <ModalButton text="Add member" options={{
-              padding: 20,
+              style: {
+                padding: 20,
+              },
               title: t("add_member"),
               swipe: isMobile && true
 

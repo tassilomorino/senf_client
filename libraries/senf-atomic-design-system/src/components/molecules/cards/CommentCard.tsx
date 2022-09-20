@@ -72,7 +72,9 @@ const CommentCard: FC<CommentCardProps> = ({ data, ...props }) => {
               button={TertiaryButton}
               iconLeft={<More />}
               options={{
-                padding: 20,
+                style: {
+                  padding: 20,
+                },
                 title: t("contactModalTitle"),
                 cancelText: t("cancel")
               }}
@@ -90,7 +92,9 @@ const CommentCard: FC<CommentCardProps> = ({ data, ...props }) => {
                     text={t("delete_comment")}
                     fillWidth="max"
                     options={{
-                      padding: 20,
+                      style: {
+                        padding: 20,
+                      },
                       title: t('delete_comment_confirm'),
                       cancelText: t('cancel'),
                       submitText: t('delete'),

@@ -65,10 +65,6 @@ const AuthEmail: FC<AuthEmailProps> = ({
     },
   ];
 
-  useEffect(() => {
-    console.log(formikStore.values)
-  }, [formikStore.values])
-
   return (
     <Box
       flexDirection="column"
@@ -172,7 +168,7 @@ const AuthEmail: FC<AuthEmailProps> = ({
             ? () => authHandler.createUser(formikStore)
             : (e) => {
               e.preventDefault();
-              authHandler.signIn.email(formikStore).then(() => setPage?.('authAddDetails'));
+              authHandler.signIn.email(formikStore).then(() => !authHandler.ifAllUserDetailsAreFilled() && setPage?.('authAddDetails'));
             }
         }
         disabled={!formikStore?.isValid}

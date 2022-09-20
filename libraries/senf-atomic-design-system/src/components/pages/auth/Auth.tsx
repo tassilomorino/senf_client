@@ -177,19 +177,23 @@ const Auth: FC<AuthProps> = ({
 
       {(() => {
         if (isLoggedIn && page !== "authAddDetails") {
-          return (<Box
-            flexDirection="column"
-            margin="480px 10% 0px 10%"
-            position="relative"
-            zIndex={9999}
-          >
-            <Button
-              variant="white"
-              fillWidth="max"
-              text="Abmelden"
-              onClick={authHandler?.signOut}
-            />
-          </Box>)
+          return (<AuthAddDetails
+            user={user}
+            authHandler={authHandler}
+          />)
+          // return (<Box
+          //   flexDirection="column"
+          //   margin="480px 10% 0px 10%"
+          //   position="relative"
+          //   zIndex={9999}
+          // >
+          //   <Button
+          //     variant="white"
+          //     fillWidth="max"
+          //     text="Abmelden"
+          //     onClick={authHandler?.signOut}
+          //   />
+          // </Box>)
         }
         if (page === "authEmail" || page === "authEmailRegister" || page === "authResetEmail") {
           return <AuthEmail

@@ -214,54 +214,13 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
               submitText: t("save"),
               onSubmit: closeModal,
             }}>
-            <AddContactForm
-              formikEditIdea={formik}
-              // onChange={formikEditIdea.setValues}
-            />
-            {/* <>
-            <Typography variant="bodyBg">Deine Kontaktdaten werden öffentlich gezeigt.</Typography>
-            <Box gap="16px" flexDirection="column" marginTop="20px">
-              <Input
-                name="contactTitle"
-                placeholder={t("contactTitle")}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.contactTitle}
-                error={
-                  formik.touched.contactTitle &&
-                  Boolean(formik.errors.contactTitle)
-                }
-                note={
-                  formik.touched.contactTitle &&
-                  formik.errors.contactTitle
-                }
-              />
-              <Input
-                name="contact"
-                type="text"
-                placeholder={t("contact")}
-                onChange={formik?.handleChange}
-                onBlur={formik?.handleBlur}
-                value={formik?.values.contact}
-                error={
-                  formik?.touched.contact &&
-                  Boolean(formik?.errors.contact)
-                }
-                note={
-                  formik?.touched.contact &&
-                  formik?.errors.contact
-                }
-              />
-            </Box>
-          </> */}
+            <AddContactForm formikEditIdea={formik} />
           </ModalButton>
         </Box>
 
         <Divider />
 
-        <Typography variant="buttonBg">
-          Welche Kategorie passt zu deiner Idee?
-        </Typography>
+        <Typography variant="buttonBg">{t("add_topic")}</Typography>
 
         <ContentDropdown
           open={topicDropdownOpen}
@@ -270,22 +229,18 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
             <Button
               onClick={() => setTopicDropdownOpen(!topicDropdownOpen)}
               text={formik?.values.topic || t("select_topic")}
-              iconRight={<Arrow transform="rotate(90deg)" />}
+              iconRight={<Arrow transform="rotate(90)" />}
               variant="secondary"
               size="small"
               fillWidth="max"
-              justifyContent="space-between"
             />
           }
           Content={
             <Box
               gap="5px"
-              flexDirection="column"
-              width="100%">
+              flexDirection="column">
               {Object.values(OptionsTopics()).map(({ value, label }) => (
-                <Box
-                  key={`optionTopics-${value}`}
-                  gap="5px">
+                <Box gap="5px">
                   <ContentDropdownItem
                     type="check"
                     text={label}
@@ -316,7 +271,9 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
             fillWidth="max"
             icon={<CalendarIcon />}
             options={{
-              padding: 20,
+              style: {
+                padding: 20,
+              },
               title: t("add_date"),
               cancelText: t("cancel"),
               submitText: t("save"),

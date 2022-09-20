@@ -157,9 +157,7 @@ const ProfilePage = ({
         handleButtonLike={handleButtonLike}
         handleButtonComment={handleButtonComment}
         handleButtonClose={handleClose}
-        handleSetAuthEditOpen={() => openModal(<AuthModal authAddDetails={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
-
-        }
+        handleSetAuthEditOpen={() => openModal(<AuthModal authAddDetails={true} />, { swipe: !!isMobileCustom, size: "md" })}
         handleLogout={handleLogout}
         handleDeleteAccount={handleDeleteAccount}
 

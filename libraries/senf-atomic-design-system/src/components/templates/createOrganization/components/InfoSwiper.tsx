@@ -139,7 +139,7 @@ const Example: FC = () => {
 
         <Box gap="8px" margin="10px 0px 0px 0px" justifyContent="center">
             <Button
-                icon={<Arrow transform="rotate(180deg)" />}
+                icon={<Arrow transform="rotate(180)" />}
                 onClick={handlePrev}
                 disabled={active === 0}
             />
