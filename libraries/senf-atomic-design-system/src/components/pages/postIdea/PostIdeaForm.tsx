@@ -220,7 +220,9 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
 
         <Divider />
 
-        <Typography variant="buttonBg">{t("add_topic")}</Typography>
+        <Typography variant="buttonBg">
+          Welche Kategorie passt zu deiner Idee?
+        </Typography>
 
         <ContentDropdown
           open={topicDropdownOpen}
@@ -228,11 +230,12 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
           OpenButton={
             <Button
               onClick={() => setTopicDropdownOpen(!topicDropdownOpen)}
-              text={formik?.values.topic || t("select_topic")}
+              text={formik?.values.topic || "Kategorie wählen"}
               iconRight={<Arrow transform="rotate(90)" />}
               variant="secondary"
               size="small"
               fillWidth="max"
+              justifyContent="space-between"
             />
           }
           Content={
@@ -240,7 +243,9 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
               gap="5px"
               flexDirection="column">
               {Object.values(OptionsTopics()).map(({ value, label }) => (
-                <Box gap="5px">
+                <Box
+                  gap="5px"
+                  key={`options-topics${value}`}>
                   <ContentDropdownItem
                     type="check"
                     text={label}
