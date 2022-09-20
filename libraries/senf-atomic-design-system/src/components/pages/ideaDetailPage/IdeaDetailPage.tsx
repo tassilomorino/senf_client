@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import dayjs from "dayjs";
 import { animated, useSpring } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
+import { AuthModal } from "senf-shared"
 import Icon from "../../atoms/icons/Icon";
 import {
   LayerWhiteFirstDefault,
@@ -52,7 +53,6 @@ import Delete from "../../../assets/icons/Delete";
 import Report from "../../../assets/icons/Report";
 import Skeleton from "../../atoms/skeleton/Skeleton";
 import EditIdeaPage from "../editIdeaPage/EditIdeaPage";
-import Auth from "../auth/Auth";
 import { useModals } from "../../molecules/modalStack/ModalProvider";
 import Avatar from "../../atoms/avatar/Avatar";
 
@@ -374,7 +374,9 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                       justifyContent="flex-start"
                       icon={<Delete />}
                       options={{
-                        padding: 20,
+                        style: {
+                          padding: 20,
+                        },
                         title: "Bist du sicher, dass du die Idee löschen möchtest?",
                         cancelText: t('cancel'),
                         submitText: t('delete'),
@@ -584,7 +586,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
               {t("IdeaDetailPage.commentHeadline")}
             </Typography>
             {!user?.authenticated ? (
-              <Button onClick={() => openModal(<Auth authEditOpen={false} />, { swipe: !!isMobile, size: "md", height: isMobile && window.innerHeight + 83, padding: 0 })
+              <Button onClick={() => openModal(<AuthModal />, { swipe: !!isMobile })
               }>{t("login")}</Button>
             ) : (
               <Box gap="8px" width="100%">

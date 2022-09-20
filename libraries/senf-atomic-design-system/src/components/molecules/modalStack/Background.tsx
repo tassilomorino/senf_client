@@ -10,9 +10,9 @@ const Background = styled.div`
 `
 const BackgroundWrapper = ({ stack, closeModal }) => {
 	const [backgroundOpacity, setBackgroundOpacity] = useState(0)
-	const [bgPointerEvents, setBgPointerEvents] = useState("none")
+	const [pointerEvents, setPointerEvents] = useState("none")
 	useEffect(() => {
-		setBgPointerEvents(stack.length > 0 ? "auto" : "none")
+		setPointerEvents(stack.length > 0 ? "auto" : "none")
 	}, [stack.length])
 
 	const backgroundTransition = useTransition(stack.length, {
@@ -22,7 +22,7 @@ const BackgroundWrapper = ({ stack, closeModal }) => {
 		update: { opacity: backgroundOpacity || 0.5 }
 	})
 	return backgroundTransition((style, item) => {
-		return item && <a.div style={{ ...style, pointerEvents: bgPointerEvents }} onClick={closeModal}><Background /></a.div>
+		return item ? <a.div style={{ ...style, pointerEvents }} onClick={closeModal}><Background /></a.div> : null
 	})
 }
 export default BackgroundWrapper

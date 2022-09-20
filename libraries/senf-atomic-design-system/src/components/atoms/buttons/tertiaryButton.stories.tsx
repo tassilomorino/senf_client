@@ -19,7 +19,7 @@ const Template: Story<TertiaryButtonProps> = (args) => (
 export const IconPure = Template.bind({});
 IconPure.args = {
   iconLeft: <Arrow />,
-  iconLeftTransform: "rotate(90deg) scale(0.7)",
+  iconLeftTransform: "rotate(90) scale(0.7)",
 };
 
 export const IconLeft = Template.bind({});

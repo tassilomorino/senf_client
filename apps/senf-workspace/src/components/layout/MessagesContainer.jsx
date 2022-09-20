@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import { Typography, TertiaryButton } from "senf-atomic-design-system";
 import Message from "../Message";
 
-import { Typography, TertiaryButton } from "senf-atomic-design-system";
 import MessageForm from "../MessageForm";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
@@ -49,7 +49,7 @@ const MessagesContainer = ({
         {isMobileCustom && (
           <TertiaryButton
             iconLeft="arrow"
-            iconLeftTransform="rotate(90deg)"
+            iconLeftTransform="rotate(90)"
             onClick={() => selectUser(null)}
           />
         )}

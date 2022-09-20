@@ -43,7 +43,7 @@ export const LegalStyles = ({ children }) => {
         zIndex={2}
       >
         <RoundedButton
-          icon={<Plus transform="rotate(45deg)" />}
+          icon={<Plus transform="rotate(45)" />}
           onClick={() => linkToHome()}
         />
       </Box>

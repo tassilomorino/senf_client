@@ -115,7 +115,7 @@ const PostIdea: FC<PostIdeaProps> = ({
             top="16px"
             left="16px">
             <Button
-              icon={<Arrow transform="rotate(180deg)" />}
+              icon={<Arrow transform="rotate(180)" />}
               onClick={() => setPostIdeaOpen(false)}
               size="medium"
               variant="white"

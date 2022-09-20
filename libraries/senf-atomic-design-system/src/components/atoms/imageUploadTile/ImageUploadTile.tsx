@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import Hyperlink from "../../../assets/icons/Hyperlink";
 import Loader from "../animations/Loader";
@@ -39,6 +39,11 @@ const StyledIconWrapper = styled.div`
 
 const ImageUploadTile: FC<ImageUploadTileProps> = ({ id, photoURL, uploadingImage, handleImageUpload }) => {
   const [hover, onHover] = useState(false);
+  const getUrl = (url: string) => url && typeof url !== "string" ? URL.createObjectURL(url) : url
+  const [image, setImage] = useState(getUrl(photoURL));
+  useEffect(() => {
+    setImage(getUrl(photoURL));
+  }, [photoURL]);
 
   return <React.Fragment>
     <ImageWrapper
@@ -61,8 +66,8 @@ const ImageUploadTile: FC<ImageUploadTileProps> = ({ id, photoURL, uploadingImag
 
       )}
 
-      {photoURL && <ImagePlaceholder
-        img={photoURL}
+      {image && <ImagePlaceholder
+        img={image}
         borderRadius="18px"
         height="calc(100% - 40px)"
         width="calc(100% - 40px)"

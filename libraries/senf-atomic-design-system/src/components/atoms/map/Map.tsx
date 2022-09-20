@@ -535,7 +535,7 @@ const Map: FC<MapProps> = ({
       >
         {children}
       </MapContainer>
-      <MarkerPin visible={ideaData} ref={setContainer}><IdeaPin transform="translateY(-12px)" color={ideaMarkerColor} /></MarkerPin>
+      <MarkerPin visible={ideaData} ref={setContainer}><IdeaPin transform="translate(0, -12)" color={ideaMarkerColor} /></MarkerPin>
     </React.Fragment>
   );
 };
