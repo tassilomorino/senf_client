@@ -259,7 +259,9 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
 
         <Divider />
 
-        <Typography variant="buttonBg">{t("add_topic")}</Typography>
+        <Typography variant="buttonBg">
+          Welche Kategorie passt zu deiner Idee?
+        </Typography>
 
         <ContentDropdown
           open={topicDropdownOpen}
@@ -272,14 +274,18 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
               variant="secondary"
               size="small"
               fillWidth="max"
+              justifyContent="space-between"
             />
           }
           Content={
             <Box
               gap="5px"
-              flexDirection="column">
+              flexDirection="column"
+              width="100%">
               {Object.values(OptionsTopics()).map(({ value, label }) => (
-                <Box gap="5px">
+                <Box
+                  key={`optionTopics-${value}`}
+                  gap="5px">
                   <ContentDropdownItem
                     type="check"
                     text={label}
