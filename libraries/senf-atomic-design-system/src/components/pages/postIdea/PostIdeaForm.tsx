@@ -24,7 +24,9 @@ const AddContactForm = ({ formikEditIdea: initial }) => {
   const { t } = useTranslation();
 
   const formikEditIdea = useFormik({ initialValues: initial.values });
-  useEffect(() => initial.setValues(formikEditIdea.values), [formikEditIdea]);
+  useEffect(() => {
+    initial.setValues(formikEditIdea.values);
+  }, [formikEditIdea]);
 
   return (
     <>

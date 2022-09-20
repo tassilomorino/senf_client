@@ -65,15 +65,14 @@ const PostIdea: FC<PostIdeaProps> = ({
       padding={"0px 16px 0px 16px"}
       justifyContent="space-between">
       <Typography variant="h3">Idee erstellen</Typography>
-      {!isMobile && (
-        <Button
-          variant="tertiary"
-          size="big"
-          text={t("Abbrechen")}
-          justifyContent="flex-start"
-          onClick={() => setPostIdeaOpen(false)}
-        />
-      )}
+
+      <Button
+        variant="tertiary"
+        size="big"
+        text={t("Abbrechen")}
+        justifyContent="flex-start"
+        onClick={() => setPostIdeaOpen(false)}
+      />
     </Box>
   );
 
@@ -109,18 +108,6 @@ const PostIdea: FC<PostIdeaProps> = ({
     <>
       {isMobile && !addressSelected && (
         <>
-          <Box
-            position="fixed"
-            zIndex="99999"
-            top="16px"
-            left="16px">
-            <Button
-              icon={<Arrow transform="rotate(180deg)" />}
-              onClick={() => setPostIdeaOpen(false)}
-              size="medium"
-              variant="white"
-            />
-          </Box>
           <Box
             position="fixed"
             top="16px"
