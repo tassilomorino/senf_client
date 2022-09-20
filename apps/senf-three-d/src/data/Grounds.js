@@ -23,22 +23,4 @@ export const Grounds = [
     imgURL: Img57,
     drawType: "lawn",
   },
-  {
-    objectId: 1,
-    title: "Wiese",
-    objectType: "Grounds",
-    imgURL: Img57,
-  },
-  {
-    objectId: 1,
-    title: "Wiese",
-    objectType: "Grounds",
-    imgURL: Img57,
-  },
-  {
-    objectId: 1,
-    title: "Wiese",
-    objectType: "Grounds",
-    imgURL: Img57,
-  },
 ];

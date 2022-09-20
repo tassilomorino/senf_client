@@ -6,7 +6,7 @@ const DrawMapbox = new MapboxDraw({
     displayControlsDefault: false,
     controls: {
         polygon: true,
-        trash: true,
+        trash: false,
     },
     styles: [
         // WHEN SAVED  POLYGON

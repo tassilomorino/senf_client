@@ -18,6 +18,7 @@ import ModalButton from "../../molecules/modalStack/ModalButton";
 import { useModals } from "../../molecules/modalStack/ModalProvider";
 import DatePicker from "../../organisms/datePicker/DatePicker";
 import { PostIdeaFormProps } from "./PostIdeaForm.types";
+import Geocoder from "../../atoms/geocoder/Geocoder";
 
 const AddContactForm = ({ formikEditIdea: initial }) => {
   const { t } = useTranslation();
@@ -66,20 +67,26 @@ const Wrapper = styled.div<PostIdeaFormProps>`
 
 width: 100%;
   height: auto;
-  padding: 20px;
+  padding: 16px;
   background-color: white;
   z-index: 2;
 `;
 
-const PostIdeaForm: FC<PostIdeaFormProps> = ({ formik, checkIfCalendar, selectedDays, handleChangeCalendar }) => {
+const PostIdeaForm: FC<PostIdeaFormProps> = ({ formik, statefulMap, checkIfCalendar, selectedDays, handleChangeCalendar, handleSubmit, loading, Out }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom()
   const { closeModal } = useModals();
 
   const [topicDropdownOpen, setTopicDropdownOpen] = useState(false);
 
-
   return <Wrapper>
+    <Box marginBottom="20px" flexDirection="column" >
+      <Typography variant="bodySm" paddingInline="0.875rem">Adresse deiner Idee</Typography>
+      <Geocoder
+        finalAddress={formik?.values?.address}
+        statefulMap={statefulMap}
+      />
+    </Box>
     <Box gap="20px" flexDirection="column">
       <Input
         name="title"
@@ -260,6 +267,20 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({ formik, checkIfCalendar, selected
 
 
       )}
+
+      <Button
+        onClick={handleSubmit}
+        variant={formik.errors.title || formik.errors.body ? "white" : "primary"}
+        text={t("postScream_shareIdea")}
+        loading={loading}
+        disabled={
+          formik.errors.body ||
+          formik.errors.title ||
+          !formik.values.address ||
+          Out === true
+        }
+      />
+
     </Box>
   </Wrapper>;
 };

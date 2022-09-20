@@ -13,6 +13,7 @@ import {
   query,
 } from "firebase/firestore";
 import { useAuthContext, AuthModal } from "senf-shared";
+import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import CreateNewSurvey from "./CreateNewSurvey";
 
@@ -34,8 +35,7 @@ const DashBoard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const { user } = useAuthContext()
   const { openModal } = useModals()
-
-
+  const navigate = useNavigate()
   const getSurveys = async () => {
     try {
       const surveysRef = collection(db, "surveys");
@@ -88,7 +88,7 @@ const DashBoard = () => {
         <Typography variant="h2">My Surveys</Typography>
         <Box justifyContent="space-between" gap="16px" alignItems="flex-end">
           <Box width="400px">
-            <Input type="search" onChange={(e) => setSearchTerm(e?.target?.value)} />
+            <Input type="search" value={searchTerm} onChange={(e) => setSearchTerm(e?.target?.value)} />
           </Box>
 
           <ModalButton text="+ Create new survey" options={{
@@ -99,13 +99,13 @@ const DashBoard = () => {
             swipe: isMobile && true
 
           }}>
-            <CreateNewSurvey getSurveys={getSurveys} />
+            <CreateNewSurvey getSurveys={getSurveys} navigate={navigate} />
           </ModalButton>
         </Box>
         <Table
           data={filteredSurveys}
-          checkbox={"docId"}
-          bulkEdit={<Icon icon="Search" />}
+          // checkbox={"docId"}
+          // bulkEdit={<Icon icon="Search" />}
           columns={[
             { key: "title", label: t('title') },
             { key: "surveyType", label: t('surveyType') },

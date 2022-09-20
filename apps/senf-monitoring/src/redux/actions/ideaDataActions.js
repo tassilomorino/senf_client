@@ -8,6 +8,7 @@ import {
 } from "firebase/firestore";
 
 import { db } from "../../firebase";
+import store from "../store";
 import {
   LOADING_DATA,
   STOP_LOADING_DATA,
@@ -15,38 +16,26 @@ import {
   SET_ERRORS,
 } from "../types";
 
-export const getIdeas = (parameter) => async (dispatch) => {
-  try {
-    dispatch({ type: LOADING_DATA });
-    const ideasRef = collection(db, "screams");
-    const q = query(
-      ideasRef,
-      // where("variable", ">", parameter),
-      orderBy("likeCount", "desc"),
-      limit(parameter)
-    );
+export const getIdeas = (municipalities) => async (dispatch) => {
+  const ideasRef = collection(db, "screams");
+  const q = query(
+    ideasRef,
+    where("municipality", "in", municipalities),
+    orderBy("createdAt", "desc"),
+    limit(10)
+  );
+  const ideasQuerySnapshot = await getDocs(q);
 
-    const ideasQuerySnapshot = await getDocs(q);
-    const ideas = [];
+  const ideas = [];
 
-    ideasQuerySnapshot.forEach((doc) => {
-      ideas.push({
-        ...doc.data(),
-        screamId: doc.id,
-        body: doc.data().body.substr(0, 180),
-        //   color: setColorByTopic(doc.data().Thema),
-        comments: [],
-      });
+  ideasQuerySnapshot.forEach((doc) => {
+    ideas.push({
+      ...doc.data(),
+      ideaId: doc.id,
     });
-
-    dispatch({
-      type: SET_IDEAS,
-      payload: ideas,
-    });
-  } catch (error) {
-    dispatch({
-      type: SET_ERRORS,
-      payload: { title: "Error occured when loading" },
-    });
-  }
+  });
+  dispatch({
+    type: SET_IDEAS,
+    payload: ideas,
+  });
 };

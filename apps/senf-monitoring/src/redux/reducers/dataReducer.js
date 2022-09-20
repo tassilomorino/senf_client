@@ -3,9 +3,13 @@ import {
   STOP_LOADING_DATA,
   SET_IDEAS,
   SET_ERRORS,
+  SET_MONITORING_BOARDS,
+  SET_CURRENT_MONITORING_BOARD,
 } from "../types";
 
 const initialState = {
+  monitoringBoards: [],
+  currentMonitoringBoard: null,
   dataError: "",
   screams: [],
   loading: false,
@@ -31,6 +35,18 @@ export default (state = initialState, action) => {
         loading: false,
       };
 
+    case SET_MONITORING_BOARDS:
+      return {
+        ...state,
+        monitoringBoards: action.payload,
+      };
+
+    case SET_CURRENT_MONITORING_BOARD:
+      return {
+        ...state,
+        currentMonitoringBoard: action.payload,
+      };
+
     case SET_ERRORS:
       return {
         ...state,
@@ -41,4 +57,4 @@ export default (state = initialState, action) => {
     default:
       return state;
   }
-}
+};

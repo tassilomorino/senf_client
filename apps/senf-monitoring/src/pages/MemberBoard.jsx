@@ -11,7 +11,9 @@ import {
   getDocs,
   orderBy,
   query,
+  where,
 } from "firebase/firestore";
+import { useSelector } from "react-redux";
 import { db } from "../firebase";
 import InviteMember from "./InviteMember";
 
@@ -21,17 +23,17 @@ const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.beige.beige20};
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
+  left: 200px;
+  width: calc(100% - 200px);
   height: 100%;
   overflow: scroll;
 `;
 
 const MemberBoard = () => {
+  const { t } = useTranslation();
   const isMobile = isMobileCustom()
 
   const [order, setOrder] = useState(1)
-  const organizationId = 12345678
 
   const [members, setMembers] = useState([]);
   const [pendingMembers, setPendingMembers] = useState([]);
@@ -39,18 +41,18 @@ const MemberBoard = () => {
   const [filteredMembers, setFilteredMembers] = useState([]);
   const [filteredPendingMembers, setFilteredPendingMembers] = useState([]);
 
+  const currentMonitoringBoard = useSelector(state => state.data.currentMonitoringBoard)
+
 
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { t } = useTranslation();
 
   const getMembers = async () => {
     try {
-      const membersRef = collection(db, "exampleUsers");
+      const membersRef = collection(db, "users");
       const q = query(
         membersRef,
-        // where("variable", ">", parameter),
-        orderBy("createdAt", "desc")
+        where("userId", "in", currentMonitoringBoard.userIds),
       );
       const membersQuerySnapshot = await getDocs(q);
       const membersData = [];
@@ -73,7 +75,7 @@ const MemberBoard = () => {
       const pendingMembersRef = collection(db, "mail");
       const q = query(
         pendingMembersRef,
-        // where("variable", ">", parameter),
+        where("monitoringBoardId", "==", currentMonitoringBoard.monitoringBoardId),
         orderBy("createdAt", "desc")
       );
       const pendingMembersQuerySnapshot = await getDocs(q);
@@ -119,9 +121,11 @@ const MemberBoard = () => {
   };
 
   useEffect(() => {
-    getMembers();
-    getPendingMembers()
-  }, []);
+    if (currentMonitoringBoard) {
+      getMembers();
+      getPendingMembers()
+    }
+  }, [currentMonitoringBoard]);
 
   useEffect(() => {
     if (order === 1) {
@@ -146,7 +150,7 @@ const MemberBoard = () => {
       <Wrapper>
         <Box gap="20px" flexDirection="column" margin="30px">
           <Typography variant="h2">MemberBoard</Typography>
-
+          {currentMonitoringBoard?.monitoringBoardId}
           <Box justifyContent="space-between" gap="16px" alignItems="flex-end">
             <Box margin="0px 24px 0px 0px" gap="10px" width="500px">
               <Tabs

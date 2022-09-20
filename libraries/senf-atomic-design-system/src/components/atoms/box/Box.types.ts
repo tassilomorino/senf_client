@@ -3,6 +3,7 @@
 import { MouseEventHandler } from "react";
 
 export interface BoxProps {
+  onClick?: () => void;
   display?: "flex" | "inline-flex" | "inline" | "block" | "none";
   flexDirection?: "column" | "row";
   gap?: string;
@@ -37,7 +38,8 @@ export interface BoxProps {
     | "center"
     | "flex-end"
     | "space-between"
-    | "space-around";
+    | "space-around"
+    | "space-evenly";
   flexWrap?: "nowrap" | "wrap" | "wrap-reverse";
   position?: "fixed" | "absolute" | "relative" | "sticky";
   onclick?: MouseEventHandler;

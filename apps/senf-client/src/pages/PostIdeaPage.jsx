@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, memo, useEffect } from "react";
+import React, { useState, memo, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
 import {
@@ -234,17 +234,6 @@ const PostIdeaPage = ({
     });
   };
 
-  useEffect(() => {
-    statefulMap.on("move", () => {
-      const newViewport = {
-        latitude: statefulMap.getCenter().lat,
-        longitude: statefulMap.getCenter().lng,
-      };
-      setTimeout(() => {
-        geocode(newViewport);
-      }, 1000);
-    });
-  }, []);
 
   const geocode = (viewport) => {
     const geocodingClient = mbxGeocoding({
@@ -258,7 +247,6 @@ const PostIdeaPage = ({
       .send()
       .then((response) => {
         const match = response.body;
-
         const houseNumber =
           match.features[0].address !== undefined
             ? match.features[0].address
@@ -286,6 +274,16 @@ const PostIdeaPage = ({
       setOut(false);
     }
   };
+  const newViewport = useRef()
+
+  statefulMap.on("moveend", () => {
+    newViewport.current = {
+      latitude: statefulMap.getCenter().lat,
+      longitude: statefulMap.getCenter().lng,
+    };
+    geocode(newViewport.current);
+  });
+
 
   const handleLocationDecided = () => {
     if (formik.values.address) {

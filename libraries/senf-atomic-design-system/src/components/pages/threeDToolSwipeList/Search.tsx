@@ -87,31 +87,9 @@ const Search: FC = ({ handlePlaceModel }) => {
             />
 
         ) : (
-            <div></div>
+            <></>
         )
     );
-
-
-
-    // const CustomHighlight = connectHighlight(({ highlight, attribute, hit }) => {
-    //     const parsedHit = highlight({
-    //         highlightProperty: '_highlightResult',
-    //         attribute,
-    //         hit
-    //     });
-
-    //     return (
-    //         <div>
-    //             <h3>{hit.title}</h3>
-    //             <img src={hit.avatar} alt={hit.username} />
-    //             {parsedHit.map(
-    //                 part => part.isHighlighted ? <mark>{part.value}</mark> : part.value
-    //             )}
-    //         </div>
-    //     );
-    // });
-
-
 
 
     const changeSearchText = (event, refine) => {

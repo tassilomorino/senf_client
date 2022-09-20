@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Button, Box, RangeSlider, Typography, LayerWhiteFirstDefault } from 'senf-atomic-design-system'
-import { setModelsData } from '../util/setData'
+import { Button, Box, RangeSlider, Typography, LayerWhiteFirstDefault, isMobileCustom } from 'senf-atomic-design-system'
+import { setModelsToLocalStorage } from '../util/setData'
 
 const Wrapper = styled.div`
 
@@ -32,6 +32,7 @@ bottom:initial;
 const ContextPanel = ({ openContextPanel, setOpenContextPanel }) => {
     const [rotation, setRotation] = useState(0);
     const [scale, setScale] = useState(1);
+    const isMobile = isMobileCustom()
 
     const handleSetRotation = (value) => {
         setRotation(value);
@@ -47,30 +48,28 @@ const ContextPanel = ({ openContextPanel, setOpenContextPanel }) => {
 
     const handleSetModel = () => {
         console.log(window.map.tb.world.children)
-        setModelsData(window.map.tb.world.children)
+        setModelsToLocalStorage(window.map.tb.world.children)
         window.tb.map.selectedObject.selected = false;
         window.tb.map.selectedObject = null;
         setOpenContextPanel(false)
     }
     const handleDeleteModel = () => {
         window.tb.remove(window.tb.map.selectedObject)
-        setModelsData(window.map.tb.world.children)
+        setModelsToLocalStorage(window.map.tb.world.children)
 
     }
     return openContextPanel && (
         <Wrapper>
             <Box zIndex={99} justifyContent="center" gap="10px" flexDirection="column" alignItems="center">
-
-
-                <Box width="200px" flexDirection="column" gap="10px">
+                <Box width={isMobile ? "90%" : "200px"} flexDirection={isMobile ? "row" : "column"} gap="10px" alignItems={isMobile && "center"} marginBlock={isMobile && "8px"}>
                     <Typography variant="h3" textAlign="center">Rotation</Typography>
                     <RangeSlider
                         rangeValue={rotation}
                         setRangeValue={handleSetRotation}
                         rangeMin={0}
                         rangeMax={360}
-                        leftTick="0"
-                        rightTick="360" />
+                        leftTick={isMobile ? null : "0%"}
+                        rightTick={isMobile ? null : "360%"} />
                 </Box>
 
                 {/* <Box width="200px" flexDirection="column" gap="10px">
