@@ -27,7 +27,7 @@ LeftDialog.args = {
         iconLeft="arrow"
         header="FAQ"
         iconRight="plus"
-        iconRightTransform="rotate(45deg)"
+        iconRightTransform="rotate(45)"
       />
     </React.Fragment>
   ),
@@ -43,7 +43,7 @@ ComponentsDialog.args = {
         iconLeft="arrow"
         header="FAQ"
         iconRight="plus"
-        iconRightTransform="rotate(45deg)"
+        iconRightTransform="rotate(45)"
       />
     </React.Fragment>
   ),
@@ -59,7 +59,7 @@ RightDialog.args = {
         iconLeft="arrow"
         header="FAQ"
         iconRight="plus"
-        iconRightTransform="rotate(45deg)"
+        iconRightTransform="rotate(45)"
       />
     </React.Fragment>
   ),
@@ -76,7 +76,7 @@ FullDialog.args = {
         iconLeft="arrow"
         header="FAQ"
         iconRight="plus"
-        iconRightTransform="rotate(45deg)"
+        iconRightTransform="rotate(45)"
       />
     </React.Fragment>
   ),

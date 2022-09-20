@@ -20,7 +20,7 @@ const Template: Story<SwipeModalProps> = (args) => <SwipeModal {...args} />;
 export const Default = Template.bind({});
 Default.args = {
   openModal: true,
-  setOpenModal: () => {},
+  setOpenModal: () => { },
 
   children: (
     <React.Fragment>
@@ -28,7 +28,7 @@ Default.args = {
         iconLeft="arrow"
         header="FAQ"
         iconRight="plus"
-        iconRightTransform="rotate(45deg)"
+        iconRightTransform="rotate(45)"
       />
       <Accordion
         data={[

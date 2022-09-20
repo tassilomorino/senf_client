@@ -133,7 +133,7 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
       </SVGWrapper>
       <Box position="fixed" margin="20px" zIndex={2}>
         <RoundedButton
-          icon={<Plus transform="rotate(45deg)" />}
+          icon={<Plus transform="rotate(45)" />}
           onClick={handleCloseOrganizationPage}
         />
       </Box>

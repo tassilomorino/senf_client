@@ -270,7 +270,7 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
               {/* <Input
                 name="searchAddress"
                 type="search"
-                leadingIcon={showResults ? <Arrow transform="rotate(180deg)" /> : <Search />}
+                leadingIcon={showResults ? <Arrow transform="rotate(180)" /> : <Search />}
                 leadingIconClick={() => { setSearchTerm(""); setShowResults(false) }}
                 placeholder={"Suche"}
                 onChange={(event) => setSearchTerm(event?.target?.value)}

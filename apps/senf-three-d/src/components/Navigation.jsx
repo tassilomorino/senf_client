@@ -42,7 +42,7 @@ const Navigation = ({ setSwipedUp, swipedUp }) => {
                             color={"white"}
                             transform="scale(2)"
                         /> : <Arrow
-                            transform="scale(1) rotate(180deg)"
+                            transform="scale(1) rotate(180)"
                         />
                 }
                 onClick={() => setSwipedUp(!swipedUp)}

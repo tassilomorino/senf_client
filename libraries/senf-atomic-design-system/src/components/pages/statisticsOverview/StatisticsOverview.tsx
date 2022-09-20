@@ -105,7 +105,7 @@ const StatisticsOverview: FC<StatisticsOverviewProps> = ({
             header={t("statistics")}
             handlebar={true}
           // iconRight="plus"
-          // iconRightTransform="rotate(45deg)"
+          // iconRightTransform="rotate(45)"
           />
         </React.Fragment>
       }
@@ -119,7 +119,7 @@ const StatisticsOverview: FC<StatisticsOverviewProps> = ({
       <SVGWrapper searchOpen={searchOpen}>
         <Box position="fixed" margin="20px" zIndex={2}>
           <RoundedButton
-            icon={<Arrow transform="rotate(180deg)" />}
+            icon={<Arrow transform="rotate(180)" />}
             onClick={() => setOpenStatisticsOverview(false)}
           />
         </Box>

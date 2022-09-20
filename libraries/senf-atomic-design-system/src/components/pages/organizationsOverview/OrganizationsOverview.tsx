@@ -155,7 +155,7 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
     //         header={t("organizations")}
     //         handlebar={true}
     //       // iconRight="plus"
-    //       // iconRightTransform="rotate(45deg)"
+    //       // iconRightTransform="rotate(45)"
     //       />
     //       <TagSlide
     //         type="organizationTypes"
@@ -180,7 +180,7 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
             header={t("organizations")}
             handlebar={true}
           // iconRight="plus"
-          // iconRightTransform="rotate(45deg)"
+          // iconRightTransform="rotate(45)"
           />
           <TagSlide
             type="organizationTypes"
@@ -225,7 +225,7 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
       <SVGWrapper searchOpen={searchOpen}>
         <Box position="fixed" margin="20px" zIndex={2}>
           <RoundedButton
-            icon={<Arrow transform="rotate(180deg)" />}
+            icon={<Arrow transform="rotate(180)" />}
             onClick={() => setOpenOrganizationsOverview(false)}
           />
         </Box>

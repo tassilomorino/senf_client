@@ -563,7 +563,7 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
         }
       >
         <RoundedButton
-          icon={<Plus transform="rotate(45deg)" />}
+          icon={<Plus transform="rotate(45)" />}
         // onClick={handleClose}
         />
       </Box> */}

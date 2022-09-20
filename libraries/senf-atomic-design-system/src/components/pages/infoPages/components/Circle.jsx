@@ -108,7 +108,7 @@ const Circle = ({ id, marginTop }) => {
                 style={{
                   marginLeft: "50%",
                   marginTop: "50%",
-                  transform: "translateX(-50%)translateY(-50%) rotate(20deg)",
+                  transform: "translateX(-50%)translateY(-50%) rotate(20)",
                   position: "absolute",
                 }}
               />
@@ -120,7 +120,7 @@ const Circle = ({ id, marginTop }) => {
                 style={{
                   marginLeft: "50%",
                   marginTop: "50%",
-                  transform: "translateX(-50%)translateY(-50%) rotate(20deg)",
+                  transform: "translateX(-50%)translateY(-50%) rotate(20)",
                   position: "absolute",
                 }}
               />
