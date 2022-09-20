@@ -217,12 +217,12 @@ const ProfilePage: FC<ProfilePageProps> = ({
               <Box gap="5px" flexDirection="column">
                 <ContentDropdownItem
                   text={t("profile.edit")}
-                  icon={<Edit />}
+                  leadingIcon={<Edit />}
                   onClick={handleSetAuthEditOpen}
                 />
                 <ContentDropdownItem
                   text={t("logout")}
-                  icon={<Logout />}
+                  leadingIcon={<Logout />}
                   onClick={handleLogout}
                 />
 
