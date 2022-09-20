@@ -150,7 +150,7 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
     //   HeaderComponent={
     //     <React.Fragment>
     //       <SubNavbar
-    //         iconLeft={<Arrow transform="rotate(90deg)" />}
+    //         iconLeft={<Arrow transform="rotate(90)" />}
     //         leftButtonClick={() => setOpenOrganizationsOverview(false)}
     //         header={t("organizations")}
     //         handlebar={true}
@@ -175,7 +175,7 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
       HeaderComponent={
         <React.Fragment>
           <SubNavbar
-            iconLeft={<Arrow transform="rotate(90deg)" />}
+            iconLeft={<Arrow transform="rotate(90)" />}
             leftButtonClick={() => setOpenOrganizationsOverview(false)}
             header={t("organizations")}
             handlebar={true}

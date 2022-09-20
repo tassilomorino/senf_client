@@ -24,7 +24,9 @@ const AddContactForm = ({ formikEditIdea: initial }) => {
   const { t } = useTranslation();
 
   const formikEditIdea = useFormik({ initialValues: initial.values });
-  useEffect(() => initial.setValues(formikEditIdea.values), [formikEditIdea]);
+  useEffect(() => {
+    initial.setValues(formikEditIdea.values)
+  }, [formikEditIdea]);
 
   return (<><Typography variant="bodyBg">Deine Kontaktdaten werden öffentlich gezeigt.</Typography>
     <Box gap="16px" flexDirection="column" marginTop="20px">
@@ -212,7 +214,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({ formik, statefulMap, checkIfCalen
           <Button
             onClick={() => setTopicDropdownOpen(!topicDropdownOpen)}
             text={formik?.values.topic || t("select_topic")}
-            iconRight={<Arrow transform="rotate(90deg)" />}
+            iconRight={<Arrow transform="rotate(90)" />}
             variant="secondary"
             size="small"
             fillWidth="max"

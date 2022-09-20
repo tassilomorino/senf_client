@@ -100,7 +100,7 @@ const StatisticsOverview: FC<StatisticsOverviewProps> = ({
       HeaderComponent={
         <React.Fragment>
           <SubNavbar
-            iconLeft={<Arrow transform="rotate(90deg)" />}
+            iconLeft={<Arrow transform="rotate(90)" />}
             leftButtonClick={() => setOpenStatisticsOverview(false)}
             header={t("statistics")}
             handlebar={true}

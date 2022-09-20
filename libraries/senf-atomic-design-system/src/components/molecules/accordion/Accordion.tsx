@@ -68,7 +68,7 @@ export const AccordionItem = memo(({ question, answer, defaultOpen = false }) =>
         </Typography>
 
         <Icon
-          icon={<Arrow transform="rotate(90deg)" />}
+          icon={<Arrow transform="rotate(90)" />}
           transform="scale(0.7)"
           style={{
             ...(isOpen && {
