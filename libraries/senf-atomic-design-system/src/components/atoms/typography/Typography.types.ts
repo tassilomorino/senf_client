@@ -6,7 +6,7 @@ export interface TypographyProps {
   fontWeight?: string | number;
   color?: string;
   textAlign?: string;
-  paddingInline: string;
+  paddingInline?: string;
   lineHeight?: string;
   variant:
     | "h1"
