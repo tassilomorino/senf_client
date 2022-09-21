@@ -43,14 +43,14 @@ export const Label = styled.label<{ size?: string; error?: boolean }>`
   font-size: ${({ theme }) => theme.fontSizes[1]}rem;
   font-weight: ${({ theme }) => theme.fontWeights[1]};
   line-height: ${({ theme }) => theme.lineHeight[0]};
-  padding-inline: ${({ size, theme }) => theme.inputPadding(size)};
+  /*  padding-inline: ${({ size, theme }) => theme.inputPadding(size)}; */
 `;
 
 export const Note = styled.p<{ error?: boolean }>`
   color: ${({ theme, error }) => error && theme.colors.signal.redDark};
   font-size: ${({ theme }) => theme.fontSizes[0]}rem;
   line-height: ${({ theme }) => theme.lineHeight[2]};
-  padding-inline: ${({ size, theme }) => theme.inputPadding(size)};
+  /*   padding-inline: ${({ size, theme }) => theme.inputPadding(size)}; */
   /* align-self: flex-end; */
   /* text-align: end; */
   /* flex: auto; */
