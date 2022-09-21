@@ -41,6 +41,7 @@ export { default as Stats } from "./Stats";
 export { default as User } from "./User";
 export { default as Vereine } from "./Vereine";
 export { default as WhatsApp } from "./WhatsApp";
+export { default as Fullscreen } from "./Fullscreen";
 
 export { default as Loading } from "./Loading";
 

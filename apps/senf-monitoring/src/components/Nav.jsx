@@ -29,7 +29,7 @@ const Nav = () => {
         if (value === 1) {
             navigate('/')
         } else if (value === 2) {
-            navigate('/members')
+            navigate('/collaborators')
         } else if (value === 3) {
             navigate('/divisions')
         } else if (divisionId) {
@@ -40,7 +40,7 @@ const Nav = () => {
     useEffect(() => {
         if (window.location.pathname === "/") {
             setOrder(1);
-        } else if (window.location.pathname === "/members") {
+        } else if (window.location.pathname === "/collaborators") {
             setOrder(2);
         } else if (window.location.pathname === "/divisions") {
             setOrder(3);

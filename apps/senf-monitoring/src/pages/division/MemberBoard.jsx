@@ -14,7 +14,7 @@ import {
   where,
 } from "firebase/firestore";
 import { useSelector } from "react-redux";
-import { db } from "../firebase";
+import { db } from "../../firebase";
 import InviteMember from "./InviteMember";
 
 
@@ -98,7 +98,9 @@ const UserBoard = ({ division }) => {
     }
   };
 
-  const handleDeleteUser = async (userId) => {
+  const handleDeleteUser = async (event, userId) => {
+    event.stopPropagation()
+
     try {
       const docRef = doc(db, `exampleUsers/${userId}`);
       await deleteDoc(docRef).then(() => {
@@ -109,7 +111,8 @@ const UserBoard = ({ division }) => {
     }
   };
 
-  const handleDeletePendingUser = async (docId) => {
+  const handleDeletePendingUser = async (event, docId) => {
+    event.stopPropagation()
     try {
       const docRef = doc(db, `mail/${docId}`);
       await deleteDoc(docRef).then(() => {
@@ -209,7 +212,7 @@ const UserBoard = ({ division }) => {
                 <Button
                   variant="white"
                   text="Delete"
-                  onClick={() => { order === 1 ? handleDeleteUser(row.userId) : handleDeletePendingUser(row.docId) }}
+                  onClick={(event) => { order === 1 ? handleDeleteUser(event, row.userId) : handleDeletePendingUser(event, row.docId) }}
                 />
               </>
             )

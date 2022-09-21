@@ -236,6 +236,7 @@ const MapContainer = styled.div<MapProps>`
 const Map: FC<MapProps> = ({
   children,
   mapType,
+  navigation = true,
   openIdea,
   openProjectRoom,
   initialMapViewport,
@@ -293,7 +294,7 @@ const Map: FC<MapProps> = ({
 
   const [ideaMarkerColor, setIdeaMarkerColor] = useState(null);
 
-  const [selectedMunicipality, setSelectedMunicipality] = useState(null);
+  const [selectedMunicipalities, setSelectedMunicipalities] = useState(["Köln"]);
 
   const { lng, lat, zoom, subscribeMap } = useCoordinates(
     initialMapViewport.longitude,
@@ -321,8 +322,12 @@ const Map: FC<MapProps> = ({
 
     setStatefulMap(map);
     subscribeMap(map);
-    navigationControl(map);
     addImagesToMap(map)
+
+    if (navigation) {
+      navigationControl(map);
+
+    }
 
 
 
@@ -381,17 +386,16 @@ const Map: FC<MapProps> = ({
     //   ]);
     // })
 
-    if (mapType === "selectMunicipality") {
+    if (mapType === "selectMunicipalities") {
       map.on("mousemove", (event) => {
         hoverMunicipalities(map, event);
       })
       map.on("click", (event) => {
-        selectMunicipalities(map, event, selectedMunicipality, setSelectedMunicipality);
+        selectMunicipalities(map, event, selectedMunicipalities, setSelectedMunicipalities);
       })
     }
 
-
-    return () => map.remove();
+    return () => map?.remove();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -402,7 +406,7 @@ const Map: FC<MapProps> = ({
 
   useEffect(() => {
     if (statefulMap && statefulDrawMapbox && drawType) {
-      if (drawType === "lawn") {
+      if (drawType === "lawn" || drawType === "area") {
         statefulDrawMapbox?.changeMode("draw_polygon");
       } else if (drawType === "bikeLane" || drawType === "crosswalk") {
         statefulDrawMapbox?.changeMode("draw_line_string");

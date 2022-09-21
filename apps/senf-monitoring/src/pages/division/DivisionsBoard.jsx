@@ -15,7 +15,7 @@ import {
 } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { db } from "../firebase";
+import { db } from "../../firebase";
 import AddNewDivison from "./AddNewDivision";
 
 
@@ -133,12 +133,10 @@ const DivisionsBoard = () => {
 
           <Table
             data={filteredDivisons}
-            checkbox={"divisionId"}
-            bulkEdit={<Icon icon="Search" />}
             onRowClick={onRowClick}
 
             columns={[
-              { key: "title", label: t('title') },
+              { key: "title", label: t('division') },
               // { key: "division", label: t('division') },
               // { key: "role", label: t('role') },
             ]}

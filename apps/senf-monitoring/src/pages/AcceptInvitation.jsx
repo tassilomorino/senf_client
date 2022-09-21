@@ -31,7 +31,10 @@ export const AcceptInvitation = () => {
   const { openModal } = useModals();
 
   const user = useSelector((state) => state.user);
-  const [state, setState] = useState([]);
+  const [invitationData, setInvitationData] = useState(null);
+  const [monitoringBoardData, setMonitoringBoardData] = useState(null);
+
+
 
 
   const params = (new URL(document.location)).searchParams;
@@ -39,12 +42,18 @@ export const AcceptInvitation = () => {
 
   const handleSetInvitationData = async () => {
     try {
-      const docRef = doc(db, `mail/${invitationId}`);
-      const docSnapshot = await getDoc(docRef);
+      const invitationRef = doc(db, `mail/${invitationId}`);
+      const inviationSnapshot = await getDoc(invitationRef);
 
-      if (docSnapshot) {
-        setState(docSnapshot.data());
-        console.log("inviteData", docSnapshot.data())
+      if (inviationSnapshot) {
+        setInvitationData(inviationSnapshot.data());
+
+
+        const monitoringRef = doc(db, `monitoringBoards/${inviationSnapshot.data().monitoringBoardId}`);
+        const mnoitoringSnapshot = await getDoc(monitoringRef)
+
+        setMonitoringBoardData(mnoitoringSnapshot.data())
+        console.log("inviteData", mnoitoringSnapshot.data())
       }
     } catch (error) {
       throw new Error(error, "Error in Memberlist");
@@ -55,7 +64,7 @@ export const AcceptInvitation = () => {
     handleSetInvitationData();
 
     console.log("User", user)
-    !user?.authenticated && openModal(<Auth />, { swipe: !!isMobile, size: "md", height: isMobile && window.innerHeight + 83, padding: 0 })
+    // !user?.authenticated && openModal(<Auth />, { swipe: !!isMobile, size: "md", height: isMobile && window.innerHeight + 83, padding: 0 })
 
   }, [user]);
 
@@ -105,7 +114,7 @@ export const AcceptInvitation = () => {
       >
         <Box maxWidth="400px">
           <Typography variant="h1" textAlign="center">
-            You were invitited to join the team of "{state?.organizationName}"
+            You were invitited to join the team of "{monitoringBoardData?.title}"
           </Typography>
         </Box>
 

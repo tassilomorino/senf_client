@@ -3,6 +3,7 @@
 import React from "react";
 // import { Example } from "senf-atomic-design-system";
 const Blank = () => {
+
   return (
     <div
       style={{

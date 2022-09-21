@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -11,8 +12,10 @@ import {
   Table,
   Icon,
   Dropdown,
+  useModals,
 } from "senf-atomic-design-system";
 import styled from "styled-components";
+import IdeaProcessPage from "./IdeaProcessPage";
 
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.greyscale.greyscale05};
@@ -27,6 +30,9 @@ const Dashboard = () => {
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { openModal } = useModals()
+
 
   const [greeting, setGreeting] = useState("");
   const ideas = useSelector((state) => state.data.ideas);
@@ -46,6 +52,9 @@ const Dashboard = () => {
 
   const onRowClick = (value) => {
     console.log(value)
+    navigate(`/idea/${value.ideaId}`);
+    openModal(< IdeaProcessPage />, { padding: 0, beforeClose: () => navigate(`/`) })
+
   }
 
 

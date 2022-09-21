@@ -64,6 +64,8 @@ export {
 export { default as Loader } from "./components/atoms/animations/Loader";
 export { default as MainLoader } from "./components/atoms/animations/MainLoader";
 export { default as Map } from "./components/atoms/map/Map";
+export { default as ExpandMap } from "./components/atoms/map/ExpandMap";
+
 export { default as Geocoder } from "./components/atoms/geocoder/Geocoder";
 export { default as SimpleBarChart } from "./components/atoms/charts/SimpleBarChart";
 
