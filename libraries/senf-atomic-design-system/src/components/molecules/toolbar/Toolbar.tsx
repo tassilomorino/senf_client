@@ -100,26 +100,18 @@ const Toolbar: FC<ToolbarProps> = ({
             size="small"
             onClick={() => setDropdownOpen(!dropdownOpen)}
             text={activeSortOptionLabel}
-            iconRight={<Arrow transform="rotate(90deg)" />}
+            iconRight={<Arrow transform="rotate(90)" />}
           />
         }
-        Content={
-          <Box gap="5px" flexDirection="column">
-            {Object.values(sortOptions).map(({ value, label }) => (
-              <Box gap="5px" key={value + label}>
-                <ContentDropdownItem
-                  type="check"
-                  text={label}
-                  checked={checkedSortOption === value}
-                  onClick={() => {
-                    setCheckedSortOption(value);
-                    setActiveSortOptionLabel(label);
-                  }}
-                />
-              </Box>
-            ))}
-          </Box>
-        }
+        itemType="check"
+        data={Object.values(sortOptions as { label: string, value: string }[]).map(item => ({
+          text: item.label,
+          checked: checkedSortOption === item.value,
+          onClick: () => {
+            setCheckedSortOption(item.value);
+            setActiveSortOptionLabel(item.label);
+          }
+        }))}
       />
 
       <Box gap="8px">

@@ -10,9 +10,10 @@ const providerId = {
 	email: Math.random().toString(36).substring(2, 15),
 }
 
-const AuthModal: FC<{ success: () => void, error: () => void, handleClose: () => void }> = (data) => {
+const AuthModal: FC<{ success: () => void, error: () => void, handleClose: () => void, authAddDetails?: boolean }> = (data) => {
 	const [page, setPage] = useState('');
-	const { user, signIn, signOut, userExists, createUser, loading, errorMessage, sendPasswordResetEmail, submitEditDetails, handleImageUpload } = useAuthContext() || {};
+	const authContext = useAuthContext();
+	const { user, signIn, signOut, userExists, createUser, loading, errorMessage, sendPasswordResetEmail, submitEditDetails, handleImageUpload } = authContext || {};
 	const { closeModal } = useModals()
 
 	const { success = () => closeModal(), error = () => closeModal(), handleClose, authAddDetails } = data;
@@ -20,7 +21,11 @@ const AuthModal: FC<{ success: () => void, error: () => void, handleClose: () =>
 
 
 
-
+	useEffect(() => {
+		if (authAddDetails) {
+			setPage('authAddDetails')
+		}
+	}, [authAddDetails])
 
 	// const UrlPath = window.location.pathname;
 	// useEffect(() => {
@@ -105,11 +110,14 @@ const AuthModal: FC<{ success: () => void, error: () => void, handleClose: () =>
 	}, [loading])
 
 
+
+
 	const authHandler = {
+		...authContext,
 		signIn: {
 			facebook: () => signIn({ provider: 'facebook', id: providerId.facebook }).then(success).catch(error),
 			google: () => signIn({ provider: 'google', id: providerId.google }).then(success).catch(error),
-			email: (formikStore: FormikValues) => signIn({ formikStore, id: providerId.email }),
+			email: (formikStore: FormikValues) => signIn({ formikStore, id: providerId.email }).then(() => authContext.ifAllUserDetailsAreFilled(user) && success()).catch(error),
 			// email: (formikStore: FormikValues) => signIn({ formikStore, id: providerId.email }).then(success).catch(error),
 		},
 		loadingAuth: loading,
@@ -118,12 +126,8 @@ const AuthModal: FC<{ success: () => void, error: () => void, handleClose: () =>
 			google: googleLoading,
 			email: emailLoading,
 		},
-		signOut,
-		userExists,
-		sendPasswordResetEmail,
 		submitEditDetails: (formikStore: FormikValues) => submitEditDetails({ formikStore }).then(success).catch(error),
 		createUser: (formikStore: FormikValues) => createUser(formikStore).then(success).catch(error),
-		handleImageUpload
 	}
 
 	return <Auth

@@ -65,12 +65,15 @@ const ToggleInput: FC<ToggleInputProps> = ({
   label
 }) => {
   const [toggle, setToggle] = useState(false);
-  const id = Math.random().toString(36).substr(2, 5)
+  const id = Math.random().toString(36).substring(2, 5)
+  if (type === 'check' && !checked) {
+    return null
+  }
   return (
     <ToggleInputContainer
       onClick={(e: React.FormEvent<HTMLInputElement>) => {
         setToggle(!toggle);
-        receiveValue(e.currentTarget.value);
+        receiveValue?.(e.currentTarget.value);
       }}
       pointerEvents={pointerEvents}
     >

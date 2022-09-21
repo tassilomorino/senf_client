@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, memo, useEffect } from "react";
+import React, { useState, memo, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
 import {
@@ -234,18 +234,6 @@ const PostIdeaPage = ({
     });
   };
 
-  useEffect(() => {
-    statefulMap.on("move", () => {
-      const newViewport = {
-        latitude: statefulMap.getCenter().lat,
-        longitude: statefulMap.getCenter().lng,
-      };
-      setTimeout(() => {
-        geocode(newViewport);
-      }, 1000);
-    });
-  }, []);
-
   const geocode = (viewport) => {
     const geocodingClient = mbxGeocoding({
       accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,
@@ -258,8 +246,6 @@ const PostIdeaPage = ({
       .send()
       .then((response) => {
         const match = response.body;
-        console.log(match)
-
         const houseNumber =
           match.features[0].address !== undefined
             ? match.features[0].address
@@ -287,6 +273,15 @@ const PostIdeaPage = ({
       setOut(false);
     }
   };
+  const newViewport = useRef();
+
+  statefulMap.on("moveend", () => {
+    newViewport.current = {
+      latitude: statefulMap.getCenter().lat,
+      longitude: statefulMap.getCenter().lng,
+    };
+    geocode(newViewport.current);
+  });
 
   const handleLocationDecided = () => {
     if (formik.values.address) {
@@ -314,7 +309,7 @@ const PostIdeaPage = ({
         <Button
           size="medium"
           variant="white"
-          icon={<Plus transform="rotate(45deg)" />}
+          icon={<Plus transform="rotate(45)" />}
           onClick={() => setPostIdeaOpen(false)}
         />
       </Box> */}
@@ -323,7 +318,8 @@ const PostIdeaPage = ({
         <AuthFirst
           isMobile={isMobileCustom}
           locationDecided={locationDecided}
-          onClick={() => openModal(<AuthModal />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+          onClick={() =>
+            openModal(<AuthModal />, { swipe: !!isMobileCustom, size: "md" })
           }
         />
       )}

@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { FunctionComponent, useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, useEffect, useRef, useState } from "react";
 import {
   InputField,
   Note,
@@ -118,9 +118,8 @@ const Input: FunctionComponent<InputProps> = ({
   useEffect(() => {
     if (clear && value) {
       setTrailingIconState("Close")
-      setTrailingIconClickState(() => {
-        const e = { target: { value: "" } }
-        onChange?.(e)
+      setTrailingIconClickState(() => () => {
+        onChange?.({ target: { value: "" } } as ChangeEvent<HTMLInputElement>)
         setIsFocused((prevState) => !prevState)
       })
     }

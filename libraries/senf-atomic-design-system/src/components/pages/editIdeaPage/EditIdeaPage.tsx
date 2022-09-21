@@ -297,7 +297,9 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
               text={formikEditIdea?.values.weblinkTitle || t('add_weblink')}
               icon={<Hyperlink />}
               options={{
-                padding: 20,
+                style: {
+                  padding: 20,
+                },
                 title: t('add_weblink'),
                 cancelText: t('cancel'),
                 submitText: t('save'),
@@ -372,7 +374,9 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
                 size="small"
                 icon={<CalendarIcon />}
                 options={{
-                  padding: 20,
+                  style: {
+                    padding: 20,
+                  },
                   title: t('add_date'),
                   cancelText: t('cancel'),
                   submitText: t('save'),

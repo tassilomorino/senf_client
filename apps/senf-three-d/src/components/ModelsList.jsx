@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useState, useEffect, useRef } from "react";
-import { ThreeDToolSwipeList, isMobileCustom, Input } from "senf-atomic-design-system";
+import { ThreeDToolSwipeList, isMobileCustom, Input, useModals } from "senf-atomic-design-system";
 import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import styled from "styled-components";
 import { useFormik } from "formik";
@@ -10,6 +10,7 @@ import imageCompression from "browser-image-compression";
 import { async } from "@firebase/util";
 import * as yup from "yup"
 import { useTranslation } from "react-i18next";
+import { AuthModal } from "senf-shared"
 import { createModel } from "../util/setModels";
 import { db } from "../firebase";
 import { Grounds } from "../data/Grounds";
@@ -32,6 +33,7 @@ pointer-events:none;
 const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPanel, setMode }) => {
   const [models, setModels] = useState([]);
   const { t } = useTranslation()
+  const { openModal } = useModals();
 
   const validationSchema = yup.object({
     title: yup
@@ -57,13 +59,13 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
     validateOnBlur: true,
   });
 
-  const handleImageUpload = (event) => {
-    formik.setFieldValue("imgURL", event.target.files[0]);
+
+  const handleImageUpload = (event, localFormik = formik) => {
+    localFormik.setFieldValue("imgURL", event.target.files[0]);
   }
 
-  const handleModelUpload = (event) => {
-    formik.setFieldValue("modelURL", event.target.files[0]);
-    console.log(event.target.files[0])
+  const handleModelUpload = (event, localFormik = formik) => {
+    localFormik.setFieldValue("modelURL", event.target.files[0]);
   }
 
   const handleUploadImageToFirestore = async (docId) => {
@@ -113,11 +115,10 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
 
 
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event, formik) => {
     const data = {
       title: formik?.values.title,
       format: formik?.values.modelURL.name.split('.')[1]
-
     }
     await addDoc(collection(db, "threeD_models"), data).then((docId) => {
       handleUploadImageToFirestore(docId.id)
@@ -139,7 +140,9 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
       modelData.labelText
     );
   }
-
+  const handleOpenMyAccount = () => {
+    openModal(<AuthModal authAddDetails={true} />)
+  }
 
   // const handleSearchQuery = async () => {
   //   const searchtext = "Ba"
@@ -164,9 +167,10 @@ const ModelsList = ({ setLoadingModel, swipedUp, setSwipedUp, setOpenContextPane
   return (
     <Wrapper>
       <ThreeDToolSwipeList data={models} handlePlaceModel={handlePlaceModel} swipedUp={swipedUp} setSwipedUp={setSwipedUp} grounds={Grounds} setMode={setMode}
+        handleOpenMyAccount={handleOpenMyAccount}
         handleImageUpload={handleImageUpload}
-        uploadedImage={formik?.values.imgURL && URL.createObjectURL(formik?.values.imgURL)}
-        uploadedModel={formik?.values.modelURL && URL.createObjectURL(formik?.values.modelURL)}
+        uploadedImage={formik?.values.imgURL}
+        uploadedModel={formik?.values.modelURL}
         handleModelUpload={handleModelUpload}
         handleSubmit={handleSubmit}
         formik={formik}

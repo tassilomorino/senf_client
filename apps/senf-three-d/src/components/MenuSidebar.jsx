@@ -30,7 +30,7 @@ const RoundedButtonWrapper = styled.div`
   height: 0;
   transform: ${({ componentsSidebarOpen }) =>
     componentsSidebarOpen
-      ? "translate(-50%, -50%) rotate(45deg)"
+      ? "translate(-50%, -50%) rotate(45)"
       : "translate(-50%, -50%)"};
   left: ${({ componentsSidebarOpen }) =>
     componentsSidebarOpen ? "600px" : "180px"};

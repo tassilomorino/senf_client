@@ -1,24 +1,29 @@
-import React, { useState } from "react";
+/** @format */
 
-import styled from "styled-components";
-import Auth from "../components/Auth";
+import { useEffect, memo } from "react";
+import { useModals } from "senf-atomic-design-system";
+import {
+  AuthModal,
+  useAuthContext,
+} from "senf-shared";
 
-const Section = styled.section`
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background-color: ${({ theme }) => theme.colors.beige.beige20};
-`;
+const Auth = ({ ...props }) => {
+  const { closeModal, setModal } = useModals();
+  const { user } = useAuthContext();
 
-const AuthPage = ({ variant }) => {
-  const [authOpen, setAuthOpen] = useState(true);
-  return (
-    <Section>
-      <Auth authOpen={authOpen} setAuthOpen={setAuthOpen} />
-    </Section>
-  );
+  const Modal = <AuthModal
+    success={() => closeModal()}
+    error={(err) => console.error(err)}
+    handleClose={() => closeModal()}
+    {...props}
+  />
+
+  useEffect(() => {
+    const timeoutID = setTimeout(() => !user && setModal(Modal), 500);
+    return () => clearTimeout(timeoutID);
+  }, [user])
+
+  return null
 };
 
-export default AuthPage;
+export default memo(Auth);

@@ -1,6 +1,8 @@
 /** @format */
 
 import React, { MouseEventHandler } from "react";
+import { ContentDropdownItemProps } from "../contentDropdownItem/ContentDropdownItem.types";
+import { ToggleInputProps } from "../toggleInput/ToggleInput.types";
 
 export interface ContentDropdownProps {
   example?: string;
@@ -11,4 +13,7 @@ export interface ContentDropdownProps {
   open?: boolean;
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   direction?: "downLeft" | "downRight";
+  data?: ContentDropdownItemProps[],
+  itemType?: ToggleInputProps["type"];
+  size?: ContentDropdownItemProps["size"];
 }

@@ -22,9 +22,10 @@ import { db, auth } from "./firebase";
 import { useSignIn } from '../firebase/useSignInWithPopup'
 import { useCreateUserWithEmailAndPassword } from '../firebase/useCreateUserWithEmailAndPassword'
 import { useHandleSubmitEditDetails } from '../firebase/useHandleSubmitEditDetails'
+import { ifAllUserDetailsAreFilled } from '../utils/ifAllUserDetailsAreFilled'
 
 export interface AuthState {
-  user: User | DocumentData | null;
+  user: DocumentData | null;
   loading: boolean | string;
   errorMessage: { code: string, message: string };
 }
@@ -38,6 +39,7 @@ export interface AuthMethods {
   userExists: (formikStore: FormikValues) => Promise<boolean | string[] | User | DocumentData>;
   submitEditDetails: (formikStore: FormikValues) => Promise<User | DocumentData>;
   handleImageUpload: (event: Event, user?: DocumentData) => Promise<string>;
+  ifAllUserDetailsAreFilled: (user?: DocumentData) => boolean;
 }
 export interface AuthContext extends AuthState, AuthMethods { }
 
@@ -155,12 +157,12 @@ const AuthProvider = ({ children }) => {
       })
     },
     sendEmailVerification,
+    ifAllUserDetailsAreFilled: (u = user) => ifAllUserDetailsAreFilled(u),
     async userExists(formikStore) {
       setLoading('email')
       try {
         const { email } = formikStore.values;
         const signInMethod = await fetchSignInMethodsForEmail(auth, email)
-        console.log(signInMethod)
         if (signInMethod?.includes('google.com')) return handler.signIn({ provider: 'google' })
         if (signInMethod?.includes('facebook.com')) this.signIn({ provider: 'facebook' })
         return signInMethod
@@ -196,8 +198,8 @@ const AuthProvider = ({ children }) => {
         throw new Error("no file selected");
       }
       const imageFile = target.files[0];
-      console.log("originalFile instanceof Blob", imageFile instanceof Blob); // true
-      console.log(`originalFile size ${imageFile.size / 1024 / 1024} MB`);
+      // console.log("originalFile instanceof Blob", imageFile instanceof Blob); // true
+      // console.log(`originalFile size ${imageFile.size / 1024 / 1024} MB`);
 
       const options = {
         maxSizeMB: 0.03,

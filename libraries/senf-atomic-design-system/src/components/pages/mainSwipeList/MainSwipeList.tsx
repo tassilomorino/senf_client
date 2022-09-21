@@ -38,10 +38,8 @@ const DragWrapper = styled(animated.div)`
     ${({ theme }) => theme.radii[5]}px 0px 0px;
   box-shadow: ${({ theme }) => theme.shadows[0]}
     ${({ theme }) => theme.colors.brown.brown20tra};
-
   position: absolute;
   pointer-events: all;
-  
 
   /* transform: scale(0.9) translateY(-20px); */
   @media (min-width: 768px) {
@@ -206,7 +204,6 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
         transform: `translateY(${window.innerHeight - 100}px)`,
         touchAction: "unset",
       });
-
     }
   }, [swipedUp]);
 
@@ -395,7 +392,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
 
   return (
     <React.Fragment>
-      <DragWrapper
+      {isMobile && postIdeaOpen ? null : (<DragWrapper
         // style={
         //   (openOrganizationsOverview || openStatisticsOverview) && isMobile
         //     ? {
@@ -409,12 +406,17 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
         //       ? springProps
         //       : null
         // }
-        style={isMobile
-          ? springProps
-          : null
+        style={
+
+          isMobile
+            ? springProps
+            : null
         }
       >
-        <Wave color={theme.colors.beige.beige20} top="0px" />
+        <Wave
+          color={theme.colors.beige.beige20}
+          top="0px"
+        />
         {!isMobile && (
           <MenuSidebar
             handleOpenMyAccount={handleOpenMyAccount}
@@ -422,23 +424,24 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
             setOrder={setOrder}
           />
         )}
-        {!postIdeaOpen && (<InnerWrapper>
-          <Header
-            {...bind()}
+        {!postIdeaOpen && (
+          <InnerWrapper>
+            <Header
+              {...bind()}
 
-          // style={listHeaderProps}
-          >
-            {isMobile && <HandleBar />}
+            // style={listHeaderProps}
+            >
+              {isMobile && <HandleBar />}
 
-            <MainSwipeListTabs
-              handleSwipeUp={handleSwipeUp}
-              order={order}
-              setOrder={setOrder}
-              ideasDataLength={ideasData?.length}
-              projectroomsDataLength={projectroomsData?.length}
-            />
+              <MainSwipeListTabs
+                handleSwipeUp={handleSwipeUp}
+                order={order}
+                setOrder={setOrder}
+                ideasDataLength={ideasData?.length}
+                projectroomsDataLength={projectroomsData?.length}
+              />
 
-            {/* <div
+              {/* <div
               style={{
                 position: "absolute",
                 right: isMobile ? "90px" : "92px",
@@ -460,76 +463,78 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
                 onClick={() => setOpenOrganizationsOverview(true)}
               />
             </div> */}
-            <RoundedButtonWrapper>
-              <RoundedButton
-                size="big"
-                icon={
-                  <Plus
-                    color={theme.colors.primary.primary120}
-                    transform="scale(2)"
+              <RoundedButtonWrapper>
+                <RoundedButton
+                  size="big"
+                  icon={
+                    <Plus
+                      color={theme.colors.primary.primary120}
+                      transform="scale(2)"
+                    />
+                  }
+                  onClick={() => setPostIdeaOpen(true)}
+                />
+              </RoundedButtonWrapper>
+
+              {isMobile && (
+                <Box margin="-10px 0px">
+                  <TagSlide
+                    type={order === "ideas" ? "topics" : "organizationTypes"}
+                    hide={!swipedUp}
+                    selectedTopics={selectedTopics}
+                    selectedOrganizationTypes={selectedOrganizationTypes}
+                    handleSelectTopics={handleSelectTopics}
+                    handleSelectOrganizationTypes={
+                      handleSelectOrganizationTypes
+                    }
                   />
+                </Box>
+              )}
+
+              {!isMobile && <Box margin="16px">{toolbarComponent} </Box>}
+            </Header>
+
+            <ContentWrapper swipedUp={swipedUp}>
+              {isMobile && swipedUp && (
+                <Box margin="32px 16px 16px 16px">{toolbarComponent}</Box>
+              )}
+
+              {order !== "ideas" && (!isMobile || swipedUp) && (
+                <Box margin="10px 16px 0px 16px">
+                  <Button
+                    variant="secondary"
+                    borderStyle="dashed"
+                    size="small"
+                    fillWidth="max"
+                    onClick={handleCreateProjectroom}
+                    text={t("createProjectRoom")}
+                  />
+                </Box>
+              )}
+
+              <List
+                CardType={order === "ideas" ? IdeaCard : ProjectroomCard}
+                data={order === "ideas" ? ideasData : projectroomsData}
+                organizations={organizations}
+                ideasData={ideasData}
+                projectroomsData={projectroomsData}
+                handleButtonOpenCard={handleButtonOpenCard}
+                handleOpenProjectroom={handleOpenProjectroom}
+                handleButtonLike={handleButtonLike}
+                handleButtonComment={handleButtonComment}
+                user={user}
+                myProfileData={myProfileData}
+                listEndText={
+                  order === "ideas" && ideasData?.length > 0
+                    ? t("noMoreIdeas")
+                    : order === "ideas" && ideasData?.length < 1
+                      ? t("noContentIdeas")
+                      : t("noMoreProjectrooms")
                 }
-                onClick={() => setPostIdeaOpen(true)}
               />
-            </RoundedButtonWrapper>
-
-            {isMobile && (
-              <Box margin="-10px 0px">
-                <TagSlide
-                  type={order === "ideas" ? "topics" : "organizationTypes"}
-                  hide={!swipedUp}
-                  selectedTopics={selectedTopics}
-                  selectedOrganizationTypes={selectedOrganizationTypes}
-                  handleSelectTopics={handleSelectTopics}
-                  handleSelectOrganizationTypes={handleSelectOrganizationTypes}
-                />
-              </Box>
-            )}
-
-            {!isMobile && <Box margin="16px">{toolbarComponent} </Box>}
-          </Header>
-
-          <ContentWrapper swipedUp={swipedUp}>
-            {isMobile && swipedUp && (
-              <Box margin="32px 16px 16px 16px">{toolbarComponent}</Box>
-            )}
-
-            {order !== "ideas" && (!isMobile || swipedUp) && (
-              <Box margin="10px 16px 0px 16px">
-                <Button
-                  variant="secondary"
-                  borderStyle="dashed"
-                  size="small"
-                  fillWidth="max"
-                  onClick={handleCreateProjectroom}
-                  text={t("createProjectRoom")}
-                />
-              </Box>
-            )}
-
-            <List
-              CardType={order === "ideas" ? IdeaCard : ProjectroomCard}
-              data={order === "ideas" ? ideasData : projectroomsData}
-              organizations={organizations}
-              ideasData={ideasData}
-              projectroomsData={projectroomsData}
-              handleButtonOpenCard={handleButtonOpenCard}
-              handleOpenProjectroom={handleOpenProjectroom}
-              handleButtonLike={handleButtonLike}
-              handleButtonComment={handleButtonComment}
-              user={user}
-              myProfileData={myProfileData}
-              listEndText={
-                order === "ideas" && ideasData?.length > 0
-                  ? t("noMoreIdeas")
-                  : order === "ideas" && ideasData?.length < 1
-                    ? t("noContentIdeas")
-                    : t("noMoreProjectrooms")
-              }
-            />
-          </ContentWrapper>
-        </InnerWrapper>)}
-
+            </ContentWrapper>
+          </InnerWrapper>
+        )}
 
         {mapFilterActive && (
           <Box
@@ -547,7 +552,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
             />
           </Box>
         )}
-      </DragWrapper>
+      </DragWrapper>)}
     </React.Fragment>
   );
 };

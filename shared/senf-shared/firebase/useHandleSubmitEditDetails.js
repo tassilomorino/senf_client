@@ -12,11 +12,11 @@ export const useHandleSubmitEditDetails = (user, db) => {
       throw new Error("You are not authorized to edit this user");
     } */
     try {
-      const { handle, description, zipcode, age, sex } = formik.values;
+      const { handle, description, postcode, age, sex } = formik.values;
       await updateDoc(doc(db, "users", user.userId), {
         handle: handle || user.handle,
         description: description || null,
-        zipcode: zipcode || null,
+        postcode: postcode || null,
         age: age || null,
         sex: sex || null,
       });

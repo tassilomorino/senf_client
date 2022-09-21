@@ -3,15 +3,14 @@
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { isisMobile } from "react-device-detect";
 import Box from "../../atoms/box/Box";
 import Button from "../../atoms/buttons/Button";
 import Typography from "../../atoms/typography/Typography";
-import { PostIdeaProps } from "./PostIdea.types";
 import PostIdeaForm from "./PostIdeaForm";
 import { LayerWhiteFirstDefault } from "../../atoms/layerStyles/LayerStyles";
 import Geocoder from "../../atoms/geocoder/Geocoder";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
+import { Arrow } from "../../../assets/icons";
 
 const Wrapper = styled.div`
   z-index: 999;
@@ -19,12 +18,27 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: ${(props) => (props.isMobile ? "0px" : "22px 0px 0px 95px")};
+  margin: ${(props) => "22px 0px 0px 95px"};
+
   width: 366px;
   height: auto;
   overflow-y: scroll;
   border-radius: 24px;
   /* padding: 0px 16px 16px 16px; */
+  ${() => LayerWhiteFirstDefault};
+`;
+
+const StyledMobileHeaders = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 16px 16px 24px;
+  z-index: 999;
+  position: fixed;
+  bottom: 0;
+  ${() => LayerWhiteFirstDefault};
+`;
+const Background = styled.div`
   ${() => LayerWhiteFirstDefault};
 `;
 
@@ -43,15 +57,15 @@ const PostIdea: FC<PostIdeaProps> = ({
   const [postIdeaForm, setPostIdeaForm] = React.useState(false);
   const [addressSelected, setAddressSelected] = React.useState(false);
   const isMobile = isMobileCustom();
-
-  const postIdeaHeader = (
+  const createIdeaHeader = (
     <Box
       flexDirection="row"
       alignItems="center"
-      justifyContent="space-around"
       width="100%"
-    >
+      padding={"0px 16px 0px 16px"}
+      justifyContent="space-between">
       <Typography variant="h3">Idee erstellen</Typography>
+
       <Button
         variant="tertiary"
         size="big"
@@ -61,83 +75,134 @@ const PostIdea: FC<PostIdeaProps> = ({
       />
     </Box>
   );
+
+  const InstructionsHeader = (
+    <Box
+      display="flex"
+      gap="16px"
+      flexDirection="column"
+      width="100%"
+      height="auto"
+      padding={"0px 16px 0px 16px"}>
+      <Typography variant="bodyBg">
+        Navigiere auf der Karte an den gewünschten Ort oder nutze die
+        Adresseingabe.
+      </Typography>
+      {!isMobile && (
+        <Geocoder
+          finalAddress={formik?.values?.address}
+          statefulMap={statefulMap}
+        />
+      )}
+      {!isMobile && formik?.values.address && formik?.values.address !== "" && (
+        <Button
+          variant="primary"
+          size="big"
+          text={t("Weiter")}
+          fillWidth={"max"}
+          onClick={() => setAddressSelected(true)}></Button>
+      )}
+    </Box>
+  );
   return (
-    <Wrapper isMobile={isMobile}>
-      {isMobile && postIdeaHeader}
-
-      {/*  whole section of !isMobile down below? */}
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        width="100%"
-        marginBottom="20px"
-      >
-        {!isMobile && postIdeaHeader}
-
-        {!addressSelected && !isMobile && (
+    <>
+      {isMobile && (
+        <>
           <Box
-            padding="0px 16px 0px 16px"
-            gap="16px"
-            flexDirection="column"
-          >
-            <Typography variant="bodyBg">
-              {" "}
-              Navigiere auf der Karte an den gewünschten Ort oder nutze die
-              Adresseingabe.
-            </Typography>
-
+            position="fixed"
+            top="16px"
+            left="16px"
+            right="16px"
+            zIndex="9999">
             <Geocoder
-              finalAddress={formik?.values.address}
+              finalAddress={formik?.values?.address}
               statefulMap={statefulMap}
             />
+          </Box>
 
-            {formik?.values.address && formik?.values.address !== "" && (
+          {!formik?.values?.address && (
+            <StyledMobileHeaders>
+              {createIdeaHeader}
+
+              {InstructionsHeader}
+            </StyledMobileHeaders>
+          )}
+
+          {formik?.values?.address && !addressSelected && (
+            <Box
+              position="fixed"
+              bottom="16px"
+              left="16px"
+              right="16px"
+              zIndex="9999"
+              height="66px">
               <Button
                 variant="primary"
                 size="big"
                 text={t("Weiter")}
                 fillWidth={"max"}
-                onClick={() => setAddressSelected(true)}
-              ></Button>
+                onClick={() => setAddressSelected(true)}></Button>
+            </Box>
+          )}
+          {isMobile && addressSelected && (
+            <Box
+              position="fixed"
+              bottom="0px"
+              zIndex="999"
+              width="100%">
+              <PostIdeaForm
+                formik={formik}
+                statefulMap={statefulMap}
+                checkIfCalendar={checkIfCalendar}
+                selectedDays={selectedDays}
+                handleChangeCalendar={handleChangeCalendar}
+                setPostIdeaOpen={setPostIdeaOpen}
+                handleSubmit={handleSubmit}
+                loading={loading}
+                Out={Out}
+              />
+            </Box>
+          )}
+        </>
+      )}
+
+      {!isMobile && (
+        <Wrapper>
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            width="100%"
+            marginBottom="20px">
+            <Box
+              flexDirection="row"
+              alignItems="center"
+              width="100%"
+              justifyContent="space-between">
+              {createIdeaHeader}
+            </Box>
+
+            {!addressSelected && InstructionsHeader}
+
+            {addressSelected && (
+              <>
+                <PostIdeaForm
+                  formik={formik}
+                  statefulMap={statefulMap}
+                  checkIfCalendar={checkIfCalendar}
+                  selectedDays={selectedDays}
+                  handleChangeCalendar={handleChangeCalendar}
+                  setPostIdeaOpen={setPostIdeaOpen}
+                  handleSubmit={handleSubmit}
+                  loading={loading}
+                  Out={Out}
+                />
+              </>
             )}
           </Box>
-        )}
-
-        {addressSelected && (
-          <PostIdeaForm
-            formik={formik}
-            checkIfCalendar={checkIfCalendar}
-            selectedDays={selectedDays}
-            handleChangeCalendar={handleChangeCalendar}
-            setPostIdeaOpen={setPostIdeaOpen}
-          />
-        )}
-      </Box>
-
-      {/* 
-      <Box
-        margin="10px 0px 10px 0px"
-        justifyContent="center"
-        position="absolute"
-        bottom="10px"
-        width="450px"
-        zIndex={3}
-      >
-        <Button
-          onClick={handleSubmit}
-          variant="white"
-          text={t("postScream_shareIdea")}
-          loading={loading}
-          disabled={
-            formik.values.body === "" ||
-            formik.values.title === "" ||
-            !formik.values.address ||
-            Out === true
-          }
-        />
-      </Box> */}
-    </Wrapper>
+        </Wrapper>
+      )}
+    </>
   );
 };
 

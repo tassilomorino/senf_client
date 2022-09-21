@@ -43,7 +43,7 @@ IdeaDetail.args = {
     photoURL: "https://firebasestorage.googleapis.com/v0/b/senf-dev.appspot.com/o/profileimages%2Fthumbnail?alt=media&token=3c02b9f2-0b46-41f1-ab89-7a74a13acebe",
     sex: "female",
     userId: "qkbwKh9DT3h4h6yPsH8D7GqYRXC3",
-    zipcode: "22607",
+    postcode: "22607",
   },
 
 

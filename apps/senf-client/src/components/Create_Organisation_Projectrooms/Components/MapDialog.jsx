@@ -186,7 +186,7 @@ const MapDialog = ({ mapOpen, setMapOpen, drawnPolygon, setDrawnPolygon }) => {
         top="0"
       >
         <RoundedButton
-          icon={<Plus transform="rotate(45deg)" />}
+          icon={<Plus transform="rotate(45)" />}
           onClick={handleClose}
         />
       </Box>

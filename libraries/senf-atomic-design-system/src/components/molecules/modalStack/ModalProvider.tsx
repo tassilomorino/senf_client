@@ -57,9 +57,9 @@ const ModalProvider = ({
       return stack
     }
 
-    const DefaultComponent = () => <div />
 
     const openModal = async (data: JSX.Element, options?: ModalOptions, reset?: boolean) => {
+      const DefaultComponent = () => <div />
       const { type, props } = data || <DefaultComponent />
       if (reset) dismissAll()
       const modal = { type, props: { ...options, ...props }, options: { ...options, ...props } }
@@ -71,7 +71,9 @@ const ModalProvider = ({
         await beforeOpen?.()
         setStack((prev) => {
           let newStack = [...prev]
+
           if (options?.replace) newStack = stack.slice(0, stack.length - 1)
+
           return [...newStack, modal as ModalProps]
         })
         afterOpen?.()

@@ -47,7 +47,7 @@ const SuccessSubmitIdea: FC<SuccessSubmitIdeaProps> = ({ }) => {
     >
       <Box margin="24px" position="fixed" zIndex={999} top="0">
         <RoundedButton
-          icon={<Plus transform="rotate(45deg)" />}
+          icon={<Plus transform="rotate(45)" />}
           onClick={() => setOrder(1)}
           variant={order === 1 ? "white" : "primary"}
         />
