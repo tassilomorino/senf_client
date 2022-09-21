@@ -5,8 +5,8 @@ export function OptionsRoles() {
   const { t } = useTranslation();
 
   return [
-    { name: "moderator", label: t("moderator") },
-    { name: "editor", label: t("editor") },
-    { name: "viewer", label: t("viewer") },
+    { value: "moderator", label: t("moderator") },
+    { value: "editor", label: t("editor") },
+    { value: "viewer", label: t("viewer") },
   ];
 }

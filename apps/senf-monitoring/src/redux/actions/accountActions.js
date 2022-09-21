@@ -1,10 +1,13 @@
 import {
+  doc,
   collection,
   where,
   query,
   getDocs,
   orderBy,
   limit,
+  collectionGroup,
+  getDoc,
 } from "firebase/firestore";
 
 import { db } from "../../firebase";
@@ -14,26 +17,35 @@ import { getIdeas } from "./ideaDataActions";
 
 export const getMyMonitoringBoards = (userId) => async (dispatch) => {
   const monitoringBoards = [];
-  const monitoringBoardsRef = collection(db, "monitoringBoards");
-  const q = query(
-    monitoringBoardsRef,
-    where("userIds", "array-contains", userId)
-  );
 
-  const monitoringBoardsSnapshot = await getDocs(q);
+  //  get all docs of myself being a divisionUser
+  const divisionUsersRef = collectionGroup(db, `divisionUsers`);
+  const q = query(divisionUsersRef, where("userId", "==", userId));
+  const divisionUserSnapshot = await getDocs(q);
+  let itemsProcessed = 0;
 
-  monitoringBoardsSnapshot.forEach((doc) => {
+  //  get all monitoringBoardDocs where i am a divisionUser
+  divisionUserSnapshot.forEach(async (divisionUserDoc) => {
+    const monitoringBoardRef = doc(
+      db,
+      "monitoringBoards",
+      divisionUserDoc.data().monitoringBoardId
+    );
+    const monitoringBoardDoc = await getDoc(monitoringBoardRef);
     monitoringBoards.push({
-      ...doc.data(),
-      value: doc.id,
-      label: doc.data().title,
-      monitoringBoardId: doc.id,
+      ...monitoringBoardDoc.data(),
+      value: monitoringBoardDoc.id,
+      label: monitoringBoardDoc.data().title,
+      monitoringBoardId: monitoringBoardDoc.id,
     });
-  });
 
-  dispatch({
-    type: SET_MONITORING_BOARDS,
-    payload: monitoringBoards,
+    itemsProcessed++;
+    if (itemsProcessed === divisionUserSnapshot.size) {
+      dispatch({
+        type: SET_MONITORING_BOARDS,
+        payload: monitoringBoards,
+      });
+    }
   });
 };
 
