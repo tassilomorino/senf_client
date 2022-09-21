@@ -6,7 +6,7 @@ import { GeocoderProps } from "./Geocoder.types";
 import Divider from "../divider/Divider";
 import Box from "../box/Box";
 import Icon from "../icons/Icon";
-import { Arrow, Location } from "../../../assets/icons";
+import { Arrow, Close, Location } from "../../../assets/icons";
 import Typography from "../typography/Typography";
 import IdeaPin from "../../../assets/icons/IdeaPin";
 import Locate from "../../../assets/icons/Locate";
@@ -128,6 +128,15 @@ const Geocoder: FC<GeocoderProps> = ({
           showResults ? setShowResults(false) : setShowResults(true)
         }
         placeholder={"searchAddress"}
+        trailingIcon={<Close />}
+        trailingIconClick={
+          searchTerm.length > 0
+            ? () => {
+                setSearchTerm("");
+                setResults([]);
+              }
+            : undefined
+        }
         // placeholder={t("searchAddress")}
         onChange={(event) => onChange(event?.target?.value)}
         onClick={() => {
