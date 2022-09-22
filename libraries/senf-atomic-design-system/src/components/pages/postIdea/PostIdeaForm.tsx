@@ -101,11 +101,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
       <Box
         marginBottom="20px"
         flexDirection="column">
-        <Typography
-          variant="bodySm"
-          paddingInline="0.875rem">
-          Adresse deiner Idee
-        </Typography>
+        <Typography variant="bodySm">Adresse deiner Idee</Typography>
         {!isMobile && (
           <Geocoder
             finalAddress={formik?.values?.address}
