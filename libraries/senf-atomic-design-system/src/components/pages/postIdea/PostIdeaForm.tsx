@@ -20,7 +20,18 @@ import DatePicker from "../../organisms/datePicker/DatePicker";
 import { PostIdeaFormProps } from "./PostIdeaForm.types";
 import Geocoder from "../../atoms/geocoder/Geocoder";
 
-const AddContactForm = ({ formikEditIdea: initial }) => {
+const contactData = [
+  {
+    description: "Deine Kontaktdaten werden öffentlich gezeigt.",
+    name: "contactTitle",
+    placeholder: "contactTitle",
+  },
+  {
+    name: "contact",
+    placeholder: "contact",
+  },
+];
+const PostIdeaFormLinks = ({ formikEditIdea: initial, contactData }) => {
   const { t } = useTranslation();
 
   const formikEditIdea = useFormik({ initialValues: initial.values });
@@ -28,48 +39,33 @@ const AddContactForm = ({ formikEditIdea: initial }) => {
     initial.setValues(formikEditIdea.values);
   }, [formikEditIdea]);
 
-  return (
-    <>
-      <Typography variant="bodyBg">
-        Deine Kontaktdaten werden öffentlich gezeigt.
-      </Typography>
-      <Box
-        gap="16px"
-        flexDirection="column"
-        marginTop="20px">
-        <Input
-          name="contactTitle"
-          placeholder={t("contactTitle")}
-          onChange={formikEditIdea.handleChange("contactTitle")}
-          onBlur={formikEditIdea.handleBlur}
-          value={formikEditIdea.values.contactTitle}
-          error={
-            formikEditIdea.touched.contactTitle &&
-            Boolean(formikEditIdea.errors.contactTitle)
-          }
-          note={
-            formikEditIdea.touched.contactTitle &&
-            formikEditIdea.errors.contactTitle
-          }
-        />
-        <Input
-          name="contact"
-          type="text"
-          placeholder={t("contact")}
-          onChange={formikEditIdea?.handleChange}
-          onBlur={formikEditIdea?.handleBlur}
-          value={formikEditIdea?.values.contact}
-          error={
-            formikEditIdea?.touched.contact &&
-            Boolean(formikEditIdea?.errors.contact)
-          }
-          note={
-            formikEditIdea?.touched.contact && formikEditIdea?.errors.contact
-          }
-        />
-      </Box>
-    </>
-  );
+  return contactData.map((item, index) => {
+    return (
+      <>
+        <Typography variant="bodyBg">{item.description}</Typography>
+        <Box
+          gap="16px"
+          flexDirection="column"
+          marginTop="20px">
+          <Input
+            name={item.name}
+            type="text"
+            placeholder={item.placeholder}
+            onChange={formikEditIdea?.handleChange}
+            onBlur={formikEditIdea?.handleBlur}
+            value={formikEditIdea?.values?.[item.name]}
+            error={
+              formikEditIdea?.touched.contact &&
+              Boolean(formikEditIdea?.errors.contact)
+            }
+            note={
+              formikEditIdea?.touched.contact && formikEditIdea?.errors.contact
+            }
+          />
+        </Box>
+      </>
+    );
+  });
 };
 
 const Wrapper = styled.div<PostIdeaFormProps>`
@@ -212,7 +208,10 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
               submitText: t("save"),
               onSubmit: closeModal,
             }}>
-            <AddContactForm formikEditIdea={formik} />
+            <PostIdeaFormLinks
+              formikEditIdea={formik}
+              contactData={contactData}
+            />
           </ModalButton>
         </Box>
 
