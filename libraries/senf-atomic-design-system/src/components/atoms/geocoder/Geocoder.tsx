@@ -24,6 +24,10 @@ const ResultsContainer = styled.div`
 const Result = styled.div`
   height: 64px;
   width: 100%;
+  &:hover {
+    cursor: pointer;
+    background-color: ${({ theme }) => theme.colors.greyscale.greyscale20};
+  }
 `;
 const Geocoder: FC<GeocoderProps> = ({
   statefulMap,
