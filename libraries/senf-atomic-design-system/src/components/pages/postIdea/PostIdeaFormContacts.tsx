@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import Box from "../../atoms/box/Box";
 import Input from "../../atoms/inputs/Input";
 import Typography from "../../atoms/typography/Typography";
@@ -9,10 +9,9 @@ const PostIdeaFormContacts = ({ formikEditIdea: initial, contactData }) => {
   useEffect(() => {
     initial.setValues(formikEditIdea.values);
   }, [formikEditIdea]);
-  console.log(formikEditIdea?.values, "formikEditIdea?.values?");
   return contactData.map((item, index) => {
     return (
-      <>
+      <React.Fragment key={`PostIdeaFormContacts-${index}`}>
         <Typography variant="bodyBg">{item.description}</Typography>
         <Box
           gap="16px"
@@ -34,7 +33,7 @@ const PostIdeaFormContacts = ({ formikEditIdea: initial, contactData }) => {
             }
           />
         </Box>
-      </>
+      </React.Fragment>
     );
   });
 };
