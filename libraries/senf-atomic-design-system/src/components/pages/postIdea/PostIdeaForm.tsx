@@ -19,6 +19,7 @@ import { useModals } from "../../molecules/modalStack/ModalProvider";
 import DatePicker from "../../organisms/datePicker/DatePicker";
 import { PostIdeaFormProps } from "./PostIdeaForm.types";
 import Geocoder from "../../atoms/geocoder/Geocoder";
+import PostIdeaFormContacts from "./PostIdeaFormContacts";
 
 const contactData = [
   {
@@ -31,42 +32,19 @@ const contactData = [
     placeholder: "contact",
   },
 ];
-const PostIdeaFormLinks = ({ formikEditIdea: initial, contactData }) => {
-  const { t } = useTranslation();
 
-  const formikEditIdea = useFormik({ initialValues: initial.values });
-  useEffect(() => {
-    initial.setValues(formikEditIdea.values);
-  }, [formikEditIdea]);
-
-  return contactData.map((item, index) => {
-    return (
-      <>
-        <Typography variant="bodyBg">{item.description}</Typography>
-        <Box
-          gap="16px"
-          flexDirection="column"
-          marginTop="20px">
-          <Input
-            name={item.name}
-            type="text"
-            placeholder={item.placeholder}
-            onChange={formikEditIdea?.handleChange}
-            onBlur={formikEditIdea?.handleBlur}
-            value={formikEditIdea?.values?.[item.name]}
-            error={
-              formikEditIdea?.touched.contact &&
-              Boolean(formikEditIdea?.errors.contact)
-            }
-            note={
-              formikEditIdea?.touched.contact && formikEditIdea?.errors.contact
-            }
-          />
-        </Box>
-      </>
-    );
-  });
-};
+const webLinkData = [
+  {
+    description:
+      "Du kannst deinem Link einen eigenen Titel geben. Wenn du möchtest dass die URL angezeigt wird, lasse das Feld einfach frei.",
+    name: "weblinkTitle",
+    placeholder: "weblinkTitle",
+  },
+  {
+    name: "weblink",
+    placeholder: "weblink",
+  },
+];
 
 const Wrapper = styled.div<PostIdeaFormProps>`
   width: 100%;
@@ -156,41 +134,10 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
               submitText: t("save"),
               onSubmit: closeModal,
             }}>
-            <Typography variant="bodyBg">
-              Du kannst deinem Link einen eigenen Titel geben. Wenn du möchtest
-              dass die URL angezeigt wird, lasse das Feld einfach frei.
-            </Typography>
-            <Box
-              gap="16px"
-              flexDirection="column"
-              marginTop="20px">
-              <Input
-                name="weblinkTitle"
-                placeholder={t("weblinkTitle")}
-                onChange={formik?.handleChange}
-                onBlur={formik?.handleBlur}
-                value={formik?.values.weblinkTitle}
-                error={
-                  formik?.touched.weblinkTitle &&
-                  Boolean(formik?.errors.weblinkTitle)
-                }
-                note={
-                  formik?.touched.weblinkTitle && formik?.errors.weblinkTitle
-                }
-              />
-              <Input
-                name="weblink"
-                type="text"
-                placeholder={t("weblink")}
-                onChange={formik?.handleChange}
-                onBlur={formik?.handleBlur}
-                value={formik?.values.weblink}
-                error={
-                  formik?.touched.weblink && Boolean(formik?.errors.weblink)
-                }
-                note={formik?.touched.weblink && formik?.errors.weblink}
-              />
-            </Box>
+            <PostIdeaFormContacts
+              formikEditIdea={formik}
+              contactData={webLinkData}
+            />
           </ModalButton>
 
           <ModalButton
@@ -208,7 +155,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
               submitText: t("save"),
               onSubmit: closeModal,
             }}>
-            <PostIdeaFormLinks
+            <PostIdeaFormContacts
               formikEditIdea={formik}
               contactData={contactData}
             />
