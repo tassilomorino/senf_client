@@ -4,7 +4,14 @@ import React, { FC, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { useFormik } from "formik";
-import { Arrow, CalendarIcon, Hyperlink, Mail } from "../../../assets/icons";
+import {
+  Arrow,
+  CalendarIcon,
+  Dot,
+  DotAllTopics,
+  Hyperlink,
+  Mail,
+} from "../../../assets/icons";
 import { OptionsTopics } from "../../../data/OptionsTopics";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 import Box from "../../atoms/box/Box";
@@ -20,6 +27,7 @@ import DatePicker from "../../organisms/datePicker/DatePicker";
 import { PostIdeaFormProps } from "./PostIdeaForm.types";
 import Geocoder from "../../atoms/geocoder/Geocoder";
 import PostIdeaFormContacts from "./PostIdeaFormContacts";
+import setColorByTopic from "../../../data/setColorByTopic";
 
 const contactData = [
   {
@@ -74,7 +82,8 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
     <Wrapper>
       <Box
         marginBottom="20px"
-        flexDirection="column">
+        flexDirection="column"
+      >
         <Typography variant="bodySm">Adresse deiner Idee</Typography>
         {!isMobile && (
           <Geocoder
@@ -85,7 +94,8 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
       </Box>
       <Box
         gap="20px"
-        flexDirection="column">
+        flexDirection="column"
+      >
         <Input
           name="title"
           type="text"
@@ -118,7 +128,8 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
 
         <Box
           gap="8px"
-          width="100%">
+          width="100%"
+        >
           <ModalButton
             fillWidth="max"
             variant="secondary"
@@ -133,7 +144,8 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
               cancelText: t("cancel"),
               submitText: t("save"),
               onSubmit: closeModal,
-            }}>
+            }}
+          >
             <PostIdeaFormContacts
               formikEditIdea={formik}
               contactData={webLinkData}
@@ -154,7 +166,8 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
               cancelText: t("cancel"),
               submitText: t("save"),
               onSubmit: closeModal,
-            }}>
+            }}
+          >
             <PostIdeaFormContacts
               formikEditIdea={formik}
               contactData={contactData}
@@ -169,6 +182,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
         </Typography>
 
         <ContentDropdown
+          direction="upRight"
           open={topicDropdownOpen}
           setOpen={setTopicDropdownOpen}
           OpenButton={
@@ -176,6 +190,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
               onClick={() => setTopicDropdownOpen(!topicDropdownOpen)}
               text={formik?.values.topic || "Kategorie wählen"}
               iconRight={<Arrow transform="rotate(90)" />}
+              icon={<DotAllTopics />}
               variant="secondary"
               size="small"
               fillWidth="max"
@@ -185,12 +200,15 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
           Content={
             <Box
               gap="5px"
-              flexDirection="column">
+              flexDirection="column"
+            >
               {Object.values(OptionsTopics()).map(({ value, label }) => (
                 <Box
                   gap="5px"
-                  key={`options-topics${value}`}>
+                  key={`options-topics${value}`}
+                >
                   <ContentDropdownItem
+                    leadingIcon={<Dot color={setColorByTopic(value)} />}
                     type="check"
                     text={label}
                     checked={formik?.values.topic === value}
@@ -227,14 +245,16 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
               cancelText: t("cancel"),
               submitText: t("save"),
               onSubmit: closeModal,
-            }}>
+            }}
+          >
             <Typography variant="bodyBg">
               {t("first_date_then_time")}
             </Typography>
             <Box
               gap="16px"
               flexDirection="column"
-              marginTop="20px">
+              marginTop="20px"
+            >
               <DatePicker
                 handleChangeCalendar={handleChangeCalendar}
                 selectedDays={selectedDays}
