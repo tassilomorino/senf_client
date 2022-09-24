@@ -104,8 +104,8 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
           onChange={formik?.handleChange}
           onBlur={formik?.handleBlur}
           value={formik?.values.title}
-          error={formik?.touched.title && Boolean(formik?.errors.title)}
-          note={formik?.touched.title && formik?.errors.title}
+          error={formik?.touched.title && Boolean(formik?.errors?.title)}
+          note={formik?.touched.title && formik?.errors?.title}
 
           // maxLength: 70
         />
@@ -120,8 +120,8 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
           onChange={formik?.handleChange}
           onBlur={formik?.handleBlur}
           value={formik?.values.body}
-          error={formik?.touched.body && Boolean(formik?.errors.body)}
-          note={formik?.touched.body && formik?.errors.body}
+          error={formik?.touched.body && Boolean(formik?.errors?.body)}
+          note={formik?.touched.body && formik?.errors?.body}
 
           // maxLength: 800
         />
@@ -266,14 +266,14 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
         <Button
           onClick={handleSubmit}
           variant={
-            formik.errors.title || formik.errors.body ? "white" : "primary"
+            formik?.errors?.title || formik?.errors?.body ? "white" : "primary"
           }
           text={t("postScream_shareIdea")}
           loading={loading}
           disabled={
-            formik.errors.body ||
-            formik.errors.title ||
-            !formik.values.address ||
+            formik?.errors?.body ||
+            formik?.errors?.title ||
+            !formik?.values.address ||
             Out === true
           }
         />
