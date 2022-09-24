@@ -189,8 +189,14 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
             <Button
               onClick={() => setTopicDropdownOpen(!topicDropdownOpen)}
               text={formik?.values.topic || "Kategorie wählen"}
+              icon={
+                formik?.values?.topic ? (
+                  <Dot color={setColorByTopic(formik?.values?.topic)} />
+                ) : (
+                  <DotAllTopics />
+                )
+              }
               iconRight={<Arrow transform="rotate(90)" />}
-              icon={<DotAllTopics />}
               variant="secondary"
               size="small"
               fillWidth="max"
@@ -209,10 +215,13 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
                 >
                   <ContentDropdownItem
                     leadingIcon={<Dot color={setColorByTopic(value)} />}
-                    type="check"
+                    type="radio"
                     text={label}
                     checked={formik?.values.topic === value}
-                    onClick={() => formik?.setFieldValue("topic", value)}
+                    onClick={() => {
+                      formik?.setFieldValue("topic", value);
+                      setTopicDropdownOpen(false);
+                    }}
                   />
                 </Box>
               ))}
