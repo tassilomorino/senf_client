@@ -32,7 +32,7 @@ const Result = styled.div`
 const Geocoder: FC<GeocoderProps> = ({
   statefulMap,
   placeholder,
-  finalAddress,
+  formik,
   handleSetClose,
 }) => {
   const debounceTimeout = null;
@@ -49,10 +49,10 @@ const Geocoder: FC<GeocoderProps> = ({
   }, []);
 
   useEffect(() => {
-    if (finalAddress) {
-      setSearchTerm(finalAddress);
+    if (formik?.values?.address) {
+      setSearchTerm(formik?.values?.address);
     }
-  }, [finalAddress]);
+  }, [formik?.values?.address]);
 
   const onChange = (queryString) => {
     setSearchTerm(queryString);
@@ -138,6 +138,7 @@ const Geocoder: FC<GeocoderProps> = ({
             ? () => {
                 setSearchTerm("");
                 setResults([]);
+                formik.setFieldValue("address", "");
               }
             : undefined
         }
@@ -156,23 +157,28 @@ const Geocoder: FC<GeocoderProps> = ({
             <Result
               key={`geocoder_result${index}`}
               onClick={() => onSelected(item)}
-              item={item}>
+              item={item}
+            >
               <Box>
                 <Box
                   width="46px"
                   justifyContent="center"
-                  alignItems="center">
+                  alignItems="center"
+                >
                   <Icon icon={<Location />} />
                 </Box>
                 <Box
                   flexDirection="column"
-                  width="calc(100%  - 70px)">
+                  width="calc(100%  - 70px)"
+                >
                   <Box
                     flexDirection="column"
-                    marginBlock="10px">
+                    marginBlock="10px"
+                  >
                     <Typography
                       variant="bodyBg"
-                      fontWeight={600}>
+                      fontWeight={600}
+                    >
                       {item?.text}
                     </Typography>
                     <Typography variant="bodySm">
@@ -191,18 +197,22 @@ const Geocoder: FC<GeocoderProps> = ({
                   <Box
                     width="46px"
                     justifyContent="center"
-                    alignItems="center">
+                    alignItems="center"
+                  >
                     <Icon icon={<Locate />} />
                   </Box>
                   <Box
                     flexDirection="column"
-                    width="calc(100%  - 70px)">
+                    width="calc(100%  - 70px)"
+                  >
                     <Box
                       flexDirection="column"
-                      marginBlock="20px">
+                      marginBlock="20px"
+                    >
                       <Typography
                         variant="bodyBg"
-                        fontWeight={600}>
+                        fontWeight={600}
+                      >
                         Standort verwenden
                       </Typography>
                     </Box>
@@ -216,18 +226,22 @@ const Geocoder: FC<GeocoderProps> = ({
                   <Box
                     width="46px"
                     justifyContent="center"
-                    alignItems="center">
+                    alignItems="center"
+                  >
                     <IdeaPin transform="scale(0.7)" />
                   </Box>
                   <Box
                     flexDirection="column"
-                    width="calc(100%  - 70px)">
+                    width="calc(100%  - 70px)"
+                  >
                     <Box
                       flexDirection="column"
-                      marginBlock="20px">
+                      marginBlock="20px"
+                    >
                       <Typography
                         variant="bodyBg"
-                        fontWeight={600}>
+                        fontWeight={600}
+                      >
                         Ort auf der Karte finden
                       </Typography>
                     </Box>

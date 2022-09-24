@@ -77,7 +77,6 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
   const { closeModal } = useModals();
 
   const [topicDropdownOpen, setTopicDropdownOpen] = useState(false);
-
   return (
     <Wrapper>
       <Box
@@ -87,8 +86,9 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
         <Typography variant="bodySm">Adresse deiner Idee</Typography>
         {!isMobile && (
           <Geocoder
-            finalAddress={formik?.values?.address}
+            formik={formik}
             statefulMap={statefulMap}
+            formik={formik}
           />
         )}
       </Box>
@@ -275,15 +275,22 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
         <Button
           onClick={handleSubmit}
           variant={
-            formik?.errors?.title || formik?.errors?.body ? "white" : "primary"
+            formik?.errors?.body ||
+            formik?.errors?.title ||
+            !formik?.values?.address ||
+            Out === true
+              ? "white"
+              : "primary"
           }
           text={t("postScream_shareIdea")}
           loading={loading}
           disabled={
-            formik?.errors?.body ||
-            formik?.errors?.title ||
-            !formik?.values.address ||
-            Out === true
+            !!(
+              formik?.errors?.body ||
+              formik?.errors?.title ||
+              !formik?.values?.address ||
+              Out === true
+            )
           }
         />
       </Box>

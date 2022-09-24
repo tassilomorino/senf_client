@@ -63,7 +63,8 @@ const PostIdea: FC<PostIdeaProps> = ({
       alignItems="center"
       width="100%"
       padding={"0px 16px 0px 16px"}
-      justifyContent="space-between">
+      justifyContent="space-between"
+    >
       <Typography variant="h3">Idee erstellen</Typography>
 
       <Button
@@ -83,14 +84,15 @@ const PostIdea: FC<PostIdeaProps> = ({
       flexDirection="column"
       width="100%"
       height="auto"
-      padding={"0px 16px 0px 16px"}>
+      padding={"0px 16px 0px 16px"}
+    >
       <Typography variant="bodyBg">
         Navigiere auf der Karte an den gewünschten Ort oder nutze die
         Adresseingabe.
       </Typography>
       {!isMobile && (
         <Geocoder
-          finalAddress={formik?.values?.address}
+          formik={formik}
           statefulMap={statefulMap}
         />
       )}
@@ -100,7 +102,8 @@ const PostIdea: FC<PostIdeaProps> = ({
           size="big"
           text={t("Weiter")}
           fillWidth={"max"}
-          onClick={() => setAddressSelected(true)}></Button>
+          onClick={() => setAddressSelected(true)}
+        ></Button>
       )}
     </Box>
   );
@@ -113,9 +116,10 @@ const PostIdea: FC<PostIdeaProps> = ({
             top="16px"
             left="16px"
             right="16px"
-            zIndex="9999">
+            zIndex="9999"
+          >
             <Geocoder
-              finalAddress={formik?.values?.address}
+              formik={formik}
               statefulMap={statefulMap}
             />
           </Box>
@@ -135,13 +139,15 @@ const PostIdea: FC<PostIdeaProps> = ({
               left="16px"
               right="16px"
               zIndex="9999"
-              height="66px">
+              height="66px"
+            >
               <Button
                 variant="primary"
                 size="big"
                 text={t("Weiter")}
                 fillWidth={"max"}
-                onClick={() => setAddressSelected(true)}></Button>
+                onClick={() => setAddressSelected(true)}
+              ></Button>
             </Box>
           )}
           {isMobile && addressSelected && (
@@ -149,7 +155,8 @@ const PostIdea: FC<PostIdeaProps> = ({
               position="fixed"
               bottom="0px"
               zIndex="999"
-              width="100%">
+              width="100%"
+            >
               <PostIdeaForm
                 formik={formik}
                 statefulMap={statefulMap}
@@ -173,12 +180,14 @@ const PostIdea: FC<PostIdeaProps> = ({
             flexDirection="column"
             alignItems="center"
             width="100%"
-            marginBottom="20px">
+            marginBottom="20px"
+          >
             <Box
               flexDirection="row"
               alignItems="center"
               width="100%"
-              justifyContent="space-between">
+              justifyContent="space-between"
+            >
               {createIdeaHeader}
             </Box>
 
