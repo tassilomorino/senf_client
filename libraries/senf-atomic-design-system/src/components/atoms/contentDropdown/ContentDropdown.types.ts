@@ -12,8 +12,8 @@ export interface ContentDropdownProps {
   openButtonWidth?: string;
   open?: boolean;
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-  direction?: "downLeft" | "downRight";
-  data?: ContentDropdownItemProps[],
+  direction?: "downLeft" | "downRight" | "upLeft" | "upRight";
+  data?: ContentDropdownItemProps[];
   itemType?: ToggleInputProps["type"];
   size?: ContentDropdownItemProps["size"];
 }
