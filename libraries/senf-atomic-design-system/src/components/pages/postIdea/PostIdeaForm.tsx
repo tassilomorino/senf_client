@@ -4,7 +4,14 @@ import React, { FC, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { useFormik } from "formik";
-import { Arrow, CalendarIcon, Hyperlink, Mail } from "../../../assets/icons";
+import {
+  Arrow,
+  CalendarIcon,
+  Dot,
+  DotAllTopics,
+  Hyperlink,
+  Mail,
+} from "../../../assets/icons";
 import { OptionsTopics } from "../../../data/OptionsTopics";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 import Box from "../../atoms/box/Box";
@@ -19,58 +26,33 @@ import { useModals } from "../../molecules/modalStack/ModalProvider";
 import DatePicker from "../../organisms/datePicker/DatePicker";
 import { PostIdeaFormProps } from "./PostIdeaForm.types";
 import Geocoder from "../../atoms/geocoder/Geocoder";
+import PostIdeaFormContacts from "./PostIdeaFormContacts";
+import setColorByTopic from "../../../data/setColorByTopic";
 
-const AddContactForm = ({ formikEditIdea: initial }) => {
-  const { t } = useTranslation();
+const contactData = [
+  {
+    description: "Deine Kontaktdaten werden öffentlich gezeigt.",
+    name: "contactTitle",
+    placeholder: "contactTitle",
+  },
+  {
+    name: "contact",
+    placeholder: "contact",
+  },
+];
 
-  const formikEditIdea = useFormik({ initialValues: initial.values });
-  useEffect(() => {
-    initial.setValues(formikEditIdea.values);
-  }, [formikEditIdea]);
-
-  return (
-    <>
-      <Typography variant="bodyBg">
-        Deine Kontaktdaten werden öffentlich gezeigt.
-      </Typography>
-      <Box
-        gap="16px"
-        flexDirection="column"
-        marginTop="20px">
-        <Input
-          name="contactTitle"
-          placeholder={t("contactTitle")}
-          onChange={formikEditIdea.handleChange("contactTitle")}
-          onBlur={formikEditIdea.handleBlur}
-          value={formikEditIdea.values.contactTitle}
-          error={
-            formikEditIdea.touched.contactTitle &&
-            Boolean(formikEditIdea.errors.contactTitle)
-          }
-          note={
-            formikEditIdea.touched.contactTitle &&
-            formikEditIdea.errors.contactTitle
-          }
-        />
-        <Input
-          name="contact"
-          type="text"
-          placeholder={t("contact")}
-          onChange={formikEditIdea?.handleChange}
-          onBlur={formikEditIdea?.handleBlur}
-          value={formikEditIdea?.values.contact}
-          error={
-            formikEditIdea?.touched.contact &&
-            Boolean(formikEditIdea?.errors.contact)
-          }
-          note={
-            formikEditIdea?.touched.contact && formikEditIdea?.errors.contact
-          }
-        />
-      </Box>
-    </>
-  );
-};
+const webLinkData = [
+  {
+    description:
+      "Du kannst deinem Link einen eigenen Titel geben. Wenn du möchtest dass die URL angezeigt wird, lasse das Feld einfach frei.",
+    name: "weblinkTitle",
+    placeholder: "weblinkTitle",
+  },
+  {
+    name: "weblink",
+    placeholder: "weblink",
+  },
+];
 
 const Wrapper = styled.div<PostIdeaFormProps>`
   width: 100%;
@@ -95,23 +77,25 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
   const { closeModal } = useModals();
 
   const [topicDropdownOpen, setTopicDropdownOpen] = useState(false);
-
   return (
     <Wrapper>
       <Box
         marginBottom="20px"
-        flexDirection="column">
+        flexDirection="column"
+      >
         <Typography variant="bodySm">Adresse deiner Idee</Typography>
         {!isMobile && (
           <Geocoder
-            finalAddress={formik?.values?.address}
+            formik={formik}
             statefulMap={statefulMap}
+            formik={formik}
           />
         )}
       </Box>
       <Box
         gap="20px"
-        flexDirection="column">
+        flexDirection="column"
+      >
         <Input
           name="title"
           type="text"
@@ -120,8 +104,8 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
           onChange={formik?.handleChange}
           onBlur={formik?.handleBlur}
           value={formik?.values.title}
-          error={formik?.touched.title && Boolean(formik?.errors.title)}
-          note={formik?.touched.title && formik?.errors.title}
+          error={formik?.touched.title && Boolean(formik?.errors?.title)}
+          note={formik?.touched.title && formik?.errors?.title}
 
           // maxLength: 70
         />
@@ -136,15 +120,16 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
           onChange={formik?.handleChange}
           onBlur={formik?.handleBlur}
           value={formik?.values.body}
-          error={formik?.touched.body && Boolean(formik?.errors.body)}
-          note={formik?.touched.body && formik?.errors.body}
+          error={formik?.touched.body && Boolean(formik?.errors?.body)}
+          note={formik?.touched.body && formik?.errors?.body}
 
           // maxLength: 800
         />
 
         <Box
           gap="8px"
-          width="100%">
+          width="100%"
+        >
           <ModalButton
             fillWidth="max"
             variant="secondary"
@@ -159,42 +144,12 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
               cancelText: t("cancel"),
               submitText: t("save"),
               onSubmit: closeModal,
-            }}>
-            <Typography variant="bodyBg">
-              Du kannst deinem Link einen eigenen Titel geben. Wenn du möchtest
-              dass die URL angezeigt wird, lasse das Feld einfach frei.
-            </Typography>
-            <Box
-              gap="16px"
-              flexDirection="column"
-              marginTop="20px">
-              <Input
-                name="weblinkTitle"
-                placeholder={t("weblinkTitle")}
-                onChange={formik?.handleChange}
-                onBlur={formik?.handleBlur}
-                value={formik?.values.weblinkTitle}
-                error={
-                  formik?.touched.weblinkTitle &&
-                  Boolean(formik?.errors.weblinkTitle)
-                }
-                note={
-                  formik?.touched.weblinkTitle && formik?.errors.weblinkTitle
-                }
-              />
-              <Input
-                name="weblink"
-                type="text"
-                placeholder={t("weblink")}
-                onChange={formik?.handleChange}
-                onBlur={formik?.handleBlur}
-                value={formik?.values.weblink}
-                error={
-                  formik?.touched.weblink && Boolean(formik?.errors.weblink)
-                }
-                note={formik?.touched.weblink && formik?.errors.weblink}
-              />
-            </Box>
+            }}
+          >
+            <PostIdeaFormContacts
+              formikEditIdea={formik}
+              contactData={webLinkData}
+            />
           </ModalButton>
 
           <ModalButton
@@ -211,8 +166,12 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
               cancelText: t("cancel"),
               submitText: t("save"),
               onSubmit: closeModal,
-            }}>
-            <AddContactForm formikEditIdea={formik} />
+            }}
+          >
+            <PostIdeaFormContacts
+              formikEditIdea={formik}
+              contactData={contactData}
+            />
           </ModalButton>
         </Box>
 
@@ -223,12 +182,20 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
         </Typography>
 
         <ContentDropdown
+          direction="upRight"
           open={topicDropdownOpen}
           setOpen={setTopicDropdownOpen}
           OpenButton={
             <Button
               onClick={() => setTopicDropdownOpen(!topicDropdownOpen)}
               text={formik?.values.topic || "Kategorie wählen"}
+              icon={
+                formik?.values?.topic ? (
+                  <Dot color={setColorByTopic(formik?.values?.topic)} />
+                ) : (
+                  <DotAllTopics />
+                )
+              }
               iconRight={<Arrow transform="rotate(90)" />}
               variant="secondary"
               size="small"
@@ -239,16 +206,22 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
           Content={
             <Box
               gap="5px"
-              flexDirection="column">
+              flexDirection="column"
+            >
               {Object.values(OptionsTopics()).map(({ value, label }) => (
                 <Box
                   gap="5px"
-                  key={`options-topics${value}`}>
+                  key={`options-topics${value}`}
+                >
                   <ContentDropdownItem
-                    type="check"
+                    leadingIcon={<Dot color={setColorByTopic(value)} />}
+                    type="radio"
                     text={label}
                     checked={formik?.values.topic === value}
-                    onClick={() => formik?.setFieldValue("topic", value)}
+                    onClick={() => {
+                      formik?.setFieldValue("topic", value);
+                      setTopicDropdownOpen(false);
+                    }}
                   />
                 </Box>
               ))}
@@ -281,14 +254,16 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
               cancelText: t("cancel"),
               submitText: t("save"),
               onSubmit: closeModal,
-            }}>
+            }}
+          >
             <Typography variant="bodyBg">
               {t("first_date_then_time")}
             </Typography>
             <Box
               gap="16px"
               flexDirection="column"
-              marginTop="20px">
+              marginTop="20px"
+            >
               <DatePicker
                 handleChangeCalendar={handleChangeCalendar}
                 selectedDays={selectedDays}
@@ -300,15 +275,22 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
         <Button
           onClick={handleSubmit}
           variant={
-            formik.errors.title || formik.errors.body ? "white" : "primary"
+            formik?.errors?.body ||
+            formik?.errors?.title ||
+            !formik?.values?.address ||
+            Out === true
+              ? "white"
+              : "primary"
           }
           text={t("postScream_shareIdea")}
           loading={loading}
           disabled={
-            formik.errors.body ||
-            formik.errors.title ||
-            !formik.values.address ||
-            Out === true
+            !!(
+              formik?.errors?.body ||
+              formik?.errors?.title ||
+              !formik?.values?.address ||
+              Out === true
+            )
           }
         />
       </Box>
