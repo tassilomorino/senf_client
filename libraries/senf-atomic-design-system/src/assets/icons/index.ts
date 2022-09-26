@@ -2,7 +2,7 @@
 export { default as AllOrganizationTypes } from './AllOrganizationTypes'
 export { default as Alert } from './Alert'
 export { default as Apple } from './Apple'
-export { default as Arrow } from './Arrow'
+export { default as Arrow, ArrowUp, ArrowRight, ArrowDown, ArrowLeft } from './Arrow'
 export { default as Bell } from './Bell'
 export { default as Bulb } from './Bulb'
 export { default as CalendarIcon } from './CalendarIcon'
