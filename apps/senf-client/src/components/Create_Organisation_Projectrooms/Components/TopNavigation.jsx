@@ -217,7 +217,7 @@ const TopNavigation = ({
             open={settingsOpen}
             setOpen={setSettingsOpen}
             direction={"downRight"}
-            OpenButton={
+            openButton={
               <RoundedButton
                 variant="white"
                 size="small"
@@ -225,7 +225,7 @@ const TopNavigation = ({
                 icon={<More />}
               />
             }
-            Content={
+            content={
               <Box gap="5px" flexDirection="column">
                 <Button
                   variant={"secondary"}

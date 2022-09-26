@@ -9,8 +9,8 @@ export interface ContentDropdownItemProps {
   text?: string;
   checked?: boolean;
   disabled?: boolean;
-  type?: ToggleInputProps["type"];
   onClick?: MouseEventHandler<HTMLButtonElement>;
+  type?: ToggleInputProps["type"];
   minWidth?: string;
-  size?: "sm" | "md" | "lg";
+  size?: "small" | "medium" | "large" | "sm" | "md" | "lg"
 }

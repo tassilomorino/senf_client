@@ -38,7 +38,7 @@ import Logout from "../../../assets/icons/Logout";
 import Edit from "../../../assets/icons/Edit";
 import Plus from "../../../assets/icons/Plus";
 import Skeleton from "../../atoms/skeleton/Skeleton";
-import ContentDropdownItem from "../../atoms/contentDropdownItem/ContentDropdownItem";
+import ContentDropdownItem from "../../atoms/contentDropdown/ContentDropdownItem";
 import ModalButton from "../../molecules/modalStack/ModalButton";
 import Auth from "../auth/Auth";
 import Avatar from "../../atoms/avatar/Avatar";
@@ -205,7 +205,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
             open={dropdownOpen}
             setOpen={setDropdownOpen}
             direction={isMobile ? "downLeft" : "downRight"}
-            OpenButton={
+            openButton={
               <Button
                 variant="white"
                 size="medium"
@@ -213,7 +213,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
                 icon={<More />}
               />
             }
-            Content={
+            content={
               <Box gap="5px" flexDirection="column">
                 <ContentDropdownItem
                   text={t("profile.edit")}

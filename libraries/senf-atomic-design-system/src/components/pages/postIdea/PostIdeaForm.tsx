@@ -10,7 +10,7 @@ import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 import Box from "../../atoms/box/Box";
 import Button from "../../atoms/buttons/Button";
 import ContentDropdown from "../../atoms/contentDropdown/ContentDropdown";
-import ContentDropdownItem from "../../atoms/contentDropdownItem/ContentDropdownItem";
+import ContentDropdownItem from "../../atoms/contentDropdown/ContentDropdownItem";
 import Divider from "../../atoms/divider/Divider";
 import Input from "../../atoms/inputs/Input";
 import Typography from "../../atoms/typography/Typography";
@@ -125,7 +125,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({ formik, statefulMap, checkIfCalen
 
 
         <ModalButton
-          fillWidth="max"
+          width="max"
           variant="secondary"
           size="small"
           text={formik?.values.weblinkTitle || t('add_weblink')}
@@ -183,7 +183,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({ formik, statefulMap, checkIfCalen
         <ModalButton
           variant="secondary"
           size="small"
-          fillWidth="max"
+          width="max"
           text={formik?.values.contactTitle || t('add_contact')}
           icon={<Mail />}
           options={{
@@ -210,18 +210,18 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({ formik, statefulMap, checkIfCalen
       <ContentDropdown
         open={topicDropdownOpen}
         setOpen={setTopicDropdownOpen}
-        OpenButton={
+        openButton={
           <Button
             onClick={() => setTopicDropdownOpen(!topicDropdownOpen)}
             text={formik?.values.topic || t("select_topic")}
             iconRight={<Arrow transform="rotate(90)" />}
             variant="secondary"
             size="small"
-            fillWidth="max"
+            width="max"
 
           />
         }
-        Content={
+        content={
           <Box gap="5px" flexDirection="column">
             {Object.values(OptionsTopics()).map(({ value, label }) => (
               <Box gap="5px">
@@ -243,7 +243,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({ formik, statefulMap, checkIfCalen
           variant="secondary"
           text={selectedDays?.length > 0 ? selectedDays.map((entry, i) => (`${entry.day}.${entry.month.number}${i !== selectedDays.length - 1 ? ", " : ""}`)) : "Termine hinzufügen"}
           size="small"
-          fillWidth="max"
+          width="max"
           icon={<CalendarIcon />}
           options={{
             style: {

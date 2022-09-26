@@ -76,7 +76,7 @@ export { default as Input } from "./components/atoms/inputs/Input";
 export { default as Dropdown } from "./components/atoms/dropdown/Dropdown";
 
 export { default as ContentDropdown } from "./components/atoms/contentDropdown/ContentDropdown";
-export { default as ContentDropdownItem } from "./components/atoms/contentDropdownItem/ContentDropdownItem";
+export { default as ContentDropdownItem } from "./components/atoms/contentDropdown/ContentDropdownItem";
 
 export { default as ImagePlaceholder } from "./components/atoms/imagePlaceholder/ImagePlaceholder";
 export { default as ImageUploadTile } from "./components/atoms/imageUploadTile/ImageUploadTile";

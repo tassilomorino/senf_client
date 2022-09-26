@@ -312,7 +312,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
             open={socialmediaShareDropdownOpen}
             setOpen={setSocialmediaShareDropdownOpen}
             direction={isMobile ? "downLeft" : "downRight"}
-            OpenButton={
+            openButton={
               <Button
                 size="medium"
                 variant="white"
@@ -320,7 +320,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                 icon={<Share />}
               />
             }
-            Content={
+            content={
               <Box gap="5px" flexDirection="column">
                 <SocialmediaShare
                   path={path}
@@ -335,7 +335,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
             open={editIdeaDropdownOpen}
             setOpen={setEditIdeaDropdownOpen}
             direction={isMobile ? "downLeft" : "downRight"}
-            OpenButton={
+            openButton={
               <Button
                 size="medium"
                 variant="white"
@@ -343,7 +343,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                 icon={<More />}
               />
             }
-            Content={
+            content={
               <Box gap="5px" flexDirection="column">
                 {user?.userId === userId || user?.isSuperAdmin === true || user?.isAdmin === true ? (
                   <React.Fragment>

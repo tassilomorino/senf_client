@@ -1,21 +1,21 @@
 /** @format */
 
-import React, { FC, useRef } from "react";
+import React, { FC, useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 // Components
-import { ContentDropdownProps } from "./ContentDropdown.types";
-import { ContentDropdownItemProps } from "../contentDropdownItem/ContentDropdownItem.types";
-import ContentDropdownItem from "../contentDropdownItem/ContentDropdownItem";
+import { DropdownListContainerProps } from "./ContentDropdown.types";
+import { ContentDropdownItemProps } from "../contentDropdown/ContentDropdownItem.types";
+import ContentDropdownItem from "../contentDropdown/ContentDropdownItem";
 import useOnClickOutside from "../../../hooks/useOnClickOutside";
 import { LayerWhiteFirstDefault } from "../layerStyles/LayerStyles";
-import Box from "../box/Box";
+import Button from "../buttons/Button"
 
 const Wrapper = styled.div`
   position: relative;
 `;
 
-const DropDownListContainer = styled.div<ContentDropdownProps>`
+const DropDownListContainer = styled.div<DropdownListContainerProps>`
   pointer-events: auto;
   display: flex;
   flex-direction: column;
@@ -41,30 +41,39 @@ const DropDownListContainer = styled.div<ContentDropdownProps>`
   }
 `;
 
-const ContentDropdown: FC<ContentDropdownProps> = ({
+const ContentDropdown: FC<DropdownListContainerProps> = ({
   data,
   itemType,
   direction,
-  OpenButton,
-  Content,
-  openButtonWidth,
-  open,
+  button,
+  openButton,
+  content,
+  open = false,
   setOpen,
-  size
+  size,
+  ...props
 }) => {
   const outerRef = useRef(null);
+  const [openState, setOpenState] = useState(open)
 
-  useOnClickOutside(outerRef, () => setOpen && setOpen(false));
+  const CustomButton = button || Button;
+  useOnClickOutside(outerRef, () => setOpenState(false));
 
+  useEffect(() => {
+    setOpen?.(openState)
+  }, [openState])
+  useEffect(() => {
+    setOpenState(open)
+  }, [open])
   return (
-    <Wrapper ref={outerRef}>
-      {OpenButton && <Box width={openButtonWidth}>{OpenButton}</Box>}
-      {open && (
-        <DropDownListContainer direction={direction}>
+    <Wrapper>
+      {openButton && <CustomButton onClick={() => setOpenState(!openState)} {...props} />}
+      {openState && (
+        <DropDownListContainer direction={direction} ref={outerRef}>
           {data?.length && data.length > 0 &&
             data.map((item: ContentDropdownItemProps, key: number) => <ContentDropdownItem key={key} {...item} type={itemType || item.type} size={size} />)
           }
-          {Content}
+          {content}
         </DropDownListContainer>
       )}
     </Wrapper>

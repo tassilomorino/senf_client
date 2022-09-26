@@ -348,7 +348,7 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
             open={socialmediaShareDropdownOpen}
             setOpen={setSocialmediaShareDropdownOpen}
             direction={isMobile ? "downLeft" : "downRight"}
-            OpenButton={
+            openButton={
               <Button
                 variant="white"
                 size="medium"
@@ -358,7 +358,7 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
                 icon={<Share />}
               />
             }
-            Content={
+            content={
               <Box gap="5px" flexDirection="column">
                 <SocialmediaShare
                   path={path}
@@ -374,7 +374,7 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
               open={editDropdownOpen}
               setOpen={setEditDropdownOpen}
               direction={isMobile ? "downLeft" : "downRight"}
-              OpenButton={
+              openButton={
                 <Button
                   variant="white"
                   size="medium"
@@ -382,7 +382,7 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
                   icon={<More />}
                 />
               }
-              Content={
+              content={
                 <Box gap="5px" flexDirection="column">
                   <Button
                     variant={"secondary"}
@@ -458,7 +458,7 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
 
             <RoundedButtonWrapper swipedUp={isMobile && swipedUp}>
               <RoundedButton
-                size="big"
+                size="lg"
                 icon={
                   <Plus
                     color={theme.colors.primary.primary120}
