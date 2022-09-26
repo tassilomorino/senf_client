@@ -41,7 +41,7 @@ const Navigation = ({
         {prevLabel && (
           <Button
             variant="white"
-            fillWidth="max"
+            width="max"
             text={
               (localStorage.getItem("createOrganizationPostEdit") === "true" ||
                 localStorage.getItem("createProjectRoomPostEdit") === "true") &&
@@ -71,7 +71,7 @@ const Navigation = ({
         {nextLabel && (
           <Button
             variant="primary"
-            fillWidth="max"
+            width="max"
             text={
               (localStorage.getItem("createOrganizationPostEdit") === "true" ||
                 localStorage.getItem("createProjectRoomPostEdit") === "true") &&

@@ -237,13 +237,13 @@ const SavePanel = ({
                 >
                     <Button
                         variant="secondary"
-                        fillWidth="max"
+                        width="max"
                         onClick={() => setSwipedUp(false)}
                         text={t("cancel")}
                     />
                     <Button
                         variant="primary"
-                        fillWidth="max"
+                        width="max"
                         onClick={() => handleSave()}
                         disabled={!formik?.isValid}
                         text={t("save")}

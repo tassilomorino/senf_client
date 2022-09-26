@@ -83,7 +83,7 @@ const AuthResetEmail: FC<AuthResetEmailProps> = ({
 
         {/* <Button
           variant="white"
-          fillWidth="max"
+          width="max"
           text={t("reset")}
           loading={resetLoading}
           onClick={() => handleSubmitResetEmail(formikStore)}

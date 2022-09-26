@@ -70,7 +70,7 @@ const AuthOptions: FC<AuthOptionsProps> = ({
       <Box gap="16px" flexDirection="column">
         <Button
           variant="white"
-          fillWidth="max"
+          width="max"
           text="Mit Google anmelden"
           icon={<Google />}
           loading={!!authHandler?.loading.google}
@@ -79,7 +79,7 @@ const AuthOptions: FC<AuthOptionsProps> = ({
 
         <Button
           variant="white"
-          fillWidth="max"
+          width="max"
           text="Mit Facebook anmelden"
           loading={!!authHandler?.loading.facebook}
           icon={<Facebook />}
@@ -223,7 +223,7 @@ const AuthOptions: FC<AuthOptionsProps> = ({
         </Box> */}
       {/* <Button
           variant="white"
-          fillWidth="max"
+          width="max"
           text="Anmelden"
           loading={loading}
           onClick={

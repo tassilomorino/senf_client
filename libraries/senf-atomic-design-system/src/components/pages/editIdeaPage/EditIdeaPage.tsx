@@ -444,13 +444,13 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
       >
         <Button
           variant="white"
-          fillWidth="max"
+          width="max"
           onClick={() => setEditOpen(false)}
           text={t("cancel")}
         />
         <Button
           variant="primary"
-          fillWidth="max"
+          width="max"
           onClick={() => handle.editIdea(formikEditIdea.values)}
           disabled={
             formikEditIdea.values.title === "" ||

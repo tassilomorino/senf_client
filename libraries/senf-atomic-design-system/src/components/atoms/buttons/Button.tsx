@@ -39,7 +39,13 @@ const StyledButton = styled.button < ButtonProps> `
   min-height: ${({ size, theme }) => theme.inputHeight(size)};
 
   //FOR SMALLICONBUTTON – is this really correct?
-  width: ${({ fillWidth }) => (fillWidth === "max" ? "100%" : "auto")};
+  width: ${({ width, theme, size }) => {
+    switch (width) {
+      case "max": return "100%"
+      case "height": return theme.inputHeight(size)
+      default: return width ? `${width}px` : "auto"
+    }
+  }};
 
   min-width: ${({ size, theme }) => theme.inputHeight(size)};
 
@@ -121,15 +127,26 @@ const Button: FC<ButtonProps> = ({
   color,
   borderStyle,
   justifyContent,
-  fillWidth,
+  width,
   loading,
   onClick,
   type = 'button',
-  ...rest
+  ...props
 }) => (
-  <StyledButton type={type} text={text} variant={variant} color={color} icon={icon} borderStyle={borderStyle}
-    justifyContent={justifyContent} fillWidth={fillWidth} loading={loading} onClick={onClick} size={size}
-    {...rest}>
+  <StyledButton
+    type={type}
+    text={text}
+    variant={variant}
+    color={color}
+    icon={icon}
+    borderStyle={borderStyle}
+    justifyContent={justifyContent}
+    width={width}
+    loading={loading}
+    onClick={onClick}
+    size={size}
+    {...props}
+  >
 
     {(icon || loading) && (
       <Box position={!icon && text && "absolute" || undefined}>

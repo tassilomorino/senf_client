@@ -82,7 +82,7 @@ const CommentCard: FC<CommentCardProps> = ({ data, ...props }) => {
               <Box width="100%" flexDirection="column" gap="8px">
                 {props.handle.reportComment && props.user?.userId !== userId && <Button
                   text={t("report")}
-                  fillWidth="max"
+                  width="max"
                   onClick={() => props.handle.reportComment(data)}
                 />}
                 {
@@ -90,7 +90,7 @@ const CommentCard: FC<CommentCardProps> = ({ data, ...props }) => {
                   (props.user?.userId === userId || props.user?.isAdmin === true || props.user?.isModerator === true) &&
                   <ModalButton
                     text={t("delete_comment")}
-                    fillWidth="max"
+                    width="max"
                     options={{
                       style: {
                         padding: 20,

@@ -85,7 +85,7 @@ const MenuSidebar = ({
               color={!componentsSidebarOpen ? "white" : "rgb(226,183,54)"}
               icon={<Plus />}
               onClick={() => setComponentsSidebarOpen(!componentsSidebarOpen)}
-              size="big"
+              size="lg"
               variant={!componentsSidebarOpen ? "primary" : undefined}
             />
           </RoundedButtonWrapper>

@@ -8,12 +8,8 @@ import TertiaryButton from "../../atoms/buttons/TertiaryButton";
 import Input from "../../atoms/inputs/Input";
 import Box from "../../atoms/box/Box";
 import { ToolbarProps } from "./Toolbar.types";
-import Arrow from "../../../assets/icons/Arrow";
-import Search from "../../../assets/icons/Search";
-import ContentDropdown from "../../atoms/contentDropdown/ContentDropdown";
-import { Checkbox } from "../../atoms/toggleInput/toggleInput.stories";
-import ToggleInput from "../../atoms/toggleInput/ToggleInput";
-import ContentDropdownItem from "../../atoms/contentDropdownItem/ContentDropdownItem";
+import { Search, ArrowDown } from "../../../assets/icons";
+import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
 
 const Wrapper = styled.div<ToolbarProps>`
   display: flex;
@@ -79,7 +75,6 @@ const Toolbar: FC<ToolbarProps> = ({
   checkedSortOption,
   setCheckedSortOption,
 }) => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const setSearch = () => {
     setSearchOpen(!searchOpen);
@@ -91,19 +86,12 @@ const Toolbar: FC<ToolbarProps> = ({
 
   return (
     <Wrapper searchOpen={searchOpen}>
-      <ContentDropdown
-        open={dropdownOpen}
-        setOpen={setDropdownOpen}
-        OpenButton={
-          <Button
-            variant="tertiary"
-            size="small"
-            onClick={() => setDropdownOpen(!dropdownOpen)}
-            text={activeSortOptionLabel}
-            iconRight={<Arrow transform="rotate(90)" />}
-          />
-        }
-        itemType="check"
+      <DropdownButton
+        variant="tertiary"
+        size="small"
+        text={activeSortOptionLabel}
+        iconRight={<ArrowDown />}
+        options={{ itemType: "check" }}
         data={Object.values(sortOptions as { label: string, value: string }[]).map(item => ({
           text: item.label,
           checked: checkedSortOption === item.value,
