@@ -18,7 +18,7 @@ const useHover = () => {
     // Add zoom and rotation controls to the map.
     map.on("mousemove", (event) => {
       const features = map.queryRenderedFeatures(event.point, {
-        layers: ["ideas", "projectrooms"],
+        layers: ["ideas", "projectrooms", ""],
       });
 
       if (!features.length) {
