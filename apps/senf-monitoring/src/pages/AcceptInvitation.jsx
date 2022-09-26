@@ -10,7 +10,6 @@ import {
 import { t } from "i18next";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import {
   Typography,
   Box,
@@ -19,7 +18,7 @@ import {
   isMobileCustom,
 } from "senf-atomic-design-system";
 import styled from "styled-components";
-import { AuthModal } from "senf-shared";
+import { AuthModal, useAuthContext } from "senf-shared";
 import { db } from "../firebase";
 
 const Wrapper = styled.div`
@@ -36,8 +35,8 @@ export const AcceptInvitation = () => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom();
   const { openModal } = useModals();
+  const { user, signOut } = useAuthContext();
 
-  const user = useSelector((state) => state.user);
   const [invitationData, setInvitationData] = useState(null);
   const [monitoringBoardData, setMonitoringBoardData] = useState(null);
 
@@ -124,6 +123,8 @@ export const AcceptInvitation = () => {
           onClick={handleAcceptInvitation}
           text={t("accept_invitation")}
         />
+
+        {user && <Button onClick={() => signOut()}>signout</Button>}
       </Box>
     </Wrapper>
   );

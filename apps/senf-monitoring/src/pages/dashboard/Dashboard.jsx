@@ -15,7 +15,8 @@ import {
   useModals,
 } from "senf-atomic-design-system";
 import styled from "styled-components";
-import IdeaProcessPage from "./IdeaProcessPage";
+import IdeaProcessPanel from "../ideaProcessing/IdeaProcessPanel";
+import IdeaSidebarContent from "../ideaProcessing/IdeaSidebarContent";
 
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.greyscale.greyscale05};
@@ -27,12 +28,10 @@ const Wrapper = styled.div`
   overflow: scroll;
 `;
 const Dashboard = () => {
-
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { openModal } = useModals()
-
+  const { openModal } = useModals();
 
   const [greeting, setGreeting] = useState("");
   const ideas = useSelector((state) => state.data.ideas);
@@ -51,69 +50,74 @@ const Dashboard = () => {
   }, []);
 
   const onRowClick = (value) => {
-    console.log(value)
     navigate(`/idea/${value.ideaId}`);
-    openModal(< IdeaProcessPage />, { padding: 0, beforeClose: () => navigate(`/`) })
-
-  }
-
+    openModal(<IdeaSidebarContent />, {
+      padding: 0,
+      size: "full",
+      beforeClose: () => navigate(`/`),
+    });
+  };
 
   return (
     <Wrapper>
-
-      <Box gap="20px" flexDirection="column" margin="30px">
+      <Box
+        gap="20px"
+        flexDirection="column"
+        margin="30px">
         <Typography variant="h3"> {greeting} Leon </Typography>
 
         <Box width="100%">
-
-          {ideas &&
+          {ideas && (
             <Table
               data={ideas}
               // checkbox={"docId"}
               bulkEdit={<Icon icon="Search" />}
               onRowClick={onRowClick}
               columns={[
-                { key: "topic", label: t('topic') },
-                { key: "id", label: t('id') },
-                { key: "date", label: t('date') },
-                { key: "district", label: t('district') },
+                { key: "topic", label: t("topic") },
+                { key: "id", label: t("id") },
+                { key: "date", label: t("date") },
+                { key: "district", label: t("district") },
                 { key: "likeCount", label: <Icon icon="FlameInactive" /> },
                 { key: "commentCount", label: <Icon icon="CommentInactive" /> },
-                { key: "status", label: t('status') },
-                { key: "respnsibiity", label: t('respnsibiity') },
-              ]}
-            >
-              {
-                (row) => (
-                  <Box justifyContent="space-between">
-                    <Box gap="16px">
-                      <Box flexDirection="column" justifyContent="center" alignItems="flex-start">
-                        <Typography variant="h3">{row.title}</Typography>
-                        {/* {row?.email && <Typography variant="bodySm">{row.email}</Typography>} */}
-                      </Box>
-                    </Box>
-                    <Typography variant="bodySm">{row.ideaId}</Typography>
-                    <Typography variant="bodySm">{row.createdAt}</Typography>
-                    <Typography variant="bodySm">{row.Stadtteil}</Typography>
-                    <Typography variant="bodySm">{row.likeCount}</Typography>
-                    <Typography variant="bodySm">{row.commentCount}</Typography>
-                    <Typography variant="bodySm">{row.status}</Typography>
-                    <Typography variant="bodySm">{row.responsibility}</Typography>
-
-
-                    <Box gap="8px" marginLeft="0">
-
-                      <Button
-                        variant="white"
-                        text="Delete"
-                        onClick={(event) => { event.stopPropagation(); console.log("delete") }}
-
-                      />
+                { key: "status", label: t("status") },
+                { key: "respnsibiity", label: t("respnsibiity") },
+              ]}>
+              {(row) => (
+                <Box justifyContent="space-between">
+                  <Box gap="16px">
+                    <Box
+                      flexDirection="column"
+                      justifyContent="center"
+                      alignItems="flex-start">
+                      <Typography variant="h3">{row.title}</Typography>
+                      {/* {row?.email && <Typography variant="bodySm">{row.email}</Typography>} */}
                     </Box>
                   </Box>
-                )
-              }
-            </Table>}
+                  <Typography variant="bodySm">{row.ideaId}</Typography>
+                  <Typography variant="bodySm">{row.createdAt}</Typography>
+                  <Typography variant="bodySm">{row.Stadtteil}</Typography>
+                  <Typography variant="bodySm">{row.likeCount}</Typography>
+                  <Typography variant="bodySm">{row.commentCount}</Typography>
+                  <Typography variant="bodySm">{row.status}</Typography>
+                  <Typography variant="bodySm">{row.responsibility}</Typography>
+
+                  <Box
+                    gap="8px"
+                    marginLeft="0">
+                    <Button
+                      variant="white"
+                      text="Delete"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        console.log("delete");
+                      }}
+                    />
+                  </Box>
+                </Box>
+              )}
+            </Table>
+          )}
         </Box>
       </Box>
     </Wrapper>

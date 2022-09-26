@@ -11,7 +11,6 @@ import { useTranslation } from "react-i18next";
 import { MapProps } from "./Map.types";
 import { convertIdeasToGeoJson } from "./utils/convertIdeasToGeoJson";
 import { LayerWhiteFirstDefault } from "../layerStyles/LayerStyles";
-import { addProjectroomMarkers } from "./utils/addProjectroomMarkers";
 
 import useInitialFly from "./hooks/useInitialFly";
 import useNavigationControl from "./hooks/useNavigationControl";
@@ -35,9 +34,11 @@ import theme from "../../../styles/theme";
 import DrawMapbox from "./utils/DrawMapbox";
 import useIdeaPin from "./hooks/useIdeaPin";
 import { addImagesToMap } from "./utils/addImagesToMap";
-import { hoverMunicipalities, selectMunicipalities } from "./utils/selectMunicipalities";
-
-
+import {
+  hoverAndSelectMunicipalities,
+  hoverMunicipalities,
+  selectMunicipalities,
+} from "./utils/selectMunicipalities";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoidG1vcmlubyIsImEiOiJjazBzZHZjeWQwMWoyM2NtejlzcnMxd3FtIn0.I_Xcc1aJiN7hToGGjNy7ow";
@@ -46,7 +47,6 @@ const MarkerPin = styled.div`
   transform: translateY(-100%);
   display: ${({ visible }) => (visible ? "block" : "none")};
   pointer-events: none;
-
 `;
 
 const MapContainer = styled.div<MapProps>`
@@ -81,8 +81,8 @@ const MapContainer = styled.div<MapProps>`
     -moz-border-radius: ${({ theme }) => theme.radii[1]}px;
     border: 0;
     ${({ focus }) =>
-    focus &&
-    css`
+      focus &&
+      css`
         outline: 3px solid ${({ theme }) => theme.colors.primary.primary120} !important;
         outline-offset: -3px;
       `}
@@ -153,7 +153,7 @@ const MapContainer = styled.div<MapProps>`
     border-radius: 8px !important;
     ${(props) => LayerWhiteFirstDefault}
   }
-/* 
+  /* 
   .marker {
   background-image: url("https://media.giphy.com/media/Bfa45K0r6cCIw/giphy.gif");
   background-size: cover;
@@ -162,76 +162,69 @@ const MapContainer = styled.div<MapProps>`
   border-radius: 50%;
   cursor: pointer;
 } */
-.mapboxgl-ctrl-geolocate{
-  display:none;
+  .mapboxgl-ctrl-geolocate {
+    display: none;
+  }
 
-}
+  .mapboxgl-ctrl-group {
+    display: none;
+    @media (min-width: 768px) {
+      position: fixed;
+      display: block;
+      right: 10px;
+      bottom: 10px;
+      z-index: 1;
+      width: 36px;
+      border-radius: ${({ theme }) => theme.radii[1]}px;
+      ${(props) => LayerWhiteFirstDefault}
+    }
+  }
 
-.mapboxgl-ctrl-group{
-  display:none;
-   @media (min-width: 768px) {
-    position:fixed;
-    display: block;
-    right: 10px;
-    bottom:10px;
-    z-index:1;
-    width:36px;
+  .mapboxgl-ctrl-zoom-in:before {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 28px;
+    height: 2px;
+    width: 20px; /* or 100px */
+    border-bottom: 2px solid
+      ${({ theme }) => theme.colors.greyscale.greyscale20tra};
+  }
+
+  .mapboxgl-ctrl-zoom-out:before {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 55px;
+    height: 2px;
+    width: 20px; /* or 100px */
+    border-bottom: 2px solid
+      ${({ theme }) => theme.colors.greyscale.greyscale20tra};
+  }
+
+  .mapboxgl-ctrl-zoom-in,
+  .mapboxgl-ctrl-zoom-out,
+  .mapboxgl-ctrl-compass {
+    background-color: transparent;
+    border: 0;
+    width: 32px;
     border-radius: ${({ theme }) => theme.radii[1]}px;
-    ${(props) => LayerWhiteFirstDefault}
-   }
-}
+  }
+  .mapboxgl-ctrl-zoom-out {
+    border-radius: 0px;
+  }
 
+  .mapboxgl-ctrl {
+    display: none;
 
-.mapboxgl-ctrl-zoom-in:before {
-  content : "";
-  position: absolute;
-  left    : 6px;
-  top  : 28px;
-  height  : 2px;
-  width: 20px;  /* or 100px */
-  border-bottom:2px solid ${({ theme }) => theme.colors.greyscale.greyscale20tra};
-}
-
-
-
-.mapboxgl-ctrl-zoom-out:before {
-  content : "";
-  position: absolute;
-  left    : 6px;
-  top  : 55px;
-  height  : 2px;
-  width: 20px;  /* or 100px */
-  border-bottom:2px solid ${({ theme }) => theme.colors.greyscale.greyscale20tra};
-}
-
-.mapboxgl-ctrl-zoom-in,
-.mapboxgl-ctrl-zoom-out,
-.mapboxgl-ctrl-compass{
-  background-color:transparent;
-  border:0 ;
-  width:32px;
-  border-radius: ${({ theme }) => theme.radii[1]}px;
-}
-.mapboxgl-ctrl-zoom-out{
-  border-radius:0px;
-}
-
-
-.mapboxgl-ctrl{
-  display:none;
-
-  @media (min-width: 768px) {
-    display:block;
-
-   }
-}
-.mapboxgl-ctrl-logo{
-  display:none;
-}
+    @media (min-width: 768px) {
+      display: block;
+    }
+  }
+  .mapboxgl-ctrl-logo {
+    display: none;
+  }
 `;
-
-
-
 
 const Map: FC<MapProps> = ({
   children,
@@ -256,7 +249,9 @@ const Map: FC<MapProps> = ({
   setStatefulMap,
   drawn,
   handleSaveDrawn,
-  setMode
+  setMode,
+  selectedMunicipalities,
+  setSelectedMunicipalities,
 }) => {
   const { t } = useTranslation();
   const [statefulDrawMapbox, setStatefulDrawMapbox] = useState(null);
@@ -266,11 +261,7 @@ const Map: FC<MapProps> = ({
   const [mapMoved, setMapMoved] = useState(false);
   const [container, setContainer] = useState(null);
 
-
-
-
   // const [selectedFeature, setSelectedFeature] = useState(null);
-
 
   const initialFly = useInitialFly();
   const navigationControl = useNavigationControl();
@@ -279,11 +270,10 @@ const Map: FC<MapProps> = ({
 
   const drawType = mapType?.drawType;
 
-
   const hover = useHover();
   const clickMarkers = useClickMarkers();
 
-  const [drawFeatureID, setDrawFeatureID] = useState(null)
+  const [drawFeatureID, setDrawFeatureID] = useState(null);
 
   // const [statefulMap, setMap] = useState(null);
   const [setProjectroomsMarkersLayer, setProjectroomsMarkersData] =
@@ -293,8 +283,6 @@ const Map: FC<MapProps> = ({
   const [setPolygonLayer, setPolygonData] = usePolygon();
 
   const [ideaMarkerColor, setIdeaMarkerColor] = useState(null);
-
-  const [selectedMunicipalities, setSelectedMunicipalities] = useState(["Köln"]);
 
   const { lng, lat, zoom, subscribeMap } = useCoordinates(
     initialMapViewport.longitude,
@@ -310,27 +298,20 @@ const Map: FC<MapProps> = ({
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
+      id: Math.random() * 1000,
       // style: "mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6",
       style: "mapbox://styles/tmorino/ckz5jc88b000l14o3i4c931rn",
       center: [lng?.current, lat?.current],
       zoom: zoom?.current,
       pitch: initialMapViewport.pitch,
     });
-
-
-
-
     setStatefulMap(map);
     subscribeMap(map);
-    addImagesToMap(map)
+    addImagesToMap(map);
 
     if (navigation) {
       navigationControl(map);
-
     }
-
-
-
 
     if (ideasData || projectroomsData || projectroomData) {
       clickMarkers(map, handleClickIdeaMarker, handleClickProjectroomMarker);
@@ -343,12 +324,15 @@ const Map: FC<MapProps> = ({
       }
     }
 
-    if (setInitialMapBounds) { setInitialMapBounds(map.getBounds().toArray()) };
+    if (setInitialMapBounds) {
+      setInitialMapBounds(map.getBounds().toArray());
+    }
 
-    const DrawMap = DrawMapbox
-    map.addControl(DrawMap);
-    setStatefulDrawMapbox(DrawMap);
-
+    if (!statefulDrawMapbox) {
+      const DrawMap = DrawMapbox;
+      map.addControl(DrawMap);
+      setStatefulDrawMapbox(DrawMap);
+    }
 
     map.on("dragend", () => {
       setMapMoved(true);
@@ -357,46 +341,25 @@ const Map: FC<MapProps> = ({
     setTimeout(() => {
       map.on("zoomend", () => {
         setMapMoved(true);
-
       });
     }, 5000);
 
-
-    // map.on("load", () => {
-    //   map.setPaintProperty("municipalities-germany-crude", "fill-color", [
-    //     "match",
-    //     ["get", "GEN"],
-    //     "Köln",
-    //     "rgba(255, 221, 106, 0.5)",
-    //     "rgba(0, 0, 0, 0)",
-    //   ]);
-    //   map.setPaintProperty("municipalities-germany-crude-line", "line-color", [
-    //     "match",
-    //     ["get", "GEN"],
-    //     "Köln",
-    //     "#FFD96B",
-    //     "rgba(18, 12, 12, 0)",
-    //   ]);
-    //   map.setPaintProperty("municipalities-germany-crude-line", "line-width", [
-    //     "match",
-    //     ["get", "GEN"],
-    //     "Köln",
-    //     3,
-    //     0,
-    //   ]);
-    // })
-
-    if (mapType === "selectMunicipalities") {
-      map.on("mousemove", (event) => {
-        hoverMunicipalities(map, event);
-      })
-      map.on("click", (event) => {
-        selectMunicipalities(map, event, selectedMunicipalities, setSelectedMunicipalities);
-      })
-    }
-
-    return () => map?.remove();
+    return () => {
+      map?.remove();
+      setStatefulMap(null);
+    };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (statefulMap && mapType === "selectMunicipalities") {
+      hoverAndSelectMunicipalities(
+        statefulMap,
+        mapType,
+        selectedMunicipalities,
+        setSelectedMunicipalities
+      );
+    }
+  }, [statefulMap]);
 
   useEffect(() => {
     if (statefulMap && statefulDrawMapbox && drawn) {
@@ -415,12 +378,12 @@ const Map: FC<MapProps> = ({
       statefulMap.on("click", (e) => {
         const drawFeatureAtPoint = statefulDrawMapbox.getFeatureIdsAt(e.point);
 
-        const result = drawFeatureAtPoint.filter(element => {
+        const result = drawFeatureAtPoint.filter((element) => {
           return element !== undefined;
         });
         const drawFeatureID = result.length ? result[0] : "";
         if (drawFeatureID) {
-          setDrawFeatureID(drawFeatureID)
+          setDrawFeatureID(drawFeatureID);
           statefulDrawMapbox.setFeatureProperty(
             drawFeatureID,
             "drawType",
@@ -429,8 +392,7 @@ const Map: FC<MapProps> = ({
         }
       });
     }
-
-  }, [statefulMap, statefulDrawMapbox, drawType])
+  }, [statefulMap, statefulDrawMapbox, drawType]);
 
   useEffect(() => {
     if (statefulMap) {
@@ -440,16 +402,13 @@ const Map: FC<MapProps> = ({
         statefulDrawMapbox?.changeMode("draw_line_string");
       }
       statefulMap.on("draw.selectionchange", (e) => {
-        const drawFeatureId = e?.features[0]?.id
+        const drawFeatureId = e?.features[0]?.id;
         if (drawFeatureId) {
-          setDrawFeatureID(drawFeatureId)
+          setDrawFeatureID(drawFeatureId);
         }
       });
     }
-  }, [statefulMap, statefulDrawMapbox])
-
-
-
+  }, [statefulMap, statefulDrawMapbox]);
 
   useEffect(() => {
     if (projectroomsData) {
@@ -468,7 +427,7 @@ const Map: FC<MapProps> = ({
   useEffect(() => {
     if (statefulMap && !openIdea && !openProjectRoom) {
       initialFly(statefulMap, initialMapViewport);
-      setGeolocateTrigger(true)
+      setGeolocateTrigger(true);
     }
   }, [statefulMap, openProjectRoom]);
 
@@ -540,9 +499,11 @@ const Map: FC<MapProps> = ({
           justifyContent="center"
           alignItems="center"
           zIndex={99}
-          pointerEvents="none"
-        >
-          <IdeaPin color={theme.colors.primary.primary100} transform="scale(1.5)" />
+          pointerEvents="none">
+          <IdeaPin
+            color={theme.colors.primary.primary100}
+            transform="scale(1.5)"
+          />
         </Box>
       )}
 
@@ -553,17 +514,16 @@ const Map: FC<MapProps> = ({
           zIndex={999999999}
           left="50%"
           transform="translateX(-50%)"
-          gap="8px"
-        >
+          gap="8px">
           <Button
             text="Delete"
             onClick={() => {
               statefulDrawMapbox.delete(drawFeatureID);
               statefulDrawMapbox.changeMode("simple_select");
               handleSaveDrawn(statefulDrawMapbox.getAll());
-              setMode(null)
-              setSwipedUp(false)
-              setDrawFeatureID(null)
+              setMode(null);
+              setSwipedUp(false);
+              setDrawFeatureID(null);
             }}
           />
           <Button
@@ -571,11 +531,10 @@ const Map: FC<MapProps> = ({
             text={t("save")}
             onClick={() => {
               statefulDrawMapbox.changeMode("simple_select");
-              setMode(null)
+              setMode(null);
               handleSaveDrawn(statefulDrawMapbox.getAll());
-              setSwipedUp(false)
-              setDrawFeatureID(null)
-
+              setSwipedUp(false);
+              setDrawFeatureID(null);
             }}
           />
         </Box>
@@ -588,11 +547,17 @@ const Map: FC<MapProps> = ({
           bottom: 0,
           width: "100%",
           height: "100%",
-        }}
-      >
+        }}>
         {children}
       </MapContainer>
-      <MarkerPin visible={ideaData} ref={setContainer}><IdeaPin transform="translate(0, -12)" color={ideaMarkerColor} /></MarkerPin>
+      <MarkerPin
+        visible={ideaData}
+        ref={setContainer}>
+        <IdeaPin
+          transform="translate(0, -12)"
+          color={ideaMarkerColor}
+        />
+      </MarkerPin>
     </React.Fragment>
   );
 };
