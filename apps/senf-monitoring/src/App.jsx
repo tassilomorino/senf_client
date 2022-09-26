@@ -2,21 +2,25 @@
 
 import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useParams } from "react-router-dom";
 import { theme, GlobalStyle, ModalProvider } from "senf-atomic-design-system";
 import styled, { ThemeProvider } from "styled-components";
 import { AuthProvider } from "senf-shared";
 import { useDispatch, useSelector } from "react-redux";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/dashboard/Dashboard";
 import "./util/i18n";
 import PrivateRoute from "./context/PrivateRoute";
 import AuthPage from "./pages/AuthPage";
-import InviteMember from "./pages/InviteMember";
-import MemberBoard from "./pages/MemberBoard";
+import InviteMember from "./pages/division/InviteMember";
 import { AcceptInvitation } from "./pages/AcceptInvitation";
 import PageNotFound from "./pages/PageNotFound";
 import { getMyMonitoringBoards } from "./redux/actions/accountActions";
 import Nav from "./components/Nav";
+import DivisionsBoard from "./pages/division/DivisionsBoard";
+import DivisionPage from "./pages/division/DivisionPage";
+import IdeaProcessPage from "./pages/dashboard/IdeaProcessPage";
+import CreateMonitoringBoardPage from "./pages/superAdminPages/CreateMonitoringBoardPage";
+import SuperAdminBoard from "./pages/superAdminPages/SuperAdminBoard";
 
 const BodyWrapper = styled.div`
   position: fixed;
@@ -29,11 +33,15 @@ const BodyWrapper = styled.div`
 const App = () => {
   const dispatch = useDispatch();
   const userId = "EkLheyhRjYSCMyUd4qvMIng0as43"
+  const params = useParams();
+  const { ideaId } = params;
 
   useEffect(() => {
     dispatch(getMyMonitoringBoards(userId))
 
   }, [])
+
+  useEffect(() => { console.log(ideaId) }, [ideaId])
   return (
     <BodyWrapper>
       <ThemeProvider theme={theme}>
@@ -69,7 +77,23 @@ const App = () => {
                   <Route exact path="/" component={<Dashboard />} />
                   </Route> */}
                   <Route exact path="/" element={<Dashboard />} />
-                  <Route exact path="/members" element={<MemberBoard />} />
+                  <Route exact path="/idea/:ideaId" element={<Dashboard />} />
+
+
+                  {/* <Route exact path="division/:divisionId/members" element={<MemberBoard />} /> */}
+
+
+                  <Route exact path="/divisions" element={<DivisionsBoard />} />
+                  <Route exact path="/divisions/:divisionId" element={<DivisionPage />} />
+
+                  <Route exact path="/superAdminBoard" element={<SuperAdminBoard />} />
+                  <Route exact path="/createMonitoringBoard" element={<CreateMonitoringBoardPage />} />
+
+
+
+
+
+
 
                   <Route exact path="/invite" element={<InviteMember />} />
                   {/* <Route

@@ -35,6 +35,7 @@ import theme from "../../../styles/theme";
 import DrawMapbox from "./utils/DrawMapbox";
 import useIdeaPin from "./hooks/useIdeaPin";
 import { addImagesToMap } from "./utils/addImagesToMap";
+import { hoverMunicipalities, selectMunicipalities } from "./utils/selectMunicipalities";
 
 
 
@@ -235,6 +236,7 @@ const MapContainer = styled.div<MapProps>`
 const Map: FC<MapProps> = ({
   children,
   mapType,
+  navigation = true,
   openIdea,
   openProjectRoom,
   initialMapViewport,
@@ -292,6 +294,8 @@ const Map: FC<MapProps> = ({
 
   const [ideaMarkerColor, setIdeaMarkerColor] = useState(null);
 
+  const [selectedMunicipalities, setSelectedMunicipalities] = useState(["Köln"]);
+
   const { lng, lat, zoom, subscribeMap } = useCoordinates(
     initialMapViewport.longitude,
     initialMapViewport.latitude,
@@ -306,17 +310,24 @@ const Map: FC<MapProps> = ({
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
-      style: "mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6",
+      // style: "mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6",
+      style: "mapbox://styles/tmorino/ckz5jc88b000l14o3i4c931rn",
       center: [lng?.current, lat?.current],
       zoom: zoom?.current,
       pitch: initialMapViewport.pitch,
     });
 
 
+
+
     setStatefulMap(map);
     subscribeMap(map);
-    navigationControl(map);
     addImagesToMap(map)
+
+    if (navigation) {
+      navigationControl(map);
+
+    }
 
 
 
@@ -338,7 +349,6 @@ const Map: FC<MapProps> = ({
     map.addControl(DrawMap);
     setStatefulDrawMapbox(DrawMap);
 
-    console.log(DrawMap)
 
     map.on("dragend", () => {
       setMapMoved(true);
@@ -352,7 +362,40 @@ const Map: FC<MapProps> = ({
     }, 5000);
 
 
-    return () => map.remove();
+    // map.on("load", () => {
+    //   map.setPaintProperty("municipalities-germany-crude", "fill-color", [
+    //     "match",
+    //     ["get", "GEN"],
+    //     "Köln",
+    //     "rgba(255, 221, 106, 0.5)",
+    //     "rgba(0, 0, 0, 0)",
+    //   ]);
+    //   map.setPaintProperty("municipalities-germany-crude-line", "line-color", [
+    //     "match",
+    //     ["get", "GEN"],
+    //     "Köln",
+    //     "#FFD96B",
+    //     "rgba(18, 12, 12, 0)",
+    //   ]);
+    //   map.setPaintProperty("municipalities-germany-crude-line", "line-width", [
+    //     "match",
+    //     ["get", "GEN"],
+    //     "Köln",
+    //     3,
+    //     0,
+    //   ]);
+    // })
+
+    if (mapType === "selectMunicipalities") {
+      map.on("mousemove", (event) => {
+        hoverMunicipalities(map, event);
+      })
+      map.on("click", (event) => {
+        selectMunicipalities(map, event, selectedMunicipalities, setSelectedMunicipalities);
+      })
+    }
+
+    return () => map?.remove();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -363,7 +406,7 @@ const Map: FC<MapProps> = ({
 
   useEffect(() => {
     if (statefulMap && statefulDrawMapbox && drawType) {
-      if (drawType === "lawn") {
+      if (drawType === "lawn" || drawType === "area") {
         statefulDrawMapbox?.changeMode("draw_polygon");
       } else if (drawType === "bikeLane" || drawType === "crosswalk") {
         statefulDrawMapbox?.changeMode("draw_line_string");
@@ -461,6 +504,20 @@ const Map: FC<MapProps> = ({
       useIdeaPin(statefulMap, container, ideaData, setIdeaMarkerColor);
     }
   }, [ideaData]);
+
+  // useEffect(() => {
+  //   if (statefulMap) {
+  //     statefulMap?.addLayer({
+  //       id: "polygonhhkj",
+  //       source: "admin-2-boundary",
+  //       type: "fill",
+  //       paint: {
+  //         "fill-color": "#fed957",
+  //         "fill-opacity": 0.3,
+  //       },
+  //     });
+  //   }
+  // }, [statefulMap])
 
   return (
     <React.Fragment>

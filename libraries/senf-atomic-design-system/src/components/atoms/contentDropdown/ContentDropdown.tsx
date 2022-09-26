@@ -32,6 +32,12 @@ const DropDownListContainer = styled.div<DropdownListContainerProps>`
   transform: ${(props) =>
     props.direction === "downLeft"
       ? "translateY(45px) translateX(calc(-100% + 50px))"
+      : props.direction === "downRight"
+      ? "translateY(45px)"
+      : props.direction === "upLeft"
+      ? "translateY(calc(-100% - 10px)) translateX(calc(-100% + 50px))"
+      : props.direction === "upRight"
+      ? "translateY(calc(-100% - 10px))"
       : "translateY(45px)"};
 
   ${() => LayerWhiteFirstDefault}
@@ -44,7 +50,6 @@ const DropDownListContainer = styled.div<DropdownListContainerProps>`
 const ContentDropdown: FC<DropdownListContainerProps> = ({
   data,
   itemType,
-  direction,
   button,
   openButton,
   content,
@@ -69,7 +74,7 @@ const ContentDropdown: FC<DropdownListContainerProps> = ({
     <Wrapper>
       {openButton && <CustomButton onClick={() => setOpenState(!openState)} {...props} />}
       {openState && (
-        <DropDownListContainer direction={direction} ref={outerRef}>
+        <DropDownListContainer ref={outerRef}>
           {data?.length && data.length > 0 &&
             data.map((item: ContentDropdownItemProps, key: number) => <ContentDropdownItem key={key} {...item} type={itemType || item.type} size={size} />)
           }

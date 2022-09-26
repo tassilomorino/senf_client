@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component, FC, useEffect, useState } from "react";
 import MapboxClient from "mapbox";
 import styled from "styled-components";
 import Input from "../inputs/Input";
@@ -6,28 +6,35 @@ import { GeocoderProps } from "./Geocoder.types";
 import Divider from "../divider/Divider";
 import Box from "../box/Box";
 import Icon from "../icons/Icon";
-import { Arrow, Location } from "../../../assets/icons";
+import { Arrow, Close, Location } from "../../../assets/icons";
 import Typography from "../typography/Typography";
 import IdeaPin from "../../../assets/icons/IdeaPin";
 import Locate from "../../../assets/icons/Locate";
 import { geolocateControl } from "../map/hooks/useGeolocateControl";
 
 const ResultsContainer = styled.div`
-height: auto;
-width: auto;
-position: relative;
-background-color:${({ theme }) => theme.colors.greyscale.greyscale10};
-z-index:998;
-
-
-
-
-`
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  width: auto;
+  position: relative;
+  background-color: ${({ theme }) => theme.colors.greyscale.greyscale10};
+  z-index: 998;
+`;
 const Result = styled.div`
-height:64px;
-width:100%;
-`
-const Geocoder: FC<GeocoderProps> = ({ statefulMap, placeholder, finalAddress, handleSetClose }) => {
+  height: 64px;
+  width: 100%;
+  &:hover {
+    cursor: pointer;
+    background-color: ${({ theme }) => theme.colors.greyscale.greyscale20};
+  }
+`;
+const Geocoder: FC<GeocoderProps> = ({
+  statefulMap,
+  placeholder,
+  formik,
+  handleSetClose,
+}) => {
   const debounceTimeout = null;
   const [searchTerm, setSearchTerm] = useState("");
   const [geocoder, setGeocoder] = useState(null);
@@ -37,52 +44,53 @@ const Geocoder: FC<GeocoderProps> = ({ statefulMap, placeholder, finalAddress, h
   useEffect(() => {
     const accessToken =
       "pk.eyJ1IjoiZGF0dHdvb2QxOTg2IiwiYSI6ImNraTI5cnAwcDByZHUycnBleWphMHR1dDcifQ.u7pG_sZ7Su685A11r6-uuw";
-    const mapboxGeocoder = new MapboxClient(accessToken)
-    setGeocoder(mapboxGeocoder)
-
-  }, [])
+    const mapboxGeocoder = new MapboxClient(accessToken);
+    setGeocoder(mapboxGeocoder);
+  }, []);
 
   useEffect(() => {
-    if (finalAddress) {
-      setSearchTerm(finalAddress)
+    if (formik?.values?.address) {
+      setSearchTerm(formik?.values?.address);
     }
-  }, [finalAddress])
-
+  }, [formik?.values?.address]);
 
   const onChange = (queryString) => {
-    setSearchTerm(queryString)
-    setDetectLocationIcons(true)
+    setSearchTerm(queryString);
+    setDetectLocationIcons(true);
     if (queryString.length > 1) {
-      setDetectLocationIcons(false)
-      setResults([])
+      setDetectLocationIcons(false);
+      setResults([]);
     }
 
     if (queryString.length >= 3) {
-      geocoder.geocodeForward(queryString, {
-        limit: 5,
-        autocomplete: true,
-        fuzzyMatch: true,
-        language: "de",
-        bbox: [6.7, 50.8, 7.2, 51],
-        types: "country,region,postcode,district,place,locality,neighborhood,address,poi"
-        // proximity: Bias the response to favor results that are closer to this location. Provided as two comma-separated coordinates in longitude,latitude order, or the string ip to bias based on reverse IP lookup.
-        // https://docs.mapbox.com/api/search/geocoding/
-      }).then((res) => {
-        setShowResults(true)
-        setResults(res.entity.features)
-      }).catch((err) => {
-        console.log(err)
-      }).finally(() => {
-        // setSearchTerm("")
-      })
+      geocoder
+        .geocodeForward(queryString, {
+          limit: 5,
+          autocomplete: true,
+          fuzzyMatch: true,
+          language: "de",
+          bbox: [6.7, 50.8, 7.2, 51],
+          types:
+            "country,region,postcode,district,place,locality,neighborhood,address,poi",
+          // proximity: Bias the response to favor results that are closer to this location. Provided as two comma-separated coordinates in longitude,latitude order, or the string ip to bias based on reverse IP lookup.
+          // https://docs.mapbox.com/api/search/geocoding/
+        })
+        .then((res) => {
+          setShowResults(true);
+          setResults(res.entity.features);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          // setSearchTerm("")
+        });
     }
-
   };
 
   const onSelected = (item) => {
-
-    console.log(item)
-    setSearchTerm(item.place_name)
+    console.log(item);
+    setSearchTerm(item.place_name);
 
     statefulMap.flyTo({
       center: [item.center[0], item.center[1]],
@@ -91,48 +99,57 @@ const Geocoder: FC<GeocoderProps> = ({ statefulMap, placeholder, finalAddress, h
       pitch: 30,
     });
 
-    setShowResults(false)
-
-
+    setShowResults(false);
   };
 
   const handleGeolocate = () => {
-    geolocateControl(statefulMap)
+    geolocateControl(statefulMap);
 
     setTimeout(() => {
-      setShowResults(false)
+      setShowResults(false);
     }, 200);
-
-
-  }
-
-
+  };
 
   return (
-    <React.Fragment>
-      <Box zIndex={999} width="100%"
+    <Box
+      zIndex={999}
+      width="100%"
+      display="flex"
+      flexDirection="column"
       // position={showResults && "fixed"} top={showResults && 0}
-      >
-        {/* <OverlayIcon onClick={() => setShowResults(!showResults)}>
+    >
+      {/* <OverlayIcon onClick={() => setShowResults(!showResults)}>
           <Icon icon={<Arrow transform="" />} />
         </OverlayIcon> */}
 
-        <Input
-          name="searchAddress"
-          type="text"
-          leadingIcon={<Location />}
-          leadingIconClick={() => showResults ? setShowResults(false) : handleSetClose()}
-          placeholder={"searchAddress"}
-          // placeholder={t("searchAddress")}
-          onChange={(event) => onChange(event?.target?.value)}
-          onClick={() => {
-            setShowResults(true)
-            setDetectLocationIcons(true)
-          }}
-          value={searchTerm}
-        />
-      </Box>
-
+      <Input
+        name="searchAddress"
+        type="text"
+        leadingIcon={
+          showResults ? <Arrow transform="rotate(180)" /> : <Location />
+        }
+        leadingIconClick={() =>
+          showResults ? setShowResults(false) : setShowResults(true)
+        }
+        placeholder={"searchAddress"}
+        trailingIcon={<Close />}
+        trailingIconClick={
+          searchTerm.length > 0
+            ? () => {
+                setSearchTerm("");
+                setResults([]);
+                formik.setFieldValue("address", "");
+              }
+            : undefined
+        }
+        // placeholder={t("searchAddress")}
+        onChange={(event) => onChange(event?.target?.value)}
+        onClick={() => {
+          setShowResults(true);
+          setDetectLocationIcons(true);
+        }}
+        value={searchTerm}
+      />
 
       {showResults && (
         <ResultsContainer>
@@ -143,58 +160,101 @@ const Geocoder: FC<GeocoderProps> = ({ statefulMap, placeholder, finalAddress, h
               item={item}
             >
               <Box>
-                <Box width="46px" justifyContent="center" alignItems="center"> <Icon icon={<Location />} /></Box>
-                <Box flexDirection="column" width="calc(100%  - 70px)" >
-                  <Box flexDirection="column" marginBlock="10px">
-                    <Typography variant="bodyBg" fontWeight={600}> {item?.text}</Typography>
-                    <Typography variant="bodySm"> {item?.context[0]?.text}, {item?.context[1]?.text} </Typography>
+                <Box
+                  width="46px"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Icon icon={<Location />} />
+                </Box>
+                <Box
+                  flexDirection="column"
+                  width="calc(100%  - 70px)"
+                >
+                  <Box
+                    flexDirection="column"
+                    marginBlock="10px"
+                  >
+                    <Typography
+                      variant="bodyBg"
+                      fontWeight={600}
+                    >
+                      {item?.text}
+                    </Typography>
+                    <Typography variant="bodySm">
+                      {item?.context[0]?.text}, {item?.context[1]?.text}{" "}
+                    </Typography>
                   </Box>
                   <Divider />
                 </Box>
-
               </Box>
             </Result>
-
-
           ))}
           {detectLocationIcons && (
             <>
-              <Result
-                onClick={handleGeolocate}
-              >
+              <Result onClick={handleGeolocate}>
                 <Box>
-                  <Box width="46px" justifyContent="center" alignItems="center"> <Icon icon={<Locate />} /></Box>
-                  <Box flexDirection="column" width="calc(100%  - 70px)" >
-                    <Box flexDirection="column" marginBlock="20px">
-                      <Typography variant="bodyBg" fontWeight={600}> Standort verwenden</Typography>
+                  <Box
+                    width="46px"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Icon icon={<Locate />} />
+                  </Box>
+                  <Box
+                    flexDirection="column"
+                    width="calc(100%  - 70px)"
+                  >
+                    <Box
+                      flexDirection="column"
+                      marginBlock="20px"
+                    >
+                      <Typography
+                        variant="bodyBg"
+                        fontWeight={600}
+                      >
+                        Standort verwenden
+                      </Typography>
                     </Box>
                     <Divider />
                   </Box>
                 </Box>
               </Result>
 
-              <Result
-                onClick={() => setShowResults(false)}
-              >
+              <Result onClick={() => setShowResults(false)}>
                 <Box>
-                  <Box width="46px" justifyContent="center" alignItems="center"> <IdeaPin transform="scale(0.7)" /></Box>
-                  <Box flexDirection="column" width="calc(100%  - 70px)" >
-                    <Box flexDirection="column" marginBlock="20px">
-                      <Typography variant="bodyBg" fontWeight={600}> Ort auf der Karte finden</Typography>
+                  <Box
+                    width="46px"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <IdeaPin transform="scale(0.7)" />
+                  </Box>
+                  <Box
+                    flexDirection="column"
+                    width="calc(100%  - 70px)"
+                  >
+                    <Box
+                      flexDirection="column"
+                      marginBlock="20px"
+                    >
+                      <Typography
+                        variant="bodyBg"
+                        fontWeight={600}
+                      >
+                        Ort auf der Karte finden
+                      </Typography>
                     </Box>
                   </Box>
                 </Box>
               </Result>
             </>
           )}
-
         </ResultsContainer>
-      )
-      }
-    </React.Fragment >
+      )}
+    </Box>
   );
-
-}
+};
 
 // Geocoder.propTypes = {
 //   timeout: PropTypes.number,

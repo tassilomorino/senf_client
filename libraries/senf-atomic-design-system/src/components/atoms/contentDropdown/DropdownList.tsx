@@ -23,7 +23,7 @@ const DropdownList: FC<DropdownListContainerProps> = ({
         size={options?.size}
         onClick={e => onItemClick(item, e)}
       />
-    )) : null
+    )) : data || null
 };
 
 export default DropdownList;

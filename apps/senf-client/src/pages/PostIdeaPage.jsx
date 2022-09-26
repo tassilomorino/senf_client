@@ -234,7 +234,6 @@ const PostIdeaPage = ({
     });
   };
 
-
   const geocode = (viewport) => {
     const geocodingClient = mbxGeocoding({
       accessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,
@@ -267,14 +266,14 @@ const PostIdeaPage = ({
       viewport.longitude < 6.712 ||
       viewport.longitude > 7.17
     ) {
-      alert("Außerhalb von Köln kannst du leider noch keine Ideen teilen.");
+      // alert("Außerhalb von Köln kannst du leider noch keine Ideen teilen.");
 
       setOut(true);
     } else {
       setOut(false);
     }
   };
-  const newViewport = useRef()
+  const newViewport = useRef();
 
   statefulMap.on("moveend", () => {
     newViewport.current = {
@@ -283,7 +282,6 @@ const PostIdeaPage = ({
     };
     geocode(newViewport.current);
   });
-
 
   const handleLocationDecided = () => {
     if (formik.values.address) {
@@ -320,7 +318,8 @@ const PostIdeaPage = ({
         <AuthFirst
           isMobile={isMobileCustom}
           locationDecided={locationDecided}
-          onClick={() => openModal(<AuthModal />, { swipe: !!isMobileCustom, size: "md" })
+          onClick={() =>
+            openModal(<AuthModal />, { swipe: !!isMobileCustom, size: "md" })
           }
         />
       )}

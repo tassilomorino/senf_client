@@ -198,7 +198,7 @@ const MapDialog = ({ mapOpen, setMapOpen, drawnPolygon, setDrawnPolygon }) => {
       </Title>
 
       <Map
-        mapType="draw"
+        mapType={{ drawType: "area" }}
         initialMapViewport={initialMapViewport}
         statefulMap={statefulMap}
         setStatefulMap={setStatefulMap}

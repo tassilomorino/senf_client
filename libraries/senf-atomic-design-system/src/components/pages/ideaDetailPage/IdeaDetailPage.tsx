@@ -55,6 +55,7 @@ import Skeleton from "../../atoms/skeleton/Skeleton";
 import EditIdeaPage from "../editIdeaPage/EditIdeaPage";
 import { useModals } from "../../molecules/modalStack/ModalProvider";
 import Avatar from "../../atoms/avatar/Avatar";
+import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
 
 const DragWrapper = styled(animated.div) <IdeaDetailPageProps>`
   display: flex;
@@ -308,45 +309,30 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
       <DetailSidebar
         handleButtonClose={() => handle.closeCard(false)}
         SecondButton={
-          <ContentDropdown
-            open={socialmediaShareDropdownOpen}
-            setOpen={setSocialmediaShareDropdownOpen}
-            direction={isMobile ? "downLeft" : "downRight"}
-            openButton={
-              <Button
-                size="medium"
-                variant="white"
-                onClick={handleShareIdea}
-                icon={<Share />}
+          <DropdownButton
+            size="md"
+            width="height"
+            variant="white"
+
+            icon="Share"
+            data={
+              <SocialmediaShare
+                path={path}
+                handleShareIdeaVia={handle.shareIdeaVia}
               />
-            }
-            content={
-              <Box gap="5px" flexDirection="column">
-                <SocialmediaShare
-                  path={path}
-                  handleShareIdeaVia={handle.shareIdeaVia}
-                />
-              </Box>
             }
           />
         }
         ThirdButton={
-          <ContentDropdown
-            open={editIdeaDropdownOpen}
-            setOpen={setEditIdeaDropdownOpen}
-            direction={isMobile ? "downLeft" : "downRight"}
-            openButton={
-              <Button
-                size="medium"
-                variant="white"
-                onClick={() => setEditIdeaDropdownOpen(!editIdeaDropdownOpen)}
-                icon={<More />}
-              />
-            }
-            content={
-              <Box gap="5px" flexDirection="column">
-                {user?.userId === userId || user?.isSuperAdmin === true || user?.isAdmin === true ? (
-                  <React.Fragment>
+          <DropdownButton
+            size="medium"
+            variant="white"
+            width="height"
+            icon="More"
+            data={
+              user?.userId === userId || user?.isSuperAdmin === true || user?.isAdmin === true  || true ? (
+                    <Box gap="5px" flexDirection="column">
+                <React.Fragment>
                     <ModalButton
                       variant={"tertiary"}
                       size="small"
@@ -385,17 +371,13 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                     >
                     </ModalButton>
                   </React.Fragment>
-                ) : (
-                  <Button
-                    variant={"secondary"}
-                    size="small"
-                    text={t("idea.report")}
-                    justifyContent="flex-start"
-                    onClick={() => handle.reportIdea(screamId)}
-                    icon={<Report />}
-                  />
-                )}
-              </Box>
+                  </Box>
+                ) : 
+                  [{
+                    text: t("idea.report"),
+                    onClick: () => handle.reportIdea(screamId),
+                    leadingIcon: "Report"
+                  }]
             }
           />
         }

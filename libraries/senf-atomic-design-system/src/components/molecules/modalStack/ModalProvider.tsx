@@ -58,7 +58,7 @@ const ModalProvider = ({
     }
 
 
-    const openModal = async (data: JSX.Element, options?: ModalOptions, reset?: boolean) => {
+    const openModal = async (data: JSX.Element | null, options?: ModalOptions, reset?: boolean) => {
       const DefaultComponent = () => <div />
       const { type, props } = data || <DefaultComponent />
       if (reset) dismissAll()
@@ -98,7 +98,7 @@ const ModalProvider = ({
 
     return {
       stack,
-      setModal: (data, options?: ModalOptions) => openModal(data, options, true),
+      setModal: (data: JSX.Element, options?: ModalOptions) => openModal(data, options, true),
       openModal,
       closeModal,
       closeModals: dismiss,

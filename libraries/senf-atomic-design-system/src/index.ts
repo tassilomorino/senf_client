@@ -43,6 +43,7 @@ export { default as Vereine } from "./assets/icons/Vereine";
 export { default as WhatsApp } from "./assets/icons/WhatsApp";
 
 export { default as LogoText } from "./assets/logo/LogoText";
+export { default as DashboardIcon } from "./assets/icons/DashboardIcon";
 
 export {
   LayerWhiteGradientBordersDefault,
@@ -63,6 +64,8 @@ export {
 export { default as Loader } from "./components/atoms/animations/Loader";
 export { default as MainLoader } from "./components/atoms/animations/MainLoader";
 export { default as Map } from "./components/atoms/map/Map";
+export { default as ExpandMap } from "./components/atoms/map/ExpandMap";
+
 export { default as Geocoder } from "./components/atoms/geocoder/Geocoder";
 export { default as SimpleBarChart } from "./components/atoms/charts/SimpleBarChart";
 
@@ -101,7 +104,10 @@ export { default as SubNavbar } from "./components/molecules/navs/SubNavbar";
 export { default as Tabs } from "./components/molecules/tabs/Tabs";
 
 export { default as ModalButton } from "./components/molecules/modalStack/ModalButton";
-export { default as ModalProvider, useModals } from "./components/molecules/modalStack/ModalProvider";
+export {
+  default as ModalProvider,
+  useModals,
+} from "./components/molecules/modalStack/ModalProvider";
 
 export { default as Accordion } from "./components/molecules/accordion/Accordion";
 export { default as TagSlide } from "./components/molecules/tagSlide/TagSlide";
