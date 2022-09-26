@@ -11,6 +11,7 @@ import { LayerWhiteFirstDefault } from "../../atoms/layerStyles/LayerStyles";
 import Geocoder from "../../atoms/geocoder/Geocoder";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 import { Arrow } from "../../../assets/icons";
+import SwipeModal from "../../molecules/modals/SwipeModal";
 
 const Wrapper = styled.div`
   z-index: 999;
@@ -157,17 +158,22 @@ const PostIdea: FC<PostIdeaProps> = ({
               zIndex="999"
               width="100%"
             >
-              <PostIdeaForm
-                formik={formik}
-                statefulMap={statefulMap}
-                checkIfCalendar={checkIfCalendar}
-                selectedDays={selectedDays}
-                handleChangeCalendar={handleChangeCalendar}
-                setPostIdeaOpen={setPostIdeaOpen}
-                handleSubmit={handleSubmit}
-                loading={loading}
-                Out={Out}
-              />
+              <SwipeModal
+                onClose={() => setPostIdeaOpen(false)}
+                overflowing={true}
+              >
+                <PostIdeaForm
+                  formik={formik}
+                  statefulMap={statefulMap}
+                  checkIfCalendar={checkIfCalendar}
+                  selectedDays={selectedDays}
+                  handleChangeCalendar={handleChangeCalendar}
+                  setPostIdeaOpen={setPostIdeaOpen}
+                  handleSubmit={handleSubmit}
+                  loading={loading}
+                  Out={Out}
+                />
+              </SwipeModal>
             </Box>
           )}
         </>
