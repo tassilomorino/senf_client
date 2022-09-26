@@ -69,7 +69,7 @@ const SuccessSubmitIdea: FC<SuccessSubmitIdeaProps> = ({ }) => {
               <Button
                 variant="secondary"
                 text="zum Organisationsprofil"
-                fillWidth="150px"
+                width="150px"
               />
               <Typography variant="h3">FAQ</Typography>
 

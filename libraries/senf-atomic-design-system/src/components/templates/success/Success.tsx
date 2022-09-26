@@ -70,17 +70,17 @@ const Success: FC<SuccessProps> = ({ variant, loading, setOrder }) => {
         <Box gap="16px" flexDirection="column">
           <Button
             variant="white"
-            fillWidth="max"
+            width="max"
             text="Über Socialmedia teilen"
             iconLeft={<Bulb />}
             iconRight={<Arrow />}
-            // loading={googleLoading}
-            // onClick={() => setGoogleLoading(true)}
+          // loading={googleLoading}
+          // onClick={() => setGoogleLoading(true)}
           />
 
           <Button
             variant="white"
-            fillWidth="max"
+            width="max"
             text="Beraten lassen"
             iconRight={<Arrow />}
             loading={loading}
@@ -91,24 +91,24 @@ const Success: FC<SuccessProps> = ({ variant, loading, setOrder }) => {
             variant="white"
             text="Zu deiner Idee"
             iconRight={<Arrow />}
-            // loading={googleLoading}
-            // onClick={() => setGoogleLoading(true)}
+          // loading={googleLoading}
+          // onClick={() => setGoogleLoading(true)}
           />
           <Divider />
           <Button
             variant="white"
-            fillWidth="max"
+            width="max"
             text="Neue Idee teilen"
             icon={<Bulb />}
-            // loading={googleLoading}
-            // onClick={() => setGoogleLoading(true)}
+          // loading={googleLoading}
+          // onClick={() => setGoogleLoading(true)}
           />
           <TertiaryButton
             variant="white"
             text="Zur Startseite"
             iconRight={<Arrow />}
-            // loading={googleLoading}
-            // onClick={() => setGoogleLoading(true)}
+          // loading={googleLoading}
+          // onClick={() => setGoogleLoading(true)}
           />
         </Box>
       </Box>

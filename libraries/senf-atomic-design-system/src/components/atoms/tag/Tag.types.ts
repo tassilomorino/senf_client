@@ -7,7 +7,7 @@ export interface TagProps {
   variant?: "primary" | "white" | "secondary" | "plus";
   icon?: React.ReactNode;
   iconColor?: string;
-  fillWidth?: "max" | undefined;
+  width?: "max" | undefined;
   active?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   hide?: boolean;

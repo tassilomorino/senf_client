@@ -202,7 +202,7 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
               variant="secondary"
               text={t("contact")}
               size="small"
-              fillWidth="max"
+              width="max"
               options={{
                 style: {
                   padding: 20,
@@ -240,7 +240,7 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
             variant="secondary"
             text={t("faq")}
             size="small"
-            fillWidth="max"
+            width="max"
             options={{
               style: {
                 padding: 20,
