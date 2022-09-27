@@ -131,7 +131,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
           width="100%"
         >
           <ModalButton
-            fillWidth="max"
+            width="max"
             variant="secondary"
             size="small"
             text={formik?.values.weblinkTitle || t("add_weblink")}
@@ -155,7 +155,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
           <ModalButton
             variant="secondary"
             size="small"
-            fillWidth="max"
+            width="max"
             text={formik?.values.contactTitle || t("add_contact")}
             icon={<Mail />}
             options={{
@@ -185,25 +185,27 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
           direction="upRight"
           open={topicDropdownOpen}
           setOpen={setTopicDropdownOpen}
-          OpenButton={
-            <Button
-              onClick={() => setTopicDropdownOpen(!topicDropdownOpen)}
-              text={formik?.values.topic || "Kategorie wählen"}
-              icon={
-                formik?.values?.topic ? (
-                  <Dot color={setColorByTopic(formik?.values?.topic)} />
-                ) : (
-                  <DotAllTopics />
-                )
-              }
-              iconRight={<Arrow transform="rotate(90)" />}
-              variant="secondary"
-              size="small"
-              fillWidth="max"
-              justifyContent="space-between"
-            />
+          openButton={
+            <>
+              <Button
+                onClick={() => setTopicDropdownOpen(!topicDropdownOpen)}
+                text={formik?.values.topic || "Kategorie wählen"}
+                icon={
+                  formik?.values?.topic ? (
+                    <Dot color={setColorByTopic(formik?.values?.topic)} />
+                  ) : (
+                    <DotAllTopics />
+                  )
+                }
+                iconRight={<Arrow transform="rotate(90)" />}
+                variant="secondary"
+                size="small"
+                width="max"
+                justifyContent="space-between"
+              />
+            </>
           }
-          Content={
+          content={
             <Box
               gap="5px"
               flexDirection="column"
@@ -244,7 +246,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
                 : "Termine hinzufügen"
             }
             size="small"
-            fillWidth="max"
+            width="max"
             icon={<CalendarIcon />}
             options={{
               style: {
