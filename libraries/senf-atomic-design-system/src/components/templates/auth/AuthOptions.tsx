@@ -34,7 +34,7 @@ const Divider = styled.div`
   color: ${({theme}) => theme.colors.black.black60tra};
   &:before, &:after {
     content: "";
-    height: ${({theme}) => `${theme.borderWidths[1]  }px`};
+    height: ${({theme}) => `${theme.borderWidths[1]}px`};
     width: 100%;
     background: currentColor;
     opacity: 0.5;
