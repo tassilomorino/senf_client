@@ -200,7 +200,7 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
             borderStyle="dashed"
             size="small"
             text={t("createOrganization")}
-            fillWidth="max"
+            width="max"
             onClick={handleOpenCreateOrganization}
 
           // onClick={

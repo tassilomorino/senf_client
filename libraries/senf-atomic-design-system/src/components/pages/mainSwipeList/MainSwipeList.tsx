@@ -465,7 +465,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
             </div> */}
               <RoundedButtonWrapper>
                 <RoundedButton
-                  size="big"
+                  size="lg"
                   icon={
                     <Plus
                       color={theme.colors.primary.primary120}
@@ -505,7 +505,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
                     variant="secondary"
                     borderStyle="dashed"
                     size="small"
-                    fillWidth="max"
+                    width="max"
                     onClick={handleCreateProjectroom}
                     text={t("createProjectRoom")}
                   />

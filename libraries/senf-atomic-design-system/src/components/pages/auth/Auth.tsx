@@ -210,7 +210,7 @@ const Auth: FC<AuthProps> = ({
           // >
           //   <Button
           //     variant="white"
-          //     fillWidth="max"
+          //     width="max"
           //     text="Abmelden"
           //     onClick={authHandler?.signOut}
           //   />

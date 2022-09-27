@@ -268,12 +268,13 @@ const PostScreamFormContent = ({
           )}
         </Box>
         <SelectContainer>
+          asd
           <StyledH3 fontWeight={400}>{t("topic")}: </StyledH3>
 
           <ContentDropdown
             open={topicDropdownOpen}
             setOpen={setTopicDropdownOpen}
-            OpenButton={
+            openButton={
               <TertiaryButton
                 onClick={() => setTopicDropdownOpen(!topicDropdownOpen)}
                 text={topic || t("select_topic")}
@@ -281,7 +282,7 @@ const PostScreamFormContent = ({
                 variant="semibold"
               />
             }
-            Content={
+            content={
               <Box gap="5px" flexDirection="column">
                 {Object.values(OptionsTopics()).map(({ name, label }) => (
                   <Box gap="5px">

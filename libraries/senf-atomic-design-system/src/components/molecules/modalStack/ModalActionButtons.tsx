@@ -14,7 +14,7 @@ const ModalActionButtons = ({ ...options }) => {
 		{cancelText &&
 			<Button
 				variant="secondary"
-				fillWidth="max"
+				width="max"
 				onClick={onClose}
 				text={cancelText}
 			/>
@@ -22,7 +22,7 @@ const ModalActionButtons = ({ ...options }) => {
 		{submitText &&
 			<Button
 				variant="primary"
-				fillWidth="max"
+				width="max"
 				onClick={() => onSubmit(modalPayload) || onClose()}
 				disabled={!!submitDisabled}
 				text={submitText}

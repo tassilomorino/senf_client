@@ -29,7 +29,7 @@ const Option = ({ opt, addOptions, deleteOptions, updateText }) => {
             deleteOptions(opt.uid);
           }}
           variant="secondary"
-          fillWidth="max"
+          width="max"
         >
           <b>-</b>
         </Button>

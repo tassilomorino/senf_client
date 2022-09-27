@@ -315,7 +315,7 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
 
                 <Box margin="10px" gap="20px" flexDirection="column" position="absolute" bottom="10px" width="calc(100% - 20px)">
                   <Typography variant="buttonBg" textAlign="center">Du hast eigene Modelle?</Typography>
-                  <ModalButton variant="primary" icon={<Plus />} text="3D Modell hochladen" fillWidth="max" options={{
+                  <ModalButton variant="primary" icon={<Plus />} text="3D Modell hochladen" width="max" options={{
                     style: {
                       padding: 20,
                     },

@@ -99,7 +99,7 @@ const PostScreamSelectContainter = ({
 
       <Box margin="0px 0px 10px 0px" justifyContent="center">
         <Button
-          fillWidth="max"
+          width="max"
           onClick={handleLocationDecided}
           text={t("confirmLocation")}
           disabled={!address}
@@ -112,7 +112,7 @@ const PostScreamSelectContainter = ({
         <ContentDropdown
           open={projectroomDropdownOpen}
           setOpen={setProjectroomDropdownOpen}
-          OpenButton={
+          openButton={
             <TertiaryButton
               onClick={() =>
                 setProjectroomDropdownOpen(!projectroomDropdownOpen)
@@ -126,7 +126,7 @@ const PostScreamSelectContainter = ({
               variant="semibold"
             />
           }
-          Content={
+          content={
             <Box gap="5px" flexDirection="column">
               {Object.values(OptionsProjects()).map(({ value, label }) => (
                 <Box gap="5px">

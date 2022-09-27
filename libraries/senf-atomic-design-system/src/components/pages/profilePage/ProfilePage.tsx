@@ -38,11 +38,12 @@ import Logout from "../../../assets/icons/Logout";
 import Edit from "../../../assets/icons/Edit";
 import Plus from "../../../assets/icons/Plus";
 import Skeleton from "../../atoms/skeleton/Skeleton";
-import ContentDropdownItem from "../../atoms/contentDropdownItem/ContentDropdownItem";
+import ContentDropdownItem from "../../atoms/contentDropdown/ContentDropdownItem";
 import ModalButton from "../../molecules/modalStack/ModalButton";
 import Auth from "../auth/Auth";
 import Avatar from "../../atoms/avatar/Avatar";
 import { useModals } from "../../molecules/modalStack/ModalProvider";
+import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
 
 const DragWrapper = styled(animated.div) <ProfilePageProps>`
   display: flex;
@@ -135,12 +136,8 @@ const ProfilePage: FC<ProfilePageProps> = ({
   const { openModal } = useModals();
   const isMobile = isMobileCustom();
   const [order, setOrder] = useState(1);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [swipePosition, setSwipePosition] = useState("top");
 
-  const handleToggle = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
 
   const [props, set] = useSpring(() => ({
     y: 0,
@@ -201,66 +198,53 @@ const ProfilePage: FC<ProfilePageProps> = ({
         handleButtonClose={() => handleButtonClose(false)}
         sideDivider={true}
         SecondButton={
-          (accountOwner || elevatedUser) && (<ContentDropdown
-            open={dropdownOpen}
-            setOpen={setDropdownOpen}
-            direction={isMobile ? "downLeft" : "downRight"}
-            OpenButton={
-              <Button
-                variant="white"
-                size="medium"
-                onClick={handleToggle}
-                icon={<More />}
-              />
-            }
-            Content={
-              <Box gap="5px" flexDirection="column">
-                <ContentDropdownItem
-                  text={t("profile.edit")}
-                  leadingIcon={<Edit />}
-                  onClick={handleSetAuthEditOpen}
-                />
-                <ContentDropdownItem
-                  text={t("logout")}
-                  leadingIcon={<Logout />}
-                  onClick={handleLogout}
-                />
-
-                {accountOwner && (
-                  // @todo: Elevated users cant delete other accounts
-                  // because we need to use firebaseAdmin SDK
-                  <ModalButton
-                    button={ContentDropdownItem}
-                    text={t("profile.delete")}
-                    icon={<Plus />}
-                    options={{
+          (accountOwner || elevatedUser) && (
+            <DropdownButton
+              variant="white"
+              width="height"
+              size="md"
+              icon="More"
+              data={[
+                {
+                  text: t("profile.edit"),
+                  leadingIcon: "Edit",
+                  onClick: handleSetAuthEditOpen
+                },
+                {
+                  text: t("logout"),
+                  leadingIcon: "Logout",
+                  onClick: handleLogout
+                },
+                accountOwner && (
+                // @todo: Elevated users cant delete other accounts
+                // because we need to use firebaseAdmin SDK
+                {
+                  text: t("profile.delete"),
+                  leadingIcon: "ArrowDown",
+                  onClick: () => openModal(null, {
+                    style: {
+                      padding: 20
+                    },
+                    title: t("contactModalTitle"),
+                    cancelText: t("cancel"),
+                    submitText: t('profile.delete'),
+                    onSubmit: () => openModal(null, {
                       style: {
-                        padding: 20
+                        padding: 20,
                       },
-                      title: t("contactModalTitle"),
-                      cancelText: t("cancel"),
-                      submitText: t('profile.delete'),
-                      onSubmit: () => openModal(null, {
-                        style: {
-                          padding: 20,
-                        },
-                        title: t('delete_account_confirm'),
-                        cancelText: t('cancel'),
-                        submitText: t('delete'),
-                        onSubmit: handleDeleteAccount,
-                      }),
-                    }}
-                  />
-                )}
-              </Box >
-
-            }
-
-          />)
+                      title: t('delete_account_confirm'),
+                      cancelText: t('cancel'),
+                      submitText: t('delete'),
+                      onSubmit: handleDeleteAccount})
+                })
+              })
+              ]}
+            />
+          )
         }
 
       />
-      < DragWrapper
+      <DragWrapper
         id="dragWrapper"
         style={props}
         {...bind()}

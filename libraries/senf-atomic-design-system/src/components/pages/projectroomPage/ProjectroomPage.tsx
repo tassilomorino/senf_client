@@ -30,7 +30,6 @@ import Info from "../../../assets/icons/Info";
 import More from "../../../assets/icons/More";
 
 import IdeaCard from "../../molecules/cards/IdeaCard";
-import ContentDropdown from "../../atoms/contentDropdown/ContentDropdown";
 import Button from "../../atoms/buttons/Button";
 import TagSlide from "../../molecules/tagSlide/TagSlide";
 import Plus from "../../../assets/icons/Plus";
@@ -46,6 +45,7 @@ import Skeleton from "../../atoms/skeleton/Skeleton";
 import RoundedButton from "../../atoms/buttons/RoundedButton";
 import { Stats } from "../../../assets/icons";
 import Loader from "../../atoms/animations/Loader";
+import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
 
 const Calendar = React.lazy(() => import("../../organisms/calendar/Calendar"));
 
@@ -344,21 +344,12 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
         handleButtonClose={() => handleButtonClose(false)}
         sideDivider={true}
         SecondButton={
-          <ContentDropdown
-            open={socialmediaShareDropdownOpen}
-            setOpen={setSocialmediaShareDropdownOpen}
-            direction={isMobile ? "downLeft" : "downRight"}
-            OpenButton={
-              <Button
-                variant="white"
-                size="medium"
-                onClick={() =>
-                  setSocialmediaShareDropdownOpen(!socialmediaShareDropdownOpen)
-                }
-                icon={<Share />}
-              />
-            }
-            Content={
+          <DropdownButton
+            variant="white"
+            size="medium"
+            width="height"
+            icon="Share"
+            data={
               <Box gap="5px" flexDirection="column">
                 <SocialmediaShare
                   path={path}
@@ -369,31 +360,17 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
           />
         }
         ThirdButton={
-          organizationCardData[3]?.includes(user?.userId) && (
-            <ContentDropdown
-              open={editDropdownOpen}
-              setOpen={setEditDropdownOpen}
-              direction={isMobile ? "downLeft" : "downRight"}
-              OpenButton={
-                <Button
-                  variant="white"
-                  size="medium"
-                  onClick={() => setEditDropdownOpen(!editDropdownOpen)}
-                  icon={<More />}
-                />
-              }
-              Content={
-                <Box gap="5px" flexDirection="column">
-                  <Button
-                    variant={"secondary"}
-                    size="small"
-                    justifyContent="flex-start"
-                    text={t("Projektraum bearbeiten")}
-                    onClick={handleEditProjectroom}
-                    icon={<Edit />}
-                  />
-                </Box>
-              }
+          organizationCardData[3]?.includes(user?.userId) || true && (
+            <DropdownButton
+              variant="white"
+              size="medium"
+              width="height"
+              icon="More"
+              data={[{
+                  text: t("Projektraum bearbeiten"),
+                  onClick: handleEditProjectroom,
+                  leadingIcon: "Edit"
+                }]}
             />
           )
         }
@@ -458,7 +435,7 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
 
             <RoundedButtonWrapper swipedUp={isMobile && swipedUp}>
               <RoundedButton
-                size="big"
+                size="lg"
                 icon={
                   <Plus
                     color={theme.colors.primary.primary120}

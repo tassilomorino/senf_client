@@ -1,19 +1,20 @@
 /** @format */
 
-import React, { MouseEventHandler } from "react";
-import { ContentDropdownItemProps } from "../contentDropdownItem/ContentDropdownItem.types";
-import { ToggleInputProps } from "../toggleInput/ToggleInput.types";
+import React from "react";
+import { ContentDropdownItemProps } from "../contentDropdown/ContentDropdownItem.types";
 
-export interface ContentDropdownProps {
-  example?: string;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
-  OpenButton?: React.ReactNode;
-  Content?: React.ReactNode;
-  openButtonWidth?: string;
-  open?: boolean;
-  setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-  direction?: "downLeft" | "downRight" | "upLeft" | "upRight";
-  data?: ContentDropdownItemProps[];
-  itemType?: ToggleInputProps["type"];
-  size?: ContentDropdownItemProps["size"];
+export interface DropdownListContainerProps {
+  data?: ContentDropdownItemProps[] | Element,
+  options?: {
+    title?: string,
+    size?: ContentDropdownItemProps["size"],
+    itemType?: ContentDropdownItemProps["type"],
+    minWidth?: ContentDropdownItemProps["minWidth"],
+    modal?: boolean
+    open?: boolean
+    setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+    closeOnSelect?: boolean // close dropdown on item select
+    x?: string
+    y?: string
+  }
 }

@@ -24,6 +24,23 @@ import Arrow from "../../../assets/icons/Arrow";
 import theme from "../../../styles/theme";
 import { useModals } from "../../molecules/modalStack/ModalProvider";
 
+const Divider = styled.div`
+  padding-block: 1rem;
+  margin-bottom: 1rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: ${({theme}) => theme.colors.black.black60tra};
+  &:before, &:after {
+    content: "";
+    height: ${({theme}) => `${theme.borderWidths[1]}px`};
+    width: 100%;
+    background: currentColor;
+    opacity: 0.5;
+  }
+`
+
 const AuthOptions: FC<AuthOptionsProps> = ({
   authHandler,
   setPage,
@@ -70,7 +87,7 @@ const AuthOptions: FC<AuthOptionsProps> = ({
       <Box gap="16px" flexDirection="column">
         <Button
           variant="white"
-          fillWidth="max"
+          width="max"
           text="Mit Google anmelden"
           icon={<Google />}
           loading={!!authHandler?.loading.google}
@@ -79,7 +96,7 @@ const AuthOptions: FC<AuthOptionsProps> = ({
 
         <Button
           variant="white"
-          fillWidth="max"
+          width="max"
           text="Mit Facebook anmelden"
           loading={!!authHandler?.loading.facebook}
           icon={<Facebook />}
@@ -91,9 +108,7 @@ const AuthOptions: FC<AuthOptionsProps> = ({
           </Typography>
         )}
       </Box>
-      <br />
-      <span style={{ textAlign: "center" }}>oder</span>
-      <br />
+      <Divider>oder</Divider>
       <Box gap="16px" flexDirection="column">
         <Input
           name="email"
@@ -223,7 +238,7 @@ const AuthOptions: FC<AuthOptionsProps> = ({
         </Box> */}
       {/* <Button
           variant="white"
-          fillWidth="max"
+          width="max"
           text="Anmelden"
           loading={loading}
           onClick={

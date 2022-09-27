@@ -9,10 +9,10 @@ export interface ButtonProps {
   iconRight?: React.ReactNode;
   transform?: string;
   borderStyle?: "dashed" | "solid";
-  fillWidth?: "max" | undefined;
+  width?: "max" | "height" | number;
   loading?: boolean;
   disabled?: boolean;
-  size?: "small" | "medium" | "big";
+  size?: "small" | "medium" | "large" | "sm" | "md" | "lg";
   color?: string;
   justifyContent?:
   | "center"

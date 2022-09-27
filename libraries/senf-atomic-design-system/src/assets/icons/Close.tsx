@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { FC } from "react";
+import { FC } from "react";
 import Plus from "./Plus";
 
 const Close: FC = ({ ...props }) => (

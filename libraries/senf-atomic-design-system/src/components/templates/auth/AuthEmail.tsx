@@ -159,7 +159,7 @@ const AuthEmail: FC<AuthEmailProps> = ({
       </Box>
       <Button
         variant="white"
-        fillWidth="max"
+        width="max"
         text={variantState === "register" ? t("register") : t("login")}
         loading={authHandler.loading.email}
 

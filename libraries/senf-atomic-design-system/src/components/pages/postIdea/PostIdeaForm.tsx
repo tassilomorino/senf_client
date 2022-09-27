@@ -17,7 +17,7 @@ import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 import Box from "../../atoms/box/Box";
 import Button from "../../atoms/buttons/Button";
 import ContentDropdown from "../../atoms/contentDropdown/ContentDropdown";
-import ContentDropdownItem from "../../atoms/contentDropdownItem/ContentDropdownItem";
+import ContentDropdownItem from "../../atoms/contentDropdown/ContentDropdownItem";
 import Divider from "../../atoms/divider/Divider";
 import Input from "../../atoms/inputs/Input";
 import Typography from "../../atoms/typography/Typography";

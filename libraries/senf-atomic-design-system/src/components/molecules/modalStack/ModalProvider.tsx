@@ -7,8 +7,10 @@
  */
 
 import React, { useMemo, useState, useContext } from 'react'
+import styled from "styled-components";
 import ModalStack from "./ModalStack";
 import Background from "./Background";
+
 
 import { ModalProps, ModalStackValue, ModalOptions } from "./ModalStack.types";
 
@@ -21,14 +23,17 @@ export interface ModalStackProps {
 
 const ModalStackContext = React.createContext({} as ModalStackValue)
 
-
+const ModalStackWrapper = styled.div`
+  z-index: 99999;
+  position: fixed;
+`
 const Modals = ({ stack, closeModal }: ModalStackValue) => {
 
   return (
-    <>
+    <ModalStackWrapper>
       <ModalStack stack={stack} closeModal={closeModal} />
       <Background stack={stack} closeModal={closeModal} />
-    </>
+    </ModalStackWrapper>
   )
 }
 
@@ -58,7 +63,7 @@ const ModalProvider = ({
     }
 
 
-    const openModal = async (data: JSX.Element, options?: ModalOptions, reset?: boolean) => {
+    const openModal = async (data: JSX.Element | null, options?: ModalOptions, reset?: boolean) => {
       const DefaultComponent = () => <div />
       const { type, props } = data || <DefaultComponent />
       if (reset) dismissAll()
@@ -98,7 +103,7 @@ const ModalProvider = ({
 
     return {
       stack,
-      setModal: (data, options?: ModalOptions) => openModal(data, options, true),
+      setModal: (data: JSX.Element, options?: ModalOptions) => openModal(data, options, true),
       openModal,
       closeModal,
       closeModals: dismiss,

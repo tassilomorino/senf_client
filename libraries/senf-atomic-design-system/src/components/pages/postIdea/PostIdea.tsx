@@ -76,7 +76,7 @@ const PostIdea: FC<PostIdeaProps> = ({
 
       <Button
         variant="tertiary"
-        size="big"
+        size="lg"
         text={t("Abbrechen")}
         justifyContent="flex-start"
         onClick={() => setPostIdeaOpen(false)}
@@ -106,11 +106,10 @@ const PostIdea: FC<PostIdeaProps> = ({
       {!isMobile && formik?.values.address && formik?.values.address !== "" && (
         <Button
           variant="primary"
-          size="big"
+          size="lg"
           text={t("Weiter")}
-          fillWidth={"max"}
-          onClick={() => setAddressSelected(true)}
-        ></Button>
+          width="max"
+          onClick={() => setAddressSelected(true)}></Button>
       )}
     </Box>
   );
@@ -150,9 +149,9 @@ const PostIdea: FC<PostIdeaProps> = ({
             >
               <Button
                 variant="primary"
-                size="big"
+                size="lg"
                 text={t("Weiter")}
-                fillWidth={"max"}
+                width={"max"}
                 onClick={() => setAddressSelected(true)}
               ></Button>
             </Box>
