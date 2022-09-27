@@ -93,12 +93,12 @@ const PostIdeaSuccess: FC<SuccessProps> = ({
             <Button
               text={t("success_page_get_advice")}
               variant="white"
-              fillWidth="max"
+              width="max"
             />
           </Box>
           <Button
             text={t("success_page_create_new_idea")}
-            fillWidth="max"
+            width="max"
             variant="white"
             onClick={() => {
               setPostIdeaSuccessModalOpen(false);
