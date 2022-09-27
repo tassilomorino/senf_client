@@ -12,6 +12,7 @@ import Geocoder from "../../atoms/geocoder/Geocoder";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 import { Arrow } from "../../../assets/icons";
 import SwipeModal from "../../molecules/modals/SwipeModal";
+import SuccessSubmitIdea from "../success/SuccessSubmitIdea";
 
 const Wrapper = styled.div`
   z-index: 999;
@@ -53,9 +54,12 @@ const PostIdea: FC<PostIdeaProps> = ({
   loading,
   Out,
   setPostIdeaOpen,
+  successModalOpen,
+  setSuccessModalOpen,
 }) => {
   const { t } = useTranslation();
   const [postIdeaForm, setPostIdeaForm] = React.useState(false);
+
   const [addressSelected, setAddressSelected] = React.useState(false);
   const isMobile = isMobileCustom();
   const createIdeaHeader = (
@@ -110,7 +114,7 @@ const PostIdea: FC<PostIdeaProps> = ({
   );
   return (
     <>
-      {isMobile && (
+      {isMobile && !successModalOpen && (
         <>
           <Box
             position="fixed"
@@ -151,7 +155,7 @@ const PostIdea: FC<PostIdeaProps> = ({
               ></Button>
             </Box>
           )}
-          {isMobile && addressSelected && (
+          {addressSelected && (
             <Box
               position="fixed"
               bottom="0px"
@@ -178,6 +182,7 @@ const PostIdea: FC<PostIdeaProps> = ({
           )}
         </>
       )}
+      {isMobile && successModalOpen && <SuccessSubmitIdea />}
 
       {!isMobile && (
         <Wrapper>

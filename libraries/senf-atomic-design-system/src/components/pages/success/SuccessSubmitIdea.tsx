@@ -34,18 +34,22 @@ const Img = styled.img`
   user-select: none;
 `;
 
-const SuccessSubmitIdea: FC<SuccessSubmitIdeaProps> = ({ }) => {
+const SuccessSubmitIdea: FC<SuccessSubmitIdeaProps> = ({}) => {
   const [order, setOrder] = useState(1);
-  const setOpenModal = () => { };
+  const setOpenModal = () => {};
   return (
     <SwipeModal
       openModal={true}
       setOpenModal={setOpenModal}
       zIndex="999999999"
       backgroundColor={theme.colors.beige.beige20}
-      onDrag={(e) => { console.log(e) }}
     >
-      <Box margin="24px" position="fixed" zIndex={999} top="0">
+      <Box
+        margin="24px"
+        position="fixed"
+        zIndex={999}
+        top="0"
+      >
         <RoundedButton
           icon={<Plus transform="rotate(45)" />}
           onClick={() => setOrder(1)}

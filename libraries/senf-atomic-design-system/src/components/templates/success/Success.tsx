@@ -8,6 +8,7 @@ import Box from "../../atoms/box/Box";
 import { SuccessProps } from "./Success.types";
 
 import SenfManCelebrating from "../../../assets/illustrations/SenfManCelebrating.png";
+import SkewedCircle from "../../../assets/illustrations/SkewedCircle.png";
 import Typography from "../../atoms/typography/Typography";
 import { openLink } from "../../../util/helpers";
 import Wave from "../../atoms/shapes/Wave";
@@ -20,6 +21,7 @@ import RoundedButton from "../../atoms/buttons/RoundedButton";
 import Plus from "../../../assets/icons/Plus";
 import Divider from "../../atoms/divider/Divider";
 import TertiaryButton from "../../atoms/buttons/TertiaryButton";
+import theme from "../../../styles/theme";
 
 const Wrapper = styled.div<SuccessProps>`
   position: relative;
@@ -29,12 +31,19 @@ const Wrapper = styled.div<SuccessProps>`
   overflow: hidden;
 `;
 
-const Img = styled.img`
+const SenfManCelebratingImg = styled.img`
   position: absolute;
-  right: -49px;
-  margin-top: 55px;
-  width: 226px;
+  left: 30%;
+
   z-index: 1;
+  pointer-events: none;
+  user-select: none;
+`;
+const SkewedCircleImg = styled.img`
+  position: absolute;
+  left: 8.18%;
+  top: 10%;
+  z-index: 0;
   pointer-events: none;
   user-select: none;
 `;
@@ -43,18 +52,87 @@ const Success: FC<SuccessProps> = ({ variant, loading, setOrder }) => {
   const { t } = useTranslation();
 
   return (
-    <Wrapper>
-      <Wave color="#fed957" top="170px" />
-
-      <Img src={SenfManCelebrating} alt="Illustration" />
-
+    <>
+      <SenfManCelebratingImg
+        src={SenfManCelebrating}
+        alt="Illustration"
+      />
+      <SkewedCircleImg
+        src={SkewedCircle}
+        alt="Illustration"
+      />
       <Box
+        display="flex"
         flexDirection="column"
-        margin="180px 10% 0px 10%"
+        alignItems="center"
         position="relative"
-        zIndex={9999}
+        padding="0px 36px 24px 36px"
+        justifyContent="space-evenly"
+        height="100vh"
+        width="100%"
+        zIndex={999}
       >
-        <Typography variant="h1" style={{ position: "relative" }}>
+        <Box
+          flexDirection="column"
+          paddingTop="175px"
+          gap="20px"
+        >
+          <Typography
+            variant="h1"
+            textAlign="center"
+            style={{ position: "relative" }}
+          >
+            {t("success_page_published")}
+          </Typography>
+          <Button
+            text="Idee auf Social Media teilen"
+            variant="white"
+            fillWidth="max"
+          />
+        </Box>
+        <Box
+          gap="24px"
+          flexDirection="column"
+        >
+          <Typography
+            variant="buttonBg"
+            textAlign="center"
+          >
+            Du möchtest die Umsetzung deiner Idee selbst in die Hand nehmen und
+            weißt nicht wie du anfangen sollst?
+          </Typography>
+          <Box
+            flexDirection="column"
+            gap="16px"
+          >
+            <Button
+              text="Lasse dich beraten"
+              variant="white"
+              fillWidth="max"
+            />
+          </Box>
+          <Button
+            text="Neue Idee erstellen"
+            fillWidth="max"
+            variant="white"
+          />
+        </Box>
+        <Box
+          flexDirection="row"
+          justifyContent="space-between"
+          width="100%"
+        >
+          <Button
+            text="Zu deiner Idee"
+            variant="tertiary"
+          />
+          <Button
+            text="Zur Startseite"
+            variant="tertiary"
+          />
+        </Box>
+
+        {/*  <Typography variant="h1" style={{ position: "relative" }}>
           Super,
         </Typography>
 
@@ -110,9 +188,9 @@ const Success: FC<SuccessProps> = ({ variant, loading, setOrder }) => {
             // loading={googleLoading}
             // onClick={() => setGoogleLoading(true)}
           />
-        </Box>
+        </Box> */}
       </Box>
-    </Wrapper>
+    </>
   );
 };
 

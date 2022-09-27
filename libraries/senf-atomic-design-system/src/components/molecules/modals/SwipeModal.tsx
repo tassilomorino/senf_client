@@ -126,7 +126,7 @@ const SwipeModal: FC<SwipeModalProps> = ({
     api.start({
       y: 0,
       immediate: false,
-      config: canceled ? config.wobbly : config.stiff,
+      config: canceled ? config.wobbly : config.gentle,
     });
   };
   const close = (velocity = 0) => {
