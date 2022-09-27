@@ -252,8 +252,6 @@ const PostIdeaPage = ({
       .send()
       .then((response) => {
         const match = response.body;
-        console.log(match);
-
         const houseNumber =
           match.features[0].address !== undefined
             ? match.features[0].address
