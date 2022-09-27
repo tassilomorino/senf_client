@@ -236,6 +236,7 @@ const PostIdeaPage = ({
       // setPostIdeaOpen(false);
       setPostIdeaSuccessModalOpen(true);
       setNewIdea(data);
+      formik.resetForm();
     });
   };
 
