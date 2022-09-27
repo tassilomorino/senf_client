@@ -7,8 +7,8 @@ import Button from "../../atoms/buttons/Button";
 import Box from "../../atoms/box/Box";
 import { SuccessProps } from "./Success.types";
 
-import SenfManCelebrating from "../../../assets/illustrations/SenfManCelebrating.png";
-import SkewedCircle from "../../../assets/illustrations/SkewedCircle.png";
+import senfManCelebrating from "../../../assets/illustrations/SenfManCelebrating.png";
+import skewedCircle from "../../../assets/illustrations/SkewedCircle.png";
 import Typography from "../../atoms/typography/Typography";
 import { openLink } from "../../../util/helpers";
 
@@ -29,17 +29,22 @@ const SkewedCircleImg = styled.img`
   user-select: none;
 `;
 
-const Success: FC<SuccessProps> = ({}) => {
+const Success: FC<SuccessProps> = ({
+  navigate,
+  setPostIdeaSuccessModalOpen,
+  setPostIdeaOpen,
+  newIdea,
+}) => {
   const { t } = useTranslation();
 
   return (
     <>
       <SenfManCelebratingImg
-        src={SenfManCelebrating}
+        src={senfManCelebrating}
         alt="Illustration"
       />
       <SkewedCircleImg
-        src={SkewedCircle}
+        src={skewedCircle}
         alt="Illustration"
       />
       <Box
@@ -95,6 +100,10 @@ const Success: FC<SuccessProps> = ({}) => {
             text={t("success_page_create_new_idea")}
             fillWidth="max"
             variant="white"
+            onClick={() => {
+              setPostIdeaSuccessModalOpen(false);
+              setPostIdeaOpen(true);
+            }}
           />
         </Box>
         <Box
@@ -105,10 +114,20 @@ const Success: FC<SuccessProps> = ({}) => {
           <Button
             text={t("success_page_to_your_idea")}
             variant="tertiary"
+            onClick={() => {
+              setPostIdeaSuccessModalOpen(false);
+              setPostIdeaOpen(false);
+              navigate(`/idea/${newIdea.screamId}`);
+            }}
           />
           <Button
             text={t("success_page_to_idea_list")}
             variant="tertiary"
+            onClick={() => {
+              setPostIdeaSuccessModalOpen(false);
+              setPostIdeaOpen(false);
+              navigate("/");
+            }}
           />
         </Box>
       </Box>

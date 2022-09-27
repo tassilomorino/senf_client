@@ -35,8 +35,10 @@ const Img = styled.img`
 `;
 
 const SuccessSubmitIdea: FC<SuccessSubmitIdeaProps> = ({
-  setPostIDeapostIdeaSuccessModalOpen,
+  setPostIdeaSuccessModalOpen,
   setPostIdeaOpen,
+  navigate,
+  newIdea,
 }) => {
   return (
     <SwipeModal
@@ -53,14 +55,19 @@ const SuccessSubmitIdea: FC<SuccessSubmitIdeaProps> = ({
         <RoundedButton
           icon={<Plus transform="rotate(45)" />}
           onClick={() => {
-            setPostIDeapostIdeaSuccessModalOpen(false);
+            setPostIdeaSuccessModalOpen(false);
             setPostIdeaOpen(false);
           }}
           variant={"white"}
         />
       </Box>
 
-      <Success />
+      <Success
+        setPostIdeaSuccessModalOpen={setPostIdeaSuccessModalOpen}
+        setPostIdeaOpen={setPostIdeaOpen}
+        navigate={navigate}
+        newIdea={newIdea}
+      />
     </SwipeModal>
   );
 };

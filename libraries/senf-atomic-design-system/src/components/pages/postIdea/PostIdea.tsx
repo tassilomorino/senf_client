@@ -55,7 +55,9 @@ const PostIdea: FC<PostIdeaProps> = ({
   Out,
   setPostIdeaOpen,
   postIdeaSuccessModalOpen,
-  setPostIDeapostIdeaSuccessModalOpen,
+  setPostIdeaSuccessModalOpen,
+  navigate,
+  newIdea,
 }) => {
   const { t } = useTranslation();
   const [postIdeaForm, setPostIdeaForm] = React.useState(false);
@@ -184,10 +186,10 @@ const PostIdea: FC<PostIdeaProps> = ({
       )}
       {isMobile && postIdeaSuccessModalOpen && (
         <SuccessSubmitIdea
-          setPostIDeapostIdeaSuccessModalOpen={
-            setPostIDeapostIdeaSuccessModalOpen
-          }
+          navigate={navigate}
+          setPostIdeaSuccessModalOpen={setPostIdeaSuccessModalOpen}
           setPostIdeaOpen={setPostIdeaOpen}
+          newIdea={newIdea}
         />
       )}
 
