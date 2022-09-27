@@ -11,25 +11,6 @@ import SenfManCelebrating from "../../../assets/illustrations/SenfManCelebrating
 import SkewedCircle from "../../../assets/illustrations/SkewedCircle.png";
 import Typography from "../../atoms/typography/Typography";
 import { openLink } from "../../../util/helpers";
-import Wave from "../../atoms/shapes/Wave";
-import Mail from "../../../assets/icons/Mail";
-import Google from "../../../assets/icons/Google";
-import Apple from "../../../assets/icons/Apple";
-import Arrow from "../../../assets/icons/Arrow";
-import Bulb from "../../../assets/icons/Bulb";
-import RoundedButton from "../../atoms/buttons/RoundedButton";
-import Plus from "../../../assets/icons/Plus";
-import Divider from "../../atoms/divider/Divider";
-import TertiaryButton from "../../atoms/buttons/TertiaryButton";
-import theme from "../../../styles/theme";
-
-const Wrapper = styled.div<SuccessProps>`
-  position: relative;
-  width: 100%;
-  /* max-width: 400px; */
-  min-height: 100vh;
-  overflow: hidden;
-`;
 
 const SenfManCelebratingImg = styled.img`
   position: absolute;
@@ -48,7 +29,7 @@ const SkewedCircleImg = styled.img`
   user-select: none;
 `;
 
-const Success: FC<SuccessProps> = ({ variant, loading, setOrder }) => {
+const Success: FC<SuccessProps> = ({}) => {
   const { t } = useTranslation();
 
   return (
@@ -131,64 +112,6 @@ const Success: FC<SuccessProps> = ({ variant, loading, setOrder }) => {
             variant="tertiary"
           />
         </Box>
-
-        {/*  <Typography variant="h1" style={{ position: "relative" }}>
-          Super,
-        </Typography>
-
-        <Typography variant="h2" style={{ position: "relative" }}>
-          Markus_123
-        </Typography>
-
-        <Box margin="25px 0px 24px 0px">
-          <Typography variant="bodyBg" style={{ position: "relative" }}>
-            {t("Success_subheadline")}
-          </Typography>
-        </Box>
-        <Box gap="16px" flexDirection="column">
-          <Button
-            variant="white"
-            fillWidth="max"
-            text="Über Socialmedia teilen"
-            iconLeft={<Bulb />}
-            iconRight={<Arrow />}
-            // loading={googleLoading}
-            // onClick={() => setGoogleLoading(true)}
-          />
-
-          <Button
-            variant="white"
-            fillWidth="max"
-            text="Beraten lassen"
-            iconRight={<Arrow />}
-            loading={loading}
-            // icon={<Apple />}
-            onClick={() => setOrder(2)}
-          />
-          <TertiaryButton
-            variant="white"
-            text="Zu deiner Idee"
-            iconRight={<Arrow />}
-            // loading={googleLoading}
-            // onClick={() => setGoogleLoading(true)}
-          />
-          <Divider />
-          <Button
-            variant="white"
-            fillWidth="max"
-            text="Neue Idee teilen"
-            icon={<Bulb />}
-            // loading={googleLoading}
-            // onClick={() => setGoogleLoading(true)}
-          />
-          <TertiaryButton
-            variant="white"
-            text="Zur Startseite"
-            iconRight={<Arrow />}
-            // loading={googleLoading}
-            // onClick={() => setGoogleLoading(true)}
-          />
-        </Box> */}
       </Box>
     </>
   );
