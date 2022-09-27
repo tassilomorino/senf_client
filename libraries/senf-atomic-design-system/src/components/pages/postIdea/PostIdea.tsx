@@ -54,8 +54,8 @@ const PostIdea: FC<PostIdeaProps> = ({
   loading,
   Out,
   setPostIdeaOpen,
-  successModalOpen,
-  setSuccessModalOpen,
+  postIdeaSuccessModalOpen,
+  setPostIDeapostIdeaSuccessModalOpen,
 }) => {
   const { t } = useTranslation();
   const [postIdeaForm, setPostIdeaForm] = React.useState(false);
@@ -114,7 +114,7 @@ const PostIdea: FC<PostIdeaProps> = ({
   );
   return (
     <>
-      {isMobile && !successModalOpen && (
+      {isMobile && !postIdeaSuccessModalOpen && (
         <>
           <Box
             position="fixed"
@@ -182,7 +182,14 @@ const PostIdea: FC<PostIdeaProps> = ({
           )}
         </>
       )}
-      {isMobile && successModalOpen && <SuccessSubmitIdea />}
+      {isMobile && postIdeaSuccessModalOpen && (
+        <SuccessSubmitIdea
+          setPostIDeapostIdeaSuccessModalOpen={
+            setPostIDeapostIdeaSuccessModalOpen
+          }
+          setPostIdeaOpen={setPostIdeaOpen}
+        />
+      )}
 
       {!isMobile && (
         <Wrapper>

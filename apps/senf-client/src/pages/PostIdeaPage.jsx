@@ -69,7 +69,8 @@ const PostIdeaPage = ({
   const initialMapViewport = useSelector(
     (state) => state.data.initialMapViewport
   );
-  const [successModalOpen, setSuccessModalOpen] = React.useState(true);
+  const [postIdeaSuccessModalOpen, setPostIDeapostIdeaSuccessModalOpen] =
+    React.useState(false);
   const [viewport, setViewport] = useState(null);
   const [openRules, setOpenRules] = useState(false);
   const [out, setOut] = useState(false);
@@ -230,8 +231,8 @@ const PostIdeaPage = ({
       newScream.selectedUnix = selectedUnix;
     }
     dispatch(postScream(newScream, user)).then(() => {
-      setPostIdeaOpen(false);
-      setSuccessModalOpen(true);
+      // setPostIdeaOpen(false);
+      setPostIDeapostIdeaSuccessModalOpen(true);
     });
   };
 
@@ -363,8 +364,10 @@ const PostIdeaPage = ({
         handleChangeCalendar={handleChangeCalendar}
         handleSubmit={handleSubmit}
         setPostIdeaOpen={setPostIdeaOpen}
-        successModalOpen={successModalOpen}
-        setSuccessModalOpen={setSuccessModalOpen}
+        postIdeaSuccessModalOpen={postIdeaSuccessModalOpen}
+        setPostIDeapostIdeaSuccessModalOpen={
+          setPostIDeapostIdeaSuccessModalOpen
+        }
       />
     </React.Fragment>
   );
