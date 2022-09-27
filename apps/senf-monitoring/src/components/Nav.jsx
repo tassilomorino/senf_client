@@ -76,7 +76,7 @@ const Nav = () => {
   return (
     <Wrapper>
       <Box
-        zIndex="9999"
+        zIndex="999"
         flexDirection="column">
         <Box
           flexDirection="column"

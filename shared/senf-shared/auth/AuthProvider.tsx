@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import imageCompression from "browser-image-compression";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
@@ -48,7 +48,7 @@ const AuthContext = React.createContext({} as AuthContext);
 
 const AuthProvider = ({ children }) => {
 
-  const [user, setUser] = React.useState<DocumentData | null>(null);
+  const [user, setUser] = React.useState<DocumentData | boolean | null>(null);
   const blankError = { code: "", message: "" };
   const [errorMessage, setErrorMessage] = React.useState(blankError)
   const [loading, setLoading] = React.useState<boolean | string>(true);
@@ -177,7 +177,7 @@ const AuthProvider = ({ children }) => {
       return new Promise((resolve, reject) => {
         setLoading(id || 'edit')
         submitEditDetails(formikStore)
-          .then(user => { setUser(setUser); resolve(user) })
+          .then(user => { setUser(user); resolve(user) })
           .catch(err => { setErrorMessage(err); reject(err) })
           .finally(() => setLoading(false));
       })
@@ -222,21 +222,21 @@ const AuthProvider = ({ children }) => {
     // ifAllUserDetailsAreFilled(reduxUser)
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     onAuthStateChanged(auth, (authUser) => {
       if (!authUser) {
-        setUser(null);
+        setUser(false);
         setLoading(false);
         return
       }
       getUserData(authUser)
         .then(setUser)
-        .catch(() => setUser(null))
+        .catch(() => setUser(false))
         .finally(() => setLoading(false))
     });
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const timout = setTimeout(() => setErrorMessage(blankError), 20000)
     return () => clearTimeout(timout)
   }, [errorMessage]);
