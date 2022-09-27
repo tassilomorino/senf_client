@@ -66,7 +66,7 @@ const Success: FC<SuccessProps> = ({}) => {
             {t("success_page_published")}
           </Typography>
           <Button
-            text="Idee auf Social Media teilen"
+            text={t("success_page_share_idea")}
             variant="white"
             fillWidth="max"
           />
@@ -79,21 +79,20 @@ const Success: FC<SuccessProps> = ({}) => {
             variant="buttonBg"
             textAlign="center"
           >
-            Du möchtest die Umsetzung deiner Idee selbst in die Hand nehmen und
-            weißt nicht wie du anfangen sollst?
+            {t("success_page_realization")}
           </Typography>
           <Box
             flexDirection="column"
             gap="16px"
           >
             <Button
-              text="Lasse dich beraten"
+              text={t("success_page_get_advice")}
               variant="white"
               fillWidth="max"
             />
           </Box>
           <Button
-            text="Neue Idee erstellen"
+            text={t("success_page_create_new_idea")}
             fillWidth="max"
             variant="white"
           />
@@ -104,11 +103,11 @@ const Success: FC<SuccessProps> = ({}) => {
           width="100%"
         >
           <Button
-            text="Zu deiner Idee"
+            text={t("success_page_to_your_idea")}
             variant="tertiary"
           />
           <Button
-            text="Zur Startseite"
+            text={t("success_page_to_idea_list")}
             variant="tertiary"
           />
         </Box>
