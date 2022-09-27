@@ -22,7 +22,7 @@
     "chromatic": "build && build-storybook && chromatic --exit-zero-on-changes",
     "patch": "patch-package"
   },
-  "author": "Tassilo Morino, Norbertas Papirtis, Mahammed Maqbol, Leon Vogler",
+  "author": "Tassilo Morino, Norbertas Papirtis, Mohammed Maqbol, Leon Vogler",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.17.5",
