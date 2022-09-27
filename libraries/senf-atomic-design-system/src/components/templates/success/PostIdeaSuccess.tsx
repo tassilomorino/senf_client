@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Trans, useTranslation } from "react-i18next";
 import Button from "../../atoms/buttons/Button";
 import Box from "../../atoms/box/Box";
-import { SuccessProps } from "./Success.types";
+import { SuccessProps } from "./PostIdeaSuccess.types";
 
 import SenfManCelebrating from "../../../assets/illustrations/SenfManCelebrating.png";
 import SkewedCircle from "../../../assets/illustrations/SkewedCircle.png";
@@ -29,7 +29,7 @@ const SkewedCircleImg = styled.img`
   user-select: none;
 `;
 
-const Success: FC<SuccessProps> = ({
+const PostIdeaSuccess: FC<SuccessProps> = ({
   navigate,
   setPostIdeaSuccessModalOpen,
   setPostIdeaOpen,
@@ -135,4 +135,4 @@ const Success: FC<SuccessProps> = ({
   );
 };
 
-export default Success;
+export default PostIdeaSuccess;

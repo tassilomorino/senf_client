@@ -11,7 +11,7 @@ import SenfManCelebrating from "../../../assets/illustrations/SenfManCelebrating
 import Typography from "../../atoms/typography/Typography";
 import Box from "../../atoms/box/Box";
 import Accordion from "../../molecules/accordion/Accordion";
-import Success from "../../templates/success/Success";
+import PostIdeaSuccess from "../../templates/success/PostIdeaSuccess";
 
 import RoundedButton from "../../atoms/buttons/RoundedButton";
 import Plus from "../../../assets/icons/Plus";
@@ -62,7 +62,7 @@ const SuccessSubmitIdea: FC<SuccessSubmitIdeaProps> = ({
         />
       </Box>
 
-      <Success
+      <PostIdeaSuccess
         setPostIdeaSuccessModalOpen={setPostIdeaSuccessModalOpen}
         setPostIdeaOpen={setPostIdeaOpen}
         navigate={navigate}
