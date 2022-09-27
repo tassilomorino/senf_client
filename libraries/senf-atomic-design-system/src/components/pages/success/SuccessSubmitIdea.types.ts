@@ -1,7 +1,10 @@
 /** @format */
 
 import { MouseEventHandler } from "react";
+
 export interface SuccessSubmitIdeaProps {
-  example?: string;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
+  navigate: NavigateFunction;
+  setPostIdeaSuccessModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setPostIdeaOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  newIdea: { screamId: string };
 }
