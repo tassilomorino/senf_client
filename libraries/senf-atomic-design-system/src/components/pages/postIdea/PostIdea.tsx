@@ -11,6 +11,9 @@ import { LayerWhiteFirstDefault } from "../../atoms/layerStyles/LayerStyles";
 import Geocoder from "../../atoms/geocoder/Geocoder";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 import { Arrow } from "../../../assets/icons";
+import SwipeModal from "../../molecules/modals/SwipeModal";
+import SuccessSubmitIdea from "../success/SuccessSubmitIdea";
+import { useModals } from "../../molecules/modalStack/ModalProvider";
 
 const Wrapper = styled.div`
   z-index: 999;
@@ -52,11 +55,17 @@ const PostIdea: FC<PostIdeaProps> = ({
   loading,
   Out,
   setPostIdeaOpen,
+  postIdeaSuccessModalOpen,
+  setPostIdeaSuccessModalOpen,
+  navigate,
+  newIdea,
 }) => {
   const { t } = useTranslation();
   const [postIdeaForm, setPostIdeaForm] = React.useState(false);
+
   const [addressSelected, setAddressSelected] = React.useState(false);
   const isMobile = isMobileCustom();
+  const { openModal } = useModals();
   const createIdeaHeader = (
     <Box
       flexDirection="row"
@@ -102,13 +111,14 @@ const PostIdea: FC<PostIdeaProps> = ({
           size="lg"
           text={t("Weiter")}
           width="max"
-          onClick={() => setAddressSelected(true)}></Button>
+          onClick={() => setAddressSelected(true)}
+        ></Button>
       )}
     </Box>
   );
   return (
     <>
-      {isMobile && (
+      {isMobile && !postIdeaSuccessModalOpen && (
         <>
           <Box
             position="fixed"
@@ -149,30 +159,43 @@ const PostIdea: FC<PostIdeaProps> = ({
               ></Button>
             </Box>
           )}
-          {isMobile && addressSelected && (
+          {addressSelected && (
             <Box
               position="fixed"
               bottom="0px"
               zIndex="999"
               width="100%"
             >
-              <PostIdeaForm
-                formik={formik}
-                statefulMap={statefulMap}
-                checkIfCalendar={checkIfCalendar}
-                selectedDays={selectedDays}
-                handleChangeCalendar={handleChangeCalendar}
-                setPostIdeaOpen={setPostIdeaOpen}
-                handleSubmit={handleSubmit}
-                loading={loading}
-                Out={Out}
-              />
+              <SwipeModal
+                onClose={() => setPostIdeaOpen(false)}
+                overflowing={true}
+              >
+                <PostIdeaForm
+                  formik={formik}
+                  statefulMap={statefulMap}
+                  checkIfCalendar={checkIfCalendar}
+                  selectedDays={selectedDays}
+                  handleChangeCalendar={handleChangeCalendar}
+                  setPostIdeaOpen={setPostIdeaOpen}
+                  handleSubmit={handleSubmit}
+                  loading={loading}
+                  Out={Out}
+                />
+              </SwipeModal>
             </Box>
           )}
         </>
       )}
+      {isMobile && postIdeaSuccessModalOpen && (
+        <SuccessSubmitIdea
+          navigate={navigate}
+          setPostIdeaSuccessModalOpen={setPostIdeaSuccessModalOpen}
+          setPostIdeaOpen={setPostIdeaOpen}
+          newIdea={newIdea}
+        />
+      )}
 
-      {!isMobile && (
+      {!isMobile && !postIdeaSuccessModalOpen && (
         <Wrapper>
           <Box
             display="flex"
@@ -209,6 +232,14 @@ const PostIdea: FC<PostIdeaProps> = ({
             )}
           </Box>
         </Wrapper>
+      )}
+      {!isMobile && postIdeaSuccessModalOpen && (
+        <SuccessSubmitIdea
+          navigate={navigate}
+          setPostIdeaSuccessModalOpen={setPostIdeaSuccessModalOpen}
+          setPostIdeaOpen={setPostIdeaOpen}
+          newIdea={newIdea}
+        />
       )}
     </>
   );
