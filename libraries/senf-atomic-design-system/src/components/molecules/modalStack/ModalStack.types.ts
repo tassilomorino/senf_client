@@ -17,6 +17,7 @@ export interface ModalOptions {
   children?: React.ReactNode | React.ReactNode[];
   // height?: number;
   swipe?: boolean;
+  enterFrom?: "top" | "bottom" | "left" | "right";
   style?: React.CSSProperties;
   replace?: boolean,
   beforeOpen?: () => Promise<void>;

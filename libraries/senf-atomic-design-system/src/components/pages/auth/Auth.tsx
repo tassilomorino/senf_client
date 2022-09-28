@@ -119,6 +119,7 @@ const Auth: FC<AuthProps> = ({
     ), {
       title: `${t("reset_header_1")} ${t("reset_header_2")}`,
       description: t("reset_password"),
+      enterFrom: "right",
       afterClose: () => setPage("authEmail"),
     })
   }, [page])
