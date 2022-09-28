@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import Box from "../../atoms/box/Box";
@@ -65,7 +65,7 @@ const PostIdea: FC<PostIdeaProps> = ({
 
   const [addressSelected, setAddressSelected] = React.useState(false);
   const isMobile = isMobileCustom();
-  const { openModal } = useModals();
+  const { openModal, closeModal } = useModals();
   const createIdeaHeader = (
     <Box
       flexDirection="row"
@@ -116,6 +116,28 @@ const PostIdea: FC<PostIdeaProps> = ({
       )}
     </Box>
   );
+  useEffect(() => {
+    if (postIdeaSuccessModalOpen) {
+      openModal(
+        <SuccessSubmitIdea
+          navigate={navigate}
+          setPostIdeaSuccessModalOpen={setPostIdeaSuccessModalOpen}
+          setPostIdeaOpen={setPostIdeaOpen}
+          newIdea={newIdea}
+        />,
+        {
+          swipe: !!isMobile,
+
+          afterClose: () => {
+            setPostIdeaSuccessModalOpen(false);
+            setPostIdeaOpen(false);
+          },
+        }
+      );
+    }
+    /* return () => closeModal(); */
+  }, [postIdeaSuccessModalOpen]);
+
   return (
     <>
       {isMobile && !postIdeaSuccessModalOpen && (
@@ -186,14 +208,6 @@ const PostIdea: FC<PostIdeaProps> = ({
           )}
         </>
       )}
-      {isMobile && postIdeaSuccessModalOpen && (
-        <SuccessSubmitIdea
-          navigate={navigate}
-          setPostIdeaSuccessModalOpen={setPostIdeaSuccessModalOpen}
-          setPostIdeaOpen={setPostIdeaOpen}
-          newIdea={newIdea}
-        />
-      )}
 
       {!isMobile && !postIdeaSuccessModalOpen && (
         <Wrapper>
@@ -232,14 +246,6 @@ const PostIdea: FC<PostIdeaProps> = ({
             )}
           </Box>
         </Wrapper>
-      )}
-      {!isMobile && postIdeaSuccessModalOpen && (
-        <SuccessSubmitIdea
-          navigate={navigate}
-          setPostIdeaSuccessModalOpen={setPostIdeaSuccessModalOpen}
-          setPostIdeaOpen={setPostIdeaOpen}
-          newIdea={newIdea}
-        />
       )}
     </>
   );

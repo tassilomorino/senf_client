@@ -56,7 +56,7 @@ const PostIdeaSuccess: FC<SuccessProps> = ({
         justifyContent="space-evenly"
         height="100vh"
         width="100%"
-        zIndex={999}
+        zIndex={9}
       >
         <Box
           flexDirection="column"
