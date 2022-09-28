@@ -13,6 +13,7 @@ import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 import { Arrow } from "../../../assets/icons";
 import SwipeModal from "../../molecules/modals/SwipeModal";
 import SuccessSubmitIdea from "../success/SuccessSubmitIdea";
+import { useModals } from "../../molecules/modalStack/ModalProvider";
 
 const Wrapper = styled.div`
   z-index: 999;
@@ -64,6 +65,7 @@ const PostIdea: FC<PostIdeaProps> = ({
 
   const [addressSelected, setAddressSelected] = React.useState(false);
   const isMobile = isMobileCustom();
+  const { openModal } = useModals();
   const createIdeaHeader = (
     <Box
       flexDirection="row"
@@ -109,7 +111,8 @@ const PostIdea: FC<PostIdeaProps> = ({
           size="lg"
           text={t("Weiter")}
           width="max"
-          onClick={() => setAddressSelected(true)}></Button>
+          onClick={() => setAddressSelected(true)}
+        ></Button>
       )}
     </Box>
   );
@@ -192,7 +195,7 @@ const PostIdea: FC<PostIdeaProps> = ({
         />
       )}
 
-      {!isMobile && (
+      {!isMobile && !postIdeaSuccessModalOpen && (
         <Wrapper>
           <Box
             display="flex"
@@ -229,6 +232,14 @@ const PostIdea: FC<PostIdeaProps> = ({
             )}
           </Box>
         </Wrapper>
+      )}
+      {!isMobile && postIdeaSuccessModalOpen && (
+        <SuccessSubmitIdea
+          navigate={navigate}
+          setPostIdeaSuccessModalOpen={setPostIdeaSuccessModalOpen}
+          setPostIdeaOpen={setPostIdeaOpen}
+          newIdea={newIdea}
+        />
       )}
     </>
   );
