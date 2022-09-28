@@ -41,34 +41,14 @@ const SuccessSubmitIdea: FC<SuccessSubmitIdeaProps> = ({
   newIdea,
 }) => {
   return (
-    <SwipeModal
-      openModal={true}
-      zIndex="999"
-      backgroundColor={theme.colors.beige.beige20}
-    >
-      <Box
-        margin="24px"
-        position="fixed"
-        zIndex={9999}
-        top="0"
-      >
-        <RoundedButton
-          icon={<Plus transform="rotate(45)" />}
-          onClick={() => {
-            setPostIdeaSuccessModalOpen(false);
-            setPostIdeaOpen(false);
-          }}
-          variant={"white"}
-        />
-      </Box>
-
+    <>
       <PostIdeaSuccess
         setPostIdeaSuccessModalOpen={setPostIdeaSuccessModalOpen}
         setPostIdeaOpen={setPostIdeaOpen}
         navigate={navigate}
         newIdea={newIdea}
       />
-    </SwipeModal>
+    </>
   );
 };
 
