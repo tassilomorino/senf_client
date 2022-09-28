@@ -124,6 +124,7 @@ const PostIdea: FC<PostIdeaProps> = ({
           setPostIdeaSuccessModalOpen={setPostIdeaSuccessModalOpen}
           setPostIdeaOpen={setPostIdeaOpen}
           newIdea={newIdea}
+          closeModal={closeModal}
         />,
         {
           swipe: !!isMobile,

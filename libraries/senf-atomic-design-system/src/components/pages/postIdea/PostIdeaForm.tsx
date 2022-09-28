@@ -28,6 +28,7 @@ import { PostIdeaFormProps } from "./PostIdeaForm.types";
 import Geocoder from "../../atoms/geocoder/Geocoder";
 import PostIdeaFormContacts from "./PostIdeaFormContacts";
 import setColorByTopic from "../../../data/setColorByTopic";
+import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
 
 const contactData = [
   {
@@ -76,7 +77,6 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
   const isMobile = isMobileCustom();
   const { closeModal } = useModals();
 
-  const [topicDropdownOpen, setTopicDropdownOpen] = useState(false);
   return (
     <Wrapper>
       <Box
@@ -88,7 +88,6 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
           <Geocoder
             formik={formik}
             statefulMap={statefulMap}
-            formik={formik}
           />
         )}
       </Box>
@@ -177,58 +176,33 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
 
         <Divider />
 
-        <Typography variant="buttonBg">
+        <Typography
+          variant="buttonBg"
+          textAlign="center"
+        >
           Welche Kategorie passt zu deiner Idee?
         </Typography>
-
-        <ContentDropdown
-          direction="upRight"
-          open={topicDropdownOpen}
-          setOpen={setTopicDropdownOpen}
-          openButton={
-            <>
-              <Button
-                onClick={() => setTopicDropdownOpen(!topicDropdownOpen)}
-                text={formik?.values.topic || "Kategorie wählen"}
-                icon={
-                  formik?.values?.topic ? (
-                    <Dot color={setColorByTopic(formik?.values?.topic)} />
-                  ) : (
-                    <DotAllTopics />
-                  )
-                }
-                iconRight={<Arrow transform="rotate(90)" />}
-                variant="secondary"
-                size="small"
-                width="max"
-                justifyContent="space-between"
-              />
-            </>
+        <DropdownButton
+          variant="white"
+          icon={
+            formik?.values?.topic ? (
+              <Dot color={setColorByTopic(formik?.values?.topic)} />
+            ) : (
+              <DotAllTopics />
+            )
           }
-          content={
-            <Box
-              gap="5px"
-              flexDirection="column"
-            >
-              {Object.values(OptionsTopics()).map(({ value, label }) => (
-                <Box
-                  gap="5px"
-                  key={`options-topics${value}`}
-                >
-                  <ContentDropdownItem
-                    leadingIcon={<Dot color={setColorByTopic(value)} />}
-                    type="radio"
-                    text={label}
-                    checked={formik?.values.topic === value}
-                    onClick={() => {
-                      formik?.setFieldValue("topic", value);
-                      setTopicDropdownOpen(false);
-                    }}
-                  />
-                </Box>
-              ))}
-            </Box>
-          }
+          width="max"
+          text={formik?.values.topic || "Kategorie wählen"}
+          options={{ size: "md", closeOnSelect: true }}
+          data={OptionsTopics().map(({ value, label }) => {
+            return {
+              text: value,
+              leadingIcon: <Dot color={setColorByTopic(value)} />,
+              onClick: () => {
+                formik?.setFieldValue("topic", value);
+              },
+            };
+          })}
         />
 
         <Divider />

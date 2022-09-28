@@ -39,6 +39,7 @@ const SuccessSubmitIdea: FC<SuccessSubmitIdeaProps> = ({
   setPostIdeaOpen,
   navigate,
   newIdea,
+  closeModal,
 }) => {
   return (
     <>
@@ -47,6 +48,7 @@ const SuccessSubmitIdea: FC<SuccessSubmitIdeaProps> = ({
         setPostIdeaOpen={setPostIdeaOpen}
         navigate={navigate}
         newIdea={newIdea}
+        closeModal={closeModal}
       />
     </>
   );

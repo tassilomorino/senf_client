@@ -34,6 +34,7 @@ const PostIdeaSuccess: FC<SuccessProps> = ({
   setPostIdeaSuccessModalOpen,
   setPostIdeaOpen,
   newIdea,
+  closeModal,
 }) => {
   const { t } = useTranslation();
 
@@ -73,7 +74,7 @@ const PostIdeaSuccess: FC<SuccessProps> = ({
           <Button
             text={t("success_page_share_idea")}
             variant="white"
-            fillWidth="max"
+            width="max"
           />
         </Box>
         <Box
@@ -103,6 +104,7 @@ const PostIdeaSuccess: FC<SuccessProps> = ({
             onClick={() => {
               setPostIdeaSuccessModalOpen(false);
               setPostIdeaOpen(true);
+              closeModal();
             }}
           />
         </Box>
@@ -118,6 +120,7 @@ const PostIdeaSuccess: FC<SuccessProps> = ({
               setPostIdeaSuccessModalOpen(false);
               setPostIdeaOpen(false);
               navigate(`/idea/${newIdea.screamId}`);
+              closeModal();
             }}
           />
           <Button
@@ -127,6 +130,7 @@ const PostIdeaSuccess: FC<SuccessProps> = ({
               setPostIdeaSuccessModalOpen(false);
               setPostIdeaOpen(false);
               navigate("/");
+              closeModal();
             }}
           />
         </Box>
