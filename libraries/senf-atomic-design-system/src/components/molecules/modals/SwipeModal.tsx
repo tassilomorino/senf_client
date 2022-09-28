@@ -18,6 +18,15 @@ const sheet = {
   bottom: "-100px",
   touchAction: "none",
 };
+const sheetDesktop = {
+  zIndex: 100,
+  width: "100%",
+  position: "fixed",
+  left: "50%",
+  bottom: "50%",
+  height: "100vh",
+  touchAction: "none",
+};
 
 const Handle = styled.div<{ position: string }>`
   width: 100%;
