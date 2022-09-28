@@ -18,15 +18,6 @@ const sheet = {
   bottom: "-100px",
   touchAction: "none",
 };
-const sheetDesktop = {
-  zIndex: 100,
-  width: "100%",
-  position: "fixed",
-  left: "50%",
-  bottom: "50%",
-  height: "100vh",
-  touchAction: "none",
-};
 
 const Handle = styled.div<{ position: string }>`
   width: 100%;
@@ -124,6 +115,7 @@ const SwipeModal: FC<SwipeModalProps> = ({
   onClose,
 
   overflowing,
+  style,
 }) => {
   const isMobile = isMobileCustom();
 
@@ -211,6 +203,7 @@ const SwipeModal: FC<SwipeModalProps> = ({
             bottom: `calc(${height - 50}px)`,
             y,
             ...sheet,
+            ...style,
           }}
         >
           <Handle

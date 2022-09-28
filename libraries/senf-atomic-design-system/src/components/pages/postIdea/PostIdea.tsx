@@ -191,6 +191,9 @@ const PostIdea: FC<PostIdeaProps> = ({
               <SwipeModal
                 onClose={() => setPostIdeaOpen(false)}
                 overflowing={true}
+                style={{
+                  height: "80%",
+                }}
               >
                 <PostIdeaForm
                   formik={formik}
