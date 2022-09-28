@@ -1,4 +1,4 @@
-export interface Colors {
+export interface ColorNames {
 	[key: string]: {
 		h: number;
 		s: number;
@@ -7,8 +7,10 @@ export interface Colors {
 }
 export interface ThemeColors { [key: string]: string }
 
+export type RGB = [number, number, number];
+
 export const hsla = (h: number, s: number, l: number, a = 1) => `hsla(${h}, ${s}%, ${l}%, ${a})`;
-// utils
+
 export const hsl2rgb = (hue: number, sat: number, lum: number) => {
 	const h = hue;
 	const s = sat / 100;
@@ -34,17 +36,18 @@ export const rgb2hsl = (red: number, green: number, blue: number) => {
 	];
 };
 
-export const composite = (h: number, s: number, l: number, a: number, background: number[] = [255, 255, 255]) => {
+export const composite = (h: number, s: number, l: number, a: number, b: number[] = [0, 0, 100]) => {
 	const overlay = hsl2rgb(h, s, l)
+	const background = hsl2rgb(...b as RGB)
 	return hsla(
 		...rgb2hsl(
-			...overlay.map((value, index) => a * value + (1 - a) * background[index]) as [number, number, number]
-		) as [number, number, number], 1
+			...overlay.map((value, index) => a * value + (1 - a) * background[index]) as RGB
+		) as RGB
 	);
 }
 const pad = (n: number, padding = 3) => String(n).padStart(padding, '0');
 
-export const generateThemeColors = (colors: Colors, luminance: number[]) => {
+export const generateThemeColors = (colors: ColorNames, luminance: number[]) => {
 	const themeColors: ThemeColors = {};
 	Object.entries(colors).forEach(([name, color]) => {
 		const { h, s, l } = color
@@ -53,7 +56,8 @@ export const generateThemeColors = (colors: Colors, luminance: number[]) => {
 			themeColors[`${name}-${index}`] = composite(h, s, l, lum / 100)
 			themeColors[`${name}-${index}-tra`] = hsla(h, s, l, lum / 100)
 			if (name === 'primary') {
-				themeColors[`${name}-${index}-shade`] = composite(colors.shade.h, colors.shade.s, colors.shade.l, lum / 100, hsl2rgb(h, s, l))
+				const { shade } = colors
+				themeColors[`${name}-${index}-shade`] = composite(shade.h, shade.s, shade.l, lum / 100, [h, s, l])
 			}
 		})
 	})
