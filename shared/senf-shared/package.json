@@ -1,8 +1,8 @@
 {
   "name": "senf-shared",
   "version": "0.0.1",
-  "main": "./index.js",
-  "types": "./index.js",
+  "main": "./index.ts",
+  "types": "./index.ts",
   "sideEffects": false,
   "private": true,
   "license": "MIT",
