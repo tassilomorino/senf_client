@@ -7,8 +7,8 @@ import Button from "../../atoms/buttons/Button";
 import Box from "../../atoms/box/Box";
 import { SuccessProps } from "./PostIdeaSuccess.types";
 
-import SenfManCelebrating from "../../../assets/illustrations/SenfManCelebrating.png";
-import SkewedCircle from "../../../assets/illustrations/SkewedCircle.png";
+import senfManCelebrating from "../../../assets/illustrations/senfManCelebrating.png";
+import skewedCircle from "../../../assets/illustrations/skewedCircle.png";
 import Typography from "../../atoms/typography/Typography";
 import { openLink } from "../../../util/helpers";
 
@@ -40,11 +40,11 @@ const PostIdeaSuccess: FC<SuccessProps> = ({
   return (
     <>
       <SenfManCelebratingImg
-        src={SenfManCelebrating}
+        src={senfManCelebrating}
         alt="Illustration"
       />
       <SkewedCircleImg
-        src={SkewedCircle}
+        src={skewedCircle}
         alt="Illustration"
       />
       <Box
