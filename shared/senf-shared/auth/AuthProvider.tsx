@@ -276,7 +276,6 @@ const AuthProvider = ({ children }) => {
       getUserData(authUser)
         .then(setUser)
         .catch(() => setUser(false))
-<<<<<<< HEAD
         .finally(() => setLoading(false));
     });
   }, []);
@@ -284,15 +283,6 @@ const AuthProvider = ({ children }) => {
   React.useEffect(() => {
     const timout = setTimeout(() => setErrorMessage(blankError), 20000);
     return () => clearTimeout(timout);
-=======
-        .finally(() => setLoading(false))
-    });
-  }, []);
-
-  useEffect(() => {
-    const timout = setTimeout(() => setErrorMessage(blankError), 20000)
-    return () => clearTimeout(timout)
->>>>>>> main
   }, [errorMessage]);
 
   // if (loading) {
