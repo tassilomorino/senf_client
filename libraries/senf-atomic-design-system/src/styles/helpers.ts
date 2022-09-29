@@ -80,9 +80,7 @@ export const getRelativeLuminance = (rgb: RGB) => 0.2126 * rgb[0] + 0.7152 * rgb
 
 export const logColors = (colors: ThemeColors) => {
 	console.log(`%cGenerated ${Object.entries(colors).length} colors:`, `font-weight: bold`);
-	const textColor = (color: string) => getRelativeLuminance(hsl2rgb(...color.replace('hsla', '').replaceAll('%', '').replace('(', '').replace(')', '').split(',').map(e => parseInt(e.trim())).slice(0, 3) as HSL)) > 128 ? 'black' : 'white';
 	Object.entries(colors).forEach(([name, color]) => {
-		console.log(`%c  `, `background: ${color}; color: ${textColor(color)}; border-radius: 0.25rem;`, `${name} ${color}`)
-		// console.log(`%c ${name} ${color} `, `background: ${color}; color: ${textColor(color)}; border-radius: 0.25rem;`)
+		console.log(`%c  `, `background: ${color}; color: black; border-radius: 0.25rem;`, `${name}: ${color}`)
 	})
 }
