@@ -14,6 +14,7 @@ import {
   GlobalStyle,
   ModalProvider,
   useModals,
+  Box,
 } from "senf-atomic-design-system";
 import styled, { ThemeProvider } from "styled-components";
 import { AuthProvider } from "senf-shared";
@@ -31,6 +32,7 @@ import DivisionsBoard from "./pages/division/DivisionsBoard";
 import DivisionPage from "./pages/division/DivisionPage";
 import CreateMonitoringBoardPage from "./pages/superAdminPages/CreateMonitoringBoardPage";
 import SuperAdminBoard from "./pages/superAdminPages/SuperAdminBoard";
+import TopBar from "./components/TopBar";
 
 const BodyWrapper = styled.div`
   position: fixed;
@@ -39,12 +41,13 @@ const BodyWrapper = styled.div`
   width: 100vw;
   height: 100vh;
   overflow: scroll;
+  display: flex;
+  background-color: ${(props) => props.theme.colors.greyscale.greyscale10};
 `;
 const App = () => {
   const dispatch = useDispatch();
   const userId = "EkLheyhRjYSCMyUd4qvMIng0as43";
-  const params = useParams();
-  const { ideaId } = params;
+  const { ideaId } = useParams();
 
   useEffect(() => {
     dispatch(getMyMonitoringBoards(userId));
@@ -55,125 +58,112 @@ const App = () => {
   }, [ideaId]);
 
   return (
-    <BodyWrapper>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        {import.meta.env.VITE_NO_CRAWL && (
-          /* disable google crawling for senf-client-test.netlify.app */
-          <Helmet>
-            <meta
-              name="robots"
-              content="noindex"
-            />
-          </Helmet>
-        )}
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      {import.meta.env.VITE_NO_CRAWL && (
+        /* disable google crawling for senf-client-test.netlify.app */
+        <Helmet>
+          <meta
+            name="robots"
+            content="noindex"
+          />
+        </Helmet>
+      )}
 
-        <Router>
-          <AuthProvider>
-            <ModalProvider>
-              <React.Suspense fallback={<div>Loading...</div>}>
+      <BodyWrapper>
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <Router>
+            <AuthProvider>
+              <ModalProvider>
                 <Nav />
-                <Routes>
-                  <Route
-                    exact
-                    path="/login"
-                    element={<AuthPage variant="login" />}
-                  />
-                  <Route
-                    exact
-                    path="/superAdminBoard"
-                    element={<SuperAdminBoard />}
-                  />
-                  <Route
-                    exact
-                    path="/"
-                    element={<PrivateRoute />}>
-                    <Route
-                      exact
-                      path="/"
-                      element={<Dashboard />}
-                    />
-
+                <Box
+                  flexDirection="column"
+                  width="100%"
+                >
+                  <TopBar />
+                  <Routes>
                     <Route
                       exact
                       path="/login"
                       element={<AuthPage variant="login" />}
                     />
+
                     <Route
                       exact
                       path="/"
-                      element={<PrivateRoute />}>
-                      {/* <Route exact path="/profile" element={<Profile />} /> */}
+                      element={<PrivateRoute />}
+                    >
                       <Route
                         exact
                         path="/"
                         element={<Dashboard />}
                       />
-                    </Route>
 
-                    <Route
-                      exact
-                      path="/"
-                      element={<Dashboard />}
-                    />
-                    <Route
-                      exact
-                      path="/idea/:ideaId"
-                      element={<Dashboard />}
-                    />
+                      <Route
+                        exact
+                        path="/superAdminBoard"
+                        element={<SuperAdminBoard />}
+                      />
 
-                    {/* <Route exact path="division/:divisionId/members" element={<MemberBoard />} /> */}
+                      <Route
+                        exact
+                        path="/idea/:ideaId"
+                        element={<Dashboard />}
+                      />
 
-                    <Route
-                      exact
-                      path="/divisions"
-                      element={<DivisionsBoard />}
-                    />
-                    <Route
-                      exact
-                      path="/divisions/:divisionId"
-                      element={<DivisionPage />}
-                    />
+                      {/* <Route exact path="division/:divisionId/members" element={<MemberBoard />} /> */}
 
-                    <Route
-                      exact
-                      path="/superAdminBoard"
-                      element={<SuperAdminBoard />}
-                    />
-                    <Route
-                      exact
-                      path="/createMonitoringBoard"
-                      element={<CreateMonitoringBoardPage />}
-                    />
+                      <Route
+                        exact
+                        path="/divisions"
+                        element={<DivisionsBoard />}
+                      />
+                      <Route
+                        exact
+                        path="/divisions/:divisionId"
+                        element={<DivisionPage />}
+                      />
 
-                    <Route
-                      exact
-                      path="/invite"
-                      element={<InviteMember />}
-                    />
-                    {/* <Route
+                      <Route
+                        exact
+                        path="/superAdminBoard"
+                        element={<SuperAdminBoard />}
+                      />
+                      <Route
+                        exact
+                        path="/createMonitoringBoard"
+                        element={<CreateMonitoringBoardPage />}
+                      />
+
+                      <Route
+                        exact
+                        path="/invite"
+                        element={<InviteMember />}
+                      />
+                      {/* <Route
                   exact
                   path="invitation/:invitationDocId"
                   element={<AcceptInvitation />}
                 /> */}
-                  </Route>
+                    </Route>
 
-                  <Route
-                    exact
-                    path="invitation"
-                    element={<AcceptInvitation />}
-                  />
-                  <Route
-                    path="*"
-                    element={<PageNotFound />}
-                  />
-                </Routes>
-              </React.Suspense>
-            </ModalProvider>
-          </AuthProvider>
-        </Router>
-      </ThemeProvider>
-    </BodyWrapper>
+                    <Route
+                      exact
+                      path="invitation"
+                      element={<AcceptInvitation />}
+                    />
+                    <Route
+                      path="*"
+                      element={<PageNotFound />}
+                    />
+                  </Routes>
+                </Box>
+              </ModalProvider>
+            </AuthProvider>
+          </Router>
+        </React.Suspense>
+      </BodyWrapper>
+    </ThemeProvider>
   );
 };
 

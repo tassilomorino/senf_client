@@ -5,10 +5,6 @@ import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
-import {
-  InstantSearch,
-} from 'react-instantsearch-dom';
-import algoliasearch from 'algoliasearch/lite';
 import { useFormik } from "formik";
 import { ThreeDToolSwipeListProps } from "./ThreeDToolSwipeListProps.types";
 
@@ -19,8 +15,8 @@ import List from "../../molecules/list/List";
 import MenuSidebar from "../../organisms/menuSidebar/MenuSidebar";
 import ObjectCard from "../../molecules/cards/ObjectCard";
 import Input from "../../atoms/inputs/Input";
-import { Arrow, Plus } from "../../../assets/icons";
-import Search from "./Search";
+import { Search, Arrow, Plus } from "../../../assets/icons";
+// import Search from "./Search";
 import Box from "../../atoms/box/Box";
 import Button from "../../atoms/buttons/Button";
 import ModalButton from "../../molecules/modalStack/ModalButton";
@@ -31,8 +27,6 @@ import Divider from "../../atoms/divider/Divider";
 import TextTransition from "../../atoms/animations/TextTransition";
 import AddModel from "./AddModel";
 
-
-const searchClient = algoliasearch("AERQKCMI5M", 'ae11cb36d2946300bd8860b2a23bc1ab');
 const DragWrapper = styled(animated.div)`
   z-index: ${({ zIndex }) => zIndex || 2};
   overscroll-behavior: contain;
@@ -49,7 +43,6 @@ const DragWrapper = styled(animated.div)`
 
   position: absolute;
   pointer-events: all;
-  
 
   /* transform: scale(0.9) translateY(-20px); */
   @media (min-width: 768px) {
@@ -60,8 +53,8 @@ const DragWrapper = styled(animated.div)`
     height: calc(100vh - 20px);
     overflow: hidden;
 
-    width: ${({ swipedUp }) => swipedUp ? "466px" : "65px"};
-    transition:0.3s;
+    width: ${({ swipedUp }) => (swipedUp ? "466px" : "65px")};
+    transition: 0.3s;
   }
 `;
 
@@ -83,19 +76,18 @@ const ContentWrapper = styled.div<OrganizationsOverviewProps>`
   margin-left: 50%;
   transform: translateX(-50%);
   position: fixed;
-  margin-top:-10px;
-  padding-top:50px;
+  margin-top: -10px;
+  padding-top: 50px;
   top: ${({ swipedUp }) => swipedUp && "110px"};
 
   @media (min-width: 768px) {
     height: calc(100% - 150px);
-    padding-top:20px;
+    padding-top: 20px;
     width: 400px;
     position: relative;
     top: 0;
   }
 `;
-
 
 export const Header = styled(animated.div)`
   position: sticky;
@@ -132,8 +124,6 @@ const HandleBar = styled.div`
   border-radius: 5px;
 `;
 
-
-
 const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
   data,
   handlePlaceModel,
@@ -153,10 +143,6 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
   setMode,
   formik: initial,
   validationSchema,
-
-
-
-
 }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom();
@@ -173,11 +159,8 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
     userSelect: "none",
   }));
 
-
-  const formik = useFormik({ initialValues: initial, validationSchema })
-  useEffect(() => initial.setValues(formik.values), [formik.values])
-
-
+  const formik = useFormik({ initialValues: initial, validationSchema });
+  useEffect(() => initial.setValues(formik.values), [formik.values]);
 
   useEffect(() => {
     if (swipedUp) {
@@ -190,7 +173,6 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
         transform: `translateY(${window.innerHeight}px)`,
         touchAction: "unset",
       });
-
     }
   }, [swipedUp]);
 
@@ -227,66 +209,79 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
     }
   );
 
-
-
-
-
   return (
     <React.Fragment>
       <DragWrapper
         swipedUp={swipedUp}
-        style={isMobile
-          ? springProps
-          : null
-        }
+        style={isMobile ? springProps : null}
       >
-        <Wave color={theme.colors.beige.beige20} top="0px" />
+        <Wave
+          color={theme.colors.beige.beige20}
+          top="0px"
+        />
         {!isMobile && (
           <MenuSidebar
             handleOpenMyAccount={handleOpenMyAccount}
             setShowUI={true}
             setOrder={() => console.log("hi")}
           />
-
         )}
 
         <InnerWrapper>
-          <Header
-            {...bind()}
-          >
+          <Header {...bind()}>
             {isMobile && <HandleBar />}
 
-            <Box margin="30px 10px 0px 10px" flexDirection="column" gap="10px">
-              <Box margin="0px 10px" flexDirection="column">
-
+            <Box
+              margin="30px 10px 0px 10px"
+              flexDirection="column"
+              gap="10px"
+            >
+              <Box
+                margin="0px 10px"
+                flexDirection="column"
+              >
                 <Box>
-                  <Typography variant="h3" textAlign="left" fontWeight={900}>Finde den richtigen</Typography>
-                  <TextTransition variant="h3" fontWeight={900} />
+                  <Typography
+                    variant="h3"
+                    textAlign="left"
+                    fontWeight={900}
+                  >
+                    Finde den richtigen
+                  </Typography>
+                  <TextTransition
+                    variant="h3"
+                    fontWeight={900}
+                  />
                 </Box>
-                <Typography variant="h3" textAlign="left" fontWeight={900}> für deinen Entwurf </Typography>
-
+                <Typography
+                  variant="h3"
+                  textAlign="left"
+                  fontWeight={900}
+                >
+                  {" "}
+                  für deinen Entwurf{" "}
+                </Typography>
               </Box>
 
-              {/* <Input
+              <Input
                 name="searchAddress"
                 type="search"
-                leadingIcon={showResults ? <Arrow transform="rotate(180)" /> : <Search />}
-                leadingIconClick={() => { setSearchTerm(""); setShowResults(false) }}
+                leadingIcon={
+                  showResults ? <Arrow transform="rotate(180)" /> : <Search />
+                }
+                leadingIconClick={() => {
+                  setSearchTerm("");
+                  setShowResults(false);
+                }}
                 placeholder={"Suche"}
                 onChange={(event) => setSearchTerm(event?.target?.value)}
                 value={searchTerm}
-                onClick={() => setShowResults(true)
-                }
-              /> */}
-              <InstantSearch searchClient={searchClient} indexName="threeD_models">
-                <Search handlePlaceModel={handlePlaceModel} />
-              </InstantSearch>
+                onClick={() => setShowResults(true)}
+              />
             </Box>
-
           </Header>
 
           <ContentWrapper swipedUp={swipedUp}>
-
             {showResults && searchTerm ? (
               <List
                 listType="grid"
@@ -295,16 +290,26 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
                 handleButtonOpenCard={handlePlaceModel}
                 loading={false}
               />
-            ) :
+            ) : (
               <React.Fragment>
-
-                <Divider margin="50px 80px" width="calc(100% - 160px)" height="2px" />
-                <Box margin="0px 10px" gap="20px" flexDirection="column" overflow="hidden" height="260px">
-
-
-                  <HorizontalSwiper data={grounds} handleButtonOpenCard={(item) =>
-                    setMode({ mode: "draw", drawType: item.drawType })
-                  } />
+                <Divider
+                  margin="50px 80px"
+                  width="calc(100% - 160px)"
+                  height="2px"
+                />
+                <Box
+                  margin="0px 10px"
+                  gap="20px"
+                  flexDirection="column"
+                  overflow="hidden"
+                  height="260px"
+                >
+                  <HorizontalSwiper
+                    data={grounds}
+                    handleButtonOpenCard={(item) =>
+                      setMode({ mode: "draw", drawType: item.drawType })
+                    }
+                  />
                   {/* <Box position="absolute" width="auto" marginTop="30px">
                     {grounds?.map((item, index) => (
                       <ObjectCard data={item} handleButtonOpenCard={() => setMode({ mode: "draw", drawType: item.drawType, drawStyle: item.drawStyle })} />
@@ -312,17 +317,33 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
                   </Box> */}
                 </Box>
 
-
-                <Box margin="10px" gap="20px" flexDirection="column" position="absolute" bottom="10px" width="calc(100% - 20px)">
-                  <Typography variant="buttonBg" textAlign="center">Du hast eigene Modelle?</Typography>
-                  <ModalButton variant="primary" icon={<Plus />} text="3D Modell hochladen" width="max" options={{
-                    style: {
-                      padding: 20,
-                    },
-                    title: t("add_model"),
-                    swipe: isMobile && true,
-
-                  }}>
+                <Box
+                  margin="10px"
+                  gap="20px"
+                  flexDirection="column"
+                  position="absolute"
+                  bottom="10px"
+                  width="calc(100% - 20px)"
+                >
+                  <Typography
+                    variant="buttonBg"
+                    textAlign="center"
+                  >
+                    Du hast eigene Modelle?
+                  </Typography>
+                  <ModalButton
+                    variant="primary"
+                    icon={<Plus />}
+                    text="3D Modell hochladen"
+                    width="max"
+                    options={{
+                      style: {
+                        padding: 20,
+                      },
+                      title: t("add_model"),
+                      swipe: isMobile && true,
+                    }}
+                  >
                     <AddModel
                       uploadedImage={uploadedImage}
                       handleImageUpload={handleImageUpload}
@@ -331,20 +352,15 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
                       handleSubmit={handleSubmit}
                       formik={formik}
                       validationSchema={validationSchema}
-
                     />
                   </ModalButton>
                 </Box>
-
-
               </React.Fragment>
-            }
-
-
+            )}
           </ContentWrapper>
         </InnerWrapper>
       </DragWrapper>
-    </React.Fragment >
+    </React.Fragment>
   );
 };
 

@@ -194,6 +194,7 @@ const Home = ({ setLoadingModel }) => {
           swipedUp={swipedUp}
         />
       )}
+
       <Map
         initialMapViewport={initialMapViewport}
         statefulMap={statefulMap}
@@ -212,7 +213,8 @@ const Home = ({ setLoadingModel }) => {
       <Box
         position="fixed"
         bottom="20px"
-        right={isMobile ? "20px" : "100px"}>
+        right={isMobile ? "20px" : "100px"}
+      >
         <Button
           onClick={() => handleSaveModalOpen(true)}
           icon={<Check />}
@@ -223,7 +225,8 @@ const Home = ({ setLoadingModel }) => {
         <Box
           position="fixed"
           bottom="20px"
-          left={"20px"}>
+          left={"20px"}
+        >
           <Button
             icon={<AllOrganizationTypes />}
             onClick={() => console.log("")}

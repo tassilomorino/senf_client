@@ -56,16 +56,30 @@ const theme: Theme = {
   // input and button height
   inputHeight: (size) => {
     switch (size) {
-      case "sm": case "small": return "36px";
-      case "md": case "medium": return "44px";
-      case "lg": case "large": default: return "50px";
+      case "sm":
+      case "small":
+        return "36px";
+      case "md":
+      case "medium":
+        return "44px";
+      case "lg":
+      case "large":
+      default:
+        return "50px";
     }
   },
   inputPadding: (size) => {
     switch (size) {
-      case "sm": case "small": return "0.5rem";
-      case "md": case "medium": return "0.75rem";
-      case "lg": case "large": default: return "0.875rem";
+      case "sm":
+      case "small":
+        return "0.5rem";
+      case "md":
+      case "medium":
+        return "0.75rem";
+      case "lg":
+      case "large":
+      default:
+        return "0.875rem";
     }
   },
 
@@ -124,6 +138,19 @@ const theme: Theme = {
       beige35tra: "rgba(226, 183, 54, 0.35)",
       beige20tra: "rgba(226, 183, 54, 0.2)",
       beige10tra: "rgba(226, 183, 54, 0.1)",
+    },
+    shade: {
+      shade100: "#",
+      shade75: "#",
+      shade50: "#",
+      shade35: "#",
+      shade20: "#",
+      shade10: "#",
+      shade75tra: "",
+      shade50tra: "",
+      shade35tra: "",
+      shade20tra: "",
+      shade10tra: "rgba(155, 95, 0, 0.1)",
     },
     brown: {
       brown100: "#baa04f",

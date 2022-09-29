@@ -298,14 +298,16 @@ const Map: FC<MapProps> = ({
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
-      id: Math.random() * 1000,
+      // id: Math.random() * 1000,
       // style: "mapbox://styles/tmorino/ckclpzylp0vgp1iqsrp4asxt6",
       style: "mapbox://styles/tmorino/ckz5jc88b000l14o3i4c931rn",
       center: [lng?.current, lat?.current],
       zoom: zoom?.current,
       pitch: initialMapViewport.pitch,
     });
-    setStatefulMap(map);
+    if (!statefulMap) {
+      setStatefulMap(map);
+    }
     subscribeMap(map);
     addImagesToMap(map);
 
@@ -499,7 +501,8 @@ const Map: FC<MapProps> = ({
           justifyContent="center"
           alignItems="center"
           zIndex={99}
-          pointerEvents="none">
+          pointerEvents="none"
+        >
           <IdeaPin
             color={theme.colors.primary.primary100}
             transform="scale(1.5)"
@@ -514,7 +517,8 @@ const Map: FC<MapProps> = ({
           zIndex={999999999}
           left="50%"
           transform="translateX(-50%)"
-          gap="8px">
+          gap="8px"
+        >
           <Button
             text="Delete"
             onClick={() => {
@@ -547,12 +551,14 @@ const Map: FC<MapProps> = ({
           bottom: 0,
           width: "100%",
           height: "100%",
-        }}>
+        }}
+      >
         {children}
       </MapContainer>
       <MarkerPin
         visible={ideaData}
-        ref={setContainer}>
+        ref={setContainer}
+      >
         <IdeaPin
           transform="translate(0, -12)"
           color={ideaMarkerColor}

@@ -1,5 +1,9 @@
-import React from "react";
+import { doc, getDoc } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { db } from "../../firebase";
 import IdeaProcessPanel from "./IdeaProcessPanel";
 
 const Wrapper = styled.div`
@@ -10,10 +14,24 @@ const Wrapper = styled.div`
   overflow: scroll;
 `;
 
-const IdeaSidebarContent = () => {
+const IdeaSidebarContent = ({ ideaId }) => {
+  const [idea, setIdea] = useState({});
+  useEffect(async () => {
+    if (ideaId) {
+      try {
+        const ideaDoc = doc(db, `screams/${ideaId}`);
+        const docSnapshot = await getDoc(ideaDoc);
+        setIdea({ ...docSnapshot.data(), ideaId: docSnapshot.id });
+        console.log(idea);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [ideaId]);
+
   return (
     <Wrapper>
-      <IdeaProcessPanel />
+      <IdeaProcessPanel idea={idea} />
     </Wrapper>
   );
 };
