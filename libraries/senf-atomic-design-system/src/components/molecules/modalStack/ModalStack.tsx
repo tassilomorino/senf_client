@@ -19,14 +19,35 @@ const StackWrapper = styled.div<ModalOptions>`
 const Stack = ({ stack, closeModal }: { stack: ModalProps[], closeModal: () => void }) => {
 	const isMobile = isMobileCustom()
 	const modalIndex = (item: ModalProps) => (stack.length - stack.indexOf(item)) - 1
-	const away = (item: ModalProps) => ({ opacity: 0, shading: 1, y: item.options?.swipe ? 1000 : 30, scale: 1.1 })
+	const x = (item: ModalProps) => {
+		if (item.options?.enterFrom === "right") return 200
+		if (item.options?.enterFrom === "left") return -200
+		return 0
+	}
+	const y = (item: ModalProps) => {
+		if (item.options?.swipe) return 1000
+		if (item.options?.enterFrom) return 0
+		return 30
+	}
+	const scale = (item: ModalProps) => {
+		if (item.options?.enterFrom) return 0.9
+		return 1.1
+	}
+	const away = (item: ModalProps) => ({
+		opacity: 0,
+		shading: 1,
+		y: y(item),
+		x: x(item),
+		scale: scale(item)
+	})
 	const modalStackTransition = useTransition(stack, {
 		from: item => away(item),
 		leave: item => away(item),
-		enter: { opacity: 1, shading: 1, y: 0, scale: 1 },
+		enter: { opacity: 1, shading: 1, y: 0, x: 0, scale: 1 },
 		update: item => [{
 			shading: Math.min(1 / (modalIndex(item) + 1), 1),
 			y: modalIndex(item) * -40,
+			x: 0,
 			scale: 1 - modalIndex(item) / 7,
 		}],
 		config: config.gentle

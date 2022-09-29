@@ -118,20 +118,17 @@ const Auth: FC<AuthProps> = ({
   const [isLoggedIn] = React.useState(user);
 
   useEffect(() => {
-    if (page === "authResetEmail")
-      openModal(
-        <AuthResetEmail
-          setPage={setPage}
-          authHandler={authHandler}
-          formikStore={formikStore}
-        />,
-        {
-          title: `${t("reset_header_1")} ${t("reset_header_2")}`,
-          description: t("reset_password"),
-          afterClose: () => setPage("authEmail"),
-        }
-      );
-  }, [page]);
+    if (page === "authResetEmail") {
+      openModal((
+        <AuthResetEmail setPage={setPage} authHandler={authHandler} formikStore={formikStore} />
+      ), {
+        title: `${t("reset_header_1")} ${t("reset_header_2")}`,
+        description: t("reset_password"),
+        enterFrom: "right",
+        afterClose: () => setPage("authEmail"),
+      })
+    }
+  }, [page])
 
   return (
     <Wrapper>
