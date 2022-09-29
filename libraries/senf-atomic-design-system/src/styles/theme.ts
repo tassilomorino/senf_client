@@ -36,7 +36,7 @@ const categoryColors = generateThemeColors(categories, [100, 50])
 const signalColors = generateThemeColors(signal, [100, 85], [0, 0, 0])
 
 // for testing
-logColors({ ...themeColors, ...categoryColors, ...signalColors })
+// logColors({ ...themeColors, ...categoryColors, ...signalColors })
 
 const theme: Theme = {
   fontFamily: "Nunito",
