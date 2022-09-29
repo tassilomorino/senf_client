@@ -83,7 +83,17 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
         marginBottom="20px"
         flexDirection="column"
       >
-        <Typography variant="bodySm">Adresse deiner Idee</Typography>
+        {!isMobile && (
+          <Typography variant="bodySm">Adresse deiner Idee</Typography>
+        )}
+        {isMobile && (
+          <Typography
+            variant="buttonBg"
+            textAlign="center"
+          >
+            Idee verfassen
+          </Typography>
+        )}
         {!isMobile && (
           <Geocoder
             formik={formik}
@@ -178,12 +188,12 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
 
         <Typography
           variant="buttonBg"
-          textAlign="center"
+          textAlign="left"
         >
           Welche Kategorie passt zu deiner Idee?
         </Typography>
         <DropdownButton
-          variant="white"
+          variant="secondary"
           icon={
             formik?.values?.topic ? (
               <Dot color={setColorByTopic(formik?.values?.topic)} />
@@ -191,9 +201,10 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
               <DotAllTopics />
             )
           }
+          justifyContent="flex-start"
           width="max"
           text={formik?.values.topic || "Kategorie wählen"}
-          options={{ size: "md", closeOnSelect: true }}
+          options={{ size: "md", closeOnSelect: true, modal: true }}
           data={OptionsTopics().map(({ value, label }) => {
             return {
               text: value,
@@ -250,14 +261,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
 
         <Button
           onClick={handleSubmit}
-          variant={
-            formik?.errors?.body ||
-            formik?.errors?.title ||
-            !formik?.values?.address ||
-            Out === true
-              ? "white"
-              : "primary"
-          }
+          variant={"primary"}
           text={t("postScream_shareIdea")}
           loading={loading}
           disabled={
