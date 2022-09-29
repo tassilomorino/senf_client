@@ -38,6 +38,11 @@ const signalColors = generateThemeColors(signal, [100, 85], [0, 0, 0])
 // for testing
 // logColors({ ...themeColors, ...categoryColors, ...signalColors })
 
+/**
+ * @todo I think we should decide whether we return variables with a unit or without. My proposal is that we return units as numbers and assume pixel values. We can then provide a px-to-rem function and devs can transform the values to rem as well
+ * @todo I also think the keys should be singular because I think it is more intuitive to use `theme.color.primary-100` or `theme.radius[0]
+ */
+
 const theme: Theme = {
   fontFamily: "Nunito",
 
