@@ -64,10 +64,6 @@ export interface AuthContext extends AuthState, AuthMethods {}
 const AuthContext = React.createContext({} as AuthContext);
 
 const AuthProvider = ({ children }) => {
-<<<<<<< HEAD
-=======
-
->>>>>>> main
   const [user, setUser] = React.useState<DocumentData | boolean | null>(null);
   const blankError = { code: "", message: "" };
   const [errorMessage, setErrorMessage] = React.useState(blankError);
