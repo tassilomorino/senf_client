@@ -8,6 +8,7 @@ export interface ColorNames {
 export interface ThemeColors { [key: string]: string }
 
 export type RGB = [number, number, number];
+export type HSL = RGB;
 
 export const hsla = (h: number, s: number, l: number, a = 1) => `hsla(${h}, ${s}%, ${l}%, ${a})`;
 
@@ -36,7 +37,7 @@ export const rgb2hsl = (red: number, green: number, blue: number) => {
 	];
 };
 
-export const composite = (h: number, s: number, l: number, a: number, b: number[] = [0, 0, 100]) => {
+export const composite = (h: number, s: number, l: number, a: number, b: HSL = [0, 0, 100]) => {
 	const overlay = hsl2rgb(h, s, l)
 	const background = hsl2rgb(...b as RGB)
 	return hsla(
@@ -47,13 +48,25 @@ export const composite = (h: number, s: number, l: number, a: number, b: number[
 }
 const pad = (n: number, padding = 3) => String(n).padStart(padding, '0');
 
-export const generateThemeColors = (colors: ColorNames, luminance: number[]) => {
+/**
+ * Generates theme colors based on the given colors and luminance
+ * @param colors Object with colors and their HSL values as an array.
+ * @example { primary: { h: 46, s: 100, l: 71 }, ... }
+ * @param luminance Array of luminance values.
+ * @example [100, 75, 50, 25, 15, 10, 5];
+ * @param mix HSL values to mix with, defaults to white, set to false to disable and only generate the base color as well as transparency.
+ * @example [46, 100, 71]
+ * @returns Object with colors and their HSLA values as string.
+ * @example { 'primary-100': 'hsla(45, 100%, 98%, 1)', 'primary-100-tra': 'hsla(46, 100%, 71%, 0.05)', ... }
+ */
+export const generateThemeColors = (colors: ColorNames, luminance: number[], mix: HSL | boolean = [0, 0, 100]) => {
 	const themeColors: ThemeColors = {};
 	Object.entries(colors).forEach(([name, color]) => {
 		const { h, s, l } = color
+		if (!mix) themeColors[`${name}`] = hsla(h, s, l, 1)
 		luminance.forEach((lum, i) => {
 			const index = pad((luminance.length - i) * 100)
-			themeColors[`${name}-${index}`] = composite(h, s, l, lum / 100)
+			if (mix) themeColors[`${name}-${index}`] = composite(h, s, l, lum / 100, mix as HSL)
 			themeColors[`${name}-${index}-tra`] = hsla(h, s, l, lum / 100)
 			if (name === 'primary') {
 				const { shade } = colors
@@ -63,9 +76,11 @@ export const generateThemeColors = (colors: ColorNames, luminance: number[]) => 
 	})
 	return themeColors
 }
+export const getRelativeLuminance = (rgb: RGB) => 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
 
 export const logColors = (colors: ThemeColors) => {
+	console.log(`%cGenerated ${Object.entries(colors).length} colors:`, `font-weight: bold`);
 	Object.entries(colors).forEach(([name, color]) => {
-		console.log(`%c${name} ${color}`, `background: ${color}; color: black`)
+		console.log(`%c  `, `background: ${color}; color: black; border-radius: 0.25rem;`, `${name}: ${color}`)
 	})
 }
