@@ -15,7 +15,9 @@ export default {
 
 // Endless loop of parentsize component in storybook makes it look like its animating
 const Template: Story<BarChartProps> = (args) => (
-  <BarChart dataList={args.dataList} />
+  <div style={{ width: 500, height: 500 }}>
+    <BarChart dataList={args.dataList} />
+  </div>
 );
 
 export const Default = Template.bind({});
