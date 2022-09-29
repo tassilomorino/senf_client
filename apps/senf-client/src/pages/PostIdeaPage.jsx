@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
 import { isMobileCustom } from "../util/customDeviceDetect";
 import { postScream } from "../redux/actions/screamActions";
 import { clearErrors } from "../redux/actions/errorsActions";
@@ -65,11 +66,13 @@ const PostIdeaPage = ({
 
   const user = useSelector((state) => state.user);
   const { t } = useTranslation();
-
+  const navigate = useNavigate();
   const initialMapViewport = useSelector(
     (state) => state.data.initialMapViewport
   );
-
+  const [postIdeaSuccessModalOpen, setPostIdeaSuccessModalOpen] =
+    React.useState(false);
+  const [newIdea, setNewIdea] = useState(null);
   const [viewport, setViewport] = useState(null);
   const [openRules, setOpenRules] = useState(false);
   const [out, setOut] = useState(false);
@@ -229,8 +232,11 @@ const PostIdeaPage = ({
     if (selectedUnix.length > 0) {
       newScream.selectedUnix = selectedUnix;
     }
-    dispatch(postScream(newScream, user)).then(() => {
-      setPostIdeaOpen(false);
+    dispatch(postScream(newScream, user)).then((data) => {
+      // setPostIdeaOpen(false);
+      setPostIdeaSuccessModalOpen(true);
+      setNewIdea(data);
+      formik.resetForm();
     });
   };
 
@@ -362,6 +368,10 @@ const PostIdeaPage = ({
         handleChangeCalendar={handleChangeCalendar}
         handleSubmit={handleSubmit}
         setPostIdeaOpen={setPostIdeaOpen}
+        postIdeaSuccessModalOpen={postIdeaSuccessModalOpen}
+        setPostIdeaSuccessModalOpen={setPostIdeaSuccessModalOpen}
+        navigate={navigate}
+        newIdea={newIdea}
       />
     </React.Fragment>
   );

@@ -13,7 +13,6 @@ import SenfManSquating from "../../../assets/illustrations/senfManSquatting.png"
 
 import Box from "../../atoms/box/Box";
 import Accordion from "../../molecules/accordion/Accordion";
-import Success from "../../templates/success/Success";
 import Button from "../../atoms/buttons/Button";
 
 import Arrow from "../../../assets/icons/Arrow";
@@ -26,14 +25,13 @@ import AuthAddDetails from "../../templates/auth/AuthAddDetails";
 
 import { useModals } from "../../molecules/modalStack/ModalProvider";
 
-
 const Wrapper = styled.div<AuthProps>`
   position: relative;
   width: 100%;
   min-height: 700px;
   background-color: ${(props) => props.theme.colors.beige.beige20};
   overflow: hidden;
-  top:0;
+  top: 0;
 `;
 const Img = styled.img`
   position: absolute;
@@ -59,13 +57,11 @@ const Auth: FC<AuthProps> = ({
   errorMessage,
   dataSuccess,
   page,
-  setPage
+  setPage,
 }) => {
   const { openModal } = useModals();
   const { t } = useTranslation();
   const navigate = useNavigate();
-
-
 
   const schema = {
     email: yup
@@ -94,9 +90,16 @@ const Auth: FC<AuthProps> = ({
       .matches(/^[a-zA-Z0-9\-\_\.]*$/, t("username_latin_only")),
   };
   const emailValidationSchema = yup.object({ email: schema.email });
-  const loginValidationSchema = yup.object({ email: schema.email, password: schema.password });
-  const registerValidationSchema = yup.object({ email: schema.email, password: schema.password, confirmPassword: schema.confirmPassword, handle: schema.handle });
-
+  const loginValidationSchema = yup.object({
+    email: schema.email,
+    password: schema.password,
+  });
+  const registerValidationSchema = yup.object({
+    email: schema.email,
+    password: schema.password,
+    confirmPassword: schema.confirmPassword,
+    handle: schema.handle,
+  });
 
   const formikStore = useFormik({
     initialValues: {
@@ -105,7 +108,8 @@ const Auth: FC<AuthProps> = ({
       confirmPassword: "",
       handle: "",
     },
-    validationSchema: page === "authEmail" ? loginValidationSchema : emailValidationSchema,
+    validationSchema:
+      page === "authEmail" ? loginValidationSchema : emailValidationSchema,
     validateOnMount: true,
     validateOnChange: true,
     validateOnBlur: true,
@@ -114,39 +118,52 @@ const Auth: FC<AuthProps> = ({
   const [isLoggedIn] = React.useState(user);
 
   useEffect(() => {
-    if (page === "authResetEmail") openModal((
-      <AuthResetEmail setPage={setPage} authHandler={authHandler} formikStore={formikStore} />
-    ), {
-      title: `${t("reset_header_1")} ${t("reset_header_2")}`,
-      description: t("reset_password"),
-      enterFrom: "right",
-      afterClose: () => setPage("authEmail"),
-    })
+    if (page === "authResetEmail") {
+      openModal((
+        <AuthResetEmail setPage={setPage} authHandler={authHandler} formikStore={formikStore} />
+      ), {
+        title: `${t("reset_header_1")} ${t("reset_header_2")}`,
+        description: t("reset_password"),
+        enterFrom: "right",
+        afterClose: () => setPage("authEmail"),
+      })
+    }
   }, [page])
 
   return (
     <Wrapper>
-      <Box margin="10px" position="absolute" zIndex={999}>
-        {
-          page !== "authOptions" && (
-            <Button
-              variant="tertiary"
-              icon={<Arrow transform="rotate(180)" />}
-              onClick={() => {
-                setPage("authOptions")
-                navigate("/")
-              }}
-            />
-          )
-        }
+      <Box
+        margin="10px"
+        position="absolute"
+        zIndex={999}
+      >
+        {page !== "authOptions" && (
+          <Button
+            variant="tertiary"
+            icon={<Arrow transform="rotate(180)" />}
+            onClick={() => {
+              setPage("authOptions");
+              navigate("/");
+            }}
+          />
+        )}
       </Box>
 
-      <Wave color="#fed957" top="170px" />
-
+      <Wave
+        color="#fed957"
+        top="170px"
+      />
 
       <React.Fragment>
-        <Img src={SenfManSquating} alt="Illustration" />
-        <StyledSvg xmlns="http://www.w3.org/2000/svg" width="175" height="69">
+        <Img
+          src={SenfManSquating}
+          alt="Illustration"
+        />
+        <StyledSvg
+          xmlns="http://www.w3.org/2000/svg"
+          width="175"
+          height="69"
+        >
           <g>
             <defs>
               <linearGradient
@@ -174,14 +191,14 @@ const Auth: FC<AuthProps> = ({
         </StyledSvg>
       </React.Fragment>
 
-
-
       {(() => {
         if (isLoggedIn && page !== "authAddDetails") {
-          return (<AuthAddDetails
-            user={user}
-            authHandler={authHandler}
-          />)
+          return (
+            <AuthAddDetails
+              user={user}
+              authHandler={authHandler}
+            />
+          );
           // return (<Box
           //   flexDirection="column"
           //   margin="480px 10% 0px 10%"
@@ -196,32 +213,42 @@ const Auth: FC<AuthProps> = ({
           //   />
           // </Box>)
         }
-        if (page === "authEmail" || page === "authEmailRegister" || page === "authResetEmail") {
-          return <AuthEmail
-            setPage={setPage}
-            authHandler={authHandler}
-            errorMessage={errorMessage}
-            formikStore={formikStore}
-            variant={page === "authEmailRegister" ? "register" : "login"}
-          />
+        if (
+          page === "authEmail" ||
+          page === "authEmailRegister" ||
+          page === "authResetEmail"
+        ) {
+          return (
+            <AuthEmail
+              setPage={setPage}
+              authHandler={authHandler}
+              errorMessage={errorMessage}
+              formikStore={formikStore}
+              variant={page === "authEmailRegister" ? "register" : "login"}
+            />
+          );
         }
         if (page === "authVerifyEmail") {
-          return <AuthVerifyEmail />
+          return <AuthVerifyEmail />;
         }
         if (page === "authAddDetails") {
-          return <AuthAddDetails
-            user={user}
-            authHandler={authHandler}
-          />
+          return (
+            <AuthAddDetails
+              user={user}
+              authHandler={authHandler}
+            />
+          );
         }
-        return <AuthOptions
-          authHandler={authHandler}
-          formikStore={formikStore}
-          setPage={setPage}
-          errorMessage={errorMessage}
-        />
+        return (
+          <AuthOptions
+            authHandler={authHandler}
+            formikStore={formikStore}
+            setPage={setPage}
+            errorMessage={errorMessage}
+          />
+        );
       })()}
-    </Wrapper >
+    </Wrapper>
   );
 };
 

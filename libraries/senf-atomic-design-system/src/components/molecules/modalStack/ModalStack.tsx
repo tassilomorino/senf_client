@@ -7,7 +7,7 @@ import { ModalProps, ModalOptions, ModalContainerProps } from "./ModalStack.type
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 
 const StackWrapper = styled.div<ModalOptions>`
-	z-index: 9999;
+	z-index: 5;
 	position: fixed;
 	bottom: ${({ isMobile }) => isMobile ? 0 : "50%"};
 	left: 50%;

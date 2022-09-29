@@ -56,7 +56,6 @@ const useIdeasMarkers = () => {
       //       "fill-outline-color": "#3bb2d0",
       //       "fill-opacity": 0.4,
       const { layers } = map.getStyle();
-      console.log(layers);
 
       // map.addSource("mapbox-terrain", {
       //   type: "vector",

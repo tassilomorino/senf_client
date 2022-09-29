@@ -1,6 +1,6 @@
 {
   "name": "senf-three-d",
-  "author": "Tassilo Morino, Norbertas Papirtis, Mahammed Maqbol, Leon Vogler",
+  "author": "Tassilo Morino, Norbertas Papirtis, Mohammed Maqbol, Leon Vogler",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
