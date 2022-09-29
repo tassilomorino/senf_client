@@ -194,6 +194,7 @@ const Home = ({ setLoadingModel }) => {
           swipedUp={swipedUp}
         />
       )}
+
       <Map
         initialMapViewport={initialMapViewport}
         statefulMap={statefulMap}

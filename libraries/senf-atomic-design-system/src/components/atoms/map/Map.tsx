@@ -305,7 +305,9 @@ const Map: FC<MapProps> = ({
       zoom: zoom?.current,
       pitch: initialMapViewport.pitch,
     });
-    setStatefulMap(map);
+    if (!statefulMap) {
+      setStatefulMap(map);
+    }
     subscribeMap(map);
     addImagesToMap(map);
 
@@ -346,7 +348,7 @@ const Map: FC<MapProps> = ({
 
     return () => {
       map?.remove();
-      // setStatefulMap(null);
+      setStatefulMap(null);
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
