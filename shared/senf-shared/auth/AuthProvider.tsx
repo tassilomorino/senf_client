@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import imageCompression from "browser-image-compression";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
@@ -64,6 +64,10 @@ export interface AuthContext extends AuthState, AuthMethods {}
 const AuthContext = React.createContext({} as AuthContext);
 
 const AuthProvider = ({ children }) => {
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
   const [user, setUser] = React.useState<DocumentData | boolean | null>(null);
   const blankError = { code: "", message: "" };
   const [errorMessage, setErrorMessage] = React.useState(blankError);
@@ -266,7 +270,7 @@ const AuthProvider = ({ children }) => {
     // ifAllUserDetailsAreFilled(reduxUser)
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     onAuthStateChanged(auth, (authUser) => {
       if (!authUser) {
         setUser(false);
@@ -276,6 +280,7 @@ const AuthProvider = ({ children }) => {
       getUserData(authUser)
         .then(setUser)
         .catch(() => setUser(false))
+<<<<<<< HEAD
         .finally(() => setLoading(false));
     });
   }, []);
@@ -283,6 +288,15 @@ const AuthProvider = ({ children }) => {
   React.useEffect(() => {
     const timout = setTimeout(() => setErrorMessage(blankError), 20000);
     return () => clearTimeout(timout);
+=======
+        .finally(() => setLoading(false))
+    });
+  }, []);
+
+  useEffect(() => {
+    const timout = setTimeout(() => setErrorMessage(blankError), 20000)
+    return () => clearTimeout(timout)
+>>>>>>> main
   }, [errorMessage]);
 
   // if (loading) {

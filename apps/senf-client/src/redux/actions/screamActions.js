@@ -235,15 +235,16 @@ export const postScream = (newScream, user) => async (dispatch) => {
       });
 
       if (resScream.projectRoomId) {
-        // open scream in projectroom context
-        // '/projectRooms/:projectRoomId/:screamId'
-        dispatch({ type: OPEN_PROJECTROOM });
+        // @TODO: handle opening idea in projectroom context
+        /*      '/projectRooms/:projectRoomId/:screamId'
+          dispatch({ type: OPEN_PROJECTROOM });
         dispatch(loadProjectRoomData(resScream.projectRoomId));
-        dispatch(openScreamFunc(resScream.screamId));
+        dispatch(openScreamFunc(resScream.screamId));  */
       } else {
         // open scream in the main context
         // '/:screamId'
-        dispatch(openScreamFunc(resScream.screamId));
+        // dispatch(openScreamFunc(resScream.screamId));
+        return resScream;
       }
     } catch (error) {
       throw new Error(error, "error in postScreamFunc");
