@@ -10,62 +10,78 @@ import {
   deleteUser,
   User,
   fetchSignInMethodsForEmail,
-  ActionCodeSettings
+  ActionCodeSettings,
 } from "firebase/auth";
 
 import {
-  collection, query, where, getDocs, doc, deleteDoc, updateDoc, DocumentData
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  deleteDoc,
+  updateDoc,
+  DocumentData,
 } from "firebase/firestore";
 // import { Loader, Box } from "senf-atomic-design-system";
 import { FormikValues } from "formik";
 import { db, auth } from "./firebase";
-import { useSignIn } from '../firebase/useSignInWithPopup'
-import { useCreateUserWithEmailAndPassword } from '../firebase/useCreateUserWithEmailAndPassword'
-import { useHandleSubmitEditDetails } from '../firebase/useHandleSubmitEditDetails'
-import { ifAllUserDetailsAreFilled } from '../utils/ifAllUserDetailsAreFilled'
+import { useSignIn } from "../firebase/useSignInWithPopup";
+import { useCreateUserWithEmailAndPassword } from "../firebase/useCreateUserWithEmailAndPassword";
+import { useHandleSubmitEditDetails } from "../firebase/useHandleSubmitEditDetails";
+import { ifAllUserDetailsAreFilled } from "../utils/ifAllUserDetailsAreFilled";
 
 export interface AuthState {
   user: DocumentData | null;
   loading: boolean | string;
-  errorMessage: { code: string, message: string };
+  errorMessage: { code: string; message: string };
 }
 export interface AuthMethods {
-  signIn: (data: { provider?: string, formikStore?: FormikValues, id?: string }) => Promise<User | DocumentData>;
+  signIn: (data: {
+    provider?: string;
+    formikStore?: FormikValues;
+    id?: string;
+  }) => Promise<User | DocumentData>;
   signOut: () => Promise<void>;
   deleteUserFromDb: (userId: string) => Promise<void>;
   createUser: (formikStore: FormikValues) => Promise<User | DocumentData>;
-  sendPasswordResetEmail: (email: string, actionCodeSettings?: ActionCodeSettings | undefined) => Promise<void>;
+  sendPasswordResetEmail: (
+    email: string,
+    actionCodeSettings?: ActionCodeSettings | undefined
+  ) => Promise<void>;
   sendEmailVerification: typeof sendEmailVerification;
-  userExists: (formikStore: FormikValues) => Promise<boolean | string[] | User | DocumentData>;
-  submitEditDetails: (formikStore: FormikValues) => Promise<User | DocumentData>;
+  userExists: (
+    formikStore: FormikValues
+  ) => Promise<boolean | string[] | User | DocumentData>;
+  submitEditDetails: (
+    formikStore: FormikValues
+  ) => Promise<User | DocumentData>;
   handleImageUpload: (event: Event, user?: DocumentData) => Promise<string>;
   ifAllUserDetailsAreFilled: (user?: DocumentData) => boolean;
 }
-export interface AuthContext extends AuthState, AuthMethods { }
+export interface AuthContext extends AuthState, AuthMethods {}
 
 const AuthContext = React.createContext({} as AuthContext);
 
-
 const AuthProvider = ({ children }) => {
-
-  const [user, setUser] = React.useState<DocumentData | null>(null);
+  const [user, setUser] = React.useState<DocumentData | boolean | null>(null);
   const blankError = { code: "", message: "" };
-  const [errorMessage, setErrorMessage] = React.useState(blankError)
+  const [errorMessage, setErrorMessage] = React.useState(blankError);
   const [loading, setLoading] = React.useState<boolean | string>(true);
 
   // Methods
 
   const getUserData = async (user: User) => {
     if (!user) throw Error("User is not logged in");
-    if (!user?.uid) return user
+    if (!user?.uid) return user;
     const usersRef = collection(db, "users");
     const q = query(usersRef, where("userId", "==", user.uid));
-    const snapshot = await getDocs(q)
+    const snapshot = await getDocs(q);
     const userData = snapshot?.docs[0]?.data();
     userData.likes = [];
     userData.comments = [];
-    return userData
-  }
+    return userData;
+  };
 
   const sendVerification = {
     sendEmailVerification: true,
@@ -74,35 +90,46 @@ const AuthProvider = ({ children }) => {
     },
   };
   const signInWith = useSignIn(auth, db);
-  const createUserWithEmailAndPassword = useCreateUserWithEmailAndPassword(auth, db, sendVerification);
+  const createUserWithEmailAndPassword = useCreateUserWithEmailAndPassword(
+    auth,
+    db,
+    sendVerification
+  );
   const submitEditDetails = useHandleSubmitEditDetails(user, db);
-
 
   // Handler
   const handler: AuthMethods = {
     signIn({ provider, formikStore, id }) {
-      setErrorMessage(blankError)
+      setErrorMessage(blankError);
       return new Promise((resolve, reject) => {
         switch (provider) {
           case "apple":
-          case 'facebook':
-          case 'google':
-            setLoading(id || provider)
-            signInWith.provider(provider, ["email"])
+          case "facebook":
+          case "google":
+            setLoading(id || provider);
+            signInWith
+              .provider(provider, ["email"])
               .then(getUserData)
               .then(resolve)
-              .catch(err => { setErrorMessage(err); reject(err) })
+              .catch((err) => {
+                setErrorMessage(err);
+                reject(err);
+              })
               .finally(() => setLoading(false));
             break;
-          case 'email':
+          case "email":
           default:
-            signInWith.email(formikStore)
+            signInWith
+              .email(formikStore)
               .then(resolve)
-              .catch(err => { setErrorMessage(err); reject(err) })
+              .catch((err) => {
+                setErrorMessage(err);
+                reject(err);
+              })
               .finally(() => setLoading(false));
             break;
         }
-      })
+      });
     },
     signOut: async () => signOut(auth),
     deleteUserFromDb: async (userId) => {
@@ -112,9 +139,12 @@ const AuthProvider = ({ children }) => {
         // if no userId is provided, delete the current user from the only firebase auth
         try {
           await deleteUser(currentuser);
-          return
+          return;
         } catch (error) {
-          throw new Error(error, "error during deleteUserFromDb without userId");
+          throw new Error(
+            error,
+            "error during deleteUserFromDb without userId"
+          );
         }
       }
       try {
@@ -132,64 +162,78 @@ const AuthProvider = ({ children }) => {
         await deleteDoc(emailRef);
         await deleteDoc(userRef);
         await deleteUser(currentuser);
-
       } catch (error) {
         throw new Error(error, "error during deleteUserFromDb with userId");
       }
     },
     async createUser(formikRegisterStore) {
       return new Promise((resolve, reject) => {
-        setLoading('email')
+        setLoading("email");
         createUserWithEmailAndPassword(formikRegisterStore)
           .then(resolve)
-          .catch(err => { setErrorMessage(err); reject(err) })
+          .catch((err) => {
+            setErrorMessage(err);
+            reject(err);
+          })
           .finally(() => setLoading(false));
-      })
+      });
     },
 
     async sendPasswordResetEmail(email, actionCodeSettings) {
       return new Promise((resolve, reject) => {
-        setLoading('reset')
+        setLoading("reset");
         sendPasswordResetEmail(auth, email, actionCodeSettings)
           .then(resolve)
-          .catch(err => { setErrorMessage(err); reject(err) })
+          .catch((err) => {
+            setErrorMessage(err);
+            reject(err);
+          })
           .finally(() => setLoading(false));
-      })
+      });
     },
     sendEmailVerification,
     ifAllUserDetailsAreFilled: (u = user) => ifAllUserDetailsAreFilled(u),
     async userExists(formikStore) {
-      setLoading('email')
+      setLoading("email");
       try {
         const { email } = formikStore.values;
-        const signInMethod = await fetchSignInMethodsForEmail(auth, email)
-        if (signInMethod?.includes('google.com')) return handler.signIn({ provider: 'google' })
-        if (signInMethod?.includes('facebook.com')) this.signIn({ provider: 'facebook' })
-        return signInMethod
+        const signInMethod = await fetchSignInMethodsForEmail(auth, email);
+        if (signInMethod?.includes("google.com"))
+          return handler.signIn({ provider: "google" });
+        if (signInMethod?.includes("facebook.com"))
+          this.signIn({ provider: "facebook" });
+        return signInMethod;
       } catch (err) {
-        setErrorMessage(err)
+        setErrorMessage(err);
         throw new Error(err);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     },
     submitEditDetails: async ({ formikStore, id }) => {
       return new Promise((resolve, reject) => {
-        setLoading(id || 'edit')
+        setLoading(id || "edit");
         submitEditDetails(formikStore)
-          .then(user => { setUser(setUser); resolve(user) })
-          .catch(err => { setErrorMessage(err); reject(err) })
+          .then((user) => {
+            setUser(user);
+            resolve(user);
+          })
+          .catch((err) => {
+            setErrorMessage(err);
+            reject(err);
+          })
           .finally(() => setLoading(false));
-      })
+      });
     },
     handleImageUpload: async (event, targetUser) => {
-      const currentUser = (!targetUser && auth.currentUser) ? auth.currentUser : targetUser;
+      const currentUser =
+        !targetUser && auth.currentUser ? auth.currentUser : targetUser;
       if (!currentUser) throw Error("User is not logged in");
       if (
-        auth.currentUser?.uid !== currentUser.uid
-        && currentUser.isAdmin === false
-        && currentUser.isSuperAdmin === false
-        && currentUser.isModerator === false
+        auth.currentUser?.uid !== currentUser.uid &&
+        currentUser.isAdmin === false &&
+        currentUser.isSuperAdmin === false &&
+        currentUser.isModerator === false
       ) {
         throw new Error("user not authorized to handleImageUpload");
       }
@@ -211,34 +255,34 @@ const AuthProvider = ({ children }) => {
         const storageRef = ref(getStorage(), `profileimages/thumbnail`);
         const userRef = doc(db, `users/${currentUser.uid}`);
 
-        await uploadBytes(storageRef, compressedFile)
+        await uploadBytes(storageRef, compressedFile);
         const photoURL = await getDownloadURL(storageRef);
-        await updateDoc(userRef, { photoURL })
-        return photoURL
+        await updateDoc(userRef, { photoURL });
+        return photoURL;
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
-    }
+    },
     // ifAllUserDetailsAreFilled(reduxUser)
-  }
+  };
 
   React.useEffect(() => {
     onAuthStateChanged(auth, (authUser) => {
       if (!authUser) {
-        setUser(null);
+        setUser(false);
         setLoading(false);
-        return
+        return;
       }
       getUserData(authUser)
         .then(setUser)
-        .catch(() => setUser(null))
-        .finally(() => setLoading(false))
+        .catch(() => setUser(false))
+        .finally(() => setLoading(false));
     });
   }, []);
 
   React.useEffect(() => {
-    const timout = setTimeout(() => setErrorMessage(blankError), 20000)
-    return () => clearTimeout(timout)
+    const timout = setTimeout(() => setErrorMessage(blankError), 20000);
+    return () => clearTimeout(timout);
   }, [errorMessage]);
 
   // if (loading) {
@@ -260,10 +304,9 @@ const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider value={{ user, loading, errorMessage, ...handler }}>
       {children}
-    </AuthContext.Provider >
+    </AuthContext.Provider>
   );
 };
-
 
 export const useAuthContext = () => React.useContext(AuthContext);
 export default AuthProvider;
