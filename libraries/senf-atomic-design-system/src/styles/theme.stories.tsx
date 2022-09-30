@@ -49,9 +49,9 @@ const Template: Story = () => {
             </>
           )}
           {typeof theme.colors[color] !== "string" &&
-            Object.keys(theme.colors[color]).map((key) => (
+            Object.keys(theme.colors[color]).map((key, index) => (
               <div
-                key={theme.colors[color][key]}
+                key={theme.colors[color][key] + index}
                 style={{ display: "flex", flexDirection: "column" }}
               >
                 {key}

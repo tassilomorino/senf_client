@@ -177,7 +177,7 @@ const OrganizationCard: FC<OrganizationCardProps> = ({
     >
       {/* {status !== "active" && (
         <DeactivatedWrapper>
-           <img src={NotPublishedIcon} width="100%" /> 
+           <img src={NotPublishedIcon} width="100%" />
         </DeactivatedWrapper>
       )}
      */}
@@ -198,10 +198,7 @@ const OrganizationCard: FC<OrganizationCardProps> = ({
         <Typography variant="bodyBg">{title}</Typography>
       </Title>
       <SubTitle>
-        {projectroomsSize}{" "}
-        {projectroomsSize === 1
-          ? t("active_projectroom")
-          : t("active_projectrooms")}
+        {projectroomsSize} {projectroomsSize === 1 ? t("simon") : t("simon")}
       </SubTitle>
     </Wrapper>
   );
