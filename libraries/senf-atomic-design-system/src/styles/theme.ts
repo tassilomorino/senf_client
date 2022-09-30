@@ -1,39 +1,49 @@
 /** @format */
 import type { Theme } from "styled-system";
-import { generateThemeColors, logColors } from "./helpers"
+import { generateThemeColors, logColors } from "./helpers";
 
-const colors = {
+export type Color = {
+  h: number;
+  s: number;
+  l: number;
+};
+
+export type ColorPallet = {
+  [key: string]: Color;
+};
+
+const colors: ColorPallet = {
   primary: { h: 46, s: 100, l: 71 },
   shade: { h: 37, s: 100, l: 30 },
   grey: { h: 44, s: 15, l: 46 },
   text: { h: 36, s: 27, l: 11 },
 };
-const transparent = {
+const transparent: ColorPallet = {
   white: { h: 0, s: 0, l: 100 },
 };
-const categories = {
+const categories: ColorPallet = {
   bike: { h: 227, s: 70, l: 68 },
   traffic: { h: 194, s: 75, l: 70 },
   social: { h: 10, s: 68, l: 70 },
   sports: { h: 27, s: 83, l: 77 },
   utilities: { h: 262, s: 85, l: 78 },
-  environment: { h: 154, s: 50, l: 70, },
+  environment: { h: 154, s: 50, l: 70 },
   other: { h: 42, s: 91, l: 78 },
 };
-const signal = {
+const signal: ColorPallet = {
   red: { h: 2, s: 80, l: 60 },
   green: { h: 145, s: 100, l: 30 },
   blue: { h: 242, s: 81, l: 60 },
-  orange: { h: 38, s: 100, l: 57 }
+  orange: { h: 38, s: 100, l: 57 },
 };
 const luminance = [100, 75, 50, 25, 15, 10, 5];
 
 const themeColors = {
   ...generateThemeColors(colors, luminance),
-  ...generateThemeColors(transparent, luminance, false)
-}
-const categoryColors = generateThemeColors(categories, [100, 50])
-const signalColors = generateThemeColors(signal, [100, 85], [0, 0, 0])
+  ...generateThemeColors(transparent, luminance, false),
+};
+const categoryColors = generateThemeColors(categories, [100, 50]);
+const signalColors = generateThemeColors(signal, [100, 85], [0, 0, 0]);
 
 // for testing
 // logColors({ ...themeColors, ...categoryColors, ...signalColors })
