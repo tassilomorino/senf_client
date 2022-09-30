@@ -96,12 +96,14 @@ const SuperAdminBoard = () => {
       <Box
         gap="20px"
         flexDirection="column"
-        margin="30px">
+        margin="30px"
+      >
         <Typography variant="h2">My MonitoringBoards</Typography>
         <Box
           justifyContent="space-between"
           gap="16px"
-          alignItems="flex-end">
+          alignItems="flex-end"
+        >
           <Box width="400px">
             <Input
               type="search"
@@ -117,7 +119,8 @@ const SuperAdminBoard = () => {
               title: t("+ Create new monitoringBoard"),
               swipe: isMobile && true,
               size: "xl",
-            }}>
+            }}
+          >
             <CreateMonitoringBoardPage
               getMonitoringBoards={getMonitoringBoards}
             />
@@ -131,23 +134,19 @@ const SuperAdminBoard = () => {
             { key: "title", label: t("title") },
             { key: "municipalities", label: t("mmunicipalities") },
             { key: "createdAt", label: t("createdAt") },
-          ]}>
+          ]}
+        >
           {(row) => (
             <Box
               justifyContent="space-between"
-              onClick={() => console.log("edit monitoringBoard now")}>
+              onClick={() => console.log("edit monitoringBoard now")}
+            >
               <Box gap="16px">
-                {/* {!isMobile &&
-                    <ImagePlaceholder
-                      width="64px"
-                      height="64px"
-                      img="#"
-                    />
-                  } */}
                 <Box
                   flexDirection="column"
                   justifyContent="center"
-                  alignItems="flex-start">
+                  alignItems="flex-start"
+                >
                   <Typography variant="h3">{row.title}</Typography>
                   {/* {row?.email && <Typography variant="bodySm">{row.email}</Typography>} */}
                 </Box>
@@ -159,7 +158,8 @@ const SuperAdminBoard = () => {
 
               <Box
                 gap="8px"
-                marginLeft="0">
+                marginLeft="0"
+              >
                 <Button
                   variant="white"
                   text="edit"
