@@ -6,25 +6,22 @@ import {
   Box,
   Dropdown,
   Input,
-  useModals
+  useModals,
 } from "senf-atomic-design-system";
 import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { useSelector } from "react-redux";
 import { db } from "../../firebase";
-
-
-
 
 const AddNewDivison = ({ getDivisions, navigate }) => {
   const { closeModal } = useModals();
   const { t } = useTranslation();
-  const currentMonitoringBoard = useSelector(state => state.data.currentMonitoringBoard)
+  const currentMonitoringBoard = useSelector(
+    (state) => state.data.currentMonitoringBoard
+  );
   const validationSchema = yup.object({
-    title: yup
-      .string()
-      .required(t("enter_title"))
+    title: yup.string().required(t("enter_title")),
   });
 
   const formik = useFormik({
@@ -39,24 +36,33 @@ const AddNewDivison = ({ getDivisions, navigate }) => {
 
   const handleSubmit = async () => {
     try {
-      await addDoc(collection(db, `monitoringBoards/${currentMonitoringBoard.monitoringBoardId}/divisions`), {
-        title: formik.values.title,
-        createdAt: new Date().toISOString(),
-      }).then((doc) => {
+      await addDoc(
+        collection(
+          db,
+          `monitoringBoards/${currentMonitoringBoard.monitoringBoardId}/divisions`
+        ),
+        {
+          title: formik.values.title,
+          createdAt: new Date().toISOString(),
+        }
+      ).then((doc) => {
         getDivisions();
 
         const surveyId = doc.id;
-        navigate(`edit/${surveyId}`)
-        closeModal()
-      })
-
+        navigate(`edit/${surveyId}`);
+        closeModal();
+      });
     } catch (error) {
       throw new Error(error, "Error in add exampleUser");
     }
   };
 
   return (
-    <Box margin="0px" flexDirection="column" gap="20px">
+    <Box
+      margin="0px"
+      flexDirection="column"
+      gap="20px"
+    >
       <Box zIndex="999">
         <Input
           name="title"
@@ -70,7 +76,6 @@ const AddNewDivison = ({ getDivisions, navigate }) => {
           note={formik?.touched.title && formik?.errors.title}
         />
       </Box>
-
 
       <Button
         text="+ Add diviosion"
