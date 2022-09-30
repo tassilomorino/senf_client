@@ -204,7 +204,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
           justifyContent="flex-start"
           width="max"
           text={formik?.values.topic || "Kategorie wählen"}
-          options={{ size: "md", closeOnSelect: true, modal: true }}
+          options={{ size: "md", closeOnSelect: true, modal: !!isMobile }}
           data={OptionsTopics().map(({ value, label }) => {
             return {
               text: value,
