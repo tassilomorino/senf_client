@@ -14,9 +14,9 @@ const Wrapper = styled.div<AvatarProps>``;
 
 const Avatar: FC<AvatarProps> = ({
   layerStyle = LayerGreyButtonsDefault,
-  borderRadius = "12px",
-  height = "40px",
-  width = "40px",
+  borderRadius = "12",
+  height = "40",
+  width = "40",
   fontSize = "14px",
   img,
   placeholder,
@@ -47,8 +47,8 @@ const Avatar: FC<AvatarProps> = ({
       )}
       {loading && !img && (
         <Skeleton
-          height="100"
-          width="100"
+          height={height}
+          width={width}
           borderRadius="18"
         />
       )}
