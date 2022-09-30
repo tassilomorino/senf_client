@@ -4,7 +4,7 @@ import React from "react";
 import { Story, Meta } from "@storybook/react";
 import Box from "../../atoms/box/Box";
 import ImagePlaceholder from "../../atoms/imagePlaceholder/ImagePlaceholder";
-import Typography from "../../atoms/typography/Typography"
+import Typography from "../../atoms/typography/Typography";
 import Button from "../../atoms/buttons/Button";
 
 import Table from "./Table";
@@ -19,7 +19,6 @@ export default {
 
 const Template: Story<TableProps> = (args) => <Table {...args} />;
 
-
 export const Default = Template.bind({});
 Default.args = {
   data: [
@@ -29,19 +28,23 @@ Default.args = {
       email: "email@senf.koeln",
       role: "Admin",
       division: "Division",
-    }
+    },
   ],
   children: (row) => (
     <>
       <Box gap="16px">
         <ImagePlaceholder
-          width="64px"
-          height="64px"
+          width="64"
+          height="64"
           img="#"
         />
-        <Box flexDirection="column" justifyContent="center" alignItems="flex-start">
+        <Box
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="flex-start"
+        >
           <Typography variant="h3">{row.handle}</Typography>
-          { row?.email && <Typography variant="bodySm">{row.email}</Typography> }
+          {row?.email && <Typography variant="bodySm">{row.email}</Typography>}
         </Box>
       </Box>
       <Typography variant="bodySm">{row.division}</Typography>
@@ -52,11 +55,6 @@ Default.args = {
       />
     </>
   ),
-  columns: [
-    'Column 1',
-    'Column 2',
-    'Column 3',
-    'Column 4',
-  ],
+  columns: ["Column 1", "Column 2", "Column 3", "Column 4"],
   checkbox: true,
 };

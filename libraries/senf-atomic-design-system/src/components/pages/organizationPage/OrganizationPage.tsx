@@ -166,9 +166,7 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
           {organization?.logoURL ? (
             <ImagePlaceholder
               img={organization?.logoURL ? organization.logoURL : null}
-              borderRadius="18px"
-              height="calc(100% - 40px)"
-              width="calc(100% - 40px)"
+              borderRadius="18"
             />
           ) : (
             <Skeleton
