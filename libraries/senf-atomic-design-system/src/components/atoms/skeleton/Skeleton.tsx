@@ -30,11 +30,11 @@ const SkeletonItem = styled.span`
   display: inline-block;
   position: relative;
   margin-bottom: ${(props) => props.spacing}px;
-  width: ${(props) => props.width}px;
+  width: ${({ width }) => (width ? `${width}px` : "100%")};
   max-width: 100%;
-  height: ${(props) => props.height}px;
+  height: ${({ height }) => (height ? `${height}px` : "100%")};
   user-select: none;
-  border-radius: ${(props) => props.borderRadius}px;
+  border-radius: ${({ borderRadius }) => borderRadius}px;
 `;
 
 const Wrapper = styled.div<SkeletonProps>``;

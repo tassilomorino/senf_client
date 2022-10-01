@@ -1,23 +1,25 @@
 /** @format */
 
-import { MouseEventHandler } from "react";
+import React, { MouseEventHandler } from "react";
 
 export interface ButtonProps {
   text?: string;
-  variant?: "primary" | "white" | "secondary" | "plus";
-  icon?: string;
+  variant?: "primary" | "secondary" | "tertiary" | "white" | "plus";
+  icon?: React.ReactNode;
+  iconRight?: React.ReactNode;
   transform?: string;
   borderStyle?: "dashed" | "solid";
-  fillWidth?: "max" | undefined;
+  width?: "max" | "height" | number;
   loading?: boolean;
   disabled?: boolean;
-  size?: "small" | "big";
+  size?: "small" | "medium" | "large" | "sm" | "md" | "lg";
   color?: string;
   justifyContent?:
-    | "center"
-    | "flex-start"
-    | "flex-end"
-    | "space-between"
-    | "space-around";
+  | "center"
+  | "flex-start"
+  | "flex-end"
+  | "space-between"
+  | "space-around";
   onClick?: MouseEventHandler<HTMLButtonElement>;
+  type?: "button" | "submit" | "reset";
 }

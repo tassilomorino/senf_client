@@ -7,7 +7,6 @@ import Arrow from "../../../assets/icons/Arrow";
 import More from "../../../assets/icons/More";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 import Box from "../../atoms/box/Box";
-import RoundedButton from "../../atoms/buttons/RoundedButton";
 import Divider from "../../atoms/divider/Divider";
 import { DetailSidebarProps } from "./DetailSidebar.types";
 
@@ -39,7 +38,10 @@ const DetailSidebar: FC<DetailSidebarProps> = ({
         />
 
         {!isMobile && <Divider margin="0px 8px" />}
-        <Box gap="8px" flexDirection={isMobile ? "row" : "column"}>
+        <Box
+          gap="8px"
+          flexDirection={isMobile ? "row" : "column"}
+        >
           {SecondButton}
           {ThirdButton}
         </Box>
@@ -50,7 +52,7 @@ const DetailSidebar: FC<DetailSidebarProps> = ({
           width="2px"
           margin="30px 16px 30px 80px"
           position="fixed"
-          zIndex={99}
+          zIndex={"99"}
         />
       )}
     </Wrapper>

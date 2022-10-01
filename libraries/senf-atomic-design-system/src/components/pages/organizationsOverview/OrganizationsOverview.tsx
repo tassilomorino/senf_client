@@ -6,7 +6,6 @@ import styled from "styled-components";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 import theme from "../../../styles/theme";
 import Button from "../../atoms/buttons/Button";
-import RoundedButton from "../../atoms/buttons/RoundedButton";
 import Box from "../../atoms/box/Box";
 import Shape from "../../atoms/shapes/Shape";
 import Typography from "../../atoms/typography/Typography";
@@ -37,7 +36,6 @@ const Wrapper = styled.div<OrganizationsOverviewProps>`
   box-shadow: 40px 8px 30px -12px rgba(0, 0, 0, 0.2);
   transition: 0.5s;
   pointer-events: all;
-
 
   @media (min-width: 768px) {
     /* display: ${({ open }) => (open ? "block" : "none")}; */
@@ -155,7 +153,7 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
     //         header={t("organizations")}
     //         handlebar={true}
     //       // iconRight="plus"
-    //       // iconRightTransform="rotate(45deg)"
+    //       // iconRightTransform="rotate(45)"
     //       />
     //       <TagSlide
     //         type="organizationTypes"
@@ -179,8 +177,8 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
             leftButtonClick={() => setOpenOrganizationsOverview(false)}
             header={t("organizations")}
             handlebar={true}
-          // iconRight="plus"
-          // iconRightTransform="rotate(45deg)"
+            // iconRight="plus"
+            // iconRightTransform="rotate(45)"
           />
           <TagSlide
             type="organizationTypes"
@@ -190,7 +188,10 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
         </React.Fragment>
       }
     >
-      <Wave color={theme.colors.beige.beige20} top="0px" />
+      <Wave
+        color={theme.colors.beige.beige20}
+        top="0px"
+      />
 
       <InnerWrapper isMobile={isMobile}>
         <Box margin="16px 12px 16px 12px">{toolbarComponent}</Box>
@@ -200,14 +201,14 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
             borderStyle="dashed"
             size="small"
             text={t("createOrganization")}
-            fillWidth="max"
+            width="max"
             onClick={handleOpenCreateOrganization}
 
-          // onClick={
-          //   user.authenticated
-          //     ? openCreateOrganization
-          //     : () => setOpenModalAuthenticate(true)
-          // }
+            // onClick={
+            //   user.authenticated
+            //     ? openCreateOrganization
+            //     : () => setOpenModalAuthenticate(true)
+            // }
           />
         </Box>
         <List
@@ -223,14 +224,23 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
   ) : (
     <Wrapper open={openOrganizationsOverview}>
       <SVGWrapper searchOpen={searchOpen}>
-        <Box position="fixed" margin="20px" zIndex={2}>
-          <RoundedButton
+        <Box
+          position="fixed"
+          margin="20px 12px"
+          zIndex={2}
+        >
+          <Button
+            variant="white"
+            size="medium"
             icon={<Arrow transform="rotate(180)" />}
             onClick={() => setOpenOrganizationsOverview(false)}
           />
         </Box>
         <HeaderWrapper>
-          <Box margin="20px 0px 0px 0px" justifyContent="center">
+          <Box
+            margin="20px 0px 0px 0px"
+            justifyContent="center"
+          >
             <Typography
               variant="h2"
               // fontSize={document.body.clientWidth > 368 ? "22px" : "19px"}

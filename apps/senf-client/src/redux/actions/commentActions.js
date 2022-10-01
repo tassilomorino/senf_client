@@ -16,7 +16,6 @@ import { clearErrors } from "./errorsActions";
 import { openScreamFunc } from "./screamActions";
 
 import {
-  SET_COMMENT,
   DELETE_COMMENT,
   LOADING_UI,
   STOP_LOADING_UI,
@@ -26,7 +25,7 @@ import {
 } from "../types";
 
 // get the data for one comment
-export const getComment = (commentId) => async (dispatch) => {
+/* export const getComment = (commentId) => async (dispatch) => {
   const commentRef = doc(db, `comments/${commentId}`);
   const commentDocSnapshot = await getDoc(commentRef);
   if (!commentDocSnapshot.exists()) {
@@ -42,7 +41,7 @@ export const getComment = (commentId) => async (dispatch) => {
     });
     dispatch({ type: STOP_LOADING_UI });
   }
-};
+}; */
 // Submit a comment to an idea
 export const submitComment =
   (screamId, commentData, user) => async (dispatch) => {

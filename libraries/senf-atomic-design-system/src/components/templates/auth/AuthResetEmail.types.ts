@@ -1,6 +1,7 @@
 /** @format */
 
 import { MouseEventHandler } from "react";
+
 export interface AuthResetEmailProps {
   text?: string;
   variant?: "register" | "login";
@@ -10,4 +11,5 @@ export interface AuthResetEmailProps {
   formikLoginStore?: Function;
   handleSubmitRegister?: Function;
   handleSubmitLogin?: Function;
+  state?: [any, (arg: any) => void];
 }

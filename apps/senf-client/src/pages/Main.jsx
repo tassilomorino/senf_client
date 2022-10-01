@@ -9,7 +9,7 @@ import React, {
 
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   Typography,
@@ -21,9 +21,9 @@ import {
   MobileTopBar,
   ErrorLoading,
   Loader,
-  ModalContext,
-
+  useModals,
 } from "senf-atomic-design-system";
+import { AuthModal } from "senf-shared";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
 import { closeScream, openScreamFunc } from "../redux/actions/screamActions";
@@ -47,7 +47,6 @@ import {
   getMyScreams,
   openAccountFunc,
 } from "../redux/actions/accountActions";
-import PostScream from "../components/PostIdea/PostScream";
 import {
   openOrganizationFunc,
   stateCreateOrganizationsFunc,
@@ -62,13 +61,14 @@ import {
   sort,
   countStatusOfScreams,
 } from "../util/helpers";
-import Auth from "./Auth";
 
 import OrganizationPage from "./OrganizationPage";
 import { likeScream, unlikeScream } from "../redux/actions/likeActions";
 import ProjectroomPage from "./ProjectroomPage";
 import ProfilePage from "./ProfilePage";
 import { StyledH3 } from "../styles/GlobalStyle";
+import { getUserData } from "../redux/actions/userActions";
+import PostIdeaPage from "./PostIdeaPage";
 
 
 
@@ -151,12 +151,13 @@ const Main = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const errors = useSelector((state) => state.UI.errors);
-  const { handleModal } = React.useContext(ModalContext) || {};
+  const { openModal } = useModals()
   const { cookie_settings } = useSelector((state) => state.data)
   const organization = useSelector((state) => state.data.organization);
 
-  const { screamId, projectRoomId, organizationId, unknownPathId } =
+  const { screamId, projectRoomId, organizationId, unknownPathId, profileId } =
     useParams();
+  const navigate = useNavigate()
 
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openScream = useSelector((state) => state.UI.openScream);
@@ -169,6 +170,7 @@ const Main = ({
     useState(false);
 
   const user = useSelector((state) => state.user);
+  const myProfileData = useSelector((state) => state.user);
   const { userId } = user;
   const userLikes = user.likes;
 
@@ -201,19 +203,46 @@ const Main = ({
   const mapBounds = useSelector((state) => state.data.mapBounds);
 
   useEffect(() => {
-    unknownPathId && window.history.pushState(null, null, "/");
+
+    unknownPathId && navigate('/')
     projectRoomId && dispatch(openProjectRoomFunc(projectRoomId, true));
     screamId && dispatch(openScreamFunc(screamId));
     organizationId && dispatch(openOrganizationFunc(organizationId, true));
+
+
   }, [dispatch, projectRoomId, screamId, organizationId, unknownPathId]);
+  useEffect(() => {
+
+
+    if (profileId) {
+      dispatch(openAccountFunc())
+      const profilePage = true;
+      if (profileId !== myProfileData.userId && openAccount) {
+        // visiting profile of other user
+
+
+
+
+        dispatch(getUserData(profileId, profilePage))
+        dispatch(getMyScreams(profileId, profilePage));
+        dispatch(getMyOrganizations(profileId, profilePage))
+      } else if (profileId === myProfileData.userId && openAccount) {
+        // visiting my own profile
+
+        dispatch(getUserData(myProfileData.userId, profilePage))
+        dispatch(getMyScreams(myProfileData.userId, profilePage));
+        dispatch(getMyOrganizations(myProfileData.userId, profilePage))
+
+      }
+    }
+  }, [dispatch, openAccount, myProfileData.userId, profileId]);
+
 
   const urlPath = window.location.pathname;
   useEffect(() => {
     if (urlPath === '/verify') {
-      handleModal("push", <Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      openModal(<AuthModal />, { swipe: !!isMobileCustom })
     }
-
-
   }, [urlPath]);
 
 
@@ -262,16 +291,16 @@ const Main = ({
         left: 0,
       });
       if (order === 1) {
-        window.history.pushState(null, null, "/");
+        navigate("/");
       }
       if (order === 2) {
-        window.history.pushState(null, null, "/projectRooms");
+        navigate("/projectRooms");
       }
       if (order === 3) {
-        window.history.pushState(null, null, "/organizations");
+        navigate("/organizations");
       }
       if (order === 4) {
-        window.history.pushState(null, null, "/insights");
+        navigate("/insights");
       }
     },
     [dispatch]
@@ -386,7 +415,7 @@ const Main = ({
   const handleButtonLike = (event, screamId) => {
     event.stopPropagation();
     if (!user.authenticated) {
-      handleModal("push", <Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      openModal(<AuthModal />, { swipe: !!isMobileCustom })
       return;
     }
     if (user.likes && user.likes.find((like) => like.screamId === screamId)) {
@@ -408,23 +437,15 @@ const Main = ({
 
   const handleOpenMyAccount = () => {
     if (user?.authenticated) {
-      dispatch(openProjectRoomFunc(null, false));
-      dispatch(closeScream());
-      dispatch(openAccountFunc(userId));
-      window.history.pushState(null, null, "/");
-      dispatch(handleTopicSelectorRedux("all"));
+
+      dispatch(openAccountFunc());
+      navigate(`/profile/${userId}`)
+
     } else {
-      handleModal("push", <Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      openModal(<AuthModal />, { swipe: !!isMobileCustom })
     }
   };
-  useEffect(() => {
-    if (userId && openAccount) {
-      if (userId) {
-        dispatch(getMyScreams(userId));
-        dispatch(getMyOrganizations(userId));
-      }
-    }
-  }, [dispatch, openAccount, userId]);
+
 
 
   const handleCloseOrganizationPage = () => {
@@ -434,10 +455,10 @@ const Main = ({
   const handleOpenCreateOrganization = () => {
     if (!user.authenticated) {
       // Add text into auth like "first you gt to create an account"
-      handleModal("push", <Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      openModal(<AuthModal />, { swipe: !!isMobileCustom })
     } else {
-      handleModal("push", <React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
-        <CreateMainComponent type="organization" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      openModal(<React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
+        <CreateMainComponent type="organization" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom })
 
     }
   };
@@ -456,9 +477,9 @@ const Main = ({
   const handleCreateProjectroom = () => {
     if (!user.authenticated) {
       // Add text into auth like "first you gt to create an account"
-      handleModal("push", <Auth />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      openModal(<AuthModal />, { swipe: !!isMobileCustom })
     } else if (!user?.organizationId?.length) {
-      handleModal("push", <>
+      openModal(<>
         <Box margin="30px 40px">
           <Typography variant="h3" textAlign="center">
             {t("createOrganizationForCreateProjectRoom")}
@@ -471,18 +492,18 @@ const Main = ({
             onClick={handleOpenCreateOrganization}
           />
         </Box>
-      </>, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && 350, padding: 0 })
+      </>, { swipe: !!isMobileCustom })
 
     } else if (user?.isOrgModerator === true) {
       dispatch(getMyOrganizations(user.userId));
       // dispatch(openCreateProjectRoomFunc(true));
 
 
-      handleModal("push", <React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
-        <CreateMainComponent type="projectRoom" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+      openModal(<React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
+        <CreateMainComponent type="projectRoom" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom })
     } else {
 
-      handleModal("push", <>
+      openModal(<>
 
         <Box margin="30px 40px">
           <Typography variant="h3" textAlign="center">
@@ -499,7 +520,7 @@ const Main = ({
             onClick={openMailRequestProjectroom}
           />
         </Box>
-      </>, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && 500, padding: 0 })
+      </>, { swipe: !!isMobileCustom })
 
     }
   };
@@ -568,7 +589,8 @@ const Main = ({
       )}
 
       {postIdeaOpen && (
-        <PostScream
+
+        <PostIdeaPage
           loadingProjects={loadingProjects}
           projectsData={projects}
           project={project}
@@ -578,11 +600,12 @@ const Main = ({
         />
       )}
 
+
+
       <ScaleContainer show={showUI}>
         {!openInfoPage && (
           <>
             {!openProjectRoom &&
-              !postIdeaOpen &&
               !openAccount &&
               !loading &&
               (order === 1 || (order === 2 && !loadingProjects)) && (
@@ -611,6 +634,7 @@ const Main = ({
                   handleButtonLike={handleButtonLike}
                   handleButtonComment={handleButtonComment}
                   user={user}
+                  myProfileData={myProfileData}
                   setOpenStatisticsOverview={setOpenStatisticsOverview}
                   openStatisticsOverview={openStatisticsOverview}
                   setOpenOrganizationsOverview={setOpenOrganizationsOverview}
@@ -621,6 +645,7 @@ const Main = ({
                   handleCreateProjectroom={handleCreateProjectroom}
                   handleMapBoundsReset={handleSetInitialMapBoundsAndViewport}
                   mapFilterActive={mapFilterActive}
+                  postIdeaOpen={postIdeaOpen}
                 />
               )}
 
@@ -707,7 +732,7 @@ const Main = ({
             />
           )}
 
-      </ScaleContainer>}
+      </ScaleContainer>
 
 
 

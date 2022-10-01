@@ -1,22 +1,24 @@
 /** @format */
 
-import React, { FC, useEffect, memo, useState, useRef } from "react";
+import React, { FC, useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 // Components
-import { ContentDropdownProps } from "./ContentDropdown.types";
-import TertiaryButton from "../buttons/TertiaryButton";
+import { DropdownListContainerProps } from "./ContentDropdown.types";
+import { ContentDropdownItemProps } from "../contentDropdown/ContentDropdownItem.types";
+import ContentDropdownItem from "../contentDropdown/ContentDropdownItem";
 import useOnClickOutside from "../../../hooks/useOnClickOutside";
 import { LayerWhiteFirstDefault } from "../layerStyles/LayerStyles";
-import Box from "../box/Box";
+import Button from "../buttons/Button"
 
 const Wrapper = styled.div`
   position: relative;
 `;
 
-const DropDownListContainer = styled.div<ContentDropdownProps>`
+const DropDownListContainer = styled.div<DropdownListContainerProps>`
   pointer-events: auto;
-  display: block;
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   z-index: 99;
   position: fixed;
@@ -24,40 +26,59 @@ const DropDownListContainer = styled.div<ContentDropdownProps>`
   width: auto;
   min-width: max-content;
   height: auto;
-  padding: 6px;
+  padding: ${({ theme }) => theme.space[2]};
+  gap: ${({ theme }) => theme.space[2]};
   border-radius: 12px;
-
   transform: ${(props) =>
     props.direction === "downLeft"
       ? "translateY(45px) translateX(calc(-100% + 50px))"
+      : props.direction === "downRight"
+      ? "translateY(45px)"
+      : props.direction === "upLeft"
+      ? "translateY(calc(-100% - 10px)) translateX(calc(-100% + 50px))"
+      : props.direction === "upRight"
+      ? "translateY(calc(-100% - 10px))"
       : "translateY(45px)"};
 
-  ${(props) => LayerWhiteFirstDefault}
+  ${() => LayerWhiteFirstDefault}
   box-shadow: ${({ theme }) => theme.shadows[0]}${({ theme }) =>
     theme.colors.greyscale.greyscale20tra};
   @media (min-width: 768px) {
   }
 `;
 
-const ContentDropdown: FC<ContentDropdownProps> = ({
-  direction,
-  OpenButton,
-  Content,
-  openButtonWidth,
-  open,
+const ContentDropdown: FC<DropdownListContainerProps> = ({
+  data,
+  itemType,
+  button,
+  openButton,
+  content,
+  open = false,
   setOpen,
+  size,
+  ...props
 }) => {
-  const outerRef = useRef();
+  const outerRef = useRef(null);
+  const [openState, setOpenState] = useState(open)
 
-  useOnClickOutside(outerRef, () => setOpen(false));
+  const CustomButton = button || Button;
+  useOnClickOutside(outerRef, () => setOpenState(false));
 
+  useEffect(() => {
+    setOpen?.(openState)
+  }, [openState])
+  useEffect(() => {
+    setOpenState(open)
+  }, [open])
   return (
-    <Wrapper ref={outerRef}>
-      <Box width={openButtonWidth}>{OpenButton}</Box>
-
-      {open && (
-        <DropDownListContainer direction={direction}>
-          {Content}
+    <Wrapper>
+      {openButton && <CustomButton onClick={() => setOpenState(!openState)} {...props} />}
+      {openState && (
+        <DropDownListContainer ref={outerRef}>
+          {data?.length && data.length > 0 &&
+            data.map((item: ContentDropdownItemProps, key: number) => <ContentDropdownItem key={key} {...item} type={itemType || item.type} size={size} />)
+          }
+          {content}
         </DropDownListContainer>
       )}
     </Wrapper>

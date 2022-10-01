@@ -137,8 +137,8 @@ const ProjectroomCard: FC<ProjectroomCardProps> = ({
           margin="10px 0px 12px 0px"
         >
           <ImagePlaceholder
-            width="118px"
-            height="118px"
+            width="118"
+            height="118"
             img={
               logoURL
               // ? img : placeHodlerImage && NoImage
@@ -147,7 +147,11 @@ const ProjectroomCard: FC<ProjectroomCardProps> = ({
 
           <Typography variant="bodyBg"> {brief}</Typography>
         </Box>
-        <Box alignItems="center" flexDirection="row" gap="14px">
+        <Box
+          alignItems="center"
+          flexDirection="row"
+          gap="14px"
+        >
           <Icon
             icon={setOrganizationTypeIcon(organizationCardData[1])}
             // transform="scale(0.8)"

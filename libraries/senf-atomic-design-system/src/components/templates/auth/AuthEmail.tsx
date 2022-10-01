@@ -1,7 +1,6 @@
 /** @format */
 
-import React, { FC, useEffect, useState, useRef } from "react";
-import styled from "styled-components";
+import React, { FC, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -12,17 +11,15 @@ import { AuthEmailProps } from "./AuthEmail.types";
 
 import Typography from "../../atoms/typography/Typography";
 import { openLink } from "../../../util/helpers";
-import Dropdown from "../../atoms/dropdown/Dropdown";
 import theme from "../../../styles/theme";
 import TertiaryButton from "../../atoms/buttons/TertiaryButton";
 
 const AuthEmail: FC<AuthEmailProps> = ({
   variant,
-  loginLoading,
-  handleSubmitRegister,
-  handleSubmitLogin,
-  errorMessage,
+  authHandler,
   setPage,
+  errorMessage,
+  formikStore,
 }) => {
   const { t } = useTranslation();
 
@@ -35,12 +32,12 @@ const AuthEmail: FC<AuthEmailProps> = ({
   }, [variant]);
 
   const inputItemsLogin = [
-    {
-      name: "email",
-      type: "email",
-      placeholder: "E-Mail",
-      autoComplete: "email",
-    },
+    // {
+    //   name: "email",
+    //   type: "email",
+    //   placeholder: "E-Mail",
+    //   autoComplete: "email",
+    // },
     {
       name: "password",
       type: "password",
@@ -68,67 +65,6 @@ const AuthEmail: FC<AuthEmailProps> = ({
     },
   ];
 
-  const loginValidationSchema = yup.object({
-    email: yup
-      .string()
-      .required(t("enter_email"))
-      .matches(/^\S*$/, t("spaces_not_allowed"))
-      .email(t("enter_valid_email")),
-
-    password: yup.string().required(t("enter_password")).matches(/^\S*$/, t("spaces_not_allowed")),
-  });
-  const registerValidationSchema = yup.object({
-    email: yup
-      .string()
-      .required(t("enter_email"))
-      .matches(/^\S*$/, t("spaces_not_allowed"))
-      .email(t("enter_valid_email")),
-
-    password: yup
-      .string()
-      .required(t("enter_password"))
-      .matches(/^\S*$/, t("spaces_not_allowed"))
-      .min(8, t("password_8characters"))
-      .matches(/\d+/, t("password_with_number")),
-
-    confirmPassword: yup
-      .string()
-      .required(t("confirmPassword"))
-      .oneOf([yup.ref("password"), null], t("passwords_must_match")),
-    handle: yup
-      .string()
-      .required(t("enter_username"))
-      .min(3, t("username_too_short"))
-      .max(20, t("username_too_long"))
-      .matches(/^\S*$/, t("spaces_not_allowed"))
-      .matches(/^[a-zA-Z0-9\-\_\.]*$/, t("username_latin_only")),
-  });
-
-  const formikLoginStore = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    validationSchema: loginValidationSchema,
-    validateOnMount: true,
-    validateOnChange: true,
-    validateOnBlur: true,
-  });
-
-  const formikRegisterStore = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-      confirmPassword: "",
-      handle: "",
-    },
-    validationSchema: registerValidationSchema,
-    validateOnMount: true,
-    validateOnChange: true,
-    validateOnBlur: true,
-    onSubmit: () => console.log("values"),
-  });
-
   return (
     <Box
       flexDirection="column"
@@ -144,7 +80,7 @@ const AuthEmail: FC<AuthEmailProps> = ({
       </Typography>
 
       <Box margin="25px 0px 24px 0px" alignItems="center" gap="5px">
-        {variantState === "login" ? (
+        {/* {variantState === "login" ? (
           <React.Fragment>
             <Typography variant="bodyBg" style={{ position: "relative" }}>
               {t("auth_login_user_redirection_question")}
@@ -164,7 +100,7 @@ const AuthEmail: FC<AuthEmailProps> = ({
               onClick={() => setVariantState("login")}
             />
           </React.Fragment>
-        )}
+        )} */}
       </Box>
 
       <Box gap="16px" flexDirection="column">
@@ -173,9 +109,7 @@ const AuthEmail: FC<AuthEmailProps> = ({
           inputItems={
             variantState === "register" ? inputItemsRegister : inputItemsLogin
           }
-          formik={
-            variantState === "register" ? formikRegisterStore : formikLoginStore
-          }
+          formik={formikStore}
         />
 
         {errorMessage && (
@@ -196,7 +130,7 @@ const AuthEmail: FC<AuthEmailProps> = ({
             <p style={{ position: "relative" }}> {t("forgot_password")}</p>{" "}
             <TertiaryButton
               text={t("reset")}
-              onClick={() => setPage("authResetEmail")}
+              onClick={() => setPage?.("authResetEmail")}
             />
           </React.Fragment>
         ) : (
@@ -225,23 +159,19 @@ const AuthEmail: FC<AuthEmailProps> = ({
       </Box>
       <Button
         variant="white"
-        fillWidth="max"
+        width="max"
         text={variantState === "register" ? t("register") : t("login")}
-        loading={loginLoading}
+        loading={authHandler.loading.email}
 
         onClick={
           variantState === "register"
-            ? () => handleSubmitRegister(formikRegisterStore)
+            ? () => authHandler.createUser(formikStore)
             : (e) => {
               e.preventDefault();
-              handleSubmitLogin(formikLoginStore);
+              authHandler.signIn.email(formikStore).then(() => !authHandler.ifAllUserDetailsAreFilled() && setPage?.('authAddDetails'));
             }
         }
-        disabled={
-          variantState === "register"
-            ? !formikRegisterStore?.isValid
-            : !formikLoginStore?.isValid
-        }
+        disabled={!formikStore?.isValid}
       />
     </Box>
   );

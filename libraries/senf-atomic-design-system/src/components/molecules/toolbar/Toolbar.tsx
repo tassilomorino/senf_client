@@ -8,12 +8,8 @@ import TertiaryButton from "../../atoms/buttons/TertiaryButton";
 import Input from "../../atoms/inputs/Input";
 import Box from "../../atoms/box/Box";
 import { ToolbarProps } from "./Toolbar.types";
-import Arrow from "../../../assets/icons/Arrow";
-import Search from "../../../assets/icons/Search";
-import ContentDropdown from "../../atoms/contentDropdown/ContentDropdown";
-import { Checkbox } from "../../atoms/toggleInput/toggleInput.stories";
-import ToggleInput from "../../atoms/toggleInput/ToggleInput";
-import ContentDropdownItem from "../../atoms/contentDropdownItem/ContentDropdownItem";
+import { Search, ArrowDown } from "../../../assets/icons";
+import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
 
 const Wrapper = styled.div<ToolbarProps>`
   display: flex;
@@ -52,7 +48,7 @@ const Background = styled.div`
 
 const SearchbarWrapper = styled.div`
   margin-top: 10px;
-  display: relative;
+  /* display: relative; */
   width: 100%;
 `;
 
@@ -79,7 +75,6 @@ const Toolbar: FC<ToolbarProps> = ({
   checkedSortOption,
   setCheckedSortOption,
 }) => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const setSearch = () => {
     setSearchOpen(!searchOpen);
@@ -91,35 +86,20 @@ const Toolbar: FC<ToolbarProps> = ({
 
   return (
     <Wrapper searchOpen={searchOpen}>
-      <ContentDropdown
-        open={dropdownOpen}
-        setOpen={setDropdownOpen}
-        OpenButton={
-          <Button
-            variant="tertiary"
-            size="small"
-            onClick={() => setDropdownOpen(!dropdownOpen)}
-            text={activeSortOptionLabel}
-            iconRight={<Arrow transform="rotate(90)" />}
-          />
-        }
-        Content={
-          <Box gap="5px" flexDirection="column">
-            {Object.values(sortOptions).map(({ value, label }) => (
-              <Box gap="5px" key={value + label}>
-                <ContentDropdownItem
-                  type="check"
-                  text={label}
-                  checked={checkedSortOption === value}
-                  onClick={() => {
-                    setCheckedSortOption(value);
-                    setActiveSortOptionLabel(label);
-                  }}
-                />
-              </Box>
-            ))}
-          </Box>
-        }
+      <DropdownButton
+        variant="tertiary"
+        size="small"
+        text={activeSortOptionLabel}
+        iconRight={<ArrowDown />}
+        options={{ itemType: "check" }}
+        data={Object.values(sortOptions as { label: string, value: string }[]).map(item => ({
+          text: item.label,
+          checked: checkedSortOption === item.value,
+          onClick: () => {
+            setCheckedSortOption(item.value);
+            setActiveSortOptionLabel(item.label);
+          }
+        }))}
       />
 
       <Box gap="8px">
@@ -141,9 +121,8 @@ const Toolbar: FC<ToolbarProps> = ({
           <Input
             type="search"
             placeholder={searchPlaceholder}
-            onChange={setSearchTerm}
+            onChange={(e) => setSearchTerm(e?.target?.value)}
             value={searchTerm}
-            setSearchTerm={setSearchTerm}
           />
         </SearchbarWrapper>
       )}

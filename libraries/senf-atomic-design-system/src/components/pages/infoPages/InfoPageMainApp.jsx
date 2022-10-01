@@ -12,13 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import styled from "styled-components";
-import {
-  Plus,
-  Box,
-  RoundedButton,
-  LanguageSelect,
-  Button
-} from "senf-atomic-design-system";
+import { Box, LanguageSelect, Button } from "senf-atomic-design-system";
 
 import Headline from "./components/Headline";
 
@@ -30,7 +24,6 @@ import UnderlinedText from "./components/UnderlinedText";
 import SecondHeadline from "./components/SecondHeadline";
 import Tags from "./components/Tags";
 
-
 import DecideLocationImg from "../../../assets/infoPages/howItWorks/decideLocationImg.png";
 import FormulateIdeaImg from "../../../assets/infoPages/howItWorks/formulateIdeaImg.png";
 import WorkTogether from "../../../assets/illustrations/workTogether.png";
@@ -38,14 +31,13 @@ import OpenBook from "../../../assets/illustrations/openBook.png";
 import { openMail } from "../../../util/helpers";
 import FooterLinks from "./components/FooterLinks";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
-import TertiaryButton from "../../atoms/buttons/TertiaryButton";
 import Typography from "../../atoms/typography/Typography";
 import { Mail } from "../../../assets/icons";
 
 const Wrapper = styled.div`
-height: 2000px;
-width: 1000px;
-`
+  height: 2000px;
+  width: 1000px;
+`;
 const Container = styled.div`
   height: 100%;
   width: 100%;
@@ -53,9 +45,6 @@ const Container = styled.div`
   overflow-y: scroll;
   position: fixed;
   @media (min-width: 768px) {
-   
-
-
   }
 `;
 
@@ -268,7 +257,7 @@ const ScrollIndicatorDot = styled.div`
 const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const isMobile = isMobileCustom()
+  const isMobile = isMobileCustom();
 
   const { openInfoPage } = useSelector((state) => state.UI);
 
@@ -292,9 +281,7 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
 
   const [counter, setCounter] = useState(0);
 
-
   useEffect(() => {
-
     // if (counter < 3) {
     //   setInterval(function () {
     //     setCounter(counter + 0.1);
@@ -302,8 +289,6 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
     // }
     const circle = document.getElementById("Circle");
     circle.style.clipPath = `circle(${4}% at 50% 50%)`;
-
-
   }, []);
 
   const [scrollValue, setScrollValue] = useState(0);
@@ -341,7 +326,7 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
     const value = el?.scrollTop / 10;
     setScrollValue(value);
 
-    console.log(value)
+    console.log(value);
 
     // SECTION 1
 
@@ -375,18 +360,24 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
     const infoPageTopicTag4 = document.getElementById("infoPageTopicTag4");
     const infoPageTopicTag5 = document.getElementById("infoPageTopicTag5");
     const infoPageTopicTag6 = document.getElementById("infoPageTopicTag6");
-    infoPageTopicTag1.style.transform = `translateX(${infoPageTopicTagScrollValue * 12
-      }px)`;
-    infoPageTopicTag2.style.transform = `translateX(${-infoPageTopicTagScrollValue * 12
-      }px)`;
-    infoPageTopicTag3.style.transform = `translateX(${infoPageTopicTagScrollValue * 12
-      }px)`;
-    infoPageTopicTag4.style.transform = `translateX(${-infoPageTopicTagScrollValue * 8
-      }px)`;
-    infoPageTopicTag5.style.transform = `translateX(${infoPageTopicTagScrollValue * 10
-      }px)`;
-    infoPageTopicTag6.style.transform = `translateX(${-infoPageTopicTagScrollValue * 12
-      }px)`;
+    infoPageTopicTag1.style.transform = `translateX(${
+      infoPageTopicTagScrollValue * 12
+    }px)`;
+    infoPageTopicTag2.style.transform = `translateX(${
+      -infoPageTopicTagScrollValue * 12
+    }px)`;
+    infoPageTopicTag3.style.transform = `translateX(${
+      infoPageTopicTagScrollValue * 12
+    }px)`;
+    infoPageTopicTag4.style.transform = `translateX(${
+      -infoPageTopicTagScrollValue * 8
+    }px)`;
+    infoPageTopicTag5.style.transform = `translateX(${
+      infoPageTopicTagScrollValue * 10
+    }px)`;
+    infoPageTopicTag6.style.transform = `translateX(${
+      -infoPageTopicTagScrollValue * 12
+    }px)`;
 
     if (value > 80) {
       setVisibleCards(true);
@@ -422,10 +413,11 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
     const mobileDifferenceKeywords = isMobile ? 220 : 0;
 
     const circle2 = document.getElementById("Circle2");
-    circle2.style.clipPath = `circle(${value > 558 - mobileDifferenceCircle
-      ? -553 + mobileDifferenceCircle + value
-      : 5
-      }% at 50% 50%)`;
+    circle2.style.clipPath = `circle(${
+      value > 558 - mobileDifferenceCircle
+        ? -553 + mobileDifferenceCircle + value
+        : 5
+    }% at 50% 50%)`;
     circle2.style.transformOrigin = "bottom";
 
     if (isMobile) {
@@ -462,18 +454,24 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
     const organizationTagScrollValue =
       el?.scrollTop / 10 - (698 - mobileDifferenceKeywords);
 
-    organizationTypeTag1.style.transform = `translateX(${organizationTagScrollValue * 8
-      }px)`;
-    organizationTypeTag2.style.transform = `translateX(${-organizationTagScrollValue * 10
-      }px)`;
-    organizationTypeTag3.style.transform = `translateX(${organizationTagScrollValue * 12
-      }px)`;
-    organizationTypeTag4.style.transform = `translateX(${-organizationTagScrollValue * 10
-      }px)`;
-    organizationTypeTag5.style.transform = `translateX(${organizationTagScrollValue * 12
-      }px)`;
-    organizationTypeTag6.style.transform = `translateX(${-organizationTagScrollValue * 14
-      }px)`;
+    organizationTypeTag1.style.transform = `translateX(${
+      organizationTagScrollValue * 8
+    }px)`;
+    organizationTypeTag2.style.transform = `translateX(${
+      -organizationTagScrollValue * 10
+    }px)`;
+    organizationTypeTag3.style.transform = `translateX(${
+      organizationTagScrollValue * 12
+    }px)`;
+    organizationTypeTag4.style.transform = `translateX(${
+      -organizationTagScrollValue * 10
+    }px)`;
+    organizationTypeTag5.style.transform = `translateX(${
+      organizationTagScrollValue * 12
+    }px)`;
+    organizationTypeTag6.style.transform = `translateX(${
+      -organizationTagScrollValue * 14
+    }px)`;
 
     // HORIZONTAL SECTION: CREDITS
     const horizontal2 = document.querySelector("#horizontal2");
@@ -494,19 +492,16 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
 
     // SECTION 3
 
-    const mobileDifferenceCircle3 = isMobile
-      ? 425 - window.innerHeight / 8
-      : 0;
-    const mobileDifferenceBubbles = isMobile
-      ? 435 - window.innerHeight / 8
-      : 0;
+    const mobileDifferenceCircle3 = isMobile ? 425 - window.innerHeight / 8 : 0;
+    const mobileDifferenceBubbles = isMobile ? 435 - window.innerHeight / 8 : 0;
 
     const circle3 = document.getElementById("Circle3");
 
-    circle3.style.clipPath = `circle(${value > 1108 - mobileDifferenceCircle3
-      ? -1103 + mobileDifferenceCircle3 + value
-      : 5
-      }% at 50% 50%)`;
+    circle3.style.clipPath = `circle(${
+      value > 1108 - mobileDifferenceCircle3
+        ? -1103 + mobileDifferenceCircle3 + value
+        : 5
+    }% at 50% 50%)`;
 
     if (isMobile) {
       if (value > 805 && value < 1205) {
@@ -528,25 +523,27 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
     const infoPageBubble3 = document.getElementById("infoPageBubble3");
     const infoPageBubble4 = document.getElementById("infoPageBubble4");
 
-    infoPageBubble1.style.transform = `translateX(${infoPageBubblesScrollValue * 8
-      }px)`;
-    infoPageBubble2.style.transform = `translateX(${-infoPageBubblesScrollValue * 12
-      }px)`;
-    infoPageBubble3.style.transform = `translateX(${infoPageBubblesScrollValue * 10
-      }px)`;
+    infoPageBubble1.style.transform = `translateX(${
+      infoPageBubblesScrollValue * 8
+    }px)`;
+    infoPageBubble2.style.transform = `translateX(${
+      -infoPageBubblesScrollValue * 12
+    }px)`;
+    infoPageBubble3.style.transform = `translateX(${
+      infoPageBubblesScrollValue * 10
+    }px)`;
 
-    infoPageBubble4.style.transform = `translateX(${-infoPageBubblesScrollValue * 8
-      }px)`;
+    infoPageBubble4.style.transform = `translateX(${
+      -infoPageBubblesScrollValue * 8
+    }px)`;
     // console.log(value)
   }, []);
 
   useEffect(() => {
-
     const div = document.getElementById("InfoPage");
     div?.addEventListener("scroll", handleScroll);
 
     setVisibleFirstHeadline(true);
-
   }, [handleScroll, openInfoPage]);
 
   return (
@@ -565,10 +562,7 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
           document.body.clientWidth > 768 ? "10vh 0px 0px 18vw" : "10px"
         }
       >
-        <RoundedButton
-          icon={<Plus transform="rotate(45deg)" />}
-        // onClick={handleClose}
-        />
+  
       </Box> */}
       <Container id="InfoPage">
         <SelectLanguageWrapper>
@@ -580,7 +574,10 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
           onClick={() => openMail("dein@senf.koeln")}
         />
         <Box margin="10px">
-          <Button icon={<Mail />} onClick={() => openMail("dein@senf.koeln")} />
+          <Button
+            icon={<Mail />}
+            onClick={() => openMail("dein@senf.koeln")}
+          />
         </Box>
 
         <Headline
@@ -593,18 +590,18 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
           ]}
         />
         <LinkHeadline>
-          <TertiaryButton textAlign="left"
-          // onClick={handleClose}
+          <Button
+            variant="tertiary"
+            // onClick={handleClose}
           >
             {t("infopage_skip")}
-          </TertiaryButton>
+          </Button>
         </LinkHeadline>
 
         <ScrollIndicator>
           <ScrollIndicatorDot />
         </ScrollIndicator>
 
-        {/* <TertiaryButton >Direkt zur Plattform </TertiaryButton> */}
         <Circle
           id="Circle"
           scrollValue={scrollValue}
@@ -690,11 +687,19 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
             ]}
           />
           <Card>
-            <Img src={WorkTogether} height="170px" visible={visibleCards} />{" "}
-            <Typography variant="h3" textAlign="center">
+            <Img
+              src={WorkTogether}
+              height="170px"
+              visible={visibleCards}
+            />{" "}
+            <Typography
+              variant="h3"
+              textAlign="center"
+            >
               {t("infopage_howToCard3_cardTitle")}
-            </Typography >
-            <Typography variant="bodyBg"
+            </Typography>
+            <Typography
+              variant="bodyBg"
               textAlign="center"
               margin="10px 10px 10px 10px"
               marginLeft="10px"
@@ -716,21 +721,32 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
             ]}
           />
           <Card>
-            <Img src={OpenBook} height="170px" visible={visibleCards2} />{" "}
-            <Typography variant="h3" textAlign="center">
+            <Img
+              src={OpenBook}
+              height="170px"
+              visible={visibleCards2}
+            />{" "}
+            <Typography
+              variant="h3"
+              textAlign="center"
+            >
               {t("infopage_howToCard4_cardTitle")}
-            </Typography >
-            <Typography variant="bodyBg"
+            </Typography>
+            <Typography
+              variant="bodyBg"
               textAlign="center"
               margin="10px 10px 10px 10px"
               marginLeft="10px"
             >
               {t("infopage_howToCard4_cardText")}
-            </Typography >
+            </Typography>
           </Card>
         </HowToCard2>
 
-        <HorizontalScrollSection id="2" visiblePartners={visiblePartners} />
+        <HorizontalScrollSection
+          id="2"
+          visiblePartners={visiblePartners}
+        />
         <Circle
           id="Circle3"
           scrollValue={scrollValue}
@@ -745,7 +761,7 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
         />
 
         <LearnMoreBubbles
-        // handleClose={handleClose} 
+        // handleClose={handleClose}
         />
 
         <FooterLinks

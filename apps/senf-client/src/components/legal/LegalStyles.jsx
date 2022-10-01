@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Box, Plus, RoundedButton, LogoText } from "senf-atomic-design-system";
+import { Box, Plus, LogoText, Button } from "senf-atomic-design-system";
 
 const OuterWrapper = styled.div`
   width: 100%;
@@ -42,8 +42,9 @@ export const LegalStyles = ({ children }) => {
         margin={document.body.clientWidth > 768 ? "40px" : "10px"}
         zIndex={2}
       >
-        <RoundedButton
-          icon={<Plus transform="rotate(45deg)" />}
+        <Button
+          size="medium"
+          icon={<Plus transform="rotate(45)" />}
           onClick={() => linkToHome()}
         />
       </Box>
@@ -65,7 +66,13 @@ const TermsWrapper = styled.a`
 `;
 
 export const Terms = ({ children, href, target, rel }) => (
-  <TermsWrapper prefetch href={href} passHref target={target} rel={rel}>
+  <TermsWrapper
+    prefetch
+    href={href}
+    passHref
+    target={target}
+    rel={rel}
+  >
     {children}
   </TermsWrapper>
 );

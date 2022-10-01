@@ -7,6 +7,7 @@ import { animated, useSpring } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 import Icon from "../../atoms/icons/Icon";
 import {
+  LayerGreyButtonsDefault,
   LayerWhiteFirstDefault,
   LayerWhiteSecondDefault,
 } from "../../atoms/layerStyles/LayerStyles";
@@ -37,11 +38,14 @@ import Logout from "../../../assets/icons/Logout";
 import Edit from "../../../assets/icons/Edit";
 import Plus from "../../../assets/icons/Plus";
 import Skeleton from "../../atoms/skeleton/Skeleton";
-import ContentDropdownItem from "../../atoms/contentDropdownItem/ContentDropdownItem";
+import ContentDropdownItem from "../../atoms/contentDropdown/ContentDropdownItem";
 import ModalButton from "../../molecules/modalStack/ModalButton";
 import Auth from "../auth/Auth";
+import Avatar from "../../atoms/avatar/Avatar";
+import { useModals } from "../../molecules/modalStack/ModalProvider";
+import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
 
-const DragWrapper = styled(animated.div) <ProfilePageProps>`
+const DragWrapper = styled(animated.div)<ProfilePageProps>`
   display: flex;
   position: relative;
   flex-direction: column;
@@ -112,10 +116,13 @@ const LogoPlacer = styled.div`
 
 const ProfilePage: FC<ProfilePageProps> = ({
   user,
+  myProfileData,
+  accountOwner,
+  elevatedUser,
   organization,
   organizations,
-  myOrganizations,
-  myScreams,
+  profilePageOrganizations,
+  profilePageScreams,
   handleButtonOpenCard,
   handleOpenProjectroom,
   handleButtonClose,
@@ -126,14 +133,10 @@ const ProfilePage: FC<ProfilePageProps> = ({
   handleButtonComment,
 }) => {
   const { t } = useTranslation();
+  const { openModal } = useModals();
   const isMobile = isMobileCustom();
   const [order, setOrder] = useState(1);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [swipePosition, setSwipePosition] = useState("top");
-
-  const handleToggle = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
 
   const [props, set] = useSpring(() => ({
     y: 0,
@@ -188,165 +191,177 @@ const ProfilePage: FC<ProfilePageProps> = ({
   );
 
   return (
-    user && (
-      <React.Fragment>
-        <DetailSidebar
-          handleButtonClose={() => handleButtonClose(false)}
-          sideDivider={true}
-          SecondButton={
-            <ContentDropdown
-              open={dropdownOpen}
-              setOpen={setDropdownOpen}
-              direction={isMobile ? "downLeft" : "downRight"}
-              OpenButton={
-                <Button
-                  variant="white"
-                  size="medium"
-                  onClick={handleToggle}
-                  icon={<More />}
-                />
-              }
-              Content={
-                <Box gap="5px" flexDirection="column">
-                  <ContentDropdownItem
-                    text={t("profile.edit")}
-                    icon={<Edit />}
-                    onClick={handleSetAuthEditOpen}
-                  />
-                  <ContentDropdownItem
-                    text={t("logout")}
-                    icon={<Logout />}
-                    onClick={handleLogout}
-                  />
-
-
-                  <ModalButton
-                    button={ContentDropdownItem}
-                    text={t("profile.delete")}
-                    icon={<Plus />}
-                    options={{
-                      padding: 20,
-                      title: t("contactModalTitle"),
-                      cancelText: t("cancel")
-                    }}
-                  >
-
-                    <ModalButton
-                      text={t("profile.delete")}
-                      fillWidth="max"
-                      options={{
+    <React.Fragment>
+      <DetailSidebar
+        handleButtonClose={() => handleButtonClose(false)}
+        sideDivider={true}
+        SecondButton={
+          (accountOwner || elevatedUser) && (
+            <DropdownButton
+              variant="white"
+              width="height"
+              size="md"
+              icon="More"
+              data={[
+                {
+                  text: t("profile.edit"),
+                  leadingIcon: "Edit",
+                  onClick: handleSetAuthEditOpen,
+                },
+                {
+                  text: t("logout"),
+                  leadingIcon: "Logout",
+                  onClick: handleLogout,
+                },
+                accountOwner && {
+                  // because we need to use firebaseAdmin SDK // @todo: Elevated users cant delete other accounts
+                  text: t("profile.delete"),
+                  leadingIcon: "ArrowDown",
+                  onClick: () =>
+                    openModal(null, {
+                      style: {
                         padding: 20,
-                        title: t('delete_account_confirm'),
-                        cancelText: t('cancel'),
-                        submitText: t('delete'),
-                        onSubmit: handleDeleteAccount,
-                      }}
-                    />
-
-                  </ModalButton>
-                </Box >
-              }
+                      },
+                      title: t("contactModalTitle"),
+                      cancelText: t("cancel"),
+                      submitText: t("profile.delete"),
+                      onSubmit: () =>
+                        openModal(null, {
+                          style: {
+                            padding: 20,
+                          },
+                          title: t("delete_account_confirm"),
+                          cancelText: t("cancel"),
+                          submitText: t("delete"),
+                          onSubmit: handleDeleteAccount,
+                        }),
+                    }),
+                },
+              ]}
             />
-          }
+          )
+        }
+      />
+      <DragWrapper
+        id="dragWrapper"
+        style={props}
+        {...bind()}
+        isMobile={isMobile}
+      >
+        <Wave
+          top="0px"
+          color={theme.colors.beige.beige20}
         />
-        < DragWrapper
-          id="dragWrapper"
-          style={props}
-          {...bind()}
-          isMobile={isMobile}
-        >
-          <Wave top="0px" color={theme.colors.beige.beige20} />
 
-          <ContentWrapper>
-            <Box justifyContent="center" margin="20px">
-              <ImageWrapper>
-                {user?.photoURL ? (
-                  <ImagePlaceholder
-                    img={user?.photoURL || null}
-                    borderRadius="18px"
-                    height="calc(100% - 40px)"
-                    width="calc(100% - 40px)"
-                  />
-                ) : (
-                  <Skeleton height="100" width="100" borderRadius="18" />
-                )}
-              </ImageWrapper>
-            </Box>
-            <Box justifyContent="center" margin="20px">
-              {user?.handle ? (
-                <Typography variant="h3">{user?.handle}</Typography>
+        <ContentWrapper>
+          <Box
+            justifyContent="center"
+            margin="20px"
+          >
+            <Avatar
+              layerStyle={
+                user?.handle && !user?.photoURL
+                  ? LayerWhiteFirstDefault
+                  : LayerGreyButtonsDefault
+              }
+              borderRadius="24"
+              height="150"
+              width="150"
+              fontSize="28px"
+              img={user?.photoURL}
+              placeholder={user?.handle?.slice(0, 1)}
+              loading={!user?.handle}
+            />
+          </Box>
+          <Box
+            justifyContent="center"
+            margin="20px"
+          >
+            {user?.handle ? (
+              <Typography variant="h3">{user?.handle}</Typography>
+            ) : (
+              <Skeleton
+                height="22"
+                width="200"
+                baseColor="#E6D7BF"
+                highlightColor="#F0E7D9"
+              />
+            )}
+          </Box>
+
+          <Box
+            margin="0px 24px"
+            flexDirection="column"
+          >
+            <Typography variant="buttonBg">
+              {t("profilePage.aboutHeadline")}
+            </Typography>
+
+            <Box margin="5px 0px">
+              {user?.description ? (
+                <Typography variant="bodyBg">{user?.description}</Typography>
               ) : (
-                <Skeleton
-                  height="22"
-                  width="200"
-                  baseColor="#E6D7BF"
-                  highlightColor="#F0E7D9"
-                />
-              )}
-            </Box>
-
-            <Box margin="0px 24px" flexDirection="column">
-              <Typography variant="buttonBg">
-                {t("profilePage.aboutHeadline")}
-              </Typography>
-
-              <Box margin="5px 0px">
-                {user?.description ? (
-                  <Typography variant="bodyBg">{user?.description}</Typography>
-                ) : (
+                accountOwner && (
                   <Button
                     variant="secondary"
                     size="small"
                     text={t("profilePage.addDescription")}
                     onClick={handleSetAuthEditOpen}
                   />
-                )}
-              </Box>
+                )
+              )}
             </Box>
+          </Box>
 
-            <Divider margin="14px 24px 16px 24px" width="calc(100% - 48px)" />
-            <Box margin="0px 24px 0px 24px" gap="10px">
-              <Tabs
-                fontSize="buttonSm"
-                order={order}
-                setOrder={setOrder}
-                tabs={
-                  myOrganizations
-                    ? [
+          <Divider
+            margin="14px 24px 16px 24px"
+            width="calc(100% - 48px)"
+          />
+          <Box
+            margin="0px 24px 0px 24px"
+            gap="10px"
+          >
+            <Tabs
+              fontSize="buttonSm"
+              order={order}
+              setOrder={setOrder}
+              tabs={
+                profilePageOrganizations
+                  ? [
                       { icon: <Bulb />, text: "Ideen" },
                       { icon: <Info />, text: "Organisationen" },
                       // { icon: <Info />, text: "Interaktionen" },
                     ]
-                    : [
+                  : [
                       { icon: <Bulb />, text: "Ideen" },
                       // { icon: <Info />, text: "Interaktionen" },
                     ]
-                }
-              />
-            </Box>
-
-            <List
-              user={user}
-              CardType={order === 1 ? IdeaCard : OrganizationCard}
-              data={order === 1 ? myScreams : myOrganizations}
-              listType={order === 2 && "grid"}
-              handleButtonOpenCard={handleButtonOpenCard}
-              handleOpenProjectroom={handleOpenProjectroom}
-              handleButtonLike={handleButtonLike}
-              handleButtonComment={handleButtonComment}
-              organizations={organizations}
-              listEndText={
-                order === 1 && myScreams > 0
-                  ? t("noMoreIdeas")
-                  : order === 1 && myScreams < 1 && t("noSharedIdeas")
-
-                // :t("noIdeasWithFilter")
               }
             />
-          </ContentWrapper>
-        </ DragWrapper>
-      </React.Fragment >
-    )
+          </Box>
+
+          <List
+            user={user}
+            myProfileData={myProfileData}
+            CardType={order === 1 ? IdeaCard : OrganizationCard}
+            data={order === 1 ? profilePageScreams : profilePageOrganizations}
+            listType={order === 2 && "grid"}
+            handleButtonOpenCard={handleButtonOpenCard}
+            handleOpenProjectroom={handleOpenProjectroom}
+            handleButtonLike={handleButtonLike}
+            handleButtonComment={handleButtonComment}
+            organizations={organizations}
+            listEndText={
+              order === 1 && profilePageScreams > 0
+                ? t("noMoreIdeas")
+                : order === 1 && profilePageScreams < 1 && t("noSharedIdeas")
+
+              // :t("noIdeasWithFilter")
+            }
+          />
+        </ContentWrapper>
+      </DragWrapper>
+    </React.Fragment>
   );
 };
 

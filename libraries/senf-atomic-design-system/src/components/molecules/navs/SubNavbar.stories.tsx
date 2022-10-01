@@ -25,7 +25,7 @@ export const Organisationen = Template.bind({});
 Organisationen.args = {
   header: "Organisationen",
   iconLeft: "arrow",
-  iconLeftTransform: "rotate(90deg)",
+  iconLeftTransform: "rotate(90)",
   textLeft: "zurück",
 };
 
@@ -33,7 +33,7 @@ export const PageAllFunctions = Template.bind({});
 PageAllFunctions.args = {
   header: "Page with all Functions",
   iconLeft: "arrow",
-  iconLeftTransform: "rotate(90deg)",
+  iconLeftTransform: "rotate(90)",
   textLeft: "zurück",
 
   iconRight: "arrow",

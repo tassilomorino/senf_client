@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev --no-cache --parallel --continue",
+    "dev": "kill-port 3000 3001 3002 3003 3004 3005 6006 && turbo run dev --no-cache --parallel --continue",
     "lint": "turbo run lint",
     "test": "turbo run test",
     "clean": "turbo run clean && rm -rf node_modules",
@@ -34,6 +34,14 @@
   },
   "packageManager": "yarn@3.2.1",
   "dependencies": {
+    "@visx/axis": "^2.12.2",
+    "@visx/gradient": "^2.10.0",
+    "@visx/group": "^2.10.0",
+    "@visx/mock-data": "^2.1.2",
+    "@visx/responsive": "^2.10.0",
+    "@visx/scale": "^2.2.2",
+    "@visx/shape": "^2.12.2",
+    "kill-port": "^2.0.1",
     "mapbox": "^1.0.0-beta10",
     "react-transition-group": "^4.4.2"
   }

@@ -23,7 +23,7 @@ const StyledButton = styled.button<TertiaryButtonProps>`
   height: 30px;
 
   //FOR SMALLICONBUTTON  – is this really  correct?
-  width: ${(props) => (props.fillWidth === "max" ? "100%" : "auto")};
+  width: ${(props) => (props.width === "max" ? "100%" : "auto")};
   pointer-events: all;
 
   //ADD THEME-SPACE?
@@ -57,7 +57,7 @@ const TertiaryButton: FC<TertiaryButtonProps> = ({
   iconRightTransform,
   size,
   variant,
-  fillWidth,
+  width,
   color,
   loading,
   onClick,
@@ -67,7 +67,7 @@ const TertiaryButton: FC<TertiaryButtonProps> = ({
     <StyledButton
       type="button"
       text={text}
-      fillWidth={fillWidth}
+      width={width}
       loading={loading}
       onClick={onClick}
       size={size}
@@ -78,7 +78,7 @@ const TertiaryButton: FC<TertiaryButtonProps> = ({
           <Icon
             icon={iconLeft}
             transform={
-              iconLeftTransform ? iconLeftTransform : "scale(0.7)"
+              iconLeftTransform || "scale(0.7)"
               // size === "small"
               //   ? ` ${iconLeftTransform ? iconLeftTransform : "scale(0.7)"}`
               //   : ` ${iconLeftTransform ? iconLeftTransform : "scale(0.7)"}`
@@ -104,7 +104,7 @@ const TertiaryButton: FC<TertiaryButtonProps> = ({
           <Icon
             icon={iconRight}
             transform={
-              iconLeftTransform ? iconLeftTransform : "scale(0.7)"
+              iconLeftTransform || "scale(0.7)"
               // size === "small"
               //   ? `${iconLeftTransform ? iconLeftTransform : "scale(0.7)"}`
               //   : `${iconLeftTransform ? iconLeftTransform : "scale(0.7)"}`

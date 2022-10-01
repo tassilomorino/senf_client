@@ -170,9 +170,7 @@ export const closeScream = () => (dispatch) => {
 };
 
 // Post an idea
-export const postScream = (newScream, user, history) => async (dispatch) => {
-  console.log(history, user);
-
+export const postScream = (newScream, user) => async (dispatch) => {
   dispatch({ type: LOADING_DATA });
 
   if (newScream.title.trim() === "") {
@@ -237,15 +235,16 @@ export const postScream = (newScream, user, history) => async (dispatch) => {
       });
 
       if (resScream.projectRoomId) {
-        // open scream in projectroom context
-        // '/projectRooms/:projectRoomId/:screamId'
-        dispatch({ type: OPEN_PROJECTROOM });
+        // @TODO: handle opening idea in projectroom context
+        /*      '/projectRooms/:projectRoomId/:screamId'
+          dispatch({ type: OPEN_PROJECTROOM });
         dispatch(loadProjectRoomData(resScream.projectRoomId));
-        dispatch(openScreamFunc(resScream.screamId));
+        dispatch(openScreamFunc(resScream.screamId));  */
       } else {
         // open scream in the main context
         // '/:screamId'
-        dispatch(openScreamFunc(resScream.screamId));
+        // dispatch(openScreamFunc(resScream.screamId));
+        return resScream;
       }
     } catch (error) {
       throw new Error(error, "error in postScreamFunc");
@@ -318,10 +317,7 @@ export const getUserEmail = (userId) => async (dispatch) => {
     const docRef = doc(db, "users", userId, "Private", userId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      dispatch({
-        type: SET_SCREAM_USER,
-        payload: docSnap.data(),
-      });
+      console.log(docSnap.data(), "userEmail");
     } else {
       throw new Error("User email not found");
     }

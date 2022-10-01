@@ -20,4 +20,6 @@ const Template: Story<SuccessSubmitIdeaProps> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
   text: "x",
+  onDrag: () => { },
+
 };

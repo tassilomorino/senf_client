@@ -42,14 +42,17 @@ const Wrapper = styled.div<BoxProps>`
   z-index: ${({ zIndex }) => zIndex || undefined};
   transform: ${({ transform }) => transform || undefined};
   pointer-events: ${({ pointerEvents }) => pointerEvents || undefined};
+  box-sizing: border-box;
+  transition: ${({ transition }) => transition || undefined};
 `;
 
 const Box: FC<BoxProps> = ({
   children,
+  onClick,
   ...props
 }) => {
   return (
-    <Wrapper {...props}>
+    <Wrapper {...props} onClick={onClick}>
       {children}
     </Wrapper>
   );

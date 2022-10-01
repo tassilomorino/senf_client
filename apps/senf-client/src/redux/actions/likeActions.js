@@ -1,14 +1,4 @@
 import moment from "moment";
-import setColorByTopic from "../../data/setColorByTopic";
-
-import {
-  LIKE_SCREAM,
-  UNLIKE_SCREAM,
-  VOTED_TRUE,
-  VOTED_FALSE,
-  SET_ERRORS,
-} from "../types";
-import { db } from "../../firebase";
 import {
   collection,
   where,
@@ -21,6 +11,16 @@ import {
   deleteDoc,
   limit,
 } from "firebase/firestore";
+import setColorByTopic from "../../data/setColorByTopic";
+
+import {
+  LIKE_SCREAM,
+  UNLIKE_SCREAM,
+  VOTED_TRUE,
+  VOTED_FALSE,
+  SET_ERRORS,
+} from "../types";
+import { db } from "../../firebase";
 
 // Like a scream
 export const likeScream = (screamId, user) => async (dispatch) => {
@@ -71,7 +71,7 @@ export const likeScream = (screamId, user) => async (dispatch) => {
       });
     }, 2000);
     await addDoc(collection(db, "likes"), {
-      screamId: screamId,
+      screamId,
       userHandle: user.handle,
       userId: user.userId,
       createdAt: new Date().toISOString(),

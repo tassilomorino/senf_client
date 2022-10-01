@@ -14,14 +14,28 @@ export const Wrapper = styled.div<{ disabled?: boolean }>`
   font-family: ${({ theme }) => theme.fontFamily};
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: ${({ theme }) => theme.space[1]};
   color: ${({ theme }) => theme.colors.black.black40tra};
   width: 100%;
 
   opacity: ${({ disabled }) => disabled && "0.5"};
 `;
 
-export const Label = styled.label<{ error?: boolean }>`
+// export const Label = styled.label<{ size?: string, icon?: boolean, active?: boolean, error?: boolean }>`
+//   position: absolute;
+//   padding-inline: ${({ size, theme }) => theme.inputPadding(size)};
+//   padding-block: 5px;
+//   margin-inline: ${({ size, theme }) => theme.inputPadding(size)};
+//   margin-block: -10px;
+//   border-radius: 10px;
+//   left: ${({ icon }) => icon ? "16px" : "0"};
+//   top: ${({ active, theme, size }) => active ? `${parseFloat(theme.space[2], 10) * -1}rem` : theme.inputPadding(size)};
+//   pointer-events: none;
+//   font-size: ${({ active, theme }) => active ? `${theme.fontSizes[1]}rem` : "inherit"};
+//   transition: 100ms;
+//   background-color: white;
+// `;
+export const Label = styled.label<{ size?: string; error?: boolean }>`
   align-self: flex-start;
   flex: auto;
   color: ${({ theme, error }) => error && theme.colors.signal.redDark};
@@ -29,135 +43,100 @@ export const Label = styled.label<{ error?: boolean }>`
   font-size: ${({ theme }) => theme.fontSizes[1]}rem;
   font-weight: ${({ theme }) => theme.fontWeights[1]};
   line-height: ${({ theme }) => theme.lineHeight[0]};
+  /*  padding-inline: ${({ size, theme }) => theme.inputPadding(size)}; */
 `;
 
 export const Note = styled.p<{ error?: boolean }>`
-  align-self: flex-end;
-  flex: auto;
   color: ${({ theme, error }) => error && theme.colors.signal.redDark};
-
   font-size: ${({ theme }) => theme.fontSizes[0]}rem;
-  text-align: end;
   line-height: ${({ theme }) => theme.lineHeight[2]};
-  flex-basis: 7rem;
+  /*   padding-inline: ${({ size, theme }) => theme.inputPadding(size)}; */
+  /* align-self: flex-end; */
+  /* text-align: end; */
+  /* flex: auto; */
+  /* flex-basis: 7rem; */ // what is this?
 `;
 
-export const InputField = styled.div<{ focus: boolean; icon: boolean }>`
+export const InputContainer = styled.label<{
+  focus: boolean;
+  icon: boolean;
+  size: string;
+  type: string;
+}>`
+  position: relative;
   display: flex;
-  align-items: flex-start;
-  /* padding: ${({ theme }) => `${theme.space[4]} ${theme.space[6]}`}; */
-  padding-right: ${({ theme }) => theme.space[3]};
-  padding-left: ${({ theme }) => theme.space[4]} !important;
-  padding-top:${({ theme }) => theme.space[4]} !important;
-  padding-bottom:${({ theme }) => theme.space[4]} !important;
-
-  gap: 0.5rem;
-  min-height: 50px;
+  align-items: center;
+  padding: ${({ size, theme }) => theme.inputPadding(size)};
+  gap: ${({ size, theme }) => `${parseFloat(theme.inputPadding(size), 10)}rem`};
+  min-height: ${({ size, theme }) => theme.inputHeight(size)};
+  height: ${({ size, type, theme }) => {
+    if (type === "textarea") return "initial";
+    return theme.inputHeight(size);
+  }};
   box-sizing: border-box;
-  color: rgb(51, 51, 51) !important;
   border-radius: ${({ theme }) => theme.radii[2]}px;
+  cursor: text;
 
-  -webkit-border-radius: ${({ theme }) => theme.radii[2]}px;
-  -moz-border-radius: ${({ theme }) => theme.radii[2]}px;
-
-  /* background-color: ${({ theme }) => theme.colors.white.white50tra};
-
-  background-color: ${({ theme }) => theme.colors.greyscale.greyscale5tra};
-  border: 2px solid ${({ theme }) => theme.colors.greyscale.greyscale5tra}; */
-
-  background: linear-gradient(
-      0deg,
-      rgba(134, 124, 99, 0.01),
-      rgba(134, 124, 99, 0.01)
-    ),
-    #ffffff;
-  
-  border: 2px solid var(--border-color, ${({ theme }) => theme.colors.greyscale.greyscale20});
   /* Big/White on Light BG */
+  background-color: #ffffff;
+  /* background: linear-gradient(
+    0deg,
+    rgba(134, 124, 99, 0.01),
+    rgba(134, 124, 99, 0.01)
+  ),
+    #ffffff; */
 
+  --border-color: ${({ focus, theme }) =>
+    focus ? theme.colors.primary.primary120 : "var(--border-color)"};
+  border: 2px solid
+    var(--border-color, ${({ theme }) => theme.colors.greyscale.greyscale20});
   box-shadow: 0px -5px 10px rgba(255, 255, 255, 0.2),
     0px 10px 20px -6px rgba(134, 124, 99, 0.06), var(--outline-shadow);
 
-  ${({ focus }) =>
-    focus &&
-    css`
-      --border-color: ${({ theme }) => theme.colors.primary.primary120};
-      --outline-shadow: inset 0px 0px 0px 1px var(--border-color);
-
-      /* outline: 3px solid ${({ theme }) => theme.colors.primary.primary120};
-      outline-offset: -3px; */
-    `}
-
-  input {
-    max-height: 50px !important;
-    box-sizing: border-box;
-    width: 100%;
-  }
-
   input,
   textarea {
-    ${({ icon }) =>
-    icon &&
-    css`
-        padding-left: ${({ theme }) => `${theme.space[1]}`};
-      `}
+    padding: 0;
+    box-sizing: border-box;
+    width: 100%;
+    line-height: ${({ theme }) => theme.lineHeight[2]};
+    margin-block: -2px;
   }
-
-  ${({ icon }) =>
-    icon &&
-    css`
-      padding-left: ${({ theme }) => `${theme.space[5]}`};
-    `}
-
   /* Styles for textarea */
+  input {
+    display: flex;
+    align-items: center;
+  }
   textarea {
     resize: none;
   }
 
-  /* Styles for password input */
-  /* button {
-    border: 0;
-    cursor: pointer;
-    background-color: transparent;
-    color: ${({ theme }) => theme.colors.primary.primary140};
-    font-weight: ${({ theme }) => theme.fontWeights[1]};
-  } */
-
-  /* Styles for search input */
-  svg {
-    opacity: 0.8;
-    width: 16px;
-    height: 16px;
-    color: ${({ theme }) => theme.colors.black.black100};
+  button {
+    margin: -10px;
+  }
+  label svg {
+    margin: 1px -1px;
   }
 `;
 
-export const TextField = styled.input`
+export const InputField = styled.input`
   font-size: ${({ theme }) => theme.fontSizes[2]}rem;
   border: 0;
   flex: 1;
   background-color: transparent !important;
-
-  /* Styles for search input */
-  /* &[type="search"] {
-    & + ${HoverContainer} > svg {
-      display: block;
-      transform: rotateZ(45deg) scale(0.7);
-      cursor: pointer;
-    }
-    :placeholder-shown {
-      & + ${HoverContainer} > svg {
-        display: none;
-      }
-    } 
-  }*/
-
+  color: ${({ theme }) => theme.colors.black.black};
   ::placeholder,
   ::-webkit-input-placeholder {
     color: ${({ theme }) => theme.colors.black.black40tra};
   }
   :-ms-input-placeholder {
     color: ${({ theme }) => theme.colors.black.black40tra};
+  }
+  :focus::placeholder,
+  :focus::-webkit-input-placeholder {
+    color: ${({ theme }) => theme.colors.black.black30tra};
+  }
+  :focus:-ms-input-placeholder {
+    color: ${({ theme }) => theme.colors.black.black30tra};
   }
   ::-webkit-search-cancel-button {
     -webkit-appearance: none;

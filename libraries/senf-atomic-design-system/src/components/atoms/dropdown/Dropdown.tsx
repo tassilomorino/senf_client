@@ -3,12 +3,12 @@
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import Box from "../box/Box";
-import { Wrapper, Label, Note, InputField } from "../inputs/input.styles";
+import { Wrapper, Label, Note, InputContainer } from "../inputs/input.styles";
 import { DropdownProps, MultiListItems } from "./Dropdown.types";
 import { Selector } from "./Dropdown.styles";
 
 const Dropdown: FunctionComponent<DropdownProps> = ({
-  id,
+  name,
   placeholder,
   label,
   note,
@@ -19,21 +19,22 @@ const Dropdown: FunctionComponent<DropdownProps> = ({
   const { t } = useTranslation();
   return (
     <Wrapper>
-      <Box>
-        <Label htmlFor={id}>{label}</Label>
-        <Note>{note}</Note>
-      </Box>
-      <InputField
+      {label || note &&
+        <Box>
+          {label && <Label htmlFor={name}>{label}</Label>}
+          {note && <Note>{note}</Note>}
+        </Box>
+      }
+      <InputContainer
         as={Selector}
-        name={id}
-        id={id}
+        name={name}
         onChange={onChange}
         placeholder={placeholder}
         value={value}
       >
-        {id && (
+        {name && (
           <option disabled selected hidden>
-            {t(id)}
+            {t(name)}
           </option>
         )}
         {Object.values(listItems).map((item) => (
@@ -41,7 +42,7 @@ const Dropdown: FunctionComponent<DropdownProps> = ({
             {item.label}
           </option>
         ))}
-      </InputField>
+      </InputContainer>
     </Wrapper>
   );
 };

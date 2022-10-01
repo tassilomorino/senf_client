@@ -2,7 +2,6 @@
 
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
-
 // import throttle from "lodash/throttle";
 
 import userReducer from "./reducers/userReducer";

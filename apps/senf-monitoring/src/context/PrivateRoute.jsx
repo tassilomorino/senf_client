@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { AuthContext } from "./auth";
+import { useAuthContext } from "senf-shared";
 
 const PrivateRoute = () => {
-  const { user } = useContext(AuthContext);
-  return user ? <Outlet /> : <Navigate to="/login" />;
+  const { user } = useAuthContext();
+
+  return user === false ? <Navigate to="/login" /> : <Outlet />;
 };
 
 export default PrivateRoute;

@@ -33,7 +33,7 @@ const StyledButton = styled.button<TagProps>`
   height: 36px;
 
   //FOR SMALLICONBUTTON  – is this really  correct?
-  width: ${(props) => (props.fillWidth === "max" ? "100%" : "auto")};
+  width: ${(props) => (props.width === "max" ? "100%" : "auto")};
 
   pointer-events: all;
 
@@ -78,7 +78,7 @@ const Tag: FC<TagProps> = ({
   icon,
   iconColor,
   variant,
-  fillWidth,
+  width,
   hide,
   active,
   onClick,
@@ -89,7 +89,7 @@ const Tag: FC<TagProps> = ({
     text={text}
     variant={variant}
     icon={icon}
-    fillWidth={fillWidth}
+    width={width}
     active={active}
     onClick={onClick}
     hide={hide}

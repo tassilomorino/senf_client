@@ -22,7 +22,7 @@ const RangeSlider: FC<RangeSliderProps> = ({
 
   const changeRange = (event: any) => {
     setRangeValue(event.target.value);
-s  };
+  };
   return (
     <Wrapper>
       <Input
@@ -38,11 +38,12 @@ s  };
         thumbColor={thumbColor}
         thumbBorderColor={thumbBorderColor}
       />
-      <Box margin="10px 13px" justifyContent="space-between">
-        <Typography variant="bodySm">{leftTick}</Typography>
-        <Typography variant="bodySm">{rightTick}</Typography>
-      </Box>
-    </Wrapper>
+      {(leftTick || rightTick) &&
+        <Box margin="10px 13px" justifyContent="space-between">
+          <Typography variant="bodySm">{leftTick}</Typography>
+          <Typography variant="bodySm">{rightTick}</Typography>
+        </Box>}
+    </Wrapper >
   );
 };
 

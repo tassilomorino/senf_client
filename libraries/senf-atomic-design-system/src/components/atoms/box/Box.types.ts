@@ -3,6 +3,7 @@
 import { MouseEventHandler } from "react";
 
 export interface BoxProps {
+  onClick?: () => void;
   display?: "flex" | "inline-flex" | "inline" | "block" | "none";
   flexDirection?: "column" | "row";
   gap?: string;
@@ -23,12 +24,23 @@ export interface BoxProps {
   paddingRight?: string;
   paddingBlock?: string;
   paddingInline?: string;
+  top?: string;
+  bottom?: string;
+  transform?: string;
+  pointerEvents?: "auto" | "none";
+  transition?: string;
   left?: string | number;
   right?: string | number;
   zIndex?: string | number;
   alignItems?: "flex-start" | "center" | "flex-end";
-  justifyContent?: "flex-start" | "center" | "flex-end";
+  justifyContent?:
+    | "flex-start"
+    | "center"
+    | "flex-end"
+    | "space-between"
+    | "space-around"
+    | "space-evenly";
   flexWrap?: "nowrap" | "wrap" | "wrap-reverse";
   position?: "fixed" | "absolute" | "relative" | "sticky";
-  onClick?: MouseEventHandler<HTMLButtonElement>;
+  onclick?: MouseEventHandler;
 }

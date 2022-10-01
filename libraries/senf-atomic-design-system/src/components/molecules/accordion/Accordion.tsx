@@ -47,7 +47,7 @@ export const AccordionItem = memo(({ question, answer, defaultOpen = false }) =>
   const previous = usePrevious(isOpen);
   const [bind, { height: viewHeight }] = useMeasure();
   const { height, opacity } = useSpring({
-    from: { height: 0, opacity: 0 /* transform: 'rotate(180deg)' */ },
+    from: { height: 0, opacity: 0 /* transform: 'rotate(180)' */ },
     to: {
       height: isOpen ? viewHeight : 0,
       opacity: isOpen ? 1 : 0,

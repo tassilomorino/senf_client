@@ -1,19 +1,22 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
-import { auth, db } from "../../firebase";
+import { Link, useNavigate } from "react-router-dom";
 import { signOut } from "@firebase/auth";
 import { updateDoc, doc } from "firebase/firestore";
-import { AuthContext } from "../../context/auth";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import {
+  CommentActive,
+  User,
+  Arrow,
+  Plus,
   Button,
   LayerWhiteSecondDefault,
   Icon,
   Divider,
   Typography,
 } from "senf-atomic-design-system";
+import { useAuthContext } from "senf-shared";
+import { auth, db } from "../../firebase";
 
 const myWorkspaces = [
   { title: "Gemüsegarten Neuehrenfeld" },
@@ -49,7 +52,7 @@ const BottomWrapper = styled.div`
 `;
 const MenuSidebar = ({ currentWorkspace, setCurrentWorkspace }) => {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { user } = useAuthContext();
 
   const handleSignOut = async () => {
     await updateDoc(doc(db, "users", user.uid), {
@@ -69,11 +72,11 @@ const MenuSidebar = ({ currentWorkspace, setCurrentWorkspace }) => {
         <ButtonWrapper>
           <Button
             variant={
-              "Meine Nachrichten" === currentWorkspace ? "white" : "primary"
+              currentWorkspace === "Meine Nachrichten" ? "white" : "primary"
             }
             onClick={() => setCurrentWorkspace("Meine Nachrichten")}
-            icon="stats"
-            transform="roate(90deg)"
+            icon={<CommentActive />}
+            transform="rotate(90)"
           />
         </ButtonWrapper>
         <Divider
@@ -96,17 +99,17 @@ const MenuSidebar = ({ currentWorkspace, setCurrentWorkspace }) => {
           <Button
             variant="secondary"
             onClick={() => console.log("create new workspace")}
-            icon="plus"
+            icon={<Plus />}
           />
         </ButtonWrapper>
       </TopWrapper>
 
       <BottomWrapper>
         <ButtonWrapper onClick={handleLinkProfile}>
-          <Button variant="white" icon="user"></Button>
+          <Button variant="white" icon={<User />}></Button>
         </ButtonWrapper>
 
-        <Button icon="arrow" onClick={handleSignOut}></Button>
+        <Button icon={<Arrow />} onClick={handleSignOut}></Button>
       </BottomWrapper>
     </Wrapper>
   );

@@ -6,6 +6,7 @@ import { Story, Meta } from "@storybook/react";
 import Map from "./Map";
 
 import { MapProps } from "./Map.types";
+import ExpandMap from "./ExpandMap";
 
 export default {
   title: "Atom/Map",
@@ -14,6 +15,7 @@ export default {
 } as Meta<typeof Map>;
 
 const Template: Story<MapProps> = (args) => <Map {...args} />;
+
 
 export const Default = Template.bind({});
 Default.args = {

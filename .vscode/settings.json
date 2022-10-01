@@ -3,7 +3,7 @@
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true // it does not fix warnings
+    "source.fixAll.eslint": true
   },
   "conventionalCommits.scopes": [
     "atomic-design",
@@ -11,12 +11,11 @@
     "monitoring",
     "workspace"
   ],
-  "typescript.validate.enable": false,
+  "typescript.validate.enable": true, // working on typescript
   "[typescriptreact]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[javascriptreact]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
-  },
-
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

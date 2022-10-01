@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Icon, Button, Input } from "senf-atomic-design-system";
+import { Arrow, Icon, Button, Input } from "senf-atomic-design-system";
+
 const Form = styled.form`
   position: sticky;
   height: 60px;
@@ -16,7 +17,7 @@ const Form = styled.form`
 const MessageForm = ({ handleSubmit, text, setText, setImg }) => {
   return (
     <Form>
-      <Button variant="secondary" icon="arrow" transform="rotate(180deg)">
+      <Button variant="secondary" icon={<Arrow transform="rotate(270deg)" />} >
         <label htmlFor="img"></label>
       </Button>
       <input

@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import dayjs from "dayjs";
 import { animated, useSpring } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
+import { AuthModal } from "senf-shared"
 import Icon from "../../atoms/icons/Icon";
 import {
   LayerWhiteFirstDefault,
@@ -43,7 +44,6 @@ import Button from "../../atoms/buttons/Button";
 import ModalButton from "../../molecules/modalStack/ModalButton";
 import Hyperlink from "../../../assets/icons/Hyperlink";
 import { openMail, openLink } from "../../../util/helpers";
-import Calendar from "../../organisms/calendar/Calendar";
 import CalendarIcon from "../../../assets/icons/CalendarIcon";
 import Location from "../../../assets/icons/Location";
 import ContentDropdown from "../../atoms/contentDropdown/ContentDropdown";
@@ -53,7 +53,9 @@ import Delete from "../../../assets/icons/Delete";
 import Report from "../../../assets/icons/Report";
 import Skeleton from "../../atoms/skeleton/Skeleton";
 import EditIdeaPage from "../editIdeaPage/EditIdeaPage";
-import Auth from "../auth/Auth";
+import { useModals } from "../../molecules/modalStack/ModalProvider";
+import Avatar from "../../atoms/avatar/Avatar";
+import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
 
 const DragWrapper = styled(animated.div) <IdeaDetailPageProps>`
   display: flex;
@@ -63,7 +65,7 @@ const DragWrapper = styled(animated.div) <IdeaDetailPageProps>`
   border-radius: 18px;
   height: calc(100vh - 20px);
   width: 100%;
-  max-width: 470px;
+  /* max-width: 470px; */
 
   background-color: ${({ theme }) => theme.colors.beige.beige20};
   overflow: hidden;
@@ -111,7 +113,7 @@ const CardWrapper = styled.div<IdeaDetailPageProps>`
   border-radius: 18px;
 
   width: 100%;
-  max-width: 400px;
+  /* max-width: 400px; */
 
   height: auto;
   flex: none;
@@ -186,7 +188,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
   const [editIdeaDropdownOpen, setEditIdeaDropdownOpen] = useState(false);
 
   const [swipePosition, setSwipePosition] = useState("bottom");
-
+  const { openModal } = useModals()
   const liked = () => {
     if (user?.likes && user?.likes.find((like) => like.screamId === screamId))
       return true;
@@ -307,45 +309,30 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
       <DetailSidebar
         handleButtonClose={() => handle.closeCard(false)}
         SecondButton={
-          <ContentDropdown
-            open={socialmediaShareDropdownOpen}
-            setOpen={setSocialmediaShareDropdownOpen}
-            direction={isMobile ? "downLeft" : "downRight"}
-            OpenButton={
-              <Button
-                size="medium"
-                variant="white"
-                onClick={handleShareIdea}
-                icon={<Share />}
+          <DropdownButton
+            size="md"
+            width="height"
+            variant="white"
+
+            icon="Share"
+            data={
+              <SocialmediaShare
+                path={path}
+                handleShareIdeaVia={handle.shareIdeaVia}
               />
-            }
-            Content={
-              <Box gap="5px" flexDirection="column">
-                <SocialmediaShare
-                  path={path}
-                  handleShareIdeaVia={handle.shareIdeaVia}
-                />
-              </Box>
             }
           />
         }
         ThirdButton={
-          <ContentDropdown
-            open={editIdeaDropdownOpen}
-            setOpen={setEditIdeaDropdownOpen}
-            direction={isMobile ? "downLeft" : "downRight"}
-            OpenButton={
-              <Button
-                size="medium"
-                variant="white"
-                onClick={() => setEditIdeaDropdownOpen(!editIdeaDropdownOpen)}
-                icon={<More />}
-              />
-            }
-            Content={
-              <Box gap="5px" flexDirection="column">
-                {user?.userId === userId || user?.isSuperAdmin === true ? (
-                  <React.Fragment>
+          <DropdownButton
+            size="medium"
+            variant="white"
+            width="height"
+            icon="More"
+            data={
+              user?.userId === userId || user?.isSuperAdmin === true || user?.isAdmin === true  || true ? (
+                    <Box gap="5px" flexDirection="column">
+                <React.Fragment>
                     <ModalButton
                       variant={"tertiary"}
                       size="small"
@@ -373,7 +360,9 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                       justifyContent="flex-start"
                       icon={<Delete />}
                       options={{
-                        padding: 20,
+                        style: {
+                          padding: 20,
+                        },
                         title: "Bist du sicher, dass du die Idee löschen möchtest?",
                         cancelText: t('cancel'),
                         submitText: t('delete'),
@@ -382,17 +371,13 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                     >
                     </ModalButton>
                   </React.Fragment>
-                ) : (
-                  <Button
-                    variant={"secondary"}
-                    size="small"
-                    text={t("idea.report")}
-                    justifyContent="flex-start"
-                    onClick={() => handle.reportIdea(screamId)}
-                    icon={<Report />}
-                  />
-                )}
-              </Box>
+                  </Box>
+                ) : 
+                  [{
+                    text: t("idea.report"),
+                    onClick: () => handle.reportIdea(screamId),
+                    leadingIcon: "Report"
+                  }]
             }
           />
         }
@@ -422,21 +407,30 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
               <Box
                 alignItems="center"
                 flexDirection="row"
-                gap="5px"
-                margin="8px 0px 4px 0px"
+                gap="10px"
+                margin="8px 0px 14px 0px"
               >
                 {Thema ? (
-                  <Icon icon={<Dot color={setColorByTopic(Thema)} />} />
+                  <Icon icon={<Location color={setColorByTopic(Thema)} />} />
                 ) : (
                   <Skeleton borderRadius="100" width="16" height="16" />
                 )}
-                <Typography
-                  variant="bodySm"
-                  fontWeight={600}
-                  color={setColorByTopic(Thema)}
-                >
-                  {Stadtteil || <Skeleton height="16" />}
-                </Typography>
+                <Box flexDirection="column">
+                  {Stadtteil ? <Typography
+                    variant="bodySm"
+                    fontWeight={700}
+                  >
+                    {Stadtteil}
+                  </Typography> : <Skeleton height="16" />}
+                  {locationHeader ? <Typography
+                    variant="bodySm"
+                    fontWeight={600}
+                    color={theme.colors.black.black40tra}
+                  >
+                    {locationHeader}
+                  </Typography> : <Skeleton height="16" />}
+
+                </Box>
 
                 <Box
                   alignItems="center"
@@ -519,15 +513,12 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                     <Typography variant="buttonSm">{selectedDates}</Typography>
                   </Box>
                 )}
-                <Box gap="5px">
-                  <Icon icon={<Location />} />{" "}
-                  <Typography variant="buttonSm">{locationHeader}</Typography>
-                </Box>
 
-                <Box gap="5px">
-                  <Icon icon={<User />} />{" "}
+
+                <Box gap="10px" alignItems="center" style={{ cursor: 'pointer' }} onClick={() => handle.openProfilePage(userId)}>
+                  <Avatar placeholder={userHandle?.slice(0, 1)} />
                   {createdAt && userHandle && (
-                    <React.Fragment>
+                    <Box gap="5px">
                       <Typography variant="buttonSm">{userHandle}</Typography>
                       <Typography
                         variant="buttonSm"
@@ -541,7 +532,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                       >
                         {dayjs(createdAt).format("DD.MM.YYYY")}
                       </Typography>
-                    </React.Fragment>
+                    </Box>
                   )}
                 </Box>
               </Box>
@@ -577,7 +568,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
               {t("IdeaDetailPage.commentHeadline")}
             </Typography>
             {!user?.authenticated ? (
-              <Button onClick={() => handleModal("push", <Auth authEditOpen={false} />, { swipe: !!isMobile, size: "md", height: isMobile && window.innerHeight + 83, padding: 0 })
+              <Button onClick={() => openModal(<AuthModal />, { swipe: !!isMobile })
               }>{t("login")}</Button>
             ) : (
               <Box gap="8px" width="100%">

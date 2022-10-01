@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ReactDOM from "react-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Box, MainLoader, Map, InfoPageMainApp, Cookiebanner, ModalContext } from "senf-atomic-design-system";
+import { MainLoader, Map, InfoPageMainApp, Cookiebanner, useModals } from "senf-atomic-design-system";
 import Cookies from "universal-cookie";
 import { setMapBounds } from "../redux/actions/mapActions";
 import { openProjectRoomFunc } from "../redux/actions/projectActions";
@@ -30,7 +30,7 @@ const Main = React.lazy(() =>
 const Home = () => {
   const dispatch = useDispatch();
 
-  const { handleModal } = React.useContext(ModalContext) || {};
+  const { openModal } = useModals()
   const [showUI, setShowUI] = useState(false)
   const [statefulMap, setStatefulMap] = useState(null);
   const [initialMapBounds, setInitialMapBounds] = useState(null);
@@ -47,7 +47,7 @@ const Home = () => {
 
   const [postIdeaOpen, setPostIdeaOpen] = useState(false);
 
-  const myScreams = useSelector((state) => state.user.myScreams);
+  const profilePageScreams = useSelector((state) => state.data.profilePage?.profilePageData?.screams);
   const screams = useSelector((state) => state.data.screams);
   const scream = useSelector((state) => state.data.scream);
   const projects = useSelector((state) => state.data.projects);
@@ -135,11 +135,11 @@ const Home = () => {
         ? project?.screams?.filter(({ Thema }) =>
           selectedTopics.includes(Thema)
         )
-        : myScreams !== null && myScreams !== undefined
-          ? myScreams.filter(({ Thema }) => selectedTopics.includes(Thema))
+        : profilePageScreams !== null && profilePageScreams !== undefined
+          ? profilePageScreams.filter(({ Thema }) => selectedTopics.includes(Thema))
           : dataFinalIdeasMap,
     [
-      myScreams,
+      profilePageScreams,
       openProjectRoom,
       project?.screams,
       dataFinalIdeasMap,
@@ -177,7 +177,7 @@ const Home = () => {
     } else {
 
       setTimeout(() => {
-        handleModal("push", <InfoPageMainApp />, { swipe: !!isMobileCustom, size: "xl", height: isMobileCustom && window.innerHeight + 83, padding: 0, onBeforeOpen: () => setShowUI(false), onBeforeClose: () => setShowUI(true) })
+        openModal(<InfoPageMainApp />, { swipe: !!isMobileCustom, size: "xl", height: isMobileCustom && window.innerHeight + 83, padding: 0, beforeOpen: () => setShowUI(false), beforeClose: () => setShowUI(true) })
         setOpenCookiebanner(true);
       }, 2800);
 

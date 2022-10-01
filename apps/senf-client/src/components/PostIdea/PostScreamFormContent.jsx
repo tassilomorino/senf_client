@@ -184,8 +184,6 @@ const PostScreamFormContent = ({
         </FlexWrapper>
         <Box flexDirection="column" gap="20px">
           <Input
-            key="title"
-            id="title"
             name="title"
             type="textarea"
             placeholder={t("add_title")}
@@ -201,8 +199,6 @@ const PostScreamFormContent = ({
           />
 
           <Input
-            key="body"
-            id="body"
             name="body"
             type="textarea"
             placeholder={t("add_body")}
@@ -272,12 +268,13 @@ const PostScreamFormContent = ({
           )}
         </Box>
         <SelectContainer>
+          asd
           <StyledH3 fontWeight={400}>{t("topic")}: </StyledH3>
 
           <ContentDropdown
             open={topicDropdownOpen}
             setOpen={setTopicDropdownOpen}
-            OpenButton={
+            openButton={
               <TertiaryButton
                 onClick={() => setTopicDropdownOpen(!topicDropdownOpen)}
                 text={topic || t("select_topic")}
@@ -285,7 +282,7 @@ const PostScreamFormContent = ({
                 variant="semibold"
               />
             }
-            Content={
+            content={
               <Box gap="5px" flexDirection="column">
                 {Object.values(OptionsTopics()).map(({ name, label }) => (
                   <Box gap="5px">

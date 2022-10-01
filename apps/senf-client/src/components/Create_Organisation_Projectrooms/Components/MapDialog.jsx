@@ -5,15 +5,7 @@ import { useSelector } from "react-redux";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import {
-  Plus,
-  Check,
-  Icon,
-  Box,
-  Button,
-  RoundedButton,
-  Map,
-} from "senf-atomic-design-system";
+import { Plus, Icon, Box, Button, Map } from "senf-atomic-design-system";
 import { db } from "../../../firebase";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
@@ -116,7 +108,7 @@ const MapDialog = ({ mapOpen, setMapOpen, drawnPolygon, setDrawnPolygon }) => {
       localStorage.getItem("createProjectRoomId") &&
       polygon
     ) {
-      setDrawnPolygon(polygon)
+      setDrawnPolygon(polygon);
       // UPDATING AN EXISTING PROJECTROOM
       const updateProject = {
         geoData: JSON.stringify(polygon),
@@ -162,12 +154,22 @@ const MapDialog = ({ mapOpen, setMapOpen, drawnPolygon, setDrawnPolygon }) => {
   }, []);
 
   return ReactDOM.createPortal(
-    <MapWrapper mapOpen={mapOpen} id="drawMapWindow">
-      <OpenButton mapOpen={mapOpen} onClick={() => setMapOpen(true)}>
+    <MapWrapper
+      mapOpen={mapOpen}
+      id="drawMapWindow"
+    >
+      <OpenButton
+        mapOpen={mapOpen}
+        onClick={() => setMapOpen(true)}
+      >
         {" "}
         <Icon icon={<Plus transform="scale(2)" />} />
       </OpenButton>
-      <svg width="calc(100% - 400px)" height="60%" viewBox="0 0 100% 244">
+      <svg
+        width="calc(100% - 400px)"
+        height="60%"
+        viewBox="0 0 100% 244"
+      >
         <clipPath id="svgPath1">
           <rect
             width="400"
@@ -185,20 +187,24 @@ const MapDialog = ({ mapOpen, setMapOpen, drawnPolygon, setDrawnPolygon }) => {
         zIndex={999}
         top="0"
       >
-        <RoundedButton
-          icon={<Plus transform="rotate(45deg)" />}
+        <Button
+          size="medium"
+          icon={<Plus transform="rotate(45)" />}
           onClick={handleClose}
         />
       </Box>
 
       <Title isMobileCustom={isMobileCustom}>
-        <StyledH2 fontWeight="900" textAlign="center">
+        <StyledH2
+          fontWeight="900"
+          textAlign="center"
+        >
           Zeichne das Gebiet ein
         </StyledH2>
       </Title>
 
       <Map
-        mapType="draw"
+        mapType={{ drawType: "area" }}
         initialMapViewport={initialMapViewport}
         statefulMap={statefulMap}
         setStatefulMap={setStatefulMap}

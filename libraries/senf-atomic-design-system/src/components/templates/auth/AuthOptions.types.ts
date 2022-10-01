@@ -1,13 +1,14 @@
 /** @format */
 
 import { MouseEventHandler } from "react";
+
 export interface AuthOptionsProps {
   text?: string;
   variant?: "register" | "login";
   loading?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
-  formikRegisterStore?: Function;
-  formikLoginStore?: Function;
-  handleSubmitRegister?: Function;
-  handleSubmitLogin?: Function;
+  formikStore?: any;
+  authHandler,
+  setPage,
+  errorMessage
 }

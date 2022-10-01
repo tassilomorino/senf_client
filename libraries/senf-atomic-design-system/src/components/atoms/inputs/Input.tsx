@@ -1,125 +1,206 @@
 /** @format */
 
-import React, { FunctionComponent, useRef, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, useEffect, useRef, useState } from "react";
 import {
-  TextField,
+  InputField,
   Note,
   Label,
-  InputField,
+  InputContainer,
   Wrapper,
   // HoverContainer,
 } from "./input.styles";
 import { InputProps } from "./Input.types";
 import Icon from "../icons/Icon";
-import Box from "../box/Box";
-import Search from "../../../assets/icons/Search";
-import Plus from "../../../assets/icons/Plus";
-import TertiaryButton from "../buttons/TertiaryButton";
-import theme from "../../../styles/theme";
 import Button from "../buttons/Button";
+import theme from "../../../styles/theme";
 
 const adjustTextarea = (event: Event, rows: number, maxRows?: number) => {
-  event.target.setAttribute('rows', null)
-  const padding = parseFloat(window.getComputedStyle(event.target).paddingBlock, 10) * 2
-  const lineHeight = parseFloat(window.getComputedStyle(event.target).lineHeight, 10)
-  const scrollHeight = event.target.scrollHeight - padding
+  if (!event?.target) return;
+  const Element = event.target as HTMLTextAreaElement;
+  Element.setAttribute('rows', "")
+  const padding = parseFloat(window.getComputedStyle(Element).paddingBlock) * 2
+  const lineHeight = parseFloat(window.getComputedStyle(Element).lineHeight)
+  const scrollHeight = Element.scrollHeight - padding
   const newRows = Math.round(scrollHeight / lineHeight)
-  event.target.setAttribute('rows', Math.max(Math.min(newRows, maxRows || rows), rows))
+  Element.setAttribute('rows', Math.max(Math.min(newRows, maxRows || rows), rows).toString())
 }
 
 const Input: FunctionComponent<InputProps> = ({
-  id,
-  name,
+  // explicit props
+  value,
+  name = Math.random().toString(36).substring(2, 5),
   type,
   label,
-  note,
-  icon,
-  iconClick,
   placeholder,
+  note, // or helperText
+  size, // sm, md, lg
+  variant, // grey (default) or white
+  autocomplete,
+
+  leadingIcon, // leadingIcon
+  trailingIcon, // trailingIcon
+  leadingIconLabel,
+  trailingIconLabel,
+
   required,
-  error,
-  success,
   disabled,
+  clearable,
+
   rows = 3,
   maxRows = 10,
+  // methods
   onChange,
-  value,
   onBlur,
   onClick,
-  setSearchTerm,
+  onSubmit,
   receiveValue,
+  error,
+  success,
+  leadingIconClick,
+  trailingIconClick,
+  refProp,
+
+  // implicit props
   ...props
 }) => {
   const [isSearch, setIsSearch] = useState(type === "search");
   const [isPassword, setIsPassword] = useState(type === "password");
   const [isFocused, setIsFocused] = useState(false);
   // const [value, setValue] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = refProp || useRef<HTMLInputElement>(null);
+
+
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (type === "textarea") adjustTextarea(event, rows, maxRows)
-    if (isSearch && event.target && typeof setSearchTerm === "function") return setSearchTerm(event.target.value)
-    if (typeof onChange === "function") return onChange(event)
+    if (typeof onChange === "function") {
+      // if (isSearch && event.target) return onChange(event.target.value)
+      return onChange(event)
+    }
     return null
   }
 
+  const clear = clearable || isSearch
+
+  const placeholderState = placeholder || `${isSearch ? "Search" : ""}`
+
+
+  // const leadingIconState = leadingIcon;
+  // const leadingIconClickState = leadingIconClick;
+  // const trailingIconState = trailingIcon;
+  // const trailingIconClickState = trailingIconClick;
+
+  const [leadingIconState, setLeadingIconState] = useState(leadingIcon);
+  const [leadingIconClickState, setLeadingIconClickState] = useState(() => leadingIconClick);
+  const [leadingIconLabelState, setLeadingIconLabelState] = useState(leadingIconLabel);
+  const [trailingIconState, setTrailingIconState] = useState(trailingIcon);
+  const [trailingIconClickState, setTrailingIconClickState] = useState(() => trailingIconClick);
+  const [trailingIconLabelState, setTrailingIconLabelState] = useState(trailingIconLabel);
+
+  useEffect(() => setLeadingIconState(leadingIcon), [leadingIcon]);
+  useEffect(() => { if (!error) setLeadingIconClickState(() => leadingIconClick) }, [leadingIconClick, error]);
+  useEffect(() => setTrailingIconState(trailingIcon), [trailingIcon]);
+  useEffect(() => { if (!error) setTrailingIconClickState(() => trailingIconClick) }, [trailingIconClick, error]);
+
+  useEffect(() => {
+    if (isSearch && !leadingIcon) {
+      setLeadingIconState("Search");
+    }
+  }, [isSearch, leadingIcon]);
+
+  useEffect(() => {
+    if (type === "password") {
+      setTrailingIconState(isPassword ? "Bulb" : "Dot")
+      setTrailingIconClickState(() => () => setIsPassword(!isPassword))
+    }
+  }, [type, isPassword])
+
+  useEffect(() => {
+    if (clear && value) {
+      setTrailingIconState("Close")
+      setTrailingIconClickState(() => () => {
+        onChange?.({ target: { value: "" } } as ChangeEvent<HTMLInputElement>)
+        setIsFocused((prevState) => !prevState)
+      })
+    }
+  }, [clear, value])
+
+  useEffect(() => {
+    if (error) setTrailingIconState("Alert")
+    if (error) setTrailingIconClickState(undefined)
+    return () => setTrailingIconClickState(() => trailingIconClick)
+  }, [error]);
+
+
+
+  const LeadingIconWrapper = typeof leadingIconClickState === "function" ? Button : "label";
+  const TrailingIconWrapper = typeof trailingIconClickState === "function" ? Button : "label";
+
+  const iconWrapperProps = (onClick?) => onClick && typeof onClick === "function" ? {
+    variant: "tertiary",
+    size: "small",
+    onClick
+  } : {
+    htmlFor: name,
+  }
+
+  const fieldType = () => {
+    if (
+      type === "textarea" ||
+      type === "password" && !isPassword
+    ) return "text"
+    return type
+  }
+
   return (
-    <Wrapper disabled={disabled}>
-      {(label || note) && (
-        <Box>
-          {label && (
-            <Label error={error}>{`${label}${required ? "*" : ""}`}</Label>
-          )}
-          {note && <Note error={error}>{note}</Note>}
-        </Box>
+    <Wrapper disabled={disabled} {...props}>
+      {label && (
+        <Label error={error} active={isFocused && value !== ""} size={size}>{`${label}${required ? "*" : ""}`}</Label>
       )}
-      {/* the InputField wrapper is necessary for including icons and buttons */}
-      <InputField
-        id={id}
+      {/* the InputContainer wrapper is necessary for including icons and buttons */}
+      <InputContainer
+        name={name}
         focus={isFocused}
-        icon={isSearch && !icon}
+        icon={leadingIconState}
         onFocusCapture={() => setIsFocused((prevState) => !prevState)}
         onBlurCapture={() => setIsFocused((prevState) => !prevState)}
         onBlur={(event) => onBlur && typeof onBlur === "function" ? onBlur(event) : null}
+        size={size || 'lg'}
+        type={type}
+        htmlFor={name}
       >
-        {isSearch && !icon && <Icon icon={<Search />} />}
-        {icon && <Box position="relative" marginLeft="-7px" width="28px"><Button variant="tertiary" size="small" icon={icon} onClick={iconClick} /></Box>}
-        <TextField
+        {/* {label && (
+          <Label error={error} size={size} icon={!!leadingIconState} active={isFocused || value !== ""}>{`${label}${required ? "*" : ""}`}</Label>
+        )} */}
+        {leadingIconState &&
+          <LeadingIconWrapper {...iconWrapperProps(leadingIconClickState)} title={leadingIconLabelState} >
+            <Icon icon={leadingIconState} style={{ pointerEvents: "none" }} />
+          </LeadingIconWrapper>
+        }
+        <InputField
           id={name}
-          type={isPassword ? "password" : isSearch ? "search" : "text"}
-          placeholder={placeholder || `${isSearch ? "Search" : ""}`}
+          type={fieldType()}
+          placeholder={placeholderState}
           disabled={disabled}
-          rows={Math.max(rows, 2)}
+          rows={(type === "textarea" && Math.max(rows, 2)) || null}
           value={value || ""}
-          // onChange={(e: React.FormEvent<HTMLInputElement>) => {
-          //   setValue(e.currentTarget.value);
-          //   receiveValue(e.currentTarget.value);
-          // }}
           onClick={onClick}
           onChange={handleChange}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") onSubmit(value)
+          }}
           ref={inputRef}
           as={type === "textarea" ? "textarea" : "input"}
+          autocomplete={autocomplete}
         />
-        {isSearch && value && (
-          <TertiaryButton
-            onClick={() => setSearchTerm("")}
-            iconLeft={<Icon icon={<Plus transform="rotate(45deg)" />} />}
-          // onClick={() => {
-          //   inputRef.current!.focus();
-          //   setValue("");
-          // }}
-          />
-        )}
-        {type === "password" && (
-          <TertiaryButton
-            onClick={() => setIsPassword((prevState) => !prevState)}
-            text={isPassword ? "Zeigen" : "Verstecken"}
-            color={theme.colors.primary.primary140}
-            variant="semibold"
-          />
-        )}
-      </InputField>
-    </Wrapper>
+        {trailingIconState &&
+          <TrailingIconWrapper {...iconWrapperProps(trailingIconClickState)} title={trailingIconLabelState}>
+            <Icon icon={trailingIconState} color={error && theme.colors.signal.redDark} style={{ pointerEvents: "none" }} />
+          </TrailingIconWrapper>
+        }
+      </InputContainer>
+      {note && <Note error={error} size={size}>{note}</Note>}
+    </Wrapper >
   );
 };
 

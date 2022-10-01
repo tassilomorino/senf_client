@@ -14,7 +14,6 @@ const DotLoaderTemplate: Story<LoaderProps> = (args) => <Loader {...args} />;
 
 export const DotLoaderAnimation = DotLoaderTemplate.bind({});
 DotLoaderAnimation.args = {
-  loading: true,
   width: "200px",
   height: "200px",
 };
@@ -25,7 +24,6 @@ const MainLoaderTemplate: Story<LoaderProps> = (args) => (
 
 export const MainLoaderAnimation = MainLoaderTemplate.bind({});
 MainLoaderAnimation.args = {
-  loading: true,
   width: "200px",
   height: "200px",
 };

@@ -1,9 +1,15 @@
 /** @format */
 
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Trans, useTranslation } from "react-i18next";
+
+import { useFormik } from "formik";
+import * as yup from "yup";
+
 import Button from "../../atoms/buttons/Button";
+import Input from "../../atoms/inputs/Input";
+import Form from "../../molecules/form/Form";
 import Box from "../../atoms/box/Box";
 import { AuthOptionsProps } from "./AuthOptions.types";
 
@@ -13,16 +19,52 @@ import Mail from "../../../assets/icons/Mail";
 import Google from "../../../assets/icons/Google";
 import Apple from "../../../assets/icons/Apple";
 import Facebook from "../../../assets/icons/Facebook";
+import Arrow from "../../../assets/icons/Arrow";
+
+import theme from "../../../styles/theme";
+import { useModals } from "../../molecules/modalStack/ModalProvider";
+
+const Divider = styled.div`
+  padding-block: 1rem;
+  margin-bottom: 1rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: ${({theme}) => theme.colors.black.black60tra};
+  &:before, &:after {
+    content: "";
+    height: ${({theme}) => `${theme.borderWidths[1]}px`};
+    width: 100%;
+    background: currentColor;
+    opacity: 0.5;
+  }
+`
 
 const AuthOptions: FC<AuthOptionsProps> = ({
-  handleGoogleSignIn,
-  googleLoading,
-  handleFacebookSignIn,
-  facebookLoading,
+  authHandler,
   setPage,
+  errorMessage,
+  formikStore
 }) => {
   const { t } = useTranslation();
-
+  const { closeModal } = useModals();
+  const submitEmail = async () => {
+    try {
+      const response = await authHandler.userExists(formikStore)
+      if (response.userId) {
+        return closeModal()
+      }
+      if (response.length && response.includes("password")) {
+        setPage("authEmail")
+      } else {
+        setPage("authEmailRegister")
+      }
+      return response
+    } catch (error) {
+      throw new Error("error")
+    }
+  }
   return (
     <Box
       flexDirection="column"
@@ -45,30 +87,53 @@ const AuthOptions: FC<AuthOptionsProps> = ({
       <Box gap="16px" flexDirection="column">
         <Button
           variant="white"
-          fillWidth="max"
+          width="max"
           text="Mit Google anmelden"
           icon={<Google />}
-          loading={googleLoading}
-          onClick={handleGoogleSignIn}
+          loading={!!authHandler?.loading.google}
+          onClick={authHandler?.signIn.google}
         />
 
         <Button
           variant="white"
-          fillWidth="max"
+          width="max"
           text="Mit Facebook anmelden"
-          loading={facebookLoading}
+          loading={!!authHandler?.loading.facebook}
           icon={<Facebook />}
-          onClick={handleFacebookSignIn}
+          onClick={authHandler?.signIn.facebook}
         />
-
-        <Button
-          variant="white"
-          fillWidth="max"
-          text="Mit Email-Adresse anmelden"
-          onClick={() => setPage("authEmail")}
-          icon={<Mail />}
+        {errorMessage && (
+          <Typography variant="bodySm" color={theme.colors.signal.redDark}>
+            {errorMessage.message}
+          </Typography>
+        )}
+      </Box>
+      <Divider>oder</Divider>
+      <Box gap="16px" flexDirection="column">
+        <Input
+          name="email"
+          type="email"
+          placeholder="E-Mail"
+          onChange={formikStore?.handleChange}
+          onBlur={formikStore?.handleBlur}
+          value={formikStore?.values.email}
+          error={formikStore?.touched.email && Boolean(formikStore?.errors.email)}
+          leadingIcon="Mail"
+          trailingIcon={formikStore.isValid ? authHandler.loading.email ? "Loading" : <Arrow /> : undefined}
+          trailingIconLabel={t("next")}
+          onSubmit={submitEmail}
+          trailingIconClick={submitEmail}
+        />
+        <Input
+          name="password"
+          type="password"
+          hidden={true}
+          onChange={formikStore?.handleChange}
+          onBlur={formikStore?.handleBlur}
+          value={formikStore?.values.password}
         />
       </Box>
+
 
       <Box margin="24px 0px">
         <Typography variant="bodySm">
@@ -173,7 +238,7 @@ const AuthOptions: FC<AuthOptionsProps> = ({
         </Box> */}
       {/* <Button
           variant="white"
-          fillWidth="max"
+          width="max"
           text="Anmelden"
           loading={loading}
           onClick={

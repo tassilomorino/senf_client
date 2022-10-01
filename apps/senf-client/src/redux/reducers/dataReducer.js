@@ -22,7 +22,6 @@ import {
   STOP_LOADING_DATA,
   DELETE_SCREAM,
   SET_COMMENTS,
-  SET_COMMENT,
   DELETE_COMMENT,
   POST_SCREAM,
   EDIT_SCREAM,
@@ -36,8 +35,6 @@ import {
   SET_ORGANIZATIONS,
   SET_ORGANIZATION,
   LOADING_ORGANIZATION_DATA,
-  SET_SCREAM_USER,
-  SET_FULL_SCREAMS,
   SET_COOKIES,
   SET_MAP_LOADED,
   SET_MAP_VIEWPORT,
@@ -47,6 +44,8 @@ import {
   SET_TOPICS,
   SET_ORGANIZATION_TYPES,
   LOADING_PROJECTROOM_DATA,
+  SET_PROFILE_PAGE,
+  RESET_PROFILE_PAGE,
 } from "../types";
 
 const defaultTopics = [
@@ -91,16 +90,15 @@ const initialState = {
   organizations: [],
   screams: [],
   scream: {},
-  project: {},
-  comment: {},
-  like: {},
+  project: { screams: [] },
   loading: true,
   loadingProjects: true,
   loadingOrganizations: true,
   loadingOrganization: false,
   loadingProjectRoom: false,
-  scream_user: {},
-  full_screams: [],
+  profilePage: {
+    profilePageData: {},
+  },
   cookie_settings: "",
   mapLoaded: false,
   mapViewport: null,
@@ -156,10 +154,23 @@ export default function (state = initialState, action) {
         scream: action.payload,
       };
 
-    case SET_SCREAM_USER:
+    case SET_PROFILE_PAGE:
       return {
         ...state,
-        scream_user: action.payload,
+        profilePage: {
+          ...state.profilePage,
+          profilePageData: {
+            ...state.profilePage.profilePageData,
+            ...action.payload,
+          },
+        },
+      };
+    case RESET_PROFILE_PAGE:
+      return {
+        ...state,
+        profilePage: {
+          ...action.payload,
+        },
       };
 
     case LIKE_SCREAM:
@@ -186,6 +197,24 @@ export default function (state = initialState, action) {
               ],
             }
           : state.project,
+        profilePage: state.profilePage?.profilePageData?.screams
+          ? {
+              ...state.profilePage,
+              profilePageData: {
+                ...state.profilePage.profilePageData,
+                screams: [
+                  ...state.profilePage.profilePageData.screams.map((scream) =>
+                    scream.screamId === action.payload.screamId
+                      ? {
+                          ...scream,
+                          likeCount: scream.likeCount + 1,
+                        }
+                      : scream
+                  ),
+                ],
+              },
+            }
+          : state.profilePage,
       };
     case UNLIKE_SCREAM:
       return {
@@ -211,6 +240,24 @@ export default function (state = initialState, action) {
               ],
             }
           : state.project,
+        profilePage: state.profilePage?.profilePageData?.screams
+          ? {
+              ...state.profilePage,
+              profilePageData: {
+                ...state.profilePage.profilePageData,
+                screams: [
+                  ...state.profilePage.profilePageData.screams.map((scream) =>
+                    scream.screamId === action.payload.screamId
+                      ? {
+                          ...scream,
+                          likeCount: scream.likeCount - 1,
+                        }
+                      : scream
+                  ),
+                ],
+              },
+            }
+          : state.profilePage,
       };
     case DELETE_SCREAM:
       return {
@@ -218,12 +265,14 @@ export default function (state = initialState, action) {
         screams: state.screams.filter(
           (scream) => scream.screamId !== action.payload
         ),
-        project: {
-          ...state.project,
-          screams: state.project?.screams?.filter(
-            (scream) => scream.screamId !== action.payload
-          ),
-        },
+        project: state.project?.screams
+          ? {
+              ...state?.project,
+              screams: state?.project?.screams?.filter(
+                (scream) => scream.screamId !== action.payload
+              ),
+            }
+          : state.project,
       };
 
     case SET_COMMENTS:
@@ -234,37 +283,6 @@ export default function (state = initialState, action) {
           ...state.scream,
           comments: action.payload,
         },
-      };
-    case SET_COMMENT:
-      return {
-        ...state,
-        comment: action.payload,
-      };
-
-    case DELETE_COMMENT:
-      const listComments = state.scream.comments.filter(
-        (comment) => comment.commentId !== action.payload
-      );
-      const screamComments = state.scream.comments.filter(
-        (comment) => comment.commentId !== action.payload
-      );
-
-      return {
-        ...state,
-        scream: {
-          ...state.scream,
-          comments: listComments,
-          commentCount: state.scream.commentCount - 1,
-        },
-        screams: state.screams.map((scream) =>
-          scream.screamId === state.scream.screamId
-            ? {
-                ...scream,
-                comments: screamComments,
-                commentCount: scream.commentCount - 1,
-              }
-            : scream
-        ),
       };
 
     case POST_SCREAM:
@@ -281,46 +299,58 @@ export default function (state = initialState, action) {
       const indexInDataScreams = state.screams?.findIndex(
         (scream) => scream.screamId === action.payload.screamId
       );
-
       const indexInDataProjectScreams = state.project?.screams?.findIndex(
         (scream) => scream.screamId === action.payload.screamId
       );
-      if (
-        state.scream &&
-        state.screams &&
-        indexInDataScream !== -1 &&
-        indexInDataScreams !== -1
-      ) {
-        const screamsCopy = [...state.screams];
+      const indexInProfilePage =
+        state.profilePage.profilePageData?.screams?.findIndex(
+          (scream) => scream.screamId === action.payload.screamId
+        );
+
+      const screamsCopy = [...state.screams];
+      if (indexInDataScreams !== -1) {
         screamsCopy[indexInDataScreams] = {
           ...screamsCopy[indexInDataScreams],
           ...action.payload,
         };
-        if (state.project?.screams && indexInDataProjectScreams !== -1) {
-          // if the scream is in the projectroom, update it
-          const projectScreamsCopy = [...state.project.screams];
-          projectScreamsCopy[indexInDataProjectScreams] = {
-            ...projectScreamsCopy[indexInDataProjectScreams],
-            ...action.payload,
-          };
-          return {
-            ...state,
-            screams: screamsCopy,
-            scream: { ...state.scream, ...action.payload },
-            project: {
-              ...state.project,
-              screams: projectScreamsCopy,
-            },
-          };
-        }
-        // if the scream is not in the projectroom, update it
-        return {
-          ...state,
-          screams: screamsCopy,
-          scream: { ...state.scream, ...action.payload },
+      }
+
+      const projectScreamsCopy = state.project?.screams
+        ? [...state.project.screams]
+        : [];
+      if (indexInDataProjectScreams !== -1) {
+        projectScreamsCopy[indexInDataProjectScreams] = {
+          ...projectScreamsCopy[indexInDataProjectScreams],
+          ...action.payload,
         };
       }
-      return { ...state };
+
+      const profilePageScreamsCopy = state.profilePage.profilePageData?.screams
+        ? [...state.profilePage.profilePageData.screams]
+        : [];
+
+      if (indexInProfilePage !== -1) {
+        profilePageScreamsCopy[indexInProfilePage] = {
+          ...profilePageScreamsCopy[indexInProfilePage],
+          ...action.payload,
+        };
+      }
+      return {
+        ...state,
+        screams: screamsCopy,
+        scream: { ...state.scream, ...action.payload },
+        project: {
+          ...state.project,
+          screams: projectScreamsCopy,
+        },
+        profilePage: {
+          ...state.profilePage,
+          profilePageData: {
+            ...state.profilePage.profilePageData,
+            screams: profilePageScreamsCopy,
+          },
+        },
+      };
 
     case SUBMIT_COMMENT:
       return {
@@ -340,8 +370,77 @@ export default function (state = initialState, action) {
           commentCount: state.scream.commentCount + 1,
           comments: [action.payload, ...state.scream.comments],
         },
-      };
+        profilePage: state.profilePage?.profilePageData?.screams
+          ? {
+              ...state.profilePage,
+              profilePageData: {
+                ...state.profilePage.profilePageData,
+                screams: [
+                  ...state.profilePage.profilePageData.screams.map((scream) =>
+                    scream.screamId === action.payload.screamId
+                      ? {
+                          ...scream,
+                          /*   comments: [action.payload, ...state.scream.comments],
 
+                        right now profilePageData.screams does not have array of comments,
+                        maybe it has to be added ? */
+
+                          commentCount: scream.commentCount + 1,
+                        }
+                      : scream
+                  ),
+                ],
+              },
+            }
+          : state.profilePage,
+      };
+    case DELETE_COMMENT:
+      const listComments = state.scream.comments.filter(
+        (comment) => comment.commentId !== action.payload
+      );
+      const filteredScreamComments = state.scream.comments.filter(
+        (comment) => comment.commentId !== action.payload
+      );
+
+      return {
+        ...state,
+        scream: {
+          ...state.scream,
+          comments: listComments,
+          commentCount: state.scream.commentCount - 1,
+        },
+        screams: state.screams.map((scream) =>
+          scream.screamId === state.scream.screamId
+            ? {
+                ...scream,
+                comments: filteredScreamComments,
+                commentCount: scream.commentCount - 1,
+              }
+            : scream
+        ),
+        profilePage: state.profilePage.profilePageData.screams
+          ? {
+              ...state.profilePage,
+              profilePageData: {
+                ...state.profilePage.profilePageData,
+                screams: [
+                  ...state.profilePage.profilePageData.screams.map((scream) =>
+                    scream.screamId === state.scream.screamId
+                      ? {
+                          ...scream,
+                          /*      comments: filteredScreamComments,
+
+                        right now profilePageData.screams does not have array of comments,
+                        maybe it has to be added ? */
+                          commentCount: scream.commentCount - 1,
+                        }
+                      : scream
+                  ),
+                ],
+              },
+            }
+          : state.profilePage,
+      };
     case LOADING_PROJECTS_DATA:
       return {
         ...state,
@@ -382,12 +481,6 @@ export default function (state = initialState, action) {
         ...state,
         organization: action.payload,
         loadingOrganization: false,
-      };
-    case SET_FULL_SCREAMS:
-      return {
-        ...state,
-        full_screams: action.payload,
-        loading: false,
       };
 
     case SET_COOKIES:

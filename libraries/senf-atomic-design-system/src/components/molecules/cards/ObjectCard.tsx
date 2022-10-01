@@ -28,7 +28,6 @@ const Wrapper = styled.div<ObjectCardProps>`
 
   @media (min-width: 768px) {
     transition: 0.3s;
-    margin: 16px 8px 0px 8px;
 
     &:hover {
       transform: scale(103%);
@@ -36,9 +35,9 @@ const Wrapper = styled.div<ObjectCardProps>`
     }
   }
 
-  @media (max-width: 768px) {
+  /* @media (max-width: 768px) {
     width: calc(50% - 15px);
-  }
+  } */
 `;
 
 const LogoWrapper = styled.div<ObjectCardProps>`
@@ -139,22 +138,22 @@ const Title = styled.div`
 // `;
 
 const ObjectCard: FC<ObjectCardProps> = ({ data, handleButtonOpenCard }) => {
-  const { title, imgUrl, objectId } = data;
+
   return (
     <Wrapper
-      onClick={(event) => handleButtonOpenCard(event, "objectCard", data)}
+      onClick={() => handleButtonOpenCard(data)}
     >
       <LogoWrapper>
         <Thumbnail
           img={
-            imgUrl
+            data?.imgURL
             // ? img : placeHodlerImage && NoImage
           }
         />
       </LogoWrapper>
 
       <Title>
-        <Typography variant="bodyBg">{title}</Typography>
+        <Typography variant="bodyBg">{data?.title}</Typography>
       </Title>
     </Wrapper>
   );

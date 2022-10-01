@@ -1,12 +1,10 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
-import { auth, db } from "../firebase";
+import { Link, useNavigate } from "react-router-dom";
 import { signOut } from "@firebase/auth";
 import { updateDoc, doc } from "firebase/firestore";
-import { AuthContext } from "../context/auth";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Typography, TertiaryButton, Icon } from "senf-atomic-design-system";
+import { Stadtverwaltung, Typography, TertiaryButton, Icon } from "senf-atomic-design-system";
+import { auth, db } from "../firebase";
 
 const Nav = styled.nav`
   position: sticky;
@@ -26,7 +24,7 @@ const Navbar = ({ currentWorkspace }) => {
     <Nav>
       <Typography variant="h3">{currentWorkspace}</Typography>
       <TertiaryButton
-        iconLeft="Verwaltung"
+        iconLeft={<Stadtverwaltung />}
         onClick={() => console.log("settings")}
       />
     </Nav>

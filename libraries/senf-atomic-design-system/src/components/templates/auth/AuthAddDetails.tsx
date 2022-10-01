@@ -32,14 +32,8 @@ const ImageWrapper = styled.label`
   cursor: pointer;
 `;
 
-const AuthAddDetails: FC<AuthAddDetailsProps> = ({
-  user,
-  handleSubmitEditDetails,
-  handleImageUpload,
-  uploadingImage,
-}) => {
+const AuthAddDetails: FC<AuthAddDetailsProps> = ({ user, authHandler }) => {
   const { t } = useTranslation();
-
 
   const addDetailsValidationSchema = yup.object({
     handle: yup
@@ -52,15 +46,14 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
     description: yup
       .string()
       .min(10, t("description_too_short"))
-      .max(100, t("description_too_long"))
-
+      .max(100, t("description_too_long")),
   });
 
   const formik = useFormik({
     initialValues: {
       handle: "",
       description: "",
-      zipcode: "",
+      postcode: "",
       age: "",
       sex: "",
     },
@@ -70,23 +63,17 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
     validateOnBlur: true,
   });
 
-
-
   useEffect(() => {
     // Set up canvas
-    formik.setFieldValue("handle", user?.handle)
-    formik.setFieldValue("description", user?.description)
-    formik.setFieldValue("zipcode", user?.zipcode)
-    formik.setFieldValue("age", user?.age)
-    formik.setFieldValue("sex", user?.sex)
-
+    formik.setFieldValue("handle", user?.handle);
+    formik.setFieldValue("description", user?.description);
+    formik.setFieldValue("postcode", user?.postcode);
+    formik.setFieldValue("age", user?.age);
+    formik.setFieldValue("sex", user?.sex);
 
     // if (data.contact) {
     //   formik.setFieldValue("contact", data.contact);
     // }
-
-
-
   }, [user]);
 
   function generateArrayOfYears() {
@@ -102,6 +89,8 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
 
   const years = generateArrayOfYears();
 
+  const [image, setImage] = useState(user?.photoURL);
+
   return (
     <Box
       flexDirection="column"
@@ -109,30 +98,41 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
       position="relative"
       zIndex={9999}
     >
-      <Typography variant="h1" style={{ position: "relative" }}>
+      <Typography
+        variant="h1"
+        style={{ position: "relative" }}
+      >
         {/* {t("auth_add_details_header1")} */}
         Vervollständige
       </Typography>
-      <Typography variant="h1" style={{ position: "relative" }}>
+      <Typography
+        variant="h1"
+        style={{ position: "relative" }}
+      >
         dein Profil
         {/* {t("auth_add_details_header2")} */}
       </Typography>
 
-      <Box margin="25px 0px 24px 0px" flexDirection="column" gap="10px">
-        <Box justifyContent="center" margin="20px">
+      <Box
+        margin="25px 0px 24px 0px"
+        flexDirection="column"
+        gap="10px"
+      >
+        <Box
+          justifyContent="center"
+          margin="20px"
+        >
           <ImageWrapper
             // onMouseEnter={() => setUploadImageHover(true)}
             // onMouseLeave={() => setUploadImageHover(false)}
             htmlFor="imageUploader"
           >
-            {user?.photoURL ? (
+            {image ? (
               <ImagePlaceholder
-                img={user?.photoURL}
-                borderRadius="18px"
-                height="calc(100% - 40px)"
-                width="calc(100% - 40px)"
+                img={image}
+                borderRadius="18"
               />
-            ) : uploadingImage ? (
+            ) : authHandler.authLoading ? (
               <Loader />
             ) : (
               <Icon icon={<Bulb />} />
@@ -140,14 +140,12 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
           </ImageWrapper>
           <input
             type="file"
-            onChange={(event) => handleImageUpload(event)}
+            onChange={(e) => authHandler.handleImageUpload(e).then(setImage)}
             style={{ display: "none" }}
             id="imageUploader"
           />
         </Box>
         <Input
-          key="handle"
-          id="handle"
           name="handle"
           type="text"
           placeholder={t("username")}
@@ -156,8 +154,6 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
         />
 
         <Input
-          key="description"
-          id="description"
           name="description"
           type="textarea"
           rows={3}
@@ -166,18 +162,14 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
           value={formik?.values.description}
         />
         <Input
-          key="zipcode"
-          id="zipcode"
-          name="zipcode"
+          name="postcode"
           type="text"
-          placeholder={t("zipcode")}
+          placeholder={t("postcode")}
           onChange={formik?.handleChange}
-          value={formik?.values.zipcode}
+          value={formik?.values.postcode}
         />
         <Box gap="8px">
           <Dropdown
-            key="sex"
-            id="sex"
             name="sex"
             listItems={[
               {
@@ -197,8 +189,6 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
             value={formik?.values.sex}
           />
           <Dropdown
-            key="age"
-            id="age"
             name="age"
             listItems={years}
             onChange={formik?.handleChange}
@@ -206,7 +196,11 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
           />
         </Box>
         <br />
-        <Button variant="white" onClick={() => handleSubmitEditDetails(formik)}>
+        <Button
+          variant="white"
+          onClick={() => authHandler.submitEditDetails(formik)}
+          loading={authHandler.loadingAuth === "edit"}
+        >
           {t("save")}
         </Button>
       </Box>

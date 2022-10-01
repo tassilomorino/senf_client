@@ -4,16 +4,8 @@ import ReactDOM from "react-dom";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { doc, deleteDoc } from "firebase/firestore";
-import {
-  More,
-  Delete,
-  Plus,
-  Box,
-  Button,
-  Modal,
-  ContentDropdown,
-  RoundedButton,
-} from "senf-atomic-design-system";
+import { Box } from "senf-atomic-design-system";
+import DropdownButton from "senf-atomic-design-system/src/components/atoms/contentDropdown/DropdownButton";
 import { db } from "../../../firebase";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { StyledH2 } from "../../../styles/GlobalStyle";
@@ -214,42 +206,25 @@ const TopNavigation = ({
           //   width="100%"
           //   alt="project-thumbnail"
           // />
-          <ContentDropdown
-            open={settingsOpen}
-            setOpen={setSettingsOpen}
-            direction={"downRight"}
-            OpenButton={
-              <RoundedButton
-                variant="white"
-                size="small"
-                onClick={() => setSettingsOpen(!settingsOpen)}
-                icon={<More />}
-              />
-            }
-            Content={
-              <Box gap="5px" flexDirection="column">
-                <Button
-                  variant={"secondary"}
-                  size="small"
-                  text={t("restart")}
-                  justifyContent="flex-start"
-                  onClick={handleRestart}
-                // icon={<Edit />}
-                />
-                <Button
-                  variant={"secondary"}
-                  size="small"
-                  text={
-                    type === "projectRoom"
-                      ? "Projektraum löschen"
-                      : "Organisation löschen"
-                  }
-                  justifyContent="flex-start"
-                  onClick={handleDelete}
-                  icon={<Delete />}
-                />
-              </Box>
-            }
+          <DropdownButton
+            variant="white"
+            icon="More"
+            width="height"
+            data={[
+              {
+                onClick: handleRestart,
+                text: t("restart"),
+                leadingIcon: "Edit",
+              },
+              {
+                onClick: handleDelete,
+                text:
+                  type === "projectRoom"
+                    ? "Projektraum löschen"
+                    : "Organisation löschen",
+                leadingIcon: "Delete",
+              },
+            ]}
           />
         )}
         {/* <ProgressLine>
@@ -270,8 +245,6 @@ const TopNavigation = ({
         </TitlesWrapper>
 
         <div />
-
-
       </Box>
       <SVGWrapper>
         {isMobileCustom ? (
