@@ -32,26 +32,25 @@ import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
 
 const contactData = [
   {
-    description: "Deine Kontaktdaten werden öffentlich gezeigt.",
+    description: "postidea_form_contact_description",
     name: "contactTitle",
-    placeholder: "contactTitle",
+    placeholder: "postidea_form_contact_title",
   },
   {
     name: "contact",
-    placeholder: "contact",
+    placeholder: "postidea_form_contact",
   },
 ];
 
 const webLinkData = [
   {
-    description:
-      "Du kannst deinem Link einen eigenen Titel geben. Wenn du möchtest dass die URL angezeigt wird, lasse das Feld einfach frei.",
+    description: "postidea_form_weblink_description",
     name: "weblinkTitle",
-    placeholder: "weblinkTitle",
+    placeholder: "postidea_form_weblink_title",
   },
   {
     name: "weblink",
-    placeholder: "weblink",
+    placeholder: "postidea_form_weblink",
   },
 ];
 
@@ -165,13 +164,13 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
             variant="secondary"
             size="small"
             width="max"
-            text={formik?.values.contactTitle || t("add_contact")}
+            text={formik?.values.contactTitle || t("postidea_form_add_contact")}
             icon={<Mail />}
             options={{
               style: {
                 padding: 20,
               },
-              title: t("add_contact"),
+              title: t("postidea_form_add_contact"),
               cancelText: t("cancel"),
               submitText: t("save"),
               onSubmit: closeModal,
