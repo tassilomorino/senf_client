@@ -202,14 +202,15 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
           }
           justifyContent="flex-start"
           width="max"
-          text={formik?.values.topic || "Kategorie wählen"}
+          text={formik?.values.topicLabel || t("choose_category")}
           options={{ size: "md", closeOnSelect: true, modal: !!isMobile }}
           data={OptionsTopics().map(({ value, label }) => {
             return {
-              text: value,
+              text: label,
               leadingIcon: <Dot color={setColorByTopic(value)} />,
               onClick: () => {
                 formik?.setFieldValue("topic", value);
+                formik?.setFieldValue("topicLabel", label);
               },
             };
           })}
