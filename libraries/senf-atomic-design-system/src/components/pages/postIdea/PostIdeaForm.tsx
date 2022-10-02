@@ -84,14 +84,14 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
         flexDirection="column"
       >
         {!isMobile && (
-          <Typography variant="bodySm">Adresse deiner Idee</Typography>
+          <Typography variant="bodySm">{t("postidea_form_address")}</Typography>
         )}
         {isMobile && (
           <Typography
             variant="buttonBg"
             textAlign="center"
           >
-            Idee verfassen
+            {t("postidea_form_compose")}
           </Typography>
         )}
         {!isMobile && (
@@ -190,7 +190,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
           variant="buttonBg"
           textAlign="left"
         >
-          Welche Kategorie passt zu deiner Idee?
+          {t("postidea_form_category")}
         </Typography>
         <DropdownButton
           variant="secondary"

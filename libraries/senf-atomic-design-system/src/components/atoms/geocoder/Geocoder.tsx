@@ -1,6 +1,7 @@
 import React, { Component, FC, useEffect, useState } from "react";
 import MapboxClient from "mapbox";
 import styled from "styled-components";
+import { useTranslation } from "react-i18next";
 import Input from "../inputs/Input";
 import { GeocoderProps } from "./Geocoder.types";
 import Divider from "../divider/Divider";
@@ -41,6 +42,7 @@ const Geocoder: FC<GeocoderProps> = ({
   const [showResults, setShowResults] = useState(false);
   const [results, setResults] = useState([]);
   const [detectLocationIcons, setDetectLocationIcons] = useState(false);
+  const { t } = useTranslation();
   useEffect(() => {
     const accessToken =
       "pk.eyJ1IjoiZGF0dHdvb2QxOTg2IiwiYSI6ImNraTI5cnAwcDByZHUycnBleWphMHR1dDcifQ.u7pG_sZ7Su685A11r6-uuw";
@@ -131,7 +133,7 @@ const Geocoder: FC<GeocoderProps> = ({
         leadingIconClick={() =>
           showResults ? setShowResults(false) : setShowResults(true)
         }
-        placeholder={"searchAddress"}
+        placeholder={t("geocoder_address")}
         trailingIcon={<Close />}
         trailingIconClick={
           searchTerm.length > 0
@@ -213,7 +215,7 @@ const Geocoder: FC<GeocoderProps> = ({
                         variant="bodyBg"
                         fontWeight={600}
                       >
-                        Standort verwenden
+                        {t("geocoder_detect_location")}
                       </Typography>
                     </Box>
                     <Divider />
@@ -242,7 +244,7 @@ const Geocoder: FC<GeocoderProps> = ({
                         variant="bodyBg"
                         fontWeight={600}
                       >
-                        Ort auf der Karte finden
+                        {t("geocoder_find_on_map")}
                       </Typography>
                     </Box>
                   </Box>

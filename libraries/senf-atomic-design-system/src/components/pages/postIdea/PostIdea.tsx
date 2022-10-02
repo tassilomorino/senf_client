@@ -73,7 +73,7 @@ const PostIdea: FC<PostIdeaProps> = ({
       width="100%"
       justifyContent="space-between"
     >
-      <Typography variant="h3">Idee erstellen</Typography>
+      <Typography variant="h3">{t("postidea_create_idea")}</Typography>
 
       <Button
         variant="tertiary"
@@ -93,10 +93,7 @@ const PostIdea: FC<PostIdeaProps> = ({
       width="100%"
       height="auto"
     >
-      <Typography variant="bodyBg">
-        Navigiere auf der Karte an den gewünschten Ort oder nutze die
-        Adresseingabe.
-      </Typography>
+      <Typography variant="bodyBg">{t("postidea_navigate")}</Typography>
       {!isMobile && (
         <Geocoder
           formik={formik}
