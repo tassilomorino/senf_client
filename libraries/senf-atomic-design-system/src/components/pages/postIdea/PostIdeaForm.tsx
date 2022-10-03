@@ -142,7 +142,11 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
             width="max"
             variant="secondary"
             size="small"
-            text={formik?.values.weblinkTitle || t("add_weblink")}
+            text={
+              formik?.values.weblinkTitle ||
+              formik?.values.weblink ||
+              t("add_weblink")
+            }
             icon={<Hyperlink />}
             options={{
               style: {
@@ -164,7 +168,11 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
             variant="secondary"
             size="small"
             width="max"
-            text={formik?.values.contactTitle || t("postidea_form_add_contact")}
+            text={
+              formik?.values.contactTitle ||
+              formik?.values.contact ||
+              t("postidea_form_add_contact")
+            }
             icon={<Mail />}
             options={{
               style: {
