@@ -60,6 +60,7 @@ const MenuSidebar: FC<MenuSidebarProps> = ({
   handleOpenMyAccount,
   setShowUI,
   setOrder,
+  setPostIdeaOpen,
 }) => (
   <Wrapper>
     <Box
@@ -74,7 +75,10 @@ const MenuSidebar: FC<MenuSidebarProps> = ({
           variant="white"
           size="medium"
           text={<SenfLogoSmall />}
-          onClick={() => setOrder(1)}
+          onClick={() => {
+            setOrder(1);
+            setPostIdeaOpen(false);
+          }}
         />
 
         {/* <Button variant="white" size="small" icon={<Bell />} /> */}
@@ -82,7 +86,7 @@ const MenuSidebar: FC<MenuSidebarProps> = ({
         <ModalButton variant="white"
           size="medium"
           icon={<Info />}
-          options={{ swipe: false, size: "xl", padding: 0, beforeOpen: () => setShowUI(false), beforeClose: () => setShowUI(true) }}>
+          options={{ swipe: false, size: "xl", padding: 0, beforeOpen: () => {setShowUI(false); setPostIdeaOpen(false)}, beforeClose: () => setShowUI(true) }}>
           <InfoPageMainApp />
         </ModalButton>
 
@@ -92,6 +96,7 @@ const MenuSidebar: FC<MenuSidebarProps> = ({
           size="medium"
           icon={<User />}
           onClick={() => {
+            setPostIdeaOpen(false);
             handleOpenMyAccount(true);
           }}
         />

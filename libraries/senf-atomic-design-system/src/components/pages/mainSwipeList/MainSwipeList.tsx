@@ -424,6 +424,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
             handleOpenMyAccount={handleOpenMyAccount}
             setShowUI={setShowUI}
             setOrder={setOrder}
+            setPostIdeaOpen={setPostIdeaOpen}
           />
         )}
         {!postIdeaOpen && (
