@@ -2,7 +2,7 @@
 
 import React, { FC, useRef, useEffect, useState } from "react";
 import styled from "styled-components";
-import lottie from 'lottie-web/build/player/lottie_light.min.js'
+import lottie from "lottie-web/build/player/lottie_light.min.js";
 import { MainLoaderProps } from "./MainLoader.types";
 import mainLoader from "../../../assets/lottieFiles/senf-Loader-v012.json";
 import Typography from "../typography/Typography";
@@ -52,9 +52,16 @@ const MainLoader: FC<MainLoaderProps> = () => {
         }}
       >
         {loading && (
-          <Box gap="30px" flexDirection="column" top="-100px">
+          <Box
+            gap="30px"
+            flexDirection="column"
+            top="-100px"
+          >
             <Box justifyContent="center">
-              <LogoText transform="scale(3)" color="white" />
+              <LogoText
+                transform="scale(3)"
+                color="white"
+              />
             </Box>
             <Typography
               variant="h2"

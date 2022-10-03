@@ -17,7 +17,10 @@ const Form = styled.form`
 const MessageForm = ({ handleSubmit, text, setText, setImg }) => {
   return (
     <Form>
-      <Button variant="secondary" icon={<Arrow transform="rotate(270deg)" />} >
+      <Button
+        variant="secondary"
+        icon={<Arrow transform="rotate(270deg)" />}
+      >
         <label htmlFor="img"></label>
       </Button>
       <input
@@ -37,7 +40,10 @@ const MessageForm = ({ handleSubmit, text, setText, setImg }) => {
         />
       </div>
 
-      <Button variant="primary" onClick={handleSubmit}>
+      <Button
+        variant="primary"
+        onClick={handleSubmit}
+      >
         Senden
       </Button>
     </Form>

@@ -119,16 +119,21 @@ const Auth: FC<AuthProps> = ({
 
   useEffect(() => {
     if (page === "authResetEmail") {
-      openModal((
-        <AuthResetEmail setPage={setPage} authHandler={authHandler} formikStore={formikStore} />
-      ), {
-        title: `${t("reset_header_1")} ${t("reset_header_2")}`,
-        description: t("reset_password"),
-        enterFrom: "right",
-        afterClose: () => setPage("authEmail"),
-      })
+      openModal(
+        <AuthResetEmail
+          setPage={setPage}
+          authHandler={authHandler}
+          formikStore={formikStore}
+        />,
+        {
+          title: `${t("reset_header_1")} ${t("reset_header_2")}`,
+          description: t("reset_password"),
+          enterFrom: "right",
+          afterClose: () => setPage("authEmail"),
+        }
+      );
     }
-  }, [page])
+  }, [page]);
 
   return (
     <Wrapper>

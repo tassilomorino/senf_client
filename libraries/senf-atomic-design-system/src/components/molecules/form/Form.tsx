@@ -22,7 +22,11 @@ const Form: FC<FormProps> = ({
   ...props
 }) => (
   <form>
-    <Wrapper margin={margin} maxWidth={maxWidth} {...props}>
+    <Wrapper
+      margin={margin}
+      maxWidth={maxWidth}
+      {...props}
+    >
       {inputItems?.map((itemProps) => (
         <Input
           key={itemProps.name}
@@ -32,8 +36,13 @@ const Form: FC<FormProps> = ({
           onChange={formik?.handleChange}
           onBlur={formik?.handleBlur}
           value={formik?.values[itemProps.name]}
-          error={formik?.touched[itemProps.name] && Boolean(formik?.errors[itemProps.name])}
-          note={formik?.touched[itemProps.name] && formik?.errors[itemProps.name]}
+          error={
+            formik?.touched[itemProps.name] &&
+            Boolean(formik?.errors[itemProps.name])
+          }
+          note={
+            formik?.touched[itemProps.name] && formik?.errors[itemProps.name]
+          }
         />
       ))}
     </Wrapper>

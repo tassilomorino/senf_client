@@ -178,7 +178,10 @@ const CreateProjectPagePreview = ({
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH2 fontWeight="900" textAlign="center">
+          <StyledH2
+            fontWeight="900"
+            textAlign="center"
+          >
             {pagesData[index].subTitle}
           </StyledH2>
           <ListItemsEdit

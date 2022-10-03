@@ -3,7 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { signOut } from "@firebase/auth";
 import { updateDoc, doc } from "firebase/firestore";
 import styled from "styled-components";
-import { Stadtverwaltung, Typography, TertiaryButton, Icon } from "senf-atomic-design-system";
+import {
+  Stadtverwaltung,
+  Typography,
+  TertiaryButton,
+  Icon,
+} from "senf-atomic-design-system";
 import { auth, db } from "../firebase";
 
 const Nav = styled.nav`

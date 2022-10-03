@@ -100,7 +100,10 @@ const TertiaryButton: FC<TertiaryButtonProps> = ({
       )}
 
       {iconRight && (
-        <IconWrapperRight text={text} iconLeft={iconLeft}>
+        <IconWrapperRight
+          text={text}
+          iconLeft={iconLeft}
+        >
           <Icon
             icon={iconRight}
             transform={

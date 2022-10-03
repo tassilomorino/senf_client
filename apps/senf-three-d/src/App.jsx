@@ -2,7 +2,11 @@
 import React, { useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import {
-  theme, GlobalStyle, ModalProvider, Typography, Loader
+  theme,
+  GlobalStyle,
+  ModalProvider,
+  Typography,
+  Loader,
 } from "senf-atomic-design-system";
 import { AuthProvider } from "senf-shared";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -16,7 +20,7 @@ const BodyWrapper = styled.div`
   width: 100vw;
   height: 100vh;
   overflow: scroll;
-`
+`;
 
 const LoaderWrapper = styled.div`
   position: absolute;
@@ -30,8 +34,7 @@ const LoaderWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  
-`
+`;
 
 const App = () => {
   const [loadingModel, setLoadingModel] = useState(false);
@@ -43,19 +46,27 @@ const App = () => {
           <AuthProvider>
             <ModalProvider>
               <GlobalStyle />
-              {loadingModel &&
+              {loadingModel && (
                 <LoaderWrapper>
-                  <Loader width="100px" height="100px" /><Typography variant="h3" textAlign="center">
-                    Loading Model...</Typography>
-                </LoaderWrapper>}
+                  <Loader
+                    width="100px"
+                    height="100px"
+                  />
+                  <Typography
+                    variant="h3"
+                    textAlign="center"
+                  >
+                    Loading Model...
+                  </Typography>
+                </LoaderWrapper>
+              )}
               <Home setLoadingModel={setLoadingModel} />
             </ModalProvider>
           </AuthProvider>
         </Router>
       </ThemeProvider>
     </BodyWrapper>
-
   );
-}
+};
 
 export default App;

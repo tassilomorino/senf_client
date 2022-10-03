@@ -46,13 +46,12 @@ const Wrapper = styled.div<BoxProps>`
   transition: ${({ transition }) => transition || undefined};
 `;
 
-const Box: FC<BoxProps> = ({
-  children,
-  onClick,
-  ...props
-}) => {
+const Box: FC<BoxProps> = ({ children, onClick, ...props }) => {
   return (
-    <Wrapper {...props} onClick={onClick}>
+    <Wrapper
+      {...props}
+      onClick={onClick}
+    >
       {children}
     </Wrapper>
   );

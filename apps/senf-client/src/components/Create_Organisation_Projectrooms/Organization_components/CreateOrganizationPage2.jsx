@@ -20,8 +20,6 @@ import {
 import Navigation from "../Components/Navigation";
 import { StyledH3 } from "../../../styles/GlobalStyle";
 
-
-
 const CreateOrganizationPage2 = ({
   onClickNext,
   onClickPrev,
@@ -31,7 +29,6 @@ const CreateOrganizationPage2 = ({
 }) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
-
 
   const createProjectValidationSchema = yup.object({
     title: yup
@@ -93,9 +90,6 @@ const CreateOrganizationPage2 = ({
     fetchData();
   }, []);
 
-
-
-
   const handleNext = async () => {
     setNextClicked(true);
 
@@ -133,11 +127,17 @@ const CreateOrganizationPage2 = ({
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH3 textAlign="center" margin="20px">
+          <StyledH3
+            textAlign="center"
+            margin="20px"
+          >
             {pagesData[index].subTitle}
           </StyledH3>
 
-          <Box flexDirection="column" gap="20px">
+          <Box
+            flexDirection="column"
+            gap="20px"
+          >
             <Input
               name="contact"
               type="text"

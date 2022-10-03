@@ -20,7 +20,7 @@ const BodyWrapper = styled.div`
   width: 100vw;
   height: 100vh;
   overflow: scroll;
-`
+`;
 const App = () => {
   const [squestion, setSquestion] = useState([]);
 
@@ -35,28 +35,41 @@ const App = () => {
               {import.meta.env.VITE_NO_CRAWL && (
                 /* disable google crawling for senf-client-test.netlify.app */
                 <Helmet>
-                  <meta name="robots" content="noindex" />
+                  <meta
+                    name="robots"
+                    content="noindex"
+                  />
                 </Helmet>
               )}
 
               <React.Suspense fallback={<div>Loading...</div>}>
                 <Routes>
-
-                  <Route exact path="/" element={<Dashboard />} />
+                  <Route
+                    exact
+                    path="/"
+                    element={<Dashboard />}
+                  />
                   {/* <Route
                   exact
                   path="invitation/:invitationDocId"
                   element={<AcceptInvitation />}
                 /> */}
-                  <Route exact path="invitation" element={<TakeSurvey />} />
-                  <Route path="*" element={<PageNotFound />} />
+                  <Route
+                    exact
+                    path="invitation"
+                    element={<TakeSurvey />}
+                  />
+                  <Route
+                    path="*"
+                    element={<PageNotFound />}
+                  />
                 </Routes>
               </React.Suspense>
             </ModalProvider>
           </AuthProvider>
         </Router>
       </ThemeProvider>
-    </BodyWrapper >
+    </BodyWrapper>
   );
 };
 

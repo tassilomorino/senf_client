@@ -58,7 +58,13 @@ const MessagesContainer = ({
       <CurrentMessageContainer>
         <Messages>
           {msgs.length
-            ? msgs.map((msg, i) => <Message key={i} msg={msg} user1={user1} />)
+            ? msgs.map((msg, i) => (
+                <Message
+                  key={i}
+                  msg={msg}
+                  user1={user1}
+                />
+              ))
             : null}
         </Messages>
       </CurrentMessageContainer>

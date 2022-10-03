@@ -62,7 +62,10 @@ const CreateOrganizationPage0 = ({ onClickNext, pagesData, index }) => {
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH3 textAlign="center" margin="0">
+          <StyledH3
+            textAlign="center"
+            margin="0"
+          >
             {pagesData[index].subTitle}
           </StyledH3>
 

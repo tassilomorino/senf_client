@@ -13,7 +13,9 @@ export default {
   argTypes: {},
 } as Meta<typeof ImageUploadTile>;
 
-const Template: Story<ImageUploadTileProps> = (args) => <ImageUploadTile {...args} />;
+const Template: Story<ImageUploadTileProps> = (args) => (
+  <ImageUploadTile {...args} />
+);
 
 export const Default = Template.bind({});
 Default.args = {

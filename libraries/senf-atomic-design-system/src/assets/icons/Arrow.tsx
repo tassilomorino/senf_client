@@ -4,10 +4,14 @@ import React, { FC, SVGProps } from "react";
 import styled from "styled-components";
 
 const Svg = styled.svg`
-  transform: ${({ transform }) => (transform || undefined)};
+  transform: ${({ transform }) => transform || undefined};
 `;
 
-const Arrow: FC<SVGProps<SVGSVGElement>> = ({ name = "Arrow", color = "black", transform }) => (
+const Arrow: FC<SVGProps<SVGSVGElement>> = ({
+  name = "Arrow",
+  color = "black",
+  transform,
+}) => (
   <Svg
     width="16px"
     height="16px"
@@ -25,7 +29,10 @@ const Arrow: FC<SVGProps<SVGSVGElement>> = ({ name = "Arrow", color = "black", t
       fill="none"
       fillRule="evenodd"
     >
-      <g id={name} fill={color}>
+      <g
+        id={name}
+        fill={color}
+      >
         <path
           d="M2.29289322,5.05179322 C2.65337718,4.69130926 3.22060824,4.66357972 3.61289944,4.96860461 L3.70710678,5.05179322 L7.82310678,9.16779322 C7.90433654,9.24902298 8.02817693,9.26256127 8.12361023,9.2084081 L8.17689322,9.16779322 L12.2928932,5.05179322 C12.6834175,4.66126893 13.3165825,4.66126893 13.7071068,5.05179322 C14.0675907,5.41227718 14.0953203,5.97950824 13.7902954,6.37179944 L13.7071068,6.46600678 L9.59110678,10.5820068 C8.75441698,11.4186966 7.42190796,11.458539 6.53799728,10.7015339 L6.40889322,10.5820068 L2.29289322,6.46600678 C1.90236893,6.07548249 1.90236893,5.44231751 2.29289322,5.05179322 Z"
           id="🎨-Icon-Color"
@@ -36,20 +43,33 @@ const Arrow: FC<SVGProps<SVGSVGElement>> = ({ name = "Arrow", color = "black", t
   </Svg>
 );
 
-
 const Up: FC = ({ ...props }) => (
-  <Arrow name="Arrow Up" transform="rotate(-90)" {...props} />
+  <Arrow
+    name="Arrow Up"
+    transform="rotate(-90)"
+    {...props}
+  />
 );
 const Right: FC = ({ ...props }) => (
-  <Arrow name="Arrow Right" {...props} />
+  <Arrow
+    name="Arrow Right"
+    {...props}
+  />
 );
 const Down: FC = ({ ...props }) => (
-  <Arrow name="Arrow Down" transform="rotate(90)" {...props} />
+  <Arrow
+    name="Arrow Down"
+    transform="rotate(90)"
+    {...props}
+  />
 );
 const Left: FC = ({ ...props }) => (
-  <Arrow name="Arrow Left" transform="rotate(180)" {...props} />
+  <Arrow
+    name="Arrow Left"
+    transform="rotate(180)"
+    {...props}
+  />
 );
-
 
 export default Arrow;
 

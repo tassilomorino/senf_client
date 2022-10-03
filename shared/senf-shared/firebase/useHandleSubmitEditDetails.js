@@ -2,7 +2,6 @@ import { updateDoc, doc } from "firebase/firestore";
 
 export const useHandleSubmitEditDetails = (user, db) => {
   return async (formik) => {
-
     /*   if (
       user.isAdmin === false ||
       user.isSuperAdmin === false ||
@@ -20,7 +19,7 @@ export const useHandleSubmitEditDetails = (user, db) => {
         age: age || null,
         sex: sex || null,
       });
-      return user
+      return user;
     } catch (error) {
       throw new Error(error, "error in usehandlesubmitedit");
     }

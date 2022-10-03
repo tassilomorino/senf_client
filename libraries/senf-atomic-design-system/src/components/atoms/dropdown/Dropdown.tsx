@@ -19,12 +19,13 @@ const Dropdown: FunctionComponent<DropdownProps> = ({
   const { t } = useTranslation();
   return (
     <Wrapper>
-      {label || note &&
-        <Box>
-          {label && <Label htmlFor={name}>{label}</Label>}
-          {note && <Note>{note}</Note>}
-        </Box>
-      }
+      {label ||
+        (note && (
+          <Box>
+            {label && <Label htmlFor={name}>{label}</Label>}
+            {note && <Note>{note}</Note>}
+          </Box>
+        ))}
       <InputContainer
         as={Selector}
         name={name}
@@ -33,12 +34,19 @@ const Dropdown: FunctionComponent<DropdownProps> = ({
         value={value}
       >
         {name && (
-          <option disabled selected hidden>
+          <option
+            disabled
+            selected
+            hidden
+          >
             {t(name)}
           </option>
         )}
         {Object.values(listItems).map((item) => (
-          <option key={item.label + item.value} value={item.value}>
+          <option
+            key={item.label + item.value}
+            value={item.value}
+          >
             {item.label}
           </option>
         ))}

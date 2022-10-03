@@ -15,7 +15,6 @@ const DialogWrapper = styled.div<DialogProps>`
   width: 100%;
   pointer-events: all;
 
-
   overflow: ${({ overflow }) => overflow || "scroll"};
 
   background-color: ${({ backgroundColor }) => backgroundColor || "white"};
@@ -30,15 +29,15 @@ const DialogWrapper = styled.div<DialogProps>`
     border-radius: 18px;
     height: calc(100vh - 20px);
     max-width: ${({ size }) =>
-    size === "xxl"
-      ? "100vw"
-      : size === "xl"
+      size === "xxl"
+        ? "100vw"
+        : size === "xl"
         ? "1200px"
         : size === "l"
-          ? "800px"
-          : size === "m"
-            ? "600px"
-            : "400px"};
+        ? "800px"
+        : size === "m"
+        ? "600px"
+        : "400px"};
   }
 `;
 
@@ -90,29 +89,28 @@ const Dialog: FC<DialogProps> = ({
   // }, []);
 
   return (
-    isOpen &&
-
-    <DialogWrapper
-      left={left}
-      right={right}
-      zIndex={zIndex}
-      boxShadow={boxShadow}
-      backgroundColor={backgroundColor}
-      overflow={overflow}
-      role="dialog"
-      size={size}
-    // aria-labelledby="dialog-header"
-    // onKeyDown={
-    //   (e) =>
-    //     submitRef?.current &&
-    //     closeRef?.current &&
-    //     trapFocus(e, submitRef.current, closeRef.current) // ideally we would use inert but it doesn't seem to be working
-    // }
-    >
-      {children}
-    </DialogWrapper>
+    isOpen && (
+      <DialogWrapper
+        left={left}
+        right={right}
+        zIndex={zIndex}
+        boxShadow={boxShadow}
+        backgroundColor={backgroundColor}
+        overflow={overflow}
+        role="dialog"
+        size={size}
+        // aria-labelledby="dialog-header"
+        // onKeyDown={
+        //   (e) =>
+        //     submitRef?.current &&
+        //     closeRef?.current &&
+        //     trapFocus(e, submitRef.current, closeRef.current) // ideally we would use inert but it doesn't seem to be working
+        // }
+      >
+        {children}
+      </DialogWrapper>
+    )
     //  document.getElementById(portalId) as HTMLElement
-
   );
 };
 

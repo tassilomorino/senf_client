@@ -17,6 +17,7 @@ export function ifAllUserDetailsAreFilled(user: User | null): boolean {
     !user.postcode?.length ||
     !user.age?.length ||
     !user.sex?.length
-  ) return false
+  )
+    return false;
   return true;
 }

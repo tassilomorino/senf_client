@@ -6,14 +6,11 @@ import { SwitchProps } from "./Switch.types";
 
 const Wrapper = styled.div`
   opacity: ${({ disabled }) => disabled && 0.5};
-
-`
+`;
 const SwitchInput = styled.input`
   height: 0;
   width: 0;
   visibility: hidden;
-
-
 `;
 
 const SwitchLabel = styled.label`
@@ -26,9 +23,9 @@ const SwitchLabel = styled.label`
   border-radius: 50px;
   border: 2px solid
     ${({ theme, toggled }) =>
-      toggled ?  theme.colors.signal.greenDark : theme.colors.brown.brown4tra};
+      toggled ? theme.colors.signal.greenDark : theme.colors.brown.brown4tra};
   background-color: ${({ theme, toggled }) =>
-    toggled ? theme.colors.signal.green: theme.colors.brown.brown10tra};
+    toggled ? theme.colors.signal.green : theme.colors.brown.brown10tra};
   position: relative;
   transition: background-color 0.2s;
 `;
@@ -54,13 +51,17 @@ const SwitchButton = styled.span`
   }
 `;
 
-const Switch: FC<SwitchProps> = ({ id = "switch", checked, receiveValue, onChange , disabled}) => {
+const Switch: FC<SwitchProps> = ({
+  id = "switch",
+  checked,
+  receiveValue,
+  onChange,
+  disabled,
+}) => {
   const [toggle, setToggle] = useState(false);
 
   return (
-    <Wrapper
-      disabled={disabled}
-    >
+    <Wrapper disabled={disabled}>
       <SwitchInput
         className="switch-checkbox"
         id={id}
@@ -71,8 +72,15 @@ const Switch: FC<SwitchProps> = ({ id = "switch", checked, receiveValue, onChang
           receiveValue(e.currentTarget.value);
         }}
       />
-      <SwitchLabel toggled={checked} className="switch-label" htmlFor={id}>
-        <SwitchButton toggled={checked} className="switch-button" />
+      <SwitchLabel
+        toggled={checked}
+        className="switch-label"
+        htmlFor={id}
+      >
+        <SwitchButton
+          toggled={checked}
+          className="switch-button"
+        />
       </SwitchLabel>
     </Wrapper>
   );

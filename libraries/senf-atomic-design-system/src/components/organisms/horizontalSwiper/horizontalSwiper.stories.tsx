@@ -7,10 +7,9 @@ import HorizontalSwiper from "./HorizontalSwiper";
 
 import { HorizontalSwiperProps } from "./HorizontalSwiper.types";
 
-
-import WorkTogether from "../../../assets/illustrations/workTogether.png"
-import OpenBook from "../../../assets/illustrations/openBook.png"
-import WeAreHere from "../../../assets/illustrations/weAreHere.png"
+import WorkTogether from "../../../assets/illustrations/workTogether.png";
+import OpenBook from "../../../assets/illustrations/openBook.png";
+import WeAreHere from "../../../assets/illustrations/weAreHere.png";
 
 export default {
   title: "Organisms/HorizontalSwiper",
@@ -18,7 +17,9 @@ export default {
   argTypes: {},
 } as Meta<typeof HorizontalSwiper>;
 
-const Template: Story<HorizontalSwiperProps> = (args) => <HorizontalSwiper {...args} />;
+const Template: Story<HorizontalSwiperProps> = (args) => (
+  <HorizontalSwiper {...args} />
+);
 
 export const Default = Template.bind({});
 Default.args = {
@@ -42,5 +43,5 @@ Default.args = {
       img: OpenBook,
       id: 2,
     },
-  ]
+  ],
 };

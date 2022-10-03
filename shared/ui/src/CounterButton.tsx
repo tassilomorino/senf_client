@@ -14,7 +14,10 @@ export const CounterButton = () => {
         This is component is from <code>ui</code>
       </p>
       <p>
-        <button type="button" onClick={() => setCount((c) => c + 1)}>
+        <button
+          type="button"
+          onClick={() => setCount((c) => c + 1)}
+        >
           count {count}
         </button>
       </p>

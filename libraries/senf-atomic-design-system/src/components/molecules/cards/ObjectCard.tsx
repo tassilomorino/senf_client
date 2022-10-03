@@ -138,11 +138,8 @@ const Title = styled.div`
 // `;
 
 const ObjectCard: FC<ObjectCardProps> = ({ data, handleButtonOpenCard }) => {
-
   return (
-    <Wrapper
-      onClick={() => handleButtonOpenCard(data)}
-    >
+    <Wrapper onClick={() => handleButtonOpenCard(data)}>
       <LogoWrapper>
         <Thumbnail
           img={
