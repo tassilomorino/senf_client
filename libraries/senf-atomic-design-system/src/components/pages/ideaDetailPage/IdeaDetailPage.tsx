@@ -487,7 +487,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                     <Button
                       variant="secondary"
                       icon={<Mail />}
-                      text={contactTitle || t("contact")}
+                      text={contactTitle || contact}
                       size="small"
                       onClick={() => openMail(contact)}
                     />
@@ -496,7 +496,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                     <Button
                       variant="secondary"
                       icon={<Hyperlink />}
-                      text={weblinkTitle || t("website")}
+                      text={weblinkTitle || weblink}
                       size="small"
                       onClick={() => openLink(weblink)}
                     />
