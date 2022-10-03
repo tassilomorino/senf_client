@@ -46,7 +46,8 @@ const Home = () => {
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
 
   const [postIdeaOpen, setPostIdeaOpen] = useState(false);
-
+  const [postIdeaSuccessModalOpen, setPostIdeaSuccessModalOpen] =
+  React.useState(false);
   const profilePageScreams = useSelector((state) => state.data.profilePage?.profilePageData?.screams);
   const screams = useSelector((state) => state.data.screams);
   const scream = useSelector((state) => state.data.scream);
@@ -222,6 +223,8 @@ const Home = () => {
           setOrder={setOrder}
           postIdeaOpen={postIdeaOpen}
           setPostIdeaOpen={setPostIdeaOpen}
+          postIdeaSuccessModalOpen={postIdeaSuccessModalOpen}
+          setPostIdeaSuccessModalOpen ={setPostIdeaSuccessModalOpen}
           handleSetInitialMapBoundsAndViewport={
             handleSetInitialMapBoundsAndViewport
           }

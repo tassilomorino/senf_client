@@ -161,7 +161,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   user,
   myProfileData,
 
-  setPostIdeaOpen,
+  
 
   handleOpenMyAccount,
   setShowUI,
@@ -175,6 +175,8 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   handleMapBoundsReset,
   mapFilterActive,
   postIdeaOpen,
+  setPostIdeaOpen,
+  postIdeaSuccessModalOpen,
 }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom();
@@ -392,7 +394,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
 
   return (
     <React.Fragment>
-      {isMobile && postIdeaOpen ? null : (<DragWrapper
+      {isMobile && postIdeaOpen || postIdeaSuccessModalOpen ? null : (<DragWrapper
         // style={
         //   (openOrganizationsOverview || openStatisticsOverview) && isMobile
         //     ? {
