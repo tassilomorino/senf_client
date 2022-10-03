@@ -9,7 +9,7 @@ import { ContentDropdownItemProps } from "../contentDropdown/ContentDropdownItem
 import ContentDropdownItem from "../contentDropdown/ContentDropdownItem";
 import useOnClickOutside from "../../../hooks/useOnClickOutside";
 import { LayerWhiteFirstDefault } from "../layerStyles/LayerStyles";
-import Button from "../buttons/Button"
+import Button from "../buttons/Button";
 
 const Wrapper = styled.div`
   position: relative;
@@ -59,25 +59,38 @@ const ContentDropdown: FC<DropdownListContainerProps> = ({
   ...props
 }) => {
   const outerRef = useRef(null);
-  const [openState, setOpenState] = useState(open)
+  const [openState, setOpenState] = useState(open);
 
   const CustomButton = button || Button;
   useOnClickOutside(outerRef, () => setOpenState(false));
 
   useEffect(() => {
-    setOpen?.(openState)
-  }, [openState])
+    setOpen?.(openState);
+  }, [openState]);
+
   useEffect(() => {
-    setOpenState(open)
-  }, [open])
+    setOpenState(open);
+  }, [open]);
   return (
     <Wrapper>
-      {openButton && <CustomButton onClick={() => setOpenState(!openState)} {...props} />}
+      {openButton && (
+        <CustomButton
+          onClick={() => setOpenState(!openState)}
+          {...props}
+        />
+      )}
       {openState && (
         <DropDownListContainer ref={outerRef}>
-          {data?.length && data.length > 0 &&
-            data.map((item: ContentDropdownItemProps, key: number) => <ContentDropdownItem key={key} {...item} type={itemType || item.type} size={size} />)
-          }
+          {data?.length &&
+            data.length > 0 &&
+            data.map((item: ContentDropdownItemProps, key: number) => (
+              <ContentDropdownItem
+                key={key}
+                {...item}
+                type={itemType || item.type}
+                size={size}
+              />
+            ))}
           {content}
         </DropDownListContainer>
       )}
