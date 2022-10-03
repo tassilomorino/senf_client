@@ -277,7 +277,6 @@ const TopNavigation = ({
           </svg>
         )}
       </SVGWrapper>
-
       <SVGWrapper2 currentStep={currentStep}>
         {isMobileCustom ? (
           <svg

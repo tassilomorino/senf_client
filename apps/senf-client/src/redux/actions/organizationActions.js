@@ -69,8 +69,6 @@ export const openOrganizationFunc =
 
       dispatch(loadOrganizationData(organizationId));
       dispatch(closeScream());
-      const newPath = `/organizations/${organizationId}`;
-      window.history.pushState(null, null, newPath);
     } else if (state === "hide") {
       if (isMobileCustom) {
         dispatch({
@@ -84,7 +82,6 @@ export const openOrganizationFunc =
         payload: false,
       });
       dispatch({ type: SET_ORGANIZATION, payload: null });
-      window.history.pushState(null, null, "/organizations");
     }
   };
 

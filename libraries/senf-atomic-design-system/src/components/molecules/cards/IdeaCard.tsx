@@ -43,7 +43,7 @@ const Wrapper = styled.div<IdeaCardProps>`
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: ${({ projectroomCardData }) =>
-    projectroomCardData ? 3 : 4};
+      projectroomCardData ? 3 : 4};
     line-clamp: ${({ projectroomCardData }) => (projectroomCardData ? 3 : 4)};
     -webkit-box-orient: vertical;
     overflow: hidden;
@@ -81,7 +81,6 @@ const IdeaCard: FC<IdeaCardProps> = ({
   handleButtonComment,
   user,
   myProfileData,
-
 }) => {
   const {
     title,
@@ -95,16 +94,14 @@ const IdeaCard: FC<IdeaCardProps> = ({
     screamId,
   } = data;
 
-
-
   const liked = () => {
-    if (myProfileData?.likes && myProfileData?.likes.find((like) => like.screamId === screamId)
+    if (
+      myProfileData?.likes &&
+      myProfileData?.likes.find((like) => like.screamId === screamId)
     ) {
       return true;
     }
     return false;
-
-
   };
 
   const commented = () => {
@@ -116,24 +113,17 @@ const IdeaCard: FC<IdeaCardProps> = ({
     return false;
   };
 
-
-
   const [projectroomCardData, setProjectroomCardData] = useState([]);
 
   useEffect(() => {
     if (projectroomsData && data && data.projectRoomId) {
       projectroomsData.map(({ projectRoomId, title, organizationType }) => {
         if (data.projectRoomId === projectRoomId) {
-          setProjectroomCardData([
-
-            title,
-            organizationType,
-          ]);
+          setProjectroomCardData([title, organizationType]);
         }
       });
     }
-
-  }, [projectroomsData, data]);;
+  }, [projectroomsData, data]);
 
   return (
     data && (

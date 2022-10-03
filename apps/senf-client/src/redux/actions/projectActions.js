@@ -79,13 +79,9 @@ export const openProjectRoomFunc =
       dispatch(setSwipePositionDown());
       dispatch(loadProjectRoomData(projectRoomId));
       dispatch(closeScream());
-      const newPath = `/projectRooms/${projectRoomId}`;
-      window.history.pushState(null, null, newPath);
     } else {
       dispatch({ type: SET_PROJECT, payload: null });
       dispatch({ type: CLOSE_PROJECT });
-
-      window.history.pushState(null, null, "/projectRooms");
     }
   };
 export const loadProjectRoomData = (projectRoomId) => async (dispatch) => {

@@ -161,8 +161,6 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   user,
   myProfileData,
 
-  
-
   handleOpenMyAccount,
   setShowUI,
 
@@ -246,7 +244,6 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
       setActiveSortOptionLabel(t("newest_projectrooms"));
       setCheckedSortOption("newest");
     }
-    console.log(order);
   }, [order, openOrganizationsOverview]);
 
   // useEffect(() => {
@@ -373,14 +370,14 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
       sortOptions={
         order === "ideas"
           ? [
-            { value: "newest", label: t("newest_ideas") },
-            { value: "hottest", label: t("hottest_ideas") },
-          ]
+              { value: "newest", label: t("newest_ideas") },
+              { value: "hottest", label: t("hottest_ideas") },
+            ]
           : [
-            { value: "newest", label: t("newest_projectrooms") },
-            { value: "aToZ", label: t("aToZ_projectrooms") },
-            { value: "zToA", label: t("zToA_projectrooms") },
-          ]
+              { value: "newest", label: t("newest_projectrooms") },
+              { value: "aToZ", label: t("aToZ_projectrooms") },
+              { value: "zToA", label: t("zToA_projectrooms") },
+            ]
       }
       statusOptions={[
         { value: "Unprocessed", label: t("unprocessed") },
@@ -394,57 +391,53 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
 
   return (
     <React.Fragment>
-      {isMobile && postIdeaOpen || postIdeaSuccessModalOpen ? null : (<DragWrapper
-        // style={
-        //   (openOrganizationsOverview || openStatisticsOverview) && isMobile
-        //     ? {
-        //       scale: 0.9,
-        //       transform: `translateY(${-20}px)`,
-        //       filter: "brightness(80%)",
-        //       transition: "0.2s",
-        //       overflow: "visible",
-        //     }
-        //     : isMobile
-        //       ? springProps
-        //       : null
-        // }
-        style={
-
-          isMobile
-            ? springProps
-            : null
-        }
-      >
-        <Wave
-          color={theme.colors.beige.beige20}
-          top="0px"
-        />
-        {!isMobile && (
-          <MenuSidebar
-            handleOpenMyAccount={handleOpenMyAccount}
-            setShowUI={setShowUI}
-            setOrder={setOrder}
-            setPostIdeaOpen={setPostIdeaOpen}
+      {(isMobile && postIdeaOpen) || postIdeaSuccessModalOpen ? null : (
+        <DragWrapper
+          // style={
+          //   (openOrganizationsOverview || openStatisticsOverview) && isMobile
+          //     ? {
+          //       scale: 0.9,
+          //       transform: `translateY(${-20}px)`,
+          //       filter: "brightness(80%)",
+          //       transition: "0.2s",
+          //       overflow: "visible",
+          //     }
+          //     : isMobile
+          //       ? springProps
+          //       : null
+          // }
+          style={isMobile ? springProps : null}
+        >
+          <Wave
+            color={theme.colors.beige.beige20}
+            top="0px"
           />
-        )}
-        {!postIdeaOpen && (
-          <InnerWrapper>
-            <Header
-              {...bind()}
+          {!isMobile && (
+            <MenuSidebar
+              handleOpenMyAccount={handleOpenMyAccount}
+              setShowUI={setShowUI}
+              setOrder={setOrder}
+              setPostIdeaOpen={setPostIdeaOpen}
+            />
+          )}
+          {!postIdeaOpen && (
+            <InnerWrapper>
+              <Header
+                {...bind()}
 
-            // style={listHeaderProps}
-            >
-              {isMobile && <HandleBar />}
+                // style={listHeaderProps}
+              >
+                {isMobile && <HandleBar />}
 
-              <MainSwipeListTabs
-                handleSwipeUp={handleSwipeUp}
-                order={order}
-                setOrder={setOrder}
-                ideasDataLength={ideasData?.length}
-                projectroomsDataLength={projectroomsData?.length}
-              />
+                <MainSwipeListTabs
+                  handleSwipeUp={handleSwipeUp}
+                  order={order}
+                  setOrder={setOrder}
+                  ideasDataLength={ideasData?.length}
+                  projectroomsDataLength={projectroomsData?.length}
+                />
 
-              {/* <div
+                {/* <div
               style={{
                 position: "absolute",
                 right: isMobile ? "90px" : "92px",
@@ -466,96 +459,97 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
                 onClick={() => setOpenOrganizationsOverview(true)}
               />
             </div> */}
-              <RoundedButtonWrapper>
-                <RoundedButton
-                  size="lg"
-                  icon={
-                    <Plus
-                      color={theme.colors.primary.primary120}
-                      transform="scale(2)"
-                    />
-                  }
-                  onClick={() => setPostIdeaOpen(true)}
-                />
-              </RoundedButtonWrapper>
-
-              {isMobile && (
-                <Box margin="-10px 0px">
-                  <TagSlide
-                    type={order === "ideas" ? "topics" : "organizationTypes"}
-                    hide={!swipedUp}
-                    selectedTopics={selectedTopics}
-                    selectedOrganizationTypes={selectedOrganizationTypes}
-                    handleSelectTopics={handleSelectTopics}
-                    handleSelectOrganizationTypes={
-                      handleSelectOrganizationTypes
+                <RoundedButtonWrapper>
+                  <RoundedButton
+                    size="lg"
+                    icon={
+                      <Plus
+                        color={theme.colors.primary.primary120}
+                        transform="scale(2)"
+                      />
                     }
+                    onClick={() => setPostIdeaOpen(true)}
                   />
-                </Box>
-              )}
+                </RoundedButtonWrapper>
 
-              {!isMobile && <Box margin="16px">{toolbarComponent} </Box>}
-            </Header>
+                {isMobile && (
+                  <Box margin="-10px 0px">
+                    <TagSlide
+                      type={order === "ideas" ? "topics" : "organizationTypes"}
+                      hide={!swipedUp}
+                      selectedTopics={selectedTopics}
+                      selectedOrganizationTypes={selectedOrganizationTypes}
+                      handleSelectTopics={handleSelectTopics}
+                      handleSelectOrganizationTypes={
+                        handleSelectOrganizationTypes
+                      }
+                    />
+                  </Box>
+                )}
 
-            <ContentWrapper swipedUp={swipedUp}>
-              {isMobile && swipedUp && (
-                <Box margin="32px 16px 16px 16px">{toolbarComponent}</Box>
-              )}
+                {!isMobile && <Box margin="16px">{toolbarComponent} </Box>}
+              </Header>
 
-              {order !== "ideas" && (!isMobile || swipedUp) && (
-                <Box margin="10px 16px 0px 16px">
-                  <Button
-                    variant="secondary"
-                    borderStyle="dashed"
-                    size="small"
-                    width="max"
-                    onClick={handleCreateProjectroom}
-                    text={t("createProjectRoom")}
-                  />
-                </Box>
-              )}
+              <ContentWrapper swipedUp={swipedUp}>
+                {isMobile && swipedUp && (
+                  <Box margin="32px 16px 16px 16px">{toolbarComponent}</Box>
+                )}
 
-              <List
-                CardType={order === "ideas" ? IdeaCard : ProjectroomCard}
-                data={order === "ideas" ? ideasData : projectroomsData}
-                organizations={organizations}
-                ideasData={ideasData}
-                projectroomsData={projectroomsData}
-                handleButtonOpenCard={handleButtonOpenCard}
-                handleOpenProjectroom={handleOpenProjectroom}
-                handleButtonLike={handleButtonLike}
-                handleButtonComment={handleButtonComment}
-                user={user}
-                myProfileData={myProfileData}
-                listEndText={
-                  order === "ideas" && ideasData?.length > 0
-                    ? t("noMoreIdeas")
-                    : order === "ideas" && ideasData?.length < 1
+                {order !== "ideas" && (!isMobile || swipedUp) && (
+                  <Box margin="10px 16px 0px 16px">
+                    <Button
+                      variant="secondary"
+                      borderStyle="dashed"
+                      size="small"
+                      width="max"
+                      onClick={handleCreateProjectroom}
+                      text={t("createProjectRoom")}
+                    />
+                  </Box>
+                )}
+
+                <List
+                  CardType={order === "ideas" ? IdeaCard : ProjectroomCard}
+                  data={order === "ideas" ? ideasData : projectroomsData}
+                  organizations={organizations}
+                  ideasData={ideasData}
+                  projectroomsData={projectroomsData}
+                  handleButtonOpenCard={handleButtonOpenCard}
+                  handleOpenProjectroom={handleOpenProjectroom}
+                  handleButtonLike={handleButtonLike}
+                  handleButtonComment={handleButtonComment}
+                  user={user}
+                  myProfileData={myProfileData}
+                  listEndText={
+                    order === "ideas" && ideasData?.length > 0
+                      ? t("noMoreIdeas")
+                      : order === "ideas" && ideasData?.length < 1
                       ? t("noContentIdeas")
                       : t("noMoreProjectrooms")
-                }
-              />
-            </ContentWrapper>
-          </InnerWrapper>
-        )}
+                  }
+                />
+              </ContentWrapper>
+            </InnerWrapper>
+          )}
 
-        {mapFilterActive && (
-          <Box
-            position="absolute"
-            bottom={isMobile ? "50px" : "30px"}
-            zIndex={99}
-            justifyContent="center"
-            width="100%"
-            left={isMobile ? "0px" : "30px"}
-          >
-            <Button
-              size="small"
-              onClick={handleMapBoundsReset}
-              text={"Alle Ideen in Köln anzeigen"}
-            />
-          </Box>
-        )}
-      </DragWrapper>)}
+          {mapFilterActive && (
+            <Box
+              position="absolute"
+              bottom={isMobile ? "50px" : "30px"}
+              zIndex={99}
+              justifyContent="center"
+              width="100%"
+              left={isMobile ? "0px" : "30px"}
+            >
+              <Button
+                size="small"
+                onClick={handleMapBoundsReset}
+                text={"Alle Ideen in Köln anzeigen"}
+              />
+            </Box>
+          )}
+        </DragWrapper>
+      )}
     </React.Fragment>
   );
 };
