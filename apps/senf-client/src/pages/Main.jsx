@@ -144,6 +144,8 @@ const Main = ({
   setOrder,
   postIdeaOpen,
   setPostIdeaOpen,
+  postIdeaSuccessModalOpen,
+  setPostIdeaSuccessModalOpen,
   handleSetInitialMapBoundsAndViewport,
   setShowUI,
   showUI
@@ -594,8 +596,10 @@ const Main = ({
           loadingProjects={loadingProjects}
           projectsData={projects}
           project={project}
-          setPostIdeaOpen={setPostIdeaOpen}
           postIdeaOpen={postIdeaOpen}
+          setPostIdeaOpen={setPostIdeaOpen}
+          postIdeaSuccessModalOpen={postIdeaSuccessModalOpen}
+          setPostIdeaSuccessModalOpen = {setPostIdeaSuccessModalOpen}
           statefulMap={statefulMap}
         />
       )}
@@ -638,14 +642,15 @@ const Main = ({
                   setOpenStatisticsOverview={setOpenStatisticsOverview}
                   openStatisticsOverview={openStatisticsOverview}
                   setOpenOrganizationsOverview={setOpenOrganizationsOverview}
-                  openOrganizationsOverview={openOrganizationsOverview}
-                  setPostIdeaOpen={setPostIdeaOpen}
+                  openOrganizationsOverview={openOrganizationsOverview}              
                   handleOpenMyAccount={handleOpenMyAccount}
                   setShowUI={setShowUI}
                   handleCreateProjectroom={handleCreateProjectroom}
                   handleMapBoundsReset={handleSetInitialMapBoundsAndViewport}
                   mapFilterActive={mapFilterActive}
                   postIdeaOpen={postIdeaOpen}
+                  setPostIdeaOpen={setPostIdeaOpen}
+                  postIdeaSuccessModalOpen={postIdeaSuccessModalOpen}
                 />
               )}
 

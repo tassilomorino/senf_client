@@ -54,8 +54,10 @@ const PostIdeaPage = ({
   classes,
   loadingProjects,
   projectsData,
-  setPostIdeaOpen,
   postIdeaOpen,
+  setPostIdeaOpen,
+  postIdeaSuccessModalOpen,
+  setPostIdeaSuccessModalOpen,
   statefulMap,
 }) => {
   const dispatch = useDispatch();
@@ -70,8 +72,7 @@ const PostIdeaPage = ({
   const initialMapViewport = useSelector(
     (state) => state.data.initialMapViewport
   );
-  const [postIdeaSuccessModalOpen, setPostIdeaSuccessModalOpen] =
-    React.useState(false);
+
   const [newIdea, setNewIdea] = useState(null);
   const [viewport, setViewport] = useState(null);
   const [openRules, setOpenRules] = useState(false);
@@ -222,11 +223,11 @@ const PostIdeaPage = ({
 
     if (formik.values.contact) {
       newScream.contact = formik.values.contact;
-      newScream.contactTitle = formik.values.contactTitle || "Kontakt";
+      newScream.contactTitle = formik.values.contactTitle;
     }
     if (formik.values.weblink) {
       newScream.weblink = formik.values.weblink;
-      newScream.weblinkTitle = formik.values.weblinkTitle || "Website";
+      newScream.weblinkTitle = formik.values.weblinkTitle;
     }
 
     if (selectedUnix.length > 0) {

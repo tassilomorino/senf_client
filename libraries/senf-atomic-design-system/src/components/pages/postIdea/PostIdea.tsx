@@ -71,15 +71,14 @@ const PostIdea: FC<PostIdeaProps> = ({
       flexDirection="row"
       alignItems="center"
       width="100%"
-      padding={"0px 16px 0px 16px"}
       justifyContent="space-between"
     >
-      <Typography variant="h3">Idee erstellen</Typography>
+      <Typography variant="h3">{t("postidea_create_idea")}</Typography>
 
       <Button
         variant="tertiary"
-        size="lg"
-        text={t("Abbrechen")}
+        size="small"
+        text={t("cancel")}
         justifyContent="flex-start"
         onClick={() => setPostIdeaOpen(false)}
       />
@@ -93,12 +92,8 @@ const PostIdea: FC<PostIdeaProps> = ({
       flexDirection="column"
       width="100%"
       height="auto"
-      padding={"0px 16px 0px 16px"}
     >
-      <Typography variant="bodyBg">
-        Navigiere auf der Karte an den gewünschten Ort oder nutze die
-        Adresseingabe.
-      </Typography>
+      <Typography variant="bodyBg">{t("postidea_navigate")}</Typography>
       {!isMobile && (
         <Geocoder
           formik={formik}
@@ -109,7 +104,7 @@ const PostIdea: FC<PostIdeaProps> = ({
         <Button
           variant="primary"
           size="lg"
-          text={t("Weiter")}
+          text={t("next")}
           width="max"
           onClick={() => setAddressSelected(true)}
         ></Button>
@@ -193,7 +188,7 @@ const PostIdea: FC<PostIdeaProps> = ({
                 onClose={() => setPostIdeaOpen(false)}
                 overflowing={true}
                 style={{
-                  height: "80%",
+                  height: "85%",
                 }}
               >
                 <PostIdeaForm
@@ -223,16 +218,16 @@ const PostIdea: FC<PostIdeaProps> = ({
             marginBottom="20px"
           >
             <Box
-              flexDirection="row"
+              flexDirection="column"
               alignItems="center"
               width="100%"
               justifyContent="space-between"
+              padding="12px 16px 8px"
             >
               {createIdeaHeader}
+
+              {!addressSelected && InstructionsHeader}
             </Box>
-
-            {!addressSelected && InstructionsHeader}
-
             {addressSelected && (
               <>
                 <PostIdeaForm
