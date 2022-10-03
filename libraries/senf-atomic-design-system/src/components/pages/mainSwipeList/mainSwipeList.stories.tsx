@@ -53,12 +53,12 @@ Default.args = {
       locationHeader: "Mülheimer Freiheit 142",
     },
   ],
-  setCheckedSortOption: () => { },
+  setCheckedSortOption: () => {},
 };
 
 export const SwipedUp = Template.bind({});
 SwipedUp.args = {
-  setCheckedSortOption: () => { },
+  setCheckedSortOption: () => {},
   swipedUp: true,
   order: "ideas",
   selectedTopics: ["Versorgung"],
@@ -579,7 +579,7 @@ SwipedUp.args = {
 
 export const ProjectRoomSwipeList = Template.bind({});
 ProjectRoomSwipeList.args = {
-  setCheckedSortOption: () => { },
+  setCheckedSortOption: () => {},
   order: "projectrooms",
 
   selectedTopics: ["Versorgung"],
@@ -859,7 +859,7 @@ SearchOpen.args = {
   searchOpen: true,
   order: "ideas",
   selectedTopics: ["Versorgung"],
-  setCheckedSortOption: () => { },
+  setCheckedSortOption: () => {},
 
   ideasData: [
     {

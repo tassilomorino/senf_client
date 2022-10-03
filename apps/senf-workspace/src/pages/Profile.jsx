@@ -13,9 +13,6 @@ import dayjs from "dayjs";
 import { storage, db, auth } from "../firebase";
 import Img from "../images/icons/icon-192.png";
 
-
-
-
 const Profile = () => {
   const [img, setImg] = useState("");
   const [user, setUser] = useState("");
@@ -74,13 +71,21 @@ const Profile = () => {
     <section>
       <div className="profile_container">
         <div className="img_container">
-          <img src={user.avatar || Img} alt="avatar" />
+          <img
+            src={user.avatar || Img}
+            alt="avatar"
+          />
           <div className="overlay">
             <div>
               <label htmlFor="photo">
                 <Icon icon="bulb" />
               </label>
-              {user.avatar ? <Icon icon="bulb" onClick={deleteImage} /> : null}
+              {user.avatar ? (
+                <Icon
+                  icon="bulb"
+                  onClick={deleteImage}
+                />
+              ) : null}
               <input
                 type="file"
                 accept="image/*"
@@ -101,7 +106,7 @@ const Profile = () => {
           </Typography>
         </div>
       </div>
-    </section >
+    </section>
   ) : null;
 };
 

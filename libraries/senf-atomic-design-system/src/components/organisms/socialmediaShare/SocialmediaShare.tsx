@@ -17,15 +17,13 @@ import Box from "../../atoms/box/Box";
 import WhatsApp from "../../../assets/icons/WhatsApp";
 
 const Wrapper = styled.div<SocialmediaShareProps>`
-display: flex;
-flex-direction: column;
-gap:20px;
-margin:10px 5px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 10px 5px 10px;
 `;
 
-const SocialmediaShare: FC<SocialmediaShareProps> = ({
-  path,
-}) => {
+const SocialmediaShare: FC<SocialmediaShareProps> = ({ path }) => {
   const { t } = useTranslation();
   return (
     <Wrapper>

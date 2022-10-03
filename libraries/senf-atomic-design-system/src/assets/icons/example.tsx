@@ -34,8 +34,16 @@ const Dot = ({
       fill="none"
       fillRule="evenodd"
     >
-      <g id="Icons/Dot" fill={color}>
-        <circle id="🎨-Icon-Color" cx="8" cy="8" r="6.5"></circle>
+      <g
+        id="Icons/Dot"
+        fill={color}
+      >
+        <circle
+          id="🎨-Icon-Color"
+          cx="8"
+          cy="8"
+          r="6.5"
+        ></circle>
       </g>
     </g>
   </Svg>

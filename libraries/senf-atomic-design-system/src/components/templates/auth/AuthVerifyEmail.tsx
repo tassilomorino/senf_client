@@ -24,14 +24,24 @@ const AuthVerifyEmail: FC<AuthVerifyEmailProps> = ({ variant, loading }) => {
       position="relative"
       zIndex={9999}
     >
-      <Typography variant="h1" style={{ position: "relative" }}>
+      <Typography
+        variant="h1"
+        style={{ position: "relative" }}
+      >
         {t("verify_header_1")}
       </Typography>
-      <Typography variant="h1" style={{ position: "relative" }}>
+      <Typography
+        variant="h1"
+        style={{ position: "relative" }}
+      >
         {t("verify_header_2")}
       </Typography>
 
-      <Box margin="25px 0px 24px 0px" alignItems="center" gap="10px">
+      <Box
+        margin="25px 0px 24px 0px"
+        alignItems="center"
+        gap="10px"
+      >
         <Typography variant="bodyBg">
           {t("email_receive")} <br /> &#40;
           {/* {history.location.state && history.location.state.email}{" "} */}

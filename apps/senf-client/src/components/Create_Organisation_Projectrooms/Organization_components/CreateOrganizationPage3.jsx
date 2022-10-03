@@ -20,7 +20,6 @@ import {
 } from "../styles/sharedStyles";
 import Navigation from "../Components/Navigation";
 
-
 const CreateOrganizationPage3 = ({
   onClickNext,
   onClickPrev,
@@ -91,8 +90,6 @@ const CreateOrganizationPage3 = ({
     }
 
     getDownloadURL(storageRef).then(onResolve, onReject);
-
-
   }, [uploadedImage]);
 
   const handleNext = () => {
@@ -111,17 +108,23 @@ const CreateOrganizationPage3 = ({
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <Typography variant="h3" textAlign="center" margin="20px">
+          <Typography
+            variant="h3"
+            textAlign="center"
+            margin="20px"
+          >
             {pagesData[index].subTitle}
           </Typography>
-          <Box justifyContent="center" marginTop="20px">
+          <Box
+            justifyContent="center"
+            marginTop="20px"
+          >
             <ImageUploadTile
               photoURL={uploadedImage}
               uploadingImage={loading}
               handleImageUpload={handleImageUpload}
             />
           </Box>
-
         </ComponentInnerWrapper>
       </ComponentWrapper>
 

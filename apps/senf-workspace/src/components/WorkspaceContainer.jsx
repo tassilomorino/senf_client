@@ -81,11 +81,17 @@ const WorkspaceContainer = ({
       </Box>
 
       <Group>
-        <Icon icon="Initiativen" transform="scale(1)" />
+        <Icon
+          icon="Initiativen"
+          transform="scale(1)"
+        />
         <Typography variant="buttonBg"> Allgemein</Typography>
       </Group>
       <Group>
-        <Icon icon="Planungsbüros" transform="scale(1)" />
+        <Icon
+          icon="Planungsbüros"
+          transform="scale(1)"
+        />
         <Typography variant="buttonBg"> Planung</Typography>
       </Group>
 

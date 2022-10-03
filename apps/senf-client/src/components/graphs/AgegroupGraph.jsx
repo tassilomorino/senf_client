@@ -299,7 +299,11 @@ const AgegroupGraph = ({ screams, likes }) => {
 
   const plot =
     screams && PlotlyComponent !== undefined ? (
-      <PlotlyComponent data={data} layout={layout} config={config} />
+      <PlotlyComponent
+        data={data}
+        layout={layout}
+        config={config}
+      />
     ) : (
       <div style={{ display: "flex", justifyContent: "center" }}>
         <div style={{ width: "50px" }}>

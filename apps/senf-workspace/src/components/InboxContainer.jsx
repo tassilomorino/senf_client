@@ -38,7 +38,10 @@ const InboxContainer = ({
   const [searchOpen, setSearchOpen] = useState(false);
   return (
     <React.Fragment>
-      <Box flexDirection="column" margin="10px 10px 0px 10px">
+      <Box
+        flexDirection="column"
+        margin="10px 10px 0px 10px"
+      >
         <Input
           type="text"
           value={searchTerm}
@@ -60,9 +63,8 @@ const InboxContainer = ({
                   .includes(searchTerm.toLocaleLowerCase())
               ) {
                 return val;
-              } 
-                return "";
-              
+              }
+              return "";
             })
             .map((val, key) => {
               return (
@@ -99,7 +101,7 @@ const InboxContainer = ({
             user.interactedUsers.indexOf(val.userId) > -1
           ) {
             return val;
-          } 
+          }
           return "";
         })
         .map((user) => (

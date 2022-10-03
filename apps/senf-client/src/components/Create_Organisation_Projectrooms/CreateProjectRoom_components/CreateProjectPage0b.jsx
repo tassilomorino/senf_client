@@ -14,7 +14,7 @@ import {
   ComponentInnerWrapper,
   ComponentWrapper,
 } from "../styles/sharedStyles";
-import { StyledH3, } from "../../../styles/GlobalStyle";
+import { StyledH3 } from "../../../styles/GlobalStyle";
 import Navigation from "../Components/Navigation";
 
 const CoverWrapper = styled.div`
@@ -131,7 +131,10 @@ const CreateProjectPage1 = ({ onClickNext, pagesData, index }) => {
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH3 textAlign="center" margin="20px">
+          <StyledH3
+            textAlign="center"
+            margin="20px"
+          >
             {pagesData[index].subTitle}
           </StyledH3>
           <CoverWrapper>

@@ -16,7 +16,6 @@ export default {
 
 const Template: Story<MapProps> = (args) => <Map {...args} />;
 
-
 export const Default = Template.bind({});
 Default.args = {
   initialMapViewport: {

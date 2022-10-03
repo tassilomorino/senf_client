@@ -24,12 +24,10 @@ const CreateProjectPage1 = ({
   pagesData,
   index,
   setTitle,
-  outerRef
+  outerRef,
 }) => {
   const { t } = useTranslation();
   const [nextClicked, setNextClicked] = useState(false);
-
-
 
   const validationSchema = yup.object({
     title: yup
@@ -157,11 +155,17 @@ const CreateProjectPage1 = ({
     <React.Fragment>
       <ComponentWrapper ref={outerRef}>
         <ComponentInnerWrapper>
-          <StyledH3 textAlign="center" margin="20px">
+          <StyledH3
+            textAlign="center"
+            margin="20px"
+          >
             {pagesData[index].subTitle}
           </StyledH3>
 
-          <Box flexDirection="column" gap="20px">
+          <Box
+            flexDirection="column"
+            gap="20px"
+          >
             <Input
               name="title"
               type="textarea"
@@ -186,8 +190,8 @@ const CreateProjectPage1 = ({
               value={formik?.values.brief}
               error={formik?.touched.brief && Boolean(formik?.errors.brief)}
               note={formik?.touched.brief && formik?.errors.brief}
-            // minRows="4"
-            // maxRows="6"
+              // minRows="4"
+              // maxRows="6"
             />
 
             <Input
@@ -207,8 +211,8 @@ const CreateProjectPage1 = ({
                 formik?.touched.description_about &&
                 formik?.errors.description_about
               }
-            // minRows="4"
-            // maxRows="6"
+              // minRows="4"
+              // maxRows="6"
             />
 
             <Input
@@ -228,8 +232,8 @@ const CreateProjectPage1 = ({
                 formik?.touched.description_procedure &&
                 formik?.errors.description_procedure
               }
-            // minRows="4"
-            // maxRows="6"
+              // minRows="4"
+              // maxRows="6"
             />
 
             <Input
@@ -249,8 +253,8 @@ const CreateProjectPage1 = ({
                 formik?.touched.description_motivation &&
                 formik?.errors.description_motivation
               }
-            // minRows="4"
-            // maxRows="6"
+              // minRows="4"
+              // maxRows="6"
             />
 
             <Input
@@ -270,8 +274,8 @@ const CreateProjectPage1 = ({
                 formik?.touched.description_learnmore &&
                 formik?.errors.description_learnmore
               }
-            // minRows="4"
-            // maxRows="6"
+              // minRows="4"
+              // maxRows="6"
             />
           </Box>
         </ComponentInnerWrapper>

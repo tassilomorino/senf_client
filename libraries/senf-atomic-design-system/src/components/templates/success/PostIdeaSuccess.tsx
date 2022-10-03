@@ -39,7 +39,7 @@ const PostIdeaSuccess: FC<SuccessProps> = ({
   closeModal,
 }) => {
   const { t } = useTranslation();
-  
+
   const projectRoomPath = newIdea?.projectRoomId
     ? `https://senf.koeln/projectRooms/${newIdea.projectRoomId}/${newIdea.screamId}`
     : null;
@@ -79,7 +79,7 @@ const PostIdeaSuccess: FC<SuccessProps> = ({
           >
             {t("success_page_published")}
           </Typography>
-        
+
           <DropdownButton
             size="md"
             width="max"
@@ -92,7 +92,7 @@ const PostIdeaSuccess: FC<SuccessProps> = ({
                 // handleShareIdeaVia={handle.shareIdeaVia}
               />
             }
-          /> 
+          />
         </Box>
         <Box
           gap="24px"

@@ -25,9 +25,17 @@ const Message = ({ msg, user1 }) => {
 
   console.log(msg);
   return (
-    <Wrapper own={msg.from === user1} ref={scrollRef}>
+    <Wrapper
+      own={msg.from === user1}
+      ref={scrollRef}
+    >
       <Typography variant="bodyBg">
-        {msg.media ? <img src={msg.media} alt={msg.text} /> : null}
+        {msg.media ? (
+          <img
+            src={msg.media}
+            alt={msg.text}
+          />
+        ) : null}
         {msg.text}
         <br />
         {/* <small>

@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { Icon, CalendarIcon, Typography } from "senf-atomic-design-system"
+import { Icon, CalendarIcon, Typography } from "senf-atomic-design-system";
 import {
   ComponentWrapper,
   ComponentInnerWrapper,
@@ -130,14 +130,29 @@ const CreateProjectPage5 = ({
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <Typography variant="h3" textAlign="center" margin="20px">
+          <Typography
+            variant="h3"
+            textAlign="center"
+            margin="20px"
+          >
             {pagesData[index].subTitle}
           </Typography>
 
-          <Card active={calendar} onClick={() => setCalendar(!calendar)}>
+          <Card
+            active={calendar}
+            onClick={() => setCalendar(!calendar)}
+          >
             <CalendarIcon size="100%" />
-            <Typography variant="h3" textAlign="center">{t("calendar")}</Typography>
-            <Typography variant="bodyBg" textAlign="center">
+            <Typography
+              variant="h3"
+              textAlign="center"
+            >
+              {t("calendar")}
+            </Typography>
+            <Typography
+              variant="bodyBg"
+              textAlign="center"
+            >
               {t("calendar_projectroom_explanaition")}
             </Typography>
           </Card>

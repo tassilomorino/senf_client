@@ -17,10 +17,6 @@ import {
 // import Geocoder from "react-mapbox-gl-geocoder";
 import Navigation from "../Components/Navigation";
 
-
-
-
-
 const CreateOrganizationPage4 = ({
   onClickNext,
   onClickPrev,
@@ -105,7 +101,11 @@ const CreateOrganizationPage4 = ({
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <Typography variant="h3" textAlign="center" margin="20px">
+          <Typography
+            variant="h3"
+            textAlign="center"
+            margin="20px"
+          >
             {pagesData[index].subTitle}
           </Typography>
 
@@ -131,13 +131,13 @@ const CreateOrganizationPage4 = ({
             width="100%"
             marginTop="20px"
             justifyContent="center"
-
           >
-            <ModalButton variant="tertiary"
+            <ModalButton
+              variant="tertiary"
               size="medium"
               text={t("how_to_find_google_calendar_id")}
-              options={{ swipe: false, size: "xl", padding: 0 }}>
-
+              options={{ swipe: false, size: "xl", padding: 0 }}
+            >
               <div style={{ height: "1000px", maxHeight: "80vh" }}>
                 <iframe
                   width="100%"

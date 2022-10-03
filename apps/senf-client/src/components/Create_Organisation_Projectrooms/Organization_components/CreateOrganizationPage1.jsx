@@ -115,12 +115,18 @@ const CreateOrganizationPage1 = ({
 
   return (
     <React.Fragment>
-      <ComponentWrapper >
+      <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH3 textAlign="center" margin="20px">
+          <StyledH3
+            textAlign="center"
+            margin="20px"
+          >
             {pagesData[index].subTitle}
           </StyledH3>
-          <Box flexDirection="column" gap="20px">
+          <Box
+            flexDirection="column"
+            gap="20px"
+          >
             <Input
               name="title"
               type="textarea"
@@ -149,8 +155,8 @@ const CreateOrganizationPage1 = ({
               }
               note={formik?.touched.description && formik?.errors.description}
 
-            // minRows="10"
-            // maxRows="12"
+              // minRows="10"
+              // maxRows="12"
             />
           </Box>
         </ComponentInnerWrapper>

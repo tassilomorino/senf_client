@@ -1,5 +1,17 @@
 import React, { useState } from "react";
-import { addDoc, collection, collectionGroup, doc, endAt, getDoc, getDocs, orderBy, query, setDoc, startAt } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  collectionGroup,
+  doc,
+  endAt,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+  setDoc,
+  startAt,
+} from "firebase/firestore";
 import * as yup from "yup";
 import {
   Icon,
@@ -11,47 +23,48 @@ import {
   Box,
   Dropdown,
   Input,
-  useModals
+  useModals,
 } from "senf-atomic-design-system";
 import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { db } from "../../firebase";
 import { OptionsRoles } from "../../data/OptionsRoles";
 
-
 const ResultsContainer = styled.div`
-  height:100vh;
-  width:100vw;
-  position:fixed;
-  top:0;
-  left:0;
-  background-color:${({ theme }) => theme.colors.greyscale.greyscale10};
-  z-index:998;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: ${({ theme }) => theme.colors.greyscale.greyscale10};
+  z-index: 998;
 
   @media (min-width: 768px) {
-    width:400px;
+    width: 400px;
   }
-`
+`;
 const Result = styled.div`
   cursor: pointer;
-  height:64px;
-  width:100%;
+  height: 64px;
+  width: 100%;
 
-  &:hover{
+  &:hover {
     background-color: ${({ theme }) => theme.colors.greyscale.greyscale20};
   }
-`
+`;
 const InviteMember = ({ getPendingDivisionUsers, division }) => {
   const { t } = useTranslation();
-  const { closeModal } = useModals()
+  const { closeModal } = useModals();
   const [showResults, setShowResults] = useState(false);
-  const [recipientEmail, setRecipientEmail] = useState(null)
+  const [recipientEmail, setRecipientEmail] = useState(null);
   const [userList, setUsersList] = useState(null);
 
-  const currentMonitoringBoard = useSelector(state => state.data.currentMonitoringBoard)
+  const currentMonitoringBoard = useSelector(
+    (state) => state.data.currentMonitoringBoard
+  );
 
   const addMemberValidationSchema = yup.object({
     email: yup
@@ -87,20 +100,19 @@ const InviteMember = ({ getPendingDivisionUsers, division }) => {
     validateOnBlur: true,
   });
 
-  // how members are being added to organization: 
+  // how members are being added to organization:
   // 1. check if admin then show add member
-  // 2. check if email is there, 
-  //    a. if yes add userId of email to organizationDoc in role and division and create mail-doc with link to organization 
-  //    b. if no create mail-doc with role, division, and email, organizationId and organizationName, and expirationdate 
+  // 2. check if email is there,
+  //    a. if yes add userId of email to organizationDoc in role and division and create mail-doc with link to organization
+  //    b. if no create mail-doc with role, division, and email, organizationId and organizationName, and expirationdate
   //        -> step TWO in Acceptinvitation.jsx
 
-  // Or other worse idea: create uuid, add uuid to organization roles, create userdoc -> user registers using that exact uuid 
-
+  // Or other worse idea: create uuid, add uuid to organization roles, create userdoc -> user registers using that exact uuid
 
   // <img src=${image} alt="HTML tutorial" style="width:400px;height:auto;border:0">
 
   const searchUsers = async (e) => {
-    formik?.handleChange(e)
+    formik?.handleChange(e);
     const users = [];
     // define queries
 
@@ -137,14 +149,13 @@ const InviteMember = ({ getPendingDivisionUsers, division }) => {
   const handleSelectUser = (parameter) => {
     if (parameter?.userId) {
       // also save userId somewhere??
-      setRecipientEmail(parameter?.email)
-      setShowResults(false)
-
+      setRecipientEmail(parameter?.email);
+      setShowResults(false);
     } else {
-      setRecipientEmail(parameter)
-      setShowResults(false)
+      setRecipientEmail(parameter);
+      setShowResults(false);
     }
-  }
+  };
 
   const handleSendInvite = async () => {
     const invitationId = uuidv4();
@@ -200,21 +211,22 @@ const InviteMember = ({ getPendingDivisionUsers, division }) => {
       role: formik.values.role,
       pending: true,
       monitoringBoardId: currentMonitoringBoard.monitoringBoardId,
-
     };
 
-
     await setDoc(doc(db, "mail", invitationId), data).then(() => {
-      console.log("Queued email for delivery!")
+      console.log("Queued email for delivery!");
 
       getPendingDivisionUsers();
-      closeModal()
-    })
+      closeModal();
+    });
   };
 
-
   return (
-    <Box margin="0px" flexDirection="column" gap="20px">
+    <Box
+      margin="0px"
+      flexDirection="column"
+      gap="20px"
+    >
       <Box zIndex="999">
         <Input
           name="email"
@@ -225,8 +237,8 @@ const InviteMember = ({ getPendingDivisionUsers, division }) => {
           value={formik?.values.email}
           onClick={() => setShowResults(true)}
 
-        // error={formik?.touched.email && Boolean(formik?.errors.email)}
-        // note={formik?.touched.email && formik?.errors.email}
+          // error={formik?.touched.email && Boolean(formik?.errors.email)}
+          // note={formik?.touched.email && formik?.errors.email}
         />
       </Box>
       {showResults && (
@@ -237,42 +249,76 @@ const InviteMember = ({ getPendingDivisionUsers, division }) => {
               key={index}
               onClick={() => handleSelectUser(item)}
               item={item}
-
             >
               <Box>
-                <Box width="46px" justifyContent="center" alignItems="center"> <Icon icon={<User />} /></Box>
-                <Box flexDirection="column" width="calc(100%  - 70px)" >
-                  <Box flexDirection="column" marginBlock="10px">
-                    <Typography variant="bodyBg" fontWeight={600}> {item?.handle}</Typography>
+                <Box
+                  width="46px"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  {" "}
+                  <Icon icon={<User />} />
+                </Box>
+                <Box
+                  flexDirection="column"
+                  width="calc(100%  - 70px)"
+                >
+                  <Box
+                    flexDirection="column"
+                    marginBlock="10px"
+                  >
+                    <Typography
+                      variant="bodyBg"
+                      fontWeight={600}
+                    >
+                      {" "}
+                      {item?.handle}
+                    </Typography>
                     <Typography variant="bodySm"> {item?.email} </Typography>
                   </Box>
                   <Divider />
                 </Box>
-
               </Box>
             </Result>
           ))}
-          {!formik?.errors.email &&
-
-            <Result
-              onClick={() => handleSelectUser(formik?.values.email)}
-            >
+          {!formik?.errors.email && (
+            <Result onClick={() => handleSelectUser(formik?.values.email)}>
               <Box>
-                <Box width="46px" justifyContent="center" alignItems="center"> <Icon icon={<User />} /></Box>
-                <Box flexDirection="column" width="calc(100%  - 70px)" >
-                  <Box flexDirection="column" marginBlock="10px">
-                    <Typography variant="bodyBg" fontWeight={600}> {formik?.values.email}</Typography>
-                    <Typography variant="bodySm"> Invite to this Organization  </Typography>
+                <Box
+                  width="46px"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  {" "}
+                  <Icon icon={<User />} />
+                </Box>
+                <Box
+                  flexDirection="column"
+                  width="calc(100%  - 70px)"
+                >
+                  <Box
+                    flexDirection="column"
+                    marginBlock="10px"
+                  >
+                    <Typography
+                      variant="bodyBg"
+                      fontWeight={600}
+                    >
+                      {" "}
+                      {formik?.values.email}
+                    </Typography>
+                    <Typography variant="bodySm">
+                      {" "}
+                      Invite to this Organization{" "}
+                    </Typography>
                   </Box>
                   <Divider />
                 </Box>
-
               </Box>
             </Result>
-
-          }
-        </ResultsContainer>)}
-
+          )}
+        </ResultsContainer>
+      )}
 
       <Dropdown
         name="role"

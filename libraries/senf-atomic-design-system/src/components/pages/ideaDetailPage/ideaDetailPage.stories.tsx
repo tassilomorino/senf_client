@@ -19,9 +19,7 @@ const IdeaDetailCardTemplate: Story<IdeaDetailPageProps> = (args) => (
 
 export const IdeaDetail = IdeaDetailCardTemplate.bind({});
 IdeaDetail.args = {
-
-
-  handleButtonCloseCard: () => { },
+  handleButtonCloseCard: () => {},
   user: {
     age: "2001",
     authenticated: true,
@@ -39,32 +37,32 @@ IdeaDetail.args = {
     myOrganizations: null,
     myScreams: null,
     notifications: [],
-    organizationId: ['4c7XbSRAzK605v85CncC'],
-    photoURL: "https://firebasestorage.googleapis.com/v0/b/senf-dev.appspot.com/o/profileimages%2Fthumbnail?alt=media&token=3c02b9f2-0b46-41f1-ab89-7a74a13acebe",
+    organizationId: ["4c7XbSRAzK605v85CncC"],
+    photoURL:
+      "https://firebasestorage.googleapis.com/v0/b/senf-dev.appspot.com/o/profileimages%2Fthumbnail?alt=media&token=3c02b9f2-0b46-41f1-ab89-7a74a13acebe",
     sex: "female",
     userId: "qkbwKh9DT3h4h6yPsH8D7GqYRXC3",
     postcode: "22607",
   },
 
-
-  path: '',
-  commentFormInput: '',
-  setCommentFormInput: () => { },
+  path: "",
+  commentFormInput: "",
+  setCommentFormInput: () => {},
   commentFormLoading: false,
 
   data: {
     handle: {
-      buttonComment: () => { },
-      buttonLike: () => { },
-      closeCard: () => { },
-      deleteComment: () => { },
-      deleteIdea: async () => { },
-      editIdea: () => { },
-      openProjectroom: () => { },
-      reportComment: () => { },
-      reportIdea: () => { },
-      shareIdeaVia: () => { },
-      submitComment: () => { },
+      buttonComment: () => {},
+      buttonLike: () => {},
+      closeCard: () => {},
+      deleteComment: () => {},
+      deleteIdea: async () => {},
+      editIdea: () => {},
+      openProjectroom: () => {},
+      reportComment: () => {},
+      reportIdea: () => {},
+      shareIdeaVia: () => {},
+      submitComment: () => {},
     },
     district: "Berliner Str. 20, 51063 Köln, Germany",
     title: "Workshop für Mülheimer Vereine",
@@ -189,5 +187,5 @@ IdeaDetail.args = {
         "https://firebasestorage.googleapis.com/v0/b/senf-dev.appspot.com/o/organizationsData%2FQO0SOuQBIc9wEjpayU9e%2Flogo%2Flogo?alt=media&token=131ee6fa-19a0-4ee9-b8c0-43909e2373d6",
     },
   ],
-  projectroomCardData: ['to contribute and get involved.', 'Planungsbüros'],
+  projectroomCardData: ["to contribute and get involved.", "Planungsbüros"],
 };

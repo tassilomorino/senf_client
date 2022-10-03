@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { onSnapshot, doc } from "@firebase/firestore";
 import styled from "styled-components";
-import { Check, User as UserIcon, Typography, Icon, Box, Button } from "senf-atomic-design-system";
+import {
+  Check,
+  User as UserIcon,
+  Typography,
+  Icon,
+  Box,
+  Button,
+} from "senf-atomic-design-system";
 import { db } from "../firebase";
 import Img from "../images/icons/icon-192.png";
 
@@ -39,18 +46,33 @@ const User = ({ user1, user, selectUser, chat }) => {
       selected={chat.handle === user.handle}
       onClick={() => selectUser(user)}
     >
-      <Box justifyContent="space-between" alignItems="center">
+      <Box
+        justifyContent="space-between"
+        alignItems="center"
+      >
         {/* <Avatar src={user.avatar || Img} alt="avatar" /> */}
-        <Button variant="secondary" icon={<UserIcon />} />
-        <Box margin="10px" flexDirection="column">
+        <Button
+          variant="secondary"
+          icon={<UserIcon />}
+        />
+        <Box
+          margin="10px"
+          flexDirection="column"
+        >
           <Typography variant="h3">{user.handle}</Typography>
 
           {data && (
             <Box gap="3px">
               {data.from === user1 ? (
-                <Icon icon={<Check />} transform="scale(0.7)" />
+                <Icon
+                  icon={<Check />}
+                  transform="scale(0.7)"
+                />
               ) : null}
-              <Typography variant="bodySm" className="truncate">
+              <Typography
+                variant="bodySm"
+                className="truncate"
+              >
                 {data.text}
               </Typography>
             </Box>

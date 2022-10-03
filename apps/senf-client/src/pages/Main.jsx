@@ -1,11 +1,6 @@
 /** @format */
 
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -70,8 +65,6 @@ import { StyledH3 } from "../styles/GlobalStyle";
 import { getUserData } from "../redux/actions/userActions";
 import PostIdeaPage from "./PostIdeaPage";
 
-
-
 const CreateMainComponent = React.lazy(() =>
   import("../components/Create_Organisation_Projectrooms/CreateMainComponent")
 );
@@ -108,7 +101,6 @@ const MobileMapClickBackground = styled.div`
 `;
 
 const ScaleContainer = styled.div`
-
   width: 100vw;
   height: 100%;
   margin-top: 0vh;
@@ -118,21 +110,18 @@ const ScaleContainer = styled.div`
   pointer-events: none;
   transform: ${({ show }) => (show ? "scale(1)" : "scale(0.9)")};
   opacity: ${({ show }) => (show ? "1" : "0")};
-  transition: 0.5s; 
+  transition: 0.5s;
 
   @media (min-width: 768px) {
     left: 0px;
-     /* width: 500px;   */
+    /* width: 500px;   */
     height: 100vh;
     overflow: visible;
     z-index: 90;
     top: 0;
     position: fixed;
     overflow-x: visible;
-    
   }
-
-
 `;
 const Main = ({
   statefulMap,
@@ -148,18 +137,18 @@ const Main = ({
   setPostIdeaSuccessModalOpen,
   handleSetInitialMapBoundsAndViewport,
   setShowUI,
-  showUI
+  showUI,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const errors = useSelector((state) => state.UI.errors);
-  const { openModal } = useModals()
-  const { cookie_settings } = useSelector((state) => state.data)
+  const { openModal } = useModals();
+  const { cookie_settings } = useSelector((state) => state.data);
   const organization = useSelector((state) => state.data.organization);
 
   const { screamId, projectRoomId, organizationId, unknownPathId, profileId } =
     useParams();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openScream = useSelector((state) => state.UI.openScream);
@@ -205,54 +194,37 @@ const Main = ({
   const mapBounds = useSelector((state) => state.data.mapBounds);
 
   useEffect(() => {
-
-    unknownPathId && navigate('/')
+    unknownPathId && navigate("/");
     projectRoomId && dispatch(openProjectRoomFunc(projectRoomId, true));
     screamId && dispatch(openScreamFunc(screamId));
     organizationId && dispatch(openOrganizationFunc(organizationId, true));
-
-
   }, [dispatch, projectRoomId, screamId, organizationId, unknownPathId]);
   useEffect(() => {
-
-
     if (profileId) {
-      dispatch(openAccountFunc())
+      dispatch(openAccountFunc());
       const profilePage = true;
       if (profileId !== myProfileData.userId && openAccount) {
         // visiting profile of other user
 
-
-
-
-        dispatch(getUserData(profileId, profilePage))
+        dispatch(getUserData(profileId, profilePage));
         dispatch(getMyScreams(profileId, profilePage));
-        dispatch(getMyOrganizations(profileId, profilePage))
+        dispatch(getMyOrganizations(profileId, profilePage));
       } else if (profileId === myProfileData.userId && openAccount) {
         // visiting my own profile
 
-        dispatch(getUserData(myProfileData.userId, profilePage))
+        dispatch(getUserData(myProfileData.userId, profilePage));
         dispatch(getMyScreams(myProfileData.userId, profilePage));
-        dispatch(getMyOrganizations(myProfileData.userId, profilePage))
-
+        dispatch(getMyOrganizations(myProfileData.userId, profilePage));
       }
     }
   }, [dispatch, openAccount, myProfileData.userId, profileId]);
 
-
   const urlPath = window.location.pathname;
   useEffect(() => {
-    if (urlPath === '/verify') {
-      openModal(<AuthModal />, { swipe: !!isMobileCustom })
+    if (urlPath === "/verify") {
+      openModal(<AuthModal />, { swipe: !!isMobileCustom });
     }
   }, [urlPath]);
-
-
-
-
-
-
-
 
   useEffect(() => {
     if (window.location.pathname === "/projectRooms") {
@@ -403,7 +375,6 @@ const Main = ({
           payload: false,
         });
       }
-
     } else if (cardType === "organizationCard") {
       dispatch(openOrganizationFunc(cardId, true));
     }
@@ -417,7 +388,7 @@ const Main = ({
   const handleButtonLike = (event, screamId) => {
     event.stopPropagation();
     if (!user.authenticated) {
-      openModal(<AuthModal />, { swipe: !!isMobileCustom })
+      openModal(<AuthModal />, { swipe: !!isMobileCustom });
       return;
     }
     if (user.likes && user.likes.find((like) => like.screamId === screamId)) {
@@ -427,7 +398,9 @@ const Main = ({
     }
   };
 
-  const handleButtonComment = () => { console.log('handleButtonComment') };
+  const handleButtonComment = () => {
+    console.log("handleButtonComment");
+  };
 
   const handleSelectTopics = (topics) => {
     dispatch(handleTopicSelectorRedux(topics));
@@ -439,16 +412,12 @@ const Main = ({
 
   const handleOpenMyAccount = () => {
     if (user?.authenticated) {
-
       dispatch(openAccountFunc());
-      navigate(`/profile/${userId}`)
-
+      navigate(`/profile/${userId}`);
     } else {
-      openModal(<AuthModal />, { swipe: !!isMobileCustom })
+      openModal(<AuthModal />, { swipe: !!isMobileCustom });
     }
   };
-
-
 
   const handleCloseOrganizationPage = () => {
     dispatch(openOrganizationFunc(null, false));
@@ -457,14 +426,22 @@ const Main = ({
   const handleOpenCreateOrganization = () => {
     if (!user.authenticated) {
       // Add text into auth like "first you gt to create an account"
-      openModal(<AuthModal />, { swipe: !!isMobileCustom })
+      openModal(<AuthModal />, { swipe: !!isMobileCustom });
     } else {
-      openModal(<React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
-        <CreateMainComponent type="organization" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom })
-
+      openModal(
+        <React.Suspense
+          fallback={
+            <div style={{ width: "50px", height: "2000px" }}>
+              <Loader />
+            </div>
+          }
+        >
+          <CreateMainComponent type="organization" />
+        </React.Suspense>,
+        { size: "full", swipe: !!isMobileCustom }
+      );
     }
   };
-
 
   const openMailRequestProjectroom = () => {
     const link =
@@ -474,74 +451,91 @@ const Main = ({
       )}
     )}`;
     window.location.href = link;
-
-  }
+  };
   const handleCreateProjectroom = () => {
     if (!user.authenticated) {
       // Add text into auth like "first you gt to create an account"
-      openModal(<AuthModal />, { swipe: !!isMobileCustom })
+      openModal(<AuthModal />, { swipe: !!isMobileCustom });
     } else if (!user?.organizationId?.length) {
-      openModal(<>
-        <Box margin="30px 40px">
-          <Typography variant="h3" textAlign="center">
-            {t("createOrganizationForCreateProjectRoom")}
-          </Typography>
-        </Box>
-        <Box justifyContent="center" margin="0px 0px 10px 0px">
-          <Button
-            text={t("createOrganization")}
-            margin="20px"
-            onClick={handleOpenCreateOrganization}
-          />
-        </Box>
-      </>, { swipe: !!isMobileCustom })
-
+      openModal(
+        <>
+          <Box margin="30px 40px">
+            <Typography
+              variant="h3"
+              textAlign="center"
+            >
+              {t("createOrganizationForCreateProjectRoom")}
+            </Typography>
+          </Box>
+          <Box
+            justifyContent="center"
+            margin="0px 0px 10px 0px"
+          >
+            <Button
+              text={t("createOrganization")}
+              margin="20px"
+              onClick={handleOpenCreateOrganization}
+            />
+          </Box>
+        </>,
+        { swipe: !!isMobileCustom }
+      );
     } else if (user?.isOrgModerator === true) {
       dispatch(getMyOrganizations(user.userId));
       // dispatch(openCreateProjectRoomFunc(true));
 
-
-      openModal(<React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
-        <CreateMainComponent type="projectRoom" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom })
+      openModal(
+        <React.Suspense
+          fallback={
+            <div style={{ width: "50px", height: "2000px" }}>
+              <Loader />
+            </div>
+          }
+        >
+          <CreateMainComponent type="projectRoom" />
+        </React.Suspense>,
+        { size: "full", swipe: !!isMobileCustom }
+      );
     } else {
-
-      openModal(<>
-
-        <Box margin="30px 40px">
-          <Typography variant="h3" textAlign="center">
-            {t("requestCreateProjectRoom")}
-          </Typography>
-        </Box>
-        <Box justifyContent="center" margin="0px 0px 10px 0px">
-          <Button
-            text={t("getInTouch")}
-            zIndex="999"
-            backgroundColor="#fed957"
-            textColor="#353535"
-            margin="20px"
-            onClick={openMailRequestProjectroom}
-          />
-        </Box>
-      </>, { swipe: !!isMobileCustom })
-
+      openModal(
+        <>
+          <Box margin="30px 40px">
+            <Typography
+              variant="h3"
+              textAlign="center"
+            >
+              {t("requestCreateProjectRoom")}
+            </Typography>
+          </Box>
+          <Box
+            justifyContent="center"
+            margin="0px 0px 10px 0px"
+          >
+            <Button
+              text={t("getInTouch")}
+              zIndex="999"
+              backgroundColor="#fed957"
+              textColor="#353535"
+              margin="20px"
+              onClick={openMailRequestProjectroom}
+            />
+          </Box>
+        </>,
+        { swipe: !!isMobileCustom }
+      );
     }
   };
-
-
 
   return (
     <React.Fragment>
       {isMobileCustom && !postIdeaOpen && (
         <React.Fragment>
-          {isMobileCustom &&
-            !openScream &&
-            !openAccount &&
-            !openProjectRoom && (
-              <MobileMapClickBackground
-                show={swipedUp}
-                onClick={() => setSwipedUp(false)}
-              />
-            )}
+          {isMobileCustom && !openScream && !openAccount && !openProjectRoom && (
+            <MobileMapClickBackground
+              show={swipedUp}
+              onClick={() => setSwipedUp(false)}
+            />
+          )}
 
           <MobileTopBar
             setOrder={setOrder}
@@ -591,7 +585,6 @@ const Main = ({
       )}
 
       {postIdeaOpen && (
-
         <PostIdeaPage
           loadingProjects={loadingProjects}
           projectsData={projects}
@@ -599,12 +592,10 @@ const Main = ({
           postIdeaOpen={postIdeaOpen}
           setPostIdeaOpen={setPostIdeaOpen}
           postIdeaSuccessModalOpen={postIdeaSuccessModalOpen}
-          setPostIdeaSuccessModalOpen = {setPostIdeaSuccessModalOpen}
+          setPostIdeaSuccessModalOpen={setPostIdeaSuccessModalOpen}
           statefulMap={statefulMap}
         />
       )}
-
-
 
       <ScaleContainer show={showUI}>
         {!openInfoPage && (
@@ -642,7 +633,7 @@ const Main = ({
                   setOpenStatisticsOverview={setOpenStatisticsOverview}
                   openStatisticsOverview={openStatisticsOverview}
                   setOpenOrganizationsOverview={setOpenOrganizationsOverview}
-                  openOrganizationsOverview={openOrganizationsOverview}              
+                  openOrganizationsOverview={openOrganizationsOverview}
                   handleOpenMyAccount={handleOpenMyAccount}
                   setShowUI={setShowUI}
                   handleCreateProjectroom={handleCreateProjectroom}
@@ -695,7 +686,6 @@ const Main = ({
             handleEdit={handleOpenCreateOrganization}
             handleButtonOpenCard={handleButtonOpenCard}
             user={user}
-
           />
         )}
 
@@ -721,8 +711,8 @@ const Main = ({
               projectroomsData={dataFinalProjectRooms}
               handleOpenCreateOrganization={handleOpenCreateOrganization}
 
-            // openCreateOrganization,
-            // setOpenModalAuthenticate,
+              // openCreateOrganization,
+              // setOpenModalAuthenticate,
             />
           )}
 
@@ -736,15 +726,9 @@ const Main = ({
               projectRoomId={project?.projectRoomId}
             />
           )}
-
       </ScaleContainer>
 
-
-
-
-
       {errors && !loading && <ErrorLoading />}
-
 
       {/* {changeLocationModalOpen && (
         <ChangeLocationModal

@@ -23,8 +23,17 @@ const Google: FC<SVGRProps> = ({ color = "black", transform }) => (
     transform={transform}
   >
     <title>Google</title>
-    <g id="Icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-      <g id="Group" transform="translate(0.181800, -0.000300)">
+    <g
+      id="Icons"
+      stroke="none"
+      strokeWidth="1"
+      fill="none"
+      fillRule="evenodd"
+    >
+      <g
+        id="Group"
+        transform="translate(0.181800, -0.000300)"
+      >
         <path
           d="M3.5108,6.51 C4.1328,4.626 5.9028,3.273 7.9998,3.273 C9.1268,3.273 10.1458,3.673 10.9458,4.328 L13.2728,2 C11.8548,0.764 10.0368,0 7.9998,0 C4.8468,0 2.1318,1.799 0.8268,4.434 L3.5108,6.51 Z"
           id="Fill-2"

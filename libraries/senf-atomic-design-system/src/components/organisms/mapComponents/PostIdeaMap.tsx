@@ -38,7 +38,11 @@ const PostIdeaMap: FC<PostIdeaMapProps> = ({ initialViewport }) => (
     </GeocoderWrapper> */}
     <Map initialViewport={initialViewport}>
       <PinWrapper>
-        <img src={Pin} width="100" alt="ChatIcon" />
+        <img
+          src={Pin}
+          width="100"
+          alt="ChatIcon"
+        />
       </PinWrapper>
     </Map>
   </Wrapper>

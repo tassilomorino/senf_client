@@ -6,7 +6,7 @@ import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 const NavigationContainer = styled.div`
   position: fixed;
-  bottom: ${({ isMobile }) => isMobile ? "100px" : "0px"};
+  bottom: ${({ isMobile }) => (isMobile ? "100px" : "0px")};
   left: 0;
   z-index: 9999;
   height: 70px;
@@ -37,7 +37,12 @@ const Navigation = ({
   const { t } = useTranslation();
   return (
     <NavigationContainer isMobile={isMobileCustom}>
-      <Box maxWidth="500px" gap="8px" width="100%" margin="10px">
+      <Box
+        maxWidth="500px"
+        gap="8px"
+        width="100%"
+        margin="10px"
+      >
         {prevLabel && (
           <Button
             variant="white"
@@ -45,27 +50,27 @@ const Navigation = ({
             text={
               (localStorage.getItem("createOrganizationPostEdit") === "true" ||
                 localStorage.getItem("createProjectRoomPostEdit") === "true") &&
-                pagesData.length - 1 === index
+              pagesData.length - 1 === index
                 ? t("close")
                 : localStorage.getItem("createOrganizationPostEdit") ===
-                  "true" ||
+                    "true" ||
                   localStorage.getItem("createProjectRoomPostEdit") === "true"
-                  ? "Zurück zur Übersicht"
-                  : prevLabel
+                ? "Zurück zur Übersicht"
+                : prevLabel
             }
             // loading={}
             onClick={
               (localStorage.getItem("createOrganizationPostEdit") === "true" ||
                 localStorage.getItem("createProjectRoomPostEdit") === "true") &&
-                pagesData.length - 1 === index
+              pagesData.length - 1 === index
                 ? setClose
                 : localStorage.getItem("createOrganizationPostEdit") ===
-                  "true" ||
+                    "true" ||
                   localStorage.getItem("createProjectRoomPostEdit") === "true"
-                  ? () => set(pagesData.length - 1)
-                  : handlePrev
+                ? () => set(pagesData.length - 1)
+                : handlePrev
             }
-          // disabled={}
+            // disabled={}
           />
         )}
         {nextLabel && (
@@ -75,13 +80,13 @@ const Navigation = ({
             text={
               (localStorage.getItem("createOrganizationPostEdit") === "true" ||
                 localStorage.getItem("createProjectRoomPostEdit") === "true") &&
-                pagesData.length - 1 === index
+              pagesData.length - 1 === index
                 ? "Abspeichern"
                 : localStorage.getItem("createOrganizationPostEdit") ===
-                  "true" ||
+                    "true" ||
                   localStorage.getItem("createProjectRoomPostEdit") === "true"
-                  ? "Speichern"
-                  : nextLabel
+                ? "Speichern"
+                : nextLabel
             }
             loading={loading}
             onClick={handleNext}

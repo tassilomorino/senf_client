@@ -25,8 +25,6 @@ const firebaseConfig = {
   // messagingSenderId: "625175372028",
   // appId: "1:625175372028:web:a9cb8092f08d2dd9543779",
 
-
-
   apiKey: "AIzaSyBbVacMvYfdUG96Ez8UVWbXZPO3f4HnjGY",
   authDomain: "senf-dev.firebaseapp.com",
   databaseURL:

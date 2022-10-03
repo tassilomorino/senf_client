@@ -5,8 +5,6 @@ import { Wrapper } from "./Styled.EditSurvey";
 import { arrayUnion, collection, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 
-
-
 const TypeSelector = ({ qtype, setQtype }) => {
   const handleChange = (e) => {
     const type = parseInt(e.target.value);
@@ -14,7 +12,11 @@ const TypeSelector = ({ qtype, setQtype }) => {
   };
   return (
     <div className="col-md-6 offset-md-3 col-12">
-      <select className="custom-select" value={qtype} onChange={handleChange}>
+      <select
+        className="custom-select"
+        value={qtype}
+        onChange={handleChange}
+      >
         <option value="0">Choose Question Type</option>
         <option value="1">Multi-Select</option>
         <option value="2">Single-Select</option>
@@ -23,12 +25,9 @@ const TypeSelector = ({ qtype, setQtype }) => {
   );
 };
 
-
-
-
 const CreateSurvey = ({ squestions, setSquestion }) => {
   const generateRandomNumber = () => Math.floor(Math.random() * 1000 + 1);
-  const docId = window.location.pathname.replace('/edit/', '');
+  const docId = window.location.pathname.replace("/edit/", "");
   const schemaRef = doc(db, "surveys", docId);
   const [qtext, setQtext] = useState("");
   const [qtype, setQtype] = useState(0);
@@ -70,7 +69,7 @@ const CreateSurvey = ({ squestions, setSquestion }) => {
     setQtext("");
     console.log(newSurveyQuestion);
     await updateDoc(schemaRef, {
-      scehma: arrayUnion(newSurveyQuestion[newSurveyQuestion.length - 1])
+      scehma: arrayUnion(newSurveyQuestion[newSurveyQuestion.length - 1]),
     });
     setQtype(0);
     setOptions([
@@ -78,15 +77,19 @@ const CreateSurvey = ({ squestions, setSquestion }) => {
       { uid: generateRandomNumber(), value: "" },
     ]);
   };
-  const publish = () => {
-    
-  };
+  const publish = () => {};
   return (
     <Wrapper>
-      <TypeSelector qtype={qtype} setQtype={setQtype} />
+      <TypeSelector
+        qtype={qtype}
+        setQtype={setQtype}
+      />
       {qtype !== 0 ? (
         <>
-          <Question qtext={qtext} setQtext={setQtext} />
+          <Question
+            qtext={qtext}
+            setQtext={setQtext}
+          />
           {options.map((opt, key) => (
             <Option
               key={key}
@@ -96,10 +99,16 @@ const CreateSurvey = ({ squestions, setSquestion }) => {
               updateText={updateTextOption}
             />
           ))}
-          <button className="btn btn-danger m-3" onClick={addQuestion}>
+          <button
+            className="btn btn-danger m-3"
+            onClick={addQuestion}
+          >
             Add Question
           </button>
-          <button className="btn btn-danger m-3" onClick={publish}>
+          <button
+            className="btn btn-danger m-3"
+            onClick={publish}
+          >
             Publish
           </button>
         </>

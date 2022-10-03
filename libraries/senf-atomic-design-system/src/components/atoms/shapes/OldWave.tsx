@@ -171,7 +171,10 @@ const Wave = (props) => {
         transition: "2s",
       }}
     >
-      <WaveCanvas canvasRef={canvasRef} props={props} />
+      <WaveCanvas
+        canvasRef={canvasRef}
+        props={props}
+      />
     </div>
   );
 };

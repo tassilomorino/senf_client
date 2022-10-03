@@ -48,7 +48,10 @@ const ToggleStatusComponent = ({
       <br />
       <br />
       <br />
-      <StyledH2 fontWeight="900" textAlign="center">
+      <StyledH2
+        fontWeight="900"
+        textAlign="center"
+      >
         {title}
       </StyledH2>
       <br />
@@ -67,7 +70,10 @@ const ToggleStatusComponent = ({
           >
             {deactivatedLabel}
           </StyledH3>
-          <StyledH3 fontWeight="400" margin="0px 20px">
+          <StyledH3
+            fontWeight="400"
+            margin="0px 20px"
+          >
             {" "}
              |
           </StyledH3>

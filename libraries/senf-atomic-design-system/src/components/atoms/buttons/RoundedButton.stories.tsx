@@ -17,7 +17,12 @@ const Template: Story<ButtonProps> = (args) => <RoundedButton {...args} />;
 
 export const AddButton = Template.bind({});
 AddButton.args = {
-  icon: <Plus color="rgb(226,183,54)" transform="scale(1.5)" />,
+  icon: (
+    <Plus
+      color="rgb(226,183,54)"
+      transform="scale(1.5)"
+    />
+  ),
 
   size: "big",
 };
@@ -25,7 +30,12 @@ AddButton.args = {
 export const AddButtonYellow = Template.bind({});
 AddButtonYellow.args = {
   variant: "primary",
-  icon: <Plus color="rgb(226,183,54)" transform="scale(1.5)" />,
+  icon: (
+    <Plus
+      color="rgb(226,183,54)"
+      transform="scale(1.5)"
+    />
+  ),
   size: "big",
   color: "white",
 };

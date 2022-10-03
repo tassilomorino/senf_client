@@ -54,10 +54,13 @@ export function search(dbData, userInput, dbDataKeys) {
   const sanitizedUserInput = userInput.toString().toLowerCase();
   if (userInput === "") return dbData;
 
-  return dbData.filter((object) => dbDataKeys.some((dbDataKey) => (
-    object[dbDataKey] &&
-    object[dbDataKey].toString().toLowerCase().includes(sanitizedUserInput)
-  )));
+  return dbData.filter((object) =>
+    dbDataKeys.some(
+      (dbDataKey) =>
+        object[dbDataKey] &&
+        object[dbDataKey].toString().toLowerCase().includes(sanitizedUserInput)
+    )
+  );
 }
 
 export function sort(items, dropdown) {
