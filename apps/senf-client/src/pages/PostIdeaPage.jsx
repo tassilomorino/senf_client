@@ -222,11 +222,11 @@ const PostIdeaPage = ({
 
     if (formik.values.contact) {
       newScream.contact = formik.values.contact;
-      newScream.contactTitle = formik.values.contactTitle || "Kontakt";
+      newScream.contactTitle = formik.values.contactTitle;
     }
     if (formik.values.weblink) {
       newScream.weblink = formik.values.weblink;
-      newScream.weblinkTitle = formik.values.weblinkTitle || "Website";
+      newScream.weblinkTitle = formik.values.weblinkTitle;
     }
 
     if (selectedUnix.length > 0) {
