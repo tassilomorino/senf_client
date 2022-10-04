@@ -284,7 +284,7 @@ const PostIdeaPage = ({
   };
   const newViewport = useRef();
 
-  statefulMap.on("moveend", () => {
+  statefulMap?.on("moveend", () => {
     newViewport.current = {
       latitude: statefulMap.getCenter().lat,
       longitude: statefulMap.getCenter().lng,

@@ -14,11 +14,21 @@ import { openLink } from "../../../util/helpers";
 import SocialmediaShare from "../../organisms/socialmediaShare/SocialmediaShare";
 import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
 
+const Background = styled.div`
+  background-color: ${({ theme }) => theme.colors.beige.beige10};
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+`;
+
 const SenfManCelebratingImg = styled.img`
   position: absolute;
   left: 30%;
 
-  z-index: 1;
+  z-index: 3;
   pointer-events: none;
   user-select: none;
 `;
@@ -26,7 +36,7 @@ const SkewedCircleImg = styled.img`
   position: absolute;
   left: 8.18%;
   top: 10%;
-  z-index: 0;
+  z-index: 2;
   pointer-events: none;
   user-select: none;
 `;
@@ -48,6 +58,7 @@ const PostIdeaSuccess: FC<SuccessProps> = ({
     : null;
   return (
     <>
+      <Background />
       <SenfManCelebratingImg
         src={senfManCelebrating}
         alt="Illustration"
