@@ -10,12 +10,7 @@ import { db } from "../firebase";
 
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.beige.beige20};
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: scroll;
+  height: 100%;
 `;
 
 const TakeSurvey = () => {

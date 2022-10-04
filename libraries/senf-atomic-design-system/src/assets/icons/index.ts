@@ -43,3 +43,7 @@ export { default as Vereine } from './Vereine'
 export { default as WhatsApp } from './WhatsApp'
 
 export { default as Loading } from './Loading'
+export { default as Minus } from './Minus'
+export { default as Eye } from './Eye'
+export { default as Write } from './Write'
+export { default as Bin } from './Bin'

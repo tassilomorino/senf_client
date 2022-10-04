@@ -18,21 +18,16 @@ import CreateNewSurvey from "./CreateNewSurvey";
 
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.beige.beige20};
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: scroll;
 `;
 
 const DashBoard = () => {
+  const [ surveys, setSurveys ] = useState([])
   const { t } = useTranslation();
   const isMobile = isMobileCustom()
-  const [surveys, setSurveys] = useState([]);
   const [filteredSurveys, setFilteredSurveys] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate()
+  
   const getSurveys = async () => {
     try {
       const surveysRef = collection(db, "surveys");
@@ -54,31 +49,26 @@ const DashBoard = () => {
       throw new Error(error, "Error in Surveylist");
     }
   };
-
   const handleDeleteSurvey = async (surveyId) => {
     try {
       const docRef = doc(db, `surveys/${surveyId}`);
-      await deleteDoc(docRef).then(() => {
-        getSurveys();
-      });
+      await deleteDoc(docRef).then(() => getSurveys());
     } catch (error) {
       throw new Error(error, "error in deleteScreamFunc");
     }
   };
-
   useEffect(() => {
     getSurveys();
   }, []);
-
   useEffect(() => {
     setFilteredSurveys(
-      surveys.filter(survey => Object.values(survey).join(' ').toLowerCase().indexOf(searchTerm.toLowerCase()) > -1));
+      surveys?.filter(survey => Object.values(survey).join(' ').toLowerCase().indexOf(searchTerm.toLowerCase()) > -1));
   }, [searchTerm, surveys]);
 
 
   return (
     <Wrapper>
-      <Box gap="20px" flexDirection="column" margin="30px">
+      <Box gap="20px" flexDirection="column" padding="30px">
         <Typography variant="h2">My Surveys</Typography>
         <Box justifyContent="space-between" gap="16px" alignItems="flex-end">
           <Box width="400px">
@@ -91,7 +81,7 @@ const DashBoard = () => {
             swipe: isMobile && true
 
           }}>
-            <CreateNewSurvey getSurveys={getSurveys} navigate={navigate} />
+            <CreateNewSurvey navigate={navigate} />
           </ModalButton>
         </Box>
         <Table
@@ -131,6 +121,11 @@ const DashBoard = () => {
                   />
                   <Button
                     variant="white"
+                    text="view results"
+                    onClick={() => navigate(`results/${row.surveyId}`)}
+                  />
+                  <Button
+                    variant="white"
                     text="edit"
                     onClick={() => {
                       navigate(`edit/${row.surveyId}`)
@@ -140,7 +135,6 @@ const DashBoard = () => {
                     variant="white"
                     text="Delete"
                     onClick={() => handleDeleteSurvey(row.surveyId)}
-
                   />
                 </Box>
               </Box>
