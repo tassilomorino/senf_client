@@ -156,8 +156,8 @@ const PostIdea: FC<PostIdeaProps> = ({
         <>
           <Box
             zIndex={9}
-            flexDirection={"row"}
-            margin={"14px 14px 0px 14px"}
+            flexDirection="column"
+            margin="14px 14px 0px 14px"
           >
             <Geocoder
               formik={formik}

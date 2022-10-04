@@ -20,7 +20,7 @@ import useOnClickOutside from "../../../hooks/useOnClickOutside";
 const ResultsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: auto;
   width: 100vw;
   position: fixed;
   padding-top: 70px;
