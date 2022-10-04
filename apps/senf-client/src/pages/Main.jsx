@@ -594,6 +594,7 @@ const Main = ({
           postIdeaSuccessModalOpen={postIdeaSuccessModalOpen}
           setPostIdeaSuccessModalOpen={setPostIdeaSuccessModalOpen}
           statefulMap={statefulMap}
+          projectroomsData={projects}
         />
       )}
 

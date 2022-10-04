@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { isMobileCustom } from "../util/customDeviceDetect";
 import { postScream } from "../redux/actions/screamActions";
 import { clearErrors } from "../redux/actions/errorsActions";
+import { OptionsProjects } from "../data/OptionsProjects";
 
 // Components
 import PostScreamSelectContainter from "../components/PostIdea/PostScreamSelectContainter";
@@ -59,6 +60,7 @@ const PostIdeaPage = ({
   postIdeaSuccessModalOpen,
   setPostIdeaSuccessModalOpen,
   statefulMap,
+  projectroomsData,
 }) => {
   const dispatch = useDispatch();
   const { openModal } = useModals();
@@ -373,6 +375,8 @@ const PostIdeaPage = ({
         setPostIdeaSuccessModalOpen={setPostIdeaSuccessModalOpen}
         navigate={navigate}
         newIdea={newIdea}
+        projectroomsData={projectroomsData}
+        projectroomSelected={projectSelected}
       />
     </React.Fragment>
   );

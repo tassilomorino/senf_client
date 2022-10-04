@@ -15,7 +15,7 @@ const Container = styled(animated.div)<DropdownListContainerProps>`
   flex-direction: column;
   box-sizing: border-box;
   position: absolute;
-  width: auto;
+  width: ${({ width }) => width || "auto"};
   min-width: max-content;
   height: auto;
   padding: ${({ theme }) => theme.space[2]};
@@ -39,6 +39,7 @@ const Container = styled(animated.div)<DropdownListContainerProps>`
     theme.colors.greyscale.greyscale20tra};
 `;
 const DropdownListContainer: FC<DropdownListContainerProps> = ({
+  children,
   data,
   options,
 }) => {
@@ -74,7 +75,9 @@ const DropdownListContainer: FC<DropdownListContainerProps> = ({
           style={{ ...styles, zIndex: 9999 }}
           options={{ x, y, ...options }}
           ref={container}
+          width={options?.width}
         >
+          {children}
           <DropdownList
             data={data}
             options={options}
