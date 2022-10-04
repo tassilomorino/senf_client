@@ -81,6 +81,7 @@ const PostIdea: FC<PostIdeaProps> = ({
   const [addressSelected, setAddressSelected] = React.useState(false);
   const isMobile = isMobileCustom();
   const { openModal, closeModal } = useModals();
+
   const createIdeaHeader = (
     <Box
       flexDirection="row"
@@ -154,11 +155,9 @@ const PostIdea: FC<PostIdeaProps> = ({
       {isMobile && !postIdeaSuccessModalOpen && (
         <>
           <Box
-            position="fixed"
-            top="16px"
-            left="16px"
-            right="16px"
-            zIndex="9999"
+            zIndex={9}
+            flexDirection={"row"}
+            margin={"14px 14px 0px 14px"}
           >
             <Geocoder
               formik={formik}
@@ -258,27 +257,29 @@ const PostIdea: FC<PostIdeaProps> = ({
           </Box>
         </Wrapper>
       )}
-      <ProjectroomsWrapper>
-        <Box margin="16px">
-          {/* <Typography variant="bodyBg">{t("")}</Typography> */}
-          <Button
-            variant="secondary"
-            width="max"
-            size="small"
-            text={t("show_projectrooms")}
-            onClick={() => setShowProjectrooms(true)}
-          />
-        </Box>
-        {showProjectrooms && (
-          <List
-            CardType={ProjectroomCard}
-            data={projectroomsData}
-            // projectroomsData={projectroomsData}
-            // handleButtonOpenCard={handleButtonOpenCard}
-            listEndText={t("noMoreProjectrooms")}
-          />
-        )}
-      </ProjectroomsWrapper>
+      {!isMobile && (
+        <ProjectroomsWrapper>
+          <Box margin="16px">
+            {/* <Typography variant="bodyBg">{t("")}</Typography> */}
+            <Button
+              variant="secondary"
+              width="max"
+              size="small"
+              text={t("show_projectrooms")}
+              onClick={() => setShowProjectrooms(true)}
+            />
+          </Box>
+          {showProjectrooms && (
+            <List
+              CardType={ProjectroomCard}
+              data={projectroomsData}
+              // projectroomsData={projectroomsData}
+              // handleButtonOpenCard={handleButtonOpenCard}
+              listEndText={t("noMoreProjectrooms")}
+            />
+          )}
+        </ProjectroomsWrapper>
+      )}
     </>
   );
 };
