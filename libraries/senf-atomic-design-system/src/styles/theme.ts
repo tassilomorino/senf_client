@@ -1,59 +1,64 @@
 /** @format */
 import type { Theme } from "styled-system";
-import { generateThemeColors, logColors } from "./helpers";
-
-export type Color = {
-  h: number;
-  s: number;
-  l: number;
-};
-
-export type ColorPallet = {
-  [key: string]: Color;
-};
+import palette from "./palette";
+import { generateThemeColors, composite, generateRaw, generateStaticColors, logColors, ColorPallet, HSL } from "./helpers";
+import layers, { BaseLayerProps } from "./layers";
 
 const colors: ColorPallet = {
-  primary: { h: 46, s: 100, l: 71 },
-  shade: { h: 37, s: 100, l: 30 },
-  grey: { h: 44, s: 15, l: 46 },
-  text: { h: 36, s: 27, l: 11 },
+  primary: [46, 100, 71],
+  shade: [37, 100, 30],
+  grey: [44, 15, 46],
+  text: [36, 27, 11],
+};
+const compositeColors: ColorPallet = {
+  primary: colors.primary, shade: colors.shade
 };
 const transparent: ColorPallet = {
-  white: { h: 0, s: 0, l: 100 },
+  white: [0, 0, 100],
 };
 const categories: ColorPallet = {
-  bike: { h: 227, s: 70, l: 68 },
-  traffic: { h: 194, s: 75, l: 70 },
-  social: { h: 10, s: 68, l: 70 },
-  sports: { h: 27, s: 83, l: 77 },
-  utilities: { h: 262, s: 85, l: 78 },
-  environment: { h: 154, s: 50, l: 70 },
-  other: { h: 42, s: 91, l: 78 },
+  bike: [227, 70, 68],
+  traffic: [194, 75, 70],
+  social: [10, 68, 70],
+  sports: [27, 83, 77],
+  utilities: [262, 85, 78],
+  environment: [154, 50, 70],
+  other: [42, 91, 78],
 };
 const signal: ColorPallet = {
-  red: { h: 2, s: 80, l: 60 },
-  green: { h: 145, s: 100, l: 30 },
-  blue: { h: 242, s: 81, l: 60 },
-  orange: { h: 38, s: 100, l: 57 },
+  alert: [2, 80, 60],
+  warning: [38, 100, 57],
+  success: [145, 100, 30],
+  info: [242, 81, 60],
 };
-const luminance = [100, 75, 50, 25, 15, 10, 5];
+const luminance = [100, 81, 64, 49, 36, 25, 16, 10, 5, 2];
 
 const themeColors = {
+  ...generateThemeColors({ "blend-shade-primary": compositeColors.shade }, [50, 25, 10], colors.primary as HSL),
+  ...generateThemeColors({ "blend-primary-bg": composite(...colors.primary as HSL, 3 / 4, compositeColors.shade as HSL) }, [15]),
   ...generateThemeColors(colors, luminance),
   ...generateThemeColors(transparent, luminance, false),
-};
-const categoryColors = generateThemeColors(categories, [100, 50]);
-const signalColors = generateThemeColors(signal, [100, 85], [0, 0, 0]);
+  ...generateThemeColors(categories, [100]),
+  ...generateThemeColors(signal, luminance),
+  ...generateThemeColors(signal, luminance)
+}
+
+// after modifying the theme colors, make them static to make use of TS
+/**
+ * After modifying the theme colors, make them static to make use of TS
+ * Export the output in ./palette.ts and import it here.
+ */
+// generateStaticColors(themeColors)
 
 // for testing
-// logColors({ ...themeColors, ...categoryColors, ...signalColors })
+// logColors({ ...themeColors })
 
 /**
  * @todo I think we should decide whether we return variables with a unit or without. My proposal is that we return units as numbers and assume pixel values. We can then provide a px-to-rem function and devs can transform the values to rem as well
  * @todo I also think the keys should be singular because I think it is more intuitive to use `theme.color.primary-100` or `theme.radius[0]
  */
 
-const theme: Theme = {
+const theme = {
   fontFamily: "Nunito",
 
   // SPACE are not complete/verified
@@ -128,9 +133,6 @@ const theme: Theme = {
   zIndices: [0, 1],
 
   colors: {
-    ...themeColors,
-    categories: categoryColors,
-    signals: signalColors,
     primary: {
       primary160: "#d6ab00",
       primary140: "#e8ba02",
@@ -226,7 +228,8 @@ const theme: Theme = {
       blue: "#322bf3",
     },
     primaryHoverLayerShadowColor: "rgba(235, 184, 0, 0.5)",
+    palette,
   },
+  layers: (props: BaseLayerProps) => layers(props, theme.colors.palette)
 };
-
 export default theme;
