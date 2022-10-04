@@ -58,7 +58,9 @@ const Wrapper = styled.div<PostIdeaFormProps>`
   width: 100%;
   height: auto;
   padding: 16px;
-  background-color: white;
+  /* background-color: white; */
+  border-top: 1px solid
+    ${({ theme, color }) => color || theme.colors.brown.brown20tra};
   z-index: 2;
 `;
 
@@ -114,7 +116,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
           value={formik?.values.title}
           error={formik?.touched.title && Boolean(formik?.errors?.title)}
           note={formik?.touched.title && formik?.errors?.title}
-
+          // maxRows={2}
           // maxLength: 70
         />
 
@@ -142,6 +144,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
             width="max"
             variant="secondary"
             size="small"
+            justifyContent="flex-start"
             text={
               formik?.values.weblinkTitle ||
               formik?.values.weblink ||
@@ -167,6 +170,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
           <ModalButton
             variant="secondary"
             size="small"
+            justifyContent="flex-start"
             width="max"
             text={
               formik?.values.contactTitle ||
@@ -201,6 +205,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
         </Typography>
         <DropdownButton
           variant="secondary"
+          size="small"
           icon={
             formik?.values?.topic ? (
               <Dot color={setColorByTopic(formik?.values?.topic)} />

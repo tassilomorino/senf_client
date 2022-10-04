@@ -14,6 +14,9 @@ import { Arrow } from "../../../assets/icons";
 import SwipeModal from "../../molecules/modals/SwipeModal";
 import SuccessSubmitIdea from "../success/SuccessSubmitIdea";
 import { useModals } from "../../molecules/modalStack/ModalProvider";
+import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
+import List from "../../molecules/list/List";
+import ProjectroomCard from "../../molecules/cards/ProjectroomCard";
 
 const Wrapper = styled.div`
   z-index: 999;
@@ -25,10 +28,19 @@ const Wrapper = styled.div`
 
   width: 366px;
   height: auto;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   border-radius: 24px;
   /* padding: 0px 16px 16px 16px; */
   ${() => LayerWhiteFirstDefault};
+`;
+const ProjectroomsWrapper = styled.div`
+  z-index: 99;
+  position: absolute;
+  top: 250px;
+  left: 80px;
+  width: 400px;
+  height: calc(100vh - 250px);
+  overflow: scroll;
 `;
 
 const StyledMobileHeaders = styled.div`
@@ -59,9 +71,12 @@ const PostIdea: FC<PostIdeaProps> = ({
   setPostIdeaSuccessModalOpen,
   navigate,
   newIdea,
+  projectroomsData,
+  projectroomSelected,
 }) => {
   const { t } = useTranslation();
   const [postIdeaForm, setPostIdeaForm] = React.useState(false);
+  const [showProjectrooms, setShowProjectrooms] = React.useState(false);
 
   const [addressSelected, setAddressSelected] = React.useState(false);
   const isMobile = isMobileCustom();
@@ -225,27 +240,45 @@ const PostIdea: FC<PostIdeaProps> = ({
               padding="12px 16px 8px"
             >
               {createIdeaHeader}
-
               {!addressSelected && InstructionsHeader}
             </Box>
             {addressSelected && (
-              <>
-                <PostIdeaForm
-                  formik={formik}
-                  statefulMap={statefulMap}
-                  checkIfCalendar={checkIfCalendar}
-                  selectedDays={selectedDays}
-                  handleChangeCalendar={handleChangeCalendar}
-                  setPostIdeaOpen={setPostIdeaOpen}
-                  handleSubmit={handleSubmit}
-                  loading={loading}
-                  Out={Out}
-                />
-              </>
+              <PostIdeaForm
+                formik={formik}
+                statefulMap={statefulMap}
+                checkIfCalendar={checkIfCalendar}
+                selectedDays={selectedDays}
+                handleChangeCalendar={handleChangeCalendar}
+                setPostIdeaOpen={setPostIdeaOpen}
+                handleSubmit={handleSubmit}
+                loading={loading}
+                Out={Out}
+              />
             )}
           </Box>
         </Wrapper>
       )}
+      <ProjectroomsWrapper>
+        <Box margin="16px">
+          {/* <Typography variant="bodyBg">{t("")}</Typography> */}
+          <Button
+            variant="secondary"
+            width="max"
+            size="small"
+            text={t("show_projectrooms")}
+            onClick={() => setShowProjectrooms(true)}
+          />
+        </Box>
+        {showProjectrooms && (
+          <List
+            CardType={ProjectroomCard}
+            data={projectroomsData}
+            // projectroomsData={projectroomsData}
+            // handleButtonOpenCard={handleButtonOpenCard}
+            listEndText={t("noMoreProjectrooms")}
+          />
+        )}
+      </ProjectroomsWrapper>
     </>
   );
 };
