@@ -13,6 +13,7 @@ import Typography from "../../atoms/typography/Typography";
 import { openLink } from "../../../util/helpers";
 import SocialmediaShare from "../../organisms/socialmediaShare/SocialmediaShare";
 import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
+import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 
 const Background = styled.div`
   background-color: ${({ theme }) => theme.colors.beige.beige10};
@@ -49,7 +50,7 @@ const PostIdeaSuccess: FC<SuccessProps> = ({
   closeModal,
 }) => {
   const { t } = useTranslation();
-
+  const isMobile = isMobileCustom();
   const projectRoomPath = newIdea?.projectRoomId
     ? `https://senf.koeln/projectRooms/${newIdea.projectRoomId}/${newIdea.screamId}`
     : null;
@@ -97,11 +98,14 @@ const PostIdeaSuccess: FC<SuccessProps> = ({
             variant="white"
             icon="Share"
             text={t("success_page_share_idea")}
+            options={{ modal: !!isMobile, closeOnSelect: false }}
             data={
-              <SocialmediaShare
-                path={projectRoomPath || ideaPath}
-                // handleShareIdeaVia={handle.shareIdeaVia}
-              />
+              <>
+                <SocialmediaShare
+                  path={projectRoomPath || ideaPath}
+                  // handleShareIdeaVia={handle.shareIdeaVia}
+                />
+              </>
             }
           />
         </Box>
