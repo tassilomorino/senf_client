@@ -2,7 +2,13 @@
 export { default as AllOrganizationTypes } from "./assets/icons/AllOrganizationTypes";
 export { default as Alert } from "./assets/icons/Alert";
 export { default as Apple } from "./assets/icons/Apple";
-export { default as Arrow } from "./assets/icons/Arrow";
+export {
+  default as Arrow,
+  ArrowUp,
+  ArrowRight,
+  ArrowDown,
+  ArrowLeft,
+} from "./assets/icons/Arrow";
 export { default as Bell } from "./assets/icons/Bell";
 export { default as Bulb } from "./assets/icons/Bulb";
 export { default as CalendarIcon } from "./assets/icons/CalendarIcon";
@@ -13,6 +19,7 @@ export { default as CommentActive } from "./assets/icons/CommentActive";
 export { default as CommentInactive } from "./assets/icons/CommentInactive";
 export { default as Delete } from "./assets/icons/Delete";
 export { default as Dot } from "./assets/icons/Dot";
+export { default as Document } from "./assets/icons/Document";
 export { default as DotAllTopics } from "./assets/icons/DotAllTopics";
 export { default as Edit } from "./assets/icons/Edit";
 export { default as Facebook } from "./assets/icons/Facebook";
@@ -35,15 +42,17 @@ export { default as Report } from "./assets/icons/Report";
 export { default as Room } from "./assets/icons/Room";
 export { default as Search } from "./assets/icons/Search";
 export { default as SenfLogoSmall } from "./assets/icons/SenfLogoSmall";
+export { default as SenfLogoBig } from "./assets/icons/SenfLogoBig";
 export { default as Share } from "./assets/icons/Share";
 export { default as Stadtverwaltung } from "./assets/icons/Stadtverwaltung";
 export { default as Stats } from "./assets/icons/Stats";
 export { default as User } from "./assets/icons/User";
 export { default as Vereine } from "./assets/icons/Vereine";
 export { default as WhatsApp } from "./assets/icons/WhatsApp";
-
-export { default as LogoText } from "./assets/logo/LogoText";
+export { default as Fullscreen } from "./assets/icons/Fullscreen";
+export { default as Loading } from "./assets/icons/Loading";
 export { default as DashboardIcon } from "./assets/icons/DashboardIcon";
+export { default as LogoText } from "./assets/logo/LogoText";
 
 export {
   LayerWhiteGradientBordersDefault,
