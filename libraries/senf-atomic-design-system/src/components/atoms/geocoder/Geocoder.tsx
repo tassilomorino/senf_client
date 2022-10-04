@@ -117,8 +117,7 @@ const Geocoder: FC<GeocoderProps> = ({
   };
 
   return (
-    <div ref={outerRef}>
-      {" "}
+    <>
       <Box
         zIndex={999}
         width="100%"
@@ -183,7 +182,7 @@ const Geocoder: FC<GeocoderProps> = ({
           </DropdownListContainer>
         )}
       </Box>
-    </div>
+    </>
   );
 };
 
