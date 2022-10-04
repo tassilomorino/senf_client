@@ -12,5 +12,5 @@ export interface ContentDropdownItemProps {
   onClick?: MouseEventHandler<HTMLButtonElement>;
   type?: ToggleInputProps["type"];
   minWidth?: string;
-  size?: "small" | "medium" | "large" | "sm" | "md" | "lg"
+  size?: "small" | "medium" | "large" | "sm" | "md" | "lg";
 }

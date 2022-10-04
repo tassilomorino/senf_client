@@ -114,8 +114,6 @@
 
 //       });
 
-
-
 //       // Clear results container when search is cleared.
 //       // geocoder.on("clear", () => {
 //       //   results.innerText = "";
@@ -126,7 +124,6 @@
 //       };
 //     }
 //   }, [statefulGeocoder])
-
 
 //   useEffect(() => {
 
@@ -142,8 +139,6 @@
 //       }, 1000);
 //     }
 //   }, [address, statefulGeocoder])
-
-
 
 //   return (
 //     <Wrapper>

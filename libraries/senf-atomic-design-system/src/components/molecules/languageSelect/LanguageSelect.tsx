@@ -20,13 +20,11 @@ const LanguageSelect: FC<LanguageSelectProps> = ({ direction }) => {
       width="height"
       text={locales[i18n.resolvedLanguage].shortName}
       options={{ direction, size: "md", closeOnSelect: true }}
-      data={
-        Object.keys(locales).map((locale) => ({
-          checked: i18n.resolvedLanguage === locale,
-          text: locales[locale].nativeName,
-          onClick: () => i18n.changeLanguage(locale)
-        }))
-      }
+      data={Object.keys(locales).map((locale) => ({
+        checked: i18n.resolvedLanguage === locale,
+        text: locales[locale].nativeName,
+        onClick: () => i18n.changeLanguage(locale),
+      }))}
     />
   );
 };

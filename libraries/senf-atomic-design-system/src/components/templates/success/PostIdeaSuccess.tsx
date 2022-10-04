@@ -11,6 +11,8 @@ import senfManCelebrating from "../../../assets/illustrations/senfManCelebrating
 import skewedCircle from "../../../assets/illustrations/skewedCircle.png";
 import Typography from "../../atoms/typography/Typography";
 import { openLink } from "../../../util/helpers";
+import SocialmediaShare from "../../organisms/socialmediaShare/SocialmediaShare";
+import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
 
 const SenfManCelebratingImg = styled.img`
   position: absolute;
@@ -38,6 +40,12 @@ const PostIdeaSuccess: FC<SuccessProps> = ({
 }) => {
   const { t } = useTranslation();
 
+  const projectRoomPath = newIdea?.projectRoomId
+    ? `https://senf.koeln/projectRooms/${newIdea.projectRoomId}/${newIdea.screamId}`
+    : null;
+  const ideaPath = newIdea?.screamId
+    ? `https://senf.koeln/idea/${newIdea.screamId}`
+    : null;
   return (
     <>
       <SenfManCelebratingImg
@@ -71,10 +79,19 @@ const PostIdeaSuccess: FC<SuccessProps> = ({
           >
             {t("success_page_published")}
           </Typography>
-          <Button
-            text={t("success_page_share_idea")}
-            variant="white"
+
+          <DropdownButton
+            size="md"
             width="max"
+            variant="white"
+            icon="Share"
+            text={t("success_page_share_idea")}
+            data={
+              <SocialmediaShare
+                path={projectRoomPath || ideaPath}
+                // handleShareIdeaVia={handle.shareIdeaVia}
+              />
+            }
           />
         </Box>
         <Box

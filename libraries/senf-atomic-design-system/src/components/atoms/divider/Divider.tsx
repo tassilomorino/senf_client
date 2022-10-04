@@ -5,16 +5,16 @@ import styled from "styled-components";
 import { DividerProps } from "./Divider.types";
 
 const StyledDivider = styled.div<DividerProps>`
-  position: ${({ position }) => (position || "relative")};
-  width: ${({ width }) => (width || "100%")};
-  height: ${({ height }) => (height || "1px")};
-  border-radius: ${({ borderRadius }) => (borderRadius || "0")};
+  position: ${({ position }) => position || "relative"};
+  width: ${({ width }) => width || "100%"};
+  height: ${({ height }) => height || "1px"};
+  border-radius: ${({ borderRadius }) => borderRadius || "0"};
 
   background-color: ${({ theme, color }) =>
     color || theme.colors.brown.brown20tra};
 
-  margin: ${({ margin }) => (margin || "0")};
-  z-index: ${({ zIndex }) => (zIndex || undefined)};
+  margin: ${({ margin }) => margin || "0"};
+  z-index: ${({ zIndex }) => zIndex || undefined};
 `;
 
 const Divider: FC<DividerProps> = ({

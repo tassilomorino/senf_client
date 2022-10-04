@@ -5,10 +5,6 @@ import styled from "styled-components";
 import Plus from "../../../assets/icons/Plus";
 import Icon from "../icons/Icon";
 import {
-  LayerGreyButtonsDefault,
-  LayerGreyButtonsHover,
-  LayerWhiteFirstDefault,
-  LayerWhiteFirstHover,
   LayerWhiteGradientBordersDefault,
   LayerYellowDefault,
   LayerYellowHover,
@@ -23,23 +19,17 @@ const StyledButton = styled.button<ButtonProps>`
   justify-content: center;
   align-items: center;
 
-  /* box-shadow: ${({ theme }) => theme.shadows[0]}
-      ${({ theme }) => theme.colors.brown.brown20tra},
-    ${({ theme }) => theme.shadows[2]}
-      ${({ theme }) => theme.colors.white.white20tra};
-  background-color: ${({ theme }) => theme.colors.brown.brown4}; */
-
   aspect-ratio: 1 / 1;
 
   //ADD THEME-RADII
-  border-radius: ${(props) => (props.size === "big" ? "28px" : "18px")};
+  border-radius: 28px;
 
   //ADD THEME-BORDER
   border: 2px solid #ffffff;
 
   //ADD THEME-SPACE?
-  height: ${(props) => (props.size === "big" ? "68px" : "50px")};
-  width: ${(props) => (props.size === "big" ? "68px" : "50px")};
+  height: 68px;
+  width: 68px;
 
   color: ${(props) => (props.loading === true ? "transparent" : "auto")};
   pointer-events: all;
@@ -82,7 +72,10 @@ const RoundedButton: FC<ButtonProps> = ({
       {...rest}
     >
       <IconWrapper>
-        <Icon icon={icon} width={size === "big" ? "24px" : "16px"} />
+        <Icon
+          icon={icon}
+          width="24px"
+        />
       </IconWrapper>
     </StyledButton>
   );

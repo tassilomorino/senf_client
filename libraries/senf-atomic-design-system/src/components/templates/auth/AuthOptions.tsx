@@ -31,40 +31,41 @@ const Divider = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
-  color: ${({theme}) => theme.colors.black.black60tra};
-  &:before, &:after {
+  color: ${({ theme }) => theme.colors.black.black60tra};
+  &:before,
+  &:after {
     content: "";
-    height: ${({theme}) => `${theme.borderWidths[1]}px`};
+    height: ${({ theme }) => `${theme.borderWidths[1]}px`};
     width: 100%;
     background: currentColor;
     opacity: 0.5;
   }
-`
+`;
 
 const AuthOptions: FC<AuthOptionsProps> = ({
   authHandler,
   setPage,
   errorMessage,
-  formikStore
+  formikStore,
 }) => {
   const { t } = useTranslation();
   const { closeModal } = useModals();
   const submitEmail = async () => {
     try {
-      const response = await authHandler.userExists(formikStore)
+      const response = await authHandler.userExists(formikStore);
       if (response.userId) {
-        return closeModal()
+        return closeModal();
       }
       if (response.length && response.includes("password")) {
-        setPage("authEmail")
+        setPage("authEmail");
       } else {
-        setPage("authEmailRegister")
+        setPage("authEmailRegister");
       }
-      return response
+      return response;
     } catch (error) {
-      throw new Error("error")
+      throw new Error("error");
     }
-  }
+  };
   return (
     <Box
       flexDirection="column"
@@ -72,19 +73,31 @@ const AuthOptions: FC<AuthOptionsProps> = ({
       position="relative"
       zIndex={9999}
     >
-      <Typography variant="h1" style={{ position: "relative" }}>
+      <Typography
+        variant="h1"
+        style={{ position: "relative" }}
+      >
         {t("infopage_addMustard_1")}
       </Typography>
-      <Typography variant="h1" style={{ position: "relative" }}>
+      <Typography
+        variant="h1"
+        style={{ position: "relative" }}
+      >
         {t("infopage_addMustard_2")}
       </Typography>
 
       <Box margin="25px 0px 24px 0px">
-        <Typography variant="bodyBg" style={{ position: "relative" }}>
+        <Typography
+          variant="bodyBg"
+          style={{ position: "relative" }}
+        >
           {t("auth_subheadline")}
         </Typography>
       </Box>
-      <Box gap="16px" flexDirection="column">
+      <Box
+        gap="16px"
+        flexDirection="column"
+      >
         <Button
           variant="white"
           width="max"
@@ -103,13 +116,19 @@ const AuthOptions: FC<AuthOptionsProps> = ({
           onClick={authHandler?.signIn.facebook}
         />
         {errorMessage && (
-          <Typography variant="bodySm" color={theme.colors.signal.redDark}>
+          <Typography
+            variant="bodySm"
+            color={theme.colors.signal.redDark}
+          >
             {errorMessage.message}
           </Typography>
         )}
       </Box>
       <Divider>oder</Divider>
-      <Box gap="16px" flexDirection="column">
+      <Box
+        gap="16px"
+        flexDirection="column"
+      >
         <Input
           name="email"
           type="email"
@@ -117,9 +136,19 @@ const AuthOptions: FC<AuthOptionsProps> = ({
           onChange={formikStore?.handleChange}
           onBlur={formikStore?.handleBlur}
           value={formikStore?.values.email}
-          error={formikStore?.touched.email && Boolean(formikStore?.errors.email)}
+          error={
+            formikStore?.touched.email && Boolean(formikStore?.errors.email)
+          }
           leadingIcon="Mail"
-          trailingIcon={formikStore.isValid ? authHandler.loading.email ? "Loading" : <Arrow /> : undefined}
+          trailingIcon={
+            formikStore.isValid ? (
+              authHandler.loading.email ? (
+                "Loading"
+              ) : (
+                <Arrow />
+              )
+            ) : undefined
+          }
           trailingIconLabel={t("next")}
           onSubmit={submitEmail}
           trailingIconClick={submitEmail}
@@ -133,7 +162,6 @@ const AuthOptions: FC<AuthOptionsProps> = ({
           value={formikStore?.values.password}
         />
       </Box>
-
 
       <Box margin="24px 0px">
         <Typography variant="bodySm">

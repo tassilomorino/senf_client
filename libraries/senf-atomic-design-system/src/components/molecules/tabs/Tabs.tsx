@@ -46,7 +46,10 @@ const Tabs: FC<TabsProps> = ({ tabs, fontSize, order, setOrder }) => {
   const isMobile = isMobileCustom();
   return (
     <Wrapper isMobile={isMobile}>
-      <Box gap="10px" justifyContent="space-around">
+      <Box
+        gap="10px"
+        justifyContent="space-around"
+      >
         {tabs.map((tab, index) => (
           <Tab
             key={tab.text}
@@ -57,15 +60,24 @@ const Tabs: FC<TabsProps> = ({ tabs, fontSize, order, setOrder }) => {
           >
             {tab.icon && <Icon icon={tab.icon} />}
 
-            <Typography variant={fontSize || "buttonBg"} color="inherit">
+            <Typography
+              variant={fontSize || "buttonBg"}
+              color="inherit"
+            >
               {tab.text}
             </Typography>
           </Tab>
         ))}
       </Box>
 
-      <TabUnderline tabs={tabs} order={order} />
-      <Divider margin="-2px 0px" height="2px" />
+      <TabUnderline
+        tabs={tabs}
+        order={order}
+      />
+      <Divider
+        margin="-2px 0px"
+        height="2px"
+      />
     </Wrapper>
   );
 };

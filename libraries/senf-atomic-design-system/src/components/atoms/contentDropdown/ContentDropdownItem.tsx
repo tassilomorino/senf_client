@@ -24,24 +24,34 @@ const Wrapper = styled.button<ContentDropdownItemProps>`
   gap: ${({ theme }) => theme.space[3]};
   height: ${({ theme, size }) => theme.inputHeight(size)};
   padding-block: ${({ theme, size }) => theme.inputPadding(size)};
-  padding-inline: ${({ theme, type, size }) => !type || type === "check" ? theme.inputPadding(size) : 0};
+  padding-inline: ${({ theme, type, size }) =>
+    !type || type === "check" ? theme.inputPadding(size) : 0};
   & > div {
-    margin-left: ${({ theme, type }) => type === "check" ? `${parseFloat(theme.space[2]) * -1}rem` : "inherit"};
+    margin-left: ${({ theme, type }) =>
+      type === "check" ? `${parseFloat(theme.space[2]) * -1}rem` : "inherit"};
   }
 
   box-sizing: border-box;
   border: 2px solid transparent;
   background-color: transparent;
-  pointer-events: ${({ disabled }) => disabled ? 'none' : 'all'};
-  cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
-  opacity: ${({ disabled }) => disabled ? 0.5 : null};
-  ${({ checked, disabled, type }) => checked && !type ? disabled ? LayerGreyButtonsDefault : LayerYellowDefault : null}
+  pointer-events: ${({ disabled }) => (disabled ? "none" : "all")};
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+  opacity: ${({ disabled }) => (disabled ? 0.5 : null)};
+  ${({ checked, disabled, type }) =>
+    checked && !type
+      ? disabled
+        ? LayerGreyButtonsDefault
+        : LayerYellowDefault
+      : null}
 
   &:hover {
-    background-color: ${({ type, theme }) => !type || type === "check" ? theme.colors.greyscale.greyscale10tra : theme.colors.white.white50tra};
+    background-color: ${({ type, theme }) =>
+      !type || type === "check"
+        ? theme.colors.greyscale.greyscale10tra
+        : theme.colors.white.white50tra};
 
-    ${({ checked, type }) => checked && !type ? LayerYellowHover : null}
-}
+    ${({ checked, type }) => (checked && !type ? LayerYellowHover : null)}
+  }
 `;
 
 const ContentDropdownItem: FC<ContentDropdownItemProps> = ({
@@ -64,12 +74,24 @@ const ContentDropdownItem: FC<ContentDropdownItemProps> = ({
       minWidth={minWidth}
       size={size}
     >
-      {type ? <ToggleInput type={type} checked={checked} /> : null}
+      {type ? (
+        <ToggleInput
+          type={type}
+          checked={checked}
+        />
+      ) : null}
       {leadingIcon ? <Icon icon={leadingIcon} /> : null}
-      <Typography variant="bodySm" fontWeight={checked ? "bold" : "regular"}>
+      <Typography
+        variant="bodySm"
+        fontWeight={checked ? "bold" : "regular"}
+      >
         {text}
       </Typography>
-      {trailingIcon && <Box marginLeft="auto"><Icon icon={trailingIcon} /></Box>}
+      {trailingIcon && (
+        <Box marginLeft="auto">
+          <Icon icon={trailingIcon} />
+        </Box>
+      )}
     </Wrapper>
   );
   // return (

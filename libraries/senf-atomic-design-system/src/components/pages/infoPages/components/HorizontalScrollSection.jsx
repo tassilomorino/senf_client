@@ -13,8 +13,6 @@ import ImplementedMobile from "../../../../assets/infoPages/howItWorks/implement
 import { isMobileCustom } from "../../../../hooks/customDeviceDetect";
 import Typography from "../../../atoms/typography/Typography";
 
-
-
 const Container = styled.section`
   position: relative;
   width: 100%;
@@ -138,7 +136,7 @@ const Text = styled.p`
 
 const HorizontalScrollSection = ({ id, visiblePartners }) => {
   const { t } = useTranslation();
-  const isMobile = isMobileCustom()
+  const isMobile = isMobileCustom();
   useEffect(() => {
     setTimeout(() => {
       function calcDynamicHeight(ref) {
@@ -155,15 +153,12 @@ const HorizontalScrollSection = ({ id, visiblePartners }) => {
       const horizontal = document.querySelector(`#horizontal${id}`);
       spaceHolder.style.height = `${calcDynamicHeight(horizontal)}px`;
 
-
-
       spaceHolder.style.height = `${calcDynamicHeight(horizontal)}px`;
 
       // window.addEventListener("resize", () => {
       //   spaceHolder.style.height = `${calcDynamicHeight(horizontal)}px`;
       // });
     }, 1000);
-
   }, []);
 
   const pages = [
@@ -221,14 +216,23 @@ const HorizontalScrollSection = ({ id, visiblePartners }) => {
               Stadt der Zukunft
             </Title>
           )} */}
-          <Img src={SectionBackground} width="100%" />
+          <Img
+            src={SectionBackground}
+            width="100%"
+          />
 
           <Horizontal id={`horizontal${id}`}>
             {id === "1" ? (
-              <CardsSection role="feed" className="cards">
+              <CardsSection
+                role="feed"
+                className="cards"
+              >
                 {pages.map(({ title, subTitle, img }) => (
                   <Article key={title}>
-                    <Title textAlign="center" margin="20px 20px 0px 20px">
+                    <Title
+                      textAlign="center"
+                      margin="20px 20px 0px 20px"
+                    >
                       {title}
                     </Title>
                     <Text>{subTitle}</Text>
@@ -237,12 +241,19 @@ const HorizontalScrollSection = ({ id, visiblePartners }) => {
                 ))}
               </CardsSection>
             ) : (
-              <CardsSection role="feed" className="cards">
+              <CardsSection
+                role="feed"
+                className="cards"
+              >
                 {credits.map(({ title, subTitle, img, width }) => (
                   <Article key={title}>
                     <Goosefoot>„</Goosefoot>
                     <Text>{subTitle}</Text>
-                    <Typography variant="h3" textAlign="center" margin="20px 20px 20px 20px">
+                    <Typography
+                      variant="h3"
+                      textAlign="center"
+                      margin="20px 20px 20px 20px"
+                    >
                       {title}
                     </Typography>
                   </Article>

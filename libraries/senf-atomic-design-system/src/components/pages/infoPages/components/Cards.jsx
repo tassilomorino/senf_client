@@ -96,7 +96,10 @@ const Cards = ({ visibleCards }) => {
   return (
     <>
       {props.map(({ x, y, rot, scale }, i) => (
-        <StyledDeck key={i} style={{ x, y }}>
+        <StyledDeck
+          key={i}
+          style={{ x, y }}
+        >
           {/* This is the card itself, we're binding our gesture to it (and inject its index so we know which is which) */}
           <animated.div
             {...bind(i)}

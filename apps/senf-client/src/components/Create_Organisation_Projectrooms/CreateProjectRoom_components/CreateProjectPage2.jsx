@@ -132,11 +132,17 @@ const CreateProjectPage2 = ({
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH3 textAlign="center" margin="20px">
+          <StyledH3
+            textAlign="center"
+            margin="20px"
+          >
             {pagesData[index].subTitle}
           </StyledH3>
 
-          <Box flexDirection="column" gap="20px">
+          <Box
+            flexDirection="column"
+            gap="20px"
+          >
             <Input
               name="contactTitle"
               type="text"

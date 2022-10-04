@@ -99,7 +99,10 @@ const Footer = ({ handleClose }) => {
         left={isMobileCustom ? "50px" : "-3%"}
         onClick={() => setFaqOpen(true)}
       >
-        <img src={Faq} width="100%" />
+        <img
+          src={Faq}
+          width="100%"
+        />
       </Bubble>
       <Bubble
         color="#90D8B9"
@@ -107,7 +110,10 @@ const Footer = ({ handleClose }) => {
         left={isMobileCustom ? "270px" : "105%"}
         onClick={() => openMail("dein@senf.koeln")}
       >
-        <img src={Contact} width="100%" />
+        <img
+          src={Contact}
+          width="100%"
+        />
       </Bubble>
 
       <Bubble
@@ -118,7 +124,10 @@ const Footer = ({ handleClose }) => {
           window.open("https://www.instagram.com/senf.koeln/", "_blank")
         }
       >
-        <img src={Insta} width="100%" />
+        <img
+          src={Insta}
+          width="100%"
+        />
       </Bubble>
 
       <Bubble
@@ -127,7 +136,10 @@ const Footer = ({ handleClose }) => {
         left={isMobileCustom ? "220px" : "90%"}
         onClick={handleClose}
       >
-        <img src={Bulb} width="100%" />
+        <img
+          src={Bulb}
+          width="100%"
+        />
       </Bubble>
     </Wrapper>
   );

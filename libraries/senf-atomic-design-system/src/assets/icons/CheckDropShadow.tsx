@@ -9,7 +9,7 @@ interface SVGRProps {
 }
 
 const Svg = styled.svg`
-  transform: ${({ transform }) => (transform || undefined)};
+  transform: ${({ transform }) => transform || undefined};
 `;
 
 const CheckDropShadow: FC<SVGRProps> = ({ color = "black", transform }) => (
@@ -49,7 +49,10 @@ const CheckDropShadow: FC<SVGRProps> = ({ color = "black", transform }) => (
         filterUnits="userSpaceOnUse"
         colorInterpolationFilters="sRGB"
       >
-        <feFlood floodOpacity="0" result="BackgroundImageFix" />
+        <feFlood
+          floodOpacity="0"
+          result="BackgroundImageFix"
+        />
         <feColorMatrix
           in="SourceAlpha"
           type="matrix"
@@ -58,7 +61,10 @@ const CheckDropShadow: FC<SVGRProps> = ({ color = "black", transform }) => (
         />
         <feOffset dy="2" />
         <feGaussianBlur stdDeviation="2" />
-        <feComposite in2="hardAlpha" operator="out" />
+        <feComposite
+          in2="hardAlpha"
+          operator="out"
+        />
         <feColorMatrix
           type="matrix"
           values="0 0 0 0 0.52549 0 0 0 0 0.486275 0 0 0 0 0.388235 0 0 0 0.18 0"

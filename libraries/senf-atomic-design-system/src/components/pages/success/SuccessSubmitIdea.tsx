@@ -13,7 +13,6 @@ import Box from "../../atoms/box/Box";
 import Accordion from "../../molecules/accordion/Accordion";
 import PostIdeaSuccess from "../../templates/success/PostIdeaSuccess";
 
-import RoundedButton from "../../atoms/buttons/RoundedButton";
 import Plus from "../../../assets/icons/Plus";
 import Button from "../../atoms/buttons/Button";
 import SwipeModal from "../../molecules/modals/SwipeModal";

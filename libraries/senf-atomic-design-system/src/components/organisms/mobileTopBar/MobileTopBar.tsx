@@ -53,21 +53,30 @@ const MobileTopBar: FC<MobileTopBarProps> = ({
       height="100%"
     >
       <LogoText transform="scale(1.2)" />
-      <Box gap="0px" flexDirection="row">
+      <Box
+        gap="0px"
+        flexDirection="row"
+      >
         <Button
           variant="tertiary"
           size="small"
-
           onClick={() => handleOpenMyAccount(true)}
           icon={<User />}
         />
-
 
         <ModalButton
           variant="tertiary"
           size="small"
           icon={<Info />}
-          options={{ swipe: true, size: "lg", height: window.innerHeight + 83, padding: 0, beforeOpen: () => setShowUI(false), beforeClose: () => setShowUI(true) }}>
+          options={{
+            swipe: true,
+            size: "lg",
+            height: window.innerHeight + 83,
+            padding: 0,
+            beforeOpen: () => setShowUI(false),
+            beforeClose: () => setShowUI(true),
+          }}
+        >
           <InfoPageMainApp />
         </ModalButton>
       </Box>

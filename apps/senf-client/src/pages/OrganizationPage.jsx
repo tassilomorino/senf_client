@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import {
   OrganizationPage as OrganizationPageComponent,
   useModals,
-  Loader
+  Loader,
 } from "senf-atomic-design-system";
 
 // Redux stuff
@@ -64,8 +64,6 @@ export const Wrapper = styled.div`
 } */
 `;
 
-
-
 const OrganizationPage = ({
   organizations,
   handleCloseOrganizationPage,
@@ -75,9 +73,7 @@ const OrganizationPage = ({
   const { t } = useTranslation();
   const organization = useSelector((state) => state.data.organization);
 
-  const { openModal, closeModal } = useModals()
-
-
+  const { openModal, closeModal } = useModals();
 
   const [
     uncompletedOrDeactivatedProjectRooms,
@@ -92,8 +88,23 @@ const OrganizationPage = ({
   const handleEditOrganization = () => {
     localStorage.setItem("createOrganizationId", organization?.organizationId);
     localStorage.setItem("createOrganizationPostEdit", true);
-    openModal(<React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
-      <CreateMainComponent type="organization" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+    openModal(
+      <React.Suspense
+        fallback={
+          <div style={{ width: "50px", height: "2000px" }}>
+            <Loader />
+          </div>
+        }
+      >
+        <CreateMainComponent type="organization" />
+      </React.Suspense>,
+      {
+        size: "full",
+        swipe: !!isMobileCustom,
+        height: isMobileCustom && window.innerHeight + 83,
+        padding: 0,
+      }
+    );
   };
 
   // useEffect(() => {
@@ -101,7 +112,6 @@ const OrganizationPage = ({
   //   setPath(window.location.pathname);
   //   console.log(organization);
   // }, [openOrganization]);
-
 
   // useEffect(() => {
   //   async function fetchData() {
@@ -139,16 +149,16 @@ const OrganizationPage = ({
 
   // loadingOrganization add skeletonlader
 
-
-  return <OrganizationPageComponent
-    user={user}
-    organization={organization}
-    organizations={organizations}
-    handleCloseOrganizationPage={handleCloseOrganizationPage}
-    handleEditOrganization={handleEditOrganization}
-    handleButtonOpenCard={handleButtonOpenCard}
-  />
-
+  return (
+    <OrganizationPageComponent
+      user={user}
+      organization={organization}
+      organizations={organizations}
+      handleCloseOrganizationPage={handleCloseOrganizationPage}
+      handleEditOrganization={handleEditOrganization}
+      handleButtonOpenCard={handleButtonOpenCard}
+    />
+  );
 };
 
 export default OrganizationPage;

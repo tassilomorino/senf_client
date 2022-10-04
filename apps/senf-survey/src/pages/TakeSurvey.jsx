@@ -1,10 +1,7 @@
-import {
-  doc,
-  getDoc,
-} from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Box, isMobileCustom, } from "senf-atomic-design-system";
+import { Box, isMobileCustom } from "senf-atomic-design-system";
 import styled from "styled-components";
 import { db } from "../firebase";
 
@@ -20,9 +17,9 @@ const Wrapper = styled.div`
 
 const TakeSurvey = () => {
   const { t } = useTranslation();
-  const isMobile = isMobileCustom()
+  const isMobile = isMobileCustom();
   const [state, setState] = useState([]);
-  const params = (new URL(document.location)).searchParams;
+  const params = new URL(document.location).searchParams;
   const surveyId = params.get("surveyId");
 
   // THIS FORMAT SHOULD WORK TO RETRIEVE THE DATA `.../surveys?surveyId=${surveyId}`;
@@ -33,7 +30,7 @@ const TakeSurvey = () => {
       const docSnapshot = await getDoc(docRef);
       if (docSnapshot) {
         setState(docSnapshot.data());
-        console.log("surveyData", docSnapshot.data())
+        console.log("surveyData", docSnapshot.data());
       }
     } catch (error) {
       throw new Error(error, "Error in TakeSurvey");

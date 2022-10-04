@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { isMobileCustom } from "../util/customDeviceDetect";
 import { postScream } from "../redux/actions/screamActions";
 import { clearErrors } from "../redux/actions/errorsActions";
+import { OptionsProjects } from "../data/OptionsProjects";
 
 // Components
 import PostScreamSelectContainter from "../components/PostIdea/PostScreamSelectContainter";
@@ -54,9 +55,12 @@ const PostIdeaPage = ({
   classes,
   loadingProjects,
   projectsData,
-  setPostIdeaOpen,
   postIdeaOpen,
+  setPostIdeaOpen,
+  postIdeaSuccessModalOpen,
+  setPostIdeaSuccessModalOpen,
   statefulMap,
+  projectroomsData,
 }) => {
   const dispatch = useDispatch();
   const { openModal } = useModals();
@@ -70,8 +74,7 @@ const PostIdeaPage = ({
   const initialMapViewport = useSelector(
     (state) => state.data.initialMapViewport
   );
-  const [postIdeaSuccessModalOpen, setPostIdeaSuccessModalOpen] =
-    React.useState(false);
+
   const [newIdea, setNewIdea] = useState(null);
   const [viewport, setViewport] = useState(null);
   const [openRules, setOpenRules] = useState(false);
@@ -222,11 +225,11 @@ const PostIdeaPage = ({
 
     if (formik.values.contact) {
       newScream.contact = formik.values.contact;
-      newScream.contactTitle = formik.values.contactTitle || "Kontakt";
+      newScream.contactTitle = formik.values.contactTitle;
     }
     if (formik.values.weblink) {
       newScream.weblink = formik.values.weblink;
-      newScream.weblinkTitle = formik.values.weblinkTitle || "Website";
+      newScream.weblinkTitle = formik.values.weblinkTitle;
     }
 
     if (selectedUnix.length > 0) {
@@ -372,6 +375,8 @@ const PostIdeaPage = ({
         setPostIdeaSuccessModalOpen={setPostIdeaSuccessModalOpen}
         navigate={navigate}
         newIdea={newIdea}
+        projectroomsData={projectroomsData}
+        projectroomSelected={projectSelected}
       />
     </React.Fragment>
   );

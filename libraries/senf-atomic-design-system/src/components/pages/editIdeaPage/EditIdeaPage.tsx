@@ -4,16 +4,14 @@ import React, { FC, Fragment, useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
-import * as yup from "yup"
+import * as yup from "yup";
 import { useFormik } from "formik";
 import DatePicker from "../../organisms/datePicker/DatePicker";
 import Plus from "../../../assets/icons/Plus";
 import theme from "../../../styles/theme";
 import Box from "../../atoms/box/Box";
 import Button from "../../atoms/buttons/Button";
-import RoundedButton from "../../atoms/buttons/RoundedButton";
 import Wave from "../../atoms/shapes/Wave";
-import SwipeModal from "../../molecules/modals/SwipeModal";
 import { EditIdeaPageProps } from "./EditIdeaPage.types";
 
 import CalendarIcon from "../../../assets/icons/CalendarIcon";
@@ -33,11 +31,11 @@ import { useModals } from "../../molecules/modalStack/ModalProvider";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 
 const Background = styled.div<EditIdeaProps>`
- width:100%;
- height:100%;
+  width: 100%;
+  height: 100%;
   background-color: #fed957;
-  position:absolute;
-  z-index:0;
+  position: absolute;
+  z-index: 0;
 `;
 
 const Wrapper = styled.div<EditIdeaProps>`
@@ -52,42 +50,54 @@ const AddContactForm = ({ formikEditIdea: initial, validationSchema }) => {
     initialValues: initial.values,
     validationSchema,
   });
-  useEffect(() => initial.setValues(formikEditIdea.values), [initial, formikEditIdea]);
-  return (<><Typography variant="bodyBg">Deine Kontaktdaten werden öffentlich gezeigt.</Typography>
-    <Box gap="16px" flexDirection="column" marginTop="20px">
-      <Input
-        name="contactTitle"
-        placeholder={t("contactTitle")}
-        onChange={formikEditIdea.handleChange("contactTitle")}
-        onBlur={formikEditIdea.handleBlur}
-        value={formikEditIdea.values.contactTitle}
-        error={
-          formikEditIdea.touched.contactTitle &&
-          Boolean(formikEditIdea.errors.contactTitle)
-        }
-        note={
-          formikEditIdea.touched.contactTitle &&
-          formikEditIdea.errors.contactTitle
-        }
-      />
-      <Input
-        name="contact"
-        type="text"
-        placeholder={t("contact")}
-        onChange={formikEditIdea?.handleChange}
-        onBlur={formikEditIdea?.handleBlur}
-        value={formikEditIdea?.values.contact}
-        error={
-          formikEditIdea?.touched.contact &&
-          Boolean(formikEditIdea?.errors.contact)
-        }
-        note={
-          formikEditIdea?.touched.contact &&
-          formikEditIdea?.errors.contact
-        }
-      />
-    </Box></>)
-}
+  useEffect(
+    () => initial.setValues(formikEditIdea.values),
+    [initial, formikEditIdea]
+  );
+  return (
+    <>
+      <Typography variant="bodyBg">
+        Deine Kontaktdaten werden öffentlich gezeigt.
+      </Typography>
+      <Box
+        gap="16px"
+        flexDirection="column"
+        marginTop="20px"
+      >
+        <Input
+          name="contactTitle"
+          placeholder={t("contactTitle")}
+          onChange={formikEditIdea.handleChange("contactTitle")}
+          onBlur={formikEditIdea.handleBlur}
+          value={formikEditIdea.values.contactTitle}
+          error={
+            formikEditIdea.touched.contactTitle &&
+            Boolean(formikEditIdea.errors.contactTitle)
+          }
+          note={
+            formikEditIdea.touched.contactTitle &&
+            formikEditIdea.errors.contactTitle
+          }
+        />
+        <Input
+          name="contact"
+          type="text"
+          placeholder={t("contact")}
+          onChange={formikEditIdea?.handleChange}
+          onBlur={formikEditIdea?.handleBlur}
+          value={formikEditIdea?.values.contact}
+          error={
+            formikEditIdea?.touched.contact &&
+            Boolean(formikEditIdea?.errors.contact)
+          }
+          note={
+            formikEditIdea?.touched.contact && formikEditIdea?.errors.contact
+          }
+        />
+      </Box>
+    </>
+  );
+};
 
 const EditIdeaPage: FC<EditIdeaPageProps> = ({
   data,
@@ -96,12 +106,11 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
   handle,
 }) => {
   const { t } = useTranslation();
-  const isMobile = isMobileCustom()
-  const { closeModal } = useModals()
+  const isMobile = isMobileCustom();
+  const { closeModal } = useModals();
 
   const [checkIfCalendar, setCheckIfCalendar] = React.useState(false);
   const [selectedDays, setSelectedDays] = useState([]);
-
 
   const editIdeaValidationSchema = yup.object({
     title: yup
@@ -116,11 +125,7 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
       .min(100, t("ideaDescription_too_short"))
       .max(800, t("ideaDescription_too_long")),
 
-
-    weblinkTitle: yup
-      .string()
-      .required(t("enter_ideaDescription"))
-
+    weblinkTitle: yup.string().required(t("enter_ideaDescription")),
   });
   const initialValues = useRef({
     screamId: data.screamId,
@@ -142,7 +147,7 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
     weblinkTitle: data.weblinkTitle ?? null,
 
     selectedUnix: data.selectedUnix ?? [],
-  })
+  });
   const formikEditIdea = useFormik({
     initialValues: initialValues.current,
     validationSchema: editIdeaValidationSchema,
@@ -151,8 +156,8 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
     validateOnBlur: true,
   });
   useEffect(() => {
-    console.log(formikEditIdea)
-  }, [formikEditIdea])
+    console.log(formikEditIdea);
+  }, [formikEditIdea]);
 
   useEffect(() => {
     // dispatch(getUserEmail(data.userId));
@@ -168,7 +173,6 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
     }
   }, [data]);
 
-
   const handleChangeCalendar = (selectedDays) => {
     const selectedUnix = [];
     let i;
@@ -180,7 +184,6 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
     formikEditIdea.setFieldValue("selectedUnix", selectedUnix);
   };
 
-
   useEffect(() => {
     projectroomsData?.forEach((project) => {
       if (formikEditIdea.values.projectRoomId === project.projectRoomId) {
@@ -188,7 +191,6 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
       }
     });
   }, [formikEditIdea.values.projectRoomId]);
-
 
   /*  const geocodeonSelected = (newViewport) => {
     setTimeout(() => {
@@ -232,12 +234,14 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
     <React.Fragment>
       <Background />
 
-      <Wave color={theme.colors.beige.beige20} top="0px" zIndex={1} />
+      <Wave
+        color={theme.colors.beige.beige20}
+        top="0px"
+        zIndex={1}
+      />
       <Wrapper>
         <Box marginLeft="10px">
-          <Typography variant="h2" >
-            {t("edit_idea")}
-          </Typography>
+          <Typography variant="h2">{t("edit_idea")}</Typography>
         </Box>
 
         {/*    <Geocoder
@@ -289,27 +293,31 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
           />
 
           <Box gap="8px">
-
-
             <ModalButton
               variant="secondary"
               size="small"
-              text={formikEditIdea?.values.weblinkTitle || t('add_weblink')}
+              text={formikEditIdea?.values.weblinkTitle || t("add_weblink")}
               icon={<Hyperlink />}
               options={{
                 style: {
                   padding: 20,
                 },
-                title: t('add_weblink'),
-                cancelText: t('cancel'),
-                submitText: t('save'),
-                onSubmit: () => closeModal()
+                title: t("add_weblink"),
+                cancelText: t("cancel"),
+                submitText: t("save"),
+                onSubmit: () => closeModal(),
               }}
             >
-
-              <Typography variant="bodyBg">Du kannst deinem Link einen eigenen Titel geben. Wenn du möchtest dass die URL angezeigt wird, lasse das Feld einfach frei.
+              <Typography variant="bodyBg">
+                Du kannst deinem Link einen eigenen Titel geben. Wenn du
+                möchtest dass die URL angezeigt wird, lasse das Feld einfach
+                frei.
               </Typography>
-              <Box gap="16px" flexDirection="column" marginTop="20px">
+              <Box
+                gap="16px"
+                flexDirection="column"
+                marginTop="20px"
+              >
                 <Input
                   name="weblinkTitle"
                   placeholder={t("weblinkTitle")}
@@ -344,20 +352,18 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
               </Box>
             </ModalButton>
 
-
-
             <ModalButton
               variant="secondary"
               size="small"
-              text={formikEditIdea?.values.contactTitle || t('add_contact')}
+              text={formikEditIdea?.values.contactTitle || t("add_contact")}
               icon={<Mail />}
               options={{
                 style: {
                   padding: "20px",
                 },
-                title: t('add_contact'),
-                cancelText: t('cancel'),
-                submitText: t('save'),
+                title: t("add_contact"),
+                cancelText: t("cancel"),
+                submitText: t("save"),
                 swipe: true,
               }}
             >
@@ -368,7 +374,6 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
             </ModalButton>
 
             {checkIfCalendar && (
-
               <ModalButton
                 variant={selectedDays.length > 0 ? "primary" : "secondary"}
                 size="small"
@@ -377,25 +382,26 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
                   style: {
                     padding: 20,
                   },
-                  title: t('add_date'),
-                  cancelText: t('cancel'),
-                  submitText: t('save'),
-                  onSubmit: () => closeModal()
+                  title: t("add_date"),
+                  cancelText: t("cancel"),
+                  submitText: t("save"),
+                  onSubmit: () => closeModal(),
                 }}
               >
-
-                <Typography variant="bodyBg">{t("first_date_then_time")}</Typography>
-                <Box gap="16px" flexDirection="column" marginTop="20px">
-
+                <Typography variant="bodyBg">
+                  {t("first_date_then_time")}
+                </Typography>
+                <Box
+                  gap="16px"
+                  flexDirection="column"
+                  marginTop="20px"
+                >
                   <DatePicker
                     handleChangeCalendar={handleChangeCalendar}
                     selectedDays={selectedDays}
                   />
-
                 </Box>
               </ModalButton>
-
-
             )}
           </Box>
           <Box width="100%">
@@ -421,10 +427,12 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
             name="projectrooms"
             label={t("projectrooms")}
             initialValue={t("all_ideas")}
-            listItems={projectroomsData && OptionsProjectrooms(projectroomsData)}
+            listItems={
+              projectroomsData && OptionsProjectrooms(projectroomsData)
+            }
             onChange={formikEditIdea.handleChange("projectRoomId")}
             value={formikEditIdea.values.projectRoomId}
-          /* text={
+            /* text={
               OptionsProjects().find(
                 (optionsProjects) => projectSelected === optionsProjects.value
               ).label || t("all_ideas")
@@ -461,7 +469,7 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
           text={t("save")}
         />
       </Box>
-    </React.Fragment >
+    </React.Fragment>
   );
 };
 

@@ -86,38 +86,41 @@ const Checkbox = styled.div`
 `;
 const Tags = ({ type }) => {
   const { t } = useTranslation();
-  const isMobile = isMobileCustom()
+  const isMobile = isMobileCustom();
   const organizationTypesSliced = organizationTypes.slice(0, -1);
   const topicsSliced = topics.slice(0, -1);
   return (
     <Wrapper isMobileCustom={isMobile}>
       {type === "topics"
         ? topicsSliced.map((topic, i) => (
-          <Tag
-            key={topic.name}
-            color={topic.color}
-            left={topic.infoPageLeft}
-            id={`infoPageTopicTag${i + 1}`}
-          >
-            <Checkbox color={topic.color} data-cy={topic.name} />
+            <Tag
+              key={topic.name}
+              color={topic.color}
+              left={topic.infoPageLeft}
+              id={`infoPageTopicTag${i + 1}`}
+            >
+              <Checkbox
+                color={topic.color}
+                data-cy={topic.name}
+              />
 
-            {topic.label}
-          </Tag>
-        ))
+              {topic.label}
+            </Tag>
+          ))
         : organizationTypesSliced.map((organizationTypes, i) => (
-          <Tag
-            key={organizationTypes.name}
-            color={organizationTypes.color}
-            left={organizationTypes.infoPageLeft}
-            id={`infoPageOrganizationTypeTag${i + 1}`}
-          >
-            <Icon data-cy={organizationTypes.name}>
-              {organizationTypes.svgIcon}
-            </Icon>
+            <Tag
+              key={organizationTypes.name}
+              color={organizationTypes.color}
+              left={organizationTypes.infoPageLeft}
+              id={`infoPageOrganizationTypeTag${i + 1}`}
+            >
+              <Icon data-cy={organizationTypes.name}>
+                {organizationTypes.svgIcon}
+              </Icon>
 
-            {organizationTypes.label}
-          </Tag>
-        ))}
+              {organizationTypes.label}
+            </Tag>
+          ))}
     </Wrapper>
   );
 };

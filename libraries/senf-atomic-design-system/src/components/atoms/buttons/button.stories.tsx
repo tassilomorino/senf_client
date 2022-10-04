@@ -24,16 +24,15 @@ export const IconMedium = Template.bind({});
 IconMedium.args = {
   icon: <Room />,
   variant: "primary",
-  size: "medium"
+  size: "medium",
 };
 
 export const IconSmall = Template.bind({});
 IconSmall.args = {
   icon: <Room />,
   variant: "primary",
-  size: "small"
+  size: "small",
 };
-
 
 export const Big = Template.bind({});
 Big.args = {
@@ -47,7 +46,7 @@ Medium.args = {
   icon: <Room />,
   variant: "primary",
   text: "Button",
-  size: "medium"
+  size: "medium",
 };
 
 export const Small = Template.bind({});
@@ -55,9 +54,8 @@ Small.args = {
   icon: <Room />,
   variant: "primary",
   text: "Button",
-  size: "small"
+  size: "small",
 };
-
 
 export const SecondaryBig = Template.bind({});
 SecondaryBig.args = {
