@@ -4,12 +4,16 @@ import React, { useState, useEffect, memo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   IdeaDetailPage as IdeaDetailPageComponent,
-  useModals
+  useModals,
 } from "senf-atomic-design-system";
 import { useNavigate } from "react-router-dom";
 import { isMobileCustom } from "../util/customDeviceDetect";
 // Redux stuff
-import { closeScream, deleteScream, editScreamFunc } from "../redux/actions/screamActions";
+import {
+  closeScream,
+  deleteScream,
+  editScreamFunc,
+} from "../redux/actions/screamActions";
 import { clearErrors } from "../redux/actions/errorsActions";
 import { openProjectRoomFunc } from "../redux/actions/projectActions";
 import { deleteComment, submitComment } from "../redux/actions/commentActions";
@@ -17,18 +21,14 @@ import { openLink } from "../util/helpers";
 import { openAccountFunc } from "../redux/actions/accountActions";
 import { handleTopicSelectorRedux } from "../redux/actions/UiActions";
 
-
-
-
 const IdeaDetailPage = ({
   handleButtonLike,
   handleButtonComment,
   projectroomsData,
   user,
 }) => {
-
   const data = useSelector((state) => state.data.scream);
-  const { closeModal } = useModals()
+  const { closeModal } = useModals();
 
   const { screamId, lat, long, userId } = useSelector(
     (state) => state.data.scream
@@ -36,7 +36,6 @@ const IdeaDetailPage = ({
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
 
   const openScream = useSelector((state) => state.UI.openScream);
 
@@ -56,37 +55,26 @@ const IdeaDetailPage = ({
     }
   }, [lat, long, openScream, screamId]);
 
-
-
   const [projectroomCardData, setProjectroomCardData] = useState([]);
 
   useEffect(() => {
     if (projectroomsData && data && data.projectRoomId) {
       projectroomsData.map(({ projectRoomId, title, organizationType }) => {
         if (data.projectRoomId === projectRoomId) {
-          setProjectroomCardData([
-
-            title,
-            organizationType,
-          ]);
+          setProjectroomCardData([title, organizationType]);
         }
       });
     }
-
   }, [projectroomsData, data]);
 
-
   const handle = {
-
     buttonLike: handleButtonLike,
     buttonComment: handleButtonComment,
-
 
     closeCard: () => {
       dispatch(closeScream());
       dispatch(clearErrors());
     },
-
 
     submitComment: () => {
       setCommentFormLoading(true);
@@ -102,24 +90,26 @@ const IdeaDetailPage = ({
         case "Whatsapp":
           return openLink(`whatsapp://send?text=${path}`);
         case "Facebook":
-          return openLink(`https://www.facebook.com/sharer/sharer.php?u=${path}`);
+          return openLink(
+            `https://www.facebook.com/sharer/sharer.php?u=${path}`
+          );
         case "Email":
-          return openLink(`mailto:?subject=Das könnte dich interessieren!&amp;body=Check out this site ${path}`)
+          return openLink(
+            `mailto:?subject=Das könnte dich interessieren!&amp;body=Check out this site ${path}`
+          );
         default:
-          return false
+          return false;
       }
     },
 
     openProjectroom: (projectRoomId) => {
-      dispatch(openProjectRoomFunc(projectRoomId, true));
+      dispatch(openProjectRoomFunc(projectRoomId, true, navigate));
     },
 
-
-
     editIdea: (values) => {
-      dispatch(
-        editScreamFunc(values)
-      ).then(() => { closeModal() })
+      dispatch(editScreamFunc(values)).then(() => {
+        closeModal();
+      });
     },
     deleteIdea: async (screamId) => {
       return dispatch(
@@ -128,18 +118,24 @@ const IdeaDetailPage = ({
     },
 
     deleteComment: ({ commentId, screamId }) => {
-
-
       dispatch(
-        deleteComment(commentId, user?.userId, screamId, user?.isAdmin, user?.isModerator)
-      ).then(() => {
-        handleModal("pop")
-        handleModal("pop")
-      }).catch((err) => {
-        handleModal("pop")
-        handleModal("pop")
-        throw new Error('Error while deleting comment', err)
-      })
+        deleteComment(
+          commentId,
+          user?.userId,
+          screamId,
+          user?.isAdmin,
+          user?.isModerator
+        )
+      )
+        .then(() => {
+          handleModal("pop");
+          handleModal("pop");
+        })
+        .catch((err) => {
+          handleModal("pop");
+          handleModal("pop");
+          throw new Error("Error while deleting comment", err);
+        });
     },
 
     reportIdea: () => {
@@ -152,8 +148,8 @@ const IdeaDetailPage = ({
           "Meldung: Beitrag beinhaltet unangebrachten Inhalt "
         )}&body=${escape(
           `Dieser Beitrag beinhaltet unangebrachten Inhalt:` +
-          `\n` +
-          `\n${siteLink}`
+            `\n` +
+            `\n${siteLink}`
         )}`;
       window.location.href = link;
     },
@@ -167,42 +163,40 @@ const IdeaDetailPage = ({
           "Meldung: Beitrag beinhaltet unangebrachten Kommentar "
         )}&body=${escape(
           `Dieser Beitrag beinhaltet einen unangebrachten Kommentar:` +
-          `\n` +
-          `\n${siteLink}\n` +
-          `\n` +
-          `Kommentar-ID:` +
-          `\n` +
-          `\n${commentId}`
+            `\n` +
+            `\n${siteLink}\n` +
+            `\n` +
+            `Kommentar-ID:` +
+            `\n` +
+            `\n${commentId}`
         )}`;
       window.location.href = link;
     },
     openProfilePage: (profileId) => {
-
       /* dispatch(openProjectRoomFunc(null, false));
-      
-      
+
+
       dispatch(handleTopicSelectorRedux("all")); */
       dispatch(closeScream());
       dispatch(openProjectRoomFunc(null, false));
       dispatch(openAccountFunc());
-      navigate(`/profile/${profileId}`)
+      navigate(`/profile/${profileId}`);
+    },
+  };
 
-
-
-
-    }
-  }
-
-  return (data && <IdeaDetailPageComponent
-    data={{ ...data, handle }}
-    projectroomCardData={projectroomCardData}
-    projectroomsData={projectroomsData}
-    user={user}
-    path={path}
-    commentFormInput={commentFormInput}
-    setCommentFormInput={setCommentFormInput}
-    commentFormLoading={commentFormLoading}
-  />
+  return (
+    data && (
+      <IdeaDetailPageComponent
+        data={{ ...data, handle }}
+        projectroomCardData={projectroomCardData}
+        projectroomsData={projectroomsData}
+        user={user}
+        path={path}
+        commentFormInput={commentFormInput}
+        setCommentFormInput={setCommentFormInput}
+        commentFormLoading={commentFormLoading}
+      />
+    )
   );
 };
 

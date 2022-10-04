@@ -194,12 +194,6 @@ const Main = ({
   const mapBounds = useSelector((state) => state.data.mapBounds);
 
   useEffect(() => {
-    unknownPathId && navigate("/");
-    projectRoomId && dispatch(openProjectRoomFunc(projectRoomId, true));
-    screamId && dispatch(openScreamFunc(screamId));
-    organizationId && dispatch(openOrganizationFunc(organizationId, true));
-  }, [dispatch, projectRoomId, screamId, organizationId, unknownPathId]);
-  useEffect(() => {
     if (profileId) {
       dispatch(openAccountFunc());
       const profilePage = true;
@@ -254,7 +248,7 @@ const Main = ({
 
   const handleClick = useCallback(
     (order) => {
-      setOrder(order);
+      // setOrder(order);
       setSearchTerm("");
       setDropdown("newest");
       setOpenStatisticsOverview(false);
@@ -372,15 +366,6 @@ const Main = ({
   const handleButtonOpenCard = (event, cardType, cardId) => {
     if (cardType === "ideaCard") {
       dispatch(openScreamFunc(cardId));
-    } else if (cardType === "projectroomCard") {
-      dispatch(openProjectRoomFunc(cardId, true));
-
-      if (organization && isMobileCustom) {
-        dispatch({
-          type: "OPEN_ORGANIZATION",
-          payload: false,
-        });
-      }
     } else if (cardType === "organizationCard") {
       dispatch(openOrganizationFunc(cardId, true));
     }
@@ -607,9 +592,9 @@ const Main = ({
         {!openInfoPage && (
           <>
             {(location.pathname === "/projectRooms" ||
-              location.pathname === "/") &&
-              !loading &&
-              (order === 1 || (order === 2 && !loadingProjects)) && (
+              location.pathname === "/" ||
+              location.pathname === "") &&
+              !loading && (
                 <MainSwipeList
                   order={
                     location.pathname === "/projectRooms"
@@ -655,7 +640,7 @@ const Main = ({
                 />
               )}
 
-            {openProjectRoom && !openScream && (
+            {location.pathname.indexOf("/projectRoom/") > -1 && !openScream && (
               <ProjectroomPage
                 user={user}
                 setPostIdeaOpen={setPostIdeaOpen}
@@ -678,7 +663,7 @@ const Main = ({
               />
             )}
 
-            {!openInfoPage && openScream && (
+            {location.pathname.indexOf("/idea/") > -1 && (
               <IdeaDetailPage
                 handleButtonLike={handleButtonLike}
                 handleButtonComment={handleButtonComment}

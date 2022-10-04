@@ -289,7 +289,7 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
         }
 
         if (last && mx > 100) {
-          handleButtonClose();
+          // handleButtonClose();
         }
       }
     },
@@ -326,7 +326,6 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
   return (
     <React.Fragment>
       <DetailSidebar
-        handleButtonClose={() => handleButtonClose(false)}
         sideDivider={true}
         SecondButton={
           <DropdownButton

@@ -70,18 +70,21 @@ export const getProjects = (mapViewport) => async (dispatch) => {
 // Open a project
 
 export const openProjectRoomFunc =
-  (projectRoomId, state) => async (dispatch) => {
+  (projectRoomId, state, navigate) => async (dispatch) => {
     if (state === true) {
       dispatch(setMapBounds(store.getState().data.initialMapBounds));
 
       dispatch({ type: LOADING_PROJECTROOM_DATA });
-      dispatch({ type: OPEN_PROJECTROOM });
+      // dispatch({ type: OPEN_PROJECTROOM });
       dispatch(setSwipePositionDown());
       dispatch(loadProjectRoomData(projectRoomId));
       dispatch(closeScream());
+      const projectRoomURL = `/projectRoom/${projectRoomId}`;
+      navigate(projectRoomURL);
     } else {
       dispatch({ type: SET_PROJECT, payload: null });
       dispatch({ type: CLOSE_PROJECT });
+      navigate("/");
     }
   };
 export const loadProjectRoomData = (projectRoomId) => async (dispatch) => {

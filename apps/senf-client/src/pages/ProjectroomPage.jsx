@@ -4,7 +4,11 @@ import React, { useState, useEffect, memo, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // Redux stuff
 import { useTranslation } from "react-i18next";
-import { ProjectroomPage as ProjectroomPageComponent, useModals, Loader } from "senf-atomic-design-system";
+import {
+  ProjectroomPage as ProjectroomPageComponent,
+  useModals,
+  Loader,
+} from "senf-atomic-design-system";
 import {
   openCreateProjectRoomFunc,
   openProjectRoomFunc,
@@ -33,7 +37,7 @@ const ProjectroomPage = ({
   setOpenStatisticsOverview,
 }) => {
   const { t } = useTranslation();
-  const { openModal, closeModal } = useModals()
+  const { openModal, closeModal } = useModals();
 
   const [path, setPath] = useState("");
   const [order, setOrder] = useState(1);
@@ -50,25 +54,12 @@ const ProjectroomPage = ({
 
   const dispatch = useDispatch();
 
-
   const selectedTopics = useSelector((state) => state.data.topics);
 
   useEffect(() => {
     dispatch(handleTopicSelectorRedux("all"));
     setPath(window.location.pathname);
   }, [openProjectRoom]);
-
-  const handleClose = useCallback(() => {
-    dispatch(openProjectRoomFunc(null, false));
-    handleSetInitialMapBoundsAndViewport();
-
-    if (organization && isMobileCustom) {
-      dispatch({
-        type: "OPEN_ORGANIZATION",
-        payload: true,
-      });
-    }
-  }, [dispatch]);
 
   useEffect(() => {
     if (project && project.organizationId) {
@@ -132,11 +123,24 @@ const ProjectroomPage = ({
 
     dispatch(openCreateProjectRoomFunc(true));
 
-    openModal(<React.Suspense fallback={<div style={{ width: "50px", height: "2000px" }}><Loader /></div>}>
-      <CreateMainComponent type="projectRoom" /></React.Suspense>, { size: "full", swipe: !!isMobileCustom, height: isMobileCustom && window.innerHeight + 83, padding: 0 })
-
+    openModal(
+      <React.Suspense
+        fallback={
+          <div style={{ width: "50px", height: "2000px" }}>
+            <Loader />
+          </div>
+        }
+      >
+        <CreateMainComponent type="projectRoom" />
+      </React.Suspense>,
+      {
+        size: "full",
+        swipe: !!isMobileCustom,
+        height: isMobileCustom && window.innerHeight + 83,
+        padding: 0,
+      }
+    );
   };
-
 
   return (
     <ProjectroomPageComponent
@@ -145,7 +149,6 @@ const ProjectroomPage = ({
       ideasData={dataFinalProjectRoomIdeas}
       organizations={organizations}
       handleButtonOpenCard={handleButtonOpenCard}
-      handleButtonClose={handleClose}
       selectedTopics={selectedTopics}
       handleSelectTopics={(topic) => dispatch(handleTopicSelectorRedux(topic))}
       setPostIdeaOpen={() => setPostIdeaOpen(true)}
