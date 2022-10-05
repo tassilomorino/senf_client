@@ -4,12 +4,13 @@ import { getFirestore, serverTimestamp } from "firebase/firestore";
 import { getPerformance } from "firebase/performance";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB86KSs0YPJz2NEEB3UnUB5KAV_-XsuZ-M",
-  authDomain: "todo-f5d03.firebaseapp.com",
-  projectId: "todo-f5d03",
-  storageBucket: "todo-f5d03.appspot.com",
-  messagingSenderId: "962822667343",
-  appId: "1:962822667343:web:6007c78f8f5285f61a7e3a"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECTID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGEBUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
