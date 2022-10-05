@@ -1,30 +1,28 @@
 /** @format */
 
-import React, { useEffect, memo } from "react";
-import { useModals, Button } from "senf-atomic-design-system";
-import {
-  AuthModal,
-  useAuthContext,
-} from "senf-shared";
+import { useEffect, memo } from "react";
+import { useModals } from "senf-atomic-design-system";
+import { AuthModal, useAuthContext } from "senf-shared";
 
-const Auth = () => {
+const Auth = ({ ...props }) => {
   const { closeModal, setModal } = useModals();
-  const { user, signOut } = useAuthContext();
+  const { user } = useAuthContext();
 
-  const Modal = <AuthModal
-    success={() => closeModal()}
-    error={(err) => console.error(err)}
-    handleClose={() => closeModal()}
-  />
+  const Modal = (
+    <AuthModal
+      success={() => closeModal()}
+      error={(err) => console.error(err)}
+      handleClose={() => closeModal()}
+      {...props}
+    />
+  );
 
   useEffect(() => {
-    const timeoutID = setTimeout(() => {
-      if (!user) setModal(Modal)
-    }, 800);
+    const timeoutID = setTimeout(() => !user && setModal(Modal), 500);
     return () => clearTimeout(timeoutID);
-  }, [user])
+  }, [user]);
 
-  return (user ? <Button onClick={signOut}>Signout</Button> : null);
+  return null;
 };
 
 export default memo(Auth);

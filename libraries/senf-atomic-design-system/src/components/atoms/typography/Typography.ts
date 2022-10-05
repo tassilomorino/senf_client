@@ -79,6 +79,7 @@ const Typography = styled.p<TypographyProps>`
   font-weight: ${({ fontWeight }) => fontWeight};
   line-height: ${({ lineHeight }) => lineHeight};
   text-align: ${({ textAlign }) => textAlign};
+  padding-inline: ${({ paddingInline }) => paddingInline};
 `;
 
 export default Typography;

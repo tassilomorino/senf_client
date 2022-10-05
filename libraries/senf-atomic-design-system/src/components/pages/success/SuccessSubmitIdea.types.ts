@@ -1,7 +1,12 @@
 /** @format */
 
 import { MouseEventHandler } from "react";
+import { NavigateFunction } from "react-router-dom";
+
 export interface SuccessSubmitIdeaProps {
-  example?: string;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
+  navigate: NavigateFunction;
+  setPostIdeaSuccessModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setPostIdeaOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  newIdea: { screamId: string };
+  closeModal: () => void;
 }

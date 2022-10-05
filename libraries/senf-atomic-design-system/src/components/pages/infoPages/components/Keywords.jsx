@@ -52,7 +52,11 @@ const Keywords = () => {
       >
         <h3>{t("transparent")}</h3>
       </Keyword>
-      <Keyword color="#90D8B9" id="keyword3" left="-750px">
+      <Keyword
+        color="#90D8B9"
+        id="keyword3"
+        left="-750px"
+      >
         <h3>{t("diverse")}</h3>
       </Keyword>
     </Wrapper>

@@ -7,13 +7,12 @@ import { ImagePlaceholderProps } from "./ImagePlaceholder.types";
 const Wrapper = styled.div<ImagePlaceholderProps>`
   position: relative;
   box-sizing: border-box;
-  height: ${(props) => (props.height ? props.height : "100%")};
-  width: ${(props) => (props.width ? props.width : "100%")};
+  height: ${({ height }) => (height ? `${height}px` : "100%")};
+  width: ${({ width }) => (width ? `${width}px` : "100%")};
   background-color: #ffffff;
   border-radius: 10px;
   border: 1px solid ${({ theme }) => theme.colors.greyscale.greyscale20tra};
-  border-radius: ${({ borderRadius }) =>
-    borderRadius || "10px"};
+  border-radius: ${({ borderRadius }) => `${borderRadius}px` || "10px"};
   overflow: hidden;
 
   display: flex;
@@ -21,7 +20,7 @@ const Wrapper = styled.div<ImagePlaceholderProps>`
   flex-shrink: 0;
   justify-content: center;
 
-  ${({ layerStyle }) => (layerStyle || null)}
+  ${({ layerStyle }) => layerStyle || null}
 `;
 
 const Thumbnail = styled.div<ImagePlaceholderProps>`
@@ -41,6 +40,7 @@ const ImagePlaceholder: FC<ImagePlaceholderProps> = ({
   height,
   borderRadius,
   layerStyle,
+  onClick,
 }) => {
   return (
     <Wrapper
@@ -48,6 +48,7 @@ const ImagePlaceholder: FC<ImagePlaceholderProps> = ({
       height={height}
       borderRadius={borderRadius}
       layerStyle={layerStyle}
+      onClick={onClick}
     >
       {children}
       <Thumbnail img={img} />

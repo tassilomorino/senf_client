@@ -16,7 +16,7 @@ import {
   ContentDropdown,
   ContentDropdownItem,
   TertiaryButton,
-  ModalButton
+  ModalButton,
 } from "senf-atomic-design-system";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
@@ -147,14 +147,17 @@ const PostScreamFormContent = ({
         locationDecided && isMobileCustom
           ? { top: "80px", transition: "0.5s" }
           : !locationDecided && isMobileCustom
-            ? { top: "100vh", transition: "0.5s" }
-            : locationDecided && !isMobileCustom
-              ? { zIndex: 5 }
-              : { zIndex: 1 }
+          ? { top: "100vh", transition: "0.5s" }
+          : locationDecided && !isMobileCustom
+          ? { zIndex: 5 }
+          : { zIndex: 1 }
       }
     >
       {!isMobileCustom && (
-        <HideDiv onClick={handleLocationDecided} show={!locationDecided} />
+        <HideDiv
+          onClick={handleLocationDecided}
+          show={!locationDecided}
+        />
       )}
 
       <Content>
@@ -167,22 +170,19 @@ const PostScreamFormContent = ({
           /> */}
           <StyledH4> ~ {address} </StyledH4>
 
-
-          <ModalButton variant="tertiary"
+          <ModalButton
+            variant="tertiary"
             size="medium"
             text={t("rules")}
-
-            options={{ swipe: false, size: "lg", padding: 20 }}>
-
+            options={{ swipe: false, size: "lg", padding: 20 }}
+          >
             <PostScreamRules />
           </ModalButton>
-
-
-
-
-
         </FlexWrapper>
-        <Box flexDirection="column" gap="20px">
+        <Box
+          flexDirection="column"
+          gap="20px"
+        >
           <Input
             name="title"
             type="textarea"
@@ -195,7 +195,7 @@ const PostScreamFormContent = ({
             error={formik?.touched.title && Boolean(formik?.errors.title)}
             note={formik?.touched.title && formik?.errors.title}
 
-          // maxLength: 70
+            // maxLength: 70
           />
 
           <Input
@@ -210,7 +210,7 @@ const PostScreamFormContent = ({
             error={formik?.touched.body && Boolean(formik?.errors.body)}
             note={formik?.touched.body && formik?.errors.body}
 
-          // maxLength: 800
+            // maxLength: 800
           />
         </Box>
         {/* <TextField
@@ -243,7 +243,12 @@ const PostScreamFormContent = ({
           inputProps={{ maxLength: 800 }}
         /> */}
 
-        <Box position="absolute" bottom="60px" zIndex={2} gap="8px">
+        <Box
+          position="absolute"
+          bottom="60px"
+          zIndex={2}
+          gap="8px"
+        >
           <RoundedButton
             variant={
               weblink !== null && weblinkTitle !== null ? "primary" : "white"
@@ -268,21 +273,24 @@ const PostScreamFormContent = ({
           )}
         </Box>
         <SelectContainer>
+          asd
           <StyledH3 fontWeight={400}>{t("topic")}: </StyledH3>
-
           <ContentDropdown
             open={topicDropdownOpen}
             setOpen={setTopicDropdownOpen}
-            OpenButton={
+            openButton={
               <TertiaryButton
                 onClick={() => setTopicDropdownOpen(!topicDropdownOpen)}
                 text={topic || t("select_topic")}
-                iconRight={<Arrow transform="rotate(90deg)" />}
+                iconRight={<Arrow transform="rotate(90)" />}
                 variant="semibold"
               />
             }
-            Content={
-              <Box gap="5px" flexDirection="column">
+            content={
+              <Box
+                gap="5px"
+                flexDirection="column"
+              >
                 {Object.values(OptionsTopics()).map(({ name, label }) => (
                   <Box gap="5px">
                     <ContentDropdownItem

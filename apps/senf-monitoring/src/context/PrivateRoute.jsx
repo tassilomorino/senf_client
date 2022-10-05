@@ -4,7 +4,8 @@ import { useAuthContext } from "senf-shared";
 
 const PrivateRoute = () => {
   const { user } = useAuthContext();
-  return user ? <Outlet /> : <Navigate to="/login" />;
+
+  return user === false ? <Navigate to="/login" /> : <Outlet />;
 };
 
 export default PrivateRoute;

@@ -76,7 +76,9 @@ export const LayerYellowDefault = css`
   background-color: ${({ theme }) => theme.colors.primary.primary100};
   overflow: visible;
 
-  border: solid 2px ${({ theme }) => theme.colors.primary.primary120};
+  /* border: solid 2px ${({ theme }) => theme.colors.primary.primary120}; */
+  outline-offset: -2px;
+  outline: solid 2px ${({ theme }) => theme.colors.shade.shade10tra};
 `;
 
 export const LayerYellowHover = css`
@@ -87,7 +89,9 @@ export const LayerYellowHover = css`
   overflow: visible;
   /* border: 2px solid rgba(186, 160, 79, 0.1); */
 
-  border: solid 2px ${({ theme }) => theme.colors.primary.primary120};
+  /* border: solid 2px ${({ theme }) => theme.colors.primary.primary120}; */
+  outline-offset: -2px;
+  outline: solid 2px ${({ theme }) => theme.colors.shade.shade10tra};
 `;
 
 export const LayerBrownDefault = css`

@@ -23,8 +23,8 @@ const Template: Story<ContentDropdownProps> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
   open: true,
-  OpenButton: Button,
-  Content: (
+  openButton: Button,
+  content: (
     <div>
       Deutsch <br />
       Englisch
@@ -35,11 +35,22 @@ Default.args = {
 export const Language = Template.bind({});
 Language.args = {
   open: true,
-  OpenButton: Button,
-  Content: (
-    <Box gap="5px" flexDirection="column">
-      <Button variant="primary" size="small" text="🇩🇪 Deutsch" />
-      <Button size="small" variant="secondary" text="🇬🇧 English" />
+  openButton: Button,
+  content: (
+    <Box
+      gap="5px"
+      flexDirection="column"
+    >
+      <Button
+        variant="primary"
+        size="small"
+        text="🇩🇪 Deutsch"
+      />
+      <Button
+        size="small"
+        variant="secondary"
+        text="🇬🇧 English"
+      />
     </Box>
   ),
 };

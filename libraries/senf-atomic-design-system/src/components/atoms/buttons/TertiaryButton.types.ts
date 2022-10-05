@@ -7,7 +7,7 @@ export interface TertiaryButtonProps {
   iconLeftTransform?: string;
   iconRight?: React.ReactNode;
   iconRightTransform?: string;
-  fillWidth?: "max" | undefined;
+  width?: "max" | undefined;
   loading?: boolean;
   disabled?: boolean;
   size?: "small" | "big";

@@ -58,16 +58,25 @@ const Cookiebanner: FC<CookiebannerProps> = ({
         src={Cookie}
         width={document.body.clientWidth > 768 ? "40px" : "30px"}
       />
-      <Typography variant="bodyBg" textAlign="center">
+      <Typography
+        variant="bodyBg"
+        textAlign="center"
+      >
         <Trans i18nKey="cookiebanner_text">
           Für die Bereitstellung einiger Funktionen und die Verbesserung dieses
           Services brauchen wir Cookies. Falls du wirklich nur die technisch
           notwendigsten Cookies akzeptieren willst, klicke{" "}
-          <span className="Terms" onClick={() => handleCookies("minimum")}>
+          <span
+            className="Terms"
+            onClick={() => handleCookies("minimum")}
+          >
             hier
           </span>
           &nbsp;oder konfiguriere deine{" "}
-          <span className="Terms" onClick={handleOpenCookiePreferences}>
+          <span
+            className="Terms"
+            onClick={handleOpenCookiePreferences}
+          >
             Cookie-Einstellungen
           </span>
           .

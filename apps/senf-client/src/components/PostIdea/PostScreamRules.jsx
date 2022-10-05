@@ -16,26 +16,42 @@ const PostScreamRules = () => {
   const { closeModal } = useModals();
 
   const handleSetUnderstoodRules = () => {
-    closeModal()
+    closeModal();
     // setIntoAccout? setInto Localstorage? setCookies? (accepted_rules:true)
-  }
+  };
   return (
-
     <React.Fragment>
-      <Box margin="10px" justifyContent="center">
-        <Typography variant="h1" fontWeight="900" textAlign="center">
+      <Box
+        margin="10px"
+        justifyContent="center"
+      >
+        <Typography
+          variant="h1"
+          fontWeight="900"
+          textAlign="center"
+        >
           {t("rules_title")}
         </Typography>
       </Box>
-      <Box margin="30px 10px 10px 10px" flexDirection="column" gap="10px">
-        <Typography variant="h3" textAlign="center">
+      <Box
+        margin="30px 10px 10px 10px"
+        flexDirection="column"
+        gap="10px"
+      >
+        <Typography
+          variant="h3"
+          textAlign="center"
+        >
           {t("rules_section1header")}
         </Typography>
 
-        <Typography variant="bodyBg" textAlign="center">
+        <Typography
+          variant="bodyBg"
+          textAlign="center"
+        >
           <Trans i18nKey="rules_section1text">
-            Ideen, Wünsche und Anregungen sind hier erwünscht. Für
-            Beschwerden, informier dich bitte
+            Ideen, Wünsche und Anregungen sind hier erwünscht. Für Beschwerden,
+            informier dich bitte
             <a
               href="https://www.stadt-koeln.de/service/onlinedienste/anregungen-beschwerden/index.html"
               rel="noopener noreferrer"
@@ -48,16 +64,29 @@ const PostScreamRules = () => {
         </Typography>
       </Box>
 
-      <Box margin="10px" flexDirection="column" gap="10px">
-        <Typography variant="h3" textAlign="center">
+      <Box
+        margin="10px"
+        flexDirection="column"
+        gap="10px"
+      >
+        <Typography
+          variant="h3"
+          textAlign="center"
+        >
           {t("rules_section2header")}
         </Typography>
 
-        <Typography variant="bodyBg" textAlign="center">
+        <Typography
+          variant="bodyBg"
+          textAlign="center"
+        >
           {t("rules_section2text")}
         </Typography>
       </Box>
-      <Box justifyContent="center" margin="40px 0px 0px 0px">
+      <Box
+        justifyContent="center"
+        margin="40px 0px 0px 0px"
+      >
         <Button
           text={t("rules_understood")}
           onClick={handleSetUnderstoodRules}

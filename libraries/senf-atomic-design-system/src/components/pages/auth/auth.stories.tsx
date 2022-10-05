@@ -17,17 +17,17 @@ const Template: Story<AuthProps> = (args) => <Auth {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  handleClose: () => { },
-  handleSubmitRegister: () => { },
+  handleClose: () => {},
+  handleSubmitRegister: () => {},
   registerLoading: false,
-  handleSubmitLogin: () => { },
+  handleSubmitLogin: () => {},
   loginLoading: false,
-  handleGoogleSignIn: () => { },
+  handleGoogleSignIn: () => {},
   googleLoading: false,
-  handleFacebookSignIn: () => { },
+  handleFacebookSignIn: () => {},
   facebookLoading: false,
   resetLoading: false,
-  handleSubmitResetEmail: () => { },
+  handleSubmitResetEmail: () => {},
   socialLoginVerified: false,
   emailRegistrationSubmitted: false,
   emailVerified: false,
@@ -49,5 +49,5 @@ AddDetailsPage.args = {
 
 export const SuccessPage = Template.bind({});
 SuccessPage.args = {
-  page: "authSuccess",// missing this page
+  page: "authSuccess", // missing this page
 };

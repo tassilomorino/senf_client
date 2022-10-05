@@ -35,7 +35,7 @@ export const Wrapper = styled.div<{ disabled?: boolean }>`
 //   transition: 100ms;
 //   background-color: white;
 // `;
-export const Label = styled.label<{ size?: string, error?: boolean }>`
+export const Label = styled.label<{ size?: string; error?: boolean }>`
   align-self: flex-start;
   flex: auto;
   color: ${({ theme, error }) => error && theme.colors.signal.redDark};
@@ -43,31 +43,35 @@ export const Label = styled.label<{ size?: string, error?: boolean }>`
   font-size: ${({ theme }) => theme.fontSizes[1]}rem;
   font-weight: ${({ theme }) => theme.fontWeights[1]};
   line-height: ${({ theme }) => theme.lineHeight[0]};
-  padding-inline: ${({ size, theme }) => theme.inputPadding(size)};
-
+  /*  padding-inline: ${({ size, theme }) => theme.inputPadding(size)}; */
 `;
 
 export const Note = styled.p<{ error?: boolean }>`
   color: ${({ theme, error }) => error && theme.colors.signal.redDark};
   font-size: ${({ theme }) => theme.fontSizes[0]}rem;
   line-height: ${({ theme }) => theme.lineHeight[2]};
-  padding-inline: ${({ size, theme }) => theme.inputPadding(size)};
+  /*   padding-inline: ${({ size, theme }) => theme.inputPadding(size)}; */
   /* align-self: flex-end; */
   /* text-align: end; */
   /* flex: auto; */
   /* flex-basis: 7rem; */ // what is this?
 `;
 
-export const InputContainer = styled.label<{ focus: boolean, icon: boolean, size: string, type: string }>`
+export const InputContainer = styled.label<{
+  focus: boolean;
+  icon: boolean;
+  size: string;
+  type: string;
+}>`
   position: relative;
   display: flex;
-  align-items: start;
+  align-items: center;
   padding: ${({ size, theme }) => theme.inputPadding(size)};
   gap: ${({ size, theme }) => `${parseFloat(theme.inputPadding(size), 10)}rem`};
   min-height: ${({ size, theme }) => theme.inputHeight(size)};
   height: ${({ size, type, theme }) => {
-    if (type === "textarea") return "initial"
-    return theme.inputHeight(size)
+    if (type === "textarea") return "initial";
+    return theme.inputHeight(size);
   }};
   box-sizing: border-box;
   border-radius: ${({ theme }) => theme.radii[2]}px;
@@ -82,13 +86,15 @@ export const InputContainer = styled.label<{ focus: boolean, icon: boolean, size
   ),
     #ffffff; */
 
-  --border-color: ${({ focus, theme }) => focus ? theme.colors.primary.primary120 : 'var(--border-color)'};
-  border: 2px solid var(--border-color, ${({ theme }) => theme.colors.greyscale.greyscale20});
+  --border-color: ${({ focus, theme }) =>
+    focus ? theme.colors.primary.primary120 : "var(--border-color)"};
+  border: 2px solid
+    var(--border-color, ${({ theme }) => theme.colors.greyscale.greyscale20});
   box-shadow: 0px -5px 10px rgba(255, 255, 255, 0.2),
     0px 10px 20px -6px rgba(134, 124, 99, 0.06), var(--outline-shadow);
 
-
-  input, textarea {
+  input,
+  textarea {
     padding: 0;
     box-sizing: border-box;
     width: 100%;
@@ -108,37 +114,37 @@ export const InputContainer = styled.label<{ focus: boolean, icon: boolean, size
     margin: -10px;
   }
   label svg {
-  margin: 1px -1px;
-}
+    margin: 1px -1px;
+  }
 `;
 
 export const InputField = styled.input`
-font-size: ${({ theme }) => theme.fontSizes[2]}rem;
-border: 0;
-flex: 1;
-background-color: transparent!important;
-color: ${({ theme }) => theme.colors.black.black};
+  font-size: ${({ theme }) => theme.fontSizes[2]}rem;
+  border: 0;
+  flex: 1;
+  background-color: transparent !important;
+  color: ${({ theme }) => theme.colors.black.black};
   ::placeholder,
   ::-webkit-input-placeholder {
-  color: ${({ theme }) => theme.colors.black.black40tra};
-}
+    color: ${({ theme }) => theme.colors.black.black40tra};
+  }
   :-ms-input-placeholder {
-  color: ${({ theme }) => theme.colors.black.black40tra};
-}
+    color: ${({ theme }) => theme.colors.black.black40tra};
+  }
   :focus::placeholder,
   :focus::-webkit-input-placeholder {
-  color: ${({ theme }) => theme.colors.black.black30tra};
-}
+    color: ${({ theme }) => theme.colors.black.black30tra};
+  }
   :focus:-ms-input-placeholder {
-  color: ${({ theme }) => theme.colors.black.black30tra};
-}
+    color: ${({ theme }) => theme.colors.black.black30tra};
+  }
   ::-webkit-search-cancel-button {
-  -webkit-appearance: none;
-}
+    -webkit-appearance: none;
+  }
   &:focus {
-  outline: 0;
-}
+    outline: 0;
+  }
   &:focus-visible {
-  outline: 0;
-}
+    outline: 0;
+  }
 `;

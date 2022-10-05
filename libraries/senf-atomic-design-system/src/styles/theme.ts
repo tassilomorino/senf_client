@@ -1,7 +1,64 @@
 /** @format */
 import type { Theme } from "styled-system";
+import palette from "./palette";
+import { generateThemeColors, composite, generateRaw, generateStaticColors, logColors, ColorPallet, HSL } from "./helpers";
+import layers, { BaseLayerProps } from "./layers";
 
-const theme: Theme = {
+const colors: ColorPallet = {
+  primary: [46, 100, 71],
+  shade: [37, 100, 30],
+  grey: [44, 15, 46],
+  text: [36, 27, 11],
+};
+const compositeColors: ColorPallet = {
+  primary: colors.primary, shade: colors.shade
+};
+const transparent: ColorPallet = {
+  white: [0, 0, 100],
+};
+const categories: ColorPallet = {
+  bike: [227, 70, 68],
+  traffic: [194, 75, 70],
+  social: [10, 68, 70],
+  sports: [27, 83, 77],
+  utilities: [262, 85, 78],
+  environment: [154, 50, 70],
+  other: [42, 91, 78],
+};
+const signal: ColorPallet = {
+  alert: [2, 80, 60],
+  warning: [38, 100, 57],
+  success: [145, 100, 30],
+  info: [242, 81, 60],
+};
+const luminance = [100, 81, 64, 49, 36, 25, 16, 10, 5, 2];
+
+const themeColors = {
+  ...generateThemeColors({ "blend-shade-primary": compositeColors.shade }, [50, 25, 10], colors.primary as HSL),
+  ...generateThemeColors({ "blend-shade-primary-bg": composite(...colors.primary as HSL, 3 / 4, compositeColors.shade as HSL) }, [15]),
+  ...generateThemeColors(colors, luminance),
+  ...generateThemeColors(transparent, luminance, false),
+  ...generateThemeColors(categories, [100]),
+  ...generateThemeColors(signal, luminance),
+  ...generateThemeColors(signal, luminance)
+}
+
+// after modifying the theme colors, make them static to make use of TS
+/**
+ * After modifying the theme colors, make them static to make use of TS
+ * Export the output in ./palette.ts and import it here.
+ */
+// generateStaticColors(themeColors)
+
+// for testing
+logColors(themeColors)
+
+/**
+ * @todo I think we should decide whether we return variables with a unit or without. My proposal is that we return units as numbers and assume pixel values. We can then provide a px-to-rem function and devs can transform the values to rem as well
+ * @todo I also think the keys should be singular because I think it is more intuitive to use `theme.color.primary-100` or `theme.radius[0]
+ */
+
+const theme = {
   fontFamily: "Nunito",
 
   // SPACE are not complete/verified
@@ -19,16 +76,30 @@ const theme: Theme = {
   // input and button height
   inputHeight: (size) => {
     switch (size) {
-      case "sm": case "small": return "36px";
-      case "md": case "medium": return "44px";
-      case "lg": case "large": default: return "50px";
+      case "sm":
+      case "small":
+        return "36px";
+      case "md":
+      case "medium":
+        return "44px";
+      case "lg":
+      case "large":
+      default:
+        return "50px";
     }
   },
   inputPadding: (size) => {
     switch (size) {
-      case "sm": case "small": return "0.5rem";
-      case "md": case "medium": return "0.75rem";
-      case "lg": case "large": default: return "0.875rem";
+      case "sm":
+      case "small":
+        return "0.5rem";
+      case "md":
+      case "medium":
+        return "0.75rem";
+      case "lg":
+      case "large":
+      default:
+        return "0.875rem";
     }
   },
 
@@ -84,6 +155,19 @@ const theme: Theme = {
       beige35tra: "rgba(226, 183, 54, 0.35)",
       beige20tra: "rgba(226, 183, 54, 0.2)",
       beige10tra: "rgba(226, 183, 54, 0.1)",
+    },
+    shade: {
+      shade100: "#",
+      shade75: "#",
+      shade50: "#",
+      shade35: "#",
+      shade20: "#",
+      shade10: "#",
+      shade75tra: "",
+      shade50tra: "",
+      shade35tra: "",
+      shade20tra: "",
+      shade10tra: "rgba(155, 95, 0, 0.1)",
     },
     brown: {
       brown100: "#baa04f",
@@ -144,65 +228,8 @@ const theme: Theme = {
       blue: "#322bf3",
     },
     primaryHoverLayerShadowColor: "rgba(235, 184, 0, 0.5)",
+    palette,
   },
+  layers: (props: BaseLayerProps) => layers(props, theme.colors.palette)
 };
-
 export default theme;
-
-// This code does not produce accurate luminance values, yet.
-
-const colors = {
-  primary: { h: 46, s: 100, l: 71, a: 1 },
-  shade: { h: 37, s: 100, l: 30, a: 1 },
-  grey: { h: 44, s: 15, l: 46, a: 1 },
-  white: { h: 0, s: 0, l: 100, a: 1 },
-  text: { h: 36, s: 27, l: 11, a: 1 },
-};
-const luminance = [100, 75, 50, 25, 15, 10, 5];
-
-const hsla = (h, s, l, a) => `hsla(${h}, ${s}%, ${l}%, ${a})`;
-// utils
-const hsl2rgb = (hue, sat, lum, alpha) => {
-  const h = hue;
-  const s = sat / 100;
-  const l = lum / 100;
-  const a = s * Math.min(l, 1 - l);
-  const f = (n, k = (n + h / 30) % 12) =>
-    parseInt((l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1)) * 255, 10);
-  return [f(0), f(8), f(4), alpha];
-};
-const rgb2hsl = (red, green, blue) => {
-  const r = red / 255;
-  const g = green / 255;
-  const b = blue / 255;
-  const v = Math.max(r, g, b);
-  const c = v - Math.min(r, g, b);
-  const f = 1 - Math.abs(v + v - c - 1);
-  const h =
-    c && (v === r ? (g - b) / c : v === g ? 2 + (b - r) / c : 4 + (r - g) / c);
-  return [
-    parseInt(60 * (h < 0 ? h + 6 : h), 10),
-    parseInt((f ? c / f : 0) * 100, 10),
-    parseInt(((v + v - c) / 2) * 100, 10),
-  ];
-};
-const blend = (hslA, hslB) => {
-  const A = hsl2rgb(...hslA);
-  const B = hsl2rgb(...hslB);
-  return rgb2hsl(
-    Math.min(hslA[3] * A[0] + hslB[3] * B[0], 255),
-    Math.min(hslA[3] * A[1] + hslB[3] * B[1], 255),
-    Math.min(hslA[3] * A[2] + hslB[3] * B[2], 255)
-  );
-};
-
-// Object.entries(colors).forEach(([name, color]) => {
-//   luminance.forEach((lum) => {
-//     const { h, s, l, a } = color
-//     const lumColor = hsla(h, s, (100 - ((l * (lum)))) / 100, 1)
-//     // const lumColor = hsla(...blend([h, s, l, a], [0, 0, 100, (100 - lum) / 100]), 1)
-//     const traColor = hsla(h, s, l, (a * (lum)).toFixed(0) / 100)
-//     console.log(`%c${name} ${lumColor}`, `background: ${lumColor}; color: white`)
-//     console.log(`%c${name} ${traColor}`, `background: ${traColor}; color: black`)
-//   })
-// })

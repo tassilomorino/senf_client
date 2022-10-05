@@ -9,7 +9,7 @@ import {
   RoundedButton,
   Divider,
   Plus,
-  ModalButton
+  ModalButton,
 } from "senf-atomic-design-system";
 import logo from "../../assets/logo_yellow.png";
 import InfoPage from "./InfoPage";
@@ -30,7 +30,7 @@ const RoundedButtonWrapper = styled.div`
   height: 0;
   transform: ${({ componentsSidebarOpen }) =>
     componentsSidebarOpen
-      ? "translate(-50%, -50%) rotate(45deg)"
+      ? "translate(-50%, -50%) rotate(45)"
       : "translate(-50%, -50%)"};
   left: ${({ componentsSidebarOpen }) =>
     componentsSidebarOpen ? "600px" : "180px"};
@@ -61,13 +61,28 @@ const MenuSidebar = ({
           alt="logo"
         />
 
-        <Box flexDirection="column" gap="10px">
-          <ModalButton variant="secondary" text="Info" options={{ swipe: false, size: "lg", onBeforeOpen: () => setOpenInfoModal(true), onBeforeClose: () => setOpenInfoModal(false) }}>
+        <Box
+          flexDirection="column"
+          gap="10px"
+        >
+          <ModalButton
+            variant="secondary"
+            text="Info"
+            options={{
+              swipe: false,
+              size: "lg",
+              onBeforeOpen: () => setOpenInfoModal(true),
+              onBeforeClose: () => setOpenInfoModal(false),
+            }}
+          >
             <InfoPage />
           </ModalButton>
 
-
-          <Button variant="secondary" text="Neustart" onClick={restart} />
+          <Button
+            variant="secondary"
+            text="Neustart"
+            onClick={restart}
+          />
         </Box>
 
         <Divider margin="30px 0px 30px 0px" />
@@ -79,13 +94,12 @@ const MenuSidebar = ({
           alignItems="center"
           flexWrap="wrap"
         >
-
           <RoundedButtonWrapper componentsSidebarOpen={componentsSidebarOpen}>
             <RoundedButton
               color={!componentsSidebarOpen ? "white" : "rgb(226,183,54)"}
               icon={<Plus />}
               onClick={() => setComponentsSidebarOpen(!componentsSidebarOpen)}
-              size="big"
+              size="lg"
               variant={!componentsSidebarOpen ? "primary" : undefined}
             />
           </RoundedButtonWrapper>
@@ -101,7 +115,10 @@ const MenuSidebar = ({
         /> */}
 
         <div style={{ marginTop: "auto" }}>
-          <Box flexDirection="column" gap="10px">
+          <Box
+            flexDirection="column"
+            gap="10px"
+          >
             <br />
             {/* <Button variant="secondary" text="Rückgängig" /> */}
             <Button

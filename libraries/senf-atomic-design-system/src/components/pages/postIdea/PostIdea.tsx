@@ -1,17 +1,22 @@
 /** @format */
 
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { isisMobile } from "react-device-detect";
 import Box from "../../atoms/box/Box";
 import Button from "../../atoms/buttons/Button";
 import Typography from "../../atoms/typography/Typography";
-import { PostIdeaProps } from "./PostIdea.types";
 import PostIdeaForm from "./PostIdeaForm";
 import { LayerWhiteFirstDefault } from "../../atoms/layerStyles/LayerStyles";
 import Geocoder from "../../atoms/geocoder/Geocoder";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
+import { Arrow } from "../../../assets/icons";
+import SwipeModal from "../../molecules/modals/SwipeModal";
+import SuccessSubmitIdea from "../success/SuccessSubmitIdea";
+import { useModals } from "../../molecules/modalStack/ModalProvider";
+import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
+import List from "../../molecules/list/List";
+import ProjectroomCard from "../../molecules/cards/ProjectroomCard";
 
 const Wrapper = styled.div`
   z-index: 999;
@@ -19,12 +24,36 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: ${(props) => (props.isMobile ? "0px" : "22px 0px 0px 95px")};
+  margin: ${(props) => "22px 0px 0px 95px"};
+
   width: 366px;
   height: auto;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   border-radius: 24px;
   /* padding: 0px 16px 16px 16px; */
+  ${() => LayerWhiteFirstDefault};
+`;
+const ProjectroomsWrapper = styled.div`
+  z-index: 99;
+  position: absolute;
+  top: 250px;
+  left: 80px;
+  width: 400px;
+  height: calc(100vh - 250px);
+  overflow: scroll;
+`;
+
+const StyledMobileHeaders = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 16px 16px 24px;
+  z-index: 999;
+  position: fixed;
+  bottom: 0;
+  ${() => LayerWhiteFirstDefault};
+`;
+const Background = styled.div`
   ${() => LayerWhiteFirstDefault};
 `;
 
@@ -38,106 +67,219 @@ const PostIdea: FC<PostIdeaProps> = ({
   loading,
   Out,
   setPostIdeaOpen,
+  postIdeaSuccessModalOpen,
+  setPostIdeaSuccessModalOpen,
+  navigate,
+  newIdea,
+  projectroomsData,
+  projectroomSelected,
 }) => {
   const { t } = useTranslation();
   const [postIdeaForm, setPostIdeaForm] = React.useState(false);
+  const [showProjectrooms, setShowProjectrooms] = React.useState(false);
+
   const [addressSelected, setAddressSelected] = React.useState(false);
   const isMobile = isMobileCustom();
-
-  const postIdeaHeader = (
+  const { openModal, closeModal } = useModals();
+  const createIdeaHeader = (
     <Box
       flexDirection="row"
       alignItems="center"
-      justifyContent="space-around"
       width="100%"
+      justifyContent="space-between"
     >
-      <Typography variant="h3">Idee erstellen</Typography>
+      <Typography variant="h3">{t("postidea_create_idea")}</Typography>
+
       <Button
         variant="tertiary"
-        size="big"
-        text={t("Abbrechen")}
+        size="small"
+        text={t("cancel")}
         justifyContent="flex-start"
         onClick={() => setPostIdeaOpen(false)}
       />
     </Box>
   );
+
+  const InstructionsHeader = (
+    <Box
+      display="flex"
+      gap="16px"
+      flexDirection="column"
+      width="100%"
+      height="auto"
+    >
+      <Typography variant="bodyBg">{t("postidea_navigate")}</Typography>
+      {!isMobile && (
+        <Geocoder
+          formik={formik}
+          statefulMap={statefulMap}
+        />
+      )}
+      {!isMobile && formik?.values.address && formik?.values.address !== "" && (
+        <Button
+          variant="primary"
+          size="lg"
+          text={t("next")}
+          width="max"
+          onClick={() => setAddressSelected(true)}
+        ></Button>
+      )}
+    </Box>
+  );
+  useEffect(() => {
+    if (postIdeaSuccessModalOpen) {
+      openModal(
+        <SuccessSubmitIdea
+          navigate={navigate}
+          setPostIdeaSuccessModalOpen={setPostIdeaSuccessModalOpen}
+          setPostIdeaOpen={setPostIdeaOpen}
+          newIdea={newIdea}
+          closeModal={closeModal}
+        />,
+        {
+          swipe: !!isMobile,
+
+          afterClose: () => {
+            setPostIdeaSuccessModalOpen(false);
+            setPostIdeaOpen(false);
+          },
+        }
+      );
+    }
+    /* return () => closeModal(); */
+  }, [postIdeaSuccessModalOpen]);
+
   return (
-    <Wrapper isMobile={isMobile}>
-      {isMobile && postIdeaHeader}
-
-      {/*  whole section of !isMobile down below? */}
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        width="100%"
-        marginBottom="20px"
-      >
-        {!isMobile && postIdeaHeader}
-
-        {!addressSelected && !isMobile && (
+    <>
+      {isMobile && !postIdeaSuccessModalOpen && (
+        <>
           <Box
-            padding="0px 16px 0px 16px"
-            gap="16px"
-            flexDirection="column"
+            position="fixed"
+            top="16px"
+            left="16px"
+            right="16px"
+            zIndex="9999"
           >
-            <Typography variant="bodyBg">
-              {" "}
-              Navigiere auf der Karte an den gewünschten Ort oder nutze die
-              Adresseingabe.
-            </Typography>
-
             <Geocoder
-              finalAddress={formik?.values.address}
+              formik={formik}
               statefulMap={statefulMap}
             />
+          </Box>
 
-            {formik?.values.address && formik?.values.address !== "" && (
+          {!formik?.values?.address && (
+            <StyledMobileHeaders>
+              {createIdeaHeader}
+
+              {InstructionsHeader}
+            </StyledMobileHeaders>
+          )}
+
+          {formik?.values?.address && !addressSelected && (
+            <Box
+              position="fixed"
+              bottom="16px"
+              left="16px"
+              right="16px"
+              zIndex="9999"
+              height="66px"
+            >
               <Button
                 variant="primary"
-                size="big"
+                size="lg"
                 text={t("Weiter")}
-                fillWidth={"max"}
+                width={"max"}
                 onClick={() => setAddressSelected(true)}
               ></Button>
+            </Box>
+          )}
+          {addressSelected && (
+            <Box
+              position="fixed"
+              bottom="0px"
+              zIndex="999"
+              width="100%"
+            >
+              <SwipeModal
+                onClose={() => setPostIdeaOpen(false)}
+                overflowing={true}
+                style={{
+                  height: "85%",
+                }}
+              >
+                <PostIdeaForm
+                  formik={formik}
+                  statefulMap={statefulMap}
+                  checkIfCalendar={checkIfCalendar}
+                  selectedDays={selectedDays}
+                  handleChangeCalendar={handleChangeCalendar}
+                  setPostIdeaOpen={setPostIdeaOpen}
+                  handleSubmit={handleSubmit}
+                  loading={loading}
+                  Out={Out}
+                />
+              </SwipeModal>
+            </Box>
+          )}
+        </>
+      )}
+
+      {!isMobile && !postIdeaSuccessModalOpen && (
+        <Wrapper>
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            width="100%"
+            marginBottom="20px"
+          >
+            <Box
+              flexDirection="column"
+              alignItems="center"
+              width="100%"
+              justifyContent="space-between"
+              padding="12px 16px 8px"
+            >
+              {createIdeaHeader}
+              {!addressSelected && InstructionsHeader}
+            </Box>
+            {addressSelected && (
+              <PostIdeaForm
+                formik={formik}
+                statefulMap={statefulMap}
+                checkIfCalendar={checkIfCalendar}
+                selectedDays={selectedDays}
+                handleChangeCalendar={handleChangeCalendar}
+                setPostIdeaOpen={setPostIdeaOpen}
+                handleSubmit={handleSubmit}
+                loading={loading}
+                Out={Out}
+              />
             )}
           </Box>
-        )}
-
-        {addressSelected && (
-          <PostIdeaForm
-            formik={formik}
-            checkIfCalendar={checkIfCalendar}
-            selectedDays={selectedDays}
-            handleChangeCalendar={handleChangeCalendar}
-            setPostIdeaOpen={setPostIdeaOpen}
+        </Wrapper>
+      )}
+      <ProjectroomsWrapper>
+        <Box margin="16px">
+          {/* <Typography variant="bodyBg">{t("")}</Typography> */}
+          <Button
+            variant="secondary"
+            width="max"
+            size="small"
+            text={t("show_projectrooms")}
+            onClick={() => setShowProjectrooms(true)}
+          />
+        </Box>
+        {showProjectrooms && (
+          <List
+            CardType={ProjectroomCard}
+            data={projectroomsData}
+            // projectroomsData={projectroomsData}
+            // handleButtonOpenCard={handleButtonOpenCard}
+            listEndText={t("noMoreProjectrooms")}
           />
         )}
-      </Box>
-
-      {/* 
-      <Box
-        margin="10px 0px 10px 0px"
-        justifyContent="center"
-        position="absolute"
-        bottom="10px"
-        width="450px"
-        zIndex={3}
-      >
-        <Button
-          onClick={handleSubmit}
-          variant="white"
-          text={t("postScream_shareIdea")}
-          loading={loading}
-          disabled={
-            formik.values.body === "" ||
-            formik.values.title === "" ||
-            !formik.values.address ||
-            Out === true
-          }
-        />
-      </Box> */}
-    </Wrapper>
+      </ProjectroomsWrapper>
+    </>
   );
 };
 

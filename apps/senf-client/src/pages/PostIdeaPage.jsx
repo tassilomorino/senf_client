@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, memo, useEffect } from "react";
+import React, { useState, memo, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
 import {
@@ -16,9 +16,11 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
 import { isMobileCustom } from "../util/customDeviceDetect";
 import { postScream } from "../redux/actions/screamActions";
 import { clearErrors } from "../redux/actions/errorsActions";
+import { OptionsProjects } from "../data/OptionsProjects";
 
 // Components
 import PostScreamSelectContainter from "../components/PostIdea/PostScreamSelectContainter";
@@ -53,9 +55,12 @@ const PostIdeaPage = ({
   classes,
   loadingProjects,
   projectsData,
-  setPostIdeaOpen,
   postIdeaOpen,
+  setPostIdeaOpen,
+  postIdeaSuccessModalOpen,
+  setPostIdeaSuccessModalOpen,
   statefulMap,
+  projectroomsData,
 }) => {
   const dispatch = useDispatch();
   const { openModal } = useModals();
@@ -65,11 +70,12 @@ const PostIdeaPage = ({
 
   const user = useSelector((state) => state.user);
   const { t } = useTranslation();
-
+  const navigate = useNavigate();
   const initialMapViewport = useSelector(
     (state) => state.data.initialMapViewport
   );
 
+  const [newIdea, setNewIdea] = useState(null);
   const [viewport, setViewport] = useState(null);
   const [openRules, setOpenRules] = useState(false);
   const [out, setOut] = useState(false);
@@ -219,32 +225,23 @@ const PostIdeaPage = ({
 
     if (formik.values.contact) {
       newScream.contact = formik.values.contact;
-      newScream.contactTitle = formik.values.contactTitle || "Kontakt";
+      newScream.contactTitle = formik.values.contactTitle;
     }
     if (formik.values.weblink) {
       newScream.weblink = formik.values.weblink;
-      newScream.weblinkTitle = formik.values.weblinkTitle || "Website";
+      newScream.weblinkTitle = formik.values.weblinkTitle;
     }
 
     if (selectedUnix.length > 0) {
       newScream.selectedUnix = selectedUnix;
     }
-    dispatch(postScream(newScream, user)).then(() => {
-      setPostIdeaOpen(false);
+    dispatch(postScream(newScream, user)).then((data) => {
+      // setPostIdeaOpen(false);
+      setPostIdeaSuccessModalOpen(true);
+      setNewIdea(data);
+      formik.resetForm();
     });
   };
-
-  useEffect(() => {
-    statefulMap.on("move", () => {
-      const newViewport = {
-        latitude: statefulMap.getCenter().lat,
-        longitude: statefulMap.getCenter().lng,
-      };
-      setTimeout(() => {
-        geocode(newViewport);
-      }, 1000);
-    });
-  }, []);
 
   const geocode = (viewport) => {
     const geocodingClient = mbxGeocoding({
@@ -258,7 +255,6 @@ const PostIdeaPage = ({
       .send()
       .then((response) => {
         const match = response.body;
-
         const houseNumber =
           match.features[0].address !== undefined
             ? match.features[0].address
@@ -279,13 +275,22 @@ const PostIdeaPage = ({
       viewport.longitude < 6.712 ||
       viewport.longitude > 7.17
     ) {
-      alert("Außerhalb von Köln kannst du leider noch keine Ideen teilen.");
+      // alert("Außerhalb von Köln kannst du leider noch keine Ideen teilen.");
 
       setOut(true);
     } else {
       setOut(false);
     }
   };
+  const newViewport = useRef();
+
+  statefulMap.on("moveend", () => {
+    newViewport.current = {
+      latitude: statefulMap.getCenter().lat,
+      longitude: statefulMap.getCenter().lng,
+    };
+    geocode(newViewport.current);
+  });
 
   const handleLocationDecided = () => {
     if (formik.values.address) {
@@ -313,7 +318,7 @@ const PostIdeaPage = ({
         <Button
           size="medium"
           variant="white"
-          icon={<Plus transform="rotate(45deg)" />}
+          icon={<Plus transform="rotate(45)" />}
           onClick={() => setPostIdeaOpen(false)}
         />
       </Box> */}
@@ -322,7 +327,8 @@ const PostIdeaPage = ({
         <AuthFirst
           isMobile={isMobileCustom}
           locationDecided={locationDecided}
-          onClick={() => openModal(<AuthModal />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
+          onClick={() =>
+            openModal(<AuthModal />, { swipe: !!isMobileCustom, size: "md" })
           }
         />
       )}
@@ -365,6 +371,12 @@ const PostIdeaPage = ({
         handleChangeCalendar={handleChangeCalendar}
         handleSubmit={handleSubmit}
         setPostIdeaOpen={setPostIdeaOpen}
+        postIdeaSuccessModalOpen={postIdeaSuccessModalOpen}
+        setPostIdeaSuccessModalOpen={setPostIdeaSuccessModalOpen}
+        navigate={navigate}
+        newIdea={newIdea}
+        projectroomsData={projectroomsData}
+        projectroomSelected={projectSelected}
       />
     </React.Fragment>
   );

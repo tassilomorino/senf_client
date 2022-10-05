@@ -32,12 +32,8 @@ const ImageWrapper = styled.label`
   cursor: pointer;
 `;
 
-const AuthAddDetails: FC<AuthAddDetailsProps> = ({
-  user,
-  authHandler,
-}) => {
+const AuthAddDetails: FC<AuthAddDetailsProps> = ({ user, authHandler }) => {
   const { t } = useTranslation();
-
 
   const addDetailsValidationSchema = yup.object({
     handle: yup
@@ -50,15 +46,14 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
     description: yup
       .string()
       .min(10, t("description_too_short"))
-      .max(100, t("description_too_long"))
-
+      .max(100, t("description_too_long")),
   });
 
   const formik = useFormik({
     initialValues: {
       handle: "",
       description: "",
-      zipcode: "",
+      postcode: "",
       age: "",
       sex: "",
     },
@@ -68,23 +63,17 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
     validateOnBlur: true,
   });
 
-
-
   useEffect(() => {
     // Set up canvas
-    formik.setFieldValue("handle", user?.handle)
-    formik.setFieldValue("description", user?.description)
-    formik.setFieldValue("zipcode", user?.zipcode)
-    formik.setFieldValue("age", user?.age)
-    formik.setFieldValue("sex", user?.sex)
-
+    formik.setFieldValue("handle", user?.handle);
+    formik.setFieldValue("description", user?.description);
+    formik.setFieldValue("postcode", user?.postcode);
+    formik.setFieldValue("age", user?.age);
+    formik.setFieldValue("sex", user?.sex);
 
     // if (data.contact) {
     //   formik.setFieldValue("contact", data.contact);
     // }
-
-
-
   }, [user]);
 
   function generateArrayOfYears() {
@@ -109,17 +98,30 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
       position="relative"
       zIndex={9999}
     >
-      <Typography variant="h1" style={{ position: "relative" }}>
+      <Typography
+        variant="h1"
+        style={{ position: "relative" }}
+      >
         {/* {t("auth_add_details_header1")} */}
         Vervollständige
       </Typography>
-      <Typography variant="h1" style={{ position: "relative" }}>
+      <Typography
+        variant="h1"
+        style={{ position: "relative" }}
+      >
         dein Profil
         {/* {t("auth_add_details_header2")} */}
       </Typography>
 
-      <Box margin="25px 0px 24px 0px" flexDirection="column" gap="10px">
-        <Box justifyContent="center" margin="20px">
+      <Box
+        margin="25px 0px 24px 0px"
+        flexDirection="column"
+        gap="10px"
+      >
+        <Box
+          justifyContent="center"
+          margin="20px"
+        >
           <ImageWrapper
             // onMouseEnter={() => setUploadImageHover(true)}
             // onMouseLeave={() => setUploadImageHover(false)}
@@ -128,9 +130,7 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
             {image ? (
               <ImagePlaceholder
                 img={image}
-                borderRadius="18px"
-                height="calc(100% - 40px)"
-                width="calc(100% - 40px)"
+                borderRadius="18"
               />
             ) : authHandler.authLoading ? (
               <Loader />
@@ -162,11 +162,11 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
           value={formik?.values.description}
         />
         <Input
-          name="zipcode"
+          name="postcode"
           type="text"
-          placeholder={t("zipcode")}
+          placeholder={t("postcode")}
           onChange={formik?.handleChange}
-          value={formik?.values.zipcode}
+          value={formik?.values.postcode}
         />
         <Box gap="8px">
           <Dropdown
@@ -196,7 +196,11 @@ const AuthAddDetails: FC<AuthAddDetailsProps> = ({
           />
         </Box>
         <br />
-        <Button variant="white" onClick={() => authHandler.submitEditDetails(formik)} loading={authHandler.loadingAuth === "edit"}>
+        <Button
+          variant="white"
+          onClick={() => authHandler.submitEditDetails(formik)}
+          loading={authHandler.loadingAuth === "edit"}
+        >
           {t("save")}
         </Button>
       </Box>

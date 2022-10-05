@@ -15,10 +15,11 @@ export interface ModalOptions {
   cancelText?: string;
   size?: "full" | "xl" | "lg" | "md" | "sm" | "l" | "m" | "s";
   children?: React.ReactNode | React.ReactNode[];
-  height?: number;
+  // height?: number;
   swipe?: boolean;
+  enterFrom?: "top" | "bottom" | "left" | "right";
   style?: React.CSSProperties;
-  replace?: boolean,
+  replace?: boolean;
   beforeOpen?: () => Promise<void>;
   afterOpen?: () => Promise<void>;
   beforeClose?: () => Promise<void>;
@@ -34,42 +35,40 @@ export interface ModalProps {
 }
 
 export interface ModalContainerProps {
-  item: ModalProps,
-  index: number,
-  style?: React.CSSProperties & { shading: number, y: number },
-  closeModal: () => void,
-
+  item: ModalProps;
+  index: number;
+  style?: React.CSSProperties & { shading: number; y: number };
+  closeModal: () => void;
 }
 export interface ModalStackValue {
-  stack: ModalProps[]
+  stack: ModalProps[];
   /**
    * Opens a modal using the provided component, clearing all open modals
    */
   setModal: (
     modal: React.ComponentElement<ModalProps, React.Component<ModalProps>>,
     options?: ModalOptions
-  ) => Promise<ModalProps[]>
+  ) => Promise<ModalProps[]>;
   /**
    * Opens a modal using the provided component, on top of the stack
    */
   openModal: (
     modal: React.ComponentElement<ModalProps, React.Component<ModalProps>>,
     options?: ModalOptions
-  ) => Promise<ModalProps[]>
+  ) => Promise<ModalProps[]>;
 
   /**
    * Closes the active modal
    */
-  closeModal: () => Promise<ModalProps[]>
+  closeModal: () => Promise<ModalProps[]>;
 
   /**
    * Closes the number of modals
    */
-  closeModals: (amount?: number) => ModalProps[]
+  closeModals: (amount?: number) => ModalProps[];
 
   /**
    * Closes all modals
    */
-  closeAllModals: () => ModalProps[]
+  closeAllModals: () => ModalProps[];
 }
-

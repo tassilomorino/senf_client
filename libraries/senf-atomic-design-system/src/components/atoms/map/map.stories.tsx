@@ -6,6 +6,7 @@ import { Story, Meta } from "@storybook/react";
 import Map from "./Map";
 
 import { MapProps } from "./Map.types";
+import ExpandMap from "./ExpandMap";
 
 export default {
   title: "Atom/Map",

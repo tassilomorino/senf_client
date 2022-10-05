@@ -29,6 +29,91 @@ const useIdeasMarkers = () => {
     // After the map style has loaded on the page,
     // add a source layer and default styling for a single point
     map.on("load", () => {
+      // map.addLayer({
+      //   id: "admin-2-boundary",
+      //   source: "composite",
+      //   "source-layer": "admin",
+      //   type: "line",
+      //   paint: {
+      //     visibility: "visible",
+      //     "line-color": "pink",
+      //   },
+      // });
+      // const x = map.getLayer("admin-2-boundary");
+      // x.paint["line-color"] = "red";
+      // map.setPaintProperty("admin-2-boundary", "line-color", "green");
+      // map.setPaintProperty("admin-2-boundary", "visibility", "visibles");
+
+      // map.setPaintProperty("gemeindegrenzen-2020-cf3scd", "fill-color", [
+      //   "match",
+      //   ["get", "GEN"],
+      //   "Köln",
+      //   "rgba(0, 0, 0, 0)",
+      //   "rgba(0, 0, 0,0.5)",
+      // ]);
+
+      // "fill-color": "#3bb2d0",
+      //       "fill-outline-color": "#3bb2d0",
+      //       "fill-opacity": 0.4,
+      const { layers } = map.getStyle();
+
+      // map.addSource("mapbox-terrain", {
+      //   type: "vector",
+      //   // Use any Mapbox-hosted tileset using its tileset id.
+      //   // Learn more about where to find a tileset id:
+      //   // https://docs.mapbox.com/help/glossary/tileset-id/
+      //   url: "mapbox://tmorino.1guvy3s9",
+      // });
+      // map.addLayer({
+      //   id: "gemeindegrenzen-2020-cf3scd",
+      //   type: "line",
+      //   source: "gemeindegrenzen-2020-cf3scd",
+      //   "source-layer": "contour",
+      //   layout: {
+      //     "line-join": "round",
+      //     "line-cap": "round",
+      //   },
+      //   paint: {
+      //     "line-color": "#ff69b4",
+      //     "line-width": 1,
+      //   },
+      // });
+
+      // map.addSource("contours", {
+      //   type: "vector",
+      //   url: "mapbox://mapbox.mapbox-terrain-v2",
+      // });
+      // map.addLayer({
+      //   id: "contours",
+      //   type: "line",
+      //   source: "contours",
+      //   "source-layer": "contour",
+      //   layout: {
+      //     // Make the layer visible by default.
+      //     visibility: "visible",
+      //     "line-join": "round",
+      //     "line-cap": "round",
+      //   },
+      //   paint: {
+      //     "line-color": "#877b59",
+      //     "line-width": 1,
+      //   },
+      // });
+      // map.addLayer({
+      //   id: "rivers",
+      //   source: "mapbox://mapbox.mapbox-streets-v8",
+      //   sourceLayer: "waterway",
+      //   type: "line",
+      //   paint: {
+      //     "line-color": "pink",
+      //   },
+      // });
+
+      // map.getSource("admin-2-boundary").setData({});
+      // const x = map.querySourceFeatures("composite", {
+      //   sourceLayer: "admin-2-boundary",
+      // });
+      // console.log(x);
       let s = map.getSource(sourceId);
       if (!s) {
         map.addSource(sourceId, {

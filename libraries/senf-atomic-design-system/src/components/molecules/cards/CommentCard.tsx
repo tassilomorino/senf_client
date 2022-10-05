@@ -21,7 +21,6 @@ import ModalButton from "../modalStack/ModalButton";
 import Avatar from "../../atoms/avatar/Avatar";
 
 const Wrapper = styled.div<CommentCardProps>`
-  
   float: left;
   overflow: hidden;
   position: relative;
@@ -41,7 +40,6 @@ const InnerWrapper = styled.div`
 `;
 
 const CommentCard: FC<CommentCardProps> = ({ data, ...props }) => {
-
   const { t } = useTranslation();
   const { title, createdAt, userHandle, userId, commentId } = data;
 
@@ -49,57 +47,73 @@ const CommentCard: FC<CommentCardProps> = ({ data, ...props }) => {
     <Wrapper>
       <InnerWrapper>
         <Box justifyContent="space-between">
-          <Box alignItems="center" height="40px" gap="5px" style={{ cursor: 'pointer' }}>
+          <Box
+            alignItems="center"
+            height="40px"
+            gap="5px"
+            style={{ cursor: "pointer" }}
+          >
             <Avatar placeholder={userHandle?.slice(0, 1)} />
             <Box flexDirection="column">
-
               <Typography
                 variant="bodySm"
                 color={theme.colors.black.black40tra}
               >
                 {dayjs(createdAt).format("DD.MM.YYYY")}
               </Typography>
-              <Typography variant="buttonBg" onClick={() => props.handle.openProfilePage(userId)}>{userHandle} </Typography>
-
+              <Typography
+                variant="buttonBg"
+                onClick={() => props.handle.openProfilePage(userId)}
+              >
+                {userHandle}{" "}
+              </Typography>
             </Box>
-
-
-
-
           </Box>
-          {props.user?.authenticated &&
+          {props.user?.authenticated && (
             <ModalButton
               button={TertiaryButton}
               iconLeft={<More />}
               options={{
-                padding: 20,
+                style: {
+                  padding: 20,
+                },
                 title: t("contactModalTitle"),
-                cancelText: t("cancel")
+                cancelText: t("cancel"),
               }}
             >
-              <Box width="100%" flexDirection="column" gap="8px">
-                {props.handle.reportComment && props.user?.userId !== userId && <Button
-                  text={t("report")}
-                  fillWidth="max"
-                  onClick={() => props.handle.reportComment(data)}
-                />}
-                {
-                  props.handle.deleteComment &&
-                  (props.user?.userId === userId || props.user?.isAdmin === true || props.user?.isModerator === true) &&
-                  <ModalButton
-                    text={t("delete_comment")}
-                    fillWidth="max"
-                    options={{
-                      padding: 20,
-                      title: t('delete_comment_confirm'),
-                      cancelText: t('cancel'),
-                      submitText: t('delete'),
-                      onSubmit: () => props.handle.deleteComment(data)
-                    }}
-                  />}
+              <Box
+                width="100%"
+                flexDirection="column"
+                gap="8px"
+              >
+                {props.handle.reportComment && props.user?.userId !== userId && (
+                  <Button
+                    text={t("report")}
+                    width="max"
+                    onClick={() => props.handle.reportComment(data)}
+                  />
+                )}
+                {props.handle.deleteComment &&
+                  (props.user?.userId === userId ||
+                    props.user?.isAdmin === true ||
+                    props.user?.isModerator === true) && (
+                    <ModalButton
+                      text={t("delete_comment")}
+                      width="max"
+                      options={{
+                        style: {
+                          padding: 20,
+                        },
+                        title: t("delete_comment_confirm"),
+                        cancelText: t("cancel"),
+                        submitText: t("delete"),
+                        onSubmit: () => props.handle.deleteComment(data),
+                      }}
+                    />
+                  )}
               </Box>
             </ModalButton>
-          }
+          )}
         </Box>
         <Box
           alignItems="flex-start"

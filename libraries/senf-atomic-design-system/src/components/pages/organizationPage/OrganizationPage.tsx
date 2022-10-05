@@ -4,7 +4,6 @@ import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import Dialog from "../../molecules/dialog/Dialog";
-import RoundedButton from "../../atoms/buttons/RoundedButton";
 import { OrganizationPageProps } from "./OrganizationPage.types";
 import Box from "../../atoms/box/Box";
 import ImagePlaceholder from "../../atoms/imagePlaceholder/ImagePlaceholder";
@@ -33,8 +32,9 @@ import Room from "../../../assets/icons/Room";
 import ModalButton from "../../molecules/modalStack/ModalButton";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 import Loader from "../../atoms/animations/Loader";
+import Skeleton from "../../atoms/skeleton/Skeleton";
 
-const Calendar = React.lazy(() => import("../../organisms/calendar/Calendar"))
+const Calendar = React.lazy(() => import("../../organisms/calendar/Calendar"));
 
 const SVGWrapper = styled.div`
   position: absolute;
@@ -94,11 +94,9 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
   googleCalendarApiKey,
 }) => {
   const { t } = useTranslation();
-  const isMobile = isMobileCustom()
+  const isMobile = isMobileCustom();
   const [infoOpen, setInfoOpen] = useState(false);
   const [order, setOrder] = useState(1);
-
-
 
   return (
     <Dialog
@@ -131,30 +129,51 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
           />
         </svg>
       </SVGWrapper>
-      <Box position="fixed" margin="20px" zIndex={2}>
-        <RoundedButton
-          icon={<Plus transform="rotate(45deg)" />}
+      <Box
+        position="fixed"
+        margin="20px"
+        zIndex={2}
+      >
+        <Button
+          variant="tertiary"
+          size="big"
+          icon={<Plus transform="rotate(45)" />}
           onClick={handleCloseOrganizationPage}
         />
       </Box>
 
       {user && organization?.userIds.includes(user.userId) && (
-        <Box position="absolute" margin="20px" right="0px" zIndex={2}>
-          <RoundedButton icon={<More />} onClick={handleEditOrganization} />
+        <Box
+          position="absolute"
+          margin="20px"
+          right="0px"
+          zIndex={2}
+        >
+          <Button
+            variant="tertiary"
+            size="big"
+            icon={<More />}
+            onClick={handleEditOrganization}
+          />
         </Box>
       )}
 
-      <Box justifyContent="center" margin="20px">
+      <Box
+        justifyContent="center"
+        margin="20px"
+      >
         <ImageWrapper>
           {organization?.logoURL ? (
             <ImagePlaceholder
               img={organization?.logoURL ? organization.logoURL : null}
-              borderRadius="18px"
-              height="calc(100% - 40px)"
-              width="calc(100% - 40px)"
+              borderRadius="18"
             />
           ) : (
-            <Skeleton height="100" width="100" borderRadius="10" />
+            <Skeleton
+              height="100"
+              width="100"
+              borderRadius="10"
+            />
           )}
         </ImageWrapper>
       </Box>
@@ -162,20 +181,30 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
       {organization?.status === "deactivated" ? (
         <Box margin="24px">
           {/* //ADD COLOR TO TYPOGRAPHY COMPONENT and THEME COLOR */}
-          <Typography variant="h3" color="#ca3336">
+          <Typography
+            variant="h3"
+            color="#ca3336"
+          >
             {t("organization_is_deactivated")}
           </Typography>
         </Box>
       ) : (
         organization?.status === "uncompleted" && (
           <Box margin="24px">
-            <Typography variant="h3" color="#ca3336">
+            <Typography
+              variant="h3"
+              color="#ca3336"
+            >
               {t("organization_is_uncompleted")}
             </Typography>
           </Box>
         )
       )}
-      <Box margin="24px" alignItems="center" gap="12px">
+      <Box
+        margin="24px"
+        alignItems="center"
+        gap="12px"
+      >
         <LogoPlacer>
           <Icon
             icon={setOrganizationTypeIcon(organization?.organizationType)}
@@ -193,66 +222,71 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
         )}
       </Box>
 
-      <Box margin="24px" alignItems="center" gap="10px">
-
+      <Box
+        margin="24px"
+        alignItems="center"
+        gap="10px"
+      >
         {(organization?.contact ||
           organization?.weblink ||
           organization?.address) && (
-            <ModalButton
-              variant="secondary"
-              text={t("contact")}
-              size="small"
-              fillWidth="max"
-              options={{
+          <ModalButton
+            variant="secondary"
+            text={t("contact")}
+            size="small"
+            width="max"
+            options={{
+              style: {
                 padding: 20,
-                title: t("contact"),
-                swipe: isMobile && true
-
-              }}
+              },
+              title: t("contact"),
+              swipe: isMobile && true,
+            }}
+          >
+            <Box
+              margin="18px"
+              flexDirection="column"
+              gap="10px"
             >
-              <Box margin="18px" flexDirection="column" gap="10px">
-                {organization?.contact && (
-                  <Typography variant="bodyBg">
-                    {organization?.contact}
-                  </Typography>
-                )}
-                {organization?.contact && <Divider />}
-                {organization?.weblink && (
-                  <Typography variant="bodyBg">
-                    {organization?.weblink}{" "}
-                  </Typography>
-                )}
-                {organization?.weblink && <Divider />}
-                {organization?.address && (
-                  <Typography variant="bodyBg">
-                    {organization?.address}{" "}
-                  </Typography>
-                )}
-              </Box>
-
-            </ModalButton>
-
-          )}
+              {organization?.contact && (
+                <Typography variant="bodyBg">
+                  {organization?.contact}
+                </Typography>
+              )}
+              {organization?.contact && <Divider />}
+              {organization?.weblink && (
+                <Typography variant="bodyBg">
+                  {organization?.weblink}{" "}
+                </Typography>
+              )}
+              {organization?.weblink && <Divider />}
+              {organization?.address && (
+                <Typography variant="bodyBg">
+                  {organization?.address}{" "}
+                </Typography>
+              )}
+            </Box>
+          </ModalButton>
+        )}
         {organization?.faqs && (
           <ModalButton
             variant="secondary"
             text={t("faq")}
             size="small"
-            fillWidth="max"
+            width="max"
             options={{
-              padding: 20,
+              style: {
+                padding: 20,
+              },
               title: t("faq"),
               swipe: isMobile && true,
-              size: "lg"
-
+              size: "lg",
             }}
           >
             <Box margin="18px">
               <Accordion data={organization.faqs} />
             </Box>
-
           </ModalButton>
-
         )}
       </Box>
       <Box margin="21px 0px 0px 18px">
@@ -265,7 +299,10 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
         />
       </Box>
       <Box margin="2px 0px 0px 24px">
-        <InfoWidget onClick={() => setInfoOpen(!infoOpen)} infoOpen={infoOpen}>
+        <InfoWidget
+          onClick={() => setInfoOpen(!infoOpen)}
+          infoOpen={infoOpen}
+        >
           {organization?.description ? (
             <Typography variant="bodyBg">
               {organization?.description}
@@ -282,10 +319,16 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
         </InfoWidget>
       </Box>
 
-      <Divider margin="14px 24px 16px 24px" width="calc(100% - 48px)" />
+      <Divider
+        margin="14px 24px 16px 24px"
+        width="calc(100% - 48px)"
+      />
 
       {organization?.googleCalendarId && (
-        <Box margin="0px 24px 0px 24px" gap="10px">
+        <Box
+          margin="0px 24px 0px 24px"
+          gap="10px"
+        >
           <Tabs
             fontSize="buttonSm"
             order={order}
@@ -314,8 +357,18 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
       ) : (
         order === 2 &&
         organization?.googleCalendarId && (
-          <Box margin="10px 10px 0px 0px" width="100%">
-            <React.Suspense fallback={<Loader width="20px" height="20px" />}>
+          <Box
+            margin="10px 10px 0px 0px"
+            width="100%"
+          >
+            <React.Suspense
+              fallback={
+                <Loader
+                  width="20px"
+                  height="20px"
+                />
+              }
+            >
               <Calendar
                 googleCalendarApiKey={googleCalendarApiKey}
                 googleCalendarId={organization?.googleCalendarId}

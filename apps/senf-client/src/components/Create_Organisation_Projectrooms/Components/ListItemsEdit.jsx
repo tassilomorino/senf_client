@@ -50,7 +50,10 @@ const ListItem = styled.div`
 const ListItemsEdit = ({ listItems, set }) => (
   <ListItemWrapper>
     {listItems.map(({ title }, index) => (
-      <ListItem key={title} onClick={() => set(index + 1)}>
+      <ListItem
+        key={title}
+        onClick={() => set(index + 1)}
+      >
         <StyledH3 textAlign="center">{title}</StyledH3>
       </ListItem>
     ))}

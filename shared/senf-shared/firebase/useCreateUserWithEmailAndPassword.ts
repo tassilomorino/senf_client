@@ -22,8 +22,7 @@ export const useCreateUserWithEmailAndPassword = (
   auth: Auth,
   db: Firestore,
   options?: CreateUserOptions
-): (formikRegisterStore: FormikValues) => Promise<UserCredential> => {
-
+): ((formikRegisterStore: FormikValues) => Promise<UserCredential>) => {
   return async (formikRegisterStore) => {
     try {
       const usersRef = collection(db, "users");
@@ -33,23 +32,26 @@ export const useCreateUserWithEmailAndPassword = (
       );
       const usernameQuerySnapshot = await getDocs(q);
       // username already exists
-      if (!usernameQuerySnapshot.empty) throw new Error("auth/username-exists")
+      if (!usernameQuerySnapshot.empty) throw new Error("auth/username-exists");
 
       const userCredential = await firebaseCreateUserWithEmailAndPassword(
         auth,
         formikRegisterStore.values.email,
         formikRegisterStore.values.password
       );
-      if (!userCredential.user) throw new Error('no user')
+      if (!userCredential.user) throw new Error("no user");
 
       await createUserInDatabase(db, userCredential, formikRegisterStore);
 
       if (options?.sendEmailVerification) {
-        await sendEmailVerification(userCredential.user, options.emailVerificationOptions);
+        await sendEmailVerification(
+          userCredential.user,
+          options.emailVerificationOptions
+        );
       }
-      return userCredential
+      return userCredential;
     } catch (err) {
-      throw new Error(err)
+      throw new Error(err);
     }
   };
 };

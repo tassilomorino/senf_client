@@ -17,9 +17,7 @@ const sheet = {
   left: "0%",
   bottom: "-100px",
   touchAction: "none",
-
-}
-
+};
 
 const Handle = styled.div<{ position: string }>`
   width: 100%;
@@ -32,7 +30,7 @@ const Handle = styled.div<{ position: string }>`
   z-index: 99;
   touch-action: none;
   &::after {
-    content: '';
+    content: "";
     cursor: pointer;
     width: 50px;
     padding: 10px;
@@ -42,7 +40,7 @@ const Handle = styled.div<{ position: string }>`
     position: absolute;
     transform: translateX(-50%);
   }
-`
+`;
 
 const DragWrapper = styled(animated.div)`
   z-index: ${({ zIndex }) => zIndex || 9};
@@ -60,7 +58,7 @@ const DragWrapper = styled(animated.div)`
     ${({ theme }) => theme.colors.brown.brown20tra};
 
   position: fixed;
-pointer-events:all;
+  pointer-events: all;
 
   @media (min-width: 768px) {
     top: 50%;
@@ -95,7 +93,7 @@ export const Header = styled(animated.div)`
     headerComponentBackgroundColor || undefined};
 
   z-index: 99;
-  top:0;
+  top: 0;
 `;
 
 const SwipeModal: FC<SwipeModalProps> = ({
@@ -109,35 +107,36 @@ const SwipeModal: FC<SwipeModalProps> = ({
   // size,
   backgroundColor,
   // overflow,
+  // onDrag,
 
   height = window.innerHeight,
   children,
   triggerOpen,
   onClose,
-  onDrag,
+
   overflowing,
+  style,
 }) => {
   const isMobile = isMobileCustom();
 
   const [{ y }, api] = useSpring(() => ({ y: height }));
   const [dragged, setDragged] = useState(0);
 
-  const swipePadding = 200
+  const swipePadding = 200;
   const open = ({ canceled }) => {
     api.start({
       y: 0,
       immediate: false,
-      config: canceled ? config.wobbly : config.stiff
+      config: canceled ? config.wobbly : config.gentle,
     });
-
   };
   const close = (velocity = 0) => {
-    onDrag(0.001)
+    // onDrag(0.001);
     api.start({
       y: height + swipePadding,
       immediate: false,
       config: { ...config.stiff, velocity },
-      onRest: () => onClose()
+      onRest: () => onClose(),
     });
   };
 
@@ -148,9 +147,9 @@ const SwipeModal: FC<SwipeModalProps> = ({
       direction: [, dy],
       movement: [, my],
       cancel,
-      canceled
+      canceled,
     }) => {
-      setDragged(my)
+      setDragged(my);
 
       if (my < -70) cancel();
 
@@ -164,12 +163,12 @@ const SwipeModal: FC<SwipeModalProps> = ({
       from: () => [0, y.get()],
       filterTaps: true,
       bounds: { top: 0 },
-      rubberband: true
+      rubberband: true,
     }
   );
 
-  const bindContainer = !overflowing && { ...bind() }
-  const bindHandle = overflowing && { ...bind() }
+  const bindContainer = !overflowing && { ...bind() };
+  const bindHandle = overflowing && { ...bind() };
 
   const display = y.to((py) => (py < height ? "block" : "none"));
 
@@ -181,58 +180,71 @@ const SwipeModal: FC<SwipeModalProps> = ({
     open({ canceled: false });
   }, []);
 
-  useEffect(() => {
-    onDrag(1 - ((1 / height) * dragged));
-  }, [onDrag, dragged, height]);
+  /*  useEffect(() => {
+    onDrag(1 - (1 / height) * dragged);
+  }, [onDrag, dragged, height]); */
 
   const [rerender, setRerender] = useState(false);
   useEffect(() => {
     setTimeout(() => {
-      setRerender(true)
+      setRerender(true);
     }, 50);
-  }, [triggerOpen])
+  }, [triggerOpen]);
 
-  return rerender && <React.Fragment>
-    <Background onClick={onClose} /><DragWrapper
-      backgroundColor={backgroundColor}
-      {...bindContainer}
-      style={{
-        display,
-        bottom: `calc(${height - 50}px)`,
-        y,
-        ...sheet
-      }}
-    >
-      <Handle {...bindHandle} onClick={dragged < 70 && onClose || null} />
-
-
-      {HeaderComponent ? (
-        <React.Fragment>
-          <Header
-            headerComponentHeight={headerComponentHeight}
-            headerComponentBackgroundColor={headerComponentBackgroundColor}
-            {...bind()}
-            {...bindHandle}
-          >
-            {HeaderComponent}
-          </Header>
-          <div
-            style={{ marginTop: "-10px", top: "100px", height: "calc(100% - 100px)", width: "100%", overflow: "scroll" }}
-          >
-            {children}
-          </div>
-        </React.Fragment>
-      ) : (
-        <div
-          style={{ height: "100%", width: "100%", overflow: "scroll" }}
-          {...bind()}
+  return (
+    rerender && (
+      <React.Fragment>
+        <Background onClick={onClose} />
+        <DragWrapper
+          backgroundColor={backgroundColor}
+          {...bindContainer}
+          style={{
+            display,
+            bottom: `calc(${height - 50}px)`,
+            y,
+            ...sheet,
+            ...style,
+          }}
         >
-          {children}
-        </div>
-      )}
-    </DragWrapper>
-  </React.Fragment>
+          <Handle
+            {...bindHandle}
+            onClick={(dragged < 70 && onClose) || null}
+          />
 
+          {HeaderComponent ? (
+            <React.Fragment>
+              <Header
+                headerComponentHeight={headerComponentHeight}
+                headerComponentBackgroundColor={headerComponentBackgroundColor}
+                {...bind()}
+                {...bindHandle}
+              >
+                {HeaderComponent}
+              </Header>
+              <div
+                style={{
+                  marginTop: "-10px",
+                  top: "100px",
+                  height: "calc(100% - 100px)",
+                  width: "100%",
+                  overflow: "scroll",
+                }}
+              >
+                {children}
+              </div>
+            </React.Fragment>
+          ) : (
+            <div
+              style={{ height: "100%", width: "100%", overflow: "scroll" }}
+              {...bind()}
+            >
+              {children}
+            </div>
+          )}
+        </DragWrapper>
+      </React.Fragment>
+    )
+  );
 };
 
 export default SwipeModal;

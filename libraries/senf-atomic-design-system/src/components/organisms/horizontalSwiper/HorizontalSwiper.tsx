@@ -1,4 +1,3 @@
-
 import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import { animated, useSpring } from "@react-spring/web";
@@ -24,7 +23,7 @@ const FlexWrapper = styled.div`
   width: max-content;
   height: 100%;
   margin-left: 0%;
-  overflow:hidden;
+  overflow: hidden;
 `;
 
 const HorizontalSwipeCard = styled(animated.div)`
@@ -41,11 +40,8 @@ const HorizontalSwipeCard = styled(animated.div)`
   user-select:none; */
 `;
 
-
-
-
 const HorizontalSwiper: FC = ({ data, handleButtonOpenCard }) => {
-  const isMobile = isMobileCustom()
+  const isMobile = isMobileCustom();
   const [active, setActive] = useState(0);
 
   const [props, set] = useSpring(() => ({
@@ -91,50 +87,53 @@ const HorizontalSwiper: FC = ({ data, handleButtonOpenCard }) => {
     }
   }, [active]);
 
+  return (
+    <Wrapper>
+      <Box
+        alignItems="center"
+        justifyContent="space-between"
+        height="36px"
+      >
+        <Box marginLeft="10px">
+          <Typography variant="h3">Wähle Bodenbeläge</Typography>
+        </Box>
 
-
-  return <Wrapper>
-
-    <Box alignItems="center" justifyContent="space-between" height="36px">
-      <Box marginLeft="10px">
-        <Typography variant="h3">Wähle Bodenbeläge</Typography>
-      </Box>
-
-      <Box gap="8px" justifyContent="center">
-        <Button
-          size="small"
-          icon={<Arrow transform="rotate(180deg)" />}
-          onClick={handlePrev}
-          disabled={active === 0}
-        />
-        <Button
-          size="small"
-
-          icon={<Arrow />}
-          onClick={handleNext}
-          disabled={active === data.length - 1}
-        />
-      </Box>
-    </Box>
-    <FlexWrapper>
-      {data?.map((item, index) => (
-        <HorizontalSwipeCard
-          {...bind()}
-          $active={index === active}
-          $isMobile={isMobile}
-          style={props}
-          key={index}
+        <Box
+          gap="8px"
+          justifyContent="center"
         >
-          <ObjectCard data={item} handleButtonOpenCard={handleButtonOpenCard} />
-
-
-
-        </HorizontalSwipeCard>
-      ))}
-    </FlexWrapper>
-
-
-  </Wrapper>;
+          <Button
+            size="small"
+            icon={<Arrow transform="rotate(180)" />}
+            onClick={handlePrev}
+            disabled={active === 0}
+          />
+          <Button
+            size="small"
+            icon={<Arrow />}
+            onClick={handleNext}
+            disabled={active === data.length - 1}
+          />
+        </Box>
+      </Box>
+      <FlexWrapper>
+        {data?.map((item, index) => (
+          <HorizontalSwipeCard
+            {...bind()}
+            $active={index === active}
+            $isMobile={isMobile}
+            style={props}
+            key={index}
+          >
+            <ObjectCard
+              data={item}
+              handleButtonOpenCard={handleButtonOpenCard}
+            />
+          </HorizontalSwipeCard>
+        ))}
+      </FlexWrapper>
+    </Wrapper>
+  );
 };
 
 export default HorizontalSwiper;

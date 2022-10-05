@@ -125,6 +125,7 @@ export const setImplementedModelsData = (
       };
 
       window.tb.loadObj(options, (newModel) => {
+        console.log(newModel);
         newModel.castShadow = true;
         if (model.labelText) {
           newModel.addLabel(createLabel(model.id, model.labelText), true);

@@ -6,113 +6,125 @@
  * License: MIT
  */
 
-import React, { useMemo, useState, useContext } from 'react'
+import React, { useMemo, useState, useContext } from "react";
+import styled from "styled-components";
 import ModalStack from "./ModalStack";
 import Background from "./Background";
 
 import { ModalProps, ModalStackValue, ModalOptions } from "./ModalStack.types";
 
-
 export interface ModalStackProps {
-  renderModals?: React.ComponentType<ModalStackValue>
-  children?: React.ReactNode
+  renderModals?: React.ComponentType<ModalStackValue>;
+  children?: React.ReactNode;
 }
 
+const ModalStackContext = React.createContext({} as ModalStackValue);
 
-const ModalStackContext = React.createContext({} as ModalStackValue)
-
-
+const ModalStackWrapper = styled.div`
+  z-index: 99999;
+  position: fixed;
+`;
 const Modals = ({ stack, closeModal }: ModalStackValue) => {
-
   return (
-    <>
-      <ModalStack stack={stack} closeModal={closeModal} />
-      <Background stack={stack} closeModal={closeModal} />
-    </>
-  )
-}
+    <ModalStackWrapper>
+      <ModalStack
+        stack={stack}
+        closeModal={closeModal}
+      />
+      <Background
+        stack={stack}
+        closeModal={closeModal}
+      />
+    </ModalStackWrapper>
+  );
+};
 
-
-const ModalProvider = ({
-  children,
-}: ModalStackProps) => {
-  const [stack, setStack] = useState<ModalProps[]>([])
+const ModalProvider = ({ children }: ModalStackProps) => {
+  const [stack, setStack] = useState<ModalProps[]>([]);
 
   const value = useMemo(() => {
     const pop = (amount = 1) => {
-      setStack((prev) => [...prev].slice(0, prev.length - amount))
-    }
+      setStack((prev) => [...prev].slice(0, prev.length - amount));
+    };
 
     const dismissAll = () => {
-      setStack([])
-      return stack
-    }
+      setStack([]);
+      return stack;
+    };
 
     const dismiss = (amount?: number) => {
       if (stack.length === 1) {
-        dismissAll()
+        dismissAll();
       } else {
-        pop(amount)
+        pop(amount);
       }
-      return stack
-    }
+      return stack;
+    };
 
-    const DefaultComponent = () => <div />
-
-    const openModal = async (data: JSX.Element, options?: ModalOptions, reset?: boolean) => {
-      const { type, props } = data || <DefaultComponent />
-      if (reset) dismissAll()
-      const modal = { type, props: { ...options, ...props }, options: { ...options, ...props } }
-      const { beforeOpen, afterOpen } = options || {}
+    const openModal = async (
+      data: JSX.Element | null,
+      options?: ModalOptions,
+      reset?: boolean
+    ) => {
+      const DefaultComponent = () => <div />;
+      const { type, props } = data || <DefaultComponent />;
+      if (reset) dismissAll();
+      const modal = {
+        type,
+        props: { ...options, ...props },
+        options: { ...options, ...props },
+      };
+      const { beforeOpen, afterOpen } = options || {};
       if (typeof type === undefined) {
-        throw new Error('Modal type is undefined')
+        throw new Error("Modal type is undefined");
       }
       try {
-        await beforeOpen?.()
+        await beforeOpen?.();
         setStack((prev) => {
-          let newStack = [...prev]
-          if (options?.replace) newStack = stack.slice(0, stack.length - 1)
-          return [...newStack, modal as ModalProps]
-        })
-        afterOpen?.()
-        return stack
-      } catch (error) {
-        throw new Error(error)
-      }
-    }
+          let newStack = [...prev];
 
+          if (options?.replace) newStack = stack.slice(0, stack.length - 1);
+
+          return [...newStack, modal as ModalProps];
+        });
+        afterOpen?.();
+        return stack;
+      } catch (error) {
+        throw new Error(error);
+      }
+    };
 
     const closeModal = async () => {
-      const { beforeClose, afterClose } = stack[stack.length - 1]?.options || {}
+      const { beforeClose, afterClose } =
+        stack[stack.length - 1]?.options || {};
       try {
-        await beforeClose?.()
-        dismiss(1)
-        afterClose?.()
-        return stack
+        await beforeClose?.();
+        dismiss(1);
+        afterClose?.();
+        return stack;
       } catch (error) {
-        throw new Error("error")
+        throw new Error("error");
       }
-    }
+    };
 
     return {
       stack,
-      setModal: (data, options?: ModalOptions) => openModal(data, options, true),
+      setModal: (data: JSX.Element, options?: ModalOptions) =>
+        openModal(data, options, true),
       openModal,
       closeModal,
       closeModals: dismiss,
       closeAllModals: dismissAll,
-    }
-
-  }, [stack])
+    };
+  }, [stack]);
 
   return (
     <ModalStackContext.Provider value={value}>
       {children}
       <Modals {...value} />
     </ModalStackContext.Provider>
-  )
-}
+  );
+};
 
-
-export const useModals = () => useContext(ModalStackContext)
-export default ModalProvider
+export const useModals = () => useContext(ModalStackContext);
+export default ModalProvider;

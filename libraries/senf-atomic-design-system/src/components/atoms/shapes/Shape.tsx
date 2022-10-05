@@ -48,7 +48,10 @@ const Shapes = [
 
 const Shape: FC<ShapeProps> = ({ variant, position, marginTop }) => {
   return (
-    <StyledWrapper position={position} marginTop={marginTop}>
+    <StyledWrapper
+      position={position}
+      marginTop={marginTop}
+    >
       {Shapes[variant]}
     </StyledWrapper>
   );

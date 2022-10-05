@@ -38,10 +38,8 @@ const DragWrapper = styled(animated.div)`
     ${({ theme }) => theme.radii[5]}px 0px 0px;
   box-shadow: ${({ theme }) => theme.shadows[0]}
     ${({ theme }) => theme.colors.brown.brown20tra};
-
   position: absolute;
   pointer-events: all;
-  
 
   /* transform: scale(0.9) translateY(-20px); */
   @media (min-width: 768px) {
@@ -163,8 +161,6 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   user,
   myProfileData,
 
-  setPostIdeaOpen,
-
   handleOpenMyAccount,
   setShowUI,
 
@@ -177,6 +173,8 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   handleMapBoundsReset,
   mapFilterActive,
   postIdeaOpen,
+  setPostIdeaOpen,
+  postIdeaSuccessModalOpen,
 }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom();
@@ -206,7 +204,6 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
         transform: `translateY(${window.innerHeight - 100}px)`,
         touchAction: "unset",
       });
-
     }
   }, [swipedUp]);
 
@@ -374,14 +371,14 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
       sortOptions={
         order === "ideas"
           ? [
-            { value: "newest", label: t("newest_ideas") },
-            { value: "hottest", label: t("hottest_ideas") },
-          ]
+              { value: "newest", label: t("newest_ideas") },
+              { value: "hottest", label: t("hottest_ideas") },
+            ]
           : [
-            { value: "newest", label: t("newest_projectrooms") },
-            { value: "aToZ", label: t("aToZ_projectrooms") },
-            { value: "zToA", label: t("zToA_projectrooms") },
-          ]
+              { value: "newest", label: t("newest_projectrooms") },
+              { value: "aToZ", label: t("aToZ_projectrooms") },
+              { value: "zToA", label: t("zToA_projectrooms") },
+            ]
       }
       statusOptions={[
         { value: "Unprocessed", label: t("unprocessed") },
@@ -395,50 +392,53 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
 
   return (
     <React.Fragment>
-      <DragWrapper
-        // style={
-        //   (openOrganizationsOverview || openStatisticsOverview) && isMobile
-        //     ? {
-        //       scale: 0.9,
-        //       transform: `translateY(${-20}px)`,
-        //       filter: "brightness(80%)",
-        //       transition: "0.2s",
-        //       overflow: "visible",
-        //     }
-        //     : isMobile
-        //       ? springProps
-        //       : null
-        // }
-        style={isMobile
-          ? springProps
-          : null
-        }
-      >
-        <Wave color={theme.colors.beige.beige20} top="0px" />
-        {!isMobile && (
-          <MenuSidebar
-            handleOpenMyAccount={handleOpenMyAccount}
-            setShowUI={setShowUI}
-            setOrder={setOrder}
+      {(isMobile && postIdeaOpen) || postIdeaSuccessModalOpen ? null : (
+        <DragWrapper
+          // style={
+          //   (openOrganizationsOverview || openStatisticsOverview) && isMobile
+          //     ? {
+          //       scale: 0.9,
+          //       transform: `translateY(${-20}px)`,
+          //       filter: "brightness(80%)",
+          //       transition: "0.2s",
+          //       overflow: "visible",
+          //     }
+          //     : isMobile
+          //       ? springProps
+          //       : null
+          // }
+          style={isMobile ? springProps : null}
+        >
+          <Wave
+            color={theme.colors.beige.beige20}
+            top="0px"
           />
-        )}
-        {!postIdeaOpen && (<InnerWrapper>
-          <Header
-            {...bind()}
-
-          // style={listHeaderProps}
-          >
-            {isMobile && <HandleBar />}
-
-            <MainSwipeListTabs
-              handleSwipeUp={handleSwipeUp}
-              order={order}
+          {!isMobile && (
+            <MenuSidebar
+              handleOpenMyAccount={handleOpenMyAccount}
+              setShowUI={setShowUI}
               setOrder={setOrder}
-              ideasDataLength={ideasData?.length}
-              projectroomsDataLength={projectroomsData?.length}
+              setPostIdeaOpen={setPostIdeaOpen}
             />
+          )}
+          {!postIdeaOpen && (
+            <InnerWrapper>
+              <Header
+                {...bind()}
 
-            {/* <div
+                // style={listHeaderProps}
+              >
+                {isMobile && <HandleBar />}
+
+                <MainSwipeListTabs
+                  handleSwipeUp={handleSwipeUp}
+                  order={order}
+                  setOrder={setOrder}
+                  ideasDataLength={ideasData?.length}
+                  projectroomsDataLength={projectroomsData?.length}
+                />
+
+                {/* <div
               style={{
                 position: "absolute",
                 right: isMobile ? "90px" : "92px",
@@ -460,94 +460,97 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
                 onClick={() => setOpenOrganizationsOverview(true)}
               />
             </div> */}
-            <RoundedButtonWrapper>
-              <RoundedButton
-                size="big"
-                icon={
-                  <Plus
-                    color={theme.colors.primary.primary120}
-                    transform="scale(2)"
+                <RoundedButtonWrapper>
+                  <RoundedButton
+                    size="lg"
+                    icon={
+                      <Plus
+                        color={theme.colors.primary.primary120}
+                        transform="scale(2)"
+                      />
+                    }
+                    onClick={() => setPostIdeaOpen(true)}
                   />
-                }
-                onClick={() => setPostIdeaOpen(true)}
+                </RoundedButtonWrapper>
+
+                {isMobile && (
+                  <Box margin="-10px 0px">
+                    <TagSlide
+                      type={order === "ideas" ? "topics" : "organizationTypes"}
+                      hide={!swipedUp}
+                      selectedTopics={selectedTopics}
+                      selectedOrganizationTypes={selectedOrganizationTypes}
+                      handleSelectTopics={handleSelectTopics}
+                      handleSelectOrganizationTypes={
+                        handleSelectOrganizationTypes
+                      }
+                    />
+                  </Box>
+                )}
+
+                {!isMobile && <Box margin="16px">{toolbarComponent} </Box>}
+              </Header>
+
+              <ContentWrapper swipedUp={swipedUp}>
+                {isMobile && swipedUp && (
+                  <Box margin="32px 16px 16px 16px">{toolbarComponent}</Box>
+                )}
+
+                {order !== "ideas" && (!isMobile || swipedUp) && (
+                  <Box margin="10px 16px 0px 16px">
+                    <Button
+                      variant="secondary"
+                      borderStyle="dashed"
+                      size="small"
+                      width="max"
+                      onClick={handleCreateProjectroom}
+                      text={t("createProjectRoom")}
+                    />
+                  </Box>
+                )}
+
+                <List
+                  CardType={order === "ideas" ? IdeaCard : ProjectroomCard}
+                  data={order === "ideas" ? ideasData : projectroomsData}
+                  organizations={organizations}
+                  ideasData={ideasData}
+                  projectroomsData={projectroomsData}
+                  handleButtonOpenCard={handleButtonOpenCard}
+                  handleOpenProjectroom={handleOpenProjectroom}
+                  handleButtonLike={handleButtonLike}
+                  handleButtonComment={handleButtonComment}
+                  user={user}
+                  myProfileData={myProfileData}
+                  listEndText={
+                    order === "ideas" && ideasData?.length > 0
+                      ? t("noMoreIdeas")
+                      : order === "ideas" && ideasData?.length < 1
+                      ? t("noContentIdeas")
+                      : t("noMoreProjectrooms")
+                  }
+                />
+              </ContentWrapper>
+            </InnerWrapper>
+          )}
+
+          {mapFilterActive && (
+            <Box
+              position="absolute"
+              bottom={isMobile ? "50px" : "30px"}
+              zIndex={99}
+              justifyContent="center"
+              width="100%"
+              left={isMobile ? "0px" : "30px"}
+            >
+              <Button
+                size="small"
+                onClick={handleMapBoundsReset}
+                text={"Alle Ideen in Köln anzeigen"}
               />
-            </RoundedButtonWrapper>
-
-            {isMobile && (
-              <Box margin="-10px 0px">
-                <TagSlide
-                  type={order === "ideas" ? "topics" : "organizationTypes"}
-                  hide={!swipedUp}
-                  selectedTopics={selectedTopics}
-                  selectedOrganizationTypes={selectedOrganizationTypes}
-                  handleSelectTopics={handleSelectTopics}
-                  handleSelectOrganizationTypes={handleSelectOrganizationTypes}
-                />
-              </Box>
-            )}
-
-            {!isMobile && <Box margin="16px">{toolbarComponent} </Box>}
-          </Header>
-
-          <ContentWrapper swipedUp={swipedUp}>
-            {isMobile && swipedUp && (
-              <Box margin="32px 16px 16px 16px">{toolbarComponent}</Box>
-            )}
-
-            {order !== "ideas" && (!isMobile || swipedUp) && (
-              <Box margin="10px 16px 0px 16px">
-                <Button
-                  variant="secondary"
-                  borderStyle="dashed"
-                  size="small"
-                  fillWidth="max"
-                  onClick={handleCreateProjectroom}
-                  text={t("createProjectRoom")}
-                />
-              </Box>
-            )}
-
-            <List
-              CardType={order === "ideas" ? IdeaCard : ProjectroomCard}
-              data={order === "ideas" ? ideasData : projectroomsData}
-              organizations={organizations}
-              ideasData={ideasData}
-              projectroomsData={projectroomsData}
-              handleButtonOpenCard={handleButtonOpenCard}
-              handleOpenProjectroom={handleOpenProjectroom}
-              handleButtonLike={handleButtonLike}
-              handleButtonComment={handleButtonComment}
-              user={user}
-              myProfileData={myProfileData}
-              listEndText={
-                order === "ideas" && ideasData?.length > 0
-                  ? t("noMoreIdeas")
-                  : order === "ideas" && ideasData?.length < 1
-                    ? t("noContentIdeas")
-                    : t("noMoreProjectrooms")
-              }
-            />
-          </ContentWrapper>
-        </InnerWrapper>)}
-
-
-        {mapFilterActive && (
-          <Box
-            position="absolute"
-            bottom={isMobile ? "50px" : "30px"}
-            zIndex={99}
-            justifyContent="center"
-            width="100%"
-            left={isMobile ? "0px" : "30px"}
-          >
-            <Button
-              size="small"
-              onClick={handleMapBoundsReset}
-              text={"Alle Ideen in Köln anzeigen"}
-            />
-          </Box>
-        )}
-      </DragWrapper>
+            </Box>
+          )}
+        </DragWrapper>
+      )}
     </React.Fragment>
   );
 };

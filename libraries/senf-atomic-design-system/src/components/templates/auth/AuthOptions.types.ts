@@ -7,7 +7,8 @@ export interface AuthOptionsProps {
   variant?: "register" | "login";
   loading?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
-  authHandler,
-  setPage,
-  errorMessage
+  formikStore?: any;
+  authHandler;
+  setPage;
+  errorMessage;
 }

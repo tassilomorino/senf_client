@@ -28,7 +28,7 @@ Default.args = {
         iconLeft="arrow"
         header="FAQ"
         iconRight="plus"
-        iconRightTransform="rotate(45deg)"
+        iconRightTransform="rotate(45)"
       />
       <Accordion
         data={[

@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import dayjs from "dayjs";
 import { animated, useSpring } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
+import { AuthModal } from "senf-shared";
 import Icon from "../../atoms/icons/Icon";
 import {
   LayerWhiteFirstDefault,
@@ -52,11 +53,11 @@ import Delete from "../../../assets/icons/Delete";
 import Report from "../../../assets/icons/Report";
 import Skeleton from "../../atoms/skeleton/Skeleton";
 import EditIdeaPage from "../editIdeaPage/EditIdeaPage";
-import Auth from "../auth/Auth";
 import { useModals } from "../../molecules/modalStack/ModalProvider";
 import Avatar from "../../atoms/avatar/Avatar";
+import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
 
-const DragWrapper = styled(animated.div) <IdeaDetailPageProps>`
+const DragWrapper = styled(animated.div)<IdeaDetailPageProps>`
   display: flex;
   position: relative;
   flex-direction: column;
@@ -154,7 +155,6 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
   commentFormInput,
   setCommentFormInput,
   commentFormLoading,
-
 }) => {
   const {
     handle,
@@ -187,7 +187,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
   const [editIdeaDropdownOpen, setEditIdeaDropdownOpen] = useState(false);
 
   const [swipePosition, setSwipePosition] = useState("bottom");
-  const { openModal } = useModals()
+  const { openModal } = useModals();
   const liked = () => {
     if (user?.likes && user?.likes.find((like) => like.screamId === screamId))
       return true;
@@ -202,8 +202,6 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
       return true;
     return false;
   };
-
-
 
   let selectedDates = [];
   const selectedUnixArray = selectedUnix;
@@ -308,44 +306,34 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
       <DetailSidebar
         handleButtonClose={() => handle.closeCard(false)}
         SecondButton={
-          <ContentDropdown
-            open={socialmediaShareDropdownOpen}
-            setOpen={setSocialmediaShareDropdownOpen}
-            direction={isMobile ? "downLeft" : "downRight"}
-            OpenButton={
-              <Button
-                size="medium"
-                variant="white"
-                onClick={handleShareIdea}
-                icon={<Share />}
+          <DropdownButton
+            size="md"
+            width="height"
+            variant="white"
+            icon="Share"
+            data={
+              <SocialmediaShare
+                path={path}
+                handleShareIdeaVia={handle.shareIdeaVia}
               />
-            }
-            Content={
-              <Box gap="5px" flexDirection="column">
-                <SocialmediaShare
-                  path={path}
-                  handleShareIdeaVia={handle.shareIdeaVia}
-                />
-              </Box>
             }
           />
         }
         ThirdButton={
-          <ContentDropdown
-            open={editIdeaDropdownOpen}
-            setOpen={setEditIdeaDropdownOpen}
-            direction={isMobile ? "downLeft" : "downRight"}
-            OpenButton={
-              <Button
-                size="medium"
-                variant="white"
-                onClick={() => setEditIdeaDropdownOpen(!editIdeaDropdownOpen)}
-                icon={<More />}
-              />
-            }
-            Content={
-              <Box gap="5px" flexDirection="column">
-                {user?.userId === userId || user?.isSuperAdmin === true || user?.isAdmin === true ? (
+          <DropdownButton
+            size="medium"
+            variant="white"
+            width="height"
+            icon="More"
+            data={
+              user?.userId === userId ||
+              user?.isSuperAdmin === true ||
+              user?.isAdmin === true ||
+              true ? (
+                <Box
+                  gap="5px"
+                  flexDirection="column"
+                >
                   <React.Fragment>
                     <ModalButton
                       variant={"tertiary"}
@@ -356,7 +344,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                       options={{
                         padding: 0,
                         swipe: isMobile && true,
-                        height: isMobile && window.innerHeight + 83
+                        height: isMobile && window.innerHeight + 83,
                       }}
                     >
                       <EditIdeaPage
@@ -374,31 +362,32 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                       justifyContent="flex-start"
                       icon={<Delete />}
                       options={{
-                        padding: 20,
-                        title: "Bist du sicher, dass du die Idee löschen möchtest?",
-                        cancelText: t('cancel'),
-                        submitText: t('delete'),
-                        onSubmit: () => handle.deleteIdea(screamId)
+                        style: {
+                          padding: 20,
+                        },
+                        title:
+                          "Bist du sicher, dass du die Idee löschen möchtest?",
+                        cancelText: t("cancel"),
+                        submitText: t("delete"),
+                        onSubmit: () => handle.deleteIdea(screamId),
                       }}
-                    >
-                    </ModalButton>
+                    ></ModalButton>
                   </React.Fragment>
-                ) : (
-                  <Button
-                    variant={"secondary"}
-                    size="small"
-                    text={t("idea.report")}
-                    justifyContent="flex-start"
-                    onClick={() => handle.reportIdea(screamId)}
-                    icon={<Report />}
-                  />
-                )}
-              </Box>
+                </Box>
+              ) : (
+                [
+                  {
+                    text: t("idea.report"),
+                    onClick: () => handle.reportIdea(screamId),
+                    leadingIcon: "Report",
+                  },
+                ]
+              )
             }
           />
         }
       />
-      < DragWrapper
+      <DragWrapper
         id="dragWrapper"
         style={props}
         {...bind()}
@@ -412,7 +401,10 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
             backgroundColor: isMobile ? "white" : "#fed957",
           }}
         />
-        <Wave top="0px" color={theme.colors.beige.beige20} />
+        <Wave
+          top="0px"
+          color={theme.colors.beige.beige20}
+        />
 
         <InnerWrapper>
           <CardWrapper
@@ -429,23 +421,34 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                 {Thema ? (
                   <Icon icon={<Location color={setColorByTopic(Thema)} />} />
                 ) : (
-                  <Skeleton borderRadius="100" width="16" height="16" />
+                  <Skeleton
+                    borderRadius="100"
+                    width="16"
+                    height="16"
+                  />
                 )}
                 <Box flexDirection="column">
-                  {Stadtteil ? <Typography
-                    variant="bodySm"
-                    fontWeight={700}
-                  >
-                    {Stadtteil}
-                  </Typography> : <Skeleton height="16" />}
-                  {locationHeader ? <Typography
-                    variant="bodySm"
-                    fontWeight={600}
-                    color={theme.colors.black.black40tra}
-                  >
-                    {locationHeader}
-                  </Typography> : <Skeleton height="16" />}
-
+                  {Stadtteil ? (
+                    <Typography
+                      variant="bodySm"
+                      fontWeight={700}
+                    >
+                      {Stadtteil}
+                    </Typography>
+                  ) : (
+                    <Skeleton height="16" />
+                  )}
+                  {locationHeader ? (
+                    <Typography
+                      variant="bodySm"
+                      fontWeight={600}
+                      color={theme.colors.black.black40tra}
+                    >
+                      {locationHeader}
+                    </Typography>
+                  ) : (
+                    <Skeleton height="16" />
+                  )}
                 </Box>
 
                 <Box
@@ -464,9 +467,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                   <Button
                     variant="tertiary"
                     size="small"
-                    icon={
-                      commented() ? <CommentActive /> : <CommentInactive />
-                    }
+                    icon={commented() ? <CommentActive /> : <CommentInactive />}
                     text={commentCount}
                     onClick={(event) => handle.buttonComment(event, screamId)}
                   />
@@ -490,20 +491,33 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                 />
               </Box> */}
 
-              <Box alignItems="flex-start" flexDirection="row" margin="8px 0px">
+              <Box
+                alignItems="flex-start"
+                flexDirection="row"
+                margin="8px 0px"
+              >
                 <Typography variant="bodyBg">
                   {" "}
-                  {body || <Skeleton count="4" width="300" />}
+                  {body || (
+                    <Skeleton
+                      count="4"
+                      width="300"
+                    />
+                  )}
                 </Typography>
               </Box>
 
               {weblink || contact ? (
-                <Box gap="8px" flexWrap="wrap" margin="10px 0px 16px 0px">
+                <Box
+                  gap="8px"
+                  flexWrap="wrap"
+                  margin="10px 0px 16px 0px"
+                >
                   {contact && (
                     <Button
                       variant="secondary"
                       icon={<Mail />}
-                      text={contactTitle || t("contact")}
+                      text={contactTitle || contact}
                       size="small"
                       onClick={() => openMail(contact)}
                     />
@@ -512,7 +526,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                     <Button
                       variant="secondary"
                       icon={<Hyperlink />}
-                      text={weblinkTitle || t("website")}
+                      text={weblinkTitle || weblink}
                       size="small"
                       onClick={() => openLink(weblink)}
                     />
@@ -522,7 +536,10 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                 <Divider margin="10px 0px 16px 0px" />
               )}
 
-              <Box flexDirection="column" gap="5px">
+              <Box
+                flexDirection="column"
+                gap="5px"
+              >
                 {selectedUnixArray && selectedUnixArray.length > 0 && (
                   <Box gap="5px">
                     <Icon icon={<CalendarIcon />} />
@@ -530,8 +547,12 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                   </Box>
                 )}
 
-
-                <Box gap="10px" alignItems="center" style={{ cursor: 'pointer' }} onClick={() => handle.openProfilePage(userId)}>
+                <Box
+                  gap="10px"
+                  alignItems="center"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handle.openProfilePage(userId)}
+                >
                   <Avatar placeholder={userHandle?.slice(0, 1)} />
                   {createdAt && userHandle && (
                     <Box gap="5px">
@@ -584,10 +605,16 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
               {t("IdeaDetailPage.commentHeadline")}
             </Typography>
             {!user?.authenticated ? (
-              <Button onClick={() => openModal(<Auth authEditOpen={false} />, { swipe: !!isMobile, size: "md", height: isMobile && window.innerHeight + 83, padding: 0 })
-              }>{t("login")}</Button>
+              <Button
+                onClick={() => openModal(<AuthModal />, { swipe: !!isMobile })}
+              >
+                {t("login")}
+              </Button>
             ) : (
-              <Box gap="8px" width="100%">
+              <Box
+                gap="8px"
+                width="100%"
+              >
                 <Input
                   placeholder={t("IdeaDetailPage.commentPlaceholder")}
                   value={commentFormInput}
@@ -612,10 +639,12 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
               user={user}
             />
           )}
-          <div style={isMobile ? { minHeight: "400px" } : { minHeight: "200px" }} />
+          <div
+            style={isMobile ? { minHeight: "400px" } : { minHeight: "200px" }}
+          />
         </InnerWrapper>
-      </DragWrapper >
-    </React.Fragment >
+      </DragWrapper>
+    </React.Fragment>
   );
 };
 

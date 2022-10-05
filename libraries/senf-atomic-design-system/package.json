@@ -22,7 +22,7 @@
     "chromatic": "build && build-storybook && chromatic --exit-zero-on-changes",
     "patch": "patch-package"
   },
-  "author": "Tassilo Morino, Norbertas Papirtis, Mahammed Maqbol, Leon Vogler",
+  "author": "Tassilo Morino, Norbertas Papirtis, Mohammed Maqbol, Leon Vogler",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.17.5",
@@ -89,6 +89,13 @@
     "yup": "^0.32.11"
   },
   "dependencies": {
+    "@visx/axis": "^2.12.2",
+    "@visx/gradient": "^2.10.0",
+    "@visx/group": "^2.10.0",
+    "@visx/mock-data": "^2.1.2",
+    "@visx/responsive": "^2.10.0",
+    "@visx/scale": "^2.2.2",
+    "@visx/shape": "^2.12.2",
     "algoliasearch": "^4.14.2",
     "formik": "^2.2.9",
     "i18next": "^21.6.16",

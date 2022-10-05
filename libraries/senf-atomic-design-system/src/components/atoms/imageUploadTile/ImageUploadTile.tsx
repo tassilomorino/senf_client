@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import Hyperlink from "../../../assets/icons/Hyperlink";
 import Loader from "../animations/Loader";
@@ -10,7 +10,6 @@ import { LayerWhiteFirstDefault } from "../layerStyles/LayerStyles";
 import { ImageUploadTileProps } from "./ImageUploadTile.types";
 
 const Wrapper = styled.div<ImageUploadTileProps>``;
-
 
 const ImageWrapper = styled.label`
   ${(props) => LayerWhiteFirstDefault}
@@ -36,46 +35,55 @@ const StyledIconWrapper = styled.div`
   z-index: 1;
 `;
 
-
-const ImageUploadTile: FC<ImageUploadTileProps> = ({ id, photoURL, uploadingImage, handleImageUpload }) => {
+const ImageUploadTile: FC<ImageUploadTileProps> = ({
+  id,
+  photoURL,
+  uploadingImage,
+  handleImageUpload,
+}) => {
   const [hover, onHover] = useState(false);
+  const getUrl = (url: string) =>
+    url && typeof url !== "string" ? URL.createObjectURL(url) : url;
+  const [image, setImage] = useState(getUrl(photoURL));
+  useEffect(() => {
+    setImage(getUrl(photoURL));
+  }, [photoURL]);
 
-  return <React.Fragment>
-    <ImageWrapper
-      onMouseEnter={() => onHover(true)}
-      onMouseLeave={() => onHover(false)}
-      htmlFor={id || "imageUploader"}
-    >
+  return (
+    <React.Fragment>
+      <ImageWrapper
+        onMouseEnter={() => onHover(true)}
+        onMouseLeave={() => onHover(false)}
+        htmlFor={id || "imageUploader"}
+      >
+        {uploadingImage && (
+          <StyledIconWrapper>
+            <div style={{ width: "50px" }}>
+              <Loader />
+            </div>
+          </StyledIconWrapper>
+        )}
+        {hover && (
+          <StyledIconWrapper>
+            <Icon icon={<Hyperlink transform="scale(1.5)" />} />
+          </StyledIconWrapper>
+        )}
 
-      {uploadingImage && (
-        <StyledIconWrapper>
-          <div style={{ width: "50px" }}>
-            <Loader />
-          </div>
-        </StyledIconWrapper>
-      )}
-      {hover && (
-        <StyledIconWrapper>
-          <Icon icon={<Hyperlink transform="scale(1.5)" />} />
-        </StyledIconWrapper>
-
-      )}
-
-      {photoURL && <ImagePlaceholder
-        img={photoURL}
-        borderRadius="18px"
-        height="calc(100% - 40px)"
-        width="calc(100% - 40px)"
-      />}
-
-    </ImageWrapper>
-    <input
-      type="file"
-      onChange={handleImageUpload}
-      style={{ display: "none" }}
-      id={id || "imageUploader"}
-    />
-  </React.Fragment>;
+        {image && (
+          <ImagePlaceholder
+            img={image}
+            borderRadius="18"
+          />
+        )}
+      </ImageWrapper>
+      <input
+        type="file"
+        onChange={handleImageUpload}
+        style={{ display: "none" }}
+        id={id || "imageUploader"}
+      />
+    </React.Fragment>
+  );
 };
 
 export default ImageUploadTile;

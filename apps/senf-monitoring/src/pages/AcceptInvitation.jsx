@@ -10,10 +10,16 @@ import {
 import { t } from "i18next";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { Typography, Box, Button, useModals, isMobileCustom, Auth } from "senf-atomic-design-system";
+import {
+  Typography,
+  Box,
+  Button,
+  useModals,
+  isMobileCustom,
+} from "senf-atomic-design-system";
 import styled from "styled-components";
-import { auth, db } from "../firebase";
+import { AuthModal, useAuthContext } from "senf-shared";
+import { db } from "../firebase";
 
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.beige.beige20};
@@ -27,24 +33,32 @@ const Wrapper = styled.div`
 
 export const AcceptInvitation = () => {
   const { t } = useTranslation();
-  const isMobile = isMobileCustom()
+  const isMobile = isMobileCustom();
   const { openModal } = useModals();
+  const { user, signOut } = useAuthContext();
 
-  const user = useSelector((state) => state.user);
-  const [state, setState] = useState([]);
+  const [invitationData, setInvitationData] = useState(null);
+  const [monitoringBoardData, setMonitoringBoardData] = useState(null);
 
-
-  const params = (new URL(document.location)).searchParams;
+  const params = new URL(document.location).searchParams;
   const invitationId = params.get("invitationId");
 
   const handleSetInvitationData = async () => {
     try {
-      const docRef = doc(db, `mail/${invitationId}`);
-      const docSnapshot = await getDoc(docRef);
+      const invitationRef = doc(db, `mail/${invitationId}`);
+      const inviationSnapshot = await getDoc(invitationRef);
 
-      if (docSnapshot) {
-        setState(docSnapshot.data());
-        console.log("inviteData", docSnapshot.data())
+      if (inviationSnapshot) {
+        setInvitationData(inviationSnapshot.data());
+
+        const monitoringRef = doc(
+          db,
+          `monitoringBoards/${inviationSnapshot.data().monitoringBoardId}`
+        );
+        const mnoitoringSnapshot = await getDoc(monitoringRef);
+
+        setMonitoringBoardData(mnoitoringSnapshot.data());
+        console.log("inviteData", mnoitoringSnapshot.data());
       }
     } catch (error) {
       throw new Error(error, "Error in Memberlist");
@@ -53,18 +67,12 @@ export const AcceptInvitation = () => {
 
   useEffect(() => {
     handleSetInvitationData();
-
-    console.log("User", user)
-    !user?.authenticated && openModal(<Auth />, { swipe: !!isMobile, size: "md", height: isMobile && window.innerHeight + 83, padding: 0 })
-
+    if (!user) openModal(<AuthModal />, { swipe: !!isMobile });
   }, [user]);
 
-
-
   // How users accept invitations
-  // user clicks on link with mail-doc-id, -> user registers. on click register checck-mail-doc and check if email matches, add current userId to organizationId-doc + cloud Function  
+  // user clicks on link with mail-doc-id, -> user registers. on click register checck-mail-doc and check if email matches, add current userId to organizationId-doc + cloud Function
   // Security: only admin can create mail-doc, mail-doc-id is unique and you can only read it specifically with providing its id, and user-email is equal check,  expirationdate
-
 
   const handleUpdateDoc = async (invitationDocData, uid) => {
     const updateDocData = {
@@ -104,8 +112,12 @@ export const AcceptInvitation = () => {
         gap="50px"
       >
         <Box maxWidth="400px">
-          <Typography variant="h1" textAlign="center">
-            You were invitited to join the team of "{state?.organizationName}"
+          <Typography
+            variant="h1"
+            textAlign="center"
+          >
+            You were invitited to join the team of "{monitoringBoardData?.title}
+            "
           </Typography>
         </Box>
 
@@ -113,6 +125,8 @@ export const AcceptInvitation = () => {
           onClick={handleAcceptInvitation}
           text={t("accept_invitation")}
         />
+
+        {user && <Button onClick={() => signOut()}>signout</Button>}
       </Box>
     </Wrapper>
   );

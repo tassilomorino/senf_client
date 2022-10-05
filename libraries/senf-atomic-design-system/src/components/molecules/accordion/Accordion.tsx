@@ -42,77 +42,92 @@ const AccordionWrapper = styled.ul<AccordionProps>`
   }
 `;
 
-export const AccordionItem = memo(({ question, answer, defaultOpen = false }) => {
-  const [isOpen, setOpen] = useState(defaultOpen);
-  const previous = usePrevious(isOpen);
-  const [bind, { height: viewHeight }] = useMeasure();
-  const { height, opacity } = useSpring({
-    from: { height: 0, opacity: 0 /* transform: 'rotate(180deg)' */ },
-    to: {
-      height: isOpen ? viewHeight : 0,
-      opacity: isOpen ? 1 : 0,
-      // transform: `rotate(${isOpen ? 0 : 180}deg)`
-    },
-  });
+export const AccordionItem = memo(
+  ({ question, answer, defaultOpen = false }) => {
+    const [isOpen, setOpen] = useState(defaultOpen);
+    const previous = usePrevious(isOpen);
+    const [bind, { height: viewHeight }] = useMeasure();
+    const { height, opacity } = useSpring({
+      from: { height: 0, opacity: 0 /* transform: 'rotate(180)' */ },
+      to: {
+        height: isOpen ? viewHeight : 0,
+        opacity: isOpen ? 1 : 0,
+        // transform: `rotate(${isOpen ? 0 : 180}deg)`
+      },
+    });
 
-  return (
-    <li
-      className="accordion-item"
-      onClick={() => {
-        setOpen(!isOpen);
-      }}
-    >
-      <div className="accordion-item-line">
-        <Typography variant="h3" style={{ maxWidth: "90%" }}>
-          {question}
-        </Typography>
-
-        <Icon
-          icon={<Arrow transform="rotate(90deg)" />}
-          transform="scale(0.7)"
-          style={{
-            ...(isOpen && {
-              transform: "rotate(180deg) scale(0.7)",
-            }),
-          }}
-        />
-      </div>
-      <a.div
-        style={{
-          willChange: "transform, opacity, height",
-          opacity,
-          height: isOpen && previous === isOpen ? "auto" : height,
+    return (
+      <li
+        className="accordion-item"
+        onClick={() => {
+          setOpen(!isOpen);
         }}
       >
-        <div {...bind} className="accordion-item-content">
-          <Box margin="0px 0px 20px 0px">
-            <Typography variant="answerBg">
-              <Linkify
-                options={{
-                  target: "_blank",
-                  // tagName: props => <a {...props} />,
-                  tagName: (...args) =>
-                    console.log(args) || ((props) => <a {...props} />),
-                }}
-              >
-                {answer}
-              </Linkify>
-            </Typography>
-          </Box>
+        <div className="accordion-item-line">
+          <Typography
+            variant="h3"
+            style={{ maxWidth: "90%" }}
+          >
+            {question}
+          </Typography>
+
+          <Icon
+            icon={<Arrow transform="rotate(90)" />}
+            transform="scale(0.7)"
+            style={{
+              ...(isOpen && {
+                transform: "rotate(180) scale(0.7)",
+              }),
+            }}
+          />
         </div>
-      </a.div>
-    </li>
-  );
-});
+        <a.div
+          style={{
+            willChange: "transform, opacity, height",
+            opacity,
+            height: isOpen && previous === isOpen ? "auto" : height,
+          }}
+        >
+          <div
+            {...bind}
+            className="accordion-item-content"
+          >
+            <Box margin="0px 0px 20px 0px">
+              <Typography variant="answerBg">
+                <Linkify
+                  options={{
+                    target: "_blank",
+                    // tagName: props => <a {...props} />,
+                    tagName: (...args) =>
+                      console.log(args) || ((props) => <a {...props} />),
+                  }}
+                >
+                  {answer}
+                </Linkify>
+              </Typography>
+            </Box>
+          </div>
+        </a.div>
+      </li>
+    );
+  }
+);
 
 const Accordion: FC<AccordionProps> = ({ data }) => {
-  return data && (
-    <AccordionWrapper>
-      {data?.map(({ question, answer }) => {
-        return <AccordionItem key={question} question={question} answer={answer} />;
-
-      })}
-    </AccordionWrapper>
+  return (
+    data && (
+      <AccordionWrapper>
+        {data?.map(({ question, answer }) => {
+          return (
+            <AccordionItem
+              key={question}
+              question={question}
+              answer={answer}
+            />
+          );
+        })}
+      </AccordionWrapper>
+    )
   );
 };
 

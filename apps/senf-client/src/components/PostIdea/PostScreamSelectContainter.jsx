@@ -77,29 +77,35 @@ const PostScreamSelectContainter = ({
         !isMobileCustom && locationDecided
           ? { zIndex: 1 }
           : !isMobileCustom && !locationDecided
-            ? { zIndex: 5 }
-            : isMobileCustom && locationDecided
-              ? {
-                position: "fixed",
-                bottom: "calc(90vh - 50px)",
-                display: "none",
-                zIndex: 999,
-              }
-              : {
-                position: "fixed",
-                bottom: "20px",
-                display: "block",
-                zIndex: 999,
-              }
+          ? { zIndex: 5 }
+          : isMobileCustom && locationDecided
+          ? {
+              position: "fixed",
+              bottom: "calc(90vh - 50px)",
+              display: "none",
+              zIndex: 999,
+            }
+          : {
+              position: "fixed",
+              bottom: "20px",
+              display: "block",
+              zIndex: 999,
+            }
       }
     >
       {!isMobileCustom && (
-        <HideDiv onClick={handleLocationDecided} show={!!locationDecided} />
+        <HideDiv
+          onClick={handleLocationDecided}
+          show={!!locationDecided}
+        />
       )}
 
-      <Box margin="0px 0px 10px 0px" justifyContent="center">
+      <Box
+        margin="0px 0px 10px 0px"
+        justifyContent="center"
+      >
         <Button
-          fillWidth="max"
+          width="max"
           onClick={handleLocationDecided}
           text={t("confirmLocation")}
           disabled={!address}
@@ -112,7 +118,7 @@ const PostScreamSelectContainter = ({
         <ContentDropdown
           open={projectroomDropdownOpen}
           setOpen={setProjectroomDropdownOpen}
-          OpenButton={
+          openButton={
             <TertiaryButton
               onClick={() =>
                 setProjectroomDropdownOpen(!projectroomDropdownOpen)
@@ -122,12 +128,15 @@ const PostScreamSelectContainter = ({
                   (optionsProjects) => projectSelected === optionsProjects.value
                 ).label || t("all_ideas")
               }
-              iconRight={<Arrow transform="rotate(90deg)" />}
+              iconRight={<Arrow transform="rotate(90)" />}
               variant="semibold"
             />
           }
-          Content={
-            <Box gap="5px" flexDirection="column">
+          content={
+            <Box
+              gap="5px"
+              flexDirection="column"
+            >
               {Object.values(OptionsProjects()).map(({ value, label }) => (
                 <Box gap="5px">
                   <ContentDropdownItem

@@ -73,11 +73,15 @@ const Logo = styled.div`
   background-position: center;
 `;
 const Partners = () => {
-  const isMobile = isMobileCustom()
+  const isMobile = isMobileCustom();
   return (
     <Wrapper isMobileCustom={isMobile}>
       {Logos.map(({ img, width }, index) => (
-        <Logo img={img} width={width} key={img + index}></Logo>
+        <Logo
+          img={img}
+          width={width}
+          key={img + index}
+        ></Logo>
       ))}
     </Wrapper>
   );

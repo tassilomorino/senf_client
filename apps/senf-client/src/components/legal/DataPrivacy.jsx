@@ -58,7 +58,11 @@ const DataPrivacy = () => (
       </Terms>
     </p>
     <p>
-      <Terms href="/impressum" rel="noopener" target="_blank">
+      <Terms
+        href="/impressum"
+        rel="noopener"
+        target="_blank"
+      >
         Impressum
       </Terms>
     </p>
@@ -364,7 +368,11 @@ const DataPrivacy = () => (
       auch gleich konfigurieren:
     </p>
     <p>
-      <Terms href="/cookieConfigurator" rel="noopener" target="_blank">
+      <Terms
+        href="/cookieConfigurator"
+        rel="noopener"
+        target="_blank"
+      >
         Cookie-Richtlinie
       </Terms>
     </p>
@@ -425,7 +433,11 @@ const DataPrivacy = () => (
       auch gleich konfigurieren:
     </p>
     <p>
-      <Terms href="/cookieConfigurator" rel="noopener" target="_blank">
+      <Terms
+        href="/cookieConfigurator"
+        rel="noopener"
+        target="_blank"
+      >
         Cookie-Richtlinie
       </Terms>
     </p>
@@ -476,7 +488,11 @@ const DataPrivacy = () => (
       auch gleich konfigurieren:
     </p>
     <p>
-      <Terms href="/cookieConfigurator" rel="noopener" target="_blank">
+      <Terms
+        href="/cookieConfigurator"
+        rel="noopener"
+        target="_blank"
+      >
         Cookie-Richtlinie
       </Terms>
     </p>
@@ -534,7 +550,11 @@ const DataPrivacy = () => (
       auch gleich konfigurieren:
     </p>
     <p>
-      <Terms href="/cookieConfigurator" rel="noopener" target="_blank">
+      <Terms
+        href="/cookieConfigurator"
+        rel="noopener"
+        target="_blank"
+      >
         Cookie-Richtlinie
       </Terms>
     </p>
@@ -554,7 +574,11 @@ const DataPrivacy = () => (
       Cookie hat dann darüber hinaus aber keinerlei Funktion mehr.
     </p>
     <p>
-      <Terms href="/cookieConfigurator" rel="noopener" target="_blank">
+      <Terms
+        href="/cookieConfigurator"
+        rel="noopener"
+        target="_blank"
+      >
         Cookie-Richtlinie
       </Terms>
     </p>

@@ -52,21 +52,15 @@ export function truncateString(str, num) {
 
 export function search(dbData, userInput, dbDataKeys) {
   const sanitizedUserInput = userInput.toString().toLowerCase();
+  if (userInput === "") return dbData;
 
-  if (userInput === "") {
-    return dbData;
-  }
-  return dbData.filter((object) => {
-    return dbDataKeys.some((dbDataKey) => {
-      // check if the user input is in the object[dbDataKey]
-      if (
+  return dbData.filter((object) =>
+    dbDataKeys.some(
+      (dbDataKey) =>
         object[dbDataKey] &&
         object[dbDataKey].toString().toLowerCase().includes(sanitizedUserInput)
-      ) {
-        return true;
-      }
-    });
-  });
+    )
+  );
 }
 
 export function sort(items, dropdown) {

@@ -3,12 +3,20 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { ProfilePage as ProfilePageComponent, useModals, Loader } from "senf-atomic-design-system";
-import { AuthModal } from "senf-shared"
+import {
+  ProfilePage as ProfilePageComponent,
+  useModals,
+  Loader,
+} from "senf-atomic-design-system";
+import { AuthModal } from "senf-shared";
 import { getAuth } from "firebase/auth";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { closeAccountFunc, getMyOrganizations, getMyScreams } from "../redux/actions/accountActions";
+import {
+  closeAccountFunc,
+  getMyOrganizations,
+  getMyScreams,
+} from "../redux/actions/accountActions";
 
 import { handleTopicSelectorRedux } from "../redux/actions/UiActions";
 
@@ -19,7 +27,11 @@ import {
   filterByTagFilter,
 } from "../util/helpers";
 
-import { deleteUserFromDb, getUserData, logoutUser } from "../redux/actions/userActions";
+import {
+  deleteUserFromDb,
+  getUserData,
+  logoutUser,
+} from "../redux/actions/userActions";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
 const ProfilePage = ({
@@ -29,9 +41,8 @@ const ProfilePage = ({
   handleButtonLike,
   handleButtonComment,
 }) => {
-
   const { t } = useTranslation();
-  const { openModal, closeModal } = useModals()
+  const { openModal, closeModal } = useModals();
 
   const loadingMyScreams = useSelector((state) => state.data.loadingMyScreams);
 
@@ -40,13 +51,18 @@ const ProfilePage = ({
   const myOrganizations = useSelector((state) => state.user.myOrganizations);
   const myProfileData = useSelector((state) => state.user);
 
-  const profilePageUser = useSelector((state) => state.data.profilePage?.profilePageData?.userData);
-  const profilePageScreams = useSelector((state) => state.data.profilePage?.profilePageData?.screams);
-  const profilePageOrganizations = useSelector((state) => state.data.profilePage?.profilePageData?.organizations);
+  const profilePageUser = useSelector(
+    (state) => state.data.profilePage?.profilePageData?.userData
+  );
+  const profilePageScreams = useSelector(
+    (state) => state.data.profilePage?.profilePageData?.screams
+  );
+  const profilePageOrganizations = useSelector(
+    (state) => state.data.profilePage?.profilePageData?.organizations
+  );
   const openAccount = useSelector((state) => state.UI.openAccount);
   const organizations = useSelector((state) => state.data.organizations);
   const organization = useSelector((state) => state.data.organization);
-
 
   const [foundOrganizations, setFoundOrganizations] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -59,14 +75,11 @@ const ProfilePage = ({
   const firebaseUser = auth.currentUser;
   const navigate = useNavigate();
   const handleClose = useCallback(() => {
-
-
     dispatch(closeAccountFunc());
     dispatch(handleTopicSelectorRedux("all"));
 
     navigate("/");
     // history.goBack(); // @Todo: why it goes back to /projectroom ?? it should be /idea/1234
-
   }, [dispatch]);
 
   const handleClick = useCallback((order) => {
@@ -97,52 +110,50 @@ const ProfilePage = ({
   const sortedOrganizations = sort(organizationsSearched, dropdown);
   const MyDataFinalOrganizations = sortedOrganizations;
 
-  const { profileId } = useParams() // /profile/V4JkU7aQ...
-
+  const { profileId } = useParams(); // /profile/V4JkU7aQ...
 
   const handleLogout = () => {
     dispatch(logoutUser());
-    navigate('/');
+    navigate("/");
   };
 
   const handleDeleteAccount = () => {
-    dispatch(deleteUserFromDb(firebaseUser.uid)).then(() => { closeModal(); navigate('/') }).catch(err => {
-      throw new Error(err, ' error in deleteUserFromDb in ProfilePage.jsx')
-    })
+    dispatch(deleteUserFromDb(firebaseUser.uid))
+      .then(() => {
+        closeModal();
+        navigate("/");
+      })
+      .catch((err) => {
+        throw new Error(err, " error in deleteUserFromDb in ProfilePage.jsx");
+      });
   };
 
   useEffect(() => {
-
-    if (myProfileData.isAdmin === true || myProfileData.isSuperAdmin === true ||
-      myProfileData.isModerator === true) {
-      setElevatedUser(true)
+    if (
+      myProfileData.isAdmin === true ||
+      myProfileData.isSuperAdmin === true ||
+      myProfileData.isModerator === true
+    ) {
+      setElevatedUser(true);
     } else {
-
-      setElevatedUser(false)
+      setElevatedUser(false);
     }
-
-
-
-  }, [myProfileData, profileId])
+  }, [myProfileData, profileId]);
 
   useEffect(() => {
-    if (myProfileData && myProfileData.authenticated && myProfileData.userId === profileId) {
-      setAccountOwner(true)
+    if (
+      myProfileData &&
+      myProfileData.authenticated &&
+      myProfileData.userId === profileId
+    ) {
+      setAccountOwner(true);
     } else {
-      setAccountOwner(false)
+      setAccountOwner(false);
     }
-
-  }, [myProfileData, profileId])
-
-
-
-
-
+  }, [myProfileData, profileId]);
 
   return (
-
-    <React.Fragment >
-
+    <React.Fragment>
       <ProfilePageComponent
         user={profilePageUser}
         myProfileData={myProfileData}
@@ -157,18 +168,18 @@ const ProfilePage = ({
         handleButtonLike={handleButtonLike}
         handleButtonComment={handleButtonComment}
         handleButtonClose={handleClose}
-        handleSetAuthEditOpen={() => openModal(<AuthModal authAddDetails={true} />, { swipe: !!isMobileCustom, size: "md", height: isMobileCustom && window.innerHeight + 83, padding: 0 })
-
+        handleSetAuthEditOpen={() =>
+          openModal(<AuthModal authAddDetails={true} />, {
+            swipe: !!isMobileCustom,
+            size: "md",
+          })
         }
         handleLogout={handleLogout}
         handleDeleteAccount={handleDeleteAccount}
 
-      // setEditProfileOpen,
+        // setEditProfileOpen,
       />
-
-
-    </React.Fragment >
-
+    </React.Fragment>
   );
 };
 

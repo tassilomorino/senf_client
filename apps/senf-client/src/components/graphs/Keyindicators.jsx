@@ -11,7 +11,7 @@ import {
   Bulb,
   CommentActive,
   FlameActive,
-  Typography
+  Typography,
 } from "senf-atomic-design-system";
 
 const Wrapper = styled.div`
@@ -47,7 +47,10 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
         {screams.length === 0 ? (
           <Loader />
         ) : (
-          <Typography variant="buttonBg" textAlign="center">
+          <Typography
+            variant="buttonBg"
+            textAlign="center"
+          >
             {screams.length} {screams.length === 1 ? t("idea") : t("ideas")}
           </Typography>
         )}
@@ -59,7 +62,13 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
         {likesLength === null ? (
           <Loader />
         ) : (
-          <Typography variant="buttonBg" textAlign="center"> {likesLength} Votes</Typography>
+          <Typography
+            variant="buttonBg"
+            textAlign="center"
+          >
+            {" "}
+            {likesLength} Votes
+          </Typography>
         )}
       </Indicator>
 
@@ -69,7 +78,10 @@ const Keyindicators = ({ screams, likesLength, commentslength }) => {
         {commentslength === null ? (
           <Loader />
         ) : (
-          <Typography variant="buttonBg" textAlign="center">
+          <Typography
+            variant="buttonBg"
+            textAlign="center"
+          >
             {commentslength}{" "}
             {commentslength === 1 ? t("comment") : t("comments")}
           </Typography>

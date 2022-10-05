@@ -38,13 +38,14 @@ import Logout from "../../../assets/icons/Logout";
 import Edit from "../../../assets/icons/Edit";
 import Plus from "../../../assets/icons/Plus";
 import Skeleton from "../../atoms/skeleton/Skeleton";
-import ContentDropdownItem from "../../atoms/contentDropdownItem/ContentDropdownItem";
+import ContentDropdownItem from "../../atoms/contentDropdown/ContentDropdownItem";
 import ModalButton from "../../molecules/modalStack/ModalButton";
 import Auth from "../auth/Auth";
 import Avatar from "../../atoms/avatar/Avatar";
 import { useModals } from "../../molecules/modalStack/ModalProvider";
+import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
 
-const DragWrapper = styled(animated.div) <ProfilePageProps>`
+const DragWrapper = styled(animated.div)<ProfilePageProps>`
   display: flex;
   position: relative;
   flex-direction: column;
@@ -135,12 +136,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
   const { openModal } = useModals();
   const isMobile = isMobileCustom();
   const [order, setOrder] = useState(1);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [swipePosition, setSwipePosition] = useState("top");
-
-  const handleToggle = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
 
   const [props, set] = useSpring(() => ({
     y: 0,
@@ -195,85 +191,92 @@ const ProfilePage: FC<ProfilePageProps> = ({
   );
 
   return (
-
     <React.Fragment>
       <DetailSidebar
         handleButtonClose={() => handleButtonClose(false)}
         sideDivider={true}
         SecondButton={
-          (accountOwner || elevatedUser) && (<ContentDropdown
-            open={dropdownOpen}
-            setOpen={setDropdownOpen}
-            direction={isMobile ? "downLeft" : "downRight"}
-            OpenButton={
-              <Button
-                variant="white"
-                size="medium"
-                onClick={handleToggle}
-                icon={<More />}
-              />
-            }
-            Content={
-              <Box gap="5px" flexDirection="column">
-                <ContentDropdownItem
-                  text={t("profile.edit")}
-                  icon={<Edit />}
-                  onClick={handleSetAuthEditOpen}
-                />
-                <ContentDropdownItem
-                  text={t("logout")}
-                  icon={<Logout />}
-                  onClick={handleLogout}
-                />
-
-                {accountOwner && (
-                  // @todo: Elevated users cant delete other accounts
-                  // because we need to use firebaseAdmin SDK
-                  <ModalButton
-                    button={ContentDropdownItem}
-                    text={t("profile.delete")}
-                    icon={<Plus />}
-                    options={{
+          (accountOwner || elevatedUser) && (
+            <DropdownButton
+              variant="white"
+              width="height"
+              size="md"
+              icon="More"
+              data={[
+                {
+                  text: t("profile.edit"),
+                  leadingIcon: "Edit",
+                  onClick: handleSetAuthEditOpen,
+                },
+                {
+                  text: t("logout"),
+                  leadingIcon: "Logout",
+                  onClick: handleLogout,
+                },
+                accountOwner && {
+                  // because we need to use firebaseAdmin SDK // @todo: Elevated users cant delete other accounts
+                  text: t("profile.delete"),
+                  leadingIcon: "ArrowDown",
+                  onClick: () =>
+                    openModal(null, {
                       style: {
-                        padding: 20
+                        padding: 20,
                       },
                       title: t("contactModalTitle"),
                       cancelText: t("cancel"),
-                      submitText: t('profile.delete'),
-                      onSubmit: () => openModal(null, {
-                        style: {
-                          padding: 20,
-                        },
-                        title: t('delete_account_confirm'),
-                        cancelText: t('cancel'),
-                        submitText: t('delete'),
-                        onSubmit: handleDeleteAccount,
-                      }),
-                    }}
-                  />
-                )}
-              </Box >
-
-            }
-
-          />)
+                      submitText: t("profile.delete"),
+                      onSubmit: () =>
+                        openModal(null, {
+                          style: {
+                            padding: 20,
+                          },
+                          title: t("delete_account_confirm"),
+                          cancelText: t("cancel"),
+                          submitText: t("delete"),
+                          onSubmit: handleDeleteAccount,
+                        }),
+                    }),
+                },
+              ]}
+            />
+          )
         }
-
       />
-      < DragWrapper
+      <DragWrapper
         id="dragWrapper"
         style={props}
         {...bind()}
         isMobile={isMobile}
       >
-        <Wave top="0px" color={theme.colors.beige.beige20} />
+        <Wave
+          top="0px"
+          color={theme.colors.beige.beige20}
+        />
 
         <ContentWrapper>
-          <Box justifyContent="center" margin="20px">
-            <Avatar layerStyle={user?.handle && !user?.photoURL ? LayerWhiteFirstDefault : LayerGreyButtonsDefault} borderRadius="24px" height="150px" width="150px" fontSize="28px" img={user?.photoURL} placeholder={user?.handle?.slice(0, 1)} loading={!user?.handle} />
-
+          <Box
+            justifyContent="center"
+            margin="20px"
+          >
+            <Avatar
+              layerStyle={
+                user?.handle && !user?.photoURL
+                  ? LayerWhiteFirstDefault
+                  : LayerGreyButtonsDefault
+              }
+              borderRadius="24"
+              height="150"
+              width="150"
+              fontSize="28px"
+              img={user?.photoURL}
+              placeholder={user?.handle?.slice(0, 1)}
+              loading={!user?.handle}
+            />
           </Box>
-          <Box justifyContent="center" margin="20px">
+          <Box
+            justifyContent="center"
+            margin="20px"
+          >
             {user?.handle ? (
               <Typography variant="h3">{user?.handle}</Typography>
             ) : (
@@ -286,7 +289,10 @@ const ProfilePage: FC<ProfilePageProps> = ({
             )}
           </Box>
 
-          <Box margin="0px 24px" flexDirection="column">
+          <Box
+            margin="0px 24px"
+            flexDirection="column"
+          >
             <Typography variant="buttonBg">
               {t("profilePage.aboutHeadline")}
             </Typography>
@@ -294,19 +300,27 @@ const ProfilePage: FC<ProfilePageProps> = ({
             <Box margin="5px 0px">
               {user?.description ? (
                 <Typography variant="bodyBg">{user?.description}</Typography>
-              ) : accountOwner && (
-                <Button
-                  variant="secondary"
-                  size="small"
-                  text={t("profilePage.addDescription")}
-                  onClick={handleSetAuthEditOpen}
-                />
+              ) : (
+                accountOwner && (
+                  <Button
+                    variant="secondary"
+                    size="small"
+                    text={t("profilePage.addDescription")}
+                    onClick={handleSetAuthEditOpen}
+                  />
+                )
               )}
             </Box>
           </Box>
 
-          <Divider margin="14px 24px 16px 24px" width="calc(100% - 48px)" />
-          <Box margin="0px 24px 0px 24px" gap="10px">
+          <Divider
+            margin="14px 24px 16px 24px"
+            width="calc(100% - 48px)"
+          />
+          <Box
+            margin="0px 24px 0px 24px"
+            gap="10px"
+          >
             <Tabs
               fontSize="buttonSm"
               order={order}
@@ -314,14 +328,14 @@ const ProfilePage: FC<ProfilePageProps> = ({
               tabs={
                 profilePageOrganizations
                   ? [
-                    { icon: <Bulb />, text: "Ideen" },
-                    { icon: <Info />, text: "Organisationen" },
-                    // { icon: <Info />, text: "Interaktionen" },
-                  ]
+                      { icon: <Bulb />, text: "Ideen" },
+                      { icon: <Info />, text: "Organisationen" },
+                      // { icon: <Info />, text: "Interaktionen" },
+                    ]
                   : [
-                    { icon: <Bulb />, text: "Ideen" },
-                    // { icon: <Info />, text: "Interaktionen" },
-                  ]
+                      { icon: <Bulb />, text: "Ideen" },
+                      // { icon: <Info />, text: "Interaktionen" },
+                    ]
               }
             />
           </Box>
@@ -346,9 +360,8 @@ const ProfilePage: FC<ProfilePageProps> = ({
             }
           />
         </ContentWrapper>
-      </ DragWrapper>
-    </React.Fragment >
-
+      </DragWrapper>
+    </React.Fragment>
   );
 };
 

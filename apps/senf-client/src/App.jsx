@@ -9,13 +9,10 @@ import {
   theme,
   GlobalStyle,
   ModalProvider,
-  RotateDevice
-
+  RotateDevice,
 } from "senf-atomic-design-system";
 
-import {
-  AuthProvider,
-} from "senf-shared";
+import { AuthProvider } from "senf-shared";
 
 import { ThemeProvider } from "styled-components";
 import { auth } from "./firebase";
@@ -48,6 +45,7 @@ import Blank from "./pages/Blank";
 import "./util/i18n";
 
 import Home from "./pages/Home";
+import Palette from "./pages/Palette";
 
 // const Main = React.lazy(() =>
 //   Promise.all([
@@ -66,7 +64,6 @@ const vh = window.innerHeight * 0.01;
 document.documentElement.style.setProperty("--vh", `${vh}px`);
 
 const App = () => {
-
   useEffect(() => {
     // setViewport();
     const { initialMapViewport } = store.getState().data;
@@ -74,7 +71,6 @@ const App = () => {
     store.dispatch(getOrganizations(initialMapViewport));
     store.dispatch(getProjects(initialMapViewport));
   }, []);
-
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -100,17 +96,17 @@ const App = () => {
     return () => unsubscribe();
   }, []);
 
-
-
   return (
     <ThemeProvider theme={theme}>
-
       <GlobalStyle />
 
       {import.meta.env.VITE_NO_CRAWL && (
         /* disable google crawling for senf-client-test.netlify.app */
         <Helmet>
-          <meta name="robots" content="noindex" />
+          <meta
+            name="robots"
+            content="noindex"
+          />
         </Helmet>
       )}
       {import.meta.env.VITE_GOOGLE_SEARCH_CONSOLE && (
@@ -133,9 +129,6 @@ const App = () => {
         </Helmet>
       )}
 
-
-
-
       <Provider store={store}>
         <Router>
           <AuthProvider>
@@ -157,36 +150,63 @@ const App = () => {
                   element={<Home />}
                 />
 
-
                 <Route
                   exact
                   path="/organizations/:organizationId"
                   element={<Home />}
                 />
 
+                <Route
+                  exact
+                  path="/verify"
+                  element={<Home />}
+                />
+                <Route
+                  exact
+                  path="/:unknownPathId"
+                  element={<Home />}
+                />
+                <Route
+                  exact
+                  path="/"
+                  element={<Home />}
+                />
+                <Route
+                  path="*"
+                  element={<Home />}
+                />
 
-                <Route exact path="/verify" element={<Home />} />
-                <Route exact path="/:unknownPathId" element={<Home />} />
-                <Route exact path="/" element={<Home />} />
-                <Route path="*" element={<Home />} />
-
-                <Route exact path="/datenschutz" element={<DataPrivacy />} />
-                <Route exact path="/agb" element={<TermsAndCondition />} />
+                <Route
+                  exact
+                  path="/datenschutz"
+                  element={<DataPrivacy />}
+                />
+                <Route
+                  exact
+                  path="/agb"
+                  element={<TermsAndCondition />}
+                />
                 <Route
                   exact
                   path="/cookieConfigurator"
                   element={<CookiesConfigurator />}
                 />
-                <Route exact path="/impressum" element={<Imprint />} />
-                <Route exact path="/blank" element={<Blank />} />
+                <Route
+                  exact
+                  path="/impressum"
+                  element={<Imprint />}
+                />
+                <Route
+                  exact
+                  path="/blank"
+                  element={<Blank />}
+                />
               </Routes>
-            </ModalProvider >
+            </ModalProvider>
           </AuthProvider>
-        </Router >
-
-      </Provider >
-
-    </ThemeProvider >
+        </Router>
+      </Provider>
+    </ThemeProvider>
   );
 };
 

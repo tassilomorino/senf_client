@@ -88,7 +88,10 @@ const Circle = ({ id, marginTop }) => {
     // }, 7000);
   }, []);
   return (
-    <Container ref={ref} marginTop={marginTop}>
+    <Container
+      ref={ref}
+      marginTop={marginTop}
+    >
       <HooksMain
         isMobile={isMobile}
         //   onMouseMove={handleMouseMove}
@@ -108,7 +111,7 @@ const Circle = ({ id, marginTop }) => {
                 style={{
                   marginLeft: "50%",
                   marginTop: "50%",
-                  transform: "translateX(-50%)translateY(-50%) rotate(20deg)",
+                  transform: "translateX(-50%)translateY(-50%) rotate(20)",
                   position: "absolute",
                 }}
               />
@@ -120,7 +123,7 @@ const Circle = ({ id, marginTop }) => {
                 style={{
                   marginLeft: "50%",
                   marginTop: "50%",
-                  transform: "translateX(-50%)translateY(-50%) rotate(20deg)",
+                  transform: "translateX(-50%)translateY(-50%) rotate(20)",
                   position: "absolute",
                 }}
               />

@@ -4,7 +4,7 @@ import React, { useState, useCallback, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
-import { Typography, Box } from "senf-atomic-design-system"
+import { Typography, Box } from "senf-atomic-design-system";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 
 const Wrapper = styled.div`
@@ -57,8 +57,6 @@ const HorizontalSwipeCard = styled(animated.div)`
     width: 250px;
   }
 `;
-
-
 
 const Img = styled.img`
   position: absolute;
@@ -189,17 +187,7 @@ const ProjectroomPricingsSwiper = () => {
 
             <Title textAlign="center">{title}</Title>
             <Box margin="10px 20px 20px 20px">
-
-
-
-
-              <Typography variant="bodyBg" >
-
-
-
-                {text}
-
-              </Typography>
+              <Typography variant="bodyBg">{text}</Typography>
             </Box>
           </HorizontalSwipeCard>
         ))}

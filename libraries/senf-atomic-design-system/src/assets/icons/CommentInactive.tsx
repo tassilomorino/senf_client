@@ -23,8 +23,17 @@ const CommentInactive: FC<SVGRProps> = ({ color = "black", transform }) => (
     transform={transform}
   >
     <title>CommentInactive</title>
-    <g id="Icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-      <g id="Icons/Comment.inactive" fill="#000000">
+    <g
+      id="Icons"
+      stroke="none"
+      strokeWidth="1"
+      fill="none"
+      fillRule="evenodd"
+    >
+      <g
+        id="Icons/Comment.inactive"
+        fill="#000000"
+      >
         <path
           d="M10.0004,-0.0003 L6.0004,-0.0003 C3.10050602,-0.0003 0.7504,2.3501668 0.7504,5.2497 L0.7504,7.7047 C0.7504,9.40710654 1.57421947,10.9668504 2.93528489,11.9464324 C3.13430751,12.0894642 3.2504,12.3126362 3.2504,12.5487 L3.2504,15.2497 C3.2504,15.8702441 3.96102221,16.2223378 4.4547424,15.8464185 L8.0507424,13.1084185 C8.1813975,13.0088005 8.34161309,12.9547 8.5054,12.9547 L10.0004,12.9547 C12.8996136,12.9547 15.2504,10.6039136 15.2504,7.7047 L15.2504,5.2497 C15.2504,2.35048644 12.8996136,-0.0003 10.0004,-0.0003 Z"
           id="Path"
