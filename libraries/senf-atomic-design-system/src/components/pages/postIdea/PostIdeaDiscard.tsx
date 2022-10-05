@@ -22,23 +22,30 @@ export default function PostIdeaDiscard() {
       >
         <Typography variant="buttonBg">{t("postIdeaDiscard_title")}</Typography>
 
-        <Typography variant="bodySm">
+        <Typography
+          variant="bodySm"
+          textAlign="center"
+        >
           {t("postIdeaDiscard_inputDiscarted")}.
         </Typography>
       </Box>
       <Box
-        marginTop="20px"
+        margin="20px 20px"
         flexDirection="column"
+        width="100%"
+        gap="8px"
       >
         <Button
-          variant="white"
+          variant="secondary"
           width="max"
+          size="medium"
         >
           {t("cancel")}
         </Button>
         <Button
-          variant="tertiary"
+          variant="primary" // @TODO: add variant "danger"
           width="max"
+          size="medium"
         >
           {t("exit_and_discard")}
         </Button>
