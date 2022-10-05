@@ -198,25 +198,17 @@ const PostIdea: FC<PostIdeaProps> = ({
               zIndex="999"
               width="100%"
             >
-              <SwipeModal
-                onClose={() => setPostIdeaOpen(false)}
-                overflowing={true}
-                style={{
-                  height: "85%",
-                }}
-              >
-                <PostIdeaForm
-                  formik={formik}
-                  statefulMap={statefulMap}
-                  checkIfCalendar={checkIfCalendar}
-                  selectedDays={selectedDays}
-                  handleChangeCalendar={handleChangeCalendar}
-                  setPostIdeaOpen={setPostIdeaOpen}
-                  handleSubmit={handleSubmit}
-                  loading={loading}
-                  Out={Out}
-                />
-              </SwipeModal>
+              <PostIdeaForm
+                formik={formik}
+                statefulMap={statefulMap}
+                checkIfCalendar={checkIfCalendar}
+                selectedDays={selectedDays}
+                handleChangeCalendar={handleChangeCalendar}
+                setPostIdeaOpen={setPostIdeaOpen}
+                handleSubmit={handleSubmit}
+                loading={loading}
+                Out={Out}
+              />
             </Box>
           )}
         </>
