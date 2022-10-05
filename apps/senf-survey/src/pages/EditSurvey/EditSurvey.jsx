@@ -15,7 +15,6 @@ import { db } from "../../firebase";
 import Nav from "./Nav/Nav";
 import Main from "./Main";
 import { Box, Button, Plus } from "senf-atomic-design-system";
-import useSurveyStore from "../../state/Survey";
 import Survey from "../Survey";
 
 const TypeSelector = ({ qtype, setQtype }) => {
