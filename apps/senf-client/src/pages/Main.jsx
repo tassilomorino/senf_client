@@ -10,6 +10,7 @@ import {
   Typography,
   MainSwipeList,
   OrganizationsOverview,
+  PostIdeaDiscard,
   Button,
   TagSlide,
   Box,
@@ -136,6 +137,8 @@ const Main = ({
   postIdeaSuccessModalOpen,
   setPostIdeaSuccessModalOpen,
   handleSetInitialMapBoundsAndViewport,
+  postIdeaCloseDialogOpen,
+  setPostIdeaCloseDialogOpen,
   setShowUI,
   showUI,
 }) => {
@@ -218,6 +221,12 @@ const Main = ({
       }
     }
   }, [dispatch, openAccount, myProfileData.userId, profileId]);
+
+  useEffect(() => {
+    if (!postIdeaCloseDialogOpen) {
+      openModal(<PostIdeaDiscard />, { modal: true, size: "sm", swipe: true });
+    }
+  }, [postIdeaCloseDialogOpen]);
 
   const urlPath = window.location.pathname;
   useEffect(() => {
