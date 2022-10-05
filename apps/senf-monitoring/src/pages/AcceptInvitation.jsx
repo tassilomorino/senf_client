@@ -109,11 +109,13 @@ export const AcceptInvitation = () => {
         width="100%"
         height="70%"
         flexDirection="column"
-        gap="50px">
+        gap="50px"
+      >
         <Box maxWidth="400px">
           <Typography
             variant="h1"
-            textAlign="center">
+            textAlign="center"
+          >
             You were invitited to join the team of "{monitoringBoardData?.title}
             "
           </Typography>

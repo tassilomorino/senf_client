@@ -3,11 +3,11 @@ export { default as AllOrganizationTypes } from "./AllOrganizationTypes";
 export { default as Alert } from "./Alert";
 export { default as Apple } from "./Apple";
 export {
-  default as Arrow,
-  ArrowUp,
-  ArrowRight,
-  ArrowDown,
-  ArrowLeft,
+	default as Arrow,
+	ArrowUp,
+	ArrowRight,
+	ArrowDown,
+	ArrowLeft,
 } from "./Arrow";
 export { default as Bell } from "./Bell";
 export { default as Bulb } from "./Bulb";
@@ -52,3 +52,4 @@ export { default as WhatsApp } from "./WhatsApp";
 export { default as Fullscreen } from "./Fullscreen";
 export { default as Loading } from "./Loading";
 export { default as DashboardIcon } from "./DashboardIcon";
+export { default as LogoText } from "../logo/LogoText";

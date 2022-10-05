@@ -328,7 +328,10 @@ const StatisticsOverviewPage = ({
             ) : order === 2 ? (
               <DistrictsGraph screams={screams} />
             ) : (
-              <AgegroupGraph screams={screams} likes={likes} />
+              <AgegroupGraph
+                screams={screams}
+                likes={likes}
+              />
             )}
           </React.Suspense>
         </GraphsWrapper>

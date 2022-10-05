@@ -41,7 +41,10 @@ const GraphsWrapper = ({ graphType, title, subTitle, plot }) => {
     <Wrapper>
       <InnerWrapper>
         <TextWrapper>
-          <StyledH2 fontWeight="900" textAlign="center">
+          <StyledH2
+            fontWeight="900"
+            textAlign="center"
+          >
             {title}
           </StyledH2>
 

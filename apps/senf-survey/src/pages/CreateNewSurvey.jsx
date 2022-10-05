@@ -6,24 +6,19 @@ import {
   Box,
   Dropdown,
   Input,
-  useModals
+  useModals,
 } from "senf-atomic-design-system";
 import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { db } from "../firebase";
 import { OptionsSurveys } from "../data/OptionsSurveys";
-
-
-
 
 const CreateNewSurvey = ({ getSurveys, navigate }) => {
   const { closeModal } = useModals();
   const { t } = useTranslation();
   const validationSchema = yup.object({
-    title: yup
-      .string()
-      .required(t("enter_title"))
+    title: yup.string().required(t("enter_title")),
   });
 
   const formik = useFormik({
@@ -47,17 +42,20 @@ const CreateNewSurvey = ({ getSurveys, navigate }) => {
         getSurveys();
 
         const surveyId = doc.id;
-        navigate(`edit/${surveyId}`)
-        closeModal()
-      })
-
+        navigate(`edit/${surveyId}`);
+        closeModal();
+      });
     } catch (error) {
       throw new Error(error, "Error in add exampleUser");
     }
   };
 
   return (
-    <Box margin="0px" flexDirection="column" gap="20px">
+    <Box
+      margin="0px"
+      flexDirection="column"
+      gap="20px"
+    >
       <Box zIndex="999">
         <Input
           name="title"
@@ -77,7 +75,9 @@ const CreateNewSurvey = ({ getSurveys, navigate }) => {
         label={t("surveyType")}
         initialValue={t("select_surveyType")}
         listItems={OptionsSurveys()}
-        onChange={(event) => formik?.setFieldValue("surveyType", event?.target.value)}
+        onChange={(event) =>
+          formik?.setFieldValue("surveyType", event?.target.value)
+        }
       />
 
       <Button

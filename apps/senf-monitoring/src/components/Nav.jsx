@@ -11,11 +11,9 @@ import {
   Tabs,
   theme,
   useModals,
-  Wave,
-} from "senf-atomic-design-system";
+  Wave, Arrow, SenfLogoBig } from "senf-atomic-design-system";
 import styled from "styled-components";
 import { useAuthContext, AuthModal } from "senf-shared";
-import { Arrow, SenfLogoBig } from "senf-atomic-design-system/src/assets/icons";
 import { setMonitoringBoard } from "../redux/actions/accountActions";
 import IdeaSidebarContent from "../pages/ideaProcessing/IdeaSidebarContent";
 

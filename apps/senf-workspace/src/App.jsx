@@ -3,9 +3,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
-import {
-  AuthProvider,
-} from "senf-shared";
+import { AuthProvider } from "senf-shared";
 
 import { initReactI18next } from "react-i18next";
 import {
@@ -19,7 +17,6 @@ import styled, { ThemeProvider } from "styled-components";
 import PrivateRoute from "./components/PrivateRoute";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
-
 
 import translationEN from "./util/translations/english.json";
 import translationDE from "./util/translations/german.json";
@@ -61,7 +58,10 @@ function App() {
                 {import.meta.env.VITE_NO_CRAWL && (
                   /* only for senf-workspace-test.netlify.app */
                   <Helmet>
-                    <meta name="robots" content="noindex" />
+                    <meta
+                      name="robots"
+                      content="noindex"
+                    />
                   </Helmet>
                 )}
                 <GlobalStyle />
@@ -77,9 +77,21 @@ function App() {
                     path="/login"
                     element={<AuthPage variant="login" />}
                   />
-                  <Route exact path="/" element={<PrivateRoute />}>
-                    <Route exact path="/profile" element={<Profile />} />
-                    <Route exact path="/" element={<Home />} />
+                  <Route
+                    exact
+                    path="/"
+                    element={<PrivateRoute />}
+                  >
+                    <Route
+                      exact
+                      path="/profile"
+                      element={<Profile />}
+                    />
+                    <Route
+                      exact
+                      path="/"
+                      element={<Home />}
+                    />
                   </Route>
                 </Routes>
               </InnerWrapper>

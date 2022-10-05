@@ -22,7 +22,13 @@ const DotAllTopics: FC<SVGRProps> = ({ color = "black", transform }) => (
     transform={transform}
   >
     <title>Dot-all-topics</title>
-    <g id="Icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+    <g
+      id="Icons"
+      stroke="none"
+      strokeWidth="1"
+      fill="none"
+      fillRule="evenodd"
+    >
       <g id="Icons/Dot.all-colors">
         <image
           id="idea-type-all-"

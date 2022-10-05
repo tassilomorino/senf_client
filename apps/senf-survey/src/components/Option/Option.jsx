@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "senf-atomic-design-system"
+import { Button } from "senf-atomic-design-system";
 import { ButtonsGroup, Container } from "./Styled.Option";
 
 const Option = ({ opt, addOptions, deleteOptions, updateText }) => {

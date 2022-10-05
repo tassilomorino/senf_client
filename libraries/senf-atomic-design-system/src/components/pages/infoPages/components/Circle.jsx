@@ -88,7 +88,10 @@ const Circle = ({ id, marginTop }) => {
     // }, 7000);
   }, []);
   return (
-    <Container ref={ref} marginTop={marginTop}>
+    <Container
+      ref={ref}
+      marginTop={marginTop}
+    >
       <HooksMain
         isMobile={isMobile}
         //   onMouseMove={handleMouseMove}

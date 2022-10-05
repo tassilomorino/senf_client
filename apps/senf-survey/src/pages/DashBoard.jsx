@@ -2,8 +2,18 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 
-
-import { Typography, ImagePlaceholder, Box, Icon, Table, Button, ModalButton, Input, isMobileCustom, useModals } from "senf-atomic-design-system";
+import {
+  Typography,
+  ImagePlaceholder,
+  Box,
+  Icon,
+  Table,
+  Button,
+  ModalButton,
+  Input,
+  isMobileCustom,
+  useModals,
+} from "senf-atomic-design-system";
 import {
   collection,
   deleteDoc,
@@ -29,20 +39,17 @@ const Wrapper = styled.div`
 
 const DashBoard = () => {
   const { t } = useTranslation();
-  const isMobile = isMobileCustom()
+  const isMobile = isMobileCustom();
   const [surveys, setSurveys] = useState([]);
   const [filteredSurveys, setFilteredSurveys] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const { user } = useAuthContext()
-  const { openModal } = useModals()
-  const navigate = useNavigate()
+  const { user } = useAuthContext();
+  const { openModal } = useModals();
+  const navigate = useNavigate();
   const getSurveys = async () => {
     try {
       const surveysRef = collection(db, "surveys");
-      const q = query(
-        surveysRef,
-        orderBy("createdAt", "desc")
-      );
+      const q = query(surveysRef, orderBy("createdAt", "desc"));
       const surveysQuerySnapshot = await getDocs(q);
       const surveysData = [];
 
@@ -78,28 +85,51 @@ const DashBoard = () => {
 
   useEffect(() => {
     setFilteredSurveys(
-      surveys.filter(survey => Object.values(survey).join(' ').toLowerCase().indexOf(searchTerm.toLowerCase()) > -1));
+      surveys.filter(
+        (survey) =>
+          Object.values(survey)
+            .join(" ")
+            .toLowerCase()
+            .indexOf(searchTerm.toLowerCase()) > -1
+      )
+    );
   }, [searchTerm, surveys]);
-
 
   return (
     <Wrapper>
-      <Box gap="20px" flexDirection="column" margin="30px">
+      <Box
+        gap="20px"
+        flexDirection="column"
+        margin="30px"
+      >
         <Typography variant="h2">My Surveys</Typography>
-        <Box justifyContent="space-between" gap="16px" alignItems="flex-end">
+        <Box
+          justifyContent="space-between"
+          gap="16px"
+          alignItems="flex-end"
+        >
           <Box width="400px">
-            <Input type="search" value={searchTerm} onChange={(e) => setSearchTerm(e?.target?.value)} />
+            <Input
+              type="search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e?.target?.value)}
+            />
           </Box>
 
-          <ModalButton text="+ Create new survey" options={{
-            style: {
-              padding: 20,
-            },
-            title: t("+ Create new survey"),
-            swipe: isMobile && true
-
-          }}>
-            <CreateNewSurvey getSurveys={getSurveys} navigate={navigate} />
+          <ModalButton
+            text="+ Create new survey"
+            options={{
+              style: {
+                padding: 20,
+              },
+              title: t("+ Create new survey"),
+              swipe: isMobile && true,
+            }}
+          >
+            <CreateNewSurvey
+              getSurveys={getSurveys}
+              navigate={navigate}
+            />
           </ModalButton>
         </Box>
         <Table
@@ -107,53 +137,60 @@ const DashBoard = () => {
           // checkbox={"docId"}
           // bulkEdit={<Icon icon="Search" />}
           columns={[
-            { key: "title", label: t('title') },
-            { key: "surveyType", label: t('surveyType') },
-            { key: "createdAt", label: t('createdAt') },
+            { key: "title", label: t("title") },
+            { key: "surveyType", label: t("surveyType") },
+            { key: "createdAt", label: t("createdAt") },
           ]}
         >
-          {
-            (row) => (
-              <Box justifyContent="space-between" onClick={() => console.log("edit survey now")}>
-                <Box gap="16px">
-                  {/* {!isMobile &&
+          {(row) => (
+            <Box
+              justifyContent="space-between"
+              onClick={() => console.log("edit survey now")}
+            >
+              <Box gap="16px">
+                {/* {!isMobile &&
                     <ImagePlaceholder
                       width="64px"
                       height="64px"
                       img="#"
                     />
                   } */}
-                  <Box flexDirection="column" justifyContent="center" alignItems="flex-start">
-                    <Typography variant="h3">{row.title}</Typography>
-                    {/* {row?.email && <Typography variant="bodySm">{row.email}</Typography>} */}
-                  </Box>
-                </Box>
-                <Typography variant="bodySm">{row.surveyType}</Typography>
-                <Typography variant="bodySm">{row.createdAt}</Typography>
-
-                <Box gap="8px" marginLeft="0">
-                  <Button
-                    variant="white"
-                    text="open TakeSurvey-Link"
-                    onClick={() => navigate(`survey/${row.surveyId}`)}
-                  />
-                  <Button
-                    variant="white"
-                    text="edit"
-                    onClick={() => {
-                      navigate(`edit/${row.surveyId}`)
-                    }}
-                  />
-                  <Button
-                    variant="white"
-                    text="Delete"
-                    onClick={() => handleDeleteSurvey(row.surveyId)}
-
-                  />
+                <Box
+                  flexDirection="column"
+                  justifyContent="center"
+                  alignItems="flex-start"
+                >
+                  <Typography variant="h3">{row.title}</Typography>
+                  {/* {row?.email && <Typography variant="bodySm">{row.email}</Typography>} */}
                 </Box>
               </Box>
-            )
-          }
+              <Typography variant="bodySm">{row.surveyType}</Typography>
+              <Typography variant="bodySm">{row.createdAt}</Typography>
+
+              <Box
+                gap="8px"
+                marginLeft="0"
+              >
+                <Button
+                  variant="white"
+                  text="open TakeSurvey-Link"
+                  onClick={() => navigate(`survey/${row.surveyId}`)}
+                />
+                <Button
+                  variant="white"
+                  text="edit"
+                  onClick={() => {
+                    navigate(`edit/${row.surveyId}`);
+                  }}
+                />
+                <Button
+                  variant="white"
+                  text="Delete"
+                  onClick={() => handleDeleteSurvey(row.surveyId)}
+                />
+              </Box>
+            </Box>
+          )}
         </Table>
       </Box>
     </Wrapper>

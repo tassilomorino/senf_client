@@ -45,6 +45,7 @@ import Blank from "./pages/Blank";
 import "./util/i18n";
 
 import Home from "./pages/Home";
+import Palette from "./pages/Palette";
 
 // const Main = React.lazy(() =>
 //   Promise.all([
@@ -134,26 +135,10 @@ const App = () => {
             <ModalProvider>
               <RotateDevice />
               <Routes>
-                <Route
-                  exact
-                  path="/projectRooms"
-                  element={<Home />}
-                />
-                <Route
-                  exact
-                  path="/organizations"
-                  element={<Home />}
-                />
-                <Route
-                  exact
-                  path="/idea/:screamId"
-                  element={<Home />}
-                />
-                <Route
-                  exact
-                  path="/profile/:profileId"
-                  element={<Home />}
-                />
+                <Route exact path="/projectRooms" element={<Home />} />
+                <Route exact path="/organizations" element={<Home />} />
+                <Route exact path="/idea/:screamId" element={<Home />} />
+                <Route exact path="/profile/:profileId" element={<Home />} />
                 <Route
                   exact
                   path="/projectRooms/:projectRoomId/:screamId"

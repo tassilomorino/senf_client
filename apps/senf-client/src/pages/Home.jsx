@@ -2,7 +2,13 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ReactDOM from "react-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { MainLoader, Map, InfoPageMainApp, Cookiebanner, useModals } from "senf-atomic-design-system";
+import {
+  MainLoader,
+  Map,
+  InfoPageMainApp,
+  Cookiebanner,
+  useModals,
+} from "senf-atomic-design-system";
 import Cookies from "universal-cookie";
 import { setMapBounds } from "../redux/actions/mapActions";
 import { openProjectRoomFunc } from "../redux/actions/projectActions";
@@ -14,7 +20,6 @@ import {
   pick,
   search,
   sort,
-
 } from "../util/helpers";
 
 import { setCookies } from "../redux/actions/cookiesActions";
@@ -30,8 +35,8 @@ const Main = React.lazy(() =>
 const Home = () => {
   const dispatch = useDispatch();
 
-  const { openModal } = useModals()
-  const [showUI, setShowUI] = useState(false)
+  const { openModal } = useModals();
+  const [showUI, setShowUI] = useState(false);
   const [statefulMap, setStatefulMap] = useState(null);
   const [initialMapBounds, setInitialMapBounds] = useState(null);
   const initialMapViewport = useSelector(
@@ -46,8 +51,11 @@ const Home = () => {
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
 
   const [postIdeaOpen, setPostIdeaOpen] = useState(false);
-
-  const profilePageScreams = useSelector((state) => state.data.profilePage?.profilePageData?.screams);
+  const [postIdeaSuccessModalOpen, setPostIdeaSuccessModalOpen] =
+    React.useState(false);
+  const profilePageScreams = useSelector(
+    (state) => state.data.profilePage?.profilePageData?.screams
+  );
   const screams = useSelector((state) => state.data.screams);
   const scream = useSelector((state) => state.data.scream);
   const projects = useSelector((state) => state.data.projects);
@@ -57,12 +65,6 @@ const Home = () => {
   const selectedOrganizationTypes = useSelector(
     (state) => state.data.organizationTypes
   );
-
-
-
-
-
-
 
   const handleSetMapBounds = (bounds) => {
     const boundsNew = {
@@ -133,11 +135,13 @@ const Home = () => {
     () =>
       openProjectRoom
         ? project?.screams?.filter(({ Thema }) =>
-          selectedTopics.includes(Thema)
-        )
+            selectedTopics.includes(Thema)
+          )
         : profilePageScreams !== null && profilePageScreams !== undefined
-          ? profilePageScreams.filter(({ Thema }) => selectedTopics.includes(Thema))
-          : dataFinalIdeasMap,
+        ? profilePageScreams.filter(({ Thema }) =>
+            selectedTopics.includes(Thema)
+          )
+        : dataFinalIdeasMap,
     [
       profilePageScreams,
       openProjectRoom,
@@ -162,33 +166,32 @@ const Home = () => {
     [projects, selectedOrganizationTypes]
   );
 
-
-
   const [openCookiebanner, setOpenCookiebanner] = useState(false);
   useEffect(() => {
     if (cookies.get("cookie_settings") === "all") {
       dispatch(setCookies("all"));
-      setShowUI(true)
+      setShowUI(true);
     } else if (cookies.get("cookie_settings") === "minimum") {
       dispatch(setCookies("minimum"));
-      setShowUI(true)
-
-
+      setShowUI(true);
     } else {
-
       setTimeout(() => {
-        openModal(<InfoPageMainApp />, { swipe: !!isMobileCustom, size: "xl", height: isMobileCustom && window.innerHeight + 83, padding: 0, beforeOpen: () => setShowUI(false), beforeClose: () => setShowUI(true) })
+        openModal(<InfoPageMainApp />, {
+          swipe: !!isMobileCustom,
+          size: "xl",
+          height: isMobileCustom && window.innerHeight + 83,
+          padding: 0,
+          beforeOpen: () => setShowUI(false),
+          beforeClose: () => setShowUI(true),
+        });
         setOpenCookiebanner(true);
       }, 2800);
-
     }
-
   }, []);
 
   const handleOpenCookiePreferences = () => {
     window.open("/cookieConfigurator", "_blank");
   };
-
 
   return (
     <div
@@ -202,18 +205,24 @@ const Home = () => {
         bottom: 0,
       }}
     >
-
       {openCookiebanner && (
-        <>{ReactDOM.createPortal(<Cookiebanner
-          handleCookies={(cookie_settings) => {
-            dispatch(setCookies(cookie_settings));
-            setOpenCookiebanner(false);
-          }}
-          handleOpenCookiePreferences={handleOpenCookiePreferences}
-        />, document.body)}</>
+        <>
+          {ReactDOM.createPortal(
+            <Cookiebanner
+              handleCookies={(cookie_settings) => {
+                dispatch(setCookies(cookie_settings));
+                setOpenCookiebanner(false);
+              }}
+              handleOpenCookiePreferences={handleOpenCookiePreferences}
+            />,
+            document.body
+          )}
+        </>
       )}
 
-      <React.Suspense fallback={ReactDOM.createPortal(<MainLoader />, document.body)}>
+      <React.Suspense
+        fallback={ReactDOM.createPortal(<MainLoader />, document.body)}
+      >
         <Main
           statefulMap={statefulMap}
           setStatefulMap={setStatefulMap}
@@ -222,6 +231,8 @@ const Home = () => {
           setOrder={setOrder}
           postIdeaOpen={postIdeaOpen}
           setPostIdeaOpen={setPostIdeaOpen}
+          postIdeaSuccessModalOpen={postIdeaSuccessModalOpen}
+          setPostIdeaSuccessModalOpen={setPostIdeaSuccessModalOpen}
           handleSetInitialMapBoundsAndViewport={
             handleSetInitialMapBoundsAndViewport
           }

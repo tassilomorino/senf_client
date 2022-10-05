@@ -60,6 +60,7 @@ const MenuSidebar: FC<MenuSidebarProps> = ({
   handleOpenMyAccount,
   setShowUI,
   setOrder,
+  setPostIdeaOpen,
 }) => (
   <Wrapper>
     <Box
@@ -69,35 +70,57 @@ const MenuSidebar: FC<MenuSidebarProps> = ({
       height="100%"
       width="44px"
     >
-      <Box gap="14px" flexDirection="column" width="44px">
+      <Box
+        gap="14px"
+        flexDirection="column"
+        width="44px"
+      >
         <Button
           variant="white"
           size="medium"
           text={<SenfLogoSmall />}
-          onClick={() => setOrder(1)}
+          onClick={() => {
+            setOrder(1);
+            setPostIdeaOpen(false);
+          }}
         />
 
         {/* <Button variant="white" size="small" icon={<Bell />} /> */}
 
-        <ModalButton variant="white"
+        <ModalButton
+          variant="white"
           size="medium"
           icon={<Info />}
-          options={{ swipe: false, size: "xl", padding: 0, beforeOpen: () => setShowUI(false), beforeClose: () => setShowUI(true) }}>
+          options={{
+            swipe: false,
+            size: "xl",
+            padding: 0,
+            beforeOpen: () => {
+              setShowUI(false);
+              setPostIdeaOpen(false);
+            },
+            beforeClose: () => setShowUI(true),
+          }}
+        >
           <InfoPageMainApp />
         </ModalButton>
-
 
         <Button
           variant="white"
           size="medium"
           icon={<User />}
           onClick={() => {
+            setPostIdeaOpen(false);
             handleOpenMyAccount(true);
           }}
         />
       </Box>
 
-      <Box gap="14px" flexDirection="column" width="44px">
+      <Box
+        gap="14px"
+        flexDirection="column"
+        width="44px"
+      >
         <LanguageSelect direction="downRight" />
         <Divider />
 
@@ -116,7 +139,11 @@ const MenuSidebar: FC<MenuSidebarProps> = ({
       </Box>
     </Box>
 
-    <Divider height="100%" width="2px" margin="0px 0px 0px 10px" />
+    <Divider
+      height="100%"
+      width="2px"
+      margin="0px 0px 0px 10px"
+    />
   </Wrapper>
 );
 

@@ -10,7 +10,7 @@ import Bulb from "../../../../assets/infoPages/lastSection/bulb.png";
 
 import { isMobileCustom } from "../../../../hooks/customDeviceDetect";
 import { openMail } from "../../../../util/helpers";
-import Typography from "../../../atoms/typography/Typography"
+import Typography from "../../../atoms/typography/Typography";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -80,7 +80,10 @@ const LearnMoreBubbles = ({ handleClose }) => {
         <React.Fragment>
           {faqOpen && (
             // <Modal openModal={faqOpen} setOpenModal={() => setFaqOpen(false)}>
-            <Box margin="24px" flexDirection="column">
+            <Box
+              margin="24px"
+              flexDirection="column"
+            >
               <Typography
                 variant="h2"
                 fontWeight="900"
@@ -104,7 +107,10 @@ const LearnMoreBubbles = ({ handleClose }) => {
         left={isMobileCustom ? "50px" : "-3%"}
         onClick={() => setFaqOpen(true)}
       >
-        <img src={Faq} width="100%" />
+        <img
+          src={Faq}
+          width="100%"
+        />
       </Bubble>
       <Bubble
         color="#90D8B9"
@@ -112,7 +118,10 @@ const LearnMoreBubbles = ({ handleClose }) => {
         left={isMobileCustom ? "270px" : "105%"}
         onClick={() => openMail("dein@senf.koeln")}
       >
-        <img src={Contact} width="100%" />
+        <img
+          src={Contact}
+          width="100%"
+        />
       </Bubble>
 
       <Bubble
@@ -123,7 +132,10 @@ const LearnMoreBubbles = ({ handleClose }) => {
           window.open("https://www.instagram.com/senf.koeln/", "_blank")
         }
       >
-        <img src={Insta} width="100%" />
+        <img
+          src={Insta}
+          width="100%"
+        />
       </Bubble>
 
       <Bubble
@@ -132,7 +144,10 @@ const LearnMoreBubbles = ({ handleClose }) => {
         left={isMobileCustom ? "220px" : "90%"}
         onClick={handleClose}
       >
-        <img src={Bulb} width="100%" />
+        <img
+          src={Bulb}
+          width="100%"
+        />
       </Bubble>
     </Wrapper>
   );

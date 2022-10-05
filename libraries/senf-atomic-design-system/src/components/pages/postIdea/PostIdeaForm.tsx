@@ -32,26 +32,25 @@ import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
 
 const contactData = [
   {
-    description: "Deine Kontaktdaten werden öffentlich gezeigt.",
+    description: "postidea_form_contact_description",
     name: "contactTitle",
-    placeholder: "contactTitle",
+    placeholder: "postidea_form_contact_title",
   },
   {
     name: "contact",
-    placeholder: "contact",
+    placeholder: "postidea_form_contact",
   },
 ];
 
 const webLinkData = [
   {
-    description:
-      "Du kannst deinem Link einen eigenen Titel geben. Wenn du möchtest dass die URL angezeigt wird, lasse das Feld einfach frei.",
+    description: "postidea_form_weblink_description",
     name: "weblinkTitle",
-    placeholder: "weblinkTitle",
+    placeholder: "postidea_form_weblink_title",
   },
   {
     name: "weblink",
-    placeholder: "weblink",
+    placeholder: "postidea_form_weblink",
   },
 ];
 
@@ -59,7 +58,9 @@ const Wrapper = styled.div<PostIdeaFormProps>`
   width: 100%;
   height: auto;
   padding: 16px;
-  background-color: white;
+  /* background-color: white; */
+  border-top: 1px solid
+    ${({ theme, color }) => color || theme.colors.brown.brown20tra};
   z-index: 2;
 `;
 
@@ -83,7 +84,17 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
         marginBottom="20px"
         flexDirection="column"
       >
-        <Typography variant="bodySm">Adresse deiner Idee</Typography>
+        {!isMobile && (
+          <Typography variant="bodySm">{t("postidea_form_address")}</Typography>
+        )}
+        {isMobile && (
+          <Typography
+            variant="buttonBg"
+            textAlign="center"
+          >
+            {t("postidea_form_compose")}
+          </Typography>
+        )}
         {!isMobile && (
           <Geocoder
             formik={formik}
@@ -105,7 +116,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
           value={formik?.values.title}
           error={formik?.touched.title && Boolean(formik?.errors?.title)}
           note={formik?.touched.title && formik?.errors?.title}
-
+          // maxRows={2}
           // maxLength: 70
         />
 
@@ -133,7 +144,12 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
             width="max"
             variant="secondary"
             size="small"
-            text={formik?.values.weblinkTitle || t("add_weblink")}
+            justifyContent="flex-start"
+            text={
+              formik?.values.weblinkTitle ||
+              formik?.values.weblink ||
+              t("add_weblink")
+            }
             icon={<Hyperlink />}
             options={{
               style: {
@@ -154,14 +170,19 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
           <ModalButton
             variant="secondary"
             size="small"
+            justifyContent="flex-start"
             width="max"
-            text={formik?.values.contactTitle || t("add_contact")}
+            text={
+              formik?.values.contactTitle ||
+              formik?.values.contact ||
+              t("postidea_form_add_contact")
+            }
             icon={<Mail />}
             options={{
               style: {
                 padding: 20,
               },
-              title: t("add_contact"),
+              title: t("postidea_form_add_contact"),
               cancelText: t("cancel"),
               submitText: t("save"),
               onSubmit: closeModal,
@@ -178,12 +199,13 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
 
         <Typography
           variant="buttonBg"
-          textAlign="center"
+          textAlign="left"
         >
-          Welche Kategorie passt zu deiner Idee?
+          {t("postidea_form_category")}
         </Typography>
         <DropdownButton
-          variant="white"
+          variant="secondary"
+          size="small"
           icon={
             formik?.values?.topic ? (
               <Dot color={setColorByTopic(formik?.values?.topic)} />
@@ -191,15 +213,17 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
               <DotAllTopics />
             )
           }
+          justifyContent="flex-start"
           width="max"
-          text={formik?.values.topic || "Kategorie wählen"}
-          options={{ size: "md", closeOnSelect: true }}
+          text={formik?.values.topicLabel || t("choose_category")}
+          options={{ size: "md", closeOnSelect: true, modal: !!isMobile }}
           data={OptionsTopics().map(({ value, label }) => {
             return {
-              text: value,
+              text: label,
               leadingIcon: <Dot color={setColorByTopic(value)} />,
               onClick: () => {
                 formik?.setFieldValue("topic", value);
+                formik?.setFieldValue("topicLabel", label);
               },
             };
           })}
@@ -250,14 +274,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
 
         <Button
           onClick={handleSubmit}
-          variant={
-            formik?.errors?.body ||
-            formik?.errors?.title ||
-            !formik?.values?.address ||
-            Out === true
-              ? "white"
-              : "primary"
-          }
+          variant={"primary"}
           text={t("postScream_shareIdea")}
           loading={loading}
           disabled={

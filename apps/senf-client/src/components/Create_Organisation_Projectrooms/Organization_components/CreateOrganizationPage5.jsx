@@ -136,13 +136,25 @@ const CreateOrganizationPage5 = ({
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH3 textAlign="center" margin="20px">
+          <StyledH3
+            textAlign="center"
+            margin="20px"
+          >
             {pagesData[index].subTitle}
           </StyledH3>
 
           <form>
             {formFields.map((form, index) => (
-              <div key={index} style={{ display: "flex", flexDirection: "column", gap: "10px", flex: "none", marginBottom: "20px" }}>
+              <div
+                key={index}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "10px",
+                  flex: "none",
+                  marginBottom: "20px",
+                }}
+              >
                 <div style={{ display: "flex" }}>
                   <Input
                     name="question"
@@ -165,7 +177,7 @@ const CreateOrganizationPage5 = ({
                   value={form.answer}
                   onChange={(event) => handleFormChange(event, index)}
 
-                // minRows="3"
+                  // minRows="3"
                 />
               </div>
             ))}

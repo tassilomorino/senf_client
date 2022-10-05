@@ -71,7 +71,8 @@ const CreateMonitoringBoardPage = ({ getMonitoringBoards }) => {
         margin="20px auto"
         flexDirection="column"
         maxWidth="500px"
-        gap="20px">
+        gap="20px"
+      >
         <Input
           name="title"
           type="text"
@@ -86,7 +87,8 @@ const CreateMonitoringBoardPage = ({ getMonitoringBoards }) => {
 
         <Box
           width="100%"
-          justifyContent="center">
+          justifyContent="center"
+        >
           <ExpandMap
             initialMapViewport={initialMapViewport}
             statefulMap={statefulMap}

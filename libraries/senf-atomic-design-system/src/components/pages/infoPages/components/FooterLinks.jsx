@@ -20,8 +20,15 @@ const Wrapper = styled.div`
 const FooterLinks = ({ color, position, top, bottom }) => {
   const { t } = useTranslation();
   return (
-    <Wrapper position={position} top={top} bottom={bottom}>
-      <TertiaryButton href="/impressum" color={color}>
+    <Wrapper
+      position={position}
+      top={top}
+      bottom={bottom}
+    >
+      <TertiaryButton
+        href="/impressum"
+        color={color}
+      >
         {t("imprint")}
       </TertiaryButton>
 
@@ -33,7 +40,10 @@ const FooterLinks = ({ color, position, top, bottom }) => {
         | {t("dataPrivacy")} |
       </TertiaryButton>
 
-      <TertiaryButton href="/agb" color={color}>
+      <TertiaryButton
+        href="/agb"
+        color={color}
+      >
         {t("termsAndConditions")}
       </TertiaryButton>
     </Wrapper>

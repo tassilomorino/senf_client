@@ -188,7 +188,10 @@ const CreateOrganizationPage1 = ({
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH3 textAlign="center" margin="20px">
+          <StyledH3
+            textAlign="center"
+            margin="20px"
+          >
             {pagesData[index].subTitle}
           </StyledH3>
 
