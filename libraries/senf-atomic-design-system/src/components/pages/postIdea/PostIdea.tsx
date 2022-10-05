@@ -185,7 +185,7 @@ const PostIdea: FC<PostIdeaProps> = ({
               <Button
                 variant="primary"
                 size="lg"
-                text={t("Weiter")}
+                text={t("next")}
                 width={"max"}
                 onClick={() => setAddressSelected(true)}
               ></Button>

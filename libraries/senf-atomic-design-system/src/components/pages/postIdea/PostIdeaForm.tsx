@@ -92,7 +92,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
             variant="buttonBg"
             textAlign="center"
           >
-            {t("postidea_form_compose")}
+            {t("postidea_form_header")}
           </Typography>
         )}
         {!isMobile && (
