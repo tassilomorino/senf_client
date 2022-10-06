@@ -1,4 +1,8 @@
 /** @format */
+export { default as Minus } from './Minus'
+export { default as Eye } from './Eye'
+export { default as Write } from './Write'
+export { default as Bin } from './Bin'
 export { default as AllOrganizationTypes } from "./AllOrganizationTypes";
 export { default as Alert } from "./Alert";
 export { default as Apple } from "./Apple";
