@@ -117,72 +117,66 @@ const Geocoder: FC<GeocoderProps> = ({
   };
 
   return (
-    <div ref={outerRef}>
-      <Box
-        zIndex={999}
-        width="100%"
-        display="flex"
-        flexDirection="column"
-
-        // position={showResults && "fixed"} top={showResults && 0}
-      >
-        {/* <OverlayIcon onClick={() => setShowResults(!showResults)}>
+    <div
+      ref={outerRef}
+      style={{ width: "100%" }}
+    >
+      {/* <OverlayIcon onClick={() => setShowResults(!showResults)}>
           <Icon icon={<Arrow transform="" />} />
         </OverlayIcon> */}
 
-        <Input
-          name="searchAddress"
-          type="text"
-          leadingIcon={
-            showResults ? <Arrow transform="rotate(180)" /> : <Location />
-          }
-          leadingIconClick={() =>
-            showResults ? setShowResults(false) : setShowResults(true)
-          }
-          placeholder={t("geocoder_address")}
-          trailingIcon={<Close />}
-          trailingIconClick={
-            searchTerm.length > 0
-              ? () => {
-                  setSearchTerm("");
-                  setResults([]);
-                  formik.setFieldValue("address", "");
-                }
-              : undefined
-          }
-          // placeholder={t("searchAddress")}
-          onChange={(event) => onChange(event?.target?.value)}
-          onClick={() => {
-            setShowResults(true);
-            setDetectLocationIcons(true);
-          }}
-          value={searchTerm}
-        />
+      <Input
+        name="searchAddress"
+        type="text"
+        leadingIcon={
+          showResults ? <Arrow transform="rotate(180)" /> : <Location />
+        }
+        leadingIconClick={() =>
+          showResults ? setShowResults(false) : setShowResults(true)
+        }
+        placeholder={t("geocoder_address")}
+        trailingIcon={searchTerm.length > 0 ? <Close /> : undefined}
+        trailingIconClick={
+          searchTerm.length > 0
+            ? () => {
+                setSearchTerm("");
+                setResults([]);
+                formik.setFieldValue("address", "");
+              }
+            : undefined
+        }
+        // placeholder={t("searchAddress")}
+        onChange={(event) => onChange(event?.target?.value)}
+        onClick={() => {
+          setShowResults(true);
+          setDetectLocationIcons(true);
+        }}
+        value={searchTerm}
+      />
 
-        {showResults && isMobile && (
-          <ResultsContainer>
-            <Results
-              results={results}
-              onSelected={onSelected}
-              detectLocationIcons={detectLocationIcons}
-              setShowResults={setShowResults}
-              handleGeolocate={handleGeolocate}
-            />
-          </ResultsContainer>
-        )}
+      {showResults && isMobile && (
+        <ResultsContainer>
+          <Results
+            results={results}
+            onSelected={onSelected}
+            detectLocationIcons={detectLocationIcons}
+            setShowResults={setShowResults}
+            handleGeolocate={handleGeolocate}
+          />
+        </ResultsContainer>
+      )}
 
-        {showResults && !isMobile && (
-          <DropdownListContainer options={{ open: true, width: "330px" }}>
-            <Results
-              results={results}
-              onSelected={onSelected}
-              detectLocationIcons={detectLocationIcons}
-              setShowResults={setShowResults}
-              handleGeolocate={handleGeolocate}
-            />
-          </DropdownListContainer>
-        )}
-      </Box>
+      {showResults && !isMobile && (
+        <DropdownListContainer options={{ open: true, width: "330px" }}>
+          <Results
+            results={results}
+            onSelected={onSelected}
+            detectLocationIcons={detectLocationIcons}
+            setShowResults={setShowResults}
+            handleGeolocate={handleGeolocate}
+          />
+        </DropdownListContainer>
+      )}
     </div>
   );
 };
