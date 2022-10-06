@@ -21,6 +21,7 @@ root.render(
   },
 });
  */
+//
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.ready.then((registration) => {

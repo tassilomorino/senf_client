@@ -29,6 +29,7 @@ import Geocoder from "../../atoms/geocoder/Geocoder";
 import PostIdeaFormContacts from "./PostIdeaFormContacts";
 import setColorByTopic from "../../../data/setColorByTopic";
 import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
+import { LayerWhiteFirstDefault } from "../../atoms/layerStyles/LayerStyles";
 
 const contactData = [
   {
@@ -62,6 +63,7 @@ const Wrapper = styled.div<PostIdeaFormProps>`
   border-top: 1px solid
     ${({ theme, color }) => color || theme.colors.brown.brown20tra};
   z-index: 2;
+  ${() => LayerWhiteFirstDefault};
 `;
 
 const PostIdeaForm: FC<PostIdeaFormProps> = ({
@@ -92,7 +94,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
             variant="buttonBg"
             textAlign="center"
           >
-            {t("postidea_form_compose")}
+            {t("postidea_form_header")}
           </Typography>
         )}
         {!isMobile && (
