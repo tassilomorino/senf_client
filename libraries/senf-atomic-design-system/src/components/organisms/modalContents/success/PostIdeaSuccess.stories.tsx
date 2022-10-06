@@ -8,7 +8,7 @@ import PostIdeaSuccess from "./PostIdeaSuccess";
 import { SuccessProps } from "./PostIdeaSuccess.types";
 
 export default {
-  title: "Templates/PostIdeaSuccess",
+  title: "Organisms/ModalContents/Success/PostIdeaSuccess",
   component: PostIdeaSuccess,
   argTypes: {},
 } as Meta<typeof PostIdeaSuccess>;

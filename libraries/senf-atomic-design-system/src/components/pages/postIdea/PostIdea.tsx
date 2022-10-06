@@ -12,12 +12,12 @@ import Geocoder from "../../atoms/geocoder/Geocoder";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 import { Arrow, Close } from "../../../assets/icons";
 import SwipeModal from "../../molecules/modals/SwipeModal";
-import SuccessSubmitIdea from "../success/SuccessSubmitIdea";
 import { useModals } from "../../molecules/modalStack/ModalProvider";
 import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
 import List from "../../molecules/list/List";
 import ProjectroomCard from "../../molecules/cards/ProjectroomCard";
 import PostIdeaDiscard from "./PostIdeaDiscard";
+import PostIdeaSuccess from "../../organisms/modalContents/success/PostIdeaSuccess";
 
 const Wrapper = styled.div`
   z-index: 999;
@@ -131,7 +131,7 @@ const PostIdea: FC<PostIdeaProps> = ({
   useEffect(() => {
     if (postIdeaSuccessModalOpen) {
       openModal(
-        <SuccessSubmitIdea
+        <PostIdeaSuccess
           navigate={navigate}
           setPostIdeaSuccessModalOpen={setPostIdeaSuccessModalOpen}
           setPostIdeaOpen={setPostIdeaOpen}
