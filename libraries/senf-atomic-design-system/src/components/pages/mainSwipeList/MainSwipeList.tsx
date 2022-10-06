@@ -5,6 +5,7 @@ import { useSpring, animated } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
+import { AuthModal } from "senf-shared";
 import { MainSwipeListProps } from "./MainSwipeList.types";
 
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
@@ -24,6 +25,7 @@ import MenuSidebar from "../../organisms/menuSidebar/MenuSidebar";
 import Box from "../../atoms/box/Box";
 import Vereine from "../../../assets/icons/Vereine";
 import More from "../../../assets/icons/More";
+import { useModals } from "../../molecules/modalStack/ModalProvider";
 
 const DragWrapper = styled(animated.div)`
   z-index: ${({ zIndex }) => zIndex || 2};
@@ -180,6 +182,8 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   const isMobile = isMobileCustom();
   const [swipePercentage, setSwipePercentage] = useState(0);
   const [activeSortOptionLabel, setActiveSortOptionLabel] = useState("");
+  const { openModal, closeModal } = useModals();
+  console.log(user);
   const [springProps, setSpring] = useSpring(() => ({
     x: 0,
     y: 0,
@@ -469,7 +473,13 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
                         transform="scale(2)"
                       />
                     }
-                    onClick={() => setPostIdeaOpen(true)}
+                    onClick={() => {
+                      if (user.authenticated) {
+                        setPostIdeaOpen(true);
+                      } else {
+                        openModal(<AuthModal />, { swipe: !!isMobileCustom });
+                      }
+                    }}
                   />
                 </RoundedButtonWrapper>
 
