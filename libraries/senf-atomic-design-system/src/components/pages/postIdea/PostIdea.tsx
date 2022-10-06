@@ -10,13 +10,14 @@ import PostIdeaForm from "./PostIdeaForm";
 import { LayerWhiteFirstDefault } from "../../atoms/layerStyles/LayerStyles";
 import Geocoder from "../../atoms/geocoder/Geocoder";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
-import { Arrow } from "../../../assets/icons";
+import { Arrow, Close } from "../../../assets/icons";
 import SwipeModal from "../../molecules/modals/SwipeModal";
 import SuccessSubmitIdea from "../success/SuccessSubmitIdea";
 import { useModals } from "../../molecules/modalStack/ModalProvider";
 import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
 import List from "../../molecules/list/List";
 import ProjectroomCard from "../../molecules/cards/ProjectroomCard";
+import PostIdeaDiscard from "./PostIdeaDiscard";
 
 const Wrapper = styled.div`
   z-index: 999;
@@ -81,7 +82,6 @@ const PostIdea: FC<PostIdeaProps> = ({
   const [addressSelected, setAddressSelected] = React.useState(false);
   const isMobile = isMobileCustom();
   const { openModal, closeModal } = useModals();
-
   const createIdeaHeader = (
     <Box
       flexDirection="row"
@@ -90,14 +90,15 @@ const PostIdea: FC<PostIdeaProps> = ({
       justifyContent="space-between"
     >
       <Typography variant="h3">{t("postidea_create_idea")}</Typography>
-
-      <Button
-        variant="tertiary"
-        size="small"
-        text={t("cancel")}
-        justifyContent="flex-start"
-        onClick={() => setPostIdeaOpen(false)}
-      />
+      {!isMobile && (
+        <Button
+          variant="tertiary"
+          size="small"
+          text={t("cancel")}
+          justifyContent="flex-start"
+          onClick={() => setPostIdeaOpen(false)}
+        />
+      )}
     </Box>
   );
 
@@ -149,19 +150,36 @@ const PostIdea: FC<PostIdeaProps> = ({
     }
     /* return () => closeModal(); */
   }, [postIdeaSuccessModalOpen]);
-
+  const openDiscardModal = () => {
+    openModal(
+      <PostIdeaDiscard
+        setPostIdeaOpen={setPostIdeaOpen}
+        closeModal={closeModal}
+      />,
+      {
+        swipe: !!isMobile,
+      }
+    );
+  };
   return (
     <>
       {isMobile && !postIdeaSuccessModalOpen && (
         <>
           <Box
             zIndex={9}
-            flexDirection="column"
+            flexDirection="row"
             margin="14px 14px 0px 14px"
+            gap="10px"
+            justifyContent="space-between"
           >
             <Geocoder
               formik={formik}
               statefulMap={statefulMap}
+            />
+            <Button
+              variant="white"
+              icon={<Close />}
+              onClick={() => openDiscardModal()}
             />
           </Box>
 

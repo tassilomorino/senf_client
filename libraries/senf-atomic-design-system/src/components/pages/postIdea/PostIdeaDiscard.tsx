@@ -4,7 +4,7 @@ import Box from "../../atoms/box/Box";
 import Button from "../../atoms/buttons/Button";
 import Typography from "../../atoms/typography/Typography";
 
-export default function PostIdeaDiscard() {
+export default function PostIdeaDiscard({ closeModal, setPostIdeaOpen }) {
   const { t } = useTranslation();
   return (
     <Box
@@ -39,6 +39,7 @@ export default function PostIdeaDiscard() {
           variant="secondary"
           width="max"
           size="medium"
+          onClick={() => closeModal()}
         >
           {t("cancel")}
         </Button>
@@ -46,6 +47,10 @@ export default function PostIdeaDiscard() {
           variant="primary" // @TODO: add variant "danger"
           width="max"
           size="medium"
+          onClick={() => {
+            closeModal();
+            setPostIdeaOpen(false);
+          }}
         >
           {t("exit_and_discard")}
         </Button>

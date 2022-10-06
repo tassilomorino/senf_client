@@ -98,7 +98,7 @@ const PostIdeaSuccess: FC<SuccessProps> = ({
             variant="white"
             icon="Share"
             text={t("success_page_share_idea")}
-            options={{ modal: !!isMobile, closeOnSelect: false }}
+            options={{ modal: false /* bug on true */, closeOnSelect: false }}
             data={
               <>
                 <SocialmediaShare
