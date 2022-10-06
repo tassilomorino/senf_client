@@ -23,7 +23,7 @@ function useOnClickOutside<T extends HTMLElement = HTMLElement>(
   });
 }
 
-function useOnClicAndTouchkOutside(ref, handler) {
+function useOnClicAndTouchOutside(ref, handler) {
   React.useEffect(
     () => {
       const listener = (event) => {
@@ -50,4 +50,4 @@ function useOnClicAndTouchkOutside(ref, handler) {
   );
 }
 export default useOnClickOutside;
-export { useOnClicAndTouchkOutside };
+export { useOnClicAndTouchOutside };

@@ -15,7 +15,7 @@ import { geolocateControl } from "../map/hooks/useGeolocateControl";
 import Results from "./Results";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 import DropdownListContainer from "../contentDropdown/DropdownListContainer";
-import useOnClickOutside from "../../../hooks/useOnClickOutside";
+import { useOnClicAndTouchOutside } from "../../../hooks/useOnClickOutside";
 
 const ResultsContainer = styled.div`
   display: flex;
@@ -45,8 +45,8 @@ const Geocoder: FC<GeocoderProps> = ({
   const [results, setResults] = useState([]);
   const [detectLocationIcons, setDetectLocationIcons] = useState(false);
   const outerRef = useRef(null);
-  useOnClickOutside(outerRef, () => setShowResults(false));
 
+  useOnClicAndTouchOutside(outerRef, () => setShowResults(false));
   useEffect(() => {
     const accessToken =
       "pk.eyJ1IjoiZGF0dHdvb2QxOTg2IiwiYSI6ImNraTI5cnAwcDByZHUycnBleWphMHR1dDcifQ.u7pG_sZ7Su685A11r6-uuw";
@@ -117,12 +117,13 @@ const Geocoder: FC<GeocoderProps> = ({
   };
 
   return (
-    <>
+    <div ref={outerRef}>
       <Box
         zIndex={999}
         width="100%"
         display="flex"
         flexDirection="column"
+
         // position={showResults && "fixed"} top={showResults && 0}
       >
         {/* <OverlayIcon onClick={() => setShowResults(!showResults)}>
@@ -182,7 +183,7 @@ const Geocoder: FC<GeocoderProps> = ({
           </DropdownListContainer>
         )}
       </Box>
-    </>
+    </div>
   );
 };
 
