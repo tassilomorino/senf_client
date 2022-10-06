@@ -109,7 +109,7 @@ export const LayerBrownHover = css`
 export const LayerGreyDefault = css`
   box-sizing: border-box;
   box-shadow: ${({ theme }) => theme.shadows[0]}${({ theme }) =>
-  theme.colors.greyscale.greyscale20tra}
+  theme.colors.greyscale.greyscale20tra};
   background-color: ${({ theme }) => theme.colors.greyscale.greyscale10tra};
   border: 2px solid ${({ theme }) => theme.colors.greyscale.greyscale8tra};
 `;
