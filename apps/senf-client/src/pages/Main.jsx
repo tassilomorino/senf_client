@@ -10,7 +10,6 @@ import {
   Typography,
   MainSwipeList,
   OrganizationsOverview,
-  PostIdeaDiscard,
   Button,
   TagSlide,
   Box,
@@ -18,6 +17,7 @@ import {
   ErrorLoading,
   Loader,
   useModals,
+  DiscardModalContent,
 } from "senf-atomic-design-system";
 import { AuthModal } from "senf-shared";
 import { isMobileCustom } from "../util/customDeviceDetect";
@@ -224,7 +224,8 @@ const Main = ({
   useEffect(() => {
     if (postIdeaDiscardModalOpen && !isMobileCustom) {
       openModal(
-        <PostIdeaDiscard
+        <DiscardModalContent
+          title="Discard idea?"
           closeModal={closeModal}
           setPostIdeaOpen={setPostIdeaOpen}
         />,

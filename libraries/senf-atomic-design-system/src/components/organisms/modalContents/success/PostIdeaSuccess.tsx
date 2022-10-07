@@ -3,17 +3,17 @@
 import React, { FC, useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { Trans, useTranslation } from "react-i18next";
-import Button from "../../atoms/buttons/Button";
-import Box from "../../atoms/box/Box";
+import Button from "../../../atoms/buttons/Button";
+import Box from "../../../atoms/box/Box";
 import { SuccessProps } from "./PostIdeaSuccess.types";
 
-import senfManCelebrating from "../../../assets/illustrations/senfManCelebrating.png";
-import skewedCircle from "../../../assets/illustrations/skewedCircle.png";
-import Typography from "../../atoms/typography/Typography";
-import { openLink } from "../../../util/helpers";
-import SocialmediaShare from "../../organisms/socialmediaShare/SocialmediaShare";
-import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
-import { isMobileCustom } from "../../../hooks/customDeviceDetect";
+import senfManCelebrating from "../../../../assets/illustrations/senfManCelebrating.png";
+import skewedCircle from "../../../../assets/illustrations/skewedCircle.png";
+import Typography from "../../../atoms/typography/Typography";
+import { openLink } from "../../../../util/helpers";
+import SocialmediaShare from "../../socialmediaShare/SocialmediaShare";
+import DropdownButton from "../../../atoms/contentDropdown/DropdownButton";
+import { isMobileCustom } from "../../../../hooks/customDeviceDetect";
 
 const Background = styled.div`
   background-color: ${({ theme }) => theme.colors.beige.beige10};

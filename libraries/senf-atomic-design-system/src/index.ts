@@ -103,7 +103,7 @@ export { default as InfoPageMainApp } from "./components/pages/infoPages/InfoPag
 export { default as ThreeDToolSwipeList } from "./components/pages/threeDToolSwipeList/ThreeDToolSwipeList";
 
 export { default as PostIdea } from "./components/pages/postIdea/PostIdea";
-export { default as PostIdeaDiscard } from "./components/pages/postIdea/PostIdeaDiscard";
+export { default as DiscardModalContent } from "./components/organisms/modalContents/discard/DiscardModalContent";
 
 export { default as theme } from "./styles/theme";
 export { default as GlobalStyle } from "./styles/globals";
