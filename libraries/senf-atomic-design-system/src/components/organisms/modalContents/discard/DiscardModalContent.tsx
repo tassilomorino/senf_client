@@ -3,9 +3,9 @@ import { useTranslation } from "react-i18next";
 import Box from "../../../atoms/box/Box";
 import Button from "../../../atoms/buttons/Button";
 import Typography from "../../../atoms/typography/Typography";
-import { DiscardModalProps } from "./DiscardModal.types";
+import { DiscardModalContentProps } from "./DiscardModalContent.types";
 
-const DiscardModal: FC<DiscardModalProps> = ({
+const DiscardModalContent: FC<DiscardModalContentProps> = ({
   header,
   closeModal,
   setDiscard,
@@ -64,4 +64,4 @@ const DiscardModal: FC<DiscardModalProps> = ({
   );
 };
 
-export default DiscardModal;
+export default DiscardModalContent;

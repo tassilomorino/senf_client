@@ -17,7 +17,7 @@ import {
   ErrorLoading,
   Loader,
   useModals,
-  DiscardModal,
+  DiscardModalContent,
 } from "senf-atomic-design-system";
 import { AuthModal } from "senf-shared";
 import { isMobileCustom } from "../util/customDeviceDetect";
@@ -224,7 +224,7 @@ const Main = ({
   useEffect(() => {
     if (postIdeaDiscardModalOpen && !isMobileCustom) {
       openModal(
-        <DiscardModal
+        <DiscardModalContent
           title="Discard idea?"
           closeModal={closeModal}
           setPostIdeaOpen={setPostIdeaOpen}
