@@ -1,10 +1,15 @@
-import React from "react";
+import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
-import Box from "../../atoms/box/Box";
-import Button from "../../atoms/buttons/Button";
-import Typography from "../../atoms/typography/Typography";
+import Box from "../../../atoms/box/Box";
+import Button from "../../../atoms/buttons/Button";
+import Typography from "../../../atoms/typography/Typography";
+import { DiscardModalProps } from "./DiscardModal.types";
 
-export default function PostIdeaDiscard({ closeModal, setPostIdeaOpen }) {
+const DiscardModal: FC<DiscardModalProps> = ({
+  header,
+  closeModal,
+  setDiscard,
+}) => {
   const { t } = useTranslation();
   return (
     <Box
@@ -20,7 +25,7 @@ export default function PostIdeaDiscard({ closeModal, setPostIdeaOpen }) {
         marginTop="16px"
         alignItems="center"
       >
-        <Typography variant="buttonBg">{t("postIdeaDiscard_title")}</Typography>
+        <Typography variant="buttonBg">{header}</Typography>
 
         <Typography
           variant="bodySm"
@@ -49,7 +54,7 @@ export default function PostIdeaDiscard({ closeModal, setPostIdeaOpen }) {
           size="medium"
           onClick={() => {
             closeModal();
-            setPostIdeaOpen(false);
+            setDiscard?.(false);
           }}
         >
           {t("exit_and_discard")}
@@ -57,4 +62,6 @@ export default function PostIdeaDiscard({ closeModal, setPostIdeaOpen }) {
       </Box>
     </Box>
   );
-}
+};
+
+export default DiscardModal;

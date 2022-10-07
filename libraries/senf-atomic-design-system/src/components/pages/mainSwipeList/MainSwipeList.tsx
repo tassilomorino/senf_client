@@ -183,7 +183,6 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   const [swipePercentage, setSwipePercentage] = useState(0);
   const [activeSortOptionLabel, setActiveSortOptionLabel] = useState("");
   const { openModal, closeModal } = useModals();
-  console.log(user);
   const [springProps, setSpring] = useSpring(() => ({
     x: 0,
     y: 0,

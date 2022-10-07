@@ -16,8 +16,8 @@ import { useModals } from "../../molecules/modalStack/ModalProvider";
 import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
 import List from "../../molecules/list/List";
 import ProjectroomCard from "../../molecules/cards/ProjectroomCard";
-import PostIdeaDiscard from "./PostIdeaDiscard";
 import PostIdeaSuccess from "../../organisms/modalContents/success/PostIdeaSuccess";
+import DiscardModal from "../../organisms/modalContents/discard/DiscardModal";
 
 const Wrapper = styled.div`
   z-index: 999;
@@ -152,12 +152,14 @@ const PostIdea: FC<PostIdeaProps> = ({
   }, [postIdeaSuccessModalOpen]);
   const openDiscardModal = () => {
     openModal(
-      <PostIdeaDiscard
-        setPostIdeaOpen={setPostIdeaOpen}
+      <DiscardModal
+        header={t("postIdeaDiscard_title")}
+        setDiscard={setPostIdeaOpen}
         closeModal={closeModal}
       />,
       {
         swipe: !!isMobile,
+        size: "sm",
       }
     );
   };
