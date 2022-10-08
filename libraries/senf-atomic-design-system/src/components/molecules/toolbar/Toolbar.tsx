@@ -90,7 +90,7 @@ const Toolbar: FC<ToolbarProps> = ({
         size="small"
         text={activeSortOptionLabel}
         iconRight={<ArrowDown />}
-        options={{ itemType: "check" }}
+        options={{ itemType: "checkbox" }}
         data={Object.values(
           sortOptions as { label: string; value: string }[]
         ).map((item) => ({

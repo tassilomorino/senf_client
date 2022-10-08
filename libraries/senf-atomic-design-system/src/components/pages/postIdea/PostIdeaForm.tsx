@@ -207,7 +207,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
         </Typography>
         <DropdownButton
           variant="secondary"
-          size="small"
+          size={isMobile ? "medium" : "small"}
           icon={
             formik?.values?.topic ? (
               <Dot color={setColorByTopic(formik?.values?.topic)} />
@@ -218,9 +218,16 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
           justifyContent="flex-start"
           width="max"
           text={formik?.values.topicLabel || t("choose_category")}
-          options={{ size: "md", closeOnSelect: true, modal: !!isMobile }}
+          options={{
+            size: isMobile ? "lg" : "md",
+            title: t("postidea_form_category"),
+            closeOnSelect: true,
+            style: { padding: 10 },
+            modal: !!isMobile
+          }}
           data={OptionsTopics().map(({ value, label }) => {
             return {
+              type: "check",
               text: label,
               leadingIcon: <Dot color={setColorByTopic(value)} />,
               onClick: () => {

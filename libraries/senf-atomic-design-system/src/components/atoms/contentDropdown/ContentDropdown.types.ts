@@ -16,5 +16,6 @@ export interface DropdownListContainerProps {
     closeOnSelect?: boolean; // close dropdown on item select
     x?: string;
     y?: string;
+    style?: React.CSSProperties;
   };
 }
