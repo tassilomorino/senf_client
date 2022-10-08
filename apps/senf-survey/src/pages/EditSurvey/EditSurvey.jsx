@@ -1,9 +1,13 @@
-import React, { useState } from "react";
-import Question from "../../components/Question";
-import Option from "../../components/Option/Option";
+/* eslint-disable react/jsx-key */
+import React, { useCallback, useContext, useMemo, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { doc, getDoc } from "firebase/firestore";
+import { Box, Button, Plus } from "senf-atomic-design-system";
 import { Wrapper } from "./Styled.EditSurvey";
-import { arrayUnion, collection, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
+import Nav from "./Nav/Nav";
+import Main from "./Main";
+import Survey from "../Survey";
 
 const TypeSelector = ({ qtype, setQtype }) => {
   const handleChange = (e) => {
@@ -24,97 +28,110 @@ const TypeSelector = ({ qtype, setQtype }) => {
     </div>
   );
 };
+const EditSurvey = () => {
+  const [order, setOrder] = React.useState(1);
+  const [title, setTitle] = useState();
+  const [type, setType] = useState();
+  const [questions, setQuestions] = useState();
 
-const CreateSurvey = ({ squestions, setSquestion }) => {
-  const generateRandomNumber = () => Math.floor(Math.random() * 1000 + 1);
-  const docId = window.location.pathname.replace("/edit/", "");
-  const schemaRef = doc(db, "surveys", docId);
-  const [qtext, setQtext] = useState("");
-  const [qtype, setQtype] = useState(0);
-  const [options, setOptions] = useState([
-    { uid: generateRandomNumber(), value: "" },
-    { uid: generateRandomNumber(), value: "" },
-  ]);
-  const addOptions = () => {
-    const newOption = {
-      uid: generateRandomNumber(),
-      value: "",
+  React.useEffect(() => {
+    const docId = window.location.pathname.replace("/edit/", "");
+    const schemaRef = doc(db, "surveys", docId);
+    const fetchSurvey = async (schemaRef) => {
+      const docSnap = await getDoc(schemaRef);
+      if (!docSnap.exists()) {
+        //! TODO show a better indicator that such survey doesn't exist
+        throw new Error("Error fetching the survey");
+      }
+
+      setTitle(docSnap.data().title);
+      setType(docSnap.data().type);
+      setQuestions(docSnap.data().questions);
     };
-    const updatedOption = [...options];
-    updatedOption.push(newOption);
-    setOptions(updatedOption);
-  };
-  const deleteOptions = (id) => {
-    if (options.length > 2) {
-      console.log(id);
-      let updatedOption = [...options].filter((item) => item.uid !== id);
-      setOptions(updatedOption);
-    }
-  };
+    fetchSurvey(schemaRef);
+  }, []);
+
   const updateTextOption = (id, text) => {
     const updatedOption = [...options];
     const changedIndex = updatedOption.findIndex((x) => x.uid === id);
     updatedOption[changedIndex].value = text;
     setOptions(updatedOption);
   };
-  const addQuestion = async () => {
-    const newSurveyQuestion = [...squestions];
+  const addQuestion = useCallback(async () => {
+    const newSurveyQuestion = [...questions];
     const newQuestion = {
-      qtext,
-      qtype,
-      options,
+      qtext: "",
+      qtype: "",
+      options: [
+        {
+          uid: uuidv4(),
+          value: "",
+        },
+        {
+          uid: uuidv4(),
+          value: "",
+        },
+      ],
     };
     newSurveyQuestion.push(newQuestion);
-    setSquestion(newSurveyQuestion);
-    setQtext("");
-    console.log(newSurveyQuestion);
-    await updateDoc(schemaRef, {
-      scehma: arrayUnion(newSurveyQuestion[newSurveyQuestion.length - 1]),
-    });
-    setQtype(0);
-    setOptions([
-      { uid: generateRandomNumber(), value: "" },
-      { uid: generateRandomNumber(), value: "" },
-    ]);
-  };
+    setQuestions(newSurveyQuestion);
+  }, [questions]);
   const publish = () => {};
+
+  const componetsList = useMemo(
+    () => [
+      <Box
+        flexDirection="column"
+        style={{ overflow: "auto", minHeight: 0 }}
+        gap="1.5rem"
+        paddingBlock="2rem"
+      >
+        {questions?.map(({ options, qtext, qtype }, index) => (
+          <Main
+            options={options}
+            qtext={qtext}
+            qtype={qtype}
+            setQuestions={setQuestions}
+            questionIndex={index}
+            key={index}
+          />
+        ))}
+        <Box justifyContent="center">
+          <Button
+            onClick={addQuestion}
+            variant="white"
+            text="Add Question"
+            icon={<Plus />}
+          />
+        </Box>
+      </Box>,
+      <Survey previewQuestions={questions} />,
+    ],
+    [addQuestion, questions]
+  );
+
   return (
     <Wrapper>
-      <TypeSelector
-        qtype={qtype}
-        setQtype={setQtype}
-      />
-      {qtype !== 0 ? (
-        <>
-          <Question
-            qtext={qtext}
-            setQtext={setQtext}
-          />
-          {options.map((opt, key) => (
-            <Option
-              key={key}
-              opt={opt}
-              addOptions={addOptions}
-              deleteOptions={deleteOptions}
-              updateText={updateTextOption}
-            />
-          ))}
-          <button
-            className="btn btn-danger m-3"
-            onClick={addQuestion}
-          >
-            Add Question
-          </button>
-          <button
-            className="btn btn-danger m-3"
-            onClick={publish}
-          >
-            Publish
-          </button>
-        </>
-      ) : null}
+      <Box
+        height="100%"
+        gap="0.5rem"
+        flexDirection="column"
+      >
+        <Nav
+          title={title}
+          order={order}
+          setOrder={setOrder}
+        />
+        <Box
+          style={{ flex: "1", overflow: "auto" }}
+          justifyContent="center"
+          flexDirection="column"
+        >
+          {componetsList[order - 1]}
+        </Box>
+      </Box>
     </Wrapper>
   );
 };
 
-export default CreateSurvey;
+export default EditSurvey;
