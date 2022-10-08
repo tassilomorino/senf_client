@@ -38,7 +38,7 @@ const themeColors = {
   ...generateThemeColors({ "blend-shade-primary": compositeColors.shade }, [50, 25, 10], colors.primary as HSL),
   ...generateThemeColors({ "blend-shade-primary-bg": composite(...colors.primary as HSL, 3 / 4, compositeColors.shade as HSL) }, [15]),
   ...generateThemeColors(transparent, luminance, false),
-  ...generateThemeColors(categories, [100]),
+  ...generateThemeColors(categories),
   ...generateThemeColors(signal, luminance),
   ...generateThemeColors(signal, luminance)
 }
