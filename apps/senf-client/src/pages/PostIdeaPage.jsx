@@ -318,7 +318,7 @@ const PostIdeaPage = ({
         <Button
           size="medium"
           variant="white"
-          icon={<Plus transform="rotate(45)" />}
+          leadingIcon="Close"
           onClick={() => setPostIdeaOpen(false)}
         />
       </Box> */}

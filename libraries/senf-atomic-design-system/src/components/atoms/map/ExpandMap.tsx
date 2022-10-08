@@ -103,7 +103,7 @@ const ExpandMap: FC = ({
                     top="0"
                 >
                     <Button
-                        icon={<Plus transform="rotate(45deg)" />}
+                        leadingIcon="Close"
                         onClick={() => closeModal()}
                     />
                 </Box> */}

@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { Box, Button, Input } from "senf-atomic-design-system";
 import { Bin, Plus } from "senf-atomic-design-system/src/assets/icons";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 const Option = ({ options, option, setQuestions, questionIndex, index }) => {
   const deleteOptions = (id) => {
     if (options.length > 2) {
       const updatedOption = [...options].filter((item) => item.uid !== id);
-      setQuestions(prev =>
+      setQuestions((prev) =>
         prev.map((question, i) => {
-          if (questionIndex !== i) return question
+          if (questionIndex !== i) return question;
           question.options = updatedOption;
-          return question
+          return question;
         })
       );
     }
@@ -20,15 +20,13 @@ const Option = ({ options, option, setQuestions, questionIndex, index }) => {
     const updatedOption = [...options];
     const changedIndex = updatedOption.findIndex((x) => x.uid === id);
     updatedOption[changedIndex].value = text;
-    setQuestions(prev => {
+    setQuestions((prev) => {
       prev[questionIndex].options = updatedOption;
-      return [...prev]
-    })
+      return [...prev];
+    });
   };
   return (
-    <Box
-      gap="1rem"
-    >
+    <Box gap="1rem">
       <Input
         size="sm"
         value={option.value}
@@ -42,7 +40,7 @@ const Option = ({ options, option, setQuestions, questionIndex, index }) => {
         text="Remove"
         style={{ paddingInline: "1rem" }}
         onClick={() => deleteOptions(option.uid)}
-        icon={
+        leadingIcon={
           <Bin
             transform="rotateY(180deg)"
             color="rgba(35, 29, 20, 0.5);"

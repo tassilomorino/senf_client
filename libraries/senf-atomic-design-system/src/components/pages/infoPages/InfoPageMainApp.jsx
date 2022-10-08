@@ -568,18 +568,16 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
         <SelectLanguageWrapper>
           <LanguageSelect direction="downLeft" />
         </SelectLanguageWrapper>
-
         <StyledContactImg
           // src={ContactImg}
           onClick={() => openMail("dein@senf.koeln")}
         />
         <Box margin="10px">
           <Button
-            icon={<Mail />}
+            leadingIcon={<Mail />}
             onClick={() => openMail("dein@senf.koeln")}
           />
         </Box>
-
         <Headline
           visible={visibleFirstHeadline}
           textlines={[
@@ -597,17 +595,14 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
             {t("infopage_skip")}
           </Button>
         </LinkHeadline>
-
         <ScrollIndicator>
           <ScrollIndicatorDot />
         </ScrollIndicator>
-
         <Circle
           id="Circle"
           scrollValue={scrollValue}
           marginTop={document.body.clientWidth > 768 ? "180px" : "150px"}
         />
-
         <SecondHeadline
           id="addMustard"
           marginTop="-400px"
@@ -617,7 +612,6 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
             { text: "infopage_addMustard_2" },
           ]}
         />
-
         <Tags type="topics" />
         <HowToCard1>
           <UnderlinedText
@@ -636,7 +630,6 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
             visible={visibleCards}
           />
         </HowToCard1>
-
         <HowToCard2>
           <UnderlinedText
             visibleHeadline={visibleCards2}
@@ -654,9 +647,7 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
             visible={visibleCards2}
           />
         </HowToCard2>
-
         <HorizontalScrollSection id="1" />
-
         <Circle
           id="Circle2"
           scrollValue={scrollValue}
@@ -672,9 +663,7 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
           ]}
           fontSize={isMobile ? "11vw" : "50px"}
         />
-
         <Tags />
-
         <HowToCard1
         // onClick={handleSetOpenOrganizationsOverview}
         >
@@ -708,7 +697,6 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
             </Typography>
           </Card>
         </HowToCard1>
-
         <HowToCard2
         // onClick={handleSetOpenProjectRoomsOverview}
         >
@@ -742,7 +730,6 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
             </Typography>
           </Card>
         </HowToCard2>
-
         <HorizontalScrollSection
           id="2"
           visiblePartners={visiblePartners}
@@ -752,18 +739,15 @@ const InfoPageMainApp = ({ setOrder, setOpenOrganizationsOverview }) => {
           scrollValue={scrollValue}
           marginTop={document.body.clientWidth > 768 ? "1850px" : "900px"}
         />
-
         <SecondHeadline
           id="sectionOrganizationHeadline"
           marginTop="-400px"
           visible={visibleSecondaryHeadline3}
           textlines={[{ text: t("infopage_lastSection_1") }]}
         />
-
         <LearnMoreBubbles
         // handleClose={handleClose}
         />
-
         <FooterLinks
           color="#353535"
           position="relative"

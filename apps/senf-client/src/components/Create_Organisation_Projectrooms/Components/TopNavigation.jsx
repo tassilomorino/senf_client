@@ -208,7 +208,7 @@ const TopNavigation = ({
           // />
           <DropdownButton
             variant="white"
-            icon="More"
+            leadingIcon="More"
             width="height"
             data={[
               {

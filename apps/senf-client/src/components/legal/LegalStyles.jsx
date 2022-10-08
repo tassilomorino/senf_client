@@ -44,7 +44,7 @@ export const LegalStyles = ({ children }) => {
       >
         <Button
           size="medium"
-          icon={<Plus transform="rotate(45)" />}
+          leadingIcon="Close"
           onClick={() => linkToHome()}
         />
       </Box>

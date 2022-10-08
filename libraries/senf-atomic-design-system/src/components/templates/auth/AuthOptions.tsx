@@ -102,7 +102,7 @@ const AuthOptions: FC<AuthOptionsProps> = ({
           variant="white"
           width="max"
           text="Mit Google anmelden"
-          icon={<Google />}
+          leadingIcon="Google"
           loading={!!authHandler?.loading.google}
           onClick={authHandler?.signIn.google}
         />
@@ -112,7 +112,7 @@ const AuthOptions: FC<AuthOptionsProps> = ({
           width="max"
           text="Mit Facebook anmelden"
           loading={!!authHandler?.loading.facebook}
-          icon={<Facebook />}
+          leadingIcon="Facebook"
           onClick={authHandler?.signIn.facebook}
         />
         {errorMessage && (

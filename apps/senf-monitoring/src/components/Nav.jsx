@@ -11,7 +11,10 @@ import {
   Tabs,
   theme,
   useModals,
-  Wave, Arrow, SenfLogoBig } from "senf-atomic-design-system";
+  Wave,
+  Arrow,
+  SenfLogoBig,
+} from "senf-atomic-design-system";
 import styled from "styled-components";
 import { useAuthContext, AuthModal } from "senf-shared";
 import { setMonitoringBoard } from "../redux/actions/accountActions";
@@ -112,7 +115,7 @@ const Nav = () => {
             variant={order === itemOrder ? "white" : "tertiary"}
             text={navOpen && name}
             width="100%"
-            icon={icon}
+            leadingIcon={icon}
             onClick={() => handleOrder(itemOrder)}
             justifyContent="flex-start"
           />
@@ -127,7 +130,7 @@ const Nav = () => {
           <Button
             size="medium"
             variant="tertiary"
-            icon={navOpen ? <Arrow transform="rotate(180deg)" /> : <Arrow />}
+            leadingIcon={navOpen ? "ArrowLeft" : "Arrow"}
             onClick={() => setNavOpen(!navOpen)}
           />
         </Box>

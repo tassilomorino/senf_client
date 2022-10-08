@@ -26,7 +26,7 @@ LeftDialog.args = {
       <SubNavbar
         iconLeft="arrow"
         header="FAQ"
-        iconRight="plus"
+        trailingIcon="plus"
         iconRightTransform="rotate(45)"
       />
     </React.Fragment>
@@ -42,7 +42,7 @@ ComponentsDialog.args = {
       <SubNavbar
         iconLeft="arrow"
         header="FAQ"
-        iconRight="plus"
+        trailingIcon="plus"
         iconRightTransform="rotate(45)"
       />
     </React.Fragment>
@@ -58,7 +58,7 @@ RightDialog.args = {
       <SubNavbar
         iconLeft="arrow"
         header="FAQ"
-        iconRight="plus"
+        trailingIcon="plus"
         iconRightTransform="rotate(45)"
       />
     </React.Fragment>
@@ -75,7 +75,7 @@ FullDialog.args = {
       <SubNavbar
         iconLeft="arrow"
         header="FAQ"
-        iconRight="plus"
+        trailingIcon="plus"
         iconRightTransform="rotate(45)"
       />
     </React.Fragment>

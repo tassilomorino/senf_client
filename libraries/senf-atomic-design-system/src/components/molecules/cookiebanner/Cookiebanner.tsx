@@ -49,7 +49,7 @@ const Cookiebanner: FC<CookiebannerProps> = ({
         <Button
           variant="tertiary"
           size="small"
-          icon={<Close />}
+          leadingIcon={<Close />}
           onClick={() => handleCookies("minimum")}
         />
       </Box>

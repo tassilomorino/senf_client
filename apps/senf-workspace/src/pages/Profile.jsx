@@ -82,7 +82,7 @@ const Profile = () => {
               </label>
               {user.avatar ? (
                 <Icon
-                  icon="bulb"
+                  leadingIcon="bulb"
                   onClick={deleteImage}
                 />
               ) : null}

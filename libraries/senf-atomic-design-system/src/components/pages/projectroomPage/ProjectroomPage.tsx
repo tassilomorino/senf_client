@@ -333,7 +333,7 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
             variant="white"
             size="medium"
             width="height"
-            icon="Share"
+            leadingIcon="Share"
             data={
               <Box
                 gap="5px"
@@ -354,7 +354,7 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
               variant="white"
               size="medium"
               width="height"
-              icon="More"
+              leadingIcon="More"
               data={[
                 {
                   text: t("Projektraum bearbeiten"),
@@ -446,7 +446,7 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
             <Box margin="0px 0px 0px 18px">
               <TertiaryButton
                 text={t("information")}
-                iconRight={
+                trailingIcon={
                   <Arrow
                     transform={infoOpen ? "rotate(-90deg) " : "rotate(0deg) "}
                   />
@@ -525,7 +525,7 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
                         variant="secondary"
                         size="small"
                         text={t("statistics")}
-                        icon={<Stats />}
+                        leadingIcon="Stats"
                         onClick={() => setOpenStatisticsOverview(true)}
                       />
                     }
@@ -554,7 +554,7 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
                     size="medium"
                     width="max"
                     text={t("post_idea_in_projectroom")}
-                    icon={"Plus"}
+                    leadingIcon="Plus"
                     onClick={() => setPostIdeaOpen(true)}
                   />
                 </Box>

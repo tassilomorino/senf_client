@@ -59,6 +59,7 @@ const DropdownButton: FC<DropdownButtonProps> = ({
     <Wrapper ref={outerRef}>
       <CustomButton
         onClick={handleClick}
+        trailingIcon={options?.modal ? "ArrowDown" : ""}
         {...props}
       />
       {!options?.modal && (

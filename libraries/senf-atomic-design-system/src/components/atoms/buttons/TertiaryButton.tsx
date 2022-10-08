@@ -53,7 +53,7 @@ const TertiaryButton: FC<TertiaryButtonProps> = ({
   children,
   iconLeft,
   iconLeftTransform,
-  iconRight,
+  trailingIcon,
   iconRightTransform,
   size,
   variant,
@@ -99,13 +99,13 @@ const TertiaryButton: FC<TertiaryButtonProps> = ({
         </Typography>
       )}
 
-      {iconRight && (
+      {trailingIcon && (
         <IconWrapperRight
           text={text}
           iconLeft={iconLeft}
         >
           <Icon
-            icon={iconRight}
+            icon={trailingIcon}
             transform={
               iconLeftTransform || "scale(0.7)"
               // size === "small"

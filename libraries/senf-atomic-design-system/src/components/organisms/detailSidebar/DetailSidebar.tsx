@@ -2,7 +2,7 @@
 
 import React, { FC } from "react";
 import styled from "styled-components";
-import { Button } from "../../..";
+import Button from "../../atoms/buttons/Button";
 import Arrow from "../../../assets/icons/Arrow";
 import More from "../../../assets/icons/More";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
@@ -31,7 +31,7 @@ const DetailSidebar: FC<DetailSidebarProps> = ({
         gap="8px"
       >
         <Button
-          icon={<Arrow transform="rotate(180)" />}
+          leadingIcon="ArrowLeft"
           onClick={handleButtonClose}
           size="medium"
           variant="white"

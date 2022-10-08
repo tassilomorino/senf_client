@@ -27,7 +27,7 @@ Default.args = {
       <SubNavbar
         iconLeft="arrow"
         header="FAQ"
-        iconRight="plus"
+        trailingIcon="plus"
         iconRightTransform="rotate(45)"
       />
       <Accordion

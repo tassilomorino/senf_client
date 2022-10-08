@@ -56,7 +56,7 @@ const IconWrapper = styled.div<ButtonProps>`
 `;
 
 const RoundedButton: FC<ButtonProps> = ({
-  icon,
+  leadingIcon,
   variant,
   size,
   color,
@@ -73,7 +73,7 @@ const RoundedButton: FC<ButtonProps> = ({
     >
       <IconWrapper>
         <Icon
-          icon={icon}
+          icon={leadingIcon}
           width="24px"
         />
       </IconWrapper>

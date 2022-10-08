@@ -358,7 +358,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
           variant="secondary"
           size="small"
           text={order === "ideas" ? t("statistics") : t("organizations")}
-          icon={order === "ideas" ? <Stats /> : null}
+          leadingIcon={order === "ideas" ? "Stats" : null}
           onClick={
             order === "ideas"
               ? () => setOpenStatisticsOverview(true)
@@ -451,13 +451,13 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
               }}
             >
               <Button
-                icon={<Stats />}
+                leadingIcon={<Stats />}
                 size="small"
                 transform="scale(0.7)"
                 onClick={() => setOpenStatisticsOverview(true)}
               />
               <Button
-                icon={<Vereine />}
+                leadingIcon={<Vereine />}
                 size="small"
                 transform="scale(0.7)"
                 onClick={() => setOpenOrganizationsOverview(true)}
@@ -466,7 +466,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
                 <RoundedButtonWrapper>
                   <RoundedButton
                     size="lg"
-                    icon={
+                    leadingIcon={
                       <Plus
                         color={theme.colors.primary.primary120}
                         transform="scale(2)"

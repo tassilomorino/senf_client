@@ -89,7 +89,7 @@ const Toolbar: FC<ToolbarProps> = ({
         variant="tertiary"
         size="small"
         text={activeSortOptionLabel}
-        iconRight={<ArrowDown />}
+        trailingIcon={<ArrowDown />}
         options={{ itemType: "checkbox" }}
         data={Object.values(
           sortOptions as { label: string; value: string }[]
@@ -107,7 +107,7 @@ const Toolbar: FC<ToolbarProps> = ({
         {secondButton}
         <Button
           variant="secondary"
-          icon={<Search />}
+          leadingIcon={<Search />}
           size="small"
           transform="scale(0.7)"
           onClick={setSearch}

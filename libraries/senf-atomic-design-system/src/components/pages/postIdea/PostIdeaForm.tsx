@@ -152,7 +152,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
               formik?.values.weblink ||
               t("add_weblink")
             }
-            icon={<Hyperlink />}
+            leadingIcon="Hyperlink"
             options={{
               style: {
                 padding: 20,
@@ -179,7 +179,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
               formik?.values.contact ||
               t("postidea_form_add_contact")
             }
-            icon={<Mail />}
+            leadingIcon="Mail"
             options={{
               style: {
                 padding: 20,
@@ -208,13 +208,20 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
         <DropdownButton
           variant="secondary"
           size={isMobile ? "medium" : "small"}
-          icon={
+          leadingIcon={
             formik?.values?.topic ? (
               <Dot color={setColorByTopic(formik?.values?.topic)} />
             ) : (
-              <DotAllTopics />
+              "DotAllTopics"
             )
           }
+          // leadingIcon={
+          //   formik?.values?.topic ? (
+          //     <Dot color={setColorByTopic(formik?.values?.topic)} />
+          //   ) : (
+          //     <DotAllTopics />
+          //   )
+          // }
           justifyContent="flex-start"
           width="max"
           text={formik?.values.topicLabel || t("choose_category")}
@@ -223,7 +230,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
             title: t("postidea_form_category"),
             closeOnSelect: true,
             style: { padding: 10 },
-            modal: !!isMobile
+            modal: !!isMobile,
           }}
           data={OptionsTopics().map(({ value, label }) => {
             return {
@@ -254,7 +261,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
             }
             size="small"
             width="max"
-            icon={<CalendarIcon />}
+            leadingIcon="CalendarIcon"
             options={{
               style: {
                 padding: 20,

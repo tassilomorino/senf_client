@@ -128,7 +128,7 @@ const PostScreamSelectContainter = ({
                   (optionsProjects) => projectSelected === optionsProjects.value
                 ).label || t("all_ideas")
               }
-              iconRight={<Arrow transform="rotate(90)" />}
+              trailingIcon="ArrowDown"
               variant="semibold"
             />
           }

@@ -51,14 +51,12 @@ const RightWrapper = styled.div<SubNavbarProps>`
   align-items: center;
 `;
 const SubNavbar: FC<SubNavbarProps> = ({
-  iconLeft,
-  iconLeftTransform,
+  leadingIcon,
   textLeft,
   leftButtonClick,
   header,
   textRight,
-  iconRight,
-  iconRightTransform,
+  trailingIcon,
   handlebar,
 }) => {
   const isMobile = isMobileCustom();
@@ -67,8 +65,7 @@ const SubNavbar: FC<SubNavbarProps> = ({
       {handlebar && isMobile && <HandleBar />}
       <LeftWrapper onClick={leftButtonClick}>
         <TertiaryButton
-          iconLeft={iconLeft}
-          iconLeftTransform={iconLeftTransform}
+          iconLeft={leadingIcon}
           text={textLeft}
         />
       </LeftWrapper>
@@ -78,10 +75,9 @@ const SubNavbar: FC<SubNavbarProps> = ({
       </CenterWrapper>
 
       <RightWrapper>
-        {textRight || iconRight ? (
+        {textRight || trailingIcon ? (
           <TertiaryButton
-            iconRight={iconRight}
-            iconRightTransform={iconRightTransform}
+            trailingIcon={trailingIcon}
             text={textRight}
           />
         ) : (

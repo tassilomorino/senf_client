@@ -64,7 +64,7 @@ const Main = ({ qtext, setQuestions, qtype, options, questionIndex }) => {
             {qtype && (
               <>
                 <TertiaryButton
-                  iconRight={<Write />}
+                  trailingIcon={<Write />}
                   text={qtype}
                   onClick={() => questionTypeChanger("")}
                   style={{ paddingTop: 0, marginRight: "auto" }}
@@ -72,13 +72,13 @@ const Main = ({ qtext, setQuestions, qtype, options, questionIndex }) => {
               </>
             )}
             <Button
-                  variant="secondary"
-                  size="small"
-                  borderStyle="solid"
-                  text="Remove"
-                  icon={<Bin color="rgba(35, 29, 20, 0.5);" />}
-                  onClick={() => handleQuestionDeletion()}
-                />
+              variant="secondary"
+              size="small"
+              borderStyle="solid"
+              text="Remove"
+              leadingIcon={<Bin color="rgba(35, 29, 20, 0.5);" />}
+              onClick={() => handleQuestionDeletion()}
+            />
           </Box>
           {!qtype && (
             <Box
@@ -89,7 +89,7 @@ const Main = ({ qtext, setQuestions, qtype, options, questionIndex }) => {
               <Button
                 style={{ flexDirection: "column" }}
                 variant="secondary"
-                icon={"Check"}
+                leadingIcon="Check"
                 onClick={() => questionTypeChanger("MultipleChoice")}
               >
                 Singlechoice
@@ -97,7 +97,7 @@ const Main = ({ qtext, setQuestions, qtype, options, questionIndex }) => {
               <Button
                 style={{ flexDirection: "column" }}
                 variant="secondary"
-                icon={"More"}
+                leadingIcon="More"
                 onClick={() => questionTypeChanger("SingleChoice")}
               >
                 Multiplechoice
