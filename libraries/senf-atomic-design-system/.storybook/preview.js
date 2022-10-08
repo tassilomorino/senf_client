@@ -28,6 +28,13 @@ export const decorators = [
   ),
 ];
 
+const backgrounds = [
+  "grey-300",
+  "white",
+  "primary",
+  "blend-shade-primary-bg"
+]
+
 export const parameters = {
   i18n,
   locale: "de",
@@ -41,24 +48,7 @@ export const parameters = {
   },
   layout: "fullscreen",
   backgrounds: {
-    default: "grey-300",
-    values: [
-      {
-        name: "grey-300",
-        value: theme.colors.palette["grey-300"],
-      },
-      {
-        name: "white",
-        value: theme.colors.palette.white,
-      },
-      {
-        name: "primary",
-        value: theme.colors.palette.primary
-      },
-      {
-        name: "blend-primary-bg",
-        value: theme.colors.palette["blend-primary-bg"]
-      },
-    ],
+    default: backgrounds[0],
+    values: backgrounds.map(e => ({ name: e, value: theme.colors.palette[e] }))
   },
 };
