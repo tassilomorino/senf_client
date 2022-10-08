@@ -41,23 +41,23 @@ export const parameters = {
   },
   layout: "fullscreen",
   backgrounds: {
-    default: "lightgrey",
+    default: "grey-300",
     values: [
       {
-        name: "lightgrey",
-        value: "lightgrey",
+        name: "grey-300",
+        value: theme.colors.palette["grey-300"],
       },
       {
         name: "white",
-        value: "white",
+        value: theme.colors.palette.white,
       },
       {
-        name: "#fed957",
-        value: "#fed957",
+        name: "primary",
+        value: theme.colors.palette.primary
       },
       {
-        name: "Beige",
-        value: "rgb(249, 241, 215)",
+        name: "blend-primary-bg",
+        value: theme.colors.palette["blend-primary-bg"]
       },
     ],
   },

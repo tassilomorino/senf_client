@@ -34,9 +34,9 @@ const signal: ColorPallet = {
 const luminance = [100, 81, 64, 49, 36, 25, 16, 10, 5, 2];
 
 const themeColors = {
+  ...generateThemeColors(colors, luminance),
   ...generateThemeColors({ "blend-shade-primary": compositeColors.shade }, [50, 25, 10], colors.primary as HSL),
   ...generateThemeColors({ "blend-shade-primary-bg": composite(...colors.primary as HSL, 3 / 4, compositeColors.shade as HSL) }, [15]),
-  ...generateThemeColors(colors, luminance),
   ...generateThemeColors(transparent, luminance, false),
   ...generateThemeColors(categories, [100]),
   ...generateThemeColors(signal, luminance),
@@ -51,7 +51,7 @@ const themeColors = {
 // generateStaticColors(themeColors)
 
 // for testing
-logColors(themeColors)
+// logColors(themeColors)
 
 /**
  * @todo I think we should decide whether we return variables with a unit or without. My proposal is that we return units as numbers and assume pixel values. We can then provide a px-to-rem function and devs can transform the values to rem as well
