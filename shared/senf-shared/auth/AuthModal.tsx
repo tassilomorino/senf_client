@@ -34,7 +34,7 @@ const AuthModal: FC<{
 
   const {
     success = () => closeModal(),
-    error = () => closeModal(),
+    error,
     handleClose,
     authAddDetails,
   } = data;
@@ -133,7 +133,9 @@ const AuthModal: FC<{
           .catch(error),
       email: (formikStore: FormikValues) =>
         signIn({ formikStore, id: providerId.email })
-          .then(() => authContext.ifAllUserDetailsAreFilled(user) && success())
+          .then(
+            (e) => authContext.ifAllUserDetailsAreFilled(user) && success(e)
+          )
           .catch(error),
       // email: (formikStore: FormikValues) => signIn({ formikStore, id: providerId.email }).then(success).catch(error),
     },

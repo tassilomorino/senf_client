@@ -19,7 +19,7 @@ const AuthEmail: FC<AuthEmailProps> = ({
   authHandler,
   setPage,
   errorMessage,
-  formikStore,
+  formikStore: initial
 }) => {
   const { t } = useTranslation();
 
@@ -30,6 +30,11 @@ const AuthEmail: FC<AuthEmailProps> = ({
       setVariantState("register");
     }
   }, [variant]);
+
+  const formik = useFormik({ initialValues: initial.values });
+  useEffect(() => {
+    initial.setValues(formik.values);
+  }, [formik.values]);
 
   const inputItemsLogin = [
     // {
@@ -84,7 +89,6 @@ const AuthEmail: FC<AuthEmailProps> = ({
       >
         {t("infopage_addMustard_2")}
       </Typography>
-
       <Box
         margin="25px 0px 24px 0px"
         alignItems="center"
@@ -112,7 +116,6 @@ const AuthEmail: FC<AuthEmailProps> = ({
           </React.Fragment>
         )} */}
       </Box>
-
       <Box
         gap="16px"
         flexDirection="column"
@@ -122,7 +125,7 @@ const AuthEmail: FC<AuthEmailProps> = ({
           inputItems={
             variantState === "register" ? inputItemsRegister : inputItemsLogin
           }
-          formik={formikStore}
+          formik={formik}
         />
 
         {errorMessage && (
@@ -134,7 +137,6 @@ const AuthEmail: FC<AuthEmailProps> = ({
           </Typography>
         )}
       </Box>
-
       <Box
         flexDirection="row"
         gap="5px"
@@ -183,11 +185,11 @@ const AuthEmail: FC<AuthEmailProps> = ({
         loading={authHandler.loading.email}
         onClick={
           variantState === "register"
-            ? () => authHandler.createUser(formikStore)
+            ? () => authHandler.createUser(formik)
             : (e) => {
                 e.preventDefault();
                 authHandler.signIn
-                  .email(formikStore)
+                  .email(formik)
                   .then(
                     () =>
                       !authHandler.ifAllUserDetailsAreFilled() &&
@@ -195,7 +197,7 @@ const AuthEmail: FC<AuthEmailProps> = ({
                   );
               }
         }
-        disabled={!formikStore?.isValid}
+        disabled={!initial?.isValid}
       />
     </Box>
   );
