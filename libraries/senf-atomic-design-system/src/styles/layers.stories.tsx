@@ -16,6 +16,10 @@ export default {
   title: "Theme/Layers",
   component: layers,
   argTypes: {
+    textColor: {
+      control: "boolean",
+      if: { arg: 'type', neq: "invisible" },
+    },
     interactive: {
       control: "boolean",
     },
@@ -24,9 +28,9 @@ export default {
       if: { arg: 'interactive', truthy: true },
     },
     border: {
-      options: ["light", "dark"],
+      options: ["light", "dark", false],
       control: { type: "inline-radio" },
-      if: { arg: 'type', eq: "primary" },
+      if: { arg: 'type', neq: "invisible" },
     },
     lightness: {
       options: ["light", "medium", "dark"],
@@ -38,15 +42,14 @@ export default {
       control: { type: "inline-radio" },
       if: { arg: 'type', eq: "transparent" },
     }
-
   },
 } as Meta<typeof layers>;
 
 
 const Layer = styled.button<BaseLayerProps>`
+  color: ${() => theme.colors.palette.text};
   ${(props: BaseLayerProps) => theme.layers(props)}
   border-radius: 10px;
-  color: ${() => theme.colors.palette.text};
   padding: 30px;
   display: flex;
   flex-direction: column;
@@ -72,6 +75,7 @@ Primary.args = {
   border: "light",
   interactive: true,
   activatable: true,
+  textColor: false
 } as BaseLayerProps;
 
 export const White = Template.bind({});
@@ -82,14 +86,7 @@ White.args = {
   border: "light",
   interactive: true,
   activatable: true,
-} as BaseLayerProps;
-
-export const Invisible = Template.bind({});
-Invisible.args = {
-  type: "invisible",
-  text: "Invisible",
-  interactive: true,
-  activatable: true,
+  textColor: false
 } as BaseLayerProps;
 
 export const Transparent = Template.bind({});
@@ -99,10 +96,21 @@ Transparent.args = {
   color: "shade",
   interactive: true,
   activatable: true,
+  textColor: false,
+  border: true
 } as BaseLayerProps;
 
-const controls = { include: ['border', "text", "lightness", "color", "interactive", "activatable"]}
+export const Invisible = Template.bind({});
+Invisible.args = {
+  type: "invisible",
+  text: "Invisible",
+  interactive: true,
+  activatable: true,
+  textColor: false
+} as BaseLayerProps;
+
+const controls = { include: ["border", "textColor", "text", "lightness", "color", "interactive", "activatable"]}
 Primary.parameters = { controls };
 White.parameters = { controls };
-Invisible.parameters = { controls };
 Transparent.parameters = { controls };
+Invisible.parameters = { controls };

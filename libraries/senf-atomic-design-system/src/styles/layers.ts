@@ -14,7 +14,7 @@ export interface BaseLayerProps {
 	type: BaseType;
 	color?: BaseColor | SignalColor;
 	lightness?: Lightness;
-	border?: Lightness;
+	border?: Lightness | boolean;
 	size?: Size;
 	interactive?: boolean;
 	activatable?: boolean;
@@ -49,6 +49,7 @@ const getColor = ({ type, color, lightness }: BaseLayerProps, colors: Palette, s
 }
 const getBorder = ({ type, color, border }: BaseLayerProps, colors: Palette, state?: InteractionState) => {
 	const lightBorder = border === "light"
+	if (!border) return "transparent"
 	switch (type) {
 		case "senf": case "primary": return colors[lightBorder ? "white/500" : "shade/300"] || "transparent";
 		case "transparent": return colors[color === "white" ? "white/500" : `${color}/300`] || "transparent";
