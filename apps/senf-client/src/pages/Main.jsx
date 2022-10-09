@@ -619,8 +619,7 @@ const Main = ({
       <ScaleContainer show={showUI}>
         {!openInfoPage && (
           <>
-            {!openProjectRoom &&
-              !openAccount &&
+            {!openAccount &&
               !loading &&
               (order === 1 || (order === 2 && !loadingProjects)) && (
                 <MainSwipeList

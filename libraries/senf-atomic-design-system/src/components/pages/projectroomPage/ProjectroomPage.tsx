@@ -72,9 +72,13 @@ const DragWrapper = styled(animated.div)<ProjectroomPageProps>`
   overscroll-behavior: contain;
   animation: translateYFrom100to70pxAnimation 1s;
 
+  ${({ theme }) =>
+    theme.layers({ type: "white", lightness: "light", border: "light" })}
+
   @media (min-width: 768px) {
-    width: 470px;
-    max-width: 470px;
+    left: 66px;
+    width: 400px;
+    max-width: 400px;
     border-radius: 18px;
     margin: 10px;
     height: calc(100vh - 20px);
@@ -85,7 +89,7 @@ const DragWrapper = styled(animated.div)<ProjectroomPageProps>`
 
 const InnerWrapper = styled.div<OrganizationsOverviewProps>`
   @media (min-width: 768px) {
-    padding: 0px 0px 0px 70px;
+    padding: 0px 0px 0px 0px;
     height: 100%;
     width: 100%;
     position: absolute;
@@ -325,7 +329,7 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
 
   return (
     <React.Fragment>
-      <DetailSidebar
+      {/* <DetailSidebar
         handleButtonClose={() => handleButtonClose(false)}
         sideDivider={true}
         SecondButton={
@@ -365,16 +369,16 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
             />
           ))
         }
-      />
+      /> */}
       <DragWrapper
         id="dragWrapper"
         style={props}
         isMobile={isMobile}
       >
-        <Wave
+        {/* <Wave
           top="0px"
           color={theme.colors.beige.beige20}
-        />
+        /> */}
 
         <InnerWrapper>
           <Header
@@ -385,21 +389,35 @@ const ProjectroomPage: FC<ProjectroomPageProps> = ({
           >
             {isMobile && <HandleBar />}
 
-            <Box margin="21px 110px 0px 24px">
-              <Typography
-                variant="h3"
-                fontWeight={900}
-                fontSize={isMobile ? "5.6vw" : "22px"}
-              >
-                {data?.title || (
-                  <Skeleton
-                    height="22"
-                    width="200"
-                    baseColor="#E6D7BF"
-                    highlightColor="#F0E7D9"
-                  />
-                )}
-              </Typography>
+            <Box
+              margin="18px 16px 0px 24px"
+              justifyContent="space-between"
+              alignItems="flex-start"
+            >
+              <Box marginTop="5px">
+                <Typography
+                  variant="h3"
+                  fontWeight={900}
+                  fontSize={isMobile ? "5.6vw" : "22px"}
+                >
+                  {data?.title || (
+                    <Skeleton
+                      height="22"
+                      width="200"
+                      baseColor="#E6D7BF"
+                      highlightColor="#F0E7D9"
+                    />
+                  )}
+                </Typography>
+              </Box>
+
+              <Button
+                onClick={() => handleButtonClose(false)}
+                variant="secondary"
+                size="medium"
+                width="height"
+                icon="Close"
+              />
             </Box>
 
             {tagSlideVisible ? (
