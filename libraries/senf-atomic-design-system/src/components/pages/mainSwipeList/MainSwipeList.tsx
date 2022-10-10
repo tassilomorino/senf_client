@@ -247,7 +247,6 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
       setActiveSortOptionLabel(t("newest_projectrooms"));
       setCheckedSortOption("newest");
     }
-    console.log(order);
   }, [order, openOrganizationsOverview]);
 
   // useEffect(() => {

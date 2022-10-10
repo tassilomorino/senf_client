@@ -3,6 +3,7 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 import Button from "../../atoms/buttons/Button";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Arrow from "../../../assets/icons/Arrow";
 import More from "../../../assets/icons/More";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
@@ -19,6 +20,7 @@ const DetailSidebar: FC<DetailSidebarProps> = ({
   sideDivider,
 }) => {
   const isMobile = isMobileCustom();
+  const navigate = useNavigate();
   return (
     <Wrapper>
       <Box
@@ -32,7 +34,7 @@ const DetailSidebar: FC<DetailSidebarProps> = ({
       >
         <Button
           leadingIcon="ArrowLeft"
-          onClick={handleButtonClose}
+          onClick={() => navigate(-1)}
           size="medium"
           variant="white"
         />

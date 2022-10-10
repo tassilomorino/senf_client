@@ -31,14 +31,8 @@ import CreateOrganizationPage6 from "./Organization_components/CreateOrganizatio
 
 import CreateOrganizationPagePreview from "./Organization_components/CreateOrganizationPreview";
 // Redux
-import {
-  getOrganizations,
-  openOrganizationFunc,
-} from "../../redux/actions/organizationActions";
-import {
-  getProjects,
-  openProjectRoomFunc,
-} from "../../redux/actions/projectActions";
+import { getOrganizations } from "../../redux/actions/organizationActions";
+import { getProjects } from "../../redux/actions/projectActions";
 import CreateProjectPage5 from "./CreateProjectRoom_components/CreateProjectPage5";
 import CreateProjectPage0a from "./CreateProjectRoom_components/CreateProjectPage0a";
 
@@ -178,14 +172,12 @@ const CreateProjectDialog = ({ type }) => {
     // dispatch(stateCreateOrganizationsFunc(false));
 
     if (localStorage.getItem("createOrganizationId")) {
-      dispatch(
-        openOrganizationFunc(localStorage.getItem("createOrganizationId"), true)
-      );
+      dispatch();
+      // openOrganizationFunc(localStorage.getItem("createOrganizationId"), true)
     }
     if (localStorage.getItem("createProjectRoomId")) {
-      dispatch(
-        openProjectRoomFunc(localStorage.getItem("createProjectRoomId"), true)
-      );
+      dispatch();
+      // openProjectRoomFunc(localStorage.getItem("createProjectRoomId"), true)
     }
 
     if (localStorage.getItem("createOrganizationPostEdit") === "true") {

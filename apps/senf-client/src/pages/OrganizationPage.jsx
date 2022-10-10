@@ -14,10 +14,7 @@ import {
 // Redux stuff
 import { clearErrors } from "../redux/actions/errorsActions";
 
-import {
-  openOrganizationFunc,
-  stateCreateOrganizationsFunc,
-} from "../redux/actions/organizationActions";
+import { setOrganization } from "../redux/actions/organizationActions";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
 const CreateMainComponent = React.lazy(() =>
@@ -69,6 +66,7 @@ const OrganizationPage = ({
   handleCloseOrganizationPage,
   handleButtonOpenCard,
   user,
+  organizationId,
 }) => {
   const { t } = useTranslation();
   const organization = useSelector((state) => state.data.organization);
@@ -84,6 +82,10 @@ const OrganizationPage = ({
   const loadingOrganization = useSelector(
     (state) => state.data.loadingOrganization
   );
+
+  useEffect(() => {
+    dispatch(setOrganization(organizationId));
+  }, [organizationId]);
 
   const handleEditOrganization = () => {
     localStorage.setItem("createOrganizationId", organization?.organizationId);
