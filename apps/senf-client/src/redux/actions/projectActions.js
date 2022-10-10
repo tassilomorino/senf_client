@@ -17,8 +17,6 @@ import {
   LOADING_PROJECTS_DATA,
   SET_PROJECTS,
   SET_PROJECT,
-  OPEN_PROJECTROOM,
-  CLOSE_PROJECT,
   OPEN_CREATE_PROJECTROOM,
   LOADING_DATA,
   STOP_LOADING_DATA,
@@ -69,26 +67,22 @@ export const getProjects = (mapViewport) => async (dispatch) => {
 
 // Open a project
 
-export const openProjectRoomFunc =
-  (projectRoomId, state) => async (dispatch) => {
-    if (state === true) {
-      dispatch(setMapBounds(store.getState().data.initialMapBounds));
+// export const openProjectRoomFunc =
+//   (projectRoomId, state, navigate) => async (dispatch) => {
+//     if (state === true) {
+//       dispatch(setMapBounds(store.getState().data.initialMapBounds));
 
-      dispatch({ type: LOADING_PROJECTROOM_DATA });
-      dispatch({ type: OPEN_PROJECTROOM });
-      dispatch(setSwipePositionDown());
-      dispatch(loadProjectRoomData(projectRoomId));
-      dispatch(closeScream());
-      const newPath = `/projectRooms/${projectRoomId}`;
-      window.history.pushState(null, null, newPath);
-    } else {
-      dispatch({ type: SET_PROJECT, payload: null });
-      dispatch({ type: CLOSE_PROJECT });
-
-      window.history.pushState(null, null, "/projectRooms");
-    }
-  };
-export const loadProjectRoomData = (projectRoomId) => async (dispatch) => {
+//       dispatch({ type: LOADING_PROJECTROOM_DATA });
+//       // dispatch({ type: OPEN_PROJECTROOM });
+//       dispatch(setSwipePositionDown());
+//       dispatch(loadProjectRoomData(projectRoomId));
+//       dispatch(closeScream());
+//     } else {
+//       dispatch({ type: SET_PROJECT, payload: null });
+//       dispatch({ type: CLOSE_PROJECT });
+//     }
+//   };
+export const setProjectRoom = (projectRoomId) => async (dispatch) => {
   const projectRoomsRef = collectionGroup(db, "projectRooms");
   const q = query(projectRoomsRef, where("projectRoomId", "==", projectRoomId));
   const projectRoomsQuerySnapshot = await getDocs(q);

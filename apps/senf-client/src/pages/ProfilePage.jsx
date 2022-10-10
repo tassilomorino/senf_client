@@ -36,7 +36,6 @@ import { isMobileCustom } from "../util/customDeviceDetect";
 
 const ProfilePage = ({
   handleButtonOpenCard,
-  handleOpenProjectroom,
   setAuthEditOpen,
   handleButtonLike,
   handleButtonComment,
@@ -164,7 +163,6 @@ const ProfilePage = ({
         profilePageOrganizations={profilePageOrganizations}
         profilePageScreams={profilePageScreams}
         handleButtonOpenCard={handleButtonOpenCard}
-        handleOpenProjectroom={handleOpenProjectroom}
         handleButtonLike={handleButtonLike}
         handleButtonComment={handleButtonComment}
         handleButtonClose={handleClose}

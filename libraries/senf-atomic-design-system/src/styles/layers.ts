@@ -11,10 +11,10 @@ type Lightness = "light" | "medium" | "dark"
 type Size = "small" | "medium" | "large" | "sm" | "md" | "lg"
 type InteractionState = "hover" | "active"
 export interface BaseLayerProps {
-	type?: BaseType;
+	type: BaseType;
 	color?: BaseColor | SignalColor;
 	lightness?: Lightness;
-	border?: Lightness;
+	border?: Lightness | boolean;
 	size?: Size;
 	interactive?: boolean;
 	activatable?: boolean;
@@ -49,11 +49,12 @@ const getColor = ({ type, color, lightness }: BaseLayerProps, colors: Palette, s
 }
 const getBorder = ({ type, color, border }: BaseLayerProps, colors: Palette, state?: InteractionState) => {
 	const lightBorder = border === "light"
+	if (!border) return "transparent"
 	switch (type) {
-		case "senf": case "primary": return colors[lightBorder ? "white/500" : "shade/300"];
-		case "transparent": return colors[color === "white" ? "white/500" : `${color}/300`];
-		case "white": return colors[lightBorder ? "white/800" : "shade/200"];
-		case "invisible": default: return state ? colors["grey/300"] : "transparent";
+		case "senf": case "primary": return colors[lightBorder ? "white/500" : "shade/300"] || "transparent";
+		case "transparent": return colors[color === "white" ? "white/500" : `${color}/300`] || "transparent";
+		case "white": return colors[lightBorder ? "white/800" : "shade/200"] || "transparent";
+		case "invisible": default: return state && colors["grey/300"] || "transparent";
 	}
 }
 const getText = ({ type, color, textColor }: BaseLayerProps, colors: Palette) => {
@@ -67,12 +68,12 @@ const getText = ({ type, color, textColor }: BaseLayerProps, colors: Palette) =>
 const getShadow = ({ type, size = "medium" }: BaseLayerProps, colors: Palette) => {
 	const color = () => {
 		switch (type) {
-			case "senf": case "primary": return colors.primary;
+			case "senf": case "primary": return colors["primary/900"];
 			case "white": return colors["grey/400"];
 			default: return false;
 		}
 	}
-	if (!color) return ""
+	if (!color()) return "0 0 transparent"
 	const sizeMap = { small: 1, medium: 2, large: 3 }
 	const shadowMap = [7, 15, 3]
 	const [y, s, o] = shadowMap.map(e => sizeMap[size] * e)
@@ -85,14 +86,15 @@ export default ({ interactive = true, activatable = true, ...props }: BaseLayerP
 		--color: ${getText(props, colors)};
 		--border-color: ${getBorder(props, colors)};
 		--border-width: 2px;
+		--border: inset 0 0 0 var(--border-width) var(--border-color);
+
 		// box-sizing should be in the global styles and applied to all elements with a * selector
 		box-sizing: border-box;
 		color: var(--color);
 		background-color: var(--bgColor);
-		border: var(--border-width) solid var(--border-color);
-		box-shadow: ${getShadow(props, colors)};
-		cursor: pointer;
-		transition: all 300ms;
+		box-shadow: ${getShadow(props, colors)}, var(--border);
+		
+		transition: all 200ms;
 
 		&:hover {
 			--bgColor: ${getColor(props, colors, interactive ? "hover" : undefined)};
@@ -102,12 +104,19 @@ export default ({ interactive = true, activatable = true, ...props }: BaseLayerP
 			--bgColor: ${getColor(props, colors, interactive ? "active" : undefined)};
 			--border-color: ${getBorder(props, colors, interactive ? "active" : undefined)};
 		}
-		${activatable ?
-			`&:focus {
+
+		${interactive && css`cursor: pointer;`}
+
+		${!interactive && css`
+			pointer-events: none;
+			cursor: default !important;
+		`}
+
+		${interactive && activatable && css`
+			&:focus {
 				--border-color: ${colors.primary};
 				--border-width: 3px
 			}`
-			: null
 		}
 `
 }

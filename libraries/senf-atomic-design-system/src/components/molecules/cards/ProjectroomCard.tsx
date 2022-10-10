@@ -124,12 +124,13 @@ const ProjectroomCard: FC<ProjectroomCardProps> = ({
       onClick={(event) =>
         handleButtonOpenCard(event, "projectroomCard", cardProjectRoomId)
       }
+      // onClick={(event) => handleOpenProjectroom(event, cardProjectRoomId)}
       // active={thisOrganizationId === organization?.organizationId}
     >
       <InnerWrapper>
         {/* {status !== "active" && (
         <DeactivatedWrapper>
-           <img src={NotPublishedIcon} width="100%" /> 
+           <img src={NotPublishedIcon} width="100%" />
         </DeactivatedWrapper>
       )}
     */}

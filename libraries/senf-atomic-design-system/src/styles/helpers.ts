@@ -93,7 +93,7 @@ export const generateRaw = (
 	})
 	return themeColors
 }
-export const generateThemeColors = (colors: ColorPallet, luminance: number[], mix: HSL | boolean = [0, 0, 100]) => {
+export const generateThemeColors = (colors: ColorPallet, luminance: number[] = [100], mix: HSL | boolean = [0, 0, 100]) => {
 	const conv = Object.fromEntries(Object.entries(
 		generateRaw(colors, luminance, mix)
 	).map(e => { e[1] = hsla(...e[1] as HSLA); return e }))

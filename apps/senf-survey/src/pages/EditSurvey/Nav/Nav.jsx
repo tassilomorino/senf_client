@@ -1,6 +1,13 @@
 import React, { useEffect } from "react";
 import styled, { useTheme } from "styled-components";
-import { Box, Button, Edit, LayerWhiteFirstDefault, Tabs, Typography } from "senf-atomic-design-system";
+import {
+  Box,
+  Button,
+  Edit,
+  LayerWhiteFirstDefault,
+  Tabs,
+  Typography,
+} from "senf-atomic-design-system";
 import { useTranslation } from "react-i18next";
 import {
   Eye,
@@ -29,14 +36,14 @@ const Nav = ({ title, order, setOrder }) => {
         <Box
           alignItems="center"
           style={{ flex: 1 }}
-          gap='0.5rem'
+          gap="0.5rem"
         >
-          <Link to={'/'}>
+          <Link to={"/"}>
             <Button
               variant="secondary"
               size="small"
               borderStyle="solid"
-              icon={<Arrow transform="rotateY(180deg)" />}
+              leadingIcon="ArrowDown"
             />
           </Link>
           <Typography variant="bodyBg">{title}</Typography>

@@ -297,7 +297,7 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
               variant="secondary"
               size="small"
               text={formikEditIdea?.values.weblinkTitle || t("add_weblink")}
-              icon={<Hyperlink />}
+              leadingIcon={<Hyperlink />}
               options={{
                 style: {
                   padding: 20,
@@ -356,7 +356,7 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
               variant="secondary"
               size="small"
               text={formikEditIdea?.values.contactTitle || t("add_contact")}
-              icon={<Mail />}
+              leadingIcon={<Mail />}
               options={{
                 style: {
                   padding: "20px",
@@ -377,7 +377,7 @@ const EditIdeaPage: FC<EditIdeaPageProps> = ({
               <ModalButton
                 variant={selectedDays.length > 0 ? "primary" : "secondary"}
                 size="small"
-                icon={<CalendarIcon />}
+                leadingIcon={<CalendarIcon />}
                 options={{
                   style: {
                     padding: 20,

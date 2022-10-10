@@ -61,13 +61,13 @@ const MobileTopBar: FC<MobileTopBarProps> = ({
           variant="tertiary"
           size="small"
           onClick={() => handleOpenMyAccount(true)}
-          icon={<User />}
+          leadingIcon={<User />}
         />
 
         <ModalButton
           variant="tertiary"
           size="small"
-          icon={<Info />}
+          leadingIcon={<Info />}
           options={{
             swipe: true,
             size: "lg",

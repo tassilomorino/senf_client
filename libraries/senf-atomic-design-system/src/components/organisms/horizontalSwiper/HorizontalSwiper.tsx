@@ -104,13 +104,13 @@ const HorizontalSwiper: FC = ({ data, handleButtonOpenCard }) => {
         >
           <Button
             size="small"
-            icon={<Arrow transform="rotate(180)" />}
+            leadingIcon="ArrowLeft"
             onClick={handlePrev}
             disabled={active === 0}
           />
           <Button
             size="small"
-            icon={<Arrow />}
+            leadingIcon="Arrow"
             onClick={handleNext}
             disabled={active === data.length - 1}
           />

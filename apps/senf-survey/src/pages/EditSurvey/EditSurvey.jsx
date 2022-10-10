@@ -101,7 +101,7 @@ const EditSurvey = () => {
             onClick={addQuestion}
             variant="white"
             text="Add Question"
-            icon={<Plus />}
+            leadingIcon="Plus"
           />
         </Box>
       </Box>,

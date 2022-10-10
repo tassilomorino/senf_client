@@ -159,7 +159,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
               formik?.values.weblink ||
               t("add_weblink")
             }
-            icon={<Hyperlink />}
+            leadingIcon="Hyperlink"
             options={{
               style: {
                 padding: 20,
@@ -186,7 +186,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
               formik?.values.contact ||
               t("postidea_form_add_contact")
             }
-            icon={<Mail />}
+            leadingIcon="Mail"
             options={{
               style: {
                 padding: 20,
@@ -214,20 +214,34 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
         </Typography>
         <DropdownButton
           variant="secondary"
-          size="small"
-          icon={
+          size={isMobile ? "medium" : "small"}
+          leadingIcon={
             formik?.values?.topic ? (
               <Dot color={setColorByTopic(formik?.values?.topic)} />
             ) : (
-              <DotAllTopics />
+              "DotAllTopics"
             )
           }
+          // leadingIcon={
+          //   formik?.values?.topic ? (
+          //     <Dot color={setColorByTopic(formik?.values?.topic)} />
+          //   ) : (
+          //     <DotAllTopics />
+          //   )
+          // }
           justifyContent="flex-start"
           width="max"
           text={formik?.values.topicLabel || t("choose_category")}
-          options={{ size: "md", closeOnSelect: true, modal: !!isMobile }}
+          options={{
+            size: isMobile ? "lg" : "md",
+            title: t("postidea_form_category"),
+            closeOnSelect: true,
+            style: { padding: 10 },
+            modal: !!isMobile,
+          }}
           data={OptionsTopics().map(({ value, label }) => {
             return {
+              type: "check",
               text: label,
               leadingIcon: <Dot color={setColorByTopic(value)} />,
               onClick: () => {
@@ -254,7 +268,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
             }
             size="small"
             width="max"
-            icon={<CalendarIcon />}
+            leadingIcon="CalendarIcon"
             options={{
               style: {
                 padding: 20,

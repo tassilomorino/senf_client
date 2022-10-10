@@ -25,7 +25,7 @@ import { OptionsProjects } from "../data/OptionsProjects";
 // Components
 import PostScreamSelectContainter from "../components/PostIdea/PostScreamSelectContainter";
 import Auth from "./Auth";
-import { loadProjectRoomData } from "../redux/actions/projectActions";
+import { setProjectRoom } from "../redux/actions/projectActions";
 
 const AuthFirst = styled.div`
   position: fixed;
@@ -182,7 +182,7 @@ const PostIdeaPage = ({
           };
           setViewport(viewport);
 
-          dispatch(loadProjectRoomData(cardId));
+          dispatch(setProjectRoom(cardId));
 
           setProjectroomSelected(element);
           setGeoData(element.geoData);

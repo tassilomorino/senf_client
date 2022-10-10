@@ -267,8 +267,6 @@ const Map: FC<MapProps> = ({
   const initialFly = useInitialFly();
   const navigationControl = useNavigationControl();
 
-  const [geolocateTrigger, setGeolocateTrigger] = useState(false);
-
   const drawType = mapType?.drawType;
 
   const hover = useHover();
@@ -428,11 +426,10 @@ const Map: FC<MapProps> = ({
   }, [mapFilterActive]);
 
   useEffect(() => {
-    if (statefulMap && !openIdea && !openProjectRoom) {
+    if (statefulMap) {
       initialFly(statefulMap, initialMapViewport);
-      setGeolocateTrigger(true);
     }
-  }, [statefulMap, openProjectRoom]);
+  }, [statefulMap]);
 
   useEffect(() => {
     showProjectroomPolygon(

@@ -6,16 +6,16 @@ import {
   IdeaDetailPage as IdeaDetailPageComponent,
   useModals,
 } from "senf-atomic-design-system";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { isMobileCustom } from "../util/customDeviceDetect";
 // Redux stuff
 import {
   closeScream,
   deleteScream,
   editScreamFunc,
+  setIdea,
 } from "../redux/actions/screamActions";
 import { clearErrors } from "../redux/actions/errorsActions";
-import { openProjectRoomFunc } from "../redux/actions/projectActions";
 import { deleteComment, submitComment } from "../redux/actions/commentActions";
 import { openLink } from "../util/helpers";
 import { openAccountFunc } from "../redux/actions/accountActions";
@@ -26,6 +26,7 @@ const IdeaDetailPage = ({
   handleButtonComment,
   projectroomsData,
   user,
+  ideaId,
 }) => {
   const data = useSelector((state) => state.data.scream);
   const { closeModal } = useModals();
@@ -36,6 +37,11 @@ const IdeaDetailPage = ({
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { city } = useParams();
+
+  useEffect(() => {
+    dispatch(setIdea(ideaId));
+  }, [ideaId]);
 
   const openScream = useSelector((state) => state.UI.openScream);
 
@@ -44,7 +50,7 @@ const IdeaDetailPage = ({
   const [commentFormLoading, setCommentFormLoading] = useState(false);
 
   useEffect(() => {
-    if (openScream && lat !== undefined) {
+    if (screamId && lat !== undefined) {
       window.scrollTo({
         top: 0,
         left: 0,
@@ -53,7 +59,7 @@ const IdeaDetailPage = ({
 
       setPath(`https://senf.koeln/${screamId}`);
     }
-  }, [lat, long, openScream, screamId]);
+  }, [lat, long, screamId]);
 
   const [projectroomCardData, setProjectroomCardData] = useState([]);
 
@@ -103,7 +109,7 @@ const IdeaDetailPage = ({
     },
 
     openProjectroom: (projectRoomId) => {
-      dispatch(openProjectRoomFunc(projectRoomId, true));
+      navigate(`/${city}/projectRooms/${projectRoomId}`);
     },
 
     editIdea: (values) => {
@@ -174,11 +180,11 @@ const IdeaDetailPage = ({
     },
     openProfilePage: (profileId) => {
       /* dispatch(openProjectRoomFunc(null, false));
-      
-      
+
+
       dispatch(handleTopicSelectorRedux("all")); */
       dispatch(closeScream());
-      dispatch(openProjectRoomFunc(null, false));
+      // dispatch(openProjectRoomFunc(null, false));
       dispatch(openAccountFunc());
       navigate(`/profile/${profileId}`);
     },

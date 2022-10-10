@@ -289,7 +289,7 @@ const StatisticsOverviewPage = ({
   return (
     <React.Fragment>
       <StatisticsOverview
-        openStatisticsOverview={openStatisticsOverview}
+        openStatisticsOverview={true}
         setOpenStatisticsOverview={setOpenStatisticsOverview}
       >
         <Keyindicators

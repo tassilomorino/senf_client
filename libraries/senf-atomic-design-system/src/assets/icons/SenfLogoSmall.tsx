@@ -14,7 +14,7 @@ const Svg = styled.svg`
 
 const SenfLogoSmall: FC<SVGRProps> = ({
   color = "#FFD96B",
-  transform = "translate(0px, 2px)",
+  transform = "translate(0, 2)",
 }) => (
   <Svg
     width="16px"

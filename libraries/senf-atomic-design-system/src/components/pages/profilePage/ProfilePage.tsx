@@ -124,7 +124,6 @@ const ProfilePage: FC<ProfilePageProps> = ({
   profilePageOrganizations,
   profilePageScreams,
   handleButtonOpenCard,
-  handleOpenProjectroom,
   handleButtonClose,
   handleSetAuthEditOpen,
   handleLogout,
@@ -201,7 +200,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
               variant="white"
               width="height"
               size="md"
-              icon="More"
+              leadingIcon="More"
               data={[
                 {
                   text: t("profile.edit"),
@@ -347,7 +346,6 @@ const ProfilePage: FC<ProfilePageProps> = ({
             data={order === 1 ? profilePageScreams : profilePageOrganizations}
             listType={order === 2 && "grid"}
             handleButtonOpenCard={handleButtonOpenCard}
-            handleOpenProjectroom={handleOpenProjectroom}
             handleButtonLike={handleButtonLike}
             handleButtonComment={handleButtonComment}
             organizations={organizations}

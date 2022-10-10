@@ -1,11 +1,12 @@
 /** @format */
 
 import { MouseEventHandler } from "react";
+
 export interface TertiaryButtonProps {
   text?: string;
   iconLeft?: React.ReactNode;
   iconLeftTransform?: string;
-  iconRight?: React.ReactNode;
+  trailingIcon?: React.ReactNode;
   iconRightTransform?: string;
   width?: "max" | undefined;
   loading?: boolean;

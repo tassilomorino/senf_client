@@ -33,13 +33,12 @@ const DropdownButton: FC<DropdownButtonProps> = ({
   const { openModal, closeModal } = useModals();
   const [open, setOpen] = useState(false);
   const CustomButton = button || Button;
-  useOnClickOutside(outerRef, () => setOpen(false));
+  useOnClickOutside(outerRef, () => setOpen(options?.modal ? open : false));
 
   useEffect(() => {
     if (options?.modal) {
       if (!open) {
         closeModal();
-
         return;
       }
       openModal(
@@ -47,7 +46,7 @@ const DropdownButton: FC<DropdownButtonProps> = ({
           data={data}
           options={{ ...options, open, setOpen }}
         />,
-        { swipe: true, title: options?.title, style: { padding: 20 } }
+        { swipe: true, title: options?.title, style: options?.style }
       );
     }
   }, [open]);
@@ -60,6 +59,7 @@ const DropdownButton: FC<DropdownButtonProps> = ({
     <Wrapper ref={outerRef}>
       <CustomButton
         onClick={handleClick}
+        trailingIcon={options?.modal ? "ArrowDown" : ""}
         {...props}
       />
       {!options?.modal && (

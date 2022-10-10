@@ -145,12 +145,12 @@ const Example: FC = () => {
         justifyContent="center"
       >
         <Button
-          icon={<Arrow transform="rotate(180)" />}
+          leadingIcon="ArrowLeft"
           onClick={handlePrev}
           disabled={active === 0}
         />
         <Button
-          icon={<Arrow />}
+          leadingIcon="ArrowRight"
           onClick={handleNext}
           disabled={active === pages.length - 1}
         />

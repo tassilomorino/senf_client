@@ -2,7 +2,12 @@
 
 import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { Provider } from "react-redux";
 import {
@@ -45,7 +50,6 @@ import Blank from "./pages/Blank";
 import "./util/i18n";
 
 import Home from "./pages/Home";
-import Palette from "./pages/Palette";
 
 // const Main = React.lazy(() =>
 //   Promise.all([
@@ -135,44 +139,65 @@ const App = () => {
             <ModalProvider>
               <RotateDevice />
               <Routes>
-                <Route exact path="/projectRooms" element={<Home />} />
-                <Route exact path="/organizations" element={<Home />} />
-                <Route exact path="/idea/:screamId" element={<Home />} />
-                <Route exact path="/profile/:profileId" element={<Home />} />
                 <Route
-                  exact
-                  path="/projectRooms/:projectRoomId/:screamId"
+                  path="/"
                   element={<Home />}
                 />
                 <Route
                   exact
-                  path="/projectRooms/:projectRoomId"
+                  path="/:city"
+                  element={<Home />}
+                />
+                <Route
+                  exact
+                  path="/:city/info"
+                  element={<Home />}
+                />
+                <Route
+                  exact
+                  path="/:city/projectRooms"
+                  element={<Home />}
+                />
+                <Route
+                  exact
+                  path="/:city/organizations"
+                  element={<Home />}
+                />
+                <Route
+                  exact
+                  path="/:city/ideas/:ideaId"
+                  element={<Home />}
+                />
+                <Route
+                  exact
+                  path="/profile/:profileId"
+                  element={<Home />}
+                />
+                <Route
+                  exact
+                  path="/:city/projectRooms/:projectRoomId/:screamId"
+                  element={<Home />}
+                />
+                <Route
+                  exact
+                  path="/:city/projectRooms/:projectRoomId"
                   element={<Home />}
                 />
 
                 <Route
                   exact
-                  path="/organizations/:organizationId"
+                  path="/:city/organizations/:organizationId"
+                  element={<Home />}
+                />
+                <Route
+                  exact
+                  path="/:city/statistics"
                   element={<Home />}
                 />
 
                 <Route
                   exact
                   path="/verify"
-                  element={<Home />}
-                />
-                <Route
-                  exact
-                  path="/:unknownPathId"
-                  element={<Home />}
-                />
-                <Route
-                  exact
-                  path="/"
-                  element={<Home />}
-                />
-                <Route
-                  path="*"
                   element={<Home />}
                 />
 

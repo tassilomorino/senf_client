@@ -19,7 +19,6 @@ const Container = styled(animated.div)<DropdownListContainerProps>`
   min-width: max-content;
   height: auto;
   padding: ${({ theme }) => theme.space[2]};
-  gap: ${({ theme }) => theme.space[2]};
   border-radius: ${({ theme }) => `${theme.radii[2]}px`};
 
   top: ${({ options, theme }) =>

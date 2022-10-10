@@ -48,7 +48,7 @@ const Navigation = ({ setSwipedUp, swipedUp }) => {
         }
         size={isMobile || !swipedUp ? "big" : "small"}
         variant="primary"
-        icon={
+        leadingIcon={
           isMobile || !swipedUp ? (
             <Plus
               color={"white"}

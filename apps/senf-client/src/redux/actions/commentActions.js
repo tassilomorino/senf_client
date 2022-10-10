@@ -13,8 +13,6 @@ import { db } from "../../firebase";
 
 import { clearErrors } from "./errorsActions";
 
-import { openScreamFunc } from "./screamActions";
-
 import {
   DELETE_COMMENT,
   LOADING_UI,

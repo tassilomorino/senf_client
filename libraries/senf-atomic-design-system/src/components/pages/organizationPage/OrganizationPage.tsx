@@ -136,8 +136,8 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
       >
         <Button
           variant="tertiary"
-          size="big"
-          icon={<Plus transform="rotate(45)" />}
+          size="lg"
+          leadingIcon="Close"
           onClick={handleCloseOrganizationPage}
         />
       </Box>
@@ -152,7 +152,7 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
           <Button
             variant="tertiary"
             size="big"
-            icon={<More />}
+            leadingIcon="More"
             onClick={handleEditOrganization}
           />
         </Box>
@@ -292,7 +292,7 @@ const OrganizationPage: FC<OrganizationPageProps> = ({
       <Box margin="21px 0px 0px 18px">
         <TertiaryButton
           text={t("information")}
-          iconRight={
+          trailingIcon={
             <Arrow transform={infoOpen ? "rotate(-90deg) " : "rotate(0deg) "} />
           }
           onClick={() => setInfoOpen(!infoOpen)}

@@ -333,7 +333,7 @@ const ThreeDToolSwipeList: FC<ThreeDToolSwipeListProps> = ({
                   </Typography>
                   <ModalButton
                     variant="primary"
-                    icon={<Plus />}
+                    leadingIcon="Plus"
                     text="3D Modell hochladen"
                     width="max"
                     options={{

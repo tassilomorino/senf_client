@@ -1,25 +1,31 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Box, Button, Input } from "senf-atomic-design-system"
+import { Box, Button, Input } from "senf-atomic-design-system";
 import { ButtonsGroup, Container } from "./Styled.Option";
 
 const Option = ({ opt, addOptions, deleteOptions, updateText }) => {
   const { t } = useTranslation();
   return (
-    <Box justifyContent="center" alignItems="center">
+    <Box
+      justifyContent="center"
+      alignItems="center"
+    >
       <Container>
-        <Box padding="20px" flexDirection="column">
+        <Box
+          padding="20px"
+          flexDirection="column"
+        >
           <Box>
             <Input
               name="title"
               type="text"
               placeholder={t("add_description")}
               label={t("projectRoom_title")}
-            // onChange={formik?.handleChange}
-            // onBlur={formik?.handleBlur}
-            // value={formik?.values.title}
-            // error={formik?.touched.title && Boolean(formik?.errors.title)}
-            // note={formik?.touched.title && formik?.errors.title}
+              // onChange={formik?.handleChange}
+              // onBlur={formik?.handleBlur}
+              // value={formik?.values.title}
+              // error={formik?.touched.title && Boolean(formik?.errors.title)}
+              // note={formik?.touched.title && formik?.errors.title}
             />
             {/* <input
         type="text"
@@ -35,7 +41,7 @@ const Option = ({ opt, addOptions, deleteOptions, updateText }) => {
                 size="small"
                 type="button"
                 onClick={addOptions}
-                icon={'Plus'}
+                leadingIcon="Plus"
               />
               <Button
                 size="small"
@@ -45,7 +51,7 @@ const Option = ({ opt, addOptions, deleteOptions, updateText }) => {
                 }}
                 variant="secondary"
                 fillWidth="max"
-                icon={'Minus'}
+                leadingIcon="Minus"
               />
             </ButtonsGroup>
           </Box>

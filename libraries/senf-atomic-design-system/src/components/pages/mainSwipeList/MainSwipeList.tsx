@@ -157,7 +157,6 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   openOrganizationsOverview,
 
   handleButtonOpenCard,
-  handleOpenProjectroom,
   handleButtonLike,
   handleButtonComment,
   user,
@@ -177,6 +176,8 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
   postIdeaOpen,
   setPostIdeaOpen,
   postIdeaSuccessModalOpen,
+
+  handleOpenInfoPage,
 }) => {
   const { t } = useTranslation();
   const isMobile = isMobileCustom();
@@ -247,7 +248,6 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
       setActiveSortOptionLabel(t("newest_projectrooms"));
       setCheckedSortOption("newest");
     }
-    console.log(order);
   }, [order, openOrganizationsOverview]);
 
   // useEffect(() => {
@@ -358,7 +358,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
           variant="secondary"
           size="small"
           text={order === "ideas" ? t("statistics") : t("organizations")}
-          icon={order === "ideas" ? <Stats /> : null}
+          leadingIcon={order === "ideas" ? "Stats" : null}
           onClick={
             order === "ideas"
               ? () => setOpenStatisticsOverview(true)
@@ -420,6 +420,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
             <MenuSidebar
               handleOpenMyAccount={handleOpenMyAccount}
               setShowUI={setShowUI}
+              handleOpenInfoPage={handleOpenInfoPage}
               setOrder={setOrder}
               setPostIdeaOpen={setPostIdeaOpen}
             />
@@ -451,13 +452,13 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
               }}
             >
               <Button
-                icon={<Stats />}
+                leadingIcon={<Stats />}
                 size="small"
                 transform="scale(0.7)"
                 onClick={() => setOpenStatisticsOverview(true)}
               />
               <Button
-                icon={<Vereine />}
+                leadingIcon={<Vereine />}
                 size="small"
                 transform="scale(0.7)"
                 onClick={() => setOpenOrganizationsOverview(true)}
@@ -466,7 +467,7 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
                 <RoundedButtonWrapper>
                   <RoundedButton
                     size="lg"
-                    icon={
+                    leadingIcon={
                       <Plus
                         color={theme.colors.primary.primary120}
                         transform="scale(2)"
@@ -525,7 +526,6 @@ const MainSwipeList: FC<MainSwipeListProps> = ({
                   ideasData={ideasData}
                   projectroomsData={projectroomsData}
                   handleButtonOpenCard={handleButtonOpenCard}
-                  handleOpenProjectroom={handleOpenProjectroom}
                   handleButtonLike={handleButtonLike}
                   handleButtonComment={handleButtonComment}
                   user={user}

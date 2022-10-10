@@ -310,7 +310,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
             size="md"
             width="height"
             variant="white"
-            icon="Share"
+            leadingIcon="Share"
             data={
               <SocialmediaShare
                 path={path}
@@ -324,7 +324,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
             size="medium"
             variant="white"
             width="height"
-            icon="More"
+            leadingIcon="More"
             data={
               user?.userId === userId ||
               user?.isSuperAdmin === true ||
@@ -340,7 +340,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                       size="small"
                       text={t("idea.edit")}
                       justifyContent="flex-start"
-                      icon={<Edit />}
+                      leadingIcon="Edit"
                       options={{
                         padding: 0,
                         swipe: isMobile && true,
@@ -360,7 +360,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                       size="small"
                       text={t("idea.delete")}
                       justifyContent="flex-start"
-                      icon={<Delete />}
+                      leadingIcon="Delete"
                       options={{
                         style: {
                           padding: 20,
@@ -460,14 +460,16 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                   <Button
                     variant="tertiary"
                     size="small"
-                    icon={liked() ? <FlameActive /> : <FlameInactive />}
+                    leadingIcon={liked() ? "FlameActive" : "FlameInactive"}
                     text={likeCount}
                     onClick={(event) => handle.buttonLike(event, screamId)}
                   />
                   <Button
                     variant="tertiary"
                     size="small"
-                    icon={commented() ? <CommentActive /> : <CommentInactive />}
+                    leadingIcon={
+                      commented() ? "CommentActive" : "CommentInactive"
+                    }
                     text={commentCount}
                     onClick={(event) => handle.buttonComment(event, screamId)}
                   />
@@ -516,7 +518,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                   {contact && (
                     <Button
                       variant="secondary"
-                      icon={<Mail />}
+                      leadingIcon="Mail"
                       text={contactTitle || contact}
                       size="small"
                       onClick={() => openMail(contact)}
@@ -525,7 +527,7 @@ const IdeaDetailPage: FC<IdeaDetailPageProps> = ({
                   {weblink && (
                     <Button
                       variant="secondary"
-                      icon={<Hyperlink />}
+                      leadingIcon="Hyperlink"
                       text={weblinkTitle || weblink}
                       size="small"
                       onClick={() => openLink(weblink)}

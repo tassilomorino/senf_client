@@ -217,7 +217,7 @@ const Home = ({ setLoadingModel }) => {
       >
         <Button
           onClick={() => handleSaveModalOpen(true)}
-          icon={<Check />}
+          leadingIcon={<Check />}
           text={!isMobile ? "Speichern" : ""}
         />
       </Box>
@@ -228,7 +228,7 @@ const Home = ({ setLoadingModel }) => {
           left={"20px"}
         >
           <Button
-            icon={<AllOrganizationTypes />}
+            leadingIcon={<AllOrganizationTypes />}
             onClick={() => console.log("")}
           />
         </Box>

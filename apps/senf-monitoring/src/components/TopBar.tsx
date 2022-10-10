@@ -95,7 +95,7 @@ const TopBar = () => {
               variant="secondary"
               size="small"
               text={currentMonitoringBoard?.title}
-              iconRight={<Arrow transform="rotate(90deg)" />}
+              trailingIcon="ArrowDown"
               options={{ itemType: "check" }}
               data={Object.values(
                 monitoringBoards as { label: string; value: string }[]
@@ -119,7 +119,7 @@ const TopBar = () => {
             variant="secondary"
             size="small"
             text={currentMonitoringBoard?.title}
-            iconRight={<Arrow transform="rotate(90deg)" />}
+            trailingIcon="ArrowDown"
             options={{ itemType: "check" }}
             data={Object.values(
               monitoringBoards as { label: string; value: string }[]
@@ -153,7 +153,7 @@ const TopBar = () => {
           <DropdownButton
             variant="secondary"
             size="medium"
-            icon="Bell"
+            leadingIcon="Bell"
             // data={Object.values(
             //   monitoringBoards as { label: string; value: string }[]
             // ).map((item) => ({
@@ -176,7 +176,7 @@ const TopBar = () => {
               img={user?.photoURL}
               placeholder={user?.handle.slice(0, 1)}
               size="small"
-              iconRight={<Arrow transform="rotate(90deg)" />}
+              trailingIcon="ArrowDown"
               options={{ itemType: "check" }}
               data={[
                 // {

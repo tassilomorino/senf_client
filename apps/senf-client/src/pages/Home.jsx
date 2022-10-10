@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ReactDOM from "react-dom";
 
 import { useDispatch, useSelector } from "react-redux";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   MainLoader,
   Map,
@@ -11,8 +12,7 @@ import {
 } from "senf-atomic-design-system";
 import Cookies from "universal-cookie";
 import { setMapBounds } from "../redux/actions/mapActions";
-import { openProjectRoomFunc } from "../redux/actions/projectActions";
-import { closeScream, openScreamFunc } from "../redux/actions/screamActions";
+import { closeScream, setIdea } from "../redux/actions/screamActions";
 import { isMobileCustom } from "../util/customDeviceDetect";
 import {
   filterByStatus,
@@ -65,6 +65,13 @@ const Home = () => {
   const selectedOrganizationTypes = useSelector(
     (state) => state.data.organizationTypes
   );
+  const { city } = useParams();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!city) {
+      navigate(`/cologne`);
+    }
+  }, []);
 
   const handleSetMapBounds = (bounds) => {
     const boundsNew = {
@@ -100,16 +107,13 @@ const Home = () => {
     }
   }, [initialMapBounds, initialMapViewport]);
 
-  const handleClickIdeaMarker = useCallback(
-    (id) => {
-      dispatch(openScreamFunc(id));
-    },
-    [dispatch]
-  );
+  const handleClickIdeaMarker = useCallback((id) => {
+    navigate(`/${city}/ideas/${id}`);
+  }, []);
 
   const handleClickProjectroomMarker = useCallback(
     (id) => {
-      dispatch(openProjectRoomFunc(id, true));
+      navigate(`/${city}/projectRooms/${id}`);
     },
     [dispatch]
   );
@@ -176,6 +180,7 @@ const Home = () => {
       setShowUI(true);
     } else {
       setTimeout(() => {
+        navigate(`/${city}/info`);
         openModal(<InfoPageMainApp />, {
           swipe: !!isMobileCustom,
           size: "xl",
@@ -249,12 +254,12 @@ const Home = () => {
         setStatefulMap={setStatefulMap}
         setInitialMapBounds={setInitialMapBounds}
         mapFilterActive={mapFilterActive}
-        openIdea={openScream}
+        openIdea={scream}
         openProjectRoom={openProjectRoom}
         ideasData={
           (order === 1 || openProjectRoom) && !postIdeaOpen && dataFinalMap
         }
-        ideaData={openScream && scream}
+        ideaData={scream}
         projectroomsData={
           order === 2 &&
           !openProjectRoom &&

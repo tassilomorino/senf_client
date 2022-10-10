@@ -97,7 +97,7 @@ const MenuSidebar = ({
           <RoundedButtonWrapper componentsSidebarOpen={componentsSidebarOpen}>
             <RoundedButton
               color={!componentsSidebarOpen ? "white" : "rgb(226,183,54)"}
-              icon={<Plus />}
+              leadingIcon="Plus"
               onClick={() => setComponentsSidebarOpen(!componentsSidebarOpen)}
               size="lg"
               variant={!componentsSidebarOpen ? "primary" : undefined}
@@ -109,7 +109,7 @@ const MenuSidebar = ({
         {/* <Button
           variant="secondary"
           size="small"
-          icon={visibleMarkers ? "check" : "dot"}
+          leadingIcon={visibleMarkers ? "check" : "dot"}
           text="Marker"
           onClick={visibleMarkers ? showMarkers : hideMarkers}
         /> */}

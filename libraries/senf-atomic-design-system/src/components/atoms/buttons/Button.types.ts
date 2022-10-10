@@ -5,8 +5,10 @@ import React, { MouseEventHandler } from "react";
 export interface ButtonProps {
   text?: string;
   variant?: "primary" | "secondary" | "tertiary" | "white" | "plus";
-  icon?: React.ReactNode;
-  iconRight?: React.ReactNode;
+
+  leadingIcon?: JSX.Element | string;
+  trailingIcon?: JSX.Element | string;
+
   transform?: string;
   borderStyle?: "dashed" | "solid";
   width?: "max" | "height" | number;
@@ -15,11 +17,11 @@ export interface ButtonProps {
   size?: "small" | "medium" | "large" | "sm" | "md" | "lg";
   color?: string;
   justifyContent?:
-    | "center"
-    | "flex-start"
-    | "flex-end"
-    | "space-between"
-    | "space-around";
+  | "center"
+  | "flex-start"
+  | "flex-end"
+  | "space-between"
+  | "space-around";
   onClick?: MouseEventHandler<HTMLButtonElement>;
   type?: "button" | "submit" | "reset";
 }

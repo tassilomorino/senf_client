@@ -5,10 +5,6 @@ import {
   CLEAR_ERRORS,
   LOADING_UI,
   STOP_LOADING_UI,
-  OPEN_SCREAM,
-  CLOSE_SCREAM,
-  OPEN_PROJECTROOM,
-  CLOSE_PROJECT,
   OPEN_CREATE_PROJECTROOM,
   CLEAR_LOADING_ERRORS,
   OPEN_MONITORING_SCREAM,
@@ -19,7 +15,6 @@ import {
   VOTED_FALSE,
   OPEN_ACCOUNT,
   CLOSE_ACCOUNT,
-  OPEN_ORGANIZATION,
   OPEN_CREATE_ORGANIZATION,
   SET_SWIPEPOSITION_UP,
   SET_SWIPEPOSITION_DOWN,
@@ -72,18 +67,6 @@ export default function (state = initialState, action) {
         loading: false,
       };
 
-    case OPEN_SCREAM:
-      return {
-        ...state,
-        openScream: true,
-      };
-
-    case CLOSE_SCREAM:
-      return {
-        ...state,
-        openScream: false,
-      };
-
     case OPEN_MONITORING_SCREAM:
       return {
         ...state,
@@ -94,18 +77,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         openMonitoringScream: false,
-      };
-
-    case OPEN_PROJECTROOM:
-      return {
-        ...state,
-        openProjectRoom: true,
-      };
-
-    case CLOSE_PROJECT:
-      return {
-        ...state,
-        openProjectRoom: false,
       };
 
     case OPEN_CREATE_PROJECTROOM:
@@ -124,12 +95,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         openAccount: false,
-      };
-
-    case OPEN_ORGANIZATION:
-      return {
-        ...state,
-        openOrganization: action.payload,
       };
 
     case OPEN_CREATE_ORGANIZATION:

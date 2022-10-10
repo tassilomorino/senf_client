@@ -13,7 +13,7 @@ import { isMobileCustom } from "../../../hooks/customDeviceDetect";
 import { Arrow, Close } from "../../../assets/icons";
 import SwipeModal from "../../molecules/modals/SwipeModal";
 import { useModals } from "../../molecules/modalStack/ModalProvider";
-import DropdownButton from "../../atoms/contentDropdown/DropdownButton";
+import SwipeWrapper from "../../atoms/swiper/SwipeWrapper";
 import List from "../../molecules/list/List";
 import ProjectroomCard from "../../molecules/cards/ProjectroomCard";
 import PostIdeaSuccess from "../../organisms/modalContents/success/PostIdeaSuccess";
@@ -48,9 +48,10 @@ const StyledMobileHeaders = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   padding: 16px 16px 24px;
-  z-index: 999;
-  position: fixed;
-  bottom: 0;
+  /* z-index: 999; */
+  /* position: fixed; */
+  /* bottom: 0; */
+  /* width: 100vw; */
   ${() => LayerWhiteFirstDefault};
 `;
 const Background = styled.div`
@@ -164,7 +165,7 @@ const PostIdea: FC<PostIdeaProps> = ({
       />,
       {
         swipe: !!isMobile,
-        size: "sm",
+        size: isMobile ? "full" : "md",
       }
     );
   };
@@ -175,7 +176,7 @@ const PostIdea: FC<PostIdeaProps> = ({
           <Box
             zIndex={9}
             flexDirection="row"
-            margin="14px 14px 0px 14px"
+            margin="14px"
             gap="10px"
             justifyContent="space-between"
           >
@@ -185,18 +186,10 @@ const PostIdea: FC<PostIdeaProps> = ({
             />
             <Button
               variant="white"
-              icon={<Close />}
+              leadingIcon="Close"
               onClick={() => openDiscardModal()}
             />
           </Box>
-
-          {!formik?.values?.address && (
-            <StyledMobileHeaders>
-              {createIdeaHeader}
-
-              {InstructionsHeader}
-            </StyledMobileHeaders>
-          )}
 
           {formik?.values?.address && !addressSelected && (
             <Box
@@ -205,38 +198,47 @@ const PostIdea: FC<PostIdeaProps> = ({
               left="16px"
               right="16px"
               zIndex="9999"
-              height="66px"
+              // height="66px"
             >
               <Button
                 variant="primary"
                 size="lg"
                 text={t("next")}
-                width={"max"}
+                width="max"
                 onClick={() => setAddressSelected(true)}
               ></Button>
             </Box>
           )}
-          {addressSelected && (
-            <Box
-              position="fixed"
-              bottom="0px"
-              zIndex="999"
-              width="100%"
-            >
-              <PostIdeaForm
-                formik={formik}
-                statefulMap={statefulMap}
-                checkIfCalendar={checkIfCalendar}
-                selectedDays={selectedDays}
-                handleChangeCalendar={handleChangeCalendar}
-                setPostIdeaOpen={setPostIdeaOpen}
-                handleSubmit={handleSubmit}
-                projectroomSelected={projectroomSelected}
-                setProjectroomSelected={setProjectroomSelected}
-                loading={loading}
-                Out={Out}
-              />
-            </Box>
+          {!formik?.values?.address && (
+            <StyledMobileHeaders>
+              {createIdeaHeader}
+
+              {InstructionsHeader}
+            </StyledMobileHeaders>
+          )}
+          {formik?.values?.address && addressSelected && (
+            <SwipeWrapper options={{ title: "this is a title" }}>
+              <Box
+                // position="fixed"
+                bottom="0px"
+                zIndex="999"
+                width="100%"
+              >
+                <PostIdeaForm
+                  formik={formik}
+                  statefulMap={statefulMap}
+                  checkIfCalendar={checkIfCalendar}
+                  selectedDays={selectedDays}
+                  handleChangeCalendar={handleChangeCalendar}
+                  setPostIdeaOpen={setPostIdeaOpen}
+                  handleSubmit={handleSubmit}
+                  loading={loading}
+                  Out={Out}
+                  projectroomSelected={projectroomSelected}
+                  setProjectroomSelected={setProjectroomSelected}
+                />
+              </Box>
+            </SwipeWrapper>
           )}
         </>
       )}
@@ -278,7 +280,8 @@ const PostIdea: FC<PostIdeaProps> = ({
           </Box>
         </Wrapper>
       )}
-      {!isMobile && !addressSelected && (
+
+      {!isMobile && (
         <ProjectroomsWrapper>
           <Box
             margin="24px"

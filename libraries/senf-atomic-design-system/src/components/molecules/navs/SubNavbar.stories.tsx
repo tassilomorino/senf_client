@@ -18,25 +18,22 @@ const Template: Story<SubNavbarProps> = (args) => <SubNavbar {...args} />;
 export const FAQ = Template.bind({});
 FAQ.args = {
   header: "FAQ",
-  iconLeft: "arrow",
+  leadingIcon: "Arrow",
 };
 
 export const Organisationen = Template.bind({});
 Organisationen.args = {
   header: "Organisationen",
-  iconLeft: "arrow",
-  iconLeftTransform: "rotate(90)",
+  leadingIcon: "ArrowDown",
   textLeft: "zurück",
 };
 
 export const PageAllFunctions = Template.bind({});
 PageAllFunctions.args = {
   header: "Page with all Functions",
-  iconLeft: "arrow",
-  iconLeftTransform: "rotate(90)",
+  leadingIcon: "Arrow",
   textLeft: "zurück",
 
-  iconRight: "arrow",
-  iconRightTransform: "rotate(270deg)",
+  trailingIcon: "ArrowDown",
   textRight: "weiter",
 };

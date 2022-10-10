@@ -156,14 +156,16 @@ const IdeaCard: FC<IdeaCardProps> = ({
               <Button
                 variant="tertiary"
                 size="small"
-                icon={liked() ? <FlameActive /> : <FlameInactive />}
+                leadingIcon={liked() ? <FlameActive /> : <FlameInactive />}
                 text={likeCount}
                 onClick={(event) => handleButtonLike(event, screamId)}
               />
               <Button
                 variant="tertiary"
                 size="small"
-                icon={commented() ? <CommentActive /> : <CommentInactive />}
+                leadingIcon={
+                  commented() ? <CommentActive /> : <CommentInactive />
+                }
                 text={commentCount}
                 onClick={(event) => handleButtonComment(event, screamId)}
               />
