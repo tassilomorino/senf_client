@@ -13,10 +13,7 @@ import {
   openOrganizationFunc,
   stateCreateOrganizationsFunc,
 } from "../../../redux/actions/organizationActions";
-import {
-  openCreateProjectRoomFunc,
-  openProjectRoomFunc,
-} from "../../../redux/actions/projectActions";
+import { openCreateProjectRoomFunc } from "../../../redux/actions/projectActions";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -154,7 +151,7 @@ const TopNavigation = ({
           localStorage.removeItem("createProjectRoomOrganizationId");
           localStorage.removeItem("createProjectRoomId");
           setClose();
-          dispatch(openProjectRoomFunc(null, false));
+          // dispatch(openProjectRoomFunc(null, false));
         });
       } else {
         await deleteDoc(

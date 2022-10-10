@@ -11,7 +11,7 @@ import {
 } from "senf-atomic-design-system";
 import {
   openCreateProjectRoomFunc,
-  openProjectRoomFunc,
+  setProjectRoom,
 } from "../redux/actions/projectActions";
 import { clearErrors } from "../redux/actions/errorsActions";
 import { handleTopicSelectorRedux } from "../redux/actions/UiActions";
@@ -29,6 +29,7 @@ const ProjectroomPage = ({
   dataFinalMap,
   setOpenInsightsPage,
   user,
+  projectRoomId,
   handleButtonOpenCard,
   setPostIdeaOpen,
   handleSetInitialMapBoundsAndViewport,
@@ -57,8 +58,11 @@ const ProjectroomPage = ({
   const selectedTopics = useSelector((state) => state.data.topics);
 
   useEffect(() => {
+    dispatch(setProjectRoom(projectRoomId));
+  }, [projectRoomId]);
+
+  useEffect(() => {
     dispatch(handleTopicSelectorRedux("all"));
-    setPath(window.location.pathname);
   }, [openProjectRoom]);
 
   useEffect(() => {

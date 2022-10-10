@@ -6,7 +6,7 @@ import {
   IdeaDetailPage as IdeaDetailPageComponent,
   useModals,
 } from "senf-atomic-design-system";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { isMobileCustom } from "../util/customDeviceDetect";
 // Redux stuff
 import {
@@ -16,7 +16,6 @@ import {
   setIdea,
 } from "../redux/actions/screamActions";
 import { clearErrors } from "../redux/actions/errorsActions";
-import { openProjectRoomFunc } from "../redux/actions/projectActions";
 import { deleteComment, submitComment } from "../redux/actions/commentActions";
 import { openLink } from "../util/helpers";
 import { openAccountFunc } from "../redux/actions/accountActions";
@@ -34,6 +33,7 @@ const IdeaDetailPage = ({
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { city } = useParams();
 
   useEffect(() => {
     dispatch(setIdea(ideaId));
@@ -107,7 +107,7 @@ const IdeaDetailPage = ({
     },
 
     openProjectroom: (projectRoomId) => {
-      dispatch(openProjectRoomFunc(projectRoomId, true, navigate));
+      navigate(`/${city}/projectRoom/${projectRoomId}`);
     },
 
     editIdea: (values) => {
@@ -182,7 +182,7 @@ const IdeaDetailPage = ({
 
       dispatch(handleTopicSelectorRedux("all")); */
       dispatch(closeScream());
-      dispatch(openProjectRoomFunc(null, false));
+      // dispatch(openProjectRoomFunc(null, false));
       dispatch(openAccountFunc());
       navigate(`/profile/${profileId}`);
     },

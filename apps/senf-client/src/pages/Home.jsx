@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ReactDOM from "react-dom";
 
 import { useDispatch, useSelector } from "react-redux";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   MainLoader,
   Map,
@@ -11,7 +12,6 @@ import {
 } from "senf-atomic-design-system";
 import Cookies from "universal-cookie";
 import { setMapBounds } from "../redux/actions/mapActions";
-import { openProjectRoomFunc } from "../redux/actions/projectActions";
 import { closeScream, setIdea } from "../redux/actions/screamActions";
 import { isMobileCustom } from "../util/customDeviceDetect";
 import {
@@ -65,7 +65,9 @@ const Home = () => {
   const selectedOrganizationTypes = useSelector(
     (state) => state.data.organizationTypes
   );
+  const { city } = useParams();
 
+  const navigate = useNavigate();
   const handleSetMapBounds = (bounds) => {
     const boundsNew = {
       latitude1: bounds[1][1],
@@ -100,16 +102,13 @@ const Home = () => {
     }
   }, [initialMapBounds, initialMapViewport]);
 
-  const handleClickIdeaMarker = useCallback(
-    (id) => {
-      dispatch(setIdea(id));
-    },
-    [dispatch]
-  );
+  const handleClickIdeaMarker = useCallback((id) => {
+    navigate(`/${city}/idea/${id}`);
+  }, []);
 
   const handleClickProjectroomMarker = useCallback(
     (id) => {
-      dispatch(openProjectRoomFunc(id, true, navigate));
+      navigate(`/${city}/projectRoom/${id}`);
     },
     [dispatch]
   );
@@ -249,12 +248,12 @@ const Home = () => {
         setStatefulMap={setStatefulMap}
         setInitialMapBounds={setInitialMapBounds}
         mapFilterActive={mapFilterActive}
-        openIdea={openScream}
+        openIdea={scream}
         openProjectRoom={openProjectRoom}
         ideasData={
           (order === 1 || openProjectRoom) && !postIdeaOpen && dataFinalMap
         }
-        ideaData={openScream && scream}
+        ideaData={scream}
         projectroomsData={
           order === 2 &&
           !openProjectRoom &&

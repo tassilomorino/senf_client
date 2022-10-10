@@ -8,7 +8,7 @@ import { useTransition, animated } from "@react-spring/web";
 
 // firebase
 import { collection, doc, getDoc } from "firebase/firestore";
-import { useModals } from "senf-atomic-design-system"
+import { useModals } from "senf-atomic-design-system";
 import { db } from "../../firebase";
 
 // Components
@@ -35,17 +35,12 @@ import {
   getOrganizations,
   openOrganizationFunc,
 } from "../../redux/actions/organizationActions";
-import {
-  getProjects,
-  openProjectRoomFunc,
-} from "../../redux/actions/projectActions";
+import { getProjects } from "../../redux/actions/projectActions";
 import CreateProjectPage5 from "./CreateProjectRoom_components/CreateProjectPage5";
 import CreateProjectPage0a from "./CreateProjectRoom_components/CreateProjectPage0a";
 
 const CreateProjectDialog = ({ type }) => {
-
   const { closeModal } = useModals();
-
 
   const userId = useSelector((state) => state.user.userId);
 
@@ -111,7 +106,6 @@ const CreateProjectDialog = ({ type }) => {
       } else if (type === "organization") {
         // IF EDITING A ORGANIZATION
         if (localStorage.getItem("createOrganizationPostEdit")) {
-
           set(pages.length - 1);
         }
 
@@ -175,7 +169,7 @@ const CreateProjectDialog = ({ type }) => {
     dispatch(getOrganizations());
     dispatch(getProjects());
 
-    closeModal()
+    closeModal();
 
     // dispatch(openCreateProjectRoomFunc(false));
     // dispatch(stateCreateOrganizationsFunc(false));
@@ -186,9 +180,8 @@ const CreateProjectDialog = ({ type }) => {
       );
     }
     if (localStorage.getItem("createProjectRoomId")) {
-      dispatch(
-        openProjectRoomFunc(localStorage.getItem("createProjectRoomId"), true)
-      );
+      dispatch();
+      // openProjectRoomFunc(localStorage.getItem("createProjectRoomId"), true)
     }
 
     if (localStorage.getItem("createOrganizationPostEdit") === "true") {
@@ -204,287 +197,287 @@ const CreateProjectDialog = ({ type }) => {
   const pagesData =
     type === "projectRoom"
       ? [
-        // {
-        //   title: t("createProjectRoomPage0aTitle"),
-        //   mobileTitle: t("createProjectRoomPage0aMobileTitle"),
-        //   subTitle: t("createProjectRoomPage0aSubTitle"),
-        // },
+          // {
+          //   title: t("createProjectRoomPage0aTitle"),
+          //   mobileTitle: t("createProjectRoomPage0aMobileTitle"),
+          //   subTitle: t("createProjectRoomPage0aSubTitle"),
+          // },
 
-        {
-          title: t("createProjectRoomPage0bTitle"),
-          mobileTitle: t("createProjectRoomPage0bMobileTitle"),
-          subTitle: t("createProjectRoomPage0bSubTitle"),
-        },
+          {
+            title: t("createProjectRoomPage0bTitle"),
+            mobileTitle: t("createProjectRoomPage0bMobileTitle"),
+            subTitle: t("createProjectRoomPage0bSubTitle"),
+          },
 
-        {
-          title: t("createProjectRoomPage1Title"),
-          subTitle: t("createProjectRoomPage1SubTitle"),
-        },
-        {
-          title: t("createProjectRoomPage2Title"),
-          subTitle: t("createProjectRoomPage2SubTitle"),
-        },
-        {
-          title: t("createProjectRoomPage3Title"),
-          subTitle: t("createProjectRoomPage3SubTitle"),
-        },
-        {
-          title: t("createProjectRoomPage4Title"),
-          subTitle: t("createProjectRoomPage4SubTitle"),
-        },
-        {
-          title: t("createProjectRoomPage5Title"),
-          subTitle: t("createProjectRoomPage5SubTitle"),
-        },
+          {
+            title: t("createProjectRoomPage1Title"),
+            subTitle: t("createProjectRoomPage1SubTitle"),
+          },
+          {
+            title: t("createProjectRoomPage2Title"),
+            subTitle: t("createProjectRoomPage2SubTitle"),
+          },
+          {
+            title: t("createProjectRoomPage3Title"),
+            subTitle: t("createProjectRoomPage3SubTitle"),
+          },
+          {
+            title: t("createProjectRoomPage4Title"),
+            subTitle: t("createProjectRoomPage4SubTitle"),
+          },
+          {
+            title: t("createProjectRoomPage5Title"),
+            subTitle: t("createProjectRoomPage5SubTitle"),
+          },
 
-        {
-          title: t("createProjectRoomPage7Title"),
-          subTitle: t("createProjectRoomPage7SubTitle"),
-        },
-      ]
+          {
+            title: t("createProjectRoomPage7Title"),
+            subTitle: t("createProjectRoomPage7SubTitle"),
+          },
+        ]
       : [
-        {
-          title: t("createOrganizationPage0aTitle"),
-          mobileTitle: t("createOrganizationPage0aMobileTitle"),
-          subTitle: t("createOrganizationPage0aSubTitle"),
-        },
-        {
-          title: t("createOrganizationPage0bTitle"),
-          subTitle: t("createOrganizationPage0bSubTitle"),
-        },
-        {
-          title: t("createOrganizationPage1Title"),
-          subTitle: t("createOrganizationPage1SubTitle"),
-        },
-        {
-          title: t("createOrganizationPage2Title"),
-          subTitle: t("createOrganizationPage2SubTitle"),
-        },
-        {
-          title: t("createOrganizationPage3Title"),
-          subTitle: t("createOrganizationPage3SubTitle"),
-        },
-        {
-          title: t("createOrganizationPage4Title"),
-          subTitle: t("createOrganizationPage4SubTitle"),
-        },
-        {
-          title: t("createOrganizationPage5Title"),
-          subTitle: t("createOrganizationPage5SubTitle"),
-        },
-        {
-          title: t("createOrganizationPage6Title"),
-          subTitle: t("createOrganizationPage6SubTitle"),
-          subTitle2: t("createOrganizationPage6SubTitle2"),
-        },
-        {
-          title: t("createOrganizationPage7Title"),
-          subTitle: t("createOrganizationPage7SubTitle"),
-        },
-      ];
+          {
+            title: t("createOrganizationPage0aTitle"),
+            mobileTitle: t("createOrganizationPage0aMobileTitle"),
+            subTitle: t("createOrganizationPage0aSubTitle"),
+          },
+          {
+            title: t("createOrganizationPage0bTitle"),
+            subTitle: t("createOrganizationPage0bSubTitle"),
+          },
+          {
+            title: t("createOrganizationPage1Title"),
+            subTitle: t("createOrganizationPage1SubTitle"),
+          },
+          {
+            title: t("createOrganizationPage2Title"),
+            subTitle: t("createOrganizationPage2SubTitle"),
+          },
+          {
+            title: t("createOrganizationPage3Title"),
+            subTitle: t("createOrganizationPage3SubTitle"),
+          },
+          {
+            title: t("createOrganizationPage4Title"),
+            subTitle: t("createOrganizationPage4SubTitle"),
+          },
+          {
+            title: t("createOrganizationPage5Title"),
+            subTitle: t("createOrganizationPage5SubTitle"),
+          },
+          {
+            title: t("createOrganizationPage6Title"),
+            subTitle: t("createOrganizationPage6SubTitle"),
+            subTitle2: t("createOrganizationPage6SubTitle2"),
+          },
+          {
+            title: t("createOrganizationPage7Title"),
+            subTitle: t("createOrganizationPage7SubTitle"),
+          },
+        ];
 
   const pages =
     type === "projectRoom"
       ? [
-        // ({ style }) => (
-        //   <PageWrapper>
-        //     <CreateProjectPage0a
-        //       onClickNext={onClickNext}
-        //       pagesData={pagesData}
-        //       index={index}
-        //     />
-        //   </PageWrapper>
-        // ),
-        ({ style }) => (
-          <PageWrapper>
-            <CreateProjectPage0b
-              onClickNext={onClickNext}
-              pagesData={pagesData}
-              index={index}
-            />
-          </PageWrapper>
-        ),
-        ({ style }) => (
-          <PageWrapper>
-            <CreateProjectPage1
-              onClickNext={onClickNext}
-              set={set}
-              pagesData={pagesData}
-              index={index}
-              setTitle={setProjectRoomTitle}
-            />
-          </PageWrapper>
-        ),
-        ({ style }) => (
-          <PageWrapper>
-            <CreateProjectPage2
-              onClickNext={onClickNext}
-              onClickPrev={onClickPrev}
-              set={set}
-              pagesData={pagesData}
-              index={index}
-            />
-          </PageWrapper>
-        ),
-        ({ style }) => (
-          <PageWrapper
-          /* style={{
+          // ({ style }) => (
+          //   <PageWrapper>
+          //     <CreateProjectPage0a
+          //       onClickNext={onClickNext}
+          //       pagesData={pagesData}
+          //       index={index}
+          //     />
+          //   </PageWrapper>
+          // ),
+          ({ style }) => (
+            <PageWrapper>
+              <CreateProjectPage0b
+                onClickNext={onClickNext}
+                pagesData={pagesData}
+                index={index}
+              />
+            </PageWrapper>
+          ),
+          ({ style }) => (
+            <PageWrapper>
+              <CreateProjectPage1
+                onClickNext={onClickNext}
+                set={set}
+                pagesData={pagesData}
+                index={index}
+                setTitle={setProjectRoomTitle}
+              />
+            </PageWrapper>
+          ),
+          ({ style }) => (
+            <PageWrapper>
+              <CreateProjectPage2
+                onClickNext={onClickNext}
+                onClickPrev={onClickPrev}
+                set={set}
+                pagesData={pagesData}
+                index={index}
+              />
+            </PageWrapper>
+          ),
+          ({ style }) => (
+            <PageWrapper
+            /* style={{
               ...style,
             }} */
-          >
-            <CreateProjectPage3
-              onClickNext={onClickNext}
-              onClickPrev={onClickPrev}
-              set={set}
-              pagesData={pagesData}
-              index={index}
-            />
-          </PageWrapper>
-        ),
-        ({ style }) => (
-          <PageWrapper>
-            <CreateProjectPage4
-              onClickNext={onClickNext}
-              onClickPrev={onClickPrev}
-              set={set}
-              pagesData={pagesData}
-              index={index}
-            />
-          </PageWrapper>
-        ),
-        ({ style }) => (
-          <PageWrapper>
-            <CreateProjectPage5
-              onClickNext={onClickNext}
-              onClickPrev={onClickPrev}
-              set={set}
-              pagesData={pagesData}
-              index={index}
-            />
-          </PageWrapper>
-        ),
-        ({ style }) => (
-          <PageWrapper>
-            <CreateProjectPagePreview
-              onClickPrev={onClickPrev}
-              setClose={setClose}
-              set={set}
-              pagesData={pagesData}
-              listItems={pagesData.slice(1, -1)}
-              index={index}
-              projectRoomTitle={projectRoomTitle}
-            />
-          </PageWrapper>
-        ),
-      ]
+            >
+              <CreateProjectPage3
+                onClickNext={onClickNext}
+                onClickPrev={onClickPrev}
+                set={set}
+                pagesData={pagesData}
+                index={index}
+              />
+            </PageWrapper>
+          ),
+          ({ style }) => (
+            <PageWrapper>
+              <CreateProjectPage4
+                onClickNext={onClickNext}
+                onClickPrev={onClickPrev}
+                set={set}
+                pagesData={pagesData}
+                index={index}
+              />
+            </PageWrapper>
+          ),
+          ({ style }) => (
+            <PageWrapper>
+              <CreateProjectPage5
+                onClickNext={onClickNext}
+                onClickPrev={onClickPrev}
+                set={set}
+                pagesData={pagesData}
+                index={index}
+              />
+            </PageWrapper>
+          ),
+          ({ style }) => (
+            <PageWrapper>
+              <CreateProjectPagePreview
+                onClickPrev={onClickPrev}
+                setClose={setClose}
+                set={set}
+                pagesData={pagesData}
+                listItems={pagesData.slice(1, -1)}
+                index={index}
+                projectRoomTitle={projectRoomTitle}
+              />
+            </PageWrapper>
+          ),
+        ]
       : [
-        ({ style }) => (
-          <PageWrapper>
-            <CreateOrganizationPage0a
-              onClickNext={onClickNext}
-              onClickPrev={onClickPrev}
-              pagesData={pagesData}
-              index={index}
-            />
-          </PageWrapper>
-        ),
-        ({ style }) => (
-          <PageWrapper>
-            <CreateOrganizationPage0b
-              onClickNext={onClickNext}
-              onClickPrev={onClickPrev}
-              set={set}
-              pagesData={pagesData}
-              index={index}
-            />
-          </PageWrapper>
-        ),
-        ({ style }) => (
-          <PageWrapper>
-            <CreateOrganizationPage1
-              onClickNext={onClickNext}
-              onClickPrev={onClickPrev}
-              set={set}
-              setTitle={setOrganizationTitle}
-              pagesData={pagesData}
-              index={index}
-            />
-          </PageWrapper>
-        ),
-        ({ style }) => (
-          <PageWrapper>
-            <CreateOrganizationPage2
-              onClickNext={onClickNext}
-              onClickPrev={onClickPrev}
-              set={set}
-              pagesData={pagesData}
-              index={index}
-            />
-          </PageWrapper>
-        ),
-        ({ style }) => (
-          <PageWrapper>
-            <CreateOrganizationPage3
-              onClickNext={onClickNext}
-              onClickPrev={onClickPrev}
-              set={set}
-              pagesData={pagesData}
-              index={index}
-            />
-          </PageWrapper>
-        ),
-        ({ style }) => (
-          <PageWrapper>
-            <CreateOrganizationPage4
-              onClickNext={onClickNext}
-              onClickPrev={onClickPrev}
-              set={set}
-              pagesData={pagesData}
-              index={index}
-            />
-          </PageWrapper>
-        ),
-        ({ style }) => (
-          <PageWrapper>
-            <CreateOrganizationPage5
-              onClickNext={onClickNext}
-              onClickPrev={onClickPrev}
-              set={set}
-              pagesData={pagesData}
-              index={index}
-            />
-          </PageWrapper>
-        ),
-        ({ style }) => (
-          <PageWrapper>
-            <CreateOrganizationPage6
-              onClickNext={onClickNext}
-              onClickPrev={onClickPrev}
-              set={set}
-              pagesData={pagesData}
-              index={index}
-            />
-          </PageWrapper>
-        ),
-        ({ style }) => (
-          <PageWrapper>
-            <CreateOrganizationPagePreview
-              onClickNext={onClickNext}
-              onClickPrev={onClickPrev}
-              setClose={setClose}
-              set={set}
-              pagesData={pagesData}
-              listItems={pagesData.slice(1, -1)}
-              index={index}
-            />
-          </PageWrapper>
-        ),
-      ];
+          ({ style }) => (
+            <PageWrapper>
+              <CreateOrganizationPage0a
+                onClickNext={onClickNext}
+                onClickPrev={onClickPrev}
+                pagesData={pagesData}
+                index={index}
+              />
+            </PageWrapper>
+          ),
+          ({ style }) => (
+            <PageWrapper>
+              <CreateOrganizationPage0b
+                onClickNext={onClickNext}
+                onClickPrev={onClickPrev}
+                set={set}
+                pagesData={pagesData}
+                index={index}
+              />
+            </PageWrapper>
+          ),
+          ({ style }) => (
+            <PageWrapper>
+              <CreateOrganizationPage1
+                onClickNext={onClickNext}
+                onClickPrev={onClickPrev}
+                set={set}
+                setTitle={setOrganizationTitle}
+                pagesData={pagesData}
+                index={index}
+              />
+            </PageWrapper>
+          ),
+          ({ style }) => (
+            <PageWrapper>
+              <CreateOrganizationPage2
+                onClickNext={onClickNext}
+                onClickPrev={onClickPrev}
+                set={set}
+                pagesData={pagesData}
+                index={index}
+              />
+            </PageWrapper>
+          ),
+          ({ style }) => (
+            <PageWrapper>
+              <CreateOrganizationPage3
+                onClickNext={onClickNext}
+                onClickPrev={onClickPrev}
+                set={set}
+                pagesData={pagesData}
+                index={index}
+              />
+            </PageWrapper>
+          ),
+          ({ style }) => (
+            <PageWrapper>
+              <CreateOrganizationPage4
+                onClickNext={onClickNext}
+                onClickPrev={onClickPrev}
+                set={set}
+                pagesData={pagesData}
+                index={index}
+              />
+            </PageWrapper>
+          ),
+          ({ style }) => (
+            <PageWrapper>
+              <CreateOrganizationPage5
+                onClickNext={onClickNext}
+                onClickPrev={onClickPrev}
+                set={set}
+                pagesData={pagesData}
+                index={index}
+              />
+            </PageWrapper>
+          ),
+          ({ style }) => (
+            <PageWrapper>
+              <CreateOrganizationPage6
+                onClickNext={onClickNext}
+                onClickPrev={onClickPrev}
+                set={set}
+                pagesData={pagesData}
+                index={index}
+              />
+            </PageWrapper>
+          ),
+          ({ style }) => (
+            <PageWrapper>
+              <CreateOrganizationPagePreview
+                onClickNext={onClickNext}
+                onClickPrev={onClickPrev}
+                setClose={setClose}
+                set={set}
+                pagesData={pagesData}
+                listItems={pagesData.slice(1, -1)}
+                index={index}
+              />
+            </PageWrapper>
+          ),
+        ];
 
   const currentStep = (100 / (pages.length - 1)) * index;
 
   return (
-    <div style={{ height: "2000px", maxHeight: "100%" }} >
+    <div style={{ height: "2000px", maxHeight: "100%" }}>
       <TopNavigation
         currentStep={currentStep}
         index={index}

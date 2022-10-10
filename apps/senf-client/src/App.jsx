@@ -150,7 +150,7 @@ const App = () => {
                 />
                 <Route
                   exact
-                  path="/projectRooms"
+                  path="/:city/projectRooms"
                   element={<Home />}
                 />
                 <Route
@@ -170,12 +170,12 @@ const App = () => {
                 />
                 <Route
                   exact
-                  path="/projectRooms/:projectRoomId/:screamId"
+                  path="/:city/projectRoom/:projectRoomId/:screamId"
                   element={<Home />}
                 />
                 <Route
                   exact
-                  path="/projectRooms/:projectRoomId"
+                  path="/:city/projectRoom/:projectRoomId"
                   element={<Home />}
                 />
 

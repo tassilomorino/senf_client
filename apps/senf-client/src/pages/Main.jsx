@@ -22,10 +22,6 @@ import { AuthModal } from "senf-shared";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
 import { closeScream, setIdea } from "../redux/actions/screamActions";
-import {
-  openProjectRoomFunc,
-  openCreateProjectRoomFunc,
-} from "../redux/actions/projectActions";
 
 import {
   handleTopicSelectorRedux,
@@ -146,15 +142,8 @@ const Main = ({
   const { cookie_settings } = useSelector((state) => state.data);
   const organization = useSelector((state) => state.data.organization);
 
-  const {
-    screamId,
-    projectRoomId,
-    organizationId,
-    unknownPathId,
-    profileId,
-    city,
-    ideaId,
-  } = useParams();
+  const { screamId, projectRoomId, organizationId, profileId, city, ideaId } =
+    useParams();
   const navigate = useNavigate();
 
   const openInfoPage = useSelector((state) => state.UI.openInfoPage);
@@ -229,30 +218,6 @@ const Main = ({
 
   const location = useLocation();
 
-  // React.useEffect(() => {
-  //   navigate(location.pathname);
-  // }, [location.pathname]);
-
-  useEffect(() => {
-    if (window.location.pathname === "/projectRooms") {
-      setOrder(2);
-    } else if (window.location.pathname === "/organizations") {
-      setOrder(2);
-      dispatch(setSwipePositionUp());
-      setOpenOrganizationsOverview(true);
-    } else if (window.location.pathname === "/insights") {
-      // setOrder(4);
-    } else if (projectRoomId) {
-      setOrder(2);
-    } else if (screamId) {
-      setOrder(1);
-    } else if (organizationId) {
-      setOrder(2);
-      dispatch(setSwipePositionUp());
-      setOpenOrganizationsOverview(true);
-    }
-  }, [dispatch, organizationId, screamId, projectRoomId]);
-
   const handleClick = useCallback(
     (order) => {
       // setOrder(order);
@@ -261,7 +226,7 @@ const Main = ({
       setOpenStatisticsOverview(false);
       setOpenOrganizationsOverview(false);
       dispatch(closeScream());
-      dispatch(openProjectRoomFunc(null, false));
+      // dispatch(openProjectRoomFunc(null, false));
       dispatch(openOrganizationFunc(null, false));
       dispatch(closeAccountFunc());
       dispatch(handleTopicSelectorRedux("all"));
@@ -275,7 +240,7 @@ const Main = ({
         navigate("/");
       }
       if (order === 2) {
-        navigate("/projectRooms");
+        navigate(`/${city}/projectRooms`);
       }
       if (order === 3) {
         navigate("/organizations");
@@ -380,7 +345,8 @@ const Main = ({
 
   const handleOpenProjectroom = (event, projectroomId) => {
     event.stopPropagation();
-    dispatch(openProjectRoomFunc(projectroomId, true, navigate));
+    navigate(`/${city}/projectRoom/${projectroomId}`);
+    // dispatch(openProjectRoomFunc(projectroomId, true, navigate));
   };
 
   const handleButtonLike = (event, screamId) => {
@@ -600,7 +566,11 @@ const Main = ({
           <>
             {city && !loading && (
               <MainSwipeList
-                order={"ideas"}
+                order={
+                  location.pathname.indexOf("projectRooms") > -1
+                    ? "projectrooms"
+                    : "ideas"
+                }
                 setOrder={handleClick}
                 ideasDataOriginal={screams}
                 ideasData={dataFinalIdeas}
@@ -640,8 +610,9 @@ const Main = ({
               />
             )}
 
-            {location.pathname.indexOf("/projectRoom/") > -1 && !openScream && (
+            {projectRoomId && (
               <ProjectroomPage
+                projectRoomId={projectRoomId}
                 user={user}
                 setPostIdeaOpen={setPostIdeaOpen}
                 handleButtonOpenCard={handleButtonOpenCard}
