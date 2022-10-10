@@ -155,7 +155,7 @@ const App = () => {
                 />
                 <Route
                   exact
-                  path="/organizations"
+                  path="/:city/organizations"
                   element={<Home />}
                 />
                 <Route
@@ -181,7 +181,7 @@ const App = () => {
 
                 <Route
                   exact
-                  path="/organizations/:organizationId"
+                  path="/:city/organizations/:organizationId"
                   element={<Home />}
                 />
 
