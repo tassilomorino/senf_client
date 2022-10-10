@@ -21,7 +21,7 @@ import DiscardModalContent from "../../organisms/modalContents/discard/DiscardMo
 
 const Wrapper = styled.div`
   z-index: 999;
-  position: absolute;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,8 +36,7 @@ const Wrapper = styled.div`
 `;
 const ProjectroomsWrapper = styled.div`
   z-index: 99;
-  position: absolute;
-  top: 250px;
+  position: relative;
   left: 80px;
   width: 400px;
   height: calc(100vh - 250px);
@@ -74,6 +73,8 @@ const PostIdea: FC<PostIdeaProps> = ({
   newIdea,
   projectroomsData,
   projectroomSelected,
+  setProjectroomSelected,
+  handleSelectProjectroom,
 }) => {
   const { t } = useTranslation();
   const [postIdeaForm, setPostIdeaForm] = React.useState(false);
@@ -111,12 +112,16 @@ const PostIdea: FC<PostIdeaProps> = ({
       height="auto"
     >
       <Typography variant="bodyBg">{t("postidea_navigate")}</Typography>
+      {projectroomSelected && (
+        <Typography variant="buttonBg"> 1 Projektraum ausgewählt</Typography>
+      )}
       {!isMobile && (
         <Geocoder
           formik={formik}
           statefulMap={statefulMap}
         />
       )}
+
       {!isMobile && formik?.values.address && formik?.values.address !== "" && (
         <Button
           variant="primary"
@@ -226,6 +231,8 @@ const PostIdea: FC<PostIdeaProps> = ({
                 handleChangeCalendar={handleChangeCalendar}
                 setPostIdeaOpen={setPostIdeaOpen}
                 handleSubmit={handleSubmit}
+                projectroomSelected={projectroomSelected}
+                setProjectroomSelected={setProjectroomSelected}
                 loading={loading}
                 Out={Out}
               />
@@ -262,6 +269,8 @@ const PostIdea: FC<PostIdeaProps> = ({
                 handleChangeCalendar={handleChangeCalendar}
                 setPostIdeaOpen={setPostIdeaOpen}
                 handleSubmit={handleSubmit}
+                projectroomSelected={projectroomSelected}
+                setProjectroomSelected={setProjectroomSelected}
                 loading={loading}
                 Out={Out}
               />
@@ -269,24 +278,35 @@ const PostIdea: FC<PostIdeaProps> = ({
           </Box>
         </Wrapper>
       )}
-      {!isMobile && (
+      {!isMobile && !addressSelected && (
         <ProjectroomsWrapper>
-          <Box margin="16px">
-            {/* <Typography variant="bodyBg">{t("")}</Typography> */}
+          <Box
+            margin="24px"
+            flexDirection="column"
+            gap="10px"
+          >
+            <Typography variant="buttonBg">
+              {t("postIdea.projectroomsFoundNearbyTitle")}
+            </Typography>
+            <Typography variant="bodyBg">
+              {t("postIdea.projectroomsFoundNearbyDescription")}
+            </Typography>
             <Button
               variant="secondary"
               width="max"
               size="small"
-              text={t("show_projectrooms")}
-              onClick={() => setShowProjectrooms(true)}
+              text={
+                showProjectrooms ? t("hideProjectrooms") : t("showProjectrooms")
+              }
+              onClick={() => setShowProjectrooms(!showProjectrooms)}
             />
           </Box>
-          {showProjectrooms && (
+          {showProjectrooms && !addressSelected && (
             <List
               CardType={ProjectroomCard}
               data={projectroomsData}
               // projectroomsData={projectroomsData}
-              // handleButtonOpenCard={handleButtonOpenCard}
+              handleButtonOpenCard={handleSelectProjectroom}
               listEndText={t("noMoreProjectrooms")}
             />
           )}

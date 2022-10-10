@@ -198,7 +198,8 @@ const OrganizationCard: FC<OrganizationCardProps> = ({
         <Typography variant="bodyBg">{title}</Typography>
       </Title>
       <SubTitle>
-        {projectroomsSize} {projectroomsSize === 1 ? t("simon") : t("simon")}
+        {projectroomsSize}{" "}
+        {projectroomsSize === 1 ? t("projectRoom") : t("projectRooms")}
       </SubTitle>
     </Wrapper>
   );

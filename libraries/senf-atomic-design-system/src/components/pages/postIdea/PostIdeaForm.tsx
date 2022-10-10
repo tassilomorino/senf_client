@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { useFormik } from "formik";
 import {
   Arrow,
+  Bin,
   CalendarIcon,
   Dot,
   DotAllTopics,
@@ -63,7 +64,10 @@ const Wrapper = styled.div<PostIdeaFormProps>`
   border-top: 1px solid
     ${({ theme, color }) => color || theme.colors.brown.brown20tra};
   z-index: 2;
-  ${() => LayerWhiteFirstDefault};
+
+  @media (max-width: 768px) {
+    ${() => LayerWhiteFirstDefault};
+  }
 `;
 
 const PostIdeaForm: FC<PostIdeaFormProps> = ({
@@ -73,6 +77,8 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
   selectedDays,
   handleChangeCalendar,
   handleSubmit,
+  projectroomSelected,
+  setProjectroomSelected,
   loading,
   Out,
 }) => {
@@ -104,6 +110,7 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
           />
         )}
       </Box>
+
       <Box
         gap="20px"
         flexDirection="column"
@@ -272,6 +279,38 @@ const PostIdeaForm: FC<PostIdeaFormProps> = ({
               />
             </Box>
           </ModalButton>
+        )}
+
+        {projectroomSelected ? (
+          <Box
+            flexDirection="column"
+            gap="8px"
+          >
+            <Typography variant="bodySm">
+              {t("postIdea.willBePostedInProjectrooms")}
+            </Typography>
+            <Box
+              alignItems="center"
+              gap="8px"
+            >
+              <Typography variant="buttonBg">
+                {projectroomSelected.title}
+              </Typography>
+              <Button
+                variant="secondary"
+                size="small"
+                icon={<Bin color="grey" />}
+                onClick={() => setProjectroomSelected("")}
+              />
+            </Box>
+          </Box>
+        ) : (
+          <Button
+            variant="secondary"
+            size="small"
+          >
+            + Projektraum hinzufügen
+          </Button>
         )}
 
         <Button

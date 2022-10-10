@@ -25,13 +25,11 @@ import { OptionsProjects } from "../data/OptionsProjects";
 // Components
 import PostScreamSelectContainter from "../components/PostIdea/PostScreamSelectContainter";
 import Auth from "./Auth";
+import { loadProjectRoomData } from "../redux/actions/projectActions";
 
 const AuthFirst = styled.div`
   position: fixed;
-  top: ${({ isMobile, locationDecided }) =>
-    isMobile && locationDecided
-      ? "27vh"
-      : isMobile && !locationDecided && "100vh"};
+  top: 0;
   height: 80vh;
   z-index: 99999;
   width: 100%;
@@ -79,20 +77,12 @@ const PostIdeaPage = ({
   const [viewport, setViewport] = useState(null);
   const [openRules, setOpenRules] = useState(false);
   const [out, setOut] = useState(false);
-  const [projectSelected, setProjectSeleted] = useState("");
+  const [projectroomSelected, setProjectroomSelected] = useState("");
   const [geoData, setGeoData] = useState("");
   const [checkIfCalendar, setCheckIfCalendar] = useState(false);
 
   const [neighborhood, setNeighborhood] = useState("Ohne Ortsangabe");
   const [fulladdress, setFulladdress] = useState("Ohne Ortsangabe");
-
-  const [allMainStates, setAllMainStates] = useState({
-    errors: {},
-    MapHeight: "100vh",
-    locationDecided: false,
-  });
-
-  const { errors, MapHeight, locationDecided } = allMainStates;
 
   const postIdeaValidationSchema = yup.object({
     title: yup
@@ -146,7 +136,7 @@ const PostIdeaPage = ({
         ? project?.projectRoomId
         : "";
 
-      setProjectSeleted(projectSelected);
+      setProjectroomSelected(projectSelected);
 
       projectsData?.forEach(
         ({ projectRoomId, zoom, centerLat, centerLong, geoData, calendar }) => {
@@ -175,37 +165,44 @@ const PostIdeaPage = ({
       );
     } else {
       dispatch(clearErrors());
-      setAllMainStates({ ...allMainStates, errors: {} });
     }
   }, [postIdeaOpen]);
 
-  const handleDropdownProject = (value) => {
-    // event.preventDefault();
-    setProjectSeleted(value);
+  const handleSelectProjectroom = (event, cardType, cardId) => {
+    if (projectroomSelected !== cardId) {
+      // event.preventDefault();
 
-    projectsData.forEach((element) => {
-      if (value === element.projectRoomId) {
-        const viewport = {
-          zoom: element.zoom,
-          latitude: element.centerLat,
-          longitude: element.centerLong,
-          transitionDuration: 1000,
-        };
-        setViewport(viewport);
+      projectsData.forEach((element) => {
+        if (cardId === element.projectRoomId) {
+          const viewport = {
+            zoom: element.zoom,
+            latitude: element.centerLat,
+            longitude: element.centerLong,
+            transitionDuration: 1000,
+          };
+          setViewport(viewport);
 
-        setGeoData(element.geoData);
-        setCheckIfCalendar(element.calendar);
-      }
-      if (value === "") {
-        if (initialMapViewport) {
-          initialMapViewport.pitch = 0;
-          setViewport(initialMapViewport);
+          dispatch(loadProjectRoomData(cardId));
+
+          setProjectroomSelected(element);
+          setGeoData(element.geoData);
+          setCheckIfCalendar(element.calendar);
         }
+        if (cardId === "") {
+          if (initialMapViewport) {
+            initialMapViewport.pitch = 0;
+            setViewport(initialMapViewport);
+          }
 
-        setGeoData("");
-        setCheckIfCalendar(false);
-      }
-    });
+          setGeoData("");
+          setCheckIfCalendar(false);
+        }
+      });
+    } else {
+      setProjectroomSelected("");
+      setGeoData("");
+      setCheckIfCalendar(false);
+    }
   };
 
   const handleSubmit = (event) => {
@@ -219,7 +216,7 @@ const PostIdeaPage = ({
       neighborhood,
       lat: statefulMap.getCenter().lat,
       long: statefulMap.getCenter().lng,
-      projectRoomId: projectSelected,
+      projectRoomId: projectroomSelected?.projectRoomId,
       Thema: formik.values.topic,
     };
 
@@ -292,77 +289,17 @@ const PostIdeaPage = ({
     geocode(newViewport.current);
   });
 
-  const handleLocationDecided = () => {
-    if (formik.values.address) {
-      setAllMainStates({
-        ...allMainStates,
-        locationDecided: true,
-        MapHeight: "30vh",
-      });
-    }
-    if (locationDecided === true) {
-      setAllMainStates({
-        ...allMainStates,
-        locationDecided: false,
-        MapHeight: "100vh",
-      });
-    }
-  };
   return (
     <React.Fragment>
-      {/* <Box
-        position="fixed"
-        margin={document.body.clientWidth > 768 ? "20px" : "10px"}
-        zIndex={2}
-      >
-        <Button
-          size="medium"
-          variant="white"
-          icon={<Plus transform="rotate(45)" />}
-          onClick={() => setPostIdeaOpen(false)}
-        />
-      </Box> */}
-
       {!user.authenticated && (
         <AuthFirst
           isMobile={isMobileCustom}
-          locationDecided={locationDecided}
           onClick={() =>
             openModal(<AuthModal />, { swipe: !!isMobileCustom, size: "md" })
           }
         />
       )}
 
-      {/* {isMobileCustom && (
-        <div
-          style={
-            locationDecided
-              ? { marginTop: 0, transition: "0.5s" }
-              : { marginTop: "100vh", transition: "0.5s" }
-          }
-        >
-          <div
-            onClick={() => handleLocationDecided()}
-          ></div>
-
-          <div ></div>
-        </div>
-      )} */}
-      {/*   <Box position="fixed" top="0px" width={isMobileCustom ? "calc(100vw - 20px)" : "400px"} zIndex={99999999} left="0px" margin="10px">
-        <Geocoder finalAddress={formik?.values.address} statefulMap={statefulMap} handleSetClose={() => setPostIdeaOpen(false)} />
-      </Box> */}
-
-      {/*     <PostScreamSelectContainter
-        classes={classes}
-        address={formik.values.address}
-        locationDecided={locationDecided}
-        handleLocationDecided={handleLocationDecided}
-        projectSelected={projectSelected}
-        handleDropdownProject={handleDropdownProject}
-        open={open}
-        loadingProjects={loadingProjects}
-        projectsData={projectsData}
-      /> */}
       <PostIdeaComponent
         statefulMap={statefulMap}
         formik={formik}
@@ -376,7 +313,9 @@ const PostIdeaPage = ({
         navigate={navigate}
         newIdea={newIdea}
         projectroomsData={projectroomsData}
-        projectroomSelected={projectSelected}
+        projectroomSelected={projectroomSelected}
+        setProjectroomSelected={setProjectroomSelected}
+        handleSelectProjectroom={handleSelectProjectroom}
       />
     </React.Fragment>
   );

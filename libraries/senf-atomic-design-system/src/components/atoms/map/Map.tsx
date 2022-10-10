@@ -39,6 +39,7 @@ import {
   hoverMunicipalities,
   selectMunicipalities,
 } from "./utils/selectMunicipalities";
+import { showProjectroomPolygon } from "./utils/showProjectroomPolygon";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoidG1vcmlubyIsImEiOiJjazBzZHZjeWQwMWoyM2NtejlzcnMxd3FtIn0.I_Xcc1aJiN7hToGGjNy7ow";
@@ -434,22 +435,11 @@ const Map: FC<MapProps> = ({
   }, [statefulMap, openProjectRoom]);
 
   useEffect(() => {
-    if (projectroomData?.geoData) {
-      setPolygonData(JSON.parse(projectroomData.geoData));
-
-      const [minLng, minLat, maxLng, maxLat] = bbox(
-        JSON.parse(projectroomData.geoData)
-      );
-
-      setTimeout(() => {
-        statefulMap.fitBounds([
-          [minLng, minLat], // southwestern corner of the bounds
-          [maxLng, maxLat], // northeastern corner of the bounds
-        ]);
-      }, 300);
-    } else {
-      setPolygonData(null);
-    }
+    showProjectroomPolygon(
+      statefulMap,
+      projectroomData?.geoData,
+      setPolygonData
+    );
   }, [projectroomData]);
 
   useEffect(() => {
