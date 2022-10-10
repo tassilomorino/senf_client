@@ -2,7 +2,12 @@
 
 import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { Provider } from "react-redux";
 import {
@@ -135,6 +140,15 @@ const App = () => {
               <RotateDevice />
               <Routes>
                 <Route
+                  path="/"
+                  element={
+                    <Navigate
+                      to="/cologne"
+                      replace
+                    />
+                  }
+                />
+                <Route
                   exact
                   path="/projectRooms"
                   element={<Home />}
@@ -146,7 +160,7 @@ const App = () => {
                 />
                 <Route
                   exact
-                  path="/idea/:screamId"
+                  path="/:city/idea/:ideaId"
                   element={<Home />}
                 />
                 <Route
@@ -178,16 +192,7 @@ const App = () => {
                 />
                 <Route
                   exact
-                  path="/:unknownPathId"
-                  element={<Home />}
-                />
-                <Route
-                  exact
-                  path="/"
-                  element={<Home />}
-                />
-                <Route
-                  path="*"
+                  path="/:city"
                   element={<Home />}
                 />
 

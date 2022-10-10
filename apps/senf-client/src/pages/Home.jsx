@@ -12,7 +12,7 @@ import {
 import Cookies from "universal-cookie";
 import { setMapBounds } from "../redux/actions/mapActions";
 import { openProjectRoomFunc } from "../redux/actions/projectActions";
-import { closeScream, openScreamFunc } from "../redux/actions/screamActions";
+import { closeScream, setIdea } from "../redux/actions/screamActions";
 import { isMobileCustom } from "../util/customDeviceDetect";
 import {
   filterByStatus,
@@ -102,7 +102,7 @@ const Home = () => {
 
   const handleClickIdeaMarker = useCallback(
     (id) => {
-      dispatch(openScreamFunc(id));
+      dispatch(setIdea(id));
     },
     [dispatch]
   );

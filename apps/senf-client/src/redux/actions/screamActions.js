@@ -94,16 +94,9 @@ export const getScreams = (mapViewport) => async (dispatch) => {
 };
 
 // Open an idea
-export const openScreamFunc = (screamId, reloadScream) => async (dispatch) => {
-  dispatch({ type: SET_SCREAM, payload: {} });
-
-  // When the modal is shown, we want a fixed body
-  // document.body.style.position = "fixed";
-  // document.body.style.top = `-${window.scrollY}px`;
+export const setIdea = (ideaId) => async (dispatch) => {
   try {
-    dispatch({ type: LOADING_IDEA_DATA });
-    dispatch({ type: OPEN_SCREAM });
-    const docRef = doc(db, `screams/${screamId}`);
+    const docRef = doc(db, `screams/${ideaId}`);
     const screamDocSnapshot = await getDoc(docRef);
 
     if (screamDocSnapshot.exists()) {
@@ -111,7 +104,7 @@ export const openScreamFunc = (screamId, reloadScream) => async (dispatch) => {
       const commentRef = collection(db, "comments");
       const commentquery = query(
         commentRef,
-        where("screamId", "==", screamId),
+        where("screamId", "==", ideaId),
         orderBy("createdAt", "desc")
       );
       const commentquerySnapshot = await getDocs(commentquery);
@@ -131,24 +124,14 @@ export const openScreamFunc = (screamId, reloadScream) => async (dispatch) => {
         color: setColorByTopic(screamDocSnapshot.data().Thema),
       };
 
-      const projectroomPath = store.getState().UI.openProjectRoom
-        ? `/projectRooms/${store.getState().data.project.projectRoomId}`
-        : `/idea`;
-
-      const newPath = `${projectroomPath}/${screamId}`;
-      window.history.pushState(null, null, newPath);
-
       dispatch({ type: SET_SCREAM, payload: scream });
     } else {
-      window.history.pushState(null, null, "/");
       console.log("No such document!");
-      dispatch({ type: CLOSE_SCREAM });
       dispatch({ type: SET_SCREAM, payload: {} });
 
       throw new Error("Idea not found");
     }
   } catch (error) {
-    window.history.pushState(null, null, "/");
     throw new Error(error, "error in openScreamFunc");
   }
 };

@@ -13,6 +13,7 @@ import {
   closeScream,
   deleteScream,
   editScreamFunc,
+  setIdea,
 } from "../redux/actions/screamActions";
 import { clearErrors } from "../redux/actions/errorsActions";
 import { openProjectRoomFunc } from "../redux/actions/projectActions";
@@ -26,25 +27,28 @@ const IdeaDetailPage = ({
   handleButtonComment,
   projectroomsData,
   user,
+  ideaId,
 }) => {
   const data = useSelector((state) => state.data.scream);
   const { closeModal } = useModals();
 
-  const { screamId, lat, long, userId } = useSelector(
-    (state) => state.data.scream
-  );
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const openScream = useSelector((state) => state.UI.openScream);
+  useEffect(() => {
+    dispatch(setIdea(ideaId));
+  }, [ideaId]);
+
+  const { screamId, lat, long, userId } = useSelector(
+    (state) => state.data.scream
+  );
 
   const [path, setPath] = useState("");
   const [commentFormInput, setCommentFormInput] = useState("");
   const [commentFormLoading, setCommentFormLoading] = useState(false);
 
   useEffect(() => {
-    if (openScream && lat !== undefined) {
+    if (screamId && lat !== undefined) {
       window.scrollTo({
         top: 0,
         left: 0,
@@ -53,7 +57,7 @@ const IdeaDetailPage = ({
 
       setPath(`https://senf.koeln/${screamId}`);
     }
-  }, [lat, long, openScream, screamId]);
+  }, [lat, long, screamId]);
 
   const [projectroomCardData, setProjectroomCardData] = useState([]);
 
