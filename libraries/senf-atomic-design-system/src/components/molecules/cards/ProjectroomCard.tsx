@@ -11,6 +11,7 @@ import { ProjectroomCardProps } from "./ProjectroomCard.types";
 import ImagePlaceholder from "../../atoms/imagePlaceholder/ImagePlaceholder";
 import Bulb from "../../../assets/icons/Bulb";
 import setOrganizationTypeIcon from "../../../data/setOrganizationTypeIcon";
+import Button from "../../atoms/buttons/Button";
 
 const Wrapper = styled.div<ProjectroomCardProps>`
   cursor: pointer;
@@ -20,7 +21,8 @@ const Wrapper = styled.div<ProjectroomCardProps>`
   box-sizing: border-box;
   height: auto;
   border-radius: 18px;
-
+  outline: ${({ type, selected }) =>
+    (type = "selectCard" && selected ? "2px solid #FFC700" : "none")};
   height: auto;
   overflow: hidden;
 
@@ -78,6 +80,8 @@ const ProjectroomCard: FC<ProjectroomCardProps> = ({
   ideasData,
   handleButtonOpenCard,
   organizations,
+  type,
+  projectroomSelected,
 }) => {
   const {
     projectRoomId: cardProjectRoomId,
@@ -115,6 +119,8 @@ const ProjectroomCard: FC<ProjectroomCardProps> = ({
   return (
     <Wrapper
       status={status}
+      type={type === "selectCard" ? "selectCard" : "default"}
+      selected={projectroomSelected?.projectRoomId === cardProjectRoomId}
       onClick={(event) =>
         handleButtonOpenCard(event, "projectroomCard", cardProjectRoomId)
       }
@@ -174,6 +180,26 @@ const ProjectroomCard: FC<ProjectroomCardProps> = ({
             <Typography variant="buttonSm">{ideasSize} </Typography>
           </div>
         </Box>
+
+        {type === "selectCard" && (
+          <Box>
+            <Button
+              variant="primary"
+              onClick={(event) =>
+                handleButtonOpenCard(
+                  event,
+                  "projectRoomCard",
+                  cardProjectRoomId
+                )
+              }
+              text={
+                cardProjectRoomId === projectroomSelected?.projectRoomId
+                  ? "deselect"
+                  : "select"
+              }
+            />
+          </Box>
+        )}
       </InnerWrapper>
     </Wrapper>
   );

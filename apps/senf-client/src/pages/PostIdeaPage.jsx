@@ -169,7 +169,7 @@ const PostIdeaPage = ({
   }, [postIdeaOpen]);
 
   const handleSelectProjectroom = (event, cardType, cardId) => {
-    if (projectroomSelected !== cardId) {
+    if (projectroomSelected?.projectRoomId !== cardId) {
       // event.preventDefault();
 
       projectsData.forEach((element) => {

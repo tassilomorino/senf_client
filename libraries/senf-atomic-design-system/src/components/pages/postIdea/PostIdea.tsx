@@ -308,6 +308,8 @@ const PostIdea: FC<PostIdeaProps> = ({
               // projectroomsData={projectroomsData}
               handleButtonOpenCard={handleSelectProjectroom}
               listEndText={t("noMoreProjectrooms")}
+              type="selectCard"
+              projectroomSelected={projectroomSelected}
             />
           )}
         </ProjectroomsWrapper>
