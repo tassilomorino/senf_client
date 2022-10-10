@@ -142,12 +142,7 @@ const App = () => {
               <Routes>
                 <Route
                   path="/"
-                  element={
-                    <Navigate
-                      to="/cologne"
-                      replace
-                    />
-                  }
+                  element={<Home />}
                 />
                 <Route
                   exact
@@ -161,7 +156,7 @@ const App = () => {
                 />
                 <Route
                   exact
-                  path="/:city/idea/:ideaId"
+                  path="/:city/ideas/:ideaId"
                   element={<Home />}
                 />
                 <Route
@@ -171,18 +166,23 @@ const App = () => {
                 />
                 <Route
                   exact
-                  path="/:city/projectRoom/:projectRoomId/:screamId"
+                  path="/:city/projectRooms/:projectRoomId/:screamId"
                   element={<Home />}
                 />
                 <Route
                   exact
-                  path="/:city/projectRoom/:projectRoomId"
+                  path="/:city/projectRooms/:projectRoomId"
                   element={<Home />}
                 />
 
                 <Route
                   exact
                   path="/:city/organizations/:organizationId"
+                  element={<Home />}
+                />
+                <Route
+                  exact
+                  path="/:city/statistics"
                   element={<Home />}
                 />
 

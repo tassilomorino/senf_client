@@ -109,7 +109,7 @@ const IdeaDetailPage = ({
     },
 
     openProjectroom: (projectRoomId) => {
-      navigate(`/${city}/projectRoom/${projectRoomId}`);
+      navigate(`/${city}/projectRooms/${projectRoomId}`);
     },
 
     editIdea: (values) => {

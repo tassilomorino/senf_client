@@ -55,47 +55,43 @@ export const stateCreateOrganizationsFunc = (state) => async (dispatch) => {
   });
 };
 
-export const openOrganizationFunc =
-  (organizationId, state) => async (dispatch) => {
-    if (state === true) {
-      console.log("open organization");
-      dispatch({ type: SET_ORGANIZATION, payload: null });
-      dispatch({
-        type: OPEN_ORGANIZATION,
-        payload: true,
-      });
+// export const openOrganizationFunc =
+//   (organizationId, state) => async (dispatch) => {
+//     if (state === true) {
+//       console.log("open organization");
+//       dispatch({ type: SET_ORGANIZATION, payload: null });
+//       dispatch({
+//         type: OPEN_ORGANIZATION,
+//         payload: true,
+//       });
 
-      dispatch({ type: LOADING_ORGANIZATION_DATA });
+//       dispatch({ type: LOADING_ORGANIZATION_DATA });
 
-      dispatch(loadOrganizationData(organizationId));
-      dispatch(closeScream());
-    } else if (state === "hide") {
-      if (isMobileCustom) {
-        dispatch({
-          type: OPEN_ORGANIZATION,
-          payload: false,
-        });
-      }
-    } else {
-      dispatch({
-        type: OPEN_ORGANIZATION,
-        payload: false,
-      });
-      dispatch({ type: SET_ORGANIZATION, payload: null });
-    }
-  };
+//       dispatch(loadOrganizationData(organizationId));
+//       dispatch(closeScream());
+//     } else if (state === "hide") {
+//       if (isMobileCustom) {
+//         dispatch({
+//           type: OPEN_ORGANIZATION,
+//           payload: false,
+//         });
+//       }
+//     } else {
+//       dispatch({
+//         type: OPEN_ORGANIZATION,
+//         payload: false,
+//       });
+//       dispatch({ type: SET_ORGANIZATION, payload: null });
+//     }
+//   };
 
-export const loadOrganizationData = (organizationId) => async (dispatch) => {
+export const setOrganization = (organizationId) => async (dispatch) => {
   const docRef = doc(db, `organizations/${organizationId}`);
   const organizationsDocSnapshot = await getDoc(docRef);
-  if (!organizationsDocSnapshot.exists()) {
-    window.history.pushState(null, null, "/");
-  } else {
-    const organization = organizationsDocSnapshot.data();
-    organization.organizationId = organizationsDocSnapshot.id;
-    organization.projectRooms = [];
-    dispatch(loadOrganizationProjectRooms(organizationId, organization));
-  }
+  const organization = organizationsDocSnapshot.data();
+  organization.organizationId = organizationsDocSnapshot.id;
+  organization.projectRooms = [];
+  dispatch(loadOrganizationProjectRooms(organizationId, organization));
 };
 
 export const loadOrganizationProjectRooms =

@@ -66,8 +66,13 @@ const Home = () => {
     (state) => state.data.organizationTypes
   );
   const { city } = useParams();
-
   const navigate = useNavigate();
+  useEffect(() => {
+    if (!city) {
+      navigate(`/cologne`);
+    }
+  }, []);
+
   const handleSetMapBounds = (bounds) => {
     const boundsNew = {
       latitude1: bounds[1][1],
@@ -103,12 +108,12 @@ const Home = () => {
   }, [initialMapBounds, initialMapViewport]);
 
   const handleClickIdeaMarker = useCallback((id) => {
-    navigate(`/${city}/idea/${id}`);
+    navigate(`/${city}/ideas/${id}`);
   }, []);
 
   const handleClickProjectroomMarker = useCallback(
     (id) => {
-      navigate(`/${city}/projectRoom/${id}`);
+      navigate(`/${city}/projectRooms/${id}`);
     },
     [dispatch]
   );

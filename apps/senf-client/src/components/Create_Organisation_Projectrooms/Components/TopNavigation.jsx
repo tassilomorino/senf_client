@@ -9,10 +9,7 @@ import DropdownButton from "senf-atomic-design-system/src/components/atoms/conte
 import { db } from "../../../firebase";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { StyledH2 } from "../../../styles/GlobalStyle";
-import {
-  openOrganizationFunc,
-  stateCreateOrganizationsFunc,
-} from "../../../redux/actions/organizationActions";
+import { stateCreateOrganizationsFunc } from "../../../redux/actions/organizationActions";
 import { openCreateProjectRoomFunc } from "../../../redux/actions/projectActions";
 
 const Wrapper = styled.div`
@@ -159,7 +156,7 @@ const TopNavigation = ({
         ).then(() => {
           localStorage.removeItem("createOrganizationId");
           setClose();
-          dispatch(openOrganizationFunc(null, false));
+          // dispatch(openOrganizationFunc(null, false));
         });
       }
 

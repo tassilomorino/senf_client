@@ -40,7 +40,7 @@ import {
   openAccountFunc,
 } from "../redux/actions/accountActions";
 import {
-  openOrganizationFunc,
+  setOrganization,
   stateCreateOrganizationsFunc,
 } from "../redux/actions/organizationActions";
 
@@ -144,7 +144,7 @@ const Main = ({
   const { cookie_settings } = useSelector((state) => state.data);
   const organization = useSelector((state) => state.data.organization);
 
-  const { screamId, projectRoomId, organizationId, profileId, city, ideaId } =
+  const { screamId, projectRoomId, organizationId, city, profileId, ideaId } =
     useParams();
   const navigate = useNavigate();
 
@@ -154,9 +154,22 @@ const Main = ({
   const openAccount = useSelector((state) => state.UI.openAccount);
   const openOrganization = useSelector((state) => state.UI.openOrganization);
 
-  const [openStatisticsOverview, setOpenStatisticsOverview] = useState(false);
-  const [openOrganizationsOverview, setOpenOrganizationsOverview] =
-    useState(false);
+  const setOpenStatisticsOverview = (bool) => {
+    if (bool) {
+      navigate(`/${city}/statistics`);
+      return;
+    }
+
+    navigate(`/${city}`);
+  };
+  const setOpenOrganizationsOverview = (bool) => {
+    if (bool) {
+      navigate(`/${city}/organizations`);
+      return;
+    }
+
+    navigate(`/${city}/projectRooms`);
+  };
 
   const user = useSelector((state) => state.user);
   const myProfileData = useSelector((state) => state.user);
@@ -245,7 +258,7 @@ const Main = ({
       setOpenOrganizationsOverview(false);
       dispatch(closeScream());
       // dispatch(openProjectRoomFunc(null, false));
-      dispatch(openOrganizationFunc(null, false));
+      // dispatch(openOrganizationFunc(null, false));
       dispatch(closeAccountFunc());
       dispatch(handleTopicSelectorRedux("all"));
       const ListWrapper = document.getElementById("ListWrapper");
@@ -355,15 +368,15 @@ const Main = ({
 
   const handleButtonOpenCard = (event, cardType, cardId) => {
     if (cardType === "ideaCard") {
-      navigate(`/${city}/idea/${cardId}`);
+      navigate(`/${city}/ideas/${cardId}`);
     } else if (cardType === "organizationCard") {
-      dispatch(openOrganizationFunc(cardId, true));
+      navigate(`/${city}/organizations/${cardId}`);
     }
   };
 
   const handleOpenProjectroom = (event, projectroomId) => {
     event.stopPropagation();
-    navigate(`/${city}/projectRoom/${projectroomId}`);
+    navigate(`/${city}/projectRooms/${projectroomId}`);
     // dispatch(openProjectRoomFunc(projectroomId, true, navigate));
   };
 
@@ -402,7 +415,7 @@ const Main = ({
   };
 
   const handleCloseOrganizationPage = () => {
-    dispatch(openOrganizationFunc(null, false));
+    navigate(`/${city}/organizations`);
   };
 
   const handleOpenCreateOrganization = () => {
@@ -615,9 +628,8 @@ const Main = ({
                 user={user}
                 myProfileData={myProfileData}
                 setOpenStatisticsOverview={setOpenStatisticsOverview}
-                openStatisticsOverview={openStatisticsOverview}
                 setOpenOrganizationsOverview={setOpenOrganizationsOverview}
-                openOrganizationsOverview={openOrganizationsOverview}
+                openOrganizationsOverview={true}
                 handleOpenMyAccount={handleOpenMyAccount}
                 setShowUI={setShowUI}
                 handleCreateProjectroom={handleCreateProjectroom}
@@ -665,8 +677,9 @@ const Main = ({
           </>
         )}
 
-        {openOrganization && (
+        {organizationId && (
           <OrganizationPage
+            organizationId={organizationId}
             organizations={organizations}
             handleCloseOrganizationPage={handleCloseOrganizationPage}
             handleEdit={handleOpenCreateOrganization}
@@ -675,43 +688,34 @@ const Main = ({
           />
         )}
 
-        {!openInfoPage &&
-          !openProjectRoom &&
-          !openAccount &&
-          openOrganizationsOverview &&
-          !loadingOrganizations && (
-            <OrganizationsOverview
-              data={dataFinalOrganizations}
-              selectedOrganizationTypes={selectedOrganizationTypes}
-              handleSelectOrganizationTypes={handleSelectOrganizationTypes}
-              user={user}
-              organizations={organizations}
-              organization={organization}
-              openOrganizationsOverview={openOrganizationsOverview}
-              setOpenOrganizationsOverview={setOpenOrganizationsOverview}
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              checkedSortOption={dropdown}
-              setCheckedSortOption={setDropdown}
-              handleButtonOpenCard={handleButtonOpenCard}
-              projectroomsData={dataFinalProjectRooms}
-              handleOpenCreateOrganization={handleOpenCreateOrganization}
+        {location.pathname.indexOf("organizations") > -1 && (
+          <OrganizationsOverview
+            data={dataFinalOrganizations}
+            selectedOrganizationTypes={selectedOrganizationTypes}
+            handleSelectOrganizationTypes={handleSelectOrganizationTypes}
+            user={user}
+            organizations={organizations}
+            organization={organization}
+            setOpenOrganizationsOverview={setOpenOrganizationsOverview}
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            checkedSortOption={dropdown}
+            setCheckedSortOption={setDropdown}
+            handleButtonOpenCard={handleButtonOpenCard}
+            projectroomsData={dataFinalProjectRooms}
+            handleOpenCreateOrganization={handleOpenCreateOrganization}
 
-              // openCreateOrganization,
-              // setOpenModalAuthenticate,
-            />
-          )}
+            // openCreateOrganization,
+            // setOpenModalAuthenticate,
+          />
+        )}
 
-        {!openInfoPage &&
-          !openAccount &&
-          !openOrganization &&
-          openStatisticsOverview && (
-            <StatisticsOverviewPage
-              openStatisticsOverview={openStatisticsOverview}
-              setOpenStatisticsOverview={setOpenStatisticsOverview}
-              projectRoomId={project?.projectRoomId}
-            />
-          )}
+        {location.pathname.indexOf("statistics") > -1 && (
+          <StatisticsOverviewPage
+            setOpenStatisticsOverview={setOpenStatisticsOverview}
+            projectRoomId={project?.projectRoomId}
+          />
+        )}
       </ScaleContainer>
 
       {errors && !loading && <ErrorLoading />}
