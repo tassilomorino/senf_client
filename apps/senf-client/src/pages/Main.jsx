@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback, useMemo } from "react";
 
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   Typography,
@@ -22,11 +22,7 @@ import {
 import { AuthModal } from "senf-shared";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
-import { closeScream, openScreamFunc } from "../redux/actions/screamActions";
-import {
-  openProjectRoomFunc,
-  openCreateProjectRoomFunc,
-} from "../redux/actions/projectActions";
+import { closeScream, setIdea } from "../redux/actions/screamActions";
 
 import {
   handleTopicSelectorRedux,
@@ -44,7 +40,7 @@ import {
   openAccountFunc,
 } from "../redux/actions/accountActions";
 import {
-  openOrganizationFunc,
+  setOrganization,
   stateCreateOrganizationsFunc,
 } from "../redux/actions/organizationActions";
 
@@ -148,7 +144,7 @@ const Main = ({
   const { cookie_settings } = useSelector((state) => state.data);
   const organization = useSelector((state) => state.data.organization);
 
-  const { screamId, projectRoomId, organizationId, unknownPathId, profileId } =
+  const { screamId, projectRoomId, organizationId, city, profileId, ideaId } =
     useParams();
   const navigate = useNavigate();
 
@@ -158,9 +154,22 @@ const Main = ({
   const openAccount = useSelector((state) => state.UI.openAccount);
   const openOrganization = useSelector((state) => state.UI.openOrganization);
 
-  const [openStatisticsOverview, setOpenStatisticsOverview] = useState(false);
-  const [openOrganizationsOverview, setOpenOrganizationsOverview] =
-    useState(false);
+  const setOpenStatisticsOverview = (bool) => {
+    if (bool) {
+      navigate(`/${city}/statistics`);
+      return;
+    }
+
+    navigate(`/${city}`);
+  };
+  const setOpenOrganizationsOverview = (bool) => {
+    if (bool) {
+      navigate(`/${city}/organizations`);
+      return;
+    }
+
+    navigate(`/${city}/projectRooms`);
+  };
 
   const user = useSelector((state) => state.user);
   const myProfileData = useSelector((state) => state.user);
@@ -195,12 +204,6 @@ const Main = ({
   const [changeLocationModalOpen, setChangeLocationModalOpen] = useState(false);
   const mapBounds = useSelector((state) => state.data.mapBounds);
 
-  useEffect(() => {
-    unknownPathId && navigate("/");
-    projectRoomId && dispatch(openProjectRoomFunc(projectRoomId, true));
-    screamId && dispatch(openScreamFunc(screamId));
-    organizationId && dispatch(openOrganizationFunc(organizationId, true));
-  }, [dispatch, projectRoomId, screamId, organizationId, unknownPathId]);
   useEffect(() => {
     if (profileId) {
       dispatch(openAccountFunc());
@@ -244,36 +247,18 @@ const Main = ({
     }
   }, [urlPath]);
 
-  useEffect(() => {
-    if (window.location.pathname === "/projectRooms") {
-      setOrder(2);
-    } else if (window.location.pathname === "/organizations") {
-      setOrder(2);
-      dispatch(setSwipePositionUp());
-      setOpenOrganizationsOverview(true);
-    } else if (window.location.pathname === "/insights") {
-      // setOrder(4);
-    } else if (projectRoomId) {
-      setOrder(2);
-    } else if (screamId) {
-      setOrder(1);
-    } else if (organizationId) {
-      setOrder(2);
-      dispatch(setSwipePositionUp());
-      setOpenOrganizationsOverview(true);
-    }
-  }, [dispatch, organizationId, screamId, projectRoomId]);
+  const location = useLocation();
 
   const handleClick = useCallback(
     (order) => {
-      setOrder(order);
+      // setOrder(order);
       setSearchTerm("");
       setDropdown("newest");
       setOpenStatisticsOverview(false);
       setOpenOrganizationsOverview(false);
       dispatch(closeScream());
-      dispatch(openProjectRoomFunc(null, false));
-      dispatch(openOrganizationFunc(null, false));
+      // dispatch(openProjectRoomFunc(null, false));
+      // dispatch(openOrganizationFunc(null, false));
       dispatch(closeAccountFunc());
       dispatch(handleTopicSelectorRedux("all"));
       const ListWrapper = document.getElementById("ListWrapper");
@@ -286,7 +271,7 @@ const Main = ({
         navigate("/");
       }
       if (order === 2) {
-        navigate("/projectRooms");
+        navigate(`/${city}/projectRooms`);
       }
       if (order === 3) {
         navigate("/organizations");
@@ -383,24 +368,16 @@ const Main = ({
 
   const handleButtonOpenCard = (event, cardType, cardId) => {
     if (cardType === "ideaCard") {
-      dispatch(openScreamFunc(cardId));
-    } else if (cardType === "projectroomCard") {
-      dispatch(openProjectRoomFunc(cardId, true));
-
-      if (organization && isMobileCustom) {
-        dispatch({
-          type: "OPEN_ORGANIZATION",
-          payload: false,
-        });
-      }
+      navigate(`/${city}/ideas/${cardId}`);
     } else if (cardType === "organizationCard") {
-      dispatch(openOrganizationFunc(cardId, true));
+      navigate(`/${city}/organizations/${cardId}`);
     }
   };
 
   const handleOpenProjectroom = (event, projectroomId) => {
     event.stopPropagation();
-    dispatch(openProjectRoomFunc(projectroomId, true));
+    navigate(`/${city}/projectRooms/${projectroomId}`);
+    // dispatch(openProjectRoomFunc(projectroomId, true, navigate));
   };
 
   const handleButtonLike = (event, screamId) => {
@@ -438,7 +415,7 @@ const Main = ({
   };
 
   const handleCloseOrganizationPage = () => {
-    dispatch(openOrganizationFunc(null, false));
+    navigate(`/${city}/organizations`);
   };
 
   const handleOpenCreateOrganization = () => {
@@ -616,56 +593,57 @@ const Main = ({
         />
       )}
 
-      <ScaleContainer show={showUI}>
+      <ScaleContainer show={true}>
         {!openInfoPage && (
           <>
-            {!openProjectRoom &&
-              !openAccount &&
-              !loading &&
-              (order === 1 || (order === 2 && !loadingProjects)) && (
-                <MainSwipeList
-                  order={order === 1 ? "ideas" : "projectrooms"}
-                  setOrder={handleClick}
-                  ideasDataOriginal={screams}
-                  ideasData={dataFinalIdeas}
-                  projectroomsData={dataFinalProjectRooms}
-                  organizations={organizations}
-                  selectedTopics={selectedTopics}
-                  selectedOrganizationTypes={selectedOrganizationTypes}
-                  checkedSortOption={dropdown}
-                  setCheckedSortOption={setDropdown}
-                  handleSelectTopics={handleSelectTopics}
-                  handleSelectOrganizationTypes={handleSelectOrganizationTypes}
-                  swipedUp={swipedUp}
-                  setSwipedUp={setSwipedUp}
-                  openScream={openScream}
-                  searchTerm={searchTerm}
-                  setSearchTerm={setSearchTerm}
-                  searchOpen={searchOpen}
-                  setSearchOpen={setSearchOpen}
-                  handleButtonOpenCard={handleButtonOpenCard}
-                  handleOpenProjectroom={handleOpenProjectroom}
-                  handleButtonLike={handleButtonLike}
-                  handleButtonComment={handleButtonComment}
-                  user={user}
-                  myProfileData={myProfileData}
-                  setOpenStatisticsOverview={setOpenStatisticsOverview}
-                  openStatisticsOverview={openStatisticsOverview}
-                  setOpenOrganizationsOverview={setOpenOrganizationsOverview}
-                  openOrganizationsOverview={openOrganizationsOverview}
-                  handleOpenMyAccount={handleOpenMyAccount}
-                  setShowUI={setShowUI}
-                  handleCreateProjectroom={handleCreateProjectroom}
-                  handleMapBoundsReset={handleSetInitialMapBoundsAndViewport}
-                  mapFilterActive={mapFilterActive}
-                  postIdeaOpen={postIdeaOpen}
-                  setPostIdeaOpen={setPostIdeaOpen}
-                  postIdeaSuccessModalOpen={postIdeaSuccessModalOpen}
-                />
-              )}
+            {city && !loading && (
+              <MainSwipeList
+                order={
+                  location.pathname.indexOf("projectRooms") > -1
+                    ? "projectrooms"
+                    : "ideas"
+                }
+                setOrder={handleClick}
+                ideasDataOriginal={screams}
+                ideasData={dataFinalIdeas}
+                projectroomsData={dataFinalProjectRooms}
+                organizations={organizations}
+                selectedTopics={selectedTopics}
+                selectedOrganizationTypes={selectedOrganizationTypes}
+                checkedSortOption={dropdown}
+                setCheckedSortOption={setDropdown}
+                handleSelectTopics={handleSelectTopics}
+                handleSelectOrganizationTypes={handleSelectOrganizationTypes}
+                swipedUp={swipedUp}
+                setSwipedUp={setSwipedUp}
+                openScream={openScream}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                searchOpen={searchOpen}
+                setSearchOpen={setSearchOpen}
+                handleButtonOpenCard={handleButtonOpenCard}
+                handleOpenProjectroom={handleOpenProjectroom}
+                handleButtonLike={handleButtonLike}
+                handleButtonComment={handleButtonComment}
+                user={user}
+                myProfileData={myProfileData}
+                setOpenStatisticsOverview={setOpenStatisticsOverview}
+                setOpenOrganizationsOverview={setOpenOrganizationsOverview}
+                openOrganizationsOverview={true}
+                handleOpenMyAccount={handleOpenMyAccount}
+                setShowUI={setShowUI}
+                handleCreateProjectroom={handleCreateProjectroom}
+                handleMapBoundsReset={handleSetInitialMapBoundsAndViewport}
+                mapFilterActive={mapFilterActive}
+                postIdeaOpen={postIdeaOpen}
+                setPostIdeaOpen={setPostIdeaOpen}
+                postIdeaSuccessModalOpen={postIdeaSuccessModalOpen}
+              />
+            )}
 
-            {openProjectRoom && !openScream && (
+            {projectRoomId && (
               <ProjectroomPage
+                projectRoomId={projectRoomId}
                 user={user}
                 setPostIdeaOpen={setPostIdeaOpen}
                 handleButtonOpenCard={handleButtonOpenCard}
@@ -687,8 +665,9 @@ const Main = ({
               />
             )}
 
-            {!openInfoPage && openScream && (
+            {city && ideaId && (
               <IdeaDetailPage
+                ideaId={ideaId}
                 handleButtonLike={handleButtonLike}
                 handleButtonComment={handleButtonComment}
                 projectroomsData={dataFinalProjectRooms}
@@ -698,8 +677,9 @@ const Main = ({
           </>
         )}
 
-        {openOrganization && (
+        {organizationId && (
           <OrganizationPage
+            organizationId={organizationId}
             organizations={organizations}
             handleCloseOrganizationPage={handleCloseOrganizationPage}
             handleEdit={handleOpenCreateOrganization}
@@ -708,43 +688,34 @@ const Main = ({
           />
         )}
 
-        {!openInfoPage &&
-          !openProjectRoom &&
-          !openAccount &&
-          openOrganizationsOverview &&
-          !loadingOrganizations && (
-            <OrganizationsOverview
-              data={dataFinalOrganizations}
-              selectedOrganizationTypes={selectedOrganizationTypes}
-              handleSelectOrganizationTypes={handleSelectOrganizationTypes}
-              user={user}
-              organizations={organizations}
-              organization={organization}
-              openOrganizationsOverview={openOrganizationsOverview}
-              setOpenOrganizationsOverview={setOpenOrganizationsOverview}
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              checkedSortOption={dropdown}
-              setCheckedSortOption={setDropdown}
-              handleButtonOpenCard={handleButtonOpenCard}
-              projectroomsData={dataFinalProjectRooms}
-              handleOpenCreateOrganization={handleOpenCreateOrganization}
+        {location.pathname.indexOf("organizations") > -1 && (
+          <OrganizationsOverview
+            data={dataFinalOrganizations}
+            selectedOrganizationTypes={selectedOrganizationTypes}
+            handleSelectOrganizationTypes={handleSelectOrganizationTypes}
+            user={user}
+            organizations={organizations}
+            organization={organization}
+            setOpenOrganizationsOverview={setOpenOrganizationsOverview}
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            checkedSortOption={dropdown}
+            setCheckedSortOption={setDropdown}
+            handleButtonOpenCard={handleButtonOpenCard}
+            projectroomsData={dataFinalProjectRooms}
+            handleOpenCreateOrganization={handleOpenCreateOrganization}
 
-              // openCreateOrganization,
-              // setOpenModalAuthenticate,
-            />
-          )}
+            // openCreateOrganization,
+            // setOpenModalAuthenticate,
+          />
+        )}
 
-        {!openInfoPage &&
-          !openAccount &&
-          !openOrganization &&
-          openStatisticsOverview && (
-            <StatisticsOverviewPage
-              openStatisticsOverview={openStatisticsOverview}
-              setOpenStatisticsOverview={setOpenStatisticsOverview}
-              projectRoomId={project?.projectRoomId}
-            />
-          )}
+        {location.pathname.indexOf("statistics") > -1 && (
+          <StatisticsOverviewPage
+            setOpenStatisticsOverview={setOpenStatisticsOverview}
+            projectRoomId={project?.projectRoomId}
+          />
+        )}
       </ScaleContainer>
 
       {errors && !loading && <ErrorLoading />}

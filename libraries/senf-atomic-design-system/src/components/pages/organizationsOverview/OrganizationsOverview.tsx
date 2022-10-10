@@ -164,7 +164,7 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
     //   }
     // >
     <SwipeModal
-      triggerOpen={openOrganizationsOverview}
+      triggerOpen={true}
       onClose={() => setOpenOrganizationsOverview(false)}
       onDrag={(e) => console.log(e)}
       overflowing={true}
@@ -222,7 +222,7 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
       </InnerWrapper>
     </SwipeModal>
   ) : (
-    <Wrapper open={openOrganizationsOverview}>
+    <Wrapper open={true}>
       <SVGWrapper searchOpen={searchOpen}>
         <Box
           position="fixed"

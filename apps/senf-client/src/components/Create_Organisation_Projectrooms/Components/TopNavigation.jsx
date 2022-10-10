@@ -9,14 +9,8 @@ import DropdownButton from "senf-atomic-design-system/src/components/atoms/conte
 import { db } from "../../../firebase";
 import { isMobileCustom } from "../../../util/customDeviceDetect";
 import { StyledH2 } from "../../../styles/GlobalStyle";
-import {
-  openOrganizationFunc,
-  stateCreateOrganizationsFunc,
-} from "../../../redux/actions/organizationActions";
-import {
-  openCreateProjectRoomFunc,
-  openProjectRoomFunc,
-} from "../../../redux/actions/projectActions";
+import { stateCreateOrganizationsFunc } from "../../../redux/actions/organizationActions";
+import { openCreateProjectRoomFunc } from "../../../redux/actions/projectActions";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -154,7 +148,7 @@ const TopNavigation = ({
           localStorage.removeItem("createProjectRoomOrganizationId");
           localStorage.removeItem("createProjectRoomId");
           setClose();
-          dispatch(openProjectRoomFunc(null, false));
+          // dispatch(openProjectRoomFunc(null, false));
         });
       } else {
         await deleteDoc(
@@ -162,7 +156,7 @@ const TopNavigation = ({
         ).then(() => {
           localStorage.removeItem("createOrganizationId");
           setClose();
-          dispatch(openOrganizationFunc(null, false));
+          // dispatch(openOrganizationFunc(null, false));
         });
       }
 
@@ -277,7 +271,6 @@ const TopNavigation = ({
           </svg>
         )}
       </SVGWrapper>
-
       <SVGWrapper2 currentStep={currentStep}>
         {isMobileCustom ? (
           <svg

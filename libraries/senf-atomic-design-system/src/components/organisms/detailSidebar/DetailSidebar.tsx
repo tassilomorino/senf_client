@@ -2,6 +2,7 @@
 
 import React, { FC } from "react";
 import styled from "styled-components";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "../../..";
 import Arrow from "../../../assets/icons/Arrow";
 import More from "../../../assets/icons/More";
@@ -19,6 +20,7 @@ const DetailSidebar: FC<DetailSidebarProps> = ({
   sideDivider,
 }) => {
   const isMobile = isMobileCustom();
+  const navigate = useNavigate();
   return (
     <Wrapper>
       <Box
@@ -32,7 +34,7 @@ const DetailSidebar: FC<DetailSidebarProps> = ({
       >
         <Button
           icon={<Arrow transform="rotate(180)" />}
-          onClick={handleButtonClose}
+          onClick={() => navigate(-1)}
           size="medium"
           variant="white"
         />

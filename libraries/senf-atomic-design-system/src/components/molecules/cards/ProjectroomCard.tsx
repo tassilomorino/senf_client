@@ -76,7 +76,7 @@ const DeactivatedWrapper = styled.div`
 const ProjectroomCard: FC<ProjectroomCardProps> = ({
   data,
   ideasData,
-  handleButtonOpenCard,
+  handleOpenProjectroom,
   organizations,
 }) => {
   const {
@@ -115,15 +115,13 @@ const ProjectroomCard: FC<ProjectroomCardProps> = ({
   return (
     <Wrapper
       status={status}
-      onClick={(event) =>
-        handleButtonOpenCard(event, "projectroomCard", cardProjectRoomId)
-      }
+      onClick={(event) => handleOpenProjectroom(event, cardProjectRoomId)}
       // active={thisOrganizationId === organization?.organizationId}
     >
       <InnerWrapper>
         {/* {status !== "active" && (
         <DeactivatedWrapper>
-           <img src={NotPublishedIcon} width="100%" /> 
+           <img src={NotPublishedIcon} width="100%" />
         </DeactivatedWrapper>
       )}
     */}

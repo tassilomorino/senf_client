@@ -11,7 +11,7 @@ import {
 } from "senf-atomic-design-system";
 import {
   openCreateProjectRoomFunc,
-  openProjectRoomFunc,
+  setProjectRoom,
 } from "../redux/actions/projectActions";
 import { clearErrors } from "../redux/actions/errorsActions";
 import { handleTopicSelectorRedux } from "../redux/actions/UiActions";
@@ -29,6 +29,7 @@ const ProjectroomPage = ({
   dataFinalMap,
   setOpenInsightsPage,
   user,
+  projectRoomId,
   handleButtonOpenCard,
   setPostIdeaOpen,
   handleSetInitialMapBoundsAndViewport,
@@ -57,21 +58,12 @@ const ProjectroomPage = ({
   const selectedTopics = useSelector((state) => state.data.topics);
 
   useEffect(() => {
+    dispatch(setProjectRoom(projectRoomId));
+  }, [projectRoomId]);
+
+  useEffect(() => {
     dispatch(handleTopicSelectorRedux("all"));
-    setPath(window.location.pathname);
   }, [openProjectRoom]);
-
-  const handleClose = useCallback(() => {
-    dispatch(openProjectRoomFunc(null, false));
-    handleSetInitialMapBoundsAndViewport();
-
-    if (organization && isMobileCustom) {
-      dispatch({
-        type: "OPEN_ORGANIZATION",
-        payload: true,
-      });
-    }
-  }, [dispatch]);
 
   useEffect(() => {
     if (project && project.organizationId) {
@@ -161,7 +153,6 @@ const ProjectroomPage = ({
       ideasData={dataFinalProjectRoomIdeas}
       organizations={organizations}
       handleButtonOpenCard={handleButtonOpenCard}
-      handleButtonClose={handleClose}
       selectedTopics={selectedTopics}
       handleSelectTopics={(topic) => dispatch(handleTopicSelectorRedux(topic))}
       setPostIdeaOpen={() => setPostIdeaOpen(true)}
