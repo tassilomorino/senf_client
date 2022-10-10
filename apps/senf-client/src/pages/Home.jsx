@@ -12,7 +12,6 @@ import {
 } from "senf-atomic-design-system";
 import Cookies from "universal-cookie";
 import { setMapBounds } from "../redux/actions/mapActions";
-import { closeScream, setIdea } from "../redux/actions/screamActions";
 import { isMobileCustom } from "../util/customDeviceDetect";
 import {
   filterByStatus,
@@ -81,7 +80,7 @@ const Home = () => {
       longitude3: bounds[1][0],
     };
     dispatch(setMapBounds(boundsNew));
-    dispatch(closeScream());
+    navigate(`/${city}`);
     window.scrollTo({
       top: 0,
       left: 0,

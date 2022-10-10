@@ -22,8 +22,6 @@ import {
 import { AuthModal } from "senf-shared";
 import { isMobileCustom } from "../util/customDeviceDetect";
 
-import { closeScream, setIdea } from "../redux/actions/screamActions";
-
 import {
   handleTopicSelectorRedux,
   handleOrganizationTypesSelectorRedux,
@@ -148,7 +146,6 @@ const Main = ({
     useParams();
   const navigate = useNavigate();
 
-  const openInfoPage = useSelector((state) => state.UI.openInfoPage);
   const openScream = useSelector((state) => state.UI.openScream);
   const openProjectRoom = useSelector((state) => state.UI.openProjectRoom);
   const openAccount = useSelector((state) => state.UI.openAccount);
@@ -181,10 +178,6 @@ const Main = ({
   const loading = useSelector((state) => state.data.loading);
   const loadingUI = useSelector((state) => state.UI.loading);
   const loadingProjects = useSelector((state) => state.data.loadingProjects);
-  const loadingOrganizations = useSelector(
-    (state) => state.data.loadingOrganizations
-  );
-
   const projects = useSelector((state) => state.data.projects);
   const project = useSelector((state) => state.data.project);
 
@@ -256,7 +249,7 @@ const Main = ({
       setDropdown("newest");
       setOpenStatisticsOverview(false);
       setOpenOrganizationsOverview(false);
-      dispatch(closeScream());
+      navigate(`/${city}`);
       // dispatch(openProjectRoomFunc(null, false));
       // dispatch(openOrganizationFunc(null, false));
       dispatch(closeAccountFunc());
@@ -566,7 +559,6 @@ const Main = ({
             }
             hide={
               !showUI ||
-              openInfoPage ||
               (isMobileCustom && swipedUp) ||
               (isMobileCustom && openScream) ||
               (openProjectRoom && !project?.screams) ||
@@ -596,87 +588,85 @@ const Main = ({
       )}
 
       <ScaleContainer show={showUI}>
-        {!openInfoPage && (
-          <>
-            {city && !loading && (
-              <MainSwipeList
-                order={
-                  location.pathname.indexOf("projectRooms") > -1
-                    ? "projectrooms"
-                    : "ideas"
-                }
-                setOrder={handleClick}
-                ideasDataOriginal={screams}
-                ideasData={dataFinalIdeas}
-                projectroomsData={dataFinalProjectRooms}
-                organizations={organizations}
-                selectedTopics={selectedTopics}
-                selectedOrganizationTypes={selectedOrganizationTypes}
-                checkedSortOption={dropdown}
-                setCheckedSortOption={setDropdown}
-                handleSelectTopics={handleSelectTopics}
-                handleSelectOrganizationTypes={handleSelectOrganizationTypes}
-                swipedUp={swipedUp}
-                setSwipedUp={setSwipedUp}
-                openScream={openScream}
-                searchTerm={searchTerm}
-                setSearchTerm={setSearchTerm}
-                searchOpen={searchOpen}
-                setSearchOpen={setSearchOpen}
-                handleButtonOpenCard={handleButtonOpenCard}
-                handleButtonLike={handleButtonLike}
-                handleButtonComment={handleButtonComment}
-                user={user}
-                myProfileData={myProfileData}
-                setOpenStatisticsOverview={setOpenStatisticsOverview}
-                setOpenOrganizationsOverview={setOpenOrganizationsOverview}
-                openOrganizationsOverview={true}
-                handleOpenMyAccount={handleOpenMyAccount}
-                setShowUI={setShowUI}
-                handleCreateProjectroom={handleCreateProjectroom}
-                handleMapBoundsReset={handleSetInitialMapBoundsAndViewport}
-                mapFilterActive={mapFilterActive}
-                postIdeaOpen={postIdeaOpen}
-                setPostIdeaOpen={setPostIdeaOpen}
-                postIdeaSuccessModalOpen={postIdeaSuccessModalOpen}
-                handleOpenInfoPage={handleOpenInfoPage}
-              />
-            )}
+        <>
+          {city && !loading && (
+            <MainSwipeList
+              order={
+                location.pathname.indexOf("projectRooms") > -1
+                  ? "projectrooms"
+                  : "ideas"
+              }
+              setOrder={handleClick}
+              ideasDataOriginal={screams}
+              ideasData={dataFinalIdeas}
+              projectroomsData={dataFinalProjectRooms}
+              organizations={organizations}
+              selectedTopics={selectedTopics}
+              selectedOrganizationTypes={selectedOrganizationTypes}
+              checkedSortOption={dropdown}
+              setCheckedSortOption={setDropdown}
+              handleSelectTopics={handleSelectTopics}
+              handleSelectOrganizationTypes={handleSelectOrganizationTypes}
+              swipedUp={swipedUp}
+              setSwipedUp={setSwipedUp}
+              openScream={openScream}
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              searchOpen={searchOpen}
+              setSearchOpen={setSearchOpen}
+              handleButtonOpenCard={handleButtonOpenCard}
+              handleButtonLike={handleButtonLike}
+              handleButtonComment={handleButtonComment}
+              user={user}
+              myProfileData={myProfileData}
+              setOpenStatisticsOverview={setOpenStatisticsOverview}
+              setOpenOrganizationsOverview={setOpenOrganizationsOverview}
+              openOrganizationsOverview={true}
+              handleOpenMyAccount={handleOpenMyAccount}
+              setShowUI={setShowUI}
+              handleCreateProjectroom={handleCreateProjectroom}
+              handleMapBoundsReset={handleSetInitialMapBoundsAndViewport}
+              mapFilterActive={mapFilterActive}
+              postIdeaOpen={postIdeaOpen}
+              setPostIdeaOpen={setPostIdeaOpen}
+              postIdeaSuccessModalOpen={postIdeaSuccessModalOpen}
+              handleOpenInfoPage={handleOpenInfoPage}
+            />
+          )}
 
-            {projectRoomId && (
-              <ProjectroomPage
-                projectRoomId={projectRoomId}
-                user={user}
-                setPostIdeaOpen={setPostIdeaOpen}
-                handleButtonOpenCard={handleButtonOpenCard}
-                handleSetInitialMapBoundsAndViewport={
-                  handleSetInitialMapBoundsAndViewport
-                }
-                handleButtonLike={handleButtonLike}
-                handleButtonComment={handleButtonComment}
-                setOpenStatisticsOverview={setOpenStatisticsOverview}
-              />
-            )}
+          {projectRoomId && (
+            <ProjectroomPage
+              projectRoomId={projectRoomId}
+              user={user}
+              setPostIdeaOpen={setPostIdeaOpen}
+              handleButtonOpenCard={handleButtonOpenCard}
+              handleSetInitialMapBoundsAndViewport={
+                handleSetInitialMapBoundsAndViewport
+              }
+              handleButtonLike={handleButtonLike}
+              handleButtonComment={handleButtonComment}
+              setOpenStatisticsOverview={setOpenStatisticsOverview}
+            />
+          )}
 
-            {openAccount && (
-              <ProfilePage
-                handleButtonOpenCard={handleButtonOpenCard}
-                handleButtonLike={handleButtonLike}
-                handleButtonComment={handleButtonComment}
-              />
-            )}
+          {openAccount && (
+            <ProfilePage
+              handleButtonOpenCard={handleButtonOpenCard}
+              handleButtonLike={handleButtonLike}
+              handleButtonComment={handleButtonComment}
+            />
+          )}
 
-            {city && ideaId && (
-              <IdeaDetailPage
-                ideaId={ideaId}
-                handleButtonLike={handleButtonLike}
-                handleButtonComment={handleButtonComment}
-                projectroomsData={dataFinalProjectRooms}
-                user={user}
-              />
-            )}
-          </>
-        )}
+          {city && ideaId && (
+            <IdeaDetailPage
+              ideaId={ideaId}
+              handleButtonLike={handleButtonLike}
+              handleButtonComment={handleButtonComment}
+              projectroomsData={dataFinalProjectRooms}
+              user={user}
+            />
+          )}
+        </>
 
         {organizationId && (
           <OrganizationPage

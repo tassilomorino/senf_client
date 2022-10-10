@@ -10,7 +10,6 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase";
 
-import { closeScream } from "./screamActions";
 import {
   LOADING_UI,
   STOP_LOADING_UI,

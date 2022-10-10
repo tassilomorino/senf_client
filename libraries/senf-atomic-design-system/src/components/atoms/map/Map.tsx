@@ -423,13 +423,7 @@ const Map: FC<MapProps> = ({
     if (!mapFilterActive && statefulMap) {
       initialFly(statefulMap, initialMapViewport);
     }
-  }, [mapFilterActive]);
-
-  useEffect(() => {
-    if (statefulMap) {
-      initialFly(statefulMap, initialMapViewport);
-    }
-  }, [statefulMap]);
+  }, [mapFilterActive, statefulMap]);
 
   useEffect(() => {
     showProjectroomPolygon(

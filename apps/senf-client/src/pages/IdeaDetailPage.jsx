@@ -10,7 +10,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { isMobileCustom } from "../util/customDeviceDetect";
 // Redux stuff
 import {
-  closeScream,
   deleteScream,
   editScreamFunc,
   setIdea,
@@ -78,7 +77,7 @@ const IdeaDetailPage = ({
     buttonComment: handleButtonComment,
 
     closeCard: () => {
-      dispatch(closeScream());
+      // navigate(`/${city}`);
       dispatch(clearErrors());
     },
 
@@ -183,7 +182,7 @@ const IdeaDetailPage = ({
 
 
       dispatch(handleTopicSelectorRedux("all")); */
-      dispatch(closeScream());
+      // dispatch(closeScream());
       // dispatch(openProjectRoomFunc(null, false));
       dispatch(openAccountFunc());
       navigate(`/profile/${profileId}`);

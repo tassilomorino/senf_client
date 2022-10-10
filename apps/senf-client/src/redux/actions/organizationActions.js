@@ -10,7 +10,6 @@ import {
 } from "firebase/firestore";
 import { isMobileCustom } from "../../util/customDeviceDetect";
 
-import { closeScream } from "./screamActions";
 import {
   LOADING_ORGANIZATIONS_DATA,
   LOADING_ORGANIZATION_DATA,

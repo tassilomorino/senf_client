@@ -132,22 +132,6 @@ export const setIdea = (ideaId) => async (dispatch) => {
   }
 };
 
-export const closeScream = () => (dispatch) => {
-  const projectroomPath =
-    store.getState().UI.openProjectRoom && store.getState().data.project
-      ? `/projectRooms/${store.getState().data.project.projectRoomId}`
-      : "/";
-
-  dispatch({ type: CLOSE_SCREAM });
-
-  // IF IT BECOMES NECESSARY (IF IN PROJECTROOM, GET PROJECTSCREAMS)
-  // setTimeout(() => {
-  //   dispatch(getScreams(store.getState().data.mapViewport));
-  // }, 100);
-
-  window.history.pushState(null, null, projectroomPath);
-};
-
 // Post an idea
 export const postScream = (newScream, user) => async (dispatch) => {
   dispatch({ type: LOADING_DATA });
