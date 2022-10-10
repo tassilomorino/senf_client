@@ -75,7 +75,6 @@ const Toolbar: FC<ToolbarProps> = ({
   checkedSortOption,
   setCheckedSortOption,
 }) => {
-
   const setSearch = () => {
     setSearchOpen(!searchOpen);
 
@@ -92,13 +91,15 @@ const Toolbar: FC<ToolbarProps> = ({
         text={activeSortOptionLabel}
         iconRight={<ArrowDown />}
         options={{ itemType: "check" }}
-        data={Object.values(sortOptions as { label: string, value: string }[]).map(item => ({
+        data={Object.values(
+          sortOptions as { label: string; value: string }[]
+        ).map((item) => ({
           text: item.label,
           checked: checkedSortOption === item.value,
           onClick: () => {
             setCheckedSortOption(item.value);
             setActiveSortOptionLabel(item.label);
-          }
+          },
         }))}
       />
 

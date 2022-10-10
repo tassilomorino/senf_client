@@ -5,7 +5,9 @@ import styled from "styled-components";
 import { LegalStyles, Terms } from "./LegalStyles";
 
 const TermsAndCondition = () => (
-  <LegalStyles>    <br />
+  <LegalStyles>
+    {" "}
+    <br />
     <br /> <br />
     <h1>Allgemeine Geschäftsbedingungen</h1>
     <p>
@@ -33,13 +35,19 @@ const TermsAndCondition = () => (
     <p>
       Die vorliegenden Allgemeinen Geschäftsbedingungen („AGB“) regeln deinen
       Zugriff auf Senf.koeln.In unserer{" "}
-      <Terms href="/datenschutz" target="_blank">
+      <Terms
+        href="/datenschutz"
+        target="_blank"
+      >
         Datenschutzrichtlinie
       </Terms>{" "}
       wird erläutert, wie wir deine Daten erheben und verwenden, während hier
       deine Pflichten hinsichtlich der Nutzung von Senf dargelegt werden.Durch
       die Registrierung erklärst du dich mit diesen AGB und unserer{" "}
-      <Terms href="/datenschutz" target="_blank">
+      <Terms
+        href="/datenschutz"
+        target="_blank"
+      >
         Datenschutzrichtlinie
       </Terms>{" "}
       einverstanden.

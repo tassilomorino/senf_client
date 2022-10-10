@@ -2,7 +2,7 @@
 
 import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
-import * as THREE from "three"
+import * as THREE from "three";
 import App from "./App";
 
 window.THREE = THREE;

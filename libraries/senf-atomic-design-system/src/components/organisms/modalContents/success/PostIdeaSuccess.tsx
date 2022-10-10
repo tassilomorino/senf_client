@@ -3,20 +3,33 @@
 import React, { FC, useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { Trans, useTranslation } from "react-i18next";
-import Button from "../../atoms/buttons/Button";
-import Box from "../../atoms/box/Box";
+import Button from "../../../atoms/buttons/Button";
+import Box from "../../../atoms/box/Box";
 import { SuccessProps } from "./PostIdeaSuccess.types";
 
-import senfManCelebrating from "../../../assets/illustrations/senfManCelebrating.png";
-import skewedCircle from "../../../assets/illustrations/skewedCircle.png";
-import Typography from "../../atoms/typography/Typography";
-import { openLink } from "../../../util/helpers";
+import senfManCelebrating from "../../../../assets/illustrations/senfManCelebrating.png";
+import skewedCircle from "../../../../assets/illustrations/skewedCircle.png";
+import Typography from "../../../atoms/typography/Typography";
+import { openLink } from "../../../../util/helpers";
+import SocialmediaShare from "../../socialmediaShare/SocialmediaShare";
+import DropdownButton from "../../../atoms/contentDropdown/DropdownButton";
+import { isMobileCustom } from "../../../../hooks/customDeviceDetect";
+
+const Background = styled.div`
+  background-color: ${({ theme }) => theme.colors.beige.beige10};
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+`;
 
 const SenfManCelebratingImg = styled.img`
   position: absolute;
   left: 30%;
 
-  z-index: 1;
+  z-index: 3;
   pointer-events: none;
   user-select: none;
 `;
@@ -24,7 +37,7 @@ const SkewedCircleImg = styled.img`
   position: absolute;
   left: 8.18%;
   top: 10%;
-  z-index: 0;
+  z-index: 2;
   pointer-events: none;
   user-select: none;
 `;
@@ -37,9 +50,16 @@ const PostIdeaSuccess: FC<SuccessProps> = ({
   closeModal,
 }) => {
   const { t } = useTranslation();
-
+  const isMobile = isMobileCustom();
+  const projectRoomPath = newIdea?.projectRoomId
+    ? `https://senf.koeln/projectRooms/${newIdea.projectRoomId}/${newIdea.screamId}`
+    : null;
+  const ideaPath = newIdea?.screamId
+    ? `https://senf.koeln/idea/${newIdea.screamId}`
+    : null;
   return (
     <>
+      <Background />
       <SenfManCelebratingImg
         src={senfManCelebrating}
         alt="Illustration"
@@ -71,10 +91,22 @@ const PostIdeaSuccess: FC<SuccessProps> = ({
           >
             {t("success_page_published")}
           </Typography>
-          <Button
-            text={t("success_page_share_idea")}
-            variant="white"
+
+          <DropdownButton
+            size="md"
             width="max"
+            variant="white"
+            icon="Share"
+            text={t("success_page_share_idea")}
+            options={{ modal: false /* bug on true */, closeOnSelect: false }}
+            data={
+              <>
+                <SocialmediaShare
+                  path={projectRoomPath || ideaPath}
+                  // handleShareIdeaVia={handle.shareIdeaVia}
+                />
+              </>
+            }
           />
         </Box>
         <Box

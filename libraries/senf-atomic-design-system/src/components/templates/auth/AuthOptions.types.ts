@@ -8,7 +8,7 @@ export interface AuthOptionsProps {
   loading?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   formikStore?: any;
-  authHandler,
-  setPage,
-  errorMessage
+  authHandler;
+  setPage;
+  errorMessage;
 }

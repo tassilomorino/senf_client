@@ -85,7 +85,8 @@ const ExpandMap: FC = ({
     <MapWrapper
       id="drawMapWindow"
       width={width}
-      height={height}>
+      height={height}
+    >
       <OpenButton
         onClick={() => {
           setMapExpanded(true);
@@ -93,7 +94,8 @@ const ExpandMap: FC = ({
             <MapWrapper
               id="drawMapWindow"
               width={"100vw"}
-              height={"1000px"}>
+              height={"1000px"}
+            >
               {/* <Box
                     position="absolute"
                     margin={document.body.clientWidth > 768 ? "20px" : "10px"}
@@ -125,7 +127,8 @@ const ExpandMap: FC = ({
               beforeClose: () => setMapExpanded(false),
             }
           );
-        }}>
+        }}
+      >
         <Icon icon={<Fullscreen transform="scale(2)" />} />
       </OpenButton>
 

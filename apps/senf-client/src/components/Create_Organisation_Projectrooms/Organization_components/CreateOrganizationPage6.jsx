@@ -279,7 +279,10 @@ const CreateOrganizationPage6 = ({
     <React.Fragment>
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH3 textAlign="center" margin="20px">
+          <StyledH3
+            textAlign="center"
+            margin="20px"
+          >
             {pagesData[index].subTitle}
           </StyledH3>
           <div
@@ -301,10 +304,16 @@ const CreateOrganizationPage6 = ({
           </div>
           <br /> <br />
           <Divider />
-          <StyledH3 textAlign="center" margin="20px">
+          <StyledH3
+            textAlign="center"
+            margin="20px"
+          >
             {pagesData[index].subTitle2}
           </StyledH3>
-          <Box gap="10px" justifyContent="center">
+          <Box
+            gap="10px"
+            justifyContent="center"
+          >
             <Input
               type="search"
               placeholder="Durchsuche Nutzernamen oder Email-Adressen..."
@@ -348,8 +357,8 @@ const CreateOrganizationPage6 = ({
         set={set}
         index={index}
         pagesData={pagesData}
-      // disabled={!data || nextClicked}
-      // loading={nextClicked}
+        // disabled={!data || nextClicked}
+        // loading={nextClicked}
       />
     </React.Fragment>
   );

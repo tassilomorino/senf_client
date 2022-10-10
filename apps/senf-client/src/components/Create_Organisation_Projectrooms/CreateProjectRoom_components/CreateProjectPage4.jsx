@@ -50,7 +50,10 @@ const CreateProjectPage4 = ({
       />
       <ComponentWrapper>
         <ComponentInnerWrapper>
-          <StyledH3 textAlign="center" margin="20px">
+          <StyledH3
+            textAlign="center"
+            margin="20px"
+          >
             {pagesData[index].subTitle}
           </StyledH3>
         </ComponentInnerWrapper>

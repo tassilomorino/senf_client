@@ -1,4 +1,4 @@
-import React, { Component, FC, useEffect, useState } from "react";
+import React, { Component, FC, useEffect, useRef, useState } from "react";
 import MapboxClient from "mapbox";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
@@ -12,37 +12,41 @@ import Typography from "../typography/Typography";
 import IdeaPin from "../../../assets/icons/IdeaPin";
 import Locate from "../../../assets/icons/Locate";
 import { geolocateControl } from "../map/hooks/useGeolocateControl";
+import Results from "./Results";
+import { isMobileCustom } from "../../../hooks/customDeviceDetect";
+import DropdownListContainer from "../contentDropdown/DropdownListContainer";
+import { useOnClicAndTouchOutside } from "../../../hooks/useOnClickOutside";
 
 const ResultsContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: auto;
-  width: auto;
-  position: relative;
+  width: 100vw;
+  position: fixed;
+  padding-top: 70px;
+  top: 0;
+  left: 0;
   background-color: ${({ theme }) => theme.colors.greyscale.greyscale10};
-  z-index: 998;
+  z-index: -1;
 `;
-const Result = styled.div`
-  height: 64px;
-  width: 100%;
-  &:hover {
-    cursor: pointer;
-    background-color: ${({ theme }) => theme.colors.greyscale.greyscale20};
-  }
-`;
+
 const Geocoder: FC<GeocoderProps> = ({
   statefulMap,
   placeholder,
   formik,
   handleSetClose,
 }) => {
+  const { t } = useTranslation();
+  const isMobile = isMobileCustom();
   const debounceTimeout = null;
   const [searchTerm, setSearchTerm] = useState("");
   const [geocoder, setGeocoder] = useState(null);
   const [showResults, setShowResults] = useState(false);
   const [results, setResults] = useState([]);
   const [detectLocationIcons, setDetectLocationIcons] = useState(false);
-  const { t } = useTranslation();
+  const outerRef = useRef(null);
+
+  useOnClicAndTouchOutside(outerRef, () => setShowResults(false));
   useEffect(() => {
     const accessToken =
       "pk.eyJ1IjoiZGF0dHdvb2QxOTg2IiwiYSI6ImNraTI5cnAwcDByZHUycnBleWphMHR1dDcifQ.u7pG_sZ7Su685A11r6-uuw";
@@ -113,12 +117,9 @@ const Geocoder: FC<GeocoderProps> = ({
   };
 
   return (
-    <Box
-      zIndex={999}
-      width="100%"
-      display="flex"
-      flexDirection="column"
-      // position={showResults && "fixed"} top={showResults && 0}
+    <div
+      ref={outerRef}
+      style={{ width: "100%" }}
     >
       {/* <OverlayIcon onClick={() => setShowResults(!showResults)}>
           <Icon icon={<Arrow transform="" />} />
@@ -134,7 +135,7 @@ const Geocoder: FC<GeocoderProps> = ({
           showResults ? setShowResults(false) : setShowResults(true)
         }
         placeholder={t("geocoder_address")}
-        trailingIcon={<Close />}
+        trailingIcon={searchTerm.length > 0 ? <Close /> : undefined}
         trailingIconClick={
           searchTerm.length > 0
             ? () => {
@@ -153,108 +154,30 @@ const Geocoder: FC<GeocoderProps> = ({
         value={searchTerm}
       />
 
-      {showResults && (
+      {showResults && isMobile && (
         <ResultsContainer>
-          {results?.map((item, index) => (
-            <Result
-              key={`geocoder_result${index}`}
-              onClick={() => onSelected(item)}
-              item={item}
-            >
-              <Box>
-                <Box
-                  width="46px"
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  <Icon icon={<Location />} />
-                </Box>
-                <Box
-                  flexDirection="column"
-                  width="calc(100%  - 70px)"
-                >
-                  <Box
-                    flexDirection="column"
-                    marginBlock="10px"
-                  >
-                    <Typography
-                      variant="bodyBg"
-                      fontWeight={600}
-                    >
-                      {item?.text}
-                    </Typography>
-                    <Typography variant="bodySm">
-                      {item?.context[0]?.text}, {item?.context[1]?.text}{" "}
-                    </Typography>
-                  </Box>
-                  <Divider />
-                </Box>
-              </Box>
-            </Result>
-          ))}
-          {detectLocationIcons && (
-            <>
-              <Result onClick={handleGeolocate}>
-                <Box>
-                  <Box
-                    width="46px"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <Icon icon={<Locate />} />
-                  </Box>
-                  <Box
-                    flexDirection="column"
-                    width="calc(100%  - 70px)"
-                  >
-                    <Box
-                      flexDirection="column"
-                      marginBlock="20px"
-                    >
-                      <Typography
-                        variant="bodyBg"
-                        fontWeight={600}
-                      >
-                        {t("geocoder_detect_location")}
-                      </Typography>
-                    </Box>
-                    <Divider />
-                  </Box>
-                </Box>
-              </Result>
-
-              <Result onClick={() => setShowResults(false)}>
-                <Box>
-                  <Box
-                    width="46px"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <IdeaPin transform="scale(0.7)" />
-                  </Box>
-                  <Box
-                    flexDirection="column"
-                    width="calc(100%  - 70px)"
-                  >
-                    <Box
-                      flexDirection="column"
-                      marginBlock="20px"
-                    >
-                      <Typography
-                        variant="bodyBg"
-                        fontWeight={600}
-                      >
-                        {t("geocoder_find_on_map")}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Box>
-              </Result>
-            </>
-          )}
+          <Results
+            results={results}
+            onSelected={onSelected}
+            detectLocationIcons={detectLocationIcons}
+            setShowResults={setShowResults}
+            handleGeolocate={handleGeolocate}
+          />
         </ResultsContainer>
       )}
-    </Box>
+
+      {showResults && !isMobile && (
+        <DropdownListContainer options={{ open: true, width: "330px" }}>
+          <Results
+            results={results}
+            onSelected={onSelected}
+            detectLocationIcons={detectLocationIcons}
+            setShowResults={setShowResults}
+            handleGeolocate={handleGeolocate}
+          />
+        </DropdownListContainer>
+      )}
+    </div>
   );
 };
 

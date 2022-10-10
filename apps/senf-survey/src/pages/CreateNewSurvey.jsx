@@ -43,9 +43,23 @@ const CreateNewSurvey = ({ getSurveys, navigate }) => {
         title: formik.values.title,
         surveyType: formik.values.surveyType,
         createdAt: new Date().toISOString(),
+        questions: [
+          {
+            qtext: "",
+            qtype: "",
+            options: [
+              {
+                uid: uuidv4(),
+                value: "",
+              },
+              {
+                uid: uuidv4(),
+                value: "",
+              },
+            ],
+          }
+        ]
       }).then((doc) => {
-        getSurveys();
-
         const surveyId = doc.id;
         navigate(`edit/${surveyId}`)
         closeModal()

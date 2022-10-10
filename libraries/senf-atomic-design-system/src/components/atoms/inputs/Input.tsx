@@ -1,6 +1,12 @@
 /** @format */
 
-import React, { ChangeEvent, FunctionComponent, useEffect, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  FunctionComponent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   InputField,
   Note,
@@ -17,13 +23,16 @@ import theme from "../../../styles/theme";
 const adjustTextarea = (event: Event, rows: number, maxRows?: number) => {
   if (!event?.target) return;
   const Element = event.target as HTMLTextAreaElement;
-  Element.setAttribute('rows', "")
-  const padding = parseFloat(window.getComputedStyle(Element).paddingBlock) * 2
-  const lineHeight = parseFloat(window.getComputedStyle(Element).lineHeight)
-  const scrollHeight = Element.scrollHeight - padding
-  const newRows = Math.round(scrollHeight / lineHeight)
-  Element.setAttribute('rows', Math.max(Math.min(newRows, maxRows || rows), rows).toString())
-}
+  Element.setAttribute("rows", "");
+  const padding = parseFloat(window.getComputedStyle(Element).paddingBlock) * 2;
+  const lineHeight = parseFloat(window.getComputedStyle(Element).lineHeight);
+  const scrollHeight = Element.scrollHeight - padding;
+  const newRows = Math.round(scrollHeight / lineHeight);
+  Element.setAttribute(
+    "rows",
+    Math.max(Math.min(newRows, maxRows || rows), rows).toString()
+  );
+};
 
 const Input: FunctionComponent<InputProps> = ({
   // explicit props
@@ -69,21 +78,18 @@ const Input: FunctionComponent<InputProps> = ({
   // const [value, setValue] = useState("");
   const inputRef = refProp || useRef<HTMLInputElement>(null);
 
-
-
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (type === "textarea") adjustTextarea(event, rows, maxRows)
+    if (type === "textarea") adjustTextarea(event, rows, maxRows);
     if (typeof onChange === "function") {
       // if (isSearch && event.target) return onChange(event.target.value)
-      return onChange(event)
+      return onChange(event);
     }
-    return null
-  }
+    return null;
+  };
 
-  const clear = clearable || isSearch
+  const clear = clearable || isSearch;
 
-  const placeholderState = placeholder || `${isSearch ? "Search" : ""}`
-
+  const placeholderState = placeholder || `${isSearch ? "Search" : ""}`;
 
   // const leadingIconState = leadingIcon;
   // const leadingIconClickState = leadingIconClick;
@@ -91,16 +97,26 @@ const Input: FunctionComponent<InputProps> = ({
   // const trailingIconClickState = trailingIconClick;
 
   const [leadingIconState, setLeadingIconState] = useState(leadingIcon);
-  const [leadingIconClickState, setLeadingIconClickState] = useState(() => leadingIconClick);
-  const [leadingIconLabelState, setLeadingIconLabelState] = useState(leadingIconLabel);
+  const [leadingIconClickState, setLeadingIconClickState] = useState(
+    () => leadingIconClick
+  );
+  const [leadingIconLabelState, setLeadingIconLabelState] =
+    useState(leadingIconLabel);
   const [trailingIconState, setTrailingIconState] = useState(trailingIcon);
-  const [trailingIconClickState, setTrailingIconClickState] = useState(() => trailingIconClick);
-  const [trailingIconLabelState, setTrailingIconLabelState] = useState(trailingIconLabel);
+  const [trailingIconClickState, setTrailingIconClickState] = useState(
+    () => trailingIconClick
+  );
+  const [trailingIconLabelState, setTrailingIconLabelState] =
+    useState(trailingIconLabel);
 
   useEffect(() => setLeadingIconState(leadingIcon), [leadingIcon]);
-  useEffect(() => { if (!error) setLeadingIconClickState(() => leadingIconClick) }, [leadingIconClick, error]);
+  useEffect(() => {
+    if (!error) setLeadingIconClickState(() => leadingIconClick);
+  }, [leadingIconClick, error]);
   useEffect(() => setTrailingIconState(trailingIcon), [trailingIcon]);
-  useEffect(() => { if (!error) setTrailingIconClickState(() => trailingIconClick) }, [trailingIconClick, error]);
+  useEffect(() => {
+    if (!error) setTrailingIconClickState(() => trailingIconClick);
+  }, [trailingIconClick, error]);
 
   useEffect(() => {
     if (isSearch && !leadingIcon) {
@@ -110,52 +126,60 @@ const Input: FunctionComponent<InputProps> = ({
 
   useEffect(() => {
     if (type === "password") {
-      setTrailingIconState(isPassword ? "Bulb" : "Dot")
-      setTrailingIconClickState(() => () => setIsPassword(!isPassword))
+      setTrailingIconState(isPassword ? "Bulb" : "Dot");
+      setTrailingIconClickState(() => () => setIsPassword(!isPassword));
     }
-  }, [type, isPassword])
+  }, [type, isPassword]);
 
   useEffect(() => {
     if (clear && value) {
-      setTrailingIconState("Close")
+      setTrailingIconState("Close");
       setTrailingIconClickState(() => () => {
-        onChange?.({ target: { value: "" } } as ChangeEvent<HTMLInputElement>)
-        setIsFocused((prevState) => !prevState)
-      })
+        onChange?.({ target: { value: "" } } as ChangeEvent<HTMLInputElement>);
+        setIsFocused((prevState) => !prevState);
+      });
     }
-  }, [clear, value])
+  }, [clear, value]);
 
   useEffect(() => {
-    if (error) setTrailingIconState("Alert")
-    if (error) setTrailingIconClickState(undefined)
-    return () => setTrailingIconClickState(() => trailingIconClick)
+    if (error) setTrailingIconState("Alert");
+    if (error) setTrailingIconClickState(undefined);
+    return () => setTrailingIconClickState(() => trailingIconClick);
   }, [error]);
 
+  const LeadingIconWrapper =
+    typeof leadingIconClickState === "function" ? Button : "label";
+  const TrailingIconWrapper =
+    typeof trailingIconClickState === "function" ? Button : "label";
 
-
-  const LeadingIconWrapper = typeof leadingIconClickState === "function" ? Button : "label";
-  const TrailingIconWrapper = typeof trailingIconClickState === "function" ? Button : "label";
-
-  const iconWrapperProps = (onClick?) => onClick && typeof onClick === "function" ? {
-    variant: "tertiary",
-    size: "small",
-    onClick
-  } : {
-    htmlFor: name,
-  }
+  const iconWrapperProps = (onClick?) =>
+    onClick && typeof onClick === "function"
+      ? {
+          variant: "tertiary",
+          size: "small",
+          onClick,
+        }
+      : {
+          htmlFor: name,
+        };
 
   const fieldType = () => {
-    if (
-      type === "textarea" ||
-      type === "password" && !isPassword
-    ) return "text"
-    return type
-  }
+    if (type === "textarea" || (type === "password" && !isPassword))
+      return "text";
+    return type;
+  };
 
   return (
-    <Wrapper disabled={disabled} {...props}>
+    <Wrapper
+      disabled={disabled}
+      {...props}
+    >
       {label && (
-        <Label error={error} active={isFocused && value !== ""} size={size}>{`${label}${required ? "*" : ""}`}</Label>
+        <Label
+          error={error}
+          active={isFocused && value !== ""}
+          size={size}
+        >{`${label}${required ? "*" : ""}`}</Label>
       )}
       {/* the InputContainer wrapper is necessary for including icons and buttons */}
       <InputContainer
@@ -164,19 +188,27 @@ const Input: FunctionComponent<InputProps> = ({
         icon={leadingIconState}
         onFocusCapture={() => setIsFocused((prevState) => !prevState)}
         onBlurCapture={() => setIsFocused((prevState) => !prevState)}
-        onBlur={(event) => onBlur && typeof onBlur === "function" ? onBlur(event) : null}
-        size={size || 'lg'}
+        onBlur={(event) =>
+          onBlur && typeof onBlur === "function" ? onBlur(event) : null
+        }
+        size={size || "lg"}
         type={type}
         htmlFor={name}
       >
         {/* {label && (
           <Label error={error} size={size} icon={!!leadingIconState} active={isFocused || value !== ""}>{`${label}${required ? "*" : ""}`}</Label>
         )} */}
-        {leadingIconState &&
-          <LeadingIconWrapper {...iconWrapperProps(leadingIconClickState)} title={leadingIconLabelState} >
-            <Icon icon={leadingIconState} style={{ pointerEvents: "none" }} />
+        {leadingIconState && (
+          <LeadingIconWrapper
+            {...iconWrapperProps(leadingIconClickState)}
+            title={leadingIconLabelState}
+          >
+            <Icon
+              icon={leadingIconState}
+              style={{ pointerEvents: "none" }}
+            />
           </LeadingIconWrapper>
-        }
+        )}
         <InputField
           id={name}
           type={fieldType()}
@@ -187,20 +219,34 @@ const Input: FunctionComponent<InputProps> = ({
           onClick={onClick}
           onChange={handleChange}
           onKeyDown={(event) => {
-            if (event.key === "Enter") onSubmit(value)
+            if (event.key === "Enter") onSubmit(value);
           }}
           ref={inputRef}
           as={type === "textarea" ? "textarea" : "input"}
           autocomplete={autocomplete}
         />
-        {trailingIconState &&
-          <TrailingIconWrapper {...iconWrapperProps(trailingIconClickState)} title={trailingIconLabelState}>
-            <Icon icon={trailingIconState} color={error && theme.colors.signal.redDark} style={{ pointerEvents: "none" }} />
+        {trailingIconState && (
+          <TrailingIconWrapper
+            {...iconWrapperProps(trailingIconClickState)}
+            title={trailingIconLabelState}
+          >
+            <Icon
+              icon={trailingIconState}
+              color={error && theme.colors.signal.redDark}
+              style={{ pointerEvents: "none" }}
+            />
           </TrailingIconWrapper>
-        }
+        )}
       </InputContainer>
-      {note && <Note error={error} size={size}>{note}</Note>}
-    </Wrapper >
+      {note && (
+        <Note
+          error={error}
+          size={size}
+        >
+          {note}
+        </Note>
+      )}
+    </Wrapper>
   );
 };
 

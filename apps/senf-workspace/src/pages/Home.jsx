@@ -33,7 +33,6 @@ import MessagesContainer from "../components/layout/MessagesContainer";
 import WorkspaceContainer from "../components/WorkspaceContainer";
 import Panel from "../components/layout/Panel";
 
-
 const RightContainer = styled.div`
   position: fixed;
   left: 0;
@@ -191,10 +190,12 @@ const Home = () => {
   };
 
   const { user: userC, signIn, signOut } = useAuthContext();
-  console.log(userC)
+  console.log(userC);
   return (
-
-    <Box height="100%" style={{ overflow: "hidden" }}>
+    <Box
+      height="100%"
+      style={{ overflow: "hidden" }}
+    >
       <MenuSidebar
         currentWorkspace={currentWorkspace}
         setCurrentWorkspace={setCurrentWorkspace}
@@ -241,8 +242,7 @@ const Home = () => {
       )} */}
 
       <RightContainer active={chat}>
-
-        <Button onClick={() => signIn('google')}>signin with google</Button>
+        <Button onClick={() => signIn("google")}>signin with google</Button>
         <Button onClick={() => signOut()}>signout</Button>
         {userC?.displayName}
         {chat ? (
@@ -264,7 +264,10 @@ const Home = () => {
             height="100%"
             width="100%"
           >
-            <img src={ChatBubbles} width="300px" />
+            <img
+              src={ChatBubbles}
+              width="300px"
+            />
             <h3 className="no_conv">Select a user to start a conversation</h3>
           </Box>
         )}

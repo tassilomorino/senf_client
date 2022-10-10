@@ -105,13 +105,10 @@
 //     }, 300);
 //   };
 
-
-
 //   constructor(props) {
 //     super();
 //     const accessToken =
 //       "pk.eyJ1IjoiZGF0dHdvb2QxOTg2IiwiYSI6ImNraTI5cnAwcDByZHUycnBleWphMHR1dDcifQ.u7pG_sZ7Su685A11r6-uuw";
-
 
 //     this.client = new MapboxClient(accessToken);
 //   }

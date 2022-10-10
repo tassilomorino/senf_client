@@ -7,6 +7,6 @@ export interface SuccessProps {
   navigate: NavigateFunction;
   setPostIdeaSuccessModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setPostIdeaOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  newIdea: { screamId: string };
+  newIdea: { screamId: string; projectRoomId?: string };
   closeModal: () => void;
 }

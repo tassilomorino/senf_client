@@ -17,6 +17,7 @@ import {
   ErrorLoading,
   Loader,
   useModals,
+  DiscardModalContent,
 } from "senf-atomic-design-system";
 import { AuthModal } from "senf-shared";
 import { isMobileCustom } from "../util/customDeviceDetect";
@@ -132,13 +133,14 @@ const Main = ({
   postIdeaSuccessModalOpen,
   setPostIdeaSuccessModalOpen,
   handleSetInitialMapBoundsAndViewport,
+  postIdeaDiscardModalOpen,
   setShowUI,
   showUI,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const errors = useSelector((state) => state.UI.errors);
-  const { openModal } = useModals();
+  const { openModal, closeModal } = useModals();
   const { cookie_settings } = useSelector((state) => state.data);
   const organization = useSelector((state) => state.data.organization);
 
@@ -209,6 +211,22 @@ const Main = ({
     }
   }, [dispatch, openAccount, myProfileData.userId, profileId]);
 
+  useEffect(() => {
+    if (postIdeaDiscardModalOpen && !isMobileCustom) {
+      openModal(
+        <DiscardModalContent
+          title="Discard idea?"
+          closeModal={closeModal}
+          setPostIdeaOpen={setPostIdeaOpen}
+        />,
+        {
+          modal: true,
+          size: "sm",
+          swipe: true,
+        }
+      );
+    }
+  }, [postIdeaDiscardModalOpen]);
   const urlPath = window.location.pathname;
   useEffect(() => {
     if (urlPath === "/verify") {
@@ -558,6 +576,7 @@ const Main = ({
           postIdeaSuccessModalOpen={postIdeaSuccessModalOpen}
           setPostIdeaSuccessModalOpen={setPostIdeaSuccessModalOpen}
           statefulMap={statefulMap}
+          projectroomsData={projects}
         />
       )}
 

@@ -222,12 +222,12 @@ export const postScream = (newScream, user) => async (dispatch) => {
           dispatch({ type: OPEN_PROJECTROOM });
         dispatch(loadProjectRoomData(resScream.projectRoomId));
         dispatch(openScreamFunc(resScream.screamId));  */
-      } else {
-        // open scream in the main context
-        // '/:screamId'
-        // dispatch(openScreamFunc(resScream.screamId));
         return resScream;
       }
+      // open scream in the main context
+      // '/:screamId'
+      // dispatch(openScreamFunc(resScream.screamId));
+      return resScream;
     } catch (error) {
       throw new Error(error, "error in postScreamFunc");
     }

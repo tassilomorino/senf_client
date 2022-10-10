@@ -31,6 +31,10 @@ const IdeaDetailPage = ({
   const data = useSelector((state) => state.data.scream);
   const { closeModal } = useModals();
 
+  const { screamId, lat, long, userId } = useSelector(
+    (state) => state.data.scream
+  );
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { city } = useParams();
@@ -39,9 +43,7 @@ const IdeaDetailPage = ({
     dispatch(setIdea(ideaId));
   }, [ideaId]);
 
-  const { screamId, lat, long, userId } = useSelector(
-    (state) => state.data.scream
-  );
+  const openScream = useSelector((state) => state.UI.openScream);
 
   const [path, setPath] = useState("");
   const [commentFormInput, setCommentFormInput] = useState("");

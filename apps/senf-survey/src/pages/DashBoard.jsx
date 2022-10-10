@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 
 
-import { Typography, ImagePlaceholder, Box, Icon, Table, Button, ModalButton, Input, isMobileCustom, useModals } from "senf-atomic-design-system";
+import { Typography, ImagePlaceholder, Box, Icon, Table, Button, ModalButton, Input, isMobileCustom } from "senf-atomic-design-system";
 import {
   collection,
   deleteDoc,
@@ -12,30 +12,22 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
-import { useAuthContext, AuthModal } from "senf-shared";
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import CreateNewSurvey from "./CreateNewSurvey";
 
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.beige.beige20};
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: scroll;
 `;
 
 const DashBoard = () => {
+  const [ surveys, setSurveys ] = useState([])
   const { t } = useTranslation();
   const isMobile = isMobileCustom()
-  const [surveys, setSurveys] = useState([]);
   const [filteredSurveys, setFilteredSurveys] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const { user } = useAuthContext()
-  const { openModal } = useModals()
   const navigate = useNavigate()
+  
   const getSurveys = async () => {
     try {
       const surveysRef = collection(db, "surveys");
@@ -57,34 +49,26 @@ const DashBoard = () => {
       throw new Error(error, "Error in Surveylist");
     }
   };
-
   const handleDeleteSurvey = async (surveyId) => {
     try {
       const docRef = doc(db, `surveys/${surveyId}`);
-      await deleteDoc(docRef).then(() => {
-        getSurveys();
-      });
+      await deleteDoc(docRef).then(() => getSurveys());
     } catch (error) {
       throw new Error(error, "error in deleteScreamFunc");
     }
   };
-
   useEffect(() => {
     getSurveys();
   }, []);
   useEffect(() => {
-    if (!user) openModal(<AuthModal />);
-  }, [user]);
-
-  useEffect(() => {
     setFilteredSurveys(
-      surveys.filter(survey => Object.values(survey).join(' ').toLowerCase().indexOf(searchTerm.toLowerCase()) > -1));
+      surveys?.filter(survey => Object.values(survey).join(' ').toLowerCase().indexOf(searchTerm.toLowerCase()) > -1));
   }, [searchTerm, surveys]);
 
 
   return (
     <Wrapper>
-      <Box gap="20px" flexDirection="column" margin="30px">
+      <Box gap="20px" flexDirection="column" padding="30px">
         <Typography variant="h2">My Surveys</Typography>
         <Box justifyContent="space-between" gap="16px" alignItems="flex-end">
           <Box width="400px">
@@ -92,14 +76,12 @@ const DashBoard = () => {
           </Box>
 
           <ModalButton text="+ Create new survey" options={{
-            style: {
-              padding: 20,
-            },
+            padding: 20,
             title: t("+ Create new survey"),
             swipe: isMobile && true
 
           }}>
-            <CreateNewSurvey getSurveys={getSurveys} navigate={navigate} />
+            <CreateNewSurvey navigate={navigate} />
           </ModalButton>
         </Box>
         <Table
@@ -139,6 +121,11 @@ const DashBoard = () => {
                   />
                   <Button
                     variant="white"
+                    text="view results"
+                    onClick={() => navigate(`results/${row.surveyId}`)}
+                  />
+                  <Button
+                    variant="white"
                     text="edit"
                     onClick={() => {
                       navigate(`edit/${row.surveyId}`)
@@ -148,7 +135,6 @@ const DashBoard = () => {
                     variant="white"
                     text="Delete"
                     onClick={() => handleDeleteSurvey(row.surveyId)}
-
                   />
                 </Box>
               </Box>

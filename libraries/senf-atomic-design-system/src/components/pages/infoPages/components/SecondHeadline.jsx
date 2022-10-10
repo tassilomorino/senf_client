@@ -73,7 +73,10 @@ const Trail = ({ open, children }) => {
     <div>
       {trail.map(({ height, ...style }, index) => (
         <TrailsText key={index}>
-          <a.div key={index} style={style}>
+          <a.div
+            key={index}
+            style={style}
+          >
             <a.div style={{ height }}>{items[index]}</a.div>
           </a.div>
         </TrailsText>
@@ -89,7 +92,11 @@ const SecondHeadline = ({ id, visible, textlines, marginTop, fontSize }) => {
     <Container marginTop={marginTop}>
       <Trail open={visible}>
         {textlines.map(({ text, color }) => (
-          <HeadlineText id={id} fontSize={fontSize} key={id}>
+          <HeadlineText
+            id={id}
+            fontSize={fontSize}
+            key={id}
+          >
             {t(text)} <Line color={color} />
           </HeadlineText>
         ))}

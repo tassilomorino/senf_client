@@ -3,7 +3,6 @@
 import React, { FC, useState, useEffect } from "react";
 import styled from "styled-components";
 
-
 import "@fullcalendar/react/dist/vdom"; // solves problem with Vite
 import FullCalendar, { formatDate } from "@fullcalendar/react"; // must go before plugins
 import deLocale from "@fullcalendar/core/locales/de";
@@ -270,12 +269,12 @@ const Calendar: FC<CalendarProps> = ({
           calendarType === "inline"
             ? handleEventClick
             : (arg) => {
-              // opens events in a popup window
-              window.open(arg.event.url, "_blank", "width=700,height=600");
+                // opens events in a popup window
+                window.open(arg.event.url, "_blank", "width=700,height=600");
 
-              // prevents current tab from navigating
-              arg.jsEvent.preventDefault();
-            }
+                // prevents current tab from navigating
+                arg.jsEvent.preventDefault();
+              }
         }
       />
     </Wrapper>

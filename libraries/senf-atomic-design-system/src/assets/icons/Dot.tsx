@@ -23,9 +23,23 @@ const Dot: FC<SVGRProps> = ({ color = "black", transform }) => (
     transform={transform}
   >
     <title>Dot</title>
-    <g id="Icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-      <g id="Icons/Dot" fill={color}>
-        <circle id="🎨-Icon-Color" cx="8" cy="8" r="6.5"></circle>
+    <g
+      id="Icons"
+      stroke="none"
+      strokeWidth="1"
+      fill="none"
+      fillRule="evenodd"
+    >
+      <g
+        id="Icons/Dot"
+        fill={color}
+      >
+        <circle
+          id="🎨-Icon-Color"
+          cx="8"
+          cy="8"
+          r="6.5"
+        ></circle>
       </g>
     </g>
   </Svg>

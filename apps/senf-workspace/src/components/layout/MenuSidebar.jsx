@@ -106,10 +106,16 @@ const MenuSidebar = ({ currentWorkspace, setCurrentWorkspace }) => {
 
       <BottomWrapper>
         <ButtonWrapper onClick={handleLinkProfile}>
-          <Button variant="white" icon={<User />}></Button>
+          <Button
+            variant="white"
+            icon={<User />}
+          ></Button>
         </ButtonWrapper>
 
-        <Button icon={<Arrow />} onClick={handleSignOut}></Button>
+        <Button
+          icon={<Arrow />}
+          onClick={handleSignOut}
+        ></Button>
       </BottomWrapper>
     </Wrapper>
   );

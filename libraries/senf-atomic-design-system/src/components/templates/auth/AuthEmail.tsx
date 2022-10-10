@@ -72,14 +72,24 @@ const AuthEmail: FC<AuthEmailProps> = ({
       position="relative"
       zIndex={9999}
     >
-      <Typography variant="h1" style={{ position: "relative" }}>
+      <Typography
+        variant="h1"
+        style={{ position: "relative" }}
+      >
         {t("infopage_addMustard_1")}
       </Typography>
-      <Typography variant="h1" style={{ position: "relative" }}>
+      <Typography
+        variant="h1"
+        style={{ position: "relative" }}
+      >
         {t("infopage_addMustard_2")}
       </Typography>
 
-      <Box margin="25px 0px 24px 0px" alignItems="center" gap="5px">
+      <Box
+        margin="25px 0px 24px 0px"
+        alignItems="center"
+        gap="5px"
+      >
         {/* {variantState === "login" ? (
           <React.Fragment>
             <Typography variant="bodyBg" style={{ position: "relative" }}>
@@ -103,7 +113,10 @@ const AuthEmail: FC<AuthEmailProps> = ({
         )} */}
       </Box>
 
-      <Box gap="16px" flexDirection="column">
+      <Box
+        gap="16px"
+        flexDirection="column"
+      >
         <Form
           width="100%"
           inputItems={
@@ -113,7 +126,10 @@ const AuthEmail: FC<AuthEmailProps> = ({
         />
 
         {errorMessage && (
-          <Typography variant="bodySm" color={theme.colors.signal.redDark}>
+          <Typography
+            variant="bodySm"
+            color={theme.colors.signal.redDark}
+          >
             {errorMessage.message}
           </Typography>
         )}
@@ -135,7 +151,10 @@ const AuthEmail: FC<AuthEmailProps> = ({
           </React.Fragment>
         ) : (
           <React.Fragment>
-            <Typography variant="bodySm" style={{ position: "relative" }}>
+            <Typography
+              variant="bodySm"
+              style={{ position: "relative" }}
+            >
               <Trans i18nKey="register_agb">
                 ...
                 <span
@@ -162,14 +181,19 @@ const AuthEmail: FC<AuthEmailProps> = ({
         width="max"
         text={variantState === "register" ? t("register") : t("login")}
         loading={authHandler.loading.email}
-
         onClick={
           variantState === "register"
             ? () => authHandler.createUser(formikStore)
             : (e) => {
-              e.preventDefault();
-              authHandler.signIn.email(formikStore).then(() => !authHandler.ifAllUserDetailsAreFilled() && setPage?.('authAddDetails'));
-            }
+                e.preventDefault();
+                authHandler.signIn
+                  .email(formikStore)
+                  .then(
+                    () =>
+                      !authHandler.ifAllUserDetailsAreFilled() &&
+                      setPage?.("authAddDetails")
+                  );
+              }
         }
         disabled={!formikStore?.isValid}
       />

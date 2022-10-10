@@ -102,8 +102,6 @@ SwipedUp.args = {
       title: "Wiese",
       objectType: "Grounds",
       imgUrl: "Img57",
-    }
-  ]
-
-
+    },
+  ],
 };

@@ -24,11 +24,17 @@ const ErrorLoading: FC<ErrorLoadingProps> = ({}) => {
   const { t } = useTranslation();
   return (
     <Wrapper>
-      <Typography variant="h2" textAlign="center">
+      <Typography
+        variant="h2"
+        textAlign="center"
+      >
         Ooops!
       </Typography>
       <br />
-      <Typography variant="h3" textAlign="center">
+      <Typography
+        variant="h3"
+        textAlign="center"
+      >
         {t("something_went_wrong")}
       </Typography>
     </Wrapper>

@@ -18,18 +18,17 @@ import { useModals } from "../../molecules/modalStack/ModalProvider";
 const AuthResetEmail: FC<AuthResetEmailProps> = ({
   setPage,
   authHandler,
-  formikStore: formikStoreInitial
+  formikStore: formikStoreInitial,
 }) => {
   const { t } = useTranslation();
-  const { sendPasswordResetEmail, loadingAuth } = authHandler
-  const { loading } = useAuthContext()
-  const { closeModal } = useModals()
+  const { sendPasswordResetEmail, loadingAuth } = authHandler;
+  const { loading } = useAuthContext();
+  const { closeModal } = useModals();
   useEffect(() => {
-    console.log(authHandler)
-  }, [authHandler])
+    console.log(authHandler);
+  }, [authHandler]);
 
   const inputItems = [{ name: "email", type: "email", placeholder: "E-Mail" }];
-
 
   const validationSchema = yup.object({
     email: yup
@@ -51,8 +50,9 @@ const AuthResetEmail: FC<AuthResetEmailProps> = ({
     submitText: t("reset"),
     submitDisabled: !formikStore.isValid,
     submitLoading: loading === "reset",
-    onSubmit: () => sendPasswordResetEmail(formikStore.values.email).then(closeModal),
-  }
+    onSubmit: () =>
+      sendPasswordResetEmail(formikStore.values.email).then(closeModal),
+  };
 
   return (
     <Box
@@ -72,8 +72,17 @@ const AuthResetEmail: FC<AuthResetEmailProps> = ({
           {t("reset_password")}
         </Typography>
       </Box> */}
-      <Box gap="16px" flexDirection="column" width="100%" padding="20px">
-        <Form width="100%" inputItems={inputItems} formik={formikStore} />
+      <Box
+        gap="16px"
+        flexDirection="column"
+        width="100%"
+        padding="20px"
+      >
+        <Form
+          width="100%"
+          inputItems={inputItems}
+          formik={formikStore}
+        />
 
         {/* {dataSuccess && (
           <Typography variant="bodySm" color={theme.colors.signal.greenDark}>
@@ -91,7 +100,6 @@ const AuthResetEmail: FC<AuthResetEmailProps> = ({
         /> */}
       </Box>
       <ModalActionButtons {...options} />
-
     </Box>
   );
 };
