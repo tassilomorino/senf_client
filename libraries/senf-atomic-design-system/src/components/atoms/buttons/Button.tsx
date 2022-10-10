@@ -128,8 +128,8 @@ const StyledButton = styled.button<ButtonProps>`
 const Button: FC<ButtonProps> = ({
   text,
   children,
-  icon,
-  iconRight,
+  leadingIcon,
+  trailingIcon,
   transform,
   size,
   variant,
@@ -147,7 +147,6 @@ const Button: FC<ButtonProps> = ({
     text={text}
     variant={variant}
     color={color}
-    icon={icon}
     borderStyle={borderStyle}
     justifyContent={justifyContent}
     width={width}
@@ -156,22 +155,21 @@ const Button: FC<ButtonProps> = ({
     size={size}
     {...props}
   >
-    {(icon || loading) && (
-      <Box position={(!icon && text && "absolute") || undefined}>
+    {(leadingIcon || loading) && (
+      <Box position={(!leadingIcon && text && "absolute") || undefined}>
         <Icon
-          icon={loading ? "Loading" : icon}
+          icon={loading ? "Loading" : leadingIcon}
           transform={transform}
         />
       </Box>
     )}
-
     {children && children}
-
-    {text && <span style={{ opacity: loading && !icon ? 0 : 1 }}>{text}</span>}
-
-    {iconRight && (
+    {text && (
+      <span style={{ opacity: loading && !leadingIcon ? 0 : 1 }}>{text}</span>
+    )}
+    {trailingIcon && (
       <Box>
-        <Icon icon={iconRight} />
+        <Icon icon={trailingIcon} />
       </Box>
     )}
   </StyledButton>

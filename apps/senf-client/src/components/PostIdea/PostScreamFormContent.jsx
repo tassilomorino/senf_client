@@ -253,21 +253,21 @@ const PostScreamFormContent = ({
             variant={
               weblink !== null && weblinkTitle !== null ? "primary" : "white"
             }
-            icon={<Hyperlink />}
+            leadingIcon="Hyperlink"
             onClick={() => setWeblinkOpen(true)}
           />
           <RoundedButton
             variant={
               contact !== null && contactTitle !== null ? "primary" : "white"
             }
-            icon={<Mail />}
+            leadingIcon="Mail"
             onClick={() => setContactOpen(true)}
           />
 
           {checkIfCalendar && (
             <RoundedButton
               variant={selectedDays.length > 0 ? "primary" : "white"}
-              icon={<CalendarIcon />}
+              leadingIcon="CalendarIcon"
               onClick={() => setCalendarOpen(true)}
             />
           )}
@@ -282,7 +282,7 @@ const PostScreamFormContent = ({
               <TertiaryButton
                 onClick={() => setTopicDropdownOpen(!topicDropdownOpen)}
                 text={topic || t("select_topic")}
-                iconRight={<Arrow transform="rotate(90)" />}
+                trailingIcon="ArrowDown"
                 variant="semibold"
               />
             }

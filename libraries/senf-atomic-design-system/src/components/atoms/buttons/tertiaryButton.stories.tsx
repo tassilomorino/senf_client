@@ -31,7 +31,7 @@ IconLeft.args = {
 
 export const IconRight = Template.bind({});
 IconRight.args = {
-  iconRight: <Arrow />,
+  trailingIcon: <Arrow />,
   iconRightTransform: "scale(0.7)",
   text: "Teriary Button",
 };

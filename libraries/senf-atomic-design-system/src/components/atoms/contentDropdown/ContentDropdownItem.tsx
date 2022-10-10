@@ -1,9 +1,10 @@
 /** @format */
 
 import React, { FC } from "react";
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 import Box from "../box/Box";
 import Icon from "../icons/Icon";
+import theme from "../../../styles/theme";
 import {
   LayerGreyButtonsDefault,
   LayerYellowDefault,
@@ -30,7 +31,23 @@ const Wrapper = styled.button<ContentDropdownItemProps>`
     margin-left: ${({ theme, type }) =>
       type === "check" ? `${parseFloat(theme.space[2]) * -1}rem` : "inherit"};
   }
-
+  position: relative;
+  & + *:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    width: ${({ theme, size }) => `calc(100% - (${theme.inputPadding(size)} * 2))`};
+    height: 1px;
+    top: -2px;
+  }
+  &:not(:hover) + *:not(:hover):before {
+    background-color: ${() => theme.colors.palette["grey-300"]};
+  }
+  ${({type}) => type !== "check" ? css`
+    & + *:before {
+      background-color: ${theme.colors.palette["grey-300"]};
+    }
+  ` : null}
   box-sizing: border-box;
   border: 2px solid transparent;
   background-color: transparent;
@@ -70,6 +87,7 @@ const ContentDropdownItem: FC<ContentDropdownItemProps> = ({
       checked={checked}
       disabled={disabled}
       type={type}
+      data-type={type}
       onClick={onClick}
       minWidth={minWidth}
       size={size}

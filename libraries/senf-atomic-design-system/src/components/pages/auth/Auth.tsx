@@ -145,7 +145,7 @@ const Auth: FC<AuthProps> = ({
         {page !== "authOptions" && (
           <Button
             variant="tertiary"
-            icon={<Arrow transform="rotate(180)" />}
+            leadingIcon="ArrowLeft"
             onClick={() => {
               setPage("authOptions");
               navigate("/");
@@ -231,8 +231,8 @@ const Auth: FC<AuthProps> = ({
               formikStore={formikStore}
               variant={page === "authEmailRegister" ? "register" : "login"}
             />
-          );
-        }
+            );
+          }
         if (page === "authVerifyEmail") {
           return <AuthVerifyEmail />;
         }

@@ -19,7 +19,7 @@ const MessageForm = ({ handleSubmit, text, setText, setImg }) => {
     <Form>
       <Button
         variant="secondary"
-        icon={<Arrow transform="rotate(270deg)" />}
+        leadingIcon={<Arrow transform="rotate(270deg)" />}
       >
         <label htmlFor="img"></label>
       </Button>

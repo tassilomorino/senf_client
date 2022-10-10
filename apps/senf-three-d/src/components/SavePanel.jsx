@@ -177,7 +177,7 @@ const SavePanel = ({ swipedUp, setSwipedUp }) => {
         <Button
           variant="secondary"
           onClick={handleClose}
-          icon="Close"
+          leadingIcon="Close"
         />
       </Box>
 

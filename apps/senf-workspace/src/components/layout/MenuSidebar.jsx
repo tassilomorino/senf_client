@@ -75,7 +75,7 @@ const MenuSidebar = ({ currentWorkspace, setCurrentWorkspace }) => {
               currentWorkspace === "Meine Nachrichten" ? "white" : "primary"
             }
             onClick={() => setCurrentWorkspace("Meine Nachrichten")}
-            icon={<CommentActive />}
+            leadingIcon={<CommentActive />}
             transform="rotate(90)"
           />
         </ButtonWrapper>
@@ -99,7 +99,7 @@ const MenuSidebar = ({ currentWorkspace, setCurrentWorkspace }) => {
           <Button
             variant="secondary"
             onClick={() => console.log("create new workspace")}
-            icon={<Plus />}
+            leadingIcon={<Plus />}
           />
         </ButtonWrapper>
       </TopWrapper>
@@ -108,12 +108,12 @@ const MenuSidebar = ({ currentWorkspace, setCurrentWorkspace }) => {
         <ButtonWrapper onClick={handleLinkProfile}>
           <Button
             variant="white"
-            icon={<User />}
+            leadingIcon={<User />}
           ></Button>
         </ButtonWrapper>
 
         <Button
-          icon={<Arrow />}
+          leadingIcon={<Arrow />}
           onClick={handleSignOut}
         ></Button>
       </BottomWrapper>

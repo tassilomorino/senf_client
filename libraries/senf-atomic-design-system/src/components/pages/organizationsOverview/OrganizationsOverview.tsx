@@ -121,7 +121,7 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
             variant="secondary"
             size="small"
             text={t("createOrganization")}
-            icon={<Plus />}
+            leadingIcon="Plus"
             onClick={handleOpenCreateOrganization}
           />
         )
@@ -152,7 +152,7 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
     //         leftButtonClick={() => setOpenOrganizationsOverview(false)}
     //         header={t("organizations")}
     //         handlebar={true}
-    //       // iconRight="plus"
+    //       // trailingIcon="plus"
     //       // iconRightTransform="rotate(45)"
     //       />
     //       <TagSlide
@@ -177,7 +177,7 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
             leftButtonClick={() => setOpenOrganizationsOverview(false)}
             header={t("organizations")}
             handlebar={true}
-            // iconRight="plus"
+            // trailingIcon="plus"
             // iconRightTransform="rotate(45)"
           />
           <TagSlide
@@ -232,7 +232,7 @@ const OrganizationsOverview: FC<OrganizationsOverviewProps> = ({
           <Button
             variant="white"
             size="medium"
-            icon={<Arrow transform="rotate(180)" />}
+            leadingIcon="ArrowLeft"
             onClick={() => setOpenOrganizationsOverview(false)}
           />
         </Box>

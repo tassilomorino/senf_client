@@ -53,7 +53,7 @@ const User = ({ user1, user, selectUser, chat }) => {
         {/* <Avatar src={user.avatar || Img} alt="avatar" /> */}
         <Button
           variant="secondary"
-          icon={<UserIcon />}
+          leadingIcon={<UserIcon />}
         />
         <Box
           margin="10px"

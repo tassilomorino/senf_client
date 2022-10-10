@@ -2,8 +2,8 @@
 
 import React, { FC } from "react";
 import styled from "styled-components";
+import Button from "../../atoms/buttons/Button";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { Button } from "../../..";
 import Arrow from "../../../assets/icons/Arrow";
 import More from "../../../assets/icons/More";
 import { isMobileCustom } from "../../../hooks/customDeviceDetect";
@@ -33,7 +33,7 @@ const DetailSidebar: FC<DetailSidebarProps> = ({
         gap="8px"
       >
         <Button
-          icon={<Arrow transform="rotate(180)" />}
+          leadingIcon="ArrowLeft"
           onClick={() => navigate(-1)}
           size="medium"
           variant="white"

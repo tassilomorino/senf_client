@@ -50,7 +50,6 @@ import Blank from "./pages/Blank";
 import "./util/i18n";
 
 import Home from "./pages/Home";
-import Palette from "./pages/Palette";
 
 // const Main = React.lazy(() =>
 //   Promise.all([

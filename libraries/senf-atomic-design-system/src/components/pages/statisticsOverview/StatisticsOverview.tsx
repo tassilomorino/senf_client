@@ -102,7 +102,7 @@ const StatisticsOverview: FC<StatisticsOverviewProps> = ({
             leftButtonClick={() => setOpenStatisticsOverview(false)}
             header={t("statistics")}
             handlebar={true}
-            // iconRight="plus"
+            // trailingIcon="plus"
             // iconRightTransform="rotate(45)"
           />
         </React.Fragment>
@@ -126,7 +126,7 @@ const StatisticsOverview: FC<StatisticsOverviewProps> = ({
           <Button
             variant="white"
             size="medium"
-            icon={<Arrow transform="rotate(180)" />}
+            leadingIcon="ArrowLeft"
             onClick={() => setOpenStatisticsOverview(false)}
           />
         </Box>

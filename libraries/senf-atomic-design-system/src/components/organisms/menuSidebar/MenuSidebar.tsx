@@ -81,23 +81,23 @@ const MenuSidebar: FC<MenuSidebarProps> = ({
           text={<SenfLogoSmall />}
           onClick={() => {
             setOrder(1);
-            setPostIdeaOpen(false);
+            setPostIdeaOpen?.(false);
           }}
         />
 
-        {/* <Button variant="white" size="small" icon={<Bell />} /> */}
+        {/* <Button variant="white" size="small" leadingIcon={<Bell />} /> */}
 
         <ModalButton
           variant="white"
           size="medium"
-          icon={<Info />}
+          leadingIcon={<Info />}
           options={{
             swipe: false,
             size: "xl",
             padding: 0,
             beforeOpen: () => {
               setShowUI(false);
-              setPostIdeaOpen(false);
+              setPostIdeaOpen?.(false);
             },
             beforeClose: () => setShowUI(true),
           }}
@@ -108,9 +108,9 @@ const MenuSidebar: FC<MenuSidebarProps> = ({
         <Button
           variant="white"
           size="medium"
-          icon={<User />}
+          leadingIcon={<User />}
           onClick={() => {
-            setPostIdeaOpen(false);
+            setPostIdeaOpen?.(false);
             handleOpenMyAccount(true);
           }}
         />
@@ -123,17 +123,17 @@ const MenuSidebar: FC<MenuSidebarProps> = ({
       >
         <LanguageSelect direction="downRight" />
         <Divider />
-
         <Button
           variant="white"
           size="medium"
-          icon={<Mail />}
+          trailingIcon="Mail"
+          // icon={<Mail />}
           onClick={() => openMail("dein@senf.koeln")}
         />
         <Button
           variant="white"
           size="medium"
-          icon={<Insta />}
+          leadingIcon="Insta"
           onClick={() => openLink("https://www.instagram.com/senf.koeln/")}
         />
       </Box>

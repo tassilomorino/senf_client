@@ -3,11 +3,12 @@ import Typography from "../../atoms/typography/Typography";
 import theme from "../../../styles/theme";
 
 const ModalHeader = ({ ...options }) => {
-  const { title, description } = options || {};
+  const { title, description, swipe } = options || {};
   return (
     <Box
       flexDirection="column"
       padding={(title || description) && "20px"}
+      paddingTop={((title || description) && swipe && "40px") || "30px"}
     >
       {(title || description) && (
         <Box

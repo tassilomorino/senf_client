@@ -201,7 +201,7 @@ const ProfilePage: FC<ProfilePageProps> = ({
               variant="white"
               width="height"
               size="md"
-              icon="More"
+              leadingIcon="More"
               data={[
                 {
                   text: t("profile.edit"),

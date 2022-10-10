@@ -86,7 +86,7 @@ const EditStatusPanel = ({ ideaId, getStatusLogDocs }) => {
             variant="secondary"
             size="small"
             text={activeStatusOptionLabel}
-            iconRight={<Arrow transform="rotate(90deg)" />}
+            trailingIcon="ArrowDown"
             options={{ itemType: "check" }}
             data={Object.values(
               statusOptions as { label: string; value: string }[]
@@ -105,7 +105,7 @@ const EditStatusPanel = ({ ideaId, getStatusLogDocs }) => {
             variant="secondary"
             size="small"
             text={"Vernetzen"}
-            iconRight={<Arrow />}
+            trailingIcon={<Arrow />}
             // options={{ itemType: "check" }}
             // data={Object.values(
             //   statusOptions as { label: string; value: string }[]
@@ -123,7 +123,7 @@ const EditStatusPanel = ({ ideaId, getStatusLogDocs }) => {
             variant="secondary"
             size="small"
             text={"Entwürfe"}
-            iconRight={<Arrow />}
+            trailingIcon={<Arrow />}
             // options={{ itemType: "check" }}
             // data={Object.values(
             //   statusOptions as { label: string; value: string }[]
